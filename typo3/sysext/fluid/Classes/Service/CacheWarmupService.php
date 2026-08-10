@@ -37,7 +37,7 @@ readonly class CacheWarmupService
     public function warmupTemplatesInAllPackages(): array
     {
         $templates = $this->templateFinder->findTemplatesInAllPackages();
-        $validationResults = (new TemplateValidator())->validateTemplateFiles(
+        $validationResults = new TemplateValidator()->validateTemplateFiles(
             $templates,
             $this->renderingContextFactory->create()
         );

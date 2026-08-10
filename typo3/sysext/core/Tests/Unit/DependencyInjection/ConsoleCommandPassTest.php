@@ -52,7 +52,7 @@ final class ConsoleCommandPassTest extends UnitTestCase
             eval($sourceCode);
         });
 
-        return (new ContainerBuilder([]))->createDependencyInjectionContainer($packageManagerStub, $cacheMock);
+        return new ContainerBuilder([])->createDependencyInjectionContainer($packageManagerStub, $cacheMock);
     }
 
     #[Test]

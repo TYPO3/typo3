@@ -29,13 +29,13 @@ final class StringLengthValidatorTest extends FunctionalTestCase
     #[Test]
     public function validateReturnsNoErrorIfTheGivenValueIsNull(): void
     {
-        self::assertFalse((new StringLengthValidator())->validate(null)->hasErrors());
+        self::assertFalse(new StringLengthValidator()->validate(null)->hasErrors());
     }
 
     #[Test]
     public function validateReturnsNoErrorIfTheGivenValueIsAnEmptyString(): void
     {
-        self::assertFalse((new StringLengthValidator())->validate('')->hasErrors());
+        self::assertFalse(new StringLengthValidator()->validate('')->hasErrors());
     }
 
     #[Test]

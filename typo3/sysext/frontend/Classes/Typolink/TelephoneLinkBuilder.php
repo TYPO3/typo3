@@ -27,6 +27,6 @@ class TelephoneLinkBuilder implements TypolinkBuilderInterface
     public function buildLink(array $linkDetails, array $configuration, ServerRequestInterface $request, string $linkText = ''): LinkResultInterface
     {
         $linkText = $linkText ?: $linkDetails['telephone'] ?? '';
-        return (new LinkResult($linkDetails['type'], $linkDetails['typoLinkParameter']))->withLinkConfiguration($configuration)->withLinkText($linkText);
+        return new LinkResult($linkDetails['type'], $linkDetails['typoLinkParameter'])->withLinkConfiguration($configuration)->withLinkText($linkText);
     }
 }

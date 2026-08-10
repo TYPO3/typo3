@@ -30,7 +30,7 @@ final class ConditionElseIncludeTest extends UnitTestCase
     {
         $this->expectException(\LogicException::class);
         $this->expectExceptionCode(1655977210);
-        (new ConditionElseInclude())->setConditionToken(new Token(TokenType::T_BLANK, ''));
+        new ConditionElseInclude()->setConditionToken(new Token(TokenType::T_BLANK, ''));
     }
 
     #[Test]
@@ -38,6 +38,6 @@ final class ConditionElseIncludeTest extends UnitTestCase
     {
         $this->expectException(\LogicException::class);
         $this->expectExceptionCode(1655977211);
-        (new ConditionElseInclude())->setOriginalConditionToken(new Token(TokenType::T_BLANK, ''));
+        new ConditionElseInclude()->setOriginalConditionToken(new Token(TokenType::T_BLANK, ''));
     }
 }

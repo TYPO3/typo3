@@ -171,7 +171,7 @@ final class FormInlineAjaxControllerTest extends FunctionalTestCase
         $configJson = json_encode($config);
         return [
             'config' => $configJson,
-            'hmac' => (new HashService())->hmac($configJson, 'InlineContext'),
+            'hmac' => new HashService()->hmac($configJson, 'InlineContext'),
         ];
     }
 }

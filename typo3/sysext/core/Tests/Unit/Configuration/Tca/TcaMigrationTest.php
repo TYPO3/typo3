@@ -2287,7 +2287,7 @@ final class TcaMigrationTest extends UnitTestCase
                 ],
             ],
         ];
-        self::assertSame($expected, (new TcaMigration())->migrate($input)->getTca());
+        self::assertSame($expected, new TcaMigration()->migrate($input)->getTca());
     }
 
     #[Test]
@@ -2365,7 +2365,7 @@ final class TcaMigrationTest extends UnitTestCase
                 ],
             ],
         ];
-        self::assertSame($expected, (new TcaMigration())->migrate($input)->getTca());
+        self::assertSame($expected, new TcaMigration()->migrate($input)->getTca());
     }
 
     public static function selectIndividualAllowDenyMigratedToNewPositionDataProvider(): iterable
@@ -3355,7 +3355,7 @@ final class TcaMigrationTest extends UnitTestCase
                 ],
             ],
         ];
-        self::assertSame($expected, (new TcaMigration())->migrate($input)->getTca());
+        self::assertSame($expected, new TcaMigration()->migrate($input)->getTca());
     }
 
     #[Test]
@@ -3484,7 +3484,7 @@ final class TcaMigrationTest extends UnitTestCase
             ],
         ];
 
-        self::assertSame($expected, (new TcaMigration())->migrate($input)->getTca());
+        self::assertSame($expected, new TcaMigration()->migrate($input)->getTca());
     }
 
     #[Test]
@@ -3537,7 +3537,7 @@ final class TcaMigrationTest extends UnitTestCase
             ],
         ];
 
-        self::assertSame($expected, (new TcaMigration())->migrate($input)->getTca());
+        self::assertSame($expected, new TcaMigration()->migrate($input)->getTca());
     }
 
     #[Test]
@@ -3568,7 +3568,7 @@ final class TcaMigrationTest extends UnitTestCase
                 ],
             ],
         ];
-        self::assertSame($expected, (new TcaMigration())->migrate($input)->getTca());
+        self::assertSame($expected, new TcaMigration()->migrate($input)->getTca());
     }
 
     #[Test]
@@ -3597,7 +3597,7 @@ final class TcaMigrationTest extends UnitTestCase
                 ],
             ],
         ];
-        self::assertSame($expected, (new TcaMigration())->migrate($input)->getTca());
+        self::assertSame($expected, new TcaMigration()->migrate($input)->getTca());
     }
 
     #[Test]
@@ -3626,7 +3626,7 @@ final class TcaMigrationTest extends UnitTestCase
                 ],
             ],
         ];
-        self::assertSame($expected, (new TcaMigration())->migrate($input)->getTca());
+        self::assertSame($expected, new TcaMigration()->migrate($input)->getTca());
     }
 
     #[Test]
@@ -3688,7 +3688,7 @@ final class TcaMigrationTest extends UnitTestCase
                 ],
             ],
         ];
-        self::assertSame($expected, (new TcaMigration())->migrate($input)->getTca());
+        self::assertSame($expected, new TcaMigration()->migrate($input)->getTca());
     }
 
     #[Test]
@@ -3763,7 +3763,7 @@ final class TcaMigrationTest extends UnitTestCase
                 ],
             ],
         ];
-        self::assertSame($expected, (new TcaMigration())->migrate($input)->getTca());
+        self::assertSame($expected, new TcaMigration()->migrate($input)->getTca());
     }
 
     #[Test]
@@ -3906,7 +3906,7 @@ final class TcaMigrationTest extends UnitTestCase
 
         $expected = $input;
         $expected['child1NotWorkspaceAware']['ctrl']['versioningWS'] = true;
-        self::assertSame($expected, (new TcaMigration())->migrate($input)->getTca());
+        self::assertSame($expected, new TcaMigration()->migrate($input)->getTca());
     }
 
     #[DataProvider('requiredYearFlagIsRemovedDataProvider')]
@@ -3992,7 +3992,7 @@ final class TcaMigrationTest extends UnitTestCase
             ],
         ];
 
-        self::assertSame($expected, (new TcaMigration())->migrate($input)->getTca());
+        self::assertSame($expected, new TcaMigration()->migrate($input)->getTca());
     }
 
     #[Test]
@@ -4031,7 +4031,7 @@ final class TcaMigrationTest extends UnitTestCase
                 ],
             ],
         ];
-        self::assertSame($expected, (new TcaMigration())->migrate($input)->getTca());
+        self::assertSame($expected, new TcaMigration()->migrate($input)->getTca());
     }
 
     #[Test]
@@ -4167,7 +4167,7 @@ final class TcaMigrationTest extends UnitTestCase
             ],
         ];
 
-        self::assertSame($expected, (new TcaMigration())->migrate($input)->getTca());
+        self::assertSame($expected, new TcaMigration()->migrate($input)->getTca());
     }
 
     #[Test]
@@ -4249,7 +4249,7 @@ final class TcaMigrationTest extends UnitTestCase
                 ],
             ],
         ];
-        self::assertSame($expected, (new TcaMigration())->migrate($input)->getTca());
+        self::assertSame($expected, new TcaMigration()->migrate($input)->getTca());
     }
 
     #[Test]
@@ -4319,7 +4319,7 @@ final class TcaMigrationTest extends UnitTestCase
                 ],
             ],
         ];
-        self::assertSame($expected, (new TcaMigration())->migrate($input)->getTca());
+        self::assertSame($expected, new TcaMigration()->migrate($input)->getTca());
     }
 
     #[Test]
@@ -4353,7 +4353,7 @@ final class TcaMigrationTest extends UnitTestCase
                 ],
             ],
         ];
-        $result = (new TcaMigration())->migrate($input);
+        $result = new TcaMigration()->migrate($input);
         self::assertSame($expected, $result->getTca());
         self::assertCount(1, $result->getMessages());
         self::assertStringContainsString('sys_redirect', $result->getMessages()[0]);

@@ -269,7 +269,7 @@ final class SecureHtmlRenderingTest extends FunctionalTestCase
     {
         $sourcePageId = 1100;
 
-        $request = (new InternalRequest('https://acme.us/'))
+        $request = new InternalRequest('https://acme.us/')
             ->withPageId($sourcePageId)
             ->withInstructions(
                 [
@@ -286,7 +286,7 @@ final class SecureHtmlRenderingTest extends FunctionalTestCase
 
     private function createDefaultInstruction(): TypoScriptInstruction
     {
-        return (new TypoScriptInstruction())
+        return new TypoScriptInstruction()
             ->withTypoScript([
                 'config.' => [
                     'no_cache' => 1,
@@ -304,7 +304,7 @@ final class SecureHtmlRenderingTest extends FunctionalTestCase
     private function createTextContentObjectWithDefaultParseFuncRteInstruction(string $value): TypoScriptInstruction
     {
         // default configuration as shipped in ext:fluid_styled_content
-        return (new TypoScriptInstruction())
+        return new TypoScriptInstruction()
             ->withTypoScript([
                 'page.' => [
                     '10' => 'TEXT',
@@ -321,7 +321,7 @@ final class SecureHtmlRenderingTest extends FunctionalTestCase
         // basically considered "insecure setup"
         // + no explicit htmlSanitize
         // + no HTMLparser + HTMLparser.htmlSpecialChars
-        return (new TypoScriptInstruction())
+        return new TypoScriptInstruction()
             ->withTypoScript([
                 'page.' => [
                     '10' => 'TEXT',
@@ -359,7 +359,7 @@ final class SecureHtmlRenderingTest extends FunctionalTestCase
 
     private function createDisableHtmlSanitizeInstruction(): TypoScriptInstruction
     {
-        return (new TypoScriptInstruction())
+        return new TypoScriptInstruction()
             ->withTypoScript([
                 'lib.' => [
                     'parseFunc_RTE.' => [
@@ -371,7 +371,7 @@ final class SecureHtmlRenderingTest extends FunctionalTestCase
 
     private function createFluidTemplateContentObject(string $type, string $payload): TypoScriptInstruction
     {
-        return (new TypoScriptInstruction())
+        return new TypoScriptInstruction()
             ->withTypoScript([
                 'page.' => [
                     '10' => 'FLUIDTEMPLATE',

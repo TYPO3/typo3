@@ -127,13 +127,13 @@ final class RichTextElementTest extends FunctionalTestCase
             $fakePublicDir . '/index.php',
             Environment::isWindows() ? 'WINDOWS' : 'UNIX'
         );
-        $request = (new ServerRequest('https://example.com/typo3/form-engine', 'GET', null, [], [
+        $request = new ServerRequest('https://example.com/typo3/form-engine', 'GET', null, [], [
             'REQUEST_URI' => '/typo3/form-engine',
             'SCRIPT_NAME' => '/index.php',
             'HTTP_HOST' => 'example.com',
             'DOCUMENT_ROOT' => Environment::getPublicPath(),
             'SCRIPT_FILENAME' => Environment::getPublicPath() . '/index.php',
-        ]))
+        ])
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $_SERVER = array_replace_recursive($_SERVER, $request->getServerParams());
         $request = $request->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));

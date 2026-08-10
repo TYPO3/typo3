@@ -112,7 +112,7 @@ final class LosslessTokenizer implements TokenizerInterface
                 //        old language construct is detected as InvalidLine.
                 $this->tokenStream->append(new Token(TokenType::T_VALUE, $this->currentLineString, $this->currentLineNumber, $this->currentColumnInLine));
                 ($this->currentLinebreakCallback)();
-                $this->lineStream->append((new InvalidLine())->setTokenStream($this->tokenStream));
+                $this->lineStream->append(new InvalidLine()->setTokenStream($this->tokenStream));
             } else {
                 $this->parseIdentifier();
             }
@@ -141,7 +141,7 @@ final class LosslessTokenizer implements TokenizerInterface
 
     private function createEmptyLine(): void
     {
-        $this->lineStream->append((new EmptyLine())->setTokenStream($this->tokenStream));
+        $this->lineStream->append(new EmptyLine()->setTokenStream($this->tokenStream));
     }
 
     /**
@@ -179,7 +179,7 @@ final class LosslessTokenizer implements TokenizerInterface
     private function createHashCommentLine(): void
     {
         $this->parseHashComment();
-        $this->lineStream->append((new CommentLine())->setTokenStream($this->tokenStream));
+        $this->lineStream->append(new CommentLine()->setTokenStream($this->tokenStream));
     }
 
     private function parseHashComment(): void
@@ -191,7 +191,7 @@ final class LosslessTokenizer implements TokenizerInterface
     private function createDoubleSlashCommentLine(): void
     {
         $this->parseDoubleSlashComment();
-        $this->lineStream->append((new CommentLine())->setTokenStream($this->tokenStream));
+        $this->lineStream->append(new CommentLine()->setTokenStream($this->tokenStream));
     }
 
     private function parseDoubleSlashComment(): void
@@ -203,7 +203,7 @@ final class LosslessTokenizer implements TokenizerInterface
     private function createMultilineCommentLine(): void
     {
         $this->parseMultilineComment();
-        $this->lineStream->append((new CommentLine())->setTokenStream($this->tokenStream));
+        $this->lineStream->append(new CommentLine()->setTokenStream($this->tokenStream));
     }
 
     private function parseMultilineComment(): void
@@ -248,7 +248,7 @@ final class LosslessTokenizer implements TokenizerInterface
             $this->currentColumnInLine += 6;
             $this->parseTabsAndWhitespaces();
             $this->makeComment();
-            $this->lineStream->append((new ConditionElseLine())->setTokenStream($this->tokenStream));
+            $this->lineStream->append(new ConditionElseLine()->setTokenStream($this->tokenStream));
             return;
         }
         if (str_starts_with($upperCaseLine, '[END]')) {
@@ -258,7 +258,7 @@ final class LosslessTokenizer implements TokenizerInterface
             $this->currentColumnInLine += 5;
             $this->parseTabsAndWhitespaces();
             $this->makeComment();
-            $this->lineStream->append((new ConditionStopLine())->setTokenStream($this->tokenStream));
+            $this->lineStream->append(new ConditionStopLine()->setTokenStream($this->tokenStream));
             return;
         }
         if (str_starts_with($upperCaseLine, '[GLOBAL]')) {
@@ -268,7 +268,7 @@ final class LosslessTokenizer implements TokenizerInterface
             $this->currentColumnInLine += 8;
             $this->parseTabsAndWhitespaces();
             $this->makeComment();
-            $this->lineStream->append((new ConditionStopLine())->setTokenStream($this->tokenStream));
+            $this->lineStream->append(new ConditionStopLine()->setTokenStream($this->tokenStream));
             return;
         }
         $conditionBody = '';
@@ -284,7 +284,7 @@ final class LosslessTokenizer implements TokenizerInterface
                     $this->tokenStream->append(new Token(TokenType::T_VALUE, $conditionBody, $this->currentLineNumber, $conditionBodyStartPosition));
                 }
                 ($this->currentLinebreakCallback)();
-                $this->lineStream->append((new InvalidLine())->setTokenStream($this->tokenStream));
+                $this->lineStream->append(new InvalidLine()->setTokenStream($this->tokenStream));
                 return;
             }
             if ($nextChar === '[') {
@@ -304,7 +304,7 @@ final class LosslessTokenizer implements TokenizerInterface
                         $this->currentColumnInLine = $this->currentColumnInLine + $conditionBodyCharCount + 2;
                         $this->parseTabsAndWhitespaces();
                         $this->makeComment();
-                        $this->lineStream->append((new ConditionLine())->setTokenStream($this->tokenStream)->setValueToken($conditionBodyToken));
+                        $this->lineStream->append(new ConditionLine()->setTokenStream($this->tokenStream)->setValueToken($conditionBodyToken));
                         return;
                     }
                     $this->tokenStream->append(new Token(TokenType::T_CONDITION_STOP, ']', $this->currentLineNumber, $this->currentColumnInLine + $conditionBodyCharCount + 1));
@@ -312,7 +312,7 @@ final class LosslessTokenizer implements TokenizerInterface
                     $this->currentColumnInLine = $this->currentColumnInLine + $conditionBodyCharCount + 2;
                     $this->parseTabsAndWhitespaces();
                     $this->makeComment();
-                    $this->lineStream->append((new InvalidLine())->setTokenStream($this->tokenStream));
+                    $this->lineStream->append(new InvalidLine()->setTokenStream($this->tokenStream));
                     return;
                 }
                 $conditionBody .= $nextChar;
@@ -330,7 +330,7 @@ final class LosslessTokenizer implements TokenizerInterface
         $this->currentColumnInLine++;
         $this->currentLineString = substr($this->currentLineString, 1);
         $this->makeComment();
-        $this->lineStream->append((new BlockCloseLine())->setTokenStream($this->tokenStream));
+        $this->lineStream->append(new BlockCloseLine()->setTokenStream($this->tokenStream));
     }
 
     private function parseBlockStart(): void
@@ -341,17 +341,17 @@ final class LosslessTokenizer implements TokenizerInterface
         $this->parseTabsAndWhitespaces();
         if (str_starts_with($this->currentLineString, '}')) {
             // Edge case: foo = { } in one line. Note content within {} is not parsed, everything behind { ends up as comment.
-            $this->lineStream->append((new IdentifierBlockOpenLine())->setIdentifierTokenStream($this->identifierStream)->setTokenStream($this->tokenStream));
+            $this->lineStream->append(new IdentifierBlockOpenLine()->setIdentifierTokenStream($this->identifierStream)->setTokenStream($this->tokenStream));
             $this->tokenStream = new TokenStream();
             $this->tokenStream->append(new Token(TokenType::T_BLOCK_STOP, '}', $this->currentLineNumber, $this->currentColumnInLine));
             $this->currentLineString = substr($this->currentLineString, 1);
             $this->currentColumnInLine++;
             $this->makeComment();
-            $this->lineStream->append((new BlockCloseLine())->setTokenStream($this->tokenStream));
+            $this->lineStream->append(new BlockCloseLine()->setTokenStream($this->tokenStream));
             return;
         }
         $this->makeComment();
-        $this->lineStream->append((new IdentifierBlockOpenLine())->setIdentifierTokenStream($this->identifierStream)->setTokenStream($this->tokenStream));
+        $this->lineStream->append(new IdentifierBlockOpenLine()->setIdentifierTokenStream($this->identifierStream)->setTokenStream($this->tokenStream));
     }
 
     private function parseImportLine(): void
@@ -365,7 +365,7 @@ final class LosslessTokenizer implements TokenizerInterface
         $nextChar = substr($this->currentLineString, 0, 1);
         if ($nextChar !== '\'' && $nextChar !== '"') {
             $this->makeComment();
-            $this->lineStream->append((new InvalidLine())->setTokenStream($this->tokenStream));
+            $this->lineStream->append(new InvalidLine()->setTokenStream($this->tokenStream));
             return;
         }
         $this->tokenStream->append(new Token(TokenType::T_IMPORT_START, $nextChar, $this->currentLineNumber, $this->currentColumnInLine));
@@ -382,11 +382,11 @@ final class LosslessTokenizer implements TokenizerInterface
                     $importBodyToken = (new Token(TokenType::T_VALUE, $importBody, $this->currentLineNumber, $importBodyStartPosition));
                     $this->tokenStream->append($importBodyToken);
                     ($this->currentLinebreakCallback)();
-                    $this->lineStream->append((new ImportLine())->setTokenStream($this->tokenStream)->setValueToken($importBodyToken));
+                    $this->lineStream->append(new ImportLine()->setTokenStream($this->tokenStream)->setValueToken($importBodyToken));
                     return;
                 }
                 ($this->currentLinebreakCallback)();
-                $this->lineStream->append((new InvalidLine())->setTokenStream($this->tokenStream));
+                $this->lineStream->append(new InvalidLine()->setTokenStream($this->tokenStream));
                 return;
             }
             if ($nextChar === '\'' || $nextChar === '"') {
@@ -398,7 +398,7 @@ final class LosslessTokenizer implements TokenizerInterface
                     $this->currentColumnInLine = $this->currentColumnInLine + $importBodyCharCount + 2;
                     $this->parseTabsAndWhitespaces();
                     $this->makeComment();
-                    $this->lineStream->append((new ImportLine())->setTokenStream($this->tokenStream)->setValueToken($importBodyToken));
+                    $this->lineStream->append(new ImportLine()->setTokenStream($this->tokenStream)->setValueToken($importBodyToken));
                     return;
                 }
                 $this->tokenStream->append(new Token(TokenType::T_IMPORT_STOP, $nextChar, $this->currentLineNumber, $this->currentColumnInLine + $importBodyCharCount + 1));
@@ -406,7 +406,7 @@ final class LosslessTokenizer implements TokenizerInterface
                 $this->currentColumnInLine = $this->currentColumnInLine + $importBodyCharCount + 2;
                 $this->parseTabsAndWhitespaces();
                 $this->makeComment();
-                $this->lineStream->append((new InvalidLine())->setTokenStream($this->tokenStream));
+                $this->lineStream->append(new InvalidLine()->setTokenStream($this->tokenStream));
                 return;
             }
             $importBody .= $nextChar;
@@ -419,7 +419,7 @@ final class LosslessTokenizer implements TokenizerInterface
         $splitLine = mb_str_split($this->currentLineString, 1, 'UTF-8');
         $currentPosition = $this->parseIdentifierUntilStopChar($splitLine);
         if (!$currentPosition) {
-            $this->lineStream->append((new InvalidLine())->setTokenStream($this->tokenStream));
+            $this->lineStream->append(new InvalidLine()->setTokenStream($this->tokenStream));
             return;
         }
         $this->currentLineString = mb_substr($this->currentLineString, $currentPosition);
@@ -459,22 +459,22 @@ final class LosslessTokenizer implements TokenizerInterface
         }
         if ($nextChar === '#') {
             $this->parseHashComment();
-            $this->lineStream->append((new InvalidLine())->setTokenStream($this->tokenStream));
+            $this->lineStream->append(new InvalidLine()->setTokenStream($this->tokenStream));
             return;
         }
         if ($nextTwoChars === '//') {
             $this->parseDoubleSlashComment();
-            $this->lineStream->append((new InvalidLine())->setTokenStream($this->tokenStream));
+            $this->lineStream->append(new InvalidLine()->setTokenStream($this->tokenStream));
             return;
         }
         if ($nextTwoChars === '/*') {
             $this->parseMultilineComment();
-            $this->lineStream->append((new InvalidLine())->setTokenStream($this->tokenStream));
+            $this->lineStream->append(new InvalidLine()->setTokenStream($this->tokenStream));
             return;
         }
         if ($nextChar === null) {
             ($this->currentLinebreakCallback)();
-            $this->lineStream->append((new InvalidLine())->setTokenStream($this->tokenStream));
+            $this->lineStream->append(new InvalidLine()->setTokenStream($this->tokenStream));
         }
     }
 
@@ -487,7 +487,7 @@ final class LosslessTokenizer implements TokenizerInterface
         $this->valueStream = new TokenStream();
         [$this->valueStream, $this->tokenStream] = $this->parseValueForConstants($this->valueStream, $this->tokenStream, $this->currentLineString, $this->currentLineNumber, $this->currentColumnInLine);
         ($this->currentLinebreakCallback)();
-        $this->lineStream->append((new IdentifierAssignmentLine())->setTokenStream($this->tokenStream)->setIdentifierTokenStream($this->identifierStream)->setValueTokenStream($this->valueStream));
+        $this->lineStream->append(new IdentifierAssignmentLine()->setTokenStream($this->tokenStream)->setIdentifierTokenStream($this->identifierStream)->setValueTokenStream($this->valueStream));
     }
 
     private function parseOperatorMultilineAssignment(): void
@@ -512,9 +512,9 @@ final class LosslessTokenizer implements TokenizerInterface
                 $this->parseTabsAndWhitespaces();
                 $this->makeComment();
                 if ($this->valueStream->isEmpty()) {
-                    $this->lineStream->append((new InvalidLine())->setTokenStream($this->tokenStream));
+                    $this->lineStream->append(new InvalidLine()->setTokenStream($this->tokenStream));
                 } else {
-                    $this->lineStream->append((new IdentifierAssignmentLine())->setIdentifierTokenStream($this->identifierStream)->setValueTokenStream($this->valueStream)->setTokenStream($this->tokenStream));
+                    $this->lineStream->append(new IdentifierAssignmentLine()->setIdentifierTokenStream($this->identifierStream)->setValueTokenStream($this->valueStream)->setTokenStream($this->tokenStream));
                 }
                 return;
             }
@@ -530,12 +530,12 @@ final class LosslessTokenizer implements TokenizerInterface
                     $this->tokenStream = $this->valueStream;
                     ($this->currentLinebreakCallback)();
                     $this->tokenStream = $tempStream;
-                    $this->lineStream->append((new IdentifierAssignmentLine())->setIdentifierTokenStream($this->identifierStream)->setValueTokenStream($this->valueStream)->setTokenStream($this->tokenStream));
+                    $this->lineStream->append(new IdentifierAssignmentLine()->setIdentifierTokenStream($this->identifierStream)->setValueTokenStream($this->valueStream)->setTokenStream($this->tokenStream));
                     return;
                 }
                 $this->tokenStream->append(new Token(TokenType::T_OPERATOR_ASSIGNMENT_MULTILINE_STOP, ')', $this->currentLineNumber, $this->currentColumnInLine + strlen($this->currentLineString)));
                 ($this->currentLinebreakCallback)();
-                $this->lineStream->append((new InvalidLine())->setTokenStream($this->tokenStream));
+                $this->lineStream->append(new InvalidLine()->setTokenStream($this->tokenStream));
                 return;
             }
             if ($isFirstLine && strlen($this->currentLineString)) {
@@ -557,7 +557,7 @@ final class LosslessTokenizer implements TokenizerInterface
             $previousLineCallback = $this->currentLinebreakCallback;
             ($this->currentLinebreakCallback)();
             if (!array_key_exists($this->currentLineNumber + 1, $this->lines)) {
-                $this->lineStream->append((new InvalidLine())->setTokenStream($this->tokenStream));
+                $this->lineStream->append(new InvalidLine()->setTokenStream($this->tokenStream));
                 return;
             }
             if ($isFirstLine) {
@@ -581,7 +581,7 @@ final class LosslessTokenizer implements TokenizerInterface
         $this->currentLineString = substr($this->currentLineString, 1);
         $this->parseTabsAndWhitespaces();
         $this->makeComment();
-        $this->lineStream->append((new IdentifierUnsetLine())->setTokenStream($this->tokenStream)->setIdentifierTokenStream($this->identifierStream));
+        $this->lineStream->append(new IdentifierUnsetLine()->setTokenStream($this->tokenStream)->setIdentifierTokenStream($this->identifierStream));
     }
 
     private function parseOperatorCopy(): void
@@ -595,11 +595,11 @@ final class LosslessTokenizer implements TokenizerInterface
         $referenceStream = $this->identifierStream;
         if ($referenceStream->isEmpty()) {
             // @todo: ($this->currentLinebreakCallback)(); is missing here?!
-            $this->lineStream->append((new InvalidLine())->setTokenStream($this->tokenStream));
+            $this->lineStream->append(new InvalidLine()->setTokenStream($this->tokenStream));
             return;
         }
         $this->lineStream->append(
-            (new IdentifierCopyLine())
+            new IdentifierCopyLine()
                 ->setIdentifierTokenStream($identifierStream)
                 ->setValueTokenStream($referenceStream)
                 ->setTokenStream($this->tokenStream)
@@ -616,11 +616,11 @@ final class LosslessTokenizer implements TokenizerInterface
         $this->parseIdentifierAtEndOfLine();
         $referenceStream = $this->identifierStream;
         if ($referenceStream->isEmpty()) {
-            $this->lineStream->append((new InvalidLine())->setTokenStream($this->tokenStream));
+            $this->lineStream->append(new InvalidLine()->setTokenStream($this->tokenStream));
             return;
         }
         $this->lineStream->append(
-            (new IdentifierReferenceLine())
+            new IdentifierReferenceLine()
                 ->setIdentifierTokenStream($identifierStream)
                 ->setValueTokenStream($referenceStream)
                 ->setTokenStream($this->tokenStream)
@@ -733,7 +733,7 @@ final class LosslessTokenizer implements TokenizerInterface
         $this->parseTabsAndWhitespaces();
         if ($this->currentLineString === '') {
             ($this->currentLinebreakCallback)();
-            $this->lineStream->append((new InvalidLine())->setTokenStream($this->tokenStream));
+            $this->lineStream->append(new InvalidLine()->setTokenStream($this->tokenStream));
             return;
         }
         $functionName = '';
@@ -748,7 +748,7 @@ final class LosslessTokenizer implements TokenizerInterface
                     $this->tokenStream->append(new Token(TokenType::T_FUNCTION_NAME, $functionName, $this->currentLineNumber, $functionNameStartPosition));
                 }
                 ($this->currentLinebreakCallback)();
-                $this->lineStream->append((new InvalidLine())->setTokenStream($this->tokenStream));
+                $this->lineStream->append(new InvalidLine()->setTokenStream($this->tokenStream));
                 return;
             }
             if ($nextChar === '(') {
@@ -760,7 +760,7 @@ final class LosslessTokenizer implements TokenizerInterface
                     break;
                 }
                 $this->makeComment();
-                $this->lineStream->append((new InvalidLine())->setTokenStream($this->tokenStream));
+                $this->lineStream->append(new InvalidLine()->setTokenStream($this->tokenStream));
                 return;
             }
             $functionName .= $nextChar;
@@ -778,7 +778,7 @@ final class LosslessTokenizer implements TokenizerInterface
                     $this->tokenStream->append(new Token(TokenType::T_VALUE, $functionBodyPart, $this->currentLineNumber, $functionBodyStartPosition));
                 }
                 ($this->currentLinebreakCallback)();
-                $this->lineStream->append((new InvalidLine())->setTokenStream($this->tokenStream));
+                $this->lineStream->append(new InvalidLine()->setTokenStream($this->tokenStream));
                 return;
             }
             if ($nextChar === '(') {
@@ -808,7 +808,7 @@ final class LosslessTokenizer implements TokenizerInterface
         $this->parseTabsAndWhitespaces();
         $this->makeComment();
         $this->lineStream->append(
-            (new IdentifierFunctionLine())
+            new IdentifierFunctionLine()
                 ->setIdentifierTokenStream($this->identifierStream)
                 ->setFunctionNameToken($functionNameToken)
                 ->setTokenStream($this->tokenStream)
@@ -859,7 +859,7 @@ final class LosslessTokenizer implements TokenizerInterface
             if ($isInConstant && $char === '}') {
                 $valueToken = new Token(TokenType::T_CONSTANT, $currentString . '}', $line, $column + $lastTokenEndPosition + $tokenOffsetPosition);
                 if (!$valueStream instanceof ConstantAwareTokenStream) {
-                    $valueStream = (new ConstantAwareTokenStream())->setAll($valueStream->getAll());
+                    $valueStream = new ConstantAwareTokenStream()->setAll($valueStream->getAll());
                 }
                 $valueStream->append($valueToken);
                 $tokenStream->append($valueToken);

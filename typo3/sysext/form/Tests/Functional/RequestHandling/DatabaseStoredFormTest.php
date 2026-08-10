@@ -79,7 +79,7 @@ final class DatabaseStoredFormTest extends FunctionalTestCase
 
         $subject = new FormDataFactory();
 
-        $internalRequest = (new InternalRequest($uri))->withAttribute('currentContentObject', $this->get(ContentObjectRenderer::class));
+        $internalRequest = new InternalRequest($uri)->withAttribute('currentContentObject', $this->get(ContentObjectRenderer::class));
         $pageMarkup = (string)$this->executeFrontendSubRequest($internalRequest, null, true)->getBody();
 
         self::assertStringContainsString('db-test-form-1005', $pageMarkup, 'database-stored form is rendered on the page');
@@ -91,7 +91,7 @@ final class DatabaseStoredFormTest extends FunctionalTestCase
         self::assertStringContainsString('text-1', $formMarkup, 'form contains text-1 element');
 
         // Submit the form and verify the confirmation finisher message
-        $internalRequest = (new InternalRequest($uri))->withAttribute('currentContentObject', $this->get(ContentObjectRenderer::class));
+        $internalRequest = new InternalRequest($uri)->withAttribute('currentContentObject', $this->get(ContentObjectRenderer::class));
         $formPostRequest = $formData->with('text-1', 'DatabaseFormTest')->toPostRequest($internalRequest);
         $pageMarkup = (string)$this->executeFrontendSubRequest($formPostRequest, null, true)->getBody();
         $formData = $subject->fromHtmlMarkupAndXpath($pageMarkup, '//*[@id="' . $formIdentifier . '"]');

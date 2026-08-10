@@ -99,6 +99,6 @@ final class WithCollection implements \Stringable
                 'after' => $part->getDependencies(),
             ];
         }
-        return (new DependencyOrderingService())->orderByDependencies($parts);
+        return new DependencyOrderingService()->orderByDependencies($parts);
     }
 }

@@ -106,7 +106,7 @@ final class RotatingFileWriterTest extends UnitTestCase
     public function writingLogWithLatestRotationInTimeFrameDoesNotRotate(Interval $interval): void
     {
         $testingTolerance = 100;
-        $rotationDate = (new \DateTime('@' . (time() + $testingTolerance)))
+        $rotationDate = new \DateTime('@' . (time() + $testingTolerance))
             ->sub(new \DateInterval($interval->getDateInterval()))
             ->format('YmdHis');
         $logFileName = $this->getDefaultFileName();

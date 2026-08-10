@@ -113,7 +113,7 @@ final class BlogPostEditingControllerTest extends FunctionalTestCase
         ];
         $requestContext = new InternalRequestContext();
 
-        $request = (new InternalRequest('https://www.acme.com' . $postLink))
+        $request = new InternalRequest('https://www.acme.com' . $postLink)
             ->withMethod('POST')
             ->withQueryParams($args)
             ->withParsedBody($postPayload)
@@ -506,7 +506,7 @@ final class BlogPostEditingControllerTest extends FunctionalTestCase
         ];
         $requestContext = new InternalRequestContext();
 
-        $request = (new InternalRequest('https://www.acme.com' . $postLink))
+        $request = new InternalRequest('https://www.acme.com' . $postLink)
             ->withMethod('POST')
             ->withQueryParams($args)
             ->withParsedBody($postPayload)
@@ -570,7 +570,7 @@ final class BlogPostEditingControllerTest extends FunctionalTestCase
         ];
         $requestContext = new InternalRequestContext();
 
-        $request = (new InternalRequest('https://www.acme.com' . $postLink))
+        $request = new InternalRequest('https://www.acme.com' . $postLink)
             ->withMethod('POST')
             ->withQueryParams($args)
             ->withParsedBody($postPayload)

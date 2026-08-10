@@ -98,7 +98,7 @@ final class NoncePoolTest extends UnitTestCase
     #[Test]
     public function itemsArePurged(array $options, array $items, array $validItems, array $revocableNames): void
     {
-        $pool = (new NoncePool($items, $options))->purge();
+        $pool = new NoncePool($items, $options)->purge();
         foreach ($validItems as $name => $validItem) {
             self::assertSame($validItem, $pool->findSigningSecret($name));
         }

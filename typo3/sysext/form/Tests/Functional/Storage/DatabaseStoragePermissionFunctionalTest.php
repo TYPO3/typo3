@@ -69,7 +69,7 @@ final class DatabaseStoragePermissionFunctionalTest extends FunctionalTestCase
 
     private function createBackendRequest(): ServerRequest
     {
-        return (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        return new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
     }
 
     private function createFormData(): FormData
@@ -217,7 +217,7 @@ final class DatabaseStoragePermissionFunctionalTest extends FunctionalTestCase
         unset($GLOBALS['BE_USER']);
 
         $subject = $this->getSubject();
-        $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
+        $request = new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
 
         $result = $subject->read(new FormIdentifier('1'), $request);
 
@@ -231,7 +231,7 @@ final class DatabaseStoragePermissionFunctionalTest extends FunctionalTestCase
         $this->switchToBackendUser(2);
 
         $subject = $this->getSubject();
-        $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
+        $request = new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
 
         // In frontend context, permission check is skipped
         $result = $subject->read(new FormIdentifier('1'), $request);

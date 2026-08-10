@@ -132,7 +132,7 @@ readonly class Installer implements MiddlewareInterface
      */
     protected function canHandleRequest(): bool
     {
-        $localConfigurationFileLocation = (new ConfigurationManager())->getSystemConfigurationFileLocation();
+        $localConfigurationFileLocation = new ConfigurationManager()->getSystemConfigurationFileLocation();
         return !@is_file($localConfigurationFileLocation) || EnableFileService::isFirstInstallAllowed();
     }
 

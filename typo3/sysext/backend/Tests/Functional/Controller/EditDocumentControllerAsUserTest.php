@@ -55,7 +55,7 @@ final class EditDocumentControllerAsUserTest extends FunctionalTestCase
     #[Test]
     public function processedDataTakesOverDefaultValues(): void
     {
-        $request = (new ServerRequest('https://www.example.com/', 'POST'))
+        $request = new ServerRequest('https://www.example.com/', 'POST')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $defaultValues = [
             'colPos' => 123,
@@ -85,7 +85,7 @@ final class EditDocumentControllerAsUserTest extends FunctionalTestCase
     #[Test]
     public function processedDataDoesNotOverridePostWithDefaultValues(): void
     {
-        $request = (new ServerRequest('https://www.example.com/', 'POST'))
+        $request = new ServerRequest('https://www.example.com/', 'POST')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $defaultValues = [
             'colPos' => 123,
@@ -114,7 +114,7 @@ final class EditDocumentControllerAsUserTest extends FunctionalTestCase
     #[Test]
     public function processedDataOmitsProhibitedDefaultValues(): void
     {
-        $request = (new ServerRequest('https://www.example.com/', 'POST'))
+        $request = new ServerRequest('https://www.example.com/', 'POST')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $defaultValues = [
             'colPos' => 123,
@@ -146,7 +146,7 @@ final class EditDocumentControllerAsUserTest extends FunctionalTestCase
     #[Test]
     public function processedDataUsesOverrideValuesOnEmptyDefaultValues(): void
     {
-        $request = (new ServerRequest('https://www.example.com/', 'POST'))
+        $request = new ServerRequest('https://www.example.com/', 'POST')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $defaultValues = [
             'colPos' => 123,
@@ -184,7 +184,7 @@ final class EditDocumentControllerAsUserTest extends FunctionalTestCase
     #[Test]
     public function processedDataPrioritizesDefaultValues(): void
     {
-        $request = (new ServerRequest('https://www.example.com/', 'POST'))
+        $request = new ServerRequest('https://www.example.com/', 'POST')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $overrideValues = [
             'colPos' => 123,

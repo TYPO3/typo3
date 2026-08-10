@@ -43,6 +43,6 @@ final class SessionManagerTest extends UnitTestCase
             'backend'  => \stdClass::class,
             'options' => [],
         ];
-        (new SessionManager(self::createStub(ContainerInterface::class)))->getSessionBackend('myidentifier');
+        new SessionManager(self::createStub(ContainerInterface::class))->getSessionBackend('myidentifier');
     }
 }

@@ -55,7 +55,7 @@ final readonly class DenyListDeserializer
     ) {
         $allowedClassNames = $GLOBALS['TYPO3_CONF_VARS']['SYS']['deserialization']['allowedClassNames'] ?? null;
         $this->allowedClassNames = is_array($allowedClassNames) ? $allowedClassNames : [];
-        $this->blockSerializationWakeup = (new \ReflectionClass(BlockSerializationTrait::class))->getMethod('__wakeup');
+        $this->blockSerializationWakeup = new \ReflectionClass(BlockSerializationTrait::class)->getMethod('__wakeup');
     }
 
     /**

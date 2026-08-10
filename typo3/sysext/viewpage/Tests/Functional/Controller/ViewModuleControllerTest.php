@@ -169,7 +169,7 @@ final class ViewModuleControllerTest extends FunctionalTestCase
             '_identifier' => 'page_preview',
         ]);
 
-        $request = (new ServerRequest('https://example.com/typo3/'))
+        $request = new ServerRequest('https://example.com/typo3/')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('site', $site)
             ->withAttribute('route', $route)
@@ -194,7 +194,7 @@ final class ViewModuleControllerTest extends FunctionalTestCase
 
         $queryParams = array_merge(['id' => $pageId], $additionalParams);
 
-        $request = (new ServerRequest('https://example.com/typo3/'))
+        $request = new ServerRequest('https://example.com/typo3/')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('site', $site)
             ->withAttribute('route', $route)

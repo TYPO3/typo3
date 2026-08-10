@@ -50,7 +50,7 @@ final class CssViewHelperTest extends FunctionalTestCase
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:asset.css identifier="test" href="' . $href . '" priority="0"/>');
 
-        (new TemplateView($context))->render();
+        new TemplateView($context)->render();
 
         $collectedStyleSheets = $this->get(AssetCollector::class)->getStyleSheets();
         self::assertSame($href, $collectedStyleSheets['test']['source']);
@@ -63,7 +63,7 @@ final class CssViewHelperTest extends FunctionalTestCase
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:asset.css identifier="test" href="my.css" disabled="1" priority="0"/>');
 
-        (new TemplateView($context))->render();
+        new TemplateView($context)->render();
 
         $collectedStyleSheets = $this->get(AssetCollector::class)->getStyleSheets();
         self::assertSame('my.css', $collectedStyleSheets['test']['source']);
@@ -76,7 +76,7 @@ final class CssViewHelperTest extends FunctionalTestCase
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:for each="{4711:\'4712\'}" as="i" iteration="iterator" key="k"><f:asset.css identifier="{i}">{k}</f:asset.css></f:for>');
 
-        (new TemplateView($context))->render();
+        new TemplateView($context)->render();
 
         $collectedInlineStyleSheets = $this->get(AssetCollector::class)->getInlineStyleSheets();
         self::assertSame('4711', $collectedInlineStyleSheets['4712']['source']);
@@ -144,7 +144,7 @@ final class CssViewHelperTest extends FunctionalTestCase
         $context->getTemplatePaths()->setTemplateSource('<f:asset.css identifier="test">' . $source . '</f:asset.css>');
         $context->getVariableProvider()->add('color', $value);
 
-        (new TemplateView($context))->render();
+        new TemplateView($context)->render();
 
         $collectedInlineStyleSheets = $this->get(AssetCollector::class)->getInlineStyleSheets();
         self::assertSame($expectation, $collectedInlineStyleSheets['test']['source']);
@@ -156,7 +156,7 @@ final class CssViewHelperTest extends FunctionalTestCase
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:asset.css identifier="test" href="test.css" inline="1" priority="0"/>');
 
-        (new TemplateView($context))->render();
+        new TemplateView($context)->render();
 
         $collectedInlineStyleSheets = $this->get(AssetCollector::class)->getInlineStyleSheets();
         self::assertSame(".foo {\n    color: black;\n}\n", $collectedInlineStyleSheets['test']['source']);

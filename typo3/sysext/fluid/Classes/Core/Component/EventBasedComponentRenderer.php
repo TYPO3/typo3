@@ -51,7 +51,7 @@ final readonly class EventBasedComponentRenderer implements ComponentRendererInt
         if ($event->getRenderedComponent() !== null) {
             return $event->getRenderedComponent();
         }
-        return (new FluidComponentRenderer($this->componentCollection))->renderComponent(
+        return new FluidComponentRenderer($this->componentCollection)->renderComponent(
             $viewHelperName,
             $event->getArguments(),
             $event->getSlots(),

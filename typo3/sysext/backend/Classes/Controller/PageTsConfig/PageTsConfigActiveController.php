@@ -106,7 +106,7 @@ final readonly class PageTsConfigActiveController
             }
             $siteSettingsNode = new SiteInclude();
             $siteSettingsNode->setName('Site constants settings of site "' . $site->getIdentifier() . '"');
-            $siteSettingsNode->setLineStream((new LosslessTokenizer())->tokenize($siteConstants));
+            $siteSettingsNode->setLineStream(new LosslessTokenizer()->tokenize($siteConstants));
             $siteSettingsTreeRoot = new RootInclude();
             $siteSettingsTreeRoot->addChild($siteSettingsNode);
             $astBuilderVisitor = $this->container->get(IncludeTreeAstBuilderVisitor::class);
@@ -145,7 +145,7 @@ final readonly class PageTsConfigActiveController
         if (!empty($userTsConfigPageOverrides)) {
             $includeNode = new TsConfigInclude();
             $includeNode->setName('pageTsConfig-overrides-by-userTsConfig');
-            $includeNode->setLineStream((new LosslessTokenizer())->tokenize($userTsConfigPageOverrides));
+            $includeNode->setLineStream(new LosslessTokenizer()->tokenize($userTsConfigPageOverrides));
             $pagesTsConfigTree->addChild($includeNode);
         }
 

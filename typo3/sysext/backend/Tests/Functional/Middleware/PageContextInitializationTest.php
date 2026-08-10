@@ -185,7 +185,7 @@ final class PageContextInitializationTest extends FunctionalTestCase
         // Route without requestPageContext option
         $route = new Route('/test', []);
 
-        $request = (new ServerRequest('https://example.com/typo3/'))
+        $request = new ServerRequest('https://example.com/typo3/')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('site', new NullSite())
             ->withAttribute('backend.user', $this->backendUser)
@@ -214,7 +214,7 @@ final class PageContextInitializationTest extends FunctionalTestCase
     #[Test]
     public function skipsProcessingWhenNoRoutePresent(): void
     {
-        $request = (new ServerRequest('https://example.com/typo3/'))
+        $request = new ServerRequest('https://example.com/typo3/')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('site', new NullSite())
             ->withAttribute('backend.user', $this->backendUser)
@@ -244,7 +244,7 @@ final class PageContextInitializationTest extends FunctionalTestCase
         // Create a route with requestPageContext option to trigger middleware
         $route = new Route('/test', ['requestPageContext' => true]);
 
-        return (new ServerRequest('https://example.com/typo3/'))
+        return new ServerRequest('https://example.com/typo3/')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('site', new NullSite())
             ->withAttribute('backend.user', $this->backendUser)

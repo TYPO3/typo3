@@ -35,7 +35,7 @@ final class FileRendererPassTest extends UnitTestCase
         $definition->addTag(AsFileRenderer::TAG_NAME);
         $container->setDefinition(AudioTagRenderer::class, $definition);
 
-        (new FileRendererPass(AsFileRenderer::TAG_NAME))->process($container);
+        new FileRendererPass(AsFileRenderer::TAG_NAME)->process($container);
 
         self::assertTrue($container->hasDefinition(AudioTagRenderer::class));
     }
@@ -51,6 +51,6 @@ final class FileRendererPassTest extends UnitTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1784818672);
 
-        (new FileRendererPass(AsFileRenderer::TAG_NAME))->process($container);
+        new FileRendererPass(AsFileRenderer::TAG_NAME)->process($container);
     }
 }

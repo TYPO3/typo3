@@ -178,12 +178,12 @@ final class RequestHandlerTest extends AbstractTestCase
     public static function uncachedStateDataProvider(): \Generator
     {
         yield 'uncached' => [
-            (new TypoScriptInstruction())->withTypoScript([
+            new TypoScriptInstruction()->withTypoScript([
                 'config.' => ['no_cache' => 1],
             ]),
         ];
         yield 'partially cached (static content)' => [
-            (new TypoScriptInstruction())->withTypoScript([
+            new TypoScriptInstruction()->withTypoScript([
                 'page.' => [
                     '10' => 'COA_INT',
                     '10.' => [
@@ -194,7 +194,7 @@ final class RequestHandlerTest extends AbstractTestCase
             ]),
         ];
         yield 'partially cached (inline JavaScript)' => [
-            (new TypoScriptInstruction())->withTypoScript([
+            new TypoScriptInstruction()->withTypoScript([
                 'page.' => [
                     '10' => 'COA_INT',
                     '10.' => [
@@ -381,7 +381,7 @@ final class RequestHandlerTest extends AbstractTestCase
     public static function nonceValuesAreExpectedDataProvider(): iterable
     {
         yield 'cached (static content)' => [
-            (new TypoScriptInstruction())->withTypoScript([
+            new TypoScriptInstruction()->withTypoScript([
                 'page.' => [
                     '10' => 'TEXT',
                     '10.' => ['value' => '<p>cached content</p>'],
@@ -390,7 +390,7 @@ final class RequestHandlerTest extends AbstractTestCase
             false,
         ];
         yield 'cached (specific f:security.nonce view-helper)' => [
-            (new TypoScriptInstruction())->withTypoScript([
+            new TypoScriptInstruction()->withTypoScript([
                 'page.' => [
                     '10' => 'FLUIDTEMPLATE',
                     '10.' => [
@@ -404,7 +404,7 @@ final class RequestHandlerTest extends AbstractTestCase
             false,
         ];
         yield 'cached (unspecific f:security.nonce view-helper)' => [
-            (new TypoScriptInstruction())->withTypoScript([
+            new TypoScriptInstruction()->withTypoScript([
                 'page.' => [
                     '10' => 'FLUIDTEMPLATE',
                     '10.' => [

@@ -53,7 +53,7 @@ final class EditDocumentControllerTest extends FunctionalTestCase
     #[Test]
     public function processedDataTakesOverDefaultValues(): void
     {
-        $request = (new ServerRequest('https://www.example.com/', 'POST'))
+        $request = new ServerRequest('https://www.example.com/', 'POST')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $defaultValues = [
             'colPos' => 123,
@@ -83,7 +83,7 @@ final class EditDocumentControllerTest extends FunctionalTestCase
     #[Test]
     public function processedDataDoesNotOverridePostWithDefaultValues(): void
     {
-        $request = (new ServerRequest('https://www.example.com/', 'POST'))
+        $request = new ServerRequest('https://www.example.com/', 'POST')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $defaultValues = [
             'colPos' => 123,

@@ -36,7 +36,7 @@ final class NewRecordViewHelperTest extends FunctionalTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->request = (new ServerRequest('https://www.example.com/'))
+        $this->request = new ServerRequest('https://www.example.com/')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('normalizedParams', new NormalizedParams([], [], '', ''));
     }
@@ -47,7 +47,7 @@ final class NewRecordViewHelperTest extends FunctionalTestCase
         $context = $this->get(RenderingContextFactory::class)->create([], $this->request);
         $context->getViewHelperResolver()->addNamespace('be', 'TYPO3\\CMS\\Backend\\ViewHelpers');
         $context->getTemplatePaths()->setTemplateSource('<be:link.newRecord table="a_table" pid="17">new record at a_table on page 17</be:link.newRecord>');
-        $result = urldecode((new TemplateView($context))->render());
+        $result = urldecode(new TemplateView($context)->render());
 
         self::assertStringContainsString('/typo3/record/edit', $result);
         self::assertStringContainsString('edit[a_table][17]=new', $result);
@@ -59,7 +59,7 @@ final class NewRecordViewHelperTest extends FunctionalTestCase
         $context = $this->get(RenderingContextFactory::class)->create([], $this->request);
         $context->getViewHelperResolver()->addNamespace('be', 'TYPO3\\CMS\\Backend\\ViewHelpers');
         $context->getTemplatePaths()->setTemplateSource('<be:link.newRecord table="a_table">new record at a_table on root</be:link.newRecord>');
-        $result = urldecode((new TemplateView($context))->render());
+        $result = urldecode(new TemplateView($context)->render());
 
         self::assertStringContainsString('/typo3/record/edit', $result);
         self::assertStringContainsString('edit[a_table][0]=new', $result);
@@ -71,7 +71,7 @@ final class NewRecordViewHelperTest extends FunctionalTestCase
         $context = $this->get(RenderingContextFactory::class)->create([], $this->request);
         $context->getViewHelperResolver()->addNamespace('be', 'TYPO3\\CMS\\Backend\\ViewHelpers');
         $context->getTemplatePaths()->setTemplateSource("{be:link.newRecord(table: 'b_table', pid:17)}");
-        $result = urldecode((new TemplateView($context))->render());
+        $result = urldecode(new TemplateView($context)->render());
 
         self::assertStringContainsString('/typo3/record/edit', $result);
         self::assertStringContainsString('edit[b_table][17]=new', $result);
@@ -83,7 +83,7 @@ final class NewRecordViewHelperTest extends FunctionalTestCase
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getViewHelperResolver()->addNamespace('be', 'TYPO3\\CMS\\Backend\\ViewHelpers');
         $context->getTemplatePaths()->setTemplateSource('<be:link.newRecord table="c_table" returnUrl="foo/bar" pid="17">new record at c_table</be:link.newRecord>');
-        $result = urldecode((new TemplateView($context))->render());
+        $result = urldecode(new TemplateView($context)->render());
 
         self::assertStringContainsString('/typo3/record/edit', $result);
         self::assertStringContainsString('edit[c_table][17]=new', $result);
@@ -96,7 +96,7 @@ final class NewRecordViewHelperTest extends FunctionalTestCase
         $context = $this->get(RenderingContextFactory::class)->create([], $this->request);
         $context->getViewHelperResolver()->addNamespace('be', 'TYPO3\\CMS\\Backend\\ViewHelpers');
         $context->getTemplatePaths()->setTemplateSource('<be:link.newRecord uid="-11" table="c_table">new record at c_table after record with uid 11</be:link.newRecord>');
-        $result = urldecode((new TemplateView($context))->render());
+        $result = urldecode(new TemplateView($context)->render());
 
         self::assertStringContainsString('/typo3/record/edit', $result);
         self::assertStringContainsString('edit[c_table][-11]=new', $result);
@@ -108,7 +108,7 @@ final class NewRecordViewHelperTest extends FunctionalTestCase
         $context = $this->get(RenderingContextFactory::class)->create([], $this->request);
         $context->getViewHelperResolver()->addNamespace('be', 'TYPO3\\CMS\\Backend\\ViewHelpers');
         $context->getTemplatePaths()->setTemplateSource('<be:link.newRecord table="c_table" defaultValues="{c_table: {c_field: \'c_value\'}}" pid="17">new record at c_table</be:link.newRecord>');
-        $result = urldecode((new TemplateView($context))->render());
+        $result = urldecode(new TemplateView($context)->render());
 
         self::assertStringContainsString('/typo3/record/edit', $result);
         self::assertStringContainsString('edit[c_table][17]=new', $result);
@@ -121,7 +121,7 @@ final class NewRecordViewHelperTest extends FunctionalTestCase
         $context = $this->get(RenderingContextFactory::class)->create([], $this->request);
         $context->getViewHelperResolver()->addNamespace('be', 'TYPO3\\CMS\\Backend\\ViewHelpers');
         $context->getTemplatePaths()->setTemplateSource('<be:link.newRecord table="c_table" defaultValues="{c_table: {c_field: \'c_value\', c_field2: \'c_value2\'}}" pid="17">new record at c_table</be:link.newRecord>');
-        $result = urldecode((new TemplateView($context))->render());
+        $result = urldecode(new TemplateView($context)->render());
 
         self::assertStringContainsString('/typo3/record/edit', $result);
         self::assertStringContainsString('edit[c_table][17]=new', $result);
@@ -134,7 +134,7 @@ final class NewRecordViewHelperTest extends FunctionalTestCase
         $context = $this->get(RenderingContextFactory::class)->create([], $this->request);
         $context->getViewHelperResolver()->addNamespace('be', 'TYPO3\\CMS\\Backend\\ViewHelpers');
         $context->getTemplatePaths()->setTemplateSource('<f:for each="{4711:\'4712\'}" as="i" iteration="iterator" key="k"><be:link.newRecord pid="{i}" table="c_table" defaultValues="{c_table: {c_field: \'c_value\', c_field2: \'c_value2\'}}">{k}</be:link.newRecord></f:for>');
-        $result = urldecode((new TemplateView($context))->render());
+        $result = urldecode(new TemplateView($context)->render());
 
         self::assertStringContainsString('/typo3/record/edit', $result);
         self::assertStringContainsString('edit[c_table][4712]=new', $result);
@@ -151,7 +151,7 @@ final class NewRecordViewHelperTest extends FunctionalTestCase
         $context = $this->get(RenderingContextFactory::class)->create([], $this->request);
         $context->getViewHelperResolver()->addNamespace('be', 'TYPO3\\CMS\\Backend\\ViewHelpers');
         $context->getTemplatePaths()->setTemplateSource('<be:link.newRecord uid="42" table="c_table">if uid given, it must be negative</be:link.newRecord>');
-        (new TemplateView($context))->render();
+        new TemplateView($context)->render();
     }
 
     #[Test]
@@ -163,6 +163,6 @@ final class NewRecordViewHelperTest extends FunctionalTestCase
         $context = $this->get(RenderingContextFactory::class)->create([], $this->request);
         $context->getViewHelperResolver()->addNamespace('be', 'TYPO3\\CMS\\Backend\\ViewHelpers');
         $context->getTemplatePaths()->setTemplateSource('<be:link.newRecord uid="-42" pid="18" table="c_table">can\'t handle uid and pid together</be:link.newRecord>');
-        (new TemplateView($context))->render();
+        new TemplateView($context)->render();
     }
 }

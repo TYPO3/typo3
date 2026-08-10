@@ -209,7 +209,7 @@ class UserSession
         return self::encodeHashSignedJwt(
             [
                 'identifier' => $this->identifier,
-                'time' => (new \DateTimeImmutable())->format(\DateTimeImmutable::RFC3339),
+                'time' => new \DateTimeImmutable()->format(\DateTimeImmutable::RFC3339),
                 'scope' => $scope,
             ],
             self::createSigningKeyFromEncryptionKey(UserSession::class)

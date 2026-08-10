@@ -29,21 +29,21 @@ final class PublicMethodDeprecationTraitTest extends UnitTestCase
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1528822131);
-        (new PublicMethodDeprecationTraitTextFixture())->standardPublicMethod();
+        new PublicMethodDeprecationTraitTextFixture()->standardPublicMethod();
     }
 
     #[Test]
     public function protectedMethodNotHandledByTraitThrowsError(): void
     {
         $this->expectException(\Error::class);
-        (new PublicMethodDeprecationTraitTextFixture())->standardProtectedMethod(); // @phpstan-ignore method.protected (testing __call() magic method behavior)
+        new PublicMethodDeprecationTraitTextFixture()->standardProtectedMethod(); // @phpstan-ignore method.protected (testing __call() magic method behavior)
     }
 
     #[Test]
     public function notExistingMethodThrowsError(): void
     {
         $this->expectException(\Error::class);
-        (new PublicMethodDeprecationTraitTextFixture())->doesNotExist(); // @phpstan-ignore method.notFound (testing __call() magic method behavior)
+        new PublicMethodDeprecationTraitTextFixture()->doesNotExist(); // @phpstan-ignore method.notFound (testing __call() magic method behavior)
     }
 
     /**
@@ -56,7 +56,7 @@ final class PublicMethodDeprecationTraitTest extends UnitTestCase
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1528822485);
-        (new PublicMethodDeprecationTraitTextFixture())->methodMadeProtected(); // @phpstan-ignore method.protected (testing __call() magic method behavior)
+        new PublicMethodDeprecationTraitTextFixture()->methodMadeProtected(); // @phpstan-ignore method.protected (testing __call() magic method behavior)
     }
 
     /**
@@ -68,7 +68,7 @@ final class PublicMethodDeprecationTraitTest extends UnitTestCase
     public function methodMadeProtectedReturnsValue(): void
     {
         // @phpstan-ignore method.protected (testing __call() magic method behavior)
-        self::assertEquals('foo', (new PublicMethodDeprecationTraitTextFixture())->methodMadeProtectedWithReturn());
+        self::assertEquals('foo', new PublicMethodDeprecationTraitTextFixture()->methodMadeProtectedWithReturn());
     }
 
     /**
@@ -81,6 +81,6 @@ final class PublicMethodDeprecationTraitTest extends UnitTestCase
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1528822486);
-        (new PublicMethodDeprecationTraitTextFixture())->methodMadeProtectedWithArguments('foo', 'bar'); // @phpstan-ignore method.protected (testing __call() magic method behavior)
+        new PublicMethodDeprecationTraitTextFixture()->methodMadeProtectedWithArguments('foo', 'bar'); // @phpstan-ignore method.protected (testing __call() magic method behavior)
     }
 }

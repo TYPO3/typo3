@@ -143,7 +143,7 @@ readonly class DataStructureIdentifierListener
         if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface) {
             $request = $GLOBALS['TYPO3_REQUEST'];
         } else {
-            $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+            $request = new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         }
         $this->extbaseConfigurationManager->setRequest($request);
         // @todo: Is this really needed? Isn't this event listener bound to BE only?

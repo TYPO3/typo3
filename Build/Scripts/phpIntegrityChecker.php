@@ -202,7 +202,7 @@ final class PhpIntegrityChecker extends Command
 
     private function createFinder(): Finder
     {
-        return (new Finder())
+        return new Finder()
             ->files()
             ->in($this->finderFindIn)
             ->notPath($this->finderNotPath)
@@ -223,7 +223,7 @@ final class PhpIntegrityChecker extends Command
     private function getParser(): Parser
     {
 
-        return (new ParserFactory())->createForVersion($this->phpVersion);
+        return new ParserFactory()->createForVersion($this->phpVersion);
     }
 }
 

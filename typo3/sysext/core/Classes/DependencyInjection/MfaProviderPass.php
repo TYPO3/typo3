@@ -69,7 +69,7 @@ final class MfaProviderPass implements CompilerPassInterface
             }
         }
 
-        foreach ((new DependencyOrderingService())->orderByDependencies($providers) as $identifier => $properties) {
+        foreach (new DependencyOrderingService()->orderByDependencies($providers) as $identifier => $properties) {
             $manifest = new Definition(MfaProviderManifest::class);
             $manifest->setArguments([
                 $identifier,

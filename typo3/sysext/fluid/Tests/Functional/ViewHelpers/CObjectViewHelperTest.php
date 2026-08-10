@@ -63,7 +63,7 @@ lib.test = TEXT
 lib.test.current = 1
 EOT
         ]);
-        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(1));
+        $response = $this->executeFrontendSubRequest(new InternalRequest()->withPageId(1));
         self::assertStringContainsString('foo', (string)$response->getBody());
     }
 
@@ -85,7 +85,7 @@ lib.test = TEXT
 lib.test.current = 1
 EOT
         ]);
-        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(1));
+        $response = $this->executeFrontendSubRequest(new InternalRequest()->withPageId(1));
         self::assertStringContainsString('foo', (string)$response->getBody());
     }
 
@@ -107,7 +107,7 @@ lib.test = TEXT
 lib.test.current = 1
 EOT
         ]);
-        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(1));
+        $response = $this->executeFrontendSubRequest(new InternalRequest()->withPageId(1));
         self::assertStringContainsString('4711', (string)$response->getBody());
     }
 
@@ -129,7 +129,7 @@ EOT
         ]);
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1540246570);
-        $this->executeFrontendSubRequest((new InternalRequest())->withPageId(1));
+        $this->executeFrontendSubRequest(new InternalRequest()->withPageId(1));
     }
 
     #[Test]
@@ -150,6 +150,6 @@ EOT
         ]);
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1253191023);
-        $this->executeFrontendSubRequest((new InternalRequest())->withPageId(1));
+        $this->executeFrontendSubRequest(new InternalRequest()->withPageId(1));
     }
 }

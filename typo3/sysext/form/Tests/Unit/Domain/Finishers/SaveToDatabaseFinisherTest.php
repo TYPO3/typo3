@@ -152,7 +152,7 @@ final class SaveToDatabaseFinisherTest extends UnitTestCase
         $saveToDatabaseFinisher->method('getElementByIdentifier')->willReturn(self::createStub(FormElementInterface::class));
         $databaseData = $saveToDatabaseFinisher->_call('prepareData', $elementsConfiguration, []);
 
-        $passwordHash = (new PasswordHashFactory())->getDefaultHashInstance('FE');
+        $passwordHash = new PasswordHashFactory()->getDefaultHashInstance('FE');
         self::assertTrue($passwordHash->checkPassword('rawValue', $databaseData['password']));
     }
 

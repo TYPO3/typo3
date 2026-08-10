@@ -123,6 +123,6 @@ final class FormYamlCollectorTest extends UnitTestCase
     #[Test]
     public function getAllConfigurationsReturnsEmptyArrayForFreshCollector(): void
     {
-        self::assertSame([], (new FormYamlCollector())->getAllConfigurations());
+        self::assertSame([], new FormYamlCollector()->getAllConfigurations());
     }
 }

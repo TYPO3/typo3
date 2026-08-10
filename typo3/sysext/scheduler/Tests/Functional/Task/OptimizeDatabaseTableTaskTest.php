@@ -33,7 +33,7 @@ final class OptimizeDatabaseTableTaskTest extends FunctionalTestCase
         $optimizeDatabaseTableTask->setTaskParameters([
             'tables' => $selectedTables,
         ]);
-        self::assertSame($selectedTables, (new \ReflectionProperty($optimizeDatabaseTableTask, 'selectedTables'))->getValue($optimizeDatabaseTableTask));
+        self::assertSame($selectedTables, new \ReflectionProperty($optimizeDatabaseTableTask, 'selectedTables')->getValue($optimizeDatabaseTableTask));
         self::assertTrue($optimizeDatabaseTableTask->execute());
     }
 
@@ -50,7 +50,7 @@ final class OptimizeDatabaseTableTaskTest extends FunctionalTestCase
         $optimizeDatabaseTableTask->setTaskParameters([
             'tables' => $selectedTables,
         ]);
-        self::assertSame($selectedTables, (new \ReflectionProperty($optimizeDatabaseTableTask, 'selectedTables'))->getValue($optimizeDatabaseTableTask));
+        self::assertSame($selectedTables, new \ReflectionProperty($optimizeDatabaseTableTask, 'selectedTables')->getValue($optimizeDatabaseTableTask));
         self::assertTrue($optimizeDatabaseTableTask->execute());
     }
 }

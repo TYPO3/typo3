@@ -137,7 +137,7 @@ final class UriPrefixRenderingTest extends FunctionalTestCase
     public function urisAreRenderedUsingAbsRefPrefix(string $absRefPrefixAspect, array $expectations): void
     {
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest())->withQueryParameters([
+            new InternalRequest()->withQueryParameters([
                 'id' => 1,
                 'testAbsRefPrefix' => $absRefPrefixAspect,
             ])

@@ -90,7 +90,7 @@ final class DatabaseRecordLinkBuilderTest extends FunctionalTestCase
             ],
         ]);
 
-        $request = (new ServerRequest('https://example.com/'))
+        $request = new ServerRequest('https://example.com/')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withAttribute('frontend.page.information', $pageInformation)
             ->withAttribute('frontend.typoscript', $frontendTypoScript)

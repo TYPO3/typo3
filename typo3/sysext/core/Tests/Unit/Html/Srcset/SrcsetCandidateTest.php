@@ -39,10 +39,10 @@ final class SrcsetCandidateTest extends UnitTestCase
     {
         return [
             [new WidthSrcsetCandidate(10), 10],
-            [(new WidthSrcsetCandidate(10))->setWidth(20), 20],
+            [new WidthSrcsetCandidate(10)->setWidth(20), 20],
             [new DensitySrcsetCandidate(2.0, 100), 200],
-            [(new DensitySrcsetCandidate(2.0, 100))->setDensity(1.0), 100],
-            [(new DensitySrcsetCandidate(2.0, 100))->setReferenceWidth(200), 400],
+            [new DensitySrcsetCandidate(2.0, 100)->setDensity(1.0), 100],
+            [new DensitySrcsetCandidate(2.0, 100)->setReferenceWidth(200), 400],
         ];
     }
 
@@ -58,7 +58,7 @@ final class SrcsetCandidateTest extends UnitTestCase
     {
         self::expectExceptionCode(1697743145);
         $this->expectExceptionMessage('Reference width needs to be specified if pixel density descriptors (e. g. 2x) are used in srcset: 2x');
-        (new DensitySrcsetCandidate(2.0))->getCalculatedWidth();
+        new DensitySrcsetCandidate(2.0)->getCalculatedWidth();
     }
 
     public static function generateDescriptorDataProvider(): array
@@ -80,7 +80,7 @@ final class SrcsetCandidateTest extends UnitTestCase
     #[Test]
     public function generateSrcset(): void
     {
-        $candidate = (new WidthSrcsetCandidate(100))->setUri('path/to/image 1.jpg');
+        $candidate = new WidthSrcsetCandidate(100)->setUri('path/to/image 1.jpg');
         self::assertEquals('path/to/image%201.jpg 100w', $candidate->generateSrcset());
         self::assertEquals('path/to/image%201.jpg 100w', (string)$candidate);
     }

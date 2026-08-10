@@ -57,7 +57,7 @@ final readonly class JavaScriptLanguageDomainProvider implements MiddlewareInter
             || str_starts_with($domain, 'install.')
         );
         if (!$isValidDomain) {
-            return (new ResponseFactory())->createResponse(403);
+            return new ResponseFactory()->createResponse(403);
         }
 
         $provider = new CoreJavaScriptLanguageDomainProvider(

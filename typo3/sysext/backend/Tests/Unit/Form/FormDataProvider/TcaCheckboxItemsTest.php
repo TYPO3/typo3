@@ -385,7 +385,7 @@ final class TcaCheckboxItemsTest extends UnitTestCase
         $GLOBALS['LANG'] = $languageService;
         $languageService->method('sL')->with(self::anything())->willReturnArgument(0);
 
-        self::assertSame($expected, (new TcaCheckboxItems())->addData($input));
+        self::assertSame($expected, new TcaCheckboxItems()->addData($input));
     }
 
     #[Test]
@@ -413,7 +413,7 @@ final class TcaCheckboxItemsTest extends UnitTestCase
 
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1440499337);
-        (new TcaCheckboxItems())->addData($input);
+        new TcaCheckboxItems()->addData($input);
     }
 
     #[Test]
@@ -443,7 +443,7 @@ final class TcaCheckboxItemsTest extends UnitTestCase
 
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1440499338);
-        (new TcaCheckboxItems())->addData($input);
+        new TcaCheckboxItems()->addData($input);
     }
 
     #[Test]
@@ -476,7 +476,7 @@ final class TcaCheckboxItemsTest extends UnitTestCase
         $expected['processedTca']['columns']['aField']['config']['items'][0]['label'] = 'translated';
         $expected['processedTca']['columns']['aField']['config']['items'][0]['invertStateDisplay'] = false;
 
-        self::assertSame($expected, (new TcaCheckboxItems())->addData($input));
+        self::assertSame($expected, new TcaCheckboxItems()->addData($input));
     }
 
     #[Test]
@@ -892,7 +892,7 @@ final class TcaCheckboxItemsTest extends UnitTestCase
         $expected['processedTca']['columns']['aField']['config']['items'][0]['label'] = 'labelOverride';
         $expected['processedTca']['columns']['aField']['config']['items'][0]['invertStateDisplay'] = false;
 
-        self::assertSame($expected, (new TcaCheckboxItems())->addData($input));
+        self::assertSame($expected, new TcaCheckboxItems()->addData($input));
     }
 
     private function getItemProcessingServiceInstance(FlashMessageService $flashMessageService): ItemProcessingService

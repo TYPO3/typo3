@@ -100,7 +100,7 @@ final class PropertyMappingConfigurationTest extends UnitTestCase
     #[Test]
     public function nonexistentTypeConverterOptionsReturnNull(): void
     {
-        self::assertNull((new PropertyMappingConfiguration())->getConfigurationValue(StringConverter::class, 'bar'));
+        self::assertNull(new PropertyMappingConfiguration()->getConfigurationValue(StringConverter::class, 'bar'));
     }
 
     #[Test]
@@ -128,7 +128,7 @@ final class PropertyMappingConfigurationTest extends UnitTestCase
     #[Test]
     public function getTypeConverterReturnsNullIfNoTypeConverterSet(): void
     {
-        self::assertNull((new PropertyMappingConfiguration())->getTypeConverter());
+        self::assertNull(new PropertyMappingConfiguration()->getTypeConverter());
     }
 
     #[Test]

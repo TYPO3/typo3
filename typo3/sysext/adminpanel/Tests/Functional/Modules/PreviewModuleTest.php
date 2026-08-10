@@ -42,7 +42,7 @@ final class PreviewModuleTest extends FunctionalTestCase
         $GLOBALS['BE_USER'] = new BackendUserAuthentication();
 
         $frontendUser = new FrontendUserAuthentication();
-        $request = (new ServerRequest())->withAttribute('frontend.user', $frontendUser);
+        $request = new ServerRequest()->withAttribute('frontend.user', $frontendUser);
 
         $configurationService = $this->getMockBuilder(ConfigurationService::class)->disableOriginalConstructor()->getMock();
         $configurationService->expects($this->once())->method('getMainConfiguration')->willReturn([]);

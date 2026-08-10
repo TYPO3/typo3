@@ -35,7 +35,7 @@ final class BackendViewFactoryTest extends FunctionalTestCase
     #[Test]
     public function createUsesTemplatePathsWithPackageGivenAsRouteOption()
     {
-        $request = (new ServerRequest())
+        $request = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('route', new Route('testing', ['packageName' => 'typo3tests/cms-test-templates-a']));
         $subject = $this->get(BackendViewFactory::class);
@@ -49,7 +49,7 @@ final class BackendViewFactoryTest extends FunctionalTestCase
     #[Test]
     public function createUsesTemplatePathsWithPackageGivenAsArgument()
     {
-        $request = (new ServerRequest())
+        $request = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('route', new Route('testing', []));
         $subject = $this->get(BackendViewFactory::class);
@@ -63,7 +63,7 @@ final class BackendViewFactoryTest extends FunctionalTestCase
     #[Test]
     public function createUsesOverrideTemplatePathsWithBasePackageNameFromRoute()
     {
-        $request = (new ServerRequest())
+        $request = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('route', new Route('testing', ['packageName' => 'typo3tests/cms-test-templates-a']));
         $subject = $this->get(BackendViewFactory::class);
@@ -77,7 +77,7 @@ final class BackendViewFactoryTest extends FunctionalTestCase
     #[Test]
     public function createUsesOverrideTemplatePathsWithMultiplePackagesGivenAsArgument()
     {
-        $request = (new ServerRequest())
+        $request = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('route', new Route('testing', []));
         $subject = $this->get(BackendViewFactory::class);
@@ -97,7 +97,7 @@ final class BackendViewFactoryTest extends FunctionalTestCase
     #[Test]
     public function createUsesPrefersTemplateFromLastOverrideWithMultiplePackagesGivenAsArgument()
     {
-        $request = (new ServerRequest())
+        $request = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('route', new Route('testing', []));
         $subject = $this->get(BackendViewFactory::class);
@@ -117,7 +117,7 @@ final class BackendViewFactoryTest extends FunctionalTestCase
     #[Test]
     public function createUsesFirstExistingFilesInChainBeginningFromLastOverrideWithMultiplePackagesGivenAsArgument()
     {
-        $request = (new ServerRequest())
+        $request = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('route', new Route('testing', []));
         $subject = $this->get(BackendViewFactory::class);
@@ -139,7 +139,7 @@ final class BackendViewFactoryTest extends FunctionalTestCase
     public function createAllowsOverridesUsingTsConfig()
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/BackendViewFactoryTestPages.csv');
-        $request = (new ServerRequest())
+        $request = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('route', new Route('testing', ['packageName' => 'typo3tests/cms-test-templates-a']))
             ->withQueryParams(['id' => 1]);
@@ -155,7 +155,7 @@ final class BackendViewFactoryTest extends FunctionalTestCase
     public function createAllowsOverridesUsingTsConfigUsesFirstExistingFilesInChain()
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/BackendViewFactoryTestPagesWithFallback.csv');
-        $request = (new ServerRequest())
+        $request = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('route', new Route('testing', ['packageName' => 'typo3tests/cms-test-templates-a']))
             ->withQueryParams(['id' => 1]);

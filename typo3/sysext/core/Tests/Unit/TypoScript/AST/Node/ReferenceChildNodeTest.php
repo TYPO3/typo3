@@ -29,7 +29,7 @@ final class ReferenceChildNodeTest extends UnitTestCase
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1674620169);
-        (new ReferenceChildNode('someName'))->getIdentifier();
+        new ReferenceChildNode('someName')->getIdentifier();
     }
 
     #[Test]

@@ -30,13 +30,13 @@ final class GenericObjectValidatorTest extends UnitTestCase
     #[Test]
     public function validatorShouldReturnErrorsIfTheValueIsNoObjectAndNotNull(): void
     {
-        self::assertTrue((new GenericObjectValidator())->validate('foo')->hasErrors());
+        self::assertTrue(new GenericObjectValidator()->validate('foo')->hasErrors());
     }
 
     #[Test]
     public function validatorShouldReturnNoErrorsIfTheValueIsNull(): void
     {
-        self::assertFalse((new GenericObjectValidator())->validate(null)->hasErrors());
+        self::assertFalse(new GenericObjectValidator()->validate(null)->hasErrors());
     }
 
     public static function dataProviderForValidator(): array

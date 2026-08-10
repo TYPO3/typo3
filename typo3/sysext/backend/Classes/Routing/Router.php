@@ -140,7 +140,7 @@ class Router
         }
         $requestContext = $this->requestContextFactory->fromBackendRequest($request);
         try {
-            $result = (new UrlMatcher($this->routeCollection, $requestContext))->match($path);
+            $result = new UrlMatcher($this->routeCollection, $requestContext)->match($path);
             $matchedSymfonyRoute = $this->routeCollection->get($result['_route']);
             if ($matchedSymfonyRoute === null) {
                 throw new ResourceNotFoundException('The requested resource "' . $path . '" was not found.', 1607596900);

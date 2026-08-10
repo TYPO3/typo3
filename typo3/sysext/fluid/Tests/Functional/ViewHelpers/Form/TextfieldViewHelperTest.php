@@ -57,10 +57,10 @@ final class TextfieldViewHelperTest extends FunctionalTestCase
     #[Test]
     public function render(string $template, string $expected): void
     {
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters());
         $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
         $context->getTemplatePaths()->setTemplateSource($template);
-        self::assertSame($expected, (new TemplateView($context))->render());
+        self::assertSame($expected, new TemplateView($context)->render());
     }
 
     #[Test]
@@ -73,7 +73,7 @@ final class TextfieldViewHelperTest extends FunctionalTestCase
         $propertyResult->addError(new Error('invalidProperty', 2));
         $extbaseRequestParameters = new ExtbaseRequestParameters();
         $extbaseRequestParameters->setOriginalRequestMappingResults($mappingResult);
-        $psr7Request = (new ServerRequest())->withAttribute('extbase', $extbaseRequestParameters)
+        $psr7Request = new ServerRequest()->withAttribute('extbase', $extbaseRequestParameters)
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $extbaseRequest = new Request($psr7Request);
 

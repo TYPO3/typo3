@@ -91,7 +91,7 @@ final class ScriptAndLinkTagRenderingTest extends FunctionalTestCase
     public function scriptAndLinkTagsRemoveUnneededAdditionalParameters(): void
     {
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest())->withQueryParameters([
+            new InternalRequest()->withQueryParameters([
                 'id' => 1,
             ])
         );

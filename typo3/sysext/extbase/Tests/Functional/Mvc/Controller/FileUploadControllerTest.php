@@ -479,7 +479,7 @@ $GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'features\'][\'security.system.enforceFi
         $multipartBody = $this->createMultipartBody($formData, $fileData, $boundary);
         $bodyStream = $this->createStreamFromString($multipartBody);
 
-        $request = (new InternalRequest('https://www.acme.com' . $postLink))
+        $request = new InternalRequest('https://www.acme.com' . $postLink)
             ->withMethod('POST')
             ->withQueryParams($args)
             ->withParsedBody($formData)

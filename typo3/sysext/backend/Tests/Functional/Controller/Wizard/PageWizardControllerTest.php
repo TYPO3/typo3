@@ -43,7 +43,7 @@ final class PageWizardControllerTest extends FunctionalTestCase
     #[Test]
     public function allDoktypesAreReturnedFromFormDataCompiler(): void
     {
-        $request = (new ServerRequest('https://example.com/typo3/', 'GET'))->withQueryParams([
+        $request = new ServerRequest('https://example.com/typo3/', 'GET')->withQueryParams([
             'data' => [
                 'position' => [
                     'pageUid' => 1,
@@ -127,7 +127,7 @@ final class PageWizardControllerTest extends FunctionalTestCase
     #[Test]
     public function getPageDetailActionReturns400IfPageUidIsMissing(): void
     {
-        $request = (new ServerRequest('https://example.com/typo3/', 'GET'))->withQueryParams([]);
+        $request = new ServerRequest('https://example.com/typo3/', 'GET')->withQueryParams([]);
 
         $response = $this->subject->getPageDetailAction($request);
 
@@ -144,7 +144,7 @@ final class PageWizardControllerTest extends FunctionalTestCase
     #[Test]
     public function getPageDetailActionReturns403IfPageDoesNotExist(): void
     {
-        $request = (new ServerRequest('https://example.com/typo3/', 'GET'))->withQueryParams([
+        $request = new ServerRequest('https://example.com/typo3/', 'GET')->withQueryParams([
             'pageUid' => '999',
         ]);
 
@@ -208,7 +208,7 @@ final class PageWizardControllerTest extends FunctionalTestCase
         // Permission 1 is PAGE_SHOW only, so no PAGE_NEW (8)
         $this->updatePagePermissions(1, 1);
 
-        $request = (new ServerRequest('https://example.com/typo3/', 'GET'))->withQueryParams([
+        $request = new ServerRequest('https://example.com/typo3/', 'GET')->withQueryParams([
             'data' => [
                 'position' => [
                     'pageUid' => 1,
@@ -231,7 +231,7 @@ final class PageWizardControllerTest extends FunctionalTestCase
         // Permission 0 is NOTHING
         $this->updatePagePermissions(1, 0);
 
-        $request = (new ServerRequest('https://example.com/typo3/', 'GET'))->withQueryParams([
+        $request = new ServerRequest('https://example.com/typo3/', 'GET')->withQueryParams([
             'pageUid' => '1',
         ]);
 
@@ -249,7 +249,7 @@ final class PageWizardControllerTest extends FunctionalTestCase
         // Permission 0 is NOTHING
         $this->updatePagePermissions(1, 0);
 
-        $request = (new ServerRequest('https://example.com/typo3/', 'GET'))->withQueryParams([
+        $request = new ServerRequest('https://example.com/typo3/', 'GET')->withQueryParams([
             'pageUid' => '1',
             'fields' => ['title' => 'foo'],
         ]);

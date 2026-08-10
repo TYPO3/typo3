@@ -648,7 +648,7 @@ final class SlugSiteRequestTest extends AbstractTestCase
 
         $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
-            (new InternalRequestContext())->withFrontendUserId($frontendUserId)
+            new InternalRequestContext()->withFrontendUserId($frontendUserId)
         );
         $responseStructure = ResponseContent::fromString(
             (string)$response->getBody()
@@ -684,7 +684,7 @@ final class SlugSiteRequestTest extends AbstractTestCase
 
         $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
-            (new InternalRequestContext())->withFrontendUserId($frontendUserId)
+            new InternalRequestContext()->withFrontendUserId($frontendUserId)
         );
         $responseStructure = ResponseContent::fromString(
             (string)$response->getBody()
@@ -731,7 +731,7 @@ final class SlugSiteRequestTest extends AbstractTestCase
 
         $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
-            (new InternalRequestContext())->withFrontendUserId($frontendUserId)
+            new InternalRequestContext()->withFrontendUserId($frontendUserId)
         );
 
         self::assertSame(
@@ -760,7 +760,7 @@ final class SlugSiteRequestTest extends AbstractTestCase
 
         $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
-            (new InternalRequestContext())->withFrontendUserId($frontendUserId)
+            new InternalRequestContext()->withFrontendUserId($frontendUserId)
         );
 
         self::assertSame(
@@ -793,7 +793,7 @@ final class SlugSiteRequestTest extends AbstractTestCase
 
         $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
-            (new InternalRequestContext())->withFrontendUserId($frontendUserId)
+            new InternalRequestContext()->withFrontendUserId($frontendUserId)
         );
 
         self::assertSame(
@@ -823,7 +823,7 @@ final class SlugSiteRequestTest extends AbstractTestCase
 
         $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
-            (new InternalRequestContext())->withFrontendUserId($frontendUserId)
+            new InternalRequestContext()->withFrontendUserId($frontendUserId)
         );
         $json = json_decode((string)$response->getBody(), true);
 
@@ -866,7 +866,7 @@ final class SlugSiteRequestTest extends AbstractTestCase
 
         $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
-            (new InternalRequestContext())->withFrontendUserId($frontendUserId)
+            new InternalRequestContext()->withFrontendUserId($frontendUserId)
         );
 
         self::assertSame(
@@ -895,7 +895,7 @@ final class SlugSiteRequestTest extends AbstractTestCase
 
         $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
-            (new InternalRequestContext())->withFrontendUserId($frontendUserId)
+            new InternalRequestContext()->withFrontendUserId($frontendUserId)
         );
 
         self::assertSame(
@@ -928,7 +928,7 @@ final class SlugSiteRequestTest extends AbstractTestCase
 
         $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
-            (new InternalRequestContext())->withFrontendUserId($frontendUserId)
+            new InternalRequestContext()->withFrontendUserId($frontendUserId)
         );
 
         self::assertSame(
@@ -958,7 +958,7 @@ final class SlugSiteRequestTest extends AbstractTestCase
 
         $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
-            (new InternalRequestContext())->withFrontendUserId($frontendUserId)
+            new InternalRequestContext()->withFrontendUserId($frontendUserId)
         );
         $json = json_decode((string)$response->getBody(), true);
 
@@ -1000,7 +1000,7 @@ final class SlugSiteRequestTest extends AbstractTestCase
 
         $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
-            (new InternalRequestContext())->withFrontendUserId($frontendUserId)
+            new InternalRequestContext()->withFrontendUserId($frontendUserId)
         );
         $json = json_decode((string)$response->getBody(), true);
 
@@ -1273,7 +1273,7 @@ final class SlugSiteRequestTest extends AbstractTestCase
         );
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest($url)),
-            (new InternalRequestContext())
+            new InternalRequestContext()
                 ->withWorkspaceId($backendUserId !== 0 ? $workspaceId : 0)
                 ->withBackendUserId($backendUserId)
         );

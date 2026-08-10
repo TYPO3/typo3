@@ -61,14 +61,14 @@ final class BackendModuleValidatorTest extends FunctionalTestCase
         $normalizedParams = self::createStub(NormalizedParams::class);
         $normalizedParams->method('getSitePath')
             ->willReturn('/');
-        $this->request = (new ServerRequest('/some/uri'))
+        $this->request = new ServerRequest('/some/uri')
             ->withAttribute('normalizedParams', $normalizedParams);
         $this->requestHandler = new class implements RequestHandlerInterface {
             public function handle(ServerRequestInterface $request): ResponseInterface
             {
                 // In case the module is valid, it is added to the request, together with the
                 // module data. To test this, we add some properties as header to the response.
-                return (new Response())
+                return new Response()
                     ->withHeader('X-Module-identifier', (string)($request->getAttribute('module')?->getIdentifier() ?? ''))
                     ->withHeader('X-ModuleData-sort', (string)($request->getAttribute('moduleData')?->get('sort') ?? ''))
                     ->withHeader('X-ModuleData-pointer', (string)($request->getAttribute('moduleData')?->get('pointer') ?? '12'))

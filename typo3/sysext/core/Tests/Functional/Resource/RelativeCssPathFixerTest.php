@@ -89,7 +89,7 @@ final class RelativeCssPathFixerTest extends FunctionalTestCase
         $subject = new RelativeCssPathFixer($this->get(SystemResourceFactory::class), $this->get(SystemResourcePublisherInterface::class));
         $normalizedParams = self::createStub(NormalizedParams::class);
         $normalizedParams->method('getSitePath')->willReturn('/');
-        $request = (new ServerRequest('https://www.example.com/'))
+        $request = new ServerRequest('https://www.example.com/')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withAttribute('normalizedParams', $normalizedParams);
         $fixedCssPath = $subject->fixRelativeUrlPaths($css, $newDir, $request);

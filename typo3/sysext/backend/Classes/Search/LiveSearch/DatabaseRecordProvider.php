@@ -268,7 +268,7 @@ final class DatabaseRecordProvider implements SearchProviderInterface
 
             $editActionLink = $this->getEditActionLink($tableName, $row);
             if ($editActionLink !== '') {
-                $actions[DatabaseRecordActionType::EDIT->value] = (new ResultItemAction(DatabaseRecordActionType::EDIT->value))
+                $actions[DatabaseRecordActionType::EDIT->value] = new ResultItemAction(DatabaseRecordActionType::EDIT->value)
                     ->setLabel($this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.edit'))
                     ->setIcon($this->iconFactory->getIcon('actions-open', IconSize::SMALL))
                     ->setUrl($editActionLink);
@@ -276,7 +276,7 @@ final class DatabaseRecordProvider implements SearchProviderInterface
 
             $layoutActionLink = $this->getLayoutActionLink($tableName, $row);
             if ($layoutActionLink !== '') {
-                $actions[DatabaseRecordActionType::LAYOUT->value] = (new ResultItemAction(DatabaseRecordActionType::LAYOUT->value))
+                $actions[DatabaseRecordActionType::LAYOUT->value] = new ResultItemAction(DatabaseRecordActionType::LAYOUT->value)
                     ->setLabel($this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view.layout'))
                     ->setIcon($this->iconFactory->getIcon('actions-viewmode-layout', IconSize::SMALL))
                     ->setUrl($layoutActionLink);
@@ -284,7 +284,7 @@ final class DatabaseRecordProvider implements SearchProviderInterface
 
             $listActionLink = $this->getRecordsActionLink($tableName, $row);
             if ($listActionLink !== '') {
-                $actions[DatabaseRecordActionType::LIST->value] = (new ResultItemAction(DatabaseRecordActionType::LIST->value))
+                $actions[DatabaseRecordActionType::LIST->value] = new ResultItemAction(DatabaseRecordActionType::LIST->value)
                     ->setLabel($this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showList'))
                     ->setIcon($this->iconFactory->getIcon('actions-list', IconSize::SMALL))
                     ->setUrl($listActionLink);
@@ -292,7 +292,7 @@ final class DatabaseRecordProvider implements SearchProviderInterface
 
             $previewActionLink = $this->getPreviewActionLink($tableName, $row);
             if ($previewActionLink !== '') {
-                $actions[DatabaseRecordActionType::PREVIEW->value] = (new ResultItemAction(DatabaseRecordActionType::PREVIEW->value))
+                $actions[DatabaseRecordActionType::PREVIEW->value] = new ResultItemAction(DatabaseRecordActionType::PREVIEW->value)
                     ->setLabel($this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
                     ->setIcon($this->iconFactory->getIcon('actions-file-view', IconSize::SMALL))
                     ->setUrl($previewActionLink);
@@ -321,7 +321,7 @@ final class DatabaseRecordProvider implements SearchProviderInterface
 
             $icon = $this->iconFactory->getIconForRecord($tableName, $row, IconSize::SMALL);
             $recordTitle = BackendUtility::getRecordTitle($tableName, $row);
-            $items[] = (new ResultItem(self::class))
+            $items[] = new ResultItem(self::class)
                 ->setItemTitle(BackendUtility::cropToTitleLength($recordTitle))
                 ->setTypeLabel($schema->getTitle($this->languageService->sL(...)) ?: $tableName)
                 ->setIcon($icon)

@@ -51,7 +51,7 @@ final class TcaEnrichmentTest extends UnitTestCase
                 ],
             ],
         ];
-        self::assertSame($expected, (new TcaEnrichment())->enrich($tca));
+        self::assertSame($expected, new TcaEnrichment()->enrich($tca));
     }
 
     #[Test]
@@ -72,7 +72,7 @@ final class TcaEnrichmentTest extends UnitTestCase
             ],
         ];
         $expected = $tca;
-        self::assertSame($expected, (new TcaEnrichment())->enrich($tca));
+        self::assertSame($expected, new TcaEnrichment()->enrich($tca));
     }
 
     #[Test]
@@ -96,7 +96,7 @@ final class TcaEnrichmentTest extends UnitTestCase
                 'default' => 0,
             ],
         ];
-        self::assertSame($expected, (new TcaEnrichment())->enrich($tca));
+        self::assertSame($expected, new TcaEnrichment()->enrich($tca));
     }
 
     #[Test]
@@ -117,7 +117,7 @@ final class TcaEnrichmentTest extends UnitTestCase
             ],
         ];
         $expected = $tca;
-        self::assertSame($expected, (new TcaEnrichment())->enrich($tca));
+        self::assertSame($expected, new TcaEnrichment()->enrich($tca));
     }
 
     #[Test]
@@ -144,7 +144,7 @@ final class TcaEnrichmentTest extends UnitTestCase
                 ],
             ],
         ];
-        self::assertSame($expected, (new TcaEnrichment())->enrich($tca));
+        self::assertSame($expected, new TcaEnrichment()->enrich($tca));
     }
 
     #[Test]
@@ -165,7 +165,7 @@ final class TcaEnrichmentTest extends UnitTestCase
             ],
         ];
         $expected = $tca;
-        self::assertSame($expected, (new TcaEnrichment())->enrich($tca));
+        self::assertSame($expected, new TcaEnrichment()->enrich($tca));
     }
 
     #[Test]
@@ -207,7 +207,7 @@ final class TcaEnrichmentTest extends UnitTestCase
                 'foreign_table' => 'fe_groups',
             ],
         ];
-        self::assertSame($expected, (new TcaEnrichment())->enrich($tca));
+        self::assertSame($expected, new TcaEnrichment()->enrich($tca));
     }
 
     #[Test]
@@ -228,7 +228,7 @@ final class TcaEnrichmentTest extends UnitTestCase
             ],
         ];
         $expected = $tca;
-        self::assertSame($expected, (new TcaEnrichment())->enrich($tca));
+        self::assertSame($expected, new TcaEnrichment()->enrich($tca));
     }
 
     #[Test]
@@ -250,7 +250,7 @@ final class TcaEnrichmentTest extends UnitTestCase
                 'renderType' => 'checkboxToggle',
             ],
         ];
-        self::assertSame($expected, (new TcaEnrichment())->enrich($tca));
+        self::assertSame($expected, new TcaEnrichment()->enrich($tca));
     }
 
     #[Test]
@@ -269,7 +269,7 @@ final class TcaEnrichmentTest extends UnitTestCase
             ],
         ];
         $expected = $tca;
-        self::assertSame($expected, (new TcaEnrichment())->enrich($tca));
+        self::assertSame($expected, new TcaEnrichment()->enrich($tca));
     }
 
     #[Test]
@@ -293,7 +293,7 @@ final class TcaEnrichmentTest extends UnitTestCase
                 'max' => 2000,
             ],
         ];
-        self::assertSame($expected, (new TcaEnrichment())->enrich($tca));
+        self::assertSame($expected, new TcaEnrichment()->enrich($tca));
     }
 
     #[Test]
@@ -312,7 +312,7 @@ final class TcaEnrichmentTest extends UnitTestCase
             ],
         ];
         $expected = $tca;
-        self::assertSame($expected, (new TcaEnrichment())->enrich($tca));
+        self::assertSame($expected, new TcaEnrichment()->enrich($tca));
     }
 
     #[Test]
@@ -332,7 +332,7 @@ final class TcaEnrichmentTest extends UnitTestCase
                 'type' => 'language',
             ],
         ];
-        self::assertSame($expected, (new TcaEnrichment())->enrich($tca)['aTable']['columns']['myLanguageField']);
+        self::assertSame($expected, new TcaEnrichment()->enrich($tca)['aTable']['columns']['myLanguageField']);
     }
 
     #[Test]
@@ -353,7 +353,7 @@ final class TcaEnrichmentTest extends UnitTestCase
         $expected = [
             'foo' => 'iAmBrokenButStillKept',
         ];
-        self::assertSame($expected, (new TcaEnrichment())->enrich($tca)['aTable']['columns']['myLanguageField']);
+        self::assertSame($expected, new TcaEnrichment()->enrich($tca)['aTable']['columns']['myLanguageField']);
     }
 
     #[Test]
@@ -366,7 +366,7 @@ final class TcaEnrichmentTest extends UnitTestCase
                 ],
             ],
         ];
-        self::assertSame('l10n_parent', (new TcaEnrichment())->enrich($tca)['aTable']['ctrl']['transOrigPointerField']);
+        self::assertSame('l10n_parent', new TcaEnrichment()->enrich($tca)['aTable']['ctrl']['transOrigPointerField']);
     }
 
     #[Test]
@@ -380,7 +380,7 @@ final class TcaEnrichmentTest extends UnitTestCase
                 ],
             ],
         ];
-        self::assertSame('myTransOrigPointerField', (new TcaEnrichment())->enrich($tca)['aTable']['ctrl']['transOrigPointerField']);
+        self::assertSame('myTransOrigPointerField', new TcaEnrichment()->enrich($tca)['aTable']['ctrl']['transOrigPointerField']);
     }
 
     #[Test]
@@ -411,7 +411,7 @@ final class TcaEnrichmentTest extends UnitTestCase
                 'default' => 0,
             ],
         ];
-        self::assertSame($expected, (new TcaEnrichment())->enrich($tca)['aTable']['columns']['myTransOrigPointerField']);
+        self::assertSame($expected, new TcaEnrichment()->enrich($tca)['aTable']['columns']['myTransOrigPointerField']);
     }
 
     #[Test]
@@ -433,7 +433,7 @@ final class TcaEnrichmentTest extends UnitTestCase
         $expected = [
             'foo' => 'iAmBrokenButStillKept',
         ];
-        self::assertSame($expected, (new TcaEnrichment())->enrich($tca)['aTable']['columns']['myTransOrigPointerField']);
+        self::assertSame($expected, new TcaEnrichment()->enrich($tca)['aTable']['columns']['myTransOrigPointerField']);
     }
 
     #[Test]
@@ -453,7 +453,7 @@ final class TcaEnrichmentTest extends UnitTestCase
                 'default' => '',
             ],
         ];
-        self::assertSame($expected, (new TcaEnrichment())->enrich($tca));
+        self::assertSame($expected, new TcaEnrichment()->enrich($tca));
     }
 
     #[Test]
@@ -472,7 +472,7 @@ final class TcaEnrichmentTest extends UnitTestCase
             ],
         ];
         $expected = $tca;
-        self::assertSame($expected, (new TcaEnrichment())->enrich($tca));
+        self::assertSame($expected, new TcaEnrichment()->enrich($tca));
     }
 
     #[Test]
@@ -491,7 +491,7 @@ final class TcaEnrichmentTest extends UnitTestCase
                 'type' => 'passthrough',
             ],
         ];
-        self::assertSame($expected, (new TcaEnrichment())->enrich($tca));
+        self::assertSame($expected, new TcaEnrichment()->enrich($tca));
     }
 
     #[Test]
@@ -510,6 +510,6 @@ final class TcaEnrichmentTest extends UnitTestCase
             ],
         ];
         $expected = $tca;
-        self::assertSame($expected, (new TcaEnrichment())->enrich($tca));
+        self::assertSame($expected, new TcaEnrichment()->enrich($tca));
     }
 }

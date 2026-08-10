@@ -60,7 +60,7 @@ class BackendModuleProvider implements SearchProviderInterface
                 continue;
             }
 
-            $action = (new ResultItemAction('open_module'))
+            $action = new ResultItemAction('open_module')
                 ->setLabel($this->languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang.xlf:resultItem.backendModuleProvider.openModule'))
                 ->setUrl($moduleUrl);
 
@@ -69,7 +69,7 @@ class BackendModuleProvider implements SearchProviderInterface
                 $iconIdentifier = $module->getParentModule()->getIconIdentifier();
             }
 
-            $items[] = (new ResultItem(self::class))
+            $items[] = new ResultItem(self::class)
                 ->setItemTitle($this->languageService->sL($module->getTitle()))
                 ->setTypeLabel($this->languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang.xlf:liveSearch.backendModuleProvider.typeLabel'))
                 ->setIcon($this->iconFactory->getIcon($iconIdentifier, IconSize::SMALL))

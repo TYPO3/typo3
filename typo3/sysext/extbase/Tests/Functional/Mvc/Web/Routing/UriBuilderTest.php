@@ -33,7 +33,7 @@ final class UriBuilderTest extends FunctionalTestCase
     {
         $pageInformation = new PageInformation();
         $pageInformation->setId(123);
-        $request = (new ServerRequest())
+        $request = new ServerRequest()
             ->withAttribute('frontend.page.information', $pageInformation)
             ->withAttribute('extbase', new ExtbaseRequestParameters());
         $request = (new Request($request));

@@ -55,7 +55,7 @@ final class TotpProviderTest extends FunctionalTestCase
 
         // Add necessary query parameter
         self::assertTrue($this->subject->canProcess(
-            (new ServerRequest('https://example.com', 'POST'))
+            new ServerRequest('https://example.com', 'POST')
                 ->withQueryParams(['totp' => '123456'])
         ));
     }
@@ -99,7 +99,7 @@ final class TotpProviderTest extends FunctionalTestCase
     {
         $request = (new ServerRequest('https://example.com', 'POST'));
         $timestamp = $this->get(Context::class)->getPropertyFromAspect('date', 'timestamp');
-        $totp = (new Totp('KRMVATZTJFZUC53FONXW2ZJB'))->generateTotp((int)floor($timestamp / 30));
+        $totp = new Totp('KRMVATZTJFZUC53FONXW2ZJB')->generateTotp((int)floor($timestamp / 30));
 
         // Provider is inactive (secret missing)
         $this->setupUser(['active' => true]);
@@ -150,7 +150,7 @@ final class TotpProviderTest extends FunctionalTestCase
         $secret = 'KRMVATZTJFZUC53FONXW2ZJB';
         $timestamp = $this->get(Context::class)->getPropertyFromAspect('date', 'timestamp');
         $parsedBody = [
-            'totp' => (new Totp($secret))->generateTotp((int)floor($timestamp / 30)),
+            'totp' => new Totp($secret)->generateTotp((int)floor($timestamp / 30)),
             'secret' => $secret,
             'checksum' => $this->hashService->hmac($secret, 'totp-setup', HashAlgo::SHA3_256),
 
@@ -223,7 +223,7 @@ final class TotpProviderTest extends FunctionalTestCase
     #[Test]
     public function setupViewTest(): void
     {
-        $request = (new ServerRequest('https://example.com', 'POST'))->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $request = new ServerRequest('https://example.com', 'POST')->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $propertyManager = MfaProviderPropertyManager::create($this->subject, $this->user);
         $response = $this->subject->handleRequest($request, $propertyManager, MfaViewType::SETUP)->getBody()->getContents();
 
@@ -236,7 +236,7 @@ final class TotpProviderTest extends FunctionalTestCase
     #[Test]
     public function editViewTest(): void
     {
-        $request = (new ServerRequest('https://example.com', 'POST'))->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $request = new ServerRequest('https://example.com', 'POST')->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $this->setupUser(['name' => 'some name', 'updated' => 1616099471, 'lastUsed' => 1616099472]);
         $propertyManager = MfaProviderPropertyManager::create($this->subject, $this->user);
         $response = $this->subject->handleRequest($request, $propertyManager, MfaViewType::EDIT)->getBody()->getContents();
@@ -249,7 +249,7 @@ final class TotpProviderTest extends FunctionalTestCase
     #[Test]
     public function authViewTest(): void
     {
-        $request = (new ServerRequest('https://example.com', 'POST'))->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $request = new ServerRequest('https://example.com', 'POST')->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $this->setupUser(['active' => true, 'secret' => 'KRMVATZTJFZUC53FONXW2ZJB', 'attempts' => 0]);
         $propertyManager = MfaProviderPropertyManager::create($this->subject, $this->user);
         $response = $this->subject->handleRequest($request, $propertyManager, MfaViewType::AUTH)->getBody()->getContents();

@@ -152,7 +152,7 @@ final class ImageContentObjectTest extends FunctionalTestCase
         $subject = $this->getAccessibleMock(ImageContentObject::class, null, [$this->get(MarkerBasedTemplateService::class), $this->get(TimeTracker::class), new NullLogger()]);
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setConfigArray([]);
-        $request = (new ServerRequest())->withAttribute('frontend.typoscript', $frontendTypoScript);
+        $request = new ServerRequest()->withAttribute('frontend.typoscript', $frontendTypoScript);
         $subject->setRequest($request);
         $subject->setContentObjectRenderer($cObj);
         $result = $subject->_call('getImageSourceCollection', 'test', $configuration, 'testImageName');
@@ -293,7 +293,7 @@ final class ImageContentObjectTest extends FunctionalTestCase
 
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setConfigArray(['doctype' => $doctype]);
-        $request = (new ServerRequest())
+        $request = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('frontend.typoscript', $frontendTypoScript);
 
@@ -353,7 +353,7 @@ final class ImageContentObjectTest extends FunctionalTestCase
     {
         $pageInformation = new PageInformation();
         $pageInformation->setLocalRootLine([3 => ['uid' => 55]]);
-        $request = (new ServerRequest())->withAttribute('frontend.page.information', $pageInformation);
+        $request = new ServerRequest()->withAttribute('frontend.page.information', $pageInformation);
         $subject = $this->getAccessibleMock(ImageContentObject::class, null, [$this->get(MarkerBasedTemplateService::class), $this->get(TimeTracker::class), new NullLogger()]);
         $subject->setRequest($request);
         $result = $subject->_call('linkWrap', $content, $wrap);

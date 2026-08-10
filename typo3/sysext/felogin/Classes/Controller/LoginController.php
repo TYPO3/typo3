@@ -168,7 +168,7 @@ class LoginController extends ActionController
     protected function handleLoginForwards(): ?ResponseInterface
     {
         if ($this->shouldRedirectToOverview()) {
-            return (new ForwardResponse('overview'))->withArguments(['showLoginMessage' => true]);
+            return new ForwardResponse('overview')->withArguments(['showLoginMessage' => true]);
         }
         if ($this->context->getAspect('frontend.user')->isLoggedIn()) {
             return new ForwardResponse('logout');

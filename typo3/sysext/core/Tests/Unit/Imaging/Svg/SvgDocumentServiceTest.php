@@ -106,7 +106,7 @@ final class SvgDocumentServiceTest extends UnitTestCase
     #[Test]
     public function resolvesDimensions(string $svg, int $expectedWidth, int $expectedHeight): void
     {
-        $dimensions = (new SvgDocumentService())->getDimensions($this->loadString($svg));
+        $dimensions = new SvgDocumentService()->getDimensions($this->loadString($svg));
 
         self::assertSame($expectedWidth, $dimensions->getWidth());
         self::assertSame($expectedHeight, $dimensions->getHeight());
@@ -116,7 +116,7 @@ final class SvgDocumentServiceTest extends UnitTestCase
     public function cropScaleWrapsSourceSvgWithViewBoxAndTargetDimensions(): void
     {
         $svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 941 724" width="941" height="724"><path d="M0 0"/></svg>';
-        $processed = (new SvgDocumentService())->cropScale(
+        $processed = new SvgDocumentService()->cropScale(
             $this->loadString($svg),
             new Area(50.0, 50.0, 640.0, 480.0),
             new ImageDimension(320, 240),
@@ -140,7 +140,7 @@ final class SvgDocumentServiceTest extends UnitTestCase
     public function cropScaleInjectsIntrinsicDimensionsWhenSourceHasOnlyViewBox(): void
     {
         $svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200"><path d="M0 0"/></svg>';
-        $processed = (new SvgDocumentService())->cropScale(
+        $processed = new SvgDocumentService()->cropScale(
             $this->loadString($svg),
             new Area(0.0, 0.0, 100.0, 100.0),
             new ImageDimension(50, 50),
@@ -158,7 +158,7 @@ final class SvgDocumentServiceTest extends UnitTestCase
     public function cropScalePropagatesPreserveAspectRatio(): void
     {
         $svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100" preserveAspectRatio="xMinYMax meet"/>';
-        $processed = (new SvgDocumentService())->cropScale(
+        $processed = new SvgDocumentService()->cropScale(
             $this->loadString($svg),
             new Area(0.0, 0.0, 50.0, 50.0),
             new ImageDimension(25, 25),
@@ -171,7 +171,7 @@ final class SvgDocumentServiceTest extends UnitTestCase
     public function cropScaleReturnsDocumentWithTargetDimensions(): void
     {
         $svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"/>';
-        $document = (new SvgDocumentService())->cropScale(
+        $document = new SvgDocumentService()->cropScale(
             $this->loadString($svg),
             new Area(0.0, 0.0, 10.0, 10.0),
             new ImageDimension(5, 5),
@@ -186,7 +186,7 @@ final class SvgDocumentServiceTest extends UnitTestCase
     {
         $svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"/>';
 
-        self::assertSame($svg, (new SvgDocumentService())->toXml($this->loadString($svg)));
+        self::assertSame($svg, new SvgDocumentService()->toXml($this->loadString($svg)));
     }
 
     #[Test]
@@ -196,7 +196,7 @@ final class SvgDocumentServiceTest extends UnitTestCase
 
         self::assertSame(
             '<svg viewBox="0 0 10 10"/>',
-            (new SvgDocumentService())->toInlineMarkup($this->loadString($svg)),
+            new SvgDocumentService()->toInlineMarkup($this->loadString($svg)),
         );
     }
 
@@ -207,7 +207,7 @@ final class SvgDocumentServiceTest extends UnitTestCase
 
         self::assertSame(
             '<svg width="128" height="64" viewBox="0 0 128 64"/>',
-            (new SvgDocumentService())->toInlineMarkup($this->loadString($svg)),
+            new SvgDocumentService()->toInlineMarkup($this->loadString($svg)),
         );
     }
 
@@ -224,7 +224,7 @@ final class SvgDocumentServiceTest extends UnitTestCase
 
         self::assertSame(
             '<svg width="128" height="64" viewBox="0 0 128 64"><rect width="128" height="64"/></svg>',
-            (new SvgDocumentService())->toInlineMarkup($this->loadString($svg)),
+            new SvgDocumentService()->toInlineMarkup($this->loadString($svg)),
         );
     }
 
@@ -241,6 +241,6 @@ final class SvgDocumentServiceTest extends UnitTestCase
 
     private function loadString(string $svg): SvgDocument
     {
-        return (new SvgDocumentFactory(new SvgSanitizer()))->fromString($svg);
+        return new SvgDocumentFactory(new SvgSanitizer())->fromString($svg);
     }
 }

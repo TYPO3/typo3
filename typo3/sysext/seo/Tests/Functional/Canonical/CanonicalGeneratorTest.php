@@ -141,7 +141,7 @@ final class CanonicalGeneratorTest extends FunctionalTestCase
     public function generate(string $targetUri, string $expectedCanonicalUrl): void
     {
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest($targetUri))->withInstructions([$this->buildPageTypoScript()])
+            new InternalRequest($targetUri)->withInstructions([$this->buildPageTypoScript()])
         );
         if ($expectedCanonicalUrl) {
             self::assertStringContainsString($expectedCanonicalUrl, (string)$response->getBody());
@@ -212,7 +212,7 @@ final class CanonicalGeneratorTest extends FunctionalTestCase
 
     private function buildPageTypoScript(): TypoScriptInstruction
     {
-        return (new TypoScriptInstruction())
+        return new TypoScriptInstruction()
             ->withTypoScript([
                 'page' => 'PAGE',
                 'page.' => [

@@ -49,7 +49,7 @@ final class UriViewHelperTest extends FunctionalTestCase
         $context->getTemplatePaths()->setTemplateSource(
             '<f:be.uri route="theRouteArgument" parameters="{parameter: \'to pass\'}" referenceType="theReferenceTypeArgument">foo</f:be.uri>'
         );
-        self::assertEquals('theUri', (new TemplateView($context))->render());
+        self::assertEquals('theUri', new TemplateView($context)->render());
     }
 
     #[Test]
@@ -67,6 +67,6 @@ final class UriViewHelperTest extends FunctionalTestCase
 
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:be.uri route="theRouteArgument" referenceType="theReferenceTypeArgument">foo</f:be.uri>');
-        self::assertEquals('theUri', (new TemplateView($context))->render());
+        self::assertEquals('theUri', new TemplateView($context)->render());
     }
 }

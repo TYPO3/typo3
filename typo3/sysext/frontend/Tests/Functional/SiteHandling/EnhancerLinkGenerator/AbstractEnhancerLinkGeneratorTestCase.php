@@ -94,7 +94,7 @@ abstract class AbstractEnhancerLinkGeneratorTestCase extends AbstractTestCase
         ]);
 
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest('https://acme.us/'))
+            new InternalRequest('https://acme.us/')
                 ->withPageId(1100)
                 ->withInstructions([
                     $this->createTypoLinkUrlInstruction([
@@ -133,7 +133,7 @@ abstract class AbstractEnhancerLinkGeneratorTestCase extends AbstractTestCase
         ]);
 
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest('https://acme.us/'))
+            new InternalRequest('https://acme.us/')
                 ->withPageId(1100)
                 ->withInstructions([
                     $this->createTypoLinkUrlInstruction([

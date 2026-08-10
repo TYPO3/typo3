@@ -53,7 +53,7 @@ final class ClassSchemaTest extends UnitTestCase
                 AbstractDomainObject::PROPERTY_VERSIONED_UID,
                 AbstractDomainObject::PROPERTY_PID,
             ],
-            array_keys((new ClassSchema(DummyClassWithAllTypesOfProperties::class))->getProperties())
+            array_keys(new ClassSchema(DummyClassWithAllTypesOfProperties::class)->getProperties())
         );
     }
 
@@ -77,16 +77,16 @@ final class ClassSchemaTest extends UnitTestCase
                 'methodWithDefaultValueParam',
                 'methodWithTypeHintedParam',
             ],
-            array_keys((new ClassSchema(DummyClassWithAllTypesOfMethods::class))->getMethods())
+            array_keys(new ClassSchema(DummyClassWithAllTypesOfMethods::class)->getMethods())
         );
     }
 
     #[Test]
     public function classSchemaDetectsDynamicProperties(): void
     {
-        self::assertTrue((new ClassSchema(DummyClassWithAllTypesOfProperties::class))->hasProperty('publicProperty'));
-        self::assertTrue((new ClassSchema(DummyClassWithAllTypesOfProperties::class))->hasProperty('protectedProperty'));
-        self::assertTrue((new ClassSchema(DummyClassWithAllTypesOfProperties::class))->hasProperty('privateProperty'));
+        self::assertTrue(new ClassSchema(DummyClassWithAllTypesOfProperties::class)->hasProperty('publicProperty'));
+        self::assertTrue(new ClassSchema(DummyClassWithAllTypesOfProperties::class)->hasProperty('protectedProperty'));
+        self::assertTrue(new ClassSchema(DummyClassWithAllTypesOfProperties::class)->hasProperty('privateProperty'));
     }
 
     #[Test]

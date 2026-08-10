@@ -56,6 +56,6 @@ final class PhpErrorCodeViewHelperTest extends FunctionalTestCase
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getViewHelperResolver()->addNamespace('install', 'TYPO3\\CMS\\Install\\ViewHelpers');
         $context->getTemplatePaths()->setTemplateSource('<install:format.phpErrorCode phpErrorCode="' . $errorCode . '" />');
-        self::assertSame($expectedString, (new TemplateView($context))->render());
+        self::assertSame($expectedString, new TemplateView($context)->render());
     }
 }

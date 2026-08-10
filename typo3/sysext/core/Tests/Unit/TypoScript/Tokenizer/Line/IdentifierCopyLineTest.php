@@ -29,7 +29,7 @@ final class IdentifierCopyLineTest extends UnitTestCase
     {
         $this->expectException(\LogicException::class);
         $this->expectExceptionCode(1655824946);
-        (new IdentifierCopyLine())->setIdentifierTokenStream(new IdentifierTokenStream());
+        new IdentifierCopyLine()->setIdentifierTokenStream(new IdentifierTokenStream());
     }
 
     #[Test]
@@ -37,6 +37,6 @@ final class IdentifierCopyLineTest extends UnitTestCase
     {
         $this->expectException(\LogicException::class);
         $this->expectExceptionCode(1655824947);
-        (new IdentifierCopyLine())->setValueTokenStream(new IdentifierTokenStream());
+        new IdentifierCopyLine()->setValueTokenStream(new IdentifierTokenStream());
     }
 }

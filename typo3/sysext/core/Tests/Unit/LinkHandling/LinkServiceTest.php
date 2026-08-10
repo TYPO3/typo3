@@ -217,7 +217,7 @@ final class LinkServiceTest extends UnitTestCase
         $this->expectException(UnknownLinkHandlerException::class);
         $this->expectExceptionCode(1460581769);
 
-        (new LinkService(new NoopEventDispatcher()))->resolveByStringRepresentation('t3://invalid');
+        new LinkService(new NoopEventDispatcher())->resolveByStringRepresentation('t3://invalid');
     }
 
     #[Test]
@@ -226,7 +226,7 @@ final class LinkServiceTest extends UnitTestCase
         $this->expectException(UnknownUrnException::class);
         $this->expectExceptionCode(1457177667);
 
-        (new LinkService(new NoopEventDispatcher()))->resolveByStringRepresentation('invalid');
+        new LinkService(new NoopEventDispatcher())->resolveByStringRepresentation('invalid');
     }
 
     #[Test]
@@ -256,7 +256,7 @@ final class LinkServiceTest extends UnitTestCase
         // However, the exception is passed to the event to provide extensions as much information as possible
         $urn = 't3://invalid';
         $expectedExceptionMessage = 'LinkHandler for invalid was not registered';
-        $result = (new LinkService($eventDispatcher))->resolveByStringRepresentation($urn);
+        $result = new LinkService($eventDispatcher)->resolveByStringRepresentation($urn);
 
         self::assertSame($modifiedResult, $result);
         self::assertInstanceOf(AfterLinkResolvedByStringRepresentationEvent::class, $afterLinkResolvedByStringRepresentationEvent);

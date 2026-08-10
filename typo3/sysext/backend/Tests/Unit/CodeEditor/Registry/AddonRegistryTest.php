@@ -44,11 +44,11 @@ final class AddonRegistryTest extends UnitTestCase
         $this->subject
             ->register(new Addon('addon/global'))
             ->register(
-                (new Addon('addon/another/global'))
+                new Addon('addon/another/global')
                     ->setCssFiles(['EXT:foobar/Resources/Public/Css/Addon.css'])
             )
             ->register(
-                (new Addon('addon/with/same/cssfile'))
+                new Addon('addon/with/same/cssfile')
                     ->setOptions([
                         'foobar' => true,
                         'husel' => 'pusel',
@@ -56,7 +56,7 @@ final class AddonRegistryTest extends UnitTestCase
                     ->setCssFiles(['EXT:foobar/Resources/Public/Css/Addon.css'])
             )
             ->register(
-                (new Addon('addon/with/settings'))
+                new Addon('addon/with/settings')
                     ->setOptions([
                         'foobar' => false,
                         'randomInt' => 4, // chosen by fair dice roll

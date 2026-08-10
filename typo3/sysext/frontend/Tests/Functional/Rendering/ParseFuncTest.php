@@ -61,7 +61,7 @@ final class ParseFuncTest extends FunctionalTestCase
         $this->createTypoScriptTemplate($fluidTemplateSource);
 
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest())->withPageId(1)
+            new InternalRequest()->withPageId(1)
         );
         self::assertStringContainsString($expected, (string)$response->getBody());
     }

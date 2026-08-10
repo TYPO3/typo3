@@ -100,7 +100,7 @@ class ContentController extends ActionController
     {
         if ($this->queueService->isActive()) {
             $this->queueService->addValue($this->getRuntimeIdentifier(), $value);
-            return (new ForwardResponse('process'))->withControllerName('Queue');
+            return new ForwardResponse('process')->withControllerName('Queue');
         }
         $this->view->assign('value', $value);
         return $this->responseFactory->createResponse()

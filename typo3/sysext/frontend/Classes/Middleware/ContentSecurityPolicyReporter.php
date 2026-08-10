@@ -52,7 +52,7 @@ class ContentSecurityPolicyReporter extends AbstractContentSecurityPolicyReporte
             // @todo check/store headers `origin` + `referer`
             // @todo create report, then call persist, then dispatch new event
             $this->persistCspReport($scope, $request);
-            return (new Response())->withStatus(201);
+            return new Response()->withStatus(201);
         }
         return $handler->handle($request);
     }

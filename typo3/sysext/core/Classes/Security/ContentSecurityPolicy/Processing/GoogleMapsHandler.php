@@ -50,7 +50,7 @@ class GoogleMapsHandler
     {
         if (!isset(self::$suggestion)) {
             self::$suggestion = $this->createGoogleMapsSuggestion();
-            self::$policyNarrative = (new Policy())->mutate(self::$suggestion->collection);
+            self::$policyNarrative = new Policy()->mutate(self::$suggestion->collection);
         }
     }
 

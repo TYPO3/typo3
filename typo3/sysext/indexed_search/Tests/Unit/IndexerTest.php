@@ -80,7 +80,7 @@ final class IndexerTest extends UnitTestCase
         $typoScript->setConfigArray([
             'absRefPrefix' => $absRefPrefix,
         ]);
-        $request = (new ServerRequest())->withAttribute('frontend.typoscript', $typoScript);
+        $request = new ServerRequest()->withAttribute('frontend.typoscript', $typoScript);
         $GLOBALS['TYPO3_REQUEST'] = $request;
         $subject = $this->getMockBuilder(Indexer::class)->disableOriginalConstructor()->onlyMethods([])->getMock();
         $result = $subject->extractHyperLinks($html);

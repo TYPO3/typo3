@@ -51,7 +51,7 @@ final class FileUploadMimeTypeValidatorRegistrationTest extends FunctionalTestCa
 
         // ArrayFormFactory resolves the prototype configuration via the Extbase
         // ConfigurationManager, which requires a request to be set.
-        $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $request = new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $this->get(ExtbaseConfigurationManagerInterface::class)->setRequest($request);
     }
 
@@ -109,7 +109,7 @@ final class FileUploadMimeTypeValidatorRegistrationTest extends FunctionalTestCa
         $formDefinition = $this->buildFormDefinition(['allowedMimeTypes' => ['application/pdf']]);
 
         $this->get(EventDispatcherInterface::class)->dispatch(
-            new AfterFormStateInitializedEvent($this->runtimeAllowingSubmission($formDefinition), new Request((new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters())))
+            new AfterFormStateInitializedEvent($this->runtimeAllowingSubmission($formDefinition), new Request(new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters())))
         );
 
         self::assertTrue(
@@ -124,7 +124,7 @@ final class FileUploadMimeTypeValidatorRegistrationTest extends FunctionalTestCa
         $formDefinition = $this->buildFormDefinition(['allowedMimeTypes' => []]);
 
         $this->get(EventDispatcherInterface::class)->dispatch(
-            new AfterFormStateInitializedEvent($this->runtimeAllowingSubmission($formDefinition), new Request((new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters())))
+            new AfterFormStateInitializedEvent($this->runtimeAllowingSubmission($formDefinition), new Request(new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters())))
         );
 
         self::assertFalse(
@@ -138,7 +138,7 @@ final class FileUploadMimeTypeValidatorRegistrationTest extends FunctionalTestCa
     {
         $formDefinition = $this->buildFormDefinition(['allowedMimeTypes' => ['application/pdf']]);
         $formRuntime = $this->runtimeAllowingSubmission($formDefinition);
-        $request = new Request((new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters()));
+        $request = new Request(new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters()));
 
         $this->get(EventDispatcherInterface::class)->dispatch(
             new AfterFormStateInitializedEvent($formRuntime, $request)

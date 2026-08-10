@@ -69,7 +69,7 @@ final class PropertyTest extends UnitTestCase
     #[Test]
     public function classSchemaDetectsTransientPropertyFromAttribute(): void
     {
-        $property = (new ClassSchema(DummyClassWithAllTypesOfProperties::class))
+        $property = new ClassSchema(DummyClassWithAllTypesOfProperties::class)
             ->getProperty('propertyWithTransientAttribute');
 
         self::assertTrue($property->isTransient());
@@ -78,7 +78,7 @@ final class PropertyTest extends UnitTestCase
     #[Test]
     public function classSchemaDetectsCascadePropertyFromAttribute(): void
     {
-        $property = (new ClassSchema(DummyClassWithAllTypesOfProperties::class))
+        $property = new ClassSchema(DummyClassWithAllTypesOfProperties::class)
             ->getProperty('propertyWithCascadeAttribute');
 
         self::assertSame('remove', $property->getCascadeValue());
@@ -87,7 +87,7 @@ final class PropertyTest extends UnitTestCase
     #[Test]
     public function classSchemaDetectsTypeAndElementType(): void
     {
-        $property = (new ClassSchema(DummyClassWithAllTypesOfProperties::class))
+        $property = new ClassSchema(DummyClassWithAllTypesOfProperties::class)
             ->getProperty('propertyWithObjectStorageAnnotation');
 
         self::assertTrue($property->getPrimaryType()->isCollection());
@@ -109,7 +109,7 @@ final class PropertyTest extends UnitTestCase
     #[Test]
     public function classSchemaDetectsTypeAndElementTypeWithoutFQCN(): void
     {
-        $property = (new ClassSchema(DummyClassWithAllTypesOfProperties::class))
+        $property = new ClassSchema(DummyClassWithAllTypesOfProperties::class)
             ->getProperty('propertyWithObjectStorageAnnotationWithoutFQCN');
 
         self::assertTrue($property->getPrimaryType()->isCollection());
@@ -124,7 +124,7 @@ final class PropertyTest extends UnitTestCase
     #[Test]
     public function classSchemaDetectsValidateAttributeModelProperties(): void
     {
-        $property = (new ClassSchema(DummyModel::class))
+        $property = new ClassSchema(DummyModel::class)
             ->getProperty('propertyWithValidateAttributes');
 
         self::assertSame(
@@ -160,7 +160,7 @@ final class PropertyTest extends UnitTestCase
     #[Test]
     public function classSchemaDetectsValidateAttributeOnPromotedModelProperties(): void
     {
-        $property = (new ClassSchema(DummyModel::class))
+        $property = new ClassSchema(DummyModel::class)
             ->getProperty('dummyPromotedProperty');
 
         self::assertSame(
@@ -196,7 +196,7 @@ final class PropertyTest extends UnitTestCase
     #[Test]
     public function classSchemaDetectsTypeFromPropertyWithStringTypeHint(): void
     {
-        $property = (new ClassSchema(DummyClassWithAllTypesOfProperties::class))
+        $property = new ClassSchema(DummyClassWithAllTypesOfProperties::class)
             ->getProperty('stringTypedProperty');
 
         self::assertCount(1, $property->getTypes());
@@ -207,7 +207,7 @@ final class PropertyTest extends UnitTestCase
     #[Test]
     public function classSchemaDetectsTypeFromPropertyWithNullableStringTypeHint(): void
     {
-        $property = (new ClassSchema(DummyClassWithAllTypesOfProperties::class))
+        $property = new ClassSchema(DummyClassWithAllTypesOfProperties::class)
             ->getProperty('nullableStringTypedProperty');
 
         self::assertTrue($property->isNullable());
@@ -223,7 +223,7 @@ final class PropertyTest extends UnitTestCase
     #[Test]
     public function isObjectStorageTypeDetectsObjectStorage(): void
     {
-        $property = (new ClassSchema(DummyClassWithAllTypesOfProperties::class))
+        $property = new ClassSchema(DummyClassWithAllTypesOfProperties::class)
             ->getProperty('propertyWithObjectStorageAnnotationWithoutFQCN');
 
         self::assertTrue($property->isObjectStorageType());
@@ -233,7 +233,7 @@ final class PropertyTest extends UnitTestCase
     #[Test]
     public function isObjectStorageTypeDetectsLazyObjectStorage(): void
     {
-        $property = (new ClassSchema(DummyClassWithAllTypesOfProperties::class))
+        $property = new ClassSchema(DummyClassWithAllTypesOfProperties::class)
             ->getProperty('propertyWithLazyObjectStorageAnnotationWithoutFQCN');
 
         self::assertTrue($property->isObjectStorageType());
@@ -243,7 +243,7 @@ final class PropertyTest extends UnitTestCase
     #[Test]
     public function filterLazyLoadingProxyAndLazyObjectStorageFiltersLazyLoadingProxy(): void
     {
-        $property = (new ClassSchema(DummyClassWithAllTypesOfProperties::class))
+        $property = new ClassSchema(DummyClassWithAllTypesOfProperties::class)
             ->getProperty('propertyWithLazyLoadingProxy');
 
         $types = $property->getFilteredTypes([$property, 'filterLazyLoadingProxyAndLazyObjectStorage']);
@@ -255,7 +255,7 @@ final class PropertyTest extends UnitTestCase
     #[Test]
     public function filterLazyLoadingProxyAndLazyObjectStorageFiltersLazyObjectStorage(): void
     {
-        $property = (new ClassSchema(DummyClassWithAllTypesOfProperties::class))
+        $property = new ClassSchema(DummyClassWithAllTypesOfProperties::class)
             ->getProperty('propertyWithLazyObjectStorageAnnotationWithoutFQCN');
 
         $types = $property->getFilteredTypes([$property, 'filterLazyLoadingProxyAndLazyObjectStorage']);
@@ -267,7 +267,7 @@ final class PropertyTest extends UnitTestCase
     #[Test]
     public function classSchemaDetectsFileUploadAttributeModelProperties(): void
     {
-        $property = (new ClassSchema(DummyModel::class))
+        $property = new ClassSchema(DummyModel::class)
             ->getProperty('propertyWithFileUploadAttribute');
 
         self::assertSame(
@@ -291,7 +291,7 @@ final class PropertyTest extends UnitTestCase
     #[Test]
     public function classSchemaDetectsFileUploadAttributeOnPromotedModelProperties(): void
     {
-        $property = (new ClassSchema(DummyModel::class))
+        $property = new ClassSchema(DummyModel::class)
             ->getProperty('dummyPromotedProperty');
 
         self::assertSame(

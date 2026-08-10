@@ -72,7 +72,7 @@ final class ProcessedImageCollectorTest extends UnitTestCase
     #[Test]
     public function nothingIsCollectedWhenAdminPanelIsNotOpen(): void
     {
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
         $GLOBALS['BE_USER'] = false;
         $subject = new ProcessedImageCollector();
@@ -129,7 +129,7 @@ final class ProcessedImageCollectorTest extends UnitTestCase
 
     private function setUpFrontendRequestWithOpenAdminPanel(): void
     {
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
         $backendUser = $this->getMockBuilder(FrontendBackendUserAuthentication::class)->disableOriginalConstructor()->getMock();
         $backendUser->method('getTSConfig')->willReturn(['admPanel.' => ['enable.' => ['all' => 1]]]);

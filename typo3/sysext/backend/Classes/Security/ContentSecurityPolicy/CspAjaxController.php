@@ -59,13 +59,13 @@ readonly class CspAjaxController
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
         if ($request->getMethod() === 'GET') {
-            return (new NullResponse())->withStatus(400);
+            return new NullResponse()->withStatus(400);
         }
         if (!$this->isSystemMaintainer()) {
-            return (new NullResponse())->withStatus(403);
+            return new NullResponse()->withStatus(403);
         }
         return $this->dispatchAction($request)
-            ?? (new NullResponse())->withStatus(500);
+            ?? new NullResponse()->withStatus(500);
     }
 
     protected function dispatchAction(ServerRequestInterface $request): ?ResponseInterface

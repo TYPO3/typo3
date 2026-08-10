@@ -94,7 +94,7 @@ final class PageViewContentObjectTest extends FunctionalTestCase
                 'EXT:frontend/Tests/Functional/Fixtures/Extensions/test_fluidpagerendering/Configuration/TypoScript/plain.typoscript',
             ]
         );
-        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId($pageUid)->withLanguageId($languageId));
+        $response = $this->executeFrontendSubRequest(new InternalRequest()->withPageId($pageUid)->withLanguageId($languageId));
         $body = (string)$response->getBody();
         foreach ($contentMatches as $match) {
             self::assertStringContainsString($match, $body);
@@ -123,7 +123,7 @@ final class PageViewContentObjectTest extends FunctionalTestCase
             ExtensionManagementUtility::extPath('test_fluidpagerendering') . 'Resources/Private/Templates/Pages/Pages/Standard.html',
             ExtensionManagementUtility::extPath('test_fluidpagerendering') . 'Resources/Private/Templates/Pages/Pages/Standard',
         ]));
-        $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::ROOT_PAGE_ID));
+        $this->executeFrontendSubRequest(new InternalRequest()->withPageId(self::ROOT_PAGE_ID));
     }
 
     public static function reservedVariableNameDataProvider(): array
@@ -152,7 +152,7 @@ final class PageViewContentObjectTest extends FunctionalTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1711748615);
         $this->expectExceptionMessage(sprintf('Cannot use reserved name "%s" as variable name in PAGEVIEW.', $variableName));
-        $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::ROOT_PAGE_ID));
+        $this->executeFrontendSubRequest(new InternalRequest()->withPageId(self::ROOT_PAGE_ID));
     }
 
     #[Test]
@@ -164,7 +164,7 @@ final class PageViewContentObjectTest extends FunctionalTestCase
                 'EXT:frontend/Tests/Functional/Fixtures/Extensions/test_fluidpagerendering/Configuration/TypoScript/withoutTrailingSlash.typoscript',
             ]
         );
-        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::ROOT_PAGE_ID));
+        $response = $this->executeFrontendSubRequest(new InternalRequest()->withPageId(self::ROOT_PAGE_ID));
         self::assertStringContainsString('You are on page Fluid Root Page', (string)$response->getBody());
         self::assertStringContainsString('This is content from the test partial.', (string)$response->getBody());
     }

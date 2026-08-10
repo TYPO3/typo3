@@ -73,7 +73,7 @@ final class FrontendConfigurationManagerTest extends FunctionalTestCase
 
         $contentObject = $this->get(ContentObjectRenderer::class);
         $contentObject->data = ['pi_flexform' => $flexForm];
-        $request = (new ServerRequest())->withAttribute('currentContentObject', $contentObject);
+        $request = new ServerRequest()->withAttribute('currentContentObject', $contentObject);
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
         $request = $request->withAttribute('frontend.typoscript', $frontendTypoScript);
@@ -352,7 +352,7 @@ final class FrontendConfigurationManagerTest extends FunctionalTestCase
     ): void {
         $contentObject = $this->get(ContentObjectRenderer::class);
         $contentObject->data = ['pi_flexform' => $flexForm];
-        $request = (new ServerRequest())->withAttribute('currentContentObject', $contentObject);
+        $request = new ServerRequest()->withAttribute('currentContentObject', $contentObject);
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray($typoScript);
         $request = $request->withAttribute('frontend.typoscript', $frontendTypoScript);

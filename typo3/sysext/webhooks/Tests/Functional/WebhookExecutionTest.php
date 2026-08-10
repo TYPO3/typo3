@@ -78,8 +78,8 @@ final class WebhookExecutionTest extends FunctionalTestCase
         $GLOBALS['TYPO3_CONF_VARS']['HTTP']['handler']['logger'] = function () use ($inspector) {
             return function (RequestInterface $request) use ($inspector) {
                 $inspector($request);
-                return (new ResponseFactory())->createResponse()
-                    ->withBody((new StreamFactory())->createStream('success'));
+                return new ResponseFactory()->createResponse()
+                    ->withBody(new StreamFactory()->createStream('success'));
             };
         };
     }
@@ -97,7 +97,7 @@ final class WebhookExecutionTest extends FunctionalTestCase
         $this->registerRequestInspector($inspector);
 
         // Catch any requests, evaluate their payload
-        (new ActionService())->modifyRecord('pages', 10, ['title' => 'Dummy Modified']);
+        new ActionService()->modifyRecord('pages', 10, ['title' => 'Dummy Modified']);
         self::assertEquals(1, $numberOfRequestsFired);
     }
 
@@ -148,7 +148,7 @@ final class WebhookExecutionTest extends FunctionalTestCase
         $this->registerRequestInspector($inspector);
 
         // Catch any requests, evaluate their payload
-        (new ActionService())->modifyRecord('pages', 10, ['title' => 'Dummy Modified']);
+        new ActionService()->modifyRecord('pages', 10, ['title' => 'Dummy Modified']);
         self::assertEquals(0, $numberOfRequestsFired);
     }
 

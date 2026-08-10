@@ -29,6 +29,6 @@ final class ConditionVerdictAwareIncludeTreeTraverserTest extends UnitTestCase
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1689244840);
-        (new ConditionVerdictAwareIncludeTreeTraverser())->traverse(new RootInclude(), [new \stdClass()]); // @phpstan-ignore argument.type (intentionally passing invalid visitor type to test exception handling)
+        new ConditionVerdictAwareIncludeTreeTraverser()->traverse(new RootInclude(), [new \stdClass()]); // @phpstan-ignore argument.type (intentionally passing invalid visitor type to test exception handling)
     }
 }

@@ -46,11 +46,11 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/addElementRelation.csv');
 
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest())->withPageId(self::VALUE_PageId),
-            (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
+            new InternalRequest()->withPageId(self::VALUE_PageId),
+            new InternalRequestContext()->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSections, (new StructureHasRecordConstraint())
+        self::assertThat($responseSections, new StructureHasRecordConstraint()
             ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField(self::FIELD_ContentElement)
             ->setTable(self::TABLE_Element)->setField('title')->setValues('Element #1', 'Element #2', 'Element #3'));
     }
@@ -62,14 +62,14 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteElementRelation.csv');
 
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest())->withPageId(self::VALUE_PageId),
-            (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
+            new InternalRequest()->withPageId(self::VALUE_PageId),
+            new InternalRequestContext()->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSections, (new StructureHasRecordConstraint())
+        self::assertThat($responseSections, new StructureHasRecordConstraint()
             ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField(self::FIELD_ContentElement)
             ->setTable(self::TABLE_Element)->setField('title')->setValues('Element #1'));
-        self::assertThat($responseSections, (new StructureDoesNotHaveRecordConstraint())
+        self::assertThat($responseSections, new StructureDoesNotHaveRecordConstraint()
             ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField(self::FIELD_ContentElement)
             ->setTable(self::TABLE_Element)->setField('title')->setValues('Element #2', 'Element #3'));
     }
@@ -81,11 +81,11 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/changeElementSorting.csv');
 
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest())->withPageId(self::VALUE_PageId),
-            (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
+            new InternalRequest()->withPageId(self::VALUE_PageId),
+            new InternalRequestContext()->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSections, (new StructureHasRecordConstraint())
+        self::assertThat($responseSections, new StructureHasRecordConstraint()
             ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField(self::FIELD_ContentElement)
             ->setTable(self::TABLE_Element)->setField('title')->setValues('Element #1', 'Element #2'));
     }
@@ -97,11 +97,11 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/changeElementRelationSorting.csv');
 
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest())->withPageId(self::VALUE_PageId),
-            (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
+            new InternalRequest()->withPageId(self::VALUE_PageId),
+            new InternalRequestContext()->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSections, (new StructureHasRecordConstraint())
+        self::assertThat($responseSections, new StructureHasRecordConstraint()
             ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField(self::FIELD_ContentElement)
             ->setTable(self::TABLE_Element)->setField('title')->setValues('Element #1', 'Element #2'));
     }
@@ -113,13 +113,13 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/createContentNAddRelation.csv');
 
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest())->withPageId(self::VALUE_PageId),
-            (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
+            new InternalRequest()->withPageId(self::VALUE_PageId),
+            new InternalRequestContext()->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSections, (new HasRecordConstraint())
+        self::assertThat($responseSections, new HasRecordConstraint()
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
-        self::assertThat($responseSections, (new StructureHasRecordConstraint())
+        self::assertThat($responseSections, new StructureHasRecordConstraint()
             ->setRecordIdentifier(self::TABLE_Content . ':' . $this->recordIds['newContentId'])->setRecordField(self::FIELD_ContentElement)
             ->setTable(self::TABLE_Element)->setField('title')->setValues('Element #1'));
     }
@@ -131,13 +131,13 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/createContentNCreateRelation.csv');
 
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest())->withPageId(self::VALUE_PageId),
-            (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
+            new InternalRequest()->withPageId(self::VALUE_PageId),
+            new InternalRequestContext()->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSections, (new HasRecordConstraint())
+        self::assertThat($responseSections, new HasRecordConstraint()
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
-        self::assertThat($responseSections, (new StructureHasRecordConstraint())
+        self::assertThat($responseSections, new StructureHasRecordConstraint()
             ->setRecordIdentifier(self::TABLE_Content . ':' . $this->recordIds['newContentId'])->setRecordField(self::FIELD_ContentElement)
             ->setTable(self::TABLE_Element)->setField('title')->setValues('Testing #1'));
     }
@@ -149,11 +149,11 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyElementOfRelation.csv');
 
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest())->withPageId(self::VALUE_PageId),
-            (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
+            new InternalRequest()->withPageId(self::VALUE_PageId),
+            new InternalRequestContext()->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSections, (new StructureHasRecordConstraint())
+        self::assertThat($responseSections, new StructureHasRecordConstraint()
             ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField(self::FIELD_ContentElement)
             ->setTable(self::TABLE_Element)->setField('title')->setValues('Testing #1', 'Element #2'));
     }
@@ -165,11 +165,11 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyContentOfRelation.csv');
 
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest())->withPageId(self::VALUE_PageId),
-            (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
+            new InternalRequest()->withPageId(self::VALUE_PageId),
+            new InternalRequestContext()->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSections, (new HasRecordConstraint())
+        self::assertThat($responseSections, new HasRecordConstraint()
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
     }
 
@@ -180,14 +180,14 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyBothSidesOfRelation.csv');
 
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest())->withPageId(self::VALUE_PageId),
-            (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
+            new InternalRequest()->withPageId(self::VALUE_PageId),
+            new InternalRequestContext()->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSections, (new StructureHasRecordConstraint())
+        self::assertThat($responseSections, new StructureHasRecordConstraint()
             ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField(self::FIELD_ContentElement)
             ->setTable(self::TABLE_Element)->setField('title')->setValues('Testing #1', 'Element #2'));
-        self::assertThat($responseSections, (new HasRecordConstraint())
+        self::assertThat($responseSections, new HasRecordConstraint()
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
     }
 
@@ -198,11 +198,11 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteContentOfRelation.csv');
 
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest())->withPageId(self::VALUE_PageId),
-            (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
+            new InternalRequest()->withPageId(self::VALUE_PageId),
+            new InternalRequestContext()->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSections, (new DoesNotHaveRecordConstraint())
+        self::assertThat($responseSections, new DoesNotHaveRecordConstraint()
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
     }
 
@@ -220,11 +220,11 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteElementOfRelation.csv');
 
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest())->withPageId(self::VALUE_PageId),
-            (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
+            new InternalRequest()->withPageId(self::VALUE_PageId),
+            new InternalRequestContext()->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSections, (new StructureDoesNotHaveRecordConstraint())
+        self::assertThat($responseSections, new StructureDoesNotHaveRecordConstraint()
             ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField(self::FIELD_ContentElement)
             ->setTable(self::TABLE_Element)->setField('title')->setValues('Element #1'));
     }
@@ -236,12 +236,12 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/copyContentOfRelation.csv');
 
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest())->withPageId(self::VALUE_PageId),
-            (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
+            new InternalRequest()->withPageId(self::VALUE_PageId),
+            new InternalRequestContext()->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         // Referenced elements are not copied with the "parent", which is expected and correct
-        self::assertThat($responseSections, (new StructureHasRecordConstraint())
+        self::assertThat($responseSections, new StructureHasRecordConstraint()
             ->setRecordIdentifier(self::TABLE_Content . ':' . $this->recordIds['copiedContentId'])->setRecordField(self::FIELD_ContentElement)
             ->setTable(self::TABLE_Element)->setField('title')->setValues('Element #2', 'Element #3'));
     }
@@ -253,15 +253,15 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/copyElementOfRelation.csv');
 
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest())->withPageId(self::VALUE_PageId),
-            (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
+            new InternalRequest()->withPageId(self::VALUE_PageId),
+            new InternalRequestContext()->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSections, (new StructureHasRecordConstraint())
+        self::assertThat($responseSections, new StructureHasRecordConstraint()
             ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField(self::FIELD_ContentElement)
             ->setTable(self::TABLE_Element)->setField('title')->setValues('Element #1'));
         // Referenced elements are not updated at the "parent", which is expected and correct
-        self::assertThat($responseSections, (new StructureDoesNotHaveRecordConstraint())
+        self::assertThat($responseSections, new StructureDoesNotHaveRecordConstraint()
             ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField(self::FIELD_ContentElement)
             ->setTable(self::TABLE_Element)->setField('title')->setValues('Element #1 (copy 1)'));
     }
@@ -273,11 +273,11 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentOfRelation.csv');
 
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId),
-            (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
+            new InternalRequest()->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId),
+            new InternalRequestContext()->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSections, (new StructureHasRecordConstraint())
+        self::assertThat($responseSections, new StructureHasRecordConstraint()
             ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_ContentElement)
             ->setTable(self::TABLE_Element)->setField('title')->setValues('Element #2', 'Element #3'));
     }
@@ -289,12 +289,12 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentOfRelationWSynchronization.csv');
 
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId),
-            (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
+            new InternalRequest()->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId),
+            new InternalRequestContext()->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
 
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSections, (new StructureHasRecordConstraint())
+        self::assertThat($responseSections, new StructureHasRecordConstraint()
             ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_ContentElement)
             ->setTable(self::TABLE_Element)->setField('title')->setValues('Element #1', 'Element #2'));
     }
@@ -306,11 +306,11 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentChainOfRelationWSynchronizationSource.csv');
 
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId),
-            (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
+            new InternalRequest()->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId),
+            new InternalRequestContext()->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSections, (new StructureHasRecordConstraint())
+        self::assertThat($responseSections, new StructureHasRecordConstraint()
             ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_ContentElement)
             ->setTable(self::TABLE_Element)->setField('title')->setValues('Element #1', 'Element #2'));
     }
@@ -324,11 +324,11 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeElementOfRelation.csv');
 
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId),
-            (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
+            new InternalRequest()->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId),
+            new InternalRequestContext()->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSections, (new StructureHasRecordConstraint())
+        self::assertThat($responseSections, new StructureHasRecordConstraint()
             ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField(self::FIELD_ContentElement)
             ->setTable(self::TABLE_Element)->setField('title')->setValues('[Translate to Dansk:] Element #1', 'Element #2'));
     }
@@ -340,11 +340,11 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/moveContentOfRelationToDifferentPage.csv');
 
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest())->withPageId(self::VALUE_PageIdTarget),
-            (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
+            new InternalRequest()->withPageId(self::VALUE_PageIdTarget),
+            new InternalRequestContext()->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSections, (new StructureHasRecordConstraint())
+        self::assertThat($responseSections, new StructureHasRecordConstraint()
             ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_ContentElement)
             ->setTable(self::TABLE_Element)->setField('title')->setValues('Element #2', 'Element #3'));
     }

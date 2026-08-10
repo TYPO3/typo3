@@ -143,14 +143,14 @@ final class TranslatedSiteContentTest extends FunctionalTestCase
         $visibleHeaders = ['Regular Element #1', 'Regular Element #2', 'Regular Element #3'];
         self::assertThat(
             $responseSections,
-            (new HasRecordConstraint())
+            new HasRecordConstraint()
                 ->setTable(self::TABLE_Content)
                 ->setField('header')
                 ->setValues(...$visibleHeaders)
         );
         self::assertThat(
             $responseSections,
-            (new DoesNotHaveRecordConstraint())
+            new DoesNotHaveRecordConstraint()
                 ->setTable(self::TABLE_Content)
                 ->setField('header')
                 ->setValues(...$this->getNonVisibleHeaders($visibleHeaders))
@@ -158,30 +158,30 @@ final class TranslatedSiteContentTest extends FunctionalTestCase
 
         // assert FAL relations
         $visibleFiles = ['T3BOARD'];
-        self::assertThat($responseSections, (new StructureHasRecordConstraint())
+        self::assertThat($responseSections, new StructureHasRecordConstraint()
             ->setRecordIdentifier(self::TABLE_Content . ':297')->setRecordField('image')
             ->setTable('sys_file_reference')->setField('title')->setValues(...$visibleFiles));
 
-        self::assertThat($responseSections, (new StructureDoesNotHaveRecordConstraint())
+        self::assertThat($responseSections, new StructureDoesNotHaveRecordConstraint()
             ->setRecordIdentifier(self::TABLE_Content . ':297')->setRecordField('image')
             ->setTable('sys_file_reference')->setField('title')->setValues(...$this->getNonVisibleFileTitles($visibleFiles)));
 
         $visibleFiles = ['Kasper2'];
-        self::assertThat($responseSections, (new StructureHasRecordConstraint())
+        self::assertThat($responseSections, new StructureHasRecordConstraint()
             ->setRecordIdentifier(self::TABLE_Content . ':298')->setRecordField('image')
             ->setTable('sys_file_reference')->setField('title')->setValues(...$visibleFiles));
 
-        self::assertThat($responseSections, (new StructureDoesNotHaveRecordConstraint())
+        self::assertThat($responseSections, new StructureDoesNotHaveRecordConstraint()
             ->setRecordIdentifier(self::TABLE_Content . ':298')->setRecordField('image')
             ->setTable('sys_file_reference')->setField('title')->setValues(...$this->getNonVisibleFileTitles($visibleFiles)));
 
         // assert Categories
         $visibleCategories = ['Category 1', 'Category 3 - not translated'];
-        self::assertThat($responseSections, (new StructureHasRecordConstraint())
+        self::assertThat($responseSections, new StructureHasRecordConstraint()
             ->setRecordIdentifier(self::TABLE_Content . ':297')->setRecordField('categories')
             ->setTable('sys_category')->setField('title')->setValues(...$visibleCategories));
 
-        self::assertThat($responseSections, (new StructureDoesNotHaveRecordConstraint())
+        self::assertThat($responseSections, new StructureDoesNotHaveRecordConstraint()
             ->setRecordIdentifier(self::TABLE_Content . ':297')->setRecordField('categories')
             ->setTable('sys_category')->setField('title')->setValues(...$this->getNonVisibleCategoryTitles($visibleCategories)));
     }
@@ -279,14 +279,14 @@ final class TranslatedSiteContentTest extends FunctionalTestCase
 
         self::assertThat(
             $responseSections,
-            (new HasRecordConstraint())
+            new HasRecordConstraint()
                 ->setTable(self::TABLE_Content)
                 ->setField('header')
                 ->setValues(...$visibleHeaders)
         );
         self::assertThat(
             $responseSections,
-            (new DoesNotHaveRecordConstraint())
+            new DoesNotHaveRecordConstraint()
                 ->setTable(self::TABLE_Content)
                 ->setField('header')
                 ->setValues(...$this->getNonVisibleHeaders($visibleHeaders))
@@ -295,21 +295,21 @@ final class TranslatedSiteContentTest extends FunctionalTestCase
         foreach ($visibleRecords as $ttContentUid => $properties) {
             $visibleFileTitles = $properties['image'];
             if (!empty($visibleFileTitles)) {
-                self::assertThat($responseSections, (new StructureHasRecordConstraint())
+                self::assertThat($responseSections, new StructureHasRecordConstraint()
                     ->setRecordIdentifier(self::TABLE_Content . ':' . $ttContentUid)->setRecordField('image')
                     ->setTable('sys_file_reference')->setField('title')->setValues(...$visibleFileTitles));
             }
-            self::assertThat($responseSections, (new StructureDoesNotHaveRecordConstraint())
+            self::assertThat($responseSections, new StructureDoesNotHaveRecordConstraint()
                 ->setRecordIdentifier(self::TABLE_Content . ':' . $ttContentUid)->setRecordField('image')
                 ->setTable('sys_file_reference')->setField('title')->setValues(...$this->getNonVisibleFileTitles($visibleFileTitles)));
 
             $visibleCategoryTitles = $properties['categories'] ?? [];
             if (!empty($visibleCategoryTitles)) {
-                self::assertThat($responseSections, (new StructureHasRecordConstraint())
+                self::assertThat($responseSections, new StructureHasRecordConstraint()
                     ->setRecordIdentifier(self::TABLE_Content . ':' . $ttContentUid)->setRecordField('categories')
                     ->setTable('sys_category')->setField('title')->setValues(...$visibleCategoryTitles));
             }
-            self::assertThat($responseSections, (new StructureDoesNotHaveRecordConstraint())
+            self::assertThat($responseSections, new StructureDoesNotHaveRecordConstraint()
                 ->setRecordIdentifier(self::TABLE_Content . ':' . $ttContentUid)->setRecordField('categories')
                 ->setTable('sys_category')->setField('title')->setValues(...$this->getNonVisibleCategoryTitles($visibleCategoryTitles)));
         }
@@ -504,14 +504,14 @@ final class TranslatedSiteContentTest extends FunctionalTestCase
             $responseSections = $responseStructure->getSection('Extbase:list()');
             self::assertThat(
                 $responseSections,
-                (new HasRecordConstraint())
+                new HasRecordConstraint()
                     ->setTable(self::TABLE_Content)
                     ->setField('header')
                     ->setValues(...$visibleHeaders)
             );
             self::assertThat(
                 $responseSections,
-                (new DoesNotHaveRecordConstraint())
+                new DoesNotHaveRecordConstraint()
                     ->setTable(self::TABLE_Content)
                     ->setField('header')
                     ->setValues(...$this->getNonVisibleHeaders($visibleHeaders))
@@ -520,11 +520,11 @@ final class TranslatedSiteContentTest extends FunctionalTestCase
             foreach ($visibleRecords as $ttContentUid => $properties) {
                 $visibleFileTitles = $properties['image'];
                 if (!empty($visibleFileTitles)) {
-                    self::assertThat($responseSections, (new StructureHasRecordConstraint())
+                    self::assertThat($responseSections, new StructureHasRecordConstraint()
                         ->setRecordIdentifier(self::TABLE_Content . ':' . $ttContentUid)->setRecordField('image')
                         ->setTable('sys_file_reference')->setField('title')->setValues(...$visibleFileTitles));
                 }
-                self::assertThat($responseSections, (new StructureDoesNotHaveRecordConstraint())
+                self::assertThat($responseSections, new StructureDoesNotHaveRecordConstraint()
                     ->setRecordIdentifier(self::TABLE_Content . ':' . $ttContentUid)->setRecordField('image')
                     ->setTable('sys_file_reference')->setField('title')->setValues(...$this->getNonVisibleFileTitles($visibleFileTitles)));
             }
@@ -620,14 +620,14 @@ final class TranslatedSiteContentTest extends FunctionalTestCase
 
         self::assertThat(
             $responseSections,
-            (new HasRecordConstraint())
+            new HasRecordConstraint()
                 ->setTable(self::TABLE_Content)
                 ->setField('header')
                 ->setValues(...$visibleRecordHeaders)
         );
         self::assertThat(
             $responseSections,
-            (new DoesNotHaveRecordConstraint())
+            new DoesNotHaveRecordConstraint()
                 ->setTable(self::TABLE_Content)
                 ->setField('header')
                 ->setValues(...$this->getNonVisibleHeaders($visibleRecordHeaders))

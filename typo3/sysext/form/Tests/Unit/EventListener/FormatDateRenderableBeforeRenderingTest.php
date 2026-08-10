@@ -30,7 +30,7 @@ final class FormatDateRenderableBeforeRenderingTest extends TestCase
     public function todayIsResolvedToCurrentDate(): void
     {
         $result = $this->invokeListener(['min' => 'today']);
-        $expected = (new \DateTime('today'))->format('Y-m-d');
+        $expected = new \DateTime('today')->format('Y-m-d');
 
         self::assertNotNull($result, 'setProperty must be called for relative expression');
         self::assertSame($expected, $result['min']);
@@ -40,7 +40,7 @@ final class FormatDateRenderableBeforeRenderingTest extends TestCase
     public function relativeMinusYearsIsResolved(): void
     {
         $result = $this->invokeListener(['max' => '-18 years']);
-        $expected = (new \DateTime('-18 years'))->format('Y-m-d');
+        $expected = new \DateTime('-18 years')->format('Y-m-d');
 
         self::assertNotNull($result, 'setProperty must be called for relative expression');
         self::assertSame($expected, $result['max']);
@@ -50,7 +50,7 @@ final class FormatDateRenderableBeforeRenderingTest extends TestCase
     public function relativePlusMonthIsResolved(): void
     {
         $result = $this->invokeListener(['min' => '+1 month']);
-        $expected = (new \DateTime('+1 month'))->format('Y-m-d');
+        $expected = new \DateTime('+1 month')->format('Y-m-d');
 
         self::assertNotNull($result, 'setProperty must be called for relative expression');
         self::assertSame($expected, $result['min']);
@@ -97,7 +97,7 @@ final class FormatDateRenderableBeforeRenderingTest extends TestCase
     public function mixedAbsoluteAndRelativeResolvesOnlyRelative(): void
     {
         $result = $this->invokeListener(['min' => '2025-01-01', 'max' => '-18 years']);
-        $expected = (new \DateTime('-18 years'))->format('Y-m-d');
+        $expected = new \DateTime('-18 years')->format('Y-m-d');
 
         self::assertNotNull($result, 'setProperty must be called when at least one attribute is relative');
         self::assertSame('2025-01-01', $result['min'], 'Absolute min must be preserved');
@@ -127,7 +127,7 @@ final class FormatDateRenderableBeforeRenderingTest extends TestCase
         $event = new BeforeRenderableIsRenderedEvent($renderable, $formRuntime);
         (new FormatDateRenderableBeforeRendering())($event);
 
-        $expected = (new \DateTime('today'))->format('Y-m-d');
+        $expected = new \DateTime('today')->format('Y-m-d');
         self::assertSame('date-1', $capturedIdentifier);
         self::assertSame($expected, $capturedValue);
     }

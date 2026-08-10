@@ -77,7 +77,7 @@ final class ResetPasswordControllerTest extends FunctionalTestCase
 
         $normalizedParams = self::createStub(NormalizedParams::class);
         $normalizedParams->method('getSitePath')->willReturn('/');
-        $this->request = (new ServerRequest('https://example.com/typo3/'))
+        $this->request = new ServerRequest('https://example.com/typo3/')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('normalizedParams', $normalizedParams)
             ->withAttribute('route', new Route('path', ['packageName' => 'typo3/cms-backend']));

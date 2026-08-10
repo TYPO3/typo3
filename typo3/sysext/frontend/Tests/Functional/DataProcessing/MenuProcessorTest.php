@@ -180,7 +180,7 @@ final class MenuProcessorTest extends FunctionalTestCase
         ]);
         $typoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $typoScript->setConfigArray([]);
-        $request = (new ServerRequest())
+        $request = new ServerRequest()
             ->withAttribute('site', $site)
             ->withAttribute('frontend.page.information', $pageInformation)
             ->withAttribute('frontend.register.stack', new RegisterStack())

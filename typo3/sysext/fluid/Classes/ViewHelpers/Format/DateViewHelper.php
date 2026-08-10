@@ -93,7 +93,7 @@ final class DateViewHelper extends AbstractViewHelper
             if ($dateTimestamp === false) {
                 throw new InvalidArgumentValueException('"' . $date . '" could not be converted to a timestamp. Probably due to a parsing error.', 1241722579);
             }
-            $date = (new \DateTime())->setTimestamp($dateTimestamp);
+            $date = new \DateTime()->setTimestamp($dateTimestamp);
         }
 
         if (!empty($this->arguments['timezone'])) {
@@ -107,12 +107,12 @@ final class DateViewHelper extends AbstractViewHelper
 
         if ($pattern !== null) {
             $locale = $this->arguments['locale'] ?? self::resolveLocale($this->renderingContext);
-            return (new DateFormatter())->format($date, $pattern, $locale);
+            return new DateFormatter()->format($date, $pattern, $locale);
         }
         if (str_contains($format, '%')) {
             // @todo: deprecate this syntax in TYPO3 v13.
             $locale = $this->arguments['locale'] ?? self::resolveLocale($this->renderingContext);
-            return (new DateFormatter())->strftime($format, $date, $locale);
+            return new DateFormatter()->strftime($format, $date, $locale);
         }
         return $date->format($format);
     }

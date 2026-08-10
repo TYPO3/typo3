@@ -43,6 +43,6 @@ final class FeatureViewHelperTest extends FunctionalTestCase
         $context->getTemplatePaths()->setTemplateSource(
             '<f:feature name="viewHelperTestFeature"><f:then>enabled</f:then><f:else>disabled</f:else></f:feature>'
         );
-        self::assertSame($expected, (new TemplateView($context))->render());
+        self::assertSame($expected, new TemplateView($context)->render());
     }
 }

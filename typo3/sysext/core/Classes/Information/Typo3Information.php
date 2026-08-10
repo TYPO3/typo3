@@ -128,6 +128,6 @@ class Typo3Information
         if (str_contains($identifier, '@')) {
             throw new \InvalidArgumentException('The identifier must not contain the "@" character.', 1728643940);
         }
-        return sprintf(self::URL_DOCS, $identifier, (new Typo3Version())->getBranch());
+        return sprintf(self::URL_DOCS, $identifier, new Typo3Version()->getBranch());
     }
 }

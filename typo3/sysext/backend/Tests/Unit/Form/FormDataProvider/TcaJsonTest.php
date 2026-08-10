@@ -236,6 +236,6 @@ final class TcaJsonTest extends UnitTestCase
     #[Test]
     public function addDataDoesHandleJsonRecords(array $input, array $expected): void
     {
-        self::assertSame($expected, (new TcaJson())->addData($input));
+        self::assertSame($expected, new TcaJson()->addData($input));
     }
 }

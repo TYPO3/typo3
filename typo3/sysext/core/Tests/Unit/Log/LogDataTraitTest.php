@@ -115,21 +115,21 @@ final class LogDataTraitTest extends UnitTestCase
     #[Test]
     public function formatLogDetailsLegacyStrings(string $detailString, array $substitutes, string $expectedResult): void
     {
-        self::assertSame($expectedResult, (new LogDataTraitTestAccessor())->callFormatLogDetails($detailString, $substitutes));
+        self::assertSame($expectedResult, new LogDataTraitTestAccessor()->callFormatLogDetails($detailString, $substitutes));
     }
 
     #[DataProvider('formatLogDetailsLegacyStringsDataProvider')]
     #[Test]
     public function formatLogDetailsLegacyStringsWithSerializedSubstitutes(string $detailString, array $substitutes, string $expectedResult): void
     {
-        self::assertSame($expectedResult, (new LogDataTraitTestAccessor())->callFormatLogDetails($detailString, serialize($substitutes)));
+        self::assertSame($expectedResult, new LogDataTraitTestAccessor()->callFormatLogDetails($detailString, serialize($substitutes)));
     }
 
     #[DataProvider('formatLogDetailsLegacyStringsDataProvider')]
     #[Test]
     public function formatLogDetailsLegacyStringsWithJsonEncodedSubstitutes(string $detailString, array $substitutes, string $expectedResult): void
     {
-        self::assertSame($expectedResult, (new LogDataTraitTestAccessor())->callFormatLogDetails($detailString, json_encode($substitutes)));
+        self::assertSame($expectedResult, new LogDataTraitTestAccessor()->callFormatLogDetails($detailString, json_encode($substitutes)));
     }
 
     public static function formatLogDetailsNewFormatStringsDataProvider(): \Generator
@@ -172,21 +172,21 @@ final class LogDataTraitTest extends UnitTestCase
     #[Test]
     public function formatLogDetailsNewFormatStrings(string $detailString, array $substitutes, string $expectedResult): void
     {
-        self::assertSame($expectedResult, (new LogDataTraitTestAccessor())->callFormatLogDetails($detailString, $substitutes));
+        self::assertSame($expectedResult, new LogDataTraitTestAccessor()->callFormatLogDetails($detailString, $substitutes));
     }
 
     #[DataProvider('formatLogDetailsNewFormatStringsDataProvider')]
     #[Test]
     public function formatLogDetailsNewFormatStringsWithSerializedSubstitutes(string $detailString, array $substitutes, string $expectedResult): void
     {
-        self::assertSame($expectedResult, (new LogDataTraitTestAccessor())->callFormatLogDetails($detailString, serialize($substitutes)));
+        self::assertSame($expectedResult, new LogDataTraitTestAccessor()->callFormatLogDetails($detailString, serialize($substitutes)));
     }
 
     #[DataProvider('formatLogDetailsNewFormatStringsDataProvider')]
     #[Test]
     public function formatLogDetailsNewFormatStringsWithJsonEncodedSubstitutes(string $detailString, array $substitutes, string $expectedResult): void
     {
-        self::assertSame($expectedResult, (new LogDataTraitTestAccessor())->callFormatLogDetails($detailString, json_encode($substitutes)));
+        self::assertSame($expectedResult, new LogDataTraitTestAccessor()->callFormatLogDetails($detailString, json_encode($substitutes)));
     }
 
     public static function formatLogDetailsMixedFormatStringsDataProvider(): \Generator
@@ -229,20 +229,20 @@ final class LogDataTraitTest extends UnitTestCase
     #[Test]
     public function formatLogDetailsMixedFormatStrings(string $detailString, array $substitutes, string $expectedResult): void
     {
-        self::assertSame($expectedResult, (new LogDataTraitTestAccessor())->callFormatLogDetails($detailString, $substitutes));
+        self::assertSame($expectedResult, new LogDataTraitTestAccessor()->callFormatLogDetails($detailString, $substitutes));
     }
 
     #[DataProvider('formatLogDetailsMixedFormatStringsDataProvider')]
     #[Test]
     public function formatLogDetailsMixedFormatStringsWithSerializedSubstitutes(string $detailString, array $substitutes, string $expectedResult): void
     {
-        self::assertSame($expectedResult, (new LogDataTraitTestAccessor())->callFormatLogDetails($detailString, serialize($substitutes)));
+        self::assertSame($expectedResult, new LogDataTraitTestAccessor()->callFormatLogDetails($detailString, serialize($substitutes)));
     }
 
     #[DataProvider('formatLogDetailsMixedFormatStringsDataProvider')]
     #[Test]
     public function formatLogDetailsMixedFormatStringsWithJsonEncodedSubstitutes(string $detailString, array $substitutes, string $expectedResult): void
     {
-        self::assertSame($expectedResult, (new LogDataTraitTestAccessor())->callFormatLogDetails($detailString, json_encode($substitutes)));
+        self::assertSame($expectedResult, new LogDataTraitTestAccessor()->callFormatLogDetails($detailString, json_encode($substitutes)));
     }
 }

@@ -40,7 +40,7 @@ final class ColumnSelectorControllerTest extends FunctionalTestCase
     #[Test]
     public function showColumnsSelectorActionHandlesFieldsWithoutLabel(): void
     {
-        $request = (new ServerRequest('https://example.com/typo3/ajax/show-columns-selector'))
+        $request = new ServerRequest('https://example.com/typo3/ajax/show-columns-selector')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('route', new Route('/typo3/ajax/show-columns-selector', ['_identifier' => 'ajax_show_columns_selector']))
             ->withQueryParams(['table' => 'pages', 'id' => 0]);
@@ -59,7 +59,7 @@ final class ColumnSelectorControllerTest extends FunctionalTestCase
     #[Test]
     public function showColumnsSelectorActionRendersWorkspaceFieldLabels(): void
     {
-        $request = (new ServerRequest('https://example.com/typo3/ajax/show-columns-selector'))
+        $request = new ServerRequest('https://example.com/typo3/ajax/show-columns-selector')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('route', new Route('/typo3/ajax/show-columns-selector', ['_identifier' => 'ajax_show_columns_selector']))
             ->withQueryParams(['table' => 'pages', 'id' => 0]);

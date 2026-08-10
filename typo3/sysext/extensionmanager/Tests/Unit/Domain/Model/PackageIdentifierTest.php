@@ -38,7 +38,7 @@ final class PackageIdentifierTest extends UnitTestCase
     {
         self::assertSame(
             ['packageKey' => 'my_package', 'version' => '1.2.3', 'remote' => 'ter'],
-            (new PackageIdentifier('my_package', '1.2.3', 'ter'))->toArray()
+            new PackageIdentifier('my_package', '1.2.3', 'ter')->toArray()
         );
     }
 }

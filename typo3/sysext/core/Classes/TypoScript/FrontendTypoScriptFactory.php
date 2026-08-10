@@ -443,7 +443,7 @@ final readonly class FrontendTypoScriptFactory
 
             if (!$gotSetupConfigFromCache) {
                 // If we did not get merged 'config.' from cache above, create it now and cache it.
-                $mergedSetupConfigAst = (new SetupConfigMerger())->merge($setupRawConfigAst, $setupPageAst->getChildByName('config'));
+                $mergedSetupConfigAst = new SetupConfigMerger()->merge($setupRawConfigAst, $setupPageAst->getChildByName('config'));
                 if ($mergedSetupConfigAst->getChildByName('absRefPrefix') === null) {
                     // Make sure config.absRefPrefix is set, fallback to 'auto'.
                     $absRefPrefixNode = new ChildNode('absRefPrefix');

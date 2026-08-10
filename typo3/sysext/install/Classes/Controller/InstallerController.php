@@ -160,11 +160,11 @@ final readonly class InstallerController
     {
         $view = $this->initializeView($request);
         $systemCheckMessageQueue = new FlashMessageQueue('install');
-        $checkMessages = (new Check())->getStatus();
+        $checkMessages = new Check()->getStatus();
         foreach ($checkMessages as $message) {
             $systemCheckMessageQueue->enqueue($message);
         }
-        $setupCheckMessages = (new SetupCheck())->getStatus();
+        $setupCheckMessages = new SetupCheck()->getStatus();
         foreach ($setupCheckMessages as $message) {
             $systemCheckMessageQueue->enqueue($message);
         }

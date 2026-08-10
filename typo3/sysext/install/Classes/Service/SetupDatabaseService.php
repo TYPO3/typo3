@@ -156,7 +156,7 @@ class SetupDatabaseService
             }
             // For sqlite a db path is automatically calculated
             if (isset($values['driver']) && $values['driver'] === 'pdo_sqlite') {
-                $dbFilename = '/cms-' . (new Random())->generateRandomHexString(8) . '.sqlite';
+                $dbFilename = '/cms-' . new Random()->generateRandomHexString(8) . '.sqlite';
                 // If the "var/" folder exists outside of document root, put it into "var/sqlite/"
                 // Otherwise simply into "typo3conf/"
                 if (Environment::getProjectPath() !== Environment::getPublicPath()) {

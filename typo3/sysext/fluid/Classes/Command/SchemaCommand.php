@@ -88,7 +88,7 @@ final class SchemaCommand extends Command
 
         // Write schema files to transient folder
         foreach ($xsdFiles as $xmlNamespace => $viewHelpers) {
-            $schema = (new SchemaGenerator())->generate($xmlNamespace, $viewHelpers);
+            $schema = new SchemaGenerator()->generate($xmlNamespace, $viewHelpers);
             $fileName = str_replace('http://typo3.org/ns/', '', $xmlNamespace);
             $fileName = str_replace('/', '_', $fileName);
             $fileName = preg_replace('#[^0-9a-zA-Z_]#', '', $fileName);

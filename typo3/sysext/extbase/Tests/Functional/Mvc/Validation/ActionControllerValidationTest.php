@@ -75,7 +75,7 @@ final class ActionControllerValidationTest extends FunctionalTestCase
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 'testkey';
 
         $response = new Response();
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $GLOBALS['TYPO3_REQUEST'] = $serverRequest;
         $request = new Request($serverRequest);
 
@@ -87,7 +87,7 @@ final class ActionControllerValidationTest extends FunctionalTestCase
         $referrerRequest['@action'] = 'testForm';
         $request = $request->withArgument(
             '__referrer',
-            ['@request' => (new HashService())->appendHmac(json_encode($referrerRequest), HashScope::ReferringRequest->prefix(), HashAlgo::SHA3_256)]
+            ['@request' => new HashService()->appendHmac(json_encode($referrerRequest), HashScope::ReferringRequest->prefix(), HashAlgo::SHA3_256)]
         );
 
         $titleMappingResults = new Result();
@@ -122,7 +122,7 @@ final class ActionControllerValidationTest extends FunctionalTestCase
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 'testkey';
 
         $response = new Response();
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $GLOBALS['TYPO3_REQUEST'] = $serverRequest;
         $request = new Request($serverRequest);
 
@@ -150,7 +150,7 @@ final class ActionControllerValidationTest extends FunctionalTestCase
         $referrerRequest['@action'] = 'testForm';
         $request = $request->withArgument(
             '__referrer',
-            ['@request' => (new HashService())->appendHmac(json_encode($referrerRequest), HashScope::ReferringRequest->prefix(), HashAlgo::SHA3_256)]
+            ['@request' => new HashService()->appendHmac(json_encode($referrerRequest), HashScope::ReferringRequest->prefix(), HashAlgo::SHA3_256)]
         );
 
         $isDispatched = false;
@@ -182,7 +182,7 @@ final class ActionControllerValidationTest extends FunctionalTestCase
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 'testkey';
 
         $response = new Response();
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters())
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $request = new Request($serverRequest);
 
@@ -210,7 +210,7 @@ final class ActionControllerValidationTest extends FunctionalTestCase
         $referrerRequest['@action'] = 'testForm';
         $request = $request->withArgument(
             '__referrer',
-            ['@request' => (new HashService())->appendHmac(json_encode($referrerRequest), HashScope::ReferringRequest->prefix(), HashAlgo::SHA3_256)]
+            ['@request' => new HashService()->appendHmac(json_encode($referrerRequest), HashScope::ReferringRequest->prefix(), HashAlgo::SHA3_256)]
         );
         $GLOBALS['TYPO3_REQUEST'] = $request;
 

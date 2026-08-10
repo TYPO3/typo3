@@ -42,7 +42,7 @@ final class PageWizardProviderTest extends FunctionalTestCase
     #[Test]
     public function handleSubmitCreatesPageInsideReferencePageWhenInsertPositionIsInside(): void
     {
-        $request = (new ServerRequest('https://example.com/typo3/', 'POST'))->withParsedBody([
+        $request = new ServerRequest('https://example.com/typo3/', 'POST')->withParsedBody([
             'position' => [
                 'pageUid' => 2,
                 'insertPosition' => 'inside',
@@ -66,7 +66,7 @@ final class PageWizardProviderTest extends FunctionalTestCase
     #[Test]
     public function handleSubmitCreatesPageAsSiblingAfterReferencePageWhenInsertPositionIsAfter(): void
     {
-        $request = (new ServerRequest('https://example.com/typo3/', 'POST'))->withParsedBody([
+        $request = new ServerRequest('https://example.com/typo3/', 'POST')->withParsedBody([
             'position' => [
                 'pageUid' => 2,
                 'insertPosition' => 'after',

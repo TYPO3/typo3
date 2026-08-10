@@ -167,7 +167,7 @@ final class TreeFromLineStreamBuilder
                 $node = $parentNode;
                 $childNode = new ConditionStopInclude();
                 $childNode->setName($node->getName());
-                $childNode->setLineStream((new LineStream())->append($line));
+                $childNode->setLineStream(new LineStream()->append($line));
                 $node->addChild($childNode);
                 $childNode = new SegmentInclude();
                 $childNode->setName($node->getName());
@@ -186,7 +186,7 @@ final class TreeFromLineStreamBuilder
                 }
                 $childNode = new ConditionStopInclude();
                 $childNode->setName($node->getName());
-                $childNode->setLineStream((new LineStream())->append($line));
+                $childNode->setLineStream(new LineStream()->append($line));
                 $node->addChild($childNode);
                 $childNode = new SegmentInclude();
                 $childNode->setName($node->getName());

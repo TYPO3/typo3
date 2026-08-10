@@ -45,7 +45,7 @@ final class IncludeTreeSyntaxScannerVisitorTest extends FunctionalTestCase
     public static function visitDataProvider(): iterable
     {
         $node = new FileInclude();
-        $node->setLineStream((new LosslessTokenizer())->tokenize('
+        $node->setLineStream(new LosslessTokenizer()->tokenize('
           foo {
             bar = barValue
           }
@@ -56,7 +56,7 @@ final class IncludeTreeSyntaxScannerVisitorTest extends FunctionalTestCase
         ];
 
         $node = new FileInclude();
-        $node->setLineStream((new LosslessTokenizer())->tokenize('
+        $node->setLineStream(new LosslessTokenizer()->tokenize('
           foo {
             bar = barValue
         '));
@@ -72,7 +72,7 @@ final class IncludeTreeSyntaxScannerVisitorTest extends FunctionalTestCase
         ];
 
         $node = new FileInclude();
-        $node->setLineStream((new LosslessTokenizer())->tokenize('
+        $node->setLineStream(new LosslessTokenizer()->tokenize('
           }
         '));
         yield 'brace excess' => [
@@ -87,7 +87,7 @@ final class IncludeTreeSyntaxScannerVisitorTest extends FunctionalTestCase
         ];
 
         $node = new FileInclude();
-        $node->setLineStream((new LosslessTokenizer())->tokenize('
+        $node->setLineStream(new LosslessTokenizer()->tokenize('
           foo {
             bar = barValue
           }
@@ -113,7 +113,7 @@ final class IncludeTreeSyntaxScannerVisitorTest extends FunctionalTestCase
         ];
 
         $node = new FileInclude();
-        $node->setLineStream((new LosslessTokenizer())->tokenize('
+        $node->setLineStream(new LosslessTokenizer()->tokenize('
           foo <
         '));
         yield 'invalid line' => [

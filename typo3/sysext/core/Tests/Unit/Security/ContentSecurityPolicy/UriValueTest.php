@@ -72,7 +72,7 @@ final class UriValueTest extends UnitTestCase
     #[Test]
     public function urisAreEqual(string $a, string $b, bool $expectation): void
     {
-        self::assertSame($expectation, (new UriValue($a))->equals(new UriValue($b)));
+        self::assertSame($expectation, new UriValue($a)->equals(new UriValue($b)));
     }
 
     public static function uriIsCoveredDataProvider(): \Generator
@@ -101,6 +101,6 @@ final class UriValueTest extends UnitTestCase
     #[Test]
     public function uriIsCovered(string $a, string $b, bool $expectation): void
     {
-        self::assertSame($expectation, (new UriValue($a))->covers(new UriValue($b)));
+        self::assertSame($expectation, new UriValue($a)->covers(new UriValue($b)));
     }
 }

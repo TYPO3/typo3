@@ -236,7 +236,7 @@ final class FormDefinitionValidationServiceTest extends FunctionalTestCase
             [
                 'test' => 'xxx1',
                 '_orig_test' => [
-                    'hmac' => (new HashService())->hmac(serialize(['text-1', 'test', 'xxx']), '54321'),
+                    'hmac' => new HashService()->hmac(serialize(['text-1', 'test', 'xxx']), '54321'),
                 ],
             ],
             '54321',
@@ -257,7 +257,7 @@ final class FormDefinitionValidationServiceTest extends FunctionalTestCase
                 'test' => 'xxx',
                 '_orig_test' => [
                     'value' => 'xxx',
-                    'hmac' => (new HashService())->hmac(serialize(['text-1', 'test', 'xxx']), '54321'),
+                    'hmac' => new HashService()->hmac(serialize(['text-1', 'test', 'xxx']), '54321'),
                 ],
             ],
             '54321',
@@ -337,7 +337,7 @@ final class FormDefinitionValidationServiceTest extends FunctionalTestCase
                 'test' => 'xxx1',
                 '_orig_test' => [
                     'value' => 'xxx',
-                    'hmac' => (new HashService())->hmac(serialize(['text-1', 'validators', 'StringLength', 'test', 'xxx']), '54321'),
+                    'hmac' => new HashService()->hmac(serialize(['text-1', 'validators', 'StringLength', 'test', 'xxx']), '54321'),
                 ],
             ],
             '54321',
@@ -358,7 +358,7 @@ final class FormDefinitionValidationServiceTest extends FunctionalTestCase
                 'test' => 'xxx',
                 '_orig_test' => [
                     'value' => 'xxx',
-                    'hmac' => (new HashService())->hmac(serialize(['text-1', 'validators', 'StringLength', 'test', 'xxx']), '54321'),
+                    'hmac' => new HashService()->hmac(serialize(['text-1', 'validators', 'StringLength', 'test', 'xxx']), '54321'),
                 ],
             ],
             '54321',

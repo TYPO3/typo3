@@ -257,7 +257,7 @@ final readonly class TotpProvider implements MfaProviderInterface
     private function getSvgQrCode(string $content): string
     {
         $qrCodeRenderer = new ImageRenderer(new RendererStyle(225, 4), new SvgImageBackEnd());
-        return (new Writer($qrCodeRenderer))->writeString($content);
+        return new Writer($qrCodeRenderer)->writeString($content);
     }
 
     /**

@@ -52,7 +52,7 @@ final class ControllerArgumentsMappingTest extends FunctionalTestCase
         ];
         $configurationManager = $this->get(ConfigurationManager::class);
         $configurationManager->setConfiguration($configuration);
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters());
         $this->request = new Request($serverRequest);
         $this->request = $this->request->withPluginName('Pi1');
         $this->request = $this->request->withControllerExtensionName(BlogController::class);

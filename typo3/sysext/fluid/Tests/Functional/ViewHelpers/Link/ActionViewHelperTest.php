@@ -61,7 +61,7 @@ final class ActionViewHelperTest extends FunctionalTestCase
         $this->expectExceptionCode(1690365240);
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:link.action />');
-        (new TemplateView($context))->render();
+        new TemplateView($context)->render();
     }
 
     #[Test]
@@ -74,7 +74,7 @@ final class ActionViewHelperTest extends FunctionalTestCase
         $this->expectExceptionCode(1690370264);
         $context = $this->get(RenderingContextFactory::class)->create([], $request);
         $context->getTemplatePaths()->setTemplateSource('<f:link.action />');
-        (new TemplateView($context))->render();
+        new TemplateView($context)->render();
     }
 
     #[Test]
@@ -87,7 +87,7 @@ final class ActionViewHelperTest extends FunctionalTestCase
         $this->expectExceptionCode(1690365240);
         $context = $this->get(RenderingContextFactory::class)->create([], $request);
         $context->getTemplatePaths()->setTemplateSource('<f:link.action />');
-        (new TemplateView($context))->render();
+        new TemplateView($context)->render();
     }
 
     public static function renderInFrontendWithCoreContextAndAllNecessaryExtbaseArgumentsDataProvider(): \Generator
@@ -170,7 +170,7 @@ final class ActionViewHelperTest extends FunctionalTestCase
         $request = $request->withAttribute('frontend.typoscript', $frontendTypoScript);
         $context = $this->get(RenderingContextFactory::class)->create([], $request);
         $context->getTemplatePaths()->setTemplateSource($template);
-        $result = (new TemplateView($context))->render();
+        $result = new TemplateView($context)->render();
         self::assertSame($expected, $result);
     }
 
@@ -306,7 +306,7 @@ final class ActionViewHelperTest extends FunctionalTestCase
         $request = new Request($request);
         $context = $this->get(RenderingContextFactory::class)->create([], $request);
         $context->getTemplatePaths()->setTemplateSource($template);
-        $result = (new TemplateView($context))->render();
+        $result = new TemplateView($context)->render();
         self::assertSame($expected, $result);
     }
 

@@ -382,7 +382,7 @@ class TcaRecordTitle implements FormDataProviderInterface
             // Generate age suffix as long as not explicitly suppressed
             if (!($fieldConfig['disableAgeDisplay'] ?? false)) {
                 $now = DateTimeFactory::createFromTimestamp($GLOBALS['EXEC_TIME']);
-                $ageSuffix = sprintf(' (%s)', (new DateFormatter())->formatDateInterval(
+                $ageSuffix = sprintf(' (%s)', new DateFormatter()->formatDateInterval(
                     $now->diff($datetime),
                     $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears')
                 ));

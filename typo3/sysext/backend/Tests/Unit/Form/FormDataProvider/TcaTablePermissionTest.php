@@ -34,7 +34,7 @@ final class TcaTablePermissionTest extends UnitTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1720028589);
-        (new TcaTablePermission())->addData([
+        new TcaTablePermission()->addData([
             'command' => 'new',
             'tableName' => 'aTable',
             'databaseRow' => [
@@ -207,7 +207,7 @@ final class TcaTablePermissionTest extends UnitTestCase
         $GLOBALS['TCA']['aTable']['columns']['bField'] = ['config' => ['type' => 'passthrough']];
         $input['tcaSchemata'] = $this->getSchemaCollection($GLOBALS['TCA']);
         $expected['tcaSchemata'] = $input['tcaSchemata'];
-        self::assertSame($expected, (new TcaTablePermission())->addData($input));
+        self::assertSame($expected, new TcaTablePermission()->addData($input));
     }
 
     private function getSchemaCollection(array $tca): SchemaCollection

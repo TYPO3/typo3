@@ -87,7 +87,7 @@ final class ImportControllerTest extends AbstractImportExportTestCase
         $this->testFilesToDelete[] = $uploadTmp;
         $uploadedFile = new UploadedFile($uploadTmp, (int)filesize($uploadTmp), \UPLOAD_ERR_OK, $clientFilename, $clientMediaType);
 
-        return (new ServerRequest('https://example.com/typo3/record/importexport/import', 'POST'))
+        return new ServerRequest('https://example.com/typo3/record/importexport/import', 'POST')
             ->withParsedBody([
                 '_upload' => '1',
                 'overwriteExistingFiles' => 'replace',

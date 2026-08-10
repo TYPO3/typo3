@@ -59,7 +59,7 @@ final class SiteWriterTest extends UnitTestCase
         copy($configFixture, $siteConfig);
 
         // load with resolved imports as the module does
-        $configuration = (new YamlFileLoader(self::createStub(LoggerInterface::class)))
+        $configuration = new YamlFileLoader(self::createStub(LoggerInterface::class))
             ->load(
                 GeneralUtility::fixWindowsFilePath($siteConfig),
                 YamlFileLoader::PROCESS_IMPORTS
@@ -93,7 +93,7 @@ final class SiteWriterTest extends UnitTestCase
         copy($configFixture, $siteConfig);
 
         // load with resolved imports as the module does
-        $configuration = (new YamlFileLoader(self::createStub(LoggerInterface::class)))
+        $configuration = new YamlFileLoader(self::createStub(LoggerInterface::class))
             ->load(
                 GeneralUtility::fixWindowsFilePath($siteConfig),
                 YamlFileLoader::PROCESS_IMPORTS
@@ -144,7 +144,7 @@ final class SiteWriterTest extends UnitTestCase
         $siteConfig = $this->fixturePath . '/' . $identifier . '/config.yaml';
         copy($configFixture, $siteConfig);
         // load with resolved imports as the module does
-        $configuration = (new YamlFileLoader(self::createStub(LoggerInterface::class)))
+        $configuration = new YamlFileLoader(self::createStub(LoggerInterface::class))
             ->load(
                 GeneralUtility::fixWindowsFilePath($siteConfig),
                 YamlFileLoader::PROCESS_IMPORTS
@@ -172,7 +172,7 @@ final class SiteWriterTest extends UnitTestCase
         $siteConfig = $this->fixturePath . '/' . $identifier . '/config.yaml';
         copy($configFixture, $siteConfig);
         // load with resolved imports as the module does
-        $configuration = (new YamlFileLoader(self::createStub(LoggerInterface::class)))
+        $configuration = new YamlFileLoader(self::createStub(LoggerInterface::class))
             ->load(
                 GeneralUtility::fixWindowsFilePath($siteConfig),
                 YamlFileLoader::PROCESS_IMPORTS
@@ -197,7 +197,7 @@ final class SiteWriterTest extends UnitTestCase
         copy($configFixture, $siteConfig);
 
         // load with resolved imports as the module does
-        $configuration = (new YamlFileLoader(self::createStub(LoggerInterface::class)))
+        $configuration = new YamlFileLoader(self::createStub(LoggerInterface::class))
             ->load(
                 GeneralUtility::fixWindowsFilePath($siteConfig),
                 YamlFileLoader::PROCESS_IMPORTS

@@ -73,6 +73,6 @@ final class IfHasRoleViewHelperTest extends FunctionalTestCase
     {
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource($template);
-        self::assertEquals($expected, (new TemplateView($context))->render());
+        self::assertEquals($expected, new TemplateView($context)->render());
     }
 }

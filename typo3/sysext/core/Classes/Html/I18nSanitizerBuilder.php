@@ -41,30 +41,30 @@ readonly class I18nSanitizerBuilder implements BuilderInterface
 
         $behavior = GeneralUtility::makeInstance(Behavior::class)
             ->withTags(
-                (new Behavior\Tag('a', Behavior\Tag::ALLOW_CHILDREN))
+                new Behavior\Tag('a', Behavior\Tag::ALLOW_CHILDREN)
                     ->addAttrs(...$globalAttrs)
                     ->addAttrs(...$this->createAttrs('rel', 'target'))
                     ->addAttrs(
-                        (new Behavior\Attr('href'))
+                        new Behavior\Attr('href')
                             ->withValues(...$httpUriBuilder->getValues()),
                     ),
-                (new Behavior\Tag('b', Behavior\Tag::ALLOW_CHILDREN))
+                new Behavior\Tag('b', Behavior\Tag::ALLOW_CHILDREN)
                     ->addAttrs(...$globalAttrs),
-                (new Behavior\Tag('br'))
+                new Behavior\Tag('br')
                     ->addAttrs(...$globalAttrs),
-                (new Behavior\Tag('div', Behavior\Tag::ALLOW_CHILDREN))
+                new Behavior\Tag('div', Behavior\Tag::ALLOW_CHILDREN)
                     ->addAttrs(...$globalAttrs),
-                (new Behavior\Tag('em', Behavior\Tag::ALLOW_CHILDREN))
+                new Behavior\Tag('em', Behavior\Tag::ALLOW_CHILDREN)
                     ->addAttrs(...$globalAttrs),
-                (new Behavior\Tag('i', Behavior\Tag::ALLOW_CHILDREN))
+                new Behavior\Tag('i', Behavior\Tag::ALLOW_CHILDREN)
                     ->addAttrs(...$globalAttrs),
-                (new Behavior\Tag('li', Behavior\Tag::ALLOW_CHILDREN))
+                new Behavior\Tag('li', Behavior\Tag::ALLOW_CHILDREN)
                     ->addAttrs(...$globalAttrs),
-                (new Behavior\Tag('span', Behavior\Tag::ALLOW_CHILDREN))
+                new Behavior\Tag('span', Behavior\Tag::ALLOW_CHILDREN)
                     ->addAttrs(...$globalAttrs),
-                (new Behavior\Tag('strong', Behavior\Tag::ALLOW_CHILDREN))
+                new Behavior\Tag('strong', Behavior\Tag::ALLOW_CHILDREN)
                     ->addAttrs(...$globalAttrs),
-                (new Behavior\Tag('ul', Behavior\Tag::ALLOW_CHILDREN))
+                new Behavior\Tag('ul', Behavior\Tag::ALLOW_CHILDREN)
                     ->addAttrs(...$globalAttrs)
             );
 

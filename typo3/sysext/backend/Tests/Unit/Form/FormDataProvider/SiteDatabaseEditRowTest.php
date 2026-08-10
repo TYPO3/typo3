@@ -55,7 +55,7 @@ final class SiteDatabaseEditRowTest extends UnitTestCase
             'command' => 'new',
             'foo' => 'bar',
         ];
-        self::assertSame($input, (new SiteDatabaseEditRow(self::createStub(SiteFinder::class), self::createStub(SiteTcaConfiguration::class), self::createStub(EnvPlaceholderProcessor::class)))->addData($input));
+        self::assertSame($input, new SiteDatabaseEditRow(self::createStub(SiteFinder::class), self::createStub(SiteTcaConfiguration::class), self::createStub(EnvPlaceholderProcessor::class))->addData($input));
     }
 
     #[Test]
@@ -67,7 +67,7 @@ final class SiteDatabaseEditRowTest extends UnitTestCase
                 'foo' => 'bar',
             ],
         ];
-        self::assertSame($input, (new SiteDatabaseEditRow(self::createStub(SiteFinder::class), self::createStub(SiteTcaConfiguration::class), self::createStub(EnvPlaceholderProcessor::class)))->addData($input));
+        self::assertSame($input, new SiteDatabaseEditRow(self::createStub(SiteFinder::class), self::createStub(SiteTcaConfiguration::class), self::createStub(EnvPlaceholderProcessor::class))->addData($input));
     }
 
     #[Test]
@@ -79,7 +79,7 @@ final class SiteDatabaseEditRowTest extends UnitTestCase
         ];
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1520886234);
-        (new SiteDatabaseEditRow(self::createStub(SiteFinder::class), self::createStub(SiteTcaConfiguration::class), self::createStub(EnvPlaceholderProcessor::class)))->addData($input);
+        new SiteDatabaseEditRow(self::createStub(SiteFinder::class), self::createStub(SiteTcaConfiguration::class), self::createStub(EnvPlaceholderProcessor::class))->addData($input);
     }
 
     #[Test]
@@ -137,7 +137,7 @@ final class SiteDatabaseEditRowTest extends UnitTestCase
             'selectMultipleSideBySide' => 'foo/bar,baz',
         ];
 
-        self::assertEquals($expected, (new SiteDatabaseEditRow($siteFinderMock, $siteTcaConfigurationStub, self::createStub(EnvPlaceholderProcessor::class)))->addData($input));
+        self::assertEquals($expected, new SiteDatabaseEditRow($siteFinderMock, $siteTcaConfigurationStub, self::createStub(EnvPlaceholderProcessor::class))->addData($input));
     }
 
     #[Test]
@@ -163,7 +163,7 @@ final class SiteDatabaseEditRowTest extends UnitTestCase
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1520886092);
-        (new SiteDatabaseEditRow($siteFinderMock, self::createStub(SiteTcaConfiguration::class), self::createStub(EnvPlaceholderProcessor::class)))->addData($input);
+        new SiteDatabaseEditRow($siteFinderMock, self::createStub(SiteTcaConfiguration::class), self::createStub(EnvPlaceholderProcessor::class))->addData($input);
     }
 
     #[Test]
@@ -189,7 +189,7 @@ final class SiteDatabaseEditRowTest extends UnitTestCase
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1520886092);
-        (new SiteDatabaseEditRow($siteFinderMock, self::createStub(SiteTcaConfiguration::class), self::createStub(EnvPlaceholderProcessor::class)))->addData($input);
+        new SiteDatabaseEditRow($siteFinderMock, self::createStub(SiteTcaConfiguration::class), self::createStub(EnvPlaceholderProcessor::class))->addData($input);
     }
 
     #[Test]
@@ -224,6 +224,6 @@ final class SiteDatabaseEditRowTest extends UnitTestCase
             'pid' => 0,
         ];
 
-        self::assertEquals($expected, (new SiteDatabaseEditRow($siteFinderMock, self::createStub(SiteTcaConfiguration::class), self::createStub(EnvPlaceholderProcessor::class)))->addData($input));
+        self::assertEquals($expected, new SiteDatabaseEditRow($siteFinderMock, self::createStub(SiteTcaConfiguration::class), self::createStub(EnvPlaceholderProcessor::class))->addData($input));
     }
 }

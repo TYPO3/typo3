@@ -232,7 +232,7 @@ Call it like this: typo3/sysext/core/bin/typo3 scheduler:run --task=13 -f')
 
         $taskUid = (int)array_shift($this->overwrittenTaskList);
         $task = $this->getTask($taskUid);
-        if (!(new TaskValidator())->isValid($task)) {
+        if (!new TaskValidator()->isValid($task)) {
             throw new \UnexpectedValueException(
                 sprintf('The task #%d is not scheduled for execution or does not exist.', $taskUid),
                 1547675557

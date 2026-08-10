@@ -26,7 +26,7 @@ final class TimeTrackerTest extends UnitTestCase
     #[Test]
     public function getParseTimeReturnsZeroOrOneIfNoValuesAreSet(): void
     {
-        $parseTime = (new TimeTracker())->getParseTime();
+        $parseTime = new TimeTracker()->getParseTime();
         self::assertLessThanOrEqual(1, $parseTime);
     }
 }

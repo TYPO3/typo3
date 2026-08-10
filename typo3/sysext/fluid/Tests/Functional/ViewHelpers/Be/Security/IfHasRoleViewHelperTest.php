@@ -49,7 +49,7 @@ final class IfHasRoleViewHelperTest extends FunctionalTestCase
         $context->getTemplatePaths()->setTemplateSource(
             '<f:be.security.ifHasRole role="1"><f:then>then child</f:then><f:else>else child</f:else></f:be.security.ifHasRole>'
         );
-        self::assertEquals('then child', (new TemplateView($context))->render());
+        self::assertEquals('then child', new TemplateView($context)->render());
     }
 
     #[Test]
@@ -59,7 +59,7 @@ final class IfHasRoleViewHelperTest extends FunctionalTestCase
         $context->getTemplatePaths()->setTemplateSource(
             '<f:be.security.ifHasRole role="NonExistingRole"><f:then>then child</f:then><f:else>else child</f:else></f:be.security.ifHasRole>'
         );
-        self::assertEquals('else child', (new TemplateView($context))->render());
+        self::assertEquals('else child', new TemplateView($context)->render());
     }
 
     #[Test]
@@ -69,6 +69,6 @@ final class IfHasRoleViewHelperTest extends FunctionalTestCase
         $context->getTemplatePaths()->setTemplateSource(
             '<f:be.security.ifHasRole role="123"><f:then>then child</f:then><f:else>else child</f:else></f:be.security.ifHasRole>'
         );
-        self::assertEquals('else child', (new TemplateView($context))->render());
+        self::assertEquals('else child', new TemplateView($context)->render());
     }
 }

@@ -53,7 +53,7 @@ final class ActionControllerArgumentTest extends FunctionalTestCase
             // regular models
             'preset model' => [
                 'inputPresetModel',
-                ['preset' => (new Model())->setValue('preset')],
+                ['preset' => new Model()->setValue('preset')],
                 'validateModel',
                 [
                     'form/model/value' => 'preset',
@@ -62,7 +62,7 @@ final class ActionControllerArgumentTest extends FunctionalTestCase
             ],
             'preset DTO' => [
                 'inputPresetDto',
-                ['preset' => (new ModelDto())->setValue('preset')],
+                ['preset' => new ModelDto()->setValue('preset')],
                 'validateDto',
                 [
                     'form/dto/value' => 'preset',
@@ -83,7 +83,7 @@ final class ActionControllerArgumentTest extends FunctionalTestCase
 
         // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
         $this->get(ConfigurationManagerInterface::class)->setRequest(
-            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
         );
 
         // trigger action to forward to some `input*` action
@@ -200,7 +200,7 @@ final class ActionControllerArgumentTest extends FunctionalTestCase
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
         $frontendTypoScript->setConfigArray([]);
-        $serverRequest = (new ServerRequest())
+        $serverRequest = new ServerRequest()
             ->withAttribute('extbase', new ExtbaseRequestParameters())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withAttribute('frontend.typoscript', $frontendTypoScript);

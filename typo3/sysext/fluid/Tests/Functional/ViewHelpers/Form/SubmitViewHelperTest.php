@@ -31,6 +31,6 @@ final class SubmitViewHelperTest extends FunctionalTestCase
     {
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:form.submit value="foo" name="bar" />');
-        self::assertSame('<input type="submit" value="foo" name="bar" />', (new TemplateView($context))->render());
+        self::assertSame('<input type="submit" value="foo" name="bar" />', new TemplateView($context)->render());
     }
 }

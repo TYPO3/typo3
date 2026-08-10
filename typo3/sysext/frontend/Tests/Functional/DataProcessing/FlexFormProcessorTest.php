@@ -65,7 +65,7 @@ final class FlexFormProcessorTest extends FunctionalTestCase
             ['EXT:frontend/Tests/Functional/Fixtures/Extensions/test_fluid_template/Configuration/TypoScript/flexform_dataprocessor.typoscript']
         );
 
-        $response = $this->executeFrontendSubRequest((new InternalRequest('https://website.local/'))->withPageId(1));
+        $response = $this->executeFrontendSubRequest(new InternalRequest('https://website.local/')->withPageId(1));
         $body = (string)$response->getBody();
         self::assertStringContainsString('<img src="/fileadmin/user_upload/typo3-logo.png" width="238" height="100" alt="" title="TYPO3 Logo" />', $body);
     }

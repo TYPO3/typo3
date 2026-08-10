@@ -344,7 +344,7 @@ final class RootlineUtilityTest extends FunctionalTestCase
     public function getForRootPageOnlyReturnsRootPageInformation(): void
     {
         $rootPageUid = 1;
-        $result = (new RootlineUtility($rootPageUid))->get();
+        $result = new RootlineUtility($rootPageUid)->get();
         self::assertCount(1, $result);
         self::assertSame($rootPageUid, (int)$result[0]['uid']);
     }
@@ -356,7 +356,7 @@ final class RootlineUtilityTest extends FunctionalTestCase
         $this->expectExceptionCode(1721913589);
         $context = new Context();
         $context->setAspect('workspace', new WorkspaceAspect(1));
-        (new RootlineUtility(1002, '', $context))->get();
+        new RootlineUtility(1002, '', $context)->get();
     }
 
     public static function getResolvesCorrectlyDataProvider(): \Generator
@@ -1319,7 +1319,7 @@ final class RootlineUtilityTest extends FunctionalTestCase
         $context->setAspect('workspace', new WorkspaceAspect($workspace));
         $context->setAspect('language', new LanguageAspect($language));
         $context->setAspect('date', new DateTimeAspect(DateTimeFactory::createFromTimestamp(time())));
-        $result = (new RootlineUtility($uid, '', $context))->get();
+        $result = new RootlineUtility($uid, '', $context)->get();
         self::assertSame($expected, $this->filterExpectedValues($result, $testFields));
     }
 
@@ -1392,7 +1392,7 @@ final class RootlineUtilityTest extends FunctionalTestCase
         $context->setAspect('language', new LanguageAspect(0));
         $context->setAspect('date', new DateTimeAspect(DateTimeFactory::createFromTimestamp(time())));
         $context->setAspect('visibility', new VisibilityAspect(false, $includeHiddenRecords, false, false));
-        $result = (new RootlineUtility($uid, '', $context))->get();
+        $result = new RootlineUtility($uid, '', $context)->get();
         self::assertSame($expected, $this->filterExpectedValues($result, $testFields));
     }
 
@@ -1525,7 +1525,7 @@ final class RootlineUtilityTest extends FunctionalTestCase
         $context->setAspect('language', new LanguageAspect(0));
         $context->setAspect('date', new DateTimeAspect(DateTimeFactory::createFromTimestamp($simulateTime)));
         $context->setAspect('visibility', new VisibilityAspect(false, false, false, $includeScheduledRecords));
-        $result = (new RootlineUtility($uid, '', $context))->get();
+        $result = new RootlineUtility($uid, '', $context)->get();
         self::assertSame($expected, $this->filterExpectedValues($result, $testFields));
     }
 
@@ -1536,7 +1536,7 @@ final class RootlineUtilityTest extends FunctionalTestCase
         $this->expectException(CircularRootLineException::class);
         $this->expectExceptionCode(1343464103);
         $context = new Context();
-        (new RootlineUtility(7020, '', $context))->get();
+        new RootlineUtility(7020, '', $context)->get();
     }
 
     #[Test]
@@ -1547,7 +1547,7 @@ final class RootlineUtilityTest extends FunctionalTestCase
         $this->expectExceptionCode(1343464103);
         $context = new Context();
         $context->setAspect('workspace', new WorkspaceAspect(2));
-        (new RootlineUtility(8020, '', $context))->get();
+        new RootlineUtility(8020, '', $context)->get();
     }
 
     #[Test]
@@ -1580,7 +1580,7 @@ final class RootlineUtilityTest extends FunctionalTestCase
                 'is_siteroot' => 1,
             ],
         ];
-        $result = (new RootlineUtility(1001, '1001-9010'))->get();
+        $result = new RootlineUtility(1001, '1001-9010')->get();
         self::assertSame($expected, $this->filterExpectedValues($result, $testFields));
         self::assertSame('second', $this->get(SiteFinder::class)->getSiteByRootPageId($result[0]['uid'])->getIdentifier());
     }
@@ -1608,7 +1608,7 @@ final class RootlineUtilityTest extends FunctionalTestCase
                 'is_siteroot' => 1,
             ],
         ];
-        $result = (new RootlineUtility(1010, '1010-9020'))->get();
+        $result = new RootlineUtility(1010, '1010-9020')->get();
         self::assertSame($expected, $this->filterExpectedValues($result, $testFields));
         self::assertSame('second', $this->get(SiteFinder::class)->getSiteByRootPageId($result[0]['uid'])->getIdentifier());
     }
@@ -1631,7 +1631,7 @@ final class RootlineUtilityTest extends FunctionalTestCase
                 $this->buildDefaultLanguageConfiguration('EN', '/'),
             ]
         );
-        $result = (new RootlineUtility(10002, '10000-10100', new Context()))->get();
+        $result = new RootlineUtility(10002, '10000-10100', new Context())->get();
         $testFields = ['uid', 'pid', 'title'];
         $expected = [
             2 => [
@@ -1677,7 +1677,7 @@ final class RootlineUtilityTest extends FunctionalTestCase
                 $this->buildDefaultLanguageConfiguration('EN', '/'),
             ]
         );
-        $result = (new RootlineUtility(10002, '10000-10100', new Context()))->get();
+        $result = new RootlineUtility(10002, '10000-10100', new Context())->get();
         $testFields = ['uid', 'pid', 'title'];
         $expected = [
             2 => [

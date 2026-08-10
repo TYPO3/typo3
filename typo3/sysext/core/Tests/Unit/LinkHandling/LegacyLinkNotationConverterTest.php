@@ -369,6 +369,6 @@ final class LegacyLinkNotationConverterTest extends UnitTestCase
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1530030673);
-        (new LegacyLinkNotationConverter())->resolve($pharUrl);
+        new LegacyLinkNotationConverter()->resolve($pharUrl);
     }
 }

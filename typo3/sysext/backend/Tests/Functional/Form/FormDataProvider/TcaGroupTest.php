@@ -54,7 +54,7 @@ final class TcaGroupTest extends FunctionalTestCase
             ],
         ];
         $expected = $input;
-        self::assertSame($expected, (new TcaGroup())->addData($input));
+        self::assertSame($expected, new TcaGroup()->addData($input));
     }
 
     #[Test]
@@ -80,7 +80,7 @@ final class TcaGroupTest extends FunctionalTestCase
             ],
         ];
 
-        $result = (new TcaGroup())->addData($input);
+        $result = new TcaGroup()->addData($input);
 
         // Verify the field was processed and contains the expected structure
         self::assertIsArray($result['databaseRow']['aField']);
@@ -126,7 +126,7 @@ final class TcaGroupTest extends FunctionalTestCase
             ],
         ];
 
-        $result = (new TcaGroup())->addData($input);
+        $result = new TcaGroup()->addData($input);
         self::assertIsArray($result['databaseRow']['aField'], 'TcaGroup did not load items');
 
         $loadedUids = array_column($result['databaseRow']['aField'], 'uid');
@@ -161,7 +161,7 @@ final class TcaGroupTest extends FunctionalTestCase
 
         $GLOBALS['BE_USER']->workspace = 1;
 
-        $result = (new TcaGroup())->addData($input);
+        $result = new TcaGroup()->addData($input);
         self::assertIsArray($result['databaseRow']['aField'], 'TcaGroup did not load items in a workspace');
 
         $loadedUids = array_column($result['databaseRow']['aField'], 'uid');

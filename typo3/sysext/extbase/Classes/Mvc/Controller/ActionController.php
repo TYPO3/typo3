@@ -632,7 +632,7 @@ abstract class ActionController implements ControllerInterface
                 }
                 $nonExtbaseBaseArguments[$argumentName] = $argumentValue;
             }
-            return (new ForwardResponse((string)($replacedArguments['@action'] ?? 'index')))
+            return new ForwardResponse((string)($replacedArguments['@action'] ?? 'index'))
                 ->withControllerName((string)($replacedArguments['@controller'] ?? 'Standard'))
                 ->withExtensionName((string)($replacedArguments['@extension'] ?? ''))
                 ->withArguments($nonExtbaseBaseArguments)

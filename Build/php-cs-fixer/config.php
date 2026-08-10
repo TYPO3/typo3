@@ -37,10 +37,10 @@ if (PHP_SAPI !== 'cli') {
 //  - PHP single-line arrays should not have trailing comma.
 //  - Single-line whitespace before closing semicolon are prohibited.
 //  - Remove unused use statements in the PHP source code
-return (new \PhpCsFixer\Config())
+return new \PhpCsFixer\Config()
     ->setParallelConfig(\PhpCsFixer\Runner\Parallel\ParallelConfigFactory::detect())
     ->setFinder(
-        (new PhpCsFixer\Finder())
+        new PhpCsFixer\Finder()
             ->ignoreVCSIgnored(true)
             ->in([
                 __DIR__ . '/../../typo3/sysext',
@@ -85,6 +85,7 @@ return (new \PhpCsFixer\Config())
             'scope' => 'all',
             'strict' => true,
         ],
+        'new_expression_parentheses' => true,
         'no_alias_functions' => true,
         'no_blank_lines_after_phpdoc' => true,
         'no_empty_phpdoc' => true,

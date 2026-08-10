@@ -77,7 +77,7 @@ final class XmlSitemapXslTest extends AbstractTestCase
         }
 
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest('http://localhost/'))->withQueryParameters($config)
+            new InternalRequest('http://localhost/')->withQueryParameters($config)
         );
 
         // Where EXT:seo serves its public resources from differs by installation mode, and

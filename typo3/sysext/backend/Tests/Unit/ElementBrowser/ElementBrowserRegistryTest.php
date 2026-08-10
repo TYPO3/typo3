@@ -69,7 +69,7 @@ final class ElementBrowserRegistryTest extends UnitTestCase
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1647241086);
 
-        (new ElementBrowserRegistry([]))->getElementBrowser('non-existent-identifer');
+        new ElementBrowserRegistry([])->getElementBrowser('non-existent-identifer');
     }
 
     private function getElementBrowser(string $identifier = ''): ElementBrowserInterface

@@ -40,7 +40,7 @@ class ExternalUrlLinkBuilder extends AbstractTypolinkBuilder implements Typolink
         $fallbackTarget = str_starts_with($url, '/') && !str_starts_with($url, '//') ? 'target' : 'extTarget';
 
         $linkText = $this->encodeFallbackLinkTextIfLinkTextIsEmpty($linkText, $url);
-        return (new LinkResult(LinkService::TYPE_URL, (string)$url))
+        return new LinkResult(LinkService::TYPE_URL, (string)$url)
             ->withLinkConfiguration($configuration)
             ->withTarget(
                 $target ?: $this->resolveTargetAttribute($configuration, $fallbackTarget, $request->getAttribute('currentContentObject')),

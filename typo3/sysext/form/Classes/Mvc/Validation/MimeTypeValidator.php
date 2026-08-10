@@ -86,7 +86,7 @@ final class MimeTypeValidator extends AbstractValidator implements ObjectStorage
             // Example: myfile.txt is actually a PDF file (defined by mime-type), but .txt is not associated
             // for application/pdf, so this is not valid. The file extension of the uploaded file must match
             // the mime-type for this file.
-            $assumedMimesTypeOfFileExtension = (new MimeTypeDetector())->getMimeTypesForFileExtension($fileExtension);
+            $assumedMimesTypeOfFileExtension = new MimeTypeDetector()->getMimeTypesForFileExtension($fileExtension);
             if (empty(array_intersect($allowedMimeTypes, $assumedMimesTypeOfFileExtension))) {
                 $this->addError(
                     $this->translateErrorMessage(

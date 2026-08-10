@@ -185,7 +185,7 @@ class Builder
         foreach ($testSet->getApplicables(EnhancerDeclaration::class) as $enhancerDeclaration) {
             $enhancerConfiguration = array_replace_recursive(
                 $enhancerConfiguration,
-                (new VariableCompiler($enhancerDeclaration->getConfiguration(), $testSet->getVariables()))
+                new VariableCompiler($enhancerDeclaration->getConfiguration(), $testSet->getVariables())
                     ->compile()
                     ->getResults()
             );
@@ -194,7 +194,7 @@ class Builder
         foreach ($testSet->getApplicables(AspectDeclaration::class) as $aspectDeclaration) {
             $enhancerConfiguration['aspects'] = array_replace_recursive(
                 $enhancerConfiguration['aspects'] ?? [],
-                (new VariableCompiler($aspectDeclaration->getConfiguration(), $testSet->getVariables()))
+                new VariableCompiler($aspectDeclaration->getConfiguration(), $testSet->getVariables())
                     ->compile()
                     ->getResults()
             );
@@ -209,7 +209,7 @@ class Builder
         foreach ($testSet->getApplicables(PageTypeDeclaration::class) as $pageTypeDeclaration) {
             $pageTypeConfiguration = array_replace_recursive(
                 $pageTypeConfiguration,
-                (new VariableCompiler($pageTypeDeclaration->getConfiguration(), $testSet->getVariables()))
+                new VariableCompiler($pageTypeDeclaration->getConfiguration(), $testSet->getVariables())
                     ->compile()
                     ->getResults()
             );
@@ -224,7 +224,7 @@ class Builder
         foreach ($testSet->getApplicables(HasGenerateParameters::class) as $applicable) {
             $generateParameters[] = $applicable->getGenerateParameters();
         }
-        $generateParameters = (new VariableCompiler($generateParameters, $testSet->getVariables()))
+        $generateParameters = new VariableCompiler($generateParameters, $testSet->getVariables())
             ->compile()
             ->getResults();
         return implode('', array_merge([], ...$generateParameters));
@@ -242,7 +242,7 @@ class Builder
         foreach ($testSet->getApplicables(HasResolveArguments::class) as $applicable) {
             $resolveArguments = array_replace_recursive(
                 $resolveArguments,
-                (new VariableCompiler($applicable->getResolveArguments(), $testSet->getVariables()))
+                new VariableCompiler($applicable->getResolveArguments(), $testSet->getVariables())
                     ->compile()
                     ->getResults()
             );

@@ -31,7 +31,7 @@ final class InfoboxViewHelperTest extends FunctionalTestCase
     {
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:be.infobox title="Message">Content</f:be.infobox>');
-        self::assertStringContainsString('<div class="callout-title">Message</div><div class="callout-body">Content</div>', (new TemplateView($context))->render());
+        self::assertStringContainsString('<div class="callout-title">Message</div><div class="callout-body">Content</div>', new TemplateView($context)->render());
     }
 
     #[Test]
@@ -39,7 +39,7 @@ final class InfoboxViewHelperTest extends FunctionalTestCase
     {
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:for each="{4711:\'4712\'}" as="i" iteration="iterator" key="k"><f:be.infobox title="{i}">{k}</f:be.infobox></f:for>');
-        self::assertStringContainsString('<div class="callout-title">4712</div><div class="callout-body">4711</div>', (new TemplateView($context))->render());
+        self::assertStringContainsString('<div class="callout-title">4712</div><div class="callout-body">4711</div>', new TemplateView($context)->render());
     }
 
     #[Test]
@@ -47,7 +47,7 @@ final class InfoboxViewHelperTest extends FunctionalTestCase
     {
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:be.infobox state="{f:constant(name: \'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR\')}">Content</f:be.infobox>');
-        self::assertStringContainsString('<div class="callout callout-danger">', (new TemplateView($context))->render());
+        self::assertStringContainsString('<div class="callout callout-danger">', new TemplateView($context)->render());
     }
 
     #[Test]
@@ -55,6 +55,6 @@ final class InfoboxViewHelperTest extends FunctionalTestCase
     {
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:be.infobox state="-1">Content</f:be.infobox>');
-        self::assertStringContainsString('<div class="callout callout-info">', (new TemplateView($context))->render());
+        self::assertStringContainsString('<div class="callout callout-info">', new TemplateView($context)->render());
     }
 }

@@ -88,7 +88,7 @@ final class ListUtilityTest extends FunctionalTestCase
 
     private function deeplBasedComplexMultiExtensionDependencyChainConstellation(): array
     {
-        $currentMajor = (new Typo3Version())->getMajorVersion();
+        $currentMajor = new Typo3Version()->getMajorVersion();
         $nextMajor = $currentMajor + 1;
         $previousMajor = $currentMajor - 1;
         $base = [

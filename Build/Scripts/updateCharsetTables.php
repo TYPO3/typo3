@@ -244,4 +244,4 @@ final readonly class CharsetUpdater
     }
 }
 
-(new CharsetUpdater())->generate();
+new CharsetUpdater()->generate();

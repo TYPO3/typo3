@@ -40,7 +40,7 @@ final class ZipServiceTest extends FunctionalTestCase
     {
         $extensionDirectory = Environment::getExtensionsPath() . '/malicious';
         GeneralUtility::mkdir_deep($extensionDirectory);
-        (new ZipService())->extract(
+        new ZipService()->extract(
             __DIR__ . '/Fixtures/malicious.zip',
             $extensionDirectory
         );
@@ -56,7 +56,7 @@ final class ZipServiceTest extends FunctionalTestCase
     {
         $extensionDirectory = Environment::getExtensionsPath() . '/my_extension';
         GeneralUtility::mkdir_deep($extensionDirectory);
-        (new ZipService())->extract(
+        new ZipService()->extract(
             __DIR__ . '/Fixtures/my_extension.zip',
             $extensionDirectory
         );
@@ -72,7 +72,7 @@ final class ZipServiceTest extends FunctionalTestCase
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'] = '0772';
         $extensionDirectory = Environment::getExtensionsPath() . '/my_extension';
         GeneralUtility::mkdir_deep($extensionDirectory);
-        (new ZipService())->extract(
+        new ZipService()->extract(
             __DIR__ . '/Fixtures/my_extension.zip',
             $extensionDirectory
         );
@@ -92,7 +92,7 @@ final class ZipServiceTest extends FunctionalTestCase
         $this->expectExceptionCode(1565709712);
         $extensionDirectory = Environment::getExtensionsPath() . '/my_extension';
         GeneralUtility::mkdir_deep($extensionDirectory);
-        (new ZipService())->extract(
+        new ZipService()->extract(
             'foobar.zip',
             Environment::getExtensionsPath() . '/my_extension'
         );
@@ -103,7 +103,7 @@ final class ZipServiceTest extends FunctionalTestCase
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1565773005);
-        (new ZipService())->extract(
+        new ZipService()->extract(
             __DIR__ . '/Fixtures/my_extension.zip',
             Environment::getLegacyConfigPath() . '/foo/my_extension'
         );
@@ -113,7 +113,7 @@ final class ZipServiceTest extends FunctionalTestCase
     public function verifyDetectsValidArchive(): void
     {
         self::assertTrue(
-            (new ZipService())->verify(__DIR__ . '/Fixtures/my_extension.zip')
+            new ZipService()->verify(__DIR__ . '/Fixtures/my_extension.zip')
         );
     }
 
@@ -122,7 +122,7 @@ final class ZipServiceTest extends FunctionalTestCase
     {
         $this->expectException(ExtractException::class);
         $this->expectExceptionCode(1565709714);
-        (new ZipService())->verify(__DIR__ . '/Fixtures/malicious.zip');
+        new ZipService()->verify(__DIR__ . '/Fixtures/malicious.zip');
     }
 
     #[Test]
@@ -139,6 +139,6 @@ final class ZipServiceTest extends FunctionalTestCase
         $zip->addFromString('foo\\..\\bar.php', '<?php echo "pwned";');
         $zip->close();
 
-        (new ZipService())->verify($zipFile);
+        new ZipService()->verify($zipFile);
     }
 }

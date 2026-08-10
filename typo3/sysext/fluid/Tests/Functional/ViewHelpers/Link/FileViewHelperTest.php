@@ -80,7 +80,7 @@ final class FileViewHelperTest extends FunctionalTestCase
 
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplatePathAndFilename(self::TEMPLATE_PATH);
-        (new TemplateView($context))->render();
+        new TemplateView($context)->render();
     }
 
     #[Test]
@@ -114,7 +114,7 @@ final class FileViewHelperTest extends FunctionalTestCase
         $connection = $this->get(ConnectionPool::class)->getConnectionForTable('sys_file_storage');
         $connection->update('sys_file_storage', ['is_public' => 0], ['uid' => 1]);
         $normalizedParams = NormalizedParams::createFromServerParams(['HTTP_HOST' => 'localhost', 'SCRIPT_NAME' => '/index.php']);
-        $request = (new ServerRequest())
+        $request = new ServerRequest()
             ->withAttribute('normalizedParams', $normalizedParams)
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $GLOBALS['TYPO3_REQUEST'] = $request;
@@ -172,7 +172,7 @@ final class FileViewHelperTest extends FunctionalTestCase
         $connection = $this->get(ConnectionPool::class)->getConnectionForTable('sys_file_storage');
         $connection->update('sys_file_storage', ['is_public' => 0], ['uid' => 1]);
         $normalizedParams = NormalizedParams::createFromServerParams(['HTTP_HOST' => 'localhost', 'SCRIPT_NAME' => '/index.php']);
-        $request = (new ServerRequest())
+        $request = new ServerRequest()
             ->withAttribute('normalizedParams', $normalizedParams)
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $GLOBALS['TYPO3_REQUEST'] = $request;
@@ -230,7 +230,7 @@ final class FileViewHelperTest extends FunctionalTestCase
         $connection = $this->get(ConnectionPool::class)->getConnectionForTable('sys_file_storage');
         $connection->update('sys_file_storage', ['is_public' => 0], ['uid' => 1]);
         $normalizedParams = NormalizedParams::createFromServerParams(['HTTP_HOST' => 'localhost', 'SCRIPT_NAME' => '/index.php']);
-        $request = (new ServerRequest())
+        $request = new ServerRequest()
             ->withAttribute('normalizedParams', $normalizedParams)
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $GLOBALS['TYPO3_REQUEST'] = $request;

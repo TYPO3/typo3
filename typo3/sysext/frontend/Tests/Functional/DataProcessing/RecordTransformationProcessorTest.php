@@ -77,7 +77,7 @@ final class RecordTransformationProcessorTest extends FunctionalTestCase
     #[Test]
     public function homeLayoutIsRendered(): void
     {
-        $response = $this->executeFrontendSubRequest((new InternalRequest('https://acme.com/'))->withPageId(1000));
+        $response = $this->executeFrontendSubRequest(new InternalRequest('https://acme.com/')->withPageId(1000));
         $body = (string)$response->getBody();
         self::assertStringContainsString('Welcome to ACME guitars', $body);
         self::assertStringContainsString('Carousel Items will show up: 2', $body);
@@ -89,7 +89,7 @@ final class RecordTransformationProcessorTest extends FunctionalTestCase
     #[Test]
     public function productdetailLayoutIsRendered(): void
     {
-        $response = $this->executeFrontendSubRequest((new InternalRequest('https://acme.com/'))->withPageId(1110));
+        $response = $this->executeFrontendSubRequest(new InternalRequest('https://acme.com/')->withPageId(1110));
         $body = (string)$response->getBody();
         self::assertStringContainsString('Hero is our flagship', $body);
         self::assertStringContainsString('Get a hero for yourself', $body);

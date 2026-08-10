@@ -73,7 +73,7 @@ final class BrowseLinksControllerTest extends FunctionalTestCase
         $eventListener->addListener(ModifyLinkHandlersEvent::class, 'modify-link-handler-listener');
         $eventListener->addListener(ModifyAllowedItemsEvent::class, 'modify-allowed-items-listener');
 
-        $request = (new ServerRequest())
+        $request = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('route', new Route('/main', [
                 'packageName' => 'typo3/cms-rte-ckeditor',

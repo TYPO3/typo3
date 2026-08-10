@@ -57,7 +57,7 @@ final class TcaInlineExpandCollapseStateTest extends UnitTestCase
         ];
         $expected = $input;
         $expected['inlineExpandCollapseStateArray'] = $inlineState['aParentTable'][5];
-        self::assertSame($expected, (new TcaInlineExpandCollapseState())->addData($input));
+        self::assertSame($expected, new TcaInlineExpandCollapseState()->addData($input));
     }
 
     #[Test]
@@ -99,7 +99,7 @@ final class TcaInlineExpandCollapseStateTest extends UnitTestCase
         ];
         $expected = $input;
         $expected['inlineExpandCollapseStateArray'] = $inlineState['aParentTable'][5];
-        self::assertSame($expected, (new TcaInlineExpandCollapseState())->addData($input));
+        self::assertSame($expected, new TcaInlineExpandCollapseState()->addData($input));
     }
 
     public static function addDataAddsCorrectIsInlineChildExpandedDataProvider(): array
@@ -323,6 +323,6 @@ final class TcaInlineExpandCollapseStateTest extends UnitTestCase
 
         $expected = $input;
         $expected['isInlineChildExpanded'] = $expectedIsInlineChildExpanded;
-        self::assertSame($expected, (new TcaInlineExpandCollapseState())->addData($input));
+        self::assertSame($expected, new TcaInlineExpandCollapseState()->addData($input));
     }
 }

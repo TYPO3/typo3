@@ -72,7 +72,7 @@ final class MutableSearchDemandTest extends TestCase
             DatabaseRecordProvider::class,
         ];
 
-        $request = (new ServerRequest())->withParsedBody([
+        $request = new ServerRequest()->withParsedBody([
             'query' => $query,
             'limit' => $limit,
             'offset' => $offset,

@@ -49,6 +49,6 @@ final class NormalizedUrlViewHelperTest extends FunctionalTestCase
     {
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<core:normalizedUrl pathOrUrl="' . $pathOrUrl . '" />');
-        self::assertStringContainsString($expected, (new TemplateView($context))->render());
+        self::assertStringContainsString($expected, new TemplateView($context)->render());
     }
 }

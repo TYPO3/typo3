@@ -41,7 +41,7 @@ final class IfAuthenticatedViewHelperTest extends FunctionalTestCase
 
         $renderingContext = $this->get(RenderingContextFactory::class)->create();
         $renderingContext->getTemplatePaths()->setTemplateSource('<f:security.ifAuthenticated><f:then>then child</f:then><f:else>else child</f:else></f:security.ifAuthenticated>');
-        self::assertEquals('then child', (new TemplateView($renderingContext))->render());
+        self::assertEquals('then child', new TemplateView($renderingContext)->render());
     }
 
     #[Test]
@@ -53,6 +53,6 @@ final class IfAuthenticatedViewHelperTest extends FunctionalTestCase
 
         $renderingContext = $this->get(RenderingContextFactory::class)->create();
         $renderingContext->getTemplatePaths()->setTemplateSource('<f:security.ifAuthenticated><f:then>then child</f:then><f:else>else child</f:else></f:security.ifAuthenticated>');
-        self::assertEquals('else child', (new TemplateView($renderingContext))->render());
+        self::assertEquals('else child', new TemplateView($renderingContext)->render());
     }
 }

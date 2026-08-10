@@ -134,7 +134,7 @@ final class SrcsetViewHelperTest extends FunctionalTestCase
     public function renderReturnsExpectedMarkup(string $template, string $expected, array $expectedSizes): void
     {
         $normalizedParams = NormalizedParams::createFromServerParams(['HTTP_HOST' => 'localhost', 'SCRIPT_NAME' => '/index.php']);
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest()
             ->withAttribute('normalizedParams', $normalizedParams)
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
 
@@ -270,7 +270,7 @@ final class SrcsetViewHelperTest extends FunctionalTestCase
 
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource("{f:image.srcset(srcset: '400w')}");
-        (new TemplateView($context))->render();
+        new TemplateView($context)->render();
     }
 
     #[Test]

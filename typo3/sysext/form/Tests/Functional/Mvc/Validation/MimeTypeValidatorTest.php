@@ -39,7 +39,7 @@ final class MimeTypeValidatorTest extends FunctionalTestCase
     {
         parent::setUp();
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('en');
-        $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $request = new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $GLOBALS['TYPO3_REQUEST'] = $request;
         mkdir($this->instancePath . '/tmp');
         file_put_contents($this->instancePath . '/tmp/file.exe', "MZ\x90\x00\x03\x00");

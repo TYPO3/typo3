@@ -30,6 +30,6 @@ final class ImportLineTest extends UnitTestCase
     {
         $this->expectException(\LogicException::class);
         $this->expectExceptionCode(1655826193);
-        (new ImportLine())->setValueToken(new Token(TokenType::T_BLANK, ''));
+        new ImportLine()->setValueToken(new Token(TokenType::T_BLANK, ''));
     }
 }

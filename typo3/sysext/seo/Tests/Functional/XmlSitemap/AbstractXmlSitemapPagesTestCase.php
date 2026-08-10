@@ -60,7 +60,7 @@ abstract class AbstractXmlSitemapPagesTestCase extends AbstractTestCase
     protected function getResponse(string $uri = 'http://localhost/'): ResponseInterface
     {
         return $this->executeFrontendSubRequest(
-            (new InternalRequest($uri))->withQueryParameters([
+            new InternalRequest($uri)->withQueryParameters([
                 'id' => 1,
                 'type' => 1533906435,
                 'tx_seo[sitemap]' => 'pages',

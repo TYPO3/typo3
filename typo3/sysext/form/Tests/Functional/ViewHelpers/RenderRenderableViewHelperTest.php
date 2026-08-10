@@ -66,7 +66,7 @@ final class RenderRenderableViewHelperTest extends FunctionalTestCase
 
         // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
         $this->get(ExtbaseConfigurationManagerInterface::class)->setRequest(
-            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
         );
         $definition = $this->buildFormDefinition();
         $runtime = $definition->bind($this->buildExtbaseRequest());
@@ -80,7 +80,7 @@ final class RenderRenderableViewHelperTest extends FunctionalTestCase
         $template = '<formvh:renderRenderable renderable="{element}">{element.label}</formvh:renderRenderable>';
         $context->getTemplatePaths()->setTemplateSource($template);
 
-        self::assertStringContainsString($expectedLabel, (new TemplateView($context))->render());
+        self::assertStringContainsString($expectedLabel, new TemplateView($context)->render());
         self::assertInstanceOf(BeforeRenderableIsRenderedEvent::class, $state[self::BEFORE_RENDERABLE_IS_RENDERED_LISTENER_KEY]);
         self::assertEquals($expectedLabel, $state[self::BEFORE_RENDERABLE_IS_RENDERED_LISTENER_KEY]->renderable->getLabel());
         self::assertEquals($expectedValue, $state[self::BEFORE_RENDERABLE_IS_RENDERED_LISTENER_KEY]->formRuntime[$state[self::BEFORE_RENDERABLE_IS_RENDERED_LISTENER_KEY]->renderable->getIdentifier()]);
@@ -90,14 +90,14 @@ final class RenderRenderableViewHelperTest extends FunctionalTestCase
     {
         $frontendUser = new FrontendUserAuthentication();
         $frontendUser->initializeUserSessionManager();
-        $serverRequest = (new ServerRequest())
+        $serverRequest = new ServerRequest()
             ->withAttribute('extbase', new ExtbaseRequestParameters())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withAttribute('frontend.user', $frontendUser);
 
         $GLOBALS['TYPO3_REQUEST'] = $serverRequest;
 
-        return (new Request($serverRequest))->withPluginName('Formframework');
+        return new Request($serverRequest)->withPluginName('Formframework');
     }
 
     private function buildFormDefinition(): FormDefinition

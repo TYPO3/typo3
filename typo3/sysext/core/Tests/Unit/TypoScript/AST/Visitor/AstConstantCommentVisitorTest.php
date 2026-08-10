@@ -898,8 +898,8 @@ final class AstConstantCommentVisitorTest extends UnitTestCase
 
         $noopEventDispatcher = new NoopEventDispatcher();
         $astTraverser = new AstTraverser();
-        $tokens = (new LosslessTokenizer())->tokenize(file_get_contents(__DIR__ . '/../../../Fixtures/ext_conf_template.txt'));
-        $ast = (new CommentAwareAstBuilder($noopEventDispatcher))->build($tokens, new RootNode());
+        $tokens = new LosslessTokenizer()->tokenize(file_get_contents(__DIR__ . '/../../../Fixtures/ext_conf_template.txt'));
+        $ast = new CommentAwareAstBuilder($noopEventDispatcher)->build($tokens, new RootNode());
         $astConstantCommentVisitor = new (AstConstantCommentVisitor::class);
         $astTraverser->traverse($ast, [$astConstantCommentVisitor]);
         $subject = $astConstantCommentVisitor->getConstants();

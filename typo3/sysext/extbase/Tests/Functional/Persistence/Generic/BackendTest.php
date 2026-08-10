@@ -45,7 +45,7 @@ final class BackendTest extends FunctionalTestCase
     {
         parent::setUp();
         $this->get(ConfigurationManagerInterface::class)->setRequest(
-            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
         );
     }
 

@@ -220,7 +220,7 @@ final readonly class RecordFieldPreviewProcessor
         $backendUser = $this->getBackendUser();
         if ($backendUser->check('tables_modify', $table)
             && $backendUser->checkRecordEditAccess($table, $record)->isAllowed
-            && (new Permission($backendUser->calcPerms(BackendUtility::getRecord('pages', $record->getPid()) ?? [])))->editContentPermissionIsGranted()
+            && new Permission($backendUser->calcPerms(BackendUtility::getRecord('pages', $record->getPid()) ?? []))->editContentPermissionIsGranted()
         ) {
             $returnUrl = $request->getAttribute('normalizedParams')->getRequestUri() . '#element-' . $table . '-' . $record->getUid();
             $editParams = [

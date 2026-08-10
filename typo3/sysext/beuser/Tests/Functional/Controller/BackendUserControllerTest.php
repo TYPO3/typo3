@@ -117,7 +117,7 @@ final class BackendUserControllerTest extends FunctionalTestCase
         $extbaseRequestParameters->setControllerActionName($action);
         $extbaseRequestParameters->setControllerName('BackendUser');
         $extbaseRequestParameters->setControllerExtensionName('Beuser');
-        $request = (new ServerRequest('https://example.com/typo3/main'))
+        $request = new ServerRequest('https://example.com/typo3/main')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('extbase', $extbaseRequestParameters)
             ->withAttribute('moduleData', new ModuleData('backend_user_management', []))

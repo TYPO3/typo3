@@ -46,7 +46,7 @@ final class DatabaseWriterTest extends FunctionalTestCase
         );
         $logRecord->setCreated($logRecordData['time_micro']);
 
-        (new DatabaseWriter())->writeLog($logRecord);
+        new DatabaseWriter()->writeLog($logRecord);
 
         $rowInDatabase = $this->get(ConnectionPool::class)->getConnectionForTable('sys_log')
             ->select(
@@ -66,7 +66,7 @@ final class DatabaseWriterTest extends FunctionalTestCase
         $logRecord = new LogRecord('aComponent', \Psr\Log\LogLevel::DEBUG, 'aMessage', [], '5862c0e7838ad');
         $logRecord->setCreated($created);
 
-        (new DatabaseWriter())->writeLog($logRecord);
+        new DatabaseWriter()->writeLog($logRecord);
 
         $row = $this->get(ConnectionPool::class)->getConnectionForTable('sys_log')
             ->select(['tstamp'], 'sys_log', ['request_id' => '5862c0e7838ad'])

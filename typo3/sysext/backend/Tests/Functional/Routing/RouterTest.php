@@ -118,7 +118,7 @@ final class RouterTest extends FunctionalTestCase
     public function matchResultReturnsRouteWithPlaceholderAndMethodLimitation(): void
     {
         $subject = $this->get(Router::class);
-        $subject->addRoute('custom-route', (new Route('/my-path/{identifier}', []))->setMethods(['POST']));
+        $subject->addRoute('custom-route', new Route('/my-path/{identifier}', [])->setMethods(['POST']));
         $serverParams = array_replace($_SERVER, ['HTTP_HOST' => 'example.com', 'HTTPS' => 'on', 'SCRIPT_NAME' => '/index.php']);
         $request = new ServerRequest('https://example.com/typo3/my-path/my-identifier', 'POST', null, [], $serverParams);
         $request = $request->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));

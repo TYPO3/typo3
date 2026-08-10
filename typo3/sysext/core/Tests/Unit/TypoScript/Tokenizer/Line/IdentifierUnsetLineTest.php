@@ -29,6 +29,6 @@ final class IdentifierUnsetLineTest extends UnitTestCase
     {
         $this->expectException(\LogicException::class);
         $this->expectExceptionCode(1655826025);
-        (new IdentifierUnsetLine())->setIdentifierTokenStream(new IdentifierTokenStream());
+        new IdentifierUnsetLine()->setIdentifierTokenStream(new IdentifierTokenStream());
     }
 }

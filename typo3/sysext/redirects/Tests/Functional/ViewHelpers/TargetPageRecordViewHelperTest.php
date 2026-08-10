@@ -31,7 +31,7 @@ final class TargetPageRecordViewHelperTest extends FunctionalTestCase
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getViewHelperResolver()->addNamespace('redirects', 'TYPO3\\CMS\\Redirects\\ViewHelpers');
         $context->getTemplatePaths()->setTemplateSource($template);
-        return (new TemplateView($context))->render();
+        return new TemplateView($context)->render();
     }
 
     #[Test]

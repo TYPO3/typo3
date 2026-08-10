@@ -49,7 +49,7 @@ final class LinkViewHelperTest extends FunctionalTestCase
         $context->getTemplatePaths()->setTemplateSource(
             '<f:be.link route="theRouteArgument" parameters="{parameter: \'to pass\'}" referenceType="theReferenceTypeArgument">foo</f:be.link>'
         );
-        self::assertEquals('<a href="theUri">foo</a>', (new TemplateView($context))->render());
+        self::assertEquals('<a href="theUri">foo</a>', new TemplateView($context)->render());
     }
 
     #[Test]
@@ -69,7 +69,7 @@ final class LinkViewHelperTest extends FunctionalTestCase
         $context->getTemplatePaths()->setTemplateSource(
             '<f:be.link route="theRouteArgument" referenceType="theReferenceTypeArgument">foo</f:be.link>'
         );
-        self::assertEquals('<a href="theUri">foo</a>', (new TemplateView($context))->render());
+        self::assertEquals('<a href="theUri">foo</a>', new TemplateView($context)->render());
     }
 
     #[Test]
@@ -89,6 +89,6 @@ final class LinkViewHelperTest extends FunctionalTestCase
         $context->getTemplatePaths()->setTemplateSource(
             '<f:for each="{4711:\'4712\'}" as="i" iteration="iterator" key="k"><f:be.link route="theRouteArgument" parameters="{parameter: \'to pass\'}" referenceType="theReferenceTypeArgument">{k}</f:be.link></f:for>'
         );
-        self::assertEquals('<a href="theUri">4711</a>', (new TemplateView($context))->render());
+        self::assertEquals('<a href="theUri">4711</a>', new TemplateView($context)->render());
     }
 }

@@ -34,7 +34,7 @@ final class DatabaseSystemLanguageRowsTest extends UnitTestCase
     {
         $this->expectException(\LogicException::class);
         $this->expectExceptionCode(1534952559);
-        (new DatabaseSystemLanguageRows(self::createStub(FlashMessageService::class)))->addData([]);
+        new DatabaseSystemLanguageRows(self::createStub(FlashMessageService::class))->addData([]);
     }
 
     #[Test]
@@ -96,6 +96,6 @@ final class DatabaseSystemLanguageRowsTest extends UnitTestCase
                 ],
             ],
         ];
-        self::assertSame(array_merge($input, $expected), (new DatabaseSystemLanguageRows(self::createStub(FlashMessageService::class)))->addData($input));
+        self::assertSame(array_merge($input, $expected), new DatabaseSystemLanguageRows(self::createStub(FlashMessageService::class))->addData($input));
     }
 }

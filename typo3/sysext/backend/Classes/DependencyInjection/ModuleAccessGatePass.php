@@ -70,7 +70,7 @@ final readonly class ModuleAccessGatePass implements CompilerPassInterface
             }
         }
 
-        $orderedGates = (new DependencyOrderingService())->orderByDependencies($gates);
+        $orderedGates = new DependencyOrderingService()->orderByDependencies($gates);
 
         $registryDefinition->setArgument(
             '$gates',

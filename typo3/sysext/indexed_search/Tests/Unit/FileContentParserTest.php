@@ -29,7 +29,7 @@ final class FileContentParserTest extends UnitTestCase
     #[Test]
     public function splitPdfInfoDoesNotOverrideValues(): void
     {
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $subject = new FileContentParser(self::createStub(LanguageServiceFactory::class));
         $input = '
 Title:          BAA010718_Broschüre_Chancen_bieten_V2.indd

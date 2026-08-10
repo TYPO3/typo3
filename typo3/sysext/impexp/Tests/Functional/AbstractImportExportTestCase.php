@@ -60,7 +60,7 @@ abstract class AbstractImportExportTestCase extends FunctionalTestCase
 
         $normalizedParams = self::createStub(NormalizedParams::class);
         $normalizedParams->method('getSitePath')->willReturn('/');
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com/'))
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest('https://www.example.com/')
             ->withAttribute('route', new Route('/record/importexport/export', []))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('normalizedParams', $normalizedParams);

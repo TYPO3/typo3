@@ -107,6 +107,6 @@ final readonly class ExtLocalconfFactory
      */
     private function getExtLocalconfCacheIdentifier(): string
     {
-        return (new PackageDependentCacheIdentifier($this->packageManager))->withPrefix('ext_localconf')->toString();
+        return new PackageDependentCacheIdentifier($this->packageManager)->withPrefix('ext_localconf')->toString();
     }
 }

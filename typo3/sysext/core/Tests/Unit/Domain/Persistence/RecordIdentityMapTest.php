@@ -31,7 +31,7 @@ final class RecordIdentityMapTest extends UnitTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1720730774);
 
-        (new RecordIdentityMap())->findByIdentifier('unknown', 123);
+        new RecordIdentityMap()->findByIdentifier('unknown', 123);
     }
 
     #[Test]

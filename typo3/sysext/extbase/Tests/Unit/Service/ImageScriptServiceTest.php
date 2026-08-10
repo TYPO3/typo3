@@ -78,7 +78,7 @@ final class ImageScriptServiceTest extends UnitTestCase
     {
         $subject = new ImageService(self::createStub(ResourceFactory::class));
         $normalizedParams = NormalizedParams::createFromServerParams(['HTTP_HOST' => 'foo.bar', 'SCRIPT_NAME' => '/index.php']);
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())->withAttribute('normalizedParams', $normalizedParams);
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest()->withAttribute('normalizedParams', $normalizedParams);
 
         $file = $this->createMock(File::class);
         $file->expects($this->once())->method('getPublicUrl')->willReturn($imageUri);

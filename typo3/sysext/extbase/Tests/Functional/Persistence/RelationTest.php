@@ -51,7 +51,7 @@ final class RelationTest extends FunctionalTestCase
     {
         parent::setUp();
         $this->importCSVDataSet(__DIR__ . '/Fixtures/RelationTestImport.csv');
-        $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $request = new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $this->get(ConfigurationManagerInterface::class)->setRequest($request);
         $this->persistenceManager = $this->get(PersistenceManager::class);
         $this->blog = $this->get(BlogRepository::class)->findByUid(1);

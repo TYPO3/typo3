@@ -27,7 +27,7 @@ final class RedirectSourceCollectionTest extends UnitTestCase
     #[Test]
     public function countReturnsZeroIfNoItemsAdded(): void
     {
-        $count = (new RedirectSourceCollection())->count();
+        $count = new RedirectSourceCollection()->count();
         self::assertSame(0, $count);
     }
 

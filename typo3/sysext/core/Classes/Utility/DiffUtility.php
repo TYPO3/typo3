@@ -29,6 +29,6 @@ readonly class DiffUtility
 {
     public function diff(string $from, string $to, DiffGranularity $granularity = DiffGranularity::WORD): string
     {
-        return (new Diff($granularity === DiffGranularity::WORD ? new Word() : new Character()))->render($from, $to);
+        return new Diff($granularity === DiffGranularity::WORD ? new Word() : new Character())->render($from, $to);
     }
 }

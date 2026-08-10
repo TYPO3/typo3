@@ -99,6 +99,6 @@ final class LinkFactoryTest extends FunctionalTestCase
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
         $frontendTypoScript->setConfigArray($configArray);
-        return (new ServerRequest())->withAttribute('frontend.typoscript', $frontendTypoScript);
+        return new ServerRequest()->withAttribute('frontend.typoscript', $frontendTypoScript);
     }
 }

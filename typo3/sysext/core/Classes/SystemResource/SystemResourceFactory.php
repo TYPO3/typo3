@@ -117,7 +117,7 @@ readonly class SystemResourceFactory
         // string and the manipulation will lead to unexpected results
         // Strip potentially available query string and fragment from the path before checking, though
         try {
-            $strippedAbsolutePath = (new Uri($absoluteResourcePath))->getPath();
+            $strippedAbsolutePath = new Uri($absoluteResourcePath)->getPath();
         } catch (\InvalidArgumentException) {
             $strippedAbsolutePath = null;
         }

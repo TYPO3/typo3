@@ -625,7 +625,7 @@ final class PageRepositoryTest extends FunctionalTestCase
         $GLOBALS['TCA'][$table] = ['ctrl' => []];
         $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
 
-        $defaultConstraints = (new PageRepository(new Context()))->getDefaultConstraints($table);
+        $defaultConstraints = new PageRepository(new Context())->getDefaultConstraints($table);
 
         self::assertEquals([$defaultConstraint], $defaultConstraints);
         self::assertInstanceOf(ModifyDefaultConstraintsForDatabaseQueryEvent::class, $modifyDefaultConstraintsForDatabaseQueryEvent);
@@ -654,7 +654,7 @@ final class PageRepositoryTest extends FunctionalTestCase
         $eventListener = $container->get(ListenerProvider::class);
         $eventListener->addListener(BeforePageIsRetrievedEvent::class, 'before-page-is-retrieved-listener');
 
-        $result = (new PageRepository(new Context()))->getPage(1234);
+        $result = new PageRepository(new Context())->getPage(1234);
 
         self::assertEquals($page->getPageId(), $result['uid']);
         self::assertInstanceOf(BeforePageIsRetrievedEvent::class, $beforePageIsRetrievedEvent);

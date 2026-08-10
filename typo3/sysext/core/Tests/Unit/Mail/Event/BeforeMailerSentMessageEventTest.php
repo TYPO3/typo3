@@ -38,7 +38,7 @@ final class BeforeMailerSentMessageEventTest extends UnitTestCase
         GeneralUtility::addInstance(TransportFactory::class, $transportFactory);
 
         $mailer = (new Mailer());
-        $rawMessage = (new Email())->subject('some subject');
+        $rawMessage = new Email()->subject('some subject');
         $envelope = (new Envelope(new Address('kasperYYYY@typo3.org'), [new Address('acme@example.com')]));
 
         $event = new BeforeMailerSentMessageEvent($mailer, $rawMessage, $envelope);
@@ -55,7 +55,7 @@ final class BeforeMailerSentMessageEventTest extends UnitTestCase
         GeneralUtility::addInstance(TransportFactory::class, $transportFactory);
 
         $mailer = (new Mailer());
-        $rawMessage = (new Email())->subject('some subject');
+        $rawMessage = new Email()->subject('some subject');
         $envelope = (new Envelope(new Address('kasperYYYY@typo3.org'), [new Address('acme@example.com')]));
 
         $event = new BeforeMailerSentMessageEvent($mailer, $rawMessage, $envelope);

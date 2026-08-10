@@ -48,7 +48,7 @@ final class ResourcePublicationSlotTest extends FunctionalTestCase
         parent::setUp();
         $this->importCSVDataSet(__DIR__ . '/Fixtures/sys_file.csv');
         $normalizedParams = NormalizedParams::createFromServerParams(['HTTP_HOST' => 'localhost', 'SCRIPT_NAME' => '/index.php']);
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://localhost/', 'GET'))
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest('https://localhost/', 'GET')
             ->withAttribute('normalizedParams', $normalizedParams)
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
     }
@@ -67,7 +67,7 @@ final class ResourcePublicationSlotTest extends FunctionalTestCase
         parse_str((string)parse_url((string)$event->getPublicUrl(), PHP_URL_QUERY), $queryParameters);
         self::assertSame('dumpFile', $queryParameters['eID'] ?? null);
 
-        $request = (new ServerRequest('https://localhost/index.php', 'GET'))
+        $request = new ServerRequest('https://localhost/index.php', 'GET')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withQueryParams($queryParameters);
 

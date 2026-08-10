@@ -98,7 +98,7 @@ final class ShowImageControllerTest extends FunctionalTestCase
         $content = (string)$response->getBody();
         self::assertNotEmpty($content);
 
-        $document = (new HTML5())->loadHTML($content);
+        $document = new HTML5()->loadHTML($content);
         $titles = $document->getElementsByTagName('title');
         $images = $document->getElementsByTagName('img');
         self::assertSame($expectedTitle, $titles->item(0)->nodeValue);

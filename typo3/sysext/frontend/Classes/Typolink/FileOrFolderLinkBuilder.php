@@ -55,7 +55,7 @@ class FileOrFolderLinkBuilder extends AbstractTypolinkBuilder implements Typolin
         if (!empty($linkDetails['fragment'])) {
             $url .= '#' . $linkDetails['fragment'];
         }
-        return (new LinkResult($linkDetails['type'], $this->forceAbsoluteUrl($url, $configuration, $request)))
+        return new LinkResult($linkDetails['type'], $this->forceAbsoluteUrl($url, $configuration, $request))
             ->withLinkConfiguration($configuration)
             ->withTarget($target ?: $this->resolveTargetAttribute($configuration, 'fileTarget', $request->getAttribute('currentContentObject')))
             ->withLinkText($linkText);

@@ -34,7 +34,7 @@ final class IconViewHelperTest extends FunctionalTestCase
     {
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource($template);
-        $result = (new TemplateView($context))->render();
+        $result = new TemplateView($context)->render();
         $fileMtimeActions = filemtime(__DIR__ . '/../../../Resources/Public/Icons/T3Icons/sprites/actions.svg');
         $coreAssetPath = (string)PathUtility::getSystemResourceUri('EXT:core/Resources/Public/');
         foreach ($expectedStrings as $expectedString) {

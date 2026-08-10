@@ -140,7 +140,7 @@ final class RequestTokenTest extends UnitTestCase
         // drop microtime, second is the minimum date-interval
         return \DateTimeImmutable::createFromFormat(
             \DateTimeImmutable::RFC3339,
-            (new \DateTimeImmutable())->format(\DateTimeImmutable::RFC3339)
+            new \DateTimeImmutable()->format(\DateTimeImmutable::RFC3339)
         );
     }
 }

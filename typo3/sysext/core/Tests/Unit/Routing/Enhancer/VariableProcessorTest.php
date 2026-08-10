@@ -343,6 +343,6 @@ final class VariableProcessorTest extends UnitTestCase
     {
         $this->expectException(\OutOfRangeException::class);
         $this->expectExceptionCode(1537633463);
-        (new VariableProcessor(new VariableProcessorCache()))->inflateKeys($deflatedKeys, $namespace, $arguments);
+        new VariableProcessor(new VariableProcessorCache())->inflateKeys($deflatedKeys, $namespace, $arguments);
     }
 }

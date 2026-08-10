@@ -72,7 +72,7 @@ final class RecoveryCodesProviderTest extends FunctionalTestCase
 
         // Add necessary query parameter
         self::assertTrue($this->subject->canProcess(
-            (new ServerRequest('https://example.com', 'POST'))
+            new ServerRequest('https://example.com', 'POST')
                 ->withQueryParams(['rc' => '12345678'])
         ));
     }
@@ -139,7 +139,7 @@ final class RecoveryCodesProviderTest extends FunctionalTestCase
 
         // Setup form data to activate provider
         $this->setupUser(['recovery-codes' => ['active' => false]]);
-        $codes = (new RecoveryCodes('BE'))->generatePlainRecoveryCodes();
+        $codes = new RecoveryCodes('BE')->generatePlainRecoveryCodes();
         $parsedBody = [
             'recoveryCodes' => implode(PHP_EOL, $codes),
             'checksum' => $this->hashService->hmac(json_encode($codes) ?: '', 'recovery-codes-setup', HashAlgo::SHA3_256),
@@ -210,7 +210,7 @@ final class RecoveryCodesProviderTest extends FunctionalTestCase
     {
         $this->setupUser();
         $response = $this->subject->handleRequest(
-            (new ServerRequest('https://example.com', 'GET'))->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE),
+            new ServerRequest('https://example.com', 'GET')->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE),
             MfaProviderPropertyManager::create($this->subject, $this->user),
             MfaViewType::SETUP
         );
@@ -220,7 +220,7 @@ final class RecoveryCodesProviderTest extends FunctionalTestCase
     #[Test]
     public function editViewTest(): void
     {
-        $request = (new ServerRequest('https://example.com', 'POST'))->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $request = new ServerRequest('https://example.com', 'POST')->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $this->setupUser([
             'recovery-codes' => [
                 'codes' => ['some-code', 'another-code'],
@@ -242,7 +242,7 @@ final class RecoveryCodesProviderTest extends FunctionalTestCase
     #[Test]
     public function authViewTest(): void
     {
-        $request = (new ServerRequest('https://example.com', 'POST'))->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $request = new ServerRequest('https://example.com', 'POST')->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $this->setupUser(['recovery-codes' => ['active' => true, 'codes' => ['some-code']]]);
         $propertyManager = MfaProviderPropertyManager::create($this->subject, $this->user);
         $response = $this->subject->handleRequest($request, $propertyManager, MfaViewType::AUTH)->getBody()->getContents();

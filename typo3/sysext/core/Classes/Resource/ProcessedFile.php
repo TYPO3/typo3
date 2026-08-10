@@ -341,7 +341,7 @@ class ProcessedFile extends AbstractFile
             $properties['name'] = $this->getName();
         }
 
-        $properties['configuration'] = (new ConfigurationService())->serialize($this->processingConfiguration);
+        $properties['configuration'] = new ConfigurationService()->serialize($this->processingConfiguration);
 
         return array_merge($properties, [
             'storage' => $this->getStorage()->getUid(),

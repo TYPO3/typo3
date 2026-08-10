@@ -132,7 +132,7 @@ class CodeEditor implements SingletonInterface
 
     protected function generateCacheIdentifier(PackageManager $packageManager): string
     {
-        return (new PackageDependentCacheIdentifier($packageManager))->withPrefix('T3editorConfiguration')->toString();
+        return new PackageDependentCacheIdentifier($packageManager)->withPrefix('T3editorConfiguration')->toString();
     }
 
     /**

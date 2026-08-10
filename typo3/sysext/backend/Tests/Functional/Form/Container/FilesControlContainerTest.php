@@ -81,7 +81,7 @@ final class FilesControlContainerTest extends FunctionalTestCase
             'renderType' => 'file',
             'databaseRow' => $databaseRow,
             'tabAndInlineStack' => '',
-            'request' => (new ServerRequest())
+            'request' => new ServerRequest()
                 ->withAttribute('route', new Route('', []))
                 ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE),
             'parameterArray' => [
@@ -142,7 +142,7 @@ final class FilesControlContainerTest extends FunctionalTestCase
                 'uid' => 123,
             ],
             'tabAndInlineStack' => '',
-            'request' => (new ServerRequest())
+            'request' => new ServerRequest()
                 ->withAttribute('route', new Route('', []))
                 ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE),
             'parameterArray' => [

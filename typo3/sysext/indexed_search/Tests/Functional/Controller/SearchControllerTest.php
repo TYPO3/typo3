@@ -80,7 +80,7 @@ final class SearchControllerTest extends FunctionalTestCase
         );
 
         $view = self::createStub(ViewInterface::class);
-        $serverRequest = (new ServerRequest('https://example.com/', 'GET'))
+        $serverRequest = new ServerRequest('https://example.com/', 'GET')
             ->withAttribute('extbase', new ExtbaseRequestParameters());
         $extbaseRequest = new Request($serverRequest);
 

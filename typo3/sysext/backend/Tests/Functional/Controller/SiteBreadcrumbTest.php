@@ -97,7 +97,7 @@ final class SiteBreadcrumbTest extends FunctionalTestCase
         $controller = $this->get(SiteSettingsController::class);
         $moduleTemplate = $this->get(ModuleTemplateFactory::class)->create($this->createSiteConfigurationRequest());
 
-        (new \ReflectionMethod($controller, 'addDocHeaderBreadcrumb'))->invoke($controller, $moduleTemplate, $site);
+        new \ReflectionMethod($controller, 'addDocHeaderBreadcrumb')->invoke($controller, $moduleTemplate, $site);
 
         $context = $this->readBreadcrumbContext($moduleTemplate);
 
@@ -138,7 +138,7 @@ final class SiteBreadcrumbTest extends FunctionalTestCase
             '_identifier' => 'site_configuration.edit',
             'module' => $module,
         ]);
-        $request = (new ServerRequest('https://example.com/typo3/module/site/configuration/edit'))
+        $request = new ServerRequest('https://example.com/typo3/module/site/configuration/edit')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('route', $route)
             ->withAttribute('routing', new RouteResult($route))
@@ -156,7 +156,7 @@ final class SiteBreadcrumbTest extends FunctionalTestCase
         $controller = $this->get(SiteConfigurationController::class);
         $moduleTemplate = $this->get(ModuleTemplateFactory::class)->create($this->createSiteConfigurationRequest());
 
-        (new \ReflectionMethod($controller, 'addDocHeaderBreadcrumb'))
+        new \ReflectionMethod($controller, 'addDocHeaderBreadcrumb')
             ->invoke($controller, $moduleTemplate, $pageRecord, $siteIdentifier, $currentStepLabel, $currentStepIcon);
 
         return $this->readBreadcrumbContext($moduleTemplate);
@@ -164,7 +164,7 @@ final class SiteBreadcrumbTest extends FunctionalTestCase
 
     private function readBreadcrumbContext(ModuleTemplate $moduleTemplate): BreadcrumbContext
     {
-        $context = (new \ReflectionProperty(DocHeaderComponent::class, 'breadcrumbContext'))
+        $context = new \ReflectionProperty(DocHeaderComponent::class, 'breadcrumbContext')
             ->getValue($moduleTemplate->getDocHeaderComponent());
         self::assertInstanceOf(BreadcrumbContext::class, $context);
 

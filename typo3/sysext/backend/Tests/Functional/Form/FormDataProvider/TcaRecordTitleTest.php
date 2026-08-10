@@ -62,7 +62,7 @@ final class TcaRecordTitleTest extends FunctionalTestCase
 
         $expected = $input;
         $expected['recordTitle'] = $expectedLabel;
-        self::assertSame($expected, (new TcaRecordTitle())->addData($input));
+        self::assertSame($expected, new TcaRecordTitle()->addData($input));
     }
 
     public static function addDataReturnsRecordTitleForCountryTypeDataProvider(): \Generator

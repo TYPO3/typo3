@@ -139,7 +139,7 @@ final class LinkGeneratorFreeModeTest extends AbstractTestCase
     public function linkIsGeneratedForLanguageWithLanguageProperty(string $hostPrefix, int $sourcePageId, int $targetPageId, int $targetLanguageId, string $expectation): void
     {
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest($hostPrefix))
+            new InternalRequest($hostPrefix)
                 ->withPageId($sourcePageId)
                 ->withInstructions([
                     $this->createTypoLinkUrlInstruction([
@@ -181,7 +181,7 @@ final class LinkGeneratorFreeModeTest extends AbstractTestCase
     public function languageMenuIsGenerated(string $hostPrefix, int $sourcePageId, array $expectation): void
     {
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest($hostPrefix))
+            new InternalRequest($hostPrefix)
                 ->withPageId($sourcePageId)
                 ->withInstructions([
                     $this->createLanguageMenuProcessorInstruction([

@@ -42,7 +42,7 @@ final class SiteResolvingTest extends UnitTestCase
         ];
         $expected = $input;
         $expected['site'] = $siteStub;
-        self::assertSame($expected, (new SiteResolving($siteFinderMock))->addData($input));
+        self::assertSame($expected, new SiteResolving($siteFinderMock)->addData($input));
     }
 
     #[Test]
@@ -57,7 +57,7 @@ final class SiteResolvingTest extends UnitTestCase
         ];
         $expected = $input;
         $expected['site'] = $siteStub;
-        self::assertSame($expected, (new SiteResolving($siteFinderMock))->addData($input));
+        self::assertSame($expected, new SiteResolving($siteFinderMock)->addData($input));
     }
 
     #[Test]
@@ -76,6 +76,6 @@ final class SiteResolvingTest extends UnitTestCase
         ];
         $expected = $input;
         $expected['site'] = $siteStub;
-        self::assertSame($expected, (new SiteResolving($siteFinderMock))->addData($input));
+        self::assertSame($expected, new SiteResolving($siteFinderMock)->addData($input));
     }
 }

@@ -27,25 +27,25 @@ final class TokenTest extends UnitTestCase
     #[Test]
     public function getTypeReturnsType(): void
     {
-        self::assertSame(TokenType::T_VALUE, (new Token(TokenType::T_VALUE, '', 0, 0))->getType());
+        self::assertSame(TokenType::T_VALUE, new Token(TokenType::T_VALUE, '', 0, 0)->getType());
     }
 
     #[Test]
     public function getValueReturnsValue(): void
     {
-        self::assertSame('foo', (new Token(TokenType::T_VALUE, 'foo', 0, 0))->getValue());
+        self::assertSame('foo', new Token(TokenType::T_VALUE, 'foo', 0, 0)->getValue());
     }
 
     #[Test]
     public function getLineReturnsLine(): void
     {
-        self::assertSame(42, (new Token(TokenType::T_VALUE, '', 42, 0))->getLine());
+        self::assertSame(42, new Token(TokenType::T_VALUE, '', 42, 0)->getLine());
     }
 
     #[Test]
     public function getColumnReturnsColumn(): void
     {
-        self::assertSame(42, (new Token(TokenType::T_VALUE, '', 0, 42))->getColumn());
+        self::assertSame(42, new Token(TokenType::T_VALUE, '', 0, 42)->getColumn());
     }
 
     #[Test]

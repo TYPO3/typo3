@@ -29,7 +29,7 @@ final class IdentifierAssignmentLineTest extends UnitTestCase
     {
         $this->expectException(\LogicException::class);
         $this->expectExceptionCode(1655824257);
-        (new IdentifierAssignmentLine())->setIdentifierTokenStream(new IdentifierTokenStream());
+        new IdentifierAssignmentLine()->setIdentifierTokenStream(new IdentifierTokenStream());
     }
 
     #[Test]
@@ -37,6 +37,6 @@ final class IdentifierAssignmentLineTest extends UnitTestCase
     {
         $this->expectException(\LogicException::class);
         $this->expectExceptionCode(1655824258);
-        (new IdentifierAssignmentLine())->setValueTokenStream(new IdentifierTokenStream());
+        new IdentifierAssignmentLine()->setValueTokenStream(new IdentifierTokenStream());
     }
 }

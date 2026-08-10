@@ -54,7 +54,7 @@ final class QueryHiddenTranslatedRecordsTest extends FunctionalTestCase
 
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
-        $request = (new ServerRequest())
+        $request = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withAttribute('frontend.typoscript', $frontendTypoScript);
         $this->get(ConfigurationManagerInterface::class)->setRequest($request);

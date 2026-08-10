@@ -325,7 +325,7 @@ final class InternalRequestDataMappingTest extends FunctionalTestCase
         ?string $body,
         array $expectedJsonKeyValues
     ): void {
-        $request = (new InternalRequest($uri))
+        $request = new InternalRequest($uri)
             ->withMethod($method)
             ->withQueryParams($queryParams)
             ->withParsedBody($parsedBody);

@@ -183,7 +183,7 @@ readonly class ProcessedFileRepository
         // Creating a task object to only fetch cleaned configuration properties
         $task = $this->prepareTaskObject($file, $taskType, $configuration);
         $configuration = $task->getConfiguration();
-        $configurationSha1 = sha1((new ConfigurationService())->serialize($configuration));
+        $configurationSha1 = sha1(new ConfigurationService()->serialize($configuration));
 
         foreach ($this->getAllByOriginal($file, $taskType) as $databaseRow) {
             if ($databaseRow['configurationsha1'] === $configurationSha1) {

@@ -594,7 +594,7 @@ readonly class SchedulerTaskRepository
 
     protected function isValidTaskObject($task): bool
     {
-        return (new TaskValidator())->isValid($task);
+        return new TaskValidator()->isValid($task);
     }
 
     /**

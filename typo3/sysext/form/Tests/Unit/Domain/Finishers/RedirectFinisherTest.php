@@ -46,7 +46,7 @@ final class RedirectFinisherTest extends UnitTestCase
             return $uriPrefix . $conf['parameter'];
         });
 
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters());
         $serverRequest = $serverRequest->withAttribute('currentContentObject', $contentObjectRendererMock);
         $contentObjectRendererMock->setRequest($serverRequest);
         $request = new Request($serverRequest);

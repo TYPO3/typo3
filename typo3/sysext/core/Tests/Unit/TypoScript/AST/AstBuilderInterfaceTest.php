@@ -1466,8 +1466,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
     public function build(string $source, RootNode $expectedAst, array $_): void
     {
         $noopEventDispatcher = new NoopEventDispatcher();
-        $tokens = (new LosslessTokenizer())->tokenize($source);
-        $ast = (new AstBuilder($noopEventDispatcher))->build($tokens, new RootNode());
+        $tokens = new LosslessTokenizer()->tokenize($source);
+        $ast = new AstBuilder($noopEventDispatcher)->build($tokens, new RootNode());
         self::assertEquals($expectedAst, $ast);
     }
 
@@ -1476,8 +1476,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
     public function buildCreatesSameAstWhenUnserialized(string $source, RootNode $expectedAst, array $_): void
     {
         $noopEventDispatcher = new NoopEventDispatcher();
-        $tokens = (new LosslessTokenizer())->tokenize($source);
-        $ast = (new AstBuilder($noopEventDispatcher))->build($tokens, new RootNode());
+        $tokens = new LosslessTokenizer()->tokenize($source);
+        $ast = new AstBuilder($noopEventDispatcher)->build($tokens, new RootNode());
         self::assertRootNodeIsSerializable($expectedAst, $ast);
     }
 
@@ -1486,8 +1486,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
     public function buildCommentAware(string $source, RootNode $expectedAst, array $_): void
     {
         $noopEventDispatcher = new NoopEventDispatcher();
-        $tokens = (new LosslessTokenizer())->tokenize($source);
-        $ast = (new CommentAwareAstBuilder($noopEventDispatcher))->build($tokens, new RootNode());
+        $tokens = new LosslessTokenizer()->tokenize($source);
+        $ast = new CommentAwareAstBuilder($noopEventDispatcher)->build($tokens, new RootNode());
         self::assertEquals($expectedAst, $ast);
     }
 
@@ -1496,8 +1496,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
     public function buildCompatArray(string $source, RootNode $_, array $expectedArray): void
     {
         $noopEventDispatcher = new NoopEventDispatcher();
-        $tokens = (new LosslessTokenizer())->tokenize($source);
-        $ast = (new AstBuilder($noopEventDispatcher))->build($tokens, new RootNode());
+        $tokens = new LosslessTokenizer()->tokenize($source);
+        $ast = new AstBuilder($noopEventDispatcher)->build($tokens, new RootNode());
         self::assertEquals($expectedArray, $ast->toArray());
     }
 
@@ -1506,8 +1506,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
     public function buildCompatArrayCommentAware(string $source, RootNode $_, array $expectedArray): void
     {
         $noopEventDispatcher = new NoopEventDispatcher();
-        $tokens = (new LosslessTokenizer())->tokenize($source);
-        $ast = (new CommentAwareAstBuilder($noopEventDispatcher))->build($tokens, new RootNode());
+        $tokens = new LosslessTokenizer()->tokenize($source);
+        $ast = new CommentAwareAstBuilder($noopEventDispatcher)->build($tokens, new RootNode());
         self::assertEquals($expectedArray, $ast->toArray());
     }
 
@@ -1681,8 +1681,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
     public function buildWithPreviousValue(string $source, RootNode $expectedAst, RootNode $_): void
     {
         $noopEventDispatcher = new NoopEventDispatcher();
-        $tokens = (new LosslessTokenizer())->tokenize($source);
-        $ast = (new AstBuilder($noopEventDispatcher))->build($tokens, new RootNode());
+        $tokens = new LosslessTokenizer()->tokenize($source);
+        $ast = new AstBuilder($noopEventDispatcher)->build($tokens, new RootNode());
         self::assertEquals($expectedAst, $ast);
     }
 
@@ -1691,8 +1691,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
     public function buildWithPreviousValueCreatesSameAstWhenUnserialized(string $source, RootNode $expectedAst, RootNode $_): void
     {
         $noopEventDispatcher = new NoopEventDispatcher();
-        $tokens = (new LosslessTokenizer())->tokenize($source);
-        $ast = (new AstBuilder($noopEventDispatcher))->build($tokens, new RootNode());
+        $tokens = new LosslessTokenizer()->tokenize($source);
+        $ast = new AstBuilder($noopEventDispatcher)->build($tokens, new RootNode());
         self::assertRootNodeIsSerializable($expectedAst, $ast);
     }
 
@@ -1701,8 +1701,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
     public function buildWithPreviousValueCommentAware(string $source, RootNode $_, RootNode $expectedAst): void
     {
         $noopEventDispatcher = new NoopEventDispatcher();
-        $tokens = (new LosslessTokenizer())->tokenize($source);
-        $ast = (new CommentAwareAstBuilder($noopEventDispatcher))->build($tokens, new RootNode());
+        $tokens = new LosslessTokenizer()->tokenize($source);
+        $ast = new CommentAwareAstBuilder($noopEventDispatcher)->build($tokens, new RootNode());
         self::assertEquals($expectedAst, $ast);
     }
 
@@ -1713,7 +1713,7 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $fooNode->setValue('foo1');
         $barNode = new ReferenceChildNode('bar');
         $barNode->setReferenceSourceStream(
-            (new IdentifierTokenStream())
+            new IdentifierTokenStream()
                 ->append((new IdentifierToken(TokenType::T_IDENTIFIER, 'foo', 1, 7)))
         );
         $expectedAst->addChild($fooNode);
@@ -1734,7 +1734,7 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $expectedAst->addChild($fooNode);
         $barNode = new ReferenceChildNode('bar');
         $barNode->setReferenceSourceStream(
-            (new IdentifierTokenStream())
+            new IdentifierTokenStream()
                 ->append((new IdentifierToken(TokenType::T_IDENTIFIER, 'baz', 1, 7)))
         );
         $expectedAst->addChild($barNode);
@@ -1755,7 +1755,7 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $bar1Node = new ReferenceChildNode('bar');
         $fooNode->addChild($bar1Node);
         $bar1Node->setReferenceSourceStream(
-            (new IdentifierTokenStream())
+            new IdentifierTokenStream()
                 ->append((new IdentifierToken(TokenType::T_IDENTIFIER, 'foo', 1, 11)))
         );
         yield 'reference operator creates reference node without sub nodes for sub node' => [
@@ -1781,7 +1781,7 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $level3FirstNode = new ReferenceChildNode('level3First');
         $level2FirstNode->addChild($level3FirstNode);
         $level3FirstNode->setReferenceSourceStream(
-            (new IdentifierTokenStream())
+            new IdentifierTokenStream()
                 ->append((new IdentifierToken(TokenType::T_IDENTIFIER, 'source', 2, 29)))
         );
         yield 'reference operator with nested sub reference is absolute' => [
@@ -1818,7 +1818,7 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $level2FirstNode->addChild($level3SecondNode);
         $level3SecondNode->setValue('newSource2Value');
         $level3FirstNode->setReferenceSourceStream(
-            (new IdentifierTokenStream())
+            new IdentifierTokenStream()
                 ->append((new IdentifierToken(TokenType::T_IDENTIFIER, 'source', 3, 29)))
         );
         yield 'reference operator with nested sub reference sets override value and sub tree' => [
@@ -1854,7 +1854,7 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $fooNode = new ReferenceChildNode('foo');
         $expectedAst->addChild($fooNode);
         $fooNode->setReferenceSourceStream(
-            (new IdentifierTokenStream())
+            new IdentifierTokenStream()
                 ->append((new IdentifierToken(TokenType::T_IDENTIFIER, 'source', 4, 7)))
         );
         $fooChildNode = new ChildNode('childfoo');
@@ -1890,7 +1890,7 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $expectedAst->addChild($fooNode);
         $fooChildNode = new ReferenceChildNode('childfoo');
         $fooChildNode->setReferenceSourceStream(
-            (new IdentifierTokenStream())
+            new IdentifierTokenStream()
                 ->append((new IdentifierToken(TokenType::T_IDENTIFIER, 'source', 4, 16)))
                 ->append((new IdentifierToken(TokenType::T_IDENTIFIER, 'childsource', 4, 23)))
         );
@@ -1933,7 +1933,7 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $expectedAst->addChild($copySourceNode);
         $targetNode = new ReferenceChildNode('target');
         $targetNode->setReferenceSourceStream(
-            (new IdentifierTokenStream())
+            new IdentifierTokenStream()
                 ->append((new IdentifierToken(TokenType::T_IDENTIFIER, 'referenceSource', 3, 10)))
         );
         $targetChildNode = new ChildNode('copySourceChild');
@@ -1977,7 +1977,7 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $libNode = new ChildNode('lib');
         $targetNode = new ReferenceChildNode('target');
         $targetNode->setReferenceSourceStream(
-            (new IdentifierTokenStream())
+            new IdentifierTokenStream()
                 ->append((new IdentifierToken(TokenType::T_IDENTIFIER, 'referenceSource', 3, 14)))
         );
         $targetChildNode = new ChildNode('copySourceChild');
@@ -2015,8 +2015,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
     public function buildReference(string $source, RootNode $expectedAst, array $_): void
     {
         $noopEventDispatcher = new NoopEventDispatcher();
-        $tokens = (new LosslessTokenizer())->tokenize($source);
-        $ast = (new AstBuilder($noopEventDispatcher))->build($tokens, new RootNode());
+        $tokens = new LosslessTokenizer()->tokenize($source);
+        $ast = new AstBuilder($noopEventDispatcher)->build($tokens, new RootNode());
         self::assertEquals($expectedAst, $ast);
     }
 
@@ -2026,8 +2026,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
     {
         $this->registerComparator(new IdentifierTokenWithoutLineAndColumnComparator());
         $noopEventDispatcher = new NoopEventDispatcher();
-        $tokens = (new LosslessTokenizer())->tokenize($source);
-        $ast = (new AstBuilder($noopEventDispatcher))->build($tokens, new RootNode());
+        $tokens = new LosslessTokenizer()->tokenize($source);
+        $ast = new AstBuilder($noopEventDispatcher)->build($tokens, new RootNode());
         self::assertRootNodeIsSerializable($expectedAst, $ast);
     }
 
@@ -2036,8 +2036,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
     public function buildReferenceCommentAware(string $source, RootNode $expectedAst, array $_): void
     {
         $noopEventDispatcher = new NoopEventDispatcher();
-        $tokens = (new LosslessTokenizer())->tokenize($source);
-        $ast = (new CommentAwareAstBuilder($noopEventDispatcher))->build($tokens, new RootNode());
+        $tokens = new LosslessTokenizer()->tokenize($source);
+        $ast = new CommentAwareAstBuilder($noopEventDispatcher)->build($tokens, new RootNode());
         self::assertEquals($expectedAst, $ast);
     }
 
@@ -2046,8 +2046,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
     public function buildReferenceArray(string $source, RootNode $_, array $expectedArray): void
     {
         $noopEventDispatcher = new NoopEventDispatcher();
-        $tokens = (new LosslessTokenizer())->tokenize($source);
-        $ast = (new AstBuilder($noopEventDispatcher))->build($tokens, new RootNode());
+        $tokens = new LosslessTokenizer()->tokenize($source);
+        $ast = new AstBuilder($noopEventDispatcher)->build($tokens, new RootNode());
         self::assertEquals($expectedArray, $ast->toArray());
     }
 
@@ -2056,8 +2056,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
     public function buildReferenceArrayCommentAware(string $source, RootNode $_, array $expectedArray): void
     {
         $noopEventDispatcher = new NoopEventDispatcher();
-        $tokens = (new LosslessTokenizer())->tokenize($source);
-        $ast = (new CommentAwareAstBuilder($noopEventDispatcher))->build($tokens, new RootNode());
+        $tokens = new LosslessTokenizer()->tokenize($source);
+        $ast = new CommentAwareAstBuilder($noopEventDispatcher)->build($tokens, new RootNode());
         self::assertEquals($expectedArray, $ast->toArray());
     }
 
@@ -2067,7 +2067,7 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $objectNode = new ChildNode('foo');
         $objectNode->setValue('{$bar}');
         $objectNode->setOriginalValueTokenStream(
-            (new ConstantAwareTokenStream())
+            new ConstantAwareTokenStream()
                 ->append(new Token(TokenType::T_CONSTANT, '{$bar}', 0, 6))
         );
         $expectedAst->addChild($objectNode);
@@ -2084,7 +2084,7 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $objectNode = new ChildNode('foo');
         $objectNode->setValue('barValue');
         $objectNode->setOriginalValueTokenStream(
-            (new ConstantAwareTokenStream())
+            new ConstantAwareTokenStream()
                 ->append(new Token(TokenType::T_CONSTANT, '{$bar}', 0, 6))
         );
         $expectedAst->addChild($objectNode);
@@ -2101,7 +2101,7 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $objectNode = new ChildNode('foo');
         $objectNode->setValue('barValue');
         $objectNode->setOriginalValueTokenStream(
-            (new ConstantAwareTokenStream())
+            new ConstantAwareTokenStream()
                 ->append(new Token(TokenType::T_CONSTANT, '{$bar ?? $baz}', 0, 6))
         );
         $expectedAst->addChild($objectNode);
@@ -2118,7 +2118,7 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $objectNode = new ChildNode('foo');
         $objectNode->setValue('bazValue');
         $objectNode->setOriginalValueTokenStream(
-            (new ConstantAwareTokenStream())
+            new ConstantAwareTokenStream()
                 ->append(new Token(TokenType::T_CONSTANT, '{$bar ?? $baz}', 0, 6))
         );
         $expectedAst->addChild($objectNode);
@@ -2135,7 +2135,7 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $objectNode = new ChildNode('foo');
         $objectNode->setValue('bazValue');
         $objectNode->setOriginalValueTokenStream(
-            (new ConstantAwareTokenStream())
+            new ConstantAwareTokenStream()
                 ->append(new Token(TokenType::T_CONSTANT, '{$bar ?? $baz ?? $foobar}', 0, 6))
         );
         $expectedAst->addChild($objectNode);
@@ -2152,7 +2152,7 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $objectNode = new ChildNode('foo');
         $objectNode->setValue('foobarValue');
         $objectNode->setOriginalValueTokenStream(
-            (new ConstantAwareTokenStream())
+            new ConstantAwareTokenStream()
                 ->append(new Token(TokenType::T_CONSTANT, '{$bar ?? $baz ?? $foobar}', 0, 6))
         );
         $expectedAst->addChild($objectNode);
@@ -2169,7 +2169,7 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $objectNode = new ChildNode('foo');
         $objectNode->setValue('barBazValue');
         $objectNode->setOriginalValueTokenStream(
-            (new ConstantAwareTokenStream())
+            new ConstantAwareTokenStream()
                 ->append(new Token(TokenType::T_CONSTANT, '{$bar??baz}', 0, 6))
         );
         $expectedAst->addChild($objectNode);
@@ -2186,7 +2186,7 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $objectNode = new ChildNode('foo');
         $objectNode->setValue('{$bar ?? baz}');
         $objectNode->setOriginalValueTokenStream(
-            (new ConstantAwareTokenStream())
+            new ConstantAwareTokenStream()
                 ->append(new Token(TokenType::T_CONSTANT, '{$bar ?? baz}', 0, 6))
         );
         $expectedAst->addChild($objectNode);
@@ -2203,7 +2203,7 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $objectNode = new ChildNode('foo');
         $objectNode->setValue('{$bar ?? $baz ?? $foobar}');
         $objectNode->setOriginalValueTokenStream(
-            (new ConstantAwareTokenStream())
+            new ConstantAwareTokenStream()
                 ->append(new Token(TokenType::T_CONSTANT, '{$bar ?? $baz ?? $foobar}', 0, 6))
         );
         $expectedAst->addChild($objectNode);
@@ -2220,7 +2220,7 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $objectNode = new ChildNode('foo');
         $objectNode->setValue('');
         $objectNode->setOriginalValueTokenStream(
-            (new ConstantAwareTokenStream())
+            new ConstantAwareTokenStream()
                 ->append(new Token(TokenType::T_CONSTANT, '{$bar}', 0, 6))
         );
         $expectedAst->addChild($objectNode);
@@ -2237,7 +2237,7 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $objectNode = new ChildNode('foo');
         $objectNode->setValue('0');
         $objectNode->setOriginalValueTokenStream(
-            (new ConstantAwareTokenStream())
+            new ConstantAwareTokenStream()
                 ->append(new Token(TokenType::T_CONSTANT, '{$bar}', 0, 6))
         );
         $expectedAst->addChild($objectNode);
@@ -2254,7 +2254,7 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $objectNode = new ChildNode('foo');
         $objectNode->setValue('bar1Valuebazbar2Value');
         $objectNode->setOriginalValueTokenStream(
-            (new ConstantAwareTokenStream())
+            new ConstantAwareTokenStream()
                 ->append(new Token(TokenType::T_CONSTANT, '{$bar1}', 0, 6))
                 ->append(new Token(TokenType::T_VALUE, 'baz', 0, 13))
                 ->append(new Token(TokenType::T_CONSTANT, '{$bar2}', 0, 16))
@@ -2276,7 +2276,7 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $objectNode = new ChildNode('foo');
         $objectNode->setValue("  bar1Valuebaz\n  bar2Value");
         $objectNode->setOriginalValueTokenStream(
-            (new ConstantAwareTokenStream())
+            new ConstantAwareTokenStream()
                 ->append(new Token(TokenType::T_VALUE, '  ', 1, 0))
                 ->append(new Token(TokenType::T_CONSTANT, '{$bar1}', 1, 2))
                 ->append(new Token(TokenType::T_VALUE, 'baz', 1, 9))
@@ -2304,7 +2304,7 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $objectNode = new ChildNode('foo');
         $objectNode->setValue('3,23,{$bar}');
         $objectNode->setOriginalValueTokenStream(
-            (new ConstantAwareTokenStream())
+            new ConstantAwareTokenStream()
                 ->append(new Token(TokenType::T_CONSTANT, '{$bar}', 1, 17))
         );
         $expectedAst->addChild($objectNode);
@@ -2322,7 +2322,7 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $objectNode = new ChildNode('foo');
         $objectNode->setValue('3,23,42');
         $objectNode->setOriginalValueTokenStream(
-            (new ConstantAwareTokenStream())
+            new ConstantAwareTokenStream()
                 ->append(new Token(TokenType::T_CONSTANT, '{$my.constant}', 1, 17))
         );
         $expectedAst->addChild($objectNode);
@@ -2340,7 +2340,7 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $objectNode = new ChildNode('foo');
         $objectNode->setValue('3,23,42');
         $objectNode->setOriginalValueTokenStream(
-            (new ConstantAwareTokenStream())
+            new ConstantAwareTokenStream()
                 ->append(new Token(TokenType::T_CONSTANT, '{$my.escaped\.constant}', 1, 17))
         );
         $expectedAst->addChild($objectNode);
@@ -2358,7 +2358,7 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $objectNode = new ChildNode('foo');
         $objectNode->setValue('3,23,42');
         $objectNode->setOriginalValueTokenStream(
-            (new ConstantAwareTokenStream())
+            new ConstantAwareTokenStream()
                 ->append(new Token(TokenType::T_CONSTANT, '{$my.constant ?? $fallback.constant}', 1, 17))
         );
         $expectedAst->addChild($objectNode);
@@ -2376,7 +2376,7 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $objectNode = new ChildNode('foo');
         $objectNode->setValue('23, 42');
         $objectNode->setOriginalValueTokenStream(
-            (new ConstantAwareTokenStream())
+            new ConstantAwareTokenStream()
                 ->append(new Token(TokenType::T_VALUE, '23, ', 0, 17))
                 ->append(new Token(TokenType::T_CONSTANT, '{$my.constant}', 0, 21))
         );
@@ -2394,7 +2394,7 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $objectNode = new ChildNode('foo');
         $objectNode->setValue('3, 23, 42');
         $objectNode->setOriginalValueTokenStream(
-            (new ConstantAwareTokenStream())
+            new ConstantAwareTokenStream()
                 ->append(new Token(TokenType::T_CONSTANT, '{$my.constant}', 0, 17))
                 ->append(new Token(TokenType::T_VALUE, ', 23, ', 0, 31))
                 ->append(new Token(TokenType::T_CONSTANT, '{$other.constant}', 0, 37))
@@ -2416,7 +2416,7 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $objectNode = new ChildNode('foo');
         $objectNode->setValue('23,42');
         $objectNode->setOriginalValueTokenStream(
-            (new ConstantAwareTokenStream())
+            new ConstantAwareTokenStream()
                 ->append(new Token(TokenType::T_CONSTANT, '{$my.constant}', 1, 17))
         );
         $expectedAst->addChild($objectNode);
@@ -2439,7 +2439,7 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         //        function may have used a constant is lost. Therefor, the BE modules can't
         //        reflect multi function changes. Also see the CommentAwareAstBuilder comment.
         $objectNode->setOriginalValueTokenStream(
-            (new ConstantAwareTokenStream())
+            new ConstantAwareTokenStream()
                 ->append(new Token(TokenType::T_CONSTANT, '{$other.constant}', 2, 22))
         );
         $expectedAst->addChild($objectNode);
@@ -2464,8 +2464,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
     {
         $this->registerComparator(new AbstractNodeWithoutOriginalValueTokenStreamIdentifierComparator());
         $noopEventDispatcher = new NoopEventDispatcher();
-        $tokens = (new LosslessTokenizer())->tokenize($source);
-        $ast = (new AstBuilder($noopEventDispatcher))->build($tokens, new RootNode(), $constants);
+        $tokens = new LosslessTokenizer()->tokenize($source);
+        $ast = new AstBuilder($noopEventDispatcher)->build($tokens, new RootNode(), $constants);
         self::assertEquals($expectedAst, $ast);
     }
 
@@ -2475,8 +2475,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
     {
         $this->registerComparator(new AbstractNodeWithoutOriginalValueTokenStreamIdentifierComparator());
         $noopEventDispatcher = new NoopEventDispatcher();
-        $tokens = (new LosslessTokenizer())->tokenize($source);
-        $ast = (new AstBuilder($noopEventDispatcher))->build($tokens, new RootNode(), $constants);
+        $tokens = new LosslessTokenizer()->tokenize($source);
+        $ast = new AstBuilder($noopEventDispatcher)->build($tokens, new RootNode(), $constants);
         self::assertRootNodeIsSerializable($expectedAst, $ast);
     }
 
@@ -2485,8 +2485,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
     public function buildConstantCommentAware(string $source, array $constants, RootNode $expectedAst, array $_): void
     {
         $noopEventDispatcher = new NoopEventDispatcher();
-        $tokens = (new LosslessTokenizer())->tokenize($source);
-        $ast = (new CommentAwareAstBuilder($noopEventDispatcher))->build($tokens, new RootNode(), $constants);
+        $tokens = new LosslessTokenizer()->tokenize($source);
+        $ast = new CommentAwareAstBuilder($noopEventDispatcher)->build($tokens, new RootNode(), $constants);
         self::assertEquals($expectedAst, $ast);
     }
 
@@ -2495,8 +2495,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
     public function buildConstantCompatArray(string $source, array $constants, RootNode $_, array $expectedArray): void
     {
         $noopEventDispatcher = new NoopEventDispatcher();
-        $tokens = (new LosslessTokenizer())->tokenize($source);
-        $ast = (new AstBuilder($noopEventDispatcher))->build($tokens, new RootNode(), $constants);
+        $tokens = new LosslessTokenizer()->tokenize($source);
+        $ast = new AstBuilder($noopEventDispatcher)->build($tokens, new RootNode(), $constants);
         self::assertEquals($expectedArray, $ast->toArray());
     }
 
@@ -2505,8 +2505,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
     public function buildConstantCompatArrayCommentAware(string $source, array $constants, RootNode $_, array $expectedArray): void
     {
         $noopEventDispatcher = new NoopEventDispatcher();
-        $tokens = (new LosslessTokenizer())->tokenize($source);
-        $ast = (new CommentAwareAstBuilder($noopEventDispatcher))->build($tokens, new RootNode(), $constants);
+        $tokens = new LosslessTokenizer()->tokenize($source);
+        $ast = new CommentAwareAstBuilder($noopEventDispatcher)->build($tokens, new RootNode(), $constants);
         self::assertEquals($expectedArray, $ast->toArray());
     }
 
@@ -2532,8 +2532,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         ];
 
         $noopEventDispatcher = new NoopEventDispatcher();
-        $tokens = (new LosslessTokenizer())->tokenize('bar = bar1');
-        $resultAst = (new AstBuilder($noopEventDispatcher))->build($tokens, $inputAst, []);
+        $tokens = new LosslessTokenizer()->tokenize('bar = bar1');
+        $resultAst = new AstBuilder($noopEventDispatcher)->build($tokens, $inputAst, []);
         self::assertEquals($expectedAst, $resultAst);
         self::assertEquals($expectedArray, $resultAst->toArray());
     }
@@ -2560,8 +2560,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         ];
 
         $noopEventDispatcher = new NoopEventDispatcher();
-        $tokens = (new LosslessTokenizer())->tokenize('bar = bar1');
-        $resultAst = (new CommentAwareAstBuilder($noopEventDispatcher))->build($tokens, $inputAst, []);
+        $tokens = new LosslessTokenizer()->tokenize('bar = bar1');
+        $resultAst = new CommentAwareAstBuilder($noopEventDispatcher)->build($tokens, $inputAst, []);
         self::assertEquals($expectedAst, $resultAst);
         self::assertEquals($expectedArray, $resultAst->toArray());
     }
@@ -2586,8 +2586,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1650893781);
         $noopEventDispatcher = new NoopEventDispatcher();
-        $tokens = (new LosslessTokenizer())->tokenize($source);
-        (new AstBuilder($noopEventDispatcher))->build($tokens, new RootNode());
+        $tokens = new LosslessTokenizer()->tokenize($source);
+        new AstBuilder($noopEventDispatcher)->build($tokens, new RootNode());
     }
 
     #[DataProvider('functionSortListThrowsSortingNonNumericListNumericDataProvider')]
@@ -2597,8 +2597,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1650893781);
         $noopEventDispatcher = new NoopEventDispatcher();
-        $tokens = (new LosslessTokenizer())->tokenize($source);
-        (new CommentAwareAstBuilder($noopEventDispatcher))->build($tokens, new RootNode());
+        $tokens = new LosslessTokenizer()->tokenize($source);
+        new CommentAwareAstBuilder($noopEventDispatcher)->build($tokens, new RootNode());
     }
 
     public static function functionGetEnvDataProvider(): \Generator
@@ -2681,8 +2681,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
             putenv($envVarName . '=' . $envVarValue);
         }
         $noopEventDispatcher = new NoopEventDispatcher();
-        $tokens = (new LosslessTokenizer())->tokenize($source);
-        $ast = (new AstBuilder($noopEventDispatcher))->build($tokens, new RootNode());
+        $tokens = new LosslessTokenizer()->tokenize($source);
+        $ast = new AstBuilder($noopEventDispatcher)->build($tokens, new RootNode());
         self::assertEquals($expectedAst, $ast);
         if ($envVarName) {
             putenv($envVarName);
@@ -2697,8 +2697,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
             putenv($envVarName . '=' . $envVarValue);
         }
         $noopEventDispatcher = new NoopEventDispatcher();
-        $tokens = (new LosslessTokenizer())->tokenize($source);
-        $ast = (new CommentAwareAstBuilder($noopEventDispatcher))->build($tokens, new RootNode());
+        $tokens = new LosslessTokenizer()->tokenize($source);
+        $ast = new CommentAwareAstBuilder($noopEventDispatcher)->build($tokens, new RootNode());
         self::assertEquals($expectedAst, $ast);
         if ($envVarName) {
             putenv($envVarName);
@@ -2798,7 +2798,7 @@ final class AstBuilderInterfaceTest extends UnitTestCase
     #[Test]
     public function flatten(string $typoscript, array $expected)
     {
-        $ast = (new AstBuilder(new NoopEventDispatcher()))->build((new LosslessTokenizer())->tokenize($typoscript), new RootNode());
+        $ast = new AstBuilder(new NoopEventDispatcher())->build(new LosslessTokenizer()->tokenize($typoscript), new RootNode());
         self::assertSame($expected, $ast->flatten());
     }
 
@@ -2806,7 +2806,7 @@ final class AstBuilderInterfaceTest extends UnitTestCase
     #[Test]
     public function flattenCommentAware(string $typoscript, array $expected)
     {
-        $ast = (new CommentAwareAstBuilder(new NoopEventDispatcher()))->build((new LosslessTokenizer())->tokenize($typoscript), new RootNode());
+        $ast = new CommentAwareAstBuilder(new NoopEventDispatcher())->build(new LosslessTokenizer()->tokenize($typoscript), new RootNode());
         self::assertSame($expected, $ast->flatten());
     }
 
@@ -2814,7 +2814,7 @@ final class AstBuilderInterfaceTest extends UnitTestCase
     {
         $expectedAst = new RootNode();
         $expectedAst->addComment(
-            (new TokenStream())
+            new TokenStream()
                 ->append(new Token(TokenType::T_COMMENT_ONELINE_HASH, '# a root node comment', 0, 0))
         );
         yield 'root node comment' => [
@@ -2824,7 +2824,7 @@ final class AstBuilderInterfaceTest extends UnitTestCase
 
         $expectedAst = new RootNode();
         $expectedAst->addComment(
-            (new TokenStream())
+            new TokenStream()
                 ->append(new Token(TokenType::T_COMMENT_ONELINE_HASH, '# a root node comment', 0, 0))
                 ->append(new Token(TokenType::T_NEWLINE, "\n", 0, 21))
         );
@@ -2835,12 +2835,12 @@ final class AstBuilderInterfaceTest extends UnitTestCase
 
         $expectedAst = new RootNode();
         $expectedAst->addComment(
-            (new TokenStream())
+            new TokenStream()
                 ->append(new Token(TokenType::T_COMMENT_ONELINE_HASH, '# a root node comment', 0, 0))
                 ->append(new Token(TokenType::T_NEWLINE, "\n", 0, 21))
         );
         $expectedAst->addComment(
-            (new TokenStream())
+            new TokenStream()
                 ->append(new Token(TokenType::T_COMMENT_ONELINE_HASH, '# another root node comment', 1, 0))
         );
         yield 'two root node comments' => [
@@ -2851,12 +2851,12 @@ final class AstBuilderInterfaceTest extends UnitTestCase
 
         $expectedAst = new RootNode();
         $expectedAst->addComment(
-            (new TokenStream())
+            new TokenStream()
                 ->append(new Token(TokenType::T_COMMENT_ONELINE_HASH, '# a root node comment', 0, 0))
                 ->append(new Token(TokenType::T_NEWLINE, "\n", 0, 21))
         );
         $expectedAst->addComment(
-            (new TokenStream())
+            new TokenStream()
                 ->append(new Token(TokenType::T_COMMENT_ONELINE_HASH, '# another root node comment', 1, 0))
                 ->append(new Token(TokenType::T_NEWLINE, "\n", 1, 27))
         );
@@ -2868,12 +2868,12 @@ final class AstBuilderInterfaceTest extends UnitTestCase
 
         $expectedAst = new RootNode();
         $expectedAst->addComment(
-            (new TokenStream())
+            new TokenStream()
                 ->append(new Token(TokenType::T_COMMENT_ONELINE_HASH, '# a root node comment', 0, 0))
                 ->append(new Token(TokenType::T_NEWLINE, "\n", 0, 21))
         );
         $expectedAst->addComment(
-            (new TokenStream())
+            new TokenStream()
                 ->append(new Token(TokenType::T_COMMENT_ONELINE_HASH, '# another root node comment', 2, 0))
                 ->append(new Token(TokenType::T_NEWLINE, "\n", 2, 27))
         );
@@ -2889,7 +2889,7 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $objectNode = new ChildNode('foo');
         $objectNode->setValue('bar');
         $objectNode->addComment(
-            (new TokenStream())
+            new TokenStream()
                 ->append(new Token(TokenType::T_COMMENT_ONELINE_HASH, '# a comment', 0, 0))
                 ->append(new Token(TokenType::T_NEWLINE, "\n", 0, 11))
         );
@@ -2904,7 +2904,7 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $objectNode = new ChildNode('foo');
         $objectNode->setValue('bar');
         $objectNode->addComment(
-            (new TokenStream())
+            new TokenStream()
                 ->append(new Token(TokenType::T_COMMENT_ONELINE_DOUBLESLASH, '// a comment', 0, 0))
                 ->append(new Token(TokenType::T_NEWLINE, "\n", 0, 12))
         );
@@ -2919,7 +2919,7 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $objectNode = new ChildNode('foo');
         $objectNode->setValue('bar');
         $objectNode->addComment(
-            (new TokenStream())
+            new TokenStream()
                 ->append(new Token(TokenType::T_COMMENT_MULTILINE_START, '/*', 0, 0))
                 ->append(new Token(TokenType::T_VALUE, ' a comment ', 0, 2))
                 ->append(new Token(TokenType::T_COMMENT_MULTILINE_STOP, '*/', 0, 13))
@@ -2936,7 +2936,7 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $objectNode = new ChildNode('foo');
         $objectNode->setValue('bar');
         $objectNode->addComment(
-            (new TokenStream())
+            new TokenStream()
                 ->append(new Token(TokenType::T_COMMENT_MULTILINE_START, '/*', 0, 0))
                 ->append(new Token(TokenType::T_VALUE, ' a comment line 1', 0, 2))
                 ->append(new Token(TokenType::T_NEWLINE, "\n", 0, 19))
@@ -2956,12 +2956,12 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $objectNode = new ChildNode('foo');
         $objectNode->setValue('bar');
         $objectNode->addComment(
-            (new TokenStream())
+            new TokenStream()
                 ->append(new Token(TokenType::T_COMMENT_ONELINE_HASH, '# a comment', 0, 0))
                 ->append(new Token(TokenType::T_NEWLINE, "\n", 0, 11))
         );
         $objectNode->addComment(
-            (new TokenStream())
+            new TokenStream()
                 ->append(new Token(TokenType::T_COMMENT_MULTILINE_START, '/*', 1, 0))
                 ->append(new Token(TokenType::T_VALUE, ' another comment line 1', 1, 2))
                 ->append(new Token(TokenType::T_NEWLINE, "\n", 1, 25))
@@ -2980,14 +2980,14 @@ final class AstBuilderInterfaceTest extends UnitTestCase
 
         $expectedAst = new RootNode();
         $expectedAst->addComment(
-            (new TokenStream())
+            new TokenStream()
                 ->append(new Token(TokenType::T_COMMENT_ONELINE_HASH, '# a root node comment', 0, 0))
                 ->append(new Token(TokenType::T_NEWLINE, "\n", 0, 21))
         );
         $objectNode = new ChildNode('foo');
         $objectNode->setValue('bar');
         $objectNode->addComment(
-            (new TokenStream())
+            new TokenStream()
                 ->append(new Token(TokenType::T_COMMENT_MULTILINE_START, '/*', 2, 0))
                 ->append(new Token(TokenType::T_VALUE, ' another comment line 1', 2, 2))
                 ->append(new Token(TokenType::T_NEWLINE, "\n", 2, 25))
@@ -3012,7 +3012,7 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $fooNode->addChild($barNode);
         $barNode->setValue('baz');
         $barNode->addComment(
-            (new TokenStream())
+            new TokenStream()
                 ->append(new Token(TokenType::T_COMMENT_ONELINE_HASH, '# a sub node comment', 0, 0))
                 ->append(new Token(TokenType::T_NEWLINE, "\n", 0, 20))
         );
@@ -3029,12 +3029,12 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $fooNode->addChild($barNode);
         $barNode->setValue('baz');
         $barNode->addComment(
-            (new TokenStream())
+            new TokenStream()
                 ->append(new Token(TokenType::T_COMMENT_ONELINE_HASH, '# a sub node comment', 0, 0))
                 ->append(new Token(TokenType::T_NEWLINE, "\n", 0, 20))
         );
         $barNode->addComment(
-            (new TokenStream())
+            new TokenStream()
                 ->append(new Token(TokenType::T_COMMENT_ONELINE_HASH, '# another sub node comment', 1, 0))
                 ->append(new Token(TokenType::T_NEWLINE, "\n", 1, 26))
         );
@@ -3047,18 +3047,18 @@ final class AstBuilderInterfaceTest extends UnitTestCase
 
         $expectedAst = new RootNode();
         $expectedAst->addComment(
-            (new TokenStream())
+            new TokenStream()
                 ->append(new Token(TokenType::T_COMMENT_ONELINE_HASH, '# a root node comment', 0, 0))
                 ->append(new Token(TokenType::T_NEWLINE, "\n", 0, 21))
         );
         $expectedAst->addComment(
-            (new TokenStream())
+            new TokenStream()
                 ->append(new Token(TokenType::T_COMMENT_ONELINE_HASH, '# another root node comment', 8, 0))
         );
         $fooNode = new ChildNode('foo');
         $fooNode->setValue('fooValue');
         $fooNode->addComment(
-            (new TokenStream())
+            new TokenStream()
                 ->append(new Token(TokenType::T_COMMENT_ONELINE_HASH, '# a sub node comment', 2, 0))
                 ->append(new Token(TokenType::T_NEWLINE, "\n", 2, 20))
         );
@@ -3067,7 +3067,7 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $fooNode->addChild($barNode);
         $barNode->setValue('barValue');
         $barNode->addComment(
-            (new TokenStream())
+            new TokenStream()
                 ->append(new Token(TokenType::T_BLANK, '  ', 5, 0))
                 ->append(new Token(TokenType::T_COMMENT_ONELINE_HASH, '# a sub sub node comment', 5, 2))
                 ->append(new Token(TokenType::T_NEWLINE, "\n", 5, 26))
@@ -3089,7 +3089,7 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $fooNode = new ChildNode('foo');
         $fooNode->setValue('fooValue');
         $fooNode->addComment(
-            (new TokenStream())
+            new TokenStream()
                 ->append(new Token(TokenType::T_COMMENT_ONELINE_HASH, '# a comment attached to foo node', 1, 0))
                 ->append(new Token(TokenType::T_NEWLINE, "\n", 1, 32))
         );
@@ -3098,7 +3098,7 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $fooNode->addChild($barNode);
         $barNode->setValue('barValue');
         $barNode->addComment(
-            (new TokenStream())
+            new TokenStream()
                 ->append(new Token(TokenType::T_BLANK, '  ', 3, 0))
                 ->append(new Token(TokenType::T_COMMENT_ONELINE_HASH, '# a comment attached to bar node', 3, 2))
                 ->append(new Token(TokenType::T_NEWLINE, "\n", 3, 34))
@@ -3121,7 +3121,7 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $fooNode->addChild($barNode);
         $barNode->setValue('fooValue');
         $barNode->addComment(
-            (new TokenStream())
+            new TokenStream()
                 ->append(new Token(TokenType::T_BLANK, '  ', 2, 0))
                 ->append(new Token(TokenType::T_COMMENT_ONELINE_HASH, '# a comment attached to bar node', 2, 2))
                 ->append(new Token(TokenType::T_NEWLINE, "\n", 2, 34))
@@ -3140,7 +3140,7 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $fooNode->setValue('fooValue');
         $expectedAst->addChild($fooNode);
         $fooNode->addComment(
-            (new TokenStream())
+            new TokenStream()
                 ->append(new Token(TokenType::T_COMMENT_ONELINE_HASH, '# a comment attached to foo node', 1, 0))
                 ->append(new Token(TokenType::T_NEWLINE, "\n", 1, 32))
         );
@@ -3155,11 +3155,11 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $fooNode = new ReferenceChildNode('foo');
         $expectedAst->addChild($fooNode);
         $fooNode->setReferenceSourceStream(
-            (new IdentifierTokenStream())
+            new IdentifierTokenStream()
                 ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'bar', 1, 7))
         );
         $fooNode->addComment(
-            (new TokenStream())
+            new TokenStream()
                 ->append(new Token(TokenType::T_COMMENT_ONELINE_HASH, '# a comment attached to foo node', 0, 0))
                 ->append(new Token(TokenType::T_NEWLINE, "\n", 0, 32))
         );
@@ -3178,8 +3178,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
     public function buildWithComments(string $source, RootNode $expectedAst): void
     {
         $noopEventDispatcher = new NoopEventDispatcher();
-        $tokens = (new LosslessTokenizer())->tokenize($source);
-        $ast = (new CommentAwareAstBuilder($noopEventDispatcher))->build($tokens, new RootNode());
+        $tokens = new LosslessTokenizer()->tokenize($source);
+        $ast = new CommentAwareAstBuilder($noopEventDispatcher)->build($tokens, new RootNode());
         self::assertEquals($expectedAst, $ast);
     }
 
@@ -3193,8 +3193,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $expectedAst->addChild($fooNode);
         $fooNode->setValue('fooValue2');
         $fooNode->setPreviousValue('fooValue1');
-        $tokens = (new LosslessTokenizer())->tokenize($source);
-        $ast = (new CommentAwareAstBuilder(new NoopEventDispatcher()))->build($tokens, new RootNode());
+        $tokens = new LosslessTokenizer()->tokenize($source);
+        $ast = new CommentAwareAstBuilder(new NoopEventDispatcher())->build($tokens, new RootNode());
         self::assertEquals($expectedAst, $ast);
     }
 

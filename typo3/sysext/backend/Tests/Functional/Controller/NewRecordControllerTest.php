@@ -183,7 +183,7 @@ final class NewRecordControllerTest extends FunctionalTestCase
     {
         $normalizedParams = new NormalizedParams([], [], '', '');
 
-        return (new ServerRequest('http://localhost' . $path, 'GET'))
+        return new ServerRequest('http://localhost' . $path, 'GET')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('normalizedParams', $normalizedParams)
             ->withAttribute('route', new Route($path, ['packageName' => 'typo3/cms-backend']))

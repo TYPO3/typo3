@@ -32,13 +32,13 @@ final class LogManagerTest extends UnitTestCase
     #[Test]
     public function logManagerTurnsUnderScoreStyleLoggerNamesIntoDotStyleLoggerNames(): void
     {
-        self::assertSame('test.a.b', (new LogManager())->getLogger('test_a_b')->getName());
+        self::assertSame('test.a.b', new LogManager()->getLogger('test_a_b')->getName());
     }
 
     #[Test]
     public function logManagerTurnsNamespaceStyleLoggerNamesIntoDotStyleLoggerNames(): void
     {
-        self::assertSame('test.a.b', (new LogManager())->getLogger('test\\a\\b')->getName());
+        self::assertSame('test.a.b', new LogManager()->getLogger('test\\a\\b')->getName());
     }
 
     #[Test]
@@ -63,7 +63,7 @@ final class LogManagerTest extends UnitTestCase
                 $writer => [],
             ],
         ];
-        $logger = (new LogManager())->getLogger($component);
+        $logger = new LogManager()->getLogger($component);
         $writers = $logger->getWriters();
         self::assertInstanceOf($writer, $writers[$level][0]);
     }
@@ -79,7 +79,7 @@ final class LogManagerTest extends UnitTestCase
                 $processor => [],
             ],
         ];
-        $logger = (new LogManager())->getLogger($component);
+        $logger = new LogManager()->getLogger($component);
         $processors = $logger->getProcessors();
         self::assertInstanceOf($processor, $processors[$level][0]);
     }
@@ -94,7 +94,7 @@ final class LogManagerTest extends UnitTestCase
             ],
         ];
         $requestId = new RequestId();
-        $logger = (new LogManager($requestId))->getLogger($component);
+        $logger = new LogManager($requestId)->getLogger($component);
         $logger->warning('test message');
         $writer = $logger->getWriters()[LogLevel::WARNING][0];
         self::assertInstanceOf(WriterFixture::class, $writer);
@@ -112,7 +112,7 @@ final class LogManagerTest extends UnitTestCase
                 WriterFixture::class => [],
             ],
         ];
-        $logger = (new LogManager())->getLogger($component);
+        $logger = new LogManager()->getLogger($component);
         $logger->debug('below minimum level');
         $writer = $logger->getWriters()[LogLevel::WARNING][0];
         self::assertInstanceOf(WriterFixture::class, $writer);

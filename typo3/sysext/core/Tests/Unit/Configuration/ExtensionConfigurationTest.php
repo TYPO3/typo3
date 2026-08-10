@@ -35,7 +35,7 @@ final class ExtensionConfigurationTest extends UnitTestCase
             ],
         ];
         $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['someExtension'] = $extConf;
-        self::assertSame((new ExtensionConfiguration())->get('someExtension'), $extConf);
+        self::assertSame(new ExtensionConfiguration()->get('someExtension'), $extConf);
     }
 
     #[Test]
@@ -47,7 +47,7 @@ final class ExtensionConfigurationTest extends UnitTestCase
                 'someFlag' => 'foo',
             ],
         ];
-        self::assertSame((new ExtensionConfiguration())->get('someExtension', 'aFeature'), 'iAmEnabled');
+        self::assertSame(new ExtensionConfiguration()->get('someExtension', 'aFeature'), 'iAmEnabled');
     }
 
     #[Test]
@@ -59,7 +59,7 @@ final class ExtensionConfigurationTest extends UnitTestCase
                 'someFlag' => 'foo',
             ],
         ];
-        self::assertSame((new ExtensionConfiguration())->get('someExtension', 'aFlagCategory'), ['someFlag' => 'foo']);
+        self::assertSame(new ExtensionConfiguration()->get('someExtension', 'aFlagCategory'), ['someFlag' => 'foo']);
     }
 
     #[Test]
@@ -67,7 +67,7 @@ final class ExtensionConfigurationTest extends UnitTestCase
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1509715852);
-        (new ExtensionConfiguration())->set('');
+        new ExtensionConfiguration()->set('');
     }
 
     #[Test]
@@ -79,7 +79,7 @@ final class ExtensionConfigurationTest extends UnitTestCase
         $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['foo'] = [
             'bar' => 'baz',
         ];
-        (new ExtensionConfiguration())->set('foo');
+        new ExtensionConfiguration()->set('foo');
         self::assertFalse(isset($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['foo']));
     }
 
@@ -94,7 +94,7 @@ final class ExtensionConfigurationTest extends UnitTestCase
             'bar' => 'fizz',
             'bee' => 'boo',
         ];
-        (new ExtensionConfiguration())->set('foo', $value);
+        new ExtensionConfiguration()->set('foo', $value);
         self::assertSame($value, $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['foo']);
     }
 }

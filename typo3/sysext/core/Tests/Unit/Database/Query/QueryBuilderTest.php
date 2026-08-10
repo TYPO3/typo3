@@ -277,7 +277,7 @@ final class QueryBuilderTest extends UnitTestCase
     {
         $this->connection->method('quoteIdentifier')->willReturnCallback(
             static function (string $identifier): string {
-                return (new MockPlatform())->quoteIdentifier($identifier);
+                return new MockPlatform()->quoteIdentifier($identifier);
             }
         );
         self::assertSame([$expectedResult], $this->subject->quoteIdentifiersForSelect([$identifier]));
@@ -290,7 +290,7 @@ final class QueryBuilderTest extends UnitTestCase
         $this->expectExceptionCode(1461170686);
         $this->connection->method('quoteIdentifier')->willReturnCallback(
             static function (string $identifier): string {
-                return (new MockPlatform())->quoteIdentifier($identifier);
+                return new MockPlatform()->quoteIdentifier($identifier);
             }
         );
         $this->subject->quoteIdentifiersForSelect(['aField AS anotherField,someField AS someThing']);

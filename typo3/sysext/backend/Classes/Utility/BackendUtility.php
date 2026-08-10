@@ -821,7 +821,7 @@ class BackendUtility
         $sign = $then > $now ? '-' : '';
         // Take an absolute diff, since we don't want formatDateInterval to output the (correct) sign
         $diff = $now->diff($then, true);
-        return $sign . (new DateFormatter())->formatDateInterval($diff, $labels);
+        return $sign . new DateFormatter()->formatDateInterval($diff, $labels);
     }
 
     /**
@@ -1405,7 +1405,7 @@ class BackendUtility
                     // Generate age suffix as long as not explicitly suppressed
                     if (!($theColConf['disableAgeDisplay'] ?? false)) {
                         $now = DateTimeFactory::createFromTimestamp($GLOBALS['EXEC_TIME']);
-                        $ageSuffix = sprintf(' (%s)', (new DateFormatter())->formatDateInterval(
+                        $ageSuffix = sprintf(' (%s)', new DateFormatter()->formatDateInterval(
                             $now->diff($datetime),
                             $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears')
                         ));

@@ -41,30 +41,30 @@ final class SelectViewHelperTest extends FunctionalTestCase
     #[Test]
     public function selectCorrectlySetsTagName(): void
     {
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters());
         $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
         $context->getTemplatePaths()->setTemplateSource('<f:form.select />');
-        self::assertSame('<select name=""></select>', (new TemplateView($context))->render());
+        self::assertSame('<select name=""></select>', new TemplateView($context)->render());
     }
 
     #[Test]
     public function selectCreatesExpectedOptions(): void
     {
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters());
         $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
         $context->getTemplatePaths()->setTemplateSource('<f:form.select name="myName" value="value2" options="{value1: \"label1\", value2: \"label2\"}" />');
         $expected = '<select name="myName"><option value="value1">label1</option>' . chr(10) . '<option value="value2" selected="selected">label2</option>' . chr(10) . '</select>';
-        self::assertSame($expected, (new TemplateView($context))->render());
+        self::assertSame($expected, new TemplateView($context)->render());
     }
 
     #[Test]
     public function selectShouldSetTheRequiredAttribute(): void
     {
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters());
         $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
         $context->getTemplatePaths()->setTemplateSource('<f:form.select name="myName" required="true" value="value2" options="{value1: \"label1\", value2: \"label2\"}" />');
         $expected = '<select required="required" name="myName"><option value="value1">label1</option>' . chr(10) . '<option value="value2" selected="selected">label2</option>' . chr(10) . '</select>';
-        self::assertSame($expected, (new TemplateView($context))->render());
+        self::assertSame($expected, new TemplateView($context)->render());
     }
 
     #[Test]
@@ -86,7 +86,7 @@ final class SelectViewHelperTest extends FunctionalTestCase
                 'uid' => '2',
             ],
         ];
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters());
         $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
         $context->getTemplatePaths()->setTemplateSource('<f:form.select name="myName" optionValueField="uid" optionLabelField="title" sortByOptionLabel="true" options="{options}" />');
         $view = new TemplateView($context);
@@ -120,7 +120,7 @@ EOT;
                 'uid' => '2',
             ],
         ];
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters());
         $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
         $context->getTemplatePaths()->setTemplateSource('<f:form.select name="myName" optionLabelField="title" sortByOptionLabel="true" options="{options}" />');
         $view = new TemplateView($context);
@@ -152,7 +152,7 @@ EOT;
                 'uid' => '2',
             ],
         ];
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters());
         $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
         $context->getTemplatePaths()->setTemplateSource('<f:form.select name="myName" optionValueField="uid" sortByOptionLabel="true" options="{options}" />');
         $view = new TemplateView($context);
@@ -184,7 +184,7 @@ EOT;
 
         $options = [$obj1, $obj2, $obj3, $obj4];
 
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters());
         $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
         $context->getTemplatePaths()->setTemplateSource('<f:form.select name="myName" optionValueField="uid" optionLabelField="title" sortByOptionLabel="true" options="{options}" />');
         $view = new TemplateView($context);
@@ -218,7 +218,7 @@ EOT;
                 'uid' => '2',
             ],
         ]);
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters());
         $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
         $context->getTemplatePaths()->setTemplateSource('<f:form.select name="myName" optionValueField="uid" optionLabelField="title" sortByOptionLabel="true" options="{options}" />');
         $view = new TemplateView($context);
@@ -241,7 +241,7 @@ EOT;
             'value1' => 'label1',
             'value2' => 'label2',
         ];
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters());
         $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
         $context->getTemplatePaths()->setTemplateSource('<f:form.select name="myName" value="value2" options="{options}" />');
         $view = new TemplateView($context);
@@ -263,7 +263,7 @@ EOT;
             'value1' => 'label1',
             'value2' => 'label2',
         ];
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters());
         $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
         $context->getTemplatePaths()->setTemplateSource('<f:form.select name="myName" sortByOptionLabel="true" value="value2" options="{options}" />');
         $view = new TemplateView($context);
@@ -286,7 +286,7 @@ EOT;
             'value3' => 'label3',
         ];
         $value = ['value3', 'value1'];
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters());
         $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
         $context->getTemplatePaths()->setTemplateSource('<f:form.select multiple="true" name="myName" value="{value}" options="{options}" />');
         $view = new TemplateView($context);
@@ -305,7 +305,7 @@ EOT;
     public function multipleSelectWithoutOptionsCreatesExpectedOptions(): void
     {
         $value = ['value3', 'value1'];
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters());
         $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
         $context->getTemplatePaths()->setTemplateSource('<f:form.select multiple="true" name="myName" value="{value}" options="{}" />');
         $view = new TemplateView($context);
@@ -325,7 +325,7 @@ EOT;
             $user_sk,
             $user_rl,
         ];
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters());
         $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
         $context->getTemplatePaths()->setTemplateSource('<f:form.select name="myName" optionValueField="id" optionLabelField="firstName" value="{value}" options="{options}" />');
         $view = new TemplateView($context);
@@ -351,7 +351,7 @@ EOT;
             $user_sk,
             $user_rl,
         ];
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters());
         $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
         $context->getTemplatePaths()->setTemplateSource('<f:form.select multiple="true" name="myName" optionValueField="id" optionLabelField="firstName" value="{value}" options="{options}" />');
         $view = new TemplateView($context);
@@ -391,7 +391,7 @@ EOT;
         $container = $this->get('service_container');
         $container->set(PersistenceManager::class, $persistenceManagerStub);
 
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters());
         $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
         $context->getTemplatePaths()->setTemplateSource('<f:form.select multiple="true" name="myName" optionLabelField="firstName" value="{value}" options="{options}" />');
         $view = new TemplateView($context);
@@ -420,7 +420,7 @@ EOT;
         $container = $this->get('service_container');
         $container->set(PersistenceManager::class, $persistenceManagerStub);
 
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters());
         $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
         $context->getTemplatePaths()->setTemplateSource('<f:form.select name="myName" options="{options}" />');
         $view = new TemplateView($context);
@@ -446,7 +446,7 @@ EOT;
         $container = $this->get('service_container');
         $container->set(PersistenceManager::class, $persistenceManagerStub);
 
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters());
         $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
         $context->getTemplatePaths()->setTemplateSource('<f:form.select name="myName" options="{options}" />');
         $view = new TemplateView($context);
@@ -472,7 +472,7 @@ EOT;
         $container = $this->get('service_container');
         $container->set(PersistenceManager::class, $persistenceManagerStub);
 
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters());
         $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
         $context->getTemplatePaths()->setTemplateSource('<f:form.select name="myName" options="{options}" />');
         $view = new TemplateView($context);
@@ -494,7 +494,7 @@ EOT;
         $propertyResult->addError(new Error('invalidProperty', 2));
         $extbaseRequestParameters = new ExtbaseRequestParameters();
         $extbaseRequestParameters->setOriginalRequestMappingResults($mappingResult);
-        $psr7Request = (new ServerRequest())->withAttribute('extbase', $extbaseRequestParameters)
+        $psr7Request = new ServerRequest()->withAttribute('extbase', $extbaseRequestParameters)
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $extbaseRequest = new Request($psr7Request);
 
@@ -515,7 +515,7 @@ EOT;
             'value2' => 'label2',
             'value3' => 'label3',
         ];
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters());
         $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
         $context->getTemplatePaths()->setTemplateSource('<f:form.select multiple="true" selectAllByDefault="true" name="myName" options="{options}" />');
         $view = new TemplateView($context);
@@ -537,7 +537,7 @@ EOT;
             'value2' => 'label2',
             'value3' => 'label3',
         ];
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters());
         $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
         $context->getTemplatePaths()->setTemplateSource('<f:form.select multiple="true" value="{value}" selectAllByDefault="true" name="myName" options="{options}" />');
         $view = new TemplateView($context);
@@ -560,7 +560,7 @@ EOT;
             'value2' => 'label2',
             'value3' => 'label3',
         ];
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters());
         $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
         $context->getTemplatePaths()->setTemplateSource('<f:form.select prependOptionLabel="please choose" name="myName" options="{options}" />');
         $view = new TemplateView($context);
@@ -584,7 +584,7 @@ EOT;
             'value2' => 'label2',
             'value3' => 'label3',
         ];
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters());
         $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
         $context->getTemplatePaths()->setTemplateSource('<f:form.select prependOptionLabel="please choose" prependOptionValue="-1" name="myName" options="{options}" />');
         $view = new TemplateView($context);
@@ -610,7 +610,7 @@ EOT;
             UserRoleEnum::GUEST->name => 'Guest',
         ];
 
-        $serverRequest = (new ServerRequest())
+        $serverRequest = new ServerRequest()
             ->withAttribute('extbase', new ExtbaseRequestParameters())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
@@ -635,7 +635,7 @@ EOT;
             UserRoleBackedEnum::GUEST->value => 'Guest',
         ];
 
-        $serverRequest = (new ServerRequest())
+        $serverRequest = new ServerRequest()
             ->withAttribute('extbase', new ExtbaseRequestParameters())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
@@ -669,7 +669,7 @@ EOT;
                 'uid' => '2',
             ],
         ];
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters());
         $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
         $context->getTemplatePaths()->setTemplateSource('<f:form.select name="myName" optionsAfterContent="0" optionValueField="uid" optionLabelField="title" sortByOptionLabel="true" options="{options}"><option value="4711">4712</option></f:form.select>');
         $view = new TemplateView($context);
@@ -703,7 +703,7 @@ EOT;
                 0 => '2',
             ],
         ];
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters());
         $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
         $context->getTemplatePaths()->setTemplateSource('<f:form.select name="myName" optionsAfterContent="0" optionValueField="0" optionLabelField="1" sortByOptionLabel="true" options="{options}" />');
         $view = new TemplateView($context);
@@ -737,7 +737,7 @@ EOT;
                 'uid' => '2',
             ],
         ];
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters());
         $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
         $context->getTemplatePaths()->setTemplateSource('<f:form.select optionsAfterContent="1" name="myName" optionValueField="uid" optionLabelField="title" sortByOptionLabel="true" options="{options}"><option value="4711">4712</option></f:form.select>');
         $view = new TemplateView($context);
@@ -771,7 +771,7 @@ EOT;
                 'uid' => '2',
             ],
         ];
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters());
         $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
         $context->getTemplatePaths()->setTemplateSource('<f:for each="{4711:\'4712\'}" as="i" iteration="iterator" key="k"><f:form.select name="myName" optionValueField="uid" optionLabelField="title" sortByOptionLabel="true" options="{options}"><option value="{i}">{k}</option></f:form.select></f:for>');
         $view = new TemplateView($context);

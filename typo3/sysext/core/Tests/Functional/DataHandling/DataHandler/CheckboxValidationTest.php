@@ -129,7 +129,7 @@ final class CheckboxValidationTest extends FunctionalTestCase
     {
         $actionService = new ActionService();
         $this->backendUserAuthentication->workspace = 1;
-        (new Context())->setAspect('workspace', new WorkspaceAspect(1));
+        new Context()->setAspect('workspace', new WorkspaceAspect(1));
         $map = $actionService->createNewRecord('tt_content', self::PAGE_ID, [
             'tx_testdatahandler_checkbox_with_eval' => 1,
         ]);
@@ -144,7 +144,7 @@ final class CheckboxValidationTest extends FunctionalTestCase
     {
         $actionService = new ActionService();
         $this->backendUserAuthentication->workspace = 1;
-        (new Context())->setAspect('workspace', new WorkspaceAspect(1));
+        new Context()->setAspect('workspace', new WorkspaceAspect(1));
         $map = $actionService->createNewRecord('tt_content', self::PAGE_ID_OTHER, [
             'tx_testdatahandler_checkbox_with_eval' => 1,
         ]);

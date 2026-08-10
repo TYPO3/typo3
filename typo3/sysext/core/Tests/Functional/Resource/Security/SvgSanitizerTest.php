@@ -66,8 +66,8 @@ final class SvgSanitizerTest extends FunctionalTestCase
         $svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10">'
             . '<g><rect width="10" height="10"/></g></svg>';
 
-        $pretty = (new SvgSanitizer())->sanitizeContent($svg);
-        $minified = (new SvgSanitizer())->sanitizeContent($svg, true);
+        $pretty = new SvgSanitizer()->sanitizeContent($svg);
+        $minified = new SvgSanitizer()->sanitizeContent($svg, true);
 
         self::assertStringContainsString("\n", $pretty);
         self::assertStringNotContainsString("\n", $minified);
@@ -79,8 +79,8 @@ final class SvgSanitizerTest extends FunctionalTestCase
         $svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10">'
             . '<a href="https://example.com"><rect width="10" height="10"/></a></svg>';
 
-        $withLinks = (new SvgSanitizer())->sanitizeContent($svg, true);
-        $withoutLinks = (new SvgSanitizer())->sanitizeContent($svg, true, true);
+        $withLinks = new SvgSanitizer()->sanitizeContent($svg, true);
+        $withoutLinks = new SvgSanitizer()->sanitizeContent($svg, true, true);
 
         self::assertStringContainsString('<a', $withLinks);
         self::assertStringContainsString('href="https://example.com"', $withLinks);
@@ -94,7 +94,7 @@ final class SvgSanitizerTest extends FunctionalTestCase
         $svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10">'
             . '<a href="https://example.com"><rect width="10" height="10"/></a></svg>';
 
-        $result = (new SvgSanitizer())->sanitizeContent($svg);
+        $result = new SvgSanitizer()->sanitizeContent($svg);
 
         self::assertStringContainsString('<a', $result);
     }

@@ -31,7 +31,7 @@ final class HtmlentitiesDecodeViewHelperTest extends FunctionalTestCase
     {
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:format.htmlentitiesDecode value="Some string" />');
-        self::assertEquals('Some string', (new TemplateView($context))->render());
+        self::assertEquals('Some string', new TemplateView($context)->render());
     }
 
     #[Test]
@@ -39,7 +39,7 @@ final class HtmlentitiesDecodeViewHelperTest extends FunctionalTestCase
     {
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:format.htmlentitiesDecode>Some string</f:format.htmlentitiesDecode>');
-        self::assertEquals('Some string', (new TemplateView($context))->render());
+        self::assertEquals('Some string', new TemplateView($context)->render());
     }
 
     #[Test]
@@ -47,7 +47,7 @@ final class HtmlentitiesDecodeViewHelperTest extends FunctionalTestCase
     {
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:for each="{4711:\'4712\'}" as="i" iteration="iterator" key="k"><f:format.htmlentitiesDecode>{k}</f:format.htmlentitiesDecode></f:for>');
-        self::assertEquals('4711', (new TemplateView($context))->render());
+        self::assertEquals('4711', new TemplateView($context)->render());
     }
 
     #[Test]
@@ -56,7 +56,7 @@ final class HtmlentitiesDecodeViewHelperTest extends FunctionalTestCase
         $source = 'This is a sample text without special characters. <> &©"\'';
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:format.htmlentitiesDecode>' . $source . '</f:format.htmlentitiesDecode>');
-        self::assertEquals($source, (new TemplateView($context))->render());
+        self::assertEquals($source, new TemplateView($context)->render());
     }
 
     #[Test]
@@ -66,7 +66,7 @@ final class HtmlentitiesDecodeViewHelperTest extends FunctionalTestCase
         $expectedResult = 'Some special characters: & " \' < > *';
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:format.htmlentitiesDecode>' . $source . '</f:format.htmlentitiesDecode>');
-        self::assertEquals($expectedResult, (new TemplateView($context))->render());
+        self::assertEquals($expectedResult, new TemplateView($context)->render());
     }
 
     #[Test]
@@ -76,7 +76,7 @@ final class HtmlentitiesDecodeViewHelperTest extends FunctionalTestCase
         $expectedResult = 'Some special characters: & &quot; \' < > *';
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:format.htmlentitiesDecode keepQuotes="true">' . $source . '</f:format.htmlentitiesDecode>');
-        self::assertEquals($expectedResult, (new TemplateView($context))->render());
+        self::assertEquals($expectedResult, new TemplateView($context)->render());
     }
 
     #[Test]
@@ -86,6 +86,6 @@ final class HtmlentitiesDecodeViewHelperTest extends FunctionalTestCase
         $expectedResult = 'Some special characters: & " \' < > *';
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:format.htmlentitiesDecode encoding="ISO-8859-1">' . $source . '</f:format.htmlentitiesDecode>');
-        self::assertEquals($expectedResult, (new TemplateView($context))->render());
+        self::assertEquals($expectedResult, new TemplateView($context)->render());
     }
 }

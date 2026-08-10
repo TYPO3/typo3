@@ -147,7 +147,7 @@ final class PersistedAliasMapperTest extends FunctionalTestCase
         $path = Environment::getConfigPath() . '/sites';
         $eventDispatcher = $this->get(EventDispatcherInterface::class);
         GeneralUtility::rmdir($path . '/' . $site->getIdentifier(), true);
-        (new SiteWriter($path, $eventDispatcher, $this->get(YamlFileLoader::class)))
+        new SiteWriter($path, $eventDispatcher, $this->get(YamlFileLoader::class))
             ->write($site->getIdentifier(), $site->getConfiguration());
     }
 

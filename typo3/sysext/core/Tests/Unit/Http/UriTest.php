@@ -218,35 +218,35 @@ final class UriTest extends UnitTestCase
     #[Test]
     public function rootlessPathWithAuthorityIsPrefixedWithSlash(): void
     {
-        $subject = (new Uri('//example.com'))->withPath('foo/bar/baz');
+        $subject = new Uri('//example.com')->withPath('foo/bar/baz');
         self::assertEquals('//example.com/foo/bar/baz', (string)$subject);
     }
 
     #[Test]
     public function relativePathWithAuthorityIsPrefixedWithSlash(): void
     {
-        $subject = (new Uri('//example.com'))->withPath('./foo/bar/baz');
+        $subject = new Uri('//example.com')->withPath('./foo/bar/baz');
         self::assertEquals('//example.com/./foo/bar/baz', (string)$subject);
     }
 
     #[Test]
     public function rootlessPathWithColonInFirstSegmentAndNoAuthorityIsNotPrefixedWithDotSlash(): void
     {
-        $subject = (new Uri(''))->withPath('foo:bar/baz');
+        $subject = new Uri('')->withPath('foo:bar/baz');
         self::assertEquals('./foo:bar/baz', (string)$subject);
     }
 
     #[Test]
     public function rootlessPathWithColonInOnlySegmentAndNoAuthorityIsNotPrefixedWithDotSlash(): void
     {
-        $subject = (new Uri(''))->withPath('foo:bar');
+        $subject = new Uri('')->withPath('foo:bar');
         self::assertEquals('./foo:bar', (string)$subject);
     }
 
     #[Test]
     public function rootlessPathWithColonInSegmentAndAuthorityIsNotPrefixedWithSlash(): void
     {
-        $subject = (new Uri('//example.com'))->withPath('foo:bar');
+        $subject = new Uri('//example.com')->withPath('foo:bar');
         self::assertEquals('//example.com/foo:bar', (string)$subject);
     }
 
@@ -490,7 +490,7 @@ final class UriTest extends UnitTestCase
     #[Test]
     public function getAuthorityOmitsPortForStandardSchemePortCombinations($scheme, $port): void
     {
-        $uri = (new Uri())
+        $uri = new Uri()
             ->withHost('example.com')
             ->withScheme($scheme)
             ->withPort($port);
@@ -500,7 +500,7 @@ final class UriTest extends UnitTestCase
     #[Test]
     public function getPathIsProperlyEncoded(): void
     {
-        $uri = (new Uri())->withPath('/foo^bar');
+        $uri = new Uri()->withPath('/foo^bar');
         $expected = '/foo%5Ebar';
         self::assertEquals($expected, $uri->getPath());
     }
@@ -508,7 +508,7 @@ final class UriTest extends UnitTestCase
     #[Test]
     public function getPathDoesNotBecomeDoubleEncoded(): void
     {
-        $uri = (new Uri())->withPath('/foo%5Ebar');
+        $uri = new Uri()->withPath('/foo%5Ebar');
         $expected = '/foo%5Ebar';
         self::assertEquals($expected, $uri->getPath());
     }
@@ -528,7 +528,7 @@ final class UriTest extends UnitTestCase
     #[Test]
     public function getQueryIsProperlyEncoded($query, $expected): void
     {
-        $uri = (new Uri())->withQuery($query);
+        $uri = new Uri()->withQuery($query);
         self::assertEquals($expected, $uri->getQuery());
     }
 
@@ -536,14 +536,14 @@ final class UriTest extends UnitTestCase
     #[Test]
     public function getQueryIsNotDoubleEncoded($query, $expected): void
     {
-        $uri = (new Uri())->withQuery($expected);
+        $uri = new Uri()->withQuery($expected);
         self::assertEquals($expected, $uri->getQuery());
     }
 
     #[Test]
     public function getFragmentIsProperlyEncoded(): void
     {
-        $uri = (new Uri())->withFragment('/p^th?key^=`bar#b@z');
+        $uri = new Uri()->withFragment('/p^th?key^=`bar#b@z');
         $expected = '/p%5Eth?key%5E=%60bar%23b@z';
         self::assertEquals($expected, $uri->getFragment());
     }
@@ -552,7 +552,7 @@ final class UriTest extends UnitTestCase
     public function getFragmentIsNotDoubleEncoded(): void
     {
         $expected = '/p%5Eth?key%5E=%60bar%23b@z';
-        $uri = (new Uri())->withFragment($expected);
+        $uri = new Uri()->withFragment($expected);
         self::assertEquals($expected, $uri->getFragment());
     }
 

@@ -138,7 +138,7 @@ final class MediaViewHelperTest extends FunctionalTestCase
     {
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setConfigArray([]);
-        $request = (new ServerRequest('https://www.example.com/'))
+        $request = new ServerRequest('https://www.example.com/')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withAttribute('frontend.typoscript', $frontendTypoScript)
             ->withAttribute('normalizedParams', NormalizedParams::createFromServerParams([

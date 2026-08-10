@@ -51,7 +51,7 @@ final class FileHandlingServiceTest extends FunctionalTestCase
         $arguments = new Arguments();
         $arguments->addArgument($argument);
 
-        $serverRequest = (new ServerRequest('/some/uri', 'GET'))
+        $serverRequest = new ServerRequest('/some/uri', 'GET')
             ->withAttribute('extbase', new ExtbaseRequestParameters())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
         $request = new Request($serverRequest);
@@ -70,7 +70,7 @@ final class FileHandlingServiceTest extends FunctionalTestCase
         $arguments = new Arguments();
         $arguments->addArgument($argument);
 
-        $serverRequest = (new ServerRequest('/some/uri', 'POST'))
+        $serverRequest = new ServerRequest('/some/uri', 'POST')
             ->withAttribute('extbase', new ExtbaseRequestParameters())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
         $request = new Request($serverRequest);
@@ -93,7 +93,7 @@ final class FileHandlingServiceTest extends FunctionalTestCase
         $arguments = new Arguments();
         $arguments->addArgument($argument);
 
-        $serverRequest = (new ServerRequest('/some/uri', 'POST'))
+        $serverRequest = new ServerRequest('/some/uri', 'POST')
             ->withAttribute('extbase', new ExtbaseRequestParameters())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
         $request = new Request($serverRequest);
@@ -121,7 +121,7 @@ final class FileHandlingServiceTest extends FunctionalTestCase
         $arguments = new Arguments();
         $arguments->addArgument($argument);
 
-        $serverRequest = (new ServerRequest('/some/uri', 'POST'))
+        $serverRequest = new ServerRequest('/some/uri', 'POST')
             ->withAttribute('extbase', new ExtbaseRequestParameters())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
         $request = new Request($serverRequest);
@@ -145,7 +145,7 @@ final class FileHandlingServiceTest extends FunctionalTestCase
         $arguments = new Arguments();
         $arguments->addArgument($argument);
 
-        $serverRequest = (new ServerRequest('/some/uri', 'GET'))
+        $serverRequest = new ServerRequest('/some/uri', 'GET')
             ->withAttribute('extbase', new ExtbaseRequestParameters())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
         $request = new Request($serverRequest);
@@ -177,7 +177,7 @@ final class FileHandlingServiceTest extends FunctionalTestCase
 
         $parsedBody = [];
 
-        $serverRequest = (new ServerRequest('/some/uri', 'POST'))
+        $serverRequest = new ServerRequest('/some/uri', 'POST')
             ->withAttribute('extbase', $extbaseRequestParamaters)
             ->withAttribute('frontend.typoscript', $frontendTypoScript)
             ->withParsedBody($parsedBody)
@@ -222,7 +222,7 @@ final class FileHandlingServiceTest extends FunctionalTestCase
             ],
         ];
 
-        $serverRequest = (new ServerRequest('/some/uri', 'POST'))
+        $serverRequest = new ServerRequest('/some/uri', 'POST')
             ->withAttribute('extbase', $extbaseRequestParamaters)
             ->withAttribute('frontend.typoscript', $frontendTypoScript)
             ->withParsedBody($parsedBody)
@@ -248,7 +248,7 @@ final class FileHandlingServiceTest extends FunctionalTestCase
         $arguments = new Arguments();
         $arguments->addArgument($argument);
 
-        $serverRequest = (new ServerRequest('/some/uri', 'POST'))
+        $serverRequest = new ServerRequest('/some/uri', 'POST')
             ->withAttribute('extbase', new ExtbaseRequestParameters())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
         $request = new Request($serverRequest);

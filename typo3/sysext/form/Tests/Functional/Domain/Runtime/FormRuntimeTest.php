@@ -64,7 +64,7 @@ final class FormRuntimeTest extends FunctionalTestCase
         // without requiring a fully-bootstrapped TypoScript pipeline.
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
-        $feRequest = (new ServerRequest())
+        $feRequest = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withAttribute('frontend.typoscript', $frontendTypoScript);
         $this->get(ExtbaseConfigurationManagerInterface::class)->setRequest($feRequest);
@@ -284,14 +284,14 @@ final class FormRuntimeTest extends FunctionalTestCase
     {
         $frontendUser = new FrontendUserAuthentication();
         $frontendUser->initializeUserSessionManager();
-        $serverRequest = (new ServerRequest())
+        $serverRequest = new ServerRequest()
             ->withAttribute('extbase', new ExtbaseRequestParameters())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withAttribute('frontend.user', $frontendUser);
 
         $GLOBALS['TYPO3_REQUEST'] = $serverRequest;
 
-        return (new Request($serverRequest))->withPluginName('Formframework');
+        return new Request($serverRequest)->withPluginName('Formframework');
     }
 
     private function buildFormDefinition(): FormDefinition

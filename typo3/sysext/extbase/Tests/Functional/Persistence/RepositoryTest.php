@@ -392,7 +392,7 @@ final class RepositoryTest extends FunctionalTestCase
     public function removeObjectWritesHistoryEntry(): void
     {
         $GLOBALS['BE_USER'] = new BackendUserAuthentication();
-        $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $request = new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $this->get(ConfigurationManagerInterface::class)->setRequest($request);
 
         $persistenceManager = $this->get(PersistenceManager::class);
@@ -414,7 +414,7 @@ final class RepositoryTest extends FunctionalTestCase
     public function removeObjectDoesNotWriteHistoryEntryWhenTrackingIsDisabled(): void
     {
         $GLOBALS['BE_USER'] = new BackendUserAuthentication();
-        $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $request = new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $this->get(ConfigurationManagerInterface::class)->setRequest($request);
 
         $persistenceManager = $this->get(PersistenceManager::class);
@@ -438,7 +438,7 @@ final class RepositoryTest extends FunctionalTestCase
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['features']['extbase.enableHistoryTracking'] = false;
         $GLOBALS['BE_USER'] = new BackendUserAuthentication();
-        $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $request = new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $this->get(ConfigurationManagerInterface::class)->setRequest($request);
 
         $persistenceManager = $this->get(PersistenceManager::class);

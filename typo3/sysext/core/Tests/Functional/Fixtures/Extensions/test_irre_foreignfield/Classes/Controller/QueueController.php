@@ -59,7 +59,7 @@ class QueueController extends ActionController
         // Clear these states and fetch fresh entities!
         $this->persistenceManager->clearState();
 
-        $response = (new ForwardResponse($call[1]))
+        $response = new ForwardResponse($call[1])
             ->withControllerName($call[0]);
 
         $arguments = $call[2] ?? null;
@@ -76,6 +76,6 @@ class QueueController extends ActionController
         $this->view->assign('value', $value);
         $body = new Stream('php://temp', 'rw');
         $body->write($this->view->render());
-        return (new Response($body))->withHeader('Content-Type', 'application/json; charset=utf-8');
+        return new Response($body)->withHeader('Content-Type', 'application/json; charset=utf-8');
     }
 }

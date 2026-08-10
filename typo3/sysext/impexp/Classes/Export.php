@@ -330,7 +330,7 @@ class Export extends ImportExport
             'packager_name' => $this->getBackendUser()->user['realName'],
             'packager_email' => $this->getBackendUser()->user['email'],
             'TYPO3_version' => (string)$this->typo3Version,
-            'created' => (new DateFormatter())->format($dateAspect->getDateTime(), 'EEE d. MMMM y', $locale),
+            'created' => new DateFormatter()->format($dateAspect->getDateTime(), 'EEE d. MMMM y', $locale),
         ], static fn(string $value): bool => $value !== '');
         if ($meta !== []) {
             $this->dat['header']['meta'] = $meta;
@@ -1102,7 +1102,7 @@ class Export extends ImportExport
         // Creating XML file from $outputArray:
         $charset = $this->dat['header']['charset'] ?: 'utf-8';
         $XML = '<?xml version="1.0" encoding="' . $charset . '" standalone="yes" ?>' . LF;
-        $XML .= (new Typo3XmlSerializer())->encodeWithReturningExceptionAsString(
+        $XML .= new Typo3XmlSerializer()->encodeWithReturningExceptionAsString(
             $this->dat,
             new Typo3XmlParserOptions([Typo3XmlParserOptions::ROOT_NODE_NAME => 'T3RecordDocument']),
             $options

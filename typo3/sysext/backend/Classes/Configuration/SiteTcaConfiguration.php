@@ -45,7 +45,7 @@ class SiteTcaConfiguration
         $GLOBALS['SiteConfiguration'] = [];
         $activePackages = GeneralUtility::makeInstance(PackageManager::class)->getActivePackages();
         // First load "full table" files from Configuration/SiteConfiguration
-        $finder = (new Finder())->files()->depth(0)->name('*.php');
+        $finder = new Finder()->files()->depth(0)->name('*.php');
         $hasDirectoryEntries = false;
         foreach ($activePackages as $package) {
             try {
@@ -62,7 +62,7 @@ class SiteTcaConfiguration
             }
         }
         // Execute override files from Configuration/SiteConfiguration/Overrides
-        $finder = (new Finder())->files()->depth(0)->name('*.php');
+        $finder = new Finder()->files()->depth(0)->name('*.php');
         $hasDirectoryEntries = false;
         foreach ($activePackages as $package) {
             try {

@@ -56,7 +56,7 @@ final readonly class AvatarProviderPass implements CompilerPassInterface
             }
         }
 
-        foreach ((new DependencyOrderingService())->orderByDependencies($providers) as ['serviceName' => $serviceName]) {
+        foreach (new DependencyOrderingService()->orderByDependencies($providers) as ['serviceName' => $serviceName]) {
             $orderedProviders[] = new Reference($serviceName);
         }
 

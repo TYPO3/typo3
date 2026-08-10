@@ -31,7 +31,7 @@ final class OptgroupViewHelperTest extends FunctionalTestCase
     {
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:form.select.optgroup />');
-        self::assertSame('<optgroup />', (new TemplateView($context))->render());
+        self::assertSame('<optgroup />', new TemplateView($context)->render());
     }
 
     #[Test]
@@ -39,7 +39,7 @@ final class OptgroupViewHelperTest extends FunctionalTestCase
     {
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:form.select.optgroup disabled="true" />');
-        self::assertSame('<optgroup disabled="disabled" />', (new TemplateView($context))->render());
+        self::assertSame('<optgroup disabled="disabled" />', new TemplateView($context)->render());
     }
 
     #[Test]
@@ -47,6 +47,6 @@ final class OptgroupViewHelperTest extends FunctionalTestCase
     {
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:form.select.optgroup disabled="false" />');
-        self::assertSame('<optgroup />', (new TemplateView($context))->render());
+        self::assertSame('<optgroup />', new TemplateView($context)->render());
     }
 }

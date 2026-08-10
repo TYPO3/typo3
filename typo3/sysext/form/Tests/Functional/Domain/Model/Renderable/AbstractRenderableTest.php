@@ -42,7 +42,7 @@ final class AbstractRenderableTest extends FunctionalTestCase
     public function setOptionsResetsValidatorsIfDefined(): void
     {
         // $prototypeConfiguration is a monster array. Get it up front.
-        $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $request = new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $extbaseConfigurationManager = $this->get(ExtbaseConfigurationManagerInterface::class);
         $extbaseConfigurationManager->setRequest($request);
         $extFormConfigurationManager = $this->get(ExtFormConfigurationManagerInterface::class);

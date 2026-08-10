@@ -273,7 +273,7 @@ final class LanguageSelectorBuilderTest extends FunctionalTestCase
     {
         $site = $this->get(SiteFinder::class)->getSiteByIdentifier('test-site');
 
-        $request = (new ServerRequest('https://example.com/typo3/'))
+        $request = new ServerRequest('https://example.com/typo3/')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('site', $site)
             ->withQueryParams(['id' => $pageId, 'languages' => $selectedLanguageIds]);

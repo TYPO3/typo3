@@ -659,7 +659,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder implements TypolinkBuilder
             && !($frontendTypoScriptConfigArray['baseURL'] ?? false)
             && count($queryParameters) === 1 // _language is always set
         ) {
-            $uri = (new Uri())->withFragment($fragment);
+            $uri = new Uri()->withFragment($fragment);
         } else {
             try {
                 $uri = $siteOfTargetPage->getRouter()->generateUri(

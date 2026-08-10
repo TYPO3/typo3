@@ -47,7 +47,7 @@ final class ModifyNewContentElementWizardItemsEventTest extends UnitTestCase
             1,
             2,
             3,
-            (new ServerRequest('https://example.com', 'POST'))->withQueryParams($this->queryParams),
+            new ServerRequest('https://example.com', 'POST')->withQueryParams($this->queryParams),
         );
     }
 

@@ -109,7 +109,7 @@ final class FormViewHelperTest extends FunctionalTestCase
         $context->getTemplatePaths()->setTemplateSource('<f:form actionUri="foobar" />');
         $this->get(ConfigurationManagerInterface::class)->setRequest($request);
         $expected = '<form action="foobar" method="post">';
-        self::assertStringContainsString($expected, (new TemplateView($context))->render());
+        self::assertStringContainsString($expected, new TemplateView($context)->render());
     }
 
     #[Test]
@@ -120,7 +120,7 @@ final class FormViewHelperTest extends FunctionalTestCase
         $context->getTemplatePaths()->setTemplateSource('<f:form name="myForm" />');
         $this->get(ConfigurationManagerInterface::class)->setRequest($request);
         $expected = '<form action="" method="post" name="myForm">';
-        self::assertStringContainsString($expected, (new TemplateView($context))->render());
+        self::assertStringContainsString($expected, new TemplateView($context)->render());
     }
 
     #[Test]
@@ -131,7 +131,7 @@ final class FormViewHelperTest extends FunctionalTestCase
         $context->getTemplatePaths()->setTemplateSource('<f:form name="" />');
         $this->get(ConfigurationManagerInterface::class)->setRequest($request);
         $expected = '<form action="" method="post">';
-        self::assertStringContainsString($expected, (new TemplateView($context))->render());
+        self::assertStringContainsString($expected, new TemplateView($context)->render());
     }
 
     #[Test]
@@ -232,7 +232,7 @@ final class FormViewHelperTest extends FunctionalTestCase
         $frontendTypoScript->setSetupArray([]);
         $frontendTypoScript->setConfigArray([]);
         $contentObject = $this->get(ContentObjectRenderer::class);
-        $serverRequest = (new ServerRequest())
+        $serverRequest = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withAttribute('frontend.typoscript', $frontendTypoScript)
             ->withAttribute('extbase', new ExtbaseRequestParameters())

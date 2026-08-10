@@ -2067,6 +2067,6 @@ final class CKEditor5MigratorTest extends UnitTestCase
     #[Test]
     public function migrationTests(array $configuration, array $expectation): void
     {
-        self::assertEquals($expectation, (new CKEditor5Migrator($configuration))->get());
+        self::assertEquals($expectation, new CKEditor5Migrator($configuration)->get());
     }
 }

@@ -105,7 +105,7 @@ final class TimingOptionsElementTest extends FunctionalTestCase
                     ],
                 ],
             ],
-            'request' => (new ServerRequest('http://localhost/typo3/', 'GET'))
+            'request' => new ServerRequest('http://localhost/typo3/', 'GET')
                 ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
                 ->withAttribute('route', new Route('/test', [])),
         ];
@@ -172,7 +172,7 @@ final class TimingOptionsElementTest extends FunctionalTestCase
                     'config' => [],
                 ],
             ],
-            'request' => (new ServerRequest('http://localhost/typo3/', 'GET'))
+            'request' => new ServerRequest('http://localhost/typo3/', 'GET')
                 ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
                 ->withAttribute('route', new Route('/test', [])),
         ];
@@ -227,7 +227,7 @@ final class TimingOptionsElementTest extends FunctionalTestCase
                     ],
                 ],
             ],
-            'request' => (new ServerRequest('http://localhost/typo3/', 'GET'))
+            'request' => new ServerRequest('http://localhost/typo3/', 'GET')
                 ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
                 ->withAttribute('route', new Route('/test', [])),
         ];
@@ -294,7 +294,7 @@ final class TimingOptionsElementTest extends FunctionalTestCase
                     ],
                 ],
             ],
-            'request' => (new ServerRequest('http://localhost/typo3/', 'GET'))
+            'request' => new ServerRequest('http://localhost/typo3/', 'GET')
                 ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
                 ->withAttribute('route', new Route('/test', [])),
         ];

@@ -30,6 +30,6 @@ final class ConditionLineTest extends UnitTestCase
     {
         $this->expectException(\LogicException::class);
         $this->expectExceptionCode(1655823705);
-        (new ConditionLine())->setValueToken(new Token(TokenType::T_BLANK, ''));
+        new ConditionLine()->setValueToken(new Token(TokenType::T_BLANK, ''));
     }
 }

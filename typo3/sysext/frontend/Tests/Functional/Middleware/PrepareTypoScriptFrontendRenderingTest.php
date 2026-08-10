@@ -62,7 +62,7 @@ final class PrepareTypoScriptFrontendRenderingTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/Fixtures/typoScriptFrontendInitializationBeUsers.csv');
         $response = $this->executeFrontendSubRequest(
             new InternalRequest('https://acme.com/hidden/'),
-            (new InternalRequestContext())->withBackendUserId(1)
+            new InternalRequestContext()->withBackendUserId(1)
         );
         self::assertEquals(200, $response->getStatusCode());
         self::assertStringContainsString('testing-typoScriptFrontendInitialization', (string)$response->getBody());
@@ -87,7 +87,7 @@ final class PrepareTypoScriptFrontendRenderingTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/Fixtures/typoScriptFrontendInitializationFeGroupsFeUsers.csv');
         $response = $this->executeFrontendSubRequest(
             new InternalRequest('https://acme.com/login-restricted/'),
-            (new InternalRequestContext())->withFrontendUserId(1)
+            new InternalRequestContext()->withFrontendUserId(1)
         );
         self::assertEquals(200, $response->getStatusCode());
         self::assertStringContainsString('testing-typoScriptFrontendInitialization', (string)$response->getBody());
@@ -111,7 +111,7 @@ final class PrepareTypoScriptFrontendRenderingTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/Fixtures/typoScriptFrontendInitializationFeGroupsFeUsers.csv');
         $response = $this->executeFrontendSubRequest(
             new InternalRequest('https://acme.com/login-restricted-group-one/'),
-            (new InternalRequestContext())->withFrontendUserId(2)
+            new InternalRequestContext()->withFrontendUserId(2)
         );
         self::assertEquals(403, $response->getStatusCode());
         self::assertStringContainsString('ID was not an accessible page', (string)$response->getBody());
@@ -125,7 +125,7 @@ final class PrepareTypoScriptFrontendRenderingTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/Fixtures/typoScriptFrontendInitializationFeGroupsFeUsers.csv');
         $response = $this->executeFrontendSubRequest(
             new InternalRequest('https://acme.com/login-restricted-group-one/'),
-            (new InternalRequestContext())->withFrontendUserId(1)
+            new InternalRequestContext()->withFrontendUserId(1)
         );
         self::assertEquals(200, $response->getStatusCode());
         self::assertStringContainsString('testing-typoScriptFrontendInitialization', (string)$response->getBody());

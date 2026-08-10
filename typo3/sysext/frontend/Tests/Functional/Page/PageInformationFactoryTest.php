@@ -54,7 +54,7 @@ final class PageInformationFactoryTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/DataSet/PageInformationFactoryTestRootlineImport.csv');
         $pageArguments = new PageArguments($pid, '0', []);
         $site = new Site('test', 2, []);
-        $request = (new ServerRequest())
+        $request = new ServerRequest()
             ->withAttribute('routing', $pageArguments)
             ->withAttribute('site', $site);
         $subject = $this->get(PageInformationFactory::class);

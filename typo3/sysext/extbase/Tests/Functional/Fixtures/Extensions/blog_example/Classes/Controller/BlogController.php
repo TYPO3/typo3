@@ -65,7 +65,7 @@ class BlogController extends ActionController
 
     public function testForwardAction(#[IgnoreValidation] Post $blogPost): ForwardResponse
     {
-        return (new ForwardResponse('testForwardTarget'))->withArguments(['blogPost' => $blogPost]);
+        return new ForwardResponse('testForwardTarget')->withArguments(['blogPost' => $blogPost]);
     }
 
     public function testForwardTargetAction(Post $blogPost): ResponseInterface

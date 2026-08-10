@@ -132,20 +132,20 @@ final class SplitButtonTest extends UnitTestCase
         $icon->setState(IconState::STATE_DEFAULT);
         $icon->setMarkup('[actions-document-save]');
 
-        $saveButton = (new InputButton())
+        $saveButton = new InputButton()
             ->setName('inputbutton-save')
             ->setValue('inputbutton-value')
             ->setIcon($icon)
             ->setTitle('inputbutton-title');
 
-        $someLinkButton = (new LinkButton())
+        $someLinkButton = new LinkButton()
             ->setHref('/some/link')
             ->setDataAttributes(['customkey' => 'customval'])
             ->setShowLabelText(true)
             ->setTitle('linkbutton-title')
             ->setIcon($icon);
 
-        $splitButtonElement = (new SplitButton())
+        $splitButtonElement = new SplitButton()
             ->addItem($saveButton, true)
             ->addItem($someLinkButton);
 
@@ -177,20 +177,20 @@ final class SplitButtonTest extends UnitTestCase
         $icon->setState(IconState::STATE_DEFAULT);
         $icon->setMarkup('[actions-document-save]');
 
-        $saveButton = (new InputButton())
+        $saveButton = new InputButton()
             ->setName('inputbutton-save')
             ->setValue('inputbutton-value')
             ->setIcon($icon)
             ->setTitle('inputbutton-title');
 
-        $someLinkButton = (new LinkButton())
+        $someLinkButton = new LinkButton()
             ->setHref('/some/link')
             ->setDataAttributes(['customkey' => 'customval'])
             ->setShowLabelText(true)
             ->setTitle('linkbutton-title')
             ->setIcon($icon);
 
-        $splitButtonElement = (new SplitButton())
+        $splitButtonElement = new SplitButton()
             ->addItem($someLinkButton, false)
             ->addItem($saveButton);
 

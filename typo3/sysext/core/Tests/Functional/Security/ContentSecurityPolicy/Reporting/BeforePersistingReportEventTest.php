@@ -159,14 +159,14 @@ final class BeforePersistingReportEventTest extends FunctionalTestCase
             {
                 $scope = Scope::backend();
                 $this->persistCspReport($scope, $request);
-                return (new Response())->withStatus(201);
+                return new Response()->withStatus(201);
             }
         };
 
         $kernel = new class implements RequestHandlerInterface {
             public function handle(ServerRequestInterface $request): ResponseInterface
             {
-                return (new Response())
+                return new Response()
                     ->withStatus(202);
             }
         };
@@ -178,7 +178,7 @@ final class BeforePersistingReportEventTest extends FunctionalTestCase
         $body->write(json_encode(['csp-report' => ['document-uri' => $uri, 'effective-directive' => 'foobar', 'blocked-uri' => 'darth://vader']]));
         $body->rewind();
         $requestTime = '1771490230';
-        $request = (new ServerRequest($uri, 'POST', $body))
+        $request = new ServerRequest($uri, 'POST', $body)
             ->withAttribute('normalizedParams', new NormalizedParams([], [], '', ''))
             ->withQueryParams([
                 'requestTime' => $requestTime,

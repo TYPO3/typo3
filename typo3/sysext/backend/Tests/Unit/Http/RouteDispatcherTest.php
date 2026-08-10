@@ -64,7 +64,7 @@ final class RouteDispatcherTest extends UnitTestCase
         $this->expectExceptionCode(1425381442);
 
         $route = new Route('not important', ['access' => 'public', 'target' => 42]);
-        $request = (new ServerRequest())->withAttribute('route', $route);
+        $request = new ServerRequest()->withAttribute('route', $route);
 
         $subject = new RouteDispatcher(
             $formProtectionFactory,
@@ -100,7 +100,7 @@ final class RouteDispatcherTest extends UnitTestCase
             'mainAction',
         ];
         $route = new Route('not important', ['access' => 'public', 'target' => $target]);
-        $request = (new ServerRequest())->withAttribute('route', $route);
+        $request = new ServerRequest()->withAttribute('route', $route);
 
         $subject = new RouteDispatcher(
             $formProtectionFactory,
@@ -135,7 +135,7 @@ final class RouteDispatcherTest extends UnitTestCase
             throw new \RuntimeException('I have been called. Good!', 1520756466);
         };
         $route = new Route('not important', ['access' => 'public', 'target' => $target]);
-        $request = (new ServerRequest())->withAttribute('route', $route);
+        $request = new ServerRequest()->withAttribute('route', $route);
 
         $subject = new RouteDispatcher(
             $formProtectionFactory,
@@ -168,7 +168,7 @@ final class RouteDispatcherTest extends UnitTestCase
 
         $target = RouteDispatcherClassInvokeFixture::class;
         $route = new Route('not important', ['access' => 'public', 'target' => $target]);
-        $request = (new ServerRequest())->withAttribute('route', $route);
+        $request = new ServerRequest()->withAttribute('route', $route);
 
         $subject = new RouteDispatcher(
             $formProtectionFactory,
@@ -195,7 +195,7 @@ final class RouteDispatcherTest extends UnitTestCase
 
         $target = 'routedispatcher.classinvokefixture';
         $route = new Route('not important', ['access' => 'public', 'target' => $target]);
-        $request = (new ServerRequest())->withAttribute('route', $route);
+        $request = new ServerRequest()->withAttribute('route', $route);
 
         $containerMock = $this->createMock(ContainerInterface::class);
         $containerMock->method('has')->with($target)->willReturn(true);
@@ -235,7 +235,7 @@ final class RouteDispatcherTest extends UnitTestCase
 
         $target = RouteDispatcherClassWithoutInvokeFixture::class;
         $route = new Route('not important', ['access' => 'public', 'target' => $target]);
-        $request = (new ServerRequest())->withAttribute('route', $route);
+        $request = new ServerRequest()->withAttribute('route', $route);
 
         $subject = new RouteDispatcher(
             $formProtectionFactory,
@@ -268,7 +268,7 @@ final class RouteDispatcherTest extends UnitTestCase
 
         $target = RouteDispatcherClassFixture::class . '::mainAction';
         $route = new Route('not important', ['access' => 'public', 'target' => $target]);
-        $request = (new ServerRequest())->withAttribute('route', $route);
+        $request = new ServerRequest()->withAttribute('route', $route);
 
         $subject = new RouteDispatcher(
             $formProtectionFactory,
@@ -301,7 +301,7 @@ final class RouteDispatcherTest extends UnitTestCase
 
         $target = RouteDispatcherStaticClassFixture::class . '::mainAction';
         $route = new Route('not important', ['access' => 'public', 'target' => $target]);
-        $request = (new ServerRequest())->withAttribute('route', $route);
+        $request = new ServerRequest()->withAttribute('route', $route);
 
         $subject = new RouteDispatcher(
             $formProtectionFactory,

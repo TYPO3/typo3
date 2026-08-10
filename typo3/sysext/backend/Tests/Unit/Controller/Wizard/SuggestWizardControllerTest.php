@@ -35,7 +35,7 @@ final class SuggestWizardControllerTest extends UnitTestCase
     public function getFlexFieldConfigurationThrowsExceptionIfSimpleFlexFieldIsNotFound(): void
     {
         $dataStructureIdentifier = '{"type":"tca","tableName":"tt_content","fieldName":"pi_flexform","dataStructureKey":"blog_example,list"}';
-        $request = (new ServerRequest())->withParsedBody([
+        $request = new ServerRequest()->withParsedBody([
             'value' => 'theSearchValue',
             'tableName' => 'aTable',
             'fieldName' => 'aField',
@@ -72,14 +72,14 @@ final class SuggestWizardControllerTest extends UnitTestCase
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1480609491);
-        (new SuggestWizardController($flexFormToolsMock, $tcaSchemaFactoryMock, self::createStub(ConnectionPool::class)))->searchAction($request);
+        new SuggestWizardController($flexFormToolsMock, $tcaSchemaFactoryMock, self::createStub(ConnectionPool::class))->searchAction($request);
     }
 
     #[Test]
     public function getFlexFieldConfigurationThrowsExceptionIfSectionContainerFlexFieldIsNotFound(): void
     {
         $dataStructureIdentifier = '{"type":"tca","tableName":"tt_content","fieldName":"pi_flexform","dataStructureKey":"blog_example,list"}';
-        $request = (new ServerRequest())->withParsedBody([
+        $request = new ServerRequest()->withParsedBody([
             'value' => 'theSearchValue',
             'tableName' => 'aTable',
             'fieldName' => 'aField',
@@ -116,7 +116,7 @@ final class SuggestWizardControllerTest extends UnitTestCase
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1480611208);
-        (new SuggestWizardController($flexFormToolsMock, $tcaSchemaFactoryMock, self::createStub(ConnectionPool::class)))->searchAction($request);
+        new SuggestWizardController($flexFormToolsMock, $tcaSchemaFactoryMock, self::createStub(ConnectionPool::class))->searchAction($request);
     }
 
     #[DataProvider('currentBackendUserMayAccessTableIsEvaluatedCorrectlyDataProvider')]

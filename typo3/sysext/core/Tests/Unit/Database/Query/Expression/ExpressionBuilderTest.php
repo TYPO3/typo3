@@ -554,7 +554,7 @@ final class ExpressionBuilderTest extends UnitTestCase
     public function maxQuotesIdentifier(): void
     {
         $this->connectionMock->method('quoteIdentifier')->willReturnCallback(static function (string $identifier): string {
-            return (new MockPlatform())->quoteIdentifier($identifier);
+            return new MockPlatform()->quoteIdentifier($identifier);
         });
 
         self::assertSame('MAX("tableName"."fieldName")', $this->subject->max('tableName.fieldName'));
@@ -568,7 +568,7 @@ final class ExpressionBuilderTest extends UnitTestCase
     public function minQuotesIdentifier(): void
     {
         $this->connectionMock->method('quoteIdentifier')->willReturnCallback(static function (string $identifier): string {
-            return (new MockPlatform())->quoteIdentifier($identifier);
+            return new MockPlatform()->quoteIdentifier($identifier);
         });
 
         self::assertSame('MIN("tableName"."fieldName")', $this->subject->min('tableName.fieldName'));
@@ -582,7 +582,7 @@ final class ExpressionBuilderTest extends UnitTestCase
     public function sumQuotesIdentifier(): void
     {
         $this->connectionMock->method('quoteIdentifier')->willReturnCallback(static function (string $identifier): string {
-            return (new MockPlatform())->quoteIdentifier($identifier);
+            return new MockPlatform()->quoteIdentifier($identifier);
         });
 
         self::assertSame('SUM("tableName"."fieldName")', $this->subject->sum('tableName.fieldName'));
@@ -596,7 +596,7 @@ final class ExpressionBuilderTest extends UnitTestCase
     public function avgQuotesIdentifier(): void
     {
         $this->connectionMock->method('quoteIdentifier')->willReturnCallback(static function (string $identifier): string {
-            return (new MockPlatform())->quoteIdentifier($identifier);
+            return new MockPlatform()->quoteIdentifier($identifier);
         });
 
         self::assertSame('AVG("tableName"."fieldName")', $this->subject->avg('tableName.fieldName'));
@@ -610,7 +610,7 @@ final class ExpressionBuilderTest extends UnitTestCase
     public function countQuotesIdentifier(): void
     {
         $this->connectionMock->method('quoteIdentifier')->willReturnCallback(static function (string $identifier): string {
-            return (new MockPlatform())->quoteIdentifier($identifier);
+            return new MockPlatform()->quoteIdentifier($identifier);
         });
 
         self::assertSame('COUNT("tableName"."fieldName")', $this->subject->count('tableName.fieldName'));
@@ -624,7 +624,7 @@ final class ExpressionBuilderTest extends UnitTestCase
     public function lengthQuotesIdentifier(): void
     {
         $this->connectionMock->method('quoteIdentifier')->willReturnCallback(static function (string $identifier): string {
-            return (new MockPlatform())->quoteIdentifier($identifier);
+            return new MockPlatform()->quoteIdentifier($identifier);
         });
 
         self::assertSame('LENGTH("tableName"."fieldName")', $this->subject->length('tableName.fieldName'));

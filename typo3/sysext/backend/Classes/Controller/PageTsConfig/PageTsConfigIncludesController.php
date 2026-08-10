@@ -85,7 +85,7 @@ final readonly class PageTsConfigIncludesController
             }
             $siteSettingsNode = new SiteInclude();
             $siteSettingsNode->setName('Site constants settings of site "' . $site->getIdentifier() . '"');
-            $siteSettingsNode->setLineStream((new LosslessTokenizer())->tokenize($siteConstants));
+            $siteSettingsNode->setLineStream(new LosslessTokenizer()->tokenize($siteConstants));
             $siteSettingsTree->addChild($siteSettingsNode);
             $siteSettingsTree->setIdentifier('pageTsConfig-siteSettingsTree');
         }
@@ -112,7 +112,7 @@ final readonly class PageTsConfigIncludesController
         if (!empty($userTsConfigPageOverrides)) {
             $includeNode = new TsConfigInclude();
             $includeNode->setName('pageTsConfig-overrides-by-userTsConfig');
-            $includeNode->setLineStream((new LosslessTokenizer())->tokenize($userTsConfigPageOverrides));
+            $includeNode->setLineStream(new LosslessTokenizer()->tokenize($userTsConfigPageOverrides));
             $pageTsConfigTree->addChild($includeNode);
         }
         $pageTsConfigTree->setIdentifier('pageTsConfig-pageTsConfigTree');
@@ -172,7 +172,7 @@ final readonly class PageTsConfigIncludesController
                 }
                 $siteSettingsNode = new SiteInclude();
                 $siteSettingsNode->setName('Site constants settings of site "' . $site->getIdentifier() . '"');
-                $siteSettingsNode->setLineStream((new LosslessTokenizer())->tokenize($siteConstants));
+                $siteSettingsNode->setLineStream(new LosslessTokenizer()->tokenize($siteConstants));
                 $includeTree->addChild($siteSettingsNode);
                 $includeTree->setIdentifier('pageTsConfig-siteSettingsTree');
             }
@@ -199,7 +199,7 @@ final readonly class PageTsConfigIncludesController
             if (!empty($userTsConfigPageOverrides)) {
                 $includeNode = new TsConfigInclude();
                 $includeNode->setName('pageTsConfig-overrides-by-userTsConfig');
-                $includeNode->setLineStream((new LosslessTokenizer())->tokenize($userTsConfigPageOverrides));
+                $includeNode->setLineStream(new LosslessTokenizer()->tokenize($userTsConfigPageOverrides));
                 $includeTree->addChild($includeNode);
             }
             $includeTree->setIdentifier('pageTsConfig-pageTsConfigTree');
@@ -243,7 +243,7 @@ final readonly class PageTsConfigIncludesController
                 }
                 $siteSettingsNode = new SiteInclude();
                 $siteSettingsNode->setName('Site constants settings of site "' . $site->getIdentifier() . '"');
-                $siteSettingsNode->setLineStream((new LosslessTokenizer())->tokenize($siteConstants));
+                $siteSettingsNode->setLineStream(new LosslessTokenizer()->tokenize($siteConstants));
                 $includeTree->addChild($siteSettingsNode);
                 $includeTree->setIdentifier('pageTsConfig-siteSettingsTree');
             }
@@ -270,7 +270,7 @@ final readonly class PageTsConfigIncludesController
             if (!empty($userTsConfigPageOverrides)) {
                 $includeNode = new TsConfigInclude();
                 $includeNode->setName('pageTsConfig-overrides-by-userTsConfig');
-                $includeNode->setLineStream((new LosslessTokenizer())->tokenize($userTsConfigPageOverrides));
+                $includeNode->setLineStream(new LosslessTokenizer()->tokenize($userTsConfigPageOverrides));
                 $includeTree->addChild($includeNode);
             }
             $includeTree->setIdentifier('pageTsConfig-pageTsConfigTree');

@@ -26,6 +26,6 @@ final class DefaultPublicFilePrefix implements DynamicPublicPrefixInterface
 {
     public function calculatePrefix(PackageInterface $package, PublicResourceDefinition $definition): string
     {
-        return (new DefaultPublicFolderPrefix())->calculatePrefix($package, $definition) . '/' . basename($definition->getRelativePath());
+        return new DefaultPublicFolderPrefix()->calculatePrefix($package, $definition) . '/' . basename($definition->getRelativePath());
     }
 }

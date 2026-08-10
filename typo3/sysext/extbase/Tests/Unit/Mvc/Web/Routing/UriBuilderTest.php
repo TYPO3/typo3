@@ -68,7 +68,7 @@ final class UriBuilderTest extends UnitTestCase
 
     private function getRequestWithRouteAttribute(string $routeIdentifier = 'module_key', string $baseUri = ''): ServerRequestInterface
     {
-        return (new ServerRequest(new Uri($baseUri)))->withAttribute('route', new Route('/test/Path', ['_identifier' => $routeIdentifier]));
+        return new ServerRequest(new Uri($baseUri))->withAttribute('route', new Route('/test/Path', ['_identifier' => $routeIdentifier]));
     }
 
     #[Test]
@@ -437,7 +437,7 @@ final class UriBuilderTest extends UnitTestCase
     {
         $mockContentObject = $this->createMock(ContentObjectRenderer::class);
         $mockContentObject->expects($this->once())->method('createUrl')->willReturn('relative/uri');
-        $serverRequest = (new ServerRequest())
+        $serverRequest = new ServerRequest()
             ->withAttribute('extbase', new ExtbaseRequestParameters())
             ->withAttribute('currentContentObject', $mockContentObject);
         $request = new Request($serverRequest);
@@ -452,7 +452,7 @@ final class UriBuilderTest extends UnitTestCase
     {
         $mockContentObject = $this->createMock(ContentObjectRenderer::class);
         $mockContentObject->expects($this->once())->method('createUrl')->willReturn('/relative/uri');
-        $serverRequest = (new ServerRequest())
+        $serverRequest = new ServerRequest()
             ->withAttribute('extbase', new ExtbaseRequestParameters())
             ->withAttribute('currentContentObject', $mockContentObject);
         $request = new Request($serverRequest);

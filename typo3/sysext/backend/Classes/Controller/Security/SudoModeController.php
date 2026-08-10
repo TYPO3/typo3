@@ -123,7 +123,7 @@ final readonly class SudoModeController
         }
 
         $this->storage->removeClaim($claim);
-        throw (new RequestGrantedException('Replay request', 1605873757))
+        throw new RequestGrantedException('Replay request', 1605873757)
             ->withInstruction($claim->instruction);
     }
 

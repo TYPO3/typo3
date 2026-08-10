@@ -85,7 +85,7 @@ abstract class AbstractLocalizedPagesTestCase extends AbstractTestCase
         );
 
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest($url))
+            new InternalRequest($url)
                 ->withInstructions([
                     $this->createHierarchicalMenuProcessorInstruction([
                         'levels' => 1,
@@ -113,7 +113,7 @@ abstract class AbstractLocalizedPagesTestCase extends AbstractTestCase
         );
 
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest($url))->withInstructions([$this->createLanguageMenuProcessorInstruction(['languages' => 'auto'])])
+            new InternalRequest($url)->withInstructions([$this->createLanguageMenuProcessorInstruction(['languages' => 'auto'])])
         );
 
         $json = json_decode((string)$response->getBody(), true);

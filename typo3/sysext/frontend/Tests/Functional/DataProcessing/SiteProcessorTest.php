@@ -73,7 +73,7 @@ final class SiteProcessorTest extends FunctionalTestCase
         );
         $this->setUpFrontendRootPage(1000, ['EXT:frontend/Tests/Functional/DataProcessing/Fixtures/Site/setup.typoscript'], ['title' => 'ACME Guitars']);
 
-        $response = $this->executeFrontendSubRequest((new InternalRequest('https://acme.com/'))->withPageId(1000));
+        $response = $this->executeFrontendSubRequest(new InternalRequest('https://acme.com/')->withPageId(1000));
         $body = (string)$response->getBody();
         self::assertStringContainsString('Array access navigationTitle: English', $body);
     }

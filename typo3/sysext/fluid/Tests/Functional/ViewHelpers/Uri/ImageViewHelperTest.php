@@ -93,7 +93,7 @@ final class ImageViewHelperTest extends FunctionalTestCase
 
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource($template);
-        (new TemplateView($context))->render();
+        new TemplateView($context)->render();
     }
 
     public static function invalidArgumentsWithContentObjectPresentDataProvider(): array
@@ -141,7 +141,7 @@ final class ImageViewHelperTest extends FunctionalTestCase
         $this->expectExceptionMessage($message);
 
         $cObj = $this->get(ContentObjectRenderer::class);
-        $serverRequest = (new ServerRequest())
+        $serverRequest = new ServerRequest()
             ->withAttribute('currentContentObject', $cObj)
             ->withAttribute('extbase', new ExtbaseRequestParameters())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
@@ -150,7 +150,7 @@ final class ImageViewHelperTest extends FunctionalTestCase
 
         $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
         $context->getTemplatePaths()->setTemplateSource($template);
-        (new TemplateView($context))->render();
+        new TemplateView($context)->render();
     }
 
     public static function basicScalingCroppingDataProvider(): \Generator
@@ -268,7 +268,7 @@ final class ImageViewHelperTest extends FunctionalTestCase
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getVariableProvider()->add('fileReference', $this->get(ResourceFactory::class)->getFileReferenceObject(1));
         $context->getTemplatePaths()->setTemplateSource($template);
-        $result = (new TemplateView($context))->render();
+        $result = new TemplateView($context)->render();
         self::assertMatchesRegularExpression($expected, $result);
 
         $matches = [];
@@ -332,7 +332,7 @@ final class ImageViewHelperTest extends FunctionalTestCase
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getVariableProvider()->add('crop', (string)$cropVariantCollection);
         $context->getTemplatePaths()->setTemplateSource($template);
-        $result = (new TemplateView($context))->render();
+        $result = new TemplateView($context)->render();
         self::assertMatchesRegularExpression($expected, $result);
 
         $matches = [];
@@ -349,7 +349,7 @@ final class ImageViewHelperTest extends FunctionalTestCase
         $context->getTemplatePaths()->setTemplateSource('<f:uri.image src="fileadmin/ImageViewHelperTest.jpg" fileExtension="png" />');
         self::assertMatchesRegularExpression(
             '@^fileadmin/_processed_/5/3/csm_ImageViewHelperTest_.*\.png$@',
-            (new TemplateView($context))->render(),
+            new TemplateView($context)->render(),
         );
     }
 
@@ -357,7 +357,7 @@ final class ImageViewHelperTest extends FunctionalTestCase
     public function absoluteArgument(): void
     {
         $normalizedParams = NormalizedParams::createFromServerParams(['HTTP_HOST' => 'typo3-testing.local', 'HTTPS' => 'on', 'SCRIPT_NAME' => '/index.php']);
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest()
             ->withAttribute('normalizedParams', $normalizedParams)
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
 
@@ -365,7 +365,7 @@ final class ImageViewHelperTest extends FunctionalTestCase
         $context->getTemplatePaths()->setTemplateSource('<f:uri.image src="fileadmin/ImageViewHelperTest.jpg" absolute="1" />');
         self::assertEquals(
             'https://typo3-testing.local/fileadmin/ImageViewHelperTest.jpg',
-            (new TemplateView($context))->render(),
+            new TemplateView($context)->render(),
         );
     }
 
@@ -376,7 +376,7 @@ final class ImageViewHelperTest extends FunctionalTestCase
         $context->getTemplatePaths()->setTemplateSource('<f:uri.image src="fileadmin/ImageViewHelperTest.jpg" base64="1" width="5" height="5" />');
         self::assertEquals(
             'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQIAEgASAAD/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCAAFAAUDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAb/xAAdEAEAAgICAwAAAAAAAAAAAAABAgMAEQQhEiIl/8QAFQEBAQAAAAAAAAAAAAAAAAAAAQL/xAAXEQADAQAAAAAAAAAAAAAAAAABAhEA/9oADAMBAAIRAxEAPwCBv53C5IfMiW1vjKyVqsgjEDRo0JJOt+3a6xjGU4jQZYC7/9k=',
-            (new TemplateView($context))->render(),
+            new TemplateView($context)->render(),
         );
     }
 }

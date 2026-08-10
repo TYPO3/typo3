@@ -35,14 +35,14 @@ final class FlashMessagesViewHelperTest extends FunctionalTestCase
     #[Test]
     public function renderReturnsEmptyStringIfNoFlashMessagesAreInQueue(): void
     {
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters())
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $extbaseRequest = (new Request($serverRequest));
         $context = $this->get(RenderingContextFactory::class)->create([], $extbaseRequest);
         $context->getTemplatePaths()->setTemplateSource('<f:flashMessages />');
         $extbaseConfigurationManager = $this->get(ConfigurationManagerInterface::class);
         $extbaseConfigurationManager->setRequest($extbaseRequest);
-        self::assertEmpty((new TemplateView($context))->render());
+        self::assertEmpty(new TemplateView($context)->render());
     }
 
     #[Test]
@@ -50,7 +50,7 @@ final class FlashMessagesViewHelperTest extends FunctionalTestCase
     {
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:flashMessages queueIdentifier="myQueue" />');
-        self::assertEmpty((new TemplateView($context))->render());
+        self::assertEmpty(new TemplateView($context)->render());
     }
 
     #[Test]
@@ -59,11 +59,11 @@ final class FlashMessagesViewHelperTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $this->setUpBackendUser(1);
         $flashMessage = new FlashMessage('test message body', 'test message title', ContextualFeedbackSeverity::OK, true);
-        (new FlashMessageQueue('myQueue'))->addMessage($flashMessage);
+        new FlashMessageQueue('myQueue')->addMessage($flashMessage);
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:flashMessages queueIdentifier="myQueue" />');
         // CLI message renderer kicks in with this functional test setup, so no HTML output here.
-        self::assertSame('[OK] test message title: test message body', (new TemplateView($context))->render());
+        self::assertSame('[OK] test message title: test message body', new TemplateView($context)->render());
     }
 
     #[Test]
@@ -72,11 +72,11 @@ final class FlashMessagesViewHelperTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $this->setUpBackendUser(1);
         $flashMessage = new FlashMessage('test message body', 'test message title', ContextualFeedbackSeverity::OK, true);
-        (new FlashMessageQueue('myQueue'))->addMessage($flashMessage);
+        new FlashMessageQueue('myQueue')->addMessage($flashMessage);
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:flashMessages queueIdentifier="myQueue" as="messages">{messages.0.title}</f:flashMessages>');
         // CLI message renderer kicks in with this functional test setup, so no HTML output here.
-        self::assertSame('test message title', (new TemplateView($context))->render());
+        self::assertSame('test message title', new TemplateView($context)->render());
     }
 
     #[Test]
@@ -85,11 +85,11 @@ final class FlashMessagesViewHelperTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $this->setUpBackendUser(1);
         $flashMessage = new FlashMessage('test message body', 'test message title', ContextualFeedbackSeverity::OK, true);
-        (new FlashMessageQueue('myQueue'))->addMessage($flashMessage);
+        new FlashMessageQueue('myQueue')->addMessage($flashMessage);
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:for each="{4711:\'4712\'}" as="i" iteration="iterator" key="k"><f:flashMessages queueIdentifier="myQueue" as="messages">{k}</f:flashMessages></f:for>');
         // CLI message renderer kicks in with this functional test setup, so no HTML output here.
-        self::assertSame('4711', (new TemplateView($context))->render());
+        self::assertSame('4711', new TemplateView($context)->render());
     }
 
     #[Test]
@@ -98,10 +98,10 @@ final class FlashMessagesViewHelperTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $this->setUpBackendUser(1);
         $flashMessage = new FlashMessage('test message body', 'test message title', ContextualFeedbackSeverity::OK, true);
-        (new FlashMessageQueue('myQueue'))->addMessage($flashMessage);
+        new FlashMessageQueue('myQueue')->addMessage($flashMessage);
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:flashMessages queueIdentifier="myQueue" as="messages"></f:flashMessages>{messages.0.title}');
         // CLI message renderer kicks in with this functional test setup, so no HTML output here.
-        self::assertSame('', (new TemplateView($context))->render());
+        self::assertSame('', new TemplateView($context)->render());
     }
 }

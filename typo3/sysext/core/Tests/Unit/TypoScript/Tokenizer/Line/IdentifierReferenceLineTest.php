@@ -29,7 +29,7 @@ final class IdentifierReferenceLineTest extends UnitTestCase
     {
         $this->expectException(\LogicException::class);
         $this->expectExceptionCode(1655825891);
-        (new IdentifierReferenceLine())->setIdentifierTokenStream(new IdentifierTokenStream());
+        new IdentifierReferenceLine()->setIdentifierTokenStream(new IdentifierTokenStream());
     }
 
     #[Test]
@@ -37,6 +37,6 @@ final class IdentifierReferenceLineTest extends UnitTestCase
     {
         $this->expectException(\LogicException::class);
         $this->expectExceptionCode(1655825892);
-        (new IdentifierReferenceLine())->setValueTokenStream(new IdentifierTokenStream());
+        new IdentifierReferenceLine()->setValueTokenStream(new IdentifierTokenStream());
     }
 }

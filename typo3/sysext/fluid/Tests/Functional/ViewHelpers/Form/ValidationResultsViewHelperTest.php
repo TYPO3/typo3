@@ -60,11 +60,11 @@ final class ValidationResultsViewHelperTest extends FunctionalTestCase
         $validationResults->forProperty('test')->addError(new Error('Test error', 123));
         $validationResults->forProperty('test.sub')->addError(new Error('Sub error', 456));
 
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', (new ExtbaseRequestParameters())->setOriginalRequestMappingResults($validationResults))
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters()->setOriginalRequestMappingResults($validationResults))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
 
         $context->getTemplatePaths()->setTemplateSource($template);
-        self::assertSame($expected, (new TemplateView($context))->render());
+        self::assertSame($expected, new TemplateView($context)->render());
     }
 }

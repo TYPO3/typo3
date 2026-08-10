@@ -47,7 +47,7 @@ final class UpgradeControllerTest extends UnitTestCase
     #[DoesNotPerformAssertions]
     public function versionIsAccepted(string $version): void
     {
-        $request = (new ServerRequest())->withQueryParams([
+        $request = new ServerRequest()->withQueryParams([
             'install' => [
                 'version' => $version,
             ],
@@ -86,7 +86,7 @@ final class UpgradeControllerTest extends UnitTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1537209128);
-        $request = (new ServerRequest())->withQueryParams([
+        $request = new ServerRequest()->withQueryParams([
             'install' => [
                 'version' => $version,
             ],

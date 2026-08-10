@@ -53,7 +53,7 @@ final class ContentObjectRendererGetDataPageLayoutTest extends FunctionalTestCas
                 'EXT:frontend/Tests/Functional/ContentObject/Fixtures/ContentObjectRendererGetDataPageLayout/setup.typoscript',
             ]
         );
-        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::ROOT_PAGE_ID));
+        $response = $this->executeFrontendSubRequest(new InternalRequest()->withPageId(self::ROOT_PAGE_ID));
         self::assertStringContainsString('pagets__default', (string)$response->getBody());
     }
 
@@ -67,7 +67,7 @@ final class ContentObjectRendererGetDataPageLayoutTest extends FunctionalTestCas
                 'EXT:frontend/Tests/Functional/ContentObject/Fixtures/ContentObjectRendererGetDataPageLayout/setup.typoscript',
             ]
         );
-        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::ROOT_PAGE_ID));
+        $response = $this->executeFrontendSubRequest(new InternalRequest()->withPageId(self::ROOT_PAGE_ID));
         self::assertStringNotContainsString('pagets__default', (string)$response->getBody());
     }
 
@@ -81,7 +81,7 @@ final class ContentObjectRendererGetDataPageLayoutTest extends FunctionalTestCas
                 'EXT:frontend/Tests/Functional/ContentObject/Fixtures/ContentObjectRendererGetDataPageLayout/setup.typoscript',
             ]
         );
-        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(2));
+        $response = $this->executeFrontendSubRequest(new InternalRequest()->withPageId(2));
         self::assertStringContainsString('pagets__inherit', (string)$response->getBody());
     }
 
@@ -95,7 +95,7 @@ final class ContentObjectRendererGetDataPageLayoutTest extends FunctionalTestCas
                 'EXT:frontend/Tests/Functional/ContentObject/Fixtures/ContentObjectRendererGetDataPageLayout/setup.typoscript',
             ]
         );
-        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(3));
+        $response = $this->executeFrontendSubRequest(new InternalRequest()->withPageId(3));
         self::assertStringContainsString('pagets__inherit', (string)$response->getBody());
     }
 
@@ -109,7 +109,7 @@ final class ContentObjectRendererGetDataPageLayoutTest extends FunctionalTestCas
                 'EXT:frontend/Tests/Functional/ContentObject/Fixtures/ContentObjectRendererGetDataPageLayout/setup.typoscript',
             ]
         );
-        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(4));
+        $response = $this->executeFrontendSubRequest(new InternalRequest()->withPageId(4));
         self::assertStringContainsString('pagets__bar', (string)$response->getBody());
     }
 
@@ -123,7 +123,7 @@ final class ContentObjectRendererGetDataPageLayoutTest extends FunctionalTestCas
                 'EXT:frontend/Tests/Functional/ContentObject/Fixtures/ContentObjectRendererGetDataPageLayout/setup.typoscript',
             ]
         );
-        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(4));
+        $response = $this->executeFrontendSubRequest(new InternalRequest()->withPageId(4));
         self::assertStringContainsString('pagets__extra', (string)$response->getBody());
     }
 }

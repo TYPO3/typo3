@@ -73,7 +73,7 @@ final class FrontendConfigurationManagerTest extends UnitTestCase
         ];
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray($testTypoScriptSetup);
-        $request = (new ServerRequest())->withAttribute('frontend.typoscript', $frontendTypoScript);
+        $request = new ServerRequest()->withAttribute('frontend.typoscript', $frontendTypoScript);
         $expectedResult = [
             'settings' => [
                 'setting1' => 'overriddenValue1',

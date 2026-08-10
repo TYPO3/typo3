@@ -28,7 +28,7 @@ final class SetupConfigMergerTest extends UnitTestCase
     #[Test]
     public function emptyConfigReturnsEmptyRootNode(): void
     {
-        self::assertEquals(new RootNode(), (new SetupConfigMerger())->merge(null, null));
+        self::assertEquals(new RootNode(), new SetupConfigMerger()->merge(null, null));
     }
 
     #[Test]
@@ -42,7 +42,7 @@ final class SetupConfigMergerTest extends UnitTestCase
         $expected = new RootNode();
         $expected->addChild($configChild);
 
-        self::assertEquals($expected, (new SetupConfigMerger())->merge($config, null));
+        self::assertEquals($expected, new SetupConfigMerger()->merge($config, null));
     }
 
     #[Test]
@@ -56,7 +56,7 @@ final class SetupConfigMergerTest extends UnitTestCase
         $expected = new RootNode();
         $expected->addChild($pageConfigChild);
 
-        self::assertEquals($expected, (new SetupConfigMerger())->merge(null, $pageConfig));
+        self::assertEquals($expected, new SetupConfigMerger()->merge(null, $pageConfig));
     }
 
     #[Test]
@@ -76,7 +76,7 @@ final class SetupConfigMergerTest extends UnitTestCase
         $expected->addChild($configChild);
         $expected->addChild($pageConfigChild);
 
-        self::assertEquals($expected, (new SetupConfigMerger())->merge($config, $pageConfig));
+        self::assertEquals($expected, new SetupConfigMerger()->merge($config, $pageConfig));
     }
 
     #[Test]
@@ -99,7 +99,7 @@ final class SetupConfigMergerTest extends UnitTestCase
         $expected->addChild($configChild);
         $expected->addChild($pageConfigChild);
 
-        self::assertEquals($expected, (new SetupConfigMerger())->merge($config, $pageConfig));
+        self::assertEquals($expected, new SetupConfigMerger()->merge($config, $pageConfig));
     }
 
     #[Test]
@@ -119,7 +119,7 @@ final class SetupConfigMergerTest extends UnitTestCase
         $expectedChild->setValue('foo1');
         $expected->addChild($expectedChild);
 
-        self::assertEquals($expected, (new SetupConfigMerger())->merge($config, $pageConfig));
+        self::assertEquals($expected, new SetupConfigMerger()->merge($config, $pageConfig));
     }
 
     #[Test]
@@ -140,7 +140,7 @@ final class SetupConfigMergerTest extends UnitTestCase
         $expectedChild->setValue('');
         $expected->addChild($expectedChild);
 
-        self::assertEquals($expected, (new SetupConfigMerger())->merge($config, $pageConfig));
+        self::assertEquals($expected, new SetupConfigMerger()->merge($config, $pageConfig));
     }
 
     #[Test]
@@ -161,7 +161,7 @@ final class SetupConfigMergerTest extends UnitTestCase
         $expectedChild->setValue('foo2');
         $expected->addChild($expectedChild);
 
-        self::assertEquals($expected, (new SetupConfigMerger())->merge($config, $pageConfig));
+        self::assertEquals($expected, new SetupConfigMerger()->merge($config, $pageConfig));
     }
 
     #[Test]
@@ -191,7 +191,7 @@ final class SetupConfigMergerTest extends UnitTestCase
         $expectedNestedPageConfigChild->setValue('nestedPageConfigChildValue');
         $expectedChild->addChild($expectedNestedPageConfigChild);
 
-        self::assertEquals($expected, (new SetupConfigMerger())->merge($config, $pageConfig));
+        self::assertEquals($expected, new SetupConfigMerger()->merge($config, $pageConfig));
     }
 
     #[Test]
@@ -217,7 +217,7 @@ final class SetupConfigMergerTest extends UnitTestCase
         $expectedNestedConfigChild->setValue('nestedConfigChildValue');
         $expectedChild->addChild($expectedNestedConfigChild);
 
-        self::assertEquals($expected, (new SetupConfigMerger())->merge($config, $pageConfig));
+        self::assertEquals($expected, new SetupConfigMerger()->merge($config, $pageConfig));
     }
 
     #[Test]
@@ -244,7 +244,7 @@ final class SetupConfigMergerTest extends UnitTestCase
         $expectedNestedConfigChild->setValue('');
         $expectedChild->addChild($expectedNestedConfigChild);
 
-        self::assertEquals($expected, (new SetupConfigMerger())->merge($config, $pageConfig));
+        self::assertEquals($expected, new SetupConfigMerger()->merge($config, $pageConfig));
     }
 
     #[Test]
@@ -271,6 +271,6 @@ final class SetupConfigMergerTest extends UnitTestCase
         $expectedNestedConfigChild->setValue('nestedConfigChildValue2');
         $expectedChild->addChild($expectedNestedConfigChild);
 
-        self::assertEquals($expected, (new SetupConfigMerger())->merge($config, $pageConfig));
+        self::assertEquals($expected, new SetupConfigMerger()->merge($config, $pageConfig));
     }
 }

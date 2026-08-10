@@ -30,7 +30,7 @@ final class PropertyWithTypeDeclarationsTest extends UnitTestCase
     #[Test]
     public function intProperty(): void
     {
-        $propertyTypes = (new ClassSchema(DummyEntityWithTypeDeclarations::class))
+        $propertyTypes = new ClassSchema(DummyEntityWithTypeDeclarations::class)
             ->getProperty('int')->getTypes();
 
         self::assertCount(1, $propertyTypes);
@@ -40,7 +40,7 @@ final class PropertyWithTypeDeclarationsTest extends UnitTestCase
     #[Test]
     public function floatProperty(): void
     {
-        $propertyTypes = (new ClassSchema(DummyEntityWithTypeDeclarations::class))
+        $propertyTypes = new ClassSchema(DummyEntityWithTypeDeclarations::class)
             ->getProperty('float')->getTypes();
 
         self::assertCount(1, $propertyTypes);
@@ -50,7 +50,7 @@ final class PropertyWithTypeDeclarationsTest extends UnitTestCase
     #[Test]
     public function boolProperty(): void
     {
-        $propertyTypes = (new ClassSchema(DummyEntityWithTypeDeclarations::class))
+        $propertyTypes = new ClassSchema(DummyEntityWithTypeDeclarations::class)
             ->getProperty('bool')->getTypes();
 
         self::assertCount(1, $propertyTypes);
@@ -60,7 +60,7 @@ final class PropertyWithTypeDeclarationsTest extends UnitTestCase
     #[Test]
     public function objectProperty(): void
     {
-        $propertyTypes = (new ClassSchema(DummyEntityWithTypeDeclarations::class))
+        $propertyTypes = new ClassSchema(DummyEntityWithTypeDeclarations::class)
             ->getProperty('object')->getTypes();
 
         self::assertCount(1, $propertyTypes);
@@ -70,7 +70,7 @@ final class PropertyWithTypeDeclarationsTest extends UnitTestCase
     #[Test]
     public function arrayProperty(): void
     {
-        $propertyTypes = (new ClassSchema(DummyEntityWithTypeDeclarations::class))
+        $propertyTypes = new ClassSchema(DummyEntityWithTypeDeclarations::class)
             ->getProperty('array')->getTypes();
 
         self::assertCount(1, $propertyTypes);
@@ -80,7 +80,7 @@ final class PropertyWithTypeDeclarationsTest extends UnitTestCase
     #[Test]
     public function mixedProperty(): void
     {
-        $propertyTypes = (new ClassSchema(DummyEntityWithTypeDeclarations::class))
+        $propertyTypes = new ClassSchema(DummyEntityWithTypeDeclarations::class)
             ->getProperty('mixed')->getTypes();
 
         self::assertCount(0, $propertyTypes);
@@ -89,7 +89,7 @@ final class PropertyWithTypeDeclarationsTest extends UnitTestCase
     #[Test]
     public function nullableIntProperty(): void
     {
-        $propertyTypes = (new ClassSchema(DummyEntityWithTypeDeclarations::class))
+        $propertyTypes = new ClassSchema(DummyEntityWithTypeDeclarations::class)
             ->getProperty('nullableInt')->getTypes();
 
         self::assertCount(1, $propertyTypes);
@@ -101,7 +101,7 @@ final class PropertyWithTypeDeclarationsTest extends UnitTestCase
     #[Test]
     public function listWithSquareBracketsSyntaxProperty(): void
     {
-        $propertyTypes = (new ClassSchema(DummyEntityWithTypeDeclarations::class))
+        $propertyTypes = new ClassSchema(DummyEntityWithTypeDeclarations::class)
             ->getProperty('listWithSquareBracketsSyntax')->getTypes();
 
         self::assertTrue($propertyTypes[0]->isCollection());
@@ -119,7 +119,7 @@ final class PropertyWithTypeDeclarationsTest extends UnitTestCase
     #[Test]
     public function listWithArraySyntaxWithoutKeyValueTypeProperty(): void
     {
-        $propertyTypes = (new ClassSchema(DummyEntityWithTypeDeclarations::class))
+        $propertyTypes = new ClassSchema(DummyEntityWithTypeDeclarations::class)
             ->getProperty('listWithArraySyntaxWithoutKeyValueType')->getTypes();
 
         self::assertCount(1, $propertyTypes);
@@ -138,7 +138,7 @@ final class PropertyWithTypeDeclarationsTest extends UnitTestCase
     #[Test]
     public function listWithArraySyntaxWithKeyValueTypeProperty(): void
     {
-        $propertyTypes = (new ClassSchema(DummyEntityWithTypeDeclarations::class))
+        $propertyTypes = new ClassSchema(DummyEntityWithTypeDeclarations::class)
             ->getProperty('listWithArraySyntaxWithKeyValueType')->getTypes();
 
         self::assertCount(1, $propertyTypes);
@@ -155,7 +155,7 @@ final class PropertyWithTypeDeclarationsTest extends UnitTestCase
     #[Test]
     public function listWithListSyntaxProperty(): void
     {
-        $propertyTypes = (new ClassSchema(DummyEntityWithTypeDeclarations::class))
+        $propertyTypes = new ClassSchema(DummyEntityWithTypeDeclarations::class)
             ->getProperty('listWithListSyntax')->getTypes();
 
         self::assertCount(1, $propertyTypes);
@@ -173,7 +173,7 @@ final class PropertyWithTypeDeclarationsTest extends UnitTestCase
     #[Test]
     public function objectStorageWithArraySyntaxWithoutKeyValueTypeProperty(): void
     {
-        $propertyTypes = (new ClassSchema(DummyEntityWithTypeDeclarations::class))
+        $propertyTypes = new ClassSchema(DummyEntityWithTypeDeclarations::class)
             ->getProperty('objectStorageWithArraySyntaxWithoutKeyValueType')->getTypes();
 
         self::assertCount(1, $propertyTypes);
@@ -194,7 +194,7 @@ final class PropertyWithTypeDeclarationsTest extends UnitTestCase
     #[Test]
     public function intOrStringProperty(): void
     {
-        $property = (new ClassSchema(DummyEntityWithTypeDeclarations::class))
+        $property = new ClassSchema(DummyEntityWithTypeDeclarations::class)
             ->getProperty('intOrString');
         $propertyTypes = $property->getTypes();
 
@@ -210,7 +210,7 @@ final class PropertyWithTypeDeclarationsTest extends UnitTestCase
     #[Test]
     public function nullableIntOrStringProperty(): void
     {
-        $propertyTypes = (new ClassSchema(DummyEntityWithTypeDeclarations::class))
+        $propertyTypes = new ClassSchema(DummyEntityWithTypeDeclarations::class)
             ->getProperty('nullableIntOrString')->getTypes();
 
         self::assertCount(2, $propertyTypes);
@@ -223,7 +223,7 @@ final class PropertyWithTypeDeclarationsTest extends UnitTestCase
     #[Test]
     public function concreteEntityOrLazyLoadingProxyProperty(): void
     {
-        $property = (new ClassSchema(DummyEntityWithTypeDeclarations::class))
+        $property = new ClassSchema(DummyEntityWithTypeDeclarations::class)
             ->getProperty('concreteEntityOrLazyLoadingProxy');
         $propertyTypes = $property->getTypes();
 
@@ -236,7 +236,7 @@ final class PropertyWithTypeDeclarationsTest extends UnitTestCase
     #[Test]
     public function objectStorageProperty(): void
     {
-        $propertyTypes = (new ClassSchema(DummyEntityWithTypeDeclarations::class))
+        $propertyTypes = new ClassSchema(DummyEntityWithTypeDeclarations::class)
             ->getProperty('objectStorage')->getTypes();
 
         self::assertCount(1, $propertyTypes);
@@ -247,7 +247,7 @@ final class PropertyWithTypeDeclarationsTest extends UnitTestCase
     #[Test]
     public function lazyObjectStorage(): void
     {
-        $property = (new ClassSchema(DummyEntityWithTypeDeclarations::class))
+        $property = new ClassSchema(DummyEntityWithTypeDeclarations::class)
             ->getProperty('lazyObjectStorage');
         $propertyTypes = $property->getTypes();
 
@@ -261,7 +261,7 @@ final class PropertyWithTypeDeclarationsTest extends UnitTestCase
     #[Test]
     public function arrayAccessAndTraversableProperty(): void
     {
-        $propertyTypes = (new ClassSchema(DummyEntityWithTypeDeclarations::class))
+        $propertyTypes = new ClassSchema(DummyEntityWithTypeDeclarations::class)
             ->getProperty('arrayAccessAndTraversable')->getTypes();
 
         self::assertCount(2, $propertyTypes);

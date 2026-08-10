@@ -337,7 +337,7 @@ final class TypoLinkCodecServiceTest extends UnitTestCase
         $listenerProvider = new ListenerProvider($container);
         $listenerProvider->addListener(BeforeTypoLinkEncodedEvent::class, 'before-typo-link-encoded-listener');
 
-        $result = (new TypoLinkCodecService(new EventDispatcher($listenerProvider)))->encode([
+        $result = new TypoLinkCodecService(new EventDispatcher($listenerProvider))->encode([
             'url' => 'https://example.com',
         ]);
 
@@ -366,7 +366,7 @@ final class TypoLinkCodecServiceTest extends UnitTestCase
         $listenerProvider = new ListenerProvider($container);
         $listenerProvider->addListener(AfterTypoLinkDecodedEvent::class, 'after-typo-link-decoded-listener');
 
-        $result = (new TypoLinkCodecService(new EventDispatcher($listenerProvider)))->decode('https://example.com');
+        $result = new TypoLinkCodecService(new EventDispatcher($listenerProvider))->decode('https://example.com');
 
         $expected = [
             'url' => 'https://example.com',

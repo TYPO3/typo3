@@ -132,7 +132,7 @@ class PasswordRecoveryController extends ActionController
             $extbaseRequestParameters->setOriginalRequestMappingResults($originalResult);
             $this->request = $this->request->withAttribute('extbase', $extbaseRequestParameters);
 
-            return (new ForwardResponse('recovery'))
+            return new ForwardResponse('recovery')
                 ->withControllerName('PasswordRecovery')
                 ->withExtensionName('felogin')
                 ->withArgumentsValidationResult($originalResult);
@@ -185,7 +185,7 @@ class PasswordRecoveryController extends ActionController
                 1554971665
             ));
 
-            return (new ForwardResponse('showChangePassword'))
+            return new ForwardResponse('showChangePassword')
                 ->withControllerName('PasswordRecovery')
                 ->withExtensionName('felogin')
                 ->withArguments(['hash' => $this->request->getArgument('hash')])
@@ -196,7 +196,7 @@ class PasswordRecoveryController extends ActionController
 
         // if an error exists, forward with all messages to the change password form
         if ($originalResult->hasErrors()) {
-            return (new ForwardResponse('showChangePassword'))
+            return new ForwardResponse('showChangePassword')
                 ->withControllerName('PasswordRecovery')
                 ->withExtensionName('felogin')
                 ->withArguments(['hash' => $this->request->getArgument('hash')])

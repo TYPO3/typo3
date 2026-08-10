@@ -96,7 +96,7 @@ final class NewContentElementControllerTest extends UnitTestCase
             'removeItems' => 'forms',
         ];
 
-        $result = (new \ReflectionClass(NewContentElementController::class))
+        $result = new \ReflectionClass(NewContentElementController::class)
             ->getMethod('migrateCommonGroupToDefault')
             ->invokeArgs(self::createStub(NewContentElementController::class), [$input]);
 
@@ -164,7 +164,7 @@ final class NewContentElementControllerTest extends UnitTestCase
         unset($expected['lists.']);
         unset($expected['special.']);
 
-        $result = (new \ReflectionClass(NewContentElementController::class))
+        $result = new \ReflectionClass(NewContentElementController::class)
             ->getMethod('removeWizardsByPageTs')
             ->invokeArgs(self::createStub(NewContentElementController::class), [$wizards, $wizardsTsConfig]);
 
@@ -273,7 +273,7 @@ final class NewContentElementControllerTest extends UnitTestCase
             ],
         ];
 
-        $result = (new \ReflectionClass(NewContentElementController::class))
+        $result = new \ReflectionClass(NewContentElementController::class)
             ->getMethod('mergeContentElementWizardsWithPageTSConfigWizards')
             ->invokeArgs(
                 self::createStub(

@@ -29,7 +29,7 @@ final class SvgDocumentFactoryTest extends UnitTestCase
     #[Test]
     public function fromStringLoadsValidSvg(): void
     {
-        $document = (new SvgDocumentFactory(new SvgSanitizer()))
+        $document = new SvgDocumentFactory(new SvgSanitizer())
             ->fromString('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"/>');
         self::assertSame('svg', $document->documentElement->localName);
     }
@@ -38,21 +38,21 @@ final class SvgDocumentFactoryTest extends UnitTestCase
     public function fromStringThrowsOnEmptyInput(): void
     {
         $this->expectException(InvalidSvgException::class);
-        (new SvgDocumentFactory(new SvgSanitizer()))->fromString('   ');
+        new SvgDocumentFactory(new SvgSanitizer())->fromString('   ');
     }
 
     #[Test]
     public function fromStringThrowsOnInvalidXml(): void
     {
         $this->expectException(InvalidSvgException::class);
-        (new SvgDocumentFactory(new SvgSanitizer()))->fromString('this is not xml');
+        new SvgDocumentFactory(new SvgSanitizer())->fromString('this is not xml');
     }
 
     #[Test]
     public function fromFileThrowsOnMissingFile(): void
     {
         $this->expectException(InvalidSvgException::class);
-        (new SvgDocumentFactory(new SvgSanitizer()))
+        new SvgDocumentFactory(new SvgSanitizer())
             ->fromFile('/nonexistent/path/' . uniqid('svg_', true) . '.svg');
     }
 
@@ -64,7 +64,7 @@ final class SvgDocumentFactoryTest extends UnitTestCase
 
         self::assertSame(
             '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"><path d="M0 0"/></svg>',
-            $this->serialize((new SvgDocumentFactory(new SvgSanitizer()))->fromStringAndSanitize($svg)),
+            $this->serialize(new SvgDocumentFactory(new SvgSanitizer())->fromStringAndSanitize($svg)),
         );
     }
 
@@ -76,7 +76,7 @@ final class SvgDocumentFactoryTest extends UnitTestCase
 
         self::assertSame(
             '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"><a href="https://example.com"><rect width="10" height="10"/></a></svg>',
-            $this->serialize((new SvgDocumentFactory(new SvgSanitizer()))->fromStringAndSanitize($svg)),
+            $this->serialize(new SvgDocumentFactory(new SvgSanitizer())->fromStringAndSanitize($svg)),
         );
     }
 
@@ -88,7 +88,7 @@ final class SvgDocumentFactoryTest extends UnitTestCase
 
         self::assertSame(
             '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"/>',
-            $this->serialize((new SvgDocumentFactory(new SvgSanitizer()))->fromStringAndSanitize($svg, true)),
+            $this->serialize(new SvgDocumentFactory(new SvgSanitizer())->fromStringAndSanitize($svg, true)),
         );
     }
 
@@ -100,7 +100,7 @@ final class SvgDocumentFactoryTest extends UnitTestCase
 
         self::assertSame(
             '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"><rect width="10" height="10"/></svg>',
-            $this->serialize((new SvgDocumentFactory(new SvgSanitizer()))->fromStringAndSanitize($svg)),
+            $this->serialize(new SvgDocumentFactory(new SvgSanitizer())->fromStringAndSanitize($svg)),
         );
     }
 
@@ -118,7 +118,7 @@ final class SvgDocumentFactoryTest extends UnitTestCase
 
         self::assertSame(
             '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 10 10"><rect width="10" height="10"/></svg>',
-            $this->serialize((new SvgDocumentFactory(new SvgSanitizer()))->fromStringAndSanitize($svg)),
+            $this->serialize(new SvgDocumentFactory(new SvgSanitizer())->fromStringAndSanitize($svg)),
         );
     }
 

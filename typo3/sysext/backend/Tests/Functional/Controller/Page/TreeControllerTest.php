@@ -768,7 +768,7 @@ final class TreeControllerTest extends FunctionalTestCase
     public function fetchDataActionConsidersPermissions(int $backendUser, array $expectation): void
     {
         $this->backendUser = $this->setUpBackendUser($backendUser);
-        $request = (new ServerRequest(new Uri('https://example.com')))->withQueryParams(['depth' => 1]);
+        $request = new ServerRequest(new Uri('https://example.com'))->withQueryParams(['depth' => 1]);
         $response = $this->get(TreeController::class)->fetchDataAction($request);
         $data = json_decode((string)$response->getBody(), true);
         $items = array_filter($data, static fn(array $page): bool => $page['depth'] <= 1);
@@ -821,7 +821,7 @@ final class TreeControllerTest extends FunctionalTestCase
     public function filterDataActionResolvesNestedPages(string $query, array $expectation): void
     {
         $filterProperties = ['identifier', 'depth', 'name', 'hasChildren'];
-        $request = (new ServerRequest(new Uri('https://example.com')))->withQueryParams(['q' => $query]);
+        $request = new ServerRequest(new Uri('https://example.com'))->withQueryParams(['q' => $query]);
         $response = $this->get(TreeController::class)->filterDataAction($request);
         $data = json_decode((string)$response->getBody(), true);
         $items = array_map(

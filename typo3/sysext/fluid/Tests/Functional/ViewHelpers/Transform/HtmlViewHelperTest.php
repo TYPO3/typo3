@@ -47,7 +47,7 @@ final class HtmlViewHelperTest extends FunctionalTestCase
 
         // @todo: Update this. There should always be a site object and setting $GLOBALS['TYPO3_REQUEST'] is a hack.
         $rootPageSite = new NullSite();
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://typo3-2.localhost/', 'GET'))
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest('https://typo3-2.localhost/', 'GET')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('language', $rootPageSite->getDefaultLanguage());
     }
@@ -112,7 +112,7 @@ final class HtmlViewHelperTest extends FunctionalTestCase
     {
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource(sprintf('<f:transform.html>%s</f:transform.html>', $payload));
-        self::assertSame($expectation, (new TemplateView($context))->render());
+        self::assertSame($expectation, new TemplateView($context)->render());
     }
 
     public static function isTransformedWithSelectorDataProvider(): array
@@ -147,7 +147,7 @@ final class HtmlViewHelperTest extends FunctionalTestCase
     {
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource(sprintf('<f:transform.html selector="%s">%s</f:transform.html>', $selector, $payload));
-        self::assertSame($expectation, (new TemplateView($context))->render());
+        self::assertSame($expectation, new TemplateView($context)->render());
     }
 
     public static function isTransformedWithOnFailureDataProvider(): array
@@ -201,7 +201,7 @@ final class HtmlViewHelperTest extends FunctionalTestCase
             $onFailure !== null ? 'onFailure="' . $onFailure . '"' : '',
             $payload
         ));
-        self::assertSame($expectation, (new TemplateView($context))->render());
+        self::assertSame($expectation, new TemplateView($context)->render());
     }
 
     #[Test]
@@ -209,6 +209,6 @@ final class HtmlViewHelperTest extends FunctionalTestCase
     {
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:for each="{4711:\'4712\'}" as="i" iteration="iterator" key="k"><f:transform.html>4711</f:transform.html></f:for>');
-        self::assertSame('4711', (new TemplateView($context))->render());
+        self::assertSame('4711', new TemplateView($context)->render());
     }
 }

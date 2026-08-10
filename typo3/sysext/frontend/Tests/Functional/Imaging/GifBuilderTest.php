@@ -102,7 +102,7 @@ final class GifBuilderTest extends FunctionalTestCase
 
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setConfigArray([]);
-        $request = (new ServerRequest('https://www.example.com/'))
+        $request = new ServerRequest('https://www.example.com/')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('frontend.typoscript', $frontendTypoScript);
         $contentObjectRenderer = $this->get(ContentObjectRenderer::class);
@@ -137,7 +137,7 @@ final class GifBuilderTest extends FunctionalTestCase
             Environment::getPublicPath() . '/fileadmin/kasper-skarhoj-gifbuilder-imageresource.jpg'
         );
 
-        $request = (new ServerRequest('https://www.example.com/'))
+        $request = new ServerRequest('https://www.example.com/')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $contentObjectRenderer = $this->get(ContentObjectRenderer::class);
         $contentObjectRenderer->setRequest($request);
@@ -173,7 +173,7 @@ final class GifBuilderTest extends FunctionalTestCase
 
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setConfigArray([]);
-        $request = (new ServerRequest('https://www.example.com/'))
+        $request = new ServerRequest('https://www.example.com/')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('frontend.typoscript', $frontendTypoScript);
         $contentObjectRenderer = $this->get(ContentObjectRenderer::class);

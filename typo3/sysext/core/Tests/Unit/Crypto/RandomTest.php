@@ -102,7 +102,7 @@ final class RandomTest extends UnitTestCase
         $this->expectException(InvalidPasswordRulesException::class);
         $this->expectExceptionCode($exceptionCode);
 
-        (new Random())->generateRandomPassword($passwordRules);
+        new Random()->generateRandomPassword($passwordRules);
     }
 
     public static function generateRandomPasswordGeneratesRandomWithEncodingDataProvider(): \Generator
@@ -130,7 +130,7 @@ final class RandomTest extends UnitTestCase
         array $passwordRules,
         string $pattern
     ): void {
-        self::assertMatchesRegularExpression($pattern, (new Random())->generateRandomPassword($passwordRules));
+        self::assertMatchesRegularExpression($pattern, new Random()->generateRandomPassword($passwordRules));
     }
 
     public static function generateRandomPasswordGeneratesRandomWithCharacterSetsDataProvider(): \Generator
@@ -167,7 +167,7 @@ final class RandomTest extends UnitTestCase
         array $passwordRules,
         string $pattern
     ): void {
-        self::assertMatchesRegularExpression($pattern, (new Random())->generateRandomPassword($passwordRules));
+        self::assertMatchesRegularExpression($pattern, new Random()->generateRandomPassword($passwordRules));
     }
 
     public static function generateRandomPasswordGeneratesRandomWithLengthDataProvider(): \Generator
@@ -204,7 +204,7 @@ final class RandomTest extends UnitTestCase
         array $passwordRules,
         int $length
     ): void {
-        self::assertEquals($length, strlen((new Random())->generateRandomPassword($passwordRules)));
+        self::assertEquals($length, strlen(new Random()->generateRandomPassword($passwordRules)));
     }
 
     #[Test]

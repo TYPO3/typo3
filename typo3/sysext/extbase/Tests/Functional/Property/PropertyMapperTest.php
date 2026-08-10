@@ -65,7 +65,7 @@ final class PropertyMapperTest extends FunctionalTestCase
     {
         $this->expectException(TargetNotFoundException::class);
         $this->expectExceptionCode(1297933823);
-        $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $request = new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $configurationManager = $this->get(ConfigurationManagerInterface::class);
         $configurationManager->setRequest($request);
         $propertyMapper = $this->get(PropertyMapper::class);

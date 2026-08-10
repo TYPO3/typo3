@@ -75,6 +75,6 @@ final class CharDataTypeTest extends AbstractDataTypeBaseTestCase
         $this->expectException(StatementException::class);
         $this->expectExceptionCode(1471504822);
         $this->expectExceptionMessage('The current data type requires a field length definition');
-        (new Parser(new Lexer()))->parse('CREATE TABLE `aTable`(`aField` VARCHAR);');
+        new Parser(new Lexer())->parse('CREATE TABLE `aTable`(`aField` VARCHAR);');
     }
 }

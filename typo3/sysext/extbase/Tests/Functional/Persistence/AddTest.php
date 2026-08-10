@@ -69,7 +69,7 @@ final class AddTest extends FunctionalTestCase
         $this->postRepository = $this->get(PostRepository::class);
         $this->exampleRepository = $this->get(ExampleRepository::class);
 
-        $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $request = new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $this->get(ConfigurationManagerInterface::class)->setRequest($request);
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['features']['extbase.enableHistoryTracking'] = true;
     }

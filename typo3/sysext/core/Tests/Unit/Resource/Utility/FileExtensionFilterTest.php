@@ -34,7 +34,7 @@ final class FileExtensionFilterTest extends UnitTestCase
         $resourceFactoryMock = $this->createMock(ResourceFactory::class);
         $resourceFactoryMock->expects($this->never())->method('getFileReferenceObject');
         GeneralUtility::setSingletonInstance(ResourceFactory::class, $resourceFactoryMock);
-        (new FileExtensionFilter())->filter([0, '', null, false], '', '');
+        new FileExtensionFilter()->filter([0, '', null, false], '', '');
     }
 
     public static function extensionFilterIgnoresCaseInAllowedExtensionCheckDataProvider(): array

@@ -86,7 +86,7 @@ final class PageRendererTest extends FunctionalTestCase
     {
         $normalizedParams = self::createStub(NormalizedParams::class);
         $normalizedParams->method('getSitePath')->willReturn('/');
-        return (new ServerRequest('https://www.example.com/'))
+        return new ServerRequest('https://www.example.com/')
             ->withAttribute('applicationType', $requestType)
             ->withAttribute('normalizedParams', $normalizedParams);
     }
@@ -561,7 +561,7 @@ final class PageRendererTest extends FunctionalTestCase
     public function loadJavaScriptLanguageStringsAddsProcessesLabelsToInlineLanguageLabels(string $fileRef, string $selectionPrefix, string $stripFromSelectionName, array $expectation): void
     {
         $subject = $this->get(PageRenderer::class);
-        $subject->setLanguage(new Locale(), (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE));
+        $subject->setLanguage(new Locale(), new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE));
         $subject->addInlineLanguageLabelFile($fileRef, $selectionPrefix, $stripFromSelectionName);
         $subjectMethodReflection = (new \ReflectionMethod($subject, 'loadJavaScriptLanguageStrings'));
         $subjectMethodReflection->invoke($subject);

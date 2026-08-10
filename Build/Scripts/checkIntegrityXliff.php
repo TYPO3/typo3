@@ -311,4 +311,4 @@ final readonly class CheckIntegrityXliff
     }
 }
 
-exit((new CheckIntegrityXliff())->execute($argv));
+exit(new CheckIntegrityXliff()->execute($argv));

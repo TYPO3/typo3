@@ -116,20 +116,20 @@ class EnvironmentController extends AbstractController
         $connectionPool = $container->get(ConnectionPool::class);
         $view = $this->initializeView($request);
         $messageQueue = new FlashMessageQueue('install');
-        $checkMessages = (new Check())->getStatus();
+        $checkMessages = new Check()->getStatus();
         foreach ($checkMessages as $message) {
             $messageQueue->enqueue($message);
         }
-        $setupMessages = (new SetupCheck())->getStatus();
+        $setupMessages = new SetupCheck()->getStatus();
         foreach ($setupMessages as $message) {
             $messageQueue->enqueue($message);
         }
-        $databaseMessages = (new DatabaseCheck($connectionPool))->getStatus();
+        $databaseMessages = new DatabaseCheck($connectionPool)->getStatus();
         foreach ($databaseMessages as $message) {
             $messageQueue->enqueue($message);
         }
         $uriBuilder = $container->get(UriBuilder::class);
-        $serverResponseMessages = (new ServerResponseCheck($uriBuilder, false))->getStatus($request);
+        $serverResponseMessages = new ServerResponseCheck($uriBuilder, false)->getStatus($request);
         foreach ($serverResponseMessages as $message) {
             $messageQueue->enqueue($message);
         }

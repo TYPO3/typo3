@@ -245,7 +245,7 @@ final class RouteSorterTest extends UnitTestCase
     #[Test]
     public function routesAreSortedForGeneration(array $givenRoutes, array $givenParameters, array $expectation): void
     {
-        $sorter = (new RouteSorter())
+        $sorter = new RouteSorter()
             ->withRoutes($givenRoutes)
             ->withOriginalParameters($givenParameters);
         $routes = $sorter->sortRoutesForGeneration()->getRoutes();

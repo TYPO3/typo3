@@ -34,10 +34,10 @@ final class UploadDeleteCheckboxViewHelperTest extends FunctionalTestCase
     public function exceptionIsThrownWhenViewHelperNotUsedInFluidFormContext(): void
     {
         $extbaseRequestParameters = new ExtbaseRequestParameters();
-        $psr7Request = (new ServerRequest())->withAttribute('extbase', $extbaseRequestParameters)
+        $psr7Request = new ServerRequest()->withAttribute('extbase', $extbaseRequestParameters)
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $this->get(ConfigurationManagerInterface::class)->setRequest($psr7Request);
-        $extbaseRequest = (new Request($psr7Request))
+        $extbaseRequest = new Request($psr7Request)
             ->withPluginName('MyPlugin')
             ->withControllerObjectName('VENDOR\\MyExtension\\Controller\\UploadController');
 
@@ -57,7 +57,7 @@ final class UploadDeleteCheckboxViewHelperTest extends FunctionalTestCase
     public function exceptionIsThrownWhenExtensionNameNotDefinedInExtbaseRequest(): void
     {
         $extbaseRequestParameters = new ExtbaseRequestParameters();
-        $psr7Request = (new ServerRequest())->withAttribute('extbase', $extbaseRequestParameters)
+        $psr7Request = new ServerRequest()->withAttribute('extbase', $extbaseRequestParameters)
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $extbaseRequest = new Request($psr7Request);
 
@@ -77,9 +77,9 @@ final class UploadDeleteCheckboxViewHelperTest extends FunctionalTestCase
     public function exceptionIsThrownWhenPluginNameNotDefinedInExtbaseRequest(): void
     {
         $extbaseRequestParameters = new ExtbaseRequestParameters();
-        $psr7Request = (new ServerRequest())->withAttribute('extbase', $extbaseRequestParameters)
+        $psr7Request = new ServerRequest()->withAttribute('extbase', $extbaseRequestParameters)
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
-        $extbaseRequest = (new Request($psr7Request))->withControllerExtensionName('MyExtension');
+        $extbaseRequest = new Request($psr7Request)->withControllerExtensionName('MyExtension');
 
         $fileReferenceStub = self::createStub(FileReference::class);
 
@@ -99,10 +99,10 @@ final class UploadDeleteCheckboxViewHelperTest extends FunctionalTestCase
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 'bar';
 
         $extbaseRequestParameters = new ExtbaseRequestParameters();
-        $psr7Request = (new ServerRequest())->withAttribute('extbase', $extbaseRequestParameters)
+        $psr7Request = new ServerRequest()->withAttribute('extbase', $extbaseRequestParameters)
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $this->get(ConfigurationManagerInterface::class)->setRequest($psr7Request);
-        $extbaseRequest = (new Request($psr7Request))
+        $extbaseRequest = new Request($psr7Request)
             ->withPluginName('MyPlugin')
             ->withControllerExtensionName('MyExtension');
 
@@ -127,14 +127,14 @@ final class UploadDeleteCheckboxViewHelperTest extends FunctionalTestCase
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 'bar';
 
         $originalRequestExtbaseRequestParameters = new ExtbaseRequestParameters();
-        $originalPsr7Rquest = (new ServerRequest())->withAttribute('extbase', $originalRequestExtbaseRequestParameters)
+        $originalPsr7Rquest = new ServerRequest()->withAttribute('extbase', $originalRequestExtbaseRequestParameters)
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $originalExtbaseRequest = (new Request($originalPsr7Rquest));
 
         $extbaseRequestParameters = new ExtbaseRequestParameters();
         $extbaseRequestParameters->setOriginalRequest($originalExtbaseRequest);
 
-        $psr7Request = (new ServerRequest('/foo/bar', 'POST'))->withParsedBody(
+        $psr7Request = new ServerRequest('/foo/bar', 'POST')->withParsedBody(
             [
                 'tx_myextension_myplugin' => [
                     '@delete' => [
@@ -149,7 +149,7 @@ final class UploadDeleteCheckboxViewHelperTest extends FunctionalTestCase
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $this->get(ConfigurationManagerInterface::class)->setRequest($psr7Request);
 
-        $extbaseRequest = (new Request($psr7Request))
+        $extbaseRequest = new Request($psr7Request)
             ->withPluginName('MyPlugin')
             ->withControllerExtensionName('MyExtension');
 

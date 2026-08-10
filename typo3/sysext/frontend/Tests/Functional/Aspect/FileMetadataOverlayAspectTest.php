@@ -164,7 +164,7 @@ final class FileMetadataOverlayAspectTest extends AbstractTestCase
 
     private function prepareWorkspaceRequest(): InternalRequestContext
     {
-        return (new InternalRequestContext())
+        return new InternalRequestContext()
             ->withBackendUserId(self::VALUE_BackendUserId)
             ->withWorkspaceId(self::VALUE_WorkspaceId);
     }

@@ -541,7 +541,7 @@ final class ContentObjectRendererTest extends FunctionalTestCase
     {
         $typoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $typoScript->setConfigArray([]);
-        $request = (new ServerRequest())->withAttribute('frontend.typoscript', $typoScript);
+        $request = new ServerRequest()->withAttribute('frontend.typoscript', $typoScript);
         $subject = $this->get(ContentObjectRenderer::class);
         $subject->setRequest($request);
         self::assertEquals($expectedResult, $subject->stdWrap_parseFunc($value, $configuration));
@@ -807,7 +807,7 @@ final class ContentObjectRendererTest extends FunctionalTestCase
     {
         $typoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $typoScript->setConfigArray([]);
-        $request = (new ServerRequest())->withAttribute('frontend.typoscript', $typoScript);
+        $request = new ServerRequest()->withAttribute('frontend.typoscript', $typoScript);
         $subject = $this->get(ContentObjectRenderer::class);
         $subject->setRequest($request);
         self::assertEquals($expectedResult, $subject->stdWrap_parseFunc($value, $configuration));
@@ -890,7 +890,7 @@ content="benni">',
     {
         $typoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $typoScript->setConfigArray([]);
-        $request = (new ServerRequest())->withAttribute('frontend.typoscript', $typoScript);
+        $request = new ServerRequest()->withAttribute('frontend.typoscript', $typoScript);
         $subject = $this->get(ContentObjectRenderer::class);
         $subject->setRequest($request);
         self::assertEquals($expected, $subject->stdWrap_parseFunc($input, $configuration));
@@ -1006,7 +1006,7 @@ content="benni">',
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
         $frontendTypoScript->setConfigArray(['doctype' => $doctype]);
-        $request = (new ServerRequest())
+        $request = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('frontend.typoscript', $frontendTypoScript);
         $subject = $this->get(ContentObjectRenderer::class);
@@ -1610,7 +1610,7 @@ content="benni">',
                 ],
             ],
         ]);
-        $request = (new ServerRequest())->withAttribute('language', $site->getLanguageById(2));
+        $request = new ServerRequest()->withAttribute('language', $site->getLanguageById(2));
         $conf = ['formattedDate' => $pattern];
         if ($locale !== null) {
             $conf['formattedDate.']['locale'] = $locale;
@@ -2695,7 +2695,7 @@ content="benni">',
         $pageInformation = new PageInformation();
         $pageInformation->setId(1);
         $pageInformation->setContentFromPid(1);
-        $request = (new ServerRequest())->withAttribute('frontend.page.information', $pageInformation);
+        $request = new ServerRequest()->withAttribute('frontend.page.information', $pageInformation);
         $subject = $this->get(ContentObjectRenderer::class);
         $subject->setRequest($request);
         self::assertSame(2, $subject->stdWrap_numRows('unused', $conf));
@@ -2927,7 +2927,7 @@ content="benni">',
         $typoScript->setConfigArray([
             'disablePrefixComment' => $disable,
         ]);
-        $request = (new ServerRequest())->withAttribute('frontend.typoscript', $typoScript);
+        $request = new ServerRequest()->withAttribute('frontend.typoscript', $typoScript);
         $subject = $this->get(ContentObjectRenderer::class);
         $subject->setRequest($request);
         self::assertSame($expected, $subject->stdWrap_prefixComment($content, $conf));
@@ -4002,12 +4002,12 @@ content="benni">',
     #[Test]
     public function mergeTSRefResolvesRecursive(string $typoScriptString, string $propertyValue, array $override, array $expected): void
     {
-        $lineStream = (new LossyTokenizer())->tokenize($typoScriptString);
-        $typoScriptAst = (new AstBuilder(new NoopEventDispatcher()))->build($lineStream, new RootNode());
+        $lineStream = new LossyTokenizer()->tokenize($typoScriptString);
+        $typoScriptAst = new AstBuilder(new NoopEventDispatcher())->build($lineStream, new RootNode());
         $typoScriptAttribute = new FrontendTypoScript(new RootNode(), [], [], []);
         $typoScriptAttribute->setSetupTree($typoScriptAst);
         $typoScriptAttribute->setSetupArray($typoScriptAst->toArray());
-        $request = (new ServerRequest())->withAttribute('frontend.typoscript', $typoScriptAttribute);
+        $request = new ServerRequest()->withAttribute('frontend.typoscript', $typoScriptAttribute);
         $subject = $this->get(ContentObjectRenderer::class);
         $subject->setRequest($request);
         $inputArray = [
@@ -4102,43 +4102,43 @@ content="benni">',
                 'Some text with a link http://example.com',
                 [],
                 'Some text with a link <a href="http://example.com">example.com</a>',
-                (new LinkResult(LinkService::TYPE_URL, 'http://example.com'))->withLinkText('example.com'),
+                new LinkResult(LinkService::TYPE_URL, 'http://example.com')->withLinkText('example.com'),
             ],
             'http link with path' => [
                 'Some text with a link http://example.com/path/to/page',
                 [],
                 'Some text with a link <a href="http://example.com/path/to/page">example.com</a>',
-                (new LinkResult(LinkService::TYPE_URL, 'http://example.com/path/to/page'))->withLinkText('example.com'),
+                new LinkResult(LinkService::TYPE_URL, 'http://example.com/path/to/page')->withLinkText('example.com'),
             ],
             'http link with query parameter' => [
                 'Some text with a link http://example.com?foo=bar',
                 [],
                 'Some text with a link <a href="http://example.com?foo=bar">example.com</a>',
-                (new LinkResult(LinkService::TYPE_URL, 'http://example.com?foo=bar'))->withLinkText('example.com'),
+                new LinkResult(LinkService::TYPE_URL, 'http://example.com?foo=bar')->withLinkText('example.com'),
             ],
             'http link with question mark' => [
                 'Some text with a link http://example.com?',
                 [],
                 'Some text with a link <a href="http://example.com">example.com</a>?',
-                (new LinkResult(LinkService::TYPE_URL, 'http://example.com'))->withLinkText('example.com'),
+                new LinkResult(LinkService::TYPE_URL, 'http://example.com')->withLinkText('example.com'),
             ],
             'http link with period' => [
                 'Some text with a link http://example.com.',
                 [],
                 'Some text with a link <a href="http://example.com">example.com</a>.',
-                (new LinkResult(LinkService::TYPE_URL, 'http://example.com'))->withLinkText('example.com'),
+                new LinkResult(LinkService::TYPE_URL, 'http://example.com')->withLinkText('example.com'),
             ],
             'http link with fragment' => [
                 'Some text with a link http://example.com#',
                 [],
                 'Some text with a link <a href="http://example.com#">example.com</a>',
-                (new LinkResult(LinkService::TYPE_URL, 'http://example.com#'))->withLinkText('example.com'),
+                new LinkResult(LinkService::TYPE_URL, 'http://example.com#')->withLinkText('example.com'),
             ],
             'http link with query parameter and fragment' => [
                 'Some text with a link http://example.com?foo=bar#top',
                 [],
                 'Some text with a link <a href="http://example.com?foo=bar#top">example.com</a>',
-                (new LinkResult(LinkService::TYPE_URL, 'http://example.com?foo=bar#top'))->withLinkText('example.com'),
+                new LinkResult(LinkService::TYPE_URL, 'http://example.com?foo=bar#top')->withLinkText('example.com'),
             ],
             'http link with query parameter and keep scheme' => [
                 'Some text with a link http://example.com/path/to/page?foo=bar',
@@ -4146,7 +4146,7 @@ content="benni">',
                     'keep' => 'scheme',
                 ],
                 'Some text with a link <a href="http://example.com/path/to/page?foo=bar">http://example.com</a>',
-                (new LinkResult(LinkService::TYPE_URL, 'http://example.com/path/to/page?foo=bar'))->withLinkText('http://example.com'),
+                new LinkResult(LinkService::TYPE_URL, 'http://example.com/path/to/page?foo=bar')->withLinkText('http://example.com'),
             ],
             'http link with query parameter and keep path' => [
                 'Some text with a link http://example.com/path/to/page?foo=bar',
@@ -4154,7 +4154,7 @@ content="benni">',
                     'keep' => 'path',
                 ],
                 'Some text with a link <a href="http://example.com/path/to/page?foo=bar">example.com/path/to/page</a>',
-                (new LinkResult(LinkService::TYPE_URL, 'http://example.com/path/to/page?foo=bar'))->withLinkText('example.com/path/to/page'),
+                new LinkResult(LinkService::TYPE_URL, 'http://example.com/path/to/page?foo=bar')->withLinkText('example.com/path/to/page'),
             ],
             'http link with query parameter and keep path with trailing slash' => [
                 'Some text with a link http://example.com/path/to/page/?foo=bar',
@@ -4162,7 +4162,7 @@ content="benni">',
                     'keep' => 'path',
                 ],
                 'Some text with a link <a href="http://example.com/path/to/page/?foo=bar">example.com/path/to/page/</a>',
-                (new LinkResult(LinkService::TYPE_URL, 'http://example.com/path/to/page/?foo=bar'))->withLinkText('example.com/path/to/page/'),
+                new LinkResult(LinkService::TYPE_URL, 'http://example.com/path/to/page/?foo=bar')->withLinkText('example.com/path/to/page/'),
             ],
             'http link with trailing slash and keep path with trailing slash' => [
                 'Some text with a link http://example.com/',
@@ -4170,7 +4170,7 @@ content="benni">',
                     'keep' => 'path',
                 ],
                 'Some text with a link <a href="http://example.com/">example.com</a>',
-                (new LinkResult(LinkService::TYPE_URL, 'http://example.com/'))->withLinkText('example.com'),
+                new LinkResult(LinkService::TYPE_URL, 'http://example.com/')->withLinkText('example.com'),
             ],
             'http link with query parameter and keep scheme,path' => [
                 'Some text with a link http://example.com/path/to/page?foo=bar',
@@ -4178,7 +4178,7 @@ content="benni">',
                     'keep' => 'scheme,path',
                 ],
                 'Some text with a link <a href="http://example.com/path/to/page?foo=bar">http://example.com/path/to/page</a>',
-                (new LinkResult(LinkService::TYPE_URL, 'http://example.com/path/to/page?foo=bar'))->withLinkText('http://example.com/path/to/page'),
+                new LinkResult(LinkService::TYPE_URL, 'http://example.com/path/to/page?foo=bar')->withLinkText('http://example.com/path/to/page'),
             ],
             'http link with multiple query parameters' => [
                 'Some text with a link http://example.com?foo=bar&fuz=baz',
@@ -4186,7 +4186,7 @@ content="benni">',
                     'keep' => 'scheme,path,query',
                 ],
                 'Some text with a link <a href="http://example.com?foo=bar&amp;fuz=baz">http://example.com?foo=bar&fuz=baz</a>',
-                (new LinkResult(LinkService::TYPE_URL, 'http://example.com?foo=bar&fuz=baz'))->withLinkText('http://example.com?foo=bar&fuz=baz'),
+                new LinkResult(LinkService::TYPE_URL, 'http://example.com?foo=bar&fuz=baz')->withLinkText('http://example.com?foo=bar&fuz=baz'),
             ],
             'http link with query parameter and keep scheme,path,query' => [
                 'Some text with a link http://example.com/path/to/page?foo=bar',
@@ -4194,25 +4194,25 @@ content="benni">',
                     'keep' => 'scheme,path,query',
                 ],
                 'Some text with a link <a href="http://example.com/path/to/page?foo=bar">http://example.com/path/to/page?foo=bar</a>',
-                (new LinkResult(LinkService::TYPE_URL, 'http://example.com/path/to/page?foo=bar'))->withLinkText('http://example.com/path/to/page?foo=bar'),
+                new LinkResult(LinkService::TYPE_URL, 'http://example.com/path/to/page?foo=bar')->withLinkText('http://example.com/path/to/page?foo=bar'),
             ],
             'https link' => [
                 'Some text with a link https://example.com',
                 [],
                 'Some text with a link <a href="https://example.com">example.com</a>',
-                (new LinkResult(LinkService::TYPE_URL, 'https://example.com'))->withLinkText('example.com'),
+                new LinkResult(LinkService::TYPE_URL, 'https://example.com')->withLinkText('example.com'),
             ],
             'http link with www' => [
                 'Some text with a link http://www.example.com',
                 [],
                 'Some text with a link <a href="http://www.example.com">www.example.com</a>',
-                (new LinkResult(LinkService::TYPE_URL, 'http://www.example.com'))->withLinkText('www.example.com'),
+                new LinkResult(LinkService::TYPE_URL, 'http://www.example.com')->withLinkText('www.example.com'),
             ],
             'https link with www' => [
                 'Some text with a link https://www.example.com',
                 [],
                 'Some text with a link <a href="https://www.example.com">www.example.com</a>',
-                (new LinkResult(LinkService::TYPE_URL, 'https://www.example.com'))->withLinkText('www.example.com'),
+                new LinkResult(LinkService::TYPE_URL, 'https://www.example.com')->withLinkText('www.example.com'),
             ],
         ];
     }
@@ -4225,7 +4225,7 @@ content="benni">',
         $linkFactory->method('create')->willReturn($linkResult);
         $this->get('service_container')->set(LinkFactory::class, $linkFactory);
         $subject = $this->get(ContentObjectRenderer::class);
-        $http_makeLinksReflectionMethod = (new \ReflectionClass($subject))->getMethod('http_makeLinks');
+        $http_makeLinksReflectionMethod = new \ReflectionClass($subject)->getMethod('http_makeLinks');
         $result = $http_makeLinksReflectionMethod->invoke($subject, $data, $configuration);
         self::assertSame($expectedResult, $result);
     }
@@ -4253,7 +4253,7 @@ content="benni">',
     public function http_makeLinksReturnsNoLink(string $data, string $expectedResult): void
     {
         $subject = $this->get(ContentObjectRenderer::class);
-        $http_makeLinksReflectionMethod = (new \ReflectionClass($subject))->getMethod('http_makeLinks');
+        $http_makeLinksReflectionMethod = new \ReflectionClass($subject)->getMethod('http_makeLinks');
         $result = $http_makeLinksReflectionMethod->invoke($subject, $data, []);
         self::assertSame($expectedResult, $result);
     }
@@ -4265,31 +4265,31 @@ content="benni">',
                 'Some text with an email address mailto:john@example.com',
                 [],
                 'Some text with an email address <a href="mailto:john@example.com">john@example.com</a>',
-                (new LinkResult(LinkService::TYPE_EMAIL, 'mailto:john@example.com'))->withLinkText('john@example.com'),
+                new LinkResult(LinkService::TYPE_EMAIL, 'mailto:john@example.com')->withLinkText('john@example.com'),
             ],
             'mailto link with subject parameter' => [
                 'Some text with an email address mailto:john@example.com?subject=hi',
                 [],
                 'Some text with an email address <a href="mailto:john@example.com?subject=hi">john@example.com</a>',
-                (new LinkResult(LinkService::TYPE_EMAIL, 'mailto:john@example.com?subject=hi'))->withLinkText('john@example.com'),
+                new LinkResult(LinkService::TYPE_EMAIL, 'mailto:john@example.com?subject=hi')->withLinkText('john@example.com'),
             ],
             'mailto link with multiple parameters' => [
                 'Some text with an email address mailto:john@example.com?subject=Greetings&body=Hi+John',
                 [],
                 'Some text with an email address <a href="mailto:john@example.com?subject=Greetings&amp;body=Hi+John">john@example.com</a>',
-                (new LinkResult(LinkService::TYPE_EMAIL, 'mailto:john@example.com?subject=Greetings&body=Hi+John'))->withLinkText('john@example.com'),
+                new LinkResult(LinkService::TYPE_EMAIL, 'mailto:john@example.com?subject=Greetings&body=Hi+John')->withLinkText('john@example.com'),
             ],
             'mailto link with question mark' => [
                 'Some text with an email address mailto:john@example.com?',
                 [],
                 'Some text with an email address <a href="mailto:john@example.com">john@example.com</a>?',
-                (new LinkResult(LinkService::TYPE_EMAIL, 'mailto:john@example.com'))->withLinkText('john@example.com'),
+                new LinkResult(LinkService::TYPE_EMAIL, 'mailto:john@example.com')->withLinkText('john@example.com'),
             ],
             'mailto link with period' => [
                 'Some text with an email address mailto:john@example.com.',
                 [],
                 'Some text with an email address <a href="mailto:john@example.com">john@example.com</a>.',
-                (new LinkResult(LinkService::TYPE_EMAIL, 'mailto:john@example.com'))->withLinkText('john@example.com'),
+                new LinkResult(LinkService::TYPE_EMAIL, 'mailto:john@example.com')->withLinkText('john@example.com'),
             ],
             'mailto link with wrap' => [
                 'Some text with an email address mailto:john@example.com.',
@@ -4297,7 +4297,7 @@ content="benni">',
                     'wrap' => '<span>|</span>',
                 ],
                 'Some text with an email address <span><a href="mailto:john@example.com">john@example.com</a></span>.',
-                (new LinkResult(LinkService::TYPE_EMAIL, 'mailto:john@example.com'))->withLinkText('john@example.com'),
+                new LinkResult(LinkService::TYPE_EMAIL, 'mailto:john@example.com')->withLinkText('john@example.com'),
             ],
             'mailto link with ATagBeforeWrap' => [
                 'Some text with an email address mailto:john@example.com.',
@@ -4306,7 +4306,7 @@ content="benni">',
                     'ATagBeforeWrap' => 1,
                 ],
                 'Some text with an email address <a href="mailto:john@example.com"><span>john@example.com</span></a>.',
-                (new LinkResult(LinkService::TYPE_EMAIL, 'mailto:john@example.com'))->withLinkText('john@example.com'),
+                new LinkResult(LinkService::TYPE_EMAIL, 'mailto:john@example.com')->withLinkText('john@example.com'),
             ],
             'mailto link with ATagParams' => [
                 'Some text with an email address mailto:john@example.com.',
@@ -4314,7 +4314,7 @@ content="benni">',
                     'ATagParams' => 'class="email"',
                 ],
                 'Some text with an email address <a href="mailto:john@example.com" class="email">john@example.com</a>.',
-                (new LinkResult(LinkService::TYPE_EMAIL, 'mailto:john@example.com'))->withAttribute('class', 'email')->withLinkText('john@example.com'),
+                new LinkResult(LinkService::TYPE_EMAIL, 'mailto:john@example.com')->withAttribute('class', 'email')->withLinkText('john@example.com'),
             ],
         ];
     }
@@ -4327,7 +4327,7 @@ content="benni">',
         $linkFactory->method('create')->willReturn($linkResult);
         $this->get('service_container')->set(LinkFactory::class, $linkFactory);
         $subject = $this->get(ContentObjectRenderer::class);
-        $mailto_makelinksReflectionMethod = (new \ReflectionClass($subject))->getMethod('mailto_makelinks');
+        $mailto_makelinksReflectionMethod = new \ReflectionClass($subject)->getMethod('mailto_makelinks');
         $result = $mailto_makelinksReflectionMethod->invoke($subject, $data, $configuration);
         self::assertSame($expectedResult, $result);
     }
@@ -4336,7 +4336,7 @@ content="benni">',
     public function mailto_makelinksReturnsNoMailToLink(): void
     {
         $subject = $this->get(ContentObjectRenderer::class);
-        $mailto_makelinksReflectionMethod = (new \ReflectionClass($subject))->getMethod('mailto_makelinks');
+        $mailto_makelinksReflectionMethod = new \ReflectionClass($subject)->getMethod('mailto_makelinks');
         $result = $mailto_makelinksReflectionMethod->invoke($subject, 'mailto:', []);
         self::assertSame('mailto:', $result);
     }
@@ -4531,7 +4531,7 @@ content="benni">',
         $result = $subject->getQuery($connection, $table, $conf);
 
         $databasePlatform = $connection->getDatabasePlatform();
-        $identifierQuoteCharacter = (new PlatformHelper())->getIdentifierQuoteCharacter($databasePlatform);
+        $identifierQuoteCharacter = new PlatformHelper()->getIdentifierQuoteCharacter($databasePlatform);
         // strip select * from part between SELECT and FROM
         $selectValue = preg_replace('/SELECT (.*) FROM.*/', '$1', $result);
         // Replace the TYPO3 quote character with the actual quote character for the DBMS
@@ -4992,7 +4992,7 @@ content="benni">',
     {
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setConfigArray($tsfeConfig);
-        $request = (new ServerRequest())->withAttribute('frontend.typoscript', $frontendTypoScript);
+        $request = new ServerRequest()->withAttribute('frontend.typoscript', $frontendTypoScript);
         $subject = $this->get(ContentObjectRenderer::class);
         $subject->setRequest($request);
         self::assertEquals($expected, $subject->typoLink($linkText, ['parameter' => $parameter]));
@@ -5724,7 +5724,7 @@ content="benni">',
             'HTTP_HOST' => 'example.com',
             'REMOTE_ADDR' => '123.45.67.89',
         ]);
-        $request = (new ServerRequest('https://example.com/'))
+        $request = new ServerRequest('https://example.com/')
             ->withAttribute('normalizedParams', $normalizedParams)
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
         $subject->setRequest($request);
@@ -5809,7 +5809,7 @@ content="benni">',
                 'someValue' => 42,
             ],
         ]);
-        $request = (new ServerRequest())->withAttribute('frontend.user', $frontendUser);
+        $request = new ServerRequest()->withAttribute('frontend.user', $frontendUser);
         $subject = $this->get(ContentObjectRenderer::class);
         $subject->setRequest($request);
         self::assertEquals(42, $subject->getData('session:myext|mydata|someValue', []));
@@ -6071,7 +6071,7 @@ content="benni">',
                 ],
             ],
         ]);
-        $request = (new ServerRequest('https://example.com'))->withAttribute('site', $site);
+        $request = new ServerRequest('https://example.com')->withAttribute('site', $site);
         $subject = $this->get(ContentObjectRenderer::class);
         $subject->setRequest($request);
         self::assertEquals('http://example.com', $subject->getData('site:base', []));
@@ -6098,7 +6098,7 @@ content="benni">',
                 ],
             ],
         ]);
-        $request = (new ServerRequest('https://example.com'))->withAttribute('site', $site);
+        $request = new ServerRequest('https://example.com')->withAttribute('site', $site);
         $subject = $this->get(ContentObjectRenderer::class);
         $subject->setRequest($request);
         self::assertEquals('http://dev.com', $subject->getData('site:base', []));
@@ -6320,7 +6320,7 @@ content="benni">',
         $this->expectExceptionCode(1414513947);
         $typoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $typoScript->setConfigArray([]);
-        $request = (new ServerRequest())->withAttribute('frontend.typoscript', $typoScript);
+        $request = new ServerRequest()->withAttribute('frontend.typoscript', $typoScript);
         $subject = $this->get(ContentObjectRenderer::class);
         $subject->setRequest($request);
         $contentObjectFixture = $this->createContentObjectThrowingExceptionFixture($subject, false);
@@ -6343,7 +6343,7 @@ content="benni">',
         );
         $typoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $typoScript->setConfigArray([]);
-        $request = (new ServerRequest())->withAttribute('frontend.typoscript', $typoScript);
+        $request = new ServerRequest()->withAttribute('frontend.typoscript', $typoScript);
         $subject = $this->get(ContentObjectRenderer::class);
         $subject->setRequest($request);
         $contentObjectFixture = $this->createContentObjectThrowingExceptionFixture($subject);
@@ -6360,7 +6360,7 @@ content="benni">',
         ];
         $typoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $typoScript->setConfigArray([]);
-        $request = (new ServerRequest())->withAttribute('frontend.typoscript', $typoScript);
+        $request = new ServerRequest()->withAttribute('frontend.typoscript', $typoScript);
         $subject->setRequest($request);
         $subject->render($contentObjectFixture, $configuration);
     }
@@ -6374,7 +6374,7 @@ content="benni">',
         $typoScript->setConfigArray([
             'contentObjectExceptionHandler' => '1',
         ]);
-        $request = (new ServerRequest())->withAttribute('frontend.typoscript', $typoScript);
+        $request = new ServerRequest()->withAttribute('frontend.typoscript', $typoScript);
         $subject->setRequest($request);
         $subject->render($contentObjectFixture);
     }
@@ -6390,7 +6390,7 @@ content="benni">',
         $typoScript->setConfigArray([
             'contentObjectExceptionHandler' => '1',
         ]);
-        $request = (new ServerRequest())->withAttribute('frontend.typoscript', $typoScript);
+        $request = new ServerRequest()->withAttribute('frontend.typoscript', $typoScript);
         $subject->setRequest($request);
         $configuration = [
             'exceptionHandler' => '0',
@@ -6405,7 +6405,7 @@ content="benni">',
         $contentObjectFixture = $this->createContentObjectThrowingExceptionFixture($subject);
         $typoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $typoScript->setConfigArray([]);
-        $request = (new ServerRequest())->withAttribute('frontend.typoscript', $typoScript);
+        $request = new ServerRequest()->withAttribute('frontend.typoscript', $typoScript);
         $subject->setRequest($request);
         $configuration = [
             'exceptionHandler' => '1',
@@ -6427,7 +6427,7 @@ content="benni">',
                 'errorMessage' => 'Global message for testing',
             ],
         ]);
-        $request = (new ServerRequest())->withAttribute('frontend.typoscript', $typoScript);
+        $request = new ServerRequest()->withAttribute('frontend.typoscript', $typoScript);
         $subject->setRequest($request);
         $configuration = [
             'exceptionHandler' => '1',
@@ -6453,7 +6453,7 @@ content="benni">',
         ];
         $typoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $typoScript->setConfigArray([]);
-        $request = (new ServerRequest())->withAttribute('frontend.typoscript', $typoScript);
+        $request = new ServerRequest()->withAttribute('frontend.typoscript', $typoScript);
         $subject->setRequest($request);
         $subject->render($contentObjectFixture, $configuration);
     }

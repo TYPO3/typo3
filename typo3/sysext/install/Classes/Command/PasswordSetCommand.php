@@ -90,7 +90,7 @@ final class PasswordSetCommand extends Command
         $password = !$noInteraction
             ? $this
                 ->getQuestionHelper()
-                ->ask($input, $output, (new Question('Password (leave empty for auto generation): '))->setHidden(true))
+                ->ask($input, $output, new Question('Password (leave empty for auto generation): ')->setHidden(true))
             : null;
 
         if ($password === null) {

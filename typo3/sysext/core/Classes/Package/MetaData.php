@@ -153,7 +153,7 @@ class MetaData
         $this->stability = Stability::from(VersionParser::parseStability($version));
         [$version, $build] = $this->splitBuildMetadata($version);
         $this->build = $build;
-        $normalizedVersion = (new VersionParser())->normalize($version);
+        $normalizedVersion = new VersionParser()->normalize($version);
         $this->version = $this->normalizedToPrettyVersion($normalizedVersion);
     }
 

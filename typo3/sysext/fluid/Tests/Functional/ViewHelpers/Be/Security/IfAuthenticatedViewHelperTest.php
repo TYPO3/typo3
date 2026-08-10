@@ -35,7 +35,7 @@ final class IfAuthenticatedViewHelperTest extends FunctionalTestCase
         $context->getTemplatePaths()->setTemplateSource(
             '<f:be.security.ifAuthenticated><f:then>then child</f:then><f:else>else child</f:else></f:be.security.ifAuthenticated>'
         );
-        self::assertEquals('then child', (new TemplateView($context))->render());
+        self::assertEquals('then child', new TemplateView($context)->render());
     }
 
     #[Test]
@@ -47,6 +47,6 @@ final class IfAuthenticatedViewHelperTest extends FunctionalTestCase
         $context->getTemplatePaths()->setTemplateSource(
             '<f:be.security.ifAuthenticated><f:then>then child</f:then><f:else>else child</f:else></f:be.security.ifAuthenticated>'
         );
-        self::assertEquals('else child', (new TemplateView($context))->render());
+        self::assertEquals('else child', new TemplateView($context)->render());
     }
 }

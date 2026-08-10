@@ -155,37 +155,37 @@ class ServerResponseCheck implements CheckInterface
         };
 
         return [
-            (new FileDeclaration($this->assetLocation, $fileName . '.html'))
+            new FileDeclaration($this->assetLocation, $fileName . '.html')
                 ->withExpectedContentType('text/html')
                 ->withExpectedContent('HTML content'),
-            (new FileDeclaration($this->assetLocation, $fileName . '.wrong'))
+            new FileDeclaration($this->assetLocation, $fileName . '.wrong')
                 ->withUnexpectedContentType('text/html')
                 ->withExpectedContent('HTML content'),
-            (new FileDeclaration($this->assetLocation, $fileName . '.html.wrong'))
+            new FileDeclaration($this->assetLocation, $fileName . '.html.wrong')
                 ->withUnexpectedContentType('text/html')
                 ->withExpectedContent('HTML content'),
-            (new FileDeclaration($this->assetLocation, $fileName . '.1.svg.wrong'))
+            new FileDeclaration($this->assetLocation, $fileName . '.1.svg.wrong')
                 ->withBuildFlags(FileDeclaration::FLAG_BUILD_SVG | FileDeclaration::FLAG_BUILD_SVG_DOCUMENT)
                 ->withUnexpectedContentType('image/svg+xml')
                 ->withExpectedContent('SVG content'),
-            (new FileDeclaration($this->assetLocation, $fileName . '.2.svg.wrong'))
+            new FileDeclaration($this->assetLocation, $fileName . '.2.svg.wrong')
                 ->withBuildFlags(FileDeclaration::FLAG_BUILD_SVG | FileDeclaration::FLAG_BUILD_SVG_DOCUMENT)
                 ->withUnexpectedContentType('image/svg')
                 ->withExpectedContent('SVG content'),
-            (new FileDeclaration($this->assetLocation, $fileName . '.php.wrong', true))
+            new FileDeclaration($this->assetLocation, $fileName . '.php.wrong', true)
                 ->withBuildFlags(FileDeclaration::FLAG_BUILD_PHP | FileDeclaration::FLAG_BUILD_HTML_DOCUMENT)
                 ->withUnexpectedContent('PHP content'),
-            (new FileDeclaration($this->assetLocation, $fileName . '.html.txt'))
+            new FileDeclaration($this->assetLocation, $fileName . '.html.txt')
                 ->withExpectedContentType('text/plain')
                 ->withUnexpectedContentType('text/html')
                 ->withExpectedContent('HTML content'),
-            (new FileDeclaration($this->assetLocation, $fileName . '.php.txt', true))
+            new FileDeclaration($this->assetLocation, $fileName . '.php.txt', true)
                 ->withBuildFlags(FileDeclaration::FLAG_BUILD_PHP | FileDeclaration::FLAG_BUILD_HTML_DOCUMENT)
                 ->withUnexpectedContent('PHP content'),
-            (new FileDeclaration($this->fileadminLocation, $fileName . '.html'))
+            new FileDeclaration($this->fileadminLocation, $fileName . '.html')
                 ->withBuildFlags(FileDeclaration::FLAG_BUILD_HTML_DOCUMENT)
                 ->withHandler($cspClosure),
-            (new FileDeclaration($this->fileadminLocation, $fileName . '.svg'))
+            new FileDeclaration($this->fileadminLocation, $fileName . '.svg')
                 ->withBuildFlags(FileDeclaration::FLAG_BUILD_SVG | FileDeclaration::FLAG_BUILD_SVG_DOCUMENT)
                 ->withHandler($cspClosure),
         ];
@@ -237,7 +237,7 @@ class ServerResponseCheck implements CheckInterface
         // in case we end up here, the server processed an HTTP request with invalid HTTP host header
         $messageParts = [];
         $locationHeader = $response->getHeaderLine('location');
-        if (!empty($locationHeader) && (new Uri($locationHeader))->getHost() === $randomHost) {
+        if (!empty($locationHeader) && new Uri($locationHeader)->getHost() === $randomHost) {
             $messageParts[] = sprintf('HTTP Location header contained unexpected "%s"', $randomHost);
         }
         $data = json_decode((string)$response->getBody(), true);

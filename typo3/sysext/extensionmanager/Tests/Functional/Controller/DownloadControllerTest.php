@@ -151,7 +151,7 @@ final class DownloadControllerTest extends FunctionalTestCase
         $extbaseRequestParameters->setControllerActionName('checkDependencies');
         $extbaseRequestParameters->setFormat('json');
         $extbaseRequestParameters->setArgument('identifier', $identifier);
-        $request = (new ServerRequest('https://example.com/typo3/module/extensions'))
+        $request = new ServerRequest('https://example.com/typo3/module/extensions')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('extbase', $extbaseRequestParameters)
             ->withAttribute('moduleData', new ModuleData('extensionmanager', []))

@@ -177,13 +177,13 @@ readonly class Typo3tempFileService
         }
 
         // first remove directories
-        foreach ((new Finder())->directories()->ignoreUnreadableDirs()->in($basePath)->depth(0) as $directory) {
+        foreach (new Finder()->directories()->ignoreUnreadableDirs()->in($basePath)->depth(0) as $directory) {
             /** @var SplFileInfo $directory */
             GeneralUtility::rmdir($directory->getPathname(), true);
         }
 
         // then remove files directly in the main dir
-        foreach ((new Finder())->files()->in($basePath)->depth(0) as $file) {
+        foreach (new Finder()->files()->in($basePath)->depth(0) as $file) {
             /** @var SplFileInfo $file */
             $path = $file->getPathname();
             @unlink($path);

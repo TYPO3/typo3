@@ -39,7 +39,7 @@ final class UploadedResourceViewHelperTest extends FunctionalTestCase
     {
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<formvh:form.uploadedResource accept="{0: \'image/jpeg\', 1: \'image/png\'}"/>');
-        self::assertSame('<input accept="image/jpeg,image/png" type="file" name="" />', (new TemplateView($context))->render());
+        self::assertSame('<input accept="image/jpeg,image/png" type="file" name="" />', new TemplateView($context)->render());
     }
 
     #[Test]
@@ -47,7 +47,7 @@ final class UploadedResourceViewHelperTest extends FunctionalTestCase
     {
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<formvh:form.uploadedResource />');
-        $result = (new TemplateView($context))->render();
+        $result = new TemplateView($context)->render();
         self::assertStringNotContainsString('multiple', $result);
         self::assertSame('<input type="file" name="" />', $result);
     }
@@ -57,7 +57,7 @@ final class UploadedResourceViewHelperTest extends FunctionalTestCase
     {
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<formvh:form.uploadedResource multiple="true" />');
-        $result = (new TemplateView($context))->render();
+        $result = new TemplateView($context)->render();
         self::assertStringContainsString('multiple="multiple"', $result);
         self::assertStringContainsString('name="[]"', $result);
     }
@@ -67,7 +67,7 @@ final class UploadedResourceViewHelperTest extends FunctionalTestCase
     {
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<formvh:form.uploadedResource multiple="false" />');
-        $result = (new TemplateView($context))->render();
+        $result = new TemplateView($context)->render();
         self::assertStringNotContainsString('multiple', $result);
         self::assertSame('<input type="file" name="" />', $result);
     }
@@ -77,7 +77,7 @@ final class UploadedResourceViewHelperTest extends FunctionalTestCase
     {
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<formvh:form.uploadedResource accept="{0: \'application/pdf\'}" multiple="true" />');
-        $result = (new TemplateView($context))->render();
+        $result = new TemplateView($context)->render();
         self::assertStringContainsString('accept="application/pdf"', $result);
         self::assertStringContainsString('multiple="multiple"', $result);
         self::assertStringContainsString('name="[]"', $result);
@@ -109,7 +109,7 @@ final class UploadedResourceViewHelperTest extends FunctionalTestCase
         );
         $context->getVariableProvider()->add('storage', $storage);
 
-        $result = (new TemplateView($context))->render();
+        $result = new TemplateView($context)->render();
 
         // Each file must produce exactly one id of the form {id}-file-reference-{suffix}
         preg_match_all('/id="my-field-file-reference-[^"]*"/', $result, $idMatches);
@@ -125,7 +125,7 @@ final class UploadedResourceViewHelperTest extends FunctionalTestCase
     private function buildExtbaseRequest(): Request
     {
         $extbaseRequestParameters = new ExtbaseRequestParameters();
-        $psr7Request = (new ServerRequest())
+        $psr7Request = new ServerRequest()
             ->withAttribute('extbase', $extbaseRequestParameters)
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         return new Request($psr7Request);

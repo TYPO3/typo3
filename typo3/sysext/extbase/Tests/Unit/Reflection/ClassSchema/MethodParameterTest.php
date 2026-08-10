@@ -37,7 +37,7 @@ final class MethodParameterTest extends UnitTestCase
     public function classSchemaDetectsMandatoryParams(): void
     {
         self::assertFalse(
-            (new ClassSchema(DummyClassWithAllTypesOfMethods::class))
+            new ClassSchema(DummyClassWithAllTypesOfMethods::class)
             ->getMethod('methodWithMandatoryParam')
             ->getParameter('param')
             ->isOptional()
@@ -49,7 +49,7 @@ final class MethodParameterTest extends UnitTestCase
     {
         self::assertSame(
             'foo',
-            (new ClassSchema(DummyClassWithAllTypesOfMethods::class))
+            new ClassSchema(DummyClassWithAllTypesOfMethods::class)
                 ->getMethod('methodWithDefaultValueParam')
                 ->getParameter('param')
                 ->getDefaultValue()
@@ -61,7 +61,7 @@ final class MethodParameterTest extends UnitTestCase
     {
         self::assertSame(
             'string',
-            (new ClassSchema(DummyClassWithAllTypesOfMethods::class))
+            new ClassSchema(DummyClassWithAllTypesOfMethods::class)
                 ->getMethod('methodWithTypeHintedParam')
                 ->getParameter('param')
                 ->getType()
@@ -71,7 +71,7 @@ final class MethodParameterTest extends UnitTestCase
     #[Test]
     public function classSchemaDetectsIgnoreValidationAttributeAtParameterScope(): void
     {
-        $classSchemaMethod = (new ClassSchema(DummyControllerWithIgnoreValidationAttributesAtParameterScope::class))
+        $classSchemaMethod = new ClassSchema(DummyControllerWithIgnoreValidationAttributesAtParameterScope::class)
             ->getMethod('someAction');
         self::assertTrue($classSchemaMethod->getParameter('foo')->ignoreValidation());
         self::assertTrue($classSchemaMethod->getParameter('bar')->ignoreValidation());
@@ -83,7 +83,7 @@ final class MethodParameterTest extends UnitTestCase
     #[Test]
     public function classSchemaIgnoresIgnoreValidationAttributeOnNonControllerClasses(): void
     {
-        $classSchemaMethod = (new ClassSchema(DummyClassWithIgnoreValidationAttribute::class))
+        $classSchemaMethod = new ClassSchema(DummyClassWithIgnoreValidationAttribute::class)
             ->getMethod('someAction');
         self::assertFalse($classSchemaMethod->getParameter('foo')->ignoreValidation());
         self::assertFalse($classSchemaMethod->getParameter('bar')->ignoreValidation());
@@ -103,7 +103,7 @@ final class MethodParameterTest extends UnitTestCase
             ],
         ];
 
-        $classSchemaMethod = (new ClassSchema(DummyControllerWithValidateAttributesAtParameterScope::class))
+        $classSchemaMethod = new ClassSchema(DummyControllerWithValidateAttributesAtParameterScope::class)
             ->getMethod('someAction');
         self::assertSame($expected, $classSchemaMethod->getParameter('foo')->getValidators());
         self::assertSame($expected, $classSchemaMethod->getParameter('bar')->getValidators());

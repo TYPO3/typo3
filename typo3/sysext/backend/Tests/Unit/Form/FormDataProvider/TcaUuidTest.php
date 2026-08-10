@@ -44,7 +44,7 @@ final class TcaUuidTest extends UnitTestCase
             ],
         ];
 
-        self::assertSame('', (new TcaUuid())->addData($input)['databaseRow']['aField']);
+        self::assertSame('', new TcaUuid()->addData($input)['databaseRow']['aField']);
     }
 
     #[Test]
@@ -67,7 +67,7 @@ final class TcaUuidTest extends UnitTestCase
             ],
         ];
 
-        self::assertSame('b3190536-1431-453e-afbb-25b8c5022513', (new TcaUuid())->addData($input)['databaseRow']['aField']);
+        self::assertSame('b3190536-1431-453e-afbb-25b8c5022513', new TcaUuid()->addData($input)['databaseRow']['aField']);
     }
 
     #[Test]
@@ -91,7 +91,7 @@ final class TcaUuidTest extends UnitTestCase
         ];
 
         self::assertFalse(Uuid::isValid($input['databaseRow']['aField']));
-        self::assertTrue(Uuid::isValid((new TcaUuid())->addData($input)['databaseRow']['aField']));
+        self::assertTrue(Uuid::isValid(new TcaUuid()->addData($input)['databaseRow']['aField']));
     }
 
     #[Test]
@@ -115,7 +115,7 @@ final class TcaUuidTest extends UnitTestCase
         ];
 
         self::assertFalse(Uuid::isValid($input['databaseRow']['aField']));
-        self::assertTrue(Uuid::isValid((new TcaUuid())->addData($input)['databaseRow']['aField']));
+        self::assertTrue(Uuid::isValid(new TcaUuid()->addData($input)['databaseRow']['aField']));
     }
 
     #[Test]
@@ -139,7 +139,7 @@ final class TcaUuidTest extends UnitTestCase
             ],
         ];
 
-        self::assertEmpty((new TcaUuid())->addData($input)['databaseRow']['aField']);
+        self::assertEmpty(new TcaUuid()->addData($input)['databaseRow']['aField']);
     }
 
     #[Test]
@@ -163,18 +163,18 @@ final class TcaUuidTest extends UnitTestCase
         ];
 
         $input['processedTca']['columns']['aField']['config']['version'] = 6;
-        self::assertEquals(6, (int)(new TcaUuid())->addData($input)['databaseRow']['aField'][14]);
+        self::assertEquals(6, (int)new TcaUuid()->addData($input)['databaseRow']['aField'][14]);
 
         $input['processedTca']['columns']['aField']['config']['version'] = 7;
-        self::assertEquals(7, (int)(new TcaUuid())->addData($input)['databaseRow']['aField'][14]);
+        self::assertEquals(7, (int)new TcaUuid()->addData($input)['databaseRow']['aField'][14]);
 
         $input['processedTca']['columns']['aField']['config']['version'] = 4;
-        self::assertEquals(4, (int)(new TcaUuid())->addData($input)['databaseRow']['aField'][14]);
+        self::assertEquals(4, (int)new TcaUuid()->addData($input)['databaseRow']['aField'][14]);
 
         $input['processedTca']['columns']['aField']['config']['version'] = 12345678; // Defaults to 4
-        self::assertEquals(4, (int)(new TcaUuid())->addData($input)['databaseRow']['aField'][14]);
+        self::assertEquals(4, (int)new TcaUuid()->addData($input)['databaseRow']['aField'][14]);
 
         unset($input['processedTca']['columns']['aField']['config']['version']); // Defaults to 4
-        self::assertEquals(4, (int)(new TcaUuid())->addData($input)['databaseRow']['aField'][14]);
+        self::assertEquals(4, (int)new TcaUuid()->addData($input)['databaseRow']['aField'][14]);
     }
 }

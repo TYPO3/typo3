@@ -61,7 +61,7 @@ final class PathGuardTest extends UnitTestCase
     #[Test]
     public function requestIsRedirectedToSitePath(string $scriptName, string $requestUri, string $expectedLocation): void
     {
-        $response = (new PathGuard())->process(
+        $response = new PathGuard()->process(
             $this->buildRequest($scriptName, $requestUri),
             $this->buildFailingHandler()
         );
@@ -103,7 +103,7 @@ final class PathGuardTest extends UnitTestCase
             }
         };
 
-        self::assertSame($expectedResponse, (new PathGuard())->process($request, $handler));
+        self::assertSame($expectedResponse, new PathGuard()->process($request, $handler));
     }
 
     private function buildFailingHandler(): RequestHandlerInterface

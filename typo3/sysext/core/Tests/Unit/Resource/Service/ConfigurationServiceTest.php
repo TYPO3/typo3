@@ -49,6 +49,6 @@ final class ConfigurationServiceTest extends UnitTestCase
                 'bar' => 'bar1',
             ],
         ];
-        self::assertSame(serialize($expected), (new ConfigurationService())->serialize($configuration));
+        self::assertSame(serialize($expected), new ConfigurationService()->serialize($configuration));
     }
 }

@@ -83,6 +83,6 @@ final class DemandTest extends UnitTestCase
     #[Test]
     public function getParametersRespectsDemandState(array $input, array $expected): void
     {
-        self::assertEquals($expected, array_filter((new Demand(...$input))->getParameters(), static fn(string $key): bool => $key !== 'redirect_type', ARRAY_FILTER_USE_KEY));
+        self::assertEquals($expected, array_filter(new Demand(...$input)->getParameters(), static fn(string $key): bool => $key !== 'redirect_type', ARRAY_FILTER_USE_KEY));
     }
 }

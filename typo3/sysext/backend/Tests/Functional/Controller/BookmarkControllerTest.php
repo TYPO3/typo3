@@ -43,7 +43,7 @@ final class BookmarkControllerTest extends FunctionalTestCase
         $this->subject = new BookmarkController(
             $this->get(BookmarkService::class),
         );
-        $this->request = (new ServerRequest('https://example.com/typo3/'))
+        $this->request = new ServerRequest('https://example.com/typo3/')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('normalizedParams', new NormalizedParams([], [], '', ''));
         $GLOBALS['TYPO3_REQUEST'] = $this->request;

@@ -79,14 +79,14 @@ class SplitFunctionalTests
         }
 
         // Find functional test files
-        $testFiles = (new Finder())
+        $testFiles = new Finder()
             ->files()
             ->in(__DIR__ . '/../../typo3/sysext/*/Tests/Functional')
             ->name('/Test\.php$/')
             ->sortByName()
         ;
 
-        $parser = (new ParserFactory())->createForVersion(PhpVersion::fromComponents(8, 5));
+        $parser = new ParserFactory()->createForVersion(PhpVersion::fromComponents(8, 5));
         $testStats = [];
         foreach ($testFiles as $file) {
             /** @var $file SplFileInfo */

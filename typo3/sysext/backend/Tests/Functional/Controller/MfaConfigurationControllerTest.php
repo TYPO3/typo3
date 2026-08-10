@@ -73,7 +73,7 @@ final class MfaConfigurationControllerTest extends FunctionalTestCase
             ->willReturn('/');
         $normalizedParams->method('getRequestUri')
             ->willReturn('/foo/bar/');
-        $this->request = (new ServerRequest('https://example.com/typo3/'))
+        $this->request = new ServerRequest('https://example.com/typo3/')
             ->withAttribute('normalizedParams', $normalizedParams)
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('route', new Route('path', ['packageName' => 'typo3/cms-backend']));
@@ -288,7 +288,7 @@ final class MfaConfigurationControllerTest extends FunctionalTestCase
 
         if ($action === 'activate') {
             $timestamp = $this->get(Context::class)->getPropertyFromAspect('date', 'timestamp');
-            $parsedBody['totp'] = (new Totp('KRMVATZTJFZUC53FONXW2ZJB'))->generateTotp((int)floor($timestamp / 30));
+            $parsedBody['totp'] = new Totp('KRMVATZTJFZUC53FONXW2ZJB')->generateTotp((int)floor($timestamp / 30));
             $parsedBody['secret'] = 'KRMVATZTJFZUC53FONXW2ZJB';
             $parsedBody['checksum'] = $this->hashService->hmac('KRMVATZTJFZUC53FONXW2ZJB', 'totp-setup', HashAlgo::SHA3_256);
         }

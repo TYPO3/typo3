@@ -70,7 +70,7 @@ class CommandApplication implements ApplicationInterface
         $this->languageServiceFactory = $languageServiceFactory;
 
         $this->checkEnvironmentOrDie();
-        $this->application = new Application('TYPO3 CMS', (new Typo3Version())->getVersion());
+        $this->application = new Application('TYPO3 CMS', new Typo3Version()->getVersion());
         $this->application->setAutoExit(false);
         $this->application->setDispatcher($eventDispatcher);
         $this->application->setCommandLoader($commandRegistry);

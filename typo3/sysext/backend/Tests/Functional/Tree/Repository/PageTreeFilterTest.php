@@ -361,7 +361,7 @@ final class PageTreeFilterTest extends FunctionalTestCase
             ],
         ];
 
-        $request = (new ServerRequest())
+        $request = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withQueryParams(['q' => $searchPhrase]);
         $event = new AfterPageTreeItemsPreparedEvent($request, $items);
@@ -398,7 +398,7 @@ final class PageTreeFilterTest extends FunctionalTestCase
             ],
         ];
 
-        $request = (new ServerRequest())
+        $request = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withQueryParams(['q' => $searchPhrase]);
         $event = new AfterPageTreeItemsPreparedEvent($request, $items);
@@ -435,7 +435,7 @@ final class PageTreeFilterTest extends FunctionalTestCase
             ],
         ];
 
-        $request = (new ServerRequest())
+        $request = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withQueryParams(['q' => $searchPhrase]);
         $event = new AfterPageTreeItemsPreparedEvent($request, $items);
@@ -467,7 +467,7 @@ final class PageTreeFilterTest extends FunctionalTestCase
             ],
         ];
 
-        $request = (new ServerRequest())
+        $request = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withQueryParams(['q' => $searchPhrase]);
         $event = new AfterPageTreeItemsPreparedEvent($request, $items);
@@ -504,7 +504,7 @@ final class PageTreeFilterTest extends FunctionalTestCase
             ],
         ];
 
-        $request = (new ServerRequest())
+        $request = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withQueryParams(['q' => $searchPhrase]);
         $event = new AfterPageTreeItemsPreparedEvent($request, $items);
@@ -541,7 +541,7 @@ final class PageTreeFilterTest extends FunctionalTestCase
             ],
         ];
 
-        $request = (new ServerRequest())
+        $request = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withQueryParams(['q' => $searchPhrase]);
         $event = new AfterPageTreeItemsPreparedEvent($request, $items);

@@ -84,7 +84,7 @@ final class DefaultExtbaseControllerTest extends AbstractEnhancerLinkGeneratorTe
         ]);
 
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest('https://acme.us/'))
+            new InternalRequest('https://acme.us/')
                 ->withPageId(1100)
                 ->withInstructions([
                     $this->createTypoLinkUrlInstruction([
@@ -160,7 +160,7 @@ final class DefaultExtbaseControllerTest extends AbstractEnhancerLinkGeneratorTe
         ]);
 
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest('https://acme.us/'))
+            new InternalRequest('https://acme.us/')
                 ->withPageId(1100)
                 ->withInstructions([
                     $this->createTypoLinkUrlInstruction([

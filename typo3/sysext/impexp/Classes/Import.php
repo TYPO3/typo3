@@ -220,7 +220,7 @@ class Import extends ImportExport
                 $xmlContent = (string)file_get_contents($filePath);
                 if (strlen($xmlContent)) {
                     try {
-                        $dat = (new Typo3XmlParser())->decode(
+                        $dat = new Typo3XmlParser()->decode(
                             $xmlContent,
                             new Typo3XmlSerializerOptions([
                                 Typo3XmlSerializerOptions::RETURN_ROOT_NODE_NAME => true,
@@ -1386,7 +1386,7 @@ class Import extends ImportExport
                                         $schema
                                     );
                                     $dataStructure = $this->flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier, $schema);
-                                    $flexFormData = (new Typo3XmlParser())->decodeWithReturningExceptionAsString(
+                                    $flexFormData = new Typo3XmlParser()->decodeWithReturningExceptionAsString(
                                         (string)($this->dat['records'][$table . ':' . $uid]['data'][$field] ?? ''),
                                         new Typo3XmlSerializerOptions([
                                             Typo3XmlSerializerOptions::ALLOW_UNDEFINED_NAMESPACES,
@@ -1518,7 +1518,7 @@ class Import extends ImportExport
                                         $schema
                                     );
                                     $dataStructure = $this->flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier, $schema);
-                                    $flexFormData = (new Typo3XmlParser())->decodeWithReturningExceptionAsString(
+                                    $flexFormData = new Typo3XmlParser()->decodeWithReturningExceptionAsString(
                                         (string)($actualRecord[$field] ?? ''),
                                         new Typo3XmlSerializerOptions([
                                             Typo3XmlSerializerOptions::ALLOW_UNDEFINED_NAMESPACES,

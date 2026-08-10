@@ -33,10 +33,10 @@ final class ShortcutButtonTest extends FunctionalTestCase
     #[Test]
     public function isButtonValid(): void
     {
-        self::assertFalse((new ShortcutButton())->isValid());
-        self::assertFalse((new ShortcutButton())->setRouteIdentifier('records')->isValid());
-        self::assertFalse((new ShortcutButton())->setDisplayName('Some module anme')->isValid());
-        self::assertTrue((new ShortcutButton())->setRouteIdentifier('records')->setDisplayName('Some module anme')->isValid());
+        self::assertFalse(new ShortcutButton()->isValid());
+        self::assertFalse(new ShortcutButton()->setRouteIdentifier('records')->isValid());
+        self::assertFalse(new ShortcutButton()->setDisplayName('Some module anme')->isValid());
+        self::assertTrue(new ShortcutButton()->setRouteIdentifier('records')->setDisplayName('Some module anme')->isValid());
     }
 
     #[Test]
@@ -45,7 +45,7 @@ final class ShortcutButtonTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../../../../Fixtures/be_users_no_bookmarks.csv');
         $backendUser = $this->setUpBackendUser(1);
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
-        $result = (new ShortcutButton())->setRouteIdentifier('records')->setDisplayName('Some module anme')->render();
+        $result = new ShortcutButton()->setRouteIdentifier('records')->setDisplayName('Some module anme')->render();
         self::assertStringContainsString('Copy URL of this record', $result);
         self::assertStringNotContainsString('actions-system-shortcut', $result);
     }
@@ -72,20 +72,20 @@ final class ShortcutButtonTest extends FunctionalTestCase
     public static function rendersCorrectMarkupDataProvider(): \Generator
     {
         yield 'Recordlist' => [
-            (new ShortcutButton())
+            new ShortcutButton()
                 ->setRouteIdentifier('records')
                 ->setDisplayName('Recordlist')
                 ->setCopyUrlToClipboard(false),
             'RecordList',
         ];
         yield 'Recordlist with copyToClipboard action' => [
-            (new ShortcutButton())
+            new ShortcutButton()
                 ->setRouteIdentifier('records')
                 ->setDisplayName('Recordlist'),
             'RecordListCopyToClipboard',
         ];
         yield 'Recordlist - single table view' => [
-            (new ShortcutButton())
+            new ShortcutButton()
                 ->setRouteIdentifier('records')
                 ->setDisplayName('Recordlist - single table view')
                 ->setCopyUrlToClipboard(false)
@@ -99,7 +99,7 @@ final class ShortcutButtonTest extends FunctionalTestCase
             'RecordListSingleTable',
         ];
         yield 'Recordlist - single table view with copyToClipboard action' => [
-            (new ShortcutButton())
+            new ShortcutButton()
                 ->setRouteIdentifier('records')
                 ->setDisplayName('Recordlist - single table view')
                 ->setArguments([
@@ -112,14 +112,14 @@ final class ShortcutButtonTest extends FunctionalTestCase
             'RecordListSingleTableCopyToClipboard',
         ];
         yield 'With special route identifier' => [
-            (new ShortcutButton())
+            new ShortcutButton()
                 ->setRouteIdentifier('record_edit')
                 ->setDisplayName('Edit record')
                 ->setCopyUrlToClipboard(false),
             'SpecialRouteIdentifier',
         ];
         yield 'With special route identifier and arguments' => [
-            (new ShortcutButton())
+            new ShortcutButton()
                 ->setRouteIdentifier('record_edit')
                 ->setDisplayName('Edit record')
                 ->setCopyUrlToClipboard(false)
@@ -140,7 +140,7 @@ final class ShortcutButtonTest extends FunctionalTestCase
             'SpecialRouteIdentifierWithArguments',
         ];
         yield 'With special route identifier and arguments - copyToClipboard' => [
-            (new ShortcutButton())
+            new ShortcutButton()
                 ->setRouteIdentifier('record_edit')
                 ->setDisplayName('Edit record')
                 ->setArguments([

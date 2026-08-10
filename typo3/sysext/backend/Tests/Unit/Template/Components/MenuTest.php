@@ -61,8 +61,8 @@ final class MenuTest extends UnitTestCase
         $menu1->setLabel('Label of an empty Menu');
         $menuRegistry->addMenu($menu1);
 
-        $menu2 = (new Menu())->setIdentifier('Foo');
-        $item = (new MenuItem())->setHref('#')->setTitle('Husel');
+        $menu2 = new Menu()->setIdentifier('Foo');
+        $item = new MenuItem()->setHref('#')->setTitle('Husel');
         $menu2->addMenuItem($item);
 
         $menuRegistry->addMenu($menu2);
@@ -85,12 +85,12 @@ final class MenuTest extends UnitTestCase
         $menu1 = new Menu();
         $menu1->setIdentifier('husel');
         $menu1->setLabel('Label of an empty Menu');
-        $item = (new MenuItem())->setHref('#')->setTitle('Item1');
+        $item = new MenuItem()->setHref('#')->setTitle('Item1');
         $menu1->addMenuItem($item);
         $menuRegistry->addMenu($menu1);
 
-        $menu2 = (new Menu())->setIdentifier('Foo');
-        $item = (new MenuItem())->setHref('#')->setTitle('Item2');
+        $menu2 = new Menu()->setIdentifier('Foo');
+        $item = new MenuItem()->setHref('#')->setTitle('Item2');
         $menu2->addMenuItem($item);
         $menuRegistry->addMenu($menu2);
 

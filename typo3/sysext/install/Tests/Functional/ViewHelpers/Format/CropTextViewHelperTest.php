@@ -55,6 +55,6 @@ final class CropTextViewHelperTest extends FunctionalTestCase
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getViewHelperResolver()->addNamespace('install', 'TYPO3\\CMS\\Install\\ViewHelpers');
         $context->getTemplatePaths()->setTemplateSource('<install:format.cropText maxCharacters="' . $maxCharacters . '">' . $input . '</install:format.cropText>');
-        self::assertSame($expected, (new TemplateView($context))->render());
+        self::assertSame($expected, new TemplateView($context)->render());
     }
 }

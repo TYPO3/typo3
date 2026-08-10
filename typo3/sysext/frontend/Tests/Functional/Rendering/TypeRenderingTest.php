@@ -99,7 +99,7 @@ final class TypeRenderingTest extends FunctionalTestCase
         if ($type !== null) {
             $queryParameters['type'] = $type;
         }
-        $response = $this->executeFrontendSubRequest((new InternalRequest())->withQueryParameters($queryParameters));
+        $response = $this->executeFrontendSubRequest(new InternalRequest()->withQueryParameters($queryParameters));
         self::assertStringContainsString($expected, (string)$response->getBody());
     }
 }

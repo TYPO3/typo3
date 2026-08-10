@@ -90,7 +90,7 @@ final readonly class TcaSystemLanguageCollector
 
         // Fallback if no site configuration exists
         $recordPid = (int)($fieldInformation['row']['pid'] ?? 0);
-        $languages = (new NullSite())->getAvailableLanguages($this->getBackendUser(), false, $recordPid);
+        $languages = new NullSite()->getAvailableLanguages($this->getBackendUser(), false, $recordPid);
 
         foreach ($languages as $languageId => $language) {
             $fieldInformation['items'][] = [

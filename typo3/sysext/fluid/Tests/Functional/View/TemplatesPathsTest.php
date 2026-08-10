@@ -328,7 +328,7 @@ final class TemplatesPathsTest extends FunctionalTestCase
     private function fetchFrontendResponseBody(array $requestArguments): string
     {
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest('https://website.local/en/'))->withQueryParameters($requestArguments)
+            new InternalRequest('https://website.local/en/')->withQueryParameters($requestArguments)
         );
 
         return (string)$response->getBody();

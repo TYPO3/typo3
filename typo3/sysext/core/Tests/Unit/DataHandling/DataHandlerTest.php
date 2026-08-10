@@ -1060,7 +1060,7 @@ final class DataHandlerTest extends UnitTestCase
     public function checkFlexFormData(array $data, array $dataStructure, array $expected): void
     {
         $GLOBALS['LANG'] = self::createStub(LanguageService::class);
-        $result = (new \ReflectionMethod($this->subject, 'checkFlexFormData'))
+        $result = new \ReflectionMethod($this->subject, 'checkFlexFormData')
             ->invoke($this->subject, $data, [], $dataStructure, 'tt_content', 777, 'update', 1, 'tt_content:777:pi_flexform', 0);
         self::assertSame($expected, $result);
     }

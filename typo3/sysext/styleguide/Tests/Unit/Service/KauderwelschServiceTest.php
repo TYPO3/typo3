@@ -26,6 +26,6 @@ final class KauderwelschServiceTest extends UnitTestCase
     #[Test]
     public function getWortReturnsWord(): void
     {
-        self::assertEquals('lipsum', (new KauderwelschService())->getWord());
+        self::assertEquals('lipsum', new KauderwelschService()->getWord());
     }
 }

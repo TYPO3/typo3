@@ -52,7 +52,7 @@ final class FileLinkHandlerTest extends FunctionalTestCase
         $expected = [
             'file' => null,
         ];
-        self::assertSame($expected, (new FileLinkHandler())->resolveHandlerData($input));
+        self::assertSame($expected, new FileLinkHandler()->resolveHandlerData($input));
     }
 
     #[Test]

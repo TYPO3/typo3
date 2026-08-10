@@ -52,7 +52,7 @@ final class ExtensionStorageAdapterFunctionalTest extends FunctionalTestCase
     #[DataProvider('readThrowsExceptionWhenFormDefinitionHasInvalidFileExtensionDataProvider')]
     public function readThrowsExceptionWhenFormDefinitionHasInvalidFileExtension(string $identifier, ?int $exceptionCode): void
     {
-        $request = (new ServerRequest())
+        $request = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $GLOBALS['TYPO3_REQUEST'] = $request;
 

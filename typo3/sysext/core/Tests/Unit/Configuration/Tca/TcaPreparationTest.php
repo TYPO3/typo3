@@ -238,7 +238,7 @@ final class TcaPreparationTest extends UnitTestCase
     #[Test]
     public function configureCategoryRelations(array $input, array $expected): void
     {
-        self::assertEquals($expected, (new TcaPreparation())->prepare($input));
+        self::assertEquals($expected, new TcaPreparation()->prepare($input));
     }
 
     public static function configureCategoryRelationsThrowsExceptionOnInvalidMaxitemsDataProvider(): \Generator
@@ -283,7 +283,7 @@ final class TcaPreparationTest extends UnitTestCase
     {
         $this->expectExceptionCode($exceptionCode);
         $this->expectException(\RuntimeException::class);
-        (new TcaPreparation())->prepare($input);
+        new TcaPreparation()->prepare($input);
     }
 
     #[Test]
@@ -291,7 +291,7 @@ final class TcaPreparationTest extends UnitTestCase
     {
         $this->expectExceptionCode(1627898896);
         $this->expectException(\RuntimeException::class);
-        (new TcaPreparation())->prepare([
+        new TcaPreparation()->prepare([
             'aTable' => [
                 'columns' => [
                     'foo' => [
@@ -697,7 +697,7 @@ final class TcaPreparationTest extends UnitTestCase
     #[Test]
     public function configureFileReferences(array $input, array $expected): void
     {
-        self::assertEquals($expected, (new TcaPreparation())->prepare($input));
+        self::assertEquals($expected, new TcaPreparation()->prepare($input));
     }
 
     #[Test]
@@ -716,7 +716,7 @@ final class TcaPreparationTest extends UnitTestCase
         ];
         $expected = $tca;
         $expected['aTable']['columns']['aField']['config']['softref'] = 'email[subst]';
-        self::assertEquals($expected, (new TcaPreparation())->prepare($tca));
+        self::assertEquals($expected, new TcaPreparation()->prepare($tca));
     }
 
     #[Test]
@@ -736,7 +736,7 @@ final class TcaPreparationTest extends UnitTestCase
         ];
         $expected = $tca;
         $expected['aTable']['columns']['aField']['config']['softref'] = 'email[subst]';
-        self::assertEquals($expected, (new TcaPreparation())->prepare($tca));
+        self::assertEquals($expected, new TcaPreparation()->prepare($tca));
     }
 
     #[Test]
@@ -755,7 +755,7 @@ final class TcaPreparationTest extends UnitTestCase
         ];
         $expected = $tca;
         $expected['aTable']['columns']['aField']['config']['softref'] = 'typolink';
-        self::assertEquals($expected, (new TcaPreparation())->prepare($tca));
+        self::assertEquals($expected, new TcaPreparation()->prepare($tca));
     }
 
     #[Test]
@@ -775,7 +775,7 @@ final class TcaPreparationTest extends UnitTestCase
         ];
         $expected = $tca;
         $expected['aTable']['columns']['aField']['config']['softref'] = 'typolink';
-        self::assertEquals($expected, (new TcaPreparation())->prepare($tca));
+        self::assertEquals($expected, new TcaPreparation()->prepare($tca));
     }
 
     #[Test]
@@ -814,21 +814,21 @@ final class TcaPreparationTest extends UnitTestCase
     #[Test]
     public function prepareSelectSingleAddsRelationship(array $configuration, $expectedRelation): void
     {
-        $subject = (new TcaPreparation())->prepare(['foo' => ['columns' => ['select' => ['config' => array_merge(['type' => 'select', 'renderType' => 'selectSingle', 'foreign_table' => 'tx_myextension_bar'], $configuration)]]]]);
+        $subject = new TcaPreparation()->prepare(['foo' => ['columns' => ['select' => ['config' => array_merge(['type' => 'select', 'renderType' => 'selectSingle', 'foreign_table' => 'tx_myextension_bar'], $configuration)]]]]);
         self::assertEquals($expectedRelation, $subject['foo']['columns']['select']['config']['relationship']);
     }
 
     #[Test]
     public function prepareSelectSingleDoesNotOverwriteRelationship(): void
     {
-        $subject = (new TcaPreparation())->prepare(['foo' => ['columns' => ['select' => ['config' => ['type' => 'select', 'renderType' => 'selectSingle', 'foreign_table' => 'tx_myextension_bar', 'relationship' => 'oneToOne']]]]]);
+        $subject = new TcaPreparation()->prepare(['foo' => ['columns' => ['select' => ['config' => ['type' => 'select', 'renderType' => 'selectSingle', 'foreign_table' => 'tx_myextension_bar', 'relationship' => 'oneToOne']]]]]);
         self::assertEquals('oneToOne', $subject['foo']['columns']['select']['config']['relationship']);
     }
 
     #[Test]
     public function prepareSelectSingleDoesNotAddRelationshipOnMissingForeignTable(): void
     {
-        $subject = (new TcaPreparation())->prepare(['foo' => ['columns' => ['select' => ['config' => ['type' => 'select', 'renderType' => 'selectSingle']]]]]);
+        $subject = new TcaPreparation()->prepare(['foo' => ['columns' => ['select' => ['config' => ['type' => 'select', 'renderType' => 'selectSingle']]]]]);
         self::assertNull($subject['foo']['columns']['select']['config']['relationship'] ?? null);
     }
 
@@ -846,11 +846,11 @@ final class TcaPreparationTest extends UnitTestCase
     #[Test]
     public function prepareRelationshipToOneAddsMaxItems(string $type, int $maxitems = 1): void
     {
-        $subject = (new TcaPreparation())->prepare(['foo' => ['columns' => ['relation' => ['config' => ['type' => $type, 'relationship' => 'oneToOne']]]]]);
+        $subject = new TcaPreparation()->prepare(['foo' => ['columns' => ['relation' => ['config' => ['type' => $type, 'relationship' => 'oneToOne']]]]]);
         self::assertEquals($maxitems, $subject['foo']['columns']['relation']['config']['maxitems'] ?? 0);
-        $subject = (new TcaPreparation())->prepare(['foo' => ['columns' => ['relation' => ['config' => ['type' => $type, 'relationship' => 'manyToOne']]]]]);
+        $subject = new TcaPreparation()->prepare(['foo' => ['columns' => ['relation' => ['config' => ['type' => $type, 'relationship' => 'manyToOne']]]]]);
         self::assertEquals($maxitems, $subject['foo']['columns']['relation']['config']['maxitems'] ?? 0);
-        $subject = (new TcaPreparation())->prepare(['foo' => ['columns' => ['relation' => ['config' => ['type' => $type, 'relationship' => 'manyToMany']]]]]);
+        $subject = new TcaPreparation()->prepare(['foo' => ['columns' => ['relation' => ['config' => ['type' => $type, 'relationship' => 'manyToMany']]]]]);
         self::assertEquals(0, $subject['foo']['columns']['relation']['config']['maxitems'] ?? 0);
     }
 
@@ -858,7 +858,7 @@ final class TcaPreparationTest extends UnitTestCase
     public function addSystemFieldsWorksForTtContentOnly(): void
     {
         $tca = ['foo' => $this->getTtContentTca()];
-        $subject = (new TcaPreparation())->prepare($tca);
+        $subject = new TcaPreparation()->prepare($tca);
         self::assertEquals($tca, $subject);
     }
 
@@ -867,7 +867,7 @@ final class TcaPreparationTest extends UnitTestCase
     {
         $tca = ['tt_content' => $this->getTtContentTca()];
         unset($tca['tt_content']['ctrl']['type']);
-        $subject = (new TcaPreparation())->prepare($tca);
+        $subject = new TcaPreparation()->prepare($tca);
         self::assertEquals($tca, $subject);
     }
 
@@ -1413,7 +1413,7 @@ final class TcaPreparationTest extends UnitTestCase
         $tca = $this->getTtContentTca();
         ArrayUtility::mergeRecursiveWithOverrule($tca, $overwriteConfiguration);
 
-        $subject = (new TcaPreparation())->prepare(['tt_content' => $tca]);
+        $subject = new TcaPreparation()->prepare(['tt_content' => $tca]);
 
         self::assertEquals(
             preg_replace('/\s/', '', $expectedShowitem),
@@ -1478,7 +1478,7 @@ final class TcaPreparationTest extends UnitTestCase
         $tca = $this->getTtContentTca();
         ArrayUtility::mergeRecursiveWithOverrule($tca, $overwriteConfiguration);
 
-        $subject = (new TcaPreparation())->prepare(['tt_content' => $tca]);
+        $subject = new TcaPreparation()->prepare(['tt_content' => $tca]);
 
         self::assertEquals(
             preg_replace('/\s/', '', $expectedPaletteShowitem),

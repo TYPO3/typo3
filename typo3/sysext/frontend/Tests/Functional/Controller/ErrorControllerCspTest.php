@@ -56,7 +56,7 @@ final class ErrorControllerCspTest extends FunctionalTestCase
     #[Test]
     public function cspHeadersAreAddedFor404Response(): void
     {
-        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::NON_EXISTING_PAGE_ID));
+        $response = $this->executeFrontendSubRequest(new InternalRequest()->withPageId(self::NON_EXISTING_PAGE_ID));
 
         self::assertEquals(404, $response->getStatusCode());
         self::assertStringContainsString('The requested page does not exist', (string)$response->getBody());
@@ -68,7 +68,7 @@ final class ErrorControllerCspTest extends FunctionalTestCase
     #[Test]
     public function cspHeadersAreAddedFor403Response(): void
     {
-        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::ACCESS_PROTECTED_PAGE));
+        $response = $this->executeFrontendSubRequest(new InternalRequest()->withPageId(self::ACCESS_PROTECTED_PAGE));
 
         self::assertEquals(403, $response->getStatusCode());
         self::assertStringContainsString('ID was not an accessible page', (string)$response->getBody());

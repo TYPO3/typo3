@@ -29,7 +29,7 @@ final class RootNodeTest extends UnitTestCase
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1673634853);
-        (new RootInclude())->getIdentifier();
+        new RootInclude()->getIdentifier();
     }
 
     #[Test]

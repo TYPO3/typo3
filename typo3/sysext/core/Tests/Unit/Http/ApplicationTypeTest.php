@@ -37,7 +37,7 @@ final class ApplicationTypeTest extends UnitTestCase
     public function isFrontendReturnsTrueIfFrontend(): void
     {
         self::assertTrue(
-            ApplicationType::fromRequest((new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE))
+            ApplicationType::fromRequest(new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE))
                 ->isFrontend()
         );
     }
@@ -46,7 +46,7 @@ final class ApplicationTypeTest extends UnitTestCase
     public function isFrontendReturnsFalseIfNotFrontend(): void
     {
         self::assertFalse(
-            ApplicationType::fromRequest((new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE))
+            ApplicationType::fromRequest(new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE))
                 ->isFrontend()
         );
     }
@@ -55,7 +55,7 @@ final class ApplicationTypeTest extends UnitTestCase
     public function isBackendReturnsTrueIfBackend(): void
     {
         self::assertTrue(
-            ApplicationType::fromRequest((new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE))
+            ApplicationType::fromRequest(new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE))
                 ->isBackend()
         );
     }
@@ -64,7 +64,7 @@ final class ApplicationTypeTest extends UnitTestCase
     public function isBackendReturnsTrueIfNotBackend(): void
     {
         self::assertFalse(
-            ApplicationType::fromRequest((new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE))
+            ApplicationType::fromRequest(new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE))
                 ->isBackend()
         );
     }

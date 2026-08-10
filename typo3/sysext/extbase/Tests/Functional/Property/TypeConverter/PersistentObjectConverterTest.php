@@ -63,7 +63,7 @@ final class PersistentObjectConverterTest extends FunctionalTestCase
         $this->expectException(TargetNotFoundException::class);
         $this->expectExceptionCode(1297933823);
         $this->expectExceptionMessage('Object of type TYPO3\CMS\Beuser\Domain\Model\BackendUser with identity "2" not found.');
-        $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $request = new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $configurationManager = $this->get(ConfigurationManagerInterface::class);
         $configurationManager->setRequest($request);
         $this->get(PropertyMapper::class)->convert(2, BackendUser::class);
@@ -72,7 +72,7 @@ final class PersistentObjectConverterTest extends FunctionalTestCase
     #[Test]
     public function converterFetchesObjectFromPersistenceIfSourceIsAnInteger(): void
     {
-        $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $request = new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $configurationManager = $this->get(ConfigurationManagerInterface::class);
         $configurationManager->setRequest($request);
         $propertyMapper = $this->get(PropertyMapper::class);
@@ -84,7 +84,7 @@ final class PersistentObjectConverterTest extends FunctionalTestCase
     #[Test]
     public function converterFetchesObjectFromPersistenceIfSourceIsANumericString(): void
     {
-        $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $request = new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $configurationManager = $this->get(ConfigurationManagerInterface::class);
         $configurationManager->setRequest($request);
         $propertyMapper = $this->get(PropertyMapper::class);
@@ -105,7 +105,7 @@ final class PersistentObjectConverterTest extends FunctionalTestCase
     #[Test]
     public function converterFetchesObjectFromPersistenceIfSourceIsAnArrayWithIdentityKey(): void
     {
-        $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $request = new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $configurationManager = $this->get(ConfigurationManagerInterface::class);
         $configurationManager->setRequest($request);
         $propertyMapper = $this->get(PropertyMapper::class);

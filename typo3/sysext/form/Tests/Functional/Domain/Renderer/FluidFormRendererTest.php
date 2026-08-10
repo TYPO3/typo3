@@ -63,7 +63,7 @@ final class FluidFormRendererTest extends FunctionalTestCase
 
         // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
         $this->get(ConfigurationManagerInterface::class)->setRequest(
-            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
         );
         $definition = $this->buildFormDefinition();
         $runtime = $definition->bind($this->buildExtbaseRequest());
@@ -84,14 +84,14 @@ final class FluidFormRendererTest extends FunctionalTestCase
     {
         $frontendUser = new FrontendUserAuthentication();
         $frontendUser->initializeUserSessionManager();
-        $serverRequest = (new ServerRequest())
+        $serverRequest = new ServerRequest()
             ->withAttribute('extbase', new ExtbaseRequestParameters())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withAttribute('frontend.user', $frontendUser);
 
         $GLOBALS['TYPO3_REQUEST'] = $serverRequest;
 
-        return (new Request($serverRequest))->withPluginName('Formframework');
+        return new Request($serverRequest)->withPluginName('Formframework');
     }
 
     private function buildFormDefinition(): FormDefinition

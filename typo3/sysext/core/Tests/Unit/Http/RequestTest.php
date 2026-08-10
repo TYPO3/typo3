@@ -31,7 +31,7 @@ final class RequestTest extends UnitTestCase
     #[Test]
     public function getMethodIsGetByDefault(): void
     {
-        self::assertEquals('GET', (new Request())->getMethod());
+        self::assertEquals('GET', new Request()->getMethod());
     }
 
     #[Test]
@@ -46,7 +46,7 @@ final class RequestTest extends UnitTestCase
     #[Test]
     public function withUriReturnsNewInstanceWithNewUri(): void
     {
-        $request1 = (new Request())->withUri(new Uri('https://example.com:10082/foo/bar?baz=bat'));
+        $request1 = new Request()->withUri(new Uri('https://example.com:10082/foo/bar?baz=bat'));
         $request2 = $request1->withUri(new Uri('/baz/bat?foo=bar'));
         self::assertNotSame($request2, $request1);
         self::assertEquals('/baz/bat?foo=bar', (string)$request2->getUri());
@@ -162,7 +162,7 @@ final class RequestTest extends UnitTestCase
     #[Test]
     public function getRequestTargetIsSlashWhenUriHasNoPathOrQuery(): void
     {
-        $request = (new Request())->withUri(new Uri('http://example.com'));
+        $request = new Request()->withUri(new Uri('http://example.com'));
         self::assertEquals('/', $request->getRequestTarget());
     }
 
@@ -170,25 +170,25 @@ final class RequestTest extends UnitTestCase
     {
         return [
             'absolute-uri'            => [
-                (new Request())
+                new Request()
                     ->withUri(new Uri('https://api.example.com/user'))
                     ->withMethod('POST'),
                 '/user',
             ],
             'absolute-uri-with-query' => [
-                (new Request())
+                new Request()
                     ->withUri(new Uri('https://api.example.com/user?foo=bar'))
                     ->withMethod('POST'),
                 '/user?foo=bar',
             ],
             'relative-uri'            => [
-                (new Request())
+                new Request()
                     ->withUri(new Uri('/user'))
                     ->withMethod('GET'),
                 '/user',
             ],
             'relative-uri-with-query' => [
-                (new Request())
+                new Request()
                     ->withUri(new Uri('/user?foo=bar'))
                     ->withMethod('GET'),
                 '/user?foo=bar',
@@ -219,7 +219,7 @@ final class RequestTest extends UnitTestCase
     #[Test]
     public function getRequestTargetCanProvideARequestTarget($requestTarget): void
     {
-        $request = (new Request())->withRequestTarget($requestTarget);
+        $request = new Request()->withRequestTarget($requestTarget);
         self::assertEquals($requestTarget, $request->getRequestTarget());
     }
 
@@ -235,7 +235,7 @@ final class RequestTest extends UnitTestCase
     #[Test]
     public function getRequestTargetDoesNotCacheBetweenInstances(): void
     {
-        $request = (new Request())->withUri(new Uri('https://example.com/foo/bar'));
+        $request = new Request()->withUri(new Uri('https://example.com/foo/bar'));
         $original = $request->getRequestTarget();
         $newRequest = $request->withUri(new Uri('http://mwop.net/bar/baz'));
         self::assertNotEquals($original, $newRequest->getRequestTarget());
@@ -244,7 +244,7 @@ final class RequestTest extends UnitTestCase
     #[Test]
     public function getRequestTargetIsResetWithNewUri(): void
     {
-        $request1 = (new Request())->withUri(new Uri('https://example.com/foo/bar'));
+        $request1 = new Request()->withUri(new Uri('https://example.com/foo/bar'));
         $target1 = $request1->getRequestTarget();
         $request2 = $request1->withUri(new Uri('http://mwop.net/bar/baz'));
         $target2 = $request2->getRequestTarget();
@@ -323,8 +323,8 @@ final class RequestTest extends UnitTestCase
     #[Test]
     public function getHeaderLineWithHostTakesPrecedenceOverModifiedUri(): void
     {
-        $request = (new Request())->withAddedHeader('Host', 'example.com');
-        $uri = (new Uri())->withHost('www.example.com');
+        $request = new Request()->withAddedHeader('Host', 'example.com');
+        $uri = new Uri()->withHost('www.example.com');
         $new = $request->withUri($uri, true);
         self::assertEquals('example.com', $new->getHeaderLine('Host'));
     }
@@ -332,7 +332,7 @@ final class RequestTest extends UnitTestCase
     #[Test]
     public function getHeaderLineWithHostTakesPrecedenceOverEmptyUri(): void
     {
-        $request = (new Request())->withAddedHeader('Host', 'example.com');
+        $request = new Request()->withAddedHeader('Host', 'example.com');
         $uri = new Uri();
         $new = $request->withUri($uri);
         self::assertEquals('example.com', $new->getHeaderLine('Host'));
@@ -341,8 +341,8 @@ final class RequestTest extends UnitTestCase
     #[Test]
     public function getHeaderLineWithHostDoesNotTakePrecedenceOverHostWithPortFromUri(): void
     {
-        $request = (new Request())->withAddedHeader('Host', 'example.com');
-        $uri = (new Uri())
+        $request = new Request()->withAddedHeader('Host', 'example.com');
+        $uri = new Uri()
             ->withHost('www.example.com')
             ->withPort(10081);
         $new = $request->withUri($uri);

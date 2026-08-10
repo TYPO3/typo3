@@ -64,7 +64,7 @@ final class ApplicationFailedLoginEmailTest extends FunctionalTestCase
     #[Test]
     public function failedLoginRendersNotificationMail(): void
     {
-        $request = (new ServerRequest(
+        $request = new ServerRequest(
             new Uri('http://localhost/?install%5Bcontroller%5D=maintenance&install%5Bcontext%5D=install'),
             'POST',
             'php://input',
@@ -76,7 +76,7 @@ final class ApplicationFailedLoginEmailTest extends FunctionalTestCase
                 'HTTPS' => 'off',
                 'REMOTE_ADDR' => '127.0.0.1',
             ],
-        ))
+        )
             ->withQueryParams([
                 'install' => [
                     'controller' => 'maintenance',

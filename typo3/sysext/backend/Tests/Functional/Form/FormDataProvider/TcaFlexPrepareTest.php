@@ -67,7 +67,7 @@ final class TcaFlexPrepareTest extends FunctionalTestCase
             ],
         ]);
         $expected = $input;
-        self::assertEquals($expected, (new TcaFlexPrepare($this->get(FlexFormTools::class)))->addData($input));
+        self::assertEquals($expected, new TcaFlexPrepare($this->get(FlexFormTools::class))->addData($input));
     }
 
     #[Test]
@@ -130,7 +130,7 @@ final class TcaFlexPrepareTest extends FunctionalTestCase
             'meta' => [],
         ];
 
-        self::assertEquals($expected, (new TcaFlexPrepare($this->get(FlexFormTools::class)))->addData($input));
+        self::assertEquals($expected, new TcaFlexPrepare($this->get(FlexFormTools::class))->addData($input));
     }
 
     #[Test]
@@ -199,7 +199,7 @@ final class TcaFlexPrepareTest extends FunctionalTestCase
             'meta' => [],
         ];
 
-        self::assertEquals($expected, (new TcaFlexPrepare($this->get(FlexFormTools::class)))->addData($input));
+        self::assertEquals($expected, new TcaFlexPrepare($this->get(FlexFormTools::class))->addData($input));
     }
 
     #[Test]
@@ -237,7 +237,7 @@ final class TcaFlexPrepareTest extends FunctionalTestCase
             'meta' => [],
         ];
 
-        self::assertEquals($expected, (new TcaFlexPrepare($this->get(FlexFormTools::class)))->addData($input));
+        self::assertEquals($expected, new TcaFlexPrepare($this->get(FlexFormTools::class))->addData($input));
     }
 
     #[Test]
@@ -369,7 +369,7 @@ final class TcaFlexPrepareTest extends FunctionalTestCase
             'meta' => [],
         ];
 
-        self::assertEquals($expected, (new TcaFlexPrepare($this->get(FlexFormTools::class)))->addData($input));
+        self::assertEquals($expected, new TcaFlexPrepare($this->get(FlexFormTools::class))->addData($input));
     }
 
     /**
@@ -440,7 +440,7 @@ final class TcaFlexPrepareTest extends FunctionalTestCase
                     ['container_1']['el']
                         ['select_section_1'] = $columnConfig;
 
-        self::assertEquals($expected, (new TcaFlexPrepare($this->get(FlexFormTools::class)))->addData($input));
+        self::assertEquals($expected, new TcaFlexPrepare($this->get(FlexFormTools::class))->addData($input));
     }
 
     private function addTcaSchemata(array $result): array

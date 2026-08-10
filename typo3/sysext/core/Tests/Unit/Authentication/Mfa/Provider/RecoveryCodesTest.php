@@ -107,7 +107,7 @@ final class RecoveryCodesTest extends UnitTestCase
 
         $codes = $this->subject->generatedHashedRecoveryCodes(['12345678', '87654321']);
 
-        self::assertTrue((new BcryptPasswordHash())->isValidSaltedPW((string)$codes[0]));
+        self::assertTrue(new BcryptPasswordHash()->isValidSaltedPW((string)$codes[0]));
         self::assertCount(2, $codes);
     }
 
@@ -141,7 +141,7 @@ final class RecoveryCodesTest extends UnitTestCase
     public function verifyRecoveryCodeUsesTheCorrectHashInstanceTest(): void
     {
         $code = '18742989';
-        $codes = [(new NoopPasswordHash())->getHashedPassword($code)];
+        $codes = [new NoopPasswordHash()->getHashedPassword($code)];
 
         // Ensure we have another default hash instance
         $GLOBALS['TYPO3_CONF_VARS']['BE']['passwordHashing'] = [

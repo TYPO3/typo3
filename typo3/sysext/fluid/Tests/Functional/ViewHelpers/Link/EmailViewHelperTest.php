@@ -39,7 +39,7 @@ final class EmailViewHelperTest extends FunctionalTestCase
     {
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:link.email email="foo@example.com">send mail</f:link.email>');
-        self::assertEquals('<a href="mailto:foo@example.com">send mail</a>', (new TemplateView($context))->render());
+        self::assertEquals('<a href="mailto:foo@example.com">send mail</a>', new TemplateView($context)->render());
     }
 
     #[Test]
@@ -47,7 +47,7 @@ final class EmailViewHelperTest extends FunctionalTestCase
     {
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:link.email email="foo@example.com" />');
-        self::assertEquals('<a href="mailto:foo@example.com">foo@example.com</a>', (new TemplateView($context))->render());
+        self::assertEquals('<a href="mailto:foo@example.com">foo@example.com</a>', new TemplateView($context)->render());
     }
 
     public static function renderEncodesEmailInFrontendDataProvider(): array
@@ -129,7 +129,7 @@ page.10 {
 }
 EOT
         ]);
-        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(1));
+        $response = $this->executeFrontendSubRequest(new InternalRequest()->withPageId(1));
         self::assertStringContainsString($expected, (string)$response->getBody());
     }
 }

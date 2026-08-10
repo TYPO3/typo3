@@ -47,7 +47,7 @@ final class ArrayFormFactoryTest extends FunctionalTestCase
     #[Test]
     public function beforeRenderableIsAddedToFormEventIsTriggered(): void
     {
-        $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $request = new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $extbaseConfigurationManager = $this->get(ExtbaseConfigurationManagerInterface::class);
         $extbaseConfigurationManager->setRequest($request);
         $extFormConfigurationManager = $this->get(ExtFormConfigurationManagerInterface::class);
@@ -99,7 +99,7 @@ final class ArrayFormFactoryTest extends FunctionalTestCase
     #[Test]
     public function afterFormIsBuiltEventIsTriggered(): void
     {
-        $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $request = new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $extbaseConfigurationManager = $this->get(ExtbaseConfigurationManagerInterface::class);
         $extbaseConfigurationManager->setRequest($request);
 
@@ -132,7 +132,7 @@ final class ArrayFormFactoryTest extends FunctionalTestCase
     #[Test]
     public function formDefinitionAfterBuildHasRequestSet(): void
     {
-        $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $request = new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $extbaseConfigurationManager = $this->get(ExtbaseConfigurationManagerInterface::class);
         $extbaseConfigurationManager->setRequest($request);
 

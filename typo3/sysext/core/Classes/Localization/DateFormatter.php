@@ -148,7 +148,7 @@ readonly class DateFormatter
             $calendar = new \IntlGregorianCalendar();
             $calendar->setGregorianChange(PHP_INT_MIN);
 
-            return (new \IntlDateFormatter($locale, $date_type, $time_type, $tz, $calendar, $pattern))->format($timestamp) ?: '';
+            return new \IntlDateFormatter($locale, $date_type, $time_type, $tz, $calendar, $pattern)->format($timestamp) ?: '';
         };
 
         // Same order as https://www.php.net/manual/en/function.strftime.php

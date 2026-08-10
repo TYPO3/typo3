@@ -194,7 +194,7 @@ final class LossyTokenizer implements TokenizerInterface
                 if ($bracketCount === 0) {
                     if ($conditionBodyCharCount) {
                         $conditionBodyToken = new Token(TokenType::T_VALUE, $conditionBody);
-                        $this->lineStream->append((new ConditionLine())->setValueToken($conditionBodyToken));
+                        $this->lineStream->append(new ConditionLine()->setValueToken($conditionBodyToken));
                         $conditionBodyCharCount++;
                         break;
                     }
@@ -219,11 +219,11 @@ final class LossyTokenizer implements TokenizerInterface
         $this->currentLineString = trim(substr($this->currentLineString, 1));
         if (str_starts_with($this->currentLineString, '}')) {
             // Edge case: foo = { } in one line. Note content within {} is not parsed, everything behind { ends up as comment.
-            $this->lineStream->append((new IdentifierBlockOpenLine())->setIdentifierTokenStream($this->identifierStream));
+            $this->lineStream->append(new IdentifierBlockOpenLine()->setIdentifierTokenStream($this->identifierStream));
             $this->lineStream->append((new BlockCloseLine()));
             return;
         }
-        $this->lineStream->append((new IdentifierBlockOpenLine())->setIdentifierTokenStream($this->identifierStream));
+        $this->lineStream->append(new IdentifierBlockOpenLine()->setIdentifierTokenStream($this->identifierStream));
     }
 
     private function parseImportLine(): void
@@ -245,7 +245,7 @@ final class LossyTokenizer implements TokenizerInterface
                 // end of chars
                 if ($importBodyCharCount) {
                     $importBodyToken = (new Token(TokenType::T_VALUE, $importBody));
-                    $this->lineStream->append((new ImportLine())->setValueToken($importBodyToken));
+                    $this->lineStream->append(new ImportLine()->setValueToken($importBodyToken));
                     return;
                 }
                 return;
@@ -253,7 +253,7 @@ final class LossyTokenizer implements TokenizerInterface
             if ($nextChar === '\'' || $nextChar === '"') {
                 if ($importBodyCharCount) {
                     $importBodyToken = new Token(TokenType::T_VALUE, $importBody);
-                    $this->lineStream->append((new ImportLine())->setValueToken($importBodyToken));
+                    $this->lineStream->append(new ImportLine()->setValueToken($importBodyToken));
                     break;
                 }
                 break;
@@ -311,7 +311,7 @@ final class LossyTokenizer implements TokenizerInterface
 
     private function parseOperatorUnset(): void
     {
-        $this->lineStream->append((new IdentifierUnsetLine())->setIdentifierTokenStream($this->identifierStream));
+        $this->lineStream->append(new IdentifierUnsetLine()->setIdentifierTokenStream($this->identifierStream));
         $this->currentLineString = trim(trim(trim($this->currentLineString), '>'));
         if (str_starts_with($this->currentLineString, '/*')) {
             $this->ignoreUntilEndOfMultilineComment();
@@ -322,7 +322,7 @@ final class LossyTokenizer implements TokenizerInterface
     {
         $this->currentLineString = trim(substr($this->currentLineString, 1));
         $this->valueStream = $this->parseValueForConstants(new TokenStream(), $this->currentLineString);
-        $this->lineStream->append((new IdentifierAssignmentLine())->setIdentifierTokenStream($this->identifierStream)->setValueTokenStream($this->valueStream));
+        $this->lineStream->append(new IdentifierAssignmentLine()->setIdentifierTokenStream($this->identifierStream)->setValueTokenStream($this->valueStream));
     }
 
     private function parseOperatorMultilineAssignment(): void
@@ -339,7 +339,7 @@ final class LossyTokenizer implements TokenizerInterface
             if (str_starts_with(ltrim($this->currentLineString), ')')) {
                 $this->currentLineString = trim(substr($this->currentLineString, 1));
                 if (!$this->valueStream->isEmpty()) {
-                    $this->lineStream->append((new IdentifierAssignmentLine())->setIdentifierTokenStream($this->identifierStream)->setValueTokenStream($this->valueStream));
+                    $this->lineStream->append(new IdentifierAssignmentLine()->setIdentifierTokenStream($this->identifierStream)->setValueTokenStream($this->valueStream));
                 }
                 if (str_starts_with($this->currentLineString, '/*')) {
                     $this->ignoreUntilEndOfMultilineComment();
@@ -350,7 +350,7 @@ final class LossyTokenizer implements TokenizerInterface
                 $this->currentLineString = substr($this->currentLineString, 0, -1);
                 if (strlen($this->currentLineString) > 1) {
                     $this->valueStream = $this->parseValueForConstants($this->valueStream, $this->currentLineString);
-                    $this->lineStream->append((new IdentifierAssignmentLine())->setIdentifierTokenStream($this->identifierStream)->setValueTokenStream($this->valueStream));
+                    $this->lineStream->append(new IdentifierAssignmentLine()->setIdentifierTokenStream($this->identifierStream)->setValueTokenStream($this->valueStream));
                     return;
                 }
                 return;
@@ -392,7 +392,7 @@ final class LossyTokenizer implements TokenizerInterface
             return;
         }
         $this->lineStream->append(
-            (new IdentifierCopyLine())
+            new IdentifierCopyLine()
                 ->setIdentifierTokenStream($identifierStream)
                 ->setValueTokenStream($referenceStream)
         );
@@ -412,7 +412,7 @@ final class LossyTokenizer implements TokenizerInterface
             return;
         }
         $this->lineStream->append(
-            (new IdentifierReferenceLine())
+            new IdentifierReferenceLine()
                 ->setIdentifierTokenStream($identifierStream)
                 ->setValueTokenStream($referenceStream)
         );
@@ -560,7 +560,7 @@ final class LossyTokenizer implements TokenizerInterface
             $functionBodyCharCount++;
         }
         $this->lineStream->append(
-            (new IdentifierFunctionLine())
+            new IdentifierFunctionLine()
                 ->setIdentifierTokenStream($this->identifierStream)
                 ->setFunctionNameToken($functionNameToken)
                 ->setFunctionValueTokenStream($functionValueStream)
@@ -606,7 +606,7 @@ final class LossyTokenizer implements TokenizerInterface
             if ($isInConstant && $char === '}') {
                 $valueToken = new Token(TokenType::T_CONSTANT, $currentString . '}');
                 if (!$valueStream instanceof ConstantAwareTokenStream) {
-                    $valueStream = (new ConstantAwareTokenStream())->setAll($valueStream->getAll());
+                    $valueStream = new ConstantAwareTokenStream()->setAll($valueStream->getAll());
                 }
                 $valueStream->append($valueToken);
                 $currentPosition++;

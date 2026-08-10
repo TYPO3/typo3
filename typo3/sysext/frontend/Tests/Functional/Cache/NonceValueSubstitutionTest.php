@@ -73,7 +73,7 @@ final class NonceValueSubstitutionTest extends FunctionalTestCase
         ?string $expectedContent,
         ?int $expectedCount,
     ): void {
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.org/', 'GET'))
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest('https://www.example.org/', 'GET')
             ->withAttribute('nonce', $nonce);
         $subject = new NonceValueSubstitution();
         $content = $subject->substituteNonce($context);

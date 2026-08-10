@@ -61,7 +61,7 @@ final class XmlSitemapPagesWithHideIfNotTranslatedTest extends AbstractXmlSitema
     {
         self::assertEquals(
             4,
-            (new \SimpleXMLElement((string)$this->getResponse('http://localhost/fr/')->getBody()))->count()
+            new \SimpleXMLElement((string)$this->getResponse('http://localhost/fr/')->getBody())->count()
         );
     }
 

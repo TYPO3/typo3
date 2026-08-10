@@ -35,7 +35,7 @@ final class SuggestWizardControllerTest extends FunctionalTestCase
 
         // sys_category does not define ctrl['type'], FormEngine still hands
         // over the default record type "1" for such tables.
-        $request = (new ServerRequest('https://example.com/typo3/ajax/wizard/suggest/search', 'POST'))
+        $request = new ServerRequest('https://example.com/typo3/ajax/wizard/suggest/search', 'POST')
             ->withParsedBody([
                 'value' => 'Category B',
                 'tableName' => 'sys_category',

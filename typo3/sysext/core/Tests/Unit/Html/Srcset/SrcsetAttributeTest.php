@@ -49,19 +49,19 @@ final class SrcsetAttributeTest extends UnitTestCase
     {
         static::expectExceptionCode(1697745459);
         $this->expectExceptionMessage('Invalid mix of w and x descriptors in srcset: dummy@100.jpg 100w, ..., dummy@2x.jpg 2x');
-        (new SrcsetAttribute())
-            ->addCandidate((new WidthSrcsetCandidate(100))->setUri('dummy@100.jpg'))
-            ->addCandidate((new WidthSrcsetCandidate(200))->setUri('dummy@200.jpg'))
-            ->addCandidate((new DensitySrcsetCandidate(2.0))->setUri('dummy@2x.jpg'));
+        new SrcsetAttribute()
+            ->addCandidate(new WidthSrcsetCandidate(100)->setUri('dummy@100.jpg'))
+            ->addCandidate(new WidthSrcsetCandidate(200)->setUri('dummy@200.jpg'))
+            ->addCandidate(new DensitySrcsetCandidate(2.0)->setUri('dummy@2x.jpg'));
     }
 
     #[Test]
     public function generateSrcsetWithDuplicates(): void
     {
-        $subject = (new SrcsetAttribute())
-            ->addCandidate((new WidthSrcsetCandidate(100))->setUri('dummy@100.jpg'))
-            ->addCandidate((new WidthSrcsetCandidate(200))->setUri('dummy@200.jpg'))
-            ->addCandidate((new WidthSrcsetCandidate(200))->setUri('dummy@200.jpg'));
+        $subject = new SrcsetAttribute()
+            ->addCandidate(new WidthSrcsetCandidate(100)->setUri('dummy@100.jpg'))
+            ->addCandidate(new WidthSrcsetCandidate(200)->setUri('dummy@200.jpg'))
+            ->addCandidate(new WidthSrcsetCandidate(200)->setUri('dummy@200.jpg'));
         self::assertEquals('dummy@100.jpg 100w, dummy@200.jpg 200w', $subject->generateSrcset());
         self::assertEquals('dummy@100.jpg 100w, dummy@200.jpg 200w', (string)$subject);
     }

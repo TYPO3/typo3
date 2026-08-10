@@ -59,7 +59,7 @@ final class TemplateAnalyzerTest extends FunctionalTestCase
         $templateFinder = $this->get(TemplateFinder::class);
         $renderingContextFactory = $this->get(RenderingContextFactory::class);
         $templates = $templateFinder->findTemplatesInAllPackages();
-        $results = (new TemplateValidator())->validateTemplateFiles(
+        $results = new TemplateValidator()->validateTemplateFiles(
             $templates,
             $renderingContextFactory->create(),
         );
@@ -73,7 +73,7 @@ final class TemplateAnalyzerTest extends FunctionalTestCase
     {
         $renderingContextFactory = $this->get(RenderingContextFactory::class);
         $templates = array_values($this->templateFixtures);
-        $results = (new TemplateValidator())->validateTemplateFiles(
+        $results = new TemplateValidator()->validateTemplateFiles(
             $templates,
             $renderingContextFactory->create(),
         );

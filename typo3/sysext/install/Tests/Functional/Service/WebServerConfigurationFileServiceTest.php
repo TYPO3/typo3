@@ -48,7 +48,7 @@ final class WebServerConfigurationFileServiceTest extends FunctionalTestCase
 
         file_put_contents($filename, file_get_contents(__DIR__ . '/../Fixtures/' . $configurationFile));
 
-        $changed = (new WebServerConfigurationFileService())->addWebServerSpecificBackendRoutingRewriteRules();
+        $changed = new WebServerConfigurationFileService()->addWebServerSpecificBackendRoutingRewriteRules();
 
         self::assertEquals($shouldBeChanged, $changed);
 

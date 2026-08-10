@@ -74,7 +74,7 @@ final class MfaControllerTest extends FunctionalTestCase
         $this->subject->injectMfaProviderRegistry($this->get(MfaProviderRegistry::class));
         $normalizedParams = self::createStub(NormalizedParams::class);
         $normalizedParams->method('getSitePath')->willReturn('/');
-        $this->request = (new ServerRequest('https://example.com/typo3/'))
+        $this->request = new ServerRequest('https://example.com/typo3/')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('normalizedParams', $normalizedParams)
             ->withAttribute('route', new Route('path', ['packageName' => 'typo3/cms-backend']));
@@ -261,7 +261,7 @@ final class MfaControllerTest extends FunctionalTestCase
         ]);
 
         $timestamp = $this->get(Context::class)->getPropertyFromAspect('date', 'timestamp');
-        $totp = (new Totp('KRMVATZTJFZUC53FONXW2ZJB'))->generateTotp((int)floor($timestamp / 30));
+        $totp = new Totp('KRMVATZTJFZUC53FONXW2ZJB')->generateTotp((int)floor($timestamp / 30));
 
         $queryParams = [
             'action' => 'verify',

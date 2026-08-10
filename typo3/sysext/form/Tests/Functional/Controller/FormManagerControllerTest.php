@@ -456,7 +456,7 @@ final class FormManagerControllerTest extends FunctionalTestCase
         $eventListener = $this->get(ListenerProvider::class);
         $eventListener->addListener(BeforeFormIsCreatedEvent::class, 'before-form-create-listener');
 
-        $serverRequest = (new ServerRequest('https://example.com', 'POST'))
+        $serverRequest = new ServerRequest('https://example.com', 'POST')
             ->withAttribute('extbase', new ExtbaseRequestParameters())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $parsedBody = [
@@ -467,7 +467,7 @@ final class FormManagerControllerTest extends FunctionalTestCase
             'storageLocation' => '0',
         ];
         $serverRequest = $serverRequest->withParsedBody($parsedBody);
-        $request = (new Request($serverRequest))
+        $request = new Request($serverRequest)
             ->withControllerExtensionName(FormManagerController::class)
             ->withControllerName('FormManagerController')
             ->withArguments($parsedBody)
@@ -517,14 +517,14 @@ final class FormManagerControllerTest extends FunctionalTestCase
         $eventListener->addListener(BeforeFormIsDeletedEvent::class, 'before-form-deleted-listener');
         $eventListener->addListener(BeforeFormIsDeletedEvent::class, 'before-form-deleted-listener-unused');
 
-        $serverRequest = (new ServerRequest('https://example.com', 'POST'))
+        $serverRequest = new ServerRequest('https://example.com', 'POST')
             ->withAttribute('extbase', new ExtbaseRequestParameters())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $parsedBody = [
             'formPersistenceIdentifier' => '1',
         ];
         $serverRequest = $serverRequest->withParsedBody($parsedBody);
-        $request = (new Request($serverRequest))
+        $request = new Request($serverRequest)
             ->withControllerExtensionName(FormManagerController::class)
             ->withControllerName('FormManagerController')
             ->withArguments($parsedBody)
@@ -565,7 +565,7 @@ final class FormManagerControllerTest extends FunctionalTestCase
         $eventListener = $this->get(ListenerProvider::class);
         $eventListener->addListener(BeforeFormIsDuplicatedEvent::class, 'before-form-duplicated-listener');
 
-        $serverRequest = (new ServerRequest('https://example.com', 'POST'))
+        $serverRequest = new ServerRequest('https://example.com', 'POST')
             ->withAttribute('extbase', new ExtbaseRequestParameters())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $parsedBody = [
@@ -575,7 +575,7 @@ final class FormManagerControllerTest extends FunctionalTestCase
             'storageLocation' => '0',
         ];
         $serverRequest = $serverRequest->withParsedBody($parsedBody);
-        $request = (new Request($serverRequest))
+        $request = new Request($serverRequest)
             ->withControllerExtensionName(FormManagerController::class)
             ->withControllerName('FormManagerController')
             ->withArguments($parsedBody)
@@ -600,7 +600,7 @@ final class FormManagerControllerTest extends FunctionalTestCase
         $route = $this->createBackendRouteFromSymfonyRoute(
             $this->get(Router::class)->getRoute('web_FormFormbuilder.FormManager_create')
         );
-        $serverRequest = (new ServerRequest())
+        $serverRequest = new ServerRequest()
             ->withMethod('POST')
             ->withParsedBody([
                 'formName' => 'testform',

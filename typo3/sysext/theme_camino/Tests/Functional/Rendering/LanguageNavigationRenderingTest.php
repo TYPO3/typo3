@@ -70,7 +70,7 @@ final class LanguageNavigationRenderingTest extends FunctionalTestCase
     public function languageNavigationIsRenderedInHeader(): void
     {
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest('https://camino.example/'))->withPageId(1)
+            new InternalRequest('https://camino.example/')->withPageId(1)
         );
 
         $content = (string)$response->getBody();

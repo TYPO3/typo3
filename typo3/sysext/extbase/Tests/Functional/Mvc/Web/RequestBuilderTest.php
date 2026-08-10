@@ -1018,7 +1018,7 @@ final class RequestBuilderTest extends FunctionalTestCase
 
     private function prepareServerRequest(string $url, string $method = 'GET'): ServerRequestInterface
     {
-        $request = (new ServerRequest($url, $method))
+        $request = new ServerRequest($url, $method)
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $normalizedParams = NormalizedParams::createFromRequest($request);
         return $request->withAttribute('normalizedParams', $normalizedParams);

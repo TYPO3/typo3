@@ -111,7 +111,7 @@ abstract class AbstractTestCase extends FunctionalTestCase
 
     protected function createTypoLinkUrlInstruction(array $typoScript): ArrayValueInstruction
     {
-        return (new ArrayValueInstruction(LinkHandlingController::class))
+        return new ArrayValueInstruction(LinkHandlingController::class)
             ->withArray([
                 '10' => 'TEXT',
                 '10.' => [
@@ -125,7 +125,7 @@ abstract class AbstractTestCase extends FunctionalTestCase
 
     protected function createTypoLinkTagInstruction(array $typoScript): ArrayValueInstruction
     {
-        return (new ArrayValueInstruction(LinkHandlingController::class))
+        return new ArrayValueInstruction(LinkHandlingController::class)
             ->withArray([
                 '10' => 'TEXT',
                 '10.' => [
@@ -136,7 +136,7 @@ abstract class AbstractTestCase extends FunctionalTestCase
 
     protected function createHierarchicalMenuProcessorInstruction(array $typoScript): ArrayValueInstruction
     {
-        return (new ArrayValueInstruction(LinkHandlingController::class))
+        return new ArrayValueInstruction(LinkHandlingController::class)
             ->withArray([
                 '10' => 'FLUIDTEMPLATE',
                 '10.' => [
@@ -154,7 +154,7 @@ abstract class AbstractTestCase extends FunctionalTestCase
 
     protected function createLanguageMenuProcessorInstruction(array $typoScript): ArrayValueInstruction
     {
-        return (new ArrayValueInstruction(LinkHandlingController::class))
+        return new ArrayValueInstruction(LinkHandlingController::class)
             ->withArray([
                 '10' => 'FLUIDTEMPLATE',
                 '10.' => [

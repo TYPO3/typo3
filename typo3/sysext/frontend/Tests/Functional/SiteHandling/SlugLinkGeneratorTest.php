@@ -132,7 +132,7 @@ final class SlugLinkGeneratorTest extends AbstractTestCase
     public function linkIsGenerated(string $hostPrefix, int $sourcePageId, int $targetPageId, string $expectation): void
     {
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest($hostPrefix))
+            new InternalRequest($hostPrefix)
                 ->withPageId($sourcePageId)
                 ->withInstructions([
                     $this->createTypoLinkUrlInstruction([
@@ -192,7 +192,7 @@ final class SlugLinkGeneratorTest extends AbstractTestCase
     public function linkIsGeneratedFromMountPoint(string $hostPrefix, array $pageMount, int $sourcePageId, int $targetPageId, string $expectation): void
     {
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest($hostPrefix))
+            new InternalRequest($hostPrefix)
                 ->withMountPoint(...$pageMount)
                 ->withPageId($sourcePageId)
                 ->withInstructions([
@@ -253,7 +253,7 @@ final class SlugLinkGeneratorTest extends AbstractTestCase
     public function linkIsGeneratedForLanguageWithLanguageProperty(string $hostPrefix, int $sourcePageId, int $targetPageId, int $targetLanguageId, string $expectation): void
     {
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest($hostPrefix))
+            new InternalRequest($hostPrefix)
                 ->withPageId($sourcePageId)
                 ->withInstructions([
                     $this->createTypoLinkUrlInstruction([
@@ -305,7 +305,7 @@ final class SlugLinkGeneratorTest extends AbstractTestCase
     public function linkIsGeneratedWithQueryParameters(string $hostPrefix, int $sourcePageId, int $targetPageId, string $expectation): void
     {
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest($hostPrefix))
+            new InternalRequest($hostPrefix)
                 ->withPageId($sourcePageId)
                 ->withInstructions([
                     $this->createTypoLinkUrlInstruction([
@@ -322,7 +322,7 @@ final class SlugLinkGeneratorTest extends AbstractTestCase
     public function linkIsGeneratedWithQueryParametersArray(): void
     {
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest('https://acme.us/'))
+            new InternalRequest('https://acme.us/')
                 ->withPageId(1100)
                 ->withInstructions([
                     $this->createTypoLinkUrlInstruction([
@@ -340,7 +340,7 @@ final class SlugLinkGeneratorTest extends AbstractTestCase
     public function queryParametersArrayOverridesAdditionalParams(): void
     {
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest('https://acme.us/'))
+            new InternalRequest('https://acme.us/')
                 ->withPageId(1100)
                 ->withInstructions([
                     $this->createTypoLinkUrlInstruction([
@@ -396,14 +396,14 @@ final class SlugLinkGeneratorTest extends AbstractTestCase
     public function linkIsGeneratedForRestrictedPage(string $hostPrefix, int $sourcePageId, int $targetPageId, int $frontendUserId, string $expectation): void
     {
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest($hostPrefix))
+            new InternalRequest($hostPrefix)
                 ->withPageId($sourcePageId)
                 ->withInstructions([
                     $this->createTypoLinkUrlInstruction([
                         'parameter' => $targetPageId,
                     ]),
                 ]),
-            (new InternalRequestContext())->withFrontendUserId($frontendUserId)
+            new InternalRequestContext()->withFrontendUserId($frontendUserId)
         );
 
         self::assertSame($expectation, (string)$response->getBody());
@@ -449,10 +449,10 @@ final class SlugLinkGeneratorTest extends AbstractTestCase
     public function linkIsGeneratedForRestrictedPageUsingLoginPage(string $hostPrefix, int $sourcePageId, int $targetPageId, int $loginPageId, int $frontendUserId, string $expectation): void
     {
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest($hostPrefix))
+            new InternalRequest($hostPrefix)
                 ->withPageId($sourcePageId)
                 ->withInstructions([
-                    (new TypoScriptInstruction())
+                    new TypoScriptInstruction()
                         ->withTypoScript([
                             'config.' => [
                                 'typolinkLinkAccessRestrictedPages' => $loginPageId,
@@ -466,7 +466,7 @@ final class SlugLinkGeneratorTest extends AbstractTestCase
                         'parameter' => $targetPageId,
                     ]),
                 ]),
-            (new InternalRequestContext())->withFrontendUserId($frontendUserId)
+            new InternalRequestContext()->withFrontendUserId($frontendUserId)
         );
 
         self::assertSame($expectation, (string)$response->getBody());
@@ -496,10 +496,10 @@ final class SlugLinkGeneratorTest extends AbstractTestCase
     public function linkIsGeneratedForRestrictedPageForGuestsUsingTypolinkLinkAccessRestrictedPages(string $hostPrefix, int $sourcePageId, int $targetPageId, int $languageId, string $expectation): void
     {
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest($hostPrefix))
+            new InternalRequest($hostPrefix)
                 ->withPageId($sourcePageId)
                 ->withInstructions([
-                    (new TypoScriptInstruction())
+                    new TypoScriptInstruction()
                         ->withTypoScript([
                             'config.' => [
                                 'typolinkLinkAccessRestrictedPages' => 'NONE',
@@ -553,14 +553,14 @@ final class SlugLinkGeneratorTest extends AbstractTestCase
         }
 
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest($hostPrefix))
+            new InternalRequest($hostPrefix)
                 ->withPageId($sourcePageId)
                 ->withInstructions([
                     $this->createTypoLinkUrlInstruction([
                         'parameter' => $targetPageId,
                     ]),
                 ]),
-            (new InternalRequestContext())
+            new InternalRequestContext()
                 ->withWorkspaceId($backendUserId !== 0 ? $workspaceId : 0)
                 ->withBackendUserId($backendUserId)
         );
@@ -793,7 +793,7 @@ final class SlugLinkGeneratorTest extends AbstractTestCase
     public function hierarchicalMenuIsGenerated(string $hostPrefix, int $sourcePageId, array $expectation): void
     {
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest($hostPrefix))
+            new InternalRequest($hostPrefix)
                 ->withPageId($sourcePageId)
                 ->withInstructions([
                     $this->createHierarchicalMenuProcessorInstruction([
@@ -847,7 +847,7 @@ final class SlugLinkGeneratorTest extends AbstractTestCase
             ],
         ];
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest('https://blog.acme.com/'))
+            new InternalRequest('https://blog.acme.com/')
                 ->withPageId(2130)
                 ->withInstructions([
                     $this->createHierarchicalMenuProcessorInstruction([
@@ -937,7 +937,7 @@ final class SlugLinkGeneratorTest extends AbstractTestCase
     public function hierarchicalMenuSetsActiveStateProperly(string $hostPrefix, int $sourcePageId, string $menuPageIds, array $expectation, int $languageId = 0): void
     {
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest($hostPrefix))
+            new InternalRequest($hostPrefix)
                 ->withPageId($sourcePageId)
                 ->withInstructions([
                     $this->createHierarchicalMenuProcessorInstruction([
@@ -1002,7 +1002,7 @@ final class SlugLinkGeneratorTest extends AbstractTestCase
     public function hierarchicalMenuAlwaysResolvesToDefaultLanguage(int $languageId, string $excludedUidList, int $expectedMenuItems): void
     {
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest('https://acme.us/'))
+            new InternalRequest('https://acme.us/')
                 ->withPageId(1100)
                 ->withLanguageId($languageId)
                 ->withInstructions([
@@ -1152,7 +1152,7 @@ final class SlugLinkGeneratorTest extends AbstractTestCase
     public function directoryMenuIsGenerated(string $hostPrefix, int $sourcePageId, int $directoryMenuParentPage, int $backendUserId, int $workspaceId, array $expectation): void
     {
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest($hostPrefix))
+            new InternalRequest($hostPrefix)
                 ->withPageId($sourcePageId)
                 ->withInstructions([
                     $this->createHierarchicalMenuProcessorInstruction([
@@ -1163,7 +1163,7 @@ final class SlugLinkGeneratorTest extends AbstractTestCase
                         'titleField' => 'title',
                     ]),
                 ]),
-            (new InternalRequestContext())
+            new InternalRequestContext()
                 ->withWorkspaceId($backendUserId !== 0 ? $workspaceId : 0)
                 ->withBackendUserId($backendUserId)
         );
@@ -1239,7 +1239,7 @@ final class SlugLinkGeneratorTest extends AbstractTestCase
     public function directoryMenuToAccessRestrictedPagesIsGenerated(string $hostPrefix, int $sourcePageId, int $directoryMenuParentPage, int $loginPageId, int $backendUserId, int $workspaceId, array $expectation): void
     {
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest($hostPrefix))
+            new InternalRequest($hostPrefix)
                 ->withPageId($sourcePageId)
                 ->withInstructions([
                     $this->createHierarchicalMenuProcessorInstruction([
@@ -1251,7 +1251,7 @@ final class SlugLinkGeneratorTest extends AbstractTestCase
                         'showAccessRestrictedPages' => $loginPageId,
                     ]),
                 ]),
-            (new InternalRequestContext())
+            new InternalRequestContext()
                 ->withWorkspaceId($backendUserId !== 0 ? $workspaceId : 0)
                 ->withBackendUserId($backendUserId)
         );
@@ -1369,7 +1369,7 @@ final class SlugLinkGeneratorTest extends AbstractTestCase
     public function listMenuIsGenerated(string $hostPrefix, int $sourcePageId, array $menuPageIds, int $backendUserId, int $workspaceId, array $additionalMenuConfiguration, array $expectation): void
     {
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest($hostPrefix))
+            new InternalRequest($hostPrefix)
                 ->withPageId($sourcePageId)
                 ->withInstructions([
                     $this->createHierarchicalMenuProcessorInstruction(array_replace_recursive([
@@ -1380,7 +1380,7 @@ final class SlugLinkGeneratorTest extends AbstractTestCase
                         'titleField' => 'title',
                     ], $additionalMenuConfiguration)),
                 ]),
-            (new InternalRequestContext())
+            new InternalRequestContext()
                 ->withWorkspaceId($backendUserId !== 0 ? $workspaceId : 0)
                 ->withBackendUserId($backendUserId)
         );
@@ -1445,7 +1445,7 @@ final class SlugLinkGeneratorTest extends AbstractTestCase
     public function languageMenuIsGenerated(string $hostPrefix, int $sourcePageId, array $expectation): void
     {
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest($hostPrefix))
+            new InternalRequest($hostPrefix)
                 ->withPageId($sourcePageId)
                 ->withInstructions([
                     $this->createLanguageMenuProcessorInstruction([

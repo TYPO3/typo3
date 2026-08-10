@@ -57,7 +57,7 @@ final class ActionControllerTest extends FunctionalTestCase
     {
         // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
         $this->get(ConfigurationManagerInterface::class)->setRequest(
-            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
         );
         $subject = $this->get(TestController::class);
         $subject->arguments = new Arguments();
@@ -82,7 +82,7 @@ final class ActionControllerTest extends FunctionalTestCase
     {
         // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
         $this->get(ConfigurationManagerInterface::class)->setRequest(
-            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
         );
         $subject = $this->get(TestController::class);
         $subject->arguments = new Arguments();
@@ -109,7 +109,7 @@ final class ActionControllerTest extends FunctionalTestCase
         $this->expectExceptionCode(1253175643);
         // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
         $this->get(ConfigurationManagerInterface::class)->setRequest(
-            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
         );
         $subject = $this->get(TestController::class);
         $subject->arguments = new Arguments();
@@ -124,10 +124,10 @@ final class ActionControllerTest extends FunctionalTestCase
         $this->expectExceptionCode(1186669086);
         // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
         $this->get(ConfigurationManagerInterface::class)->setRequest(
-            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
         );
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
-        $request = (new Request($serverRequest))
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters());
+        $request = new Request($serverRequest)
             ->withControllerExtensionName('ActionControllerTest')
             ->withControllerName('Test')
             ->withControllerActionName('doesNotExist');
@@ -140,10 +140,10 @@ final class ActionControllerTest extends FunctionalTestCase
     {
         // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
         $this->get(ConfigurationManagerInterface::class)->setRequest(
-            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
         );
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
-        $request = (new Request($serverRequest))
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters());
+        $request = new Request($serverRequest)
             ->withControllerExtensionName('ActionControllerTest')
             ->withControllerName('Test')
             ->withControllerActionName('qux');
@@ -157,10 +157,10 @@ final class ActionControllerTest extends FunctionalTestCase
     {
         // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
         $this->get(ConfigurationManagerInterface::class)->setRequest(
-            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
         );
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
-        $request = (new Request($serverRequest))
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters());
+        $request = new Request($serverRequest)
             ->withControllerExtensionName('ActionControllerTest')
             ->withControllerName('Test')
             ->withControllerActionName('bar')
@@ -185,10 +185,10 @@ final class ActionControllerTest extends FunctionalTestCase
     {
         // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
         $this->get(ConfigurationManagerInterface::class)->setRequest(
-            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
         );
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
-        $request = (new Request($serverRequest))
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters());
+        $request = new Request($serverRequest)
             ->withControllerExtensionName('ActionControllerTest')
             ->withControllerName('Test')
             ->withControllerActionName('baz')
@@ -214,10 +214,10 @@ final class ActionControllerTest extends FunctionalTestCase
     {
         // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
         $this->get(ConfigurationManagerInterface::class)->setRequest(
-            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
         );
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
-        $request = (new Request($serverRequest))
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters());
+        $request = new Request($serverRequest)
             ->withControllerExtensionName('ActionControllerTest')
             ->withControllerName('Test')
             ->withControllerActionName('qux');
@@ -240,11 +240,11 @@ final class ActionControllerTest extends FunctionalTestCase
     {
         // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
         $this->get(ConfigurationManagerInterface::class)->setRequest(
-            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
         );
 
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
-        $request = (new Request($serverRequest))
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters());
+        $request = new Request($serverRequest)
             ->withControllerExtensionName('ActionControllerTest')
             ->withControllerName('Test')
             ->withControllerActionName('bar')
@@ -272,7 +272,7 @@ final class ActionControllerTest extends FunctionalTestCase
     {
         // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
         $this->get(ConfigurationManagerInterface::class)->setRequest(
-            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
         );
 
         $testFilename = $this->createTestFile('testfile.txt', 'TYPO3 - Inspiring People To Share');
@@ -281,9 +281,9 @@ final class ActionControllerTest extends FunctionalTestCase
         $extbaseRequestParameters = new ExtbaseRequestParameters();
         $extbaseRequestParameters->setUploadedFiles(['fooParam' => [$uploadedFile]]);
 
-        $serverRequest = (new ServerRequest('https://example.com/', 'POST'))
+        $serverRequest = new ServerRequest('https://example.com/', 'POST')
             ->withAttribute('extbase', $extbaseRequestParameters);
-        $request = (new Request($serverRequest))
+        $request = new Request($serverRequest)
             ->withControllerExtensionName('ActionControllerTest')
             ->withControllerName('Test')
             ->withControllerActionName('bar')
@@ -305,7 +305,7 @@ final class ActionControllerTest extends FunctionalTestCase
     {
         // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
         $this->get(ConfigurationManagerInterface::class)->setRequest(
-            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
         );
 
         // Create a referring request to ensure ForwardResponse is used
@@ -314,14 +314,14 @@ final class ActionControllerTest extends FunctionalTestCase
             '@controller' => 'Test',
             '@action' => 'qux',
         ];
-        $referringRequestSerialized = (new HashService())->appendHmac(
+        $referringRequestSerialized = new HashService()->appendHmac(
             json_encode($referringRequest),
             HashScope::ReferringRequest->prefix(),
             HashAlgo::SHA3_256
         );
 
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
-        $request = (new Request($serverRequest))
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters());
+        $request = new Request($serverRequest)
             ->withControllerExtensionName('ActionControllerTest')
             ->withControllerName('Test')
             ->withControllerActionName('baz')
@@ -349,7 +349,7 @@ final class ActionControllerTest extends FunctionalTestCase
     {
         // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
         $this->get(ConfigurationManagerInterface::class)->setRequest(
-            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
         );
 
         // Create a referring request to ensure ForwardResponse is used
@@ -358,14 +358,14 @@ final class ActionControllerTest extends FunctionalTestCase
             '@controller' => 'Test',
             '@action' => 'qux',
         ];
-        $referringRequestSerialized = (new HashService())->appendHmac(
+        $referringRequestSerialized = new HashService()->appendHmac(
             json_encode($referringRequest),
             HashScope::ReferringRequest->prefix(),
             HashAlgo::SHA3_256
         );
 
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
-        $request = (new Request($serverRequest))
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters());
+        $request = new Request($serverRequest)
             ->withControllerExtensionName('ActionControllerTest')
             ->withControllerName('Test')
             ->withControllerActionName('baz')
@@ -393,7 +393,7 @@ final class ActionControllerTest extends FunctionalTestCase
     {
         // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
         $this->get(ConfigurationManagerInterface::class)->setRequest(
-            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
         );
 
         // Create an ExtbaseRequestParameters with original flash messages (simulating a forwarded request)
@@ -407,8 +407,8 @@ final class ActionControllerTest extends FunctionalTestCase
         $extbaseRequestParameters = new ExtbaseRequestParameters();
         $extbaseRequestParameters->setOriginalFlashMessages($originalFlashMessage);
 
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', $extbaseRequestParameters);
-        $request = (new Request($serverRequest))
+        $serverRequest = new ServerRequest()->withAttribute('extbase', $extbaseRequestParameters);
+        $request = new Request($serverRequest)
             ->withControllerExtensionName('ActionControllerTest')
             ->withControllerName('Test')
             ->withControllerActionName('qux')
@@ -432,7 +432,7 @@ final class ActionControllerTest extends FunctionalTestCase
     {
         // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
         $this->get(ConfigurationManagerInterface::class)->setRequest(
-            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
         );
 
         // Create a referring request to ensure ForwardResponse is used
@@ -441,14 +441,14 @@ final class ActionControllerTest extends FunctionalTestCase
             '@controller' => 'Test',
             '@action' => 'qux',
         ];
-        $referringRequestSerialized = (new HashService())->appendHmac(
+        $referringRequestSerialized = new HashService()->appendHmac(
             json_encode($referringRequest),
             HashScope::ReferringRequest->prefix(),
             HashAlgo::SHA3_256
         );
 
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
-        $request = (new Request($serverRequest))
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters());
+        $request = new Request($serverRequest)
             ->withControllerExtensionName('ActionControllerTest')
             ->withControllerName('Test')
             ->withControllerActionName('validateModel')
@@ -475,11 +475,11 @@ final class ActionControllerTest extends FunctionalTestCase
     {
         // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
         $this->get(ConfigurationManagerInterface::class)->setRequest(
-            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
         );
 
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
-        $request = (new Request($serverRequest))
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters());
+        $request = new Request($serverRequest)
             ->withControllerExtensionName('ActionControllerTest')
             ->withControllerName('Test')
             ->withControllerActionName('validateModel')
@@ -504,11 +504,11 @@ final class ActionControllerTest extends FunctionalTestCase
 
         // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
         $this->get(ConfigurationManagerInterface::class)->setRequest(
-            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
         );
 
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
-        $request = (new Request($serverRequest))
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters());
+        $request = new Request($serverRequest)
             ->withControllerExtensionName('ActionControllerTest')
             ->withControllerName('Test')
             ->withControllerActionName('testRateLimit')
@@ -537,7 +537,7 @@ final class ActionControllerTest extends FunctionalTestCase
 
         // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
         $this->get(ConfigurationManagerInterface::class)->setRequest(
-            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
         );
 
         $eventDispatcher = new class implements EventDispatcherInterface {
@@ -553,8 +553,8 @@ final class ActionControllerTest extends FunctionalTestCase
             }
         };
 
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
-        $request = (new Request($serverRequest))
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters());
+        $request = new Request($serverRequest)
             ->withControllerExtensionName('ActionControllerTest')
             ->withControllerName('Test')
             ->withControllerActionName('testRateLimit')
@@ -584,7 +584,7 @@ final class ActionControllerTest extends FunctionalTestCase
 
         // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
         $this->get(ConfigurationManagerInterface::class)->setRequest(
-            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
         );
 
         // Create a referring request to ensure ForwardResponse is used
@@ -593,14 +593,14 @@ final class ActionControllerTest extends FunctionalTestCase
             '@controller' => 'Test',
             '@action' => 'qux',
         ];
-        $referringRequestSerialized = (new HashService())->appendHmac(
+        $referringRequestSerialized = new HashService()->appendHmac(
             json_encode($referringRequest),
             HashScope::ReferringRequest->prefix(),
             HashAlgo::SHA3_256
         );
 
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
-        $request = (new Request($serverRequest))
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters());
+        $request = new Request($serverRequest)
             ->withControllerExtensionName('ActionControllerTest')
             ->withControllerName('Test')
             ->withControllerActionName('testRateLimit')

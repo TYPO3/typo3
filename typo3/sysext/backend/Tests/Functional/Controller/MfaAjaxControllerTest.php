@@ -41,7 +41,7 @@ final class MfaAjaxControllerTest extends FunctionalTestCase
 
         $this->subject = new MfaAjaxController($this->get(MfaProviderRegistry::class));
 
-        $this->request = (new ServerRequest())
+        $this->request = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
     }
 

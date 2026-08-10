@@ -41,7 +41,7 @@ final class DatabaseRowInitializeNewTest extends UnitTestCase
                 ],
             ],
         ];
-        self::assertSame($input, (new DatabaseRowInitializeNew())->addData($input));
+        self::assertSame($input, new DatabaseRowInitializeNew()->addData($input));
     }
 
     #[Test]
@@ -54,7 +54,7 @@ final class DatabaseRowInitializeNewTest extends UnitTestCase
         ];
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1444431128);
-        (new DatabaseRowInitializeNew())->addData($input);
+        new DatabaseRowInitializeNew()->addData($input);
     }
 
     #[Test]
@@ -73,7 +73,7 @@ final class DatabaseRowInitializeNewTest extends UnitTestCase
         ];
         $expected = $input;
         $expected['databaseRow']['pid'] = 23;
-        self::assertSame($expected, (new DatabaseRowInitializeNew())->addData($input));
+        self::assertSame($expected, new DatabaseRowInitializeNew()->addData($input));
     }
 
     #[Test]
@@ -104,7 +104,7 @@ final class DatabaseRowInitializeNewTest extends UnitTestCase
             'aField' => 'userTsValue',
             'pid' => 23,
         ];
-        $result = (new DatabaseRowInitializeNew())->addData($input);
+        $result = new DatabaseRowInitializeNew()->addData($input);
         self::assertSame($expected, $result['databaseRow']);
     }
 
@@ -133,7 +133,7 @@ final class DatabaseRowInitializeNewTest extends UnitTestCase
         $expected = [
             'pid' => 23,
         ];
-        $result = (new DatabaseRowInitializeNew())->addData($input);
+        $result = new DatabaseRowInitializeNew()->addData($input);
         self::assertSame($expected, $result['databaseRow']);
     }
 
@@ -165,7 +165,7 @@ final class DatabaseRowInitializeNewTest extends UnitTestCase
             'aField' => 'pageTsValue',
             'pid' => 23,
         ];
-        $result = (new DatabaseRowInitializeNew())->addData($input);
+        $result = new DatabaseRowInitializeNew()->addData($input);
         self::assertSame($expected, $result['databaseRow']);
     }
 
@@ -194,7 +194,7 @@ final class DatabaseRowInitializeNewTest extends UnitTestCase
         $expected = [
             'pid' => 23,
         ];
-        $result = (new DatabaseRowInitializeNew())->addData($input);
+        $result = new DatabaseRowInitializeNew()->addData($input);
         self::assertSame($expected, $result['databaseRow']);
     }
 
@@ -233,7 +233,7 @@ final class DatabaseRowInitializeNewTest extends UnitTestCase
             'aField' => 'pageTsValue',
             'pid' => 23,
         ];
-        $result = (new DatabaseRowInitializeNew())->addData($input);
+        $result = new DatabaseRowInitializeNew()->addData($input);
         self::assertSame($expected, $result['databaseRow']);
     }
 
@@ -263,7 +263,7 @@ final class DatabaseRowInitializeNewTest extends UnitTestCase
             'aField' => 'valueFromNeighbor',
             'pid' => 23,
         ];
-        $result = (new DatabaseRowInitializeNew())->addData($input);
+        $result = new DatabaseRowInitializeNew()->addData($input);
         self::assertSame($expected, $result['databaseRow']);
     }
 
@@ -307,7 +307,7 @@ final class DatabaseRowInitializeNewTest extends UnitTestCase
             'aField' => 'valueFromNeighbor',
             'pid' => 23,
         ];
-        $result = (new DatabaseRowInitializeNew())->addData($input);
+        $result = new DatabaseRowInitializeNew()->addData($input);
         self::assertSame($expected, $result['databaseRow']);
     }
 
@@ -337,7 +337,7 @@ final class DatabaseRowInitializeNewTest extends UnitTestCase
             'aField' => 'getValue',
             'pid' => 23,
         ];
-        $result = (new DatabaseRowInitializeNew())->addData($input);
+        $result = new DatabaseRowInitializeNew()->addData($input);
         self::assertSame($expected, $result['databaseRow']);
     }
 
@@ -371,7 +371,7 @@ final class DatabaseRowInitializeNewTest extends UnitTestCase
         $expected = [
             'pid' => 23,
         ];
-        $result = (new DatabaseRowInitializeNew())->addData($input);
+        $result = new DatabaseRowInitializeNew()->addData($input);
         self::assertSame($expected, $result['databaseRow']);
     }
 
@@ -420,7 +420,7 @@ final class DatabaseRowInitializeNewTest extends UnitTestCase
             'aField' => 'postValue',
             'pid' => 23,
         ];
-        $result = (new DatabaseRowInitializeNew())->addData($input);
+        $result = new DatabaseRowInitializeNew()->addData($input);
         self::assertSame($expected, $result['databaseRow']);
     }
 
@@ -437,7 +437,7 @@ final class DatabaseRowInitializeNewTest extends UnitTestCase
         ];
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1444434102);
-        (new DatabaseRowInitializeNew())->addData($input);
+        new DatabaseRowInitializeNew()->addData($input);
     }
 
     #[Test]
@@ -453,7 +453,7 @@ final class DatabaseRowInitializeNewTest extends UnitTestCase
         ];
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1444434103);
-        (new DatabaseRowInitializeNew())->addData($input);
+        new DatabaseRowInitializeNew()->addData($input);
     }
 
     #[Test]
@@ -483,7 +483,7 @@ final class DatabaseRowInitializeNewTest extends UnitTestCase
         $expected = $input;
         $expected['databaseRow']['theForeignSelectorField'] = 42;
         $expected['databaseRow']['pid'] = 5;
-        self::assertSame($expected, (new DatabaseRowInitializeNew())->addData($input));
+        self::assertSame($expected, new DatabaseRowInitializeNew()->addData($input));
     }
 
     #[Test]
@@ -511,7 +511,7 @@ final class DatabaseRowInitializeNewTest extends UnitTestCase
         ];
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1444434104);
-        (new DatabaseRowInitializeNew())->addData($input);
+        new DatabaseRowInitializeNew()->addData($input);
     }
 
     #[Test]
@@ -539,7 +539,7 @@ final class DatabaseRowInitializeNewTest extends UnitTestCase
         ];
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1490360772);
-        (new DatabaseRowInitializeNew())->addData($input);
+        new DatabaseRowInitializeNew()->addData($input);
     }
 
     #[Test]
@@ -571,7 +571,7 @@ final class DatabaseRowInitializeNewTest extends UnitTestCase
             'sys_language_uid' => 42,
             'pid' => 1,
         ];
-        $result = (new DatabaseRowInitializeNew())->addData($input);
+        $result = new DatabaseRowInitializeNew()->addData($input);
         self::assertSame($expected, $result);
     }
 
@@ -589,7 +589,7 @@ final class DatabaseRowInitializeNewTest extends UnitTestCase
         ];
         $expected = [];
         $expected['pid'] = 23;
-        $result = (new DatabaseRowInitializeNew())->addData($input);
+        $result = new DatabaseRowInitializeNew()->addData($input);
         self::assertSame($expected, $result['databaseRow']);
     }
 
@@ -614,7 +614,7 @@ final class DatabaseRowInitializeNewTest extends UnitTestCase
         ];
         $expected = $input;
         $expected['databaseRow']['pid'] = 23;
-        self::assertSame($expected, (new DatabaseRowInitializeNew())->addData($input));
+        self::assertSame($expected, new DatabaseRowInitializeNew()->addData($input));
     }
 
     #[Test]
@@ -638,7 +638,7 @@ final class DatabaseRowInitializeNewTest extends UnitTestCase
         ];
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1461598332);
-        (new DatabaseRowInitializeNew())->addData($input);
+        new DatabaseRowInitializeNew()->addData($input);
     }
 
     #[Test]
@@ -662,7 +662,7 @@ final class DatabaseRowInitializeNewTest extends UnitTestCase
         ];
         $expected = $input;
         $expected['databaseRow']['pid'] = 42;
-        self::assertSame($expected, (new DatabaseRowInitializeNew())->addData($input));
+        self::assertSame($expected, new DatabaseRowInitializeNew()->addData($input));
     }
 
     #[Test]
@@ -684,7 +684,7 @@ final class DatabaseRowInitializeNewTest extends UnitTestCase
         $expected = $input;
         $expected['databaseRow']['theParentField'] = 42;
         $expected['databaseRow']['pid'] = 23;
-        self::assertSame($expected, (new DatabaseRowInitializeNew())->addData($input));
+        self::assertSame($expected, new DatabaseRowInitializeNew()->addData($input));
     }
 
     #[Test]
@@ -731,7 +731,7 @@ final class DatabaseRowInitializeNewTest extends UnitTestCase
             'header_layout' => '3',  // Type-specific value overrides field-level
             'pid' => 23,
         ];
-        $result = (new DatabaseRowInitializeNew())->addData($input);
+        $result = new DatabaseRowInitializeNew()->addData($input);
         self::assertSame($expected, $result['databaseRow']);
     }
 
@@ -780,7 +780,7 @@ final class DatabaseRowInitializeNewTest extends UnitTestCase
             'header_layout' => '1',  // Field-level default used when no type-specific exists
             'pid' => 23,
         ];
-        $result = (new DatabaseRowInitializeNew())->addData($input);
+        $result = new DatabaseRowInitializeNew()->addData($input);
         self::assertSame($expected, $result['databaseRow']);
     }
 
@@ -828,7 +828,7 @@ final class DatabaseRowInitializeNewTest extends UnitTestCase
             'header_layout' => '3',  // Type-specific value overrides field-level
             'pid' => 23,
         ];
-        $result = (new DatabaseRowInitializeNew())->addData($input);
+        $result = new DatabaseRowInitializeNew()->addData($input);
         self::assertSame($expected, $result['databaseRow']);
     }
 
@@ -878,7 +878,7 @@ final class DatabaseRowInitializeNewTest extends UnitTestCase
             'header_layout' => '3',  // Page TS type-specific value takes precedence
             'pid' => 23,
         ];
-        $result = (new DatabaseRowInitializeNew())->addData($input);
+        $result = new DatabaseRowInitializeNew()->addData($input);
         self::assertSame($expected, $result['databaseRow']);
     }
 
@@ -927,7 +927,7 @@ final class DatabaseRowInitializeNewTest extends UnitTestCase
             'space_before_class' => 'none',
             'pid' => 23,
         ];
-        $result = (new DatabaseRowInitializeNew())->addData($input);
+        $result = new DatabaseRowInitializeNew()->addData($input);
         self::assertSame($expected, $result['databaseRow']);
     }
 
@@ -961,7 +961,7 @@ final class DatabaseRowInitializeNewTest extends UnitTestCase
         $expected = [
             'pid' => 23,
         ];
-        $result = (new DatabaseRowInitializeNew())->addData($input);
+        $result = new DatabaseRowInitializeNew()->addData($input);
         self::assertSame($expected, $result['databaseRow']);
     }
 
@@ -998,7 +998,7 @@ final class DatabaseRowInitializeNewTest extends UnitTestCase
             'header_layout' => '3',
             'pid' => 23,
         ];
-        $result = (new DatabaseRowInitializeNew())->addData($input);
+        $result = new DatabaseRowInitializeNew()->addData($input);
         self::assertSame($expected, $result['databaseRow']);
     }
 
@@ -1050,7 +1050,7 @@ final class DatabaseRowInitializeNewTest extends UnitTestCase
             'space_before_class' => 'none',  // Field-level default
             'pid' => 23,
         ];
-        $result = (new DatabaseRowInitializeNew())->addData($input);
+        $result = new DatabaseRowInitializeNew()->addData($input);
         self::assertSame($expected, $result['databaseRow']);
     }
 
@@ -1100,7 +1100,7 @@ final class DatabaseRowInitializeNewTest extends UnitTestCase
             'header_layout' => '3',  // Page TS type-specific should win
             'pid' => 23,
         ];
-        $result = (new DatabaseRowInitializeNew())->addData($input);
+        $result = new DatabaseRowInitializeNew()->addData($input);
         self::assertSame($expected, $result['databaseRow']);
     }
 
@@ -1138,7 +1138,7 @@ final class DatabaseRowInitializeNewTest extends UnitTestCase
             'header_layout' => '1',  // Should fall back to field-level default
             'pid' => 23,
         ];
-        $result = (new DatabaseRowInitializeNew())->addData($input);
+        $result = new DatabaseRowInitializeNew()->addData($input);
         self::assertSame($expected, $result['databaseRow']);
     }
 
@@ -1175,7 +1175,7 @@ final class DatabaseRowInitializeNewTest extends UnitTestCase
             'header_layout' => '3',
             'pid' => 23,
         ];
-        $result = (new DatabaseRowInitializeNew())->addData($input);
+        $result = new DatabaseRowInitializeNew()->addData($input);
         self::assertSame($expected, $result['databaseRow']);
     }
 
@@ -1213,7 +1213,7 @@ final class DatabaseRowInitializeNewTest extends UnitTestCase
             'header_layout' => '1',  // Should use field-level default when no type
             'pid' => 23,
         ];
-        $result = (new DatabaseRowInitializeNew())->addData($input);
+        $result = new DatabaseRowInitializeNew()->addData($input);
         self::assertSame($expected, $result['databaseRow']);
     }
 
@@ -1258,7 +1258,7 @@ final class DatabaseRowInitializeNewTest extends UnitTestCase
             'header_layout' => '1',  // Should use field-level default when no type
             'pid' => 23,
         ];
-        $result = (new DatabaseRowInitializeNew())->addData($input);
+        $result = new DatabaseRowInitializeNew()->addData($input);
         self::assertSame($expected, $result['databaseRow']);
     }
 

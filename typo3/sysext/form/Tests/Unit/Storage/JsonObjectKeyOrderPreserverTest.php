@@ -38,7 +38,7 @@ final class JsonObjectKeyOrderPreserverTest extends UnitTestCase
             ],
         ];
 
-        $protected = (new JsonObjectKeyOrderPreserver())->protect($formDefinition);
+        $protected = new JsonObjectKeyOrderPreserver()->protect($formDefinition);
         $wrapper = $protected['renderables'][0]['properties']['options'];
 
         self::assertTrue($wrapper['__jsonKeyOrderProtected']);
@@ -93,7 +93,7 @@ final class JsonObjectKeyOrderPreserverTest extends UnitTestCase
     {
         $formDefinition = ['properties' => ['options' => []]];
 
-        self::assertSame($formDefinition, (new JsonObjectKeyOrderPreserver())->protect($formDefinition));
+        self::assertSame($formDefinition, new JsonObjectKeyOrderPreserver()->protect($formDefinition));
     }
 
     #[Test]
@@ -103,7 +103,7 @@ final class JsonObjectKeyOrderPreserverTest extends UnitTestCase
         // "options" map with no wrapper - restore() must not touch them.
         $legacy = ['properties' => ['options' => ['a' => 'Label A', 'b' => 'Label B']]];
 
-        self::assertSame($legacy, (new JsonObjectKeyOrderPreserver())->restore($legacy));
+        self::assertSame($legacy, new JsonObjectKeyOrderPreserver()->restore($legacy));
     }
 
     #[Test]

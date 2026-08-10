@@ -62,7 +62,7 @@ final class FileExtensionMimeTypeConsistencyValidator extends AbstractValidator
         // Example: myfile.txt is actually a PDF file (defined by mime-type), but .txt is not associated
         // for application/pdf, so this is not valid.
         $fileExtension =  pathinfo($uploadedFile->getClientFilename(), PATHINFO_EXTENSION);
-        $assumedMimesTypeOfFileExtension = (new MimeTypeDetector())->getMimeTypesForFileExtension($fileExtension);
+        $assumedMimesTypeOfFileExtension = new MimeTypeDetector()->getMimeTypesForFileExtension($fileExtension);
 
         // pass, in case no assumed mime-type was found (e.g., for individual file extension)
         if ($mimeType === '' || $assumedMimesTypeOfFileExtension === []) {
@@ -74,7 +74,7 @@ final class FileExtensionMimeTypeConsistencyValidator extends AbstractValidator
         // However, PHP detects this as "application/vnd.microsoft.portable-executable" (PHP 8.4+) or "application/x-dosexec" (PHP < 8.4)
         // DefaultConfiguration $GLOBALS['TYPO3_CONF_VARS']['SYS']['FileInfo']['mimeTypeCompatibility'] registers this (and some more),
         // so we also need these fallbacks to be evaluated.
-        $mimeTypeCompatibility = (new MimeTypeCompatibilityTypeGuesser())->getMimeTypeCompatibilityList();
+        $mimeTypeCompatibility = new MimeTypeCompatibilityTypeGuesser()->getMimeTypeCompatibilityList();
         $additionalMappedMimeType = $mimeTypeCompatibility[$mimeType][$fileExtension] ?? null;
 
         if (!in_array($mimeType, $assumedMimesTypeOfFileExtension, true)

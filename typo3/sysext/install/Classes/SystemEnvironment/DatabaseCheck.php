@@ -202,7 +202,7 @@ class DatabaseCheck implements CheckInterface
         }
 
         if (!empty(self::$databaseDriverToPlatformMapping[$databaseDriver])) {
-            $platformMessageQueue = (new $databasePlatformClass($this->connectionPool))->getStatus();
+            $platformMessageQueue = new $databasePlatformClass($this->connectionPool)->getStatus();
             foreach ($platformMessageQueue as $message) {
                 $this->messageQueue->enqueue($message);
             }

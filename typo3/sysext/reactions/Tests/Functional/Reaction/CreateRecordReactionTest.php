@@ -49,7 +49,7 @@ final class CreateRecordReactionTest extends FunctionalTestCase
     #[Test]
     public function reactWorksForAValidRequest(): void
     {
-        $reactionRecord = (new ReactionRepository())->getReactionRecordByIdentifier('c6e9c385-d15b-4ae1-9302-931c78f1a458');
+        $reactionRecord = new ReactionRepository()->getReactionRecordByIdentifier('c6e9c385-d15b-4ae1-9302-931c78f1a458');
         $reaction = $this->get(CreateRecordReaction::class);
         $request = new ServerRequest('http://localhost/', 'POST');
         $payload = [
@@ -75,7 +75,7 @@ final class CreateRecordReactionTest extends FunctionalTestCase
     #[Test]
     public function reactFailsOnInvalidTable(): void
     {
-        $reactionRecord = (new ReactionRepository())->getReactionRecordByIdentifier('5d37024e-2af4-4323-abcd-494a9ec37927');
+        $reactionRecord = new ReactionRepository()->getReactionRecordByIdentifier('5d37024e-2af4-4323-abcd-494a9ec37927');
         $reaction = $this->get(CreateRecordReaction::class);
         $request = new ServerRequest('http://localhost/', 'POST');
         $request = $request->withHeader('x-api-key', $reactionRecord->toArray()['secret']);
@@ -88,7 +88,7 @@ final class CreateRecordReactionTest extends FunctionalTestCase
     #[Test]
     public function reactFailsOnInvalidFields(): void
     {
-        $reactionRecord = (new ReactionRepository())->getReactionRecordByIdentifier('9d5167ef-d9f6-4d02-9dd3-b132e50492f1');
+        $reactionRecord = new ReactionRepository()->getReactionRecordByIdentifier('9d5167ef-d9f6-4d02-9dd3-b132e50492f1');
         $reaction = $this->get(CreateRecordReaction::class);
         $request = new ServerRequest('http://localhost/', 'POST');
         $request = $request->withHeader('x-api-key', $reactionRecord->toArray()['secret']);

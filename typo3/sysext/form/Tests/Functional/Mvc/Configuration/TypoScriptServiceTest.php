@@ -32,7 +32,7 @@ final class TypoScriptServiceTest extends FunctionalTestCase
     {
         $pageInformation = new PageInformation();
         $pageInformation->setPageRecord([]);
-        $request = (new ServerRequest())->withAttribute('frontend.page.information', $pageInformation);
+        $request = new ServerRequest()->withAttribute('frontend.page.information', $pageInformation);
         $input = [
             'key' => [
                 'john' => [

@@ -73,7 +73,7 @@ class UpdateFromTerController extends AbstractController
             $lastUpdateTime = date($timeFormat);
         } else {
             $now = DateTimeFactory::createFromTimestamp($GLOBALS['EXEC_TIME']);
-            $lastUpdatedSince = (new DateFormatter())->formatDateInterval(
+            $lastUpdatedSince = new DateFormatter()->formatDateInterval(
                 // absolute diff, we don't want a sign to be displayed
                 $now->diff($lastUpdate, true),
                 $this->translate('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears'),

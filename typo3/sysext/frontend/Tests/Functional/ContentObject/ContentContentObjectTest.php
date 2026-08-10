@@ -55,7 +55,7 @@ final class ContentContentObjectTest extends FunctionalTestCase
         $pageInformation = new PageInformation();
         $pageInformation->setId(1);
         $pageInformation->setContentFromPid(1);
-        $request = (new ServerRequest())
+        $request = new ServerRequest()
             ->withAttribute('frontend.page.information', $pageInformation)
             ->withAttribute('frontend.cache.collector', new CacheDataCollector())
             ->withAttribute('frontend.page.parts', new PageParts());

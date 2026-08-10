@@ -33,7 +33,7 @@ final class PasswordHashFactoryTest extends UnitTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1533948312);
-        (new PasswordHashFactory())->get('ThisIsNotAValidHash', 'foo');
+        new PasswordHashFactory()->get('ThisIsNotAValidHash', 'foo');
     }
 
     #[Test]
@@ -42,7 +42,7 @@ final class PasswordHashFactoryTest extends UnitTestCase
         $this->expectException(\LogicException::class);
         $this->expectExceptionCode(1533949053);
         $GLOBALS['TYPO3_CONF_VARS']['FE']['passwordHashing']['className'] = '';
-        (new PasswordHashFactory())->get('ThisIsNotAValidHash', 'FE');
+        new PasswordHashFactory()->get('ThisIsNotAValidHash', 'FE');
     }
 
     #[Test]
@@ -51,7 +51,7 @@ final class PasswordHashFactoryTest extends UnitTestCase
         $this->expectException(\LogicException::class);
         $this->expectExceptionCode(1533949053);
         $GLOBALS['TYPO3_CONF_VARS']['FE']['passwordHashing']['options'] = '';
-        (new PasswordHashFactory())->get('ThisIsNotAValidHash', 'FE');
+        new PasswordHashFactory()->get('ThisIsNotAValidHash', 'FE');
     }
 
     #[Test]
@@ -60,7 +60,7 @@ final class PasswordHashFactoryTest extends UnitTestCase
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['availablePasswordHashAlgorithms'] = [ \stdClass::class ];
         $this->expectException(\LogicException::class);
         $this->expectExceptionCode(1533818569);
-        (new PasswordHashFactory())->get('ThisIsNotAValidHash', 'BE');
+        new PasswordHashFactory()->get('ThisIsNotAValidHash', 'BE');
     }
 
     #[Test]
@@ -68,7 +68,7 @@ final class PasswordHashFactoryTest extends UnitTestCase
     {
         $this->expectException(InvalidPasswordHashException::class);
         $this->expectExceptionCode(1533818591);
-        (new PasswordHashFactory())->get('ThisIsNotAValidHash', 'BE');
+        new PasswordHashFactory()->get('ThisIsNotAValidHash', 'BE');
     }
 
     #[Test]
@@ -79,7 +79,7 @@ final class PasswordHashFactoryTest extends UnitTestCase
         GeneralUtility::addInstance(PhpassPasswordHash::class, $phpassPasswordHashMock);
         $this->expectException(InvalidPasswordHashException::class);
         $this->expectExceptionCode(1533818591);
-        (new PasswordHashFactory())->get('$P$C7u7E10SBEie/Jbdz0jDtUcWhzgOPF.', 'BE');
+        new PasswordHashFactory()->get('$P$C7u7E10SBEie/Jbdz0jDtUcWhzgOPF.', 'BE');
     }
 
     #[Test]
@@ -89,7 +89,7 @@ final class PasswordHashFactoryTest extends UnitTestCase
         $hash = 'FOO$P$C7u7E10SBEie/Jbdz0jDtUcWhzgOPF.';
         $this->expectException(InvalidPasswordHashException::class);
         $this->expectExceptionCode(1533818591);
-        (new PasswordHashFactory())->get($hash, 'BE');
+        new PasswordHashFactory()->get($hash, 'BE');
     }
 
     #[Test]
@@ -104,7 +104,7 @@ final class PasswordHashFactoryTest extends UnitTestCase
         ];
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1533950385);
-        (new PasswordHashFactory())->get('someHash', 'FE');
+        new PasswordHashFactory()->get('someHash', 'FE');
     }
 
     #[Test]
@@ -113,7 +113,7 @@ final class PasswordHashFactoryTest extends UnitTestCase
         $phpassPasswordHash = new PhpassPasswordHash();
         GeneralUtility::addInstance(PhpassPasswordHash::class, $phpassPasswordHash);
         $hash = '$P$C7u7E10SBEie/Jbdz0jDtUcWhzgOPF.';
-        self::assertSame($phpassPasswordHash, (new PasswordHashFactory())->get($hash, 'BE'));
+        self::assertSame($phpassPasswordHash, new PasswordHashFactory()->get($hash, 'BE'));
     }
 
     #[Test]
@@ -121,7 +121,7 @@ final class PasswordHashFactoryTest extends UnitTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1533820041);
-        (new PasswordHashFactory())->getDefaultHashInstance('foo');
+        new PasswordHashFactory()->getDefaultHashInstance('foo');
     }
 
     #[Test]
@@ -130,7 +130,7 @@ final class PasswordHashFactoryTest extends UnitTestCase
         $this->expectException(\LogicException::class);
         $this->expectExceptionCode(1533950622);
         $GLOBALS['TYPO3_CONF_VARS']['FE']['passwordHashing']['className'] = '';
-        (new PasswordHashFactory())->getDefaultHashInstance('FE');
+        new PasswordHashFactory()->getDefaultHashInstance('FE');
     }
 
     #[Test]
@@ -139,20 +139,20 @@ final class PasswordHashFactoryTest extends UnitTestCase
         $this->expectException(\LogicException::class);
         $this->expectExceptionCode(1533950622);
         $GLOBALS['TYPO3_CONF_VARS']['FE']['passwordHashing']['options'] = '';
-        (new PasswordHashFactory())->getDefaultHashInstance('FE');
+        new PasswordHashFactory()->getDefaultHashInstance('FE');
     }
 
     #[Test]
     public function getDefaultHashReturnsInstanceOfConfiguredDefaultFeMethod(): void
     {
-        $hashInstance = (new PasswordHashFactory())->getDefaultHashInstance('FE');
+        $hashInstance = new PasswordHashFactory()->getDefaultHashInstance('FE');
         self::assertInstanceOf(Argon2idPasswordHash::class, $hashInstance);
     }
 
     #[Test]
     public function getDefaultHashReturnsInstanceOfConfiguredDefaultBeMethod(): void
     {
-        $hashInstance = (new PasswordHashFactory())->getDefaultHashInstance('BE');
+        $hashInstance = new PasswordHashFactory()->getDefaultHashInstance('BE');
         self::assertInstanceOf(Argon2idPasswordHash::class, $hashInstance);
     }
 
@@ -163,7 +163,7 @@ final class PasswordHashFactoryTest extends UnitTestCase
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['availablePasswordHashAlgorithms'] = [ \stdClass::class ];
         $this->expectException(\LogicException::class);
         $this->expectExceptionCode(1533820281);
-        (new PasswordHashFactory())->getDefaultHashInstance('BE');
+        new PasswordHashFactory()->getDefaultHashInstance('BE');
     }
 
     #[Test]
@@ -173,7 +173,7 @@ final class PasswordHashFactoryTest extends UnitTestCase
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['availablePasswordHashAlgorithms'] = [ Argon2idPasswordHash::class ];
         $this->expectException(InvalidPasswordHashException::class);
         $this->expectExceptionCode(1533820194);
-        (new PasswordHashFactory())->getDefaultHashInstance('BE');
+        new PasswordHashFactory()->getDefaultHashInstance('BE');
     }
 
     #[Test]
@@ -184,7 +184,7 @@ final class PasswordHashFactoryTest extends UnitTestCase
         GeneralUtility::addInstance(Argon2idPasswordHash::class, $argon2idPasswordHashMock);
         $this->expectException(InvalidPasswordHashException::class);
         $this->expectExceptionCode(1533822084);
-        (new PasswordHashFactory())->getDefaultHashInstance('BE');
+        new PasswordHashFactory()->getDefaultHashInstance('BE');
     }
 
     #[Test]
@@ -199,7 +199,7 @@ final class PasswordHashFactoryTest extends UnitTestCase
         ];
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1533950385);
-        (new PasswordHashFactory())->getDefaultHashInstance('FE');
+        new PasswordHashFactory()->getDefaultHashInstance('FE');
     }
 
     #[Test]

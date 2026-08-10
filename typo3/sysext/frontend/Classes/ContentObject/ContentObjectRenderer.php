@@ -1727,8 +1727,8 @@ class ContentObjectRenderer
         // Check for zero length string to mimic default case of strtime/gmstrftime
         $content = (string)$content === '' ? $GLOBALS['EXEC_TIME'] : (int)$content;
         $content = (isset($conf['strftime.']['GMT']) && $conf['strftime.']['GMT'])
-            ? (new DateFormatter())->strftime($conf['strftime'] ?? '', $content, null, true)
-            : (new DateFormatter())->strftime($conf['strftime'] ?? '', $content);
+            ? new DateFormatter()->strftime($conf['strftime'] ?? '', $content, null, true)
+            : new DateFormatter()->strftime($conf['strftime'] ?? '', $content);
         if (!empty($conf['strftime.']['charset'])) {
             $output = mb_convert_encoding((string)$content, 'utf-8', trim(strtolower($conf['strftime.']['charset'])));
             return $output ?: $content;
@@ -1774,7 +1774,7 @@ class ContentObjectRenderer
                 $content = $this->context->getAspect('date')->getDateTime();
             }
         }
-        return (new DateFormatter())->format($content, $pattern, $locale);
+        return new DateFormatter()->format($content, $pattern, $locale);
     }
 
     /**
@@ -2442,7 +2442,7 @@ class ContentObjectRenderer
             }
             if (isset($conf['bitAnd']) || isset($conf['bitAnd.'])) {
                 $number = (int)trim((string)$this->stdWrapValue('bitAnd', $conf));
-                if ((new BitSet($number))->get((int)$comparisonValue) === false) {
+                if (new BitSet($number)->get((int)$comparisonValue) === false) {
                     $flag = false;
                 }
             }
@@ -4319,7 +4319,7 @@ class ContentObjectRenderer
         // Take an absolute diff, since we don't want formatDateInterval to output the (correct) sign
         $diff = $now->diff($then, true);
         $labels = ($labels === null || MathUtility::canBeInterpretedAsInteger($labels)) ? 'min|hrs|days|yrs|min|hour|day|year' : str_replace('"', '', $labels);
-        return $sign . (new DateFormatter())->formatDateInterval($diff, $labels);
+        return $sign . new DateFormatter()->formatDateInterval($diff, $labels);
     }
 
     /**

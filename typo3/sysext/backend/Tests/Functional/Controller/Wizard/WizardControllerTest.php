@@ -55,7 +55,7 @@ final class WizardControllerTest extends FunctionalTestCase
     #[Test]
     public function getConfigurationActionReturnsJsonFromProvider(): void
     {
-        $request = (new ServerRequest('https://example.com/typo3/', 'GET'))->withQueryParams([
+        $request = new ServerRequest('https://example.com/typo3/', 'GET')->withQueryParams([
             'mode' => 'foo',
         ]);
 
@@ -77,7 +77,7 @@ final class WizardControllerTest extends FunctionalTestCase
     #[Test]
     public function submitDataActionReturnsJsonFromProvider(): void
     {
-        $request = (new ServerRequest('https://example.com/typo3/', 'GET'))->withQueryParams([
+        $request = new ServerRequest('https://example.com/typo3/', 'GET')->withQueryParams([
             'mode' => 'foo',
         ]);
 

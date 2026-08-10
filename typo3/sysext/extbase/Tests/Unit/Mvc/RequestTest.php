@@ -30,7 +30,7 @@ final class RequestTest extends UnitTestCase
     #[Test]
     public function aSingleArgumentCanBeSetWithWithArgumentAndRetrievedWithGetArgument(): void
     {
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters());
         $request = new Request($serverRequest);
         $request = $request->withArgument('someArgumentName', 'theValue');
         self::assertEquals('theValue', $request->getArgument('someArgumentName'));
@@ -41,7 +41,7 @@ final class RequestTest extends UnitTestCase
     {
         $this->expectException(InvalidArgumentNameException::class);
         $this->expectExceptionCode(1210858767);
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters());
         $request = new Request($serverRequest);
         $request->withArgument('', 'theValue');
     }
@@ -50,7 +50,7 @@ final class RequestTest extends UnitTestCase
     public function withArgumentsOverridesAllExistingArguments(): void
     {
         $arguments = ['key1' => 'value1', 'key2' => 'value2'];
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters());
         $request = new Request($serverRequest);
         $request = $request->withArgument('someKey', 'shouldBeOverridden');
         $request = $request->withArguments($arguments);
@@ -61,7 +61,7 @@ final class RequestTest extends UnitTestCase
     #[Test]
     public function withArgumentCanNotSetAtExtension(): void
     {
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters());
         $request = new Request($serverRequest);
         $request = $request->withArgument('@extension', 'MyExtension');
         self::assertFalse($request->hasArgument('@extension'));
@@ -70,7 +70,7 @@ final class RequestTest extends UnitTestCase
     #[Test]
     public function withArgumentCanNotSetAtController(): void
     {
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters());
         $request = new Request($serverRequest);
         $request = $request->withArgument('@controller', 'MyController');
         self::assertFalse($request->hasArgument('@controller'));
@@ -79,7 +79,7 @@ final class RequestTest extends UnitTestCase
     #[Test]
     public function withArgumentCanNotSetAtAction(): void
     {
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters());
         $request = new Request($serverRequest);
         $request = $request->withArgument('@action', 'foo');
         self::assertFalse($request->hasArgument('@action'));
@@ -88,7 +88,7 @@ final class RequestTest extends UnitTestCase
     #[Test]
     public function withArgumentCanNotSetAtFormat(): void
     {
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters());
         $request = new Request($serverRequest);
         $request = $request->withArgument('@format', 'txt');
         self::assertFalse($request->hasArgument('@format'));
@@ -97,7 +97,7 @@ final class RequestTest extends UnitTestCase
     #[Test]
     public function internalArgumentsIsNotReturnedAsNormalArgument(): void
     {
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters());
         $request = new Request($serverRequest);
         $request = $request->withArgument('__referrer', 'foo');
         self::assertFalse($request->hasArgument('__referrer'));
@@ -106,7 +106,7 @@ final class RequestTest extends UnitTestCase
     #[Test]
     public function multipleArgumentsCanBeSetWithWithArgumentsAndRetrievedWithGetArguments(): void
     {
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters());
         $request = new Request($serverRequest);
         $arguments = [
             'firstArgument' => 'firstValue',
@@ -120,7 +120,7 @@ final class RequestTest extends UnitTestCase
     #[Test]
     public function hasArgumentTellsIfAnArgumentExists(): void
     {
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters());
         $request = new Request($serverRequest);
         $request = $request->withArgument('existingArgument', 'theValue');
         self::assertTrue($request->hasArgument('existingArgument'));
@@ -130,7 +130,7 @@ final class RequestTest extends UnitTestCase
     #[Test]
     public function theActionNameCanBeSetAndRetrieved(): void
     {
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters());
         $request = new Request($serverRequest);
         $request = $request->withControllerActionName('theAction');
         self::assertEquals('theAction', $request->getControllerActionName());
@@ -139,7 +139,7 @@ final class RequestTest extends UnitTestCase
     #[Test]
     public function theRepresentationFormatCanBeSetAndRetrieved(): void
     {
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters());
         $request = new Request($serverRequest);
         $request = $request->withFormat('html');
         self::assertEquals('html', $request->getFormat());
@@ -186,7 +186,7 @@ final class RequestTest extends UnitTestCase
     #[Test]
     public function withControllerObjectNameResolvesControllerObjectNameArgumentsCorrectly(array $controllerArguments, string $controllerObjectName): void
     {
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters());
         $request = new Request($serverRequest);
         $request = $request->withControllerObjectName($controllerObjectName);
         $actualControllerArguments = [

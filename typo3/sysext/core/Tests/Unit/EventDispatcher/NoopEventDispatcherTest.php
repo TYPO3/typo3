@@ -27,6 +27,6 @@ final class NoopEventDispatcherTest extends UnitTestCase
     public function dispatchReturnsProvidedEvent(): void
     {
         $event = new \stdClass();
-        self::assertSame($event, (new NoopEventDispatcher())->dispatch($event));
+        self::assertSame($event, new NoopEventDispatcher()->dispatch($event));
     }
 }

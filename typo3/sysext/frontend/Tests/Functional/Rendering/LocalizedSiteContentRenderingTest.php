@@ -196,14 +196,14 @@ final class LocalizedSiteContentRenderingTest extends FunctionalTestCase
         $visibleHeaders = ['Regular Element #1', 'Regular Element #2', 'Regular Element #3'];
         self::assertThat(
             $responseSections,
-            (new HasRecordConstraint())
+            new HasRecordConstraint()
             ->setTable(self::TABLE_Content)
             ->setField('header')
             ->setValues(...$visibleHeaders)
         );
         self::assertThat(
             $responseSections,
-            (new DoesNotHaveRecordConstraint())
+            new DoesNotHaveRecordConstraint()
             ->setTable(self::TABLE_Content)
             ->setField('header')
             ->setValues(...$this->getNonVisibleHeaders($visibleHeaders))
@@ -211,20 +211,20 @@ final class LocalizedSiteContentRenderingTest extends FunctionalTestCase
 
         //assert FAL relations
         $visibleFiles = ['T3BOARD'];
-        self::assertThat($responseSections, (new StructureHasRecordConstraint())
+        self::assertThat($responseSections, new StructureHasRecordConstraint()
             ->setRecordIdentifier(self::TABLE_Content . ':297')->setRecordField('image')
             ->setTable('sys_file_reference')->setField('title')->setValues(...$visibleFiles));
 
-        self::assertThat($responseSections, (new StructureDoesNotHaveRecordConstraint())
+        self::assertThat($responseSections, new StructureDoesNotHaveRecordConstraint()
             ->setRecordIdentifier(self::TABLE_Content . ':297')->setRecordField('image')
             ->setTable('sys_file_reference')->setField('title')->setValues(...$this->getNonVisibleFileTitles($visibleFiles)));
 
         $visibleFiles = ['Kasper2'];
-        self::assertThat($responseSections, (new StructureHasRecordConstraint())
+        self::assertThat($responseSections, new StructureHasRecordConstraint()
             ->setRecordIdentifier(self::TABLE_Content . ':298')->setRecordField('image')
             ->setTable('sys_file_reference')->setField('title')->setValues(...$visibleFiles));
 
-        self::assertThat($responseSections, (new StructureDoesNotHaveRecordConstraint())
+        self::assertThat($responseSections, new StructureDoesNotHaveRecordConstraint()
             ->setRecordIdentifier(self::TABLE_Content . ':298')->setRecordField('image')
             ->setTable('sys_file_reference')->setField('title')->setValues(...$this->getNonVisibleFileTitles($visibleFiles)));
 
@@ -354,14 +354,14 @@ final class LocalizedSiteContentRenderingTest extends FunctionalTestCase
 
         self::assertThat(
             $responseSections,
-            (new HasRecordConstraint())
+            new HasRecordConstraint()
             ->setTable(self::TABLE_Content)
             ->setField('header')
             ->setValues(...$visibleHeaders)
         );
         self::assertThat(
             $responseSections,
-            (new DoesNotHaveRecordConstraint())
+            new DoesNotHaveRecordConstraint()
             ->setTable(self::TABLE_Content)
             ->setField('header')
             ->setValues(...$this->getNonVisibleHeaders($visibleHeaders))
@@ -370,11 +370,11 @@ final class LocalizedSiteContentRenderingTest extends FunctionalTestCase
         foreach ($visibleRecords as $ttContentUid => $properties) {
             $visibleFileTitles = $properties['image'];
             if (!empty($visibleFileTitles)) {
-                self::assertThat($responseSections, (new StructureHasRecordConstraint())
+                self::assertThat($responseSections, new StructureHasRecordConstraint()
                     ->setRecordIdentifier(self::TABLE_Content . ':' . $ttContentUid)->setRecordField('image')
                     ->setTable('sys_file_reference')->setField('title')->setValues(...$visibleFileTitles));
             }
-            self::assertThat($responseSections, (new StructureDoesNotHaveRecordConstraint())
+            self::assertThat($responseSections, new StructureDoesNotHaveRecordConstraint()
                 ->setRecordIdentifier(self::TABLE_Content . ':' . $ttContentUid)->setRecordField('image')
                 ->setTable('sys_file_reference')->setField('title')->setValues(...$this->getNonVisibleFileTitles($visibleFileTitles)));
         }
@@ -691,14 +691,14 @@ final class LocalizedSiteContentRenderingTest extends FunctionalTestCase
 
             self::assertThat(
                 $responseSections,
-                (new HasRecordConstraint())
+                new HasRecordConstraint()
                 ->setTable(self::TABLE_Content)
                 ->setField('header')
                 ->setValues(...$visibleHeaders)
             );
             self::assertThat(
                 $responseSections,
-                (new DoesNotHaveRecordConstraint())
+                new DoesNotHaveRecordConstraint()
                 ->setTable(self::TABLE_Content)
                 ->setField('header')
                 ->setValues(...$this->getNonVisibleHeaders($visibleHeaders))
@@ -707,11 +707,11 @@ final class LocalizedSiteContentRenderingTest extends FunctionalTestCase
             foreach ($visibleRecords as $ttContentUid => $properties) {
                 $visibleFileTitles = $properties['image'];
                 if (!empty($visibleFileTitles)) {
-                    self::assertThat($responseSections, (new StructureHasRecordConstraint())
+                    self::assertThat($responseSections, new StructureHasRecordConstraint()
                         ->setRecordIdentifier(self::TABLE_Content . ':' . $ttContentUid)->setRecordField('image')
                         ->setTable('sys_file_reference')->setField('title')->setValues(...$visibleFileTitles));
                 }
-                self::assertThat($responseSections, (new StructureDoesNotHaveRecordConstraint())
+                self::assertThat($responseSections, new StructureDoesNotHaveRecordConstraint()
                     ->setRecordIdentifier(self::TABLE_Content . ':' . $ttContentUid)->setRecordField('image')
                     ->setTable('sys_file_reference')->setField('title')->setValues(...$this->getNonVisibleFileTitles($visibleFileTitles)));
             }
@@ -858,14 +858,14 @@ final class LocalizedSiteContentRenderingTest extends FunctionalTestCase
 
         self::assertThat(
             $responseSections,
-            (new HasRecordConstraint())
+            new HasRecordConstraint()
             ->setTable(self::TABLE_Content)
             ->setField('header')
             ->setValues(...$visibleRecordHeaders)
         );
         self::assertThat(
             $responseSections,
-            (new DoesNotHaveRecordConstraint())
+            new DoesNotHaveRecordConstraint()
             ->setTable(self::TABLE_Content)
             ->setField('header')
             ->setValues(...$this->getNonVisibleHeaders($visibleRecordHeaders))

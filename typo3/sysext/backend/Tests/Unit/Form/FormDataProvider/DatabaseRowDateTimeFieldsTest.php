@@ -43,7 +43,7 @@ final class DatabaseRowDateTimeFieldsTest extends UnitTestCase
         ];
         $expected = $input;
         $expected['databaseRow']['aField'] = null;
-        self::assertEquals($expected, (new DatabaseRowDateTimeFields())->addData($input));
+        self::assertEquals($expected, new DatabaseRowDateTimeFields()->addData($input));
     }
 
     #[Test]
@@ -67,7 +67,7 @@ final class DatabaseRowDateTimeFieldsTest extends UnitTestCase
         $expected = $input;
         $expected['databaseRow']['aField'] = null;
 
-        $actual = (new DatabaseRowDateTimeFields())->addData($input);
+        $actual = new DatabaseRowDateTimeFields()->addData($input);
 
         self::assertEquals($expected, $actual);
 
@@ -94,7 +94,7 @@ final class DatabaseRowDateTimeFieldsTest extends UnitTestCase
         ];
         $expected = $input;
         $expected['databaseRow']['aField'] = null;
-        self::assertEquals($expected, (new DatabaseRowDateTimeFields())->addData($input));
+        self::assertEquals($expected, new DatabaseRowDateTimeFields()->addData($input));
     }
 
     #[Test]
@@ -117,7 +117,7 @@ final class DatabaseRowDateTimeFieldsTest extends UnitTestCase
         ];
         $expected = $input;
         $expected['databaseRow']['aField'] = null;
-        self::assertEquals($expected, (new DatabaseRowDateTimeFields())->addData($input));
+        self::assertEquals($expected, new DatabaseRowDateTimeFields()->addData($input));
     }
 
     #[Test]
@@ -140,7 +140,7 @@ final class DatabaseRowDateTimeFieldsTest extends UnitTestCase
         ];
         $expected = $input;
         $expected['databaseRow']['aField'] = null;
-        self::assertEquals($expected, (new DatabaseRowDateTimeFields())->addData($input));
+        self::assertEquals($expected, new DatabaseRowDateTimeFields()->addData($input));
     }
 
     #[Test]
@@ -166,7 +166,7 @@ final class DatabaseRowDateTimeFieldsTest extends UnitTestCase
         $expected = $input;
         $expected['databaseRow']['aField'] = null;
 
-        $actual = (new DatabaseRowDateTimeFields())->addData($input);
+        $actual = new DatabaseRowDateTimeFields()->addData($input);
 
         self::assertEquals($expected, $actual);
 
@@ -193,7 +193,7 @@ final class DatabaseRowDateTimeFieldsTest extends UnitTestCase
         ];
         $expected = $input;
         $expected['databaseRow']['aField'] = null;
-        self::assertEquals($expected, (new DatabaseRowDateTimeFields())->addData($input));
+        self::assertEquals($expected, new DatabaseRowDateTimeFields()->addData($input));
     }
 
     #[Test]
@@ -215,7 +215,7 @@ final class DatabaseRowDateTimeFieldsTest extends UnitTestCase
         ];
         $expected = $input;
         $expected['databaseRow']['aField'] = null;
-        self::assertEquals($expected, (new DatabaseRowDateTimeFields())->addData($input));
+        self::assertEquals($expected, new DatabaseRowDateTimeFields()->addData($input));
     }
 
     #[Test]
@@ -238,7 +238,7 @@ final class DatabaseRowDateTimeFieldsTest extends UnitTestCase
         $expected = $input;
         $expected['databaseRow']['aField'] = null;
 
-        $actual = (new DatabaseRowDateTimeFields())->addData($input);
+        $actual = new DatabaseRowDateTimeFields()->addData($input);
 
         self::assertEquals($expected, $actual);
 
@@ -270,7 +270,7 @@ final class DatabaseRowDateTimeFieldsTest extends UnitTestCase
         ];
         $expected = $input;
         $expected['databaseRow']['aField'] = new \DateTimeImmutable('2015-07-27T00:00:00', new \DateTimeZone('UTC'));
-        self::assertEquals($expected, (new DatabaseRowDateTimeFields())->addData($input));
+        self::assertEquals($expected, new DatabaseRowDateTimeFields()->addData($input));
         date_default_timezone_set($oldTimezone);
     }
 
@@ -297,7 +297,7 @@ final class DatabaseRowDateTimeFieldsTest extends UnitTestCase
         ];
         $expected = $input;
         $expected['databaseRow']['aField'] = new \DateTimeImmutable('2015-07-27T15:25:32', new \DateTimeZone('UTC'));
-        self::assertEquals($expected, (new DatabaseRowDateTimeFields())->addData($input));
+        self::assertEquals($expected, new DatabaseRowDateTimeFields()->addData($input));
         date_default_timezone_set($oldTimezone);
     }
 
@@ -324,7 +324,7 @@ final class DatabaseRowDateTimeFieldsTest extends UnitTestCase
         ];
         $expected = $input;
         $expected['databaseRow']['aField'] = new \DateTimeImmutable('1970-01-01T15:25:32', new \DateTimeZone('UTC'));
-        self::assertEquals($expected, (new DatabaseRowDateTimeFields())->addData($input));
+        self::assertEquals($expected, new DatabaseRowDateTimeFields()->addData($input));
         date_default_timezone_set($oldTimezone);
     }
 
@@ -352,7 +352,7 @@ final class DatabaseRowDateTimeFieldsTest extends UnitTestCase
         $expected = $input;
         $expected['databaseRow']['aField'] = new \DateTimeImmutable('1970-01-01T00:00:00', new \DateTimeZone('UTC'));
 
-        self::assertEquals($expected, (new DatabaseRowDateTimeFields())->addData($input));
+        self::assertEquals($expected, new DatabaseRowDateTimeFields()->addData($input));
         date_default_timezone_set($oldTimezone);
     }
 
@@ -381,7 +381,7 @@ final class DatabaseRowDateTimeFieldsTest extends UnitTestCase
         $expected = $input;
         $expected['databaseRow']['aField'] = new \DateTimeImmutable('1970-01-01T00:00:00', new \DateTimeZone('UTC'));
 
-        self::assertEquals($expected, (new DatabaseRowDateTimeFields())->addData($input));
+        self::assertEquals($expected, new DatabaseRowDateTimeFields()->addData($input));
         date_default_timezone_set($oldTimezone);
     }
 
@@ -410,7 +410,7 @@ final class DatabaseRowDateTimeFieldsTest extends UnitTestCase
         $expected = $input;
         $expected['databaseRow']['aField'] = null;
 
-        self::assertEquals($expected, (new DatabaseRowDateTimeFields())->addData($input));
+        self::assertEquals($expected, new DatabaseRowDateTimeFields()->addData($input));
         date_default_timezone_set($oldTimezone);
     }
 
@@ -439,7 +439,7 @@ final class DatabaseRowDateTimeFieldsTest extends UnitTestCase
         $expected = $input;
         $expected['databaseRow']['aField'] = null;
 
-        self::assertEquals($expected, (new DatabaseRowDateTimeFields())->addData($input));
+        self::assertEquals($expected, new DatabaseRowDateTimeFields()->addData($input));
         date_default_timezone_set($oldTimezone);
     }
 
@@ -486,7 +486,7 @@ final class DatabaseRowDateTimeFieldsTest extends UnitTestCase
         $expected = $input;
         $expected['databaseRow']['aField'] = $expectedValue;
 
-        self::assertEquals($expected, (new DatabaseRowDateTimeFields())->addData($input));
+        self::assertEquals($expected, new DatabaseRowDateTimeFields()->addData($input));
         date_default_timezone_set($oldTimezone);
     }
 
@@ -513,7 +513,7 @@ final class DatabaseRowDateTimeFieldsTest extends UnitTestCase
         $expected = $input;
         $expected['databaseRow']['aField'] = null;
 
-        self::assertEquals($expected, (new DatabaseRowDateTimeFields())->addData($input));
+        self::assertEquals($expected, new DatabaseRowDateTimeFields()->addData($input));
         date_default_timezone_set($oldTimezone);
     }
 }

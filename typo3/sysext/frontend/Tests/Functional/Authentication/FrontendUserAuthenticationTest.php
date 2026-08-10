@@ -53,7 +53,7 @@ final class FrontendUserAuthenticationTest extends FunctionalTestCase
     #[Test]
     public function feSessionsAreNotStoredForAnonymousSessions(): void
     {
-        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::ROOT_PAGE_ID));
+        $response = $this->executeFrontendSubRequest(new InternalRequest()->withPageId(self::ROOT_PAGE_ID));
 
         self::assertStringNotContainsString('fe_typo_user', $response->getHeaderLine('Set-Cookie'));
         $this->assertCSVDataSet(__DIR__ . '/Fixtures/fe_sessions_empty.csv');
@@ -79,7 +79,7 @@ final class FrontendUserAuthenticationTest extends FunctionalTestCase
 
         $nonce = Nonce::create();
         $requestToken = RequestToken::create('core/user-auth/fe')->toHashSignedJwt($nonce);
-        $request = (new InternalRequest())
+        $request = new InternalRequest()
             ->withPageId(self::ROOT_PAGE_ID)
             ->withMethod('POST')
             ->withParsedBody(
@@ -100,7 +100,7 @@ final class FrontendUserAuthenticationTest extends FunctionalTestCase
 
         // Now check whether the existing session is retrieved by providing the retrieved JWT token in the cookie params.
         $cookie = SetCookie::fromString($response->getHeaderLine('Set-Cookie'));
-        $request = (new ServerRequest('http://localhost/'))
+        $request = new ServerRequest('http://localhost/')
             ->withAttribute('normalizedParams', $normalizedParams)
             ->withCookieParams([$cookie->getName() => $cookie->getValue()]);
 

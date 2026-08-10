@@ -69,7 +69,7 @@ final class FileDumpTokenTest extends FunctionalTestCase
         $queryParameters = $this->getQueryParametersOfRenderedLink($tagIndex);
         self::assertSame('dumpFile', $queryParameters['eID'] ?? null);
 
-        $request = (new ServerRequest('https://localhost/index.php', 'GET'))
+        $request = new ServerRequest('https://localhost/index.php', 'GET')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withQueryParams($queryParameters);
 
@@ -79,7 +79,7 @@ final class FileDumpTokenTest extends FunctionalTestCase
     private function getQueryParametersOfRenderedLink(int $tagIndex): array
     {
         $normalizedParams = NormalizedParams::createFromServerParams(['HTTP_HOST' => 'localhost', 'SCRIPT_NAME' => '/index.php']);
-        $request = (new ServerRequest('https://localhost/', 'GET'))
+        $request = new ServerRequest('https://localhost/', 'GET')
             ->withAttribute('normalizedParams', $normalizedParams)
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
         $GLOBALS['TYPO3_REQUEST'] = $request;

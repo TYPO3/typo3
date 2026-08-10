@@ -63,7 +63,7 @@ class CreateRecordReaction implements ReactionInterface
         $table = (string)($reaction->toArray()['table_name'] ?? '');
         $fields = (array)($reaction->toArray()['fields'] ?? []);
 
-        if (!(new CreateRecordReactionTable($table))->isAllowedForCreation()) {
+        if (!new CreateRecordReactionTable($table)->isAllowedForCreation()) {
             return $this->jsonResponse(['success' => false, 'error' => 'Invalid argument "table_name"'], 400);
         }
 

@@ -174,7 +174,7 @@ final class PasswordResetTest extends FunctionalTestCase
         );
         $normalizedParams = self::createStub(NormalizedParams::class);
         $normalizedParams->method('getSitePath')->willReturn('/');
-        $request = (new ServerRequest('https://localhost/typo3/'))
+        $request = new ServerRequest('https://localhost/typo3/')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('normalizedParams', $normalizedParams);
         $subject->initiateReset($request, new Context(), $emailAddress);
@@ -218,7 +218,7 @@ final class PasswordResetTest extends FunctionalTestCase
         );
         $normalizedParams = self::createStub(NormalizedParams::class);
         $normalizedParams->method('getSitePath')->willReturn('/');
-        $request = (new ServerRequest('https://localhost/typo3/'))
+        $request = new ServerRequest('https://localhost/typo3/')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('normalizedParams', $normalizedParams);
         $subject->initiateReset($request, new Context(), $emailAddress);
@@ -302,7 +302,7 @@ final class PasswordResetTest extends FunctionalTestCase
         );
         $normalizedParams = self::createStub(NormalizedParams::class);
         $normalizedParams->method('getSitePath')->willReturn('/');
-        $request = (new ServerRequest('https://localhost/typo3/'))
+        $request = new ServerRequest('https://localhost/typo3/')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('normalizedParams', $normalizedParams);
         $subject->initiateReset($request, new Context(), $emailAddress); // 1st successful password reset

@@ -124,7 +124,7 @@ readonly class Random
                 $password .= $characters[random_int(0, $charactersCount - 1)];
             }
 
-            $password = (new Randomizer())->shuffleBytes($password);
+            $password = new Randomizer()->shuffleBytes($password);
         }
 
         return $password;

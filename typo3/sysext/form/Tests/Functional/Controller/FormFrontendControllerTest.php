@@ -57,7 +57,7 @@ final class FormFrontendControllerTest extends FunctionalTestCase
                 'EmailToReceiver',
             ])
         );
-        $request = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $request = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters());
         $request = (new Request($request));
         $contentObject = $this->get(ContentObjectRenderer::class);
         $request = $request->withAttribute('currentContentObject', $contentObject);
@@ -178,7 +178,7 @@ final class FormFrontendControllerTest extends FunctionalTestCase
                 'EmailToReceiver',
             ])
         );
-        $request = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $request = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters());
         $request = (new Request($request));
         $contentObject = $this->get(ContentObjectRenderer::class);
         $request = $request->withAttribute('currentContentObject', $contentObject);
@@ -323,7 +323,7 @@ final class FormFrontendControllerTest extends FunctionalTestCase
                 'EmailToReceiver',
             ])
         );
-        $request = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $request = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters());
         $request = (new Request($request));
         $contentObject = $this->get(ContentObjectRenderer::class);
         $request = $request->withAttribute('currentContentObject', $contentObject);

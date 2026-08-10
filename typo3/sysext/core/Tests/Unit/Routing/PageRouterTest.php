@@ -81,7 +81,7 @@ final class PageRouterTest extends UnitTestCase
 
         $request = new ServerRequest($incomingUrl, 'GET');
         $previousResult = new SiteRouteResult($request->getUri(), $site, $language, '/mr-magpie/bloom');
-        $routeResult = (new PageRouter($site))->matchRequest($request, $previousResult);
+        $routeResult = new PageRouter($site)->matchRequest($request, $previousResult);
 
         $expectedRouteResult = new PageArguments(13, '0', [], [], []);
         self::assertEquals($expectedRouteResult, $routeResult);
@@ -113,7 +113,7 @@ final class PageRouterTest extends UnitTestCase
 
         $request = new ServerRequest($incomingUrl, 'GET');
         $previousResult = new SiteRouteResult($request->getUri(), $site, $language, '/mr-magpie/bloom/');
-        $routeResult = (new PageRouter($site))->matchRequest($request, $previousResult);
+        $routeResult = new PageRouter($site)->matchRequest($request, $previousResult);
 
         $expectedRouteResult = new PageArguments((int)$pageRecord['uid'], '0', []);
         self::assertEquals($expectedRouteResult, $routeResult);

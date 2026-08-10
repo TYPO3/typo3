@@ -182,7 +182,7 @@ class DownloadController extends AbstractController
         $this->assertAllowedHttpMethod($this->request, 'POST');
 
         $this->managementService->setSkipDependencyCheck(true);
-        return (new ForwardResponse('installFromTer'))->withArguments(['identifier' => $identifier->toArray()]);
+        return new ForwardResponse('installFromTer')->withArguments(['identifier' => $identifier->toArray()]);
     }
 
     /**
@@ -288,7 +288,7 @@ class DownloadController extends AbstractController
         $this->assertAllowedHttpMethod($this->request, 'POST');
 
         $this->managementService->setSkipDependencyCheck(true);
-        return (new ForwardResponse('installDistribution'))->withArguments(['identifier' => $identifier->toArray()]);
+        return new ForwardResponse('installDistribution')->withArguments(['identifier' => $identifier->toArray()]);
     }
 
     /**

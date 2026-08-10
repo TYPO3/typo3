@@ -44,7 +44,7 @@ final class TcaTypeCountryTest extends FunctionalTestCase
         parent::setUp();
         $GLOBALS['BE_USER'] = new BackendUserAuthentication();
 
-        $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $request = new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $this->get(ConfigurationManagerInterface::class)->setRequest($request);
     }
 
@@ -55,7 +55,7 @@ final class TcaTypeCountryTest extends FunctionalTestCase
         $person = new Person();
         $person->setCountry($countryProvider->getByAlpha2IsoCode('DE'));
 
-        $serverRequest = (new ServerRequest())
+        $serverRequest = new ServerRequest()
             ->withAttribute('extbase', new ExtbaseRequestParameters())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));

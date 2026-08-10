@@ -43,7 +43,7 @@ final class TcaFolderTest extends UnitTestCase
             ],
         ];
         $expected = $input;
-        self::assertSame($expected, (new TcaFolder(self::createStub(ResourceFactory::class)))->addData($input));
+        self::assertSame($expected, new TcaFolder(self::createStub(ResourceFactory::class))->addData($input));
     }
 
     #[Test]
@@ -77,6 +77,6 @@ final class TcaFolderTest extends UnitTestCase
                 'folder' => '1:/aFolder/anotherFolder/',
             ],
         ];
-        self::assertSame($expected, (new TcaFolder($resourceFactoryMock))->addData($input));
+        self::assertSame($expected, new TcaFolder($resourceFactoryMock)->addData($input));
     }
 }

@@ -39,7 +39,7 @@ final class PageWizardStepBuilderTest extends FunctionalTestCase
 
     protected function getRequest(): ServerRequestInterface
     {
-        return (new ServerRequest())
+        return new ServerRequest()
             ->withAttribute('site', new NullSite())
             ->withAttribute('normalizedParams', NormalizedParams::createFromRequest(new ServerRequest()));
     }

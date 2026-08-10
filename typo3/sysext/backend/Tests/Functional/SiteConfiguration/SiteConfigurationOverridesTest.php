@@ -39,7 +39,7 @@ final class SiteConfigurationOverridesTest extends FunctionalTestCase
     {
         parent::setUp();
 
-        $this->subject = (new SiteTcaConfiguration())->getTca();
+        $this->subject = new SiteTcaConfiguration()->getTca();
     }
 
     #[Test]

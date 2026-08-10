@@ -136,7 +136,7 @@ final class SvgImageRenderingTest extends FunctionalTestCase
     public function svgsAreRenderedWithTyposcript(array $expectedAssets): void
     {
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest())->withQueryParameters([
+            new InternalRequest()->withQueryParameters([
                 'id' => 1,
             ])
         );

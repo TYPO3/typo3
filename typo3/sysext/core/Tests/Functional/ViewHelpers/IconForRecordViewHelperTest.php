@@ -33,6 +33,6 @@ final class IconForRecordViewHelperTest extends FunctionalTestCase
         $context->getTemplatePaths()->setTemplateSource(
             '<core:iconForRecord table="tt_content" row="{uid: 123}" size="large" alternativeMarkupIdentifier="inline" />'
         );
-        self::assertStringContainsString('<span class="t3js-icon icon icon-size-large icon-state-default icon-mimetypes-x-content-text" data-identifier="mimetypes-x-content-text" aria-hidden="true">', (new TemplateView($context))->render());
+        self::assertStringContainsString('<span class="t3js-icon icon icon-size-large icon-state-default icon-mimetypes-x-content-text" data-identifier="mimetypes-x-content-text" aria-hidden="true">', new TemplateView($context)->render());
     }
 }

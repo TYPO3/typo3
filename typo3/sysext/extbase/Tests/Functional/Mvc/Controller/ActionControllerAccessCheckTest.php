@@ -41,7 +41,7 @@ final class ActionControllerAccessCheckTest extends FunctionalTestCase
     {
         // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
         $this->get(ConfigurationManagerInterface::class)->setRequest(
-            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
         );
 
         self::expectException(PropagateResponseException::class);
@@ -49,9 +49,9 @@ final class ActionControllerAccessCheckTest extends FunctionalTestCase
 
         $extbaseRequestParameters = new ExtbaseRequestParameters();
 
-        $serverRequest = (new ServerRequest('https://example.com/', 'POST'))
+        $serverRequest = new ServerRequest('https://example.com/', 'POST')
             ->withAttribute('extbase', $extbaseRequestParameters);
-        $request = (new Request($serverRequest))
+        $request = new Request($serverRequest)
             ->withControllerExtensionName('ActionControllerTest')
             ->withControllerName('AccessCheckController')
             ->withControllerActionName('feUserRequired')
@@ -67,14 +67,14 @@ final class ActionControllerAccessCheckTest extends FunctionalTestCase
     {
         // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
         $this->get(ConfigurationManagerInterface::class)->setRequest(
-            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
         );
 
         $extbaseRequestParameters = new ExtbaseRequestParameters();
 
-        $serverRequest = (new ServerRequest('https://example.com/', 'POST'))
+        $serverRequest = new ServerRequest('https://example.com/', 'POST')
             ->withAttribute('extbase', $extbaseRequestParameters);
-        $request = (new Request($serverRequest))
+        $request = new Request($serverRequest)
             ->withControllerExtensionName('ActionControllerTest')
             ->withControllerName('AccessCheckController')
             ->withControllerActionName('feUserRequired')
@@ -103,7 +103,7 @@ final class ActionControllerAccessCheckTest extends FunctionalTestCase
     {
         // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
         $this->get(ConfigurationManagerInterface::class)->setRequest(
-            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
         );
 
         self::expectException(PropagateResponseException::class);
@@ -111,9 +111,9 @@ final class ActionControllerAccessCheckTest extends FunctionalTestCase
 
         $extbaseRequestParameters = new ExtbaseRequestParameters();
 
-        $serverRequest = (new ServerRequest('https://example.com/', 'POST'))
+        $serverRequest = new ServerRequest('https://example.com/', 'POST')
             ->withAttribute('extbase', $extbaseRequestParameters);
-        $request = (new Request($serverRequest))
+        $request = new Request($serverRequest)
             ->withControllerExtensionName('ActionControllerTest')
             ->withControllerName('AccessCheckController')
             ->withControllerActionName('feGroupUidRequired')
@@ -129,14 +129,14 @@ final class ActionControllerAccessCheckTest extends FunctionalTestCase
     {
         // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
         $this->get(ConfigurationManagerInterface::class)->setRequest(
-            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
         );
 
         $extbaseRequestParameters = new ExtbaseRequestParameters();
 
-        $serverRequest = (new ServerRequest('https://example.com/', 'POST'))
+        $serverRequest = new ServerRequest('https://example.com/', 'POST')
             ->withAttribute('extbase', $extbaseRequestParameters);
-        $request = (new Request($serverRequest))
+        $request = new Request($serverRequest)
             ->withControllerExtensionName('ActionControllerTest')
             ->withControllerName('AccessCheckController')
             ->withControllerActionName('feGroupUidRequired')
@@ -165,7 +165,7 @@ final class ActionControllerAccessCheckTest extends FunctionalTestCase
     {
         // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
         $this->get(ConfigurationManagerInterface::class)->setRequest(
-            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
         );
 
         self::expectException(PropagateResponseException::class);
@@ -173,9 +173,9 @@ final class ActionControllerAccessCheckTest extends FunctionalTestCase
 
         $extbaseRequestParameters = new ExtbaseRequestParameters();
 
-        $serverRequest = (new ServerRequest('https://example.com/', 'POST'))
+        $serverRequest = new ServerRequest('https://example.com/', 'POST')
             ->withAttribute('extbase', $extbaseRequestParameters);
-        $request = (new Request($serverRequest))
+        $request = new Request($serverRequest)
             ->withControllerExtensionName('ActionControllerTest')
             ->withControllerName('AccessCheckController')
             ->withControllerActionName('feGroupNameRequired')
@@ -203,14 +203,14 @@ final class ActionControllerAccessCheckTest extends FunctionalTestCase
     {
         // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
         $this->get(ConfigurationManagerInterface::class)->setRequest(
-            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
         );
 
         $extbaseRequestParameters = new ExtbaseRequestParameters();
 
-        $serverRequest = (new ServerRequest('https://example.com/', 'POST'))
+        $serverRequest = new ServerRequest('https://example.com/', 'POST')
             ->withAttribute('extbase', $extbaseRequestParameters);
-        $request = (new Request($serverRequest))
+        $request = new Request($serverRequest)
             ->withControllerExtensionName('ActionControllerTest')
             ->withControllerName('AccessCheckController')
             ->withControllerActionName('feGroupNameRequired')
@@ -239,14 +239,14 @@ final class ActionControllerAccessCheckTest extends FunctionalTestCase
     {
         // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
         $this->get(ConfigurationManagerInterface::class)->setRequest(
-            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
         );
 
         $extbaseRequestParameters = new ExtbaseRequestParameters();
 
-        $serverRequest = (new ServerRequest('https://example.com/', 'POST'))
+        $serverRequest = new ServerRequest('https://example.com/', 'POST')
             ->withAttribute('extbase', $extbaseRequestParameters);
-        $request = (new Request($serverRequest))
+        $request = new Request($serverRequest)
             ->withControllerExtensionName('ActionControllerTest')
             ->withControllerName('AccessCheckController')
             ->withControllerActionName('oneOfMultipleFeGroupsRequired')
@@ -275,7 +275,7 @@ final class ActionControllerAccessCheckTest extends FunctionalTestCase
     {
         // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
         $this->get(ConfigurationManagerInterface::class)->setRequest(
-            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
         );
 
         self::expectException(PropagateResponseException::class);
@@ -283,9 +283,9 @@ final class ActionControllerAccessCheckTest extends FunctionalTestCase
 
         $extbaseRequestParameters = new ExtbaseRequestParameters();
 
-        $serverRequest = (new ServerRequest('https://example.com/', 'POST'))
+        $serverRequest = new ServerRequest('https://example.com/', 'POST')
             ->withAttribute('extbase', $extbaseRequestParameters);
-        $request = (new Request($serverRequest))
+        $request = new Request($serverRequest)
             ->withControllerExtensionName('ActionControllerTest')
             ->withControllerName('AccessCheckController')
             ->withControllerActionName('authorizationWithSimpleCallback')
@@ -301,14 +301,14 @@ final class ActionControllerAccessCheckTest extends FunctionalTestCase
     {
         // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
         $this->get(ConfigurationManagerInterface::class)->setRequest(
-            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
         );
 
         $extbaseRequestParameters = new ExtbaseRequestParameters();
 
-        $serverRequest = (new ServerRequest('https://example.com/', 'POST'))
+        $serverRequest = new ServerRequest('https://example.com/', 'POST')
             ->withAttribute('extbase', $extbaseRequestParameters);
-        $request = (new Request($serverRequest))
+        $request = new Request($serverRequest)
             ->withControllerExtensionName('ActionControllerTest')
             ->withControllerName('AccessCheckController')
             ->withControllerActionName('authorizationWithSimpleCallback')
@@ -325,7 +325,7 @@ final class ActionControllerAccessCheckTest extends FunctionalTestCase
     {
         // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
         $this->get(ConfigurationManagerInterface::class)->setRequest(
-            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
         );
 
         self::expectException(PropagateResponseException::class);
@@ -333,9 +333,9 @@ final class ActionControllerAccessCheckTest extends FunctionalTestCase
 
         $extbaseRequestParameters = new ExtbaseRequestParameters();
 
-        $serverRequest = (new ServerRequest('https://example.com/', 'POST'))
+        $serverRequest = new ServerRequest('https://example.com/', 'POST')
             ->withAttribute('extbase', $extbaseRequestParameters);
-        $request = (new Request($serverRequest))
+        $request = new Request($serverRequest)
             ->withControllerExtensionName('ActionControllerTest')
             ->withControllerName('AccessCheckController')
             ->withControllerActionName('authorizationWithCustomServiceClassCallback')
@@ -351,14 +351,14 @@ final class ActionControllerAccessCheckTest extends FunctionalTestCase
     {
         // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
         $this->get(ConfigurationManagerInterface::class)->setRequest(
-            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
         );
 
         $extbaseRequestParameters = new ExtbaseRequestParameters();
 
-        $serverRequest = (new ServerRequest('https://example.com/', 'POST'))
+        $serverRequest = new ServerRequest('https://example.com/', 'POST')
             ->withAttribute('extbase', $extbaseRequestParameters);
-        $request = (new Request($serverRequest))
+        $request = new Request($serverRequest)
             ->withControllerExtensionName('ActionControllerTest')
             ->withControllerName('AccessCheckController')
             ->withControllerActionName('authorizationWithCustomServiceClassCallback')

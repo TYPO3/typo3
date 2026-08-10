@@ -28,6 +28,6 @@ final class FlashMessageRendererResolverTest extends UnitTestCase
     #[DoesNotPerformAssertions]
     public function flashMessageRendererResolverResolveDoesNotThrowException(): void
     {
-        (new FlashMessageRendererResolver())->resolve();
+        new FlashMessageRendererResolver()->resolve();
     }
 }

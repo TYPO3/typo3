@@ -135,7 +135,7 @@ readonly class FileHandlingService
         $fileUploadConfiguration = $property->getFileUpload();
         $configurationPropertyName = $property->getName();
 
-        $configuration = (new FileUploadConfiguration($configurationPropertyName))
+        $configuration = new FileUploadConfiguration($configurationPropertyName)
             ->initializeWithConfiguration($fileUploadConfiguration);
         $configuration->ensureValidConfiguration($propertyTargetClassName);
 

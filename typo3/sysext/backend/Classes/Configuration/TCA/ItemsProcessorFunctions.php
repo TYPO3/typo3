@@ -126,7 +126,7 @@ class ItemsProcessorFunctions
 
     public function populateFlags(array &$fieldConfiguration): void
     {
-        $filter = (new CountryFilter())->setExcludeCountries(['um']);
+        $filter = new CountryFilter()->setExcludeCountries(['um']);
         $countries = GeneralUtility::makeInstance(CountryProvider::class)->getFiltered($filter);
         /** @var Country $country */
         foreach ($countries as $country) {

@@ -219,7 +219,7 @@ final readonly class SchedulerTaskPersistenceValidator
         }
         try {
             // Convert from ISO 8601 dates
-            $value = (new \DateTime($input))->getTimestamp();
+            $value = new \DateTime($input)->getTimestamp();
         } catch (\Exception $e) {
             throw new InvalidDateException($e->getMessage(), 1747813335);
         }

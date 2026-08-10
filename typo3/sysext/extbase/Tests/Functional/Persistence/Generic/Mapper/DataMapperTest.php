@@ -59,7 +59,7 @@ final class DataMapperTest extends FunctionalTestCase
         parent::setUp();
         $GLOBALS['BE_USER'] = new BackendUserAuthentication();
 
-        $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $request = new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $this->get(ConfigurationManagerInterface::class)->setRequest($request);
     }
 

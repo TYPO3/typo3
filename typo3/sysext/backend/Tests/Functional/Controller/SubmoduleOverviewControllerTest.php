@@ -45,7 +45,7 @@ final class SubmoduleOverviewControllerTest extends FunctionalTestCase
         $moduleProvider = $this->get(ModuleProvider::class);
         $module = $moduleProvider->getModule('content_status', $GLOBALS['BE_USER']);
 
-        $request = (new ServerRequest('https://example.com/typo3/module/content/status'))
+        $request = new ServerRequest('https://example.com/typo3/module/content/status')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('route', new Route('/module/content/status', [
                 'packageName' => 'typo3/cms-info',
@@ -82,7 +82,7 @@ final class SubmoduleOverviewControllerTest extends FunctionalTestCase
         $moduleProvider = $this->get(ModuleProvider::class);
         $module = $moduleProvider->getModule('content_status', $GLOBALS['BE_USER']);
 
-        $request = (new ServerRequest('https://example.com/typo3/module/content/status'))
+        $request = new ServerRequest('https://example.com/typo3/module/content/status')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('route', new Route('/module/content/status', [
                 'packageName' => 'typo3/cms-info',
@@ -112,7 +112,7 @@ final class SubmoduleOverviewControllerTest extends FunctionalTestCase
         $moduleProvider = $this->get(ModuleProvider::class);
         $module = $moduleProvider->getModule('content_status', $GLOBALS['BE_USER']);
 
-        $request = (new ServerRequest('https://example.com/typo3/module/content/status'))
+        $request = new ServerRequest('https://example.com/typo3/module/content/status')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withQueryParams(['id' => 1])
             ->withAttribute('route', new Route('/module/content/status', [
@@ -171,7 +171,7 @@ final class SubmoduleOverviewControllerTest extends FunctionalTestCase
     #[Test]
     public function handleRequestWithoutModuleAttributeRendersEmptyPage(): void
     {
-        $request = (new ServerRequest('https://example.com/typo3/module/content/status'))
+        $request = new ServerRequest('https://example.com/typo3/module/content/status')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('route', new Route('/module/content/status', [
                 'packageName' => 'typo3/cms-info',
@@ -198,7 +198,7 @@ final class SubmoduleOverviewControllerTest extends FunctionalTestCase
         $module = $moduleProvider->getModule('content_status', $GLOBALS['BE_USER']);
 
         $pageId = 42;
-        $request = (new ServerRequest('https://example.com/typo3/module/content/status'))
+        $request = new ServerRequest('https://example.com/typo3/module/content/status')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withQueryParams(['id' => $pageId])
             ->withAttribute('route', new Route('/module/content/status', [
@@ -239,7 +239,7 @@ final class SubmoduleOverviewControllerTest extends FunctionalTestCase
         $moduleProvider = $this->get(ModuleProvider::class);
         $module = $moduleProvider->getModule('content_status', $backendUser);
 
-        $request = (new ServerRequest('https://example.com/typo3/module/content/status'))
+        $request = new ServerRequest('https://example.com/typo3/module/content/status')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('route', new Route('/module/content/status', [
                 'packageName' => 'typo3/cms-info',

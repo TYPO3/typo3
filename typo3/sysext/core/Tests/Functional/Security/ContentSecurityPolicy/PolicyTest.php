@@ -65,14 +65,14 @@ final class PolicyTest extends FunctionalTestCase
         $hashProxy = HashProxy::glob(
             'EXT:core/Tests/Unit/Security/ContentSecurityPolicy/Fixtures/*.js'
         );
-        $policy = (new Policy())->extend(Directive::ScriptSrc, $hashProxy);
+        $policy = new Policy()->extend(Directive::ScriptSrc, $hashProxy);
         self::assertSame("script-src 'sha256-dawsv3oUbEz6NVoOxXFAu0k7W3I/PS6NucUIAmvoIng='", $policy->compile($this->createPolicyBag()));
     }
 
     #[Test]
     public function hashValueIsCompiledUsingHashFactory(): void
     {
-        $policy = (new Policy())->extend(Directive::ScriptSrc, HashValue::hash('test'));
+        $policy = new Policy()->extend(Directive::ScriptSrc, HashValue::hash('test'));
         self::assertSame("script-src 'sha256-n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg='", $policy->compile($this->createPolicyBag()));
     }
 
@@ -80,7 +80,7 @@ final class PolicyTest extends FunctionalTestCase
     public function hashValueIsCompiledUsingCreateFactory(): void
     {
         $hash = hash('sha256', 'test', true);
-        $policy = (new Policy())->extend(Directive::ScriptSrc, HashValue::create($hash));
+        $policy = new Policy()->extend(Directive::ScriptSrc, HashValue::create($hash));
         self::assertSame("script-src 'sha256-n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg='", $policy->compile($this->createPolicyBag()));
     }
 
@@ -94,7 +94,7 @@ final class PolicyTest extends FunctionalTestCase
     #[Test]
     public function defaultDirectiveIsModified(): void
     {
-        $policy = (new Policy(SourceKeyword::self))
+        $policy = new Policy(SourceKeyword::self)
             ->default(SourceKeyword::none);
         self::assertSame("default-src 'none'", $policy->compile($this->createPolicyBag()));
     }
@@ -102,7 +102,7 @@ final class PolicyTest extends FunctionalTestCase
     #[Test]
     public function defaultDirectiveConsidersVeto(): void
     {
-        $policy = (new Policy(SourceKeyword::self))
+        $policy = new Policy(SourceKeyword::self)
             ->default(SourceKeyword::unsafeEval, SourceKeyword::none);
         self::assertSame("default-src 'none'", $policy->compile($this->createPolicyBag()));
     }
@@ -110,7 +110,7 @@ final class PolicyTest extends FunctionalTestCase
     #[Test]
     public function newDirectiveExtendsDefault(): void
     {
-        $policy = (new Policy(SourceKeyword::self))
+        $policy = new Policy(SourceKeyword::self)
             ->extend(Directive::ScriptSrc, SourceKeyword::unsafeInline);
         self::assertSame("default-src 'self'; script-src 'self' 'unsafe-inline'", $policy->compile($this->createPolicyBag()));
     }
@@ -118,7 +118,7 @@ final class PolicyTest extends FunctionalTestCase
     #[Test]
     public function nonAncestorDirectiveDoesNotExtendDefault(): void
     {
-        $policy = (new Policy(SourceKeyword::self))
+        $policy = new Policy(SourceKeyword::self)
             ->extend(Directive::Sandbox)
             ->extend(Directive::TrustedTypes);
         self::assertSame("default-src 'self'; sandbox; trusted-types", $policy->compile($this->createPolicyBag()));
@@ -169,14 +169,14 @@ final class PolicyTest extends FunctionalTestCase
     #[Test]
     public function ancestorInheritanceIsAppliedFromMutations(MutationCollection $mutations, string $expectation): void
     {
-        $policy = (new Policy())->mutate($mutations);
+        $policy = new Policy()->mutate($mutations);
         self::assertSame($expectation, $policy->compile($this->createPolicyBag()));
     }
 
     #[Test]
     public function newDirectiveDoesNotExtendDefault(): void
     {
-        $policy = (new Policy(SourceKeyword::self))
+        $policy = new Policy(SourceKeyword::self)
             ->set(Directive::ScriptSrc, SourceKeyword::unsafeInline);
         self::assertSame("default-src 'self'; script-src 'unsafe-inline'", $policy->compile($this->createPolicyBag()));
     }
@@ -203,7 +203,7 @@ final class PolicyTest extends FunctionalTestCase
     #[Test]
     public function directiveIsReduced(array $defaultSources, array $reduceSources, string $expectation): void
     {
-        $policy = (new Policy())
+        $policy = new Policy()
             ->set(Directive::ScriptSrc, ...$defaultSources)
             ->reduce(Directive::ScriptSrc, ...$reduceSources);
         self::assertSame($expectation, $policy->compile($this->createPolicyBag()));
@@ -247,7 +247,7 @@ final class PolicyTest extends FunctionalTestCase
     public function strictDynamicIsApplied(): void
     {
         $this->nonce->consume();
-        $policy = (new Policy(SourceKeyword::self, SourceKeyword::strictDynamic))
+        $policy = new Policy(SourceKeyword::self, SourceKeyword::strictDynamic)
             ->extend(Directive::ScriptSrc, SourceKeyword::strictDynamic)
             ->extend(Directive::StyleSrc, SourceKeyword::strictDynamic);
         self::assertSame(
@@ -261,7 +261,7 @@ final class PolicyTest extends FunctionalTestCase
     {
         $this->nonce->consume();
         $behavior = new Behavior(useNonce: false);
-        $policy = (new Policy(SourceKeyword::self, SourceKeyword::strictDynamic))
+        $policy = new Policy(SourceKeyword::self, SourceKeyword::strictDynamic)
             ->extend(Directive::ScriptSrc, SourceKeyword::strictDynamic)
             ->extend(Directive::StyleSrc, SourceKeyword::strictDynamic);
         self::assertSame("default-src 'self'; script-src 'self'", $policy->compile($this->createPolicyBag($behavior)));
@@ -270,7 +270,7 @@ final class PolicyTest extends FunctionalTestCase
     #[Test]
     public function directiveIsRemoved(): void
     {
-        $policy = (new Policy(SourceKeyword::self))
+        $policy = new Policy(SourceKeyword::self)
             ->remove(Directive::DefaultSrc);
         self::assertSame('', $policy->compile($this->createPolicyBag()));
     }
@@ -278,7 +278,7 @@ final class PolicyTest extends FunctionalTestCase
     #[Test]
     public function superfluousDirectivesArePurged(): void
     {
-        $policy = (new Policy(SourceKeyword::self, SourceScheme::data))
+        $policy = new Policy(SourceKeyword::self, SourceScheme::data)
             ->set(Directive::ScriptSrc, SourceKeyword::self, SourceScheme::data);
         self::assertSame("default-src 'self' data:", $policy->compile($this->createPolicyBag()));
     }
@@ -287,7 +287,7 @@ final class PolicyTest extends FunctionalTestCase
     public function backendPolicyIsCompiled(): void
     {
         $this->nonce->consume();
-        $policy = (new Policy())
+        $policy = new Policy()
             ->default(SourceKeyword::self)
             ->extend(Directive::ScriptSrc, SourceKeyword::nonceProxy)
             ->extend(Directive::StyleSrc, SourceKeyword::unsafeInline)
@@ -306,7 +306,7 @@ final class PolicyTest extends FunctionalTestCase
     #[Test]
     public function containedDirectiveSourcesAreDetermined(): void
     {
-        $policy = (new Policy())
+        $policy = new Policy()
             ->extend(Directive::ScriptSrc, SourceKeyword::unsafeInline, SourceScheme::data, new UriValue('https://example.org'))
             ->extend(Directive::StyleSrc, SourceKeyword::unsafeInline, SourceScheme::blob, new UriValue('https://example.com/path'));
 
@@ -318,7 +318,7 @@ final class PolicyTest extends FunctionalTestCase
     #[Test]
     public function coveredDirectiveSourcesAreDetermined(): void
     {
-        $policy = (new Policy())
+        $policy = new Policy()
             ->extend(Directive::ScriptSrc, SourceKeyword::unsafeInline, SourceScheme::data, new UriValue('*.example.org'))
             ->extend(Directive::StyleSrc, SourceKeyword::unsafeInline, SourceScheme::blob, new UriValue('https://*.example.com'));
 
@@ -330,10 +330,10 @@ final class PolicyTest extends FunctionalTestCase
     #[Test]
     public function containedPolicyIsDetermined(): void
     {
-        $policy = (new Policy())
+        $policy = new Policy()
             ->extend(Directive::ScriptSrc, SourceKeyword::unsafeInline, SourceScheme::data, new UriValue('https://example.org'))
             ->extend(Directive::StyleSrc, SourceKeyword::unsafeInline, SourceScheme::blob, new UriValue('https://example.com/path'));
-        $other = (new Policy())
+        $other = new Policy()
             ->extend(Directive::ScriptSrc, SourceScheme::data, new UriValue('https://example.org'))
             ->extend(Directive::StyleSrc, SourceScheme::blob, new UriValue('https://example.com/path'));
         self::assertTrue($policy->contains($other));

@@ -35,7 +35,7 @@ final class UploadViewHelperTest extends FunctionalTestCase
     {
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:form.upload />');
-        self::assertSame('<input type="file" name="" />', (new TemplateView($context))->render());
+        self::assertSame('<input type="file" name="" />', new TemplateView($context)->render());
     }
 
     #[Test]
@@ -43,7 +43,7 @@ final class UploadViewHelperTest extends FunctionalTestCase
     {
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:form.upload name="someName" />');
-        self::assertSame('<input type="file" name="someName" />', (new TemplateView($context))->render());
+        self::assertSame('<input type="file" name="someName" />', new TemplateView($context)->render());
     }
 
     #[Test]
@@ -51,7 +51,7 @@ final class UploadViewHelperTest extends FunctionalTestCase
     {
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:form.upload multiple="multiple" name="someName" />');
-        self::assertSame('<input multiple="multiple" type="file" name="someName[]" />', (new TemplateView($context))->render());
+        self::assertSame('<input multiple="multiple" type="file" name="someName[]" />', new TemplateView($context)->render());
     }
 
     #[Test]
@@ -59,7 +59,7 @@ final class UploadViewHelperTest extends FunctionalTestCase
     {
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:form.upload accept=".jpg,.png" />');
-        self::assertSame('<input accept=".jpg,.png" type="file" name="" />', (new TemplateView($context))->render());
+        self::assertSame('<input accept=".jpg,.png" type="file" name="" />', new TemplateView($context)->render());
     }
 
     #[Test]
@@ -72,7 +72,7 @@ final class UploadViewHelperTest extends FunctionalTestCase
         $propertyResult->addError(new Error('invalidProperty', 2));
         $extbaseRequestParameters = new ExtbaseRequestParameters();
         $extbaseRequestParameters->setOriginalRequestMappingResults($mappingResult);
-        $psr7Request = (new ServerRequest())->withAttribute('extbase', $extbaseRequestParameters)
+        $psr7Request = new ServerRequest()->withAttribute('extbase', $extbaseRequestParameters)
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $extbaseRequest = new Request($psr7Request);
 

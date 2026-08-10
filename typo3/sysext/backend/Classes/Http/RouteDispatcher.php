@@ -168,10 +168,10 @@ class RouteDispatcher extends Dispatcher
 
         $event = $this->eventDispatcher->dispatch(new SudoModeRequiredEvent($claim));
         if ($event->isVerificationRequired()) {
-            throw (new VerificationRequiredException(
+            throw new VerificationRequiredException(
                 'Sudo Mode Confirmation Required',
                 1605812020
-            ))->withClaim($claim);
+            )->withClaim($claim);
         }
     }
 }

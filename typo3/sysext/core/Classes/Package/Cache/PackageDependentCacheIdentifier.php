@@ -36,7 +36,7 @@ class PackageDependentCacheIdentifier
 
     public function __construct(PackageManager $packageManager)
     {
-        $this->baseIdentifier = (new Typo3Version())->getVersion() . Environment::getProjectPath() . ($packageManager->getCacheIdentifier() ?? '');
+        $this->baseIdentifier = new Typo3Version()->getVersion() . Environment::getProjectPath() . ($packageManager->getCacheIdentifier() ?? '');
     }
 
     public function toString(): string

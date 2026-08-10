@@ -53,7 +53,7 @@ final class XmlSitemapIndexTest extends AbstractTestCase
         );
 
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest('http://localhost/'))->withQueryParameters([
+            new InternalRequest('http://localhost/')->withQueryParameters([
                 'id' => 1,
                 'type' => 1533906435,
             ])

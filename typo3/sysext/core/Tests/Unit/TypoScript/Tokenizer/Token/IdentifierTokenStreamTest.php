@@ -32,7 +32,7 @@ final class IdentifierTokenStreamTest extends UnitTestCase
         $this->expectException(\LogicException::class);
         $this->expectExceptionCode(1655138907);
         $token = new Token(TokenType::T_NONE, '', 0, 0);
-        (new IdentifierTokenStream())->append($token);
+        new IdentifierTokenStream()->append($token);
     }
 
     #[Test]
@@ -40,13 +40,13 @@ final class IdentifierTokenStreamTest extends UnitTestCase
     public function canAppendIdentifierToken(): void
     {
         $token = new Token(TokenType::T_IDENTIFIER, '', 0, 0);
-        (new IdentifierTokenStream())->append($token);
+        new IdentifierTokenStream()->append($token);
     }
 
     #[Test]
     public function nonRelativeStreamIsNotRelative(): void
     {
-        self::assertFalse((new IdentifierTokenStream())->isRelative());
+        self::assertFalse(new IdentifierTokenStream()->isRelative());
     }
 
     #[Test]

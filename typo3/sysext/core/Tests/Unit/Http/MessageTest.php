@@ -37,7 +37,7 @@ final class MessageTest extends UnitTestCase
     {
         parent::setUp();
         $this->stream = new Stream('php://memory', 'wb+');
-        $this->message = (new Message())->withBody($this->stream);
+        $this->message = new Message()->withBody($this->stream);
     }
 
     #[Test]

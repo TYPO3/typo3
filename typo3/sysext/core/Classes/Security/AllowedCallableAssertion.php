@@ -61,7 +61,7 @@ final readonly class AllowedCallableAssertion
         if (count($callable) === 1) {
             if ((is_string($callable[0]) && function_exists($callable[0])) || $callable[0] instanceof \Closure) {
                 return $this->hasMatchingAttributes(
-                    (new \ReflectionFunction($callable[0]))->getAttributes(AsAllowedCallable::class)
+                    new \ReflectionFunction($callable[0])->getAttributes(AsAllowedCallable::class)
                 );
             }
             return null;
@@ -80,7 +80,7 @@ final readonly class AllowedCallableAssertion
             }
             // fall-back to using reflection
             return $this->hasMatchingAttributes(
-                (new \ReflectionMethod(...$callable))->getAttributes(AsAllowedCallable::class),
+                new \ReflectionMethod(...$callable)->getAttributes(AsAllowedCallable::class),
             );
         }
         return null;

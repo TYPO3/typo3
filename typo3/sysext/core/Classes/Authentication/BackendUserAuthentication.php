@@ -1009,7 +1009,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             ? MathUtility::forceIntegerInRange((int)$alertPopupsSetting, 0, JsConfirmation::ALL)
             : JsConfirmation::ALL;
 
-        return (new JsConfirmation($alertPopupsSetting))->get($bitmask);
+        return new JsConfirmation($alertPopupsSetting)->get($bitmask);
     }
 
     /**

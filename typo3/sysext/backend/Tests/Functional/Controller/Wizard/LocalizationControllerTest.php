@@ -69,7 +69,7 @@ final class LocalizationControllerTest extends FunctionalTestCase
         $backendUser = $this->setUpBackendUser(1);
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
 
-        $request = (new ServerRequest())->withQueryParams([
+        $request = new ServerRequest()->withQueryParams([
             'recordType' => 'tt_content',
             'recordUid' => 1,
         ]);
@@ -94,7 +94,7 @@ final class LocalizationControllerTest extends FunctionalTestCase
         $backendUser = $this->setUpBackendUser(1);
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
 
-        $request = (new ServerRequest())->withQueryParams([
+        $request = new ServerRequest()->withQueryParams([
             'recordType' => 'tt_content',
             'recordUid' => 99999,
         ]);
@@ -111,7 +111,7 @@ final class LocalizationControllerTest extends FunctionalTestCase
         $backendUser = $this->setUpBackendUser(1);
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
 
-        $request = (new ServerRequest())->withQueryParams([
+        $request = new ServerRequest()->withQueryParams([
             'recordType' => 'tt_content',
             // Missing recordUid
         ]);
@@ -128,7 +128,7 @@ final class LocalizationControllerTest extends FunctionalTestCase
         $backendUser = $this->setUpBackendUser(1);
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
 
-        $request = (new ServerRequest())->withQueryParams([
+        $request = new ServerRequest()->withQueryParams([
             'recordType' => 'tt_content',
             'recordUid' => 1,
         ]);
@@ -154,7 +154,7 @@ final class LocalizationControllerTest extends FunctionalTestCase
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
 
         // Record 1 exists in default language (0) and has translation to Danish (1)
-        $request = (new ServerRequest())->withQueryParams([
+        $request = new ServerRequest()->withQueryParams([
             'recordType' => 'tt_content',
             'recordUid' => 1,
             'targetLanguage' => self::LANGUAGE_PRESETS['DE']['id'],
@@ -177,7 +177,7 @@ final class LocalizationControllerTest extends FunctionalTestCase
         $backendUser = $this->setUpBackendUser(1);
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
 
-        $request = (new ServerRequest())->withQueryParams([
+        $request = new ServerRequest()->withQueryParams([
             'recordType' => 'tt_content',
             'recordUid' => 1,
             'targetLanguage' => self::LANGUAGE_PRESETS['DA']['id'],
@@ -212,7 +212,7 @@ final class LocalizationControllerTest extends FunctionalTestCase
             ['uid' => 1]
         );
 
-        $request = (new ServerRequest())->withQueryParams([
+        $request = new ServerRequest()->withQueryParams([
             'recordType' => 'tt_content',
             'recordUid' => 1,
             'targetLanguage' => self::LANGUAGE_PRESETS['DA']['id'],
@@ -251,7 +251,7 @@ final class LocalizationControllerTest extends FunctionalTestCase
 
         // Now check available modes for a different record on the same page
         // Should only return TRANSLATE to prevent mixing modes
-        $request = (new ServerRequest())->withQueryParams([
+        $request = new ServerRequest()->withQueryParams([
             'recordType' => 'tt_content',
             'recordUid' => 2, // Different record on same page
             'targetLanguage' => self::LANGUAGE_PRESETS['DA']['id'],
@@ -273,7 +273,7 @@ final class LocalizationControllerTest extends FunctionalTestCase
         $backendUser = $this->setUpBackendUser(1);
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
 
-        $request = (new ServerRequest())->withQueryParams([
+        $request = new ServerRequest()->withQueryParams([
             'recordType' => 'tt_content',
             'recordUid' => 1,
             'sourceLanguage' => self::LANGUAGE_PRESETS['EN']['id'],
@@ -300,7 +300,7 @@ final class LocalizationControllerTest extends FunctionalTestCase
         $backendUser = $this->setUpBackendUser(1);
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
 
-        $request = (new ServerRequest())->withQueryParams([
+        $request = new ServerRequest()->withQueryParams([
             'recordType' => 'tt_content',
             'recordUid' => 1,
             'sourceLanguage' => self::LANGUAGE_PRESETS['EN']['id'],
@@ -320,7 +320,7 @@ final class LocalizationControllerTest extends FunctionalTestCase
         $backendUser = $this->setUpBackendUser(1);
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
 
-        $request = (new ServerRequest())->withQueryParams([
+        $request = new ServerRequest()->withQueryParams([
             'pageUid' => 1,
             'targetLanguage' => self::LANGUAGE_PRESETS['DA']['id'],
             'sourceLanguage' => self::LANGUAGE_PRESETS['EN']['id'],
@@ -351,7 +351,7 @@ final class LocalizationControllerTest extends FunctionalTestCase
         $actionService = new ActionService();
         $actionService->deleteRecord('tt_content', 2);
 
-        $request = (new ServerRequest())->withQueryParams([
+        $request = new ServerRequest()->withQueryParams([
             'pageUid' => 1,
             'targetLanguage' => self::LANGUAGE_PRESETS['DA']['id'],
             'sourceLanguage' => self::LANGUAGE_PRESETS['EN']['id'],
@@ -379,7 +379,7 @@ final class LocalizationControllerTest extends FunctionalTestCase
         $actionService = new ActionService();
         $actionService->moveRecord('tt_content', 2, 2);
 
-        $request = (new ServerRequest())->withQueryParams([
+        $request = new ServerRequest()->withQueryParams([
             'pageUid' => 1,
             'targetLanguage' => self::LANGUAGE_PRESETS['DA']['id'],
             'sourceLanguage' => self::LANGUAGE_PRESETS['EN']['id'],
@@ -402,7 +402,7 @@ final class LocalizationControllerTest extends FunctionalTestCase
         $backendUser = $this->setUpBackendUser(1);
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
 
-        $request = (new ServerRequest())->withParsedBody([
+        $request = new ServerRequest()->withParsedBody([
             'recordType' => 'tt_content',
             'recordUid' => 1,
             'data' => [
@@ -430,7 +430,7 @@ final class LocalizationControllerTest extends FunctionalTestCase
         $backendUser = $this->setUpBackendUser(1);
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
 
-        $request = (new ServerRequest())->withParsedBody([
+        $request = new ServerRequest()->withParsedBody([
             'recordType' => 'tt_content',
             'recordUid' => 1,
             'data' => [
@@ -451,7 +451,7 @@ final class LocalizationControllerTest extends FunctionalTestCase
         $backendUser = $this->setUpBackendUser(1);
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
 
-        $request = (new ServerRequest())->withParsedBody([
+        $request = new ServerRequest()->withParsedBody([
             'recordType' => 'tt_content',
             'recordUid' => 1,
             'data' => [
@@ -474,7 +474,7 @@ final class LocalizationControllerTest extends FunctionalTestCase
         $backendUser = $this->setUpBackendUser(1);
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
 
-        $request = (new ServerRequest())->withParsedBody([
+        $request = new ServerRequest()->withParsedBody([
             'recordType' => 'pages',
             'recordUid' => 1,
             'data' => [
@@ -525,7 +525,7 @@ final class LocalizationControllerTest extends FunctionalTestCase
         $actionService->localizeRecord('pages', 1, self::LANGUAGE_PRESETS['DE']['id']);
 
         // German page has no content yet, so all available languages should be offered
-        $request = (new ServerRequest())->withQueryParams([
+        $request = new ServerRequest()->withQueryParams([
             'recordType' => 'pages',
             'recordUid' => 1,
             'targetLanguage' => self::LANGUAGE_PRESETS['DE']['id'],

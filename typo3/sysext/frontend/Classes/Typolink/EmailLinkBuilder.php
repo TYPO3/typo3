@@ -44,7 +44,7 @@ class EmailLinkBuilder implements LoggerAwareInterface, TypolinkBuilderInterface
         string $linkText = '',
     ): LinkResultInterface {
         [$url, $linkText, $attributes] = $this->processEmailLink($linkDetails['email'], $linkText, $linkDetails, $request);
-        return (new LinkResult(LinkService::TYPE_EMAIL, $url))
+        return new LinkResult(LinkService::TYPE_EMAIL, $url)
             ->withTarget($linkDetails['target'] ?? '')
             ->withLinkConfiguration($configuration)
             ->withLinkText($linkText)

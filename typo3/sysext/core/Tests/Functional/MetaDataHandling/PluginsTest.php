@@ -62,7 +62,7 @@ final class PluginsTest extends AbstractTestCase
     {
         $this->setUpFrontendRootPage(1, ['EXT:core/Tests/Functional/Fixtures/Extensions/test_meta/Configuration/TypoScript/page' . $pageId . '.typoscript']);
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest('http://localhost/'))->withQueryParameters([
+            new InternalRequest('http://localhost/')->withQueryParameters([
                 'id' => $pageId,
             ])
         );
@@ -99,7 +99,7 @@ final class PluginsTest extends AbstractTestCase
 
         // First hit to create a cached version
         $uncachedResponse = $this->executeFrontendSubRequest(
-            (new InternalRequest('http://localhost/'))->withQueryParameters([
+            new InternalRequest('http://localhost/')->withQueryParameters([
                 'id' => $pageId,
             ])
         );
@@ -111,7 +111,7 @@ final class PluginsTest extends AbstractTestCase
 
         // Second hit to check the cached version
         $cachedResponse = $this->executeFrontendSubRequest(
-            (new InternalRequest('http://localhost/'))->withQueryParameters([
+            new InternalRequest('http://localhost/')->withQueryParameters([
                 'id' => $pageId,
             ])
         );

@@ -143,7 +143,7 @@ final class AnalyzeCommand extends Command
      */
     private function validateTemplateFiles(array $templates): array
     {
-        return (new TemplateValidator())->validateTemplateFiles(
+        return new TemplateValidator()->validateTemplateFiles(
             $templates,
             $this->renderingContextFactory->create(),
         );

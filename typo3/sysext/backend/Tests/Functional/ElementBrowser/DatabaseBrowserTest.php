@@ -87,7 +87,7 @@ final class DatabaseBrowserTest extends FunctionalTestCase
         // module identifier.
         $this->backendUser->pushModuleData('records', ['languages' => [1]]);
 
-        $request = (new ServerRequest('http://localhost/wizard/record/browse'))
+        $request = new ServerRequest('http://localhost/wizard/record/browse')
             ->withQueryParams([
                 'mode' => 'db',
                 'expandPage' => 1100,

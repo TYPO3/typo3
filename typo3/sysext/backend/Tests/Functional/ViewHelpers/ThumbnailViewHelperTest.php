@@ -42,7 +42,7 @@ final class ThumbnailViewHelperTest extends FunctionalTestCase
         $context->getVariableProvider()->add('imageObject', $file);
         $expected = '<img src="fileadmin/_processed_/3/7/preview_ImageViewHelperFalTest_252565634e.jpg" width="64" height="48" alt="alt text from metadata" />';
 
-        self::assertEquals($expected, (new TemplateView($context))->render());
+        self::assertEquals($expected, new TemplateView($context)->render());
     }
 
     #[Test]
@@ -57,7 +57,7 @@ final class ThumbnailViewHelperTest extends FunctionalTestCase
         $context->getVariableProvider()->add('imageObject', $file);
         $expected = '<img src="fileadmin/_processed_/3/7/preview_ImageViewHelperFalTest_252565634e.jpg" width="64" height="48" alt="alt text from metadata" />';
 
-        self::assertEquals($expected, (new TemplateView($context))->render());
+        self::assertEquals($expected, new TemplateView($context)->render());
     }
 
     #[Test]

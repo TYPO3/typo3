@@ -63,7 +63,7 @@ final class TotpTest extends UnitTestCase
 
         self::assertEquals(
             $expectedTotp,
-            (new Totp($this->secret, ...$arguments))->generateTotp($counter)
+            new Totp($this->secret, ...$arguments)->generateTotp($counter)
         );
     }
 
@@ -76,7 +76,7 @@ final class TotpTest extends UnitTestCase
         GeneralUtility::setSingletonInstance(Context::class, $context);
 
         self::assertTrue(
-            (new Totp($this->secret, ...$arguments))->verifyTotp($totp)
+            new Totp($this->secret, ...$arguments)->verifyTotp($totp)
         );
     }
 

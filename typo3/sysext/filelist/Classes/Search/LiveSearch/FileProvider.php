@@ -105,7 +105,7 @@ final class FileProvider implements SearchProviderInterface
             }
             $actions['show'] = $this->buildShowInListAction($parentFolderIdentifier, $searchDemand->getQuery());
 
-            $resultItem = (new ResultItem(self::class))
+            $resultItem = new ResultItem(self::class)
                 ->setItemTitle($file->getName())
                 ->setTypeLabel($this->languageService->sL('filelist.messages:live_search.file_provider.type_label'))
                 ->setIcon($this->iconFactory->getIconForResource($file, IconSize::SMALL))
@@ -145,7 +145,7 @@ final class FileProvider implements SearchProviderInterface
             'module' => 'media_management',
         ]);
 
-        return (new ResultItemAction('edit'))
+        return new ResultItemAction('edit')
             ->setLabel($this->languageService->sL('core.core:cm.editMetadata'))
             ->setIcon($this->iconFactory->getIcon('actions-open', IconSize::SMALL))
             ->setUrl($url);
@@ -158,7 +158,7 @@ final class FileProvider implements SearchProviderInterface
             'searchTerm' => $query,
         ]);
 
-        return (new ResultItemAction('show'))
+        return new ResultItemAction('show')
             ->setLabel($this->languageService->sL('filelist.messages:live_search.file_provider.show_in_list'))
             ->setIcon($this->iconFactory->getIcon('actions-list', IconSize::SMALL))
             ->setUrl($url);

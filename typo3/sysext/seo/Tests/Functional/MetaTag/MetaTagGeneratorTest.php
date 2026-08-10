@@ -198,7 +198,7 @@ final class MetaTagGeneratorTest extends FunctionalTestCase
 
     private function determineGraphicMagickBinaryPath(): string
     {
-        $values = (new GraphicsMagickPreset())->getConfigurationValues();
+        $values = new GraphicsMagickPreset()->getConfigurationValues();
         return $values['GFX/processor_path'] ?? $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_path'];
     }
 

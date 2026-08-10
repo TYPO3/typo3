@@ -35,7 +35,7 @@ final class EditRecordViewHelperTest extends FunctionalTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->request = (new ServerRequest('https://www.example.com/'))
+        $this->request = new ServerRequest('https://www.example.com/')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('normalizedParams', new NormalizedParams([], [], '', ''));
     }
@@ -46,7 +46,7 @@ final class EditRecordViewHelperTest extends FunctionalTestCase
         $context = $this->get(RenderingContextFactory::class)->create([], $this->request);
         $context->getViewHelperResolver()->addNamespace('be', 'TYPO3\\CMS\\Backend\\ViewHelpers');
         $context->getTemplatePaths()->setTemplateSource('<be:link.editRecord uid="42" table="a_table">edit record a_table:42</be:link.editRecord>');
-        $result = urldecode((new TemplateView($context))->render());
+        $result = urldecode(new TemplateView($context)->render());
 
         self::assertStringContainsString('/typo3/record/edit', $result);
         self::assertStringContainsString('edit[a_table][42]=edit', $result);
@@ -58,7 +58,7 @@ final class EditRecordViewHelperTest extends FunctionalTestCase
         $context = $this->get(RenderingContextFactory::class)->create([], $this->request);
         $context->getViewHelperResolver()->addNamespace('be', 'TYPO3\\CMS\\Backend\\ViewHelpers');
         $context->getTemplatePaths()->setTemplateSource("{be:link.editRecord(uid: 21, table: 'b_table')}");
-        $result = urldecode((new TemplateView($context))->render());
+        $result = urldecode(new TemplateView($context)->render());
 
         self::assertStringContainsString('/typo3/record/edit', $result);
         self::assertStringContainsString('edit[b_table][21]=edit', $result);
@@ -70,7 +70,7 @@ final class EditRecordViewHelperTest extends FunctionalTestCase
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getViewHelperResolver()->addNamespace('be', 'TYPO3\\CMS\\Backend\\ViewHelpers');
         $context->getTemplatePaths()->setTemplateSource('<be:link.editRecord uid="43" table="c_table" returnUrl="foo/bar">edit record c_table:43</be:link.editRecord>');
-        $result = urldecode((new TemplateView($context))->render());
+        $result = urldecode(new TemplateView($context)->render());
 
         self::assertStringContainsString('/typo3/record/edit', $result);
         self::assertStringContainsString('edit[c_table][43]=edit', $result);
@@ -83,7 +83,7 @@ final class EditRecordViewHelperTest extends FunctionalTestCase
         $context = $this->get(RenderingContextFactory::class)->create([], $this->request);
         $context->getViewHelperResolver()->addNamespace('be', 'TYPO3\\CMS\\Backend\\ViewHelpers');
         $context->getTemplatePaths()->setTemplateSource('<be:link.editRecord uid="43" table="c_table" fields="canonical_url">edit record c_table:42</be:link.editRecord>');
-        $result = urldecode((new TemplateView($context))->render());
+        $result = urldecode(new TemplateView($context)->render());
 
         self::assertStringContainsString('/typo3/record/edit', $result);
         self::assertStringContainsString('edit[c_table][43]=edit', $result);
@@ -96,7 +96,7 @@ final class EditRecordViewHelperTest extends FunctionalTestCase
         $context = $this->get(RenderingContextFactory::class)->create([], $this->request);
         $context->getViewHelperResolver()->addNamespace('be', 'TYPO3\\CMS\\Backend\\ViewHelpers');
         $context->getTemplatePaths()->setTemplateSource('<be:link.editRecord uid="43" table="c_table" fields="canonical_url,title">edit record c_table:42</be:link.editRecord>');
-        $result = urldecode((new TemplateView($context))->render());
+        $result = urldecode(new TemplateView($context)->render());
 
         self::assertStringContainsString('/typo3/record/edit', $result);
         self::assertStringContainsString('edit[c_table][43]=edit', $result);
@@ -110,7 +110,7 @@ final class EditRecordViewHelperTest extends FunctionalTestCase
         $context = $this->get(RenderingContextFactory::class)->create([], $this->request);
         $context->getViewHelperResolver()->addNamespace('be', 'TYPO3\\CMS\\Backend\\ViewHelpers');
         $context->getTemplatePaths()->setTemplateSource('<f:for each="{4711:\'43\'}" as="i" iteration="iterator" key="k"><be:link.editRecord uid="{i}" table="c_table" fields="canonical_url,title">{k}</be:link.editRecord></f:for>');
-        $result = urldecode((new TemplateView($context))->render());
+        $result = urldecode(new TemplateView($context)->render());
 
         self::assertStringContainsString('/typo3/record/edit', $result);
         self::assertStringContainsString('edit[c_table][43]=edit', $result);
@@ -128,7 +128,7 @@ final class EditRecordViewHelperTest extends FunctionalTestCase
         $context = $this->get(RenderingContextFactory::class)->create([], $this->request);
         $context->getViewHelperResolver()->addNamespace('be', 'TYPO3\\CMS\\Backend\\ViewHelpers');
         $context->getTemplatePaths()->setTemplateSource('<be:link.editRecord uid="-42" table="c_table">edit record c_table:-42</be:link.editRecord>');
-        (new TemplateView($context))->render();
+        new TemplateView($context)->render();
     }
 
     #[Test]
@@ -137,7 +137,7 @@ final class EditRecordViewHelperTest extends FunctionalTestCase
         $context = $this->get(RenderingContextFactory::class)->create([], $this->request);
         $context->getViewHelperResolver()->addNamespace('be', 'TYPO3\\CMS\\Backend\\ViewHelpers');
         $context->getTemplatePaths()->setTemplateSource('<be:link.editRecord uid="42" table="a_table" contextual="true">edit record a_table:42</be:link.editRecord>');
-        $result = urldecode((new TemplateView($context))->render());
+        $result = urldecode(new TemplateView($context)->render());
 
         self::assertStringContainsString('<typo3-backend-contextual-record-edit-trigger', $result);
         self::assertStringContainsString('/typo3/record/edit/contextual', $result);
@@ -153,7 +153,7 @@ final class EditRecordViewHelperTest extends FunctionalTestCase
         $context = $this->get(RenderingContextFactory::class)->create([], $this->request);
         $context->getViewHelperResolver()->addNamespace('be', 'TYPO3\\CMS\\Backend\\ViewHelpers');
         $context->getTemplatePaths()->setTemplateSource('<be:link.editRecord uid="43" table="c_table" fields="canonical_url,title" returnUrl="foo/bar" contextual="true">edit record c_table:43</be:link.editRecord>');
-        $result = urldecode((new TemplateView($context))->render());
+        $result = urldecode(new TemplateView($context)->render());
 
         self::assertStringContainsString('/typo3/record/edit/contextual', $result);
         self::assertStringContainsString('/typo3/record/edit?', $result);
@@ -169,7 +169,7 @@ final class EditRecordViewHelperTest extends FunctionalTestCase
         $context = $this->get(RenderingContextFactory::class)->create([], $this->request);
         $context->getViewHelperResolver()->addNamespace('be', 'TYPO3\\CMS\\Backend\\ViewHelpers');
         $context->getTemplatePaths()->setTemplateSource('<be:link.editRecord uid="43" table="c_table" contextual="true" class="btn btn-default" data="{action: \'edit\'}">edit record c_table:43</be:link.editRecord>');
-        $result = urldecode((new TemplateView($context))->render());
+        $result = urldecode(new TemplateView($context)->render());
 
         self::assertStringContainsString('class="btn btn-default"', $result);
         self::assertStringContainsString('data-action="edit"', $result);

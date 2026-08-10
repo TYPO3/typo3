@@ -338,7 +338,7 @@ final class BreadcrumbTest extends FunctionalTestCase
 
         $context = new BreadcrumbContext($pageRecord);
 
-        $request = (new ServerRequest('https://example.com/typo3/'))
+        $request = new ServerRequest('https://example.com/typo3/')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withQueryParams([
                 'id' => 1,
@@ -576,7 +576,7 @@ final class BreadcrumbTest extends FunctionalTestCase
         $moduleProvider = $this->get(ModuleProvider::class);
         $module = $moduleProvider->getModule($moduleIdentifier, $GLOBALS['BE_USER']);
 
-        $request = (new ServerRequest('https://example.com/typo3/module/' . $moduleIdentifier))
+        $request = new ServerRequest('https://example.com/typo3/module/' . $moduleIdentifier)
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('route', new Route('/module/' . $moduleIdentifier, [
                 '_identifier' => $moduleIdentifier,
@@ -611,7 +611,7 @@ final class BreadcrumbTest extends FunctionalTestCase
      */
     private function createMockRequestForRoute(Route $route, ?ModuleInterface $module, array $queryParams): ServerRequestInterface
     {
-        $request = (new ServerRequest('https://example.com/typo3' . $route->getPath()))
+        $request = new ServerRequest('https://example.com/typo3' . $route->getPath())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('route', $route)
             ->withAttribute('routing', new RouteResult($route))

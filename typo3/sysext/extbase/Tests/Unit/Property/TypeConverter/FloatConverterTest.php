@@ -28,19 +28,19 @@ final class FloatConverterTest extends UnitTestCase
     #[Test]
     public function convertFromShouldCastTheStringToFloat(): void
     {
-        self::assertSame(1.5, (new FloatConverter())->convertFrom('1.5', 'float'));
+        self::assertSame(1.5, new FloatConverter()->convertFrom('1.5', 'float'));
     }
 
     #[Test]
     public function convertFromReturnsNullIfEmptyStringSpecified(): void
     {
-        self::assertNull((new FloatConverter())->convertFrom('', 'float'));
+        self::assertNull(new FloatConverter()->convertFrom('', 'float'));
     }
 
     #[Test]
     public function convertFromShouldAcceptIntegers(): void
     {
-        self::assertSame((float)123, (new FloatConverter())->convertFrom(123, 'float'));
+        self::assertSame((float)123, new FloatConverter()->convertFrom(123, 'float'));
     }
 
     #[Test]
@@ -60,18 +60,18 @@ final class FloatConverterTest extends UnitTestCase
                 self::assertSame($key, $arguments[1]);
                 return $arguments[2];
             });
-        self::assertSame(1024.42, (new FloatConverter())->convertFrom('1.024,42', 'float', [], $mockMappingConfiguration));
+        self::assertSame(1024.42, new FloatConverter()->convertFrom('1.024,42', 'float', [], $mockMappingConfiguration));
     }
 
     #[Test]
     public function convertFromReturnsAnErrorIfSpecifiedStringIsNotNumeric(): void
     {
-        self::assertInstanceOf(Error::class, (new FloatConverter())->convertFrom('not numeric', 'float'));
+        self::assertInstanceOf(Error::class, new FloatConverter()->convertFrom('not numeric', 'float'));
     }
 
     #[Test]
     public function getSourceChildPropertiesToBeConvertedShouldReturnEmptyArray(): void
     {
-        self::assertEquals([], (new FloatConverter())->getSourceChildPropertiesToBeConverted('myString'));
+        self::assertEquals([], new FloatConverter()->getSourceChildPropertiesToBeConverted('myString'));
     }
 }

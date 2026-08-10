@@ -497,7 +497,7 @@ final class SvgImageViewHelperTest extends FunctionalTestCase
     {
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource($template);
-        $actual = (new TemplateView($context))->render();
+        $actual = new TemplateView($context)->render();
         self::assertMatchesRegularExpression($this->resolveResourcePlaceholders($expected), $actual);
 
         $dumpTable = 'sys_file_processedfile';

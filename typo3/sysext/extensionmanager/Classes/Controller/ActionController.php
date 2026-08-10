@@ -142,7 +142,7 @@ class ActionController extends AbstractController
         $this->assertAllowedHttpMethod($this->request, 'POST');
 
         $this->managementService->setSkipDependencyCheck(true);
-        return (new ForwardResponse('toggleExtensionInstallationState'))->withArguments(['extensionKey' => $extensionKey]);
+        return new ForwardResponse('toggleExtensionInstallationState')->withArguments(['extensionKey' => $extensionKey]);
     }
 
     /**

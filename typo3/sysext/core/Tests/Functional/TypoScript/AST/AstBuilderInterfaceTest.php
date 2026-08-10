@@ -38,7 +38,7 @@ final class AstBuilderInterfaceTest extends FunctionalTestCase
     #[Test]
     public function notModifiedValueKeepsNullValue(): void
     {
-        $tokens = (new LosslessTokenizer())->tokenize('foo := doesNotExistFunction()');
+        $tokens = new LosslessTokenizer()->tokenize('foo := doesNotExistFunction()');
         $astBuilder = $this->get(AstBuilder::class);
         $ast = $astBuilder->build($tokens, new RootNode());
         self::assertNull($ast->getChildByName('foo')->getValue());
@@ -48,7 +48,7 @@ final class AstBuilderInterfaceTest extends FunctionalTestCase
     #[Test]
     public function notModifiedValueKeepsNullValueCommentAware(): void
     {
-        $tokens = (new LosslessTokenizer())->tokenize('foo := doesNotExistFunction()');
+        $tokens = new LosslessTokenizer()->tokenize('foo := doesNotExistFunction()');
         $astBuilder = $this->get(CommentAwareAstBuilder::class);
         $ast = $astBuilder->build($tokens, new RootNode());
         self::assertNull($ast->getChildByName('foo')->getValue());
@@ -58,7 +58,7 @@ final class AstBuilderInterfaceTest extends FunctionalTestCase
     #[Test]
     public function notModifiedValueKeepsOriginalValue(): void
     {
-        $tokens = (new LosslessTokenizer())->tokenize(
+        $tokens = new LosslessTokenizer()->tokenize(
             "foo = originalValue\n"
             . 'foo := doesNotExistFunction()'
         );
@@ -71,7 +71,7 @@ final class AstBuilderInterfaceTest extends FunctionalTestCase
     #[Test]
     public function notModifiedValueKeepsOriginalValueCommentAware(): void
     {
-        $tokens = (new LosslessTokenizer())->tokenize(
+        $tokens = new LosslessTokenizer()->tokenize(
             "foo = originalValue\n"
             . 'foo := doesNotExistFunction()'
         );
@@ -84,7 +84,7 @@ final class AstBuilderInterfaceTest extends FunctionalTestCase
     #[Test]
     public function modifiedValueUpdatesOriginalValue(): void
     {
-        $tokens = (new LosslessTokenizer())->tokenize(
+        $tokens = new LosslessTokenizer()->tokenize(
             "foo = originalValue\n"
             . 'foo := testFunction(modifierArgument)'
         );
@@ -97,7 +97,7 @@ final class AstBuilderInterfaceTest extends FunctionalTestCase
     #[Test]
     public function modifiedValueUpdatesOriginalValueCommentAware(): void
     {
-        $tokens = (new LosslessTokenizer())->tokenize(
+        $tokens = new LosslessTokenizer()->tokenize(
             "foo = originalValue\n"
             . 'foo := testFunction(modifierArgument)'
         );

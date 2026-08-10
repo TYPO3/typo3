@@ -57,7 +57,7 @@ final class ModuleRegistryTest extends UnitTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1642375889);
 
-        (new ModuleRegistry([]))->getModule('a_module');
+        new ModuleRegistry([])->getModule('a_module');
     }
 
     #[Test]
@@ -179,13 +179,13 @@ final class ModuleRegistryTest extends UnitTestCase
     {
         self::assertEquals(
             ['a', 'b', 'b_a', 'b_b', 'c'],
-            array_keys((new ModuleRegistry([
+            array_keys(new ModuleRegistry([
                 $this->createModule('a'),
                 $this->createModule('b'),
                 $this->createModule('b_a', ['parent' => 'b']),
                 $this->createModule('b_b', ['parent' => 'b']),
                 $this->createModule('c'),
-            ]))->getModules())
+            ])->getModules())
         );
     }
 
@@ -194,14 +194,14 @@ final class ModuleRegistryTest extends UnitTestCase
     {
         self::assertEquals(
             ['a', 'b', 'c', 'd', 'f', 'e'],
-            array_keys((new ModuleRegistry([
+            array_keys(new ModuleRegistry([
                 $this->createModule('f'),
                 $this->createModule('c', ['position' => ['after' => '*']]),
                 $this->createModule('d', ['position' => ['bottom']]),
                 $this->createModule('a', ['position' => ['top']]),
                 $this->createModule('b', ['position' => ['before' => '*']]),
                 $this->createModule('e'),
-            ]))->getModules())
+            ])->getModules())
         );
     }
 
@@ -211,7 +211,7 @@ final class ModuleRegistryTest extends UnitTestCase
         self::assertEquals(
             // @todo Shouldn't this better be: "a", "a_a", "a_a_a", "b", "c", "d", "e" ?
             ['a', 'a_a', 'a_a_a', 'b', 'd', 'c', 'e'],
-            array_keys((new ModuleRegistry([
+            array_keys(new ModuleRegistry([
                 $this->createModule('a'),
                 $this->createModule('a_a', ['parent' => 'a']),
                 $this->createModule('a_a_a', ['parent' => 'a_a']),
@@ -219,7 +219,7 @@ final class ModuleRegistryTest extends UnitTestCase
                 $this->createModule('c', ['position' => ['after' => 'a']]),
                 $this->createModule('d', ['position' => ['after' => 'b']]),
                 $this->createModule('e'),
-            ]))->getModules())
+            ])->getModules())
         );
     }
 
@@ -229,13 +229,13 @@ final class ModuleRegistryTest extends UnitTestCase
         self::assertEquals(
             // @todo Shouldn't this better be: "a", "e", "c", "b", "d" ?
             ['a', 'b', 'd', 'c', 'e'],
-            array_keys((new ModuleRegistry([
+            array_keys(new ModuleRegistry([
                 $this->createModule('a'),
                 $this->createModule('b', ['position' => ['after' => 'a']]),
                 $this->createModule('c', ['position' => ['after' => 'a']]),
                 $this->createModule('d', ['position' => ['after' => 'b']]),
                 $this->createModule('e', ['position' => ['before' => 'c']]),
-            ]))->getModules())
+            ])->getModules())
         );
     }
 

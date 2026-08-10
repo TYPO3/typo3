@@ -37,7 +37,7 @@ final class MiddlewareDispatcherTest extends UnitTestCase
         $kernel = new class implements RequestHandlerInterface {
             public function handle(ServerRequestInterface $request): ResponseInterface
             {
-                return (new Response())->withStatus(204);
+                return new Response()->withStatus(204);
             }
         };
 
@@ -53,7 +53,7 @@ final class MiddlewareDispatcherTest extends UnitTestCase
         $kernel = new class implements RequestHandlerInterface {
             public function handle(ServerRequestInterface $request): ResponseInterface
             {
-                return (new Response())
+                return new Response()
                     ->withStatus(204)
                     ->withHeader('X-SEQ-PRE-REQ-HANDLER', $request->getHeader('X-SEQ-PRE-REQ-HANDLER'));
             }
@@ -102,7 +102,7 @@ final class MiddlewareDispatcherTest extends UnitTestCase
         $middleware = new class implements MiddlewareInterface {
             public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
             {
-                return (new Response())->withStatus(404);
+                return new Response()->withStatus(404);
             }
         };
 
@@ -145,7 +145,7 @@ final class MiddlewareDispatcherTest extends UnitTestCase
         $middleware = new class implements MiddlewareInterface {
             public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
             {
-                return (new Response())->withStatus(204);
+                return new Response()->withStatus(204);
             }
         };
 
@@ -182,7 +182,7 @@ final class MiddlewareDispatcherTest extends UnitTestCase
             public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
             {
                 if ($request->hasHeader('X-NESTED')) {
-                    return (new Response())->withStatus(204)->withAddedHeader('X-TRACE', 'nested');
+                    return new Response()->withStatus(204)->withAddedHeader('X-TRACE', 'nested');
                 }
 
                 $response = $this->dispatcher->handle($request->withAddedHeader('X-NESTED', '1'));
@@ -210,7 +210,7 @@ final class MiddlewareDispatcherTest extends UnitTestCase
         $middleware = new class implements MiddlewareInterface {
             public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
             {
-                return (new Response())->withStatus(404);
+                return new Response()->withStatus(404);
             }
         };
 

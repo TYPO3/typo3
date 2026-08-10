@@ -97,7 +97,7 @@ final readonly class TcaFactory
 
     private function getTcaCacheIdentifier(): string
     {
-        return (new PackageDependentCacheIdentifier($this->packageManager))->withPrefix('tca_base')->toString();
+        return new PackageDependentCacheIdentifier($this->packageManager)->withPrefix('tca_base')->toString();
     }
 
     private function loadConfigurationTcaFiles(): array
@@ -132,7 +132,7 @@ final readonly class TcaFactory
 
     private function enrichTca(array $tca): array
     {
-        return (new TcaEnrichment())->enrich($tca);
+        return new TcaEnrichment()->enrich($tca);
     }
 
     private function loadConfigurationTcaOverridesFiles(array $tca): array
@@ -178,7 +178,7 @@ final readonly class TcaFactory
 
     private function prepareTca(array $tca): array
     {
-        return (new TcaPreparation())->prepare($tca);
+        return new TcaPreparation()->prepare($tca);
     }
 
     private function dispatchBeforeTcaOverridesEvent($tca): array

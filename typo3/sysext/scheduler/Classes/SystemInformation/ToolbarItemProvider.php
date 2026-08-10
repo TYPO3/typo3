@@ -81,7 +81,7 @@ final class ToolbarItemProvider
                 $end = DateTimeFactory::createFromTimestamp($this->lastRunInformation['end']);
                 $startDate = $start->format($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy']);
                 $startTime = $start->format($GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm']);
-                $duration = (new DateFormatter())->formatDateInterval(
+                $duration = new DateFormatter()->formatDateInterval(
                     $end->diff($start, true),
                     $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears')
                 );

@@ -35,7 +35,7 @@ final class TextExtractorPassTest extends UnitTestCase
         $definition->addTag(AsTextExtractor::TAG_NAME);
         $container->setDefinition(PlainTextExtractor::class, $definition);
 
-        (new TextExtractorPass(AsTextExtractor::TAG_NAME))->process($container);
+        new TextExtractorPass(AsTextExtractor::TAG_NAME)->process($container);
 
         self::assertTrue($container->hasDefinition(PlainTextExtractor::class));
     }
@@ -51,6 +51,6 @@ final class TextExtractorPassTest extends UnitTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1784879763);
 
-        (new TextExtractorPass(AsTextExtractor::TAG_NAME))->process($container);
+        new TextExtractorPass(AsTextExtractor::TAG_NAME)->process($container);
     }
 }

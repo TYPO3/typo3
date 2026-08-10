@@ -186,4 +186,4 @@ final readonly class CheckIntegritySetLabels
     }
 }
 
-exit((new CheckIntegritySetLabels())->execute());
+exit(new CheckIntegritySetLabels()->execute());

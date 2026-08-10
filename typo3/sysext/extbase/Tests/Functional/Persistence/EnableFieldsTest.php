@@ -56,27 +56,27 @@ final class EnableFieldsTest extends FunctionalTestCase
     #[Test]
     public function protectedRecordsNotFoundIfNoUserLoggedIn(): void
     {
-        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(1));
+        $response = $this->executeFrontendSubRequest(new InternalRequest()->withPageId(1));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections('Extbase:list()');
-        self::assertThat($responseSections, (new HasRecordConstraint())
+        self::assertThat($responseSections, new HasRecordConstraint()
             ->setTable(self::TABLE_Blog)->setField('title')->setValues('Blog1'));
     }
 
     #[Test]
     public function onlyReturnProtectedRecordsForTheFirstUserGroup(): void
     {
-        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(1), (new InternalRequestContext())->withFrontendUserId(1));
+        $response = $this->executeFrontendSubRequest(new InternalRequest()->withPageId(1), new InternalRequestContext()->withFrontendUserId(1));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections('Extbase:list()');
-        self::assertThat($responseSections, (new HasRecordConstraint())
+        self::assertThat($responseSections, new HasRecordConstraint()
             ->setTable(self::TABLE_Blog)->setField('title')->setValues('Blog1', 'Blog2'));
     }
 
     #[Test]
     public function onlyReturnProtectedRecordsForTheSecondUserGroup(): void
     {
-        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(1), (new InternalRequestContext())->withFrontendUserId(2));
+        $response = $this->executeFrontendSubRequest(new InternalRequest()->withPageId(1), new InternalRequestContext()->withFrontendUserId(2));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections('Extbase:list()');
-        self::assertThat($responseSections, (new HasRecordConstraint())
+        self::assertThat($responseSections, new HasRecordConstraint()
             ->setTable(self::TABLE_Blog)->setField('title')->setValues('Blog1', 'Blog3'));
     }
 
@@ -84,15 +84,15 @@ final class EnableFieldsTest extends FunctionalTestCase
     public function onlyOwnProtectedRecordsWithQueryCacheInvolvedAreReturned(): void
     {
         // first request to fill the query cache
-        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(1), (new InternalRequestContext())->withFrontendUserId(1));
+        $response = $this->executeFrontendSubRequest(new InternalRequest()->withPageId(1), new InternalRequestContext()->withFrontendUserId(1));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections('Extbase:list()');
-        self::assertThat($responseSections, (new HasRecordConstraint())
+        self::assertThat($responseSections, new HasRecordConstraint()
             ->setTable(self::TABLE_Blog)->setField('title')->setValues('Blog1', 'Blog2'));
 
         // second request with other frontenduser
-        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(1), (new InternalRequestContext())->withFrontendUserId(2));
+        $response = $this->executeFrontendSubRequest(new InternalRequest()->withPageId(1), new InternalRequestContext()->withFrontendUserId(2));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections('Extbase:list()');
-        self::assertThat($responseSections, (new HasRecordConstraint())
+        self::assertThat($responseSections, new HasRecordConstraint()
             ->setTable(self::TABLE_Blog)->setField('title')->setValues('Blog1', 'Blog3'));
     }
 }

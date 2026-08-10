@@ -87,7 +87,7 @@ final class PageLinkBuilderTest extends FunctionalTestCase
         // Add argument for simple enhancer and internal argument with double underscore.
         new PageArguments(1, '0', ['name' => 'benni', 'internal' => ['__argument' => 'foo']]);
 
-        $request = (new ServerRequest('https://example.com'))
+        $request = new ServerRequest('https://example.com')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withAttribute('frontend.page.information', $pageInformation)
             ->withAttribute('frontend.typoscript', $frontendTypoScript)
@@ -144,7 +144,7 @@ final class PageLinkBuilderTest extends FunctionalTestCase
         $frontendTypoScript->setSetupArray([]);
         $frontendTypoScript->setConfigArray([]);
 
-        $request = (new ServerRequest('https://example.com'))
+        $request = new ServerRequest('https://example.com')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withAttribute('frontend.page.information', $pageInformation)
             ->withAttribute('frontend.typoscript', $frontendTypoScript)
@@ -184,7 +184,7 @@ final class PageLinkBuilderTest extends FunctionalTestCase
         $site = $this->get(SiteFinder::class)->getSiteByPageId(1000);
         $germanLanguage = $site->getLanguageById(1);
 
-        $request = (new ServerRequest('https://example.com/de/'))
+        $request = new ServerRequest('https://example.com/de/')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withAttribute('site', $site)
             ->withAttribute('language', $germanLanguage);

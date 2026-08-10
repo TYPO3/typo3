@@ -40,8 +40,8 @@ final class ModeRegistryTest extends UnitTestCase
     public function latestDefaultModeIsReturned(): void
     {
         $module = JavaScriptModuleInstruction::create('@test/foo', 'bar')->invoke();
-        $firstDefaultMode = (new Mode($module))->setAsDefault();
-        $expected = (new Mode($module))->setAsDefault();
+        $firstDefaultMode = new Mode($module)->setAsDefault();
+        $expected = new Mode($module)->setAsDefault();
         $this->subject->register($firstDefaultMode)->register($expected);
         $actual = $this->subject->getDefaultMode();
 
@@ -52,7 +52,7 @@ final class ModeRegistryTest extends UnitTestCase
     public function formatCodeReturnsCorrectMode(): void
     {
         $module = JavaScriptModuleInstruction::create('@test/mode', 'formatCode')->invoke();
-        $expected = (new Mode($module))->setFormatCode('code');
+        $expected = new Mode($module)->setFormatCode('code');
         $this->subject->register($expected);
         $actual = $this->subject->getByFormatCode('code');
 
@@ -63,7 +63,7 @@ final class ModeRegistryTest extends UnitTestCase
     public function modeIsFetchedByFileExtension(): void
     {
         $module = JavaScriptModuleInstruction::create('@test/mode', 'extension')->invoke();
-        $expected = (new Mode($module))->bindToFileExtensions(['ext', 'fext']);
+        $expected = new Mode($module)->bindToFileExtensions(['ext', 'fext']);
         $this->subject->register($expected);
         $actual = $this->subject->getByFileExtension('fext');
 

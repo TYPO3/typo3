@@ -29,6 +29,6 @@ final class ConditionStopIncludeTest extends UnitTestCase
     {
         $this->expectException(\LogicException::class);
         $this->expectExceptionCode(1717691734);
-        (new ConditionStopInclude())->addChild(new FileInclude());
+        new ConditionStopInclude()->addChild(new FileInclude());
     }
 }

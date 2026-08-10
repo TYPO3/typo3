@@ -34,13 +34,13 @@ final class FormSelectTreeAjaxControllerTest extends FunctionalTestCase
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1479386729);
-        (new FormSelectTreeAjaxController(new FormDataCompiler(), $this->get(FlexFormTools::class), $this->get(TcaSchemaFactory::class)))->fetchDataAction(new ServerRequest());
+        new FormSelectTreeAjaxController(new FormDataCompiler(), $this->get(FlexFormTools::class), $this->get(TcaSchemaFactory::class))->fetchDataAction(new ServerRequest());
     }
 
     #[Test]
     public function fetchDataActionThrowsExceptionIfTcaOfTableFieldDoesNotExist(): void
     {
-        $serverRequest = (new ServerRequest())->withQueryParams([
+        $serverRequest = new ServerRequest()->withQueryParams([
             'tableName' => 'aTable',
             'fieldName' => 'aField',
         ]);
@@ -48,6 +48,6 @@ final class FormSelectTreeAjaxControllerTest extends FunctionalTestCase
         $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1479386990);
-        (new FormSelectTreeAjaxController(new FormDataCompiler(), $this->get(FlexFormTools::class), $this->get(TcaSchemaFactory::class)))->fetchDataAction($serverRequest);
+        new FormSelectTreeAjaxController(new FormDataCompiler(), $this->get(FlexFormTools::class), $this->get(TcaSchemaFactory::class))->fetchDataAction($serverRequest);
     }
 }

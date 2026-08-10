@@ -231,9 +231,9 @@ EOF;
             return $response;
         } catch (\InvalidArgumentException $e) {
             // add a 410 "gone" if invalid parameters given
-            return (new Response())->withStatus(410);
+            return new Response()->withStatus(410);
         } catch (Exception $e) {
-            return (new Response())->withStatus(404);
+            return new Response()->withStatus(404);
         }
     }
 

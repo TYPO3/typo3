@@ -35,7 +35,7 @@ final class ParentChildTranslationTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/Fixtures/parentChildTranslationExampleData.csv');
         // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
         $this->get(ConfigurationManagerInterface::class)->setRequest(
-            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
         );
 
         $query = $this->get(MainRepository::class)->createQuery();
@@ -66,7 +66,7 @@ final class ParentChildTranslationTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/Fixtures/parentChildTranslationExampleData.csv');
         // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
         $this->get(ConfigurationManagerInterface::class)->setRequest(
-            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
         );
 
         $query = $this->get(MainRepository::class)->createQuery();
@@ -101,7 +101,7 @@ final class ParentChildTranslationTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/Fixtures/parentChildTranslationExampleData.csv');
         // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
         $this->get(ConfigurationManagerInterface::class)->setRequest(
-            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
         );
 
         $query = $this->get(MainRepository::class)->createQuery();

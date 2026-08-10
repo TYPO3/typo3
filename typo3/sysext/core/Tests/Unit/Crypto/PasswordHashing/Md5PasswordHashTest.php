@@ -26,13 +26,13 @@ final class Md5PasswordHashTest extends UnitTestCase
     #[Test]
     public function getHashedPasswordReturnsNullWithEmptyPassword(): void
     {
-        self::assertNull((new Md5PasswordHash())->getHashedPassword(''));
+        self::assertNull(new Md5PasswordHash()->getHashedPassword(''));
     }
 
     #[Test]
     public function getHashedPasswordReturnsNotNullWithNonEmptyPassword(): void
     {
-        self::assertNotNull((new Md5PasswordHash())->getHashedPassword('a'));
+        self::assertNotNull(new Md5PasswordHash()->getHashedPassword('a'));
     }
 
     #[Test]
@@ -55,7 +55,7 @@ final class Md5PasswordHashTest extends UnitTestCase
     {
         $password = 'password';
         $saltedHashPassword = '$1$GNu9HdMt$RwkPb28pce4nXZfnplVZY/';
-        self::assertTrue((new Md5PasswordHash())->checkPassword($password, $saltedHashPassword));
+        self::assertTrue(new Md5PasswordHash()->checkPassword($password, $saltedHashPassword));
     }
 
     /**
@@ -66,7 +66,7 @@ final class Md5PasswordHashTest extends UnitTestCase
     {
         $password = 'password';
         $saltedHashPassword = '$1$GNu9HdMt$RwkPb28pce4nXZfnplVZY';
-        self::assertFalse((new Md5PasswordHash())->checkPassword($password, $saltedHashPassword));
+        self::assertFalse(new Md5PasswordHash()->checkPassword($password, $saltedHashPassword));
     }
 
     /**

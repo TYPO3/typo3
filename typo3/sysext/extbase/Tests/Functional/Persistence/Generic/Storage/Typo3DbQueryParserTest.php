@@ -62,7 +62,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
     {
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withAttribute('frontend.typoscript', $frontendTypoScript);
         $typo3DbQueryParser = $this->get(Typo3DbQueryParser::class);
@@ -81,7 +81,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
     {
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withAttribute('frontend.typoscript', $frontendTypoScript);
         $typo3DbQueryParser = $this->get(Typo3DbQueryParser::class);
@@ -104,7 +104,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
     {
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withAttribute('frontend.typoscript', $frontendTypoScript);
         $typo3DbQueryParser = $this->get(Typo3DbQueryParser::class);
@@ -126,7 +126,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
     {
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withAttribute('frontend.typoscript', $frontendTypoScript);
         $typo3DbQueryParser = $this->get(Typo3DbQueryParser::class);
@@ -148,7 +148,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
     {
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withAttribute('frontend.typoscript', $frontendTypoScript);
         $typo3DbQueryParser = $this->get(Typo3DbQueryParser::class);
@@ -174,7 +174,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
     {
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withAttribute('frontend.typoscript', $frontendTypoScript);
         $typo3DbQueryParser = $this->get(Typo3DbQueryParser::class);
@@ -200,7 +200,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
     {
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withAttribute('frontend.typoscript', $frontendTypoScript);
         $typo3DbQueryParser = $this->get(Typo3DbQueryParser::class);
@@ -218,7 +218,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
     {
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withAttribute('frontend.typoscript', $frontendTypoScript);
         $typo3DbQueryParser = $this->get(Typo3DbQueryParser::class);
@@ -239,7 +239,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
     #[Test]
     public function languageStatementWorksInBackendContext(): void
     {
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $typo3DbQueryParser = $this->get(Typo3DbQueryParser::class);
         $blogRepository = $this->get(BlogRepository::class);
         $context = new Context();
@@ -261,7 +261,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
         $GLOBALS['TCA']['tx_blogexample_domain_model_blog']['ctrl']['delete'] = null;
         $tcaSchemaFactory = $this->get(TcaSchemaFactory::class);
         $tcaSchemaFactory->rebuild($GLOBALS['TCA']);
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $typo3DbQueryParser = $this->get(Typo3DbQueryParser::class);
         $blogRepository = $this->get(BlogRepository::class);
         $context = new Context();
@@ -283,7 +283,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
     {
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withAttribute('frontend.typoscript', $frontendTypoScript);
         $typo3DbQueryParser = $this->get(Typo3DbQueryParser::class);
@@ -305,7 +305,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
     #[Test]
     public function addGetLanguageStatementWorksInBackendContextWithSubselectionTakesDeleteStatementIntoAccountIfNecessary(): void
     {
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $typo3DbQueryParser = $this->get(Typo3DbQueryParser::class);
         $blogRepository = $this->get(BlogRepository::class);
@@ -328,7 +328,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
     {
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withAttribute('frontend.typoscript', $frontendTypoScript);
         $typo3DbQueryParser = $this->get(Typo3DbQueryParser::class);
@@ -355,7 +355,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
 
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withAttribute('frontend.typoscript', $frontendTypoScript);
         $typo3DbQueryParser = $this->get(Typo3DbQueryParser::class);
@@ -376,7 +376,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
     {
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withAttribute('frontend.typoscript', $frontendTypoScript);
         $typo3DbQueryParser = $this->get(Typo3DbQueryParser::class);
@@ -401,7 +401,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
     #[Test]
     public function expressionIsOmittedForIgnoreEnableFieldsAreAndDoNotIncludeDeletedInBackendContext(): void
     {
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $typo3DbQueryParser = $this->get(Typo3DbQueryParser::class);
         $blogRepository = $this->get(BlogRepository::class);
@@ -423,7 +423,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
     #[Test]
     public function expressionIsGeneratedForIgnoreEnableFieldsAndDoNotIncludeDeletedInBackendContext(): void
     {
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $typo3DbQueryParser = $this->get(Typo3DbQueryParser::class);
         $blogRepository = $this->get(BlogRepository::class);
@@ -445,7 +445,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
     #[Test]
     public function expressionIsGeneratedForDoNotIgnoreEnableFieldsAndIncludeDeletedInBackendContext(): void
     {
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $typo3DbQueryParser = $this->get(Typo3DbQueryParser::class);
         $blogRepository = $this->get(BlogRepository::class);
@@ -466,7 +466,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
     #[Test]
     public function expressionIsGeneratedForDoNotIgnoreEnableFieldsAndDoNotIncludeDeletedInBackendContext(): void
     {
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $typo3DbQueryParser = $this->get(Typo3DbQueryParser::class);
         $blogRepository = $this->get(BlogRepository::class);
@@ -489,7 +489,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
     {
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withAttribute('frontend.typoscript', $frontendTypoScript);
         $typo3DbQueryParser = $this->get(Typo3DbQueryParser::class);
@@ -513,7 +513,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
     {
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withAttribute('frontend.typoscript', $frontendTypoScript);
         $typo3DbQueryParser = $this->get(Typo3DbQueryParser::class);
@@ -537,7 +537,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
     {
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withAttribute('frontend.typoscript', $frontendTypoScript);
         $typo3DbQueryParser = $this->get(Typo3DbQueryParser::class);
@@ -563,7 +563,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
     {
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withAttribute('frontend.typoscript', $frontendTypoScript);
         $typo3DbQueryParser = $this->get(Typo3DbQueryParser::class);
@@ -596,7 +596,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
         $tcaSchemaFactory->load($GLOBALS['TCA'], true);
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withAttribute('frontend.typoscript', $frontendTypoScript);
         $typo3DbQueryParser = $this->get(Typo3DbQueryParser::class);
@@ -626,7 +626,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
         $tcaSchemaFactory->load($GLOBALS['TCA'], true);
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $typo3DbQueryParser = $this->get(Typo3DbQueryParser::class);
         $blogRepository = $this->get(BlogRepository::class);
@@ -648,7 +648,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
     {
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withAttribute('frontend.typoscript', $frontendTypoScript);
         $typo3DbQueryParser = $this->get(Typo3DbQueryParser::class);
@@ -712,7 +712,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
         $tcaSchemaFactory->load($GLOBALS['TCA'], true);
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withAttribute('frontend.typoscript', $frontendTypoScript);
         $typo3DbQueryParser = $this->get(Typo3DbQueryParser::class);
@@ -732,7 +732,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
     #[Test]
     public function tcaWithoutCtrlCreatesAValidSQLStatement(): void
     {
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $registryEntryRepository = $this->get(RegistryEntryRepository::class);
         $querySettings = new Typo3QuerySettings(new Context(), $this->get(ConfigurationManagerInterface::class));
@@ -757,7 +757,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/Fixtures/Typo3DbQueryParserTestImport.csv');
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withAttribute('frontend.typoscript', $frontendTypoScript);
         $blogRepository = $this->get(BlogRepository::class);
@@ -773,7 +773,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
     {
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withAttribute('frontend.typoscript', $frontendTypoScript);
         $typo3DbQueryParser = $this->get(Typo3DbQueryParser::class);
@@ -799,7 +799,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
     {
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withAttribute('frontend.typoscript', $frontendTypoScript);
         $typo3DbQueryParser = $this->get(Typo3DbQueryParser::class);
@@ -823,7 +823,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
     {
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withAttribute('frontend.typoscript', $frontendTypoScript);
         $typo3DbQueryParser = $this->get(Typo3DbQueryParser::class);
@@ -849,7 +849,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
     {
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withAttribute('frontend.typoscript', $frontendTypoScript);
         $typo3DbQueryParser = $this->get(Typo3DbQueryParser::class);
@@ -881,7 +881,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
     {
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withAttribute('frontend.typoscript', $frontendTypoScript);
         $typo3DbQueryParser = $this->get(Typo3DbQueryParser::class);
@@ -908,7 +908,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
     {
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withAttribute('frontend.typoscript', $frontendTypoScript);
         $typo3DbQueryParser = $this->get(Typo3DbQueryParser::class);
@@ -937,7 +937,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/Fixtures/Typo3DbQueryParserTestImport.csv');
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withAttribute('frontend.typoscript', $frontendTypoScript);
         $blogRepository = $this->get(BlogRepository::class);
@@ -956,7 +956,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/Fixtures/Typo3DbQueryParserTestImport.csv');
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withAttribute('frontend.typoscript', $frontendTypoScript);
         $blogRepository = $this->get(BlogRepository::class);
@@ -975,7 +975,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/Fixtures/Typo3DbQueryParserTestImport.csv');
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withAttribute('frontend.typoscript', $frontendTypoScript);
         $blogRepository = $this->get(BlogRepository::class);

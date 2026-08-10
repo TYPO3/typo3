@@ -63,7 +63,7 @@ final readonly class TsConfigTreeBuilder
 
         $collectedUserTsConfigArray = [];
         $gotPackagesUserTsConfigFromCache = false;
-        $cacheIdentifier = (new PackageDependentCacheIdentifier($this->packageManager))
+        $cacheIdentifier = new PackageDependentCacheIdentifier($this->packageManager)
             ->withPrefix('usertsconfig-packages-strings')
             ->toString();
         if ($cache) {
@@ -165,7 +165,7 @@ final readonly class TsConfigTreeBuilder
     ): array {
         $collectedPagesTsConfigArray = [];
         $gotPackagesPagesTsConfigFromCache = false;
-        $cacheIdentifier = (new PackageDependentCacheIdentifier($this->packageManager))
+        $cacheIdentifier = new PackageDependentCacheIdentifier($this->packageManager)
             ->withPrefix('pagestsconfig-packages-strings')
             ->toString();
         if ($cache) {
@@ -230,7 +230,7 @@ final readonly class TsConfigTreeBuilder
             return [];
         }
 
-        $cacheIdentifier = (new PackageDependentCacheIdentifier($this->packageManager))
+        $cacheIdentifier = new PackageDependentCacheIdentifier($this->packageManager)
             ->withPrefix('pagestsconfig-site')
             ->withAdditionalHashedIdentifier($rootSite->getIdentifier())
             ->toString();
@@ -319,7 +319,7 @@ final readonly class TsConfigTreeBuilder
         ?string $filename = null,
     ): TsConfigInclude {
         $lowercaseName = mb_strtolower($name);
-        $identifier = (new PackageDependentCacheIdentifier($this->packageManager))
+        $identifier = new PackageDependentCacheIdentifier($this->packageManager)
             ->withPrefix($lowercaseName)
             ->withAdditionalHashedIdentifier($typoScriptString)
             ->toString();

@@ -115,7 +115,7 @@ final class XmlSitemapExtensionDataProviderTest extends AbstractTestCase
     public function sitemapIndexContainsAllPagesOfExtensionDataProviders(): void
     {
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest('http://localhost/'))->withQueryParameters(['type' => 1533906435])
+            new InternalRequest('http://localhost/')->withQueryParameters(['type' => 1533906435])
         );
         self::assertSame(200, $response->getStatusCode());
         $content = (string)$response->getBody();
@@ -135,7 +135,7 @@ final class XmlSitemapExtensionDataProviderTest extends AbstractTestCase
             $queryParameters['tx_seo[page]'] = $page;
         }
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest('http://localhost/'))->withQueryParameters($queryParameters)
+            new InternalRequest('http://localhost/')->withQueryParameters($queryParameters)
         );
         self::assertSame(200, $response->getStatusCode());
         return (string)$response->getBody();

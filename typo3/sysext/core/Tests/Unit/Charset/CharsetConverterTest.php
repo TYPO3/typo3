@@ -49,7 +49,7 @@ final class CharsetConverterTest extends UnitTestCase
             'j',
             'i',
         ];
-        self::assertSame($expectedArray, (new CharsetConverter(new CharsetProvider()))->utf8_to_numberarray($string));
+        self::assertSame($expectedArray, new CharsetConverter(new CharsetProvider())->utf8_to_numberarray($string));
     }
 
     public static function utf8CharMappingDataProvider(): array
@@ -71,6 +71,6 @@ final class CharsetConverterTest extends UnitTestCase
     #[Test]
     public function utf8CharMapping(string $input, string $expectedString): void
     {
-        self::assertSame($expectedString, (new CharsetConverter(new CharsetProvider()))->utf8_char_mapping($input));
+        self::assertSame($expectedString, new CharsetConverter(new CharsetProvider())->utf8_char_mapping($input));
     }
 }

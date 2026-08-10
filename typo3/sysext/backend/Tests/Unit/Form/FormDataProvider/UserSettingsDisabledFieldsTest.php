@@ -75,7 +75,7 @@ final class UserSettingsDisabledFieldsTest extends UnitTestCase
             ],
         ];
 
-        self::assertSame($input, (new UserSettingsDisabledFields(new UserSettingsSchema()))->addData($input));
+        self::assertSame($input, new UserSettingsDisabledFields(new UserSettingsSchema())->addData($input));
     }
 
     #[Test]
@@ -102,7 +102,7 @@ final class UserSettingsDisabledFieldsTest extends UnitTestCase
         $expected = $input;
         $expected['processedTca']['types']['0']['showitem'] = '--div--;aTabLabel,user_settings__titleLen';
 
-        self::assertSame($expected, (new UserSettingsDisabledFields(new UserSettingsSchema()))->addData($input));
+        self::assertSame($expected, new UserSettingsDisabledFields(new UserSettingsSchema())->addData($input));
     }
 
     #[Test]
@@ -129,7 +129,7 @@ final class UserSettingsDisabledFieldsTest extends UnitTestCase
         $expected = $input;
         $expected['processedTca']['types']['0']['showitem'] = 'user_settings__titleLen';
 
-        self::assertSame($expected, (new UserSettingsDisabledFields(new UserSettingsSchema()))->addData($input));
+        self::assertSame($expected, new UserSettingsDisabledFields(new UserSettingsSchema())->addData($input));
     }
 
     #[Test]
@@ -154,6 +154,6 @@ final class UserSettingsDisabledFieldsTest extends UnitTestCase
             ],
         ];
 
-        self::assertSame($input, (new UserSettingsDisabledFields(new UserSettingsSchema()))->addData($input));
+        self::assertSame($input, new UserSettingsDisabledFields(new UserSettingsSchema())->addData($input));
     }
 }

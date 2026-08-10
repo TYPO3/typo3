@@ -63,7 +63,7 @@ class ArgumentTestController extends ActionController
 
     public function forwardAction(): ResponseInterface
     {
-        return (new ForwardResponse($this->forwardTargetAction))->withArguments($this->forwardTargetArguments);
+        return new ForwardResponse($this->forwardTargetAction)->withArguments($this->forwardTargetArguments);
     }
 
     public function inputPresetModelAction(Model $preset): ResponseInterface

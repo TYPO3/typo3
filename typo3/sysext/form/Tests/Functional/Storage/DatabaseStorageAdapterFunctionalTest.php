@@ -102,7 +102,7 @@ final class DatabaseStorageAdapterFunctionalTest extends FunctionalTestCase
         self::assertTrue(is_numeric($newIdentifier->identifier), 'new identifier is numeric UID');
 
         // 2. Read: load the created form
-        $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $request = new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $readData = $subject->read($newIdentifier, $request);
 
         self::assertSame('roundtrip-form', $readData->identifier);
@@ -165,7 +165,7 @@ final class DatabaseStorageAdapterFunctionalTest extends FunctionalTestCase
 
         $newIdentifier = $subject->write(new FormIdentifier('NEW54321'), $formData);
 
-        $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $request = new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $readData = $subject->read($newIdentifier, $request);
 
         self::assertSame(
@@ -178,7 +178,7 @@ final class DatabaseStorageAdapterFunctionalTest extends FunctionalTestCase
     public function readReturnsFormDataFromDatabaseFixture(): void
     {
         $subject = $this->getSubject();
-        $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $request = new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
 
         $result = $subject->read(new FormIdentifier('1'), $request);
 
@@ -193,7 +193,7 @@ final class DatabaseStorageAdapterFunctionalTest extends FunctionalTestCase
         unset($GLOBALS['BE_USER']);
 
         $subject = $this->getSubject();
-        $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
+        $request = new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
 
         $result = $subject->read(new FormIdentifier('1'), $request);
 
@@ -222,7 +222,7 @@ final class DatabaseStorageAdapterFunctionalTest extends FunctionalTestCase
         ]);
 
         $subject = $this->getSubject();
-        $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
+        $request = new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
 
         $this->expectException(PersistenceManagerException::class);
         $this->expectExceptionCode(1767199423);
@@ -250,7 +250,7 @@ final class DatabaseStorageAdapterFunctionalTest extends FunctionalTestCase
         ]);
 
         $subject = $this->getSubject();
-        $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
+        $request = new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
 
         $this->expectException(PersistenceManagerException::class);
         $this->expectExceptionCode(1767199444);

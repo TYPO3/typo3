@@ -319,4 +319,4 @@ final readonly class XliffNormalizer
     }
 }
 
-exit((new XliffNormalizer())->execute($argv));
+exit(new XliffNormalizer()->execute($argv));

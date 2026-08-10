@@ -75,6 +75,6 @@ final class PlatformHelperTest extends UnitTestCase
     public function getIdentifierQuoteCharacterReturnsExpectedValue(DoctrineAbstractPlatform $platform): void
     {
         $expectedIdentifierQuoteChar = $platform->quoteIdentifier('fake_identifier')[0];
-        self::assertSame($expectedIdentifierQuoteChar, (new PlatformHelper())->getIdentifierQuoteCharacter($platform));
+        self::assertSame($expectedIdentifierQuoteChar, new PlatformHelper()->getIdentifierQuoteCharacter($platform));
     }
 }

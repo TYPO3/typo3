@@ -178,7 +178,7 @@ final class BrokenLinkRepositoryTest extends FunctionalTestCase
         $linkAnalyzer = $this->get(LinkAnalyzer::class);
         $linkAnalyzer->init($searchFields, $pidList, $tsConfig);
         $linkAnalyzer->getLinkStatistics($linkTypes);
-        $result = (new BrokenLinkRepository())->getNumberOfBrokenLinksForRecordsOnPages(
+        $result = new BrokenLinkRepository()->getNumberOfBrokenLinksForRecordsOnPages(
             $pidList,
             $searchFields
         );
@@ -272,7 +272,7 @@ final class BrokenLinkRepositoryTest extends FunctionalTestCase
         $linkAnalyzer->init($searchFields, $pidList, $tsConfig);
         $linkAnalyzer->getLinkStatistics($linkTypes);
 
-        $results = (new BrokenLinkRepository())->getAllBrokenLinksForPages(
+        $results = new BrokenLinkRepository()->getAllBrokenLinksForPages(
             $pidList,
             $linkTypes,
             $searchFields
@@ -541,7 +541,7 @@ final class BrokenLinkRepositoryTest extends FunctionalTestCase
         $linkAnalyzer->init($searchFields, $pidList, $tsConfig);
         $linkAnalyzer->getLinkStatistics($linkTypes);
 
-        $results = (new BrokenLinkRepository())->getAllBrokenLinksForPages(
+        $results = new BrokenLinkRepository()->getAllBrokenLinksForPages(
             $pidList,
             $linkTypes,
             $searchFields
@@ -668,7 +668,7 @@ final class BrokenLinkRepositoryTest extends FunctionalTestCase
         $linkAnalyzer->init($searchFields, $pidList, $tsConfig);
         $linkAnalyzer->getLinkStatistics($linkTypes);
 
-        $results = (new BrokenLinkRepository())->getAllBrokenLinksForPages(
+        $results = new BrokenLinkRepository()->getAllBrokenLinksForPages(
             $pidList,
             $linkTypes,
             $searchFields,

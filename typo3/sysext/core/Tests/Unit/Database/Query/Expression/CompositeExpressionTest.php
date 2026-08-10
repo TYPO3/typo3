@@ -28,21 +28,21 @@ final class CompositeExpressionTest extends UnitTestCase
     #[Test]
     public function orCompositeExpressionWithMethodFiltersNullParts(): void
     {
-        $compositeExpression = (new CompositeExpression(CompositeExpression::TYPE_OR))->with(null, null);
+        $compositeExpression = new CompositeExpression(CompositeExpression::TYPE_OR)->with(null, null);
         self::assertCount(0, $compositeExpression);
     }
 
     #[Test]
     public function andCompositeExpressionWithMethodFiltersNullParts(): void
     {
-        $compositeExpression = (new CompositeExpression(CompositeExpression::TYPE_OR))->with(null, null);
+        $compositeExpression = new CompositeExpression(CompositeExpression::TYPE_OR)->with(null, null);
         self::assertCount(0, $compositeExpression);
     }
 
     #[Test]
     public function orCompositeExpressionWithMethodFiltersEmptyStringParts(): void
     {
-        $compositeExpression = (new CompositeExpression(CompositeExpression::TYPE_OR))->with('', '');
+        $compositeExpression = new CompositeExpression(CompositeExpression::TYPE_OR)->with('', '');
         self::assertCount(0, $compositeExpression);
     }
 
@@ -61,7 +61,7 @@ final class CompositeExpressionTest extends UnitTestCase
     #[Test]
     public function andCompositeExpressionWithMethodFiltersEmptyStringParts(): void
     {
-        $compositeExpression = (new CompositeExpression(CompositeExpression::TYPE_OR))->with('', '');
+        $compositeExpression = new CompositeExpression(CompositeExpression::TYPE_OR)->with('', '');
         self::assertCount(0, $compositeExpression);
     }
 
@@ -88,7 +88,7 @@ final class CompositeExpressionTest extends UnitTestCase
     #[Test]
     public function orCompositeExpressionWithMethodFiltersEmptyStringAfterTrimChars(string $value): void
     {
-        $compositeExpression = (new CompositeExpression(CompositeExpression::TYPE_OR))->with($value, $value);
+        $compositeExpression = new CompositeExpression(CompositeExpression::TYPE_OR)->with($value, $value);
         self::assertCount(0, $compositeExpression);
     }
 
@@ -96,7 +96,7 @@ final class CompositeExpressionTest extends UnitTestCase
     #[Test]
     public function andCompositeExpressionWithMethodFiltersEmptyStringAfterTrimChars(string $value): void
     {
-        $compositeExpression = (new CompositeExpression(CompositeExpression::TYPE_OR))->with($value, $value);
+        $compositeExpression = new CompositeExpression(CompositeExpression::TYPE_OR)->with($value, $value);
         self::assertCount(0, $compositeExpression);
     }
 
@@ -138,7 +138,7 @@ final class CompositeExpressionTest extends UnitTestCase
 
     private function callStaticIsEmptyPartMethod(CompositeExpression|DoctrineCompositeExpression|string|null $value): bool
     {
-        return (new \ReflectionClass(CompositeExpression::class))
+        return new \ReflectionClass(CompositeExpression::class)
           ->getMethod('isEmptyPart')
           ->invoke(null, $value);
     }

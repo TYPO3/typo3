@@ -111,7 +111,7 @@ readonly class QrCodeController
     {
         $qrCodeRenderer = new ImageRenderer(new RendererStyle($size->getSize(), 2), new SvgImageBackEnd());
 
-        return (new Writer($qrCodeRenderer))->writeString($content);
+        return new Writer($qrCodeRenderer)->writeString($content);
     }
 
     private function createSvg(string $file, string $content): string

@@ -52,7 +52,7 @@ final class ManagementControllerTest extends FunctionalTestCase
     #[Test]
     public function modifyRedirectManagementControllerViewDataEventIsTriggered(): void
     {
-        $request = (new ServerRequest('https://www.example.com/', 'GET'))
+        $request = new ServerRequest('https://www.example.com/', 'GET')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $request = $request
             ->withAttribute('normalizedParams', $this->normalizedParams)

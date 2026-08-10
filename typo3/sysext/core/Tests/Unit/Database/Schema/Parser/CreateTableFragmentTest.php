@@ -85,7 +85,7 @@ final class CreateTableFragmentTest extends UnitTestCase
     #[Test]
     public function canParseCreateTableFragment(string $statement, string $tableName, bool $isTemporary): void
     {
-        $ast = (new Parser(new Lexer()))->getAST($statement);
+        $ast = new Parser(new Lexer())->getAST($statement);
         self::assertInstanceOf(CreateTableStatement::class, $ast);
         self::assertSame($tableName, $ast->tableName->schemaObjectName);
         self::assertSame($isTemporary, $ast->isTemporary);
@@ -94,7 +94,7 @@ final class CreateTableFragmentTest extends UnitTestCase
     #[Test]
     public function canParseCreateTableStatementWithoutColumns(): void
     {
-        $ast = (new Parser(new Lexer()))->getAST('CREATE TABLE aTable ();');
+        $ast = new Parser(new Lexer())->getAST('CREATE TABLE aTable ();');
         self::assertInstanceOf(CreateTableStatement::class, $ast);
         self::assertSame('aTable', $ast->tableName->schemaObjectName);
         self::assertSame([], $ast->createDefinition->items);

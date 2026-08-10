@@ -26,6 +26,6 @@ final readonly class AfterRichtextConfigurationPreparedEventListener
     #[AsEventListener('typo3/cms-rte-ckeditor/migrate-ckeditor4-configuration')]
     public function __invoke(AfterRichtextConfigurationPreparedEvent $event)
     {
-        $event->setConfiguration((new CKEditor5Migrator($event->getConfiguration()))->get());
+        $event->setConfiguration(new CKEditor5Migrator($event->getConfiguration())->get());
     }
 }

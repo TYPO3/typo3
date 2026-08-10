@@ -64,14 +64,14 @@ final class RequestHandlerCachingTest extends FunctionalTestCase
         );
 
         // Call page first time to trigger page cache with result
-        $response = $this->executeFrontendSubRequest((new InternalRequest('https://website.local/en/'))->withPageId(88));
+        $response = $this->executeFrontendSubRequest(new InternalRequest('https://website.local/en/')->withPageId(88));
         $body = (string)$response->getBody();
         self::assertStringContainsString('userIntContent', $body);
         self::assertStringContainsString('headerDataFromUserInt', $body);
         self::assertStringContainsString('footerDataFromUserInt', $body);
 
         // Call page second time to see if it works with page cache and user_int is still executed.
-        $response = $this->executeFrontendSubRequest((new InternalRequest('https://website.local/en/'))->withPageId(88));
+        $response = $this->executeFrontendSubRequest(new InternalRequest('https://website.local/en/')->withPageId(88));
         $body = (string)$response->getBody();
         self::assertStringContainsString('userIntContent', $body);
         self::assertStringContainsString('headerDataFromUserInt', $body);
@@ -90,10 +90,10 @@ final class RequestHandlerCachingTest extends FunctionalTestCase
         );
 
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest('https://website.local/en/'))
+            new InternalRequest('https://website.local/en/')
                 ->withPageId(2)
                 ->withInstructions([
-                    (new TypoScriptInstruction())
+                    new TypoScriptInstruction()
                         ->withTypoScript([
                             'page' => 'PAGE',
                             'page.' => [
@@ -130,7 +130,7 @@ alert(yes);', $body);
             [$this->buildDefaultLanguageConfiguration('EN', '/en/')]
         );
 
-        $response = $this->executeFrontendSubRequest((new InternalRequest('https://website.local/en/'))->withPageId(88));
+        $response = $this->executeFrontendSubRequest(new InternalRequest('https://website.local/en/')->withPageId(88));
         $body = (string)$response->getBody();
         self::assertStringContainsString('notprefixedWithLLL', $body);
     }
@@ -149,7 +149,7 @@ alert(yes);', $body);
             [$this->buildDefaultLanguageConfiguration('EN', '/en/')]
         );
 
-        $response = $this->executeFrontendSubRequest((new InternalRequest('https://website.local/en/'))->withPageId(88));
+        $response = $this->executeFrontendSubRequest(new InternalRequest('https://website.local/en/')->withPageId(88));
         $body = (string)$response->getBody();
         self::assertStringContainsString('Border around each element', $body);
     }
@@ -167,7 +167,7 @@ alert(yes);', $body);
             $this->buildSiteConfiguration(2, 'https://website.local/'),
             [$this->buildDefaultLanguageConfiguration('EN', '/en/')]
         );
-        $request = (new InternalRequest('https://website.local/en/'))->withPageId(2);
+        $request = new InternalRequest('https://website.local/en/')->withPageId(2);
         $response = $this->executeFrontendSubRequest($request);
         self::assertStringContainsString('https-condition-on', (string)$response->getBody());
     }
@@ -185,7 +185,7 @@ alert(yes);', $body);
             $this->buildSiteConfiguration(2, 'http://website.local/'),
             [$this->buildDefaultLanguageConfiguration('EN', '/en/')]
         );
-        $request = (new InternalRequest('http://website.local/en/'))->withPageId(2);
+        $request = new InternalRequest('http://website.local/en/')->withPageId(2);
         $response = $this->executeFrontendSubRequest($request);
         self::assertStringContainsString('https-condition-off', (string)$response->getBody());
     }
@@ -207,7 +207,7 @@ alert(yes);', $body);
             ],
         );
 
-        $this->executeFrontendSubRequest((new InternalRequest('https://website.local/de/'))->withPageId(90));
+        $this->executeFrontendSubRequest(new InternalRequest('https://website.local/de/')->withPageId(90));
 
         $cacheBackend = $this->get(CacheManager::class)->getCache('pages')->getBackend();
 

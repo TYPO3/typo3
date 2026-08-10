@@ -46,7 +46,7 @@ final class FormInlineAjaxControllerTest extends UnitTestCase
     #[Test]
     public function createActionThrowsExceptionIfContextIsEmpty(): void
     {
-        $request = (new ServerRequest())
+        $request = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withQueryParams(
                 [
@@ -64,7 +64,7 @@ final class FormInlineAjaxControllerTest extends UnitTestCase
     #[Test]
     public function createActionThrowsExceptionIfContextConfigSectionIsEmpty(): void
     {
-        $request = (new ServerRequest())
+        $request = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withQueryParams(
                 [
@@ -82,7 +82,7 @@ final class FormInlineAjaxControllerTest extends UnitTestCase
     #[Test]
     public function createActionThrowsExceptionIfContextConfigSectionDoesNotValidate(): void
     {
-        $request = (new ServerRequest())
+        $request = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withQueryParams(
                 [
@@ -107,7 +107,7 @@ final class FormInlineAjaxControllerTest extends UnitTestCase
     #[Test]
     public function detailsActionThrowsExceptionIfContextIsEmpty(): void
     {
-        $request = (new ServerRequest())
+        $request = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withQueryParams(
                 [
@@ -125,7 +125,7 @@ final class FormInlineAjaxControllerTest extends UnitTestCase
     #[Test]
     public function detailsActionThrowsExceptionIfContextConfigSectionIsEmpty(): void
     {
-        $request = (new ServerRequest())
+        $request = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withQueryParams(
                 [
@@ -143,7 +143,7 @@ final class FormInlineAjaxControllerTest extends UnitTestCase
     #[Test]
     public function detailsActionThrowsExceptionIfContextConfigSectionDoesNotValidate(): void
     {
-        $request = (new ServerRequest())
+        $request = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withQueryParams(
                 [
@@ -168,7 +168,7 @@ final class FormInlineAjaxControllerTest extends UnitTestCase
     #[Test]
     public function synchronizeLocalizeActionThrowsExceptionIfContextIsEmpty(): void
     {
-        $request = (new ServerRequest())
+        $request = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withQueryParams(
                 [
@@ -186,7 +186,7 @@ final class FormInlineAjaxControllerTest extends UnitTestCase
     #[Test]
     public function synchronizeLocalizeActionThrowsExceptionIfContextConfigSectionIsEmpty(): void
     {
-        $request = (new ServerRequest())
+        $request = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withQueryParams(
                 [
@@ -204,7 +204,7 @@ final class FormInlineAjaxControllerTest extends UnitTestCase
     #[Test]
     public function synchronizeLocalizeActionThrowsExceptionIfContextConfigSectionDoesNotValidate(): void
     {
-        $request = (new ServerRequest())
+        $request = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withQueryParams(
                 [

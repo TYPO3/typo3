@@ -167,7 +167,7 @@ final class RecordViewHelperTest extends FunctionalTestCase
 
         $contentObject = $this->get(ContentObjectRenderer::class);
 
-        return (new ServerRequest())
+        return new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withAttribute('frontend.typoscript', $frontendTypoScript)
             ->withAttribute('currentContentObject', $contentObject);

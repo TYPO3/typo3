@@ -30,6 +30,6 @@ final class DefaultFactoryTest extends UnitTestCase
     public function getStructureDoesNotFail(): void
     {
         $webserverType = WebserverType::fromType('i-dont-care');
-        (new DefaultFactory())->getStructure($webserverType);
+        new DefaultFactory()->getStructure($webserverType);
     }
 }

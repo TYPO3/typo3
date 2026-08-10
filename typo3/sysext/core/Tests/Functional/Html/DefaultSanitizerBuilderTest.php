@@ -222,7 +222,7 @@ final class DefaultSanitizerBuilderTest extends FunctionalTestCase
     public function incidentIsLogged(): void
     {
         $trace = bin2hex(random_bytes(8));
-        $sanitizer = (new DefaultSanitizerBuilder())->build();
+        $sanitizer = new DefaultSanitizerBuilder()->build();
         $sanitizer->sanitize('<script>alert(1)</script>', new SanitizerInitiator($trace));
         $logItemDataExpectation = [
             'behavior' => 'default',
@@ -238,10 +238,10 @@ final class DefaultSanitizerBuilderTest extends FunctionalTestCase
 
     private function resolveBehaviorFromSanitizer(Sanitizer $sanitizer): Behavior
     {
-        $visitor = (new \ReflectionObject($sanitizer))
+        $visitor = new \ReflectionObject($sanitizer)
             ->getProperty('visitors')
             ->getValue($sanitizer)[0];
-        return (new \ReflectionObject($visitor))
+        return new \ReflectionObject($visitor)
             ->getProperty('behavior')
             ->getValue($visitor);
     }

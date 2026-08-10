@@ -139,7 +139,7 @@ final class MetaTagTest extends AbstractTestCase
         $this->setUpFrontendRootPage(1, [], ['config' => implode(LF, array_merge(['page = PAGE'], $typoScriptSetup))]);
 
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest('http://localhost/'))->withQueryParameters([
+            new InternalRequest('http://localhost/')->withQueryParameters([
                 'id' => $pageId,
             ])
         );

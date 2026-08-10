@@ -1306,7 +1306,7 @@ final class GeneralUtilityTest extends UnitTestCase
             Environment::getPublicPath() . '/subdir/index.php',
             Environment::isWindows() ? 'WINDOWS' : 'UNIX'
         );
-        $request = (new ServerRequest())->withAttribute('normalizedParams', NormalizedParams::createFromServerParams([
+        $request = new ServerRequest()->withAttribute('normalizedParams', NormalizedParams::createFromServerParams([
             'HTTP_HOST' => 'localhost',
             'SCRIPT_NAME' => '/subdir/index.php',
         ]));
@@ -1330,7 +1330,7 @@ final class GeneralUtilityTest extends UnitTestCase
             Environment::getPublicPath() . '/subdir/index.php',
             Environment::isWindows() ? 'WINDOWS' : 'UNIX'
         );
-        $request = (new ServerRequest())->withAttribute('normalizedParams', NormalizedParams::createFromServerParams([
+        $request = new ServerRequest()->withAttribute('normalizedParams', NormalizedParams::createFromServerParams([
             'HTTP_HOST' => 'localhost',
             'SCRIPT_NAME' => '/subdir/index.php',
         ]));
@@ -1409,7 +1409,7 @@ final class GeneralUtilityTest extends UnitTestCase
             Environment::getPublicPath() . '/index.php',
             Environment::isWindows() ? 'WINDOWS' : 'UNIX'
         );
-        $request = (new ServerRequest())->withAttribute('normalizedParams', NormalizedParams::createFromServerParams([
+        $request = new ServerRequest()->withAttribute('normalizedParams', NormalizedParams::createFromServerParams([
             'HTTP_HOST' => $host,
             'SCRIPT_NAME' => $subDirectory . 'index.php',
         ]));
@@ -1432,7 +1432,7 @@ final class GeneralUtilityTest extends UnitTestCase
             Environment::getPublicPath() . '/index.php',
             Environment::isWindows() ? 'WINDOWS' : 'UNIX'
         );
-        $request = (new ServerRequest())->withAttribute('normalizedParams', NormalizedParams::createFromServerParams([
+        $request = new ServerRequest()->withAttribute('normalizedParams', NormalizedParams::createFromServerParams([
             'HTTP_HOST' => $host,
             'SCRIPT_NAME' => $subDirectory . 'index.php',
         ]));
@@ -1500,7 +1500,7 @@ final class GeneralUtilityTest extends UnitTestCase
             Environment::getPublicPath() . '/index.php',
             Environment::isWindows() ? 'WINDOWS' : 'UNIX'
         );
-        $request = (new ServerRequest())->withAttribute('normalizedParams', NormalizedParams::createFromServerParams([
+        $request = new ServerRequest()->withAttribute('normalizedParams', NormalizedParams::createFromServerParams([
             'HTTP_HOST' => 'localhost',
             'SCRIPT_NAME' => '/index.php',
         ]));
@@ -1514,7 +1514,7 @@ final class GeneralUtilityTest extends UnitTestCase
         if ($skipExplicitEncodeTest) {
             self::markTestSkipped('Explicit rawurlencoding skipped because the contents are considered allowed payload if encoded');
         }
-        $request = (new ServerRequest())->withAttribute('normalizedParams', NormalizedParams::createFromServerParams([]));
+        $request = new ServerRequest()->withAttribute('normalizedParams', NormalizedParams::createFromServerParams([]));
         self::assertEquals('', GeneralUtility::sanitizeLocalUrl(rawurlencode($url), $request));
     }
 
@@ -3622,7 +3622,7 @@ final class GeneralUtilityTest extends UnitTestCase
     public function locationHeaderUrl(string $path, string $host, string $expected): void
     {
         $normalizedParams = NormalizedParams::createFromServerParams(['HTTP_HOST' => $host, 'SCRIPT_NAME' => '/index.php']);
-        $request = (new ServerRequest())->withAttribute('normalizedParams', $normalizedParams);
+        $request = new ServerRequest()->withAttribute('normalizedParams', $normalizedParams);
         $result = GeneralUtility::locationHeaderUrl($path, $request);
         self::assertSame($expected, $result);
     }

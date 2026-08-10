@@ -42,18 +42,18 @@ final class ResourceViewHelperTest extends FunctionalTestCase
         $this->expectExceptionCode(1639672666);
         $context = $this->get(RenderingContextFactory::class)->create([], new ServerRequest());
         $context->getTemplatePaths()->setTemplateSource('<f:uri.resource path="Icons/Extension.svg" />');
-        (new TemplateView($context))->render();
+        new TemplateView($context)->render();
     }
 
     #[Test]
     public function renderingFailsWhenExtensionNameNotSetInExtbaseRequest(): void
     {
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters());
         $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
         $context->getTemplatePaths()->setTemplateSource('<f:uri.resource path="Icons/Extension.svg" />');
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1640097205);
-        (new TemplateView($context))->render();
+        new TemplateView($context)->render();
     }
 
     public static function renderWithExtbaseRequestDataProvider(): \Generator
@@ -88,13 +88,13 @@ final class ResourceViewHelperTest extends FunctionalTestCase
         $extbaseRequestParameters->setControllerExtensionName('Core');
         $normalizedParams = self::createStub(NormalizedParams::class);
         $normalizedParams->method('getSitePath')->willReturn('/');
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', $extbaseRequestParameters)
+        $serverRequest = new ServerRequest()->withAttribute('extbase', $extbaseRequestParameters)
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('normalizedParams', $normalizedParams);
         $extbaseRequest = (new Request($serverRequest));
         $context = $this->get(RenderingContextFactory::class)->create([], $extbaseRequest);
         $context->getTemplatePaths()->setTemplateSource($template);
-        self::assertEquals($this->resolveResourcePlaceholders($expected), (new TemplateView($context))->render());
+        self::assertEquals($this->resolveResourcePlaceholders($expected), new TemplateView($context)->render());
     }
 
     public static function renderWithAndWithoutRequestDataProvider(): \Generator
@@ -124,12 +124,12 @@ final class ResourceViewHelperTest extends FunctionalTestCase
         $urlPrefix = '/prefix/';
         $normalizedParams = self::createStub(NormalizedParams::class);
         $normalizedParams->method('getSitePath')->willReturn($urlPrefix);
-        $serverRequest = (new ServerRequest())
+        $serverRequest = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('normalizedParams', $normalizedParams);
         $context = $this->get(RenderingContextFactory::class)->create([], $serverRequest);
         $context->getTemplatePaths()->setTemplateSource($template);
-        self::assertEquals($urlPrefix . $this->resolveResourcePlaceholders($expected), (new TemplateView($context))->render());
+        self::assertEquals($urlPrefix . $this->resolveResourcePlaceholders($expected), new TemplateView($context)->render());
     }
 
     #[DataProvider('renderWithAndWithoutRequestDataProvider')]
@@ -143,13 +143,13 @@ final class ResourceViewHelperTest extends FunctionalTestCase
         ]);
         $normalizedParams = self::createStub(NormalizedParams::class);
         $normalizedParams->method('getSitePath')->willReturn('/');
-        $serverRequest = (new ServerRequest())
+        $serverRequest = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withAttribute('normalizedParams', $normalizedParams)
             ->withAttribute('frontend.typoscript', $frontendTypoScript);
         $context = $this->get(RenderingContextFactory::class)->create([], $serverRequest);
         $context->getTemplatePaths()->setTemplateSource($template);
-        self::assertEquals($urlPrefix . $this->resolveResourcePlaceholders($expected), (new TemplateView($context))->render());
+        self::assertEquals($urlPrefix . $this->resolveResourcePlaceholders($expected), new TemplateView($context)->render());
     }
 
     #[DataProvider('renderWithAndWithoutRequestDataProvider')]
@@ -160,7 +160,7 @@ final class ResourceViewHelperTest extends FunctionalTestCase
         $urlPrefix = '/';
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource($template);
-        self::assertEquals($urlPrefix . $this->resolveResourcePlaceholders($expected), (new TemplateView($context))->render());
+        self::assertEquals($urlPrefix . $this->resolveResourcePlaceholders($expected), new TemplateView($context)->render());
     }
 
     #[Test]

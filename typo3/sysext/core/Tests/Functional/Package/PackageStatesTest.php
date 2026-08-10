@@ -130,7 +130,7 @@ final class PackageStatesTest extends FunctionalTestCase
     public function activePackagesAreOrderedByPrioritizedPackageKeysOrPackageDependenciesOrAlphabeticallyAndSustainResorting(array $expectedSystemExtensionKeys): void
     {
         $packageManager = $this->get(PackageManager::class);
-        (new \ReflectionMethod($packageManager, 'sortActivePackagesByDependencies'))->invoke($packageManager);
+        new \ReflectionMethod($packageManager, 'sortActivePackagesByDependencies')->invoke($packageManager);
         $activePackages = $packageManager->getActivePackages();
         self::assertSame(
             $expectedSystemExtensionKeys,

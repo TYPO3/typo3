@@ -47,7 +47,7 @@ final class NewSchedulerTaskControllerTest extends FunctionalTestCase
     #[Test]
     public function handleRequestReturnsWizardContent(): void
     {
-        $request = (new ServerRequest('http://localhost/typo3/scheduler/task/wizard/new', 'GET'))
+        $request = new ServerRequest('http://localhost/typo3/scheduler/task/wizard/new', 'GET')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('route', new Route('/scheduler/task/wizard/new', ['packageName' => 'typo3/cms-scheduler', '_identifier' => 'ajax_new_scheduler_task_wizard']));
 
@@ -99,7 +99,7 @@ final class NewSchedulerTaskControllerTest extends FunctionalTestCase
         $eventListener = $container->get(ListenerProvider::class);
         $eventListener->addListener(ModifyNewSchedulerTaskWizardItemsEvent::class, 'test-wizard-event-listener');
 
-        $request = (new ServerRequest('http://localhost/typo3/scheduler/task/wizard/new', 'GET'))
+        $request = new ServerRequest('http://localhost/typo3/scheduler/task/wizard/new', 'GET')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('route', new Route('/scheduler/task/wizard/new', ['packageName' => 'typo3/cms-scheduler', '_identifier' => 'ajax_new_scheduler_task_wizard']));
         $controller = $this->get(NewSchedulerTaskController::class);
@@ -146,7 +146,7 @@ final class NewSchedulerTaskControllerTest extends FunctionalTestCase
     #[Test]
     public function wizardContainsRegisteredSchedulerTasks(): void
     {
-        $request = (new ServerRequest('http://localhost/typo3/scheduler/task/wizard/new', 'GET'))
+        $request = new ServerRequest('http://localhost/typo3/scheduler/task/wizard/new', 'GET')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('route', new Route('/scheduler/task/wizard/new', ['packageName' => 'typo3/cms-scheduler', '_identifier' => 'ajax_new_scheduler_task_wizard']));
         $controller = $this->get(NewSchedulerTaskController::class);
@@ -165,7 +165,7 @@ final class NewSchedulerTaskControllerTest extends FunctionalTestCase
     {
         $defaultValues = ['description' => 'Test default description'];
 
-        $request = (new ServerRequest('http://localhost/typo3/scheduler/task/wizard/new', 'GET'))
+        $request = new ServerRequest('http://localhost/typo3/scheduler/task/wizard/new', 'GET')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('route', new Route('/scheduler/task/wizard/new', ['packageName' => 'typo3/cms-scheduler', '_identifier' => 'ajax_new_scheduler_task_wizard']))
             ->withAttribute('normalizedParams', NormalizedParams::createFromServerParams([

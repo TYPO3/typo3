@@ -31,7 +31,7 @@ final class IdentifierFunctionLineTest extends UnitTestCase
     {
         $this->expectException(\LogicException::class);
         $this->expectExceptionCode(1655825120);
-        (new IdentifierFunctionLine())->setIdentifierTokenStream(new IdentifierTokenStream());
+        new IdentifierFunctionLine()->setIdentifierTokenStream(new IdentifierTokenStream());
     }
 
     #[Test]
@@ -39,7 +39,7 @@ final class IdentifierFunctionLineTest extends UnitTestCase
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1717495444);
-        (new IdentifierFunctionLine())->getIdentifierTokenStream();
+        new IdentifierFunctionLine()->getIdentifierTokenStream();
     }
 
     #[Test]
@@ -47,7 +47,7 @@ final class IdentifierFunctionLineTest extends UnitTestCase
     {
         $this->expectException(\LogicException::class);
         $this->expectExceptionCode(1655825121);
-        (new IdentifierFunctionLine())->setFunctionNameToken(new Token(TokenType::T_BLANK, ''));
+        new IdentifierFunctionLine()->setFunctionNameToken(new Token(TokenType::T_BLANK, ''));
     }
 
     #[Test]
@@ -55,7 +55,7 @@ final class IdentifierFunctionLineTest extends UnitTestCase
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1717495576);
-        (new IdentifierFunctionLine())->getFunctionNameToken();
+        new IdentifierFunctionLine()->getFunctionNameToken();
     }
 
     #[Test]
@@ -63,6 +63,6 @@ final class IdentifierFunctionLineTest extends UnitTestCase
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1717495996);
-        (new IdentifierFunctionLine())->getFunctionValueTokenStream();
+        new IdentifierFunctionLine()->getFunctionValueTokenStream();
     }
 }

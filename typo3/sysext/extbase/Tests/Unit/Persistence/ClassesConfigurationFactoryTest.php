@@ -61,7 +61,7 @@ final class ClassesConfigurationFactoryTest extends UnitTestCase
             ],
         ];
 
-        $reflectionMethod = (new \ReflectionClass($classesConfigurationFactory))
+        $reflectionMethod = new \ReflectionClass($classesConfigurationFactory)
             ->getMethod('inheritPropertiesFromParentClasses');
         $classes = $reflectionMethod->invoke($classesConfigurationFactory, $classes);
 

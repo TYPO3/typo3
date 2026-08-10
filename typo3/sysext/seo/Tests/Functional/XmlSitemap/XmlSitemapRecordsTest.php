@@ -71,7 +71,7 @@ final class XmlSitemapRecordsTest extends AbstractTestCase
     public function checkIfSiteMapIndexContainsSysCategoryLinks(string $sitemap, string $host, array $expectedEntries, array $notExpectedEntries): void
     {
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest($host))->withQueryParameters(
+            new InternalRequest($host)->withQueryParameters(
                 [
                     'type' => 1533906435,
                     'tx_seo[sitemap]' => $sitemap,
@@ -160,7 +160,7 @@ final class XmlSitemapRecordsTest extends AbstractTestCase
     public function checkIfSiteMapIndexContainsCustomChangeFreqAndPriorityValues(): void
     {
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest('http://localhost/'))->withQueryParameters(
+            new InternalRequest('http://localhost/')->withQueryParameters(
                 [
                     'id' => 1,
                     'type' => 1533906435,
@@ -186,7 +186,7 @@ final class XmlSitemapRecordsTest extends AbstractTestCase
     public function checkSiteMapWithDifferentTypoScriptConfigs(string $sitemap, array $expectedEntries, array $notExpectedEntries): void
     {
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest('http://localhost/'))->withQueryParameters(
+            new InternalRequest('http://localhost/')->withQueryParameters(
                 [
                     'id' => 1,
                     'type' => 1533906435,

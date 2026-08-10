@@ -31,13 +31,13 @@ final class ArrayConverterTest extends UnitTestCase
     public function convertFromDoesNotModifyTheSourceArray(): void
     {
         $sourceArray = ['Foo' => 'Bar', 'Baz'];
-        self::assertEquals($sourceArray, (new ArrayConverter())->convertFrom($sourceArray, 'array'));
+        self::assertEquals($sourceArray, new ArrayConverter()->convertFrom($sourceArray, 'array'));
     }
 
     #[Test]
     public function canConvertFromEmptyStringToArray(): void
     {
-        self::assertEquals([], (new ArrayConverter())->convertFrom('', 'array'));
+        self::assertEquals([], new ArrayConverter()->convertFrom('', 'array'));
     }
 
     public static function stringToArrayWithConfigurationDataProvider(): array
@@ -95,7 +95,7 @@ final class ArrayConverterTest extends UnitTestCase
     #[Test]
     public function canConvertWithConfigurationFromString(string $source, PropertyMappingConfigurationInterface $configuration, array $expectedResult): void
     {
-        self::assertEquals($expectedResult, (new ArrayConverter())->convertFrom($source, 'array', [], $configuration));
+        self::assertEquals($expectedResult, new ArrayConverter()->convertFrom($source, 'array', [], $configuration));
     }
 
     #[Test]
@@ -103,12 +103,12 @@ final class ArrayConverterTest extends UnitTestCase
     {
         $this->expectException(TypeConverterException::class);
         $this->expectExceptionCode(1582877555);
-        (new ArrayConverter())->convertFrom('foo', 'array', [], new PropertyMappingConfiguration());
+        new ArrayConverter()->convertFrom('foo', 'array', [], new PropertyMappingConfiguration());
     }
 
     #[Test]
     public function returnsSourceUnchangedIfNonEmptyValueWithNoConfigurationIsGiven(): void
     {
-        self::assertSame('foo', (new ArrayConverter())->convertFrom('foo', 'array', []));
+        self::assertSame('foo', new ArrayConverter()->convertFrom('foo', 'array', []));
     }
 }

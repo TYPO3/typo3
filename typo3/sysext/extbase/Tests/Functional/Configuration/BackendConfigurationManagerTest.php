@@ -55,7 +55,7 @@ final class BackendConfigurationManagerTest extends FunctionalTestCase
                 'throwPageNotFoundExceptionIfActionCantBeResolved' => '0',
             ],
         ];
-        $request = (new ServerRequest())->withQueryParams(['id' => 1]);
+        $request = new ServerRequest()->withQueryParams(['id' => 1]);
         self::assertEquals($expectedResult, $subject->getConfiguration($request, [], 'CurrentExtensionName'));
     }
 
@@ -86,14 +86,14 @@ final class BackendConfigurationManagerTest extends FunctionalTestCase
                 'throwPageNotFoundExceptionIfActionCantBeResolved' => '0',
             ],
         ];
-        $request = (new ServerRequest())->withQueryParams(['id' => 1]);
+        $request = new ServerRequest()->withQueryParams(['id' => 1]);
         self::assertEquals($expectedResult, $subject->getConfiguration($request, [], 'CurrentExtensionName', 'CurrentPluginName'));
     }
 
     #[Test]
     public function getCurrentPageIdReturnsPageIdFromGet(): void
     {
-        $request = (new ServerRequest())->withQueryParams(['id' => 123]);
+        $request = new ServerRequest()->withQueryParams(['id' => 123]);
         $subject = $this->get(BackendConfigurationManager::class);
         $getCurrentPageIdReflectionMethod = (new \ReflectionMethod($subject, 'getCurrentPageId'));
         $actualResult = $getCurrentPageIdReflectionMethod->invoke($subject, $request);
@@ -103,7 +103,7 @@ final class BackendConfigurationManagerTest extends FunctionalTestCase
     #[Test]
     public function getCurrentPageIdReturnsPageIdFromPost(): void
     {
-        $request = (new ServerRequest())->withQueryParams(['id' => 123])->withParsedBody(['id' => 321]);
+        $request = new ServerRequest()->withQueryParams(['id' => 123])->withParsedBody(['id' => 321]);
         $subject = $this->get(BackendConfigurationManager::class);
         $getCurrentPageIdReflectionMethod = (new \ReflectionMethod($subject, 'getCurrentPageId'));
         $actualResult = $getCurrentPageIdReflectionMethod->invoke($subject, $request);
@@ -152,7 +152,7 @@ final class BackendConfigurationManagerTest extends FunctionalTestCase
         );
 
         $site = $this->get(SiteFinder::class)->getSiteByPageId(2);
-        $request = (new ServerRequest())->withQueryParams(['id' => 2])->withAttribute('site', $site);
+        $request = new ServerRequest()->withQueryParams(['id' => 2])->withAttribute('site', $site);
         $subject = $this->get(BackendConfigurationManager::class);
         $setup = $subject->getTypoScriptSetup($request);
 

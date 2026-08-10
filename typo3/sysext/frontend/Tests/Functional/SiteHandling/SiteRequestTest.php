@@ -407,7 +407,7 @@ final class SiteRequestTest extends AbstractTestCase
 
         $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
-            (new InternalRequestContext())->withFrontendUserId($frontendUserId)
+            new InternalRequestContext()->withFrontendUserId($frontendUserId)
         );
         $responseStructure = ResponseContent::fromString(
             (string)$response->getBody()
@@ -457,7 +457,7 @@ final class SiteRequestTest extends AbstractTestCase
 
         $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
-            (new InternalRequestContext())->withFrontendUserId($frontendUserId)
+            new InternalRequestContext()->withFrontendUserId($frontendUserId)
         );
 
         self::assertSame(
@@ -490,7 +490,7 @@ final class SiteRequestTest extends AbstractTestCase
 
         $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
-            (new InternalRequestContext())->withFrontendUserId($frontendUserId)
+            new InternalRequestContext()->withFrontendUserId($frontendUserId)
         );
 
         self::assertSame(
@@ -512,7 +512,7 @@ final class SiteRequestTest extends AbstractTestCase
 
         $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
-            (new InternalRequestContext())->withFrontendUserId($frontendUserId)
+            new InternalRequestContext()->withFrontendUserId($frontendUserId)
         );
         $json = json_decode((string)$response->getBody(), true);
 
@@ -549,7 +549,7 @@ final class SiteRequestTest extends AbstractTestCase
 
         $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
-            (new InternalRequestContext())->withFrontendUserId($frontendUserId)
+            new InternalRequestContext()->withFrontendUserId($frontendUserId)
         );
         $responseStructure = ResponseContent::fromString(
             (string)$response->getBody()
@@ -593,7 +593,7 @@ final class SiteRequestTest extends AbstractTestCase
 
         $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
-            (new InternalRequestContext())->withFrontendUserId($frontendUserId)
+            new InternalRequestContext()->withFrontendUserId($frontendUserId)
         );
 
         self::assertSame(
@@ -631,7 +631,7 @@ final class SiteRequestTest extends AbstractTestCase
 
         $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
-            (new InternalRequestContext())->withFrontendUserId($frontendUserId)
+            new InternalRequestContext()->withFrontendUserId($frontendUserId)
         );
 
         self::assertSame(
@@ -653,7 +653,7 @@ final class SiteRequestTest extends AbstractTestCase
 
         $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
-            (new InternalRequestContext())->withFrontendUserId($frontendUserId)
+            new InternalRequestContext()->withFrontendUserId($frontendUserId)
         );
         $json = json_decode((string)$response->getBody(), true);
 
@@ -695,7 +695,7 @@ final class SiteRequestTest extends AbstractTestCase
 
         $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
-            (new InternalRequestContext())->withFrontendUserId($frontendUserId)
+            new InternalRequestContext()->withFrontendUserId($frontendUserId)
         );
         $json = json_decode((string)$response->getBody(), true);
 

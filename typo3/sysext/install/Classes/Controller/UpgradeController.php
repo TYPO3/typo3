@@ -722,7 +722,7 @@ class UpgradeController extends AbstractController
             );
         }
 
-        $parser = (new ParserFactory())->createForVersion(PhpVersion::fromComponents(8, 5));
+        $parser = new ParserFactory()->createForVersion(PhpVersion::fromComponents(8, 5));
         // Parse PHP file to AST and traverse tree calling visitors
         $statements = $parser->parse(file_get_contents($absoluteFilePath));
 
@@ -1122,7 +1122,7 @@ class UpgradeController extends AbstractController
             'upgradeWizardsMarkUndoneToken' => $formProtection->generateToken('installTool', 'upgradeWizardsMarkUndone'),
             'upgradeWizardsInputToken' => $formProtection->generateToken('installTool', 'upgradeWizardsInput'),
             'upgradeWizardsExecuteToken' => $formProtection->generateToken('installTool', 'upgradeWizardsExecute'),
-            'currentVersion' => (new Typo3Version())->getMajorVersion(),
+            'currentVersion' => new Typo3Version()->getMajorVersion(),
         ]);
         return new JsonResponse([
             'success' => true,

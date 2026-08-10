@@ -66,7 +66,7 @@ final class UserSettingsOverrideFieldsTest extends UnitTestCase
             ],
         ];
 
-        self::assertSame($input, (new UserSettingsOverrideFields(new UserSettingsSchema()))->addData($input));
+        self::assertSame($input, new UserSettingsOverrideFields(new UserSettingsSchema())->addData($input));
     }
 
     #[Test]
@@ -96,7 +96,7 @@ final class UserSettingsOverrideFieldsTest extends UnitTestCase
         $expected = $input;
         $expected['processedTca']['columns']['user_settings__emailMeAtLogin']['config']['readOnly'] = true;
 
-        self::assertSame($expected, (new UserSettingsOverrideFields(new UserSettingsSchema()))->addData($input));
+        self::assertSame($expected, new UserSettingsOverrideFields(new UserSettingsSchema())->addData($input));
     }
 
     #[Test]
@@ -120,7 +120,7 @@ final class UserSettingsOverrideFieldsTest extends UnitTestCase
             ],
         ];
 
-        self::assertSame($input, (new UserSettingsOverrideFields(new UserSettingsSchema()))->addData($input));
+        self::assertSame($input, new UserSettingsOverrideFields(new UserSettingsSchema())->addData($input));
     }
 
     #[Test]
@@ -144,6 +144,6 @@ final class UserSettingsOverrideFieldsTest extends UnitTestCase
             ],
         ];
 
-        self::assertSame($input, (new UserSettingsOverrideFields(new UserSettingsSchema()))->addData($input));
+        self::assertSame($input, new UserSettingsOverrideFields(new UserSettingsSchema())->addData($input));
     }
 }

@@ -57,7 +57,7 @@ final class DatabaseRowDefaultAsReadonlyTest extends UnitTestCase
         $expected = $input;
         $expected['databaseRow']['aField'] = $expected['defaultLanguageRow']['aField'];
 
-        self::assertEquals($expected, (new DatabaseRowDefaultAsReadonly())->addData($input));
+        self::assertEquals($expected, new DatabaseRowDefaultAsReadonly()->addData($input));
     }
 
     #[DataProvider('addDataDoesNotReplaceCurrentDatabaseValueDataProvider')]
@@ -66,7 +66,7 @@ final class DatabaseRowDefaultAsReadonlyTest extends UnitTestCase
     {
         self::assertEquals(
             $input['databaseRow']['aField'],
-            (new DatabaseRowDefaultAsReadonly())->addData($input)['databaseRow']['aField']
+            new DatabaseRowDefaultAsReadonly()->addData($input)['databaseRow']['aField']
         );
     }
 

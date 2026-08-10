@@ -97,7 +97,7 @@ final class PageContextTest extends FunctionalTestCase
         $moduleData = new ModuleData('web_layout', []);
         $moduleData->set('languages', $requestedLanguages);
 
-        $request = (new ServerRequest('https://example.com/'))
+        $request = new ServerRequest('https://example.com/')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('site', $site)
             ->withAttribute('moduleData', $moduleData)
@@ -128,7 +128,7 @@ final class PageContextTest extends FunctionalTestCase
         $moduleData = new ModuleData('test_module', []);
         $moduleData->set('languages', []);
 
-        $request = (new ServerRequest('https://example.com/'))
+        $request = new ServerRequest('https://example.com/')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('site', $site)
             ->withAttribute('moduleData', $moduleData)
@@ -147,7 +147,7 @@ final class PageContextTest extends FunctionalTestCase
     #[Test]
     public function createsContextForPageZero(): void
     {
-        $request = (new ServerRequest('https://example.com/'))
+        $request = new ServerRequest('https://example.com/')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('site', new NullSite())
             ->withAttribute('normalizedParams', NormalizedParams::createFromRequest(new ServerRequest()));
@@ -172,7 +172,7 @@ final class PageContextTest extends FunctionalTestCase
         // Set up non-admin user (editor)
         $editorUser = $this->setUpBackendUser(2);
 
-        $request = (new ServerRequest('https://example.com/'))
+        $request = new ServerRequest('https://example.com/')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('site', new NullSite())
             ->withAttribute('normalizedParams', NormalizedParams::createFromRequest(new ServerRequest()));
@@ -227,7 +227,7 @@ final class PageContextTest extends FunctionalTestCase
     #[Test]
     public function createWithLanguagesWorksForPageZero(): void
     {
-        $request = (new ServerRequest('https://example.com/'))
+        $request = new ServerRequest('https://example.com/')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('site', new NullSite())
             ->withAttribute('normalizedParams', NormalizedParams::createFromRequest(new ServerRequest()));
@@ -268,7 +268,7 @@ final class PageContextTest extends FunctionalTestCase
         $pageContextFactory = $this->get(PageContextFactory::class);
 
         // Step 1: User explicitly selects L=1 on page 1 (which has L=1 translation)
-        $requestWithLanguage = (new ServerRequest('https://example.com/'))
+        $requestWithLanguage = new ServerRequest('https://example.com/')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('site', $site)
             ->withAttribute('normalizedParams', NormalizedParams::createFromRequest(new ServerRequest()))
@@ -284,7 +284,7 @@ final class PageContextTest extends FunctionalTestCase
         self::assertSame([1], $pageContext1->selectedLanguageIds);
 
         // Step 2: Navigate to page 3 (NO L=1 translation) without explicit language parameter
-        $requestWithoutLanguage = (new ServerRequest('https://example.com/'))
+        $requestWithoutLanguage = new ServerRequest('https://example.com/')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('site', $site)
             ->withAttribute('normalizedParams', NormalizedParams::createFromRequest(new ServerRequest()));
@@ -325,7 +325,7 @@ final class PageContextTest extends FunctionalTestCase
         $pageContextFactory = $this->get(PageContextFactory::class);
 
         // Step 1: Select L=1
-        $request1 = (new ServerRequest('https://example.com/'))
+        $request1 = new ServerRequest('https://example.com/')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('site', $site)
             ->withAttribute('normalizedParams', NormalizedParams::createFromRequest(new ServerRequest()))
@@ -334,7 +334,7 @@ final class PageContextTest extends FunctionalTestCase
         $pageContextFactory->createFromRequest($request1, 4, $this->backendUser);
 
         // Step 2: Explicitly change to L=2 via request
-        $request2 = (new ServerRequest('https://example.com/'))
+        $request2 = new ServerRequest('https://example.com/')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('site', $site)
             ->withAttribute('normalizedParams', NormalizedParams::createFromRequest(new ServerRequest()))
@@ -346,7 +346,7 @@ final class PageContextTest extends FunctionalTestCase
         self::assertSame([2], $pageContext2->selectedLanguageIds);
 
         // Step 3: Navigate without explicit parameter
-        $request3 = (new ServerRequest('https://example.com/'))
+        $request3 = new ServerRequest('https://example.com/')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('site', $site)
             ->withAttribute('normalizedParams', NormalizedParams::createFromRequest(new ServerRequest()));
@@ -369,7 +369,7 @@ final class PageContextTest extends FunctionalTestCase
             ],
         ]);
 
-        $request = (new ServerRequest('https://example.com/'))
+        $request = new ServerRequest('https://example.com/')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('site', $site)
             ->withAttribute('normalizedParams', NormalizedParams::createFromRequest(new ServerRequest()))
@@ -398,7 +398,7 @@ final class PageContextTest extends FunctionalTestCase
             ],
         ]);
 
-        $request = (new ServerRequest('https://example.com/'))
+        $request = new ServerRequest('https://example.com/')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('site', $site)
             ->withAttribute('normalizedParams', NormalizedParams::createFromRequest(new ServerRequest()))
@@ -426,7 +426,7 @@ final class PageContextTest extends FunctionalTestCase
             ],
         ]);
 
-        $request = (new ServerRequest('https://example.com/'))
+        $request = new ServerRequest('https://example.com/')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('site', $site)
             ->withAttribute('normalizedParams', NormalizedParams::createFromRequest(new ServerRequest()))
@@ -454,7 +454,7 @@ final class PageContextTest extends FunctionalTestCase
             ],
         ]);
 
-        $request = (new ServerRequest('https://example.com/'))
+        $request = new ServerRequest('https://example.com/')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('site', $site)
             ->withAttribute('normalizedParams', NormalizedParams::createFromRequest(new ServerRequest()))
@@ -481,7 +481,7 @@ final class PageContextTest extends FunctionalTestCase
             ],
         ]);
 
-        $request = (new ServerRequest('https://example.com/'))
+        $request = new ServerRequest('https://example.com/')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('site', $site)
             ->withAttribute('normalizedParams', NormalizedParams::createFromRequest(new ServerRequest()))
@@ -509,7 +509,7 @@ final class PageContextTest extends FunctionalTestCase
             ],
         ]);
 
-        $request = (new ServerRequest('https://example.com/'))
+        $request = new ServerRequest('https://example.com/')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('site', $site)
             ->withAttribute('normalizedParams', NormalizedParams::createFromRequest(new ServerRequest()))
@@ -537,7 +537,7 @@ final class PageContextTest extends FunctionalTestCase
             ],
         ]);
 
-        $request = (new ServerRequest('https://example.com/'))
+        $request = new ServerRequest('https://example.com/')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('site', $site)
             ->withAttribute('normalizedParams', NormalizedParams::createFromRequest(new ServerRequest()))
@@ -563,7 +563,7 @@ final class PageContextTest extends FunctionalTestCase
             ],
         ]);
 
-        $request = (new ServerRequest('https://example.com/'))
+        $request = new ServerRequest('https://example.com/')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('site', $site)
             ->withAttribute('normalizedParams', NormalizedParams::createFromRequest(new ServerRequest()));
@@ -589,7 +589,7 @@ final class PageContextTest extends FunctionalTestCase
             ],
         ]);
 
-        $request = (new ServerRequest('https://example.com/'))
+        $request = new ServerRequest('https://example.com/')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('site', $site)
             ->withAttribute('normalizedParams', NormalizedParams::createFromRequest(new ServerRequest()))
@@ -616,7 +616,7 @@ final class PageContextTest extends FunctionalTestCase
             ],
         ]);
 
-        $request = (new ServerRequest('https://example.com/'))
+        $request = new ServerRequest('https://example.com/')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('site', $site)
             ->withAttribute('normalizedParams', NormalizedParams::createFromRequest(new ServerRequest()))
@@ -643,7 +643,7 @@ final class PageContextTest extends FunctionalTestCase
             ],
         ]);
 
-        $request = (new ServerRequest('https://example.com/'))
+        $request = new ServerRequest('https://example.com/')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('site', $site)
             ->withAttribute('normalizedParams', NormalizedParams::createFromRequest(new ServerRequest()))
@@ -669,7 +669,7 @@ final class PageContextTest extends FunctionalTestCase
             ],
         ]);
 
-        $request = (new ServerRequest('https://example.com/'))
+        $request = new ServerRequest('https://example.com/')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('site', $site)
             ->withAttribute('normalizedParams', NormalizedParams::createFromRequest(new ServerRequest()));
@@ -694,7 +694,7 @@ final class PageContextTest extends FunctionalTestCase
             ],
         ]);
 
-        $request = (new ServerRequest('https://example.com/'))
+        $request = new ServerRequest('https://example.com/')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('site', $site)
             ->withAttribute('normalizedParams', NormalizedParams::createFromRequest(new ServerRequest()));
@@ -727,7 +727,7 @@ final class PageContextTest extends FunctionalTestCase
             ],
         ]);
 
-        $request = (new ServerRequest('https://example.com/'))
+        $request = new ServerRequest('https://example.com/')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('site', $site)
             ->withAttribute('normalizedParams', NormalizedParams::createFromRequest(new ServerRequest()));
@@ -752,7 +752,7 @@ final class PageContextTest extends FunctionalTestCase
             ],
         ]);
 
-        $request = (new ServerRequest('https://example.com/'))
+        $request = new ServerRequest('https://example.com/')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('site', $site)
             ->withAttribute('normalizedParams', NormalizedParams::createFromRequest(new ServerRequest()));
@@ -778,7 +778,7 @@ final class PageContextTest extends FunctionalTestCase
         // Create backend user with no page permissions (user 2 has limited permissions)
         $limitedUser = $this->setUpBackendUser(2);
 
-        $request = (new ServerRequest('https://example.com/'))
+        $request = new ServerRequest('https://example.com/')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('site', $site)
             ->withAttribute('normalizedParams', NormalizedParams::createFromRequest(new ServerRequest()));
@@ -806,7 +806,7 @@ final class PageContextTest extends FunctionalTestCase
             ],
         ]);
 
-        $request = (new ServerRequest('https://example.com/'))
+        $request = new ServerRequest('https://example.com/')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('site', $site)
             ->withAttribute('normalizedParams', NormalizedParams::createFromRequest(new ServerRequest()));
@@ -821,7 +821,7 @@ final class PageContextTest extends FunctionalTestCase
     #[Test]
     public function contextProvidesPagePermissionsForPageZeroAndAdmin(): void
     {
-        $request = (new ServerRequest('https://example.com/'))
+        $request = new ServerRequest('https://example.com/')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('site', new NullSite())
             ->withAttribute('normalizedParams', NormalizedParams::createFromRequest(new ServerRequest()));
@@ -838,7 +838,7 @@ final class PageContextTest extends FunctionalTestCase
     public function contextProvidesPagePermissionsForPageZeroAndNonAdmin(): void
     {
         $editorUser = $this->setUpBackendUser(2);
-        $request = (new ServerRequest('https://example.com/'))
+        $request = new ServerRequest('https://example.com/')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('site', new NullSite())
             ->withAttribute('normalizedParams', NormalizedParams::createFromRequest(new ServerRequest()));

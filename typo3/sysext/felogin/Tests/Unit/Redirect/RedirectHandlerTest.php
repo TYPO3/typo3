@@ -61,7 +61,7 @@ final class RedirectHandlerTest extends UnitTestCase
     #[Test]
     public function processShouldReturnStringForLoginTypeLogout(string $expect, string $redirectMode): void
     {
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters());
         $request = new Request($serverRequest);
 
         $this->redirectModeHandler->expects($this->atMost(PHP_INT_MAX))->method('redirectModeLogout')->with($request, 0)->willReturn('');
@@ -114,7 +114,7 @@ final class RedirectHandlerTest extends UnitTestCase
             new Context()
         );
 
-        $serverRequest = (new ServerRequest())->withQueryParams(['redirect_url' => $redirectUrl])->withAttribute('extbase', new ExtbaseRequestParameters());
+        $serverRequest = new ServerRequest()->withQueryParams(['redirect_url' => $redirectUrl])->withAttribute('extbase', new ExtbaseRequestParameters());
         $request = new Request($serverRequest);
 
         if ($redirectUrl === $expected) {
@@ -128,7 +128,7 @@ final class RedirectHandlerTest extends UnitTestCase
     #[Test]
     public function getReferrerForLoginFormReturnsEmptyStringIfRedirectModeReferrerDisabled(): void
     {
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters());
         $request = new Request($serverRequest);
         $settings = ['redirectMode' => RedirectMode::LOGIN];
         self::assertEquals('', $this->subject->getReferrerForLoginForm($request, $settings));
@@ -138,7 +138,7 @@ final class RedirectHandlerTest extends UnitTestCase
     public function getReferrerForLoginFormReturnsReferrerGetParameter(): void
     {
         $expectedReferrer = 'https://example.com/page-referrer';
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters())
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters())
             ->withQueryParams(['referer' => $expectedReferrer]);
         $request = new Request($serverRequest);
         $this->redirectUrlValidator->expects($this->once())->method('isValid')->with($request, $expectedReferrer)->willReturn(true);
@@ -150,7 +150,7 @@ final class RedirectHandlerTest extends UnitTestCase
     public function getReferrerForLoginFormReturnsReferrerPostParameter(): void
     {
         $expectedReferrer = 'https://example.com/page-referrer';
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters())
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters())
             ->withParsedBody(['referer' => $expectedReferrer]);
         $request = new Request($serverRequest);
         $this->redirectUrlValidator->expects($this->once())->method('isValid')->with($request, $expectedReferrer)->willReturn(true);
@@ -162,7 +162,7 @@ final class RedirectHandlerTest extends UnitTestCase
     public function getReferrerForLoginFormReturnsHttpReferrerParameter(): void
     {
         $expectedReferrer = 'https://example.com/page-referrer';
-        $serverRequest = (new ServerRequest('/login', 'GET', 'php://input', [], ['HTTP_REFERER' => $expectedReferrer]))
+        $serverRequest = new ServerRequest('/login', 'GET', 'php://input', [], ['HTTP_REFERER' => $expectedReferrer])
             ->withAttribute('extbase', new ExtbaseRequestParameters());
         $request = new Request($serverRequest);
         $this->redirectUrlValidator->expects($this->once())->method('isValid')->with($request, $expectedReferrer)->willReturn(true);
@@ -174,7 +174,7 @@ final class RedirectHandlerTest extends UnitTestCase
     public function getReferrerForLoginFormReturnsOriginalRequestUrlIfCalledBySubRequest(): void
     {
         $expectedReferrer = 'https://example.com/original-page';
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters())
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters())
             ->withAttribute('originalRequest', new ServerRequest($expectedReferrer));
         $request = new Request($serverRequest);
         $this->redirectUrlValidator->expects($this->once())->method('isValid')->with($request, $expectedReferrer)->willReturn(true);
@@ -185,13 +185,13 @@ final class RedirectHandlerTest extends UnitTestCase
     #[Test]
     public function getReferrerForLoginFormReturnsNoUrlIfRedirectReferrerIsOff(): void
     {
-        $serverRequest = (new ServerRequest(
+        $serverRequest = new ServerRequest(
             '/login',
             'GET',
             'php://input',
             [],
             ['HTTP_REFERER' => 'https://example.com/page-referrer']
-        ))->withQueryParams(['tx_felogin_login' => ['redirectReferrer' => 'off']])
+        )->withQueryParams(['tx_felogin_login' => ['redirectReferrer' => 'off']])
             ->withAttribute('extbase', new ExtbaseRequestParameters());
         $request = new Request($serverRequest);
         $this->redirectUrlValidator->expects($this->never())->method('isValid');

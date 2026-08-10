@@ -275,17 +275,17 @@ final class RedirectRepositoryTest extends FunctionalTestCase
     public static function filteredRedirectsArePaginatedCorrectlyDataProvider(): iterable
     {
         yield 'first page' => [
-            (new DemandFixture(page: 1))->setLimit(2),
+            new DemandFixture(page: 1)->setLimit(2),
             [1, 2],
         ];
         // the second page skips uids 3 and 4, as they are not in web-mount 13
         yield 'second page' => [
-            (new DemandFixture(page: 2))->setLimit(2),
+            new DemandFixture(page: 2)->setLimit(2),
             [5, 6],
         ];
         // the third page does not have any more redirects in web-mount 13
         yield 'third page' => [
-            (new DemandFixture(page: 3))->setLimit(2),
+            new DemandFixture(page: 3)->setLimit(2),
             [],
         ];
     }

@@ -49,7 +49,7 @@ final class ScriptViewHelperTest extends FunctionalTestCase
     {
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:asset.script identifier="test" src="' . $src . '" priority="0"/>');
-        (new TemplateView($context))->render();
+        new TemplateView($context)->render();
         $collectedJavaScripts = $this->get(AssetCollector::class)->getJavaScripts();
         self::assertSame($src, $collectedJavaScripts['test']['source']);
         self::assertSame([], $collectedJavaScripts['test']['attributes']);
@@ -60,7 +60,7 @@ final class ScriptViewHelperTest extends FunctionalTestCase
     {
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:asset.script identifier="test" src="my.js" async="1" defer="1" nomodule="1" priority="0"/>');
-        (new TemplateView($context))->render();
+        new TemplateView($context)->render();
         $collectedJavaScripts = $this->get(AssetCollector::class)->getJavaScripts();
         self::assertSame($collectedJavaScripts['test']['source'], 'my.js');
         self::assertSame($collectedJavaScripts['test']['attributes'], ['async' => 'async', 'defer' => 'defer', 'nomodule' => 'nomodule']);
@@ -72,7 +72,7 @@ final class ScriptViewHelperTest extends FunctionalTestCase
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:asset.script identifier="test" src="test.js" inline="1" priority="0"/>');
 
-        (new TemplateView($context))->render();
+        new TemplateView($context)->render();
 
         $collectedInlineJavaScripts = $this->get(AssetCollector::class)->getInlineJavaScripts();
         self::assertSame("alert('test');\n", $collectedInlineJavaScripts['test']['source']);
@@ -85,7 +85,7 @@ final class ScriptViewHelperTest extends FunctionalTestCase
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:for each="{4711:\'4712\'}" as="i" iteration="iterator" key="k"><f:asset.script identifier="{i}">{k}</f:asset.script></f:for>');
 
-        (new TemplateView($context))->render();
+        new TemplateView($context)->render();
 
         $collectedInlineJavaScripts = $this->get(AssetCollector::class)->getInlineJavaScripts();
         self::assertSame('4711', $collectedInlineJavaScripts['4712']['source']);

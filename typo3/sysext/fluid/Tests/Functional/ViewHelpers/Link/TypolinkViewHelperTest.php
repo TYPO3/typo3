@@ -185,7 +185,7 @@ page.10 {
 EOT
         ]);
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest())
+            new InternalRequest()
             ->withPageId(1)
             ->withQueryParameter('foo', 'bar')
             ->withQueryParameter('temp', 'test')

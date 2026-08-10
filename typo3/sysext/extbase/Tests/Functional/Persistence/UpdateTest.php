@@ -60,7 +60,7 @@ final class UpdateTest extends FunctionalTestCase
         $this->personRepository = $this->get(PersonRepository::class);
         $this->exampleRepository = $this->get(ExampleRepository::class);
 
-        $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $request = new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $this->get(ConfigurationManagerInterface::class)->setRequest($request);
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['features']['extbase.enableHistoryTracking'] = true;
     }

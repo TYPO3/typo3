@@ -86,7 +86,7 @@ final class DatabaseRecordListTest extends FunctionalTestCase
         );
 
         // Create request with site and PageContext for page 1100 with default language
-        $request = (new ServerRequest('http://localhost/'))
+        $request = new ServerRequest('http://localhost/')
             ->withAttribute('route', (new Route('/typo3/module/content/records', ['_identifier' => 'records'])))
             ->withAttribute('site', $this->get(SiteFinder::class)->getSiteByIdentifier('test'));
 
@@ -117,7 +117,7 @@ final class DatabaseRecordListTest extends FunctionalTestCase
             ]
         );
 
-        $request = (new ServerRequest('http://localhost/'))
+        $request = new ServerRequest('http://localhost/')
             ->withAttribute('route', (new Route('/typo3/module/content/records', ['_identifier' => 'records'])))
             ->withAttribute('site', $this->get(SiteFinder::class)->getSiteByIdentifier('test'));
 
@@ -191,7 +191,7 @@ final class DatabaseRecordListTest extends FunctionalTestCase
     public function moduleDataLanguageSettingIsRespected(): void
     {
         // Create PageContext with default and French languages [0, 1]
-        $request = (new ServerRequest('http://localhost/'))
+        $request = new ServerRequest('http://localhost/')
             ->withAttribute('route', (new Route('/typo3/module/content/records', ['_identifier' => 'records'])))
             ->withAttribute('site', $this->get(SiteFinder::class)->getSiteByIdentifier('test'));
 
@@ -217,7 +217,7 @@ final class DatabaseRecordListTest extends FunctionalTestCase
     public function allLanguagesModeShowsAllElements(): void
     {
         // Create PageContext with all available languages [0, 1, 2, 3]
-        $request = (new ServerRequest('http://localhost/'))
+        $request = new ServerRequest('http://localhost/')
             ->withAttribute('route', (new Route('/typo3/module/content/records', ['_identifier' => 'records'])))
             ->withAttribute('site', $this->get(SiteFinder::class)->getSiteByIdentifier('test'));
 
@@ -242,7 +242,7 @@ final class DatabaseRecordListTest extends FunctionalTestCase
     public function languageFilterDoesNotShowWrongLanguageTranslations(): void
     {
         // Create PageContext with default and French languages only [0, 1]
-        $request = (new ServerRequest('http://localhost/'))
+        $request = new ServerRequest('http://localhost/')
             ->withAttribute('route', (new Route('/typo3/module/content/records', ['_identifier' => 'records'])))
             ->withAttribute('site', $this->get(SiteFinder::class)->getSiteByIdentifier('test'));
 
@@ -266,7 +266,7 @@ final class DatabaseRecordListTest extends FunctionalTestCase
     public function localizationPanelDoesNotOfferLanguageWithoutPageTranslation(): void
     {
         // Create PageContext with only default language [0] for page 1200
-        $request = (new ServerRequest('http://localhost/'))
+        $request = new ServerRequest('http://localhost/')
             ->withAttribute('route', (new Route('/typo3/module/content/records', ['_identifier' => 'records'])))
             ->withAttribute('site', $this->get(SiteFinder::class)->getSiteByIdentifier('test'));
 
@@ -290,7 +290,7 @@ final class DatabaseRecordListTest extends FunctionalTestCase
     #[Test]
     public function afterRecordListRowPreparedEventIsTriggered(): void
     {
-        $request = (new ServerRequest('http://localhost/'))
+        $request = new ServerRequest('http://localhost/')
             ->withAttribute('route', (new Route('/typo3/module/content/records', ['_identifier' => 'records'])))
             ->withAttribute('site', $this->get(SiteFinder::class)->getSiteByIdentifier('test'));
 

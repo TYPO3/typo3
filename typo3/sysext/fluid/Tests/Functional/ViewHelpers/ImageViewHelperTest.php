@@ -93,7 +93,7 @@ final class ImageViewHelperTest extends FunctionalTestCase
 
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource($template);
-        (new TemplateView($context))->render();
+        new TemplateView($context)->render();
     }
 
     public static function invalidArgumentsWithContentObjectPresentDataProvider(): array
@@ -141,7 +141,7 @@ final class ImageViewHelperTest extends FunctionalTestCase
         $this->expectExceptionMessage($message);
 
         $cObj = $this->get(ContentObjectRenderer::class);
-        $serverRequest = (new ServerRequest())
+        $serverRequest = new ServerRequest()
             ->withAttribute('currentContentObject', $cObj)
             ->withAttribute('extbase', new ExtbaseRequestParameters())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
@@ -150,7 +150,7 @@ final class ImageViewHelperTest extends FunctionalTestCase
 
         $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
         $context->getTemplatePaths()->setTemplateSource($template);
-        (new TemplateView($context))->render();
+        new TemplateView($context)->render();
     }
 
     public static function basicUsageScalingCroppingDataProvider(): \Generator
@@ -268,7 +268,7 @@ final class ImageViewHelperTest extends FunctionalTestCase
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource($template);
         $context->getVariableProvider()->add('fileReference', $this->get(ResourceFactory::class)->getFileReferenceObject(1));
-        $result = (new TemplateView($context))->render();
+        $result = new TemplateView($context)->render();
         self::assertMatchesRegularExpression($expected, $result);
 
         $matches = [];
@@ -308,7 +308,7 @@ final class ImageViewHelperTest extends FunctionalTestCase
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource($template);
         $context->getVariableProvider()->add('fileReference', $this->get(ResourceFactory::class)->getFileReferenceObject(1));
-        $result = (new TemplateView($context))->render();
+        $result = new TemplateView($context)->render();
         self::assertMatchesRegularExpression($expected, $result);
 
         $matches = [];
@@ -372,7 +372,7 @@ final class ImageViewHelperTest extends FunctionalTestCase
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getVariableProvider()->add('crop', (string)$cropVariantCollection);
         $context->getTemplatePaths()->setTemplateSource($template);
-        $result = (new TemplateView($context))->render();
+        $result = new TemplateView($context)->render();
         self::assertMatchesRegularExpression($expected, $result);
 
         $matches = [];
@@ -436,7 +436,7 @@ final class ImageViewHelperTest extends FunctionalTestCase
     {
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource($template);
-        $result = (new TemplateView($context))->render();
+        $result = new TemplateView($context)->render();
         self::assertEquals($expected, $result);
     }
 
@@ -447,7 +447,7 @@ final class ImageViewHelperTest extends FunctionalTestCase
         $context->getTemplatePaths()->setTemplateSource('<f:image src="fileadmin/ImageViewHelperTest.jpg" fileExtension="png" />');
         self::assertMatchesRegularExpression(
             '@^<img src="fileadmin/_processed_/5/3/csm_ImageViewHelperTest_.*\.png" width="400" height="300" alt="" />$@',
-            (new TemplateView($context))->render(),
+            new TemplateView($context)->render(),
         );
     }
 
@@ -462,7 +462,7 @@ final class ImageViewHelperTest extends FunctionalTestCase
         $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor'] = 'ImageMagick';
         self::assertMatchesRegularExpression(
             '@^<img src="fileadmin/_processed_/5/3/csm_ImageViewHelperTest_.*\.avif" width="400" height="300" alt="" />$@',
-            (new TemplateView($context))->render(),
+            new TemplateView($context)->render(),
         );
     }
 
@@ -473,7 +473,7 @@ final class ImageViewHelperTest extends FunctionalTestCase
         $context->getTemplatePaths()->setTemplateSource('<f:image src="fileadmin/ImageViewHelperFailTest.tif" width="200" fileExtension="jpg" />');
         self::assertMatchesRegularExpression(
             '@^<img src="fileadmin/_processed_/3/3/csm_ImageViewHelperFailTest_.*\.jpg" width="200" height="150" alt="" />$@',
-            (new TemplateView($context))->render(),
+            new TemplateView($context)->render(),
         );
     }
 
@@ -485,7 +485,7 @@ final class ImageViewHelperTest extends FunctionalTestCase
         $context->getTemplatePaths()->setTemplateSource('<f:image src="fileadmin/ImageViewHelperFailTest.tif" width="200" />');
         self::assertMatchesRegularExpression(
             '@^<img src="fileadmin/_processed_/3/3/csm_ImageViewHelperFailTest_.*\.png" width="200" height="150" alt="" />$@',
-            (new TemplateView($context))->render(),
+            new TemplateView($context)->render(),
         );
     }
 
@@ -496,7 +496,7 @@ final class ImageViewHelperTest extends FunctionalTestCase
         $context->getTemplatePaths()->setTemplateSource('<f:image src="fileadmin/ImageViewHelperTest.jpg" width="200" fileExtension="tif" />');
         self::assertMatchesRegularExpression(
             '@^<img src="fileadmin/_processed_/5/3/csm_ImageViewHelperTest_.*\.tif" width="200" height="150" alt="" />$@',
-            (new TemplateView($context))->render(),
+            new TemplateView($context)->render(),
         );
     }
 
@@ -510,7 +510,7 @@ final class ImageViewHelperTest extends FunctionalTestCase
         $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor'] = 'GraphicsMagick';
         self::assertMatchesRegularExpression(
             '@^<img src="fileadmin/_processed_/5/3/csm_ImageViewHelperTest_.*\.avif.jpg" width="200" height="150" alt="" />$@',
-            (new TemplateView($context))->render(),
+            new TemplateView($context)->render(),
         );
     }
 
@@ -529,7 +529,7 @@ final class ImageViewHelperTest extends FunctionalTestCase
         $context->getTemplatePaths()->setTemplateSource('<f:image src="fileadmin/ImageViewHelperTest.jpg" width="201" />');
         self::assertMatchesRegularExpression(
             '@^<img src="fileadmin/_processed_/5/3/csm_ImageViewHelperTest_.*\.webp" width="201" height="151" alt="" />$@',
-            (new TemplateView($context))->render(),
+            new TemplateView($context)->render(),
         );
     }
 
@@ -546,7 +546,7 @@ final class ImageViewHelperTest extends FunctionalTestCase
         $context->getTemplatePaths()->setTemplateSource('<f:image src="fileadmin/ImageViewHelperTest.jpg" width="202" />');
         self::assertMatchesRegularExpression(
             '@^<img src="fileadmin/_processed_/5/3/csm_ImageViewHelperTest_.*\.webp" width="202" height="152" alt="" />$@',
-            (new TemplateView($context))->render(),
+            new TemplateView($context)->render(),
         );
     }
 
@@ -568,7 +568,7 @@ final class ImageViewHelperTest extends FunctionalTestCase
         $context->getTemplatePaths()->setTemplateSource('<f:image src="fileadmin/ImageViewHelperTest.jpg" width="202" />');
         self::assertMatchesRegularExpression(
             '@^<img src="fileadmin/_processed_/5/3/csm_ImageViewHelperTest_.*\.webp" width="202" height="152" alt="" />$@',
-            (new TemplateView($context))->render(),
+            new TemplateView($context)->render(),
         );
     }
 
@@ -583,7 +583,7 @@ final class ImageViewHelperTest extends FunctionalTestCase
         $context->getTemplatePaths()->setTemplateSource('<f:image src="fileadmin/ImageViewHelperTest.jpg" width="202" />');
         self::assertMatchesRegularExpression(
             '@^<img src="fileadmin/_processed_/5/3/csm_ImageViewHelperTest_.*\.png" width="202" height="152" alt="" />$@',
-            (new TemplateView($context))->render(),
+            new TemplateView($context)->render(),
         );
     }
 
@@ -598,7 +598,7 @@ final class ImageViewHelperTest extends FunctionalTestCase
         $context->getTemplatePaths()->setTemplateSource('<f:image src="fileadmin/ImageViewHelperTest.jpg" width="202" />');
         self::assertMatchesRegularExpression(
             '@^<img src="fileadmin/_processed_/5/3/csm_ImageViewHelperTest_.*\.png" width="202" height="152" alt="" />$@',
-            (new TemplateView($context))->render(),
+            new TemplateView($context)->render(),
         );
     }
 
@@ -613,7 +613,7 @@ final class ImageViewHelperTest extends FunctionalTestCase
         $context->getTemplatePaths()->setTemplateSource('<f:image src="fileadmin/ImageViewHelperTest.jpg" width="202" />');
         self::assertMatchesRegularExpression(
             '@^<img src="fileadmin/_processed_/5/3/csm_ImageViewHelperTest_.*\.png" width="202" height="152" alt="" />$@',
-            (new TemplateView($context))->render(),
+            new TemplateView($context)->render(),
         );
     }
 
@@ -621,7 +621,7 @@ final class ImageViewHelperTest extends FunctionalTestCase
     public function absoluteArgument(): void
     {
         $normalizedParams = NormalizedParams::createFromServerParams(['HTTP_HOST' => 'typo3-testing.local', 'HTTPS' => 'on', 'SCRIPT_NAME' => '/index.php']);
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest()
             ->withAttribute('normalizedParams', $normalizedParams)
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
 
@@ -629,7 +629,7 @@ final class ImageViewHelperTest extends FunctionalTestCase
         $context->getTemplatePaths()->setTemplateSource('<f:image src="fileadmin/ImageViewHelperTest.jpg" absolute="1" />');
         self::assertEquals(
             '<img src="https://typo3-testing.local/fileadmin/ImageViewHelperTest.jpg" width="400" height="300" alt="" />',
-            (new TemplateView($context))->render(),
+            new TemplateView($context)->render(),
         );
     }
 
@@ -640,7 +640,7 @@ final class ImageViewHelperTest extends FunctionalTestCase
         $context->getTemplatePaths()->setTemplateSource('<f:image src="fileadmin/ImageViewHelperTest.jpg" base64="1" width="5" height="5" />');
         self::assertEquals(
             '<img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQIAEgASAAD/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCAAFAAUDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAb/xAAdEAEAAgICAwAAAAAAAAAAAAABAgMAEQQhEiIl/8QAFQEBAQAAAAAAAAAAAAAAAAAAAQL/xAAXEQADAQAAAAAAAAAAAAAAAAABAhEA/9oADAMBAAIRAxEAPwCBv53C5IfMiW1vjKyVqsgjEDRo0JJOt+3a6xjGU4jQZYC7/9k=" width="5" height="5" alt="" />',
-            (new TemplateView($context))->render(),
+            new TemplateView($context)->render(),
         );
     }
 
@@ -657,7 +657,7 @@ final class ImageViewHelperTest extends FunctionalTestCase
         $context->getTemplatePaths()->setTemplateSource('<f:image src="fileadmin/ImageViewHelperTest.jpg" crop="{crop}" />');
         self::assertEquals(
             '<img data-focus-area="{&quot;x&quot;:100,&quot;y&quot;:75,&quot;width&quot;:200,&quot;height&quot;:225}" src="fileadmin/ImageViewHelperTest.jpg" width="400" height="300" alt="" />',
-            (new TemplateView($context))->render(),
+            new TemplateView($context)->render(),
         );
     }
 
@@ -680,6 +680,6 @@ final class ImageViewHelperTest extends FunctionalTestCase
         $context->getTemplatePaths()->setTemplateSource($template);
         $context->getVariableProvider()->add('file', $this->get(ResourceFactory::class)->getFileObject(2));
         $context->getVariableProvider()->add('fileReference', $this->get(ResourceFactory::class)->getFileReferenceObject(2));
-        self::assertSame('', (new TemplateView($context))->render());
+        self::assertSame('', new TemplateView($context)->render());
     }
 }

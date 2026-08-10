@@ -95,7 +95,7 @@ final class RequestHandlerTest extends FunctionalTestCase
     public function generateHtmlTagUsingTypoScript(array $typoScriptSetup, string $expectedResult): void
     {
         $this->setUpFrontendRootPage(1, [], ['config' => implode("\n", $typoScriptSetup)]);
-        $response = $this->executeFrontendSubRequest((new InternalRequest('https://website.local/'))->withPageId(1));
+        $response = $this->executeFrontendSubRequest(new InternalRequest('https://website.local/')->withPageId(1));
         self::assertStringContainsString($expectedResult, (string)$response->getBody());
     }
 
@@ -105,7 +105,7 @@ final class RequestHandlerTest extends FunctionalTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1496402460);
         $this->setUpFrontendRootPage(1, [], ['config' => implode("\n", ['page = PAGE', 'page.meta.refresh = 10', 'page.meta.refresh.attribute=this-is-invalid'])]);
-        $this->executeFrontendSubRequest((new InternalRequest('https://website.local/'))->withPageId(1));
+        $this->executeFrontendSubRequest(new InternalRequest('https://website.local/')->withPageId(1));
     }
 
     public static function generateMetaTagUsingTypoScriptDataProvider(): array
@@ -211,7 +211,7 @@ final class RequestHandlerTest extends FunctionalTestCase
     public function generateMetaTagUsingTypoScript(array $typoScriptSetup, array $expectedResults): void
     {
         $this->setUpFrontendRootPage(1, [], ['config' => implode("\n", $typoScriptSetup)]);
-        $response = $this->executeFrontendSubRequest((new InternalRequest('https://website.local/'))->withPageId(1));
+        $response = $this->executeFrontendSubRequest(new InternalRequest('https://website.local/')->withPageId(1));
         $body = (string)$response->getBody();
         foreach ($expectedResults as $expectedResult) {
             self::assertStringContainsString($expectedResult, $body);
@@ -222,7 +222,7 @@ final class RequestHandlerTest extends FunctionalTestCase
     public function generateMetaTagUsingTypoScriptGeneratesNoTagWithEmptyContent(): void
     {
         $this->setUpFrontendRootPage(1, [], ['config' => implode("\n", ['page = PAGE', 'page.meta.refresh = '])]);
-        $response = $this->executeFrontendSubRequest((new InternalRequest('https://website.local/'))->withPageId(1));
+        $response = $this->executeFrontendSubRequest(new InternalRequest('https://website.local/')->withPageId(1));
         self::assertStringNotContainsString('refresh', (string)$response->getBody());
     }
 }

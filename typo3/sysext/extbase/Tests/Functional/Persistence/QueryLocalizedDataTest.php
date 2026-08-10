@@ -57,7 +57,7 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
         $configurationManager->setConfiguration($configuration);
         $this->postRepository = $this->get(PostRepository::class);
         $this->persistenceManager = $this->get(PersistenceManager::class);
-        $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $request = new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $this->get(ConfigurationManagerInterface::class)->setRequest($request);
     }
 

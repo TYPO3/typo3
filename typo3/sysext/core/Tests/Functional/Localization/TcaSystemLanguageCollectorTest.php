@@ -85,7 +85,7 @@ final class TcaSystemLanguageCollectorTest extends FunctionalTestCase
             ],
         ];
         $fieldInformation = ['items' => []];
-        (new TcaSystemLanguageCollector(new Locales(), $siteFinderStub))->populateAvailableSiteLanguages($fieldInformation);
+        new TcaSystemLanguageCollector(new Locales(), $siteFinderStub)->populateAvailableSiteLanguages($fieldInformation);
         self::assertSame($expectedItems, $fieldInformation['items']);
     }
 
@@ -100,7 +100,7 @@ final class TcaSystemLanguageCollectorTest extends FunctionalTestCase
             ],
         ];
         $fieldInformation = ['items' => []];
-        (new TcaSystemLanguageCollector(new Locales(), $this->get(SiteFinder::class)))->populateAvailableSiteLanguages($fieldInformation);
+        new TcaSystemLanguageCollector(new Locales(), $this->get(SiteFinder::class))->populateAvailableSiteLanguages($fieldInformation);
         self::assertSame($expectedItems, $fieldInformation['items']);
     }
 }

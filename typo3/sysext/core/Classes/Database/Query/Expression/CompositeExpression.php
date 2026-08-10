@@ -84,7 +84,7 @@ class CompositeExpression extends DoctrineCompositeExpression
      */
     public static function and($part = null, ...$parts): self
     {
-        return (new self(self::TYPE_AND, []))->with($part, ...$parts);
+        return new self(self::TYPE_AND, [])->with($part, ...$parts);
     }
 
     /**
@@ -93,7 +93,7 @@ class CompositeExpression extends DoctrineCompositeExpression
      */
     public static function or($part = null, ...$parts): self
     {
-        return (new self(self::TYPE_OR, []))->with($part, ...$parts);
+        return new self(self::TYPE_OR, [])->with($part, ...$parts);
     }
 
     /**

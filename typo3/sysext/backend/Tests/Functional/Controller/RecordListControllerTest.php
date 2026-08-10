@@ -285,7 +285,7 @@ final class RecordListControllerTest extends FunctionalTestCase
     {
         $queryParams = array_merge(['id' => $pageId], $additionalParams);
 
-        $request = (new ServerRequest('https://example.com/typo3/module/content/records'))
+        $request = new ServerRequest('https://example.com/typo3/module/content/records')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('route', new Route('/typo3/module/content/records', ['_identifier' => 'records']))
             ->withAttribute('site', $site)

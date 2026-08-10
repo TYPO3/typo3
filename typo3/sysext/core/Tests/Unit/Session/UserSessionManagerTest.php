@@ -143,7 +143,7 @@ final class UserSessionManagerTest extends UnitTestCase
         $validSessionJwt = self::encodeHashSignedJwt(
             [
                 'identifier' => 'valid-session',
-                'time' => (new \DateTimeImmutable())->format(\DateTimeImmutable::RFC3339),
+                'time' => new \DateTimeImmutable()->format(\DateTimeImmutable::RFC3339),
                 'scope' => [
                     'domain' => $cookieDomain,
                     'path' => '/',

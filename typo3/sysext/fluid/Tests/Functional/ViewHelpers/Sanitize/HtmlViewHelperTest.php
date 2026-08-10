@@ -68,7 +68,7 @@ final class HtmlViewHelperTest extends FunctionalTestCase
         $GLOBALS['TYPO3_REQUEST'] = $request->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource(sprintf('<f:sanitize.html>%s</f:sanitize.html>', $payload));
-        self::assertSame($expectation, (new TemplateView($context))->render());
+        self::assertSame($expectation, new TemplateView($context)->render());
     }
 
     #[DataProvider('isSanitizedDataProvider')]

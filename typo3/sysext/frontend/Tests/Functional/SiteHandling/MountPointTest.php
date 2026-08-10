@@ -353,7 +353,7 @@ final class MountPointTest extends AbstractTestCase
     public function hierarchicalMenuIsGenerated(string $accessedUrl, array $expectation): void
     {
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest($accessedUrl))
+            new InternalRequest($accessedUrl)
                 ->withInstructions([
                     $this->createHierarchicalMenuProcessorInstruction([
                         'levels' => 3,

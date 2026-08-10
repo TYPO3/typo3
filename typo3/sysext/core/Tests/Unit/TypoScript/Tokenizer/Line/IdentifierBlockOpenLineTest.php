@@ -29,6 +29,6 @@ final class IdentifierBlockOpenLineTest extends UnitTestCase
     {
         $this->expectException(\LogicException::class);
         $this->expectExceptionCode(1655824621);
-        (new IdentifierBlockOpenLine())->setIdentifierTokenStream(new IdentifierTokenStream());
+        new IdentifierBlockOpenLine()->setIdentifierTokenStream(new IdentifierTokenStream());
     }
 }

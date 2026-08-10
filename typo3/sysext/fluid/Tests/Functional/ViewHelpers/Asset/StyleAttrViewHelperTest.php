@@ -60,7 +60,7 @@ final class StyleAttrViewHelperTest extends FunctionalTestCase
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource($template);
 
-        $result = (new TemplateView($context))->render();
+        $result = new TemplateView($context)->render();
         $collection = $this->get(DirectiveHashCollection::class);
         $hash = $collection->jsonSerialize()['inline']['style-src-attr'][0] ?? null;
 

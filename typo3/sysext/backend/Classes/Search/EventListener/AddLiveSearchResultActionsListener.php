@@ -67,7 +67,7 @@ final readonly class AddLiveSearchResultActionsListener
             && (int)$currentUser->getUserId() !== (int)$resultItem->getExtraData()['uid']
         ) {
             $languageService = $this->languageServiceFactory->createFromUserPreferences($this->getBackendUser());
-            $switchUserAction = (new ResultItemAction('switch_backend_user'))
+            $switchUserAction = new ResultItemAction('switch_backend_user')
                 ->setLabel($languageService->sL('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:switchBackMode'))
                 ->setIcon($this->iconFactory->getIcon('actions-system-backend-user-switch', IconSize::SMALL))
                 ->setUrl('#');

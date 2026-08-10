@@ -43,7 +43,7 @@ final class QrCodeControllerTest extends FunctionalTestCase
     #[Test]
     public function getQrCodeTest(): void
     {
-        $request = (new ServerRequest('https://example.com/typo3/', 'GET'))->withQueryParams([
+        $request = new ServerRequest('https://example.com/typo3/', 'GET')->withQueryParams([
             'size' => 'large',
             'content' => 'https://www.example.com',
         ]);
@@ -58,7 +58,7 @@ final class QrCodeControllerTest extends FunctionalTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
-        $request = (new ServerRequest('https://example.com/typo3/', 'GET'))->withQueryParams([
+        $request = new ServerRequest('https://example.com/typo3/', 'GET')->withQueryParams([
             'size' => 'large',
             'content' => '',
         ]);
@@ -69,7 +69,7 @@ final class QrCodeControllerTest extends FunctionalTestCase
     #[Test]
     public function downloadTest(): void
     {
-        $request = (new ServerRequest('https://example.com/typo3/', 'POST'))->withParsedBody([
+        $request = new ServerRequest('https://example.com/typo3/', 'POST')->withParsedBody([
             'size' => 'large',
             'format' => 'png',
             'content' => 'https://www.example.com',
@@ -90,7 +90,7 @@ final class QrCodeControllerTest extends FunctionalTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
-        $request = (new ServerRequest('https://example.com/typo3/', 'POST'))->withParsedBody([
+        $request = new ServerRequest('https://example.com/typo3/', 'POST')->withParsedBody([
             'format' => 'jpg',
             'content' => 'https://www.example.com',
         ]);

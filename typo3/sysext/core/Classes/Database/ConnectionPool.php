@@ -152,7 +152,7 @@ class ConnectionPool
             $dsnUrl = $connectionParams['url'];
             unset($connectionParams['url']);
             try {
-                $parsedParams = (new DsnParser())->parse($dsnUrl);
+                $parsedParams = new DsnParser()->parse($dsnUrl);
             } catch (MalformedDsnException $e) {
                 throw new \UnexpectedValueException('Malformed connection parameter "url".', 1750964898, $e);
             }
@@ -322,7 +322,7 @@ class ConnectionPool
         self::registerDoctrineTypes();
 
         $middlewares = $this->getDriverMiddlewares($connectionName, $connectionParams);
-        $configuration = (new Configuration())
+        $configuration = new Configuration()
             ->setContainer($this->container)
             ->setMiddlewares($middlewares)
             // @link https://github.com/doctrine/dbal/blob/3.7.x/UPGRADE.md#deprecated-not-setting-a-schema-manager-factory

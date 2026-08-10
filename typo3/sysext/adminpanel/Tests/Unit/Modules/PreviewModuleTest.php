@@ -39,14 +39,14 @@ final class PreviewModuleTest extends UnitTestCase
     {
         return [
             'timestamp' => [
-                (string)(new \DateTime('2018-01-01 12:00:15 UTC'))->getTimestamp(),
-                (new \DateTime('2018-01-01 12:00:15 UTC'))->getTimestamp(),
-                (new \DateTime('2018-01-01 12:00:00 UTC'))->getTimestamp(),
+                (string)new \DateTime('2018-01-01 12:00:15 UTC')->getTimestamp(),
+                new \DateTime('2018-01-01 12:00:15 UTC')->getTimestamp(),
+                new \DateTime('2018-01-01 12:00:00 UTC')->getTimestamp(),
             ],
             'timestamp_1970' => [
-                (string)(new \DateTime('1970-01-01 00:00:15 UTC'))->getTimestamp(),
-                (new \DateTime('1970-01-01 00:00:60 UTC'))->getTimestamp(),
-                (new \DateTime('1970-01-01 00:00:60 UTC'))->getTimestamp(),
+                (string)new \DateTime('1970-01-01 00:00:15 UTC')->getTimestamp(),
+                new \DateTime('1970-01-01 00:00:60 UTC')->getTimestamp(),
+                new \DateTime('1970-01-01 00:00:60 UTC')->getTimestamp(),
             ],
         ];
     }
@@ -83,7 +83,7 @@ final class PreviewModuleTest extends UnitTestCase
     #[Test]
     public function initializeFrontendPreviewSetsUserGroupForSimulation(): void
     {
-        $request = (new ServerRequest())->withAttribute('frontend.user', $this->getMockBuilder(FrontendUserAuthentication::class)->getMock());
+        $request = new ServerRequest()->withAttribute('frontend.user', $this->getMockBuilder(FrontendUserAuthentication::class)->getMock());
 
         $configurationService = $this->getMockBuilder(ConfigurationService::class)->disableOriginalConstructor()->getMock();
         $configurationService->expects($this->once())->method('getMainConfiguration')->willReturn([]);

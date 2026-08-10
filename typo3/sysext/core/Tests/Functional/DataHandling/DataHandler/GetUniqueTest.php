@@ -47,7 +47,7 @@ final class GetUniqueTest extends FunctionalTestCase
      */
     public static function getUniqueDataProvider(): array
     {
-        $randomValue = (new Random())->generateRandomHexString(10);
+        $randomValue = new Random()->generateRandomHexString(10);
 
         return [
             'unique value' => [$randomValue, $randomValue],

@@ -56,7 +56,7 @@ final class ImageConvertGMViewHelperTest extends FunctionalTestCase
     {
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource($template);
-        return (new TemplateView($context))->render();
+        return new TemplateView($context)->render();
     }
 
     public static function filesConvertedToDefaultFileFormatUsingGraphicsMagickDataProvider(): \Generator

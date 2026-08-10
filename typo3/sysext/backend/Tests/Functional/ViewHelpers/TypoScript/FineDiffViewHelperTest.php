@@ -35,6 +35,6 @@ final class FineDiffViewHelperTest extends FunctionalTestCase
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getViewHelperResolver()->addNamespace('be', 'TYPO3\\CMS\\Backend\\ViewHelpers');
         $context->getTemplatePaths()->setTemplateSource('<be:typoScript.fineDiff />');
-        (new TemplateView($context))->render();
+        new TemplateView($context)->render();
     }
 }

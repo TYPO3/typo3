@@ -94,12 +94,12 @@ final class BackendUserTest extends UnitTestCase
                 null,
             ],
             'enabled user, starttime in past and no endtime' => [
-                (new \DateTime())->modify('-10 days'),
+                new \DateTime()->modify('-10 days'),
                 null,
             ],
             'enabled user, no starttime and endtime in future' => [
                 null,
-                (new \DateTime())->modify('+10 days'),
+                new \DateTime()->modify('+10 days'),
             ],
         ];
     }
@@ -126,13 +126,13 @@ final class BackendUserTest extends UnitTestCase
             ],
             'enabled user, starttime in future and no endtime' => [
                 false,
-                (new \DateTime())->modify('+10 days'),
+                new \DateTime()->modify('+10 days'),
                 null,
             ],
             'enabled user, no starttime and endtime in past' => [
                 false,
                 null,
-                (new \DateTime())->modify('-10 days'),
+                new \DateTime()->modify('-10 days'),
             ],
         ];
     }

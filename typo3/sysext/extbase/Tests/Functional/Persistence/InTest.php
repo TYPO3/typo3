@@ -42,7 +42,7 @@ final class InTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/Fixtures/InTestImport.csv');
         $this->blogRepository = $this->get(BlogRepository::class);
         $this->postRepository = $this->get(PostRepository::class);
-        $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $request = new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $this->get(ConfigurationManagerInterface::class)->setRequest($request);
     }
 

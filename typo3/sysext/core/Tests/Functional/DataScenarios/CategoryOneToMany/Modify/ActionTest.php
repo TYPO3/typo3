@@ -43,12 +43,12 @@ final class ActionTest extends AbstractActionTestCase
         parent::addCategoryRelation();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/addCategoryRelation.csv');
 
-        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
+        $response = $this->executeFrontendSubRequest(new InternalRequest()->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
 
         self::assertThat(
             $responseSections,
-            (new StructureHasRecordConstraint())
+            new StructureHasRecordConstraint()
                 ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_Categories)
                 ->setTable(self::TABLE_Category)->setField('title')->setValues('Category C')
         );
@@ -60,12 +60,12 @@ final class ActionTest extends AbstractActionTestCase
         parent::addCategoryRelations();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/addCategoryRelations.csv');
 
-        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
+        $response = $this->executeFrontendSubRequest(new InternalRequest()->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
 
         self::assertThat(
             $responseSections,
-            (new StructureHasRecordConstraint())
+            new StructureHasRecordConstraint()
                 ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_Categories)
                 ->setTable(self::TABLE_Category)->setField('title')->setValues('Category C', 'Category A.A')
         );
@@ -77,12 +77,12 @@ final class ActionTest extends AbstractActionTestCase
         parent::addCategoryRelationToExisting();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/addCategoryRelationToExisting.csv');
 
-        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
+        $response = $this->executeFrontendSubRequest(new InternalRequest()->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
 
         self::assertThat(
             $responseSections,
-            (new StructureHasRecordConstraint())
+            new StructureHasRecordConstraint()
                  ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField(self::FIELD_Categories)
                  ->setTable(self::TABLE_Category)->setField('title')->setValues('Category A', 'Category B', 'Category C')
         );
@@ -94,12 +94,12 @@ final class ActionTest extends AbstractActionTestCase
         parent::addCategoryRelationsToExisting();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/addCategoryRelationsToExisting.csv');
 
-        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
+        $response = $this->executeFrontendSubRequest(new InternalRequest()->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
 
         self::assertThat(
             $responseSections,
-            (new StructureHasRecordConstraint())
+            new StructureHasRecordConstraint()
                  ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField(self::FIELD_Categories)
                  ->setTable(self::TABLE_Category)->setField('title')->setValues('Category A', 'Category B', 'Category C', 'Category A.A')
         );
@@ -111,25 +111,25 @@ final class ActionTest extends AbstractActionTestCase
         parent::createAndAddCategoryRelation();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/createAndAddCategoryRelation.csv');
 
-        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
+        $response = $this->executeFrontendSubRequest(new InternalRequest()->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
 
         self::assertThat(
             $responseSections,
-            (new HasRecordConstraint())
+            new HasRecordConstraint()
                  ->setTable(self::TABLE_Category)->setField('title')->setValues('Category B.A')
         );
 
         self::assertThat(
             $responseSections,
-            (new StructureHasRecordConstraint())
+            new StructureHasRecordConstraint()
                  ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField(self::FIELD_Categories)
                  ->setTable(self::TABLE_Category)->setField('title')->setValues('Category A', 'Category B', 'Category B.A')
         );
 
         self::assertThat(
             $responseSections,
-            (new StructureHasRecordConstraint())
+            new StructureHasRecordConstraint()
                  ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_Categories)
                  ->setTable(self::TABLE_Category)->setField('title')->setValues('Category B.A')
         );
@@ -141,18 +141,18 @@ final class ActionTest extends AbstractActionTestCase
         parent::createAndReplaceCategoryRelation();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/createAndReplaceCategoryRelation.csv');
 
-        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
+        $response = $this->executeFrontendSubRequest(new InternalRequest()->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
 
         self::assertThat(
             $responseSections,
-            (new HasRecordConstraint())
+            new HasRecordConstraint()
                  ->setTable(self::TABLE_Category)->setField('title')->setValues('Category B.A')
         );
 
         self::assertThat(
             $responseSections,
-            (new StructureHasRecordConstraint())
+            new StructureHasRecordConstraint()
                  ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField(self::FIELD_Categories)
                  ->setTable(self::TABLE_Category)->setField('title')->setValues('Category B.A')
         );
@@ -164,12 +164,12 @@ final class ActionTest extends AbstractActionTestCase
         parent::addAndDeleteCategoryRelationsOnExisting();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/addAndDeleteCategoryRelationsOnExisting.csv');
 
-        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
+        $response = $this->executeFrontendSubRequest(new InternalRequest()->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
 
         self::assertThat(
             $responseSections,
-            (new StructureHasRecordConstraint())
+            new StructureHasRecordConstraint()
                  ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField(self::FIELD_Categories)
                  ->setTable(self::TABLE_Category)->setField('title')->setValues('Category A', 'Category C')
         );
@@ -181,12 +181,12 @@ final class ActionTest extends AbstractActionTestCase
         parent::modifyReferencingContentElement();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyReferencingContentElement.csv');
 
-        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
+        $response = $this->executeFrontendSubRequest(new InternalRequest()->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
 
         self::assertThat(
             $responseSections,
-            (new HasRecordConstraint())
+            new HasRecordConstraint()
                  ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1')
         );
     }
@@ -197,12 +197,12 @@ final class ActionTest extends AbstractActionTestCase
         parent::modifyContentOfRelatedCategory();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyContentOfRelatedCategory.csv');
 
-        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
+        $response = $this->executeFrontendSubRequest(new InternalRequest()->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
 
         self::assertThat(
             $responseSections,
-            (new StructureHasRecordConstraint())
+            new StructureHasRecordConstraint()
                  ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField(self::FIELD_Categories)
                  ->setTable(self::TABLE_Category)->setField('title')->setValues('Category A', 'Testing #1')
         );
@@ -214,12 +214,12 @@ final class ActionTest extends AbstractActionTestCase
         parent::moveContentAndCategoryRelationToDifferentPage();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/moveContentAndCategoryRelationToDifferentPage.csv');
 
-        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_TargetPageId));
+        $response = $this->executeFrontendSubRequest(new InternalRequest()->withPageId(self::VALUE_TargetPageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
 
         self::assertThat(
             $responseSections,
-            (new StructureHasRecordConstraint())
+            new StructureHasRecordConstraint()
                  ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField(self::FIELD_Categories)
                  ->setTable(self::TABLE_Category)->setField('title')->setValues('Category A', 'Category B')
         );
@@ -231,12 +231,12 @@ final class ActionTest extends AbstractActionTestCase
         parent::changeContentAndCategorySorting();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/changeContentAndCategorySorting.csv');
 
-        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
+        $response = $this->executeFrontendSubRequest(new InternalRequest()->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
 
         self::assertThat(
             $responseSections,
-            (new StructureHasRecordConstraint())
+            new StructureHasRecordConstraint()
                  ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField(self::FIELD_Categories)
                  ->setTable(self::TABLE_Category)->setField('title')->setValues('Category B', 'Category A')
         );
@@ -248,19 +248,19 @@ final class ActionTest extends AbstractActionTestCase
         parent::deleteCategoryRelation();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteCategoryRelation.csv');
 
-        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
+        $response = $this->executeFrontendSubRequest(new InternalRequest()->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
 
         self::assertThat(
             $responseSections,
-            (new StructureHasRecordConstraint())
+            new StructureHasRecordConstraint()
                  ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField(self::FIELD_Categories)
                  ->setTable(self::TABLE_Category)->setField('title')->setValues('Category A')
         );
 
         self::assertThat(
             $responseSections,
-            (new StructureDoesNotHaveRecordConstraint())
+            new StructureDoesNotHaveRecordConstraint()
                  ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField(self::FIELD_Categories)
                  ->setTable(self::TABLE_Category)->setField('title')->setValues('Category B')
         );
@@ -272,12 +272,12 @@ final class ActionTest extends AbstractActionTestCase
         parent::deleteCategoryRelations();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteCategoryRelations.csv');
 
-        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
+        $response = $this->executeFrontendSubRequest(new InternalRequest()->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
 
         self::assertThat(
             $responseSections,
-            (new StructureDoesNotHaveRecordConstraint())
+            new StructureDoesNotHaveRecordConstraint()
                  ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField(self::FIELD_Categories)
                  ->setTable(self::TABLE_Category)->setField('title')->setValues('Category A', 'Category B')
         );

@@ -386,7 +386,7 @@ final class QuerySearchControllerTest extends FunctionalTestCase
 
         $route = $this->get(Router::class)->getRoute('system_database');
         $route->setOption('_identifier', 'system_database');
-        $request = (new ServerRequest())->withAttribute('route', $route);
+        $request = new ServerRequest()->withAttribute('route', $route);
 
         $subject = $this->getAccessibleMock(QuerySearchController::class, null, [
             $iconFactoryStub,

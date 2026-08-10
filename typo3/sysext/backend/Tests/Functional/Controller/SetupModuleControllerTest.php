@@ -96,7 +96,7 @@ final class SetupModuleControllerTest extends FunctionalTestCase
         $normalizedParams = self::createStub(NormalizedParams::class);
         $normalizedParams->method('getSitePath')->willReturn('/');
         $normalizedParams->method('getRequestUri')->willReturn('/typo3/setup');
-        $request = (new ServerRequest('https://example.com/typo3/setup'))
+        $request = new ServerRequest('https://example.com/typo3/setup')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('normalizedParams', $normalizedParams)
             ->withAttribute('route', new Route('/module/user/setup', ['packageName' => 'typo3/cms-backend', '_identifier' => 'user_setup']));

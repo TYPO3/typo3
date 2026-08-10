@@ -46,7 +46,7 @@ final class RegistryTest extends UnitTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1249755131);
-        (new Registry($this->connectionPool, $this->deserializer))->get('', 'someKey');
+        new Registry($this->connectionPool, $this->deserializer)->get('', 'someKey');
     }
 
     #[Test]
@@ -54,7 +54,7 @@ final class RegistryTest extends UnitTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1249755131);
-        (new Registry($this->connectionPool, $this->deserializer))->get('t', 'someKey');
+        new Registry($this->connectionPool, $this->deserializer)->get('t', 'someKey');
     }
 
     #[Test]
@@ -62,7 +62,7 @@ final class RegistryTest extends UnitTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1249755131);
-        (new Registry($this->connectionPool, $this->deserializer))->set('', 'someKey', 'someValue');
+        new Registry($this->connectionPool, $this->deserializer)->set('', 'someKey', 'someValue');
     }
 
     #[Test]
@@ -70,7 +70,7 @@ final class RegistryTest extends UnitTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1249755131);
-        (new Registry($this->connectionPool, $this->deserializer))->set('t', 'someKey', 'someValue');
+        new Registry($this->connectionPool, $this->deserializer)->set('t', 'someKey', 'someValue');
     }
 
     #[Test]
@@ -78,7 +78,7 @@ final class RegistryTest extends UnitTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1249755131);
-        (new Registry($this->connectionPool, $this->deserializer))->remove('t', 'someKey');
+        new Registry($this->connectionPool, $this->deserializer)->remove('t', 'someKey');
     }
 
     #[Test]
@@ -86,6 +86,6 @@ final class RegistryTest extends UnitTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1249755131);
-        (new Registry($this->connectionPool, $this->deserializer))->removeAllByNamespace('');
+        new Registry($this->connectionPool, $this->deserializer)->removeAllByNamespace('');
     }
 }

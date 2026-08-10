@@ -66,7 +66,7 @@ final class BackendControllerTest extends FunctionalTestCase
         $eventListener = $this->get(ListenerProvider::class);
         $eventListener->addListener(AfterBackendPageRenderEvent::class, 'after-backend-page-render-listener');
 
-        $request = (new ServerRequest('https://example.com/typo3/main'))
+        $request = new ServerRequest('https://example.com/typo3/main')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('route', new Route('/main', ['packageName' => 'typo3/cms-backend', '_identifier' => 'main']));
 
@@ -86,7 +86,7 @@ final class BackendControllerTest extends FunctionalTestCase
         // Set workspace to disable the site configuration module
         $GLOBALS['BE_USER']->workspace = 1;
 
-        $request = (new ServerRequest('https://example.com/typo3/main'))
+        $request = new ServerRequest('https://example.com/typo3/main')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withQueryParams(['redirect' => 'site_configuration'])
             ->withAttribute('route', new Route('/main', ['packageName' => 'typo3/cms-backend', '_identifier' => 'main']));

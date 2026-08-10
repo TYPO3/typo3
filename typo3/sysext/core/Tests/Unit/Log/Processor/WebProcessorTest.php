@@ -38,7 +38,7 @@ final class WebProcessorTest extends UnitTestCase
             'REMOTE_ADDR' => '127.0.0.1',
             'QUERY_STRING' => 'id=42',
         ]);
-        $request = (new ServerRequest('https://acme.com/index.php?id=42'))
+        $request = new ServerRequest('https://acme.com/index.php?id=42')
             ->withAttribute('normalizedParams', $normalizedParams)
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $GLOBALS['TYPO3_REQUEST'] = $request;

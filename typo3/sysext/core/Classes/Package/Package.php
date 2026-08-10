@@ -156,7 +156,7 @@ class Package implements PackageInterface
         $isFrameworkPackage = $packageManager->isFrameworkPackage($this->getValueFromComposerManifest('name') ?? $this->packageKey);
         $version = $manifest->extra->{'typo3/cms'}->{'version'} ?? $manifest->version ?? self::NO_VERSION_SET;
         if ($isFrameworkPackage) {
-            $version = (new Typo3Version())->getVersion();
+            $version = new Typo3Version()->getVersion();
         }
         $this->packageMetaData->setVersion($version);
         $this->packageMetaData->setExcludeFromUpdates($manifest->extra->{'typo3/cms'}->{'exclude-from-updates'} ?? false);

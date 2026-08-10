@@ -131,7 +131,7 @@ final class BackendLayoutRendererLanguageComparisonTest extends FunctionalTestCa
         $drawingConfiguration->setSelectedLanguageIds($selectedLanguageIds);
 
         $site = $this->get(SiteFinder::class)->getSiteByIdentifier('test-site');
-        $request = (new ServerRequest('https://example.com/'))
+        $request = new ServerRequest('https://example.com/')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('site', $site)
             ->withAttribute('route', new Route('path', ['packageName' => 'typo3/cms-backend']));

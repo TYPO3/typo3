@@ -27,7 +27,7 @@ final class TextCropperTest extends UnitTestCase
     #[Test]
     public function cropIsMultibyteSafe(): void
     {
-        self::assertEquals('бла', (new TextCropper())->crop('бла', 3, '...', false));
+        self::assertEquals('бла', new TextCropper()->crop('бла', 3, '...', false));
     }
 
     public static function cropWorksDataProvider(): \Generator
@@ -105,6 +105,6 @@ final class TextCropperTest extends UnitTestCase
     {
         $content = mb_convert_encoding($content, 'utf-8', 'iso-8859-1');
         $expected = mb_convert_encoding($expected, 'utf-8', 'iso-8859-1');
-        self::assertEquals($expected, (new TextCropper())->crop($content, $numberOfChars, $replacementForEllipsis, $cropToSpace));
+        self::assertEquals($expected, new TextCropper()->crop($content, $numberOfChars, $replacementForEllipsis, $cropToSpace));
     }
 }

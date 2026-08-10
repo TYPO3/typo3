@@ -146,7 +146,7 @@ final class DependencyOrderingServiceTest extends UnitTestCase
     #[Test]
     public function orderByDependenciesBuildsCorrectOrder(array $items, string $beforeKey, string $afterKey, array $expectedOrderedItems): void
     {
-        $orderedItems = (new DependencyOrderingService())->orderByDependencies($items, $beforeKey, $afterKey);
+        $orderedItems = new DependencyOrderingService()->orderByDependencies($items, $beforeKey, $afterKey);
         self::assertSame($expectedOrderedItems, $orderedItems);
     }
 
@@ -561,7 +561,7 @@ final class DependencyOrderingServiceTest extends UnitTestCase
     #[Test]
     public function buildDependencyGraphBuildsValidGraph(array $dependencies, array $expectedGraph): void
     {
-        $graph = (new DependencyOrderingService())->buildDependencyGraph($dependencies);
+        $graph = new DependencyOrderingService()->buildDependencyGraph($dependencies);
         self::assertEquals($expectedGraph, $graph);
     }
 
@@ -635,7 +635,7 @@ final class DependencyOrderingServiceTest extends UnitTestCase
     #[Test]
     public function calculateOrderResolvesCorrectOrder(array $graph, array $expectedList): void
     {
-        $list = (new DependencyOrderingService())->calculateOrder($graph);
+        $list = new DependencyOrderingService()->calculateOrder($graph);
         self::assertSame($expectedList, $list);
     }
 
@@ -645,7 +645,7 @@ final class DependencyOrderingServiceTest extends UnitTestCase
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1381960494);
 
-        (new DependencyOrderingService())->calculateOrder([
+        new DependencyOrderingService()->calculateOrder([
             1 => [
                 1 => false,
                 2 => true,

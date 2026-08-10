@@ -86,7 +86,7 @@ final class MimeTypeValidator extends AbstractValidator
             // Example: myfile.txt is actually a PDF file (defined by mime-type), but .txt is not associated
             // for application/pdf, so this is not valid.
             $fileExtension =  pathinfo($uploadedFile->getClientFilename(), PATHINFO_EXTENSION);
-            $assumedMimesTypeOfFileExtension = (new MimeTypeDetector())->getMimeTypesForFileExtension($fileExtension);
+            $assumedMimesTypeOfFileExtension = new MimeTypeDetector()->getMimeTypesForFileExtension($fileExtension);
             if (empty(array_intersect($allowedMimeTypes, $assumedMimesTypeOfFileExtension))) {
                 $message = $this->translateErrorMessage(
                     $this->invalidExtensionMessage,

@@ -89,11 +89,11 @@ final class FormDefinitionArrayConverterTest extends FunctionalTestCase
                 ],
                 '_orig_prototypeName' => [
                     'value' => 'standard',
-                    'hmac' => (new HashService())->hmac(serialize(['test', 'prototypeName', 'standard']), '123'),
+                    'hmac' => new HashService()->hmac(serialize(['test', 'prototypeName', 'standard']), '123'),
                 ],
                 '_orig_identifier' => [
                     'value' => 'test',
-                    'hmac' => (new HashService())->hmac(serialize(['test', 'identifier', 'test']), '123'),
+                    'hmac' => new HashService()->hmac(serialize(['test', 'identifier', 'test']), '123'),
                 ],
             ]),
             FormDefinitionArray::class
@@ -172,11 +172,11 @@ final class FormDefinitionArrayConverterTest extends FunctionalTestCase
             '_formPersistenceIdentifier' => '1:/form_definitions/test.form.yaml',
             '_orig_prototypeName' => [
                 'value' => 'standard',
-                'hmac' => (new HashService())->hmac(serialize(['test', 'prototypeName', 'standard']), '123'),
+                'hmac' => new HashService()->hmac(serialize(['test', 'prototypeName', 'standard']), '123'),
             ],
             '_orig_identifier' => [
                 'value' => 'test',
-                'hmac' => (new HashService())->hmac(serialize(['test', 'identifier', 'test']), '123'),
+                'hmac' => new HashService()->hmac(serialize(['test', 'identifier', 'test']), '123'),
             ],
         ];
         $subject = $this->get(FormDefinitionArrayConverter::class);
@@ -199,11 +199,11 @@ final class FormDefinitionArrayConverterTest extends FunctionalTestCase
             '_formPersistenceIdentifier' => '1:/form_definitions/test.form.yaml',
             '_orig_prototypeName' => [
                 'value' => 'standard',
-                'hmac' => (new HashService())->hmac(serialize(['test', 'prototypeName', 'standard']), '123'),
+                'hmac' => new HashService()->hmac(serialize(['test', 'prototypeName', 'standard']), '123'),
             ],
             '_orig_identifier' => [
                 'value' => 'test',
-                'hmac' => (new HashService())->hmac(serialize(['test', 'prototypeName', 'test']), '123'),
+                'hmac' => new HashService()->hmac(serialize(['test', 'prototypeName', 'test']), '123'),
             ],
         ];
         $subject = $this->get(FormDefinitionArrayConverter::class);

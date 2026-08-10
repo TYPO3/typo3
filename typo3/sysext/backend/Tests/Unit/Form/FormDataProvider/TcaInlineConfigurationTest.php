@@ -69,7 +69,7 @@ final class TcaInlineConfigurationTest extends UnitTestCase
         ];
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1443793404);
-        (new TcaInlineConfiguration())->addData($input);
+        new TcaInlineConfiguration()->addData($input);
     }
 
     #[Test]
@@ -91,7 +91,7 @@ final class TcaInlineConfigurationTest extends UnitTestCase
         $expected = [];
         $expected['processedTca']['columns']['aField']['config'] = $this->defaultConfig;
         $expected['tcaSchemata'] = $input['tcaSchemata'];
-        self::assertEquals($expected, (new TcaInlineConfiguration())->addData($input));
+        self::assertEquals($expected, new TcaInlineConfiguration()->addData($input));
     }
 
     #[Test]
@@ -115,7 +115,7 @@ final class TcaInlineConfigurationTest extends UnitTestCase
         $expected['processedTca']['columns']['aField']['config'] = $this->defaultConfig;
         $expected['processedTca']['columns']['aField']['config']['minitems'] = 23;
         $expected['tcaSchemata'] = $input['tcaSchemata'];
-        self::assertEquals($expected, (new TcaInlineConfiguration())->addData($input));
+        self::assertEquals($expected, new TcaInlineConfiguration()->addData($input));
     }
 
     #[Test]
@@ -139,7 +139,7 @@ final class TcaInlineConfigurationTest extends UnitTestCase
         $expected['processedTca']['columns']['aField']['config'] = $this->defaultConfig;
         $expected['processedTca']['columns']['aField']['config']['minitems'] = 0;
         $expected['tcaSchemata'] = $input['tcaSchemata'];
-        self::assertEquals($expected, (new TcaInlineConfiguration())->addData($input));
+        self::assertEquals($expected, new TcaInlineConfiguration()->addData($input));
     }
 
     #[Test]
@@ -163,7 +163,7 @@ final class TcaInlineConfigurationTest extends UnitTestCase
         $expected['processedTca']['columns']['aField']['config'] = $this->defaultConfig;
         $expected['processedTca']['columns']['aField']['config']['maxitems'] = 23;
         $expected['tcaSchemata'] = $input['tcaSchemata'];
-        self::assertEquals($expected, (new TcaInlineConfiguration())->addData($input));
+        self::assertEquals($expected, new TcaInlineConfiguration()->addData($input));
     }
 
     #[Test]
@@ -187,7 +187,7 @@ final class TcaInlineConfigurationTest extends UnitTestCase
         $expected['processedTca']['columns']['aField']['config'] = $this->defaultConfig;
         $expected['processedTca']['columns']['aField']['config']['maxitems'] = 1;
         $expected['tcaSchemata'] = $input['tcaSchemata'];
-        self::assertEquals($expected, (new TcaInlineConfiguration())->addData($input));
+        self::assertEquals($expected, new TcaInlineConfiguration()->addData($input));
     }
 
     #[Test]
@@ -217,7 +217,7 @@ final class TcaInlineConfigurationTest extends UnitTestCase
         $expected['processedTca']['columns']['aField']['config']['appearance']['levelLinksPosition'] = 'both';
         $expected['processedTca']['columns']['aField']['config']['appearance']['enabledControls']['dragdrop'] = false;
         $expected['tcaSchemata'] = $input['tcaSchemata'];
-        self::assertEquals($expected, (new TcaInlineConfiguration())->addData($input));
+        self::assertEquals($expected, new TcaInlineConfiguration()->addData($input));
     }
 
     #[Test]
@@ -263,7 +263,7 @@ final class TcaInlineConfigurationTest extends UnitTestCase
         $expected['processedTca']['columns']['aField']['config']['appearance']['showNewRecordLink'] = false;
         $expected['processedTca']['aForeignTableName'] = $input['processedTca']['aForeignTableName'];
         $expected['tcaSchemata'] = $input['tcaSchemata'];
-        self::assertEquals($expected, (new TcaInlineConfiguration())->addData($input));
+        self::assertEquals($expected, new TcaInlineConfiguration()->addData($input));
     }
 
     #[Test]
@@ -308,7 +308,7 @@ final class TcaInlineConfigurationTest extends UnitTestCase
         $expected['processedTca']['columns']['aField']['config']['appearance']['levelLinksPosition'] = 'both';
         $expected['processedTca']['aForeignTableName'] = $input['processedTca']['aForeignTableName'];
         $expected['tcaSchemata'] = $input['tcaSchemata'];
-        self::assertEquals($expected, (new TcaInlineConfiguration())->addData($input));
+        self::assertEquals($expected, new TcaInlineConfiguration()->addData($input));
     }
 
     #[Test]
@@ -334,7 +334,7 @@ final class TcaInlineConfigurationTest extends UnitTestCase
         $expected['processedTca']['columns']['aField']['config'] = $this->defaultConfig;
         $expected['processedTca']['columns']['aField']['config']['appearance']['showPossibleLocalizationRecords'] = true;
         $expected['tcaSchemata'] = $input['tcaSchemata'];
-        self::assertEquals($expected, (new TcaInlineConfiguration())->addData($input));
+        self::assertEquals($expected, new TcaInlineConfiguration()->addData($input));
     }
 
     #[Test]
@@ -360,7 +360,7 @@ final class TcaInlineConfigurationTest extends UnitTestCase
         $expected['processedTca']['columns']['aField']['config'] = $this->defaultConfig;
         $expected['processedTca']['columns']['aField']['config']['appearance']['showPossibleLocalizationRecords'] = false;
         $expected['tcaSchemata'] = $input['tcaSchemata'];
-        self::assertEquals($expected, (new TcaInlineConfiguration())->addData($input));
+        self::assertEquals($expected, new TcaInlineConfiguration()->addData($input));
     }
 
     #[Test]
@@ -385,7 +385,7 @@ final class TcaInlineConfigurationTest extends UnitTestCase
         $input['tcaSchemata'] = $this->getSchemaCollection($input['processedTca']);
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1444995464);
-        (new TcaInlineConfiguration())->addData($input);
+        new TcaInlineConfiguration()->addData($input);
     }
 
     #[Test]
@@ -409,7 +409,7 @@ final class TcaInlineConfigurationTest extends UnitTestCase
         $input['tcaSchemata'] = $this->getSchemaCollection($input['processedTca']);
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1444996537);
-        (new TcaInlineConfiguration())->addData($input);
+        new TcaInlineConfiguration()->addData($input);
     }
 
     #[Test]
@@ -433,7 +433,7 @@ final class TcaInlineConfigurationTest extends UnitTestCase
         $input['tcaSchemata'] = $this->getSchemaCollection($input['processedTca']);
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1444996537);
-        (new TcaInlineConfiguration())->addData($input);
+        new TcaInlineConfiguration()->addData($input);
     }
 
     #[Test]
@@ -459,7 +459,7 @@ final class TcaInlineConfigurationTest extends UnitTestCase
         $input['tcaSchemata'] = $this->getSchemaCollection($input['processedTca']);
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1444996537);
-        (new TcaInlineConfiguration())->addData($input);
+        new TcaInlineConfiguration()->addData($input);
     }
 
     #[Test]
@@ -485,7 +485,7 @@ final class TcaInlineConfigurationTest extends UnitTestCase
         $input['tcaSchemata'] = $this->getSchemaCollection($input['processedTca']);
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1445078627);
-        (new TcaInlineConfiguration())->addData($input);
+        new TcaInlineConfiguration()->addData($input);
     }
 
     #[Test]
@@ -509,7 +509,7 @@ final class TcaInlineConfigurationTest extends UnitTestCase
         $input['tcaSchemata'] = $this->getSchemaCollection($input['processedTca']);
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1445078628);
-        (new TcaInlineConfiguration())->addData($input);
+        new TcaInlineConfiguration()->addData($input);
     }
 
     #[Test]
@@ -548,7 +548,7 @@ final class TcaInlineConfigurationTest extends UnitTestCase
         ];
         $expected['processedTca']['aForeignTableName'] = $input['processedTca']['aForeignTableName'];
         $expected['tcaSchemata'] = $input['tcaSchemata'];
-        self::assertEquals($expected, (new TcaInlineConfiguration())->addData($input));
+        self::assertEquals($expected, new TcaInlineConfiguration()->addData($input));
     }
 
     #[Test]
@@ -622,7 +622,7 @@ final class TcaInlineConfigurationTest extends UnitTestCase
         ];
         $expected['processedTca']['aForeignTableName'] = $input['processedTca']['aForeignTableName'];
         $expected['tcaSchemata'] = $input['tcaSchemata'];
-        self::assertEquals($expected, (new TcaInlineConfiguration())->addData($input));
+        self::assertEquals($expected, new TcaInlineConfiguration()->addData($input));
     }
 
     private function getSchemaCollection(array $tca): SchemaCollection

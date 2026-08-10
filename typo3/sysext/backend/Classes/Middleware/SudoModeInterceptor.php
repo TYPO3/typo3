@@ -79,14 +79,14 @@ final class SudoModeInterceptor implements MiddlewareInterface
         $this->storage->addClaim($claim);
         $isAjaxCall = (bool)($request->getAttribute('route')?->getOption('ajax') ?? false);
         if ($isAjaxCall) {
-            return (new JsonResponse([
+            return new JsonResponse([
                 'sudoModeInitialization' => [
                     'verifyActionUri' => (string)$this->controller->buildVerifyActionUriForClaim($claim),
                     'allowInstallToolPassword' => $GLOBALS['BE_USER']->isSystemMaintainer(),
                     'isAjax' => true,
                     'labels' => $GLOBALS['LANG']->getLabelsFromResource('EXT:backend/Resources/Private/Language/SudoMode.xlf'),
                 ],
-            ]))->withStatus(422, 'Step-Up required: A different authentication level is required');
+            ])->withStatus(422, 'Step-Up required: A different authentication level is required');
         }
         $uri = $this->controller->buildModuleActionUriForClaim($claim);
         return new RedirectResponse($uri, 401);

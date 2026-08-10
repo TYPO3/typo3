@@ -49,6 +49,6 @@ class LegacyLinkBuilder extends AbstractTypolinkBuilder implements TypolinkBuild
         } else {
             throw new UnableToLinkException('Unknown link detected, so ' . $linkText . ' was not linked.', 1490990031, null, $linkText);
         }
-        return (new LinkResult((string)$linkDetails['type'], (string)$url))->withTarget($target)->withLinkConfiguration($configuration)->withLinkText($linkText);
+        return new LinkResult((string)$linkDetails['type'], (string)$url)->withTarget($target)->withLinkConfiguration($configuration)->withLinkText($linkText);
     }
 }

@@ -81,7 +81,7 @@ final class PasswordGeneratorControllerTest extends FunctionalTestCase
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['passwordPolicies']['default']['generator']['className'] = $classNameOverride;
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['passwordPolicies']['default']['generator']['options'] = $options;
 
-        $request = (new ServerRequest())->withParsedBody($parsedBody);
+        $request = new ServerRequest()->withParsedBody($parsedBody);
         $response = $this->controller->generate($request);
 
         $result = json_decode((string)$response->getBody(), true, 512, JSON_THROW_ON_ERROR);
@@ -110,7 +110,7 @@ final class PasswordGeneratorControllerTest extends FunctionalTestCase
             $setupConfig();
         }
 
-        $request = (new ServerRequest())->withParsedBody($parsedBody);
+        $request = new ServerRequest()->withParsedBody($parsedBody);
         $response = $this->controller->generate($request);
 
         $result = json_decode((string)$response->getBody(), true, 512, JSON_THROW_ON_ERROR);
@@ -142,7 +142,7 @@ final class PasswordGeneratorControllerTest extends FunctionalTestCase
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['passwordPolicies']['default']['generator'] = $configOverride;
 
-        $request = (new ServerRequest())->withParsedBody($parsedBody);
+        $request = new ServerRequest()->withParsedBody($parsedBody);
         $response = $this->controller->generate($request);
         $result = json_decode((string)$response->getBody(), true, 512, JSON_THROW_ON_ERROR);
 

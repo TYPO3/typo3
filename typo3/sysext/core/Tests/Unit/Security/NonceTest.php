@@ -86,7 +86,7 @@ final class NonceTest extends UnitTestCase
         // drop microtime, second is the minimum date-interval here
         $now = \DateTimeImmutable::createFromFormat(
             \DateTimeImmutable::RFC3339,
-            (new \DateTimeImmutable())->format(\DateTimeImmutable::RFC3339)
+            new \DateTimeImmutable()->format(\DateTimeImmutable::RFC3339)
         );
         $delta = random_int(-7200, 7200);
         $interval = new \DateInterval(sprintf('PT%dS', abs($delta)));

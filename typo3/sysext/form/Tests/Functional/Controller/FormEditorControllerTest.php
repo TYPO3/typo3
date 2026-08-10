@@ -520,7 +520,7 @@ final class FormEditorControllerTest extends FunctionalTestCase
         $eventListener = $this->get(ListenerProvider::class);
         $eventListener->addListener(BeforeFormIsSavedEvent::class, 'before-form-saved-listener');
 
-        $serverRequest = (new ServerRequest('https://example.com', 'POST'))
+        $serverRequest = new ServerRequest('https://example.com', 'POST')
             ->withAttribute('extbase', new ExtbaseRequestParameters())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
 
@@ -536,7 +536,7 @@ final class FormEditorControllerTest extends FunctionalTestCase
             'formDefinition' => new FormDefinitionArray($formDefinition),
         ];
         $serverRequest = $serverRequest->withParsedBody($parsedBody);
-        $request = (new Request($serverRequest))
+        $request = new Request($serverRequest)
             ->withControllerExtensionName(FormEditorController::class)
             ->withControllerName('FormEditorController')
             ->withArguments($parsedBody)

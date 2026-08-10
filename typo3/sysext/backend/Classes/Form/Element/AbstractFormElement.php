@@ -249,7 +249,7 @@ abstract class AbstractFormElement extends AbstractNode
                             } else {
                                 $locale = new Locale();
                             }
-                            $value = (new DateFormatter())->strftime($option, (int)$itemValue, $locale);
+                            $value = new DateFormatter()->strftime($option, (int)$itemValue, $locale);
                         } else {
                             $value = date($option, (int)$itemValue);
                         }
@@ -259,7 +259,7 @@ abstract class AbstractFormElement extends AbstractNode
                     if (isset($formatOptions['appendAge']) && $formatOptions['appendAge']) {
                         $now = DateTimeFactory::createFromTimestamp($GLOBALS['EXEC_TIME']);
                         $then = DateTimeFactory::createFromTimestamp((int)$itemValue);
-                        $age = (new DateFormatter())->formatDateInterval(
+                        $age = new DateFormatter()->formatDateInterval(
                             $now->diff($then),
                             $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears')
                         );

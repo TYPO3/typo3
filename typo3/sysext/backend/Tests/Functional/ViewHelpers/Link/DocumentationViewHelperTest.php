@@ -35,7 +35,7 @@ final class DocumentationViewHelperTest extends FunctionalTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->request = (new ServerRequest('https://www.example.com/'))
+        $this->request = new ServerRequest('https://www.example.com/')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('normalizedParams', new NormalizedParams([], [], '', ''));
     }
@@ -46,9 +46,9 @@ final class DocumentationViewHelperTest extends FunctionalTestCase
         $context = $this->get(RenderingContextFactory::class)->create([], $this->request);
         $context->getViewHelperResolver()->addNamespace('be', 'TYPO3\\CMS\\Backend\\ViewHelpers');
         $context->getTemplatePaths()->setTemplateSource('<be:link.documentation identifier="foobar" class="baz" target="_self" rel="nofollow">see documentation</be:link.documentation>');
-        $result = urldecode((new TemplateView($context))->render());
+        $result = urldecode(new TemplateView($context)->render());
 
-        $typo3Version = (new Typo3Version())->getBranch();
+        $typo3Version = new Typo3Version()->getBranch();
         self::assertSame('<a class="baz" target="_blank" rel="noreferrer" href="https://docs.typo3.org/permalink/foobar@' . $typo3Version . '">see documentation</a>', $result);
     }
 
@@ -61,6 +61,6 @@ final class DocumentationViewHelperTest extends FunctionalTestCase
         $context = $this->get(RenderingContextFactory::class)->create([], $this->request);
         $context->getViewHelperResolver()->addNamespace('be', 'TYPO3\\CMS\\Backend\\ViewHelpers');
         $context->getTemplatePaths()->setTemplateSource('<be:link.documentation identifier="foo@bar" class="baz">see documentation</be:link.documentation>');
-        (new TemplateView($context))->render();
+        new TemplateView($context)->render();
     }
 }
