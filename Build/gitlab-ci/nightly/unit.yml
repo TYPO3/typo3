@@ -12,7 +12,7 @@ unit javascript:
   script:
     - Build/Scripts/runTests.sh -s unitJavascript
 
-# 8.2 & 8.5 "locked" are part of pre-merge, have 8.3 and 8.4 in nightly
+# 8.2 & 8.6 "locked" are part of pre-merge, have 8.3, 8.4 and 8.5 in nightly
 unit php 8.3 locked:
   stage: unit
   tags:
@@ -47,6 +47,23 @@ unit php 8.4 locked:
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.4
     - Build/Scripts/runTests.sh -s unit -p 8.4 -- --log-junit typo3temp/var/tests/junit-reports/unit.xml
+unit php 8.5 locked:
+  stage: unit
+  tags:
+    - metal2
+  needs: []
+  only:
+    - schedules
+  artifacts:
+    when: always
+    expire_in: 1 week
+    paths:
+      - typo3temp/var/tests/junit-reports
+    reports:
+      junit: typo3temp/var/tests/junit-reports/unit.xml
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.5
+    - Build/Scripts/runTests.sh -s unit -p 8.5 -- --log-junit typo3temp/var/tests/junit-reports/unit.xml
 
 unit php 8.2 max:
   stage: unit
@@ -187,6 +204,41 @@ unit php 8.5 max random:
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 8.5
     - Build/Scripts/runTests.sh -s unitRandom -p 8.5 -- --log-junit typo3temp/var/tests/junit-reports/unit-random.xml
+
+unit php 8.6 max:
+  stage: unit
+  tags:
+    - metal2
+  needs: []
+  only:
+    - schedules
+  artifacts:
+    when: always
+    expire_in: 1 week
+    paths:
+      - typo3temp/var/tests/junit-reports
+    reports:
+      junit: typo3temp/var/tests/junit-reports/unit.xml
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.6
+    - Build/Scripts/runTests.sh -s unit -p 8.6 -- --log-junit typo3temp/var/tests/junit-reports/unit.xml
+unit php 8.6 max random:
+  stage: unit
+  tags:
+    - metal2
+  needs: []
+  only:
+    - schedules
+  artifacts:
+    when: always
+    expire_in: 1 week
+    paths:
+      - typo3temp/var/tests/junit-reports
+    reports:
+      junit: typo3temp/var/tests/junit-reports/unit-random.xml
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.6
+    - Build/Scripts/runTests.sh -s unitRandom -p 8.6 -- --log-junit typo3temp/var/tests/junit-reports/unit-random.xml
 
 unit php 8.2 min:
   stage: unit

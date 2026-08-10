@@ -50,7 +50,7 @@ unit php 8.2 pre-merge:
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.2
     - Build/Scripts/runTests.sh -s unit -p 8.2 -- --log-junit typo3temp/var/tests/junit-reports/unit.xml
-unit php 8.5 pre-merge:
+unit php 8.6 pre-merge:
   stage: main
   tags:
     - metal2
@@ -66,5 +66,5 @@ unit php 8.5 pre-merge:
     reports:
       junit: typo3temp/var/tests/junit-reports/unit.xml
   script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 8.5
-    - Build/Scripts/runTests.sh -s unit -p 8.5 -- --log-junit typo3temp/var/tests/junit-reports/unit.xml
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.6
+    - Build/Scripts/runTests.sh -s unit -p 8.6 -- --log-junit typo3temp/var/tests/junit-reports/unit.xml
