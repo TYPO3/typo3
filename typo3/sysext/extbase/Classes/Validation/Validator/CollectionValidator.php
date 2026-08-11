@@ -79,7 +79,7 @@ final class CollectionValidator extends AbstractGenericObjectValidator
     protected function isValid(mixed $value): void
     {
         if ($value instanceof ObjectStorage) {
-            // ObjectStorage is keyed by spl_object_hash(), which is an internal detail and would end up
+            // ObjectStorage is keyed by spl_object_id(), which is an internal detail and would end up
             // as the property path of the validation result. Consumers address collection elements by
             // their position instead, for example `<f:form.textfield property="toppings.0.title" />`.
             $value = $value->toArray();
