@@ -15,15 +15,16 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\Tests\Unit\Http\Security;
+namespace TYPO3\CMS\Backend\Tests\Unit\Http\Security;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Http\Security\ReferrerEnforcer;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\Security\InvalidReferrerException;
 use TYPO3\CMS\Core\Http\Security\MissingReferrerException;
-use TYPO3\CMS\Core\Http\Security\ReferrerEnforcer;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\ConsumableNonce;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -165,6 +166,18 @@ final class ReferrerEnforcerTest extends UnitTestCase
                 'https://other-example.site/security/',
                 null,
             ],
+            // The actual regression: the backend is served from the very same entry script as
+            // any other application, thus a same-site referrer must not be mistaken for same-origin.
+            [
+                'https://example.org/typo3/module/web/list',
+                'https://example.org/some-frontend-page',
+                null,
+            ],
+            [
+                'https://example.org/typo3/module/web/list',
+                'https://example.org/',
+                null,
+            ],
         ];
     }
 
@@ -211,33 +224,31 @@ final class ReferrerEnforcerTest extends UnitTestCase
 
     private function buildSubject(string $requestUri, string $referrer, ?ConsumableNonce $nonce = null): ReferrerEnforcer
     {
-        $requestUriInstance = new Uri($requestUri);
-        $host = sprintf(
-            '%s://%s',
-            $requestUriInstance->getScheme(),
-            $requestUriInstance->getHost()
-        );
-        $dir = $host . rtrim(dirname($requestUriInstance->getPath()), '/') . '/';
-        parse_str($requestUriInstance->getQuery(), $queryParams);
-
-        $normalizedParams = $this->createMock(NormalizedParams::class);
-        $normalizedParams->method('getRequestHost')->willReturn($host);
-        $normalizedParams->method('getRequestDir')->willReturn($dir);
-        $request = $this->createMock(ServerRequestInterface::class);
-        $request->method('getAttribute')->willReturnCallback(static fn(string $name): mixed => match ($name) {
-            'normalizedParams' => $normalizedParams,
-            'nonce' => $nonce,
-            default => null,
-        });
-        $request->method('getServerParams')->willReturn(['HTTP_REFERER' => $referrer]);
-        $request->method('getUri')->willReturn($requestUriInstance);
-        $request->method('getQueryParams')->willReturn($queryParams);
-
+        $request = $this->buildPreparedRequest($requestUri, $referrer, $nonce);
         $mock = $this->getMockBuilder(ReferrerEnforcer::class)
             ->onlyMethods(['resolveAbsoluteWebPath'])
             ->setConstructorArgs([$request])
             ->getMock();
         $mock->method('resolveAbsoluteWebPath')->willReturnCallback(static fn(string $target): string => '/' . $target);
         return $mock;
+    }
+
+    private function buildPreparedRequest(string $requestUri, string $referrer, ?ConsumableNonce $nonce = null): ServerRequestInterface
+    {
+        $requestUriInstance = new Uri($requestUri);
+        // the backend is served from the entry script in the document root, thus `SCRIPT_NAME` is `/index.php`
+        $serverParams = [
+            'HTTP_HOST' => $requestUriInstance->getHost(),
+            'HTTP_REFERER' => $referrer,
+            'SCRIPT_NAME' => '/index.php',
+            'REQUEST_URI' => $requestUriInstance->getPath() . ($requestUriInstance->getQuery() !== '' ? '?' . $requestUriInstance->getQuery() : ''),
+            'HTTPS' => $requestUriInstance->getScheme() === 'https' ? 'on' : 'off',
+        ];
+        parse_str($requestUriInstance->getQuery(), $queryParams);
+        $request = new ServerRequest($requestUriInstance, null, null, [], $serverParams);
+        return $request
+            ->withQueryParams($queryParams)
+            ->withAttribute('normalizedParams', new NormalizedParams($serverParams, [], '', ''))
+            ->withAttribute('nonce', $nonce);
     }
 }
