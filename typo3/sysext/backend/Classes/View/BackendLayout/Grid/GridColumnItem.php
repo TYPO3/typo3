@@ -178,7 +178,7 @@ class GridColumnItem
             LF . $this->getLanguageService()->sL('core.core:labels.referencesToRecord'),
             (string)$this->getReferenceCount($this->record->getUid())
         );
-        $translationCount = count(GeneralUtility::makeInstance(LocalizationRepository::class)->getRecordTranslations($this->table, $this->record->getUid()));
+        $translationCount = count(GeneralUtility::makeInstance(LocalizationRepository::class)->getRecordTranslations($this->table, $this->record));
         if ($translationCount > 0) {
             $refCountMsg .= LF . sprintf(
                 $this->getLanguageService()->sL('core.core:labels.translationsOfRecord'),

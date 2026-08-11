@@ -1910,7 +1910,7 @@ class DatabaseRecordList
                     LF . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.referencesToRecord'),
                     (string)$this->getReferenceCount($table, $record->getUid())
                 );
-                $translationCount = count($this->localizationRepository->getRecordTranslations($table, $record->getUid()));
+                $translationCount = count($this->localizationRepository->getRecordTranslations($table, $record));
                 if ($translationCount > 0) {
                     $refCountMsg .= LF . sprintf(
                         $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.translationsOfRecord'),

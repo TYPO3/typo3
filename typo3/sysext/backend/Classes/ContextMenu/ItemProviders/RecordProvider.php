@@ -390,7 +390,7 @@ class RecordProvider extends AbstractProvider
                 $this->record['uid'],
                 LF . $this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.referencesToRecord')
             );
-            $translationCount = count($this->localizationRepository->getRecordTranslations($this->table, $this->record['uid']));
+            $translationCount = count($this->localizationRepository->getRecordTranslations($this->table, $this->record));
             if ($translationCount > 0) {
                 $confirmMessage .= LF . sprintf(
                     $this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.translationsOfRecord'),
