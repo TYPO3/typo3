@@ -26,19 +26,24 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
+ * Evaluates the `Referer` header of a request against the application the request was addressed to.
+ *
+ * Deciding whether a referrer is same-origin (= originating from the very same application) cannot
+ * be done generically - the concrete URI details of the addressed application are required for that.
+ * Therefore, this class is abstract and each application (backend, install tool) has to provide its
+ * own `resolveReferrerType()` implementation.
+ *
  * @internal
  */
-readonly class ReferrerEnforcer
+abstract readonly class ReferrerEnforcer
 {
-    private const int TYPE_REFERRER_EMPTY = 1;
-    private const int TYPE_REFERRER_SAME_SITE = 2;
-    private const int TYPE_REFERRER_SAME_ORIGIN = 4;
+    protected const int TYPE_REFERRER_EMPTY = 1;
+    protected const int TYPE_REFERRER_SAME_SITE = 2;
+    protected const int TYPE_REFERRER_SAME_ORIGIN = 4;
 
     public function handle(ServerRequestInterface $request, array $options): ?ResponseInterface
     {
-        $requestHost = rtrim($this->resolveRequestHost($request), '/') . '/';
-        $requestDir = $this->resolveRequestDir($request);
-        $referrerType = $this->resolveReferrerType($request, $requestHost, $requestDir);
+        $referrerType = $this->resolveReferrerType($request);
         // valid referrer, no more actions required
         if ($referrerType & self::TYPE_REFERRER_SAME_ORIGIN) {
             return null;
@@ -101,29 +106,18 @@ readonly class ReferrerEnforcer
         return (string)PathUtility::getSystemResourceUri($target, $request);
     }
 
-    protected function resolveReferrerType(ServerRequestInterface $request, string $requestHost, string $requestDir): int
-    {
-        $referrer = $request->getServerParams()['HTTP_REFERER'] ?? '';
-        if ($referrer === '') {
-            return self::TYPE_REFERRER_EMPTY;
-        }
-        if (str_starts_with($referrer, $requestDir)) {
-            // same-origin implies same-site
-            return self::TYPE_REFERRER_SAME_ORIGIN | self::TYPE_REFERRER_SAME_SITE;
-        }
-        if (str_starts_with($referrer, $requestHost)) {
-            return self::TYPE_REFERRER_SAME_SITE;
-        }
-        return 0;
-    }
+    /**
+     * Determines whether the referrer is same-origin (= the very same application), same-site
+     * (= the same host, but a different application) or neither of both.
+     *
+     * Implementations must not fall back to the request directory to detect same-origin: all
+     * applications are served from the same entry script, which would make any same-site referrer
+     * appear as same-origin.
+     */
+    abstract protected function resolveReferrerType(ServerRequestInterface $request): int;
 
     protected function resolveRequestHost(ServerRequestInterface $request): string
     {
         return $request->getAttribute('normalizedParams')->getRequestHost();
-    }
-
-    protected function resolveRequestDir(ServerRequestInterface $request): string
-    {
-        return $request->getAttribute('normalizedParams')->getRequestDir();
     }
 }

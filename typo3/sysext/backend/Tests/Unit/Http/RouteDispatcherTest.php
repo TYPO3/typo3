@@ -22,6 +22,7 @@ use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Http\RouteDispatcher;
+use TYPO3\CMS\Backend\Http\Security\ReferrerEnforcer;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Security\SudoMode\Access\AccessFactory;
 use TYPO3\CMS\Backend\Security\SudoMode\Access\AccessStorage;
@@ -32,8 +33,8 @@ use TYPO3\CMS\Backend\Tests\Unit\Http\Fixtures\RouteDispatcherStaticClassFixture
 use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\FormProtection\AbstractFormProtection;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
-use TYPO3\CMS\Core\Http\Security\ReferrerEnforcer;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -71,7 +72,7 @@ final class RouteDispatcherTest extends UnitTestCase
             $accessFactoryStub,
             $accessStorageStub,
             new Features(),
-            new ReferrerEnforcer(),
+            new ReferrerEnforcer(new BackendEntryPointResolver()),
             $containerStub
         );
         $subject->dispatch($request);
@@ -107,7 +108,7 @@ final class RouteDispatcherTest extends UnitTestCase
             $accessFactoryStub,
             $accessStorageStub,
             new Features(),
-            new ReferrerEnforcer(),
+            new ReferrerEnforcer(new BackendEntryPointResolver()),
             $containerStub
         );
         $subject->dispatch($request);
@@ -142,7 +143,7 @@ final class RouteDispatcherTest extends UnitTestCase
             $accessFactoryStub,
             $accessStorageStub,
             new Features(),
-            new ReferrerEnforcer(),
+            new ReferrerEnforcer(new BackendEntryPointResolver()),
             $containerStub
         );
         $subject->dispatch($request);
@@ -175,7 +176,7 @@ final class RouteDispatcherTest extends UnitTestCase
             $accessFactoryStub,
             $accessStorageStub,
             new Features(),
-            new ReferrerEnforcer(),
+            new ReferrerEnforcer(new BackendEntryPointResolver()),
             $containerStub
         );
         $subject->dispatch($request);
@@ -209,7 +210,7 @@ final class RouteDispatcherTest extends UnitTestCase
             $accessFactoryStub,
             $accessStorageStub,
             new Features(),
-            new ReferrerEnforcer(),
+            new ReferrerEnforcer(new BackendEntryPointResolver()),
             $containerMock
         );
         $subject->dispatch($request);
@@ -242,7 +243,7 @@ final class RouteDispatcherTest extends UnitTestCase
             $accessFactoryStub,
             $accessStorageStub,
             new Features(),
-            new ReferrerEnforcer(),
+            new ReferrerEnforcer(new BackendEntryPointResolver()),
             $containerStub
         );
         $subject->dispatch($request);
@@ -275,7 +276,7 @@ final class RouteDispatcherTest extends UnitTestCase
             $accessFactoryStub,
             $accessStorageStub,
             new Features(),
-            new ReferrerEnforcer(),
+            new ReferrerEnforcer(new BackendEntryPointResolver()),
             $containerStub
         );
         $subject->dispatch($request);
@@ -308,7 +309,7 @@ final class RouteDispatcherTest extends UnitTestCase
             $accessFactoryStub,
             $accessStorageStub,
             new Features(),
-            new ReferrerEnforcer(),
+            new ReferrerEnforcer(new BackendEntryPointResolver()),
             $containerStub
         );
         $subject->dispatch($request);
