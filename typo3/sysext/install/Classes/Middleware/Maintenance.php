@@ -29,7 +29,6 @@ use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\JsonResponse;
-use TYPO3\CMS\Core\Http\Security\ReferrerEnforcer;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Package\FailsafePackageManager;
@@ -43,6 +42,7 @@ use TYPO3\CMS\Install\Controller\LoginController;
 use TYPO3\CMS\Install\Controller\MaintenanceController;
 use TYPO3\CMS\Install\Controller\SettingsController;
 use TYPO3\CMS\Install\Controller\UpgradeController;
+use TYPO3\CMS\Install\Http\Security\ReferrerEnforcer;
 use TYPO3\CMS\Install\Service\EnableFileService;
 use TYPO3\CMS\Install\Service\SessionService;
 

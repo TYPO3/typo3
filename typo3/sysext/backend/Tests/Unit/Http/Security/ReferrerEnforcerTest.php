@@ -15,17 +15,18 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\Tests\Unit\Http\Security;
+namespace TYPO3\CMS\Backend\Tests\Unit\Http\Security;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Http\Security\ReferrerEnforcer;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\Security\InvalidReferrerException;
 use TYPO3\CMS\Core\Http\Security\MissingReferrerException;
-use TYPO3\CMS\Core\Http\Security\ReferrerEnforcer;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Http\Uri;
+use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\ConsumableNonce;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -217,6 +218,7 @@ final class ReferrerEnforcerTest extends UnitTestCase
     private function buildSubject(): ReferrerEnforcer
     {
         $mock = $this->getMockBuilder(ReferrerEnforcer::class)
+            ->setConstructorArgs([new BackendEntryPointResolver()])
             ->onlyMethods(['resolveAbsoluteWebPath'])
             ->getMock();
         $mock->method('resolveAbsoluteWebPath')->willReturnCallback(static fn(string $target): string => '/' . $target);
@@ -226,24 +228,21 @@ final class ReferrerEnforcerTest extends UnitTestCase
     private function buildPreparedRequest(string $requestUri, string $referrer, ?ConsumableNonce $nonce = null): ServerRequestInterface
     {
         $requestUriInstance = new Uri($requestUri);
-        $host = sprintf(
-            '%s://%s',
-            $requestUriInstance->getScheme(),
-            $requestUriInstance->getHost()
-        );
-        $dir = $host . rtrim(dirname($requestUriInstance->getPath()), '/') . '/';
-        parse_str($requestUriInstance->getQuery(), $queryParams);
-
-        $normalizedParams = $this->createMock(NormalizedParams::class);
-        $normalizedParams->method('getRequestHost')->willReturn($host);
-        $normalizedParams->method('getRequestDir')->willReturn($dir);
+        $headers = [
+            'HTTP_HOST' => $requestUriInstance->getHost(),
+            'HTTP_REFERER' => $referrer,
+            'SCRIPT_NAME' => '/index.php',
+            'REQUEST_URI' => $requestUriInstance->getPath() . ($requestUriInstance->getQuery() ? '?' . $requestUriInstance->getQuery() : ''),
+            'HTTPS' => $requestUriInstance->getScheme() === 'https' ? 'on' : 'off',
+        ];
         $request = new ServerRequest(
             $requestUriInstance,
             null,
             null,
             [],
-            ['HTTP_REFERER' => $referrer]
+            $headers,
         );
+        $normalizedParams = new NormalizedParams($headers, [], '', '');
         return $request
             ->withAttribute('normalizedParams', $normalizedParams)
             ->withAttribute('nonce', $nonce);

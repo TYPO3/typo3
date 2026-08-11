@@ -103,6 +103,7 @@ class ServiceProvider extends AbstractServiceProvider
             Middleware\Maintenance::class => self::getMaintenanceMiddleware(...),
             Middleware\AssetPublishing::class => self::getAssetPublishing(...),
             Middleware\JavaScriptLanguageDomainProvider::class => self::getJavaScriptLanguageDomainProvider(...),
+            Middleware\PathGuard::class => self::getPathGuard(...),
             Controller\EnvironmentController::class => self::getEnvironmentController(...),
             Controller\IconController::class => self::getIconController(...),
             Controller\InstallerController::class => self::getInstallerController(...),
@@ -151,6 +152,7 @@ class ServiceProvider extends AbstractServiceProvider
         $dispatcher->add($container->get(Middleware\Maintenance::class));
         $dispatcher->add($container->get(Middleware\AssetPublishing::class));
         $dispatcher->add($container->get(Middleware\JavaScriptLanguageDomainProvider::class));
+        $dispatcher->add($container->get(Middleware\PathGuard::class));
         $dispatcher->lazy(NormalizedParamsMiddleware::class);
 
         return self::new($container, Http\Application::class, [
@@ -280,6 +282,11 @@ class ServiceProvider extends AbstractServiceProvider
             $container->get(LanguageServiceFactory::class),
             $container->get(TranslationDomainResolver::class),
         );
+    }
+
+    public static function getPathGuard(ContainerInterface $container): Middleware\PathGuard
+    {
+        return new Middleware\PathGuard();
     }
 
     public static function getAssetPublishing(ContainerInterface $container): Middleware\AssetPublishing

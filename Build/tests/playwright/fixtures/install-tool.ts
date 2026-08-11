@@ -48,7 +48,7 @@ export class InstallTool {
   }
 
   async goto(): Promise<void> {
-    await this.page.goto(`${config.baseUrl}?__typo3_install`);
+    await this.page.goto(`${config.baseUrl}install`);
   }
 
   async login(password: string = INSTALL_TOOL_PASSWORD): Promise<void> {
