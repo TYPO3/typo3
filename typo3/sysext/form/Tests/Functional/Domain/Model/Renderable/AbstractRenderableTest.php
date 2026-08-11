@@ -40,10 +40,11 @@ final class AbstractRenderableTest extends FunctionalTestCase
         'form',
     ];
 
-    #[Test]
-    public function setOptionsResetsValidatorsIfDefined(): void
+    /**
+     * $prototypeConfiguration is a monster array. Get it up front.
+     */
+    private function getPrototypeConfiguration(): array
     {
-        // $prototypeConfiguration is a monster array. Get it up front.
         $request = new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $extbaseConfigurationManager = $this->get(ExtbaseConfigurationManagerInterface::class);
         $extbaseConfigurationManager->setRequest($request);
@@ -56,7 +57,36 @@ final class AbstractRenderableTest extends FunctionalTestCase
             self::createStub(FrontendInterface::class),
             self::createStub(EventDispatcherInterface::class),
         );
-        $prototypeConfiguration = $configurationService->getPrototypeConfiguration('standard');
+        return $configurationService->getPrototypeConfiguration('standard');
+    }
+
+    #[Test]
+    public function setOptionsAddsValidatorsForEveryRenderableUsingTheSameConfiguration(): void
+    {
+        $prototypeConfiguration = $this->getPrototypeConfiguration();
+        $form = new FormDefinition('foo', $prototypeConfiguration);
+
+        $first = new class extends AbstractRenderable {};
+        $first->setIdentifier('first');
+        $first->setParentRenderable($form);
+        $second = new class extends AbstractRenderable {};
+        $second->setIdentifier('second');
+        $second->setParentRenderable($form);
+
+        // Identical validator configuration for two distinct renderables: the configuration
+        // hash is per renderable instance, so both must end up with their own validator.
+        $options = ['validators' => [['identifier' => 'NotEmpty']]];
+        $first->setOptions($options);
+        $second->setOptions($options);
+
+        self::assertCount(1, $first->getValidators());
+        self::assertCount(1, $second->getValidators());
+    }
+
+    #[Test]
+    public function setOptionsResetsValidatorsIfDefined(): void
+    {
+        $prototypeConfiguration = $this->getPrototypeConfiguration();
 
         $subject = new class extends AbstractRenderable {};
         $subject->setIdentifier('Foo');

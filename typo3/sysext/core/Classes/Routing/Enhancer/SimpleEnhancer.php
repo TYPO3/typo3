@@ -89,7 +89,7 @@ class SimpleEnhancer extends AbstractEnhancer implements RoutingEnhancerInterfac
         /** @var Route $defaultPageRoute */
         $defaultPageRoute = $collection->get('default');
         $variant = $this->getVariant($defaultPageRoute, $this->configuration);
-        $collection->add('enhancer_' . spl_object_hash($variant), $variant);
+        $collection->add('enhancer_' . spl_object_id($variant), $variant);
     }
 
     /**
@@ -133,7 +133,7 @@ class SimpleEnhancer extends AbstractEnhancer implements RoutingEnhancerInterfac
             return;
         }
         $variant->addOptions(['deflatedParameters' => $deflatedParameters]);
-        $collection->add('enhancer_' . spl_object_hash($variant), $variant);
+        $collection->add('enhancer_' . spl_object_id($variant), $variant);
     }
 
     public function inflateParameters(array $parameters, array $internals = []): array
