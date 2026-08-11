@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Domain\Record\ComputedProperties;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
 use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
+use TYPO3\CMS\Extbase\Domain\Model\Category;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -116,6 +117,11 @@ final class TextViewHelperTest extends FunctionalTestCase
         ];
         yield 'extbaseModel' => [
             'record' => self::createExtbaseModel('<b>My Page</b>'),
+            'templateSource' => '<f:render.text record="{record}" field="title" />',
+            'expected' => '&lt;b&gt;My Page&lt;/b&gt;',
+        ];
+        yield 'extbaseModel withUid' => [
+            'record' => self::createExtbaseCategoryModel('<b>My Page</b>'),
             'templateSource' => '<f:render.text record="{record}" field="title" />',
             'expected' => '&lt;b&gt;My Page&lt;/b&gt;',
         ];
@@ -274,5 +280,13 @@ final class TextViewHelperTest extends FunctionalTestCase
         $blog = new Blog();
         $blog->setTitle($title);
         return $blog;
+    }
+
+    private static function createExtbaseCategoryModel(string $title): DomainObjectInterface
+    {
+        $category = new Category();
+        $category->_setProperty('uid', 1);
+        $category->setTitle($title);
+        return $category;
     }
 }

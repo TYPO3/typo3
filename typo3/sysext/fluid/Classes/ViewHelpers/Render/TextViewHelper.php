@@ -176,10 +176,13 @@ final class TextViewHelper extends AbstractViewHelper
         }
 
         $recordTypeFieldName = $dataMap->getRecordTypeColumnName();
+        if ($recordTypeFieldName === null) {
+            return null;
+        }
 
         foreach ($input->_getProperties() as $propertyName => $value) {
             if ($dataMap->getColumnMap($propertyName)?->getColumnName() === $recordTypeFieldName) {
-                return $value;
+                return (string)$value;
             }
         }
         throw new InvalidArgumentValueException('The record type field "' . $recordTypeFieldName . '" does not exist in the given model ' . $input::class . '.', 1771507212);

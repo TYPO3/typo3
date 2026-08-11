@@ -3175,6 +3175,12 @@ parameters:
 			path: ../../typo3/sysext/fluid/Classes/ViewHelpers/Link/TypolinkViewHelper.php
 
 		-
+			message: '#^Strict comparison using \=\=\= between string and null will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: ../../typo3/sysext/fluid/Classes/ViewHelpers/Render/TextViewHelper.php
+
+		-
 			message: '#^Strict comparison using \!\=\= between mixed and null will always evaluate to true\.$#'
 			identifier: notIdentical.alwaysTrue
 			count: 1
