@@ -4,7 +4,7 @@
         <f:form.validationResults for="{element.rootForm.identifier}.{element.identifier}">
             <f:variable name="errorClass">{f:if(condition: '{validationResults.errors}', then: '{element.rootForm.renderingOptions.fieldProperties.errorClassAttribute}')}</f:variable>
 
-            <div id="{element.uniqueIdentifier}" class="{errorClass}" role="radiogroup" aria-label="{element.label}">
+            <div id="{element.uniqueIdentifier}" class="{errorClass}" role="group" aria-label="{element.label}">
                 <f:for each="{element.properties.options}" as="label" key="value" iteration="idIterator">
                     <f:if condition="{element.properties.elementDescription}">
                         <f:variable name="aria" value="{describedby: '{element.uniqueIdentifier}-desc'}" />

@@ -24,6 +24,8 @@ use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Http\Uri;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
 use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface as ExtbaseConfigurationManagerInterface;
@@ -95,6 +97,17 @@ final class FormRuntimeTest extends FunctionalTestCase
         $this->expectExceptionCode(1326096024);
 
         $formRuntime->render();
+    }
+
+    #[Test]
+    public function multiCheckboxIsRenderedAsGroupAndNotAsRadioGroup(): void
+    {
+        $formRuntime = $this->buildFormDefinitionWithMultiCheckbox()->bind($this->request);
+
+        $markup = (string)$formRuntime->render();
+
+        self::assertStringContainsString('role="group"', $markup);
+        self::assertStringNotContainsString('role="radiogroup"', $markup);
     }
 
     #[Test]
@@ -260,7 +273,11 @@ final class FormRuntimeTest extends FunctionalTestCase
         $serverRequest = (new ServerRequest())
             ->withAttribute('extbase', new ExtbaseRequestParameters())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
-            ->withAttribute('frontend.user', $frontendUser);
+            ->withAttribute('frontend.user', $frontendUser)
+            // Rendering resolves element labels through TranslationService, which
+            // derives the locale from the request. A frontend request always has
+            // a language; without it, rendering fails before reaching a template.
+            ->withAttribute('language', new SiteLanguage(0, 'en_US.UTF-8', new Uri('/'), []));
 
         $GLOBALS['TYPO3_REQUEST'] = $serverRequest;
 
@@ -284,6 +301,36 @@ final class FormRuntimeTest extends FunctionalTestCase
                             'type' => 'Text',
                             'identifier' => 'text-1',
                             'label' => 'Text',
+                        ],
+                    ],
+                ],
+            ],
+        ], null, new ServerRequest());
+    }
+
+    private function buildFormDefinitionWithMultiCheckbox(): FormDefinition
+    {
+        return $this->formFactory->build([
+            'type' => 'Form',
+            'identifier' => 'test',
+            'label' => 'test',
+            'prototypeName' => 'standard',
+            'renderables' => [
+                [
+                    'type' => 'Page',
+                    'identifier' => 'page-1',
+                    'label' => 'Page',
+                    'renderables' => [
+                        [
+                            'type' => 'MultiCheckbox',
+                            'identifier' => 'multicheckbox-1',
+                            'label' => 'Multi checkbox',
+                            'properties' => [
+                                'options' => [
+                                    'value-1' => 'Label 1',
+                                    'value-2' => 'Label 2',
+                                ],
+                            ],
                         ],
                     ],
                 ],
