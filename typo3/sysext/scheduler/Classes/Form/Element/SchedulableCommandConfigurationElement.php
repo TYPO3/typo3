@@ -123,7 +123,7 @@ class SchedulableCommandConfigurationElement extends AbstractFormElement
 
             $fields['arguments'][$name] = [
                 'label' => 'Argument "' . $argument->getName() . '"',
-                'description' => $argument->getDescription(),
+                'description' => strip_tags($argument->getDescription()),
                 'value' => $value,
                 'required' => $argument->isRequired(),
             ];
@@ -150,7 +150,7 @@ class SchedulableCommandConfigurationElement extends AbstractFormElement
 
             $fields['options'][$name] = [
                 'label' => 'Option "' . $option->getName() . '"',
-                'description' => $option->getDescription(),
+                'description' => strip_tags($option->getDescription()),
                 'enabled' => $enabled,
                 'value' => $value,
                 'valueOption' => $option->isValueRequired() || $option->isValueOptional() || $option->isArray(),
