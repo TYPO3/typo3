@@ -3443,7 +3443,7 @@ typo3-backend-workspace-selector .workspace-selector-loading{align-items:center;
 .cropper .cropper-image-container{direction:ltr;display:block;max-height:calc(100dvh - 250px);max-width:1000px;width:100%}
 @media (min-width:992px){
 .cropper .cropper-image-container{max-height:100%}}
-.cropper .ratio-buttons{margin-bottom:10px}
+.cropper .ratio-buttons{display:flex;flex-wrap:wrap;gap:calc(var(--typo3-spacing)/2);margin-bottom:10px}
 .cropper .ratio-buttons .btn:not(.active) .icon{display:none}
 .cropper .panel-group{--typo3-panel-border-radius:0;margin:-15px;position:relative}
 .cropper .panel-group .panel{border:0;-webkit-border-start:3px solid var(--typo3-panel-border-color);border-inline-start:3px solid var(--typo3-panel-border-color);margin-bottom:0}

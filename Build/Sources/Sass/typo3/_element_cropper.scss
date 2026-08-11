@@ -73,6 +73,9 @@
 
     // Custom styles for cropper radio buttons
     .ratio-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: calc(var(--typo3-spacing) / 2);
         margin-bottom: 10px;
 
         .btn {
