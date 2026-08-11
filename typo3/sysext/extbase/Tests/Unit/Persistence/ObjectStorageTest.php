@@ -57,6 +57,58 @@ final class ObjectStorageTest extends UnitTestCase
     }
 
     #[Test]
+    public function keyReturnsAStringForTheCurrentIteratorPosition(): void
+    {
+        /** @var ObjectStorage<Entity> $objectStorage */
+        $objectStorage = new ObjectStorage();
+        $objectStorage->attach(new Entity());
+        $objectStorage->rewind();
+
+        self::assertIsString($objectStorage->key());
+    }
+
+    #[Test]
+    public function keyIsUniqueForEveryAttachedObject(): void
+    {
+        /** @var ObjectStorage<Entity> $objectStorage */
+        $objectStorage = new ObjectStorage();
+        $objectStorage->attach(new Entity());
+        $objectStorage->attach(new Entity());
+        $objectStorage->attach(new Entity());
+
+        $keys = [];
+        foreach ($objectStorage as $_) {
+            $keys[] = $objectStorage->key();
+        }
+
+        self::assertCount(3, $keys);
+        self::assertSame($keys, array_unique($keys));
+    }
+
+    #[Test]
+    public function attachKeepsEqualButNotIdenticalObjectsApart(): void
+    {
+        /** @var ObjectStorage<Entity> $objectStorage */
+        $objectStorage = new ObjectStorage();
+        $first = new Entity();
+        $second = new Entity();
+        // both objects are equal, but not identical
+        self::assertEquals($first, $second);
+        self::assertNotSame($first, $second);
+
+        $objectStorage->attach($first, 'first');
+        $objectStorage->attach($second, 'second');
+
+        self::assertCount(2, $objectStorage);
+        self::assertSame('first', $objectStorage[$first]);
+        self::assertSame('second', $objectStorage[$second]);
+        $objectStorage->detach($first);
+        self::assertCount(1, $objectStorage);
+        self::assertFalse($objectStorage->contains($first));
+        self::assertTrue($objectStorage->contains($second));
+    }
+
+    #[Test]
     public function attachWithInformationMakesAttachedInformationAvailableUsingTheObjectAsKey(): void
     {
         /** @var ObjectStorage<Entity> $objectStorage */

@@ -44,11 +44,11 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
 
     /**
      * An array holding the objects and the stored information. The key of the array items ist the
-     * spl_object_hash of the given object.
+     * spl_object_id of the given object.
      *
      * ```php
      * [
-     *   'spl_object_hash' => [
+     *   'spl_object_id' => [
      *     'obj' => $object,
      *     'inf' => $information,
      *   ],
@@ -101,13 +101,14 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
     /**
      * Returns the index at which the iterator currently is.
      *
-     * This is different from `SplObjectStorage` as the key in this implementation is the object hash (string).
+     * This is different from `SplObjectStorage` as the key in this implementation is derived from
+     * the object id and returned as string.
      *
      * @return string The index corresponding to the position of the iterator.
      */
     public function key(): string
     {
-        return key($this->storage);
+        return (string)key($this->storage);
     }
 
     /**
@@ -148,10 +149,10 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
     public function offsetSet(mixed $object, mixed $information): void
     {
         $this->isModified = true;
-        $this->storage[spl_object_hash($object)] = ['obj' => $object, 'inf' => $information];
+        $this->storage[spl_object_id($object)] = ['obj' => $object, 'inf' => $information];
 
         $this->positionCounter++;
-        $this->addedObjectsPositions[spl_object_hash($object)] = $this->positionCounter;
+        $this->addedObjectsPositions[spl_object_id($object)] = $this->positionCounter;
     }
 
     /**
@@ -161,7 +162,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
      */
     public function offsetExists(mixed $value): bool
     {
-        return (is_object($value) && isset($this->storage[spl_object_hash($value)]))
+        return (is_object($value) && isset($this->storage[spl_object_id($value)]))
             || (MathUtility::canBeInterpretedAsInteger($value) && isset(array_values($this->storage)[$value]));
     }
 
@@ -180,14 +181,14 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
             $object = $this->offsetGet($value);
         }
 
-        unset($this->storage[spl_object_hash($object)]);
+        unset($this->storage[spl_object_id($object)]);
 
         if (empty($this->storage)) {
             $this->positionCounter = 0;
         }
 
-        $this->removedObjectsPositions[spl_object_hash($object)] = $this->addedObjectsPositions[spl_object_hash($object)] ?? null;
-        unset($this->addedObjectsPositions[spl_object_hash($object)]);
+        $this->removedObjectsPositions[spl_object_id($object)] = $this->addedObjectsPositions[spl_object_id($object)] ?? null;
+        unset($this->addedObjectsPositions[spl_object_id($object)]);
     }
 
     /**
@@ -203,7 +204,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
         }
 
         /** @var DomainObjectInterface $value */
-        return $this->storage[spl_object_hash($value)]['inf'] ?? null;
+        return $this->storage[spl_object_id($value)]['inf'] ?? null;
     }
 
     /**
@@ -335,17 +336,17 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
      */
     public function isRelationDirty(object $object): bool
     {
-        return isset($this->addedObjectsPositions[spl_object_hash($object)])
-                && isset($this->removedObjectsPositions[spl_object_hash($object)])
-                && ($this->addedObjectsPositions[spl_object_hash($object)] !== $this->removedObjectsPositions[spl_object_hash($object)]);
+        return isset($this->addedObjectsPositions[spl_object_id($object)])
+                && isset($this->removedObjectsPositions[spl_object_id($object)])
+                && ($this->addedObjectsPositions[spl_object_id($object)] !== $this->removedObjectsPositions[spl_object_id($object)]);
     }
 
     public function getPosition(object $object): ?int
     {
-        if (!isset($this->addedObjectsPositions[spl_object_hash($object)])) {
+        if (!isset($this->addedObjectsPositions[spl_object_id($object)])) {
             return null;
         }
 
-        return $this->addedObjectsPositions[spl_object_hash($object)];
+        return $this->addedObjectsPositions[spl_object_id($object)];
     }
 }
