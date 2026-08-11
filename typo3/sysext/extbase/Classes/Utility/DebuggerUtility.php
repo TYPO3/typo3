@@ -204,7 +204,7 @@ class DebuggerUtility
             return self::html('div', ['class' => 'extbase-debugger-header'], $header);
         }
         return self::html('details', ['class' => 'extbase-debugger-tree', 'open' => $level > 1 ? null : ''], [
-            self::html('summary', ['class' => 'extbase-debug-header', 'id' => spl_object_hash($object)], $header),
+            self::html('summary', ['class' => 'extbase-debug-header', 'id' => 'object-' . spl_object_id($object)], $header),
             self::html('div', ['class' => 'extbase-debug-content'], $content),
         ]);
     }
@@ -305,7 +305,7 @@ class DebuggerUtility
             $dump[] = self::styled('filtered', 'filtered', $plainText, $ansiColors, 1);
         } elseif (self::$renderedObjects->contains($object) && !$plainText) {
             $dump = [
-                self::html('a', ['href' => '#' . spl_object_hash($object), 'class' => 'extbase-debug-seeabove'], [
+                self::html('a', ['href' => '#object-' . spl_object_id($object), 'class' => 'extbase-debug-seeabove'], [
                     $dump,
                     self::html('span', ['class' => 'extbase-debug-filtered'], 'see above'),
                 ]),
