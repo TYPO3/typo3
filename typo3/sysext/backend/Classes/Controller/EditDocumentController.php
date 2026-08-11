@@ -1240,7 +1240,7 @@ class EditDocumentController
 
         $translations = $this->localizationRepository->getRecordTranslations(
             $this->firstEl->table,
-            (int)$this->firstEl->uid,
+            ['uid' => (int)$this->firstEl->uid, 'pid' => $this->firstEl->pid]
         );
         $count = count($translations);
         $translationCountMessage = '';
