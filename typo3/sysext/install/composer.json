@@ -32,7 +32,7 @@
 		"sort-packages": true
 	},
 	"require": {
-		"doctrine/dbal": "~4.4.3",
+		"doctrine/dbal": "~4.4.4",
 		"guzzlehttp/promises": "^2.0.3 || ^3.0",
 		"nikic/php-parser": "^5.4.0",
 		"symfony/finder": "~8.1.0",

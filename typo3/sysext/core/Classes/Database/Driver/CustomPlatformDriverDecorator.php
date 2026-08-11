@@ -23,6 +23,7 @@ use Doctrine\DBAL\Platforms\MariaDB1010Platform as DoctrineMariaDB1010Platform;
 use Doctrine\DBAL\Platforms\MariaDB1052Platform as DoctrineMariaDB1052Platform;
 use Doctrine\DBAL\Platforms\MariaDB1060Platform as DoctrineMariaDB1060Platform;
 use Doctrine\DBAL\Platforms\MariaDB110700Platform as DoctrineMariaDB110700Platform;
+use Doctrine\DBAL\Platforms\MariaDB120300Platform as DoctrineMariaDB120300Platform;
 use Doctrine\DBAL\Platforms\MariaDBPlatform as DoctrineMariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQL80Platform as DoctrineMySQL80Platform;
 use Doctrine\DBAL\Platforms\MySQL84Platform as DoctrineMySQL84Platform;
@@ -35,6 +36,7 @@ use TYPO3\CMS\Core\Database\Platform\MariaDB1010Platform as Typo3MariaDB1010Plat
 use TYPO3\CMS\Core\Database\Platform\MariaDB1052Platform as Typo3MariaDB1052Platform;
 use TYPO3\CMS\Core\Database\Platform\MariaDB1060Platform as Typo3MariaDB1060Platform;
 use TYPO3\CMS\Core\Database\Platform\MariaDB110700Platform as Typo3MariaDB110700Platform;
+use TYPO3\CMS\Core\Database\Platform\MariaDB120300Platform as Typo3MariaDB120300Platform;
 use TYPO3\CMS\Core\Database\Platform\MariaDBPlatform as Typo3MariaDBPlatform;
 use TYPO3\CMS\Core\Database\Platform\MySQL80Platform as Typo3MySQL80Platform;
 use TYPO3\CMS\Core\Database\Platform\MySQL84Platform as Typo3MySQL84Platform;
@@ -67,6 +69,7 @@ final class CustomPlatformDriverDecorator extends AbstractDriverMiddleware
             DoctrineMySQLPlatform::class => new Typo3MySQLPlatform(),
             DoctrineMySQL80Platform::class => new Typo3MySQL80Platform(),
             DoctrineMySQL84Platform::class => new Typo3MySQL84Platform(),
+            DoctrineMariaDB120300Platform::class => new Typo3MariaDB120300Platform(),
             DoctrineMariaDB110700Platform::class => new Typo3MariaDB110700Platform(),
             DoctrineMariaDB1010Platform::class => new Typo3MariaDB1010Platform(),
             DoctrineMariaDB1060Platform::class => new Typo3MariaDB1060Platform(),
