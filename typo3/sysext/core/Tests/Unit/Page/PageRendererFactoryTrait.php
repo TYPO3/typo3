@@ -61,6 +61,7 @@ trait PageRendererFactoryTrait
         $labelMapperStub->method('mapDomainToFileName')->willReturnArgument(0);
         $resourceFactory = self::createStub(SystemResourceFactory::class);
         $resourcePublisher = self::createStub(SystemResourcePublisherInterface::class);
+        $resourceHashCollection = new ResourceHashCollection(new NullLogger(), $resourceFactory, new NullFrontend('assets'));
         return [
             new Context(),
             new NullFrontend('assets'),
@@ -69,7 +70,14 @@ trait PageRendererFactoryTrait
                 new NullFrontend('runtime'),
             ),
             new MetaTagManagerRegistry(),
-            new AssetRenderer(new AssetCollector(), new NoopEventDispatcher(), $resourcePublisher, $resourceFactory, self::createStub(ResourceHashCollection::class), new DirectiveHashCollection(self::createStub(ResourceHashCollection::class))),
+            new AssetRenderer(
+                new AssetCollector(),
+                new NoopEventDispatcher(),
+                $resourcePublisher,
+                $resourceFactory,
+                $resourceHashCollection,
+                new DirectiveHashCollection($resourceHashCollection)
+            ),
             new AssetCollector(),
             new RelativeCssPathFixer($resourceFactory, $resourcePublisher),
             new LanguageServiceFactory(
@@ -93,7 +101,7 @@ trait PageRendererFactoryTrait
             $resourcePublisher,
             $resourceFactory,
             new ResourceHashCollection(new NullLogger(), $resourceFactory, new NullFrontend('assets')),
-            new DirectiveHashCollection(self::createStub(ResourceHashCollection::class)),
+            new DirectiveHashCollection(new ResourceHashCollection(new NullLogger(), $resourceFactory, new NullFrontend('assets'))),
         ];
     }
 }

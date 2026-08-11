@@ -19,7 +19,9 @@ namespace TYPO3\CMS\Core\Tests\Unit\Page;
 
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Page\JavaScriptRenderer;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -105,6 +107,23 @@ final class PageRendererTest extends UnitTestCase
         $subject->addInlineLanguageLabelFile($fileReference, $selectionPrefix, $stripFromSelectionName);
         $subjectPropertyReflection = (new \ReflectionProperty($subject, 'inlineLanguageLabelFiles'));
         self::assertCount(1, $subjectPropertyReflection->getValue($subject));
+    }
+
+    #[Test]
+    public function updateStateUpdatesState(): void
+    {
+        GeneralUtility::addInstance(JavaScriptRenderer::class, self::createStub(JavaScriptRenderer::class));
+        $subject = $this->getMockBuilder(PageRenderer::class)
+            ->setConstructorArgs($this->getPageRendererConstructorArgs())
+            ->onlyMethods([])
+            ->getMock();
+
+        $state = $subject->getState();
+        $state['title'] = 'Test Title';
+
+        $subject->updateState($state);
+
+        self::assertSame('Test Title', $subject->getState()['title']);
     }
 
     #[Test]
