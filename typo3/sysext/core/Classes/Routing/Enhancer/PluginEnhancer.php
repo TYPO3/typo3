@@ -102,7 +102,7 @@ class PluginEnhancer extends AbstractEnhancer implements RoutingEnhancerInterfac
         /** @var Route $defaultPageRoute */
         $defaultPageRoute = $collection->get('default');
         $variant = $this->getVariant($defaultPageRoute, $this->configuration);
-        $collection->add('enhancer_' . $this->namespace . spl_object_hash($variant), $variant);
+        $collection->add('enhancer_' . $this->namespace . '_' . spl_object_id($variant), $variant);
     }
 
     /**
@@ -150,7 +150,7 @@ class PluginEnhancer extends AbstractEnhancer implements RoutingEnhancerInterfac
             return;
         }
         $variant->addOptions(['deflatedParameters' => $deflatedParameters]);
-        $collection->add('enhancer_' . $this->namespace . spl_object_hash($variant), $variant);
+        $collection->add('enhancer_' . $this->namespace . '_' . spl_object_id($variant), $variant);
     }
 
     protected function deflateParameters(Route $route, array $parameters): array

@@ -52,6 +52,25 @@ final class DebuggerUtilityTest extends UnitTestCase
     }
 
     #[Test]
+    public function varDumpLinksRecurringObjectToTheAnchorOfItsFirstRendering(): void
+    {
+        $shared = new \stdClass();
+        $shared->foo = 'bar';
+        $subject = new \stdClass();
+        $subject->first = $shared;
+        $subject->second = $shared;
+
+        $result = DebuggerUtility::var_dump($subject, null, 8, false, false, true);
+
+        self::assertMatchesRegularExpression('/class="extbase-debug-header" id="[^"]+"/', $result);
+        self::assertStringContainsString('extbase-debug-seeabove', $result);
+        preg_match_all('/class="extbase-debug-header" id="(?P<id>[^"]+)"/', $result, $idMatches);
+        preg_match('/href="#(?P<target>[^"]+)" class="extbase-debug-seeabove"/', $result, $hrefMatch);
+        // the "see above" link must point at an anchor that is actually rendered
+        self::assertContains($hrefMatch['target'], $idMatches['id']);
+    }
+
+    #[Test]
     public function varDumpShowsPropertiesOfStdClassObjects(): void
     {
         $testObject = new \stdClass();
