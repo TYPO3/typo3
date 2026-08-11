@@ -122,7 +122,7 @@ final class CountrySelectViewHelper extends AbstractFormFieldViewHelper
             }
         }
         if ($this->arguments['sortByOptionLabel']) {
-            asort($options, SORT_LOCALE_STRING);
+            asort($options, PHP_VERSION_ID >= 80600 ? SORT_STRING : SORT_LOCALE_STRING);
         } else {
             ksort($options, SORT_NATURAL);
         }

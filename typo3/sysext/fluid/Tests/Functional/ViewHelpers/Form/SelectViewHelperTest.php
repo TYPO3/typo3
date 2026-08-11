@@ -103,6 +103,72 @@ EOT;
     }
 
     #[Test]
+    public function selectSortsOptionsByLabelUsingStringComparison(): void
+    {
+        $options = [
+            [
+                'uid' => 1,
+                'title' => '9',
+            ],
+            [
+                'uid' => 2,
+                'title' => '10',
+            ],
+            [
+                'uid' => 3,
+                'title' => '100',
+            ],
+            [
+                'uid' => 4,
+                'title' => 'apple',
+            ],
+            [
+                'uid' => 5,
+                'title' => 'Banana',
+            ],
+        ];
+        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
+        $context->getTemplatePaths()->setTemplateSource('<f:form.select name="myName" optionValueField="uid" optionLabelField="title" sortByOptionLabel="true" options="{options}" />');
+        $view = new TemplateView($context);
+        $view->assign('options', $options);
+        // Labels are compared as strings, not numerically ("10" before "9") and byte wise,
+        // so upper case letters sort before lower case ones.
+        $expected = <<< EOT
+<select name="myName"><option value="2">10</option>
+<option value="3">100</option>
+<option value="1">9</option>
+<option value="5">Banana</option>
+<option value="4">apple</option>
+</select>
+EOT;
+        self::assertSame($expected, $view->render());
+    }
+
+    #[Test]
+    public function sortingUsesLocaleOnlyBeforePhp86(): void
+    {
+        $locale = setlocale(LC_COLLATE, '0');
+        try {
+            if (setlocale(LC_COLLATE, 'en_US.UTF-8', 'en_US.utf8') === false) {
+                self::markTestSkipped('The en_US.UTF-8 locale is required.');
+            }
+            $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+            $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
+            $context->getTemplatePaths()->setTemplateSource('<f:form.select name="letters" sortByOptionLabel="true" options="{options}" />');
+            $view = new TemplateView($context);
+            $view->assign('options', ['z' => 'Zebra', 'a' => 'Äpfel']);
+
+            $options = PHP_VERSION_ID >= 80600 || strcoll('Äpfel', 'Zebra') > 0
+                ? "<option value=\"z\">Zebra</option>\n<option value=\"a\">Äpfel</option>\n"
+                : "<option value=\"a\">Äpfel</option>\n<option value=\"z\">Zebra</option>\n";
+            self::assertSame('<select name="letters">' . $options . '</select>', $view->render());
+        } finally {
+            setlocale(LC_COLLATE, $locale);
+        }
+    }
+
+    #[Test]
     public function selectThrowsExceptionIfEitherOptionValueFieldIsNotSet(): void
     {
         $options = [

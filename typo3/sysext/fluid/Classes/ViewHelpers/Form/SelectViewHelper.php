@@ -204,7 +204,7 @@ final class SelectViewHelper extends AbstractFormFieldViewHelper
             $options[$key ?? ''] = $value;
         }
         if ($this->arguments['sortByOptionLabel']) {
-            asort($options, SORT_LOCALE_STRING);
+            asort($options, PHP_VERSION_ID >= 80600 ? SORT_STRING : SORT_LOCALE_STRING);
         }
         return $options;
     }
