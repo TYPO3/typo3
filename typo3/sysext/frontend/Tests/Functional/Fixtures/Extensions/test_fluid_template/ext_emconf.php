@@ -4,13 +4,13 @@ $EM_CONF[$_EXTKEY] = [
     'title' => 'FluidTemplateContentObject Test',
     'description' => 'FluidTemplateContentObject Test',
     'category' => 'example',
-    'version' => '13.4.34',
+    'version' => '13.4.35',
     'state' => 'beta',
     'author' => 'Nikita Hovratov',
     'author_company' => '',
     'constraints' => [
         'depends' => [
-            'typo3' => '13.4.34',
+            'typo3' => '13.4.35',
         ],
         'conflicts' => [],
         'suggests' => [],

@@ -6,14 +6,14 @@ $EM_CONF[$_EXTKEY] = [
     'title' => 'This extension defines event listeners for page TSConfig modification.',
     'description' => 'This extension defines event listeners for page TSConfig modification.',
     'category' => 'example',
-    'version' => '13.4.34',
+    'version' => '13.4.35',
     'state' => 'beta',
     'author' => 'Nikita Hovratov',
     'author_email' => 'info@nikita-hovratov.de',
     'author_company' => '',
     'constraints' => [
         'depends' => [
-            'typo3' => '13.4.34',
+            'typo3' => '13.4.35',
         ],
         'conflicts' => [],
         'suggests' => [],
