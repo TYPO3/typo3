@@ -82,6 +82,39 @@ final class CountrySelectViewHelperTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function sortingPreservesCountryCodesAndPrioritizedCountries(): void
+    {
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters());
+        $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
+        $context->getTemplatePaths()->setTemplateSource('<f:form.countrySelect name="country" alternativeLanguage="en" sortByOptionLabel="true" onlyCountries="{0: \'AX\', 1: \'AT\', 2: \'AL\'}" prioritizedCountries="{0: \'AT\'}" />');
+
+        $result = new TemplateView($context)->render();
+
+        self::assertSame('<select name="country"><option value="AT" data-prioritized="1">Austria</option><option value="AL">Albania</option><option value="AX">Åland Islands</option></select>', $result);
+    }
+
+    #[Test]
+    public function sortingUsesLocaleOnlyBeforePhp86(): void
+    {
+        $locale = setlocale(LC_COLLATE, '0');
+        try {
+            if (setlocale(LC_COLLATE, 'en_US.UTF-8', 'en_US.utf8') === false) {
+                self::markTestSkipped('The en_US.UTF-8 locale is required.');
+            }
+            $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters());
+            $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
+            $context->getTemplatePaths()->setTemplateSource('<f:form.countrySelect name="country" alternativeLanguage="en" sortByOptionLabel="true" onlyCountries="{0: \'AX\', 1: \'AT\', 2: \'AL\'}" prioritizedCountries="{0: \'AT\'}" />');
+
+            $options = PHP_VERSION_ID >= 80600 || strcoll('Åland Islands', 'Albania') > 0
+                ? '<option value="AL">Albania</option><option value="AX">Åland Islands</option>'
+                : '<option value="AX">Åland Islands</option><option value="AL">Albania</option>';
+            self::assertSame('<select name="country"><option value="AT" data-prioritized="1">Austria</option>' . $options . '</select>', new TemplateView($context)->render());
+        } finally {
+            setlocale(LC_COLLATE, $locale);
+        }
+    }
+
+    #[Test]
     public function rendersSortsByOptionLabelWithLocalizedOfficialName(): void
     {
         $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters());
