@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Redirects\Tests\Unit\Service;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -64,6 +65,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  * @todo: It looks as if these should be merged into existing functional RedirectServiceTest
  *        to avoid setUp() and mocking party.
  */
+#[AllowMockObjectsWithoutExpectations]
 final class RedirectServiceTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Error;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -28,6 +29,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * testcase for the DebugExceptionHandler class.
  */
+#[AllowMockObjectsWithoutExpectations]
 final class DebugExceptionHandlerTest extends UnitTestCase
 {
     private DebugExceptionHandler&MockObject $subject;

@@ -13,11 +13,10 @@
 -->
 <phpunit
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/11.2/phpunit.xsd"
+    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/13.2/phpunit.xsd"
     backupGlobals="true"
     bootstrap="UnitTestsBootstrap.php"
     cacheDirectory=".phpunit.cache"
-    cacheResult="false"
     colors="true"
     displayDetailsOnTestsThatTriggerDeprecations="true"
     displayDetailsOnTestsThatTriggerErrors="true"
@@ -27,6 +26,7 @@
     failOnNotice="true"
     failOnRisky="true"
     failOnWarning="true"
+    recordTestRunHistory="false"
 >
     <testsuites>
         <testsuite name="Core tests">

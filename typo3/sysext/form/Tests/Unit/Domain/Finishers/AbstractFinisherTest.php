@@ -110,8 +110,8 @@ final class AbstractFinisherTest extends UnitTestCase
         $input = '{' . $elementIdentifier . '}';
         $expected = 'element-value';
         $formRuntimeMock = $this->createMock(FormRuntime::class);
-        $formRuntimeMock->method('offsetExists')->with($elementIdentifier)->willReturn(true);
-        $formRuntimeMock->method('offsetGet')->with($elementIdentifier)->willReturn($expected);
+        $formRuntimeMock->expects($this->atMost(PHP_INT_MAX))->method('offsetExists')->with($elementIdentifier)->willReturn(true);
+        $formRuntimeMock->expects($this->atMost(PHP_INT_MAX))->method('offsetGet')->with($elementIdentifier)->willReturn($expected);
         $subject = new AbstractFinisherFixture();
         self::assertSame($expected, $subject->substituteRuntimeReferences($input, $formRuntimeMock));
     }
@@ -145,8 +145,8 @@ final class AbstractFinisherTest extends UnitTestCase
         $input = '{' . $elementIdentifier . '}';
         $expected = ['bar', 'foobar'];
         $formRuntimeMock = $this->createMock(FormRuntime::class);
-        $formRuntimeMock->method('offsetExists')->with($elementIdentifier)->willReturn(true);
-        $formRuntimeMock->method('offsetGet')->with($elementIdentifier)->willReturn($expected);
+        $formRuntimeMock->expects($this->atMost(PHP_INT_MAX))->method('offsetExists')->with($elementIdentifier)->willReturn(true);
+        $formRuntimeMock->expects($this->atMost(PHP_INT_MAX))->method('offsetGet')->with($elementIdentifier)->willReturn($expected);
         $subject = new AbstractFinisherFixture();
         self::assertSame($expected, $subject->substituteRuntimeReferences($input, $formRuntimeMock));
     }
@@ -196,8 +196,8 @@ final class AbstractFinisherTest extends UnitTestCase
         $input = '{' . $elementIdentifier . '}';
         $expected = '{' . $elementIdentifier . '}';
         $formRuntimeMock = $this->createMock(FormRuntime::class);
-        $formRuntimeMock->method('offsetExists')->with($elementIdentifier)->willReturn(true);
-        $formRuntimeMock->method('offsetGet')->with($elementIdentifier)->willReturn($expected);
+        $formRuntimeMock->expects($this->atMost(PHP_INT_MAX))->method('offsetExists')->with($elementIdentifier)->willReturn(true);
+        $formRuntimeMock->expects($this->atMost(PHP_INT_MAX))->method('offsetGet')->with($elementIdentifier)->willReturn($expected);
         $finisherContextStub = self::createStub(FinisherContext::class);
         $finisherContextStub->method('getFinisherVariableProvider')->willReturn(new FinisherVariableProvider());
         $subject = new AbstractFinisherFixture();
@@ -252,8 +252,8 @@ final class AbstractFinisherTest extends UnitTestCase
     {
         $date = new \DateTime('@1574415600');
         $formRuntimeMock = $this->createMock(FormRuntime::class);
-        $formRuntimeMock->method('offsetExists')->with('date-1')->willReturn(true);
-        $formRuntimeMock->method('offsetGet')->with('date-1')->willReturn($date);
+        $formRuntimeMock->expects($this->atMost(PHP_INT_MAX))->method('offsetExists')->with('date-1')->willReturn(true);
+        $formRuntimeMock->expects($this->atMost(PHP_INT_MAX))->method('offsetGet')->with('date-1')->willReturn($date);
         $stringableElement = new class implements StringableFormElementInterface {
             /**
              * @param \DateTimeInterface $value
@@ -264,7 +264,7 @@ final class AbstractFinisherTest extends UnitTestCase
             }
         };
         $formDefinitionMock = $this->createMock(FormDefinition::class);
-        $formDefinitionMock->method('getElementByIdentifier')->with('date-1')->willReturn($stringableElement);
+        $formDefinitionMock->expects($this->atMost(PHP_INT_MAX))->method('getElementByIdentifier')->with('date-1')->willReturn($stringableElement);
         $formRuntimeMock->method('getFormDefinition')->willReturn($formDefinitionMock);
         $subject = new AbstractFinisherFixture();
         self::assertSame('When: 2019-11-22', $subject->substituteRuntimeReferences('When: {date-1}', $formRuntimeMock));
@@ -274,8 +274,8 @@ final class AbstractFinisherTest extends UnitTestCase
     public function substituteRuntimeReferencesThrowsExceptionOnObjectWithoutStringableElement(): void
     {
         $formRuntimeMock = $this->createMock(FormRuntime::class);
-        $formRuntimeMock->method('offsetExists')->with('date-1')->willReturn(true);
-        $formRuntimeMock->method('offsetGet')->with('date-1')->willReturn(new \DateTime());
+        $formRuntimeMock->expects($this->atMost(PHP_INT_MAX))->method('offsetExists')->with('date-1')->willReturn(true);
+        $formRuntimeMock->expects($this->atMost(PHP_INT_MAX))->method('offsetGet')->with('date-1')->willReturn(new \DateTime());
         $formDefinitionStub = self::createStub(FormDefinition::class);
         $formRuntimeMock->method('getFormDefinition')->willReturn($formDefinitionStub);
         $this->expectException(FinisherException::class);
@@ -290,8 +290,8 @@ final class AbstractFinisherTest extends UnitTestCase
         $elementIdentifier = 'element-identifier-1';
         $input = 'BEFORE {' . $elementIdentifier . '} AFTER';
         $formRuntimeMock = $this->createMock(FormRuntime::class);
-        $formRuntimeMock->method('offsetExists')->with($elementIdentifier)->willReturn(true);
-        $formRuntimeMock->method('offsetGet')->with($elementIdentifier)->willReturn(['value-1', 'value-2']);
+        $formRuntimeMock->expects($this->atMost(PHP_INT_MAX))->method('offsetExists')->with($elementIdentifier)->willReturn(true);
+        $formRuntimeMock->expects($this->atMost(PHP_INT_MAX))->method('offsetGet')->with($elementIdentifier)->willReturn(['value-1', 'value-2']);
         $this->expectException(FinisherException::class);
         $this->expectExceptionCode(1519239265);
         $subject = new AbstractFinisherFixture();

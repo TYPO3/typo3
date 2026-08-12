@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Tests\Unit\FolderStructure;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -26,6 +27,7 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Install\FolderStructure\LinkOrDirectoryNode;
 use TYPO3\CMS\Install\FolderStructure\NodeInterface;
 
+#[AllowMockObjectsWithoutExpectations]
 final class LinkOrDirectoryNodeTest extends AbstractFolderStructureTestCase
 {
     #[Test]

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Web\Routing;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\ServerRequestInterface;
@@ -46,6 +47,7 @@ use TYPO3\CMS\Extbase\Tests\Unit\Mvc\Web\Routing\Fixtures\ValueObjectFixture;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
+#[AllowMockObjectsWithoutExpectations]
 final class UriBuilderTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
@@ -108,7 +110,7 @@ final class UriBuilderTest extends UnitTestCase
     {
         $expectedArguments = ['foo' => 'bar', 'baz' => ['extbase' => 'fluid'], 'controller' => 'SomeController', 'route' => 'SomePlugin'];
         $mockRequest = $this->createMock(Request::class);
-        $mockRequest->method('getAttribute')->with('applicationType')->willReturn(SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $mockRequest->expects($this->atMost(PHP_INT_MAX))->method('getAttribute')->with('applicationType')->willReturn(SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $extensionServiceStub = self::createStub(ExtensionService::class);
         $subject = $this->getAccessibleMock(UriBuilder::class, ['build'], [$extensionServiceStub]);
         $subject->setRequest($mockRequest);
@@ -123,7 +125,7 @@ final class UriBuilderTest extends UnitTestCase
         $controllerArguments = ['foo' => 'overruled', 'baz' => ['extbase' => 'fluid']];
         $expectedArguments = ['foo' => 'overruled', 'baz' => ['extbase' => 'fluid'], 'controller' => 'SomeController', 'additionalParam' => 'additionalValue', 'route' => 'SomePlugin'];
         $mockRequest = $this->createMock(Request::class);
-        $mockRequest->method('getAttribute')->with('applicationType')->willReturn(SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $mockRequest->expects($this->atMost(PHP_INT_MAX))->method('getAttribute')->with('applicationType')->willReturn(SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $extensionServiceStub = self::createStub(ExtensionService::class);
         $subject = $this->getAccessibleMock(UriBuilder::class, ['build'], [$extensionServiceStub]);
         $subject->setRequest($mockRequest);
@@ -137,7 +139,7 @@ final class UriBuilderTest extends UnitTestCase
     {
         $expectedArguments = ['controller' => 'SomeController', 'route' => 'SomePlugin'];
         $mockRequest = $this->createMock(Request::class);
-        $mockRequest->method('getAttribute')->with('applicationType')->willReturn(SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $mockRequest->expects($this->atMost(PHP_INT_MAX))->method('getAttribute')->with('applicationType')->willReturn(SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $extensionServiceStub = self::createStub(ExtensionService::class);
         $subject = $this->getAccessibleMock(UriBuilder::class, ['build'], [$extensionServiceStub]);
         $subject->setRequest($mockRequest);
@@ -151,7 +153,7 @@ final class UriBuilderTest extends UnitTestCase
         $mockRequest = $this->createMock(Request::class);
         $mockRequest->expects($this->once())->method('getControllerName')->willReturn('SomeControllerFromRequest');
         $expectedArguments = ['controller' => 'SomeControllerFromRequest', 'route' => 'SomePlugin'];
-        $mockRequest->method('getAttribute')->with('applicationType')->willReturn(SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $mockRequest->expects($this->atMost(PHP_INT_MAX))->method('getAttribute')->with('applicationType')->willReturn(SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $extensionServiceStub = self::createStub(ExtensionService::class);
         $subject = $this->getAccessibleMock(UriBuilder::class, ['build'], [$extensionServiceStub]);
         $subject->setRequest($mockRequest);
@@ -165,7 +167,7 @@ final class UriBuilderTest extends UnitTestCase
         $mockRequest = $this->createMock(Request::class);
         $mockRequest->expects($this->once())->method('getControllerExtensionName')->willReturn('SomeExtensionNameFromRequest');
         $expectedArguments = ['controller' => 'SomeController', 'route' => 'SomePlugin'];
-        $mockRequest->method('getAttribute')->with('applicationType')->willReturn(SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $mockRequest->expects($this->atMost(PHP_INT_MAX))->method('getAttribute')->with('applicationType')->willReturn(SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $extensionServiceStub = self::createStub(ExtensionService::class);
         $subject = $this->getAccessibleMock(UriBuilder::class, ['build'], [$extensionServiceStub]);
         $subject->setRequest($mockRequest);
@@ -181,7 +183,7 @@ final class UriBuilderTest extends UnitTestCase
         $mockExtensionService->expects($this->once())->method('getPluginNamespace')->willReturn('tx_someextension_somepluginnamefromrequest');
         $mockRequest->expects($this->once())->method('getPluginName')->willReturn('SomePluginNameFromRequest');
         $expectedArguments = ['tx_someextension_somepluginnamefromrequest' => ['controller' => 'SomeController']];
-        $mockRequest->method('getAttribute')->with('applicationType')->willReturn(SystemEnvironmentBuilder::REQUESTTYPE_FE);
+        $mockRequest->expects($this->atMost(PHP_INT_MAX))->method('getAttribute')->with('applicationType')->willReturn(SystemEnvironmentBuilder::REQUESTTYPE_FE);
         $subject = $this->getAccessibleMock(UriBuilder::class, ['build'], [$mockExtensionService]);
         $subject->setRequest($mockRequest);
         $subject->uriFor(null, [], 'SomeController', 'SomeExtension');
@@ -193,7 +195,7 @@ final class UriBuilderTest extends UnitTestCase
         $mockRequest = $this->createMock(Request::class);
         $mockRequest->expects($this->once())->method('getPluginName')->willReturn('SomePluginNameFromRequest');
         $expectedArguments = ['controller' => 'SomeController', 'route' => 'SomePluginNameFromRequest'];
-        $mockRequest->method('getAttribute')->with('applicationType')->willReturn(SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $mockRequest->expects($this->atMost(PHP_INT_MAX))->method('getAttribute')->with('applicationType')->willReturn(SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $extensionServiceStub = self::createStub(ExtensionService::class);
         $subject = $this->getAccessibleMock(UriBuilder::class, ['build'], [$extensionServiceStub]);
         $subject->setRequest($mockRequest);
@@ -468,7 +470,7 @@ final class UriBuilderTest extends UnitTestCase
         $mockContentObject = $this->createMock(ContentObjectRenderer::class);
         $mockContentObject->expects($this->once())->method('createUrl')->with(['foo' => 'bar', 'forceAbsoluteUrl' => true])->willReturn('http://baseuri/relative/uri');
         $mockRequest = $this->createMock(Request::class);
-        $mockRequest->method('getAttribute')->with('currentContentObject')->willReturn($mockContentObject);
+        $mockRequest->expects($this->atMost(PHP_INT_MAX))->method('getAttribute')->with('currentContentObject')->willReturn($mockContentObject);
         $subject = $this->getAccessibleMock(UriBuilder::class, ['buildTypolinkConfiguration'], [], '', false);
         $subject->setRequest($mockRequest);
         $subject->expects($this->once())->method('buildTypolinkConfiguration')->willReturn(['foo' => 'bar']);
@@ -486,7 +488,7 @@ final class UriBuilderTest extends UnitTestCase
             ->with(['foo' => 'bar', 'forceAbsoluteUrl' => true, 'forceAbsoluteUrl.' => ['scheme' => 'someScheme']])
             ->willReturn('http://baseuri/relative/uri');
         $mockRequest = $this->createMock(Request::class);
-        $mockRequest->method('getAttribute')->with('currentContentObject')->willReturn($mockContentObject);
+        $mockRequest->expects($this->atMost(PHP_INT_MAX))->method('getAttribute')->with('currentContentObject')->willReturn($mockContentObject);
         $subject = $this->getAccessibleMock(UriBuilder::class, ['buildTypolinkConfiguration'], [], '', false);
         $subject->setRequest($mockRequest);
         $subject->expects($this->once())->method('buildTypolinkConfiguration')->willReturn(['foo' => 'bar']);
@@ -502,7 +504,7 @@ final class UriBuilderTest extends UnitTestCase
         $uriBuilder = $this->getAccessibleMock(UriBuilder::class, ['buildTypolinkConfiguration'], [], '', false);
         $mockRequest = $this->createMock(Request::class);
         $mockContentObject = $this->createMock(ContentObjectRenderer::class);
-        $mockRequest->method('getAttribute')->with('currentContentObject')->willReturn($mockContentObject);
+        $mockRequest->expects($this->atMost(PHP_INT_MAX))->method('getAttribute')->with('currentContentObject')->willReturn($mockContentObject);
         $uriBuilder->setRequest($mockRequest);
         $uriBuilder->expects($this->once())->method('buildTypolinkConfiguration')->willReturn(['foo' => 'bar']);
         $mockContentObject->expects($this->once())->method('createUrl')->with(['foo' => 'bar'])->willReturn('http://baseuri/relative/uri');
@@ -686,7 +688,7 @@ final class UriBuilderTest extends UnitTestCase
     public function buildTypolinkConfigurationResolvesPageTypeFromFormat(): void
     {
         $mockExtensionService = $this->createMock(ExtensionService::class);
-        $mockExtensionService->method('getTargetPageTypeByFormat')->with('SomeExtensionNameFromRequest', 'txt')->willReturn(2);
+        $mockExtensionService->expects($this->atMost(PHP_INT_MAX))->method('getTargetPageTypeByFormat')->with('SomeExtensionNameFromRequest', 'txt')->willReturn(2);
         $mockRequest = $this->createMock(Request::class);
         $mockRequest->expects($this->once())->method('getControllerExtensionName')->willReturn('SomeExtensionNameFromRequest');
         $subject = $this->getAccessibleMock(UriBuilder::class, null, [$mockExtensionService]);
@@ -701,7 +703,7 @@ final class UriBuilderTest extends UnitTestCase
     public function buildTypolinkConfigurationResolvesDefaultPageTypeFromFormatIfNoMappingIsConfigured(): void
     {
         $mockExtensionService = $this->createMock(ExtensionService::class);
-        $mockExtensionService->method('getTargetPageTypeByFormat')->with(null, 'txt')->willReturn(0);
+        $mockExtensionService->expects($this->atMost(PHP_INT_MAX))->method('getTargetPageTypeByFormat')->with(null, 'txt')->willReturn(0);
         $subject = $this->getAccessibleMock(UriBuilder::class, null, [$mockExtensionService]);
         $subject->setTargetPageUid(123);
         $subject->setFormat('txt');
@@ -715,7 +717,7 @@ final class UriBuilderTest extends UnitTestCase
     public function buildTypolinkConfigurationResolvesDefaultPageTypeFromFormatIfFormatIsNotMapped(): void
     {
         $mockExtensionService = $this->createMock(ExtensionService::class);
-        $mockExtensionService->method('getTargetPageTypeByFormat')->with(null, 'txt')->willReturn(0);
+        $mockExtensionService->expects($this->atMost(PHP_INT_MAX))->method('getTargetPageTypeByFormat')->with(null, 'txt')->willReturn(0);
         $subject = $this->getAccessibleMock(UriBuilder::class, null, [$mockExtensionService]);
         $subject->setTargetPageUid(123);
         $subject->setFormat('txt');

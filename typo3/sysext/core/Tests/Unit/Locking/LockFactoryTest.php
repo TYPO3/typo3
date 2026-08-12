@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Locking;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Locking\Exception\LockCreateException;
@@ -32,6 +33,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Testcase for \TYPO3\CMS\Core\Locking\LockFactory
  */
+#[AllowMockObjectsWithoutExpectations]
 final class LockFactoryTest extends UnitTestCase
 {
     private LockFactory&MockObject&AccessibleObjectInterface $mockFactory;

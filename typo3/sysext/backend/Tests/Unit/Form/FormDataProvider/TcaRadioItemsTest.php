@@ -52,7 +52,7 @@ final class TcaRadioItemsTest extends UnitTestCase
 
         $languageService = $this->createMock(LanguageService::class);
         $GLOBALS['LANG'] = $languageService;
-        $languageService->method('sL')->with(self::anything())->willReturnArgument(0);
+        $languageService->expects($this->atMost(PHP_INT_MAX))->method('sL')->with(self::anything())->willReturnArgument(0);
 
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1438594829);
@@ -82,7 +82,7 @@ final class TcaRadioItemsTest extends UnitTestCase
         ];
         $languageService = $this->createMock(LanguageService::class);
         $GLOBALS['LANG'] = $languageService;
-        $languageService->method('sL')->with(self::anything())->willReturnArgument(0);
+        $languageService->expects($this->atMost(PHP_INT_MAX))->method('sL')->with(self::anything())->willReturnArgument(0);
 
         $expected = $input;
         self::assertSame($expected, new TcaRadioItems()->addData($input));
@@ -109,7 +109,7 @@ final class TcaRadioItemsTest extends UnitTestCase
 
         $languageService = $this->createMock(LanguageService::class);
         $GLOBALS['LANG'] = $languageService;
-        $languageService->method('sL')->with(self::anything())->willReturnArgument(0);
+        $languageService->expects($this->atMost(PHP_INT_MAX))->method('sL')->with(self::anything())->willReturnArgument(0);
 
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1438607163);
@@ -139,7 +139,7 @@ final class TcaRadioItemsTest extends UnitTestCase
 
         $languageService = $this->createMock(LanguageService::class);
         $GLOBALS['LANG'] = $languageService;
-        $languageService->method('sL')->with(self::anything())->willReturnArgument(0);
+        $languageService->expects($this->atMost(PHP_INT_MAX))->method('sL')->with(self::anything())->willReturnArgument(0);
 
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1438607164);
@@ -169,7 +169,7 @@ final class TcaRadioItemsTest extends UnitTestCase
 
         $languageService = $this->createMock(LanguageService::class);
         $GLOBALS['LANG'] = $languageService;
-        $languageService->method('sL')->with(self::anything())->willReturnArgument(0);
+        $languageService->expects($this->atMost(PHP_INT_MAX))->method('sL')->with(self::anything())->willReturnArgument(0);
 
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1438607165);
@@ -257,10 +257,10 @@ final class TcaRadioItemsTest extends UnitTestCase
 
         $languageService = $this->createMock(LanguageService::class);
         $GLOBALS['LANG'] = $languageService;
-        $languageService->method('sL')->with(self::anything())->willReturnArgument(0);
+        $languageService->expects($this->atMost(PHP_INT_MAX))->method('sL')->with(self::anything())->willReturnArgument(0);
         $flashMessageService = $this->createMock(FlashMessageService::class);
         $flashMessageQueue = self::createStub(FlashMessageQueue::class);
-        $flashMessageService->method('getMessageQueueByIdentifier')->with(self::anything())->willReturn($flashMessageQueue);
+        $flashMessageService->expects($this->atMost(PHP_INT_MAX))->method('getMessageQueueByIdentifier')->with(self::anything())->willReturn($flashMessageQueue);
 
         $subject = new TcaRadioItems();
         $subject->injectItemProcessingService(
@@ -323,10 +323,10 @@ final class TcaRadioItemsTest extends UnitTestCase
 
         $languageService = $this->createMock(LanguageService::class);
         $GLOBALS['LANG'] = $languageService;
-        $languageService->method('sL')->with(self::anything())->willReturnArgument(0);
+        $languageService->expects($this->atMost(PHP_INT_MAX))->method('sL')->with(self::anything())->willReturnArgument(0);
         $flashMessageService = $this->createMock(FlashMessageService::class);
         $flashMessageQueue = self::createStub(FlashMessageQueue::class);
-        $flashMessageService->method('getMessageQueueByIdentifier')->with(self::anything())->willReturn($flashMessageQueue);
+        $flashMessageService->expects($this->atMost(PHP_INT_MAX))->method('getMessageQueueByIdentifier')->with(self::anything())->willReturn($flashMessageQueue);
 
         $subject = new TcaRadioItems();
         $subject->injectItemProcessingService(
@@ -422,10 +422,10 @@ final class TcaRadioItemsTest extends UnitTestCase
 
         $languageService = $this->createMock(LanguageService::class);
         $GLOBALS['LANG'] = $languageService;
-        $languageService->method('sL')->with(self::anything())->willReturnArgument(0);
+        $languageService->expects($this->atMost(PHP_INT_MAX))->method('sL')->with(self::anything())->willReturnArgument(0);
         $flashMessageService = $this->createMock(FlashMessageService::class);
         $flashMessageQueue = $this->createMock(FlashMessageQueue::class);
-        $flashMessageService->method('getMessageQueueByIdentifier')->with(self::anything())->willReturn($flashMessageQueue);
+        $flashMessageService->expects($this->atMost(PHP_INT_MAX))->method('getMessageQueueByIdentifier')->with(self::anything())->willReturn($flashMessageQueue);
 
         // itemsProcFunc must NOT have raised an exception
         $flashMessageQueue->expects($this->never())->method('enqueue')->with(self::isInstanceOf(FlashMessage::class));
@@ -488,11 +488,11 @@ final class TcaRadioItemsTest extends UnitTestCase
         ];
 
         $languageService = $this->createMock(LanguageService::class);
-        $languageService->method('sL')->with(self::anything())->willReturn('');
+        $languageService->expects($this->atMost(PHP_INT_MAX))->method('sL')->with(self::anything())->willReturn('');
         $GLOBALS['LANG'] = $languageService;
         $flashMessageService = $this->createMock(FlashMessageService::class);
         $flashMessageQueue = $this->createMock(FlashMessageQueue::class);
-        $flashMessageService->method('getMessageQueueByIdentifier')->with(self::anything())->willReturn($flashMessageQueue);
+        $flashMessageService->expects($this->atMost(PHP_INT_MAX))->method('getMessageQueueByIdentifier')->with(self::anything())->willReturn($flashMessageQueue);
 
         $flashMessageQueue->expects($this->atLeastOnce())->method('enqueue')->with(self::isInstanceOf(FlashMessage::class));
 
@@ -561,11 +561,11 @@ final class TcaRadioItemsTest extends UnitTestCase
         ];
 
         $languageService = $this->createMock(LanguageService::class);
-        $languageService->method('sL')->with(self::anything())->willReturn('');
+        $languageService->expects($this->atMost(PHP_INT_MAX))->method('sL')->with(self::anything())->willReturn('');
         $GLOBALS['LANG'] = $languageService;
         $flashMessageService = $this->createMock(FlashMessageService::class);
         $flashMessageQueue = $this->createMock(FlashMessageQueue::class);
-        $flashMessageService->method('getMessageQueueByIdentifier')->with(self::anything())->willReturn($flashMessageQueue);
+        $flashMessageService->expects($this->atMost(PHP_INT_MAX))->method('getMessageQueueByIdentifier')->with(self::anything())->willReturn($flashMessageQueue);
 
         $flashMessageQueue->expects($this->atLeastOnce())->method('enqueue')->with(self::isInstanceOf(FlashMessage::class));
 

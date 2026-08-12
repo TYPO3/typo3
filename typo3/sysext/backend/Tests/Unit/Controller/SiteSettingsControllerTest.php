@@ -17,12 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Controller;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Controller\SiteSettingsController;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Settings\SettingDefinition;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
+#[AllowMockObjectsWithoutExpectations]
 final class SiteSettingsControllerTest extends UnitTestCase
 {
     #[Test]

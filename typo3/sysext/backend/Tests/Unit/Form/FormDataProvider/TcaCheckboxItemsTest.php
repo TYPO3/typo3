@@ -383,7 +383,7 @@ final class TcaCheckboxItemsTest extends UnitTestCase
     {
         $languageService = $this->createMock(LanguageService::class);
         $GLOBALS['LANG'] = $languageService;
-        $languageService->method('sL')->with(self::anything())->willReturnArgument(0);
+        $languageService->expects($this->atMost(PHP_INT_MAX))->method('sL')->with(self::anything())->willReturnArgument(0);
 
         self::assertSame($expected, new TcaCheckboxItems()->addData($input));
     }
@@ -409,7 +409,7 @@ final class TcaCheckboxItemsTest extends UnitTestCase
 
         $languageService = $this->createMock(LanguageService::class);
         $GLOBALS['LANG'] = $languageService;
-        $languageService->method('sL')->with(self::anything())->willReturnArgument(0);
+        $languageService->expects($this->atMost(PHP_INT_MAX))->method('sL')->with(self::anything())->willReturnArgument(0);
 
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1440499337);
@@ -439,7 +439,7 @@ final class TcaCheckboxItemsTest extends UnitTestCase
 
         $languageService = $this->createMock(LanguageService::class);
         $GLOBALS['LANG'] = $languageService;
-        $languageService->method('sL')->with(self::anything())->willReturnArgument(0);
+        $languageService->expects($this->atMost(PHP_INT_MAX))->method('sL')->with(self::anything())->willReturnArgument(0);
 
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1440499338);
@@ -526,7 +526,7 @@ final class TcaCheckboxItemsTest extends UnitTestCase
 
         $languageService = $this->createMock(LanguageService::class);
         $GLOBALS['LANG'] = $languageService;
-        $languageService->method('sL')->with(self::anything())->willReturnArgument(0);
+        $languageService->expects($this->atMost(PHP_INT_MAX))->method('sL')->with(self::anything())->willReturnArgument(0);
         $flashMessageService = self::createStub(FlashMessageService::class);
         $subject = new TcaCheckboxItems();
         $subject->injectItemProcessingService(
@@ -588,7 +588,7 @@ final class TcaCheckboxItemsTest extends UnitTestCase
 
         $languageService = $this->createMock(LanguageService::class);
         $GLOBALS['LANG'] = $languageService;
-        $languageService->method('sL')->with(self::anything())->willReturnArgument(0);
+        $languageService->expects($this->atMost(PHP_INT_MAX))->method('sL')->with(self::anything())->willReturnArgument(0);
         $flashMessageService = self::createStub(FlashMessageService::class);
         $subject = new TcaCheckboxItems();
         $subject->injectItemProcessingService(
@@ -689,10 +689,10 @@ final class TcaCheckboxItemsTest extends UnitTestCase
 
         $languageService = $this->createMock(LanguageService::class);
         $GLOBALS['LANG'] = $languageService;
-        $languageService->method('sL')->with(self::anything())->willReturnArgument(0);
+        $languageService->expects($this->atMost(PHP_INT_MAX))->method('sL')->with(self::anything())->willReturnArgument(0);
         $flashMessageService = $this->createMock(FlashMessageService::class);
         $flashMessageQueue = $this->createMock(FlashMessageQueue::class);
-        $flashMessageService->method('getMessageQueueByIdentifier')->with(self::anything())->willReturn($flashMessageQueue);
+        $flashMessageService->expects($this->atMost(PHP_INT_MAX))->method('getMessageQueueByIdentifier')->with(self::anything())->willReturn($flashMessageQueue);
 
         // itemsProcFunc must NOT have raised an exception
         $flashMessageQueue->expects($this->never())->method('enqueue');
@@ -754,11 +754,11 @@ final class TcaCheckboxItemsTest extends UnitTestCase
         ];
 
         $languageService = $this->createMock(LanguageService::class);
-        $languageService->method('sL')->with(self::anything())->willReturn('');
+        $languageService->expects($this->atMost(PHP_INT_MAX))->method('sL')->with(self::anything())->willReturn('');
         $GLOBALS['LANG'] = $languageService;
         $flashMessageService = $this->createMock(FlashMessageService::class);
         $flashMessageQueue = $this->createMock(FlashMessageQueue::class);
-        $flashMessageService->method('getMessageQueueByIdentifier')->with(self::anything())->willReturn($flashMessageQueue);
+        $flashMessageService->expects($this->atMost(PHP_INT_MAX))->method('getMessageQueueByIdentifier')->with(self::anything())->willReturn($flashMessageQueue);
 
         $flashMessageQueue->expects($this->atLeastOnce())->method('enqueue');
 
@@ -828,11 +828,11 @@ final class TcaCheckboxItemsTest extends UnitTestCase
         ];
 
         $languageService = $this->createMock(LanguageService::class);
-        $languageService->method('sL')->with(self::anything())->willReturn('');
+        $languageService->expects($this->atMost(PHP_INT_MAX))->method('sL')->with(self::anything())->willReturn('');
         $GLOBALS['LANG'] = $languageService;
         $flashMessageService = $this->createMock(FlashMessageService::class);
         $flashMessageQueue = $this->createMock(FlashMessageQueue::class);
-        $flashMessageService->method('getMessageQueueByIdentifier')->with(self::anything())->willReturn($flashMessageQueue);
+        $flashMessageService->expects($this->atMost(PHP_INT_MAX))->method('getMessageQueueByIdentifier')->with(self::anything())->willReturn($flashMessageQueue);
 
         $flashMessageQueue->expects($this->atLeastOnce())->method('enqueue');
 

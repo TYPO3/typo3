@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Validation\Validator;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
@@ -80,6 +81,7 @@ final class CollectionValidatorTest extends FunctionalTestCase
     }
 
     #[Test]
+    #[AllowMockObjectsWithoutExpectations]
     public function collectionValidatorValidatesNestedObjectStructuresWithoutEndlessLooping(): void
     {
         $A = new class {

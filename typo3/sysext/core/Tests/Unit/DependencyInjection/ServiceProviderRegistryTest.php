@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\DependencyInjection;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Container\ContainerInterface;
@@ -27,6 +28,7 @@ use TYPO3\CMS\Core\Tests\Unit\DependencyInjection\Fixtures\TestRegistryServicePr
 use TYPO3\CMS\Core\Tests\Unit\DependencyInjection\Fixtures\TestStatefulServiceProvider;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
+#[AllowMockObjectsWithoutExpectations]
 final class ServiceProviderRegistryTest extends UnitTestCase
 {
     private PackageManager&MockObject $packageManagerMock;
@@ -39,11 +41,11 @@ final class ServiceProviderRegistryTest extends UnitTestCase
 
     private function mockPackage(string $packageKey, string $serviceProvider): Package
     {
-        $this->packageManagerMock->method('isPackageActive')->with($packageKey)->willReturn(true);
+        $this->packageManagerMock->expects($this->atMost(PHP_INT_MAX))->method('isPackageActive')->with($packageKey)->willReturn(true);
         $package = self::createStub(Package::class);
         $package->method('getPackageKey')->willReturn($packageKey);
         $package->method('getServiceProvider')->willReturn($serviceProvider);
-        $this->packageManagerMock->method('getPackage')->with($packageKey)->willReturn($package);
+        $this->packageManagerMock->expects($this->atMost(PHP_INT_MAX))->method('getPackage')->with($packageKey)->willReturn($package);
         $this->packageManagerMock->method('getActivePackages')->willReturn([$package]);
         return $package;
     }

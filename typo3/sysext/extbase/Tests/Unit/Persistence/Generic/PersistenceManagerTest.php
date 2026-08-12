@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -32,6 +33,7 @@ use TYPO3\CMS\Extbase\Tests\Unit\Persistence\Fixture\Model\Entity2;
 use TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic\Fixtures\TearDownableBackendInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
+#[AllowMockObjectsWithoutExpectations]
 final class PersistenceManagerTest extends UnitTestCase
 {
     #[Test]

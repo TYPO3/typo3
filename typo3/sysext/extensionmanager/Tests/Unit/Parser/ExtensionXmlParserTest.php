@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Parser;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
@@ -24,6 +25,7 @@ use TYPO3\CMS\Extensionmanager\Parser\ExtensionXmlParser;
 use TYPO3\CMS\Extensionmanager\Tests\Unit\Fixtures\ExtensionXmlParserObserverFixture;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
+#[AllowMockObjectsWithoutExpectations]
 final class ExtensionXmlParserTest extends UnitTestCase
 {
     #[DataProvider('isValidVersionNumberDataProvider')]

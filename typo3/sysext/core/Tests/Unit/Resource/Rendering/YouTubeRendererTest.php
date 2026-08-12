@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource\Rendering;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -28,6 +29,7 @@ use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\YouTubeHelper;
 use TYPO3\CMS\Core\Resource\Rendering\YouTubeRenderer;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
+#[AllowMockObjectsWithoutExpectations]
 final class YouTubeRendererTest extends UnitTestCase
 {
     private YouTubeRenderer&MockObject $subject;
@@ -38,7 +40,7 @@ final class YouTubeRendererTest extends UnitTestCase
         $normalizedParams = self::createStub(NormalizedParams::class);
         $normalizedParams->method('getRequestHost')->willReturn('http://test.server.org');
         $request = $this->createMock(ServerRequestInterface::class);
-        $request->method('getAttribute')->with('normalizedParams')->willReturn($normalizedParams);
+        $request->expects($this->atMost(PHP_INT_MAX))->method('getAttribute')->with('normalizedParams')->willReturn($normalizedParams);
         $GLOBALS['TYPO3_REQUEST'] = $request;
 
         $youTubeHelper = $this->getMockBuilder(YouTubeHelper::class)

@@ -106,10 +106,10 @@ final class SiteDatabaseEditRowTest extends UnitTestCase
         ];
         $siteFinderMock = $this->createMock(SiteFinder::class);
         $siteStub = self::createStub(Site::class);
-        $siteFinderMock->method('getSiteByRootPageId')->with(23)->willReturn($siteStub);
+        $siteFinderMock->expects($this->atMost(PHP_INT_MAX))->method('getSiteByRootPageId')->with(23)->willReturn($siteStub);
         $siteStub->method('getIdentifier')->willReturn('testident');
         $siteConfiguration = $this->createMock(SiteConfiguration::class);
-        $siteConfiguration->method('load')->with('testident')->willReturn($rowData);
+        $siteConfiguration->expects($this->atMost(PHP_INT_MAX))->method('load')->with('testident')->willReturn($rowData);
         GeneralUtility::addInstance(SiteConfiguration::class, $siteConfiguration);
 
         $siteTca = [
@@ -155,10 +155,10 @@ final class SiteDatabaseEditRowTest extends UnitTestCase
         ];
         $siteFinderMock = $this->createMock(SiteFinder::class);
         $siteStub = self::createStub(Site::class);
-        $siteFinderMock->method('getSiteByRootPageId')->with(5)->willReturn($siteStub);
+        $siteFinderMock->expects($this->atMost(PHP_INT_MAX))->method('getSiteByRootPageId')->with(5)->willReturn($siteStub);
         $siteStub->method('getIdentifier')->willReturn('testident');
         $siteConfiguration = $this->createMock(SiteConfiguration::class);
-        $siteConfiguration->method('load')->with('testident')->willReturn($rowData);
+        $siteConfiguration->expects($this->atMost(PHP_INT_MAX))->method('load')->with('testident')->willReturn($rowData);
         GeneralUtility::addInstance(SiteConfiguration::class, $siteConfiguration);
 
         $this->expectException(\RuntimeException::class);
@@ -181,10 +181,10 @@ final class SiteDatabaseEditRowTest extends UnitTestCase
         ];
         $siteFinderMock = $this->createMock(SiteFinder::class);
         $siteStub = self::createStub(Site::class);
-        $siteFinderMock->method('getSiteByRootPageId')->with(5)->willReturn($siteStub);
+        $siteFinderMock->expects($this->atMost(PHP_INT_MAX))->method('getSiteByRootPageId')->with(5)->willReturn($siteStub);
         $siteStub->method('getIdentifier')->willReturn('testident');
         $siteConfiguration = $this->createMock(SiteConfiguration::class);
-        $siteConfiguration->method('load')->with('testident')->willReturn($rowData);
+        $siteConfiguration->expects($this->atMost(PHP_INT_MAX))->method('load')->with('testident')->willReturn($rowData);
         GeneralUtility::addInstance(SiteConfiguration::class, $siteConfiguration);
 
         $this->expectException(\RuntimeException::class);
@@ -211,10 +211,10 @@ final class SiteDatabaseEditRowTest extends UnitTestCase
         ];
         $siteFinderMock = $this->createMock(SiteFinder::class);
         $siteStub = self::createStub(Site::class);
-        $siteFinderMock->method('getSiteByRootPageId')->with(5)->willReturn($siteStub);
+        $siteFinderMock->expects($this->atMost(PHP_INT_MAX))->method('getSiteByRootPageId')->with(5)->willReturn($siteStub);
         $siteStub->method('getIdentifier')->willReturn('testident');
         $siteConfiguration = $this->createMock(SiteConfiguration::class);
-        $siteConfiguration->method('load')->with('testident')->willReturn($rowData);
+        $siteConfiguration->expects($this->atMost(PHP_INT_MAX))->method('load')->with('testident')->willReturn($rowData);
         GeneralUtility::addInstance(SiteConfiguration::class, $siteConfiguration);
 
         $expected = $input;

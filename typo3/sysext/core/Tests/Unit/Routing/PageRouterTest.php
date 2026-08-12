@@ -75,7 +75,7 @@ final class PageRouterTest extends UnitTestCase
         $language = $site->getDefaultLanguage();
 
         $pageSlugCandidateProvider = $this->createMock(PageSlugCandidateProvider::class);
-        $pageSlugCandidateProvider->method('getCandidatesForPath')->with('/mr-magpie/bloom', $language)->willReturn([$pageRecord]);
+        $pageSlugCandidateProvider->expects($this->atMost(PHP_INT_MAX))->method('getCandidatesForPath')->with('/mr-magpie/bloom', $language)->willReturn([$pageRecord]);
         GeneralUtility::addInstance(PageSlugCandidateProvider::class, $pageSlugCandidateProvider);
         GeneralUtility::addInstance(TcaSchemaFactory::class, self::createStub(TcaSchemaFactory::class));
 

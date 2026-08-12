@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Tests\Unit\Http\Security;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\ServerRequestInterface;
@@ -28,6 +29,7 @@ use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Install\Http\Security\ReferrerEnforcer;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
+#[AllowMockObjectsWithoutExpectations]
 final class ReferrerEnforcerTest extends UnitTestCase
 {
     public static function sameOriginReferrerIsAcceptedDataProvider(): array

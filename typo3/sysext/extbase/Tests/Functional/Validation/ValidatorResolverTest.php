@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Validation;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Extbase\Error\Error;
@@ -37,6 +38,7 @@ use TYPO3Tests\TestValidators\Domain\Model\ModelWithTransientProperty;
 use TYPO3Tests\TestValidators\Domain\Model\SymfonyModel;
 use TYPO3Tests\TestValidators\Validation\Validator\CustomValidator;
 
+#[AllowMockObjectsWithoutExpectations]
 final class ValidatorResolverTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;

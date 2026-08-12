@@ -194,13 +194,13 @@ final class EmailLoginNotificationTest extends UnitTestCase
         $mailMessage = $this->createMock(FluidEmail::class);
 
         if ($recipient === '') {
-            $mailMessage->method('to')->withAnyParameters()->willReturn($mailMessage);
+            $mailMessage->expects($this->atMost(PHP_INT_MAX))->method('to')->withAnyParameters()->willReturn($mailMessage);
         } else {
             $mailMessage->expects($this->atLeastOnce())->method('to')->with($recipient)->willReturn($mailMessage);
         }
-        $mailMessage->method('setTemplate')->withAnyParameters()->willReturn($mailMessage);
-        $mailMessage->method('from')->withAnyParameters()->willReturn($mailMessage);
-        $mailMessage->method('assignMultiple')->withAnyParameters()->willReturn($mailMessage);
+        $mailMessage->expects($this->atMost(PHP_INT_MAX))->method('setTemplate')->withAnyParameters()->willReturn($mailMessage);
+        $mailMessage->expects($this->atMost(PHP_INT_MAX))->method('from')->withAnyParameters()->willReturn($mailMessage);
+        $mailMessage->expects($this->atMost(PHP_INT_MAX))->method('assignMultiple')->withAnyParameters()->willReturn($mailMessage);
         return $mailMessage;
     }
 

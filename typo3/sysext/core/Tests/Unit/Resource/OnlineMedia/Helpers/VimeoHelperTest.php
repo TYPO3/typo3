@@ -55,7 +55,7 @@ final class VimeoHelperTest extends UnitTestCase
             ->onlyMethods(['transformMediaIdToFile'])
             ->setConstructorArgs(['video/vimeo'])
             ->getMock();
-        $subject->method('transformMediaIdToFile')
+        $subject->expects($this->atMost(PHP_INT_MAX))->method('transformMediaIdToFile')
             ->with($videoId, $folderStub, 'video/vimeo')
             ->willReturn($expectedResult);
 

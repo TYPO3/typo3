@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -31,6 +32,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Testcase for the ProcessedFile class of the TYPO3 FAL
  */
+#[AllowMockObjectsWithoutExpectations]
 final class ProcessedFileTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;

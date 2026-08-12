@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\DataHandling;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -65,6 +66,7 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
+#[AllowMockObjectsWithoutExpectations]
 final class DataHandlerTest extends UnitTestCase
 {
     private DataHandler&MockObject&AccessibleObjectInterface $subject;
@@ -74,7 +76,7 @@ final class DataHandlerTest extends UnitTestCase
     {
         parent::setUp();
         $cacheMock = $this->createMock(PhpFrontend::class);
-        $cacheMock->method('has')->with(self::isString())->willReturn(false);
+        $cacheMock->expects($this->atMost(PHP_INT_MAX))->method('has')->with(self::isString())->willReturn(false);
         $this->tcaSchemaFactory = new TcaSchemaFactory(
             new TcaSchemaBuilder(
                 new RelationMapBuilder(self::createStub(FlexFormTools::class)),
@@ -1579,7 +1581,7 @@ final class DataHandlerTest extends UnitTestCase
     public function clearPrefixFromValueRemovesPrefix(string $input, string $expected): void
     {
         $languageServiceMock = $this->createMock(LanguageService::class);
-        $languageServiceMock->method('sL')->with('testLabel')->willReturn('(copy %s)');
+        $languageServiceMock->expects($this->atMost(PHP_INT_MAX))->method('sL')->with('testLabel')->willReturn('(copy %s)');
         $GLOBALS['LANG'] = $languageServiceMock;
         $GLOBALS['TCA']['testTable']['ctrl']['prependAtCopy'] = 'testLabel';
         $this->tcaSchemaFactory->load($GLOBALS['TCA'], true);

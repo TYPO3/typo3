@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\SystemResource\Publishing;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
@@ -334,6 +335,7 @@ final class DefaultResourcePublisherTest extends FunctionalTestCase
     }
 
     #[Test]
+    #[AllowMockObjectsWithoutExpectations]
     public function falFileFromPrivateStorageThrowsExceptionWhenBuildingUri(): void
     {
         $this->expectException(CanNotGenerateUriException::class);

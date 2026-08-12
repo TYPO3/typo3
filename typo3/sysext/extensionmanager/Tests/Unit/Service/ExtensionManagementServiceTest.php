@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Service;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Stub;
@@ -31,6 +32,7 @@ use TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility;
 use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
+#[AllowMockObjectsWithoutExpectations]
 final class ExtensionManagementServiceTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
@@ -48,8 +50,8 @@ final class ExtensionManagementServiceTest extends UnitTestCase
         $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['extensionmanager']['offlineMode'] = false;
         $this->remoteMock = $this->createMock(ExtensionDownloaderRemoteInterface::class);
         $remoteRegistryMock = $this->createMock(RemoteRegistry::class);
-        $remoteRegistryMock->method('hasRemote')->with(self::anything())->willReturn(true);
-        $remoteRegistryMock->method('getRemote')->with(self::anything())->willReturn($this->remoteMock);
+        $remoteRegistryMock->expects($this->atMost(PHP_INT_MAX))->method('hasRemote')->with(self::anything())->willReturn(true);
+        $remoteRegistryMock->expects($this->atMost(PHP_INT_MAX))->method('getRemote')->with(self::anything())->willReturn($this->remoteMock);
         $this->fileHandlingUtilityStub = self::createStub(FileHandlingUtility::class);
 
         $this->downloadQueue = new DownloadQueue();
@@ -116,7 +118,7 @@ final class ExtensionManagementServiceTest extends UnitTestCase
         $extension->extensionKey = 'foo';
         $extension->remote = 'ter';
         $this->downloadQueue->addExtensionToQueue($extension);
-        $this->installUtilityMock->method('enrichExtensionWithDetails')->with('foo')->willReturn([
+        $this->installUtilityMock->expects($this->atMost(PHP_INT_MAX))->method('enrichExtensionWithDetails')->with('foo')->willReturn([
             'key' => 'foo',
             'remote' => 'ter',
         ]);
@@ -134,7 +136,7 @@ final class ExtensionManagementServiceTest extends UnitTestCase
         $extension->extensionKey = 'foo';
         $extension->remote = 'ter';
         $this->downloadQueue->addExtensionToQueue($extension, 'update');
-        $this->installUtilityMock->method('enrichExtensionWithDetails')->with('foo')->willReturn([
+        $this->installUtilityMock->expects($this->atMost(PHP_INT_MAX))->method('enrichExtensionWithDetails')->with('foo')->willReturn([
             'key' => 'foo',
             'remote' => 'ter',
         ]);

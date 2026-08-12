@@ -32,7 +32,7 @@ final class SiteResolvingTest extends UnitTestCase
     {
         $siteFinderMock = $this->createMock(SiteFinder::class);
         $siteStub = self::createStub(Site::class);
-        $siteFinderMock->method('getSiteByPageId')->with(23)->willReturn($siteStub);
+        $siteFinderMock->expects($this->atMost(PHP_INT_MAX))->method('getSiteByPageId')->with(23)->willReturn($siteStub);
         $input = [
             'defaultLanguagePageRow' => [
                 'uid' => 23,
@@ -50,7 +50,7 @@ final class SiteResolvingTest extends UnitTestCase
     {
         $siteFinderMock = $this->createMock(SiteFinder::class);
         $siteStub = self::createStub(Site::class);
-        $siteFinderMock->method('getSiteByPageId')->with(42)->willReturn($siteStub);
+        $siteFinderMock->expects($this->atMost(PHP_INT_MAX))->method('getSiteByPageId')->with(42)->willReturn($siteStub);
         $input = [
             'effectivePid' => 42,
             'site' => $siteStub,
@@ -65,7 +65,7 @@ final class SiteResolvingTest extends UnitTestCase
     {
         $siteFinderMock = $this->createMock(SiteFinder::class);
         $siteStub = self::createStub(Site::class);
-        $siteFinderMock->method('getSiteByPageId')->with(42)->willReturn($siteStub);
+        $siteFinderMock->expects($this->atMost(PHP_INT_MAX))->method('getSiteByPageId')->with(42)->willReturn($siteStub);
         $input = [
             'databaseRow' => [
                 'uid' => 'NEW12345678BACDEF',

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Mvc\Web\Routing;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
@@ -29,6 +30,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 final class UriBuilderTest extends FunctionalTestCase
 {
     #[Test]
+    #[AllowMockObjectsWithoutExpectations]
     public function buildTypolinkConfigurationUsesCurrentPageUidIfTargetPageUidIsNotSet(): void
     {
         $pageInformation = new PageInformation();

@@ -198,8 +198,8 @@ final class RouteDispatcherTest extends UnitTestCase
         $request = new ServerRequest()->withAttribute('route', $route);
 
         $containerMock = $this->createMock(ContainerInterface::class);
-        $containerMock->method('has')->with($target)->willReturn(true);
-        $containerMock->method('get')->with($target)->willReturn(new RouteDispatcherClassInvokeFixture());
+        $containerMock->expects($this->atMost(PHP_INT_MAX))->method('has')->with($target)->willReturn(true);
+        $containerMock->expects($this->atMost(PHP_INT_MAX))->method('get')->with($target)->willReturn(new RouteDispatcherClassInvokeFixture());
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1520756623);

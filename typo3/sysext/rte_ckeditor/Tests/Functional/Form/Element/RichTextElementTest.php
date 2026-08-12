@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\RteCKEditor\Tests\Functional\Form\Element;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -35,6 +36,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\RteCKEditor\Form\Element\RichTextElement;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
+#[AllowMockObjectsWithoutExpectations]
 final class RichTextElementTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = ['rte_ckeditor'];

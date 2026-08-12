@@ -52,7 +52,7 @@ final class TranslationConfigurationProviderTest extends UnitTestCase
         $pageId = 1;
         $site = new Site('dummy', $pageId, ['base' => 'http://sub.domainhostname.tld/path/']);
         $siteFinderMock = $this->createMock(SiteFinder::class);
-        $siteFinderMock->method('getSiteByPageId')->with($pageId)->willReturn($site);
+        $siteFinderMock->expects($this->atMost(PHP_INT_MAX))->method('getSiteByPageId')->with($pageId)->willReturn($site);
         $subject = new TranslationConfigurationProvider(
             self::createStub(FrontendInterface::class),
             $siteFinderMock,

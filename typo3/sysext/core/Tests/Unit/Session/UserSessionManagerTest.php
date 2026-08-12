@@ -125,7 +125,7 @@ final class UserSessionManagerTest extends UnitTestCase
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 'secret-encryption-key-test';
         $sessionBackendMock = $this->createMock(SessionBackendInterface::class);
-        $sessionBackendMock->method('get')->with('valid-session')->willReturn([
+        $sessionBackendMock->expects($this->atMost(PHP_INT_MAX))->method('get')->with('valid-session')->willReturn([
             'ses_id' => 'valid-session',
             'ses_userid' => 13,
             'ses_data' => serialize(['propertyA' => 42, 'propertyB' => 'great']),
@@ -175,7 +175,7 @@ final class UserSessionManagerTest extends UnitTestCase
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 'secret-encryption-key-test';
         $sessionBackendMock = $this->createMock(SessionBackendInterface::class);
-        $sessionBackendMock->method('get')->with('invalid-session')->willThrowException(
+        $sessionBackendMock->expects($this->atMost(PHP_INT_MAX))->method('get')->with('invalid-session')->willThrowException(
             new SessionNotFoundException('Session not found', 1669358326)
         );
         $subject = new UserSessionManager(

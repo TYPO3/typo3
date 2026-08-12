@@ -35,7 +35,7 @@ final class MiddlewareStackResolverTest extends UnitTestCase
             require __DIR__ . '/Fixtures/Package2/Configuration/RequestMiddlewares.php'
         ));
         $containerMock = $this->createMock(ContainerInterface::class);
-        $containerMock->method('get')->with('middlewares')->willReturn($middlewares);
+        $containerMock->expects($this->atMost(PHP_INT_MAX))->method('get')->with('middlewares')->willReturn($middlewares);
         $dependencyOrderingServiceStub = self::createStub(DependencyOrderingService::class);
         $dependencyOrderingServiceStub->method('orderByDependencies')->willReturnArgument(0);
 
@@ -57,7 +57,7 @@ final class MiddlewareStackResolverTest extends UnitTestCase
     {
         $middlewares = new \ArrayObject();
         $containerMock = $this->createMock(ContainerInterface::class);
-        $containerMock->method('get')->with('middlewares')->willReturn($middlewares);
+        $containerMock->expects($this->atMost(PHP_INT_MAX))->method('get')->with('middlewares')->willReturn($middlewares);
         $dependencyOrderingServiceStub = self::createStub(DependencyOrderingService::class);
         $dependencyOrderingServiceStub->method('orderByDependencies')->willReturnArgument(0);
 
@@ -81,7 +81,7 @@ final class MiddlewareStackResolverTest extends UnitTestCase
             require __DIR__ . '/Fixtures/Package2Disables1/Configuration/RequestMiddlewares.php'
         ));
         $containerMock = $this->createMock(ContainerInterface::class);
-        $containerMock->method('get')->with('middlewares')->willReturn($middlewares);
+        $containerMock->expects($this->atMost(PHP_INT_MAX))->method('get')->with('middlewares')->willReturn($middlewares);
         $dependencyOrderingServiceStub = self::createStub(DependencyOrderingService::class);
         $dependencyOrderingServiceStub->method('orderByDependencies')->willReturnArgument(0);
 
@@ -107,7 +107,7 @@ final class MiddlewareStackResolverTest extends UnitTestCase
             require __DIR__ . '/Fixtures/Package2Replaces1/Configuration/RequestMiddlewares.php'
         ));
         $containerMock = $this->createMock(ContainerInterface::class);
-        $containerMock->method('get')->with('middlewares')->willReturn($middlewares);
+        $containerMock->expects($this->atMost(PHP_INT_MAX))->method('get')->with('middlewares')->willReturn($middlewares);
         $dependencyOrderingServiceStub = self::createStub(DependencyOrderingService::class);
         $dependencyOrderingServiceStub->method('orderByDependencies')->willReturnArgument(0);
 

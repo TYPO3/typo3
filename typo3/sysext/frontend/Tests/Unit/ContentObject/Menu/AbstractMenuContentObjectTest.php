@@ -51,7 +51,7 @@ final class AbstractMenuContentObjectTest extends UnitTestCase
         $connectionMock->method('getExpressionBuilder')->willReturn(new ExpressionBuilder($connectionMock, self::createStub(ContainerInterface::class)));
         $connectionMock->method('quoteIdentifier')->willReturnArgument(0);
         $connectionPoolMock = $this->createMock(ConnectionPool::class);
-        $connectionPoolMock->method('getConnectionForTable')->with('tt_content')->willReturn($connectionMock);
+        $connectionPoolMock->expects($this->atMost(PHP_INT_MAX))->method('getConnectionForTable')->with('tt_content')->willReturn($connectionMock);
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolMock);
     }
 
