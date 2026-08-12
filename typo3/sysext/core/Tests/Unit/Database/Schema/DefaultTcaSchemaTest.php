@@ -609,6 +609,134 @@ final class DefaultTcaSchemaTest extends UnitTestCase
     }
 
     #[Test]
+    public function enrichAddsLanguageIdentifierKey(): void
+    {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
+        $subject = new DefaultTcaSchema($this->connectionPool, $this->getPreparedTcaSchemaFactory($this->getLanguageAwareTca()));
+        $result = $subject->enrich(['aTable' => $this->defaultTable]);
+        $expectedIndex = new Index('language_identifier', ['l10n_parent', 'sys_language_uid']);
+        self::assertEquals($expectedIndex, $result['aTable']->getIndex('language_identifier'));
+    }
+
+    #[Test]
+    public function enrichAddsLanguageIdentifierKeyIfLanguageColumnsAreDefinedAlready(): void
+    {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
+        $subject = new DefaultTcaSchema($this->connectionPool, $this->getPreparedTcaSchemaFactory($this->getLanguageAwareTca()));
+
+        $table = new Table('aTable');
+        $table->addColumn('sys_language_uid', 'integer');
+        $table->addColumn('l10n_parent', 'integer');
+
+        $result = $subject->enrich(['aTable' => $table]);
+        $expectedIndex = new Index('language_identifier', ['l10n_parent', 'sys_language_uid']);
+        self::assertEquals($expectedIndex, $result['aTable']->getIndex('language_identifier'));
+    }
+
+    #[Test]
+    public function enrichKeepsGivenLanguageIdentifierKey(): void
+    {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
+        $subject = new DefaultTcaSchema($this->connectionPool, $this->getPreparedTcaSchemaFactory($this->getLanguageAwareTca()));
+
+        $table = new Table('aTable');
+        $table->addColumn('sys_language_uid', 'integer');
+        $table->addColumn('l10n_parent', 'integer');
+        $table->addIndex(['l10n_parent'], 'language_identifier');
+
+        $result = $subject->enrich(['aTable' => $table]);
+        $expectedIndex = new Index('language_identifier', ['l10n_parent']);
+        self::assertEquals($expectedIndex, $result['aTable']->getIndex('language_identifier'));
+    }
+
+    #[Test]
+    public function enrichDoesNotAddLanguageIdentifierKeyIfTableIsNotLanguageAware(): void
+    {
+        $tca['aTable']['ctrl'] = [];
+        $subject = new DefaultTcaSchema($this->connectionPool, $this->getPreparedTcaSchemaFactory($tca));
+        $result = $subject->enrich(['aTable' => $this->defaultTable]);
+        self::assertFalse($result['aTable']->hasIndex('language_identifier'));
+    }
+
+    #[Test]
+    public function enrichAddsTranslationSourceKeyCoveringBothTranslationLookupConstraints(): void
+    {
+        $tca = $this->getLanguageAwareTca();
+        $tca['aTable']['ctrl']['translationSource'] = 'l10n_source';
+        $tca['aTable']['columns']['l10n_source'] = [
+            'label' => 'Language Source',
+            'config' => [
+                'type' => 'input',
+            ],
+        ];
+        $this->mockDefaultConnectionPlatformInConnectionPool();
+        $subject = new DefaultTcaSchema($this->connectionPool, $this->getPreparedTcaSchemaFactory($tca));
+        $result = $subject->enrich(['aTable' => $this->defaultTable]);
+        $expectedIndex = new Index('translation_source', ['l10n_source', 'l10n_parent', 'sys_language_uid']);
+        self::assertEquals($expectedIndex, $result['aTable']->getIndex('translation_source'));
+    }
+
+    #[Test]
+    public function enrichAddsTranslationSourceKeyIfTranslationSourceColumnIsDefinedAlready(): void
+    {
+        $tca = $this->getLanguageAwareTca();
+        $tca['aTable']['ctrl']['translationSource'] = 'l10n_source';
+        $tca['aTable']['columns']['l10n_source'] = [
+            'label' => 'Language Source',
+            'config' => [
+                'type' => 'input',
+            ],
+        ];
+        $this->mockDefaultConnectionPlatformInConnectionPool();
+        $subject = new DefaultTcaSchema($this->connectionPool, $this->getPreparedTcaSchemaFactory($tca));
+
+        $table = new Table('aTable');
+        $table->addColumn('l10n_source', 'integer');
+
+        $result = $subject->enrich(['aTable' => $table]);
+        $expectedIndex = new Index('translation_source', ['l10n_source', 'l10n_parent', 'sys_language_uid']);
+        self::assertEquals($expectedIndex, $result['aTable']->getIndex('translation_source'));
+    }
+
+    #[Test]
+    public function enrichDoesNotAddTranslationSourceKeyIfTranslationSourceIsNotDefined(): void
+    {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
+        $subject = new DefaultTcaSchema($this->connectionPool, $this->getPreparedTcaSchemaFactory($this->getLanguageAwareTca()));
+        $result = $subject->enrich(['aTable' => $this->defaultTable]);
+        self::assertFalse($result['aTable']->hasIndex('translation_source'));
+    }
+
+    /**
+     * Minimal language-aware TCA for the index related tests.
+     */
+    private function getLanguageAwareTca(): array
+    {
+        return [
+            'aTable' => [
+                'ctrl' => [
+                    'languageField' => 'sys_language_uid',
+                    'transOrigPointerField' => 'l10n_parent',
+                ],
+                'columns' => [
+                    'sys_language_uid' => [
+                        'label' => 'Language',
+                        'config' => [
+                            'type' => 'language',
+                        ],
+                    ],
+                    'l10n_parent' => [
+                        'label' => 'Language Parent',
+                        'config' => [
+                            'type' => 'input',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    #[Test]
     public function enrichAddsL10nState(): void
     {
         $tca['aTable'] = [
