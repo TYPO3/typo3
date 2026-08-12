@@ -85,13 +85,6 @@ readonly class FormDataCompiler
 
         $result = $formDataGroup->compile($result);
 
-        if (!is_array($result)) {
-            throw new \UnexpectedValueException(
-                'Data group provider must return array',
-                1446664764
-            );
-        }
-
         if (!empty($result['renderData'])) {
             throw new \RuntimeException(
                 'Array \'renderData\' not empty. Data providers must not add data here',

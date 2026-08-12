@@ -175,20 +175,6 @@ final class FormDataCompilerTest extends UnitTestCase
     }
 
     #[Test]
-    public function compileThrowsExceptionIfFormDataGroupDoesNotReturnArray(): void
-    {
-        $this->formDataGroupStub->method('compile')->willReturn(null);
-        $this->expectException(\UnexpectedValueException::class);
-        $this->expectExceptionCode(1446664764);
-        $this->subject->compile(
-            [
-                'request' => new ServerRequest(),
-            ],
-            $this->formDataGroupStub
-        );
-    }
-
-    #[Test]
     public function compileThrowsExceptionIfRenderDataIsNotEmpty(): void
     {
         $this->formDataGroupStub->method('compile')->willReturn([
