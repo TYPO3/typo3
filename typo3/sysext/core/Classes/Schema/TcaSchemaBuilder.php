@@ -61,8 +61,7 @@ final readonly class TcaSchemaBuilder
     }
 
     /**
-     * Builds a schema from a TCA table, if a sub-schema is requested, it will build the main schema and
-     * all sub-schematas first.
+     * Builds a schema from a TCA table including all of its sub-schemata.
      *
      * First builds all fields, then the schema and attach the fields, so all parts can never be
      * modified (except for adding sub-schema - this might be removed at some point hopefully).
@@ -75,13 +74,6 @@ final readonly class TcaSchemaBuilder
      */
     private function build(string $schemaName, array $fullTca, RelationMap $relationMap): TcaSchema
     {
-        if (str_contains($schemaName, '.')) {
-            // @todo: This 'if' is dead code, isn't it?
-            [$mainSchema, $subSchema] = explode('.', $schemaName, 2);
-            $mainSchema = $this->build($mainSchema, $fullTca, $relationMap);
-            return $mainSchema->getSubSchema($subSchema);
-        }
-
         // Collect all fields
         $allFields = [];
         $schemaDefinition = $fullTca[$schemaName];
