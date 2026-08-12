@@ -303,7 +303,6 @@ class DefaultTcaSchema
             }
 
             // sys_language_uid column
-            $languageColumnAdded = false;
             if ($schema->isLanguageAware()
                 && !$this->isColumnDefinedForTable($tables, $tableName, $schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName())
             ) {
@@ -316,11 +315,9 @@ class DefaultTcaSchema
                         'unsigned' => false,
                     ]
                 );
-                $languageColumnAdded = true;
             }
 
             // l10n_parent column
-            $translationOriginPointerColumnAdded = false;
             if ($schema->isLanguageAware()
                 && !$this->isColumnDefinedForTable($tables, $tableName, $schema->getCapability(TcaSchemaCapability::Language)->getTranslationOriginPointerField()->getName())
             ) {
@@ -333,18 +330,6 @@ class DefaultTcaSchema
                         'unsigned' => true,
                     ]
                 );
-                $translationOriginPointerColumnAdded = true;
-            }
-
-            // Add index for sys_language_uid and l10n_parent
-            if ($languageColumnAdded
-                && $translationOriginPointerColumnAdded
-                && !$this->isIndexDefinedForTable($tables, $tableName, 'language_identifier')
-            ) {
-                $tables[$tableName]->addIndex([
-                    (string)$schema->getCapability(TcaSchemaCapability::Language)->getTranslationOriginPointerField()->getName(),
-                    (string)$schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName(),
-                ], 'language_identifier');
             }
 
             // l10n_source column
@@ -361,7 +346,34 @@ class DefaultTcaSchema
                         'unsigned' => true,
                     ]
                 );
-                $tables[$tableName]->addIndex([$schema->getCapability(TcaSchemaCapability::Language)->getTranslationSourceField()->getName()], 'translation_source');
+            }
+
+            // Indexes for the language related columns. They depend on the language capability only,
+            // not on whether the columns above have been added here: a table declaring for instance
+            // its own "sys_language_uid" column in ext_tables.sql must not silently lose the index.
+            if ($schema->isLanguageAware()) {
+                $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
+                if (!$this->isIndexDefinedForTable($tables, $tableName, 'language_identifier')) {
+                    $tables[$tableName]->addIndex([
+                        $languageCapability->getTranslationOriginPointerField()->getName(),
+                        $languageCapability->getLanguageField()->getName(),
+                    ], 'language_identifier');
+                }
+                // Translation lookups match "translationSource = uid" OR "translationSource = 0 AND
+                // transOrigPointer = uid", since the translation source is not maintained by all
+                // writes. Both branches must resolve on this single index: with an index on the
+                // translation source alone, MySQL reduces the condition to a range over
+                // "translationSource IN (0, uid)" - which covers every untranslated record - or
+                // discards the index and scans the table.
+                if ($languageCapability->hasTranslationSourceField()
+                    && !$this->isIndexDefinedForTable($tables, $tableName, 'translation_source')
+                ) {
+                    $tables[$tableName]->addIndex([
+                        $languageCapability->getTranslationSourceField()->getName(),
+                        $languageCapability->getTranslationOriginPointerField()->getName(),
+                        $languageCapability->getLanguageField()->getName(),
+                    ], 'translation_source');
+                }
             }
 
             // l10n_state column, this is not defined in TCA, but always added if the table is language-aware
