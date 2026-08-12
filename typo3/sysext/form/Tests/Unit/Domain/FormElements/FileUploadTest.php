@@ -39,7 +39,7 @@ final class FileUploadTest extends UnitTestCase
 
     private ExtbasePropertyMappingConfiguration&MockObject $extbasePropertyMappingConfiguration;
     private FileUpload&MockObject $fileUpload;
-    private FormDefinition&MockObject $rootForm;
+    private FormDefinition $rootForm;
     private ProcessingRule&MockObject $processingRule;
 
     public function setUp(): void
@@ -62,14 +62,8 @@ final class FileUploadTest extends UnitTestCase
             ->willReturn($this->extbasePropertyMappingConfiguration);
 
         // Root Form
-        $this->rootForm = $this->getMockBuilder(FormDefinition::class)
-            ->onlyMethods(['getProcessingRule', 'getPersistenceIdentifier', 'getIdentifier'])
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->rootForm
-            ->method('getProcessingRule')
-            ->willReturn($this->processingRule);
+        $this->rootForm = new FormDefinition('root');
+        GeneralUtility::addInstance(ProcessingRule::class, $this->processingRule);
 
         // File Upload
         $this->fileUpload = $this->getMockBuilder(FileUpload::class)
@@ -79,7 +73,7 @@ final class FileUploadTest extends UnitTestCase
 
         $this->fileUpload
             ->method('getRootForm')
-            ->willReturn($this->rootForm);
+            ->willReturnCallback(fn(): FormDefinition => $this->rootForm);
     }
 
     /**
@@ -150,9 +144,7 @@ final class FileUploadTest extends UnitTestCase
             ->method('getValidators')
             ->willReturn(new \SplObjectStorage());
 
-        $this->rootForm
-            ->method('getPersistenceIdentifier')
-            ->willReturn('/tmp/somefile');
+        $this->rootForm = new FormDefinition('root', [], 'Form', '/tmp/somefile');
 
         // Set the file mount
         $this->fileUpload
@@ -181,10 +173,6 @@ final class FileUploadTest extends UnitTestCase
         $this->processingRule
             ->method('getValidators')
             ->willReturn(new \SplObjectStorage());
-
-        $this->rootForm
-            ->method('getPersistenceIdentifier')
-            ->willReturn('');
 
         $this->fileUpload
             ->method('getProperties')
@@ -286,10 +274,6 @@ final class FileUploadTest extends UnitTestCase
             ->method('getValidators')
             ->willReturn(new \SplObjectStorage());
 
-        $this->rootForm
-            ->method('getPersistenceIdentifier')
-            ->willReturn('');
-
         $this->fileUpload
             ->method('getProperties')
             ->willReturn(['saveToFileMount' => '2:/secureUploads/']);
@@ -318,10 +302,6 @@ final class FileUploadTest extends UnitTestCase
         $this->processingRule
             ->method('getValidators')
             ->willReturn(new \SplObjectStorage());
-
-        $this->rootForm
-            ->method('getPersistenceIdentifier')
-            ->willReturn('');
 
         $this->fileUpload
             ->method('getProperties')

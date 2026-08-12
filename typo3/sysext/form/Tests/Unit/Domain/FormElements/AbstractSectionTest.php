@@ -51,7 +51,7 @@ final class AbstractSectionTest extends UnitTestCase
     #[Test]
     public function createElementThrowsExceptionIfTypeDefinitionNotFoundAndSkipUnknownElementsIsFalse(): void
     {
-        $rootForm = self::createStub(FormDefinition::class);
+        $rootForm = new FormDefinition('root');
         $this->expectException(TypeDefinitionNotFoundException::class);
         $this->expectExceptionCode(1382364019);
         $subject = new AbstractSectionFixture('identifier', '');
@@ -62,8 +62,8 @@ final class AbstractSectionTest extends UnitTestCase
     #[Test]
     public function createElementReturnsUnknownElementsIfTypeDefinitionIsNotFoundAndSkipUnknownElementsIsTrue(): void
     {
-        $rootForm = self::createStub(FormDefinition::class);
-        $rootForm->method('getRenderingOptions')->willReturn(['skipUnknownElements' => true]);
+        $rootForm = new FormDefinition('root');
+        $rootForm->setRenderingOption('skipUnknownElements', true);
         GeneralUtility::addInstance(UnknownFormElement::class, new UnknownFormElement('foo', 'bar'));
         $subject = new AbstractSectionFixture('testing', '');
         $subject->setParentRenderable($rootForm);
@@ -78,8 +78,12 @@ final class AbstractSectionTest extends UnitTestCase
     {
         $this->expectException(TypeDefinitionNotFoundException::class);
         $this->expectExceptionCode(1325689855);
-        $rootForm = self::createStub(FormDefinition::class);
-        $rootForm->method('getTypeDefinitions')->willReturn(['foobar' => []]);
+        $rootForm = new FormDefinition('root', [
+            'formElementsDefinition' => [
+                'Form' => [],
+                'foobar' => [],
+            ],
+        ]);
         $subject = new AbstractSectionFixture('testing', '');
         $subject->setParentRenderable($rootForm);
         $subject->createElement('id', 'foobar');
@@ -90,10 +94,12 @@ final class AbstractSectionTest extends UnitTestCase
     {
         $this->expectException(TypeDefinitionNotValidException::class);
         $this->expectExceptionCode(1327318156);
-        $rootForm = self::createStub(FormDefinition::class);
-        $rootForm->method('getTypeDefinitions')->willReturn([
-            'foobar' => [
-                'implementationClassName' => self::class,
+        $rootForm = new FormDefinition('root', [
+            'formElementsDefinition' => [
+                'Form' => [],
+                'foobar' => [
+                    'implementationClassName' => self::class,
+                ],
             ],
         ]);
         $subject = new AbstractSectionFixture('testing', '');
@@ -115,8 +121,12 @@ final class AbstractSectionTest extends UnitTestCase
         unset($typeDefinitionWithoutImplementationClassName['implementationClassName']);
         $implementationMock->expects($this->once())->method('initializeFormElement');
         $implementationMock->expects($this->once())->method('setOptions')->with($typeDefinitionWithoutImplementationClassName);
-        $rootForm = self::createStub(FormDefinition::class);
-        $rootForm->method('getTypeDefinitions')->willReturn(['foobar' => $typeDefinition]);
+        $rootForm = new FormDefinition('root', [
+            'formElementsDefinition' => [
+                'Form' => [],
+                'foobar' => $typeDefinition,
+            ],
+        ]);
         $subject = new AbstractSectionFixture('testing', '');
         $subject->setParentRenderable($rootForm);
         GeneralUtility::addInstance(get_class($implementationMock), $implementationMock);

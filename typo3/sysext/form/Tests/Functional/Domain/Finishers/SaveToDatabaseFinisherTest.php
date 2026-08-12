@@ -51,9 +51,7 @@ final class SaveToDatabaseFinisherTest extends FunctionalTestCase
         // write the row to the database.
         $formRuntime = self::createStub(FormRuntime::class);
         $formRuntime->method('getFormState')->willReturn(new FormState());
-        $formRuntime->method('getFormDefinition')->willReturn(
-            self::createStub(FormDefinition::class)
-        );
+        $formRuntime->method('getFormDefinition')->willReturn(new FormDefinition('form'));
         $formRuntime->method('getRenderingOptions')->willReturn([
             'translation' => ['translationFiles' => ['EXT:form/Resources/Private/Language/locallang.xlf']],
         ]);

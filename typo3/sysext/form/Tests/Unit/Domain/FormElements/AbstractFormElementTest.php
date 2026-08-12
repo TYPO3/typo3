@@ -135,18 +135,12 @@ final class AbstractFormElementTest extends UnitTestCase
     #[Test]
     public function getUniqueIdentifierExpectedUnique(): void
     {
-        $formDefinition1 = self::createStub(FormDefinition::class);
-        $formDefinition1
-            ->method('getIdentifier')
-            ->willReturn('c');
+        $formDefinition1 = new FormDefinition('c');
 
         $formElement1 = new TestingFormElement();
         $formElement1->setParentRenderable($formDefinition1);
 
-        $formDefinition2 = self::createStub(FormDefinition::class);
-        $formDefinition2
-            ->method('getIdentifier')
-            ->willReturn('d');
+        $formDefinition2 = new FormDefinition('d');
 
         $formElement2 = new TestingFormElement();
         $formElement2->setParentRenderable($formDefinition2);

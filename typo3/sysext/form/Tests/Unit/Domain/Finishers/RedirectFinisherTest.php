@@ -27,7 +27,7 @@ use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Form\Domain\Finishers\FinisherContext;
 use TYPO3\CMS\Form\Domain\Finishers\RedirectFinisher;
 use TYPO3\CMS\Form\Domain\Model\FormDefinition;
-use TYPO3\CMS\Form\Domain\Model\FormElements\FormElementInterface;
+use TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement;
 use TYPO3\CMS\Form\Domain\Model\FormElements\ProcessableValueFormElementInterface;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 use TYPO3\CMS\Form\Service\FormValueResolver;
@@ -153,27 +153,28 @@ final class RedirectFinisherTest extends UnitTestCase
         $submittedValues = ['topic' => '3', 'department' => 'sales'];
         $labels = ['topic' => 'Sales team', 'department' => 'Sales'];
 
-        $elementStubs = [];
+        $formDefinition = new FormDefinition('form');
         foreach ($labels as $identifier => $label) {
-            $elementStub = self::createStubForIntersectionOfInterfaces([
-                FormElementInterface::class,
-                ProcessableValueFormElementInterface::class,
-            ]);
-            $elementStub->method('processElementValue')->willReturn($label);
-            $elementStubs[$identifier] = $elementStub;
-        }
+            $element = new class ($identifier, '', $label) extends GenericFormElement implements ProcessableValueFormElementInterface {
+                public function __construct(string $identifier, string $type, private readonly string $displayValue)
+                {
+                    parent::__construct($identifier, $type);
+                }
 
-        $formDefinitionStub = self::createStub(FormDefinition::class);
-        $formDefinitionStub->method('getElementByIdentifier')->willReturnCallback(
-            static fn(string $identifier) => $elementStubs[$identifier] ?? null
-        );
+                public function processElementValue(mixed $value, FormRuntime $formRuntime): mixed
+                {
+                    return $this->displayValue;
+                }
+            };
+            $element->setParentRenderable($formDefinition);
+        }
 
         $formRuntimeStub = self::createStub(FormRuntime::class);
         $formRuntimeStub->method('offsetExists')->willReturn(true);
         $formRuntimeStub->method('offsetGet')->willReturnCallback(
             static fn(string $identifier) => $submittedValues[$identifier] ?? null
         );
-        $formRuntimeStub->method('getFormDefinition')->willReturn($formDefinitionStub);
+        $formRuntimeStub->method('getFormDefinition')->willReturn($formDefinition);
         return $formRuntimeStub;
     }
 }

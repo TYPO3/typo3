@@ -120,7 +120,9 @@ final class EmailFinisherTest extends FunctionalTestCase
             'recipients' => ['user@example.org' => 'John Doe'],
             'subject' => 'default subject',
         ]);
-        $subject->execute(new FinisherContext(self::createStub(FormRuntime::class), self::createStub(Request::class)));
+        $formRuntimeStub = self::createStub(FormRuntime::class);
+        $formRuntimeStub->method('getFormDefinition')->willReturn(new FormDefinition('form'));
+        $subject->execute(new FinisherContext($formRuntimeStub, self::createStub(Request::class)));
 
         self::assertInstanceOf(BeforeEmailFinisherInitializedEvent::class, $beforeEmailFinisherInitializedEvent);
         self::assertEquals([
