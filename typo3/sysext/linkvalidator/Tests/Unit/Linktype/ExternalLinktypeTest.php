@@ -49,7 +49,6 @@ final class ExternalLinktypeTest extends UnitTestCase
     {
         $response = new Response(404);
         $clientExceptionMock = $this->getMockBuilder(ClientException::class)->disableOriginalConstructor()->getMock();
-        $clientExceptionMock->expects($this->once())->method('hasResponse')->willReturn(true);
         $clientExceptionMock->expects($this->once())->method('getResponse')->willReturn($response);
 
         $url = 'https://example.org/~not-existing-url';
@@ -73,7 +72,6 @@ final class ExternalLinktypeTest extends UnitTestCase
     {
         $response = new Response(404);
         $clientExceptionMock = $this->getMockBuilder(ClientException::class)->disableOriginalConstructor()->getMock();
-        $clientExceptionMock->expects($this->once())->method('hasResponse')->willReturn(true);
         $clientExceptionMock->expects($this->once())->method('getResponse')->willReturn($response);
 
         $options = $this->getRequestHeaderOptions();

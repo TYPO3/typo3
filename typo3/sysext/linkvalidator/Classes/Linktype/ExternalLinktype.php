@@ -214,12 +214,8 @@ class ExternalLinktype extends AbstractLinktype
         } catch (ClientException|ServerException $e) {
             // ClientException - A GuzzleHttp\Exception\ClientException is thrown for 400 level errors if the http_errors request option is set to true.
             // ServerException - A GuzzleHttp\Exception\ServerException is thrown for 500 level errors if the http_errors request option is set to true.
-            if ($e->hasResponse()) {
-                $this->errorParams['errorType'] = self::ERROR_TYPE_HTTP_STATUS_CODE;
-                $this->errorParams['errno'] = $e->getResponse()->getStatusCode();
-            } else {
-                $this->errorParams['errorType'] = self::ERROR_TYPE_UNKNOWN;
-            }
+            $this->errorParams['errorType'] = self::ERROR_TYPE_HTTP_STATUS_CODE;
+            $this->errorParams['errno'] = $e->getResponse()->getStatusCode();
             $this->errorParams['exception'] = $e->getMessage();
             $this->errorParams['message'] = $this->getErrorMessage($this->errorParams);
         } catch (RequestException|ConnectException $e) {
@@ -228,10 +224,6 @@ class ExternalLinktype extends AbstractLinktype
             // ConnectException - A GuzzleHttp\Exception\ConnectException exception is thrown in the event of a networking error.
             $this->errorParams['errorType'] = self::ERROR_TYPE_LOWLEVEL_LIBCURL_ERRNO;
             $this->errorParams['exception'] = $e->getMessage();
-            $handlerContext = $e->getHandlerContext();
-            if ($handlerContext['errno'] ?? 0) {
-                $this->errorParams['errno'] = (int)($handlerContext['errno']);
-            }
             $this->errorParams['message'] = $this->getErrorMessage($this->errorParams);
         } catch (\Exception $e) {
             // Generic catch for anything else that may go wrong
