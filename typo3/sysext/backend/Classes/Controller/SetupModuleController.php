@@ -76,8 +76,6 @@ class SetupModuleController
     protected const PASSWORD_NOT_UPDATED = 0;
     protected const PASSWORD_UPDATED = 1;
     protected const PASSWORD_NOT_THE_SAME = 2;
-    // @todo: Can this constant be removed?
-    protected const PASSWORD_OLD_WRONG = 3;
     protected const PASSWORD_POLICY_FAILED = 4;
 
     protected array $overrideConf = [];
