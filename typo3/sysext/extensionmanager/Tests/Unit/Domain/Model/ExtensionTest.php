@@ -132,6 +132,18 @@ final class ExtensionTest extends UnitTestCase
     }
 
     #[Test]
+    public function createObjectFromRowMapsComposerName(): void
+    {
+        $extension = Extension::createObjectFromRow([
+            'uid' => 1,
+            'extension_key' => 'my_ext',
+            'composer_name' => 'vendor/my-ext',
+        ]);
+
+        self::assertSame('vendor/my-ext', $extension->composerName);
+    }
+
+    #[Test]
     public function derivesPackageIdentifierFromItsProperties(): void
     {
         $extension = new Extension();

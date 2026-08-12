@@ -14,7 +14,7 @@
             <lastuploaddate>1215424196</lastuploaddate>
             <uploadcomment>New news, extra extra. Read all about it.</uploadcomment>
             <dependencies>a:3:{i:0;a:3:{s:4:"kind";s:7:"depends";s:12:"extensionKey";s:5:"typo3";s:12:"versionRange";s:9:"4.1-0.0.0";}i:1;a:3:{s:4:"kind";s:7:"depends";s:12:"extensionKey";s:3:"php";s:12:"versionRange";s:9:"5.1-0.0.0";}i:2;a:3:{s:4:"kind";s:7:"depends";s:12:"extensionKey";s:3:"cms";s:12:"versionRange";s:0:"";}}</dependencies>
-            <composerinfo/>
+            <composerinfo>{"name":"georgringer/news"}</composerinfo>
             <authorname>Best Georg</authorname>
             <authoremail>support@example.com</authoremail>
             <authorcompany>The Georg Company</authorcompany>
@@ -35,7 +35,7 @@
             <lastuploaddate>1215424196</lastuploaddate>
             <uploadcomment>New news, extra extra. Read all about it.</uploadcomment>
             <dependencies>a:3:{i:0;a:3:{s:4:"kind";s:7:"depends";s:12:"extensionKey";s:5:"typo3";s:12:"versionRange";s:9:"4.1-0.0.0";}i:1;a:3:{s:4:"kind";s:7:"depends";s:12:"extensionKey";s:3:"php";s:12:"versionRange";s:9:"5.1-0.0.0";}i:2;a:3:{s:4:"kind";s:7:"depends";s:12:"extensionKey";s:3:"cms";s:12:"versionRange";s:0:"";}}</dependencies>
-            <composerinfo/>
+            <composerinfo>{"name":"georgringer/news"}</composerinfo>
             <authorname>Best Georg</authorname>
             <authoremail>support@example.com</authoremail>
             <authorcompany>The Georg Company</authorcompany>

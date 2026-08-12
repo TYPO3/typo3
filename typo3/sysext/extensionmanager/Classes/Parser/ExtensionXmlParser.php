@@ -48,6 +48,7 @@ class ExtensionXmlParser implements \SplSubject
     protected string $authoremail = '';
     protected string $authorname = '';
     protected string $category = '';
+    protected string $composerName = '';
     protected string $dependencies = '';
     protected string $description = '';
     protected int $extensionDownloadCounter = 0;
@@ -227,6 +228,10 @@ class ExtensionXmlParser implements \SplSubject
                     $this->distributionWelcomeImage = $this->elementData;
                 }
                 break;
+            case 'composerinfo':
+                $composerInfo = json_decode($this->elementData, true);
+                $this->composerName = is_array($composerInfo) ? ($composerInfo['name'] ?? '') : '';
+                break;
         }
     }
 
@@ -239,7 +244,7 @@ class ExtensionXmlParser implements \SplSubject
     {
         // Resetting at least class property "version" is mandatory as we need to do some magic in
         // regards to an extension's and version's child node "downloadcounter"
-        $this->version = $this->authorcompany = $this->authorname = $this->authoremail = $this->category = $this->dependencies = $this->state = '';
+        $this->version = $this->authorcompany = $this->authorname = $this->authoremail = $this->category = $this->composerName = $this->dependencies = $this->state = '';
         $this->description = $this->ownerusername = $this->t3xfilemd5 = $this->artifactSha256 = $this->title = $this->uploadcomment = $this->documentationLink = $this->distributionImage = $this->distributionWelcomeImage = '';
         $this->lastuploaddate = $this->reviewstate = $this->versionDownloadCounter = 0;
         if ($resetAll) {
@@ -332,6 +337,14 @@ class ExtensionXmlParser implements \SplSubject
     public function getCategory(): string
     {
         return $this->category;
+    }
+
+    /**
+     * Returns the composer package name of an extension's version.
+     */
+    public function getComposerName(): string
+    {
+        return $this->composerName;
     }
 
     /**

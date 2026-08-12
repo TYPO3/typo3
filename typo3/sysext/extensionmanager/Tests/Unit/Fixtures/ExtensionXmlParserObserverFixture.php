@@ -57,6 +57,7 @@ class ExtensionXmlParserObserverFixture implements \SplObserver
                 'documentationlink' => $subject->getDocumentationLink(),
                 'distributionimage' => $subject->getDistributionImage(),
                 'distributionwelcomeimage' => $subject->getDistributionWelcomeImage(),
+                'composername' => $subject->getComposerName(),
             ];
         }
     }

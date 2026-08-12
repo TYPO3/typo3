@@ -84,6 +84,7 @@ class BulkExtensionRepositoryWriter implements \SplObserver
         'documentation_link',
         'distribution_image',
         'distribution_welcome_image',
+        'composer_name',
     ];
 
     /**
@@ -245,6 +246,7 @@ class BulkExtensionRepositoryWriter implements \SplObserver
             $subject->getDocumentationLink() ?: '',
             $subject->getDistributionImage() ?: '',
             $subject->getDistributionWelcomeImage() ?: '',
+            $subject->getComposerName() ?: '',
         ];
         ++$this->sumRecords;
     }
