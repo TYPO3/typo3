@@ -69,9 +69,12 @@ final class ImportCommandTest extends AbstractImportExportTestCase
             ],
         ];
 
-        $importMock = $this->getAccessibleMock(Import::class, [
-            'setPid', 'setUpdate', 'setGlobalIgnorePid', 'setForceAllUids', 'setEnableLogging', 'loadFile', 'setImportMode',
-        ], [], '', false);
+        $importMock = $this->getMockBuilder(Import::class)
+            ->onlyMethods([
+                'setPid', 'setUpdate', 'setGlobalIgnorePid', 'setForceAllUids', 'setEnableLogging', 'loadFile', 'setImportMode',
+            ])
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $importMock->expects($this->once())->method('setPid')->with(self::equalTo(3));
         $importMock->expects($this->once())->method('setUpdate')->with(self::equalTo(false));

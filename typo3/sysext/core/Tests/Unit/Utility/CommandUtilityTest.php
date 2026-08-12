@@ -209,8 +209,7 @@ final class CommandUtilityTest extends UnitTestCase
     #[Test]
     public function getCommandWithPhpReturnsPathToPhpExecutable(): void
     {
-        $commandUtilityMock = $this->getAccessibleMock(CommandUtility::class, null);
-        $command = $commandUtilityMock->_call('getCommand', 'php');
+        $command = CommandUtility::getCommand('php');
 
         self::assertIsString($command);
         self::assertNotEmpty($command);

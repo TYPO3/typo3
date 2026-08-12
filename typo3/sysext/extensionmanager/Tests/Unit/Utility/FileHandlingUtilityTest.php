@@ -99,7 +99,7 @@ final class FileHandlingUtilityTest extends UnitTestCase
         $extDirPath = $this->testRoot . StringUtility::getUniqueId('test-extensions-');
         @mkdir($extDirPath);
         $subject = $this->getAccessibleMock(FileHandlingUtility::class, null, [], '', false);
-        $subject->_call('removeDirectory', $extDirPath);
+        $subject->removeDirectory($extDirPath);
         self::assertDirectoryDoesNotExist($extDirPath);
     }
 

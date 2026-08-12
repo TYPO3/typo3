@@ -327,7 +327,7 @@ final class JsonViewTest extends UnitTestCase
         $jsonView = $this->getAccessibleMock(JsonView::class, null, [], '', false);
         $jsonView->_set('configuration', $configuration);
         $jsonView->_set('variablesToRender', [$variableToRender]);
-        $jsonView->_call('assign', $variableToRender, $object);
+        $jsonView->assign($variableToRender, $object);
         $actual = $jsonView->_call('renderArray');
 
         self::assertSame($expected, $actual, $description);

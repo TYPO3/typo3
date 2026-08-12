@@ -37,15 +37,14 @@ final class FormDefinitionConversionServiceTest extends UnitTestCase
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '';
 
-        $richTextConfigurationServiceMock = $this->createMock(RichTextConfigurationService::class);
-        $formDefinitionConversionService = $this->getAccessibleMock(
-            FormDefinitionConversionService::class,
-            [
+        $richTextConfigurationServiceStub = self::createStub(RichTextConfigurationService::class);
+        $formDefinitionConversionService = $this->getMockBuilder(FormDefinitionConversionService::class)
+            ->onlyMethods([
                 'generateSessionToken',
                 'persistSessionToken',
-            ],
-            [$richTextConfigurationServiceMock]
-        );
+            ])
+            ->setConstructorArgs([$richTextConfigurationServiceStub])
+            ->getMock();
 
         $sessionToken = '123';
         $formDefinitionConversionService->method(

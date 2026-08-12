@@ -33,10 +33,15 @@ final class VimeoRendererTest extends UnitTestCase
     {
         parent::setUp();
 
-        $vimeoHelper = $this->getAccessibleMock(VimeoHelper::class, ['getOnlineMediaId'], ['vimeo']);
+        $vimeoHelper = $this->getMockBuilder(VimeoHelper::class)
+            ->onlyMethods(['getOnlineMediaId'])
+            ->setConstructorArgs(['vimeo'])
+            ->getMock();
         $vimeoHelper->method('getOnlineMediaId')->willReturn('7331');
 
-        $this->subject = $this->getAccessibleMock(VimeoRenderer::class, ['getOnlineMediaHelper', 'shouldIncludeFrameBorderAttribute']);
+        $this->subject = $this->getMockBuilder(VimeoRenderer::class)
+            ->onlyMethods(['getOnlineMediaHelper', 'shouldIncludeFrameBorderAttribute'])
+            ->getMock();
         $this->subject->method('shouldIncludeFrameBorderAttribute')->willReturn(false);
         $this->subject->method('getOnlineMediaHelper')->willReturn($vimeoHelper);
     }
@@ -187,10 +192,15 @@ final class VimeoRendererTest extends UnitTestCase
     #[Test]
     public function renderOutputWithPrivateVimeoCodeIsCorrect(): void
     {
-        $vimeoHelper = $this->getAccessibleMock(VimeoHelper::class, ['getOnlineMediaId'], ['vimeo']);
+        $vimeoHelper = $this->getMockBuilder(VimeoHelper::class)
+            ->onlyMethods(['getOnlineMediaId'])
+            ->setConstructorArgs(['vimeo'])
+            ->getMock();
         $vimeoHelper->method('getOnlineMediaId')->willReturn('7331/private0123');
 
-        $subject = $this->getAccessibleMock(VimeoRenderer::class, ['getOnlineMediaHelper', 'shouldIncludeFrameBorderAttribute']);
+        $subject = $this->getMockBuilder(VimeoRenderer::class)
+            ->onlyMethods(['getOnlineMediaHelper', 'shouldIncludeFrameBorderAttribute'])
+            ->getMock();
         $subject->method('shouldIncludeFrameBorderAttribute')->willReturn(false);
         $subject->method('getOnlineMediaHelper')->willReturn($vimeoHelper);
 
@@ -205,10 +215,15 @@ final class VimeoRendererTest extends UnitTestCase
     #[Test]
     public function renderOutputIsEscaped(): void
     {
-        $vimeoHelper = $this->getAccessibleMock(VimeoHelper::class, ['getOnlineMediaId'], ['vimeo']);
+        $vimeoHelper = $this->getMockBuilder(VimeoHelper::class)
+            ->onlyMethods(['getOnlineMediaId'])
+            ->setConstructorArgs(['vimeo'])
+            ->getMock();
         $vimeoHelper->method('getOnlineMediaId')->willReturn('7331<script>danger</script>\'"random"quotes;');
 
-        $subject = $this->getAccessibleMock(VimeoRenderer::class, ['getOnlineMediaHelper', 'shouldIncludeFrameBorderAttribute']);
+        $subject = $this->getMockBuilder(VimeoRenderer::class)
+            ->onlyMethods(['getOnlineMediaHelper', 'shouldIncludeFrameBorderAttribute'])
+            ->getMock();
         $subject->method('shouldIncludeFrameBorderAttribute')->willReturn(false);
         $subject->method('getOnlineMediaHelper')->willReturn($vimeoHelper);
 

@@ -238,8 +238,7 @@ final class EnableFileServiceTest extends FunctionalTestCase
         file_put_contents($publicPath . '/dadadaFIRST_INStall', '');
         $expected = scandir($publicPath);
         unset($expected[2], $expected[3], $expected[5]);
-        $subject = $this->getAccessibleMock(EnableFileService::class, null);
-        $subject->_call('removeFirstInstallFile');
+        EnableFileService::removeFirstInstallFile();
         self::assertEquals(array_values($expected), array_values(scandir($publicPath)));
     }
 
@@ -256,8 +255,7 @@ final class EnableFileServiceTest extends FunctionalTestCase
         file_put_contents($projectPath . '/FIRST_INStall', '');
         file_put_contents($projectPath . '/FIRST_INSTALL.txt', 'with content');
 
-        $subject = $this->getAccessibleMock(EnableFileService::class, null);
-        $subject->_call('removeFirstInstallFile');
+        EnableFileService::removeFirstInstallFile();
 
         // Verify files were removed from project path
         self::assertFileDoesNotExist($projectPath . '/FIRST_INSTALL');
@@ -279,8 +277,7 @@ final class EnableFileServiceTest extends FunctionalTestCase
         file_put_contents($projectPath . '/FIRST_INSTALL', '');
         file_put_contents($publicPath . '/FIRST_INStall', '');
 
-        $subject = $this->getAccessibleMock(EnableFileService::class, null);
-        $subject->_call('removeFirstInstallFile');
+        EnableFileService::removeFirstInstallFile();
 
         // Verify files were removed from both paths
         self::assertFileDoesNotExist($publicPath . '/FIRST_INSTALL');
@@ -303,8 +300,7 @@ final class EnableFileServiceTest extends FunctionalTestCase
         file_put_contents($publicPath . '/somethingelse', '');
         file_put_contents($publicPath . '/dadadaFIRST_INStall', '');
         $expected = scandir($publicPath);
-        $subject = $this->getAccessibleMock(EnableFileService::class, null);
-        $subject->_call('removeFirstInstallFile');
+        EnableFileService::removeFirstInstallFile();
         self::assertEquals(array_values($expected), array_values(scandir($publicPath)));
     }
 

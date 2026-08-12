@@ -160,9 +160,9 @@ final class AbstractFormElementTest extends UnitTestCase
     #[Test]
     public function setDefaultValueSetStringValueIfKeyDoesNotExists(): void
     {
-        $formDefinitionMock = $this->getAccessibleMock(FormDefinition::class, null, [], '', false);
+        $formDefinition = new FormDefinition('test-form');
         $formElement = new TestingFormElement();
-        $formElement->setParentRenderable($formDefinitionMock);
+        $formElement->setParentRenderable($formDefinition);
 
         $input = 'foo';
         $expected = 'foo';
@@ -175,9 +175,9 @@ final class AbstractFormElementTest extends UnitTestCase
     #[Test]
     public function setDefaultValueSetArrayValueIfKeyDoesNotExists(): void
     {
-        $formDefinitionMock = $this->getAccessibleMock(FormDefinition::class, null, [], '', false);
+        $formDefinition = new FormDefinition('test-form');
         $formElement = new TestingFormElement();
-        $formElement->setParentRenderable($formDefinitionMock);
+        $formElement->setParentRenderable($formDefinition);
 
         $input = ['foo' => 'bar'];
         $expected = ['foo' => 'bar'];
@@ -190,9 +190,9 @@ final class AbstractFormElementTest extends UnitTestCase
     #[Test]
     public function setDefaultValueUnsetIfValueIsArrayWithSomeNullVales(): void
     {
-        $formDefinitionMock = $this->getAccessibleMock(FormDefinition::class, null, [], '', false);
+        $formDefinition = new FormDefinition('test-form');
         $formElement = new TestingFormElement();
-        $formElement->setParentRenderable($formDefinitionMock);
+        $formElement->setParentRenderable($formDefinition);
 
         $input1 = [
             'foo-1' => [
@@ -228,9 +228,9 @@ final class AbstractFormElementTest extends UnitTestCase
     #[Test]
     public function setDefaultValueAddValueIfValueIsArray(): void
     {
-        $formDefinitionMock = $this->getAccessibleMock(FormDefinition::class, null, [], '', false);
+        $formDefinition = new FormDefinition('test-form');
         $formElement = new TestingFormElement();
-        $formElement->setParentRenderable($formDefinitionMock);
+        $formElement->setParentRenderable($formDefinition);
 
         $input1 = [
             'foo-1' => [

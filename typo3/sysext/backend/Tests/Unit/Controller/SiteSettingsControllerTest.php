@@ -28,8 +28,11 @@ final class SiteSettingsControllerTest extends UnitTestCase
     #[Test]
     public function resolveSettingLabelsResolvesEnumLabelsWithLanguageService(): void
     {
-        $subject = $this->getAccessibleMock(SiteSettingsController::class, ['getLanguageService'], [], '', false);
-        $languageService = $this->createMock(LanguageService::class);
+        $subject = $this->getMockBuilder(SiteSettingsController::class)
+            ->onlyMethods(['getLanguageService'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $languageService = self::createStub(LanguageService::class);
         $languageService
             ->method('sL')
             ->willReturnCallback(static fn(string $label): string => match ($label) {

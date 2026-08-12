@@ -36,7 +36,9 @@ final class DateTimeConverterTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->converter = $this->getAccessibleMock(DateTimeConverter::class, ['translateErrorMessage']);
+        $this->converter = $this->getMockBuilder(DateTimeConverter::class)
+            ->onlyMethods(['translateErrorMessage'])
+            ->getMock();
     }
 
     #[Test]

@@ -51,7 +51,10 @@ final class VimeoHelperTest extends UnitTestCase
             $expectedResult = $this->createMock(File::class);
         }
 
-        $subject = $this->getAccessibleMock(VimeoHelper::class, ['transformMediaIdToFile'], ['video/vimeo']);
+        $subject = $this->getMockBuilder(VimeoHelper::class)
+            ->onlyMethods(['transformMediaIdToFile'])
+            ->setConstructorArgs(['video/vimeo'])
+            ->getMock();
         $subject->method('transformMediaIdToFile')
             ->with($videoId, $mockedFolder, 'video/vimeo')
             ->willReturn($expectedResult);

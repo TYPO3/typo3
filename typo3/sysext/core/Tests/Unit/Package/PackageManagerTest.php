@@ -183,7 +183,7 @@ final class PackageManagerTest extends UnitTestCase
         $packageManager->_set('packageStatesPathAndFilename', $this->testRoot . 'Configuration/PackageStates.php');
 
         $packageManager->_set('packages', []);
-        $packageManager->_call('scanAvailablePackages');
+        $packageManager->scanAvailablePackages();
 
         $packageStates = require $this->testRoot . 'Configuration/PackageStates.php';
         $actualPackageKeys = array_keys($packageStates['packages']);
@@ -225,7 +225,7 @@ final class PackageManagerTest extends UnitTestCase
             ],
             'version' => 5,
         ]);
-        $packageManager->_call('scanAvailablePackages');
+        $packageManager->scanAvailablePackages();
         $packageManager->_call('sortAndSavePackageStates');
 
         $packageStates = require $this->testRoot . 'Configuration/PackageStates.php';
@@ -282,7 +282,7 @@ final class PackageManagerTest extends UnitTestCase
         $packageManager->_set('packageStatesPathAndFilename', $this->testRoot . 'Configuration/PackageStates.php');
 
         $packageManager->_set('packages', []);
-        $packageManager->_call('scanAvailablePackages');
+        $packageManager->scanAvailablePackages();
 
         $expectedPackageStatesConfiguration = [];
         foreach ($packageKeys as $packageKey) {

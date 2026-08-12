@@ -430,16 +430,15 @@ final class RichtextTest extends FunctionalTestCase
             ],
         ];
         $this->primeRtePageTsConfigCache($pageId, $pageTsConfigArray);
-        $subject = $this->getAccessibleMock(
-            Richtext::class,
-            ['loadConfigurationFromPreset'],
-            [
+        $subject = $this->getMockBuilder(Richtext::class)
+            ->onlyMethods(['loadConfigurationFromPreset'])
+            ->setConstructorArgs([
                 $this->get(EventDispatcherInterface::class),
                 $this->get('cache.runtime'),
                 $this->get(YamlFileLoader::class),
                 $this->get(TypoScriptService::class),
-            ]
-        );
+            ])
+            ->getMock();
         $subject->expects($this->once())->method('loadConfigurationFromPreset')->with($presetKey)->willReturn($preset);
         $expected = [
             'editor' => [

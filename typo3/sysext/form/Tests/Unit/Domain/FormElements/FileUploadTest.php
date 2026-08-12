@@ -70,7 +70,10 @@ final class FileUploadTest extends UnitTestCase
             ->willReturn($this->processingRule);
 
         // File Upload
-        $this->fileUpload = $this->getAccessibleMock(FileUpload::class, ['getRootForm', 'getProperties'], ['foo', 'FileUpload']);
+        $this->fileUpload = $this->getMockBuilder(FileUpload::class)
+            ->onlyMethods(['getRootForm', 'getProperties'])
+            ->setConstructorArgs(['foo', 'FileUpload'])
+            ->getMock();
 
         $this->fileUpload
             ->method('getRootForm')

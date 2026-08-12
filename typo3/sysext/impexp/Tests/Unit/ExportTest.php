@@ -17,6 +17,12 @@ namespace TYPO3\CMS\Impexp\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Configuration\SiteConfiguration;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\ReferenceIndex;
+use TYPO3\CMS\Core\Information\Typo3Version;
+use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Impexp\Export;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -36,38 +42,38 @@ final class ExportTest extends UnitTestCase
     #[Test]
     public function setExportFileNameSanitizesFileName(string $fileName, string $expected): void
     {
-        $exportMock = $this->getAccessibleMock(Export::class, null, [], '', false);
-        $exportMock->setExportFileName($fileName);
-        $actual = $exportMock->getExportFileName();
+        $subject = $this->createSubject();
+        $subject->setExportFileName($fileName);
+        $actual = $subject->getExportFileName();
         self::assertEquals($expected, $actual);
     }
 
     #[Test]
     public function getOrGenerateExportFileNameWithFileExtensionConsidersPidAndLevels(): void
     {
-        $exportMock = $this->getAccessibleMock(Export::class, null, [], '', false);
-        $exportMock->setPid(1);
-        $exportMock->setLevels(2);
+        $subject = $this->createSubject();
+        $subject->setPid(1);
+        $subject->setLevels(2);
         $patternDateTime = '[0-9-_]{16}';
-        self::assertMatchesRegularExpression("/T3D_tree_PID1_L2_$patternDateTime.xml/", $exportMock->getOrGenerateExportFileNameWithFileExtension());
+        self::assertMatchesRegularExpression("/T3D_tree_PID1_L2_$patternDateTime.xml/", $subject->getOrGenerateExportFileNameWithFileExtension());
     }
 
     #[Test]
     public function getOrGenerateExportFileNameWithFileExtensionConsidersRecords(): void
     {
-        $exportMock = $this->getAccessibleMock(Export::class, null, [], '', false);
-        $exportMock->setRecord(['page:1', 'tt_content:1']);
+        $subject = $this->createSubject();
+        $subject->setRecord(['page:1', 'tt_content:1']);
         $patternDateTime = '[0-9-_]{16}';
-        self::assertMatchesRegularExpression("/T3D_recs_page_1-tt_conte_$patternDateTime.xml/", $exportMock->getOrGenerateExportFileNameWithFileExtension());
+        self::assertMatchesRegularExpression("/T3D_recs_page_1-tt_conte_$patternDateTime.xml/", $subject->getOrGenerateExportFileNameWithFileExtension());
     }
 
     #[Test]
     public function getOrGenerateExportFileNameWithFileExtensionConsidersLists(): void
     {
-        $exportMock = $this->getAccessibleMock(Export::class, null, [], '', false);
-        $exportMock->setList(['sys_news:0', 'news:12']);
+        $subject = $this->createSubject();
+        $subject->setList(['sys_news:0', 'news:12']);
         $patternDateTime = '[0-9-_]{16}';
-        self::assertMatchesRegularExpression("/T3D_list_sys_news_0-news_$patternDateTime.xml/", $exportMock->getOrGenerateExportFileNameWithFileExtension());
+        self::assertMatchesRegularExpression("/T3D_list_sys_news_0-news_$patternDateTime.xml/", $subject->getOrGenerateExportFileNameWithFileExtension());
     }
 
     public static function setExportFileTypeSucceedsWithSupportedFileTypeProvider(): array
@@ -83,17 +89,28 @@ final class ExportTest extends UnitTestCase
     #[Test]
     public function setExportFileTypeSucceedsWithSupportedFileType(string $fileType): void
     {
-        $exportMock = $this->getAccessibleMock(Export::class, null, [], '', false);
-        $exportMock->setExportFileType($fileType);
-        self::assertEquals($fileType, $exportMock->getExportFileType());
+        $subject = $this->createSubject();
+        $subject->setExportFileType($fileType);
+        self::assertEquals($fileType, $subject->getExportFileType());
     }
 
     #[Test]
     public function setExportFileTypeFailsWithUnsupportedFileType(): void
     {
         $this->expectException(\Exception::class);
-        $exportMock = $this->getAccessibleMock(Export::class, null, [], '', false);
-        $exportMock->setExportFileType('json');
+        $subject = $this->createSubject();
+        $subject->setExportFileType('json');
     }
 
+    private function createSubject(): Export
+    {
+        return new Export(
+            self::createStub(ConnectionPool::class),
+            self::createStub(Locales::class),
+            new Typo3Version(),
+            self::createStub(ReferenceIndex::class),
+            self::createStub(SiteConfiguration::class),
+            new Context(),
+        );
+    }
 }
