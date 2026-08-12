@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extensionmanager\Tests\Functional\Domain\Repository;
 
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Extensionmanager\Domain\ExtensionCatalogueInterface;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Extensionmanager\Domain\Model\PackageIdentifier;
@@ -153,6 +154,31 @@ final class ExtensionRepositoryTest extends FunctionalTestCase
         self::assertSame(4, $this->get(ExtensionRepository::class)->countByTitleOrAuthorNameOrExtensionKey('news'));
     }
 
+    #[Test]
+    public function findByExtensionKeyOrderedByVersionResolvesComposerName(): void
+    {
+        $this->createRemoteExtensionRecord('content_blocks', '5.0.0', ['composer_name' => 'friendsoftypo3/content-blocks']);
+
+        $extensions = $this->get(ExtensionRepository::class)
+            ->findByExtensionKeyOrderedByVersion('friendsoftypo3/content-blocks');
+
+        self::assertCount(1, $extensions);
+        self::assertSame('content_blocks', $extensions[0]->extensionKey);
+        self::assertSame('friendsoftypo3/content-blocks', $extensions[0]->composerName);
+    }
+
+    #[Test]
+    public function findByVersionRangeAndExtensionKeyOrderedByVersionResolvesComposerName(): void
+    {
+        $this->createRemoteExtensionRecord('content_blocks', '5.0.0', ['composer_name' => 'friendsoftypo3/content-blocks']);
+
+        $extensions = $this->get(ExtensionRepository::class)
+            ->findByVersionRangeAndExtensionKeyOrderedByVersion('friendsoftypo3/content-blocks', 5000000, 5000000);
+
+        self::assertCount(1, $extensions);
+        self::assertSame('content_blocks', $extensions[0]->extensionKey);
+    }
+
     /**
      * @param Extension[] $extensions
      * @return string[]
@@ -176,6 +202,7 @@ final class ExtensionRepositoryTest extends FunctionalTestCase
                         'extension_key' => $extensionKey,
                         'remote' => 'ter',
                         'version' => $version,
+                        'integer_version' => VersionNumberUtility::convertVersionNumberToInteger($version),
                         'title' => $extensionKey,
                         'description' => '',
                         'author_name' => '',

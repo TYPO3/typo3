@@ -93,7 +93,10 @@ readonly class ExtensionRepository implements ExtensionCatalogueInterface
         $result = $queryBuilder->select('*')
             ->from(self::TABLE_NAME)
             ->where(
-                $queryBuilder->expr()->eq('extension_key', $queryBuilder->createNamedParameter($extensionKey, Connection::PARAM_STR)),
+                $queryBuilder->expr()->or(
+                    $queryBuilder->expr()->eq('extension_key', $queryBuilder->createNamedParameter($extensionKey, Connection::PARAM_STR)),
+                    $queryBuilder->expr()->eq('composer_name', $queryBuilder->createNamedParameter($extensionKey, Connection::PARAM_STR)),
+                ),
                 $queryBuilder->expr()->gte('review_state', 0),
             )
             ->orderBy('integer_version', 'DESC')
@@ -298,7 +301,10 @@ readonly class ExtensionRepository implements ExtensionCatalogueInterface
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable(self::TABLE_NAME);
         $queryBuilder->select('*')->from(self::TABLE_NAME);
         $constraints = [
-            $queryBuilder->expr()->eq('extension_key', $queryBuilder->createNamedParameter($extensionKey, Connection::PARAM_STR)),
+            $queryBuilder->expr()->or(
+                $queryBuilder->expr()->eq('extension_key', $queryBuilder->createNamedParameter($extensionKey, Connection::PARAM_STR)),
+                $queryBuilder->expr()->eq('composer_name', $queryBuilder->createNamedParameter($extensionKey, Connection::PARAM_STR)),
+            ),
         ];
         if ($lowestVersion !== 0 && $highestVersion !== 0) {
             $constraints[] = $queryBuilder->expr()->lte('integer_version', $queryBuilder->createNamedParameter($highestVersion, Connection::PARAM_INT));
