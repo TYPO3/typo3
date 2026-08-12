@@ -20,11 +20,14 @@ namespace TYPO3\CMS\Core\Context;
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Exception\AspectPropertyNotFoundException;
-use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 
 /**
  * The aspect contains information about a user.
  * Can be used for frontend and backend users.
+ *
+ * The aspect is an immutable snapshot: all information is captured when the
+ * aspect is created. Code changing the state of a user object needs to set
+ * a newly created aspect afterwards to make the change visible.
  *
  * Allowed properties:
  * - id
@@ -36,14 +39,48 @@ use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
  */
 final readonly class UserAspect implements AspectInterface
 {
+    private int $id;
+    private string $username;
+    private bool $isAdmin;
+    private bool $isFrontendUser;
+    private array $groupIds;
+    private array $groupNames;
+
     /**
-     * @param AbstractUserAuthentication|null $user
      * @param array|null $alternativeGroups Alternative list of groups, usually useful for frontend logins with "magic" groups like "-1" and "-2"
      */
-    public function __construct(
-        private ?AbstractUserAuthentication $user = null,
-        private ?array $alternativeGroups = null
-    ) {}
+    public function __construct(?AbstractUserAuthentication $user = null, ?array $alternativeGroups = null)
+    {
+        $this->id = (int)($user?->user[$user->userid_column] ?? 0);
+        $this->username = (string)($user?->user[$user->username_column] ?? '');
+        $this->isAdmin = $user instanceof BackendUserAuthentication && $user->isAdmin();
+        $this->isFrontendUser = $user !== null && $user->loginType === 'FE';
+        if (is_array($alternativeGroups)) {
+            $this->groupIds = $alternativeGroups;
+        } elseif ($user instanceof BackendUserAuthentication) {
+            $this->groupIds = $user->userGroupsUID;
+        } elseif ($this->isFrontendUser) {
+            if ($this->id > 0) {
+                // If a user is logged in, always add "-2"
+                $groups = [0, -2];
+                if (!empty($user->userGroups)) {
+                    $groups = array_merge($groups, array_keys($user->userGroups));
+                }
+                $this->groupIds = $groups;
+            } else {
+                $this->groupIds = [0, -1];
+            }
+        } else {
+            $this->groupIds = [];
+        }
+        $groupNames = [];
+        if ($user !== null) {
+            foreach ($user->userGroups as $userGroup) {
+                $groupNames[] = $userGroup['title'] ?? '';
+            }
+        }
+        $this->groupNames = $groupNames;
+    }
 
     /**
      * Fetch common information about the user
@@ -54,9 +91,9 @@ final readonly class UserAspect implements AspectInterface
     {
         switch ($name) {
             case 'id':
-                return (int)($this->user?->user[$this->user->userid_column] ?? 0);
+                return $this->id;
             case 'username':
-                return (string)($this->user?->user[$this->user->username_column] ?? '');
+                return $this->username;
             case 'isLoggedIn':
                 return $this->isLoggedIn();
             case 'isAdmin':
@@ -78,7 +115,7 @@ final readonly class UserAspect implements AspectInterface
      */
     public function isLoggedIn(): bool
     {
-        return ($this->user?->user[$this->user->userid_column] ?? 0) > 0;
+        return $this->id > 0;
     }
 
     /**
@@ -86,11 +123,8 @@ final readonly class UserAspect implements AspectInterface
      */
     public function isAdmin(): bool
     {
-        if ($this->user instanceof BackendUserAuthentication) {
-            // Only backend users have the admin flag at all.
-            return $this->user->isAdmin();
-        }
-        return false;
+        // Only backend users have the admin flag at all.
+        return $this->isAdmin;
     }
 
     /**
@@ -102,26 +136,7 @@ final readonly class UserAspect implements AspectInterface
      */
     public function getGroupIds(): array
     {
-        // Alternative groups are set
-        if (is_array($this->alternativeGroups)) {
-            return $this->alternativeGroups;
-        }
-        if ($this->user instanceof BackendUserAuthentication) {
-            return $this->user->userGroupsUID;
-        }
-        $groups = [];
-        if ($this->user instanceof FrontendUserAuthentication) {
-            if ($this->isLoggedIn()) {
-                // If a user is logged in, always add "-2"
-                $groups = [0, -2];
-                if (!empty($this->user->userGroups)) {
-                    $groups = array_merge($groups, array_keys($this->user->userGroups));
-                }
-            } else {
-                $groups = [0, -1];
-            }
-        }
-        return $groups;
+        return $this->groupIds;
     }
 
     /**
@@ -129,13 +144,7 @@ final readonly class UserAspect implements AspectInterface
      */
     public function getGroupNames(): array
     {
-        $groupNames = [];
-        if ($this->user instanceof AbstractUserAuthentication) {
-            foreach ($this->user->userGroups as $userGroup) {
-                $groupNames[] = $userGroup['title'];
-            }
-        }
-        return $groupNames;
+        return $this->groupNames;
     }
 
     /**
@@ -145,9 +154,8 @@ final readonly class UserAspect implements AspectInterface
      */
     public function isUserOrGroupSet(): bool
     {
-        if ($this->user instanceof FrontendUserAuthentication) {
-            $groups = $this->getGroupIds();
-            return $this->isLoggedIn() || implode(',', $groups) !== '0,-1';
+        if ($this->isFrontendUser) {
+            return $this->isLoggedIn() || implode(',', $this->groupIds) !== '0,-1';
         }
         return $this->isLoggedIn();
     }

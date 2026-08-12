@@ -22,6 +22,8 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\Event\AfterUserLoggedInEvent;
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -1859,6 +1861,9 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         // The groups are fetched and ready for permission checking in this initialization.
         // Tables.php must be read before this because stuff like the modules has impact in this
         $this->fetchGroupData();
+        // Refresh the user aspect snapshot now that the group data is resolved, as user
+        // TSconfig conditions evaluated during the UC initialization below rely on it.
+        GeneralUtility::makeInstance(Context::class)->setAspect('backend.user', new UserAspect($this));
         // Setting the UC array. It's needed with fetchGroupData first, due to default/overriding of values.
         $this->backendSetUC();
         if ($this->loginSessionStarted && !($this->getSessionData('mfa') ?? false)) {
