@@ -23,68 +23,15 @@ use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
  * Represents a mode for CodeMirror
  * @internal
  */
-class Mode
+final readonly class Mode
 {
-    protected JavaScriptModuleInstruction $module;
-
     /**
-     * @var string
+     * @param string[] $fileExtensions File extensions this mode is bound to
      */
-    protected $formatCode = '';
-
-    /**
-     * @var array
-     */
-    protected $fileExtensions = [];
-
-    /**
-     * @var bool
-     */
-    protected $isDefault = false;
-
-    public function __construct(JavaScriptModuleInstruction $module)
-    {
-        $this->module = $module;
-    }
-
-    public function getModule(): JavaScriptModuleInstruction
-    {
-        return $this->module;
-    }
-
-    public function getFormatCode(): string
-    {
-        return $this->formatCode;
-    }
-
-    public function setFormatCode(string $formatCode): Mode
-    {
-        $this->formatCode = $formatCode;
-
-        return $this;
-    }
-
-    public function bindToFileExtensions(array $fileExtensions): Mode
-    {
-        $this->fileExtensions = $fileExtensions;
-
-        return $this;
-    }
-
-    public function getBoundFileExtensions(): array
-    {
-        return $this->fileExtensions;
-    }
-
-    public function setAsDefault(): Mode
-    {
-        $this->isDefault = true;
-
-        return $this;
-    }
-
-    public function isDefault(): bool
-    {
-        return $this->isDefault;
-    }
+    public function __construct(
+        public JavaScriptModuleInstruction $module,
+        public string $formatCode = '',
+        public array $fileExtensions = [],
+        public bool $isDefault = false,
+    ) {}
 }

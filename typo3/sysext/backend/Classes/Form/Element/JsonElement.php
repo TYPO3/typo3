@@ -17,9 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Form\Element;
 
-use TYPO3\CMS\Backend\CodeEditor\CodeEditor;
-use TYPO3\CMS\Backend\CodeEditor\Registry\AddonRegistry;
-use TYPO3\CMS\Backend\CodeEditor\Registry\ModeRegistry;
+use TYPO3\CMS\Backend\CodeEditor\CodeEditorConfiguration;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -54,6 +52,10 @@ class JsonElement extends AbstractFormElement
             ],
         ],
     ];
+
+    public function __construct(
+        private readonly CodeEditorConfiguration $codeEditorConfiguration,
+    ) {}
 
     public function render(): array
     {
@@ -135,29 +137,25 @@ class JsonElement extends AbstractFormElement
 
         // Use CodeMirror if available
         if ($enableCodeEditor) {
-            // Compile and register code editor configuration
-            GeneralUtility::makeInstance(CodeEditor::class)->registerConfiguration();
-
-            $modeRegistry = GeneralUtility::makeInstance(ModeRegistry::class);
-            $mode = $modeRegistry->isRegistered('json')
-                ? $modeRegistry->getByFormatCode('json')
-                : $modeRegistry->getDefaultMode();
+            $mode = $this->codeEditorConfiguration->hasMode('json')
+                ? $this->codeEditorConfiguration->getModeByFormatCode('json')
+                : $this->codeEditorConfiguration->getDefaultMode();
 
             $addons = $keymaps = [];
-            foreach (GeneralUtility::makeInstance(AddonRegistry::class)->getAddons() as $addon) {
-                foreach ($addon->getCssFiles() as $cssFile) {
+            foreach ($this->codeEditorConfiguration->getAddons() as $addon) {
+                foreach ($addon->cssFiles as $cssFile) {
                     $resultArray['stylesheetFiles'][] = $cssFile;
                 }
-                if (($module = $addon->getModule())) {
-                    $addons[] = $module;
+                if ($addon->module !== null) {
+                    $addons[] = $addon->module;
                 }
-                if (($keymap = $addon->getKeymap())) {
-                    $keymaps[] = $keymap;
+                if ($addon->keymap !== null) {
+                    $keymaps[] = $addon->keymap;
                 }
             }
 
             $codeMirrorConfig = [
-                'mode' => GeneralUtility::jsonEncodeForHtmlAttribute($mode->getModule(), false),
+                'mode' => GeneralUtility::jsonEncodeForHtmlAttribute($mode->module, false),
             ];
 
             if ($readOnly) {

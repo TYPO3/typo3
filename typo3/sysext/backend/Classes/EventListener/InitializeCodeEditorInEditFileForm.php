@@ -17,11 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\EventListener;
 
-use TYPO3\CMS\Backend\CodeEditor\CodeEditor;
+use TYPO3\CMS\Backend\CodeEditor\CodeEditorConfiguration;
 use TYPO3\CMS\Backend\CodeEditor\Exception\InvalidModeException;
-use TYPO3\CMS\Backend\CodeEditor\Registry\ModeRegistry;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Filelist\Event\ModifyEditFileFormDataEvent;
 
 /**
@@ -30,25 +28,22 @@ use TYPO3\CMS\Filelist\Event\ModifyEditFileFormDataEvent;
  */
 final readonly class InitializeCodeEditorInEditFileForm
 {
-    public function __construct(private ModeRegistry $modeRegistry) {}
+    public function __construct(private CodeEditorConfiguration $codeEditorConfiguration) {}
 
     #[AsEventListener('typo3-codeeditor/initialize-code-editor-in-edit-file-form')]
     public function __invoke(ModifyEditFileFormDataEvent $event): void
     {
-        // Compile and register code editor configuration
-        GeneralUtility::makeInstance(CodeEditor::class)->registerConfiguration();
-
         $fileExtension = $event->getFile()->getExtension();
 
         try {
-            $mode = $this->modeRegistry->getByFileExtension($fileExtension);
-        } catch (InvalidModeException $e) {
-            $mode = $this->modeRegistry->getDefaultMode();
+            $mode = $this->codeEditorConfiguration->getModeByFileExtension($fileExtension);
+        } catch (InvalidModeException) {
+            $mode = $this->codeEditorConfiguration->getDefaultMode();
         }
 
         $formData = $event->getFormData();
         $formData['processedTca']['columns']['data']['config']['renderType'] = 'codeEditor';
-        $formData['processedTca']['columns']['data']['config']['format'] = $mode->getFormatCode();
+        $formData['processedTca']['columns']['data']['config']['format'] = $mode->formatCode;
         $event->setFormData($formData);
     }
 }

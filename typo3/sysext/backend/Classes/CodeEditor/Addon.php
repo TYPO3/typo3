@@ -23,75 +23,16 @@ use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
  * Represents an addon for CodeMirror
  * @internal
  */
-class Addon
+final readonly class Addon
 {
-    protected string $identifier;
-
-    protected ?JavaScriptModuleInstruction $module = null;
-
-    protected ?JavaScriptModuleInstruction $keymap = null;
-
     /**
-     * @var array
+     * @param string[] $cssFiles
      */
-    protected $modes = [];
-
-    /**
-     * @var array
-     */
-    protected $options = [];
-
-    /**
-     * @var array
-     */
-    protected $cssFiles = [];
-
     public function __construct(
-        string $identifier,
-        ?JavaScriptModuleInstruction $module = null,
-        ?JavaScriptModuleInstruction $keymap = null
-    ) {
-        $this->identifier = $identifier;
-        $this->module = $module;
-        $this->keymap = $keymap;
-    }
-
-    public function getIdentifier(): string
-    {
-        return $this->identifier;
-    }
-
-    public function getModule(): ?JavaScriptModuleInstruction
-    {
-        return $this->module;
-    }
-
-    public function getKeymap(): ?JavaScriptModuleInstruction
-    {
-        return $this->keymap;
-    }
-
-    public function setOptions(array $options): Addon
-    {
-        $this->options = $options;
-
-        return $this;
-    }
-
-    public function getOptions(): array
-    {
-        return $this->options;
-    }
-
-    public function setCssFiles(array $cssFiles): Addon
-    {
-        $this->cssFiles = $cssFiles;
-
-        return $this;
-    }
-
-    public function getCssFiles(): array
-    {
-        return $this->cssFiles;
-    }
+        public string $identifier,
+        public ?JavaScriptModuleInstruction $module = null,
+        public ?JavaScriptModuleInstruction $keymap = null,
+        public array $options = [],
+        public array $cssFiles = [],
+    ) {}
 }

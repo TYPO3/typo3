@@ -18,23 +18,17 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\Element;
 
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Backend\CodeEditor\CodeEditorConfiguration;
 use TYPO3\CMS\Backend\CodeEditor\Mode;
-use TYPO3\CMS\Backend\CodeEditor\Registry\ModeRegistry;
 use TYPO3\CMS\Backend\Form\Element\JsonElement;
 use TYPO3\CMS\Backend\Form\NodeExpansion\FieldInformation;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
-use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class JsonElementTest extends UnitTestCase
 {
-    protected bool $resetSingletonInstances = true;
-
     protected function setUp(): void
     {
         parent::setUp();
@@ -64,7 +58,7 @@ final class JsonElementTest extends UnitTestCase
         $fieldInformationStub->method('render')->willReturn(['html' => '']);
         $nodeFactoryStub->method('create')->willReturn($fieldInformationStub);
 
-        $subject = new JsonElement();
+        $subject = new JsonElement(self::createStub(CodeEditorConfiguration::class));
         $subject->injectNodeFactory($nodeFactoryStub);
         $subject->setData($data);
         $result = $subject->render();
@@ -94,24 +88,15 @@ final class JsonElementTest extends UnitTestCase
             ],
         ];
 
-        GeneralUtility::setSingletonInstance(PackageManager::class, self::createStub(PackageManager::class));
-
-        $cacheManagerMock = $this->createMock(CacheManager::class);
-        $cacheStub = self::createStub(FrontendInterface::class);
-        $cacheManagerMock->method('getCache')->with('assets')->willReturn($cacheStub);
-        $cacheStub->method('get')->willReturn([]);
-        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerMock);
-
-        $modeRegistryStub = self::createStub(ModeRegistry::class);
-        $modeRegistryStub->method('getDefaultMode')->willReturn(new Mode(JavaScriptModuleInstruction::create('foo')));
-        GeneralUtility::setSingletonInstance(ModeRegistry::class, $modeRegistryStub);
+        $codeEditorConfigurationStub = self::createStub(CodeEditorConfiguration::class);
+        $codeEditorConfigurationStub->method('getDefaultMode')->willReturn(new Mode(JavaScriptModuleInstruction::create('foo')));
 
         $nodeFactoryStub = self::createStub(NodeFactory::class);
         $fieldInformationStub = self::createStub(FieldInformation::class);
         $fieldInformationStub->method('render')->willReturn(['html' => '']);
         $nodeFactoryStub->method('create')->willReturn($fieldInformationStub);
 
-        $subject = new JsonElement();
+        $subject = new JsonElement($codeEditorConfigurationStub);
         $subject->injectNodeFactory($nodeFactoryStub);
         $subject->setData($data);
         $result = $subject->render();

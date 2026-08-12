@@ -17,11 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Form\Element;
 
-use TYPO3\CMS\Backend\CodeEditor\CodeEditor;
+use TYPO3\CMS\Backend\CodeEditor\CodeEditorConfiguration;
 use TYPO3\CMS\Backend\CodeEditor\Exception\InvalidModeException;
 use TYPO3\CMS\Backend\CodeEditor\Mode;
-use TYPO3\CMS\Backend\CodeEditor\Registry\AddonRegistry;
-use TYPO3\CMS\Backend\CodeEditor\Registry\ModeRegistry;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -58,6 +56,10 @@ class CodeEditorElement extends AbstractFormElement
         ],
     ];
 
+    public function __construct(
+        private readonly CodeEditorConfiguration $codeEditorConfiguration,
+    ) {}
+
     /**
      * Render code editor element
      *
@@ -71,13 +73,8 @@ class CodeEditorElement extends AbstractFormElement
         $this->resultArray = $this->initializeResultArray();
         $this->resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create('@typo3/backend/code-editor/element/code-mirror-element.js');
 
-        // Compile and register code editor configuration
-        GeneralUtility::makeInstance(CodeEditor::class)->registerConfiguration();
-
-        $addonRegistry = GeneralUtility::makeInstance(AddonRegistry::class);
-        $registeredAddons = $addonRegistry->getAddons();
-        foreach ($registeredAddons as $addon) {
-            foreach ($addon->getCssFiles() as $cssFile) {
+        foreach ($this->codeEditorConfiguration->getAddons() as $addon) {
+            foreach ($addon->cssFiles as $cssFile) {
                 $this->resultArray['stylesheetFiles'][] = $cssFile;
             }
         }
@@ -174,30 +171,27 @@ class CodeEditorElement extends AbstractFormElement
     ): string {
         $code = [];
         $mode = $this->getMode();
-        $addonRegistry = GeneralUtility::makeInstance(AddonRegistry::class);
-        $registeredAddons = $addonRegistry->getAddons();
+        $registeredAddons = $this->codeEditorConfiguration->getAddons();
 
         $attributes['class'] = $class;
         $attributes['id'] = 't3editor_' . md5($name);
         $attributes['name'] = $name;
 
-        $settings = array_merge($addonRegistry->compileSettings($registeredAddons), $settings);
+        $settings = array_merge($this->codeEditorConfiguration->getAddonSettings(), $settings);
 
         $addons = [];
         $keymaps = [];
         foreach ($registeredAddons as $addon) {
-            $module = $addon->getModule();
-            $keymap = $addon->getKeymap();
-            if ($module) {
-                $addons[] = $module;
+            if ($addon->module !== null) {
+                $addons[] = $addon->module;
             }
-            if ($keymap) {
-                $keymaps[] = $keymap;
+            if ($addon->keymap !== null) {
+                $keymaps[] = $addon->keymap;
             }
         }
         $codeMirrorConfig = array_merge($settings, [
             'name' => $name,
-            'mode' => GeneralUtility::jsonEncodeForHtmlAttribute($mode->getModule(), false),
+            'mode' => GeneralUtility::jsonEncodeForHtmlAttribute($mode->module, false),
             'addons' => GeneralUtility::jsonEncodeForHtmlAttribute($addons, false),
             'keymaps' => GeneralUtility::jsonEncodeForHtmlAttribute($keymaps, false),
         ]);
@@ -222,9 +216,8 @@ class CodeEditorElement extends AbstractFormElement
     {
         $config = $this->data['parameterArray']['fieldConf']['config'];
 
-        $registry = GeneralUtility::makeInstance(ModeRegistry::class);
         if (!isset($config['format'])) {
-            return $registry->getDefaultMode();
+            return $this->codeEditorConfiguration->getDefaultMode();
         }
 
         $identifier = $config['format'];
@@ -233,6 +226,6 @@ class CodeEditorElement extends AbstractFormElement
             $identifier = end($parts);
         }
 
-        return $registry->getByFormatCode($identifier);
+        return $this->codeEditorConfiguration->getModeByFormatCode($identifier);
     }
 }
