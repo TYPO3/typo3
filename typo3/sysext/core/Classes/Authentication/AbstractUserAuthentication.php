@@ -300,6 +300,30 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     }
 
     /**
+     * Initializes this user object from an authentication result established
+     * by the authentication pipeline, without running the authentication
+     * service chain. The session cookie behavior is evaluated the same way
+     * start() does.
+     *
+     * @internal only to be used by pipeline authenticators during the migration period
+     */
+    public function initializeFromPipeline(UserSession $userSession, ?array $userRecord, bool $activeLogin = false): void
+    {
+        if (!isset($this->userSessionManager)) {
+            $this->initializeUserSessionManager();
+        }
+        $this->userSession = $userSession;
+        $this->user = $userRecord;
+        $this->loginSessionStarted = $activeLogin;
+        if (is_array($userRecord)) {
+            $this->unpack_uc();
+        }
+        if ($this->shallSetSessionCookie()) {
+            $this->setSessionCookie();
+        }
+    }
+
+    /**
      * The cookie behavior (send, remove or none) as evaluated during
      * authentication, to be applied to the response by a middleware
      * via SetCookieService::applyCookieToResponse().

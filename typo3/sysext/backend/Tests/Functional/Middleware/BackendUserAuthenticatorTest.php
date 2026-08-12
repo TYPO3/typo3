@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\Middleware;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -26,6 +27,7 @@ use TYPO3\CMS\Backend\Middleware\BackendUserAuthenticator;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Security\MfaChallengeResponseFactory;
+use TYPO3\CMS\Core\Authentication\AuthenticationService;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\Pipeline\AuthenticationResult;
 use TYPO3\CMS\Core\Authentication\Pipeline\AuthenticatorInterface;
@@ -42,6 +44,7 @@ use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Security\PermissionSet\PrincipalRole;
 use TYPO3\CMS\Core\Security\RequestToken;
+use TYPO3\CMS\Core\Session\UserSessionManager;
 use TYPO3\CMS\Core\Tests\Functional\Authentication\Fixtures\FixtureAuthenticationService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -59,10 +62,12 @@ final class BackendUserAuthenticatorTest extends FunctionalTestCase
     private RequestHandlerInterface $requestHandler;
     private bool $handlerInvoked = false;
     private ?ServerRequestInterface $handledRequest = null;
+    private array $originalServices = [];
 
     protected function setUp(): void
     {
         parent::setUp();
+        $this->originalServices = $GLOBALS['T3_SERVICES'] ?? [];
         $this->withDatabaseSnapshot(function (): void {
             $passwordHash = $this->get(PasswordHashFactory::class)
                 ->getDefaultHashInstance('BE')
@@ -97,6 +102,7 @@ final class BackendUserAuthenticatorTest extends FunctionalTestCase
     protected function tearDown(): void
     {
         unset($GLOBALS['BE_USER'], $GLOBALS['LANG']);
+        $GLOBALS['T3_SERVICES'] = $this->originalServices;
         parent::tearDown();
     }
 
@@ -248,6 +254,8 @@ final class BackendUserAuthenticatorTest extends FunctionalTestCase
         self::assertTrue($this->handlerInvoked);
         self::assertFalse($this->get(Context::class)->getAspect('backend.user')->isLoggedIn());
         self::assertNull($GLOBALS['BE_USER']->getUserId());
+        // Listeners of the dispatched events may access the session
+        self::assertTrue($GLOBALS['BE_USER']->getSession()->isAnonymous());
         self::assertNull($this->handledRequest?->getAttribute('backend.principal'));
         self::assertSame('handler-reached', (string)$response->getBody());
     }
@@ -397,6 +405,81 @@ final class BackendUserAuthenticatorTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function loginPostTrimsSubmittedCredentials(): void
+    {
+        $this->provideValidRequestToken();
+        $request = $this->buildRequest(new Route('/login', ['access' => 'anonymous', '_identifier' => 'login']), 'POST')
+            ->withParsedBody([
+                'username' => ' testadmin ',
+                'userident' => self::PASSWORD . " \n",
+                'login_status' => 'login',
+            ]);
+
+        $this->subject->process($request, $this->requestHandler);
+
+        self::assertTrue($this->get(Context::class)->getAspect('backend.user')->isLoggedIn());
+        self::assertSame(100, $this->getHandledPrincipal()?->context->id);
+    }
+
+    #[Test]
+    public function loginPostWithExpiredSessionCookieAuthenticatesUser(): void
+    {
+        $userRecord = $this->get(ConnectionPool::class)->getConnectionForTable('be_users')
+            ->select(['*'], 'be_users', ['uid' => 100])->fetchAssociative();
+        $session = new BackendUserAuthentication()->createUserSession($userRecord);
+        $this->get(ConnectionPool::class)->getConnectionForTable('be_sessions')
+            ->update('be_sessions', ['ses_tstamp' => 1], ['ses_userid' => 100]);
+        $request = $this->buildLoginRequest('testadmin')
+            ->withCookieParams(['be_typo_user' => $session->getJwt()]);
+
+        $response = $this->subject->process($request, $this->requestHandler);
+
+        self::assertTrue($this->get(Context::class)->getAspect('backend.user')->isLoggedIn());
+        self::assertSame(100, $this->getHandledPrincipal()?->context->id);
+        self::assertStringContainsString('be_typo_user', $response->getHeaderLine('Set-Cookie'));
+    }
+
+    #[Test]
+    public function loginPostIsRefusedWhenCoreAuthenticationServiceIsDisabled(): void
+    {
+        // Without an available authentication service the legacy chain
+        // accepts no password, the native path must not either.
+        $GLOBALS['T3_SERVICES']['auth'][AuthenticationService::class]['available'] = false;
+
+        $this->subject->process($this->buildLoginRequest('testadmin'), $this->requestHandler);
+
+        self::assertTrue($this->handlerInvoked);
+        self::assertFalse($this->get(Context::class)->getAspect('backend.user')->isLoggedIn());
+        self::assertNull($this->getHandledPrincipal());
+    }
+
+    #[Test]
+    public function sessionOfAdministratorSwitchedToMfaUserIsNotChallenged(): void
+    {
+        $this->get(ConnectionPool::class)->getConnectionForTable('be_users')->insert('be_users', [
+            'uid' => 102,
+            'username' => 'mfauser',
+            'password' => 'not-used',
+            'mfa' => '{"totp":{"active":true,"secret":"KRMVATZTJFZUC53FONXW2ZJB"}}',
+        ]);
+        $userRecord = $this->get(ConnectionPool::class)->getConnectionForTable('be_users')
+            ->select(['*'], 'be_users', ['uid' => 102])->fetchAssociative();
+        $session = new BackendUserAuthentication()->createUserSession($userRecord);
+        $session->set('backuserid', 100);
+        UserSessionManager::create('BE')->updateSession($session);
+        $request = $this->buildRequest(new Route('/module/web/layout', ['_identifier' => 'web_layout']))
+            ->withCookieParams(['be_typo_user' => $session->getJwt()]);
+
+        $this->subject->process($request, $this->requestHandler);
+
+        self::assertTrue($this->handlerInvoked);
+        $principal = $this->getHandledPrincipal();
+        self::assertInstanceOf(Principal::class, $principal);
+        self::assertSame(102, $principal->context->id);
+        self::assertSame(100, $principal->context->impersonatedBy?->id);
+    }
+
+    #[Test]
     public function protectedRouteRedirectsToLoginForAnonymousRequest(): void
     {
         $request = $this->buildRequest(new Route('/module/web/layout', ['_identifier' => 'web_layout']));
@@ -430,6 +513,44 @@ final class BackendUserAuthenticatorTest extends FunctionalTestCase
 
         self::assertTrue($this->handlerInvoked);
         self::assertSame('handler-reached', (string)$response->getBody());
+        self::assertFalse($this->get(Context::class)->getAspect('backend.user')->isLoggedIn());
+    }
+
+    public static function malformedLoginParametersDataProvider(): \Generator
+    {
+        yield 'login status as array in the body' => [['login_status' => ['login'], 'username' => 'testadmin', 'userident' => self::PASSWORD], []];
+        yield 'login status as array in the query' => [[], ['login_status' => ['logout']]];
+        yield 'username as array' => [['login_status' => 'login', 'username' => ['testadmin'], 'userident' => self::PASSWORD], []];
+        yield 'password as array' => [['login_status' => 'login', 'username' => 'testadmin', 'userident' => [self::PASSWORD]], []];
+    }
+
+    #[Test]
+    #[DataProvider('malformedLoginParametersDataProvider')]
+    public function malformedLoginParametersDoNotAuthenticateUser(array $parsedBody, array $queryParams): void
+    {
+        $this->provideValidRequestToken();
+        $request = $this->buildRequest(new Route('/login', ['access' => 'anonymous', '_identifier' => 'login']), 'POST')
+            ->withParsedBody($parsedBody)
+            ->withQueryParams($queryParams);
+
+        $response = $this->subject->process($request, $this->requestHandler);
+
+        self::assertTrue($this->handlerInvoked);
+        self::assertSame('handler-reached', (string)$response->getBody());
+        self::assertFalse($this->get(Context::class)->getAspect('backend.user')->isLoggedIn());
+    }
+
+    #[Test]
+    public function loginStatusInTheQueryOfAGetRequestDoesNotAuthenticateUser(): void
+    {
+        $this->provideValidRequestToken();
+        $request = $this->buildRequest(new Route('/login', ['access' => 'anonymous', '_identifier' => 'login']))
+            ->withQueryParams(['login_status' => 'login'])
+            ->withParsedBody(['username' => 'testadmin', 'userident' => self::PASSWORD]);
+
+        $this->subject->process($request, $this->requestHandler);
+
+        self::assertTrue($this->handlerInvoked);
         self::assertFalse($this->get(Context::class)->getAspect('backend.user')->isLoggedIn());
     }
 

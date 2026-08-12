@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Authentication\Pipeline\Authenticated;
 use TYPO3\CMS\Core\Authentication\Pipeline\AuthenticationResult;
 use TYPO3\CMS\Core\Authentication\Pipeline\AuthenticatorInterface;
 use TYPO3\CMS\Core\Authentication\Pipeline\Challenge;
+use TYPO3\CMS\Core\Authentication\Pipeline\LegacyAuthServiceDetector;
 use TYPO3\CMS\Core\Authentication\Pipeline\LegacyUserPrincipalFactory;
 use TYPO3\CMS\Core\Authentication\Pipeline\LoginRateLimiterGuard;
 use TYPO3\CMS\Core\Authentication\Pipeline\NotApplicable;
@@ -36,9 +37,14 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Performs backend authentication through the legacy user authentication
  * object and its T3_SERVICES chain, exposed as a pipeline authenticator.
- * A pending multi-factor requirement is translated into a Challenge
- * outcome, an established user is handed over as "legacyUser" attribute
- * of the Authenticated outcome.
+ *
+ * Only used when an extension registered an additional authentication
+ * service or modified the chain behavior - every existing authentication
+ * service keeps working unchanged this way. Installations without such
+ * extensions are handled by the native SessionAuthenticator and
+ * PasswordAuthenticator. A pending multi-factor requirement is translated
+ * into a Challenge outcome, an established user is handed over as
+ * "legacyUser" attribute of the Authenticated outcome.
  *
  * @internal not part of TYPO3 Core API, only exists for the migration period
  *           towards native pipeline authenticators
@@ -47,6 +53,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 final class LegacyBackendAuthenticator implements AuthenticatorInterface
 {
     public function __construct(
+        private readonly LegacyAuthServiceDetector $legacyAuthServiceDetector,
         private readonly LoginRateLimiterGuard $rateLimiterGuard,
         private readonly MfaChallengeResponseFactory $mfaChallengeResponseFactory,
         private readonly LegacyUserPrincipalFactory $principalFactory,
@@ -54,6 +61,9 @@ final class LegacyBackendAuthenticator implements AuthenticatorInterface
 
     public function authenticate(ServerRequestInterface $request, Realm $realm): AuthenticationResult
     {
+        if (!$this->legacyAuthServiceDetector->requiresLegacyServiceChain()) {
+            return new NotApplicable();
+        }
         /** @var Route|null $route */
         $route = $request->getAttribute('route');
         $isAjaxCall = (bool)($route?->getOption('ajax') ?? false);

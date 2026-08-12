@@ -83,8 +83,9 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
             $GLOBALS['BE_USER'] = $backendUser;
         } else {
             // During the migration period the legacy user object is guaranteed to
-            // be established by LegacyBackendAuthenticator, even for anonymous
-            // requests and failed authentication attempts.
+            // be established by LegacyBackendAuthenticator or the native
+            // authenticators, even for anonymous requests and failed
+            // authentication attempts.
             /** @var BackendUserAuthentication $backendUser */
             $backendUser = $GLOBALS['BE_USER'];
         }
