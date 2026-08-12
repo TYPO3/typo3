@@ -571,15 +571,14 @@ final class SlugHelperTest extends UnitTestCase
             'pid' => '10',
             'title' => 'Parent Page',
         ];
-        $subject = $this->getAccessibleMock(
-            SlugHelper::class,
-            ['resolveParentPageRecord'],
-            [
+        $subject = $this->getMockBuilder(SlugHelper::class)
+            ->onlyMethods(['resolveParentPageRecord'])
+            ->setConstructorArgs([
                 'pages',
                 'slug',
                 $options,
-            ]
-        );
+            ])
+            ->getMock();
         $series = [
             [13, $parentPage],
             [10, null],
@@ -817,15 +816,14 @@ final class SlugHelperTest extends UnitTestCase
             'uid' => '0',
             'pid' => null,
         ];
-        $subject = $this->getAccessibleMock(
-            SlugHelper::class,
-            ['resolveParentPageRecord'],
-            [
+        $subject = $this->getMockBuilder(SlugHelper::class)
+            ->onlyMethods(['resolveParentPageRecord'])
+            ->setConstructorArgs([
                 'another_table',
                 'slug',
                 $options,
-            ]
-        );
+            ])
+            ->getMock();
         $subject->method('resolveParentPageRecord')
             ->willReturn($parentPage);
         self::assertEquals(

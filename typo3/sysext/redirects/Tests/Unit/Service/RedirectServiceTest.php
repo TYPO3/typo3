@@ -646,10 +646,9 @@ final class RedirectServiceTest extends UnitTestCase
     #[Test]
     public function getTargetUrlRespectsAdditionalParametersFromTypolink(): void
     {
-        $redirectService = $this->getAccessibleMock(
-            RedirectService::class,
-            ['getUriFromCustomLinkDetails'],
-            [
+        $redirectService = $this->getMockBuilder(RedirectService::class)
+            ->onlyMethods(['getUriFromCustomLinkDetails'])
+            ->setConstructorArgs([
                 $this->redirectCacheServiceMock,
                 $this->linkServiceMock,
                 $this->siteFinder,
@@ -685,9 +684,8 @@ final class RedirectServiceTest extends UnitTestCase
                 self::createStub(LoggerInterface::class),
                 new TypoLinkCodecService(new NoopEventDispatcher()),
                 new Locales(),
-            ],
-            '',
-        );
+            ])
+            ->getMock();
 
         $pageRecord = 't3://page?uid=13';
         $redirectTargetMatch = [

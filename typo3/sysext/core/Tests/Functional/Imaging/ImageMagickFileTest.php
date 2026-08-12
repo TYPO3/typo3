@@ -228,13 +228,10 @@ final class ImageMagickFileTest extends FunctionalTestCase
 
     private function simulateNextFileInfoInvocation(string $mimeType): void
     {
-        $fileInfo = $this->getAccessibleMock(
-            FileInfo::class,
-            ['getMimeType', 'getMimeExtensions'],
-            [],
-            '',
-            false
-        );
+        $fileInfo = $this->getMockBuilder(FileInfo::class)
+            ->onlyMethods(['getMimeType', 'getMimeExtensions'])
+            ->disableOriginalConstructor()
+            ->getMock();
         $fileInfo->expects($this->atLeastOnce())->method('getMimeType')->willReturn($mimeType);
         $fileInfo->expects($this->atLeastOnce())->method('getMimeExtensions')->willReturn([]);
         GeneralUtility::addInstance(FileInfo::class, $fileInfo);

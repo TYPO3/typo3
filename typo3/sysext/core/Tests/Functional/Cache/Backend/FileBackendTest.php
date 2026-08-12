@@ -40,69 +40,69 @@ final class FileBackendTest extends FunctionalTestCase
     #[Test]
     public function setCacheDirectoryAllowsAbsolutePathWithoutTrailingSlash(): void
     {
-        $subject = $this->getAccessibleMock(FileBackend::class, null, [], '', false);
+        $subject = new FileBackend();
         $subject->setCacheDirectory('/tmp/foo');
-        self::assertEquals('/tmp/foo/', $subject->_get('temporaryCacheDirectory'));
+        self::assertEquals('/tmp/foo/', new \ReflectionProperty($subject, 'temporaryCacheDirectory')->getValue($subject));
     }
 
     #[Test]
     public function setCacheDirectoryAllowsAbsolutePathWithTrailingSlash(): void
     {
-        $subject = $this->getAccessibleMock(FileBackend::class, null, [], '', false);
+        $subject = new FileBackend();
         $subject->setCacheDirectory('/tmp/foo/');
-        self::assertEquals('/tmp/foo/', $subject->_get('temporaryCacheDirectory'));
+        self::assertEquals('/tmp/foo/', new \ReflectionProperty($subject, 'temporaryCacheDirectory')->getValue($subject));
     }
 
     #[Test]
     public function setCacheDirectoryAllowsRelativePathWithoutTrailingSlash(): void
     {
-        $subject = $this->getAccessibleMock(FileBackend::class, null, [], '', false);
+        $subject = new FileBackend();
         $subject->setCacheDirectory('tmp/foo');
         $path = Environment::getProjectPath();
-        self::assertEquals($path . '/tmp/foo/', $subject->_get('temporaryCacheDirectory'));
+        self::assertEquals($path . '/tmp/foo/', new \ReflectionProperty($subject, 'temporaryCacheDirectory')->getValue($subject));
     }
 
     #[Test]
     public function setCacheDirectoryAllowsRelativePathWithTrailingSlash(): void
     {
-        $subject = $this->getAccessibleMock(FileBackend::class, null, [], '', false);
+        $subject = new FileBackend();
         $subject->setCacheDirectory('tmp/foo/');
         $path = Environment::getProjectPath();
-        self::assertEquals($path . '/tmp/foo/', $subject->_get('temporaryCacheDirectory'));
+        self::assertEquals($path . '/tmp/foo/', new \ReflectionProperty($subject, 'temporaryCacheDirectory')->getValue($subject));
     }
 
     #[Test]
     public function setCacheDirectoryAllowsRelativeDottedPathWithoutTrailingSlash(): void
     {
-        $subject = $this->getAccessibleMock(FileBackend::class, null, [], '', false);
+        $subject = new FileBackend();
         $subject->setCacheDirectory('../tmp/foo');
         $path = Environment::getProjectPath();
-        self::assertEquals($path . '/../tmp/foo/', $subject->_get('temporaryCacheDirectory'));
+        self::assertEquals($path . '/../tmp/foo/', new \ReflectionProperty($subject, 'temporaryCacheDirectory')->getValue($subject));
     }
 
     #[Test]
     public function setCacheDirectoryAllowsRelativeDottedPathWithTrailingSlash(): void
     {
-        $subject = $this->getAccessibleMock(FileBackend::class, null, [], '', false);
+        $subject = new FileBackend();
         $subject->setCacheDirectory('../tmp/foo/');
         $path = Environment::getProjectPath();
-        self::assertEquals($path . '/../tmp/foo/', $subject->_get('temporaryCacheDirectory'));
+        self::assertEquals($path . '/../tmp/foo/', new \ReflectionProperty($subject, 'temporaryCacheDirectory')->getValue($subject));
     }
 
     #[Test]
     public function setCacheDirectoryAllowsAbsoluteDottedPathWithoutTrailingSlash(): void
     {
-        $subject = $this->getAccessibleMock(FileBackend::class, null, [], '', false);
+        $subject = new FileBackend();
         $subject->setCacheDirectory('/tmp/../foo');
-        self::assertEquals('/tmp/../foo/', $subject->_get('temporaryCacheDirectory'));
+        self::assertEquals('/tmp/../foo/', new \ReflectionProperty($subject, 'temporaryCacheDirectory')->getValue($subject));
     }
 
     #[Test]
     public function setCacheDirectoryAllowsAbsoluteDottedPathWithTrailingSlash(): void
     {
-        $subject = $this->getAccessibleMock(FileBackend::class, null, [], '', false);
+        $subject = new FileBackend();
         $subject->setCacheDirectory('/tmp/../foo/');
-        self::assertEquals('/tmp/../foo/', $subject->_get('temporaryCacheDirectory'));
+        self::assertEquals('/tmp/../foo/', new \ReflectionProperty($subject, 'temporaryCacheDirectory')->getValue($subject));
     }
 
     #[Test]

@@ -141,10 +141,10 @@ final class ListUtilityTest extends UnitTestCase
     #[Test]
     public function enrichExtensionsWithEmConfInformation(array $extensions, array $emConf, array $expectedResult): void
     {
-        $this->subject->injectExtensionRepository($this->getAccessibleMock(ExtensionRepository::class, ['findOneByExtensionKeyAndVersion', 'findHighestAvailableVersion'], [], '', false));
-        $emConfUtilityMock = $this->getMockBuilder(EmConfUtility::class)->getMock();
-        $emConfUtilityMock->method('includeEmConf')->willReturn($emConf);
-        $this->subject->injectEmConfUtility($emConfUtilityMock);
+        $this->subject->injectExtensionRepository(self::createStub(ExtensionRepository::class));
+        $emConfUtilityStub = self::createStub(EmConfUtility::class);
+        $emConfUtilityStub->method('includeEmConf')->willReturn($emConf);
+        $this->subject->injectEmConfUtility($emConfUtilityStub);
         self::assertEquals($expectedResult, $this->subject->enrichExtensionsWithEmConfAndTerInformation($extensions));
     }
 }

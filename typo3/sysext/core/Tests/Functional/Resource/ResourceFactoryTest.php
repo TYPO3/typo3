@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Functional\Resource;
 
 use PHPUnit\Framework\Attributes\Test;
-use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
@@ -33,20 +32,11 @@ use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class ResourceFactoryTest extends FunctionalTestCase
 {
-    private ResourceFactory&MockObject&AccessibleObjectInterface $subject;
-
     private array $filesCreated = [];
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->subject = $this->getAccessibleMock(ResourceFactory::class, null, [], '', false);
-    }
 
     protected function tearDown(): void
     {
@@ -62,13 +52,10 @@ final class ResourceFactoryTest extends FunctionalTestCase
     #[Test]
     public function retrieveFileOrFolderObjectCallsGetFolderObjectFromCombinedIdentifierWithRelativePath(): void
     {
-        $subject = $this->getAccessibleMock(
-            ResourceFactory::class,
-            ['getFolderObjectFromCombinedIdentifier'],
-            [],
-            '',
-            false
-        );
+        $subject = $this->getMockBuilder(ResourceFactory::class)
+            ->onlyMethods(['getFolderObjectFromCombinedIdentifier'])
+            ->disableOriginalConstructor()
+            ->getMock();
         $subject
             ->expects($this->once())
             ->method('getFolderObjectFromCombinedIdentifier')
@@ -79,13 +66,10 @@ final class ResourceFactoryTest extends FunctionalTestCase
     #[Test]
     public function retrieveFileOrFolderObjectCallsGetFolderObjectFromCombinedIdentifierWithAbsolutePath(): void
     {
-        $subject = $this->getAccessibleMock(
-            ResourceFactory::class,
-            ['getFolderObjectFromCombinedIdentifier'],
-            [],
-            '',
-            false
-        );
+        $subject = $this->getMockBuilder(ResourceFactory::class)
+            ->onlyMethods(['getFolderObjectFromCombinedIdentifier'])
+            ->disableOriginalConstructor()
+            ->getMock();
         $subject
             ->expects($this->once())
             ->method('getFolderObjectFromCombinedIdentifier')
@@ -96,15 +80,18 @@ final class ResourceFactoryTest extends FunctionalTestCase
     #[Test]
     public function retrieveFileOrFolderObjectReturnsFileIfPathIsGiven(): void
     {
-        $this->subject = $this->getAccessibleMock(ResourceFactory::class, ['getFileObjectFromCombinedIdentifier'], [], '', false);
+        $subject = $this->getMockBuilder(ResourceFactory::class)
+            ->onlyMethods(['getFileObjectFromCombinedIdentifier'])
+            ->disableOriginalConstructor()
+            ->getMock();
         $filename = 'typo3temp/var/tests/4711.txt';
-        $this->subject->expects($this->once())
+        $subject->expects($this->once())
             ->method('getFileObjectFromCombinedIdentifier')
             ->with($filename);
         // Create and prepare test file
         GeneralUtility::writeFileToTypo3tempDir(Environment::getPublicPath() . '/' . $filename, '42');
         $this->filesCreated[] = Environment::getPublicPath() . '/' . $filename;
-        $this->subject->retrieveFileOrFolderObject($filename);
+        $subject->retrieveFileOrFolderObject($filename);
     }
 
     #[Test]
@@ -124,15 +111,18 @@ final class ResourceFactoryTest extends FunctionalTestCase
 
         GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/typo3temp');
 
-        $this->subject = $this->getAccessibleMock(ResourceFactory::class, ['getFileObjectFromCombinedIdentifier'], [], '', false);
+        $subject = $this->getMockBuilder(ResourceFactory::class)
+            ->onlyMethods(['getFileObjectFromCombinedIdentifier'])
+            ->disableOriginalConstructor()
+            ->getMock();
         $filename = 'typo3temp/var/tests/4711.txt';
-        $this->subject->expects($this->once())
+        $subject->expects($this->once())
             ->method('getFileObjectFromCombinedIdentifier')
             ->with($filename);
         // Create and prepare test file
         GeneralUtility::writeFileToTypo3tempDir(Environment::getPublicPath() . '/' . $filename, '42');
         $this->filesCreated[] = Environment::getPublicPath() . '/' . $filename;
-        $this->subject->retrieveFileOrFolderObject($filename);
+        $subject->retrieveFileOrFolderObject($filename);
     }
 
     #[Test]
@@ -159,12 +149,15 @@ final class ResourceFactoryTest extends FunctionalTestCase
         GeneralUtility::mkdir_deep(Environment::getPublicPath() . dirname($publicFile));
         copy(GeneralUtility::getFileAbsFileName('EXT:core/Resources/Public/Icons/Extension.svg'), Environment::getPublicPath() . $publicFile);
 
-        $this->subject = $this->getAccessibleMock(ResourceFactory::class, ['getFileObjectFromCombinedIdentifier'], [], '', false);
-        $this->subject->expects($this->once())
+        $subject = $this->getMockBuilder(ResourceFactory::class)
+            ->onlyMethods(['getFileObjectFromCombinedIdentifier'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $subject->expects($this->once())
             ->method('getFileObjectFromCombinedIdentifier')
             ->with($publicFile);
         // Create and prepare test file
-        $this->subject->retrieveFileOrFolderObject('EXT:core/Resources/Public/Icons/Extension.svg');
+        $subject->retrieveFileOrFolderObject('EXT:core/Resources/Public/Icons/Extension.svg');
     }
 
     #[Test]
@@ -181,16 +174,22 @@ final class ResourceFactoryTest extends FunctionalTestCase
             Environment::getCurrentScript(),
             Environment::isWindows() ? 'WINDOWS' : 'UNIX'
         );
-        $this->subject = $this->getAccessibleMock(ResourceFactory::class, ['getFileObjectFromCombinedIdentifier'], [], '', false);
+        $subject = $this->getMockBuilder(ResourceFactory::class)
+            ->onlyMethods(['getFileObjectFromCombinedIdentifier'])
+            ->disableOriginalConstructor()
+            ->getMock();
         $this->expectException(ResourceDoesNotExistException::class);
-        $this->subject->retrieveFileOrFolderObject('EXT:core/Resources/Private/Templates/PageRenderer.html');
+        $subject->retrieveFileOrFolderObject('EXT:core/Resources/Private/Templates/PageRenderer.html');
     }
 
     #[Test]
     public function resolveFileObjectPassesAnAlreadyResolvedFileThrough(): void
     {
         $file = $this->createMock(File::class);
-        $subject = $this->getAccessibleMock(ResourceFactory::class, ['getFileObject'], [], '', false);
+        $subject = $this->getMockBuilder(ResourceFactory::class)
+            ->onlyMethods(['getFileObject'])
+            ->disableOriginalConstructor()
+            ->getMock();
         $subject->expects($this->never())->method('getFileObject');
         self::assertSame($file, $subject->resolveFileObject($file));
     }
@@ -206,14 +205,20 @@ final class ResourceFactoryTest extends FunctionalTestCase
                 return $this->file;
             }
         };
-        $subject = $this->getAccessibleMock(ResourceFactory::class, null, [], '', false);
+        $subject = $this->getMockBuilder(ResourceFactory::class)
+            ->onlyMethods([])
+            ->disableOriginalConstructor()
+            ->getMock();
         self::assertSame($file, $subject->resolveFileObject($domainObject));
     }
 
     #[Test]
     public function resolveFileObjectThrowsForAnUnsupportedObject(): void
     {
-        $subject = $this->getAccessibleMock(ResourceFactory::class, null, [], '', false);
+        $subject = $this->getMockBuilder(ResourceFactory::class)
+            ->onlyMethods([])
+            ->disableOriginalConstructor()
+            ->getMock();
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1625585157);
         $subject->resolveFileObject(new \stdClass());
@@ -223,7 +228,10 @@ final class ResourceFactoryTest extends FunctionalTestCase
     public function resolveFileObjectResolvesAnIntegerToAFile(): void
     {
         $file = $this->createMock(File::class);
-        $subject = $this->getAccessibleMock(ResourceFactory::class, ['getFileObject', 'getFileReferenceObject'], [], '', false);
+        $subject = $this->getMockBuilder(ResourceFactory::class)
+            ->onlyMethods(['getFileObject', 'getFileReferenceObject'])
+            ->disableOriginalConstructor()
+            ->getMock();
         $subject->expects($this->once())->method('getFileObject')->with('42')->willReturn($file);
         $subject->expects($this->never())->method('getFileReferenceObject');
         self::assertSame($file, $subject->resolveFileObject('42'));
@@ -233,7 +241,10 @@ final class ResourceFactoryTest extends FunctionalTestCase
     public function resolveFileObjectResolvesAnIntegerToAFileReferenceIfRequested(): void
     {
         $fileReference = $this->createMock(FileReference::class);
-        $subject = $this->getAccessibleMock(ResourceFactory::class, ['getFileObject', 'getFileReferenceObject'], [], '', false);
+        $subject = $this->getMockBuilder(ResourceFactory::class)
+            ->onlyMethods(['getFileObject', 'getFileReferenceObject'])
+            ->disableOriginalConstructor()
+            ->getMock();
         $subject->expects($this->once())->method('getFileReferenceObject')->with('42')->willReturn($fileReference);
         $subject->expects($this->never())->method('getFileObject');
         self::assertSame($fileReference, $subject->resolveFileObject('42', true));
@@ -243,7 +254,10 @@ final class ResourceFactoryTest extends FunctionalTestCase
     public function resolveFileObjectResolvesACombinedIdentifier(): void
     {
         $file = $this->createMock(File::class);
-        $subject = $this->getAccessibleMock(ResourceFactory::class, ['getObjectFromCombinedIdentifier'], [], '', false);
+        $subject = $this->getMockBuilder(ResourceFactory::class)
+            ->onlyMethods(['getObjectFromCombinedIdentifier'])
+            ->disableOriginalConstructor()
+            ->getMock();
         $subject->expects($this->once())
             ->method('getObjectFromCombinedIdentifier')
             ->with('1:/foo.jpg')
@@ -254,7 +268,10 @@ final class ResourceFactoryTest extends FunctionalTestCase
     #[Test]
     public function resolveFileObjectThrowsForAFolder(): void
     {
-        $subject = $this->getAccessibleMock(ResourceFactory::class, ['getObjectFromCombinedIdentifier'], [], '', false);
+        $subject = $this->getMockBuilder(ResourceFactory::class)
+            ->onlyMethods(['getObjectFromCombinedIdentifier'])
+            ->disableOriginalConstructor()
+            ->getMock();
         $subject->expects($this->once())
             ->method('getObjectFromCombinedIdentifier')
             ->with('1:/aFolder/')
@@ -287,7 +304,10 @@ final class ResourceFactoryTest extends FunctionalTestCase
     #[Test]
     public function resolveFileObjectThrowsForAResolvedProcessedFile(): void
     {
-        $subject = $this->getAccessibleMock(ResourceFactory::class, ['getObjectFromCombinedIdentifier'], [], '', false);
+        $subject = $this->getMockBuilder(ResourceFactory::class)
+            ->onlyMethods(['getObjectFromCombinedIdentifier'])
+            ->disableOriginalConstructor()
+            ->getMock();
         $subject->method('getObjectFromCombinedIdentifier')->willReturn($this->createMock(ProcessedFile::class));
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1382687163);

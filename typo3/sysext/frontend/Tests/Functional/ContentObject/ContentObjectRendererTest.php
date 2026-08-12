@@ -1152,7 +1152,10 @@ content="benni">',
         $conf = [
             'cache.' => $confCache,
         ];
-        $subject = $this->getAccessibleMock(ContentObjectRenderer::class, ['calculateCacheKey', 'calculateCacheTags', 'calculateCacheLifetime'], [], '', false);
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->onlyMethods(['calculateCacheKey', 'calculateCacheTags', 'calculateCacheLifetime'])
+            ->disableOriginalConstructor()
+            ->getMock();
         $subject->expects($this->exactly($times))->method('calculateCacheKey')->with($confCache)->willReturn($key);
         self::assertSame($content, $subject->stdWrap_cacheStore($content, $conf));
     }

@@ -44,7 +44,7 @@ final class YamlSourceTest extends UnitTestCase
         $input = [
             'EXT:form/Resources/Forms/_example.yaml',
         ];
-        $mockYamlSource->_call('load', $input);
+        $mockYamlSource->load($input);
     }
 
     #[Test]
@@ -60,7 +60,7 @@ final class YamlSourceTest extends UnitTestCase
         $input = [
             'EXT:form/Tests/Unit/Mvc/Configuration/Fixtures/Invalid.yaml',
         ];
-        $mockYamlSource->_call('load', $input);
+        $mockYamlSource->load($input);
     }
 
     #[Test]
@@ -97,7 +97,7 @@ final class YamlSourceTest extends UnitTestCase
                 'key03' => 'value2',
             ],
         ];
-        self::assertSame($expected, $mockYamlSource->_call('load', $input));
+        self::assertSame($expected, $mockYamlSource->load($input));
     }
 
     #[Test]
@@ -125,6 +125,6 @@ final class YamlSourceTest extends UnitTestCase
             'key05' => 'key05_value_override',
             'key08' => 'key08_value_override',
         ];
-        self::assertSame($expected, $mockYamlSource->_call('load', $input));
+        self::assertSame($expected, $mockYamlSource->load($input));
     }
 }

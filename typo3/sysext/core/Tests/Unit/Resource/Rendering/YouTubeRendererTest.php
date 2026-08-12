@@ -41,10 +41,15 @@ final class YouTubeRendererTest extends UnitTestCase
         $request->method('getAttribute')->with('normalizedParams')->willReturn($normalizedParams);
         $GLOBALS['TYPO3_REQUEST'] = $request;
 
-        $youTubeHelper = $this->getAccessibleMock(YouTubeHelper::class, ['getOnlineMediaId'], ['youtube']);
+        $youTubeHelper = $this->getMockBuilder(YouTubeHelper::class)
+            ->onlyMethods(['getOnlineMediaId'])
+            ->setConstructorArgs(['youtube'])
+            ->getMock();
         $youTubeHelper->method('getOnlineMediaId')->willReturn('7331');
 
-        $this->subject = $this->getAccessibleMock(YouTubeRenderer::class, ['getOnlineMediaHelper', 'shouldIncludeFrameBorderAttribute']);
+        $this->subject = $this->getMockBuilder(YouTubeRenderer::class)
+            ->onlyMethods(['getOnlineMediaHelper', 'shouldIncludeFrameBorderAttribute'])
+            ->getMock();
         $this->subject->method('shouldIncludeFrameBorderAttribute')->willReturn(false);
         $this->subject->method('getOnlineMediaHelper')->willReturn($youTubeHelper);
     }
@@ -293,10 +298,15 @@ final class YouTubeRendererTest extends UnitTestCase
     #[Test]
     public function renderOutputIsEscaped(): void
     {
-        $youtubeHelper = $this->getAccessibleMock(YouTubeHelper::class, ['getOnlineMediaId'], ['youtube']);
+        $youtubeHelper = $this->getMockBuilder(YouTubeHelper::class)
+            ->onlyMethods(['getOnlineMediaId'])
+            ->setConstructorArgs(['youtube'])
+            ->getMock();
         $youtubeHelper->method('getOnlineMediaId')->willReturn('7331<script>danger</script>\'"random"quotes;');
 
-        $subject = $this->getAccessibleMock(YouTubeRenderer::class, ['getOnlineMediaHelper', 'shouldIncludeFrameBorderAttribute']);
+        $subject = $this->getMockBuilder(YouTubeRenderer::class)
+            ->onlyMethods(['getOnlineMediaHelper', 'shouldIncludeFrameBorderAttribute'])
+            ->getMock();
         $subject->method('shouldIncludeFrameBorderAttribute')->willReturn(false);
         $subject->method('getOnlineMediaHelper')->willReturn($youtubeHelper);
 

@@ -232,11 +232,11 @@ final class TranslationServiceTest extends FunctionalTestCase
             ],
         ]);
 
-        $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, ['getIdentifier', 'getRenderingOptions'], [], '', false);
-        $mockFormRuntime->method('getIdentifier')->willReturn($formRuntimeIdentifier);
-        $mockFormRuntime->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
+        $formRuntimeStub = self::createStub(FormRuntime::class);
+        $formRuntimeStub->method('getIdentifier')->willReturn($formRuntimeIdentifier);
+        $formRuntimeStub->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
 
-        self::assertEquals($expected, $this->subject->translateFormElementValue($formElement, ['fluidAdditionalAttributes'], $mockFormRuntime));
+        self::assertEquals($expected, $this->subject->translateFormElementValue($formElement, ['fluidAdditionalAttributes'], $formRuntimeStub));
     }
 
     #[Test]
@@ -268,12 +268,12 @@ final class TranslationServiceTest extends FunctionalTestCase
             'renderingOptions' => $formElementRenderingOptions,
         ]);
 
-        $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, ['getIdentifier', 'getRenderingOptions'], [], '', false);
-        $mockFormRuntime->method('getIdentifier')->willReturn($formRuntimeIdentifier);
-        $mockFormRuntime->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
+        $formRuntimeStub = self::createStub(FormRuntime::class);
+        $formRuntimeStub->method('getIdentifier')->willReturn($formRuntimeIdentifier);
+        $formRuntimeStub->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
 
         $expected = 'form-element-identifier LABEL EN';
-        self::assertEquals($expected, $this->subject->translateFormElementValue($formElement, ['label'], $mockFormRuntime));
+        self::assertEquals($expected, $this->subject->translateFormElementValue($formElement, ['label'], $formRuntimeStub));
     }
 
     #[Test]
@@ -305,12 +305,12 @@ final class TranslationServiceTest extends FunctionalTestCase
             'renderingOptions' => $formElementRenderingOptions,
         ]);
 
-        $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, ['getIdentifier', 'getRenderingOptions'], [], '', false);
-        $mockFormRuntime->method('getIdentifier')->willReturn($formRuntimeIdentifier);
-        $mockFormRuntime->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
+        $formRuntimeStub = self::createStub(FormRuntime::class);
+        $formRuntimeStub->method('getIdentifier')->willReturn($formRuntimeIdentifier);
+        $formRuntimeStub->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
 
         $expected = 'form-element-identifier LABEL EN';
-        self::assertEquals($expected, $this->subject->translateFormElementValue($formElement, ['label'], $mockFormRuntime));
+        self::assertEquals($expected, $this->subject->translateFormElementValue($formElement, ['label'], $formRuntimeStub));
     }
 
     #[Test]
@@ -342,11 +342,11 @@ final class TranslationServiceTest extends FunctionalTestCase
             'renderingOptions' => $formElementRenderingOptions,
         ]);
 
-        $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, ['getIdentifier', 'getRenderingOptions'], [], '', false);
-        $mockFormRuntime->method('getIdentifier')->willReturn($formRuntimeIdentifier);
-        $mockFormRuntime->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
+        $formRuntimeStub = self::createStub(FormRuntime::class);
+        $formRuntimeStub->method('getIdentifier')->willReturn($formRuntimeIdentifier);
+        $formRuntimeStub->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
 
-        self::assertEquals('', $this->subject->translateFormElementValue($formElement, ['label'], $mockFormRuntime));
+        self::assertEquals('', $this->subject->translateFormElementValue($formElement, ['label'], $formRuntimeStub));
     }
 
     #[Test]
@@ -378,11 +378,11 @@ final class TranslationServiceTest extends FunctionalTestCase
             'renderingOptions' => $formElementRenderingOptions,
         ]);
 
-        $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, ['getIdentifier', 'getRenderingOptions'], [], '', false);
-        $mockFormRuntime->method('getIdentifier')->willReturn($formRuntimeIdentifier);
-        $mockFormRuntime->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
+        $formRuntimeStub = self::createStub(FormRuntime::class);
+        $formRuntimeStub->method('getIdentifier')->willReturn($formRuntimeIdentifier);
+        $formRuntimeStub->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
 
-        self::assertEquals('form-element-identifier LABEL EN 1', $this->subject->translateFormElementValue($formElement, ['label'], $mockFormRuntime));
+        self::assertEquals('form-element-identifier LABEL EN 1', $this->subject->translateFormElementValue($formElement, ['label'], $formRuntimeStub));
     }
 
     #[Test]
@@ -414,12 +414,12 @@ final class TranslationServiceTest extends FunctionalTestCase
             'renderingOptions' => $formElementRenderingOptions,
         ]);
 
-        $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, ['getIdentifier', 'getRenderingOptions'], [], '', false);
-        $mockFormRuntime->method('getIdentifier')->willReturn($formRuntimeIdentifier);
-        $mockFormRuntime->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
+        $formRuntimeStub = self::createStub(FormRuntime::class);
+        $formRuntimeStub->method('getIdentifier')->willReturn($formRuntimeIdentifier);
+        $formRuntimeStub->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
 
         $expected = 'form-element-identifier LABEL EN 2';
-        self::assertEquals($expected, $this->subject->translateFormElementValue($formElement, ['label'], $mockFormRuntime));
+        self::assertEquals($expected, $this->subject->translateFormElementValue($formElement, ['label'], $formRuntimeStub));
     }
 
     #[Test]
@@ -456,11 +456,11 @@ final class TranslationServiceTest extends FunctionalTestCase
             'renderingOptions' => $formElementRenderingOptions,
         ]);
 
-        $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, ['getIdentifier', 'getRenderingOptions'], [], '', false);
-        $mockFormRuntime->method('getIdentifier')->willReturn($formRuntimeIdentifier);
-        $mockFormRuntime->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
+        $formRuntimeStub = self::createStub(FormRuntime::class);
+        $formRuntimeStub->method('getIdentifier')->willReturn($formRuntimeIdentifier);
+        $formRuntimeStub->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
 
-        self::assertEquals($expected, $this->subject->translateFormElementValue($formElement, ['placeholder'], $mockFormRuntime));
+        self::assertEquals($expected, $this->subject->translateFormElementValue($formElement, ['placeholder'], $formRuntimeStub));
     }
 
     #[Test]
@@ -497,11 +497,11 @@ final class TranslationServiceTest extends FunctionalTestCase
             'renderingOptions' => $formElementRenderingOptions,
         ]);
 
-        $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, ['getIdentifier', 'getRenderingOptions'], [], '', false);
-        $mockFormRuntime->method('getIdentifier')->willReturn($formRuntimeIdentifier);
-        $mockFormRuntime->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
+        $formRuntimeStub = self::createStub(FormRuntime::class);
+        $formRuntimeStub->method('getIdentifier')->willReturn($formRuntimeIdentifier);
+        $formRuntimeStub->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
 
-        self::assertEquals($expected, $this->subject->translateFormElementValue($formElement, ['placeholder'], $mockFormRuntime));
+        self::assertEquals($expected, $this->subject->translateFormElementValue($formElement, ['placeholder'], $formRuntimeStub));
     }
 
     #[Test]
@@ -539,11 +539,11 @@ final class TranslationServiceTest extends FunctionalTestCase
             'renderingOptions' => $formElementRenderingOptions,
         ]);
 
-        $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, ['getIdentifier', 'getRenderingOptions'], [], '', false);
-        $mockFormRuntime->method('getIdentifier')->willReturn($formRuntimeIdentifier);
-        $mockFormRuntime->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
+        $formRuntimeStub = self::createStub(FormRuntime::class);
+        $formRuntimeStub->method('getIdentifier')->willReturn($formRuntimeIdentifier);
+        $formRuntimeStub->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
 
-        self::assertEquals($expected, $this->subject->translateFormElementValue($formElement, ['defaultValue'], $mockFormRuntime));
+        self::assertEquals($expected, $this->subject->translateFormElementValue($formElement, ['defaultValue'], $formRuntimeStub));
     }
 
     #[Test]
@@ -581,11 +581,11 @@ final class TranslationServiceTest extends FunctionalTestCase
             'renderingOptions' => $formElementRenderingOptions,
         ]);
 
-        $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, ['getIdentifier', 'getRenderingOptions'], [], '', false);
-        $mockFormRuntime->method('getIdentifier')->willReturn($formRuntimeIdentifier);
-        $mockFormRuntime->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
+        $formRuntimeStub = self::createStub(FormRuntime::class);
+        $formRuntimeStub->method('getIdentifier')->willReturn($formRuntimeIdentifier);
+        $formRuntimeStub->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
 
-        self::assertEquals($expected, $this->subject->translateFormElementValue($formElement, ['defaultValue'], $mockFormRuntime));
+        self::assertEquals($expected, $this->subject->translateFormElementValue($formElement, ['defaultValue'], $formRuntimeStub));
     }
 
     #[Test]
@@ -623,11 +623,11 @@ final class TranslationServiceTest extends FunctionalTestCase
             'renderingOptions' => $formElementRenderingOptions,
         ]);
 
-        $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, ['getIdentifier', 'getRenderingOptions'], [], '', false);
-        $mockFormRuntime->method('getIdentifier')->willReturn($formRuntimeIdentifier);
-        $mockFormRuntime->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
+        $formRuntimeStub = self::createStub(FormRuntime::class);
+        $formRuntimeStub->method('getIdentifier')->willReturn($formRuntimeIdentifier);
+        $formRuntimeStub->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
 
-        self::assertEquals($expected, $this->subject->translateFormElementValue($formElement, ['defaultValue'], $mockFormRuntime));
+        self::assertEquals($expected, $this->subject->translateFormElementValue($formElement, ['defaultValue'], $formRuntimeStub));
     }
 
     #[Test]
@@ -665,11 +665,11 @@ final class TranslationServiceTest extends FunctionalTestCase
             'renderingOptions' => $formElementRenderingOptions,
         ]);
 
-        $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, ['getIdentifier', 'getRenderingOptions'], [], '', false);
-        $mockFormRuntime->method('getIdentifier')->willReturn($formRuntimeIdentifier);
-        $mockFormRuntime->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
+        $formRuntimeStub = self::createStub(FormRuntime::class);
+        $formRuntimeStub->method('getIdentifier')->willReturn($formRuntimeIdentifier);
+        $formRuntimeStub->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
 
-        self::assertEquals($expected, $this->subject->translateFormElementValue($formElement, ['defaultValue'], $mockFormRuntime));
+        self::assertEquals($expected, $this->subject->translateFormElementValue($formElement, ['defaultValue'], $formRuntimeStub));
     }
 
     #[Test]
@@ -701,12 +701,12 @@ final class TranslationServiceTest extends FunctionalTestCase
             'renderingOptions' => $formElementRenderingOptions,
         ]);
 
-        $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, ['getIdentifier', 'getRenderingOptions'], [], '', false);
-        $mockFormRuntime->method('getIdentifier')->willReturn($formRuntimeIdentifier);
-        $mockFormRuntime->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
+        $formRuntimeStub = self::createStub(FormRuntime::class);
+        $formRuntimeStub->method('getIdentifier')->willReturn($formRuntimeIdentifier);
+        $formRuntimeStub->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
 
         $expected = 'form-element-identifier nextButtonLabel EN';
-        self::assertEquals($expected, $this->subject->translateFormElementValue($formElement, ['nextButtonLabel'], $mockFormRuntime));
+        self::assertEquals($expected, $this->subject->translateFormElementValue($formElement, ['nextButtonLabel'], $formRuntimeStub));
     }
 
     #[Test]
@@ -749,11 +749,11 @@ final class TranslationServiceTest extends FunctionalTestCase
             'renderingOptions' => $formElementRenderingOptions,
         ]);
 
-        $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, ['getIdentifier', 'getRenderingOptions'], [], '', false);
-        $mockFormRuntime->method('getIdentifier')->willReturn($formRuntimeIdentifier);
-        $mockFormRuntime->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
+        $formRuntimeStub = self::createStub(FormRuntime::class);
+        $formRuntimeStub->method('getIdentifier')->willReturn($formRuntimeIdentifier);
+        $formRuntimeStub->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
 
-        self::assertEquals($expected, $this->subject->translateFormElementValue($formElement, ['options'], $mockFormRuntime));
+        self::assertEquals($expected, $this->subject->translateFormElementValue($formElement, ['options'], $formRuntimeStub));
     }
 
     #[Test]
@@ -796,11 +796,11 @@ final class TranslationServiceTest extends FunctionalTestCase
             'renderingOptions' => $formElementRenderingOptions,
         ]);
 
-        $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, ['getIdentifier', 'getRenderingOptions'], [], '', false);
-        $mockFormRuntime->method('getIdentifier')->willReturn($formRuntimeIdentifier);
-        $mockFormRuntime->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
+        $formRuntimeStub = self::createStub(FormRuntime::class);
+        $formRuntimeStub->method('getIdentifier')->willReturn($formRuntimeIdentifier);
+        $formRuntimeStub->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
 
-        self::assertEquals($expected, $this->subject->translateFormElementValue($formElement, ['options'], $mockFormRuntime));
+        self::assertEquals($expected, $this->subject->translateFormElementValue($formElement, ['options'], $formRuntimeStub));
     }
 
     #[Test]
@@ -824,12 +824,12 @@ final class TranslationServiceTest extends FunctionalTestCase
             'translatePropertyValueIfEmpty' => true,
         ];
 
-        $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, ['getIdentifier', 'getRenderingOptions'], [], '', false);
-        $mockFormRuntime->method('getIdentifier')->willReturn($formRuntimeIdentifier);
-        $mockFormRuntime->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
+        $formRuntimeStub = self::createStub(FormRuntime::class);
+        $formRuntimeStub->method('getIdentifier')->willReturn($formRuntimeIdentifier);
+        $formRuntimeStub->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
 
         $expected = 'form-element-identifier SaveToDatabase subject EN';
-        self::assertEquals($expected, $this->subject->translateFinisherOption($mockFormRuntime, $finisherIdentifier, 'subject', 'subject value', $finisherRenderingOptions));
+        self::assertEquals($expected, $this->subject->translateFinisherOption($formRuntimeStub, $finisherIdentifier, 'subject', 'subject value', $finisherRenderingOptions));
     }
 
     #[Test]
@@ -853,12 +853,12 @@ final class TranslationServiceTest extends FunctionalTestCase
             'translatePropertyValueIfEmpty' => true,
         ];
 
-        $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, ['getIdentifier', 'getRenderingOptions'], [], '', false);
-        $mockFormRuntime->method('getIdentifier')->willReturn($formRuntimeIdentifier);
-        $mockFormRuntime->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
+        $formRuntimeStub = self::createStub(FormRuntime::class);
+        $formRuntimeStub->method('getIdentifier')->willReturn($formRuntimeIdentifier);
+        $formRuntimeStub->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
 
         $expected = 'form-element-identifier SaveToDatabase subject EN 1';
-        self::assertEquals($expected, $this->subject->translateFinisherOption($mockFormRuntime, $finisherIdentifier, 'subject', 'subject value', $finisherRenderingOptions));
+        self::assertEquals($expected, $this->subject->translateFinisherOption($formRuntimeStub, $finisherIdentifier, 'subject', 'subject value', $finisherRenderingOptions));
     }
 
     #[Test]
@@ -882,12 +882,12 @@ final class TranslationServiceTest extends FunctionalTestCase
             'renderingOptions' => [],
         ]);
 
-        $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, ['getIdentifier', 'getRenderingOptions'], [], '', false);
-        $mockFormRuntime->method('getIdentifier')->willReturn($formRuntimeIdentifier);
-        $mockFormRuntime->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
+        $formRuntimeStub = self::createStub(FormRuntime::class);
+        $formRuntimeStub->method('getIdentifier')->willReturn($formRuntimeIdentifier);
+        $formRuntimeStub->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
 
         $expected = 'my-form-runtime-identifier my-form-element-identifier LABEL EN';
-        self::assertEquals($expected, $this->subject->translateFormElementValue($formElement, ['label'], $mockFormRuntime));
+        self::assertEquals($expected, $this->subject->translateFormElementValue($formElement, ['label'], $formRuntimeStub));
     }
 
     #[Test]
@@ -938,12 +938,12 @@ final class TranslationServiceTest extends FunctionalTestCase
             ],
         ];
 
-        $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, ['getIdentifier', 'getRenderingOptions'], [], '', false);
-        $mockFormRuntime->method('getIdentifier')->willReturn($formRuntimeIdentifier);
-        $mockFormRuntime->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
+        $formRuntimeStub = self::createStub(FormRuntime::class);
+        $formRuntimeStub->method('getIdentifier')->willReturn($formRuntimeIdentifier);
+        $formRuntimeStub->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
 
         $expected = 'my-form-runtime-identifier form-element-identifier SaveToDatabase subject EN';
-        self::assertEquals($expected, $this->subject->translateFinisherOption($mockFormRuntime, $finisherIdentifier, 'subject', 'subject value'));
+        self::assertEquals($expected, $this->subject->translateFinisherOption($formRuntimeStub, $finisherIdentifier, 'subject', 'subject value'));
     }
 
     #[Test]
@@ -1022,11 +1022,11 @@ final class TranslationServiceTest extends FunctionalTestCase
             'renderingOptions' => $formElementRenderingOptions,
         ]);
 
-        $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, ['getIdentifier', 'getRenderingOptions'], [], '', false);
-        $mockFormRuntime->method('getIdentifier')->willReturn($formRuntimeIdentifier);
-        $mockFormRuntime->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
+        $formRuntimeStub = self::createStub(FormRuntime::class);
+        $formRuntimeStub->method('getIdentifier')->willReturn($formRuntimeIdentifier);
+        $formRuntimeStub->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
 
-        self::assertEquals($expected, $this->subject->translateFormElementValue($formElement, ['label'], $mockFormRuntime));
+        self::assertEquals($expected, $this->subject->translateFormElementValue($formElement, ['label'], $formRuntimeStub));
     }
 
     #[Test]
@@ -1045,11 +1045,11 @@ final class TranslationServiceTest extends FunctionalTestCase
             ],
         ];
 
-        $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, ['getIdentifier', 'getRenderingOptions', 'getType'], [], '', false);
+        $formRuntimeStub = self::createStub(FormRuntime::class);
 
-        $mockFormRuntime->method('getIdentifier')->willReturn($formRuntimeIdentifier);
-        $mockFormRuntime->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
-        $mockFormRuntime->method('getType')->willReturn('Form');
+        $formRuntimeStub->method('getIdentifier')->willReturn($formRuntimeIdentifier);
+        $formRuntimeStub->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
+        $formRuntimeStub->method('getType')->willReturn('Form');
 
         $formElement = new GenericFormElement($formElementIdentifier, 'Text');
         $formElement->setOptions([
@@ -1057,10 +1057,10 @@ final class TranslationServiceTest extends FunctionalTestCase
         ]);
 
         $expected = 'form-runtime-identifier-42 submitButtonLabel EN';
-        self::assertEquals($expected, $this->subject->translateFormElementValue($mockFormRuntime, ['submitButtonLabel'], $mockFormRuntime));
+        self::assertEquals($expected, $this->subject->translateFormElementValue($formRuntimeStub, ['submitButtonLabel'], $formRuntimeStub));
 
         $expected = 'form-runtime-identifier-42 form-element-identifierlabel EN';
-        self::assertEquals($expected, $this->subject->translateFormElementValue($formElement, ['label'], $mockFormRuntime));
+        self::assertEquals($expected, $this->subject->translateFormElementValue($formElement, ['label'], $formRuntimeStub));
     }
 
     #[Test]
@@ -1080,11 +1080,11 @@ final class TranslationServiceTest extends FunctionalTestCase
             ],
         ];
 
-        $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, ['getIdentifier', 'getRenderingOptions', 'getType'], [], '', false);
+        $formRuntimeStub = self::createStub(FormRuntime::class);
 
-        $mockFormRuntime->method('getIdentifier')->willReturn($formRuntimeIdentifier);
-        $mockFormRuntime->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
-        $mockFormRuntime->method('getType')->willReturn('Form');
+        $formRuntimeStub->method('getIdentifier')->willReturn($formRuntimeIdentifier);
+        $formRuntimeStub->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
+        $formRuntimeStub->method('getType')->willReturn('Form');
 
         $formElement = new GenericFormElement($formElementIdentifier, 'Text');
         $formElement->setOptions([
@@ -1092,10 +1092,10 @@ final class TranslationServiceTest extends FunctionalTestCase
         ]);
 
         $expected = 'form-runtime-identifier submitButtonLabel EN';
-        self::assertEquals($expected, $this->subject->translateFormElementValue($mockFormRuntime, ['submitButtonLabel'], $mockFormRuntime));
+        self::assertEquals($expected, $this->subject->translateFormElementValue($formRuntimeStub, ['submitButtonLabel'], $formRuntimeStub));
 
         $expected = 'form-runtime-identifier form-element-identifierlabel EN';
-        self::assertEquals($expected, $this->subject->translateFormElementValue($formElement, ['label'], $mockFormRuntime));
+        self::assertEquals($expected, $this->subject->translateFormElementValue($formElement, ['label'], $formRuntimeStub));
     }
 
     #[Test]
@@ -1113,11 +1113,11 @@ final class TranslationServiceTest extends FunctionalTestCase
             ],
         ];
 
-        $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, ['getIdentifier', 'getRenderingOptions', 'getType'], [], '', false);
+        $formRuntimeStub = self::createStub(FormRuntime::class);
 
-        $mockFormRuntime->method('getIdentifier')->willReturn($formRuntimeIdentifier);
-        $mockFormRuntime->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
-        $mockFormRuntime->method('getType')->willReturn('Form');
+        $formRuntimeStub->method('getIdentifier')->willReturn($formRuntimeIdentifier);
+        $formRuntimeStub->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
+        $formRuntimeStub->method('getType')->willReturn('Form');
 
         $formElement = new GenericFormElement($formElementIdentifier, 'Text');
         $formElement->setOptions([
@@ -1126,10 +1126,10 @@ final class TranslationServiceTest extends FunctionalTestCase
         ]);
 
         $expected = 'form-runtime-identifier-42 error 123 EN';
-        self::assertEquals($expected, $this->subject->translateFormElementError($mockFormRuntime, 123, [], 'default value', $mockFormRuntime));
+        self::assertEquals($expected, $this->subject->translateFormElementError($formRuntimeStub, 123, [], 'default value', $formRuntimeStub));
 
         $expected = 'form-runtime-identifier-42 form-element-identifier error 123 EN';
-        self::assertEquals($expected, $this->subject->translateFormElementError($formElement, 123, [], 'default value', $mockFormRuntime));
+        self::assertEquals($expected, $this->subject->translateFormElementError($formElement, 123, [], 'default value', $formRuntimeStub));
     }
 
     #[Test]
@@ -1148,11 +1148,11 @@ final class TranslationServiceTest extends FunctionalTestCase
             ],
         ];
 
-        $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, ['getIdentifier', 'getRenderingOptions', 'getType'], [], '', false);
+        $formRuntimeStub = self::createStub(FormRuntime::class);
 
-        $mockFormRuntime->method('getIdentifier')->willReturn($formRuntimeIdentifier);
-        $mockFormRuntime->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
-        $mockFormRuntime->method('getType')->willReturn('Form');
+        $formRuntimeStub->method('getIdentifier')->willReturn($formRuntimeIdentifier);
+        $formRuntimeStub->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
+        $formRuntimeStub->method('getType')->willReturn('Form');
 
         $formElement = new GenericFormElement($formElementIdentifier, 'Text');
         $formElement->setOptions([
@@ -1161,10 +1161,10 @@ final class TranslationServiceTest extends FunctionalTestCase
         ]);
 
         $expected = 'form-runtime-identifier error 123 EN';
-        self::assertEquals($expected, $this->subject->translateFormElementError($mockFormRuntime, 123, [], 'default value', $mockFormRuntime));
+        self::assertEquals($expected, $this->subject->translateFormElementError($formRuntimeStub, 123, [], 'default value', $formRuntimeStub));
 
         $expected = 'form-runtime-identifier form-element-identifier error 123 EN';
-        self::assertEquals($expected, $this->subject->translateFormElementError($formElement, 123, [], 'default value', $mockFormRuntime));
+        self::assertEquals($expected, $this->subject->translateFormElementError($formElement, 123, [], 'default value', $formRuntimeStub));
     }
 
     #[Test]
@@ -1181,14 +1181,14 @@ final class TranslationServiceTest extends FunctionalTestCase
             ],
         ];
 
-        $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, ['getIdentifier', 'getRenderingOptions', 'getType'], [], '', false);
+        $formRuntimeStub = self::createStub(FormRuntime::class);
 
-        $mockFormRuntime->method('getIdentifier')->willReturn($formRuntimeIdentifier);
-        $mockFormRuntime->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
-        $mockFormRuntime->method('getType')->willReturn('Form');
+        $formRuntimeStub->method('getIdentifier')->willReturn($formRuntimeIdentifier);
+        $formRuntimeStub->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
+        $formRuntimeStub->method('getType')->willReturn('Form');
 
         $expected = 'form-runtime-identifier-42 FooFinisher test EN';
-        self::assertEquals($expected, $this->subject->translateFinisherOption($mockFormRuntime, 'Foo', 'test', 'value', []));
+        self::assertEquals($expected, $this->subject->translateFinisherOption($formRuntimeStub, 'Foo', 'test', 'value', []));
     }
 
     #[Test]
@@ -1206,14 +1206,14 @@ final class TranslationServiceTest extends FunctionalTestCase
             ],
         ];
 
-        $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, ['getIdentifier', 'getRenderingOptions', 'getType'], [], '', false);
+        $formRuntimeStub = self::createStub(FormRuntime::class);
 
-        $mockFormRuntime->method('getIdentifier')->willReturn($formRuntimeIdentifier);
-        $mockFormRuntime->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
-        $mockFormRuntime->method('getType')->willReturn('Form');
+        $formRuntimeStub->method('getIdentifier')->willReturn($formRuntimeIdentifier);
+        $formRuntimeStub->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
+        $formRuntimeStub->method('getType')->willReturn('Form');
 
         $expected = 'form-runtime-identifier FooFinisher test EN';
-        self::assertEquals($expected, $this->subject->translateFinisherOption($mockFormRuntime, 'Foo', 'test', 'value', []));
+        self::assertEquals($expected, $this->subject->translateFinisherOption($formRuntimeStub, 'Foo', 'test', 'value', []));
     }
 
     #[Test]
@@ -1232,11 +1232,11 @@ final class TranslationServiceTest extends FunctionalTestCase
             ],
         ];
 
-        $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, ['getIdentifier', 'getRenderingOptions', 'getType'], [], '', false);
+        $formRuntimeStub = self::createStub(FormRuntime::class);
 
-        $mockFormRuntime->method('getIdentifier')->willReturn($formRuntimeIdentifier);
-        $mockFormRuntime->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
-        $mockFormRuntime->method('getType')->willReturn('Form');
+        $formRuntimeStub->method('getIdentifier')->willReturn($formRuntimeIdentifier);
+        $formRuntimeStub->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
+        $formRuntimeStub->method('getType')->willReturn('Form');
 
         $formElement = new GenericFormElement($formElementIdentifier, 'Text');
         $formElement->setOptions([
@@ -1244,8 +1244,8 @@ final class TranslationServiceTest extends FunctionalTestCase
             'properties' => [],
         ]);
 
-        self::assertEquals('0', $this->subject->translateFormElementError($formElement, 123, [], 'default value', $mockFormRuntime));
-        self::assertEquals('default value', $this->subject->translateFormElementError($formElement, 124, [], 'default value', $mockFormRuntime));
+        self::assertEquals('0', $this->subject->translateFormElementError($formElement, 123, [], 'default value', $formRuntimeStub));
+        self::assertEquals('default value', $this->subject->translateFormElementError($formElement, 124, [], 'default value', $formRuntimeStub));
     }
 
     #[Test]
@@ -1265,19 +1265,19 @@ final class TranslationServiceTest extends FunctionalTestCase
             ],
         ];
 
-        $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, ['getIdentifier', 'getRenderingOptions', 'getType'], [], '', false);
+        $formRuntimeStub = self::createStub(FormRuntime::class);
 
-        $mockFormRuntime->method('getIdentifier')->willReturn($formRuntimeIdentifier);
-        $mockFormRuntime->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
-        $mockFormRuntime->method('getType')->willReturn('Form');
+        $formRuntimeStub->method('getIdentifier')->willReturn($formRuntimeIdentifier);
+        $formRuntimeStub->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
+        $formRuntimeStub->method('getType')->willReturn('Form');
 
         $formElement = new GenericFormElement($formElementIdentifier, 'Text');
         $formElement->setOptions([
             'label' => 'test',
         ]);
 
-        self::assertEquals('0', $this->subject->translateFormElementValue($mockFormRuntime, ['submitButtonLabel'], $mockFormRuntime));
-        self::assertEquals('test', $this->subject->translateFormElementValue($formElement, ['label'], $mockFormRuntime));
+        self::assertEquals('0', $this->subject->translateFormElementValue($formRuntimeStub, ['submitButtonLabel'], $formRuntimeStub));
+        self::assertEquals('test', $this->subject->translateFormElementValue($formElement, ['label'], $formRuntimeStub));
     }
 
     #[Test]
@@ -1295,13 +1295,13 @@ final class TranslationServiceTest extends FunctionalTestCase
             ],
         ];
 
-        $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, ['getIdentifier', 'getRenderingOptions', 'getType'], [], '', false);
+        $formRuntimeStub = self::createStub(FormRuntime::class);
 
-        $mockFormRuntime->method('getIdentifier')->willReturn($formRuntimeIdentifier);
-        $mockFormRuntime->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
-        $mockFormRuntime->method('getType')->willReturn('Form');
+        $formRuntimeStub->method('getIdentifier')->willReturn($formRuntimeIdentifier);
+        $formRuntimeStub->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
+        $formRuntimeStub->method('getType')->willReturn('Form');
 
-        self::assertEquals('0', $this->subject->translateFinisherOption($mockFormRuntime, 'Foo', 'test1', 'value', []));
-        self::assertEquals('value', $this->subject->translateFinisherOption($mockFormRuntime, 'Foo', 'test2', 'value', []));
+        self::assertEquals('0', $this->subject->translateFinisherOption($formRuntimeStub, 'Foo', 'test1', 'value', []));
+        self::assertEquals('value', $this->subject->translateFinisherOption($formRuntimeStub, 'Foo', 'test2', 'value', []));
     }
 }

@@ -177,17 +177,16 @@ final class DatabaseRecordLinkBuilderTest extends UnitTestCase
         $contentObjectRendererMock->expects($this->once())->method('createLink');
 
         // Act
-        $databaseRecordLinkBuilder = $this->getAccessibleMock(
-            DatabaseRecordLinkBuilder::class,
-            ['getPageTsConfig'],
-            [
+        $databaseRecordLinkBuilder = $this->getMockBuilder(DatabaseRecordLinkBuilder::class)
+            ->onlyMethods(['getPageTsConfig'])
+            ->setConstructorArgs([
                 self::createStub(TcaSchemaFactory::class),
                 new NullFrontend('testing'),
                 new TypoLinkCodecService(new NoopEventDispatcher()),
                 new NoopEventDispatcher(),
                 $pageRepositoryMock,
-            ]
-        );
+            ])
+            ->getMock();
         $databaseRecordLinkBuilder->method('getPageTsConfig')->willReturn($pageTsConfig);
         try {
             $databaseRecordLinkBuilder->buildLink($extractedLinkDetails, $confFromDb, $request, $linkText);

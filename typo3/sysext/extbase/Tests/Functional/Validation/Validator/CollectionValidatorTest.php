@@ -53,11 +53,10 @@ final class CollectionValidatorTest extends FunctionalTestCase
     #[Test]
     public function collectionValidatorValidatesEveryElementOfACollectionWithTheGivenElementValidator(): void
     {
-        $mockValidatorResolver = $this->getAccessibleMock(
-            ValidatorResolver::class,
-            ['createValidator', 'buildBaseValidatorConjunction', 'getBaseValidatorConjunction'],
-            [$this->get(ReflectionService::class)]
-        );
+        $mockValidatorResolver = $this->getMockBuilder(ValidatorResolver::class)
+            ->onlyMethods(['createValidator', 'buildBaseValidatorConjunction', 'getBaseValidatorConjunction'])
+            ->setConstructorArgs([$this->get(ReflectionService::class)])
+            ->getMock();
         /** @var ContainerBuilder $container */
         $container = $this->get('service_container');
         $container->set(ValidatorResolver::class, $mockValidatorResolver);
@@ -106,11 +105,10 @@ final class CollectionValidatorTest extends FunctionalTestCase
         $subject->setOptions(['elementValidator' => 'Integer']);
         $integerValidator = new IntegerValidator();
         $integerValidator->setOptions([]);
-        $mockValidatorResolver = $this->getAccessibleMock(
-            ValidatorResolver::class,
-            ['createValidator', 'buildBaseValidatorConjunction', 'getBaseValidatorConjunction'],
-            [$this->get(ReflectionService::class)]
-        );
+        $mockValidatorResolver = $this->getMockBuilder(ValidatorResolver::class)
+            ->onlyMethods(['createValidator', 'buildBaseValidatorConjunction', 'getBaseValidatorConjunction'])
+            ->setConstructorArgs([$this->get(ReflectionService::class)])
+            ->getMock();
         // Add validators to properties
         $aValidator->addPropertyValidator('b', $subject);
         $aValidator->addPropertyValidator('integer', $integerValidator);
@@ -128,11 +126,10 @@ final class CollectionValidatorTest extends FunctionalTestCase
         $objectStorage->attach($entity);
         $aValidator = new GenericObjectValidator();
         $aValidator->setOptions([]);
-        $mockValidatorResolver = $this->getAccessibleMock(
-            ValidatorResolver::class,
-            ['createValidator', 'buildBaseValidatorConjunction', 'getBaseValidatorConjunction'],
-            [$this->get(ReflectionService::class)]
-        );
+        $mockValidatorResolver = $this->getMockBuilder(ValidatorResolver::class)
+            ->onlyMethods(['createValidator', 'buildBaseValidatorConjunction', 'getBaseValidatorConjunction'])
+            ->setConstructorArgs([$this->get(ReflectionService::class)])
+            ->getMock();
         $mockValidatorResolver->expects($this->never())->method('createValidator');
         $subject = $this->get(CollectionValidator::class);
         $subject->setOptions(['elementType' => $elementType]);
