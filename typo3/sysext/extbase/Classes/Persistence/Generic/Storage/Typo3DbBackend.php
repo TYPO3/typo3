@@ -71,6 +71,7 @@ readonly class Typo3DbBackend implements BackendInterface
         protected TcaSchemaFactory $tcaSchemaFactory,
         #[Autowire(expression: 'service("features").isFeatureEnabled("frontend.cache.autoTagging")')]
         protected bool $autoTagging,
+        protected PageRepository $pageRepository,
     ) {}
 
     /**
@@ -434,7 +435,7 @@ readonly class Typo3DbBackend implements BackendInterface
     {
         $workspaceUid = (int)$context->getPropertyFromAspect('workspace', 'id');
 
-        $pageRepository = GeneralUtility::makeInstance(PageRepository::class, $context);
+        $pageRepository = $this->pageRepository->withContext($context);
         if ($source instanceof SelectorInterface) {
             $tableName = $source->getSelectorName();
             $rows = $this->resolveMovedRecordsInWorkspace($tableName, $rows, $workspaceUid);

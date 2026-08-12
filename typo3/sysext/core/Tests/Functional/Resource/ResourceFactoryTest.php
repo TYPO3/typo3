@@ -21,6 +21,7 @@ use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
@@ -298,7 +299,8 @@ final class ResourceFactoryTest extends FunctionalTestCase
             $storageRepository,
             self::createStub(FrontendInterface::class),
             self::createStub(FileIndexRepository::class),
-            $linkService
+            $linkService,
+            self::createStub(PageRepository::class)
         );
         self::assertSame($file, $subject->resolveFileObject('t3://file?uid=42'));
     }

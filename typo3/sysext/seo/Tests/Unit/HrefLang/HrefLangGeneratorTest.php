@@ -22,6 +22,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Http\Message\UriInterface;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\DataProcessing\LanguageMenuProcessor;
@@ -44,6 +45,7 @@ final class HrefLangGeneratorTest extends UnitTestCase
             [
                 self::createStub(ContentObjectRenderer::class),
                 self::createStub(LanguageMenuProcessor::class),
+                self::createStub(PageRepository::class),
             ]
         );
     }

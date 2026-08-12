@@ -53,6 +53,7 @@ readonly class ResourceFactory implements SingletonInterface
         protected FrontendInterface $runtimeCache,
         private FileIndexRepository $fileIndexRepository,
         private LinkService $linkService,
+        private PageRepository $pageRepository,
     ) {}
 
     /**
@@ -431,7 +432,7 @@ readonly class ResourceFactory implements SingletonInterface
             && $request instanceof ServerRequestInterface
             && ApplicationType::fromRequest($request)->isFrontend()
         ) {
-            $fileReferenceData = GeneralUtility::makeInstance(PageRepository::class)->checkRecord('sys_file_reference', $uid);
+            $fileReferenceData = $this->pageRepository->checkRecord('sys_file_reference', $uid);
         } else {
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_file_reference');
             $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));

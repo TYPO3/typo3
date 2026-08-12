@@ -40,7 +40,6 @@ use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Platform\PlatformHelper;
-use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\ExpressionLanguage\DefaultProvider;
@@ -5988,14 +5987,11 @@ content="benni">',
     }
 
     #[Test]
-    public function getDataWithTypeDbReturnsCorrectTitle()
+    public function getDataWithTypeDbReturnsRequestedColumn(): void
     {
-        $dummyRecord = ['uid' => 5, 'title' => 'someTitle'];
-        $pageRepository = $this->createMock(PageRepository::class);
-        GeneralUtility::addInstance(PageRepository::class, $pageRepository);
-        $pageRepository->expects($this->once())->method('getRawRecord')->with('tt_content', '106')->willReturn($dummyRecord);
+        $this->importCSVDataSet(__DIR__ . '/DataSet/GetDataDb.csv');
         $subject = $this->get(ContentObjectRenderer::class);
-        self::assertSame('someTitle', $subject->getData('db:tt_content:106:title', []));
+        self::assertSame('someHeader', $subject->getData('db:tt_content:106:header', []));
     }
 
     public static function getDataWithTypeDbReturnsEmptyStringOnInvalidIdentifiersDataProvider(): array
@@ -6023,29 +6019,26 @@ content="benni">',
         self::assertSame('', $this->get(ContentObjectRenderer::class)->getData($identifier, []));
     }
 
-    public static function getDataWithTypeDbReturnsEmptyStringOnInvalidIdentifiersCallsPageRepositoryOnceDataProvider(): array
+    public static function getDataWithTypeDbReturnsEmptyStringOnUnusableColumnDataProvider(): array
     {
         return [
-            'identifier with empty uid and missing column' => [
+            'identifier with missing column' => [
                 'identifier' => 'db:tt_content:106',
             ],
-            'identifier with empty uid and column' => [
+            'identifier with empty column' => [
                 'identifier' => 'db:tt_content:106:',
             ],
-            'identifier with empty uid and not existing column' => [
+            'identifier with not existing column' => [
                 'identifier' => 'db:tt_content:106:not_existing_column',
             ],
         ];
     }
 
-    #[DataProvider('getDataWithTypeDbReturnsEmptyStringOnInvalidIdentifiersCallsPageRepositoryOnceDataProvider')]
+    #[DataProvider('getDataWithTypeDbReturnsEmptyStringOnUnusableColumnDataProvider')]
     #[Test]
-    public function getDataWithTypeDbReturnsEmptyStringOnInvalidIdentifiersCallsPageRepositoryOnce(string $identifier): void
+    public function getDataWithTypeDbReturnsEmptyStringOnUnusableColumn(string $identifier): void
     {
-        $dummyRecord = ['uid' => 5, 'title' => 'someTitle'];
-        $pageRepository = $this->createMock(PageRepository::class);
-        GeneralUtility::addInstance(PageRepository::class, $pageRepository);
-        $pageRepository->expects($this->once())->method('getRawRecord')->with('tt_content', '106')->willReturn($dummyRecord);
+        $this->importCSVDataSet(__DIR__ . '/DataSet/GetDataDb.csv');
         $subject = $this->get(ContentObjectRenderer::class);
         self::assertSame('', $subject->getData($identifier, []));
     }

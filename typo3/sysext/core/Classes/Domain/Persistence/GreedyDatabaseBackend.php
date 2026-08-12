@@ -66,7 +66,8 @@ readonly class GreedyDatabaseBackend
         #[Autowire(service: 'cache.runtime')]
         protected FrontendInterface $runtimeCache,
         protected RecordAccessVoter $recordAccessVoter,
-        protected ConnectionPool $connectionPool
+        protected ConnectionPool $connectionPool,
+        protected PageRepository $pageRepository
     ) {}
 
     public function getRows(string $tableName, array $uids, Context $context): array
@@ -188,7 +189,7 @@ readonly class GreedyDatabaseBackend
 
     protected function handleOverlays(array $rows, string $dbTable, Context $context): array
     {
-        $pageRepository = GeneralUtility::makeInstance(PageRepository::class, $context);
+        $pageRepository = $this->pageRepository->withContext($context);
         $finalRows = [];
         foreach ($rows as $row) {
             $pageRepository->versionOL($dbTable, $row);

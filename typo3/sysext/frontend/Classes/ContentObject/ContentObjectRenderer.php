@@ -377,6 +377,7 @@ class ContentObjectRenderer
         // similar to PageRenderer and Context, which are designed in a similar way.
         private readonly TimeTracker $timeTracker,
         private readonly TcaSchemaFactory $tcaSchemaFactory,
+        private readonly PageRepository $pageRepository,
     ) {}
 
     public function setRequest(ServerRequestInterface $request): void
@@ -791,14 +792,13 @@ class ContentObjectRenderer
         if ($pidList === '') {
             $pidList = 'this';
         }
-        $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
         if (trim($pidList)) {
             $contentPid = $this->getRequest()->getAttribute('frontend.page.information')->getContentFromPid();
             $listArr = GeneralUtility::intExplode(',', str_replace('this', (string)$contentPid, $pidList));
             $listArr = $this->checkPidArray($listArr);
             $pidList = [];
             foreach ($listArr as $uid) {
-                $page = $pageRepository->getPage((int)$uid);
+                $page = $this->pageRepository->getPage((int)$uid);
                 if (!$page['is_siteroot']) {
                     $pidList[] = $page['pid'];
                 }
@@ -3721,8 +3721,7 @@ class ContentObjectRenderer
                         if (!isset($selectParts[1])) {
                             break;
                         }
-                        $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
-                        $dbRecord = $pageRepository->getRawRecord($selectParts[0], (int)$selectParts[1]);
+                        $dbRecord = $this->pageRepository->getRawRecord($selectParts[0], (int)$selectParts[1]);
                         if (is_array($dbRecord) && isset($selectParts[2])) {
                             $retVal = $dbRecord[$selectParts[2]] ?? '';
                         }
@@ -4448,13 +4447,12 @@ class ContentObjectRenderer
     {
         $records = [];
         $statement = $this->exec_getQuery($tableName, $queryConfiguration);
-        $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
         while ($row = $statement->fetchAssociative()) {
             // Versioning preview:
-            $pageRepository->versionOL($tableName, $row, true);
+            $this->pageRepository->versionOL($tableName, $row, true);
             // Language overlay:
             if (is_array($row)) {
-                $row = $pageRepository->getLanguageOverlay($tableName, $row);
+                $row = $this->pageRepository->getLanguageOverlay($tableName, $row);
             }
             // Might be unset in the language overlay
             if (is_array($row)) {
@@ -4549,8 +4547,7 @@ class ContentObjectRenderer
                         $storagePid = $this->getRequest()->getAttribute('frontend.page.information')->getId();
                     }
                 });
-                $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
-                $expandedPidList = $pageRepository->getPageIdsRecursive($pidList, $conf['recursive']);
+                $expandedPidList = $this->pageRepository->getPageIdsRecursive($pidList, $conf['recursive']);
                 $conf['pidInList'] = implode(',', $expandedPidList);
             }
         }
@@ -4752,8 +4749,7 @@ class ContentObjectRenderer
         }
 
         // default constraints from TCA
-        $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
-        $constraints = array_merge($constraints, array_values($pageRepository->getDefaultConstraints($table, $enableFieldsIgnore)));
+        $constraints = array_merge($constraints, array_values($this->pageRepository->getDefaultConstraints($table, $enableFieldsIgnore)));
 
         // MAKE WHERE:
         if ($constraints !== []) {
@@ -4918,8 +4914,7 @@ class ContentObjectRenderer
             return $pageIds;
         }
         $restrictionContainer = GeneralUtility::makeInstance(FrontendRestrictionContainer::class);
-        $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
-        return $pageRepository->filterAccessiblePageIds($pageIds, $restrictionContainer);
+        return $this->pageRepository->filterAccessiblePageIds($pageIds, $restrictionContainer);
     }
 
     /**

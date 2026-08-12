@@ -954,10 +954,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder implements TypolinkBuilder
      */
     protected function buildPageRepository(?LanguageAspect $languageAspect = null): PageRepository
     {
-        // clone global context object (singleton)
-        $context = clone GeneralUtility::makeInstance(Context::class);
-        $context->setAspect('language', $languageAspect ?? new LanguageAspect());
-        return GeneralUtility::makeInstance(PageRepository::class, $context);
+        return $this->pageRepository->withLanguageAspect($languageAspect ?? new LanguageAspect());
     }
 
     protected function addPageCacheTag(ServerRequestInterface $request, array $pageRecord): void

@@ -18,13 +18,11 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Seo\HrefLang;
 
 use TYPO3\CMS\Core\Attribute\AsEventListener;
-use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspectFactory;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\DataProcessing\LanguageMenuProcessor;
 use TYPO3\CMS\Frontend\Event\ModifyHrefLangTagsEvent;
@@ -39,6 +37,7 @@ class HrefLangGenerator
     public function __construct(
         protected ContentObjectRenderer $cObj,
         protected LanguageMenuProcessor $languageMenuProcessor,
+        protected PageRepository $pageRepository,
     ) {}
 
     #[AsEventListener('typo3-seo/hreflangGenerator')]
@@ -107,11 +106,7 @@ class HrefLangGenerator
         $targetSiteLanguage = $site->getLanguageById($languageId);
         $languageAspect = LanguageAspectFactory::createFromSiteLanguage($targetSiteLanguage);
 
-        $context = clone GeneralUtility::makeInstance(Context::class);
-        $context->setAspect('language', $languageAspect);
-
-        $pageRepository = GeneralUtility::makeInstance(PageRepository::class, $context);
-        $pageRecord = $pageRepository->getPage($pageId);
+        $pageRecord = $this->pageRepository->withLanguageAspect($languageAspect)->getPage($pageId);
         // Overlay was requested but did not apply
         if ($languageId > 0 && !isset($pageRecord['_LOCALIZED_UID'])) {
             return [];

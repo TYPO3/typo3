@@ -119,6 +119,30 @@ readonly class PageRepository
     }
 
     /**
+     * Returns an instance operating on the given Context, for instance to resolve pages
+     * of a different language or workspace than the one of the current request.
+     */
+    public function withContext(Context $context): self
+    {
+        if ($context === $this->context) {
+            return $this;
+        }
+        return new self($context, $this->tcaSchemaFactory, $this->pageTypeLinkResolver, $this->logger);
+    }
+
+    /**
+     * Returns an instance operating on the given language aspect, leaving all other aspects
+     * (workspace, visibility, ...) of the current Context untouched. Use "new LanguageAspect()"
+     * to resolve records without any language overlay being applied.
+     */
+    public function withLanguageAspect(LanguageAspect $languageAspect): self
+    {
+        $context = clone $this->context;
+        $context->setAspect('language', $languageAspect);
+        return $this->withContext($context);
+    }
+
+    /**
      * Builds the where clause for page records taking
      * deleted/hidden/starttime/endtime/t3ver_state into account.
      *
