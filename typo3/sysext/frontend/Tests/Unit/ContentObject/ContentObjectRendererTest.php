@@ -944,6 +944,17 @@ final class ContentObjectRendererTest extends UnitTestCase
                     ],
                 ],
             ],
+            'invalid regex pattern (backslash delimiter) leaves content untouched' => [
+                'a \\ b',
+                'a \\ b',
+                [
+                    '10.' => [
+                        'search' => '\\',
+                        'replace' => '<br>',
+                        'useRegExp' => '1',
+                    ],
+                ],
+            ],
         ];
     }
 

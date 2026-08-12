@@ -2949,6 +2949,12 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     $modifiers = str_replace('e', '', $modifiers);
                     $search = substr($search, 0, $startModifiers + 1) . $modifiers;
                 }
+                // A pattern that PHP cannot compile (for instance a single backslash or any
+                // other value with an invalid delimiter) would make preg_replace() emit a
+                // warning and return null, silently wiping the content.
+                if (@preg_match($search, '') === false) {
+                    return $content;
+                }
                 if ($useOptionSplitReplace) {
                     // init for replacement
                     $splitCount = preg_match_all($search, $content);
