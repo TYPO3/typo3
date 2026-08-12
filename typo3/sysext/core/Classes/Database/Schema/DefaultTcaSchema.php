@@ -315,7 +315,27 @@ class DefaultTcaSchema
                         'unsigned' => true,
                     ]
                 );
-                $tables[$tableName]->addIndex([$tableDefinition['ctrl']['translationSource']], 'translation_source');
+            }
+
+            // Index for the translation lookup. It depends on the 'ctrl' configuration only, not on
+            // whether the column above has been added here: a table declaring for instance its own
+            // translation source column in ext_tables.sql must not silently lose the index.
+            // Translation lookups match "translationSource = uid" OR "translationSource = 0 AND
+            // transOrigPointerField = uid", since the translation source is not maintained by all
+            // writes. Both branches must resolve on this single index: with an index on the
+            // translation source alone, MySQL reduces the condition to a range over
+            // "translationSource IN (0, uid)" - which covers every untranslated record - or
+            // discards the index and scans the table.
+            if (!empty($tableDefinition['ctrl']['languageField'])
+                && !empty($tableDefinition['ctrl']['transOrigPointerField'])
+                && !empty($tableDefinition['ctrl']['translationSource'])
+                && !$this->isIndexDefinedForTable($tables, $tableName, 'translation_source')
+            ) {
+                $tables[$tableName]->addIndex([
+                    (string)$tableDefinition['ctrl']['translationSource'],
+                    (string)$tableDefinition['ctrl']['transOrigPointerField'],
+                    (string)$tableDefinition['ctrl']['languageField'],
+                ], 'translation_source');
             }
 
             // l10n_state column

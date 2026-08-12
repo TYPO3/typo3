@@ -434,6 +434,63 @@ final class DefaultTcaSchemaTest extends UnitTestCase
     }
 
     #[Test]
+    public function enrichAddsTranslationSourceKeyCoveringBothTranslationLookupConstraints(): void
+    {
+        $GLOBALS['TCA']['aTable']['ctrl'] = [
+            'languageField' => 'sys_language_uid',
+            'transOrigPointerField' => 'l10n_parent',
+            'translationSource' => 'l10n_source',
+        ];
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
+        $expectedIndex = new Index('translation_source', ['l10n_source', 'l10n_parent', 'sys_language_uid']);
+        self::assertEquals($expectedIndex, $result['aTable']->getIndex('translation_source'));
+    }
+
+    #[Test]
+    public function enrichAddsTranslationSourceKeyIfTranslationSourceColumnIsDefinedAlready(): void
+    {
+        $GLOBALS['TCA']['aTable']['ctrl'] = [
+            'languageField' => 'sys_language_uid',
+            'transOrigPointerField' => 'l10n_parent',
+            'translationSource' => 'l10n_source',
+        ];
+        $table = new Table('aTable');
+        $table->addColumn('l10n_source', 'integer');
+
+        $result = $this->subject->enrich(['aTable' => $table]);
+        $expectedIndex = new Index('translation_source', ['l10n_source', 'l10n_parent', 'sys_language_uid']);
+        self::assertEquals($expectedIndex, $result['aTable']->getIndex('translation_source'));
+    }
+
+    #[Test]
+    public function enrichKeepsGivenTranslationSourceKey(): void
+    {
+        $GLOBALS['TCA']['aTable']['ctrl'] = [
+            'languageField' => 'sys_language_uid',
+            'transOrigPointerField' => 'l10n_parent',
+            'translationSource' => 'l10n_source',
+        ];
+        $table = new Table('aTable');
+        $table->addColumn('l10n_source', 'integer');
+        $table->addIndex(['l10n_source'], 'translation_source');
+
+        $result = $this->subject->enrich(['aTable' => $table]);
+        $expectedIndex = new Index('translation_source', ['l10n_source']);
+        self::assertEquals($expectedIndex, $result['aTable']->getIndex('translation_source'));
+    }
+
+    #[Test]
+    public function enrichDoesNotAddTranslationSourceKeyIfTranslationSourceIsNotDefined(): void
+    {
+        $GLOBALS['TCA']['aTable']['ctrl'] = [
+            'languageField' => 'sys_language_uid',
+            'transOrigPointerField' => 'l10n_parent',
+        ];
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
+        self::assertFalse($result['aTable']->hasIndex('translation_source'));
+    }
+
+    #[Test]
     public function enrichDoesNotAddL10nSourceIfLanguageFieldIsNotDefined(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
