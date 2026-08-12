@@ -126,6 +126,7 @@ final class ExtensionXmlParserTest extends UnitTestCase
                 'documentationlink' => 'https://docs.typo3.org/typo3cms/extensions/news',
                 'distributionimage' => '',
                 'distributionwelcomeimage' => '',
+                'composername' => 'georgringer/news',
             ],
             1 => [
                 'extkey' => 'news',
@@ -149,6 +150,7 @@ final class ExtensionXmlParserTest extends UnitTestCase
                 'documentationlink' => 'https://docs.typo3.org/typo3cms/extensions/news',
                 'distributionimage' => '',
                 'distributionwelcomeimage' => '',
+                'composername' => 'georgringer/news',
             ],
             2 => [
                 'extkey' => 'fake-news',
@@ -172,6 +174,7 @@ final class ExtensionXmlParserTest extends UnitTestCase
                 'documentationlink' => 'https://docs.typo3.org/typo3cms/extensions/news',
                 'distributionimage' => '',
                 'distributionwelcomeimage' => '',
+                'composername' => '',
             ],
         ];
 

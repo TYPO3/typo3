@@ -32,6 +32,7 @@ class Extension
     public string $version = '';
     public int $integerVersion = 0;
     public string $title = '';
+    public string $composerName = '';
     public string $description = '';
     public int $state = 0;
     public int $category = 0;
@@ -65,6 +66,7 @@ class Extension
         $extension->version = $row['version'] ?? '';
         $extension->alldownloadcounter = (int)($row['alldownloadcounter'] ?? 0);
         $extension->title = $row['title'] ?? '';
+        $extension->composerName = $row['composer_name'] ?? '';
         $extension->description = $row['description'] ?? '';
         $extension->state = (int)($row['state'] ?? 0);
         $extension->category = (int)($row['category'] ?? 0);

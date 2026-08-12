@@ -27,10 +27,12 @@ CREATE TABLE tx_extensionmanager_domain_model_extension (
   update_comment longtext,
   current_version smallint unsigned DEFAULT 0 NOT NULL,
   review_state int(11) NOT NULL default '0',
+  composer_name varchar(255) NOT NULL default '',
 
 	PRIMARY KEY (uid),
   KEY index_extrepo (extension_key,remote),
   KEY index_versionrepo (integer_version,remote,extension_key),
   KEY index_currentversions (current_version,review_state),
+  KEY composer_name (composer_name),
   UNIQUE versionextrepo (extension_key,version,remote)
 );
