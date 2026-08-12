@@ -79,8 +79,6 @@ class DatabaseCheck implements CheckInterface
      * List of database platforms to check
      *
      * @var string[]
-     * @todo Check if this property can be removed after DatabaseCheck::retrieveDatabasePlatformByDriverName() could be
-     *       removed.
      */
     private static $databaseDriverToPlatformMapping = [
         DoctrineMysqliDriver::class => DatabaseCheckPlatformMysql::class,
@@ -241,23 +239,6 @@ class DatabaseCheck implements CheckInterface
         }
 
         return $installedDrivers;
-    }
-
-    /**
-     * @throws Exception
-     * @todo This method seems to be unused. Check if it can be removed or if it needs to be deprecated.
-     */
-    public static function retrieveDatabasePlatformByDriverName(string $databaseDriverName): string
-    {
-        $databaseDriverClassName = static::retrieveDatabaseDriverClassByDriverName($databaseDriverName);
-        if (!empty(self::$databaseDriverToPlatformMapping[$databaseDriverClassName])) {
-            return self::$databaseDriverToPlatformMapping[$databaseDriverClassName];
-        }
-
-        throw new Exception(
-            sprintf('There is no database platform available for the given driver: %s', $databaseDriverName),
-            1573753057
-        );
     }
 
     /**
