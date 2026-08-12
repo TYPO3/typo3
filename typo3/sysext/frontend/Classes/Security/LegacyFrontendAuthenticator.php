@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Authentication\Event\AfterUserLoggedInEvent;
 use TYPO3\CMS\Core\Authentication\Pipeline\Authenticated;
 use TYPO3\CMS\Core\Authentication\Pipeline\AuthenticationResult;
 use TYPO3\CMS\Core\Authentication\Pipeline\AuthenticatorInterface;
+use TYPO3\CMS\Core\Authentication\Pipeline\LegacyAuthServiceDetector;
 use TYPO3\CMS\Core\Authentication\Pipeline\LegacyUserPrincipalFactory;
 use TYPO3\CMS\Core\Authentication\Pipeline\LoginRateLimiterGuard;
 use TYPO3\CMS\Core\Authentication\Pipeline\NotApplicable;
@@ -33,8 +34,14 @@ use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 /**
  * Performs frontend authentication through the legacy user authentication
  * object and its T3_SERVICES chain, exposed as a pipeline authenticator.
- * The frontend user object to operate on is taken from the "frontend.user"
- * request attribute prepared by the FrontendUserAuthenticator middleware.
+ *
+ * Only used when an extension registered an additional authentication
+ * service or modified the chain behavior - every existing authentication
+ * service keeps working unchanged this way. Installations without such
+ * extensions are handled by the native FrontendSessionAuthenticator and
+ * FrontendPasswordAuthenticator. The frontend user object to operate on is
+ * taken from the "frontend.user" request attribute prepared by the
+ * FrontendUserAuthenticator middleware.
  *
  * @internal not part of TYPO3 Core API, only exists for the migration period
  *           towards native pipeline authenticators
@@ -43,6 +50,7 @@ use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 final class LegacyFrontendAuthenticator implements AuthenticatorInterface
 {
     public function __construct(
+        private readonly LegacyAuthServiceDetector $legacyAuthServiceDetector,
         private readonly LoginRateLimiterGuard $rateLimiterGuard,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly LegacyUserPrincipalFactory $principalFactory,
@@ -51,7 +59,9 @@ final class LegacyFrontendAuthenticator implements AuthenticatorInterface
     public function authenticate(ServerRequestInterface $request, Realm $realm): AuthenticationResult
     {
         $frontendUser = $request->getAttribute('frontend.user');
-        if (!$frontendUser instanceof FrontendUserAuthentication) {
+        if (!$frontendUser instanceof FrontendUserAuthentication
+            || !$this->legacyAuthServiceDetector->requiresLegacyServiceChain()
+        ) {
             return new NotApplicable();
         }
         $rateLimiter = $this->rateLimiterGuard->ensureLoginRateLimit($frontendUser, $request);

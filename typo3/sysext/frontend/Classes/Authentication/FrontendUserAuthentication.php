@@ -20,6 +20,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 use TYPO3\CMS\Core\Authentication\GroupResolver;
 use TYPO3\CMS\Core\Authentication\LoginType;
+use TYPO3\CMS\Core\Authentication\Mfa\MfaRequiredException;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\SetCookieService;
@@ -162,6 +163,72 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
     }
 
     /**
+     * @internal only to be used by pipeline authenticators during the migration period
+     */
+    public function initializeFromPipeline(UserSession $userSession, ?array $userRecord, bool $activeLogin = false): void
+    {
+        if ($activeLogin) {
+            // At this point we do not know if we need to set a session or a permanent
+            // cookie, so the cookie is forced to be evaluated after authentication
+            // took place - same as in createUserSession().
+            $this->dontSetCookie = false;
+        }
+        parent::initializeFromPipeline($userSession, $userRecord, $activeLogin);
+    }
+
+    /**
+     * Evaluates the permanent login decision ("stay logged in") from the
+     * "permalogin" configuration and the submitted form value, controlling the
+     * type of the session cookie to be issued. Configuration values 0/1 can be
+     * overridden by the form value, configuration value 2 enforces it.
+     *
+     * @internal only to be used by pipeline authenticators during the migration period
+     */
+    public function evaluatePermanentLogin(ServerRequestInterface $request): bool
+    {
+        if ($GLOBALS['TYPO3_CONF_VARS']['FE']['permalogin'] == 0 || $GLOBALS['TYPO3_CONF_VARS']['FE']['permalogin'] == 1) {
+            $isPermanent = $request->getParsedBody()[$this->formfield_permanent] ?? null;
+            if ($isPermanent === null) {
+                $isPermanent = $GLOBALS['TYPO3_CONF_VARS']['FE']['permalogin'];
+            } elseif (!$isPermanent) {
+                // To make sure the user gets a session cookie and doesn't keep a possibly existing time based cookie,
+                // we need to force setting the session cookie here
+                $this->forceSetCookie = true;
+            }
+            $isPermanent = (bool)$isPermanent;
+        } elseif ($GLOBALS['TYPO3_CONF_VARS']['FE']['permalogin'] == 2) {
+            $isPermanent = true;
+        } else {
+            $isPermanent = false;
+        }
+        $this->is_permanent = $isPermanent;
+        return $isPermanent;
+    }
+
+    /**
+     * Throws an MfaRequiredException as the legacy authentication chain does,
+     * when the user has an active provider and has not passed multi-factor
+     * authentication in this session yet.
+     *
+     * @throws MfaRequiredException
+     * @internal only to be used by pipeline authenticators during the migration period
+     */
+    public function assertMfaRequirementsMet(): void
+    {
+        $this->evaluateMfaRequirements();
+    }
+
+    /**
+     * Whether the current login is to be treated as permanent ("stay logged in")
+     *
+     * @internal only to be used by pipeline authenticators during the migration period
+     */
+    public function isPermanentLogin(): bool
+    {
+        return (bool)$this->is_permanent;
+    }
+
+    /**
      * Returns the configured cookie name
      */
     public static function getCookieName(): string
@@ -206,23 +273,7 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
             $this->checkPid_value = null;
         }
 
-        if ($GLOBALS['TYPO3_CONF_VARS']['FE']['permalogin'] == 0 || $GLOBALS['TYPO3_CONF_VARS']['FE']['permalogin'] == 1) {
-            $isPermanent = $request->getParsedBody()[$this->formfield_permanent] ?? null;
-            if ($isPermanent === null) {
-                $isPermanent = $GLOBALS['TYPO3_CONF_VARS']['FE']['permalogin'];
-            } elseif (!$isPermanent) {
-                // To make sure the user gets a session cookie and doesn't keep a possibly existing time based cookie,
-                // we need to force setting the session cookie here
-                $this->forceSetCookie = true;
-            }
-            $isPermanent = (bool)$isPermanent;
-        } elseif ($GLOBALS['TYPO3_CONF_VARS']['FE']['permalogin'] == 2) {
-            $isPermanent = true;
-        } else {
-            $isPermanent = false;
-        }
-        $loginData['permanent'] = $isPermanent;
-        $this->is_permanent = $isPermanent;
+        $loginData['permanent'] = $this->evaluatePermanentLogin($request);
         return $loginData;
     }
 
