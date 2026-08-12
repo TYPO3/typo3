@@ -50,7 +50,7 @@ final class QueryFactoryTest extends UnitTestCase
             tableName: 'sys_category',
             rootLevel: $rootLevel,
         );
-        $dataMapFactoryMock = $this->createMock(DataMapFactory::class);
+        $dataMapFactoryMock = self::createStub(DataMapFactory::class);
         $dataMapFactoryMock->method('buildDataMap')->willReturn($dataMap);
         $subject = new QueryFactory(self::createStub(ConfigurationManagerInterface::class), $dataMapFactoryMock);
         $query = $this->createMock(QueryInterface::class);

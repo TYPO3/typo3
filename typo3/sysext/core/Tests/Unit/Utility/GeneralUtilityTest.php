@@ -1223,7 +1223,7 @@ final class GeneralUtilityTest extends UnitTestCase
     #[Test]
     public function isOnCurrentHostReturnsTrueWithCurrentHost(): void
     {
-        $normalizedParams = $this->createMock(NormalizedParams::class);
+        $normalizedParams = self::createStub(NormalizedParams::class);
         $normalizedParams->method('getRequestHost')->willReturn('http://example.org');
         $request = $this->createMock(ServerRequestInterface::class);
         $request->expects($this->atMost(PHP_INT_MAX))->method('getAttribute')->with('normalizedParams')->willReturn($normalizedParams);
@@ -1251,7 +1251,7 @@ final class GeneralUtilityTest extends UnitTestCase
     #[Test]
     public function isOnCurrentHostWithNotCurrentHostReturnsFalse(string $hostCandidate): void
     {
-        $normalizedParams = $this->createMock(NormalizedParams::class);
+        $normalizedParams = self::createStub(NormalizedParams::class);
         $normalizedParams->method('getRequestHost')->willReturn('http://example.org');
         $request = $this->createMock(ServerRequestInterface::class);
         $request->expects($this->atMost(PHP_INT_MAX))->method('getAttribute')->with('normalizedParams')->willReturn($normalizedParams);
@@ -2789,14 +2789,14 @@ final class GeneralUtilityTest extends UnitTestCase
     #[Test]
     public function makeInstanceCalledTwoTimesForSingletonClassReturnsSameInstance(): void
     {
-        $className = get_class($this->createMock(SingletonInterface::class));
+        $className = get_class(self::createStub(SingletonInterface::class));
         self::assertSame(GeneralUtility::makeInstance($className), GeneralUtility::makeInstance($className));
     }
 
     #[Test]
     public function makeInstanceCalledTwoTimesForSingletonClassWithPurgeInstancesInbetweenReturnsDifferentInstances(): void
     {
-        $className = get_class($this->createMock(SingletonInterface::class));
+        $className = get_class(self::createStub(SingletonInterface::class));
         $instance = GeneralUtility::makeInstance($className);
         GeneralUtility::purgeInstances();
         self::assertNotSame($instance, GeneralUtility::makeInstance($className));
@@ -2827,7 +2827,7 @@ final class GeneralUtilityTest extends UnitTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1288967686);
         $instance = $this->getMockBuilder(SingletonInterface::class)->getMock();
-        $singletonClassName = get_class($this->createMock(SingletonInterface::class));
+        $singletonClassName = get_class(self::createStub(SingletonInterface::class));
         GeneralUtility::setSingletonInstance($singletonClassName, $instance);
     }
 
@@ -2914,7 +2914,7 @@ final class GeneralUtilityTest extends UnitTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1288967686);
         $instance = $this->getMockBuilder(\stdClass::class)->getMock();
-        $singletonClassName = get_class($this->createMock(\stdClass::class));
+        $singletonClassName = get_class(self::createStub(\stdClass::class));
         GeneralUtility::addInstance($singletonClassName, $instance);
     }
 

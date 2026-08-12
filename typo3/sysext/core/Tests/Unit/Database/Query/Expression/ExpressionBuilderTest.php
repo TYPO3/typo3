@@ -306,7 +306,7 @@ final class ExpressionBuilderTest extends UnitTestCase
     #[Test]
     public function inSetForSQLite(): void
     {
-        $databasePlatform = $this->createMock(MockSQLitePlatform::class);
+        $databasePlatform = self::createStub(MockSQLitePlatform::class);
         $series = [
             [',', "','"],
             [',', "','"],
@@ -336,7 +336,7 @@ final class ExpressionBuilderTest extends UnitTestCase
     #[Test]
     public function inSetForSQLiteWithQuoteCharactersInValue(): void
     {
-        $databasePlatform = $this->createMock(MockSQLitePlatform::class);
+        $databasePlatform = self::createStub(MockSQLitePlatform::class);
         $series = [
             [',', "','"],
             [',', "','"],

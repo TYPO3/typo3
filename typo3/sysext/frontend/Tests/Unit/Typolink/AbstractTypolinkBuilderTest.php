@@ -176,7 +176,7 @@ final class AbstractTypolinkBuilderTest extends UnitTestCase
     #[Test]
     public function canResolveTheTargetAttribute(string $expected, array $conf, string $name): void
     {
-        $cObj = $this->createMock(ContentObjectRenderer::class);
+        $cObj = self::createStub(ContentObjectRenderer::class);
         $cObj->method('stdWrap')->willReturnArgument(0);
         $subject = new AbstractTypolinkBuilderFixture();
         self::assertEquals($expected, $subject->resolveTargetAttribute($conf, $name, $cObj));

@@ -937,8 +937,8 @@ final class QueryBuilderTest extends UnitTestCase
     #[Test]
     public function unquoteSingleIdentifierUnquotesCorrectlyOnDifferentPlatforms(string $platform, string $quoteChar, string $input, string $expected): void
     {
-        $connectionMock = $this->createMock(Connection::class);
-        $databasePlatformMock = $this->createMock($platform);
+        $connectionMock = self::createStub(Connection::class);
+        $databasePlatformMock = self::createStub($platform);
         $databasePlatformMock->method('quoteSingleIdentifier')->willReturnCallback(static function (string $str) use ($quoteChar): string {
             return $quoteChar . str_replace($quoteChar, $quoteChar . $quoteChar, $str) . $quoteChar;
         });
@@ -1022,7 +1022,7 @@ final class QueryBuilderTest extends UnitTestCase
     #[Test]
     public function settingRestrictionContainerWillAddAdditionalRestrictionsFromConstructor(): void
     {
-        $restrictionClass = get_class($this->createMock(QueryRestrictionInterface::class));
+        $restrictionClass = get_class(self::createStub(QueryRestrictionInterface::class));
         $queryBuilder = new QueryBuilder(
             $this->connection,
             null,
@@ -1041,7 +1041,7 @@ final class QueryBuilderTest extends UnitTestCase
     #[Test]
     public function settingRestrictionContainerWillAddAdditionalRestrictionsFromConfiguration(): void
     {
-        $restrictionClass = get_class($this->createMock(QueryRestrictionInterface::class));
+        $restrictionClass = get_class(self::createStub(QueryRestrictionInterface::class));
         $GLOBALS['TYPO3_CONF_VARS']['DB']['additionalQueryRestrictions'][$restrictionClass] = [];
         $queryBuilder = new QueryBuilder(
             $this->connection,
@@ -1058,7 +1058,7 @@ final class QueryBuilderTest extends UnitTestCase
     #[Test]
     public function settingRestrictionContainerWillNotAddAdditionalRestrictionsFromConfigurationIfNotDisabled(): void
     {
-        $restrictionClass = get_class($this->createMock(QueryRestrictionInterface::class));
+        $restrictionClass = get_class(self::createStub(QueryRestrictionInterface::class));
         $GLOBALS['TYPO3_CONF_VARS']['DB']['additionalQueryRestrictions'][$restrictionClass] = ['disabled' => true];
         $queryBuilder = new QueryBuilder(
             $this->connection,
@@ -1075,7 +1075,7 @@ final class QueryBuilderTest extends UnitTestCase
     #[Test]
     public function resettingToDefaultRestrictionContainerWillAddAdditionalRestrictionsFromConfiguration(): void
     {
-        $restrictionClass = get_class($this->createMock(QueryRestrictionInterface::class));
+        $restrictionClass = get_class(self::createStub(QueryRestrictionInterface::class));
         $queryBuilder = new QueryBuilder(
             $this->connection,
             null,
@@ -1505,7 +1505,7 @@ final class QueryBuilderTest extends UnitTestCase
 
     private function createContainerWithTcaSchemaFactoryInstance(?TcaSchemaFactory $tcaSchemaFactory = null): ContainerInterface
     {
-        $tcaSchemaFactoryMock = $tcaSchemaFactory ?? $this->createMock(TcaSchemaFactory::class);
+        $tcaSchemaFactoryMock = $tcaSchemaFactory ?? self::createStub(TcaSchemaFactory::class);
         $container = new Container();
         $container->set(TcaSchemaFactory::class, $tcaSchemaFactoryMock);
         return $container;

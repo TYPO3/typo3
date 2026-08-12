@@ -33,7 +33,7 @@ final class FileTest extends UnitTestCase
     #[Test]
     public function commonPropertiesAreAvailableWithOwnGetters(): void
     {
-        $storageMock = $this->createMock(ResourceStorage::class);
+        $storageMock = self::createStub(ResourceStorage::class);
         $storageMock->method('getUid')->willReturn(5);
         $properties = [
             'name' => StringUtility::getUniqueId('name_'),
@@ -49,7 +49,7 @@ final class FileTest extends UnitTestCase
     #[Test]
     public function fileIndexStatusIsTrueIfUidIsSet(): void
     {
-        $storageMock = $this->createMock(ResourceStorage::class);
+        $storageMock = self::createStub(ResourceStorage::class);
         $storageMock->method('getUid')->willReturn(5);
 
         $fixture = new File(['uid' => 1], $storageMock);
@@ -59,7 +59,7 @@ final class FileTest extends UnitTestCase
     #[Test]
     public function updatePropertiesUpdatesFileProperties(): void
     {
-        $storageMock = $this->createMock(ResourceStorage::class);
+        $storageMock = self::createStub(ResourceStorage::class);
         $storageMock->method('getUid')->willReturn(5);
 
         $identifier = '/' . StringUtility::getUniqueId('identifier_');
@@ -71,7 +71,7 @@ final class FileTest extends UnitTestCase
     #[Test]
     public function updatePropertiesLeavesPropertiesUntouchedIfNotSetInNewProperties(): void
     {
-        $storageMock = $this->createMock(ResourceStorage::class);
+        $storageMock = self::createStub(ResourceStorage::class);
         $storageMock->method('getUid')->willReturn(5);
 
         $fixture = new File(['uid' => 1, 'foo' => 'asdf', 'identifier' => '/test'], $storageMock);
@@ -83,7 +83,7 @@ final class FileTest extends UnitTestCase
     #[Test]
     public function updatePropertiesDiscardsUidIfAlreadySet(): void
     {
-        $storageMock = $this->createMock(ResourceStorage::class);
+        $storageMock = self::createStub(ResourceStorage::class);
         $storageMock->method('getUid')->willReturn(5);
 
         $fixture = new File(['uid' => 1, 'identifier' => '/test'], $storageMock);
@@ -94,7 +94,7 @@ final class FileTest extends UnitTestCase
     #[Test]
     public function updatePropertiesRecordsNamesOfChangedProperties(): void
     {
-        $storageMock = $this->createMock(ResourceStorage::class);
+        $storageMock = self::createStub(ResourceStorage::class);
         $storageMock->method('getUid')->willReturn(5);
 
         $fixture = new File(['uid' => 1, 'foo' => 'asdf', 'baz' => 'fdsw', 'identifier' => '/test'], $storageMock);
@@ -105,7 +105,7 @@ final class FileTest extends UnitTestCase
     #[Test]
     public function updatePropertiesDoesNotRecordPropertyNameIfSameValueIsProvided(): void
     {
-        $storageMock = $this->createMock(ResourceStorage::class);
+        $storageMock = self::createStub(ResourceStorage::class);
         $storageMock->method('getUid')->willReturn(5);
 
         $fixture = new File(['uid' => 1, 'foo' => 'asdf', 'identifier' => '/test'], $storageMock);
@@ -116,7 +116,7 @@ final class FileTest extends UnitTestCase
     #[Test]
     public function updatePropertiesMarksPropertyAsChangedOnlyOnce(): void
     {
-        $storageMock = $this->createMock(ResourceStorage::class);
+        $storageMock = self::createStub(ResourceStorage::class);
         $storageMock->method('getUid')->willReturn(5);
 
         $fixture = new File(['uid' => 1, 'foo' => 'asdf', 'baz' => 'fdsw', 'identifier' => '/test'], $storageMock);
@@ -128,7 +128,7 @@ final class FileTest extends UnitTestCase
     #[Test]
     public function updatePropertiesReloadsStorageObjectIfStorageChanges(): void
     {
-        $storageMock = $this->createMock(ResourceStorage::class);
+        $storageMock = self::createStub(ResourceStorage::class);
         $storageMock->method('getUid')->willReturn(5);
 
         $fileProperties = [
@@ -154,11 +154,11 @@ final class FileTest extends UnitTestCase
     #[Test]
     public function copyToCallsCopyOperationOnTargetFolderStorage(): void
     {
-        $storageMock = $this->createMock(ResourceStorage::class);
+        $storageMock = self::createStub(ResourceStorage::class);
         $storageMock->method('getUid')->willReturn(5);
 
         $targetStorage = $this->createMock(ResourceStorage::class);
-        $targetFolder = $this->createMock(Folder::class);
+        $targetFolder = self::createStub(Folder::class);
         $targetFolder->method('getStorage')->willReturn($targetStorage);
         $fixture = new File([], $storageMock);
         $targetStorage->expects($this->once())->method('copyFile')->with(self::equalTo($fixture), self::equalTo($targetFolder));
@@ -168,11 +168,11 @@ final class FileTest extends UnitTestCase
     #[Test]
     public function moveToCallsMoveOperationOnTargetFolderStorage(): void
     {
-        $storageMock = $this->createMock(ResourceStorage::class);
+        $storageMock = self::createStub(ResourceStorage::class);
         $storageMock->method('getUid')->willReturn(5);
 
         $targetStorage = $this->createMock(ResourceStorage::class);
-        $targetFolder = $this->createMock(Folder::class);
+        $targetFolder = self::createStub(Folder::class);
         $targetFolder->method('getStorage')->willReturn($targetStorage);
         $fixture = new File([], $storageMock);
         $targetStorage->expects($this->once())->method('moveFile')->with(self::equalTo($fixture), self::equalTo($targetFolder));
@@ -192,9 +192,9 @@ final class FileTest extends UnitTestCase
 
     #[DataProvider('filenameExtensionDataProvider')]
     #[Test]
-    public function getNameWithoutExtensionReturnsCorrectName($originalFilename, $expectedBasename): void
+    public function getNameWithoutExtensionReturnsCorrectName($originalFilename, $expectedBasename, $_): void
     {
-        $storageMock = $this->createMock(ResourceStorage::class);
+        $storageMock = self::createStub(ResourceStorage::class);
         $storageMock->method('getUid')->willReturn(5);
 
         $fixture = new File(
@@ -211,7 +211,7 @@ final class FileTest extends UnitTestCase
     #[Test]
     public function getExtensionReturnsCorrectExtension($originalFilename, $expectedBasename, $expectedExtension): void
     {
-        $storageMock = $this->createMock(ResourceStorage::class);
+        $storageMock = self::createStub(ResourceStorage::class);
         $storageMock->method('getUid')->willReturn(5);
 
         $fixture = new File([
@@ -224,7 +224,7 @@ final class FileTest extends UnitTestCase
     #[Test]
     public function hasPropertyReturnsTrueFilePropertyExists(): void
     {
-        $storageMock = $this->createMock(ResourceStorage::class);
+        $storageMock = self::createStub(ResourceStorage::class);
         $storageMock->method('getUid')->willReturn(5);
 
         $fixture = new File(['testproperty' => 'testvalue'], $storageMock);
@@ -234,7 +234,7 @@ final class FileTest extends UnitTestCase
     #[Test]
     public function hasPropertyReturnsTrueIfMetadataPropertyExists(): void
     {
-        $storageMock = $this->createMock(ResourceStorage::class);
+        $storageMock = self::createStub(ResourceStorage::class);
         $storageMock->method('getUid')->willReturn(5);
 
         $fixture = $this->getMockBuilder(File::class)
@@ -257,7 +257,7 @@ final class FileTest extends UnitTestCase
     #[Test]
     public function getPropertiesContainsUidOfSysFileMetadata(): void
     {
-        $storageMock = $this->createMock(ResourceStorage::class);
+        $storageMock = self::createStub(ResourceStorage::class);
         $storageMock->method('getUid')->willReturn(5);
 
         $fileData = [

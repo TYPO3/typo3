@@ -36,15 +36,13 @@ final class ListUtilityTest extends UnitTestCase
         parent::setUp();
         $this->subject = new ListUtility();
         $this->subject->injectEventDispatcher(new NoopEventDispatcher());
-        $packageManagerMock = $this->getMockBuilder(PackageManager::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $packageManagerMock = self::createStub(PackageManager::class);
         $packageManagerMock
                 ->method('getActivePackages')
                 ->willReturn([
-                    'lang' => $this->getMockBuilder(Package::class)->disableOriginalConstructor()->getMock(),
-                    'news' => $this->getMockBuilder(Package::class)->disableOriginalConstructor()->getMock(),
-                    'felogin' => $this->getMockBuilder(Package::class)->disableOriginalConstructor()->getMock(),
+                    'lang' => self::createStub(Package::class),
+                    'news' => self::createStub(Package::class),
+                    'felogin' => self::createStub(Package::class),
                 ]);
         $this->subject->injectPackageManager($packageManagerMock);
     }

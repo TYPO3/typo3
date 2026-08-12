@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
@@ -34,7 +35,7 @@ final class ProcessedFileTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    private Folder&MockObject $folderMock;
+    private Folder&Stub $folderStub;
 
     private ResourceStorage&MockObject $storageMock;
 
@@ -51,10 +52,10 @@ final class ProcessedFileTest extends UnitTestCase
         $this->storageMock->method('hashFile')->willReturn('');
         $this->storageMock->method('deleteFile')->willReturn(true);
 
-        $this->folderMock = $this->createMock(Folder::class);
-        $this->folderMock->method('getStorage')->willReturn($this->storageMock);
+        $this->folderStub = self::createStub(Folder::class);
+        $this->folderStub->method('getStorage')->willReturn($this->storageMock);
 
-        $this->storageMock->method('getProcessingFolder')->willReturn($this->folderMock);
+        $this->storageMock->method('getProcessingFolder')->willReturn($this->folderStub);
 
         $this->databaseRow = [
             'uid' => '1234567',

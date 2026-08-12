@@ -37,7 +37,7 @@ final class ImageScriptServiceTest extends UnitTestCase
     {
         $subject = new ImageService(self::createStub(ResourceFactory::class));
         $reference = $this->getMockBuilder(FileReference::class)->disableOriginalConstructor()->getMock();
-        $processedFile = $this->createMock(ProcessedFile::class);
+        $processedFile = self::createStub(ProcessedFile::class);
         $reference->expects($this->once())->method('process')->willReturn($processedFile);
 
         self::assertSame($processedFile, $subject->applyProcessingInstructions($reference, []));

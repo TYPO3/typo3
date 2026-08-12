@@ -60,9 +60,9 @@ final class PaletteAndSingleContainerTest extends UnitTestCase
             ],
         ];
 
-        $languageService = $this->createMock(LanguageService::class);
+        $languageService = self::createStub(LanguageService::class);
         $GLOBALS['LANG'] = $languageService;
-        $backendUserAuthentication = $this->createMock(BackendUserAuthentication::class);
+        $backendUserAuthentication = self::createStub(BackendUserAuthentication::class);
         $backendUserAuthentication->method('shallDisplayDebugInformation')->willReturn(true);
         $GLOBALS['BE_USER'] = $backendUserAuthentication;
 
@@ -127,9 +127,9 @@ final class PaletteAndSingleContainerTest extends UnitTestCase
             ],
         ];
 
-        $languageService = $this->createMock(LanguageService::class);
+        $languageService = self::createStub(LanguageService::class);
         $GLOBALS['LANG'] = $languageService;
-        $backendUserAuthentication = $this->createMock(BackendUserAuthentication::class);
+        $backendUserAuthentication = self::createStub(BackendUserAuthentication::class);
         $backendUserAuthentication->method('shallDisplayDebugInformation')->willReturn(true);
         $GLOBALS['BE_USER'] = $backendUserAuthentication;
 
@@ -196,9 +196,9 @@ final class PaletteAndSingleContainerTest extends UnitTestCase
             ],
         ];
 
-        $languageService = $this->createMock(LanguageService::class);
+        $languageService = self::createStub(LanguageService::class);
         $GLOBALS['LANG'] = $languageService;
-        $backendUserAuthentication = $this->createMock(BackendUserAuthentication::class);
+        $backendUserAuthentication = self::createStub(BackendUserAuthentication::class);
         $backendUserAuthentication->method('shallDisplayDebugInformation')->willReturn(true);
         $GLOBALS['BE_USER'] = $backendUserAuthentication;
 

@@ -32,7 +32,7 @@ final class HandlersLocatorFactoryTest extends UnitTestCase
     {
         // The container is never touched while listing handlers - the descriptor
         // callable only resolves the service when the handler is actually invoked.
-        $container = $this->createMock(ContainerInterface::class);
+        $container = self::createStub(ContainerInterface::class);
         return new HandlersLocatorFactory($container);
     }
 

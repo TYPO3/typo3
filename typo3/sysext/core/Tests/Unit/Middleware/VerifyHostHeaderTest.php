@@ -224,7 +224,7 @@ final class VerifyHostHeaderTest extends UnitTestCase
 
     #[DataProvider('hostnamesNotMatchingTrustedHostsConfigurationDataProvider')]
     #[Test]
-    public function processAllowsAllHostnameValuesIfHostPatternIsSetToAllowAll(string $httpHost): void
+    public function processAllowsAllHostnameValuesIfHostPatternIsSetToAllowAll(string $httpHost, string $_): void
     {
         $serverParams = $_SERVER;
         $serverParams['HTTP_HOST'] = $httpHost;

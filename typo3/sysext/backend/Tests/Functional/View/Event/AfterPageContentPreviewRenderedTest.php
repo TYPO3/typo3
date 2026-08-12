@@ -68,7 +68,7 @@ final class AfterPageContentPreviewRenderedTest extends FunctionalTestCase
             ->onlyMethods(['getRecordType'])
             ->getMock();
 
-        $mockedGridColumnItem->method('getRecordType')->willReturn('myRecordType');
+        $mockedGridColumnItem->expects($this->atLeast(1))->method('getRecordType')->willReturn('myRecordType');
 
         /** @var Container $container */
         $container = $this->get('service_container');

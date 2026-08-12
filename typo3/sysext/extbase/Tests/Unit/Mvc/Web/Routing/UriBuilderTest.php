@@ -61,7 +61,7 @@ final class UriBuilderTest extends UnitTestCase
         $router->addRoute('module_key.controller2_action2', new Route('/test/Path/Controller2/action2', []));
         $router->addRoute('module_key2', new Route('/test/Path2', []));
         $router->addRoute('', new Route('', []));
-        $formProtectionFactory = $this->createMock(FormProtectionFactory::class);
+        $formProtectionFactory = self::createStub(FormProtectionFactory::class);
         $formProtectionFactory->method('createForType')->willReturn(new DisabledFormProtection());
         GeneralUtility::setSingletonInstance(BackendUriBuilder::class, new BackendUriBuilder($router, $formProtectionFactory, $requestContextFactory));
     }
@@ -515,7 +515,7 @@ final class UriBuilderTest extends UnitTestCase
     #[Test]
     public function buildFrontendUriConvertsEnumAfterArgumentsHaveBeenMerged(): void
     {
-        $mockContentObject = $this->createMock(ContentObjectRenderer::class);
+        $mockContentObject = self::createStub(ContentObjectRenderer::class);
         $serverRequest = $this->getRequestWithRouteAttribute()
             ->withAttribute('extbase', new ExtbaseRequestParameters());
         $request =  new Request($serverRequest);
@@ -540,7 +540,7 @@ final class UriBuilderTest extends UnitTestCase
                 return 'string-from-stringable';
             }
         };
-        $mockContentObject = $this->createMock(ContentObjectRenderer::class);
+        $mockContentObject = self::createStub(ContentObjectRenderer::class);
         $serverRequest = $this->getRequestWithRouteAttribute()
             ->withAttribute('extbase', new ExtbaseRequestParameters());
         $request =  new Request($serverRequest);
@@ -719,7 +719,7 @@ final class UriBuilderTest extends UnitTestCase
         $subject = $this->getAccessibleMock(UriBuilder::class, null, [$mockExtensionService]);
         $subject->setTargetPageUid(123);
         $subject->setFormat('txt');
-        $subject->setRequest($this->createMock(Request::class));
+        $subject->setRequest(self::createStub(Request::class));
         $expectedConfiguration = ['parameter' => '123,0'];
         self::assertEquals($expectedConfiguration, $subject->_call('buildTypolinkConfiguration'));
     }

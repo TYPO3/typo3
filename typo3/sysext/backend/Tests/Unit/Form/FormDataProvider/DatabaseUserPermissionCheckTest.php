@@ -241,7 +241,7 @@ final class DatabaseUserPermissionCheckTest extends UnitTestCase
         $rootLevelCapability = new RootLevelCapability(0, true);
         $schema = $this->createMock(TcaSchema::class);
         $schema->expects($this->atMost(PHP_INT_MAX))->method('getCapability')->with(TcaSchemaCapability::RestrictionRootLevel)->willReturn($rootLevelCapability);
-        $schemaFactory = $this->createMock(TcaSchemaFactory::class);
+        $schemaFactory = self::createStub(TcaSchemaFactory::class);
         $schemaFactory->method('get')->willReturn($schema);
 
         $result = new DatabaseUserPermissionCheck(new NoopEventDispatcher())->addData($input);
@@ -272,7 +272,7 @@ final class DatabaseUserPermissionCheckTest extends UnitTestCase
         $rootLevelCapability = new RootLevelCapability(0, false);
         $schema = $this->createMock(TcaSchema::class);
         $schema->expects($this->atMost(PHP_INT_MAX))->method('getCapability')->with(TcaSchemaCapability::RestrictionRootLevel)->willReturn($rootLevelCapability);
-        $schemaFactory = $this->createMock(TcaSchemaFactory::class);
+        $schemaFactory = self::createStub(TcaSchemaFactory::class);
         $schemaFactory->method('get')->willReturn($schema);
 
         new DatabaseUserPermissionCheck(new NoopEventDispatcher())->addData($input);
@@ -437,7 +437,7 @@ final class DatabaseUserPermissionCheckTest extends UnitTestCase
         $rootLevelCapability = new RootLevelCapability(-1, false);
         $schema = $this->createMock(TcaSchema::class);
         $schema->expects($this->atMost(PHP_INT_MAX))->method('getCapability')->with(TcaSchemaCapability::RestrictionRootLevel)->willReturn($rootLevelCapability);
-        $schemaFactory = $this->createMock(TcaSchemaFactory::class);
+        $schemaFactory = self::createStub(TcaSchemaFactory::class);
         $schemaFactory->method('get')->willReturn($schema);
 
         $result = new DatabaseUserPermissionCheck(new NoopEventDispatcher())->addData($input);
@@ -484,7 +484,7 @@ final class DatabaseUserPermissionCheckTest extends UnitTestCase
         $rootLevelCapability = new RootLevelCapability(0, true);
         $schema = $this->createMock(TcaSchema::class);
         $schema->expects($this->atMost(PHP_INT_MAX))->method('getCapability')->with(TcaSchemaCapability::RestrictionRootLevel)->willReturn($rootLevelCapability);
-        $schemaFactory = $this->createMock(TcaSchemaFactory::class);
+        $schemaFactory = self::createStub(TcaSchemaFactory::class);
         $schemaFactory->method('get')->willReturn($schema);
 
         $result = new DatabaseUserPermissionCheck(new NoopEventDispatcher())->addData($input);
@@ -509,7 +509,7 @@ final class DatabaseUserPermissionCheckTest extends UnitTestCase
         $rootLevelCapability = new RootLevelCapability(0, false);
         $schema = $this->createMock(TcaSchema::class);
         $schema->expects($this->atMost(PHP_INT_MAX))->method('getCapability')->with(TcaSchemaCapability::RestrictionRootLevel)->willReturn($rootLevelCapability);
-        $schemaFactory = $this->createMock(TcaSchemaFactory::class);
+        $schemaFactory = self::createStub(TcaSchemaFactory::class);
         $schemaFactory->method('get')->willReturn($schema);
 
         $this->expectException(AccessDeniedRootNodeException::class);

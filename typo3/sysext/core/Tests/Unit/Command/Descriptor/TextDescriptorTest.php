@@ -29,7 +29,7 @@ final class TextDescriptorTest extends UnitTestCase
     #[Test]
     public function ensureEmptyStringIsSetForDescriptionIfNoDescriptionForCommandIsGiven(): void
     {
-        $commandRegistry = $this->createMock(CommandRegistry::class);
+        $commandRegistry = self::createStub(CommandRegistry::class);
         $commandRegistry
             ->method('filter')
             ->willReturn([
@@ -60,7 +60,7 @@ final class TextDescriptorTest extends UnitTestCase
         $subject->_set('output', $output);
         $subject->_call(
             'describeApplication',
-            $this->createMock(Application::class),
+            self::createStub(Application::class),
             ['raw_text' => true]
         );
     }

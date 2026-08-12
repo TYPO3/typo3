@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Security;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Backend\Security\EmailLoginNotification;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -39,20 +40,18 @@ final class EmailLoginNotificationTest extends UnitTestCase
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] = 'My TYPO3 Inc.';
 
         $userSettings = new UserSettings(['emailMeAtLogin' => 1]);
-        $backendUser = $this->getMockBuilder(BackendUserAuthentication::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $backendUser = self::createStub(BackendUserAuthentication::class);
         $backendUser->method('getUserSettings')->willReturn($userSettings);
         $backendUser->user = [
             'email' => 'test@acme.com',
         ];
 
         $mailMessage = $this->createMailMessageMock();
-        $emailFactoryMock = $this->createTemplatedEmailFactoryMock($mailMessage);
+        $emailFactoryStub = $this->createTemplatedEmailFactoryStub($mailMessage);
         $mailerMock = $this->createMock(MailerInterface::class);
         $mailerMock->expects($this->once())->method('send')->with($mailMessage);
 
-        $subject = new EmailLoginNotification($mailerMock, $emailFactoryMock, self::createStub(LoggerInterface::class));
+        $subject = new EmailLoginNotification($mailerMock, $emailFactoryStub, self::createStub(LoggerInterface::class));
         $subject->emailAtLogin(new AfterUserLoggedInEvent($backendUser));
     }
 
@@ -64,9 +63,7 @@ final class EmailLoginNotificationTest extends UnitTestCase
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] = 'My TYPO3 Inc.';
 
         $userSettings = new UserSettings(['emailMeAtLogin' => 0]);
-        $backendUser = $this->getMockBuilder(BackendUserAuthentication::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $backendUser = self::createStub(BackendUserAuthentication::class);
         $backendUser->method('getUserSettings')->willReturn($userSettings);
         $backendUser->user = [
             'username' => 'karl',
@@ -88,9 +85,7 @@ final class EmailLoginNotificationTest extends UnitTestCase
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] = 'My TYPO3 Inc.';
 
         $userSettings = new UserSettings(['emailMeAtLogin' => 1]);
-        $backendUser = $this->getMockBuilder(BackendUserAuthentication::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $backendUser = self::createStub(BackendUserAuthentication::class);
         $backendUser->method('getUserSettings')->willReturn($userSettings);
         $backendUser->user = [
             'username' => 'karl',
@@ -112,20 +107,18 @@ final class EmailLoginNotificationTest extends UnitTestCase
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] = 'My TYPO3 Inc.';
         $GLOBALS['TYPO3_CONF_VARS']['BE']['warning_email_addr'] = 'typo3-admin@acme.com';
         $GLOBALS['TYPO3_CONF_VARS']['BE']['warning_mode'] = 2;
-        $backendUser = $this->getMockBuilder(BackendUserAuthentication::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $backendUser = self::createStub(BackendUserAuthentication::class);
         $backendUser->method('isAdmin')->willReturn(true);
         $backendUser->user = [
             'username' => 'karl',
         ];
 
         $mailMessage = $this->createMailMessageMock('typo3-admin@acme.com');
-        $emailFactoryMock = $this->createTemplatedEmailFactoryMock($mailMessage);
+        $emailFactoryStub = $this->createTemplatedEmailFactoryStub($mailMessage);
         $mailerMock = $this->createMock(MailerInterface::class);
         $mailerMock->expects($this->once())->method('send')->with($mailMessage);
 
-        $subject = new EmailLoginNotification($mailerMock, $emailFactoryMock, self::createStub(LoggerInterface::class));
+        $subject = new EmailLoginNotification($mailerMock, $emailFactoryStub, self::createStub(LoggerInterface::class));
         $subject->emailAtLogin(new AfterUserLoggedInEvent($backendUser));
     }
 
@@ -137,20 +130,18 @@ final class EmailLoginNotificationTest extends UnitTestCase
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] = 'My TYPO3 Inc.';
         $GLOBALS['TYPO3_CONF_VARS']['BE']['warning_email_addr'] = 'typo3-admin@acme.com';
         $GLOBALS['TYPO3_CONF_VARS']['BE']['warning_mode'] = 1;
-        $backendUser = $this->getMockBuilder(BackendUserAuthentication::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $backendUser = self::createStub(BackendUserAuthentication::class);
         $backendUser->method('isAdmin')->willReturn(true);
         $backendUser->user = [
             'username' => 'karl',
         ];
 
         $mailMessage = $this->createMailMessageMock('typo3-admin@acme.com');
-        $emailFactoryMock = $this->createTemplatedEmailFactoryMock($mailMessage);
+        $emailFactoryStub = $this->createTemplatedEmailFactoryStub($mailMessage);
         $mailerMock = $this->createMock(MailerInterface::class);
         $mailerMock->expects($this->once())->method('send')->with($mailMessage);
 
-        $subject = new EmailLoginNotification($mailerMock, $emailFactoryMock, self::createStub(LoggerInterface::class));
+        $subject = new EmailLoginNotification($mailerMock, $emailFactoryStub, self::createStub(LoggerInterface::class));
         $subject->emailAtLogin(new AfterUserLoggedInEvent($backendUser));
     }
 
@@ -162,20 +153,18 @@ final class EmailLoginNotificationTest extends UnitTestCase
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] = 'My TYPO3 Inc.';
         $GLOBALS['TYPO3_CONF_VARS']['BE']['warning_email_addr'] = 'typo3-admin@acme.com';
         $GLOBALS['TYPO3_CONF_VARS']['BE']['warning_mode'] = 1;
-        $backendUser = $this->getMockBuilder(BackendUserAuthentication::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $backendUser = self::createStub(BackendUserAuthentication::class);
         $backendUser->method('isAdmin')->willReturn(false);
         $backendUser->user = [
             'username' => 'karl',
         ];
 
         $mailMessage = $this->createMailMessageMock('typo3-admin@acme.com');
-        $emailFactoryMock = $this->createTemplatedEmailFactoryMock($mailMessage);
+        $emailFactoryStub = $this->createTemplatedEmailFactoryStub($mailMessage);
         $mailerMock = $this->createMock(MailerInterface::class);
         $mailerMock->expects($this->once())->method('send')->with($mailMessage);
 
-        $subject = new EmailLoginNotification($mailerMock, $emailFactoryMock, self::createStub(LoggerInterface::class));
+        $subject = new EmailLoginNotification($mailerMock, $emailFactoryStub, self::createStub(LoggerInterface::class));
         $subject->emailAtLogin(new AfterUserLoggedInEvent($backendUser));
     }
 
@@ -187,9 +176,7 @@ final class EmailLoginNotificationTest extends UnitTestCase
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] = 'My TYPO3 Inc.';
         $GLOBALS['TYPO3_CONF_VARS']['BE']['warning_email_addr'] = 'typo3-admin@acme.com';
         $GLOBALS['TYPO3_CONF_VARS']['BE']['warning_mode'] = 2;
-        $backendUser = $this->getMockBuilder(BackendUserAuthentication::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $backendUser = self::createStub(BackendUserAuthentication::class);
         $backendUser->method('isAdmin')->willReturn(false);
         $backendUser->user = [
             'username' => 'karl',
@@ -217,10 +204,10 @@ final class EmailLoginNotificationTest extends UnitTestCase
         return $mailMessage;
     }
 
-    private function createTemplatedEmailFactoryMock(FluidEmail&MockObject $mailMessage): TemplatedEmailFactory&MockObject
+    private function createTemplatedEmailFactoryStub(FluidEmail&MockObject $mailMessage): TemplatedEmailFactory&Stub
     {
-        $emailFactoryMock = $this->createMock(TemplatedEmailFactory::class);
-        $emailFactoryMock->method('create')->willReturn($mailMessage);
-        return $emailFactoryMock;
+        $emailFactoryStub = self::createStub(TemplatedEmailFactory::class);
+        $emailFactoryStub->method('create')->willReturn($mailMessage);
+        return $emailFactoryStub;
     }
 }

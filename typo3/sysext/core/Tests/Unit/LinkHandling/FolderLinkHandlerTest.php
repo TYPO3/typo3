@@ -68,9 +68,7 @@ final class FolderLinkHandlerTest extends UnitTestCase
     #[Test]
     public function resolveFileReferencesToSplitParameters(array $input, array $expected, string $_): void
     {
-        $storage = $this->getMockBuilder(ResourceStorage::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $storage = self::createStub(ResourceStorage::class);
 
         $factory = $this->getMockBuilder(ResourceFactory::class)
             ->disableOriginalConstructor()
@@ -102,9 +100,7 @@ final class FolderLinkHandlerTest extends UnitTestCase
 
         $folderObject->method('getCombinedIdentifier')->willReturn($parameters['folder']);
         $folderData = explode(':', $parameters['folder']);
-        $storage = $this->getMockBuilder(ResourceStorage::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $storage = self::createStub(ResourceStorage::class);
         $storage->method('getUid')->willReturn((int)$folderData[0]);
         $folderObject->method('getStorage')->willReturn($storage);
         $folderObject->method('getIdentifier')->willReturn($folderData[1]);

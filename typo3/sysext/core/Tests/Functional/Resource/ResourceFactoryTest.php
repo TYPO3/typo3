@@ -185,7 +185,7 @@ final class ResourceFactoryTest extends FunctionalTestCase
     #[Test]
     public function resolveFileObjectPassesAnAlreadyResolvedFileThrough(): void
     {
-        $file = $this->createMock(File::class);
+        $file = self::createStub(File::class);
         $subject = $this->getMockBuilder(ResourceFactory::class)
             ->onlyMethods(['getFileObject'])
             ->disableOriginalConstructor()
@@ -197,7 +197,7 @@ final class ResourceFactoryTest extends FunctionalTestCase
     #[Test]
     public function resolveFileObjectUnwrapsADomainObjectViaGetOriginalResource(): void
     {
-        $file = $this->createMock(File::class);
+        $file = self::createStub(File::class);
         $domainObject = new class ($file) implements FileCarrierInterface {
             public function __construct(private readonly File $file) {}
             public function getOriginalResource(): File
@@ -227,7 +227,7 @@ final class ResourceFactoryTest extends FunctionalTestCase
     #[Test]
     public function resolveFileObjectResolvesAnIntegerToAFile(): void
     {
-        $file = $this->createMock(File::class);
+        $file = self::createStub(File::class);
         $subject = $this->getMockBuilder(ResourceFactory::class)
             ->onlyMethods(['getFileObject', 'getFileReferenceObject'])
             ->disableOriginalConstructor()
@@ -240,7 +240,7 @@ final class ResourceFactoryTest extends FunctionalTestCase
     #[Test]
     public function resolveFileObjectResolvesAnIntegerToAFileReferenceIfRequested(): void
     {
-        $fileReference = $this->createMock(FileReference::class);
+        $fileReference = self::createStub(FileReference::class);
         $subject = $this->getMockBuilder(ResourceFactory::class)
             ->onlyMethods(['getFileObject', 'getFileReferenceObject'])
             ->disableOriginalConstructor()
@@ -253,7 +253,7 @@ final class ResourceFactoryTest extends FunctionalTestCase
     #[Test]
     public function resolveFileObjectResolvesACombinedIdentifier(): void
     {
-        $file = $this->createMock(File::class);
+        $file = self::createStub(File::class);
         $subject = $this->getMockBuilder(ResourceFactory::class)
             ->onlyMethods(['getObjectFromCombinedIdentifier'])
             ->disableOriginalConstructor()
@@ -275,7 +275,7 @@ final class ResourceFactoryTest extends FunctionalTestCase
         $subject->expects($this->once())
             ->method('getObjectFromCombinedIdentifier')
             ->with('1:/aFolder/')
-            ->willReturn($this->createMock(Folder::class));
+            ->willReturn(self::createStub(Folder::class));
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1625585158);
         $subject->resolveFileObject('1:/aFolder/');
@@ -284,7 +284,7 @@ final class ResourceFactoryTest extends FunctionalTestCase
     #[Test]
     public function resolveFileObjectDelegatesAT3FileUrnToTheLinkService(): void
     {
-        $file = $this->createMock(File::class);
+        $file = self::createStub(File::class);
         $linkService = $this->createMock(LinkService::class);
         $linkService->expects($this->once())
             ->method('resolveByStringRepresentation')
@@ -308,7 +308,7 @@ final class ResourceFactoryTest extends FunctionalTestCase
             ->onlyMethods(['getObjectFromCombinedIdentifier'])
             ->disableOriginalConstructor()
             ->getMock();
-        $subject->method('getObjectFromCombinedIdentifier')->willReturn($this->createMock(ProcessedFile::class));
+        $subject->method('getObjectFromCombinedIdentifier')->willReturn(self::createStub(ProcessedFile::class));
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1382687163);
         $subject->resolveFileObject('1:/processed.jpg');

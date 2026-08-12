@@ -251,13 +251,9 @@ final class LegacyLinkNotationConverterTest extends UnitTestCase
     #[Test]
     public function resolveFileReferencesToSplitParameters(string $input, array $expected, string $_): void
     {
-        $storage = $this->getMockBuilder(ResourceStorage::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $storage = self::createStub(ResourceStorage::class);
 
-        $factory = $this->getMockBuilder(ResourceFactory::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $factory = self::createStub(ResourceFactory::class);
 
         // fake methods to return proper objects
         if ($expected['type'] === LinkService::TYPE_FILE) {

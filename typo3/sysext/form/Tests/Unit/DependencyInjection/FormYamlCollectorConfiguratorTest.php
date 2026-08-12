@@ -18,7 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Tests\Unit\DependencyInjection;
 
 use PHPUnit\Framework\Attributes\Test;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Package\PackageInterface;
 use TYPO3\CMS\Core\Package\PackageManager;
@@ -60,7 +60,7 @@ final class FormYamlCollectorConfiguratorTest extends UnitTestCase
 
     /**
      * Creates a minimal package fixture under $this->tempDir/<extensionKey>/ and
-     * returns a mock PackageInterface pointing to it.
+     * returns a stubbed PackageInterface pointing to it.
      *
      * @param array<string,mixed>|null $configYaml  null = do not create config.yaml, array = YAML content
      */
@@ -68,7 +68,7 @@ final class FormYamlCollectorConfiguratorTest extends UnitTestCase
         string $extensionKey,
         string $setDirectoryName,
         ?array $configYaml,
-    ): PackageInterface&MockObject {
+    ): PackageInterface&Stub {
         $pkgPath = $this->tempDir . '/' . $extensionKey . '/';
         $setDir  = $pkgPath . 'Configuration/Form/' . $setDirectoryName;
         mkdir($setDir, 0777, true);
@@ -77,7 +77,7 @@ final class FormYamlCollectorConfiguratorTest extends UnitTestCase
             file_put_contents($setDir . '/config.yaml', \Symfony\Component\Yaml\Yaml::dump($configYaml));
         }
 
-        $package = $this->createMock(PackageInterface::class);
+        $package = self::createStub(PackageInterface::class);
         $package->method('getPackagePath')->willReturn($pkgPath);
         $package->method('getPackageKey')->willReturn($extensionKey);
         return $package;
@@ -88,7 +88,7 @@ final class FormYamlCollectorConfiguratorTest extends UnitTestCase
         array $packages,
         ?LoggerInterface $logger = null,
     ): FormYamlCollectorConfigurator {
-        $packageManager = $this->createMock(PackageManager::class);
+        $packageManager = self::createStub(PackageManager::class);
         $packageManager->method('getActivePackages')->willReturn($packages);
 
         return new FormYamlCollectorConfigurator(
@@ -151,7 +151,7 @@ final class FormYamlCollectorConfiguratorTest extends UnitTestCase
         $pkgPath = $this->tempDir . '/no_form_dir/';
         mkdir($pkgPath, 0777, true);
 
-        $package = $this->createMock(PackageInterface::class);
+        $package = self::createStub(PackageInterface::class);
         $package->method('getPackagePath')->willReturn($pkgPath);
         $package->method('getPackageKey')->willReturn('no_form_dir');
 
@@ -221,7 +221,7 @@ final class FormYamlCollectorConfiguratorTest extends UnitTestCase
         mkdir($setDir, 0777, true);
         file_put_contents($setDir . '/config.yaml', "name: valid\nbroken: [\n  unclosed");
 
-        $package = $this->createMock(PackageInterface::class);
+        $package = self::createStub(PackageInterface::class);
         $package->method('getPackagePath')->willReturn($pkgPath);
         $package->method('getPackageKey')->willReturn('broken_ext');
 
@@ -248,7 +248,7 @@ final class FormYamlCollectorConfiguratorTest extends UnitTestCase
         // YAML scalar (string) instead of mapping
         file_put_contents($setDir . '/config.yaml', 'just a string');
 
-        $package = $this->createMock(PackageInterface::class);
+        $package = self::createStub(PackageInterface::class);
         $package->method('getPackagePath')->willReturn($pkgPath);
         $package->method('getPackageKey')->willReturn('scalar_ext');
 
@@ -298,7 +298,7 @@ final class FormYamlCollectorConfiguratorTest extends UnitTestCase
             ]));
         }
 
-        $package = $this->createMock(PackageInterface::class);
+        $package = self::createStub(PackageInterface::class);
         $package->method('getPackagePath')->willReturn($pkgPath);
         $package->method('getPackageKey')->willReturn('multi_ext');
 

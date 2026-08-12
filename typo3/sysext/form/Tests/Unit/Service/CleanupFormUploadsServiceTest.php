@@ -43,7 +43,7 @@ final class CleanupFormUploadsServiceTest extends UnitTestCase
     #[Test]
     public function getExpiredFoldersReturnsEmptyArrayWhenNoFoldersExist(): void
     {
-        $parentFolder = $this->createMock(Folder::class);
+        $parentFolder = self::createStub(Folder::class);
         $parentFolder->method('getSubfolders')->willReturn([]);
 
         $this->resourceFactoryMock
@@ -60,11 +60,11 @@ final class CleanupFormUploadsServiceTest extends UnitTestCase
     #[Test]
     public function getExpiredFoldersIgnoresNonFormFolders(): void
     {
-        $regularFolder = $this->createMock(Folder::class);
+        $regularFolder = self::createStub(Folder::class);
         $regularFolder->method('getName')->willReturn('my_custom_folder');
         $regularFolder->method('getModificationTime')->willReturn(time() - 172800);
 
-        $parentFolder = $this->createMock(Folder::class);
+        $parentFolder = self::createStub(Folder::class);
         $parentFolder->method('getSubfolders')->willReturn([$regularFolder]);
 
         $this->resourceFactoryMock
@@ -82,11 +82,11 @@ final class CleanupFormUploadsServiceTest extends UnitTestCase
     public function getExpiredFoldersIgnoresFormFolderWithIncorrectHashLength(): void
     {
         // form_ + only 10 hex chars (should be 40)
-        $shortHashFolder = $this->createMock(Folder::class);
+        $shortHashFolder = self::createStub(Folder::class);
         $shortHashFolder->method('getName')->willReturn('form_abcdef1234');
         $shortHashFolder->method('getModificationTime')->willReturn(time() - 172800);
 
-        $parentFolder = $this->createMock(Folder::class);
+        $parentFolder = self::createStub(Folder::class);
         $parentFolder->method('getSubfolders')->willReturn([$shortHashFolder]);
 
         $this->resourceFactoryMock
@@ -104,11 +104,11 @@ final class CleanupFormUploadsServiceTest extends UnitTestCase
     public function getExpiredFoldersIgnoresFormFoldersYoungerThanRetentionPeriod(): void
     {
         // Valid form folder name but very recent
-        $recentFolder = $this->createMock(Folder::class);
+        $recentFolder = self::createStub(Folder::class);
         $recentFolder->method('getName')->willReturn('form_' . str_repeat('a', 40));
         $recentFolder->method('getModificationTime')->willReturn(time() - 3600); // 1 hour ago
 
-        $parentFolder = $this->createMock(Folder::class);
+        $parentFolder = self::createStub(Folder::class);
         $parentFolder->method('getSubfolders')->willReturn([$recentFolder]);
 
         $this->resourceFactoryMock
@@ -127,11 +127,11 @@ final class CleanupFormUploadsServiceTest extends UnitTestCase
     public function getExpiredFoldersFindsOldFormFolders(): void
     {
         // Valid form folder name and old enough
-        $oldFolder = $this->createMock(Folder::class);
+        $oldFolder = self::createStub(Folder::class);
         $oldFolder->method('getName')->willReturn('form_' . str_repeat('b', 40));
         $oldFolder->method('getModificationTime')->willReturn(time() - 172800); // 48 hours ago
 
-        $parentFolder = $this->createMock(Folder::class);
+        $parentFolder = self::createStub(Folder::class);
         $parentFolder->method('getSubfolders')->willReturn([$oldFolder]);
 
         $this->resourceFactoryMock
@@ -151,21 +151,21 @@ final class CleanupFormUploadsServiceTest extends UnitTestCase
     public function getExpiredFoldersMixedFoldersReturnsOnlyExpired(): void
     {
         // Old valid form folder (should be returned)
-        $oldFormFolder = $this->createMock(Folder::class);
+        $oldFormFolder = self::createStub(Folder::class);
         $oldFormFolder->method('getName')->willReturn('form_' . str_repeat('c', 40));
         $oldFormFolder->method('getModificationTime')->willReturn(time() - 172800);
 
         // Recent valid form folder (should NOT be returned)
-        $recentFormFolder = $this->createMock(Folder::class);
+        $recentFormFolder = self::createStub(Folder::class);
         $recentFormFolder->method('getName')->willReturn('form_' . str_repeat('d', 40));
         $recentFormFolder->method('getModificationTime')->willReturn(time() - 1800); // 30 min ago
 
         // Regular folder (should NOT be returned)
-        $regularFolder = $this->createMock(Folder::class);
+        $regularFolder = self::createStub(Folder::class);
         $regularFolder->method('getName')->willReturn('user_upload');
         $regularFolder->method('getModificationTime')->willReturn(time() - 172800);
 
-        $parentFolder = $this->createMock(Folder::class);
+        $parentFolder = self::createStub(Folder::class);
         $parentFolder->method('getSubfolders')->willReturn([
             $oldFormFolder,
             $recentFormFolder,
@@ -187,11 +187,11 @@ final class CleanupFormUploadsServiceTest extends UnitTestCase
     #[Test]
     public function getExpiredFoldersWithSpecificUploadFolderScansOnlyThatFolder(): void
     {
-        $oldFormFolder = $this->createMock(Folder::class);
+        $oldFormFolder = self::createStub(Folder::class);
         $oldFormFolder->method('getName')->willReturn('form_' . str_repeat('e', 40));
         $oldFormFolder->method('getModificationTime')->willReturn(time() - 172800);
 
-        $parentFolder = $this->createMock(Folder::class);
+        $parentFolder = self::createStub(Folder::class);
         $parentFolder->method('getSubfolders')->willReturn([$oldFormFolder]);
 
         $this->resourceFactoryMock
@@ -209,18 +209,18 @@ final class CleanupFormUploadsServiceTest extends UnitTestCase
     #[Test]
     public function getExpiredFoldersWithMultipleUploadFoldersScansAllOfThem(): void
     {
-        $folder1 = $this->createMock(Folder::class);
+        $folder1 = self::createStub(Folder::class);
         $folder1->method('getName')->willReturn('form_' . str_repeat('f', 40));
         $folder1->method('getModificationTime')->willReturn(time() - 172800);
 
-        $parentFolder1 = $this->createMock(Folder::class);
+        $parentFolder1 = self::createStub(Folder::class);
         $parentFolder1->method('getSubfolders')->willReturn([$folder1]);
 
-        $folder2 = $this->createMock(Folder::class);
+        $folder2 = self::createStub(Folder::class);
         $folder2->method('getName')->willReturn('form_' . str_repeat('a', 40));
         $folder2->method('getModificationTime')->willReturn(time() - 172800);
 
-        $parentFolder2 = $this->createMock(Folder::class);
+        $parentFolder2 = self::createStub(Folder::class);
         $parentFolder2->method('getSubfolders')->willReturn([$folder2]);
 
         $this->resourceFactoryMock
@@ -260,7 +260,7 @@ final class CleanupFormUploadsServiceTest extends UnitTestCase
     #[Test]
     public function deleteFoldersHandlesPartialFailure(): void
     {
-        $folder1 = $this->createMock(Folder::class);
+        $folder1 = self::createStub(Folder::class);
         $folder1->method('delete')->willThrowException(new \RuntimeException('Access denied'));
         $folder1->method('getCombinedIdentifier')->willReturn('1:/user_upload/form_aaa/');
 
@@ -291,26 +291,26 @@ final class CleanupFormUploadsServiceTest extends UnitTestCase
     public function getExpiredFoldersOnlyMatchesExact40HexCharPattern(): void
     {
         // form_ + 40 chars but with non-hex char 'g'
-        $invalidHexFolder = $this->createMock(Folder::class);
+        $invalidHexFolder = self::createStub(Folder::class);
         $invalidHexFolder->method('getName')->willReturn('form_' . str_repeat('g', 40));
         $invalidHexFolder->method('getModificationTime')->willReturn(time() - 172800);
 
         // form_ + 39 hex chars (too short)
-        $tooShortFolder = $this->createMock(Folder::class);
+        $tooShortFolder = self::createStub(Folder::class);
         $tooShortFolder->method('getName')->willReturn('form_' . str_repeat('a', 39));
         $tooShortFolder->method('getModificationTime')->willReturn(time() - 172800);
 
         // form_ + 41 hex chars (too long)
-        $tooLongFolder = $this->createMock(Folder::class);
+        $tooLongFolder = self::createStub(Folder::class);
         $tooLongFolder->method('getName')->willReturn('form_' . str_repeat('a', 41));
         $tooLongFolder->method('getModificationTime')->willReturn(time() - 172800);
 
         // Valid: form_ + 40 hex chars
-        $validFolder = $this->createMock(Folder::class);
+        $validFolder = self::createStub(Folder::class);
         $validFolder->method('getName')->willReturn('form_0123456789abcdef0123456789abcdef01234567');
         $validFolder->method('getModificationTime')->willReturn(time() - 172800);
 
-        $parentFolder = $this->createMock(Folder::class);
+        $parentFolder = self::createStub(Folder::class);
         $parentFolder->method('getSubfolders')->willReturn([
             $invalidHexFolder,
             $tooShortFolder,

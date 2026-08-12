@@ -41,7 +41,7 @@ final class IndexerTest extends UnitTestCase
         $indexFileRepositoryMock = $this->createMock(FileIndexRepository::class);
         $subject->method('getFileIndexRepository')->willReturn($indexFileRepositoryMock);
 
-        $fileMock = $this->createMock(File::class);
+        $fileMock = self::createStub(File::class);
         $fileMock->method('getUid')->willReturn(42);
         $fileMock->method('getType')->willReturn(FileType::TEXT->value);
         $fileMock->method('getStorage')->willReturn($storageStub);

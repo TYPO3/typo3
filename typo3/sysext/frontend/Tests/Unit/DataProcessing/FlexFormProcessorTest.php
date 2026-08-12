@@ -33,7 +33,7 @@ final class FlexFormProcessorTest extends UnitTestCase
     public function customFieldNameDoesNotExistsWillReturnUnchangedProcessedData(): void
     {
         $processorConfiguration = ['as' => 'myOutputVariable', 'fieldName' => 'non_existing_field'];
-        $contentObjectRendererMock = $this->getMockBuilder(ContentObjectRenderer::class)->disableOriginalConstructor()->getMock();
+        $contentObjectRendererMock = self::createStub(ContentObjectRenderer::class);
         $contentObjectRendererMock->method('stdWrapValue')->willReturnMap([
             ['fieldName', $processorConfiguration, 'pi_flexform', 'non_existing_field'],
             ['as', $processorConfiguration, 'flexFormData', 'myOutputVariable'],
@@ -60,7 +60,7 @@ final class FlexFormProcessorTest extends UnitTestCase
     public function customFieldNameDoesNotContainFlexFormDataWillReturnUnchangedProcessedData(): void
     {
         $processorConfiguration = ['as' => 'myOutputVariable', 'fieldName' => 'custom_field'];
-        $contentObjectRendererMock = $this->getMockBuilder(ContentObjectRenderer::class)->disableOriginalConstructor()->getMock();
+        $contentObjectRendererMock = self::createStub(ContentObjectRenderer::class);
         $contentObjectRendererMock->method('stdWrapValue')->willReturnMap([
             ['fieldName', $processorConfiguration, 'pi_flexform', 'non_existing_field'],
             ['as', $processorConfiguration, 'flexFormData', 'myOutputVariable'],
@@ -87,7 +87,7 @@ final class FlexFormProcessorTest extends UnitTestCase
     public function customOutputVariableForProcessorWillReturnParsedFlexFormToDataCustomVariable(): void
     {
         $processorConfiguration = ['as' => 'myCustomVar'];
-        $contentObjectRendererMock = $this->getMockBuilder(ContentObjectRenderer::class)->disableOriginalConstructor()->getMock();
+        $contentObjectRendererMock = self::createStub(ContentObjectRenderer::class);
         $contentObjectRendererMock->method('stdWrapValue')->willReturnMap([
             ['fieldName', $processorConfiguration, 'pi_flexform', 'pi_flexform'],
             ['as', $processorConfiguration, 'flexFormData', 'myCustomVar'],
@@ -114,7 +114,7 @@ final class FlexFormProcessorTest extends UnitTestCase
     public function defaultOutputVariableForProcessorWillBeUsed(): void
     {
         $processorConfiguration = [];
-        $contentObjectRendererMock = $this->getMockBuilder(ContentObjectRenderer::class)->disableOriginalConstructor()->getMock();
+        $contentObjectRendererMock = self::createStub(ContentObjectRenderer::class);
         $contentObjectRendererMock->method('stdWrapValue')->willReturnMap([
             ['fieldName', $processorConfiguration, 'pi_flexform', 'pi_flexform'],
             ['as', $processorConfiguration, 'flexFormData', 'flexFormData'],
@@ -142,7 +142,7 @@ final class FlexFormProcessorTest extends UnitTestCase
     public function defaultConfigurationWithCustomFieldNameWillReturnParsedFlexFormToDefaultOutputVariable(): void
     {
         $processorConfiguration = ['as' => 'myOutputVariable', 'fieldName' => 'my_flexform'];
-        $contentObjectRendererMock = $this->getMockBuilder(ContentObjectRenderer::class)->disableOriginalConstructor()->getMock();
+        $contentObjectRendererMock = self::createStub(ContentObjectRenderer::class);
         $contentObjectRendererMock->method('stdWrapValue')->willReturnMap([
             ['fieldName', $processorConfiguration, 'pi_flexform', 'my_flexform'],
             ['as', $processorConfiguration, 'flexFormData', 'myOutputVariable'],
@@ -235,7 +235,7 @@ final class FlexFormProcessorTest extends UnitTestCase
             ],
         ];
 
-        $contentObjectRendererMock = $this->getMockBuilder(ContentObjectRenderer::class)->disableOriginalConstructor()->getMock();
+        $contentObjectRendererMock = self::createStub(ContentObjectRenderer::class);
         $contentObjectRendererMock->method('stdWrapValue')->willReturnMap([
             ['fieldName', $processorConfiguration, 'pi_flexform', 'pi_flexform'],
             ['as', $processorConfiguration, 'flexFormData', 'flexFormData'],

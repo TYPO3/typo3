@@ -157,7 +157,7 @@ final class FileReferenceTest extends UnitTestCase
     #[Test]
     public function processIsDelegatedToTheOriginalFile(): void
     {
-        $processedFile = $this->createMock(ProcessedFile::class);
+        $processedFile = self::createStub(ProcessedFile::class);
         $originalFile = $this->createMock(File::class);
         $originalFile->expects($this->once())
             ->method('process')

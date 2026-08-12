@@ -78,7 +78,7 @@ final class SaveToDatabaseFinisherTest extends UnitTestCase
 
         $saveToDatabaseFinisher->expects($this->once())->method('process')->with(0);
 
-        $saveToDatabaseFinisher->execute($this->createMock(FinisherContext::class));
+        $saveToDatabaseFinisher->execute(self::createStub(FinisherContext::class));
     }
 
     public static function skipIfValueIsEmptyDataProvider(): array
@@ -175,7 +175,7 @@ final class SaveToDatabaseFinisherTest extends UnitTestCase
             ],
         ]);
         $saveToDatabaseFinisher->expects($this->exactly(2))->method('process');
-        $saveToDatabaseFinisher->execute($this->createMock(FinisherContext::class));
+        $saveToDatabaseFinisher->execute(self::createStub(FinisherContext::class));
     }
 
     #[Test]

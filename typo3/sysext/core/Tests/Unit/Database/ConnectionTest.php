@@ -436,7 +436,7 @@ final class ConnectionTest extends UnitTestCase
         ?ContainerInterface $container = null,
     ): Connection&MockObject {
         $platform ??= new MockPlatform();
-        $container ??= $this->createMock(ContainerInterface::class);
+        $container ??= self::createStub(ContainerInterface::class);
         $configuration = new Configuration();
         $configuration->setContainer($container);
         $connectionMock = $this->getMockBuilder(Connection::class)

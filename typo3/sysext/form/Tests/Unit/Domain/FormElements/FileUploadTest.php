@@ -275,7 +275,7 @@ final class FileUploadTest extends UnitTestCase
     #[Test]
     public function initializeFormElementHandlesInsufficientFolderAccessPermissionsGracefully(): void
     {
-        $resourceFactory = $this->createMock(ResourceFactory::class);
+        $resourceFactory = self::createStub(ResourceFactory::class);
         $resourceFactory->method('getFolderObjectFromCombinedIdentifier')
             ->willThrowException(new InsufficientFolderAccessPermissionsException('Access denied', 1430317630));
         GeneralUtility::setSingletonInstance(ResourceFactory::class, $resourceFactory);
@@ -308,7 +308,7 @@ final class FileUploadTest extends UnitTestCase
     #[Test]
     public function initializeFormElementHandlesFolderDoesNotExistExceptionGracefully(): void
     {
-        $resourceFactory = $this->createMock(ResourceFactory::class);
+        $resourceFactory = self::createStub(ResourceFactory::class);
         $resourceFactory->method('getFolderObjectFromCombinedIdentifier')
             ->willThrowException(new FolderDoesNotExistException('Folder not found', 1314516809));
         GeneralUtility::setSingletonInstance(ResourceFactory::class, $resourceFactory);

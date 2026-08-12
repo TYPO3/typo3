@@ -88,14 +88,14 @@ final class XmlSitemapFactoryTest extends UnitTestCase
 
     private function createSitemapRequest(string $name = 'pages', array $configuration = []): XmlSitemapRequest
     {
-        $request = $this->createMock(ServerRequestInterface::class);
+        $request = self::createStub(ServerRequestInterface::class);
         $request->method('getQueryParams')->willReturn([]);
         return new XmlSitemapRequest(
             name: $name,
             configuration: $configuration,
             page: 0,
             request: $request,
-            contentObjectRenderer: $this->createMock(ContentObjectRenderer::class),
+            contentObjectRenderer: self::createStub(ContentObjectRenderer::class),
         );
     }
 }

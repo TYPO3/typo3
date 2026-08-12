@@ -42,7 +42,7 @@ final class MetaDataAspectTest extends UnitTestCase
             'title' => 'Lorem ipsum meta sit amet',
         ];
 
-        $storageMock = $this->createMock(ResourceStorage::class);
+        $storageMock = self::createStub(ResourceStorage::class);
         $storageMock->method('getUid')->willReturn(12);
 
         $file = new File([], $storageMock, $metaData);
@@ -58,7 +58,7 @@ final class MetaDataAspectTest extends UnitTestCase
             'title' => 'Lorem ipsum meta sit amet',
         ];
 
-        $storageMock = $this->createMock(ResourceStorage::class);
+        $storageMock = self::createStub(ResourceStorage::class);
         $storageMock->method('getUid')->willReturn(12);
 
         $file = new File([], $storageMock, $metaData);
@@ -82,7 +82,7 @@ final class MetaDataAspectTest extends UnitTestCase
     {
         $metaData = ['foo' => 'bar'];
 
-        $storageMock = $this->createMock(ResourceStorage::class);
+        $storageMock = self::createStub(ResourceStorage::class);
         $storageMock->method('getUid')->willReturn(12);
 
         $file = new File(['uid' => 12], $storageMock);
@@ -106,7 +106,7 @@ final class MetaDataAspectTest extends UnitTestCase
 
         $metaDataRepository = new MetaDataRepository(new NoopEventDispatcher(), self::createStub(ConnectionPool::class), new Context());
         GeneralUtility::addInstance(MetaDataRepository::class, $metaDataRepository);
-        $storageMock = $this->createMock(ResourceStorage::class);
+        $storageMock = self::createStub(ResourceStorage::class);
         $storageMock->method('getUid')->willReturn(12);
 
         $file = new File(['uid' => -3], $storageMock);
@@ -123,15 +123,15 @@ final class MetaDataAspectTest extends UnitTestCase
             'description' => 'Yipp yipp yipp',
         ];
 
-        $storageMock = $this->createMock(ResourceStorage::class);
+        $storageMock = self::createStub(ResourceStorage::class);
         $storageMock->method('getUid')->willReturn(12);
 
         $file = new File(['uid' => 12], $storageMock);
 
-        $connectionMock = $this->createMock(Connection::class);
+        $connectionMock = self::createStub(Connection::class);
         $connectionMock->method('insert')->willReturn(1);
         $connectionMock->method('lastInsertId')->willReturn('5');
-        $connectionPoolMock = $this->createMock(ConnectionPool::class);
+        $connectionPoolMock = self::createStub(ConnectionPool::class);
         $connectionPoolMock->method('getConnectionForTable')->willReturn($connectionMock);
 
         $metaDataRepositoryMock = $this->getMockBuilder(MetaDataRepository::class)
@@ -165,7 +165,7 @@ final class MetaDataAspectTest extends UnitTestCase
         $metaData = ['uid' => 12, 'foo' => 'bar'];
         $updatedMetadata = array_merge($metaData, ['testproperty' => 'testvalue']);
 
-        $storageMock = $this->createMock(ResourceStorage::class);
+        $storageMock = self::createStub(ResourceStorage::class);
         $storageMock->method('getUid')->willReturn(12);
 
         $file = new File(['uid' => 12], $storageMock);
@@ -175,7 +175,7 @@ final class MetaDataAspectTest extends UnitTestCase
 
         $connectionMock = $this->createMock(Connection::class);
         $connectionMock->expects($this->atLeastOnce())->method('update')->with('sys_file_metadata', self::anything())->willReturn(1);
-        $connectionPoolMock = $this->createMock(ConnectionPool::class);
+        $connectionPoolMock = self::createStub(ConnectionPool::class);
         $connectionPoolMock->method('getConnectionForTable')->willReturn($connectionMock);
 
         $metaDataRepositoryMock = $this->getMockBuilder(MetaDataRepository::class)
@@ -242,7 +242,7 @@ final class MetaDataAspectTest extends UnitTestCase
     #[Test]
     public function propertyIsFetchedProperly(array $metaData, array $has, array $get): void
     {
-        $storageMock = $this->createMock(ResourceStorage::class);
+        $storageMock = self::createStub(ResourceStorage::class);
         $storageMock->method('getUid')->willReturn(12);
 
         $file = new File([], $storageMock, $metaData);

@@ -20,6 +20,7 @@ namespace TYPO3\CMS\FrontendLogin\Tests\Unit\Service;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Mime\Address;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
@@ -43,16 +44,16 @@ final class RecoveryServiceTest extends UnitTestCase
     protected bool $resetSingletonInstances = true;
 
     private MockObject&FrontendUserRepository $userRepository;
-    private MockObject&RecoveryConfiguration $recoveryConfiguration;
-    private MockObject&TemplatedEmailFactory $templatedEmailFactory;
+    private Stub&RecoveryConfiguration $recoveryConfiguration;
+    private Stub&TemplatedEmailFactory $templatedEmailFactory;
     private RequestInterface $extbaseRequest;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->userRepository = $this->createMock(FrontendUserRepository::class);
-        $this->recoveryConfiguration = $this->createMock(RecoveryConfiguration::class);
-        $this->templatedEmailFactory = $this->createMock(TemplatedEmailFactory::class);
+        $this->recoveryConfiguration = self::createStub(RecoveryConfiguration::class);
+        $this->templatedEmailFactory = self::createStub(TemplatedEmailFactory::class);
 
         $request = new ServerRequest();
         $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);

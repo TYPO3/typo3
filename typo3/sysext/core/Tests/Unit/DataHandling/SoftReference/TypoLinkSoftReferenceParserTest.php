@@ -257,7 +257,7 @@ final class TypoLinkSoftReferenceParserTest extends AbstractSoftReferenceParserT
     #[Test]
     public function findRefReturnsParsedElementsWithFile(array $softrefConfiguration, array $expectedElement): void
     {
-        $storageObject = $this->createMock(ResourceStorage::class);
+        $storageObject = self::createStub(ResourceStorage::class);
         $storageObject->method('getUid')->willReturn(1);
         $fileObject = $this->createMock(File::class);
         $fileObject->expects($this->once())->method('getUid')->willReturn(42);

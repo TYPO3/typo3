@@ -39,11 +39,11 @@ final class FieldControlTest extends UnitTestCase
         $iconMock->expects($this->atLeastOnce())->method('render')->willReturn('');
         $iconFactoryMock->expects($this->atLeastOnce())->method('getIcon')->willReturn($iconMock);
 
-        $languageServiceMock = $this->createMock(LanguageService::class);
+        $languageServiceMock = self::createStub(LanguageService::class);
         $languageServiceMock->method('sL')->willReturnArgument(0);
         $GLOBALS['LANG'] = $languageServiceMock;
 
-        $nodeFactoryMock = $this->createMock(NodeFactory::class);
+        $nodeFactoryMock = self::createStub(NodeFactory::class);
         $data = [
             'renderData' => [
                 'fieldControl' => [
@@ -58,7 +58,7 @@ final class FieldControlTest extends UnitTestCase
             ],
         ];
 
-        $aControlMock = $this->createMock(AbstractNode::class);
+        $aControlMock = self::createStub(AbstractNode::class);
         $aControlMock->method('render')->willReturn(
             [
                 'iconIdentifier' => 'actions-open',
@@ -73,7 +73,7 @@ final class FieldControlTest extends UnitTestCase
         $aControlNodeFactoryInput['renderData']['fieldControlOptions'] = [];
         $aControlNodeFactoryInput['renderType'] = 'aControl';
 
-        $anotherControlMock = $this->createMock(AbstractNode::class);
+        $anotherControlMock = self::createStub(AbstractNode::class);
         $anotherControlMock->method('render')->willReturn(
             [
                 'iconIdentifier' => 'actions-close',

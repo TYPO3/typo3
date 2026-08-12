@@ -35,7 +35,7 @@ final class TextExtractorRegistryTest extends UnitTestCase
         $textExtractor3 = $this->createMock(TextExtractorInterface::class);
         $textExtractor3->expects($this->never())->method('canExtractText');
 
-        $fileResourceMock = $this->createMock(File::class);
+        $fileResourceMock = self::createStub(File::class);
 
         $textExtractorRegistry = new TextExtractorRegistry([$textExtractor1, $textExtractor2, $textExtractor3]);
 
@@ -45,10 +45,10 @@ final class TextExtractorRegistryTest extends UnitTestCase
     #[Test]
     public function getTextExtractorReturnsNullIfNoTextExtractorMatches(): void
     {
-        $textExtractor = $this->createMock(TextExtractorInterface::class);
+        $textExtractor = self::createStub(TextExtractorInterface::class);
         $textExtractor->method('canExtractText')->willReturn(false);
 
-        $fileResourceMock = $this->createMock(File::class);
+        $fileResourceMock = self::createStub(File::class);
 
         $textExtractorRegistry = new TextExtractorRegistry([$textExtractor]);
 

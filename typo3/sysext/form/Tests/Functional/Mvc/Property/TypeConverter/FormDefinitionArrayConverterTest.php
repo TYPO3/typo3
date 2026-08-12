@@ -40,8 +40,8 @@ final class FormDefinitionArrayConverterTest extends FunctionalTestCase
     public function convertsJsonStringToFormDefinitionArray(): void
     {
         $formDefinitionValidationServiceMock = $this->createMock(FormDefinitionValidationService::class);
-        $formDefinitionValidationServiceMock->expects($this->atLeastOnce())->method('validateFormDefinitionProperties')->with(self::anything());
-        $formDefinitionValidationServiceMock->method('isPropertyValueEqualToHistoricalValue')->with(self::anything())->willReturn(true);
+        $formDefinitionValidationServiceMock->expects($this->atLeastOnce())->method('validateFormDefinitionProperties');
+        $formDefinitionValidationServiceMock->method('isPropertyValueEqualToHistoricalValue')->willReturn(true);
 
         $formDefinitionConversionServiceStub = self::createStub(FormDefinitionConversionService::class);
         $formDefinitionConversionServiceStub->method('extractRtePropertyPaths')->willReturn([]);
@@ -160,7 +160,7 @@ final class FormDefinitionArrayConverterTest extends FunctionalTestCase
     public function convertFromThrowsExceptionIfPrototypeNameWasChanged(): void
     {
         $backendUserMock = $this->createMock(BackendUserAuthentication::class);
-        $backendUserMock->method('getSessionData')->with('extFormProtectionSessionTokens')
+        $backendUserMock->expects($this->atLeast(1))->method('getSessionData')->with('extFormProtectionSessionTokens')
             ->willReturn(['1:/form_definitions/test.form.yaml' => '123']);
         $GLOBALS['BE_USER'] = $backendUserMock;
 
@@ -187,7 +187,7 @@ final class FormDefinitionArrayConverterTest extends FunctionalTestCase
     public function convertFromThrowsExceptionIfIdentifierWasChanged(): void
     {
         $backendUserMock = $this->createMock(BackendUserAuthentication::class);
-        $backendUserMock->method('getSessionData')->with('extFormProtectionSessionTokens')
+        $backendUserMock->expects($this->atLeast(1))->method('getSessionData')->with('extFormProtectionSessionTokens')
             ->willReturn(['1:/form_definitions/test.form.yaml' => '123']);
         $GLOBALS['BE_USER'] = $backendUserMock;
 

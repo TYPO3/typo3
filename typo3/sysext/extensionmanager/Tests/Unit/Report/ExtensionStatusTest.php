@@ -273,7 +273,7 @@ final class ExtensionStatusTest extends UnitTestCase
         $mockTerObject->version = '1.0.6';
         $mockTerObject->reviewState = $reviewState;
 
-        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $eventDispatcher = self::createStub(EventDispatcherInterface::class);
         $mockListUtility = $this->getMockBuilder(ListUtility::class)->getMock();
         $mockListUtility->injectEventDispatcher($eventDispatcher);
         $mockListUtility

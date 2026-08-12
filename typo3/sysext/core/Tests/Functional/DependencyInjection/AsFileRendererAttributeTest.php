@@ -35,7 +35,7 @@ final class AsFileRendererAttributeTest extends FunctionalTestCase
     {
         $rendererRegistry = $this->get(RendererRegistry::class);
 
-        self::assertInstanceOf(TextRenderer::class, $rendererRegistry->getRenderer($this->createFileMock('text/plain')));
+        self::assertInstanceOf(TextRenderer::class, $rendererRegistry->getRenderer($this->createFileStub('text/plain')));
     }
 
     #[Test]
@@ -43,13 +43,13 @@ final class AsFileRendererAttributeTest extends FunctionalTestCase
     {
         $rendererRegistry = $this->get(RendererRegistry::class);
 
-        self::assertInstanceOf(HighPriorityVideoRenderer::class, $rendererRegistry->getRenderer($this->createFileMock('video/mp4')));
+        self::assertInstanceOf(HighPriorityVideoRenderer::class, $rendererRegistry->getRenderer($this->createFileStub('video/mp4')));
     }
 
-    private function createFileMock(string $mimeType): File
+    private function createFileStub(string $mimeType): File
     {
-        $fileMock = $this->createMock(File::class);
-        $fileMock->method('getMimeType')->willReturn($mimeType);
-        return $fileMock;
+        $fileStub = self::createStub(File::class);
+        $fileStub->method('getMimeType')->willReturn($mimeType);
+        return $fileStub;
     }
 }

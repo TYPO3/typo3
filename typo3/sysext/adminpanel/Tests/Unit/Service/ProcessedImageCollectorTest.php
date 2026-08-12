@@ -111,15 +111,15 @@ final class ProcessedImageCollectorTest extends UnitTestCase
         $this->setUpFrontendRequestWithOpenAdminPanel();
         $subject = new ProcessedImageCollector();
 
-        $processedFile = $this->createMock(ProcessedFile::class);
+        $processedFile = self::createStub(ProcessedFile::class);
         $processedFile->method('getPublicUrl')->willReturn('/fileadmin/_processed_/gone.png');
         $processedFile->method('getSize')->willThrowException(new \RuntimeException('File has been deleted.', 1329821480));
         $processedFile->method('getProperty')->willReturn(0);
 
         $subject->collect(new AfterFileProcessingEvent(
-            $this->createMock(DriverInterface::class),
+            self::createStub(DriverInterface::class),
             $processedFile,
-            $this->createMock(File::class),
+            self::createStub(File::class),
             ProcessedFile::CONTEXT_IMAGECROPSCALEMASK,
             []
         ));
@@ -131,7 +131,7 @@ final class ProcessedImageCollectorTest extends UnitTestCase
     {
         $GLOBALS['TYPO3_REQUEST'] = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
-        $backendUser = $this->getMockBuilder(FrontendBackendUserAuthentication::class)->disableOriginalConstructor()->getMock();
+        $backendUser = self::createStub(FrontendBackendUserAuthentication::class);
         $backendUser->method('getTSConfig')->willReturn(['admPanel.' => ['enable.' => ['all' => 1]]]);
         $backendUser->uc = ['AdminPanel' => ['display_top' => true]];
         $GLOBALS['BE_USER'] = $backendUser;
@@ -139,7 +139,7 @@ final class ProcessedImageCollectorTest extends UnitTestCase
 
     private function createEvent(?string $publicUrl, int $size, int $width, int $height): AfterFileProcessingEvent
     {
-        $processedFile = $this->createMock(ProcessedFile::class);
+        $processedFile = self::createStub(ProcessedFile::class);
         $processedFile->method('getPublicUrl')->willReturn($publicUrl);
         $processedFile->method('getSize')->willReturn($size);
         $processedFile->method('getProperty')->willReturnMap([
@@ -148,9 +148,9 @@ final class ProcessedImageCollectorTest extends UnitTestCase
         ]);
 
         return new AfterFileProcessingEvent(
-            $this->createMock(DriverInterface::class),
+            self::createStub(DriverInterface::class),
             $processedFile,
-            $this->createMock(File::class),
+            self::createStub(File::class),
             ProcessedFile::CONTEXT_IMAGECROPSCALEMASK,
             []
         );

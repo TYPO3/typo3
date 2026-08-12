@@ -30,7 +30,7 @@ final class ResourceFileExtensionMatcherTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->storage = $this->getMockBuilder(ResourceStorage::class)->disableOriginalConstructor()->getMock();
+        $this->storage = self::createStub(ResourceStorage::class);
     }
 
     #[Test]

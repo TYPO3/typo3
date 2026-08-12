@@ -4557,7 +4557,7 @@ content="benni">',
     public function typoLinkReturnsOnlyLinkTextIfNoLinkResolvingIsPossible(): void
     {
         $linkService = $this->getMockBuilder(LinkService::class)->disableOriginalConstructor()->getMock();
-        $linkService->method('resolve')->with('foo')->willThrowException(new InvalidPathException('', 1666303735));
+        $linkService->expects($this->once())->method('resolve')->with('foo')->willThrowException(new InvalidPathException('', 1666303735));
         $linkFactory = new LinkFactory($linkService, $this->get(EventDispatcherInterface::class), $this->get(TypoLinkCodecService::class), $this->get('cache.runtime'), $this->get(SiteFinder::class), new NullLogger());
         $this->get('service_container')->set(LinkFactory::class, $linkFactory);
         $subject = $this->get(ContentObjectRenderer::class);
@@ -4569,7 +4569,7 @@ content="benni">',
     public function typoLinkLogsErrorIfNoLinkResolvingIsPossible(): void
     {
         $linkService = $this->getMockBuilder(LinkService::class)->disableOriginalConstructor()->getMock();
-        $linkService->method('resolve')->with('foo')->willThrowException(new InvalidPathException('', 1666303765));
+        $linkService->expects($this->once())->method('resolve')->with('foo')->willThrowException(new InvalidPathException('', 1666303765));
         $logger = $this->createMock(LoggerInterface::class);
         $logger->expects($this->atLeastOnce())->method('warning')->with('The link could not be generated', self::anything());
         $linkFactory = new LinkFactory($linkService, $this->get(EventDispatcherInterface::class), $this->get(TypoLinkCodecService::class), $this->get('cache.runtime'), $this->get(SiteFinder::class), $logger);

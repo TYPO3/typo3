@@ -28,7 +28,7 @@ final class IsFileSelectableEventTest extends UnitTestCase
     #[Test]
     public function eventMethodsReturnExpected(): void
     {
-        $mockResourceStorage = $this->getMockBuilder(ResourceStorage::class)->disableOriginalConstructor()->getMock();
+        $mockResourceStorage = self::createStub(ResourceStorage::class);
         $file = new File(
             [
                 'width' => 100,

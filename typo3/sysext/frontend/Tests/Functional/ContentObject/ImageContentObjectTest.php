@@ -47,7 +47,7 @@ final class ImageContentObjectTest extends FunctionalTestCase
         // A file whose physical resource is gone (sys_file.missing=1) resolves to
         // an image resource of the processed file without a public URL.
         $cObj->method('getImgResource')->willReturn(
-            new ImageResource(100, 100, 'jpg', 'missing-file.jpg', null, $this->createMock(File::class))
+            new ImageResource(100, 100, 'jpg', 'missing-file.jpg', null, self::createStub(File::class))
         );
         $timeTracker = $this->get(TimeTracker::class);
         $logger = $this->createMock(LoggerInterface::class);

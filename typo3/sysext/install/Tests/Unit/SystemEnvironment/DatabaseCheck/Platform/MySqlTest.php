@@ -90,7 +90,7 @@ final class MySqlTest extends UnitTestCase
         ContextualFeedbackSeverity $expectedSeverity,
         string $expectedTitle
     ): void {
-        $connectionMock = $this->getMockBuilder(Connection::class)->disableOriginalConstructor()->getMock();
+        $connectionMock = self::createStub(Connection::class);
         $connectionMock->method('getPlatformServerVersion')->willReturn($serverVersionString);
         $connectionMock->method('getDatabasePlatform')->willReturn($platform);
         $subject = new class ($this->createStub(ConnectionPool::class)) extends MySql {

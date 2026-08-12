@@ -47,7 +47,7 @@ final class Typo3DatabaseBackendTest extends UnitTestCase
                 self::assertSame($arguments[0], $table);
                 return 0;
             });
-        $connectionPoolMock = $this->createMock(ConnectionPool::class);
+        $connectionPoolMock = self::createStub(ConnectionPool::class);
         $connectionPoolMock->method('getConnectionForTable')->willReturn($connectionMock);
 
         // Two instances are required as there are different tables being cleared
@@ -73,7 +73,7 @@ final class Typo3DatabaseBackendTest extends UnitTestCase
                 ]
             );
 
-        $connectionPoolMock = $this->createMock(ConnectionPool::class);
+        $connectionPoolMock = self::createStub(ConnectionPool::class);
         $connectionPoolMock->method('getConnectionForTable')->willReturn($connectionMock);
 
         // Two instances are required as there are different tables being cleared
@@ -99,7 +99,7 @@ final class Typo3DatabaseBackendTest extends UnitTestCase
                 ]
             );
 
-        $connectionPoolMock = $this->createMock(ConnectionPool::class);
+        $connectionPoolMock = self::createStub(ConnectionPool::class);
         $connectionPoolMock->method('getConnectionForTable')->willReturn($connectionMock);
 
         // Two instances are required as there are different tables being cleared

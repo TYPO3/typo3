@@ -89,12 +89,8 @@ final class FileLinkHandlerTest extends UnitTestCase
     #[Test]
     public function resolveFileReferencesToSplitParameters(array $input, array $expected, string $_): void
     {
-        $storage = $this->getMockBuilder(ResourceStorage::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $factory = $this->getMockBuilder(ResourceFactory::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $storage = self::createStub(ResourceStorage::class);
+        $factory = self::createStub(ResourceFactory::class);
 
         // fake methods to return proper objects
         $fileObject = new File(['identifier' => 'fileadmin/deep/down.jpg', 'name' => 'down.jpg'], $storage);

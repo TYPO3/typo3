@@ -32,7 +32,7 @@ final class DatabaseLanguageRowsTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $GLOBALS['BE_USER'] = $this->createMock(BackendUserAuthentication::class);
+        $GLOBALS['BE_USER'] = self::createStub(BackendUserAuthentication::class);
 
         $this->subject = $this->getMockBuilder(DatabaseLanguageRows::class)
             ->disableOriginalConstructor()

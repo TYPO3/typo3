@@ -33,7 +33,7 @@ final class FolderTest extends UnitTestCase
     private function createFolderFixture($path, $name, $mockedStorage = null): Folder
     {
         if ($mockedStorage === null) {
-            $mockedStorage = $this->createMock(ResourceStorage::class);
+            $mockedStorage = self::createStub(ResourceStorage::class);
         }
         return new Folder($mockedStorage, $path, $name);
     }

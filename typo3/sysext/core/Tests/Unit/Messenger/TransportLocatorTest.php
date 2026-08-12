@@ -235,12 +235,12 @@ final class TransportLocatorTest extends UnitTestCase
      */
     private function createSendersLocator(array $registeredSenders): ContainerInterface
     {
-        $sendersLocator = $this->createMock(ContainerInterface::class);
+        $sendersLocator = self::createStub(ContainerInterface::class);
         $sendersLocator->method('has')->willReturnCallback(
             static fn(string $id): bool => in_array($id, $registeredSenders, true)
         );
         $sendersLocator->method('get')->willReturnCallback(
-            fn(string $id): SenderInterface => $this->createMock(SenderInterface::class)
+            fn(string $id): SenderInterface => self::createStub(SenderInterface::class)
         );
 
         return $sendersLocator;

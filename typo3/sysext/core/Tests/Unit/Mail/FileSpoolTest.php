@@ -130,7 +130,7 @@ final class FileSpoolTest extends UnitTestCase
             new Envelope(new Address('sender@example.com'), [new Address('recipient@example.com')])
         )));
 
-        $transportMock = $this->createMock(TransportInterface::class);
+        $transportMock = self::createStub(TransportInterface::class);
         $transportMock->method('send')->willThrowException(new \RuntimeException('Transport failure', 1768491292));
         $exception = null;
 

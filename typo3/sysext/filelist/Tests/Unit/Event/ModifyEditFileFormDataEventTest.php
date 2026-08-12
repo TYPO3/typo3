@@ -45,7 +45,7 @@ final class ModifyEditFileFormDataEventTest extends UnitTestCase
                 ],
             ],
         ];
-        $mockResourceStorage = $this->getMockBuilder(ResourceStorage::class)->disableOriginalConstructor()->getMock();
+        $mockResourceStorage = self::createStub(ResourceStorage::class);
         $file = new File([], $mockResourceStorage);
         $request = new ServerRequest(new Uri('https://example.com'));
 

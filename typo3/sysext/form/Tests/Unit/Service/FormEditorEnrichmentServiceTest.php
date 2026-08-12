@@ -155,7 +155,7 @@ final class FormEditorEnrichmentServiceTest extends UnitTestCase
     {
         $testRteOptions = ['toolbar' => ['bold', 'italic']];
 
-        $richTextServiceMock = $this->createMock(RichTextConfigurationService::class);
+        $richTextServiceMock = self::createStub(RichTextConfigurationService::class);
         $richTextServiceMock->method('resolveCkEditorConfiguration')->willReturn($testRteOptions);
 
         $subject = $this->getAccessibleMock(
@@ -199,7 +199,7 @@ final class FormEditorEnrichmentServiceTest extends UnitTestCase
     {
         $testRteOptions = ['toolbar' => ['bold']];
 
-        $richTextServiceMock = $this->createMock(RichTextConfigurationService::class);
+        $richTextServiceMock = self::createStub(RichTextConfigurationService::class);
         $richTextServiceMock->method('resolveCkEditorConfiguration')->willReturn($testRteOptions);
 
         $subject = $this->getAccessibleMock(

@@ -48,7 +48,7 @@ final class TransportFactoryTest extends UnitTestCase
     {
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
         $logger = new NullLogger();
-        $logManager = $this->createMock(LogManagerInterface::class);
+        $logManager = self::createStub(LogManagerInterface::class);
         $logManager->method('getLogger')->willReturn($logger);
         $dispatcher = $eventDispatcher;
         return new TransportFactory($dispatcher, $logManager, $logger, new FileNameValidator());

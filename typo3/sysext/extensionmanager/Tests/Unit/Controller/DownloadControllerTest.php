@@ -38,7 +38,7 @@ final class DownloadControllerTest extends UnitTestCase
         $dummyExtension = new Extension();
         $dummyExtension->extensionKey = $dummyExtensionName;
 
-        $extensionManagementServiceMock = $this->getMockBuilder(ExtensionManagementService::class)->disableOriginalConstructor()->getMock();
+        $extensionManagementServiceMock = self::createStub(ExtensionManagementService::class);
         $extensionManagementServiceMock->method('installExtension')->willThrowException($dummyException);
 
         $subject = new DownloadController(

@@ -62,7 +62,7 @@ final class FileControllerTest extends UnitTestCase
     #[Test]
     public function flattenResultDataValueFlattensFile(): void
     {
-        $iconFactoryMock = $this->createMock(IconFactory::class);
+        $iconFactoryMock = self::createStub(IconFactory::class);
         $icon = $this->createMock(Icon::class);
         $icon->expects($this->once())->method('render')->willReturn('');
         $iconFactoryMock->method('getIconForFileExtension')->willReturn($icon);

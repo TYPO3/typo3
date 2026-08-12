@@ -83,10 +83,10 @@ final class DataHandlerTest extends UnitTestCase
             '',
             $cacheMock
         );
-        $connectionMock = $this->createMock(Connection::class);
+        $connectionMock = self::createStub(Connection::class);
         $connectionMock->method('insert')->willReturn(1);
         $connectionMock->method('lastInsertId')->willReturn('1');
-        $connectionPoolMock = $this->createMock(ConnectionPool::class);
+        $connectionPoolMock = self::createStub(ConnectionPool::class);
         $connectionPoolMock->method('getConnectionForTable')->willReturn($connectionMock);
         $constructorArguments = [
             new NoopEventDispatcher(),
@@ -111,7 +111,7 @@ final class DataHandlerTest extends UnitTestCase
             self::createStub(LinkService::class),
         ];
         $this->subject = $this->getAccessibleMock(DataHandler::class, null, $constructorArguments);
-        $this->subject->start([], [], new BackendUserAuthentication(), $this->createMock(ReferenceIndexUpdater::class));
+        $this->subject->start([], [], new BackendUserAuthentication(), self::createStub(ReferenceIndexUpdater::class));
     }
 
     #[Test]
@@ -1068,7 +1068,7 @@ final class DataHandlerTest extends UnitTestCase
     #[Test]
     public function logCallsWriteLogOfBackendUserIfLoggingIsEnabled(): void
     {
-        $backendUser = $this->createMock(BackendUserAuthentication::class);
+        $backendUser = self::createStub(BackendUserAuthentication::class);
         $backendUser->method('getRole')->willReturn(PrincipalRole::USER);
         $backendUser->method('getUserId')->willReturn(1);
         $backendUser->workspace = 0;
@@ -1082,7 +1082,7 @@ final class DataHandlerTest extends UnitTestCase
     #[Test]
     public function logDoesNotCallWriteLogOfBackendUserIfLoggingIsDisabled(): void
     {
-        $backendUser = $this->createMock(BackendUserAuthentication::class);
+        $backendUser = self::createStub(BackendUserAuthentication::class);
         $backendUser->method('getRole')->willReturn(PrincipalRole::USER);
         $backendUser->method('getUserId')->willReturn(1);
         $backendUser->workspace = 0;
@@ -1096,7 +1096,7 @@ final class DataHandlerTest extends UnitTestCase
     #[Test]
     public function logAddsEntryToLocalErrorLogArray(): void
     {
-        $backendUser = $this->createMock(BackendUserAuthentication::class);
+        $backendUser = self::createStub(BackendUserAuthentication::class);
         $backendUser->method('getRole')->willReturn(PrincipalRole::USER);
         $backendUser->method('getUserId')->willReturn(1);
         $backendUser->workspace = 0;
@@ -1135,7 +1135,7 @@ final class DataHandlerTest extends UnitTestCase
             self::createStub(DataMapProcessor::class),
             self::createStub(LinkService::class),
         );
-        $backendUser = $this->createMock(BackendUserAuthentication::class);
+        $backendUser = self::createStub(BackendUserAuthentication::class);
         $backendUser->method('getRole')->willReturn(PrincipalRole::USER);
         $backendUser->method('getUserId')->willReturn(1);
         $backendUser->workspace = 0;
@@ -1172,7 +1172,7 @@ final class DataHandlerTest extends UnitTestCase
             self::createStub(DataMapProcessor::class),
             self::createStub(LinkService::class),
         );
-        $backendUser = $this->createMock(BackendUserAuthentication::class);
+        $backendUser = self::createStub(BackendUserAuthentication::class);
         $backendUser->method('getRole')->willReturn(PrincipalRole::USER);
         $backendUser->method('getUserId')->willReturn(1);
         $backendUser->workspace = 0;

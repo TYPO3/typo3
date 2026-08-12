@@ -44,7 +44,7 @@ final class OnTheFlyTest extends UnitTestCase
     #[Test]
     public function compileReturnsIncomingData(): void
     {
-        $formDataProviderMock = $this->createMock(FormDataProviderInterface::class);
+        $formDataProviderMock = self::createStub(FormDataProviderInterface::class);
         GeneralUtility::addInstance(FormDataProviderInterface::class, $formDataProviderMock);
         $formDataProviderMock->method('addData')->willReturnArgument(0);
         $providerList = [

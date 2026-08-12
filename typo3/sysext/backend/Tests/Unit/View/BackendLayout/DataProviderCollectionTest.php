@@ -37,7 +37,7 @@ final class DataProviderCollectionTest extends UnitTestCase
         $this->expectExceptionCode(1381597629);
 
         $identifier = StringUtility::getUniqueId('identifier__');
-        $dataProviderMock = $this->createMock(DataProviderInterface::class);
+        $dataProviderMock = self::createStub(DataProviderInterface::class);
         $dataProviderMock->method('getIdentifier')->willReturn($identifier);
 
         new DataProviderCollection([$dataProviderMock]);
@@ -50,9 +50,9 @@ final class DataProviderCollectionTest extends UnitTestCase
         $this->expectExceptionCode(1762361129);
 
         $identifier = 'duplicate_provider';
-        $dataProviderMock1 = $this->createMock(DataProviderInterface::class);
+        $dataProviderMock1 = self::createStub(DataProviderInterface::class);
         $dataProviderMock1->method('getIdentifier')->willReturn($identifier);
-        $dataProviderMock2 = $this->createMock(DataProviderInterface::class);
+        $dataProviderMock2 = self::createStub(DataProviderInterface::class);
         $dataProviderMock2->method('getIdentifier')->willReturn($identifier);
 
         new DataProviderCollection([$dataProviderMock1, $dataProviderMock2]);
@@ -75,7 +75,7 @@ final class DataProviderCollectionTest extends UnitTestCase
     {
         $backendLayoutIdentifier = StringUtility::getUniqueId('identifier');
 
-        $backendLayoutMock = $this->createMock(BackendLayout::class);
+        $backendLayoutMock = self::createStub(BackendLayout::class);
         $backendLayoutMock->method('getIdentifier')->willReturn($backendLayoutIdentifier);
         $dataProviderMock = $this->createMock(DefaultDataProvider::class);
         $dataProviderMock->method('getIdentifier')->willReturn('default');
@@ -94,7 +94,7 @@ final class DataProviderCollectionTest extends UnitTestCase
         $dataProviderIdentifier = StringUtility::getUniqueId('custom');
         $backendLayoutIdentifier = StringUtility::getUniqueId('identifier');
 
-        $backendLayoutMock = $this->createMock(BackendLayout::class);
+        $backendLayoutMock = self::createStub(BackendLayout::class);
         $backendLayoutMock->method('getIdentifier')->willReturn($backendLayoutIdentifier);
         $dataProviderMock = $this->createMock(DefaultDataProvider::class);
         $dataProviderMock->method('getIdentifier')->willReturn($dataProviderIdentifier);

@@ -39,7 +39,7 @@ final class StateTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $cacheMock = $this->createMock(PhpFrontend::class);
+        $cacheMock = self::createStub(PhpFrontend::class);
         $cacheMock->method('has')->willReturnCallback(static function (string $entryIdentifier): bool {
             self::assertNotSame('', $entryIdentifier);
             return false;

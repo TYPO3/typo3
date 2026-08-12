@@ -217,7 +217,7 @@ final class PackageManagerTest extends UnitTestCase
         $packageManager->_set('packagesBasePaths', $packagePaths);
         $packageManager->_set('packagesBasePath', $this->testRoot . 'Packages/');
         $packageManager->_set('packageStatesPathAndFilename', $this->testRoot . 'Configuration/PackageStates.php');
-        $mockCache = $this->getMockBuilder(PhpFrontend::class)->disableOriginalConstructor()->getMock();
+        $mockCache = self::createStub(PhpFrontend::class);
         $packageManager->_set('packageCache', new PackageStatesPackageCache($this->testRoot . 'Configuration/PackageStates.php', $mockCache));
 
         $packageKey = $expectedPackageKeys[0];

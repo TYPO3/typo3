@@ -107,7 +107,7 @@ final class FormatDateRenderableBeforeRenderingTest extends TestCase
     #[Test]
     public function relativeDefaultValueIsResolvedToAbsoluteDate(): void
     {
-        $renderable = $this->createMock(FormElementInterface::class);
+        $renderable = self::createStub(FormElementInterface::class);
         $renderable->method('getType')->willReturn('Date');
         $renderable->method('getIdentifier')->willReturn('date-1');
         $renderable->method('getProperties')->willReturn([]);
@@ -135,7 +135,7 @@ final class FormatDateRenderableBeforeRenderingTest extends TestCase
     #[Test]
     public function absoluteDefaultValueIsNotModified(): void
     {
-        $renderable = $this->createMock(FormElementInterface::class);
+        $renderable = self::createStub(FormElementInterface::class);
         $renderable->method('getType')->willReturn('Date');
         $renderable->method('getIdentifier')->willReturn('date-1');
         $renderable->method('getProperties')->willReturn([]);
@@ -152,7 +152,7 @@ final class FormatDateRenderableBeforeRenderingTest extends TestCase
     {
         $properties = ['fluidAdditionalAttributes' => $fluidAttributes];
 
-        $renderable = $this->createMock(FormElementInterface::class);
+        $renderable = self::createStub(FormElementInterface::class);
         $renderable->method('getType')->willReturn('Date');
         $renderable->method('getIdentifier')->willReturn('date-1');
         $renderable->method('getProperties')->willReturn($properties);
@@ -164,7 +164,7 @@ final class FormatDateRenderableBeforeRenderingTest extends TestCase
             }
         );
 
-        $formRuntime = $this->createMock(FormRuntime::class);
+        $formRuntime = self::createStub(FormRuntime::class);
         $formRuntime->method('offsetGet')->willReturn(null);
 
         $event = new BeforeRenderableIsRenderedEvent($renderable, $formRuntime);

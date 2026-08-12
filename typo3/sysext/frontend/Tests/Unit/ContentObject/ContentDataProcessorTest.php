@@ -34,7 +34,7 @@ final class ContentDataProcessorTest extends UnitTestCase
     {
         parent::setUp();
         $this->container = new Container();
-        $dataProcessorRegistryMock = $this->getMockBuilder(DataProcessorRegistry::class)->disableOriginalConstructor()->getMock();
+        $dataProcessorRegistryMock = self::createStub(DataProcessorRegistry::class);
         $dataProcessorRegistryMock->method('getDataProcessor')->willReturn(null);
         $this->contentDataProcessor = new ContentDataProcessor(
             $this->container,

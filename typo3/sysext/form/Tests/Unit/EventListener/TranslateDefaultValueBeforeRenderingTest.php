@@ -47,7 +47,7 @@ final class TranslateDefaultValueBeforeRenderingTest extends TestCase
         $translationService = $this->createMock(TranslationService::class);
         $translationService->expects($this->never())->method('translateFormElementValue');
 
-        $renderable = $this->createMock(FormElementInterface::class);
+        $renderable = self::createStub(FormElementInterface::class);
         $renderable->method('getDefaultValue')->willReturn(null);
         $formRuntime = self::createStub(FormRuntime::class);
         $event = new BeforeRenderableIsRenderedEvent($renderable, $formRuntime);
@@ -63,7 +63,7 @@ final class TranslateDefaultValueBeforeRenderingTest extends TestCase
         $translationService = $this->createMock(TranslationService::class);
         $translationService->expects($this->never())->method('translateFormElementValue');
 
-        $renderable = $this->createMock(FormElementInterface::class);
+        $renderable = self::createStub(FormElementInterface::class);
         $renderable->method('getDefaultValue')->willReturn(['foo' => 'bar']);
         $formRuntime = self::createStub(FormRuntime::class);
         $event = new BeforeRenderableIsRenderedEvent($renderable, $formRuntime);
@@ -74,7 +74,7 @@ final class TranslateDefaultValueBeforeRenderingTest extends TestCase
     #[Test]
     public function translationExceptionIsSilentlySwallowed(): void
     {
-        $translationService = $this->createMock(TranslationService::class);
+        $translationService = self::createStub(TranslationService::class);
         $translationService->method('translateFormElementValue')->willThrowException(new \RuntimeException('No site found'));
 
         $renderable = $this->createMock(FormElementInterface::class);
@@ -90,7 +90,7 @@ final class TranslateDefaultValueBeforeRenderingTest extends TestCase
     #[Test]
     public function identicalTranslationDoesNotCallSetDefaultValue(): void
     {
-        $translationService = $this->createMock(TranslationService::class);
+        $translationService = self::createStub(TranslationService::class);
         $translationService->method('translateFormElementValue')->willReturn('original');
 
         $renderable = $this->createMock(FormElementInterface::class);
@@ -105,7 +105,7 @@ final class TranslateDefaultValueBeforeRenderingTest extends TestCase
     #[Test]
     public function nullTranslationResultDoesNotCallSetDefaultValue(): void
     {
-        $translationService = $this->createMock(TranslationService::class);
+        $translationService = self::createStub(TranslationService::class);
         $translationService->method('translateFormElementValue')->willReturn(null);
 
         $renderable = $this->createMock(FormElementInterface::class);
@@ -120,11 +120,11 @@ final class TranslateDefaultValueBeforeRenderingTest extends TestCase
     #[Test]
     public function differentTranslationCallsSetDefaultValue(): void
     {
-        $translationService = $this->createMock(TranslationService::class);
+        $translationService = self::createStub(TranslationService::class);
         $translationService->method('translateFormElementValue')->willReturn('translated');
 
         $capturedValue = null;
-        $renderable = $this->createMock(FormElementInterface::class);
+        $renderable = self::createStub(FormElementInterface::class);
         $renderable->method('getDefaultValue')->willReturn('original');
         $renderable->method('setDefaultValue')->willReturnCallback(
             static function (mixed $value) use (&$capturedValue): void {

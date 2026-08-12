@@ -283,7 +283,7 @@ final class SiteMatcherTest extends UnitTestCase
 
     private function createSiteFinder(Site ...$sites): SiteFinder
     {
-        $siteConfigurationMock = $this->createMock(SiteConfiguration::class);
+        $siteConfigurationMock = self::createStub(SiteConfiguration::class);
         $sitesArray = array_combine(
             array_map(static function (Site $site) {
                 return $site->getIdentifier();

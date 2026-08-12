@@ -28,7 +28,7 @@ final class Typo3StatusTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $mockLanguageService = $this->getMockBuilder(LanguageService::class)->disableOriginalConstructor()->getMock();
+        $mockLanguageService = self::createStub(LanguageService::class);
         $GLOBALS['LANG'] = $mockLanguageService;
     }
 

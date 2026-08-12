@@ -49,10 +49,10 @@ final class QueryTest extends UnitTestCase
     {
         parent::setUp();
         $this->query = $this->getAccessibleMock(Query::class, ['getSelectorName'], [], '', false);
-        $this->query->_set('querySettings', $this->createMock(QuerySettingsInterface::class));
+        $this->query->_set('querySettings', self::createStub(QuerySettingsInterface::class));
         $this->persistenceManager = $this->createMock(PersistenceManagerInterface::class);
         $this->query->_set('persistenceManager', $this->persistenceManager);
-        $this->query->_set('dataMapFactory', $this->createMock(DataMapFactory::class));
+        $this->query->_set('dataMapFactory', self::createStub(DataMapFactory::class));
         $this->container = $this->createMock(ContainerInterface::class);
         $this->query->_set('container', $this->container);
     }

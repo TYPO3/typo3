@@ -185,10 +185,10 @@ final class ImageDimensionTest extends UnitTestCase
 
     private function createTask(array $processingConfiguration, ImageDimension $originalImageDimension, string $fileExtension, string $taskClass = ImageCropScaleMaskTask::class): TaskInterface
     {
-        $originalFileMock = $this->getMockBuilder(File::class)->disableOriginalConstructor()->getMock();
+        $originalFileMock = self::createStub(File::class);
         $originalFileMock->method('getExtension')->willReturn($fileExtension);
         $originalFileMock->method('getProperty')->willReturnOnConsecutiveCalls($originalImageDimension->getWidth(), $originalImageDimension->getHeight());
-        $processedFileMock = $this->getMockBuilder(ProcessedFile::class)->disableOriginalConstructor()->getMock();
+        $processedFileMock = self::createStub(ProcessedFile::class);
         $processedFileMock->method('getOriginalFile')->willReturn($originalFileMock);
 
         /** @var TaskInterface $task */

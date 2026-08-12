@@ -49,7 +49,7 @@ final class RichTextConfigurationServiceTest extends UnitTestCase
             ],
         ];
 
-        $richtextMock = $this->createMock(Richtext::class);
+        $richtextMock = self::createStub(Richtext::class);
         $richtextMock->method('getConfiguration')->willReturn($testConfiguration);
 
         $rteHtmlParserStub = self::createStub(RteHtmlParser::class);
@@ -88,7 +88,7 @@ final class RichTextConfigurationServiceTest extends UnitTestCase
             ],
         ];
 
-        $richtextMock = $this->createMock(Richtext::class);
+        $richtextMock = self::createStub(Richtext::class);
         $richtextMock->method('getConfiguration')->willReturn($testConfiguration);
 
         $rteHtmlParserStub = self::createStub(RteHtmlParser::class);
@@ -130,7 +130,7 @@ final class RichTextConfigurationServiceTest extends UnitTestCase
             ],
         ];
 
-        $richtextMock = $this->createMock(Richtext::class);
+        $richtextMock = self::createStub(Richtext::class);
         $richtextMock->method('getConfiguration')->willReturn($testConfiguration);
 
         $rteHtmlParserStub = self::createStub(RteHtmlParser::class);
@@ -138,7 +138,7 @@ final class RichTextConfigurationServiceTest extends UnitTestCase
         $factoryStub = self::createStub(SystemResourceFactory::class);
         $uriBuilderStub = self::createStub(UriBuilder::class);
 
-        $languageService = $this->createMock(LanguageService::class);
+        $languageService = self::createStub(LanguageService::class);
         $languageService->method('sL')->willReturnCallback(function ($input) {
             if (str_starts_with($input, 'LLL:')) {
                 return 'Translated: Bold';
@@ -183,14 +183,14 @@ final class RichTextConfigurationServiceTest extends UnitTestCase
             ],
         ];
 
-        $richtextMock = $this->createMock(Richtext::class);
+        $richtextMock = self::createStub(Richtext::class);
         $richtextMock->method('getConfiguration')->willReturn($testConfiguration);
 
         $rteHtmlParserStub = self::createStub(RteHtmlParser::class);
         $publisherStub = self::createStub(SystemResourcePublisherInterface::class);
         $factoryStub = self::createStub(SystemResourceFactory::class);
 
-        $uriBuilderMock = $this->createMock(UriBuilder::class);
+        $uriBuilderMock = self::createStub(UriBuilder::class);
         $uriBuilderMock->method('buildUriFromRoute')->willReturn('https://example.com/wizard');
 
         $backendUser = self::createStub(BackendUserAuthentication::class);
@@ -226,7 +226,7 @@ final class RichTextConfigurationServiceTest extends UnitTestCase
             ],
         ];
 
-        $richtextMock = $this->createMock(Richtext::class);
+        $richtextMock = self::createStub(Richtext::class);
         $richtextMock->method('getConfiguration')->willReturn($testConfiguration);
 
         $rteHtmlParserStub = self::createStub(RteHtmlParser::class);
@@ -263,7 +263,7 @@ final class RichTextConfigurationServiceTest extends UnitTestCase
             ],
         ];
 
-        $richtextMock = $this->createMock(Richtext::class);
+        $richtextMock = self::createStub(Richtext::class);
         $richtextMock->method('getConfiguration')->willReturn($testConfiguration);
 
         $rteHtmlParserMock = $this->createMock(RteHtmlParser::class);
@@ -298,7 +298,7 @@ final class RichTextConfigurationServiceTest extends UnitTestCase
             ],
         ];
 
-        $richtextMock = $this->createMock(Richtext::class);
+        $richtextMock = self::createStub(Richtext::class);
         $richtextMock->method('getConfiguration')->willReturn($testConfiguration);
 
         $rteHtmlParserMock = $this->createMock(RteHtmlParser::class);

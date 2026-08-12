@@ -35,7 +35,7 @@ final class StatusServiceTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $mockLanguageService = $this->getMockBuilder(LanguageService::class)->disableOriginalConstructor()->getMock();
+        $mockLanguageService = self::createStub(LanguageService::class);
         $GLOBALS['LANG'] = $mockLanguageService;
     }
 
@@ -120,7 +120,7 @@ final class StatusServiceTest extends UnitTestCase
      */
     private function createSubject(array $statusProviderArguments): StatusService
     {
-        $registry = $this->getMockBuilder(Registry::class)->disableOriginalConstructor()->getMock();
+        $registry = self::createStub(Registry::class);
         $statusRegistry = new StatusRegistry($this->generateStatusProviders($statusProviderArguments));
 
         return new StatusService($statusRegistry, $registry);

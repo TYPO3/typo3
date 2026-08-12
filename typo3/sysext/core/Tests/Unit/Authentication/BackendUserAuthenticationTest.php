@@ -488,14 +488,14 @@ final class BackendUserAuthenticationTest extends UnitTestCase
     #[Test]
     public function getPagePermissionsClauseWithValidUser(int $perms, array $groups, string $expected): void
     {
-        $connectionMock = $this->createMock(Connection::class);
+        $connectionMock = self::createStub(Connection::class);
         $connectionMock->method('getDatabasePlatform')->willReturn(new MockMySQLPlatform());
         $connectionMock->method('quoteIdentifier')
             ->willReturnCallback(fn(string $identifier): string => '`' . str_replace('.', '`.`', $identifier) . '`');
 
         $containerStub = self::createStub(ContainerInterface::class);
 
-        $queryBuilderMock = $this->createMock(QueryBuilder::class);
+        $queryBuilderMock = self::createStub(QueryBuilder::class);
         $queryBuilderMock->method('expr')->willReturn(
             new ExpressionBuilder($connectionMock, $containerStub)
         );

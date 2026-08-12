@@ -877,7 +877,7 @@ final class TcaCheckboxItemsTest extends UnitTestCase
             ],
         ];
 
-        $languageService = $this->createMock(LanguageService::class);
+        $languageService = self::createStub(LanguageService::class);
         $GLOBALS['LANG'] = $languageService;
         $series = [
             'aLabel',

@@ -47,7 +47,7 @@ final class AbstractMenuContentObjectTest extends UnitTestCase
 
     private function prepareSectionIndexTest(): void
     {
-        $connectionMock = $this->createMock(Connection::class);
+        $connectionMock = self::createStub(Connection::class);
         $connectionMock->method('getExpressionBuilder')->willReturn(new ExpressionBuilder($connectionMock, self::createStub(ContainerInterface::class)));
         $connectionMock->method('quoteIdentifier')->willReturnArgument(0);
         $connectionPoolMock = $this->createMock(ConnectionPool::class);
@@ -149,7 +149,7 @@ final class AbstractMenuContentObjectTest extends UnitTestCase
     public function sectionIndexFilters(int $expectedAmount, array $dataRow): void
     {
         $this->prepareSectionIndexTest();
-        $statementMock = $this->createMock(Result::class);
+        $statementMock = self::createStub(Result::class);
         $statementMock->method('fetchAssociative')->willReturn($dataRow, false);
         $subject = new AbstractMenuContentObjectFixture();
         $subject->mconf = [
@@ -205,7 +205,7 @@ final class AbstractMenuContentObjectTest extends UnitTestCase
     public function sectionIndexQueriesWithDifferentColPos(array $configuration, string $colPosFromStdWrapValue, string $whereClausePrefix): void
     {
         $this->prepareSectionIndexTest();
-        $statementMock = $this->createMock(Result::class);
+        $statementMock = self::createStub(Result::class);
         $statementMock->method('fetchAssociative')->willReturn([]);
         $subject = new AbstractMenuContentObjectFixture();
         $subject->mconf = ['sectionIndex.' => $configuration];

@@ -30,8 +30,8 @@ final class Typo3tempFileServiceTest extends UnitTestCase
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1501781453);
-        $processedFileRepositoryMock = $this->getMockBuilder(ProcessedFileRepository::class)->disableOriginalConstructor()->getMock();
-        $storageRepositoryMock = $this->getMockBuilder(StorageRepository::class)->disableOriginalConstructor()->getMock();
+        $processedFileRepositoryMock = self::createStub(ProcessedFileRepository::class);
+        $storageRepositoryMock = self::createStub(StorageRepository::class);
         $subject = new Typo3tempFileService($processedFileRepositoryMock, $storageRepositoryMock);
         $subject->clearAssetsFolder('../foo');
     }
@@ -41,8 +41,8 @@ final class Typo3tempFileServiceTest extends UnitTestCase
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1501781453);
-        $processedFileRepositoryMock = $this->getMockBuilder(ProcessedFileRepository::class)->disableOriginalConstructor()->getMock();
-        $storageRepositoryMock = $this->getMockBuilder(StorageRepository::class)->disableOriginalConstructor()->getMock();
+        $processedFileRepositoryMock = self::createStub(ProcessedFileRepository::class);
+        $storageRepositoryMock = self::createStub(StorageRepository::class);
         $subject = new Typo3tempFileService($processedFileRepositoryMock, $storageRepositoryMock);
         $subject->clearAssetsFolder('typo3temp/foo');
     }

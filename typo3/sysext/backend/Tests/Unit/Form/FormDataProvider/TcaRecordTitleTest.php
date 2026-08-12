@@ -227,7 +227,7 @@ final class TcaRecordTitleTest extends UnitTestCase
             ],
         ];
 
-        $languageService = $this->createMock(LanguageService::class);
+        $languageService = self::createStub(LanguageService::class);
         $GLOBALS['LANG'] = $languageService;
         $languageService->method('sL')->willReturnArgument(0);
 
@@ -799,7 +799,7 @@ final class TcaRecordTitleTest extends UnitTestCase
             ],
         ];
 
-        $languageService = $this->createMock(LanguageService::class);
+        $languageService = self::createStub(LanguageService::class);
         $GLOBALS['LANG'] = $languageService;
         $languageService->method('sL')->willReturnArgument(0);
 
@@ -872,7 +872,7 @@ final class TcaRecordTitleTest extends UnitTestCase
             ],
         ];
 
-        $languageService = $this->createMock(LanguageService::class);
+        $languageService = self::createStub(LanguageService::class);
         $GLOBALS['LANG'] = $languageService;
         $languageService->method('sL')->willReturnArgument(0);
 
@@ -909,7 +909,7 @@ final class TcaRecordTitleTest extends UnitTestCase
             ],
         ];
 
-        $languageService = $this->createMock(LanguageService::class);
+        $languageService = self::createStub(LanguageService::class);
         $GLOBALS['LANG'] = $languageService;
         $languageService->method('sL')->willReturnArgument(0);
 

@@ -41,7 +41,7 @@ final class RedirectFinisherTest extends UnitTestCase
     public function pageUidOptionForFinisherAcceptsVariousPageRepresentations($pageUid, int $expectedPage): void
     {
         $uriPrefix = 'https://site.test/?id=';
-        $contentObjectRendererMock = $this->createMock(ContentObjectRenderer::class);
+        $contentObjectRendererMock = self::createStub(ContentObjectRenderer::class);
         $contentObjectRendererMock->method('createUrl')->willReturnCallback(static function (array $conf) use ($uriPrefix): string {
             return $uriPrefix . $conf['parameter'];
         });
@@ -55,7 +55,7 @@ final class RedirectFinisherTest extends UnitTestCase
         $finisherContextMock->method('getRequest')->willReturn($request);
         $finisherContextMock->expects($this->once())->method('cancel');
 
-        $translationServiceMock = $this->createMock(TranslationService::class);
+        $translationServiceMock = self::createStub(TranslationService::class);
         $translationServiceMock->method('translateFinisherOption')->willReturnArgument(3);
 
         $redirectFinisherMock = $this->getAccessibleMock(RedirectFinisher::class, null, [], '', false);

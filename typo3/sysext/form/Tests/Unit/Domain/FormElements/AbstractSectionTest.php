@@ -62,7 +62,7 @@ final class AbstractSectionTest extends UnitTestCase
     #[Test]
     public function createElementReturnsUnknownElementsIfTypeDefinitionIsNotFoundAndSkipUnknownElementsIsTrue(): void
     {
-        $rootForm = $this->createMock(FormDefinition::class);
+        $rootForm = self::createStub(FormDefinition::class);
         $rootForm->method('getRenderingOptions')->willReturn(['skipUnknownElements' => true]);
         GeneralUtility::addInstance(UnknownFormElement::class, new UnknownFormElement('foo', 'bar'));
         $subject = new AbstractSectionFixture('testing', '');
@@ -78,7 +78,7 @@ final class AbstractSectionTest extends UnitTestCase
     {
         $this->expectException(TypeDefinitionNotFoundException::class);
         $this->expectExceptionCode(1325689855);
-        $rootForm = $this->createMock(FormDefinition::class);
+        $rootForm = self::createStub(FormDefinition::class);
         $rootForm->method('getTypeDefinitions')->willReturn(['foobar' => []]);
         $subject = new AbstractSectionFixture('testing', '');
         $subject->setParentRenderable($rootForm);
@@ -90,7 +90,7 @@ final class AbstractSectionTest extends UnitTestCase
     {
         $this->expectException(TypeDefinitionNotValidException::class);
         $this->expectExceptionCode(1327318156);
-        $rootForm = $this->createMock(FormDefinition::class);
+        $rootForm = self::createStub(FormDefinition::class);
         $rootForm->method('getTypeDefinitions')->willReturn([
             'foobar' => [
                 'implementationClassName' => self::class,
@@ -115,7 +115,7 @@ final class AbstractSectionTest extends UnitTestCase
         unset($typeDefinitionWithoutImplementationClassName['implementationClassName']);
         $implementationMock->expects($this->once())->method('initializeFormElement');
         $implementationMock->expects($this->once())->method('setOptions')->with($typeDefinitionWithoutImplementationClassName);
-        $rootForm = $this->createMock(FormDefinition::class);
+        $rootForm = self::createStub(FormDefinition::class);
         $rootForm->method('getTypeDefinitions')->willReturn(['foobar' => $typeDefinition]);
         $subject = new AbstractSectionFixture('testing', '');
         $subject->setParentRenderable($rootForm);

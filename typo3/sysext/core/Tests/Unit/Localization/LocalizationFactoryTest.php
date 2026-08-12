@@ -35,17 +35,17 @@ final class LocalizationFactoryTest extends UnitTestCase
     #[Test]
     public function getParsedDataCallsLocalizationOverrideIfFileNotFoundExceptionIsThrown(): void
     {
-        $translatorMock = $this->createMock(Translator::class);
+        $translatorMock = self::createStub(Translator::class);
         $translatorMock->method('addResource')->willThrowException(new FileNotFoundException('testing', 1476049512));
 
         $cacheFrontendMock = $this->createMock(FrontendInterface::class);
         $cacheFrontendMock->method('get')->willReturn(false);
         $cacheFrontendMock->expects($this->atLeastOnce())->method('set');
 
-        $labelMapperMock = $this->createMock(TranslationDomainMapper::class);
+        $labelMapperMock = self::createStub(TranslationDomainMapper::class);
         $labelMapperMock->method('mapDomainToFileName')->willReturnArgument(0);
 
-        $packageManagerMock = $this->createMock(PackageManager::class);
+        $packageManagerMock = self::createStub(PackageManager::class);
         $packageManagerMock->method('getActivePackages')->willReturn([]);
 
         $GLOBALS['TYPO3_CONF_VARS']['LANG']['resourceOverrides'] = ['foo' => 'bar'];
@@ -71,16 +71,16 @@ final class LocalizationFactoryTest extends UnitTestCase
         $packageManagerMock->method('getActivePackages')->willReturn([]);
         $packageManagerMock->expects($this->atLeastOnce())->method('extractPackageKeyFromPackagePath')->with('EXT:core/Tests/Unit/Localization/Fixtures/locallang.xlf')->willReturn('core');
 
-        $catalogue = $this->createMock(MessageCatalogue::class);
+        $catalogue = self::createStub(MessageCatalogue::class);
         $catalogue->method('getLocale')->willReturn('en');
         $catalogue->method('all')->willReturn([
             'label1' => 'This is label #1',
         ]);
 
-        $translatorMock = $this->createMock(Translator::class);
+        $translatorMock = self::createStub(Translator::class);
         $translatorMock->method('getCatalogue')->willReturn($catalogue);
 
-        $labelMapperMock = $this->createMock(TranslationDomainMapper::class);
+        $labelMapperMock = self::createStub(TranslationDomainMapper::class);
         $labelMapperMock->method('mapDomainToFileName')->willReturnArgument(0);
 
         $cacheFrontendMock = $this->createMock(FrontendInterface::class);
@@ -106,7 +106,7 @@ final class LocalizationFactoryTest extends UnitTestCase
     #[Test]
     public function usesSymfonyTranslatorInternally(): void
     {
-        $packageManagerMock = $this->createMock(PackageManager::class);
+        $packageManagerMock = self::createStub(PackageManager::class);
         $packageManagerMock->method('getActivePackages')->willReturn([]);
 
         // Create a test file that exists
@@ -118,7 +118,7 @@ final class LocalizationFactoryTest extends UnitTestCase
             ->method('addResource')
             ->with('xlf', self::stringContains('locallang.xlf'), 'default', $testFile);
 
-        $labelMapperMock = $this->createMock(TranslationDomainMapper::class);
+        $labelMapperMock = self::createStub(TranslationDomainMapper::class);
         $labelMapperMock->method('mapDomainToFileName')->willReturnArgument(0);
 
         $catalogue = new MessageCatalogue('en', [$testFile => ['fine' => 'true']]);

@@ -45,10 +45,10 @@ final class RendererRegistryTest extends UnitTestCase
     #[Test]
     public function getRendererReturnsNullIfNoFileRendererMatches(): void
     {
-        $rendererObject = $this->createMock(FileRendererInterface::class);
+        $rendererObject = self::createStub(FileRendererInterface::class);
         $rendererObject->method('canRender')->willReturn(false);
 
-        $fileResourceMock = $this->createMock(File::class);
+        $fileResourceMock = self::createStub(File::class);
 
         $rendererRegistry = new RendererRegistry([$rendererObject]);
 

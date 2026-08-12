@@ -40,8 +40,8 @@ final class HrefLangGeneratorTest extends UnitTestCase
             HrefLangGenerator::class,
             null,
             [
-                $this->getMockBuilder(ContentObjectRenderer::class)->disableOriginalConstructor()->getMock(),
-                $this->getMockBuilder(LanguageMenuProcessor::class)->disableOriginalConstructor()->getMock(),
+                self::createStub(ContentObjectRenderer::class),
+                self::createStub(LanguageMenuProcessor::class),
             ]
         );
     }
