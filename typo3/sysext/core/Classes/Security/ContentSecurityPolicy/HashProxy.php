@@ -212,6 +212,9 @@ final class HashProxy implements \JsonSerializable, SourceValueInterface
         $resolvedPromises = Promise\Utils::settle($promises)->wait();
         return array_map(
             static function (array $response): ?string {
+                // The shape of a settled promise differs between guzzle major versions, keep the
+                // runtime check independent of what the installed version happens to declare.
+                /** @var array<string, mixed> $response */
                 if ($response['state'] === 'fulfilled' && $response['value'] instanceof ResponseInterface) {
                     return (string)$response['value']->getBody();
                 }
