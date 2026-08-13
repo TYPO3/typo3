@@ -36,10 +36,19 @@ printSummary() {
     exit ${SUITE_EXIT_CODE}
 }
 
+# Waits for one or more "host port" pairs to accept connections. All pairs are
+# probed by a single container: each container attached to or detached from the
+# network reconfigures it, which browsers in other containers observe as a
+# network change and answer with aborted requests.
 waitFor() {
-    local HOST=${1}
-    local PORT=${2}
-    local TESTCOMMAND="
+    local HOST
+    local PORT
+    local TESTCOMMAND=""
+    while [[ $# -gt 1 ]]; do
+        HOST=${1}
+        PORT=${2}
+        shift 2
+        TESTCOMMAND="${TESTCOMMAND}
         COUNT=0;
         while ! nc -z ${HOST} ${PORT}; do
             if [ \"\${COUNT}\" -gt 10 ]; then
@@ -50,10 +59,22 @@ waitFor() {
             COUNT=\$((COUNT + 1));
         done;
     "
+    done
     ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name wait-for-${SUFFIX} ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${IMAGE_PHP} /bin/sh -c "${TESTCOMMAND}"
     if [[ $? -gt 0 ]]; then
         kill -SIGINT -$$
     fi
+}
+
+# Dumps the web and php-fpm container logs of a failed browser test run into the
+# log directory of the test instance, which CI collects as job artifact. Errors
+# raised by the web server itself, for instance a failed proxy request to the
+# backend, are only visible there and would otherwise be lost with the container.
+dumpWebContainerLogs() {
+    local LOG_DIR=${1}
+    mkdir -p "${LOG_DIR}"
+    ${CONTAINER_BIN} logs "ac-web-${SUFFIX}" > "${LOG_DIR}/container-ac-web.log" 2>&1
+    ${CONTAINER_BIN} logs "ac-phpfpm-${SUFFIX}" > "${LOG_DIR}/container-ac-phpfpm.log" 2>&1
 }
 
 cleanUp() {
@@ -237,7 +258,7 @@ runPlaywright() {
         SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
     fi
 
-    waitFor web 80
+    waitFor phpfpm 9000 web 80
 
     PLAYWRIGHT_SHARD=""
     if [ "${CHUNKS}" -gt 0 ]; then
@@ -276,6 +297,9 @@ runPlaywright() {
     elif [[ ${PLAYWRIGHT_PREPARE_ONLY} -eq 0 ]]; then
         ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name playwright-${SUFFIX} -e CHROME_SANDBOX=false -e CI=1 ${IMAGE_PLAYWRIGHT} ${COMMAND}
         SUITE_EXIT_CODE=$?
+        if [[ ${SUITE_EXIT_CODE} -ne 0 ]]; then
+            dumpWebContainerLogs "${CORE_ROOT}/typo3temp/var/tests/playwright-composer/var/log"
+        fi
     else
         PLAYWRIGHT_BASE_URL="http://$(${CONTAINER_BIN} port ac-web-${SUFFIX} 80/tcp)/"
         echo
@@ -366,7 +390,7 @@ runPlaywrightInstall() {
         SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
     fi
 
-    waitFor web 80
+    waitFor phpfpm 9000 web 80
 
     COMMAND="npm --prefix=${CORE_ROOT}/Build run playwright:run -- ${PLAYWRIGHT_INSTALL_SPEC} ${PLAYWRIGHT_PROJECT}"
     COMMAND_UI="npm --prefix=${CORE_ROOT}/Build run playwright:open -- ${PLAYWRIGHT_INSTALL_SPEC} ${PLAYWRIGHT_PROJECT}"
@@ -401,6 +425,9 @@ runPlaywrightInstall() {
     elif [[ ${PLAYWRIGHT_PREPARE_ONLY} -eq 0 ]]; then
         ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name e2e-install-${SUFFIX} -e CHROME_SANDBOX=false -e CI=1 ${INSTALL_ENV} ${IMAGE_PLAYWRIGHT} ${COMMAND}
         SUITE_EXIT_CODE=$?
+        if [[ ${SUITE_EXIT_CODE} -ne 0 ]]; then
+            dumpWebContainerLogs "${CORE_ROOT}/typo3temp/var/tests/playwright-install-composer/var/log"
+        fi
     else
         PLAYWRIGHT_BASE_URL="http://$(${CONTAINER_BIN} port ac-web-${SUFFIX} 80/tcp)/"
         echo

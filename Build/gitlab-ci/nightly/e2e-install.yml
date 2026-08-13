@@ -13,6 +13,7 @@ e2e install mariadb 11.8 playwright php 8.5 max:
     paths:
       - typo3temp/var/tests/playwright-install-composer/var/log
       - typo3temp/var/tests/playwright-reports
+      - typo3temp/var/tests/playwright-results
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 8.5
     - Build/Scripts/runTests.sh -s e2e-install -d mariadb -i 11.8 -p 8.5
@@ -32,6 +33,7 @@ e2e install mysql 8.4 playwright php 8.5 max:
     paths:
       - typo3temp/var/tests/playwright-install-composer/var/log
       - typo3temp/var/tests/playwright-reports
+      - typo3temp/var/tests/playwright-results
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 8.5
     - Build/Scripts/runTests.sh -s e2e-install -d mysql -i 8.4 -p 8.5
@@ -51,6 +53,7 @@ e2e install postgres 18 playwright php 8.5 max:
     paths:
       - typo3temp/var/tests/playwright-install-composer/var/log
       - typo3temp/var/tests/playwright-reports
+      - typo3temp/var/tests/playwright-results
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 8.5
     - Build/Scripts/runTests.sh -s e2e-install -d postgres -i 18 -p 8.5
@@ -70,6 +73,7 @@ e2e install sqlite playwright php 8.5 max:
     paths:
       - typo3temp/var/tests/playwright-install-composer/var/log
       - typo3temp/var/tests/playwright-reports
+      - typo3temp/var/tests/playwright-results
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 8.5
     - Build/Scripts/runTests.sh -s e2e-install -d sqlite -p 8.5
@@ -89,6 +93,7 @@ e2e install mariadb 10.4 playwright php 8.5 min:
     paths:
       - typo3temp/var/tests/playwright-install-composer/var/log
       - typo3temp/var/tests/playwright-reports
+      - typo3temp/var/tests/playwright-results
   script:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 8.5
     - Build/Scripts/runTests.sh -s e2e-install -d mariadb -i 10.4 -p 8.5
@@ -108,6 +113,7 @@ e2e install mysql 8.0 playwright php 8.5 min:
     paths:
       - typo3temp/var/tests/playwright-install-composer/var/log
       - typo3temp/var/tests/playwright-reports
+      - typo3temp/var/tests/playwright-results
   script:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 8.5
     - Build/Scripts/runTests.sh -s e2e-install -d mysql -i 8.0 -p 8.5
@@ -127,6 +133,7 @@ e2e install postgres 10 playwright php 8.5 min:
     paths:
       - typo3temp/var/tests/playwright-install-composer/var/log
       - typo3temp/var/tests/playwright-reports
+      - typo3temp/var/tests/playwright-results
   script:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 8.5
     - Build/Scripts/runTests.sh -s e2e-install -d postgres -i 10 -p 8.5
@@ -146,6 +153,7 @@ e2e install sqlite playwright php 8.5 min:
     paths:
       - typo3temp/var/tests/playwright-install-composer/var/log
       - typo3temp/var/tests/playwright-reports
+      - typo3temp/var/tests/playwright-results
   script:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 8.5
     - Build/Scripts/runTests.sh -s e2e-install -d sqlite -p 8.5
