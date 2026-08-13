@@ -18,12 +18,13 @@ declare(strict_types=1);
 namespace TYPO3Tests\BlogExample\Domain\Model;
 
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3Tests\BlogExample\Domain\Model\Enum\ContentType;
 
 class TtContentWithCType extends AbstractEntity
 {
     protected string $header = '';
 
-    protected string $ctype = '';
+    protected string|ContentType $ctype = '';
 
     public function getHeader(): string
     {
@@ -35,12 +36,12 @@ class TtContentWithCType extends AbstractEntity
         $this->header = $header;
     }
 
-    public function getCtype(): string
+    public function getCtype(): string|ContentType
     {
         return $this->ctype;
     }
 
-    public function setCtype(string $ctype): void
+    public function setCtype(string|ContentType $ctype): void
     {
         $this->ctype = $ctype;
     }

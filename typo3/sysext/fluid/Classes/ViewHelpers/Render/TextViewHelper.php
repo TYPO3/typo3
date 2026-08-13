@@ -179,6 +179,9 @@ final class TextViewHelper extends AbstractViewHelper
 
         foreach ($input->_getProperties() as $propertyName => $value) {
             if ($dataMap->getColumnMap($propertyName)?->getColumnName() === $recordTypeFieldName) {
+                if ($value instanceof \BackedEnum) {
+                    return (string)$value->value;
+                }
                 return (string)$value;
             }
         }
