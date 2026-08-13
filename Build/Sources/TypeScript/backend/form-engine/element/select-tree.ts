@@ -14,6 +14,7 @@
 import { html, type TemplateResult } from 'lit';
 import { Tree, type TreeSettings } from '@typo3/backend/tree/tree';
 import { customElement, state } from 'lit/decorators.js';
+import TextNormalizer from '@typo3/core/utility/text-normalizer';
 import type { TreeNodeInterface } from '@typo3/backend/tree/tree-node';
 
 interface SelectTreeSettings extends TreeSettings {
@@ -46,6 +47,18 @@ export class SelectTree extends Tree
   constructor() {
     super();
     this.addEventListener('typo3:tree:nodes-prepared', this.prepareLoadedNodes);
+  }
+
+  /**
+   * Fold both sides of the comparison the filter performs, so that a node is
+   * found whether or not the diacritics of its name are typed.
+   *
+   * The names are folded on every keystroke rather than kept beside the node,
+   * because writing to a node triggers a re-render and the nodes are replaced
+   * whenever a part of the tree is loaded.
+   */
+  private static fold(value: string): string {
+    return TextNormalizer.foldCaseAndDiacritics(TextNormalizer.normalizeInvisibleCharacters(value));
   }
 
   /**
@@ -89,9 +102,8 @@ export class SelectTree extends Tree
       this.nodes[0].__expanded = false;
     }
     const firstNode = this.nodes[0];
-    // A plain, case insensitive substring match. A RegExp would interpret meta characters
-    // of the typed search term as syntax and throw on unbalanced ones, e.g. on "(".
-    const lowerCasedSearchTerm = (searchTerm ?? '').toLowerCase();
+    // A plain substring match, no RegExp involved, therefore nothing to escape either
+    const foldedSearchTerm = SelectTree.fold(searchTerm ?? '');
 
     this.nodes.forEach((node: any) => {
       // skip the root node in searches
@@ -102,7 +114,7 @@ export class SelectTree extends Tree
       node.__expanded = false;
       node.__hidden = true;
 
-      if (node.name.toLowerCase().includes(lowerCasedSearchTerm)) {
+      if (SelectTree.fold(node.name).includes(foldedSearchTerm)) {
         results.push(node);
       }
     });
