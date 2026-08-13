@@ -37,6 +37,7 @@ use TYPO3Fluid\Fluid\Core\Parser\UnsafeHTML;
 use TYPO3Fluid\Fluid\Core\ViewHelper\InvalidArgumentValueException;
 use TYPO3Fluid\Fluid\View\TemplateView;
 use TYPO3Tests\BlogExample\Domain\Model\Blog;
+use TYPO3Tests\BlogExample\Domain\Model\Enum\ContentType;
 use TYPO3Tests\BlogExample\Domain\Model\TtContent;
 use TYPO3Tests\BlogExample\Domain\Model\TtContentWithCType;
 
@@ -142,6 +143,14 @@ final class TextViewHelperTest extends FunctionalTestCase
         $ttContent->setHeader('<b>My Page</b>');
         $ttContent->setCtype('text');
         yield 'TtContentWithCType' => [
+            'record' => $ttContent,
+            'templateSource' => '<f:render.text record="{record}" field="header" />',
+            'expected' => '&lt;b&gt;My Page&lt;/b&gt;',
+        ];
+        $ttContent = new TtContentWithCType();
+        $ttContent->setHeader('<b>My Page</b>');
+        $ttContent->setCtype(ContentType::TEXT);
+        yield 'TtContentWithCTypeBackedEnum' => [
             'record' => $ttContent,
             'templateSource' => '<f:render.text record="{record}" field="header" />',
             'expected' => '&lt;b&gt;My Page&lt;/b&gt;',
