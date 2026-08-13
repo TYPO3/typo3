@@ -58,6 +58,13 @@ export default defineConfig({
       // Full installer flow (folders, schema, default config, BE bootstrap) needs
       // more than the 30s default on loaded CI runners.
       timeout: 180 * 1000,
+      // With retries disabled the global "on-first-retry" trace never triggers,
+      // so a failed installer run would leave no evidence of what the browser
+      // actually saw. Keep trace and screenshot of the single attempt instead.
+      use: {
+        trace: 'retain-on-failure',
+        screenshot: 'only-on-failure',
+      },
     },
   ],
   outputDir: '../typo3temp/var/tests/playwright-results'

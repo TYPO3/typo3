@@ -14,6 +14,7 @@ e2e install playwright php 8.2 pre-merge:
     paths:
       - typo3temp/var/tests/playwright-install-composer/var/log
       - typo3temp/var/tests/playwright-reports
+      - typo3temp/var/tests/playwright-results
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.2
     - Build/Scripts/runTests.sh -s e2e-install -d mariadb -i 10.4 -p 8.2

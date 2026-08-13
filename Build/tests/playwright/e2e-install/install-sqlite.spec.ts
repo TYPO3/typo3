@@ -12,14 +12,12 @@
  */
 
 import { test, expect } from '@playwright/test';
+import { openInstaller } from '../helper/installer';
 
 test.describe('TYPO3 installer - SQLite', () => {
   test('install TYPO3 on SQLite', async ({ page }) => {
-    // Calling frontend redirects to installer
-    await page.goto('/');
-
-    // EnvironmentAndFolders step
-    await expect(page.getByText('Installing TYPO3')).toBeVisible();
+    // Calling frontend redirects to installer, EnvironmentAndFolders step
+    await openInstaller(page);
     await expect(page.getByText('No problems detected, continue with installation')).toBeVisible();
     await page.getByText('No problems detected, continue with installation').click();
 

@@ -12,6 +12,7 @@
  */
 
 import { test, expect } from '@playwright/test';
+import { openInstaller } from '../helper/installer';
 
 const dbHost = process.env.typo3InstallPostgresqlDatabaseHost;
 const dbUsername = process.env.typo3InstallPostgresqlDatabaseUsername;
@@ -23,11 +24,8 @@ if (!dbHost || !dbUsername || !dbPassword || !dbName) {
 
 test.describe('TYPO3 installer - PostgreSQL', () => {
   test('install TYPO3 on PostgreSQL', async ({ page }) => {
-    // Calling frontend redirects to installer
-    await page.goto('/');
-
-    // EnvironmentAndFolders step
-    await expect(page.getByText('Installing TYPO3')).toBeVisible();
+    // Calling frontend redirects to installer, EnvironmentAndFolders step
+    await openInstaller(page);
     await expect(page.getByText('No problems detected, continue with installation')).toBeVisible();
     await page.getByText('No problems detected, continue with installation').click();
 
