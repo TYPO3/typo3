@@ -17,41 +17,49 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Command;
 
+use Symfony\Component\Process\Exception\ProcessTimedOutException;
+use Symfony\Component\Process\Process;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 abstract class AbstractCommandTestCase extends FunctionalTestCase
 {
+    /**
+     * Upper bound in seconds for a single console command. Commands are expected
+     * to finish in seconds, the limit only ensures that one which never returns
+     * fails its test instead of stalling the whole test run.
+     */
+    protected float $consoleCommandTimeout = 300.0;
+
     protected function executeConsoleCommand(string $cmdline, ...$args): array
     {
         $cmd = vsprintf(PHP_BINARY . ' ' . GeneralUtility::getFileAbsFileName('EXT:core/bin/typo3') . ' ' . $cmdline, array_map('escapeshellarg', $args));
-        $handle = proc_open(
-            $cmd,
-            [
-                // For details, see https://www.php.net/manual/en/function.proc-open
-                ['pipe', 'r'], // stdin is a pipe that the child will read from
-                ['pipe', 'w'], // stdout is a pipe that the child will write to
-                ['pipe', 'w'], // stderr is a pipe that the child will write to
-            ],
-            $pipes
-        );
 
-        if (!is_resource($handle)) {
-            throw new \Exception('Failed to create proc_open handle', 1700678064);
+        // Process reads stdout and stderr simultaneously. Consuming one of them
+        // to the end before the other one is read at all deadlocks as soon as a
+        // command writes more to the pending pipe than its buffer holds, which
+        // is why this must not be done with plain proc_open() and
+        // stream_get_contents().
+        $process = Process::fromShellCommandline($cmd, null, null, null, $this->consoleCommandTimeout);
+
+        try {
+            $process->run();
+        } catch (ProcessTimedOutException) {
+            self::fail(sprintf(
+                'Command "%s" did not finish within %s seconds.' . PHP_EOL
+                    . 'stdout: %s' . PHP_EOL
+                    . 'stderr: %s',
+                $cmd,
+                $this->consoleCommandTimeout,
+                $process->getOutput(),
+                $process->getErrorOutput()
+            ));
         }
 
-        fclose($pipes[0]);
-        $stdout = stream_get_contents($pipes[1]);
-        fclose($pipes[1]);
-        $stderr = stream_get_contents($pipes[2]);
-        fclose($pipes[2]);
-
-        $status = proc_close($handle);
-
         return [
-            'status' => $status,
-            'stdout' => $stdout,
-            'stderr' => $stderr,
+            'status' => $process->getExitCode(),
+            'stdout' => $process->getOutput(),
+            'stderr' => $process->getErrorOutput(),
         ];
     }
 }
