@@ -10,5 +10,6 @@ accessibility playwright composer sqlite 8.3:
     paths:
       - typo3temp/var/tests/playwright-composer/var/log
       - typo3temp/var/tests/playwright-reports
+      - typo3temp/var/tests/playwright-results
   script:
     - Build/Scripts/runTests.sh -s accessibility -p 8.3 -d sqlite
