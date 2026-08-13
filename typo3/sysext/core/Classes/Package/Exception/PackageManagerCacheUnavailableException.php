@@ -20,7 +20,4 @@ use TYPO3\CMS\Core\Package\Exception;
 /**
  * A package cache unavailable exception
  */
-class PackageManagerCacheUnavailableException extends Exception
-{
-
-}
+class PackageManagerCacheUnavailableException extends Exception {}
