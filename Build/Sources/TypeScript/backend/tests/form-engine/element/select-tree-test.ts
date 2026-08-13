@@ -73,4 +73,49 @@ describe('@typo3/backend/form-engine/element/select-tree', () => {
     tree.filter('Erdbeere');
     expect(visibleNodes()).to.eql([]);
   });
+
+  describe('folding of the search term and the node names', () => {
+    beforeEach((): void => {
+      tree.nodes = [
+        createNode('root', 'Root', []),
+        createNode('creme', 'Crème brûlée', ['root']),
+        createNode('cremeschnitte', 'Cremeschnitte', ['root']),
+        createNode('strasse', 'Straße', ['root']),
+      ];
+    });
+
+    it('matches a name with diacritics when they are not typed', (): void => {
+      tree.filter('creme');
+      expect(visibleNodes()).to.eql(['Crème brûlée', 'Cremeschnitte']);
+    });
+
+    it('matches a name without diacritics when they are typed', (): void => {
+      tree.filter('crèm');
+      expect(visibleNodes()).to.eql(['Crème brûlée', 'Cremeschnitte']);
+    });
+
+    it('matches a Latin letter that does not decompose by its ASCII spelling', (): void => {
+      tree.filter('strasse');
+      expect(visibleNodes()).to.eql(['Straße']);
+    });
+
+    it('ignores a character the reader cannot see in the name', (): void => {
+      tree.nodes = [
+        createNode('root', 'Root', []),
+        createNode('creme', 'Creme\u00adschnitte', ['root']),
+      ];
+      tree.filter('cremeschnitte');
+      expect(visibleNodes()).to.eql(['Creme\u00adschnitte']);
+    });
+
+    it('shows the parents of a node matched without its diacritics', (): void => {
+      tree.nodes = [
+        createNode('root', 'Root', []),
+        createNode('sweets', 'Süßwaren', ['root']),
+        createNode('creme', 'Crème brûlée', ['root', 'sweets']),
+      ];
+      tree.filter('creme');
+      expect(visibleNodes()).to.eql(['Süßwaren', 'Crème brûlée']);
+    });
+  });
 });

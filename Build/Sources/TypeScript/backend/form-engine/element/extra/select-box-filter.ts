@@ -12,6 +12,7 @@
  */
 
 import RegularEvent from '@typo3/core/event/regular-event';
+import TextNormalizer from '@typo3/core/utility/text-normalizer';
 
 enum Selectors {
   fieldContainerSelector = '.t3js-formengine-field-group',
@@ -25,6 +26,7 @@ enum Selectors {
 class SelectBoxFilter {
   private readonly selectElement: HTMLSelectElement = null;
   private availableOptions: NodeListOf<HTMLOptionElement> = null;
+  private foldedLabels: string[] = null;
 
   constructor(selectElement: HTMLSelectElement) {
     this.selectElement = selectElement;
@@ -73,14 +75,15 @@ class SelectBoxFilter {
   private filter(filterText: string): void {
     if (this.availableOptions === null) {
       this.availableOptions = this.selectElement.querySelectorAll('option');
+      this.foldedLabels = Array.from(this.availableOptions, (option: HTMLOptionElement): string =>
+        TextNormalizer.foldCaseAndDiacritics(TextNormalizer.normalizeInvisibleCharacters(option.textContent)));
     }
 
-    // Escape filter text to prevent RegExp() exceptions
-    const escapedFilterText = filterText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    // A plain substring match, no RegExp involved, therefore nothing to escape either
+    const foldedFilterText = TextNormalizer.foldCaseAndDiacritics(TextNormalizer.normalizeInvisibleCharacters(filterText));
 
-    const matchFilter = new RegExp(escapedFilterText, 'i');
-    this.availableOptions.forEach((option: HTMLOptionElement): void => {
-      option.hidden = filterText.length > 0 && option.textContent.match(matchFilter) === null;
+    this.availableOptions.forEach((option: HTMLOptionElement, index: number): void => {
+      option.hidden = filterText.length > 0 && !this.foldedLabels[index].includes(foldedFilterText);
       SelectBoxFilter.toggleOptGroup(option);
     });
   }
