@@ -89,7 +89,9 @@ export class SelectTree extends Tree
       this.nodes[0].__expanded = false;
     }
     const firstNode = this.nodes[0];
-    const regex = new RegExp(searchTerm, 'i');
+    // A plain, case insensitive substring match. A RegExp would interpret meta characters
+    // of the typed search term as syntax and throw on unbalanced ones, e.g. on "(".
+    const lowerCasedSearchTerm = (searchTerm ?? '').toLowerCase();
 
     this.nodes.forEach((node: any) => {
       // skip the root node in searches
@@ -100,7 +102,7 @@ export class SelectTree extends Tree
       node.__expanded = false;
       node.__hidden = true;
 
-      if (regex.test(node.name)) {
+      if (node.name.toLowerCase().includes(lowerCasedSearchTerm)) {
         results.push(node);
       }
     });
