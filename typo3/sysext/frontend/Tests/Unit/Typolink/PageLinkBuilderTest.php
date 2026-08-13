@@ -132,6 +132,53 @@ final class PageLinkBuilderTest extends UnitTestCase
         self::assertEquals($expectedResult, $actualResult);
     }
 
+    public static function fallbackTargetFromConfigDataProvider(): \Generator
+    {
+        yield 'internal link applies config.intTarget' => [
+            ['intTarget' => '_top'],
+            [],
+            '_top',
+            false,
+        ];
+        yield 'external link applies config.extTarget' => [
+            ['extTarget' => '_blank'],
+            [],
+            '_blank',
+            true,
+        ];
+        yield 'typolink applies target stdWrap' => [
+            [],
+            ['target' => '_self', 'target.' => ['case' => 'upper']],
+            '_SELF',
+            false,
+        ];
+    }
+
+    #[DataProvider('fallbackTargetFromConfigDataProvider')]
+    #[Test]
+    public function fallbackTargetIsAppliedFromConfig(array $frontendTypoScriptConfig, array $linkConfiguration, string $expectedTarget, bool $treatAsExternalLink): void
+    {
+        $request = new ServerRequest('https://example.com');
+        $request = $request->withAttribute('frontend.typoscript', new class ($frontendTypoScriptConfig) {
+            public function __construct(private readonly array $frontendTypoScriptConfig) {}
+
+            public function getConfigArray(): array
+            {
+                return $this->frontendTypoScriptConfig;
+            }
+        });
+        $cObj = self::createStub(ContentObjectRenderer::class);
+        $cObj->method('getRequest')->willReturn($request);
+        $cObj->method('stdWrap')->willReturnCallback(
+            static fn(string $value, array $configuration) => ($configuration['case'] ?? '') === 'upper' ? strtoupper($value) : $value
+        );
+
+        $subject = $this->getAccessibleMock(PageLinkBuilder::class, null, [], '', false);
+        $subject->_set('contentObjectRenderer', $cObj);
+        $target = $subject->_call('calculateTargetAttribute', [], $linkConfiguration, $treatAsExternalLink, '');
+        self::assertSame($expectedTarget, $target);
+    }
+
     /**
      * Encodes square brackets in URL for a better readability in these tests.
      */

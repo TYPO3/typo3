@@ -458,11 +458,11 @@ class PageLinkBuilder extends AbstractTypolinkBuilder implements TypolinkBuilder
     protected function calculateTargetAttribute(array $page, array $conf, bool $treatAsExternalLink, string $target): string
     {
         if ($treatAsExternalLink) {
-            $target = $target ?: $this->resolveTargetAttribute($conf, 'extTarget');
+            $target = $target ?: $this->resolveTargetAttribute($conf, 'extTarget', $this->contentObjectRenderer);
         } else {
             $target = (isset($page['target']) && trim($page['target'])) ? $page['target'] : $target;
             if (empty($target)) {
-                $target = $this->resolveTargetAttribute($conf, 'target');
+                $target = $this->resolveTargetAttribute($conf, 'target', $this->contentObjectRenderer);
             }
         }
         return $target;
