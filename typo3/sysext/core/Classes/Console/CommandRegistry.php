@@ -91,10 +91,15 @@ class CommandRegistry implements CommandLoaderInterface
 
     /**
      * Get all commands which are allowed for scheduling recurring commands.
-     * @todo Not used by core. Consider deprecating!
+     *
+     * @deprecated since TYPO3 v15.0, will be removed in TYPO3 v16.0. Use getSchedulableCommandsConfiguration() instead.
      */
     public function getSchedulableCommands(): \Generator
     {
+        trigger_error(
+            'CommandRegistry->getSchedulableCommands() is deprecated since TYPO3 v15.0 and will be removed in TYPO3 v16.0. Use getSchedulableCommandsConfiguration() instead.',
+            E_USER_DEPRECATED
+        );
         foreach ($this->commandConfigurations as $commandName => $configuration) {
             if ($configuration['schedulable'] ?? true) {
                 yield $commandName => $this->getInstance($configuration['serviceName']);

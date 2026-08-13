@@ -7051,6 +7051,13 @@ return [
             'Breaking-110485-MenuContentObjectRegistrationChanged.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Console\CommandRegistry->getSchedulableCommands' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-110477-CommandRegistryGetSchedulableCommands.rst',
+        ],
+    ],
     /** Note (leave this at the bottom):
      *  The FQCN object definitions here are not actually checked, only
      *  the method name itself. That means, never list generic method names

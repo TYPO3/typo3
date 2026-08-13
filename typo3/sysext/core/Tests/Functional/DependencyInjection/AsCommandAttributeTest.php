@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DependencyInjection;
 
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Console\CommandRegistry;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -85,6 +86,7 @@ final class AsCommandAttributeTest extends FunctionalTestCase
     }
 
     #[Test]
+    #[IgnoreDeprecations]
     public function asCommandIsSchedulable(): void
     {
         $commandRegistry = $this->get(CommandRegistry::class);
@@ -99,6 +101,16 @@ final class AsCommandAttributeTest extends FunctionalTestCase
         foreach ($commandRegistry->getSchedulableCommands() as $command) {
             $collection[$command->getName()] = true;
         }
+
+        self::assertArrayHasKey('testschedulable:schedulable', $collection);
+        self::assertArrayNotHasKey('testschedulable:nonschedulable', $collection);
+    }
+
+    #[Test]
+    public function schedulableCommandConfigurationCanBeRetrieved(): void
+    {
+        $commandRegistry = $this->get(CommandRegistry::class);
+        $collection = $commandRegistry->getSchedulableCommandsConfiguration();
 
         self::assertArrayHasKey('testschedulable:schedulable', $collection);
         self::assertArrayNotHasKey('testschedulable:nonschedulable', $collection);
