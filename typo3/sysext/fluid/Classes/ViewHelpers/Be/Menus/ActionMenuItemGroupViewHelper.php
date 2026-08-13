@@ -17,8 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\ViewHelpers\Be\Menus;
 
+use TYPO3Fluid\Fluid\Core\Parser\ParsingState;
 use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperNodeInitializedEventInterface;
 
 /**
  * ViewHelper which groups options within a `<f:be.menus.actionMenu>` group.
@@ -38,7 +40,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  *
  * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-be-menus-actionmenuitemgroup
  */
-final class ActionMenuItemGroupViewHelper extends AbstractTagBasedViewHelper
+final class ActionMenuItemGroupViewHelper extends AbstractTagBasedViewHelper implements ViewHelperNodeInitializedEventInterface
 {
     /**
      * @var string
@@ -48,8 +50,7 @@ final class ActionMenuItemGroupViewHelper extends AbstractTagBasedViewHelper
     public function initializeArguments(): void
     {
         parent::initializeArguments();
-        // @todo: deprecate
-        $this->registerArgument('defaultController', 'string', 'Unused');
+        $this->registerArgument('defaultController', 'string', 'Deprecated and unused');
         $this->registerArgument('label', 'string', 'The label of the option group', false, '');
     }
 
@@ -64,5 +65,15 @@ final class ActionMenuItemGroupViewHelper extends AbstractTagBasedViewHelper
         }
         $this->tag->setContent($options);
         return $this->tag->render();
+    }
+
+    public static function nodeInitializedEvent(ViewHelperNode $node, array $arguments, ParsingState $parsingState): void
+    {
+        if (array_key_exists('defaultController', $arguments)) {
+            trigger_error(
+                'The defaultController argument of f:be.menus.actionMenuItemGroup is deprecated since TYPO3 v15.0 and will be removed in TYPO3 v16.0.',
+                E_USER_DEPRECATED
+            );
+        }
     }
 }
