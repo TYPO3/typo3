@@ -3715,12 +3715,6 @@ parameters:
 			path: ../../typo3/sysext/frontend/Classes/Middleware/FrontendUserAuthenticator.php
 
 		-
-			message: '#^Instanceof between TYPO3\\CMS\\Core\\Resource\\FileReference and TYPO3\\CMS\\Core\\Resource\\FileInterface will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/Resource/FileCollector.php
-
-		-
 			message: '#^Call to function is_string\(\) with non\-empty\-string will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
 			count: 1
