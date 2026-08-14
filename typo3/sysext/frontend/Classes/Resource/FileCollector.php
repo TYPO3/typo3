@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Resource\Collection\AbstractFileCollection;
 use TYPO3\CMS\Core\Resource\Exception;
 use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
+use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\FileCollectionRepository;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\FileRepository;
@@ -103,7 +104,16 @@ class FileCollector implements \Countable, LoggerAwareInterface
     public function addFileReferences(array $fileReferenceUids = []): void
     {
         foreach ($fileReferenceUids as $fileReferenceUid) {
-            $fileObject = $this->resourceFactory->getFileReferenceObject((int)$fileReferenceUid);
+            try {
+                $fileObject = $this->resourceFactory->getFileReferenceObject((int)$fileReferenceUid);
+            } catch (ResourceDoesNotExistException $e) {
+                $this->logger->warning(
+                    'The file reference with uid  "' . $fileReferenceUid
+                    . '" could not be found and won\'t be included in frontend output',
+                    ['exception' => $e]
+                );
+                continue;
+            }
             $this->addFileObject($fileObject);
         }
     }
