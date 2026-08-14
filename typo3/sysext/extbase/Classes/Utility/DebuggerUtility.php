@@ -301,7 +301,7 @@ class DebuggerUtility
             $dump[] = self::styled($persistenceType . $domainObjectType, 'ptype', $plainText, $ansiColors, 1);
         }
 
-        if (strpos(implode('|', self::$blacklistedClassNames), get_class($object)) > 0) {
+        if (self::isBlacklisted($object)) {
             $dump[] = self::styled('filtered', 'filtered', $plainText, $ansiColors, 1);
         } elseif (self::$renderedObjects->contains($object) && !$plainText) {
             $dump = [

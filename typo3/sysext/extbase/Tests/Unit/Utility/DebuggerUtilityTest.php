@@ -85,6 +85,7 @@ final class DebuggerUtilityTest extends UnitTestCase
         $testClass->data = 'I like burger.';
 
         $result = DebuggerUtility::var_dump($testClass, null, 8, true, false, true, [\stdClass::class]);
+        self::assertStringContainsString('filtered', $result);
         self::assertStringNotContainsString($testClass->data, $result);
     }
 
