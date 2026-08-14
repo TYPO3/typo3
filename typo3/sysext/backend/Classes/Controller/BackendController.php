@@ -50,11 +50,14 @@ use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
+use TYPO3\CMS\Core\SystemResource\Exception\SystemResourceException;
+use TYPO3\CMS\Core\SystemResource\Publishing\SystemResourcePublisherInterface;
+use TYPO3\CMS\Core\SystemResource\SystemResourceFactory;
+use TYPO3\CMS\Core\SystemResource\Type\SystemResourceInterface;
+use TYPO3\CMS\Core\SystemResource\Type\UriResource;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
-use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\View\ViewInterface;
 
 /**
@@ -80,6 +83,8 @@ readonly class BackendController
         protected BackendEntryPointResolver $backendEntryPointResolver,
         protected BookmarkService $bookmarkService,
         protected DateConfigurationFactory $dateConfigurationFactory,
+        protected SystemResourceFactory $systemResourceFactory,
+        protected SystemResourcePublisherInterface $systemResourcePublisher,
     ) {}
 
     /**
@@ -222,34 +227,40 @@ readonly class BackendController
     {
         // Extension Configuration to find the TYPO3 logo in the left corner
         $extConf = $this->extensionConfiguration->get('backend');
-        $logoPath = '';
-        $logoUrl = '';
+        $logoResource = null;
         $logoWidth = 22;
         $logoHeight = 22;
         if (!empty($extConf['backendLogo'])) {
             $configuredLogo = ltrim($extConf['backendLogo'], '/');
-            $customBackendLogo = GeneralUtility::getFileAbsFileName($configuredLogo);
-            if ($customBackendLogo !== '' && file_exists($customBackendLogo)) {
-                $logoPath = $customBackendLogo;
-                $logoUrl = (string)PathUtility::getSystemResourceUri($configuredLogo, $request);
-                // set width/height for custom logo
-                $imageInfo = GeneralUtility::makeInstance(ImageInfo::class, $logoPath);
-                $logoWidth = $imageInfo->getWidth() ?: $logoWidth;
-                $logoHeight = $imageInfo->getHeight() ?: $logoHeight;
-
-                // High-resolution?
-                if (str_contains($logoPath, '@2x.')) {
-                    $logoWidth /= 2;
-                    $logoHeight /= 2;
+            try {
+                $logoResource = $this->systemResourceFactory->createPublicResource($configuredLogo);
+                if ($logoResource instanceof SystemResourceInterface) {
+                    $dimensions = $logoResource->getImageDimension();
+                    $logoWidth = $dimensions->getWidth();
+                    $logoHeight = $dimensions->getHeight();
+                    // High-resolution?
+                    if (str_contains($configuredLogo, '@2x.')) {
+                        $logoWidth /= 2;
+                        $logoHeight /= 2;
+                    }
                 }
+                if ($logoResource instanceof UriResource) {
+                    // Despite being a valid resource, external URLs are not allowed here
+                    // because it is not reasonably possible to determine the width and height
+                    // which is required for this asset
+                    $logoResource = null;
+                }
+            } catch (SystemResourceException) {
+                // Invalid, missing, unreadable logo or non image file configured, the default logo is used below.
+                $logoResource = null;
             }
         }
         // if no custom logo was set or the path is invalid, use the original one
-        if ($logoPath === '') {
-            $logoUrl = (string)PathUtility::getSystemResourceUri('EXT:backend/Resources/Public/Images/typo3_logo_orange.svg', $request);
+        if ($logoResource === null) {
+            $logoResource = $this->systemResourceFactory->createPublicResource('EXT:backend/Resources/Public/Images/typo3_logo_orange.svg');
         }
         $view->assign('sidebar', $sidebar);
-        $view->assign('logoUrl', $logoUrl);
+        $view->assign('logoUrl', (string)$this->systemResourcePublisher->generateUri($logoResource, $request));
         $view->assign('logoWidth', $logoWidth);
         $view->assign('logoHeight', $logoHeight);
         $view->assign('applicationVersion', $this->typo3Version->getVersion());

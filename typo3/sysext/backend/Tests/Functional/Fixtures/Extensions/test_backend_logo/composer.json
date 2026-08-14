@@ -1,0 +1,16 @@
+{
+	"name": "typo3tests/cms-test-backend-logo",
+	"type": "typo3-cms-extension",
+	"require": {
+		"typo3/cms-core": "15.0.*@dev"
+	},
+	"extra": {
+		"typo3/cms": {
+			"extension-key": "test_backend_logo",
+			"Package": {
+				"providesPackages": []
+			}
+		}
+	},
+	"version": "1.0.0"
+}
