@@ -7037,6 +7037,20 @@ return [
             'Breaking-110287-MetaTagManagerRegistrationAndInterfaceChanged.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\ContentObject\Menu\MenuContentObjectFactory->registerMenuType' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Breaking-110485-MenuContentObjectRegistrationChanged.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\ContentObject\Menu\MenuContentObjectFactory->getMenuObjectByType' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Breaking-110485-MenuContentObjectRegistrationChanged.rst',
+        ],
+    ],
     /** Note (leave this at the bottom):
      *  The FQCN object definitions here are not actually checked, only
      *  the method name itself. That means, never list generic method names

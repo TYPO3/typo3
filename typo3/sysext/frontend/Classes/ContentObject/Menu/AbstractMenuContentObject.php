@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Frontend\ContentObject\Menu;
 
+use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LogLevel;
@@ -35,7 +36,6 @@ use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-use TYPO3\CMS\Frontend\ContentObject\Menu\Exception\NoSuchMenuTypeException;
 use TYPO3\CMS\Frontend\Event\FilterMenuItemsEvent;
 use TYPO3\CMS\Frontend\Typolink\LinkResult;
 use TYPO3\CMS\Frontend\Typolink\LinkResultInterface;
@@ -159,6 +159,16 @@ abstract class AbstractMenuContentObject
     protected array $parentMenuArr = [];
 
     protected bool $disableGroupAccessCheck = false;
+
+    /**
+     * @param ContainerInterface $menuContentObjectLocator Locator of all menu content objects registered
+     *                                                     via the "frontend.menucontentobject" tag, keyed by
+     *                                                     their (upper cased) TypoScript identifier. Used to
+     *                                                     create the menu objects of the next level.
+     */
+    public function __construct(
+        protected readonly ContainerInterface $menuContentObjectLocator,
+    ) {}
 
     /**
      * The initialization of the object. This just sets some internal variables.
@@ -1229,6 +1239,19 @@ abstract class AbstractMenuContentObject
     }
 
     /**
+     * Creates the menu content object for a TypoScript menu type like "TMENU",
+     * or NULL if no menu content object is registered for that type.
+     */
+    protected function createMenuContentObject(string $menuType): ?AbstractMenuContentObject
+    {
+        $menuType = strtoupper($menuType);
+        if (!$this->menuContentObjectLocator->has($menuType)) {
+            return null;
+        }
+        return $this->menuContentObjectLocator->get($menuType);
+    }
+
+    /**
      * Creates a submenu level to the current level - if configured for.
      *
      * @param int $uid Page id of the current page for which a submenu MAY be produced (if conditions are met)
@@ -1247,36 +1270,34 @@ abstract class AbstractMenuContentObject
         // stdWrap for expAll
         $this->mconf['expAll'] = $this->parent_cObj->stdWrapValue('expAll', $this->mconf);
         if (($this->mconf['expAll'] || $this->isNext($uid, $this->getMPvar($menuItemKey)) || $altArray !== []) && !($this->mconf['sectionIndex'] ?? false)) {
-            try {
-                $menuObjectFactory = GeneralUtility::makeInstance(MenuContentObjectFactory::class);
-                /** @var AbstractMenuContentObject $submenu */
-                $submenu = $menuObjectFactory->getMenuObjectByType($menuType);
-                $submenu->entryLevel = $this->entryLevel + 1;
-                $submenu->rL_uidRegister = $this->rL_uidRegister;
-                $submenu->MP_array = $this->MP_array;
-                if ($this->menuArr[$menuItemKey]['_MP_PARAM'] ?? false) {
-                    $submenu->MP_array[] = $this->menuArr[$menuItemKey]['_MP_PARAM'];
-                }
-                // Especially scripts that build the submenu needs the parent data
-                $submenu->parent_cObj = $this->parent_cObj;
-                $submenu->setParentMenu($this->menuArr, $menuItemKey);
-                // Setting alternativeMenuTempArray (will be effective only if an array and not empty)
-                if ($altArray !== []) {
-                    $submenu->alternativeMenuTempArray = $altArray;
-                }
-                if ($submenu->start(null, $this->sys_page, $uid, $this->conf, $this->menuNumber + 1, $objSuffix, $this->request)) {
-                    $submenu->makeMenu();
-                    $registerStack = $this->request->getAttribute('frontend.register.stack');
-                    $clonedRegister = clone $registerStack->current();
-                    // Reset the menu item count for the submenu by pushing a new register to register stack
-                    $clonedRegister->set('count_MENUOBJ', 0);
-                    $registerStack->push($clonedRegister);
-                    $content = $submenu->writeMenu();
-                    $registerStack->pop();
-                    $registerStack->current()->set('count_menuItems', count($this->menuArr));
-                    return $content;
-                }
-            } catch (NoSuchMenuTypeException) {
+            $submenu = $this->createMenuContentObject($menuType);
+            if ($submenu === null) {
+                return '';
+            }
+            $submenu->entryLevel = $this->entryLevel + 1;
+            $submenu->rL_uidRegister = $this->rL_uidRegister;
+            $submenu->MP_array = $this->MP_array;
+            if ($this->menuArr[$menuItemKey]['_MP_PARAM'] ?? false) {
+                $submenu->MP_array[] = $this->menuArr[$menuItemKey]['_MP_PARAM'];
+            }
+            // Especially scripts that build the submenu needs the parent data
+            $submenu->parent_cObj = $this->parent_cObj;
+            $submenu->setParentMenu($this->menuArr, $menuItemKey);
+            // Setting alternativeMenuTempArray (will be effective only if an array and not empty)
+            if ($altArray !== []) {
+                $submenu->alternativeMenuTempArray = $altArray;
+            }
+            if ($submenu->start(null, $this->sys_page, $uid, $this->conf, $this->menuNumber + 1, $objSuffix, $this->request)) {
+                $submenu->makeMenu();
+                $registerStack = $this->request->getAttribute('frontend.register.stack');
+                $clonedRegister = clone $registerStack->current();
+                // Reset the menu item count for the submenu by pushing a new register to register stack
+                $clonedRegister->set('count_MENUOBJ', 0);
+                $registerStack->push($clonedRegister);
+                $content = $submenu->writeMenu();
+                $registerStack->pop();
+                $registerStack->current()->set('count_menuItems', count($this->menuArr));
+                return $content;
             }
         }
         return '';
@@ -1955,10 +1976,8 @@ abstract class AbstractMenuContentObject
         }
 
         if ($this->mconf['expAll'] || $this->isNext($uid, $this->getMPvar($menuItemKey)) || $altArray !== []) {
-            try {
-                $menuObjectFactory = GeneralUtility::makeInstance(MenuContentObjectFactory::class);
-                $submenu = $menuObjectFactory->getMenuObjectByType($menuType);
-            } catch (NoSuchMenuTypeException) {
+            $submenu = $this->createMenuContentObject($menuType);
+            if ($submenu === null) {
                 return [];
             }
             $submenu->entryLevel = $this->entryLevel + 1;

@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject\Menu\Fixtures;
 
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\DependencyInjection\ServiceLocator;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\Domain\Page;
@@ -32,6 +33,11 @@ final class AbstractMenuContentObjectFixture extends AbstractMenuContentObject
     public int $id = 0;
     public array $menuArr = [];
     public ServerRequestInterface $request;
+
+    public function __construct()
+    {
+        parent::__construct(new ServiceLocator([]));
+    }
 
     public function isItemState($kind, $key)
     {

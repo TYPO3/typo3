@@ -15,12 +15,12 @@
 
 namespace TYPO3\CMS\Frontend\DataProcessing;
 
+use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentDataProcessor;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\DataProcessorInterface;
-use TYPO3\CMS\Frontend\ContentObject\Menu\MenuContentObjectFactory;
 
 /**
  * This menu processor generates a menu array that will be assigned to
@@ -153,7 +153,7 @@ class MenuProcessor implements DataProcessorInterface
 
     public function __construct(
         protected ContentDataProcessor $contentDataProcessor,
-        protected MenuContentObjectFactory $menuContentObjectFactory,
+        protected ContainerInterface $menuContentObjectLocator,
         protected PageRepository $pageRepository,
     ) {}
 
@@ -252,7 +252,7 @@ class MenuProcessor implements DataProcessorInterface
 
         // Create menu object and get menu items directly
         $request = $cObj->getRequest();
-        $menu = $this->menuContentObjectFactory->getMenuObjectByType('TMENU');
+        $menu = $this->menuContentObjectLocator->get('TMENU');
         $menu->parent_cObj = $cObj;
 
         if (!$menu->start(null, $this->pageRepository, '', $this->menuConfig, 1, '', $request)) {

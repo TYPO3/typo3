@@ -17,13 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\DataProcessing;
 
+use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\DataProcessorInterface;
-use TYPO3\CMS\Frontend\ContentObject\Menu\MenuContentObjectFactory;
 use TYPO3\CMS\Frontend\Utility\CanonicalizationUtility;
 
 /**
@@ -81,7 +81,7 @@ class LanguageMenuProcessor implements DataProcessorInterface
     ];
 
     public function __construct(
-        protected readonly MenuContentObjectFactory $menuContentObjectFactory,
+        protected readonly ContainerInterface $menuContentObjectLocator,
         protected readonly PageRepository $pageRepository,
     ) {}
 
@@ -189,7 +189,7 @@ class LanguageMenuProcessor implements DataProcessorInterface
         $request = $cObj->getRequest();
         $site = $this->getCurrentSite();
 
-        $menu = $this->menuContentObjectFactory->getMenuObjectByType('TMENU');
+        $menu = $this->menuContentObjectLocator->get('TMENU');
         $menu->parent_cObj = $cObj;
 
         if (!$menu->start(null, $this->pageRepository, '', $this->menuConfig, 1, '', $request)) {

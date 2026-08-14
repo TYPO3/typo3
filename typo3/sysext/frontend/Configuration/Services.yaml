@@ -86,6 +86,8 @@ services:
         identifier: 'RECORDS'
 
   TYPO3\CMS\Frontend\ContentObject\HierarchicalMenuContentObject:
+    arguments:
+      $menuContentObjectLocator: !tagged_locator { tag: 'frontend.menucontentobject', index_by: 'identifier' }
     tags:
       - name: frontend.contentobject
         identifier: 'HMENU'
@@ -115,6 +117,14 @@ services:
       - name: frontend.contentobject
         identifier: 'SVG'
 
+  # Register all available menu content objects (the sub types of HMENU).
+  # These are always non-shared and receive the locator of all registered
+  # menu types, see EXT:frontend/Configuration/Services.php.
+  TYPO3\CMS\Frontend\ContentObject\Menu\TextMenuContentObject:
+    tags:
+      - name: frontend.menucontentobject
+        identifier: 'TMENU'
+
   TYPO3\CMS\Frontend\DataProcessing\CommaSeparatedValueProcessor:
     tags:
       - { name: 'data.processor', identifier: 'comma-separated-value' }
@@ -140,12 +150,16 @@ services:
   TYPO3\CMS\Frontend\DataProcessing\LanguageMenuProcessor:
     public: true
     shared: false
+    arguments:
+      $menuContentObjectLocator: !tagged_locator { tag: 'frontend.menucontentobject', index_by: 'identifier' }
     tags:
       - { name: 'data.processor', identifier: 'language-menu' }
 
   TYPO3\CMS\Frontend\DataProcessing\MenuProcessor:
     public: true
     shared: false
+    arguments:
+      $menuContentObjectLocator: !tagged_locator { tag: 'frontend.menucontentobject', index_by: 'identifier' }
     tags:
       - { name: 'data.processor', identifier: 'menu' }
 

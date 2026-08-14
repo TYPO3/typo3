@@ -15,15 +15,22 @@
 
 namespace TYPO3\CMS\Frontend\ContentObject;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\ContentObject\Menu\Exception\NoSuchMenuTypeException;
-use TYPO3\CMS\Frontend\ContentObject\Menu\MenuContentObjectFactory;
+use Psr\Container\ContainerInterface;
 
 /**
  * Contains HMENU class object.
  */
 class HierarchicalMenuContentObject extends AbstractContentObject
 {
+    /**
+     * @param ContainerInterface $menuContentObjectLocator Locator of all menu content objects registered
+     *                                                     via the "frontend.menucontentobject" tag, keyed by
+     *                                                     their (upper cased) TypoScript identifier.
+     */
+    public function __construct(
+        protected readonly ContainerInterface $menuContentObjectLocator,
+    ) {}
+
     /**
      * Rendering the cObject, HMENU
      *
@@ -37,11 +44,10 @@ class HierarchicalMenuContentObject extends AbstractContentObject
         }
 
         $theValue = '';
-        $menuType = $conf[1] ?? '';
-        try {
+        $menuType = strtoupper((string)($conf[1] ?? ''));
+        if ($this->menuContentObjectLocator->has($menuType)) {
             $register = $this->request->getAttribute('frontend.register.stack')->current();
-            $menuObjectFactory = GeneralUtility::makeInstance(MenuContentObjectFactory::class);
-            $menu = $menuObjectFactory->getMenuObjectByType($menuType);
+            $menu = $this->menuContentObjectLocator->get($menuType);
             $countHMENU = (int)$register->get('count_HMENU', 0);
             $countHMENU++;
             $register->set('count_HMENU', $countHMENU);
@@ -51,7 +57,6 @@ class HierarchicalMenuContentObject extends AbstractContentObject
             $menu->start(null, $this->getPageRepository(), '', $conf, 1, '', $this->request);
             $menu->makeMenu();
             $theValue .= $menu->writeMenu();
-        } catch (NoSuchMenuTypeException) {
         }
         $wrap = $this->cObj->stdWrapValue('wrap', $conf);
         if ($wrap) {

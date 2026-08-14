@@ -2836,4 +2836,14 @@ return [
             'Breaking-110334-XmlSitemapDataProviderInterfaceChanged.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\ContentObject\Menu\MenuContentObjectFactory' => [
+        'restFiles' => [
+            'Breaking-110485-MenuContentObjectRegistrationChanged.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\ContentObject\Menu\Exception\NoSuchMenuTypeException' => [
+        'restFiles' => [
+            'Breaking-110485-MenuContentObjectRegistrationChanged.rst',
+        ],
+    ],
 ];
