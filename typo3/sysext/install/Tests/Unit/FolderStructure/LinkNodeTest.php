@@ -36,7 +36,10 @@ final class LinkNodeTest extends UnitTestCase
     {
         parent::setUp();
         // do not use var path here, as link nodes get checked for public path as first part
-        $this->testRoot = Environment::getPublicPath() . '/typo3temp/tests/';
+        // The unique sub directory keeps the files of other test cases, which use the
+        // same root, out of the cleanup below.
+        $this->testRoot = Environment::getPublicPath() . '/typo3temp/tests/'
+            . StringUtility::getUniqueId('linkNode_') . '/';
         $this->testFilesToDelete[] = $this->testRoot;
         GeneralUtility::mkdir_deep($this->testRoot);
     }

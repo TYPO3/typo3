@@ -611,8 +611,10 @@ final class FileNodeTest extends AbstractFolderStructureTestCase
         // do not use var path here, as file nodes explicitly check for public path
         $testRoot = Environment::getPublicPath() . '/typo3temp/tests/';
         $path = $testRoot . StringUtility::getUniqueId('root_');
-        $this->testFilesToDelete[] = $testRoot;
         GeneralUtility::mkdir_deep($path);
+        // Register the unique directory and not the shared root: other test cases
+        // keep their files below the same root and must not have them removed.
+        $this->testFilesToDelete[] = $path;
         $link = StringUtility::getUniqueId('link_');
         $file = StringUtility::getUniqueId('file_');
         touch($path . '/' . $file);

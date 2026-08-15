@@ -33,6 +33,7 @@ use TYPO3\CMS\Core\Settings\SettingsTypeRegistry;
 use TYPO3\CMS\Core\Site\Set\SetRegistry;
 use TYPO3\CMS\Core\Site\SiteSettingsFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class SiteConfigurationTest extends UnitTestCase
@@ -50,7 +51,9 @@ final class SiteConfigurationTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $basePath = Environment::getVarPath() . '/tests/unit';
+        // The unique sub directory keeps the files of other test cases, which use
+        // the same root, out of the cleanup below.
+        $basePath = Environment::getVarPath() . '/tests/unit/' . StringUtility::getUniqueId('siteConfiguration_');
         $this->fixturePath = $basePath . '/fixture/config/sites';
         if (!file_exists($this->fixturePath)) {
             GeneralUtility::mkdir_deep($this->fixturePath);

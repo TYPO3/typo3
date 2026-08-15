@@ -483,9 +483,11 @@ final class DirectoryNodeTest extends AbstractFolderStructureTestCase
     {
         $node = $this->getAccessibleMock(DirectoryNode::class, ['getAbsolutePath'], [], '', false);
         $testRoot = Environment::getVarPath() . '/tests/';
-        $this->testFilesToDelete[] = $testRoot;
         $path = $testRoot . StringUtility::getUniqueId('root_');
         GeneralUtility::mkdir_deep($path);
+        // Register the unique directory and not the shared root: other test cases
+        // keep their files below the same root and must not have them removed.
+        $this->testFilesToDelete[] = $path;
         $link = StringUtility::getUniqueId('link_');
         $dir = StringUtility::getUniqueId('dir_');
         mkdir($path . '/' . $dir);
