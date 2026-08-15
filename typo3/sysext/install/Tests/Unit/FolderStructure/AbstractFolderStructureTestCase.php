@@ -33,10 +33,12 @@ abstract class AbstractFolderStructureTestCase extends UnitTestCase
     protected function getTestDirectory($prefix = 'root_'): string
     {
         $testRoot = Environment::getVarPath() . '/tests/';
-        $this->testFilesToDelete[] = $testRoot;
         $path = $testRoot . StringUtility::getUniqueId($prefix);
         GeneralUtility::mkdir_deep($path);
         chmod($testRoot, 02777);
+        // Register the unique directory and not the shared root: other test cases
+        // keep their files below the same root and must not have them removed.
+        $this->testFilesToDelete[] = $path;
         return $path;
     }
 

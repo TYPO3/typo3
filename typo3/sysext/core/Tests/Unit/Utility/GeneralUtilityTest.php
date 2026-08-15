@@ -2184,19 +2184,19 @@ final class GeneralUtilityTest extends UnitTestCase
         return [
             'Default text file' => [
                 Environment::getVarPath() . '/tests/paranoid/android.txt',
-                Environment::getVarPath() . '/tests/',
+                Environment::getVarPath() . '/tests/paranoid',
             ],
             'Html file extension' => [
                 Environment::getVarPath() . '/tests/karma.html',
-                Environment::getVarPath() . '/tests/',
+                Environment::getVarPath() . '/tests/karma.html',
             ],
             'No file extension' => [
                 Environment::getVarPath() . '/tests/no-surprises',
-                Environment::getVarPath() . '/tests/',
+                Environment::getVarPath() . '/tests/no-surprises',
             ],
             'Deep directory' => [
                 Environment::getVarPath() . '/tests/climbing/up/the/walls',
-                Environment::getVarPath() . '/tests/',
+                Environment::getVarPath() . '/tests/climbing',
             ],
             'File in typo3temp/var directory' => [
                 Environment::getPublicPath() . '/typo3temp/var/path/foo.txt',
@@ -2257,8 +2257,9 @@ final class GeneralUtilityTest extends UnitTestCase
     #[Test]
     public function mkdirDeepCreatesDirectoryWithDoubleSlashes($directoryToCreate): void
     {
-        $testRoot = Environment::getVarPath() . '/public/';
-        $this->testFilesToDelete[] = $testRoot;
+        // Trailing slash on purpose: combined with a leading slash of the data set,
+        // this creates the double slash the test is about.
+        $testRoot = $this->getTestDirectory() . '/';
         $directory = $testRoot . $directoryToCreate;
         GeneralUtility::mkdir_deep($directory);
         self::assertDirectoryExists($directory);
@@ -2328,9 +2329,7 @@ final class GeneralUtilityTest extends UnitTestCase
     #[Test]
     public function rmdirRemovesFile(): void
     {
-        $testRoot = Environment::getVarPath() . '/tests/';
-        $this->testFilesToDelete[] = $testRoot;
-        GeneralUtility::mkdir_deep($testRoot);
+        $testRoot = $this->getTestDirectory() . '/';
         $file = $testRoot . StringUtility::getUniqueId('file_');
         touch($file);
         GeneralUtility::rmdir($file);

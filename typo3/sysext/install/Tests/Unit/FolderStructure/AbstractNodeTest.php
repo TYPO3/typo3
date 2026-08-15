@@ -114,10 +114,13 @@ final class AbstractNodeTest extends AbstractFolderStructureTestCase
     {
         $node = $this->getAccessibleMock(AbstractNode::class, ['getAbsolutePath'], [], '', false);
         $testRoot = Environment::getVarPath() . '/tests/';
-        $this->testFilesToDelete[] = $testRoot;
         GeneralUtility::mkdir_deep($testRoot);
         $path = $testRoot . StringUtility::getUniqueId('link_');
         $target = $testRoot . StringUtility::getUniqueId('notExists_');
+        // Register the unique link and not the shared root: other test cases keep
+        // their files below the same root and must not have them removed. The
+        // target is unlinked by the test itself and must not be registered.
+        $this->testFilesToDelete[] = $path;
         touch($target);
         symlink($target, $path);
         unlink($target);
