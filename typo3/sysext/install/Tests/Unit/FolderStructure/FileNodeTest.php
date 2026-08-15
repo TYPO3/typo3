@@ -173,8 +173,10 @@ final class FileNodeTest extends AbstractFolderStructureTestCase
         );
         // do not use var path here, as file nodes explicitly check for public path
         $testRoot = Environment::getPublicPath() . '/typo3temp/tests/';
-        $this->testFilesToDelete[] = $testRoot;
         GeneralUtility::mkdir_deep($testRoot);
+        // Nothing is registered for removal here: only the shared root is
+        // created, and that one is kept for the other test cases using it. The
+        // directory below is handed to the mock only and never created.
         $path = $testRoot . StringUtility::getUniqueId('dir_');
         $node->method('getAbsolutePath')->willReturn($path);
         $node->method('exists')->willReturn(true);
@@ -635,8 +637,10 @@ final class FileNodeTest extends AbstractFolderStructureTestCase
         // do not use var path here, as file nodes explicitly check for public path
         $testRoot = Environment::getPublicPath() . '/typo3temp/tests/';
         $path = $testRoot . StringUtility::getUniqueId('root_');
-        $this->testFilesToDelete[] = $testRoot;
         GeneralUtility::mkdir_deep($path);
+        // Register the unique directory and not the shared root: other test cases
+        // keep their files below the same root and must not have them removed.
+        $this->testFilesToDelete[] = $path;
         $link = StringUtility::getUniqueId('link_');
         $file = StringUtility::getUniqueId('file_');
         touch($path . '/' . $file);

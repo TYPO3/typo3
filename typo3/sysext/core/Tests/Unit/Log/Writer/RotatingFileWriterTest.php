@@ -38,7 +38,9 @@ final class RotatingFileWriterTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->testRoot = Environment::getVarPath() . '/tests/';
+        // The unique sub directory keeps the files of other test cases, which use
+        // the same root, out of the cleanup below.
+        $this->testRoot = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('rotatingFileWriter_') . '/';
         GeneralUtility::mkdir_deep($this->testRoot . $this->logFileDirectory);
         $this->testFilesToDelete[] = $this->testRoot;
     }

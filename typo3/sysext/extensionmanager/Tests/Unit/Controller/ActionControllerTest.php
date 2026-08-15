@@ -36,10 +36,12 @@ final class ActionControllerTest extends UnitTestCase
     protected function createFakeExtension(): array
     {
         $testRoot = Environment::getVarPath() . '/tests';
-        $this->testFilesToDelete[] = $testRoot;
         $extKey = strtolower(StringUtility::getUniqueId('testing'));
         $absExtPath = $testRoot . '/ext-' . $extKey . '/';
         GeneralUtility::mkdir_deep($absExtPath);
+        // Register the unique directory and not the shared root: other test cases
+        // keep their files below the same root and must not have them removed.
+        $this->testFilesToDelete[] = $absExtPath;
         return [
             'extensionKey' => $extKey,
             'version' => '0.0.0',
