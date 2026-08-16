@@ -31,6 +31,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class LocalizationUtilityTest extends FunctionalTestCase
 {
+    protected bool $initializeDatabase = false;
+
     protected array $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/label_test'];
 
     #[Test]

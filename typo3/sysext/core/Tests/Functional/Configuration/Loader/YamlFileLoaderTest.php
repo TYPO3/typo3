@@ -27,6 +27,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class YamlFileLoaderTest extends FunctionalTestCase
 {
+    protected bool $initializeDatabase = false;
+
     /**
      * Generic method to check if the load method returns an array from a YAML file
      */

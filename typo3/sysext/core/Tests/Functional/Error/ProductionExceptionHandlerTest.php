@@ -29,6 +29,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class ProductionExceptionHandlerTest extends FunctionalTestCase
 {
+    protected bool $initializeDatabase = false;
+
     private ProductionExceptionHandler&MockObject $subject;
 
     protected function setUp(): void

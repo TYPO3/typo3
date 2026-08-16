@@ -35,6 +35,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class FlexFormToolsTest extends FunctionalTestCase
 {
+    protected bool $initializeDatabase = false;
+
     #[Test]
     public function getDataStructureIdentifierWithNoListenersReturnsDefault(): void
     {

@@ -40,6 +40,8 @@ use TYPO3Tests\BlogExample\Controller\BlogController;
 
 final class RequestBuilderTest extends FunctionalTestCase
 {
+    protected bool $initializeDatabase = false;
+
     #[Test]
     public function buildBuildsARequestInterfaceObject(): void
     {

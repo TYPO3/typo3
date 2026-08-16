@@ -25,6 +25,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class ModuleDataTest extends FunctionalTestCase
 {
+    protected bool $initializeDatabase = false;
+
     #[Test]
     public function defaultValuesAreOverwritten(): void
     {
