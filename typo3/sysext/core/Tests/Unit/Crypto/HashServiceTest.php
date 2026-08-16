@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Crypto;
 
+use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Crypto\HashAlgo;
@@ -24,6 +25,7 @@ use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Exception\Crypto\InvalidHashStringException;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
+#[BackupGlobals(true)]
 final class HashServiceTest extends UnitTestCase
 {
     private HashService $subject;

@@ -17,12 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Configuration\Tca;
 
+use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Configuration\Tca\TcaPreparation;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
+#[BackupGlobals(true)]
 final class TcaPreparationTest extends UnitTestCase
 {
     public static function configureCategoryRelationsDataProvider(): \Generator

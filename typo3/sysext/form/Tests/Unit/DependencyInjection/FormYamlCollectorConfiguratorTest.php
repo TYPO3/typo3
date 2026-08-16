@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Unit\DependencyInjection;
 
+use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\Stub;
 use Psr\Log\LoggerInterface;
@@ -26,6 +27,7 @@ use TYPO3\CMS\Form\DependencyInjection\FormYamlCollectorConfigurator;
 use TYPO3\CMS\Form\Mvc\Configuration\FormYamlCollector;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
+#[BackupGlobals(true)]
 final class FormYamlCollectorConfiguratorTest extends UnitTestCase
 {
     private string $tempDir = '';

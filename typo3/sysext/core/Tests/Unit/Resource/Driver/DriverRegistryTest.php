@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource\Driver;
 
+use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Resource\Driver\DriverInterface;
 use TYPO3\CMS\Core\Resource\Driver\DriverRegistry;
@@ -24,6 +25,7 @@ use TYPO3\CMS\Core\Tests\Unit\Resource\Driver\Fixtures\TestingDriver;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
+#[BackupGlobals(true)]
 final class DriverRegistryTest extends UnitTestCase
 {
     #[Test]

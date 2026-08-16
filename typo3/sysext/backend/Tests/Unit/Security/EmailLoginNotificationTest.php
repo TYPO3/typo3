@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Security;
 
+use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Stub;
@@ -30,6 +31,7 @@ use TYPO3\CMS\Core\Mail\MailerInterface;
 use TYPO3\CMS\Core\Mail\TemplatedEmailFactory;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
+#[BackupGlobals(true)]
 final class EmailLoginNotificationTest extends UnitTestCase
 {
     #[Test]

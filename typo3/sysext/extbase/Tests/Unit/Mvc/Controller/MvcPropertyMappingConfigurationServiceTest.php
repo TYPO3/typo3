@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Controller;
 
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Test;
@@ -37,6 +38,7 @@ use TYPO3\CMS\Extbase\Security\HashScope;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 #[AllowMockObjectsWithoutExpectations]
+#[BackupGlobals(true)]
 final class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
 {
     /**

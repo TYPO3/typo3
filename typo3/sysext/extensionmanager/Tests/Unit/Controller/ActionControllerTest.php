@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Controller;
 
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Package\PackageManager;
@@ -31,6 +32,7 @@ use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 #[AllowMockObjectsWithoutExpectations]
+#[BackupGlobals(true)]
 final class ActionControllerTest extends UnitTestCase
 {
     /**

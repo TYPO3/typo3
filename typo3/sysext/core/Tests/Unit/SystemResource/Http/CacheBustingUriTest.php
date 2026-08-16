@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\SystemResource\Http;
 
+use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\ApplicationType;
@@ -26,6 +27,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
+#[BackupGlobals(true)]
 final class CacheBustingUriTest extends UnitTestCase
 {
     private \SplFileInfo $assetFile;

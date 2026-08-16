@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\Page;
 
+use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Crypto\HashAlgo;
@@ -25,6 +26,7 @@ use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
 use TYPO3\CMS\Frontend\Page\CacheHashConfiguration;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
+#[BackupGlobals(true)]
 final class CacheHashCalculatorTest extends UnitTestCase
 {
     private array $configuration = [

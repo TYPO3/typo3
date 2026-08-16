@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Authentication;
 
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\Container\ContainerInterface;
@@ -48,6 +49,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 #[AllowMockObjectsWithoutExpectations]
+#[BackupGlobals(true)]
 final class BackendUserAuthenticationTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;

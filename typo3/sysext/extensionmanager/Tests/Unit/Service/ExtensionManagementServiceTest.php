@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Service;
 
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Stub;
@@ -33,6 +34,7 @@ use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 #[AllowMockObjectsWithoutExpectations]
+#[BackupGlobals(true)]
 final class ExtensionManagementServiceTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;

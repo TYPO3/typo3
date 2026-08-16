@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\TypoScript\AST\Visitor;
 
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -29,6 +30,7 @@ use TYPO3\CMS\Core\TypoScript\Tokenizer\LosslessTokenizer;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 #[AllowMockObjectsWithoutExpectations]
+#[BackupGlobals(true)]
 final class AstConstantCommentVisitorTest extends UnitTestCase
 {
     /**

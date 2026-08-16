@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\IgnoreDeprecations;
@@ -47,6 +48,7 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 #[AllowMockObjectsWithoutExpectations]
+#[BackupGlobals(true)]
 final class GeneralUtilityTest extends UnitTestCase
 {
     public const string NO_FIX_PERMISSIONS_ON_WINDOWS = 'fixPermissions() not available on Windows (method does nothing)';

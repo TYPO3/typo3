@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Crypto\PasswordHashing;
 
+use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2idPasswordHash;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException;
@@ -26,6 +27,7 @@ use TYPO3\CMS\Core\Tests\Unit\Crypto\PasswordHashing\Fixtures\TestPasswordHash;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
+#[BackupGlobals(true)]
 final class PasswordHashFactoryTest extends UnitTestCase
 {
     #[Test]

@@ -17,11 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Localization\Loader;
 
+use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Localization\Loader\XliffLoader;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
+#[BackupGlobals(true)]
 final class XliffLoaderTest extends UnitTestCase
 {
     public static function canLoadXliffDataProvider(): \Generator

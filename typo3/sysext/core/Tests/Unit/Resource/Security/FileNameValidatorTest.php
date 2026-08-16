@@ -17,12 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource\Security;
 
+use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
+#[BackupGlobals(true)]
 final class FileNameValidatorTest extends TestCase
 {
     public static function deniedFilesWithoutDenyPatternDataProvider(): array

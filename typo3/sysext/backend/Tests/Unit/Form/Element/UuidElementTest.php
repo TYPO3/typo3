@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\Element;
 
+use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\Element\UuidElement;
 use TYPO3\CMS\Backend\Form\NodeExpansion\FieldInformation;
@@ -26,6 +27,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
+#[BackupGlobals(true)]
 final class UuidElementTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
+use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessFieldDescriptions;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
@@ -25,6 +26,7 @@ use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
+#[BackupGlobals(true)]
 final class TcaColumnsProcessFieldDescriptionsTest extends UnitTestCase
 {
     private TcaColumnsProcessFieldDescriptions $subject;

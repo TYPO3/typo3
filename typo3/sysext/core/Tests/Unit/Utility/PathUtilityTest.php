@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 
+use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
@@ -26,6 +27,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * @todo Defining the method parameter types further leads to test bench errors
  */
+#[BackupGlobals(true)]
 final class PathUtilityTest extends UnitTestCase
 {
     protected bool $backupEnvironment = true;

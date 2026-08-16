@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Utility;
 
+use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Extbase\Tests\Unit\Utility\Fixtures\ExtensionUtilityAccessibleProxy;
@@ -26,6 +27,7 @@ use TYPO3\CMS\Extbase\Tests\Unit\Utility\Fixtures\MyExtension\Controller\ThirdCo
 use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
+#[BackupGlobals(true)]
 final class ExtensionUtilityTest extends UnitTestCase
 {
     #[Test]

@@ -17,12 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Reports\Tests\Unit\Report\Status;
 
+use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Reports\Report\Status\Typo3Status;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
+#[BackupGlobals(true)]
 final class Typo3StatusTest extends UnitTestCase
 {
     protected function setUp(): void

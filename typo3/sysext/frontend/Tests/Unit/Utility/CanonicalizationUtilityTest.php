@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\Utility;
 
+use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Crypto\HashService;
@@ -27,6 +28,7 @@ use TYPO3\CMS\Frontend\Page\CacheHashConfiguration;
 use TYPO3\CMS\Frontend\Utility\CanonicalizationUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
+#[BackupGlobals(true)]
 final class CanonicalizationUtilityTest extends UnitTestCase
 {
     protected function setUp(): void

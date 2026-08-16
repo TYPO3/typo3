@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Linkvalidator\Tests\Unit\Linktype;
 use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Psr7\Response;
+use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\Stub;
@@ -30,6 +31,7 @@ use TYPO3\CMS\Linkvalidator\LinkAnalyzer;
 use TYPO3\CMS\Linkvalidator\Linktype\ExternalLinktype;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
+#[BackupGlobals(true)]
 final class ExternalLinktypeTest extends UnitTestCase
 {
     protected function setUp(): void
