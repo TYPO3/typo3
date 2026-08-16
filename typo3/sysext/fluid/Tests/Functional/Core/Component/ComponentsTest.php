@@ -31,6 +31,8 @@ use TYPO3Tests\ComponentsTest\Components\ClassBasedComponentCollection;
 
 final class ComponentsTest extends FunctionalTestCase
 {
+    protected bool $initializeDatabase = false;
+
     protected array $testExtensionsToLoad = [
         'typo3/sysext/fluid/Tests/Functional/Fixtures/Extensions/components_test',
         'typo3/sysext/fluid/Tests/Functional/Fixtures/Extensions/components_override_test',

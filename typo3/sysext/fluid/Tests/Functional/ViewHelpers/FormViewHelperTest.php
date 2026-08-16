@@ -42,6 +42,8 @@ final class FormViewHelperTest extends FunctionalTestCase
         'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
     ];
 
+    protected bool $initializeDatabase = false;
+
     public static function isRenderedDataProvider(): array
     {
         return [

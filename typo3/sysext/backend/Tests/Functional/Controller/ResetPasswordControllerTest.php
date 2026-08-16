@@ -42,6 +42,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class ResetPasswordControllerTest extends FunctionalTestCase
 {
+    protected bool $initializeDatabase = false;
+
     private ResetPasswordController $subject;
     private ServerRequestInterface $request;
 

@@ -25,6 +25,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class ErrorControllerTest extends FunctionalTestCase
 {
+    protected bool $initializeDatabase = false;
+
     #[Test]
     public function pageNotFoundHandlingReturns404ResponseIfNotConfigured(): void
     {
