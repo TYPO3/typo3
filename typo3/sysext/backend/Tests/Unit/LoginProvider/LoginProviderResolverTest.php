@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\LoginProvider;
 
+use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\LoginProvider\LoginProviderResolver;
 use TYPO3\CMS\Backend\LoginProvider\UsernamePasswordLoginProvider;
@@ -24,6 +25,7 @@ use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
+#[BackupGlobals(true)]
 final class LoginProviderResolverTest extends UnitTestCase
 {
     private const LOGIN_PROVIDERS = [

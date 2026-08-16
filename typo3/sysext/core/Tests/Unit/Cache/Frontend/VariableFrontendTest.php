@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Cache\Frontend;
 
+use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Test;
@@ -28,6 +29,7 @@ use TYPO3\CMS\Core\Serializer\AuthenticatedMessageDeserializer;
 use TYPO3\CMS\Core\Serializer\DeserializationService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
+#[BackupGlobals(true)]
 final class VariableFrontendTest extends UnitTestCase
 {
     private AuthenticatedMessageDeserializer $deserializer;

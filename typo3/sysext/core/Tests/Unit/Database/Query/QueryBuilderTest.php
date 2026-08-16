@@ -31,6 +31,7 @@ use Doctrine\DBAL\Query\QueryType;
 use Doctrine\DBAL\Query\UnionType;
 use Doctrine\DBAL\Result;
 use Doctrine\DBAL\Types\Type;
+use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -53,6 +54,7 @@ use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform\MockPlatform;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
+#[BackupGlobals(true)]
 final class QueryBuilderTest extends UnitTestCase
 {
     private Connection&MockObject $connection;

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource\Processing;
 
+use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Resource\Processing\AbstractTask;
 use TYPO3\CMS\Core\Resource\Processing\LocalImageProcessor;
@@ -24,6 +25,7 @@ use TYPO3\CMS\Core\Resource\Processing\ProcessorRegistry;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
+#[BackupGlobals(true)]
 final class ProcessorRegistryTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;

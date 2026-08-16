@@ -10,11 +10,13 @@
 
     The recommended way to execute the suite is "runTests.sh -s unit"
     execute "Build/Scripts/runTests.sh -h" for more details.
+
+    Test classes that modify global state enable backup with #[BackupGlobals(true)].
 -->
 <phpunit
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/11.2/phpunit.xsd"
-    backupGlobals="true"
+    backupGlobals="false"
     bootstrap="UnitTestsBootstrap.php"
     cacheDirectory=".phpunit.cache"
     cacheResult="false"

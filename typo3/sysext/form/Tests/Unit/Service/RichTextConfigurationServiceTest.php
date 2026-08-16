@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Unit\Service;
 
+use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -34,6 +35,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  * Note: RichTextConfigurationService is a final class, so we test only the public API.
  * Private methods are tested indirectly through the public resolveCkEditorConfiguration method.
  */
+#[BackupGlobals(true)]
 final class RichTextConfigurationServiceTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;

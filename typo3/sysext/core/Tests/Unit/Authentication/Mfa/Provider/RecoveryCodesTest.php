@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Authentication\Mfa\Provider;
 
+use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Authentication\Mfa\Provider\RecoveryCodes;
@@ -24,6 +25,7 @@ use TYPO3\CMS\Core\Crypto\PasswordHashing\BcryptPasswordHash;
 use TYPO3\CMS\Core\Tests\Unit\Authentication\Mfa\Provider\Fixtures\Crypto\PasswordHashing\NoopPasswordHash;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
+#[BackupGlobals(true)]
 final class RecoveryCodesTest extends UnitTestCase
 {
     private RecoveryCodes $subject;
