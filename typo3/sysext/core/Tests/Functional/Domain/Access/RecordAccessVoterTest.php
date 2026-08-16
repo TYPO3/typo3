@@ -28,6 +28,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class RecordAccessVoterTest extends FunctionalTestCase
 {
+    protected bool $initializeDatabase = false;
+
     protected RecordAccessVoter $subject;
 
     protected function setUp(): void

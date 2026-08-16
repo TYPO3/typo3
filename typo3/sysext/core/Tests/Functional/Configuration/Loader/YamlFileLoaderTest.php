@@ -27,6 +27,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class YamlFileLoaderTest extends FunctionalTestCase
 {
+    protected bool $initializeDatabase = false;
+
     protected bool $resetSingletonInstances = true;
 
     /**

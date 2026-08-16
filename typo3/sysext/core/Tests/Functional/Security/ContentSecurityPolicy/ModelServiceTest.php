@@ -31,6 +31,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class ModelServiceTest extends FunctionalTestCase
 {
+    protected bool $initializeDatabase = false;
+
     public static function enumSourceInterfaceIsBuiltFromStringDataProvider(): \Generator
     {
         yield 'nonce-proxy' => ["'nonce-anything'", SourceKeyword::nonceProxy];

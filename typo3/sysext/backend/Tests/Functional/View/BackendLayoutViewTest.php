@@ -28,6 +28,8 @@ final class BackendLayoutViewTest extends FunctionalTestCase
 {
     private const RUNTIME_CACHE_ENTRY = 'backendUtilityBeGetRootLine';
 
+    protected bool $initializeDatabase = false;
+
     private FrontendInterface $runtimeCache;
     private BackendLayoutView $subject;
 

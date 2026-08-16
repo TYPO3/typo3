@@ -42,6 +42,8 @@ use TYPO3Tests\BlogExample\Controller\BlogController;
 
 final class RequestBuilderTest extends FunctionalTestCase
 {
+    protected bool $initializeDatabase = false;
+
     protected function setUp(): void
     {
         parent::setUp();
