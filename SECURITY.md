@@ -48,12 +48,11 @@ other affected parties. Once a security fix is available, we prepare a new relea
 and publish the fixed version. At the same time, we communicate the vulnerability
 and the fix to the public by using various communication channels such as:
 
-* [TYPO3 Security Advisories](https://typo3.org/security)
+* [TYPO3 Security Advisories](https://news.typo3.com/security)
 * [TYPO3 Security Team on Mastodon](https://typo3.social/@typo3_security)
-* [TYPO3 Security Team on X](https://x.com/typo3_security)
 * [#announcements channel on Slack](https://typo3.community/meet/slack)
-* [TYPO3 Security RSS Feed](https://typo3.org/rss-security)
-* [TYPO3 Announce Mailing List](https://lists.typo3.org/cgi-bin/mailman/listinfo/typo3-announce)
+* [TYPO3 Security RSS Feed](https://news.typo3.com/security/rss-security)
+* [TYPO3 Announce Mailing List](https://announce.typo3.org/security)
 
 The TYPO3 Security Team takes care of requesting [CVE IDs](https://www.cve.org/About/Process#CVERecordLifecycle)
 (Common Vulnerabilities and Exposures identifiers).
@@ -68,5 +67,5 @@ are scheduled in advance. These releases can contain security fixes.
 ## Further Information
 
 * [TYPO3 Security Team](https://typo3.community/contribute/teams-committees/security)
-* [TYPO3 Security Advisories](https://typo3.org/security)
+* [TYPO3 Security Advisories](https://news.typo3.com/security)
 * [TYPO3 Security Guidelines](https://docs.typo3.org/m/typo3/reference-coreapi/main/en-us/Security/Index.html)
