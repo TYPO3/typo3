@@ -102,7 +102,8 @@ final class CObjectViewHelper extends AbstractViewHelper
         }
         $pathSegments = GeneralUtility::trimExplode('.', $typoscriptObjectPath);
         $lastSegment = (string)array_pop($pathSegments);
-        $setup = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+        $setup = $request->getAttribute('frontend.typoscript')?->getSetupArray()
+            ?? $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
         foreach ($pathSegments as $segment) {
             if (!array_key_exists($segment . '.', $setup)) {
                 throw new InvalidArgumentValueException(
