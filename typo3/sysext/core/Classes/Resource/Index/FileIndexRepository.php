@@ -63,7 +63,7 @@ readonly class FileIndexRepository
     {
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_file');
         $row = $queryBuilder
-            ->select(...self::FIELDS)
+            ->select('*')
             ->from('sys_file')
             ->where(
                 $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($fileUid, Connection::PARAM_INT))
@@ -82,7 +82,7 @@ readonly class FileIndexRepository
     {
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_file');
         $row = $queryBuilder
-            ->select(...self::FIELDS)
+            ->select('*')
             ->from('sys_file')
             ->where(
                 $queryBuilder->expr()->eq('storage', $queryBuilder->createNamedParameter($storageUid, Connection::PARAM_INT)),
@@ -125,7 +125,7 @@ readonly class FileIndexRepository
         }
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_file');
         return $queryBuilder
-            ->select(...self::FIELDS)
+            ->select('*')
             ->from('sys_file')
             ->where(
                 $queryBuilder->expr()->eq('sha1', $queryBuilder->createNamedParameter($hash))
@@ -141,7 +141,7 @@ readonly class FileIndexRepository
     {
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_file');
         $result = $queryBuilder
-            ->select(...self::FIELDS)
+            ->select('*')
             ->from('sys_file')
             ->where(
                 $queryBuilder->expr()->eq('folder_hash', $queryBuilder->createNamedParameter($folder->getHashedIdentifier())),
@@ -173,7 +173,7 @@ readonly class FileIndexRepository
 
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_file');
         $queryBuilder
-            ->select(...self::FIELDS)
+            ->select('*')
             ->from('sys_file')
             ->where(
                 $queryBuilder->expr()->in('folder_hash', $queryBuilder->createNamedParameter($folderIdentifiers, Connection::PARAM_STR_ARRAY)),
@@ -315,7 +315,7 @@ readonly class FileIndexRepository
             $queryBuilder->setMaxResults($limit);
         }
         return $queryBuilder
-            ->select(...self::FIELDS)
+            ->select('*')
             ->from('sys_file')
             ->where(
                 $queryBuilder->expr()->gt('tstamp', $queryBuilder->quoteIdentifier('last_indexed')),
@@ -336,7 +336,7 @@ readonly class FileIndexRepository
     {
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_file');
         $queryBuilder
-            ->select(...self::FIELDS)
+            ->select('*')
             ->from('sys_file')
             ->where(
                 $queryBuilder->expr()->eq('storage', $queryBuilder->createNamedParameter($storage->getUid(), Connection::PARAM_INT))
