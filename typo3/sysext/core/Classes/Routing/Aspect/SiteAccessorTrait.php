@@ -17,8 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Routing\Aspect;
 
-use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Routing\SiteMatcher;
+use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -81,16 +81,15 @@ trait SiteAccessorTrait
      */
     protected function isPageIdContainedInSite(int $pageId): bool
     {
-        try {
-            $expectedSite = $this->getSiteMatcher()->matchByPageId($pageId);
-            return $expectedSite->getRootPageId() === $this->site->getRootPageId();
-        } catch (SiteNotFoundException $exception) {
+        $expectedSite = $this->getSiteMatcher()->matchByPageId($pageId);
+        if ($expectedSite instanceof NullSite) {
             // Same as in \TYPO3\CMS\Core\DataHandling\SlugHelper::isUniqueInSite
             // where it is assumed that a record, that is not in site context,
             // but still configured uniqueInSite is unique. We therefore must assume
             // the resolved record to be rightfully part of the current site.
             return true;
         }
+        return $expectedSite->getRootPageId() === $this->site->getRootPageId();
     }
 
     protected function getSiteMatcher(): SiteMatcher

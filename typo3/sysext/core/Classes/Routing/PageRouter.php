@@ -27,7 +27,6 @@ use TYPO3\CMS\Core\Context\LanguageAspectFactory;
 use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Domain\Page;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
-use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\ExpressionLanguage\Resolver;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Routing\Aspect\AspectFactory;
@@ -293,13 +292,14 @@ class PageRouter implements RouterInterface
             // If the MountPoint page has a different site, the link needs to be generated
             // with the base of the MountPoint page, this is especially relevant for cross-domain linking
             // Because the language contains the full base, it is retrieved in this case.
-            try {
-                [, $mountPointPage] = explode('-', (string)reset($mountPointPairs));
-                $site = GeneralUtility::makeInstance(SiteMatcher::class)
-                    ->matchByPageId((int)$mountPointPage);
-                $language = $site->getLanguageById($language->getLanguageId());
-            } catch (SiteNotFoundException $e) {
-                // No alternative site found, use the existing one
+            [, $mountPointPage] = explode('-', (string)reset($mountPointPairs));
+            $site = GeneralUtility::makeInstance(SiteMatcher::class)
+                ->matchByPageId((int)$mountPointPage);
+            // Fall back to the existing language if the resolved site does not have a
+            // matching language
+            $targetLanguages = $site->getLanguages();
+            if (isset($targetLanguages[$language->getLanguageId()])) {
+                $language = $targetLanguages[$language->getLanguageId()];
             }
             // Store the MP parameter in the page record, so it could be used for any enhancers
             $page['MPvar'] = $parameters['MP'];

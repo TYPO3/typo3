@@ -123,4 +123,19 @@ final class PageRouterTest extends AbstractTestCase
         self::assertSame(0, $eventCapture->event->getLanguage()->getLanguageId());
         self::assertSame('acme-com', $eventCapture->event->getSite()->getIdentifier());
     }
+
+    #[Test]
+    public function generateUriForUnresolvableMountPointFallsBackToRequestedLanguage(): void
+    {
+        $site = $this->siteFinder->getSiteByIdentifier('acme-com');
+        $pageRouter = new PageRouter($site);
+        $result = $pageRouter->generateUri(
+            1100,
+            [
+                'MP' => '99999-88888',
+                '_language' => $site->getLanguageById(1),
+            ]
+        );
+        self::assertSame('https://acme.fr/bienvenue', (string)$result);
+    }
 }
