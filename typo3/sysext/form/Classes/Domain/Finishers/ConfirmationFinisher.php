@@ -82,7 +82,8 @@ class ConfirmationFinisher extends AbstractFinisher
         if (!empty($contentElementUid)) {
             $pathSegments = GeneralUtility::trimExplode('.', $typoscriptObjectPath);
             $lastSegment = array_pop($pathSegments);
-            $setup = $this->extbaseConfigurationManager->getConfiguration(ExtbaseConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+            $setup = $this->finisherContext->getRequest()->getAttribute('frontend.typoscript')?->getSetupArray()
+                ?? $this->extbaseConfigurationManager->getConfiguration(ExtbaseConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
             foreach ($pathSegments as $segment) {
                 if (!array_key_exists($segment . '.', $setup)) {
                     throw new FinisherException(
