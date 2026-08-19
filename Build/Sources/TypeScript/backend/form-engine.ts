@@ -22,6 +22,7 @@
 
 import DocumentService from '@typo3/core/document-service';
 import FormEngineValidation from '@typo3/backend/form-engine-validation';
+import Notification from '@typo3/backend/notification';
 import { default as Modal, type ModalElement } from '@typo3/backend/modal';
 import * as MessageUtility from '@typo3/backend/utility/message-utility';
 import Severity from '@typo3/backend/severity';
@@ -37,6 +38,7 @@ import Hotkeys, { ModifierKeys } from '@typo3/backend/hotkeys';
 import RegularEvent from '@typo3/core/event/regular-event';
 import backendAltDocLabels from '~labels/backend.alt_doc';
 import coreCoreLabels from '~labels/core.core';
+import { parseItemCountLimits, type ItemCount } from '@typo3/backend/form-engine/element/extra/item-count';
 import type { ElementBrowserMessage, ElementBrowserElementAddedMessage } from '@typo3/backend/element-browser';
 
 export interface OnFieldChangeItem {
@@ -335,6 +337,13 @@ export default (function() {
           }
         }
 
+        // Respect TCA maxitems for list-like fields and prevent inserting
+        // additional values once the client-side limit is reached.
+        const maxItems = Number(fieldEl.dataset.maxitems ?? 0);
+        if (addNewValue && Number.isFinite(maxItems) && maxItems > 0 && fieldEl.querySelectorAll('option').length >= maxItems) {
+          addNewValue = false;
+        }
+
         if (addNewValue && typeof optionEl !== 'undefined') {
           optionEl.classList.add('hidden');
           optionEl.disabled = true;
@@ -364,6 +373,9 @@ export default (function() {
         FormEngine.markFieldAsChanged(originalFieldEl);
         FormEngine.Validation.validateField(fieldEl);
         FormEngine.Validation.validateField(availableFieldEl);
+      }
+      if (!addNewValue && Number(fieldEl.dataset.maxitems ?? 0) > 0) {
+        FormEngine.showMaxItemsReachedNotice(fieldEl);
       }
 
     } else {
@@ -398,6 +410,63 @@ export default (function() {
     // set the values to the final hidden field
     originalFieldEl.value = selectedValues.join(',');
     originalFieldEl.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
+
+    // Allow the max-items notice to be shown again once the selection drops below the limit.
+    const maxItems = Number(selectFieldEl.dataset.maxitems ?? 0);
+    if (maxItems > 0 && selectFieldEl.options.length < maxItems) {
+      selectFieldEl.dataset.maxitemsNoticeShown = '0';
+    }
+  };
+
+  FormEngine.showMaxItemsReachedNotice = function(selectFieldEl: HTMLSelectElement): void {
+    const maxItems = Number(selectFieldEl.dataset.maxitems ?? 0);
+    if (!Number.isFinite(maxItems) || maxItems <= 0) {
+      return;
+    }
+    if (selectFieldEl.dataset.maxitemsNoticeShown === '1') {
+      return;
+    }
+
+    const message = maxItems === 1
+      ? coreCoreLabels.get('labels.maxItemsReached.single')
+      : coreCoreLabels.get('labels.maxItemsReached.multiple', {
+        '0': maxItems.toString(),
+      });
+    Notification.info(coreCoreLabels.get('labels.maxItemsReached.title'), message);
+    selectFieldEl.dataset.maxitemsNoticeShown = '1';
+  };
+
+  /**
+   * Attaches an item count badge web component to a field that carries item
+   * count validation rules (minitems/maxitems). This works generically for all
+   * field types emitting `data-formengine-validation-rules`, including custom
+   * fields provided by extensions.
+   */
+  FormEngine.attachItemCountBadge = function(fieldEl: HTMLElement): void {
+    if (fieldEl.dataset.itemcountBadgeInitialized === '1') {
+      return;
+    }
+
+    const { minItems, maxItems } = parseItemCountLimits(fieldEl);
+    if (minItems <= 0 && maxItems <= 0) {
+      return;
+    }
+
+    const container = (fieldEl.closest('.t3js-formengine-field-item') ?? fieldEl.closest('fieldset')) as HTMLElement | null;
+    if (container === null) {
+      return;
+    }
+
+    fieldEl.dataset.itemcountBadgeInitialized = '1';
+    const badge = document.createElement('typo3-backend-formengine-item-count') as ItemCount;
+    badge.field = fieldEl;
+    container.appendChild(badge);
+  };
+
+  FormEngine.initializeItemCountBadges = function(): void {
+    FormEngine.formElement.querySelectorAll('[data-formengine-validation-rules]').forEach((fieldEl: Element): void => {
+      FormEngine.attachItemCountBadge(fieldEl as HTMLElement);
+    });
   };
 
   /**
@@ -763,6 +832,7 @@ export default (function() {
     FormEngine.initializeLocalizationStateSelector();
     FormEngine.initializeMinimumCharactersLeftViews();
     FormEngine.initializeRemainingCharacterViews();
+    FormEngine.initializeItemCountBadges();
   };
 
   /**

@@ -54,6 +54,12 @@
     }
 }
 
+// Generic item-count badge injected next to fields with minitems/maxitems rules.
+typo3-backend-formengine-item-count {
+    display: block;
+    margin-top: calc(var(--typo3-spacing) * .25);
+}
+
 //
 // SelectIcons FieldWizard
 //

@@ -2165,6 +2165,7 @@ typo3-backend-editable-setting :user-invalid{--typo3-input-color:var(--typo3-sur
 .form-wizards-wrap>.form-wizards-item-aside{align-self:flex-start;grid-column:2/3;white-space:nowrap}
 .form-wizards-wrap>.form-wizards-item-aside+.form-wizards-item-aside{grid-column:3/4}
 .form-wizards-wrap>.form-wizards-item-bottom .btn{text-align:left;white-space:wrap}
+typo3-backend-formengine-item-count{display:block;margin-top:calc(var(--typo3-spacing)*.25)}
 .form-wizard-icon-list{background:var(--typo3-component-bg);border:var(--typo3-component-border-width) solid var(--typo3-component-border-color);border-radius:var(--typo3-input-border-radius);color:var(--typo3-component-color);display:flex;flex-wrap:wrap;gap:2px;margin-top:.25rem;padding:calc(var(--typo3-spacing)/4)}
 .form-wizard-icon-list-item a,.form-wizard-icon-list-item button{align-items:center;background-color:var(--typo3-component-bg);border:none;border-radius:calc(var(--typo3-component-border-radius)/2);color:var(--typo3-component-color);display:flex;height:100%;justify-content:center;line-height:1;outline-offset:-1px;padding:calc(var(--typo3-spacing)/2)}
 .form-wizard-icon-list-item a>span[title],.form-wizard-icon-list-item button>span[title]{display:block}

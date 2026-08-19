@@ -117,6 +117,24 @@
       <trans-unit id="labels.maxItemsAllowed">
         <source>A maximum of {0} child records are allowed.</source>
       </trans-unit>
+      <trans-unit id="labels.maxItemsReached.title">
+        <source>Maximum selection reached</source>
+      </trans-unit>
+      <trans-unit id="labels.maxItemsReached.single">
+        <source>Only one item can be selected in this field.</source>
+      </trans-unit>
+      <trans-unit id="labels.maxItemsReached.multiple">
+        <source>Only {0} items can be selected in this field.</source>
+      </trans-unit>
+      <trans-unit id="labels.selectedItems.short.withMinAndMax">
+        <source>{actualItems}/{maxItems} (minimum {minItems})</source>
+      </trans-unit>
+      <trans-unit id="labels.selectedItems.short.withMax">
+        <source>{actualItems}/{maxItems}</source>
+      </trans-unit>
+      <trans-unit id="labels.selectedItems.short.withMin">
+        <source>{actualItems} (minimum {minItems})</source>
+      </trans-unit>
       <trans-unit id="labels.noRTEfound">
         <source>Notice: This field can only be edited with a Rich Text Editor. No editor is currently available or enabled.</source>
       </trans-unit>

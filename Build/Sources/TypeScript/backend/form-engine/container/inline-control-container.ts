@@ -715,7 +715,7 @@ class InlineControlContainer extends HTMLElement {
 
     (<HTMLInputElement>formField).value = records.join(',');
     FormEngine.markFieldAsChanged(formField);
-    document.dispatchEvent(new Event('change'));
+    formField.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
 
     this.redrawSortingButtons(this.objectGroup, records);
     this.setUnique(newUid, selectedValue);
@@ -746,7 +746,7 @@ class InlineControlContainer extends HTMLElement {
 
       (<HTMLInputElement>formField).value = records.join(',');
       FormEngine.markFieldAsChanged(formField);
-      document.dispatchEvent(new Event('change'));
+      formField.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
 
       this.redrawSortingButtons(this.objectGroup, records);
     }
@@ -800,7 +800,7 @@ class InlineControlContainer extends HTMLElement {
 
     (<HTMLInputElement>formField).value = records.join(',');
     FormEngine.markFieldAsChanged(formField);
-    document.dispatchEvent(new Event('change'));
+    formField.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
 
     this.redrawSortingButtons(this.objectGroup, records);
   }
