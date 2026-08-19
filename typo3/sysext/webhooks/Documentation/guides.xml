@@ -3,7 +3,7 @@
         xsi:schemaLocation="https://www.phpdoc.org/guides ../vendor/phpdocumentor/guides-cli/resources/schema/guides.xsd"
         links-are-relative="true">
     <extension class="\T3Docs\Typo3DocsTheme\DependencyInjection\Typo3DocsThemeExtension"
-               project-home="https://extensions.typo3.org/extension/webhoooks/"
+               project-home="https://docs.typo3.org/permalink/typo3-cms-webhooks:start"
                project-contact="https://typo3.slack.com/archives/C025BQLFA"
                project-repository="https://github.com/typo3/typo3"
                project-issues="https://forge.typo3.org/projects/typo3cms-core/issues"
