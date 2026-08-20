@@ -103,7 +103,8 @@ readonly class PageLinkMessageProvider
             'returnUrl' => (string)$request->getAttribute('normalizedParams')->getRequestUri(),
         ];
         $uri = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $params);
-        $recordLabel = htmlspecialchars($record->get('header'));
+        $recordLabel = BackendUtility::getRecordTitle('tt_content', $record);
+        $recordLabel = htmlspecialchars($recordLabel);
 
         if (empty($recordLabel)) {
             $recordLabel = '<em>[' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.no_title')) . ']</em>';
