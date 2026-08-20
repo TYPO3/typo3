@@ -203,11 +203,12 @@ readonly class TranslationConfigurationProvider
                 $translationsErrors[$translationRecord[$GLOBALS['TCA'][$table]['ctrl']['languageField']]][] = $translationRecord;
             }
         }
+        $languageField = (string)($GLOBALS['TCA'][$table]['ctrl']['languageField'] ?? '');
         return [
             'table' => $table,
             'uid' => $uid,
             'CType' => $row['CType'] ?? '',
-            'sys_language_uid' => $row[$GLOBALS['TCA'][$table]['ctrl']['languageField'] ?? null] ?? null,
+            'sys_language_uid' => $row[$languageField] ?? null,
             'translations' => $translations,
             'excessive_translations' => $translationsErrors,
         ];

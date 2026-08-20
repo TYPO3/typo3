@@ -114,8 +114,9 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
             }
             if (MathUtility::canBeInterpretedAsInteger($pid)) {
                 $pageRecord = BackendUtility::getRecord('pages', (int)$pid);
-                if (($pageRecord[$GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'] ?? null] ?? 0) > 0) {
-                    $pid = (int)$pageRecord[$GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField']];
+                $transOrigPointerField = (string)($GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'] ?? '');
+                if (($pageRecord[$transOrigPointerField] ?? 0) > 0) {
+                    $pid = (int)$pageRecord[$transOrigPointerField];
                 }
             } elseif (!str_starts_with($pid, 'NEW')) {
                 throw new \RuntimeException(

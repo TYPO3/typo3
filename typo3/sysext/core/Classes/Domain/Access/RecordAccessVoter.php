@@ -59,7 +59,7 @@ class RecordAccessVoter
             : $visibilityAspect->includeHiddenContent();
 
         // Hidden field is active and hidden records should not be included
-        if (($record[$configuration['disabled'] ?? null] ?? false) && !$includeHidden) {
+        if (isset($configuration['disabled']) && ($record[$configuration['disabled']] ?? false) && !$includeHidden) {
             return false;
         }
         // Records' starttime set AND is HIGHER than the current access time

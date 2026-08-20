@@ -353,10 +353,12 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         }
         // if current rec is a translation then get uid from l10n_parent instead
         // because web mounts point to pages in default language and rootline returns uids of default languages
-        if ((int)($checkRec[$GLOBALS['TCA']['pages']['ctrl']['languageField'] ?? null] ?? 0) !== 0
-            && (int)($checkRec[$GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'] ?? null] ?? 0) !== 0
+        $languageField = (string)($GLOBALS['TCA']['pages']['ctrl']['languageField'] ?? '');
+        $transOrigPointerField = (string)($GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'] ?? '');
+        if ((int)($checkRec[$languageField] ?? 0) !== 0
+            && (int)($checkRec[$transOrigPointerField] ?? 0) !== 0
         ) {
-            $id = (int)$checkRec[$GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField']];
+            $id = (int)$checkRec[$transOrigPointerField];
         }
         if (!$readPerms) {
             $readPerms = $this->getPagePermsClause(Permission::PAGE_SHOW);
