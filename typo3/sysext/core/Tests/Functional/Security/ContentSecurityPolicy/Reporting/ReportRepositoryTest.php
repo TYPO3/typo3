@@ -18,11 +18,33 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Functional\Security\ContentSecurityPolicy\Reporting;
 
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Reporting\ReportRepository;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Scope;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class ReportRepositoryTest extends FunctionalTestCase
 {
+    #[Test]
+    public function removeAllForScopeUsesReportType(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/sys_http_report.csv');
+        $connection = $this->get(ConnectionPool::class)->getConnectionForTable('sys_http_report');
+        $connection->insert('sys_http_report', [
+            'uuid' => '2fdb81aa-c74f-4aa6-b21f-a52d5564f51d',
+            'status' => 0,
+            'type' => 'other',
+            'scope' => 'backend',
+            'summary' => sha1('other'),
+            'created' => 0,
+            'changed' => 0,
+            'request_time' => 0,
+        ]);
+
+        self::assertSame(4, $this->get(ReportRepository::class)->removeAll(Scope::backend()));
+        self::assertSame(1, $connection->count('*', 'sys_http_report', []));
+    }
+
     #[Test]
     public function findAllSummarizedReturnsAllSummaries(): void
     {

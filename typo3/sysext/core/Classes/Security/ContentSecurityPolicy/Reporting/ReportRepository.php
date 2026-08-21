@@ -188,7 +188,7 @@ readonly class ReportRepository
         if ($scope === null) {
             return $this->getConnection()->truncate(self::TABLE_NAME);
         }
-        return $this->getConnection()->delete(self::TABLE_NAME, ['scope' => (string)$scope]);
+        return $this->getConnection()->delete(self::TABLE_NAME, ['type' => self::TYPE, 'scope' => (string)$scope]);
     }
 
     /**
