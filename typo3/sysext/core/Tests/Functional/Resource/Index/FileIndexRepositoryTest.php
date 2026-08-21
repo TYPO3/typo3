@@ -18,12 +18,31 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Functional\Resource\Index;
 
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Index\FileIndexRepository;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class FileIndexRepositoryTest extends FunctionalTestCase
 {
+    #[Test]
+    public function hasIndexRecordUsesIdentifierHashForFilesWithoutUid(): void
+    {
+        $identifier = '/file.txt';
+        $identifierHash = sha1($identifier);
+        $this->get(ConnectionPool::class)->getConnectionForTable('sys_file')->insert('sys_file', [
+            'storage' => 1,
+            'identifier' => $identifier,
+            'identifier_hash' => $identifierHash,
+        ]);
+        $storage = $this->createMock(ResourceStorage::class);
+        $storage->method('getUid')->willReturn(1);
+        $storage->expects($this->once())->method('hashFileIdentifier')->willReturn($identifierHash);
+
+        self::assertTrue($this->get(FileIndexRepository::class)->hasIndexRecord(new File(['uid' => 0, 'identifier' => $identifier], $storage)));
+    }
+
     #[Test]
     public function findInStorageWithIndexOutstandingExcludesMissingFiles(): void
     {

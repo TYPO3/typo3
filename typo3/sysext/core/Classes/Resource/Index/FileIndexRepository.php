@@ -211,7 +211,7 @@ readonly class FileIndexRepository
         } else {
             $constraints = [
                 $queryBuilder->expr()->eq('storage', $queryBuilder->createNamedParameter($file->getStorage()->getUid(), Connection::PARAM_INT)),
-                $queryBuilder->expr()->eq('identifier', $queryBuilder->createNamedParameter($file->_getPropertyRaw('identifier'))),
+                $queryBuilder->expr()->eq('identifier_hash', $queryBuilder->createNamedParameter($file->getStorage()->hashFileIdentifier($file))),
             ];
         }
         $count = $queryBuilder
@@ -239,7 +239,7 @@ readonly class FileIndexRepository
             } else {
                 $constraints = [
                     'storage' => $file->getStorage()->getUid(),
-                    'identifier' => $file->_getPropertyRaw('identifier'),
+                    'identifier_hash' => $file->getStorage()->hashFileIdentifier($file),
                 ];
             }
             $connection = $this->connectionPool->getConnectionForTable('sys_file');
