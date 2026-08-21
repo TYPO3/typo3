@@ -146,7 +146,12 @@ class FormManagerController extends ActionController
         if (!$this->formPersistenceManager->isAllowedStorageLocation($storageLocation)) {
             throw new PersistenceManagerException(sprintf('Save to storage location "%s" is not allowed', $storageLocation), 1614500657);
         }
-        if (!$this->isValidTemplatePath($formSettings, $prototypeName, $templatePath)) {
+        if ($templatePath === '') {
+            // The "create new form" wizard sends no start template when the editor
+            // asked for a blank form. This path is the core's own rather than client
+            // input, so it stands whether or not it is listed in newFormTemplates.
+            $templatePath = 'EXT:form/Resources/Private/Backend/Templates/FormEditor/Yaml/NewForms/BlankForm.yaml';
+        } elseif (!$this->isValidTemplatePath($formSettings, $prototypeName, $templatePath)) {
             throw new FormException(sprintf('The template path "%s" is not allowed', $templatePath), 1329233410);
         }
         if (empty($formName)) {

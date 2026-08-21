@@ -43,6 +43,7 @@ use TYPO3\CMS\Form\Domain\DTO\SearchCriteria;
 use TYPO3\CMS\Form\Event\BeforeFormIsCreatedEvent;
 use TYPO3\CMS\Form\Event\BeforeFormIsDeletedEvent;
 use TYPO3\CMS\Form\Event\BeforeFormIsDuplicatedEvent;
+use TYPO3\CMS\Form\Exception as FormException;
 use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface as ExtFormConfigurationManagerInterface;
 use TYPO3\CMS\Form\Mvc\Configuration\YamlSource;
 use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface;
@@ -481,6 +482,86 @@ final class FormManagerControllerTest extends FunctionalTestCase
         self::assertInstanceOf(BeforeFormIsCreatedEvent::class, $state['before-form-create-listener']);
         self::assertEquals('NEW_from_listener', $state['before-form-create-listener']->formPersistenceIdentifier);
         self::assertEquals('bar', $state['before-form-create-listener']->form['label']);
+    }
+
+    /**
+     * The wizard's "Blank" mode offers the editor no start template, so it sends
+     * none and the controller resolves the blank form EXT:form ships.
+     */
+    #[Test]
+    public function createActionBuildsTheBlankFormWhenNoTemplatePathIsGiven(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->setUpBackendUser(1);
+
+        /** @var Container $container */
+        $container = $this->get('service_container');
+        $state = ['before-form-create-listener' => null];
+        $container->set(
+            'before-form-create-listener',
+            static function (BeforeFormIsCreatedEvent $event) use (&$state) {
+                $state['before-form-create-listener'] = $event;
+            }
+        );
+        $this->get(ListenerProvider::class)->addListener(BeforeFormIsCreatedEvent::class, 'before-form-create-listener');
+
+        $parsedBody = [
+            'formName' => 'test',
+            'templatePath' => '',
+            'prototypeName' => 'standard',
+            'storage' => 'database',
+            'storageLocation' => '0',
+        ];
+        $this->processCreateAction($parsedBody);
+
+        self::assertInstanceOf(BeforeFormIsCreatedEvent::class, $state['before-form-create-listener']);
+        self::assertSame(
+            [
+                [
+                    'type' => 'Page',
+                    'identifier' => 'page-1',
+                    'label' => 'Step',
+                ],
+            ],
+            $state['before-form-create-listener']->form['renderables']
+        );
+    }
+
+    /**
+     * Resolving an empty template path server side must not widen what a client
+     * may name: a path outside newFormTemplates is still refused.
+     */
+    #[Test]
+    public function createActionRejectsATemplatePathTheConfigurationDoesNotList(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->setUpBackendUser(1);
+
+        $this->expectException(FormException::class);
+        $this->expectExceptionCode(1329233410);
+
+        $this->processCreateAction([
+            'formName' => 'test',
+            'templatePath' => 'EXT:form/Tests/Functional/Controller/Fixtures/BlankForm.yaml',
+            'prototypeName' => 'standard',
+            'storage' => 'database',
+            'storageLocation' => '0',
+        ]);
+    }
+
+    private function processCreateAction(array $parsedBody): void
+    {
+        $serverRequest = new ServerRequest('https://example.com', 'POST')
+            ->withAttribute('extbase', new ExtbaseRequestParameters())
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            ->withParsedBody($parsedBody);
+        $request = new Request($serverRequest)
+            ->withControllerExtensionName(FormManagerController::class)
+            ->withControllerName('FormManagerController')
+            ->withArguments($parsedBody)
+            ->withControllerActionName('create');
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $this->get(FormManagerController::class)->processRequest($request);
     }
 
     #[Test]
