@@ -1,0 +1,8 @@
+"be_dashboards"
+,"uid","identifier","title","deleted","hidden","starttime","endtime"
+,1,"duplicate","First",0,0,0,0
+,2,"duplicate","Second",0,0,0,0
+,3,"duplicate","Deleted",1,0,0,0
+,4,"duplicate","Hidden",0,1,0,0
+,5,"duplicate","Scheduled",0,0,2147483647,0
+,6,"duplicate","Expired",0,0,0,1

@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Dashboard\Repository;
 
 use Psr\Container\ContainerInterface;
+use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -50,7 +51,8 @@ class DashboardRepository
         protected readonly ConnectionPool $connectionPool,
         protected readonly WidgetRegistry $widgetRegistry,
         protected readonly WidgetSettingsFactory $widgetSettingsFactory,
-        protected readonly ContainerInterface $container
+        protected readonly ContainerInterface $container,
+        private readonly Random $random,
     ) {}
 
     /**
@@ -83,7 +85,7 @@ class DashboardRepository
             $hash = sha1(StringUtility::getUniqueId('widget_') . '-' . $defaultWidget['identifier']);
             $widgets[$hash] = $defaultWidget;
         }
-        $identifier = sha1($dashboardPreset->getIdentifier() . '-' . time());
+        $identifier = $this->random->generateRandomHexString(40);
         $this->getQueryBuilder()
             ->insert(self::TABLE)
             ->values([

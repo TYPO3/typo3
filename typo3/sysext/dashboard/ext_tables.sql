@@ -3,5 +3,6 @@ CREATE TABLE be_dashboards (
     cruser_id int(11) unsigned DEFAULT 0 NOT NULL,
     # No TCA column
     widgets text,
-    KEY identifier (identifier)
+    UNIQUE identifier (identifier),
+    KEY owner (cruser_id)
 );
