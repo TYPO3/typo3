@@ -87,8 +87,6 @@ CREATE TABLE index_grlist (
 CREATE TABLE index_config (
   # @todo: Change TCA type from input to something better
   set_id int(11) DEFAULT '0' NOT NULL,
-  # @todo: Completely unused?!
-  session_data mediumtext,
   # @todo: type=group fields, but rely on integer.
   alternative_source_pid int(11) unsigned DEFAULT '0' NOT NULL,
 );
