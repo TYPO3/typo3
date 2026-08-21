@@ -267,6 +267,8 @@ selectablePrototypesConfiguration.*.newFormTemplates
 :aspect:`Description`
       Array with numerical Keys. Configure the ``Start templates`` selectlist for this ``prototype`` within the ``form manager`` "Advanced settings" step.
 
+      The "Create new form" wizard offers this list in its ``Predefined`` mode. Its ``Blank`` mode picks no entry at all: it sends no start template and the blank form shipped by EXT:form is used, so the order of this list does not decide what a blank form contains. Use the ``BeforeFormIsCreatedEvent`` to change what a newly created form starts from.
+
 
 .. _formmanager.selectableprototypesconfiguration.*.newformtemplates.*.templatepath:
 
