@@ -15,5 +15,7 @@ CREATE TABLE tx_linkvalidator_link (
 	link_type varchar(50) DEFAULT '' NOT NULL,
 	needs_recheck int(11) DEFAULT '0' NOT NULL,
 
-	PRIMARY KEY (uid)
+	PRIMARY KEY (uid),
+	KEY record_uid_table (record_uid,table_name),
+	KEY record_pid_table (record_pid,table_name)
 );
