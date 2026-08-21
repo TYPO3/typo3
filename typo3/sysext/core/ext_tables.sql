@@ -168,7 +168,8 @@ CREATE TABLE sys_history (
 
 	PRIMARY KEY (uid),
 	KEY recordident_1 (tablename(100),recuid),
-	KEY recordident_2 (tablename(100),tstamp)
+	KEY recordident_2 (tablename(100),tstamp),
+	KEY correlation (correlation_id,tstamp)
 );
 
 # Define table and fields since it has no TCA
