@@ -67,6 +67,7 @@ CREATE TABLE index_section (
   page_id int(11) DEFAULT '0' NOT NULL,
   PRIMARY KEY (uniqid),
   KEY joinkey (phash,rl0),
+  KEY phash_t3 (phash_t3),
   KEY page_id (page_id),
   KEY rl0 (rl0,rl1,phash),
   KEY rl0_2 (rl0,phash)
