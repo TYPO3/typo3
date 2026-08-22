@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\SystemResource\Type;
 
+use TYPO3\CMS\Core\Imaging\ImageDimension;
+use TYPO3\CMS\Core\SystemResource\Exception\CanNotDetectImageDimensionOfSystemResourceException;
 use TYPO3\CMS\Core\SystemResource\Exception\SystemResourceDoesNotExistException;
 
 /**
@@ -36,4 +38,15 @@ interface SystemResourceInterface extends StaticResourceInterface
     public function getExtension(): string;
     public function getMimeType(): string;
     public function getHash(): string;
+
+    /**
+     * @throws SystemResourceDoesNotExistException
+     */
+    public function isImage(): bool;
+
+    /**
+     * @throws SystemResourceDoesNotExistException
+     * @throws CanNotDetectImageDimensionOfSystemResourceException
+     */
+    public function getImageDimension(): ImageDimension;
 }
