@@ -18,7 +18,9 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Resource;
 
 use Psr\Http\Message\UriInterface;
+use TYPO3\CMS\Core\Imaging\ImageDimension;
 use TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior;
+use TYPO3\CMS\Core\SystemResource\Exception\CanNotDetectImageDimensionOfSystemResourceException;
 use TYPO3\CMS\Core\SystemResource\Identifier\FalResourceIdentifier;
 use TYPO3\CMS\Core\SystemResource\Publishing\SystemResourceUriGeneratorInterface;
 use TYPO3\CMS\Core\SystemResource\Type\PublicResourceInterface;
@@ -401,5 +403,19 @@ class File extends AbstractFile implements PublicResourceInterface, SystemResour
     public function __toString(): string
     {
         return $this->getResourceIdentifier();
+    }
+
+    public function getImageDimension(): ImageDimension
+    {
+        if ($this->getFileType() !== FileType::IMAGE) {
+            throw new CanNotDetectImageDimensionOfSystemResourceException(sprintf('Cannot determine image dimensions for FAL resource "%s". File is not an image.', $this->getResourceIdentifier()), 1787469051);
+        }
+        $width = $this->getProperty('width');
+        $height = $this->getProperty('height');
+        if ($width === 0 || $height === 0) {
+            throw new CanNotDetectImageDimensionOfSystemResourceException(sprintf('Cannot determine image dimensions for FAL resource "%s".', $this->getResourceIdentifier()), 1787470137);
+        }
+
+        return new ImageDimension($width, $height);
     }
 }

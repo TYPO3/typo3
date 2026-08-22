@@ -17,10 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\SystemResource\Type;
 
+use TYPO3\CMS\Core\Imaging\ImageDimension;
 use TYPO3\CMS\Core\Package\Resource\Definition\ResourceDefinitionInterface;
+use TYPO3\CMS\Core\Resource\FileType;
+use TYPO3\CMS\Core\SystemResource\Exception\CanNotDetectImageDimensionOfSystemResourceException;
 use TYPO3\CMS\Core\SystemResource\Exception\SystemResourceDoesNotExistException;
 use TYPO3\CMS\Core\SystemResource\Identifier\PackageResourceIdentifier;
 use TYPO3\CMS\Core\Type\File\FileInfo;
+use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
@@ -30,6 +34,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 class PackageResource implements SystemResourceInterface
 {
     private ?FileInfo $fileInfo = null;
+    private ?ImageDimension $imageDimension = null;
 
     public function __construct(
         protected readonly PackageResourceIdentifier $identifier,
@@ -48,7 +53,39 @@ class PackageResource implements SystemResourceInterface
 
     public function getExtension(): string
     {
-        return PathUtility::pathinfo($this->identifier->getRelativePath())['extension'];
+        return PathUtility::pathinfo($this->identifier->getRelativePath())['extension'] ?? '';
+    }
+
+    /**
+     * Returns whether the referenced system resource is an image.
+     *
+     * @throws SystemResourceDoesNotExistException
+     */
+    public function isImage(): bool
+    {
+        return FileType::tryFromMimeType(
+            $this->getMimeType(),
+        ) === FileType::IMAGE;
+    }
+
+    /**
+     * Returns the dimensions of the referenced image.
+     *
+     * @throws CanNotDetectImageDimensionOfSystemResourceException
+     * @throws SystemResourceDoesNotExistException
+     */
+    public function getImageDimension(): ImageDimension
+    {
+        if (isset($this->imageDimension)) {
+            return $this->imageDimension;
+        }
+        $imageInfo = $this->getValidatedImageInfo();
+        $width = $imageInfo->getWidth();
+        $height = $imageInfo->getHeight();
+        if ($width === 0 || $height === 0) {
+            throw new CanNotDetectImageDimensionOfSystemResourceException(sprintf('Cannot determine image dimensions for system resource "%s" (resolved as "%s")', $this->identifier->givenIdentifier, $this), 1787399730);
+        }
+        return $this->imageDimension = new ImageDimension($width, $height);
     }
 
     /**
@@ -94,11 +131,33 @@ class PackageResource implements SystemResourceInterface
         if ($this->fileInfo !== null) {
             return $this->fileInfo;
         }
-        $fileInfo = GeneralUtility::makeInstance(FileInfo::class, $this->identifier->getPackage()->getPackagePath() . $this->identifier->getRelativePath());
+        $fileInfo = GeneralUtility::makeInstance(
+            FileInfo::class,
+            $this->identifier->getPackage()->getPackagePath() . $this->identifier->getRelativePath(),
+        );
         if (!$fileInfo->isFile()) {
             throw new SystemResourceDoesNotExistException(sprintf('Referenced system resource "%s" (resolved as "%s") does not exist, or is not a file', $this->identifier->givenIdentifier, $this), 1758785343);
         }
+
         return $this->fileInfo = $fileInfo;
+    }
+
+    /**
+     * @throws SystemResourceDoesNotExistException
+     * @throws CanNotDetectImageDimensionOfSystemResourceException
+     */
+    private function getValidatedImageInfo(): ImageInfo
+    {
+        if ($this->fileInfo instanceof ImageInfo) {
+            return $this->fileInfo;
+        }
+        if (!$this->isImage()) {
+            throw new CanNotDetectImageDimensionOfSystemResourceException(sprintf('Cannot determine image dimensions for system resource "%s" (resolved as "%s"). File is not an image.', $this->identifier->givenIdentifier, $this), 1787397106);
+        }
+        return $this->fileInfo = GeneralUtility::makeInstance(
+            ImageInfo::class,
+            $this->identifier->getPackage()->getPackagePath() . $this->identifier->getRelativePath(),
+        );
     }
 
     public function getResourceIdentifier(): string
