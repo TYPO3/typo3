@@ -1,21 +1,25 @@
 base: 'https://example.com/'
 baseVariants:
-  - base: foo123
+  -
+    base: foo123
     condition: bar
 customProperty: 'Using %env("existing")% variable'
 errorHandling:
-  - errorCode: '404'
+  -
+    errorCode: '404'
     errorHandler: Page
     errorContentSource: 't3://page?uid=5'
 languages:
-  - title: English
+  -
+    title: English
     enabled: true
     languageId: '0'
     base: /en
     locale: en_US.utf8
     flag: en
     navigationTitle: English
-  - title: Danish
+  -
+    title: Danish
     enabled: false
     languageId: '1'
     base: /da
@@ -24,10 +28,13 @@ languages:
     navigationTitle: Dansk
 rootPageId: 1
 routeEnhancers:
-  - foo: bar
+  -
+    foo: bar
 routes:
-  - route: robots.txt
+  -
+    route: robots.txt
     type: staticText
     content: 'deny all'
 imports:
-  - resource: 'EXT:core/Tests/Unit/Configuration/Fixtures/SiteConfigs/include.yaml'
+  -
+    resource: 'EXT:core/Tests/Unit/Configuration/Fixtures/SiteConfigs/include.yaml'
