@@ -50,6 +50,10 @@ parameters:
     - ../../typo3/sysext/*/ext_emconf.php
     # contains broken syntax for testing-purpose, which cannot be disabled directly
     - ../../typo3/sysext/extbase/Tests/Unit/Reflection/Fixture/DummyController.php
+    # IDE-only stubs for the deprecated class aliases, guarded by die() and never loaded.
+    # The real classes are provided at runtime by typo3/class-alias-loader. Reflecting the
+    # stubs instead lets PHPStan see a plain subclass instead of the aliased class.
+    - ../../typo3/sysext/*/Migrations/Code/LegacyClassesForIde.php
 
   # In 2026, this option does not help that much anymore since our code base is moving to PHP 8
   # and native PHP types. It certainly does not hurt to re-check this every once in a while to
