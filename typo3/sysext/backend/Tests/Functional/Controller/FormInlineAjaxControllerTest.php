@@ -79,6 +79,22 @@ final class FormInlineAjaxControllerTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function createActionWithoutAjaxContextReturnsANoOpResponseInsteadOfThrowing(): void
+    {
+        // Regression test: a stale/interrupted request (e.g. the browser
+        // navigated away before this in-flight request completed) can arrive
+        // with neither a parsed body nor query params carrying "ajax" at all.
+        // This must degrade gracefully instead of a PHP "undefined array key"
+        // warning escalating into an uncaught exception.
+        $request = new ServerRequest();
+        $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $request = $request->withAttribute('route', new Route('path', ['packageName' => 'typo3/cms-backend']));
+        $request = $request->withParsedBody([]);
+        $response = $this->get(FormInlineAjaxController::class)->createAction($request);
+        self::assertSame(204, $response->getStatusCode());
+    }
+
+    #[Test]
     public function createActionWithExistingParentReturnsResponseForInlineChildData(): void
     {
         $parsedBody = [

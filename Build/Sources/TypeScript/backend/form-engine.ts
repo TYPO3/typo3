@@ -61,6 +61,7 @@ const enum FormAction {
   saveAndView = '_savedokview',
   saveAndNew = '_savedoknew',
   duplicate = '_duplicatedoc',
+  saveAndAddRecord = '_savedokaddrecord',
 }
 
 type OnChangeFieldHandlerCallback = (data: object, e: Event) => void;
@@ -879,6 +880,80 @@ export default (function() {
     } else {
       callback.call(null, true);
     }
+  };
+
+  /**
+   * Show modal to confirm following a "+ add related record" (fieldControl.addRecord)
+   * link whose OWN record is itself still new/unsaved. Since Wizard/AddController
+   * can only link a newly created record back into an already-persisted uid,
+   * discarding here means abandoning the whole attempt (closing the document,
+   * same as preventExitIfNotSavedCallback) rather than following through to
+   * create an orphaned record that could never be linked back anyway. The
+   * only way to actually continue to the add-record wizard is "save first".
+   *
+   * @param {Object.<string, string>} addRecordParams
+   * @returns {Boolean}
+   */
+  FormEngine.preventFollowAddRecordLinkIfNotSaved = function(addRecordParams: {[key: string]: string}): boolean {
+    const title = backendAltDocLabels.get('label.confirm.add_record_unsaved_parent.title');
+    const content = backendAltDocLabels.get('label.confirm.add_record_unsaved_parent.content');
+    const buttons: Array<{text: string, btnClass: string, name: string, active?: boolean}> = [
+      {
+        text: backendAltDocLabels.get('buttons.confirm.close_without_save.no'),
+        btnClass: 'btn-default',
+        name: 'no'
+      },
+      {
+        text: backendAltDocLabels.get('buttons.confirm.close_without_save.yes'),
+        btnClass: 'btn-default',
+        name: 'yes'
+      }
+    ];
+    if (document.querySelector('.has-error') === null) {
+      buttons.push({
+        text: backendAltDocLabels.get('buttons.confirm.add_record_unsaved_parent.save'),
+        btnClass: 'btn-primary',
+        name: 'save',
+        active: true
+      });
+    }
+
+    const modal = Modal.confirm(title, content, Severity.warning, buttons);
+    modal.addEventListener('button.clicked', function(e: Event) {
+      modal.hideModal();
+      const name = (e.target as HTMLButtonElement).name;
+      if (name === 'yes') {
+        FormEngine.closeDocument();
+      } else if (name === 'save') {
+        FormEngine.saveAndContinueToAddRecord(addRecordParams);
+      }
+    });
+    return false;
+  };
+
+  /**
+   * Saves the current document, then (server-side, once the record this
+   * addRecordParams.originalUid placeholder was saved under is known)
+   * redirects on to Wizard/AddController for the field identified by
+   * addRecordParams, see FormAction::savedokaddrecord() /
+   * EditDocumentController::processData().
+   *
+   * @param {Object.<string, string>} addRecordParams
+   */
+  FormEngine.saveAndContinueToAddRecord = function(addRecordParams: {[key: string]: string}): void {
+    Object.keys(addRecordParams).forEach((key: string): void => {
+      const input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = 'addRecordAfterSave[' + key + ']';
+      input.value = addRecordParams[key];
+      FormEngine.formElement.append(input);
+    });
+    FormEngine.formElement.append(createActionInput(FormAction.saveAndAddRecord));
+    // Submitted as a regular save on top: "_savedokaddrecord" is only understood by
+    // EditDocumentController, while other hosts of FormEngine forms (site configuration,
+    // constant editor, ...) test "_savedok" literally. Without it, such a form would
+    // neither save nor create anything and silently discard the submitted data.
+    submitFormWithAction(FormAction.save);
   };
 
   /**

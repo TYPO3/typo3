@@ -56,7 +56,15 @@ readonly class FormInlineAjaxController extends AbstractFormEngineAjaxController
      */
     public function createAction(ServerRequestInterface $request): ResponseInterface
     {
-        $ajaxArguments = $request->getParsedBody()['ajax'] ?? $request->getQueryParams()['ajax'];
+        $ajaxArguments = $request->getParsedBody()['ajax'] ?? $request->getQueryParams()['ajax'] ?? [];
+        if (!isset($ajaxArguments['context'])) {
+            // No signed inline context at all: most likely a stale/interrupted
+            // request (e.g. the browser navigated away before this in-flight
+            // request completed) whose response nothing is waiting for anymore.
+            // Nothing to create, and nothing left client-side to react to a
+            // response with, so this is a silent no-op rather than a hard error.
+            return new JsonResponse(null, 204);
+        }
         $parentConfig = $this->extractSignedParentConfigFromRequest((string)$ajaxArguments['context']);
 
         $domObjectId = $ajaxArguments[0] ?? '';

@@ -100,12 +100,25 @@ final readonly class FormAction
         return (bool)($this->parsedBody['_duplicatedoc'] ?? false);
     }
 
+    /**
+     * Is true when
+     *  - the incoming data should be persisted
+     *  - and, once saved, the browser should continue on to the "add new
+     *    related record" wizard (fieldControl.addRecord) for a field that
+     *    belongs to the record just saved. Used when that record was
+     *    itself still new (a "NEW..." placeholder uid) when "+" was clicked.
+     */
+    public function savedokaddrecord(): bool
+    {
+        return (bool)($this->parsedBody['_savedokaddrecord'] ?? false);
+    }
+
     public function shouldProcessData(): bool
     {
         if (!$this->isPostRequest) {
             return false;
         }
-        return $this->savedok() || $this->saveandclosedok() || $this->savedokview() || $this->savedoknew() || $this->duplicatedoc();
+        return $this->savedok() || $this->saveandclosedok() || $this->savedokview() || $this->savedoknew() || $this->duplicatedoc() || $this->savedokaddrecord();
     }
 
     public function shouldHandleDocumentClosing(): bool

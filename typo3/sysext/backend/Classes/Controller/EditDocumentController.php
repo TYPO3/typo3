@@ -160,6 +160,17 @@ class EditDocumentController
     protected bool $returnEditConf = false;
 
     /**
+     * Set by processData() when a "_savedokaddrecord" request resolved the
+     * real, now-persisted uid of a record that was still new when its own
+     * "+ add related record" wizard link was clicked; mainAction() redirects
+     * to Wizard/AddController with these parameters instead of the normal
+     * post-save destination when set.
+     *
+     * @var array<string, mixed>|null
+     */
+    protected ?array $addRecordWizardParameters = null;
+
+    /**
      * @var array
      */
     protected $pageinfo;
@@ -282,6 +293,23 @@ class EditDocumentController
             if (!$hasUnresolvedNewRecords) {
                 unset($queryParamsForGeneratingCurrentUrl['defVals']);
             }
+        }
+
+        if ($this->addRecordWizardParameters !== null) {
+            // Once the created record is linked and the wizard is done, land back on the
+            // document that was being edited, not wherever a plain "Close" of it would go.
+            // Built from $queryParamsForGeneratingCurrentUrl so that parameters like
+            // "returnEditConf" or "columnsOnly" survive - dropping them would break an
+            // outer Wizard/AddController waiting for "returnEditConf" to link this very
+            // document back into its own field. A client-supplied returnUrl is not used,
+            // since it cannot be trusted to reflect the real, current document (e.g. it
+            // may have been rendered as part of an AJAX-loaded fragment).
+            $wizardParameters = $this->addRecordWizardParameters;
+            $wizardParameters['returnUrl'] = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $queryParamsForGeneratingCurrentUrl);
+            return new RedirectResponse(
+                (string)$this->uriBuilder->buildUriFromRoute('wizard_add', ['P' => $wizardParameters]),
+                302
+            );
         }
 
         // Preview code is implicit only generated for GET requests, having the query
@@ -635,6 +663,34 @@ class EditDocumentController
             // Setting a blank editconf array for a new record:
             $this->editconf = [];
             $this->editconf[$nTable][$relatedPageId] = 'new';
+        }
+
+        // "fieldControl.addRecord" was clicked on a field belonging to a
+        // record that was itself still new: continue on to Wizard/AddController
+        // using the uid this record was just persisted under, since AddController
+        // itself has no way to resolve a "NEW..." placeholder back to a real uid.
+        if ($requestAction->savedokaddrecord()) {
+            $addRecordParams = (array)($parsedBody['addRecordAfterSave'] ?? []);
+            $originalUid = (string)($addRecordParams['originalUid'] ?? '');
+            $realUid = $dataHandler->substNEWwithIDs[$originalUid] ?? null;
+            if ($realUid !== null
+                && (string)($addRecordParams['table'] ?? '') !== ''
+                && (string)($addRecordParams['ownerTable'] ?? '') !== ''
+            ) {
+                // The "returnUrl" back to this document is added by mainAction(), which
+                // is where the full set of current query parameters is available.
+                $this->addRecordWizardParameters = [
+                    'params' => [
+                        'table' => $addRecordParams['table'],
+                        'pid' => (string)($addRecordParams['pid'] ?? '0'),
+                        'setValue' => (string)($addRecordParams['setValue'] ?? 'append'),
+                    ],
+                    'table' => $addRecordParams['ownerTable'],
+                    'field' => (string)($addRecordParams['ownerField'] ?? ''),
+                    'uid' => $realUid,
+                    'flexFormPath' => (string)($addRecordParams['flexFormPath'] ?? ''),
+                ];
+            }
         }
 
         // Explicitly require a save operation

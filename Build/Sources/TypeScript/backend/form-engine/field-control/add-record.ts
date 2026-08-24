@@ -33,7 +33,33 @@ class AddRecord {
   private readonly registerClickHandler = (e: Event): void => {
     e.preventDefault();
 
-    FormEngine.preventFollowLinkIfNotSaved(this.controlElement.getAttribute('href'));
+    const href = this.controlElement.getAttribute('href');
+    const url = new URL(href, window.location.origin);
+    const ownerUid = url.searchParams.get('P[uid]') || '';
+    if (ownerUid.startsWith('NEW')) {
+      // The record this field belongs to is itself still unsaved:
+      // Wizard/AddController can only link a newly created record back into
+      // an already-persisted uid, so a plain "leave without saving?" prompt
+      // would both discard this record AND silently fail to link anything.
+      // Deliberately not passing along this href's own P[returnUrl] here: for
+      // a field belonging to an inline/IRRE child that was itself added via
+      // AJAX (record_inline_create), that value is whatever URL rendered the
+      // child's markup at ajax-creation time. The ajax endpoint's own URL,
+      // not a real, navigable page. EditDocumentController computes the
+      // correct return-to-this-document URL itself once the save completes.
+      FormEngine.preventFollowAddRecordLinkIfNotSaved({
+        originalUid: ownerUid,
+        ownerTable: url.searchParams.get('P[table]') || '',
+        ownerField: url.searchParams.get('P[field]') || '',
+        table: url.searchParams.get('P[params][table]') || '',
+        pid: url.searchParams.get('P[params][pid]') || '',
+        setValue: url.searchParams.get('P[params][setValue]') || 'append',
+        flexFormPath: url.searchParams.get('P[flexFormPath]') || '',
+      });
+      return;
+    }
+
+    FormEngine.preventFollowLinkIfNotSaved(href);
   };
 }
 

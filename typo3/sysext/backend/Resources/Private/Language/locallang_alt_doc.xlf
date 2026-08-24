@@ -114,6 +114,15 @@
       <trans-unit id="label.confirm.close_without_save.content">
         <source>You currently have unsaved changes which will be discarded if you close without saving.</source>
       </trans-unit>
+      <trans-unit id="label.confirm.add_record_unsaved_parent.title">
+        <source>Save before creating a new record?</source>
+      </trans-unit>
+      <trans-unit id="label.confirm.add_record_unsaved_parent.content">
+        <source>This record has not been saved yet, so a new related record could not be linked back to it. Save it first to create and link a new record, or discard your changes to cancel.</source>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.add_record_unsaved_parent.save">
+        <source>Save and continue</source>
+      </trans-unit>
       <trans-unit id="buttons.confirm.delete_file.no">
         <source>Cancel</source>
       </trans-unit>
