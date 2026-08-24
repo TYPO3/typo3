@@ -1,0 +1,21 @@
+"pages",,,,,,,,
+,"uid","pid","sorting","title","doktype","sys_language_uid","l10n_parent","l10n_source"
+,1,0,256,"Root",1,0,0,0
+,2,1,256,"Dummy with 3 languages, two translations [DEFAULT]",1,0,0,0
+,3,1,128,"Dummy with 3 languages, only default content [DEFAULT]",1,0,0,0
+,4,1,64,"Dummy with 3 languages, fully translated [DEFAULT]",1,0,0,0
+,5,1,32,"Dummy with 3 languages, no content [DEFAULT]",1,0,0,0
+,6,1,16,"Dummy only default language",1,0,0,0
+,7,1,8,"Dummy no content",1,0,0,0
+,8,1,4,"Dummy with 3 languages, fully translated [FRENCH]",1,2,4,4
+,9,1,2,"Dummy with 3 languages, fully translated [GERMAN]",1,1,4,4
+,10,1,1,"Dummy with 3 languages, two languages [GERMAN]",1,1,2,2
+"tt_content",,,,,,,,
+,"uid","pid","sorting","header","sys_language_uid","l18n_parent","l10n_source",
+,1,6,256,"Test content #1 pid=3 'Dummy only default language' (default language=0)",0,0,0,
+,2,4,256,"Test content #5 pid=5 'Dummy with 3 languages, fully translated' (french=2)",2,4,4,
+,3,4,128,"Test content #4 pid=5 'Dummy with 3 languages, fully translated' (german=1)",1,4,4,
+,4,4,64,"Test content #3 pid=5 'Dummy with 3 languages, fully translated' (default language=0)",0,0,0,
+,5,3,256,"Test content #6 pid=6 'Dummy with 3 languages, only default content' (default language=0)",0,0,0,
+,6,2,256,"Test content #7 pid=7 'Dummy with 3 languages, two translations' (german=1)",1,7,7,
+,7,2,128,"Test content #2 pid=7 'Dummy with 3 languages, two translations' (default language=0)",0,0,0,

@@ -817,7 +817,7 @@ class Import extends ImportExport
         if (is_array($this->dat['header']['pagetree'] ?? null)) {
             $pageList = [];
             $this->flatInversePageTree($this->dat['header']['pagetree'], $pageList);
-            foreach ($pageList as $pageUid => $_) {
+            foreach ($this->sortPageUidsParentsFirst(array_keys($pageList)) as $pageUid) {
                 $pid = $this->dat['header']['records']['pages'][$pageUid]['pid'] ?? null;
                 if ($pid !== null) {
                     $pid = (int)$pid;
@@ -850,6 +850,43 @@ class Import extends ImportExport
 
         // Sort pages
         $this->writePagesOrder();
+    }
+
+    /**
+     * Page translations are appended to the exported page tree as top level nodes, so a translation
+     * may be listed before the page it belongs to. Order the pages in a way that each page is
+     * preceded by its parent page, since the parent needs to have been assigned its new ID before
+     * a page can be related to it.
+     *
+     * @param list<int> $pageUids
+     * @return list<int>
+     */
+    protected function sortPageUidsParentsFirst(array $pageUids): array
+    {
+        $importPageUids = array_flip($pageUids);
+        $sortedPageUids = [];
+        $sortedPageUidsMap = [];
+        $pendingPageUids = $pageUids;
+
+        while ($pendingPageUids !== []) {
+            $postponedPageUids = [];
+            foreach ($pendingPageUids as $pageUid) {
+                $pid = (int)($this->dat['header']['records']['pages'][$pageUid]['pid'] ?? 0);
+                if (isset($importPageUids[$pid]) && !isset($sortedPageUidsMap[$pid])) {
+                    $postponedPageUids[] = $pageUid;
+                    continue;
+                }
+                $sortedPageUids[] = $pageUid;
+                $sortedPageUidsMap[$pageUid] = true;
+            }
+            if (count($postponedPageUids) === count($pendingPageUids)) {
+                // Pages referencing each other in a circle, keep the given order for the remainder
+                return array_merge($sortedPageUids, $postponedPageUids);
+            }
+            $pendingPageUids = $postponedPageUids;
+        }
+
+        return $sortedPageUids;
     }
 
     /**
