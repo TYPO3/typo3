@@ -71,6 +71,14 @@ return [
             'config' => [
                 'type' => 'group',
                 'allowed' => 'tx_styleguide_staticdata',
+                'fieldControl' => [
+                    'editPopup' => [
+                        'disabled' => false,
+                    ],
+                    'addRecord' => [
+                        'disabled' => false,
+                    ],
+                ],
             ],
         ],
         'select_tree_1' => [
