@@ -35,6 +35,14 @@ class PasswordGenerator extends AbstractNode
     public function render(): array
     {
         $options = $this->data['renderData']['fieldControlOptions'];
+        $passwordPolicy = $options['passwordPolicy'] ?? null;
+        if (!is_string($passwordPolicy) || $passwordPolicy === '' || !$this->hasGenerator($passwordPolicy)) {
+            // The generator is resolved from the password policy, so a policy that is unset,
+            // unknown, or carries no generator leaves nothing to call and the control would
+            // fail on every click. Render nothing instead of an inoperable button.
+            return [];
+        }
+
         $itemName = (string)$this->data['parameterArray']['itemFormElName'];
         $id = StringUtility::getUniqueId('t3js-formengine-fieldcontrol-');
 
@@ -50,9 +58,7 @@ class PasswordGenerator extends AbstractNode
             $linkAttributes['data-allow-edit'] = true;
         }
 
-        if (is_string($options['passwordPolicy'] ?? null) && $options['passwordPolicy'] !== '') {
-            $linkAttributes['data-password-policy'] = $options['passwordPolicy'];
-        }
+        $linkAttributes['data-password-policy'] = $passwordPolicy;
 
         return [
             'iconIdentifier' => 'actions-dice',
@@ -62,5 +68,17 @@ class PasswordGenerator extends AbstractNode
                 JavaScriptModuleInstruction::create('@typo3/backend/form-engine/field-control/password-generator.js')->instance($id),
             ],
         ];
+    }
+
+    /**
+     * Whether a generator is configured for the given password policy. This mirrors the first
+     * condition PasswordGeneratorController applies, which stays the authoritative one: it also
+     * verifies the class and its interface, and logs what it rejects.
+     */
+    protected function hasGenerator(string $passwordPolicy): bool
+    {
+        $className = $GLOBALS['TYPO3_CONF_VARS']['SYS']['passwordPolicies'][$passwordPolicy]['generator']['className'] ?? null;
+
+        return is_string($className) && $className !== '';
     }
 }

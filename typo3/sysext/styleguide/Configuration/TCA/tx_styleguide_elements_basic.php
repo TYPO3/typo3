@@ -679,6 +679,21 @@ return [
                 'nullable' => true,
             ],
         ],
+        'password_9' => [
+            'label' => 'password_9',
+            'description' => 'type=password fieldControl=passwordGenerator without passwordPolicy - control is not rendered',
+            'config' => [
+                'type' => 'password',
+                'fieldControl' => [
+                    'passwordGenerator' => [
+                        'renderType' => 'passwordGenerator',
+                        'options' => [
+                            'title' => 'Create random password',
+                        ],
+                    ],
+                ],
+            ],
+        ],
 
         'color_1' => [
             'label' => 'color_1',
@@ -2082,7 +2097,7 @@ backend_layout {
                 --div--;link,
                     link_1,link_2,link_3,link_4,link_5,link_6,
                 --div--;password,
-                    password_1,password_2,password_3,password_8,password_4,password_5,password_6,password_7,
+                    password_1,password_2,password_3,password_8,password_4,password_5,password_6,password_7,password_9,
                 --div--;color,
                     color_1,color_2,color_3,color_4,color_5,color_palpreset,
                 --div--;number,
