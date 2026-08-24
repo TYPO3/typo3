@@ -151,6 +151,9 @@ export class LocalizationWizard extends LitElement {
 
   private handleStepSummary(event: StepSummaryEvent) {
     const recordInfo = this.recordInfoTask.value;
+    if (recordInfo === undefined) {
+      return;
+    }
     event.detail.summaryData = [
       {
         label: recordInfo.typeName,

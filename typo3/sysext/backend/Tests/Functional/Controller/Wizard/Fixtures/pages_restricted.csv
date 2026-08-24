@@ -1,0 +1,6 @@
+"pages"
+,"uid","pid","title","deleted","perms_everybody"
+,10,0,"Page no editor may see",0,0
+"tt_content"
+,"uid","pid","header","deleted","t3ver_oid","t3ver_wsid","sorting","colPos"
+,10,10,"Content on a page no editor may see",0,0,0,1,0

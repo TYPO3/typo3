@@ -45,23 +45,18 @@ export class HandlerSelectionStep implements WizardStepInterface, WizardStepValu
           return [];
         }
 
-        try {
-          const response = await new AjaxRequest(TYPO3.settings.ajaxUrls.wizard_localization_get_handlers)
-            .withQueryArguments({
-              recordType: recordType,
-              recordUid: recordUid,
-              sourceLanguage: sourceLanguage,
-              targetLanguage: targetLanguage,
-              mode: mode,
-            })
-            .get();
-          const handlers: LocalizationHandler[] = await response.resolve();
+        const response = await new AjaxRequest(TYPO3.settings.ajaxUrls.wizard_localization_get_handlers)
+          .withQueryArguments({
+            recordType: recordType,
+            recordUid: recordUid,
+            sourceLanguage: sourceLanguage,
+            targetLanguage: targetLanguage,
+            mode: mode,
+          })
+          .get();
+        const handlers: LocalizationHandler[] = await response.resolve();
 
-          return handlers;
-        } catch (error) {
-          console.warn('Failed to fetch handlers:', error);
-          return [];
-        }
+        return handlers;
       },
       args: () => [this.context.recordType, this.context.recordUid, this.context.getStoreData('sourceLanguage'), this.context.getStoreData('targetLanguage'), this.context.getStoreData('localizationMode')],
       autoRun: false
