@@ -26,7 +26,7 @@ machine-specific preferences do not belong here — put those in an untracked
   in a label, comment or documentation.
 - Only add code comments when they add meaning; otherwise leave them out.
 - Follow the TYPO3 Coding Guidelines (CGL), and run
-  `PHP_CS_FIXER_IGNORE_ENV=1 ./Build/Scripts/cglFixMyCommit.sh` after committing.
+  `./Build/Scripts/runTests.sh -s cglGit` after committing.
 
 ## Project structure & modules
 
@@ -71,7 +71,6 @@ CI=true ./Build/Scripts/runTests.sh -s functional -c 3/13             # run chun
 # static analysis / style
 ./Build/Scripts/runTests.sh -s cgl                # fix; add -n for dry-run
 ./Build/Scripts/runTests.sh -s cglGit             # CGL of the last commit only
-PHP_CS_FIXER_IGNORE_ENV=1 ./Build/Scripts/cglFixMyCommit.sh
 ./Build/Scripts/runTests.sh -s phpstan            # custom rules, baseline in Build/phpstan/
 ./Build/Scripts/runTests.sh -s checkIntegrityPhp  # registered PHP integrity rules
 ./Build/Scripts/runTests.sh -s listExceptionCodes # also reports duplicate/missing exception codes
