@@ -353,7 +353,8 @@ class PageLinkBuilder extends AbstractTypolinkBuilder implements TypolinkBuilder
         }
 
         $queryParameters = [];
-        $addQueryParams = ($conf['addQueryString'] ?? false) ? $this->getQueryArguments($conf['addQueryString'], $conf['addQueryString.'] ?? []) : '';
+        $addQueryString = $conf['addQueryString'] ?? false;
+        $addQueryParams = $addQueryString ? $this->getQueryArguments($addQueryString, $conf['addQueryString.'] ?? []) : '';
         $addQueryParams .= trim((string)$this->contentObjectRenderer->stdWrapValue('additionalParams', $conf));
         if ($addQueryParams === '&' || ($addQueryParams[0] ?? '') !== '&') {
             $addQueryParams = '';
@@ -366,6 +367,12 @@ class PageLinkBuilder extends AbstractTypolinkBuilder implements TypolinkBuilder
         if ($linkVars !== '') {
             $globalQueryParameters = [];
             parse_str($linkVars, $globalQueryParameters);
+            // "config.linkVars" carries query parameters of the current request over to the link,
+            // just like "addQueryString" does. A parameter dropped by "addQueryString.exclude"
+            // must therefore not sneak back in through "linkVars".
+            if ($addQueryString && ($conf['addQueryString.']['exclude'] ?? false)) {
+                $globalQueryParameters = $this->excludeQueryParameters($globalQueryParameters, (string)$conf['addQueryString.']['exclude']);
+            }
             $queryParameters = array_replace_recursive($globalQueryParameters, $queryParameters);
         }
         // Disable "?id=", for pages with no site configuration, this is added later-on anyway
@@ -916,14 +923,24 @@ class PageLinkBuilder extends AbstractTypolinkBuilder implements TypolinkBuilder
             $currentQueryArray = array_replace_recursive($pageArguments->getQueryArguments(), $currentQueryArray);
         }
         if ($configuration['exclude'] ?? false) {
-            $excludeItems = array_map(urlencode(...), GeneralUtility::trimExplode(',', $configuration['exclude']));
-            $excludeString = implode('&', $excludeItems);
-            parse_str($excludeString, $excludedQueryParts);
-            $newQueryArray = ArrayUtility::arrayDiffKeyRecursive($currentQueryArray, $excludedQueryParts);
+            $newQueryArray = $this->excludeQueryParameters($currentQueryArray, (string)$configuration['exclude']);
         } else {
             $newQueryArray = $currentQueryArray;
         }
         return HttpUtility::buildQueryString($newQueryArray, '&');
+    }
+
+    /**
+     * Removes the query parameters listed in "addQueryString.exclude" from a set of query
+     * parameters taken from the current request.
+     *
+     * @param string $exclude Comma separated list of parameter names, e.g. "L,print" or "tx_ext[foo]"
+     */
+    protected function excludeQueryParameters(array $queryParameters, string $exclude): array
+    {
+        $excludeItems = array_map(urlencode(...), GeneralUtility::trimExplode(',', $exclude));
+        parse_str(implode('&', $excludeItems), $excludedQueryParts);
+        return ArrayUtility::arrayDiffKeyRecursive($queryParameters, $excludedQueryParts);
     }
 
     /**

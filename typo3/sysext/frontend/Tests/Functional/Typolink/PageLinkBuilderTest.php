@@ -200,4 +200,66 @@ final class PageLinkBuilderTest extends FunctionalTestCase
 
         self::assertStringEndsWith('#de-anchor', $result->getUrl());
     }
+
+    #[Test]
+    public function configLinkVarsAreAddedToLink(): void
+    {
+        $result = $this->buildLinkWithLinkVars(['addQueryString' => 'untrusted']);
+
+        self::assertSame('/?print=1', $result);
+    }
+
+    #[Test]
+    public function addQueryStringExcludeAlsoDropsParameterCarriedOverByConfigLinkVars(): void
+    {
+        $result = $this->buildLinkWithLinkVars([
+            'addQueryString' => 'untrusted',
+            'addQueryString.' => ['exclude' => 'print'],
+        ]);
+
+        self::assertSame('/', $result);
+    }
+
+    /**
+     * Builds a link on a request carrying "?print=1", with "config.linkVars = print(int)"
+     * declared, so the parameter is a candidate for both "addQueryString" and "linkVars".
+     */
+    private function buildLinkWithLinkVars(array $configuration): string
+    {
+        $this->writeSiteConfiguration(
+            'example',
+            [
+                'rootPageId' => 1,
+                'base' => 'https://example.com/',
+            ],
+        );
+
+        $pageInformation = new PageInformation();
+        $pageInformation->setId(1);
+        $pageInformation->setPageRecord(['uid' => 1, 'pid' => 0, 'title' => 'Root']);
+
+        $site = new Site('test', 1, [
+            'base' => 'https://example.com/',
+            'languages' => [
+                ['languageId' => 0, 'title' => 'English', 'locale' => 'en_US.UTF-8', 'base' => 'https://example.com/'],
+            ],
+        ]);
+
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
+        $frontendTypoScript->setSetupArray([]);
+        $frontendTypoScript->setConfigArray(['linkVars' => 'print(int)']);
+
+        $request = new ServerRequest('https://example.com/?print=1')
+            ->withQueryParams(['print' => '1'])
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
+            ->withAttribute('frontend.page.information', $pageInformation)
+            ->withAttribute('frontend.typoscript', $frontendTypoScript)
+            ->withAttribute('routing', new PageArguments(1, '0', [], [], ['print' => '1']))
+            ->withAttribute('site', $site);
+
+        $url = $this->get(PageLinkBuilder::class)->buildLink(['pageuid' => 1], $configuration, $request)->getUrl();
+
+        // The cHash is irrelevant here and depends on the encryption key
+        return rtrim(preg_replace('/[?&]cHash=[0-9a-f]+/', '', $url), '?&');
+    }
 }
