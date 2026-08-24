@@ -21,6 +21,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
+use TYPO3\CMS\Fluid\ViewHelpers\Asset\CssViewHelper;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Fluid\Fluid\View\TemplateView;
 
@@ -161,5 +162,42 @@ final class CssViewHelperTest extends FunctionalTestCase
         $collectedInlineStyleSheets = $this->get(AssetCollector::class)->getInlineStyleSheets();
         self::assertSame(".foo {\n    color: black;\n}\n", $collectedInlineStyleSheets['test']['source']);
         self::assertSame([], $collectedInlineStyleSheets['test']['attributes']);
+    }
+
+    #[Test]
+    public function hrefIsRegisteredAsOptionalStringArgument(): void
+    {
+        $argumentDefinitions = $this->get(CssViewHelper::class)->prepareArguments();
+
+        self::assertArrayHasKey('href', $argumentDefinitions);
+        self::assertSame('string', $argumentDefinitions['href']->getType());
+        self::assertFalse($argumentDefinitions['href']->isRequired());
+        self::assertNull($argumentDefinitions['href']->getDefaultValue());
+    }
+
+    #[Test]
+    public function hrefPassedAsAdditionalAttributeIsUsedAsSource(): void
+    {
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:asset.css identifier="test" additionalAttributes="{href: \'my.css\'}" priority="0"/>');
+
+        new TemplateView($context)->render();
+
+        $collectedStyleSheets = $this->get(AssetCollector::class)->getStyleSheets();
+        self::assertSame('my.css', $collectedStyleSheets['test']['source']);
+        self::assertSame([], $collectedStyleSheets['test']['attributes']);
+    }
+
+    #[Test]
+    public function emptyHrefRendersTagChildrenAsInlineStyleSheet(): void
+    {
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:asset.css identifier="test" href="">body { color: black; }</f:asset.css>');
+
+        new TemplateView($context)->render();
+
+        self::assertSame([], $this->get(AssetCollector::class)->getStyleSheets());
+        $collectedInlineStyleSheets = $this->get(AssetCollector::class)->getInlineStyleSheets();
+        self::assertSame('body { color: black; }', $collectedInlineStyleSheets['test']['source']);
     }
 }

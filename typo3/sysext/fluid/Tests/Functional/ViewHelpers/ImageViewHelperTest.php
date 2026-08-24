@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
+use TYPO3\CMS\Fluid\ViewHelpers\ImageViewHelper;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
@@ -398,7 +399,7 @@ final class ImageViewHelperTest extends FunctionalTestCase
         ];
         yield 'alt' => [
             '<f:image src="fileadmin/ImageViewHelperTest.jpg" alt="alternative text" />',
-            '<img alt="alternative text" src="fileadmin/ImageViewHelperTest.jpg" width="400" height="300" />',
+            '<img src="fileadmin/ImageViewHelperTest.jpg" width="400" height="300" alt="alternative text" />',
         ];
         yield 'title' => [
             '<f:image src="fileadmin/ImageViewHelperTest.jpg" title="image title" />',
@@ -420,6 +421,10 @@ final class ImageViewHelperTest extends FunctionalTestCase
             '<f:image src="1" alt="" />',
             '<img src="fileadmin/user_upload/ImageViewHelperFalTest.jpg" width="400" height="300" alt="" />',
         ];
+        yield 'overwrite alt from file with custom text' => [
+            '<f:image src="1" alt="custom alternative text" />',
+            '<img src="fileadmin/user_upload/ImageViewHelperFalTest.jpg" width="400" height="300" alt="custom alternative text" />',
+        ];
         yield 'title from file reference' => [
             '<f:image src="1" treatIdAsReference="1" />',
             '<img src="fileadmin/user_upload/ImageViewHelperFalTest.jpg" width="400" height="300" alt="alt text from reference" title="title from reference" />',
@@ -428,6 +433,17 @@ final class ImageViewHelperTest extends FunctionalTestCase
             '<f:image src="1" treatIdAsReference="1" title="overwritten title" />',
             '<img title="overwritten title" src="fileadmin/user_upload/ImageViewHelperFalTest.jpg" width="400" height="300" alt="alt text from reference" />',
         ];
+    }
+
+    #[Test]
+    public function altIsRegisteredAsOptionalStringArgument(): void
+    {
+        $argumentDefinitions = $this->get(ImageViewHelper::class)->prepareArguments();
+
+        self::assertArrayHasKey('alt', $argumentDefinitions);
+        self::assertSame('string', $argumentDefinitions['alt']->getType());
+        self::assertFalse($argumentDefinitions['alt']->isRequired());
+        self::assertNull($argumentDefinitions['alt']->getDefaultValue());
     }
 
     #[DataProvider('tagAttributesDataProvider')]

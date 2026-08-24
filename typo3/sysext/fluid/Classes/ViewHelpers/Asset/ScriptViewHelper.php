@@ -74,6 +74,7 @@ final class ScriptViewHelper extends AbstractTagBasedViewHelper
     public function initializeArguments(): void
     {
         parent::initializeArguments();
+        $this->registerArgument('src', 'string', 'The URI of the script to be loaded. If omitted, the tag children are added as inline JavaScript.');
         $this->registerArgument('async', 'bool', 'Define that the script will be fetched in parallel to parsing and evaluation.');
         $this->registerArgument('defer', 'bool', 'Define that the script is meant to be executed after the document has been parsed.');
         $this->registerArgument('nomodule', 'bool', 'Define that the script should not be executed in browsers that support ES2015 modules.');
@@ -95,7 +96,10 @@ final class ScriptViewHelper extends AbstractTagBasedViewHelper
             }
         }
 
-        $src = $attributes['src'] ?? null;
+        $src = $this->arguments['src'] ?? $attributes['src'] ?? null;
+        if ($src === '') {
+            $src = null;
+        }
         unset($attributes['src']);
         $isExternalFile = $src !== null && !($this->arguments['inline'] ?? false);
         $useCsp = $this->resolveCspOption($isExternalFile);

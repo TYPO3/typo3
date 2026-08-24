@@ -21,6 +21,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
+use TYPO3\CMS\Fluid\ViewHelpers\Asset\ScriptViewHelper;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Fluid\Fluid\View\TemplateView;
 
@@ -89,5 +90,42 @@ final class ScriptViewHelperTest extends FunctionalTestCase
 
         $collectedInlineJavaScripts = $this->get(AssetCollector::class)->getInlineJavaScripts();
         self::assertSame('4711', $collectedInlineJavaScripts['4712']['source']);
+    }
+
+    #[Test]
+    public function srcIsRegisteredAsOptionalStringArgument(): void
+    {
+        $argumentDefinitions = $this->get(ScriptViewHelper::class)->prepareArguments();
+
+        self::assertArrayHasKey('src', $argumentDefinitions);
+        self::assertSame('string', $argumentDefinitions['src']->getType());
+        self::assertFalse($argumentDefinitions['src']->isRequired());
+        self::assertNull($argumentDefinitions['src']->getDefaultValue());
+    }
+
+    #[Test]
+    public function srcPassedAsAdditionalAttributeIsUsedAsSource(): void
+    {
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:asset.script identifier="test" additionalAttributes="{src: \'my.js\'}" priority="0"/>');
+
+        new TemplateView($context)->render();
+
+        $collectedJavaScripts = $this->get(AssetCollector::class)->getJavaScripts();
+        self::assertSame('my.js', $collectedJavaScripts['test']['source']);
+        self::assertSame([], $collectedJavaScripts['test']['attributes']);
+    }
+
+    #[Test]
+    public function emptySrcRendersTagChildrenAsInlineJavaScript(): void
+    {
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:asset.script identifier="test" src="">console.log(1);</f:asset.script>');
+
+        new TemplateView($context)->render();
+
+        self::assertSame([], $this->get(AssetCollector::class)->getJavaScripts());
+        $collectedInlineJavaScripts = $this->get(AssetCollector::class)->getInlineJavaScripts();
+        self::assertSame('console.log(1);', $collectedInlineJavaScripts['test']['source']);
     }
 }

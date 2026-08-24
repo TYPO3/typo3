@@ -68,6 +68,7 @@ final class ImageViewHelper extends AbstractTagBasedViewHelper
         $this->registerArgument('src', 'string', 'a path to a file, a combined FAL identifier or an uid (int). If $treatIdAsReference is set, the integer is considered the uid of the sys_file_reference record. If you already got a FAL object, consider using the $image parameter instead', false, '');
         $this->registerArgument('treatIdAsReference', 'bool', 'given src argument is a sys_file_reference record', false, false);
         $this->registerArgument('image', 'object', 'a FAL object (\\TYPO3\\CMS\\Core\\Resource\\File or \\TYPO3\\CMS\\Core\\Resource\\FileReference)');
+        $this->registerArgument('alt', 'string', 'Alternative text for the image. Falls back to the "alternative" metadata property of the image, an empty string excludes the image from screen readers.');
         $this->registerArgument('crop', 'string|bool|array', 'overrule cropping of image (setting to FALSE disables the cropping set in FileReference)');
         $this->registerArgument('cropVariant', 'string', 'select a cropping variant, in case multiple croppings have been specified or stored in FileReference', false, 'default');
         $this->registerArgument('fileExtension', 'string', 'Custom file extension to use');
@@ -163,11 +164,11 @@ final class ImageViewHelper extends AbstractTagBasedViewHelper
             $this->tag->addAttribute('width', $processedImage->getProperty('width'));
             $this->tag->addAttribute('height', $processedImage->getProperty('height'));
 
-            if (isset($this->additionalArguments['alt']) && $this->additionalArguments['alt'] === '') {
-                // In case the "alt" attribute is explicitly set to an empty string, respect
-                // this to allow excluding it from screen readers, improving accessibility.
-                $this->tag->addAttribute('alt', '');
-            } elseif (!isset($this->additionalArguments['alt'])) {
+            if ($this->arguments['alt'] !== null) {
+                // In case the "alt" attribute is explicitly set, respect it. An empty string
+                // excludes the image from screen readers, improving accessibility.
+                $this->tag->addAttribute('alt', $this->arguments['alt']);
+            } else {
                 // The alt-attribute is mandatory to have valid html-code, therefore use "alternative" property or empty
                 $this->tag->addAttribute('alt', $image->getProperty('alternative') ?? '');
             }
