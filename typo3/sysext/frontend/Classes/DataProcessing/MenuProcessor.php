@@ -35,7 +35,7 @@ use TYPO3\CMS\Frontend\ContentObject\Menu\MenuContentObjectFactory;
  * titleField = Field that should be used for the title
  *
  * See HMENU docs for more options.
- * https://docs.typo3.org/typo3cms/TyposcriptReference/ContentObjects/Hmenu/Index.html
+ * https://docs.typo3.org/permalink/t3tsref:cobj-hmenu
  *
  *
  * Example TypoScript configuration:

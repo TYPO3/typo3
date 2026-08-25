@@ -38,28 +38,28 @@ services:
     class: 'TYPO3\CMS\Dashboard\Widgets\Provider\ButtonProvider'
     arguments:
       $title: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.t3securityAdvisories.moreItems'
-      $link: 'https://typo3.org/help/security-advisories'
+      $link: 'https://news.typo3.com/security'
       $target: '_blank'
 
   dashboard.buttons.docGettingStarted:
     class: 'TYPO3\CMS\Dashboard\Widgets\Provider\ButtonProvider'
     arguments:
       $title: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.documentation.gettingStarted.content.label'
-      $link: 'https://docs.typo3.org/m/typo3/tutorial-getting-started/main/en-us/Index.html'
+      $link: 'https://docs.typo3.org/permalink/t3start:start'
       $target: '_blank'
 
   dashboard.buttons.docTypoScriptReference:
     class: 'TYPO3\CMS\Dashboard\Widgets\Provider\ButtonProvider'
     arguments:
       $title: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.documentation.typoscriptReference.content.label'
-      $link: 'https://docs.typo3.org/m/typo3/reference-typoscript/main/en-us/Index.html'
+      $link: 'https://docs.typo3.org/permalink/t3tsref:start'
       $target: '_blank'
 
   dashboard.buttons.docTSconfig:
     class: 'TYPO3\CMS\Dashboard\Widgets\Provider\ButtonProvider'
     arguments:
       $title: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.documentation.TSconfigReference.content.label'
-      $link: 'https://docs.typo3.org/m/typo3/reference-tsconfig/main/en-us/Index.html'
+      $link: 'https://docs.typo3.org/permalink/t3tsref:pagetsconfig'
       $target: '_blank'
 
   dashboard.widget.rss:

@@ -25,7 +25,7 @@ for own extensions:
 * The extension is interesting for **backend extension developers** as a reference
   to see how casual stuff like buttons and other HTML related things are solved or
   used in the backend, and to copy+paste solutions. Additionally, the TCA examples
-  is a near-complete show-case of [FormEngine](https://docs.typo3.org/m/typo3/reference-coreapi/10.4/en-us/ApiOverview/FormEngine/Index.html)
+  is a near-complete show-case of [FormEngine](https://docs.typo3.org/permalink/t3coreapi:formengine)
   (editing records in the backend). Developers will see new things they did not
   know yet. Guaranteed!
 
@@ -39,7 +39,7 @@ for own extensions:
   break when developing core patches.
 
 * Styleguide is used within the official core documentation to provide examples, screenshots
-  and possible usages of core functionality. Especially the [TCA reference](https://docs.typo3.org/m/typo3/reference-tca/master/en-us/)
+  and possible usages of core functionality. Especially the [TCA reference](https://docs.typo3.org/permalink/t3tca:start)
   heavily relies on it.
 
 # Installation

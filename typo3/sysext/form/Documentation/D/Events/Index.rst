@@ -138,7 +138,7 @@ These events are dispatched during form rendering in the frontend.
       -  Modify the options used by the :php:`EmailFinisher` (e.g. recipients,
          subject) before they are applied.
    *  -  `AfterFormStateInitializedEvent
-         <https://docs.typo3.org/permalink/t3coreapi:afterformstateinitializedevent>`_
+         <https://docs.typo3.org/permalink/t3coreapi:eventlist-form>`_
       -  Enrich components with runtime data after the :php:`FormState` has
          been restored from the request (form state and form session are
          both available at this point).
@@ -148,7 +148,7 @@ These events are dispatched during form rendering in the frontend.
          definition has been loaded from disk. Modify the definition globally
          before it reaches the form factory.
    *  -  `AfterFormDefinitionValidationConfigurationIsBuiltEvent
-         <https://docs.typo3.org/permalink/t3coreapi:afterformdefinitionvalidationconfigurationisbuiltevent>`_
+         <https://docs.typo3.org/permalink/t3coreapi:eventlist-form>`_
       -  Dispatched after the form definition validation configuration has
          been built from the form editor setup. Add additional writable
          property paths for custom inspector editor implementations.
