@@ -9,9 +9,9 @@
                project-issues="https://forge.typo3.org/projects/typo3cms-core/issues"
                edit-on-github-branch="13.4"
                edit-on-github="typo3/typo3"
-               edit-on-github-directory="typo3/sysext/webhoooks/Documentation/"
+               edit-on-github-directory="typo3/sysext/webhooks/Documentation/"
                typo3-core-preferred="13"
-               interlink-shortcode="typo3/cms-webhoooks"
+               interlink-shortcode="typo3/cms-webhooks"
     />
     <project title="Webhooks"
              release="13.4 (development)"

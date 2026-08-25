@@ -1,3 +1,4 @@
+{namespace be=TYPO3\CMS\Backend\ViewHelpers}
 <f:layout name="Cards"/>
 
 <f:section name="headline">
@@ -41,7 +42,7 @@
             <f:then>
                 <div class="card-footer text-body-secondary">
                     You can't use this feature, because your installation is in composer mode.
-                    Guide: <a href="https://docs.typo3.org/m/typo3/reference-coreapi/main/en-us/ApiOverview/Autoloading/Index.html#loading-classes-with-composer-mode" target="_blank" rel="noreferrer">Composer dumpautoload</a>.
+                    Guide: <be:link.documentation identifier="t3coreapi:autoloading-with-composer-mode" class="text-decoration-underline">Composer dumpautoload</be:link.documentation>.
                 </div>
             </f:then>
             <f:else>

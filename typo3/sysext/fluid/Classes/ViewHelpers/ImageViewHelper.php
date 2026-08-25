@@ -86,7 +86,7 @@ final class ImageViewHelper extends AbstractTagBasedViewHelper
     /**
      * Resizes a given image (if required) and renders the respective img tag.
      *
-     * @see https://docs.typo3.org/typo3cms/TyposcriptReference/ContentObjects/Image/
+     * @see https://docs.typo3.org/permalink/t3tsref:cobj-image
      * @throws Exception
      */
     public function render(): string

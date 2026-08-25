@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Type\BitSet;
 /**
  * Bitset for bitwise operations on javascript confirmation popups
  *
- * @see https://docs.typo3.org/m/typo3/reference-tsconfig/main/en-us/UserTsconfig/Options.html#alertpopups
+ * @see https://docs.typo3.org/permalink/t3tsref:confval-useroptions-alertpopups
  */
 final class JsConfirmation extends BitSet
 {

@@ -1,3 +1,4 @@
+{namespace be=TYPO3\CMS\Backend\ViewHelpers}
 <f:layout name="Cards"/>
 
 <f:section name="headline">
@@ -14,7 +15,7 @@
             <f:then>
                 <div class="card-footer text-body-secondary">
                     This function is not available as your installation is in composer mode. Please refer to the
-                    <a href="https://docs.typo3.org/upgrade" target="_blank" rel="noreferrer">TYPO3 upgrade guide</a> for more information on how to upgrade your instance.
+                    <be:link.documentation identifier="t3coreapi:upgrading" class="text-decoration-underline">TYPO3 upgrade guide</be:link.documentation> for more information on how to upgrade your instance.
                 </div>
             </f:then>
             <f:else>

@@ -1,4 +1,4 @@
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers" data-namespace-typo3-fluid="true">
 
 <p>
     This module scans extensions for usage of deprecated and removed TYPO3 API calls.
@@ -6,9 +6,7 @@
     upgrading to new core versions. However, the detection approach - based on static
     code analysis - is limited by concept: false positives/negatives are impossible to avoid.
     Further details can be found at
-    <a style="text-decoration: underline;" target="_blank" rel="noreferrer" href="https://docs.typo3.org/typo3cms/CoreApiReference/ApiOverview/ExtensionScanner/Index.html">
-        the official docs.
-    </a>
+    <be:link.documentation identifier="t3coreapi:extension-scanner" class="text-decoration-underline">the official docs</be:link.documentation>.
 </p>
 
 <div style="display: none">

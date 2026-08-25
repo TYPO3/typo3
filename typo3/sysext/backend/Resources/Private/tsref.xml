@@ -300,7 +300,7 @@ This value is overridden by the value set in the page-record (field="cache_timeo
             Use a class name for individual exception handlers
 
             See TSref for details:
-            https://docs.typo3.org/typo3cms/TyposcriptReference/Setup/Config/Index.html#contentobjectexceptionhandler
+            https://docs.typo3.org/permalink/t3tsref:confval-config-contentobjectexceptionhandler
 ]]></description>
             <default><![CDATA[
 ]]></default>
@@ -2066,8 +2066,8 @@ When set to "all" the same check is carried out but it will not look if "Hide pa
         <property name="special" type="HMENU_SPECIAL">
             <description><![CDATA["directory" / "list" / "updated" / "browse" / "rootline" / "keywords" / "language"
             (See TSref for details:
-            <a href="https://docs.typo3.org/typo3cms/TyposcriptReference/ContentObjects/Hmenu/#hmenu-special-property">
-            https://docs.typo3.org/typo3cms/TyposcriptReference/ContentObjects/Hmenu/#hmenu-special-property</a> )]]></description>
+            <a href="https://docs.typo3.org/permalink/t3tsref:confval-hmenu-special">
+            https://docs.typo3.org/permalink/t3tsref:confval-hmenu-special</a> )]]></description>
             <default><![CDATA[
 ]]></default>
         </property>
