@@ -140,6 +140,9 @@ return [
                     'fields' => ['title'],
                     'fieldSeparator' => '/',
                     'prefixParentPageSlug' => true,
+                    'replacements' => [
+                        '/' => '-',
+                    ],
                 ],
                 'fallbackCharacter' => '-',
                 'eval' => 'uniqueInSite',
