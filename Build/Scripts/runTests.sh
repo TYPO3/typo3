@@ -848,14 +848,25 @@ mkdir -p typo3temp/var/tests
 
 ${CONTAINER_BIN} network create ${NETWORK} >/dev/null
 
+# In a git worktree ".git" is a file pointing to a gitdir outside CORE_ROOT.
+# Mount that directory as well, so git based suites work in worktrees, too.
+GIT_DIR_MOUNT=""
+if [ -f "${CORE_ROOT}/.git" ]; then
+    GIT_COMMON_DIR="$(git -C "${CORE_ROOT}" rev-parse --git-common-dir 2>/dev/null)"
+    GIT_COMMON_DIR="$(cd "${CORE_ROOT}" && cd "${GIT_COMMON_DIR}" >/dev/null 2>&1 && pwd)"
+    if [ -n "${GIT_COMMON_DIR}" ] && [ "${GIT_COMMON_DIR}" != "${CORE_ROOT}" ]; then
+        GIT_DIR_MOUNT="-v ${GIT_COMMON_DIR}:${GIT_COMMON_DIR}"
+    fi
+fi
+
 if [ ${CONTAINER_BIN} = "docker" ]; then
     # docker needs the add-host for xdebug remote debugging. podman has host.container.internal built in
-    CONTAINER_COMMON_PARAMS="${CONTAINER_INTERACTIVE} --rm --network ${NETWORK} --add-host "${CONTAINER_HOST}:host-gateway" ${USERSET} -v ${CORE_ROOT}:${CORE_ROOT} -w ${CORE_ROOT}"
+    CONTAINER_COMMON_PARAMS="${CONTAINER_INTERACTIVE} --rm --network ${NETWORK} --add-host "${CONTAINER_HOST}:host-gateway" ${USERSET} -v ${CORE_ROOT}:${CORE_ROOT} ${GIT_DIR_MOUNT} -w ${CORE_ROOT}"
     TMPFS_MOUNT_OPTIONS="rw,noexec,nosuid,uid=${HOST_UID},gid=${HOST_PID}"
 else
     # podman
     CONTAINER_HOST="host.containers.internal"
-    CONTAINER_COMMON_PARAMS="${CONTAINER_INTERACTIVE} ${CI_PARAMS} --rm --network ${NETWORK} -v ${CORE_ROOT}:${CORE_ROOT} -w ${CORE_ROOT}"
+    CONTAINER_COMMON_PARAMS="${CONTAINER_INTERACTIVE} ${CI_PARAMS} --rm --network ${NETWORK} -v ${CORE_ROOT}:${CORE_ROOT} ${GIT_DIR_MOUNT} -w ${CORE_ROOT}"
     TMPFS_MOUNT_OPTIONS="rw,noexec,nosuid"
 fi
 

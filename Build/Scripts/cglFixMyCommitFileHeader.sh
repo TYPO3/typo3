@@ -110,15 +110,26 @@ php_no_xdebug ()
     exit $RETURN
 }
 
+# ---------------------------------------
+# --- bail out on a failing git call  ---
+# ---------------------------------------
+exit_on_git_error()
+{
+    echo "$progname: ERROR: git failed, is this a valid git repository?"
+    exit 1
+}
+
 # ------------------------------------
 # --- get a list of files to check ---
 # ------------------------------------
 if [[ $filestype == commit ]];then
     echo "$progname: Searching for php files in latest git commit ..."
-    DETECTED_FILES=`git diff-tree --no-commit-id --name-only -r HEAD | grep '.php$' 2>/dev/null`
+    CHANGED_FILES=$(git diff-tree --no-commit-id --name-only -r HEAD) || exit_on_git_error
+    DETECTED_FILES=`echo "${CHANGED_FILES}" | grep '.php$' 2>/dev/null`
 elif [[ $filestype == cache ]];then
     echo "$progname: Searching for php files in git cache ..."
-    DETECTED_FILES=`git diff --cached --name-only | grep '.php$' 2>/dev/null`
+    CHANGED_FILES=$(git diff --cached --name-only) || exit_on_git_error
+    DETECTED_FILES=`echo "${CHANGED_FILES}" | grep '.php$' 2>/dev/null`
 elif [[ $filestype == stdin ]];then
     echo "$progname: reading list of php files to check from stdin"
     DETECTED_FILES=$(cat)
