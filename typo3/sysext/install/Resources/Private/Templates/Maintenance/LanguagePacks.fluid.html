@@ -1,4 +1,4 @@
-<html xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers" data-namespace-typo3-fluid="true">
+<html xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers" xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers" data-namespace-typo3-fluid="true">
 
 <div
     class="t3js-module-content"
@@ -18,9 +18,8 @@
     </p>
     <p>
         Missing or incorrect translations can be improved by contributing through
-        <a target="_blank" rel="noreferrer" href="https://crowdin.com/profile/TYPO3">
-            <u>Crowdin</u></a>. See the <a target="_blank" rel="noreferrer" href="https://docs.typo3.org/m/typo3/reference-coreapi/main/en-us/ApiOverview/Localization/TranslationServer/Crowdin.html">
-            <u>TYPO3 documentation</u></a> for details.
+        <a target="_blank" rel="noreferrer" href="https://crowdin.com/profile/TYPO3">Crowdin</a>.
+        See the <be:link.documentation identifier="t3coreapi:xliff-translating-server-crowdin" class="text-decoration-underline">TYPO3 documentation</be:link.documentation> for details.
     </p>
 
     <f:render partial="Generic/ConfigurationNotWritable" arguments="{_all}"/>

@@ -131,7 +131,7 @@ final class LikeTest extends FunctionalTestCase
             'excludePlatforms' => [],
         ];
         // @todo Prepared test cases for case-sensitive like enforcement (not guaranteed yet), but required to ensure
-        //       https://docs.typo3.org/m/typo3/reference-tca/11.5/en-us/ColumnsConfig/CommonProperties/Search.html#confval-case
+        //       https://docs.typo3.org/permalink/t3tca:tca-property-search
         yield 'Case-sensitive for "Some"' => [
             'section' => 'casesensitive',
             'searchWord' => '%Some%',
@@ -375,7 +375,7 @@ final class LikeTest extends FunctionalTestCase
             'excludePlatforms' => [],
         ];
         // @todo Prepared test cases for case-sensitive like enforcement (not guaranteed yet), but required to ensure
-        //       https://docs.typo3.org/m/typo3/reference-tca/11.5/en-us/ColumnsConfig/CommonProperties/Search.html#confval-case
+        //       https://docs.typo3.org/permalink/t3tca:tca-property-search
         yield 'Case-sensitive for "Some"' => [
             'section' => 'casesensitive',
             'searchWord' => '%Some%',

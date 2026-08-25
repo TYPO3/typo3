@@ -192,7 +192,7 @@ class UriBuilder
      *
      * @param bool|string|int $addQueryString is set to "1", "true", "0", "false" or "untrusted"
      * @return static the current UriBuilder to allow method chaining
-     * @see https://docs.typo3.org/m/typo3/reference-typoscript/main/en-us/Functions/Typolink.html#addquerystring
+     * @see https://docs.typo3.org/permalink/t3tsref:confval-typolink-addquerystring
      */
     public function setAddQueryString(bool|string|int $addQueryString): UriBuilder
     {
@@ -213,7 +213,7 @@ class UriBuilder
      * Only active if addQueryString is set
      *
      * @return static the current UriBuilder to allow method chaining
-     * @see https://docs.typo3.org/m/typo3/reference-typoscript/main/en-us/Functions/Typolink.html#addquerystring
+     * @see https://docs.typo3.org/permalink/t3tsref:confval-typolink-addquerystring
      * @see setAddQueryString()
      */
     public function setArgumentsToBeExcludedFromQueryString(array $argumentsToBeExcludedFromQueryString): UriBuilder
@@ -528,7 +528,7 @@ class UriBuilder
      * Builds a TypoLink configuration array from the current settings
      *
      * @return array typolink configuration array
-     * @see https://docs.typo3.org/m/typo3/reference-typoscript/main/en-us/Functions/Typolink.html
+     * @see https://docs.typo3.org/permalink/t3tsref:typolink
      */
     protected function buildTypolinkConfiguration(): array
     {

@@ -403,7 +403,7 @@ final class TypoScriptServiceTest extends UnitTestCase
     }
 
     /**
-     * @see https://docs.typo3.org/typo3cms/TyposcriptReference/ObjectsAndProperties/Index.html#objects-optionsplit
+     * @see https://docs.typo3.org/permalink/t3tsref:optionsplit
      */
     #[DataProvider('explodeConfigurationForOptionSplitProvider')]
     #[Test]

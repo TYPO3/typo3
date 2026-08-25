@@ -44,8 +44,8 @@ if [ ${ERROR_CODE} -ne 0 ];then
     echo -e "              your php files.                                       "
     echo -e "   Please refer to [1] for details on the coding guidelines         "
     echo -e "   Please refer to [2] for details on contribution                  "
-    echo -e "   [1] https://docs.typo3.org/typo3cms/CoreApiReference/CodingGuidelines/Index.html"
-    echo -e "   [2] https://docs.typo3.org/typo3cms/ContributionWorkflowGuide/   "
+    echo -e "   [1] https://docs.typo3.org/permalink/t3coreapi:cgl               "
+    echo -e "   [2] https://docs.typo3.org/permalink/t3contribute:overview       "
     echo -e "------------------------------------------------------------------\n"
     if [[ ${ABORT_ON_ERROR} == "yes" ]];then
         echo -e "   Your commit is being aborted ... Fix and try again!          "
@@ -65,8 +65,8 @@ if [ ${ERROR_CODE_FILE_HEADER} -ne 0 ];then
     echo -e "               more of your php files.                              "
     echo -e "   Please refer to [1] for details on the coding guidelines         "
     echo -e "   Please refer to [2] for details on contribution                  "
-    echo -e "   [1] https://docs.typo3.org/typo3cms/CoreApiReference/CodingGuidelines/Index.html"
-    echo -e "   [2] https://docs.typo3.org/typo3cms/ContributionWorkflowGuide/   "
+    echo -e "   [1] https://docs.typo3.org/permalink/t3coreapi:cgl               "
+    echo -e "   [2] https://docs.typo3.org/permalink/t3contribute:overview       "
     echo -e "------------------------------------------------------------------\n"
     if [[ ${ABORT_ON_ERROR} == "yes" ]];then
         echo -e "   Your commit is being aborted ... Fix and try again!          "

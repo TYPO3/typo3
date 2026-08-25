@@ -68,4 +68,4 @@ are scheduled in advance. These releases can contain security fixes.
 
 * [TYPO3 Security Team](https://typo3.community/contribute/teams-committees/security)
 * [TYPO3 Security Advisories](https://news.typo3.com/security)
-* [TYPO3 Security Guidelines](https://docs.typo3.org/m/typo3/reference-coreapi/main/en-us/Security/Index.html)
+* [TYPO3 Security Guidelines](https://docs.typo3.org/permalink/t3coreapi:security)

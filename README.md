@@ -75,7 +75,7 @@ with each other and with the public. Several TYPO3 teams use Slack as a
 way to communicate internally and most channels are a welcome place for
 you to join and get yourself involved.
 
-* Register: https://my.typo3.org/about-mytypo3org/slack
+* Register: https://typo3.community/meet/slack/
 * Slack: https://typo3.slack.com/
 
 ### Exchange information, ask questions, get help
