@@ -17,16 +17,20 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\ViewHelpers\Render;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Domain\Exception\RecordPropertyNotFoundException;
 use TYPO3\CMS\Core\Domain\RecordFactory;
 use TYPO3\CMS\Core\Domain\RecordInterface;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Schema\Field\InputFieldType;
 use TYPO3\CMS\Core\Schema\Field\TextFieldType;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory;
-use TYPO3\CMS\Fluid\ViewHelpers\Format\HtmlViewHelper;
+use TYPO3\CMS\Fluid\ViewHelpers\Format\HtmlViewHelper as FormatHtmlViewHelper;
+use TYPO3\CMS\Fluid\ViewHelpers\Sanitize\HtmlViewHelper as SanitizeHtmlViewHelper;
+use TYPO3\CMS\Fluid\ViewHelpers\Transform\HtmlViewHelper as TransformHtmlViewHelper;
 use TYPO3\CMS\Frontend\Page\PageInformation;
 use TYPO3Fluid\Fluid\Core\Parser\UnsafeHTML;
 use TYPO3Fluid\Fluid\Core\Parser\UnsafeHTMLString;
@@ -132,14 +136,7 @@ final class TextViewHelper extends AbstractViewHelper
                 return new UnsafeHTMLString(nl2br(htmlspecialchars($value)));
             }
 
-            return new UnsafeHTMLString(
-                $this->renderingContext->getViewHelperInvoker()->invoke(
-                    HtmlViewHelper::class,
-                    [],
-                    $this->renderingContext,
-                    fn() => $value,
-                ),
-            );
+            return new UnsafeHTMLString($this->renderHtml($value));
         }
 
         throw new InvalidArgumentValueException('The field "' . $table . '.' . $field . '" is not supported. Given: ' . get_debug_type($fieldSchema), 1770618219);
@@ -196,5 +193,34 @@ final class TextViewHelper extends AbstractViewHelper
             }
         }
         throw new RecordPropertyNotFoundException('Could not find the field "' . $field . '" in the given model ' . $input::class . '.', 1771507213);
+    }
+
+    private function renderHtml(string $value): string
+    {
+        $request = null;
+        if ($this->renderingContext->hasAttribute(ServerRequestInterface::class)) {
+            $request = $this->renderingContext->getAttribute(ServerRequestInterface::class);
+        }
+        $isBackendRequest = $request instanceof ServerRequestInterface && ApplicationType::fromRequest($request)->isBackend();
+        if (!$isBackendRequest) {
+            return $this->renderingContext->getViewHelperInvoker()->invoke(
+                FormatHtmlViewHelper::class,
+                [],
+                $this->renderingContext,
+                fn(): string => $value,
+            );
+        }
+        $value = $this->renderingContext->getViewHelperInvoker()->invoke(
+            SanitizeHtmlViewHelper::class,
+            [],
+            $this->renderingContext,
+            fn() => $value,
+        );
+        return $this->renderingContext->getViewHelperInvoker()->invoke(
+            TransformHtmlViewHelper::class,
+            [],
+            $this->renderingContext,
+            fn() => $value,
+        );
     }
 }
