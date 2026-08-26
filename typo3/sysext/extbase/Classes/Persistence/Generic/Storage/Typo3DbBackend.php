@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\Cache\CacheTag;
 use TYPO3\CMS\Core\Cache\Event\AddCacheTagEvent;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
+use TYPO3\CMS\Core\Context\VisibilityAspect;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -207,10 +208,30 @@ readonly class Typo3DbBackend implements BackendInterface
     public function getObjectDataByQuery(QueryInterface $query): array
     {
         $statement = $query->getStatement();
+        $querySettings = $query->getQuerySettings();
         // A custom query is needed for the language, so a custom context is cloned
         /** @var Context $context */
         $context = clone GeneralUtility::makeInstance(Context::class);
-        $context->setAspect('language', $query->getQuerySettings()->getLanguageAspect());
+        $context->setAspect('language', $querySettings->getLanguageAspect());
+        if ($querySettings->getIgnoreEnableFields()) {
+            // The language overlay is fetched by PageRepository, which applies the frontend restrictions based on
+            // the visibility aspect. Ignored enable fields must therefore be mirrored into that aspect, otherwise a
+            // hidden or scheduled translation is never found and the default language record is dropped or kept
+            // untranslated. An empty list of enable fields means "ignore all of them".
+            $ignoredEnableFields = $querySettings->getEnableFieldsToBeIgnored();
+            $ignoreAll = $ignoredEnableFields === [];
+            $includeHidden = $ignoreAll || in_array('disabled', $ignoredEnableFields, true);
+            $includeScheduled = $ignoreAll
+                || in_array('starttime', $ignoredEnableFields, true)
+                || in_array('endtime', $ignoredEnableFields, true);
+            $visibility = $context->getAspect('visibility');
+            $context->setAspect('visibility', new VisibilityAspect(
+                includeHiddenPages: $includeHidden || $visibility->get('includeHiddenPages'),
+                includeHiddenContent: $includeHidden || $visibility->get('includeHiddenContent'),
+                includeDeletedRecords: $visibility->get('includeDeletedRecords'),
+                includeScheduledRecords: $includeScheduled || $visibility->get('includeScheduledRecords'),
+            ));
+        }
         if ($statement instanceof Statement && !$statement->getStatement() instanceof QueryBuilder) {
             $rows = $this->getObjectDataByRawQuery($statement);
         } else {
