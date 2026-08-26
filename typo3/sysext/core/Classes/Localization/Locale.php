@@ -60,7 +60,7 @@ class Locale implements \Stringable
      *
      * @var array<int, string>
      */
-    protected array $dependencies = [];
+    protected ?array $dependencies = null;
 
     /**
      * Only use the constructor directly if you know what you are doing and want to create custom locales with custom dependencies.
@@ -68,7 +68,7 @@ class Locale implements \Stringable
      */
     public function __construct(
         string $locale = 'en',
-        array $dependencies = []
+        ?array $dependencies = null,
     ) {
         $locale = $this->normalize($locale);
         if (str_contains($locale, '@')) {
@@ -101,7 +101,8 @@ class Locale implements \Stringable
         }
 
         $this->locale = $this->languageCode . ($this->languageScript ? '-' . $this->languageScript : '') . ($this->countryCode ? '-' . $this->countryCode : '');
-        $this->dependencies = array_map($this->normalize(...), $dependencies);
+        $this->dependencies = $dependencies === null ? null : array_map($this->normalize(...), $dependencies);
+
     }
 
     public function getName(): string
@@ -162,7 +163,12 @@ class Locale implements \Stringable
 
     public function getDependencies(): array
     {
-        return $this->dependencies;
+        return $this->dependencies ?? [];
+    }
+
+    public function hasResolvedDependencies(): bool
+    {
+        return $this->dependencies !== null;
     }
 
     protected function normalize(string $locale): string

@@ -32,12 +32,19 @@ readonly class LanguageServiceFactory
     /**
      * Factory method to create a language service object.
      *
+     * A Locale without resolved dependencies (e.g. one of a SiteLanguage)
+     * gets them resolved, so "de-AT" falls back to "de".
+     * An object with resolved dependencies is kept.
+     *
      * @param Locale|string $locale the locale
      */
     public function create(Locale|string $locale): LanguageService
     {
+        if (is_string($locale) || !$locale->hasResolvedDependencies()) {
+            $locale = $this->locales->createLocale((string)$locale);
+        }
         $obj = new LanguageService($this->locales, $this->localizationFactory, $this->runtimeCache);
-        $obj->init($locale instanceof Locale ? $locale : $this->locales->createLocale($locale));
+        $obj->init($locale);
         return $obj;
     }
 
@@ -48,10 +55,7 @@ readonly class LanguageServiceFactory
 
     public function createFromSiteLanguage(SiteLanguage $language): LanguageService
     {
-        // createLocale from a string takes care of resolving the automatic dependencies of e.g. "de_AT" to also check for "de"
-        // and also validates if TYPO3 supports the original language (at least in TYPO3 v12, there is a fixed list of
-        // allowed language keys)
-        return $this->create((string)$language->getLocale());
+        return $this->create($language->getLocale());
     }
 
     /**

@@ -21,7 +21,10 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\Backend\NullBackend;
+use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Localization\Locale;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class LanguageServiceTest extends FunctionalTestCase
@@ -614,6 +617,30 @@ final class LanguageServiceTest extends FunctionalTestCase
         $subject = $this->get(LanguageServiceFactory::class)->create('fr');
         $result = $subject->translate('label1', 'test_localization.messages');
         self::assertSame('Ceci est le libellé no. 1', $result);
+    }
+
+    #[Test]
+    public function createResolvesTheDependenciesOfALocaleWithoutDependencies(): void
+    {
+        $subject = $this->get(LanguageServiceFactory::class)->create(new Locale('fr-CA'));
+        self::assertSame(['fr'], $subject->getLocale()->getDependencies());
+        self::assertSame('Ceci est le libellé no. 1', $subject->translate('label1', 'test_localization.messages'));
+    }
+
+    #[Test]
+    public function createKeepsTheCustomDependenciesOfALocale(): void
+    {
+        $subject = $this->get(LanguageServiceFactory::class)->create(new Locale('de-AT', ['fr']));
+        self::assertSame(['fr'], $subject->getLocale()->getDependencies());
+        self::assertSame('Ceci est le libellé no. 1', $subject->translate('label1', 'test_localization.messages'));
+    }
+
+    #[Test]
+    public function createFromSiteLanguageResolvesTheDependenciesOfTheLocale(): void
+    {
+        $siteLanguage = new SiteLanguage(1, 'fr-CA', new Uri('/fr/'), []);
+        $subject = $this->get(LanguageServiceFactory::class)->createFromSiteLanguage($siteLanguage);
+        self::assertSame(['fr'], $subject->getLocale()->getDependencies());
     }
 
     #[Test]

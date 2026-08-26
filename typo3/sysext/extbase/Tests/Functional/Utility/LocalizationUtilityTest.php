@@ -22,6 +22,7 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Localization\Locale;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
 use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -438,6 +439,26 @@ final class LocalizationUtilityTest extends FunctionalTestCase
         $result = LocalizationUtility::translate('missingkey', 'label_test', languageKey: 'ru', request: $request);
         self::assertNull($result);
 
+    }
+
+    #[Test]
+    public function translateResolvesTheDependenciesOfALocaleGivenAsObject(): void
+    {
+        // A Locale instantiated directly - as SiteLanguage does - carries no dependencies,
+        // so "da-DK" has to be resolved to fall back to "da".
+        self::assertSame(
+            'Dansk label for key1',
+            LocalizationUtility::translate('key1', 'label_test', null, new Locale('da-DK'))
+        );
+    }
+
+    #[Test]
+    public function translateKeepsTheCustomDependenciesOfALocaleGivenAsObject(): void
+    {
+        self::assertSame(
+            'Russian label for key1',
+            LocalizationUtility::translate('key1', 'label_test', null, new Locale('da-DK', ['ru']))
+        );
     }
 
     #[Test]
