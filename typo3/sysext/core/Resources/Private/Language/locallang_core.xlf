@@ -396,6 +396,9 @@
       <trans-unit id="labels.items">
         <source>Available Items</source>
       </trans-unit>
+      <trans-unit id="labels.filter_items">
+        <source>Filter items</source>
+      </trans-unit>
       <trans-unit id="labels.remove_selected">
         <source>Remove selected items</source>
       </trans-unit>

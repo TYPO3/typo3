@@ -212,7 +212,9 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
 
         // Html stuff for filter and select filter on top of right side of multi select boxes
         $filterTextfieldId = StringUtility::getUniqueId('tceforms-multiselect-filter-');
-        $filterTextfield[] = '<input type="search" id="' . $filterTextfieldId . '" autocomplete="off" class="t3js-formengine-multiselect-filter-textfield form-control" value="">';
+        $availableOptionsFieldId = StringUtility::getUniqueId('tceforms-multiselect-');
+        $filterItemsLabel = htmlspecialchars($languageService->translate('labels.filter_items', 'core.core'));
+        $filterTextfield[] = '<input type="search" id="' . $filterTextfieldId . '" placeholder="' . $filterItemsLabel . '" aria-label="' . $filterItemsLabel . '" autocomplete="off" class="t3js-formengine-multiselect-filter-textfield form-control" value="">';
 
         $filterDropDownOptions = [];
         if (isset($config['multiSelectFilterItems']) && is_array($config['multiSelectFilterItems']) && count($config['multiSelectFilterItems']) > 1) {
@@ -263,7 +265,6 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldWizardResult, false);
 
         $selectedOptionsFieldId = StringUtility::getUniqueId('tceforms-multiselect-');
-        $availableOptionsFieldId = StringUtility::getUniqueId('tceforms-multiselect-');
 
         $html = [];
         $html[] = $this->renderLabel($selectedOptionsFieldId);
@@ -343,7 +344,7 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
         $html[] =                   '</div>';
         $html[] =               '</div>';
         $html[] =               '<div class="form-multigroup-item">';
-        $html[] =                   '<label for="' . $filterTextfieldId . '">';
+        $html[] =                   '<label for="' . $availableOptionsFieldId . '">';
         $html[] =                       htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.items'));
         $html[] =                   '</label>';
         $html[] =                   '<div class="form-wizards-wrap">';
