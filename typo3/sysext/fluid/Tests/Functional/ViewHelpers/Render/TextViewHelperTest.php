@@ -22,7 +22,10 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Domain\RawRecord;
 use TYPO3\CMS\Core\Domain\Record\ComputedProperties;
+use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Site\Entity\NullSite;
+use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
 use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
 use TYPO3\CMS\Extbase\Domain\Model\Category;
@@ -40,6 +43,12 @@ use TYPO3Tests\BlogExample\Domain\Model\TtContentWithCType;
 
 final class TextViewHelperTest extends FunctionalTestCase
 {
+    use SiteBasedTestTrait;
+
+    protected const LANGUAGE_PRESETS = [
+        'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
+    ];
+
     protected array $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example'];
 
     #[Test]
@@ -142,6 +151,46 @@ final class TextViewHelperTest extends FunctionalTestCase
             'record' => $ttContent,
             'templateSource' => '<f:render.text record="{record}" field="header" />',
             'expected' => '&lt;b&gt;My Page&lt;/b&gt;',
+        ];
+    }
+
+    #[Test]
+    #[DataProvider('backendRichTextRenderingDataProvider')]
+    public function richTextIsRenderedInBackendContext(string $value, string $expected): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/pages.csv');
+        $this->writeSiteConfiguration(
+            'typo3-localhost',
+            $this->buildSiteConfiguration(1, 'https://typo3.localhost/'),
+            [$this->buildDefaultLanguageConfiguration('EN', '/')]
+        );
+
+        $request = new ServerRequest('https://typo3-2.localhost/', 'GET', 'php://input', [], ['HTTP_HOST' => 'typo3-2.localhost']);
+        $request = $request
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            ->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request))
+            ->withAttribute('language', (new NullSite())->getDefaultLanguage());
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $context = $this->get(RenderingContextFactory::class)->create([], $request);
+        $context->getTemplatePaths()->setTemplateSource("{record -> f:render.text(field: 'bodytext')}");
+
+        $view = new TemplateView($context);
+        $view->assign('record', self::createRecord(['bodytext' => $value]));
+
+        $result = $view->render();
+        self::assertInstanceOf(UnsafeHTML::class, $result);
+        self::assertSame($expected, (string)$result);
+    }
+
+    public static function backendRichTextRenderingDataProvider(): \Generator
+    {
+        yield 'sanitizes unsafe attributes' => [
+            'value' => '<img src="/image.png" onerror="alert(1)">',
+            'expected' => '<img src="/image.png">',
+        ];
+        yield 'transforms internal links' => [
+            'value' => '<a href="t3://page?uid=1">Root</a>',
+            'expected' => '<a href="https://typo3.localhost/">Root</a>',
         ];
     }
 
