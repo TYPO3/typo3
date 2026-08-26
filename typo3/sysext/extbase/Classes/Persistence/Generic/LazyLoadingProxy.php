@@ -158,6 +158,10 @@ class LazyLoadingProxy implements \Iterator, LoadingStrategyInterface
     public function __isset($propertyName)
     {
         $realInstance = $this->_loadRealInstance();
+
+        if ($realInstance instanceof DomainObjectInterface) {
+            return $realInstance->_getProperty($propertyName) !== null;
+        }
         return isset($realInstance->{$propertyName});
     }
 

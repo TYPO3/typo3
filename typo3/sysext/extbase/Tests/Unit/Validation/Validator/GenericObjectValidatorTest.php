@@ -19,9 +19,15 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Error\Error;
 use TYPO3\CMS\Extbase\Error\Result;
+use TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy;
+use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Extbase\Validation\Validator\BooleanValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator;
+use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -268,5 +274,55 @@ final class GenericObjectValidatorTest extends UnitTestCase
         $fooObjectStorage->offsetSet($validatorForFoo);
 
         self::assertEquals($fooObjectStorage, $validator->getPropertyValidators('foo'));
+    }
+
+    #[Test]
+    public function propertyReadByAnIsserIsValidatedOnALazilyLoadedObject(): void
+    {
+        $lazilyLoadedObject = new class extends AbstractEntity {
+            protected bool $boolean = true;
+
+            public function isBoolean(): bool
+            {
+                return $this->boolean;
+            }
+        };
+        $validator = new GenericObjectValidator();
+        $booleanValidator = new BooleanValidator();
+        $booleanValidator->setOptions(['is' => true]);
+        $validator->addPropertyValidator('boolean', $booleanValidator);
+
+        self::assertFalse($validator->validate($this->createProxyFor($lazilyLoadedObject))->hasErrors());
+    }
+
+    #[Test]
+    public function propertyWithoutAnyAccessorIsValidatedOnALazilyLoadedObject(): void
+    {
+        $lazilyLoadedObject = new class extends AbstractEntity {
+            protected ObjectStorage $_myStorage;
+
+            public function __construct()
+            {
+                $this->_myStorage = new ObjectStorage();
+                $this->_myStorage->attach(new \stdClass());
+            }
+        };
+        $validator = new GenericObjectValidator();
+        $validator->addPropertyValidator('_myStorage', new NotEmptyValidator());
+
+        self::assertFalse($validator->validate($this->createProxyFor($lazilyLoadedObject))->hasErrors());
+    }
+
+    private function createProxyFor(AbstractEntity $lazilyLoadedObject): LazyLoadingProxy
+    {
+        $parentObject = new class extends AbstractEntity {
+            protected AbstractEntity|LazyLoadingProxy|null $relation = null;
+        };
+        $dataMapper = self::createStub(DataMapper::class);
+        $dataMapper->method('mapResultToPropertyValue')->willReturn($lazilyLoadedObject);
+        $proxy = new LazyLoadingProxy($parentObject, 'relation', 1, $dataMapper);
+        $parentObject->_setProperty('relation', $proxy);
+
+        return $proxy;
     }
 }

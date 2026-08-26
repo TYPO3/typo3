@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
+use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Tests\BlogExample\Domain\Model\Administrator;
 use TYPO3Tests\BlogExample\Domain\Model\Blog;
@@ -74,5 +75,32 @@ final class LazyLoadingProxyTest extends FunctionalTestCase
         // See: https://phpstan.org/blog/solving-phpstan-access-to-undefined-property
         // This equals to: self::assertNull($lazyLoadingProxy->name);
         self::assertNull($lazyLoadingProxy->__get('name'));
+    }
+
+    #[Test]
+    public function issetOnProtectedPropertyOfLazyLoadedObjectReturnsTrue(): void
+    {
+        $blog = new Blog();
+        $blog->_setProperty('administrator', new LazyLoadingProxy($blog, 'administrator', 1, $this->get(DataMapper::class)));
+
+        self::assertTrue(isset($blog->getAdministrator()->username));
+    }
+
+    #[Test]
+    public function issetOnUnknownPropertyOfLazyLoadedObjectReturnsFalse(): void
+    {
+        $blog = new Blog();
+        $blog->_setProperty('administrator', new LazyLoadingProxy($blog, 'administrator', 1, $this->get(DataMapper::class)));
+
+        self::assertFalse(isset($blog->getAdministrator()->nonExisting));
+    }
+
+    #[Test]
+    public function objectAccessReadsProtectedPropertyOfLazyLoadedObject(): void
+    {
+        $blog = new Blog();
+        $blog->_setProperty('administrator', new LazyLoadingProxy($blog, 'administrator', 1, $this->get(DataMapper::class)));
+
+        self::assertSame('Blog Admin', ObjectAccess::getProperty($blog->getAdministrator(), 'username'));
     }
 }
