@@ -17,11 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
 
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
+use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Tests\BlogExample\Domain\Model\Administrator;
 use TYPO3Tests\BlogExample\Domain\Model\Blog;
@@ -122,5 +125,35 @@ final class LazyLoadingProxyTest extends FunctionalTestCase
         self::assertSame('', $administrator->getUsername());
         // ... and resets the parent property to null
         self::assertNull($blog->getAdministrator());
+    }
+
+    #[IgnoreDeprecations]
+    #[Test]
+    public function issetOnProtectedPropertyOfLazyLoadedObjectReturnsTrue(): void
+    {
+        $blog = new Blog();
+        $blog->_setProperty('administrator', new LazyLoadingProxy($blog, 'administrator', 1, $this->get(DataMapper::class)));
+
+        self::assertTrue(isset($blog->getAdministrator()->username));
+    }
+
+    #[IgnoreDeprecations]
+    #[Test]
+    public function issetOnUnknownPropertyOfLazyLoadedObjectReturnsFalse(): void
+    {
+        $blog = new Blog();
+        $blog->_setProperty('administrator', new LazyLoadingProxy($blog, 'administrator', 1, $this->get(DataMapper::class)));
+
+        self::assertFalse(isset($blog->getAdministrator()->nonExisting));
+    }
+
+    #[IgnoreDeprecations]
+    #[Test]
+    public function objectAccessReadsProtectedPropertyOfLazyLoadedObject(): void
+    {
+        $blog = new Blog();
+        $blog->_setProperty('administrator', new LazyLoadingProxy($blog, 'administrator', 1, $this->get(DataMapper::class)));
+
+        self::assertSame('Blog Admin', ObjectAccess::getProperty($blog->getAdministrator(), 'username'));
     }
 }
