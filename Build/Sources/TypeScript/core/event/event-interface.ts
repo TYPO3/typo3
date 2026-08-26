@@ -11,10 +11,10 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-export type Listener = EventListenerWithTarget | EventListener;
+export type Listener<E extends Event = Event, T extends Element = Element> = EventListenerWithTarget<E, T>;
 
-export interface EventListenerWithTarget {
-  (evt: Event, target?: Element): void;
+export interface EventListenerWithTarget<E extends Event = Event, T extends Element = Element> {
+  (evt: E, target: T): void;
 }
 
 export interface EventInterface {

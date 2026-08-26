@@ -214,7 +214,7 @@ export class CKEditor5Element extends LitElement {
     const importModules: Array<PluginModuleDescriptor> = normalizeImportModules([
       ...defaultPlugins,
       ...(importModulesOption || []),
-    ]).map((moduleDescriptor: PluginModuleDescriptor) => {
+    ]).map((moduleDescriptor) => {
       const { module } = moduleDescriptor;
       let { exports } = moduleDescriptor;
       for (const toRemove of removeImportModules) {
@@ -227,7 +227,7 @@ export class CKEditor5Element extends LitElement {
 
     const pluginModules: Array<{module: PluginModule, exports: string[]}> = await Promise.all(
       importModules
-        .map(async (moduleDescriptor: PluginModuleDescriptor): Promise<{module: PluginModule, exports: string[]}> => {
+        .map(async (moduleDescriptor): Promise<{module: PluginModule, exports: string[]}> => {
           try {
             return {
               module: await import(moduleDescriptor.module) as PluginModule,
@@ -362,7 +362,7 @@ type PseudoRegExp = {
 function walkObj(data: RecurseMapInput, proc: (value: unknown) => unknown|null): RecurseMapInput {
   if (data !== null && typeof data === 'object') {
     if (Array.isArray(data)) {
-      return data.map((element: RecurseMapInput) => proc(element) ?? walkObj(element, proc));
+      return data.map((element) => proc(element) ?? walkObj(element, proc));
     }
     const newData: Record<string, unknown> = {};
     for (const [key, value] of Object.entries(data)) {

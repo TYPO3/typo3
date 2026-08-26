@@ -36,7 +36,7 @@ export class OnlineMediaFormElement extends LitElement {
           <div class="form-text">
             ${this.allowedExtensionsHelpText}<br>
             <ul class="badge-list">
-            ${this.allowedExtensions.split(',').map((ext: string) => html`
+            ${this.allowedExtensions.split(',').map((ext) => html`
               <li><span class="badge badge-secondary">${ext.trim().toLowerCase()}</span></li>
             `)}
             </ul>
@@ -61,5 +61,9 @@ export class OnlineMediaFormElement extends LitElement {
 declare global {
   interface HTMLElementTagNameMap {
     'typo3-backend-formengine-online-media-form': OnlineMediaFormElement;
+  }
+
+  interface HTMLElementEventMap {
+    'typo3:formengine:online-media-added': CustomEvent<{ file: number }>;
   }
 }

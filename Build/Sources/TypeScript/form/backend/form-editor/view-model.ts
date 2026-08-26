@@ -795,9 +795,9 @@ export function renderAbstractStageArea(): void {
 
   const renderPostProcess = (): void => {
     const formElementTypeDefinition = getFormElementDefinition(getCurrentlySelectedFormElement(), undefined);
-    getStage().getAllFormElementDomElements().forEach(function(el: HTMLElement) {
+    getStage().getAllFormElementDomElements().forEach(function(el) {
       el.addEventListener('mouseenter', function() {
-        getStage().getAllFormElementDomElements().forEach((other: HTMLElement) => {
+        getStage().getAllFormElementDomElements().forEach((other) => {
           other.parentElement?.classList.remove(getHelper().getDomElementClassName('sortableHover'));
         });
         if (
@@ -1073,7 +1073,7 @@ export function refreshSelectedElementItemsBatch(): void {
       getStage().createAndAddAbstractViewFormElementToolbar(selectedElement, undefined);
     }
 
-    getStage().getAllFormElementDomElements().forEach((el: HTMLElement) => {
+    getStage().getAllFormElementDomElements().forEach((el) => {
       el.parentElement?.classList.remove(getHelper().getDomElementClassName('selectedCompositFormElement'));
     });
     if (!formElementTypeDefinition._isTopLevelFormElement && formElementTypeDefinition._isCompositeFormElement) {
@@ -1100,9 +1100,9 @@ export function selectPageBatch(pageIndex: number): void {
 }
 
 export function removeAllStageElementSelectionsBatch(): void {
-  getStage().getAllFormElementDomElements().forEach((el: HTMLElement) => el.classList.remove(getHelper().getDomElementClassName('selectedFormElement')));
+  getStage().getAllFormElementDomElements().forEach((el) => el.classList.remove(getHelper().getDomElementClassName('selectedFormElement')));
   removeStagePanelSelection();
-  getStage().getAllFormElementDomElements().forEach((el: HTMLElement) => el.parentElement?.classList.remove(getHelper().getDomElementClassName('sortableHover')));
+  getStage().getAllFormElementDomElements().forEach((el) => el.parentElement?.classList.remove(getHelper().getDomElementClassName('sortableHover')));
 }
 
 export function onViewReadyBatch(): void {
@@ -1137,7 +1137,7 @@ export function onAbstractViewDndChangeBatch(
   parentFormElementIdentifierPath: string,
   enclosingCompositeFormElement?: FormElement | string
 ): void {
-  getStage().getAllFormElementDomElements().forEach((el: HTMLElement) => {
+  getStage().getAllFormElementDomElements().forEach((el) => {
     el.parentElement?.classList.remove(getHelper().getDomElementClassName('sortableHover'));
   });
   if (enclosingCompositeFormElement) {
@@ -1189,7 +1189,7 @@ export function onStructureDndChangeBatch(
 
   getStage()
     .getAllFormElementDomElements()
-    .forEach((el: HTMLElement) => el.parentElement?.classList.remove(getHelper().getDomElementClassName('sortableHover')));
+    .forEach((el) => el.parentElement?.classList.remove(getHelper().getDomElementClassName('sortableHover')));
 
   if (enclosingCompositeFormElement) {
     getStructure()

@@ -89,10 +89,10 @@ class NewMultiplePages {
    * @private
    */
   private resetFieldAttributes(this: HTMLInputElement): void {
-    document.querySelectorAll(Identifiers.containerSelector + ' ' + Identifiers.pageTitleSelector).forEach((inputElement: HTMLInputElement): void => {
+    document.querySelectorAll<HTMLInputElement>(Identifiers.containerSelector + ' ' + Identifiers.pageTitleSelector).forEach((inputElement): void => {
       inputElement.removeAttribute('value');
     });
-    document.querySelectorAll(Identifiers.containerSelector + ' ' + Identifiers.doktypeSelector).forEach((selectElement: HTMLSelectElement): void => {
+    document.querySelectorAll<HTMLSelectElement>(Identifiers.containerSelector + ' ' + Identifiers.doktypeSelector).forEach((selectElement): void => {
       for (const option of selectElement) {
         option.removeAttribute('selected');
       }

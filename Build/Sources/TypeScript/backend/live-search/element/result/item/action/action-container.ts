@@ -31,7 +31,7 @@ export class ActionContainer extends LitElement {
 
   protected override render(): TemplateResult {
     return html`<typo3-backend-live-search-result-action-list>
-      ${this.resultItem.actions.map((action: ResultItemActionInterface) => this.renderActionItem(this.resultItem, action))}
+      ${this.resultItem.actions.map((action) => this.renderActionItem(this.resultItem, action))}
     </typo3-backend-live-search-result-action-list>`;
   }
 

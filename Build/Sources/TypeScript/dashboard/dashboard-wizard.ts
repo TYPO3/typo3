@@ -28,7 +28,7 @@ export interface DashboardWizardDataStore extends DataStore {
 type DashboardWizardDataStoreKey = keyof DashboardWizardDataStore;
 
 export interface DashboardWizardContext {
-  wizard: Wizard;
+  wizard: Wizard<DashboardWizardDataStore>;
   getStoreData: <T extends DashboardWizardDataStoreKey>(key: T) => NoInfer<DashboardWizardDataStore[T]>;
   setStoreData: <T extends DashboardWizardDataStoreKey>(key: T, value: NoInfer<DashboardWizardDataStore[T]>) => void;
   clearStoreData: <T extends DashboardWizardDataStoreKey>(key: T) => void;
@@ -41,7 +41,7 @@ export class DashboardWizard extends LitElement {
   @state() steps: WizardStepInterface[] = [];
   @state() submissionService: SubmissionServiceInterface;
 
-  @query('typo3-backend-wizard') wizard!: Wizard;
+  @query('typo3-backend-wizard') wizard!: Wizard<DashboardWizardDataStore>;
 
   private context: DashboardWizardContext;
 

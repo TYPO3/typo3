@@ -36,7 +36,7 @@ export class FilePasteHandler {
    */
   private lastInteractionTarget: Element | null = null;
 
-  public listen(eventTarget: EventTarget): void {
+  public listen(eventTarget: GlobalEventHandlers): void {
     eventTarget.addEventListener('pointerdown', this.trackInteraction, { capture: true });
     eventTarget.addEventListener('focusin', this.trackInteraction, { capture: true });
     eventTarget.addEventListener('paste', this.handlePaste);

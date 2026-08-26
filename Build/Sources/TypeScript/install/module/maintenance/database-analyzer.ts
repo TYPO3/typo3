@@ -51,6 +51,8 @@ type SuggestionsResponse = {
     children: {
       hash: string,
       statement: string,
+      current?: string,
+      rowCount?: number,
     }[],
     enabled: boolean,
     key: string,
@@ -75,7 +77,7 @@ class DatabaseAnalyzer extends AbstractInteractableModule {
 
     // Select / deselect all checkboxes
     new RegularEvent('click', (event: Event, element: HTMLInputElement): void => {
-      element.closest('fieldset').querySelectorAll('input[type="checkbox"]').forEach((checkbox: HTMLInputElement): void => {
+      element.closest('fieldset').querySelectorAll<HTMLInputElement>('input[type="checkbox"]').forEach((checkbox): void => {
         checkbox.checked = element.checked;
       });
     }).delegateTo(currentModal, Identifiers.suggestionBlockCheckbox);
@@ -135,12 +137,12 @@ class DatabaseAnalyzer extends AbstractInteractableModule {
           if (data.success === true) {
             if (Array.isArray(data.status)) {
               progressBar.remove();
-              data.status.forEach((element: MessageInterface): void => {
+              data.status.forEach((element): void => {
                 outputContainer.append(InfoBox.create(element.severity, element.title, element.message));
               });
             }
             if (Array.isArray(data.suggestions)) {
-              data.suggestions.forEach((element: any): void => {
+              data.suggestions.forEach((element): void => {
                 const aBlock = (modalContent.querySelector(Identifiers.suggestionBlock) as HTMLTemplateElement).content.cloneNode(true) as HTMLElement;
                 const key = element.key;
                 aBlock.querySelector<HTMLElement>(Identifiers.suggestionBlockLegend).innerText = element.label;
@@ -149,7 +151,7 @@ class DatabaseAnalyzer extends AbstractInteractableModule {
                   aBlock.querySelector<HTMLElement>(Identifiers.suggestionBlockCheckbox).setAttribute('checked', 'checked');
                 }
                 aBlock.querySelector<HTMLElement>(Identifiers.suggestionBlockLabel).setAttribute('for', 't3-install-' + key + '-checkbox');
-                element.children.forEach((line: any): void => {
+                element.children.forEach((line): void => {
                   const aLine = (modalContent.querySelector(Identifiers.suggestionLineTemplate) as HTMLTemplateElement).content.cloneNode(true) as HTMLElement;
                   const hash = line.hash;
                   const checkbox = aLine.querySelector<HTMLInputElement>(Identifiers.suggestionLineCheckbox);
@@ -165,7 +167,7 @@ class DatabaseAnalyzer extends AbstractInteractableModule {
                     aLine.querySelector<HTMLElement>(Identifiers.suggestionLineCurrent).style.display = 'inline';
                   }
                   if (typeof line.rowCount !== 'undefined') {
-                    aLine.querySelector<HTMLElement>(Identifiers.suggestionLineCountValue).innerText = line.rowCount;
+                    aLine.querySelector<HTMLElement>(Identifiers.suggestionLineCountValue).innerText = String(line.rowCount);
                     aLine.querySelector<HTMLElement>(Identifiers.suggestionLineCount).style.display = 'inline';
                   }
                   aBlock.querySelector<HTMLElement>(Identifiers.suggestionList).append(aLine);
@@ -202,7 +204,7 @@ class DatabaseAnalyzer extends AbstractInteractableModule {
     const notificationContainer: HTMLElement = modalContent.querySelector(Identifiers.notificationContainer);
 
     const selectedHashes: string[] = [];
-    outputContainer.querySelectorAll('.t3js-databaseAnalyzer-suggestion-line input:checked').forEach((element: HTMLElement): void => {
+    outputContainer.querySelectorAll<HTMLElement>('.t3js-databaseAnalyzer-suggestion-line input:checked').forEach((element): void => {
       selectedHashes.push(element.dataset.hash);
     });
     this.renderProgressBar(outputContainer, {
@@ -220,7 +222,7 @@ class DatabaseAnalyzer extends AbstractInteractableModule {
           const data: SuggestionsExecutedResponse = await response.resolve();
           if (Array.isArray(data.status)) {
             let groupedErrors: string = '';
-            data.status.forEach((element: MessageInterface): void => {
+            data.status.forEach((element): void => {
               if(element.severity === Severity.error) {
                 const securityUtility = new SecurityUtility();
                 groupedErrors += '<li>' + securityUtility.encodeHtml(element.message) + '</li>';

@@ -8,8 +8,8 @@ type Keyword = {
 };
 
 type CombinatorReturnType = boolean | undefined;
-type CombinatorFunction = (type?: Type, value?: unknown) => CombinatorReturnType;
-type CombinatorLexFunction = ((type?: Type, value?: unknown) => CombinatorReturnType) & { lex: true };
+type CombinatorFunction = (type?: Type, value?: Value) => CombinatorReturnType;
+type CombinatorLexFunction = ((type?: Type, value?: Value) => CombinatorReturnType) & { lex: true };
 type CC = CombinatorFunction | CombinatorLexFunction;
 
 type CX = {

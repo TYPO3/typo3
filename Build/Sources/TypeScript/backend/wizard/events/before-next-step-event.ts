@@ -22,3 +22,9 @@ export class BeforeNextStepEvent extends CustomEvent<{ currentStepKey: string; c
     });
   }
 }
+
+declare global {
+  interface HTMLElementEventMap {
+    [BeforeNextStepEvent.eventName]: BeforeNextStepEvent;
+  }
+}

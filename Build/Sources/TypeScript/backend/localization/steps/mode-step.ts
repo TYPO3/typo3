@@ -41,7 +41,7 @@ export class ModeStep implements WizardStepInterface, WizardStepValueInterface, 
 
   constructor(private readonly context: LocalizationContext) {
     this.task = new Task(this.context.wizard, {
-      task: async ([recordType, recordUid, targetLanguage, sourceLanguage]: [string, number, number | null, number | null]): Promise<LocalizationMode[]> => {
+      task: async ([recordType, recordUid, targetLanguage, sourceLanguage]): Promise<LocalizationMode[]> => {
         if (targetLanguage == null || sourceLanguage == null) {
           return [];
         }
@@ -56,7 +56,7 @@ export class ModeStep implements WizardStepInterface, WizardStepValueInterface, 
 
         return modes;
       },
-      args: () => [this.context.recordType, this.context.recordUid, this.context.getStoreData('targetLanguage'), this.context.getStoreData('sourceLanguage')],
+      args: () => [this.context.recordType, this.context.recordUid, this.context.getStoreData('targetLanguage'), this.context.getStoreData('sourceLanguage')] as const,
       autoRun: false
     });
   }
@@ -110,7 +110,7 @@ export class ModeStep implements WizardStepInterface, WizardStepValueInterface, 
           content = html`
             <p>${localizationWizardLabels.get('step.modes.description')}</p>
             <div class="form-check-card-container">
-              ${modes.map((mode: LocalizationMode) => html`
+              ${modes.map((mode) => html`
                 <div class="form-check form-check-type-card">
                   <input
                     class="form-check-input"
@@ -171,7 +171,7 @@ export class ModeStep implements WizardStepInterface, WizardStepValueInterface, 
       return [];
     }
 
-    const mode = this.task.value.find((m: LocalizationMode) => m.key === selectedMode);
+    const mode = this.task.value.find((m) => m.key === selectedMode);
     if (!mode) {
       return [];
     }

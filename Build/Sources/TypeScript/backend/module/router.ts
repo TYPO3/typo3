@@ -266,4 +266,14 @@ declare global {
   interface HTMLElementTagNameMap {
     'typo3-backend-module-router': ModuleRouter;
   }
+
+  interface HTMLElementEventMap {
+    'typo3-module-load': CustomEvent<ModuleState>;
+    'typo3-module-loaded': CustomEvent<ModuleState>;
+  }
+
+  interface DocumentEventMap {
+    'typo3-module-load': CustomEvent<ModuleState>;
+    'typo3-module-loaded': CustomEvent<ModuleState>;
+  }
 }

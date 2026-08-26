@@ -135,7 +135,7 @@ class FlexFormContainerContainer {
   }
 
   private registerPanelToggle(): void {
-    ['hide.bs.collapse', 'show.bs.collapse'].forEach((eventName: string): void => {
+    ['hide.bs.collapse', 'show.bs.collapse'].forEach((eventName): void => {
       new RegularEvent(eventName, (e: Event): void => {
         if (e.target !== this.containerContent) {
           return;
@@ -147,7 +147,7 @@ class FlexFormContainerContainer {
   }
 
   private registerPreviewUpdate(): void {
-    ['input', 'change'].forEach((eventName: string): void => {
+    ['input', 'change'].forEach((eventName): void => {
       new RegularEvent(eventName, (): void => {
         this.generatePreview();
       }).delegateTo(this.containerContent, 'input[type="text"], textarea');

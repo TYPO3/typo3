@@ -56,7 +56,7 @@ class DatetimeElement extends HTMLElement {
       FormEngineValidation.validateField(e.target as HTMLInputElement);
       FormEngine.markFieldAsChanged(e.target as HTMLInputElement);
 
-      document.querySelectorAll('.module-docheader-bar .btn').forEach((btn: HTMLButtonElement): void => {
+      document.querySelectorAll<HTMLButtonElement>('.module-docheader-bar .btn').forEach((btn): void => {
         btn.classList.remove('disabled');
         btn.disabled = false;
       });

@@ -20,5 +20,5 @@ export interface PromiseControls<T> {
 
 export interface InteractionRequestAssignment {
   request: InteractionRequest;
-  deferreds: PromiseControls<unknown>[];
+  deferreds: PromiseControls<never>[];
 }

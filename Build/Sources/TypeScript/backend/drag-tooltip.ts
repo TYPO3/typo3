@@ -144,15 +144,15 @@ export class DragToolTip extends LitElement implements DragTooltipMetadata {
       return;
     }
 
-    const propertyNames = [...changedProperties.keys()].filter(
-      (propName: keyof this) => (this.constructor as typeof ReactiveElement).elementProperties.get(propName).attribute !== false
+    const propertyNames = ([...changedProperties.keys()] as (keyof this)[]).filter(
+      (propName) => (this.constructor as typeof ReactiveElement).elementProperties.get(propName).attribute !== false
     );
 
     if (propertyNames.length === 0) {
       return;
     }
 
-    const newProperties = propertyNames.map((propName: keyof this) => [ propName, this[propName] ]);
+    const newProperties = propertyNames.map((propName) => [ propName, this[propName] ]);
     this.broadcast('changedProperties', Object.fromEntries(newProperties));
   }
 
@@ -212,7 +212,7 @@ export class DragToolTip extends LitElement implements DragTooltipMetadata {
 
   protected onBroadcastChangedProperties = (event: CustomEvent<{ payload: Partial<WritablePart<DragToolTip>> }>) => {
     const newProperties = event.detail.payload;
-    Object.keys(newProperties).forEach((key: keyof WritablePart<DragToolTip>) => {
+    (Object.keys(newProperties) as (keyof WritablePart<DragToolTip>)[]).forEach((key) => {
       (this[key] as unknown) = newProperties[key];
     });
     this.skipNextUpdateBroadcast = true;
@@ -281,5 +281,10 @@ export class DragToolTip extends LitElement implements DragTooltipMetadata {
 declare global {
   interface HTMLElementTagNameMap {
     'typo3-backend-drag-tooltip': DragToolTip;
+  }
+
+  interface DocumentEventMap {
+    'typo3:drag-tooltip:metadata-update': CustomEvent<DragTooltipMetadata>;
+    'typo3:drag-tooltip:changedProperties': CustomEvent<{ payload: Partial<WritablePart<DragToolTip>> }>;
   }
 }

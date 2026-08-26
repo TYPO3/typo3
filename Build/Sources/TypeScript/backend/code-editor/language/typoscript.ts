@@ -90,7 +90,7 @@ export async function complete(context: CompletionContext): Promise<CompletionRe
   const completions = getCompletions(tokenValue, keywords);
   return {
     from: completionStart,
-    options: completions.map((result: string) => {
+    options: completions.map((result) => {
       return { label: result, type: 'keyword' };
     })
   };
@@ -129,7 +129,7 @@ function extractCodemirror5StyleLineTokens(lineCount: number, context: Completio
     // stream parser doesn't perform proper tokenization.
     // Insert content as null-type token into the lineToken array.
     if (lastToken < start) {
-      context.state.sliceDoc(lastToken, start).split(context.state.lineBreak).forEach((part: string) => {
+      context.state.sliceDoc(lastToken, start).split(context.state.lineBreak).forEach((part) => {
         if (part) {
           lineTokens[Math.min(lineNumber - 1, lineCount - 1)].push({ type: null, string: part, start: lastToken, end: lastToken + part.length });
           lineNumber++;
@@ -162,7 +162,7 @@ function tokenIsSubStringOfKeywords(token: string, keywords: string[]): boolean 
 }
 
 function getCompletions(token: string, keywords: string[]) {
-  const found = new Set();
+  const found = new Set<string>();
 
   const maybeAdd = (str: string) => {
     if (str.lastIndexOf(token, 0) === 0 && !found.has(str)) {

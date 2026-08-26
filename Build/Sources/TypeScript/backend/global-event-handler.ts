@@ -228,7 +228,7 @@ class GlobalEventHandler {
   private assignHTMLFormChildElementValue(element: HTMLElement, value: string): void {
     const type: string = element.getAttribute('type');
     if (element instanceof HTMLSelectElement) {
-      Array.from(element.options).some((option: HTMLOptionElement, index: number) => {
+      Array.from(element.options).some((option, index) => {
         if (option.value === value) {
           element.selectedIndex = index;
           return true;

@@ -34,7 +34,7 @@ export class ThumbnailElement extends LitElement {
   @property({ type: Number, reflect: true }) height: number;
 
   private readonly thumbnailTask = new Task(this, {
-    task: async ([url, size, keepAspectRatio, width, height]: [string, ThumbnailSizeType, boolean, number, number]): Promise<TemplateResult> => {
+    task: async ([url, size, keepAspectRatio, width, height]): Promise<TemplateResult> => {
       const thumbnailUrl = new URL(url, window.origin);
       thumbnailUrl.searchParams.set('size', size);
       thumbnailUrl.searchParams.set('keepAspectRatio', keepAspectRatio ? '1' : '0');
@@ -60,7 +60,7 @@ export class ThumbnailElement extends LitElement {
       }));
       return html`${img}`;
     },
-    args: () => [this.url, this.size, this.keepAspectRatio, this.width, this.height]
+    args: () => [this.url, this.size, this.keepAspectRatio, this.width, this.height] as const
   });
 
   protected override createRenderRoot(): HTMLElement | ShadowRoot {

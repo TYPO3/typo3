@@ -88,7 +88,7 @@ class SlugElement {
   }
 
   private registerEvents(): void {
-    const fieldsToListenOnList = Object.values(this.getAvailableFieldsForProposalGeneration()).map((field: HTMLElement) => field.dataset.slugSelector);
+    const fieldsToListenOnList = Object.values(this.getAvailableFieldsForProposalGeneration()).map((field) => field.dataset.slugSelector);
     const recreateButton: HTMLButtonElement = this.fullElement.querySelector(Selectors.recreateButton);
 
     // Listen on 'listenerFieldNames' for new pages. This is typically the 'title' field
@@ -158,7 +158,7 @@ class SlugElement {
   private sendSlugProposal(mode: ProposalModes): void {
     const input: Record<string, string> = {};
     if (mode === ProposalModes.AUTO || mode === ProposalModes.RECREATE) {
-      Object.entries(this.getAvailableFieldsForProposalGeneration()).forEach((entry: [fieldName: string, field: HTMLInputElement|HTMLSelectElement]) => {
+      Object.entries(this.getAvailableFieldsForProposalGeneration()).forEach((entry) => {
         input[entry[0]] = entry[1].value;
       });
       if (this.options.includeUidInValues === true) {
@@ -214,18 +214,18 @@ class SlugElement {
    *
    * @return Record<string, string>
    */
-  private getAvailableFieldsForProposalGeneration(): { [key: string]: HTMLElement } {
-    const availableFields: { [key: string]: HTMLElement } = {};
+  private getAvailableFieldsForProposalGeneration(): { [key: string]: HTMLInputElement|HTMLSelectElement } {
+    const availableFields: { [key: string]: HTMLInputElement|HTMLSelectElement } = {};
     for (const [fieldName, selector] of Object.entries(this.fieldsToListenOn)) {
       const selectorCandidates = [
         '[data-formengine-input-name="' + selector + '"]',
         // Also check for fields, which do not point to a hidden input field (e.g. "input type=hidden", readOnly, or select fields)
         '[name="' + selector + '"]'
       ];
-      let field: HTMLElement;
+      let field: HTMLInputElement|HTMLSelectElement;
       let usedSelector = '';
-      selectorCandidates.some((testSelector: string) => {
-        field = document.querySelector(testSelector) as HTMLElement;
+      selectorCandidates.some((testSelector) => {
+        field = document.querySelector<HTMLInputElement|HTMLSelectElement>(testSelector);
         usedSelector = testSelector;
         return field !== null;
       });

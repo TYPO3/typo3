@@ -73,7 +73,7 @@ export class TableWizardElement extends LitElement {
     const textarea: HTMLTextAreaElement = document.querySelector(this.selectorData);
     const table: string[][] = [];
 
-    textarea.value.split('\n').forEach((row: string) => {
+    textarea.value.split('\n').forEach((row) => {
       if (row !== '') {
         if(this.enclosure) {
           row = row.replace(new RegExp(this.enclosure, 'g'), '');
@@ -167,7 +167,7 @@ export class TableWizardElement extends LitElement {
 
   private renderTemplate(): TemplateResult {
     this.provideMinimalTable();
-    const colIndexes = Object.keys(this.firstRow).map((item: string) => parseInt(item, 10));
+    const colIndexes = Object.keys(this.firstRow).map((item) => parseInt(item, 10));
     const lastColIndex = colIndexes[colIndexes.length - 1];
     const lastRowIndex = this.table.length - 1;
 
@@ -176,7 +176,7 @@ export class TableWizardElement extends LitElement {
         <table class="table table-center">
           <thead>
             <th>${this.renderTypeButton()}</th>
-            ${colIndexes.map((colIndex: number) => html`
+            ${colIndexes.map((colIndex) => html`
             <th>${this.renderColButtons(colIndex, lastColIndex)}</th>
             `)}
           </thead>
@@ -184,7 +184,7 @@ export class TableWizardElement extends LitElement {
             ${this.table.map((row: string[], rowIndex: number) => html`
             <tr>
               <td>${this.renderRowButtons(rowIndex, lastRowIndex)}</td>
-              ${row.map((value: string, colIndex: number) => html`
+              ${row.map((value, colIndex) => html`
               <td>${this.renderDataElement(value, rowIndex, colIndex)}</td>
               `)}
             </tr>

@@ -71,7 +71,7 @@ class MailTest extends AbstractInteractableModule {
             modalContent.innerHTML = data.html;
             const outputContainer: HTMLElement = this.findInModal(Identifiers.outputContainer);
             if (data.messages && Array.isArray(data.messages)) {
-              data.messages.forEach((element: MessageInterface): void => {
+              data.messages.forEach((element): void => {
                 outputContainer.append(InfoBox.create(element.severity, element.title, element.message));
               });
             }
@@ -106,7 +106,7 @@ class MailTest extends AbstractInteractableModule {
         const data: SendTestMailResponse = await response.resolve();
         outputContainer.innerHTML = '';
         if (Array.isArray(data.status)) {
-          data.status.forEach((element: MessageInterface): void => {
+          data.status.forEach((element): void => {
             outputContainer.innerHTML = '';
             outputContainer.append(InfoBox.create(element.severity, element.title, element.message));
           });

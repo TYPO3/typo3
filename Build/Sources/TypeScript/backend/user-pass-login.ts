@@ -41,8 +41,8 @@ class UserPassLogin {
     // register submit handler
     Login.options.submitHandler = this.resetPassword;
 
-    [usernameField, passwordField].forEach((field: HTMLInputElement) => new RegularEvent('keypress', this.showCapslockWarning).bindTo(field));
-    ['input', 'change'].forEach((eventName: string) => new RegularEvent(eventName, this.showPasswordToggle).bindTo(passwordField));
+    [usernameField, passwordField].forEach((field) => new RegularEvent('keypress', this.showCapslockWarning).bindTo(field));
+    ['input', 'change'].forEach((eventName) => new RegularEvent(eventName, this.showPasswordToggle).bindTo(passwordField));
     new RegularEvent('keydown', this.toggleCopyright).bindTo(copyrightLink);
 
     // if the login screen is shown in the login_frameset window for re-login,

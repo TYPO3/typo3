@@ -23,7 +23,7 @@ class Utility {
    * @return Array<string>
    */
   public static trimExplode(delimiter: string, string: string): Array<string> {
-    return string.split(delimiter).map((item: string) => item.trim()).filter((item: string) => item !== '');
+    return string.split(delimiter).map((item) => item.trim()).filter((item) => item !== '');
   }
 
   /**
@@ -32,7 +32,7 @@ class Utility {
    * @param {string[]|any[]} items
    */
   public static trimItems(items: any[]): any[] {
-    return items.map((item: any) => {
+    return items.map((item) => {
       if (item instanceof String) {
         return item.trim();
       }
@@ -51,8 +51,8 @@ class Utility {
   public static intExplode(delimiter: string, string: string, excludeZeroValues: boolean = false): Array<number> {
     return string
       .split(delimiter)
-      .map((item: string) => parseInt(item, 10))
-      .filter((item: number) => !isNaN(item) || excludeZeroValues && item === 0);
+      .map((item) => parseInt(item, 10))
+      .filter((item) => !isNaN(item) || excludeZeroValues && item === 0);
   }
 
   /**
@@ -70,7 +70,7 @@ class Utility {
 
   public static convertFormToObject(form: HTMLFormElement): { [key: string]: any } {
     const obj: { [key: string]: any } = {};
-    form.querySelectorAll('input, select, textarea').forEach((element: HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement): void => {
+    form.querySelectorAll<HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement>('input, select, textarea').forEach((element): void => {
       const name = element.name;
       const value = element.value;
 
@@ -106,7 +106,7 @@ class Utility {
     };
 
     return objects.reduce((prev: IndexedObject, obj: IndexedObject): IndexedObject => {
-      Object.keys(obj).forEach((key: string): void => {
+      Object.keys(obj).forEach((key): void => {
         const pVal = prev[key];
         const oVal = obj[key];
 

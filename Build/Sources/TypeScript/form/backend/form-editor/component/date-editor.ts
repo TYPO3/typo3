@@ -261,5 +261,9 @@ declare global {
   interface HTMLElementTagNameMap {
     'typo3-form-date-editor': DateEditor;
   }
+
+  interface HTMLElementEventMap {
+    [DateEditorChangeEvent.eventName]: DateEditorChangeEvent;
+  }
 }
 

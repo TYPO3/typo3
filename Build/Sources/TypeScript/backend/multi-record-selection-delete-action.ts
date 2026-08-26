@@ -85,7 +85,7 @@ class MultiRecordSelectionDeleteAction {
             try {
               const result = await AjaxDataHandler.process({
                 cmd: {
-                  [tableName]: Object.fromEntries(entityIdentifiers.map((identifier: string): [string, DatahandlerCommand] => [
+                  [tableName]: Object.fromEntries(entityIdentifiers.map((identifier): [string, DatahandlerCommand] => [
                     identifier, { delete: 1 }
                   ]))
                 }

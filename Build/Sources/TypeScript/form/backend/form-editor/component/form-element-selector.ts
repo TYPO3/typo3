@@ -71,4 +71,8 @@ declare global {
   interface HTMLElementTagNameMap {
     'typo3-form-element-selector': FormElementSelector;
   }
+
+  interface HTMLElementEventMap {
+    [FormElementSelectorSelectedEvent.eventName]: FormElementSelectorSelectedEvent;
+  }
 }

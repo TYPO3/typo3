@@ -117,7 +117,7 @@ class ReferenceIndex extends AbstractInteractableModule {
             // Build error list or success message
             let bodyContent = '';
             if (hasErrors) {
-              const errorItems = data.result.errors.map((error: string) => `<li>${error}</li>`).join('');
+              const errorItems = data.result.errors.map((error) => `<li>${error}</li>`).join('');
               bodyContent = `<ul class="list-unstyled">${errorItems}</ul>`;
             } else {
               bodyContent = 'Index integrity is perfect.';

@@ -62,7 +62,7 @@ export class EditableFileStorageTree extends FileStorageTree {
     const fileOperationCollection = FileOperationCollection.fromNodePositionOptions(options);
     const operationConflicts = fileOperationCollection.getConflictingOperationsForTreeNode(options.target);
     if (operationConflicts.length > 0) {
-      operationConflicts.forEach((operation: FileOperation) => {
+      operationConflicts.forEach((operation) => {
         Notification.showMessage(
           layoutLabels.get('drop.conflict'),
           layoutLabels.get('mess.drop.conflict', [
@@ -161,7 +161,7 @@ export class EditableFileStorageTree extends FileStorageTree {
         const fileOperationCollection = FileOperationCollection.fromDataTransfer(event.dataTransfer, targetResource);
         const operationConflicts = fileOperationCollection.getConflictingOperationsForTreeNode(node);
         if (operationConflicts.length > 0) {
-          operationConflicts.forEach((operation: FileOperation) => {
+          operationConflicts.forEach((operation) => {
             Notification.showMessage(
               layoutLabels.get('drop.conflict'),
               layoutLabels.get('mess.drop.conflict', [
@@ -448,12 +448,12 @@ class FileOperationCollection {
   }
 
   public getConflictingOperationsForTreeNode(node: TreeNodeInterface): FileOperation[] {
-    return this.operations.filter((operation: FileOperation) => operation.hasConflictWithTreeNode(node));
+    return this.operations.filter((operation) => operation.hasConflictWithTreeNode(node));
   }
 
   public getResources(): ResourceInterface[] {
     const resources: ResourceInterface[] = [];
-    this.operations.forEach((operation: FileOperation) => {
+    this.operations.forEach((operation) => {
       resources.push(operation.resource);
     });
 

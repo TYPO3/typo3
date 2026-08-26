@@ -33,7 +33,7 @@ class SecurityUtility {
     const values = new Uint8Array(Math.ceil(length / 2));
     crypto.getRandomValues(values);
     return Array.from(values)
-      .map((item: number): string => item.toString(16).padStart(2, '0'))
+      .map((item): string => item.toString(16).padStart(2, '0'))
       .join('')
       .substr(0, length);
   }

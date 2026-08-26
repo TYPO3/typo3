@@ -114,7 +114,7 @@ class ExtensionScanner extends AbstractInteractableModule {
   }
 
   private setupEventListeners(): void {
-    this.currentModal.querySelectorAll(Identifiers.extensionContainer).forEach((extensionContainer: HTMLElement) => {
+    this.currentModal.querySelectorAll<HTMLElement>(Identifiers.extensionContainer).forEach((extensionContainer) => {
       new RegularEvent('show.bs.collapse', (event: Event): void => {
         // Scan a single extension by opening the panel
         const target = event.currentTarget as HTMLElement;
@@ -143,7 +143,7 @@ class ExtensionScanner extends AbstractInteractableModule {
 
     this.setProgressForAll();
 
-    const scannerPromises = [...extensions].map(async (element: HTMLElement) => {
+    const scannerPromises = [...extensions].map(async (element) => {
       const extension = element.dataset.extension;
       try {
         await this.scanSingleExtension(extension);
@@ -251,7 +251,7 @@ class ExtensionScanner extends AbstractInteractableModule {
         extensionContainer.querySelector<HTMLElement>('.t3js-extensionScanner-extension-body').innerText = '';
         extensionContainer.classList.add('panel-has-progress');
         let doneFiles = 0;
-        const filePromises = data.files.map((file: string): Promise<void> => new Promise<void>((resolve, reject): void => {
+        const filePromises = data.files.map((file): Promise<void> => new Promise<void>((resolve, reject): void => {
           AjaxQueue.add({
             method: 'POST',
             data: {
@@ -269,7 +269,7 @@ class ExtensionScanner extends AbstractInteractableModule {
               this.setStatusMessageForScan(extension, doneFiles, numberOfFiles);
               this.setProgressForScan(extension, doneFiles, numberOfFiles);
               if (fileData.success && Array.isArray(fileData.matches)) {
-                fileData.matches.forEach((match: Match): void => {
+                fileData.matches.forEach((match): void => {
                   hitFound = true;
                   const aMatch = modalContent.querySelector(hitTemplate + ' .panel').cloneNode(true) as HTMLElement;
                   aMatch.querySelector<HTMLElement>('.t3js-extensionScanner-hit-file-panel-head').setAttribute('data-bs-target', '#collapse' + match.uniqueId);
@@ -292,7 +292,7 @@ class ExtensionScanner extends AbstractInteractableModule {
                   aMatch.querySelector<HTMLElement>('.t3js-extensionScanner-hit-file-lineContent').innerText = match.lineContent;
                   aMatch.querySelector<HTMLElement>('.t3js-extensionScanner-hit-file-line').innerText = match.line + ': ';
                   if (Array.isArray(match.restFiles)) {
-                    match.restFiles.forEach((restFile: RestFile): void => {
+                    match.restFiles.forEach((restFile): void => {
                       const aRest = modalContent.querySelector(restTemplate + ' .panel').cloneNode(true) as HTMLElement;
                       aRest.querySelector<HTMLElement>('.t3js-extensionScanner-hit-rest-panel-head').setAttribute('data-bs-target', '#collapse' + restFile.uniqueId);
                       aRest.querySelector<HTMLElement>('.t3js-extensionScanner-hit-rest-panel-head').setAttribute('aria-controls', 'collapse' + restFile.uniqueId);

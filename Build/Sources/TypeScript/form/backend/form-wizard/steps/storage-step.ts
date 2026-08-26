@@ -64,7 +64,7 @@ export class StorageStep implements WizardStepInterface, WizardStepValueInterfac
       <p>${formManagerLabels.get('formManager.newFormWizard.step.storages.description')}</p>
       <div class="form-storage-selection">
         <div class="form-check-card-container">
-          ${storageAdapters.map((storage: StorageAdapter) => html`
+          ${storageAdapters.map((storage) => html`
             <div class="form-check form-check-type-card">
               <input
                 class="form-check-input"

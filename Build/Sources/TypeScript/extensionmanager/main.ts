@@ -174,17 +174,17 @@ class ExtensionManager {
   }
 
   private filterExtensions(searchText: string): void {
-    const filterableColumns = document.querySelectorAll('[data-filterable]');
+    const filterableColumns = document.querySelectorAll<HTMLTableRowElement>('[data-filterable]');
     const columnIndices: number[] = [];
-    filterableColumns.forEach((element: HTMLTableRowElement): void => {
+    filterableColumns.forEach((element): void => {
       const children = Array.from(element.parentElement.children);
       columnIndices.push(children.indexOf(element));
     });
-    const rows = document.querySelectorAll('#typo3-extension-list tbody tr');
-    rows.forEach((row: HTMLTableRowElement): void => {
-      const columns = columnIndices.map((index: number) => row.children.item(index));
+    const rows = document.querySelectorAll<HTMLTableRowElement>('#typo3-extension-list tbody tr');
+    rows.forEach((row): void => {
+      const columns = columnIndices.map((index) => row.children.item(index));
       const values: string[] = [];
-      columns.forEach((column: HTMLTableCellElement): void => {
+      columns.forEach((column): void => {
         values.push(column.textContent.trim().replace(/\s+/g, ' '));
       });
       row.classList.toggle('hidden', searchText !== '' && !RegExp(searchText, 'i').test(values.join(':')));
@@ -238,7 +238,7 @@ class ExtensionManager {
         labelBody.classList.add('form-check-label-body');
         labelBody.innerHTML = comment
           .replace(/(\r\n|\n\r|\r|\n)/g, '\n')
-          .split(/\n/).map((line: string): string => {
+          .split(/\n/).map((line): string => {
             return securityUtility.encodeHtml(line);
           })
           .join('<br>');

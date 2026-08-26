@@ -204,7 +204,7 @@ export class PagePositionSelect extends LitElement {
 
   private syncActiveInsertPositionState(): TreeNodeInterface|null {
     let activeNode: TreeNodeInterface|null = null;
-    this.tree.nodes.forEach((node: TreeNodeInterface) => {
+    this.tree.nodes.forEach((node) => {
       node.checked = this.isActivePagePositionNode(node);
       if (node.checked) {
         activeNode = node;

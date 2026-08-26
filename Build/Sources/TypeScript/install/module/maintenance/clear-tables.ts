@@ -78,12 +78,12 @@ class ClearTables extends AbstractInteractableModule {
             modalContent.innerHTML = data.html;
             Modal.setButtons(data.buttons);
             if (Array.isArray(data.stats) && data.stats.length > 0) {
-              data.stats.forEach((element: any): void => {
+              data.stats.forEach((element): void => {
                 if (element.rowCount > 0) {
                   const aStat = (modalContent.querySelector(Identifiers.statTemplate) as HTMLTemplateElement).content.cloneNode(true) as HTMLElement;
                   aStat.querySelector<HTMLElement>(Identifiers.statDescription).innerText = element.description;
                   aStat.querySelector<HTMLElement>(Identifiers.statName).innerText = element.name;
-                  aStat.querySelector<HTMLElement>(Identifiers.statRows).innerText = element.rowCount;
+                  aStat.querySelector<HTMLElement>(Identifiers.statRows).innerText = String(element.rowCount);
                   aStat.querySelector<HTMLElement>(Identifiers.clearTrigger).setAttribute('data-table', element.name);
                   modalContent.querySelector(Identifiers.statContainer).append(aStat);
                 }
@@ -116,7 +116,7 @@ class ClearTables extends AbstractInteractableModule {
         async (response: AjaxResponse): Promise<void> => {
           const data: DatabaseTableClearedResponse = await response.resolve();
           if (data.success === true && Array.isArray(data.status)) {
-            data.status.forEach((element: MessageInterface): void => {
+            data.status.forEach((element): void => {
               Notification.success(element.title, element.message);
             });
           } else {

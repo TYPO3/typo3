@@ -101,7 +101,7 @@ class MultiRecordSelection {
     // which were already evaluated and do not call the evaluation for them again.
     let actionsToggled: boolean = false;
     const identifiers: Array<string> = [];
-    checked.forEach((checkbox: HTMLInputElement) => {
+    checked.forEach((checkbox) => {
       (checkbox.closest(MultiRecordSelectionSelectors.elementSelector) as HTMLElement)?.classList.add(MultiRecordSelection.activeClass);
       const identifier: string = MultiRecordSelection.getIdentifier(checkbox);
       if (identifier !== '' && !identifiers.includes(identifier)) {
@@ -132,12 +132,12 @@ class MultiRecordSelection {
 
     if (!MultiRecordSelection.getCheckboxes(CheckboxState.checked, identifier).length) {
       // In case no checkbox is checked, hide all action containers and return
-      actionContainers.forEach((container: HTMLElement): void => MultiRecordSelection.changeActionContainerVisibility(container, false));
+      actionContainers.forEach((container): void => MultiRecordSelection.changeActionContainerVisibility(container, false));
       return;
     }
 
     // Remove hidden state of all action containers, since checked checkboxes exist
-    actionContainers.forEach((container: HTMLElement): void => MultiRecordSelection.changeActionContainerVisibility(container));
+    actionContainers.forEach((container): void => MultiRecordSelection.changeActionContainerVisibility(container));
 
     const actions: NodeListOf<HTMLButtonElement> = document.querySelectorAll(
       [MultiRecordSelection.getCombinedSelector(MultiRecordSelectionSelectors.actionsSelector, identifier), Buttons.actionButton].join(' ')
@@ -148,7 +148,7 @@ class MultiRecordSelection {
       return;
     }
 
-    actions.forEach((action: HTMLButtonElement): void => {
+    actions.forEach((action): void => {
       if (!action.dataset.multiRecordSelectionActionConfig) {
         // In case the action does not define any configuration, no toggling is possible
         return;
@@ -208,7 +208,7 @@ class MultiRecordSelection {
    * state would may led to misbehaviour.
    */
   private static unsetManuallyChangedAttribute(identifier: string): void {
-    MultiRecordSelection.getCheckboxes(CheckboxState.any, identifier).forEach((checkbox: HTMLInputElement): void => {
+    MultiRecordSelection.getCheckboxes(CheckboxState.any, identifier).forEach((checkbox): void => {
       checkbox.removeAttribute('data-manually-changed');
     });
   }
@@ -251,20 +251,20 @@ class MultiRecordSelection {
     new RegularEvent('multiRecordSelection:actions:show', (e: CustomEvent): void => {
       const identifier: string = e.detail?.identifier || '';
       const actionContainers: NodeListOf<HTMLElement> = document.querySelectorAll(MultiRecordSelection.getCombinedSelector(MultiRecordSelectionSelectors.actionsSelector, identifier));
-      actionContainers.forEach((container: HTMLElement): void => MultiRecordSelection.changeActionContainerVisibility(container));
+      actionContainers.forEach((container): void => MultiRecordSelection.changeActionContainerVisibility(container));
     }).bindTo(document);
     new RegularEvent('multiRecordSelection:actions:hide', (e: CustomEvent): void => {
       const identifier: string = e.detail?.identifier || '';
       const actionContainers: NodeListOf<HTMLElement> = document.querySelectorAll(MultiRecordSelection.getCombinedSelector(MultiRecordSelectionSelectors.actionsSelector, identifier));
-      actionContainers.forEach((container: HTMLElement): void => MultiRecordSelection.changeActionContainerVisibility(container, false));
+      actionContainers.forEach((container): void => MultiRecordSelection.changeActionContainerVisibility(container, false));
     }).bindTo(document);
     new RegularEvent('multiRecordSelection:checkboxes:check', (e: CustomEvent): void => {
       const identifier: string = e.detail?.identifier || '';
-      MultiRecordSelection.getCheckboxes(CheckboxState.any, identifier).forEach((checkbox: HTMLInputElement): void => MultiRecordSelection.changeCheckboxState(checkbox, true));
+      MultiRecordSelection.getCheckboxes(CheckboxState.any, identifier).forEach((checkbox): void => MultiRecordSelection.changeCheckboxState(checkbox, true));
     }).bindTo(document);
     new RegularEvent('multiRecordSelection:checkboxes:uncheck', (e: CustomEvent): void => {
       const identifier: string = e.detail?.identifier || '';
-      MultiRecordSelection.getCheckboxes(CheckboxState.any, identifier).forEach((checkbox: HTMLInputElement): void => MultiRecordSelection.changeCheckboxState(checkbox, false));
+      MultiRecordSelection.getCheckboxes(CheckboxState.any, identifier).forEach((checkbox): void => MultiRecordSelection.changeCheckboxState(checkbox, false));
     }).bindTo(document);
   }
 
@@ -293,17 +293,17 @@ class MultiRecordSelection {
       // Perform requested action
       switch (target.dataset.multiRecordSelectionCheckAction) {
         case CheckboxActions.checkAll:
-          checkboxes.forEach((checkbox: HTMLInputElement) => {
+          checkboxes.forEach((checkbox) => {
             MultiRecordSelection.changeCheckboxState(checkbox, true);
           });
           break;
         case CheckboxActions.checkNone:
-          checkboxes.forEach((checkbox: HTMLInputElement) => {
+          checkboxes.forEach((checkbox) => {
             MultiRecordSelection.changeCheckboxState(checkbox, false);
           });
           break;
         case CheckboxActions.toggle:
-          checkboxes.forEach((checkbox: HTMLInputElement) => {
+          checkboxes.forEach((checkbox) => {
             MultiRecordSelection.changeCheckboxState(checkbox, !checkbox.checked);
           });
           break;
@@ -438,7 +438,7 @@ class MultiRecordSelection {
       const end = checkboxes.indexOf(this.lastChecked);
       // Get the checkboxes which should be changed (we use min() and max() to allow ranges in both directions)
       const checkboxesToChange = checkboxes.slice(Math.min(start, end), Math.max(start, end) + 1);
-      checkboxesToChange.forEach((checkbox: HTMLInputElement): void => {
+      checkboxesToChange.forEach((checkbox): void => {
         // Change the state of each checkbox in question. Do not change the current target since we
         // use it's current checked state, making both "check all" and "uncheck all" possible.
         if (checkbox !== target) {
@@ -452,7 +452,7 @@ class MultiRecordSelection {
 
     // With the alt or ctrl key, it's possible to toggle the current selection
     if (e.altKey || e.ctrlKey) {
-      MultiRecordSelection.getCheckboxes(CheckboxState.any, identifier).forEach((checkbox: HTMLInputElement): void => {
+      MultiRecordSelection.getCheckboxes(CheckboxState.any, identifier).forEach((checkbox): void => {
         // Toggle all checkboxes except the current target as this was already done by clicking on it
         if (checkbox !== target) {
           MultiRecordSelection.changeCheckboxState(checkbox, !checkbox.checked);

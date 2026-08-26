@@ -91,14 +91,14 @@ class CreateAdmin extends AbstractInteractableModule {
         userSystemMaintainer: (this.findInModal(Identifiers.adminSysMaintainterInput) as HTMLInputElement).checked ? 1 : 0,
       },
     };
-    this.getModuleContent().querySelectorAll('input').forEach((input: HTMLInputElement): void => {
+    this.getModuleContent().querySelectorAll('input').forEach((input): void => {
       input.disabled = true;
     });
 
     (new AjaxRequest(Router.getUrl())).post(payload).then(async (response: AjaxResponse): Promise<void> => {
       const data: BackendUserCreatedResponse = await response.resolve();
       if (data.success === true && Array.isArray(data.status)) {
-        data.status.forEach((element: MessageInterface): void => {
+        data.status.forEach((element): void => {
           Notification.showMessage(element.title, element.message, element.severity);
         });
         if (data.userCreated) {
@@ -116,7 +116,7 @@ class CreateAdmin extends AbstractInteractableModule {
     }).finally((): void => {
       this.setModalButtonsState(true);
 
-      this.getModuleContent().querySelectorAll('input').forEach((input: HTMLInputElement): void => {
+      this.getModuleContent().querySelectorAll('input').forEach((input): void => {
         input.disabled = false;
       });
     });

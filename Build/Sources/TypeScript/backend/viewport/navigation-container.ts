@@ -103,7 +103,7 @@ class NavigationContainer extends AbstractContainer {
     if (!contentNavigation || !navigationContainer) {
       return;
     }
-    navigationContainer.querySelectorAll('[data-component]').forEach((el: HTMLElement) => el.style.display = 'none');
+    navigationContainer.querySelectorAll<HTMLElement>('[data-component]').forEach((el) => el.style.display = 'none');
     contentNavigation.showNavigation();
     const selectedElement = navigationContainer.querySelector('[data-component="' + component + '"]') as HTMLElement;
     if (selectedElement) {

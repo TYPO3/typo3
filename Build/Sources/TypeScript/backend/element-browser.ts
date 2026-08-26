@@ -68,7 +68,7 @@ class ElementBrowser {
     const isInModalFrame = typeof window.frames !== 'undefined'
       && typeof window.frames.frameElement !== 'undefined'
       && window.frames.frameElement.classList.contains('t3js-modal-iframe');
-    const otherModalFrames = Array.from(top.frames || []).filter((item: Window) => {
+    const otherModalFrames = Array.from(top.frames || []).filter((item) => {
       try {
         return typeof item.frameElement !== 'undefined'
           && item.frameElement.classList.contains('t3js-modal-iframe')

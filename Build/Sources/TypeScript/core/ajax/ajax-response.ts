@@ -47,7 +47,7 @@ export class AjaxResponse {
    */
   public async dereference(): Promise<SimpleResponseInterface> {
     const headers = new Map<string, string>();
-    this.response.headers.forEach((value: string, name: string) => headers.set(name, value));
+    this.response.headers.forEach((value, name) => headers.set(name, value));
     return {
       status: this.response.status,
       headers: headers,

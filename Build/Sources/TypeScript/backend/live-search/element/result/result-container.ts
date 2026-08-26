@@ -112,4 +112,9 @@ declare global {
   interface HTMLElementTagNameMap {
     'typo3-backend-live-search-result-container': ResultContainer;
   }
+
+  interface HTMLElementEventMap {
+    'livesearch:request-actions': CustomEvent<RequestActionsEventData>;
+    'livesearch:invoke-action': CustomEvent<InvokeActionEventData>;
+  }
 }

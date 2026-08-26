@@ -71,7 +71,7 @@ class MfaInfoElement {
       this.prepareDeactivateRequest(this.deactivteMfaButton);
     }).bindTo(this.deactivteMfaButton);
 
-    this.deactivteProviderButtons.forEach((buttonElement: HTMLButtonElement): void => {
+    this.deactivteProviderButtons.forEach((buttonElement): void => {
       new RegularEvent('click', (e: Event): void => {
         e.preventDefault();
         this.prepareDeactivateRequest(buttonElement);
@@ -120,7 +120,7 @@ class MfaInfoElement {
     }).then(async (response: AjaxResponse): Promise<void> => {
       const data: Response = await response.resolve();
       if (data.status.length > 0) {
-        data.status.forEach((status: Status): void => {
+        data.status.forEach((status): void => {
           if (data.success) {
             Notification.success(status.title, status.message);
           } else {

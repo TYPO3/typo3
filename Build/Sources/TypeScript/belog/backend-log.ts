@@ -47,12 +47,12 @@ class BackendLog {
 
   private initializeDateTimePickerElements(): void {
     this.dateTimePickerElements.forEach(
-      (dateTimePickerElement: HTMLInputElement) => DateTimePicker.initialize(dateTimePickerElement)
+      (dateTimePickerElement) => DateTimePicker.initialize(dateTimePickerElement)
     );
   }
 
   private initializeElementBrowserElements(): void {
-    this.elementBrowserElements.forEach((element: HTMLAnchorElement): void => {
+    this.elementBrowserElements.forEach((element): void => {
       const triggerField = <HTMLInputElement>document.getElementById(element.dataset.triggerFor);
       element.dataset.fieldReference = triggerField.name;
       element.dataset.allowedTypes = 'pages';

@@ -37,10 +37,8 @@ import { BeforeNextStepEvent } from '@typo3/backend/wizard/events/before-next-st
 
 export type DataStore = object;
 
-type DataStoreKey = keyof DataStore;
-
 @customElement('typo3-backend-wizard')
-export class Wizard extends LitElement {
+export class Wizard<TDataStore extends DataStore = DataStore> extends LitElement {
   @property({ type: Array, attribute: false }) steps: WizardStepInterface[] = [];
   @property({ type: String, attribute: 'confirm-button-label' }) confirmButtonLabel: string;
   @property({ type: Boolean, attribute: 'skip-summary' }) skipSummary: boolean = false;
@@ -48,7 +46,7 @@ export class Wizard extends LitElement {
 
   @state() protected currentStepIndex: number = 0;
   @state() protected currentStep!: WizardStepInterface;
-  @state() protected dataStore: DataStore = {};
+  @state() protected dataStore: TDataStore = {} as TDataStore;
   @state() protected allSteps: WizardStepInterface[] = [];
 
   private progressTracker: ProgressTrackerElement | null = null;
@@ -79,20 +77,20 @@ export class Wizard extends LitElement {
     return summaries;
   }
 
-  public getStoreData<T extends DataStoreKey>(key: T): NoInfer<DataStore[T]> {
+  public getStoreData<T extends keyof TDataStore>(key: T): NoInfer<TDataStore[T]> {
     return this.dataStore[key] ?? null;
   }
 
-  public setStoreData<T extends DataStoreKey>(key: T, value: NoInfer<DataStore[T]>): void {
+  public setStoreData<T extends keyof TDataStore>(key: T, value: NoInfer<TDataStore[T]>): void {
     this.dataStore = { ...this.dataStore, [key]: value };
   }
 
-  public getDataStore(): DataStore {
+  public getDataStore(): TDataStore {
     return this.dataStore;
   }
 
-  public clearStoreData<T extends DataStoreKey>(key: T): void {
-    const newDataStore = { ...this.dataStore };
+  public clearStoreData<T extends keyof TDataStore>(key: T): void {
+    const newDataStore: TDataStore = { ...this.dataStore };
     delete newDataStore[key];
     this.dataStore = newDataStore;
   }
@@ -490,7 +488,7 @@ export class Wizard extends LitElement {
   }
 
   private handleRestart(): void {
-    this.dataStore = {};
+    this.dataStore = {} as TDataStore;
     this.goToStep(0).then(() => this.updateComplete);
   }
 }

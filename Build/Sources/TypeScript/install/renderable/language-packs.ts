@@ -247,10 +247,10 @@ export class ExtensionMatrixElement extends LitElement {
   private renderExtensionActions(extension: Extension): TemplateResult[] {
     const cells: TemplateResult[] = [];
 
-    this.data.activeLanguages.forEach((language: string): void => {
+    this.data.activeLanguages.forEach((language): void => {
       let cell: TemplateResult | typeof nothing = nothing;
 
-      extension.packs.forEach((pack: ExtensionPack): void => {
+      extension.packs.forEach((pack): void => {
         if (pack.iso !== language) {
           return;
         }
@@ -301,5 +301,11 @@ declare global {
   interface HTMLElementTagNameMap {
     'typo3-install-language-matrix': LanguageMatrixElement;
     'typo3-install-extension-matrix': ExtensionMatrixElement;
+  }
+
+  interface HTMLElementEventMap {
+    'activate-language': CustomEvent<ActivateLanguageEvent>;
+    'deactivate-language': CustomEvent<DeactivateLanguageEvent>;
+    'download-packs': CustomEvent<DownloadPacksEvent>;
   }
 }

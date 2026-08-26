@@ -31,9 +31,9 @@ describe('@typo3/backend/utility/dom-helper', () => {
     const wrapperElement = document.createElement('div');
     wrapperElement.append(document.createRange().createContextualFragment(markup));
 
-    const parents = DomHelper.parents(wrapperElement.querySelector('#enter-here'), '.dummy-matching-element');
+    const parents = DomHelper.parents<HTMLElement>(wrapperElement.querySelector('#enter-here'), '.dummy-matching-element');
     expect(parents).to.length(3);
-    expect(parents.map((el: HTMLElement) => el.tagName)).to.have.ordered.members(['SPAN', 'P', 'DIV']);
+    expect(parents.map((el) => el.tagName)).to.have.ordered.members(['SPAN', 'P', 'DIV']);
   });
 
   it('nextAll() returns a proper list of all next elements', () => {

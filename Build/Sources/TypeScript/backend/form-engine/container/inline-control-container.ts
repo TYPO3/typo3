@@ -161,7 +161,7 @@ class InlineControlContainer extends HTMLElement {
   }
 
   private static getValuesFromHashMap(hashmap: UniqueDefinitionCollection): Array<any> {
-    return Object.keys(hashmap).map((key: string) => hashmap[key]);
+    return Object.keys(hashmap).map((key) => hashmap[key]);
   }
 
   private static selectOptionValueExists(selectElement: HTMLSelectElement, value: string): boolean {
@@ -449,10 +449,10 @@ class InlineControlContainer extends HTMLElement {
    * @param {string} afterUid
    */
   private async importRecord(params: Array<any>, afterUid?: string): Promise<void> {
-    return this.ajaxDispatcher.send(
+    return this.ajaxDispatcher.send<InlineResponseInterface>(
       this.ajaxDispatcher.newRequest(this.ajaxDispatcher.getEndpoint(this.endpoints.create)),
       params,
-    ).then(async (response: InlineResponseInterface): Promise<void> => {
+    ).then(async (response): Promise<void> => {
       if (this.isBelowMax()) {
         this.createRecord(
           response.compilerInput.uid,
@@ -553,10 +553,10 @@ class InlineControlContainer extends HTMLElement {
         return;
       }
 
-      this.ajaxDispatcher.send(
+      this.ajaxDispatcher.send<InlineResponseInterface>(
         this.ajaxDispatcher.newRequest(this.ajaxDispatcher.getEndpoint(this.endpoints.synchronizelocalize)),
         [this.objectGroup, targetElement.dataset.type],
-      ).then(async (response: InlineResponseInterface): Promise<void> => {
+      ).then(async (response): Promise<void> => {
         this.recordsContainer.insertAdjacentHTML('beforeend', response.data);
 
         const objectIdPrefix = this.objectGroup + Separators.structureSeparator;
@@ -617,9 +617,9 @@ class InlineControlContainer extends HTMLElement {
 
     if (!isLoading) {
       const ajaxRequest = this.ajaxDispatcher.newRequest(this.ajaxDispatcher.getEndpoint(this.endpoints.details));
-      const request = this.ajaxDispatcher.send(ajaxRequest, [objectId]);
+      const request = this.ajaxDispatcher.send<InlineResponseInterface>(ajaxRequest, [objectId]);
 
-      request.then(async (response: InlineResponseInterface): Promise<void> => {
+      request.then(async (response): Promise<void> => {
         delete this.requestQueue[objectId];
         delete this.progressQueue[objectId];
 
@@ -762,7 +762,7 @@ class InlineControlContainer extends HTMLElement {
     const currentRecordContainer = this.getRecordContainer(objectId);
     const recordUid = currentRecordContainer.dataset.objectUid;
     const recordListContainer = this.recordsContainer;
-    const records = Array.from(recordListContainer.children).map((child: HTMLElement) => child.dataset.objectUid);
+    const records = Array.from(recordListContainer.children as HTMLCollectionOf<HTMLElement>).map((child) => child.dataset.objectUid);
     const position = records.indexOf(recordUid);
     let isChanged = false;
 
@@ -795,8 +795,8 @@ class InlineControlContainer extends HTMLElement {
     }
 
     const recordListContainer = this.recordsContainer;
-    const records = Array.from(recordListContainer.querySelectorAll(selector`[data-object-parent-group="${this.objectGroup}"][data-placeholder-record="0"]`))
-      .map((child: HTMLElement) => child.dataset.objectUid);
+    const records = Array.from(recordListContainer.querySelectorAll<HTMLElement>(selector`[data-object-parent-group="${this.objectGroup}"][data-placeholder-record="0"]`))
+      .map((child) => child.dataset.objectUid);
 
     (<HTMLInputElement>formField).value = records.join(',');
     FormEngine.markFieldAsChanged(formField);
@@ -841,12 +841,12 @@ class InlineControlContainer extends HTMLElement {
    * @param {boolean} visible
    */
   private toggleContainerControls(visible: boolean): void {
-    const controlContainer = this.querySelectorAll(
+    const controlContainer = this.querySelectorAll<HTMLElement>(
       ':scope > ' + Selectors.controlContainer
     );
-    controlContainer.forEach((container: HTMLElement): void => {
+    controlContainer.forEach((container): void => {
       const controlContainerButtons = container.querySelectorAll<HTMLButtonElement | HTMLAnchorElement>('button, a');
-      controlContainerButtons.forEach((button: HTMLButtonElement | HTMLAnchorElement): void => {
+      controlContainerButtons.forEach((button): void => {
         button.hidden = !visible;
       });
     });
@@ -912,7 +912,7 @@ class InlineControlContainer extends HTMLElement {
       return;
     }
 
-    records.forEach((recordUid: string, index: number): void => {
+    records.forEach((recordUid, index): void => {
       const recordContainer = this.getRecordContainer(objectId + Separators.structureSeparator + recordUid);
       if (recordContainer === null) {
         return;

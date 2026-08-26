@@ -188,7 +188,7 @@ export class RecordTableElement extends LitElement {
     }
 
     if (data.Workspaces_CollectionParent !== '') {
-      parentItem = this.results.find((element: any) => {
+      parentItem = this.results.find((element) => {
         return element.Workspaces_CollectionCurrent === data.Workspaces_CollectionParent;
       });
     }

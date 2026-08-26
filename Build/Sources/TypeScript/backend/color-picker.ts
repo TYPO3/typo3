@@ -107,7 +107,7 @@ export class Typo3BackendColorPicker extends LitElement {
 
     // input: react on user input
     // change: react on indirect changes, e.g. a value picker
-    ['input', 'change'].forEach((eventName: string): void => {
+    ['input', 'change'].forEach((eventName): void => {
       new RegularEvent(eventName, (e: Event): void => {
         const input = (e.target as HTMLInputElement);
         this.color = input.value;
@@ -151,7 +151,7 @@ class LegacyColorPicker {
     }
 
     const colorPicker = document.createElement('typo3-backend-color-picker');
-    colorPicker.swatches = options.swatches.map((swatch: string) => ({ color: swatch, label: swatch }));
+    colorPicker.swatches = options.swatches.map((swatch) => ({ color: swatch, label: swatch }));
     colorPicker.opacity = options.opacity ?? false;
     element.parentNode.insertBefore(colorPicker, element);
     colorPicker.appendChild(element);

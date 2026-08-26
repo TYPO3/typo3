@@ -268,7 +268,7 @@ export default class DragUploader {
             if (node.matches('.t3js-drag-uploader')) {
               new DragUploader(node);
             } else {
-              node.querySelectorAll('.t3js-drag-uploader').forEach((element: HTMLElement): void => {
+              node.querySelectorAll<HTMLElement>('.t3js-drag-uploader').forEach((element): void => {
                 new DragUploader(element);
               });
             }
@@ -279,7 +279,7 @@ export default class DragUploader {
     observer.observe(document, { childList: true, subtree: true });
 
     DocumentService.ready().then((): void => {
-      document.querySelectorAll('.t3js-drag-uploader').forEach((element: HTMLElement): void => {
+      document.querySelectorAll<HTMLElement>('.t3js-drag-uploader').forEach((element): void => {
         new DragUploader(element);
       });
     });
@@ -421,7 +421,7 @@ export default class DragUploader {
 
     // Check for each file if is already exist before adding it to the queue
     const ajaxCalls: Promise<void>[] = [];
-    validFiles.forEach((file: File) => {
+    validFiles.forEach((file) => {
       const request = new AjaxRequest(TYPO3.settings.ajaxUrls.file_exists).withQueryArguments({
         fileName: file.name,
         fileTarget: this.target,
@@ -624,7 +624,7 @@ export default class DragUploader {
           this.askForOverride[index].action = <Action>select.value;
         }
       } else {
-        modal.querySelectorAll('.t3js-actions').forEach((select: HTMLSelectElement) => select.disabled = false);
+        modal.querySelectorAll<HTMLSelectElement>('.t3js-actions').forEach((select) => select.disabled = false);
       }
     }).delegateTo(modal, '.t3js-actions-all');
 

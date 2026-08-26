@@ -72,7 +72,7 @@ class TcaMigrationsCheck extends AbstractInteractableModule {
                 'TCA migrations need to be applied',
                 'Check the following list and apply needed changes.'
               ));
-              data.status.forEach((element: MessageInterface): void => {
+              data.status.forEach((element): void => {
                 modalContent.querySelector(Identifiers.outputContainer).append(InfoBox.create(element.severity, element.title, element.message));
               });
             } else {

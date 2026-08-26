@@ -17,7 +17,7 @@ import type { InteractionRequestAssignment, PromiseControls } from './interactio
 class InteractionRequestMap {
   private assignments: InteractionRequestAssignment[] = [];
 
-  public attachFor(request: InteractionRequest, deferred: PromiseControls<unknown>): void {
+  public attachFor(request: InteractionRequest, deferred: PromiseControls<never>): void {
     let targetAssignment: InteractionRequestAssignment = this.getFor(request);
     if (targetAssignment === null) {
       targetAssignment = { request, deferreds: [] };
@@ -29,14 +29,14 @@ class InteractionRequestMap {
   public detachFor(request: InteractionRequest): void {
     const targetAssignment = this.getFor(request);
     this.assignments = this.assignments.filter(
-      (assignment: InteractionRequestAssignment) => assignment === targetAssignment,
+      (assignment) => assignment === targetAssignment,
     );
   }
 
   public getFor(triggerEvent: InteractionRequest): InteractionRequestAssignment | null {
     let targetAssignment: InteractionRequestAssignment = null;
     this.assignments.some(
-      (assignment: InteractionRequestAssignment) => {
+      (assignment) => {
         if (assignment.request === triggerEvent) {
           targetAssignment = assignment;
           return true;

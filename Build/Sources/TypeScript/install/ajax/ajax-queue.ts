@@ -39,7 +39,7 @@ class AjaxQueue {
 
   public flush(): void {
     this.queue = [];
-    this.requests.forEach((request: AjaxRequest) => request.abort());
+    this.requests.forEach((request) => request.abort());
     this.requests = [];
   }
 

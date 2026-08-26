@@ -187,7 +187,7 @@ class LiveSearch {
      *   // do stuff here
      * });
      */
-    ['modal-loaded', 'typo3-modal-shown'].forEach((eventToListenOn: string) => {
+    ['modal-loaded', 'typo3-modal-shown'].forEach((eventToListenOn) => {
       modal.addEventListener(eventToListenOn, () => {
         const searchField = modal.querySelector('input[type="search"]') as HTMLInputElement|null;
         if (searchField !== null) {
@@ -200,7 +200,7 @@ class LiveSearch {
 
   private composeSearchOptions(searchOptions: SearchOption[]): { [key: string]: string[] } {
     const composedSearchOptions: { [key: string]: string[] } = {};
-    searchOptions.forEach((searchOption: SearchOption): void => {
+    searchOptions.forEach((searchOption): void => {
       if (composedSearchOptions[searchOption.key] === undefined) {
         composedSearchOptions[searchOption.key] = [];
       }

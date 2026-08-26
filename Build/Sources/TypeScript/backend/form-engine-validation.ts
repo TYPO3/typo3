@@ -65,7 +65,7 @@ export default class FormEngineValidation {
    */
   public static initialize(formEngine: typeof FormEngine): void {
     formEngineInstance = formEngine;
-    formEngineInstance.formElement.querySelectorAll('.' + FormEngineValidation.errorClass).forEach((e: HTMLElement) => e.classList.remove(FormEngineValidation.errorClass));
+    formEngineInstance.formElement.querySelectorAll<HTMLElement>('.' + FormEngineValidation.errorClass).forEach((e) => e.classList.remove(FormEngineValidation.errorClass));
 
     // Initialize input fields
     FormEngineValidation.initializeInputFields();
@@ -91,7 +91,7 @@ export default class FormEngineValidation {
    * Initialize all input fields
    */
   public static initializeInputFields(): void {
-    formEngineInstance.formElement.querySelectorAll(FormEngineValidation.inputSelector).forEach((visibleField: FormEngineFieldElement): void => {
+    formEngineInstance.formElement.querySelectorAll<FormEngineFieldElement>(FormEngineValidation.inputSelector).forEach((visibleField): void => {
       // ignore fields which already have been initialized
       if ('formengineInputInitialized' in visibleField.dataset) {
         return;
@@ -500,7 +500,7 @@ export default class FormEngineValidation {
    */
   public static validate(section?: Element): void {
     if (typeof section === 'undefined' || section instanceof Document) {
-      formEngineInstance.formElement.querySelectorAll(FormEngineValidation.markerSelector + ', [role="tablist"] > .nav-item').forEach((tabMenuItem: HTMLElement): void => {
+      formEngineInstance.formElement.querySelectorAll<HTMLElement>(FormEngineValidation.markerSelector + ', [role="tablist"] > .nav-item').forEach((tabMenuItem): void => {
         tabMenuItem.classList.remove(FormEngineValidation.validationErrorClass);
       });
     }
@@ -570,8 +570,8 @@ export default class FormEngineValidation {
    * Find tab by field and mark it as has-validation-error
    */
   public static markParentTab(element: FormEngineFieldElement, isValid: boolean): void {
-    const panes = DomHelper.parents(element, '.tab-pane');
-    panes.forEach((pane: HTMLElement): void => {
+    const panes = DomHelper.parents<HTMLElement>(element, '.tab-pane');
+    panes.forEach((pane): void => {
       if (isValid) {
         // If incoming element is valid, check for errors in the same sheet
         isValid = pane.querySelector('.has-error') === null;
@@ -631,5 +631,11 @@ export default class FormEngineValidation {
 
       return false;
     });
+  }
+}
+
+declare global {
+  interface HTMLElementEventMap {
+    't3-formengine-postfieldvalidation': CustomEvent<PostValidationEvent>;
   }
 }

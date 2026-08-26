@@ -72,7 +72,7 @@ export class ContentRecordSelectionStep implements WizardStepInterface, WizardSt
 
   constructor(private readonly context: LocalizationContext) {
     this.task = new Task(this.context.wizard, {
-      task: async ([pageUid, targetLanguage, sourceLanguage]: [number, number, number]): Promise<PageRecordSelection> => {
+      task: async ([pageUid, targetLanguage, sourceLanguage]): Promise<PageRecordSelection> => {
         const response = await new AjaxRequest(TYPO3.settings.ajaxUrls.wizard_localization_get_content).withQueryArguments({
           pageUid: pageUid,
           targetLanguage: targetLanguage,
@@ -82,7 +82,7 @@ export class ContentRecordSelectionStep implements WizardStepInterface, WizardSt
 
         return result;
       },
-      args: () => [this.context.recordUid, this.context.getStoreData('targetLanguage'), this.context.getStoreData('sourceLanguage')],
+      args: () => [this.context.recordUid, this.context.getStoreData('targetLanguage'), this.context.getStoreData('sourceLanguage')] as const,
       autoRun: false
     });
   }
@@ -194,9 +194,9 @@ export class ContentRecordSelectionStep implements WizardStepInterface, WizardSt
     const records: ContentRecord[] = [];
 
     if (this.task.value) {
-      this.task.value.layout.rows.forEach((row: LayoutRow) => {
-        row.columns.forEach((column: LayoutColumn) => {
-          column.records.forEach((record: ContentRecord) => {
+      this.task.value.layout.rows.forEach((row) => {
+        row.columns.forEach((column) => {
+          column.records.forEach((record) => {
             if (selectedUids.includes(record.uid)) {
               records.push(record);
             }
@@ -355,9 +355,9 @@ export class ContentRecordSelectionStep implements WizardStepInterface, WizardSt
 
   private getAllRecordUids(layout: BackendLayoutStructure): number[] {
     const allUids: number[] = [];
-    layout.rows.forEach((row: LayoutRow) => {
-      row.columns.forEach((column: LayoutColumn) => {
-        column.records.forEach((record: ContentRecord) => {
+    layout.rows.forEach((row) => {
+      row.columns.forEach((column) => {
+        column.records.forEach((record) => {
           allUids.push(record.uid);
         });
       });

@@ -192,11 +192,11 @@ export class ContextMenuElement extends LitElement {
     onComplete: () => {
       this.focusFirstElement = true;
     },
-    onError: (error: Error|AjaxResponse) => {
+    onError: (error: unknown) => {
       if (error instanceof AjaxResponse) {
         Notification.error('', error.response.status + ' ' + error.response.statusText, 5);
       } else {
-        Notification.error('', error.message);
+        Notification.error('', (error as Error).message);
       }
     },
   });
@@ -551,7 +551,7 @@ export class ContextMenuElement extends LitElement {
 
   private getNodeByIdentifier(identifier: string): MenuItemInterface | null {
     const flattenedNodes = this.flattenMenuItems(this.nodes);
-    return flattenedNodes.find((node: MenuItemInterface) => {
+    return flattenedNodes.find((node) => {
       return this.getNodeIdentifier(node) === identifier;
     }) ?? null;
   }
@@ -747,5 +747,10 @@ export class ContextMenuElement extends LitElement {
 declare global {
   interface HTMLElementTagNameMap {
     'typo3-backend-context-menu': ContextMenuElement;
+  }
+
+  interface DocumentEventMap {
+    [ContextMenuEvent.open]: CustomEvent<ContextMenuEventDetail>;
+    [ContextMenuEvent.close]: CustomEvent<ContextMenuEventDetail>;
   }
 }

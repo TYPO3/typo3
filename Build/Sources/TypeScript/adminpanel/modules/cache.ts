@@ -1,11 +1,11 @@
 ((): void => {
   class AdminPanelCache {
-    private readonly buttons: NodeList;
+    private readonly buttons: NodeListOf<HTMLElement>;
 
     constructor() {
-      this.buttons = document.querySelectorAll('[data-typo3-role="clearCacheButton"]');
+      this.buttons = document.querySelectorAll<HTMLElement>('[data-typo3-role="clearCacheButton"]');
 
-      this.buttons.forEach((element: HTMLElement): void => {
+      this.buttons.forEach((element): void => {
         element.addEventListener('click', (): void => {
           const url = element.dataset.typo3AjaxUrl;
           const request = new XMLHttpRequest();

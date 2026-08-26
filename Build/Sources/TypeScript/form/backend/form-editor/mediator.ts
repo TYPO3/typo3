@@ -109,7 +109,7 @@ function subscribeEvents(): void {
       applicationState, // eslint-disable-line @typescript-eslint/no-unused-vars
       currentStackPointer,
       currentStackSize
-    ]: [
+    ]: readonly [
       ApplicationState,
       number,
       number
@@ -132,7 +132,7 @@ function subscribeEvents(): void {
    */
   getPublisherSubscriber().subscribe('core/ajax/saveFormDefinition/success', (
     topic: string,
-    [data]: [{ status: string, formDefinition: FormElementDefinition }]
+    [data]: readonly [{ status: string, formDefinition: FormElementDefinition }]
   ): void => {
     getFormEditorApp().setUnsavedContent(false);
     getViewModel().setPreviewMode(false);
@@ -156,7 +156,7 @@ function subscribeEvents(): void {
    */
   getPublisherSubscriber().subscribe('core/ajax/saveFormDefinition/error', (
     topic: string,
-    [data]: [{ status: string, message: string, code: number }]
+    [data]: readonly [{ status: string, message: string, code: number }]
   ): void => {
     getViewModel().showSaveButtonSaveIcon();
     getViewModel().showSaveErrorMessage({ message: data.message });
@@ -167,7 +167,7 @@ function subscribeEvents(): void {
    */
   getPublisherSubscriber().subscribe('core/ajax/renderFormDefinitionPage/success', (
     topic: string,
-    [htmldata, pageIndex]: [string, number] // eslint-disable-line @typescript-eslint/no-unused-vars
+    [htmldata, pageIndex]: readonly [string, number] // eslint-disable-line @typescript-eslint/no-unused-vars
   ): void => {
     getViewModel().renderPreviewStageArea(htmldata);
   });
@@ -177,7 +177,7 @@ function subscribeEvents(): void {
    */
   getPublisherSubscriber().subscribe('core/ajax/error', (
     topic: string,
-    [statusText, responseBody]: [string, string]
+    [statusText, responseBody]: readonly [string, string]
   ): void => {
     getViewModel().showErrorFlashMessage(statusText, responseBody);
     getViewModel().renderPreviewStageArea(responseBody);
@@ -218,7 +218,7 @@ function subscribeEvents(): void {
    */
   getPublisherSubscriber().subscribe('view/header/button/newPage/clicked', (
     topic: string,
-    [targetEvent]: ['view/insertPages/perform']
+    [targetEvent]: readonly ['view/insertPages/perform']
   ): void => {
     if (getFormEditorApp().isRootFormElementSelected()) {
       getViewModel().selectPageBatch(0);
@@ -282,7 +282,7 @@ function subscribeEvents(): void {
    */
   getPublisherSubscriber().subscribe('view/stage/element/clicked', (
     topic: string,
-    [formElementIdentifierPath]: [string]
+    [formElementIdentifierPath]: readonly [string]
   ): void => {
     if (getViewModel().getPreviewMode()) {
       return;
@@ -307,7 +307,7 @@ function subscribeEvents(): void {
     [
       targetEvent,
       modalConfiguration
-    ]: [
+    ]: readonly [
       'view/insertElements/perform/before' | 'view/insertElements/perform/after' | 'view/insertElements/perform/inside',
       InsertElementsModalConfiguration
     ]
@@ -326,7 +326,7 @@ function subscribeEvents(): void {
     [
       targetEvent,
       modalConfiguration
-    ]: [
+    ]: readonly [
       'view/insertElements/perform/bottom',
       InsertElementsModalConfiguration?
     ]
@@ -345,7 +345,7 @@ function subscribeEvents(): void {
     [
       draggedFormElementDomElement,
       draggedFormPlaceholderDomElement
-    ]: [
+    ]: readonly [
       HTMLElement,
       HTMLElement
     ]
@@ -361,7 +361,7 @@ function subscribeEvents(): void {
    */
   getPublisherSubscriber().subscribe('view/stage/abstract/dnd/stop', (
     topic: string,
-    [draggedFormElementIdentifierPath]: [string]
+    [draggedFormElementIdentifierPath]: readonly [string]
   ): void => {
     getFormEditorApp().setCurrentlySelectedFormElement(draggedFormElementIdentifierPath);
     getViewModel().renewStructure();
@@ -381,7 +381,7 @@ function subscribeEvents(): void {
       placeholderDomElement,
       parentFormElementIdentifierPath,
       enclosingCompositeFormElement
-    ]: [
+    ]: readonly [
       HTMLElement,
       string,
       FormElement
@@ -404,7 +404,7 @@ function subscribeEvents(): void {
       movedFormElementIdentifierPath,
       previousFormElementIdentifierPath,
       nextFormElementIdentifierPath
-    ]: [
+    ]: readonly [
       HTMLElement,
       string,
       string,
@@ -487,7 +487,7 @@ function subscribeEvents(): void {
    */
   getPublisherSubscriber().subscribe('view/tree/node/clicked', (
     topic: string,
-    [formElementIdentifierPath]: [string]
+    [formElementIdentifierPath]: readonly [string]
   ): void => {
     if (getCurrentlySelectedFormElement().get('__identifierPath') !== formElementIdentifierPath) {
       getFormEditorApp().setCurrentlySelectedFormElement(formElementIdentifierPath);
@@ -506,7 +506,7 @@ function subscribeEvents(): void {
    */
   getPublisherSubscriber().subscribe('view/tree/node/changed', (
     topic: string,
-    [formElementIdentifierPath, newLabel]: [string, string]
+    [formElementIdentifierPath, newLabel]: readonly [string, string]
   ): void => {
     const formElement = getFormEditorApp().getFormElementByIdentifierPath(formElementIdentifierPath);
     formElement.set('label', newLabel);
@@ -536,7 +536,7 @@ function subscribeEvents(): void {
    */
   getPublisherSubscriber().subscribe('view/structure/button/newPage/clicked', (
     topic: string,
-    [targetEvent]: ['view/insertPages/perform']
+    [targetEvent]: readonly ['view/insertPages/perform']
   ): void => {
     if (getFormEditorApp().isRootFormElementSelected()) {
       getViewModel().selectPageBatch(0);
@@ -549,7 +549,7 @@ function subscribeEvents(): void {
    */
   getPublisherSubscriber().subscribe('view/tree/dnd/stop', (
     topic: string,
-    [draggedFormElementIdentifierPath]: [string]
+    [draggedFormElementIdentifierPath]: readonly [string]
   ): void => {
     getFormEditorApp().setCurrentlySelectedFormElement(draggedFormElementIdentifierPath);
     getViewModel().renewStructure();
@@ -569,7 +569,7 @@ function subscribeEvents(): void {
       placeholderDomElement,
       parentFormElementIdentifierPath,
       enclosingCompositeFormElement
-    ]: [
+    ]: readonly [
       HTMLElement | null,
       string,
       FormElement
@@ -592,7 +592,7 @@ function subscribeEvents(): void {
       movedFormElementIdentifierPath,
       previousFormElementIdentifierPath,
       nextFormElementIdentifierPath
-    ]: [
+    ]: readonly [
       HTMLElement | null,
       string,
       string,
@@ -627,7 +627,7 @@ function subscribeEvents(): void {
       collectionElementIdentifier,
       collectionName,
       formElement
-    ]: [
+    ]: readonly [
       string,
       'validators',
       FormElement?
@@ -648,7 +648,7 @@ function subscribeEvents(): void {
     [
       collectionElementIdentifier,
       collectionName,
-    ]: [
+    ]: readonly [
       string,
       keyof FormEditorDefinitions,
     ]
@@ -667,7 +667,7 @@ function subscribeEvents(): void {
     [
       collectionElementIdentifier,
       collectionName,
-    ]: [
+    ]: readonly [
       string,
       keyof FormEditorDefinitions,
     ]
@@ -689,7 +689,7 @@ function subscribeEvents(): void {
       previousCollectionElementIdentifier,
       nextCollectionElementIdentifier,
       collectionName
-    ]: [
+    ]: readonly [
       string,
       string,
       string,
@@ -729,10 +729,10 @@ function subscribeEvents(): void {
       value, // eslint-disable-line @typescript-eslint/no-unused-vars
       oldValue, // eslint-disable-line @typescript-eslint/no-unused-vars
       formElementIdentifierPath
-    ]: [
+    ]: readonly [
       string,
-      unknown | undefined,
-      unknown | undefined,
+      unknown?,
+      unknown?,
       string?,
     ]
   ): void => {
@@ -765,7 +765,7 @@ function subscribeEvents(): void {
    */
   getPublisherSubscriber().subscribe('view/formElement/removed', (
     topic: string,
-    [parentFormElement]: [FormElement]
+    [parentFormElement]: readonly [FormElement]
   ): void => {
     getFormEditorApp().setCurrentlySelectedFormElement(parentFormElement);
     getViewModel().renewStructure();
@@ -779,7 +779,7 @@ function subscribeEvents(): void {
    */
   getPublisherSubscriber().subscribe('view/formElement/inserted', (
     topic: string,
-    [newFormElement]: [FormElement]
+    [newFormElement]: readonly [FormElement]
   ): void => {
     getFormEditorApp().setCurrentlySelectedFormElement(newFormElement);
     getViewModel().renewStructure();
@@ -814,7 +814,7 @@ function subscribeEvents(): void {
    */
   getPublisherSubscriber().subscribe('view/insertElements/perform/bottom', (
     topic: string,
-    [formElementType]: [string]
+    [formElementType]: readonly [string]
   ): void => {
     const lastRenderable = getFormEditorApp().getLastTopLevelElementOnCurrentPage();
     if (!lastRenderable) {
@@ -837,7 +837,7 @@ function subscribeEvents(): void {
    */
   getPublisherSubscriber().subscribe('view/insertElements/perform/before', (
     topic: string,
-    [formElementType]: [string]
+    [formElementType]: readonly [string]
   ): void => {
     let newFormElement;
     newFormElement = getViewModel().createAndAddFormElement(formElementType, undefined, true);
@@ -851,7 +851,7 @@ function subscribeEvents(): void {
    */
   getPublisherSubscriber().subscribe('view/insertElements/perform/after', (
     topic: string,
-    [formElementType]: [string]
+    [formElementType]: readonly [string]
   ): void => {
     let newFormElement;
     newFormElement = getViewModel().createAndAddFormElement(formElementType, undefined, true);
@@ -864,7 +864,7 @@ function subscribeEvents(): void {
    */
   getPublisherSubscriber().subscribe('view/insertElements/perform/inside', (
     topic: string,
-    [formElementType]: [string]
+    [formElementType]: readonly [string]
   ): void => {
     getViewModel().createAndAddFormElement(formElementType);
   });
@@ -874,7 +874,7 @@ function subscribeEvents(): void {
    */
   getPublisherSubscriber().subscribe('view/insertPages/perform', (
     topic: string,
-    [formElementType]: [string]
+    [formElementType]: readonly [string]
   ): void => {
     getViewModel().createAndAddFormElement(formElementType);
   });
@@ -896,7 +896,7 @@ function subscribeEvents(): void {
    */
   getPublisherSubscriber().subscribe('view/modal/removeFormElement/perform', (
     topic: string,
-    [formElement]: [FormElement]
+    [formElement]: readonly [FormElement]
   ): void => {
     getViewModel().removeFormElement(formElement);
   });
@@ -910,7 +910,7 @@ function subscribeEvents(): void {
       collectionElementIdentifier,
       collectionName,
       formElement,
-    ]: [
+    ]: readonly [
       string,
       keyof FormEditorDefinitions,
       FormElement
@@ -928,7 +928,7 @@ function subscribeEvents(): void {
    */
   getPublisherSubscriber().subscribe('view/modal/validationErrors/element/clicked', (
     topic: string,
-    [formElementIdentifierPath]: [string]
+    [formElementIdentifierPath]: readonly [string]
   ): void => {
     if (getCurrentlySelectedFormElement().get('__identifierPath') !== formElementIdentifierPath) {
       getFormEditorApp().setCurrentlySelectedFormElement(formElementIdentifierPath);

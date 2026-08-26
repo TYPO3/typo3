@@ -89,8 +89,8 @@ export class ModuleStateStorage {
   public static purge(): void
   {
     Object.keys(sessionStorage)
-      .filter((key: string) => key.startsWith(ModuleStateStorage.prefix))
-      .forEach((key: string) => sessionStorage.removeItem(key));
+      .filter((key) => key.startsWith(ModuleStateStorage.prefix))
+      .forEach((key) => sessionStorage.removeItem(key));
   }
 
   private static fetch(module: string): CurrentState|null {

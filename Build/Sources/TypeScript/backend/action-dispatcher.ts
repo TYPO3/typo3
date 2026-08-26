@@ -19,6 +19,11 @@ import documentService from '@typo3/core/document-service';
 import Utility from '@typo3/backend/utility';
 
 declare type ActionDispatchArgument = unknown;
+/**
+ * Delegates are invoked with arguments resolved from the DOM, so their concrete
+ * signature is only known to the registering side.
+ */
+declare type ActionDispatchDelegate = (...args: never[]) => void;
 
 /**
  * Module: @typo3/backend/action-dispatcher
@@ -33,7 +38,7 @@ declare type ActionDispatchArgument = unknown;
  *  data-dispatch-disabled>
  */
 class ActionDispatcher {
-  private delegates: {[key: string]: (...args: ActionDispatchArgument[]) => void} = {};
+  private delegates: Record<string, ActionDispatchDelegate> = {};
 
   public constructor() {
     this.createDelegates();
@@ -82,7 +87,7 @@ class ActionDispatcher {
     const action = target.dataset.dispatchAction;
     let args: ActionDispatchArgument[] = ActionDispatcher.resolveArguments(target);
     if (args instanceof Array) {
-      args = args.map((arg: string): ActionDispatchArgument => {
+      args = args.map((arg): ActionDispatchArgument => {
         switch (arg) {
           case '{$target}':
             return target;
@@ -94,7 +99,7 @@ class ActionDispatcher {
       });
     }
     if (this.delegates[action]) {
-      this.delegates[action].apply(null, args || []);
+      this.delegates[action].apply(null, (args || []) as never[]);
     }
   }
 }

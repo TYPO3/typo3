@@ -107,7 +107,7 @@ class CollapseStateSearch {
     numberOfSearchMatchesContainer.innerText = labels.get('collapse_state_search.numberOfSearchMatches', { count: matchingNodes.length });
     numberOfSearchMatchesContainer.classList.remove('hidden');
 
-    matchingNodes.forEach((match: Element|null): void => {
+    matchingNodes.forEach((match): void => {
       if (match === null) {
         return;
       }
@@ -153,28 +153,28 @@ class CollapseStateSearch {
   }
 
   private findNodesByIdentifier(term: string, treeContainer: HTMLElement): Element[] {
-    return Array.from(treeContainer.querySelectorAll('.treelist-label')).filter((el: Element): boolean => {
+    return Array.from(treeContainer.querySelectorAll('.treelist-label')).filter((el): boolean => {
       return el.textContent.toLowerCase().includes(term);
     });
   }
 
   private findNodesByValue(term: string, treeContainer: HTMLElement): Element[] {
-    const matchingValueNodes = Array.from(treeContainer.querySelectorAll('.treelist-value')).filter((el: Element): boolean => {
+    const matchingValueNodes = Array.from(treeContainer.querySelectorAll('.treelist-value')).filter((el): boolean => {
       return el.textContent.toLowerCase().includes(term);
     });
-    return matchingValueNodes.map((node: Element): Element => {
+    return matchingValueNodes.map((node): Element => {
       return node.previousElementSibling;
     });
   }
 
   private findNodesByComment(term: string, treeContainer: HTMLElement): Element[] {
-    return Array.from(treeContainer.querySelectorAll('.treelist-comment')).filter((el: Element): boolean => {
+    return Array.from(treeContainer.querySelectorAll('.treelist-comment')).filter((el): boolean => {
       return el.textContent.toLowerCase().includes(term);
     });
   }
 
   private findNodesByConstantSubstitution(term: string, treeContainer: HTMLElement): Element[] {
-    return Array.from(treeContainer.querySelectorAll('.treelist-constant-substitution')).filter((el: Element): boolean => {
+    return Array.from(treeContainer.querySelectorAll('.treelist-constant-substitution')).filter((el): boolean => {
       return el.textContent.toLowerCase().includes(term);
     });
   }

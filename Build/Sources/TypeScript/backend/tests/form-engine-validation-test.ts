@@ -35,7 +35,7 @@ type Values = any;
  * @param {Function|Array|Object} values
  * @param {Function} func
  */
-function using(values: (() => Values)|Values, func: (...args: unknown[]) => void): void {
+function using(values: (() => Values)|Values, func: (...args: any[]) => void): void {
   if (values instanceof Function) {
     values = values();
   }

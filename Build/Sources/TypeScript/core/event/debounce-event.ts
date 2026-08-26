@@ -18,20 +18,20 @@ import type { Listener } from './event-interface';
  * Debounces an event listener that is executed after the event happened.
  * A debounced event listener is not executed again until a certain amount of time has passed without it being called.
  */
-class DebounceEvent extends RegularEvent {
-  constructor(eventName: string, callback: Listener, wait: number = 250) {
+class DebounceEvent<E extends Event = Event, T extends Element = Element> extends RegularEvent<E, T> {
+  constructor(eventName: string, callback: Listener<E, T>, wait: number = 250) {
     super(eventName, callback);
     this.callback = this.debounce(this.callback, wait);
   }
 
-  private debounce(callback: Listener, wait: number): Listener {
+  private debounce(callback: Listener<E, T>, wait: number): Listener<E, T> {
     let timeout: number = null;
 
     return function (this: Node, ...args: unknown[]): void {
       clearTimeout(timeout);
       timeout = setTimeout((): void => {
         timeout = null;
-        callback.apply(this, args);
+        callback.apply(this, args as Parameters<Listener<E, T>>);
       }, wait);
     };
   }

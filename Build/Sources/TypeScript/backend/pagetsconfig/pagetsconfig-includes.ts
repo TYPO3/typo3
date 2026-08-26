@@ -33,7 +33,7 @@ class PageTsConfigIncludes {
   private async registerEventListeners(): Promise<void> {
     await DocumentService.ready();
 
-    document.querySelectorAll('.t3js-pagetsconfig-includes-modal').forEach((link: HTMLAnchorElement): void => {
+    document.querySelectorAll<HTMLAnchorElement>('.t3js-pagetsconfig-includes-modal').forEach((link): void => {
       link.addEventListener('click', (e: Event): void => {
         e.preventDefault();
 

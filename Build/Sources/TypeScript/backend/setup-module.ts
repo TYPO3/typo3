@@ -35,8 +35,8 @@ class SetupModule {
         });
       element.dispatchEvent(clickEvent);
     }).delegateTo(document, '[data-event="click"][data-event-name]');
-    document.querySelectorAll('[data-setup-avatar-field]')
-      .forEach((fieldElement: HTMLElement): void => {
+    document.querySelectorAll<HTMLElement>('[data-setup-avatar-field]')
+      .forEach((fieldElement): void => {
         const fieldName = fieldElement.dataset.setupAvatarField;
         const clearElement = document.getElementById('clear_button_' + fieldName);
         const addElement = document.getElementById('add_button_' + fieldName);

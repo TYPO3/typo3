@@ -158,7 +158,7 @@ class ViewPage {
       this.persistCurrentPreset();
     }).bindTo(document.querySelector(Selectors.changeOrientationSelector));
 
-    [this.inputCustomWidth, this.inputCustomHeight].forEach((customDimensionControl: HTMLInputElement): void => {
+    [this.inputCustomWidth, this.inputCustomHeight].forEach((customDimensionControl): void => {
       new RegularEvent('input', (e: Event): void => {
         const input = e.target as HTMLInputElement;
         input.valueAsNumber = Math.round(parseInt(input.value, 10));

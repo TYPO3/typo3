@@ -189,7 +189,7 @@ function insertElementsModalSetup(
       ) {
         modalContent.querySelectorAll(
           getHelper().getDomElementDataAttribute('fullElementType', 'bracesWithKey')
-        ).forEach((el: Element) => {
+        ).forEach((el) => {
           const elementType = el.getAttribute(getHelper().getDomElementDataAttribute('elementType'));
           const isEnabled = configuration[key].some((type) => type === elementType);
           if (!isEnabled) {

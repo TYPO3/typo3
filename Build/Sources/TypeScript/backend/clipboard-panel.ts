@@ -105,7 +105,7 @@ export class ClipboardPanel extends LitElement {
               <div class="table-fit">
                 <table class="table">
                   <tbody>
-                    ${clipboardData.tabs.map((tab: ClipboardTab): TemplateResult => this.renderTab(tab, clipboardData))}
+                    ${clipboardData.tabs.map((tab): TemplateResult => this.renderTab(tab, clipboardData))}
                   </tbody>
                 </table>
               </div>
@@ -166,7 +166,7 @@ export class ClipboardPanel extends LitElement {
           `}
         </td>
       </tr>
-      ${clipboardData.current === tab.identifier && tab.items ? tab.items.map((tabItem: ClipboardTabItem): TemplateResult => this.renderTabItem(tabItem, tab.identifier, clipboardData)) : nothing}
+      ${clipboardData.current === tab.identifier && tab.items ? tab.items.map((tabItem): TemplateResult => this.renderTabItem(tabItem, tab.identifier, clipboardData)) : nothing}
     `;
   }
 

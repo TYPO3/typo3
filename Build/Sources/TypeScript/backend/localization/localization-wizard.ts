@@ -48,7 +48,7 @@ export interface LocalizationDataStore extends DataStore {
 type LocalizationDataStoreKey = keyof LocalizationDataStore;
 
 export interface LocalizationContext {
-  wizard: Wizard;
+  wizard: Wizard<LocalizationDataStore>;
   targetLanguage: number;
   recordType: string;
   recordUid: number;
@@ -72,13 +72,13 @@ export class LocalizationWizard extends LitElement {
   @property({ type: Number, attribute: 'record-uid' }) recordUid: number;
   @property({ type: Number, attribute: 'target-language' }) targetLanguage?: number;
 
-  @query('typo3-backend-wizard') wizard!: Wizard;
+  @query('typo3-backend-wizard') wizard!: Wizard<LocalizationDataStore>;
 
   @state() steps: WizardStepInterface[] = [];
   @state() submissionService: SubmissionServiceInterface;
 
   protected readonly recordInfoTask = new Task(this, {
-    task: async ([recordType, recordUid]: [string, number]): Promise<RecordInfo> => {
+    task: async ([recordType, recordUid]): Promise<RecordInfo> => {
       try {
         const response = await new AjaxRequest(TYPO3.settings.ajaxUrls.wizard_localization_get_record).withQueryArguments({
           recordType: recordType,
@@ -97,7 +97,7 @@ export class LocalizationWizard extends LitElement {
         throw error;
       }
     },
-    args: () => [this.recordType, this.recordUid],
+    args: () => [this.recordType, this.recordUid] as const,
   });
 
   override connectedCallback() {

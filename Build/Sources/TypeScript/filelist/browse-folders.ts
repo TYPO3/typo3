@@ -72,7 +72,7 @@ class BrowseFolders {
       return;
     }
     const selectedItems: ResourceInterface[] = [];
-    items.forEach((checkbox: HTMLInputElement) => {
+    items.forEach((checkbox) => {
       if (checkbox.checked) {
         const element = checkbox.closest(FileListActionSelector.elementSelector) as HTMLInputElement;
         const resource = FileListActionUtility.getResourceForElement(element);
@@ -84,7 +84,7 @@ class BrowseFolders {
     if (!selectedItems.length) {
       return;
     }
-    selectedItems.forEach(function (resource: ResourceInterface) {
+    selectedItems.forEach(function (resource) {
       BrowseFolders.insertElement(resource.identifier);
     });
     ElementBrowser.focusOpenerAndClose();

@@ -129,8 +129,8 @@ function createFormatter(label: string): IntlMessageFormat {
 }
 
 const formatters: Formatters = {
-  getNumberFormat: memoize('number', (locale, opts) => new Intl.NumberFormat(locale, opts)),
-  getDateTimeFormat: memoize('datetime', (locale, opts) => {
+  getNumberFormat: memoize('number', (locale?: string | string[], opts?: Intl.NumberFormatOptions) => new Intl.NumberFormat(locale, opts)),
+  getDateTimeFormat: memoize('datetime', (locale?: Intl.LocalesArgument, opts?: Intl.DateTimeFormatOptions) => {
     const { dateStyle, timeStyle, timeZone } = opts;
 
     // Apply configured TYPO3 date format to the "medium" preset
@@ -152,10 +152,10 @@ const formatters: Formatters = {
 
     return new Intl.DateTimeFormat(locale, { dateStyle, timeStyle, timeZone });
   }),
-  getPluralRules: memoize('date', (locale, opts) => new Intl.PluralRules(locale, opts)),
+  getPluralRules: memoize('date', (locale?: Intl.LocalesArgument, opts?: Intl.PluralRulesOptions) => new Intl.PluralRules(locale, opts)),
 };
 
-type Factory = (...args: unknown[]) => object;
+type Factory = (...args: never[]) => object;
 const cache: Record<string, object> = {};
 /**
  * Cache the (object) result of a factory function,

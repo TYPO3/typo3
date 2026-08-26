@@ -96,7 +96,7 @@ export class CspReports extends LitElement {
   @state() selectedReport: SummarizedCspReport | null = null;
   @state() suggestions: MutationSuggestion[] = [];
 
-  private peripheralEvent: RegularEvent;
+  private peripheralEvent: RegularEvent<Event, HTMLElement>;
   private previouslyFocusedRow: HTMLElement | null = null;
 
   public override connectedCallback(): void {
@@ -154,7 +154,7 @@ export class CspReports extends LitElement {
                 ${this.reports.length === 0 ? html`
                   <tr><td colspan="5">${labels.get('module.label.noEntriesAvailable')}</td></tr>
                 ` : nothing}
-                ${this.reports.map((report: SummarizedCspReport) => html`
+                ${this.reports.map((report) => html`
                   <tr class=${classMap({ 'table-info': this.selectedReport === report })} data-mutation-group=${report.mutationHashes.join('-')}
                       @click=${() => this.selectReport(report)}
                       @keydown=${(e: KeyboardEvent) => this.handleReportKeydown(e, report)}
@@ -197,7 +197,7 @@ export class CspReports extends LitElement {
             </span>
             ${labels.get('module.label.all')}
           </button>
-          ${this.scopes.map((scope: string) => html`
+          ${this.scopes.map((scope) => html`
             <li>
               <button class="dropdown-item dropdown-item-spaced" title="${scope}" @click=${() => this.selectScope(scope)}>
                 <span class="${scope === this.selectedScope ? 'text-primary' : '' }">
@@ -272,10 +272,10 @@ export class CspReports extends LitElement {
               <h3>${labels.get('module.label.suggestions')}</h3>
             </div>
           ` : nothing}
-          ${this.suggestions.map((suggestion: MutationSuggestion) => html`
+          ${this.suggestions.map((suggestion) => html`
             <div class="card-body">
               <h4>${suggestion.label || suggestion.identifier}</h4>
-              ${suggestion.collection.mutations.map((mutation: Mutation) => html`
+              ${suggestion.collection.mutations.map((mutation) => html`
                 <p>
                   <i>${mutation.mode}</i>
                   <code>${mutation.directive}: ${mutation.sources.join(' ')}</code>
@@ -407,7 +407,7 @@ export class CspReports extends LitElement {
     if (uuids.includes(this.selectedReport?.uuid)) {
       this.selectedReport = null;
     }
-    this.reports = this.reports.filter((report: SummarizedCspReport) => !uuids.includes(report.uuid));
+    this.reports = this.reports.filter((report) => !uuids.includes(report.uuid));
   }
 
   private invokeFetchReportsAction(): Promise<SummarizedCspReport[]> {
@@ -424,8 +424,8 @@ export class CspReports extends LitElement {
 
   private invokeMutateReportAction(report: SummarizedCspReport, suggestion: MutationSuggestion) {
     const summaries = this.reports
-      .filter((other: SummarizedCspReport) => other.mutationHashes.includes(suggestion.hash))
-      .map((other: SummarizedCspReport) => other.summary);
+      .filter((other) => other.mutationHashes.includes(suggestion.hash))
+      .map((other) => other.summary);
     return (new AjaxRequest(this.controlUri))
       .post({ action: 'mutateReport', scope: report.scope, hmac: suggestion.hmac, suggestion, summaries })
       .then((response: AjaxResponse) => response.resolve('application/json'))

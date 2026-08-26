@@ -17,13 +17,13 @@ import type { Listener } from './event-interface';
 /**
  * Throttles the event listener to be called only after a defined time during the event's execution over time.
  */
-class ThrottleEvent extends RegularEvent {
-  constructor(eventName: string, callback: Listener, limit: number) {
+class ThrottleEvent<E extends Event = Event, T extends Element = Element> extends RegularEvent<E, T> {
+  constructor(eventName: string, callback: Listener<E, T>, limit: number) {
     super(eventName, callback);
     this.callback = this.throttle(callback, limit);
   }
 
-  private throttle(callback: Listener, limit: number): Listener {
+  private throttle(callback: Listener<E, T>, limit: number): Listener<E, T> {
     let eventData: unknown[] | null = null;
     let intervalId: number | null = null;
 
@@ -41,7 +41,7 @@ class ThrottleEvent extends RegularEvent {
           intervalId = null;
           return;
         }
-        callback.apply(this, eventData);
+        callback.apply(this, eventData as Parameters<Listener<E, T>>);
         eventData = null;
       };
       // immediate dispatch, no need to wait as no timer is active

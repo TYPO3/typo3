@@ -55,7 +55,7 @@ class Presets extends AbstractInteractableModule {
 
     // Automatically select the custom preset if a value in one of its input fields is changed
 
-    currentModal.querySelectorAll('.t3js-custom-preset').forEach((element: HTMLInputElement) => {
+    currentModal.querySelectorAll<HTMLInputElement>('.t3js-custom-preset').forEach((element) => {
       new RegularEvent('input', (event: Event, target: HTMLElement): void => {
         currentModal.querySelector<HTMLInputElement>(`#${target.dataset.radio}`).checked = true;
       }).delegateTo(element, '.t3js-custom-preset');
@@ -128,7 +128,7 @@ class Presets extends AbstractInteractableModule {
       async (response: AjaxResponse): Promise<void> => {
         const data: PresetsWrittenResponse = await response.resolve();
         if (data.success === true && Array.isArray(data.status)) {
-          data.status.forEach((element: MessageInterface): void => {
+          data.status.forEach((element): void => {
             Notification.showMessage(element.title, element.message, element.severity);
           });
         } else {

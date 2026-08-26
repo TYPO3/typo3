@@ -60,7 +60,7 @@ class LocalConfiguration extends AbstractInteractableModule {
       const panels = modalContent.querySelectorAll<HTMLElement>('.panel-collapse');
       this.toggleAll = !this.toggleAll;
       const action = this.toggleAll ? 'show' : 'hide';
-      panels.forEach((panel: HTMLElement) => {
+      panels.forEach((panel) => {
         const toggleButton: HTMLElement = modalContent.querySelector(`[data-bs-target="#${panel.id}"]`);
         if (toggleButton) {
           toggleButton.classList.toggle('collapsed', !this.toggleAll);
@@ -152,7 +152,7 @@ class LocalConfiguration extends AbstractInteractableModule {
   }
 
   private search(typedQuery: string): void {
-    this.currentModal.querySelectorAll(Identifiers.item).forEach((element: HTMLElement): void => {
+    this.currentModal.querySelectorAll<HTMLElement>(Identifiers.item).forEach((element): void => {
       if (element.textContent.toLowerCase().trim().includes(typedQuery.toLowerCase())) {
         element.classList.remove('hidden');
         element.classList.add('searchhit');
@@ -162,7 +162,7 @@ class LocalConfiguration extends AbstractInteractableModule {
       }
     });
 
-    this.currentModal.querySelectorAll('.searchhit').forEach((resultElement: HTMLElement) => {
+    this.currentModal.querySelectorAll<HTMLElement>('.searchhit').forEach((resultElement) => {
       const collapseElement = resultElement.closest('.panel-collapse');
       Collapse.getOrCreateInstance(collapseElement).show();
     });
@@ -194,7 +194,7 @@ class LocalConfiguration extends AbstractInteractableModule {
     const configurationValues: Record<string, string | Record<string, string>> = {};
     const collectedArrayKeys: Record<string, string[]> = {};
     const collectedArrayValues: Record<string, string[]> = {};
-    this.currentModal.querySelectorAll('.t3js-localConfiguration-pathValue').forEach((element: HTMLInputElement): void => {
+    this.currentModal.querySelectorAll<HTMLInputElement>('.t3js-localConfiguration-pathValue').forEach((element): void => {
       if (element.type === 'checkbox') {
         if (element.checked) {
           configurationValues[element.dataset.path] = '1';
@@ -287,7 +287,7 @@ class LocalConfiguration extends AbstractInteractableModule {
     }).then(async (response: AjaxResponse): Promise<void> => {
       const data: LocalConfigurationWrittenResponse = await response.resolve();
       if (data.success === true && Array.isArray(data.status)) {
-        data.status.forEach((element: MessageInterface): void => {
+        data.status.forEach((element): void => {
           Notification.showMessage(element.title, element.message, element.severity);
         });
       } else {
