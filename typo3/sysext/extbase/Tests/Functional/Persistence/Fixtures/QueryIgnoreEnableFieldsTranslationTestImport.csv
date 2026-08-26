@@ -1,0 +1,17 @@
+"pages"
+,"uid","pid","sorting","deleted","title"
+,1,0,256,0,"FunctionalTest"
+,20,1,256,0,"Ignore enable fields translation test"
+"tx_blogexample_domain_model_blog"
+,"uid","pid","title","sys_language_uid","l18n_parent","administrator","description","deleted","hidden","posts","logo"
+,1,20,"Blog 1",0,0,0,,0,0,2,0
+,2,20,"Blog 1 DA",1,1,0,,0,0,2,0
+"tx_blogexample_domain_model_post"
+,"uid","pid","sorting","title","sys_language_uid","l18n_parent","blog","tags","comments","content","author","second_author","reviewer","related_posts","deleted","hidden"
+,1,20,256,"Post 1",0,0,1,0,0,"Content 1",1,1,1,0,0,0
+,11,20,256,"Post 1 - DA",1,1,2,0,0,"Content 1 DA",1,1,1,0,0,1
+,2,20,512,"Post 2",0,0,1,0,0,"Content 2",1,1,1,0,0,0
+,12,20,512,"Post 2 - DA",1,2,2,0,0,"Content 2 DA",1,1,1,0,0,0
+"tx_blogexample_domain_model_person"
+,"uid","pid","firstname","lastname","sys_language_uid","l10n_parent","email","tags","tags_special","deleted","hidden"
+,1,20,"John","Doe",0,0,,0,0,0,0
