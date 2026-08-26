@@ -104,7 +104,7 @@ class BrowseFiles {
     }
 
     const selectedItems: ResourceInterface[] = [];
-    items.forEach((checkbox: HTMLInputElement) => {
+    items.forEach((checkbox) => {
       if (checkbox.checked) {
         const element = checkbox.closest(FileListActionSelector.elementSelector) as HTMLInputElement;
         const resource = FileListActionUtility.getResourceForElement(element);

@@ -17,6 +17,7 @@
         "strict": false,
         "noUncheckedSideEffectImports": false,
         "strictBindCallApply": true,
+        "strictFunctionTypes": true,
         "strictBuiltinIteratorReturn": true,
         "experimentalDecorators": true,
         "useDefineForClassFields": false,

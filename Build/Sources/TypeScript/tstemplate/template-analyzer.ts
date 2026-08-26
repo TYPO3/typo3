@@ -33,7 +33,7 @@ class TemplateAnalyzer {
   private async registerEventListeners(): Promise<void> {
     await DocumentService.ready();
 
-    document.querySelectorAll('.t3js-typoscript-analyzer-modal').forEach((link: HTMLAnchorElement): void => {
+    document.querySelectorAll<HTMLAnchorElement>('.t3js-typoscript-analyzer-modal').forEach((link): void => {
       link.addEventListener('click', (e: Event): void => {
         e.preventDefault();
 

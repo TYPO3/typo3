@@ -102,12 +102,12 @@ export class DoktypeStep implements WizardStepInterface, WizardStepValueInterfac
         }
 
         const filteredDoktypes = doktypes
-          .filter((doktype: Doktype) => doktype.value === '--div--' || doktype.label.toLowerCase().includes(this.searchTerm.toLowerCase()));
+          .filter((doktype) => doktype.value === '--div--' || doktype.label.toLowerCase().includes(this.searchTerm.toLowerCase()));
 
         const groups: DoktypeGroup[] = [];
         let currentGroup: DoktypeGroup = { label: '', items: [] };
 
-        filteredDoktypes.forEach((doktype: Doktype) => {
+        filteredDoktypes.forEach((doktype) => {
           if (doktype.value === '--div--') {
             if (currentGroup.items.length > 0) {
               groups.push(currentGroup);
@@ -147,9 +147,9 @@ export class DoktypeStep implements WizardStepInterface, WizardStepValueInterfac
             </div>
             ${finalGroups.length == 0 ? html`<div role="alert" class="alert alert-info">${labels.get('step.doktype.filter.noResults')}</div>` : nothing}
             <div class="form-check-card-container">
-              ${finalGroups.map((group: DoktypeGroup) => html`
+              ${finalGroups.map((group) => html`
                 ${group.label ? html`<h3 class="form-check-card-container-headline">${group.label}</h3>` : nothing}
-                ${group.items.map((doktype: Doktype) => html`
+                ${group.items.map((doktype) => html`
                   <div class="form-check form-check-type-card">
                     <input
                       class="form-check-input"
@@ -203,7 +203,7 @@ export class DoktypeStep implements WizardStepInterface, WizardStepValueInterfac
       return [];
     }
 
-    const selectedDoktype = this.task.value.find((doktype: Doktype) => doktype.value === selectedDoktypeKey);
+    const selectedDoktype = this.task.value.find((doktype) => doktype.value === selectedDoktypeKey);
     if (!selectedDoktype) {
       return [];
     }

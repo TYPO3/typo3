@@ -44,7 +44,7 @@ export class ResultContainer extends LitElement {
       if (this.results.length === 0) {
         content = html`<div class="alert alert-info">${labels.get('search.no_records_found')}</div>`;
       } else {
-        content = html`${this.results.map((result: ResultItemInterface) => this.renderResultItem(result))}`;
+        content = html`${this.results.map((result) => this.renderResultItem(result))}`;
       }
     }
 

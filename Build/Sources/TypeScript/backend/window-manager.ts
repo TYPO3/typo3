@@ -20,12 +20,12 @@ class WindowManager {
   private windows: {[key: string]: Window} = {};
 
   // alias for `localOpen`
-  public open(...params: any[]): Window {
+  public open(...params: Parameters<WindowManager['_localOpen']>): Window {
     return this._localOpen.apply(null, params);
   }
 
   // @todo Not implemented, yet
-  public globalOpen(...params: any[]): Window {
+  public globalOpen(...params: Parameters<WindowManager['_localOpen']>): Window {
     return this._localOpen.apply(null, params);
   }
 

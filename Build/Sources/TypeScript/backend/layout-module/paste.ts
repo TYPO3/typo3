@@ -99,7 +99,7 @@ class Paste {
    */
   private activatePasteIcons(): void {
     if (this.pasteAfterLinkTemplate && this.pasteIntoLinkTemplate) {
-      document.querySelectorAll('.t3js-page-new-ce').forEach((el: HTMLElement): void => {
+      document.querySelectorAll<HTMLElement>('.t3js-page-new-ce').forEach((el): void => {
         if (!isContentTypeAllowedForTarget(this.itemOnClipboardCType, el)) {
           return;
         }

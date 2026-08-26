@@ -57,8 +57,8 @@ export default abstract class AbstractClientStorage {
     }
     prefix = this.keyPrefix + prefix;
     Object.keys(this.storage)
-      .filter((key: string) => key.startsWith(prefix))
-      .forEach((key: string) => this.storage.removeItem(key));
+      .filter((key) => key.startsWith(prefix))
+      .forEach((key) => this.storage.removeItem(key));
   }
 
   public clear(): void {

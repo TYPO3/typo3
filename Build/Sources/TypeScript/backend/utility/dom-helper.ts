@@ -20,12 +20,12 @@ export default class DomHelper {
   /**
    * Get all parent elements matching the passed `selector`
    */
-  public static parents(el: Element, selector: string): Element[] {
-    const parents = [];
+  public static parents<T extends Element = Element>(el: Element, selector: string): T[] {
+    const parents: T[] = [];
     let closest;
     while ((closest = el.parentElement.closest(selector)) !== null) {
       el = closest;
-      parents.push(closest);
+      parents.push(closest as T);
     }
 
     return parents;

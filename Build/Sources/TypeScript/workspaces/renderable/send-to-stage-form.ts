@@ -84,7 +84,7 @@ export class SendToStageFormElement extends LitElement {
   private renderRecipientCheckboxes(): TemplateResult[] {
     const renderResult: TemplateResult[] = [];
 
-    this.data.sendMailTo?.forEach((recipient: SendToStageRecipient) => {
+    this.data.sendMailTo?.forEach((recipient) => {
       renderResult.push(html`
         <div class="form-check">
           <input

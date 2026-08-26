@@ -264,7 +264,7 @@ export default class Filelist {
       return;
     }
     const list: Array<string> = [];
-    (eventDetails.checkboxes as NodeListOf<HTMLInputElement>).forEach((checkbox: HTMLInputElement) => {
+    (eventDetails.checkboxes as NodeListOf<HTMLInputElement>).forEach((checkbox) => {
       const checkboxContainer: HTMLElement = checkbox.closest(MultiRecordSelectionSelectors.elementSelector);
       if (checkboxContainer !== null && checkboxContainer.dataset[configuration.idField]) {
         list.push(checkboxContainer.dataset[configuration.idField]);
@@ -276,7 +276,7 @@ export default class Filelist {
       url.searchParams.set('edit[' + configuration.table + '][' + list.join(',') + ']', 'edit');
       url.searchParams.set('returnUrl', Filelist.getReturnUrl(configuration.returnUrl || ''));
       const columnsOnly = configuration.columnsOnly || [];
-      columnsOnly.forEach((column: string, i: number): void => {
+      columnsOnly.forEach((column, i): void => {
         url.searchParams.set('columnsOnly[' + configuration.table + '][' + i + ']', column);
       });
       window.location.href = url.toString();
@@ -293,7 +293,7 @@ export default class Filelist {
     const configuration: DownloadConfiguration = (eventDetails.configuration as DownloadConfiguration);
 
     const filesAndFolders: ResourceInterface[] = [];
-    eventDetails.checkboxes.forEach((checkbox: HTMLInputElement) => {
+    eventDetails.checkboxes.forEach((checkbox) => {
       if (checkbox.checked) {
         const element = checkbox.closest(FileListActionSelector.elementSelector) as HTMLInputElement;
         const resource = FileListActionUtility.getResourceForElement(element);
@@ -335,7 +335,7 @@ export default class Filelist {
     const progressBar = this.getProgress();
     progressBar.start();
 
-    const itemIdentifiers = items.map((resource: ResourceInterface) => resource.identifier);
+    const itemIdentifiers = items.map((resource) => resource.identifier);
     (new AjaxRequest(downloadUrl)).post({ items: itemIdentifiers })
       .then(async (response: AjaxResponse): Promise<void> => {
         let fileName = response.response.headers.get('Content-Disposition');
@@ -408,7 +408,7 @@ export default class Filelist {
   }
 
   private readonly registerPaginationEvents = (): void => {
-    document.querySelectorAll('.t3js-filelist-paging').forEach((trigger: HTMLInputElement) => {
+    document.querySelectorAll<HTMLInputElement>('.t3js-filelist-paging').forEach((trigger) => {
       trigger.addEventListener('keyup', (e: KeyboardEvent) => {
         e.preventDefault();
         let value = Number(trigger.value);

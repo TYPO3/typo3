@@ -51,7 +51,7 @@ class Scheduler {
    * Registers listeners
    */
   private initializeEvents(): void {
-    document.querySelectorAll('[data-scheduler-table]').forEach((table: HTMLTableElement) => {
+    document.querySelectorAll<HTMLTableElement>('[data-scheduler-table]').forEach((table) => {
       new SortableTable(table);
     });
     new RegularEvent('show.bs.collapse', this.toggleCollapseIcon.bind(this)).bindTo(document);
@@ -79,7 +79,7 @@ class Scheduler {
       return;
     }
     const taskIds: Array<string> = [];
-    ((event.detail as ActionEventDetails).checkboxes as NodeListOf<HTMLInputElement>).forEach((checkbox: HTMLInputElement) => {
+    ((event.detail as ActionEventDetails).checkboxes as NodeListOf<HTMLInputElement>).forEach((checkbox) => {
       const checkboxContainer: HTMLElement = checkbox.closest(MultiRecordSelectionSelectors.elementSelector);
       if (checkboxContainer !== null && checkboxContainer.dataset.taskId) {
         taskIds.push(checkboxContainer.dataset.taskId);

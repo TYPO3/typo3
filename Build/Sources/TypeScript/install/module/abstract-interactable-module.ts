@@ -59,7 +59,7 @@ export abstract class AbstractInteractableModule {
   }
 
   protected setModalButtonsState(interactable: boolean): void {
-    this.getModalFooter()?.querySelectorAll('button').forEach((elem: HTMLButtonElement): void => {
+    this.getModalFooter()?.querySelectorAll('button').forEach((elem): void => {
       this.setModalButtonState(elem, interactable);
     });
   }
@@ -89,7 +89,7 @@ export abstract class AbstractInteractableModule {
 
     const progressBar = target.ownerDocument.createElement('typo3-backend-progress-bar');
     if (typeof properties === 'object') {
-      Object.keys(properties).forEach((key: keyof WritablePart<ProgressBarElement>) => {
+      (Object.keys(properties) as (keyof WritablePart<ProgressBarElement>)[]).forEach((key) => {
         (progressBar[key] as unknown) = properties[key];
       });
     }

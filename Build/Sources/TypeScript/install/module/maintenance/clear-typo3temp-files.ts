@@ -23,9 +23,9 @@ import type { ModalElement } from '@typo3/backend/modal';
 
 type TemporaryAssetsListResponse = ModuleLoadedResponseWithButtons & {
   stats: {
-    description: string,
-    name: string,
-    rowCount: number,
+    directory: string,
+    numberOfFiles: number,
+    storageUid?: number,
   }[]
 };
 
@@ -78,14 +78,14 @@ class ClearTypo3tempFiles extends AbstractInteractableModule {
             modalContent.innerHTML = data.html;
             Modal.setButtons(data.buttons);
             if (Array.isArray(data.stats) && data.stats.length > 0) {
-              data.stats.forEach((element: any): void => {
+              data.stats.forEach((element): void => {
                 if (element.numberOfFiles > 0) {
                   const aStat = (modalContent.querySelector(Identifiers.statTemplate) as HTMLTemplateElement).content.cloneNode(true) as HTMLElement;
-                  aStat.querySelector<HTMLElement>(Identifiers.statNumberOfFiles).innerText = (element.numberOfFiles);
-                  aStat.querySelector<HTMLElement>(Identifiers.statDirectory).innerText = (element.directory);
+                  aStat.querySelector<HTMLElement>(Identifiers.statNumberOfFiles).innerText = String(element.numberOfFiles);
+                  aStat.querySelector<HTMLElement>(Identifiers.statDirectory).innerText = element.directory;
                   aStat.querySelector<HTMLElement>(Identifiers.deleteTrigger).setAttribute('data-folder', element.directory);
                   if (element.storageUid !== undefined) {
-                    aStat.querySelector<HTMLElement>(Identifiers.deleteTrigger).setAttribute('data-storage-uid', element.storageUid);
+                    aStat.querySelector<HTMLElement>(Identifiers.deleteTrigger).setAttribute('data-storage-uid', String(element.storageUid));
                   }
                   modalContent.querySelector(Identifiers.statContainer).append(aStat);
                 }
@@ -119,7 +119,7 @@ class ClearTypo3tempFiles extends AbstractInteractableModule {
         async (response: AjaxResponse): Promise<void> => {
           const data: TemporaryAssetsClearedResponse = await response.resolve();
           if (data.success === true && Array.isArray(data.status)) {
-            data.status.forEach((element: MessageInterface): void => {
+            data.status.forEach((element): void => {
               Notification.success(element.title, element.message);
             });
             this.getStats();

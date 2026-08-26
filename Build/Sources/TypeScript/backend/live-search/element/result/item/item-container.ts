@@ -45,13 +45,13 @@ export class ItemContainer extends LitElement {
 
   protected override render(): TemplateResult {
     const groupedResults: GroupedResultItems = {};
-    const filteredResults = this.results.filter((result: ResultItemInterface): boolean => result !== null);
+    const filteredResults = this.results.filter((result): boolean => result !== null);
     if (filteredResults.length !== this.results.length) {
       console.warn(
         'The result set contained "null" values, indicating something went wrong while building the search results. Affected values were removed to no break the user interface.'
       );
     }
-    filteredResults.forEach((result: ResultItemInterface): void => {
+    filteredResults.forEach((result): void => {
       if (!(result.typeLabel in groupedResults)) {
         groupedResults[result.typeLabel] = [result];
       } else {
@@ -69,7 +69,7 @@ export class ItemContainer extends LitElement {
     for (const [type, results] of Object.entries(groupedResults)) {
       const countElements = results.length;
       items.push(html`<h6 class="livesearch-result-item-group-label">${type} (${countElements})</h6>`);
-      items.push(...results.map((result: ResultItemInterface) => html`${until(
+      items.push(...results.map((result) => html`${until(
         this.renderResultItem(result),
         html`<typo3-backend-spinner></typo3-backend-spinner>`
       )}`));
@@ -122,7 +122,7 @@ export class ItemContainer extends LitElement {
   }
 
   private onScroll(e: Event): void {
-    this.querySelectorAll('.livesearch-result-item-group-label').forEach((groupLabel: HTMLElement): void => {
+    this.querySelectorAll<HTMLElement>('.livesearch-result-item-group-label').forEach((groupLabel): void => {
       groupLabel.classList.toggle('sticky', groupLabel.offsetTop <= (e.target as HTMLElement).scrollTop);
     });
   }

@@ -114,3 +114,9 @@ class EventHandler {
 }
 
 export default new EventHandler();
+
+declare global {
+  interface DocumentEventMap {
+    'typo3:redirects:slugChanged': CustomEvent<SlugChangeDetail>;
+  }
+}

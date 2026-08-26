@@ -117,7 +117,7 @@ class BackendLogin {
         const result = await response.resolve('application/json') as PreflightResponse;
         if (result.capabilities.referrer !== true) {
           document.querySelectorAll(this.options.errorNoReferrer)
-            .forEach((element: HTMLElement): void => element.classList.remove('hidden'));
+            .forEach((element): void => element.classList.remove('hidden'));
         }
       });
   }
@@ -186,7 +186,7 @@ class BackendLogin {
     }
 
     (document.querySelectorAll('.t3js-clearable') as NodeListOf<HTMLInputElement>).forEach(
-      (clearableField: HTMLInputElement) => clearableField.clearable(),
+      (clearableField) => clearableField.clearable(),
     );
 
     const passwordField: HTMLInputElement = document.querySelector(this.options.passwordField);

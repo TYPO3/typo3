@@ -85,7 +85,7 @@ class ImageProcessing extends AbstractInteractableModule {
 
     const twinImageTemplate = this.findInModal(Identifiers.twinImageTemplate) as HTMLTemplateElement;
     const promises: Array<Promise<void>> = [];
-    modalContent.querySelectorAll(Identifiers.testContainer).forEach((container: HTMLElement): void => {
+    modalContent.querySelectorAll<HTMLElement>(Identifiers.testContainer).forEach((container): void => {
       container.replaceChildren(InfoBox.create(Severity.loading, 'Loading...'));
       const request = (new AjaxRequest(Router.getUrl(container.dataset.test)))
         .get({ cache: 'no-cache' })
@@ -95,7 +95,7 @@ class ImageProcessing extends AbstractInteractableModule {
             if (data.success === true) {
               container.innerHTML = '';
               if (Array.isArray(data.status)) {
-                data.status.forEach((element: MessageInterface): void => {
+                data.status.forEach((element): void => {
                   container.append(InfoBox.create(element.severity, element.title, element.message));
                 });
               }
@@ -103,7 +103,7 @@ class ImageProcessing extends AbstractInteractableModule {
               if (data.fileExists === true) {
                 aTwin.querySelector('img.reference')?.setAttribute('src', data.referenceFile);
                 aTwin.querySelector('img.result')?.setAttribute('src', data.outputFile);
-                aTwin.querySelectorAll(Identifiers.twinImages).forEach((image: HTMLElement) => image.hidden = false);
+                aTwin.querySelectorAll<HTMLElement>(Identifiers.twinImages).forEach((image) => image.hidden = false);
               }
               if (Array.isArray(data.command) && data.command.length > 0) {
                 const commandContainer: HTMLElement = aTwin.querySelector(Identifiers.commandContainer);
@@ -111,7 +111,7 @@ class ImageProcessing extends AbstractInteractableModule {
                   commandContainer.hidden = false;
                 }
                 const commandText: Array<string> = [];
-                data.command.forEach((aElement: any): void => {
+                data.command.forEach((aElement): void => {
                   commandText.push('<strong>Command:</strong>\n' + aElement[1]);
                   if (aElement.length === 3) {
                     commandText.push('<strong>Result:</strong>\n' + aElement[2]);

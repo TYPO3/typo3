@@ -75,7 +75,7 @@ class ExtensionConfiguration extends AbstractInteractableModule {
   }
 
   private search(typedQuery: string): void {
-    this.currentModal.querySelectorAll('.search-item').forEach((element: Element): void => {
+    this.currentModal.querySelectorAll('.search-item').forEach((element): void => {
       if (typedQuery === '' || element.textContent.toLowerCase().trim().includes(typedQuery.toLowerCase())) {
         element.classList.add('searchhit');
         element.classList.remove('hidden');
@@ -84,7 +84,7 @@ class ExtensionConfiguration extends AbstractInteractableModule {
         element.classList.add('hidden');
       }
     });
-    this.currentModal.querySelectorAll('.searchhit').forEach((resultElement: HTMLElement) => {
+    this.currentModal.querySelectorAll<HTMLElement>('.searchhit').forEach((resultElement) => {
       Collapse.getOrCreateInstance(resultElement).show();
     });
   }
@@ -141,7 +141,7 @@ class ExtensionConfiguration extends AbstractInteractableModule {
         async (response: AjaxResponse): Promise<void> => {
           const data: ExtensionConfigurationWrittenResponse = await response.resolve();
           if (data.success === true && Array.isArray(data.status)) {
-            data.status.forEach((element: MessageInterface): void => {
+            data.status.forEach((element): void => {
               Notification.showMessage(element.title, element.message, element.severity);
             });
             if (document.body.dataset.context === 'backend') {
@@ -167,7 +167,7 @@ class ExtensionConfiguration extends AbstractInteractableModule {
       topLevelModuleImport('@typo3/install/renderable/offset-group.js');
     }
 
-    this.currentModal.querySelectorAll('.t3js-emconf-offset').forEach((element: HTMLInputElement): void => {
+    this.currentModal.querySelectorAll<HTMLInputElement>('.t3js-emconf-offset').forEach((element): void => {
       const parent = element.parentElement;
 
       element.setAttribute('data-offsetfield-x', '#' + element.id + '_offset_x');
@@ -186,7 +186,7 @@ class ExtensionConfiguration extends AbstractInteractableModule {
       }).delegateTo(parent, '.t3js-emconf-offsetfield');
     });
 
-    this.currentModal.querySelectorAll('.t3js-emconf-wrap').forEach((element: HTMLInputElement): void => {
+    this.currentModal.querySelectorAll<HTMLInputElement>('.t3js-emconf-wrap').forEach((element): void => {
       const parent = element.parentElement;
 
       element.setAttribute('data-wrapfield-start', '#' + element.id + '_wrap_start');

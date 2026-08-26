@@ -138,7 +138,7 @@ class Backend extends Workspaces {
   private static changeCollectionChildrenState(collectionCurrent: string, check: boolean): void {
     const collectionChildren: NodeListOf<HTMLInputElement> = document.querySelectorAll(selector`tr[data-collection="${collectionCurrent}"] input[type=checkbox]`);
     if (collectionChildren.length) {
-      collectionChildren.forEach((checkbox: HTMLInputElement): void => {
+      collectionChildren.forEach((checkbox): void => {
         if (checkbox.checked !== check) {
           checkbox.checked = check;
           checkbox.dataset.manuallyChanged = 'true';
@@ -226,9 +226,9 @@ class Backend extends Workspaces {
     }).delegateTo(document, Identifiers.expandAction);
 
     new RegularEvent('click', () => {
-      const workspaceRecipients = window.top.document.querySelectorAll('.t3js-workspace-recipient');
+      const workspaceRecipients = window.top.document.querySelectorAll<HTMLInputElement>('.t3js-workspace-recipient');
 
-      workspaceRecipients.forEach((recipient: HTMLInputElement) => {
+      workspaceRecipients.forEach((recipient) => {
         if (!recipient.disabled) {
           recipient.checked = true;
         }
@@ -236,9 +236,9 @@ class Backend extends Workspaces {
     }).delegateTo(window.top.document, Identifiers.workspaceRecipientsSelectAll);
 
     new RegularEvent('click', () => {
-      const workspaceRecipients = window.top.document.querySelectorAll('.t3js-workspace-recipient');
+      const workspaceRecipients = window.top.document.querySelectorAll<HTMLInputElement>('.t3js-workspace-recipient');
 
-      workspaceRecipients.forEach((recipient: HTMLInputElement) => {
+      workspaceRecipients.forEach((recipient) => {
         if (!recipient.disabled) {
           recipient.checked = false;
         }

@@ -159,10 +159,10 @@ class BookmarkStore {
     let bookmarks = await this.getBookmarks();
 
     if (options?.accessibleOnly) {
-      bookmarks = bookmarks.filter((b: Bookmark) => b.accessible);
+      bookmarks = bookmarks.filter((b) => b.accessible);
     }
     if (options?.groupId !== undefined) {
-      bookmarks = bookmarks.filter((b: Bookmark) => b.groupId === options.groupId);
+      bookmarks = bookmarks.filter((b) => b.groupId === options.groupId);
     }
     if (options?.limit !== undefined && options.limit > 0 && bookmarks.length > options.limit) {
       bookmarks = bookmarks.slice(0, options.limit);
@@ -178,8 +178,8 @@ class BookmarkStore {
       groupSortingMap.set(group.id, group.sorting);
     });
 
-    const groupIds = [...new Set(bookmarks.map((b: Bookmark) => b.groupId))];
-    const sortedBookmarkGroupIds = groupIds.sort((a: BookmarkGroupId, b: BookmarkGroupId) => {
+    const groupIds = [...new Set(bookmarks.map((b) => b.groupId))];
+    const sortedBookmarkGroupIds = groupIds.sort((a, b) => {
       // First sort by priority (lower values first)
       const priorityA = groupPriorityMap.get(a) ?? Number.MAX_SAFE_INTEGER;
       const priorityB = groupPriorityMap.get(b) ?? Number.MAX_SAFE_INTEGER;
@@ -195,7 +195,7 @@ class BookmarkStore {
     });
 
     for (const groupId of sortedBookmarkGroupIds) {
-      const groupBookmarks = bookmarks.filter((b: Bookmark) => b.groupId === groupId);
+      const groupBookmarks = bookmarks.filter((b) => b.groupId === groupId);
       if (groupBookmarks.length > 0) {
         grouped.set(groupId, groupBookmarks);
       }

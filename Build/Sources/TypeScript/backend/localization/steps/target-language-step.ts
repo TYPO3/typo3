@@ -36,7 +36,7 @@ export class TargetLanguageStep implements WizardStepInterface, WizardStepValueI
 
   constructor(private readonly context: LocalizationContext) {
     this.task = new Task(this.context.wizard, {
-      task: async ([recordType, recordUid]: [string, number]): Promise<LocalizationLanguageRecord[]> => {
+      task: async ([recordType, recordUid]): Promise<LocalizationLanguageRecord[]> => {
         const response = await new AjaxRequest(TYPO3.settings.ajaxUrls.wizard_localization_get_targets).withQueryArguments({
           recordType: recordType,
           recordUid: recordUid,
@@ -51,7 +51,7 @@ export class TargetLanguageStep implements WizardStepInterface, WizardStepValueI
 
         return targetLanguages;
       },
-      args: () => [this.context.recordType, this.context.recordUid],
+      args: () => [this.context.recordType, this.context.recordUid] as const,
       autoRun: false
     });
   }
@@ -120,7 +120,7 @@ export class TargetLanguageStep implements WizardStepInterface, WizardStepValueI
             <h2 class="h4">${localizationWizardLabels.get('step.target_language.headline')}</h2>
             <p>${localizationWizardLabels.get('step.target_language.description')}</p>
             <div class="form-check-card-container">
-              ${languages.map((language: LocalizationLanguageRecord) => html`
+              ${languages.map((language) => html`
                 <div class="form-check form-check-type-card">
                   <input
                     class="form-check-input"
@@ -171,7 +171,7 @@ export class TargetLanguageStep implements WizardStepInterface, WizardStepValueI
       return [];
     }
 
-    const selectedLanguage = this.task.value.find((lang: LocalizationLanguageRecord) => lang.uid === selectedTargetLanguage);
+    const selectedLanguage = this.task.value.find((lang) => lang.uid === selectedTargetLanguage);
     if (!selectedLanguage) {
       return [];
     }

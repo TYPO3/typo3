@@ -280,7 +280,7 @@ class ImageManipulation {
     /**
      * Assign EventListener to cropVariantTriggers
      */
-    this.cropVariantTriggers.forEach((el: HTMLElement) =>
+    this.cropVariantTriggers.forEach((el) =>
       el.addEventListener('click', (e: Event): void => {
         /**
          * Is the current cropVariantTrigger is active, bail out.
@@ -341,8 +341,8 @@ class ImageManipulation {
       new RegularEvent('click', (): void => this.openPreview(this.data))
         .delegateTo(this.currentModal, 'button[name=preview]');
     } else {
-      this.currentModal.querySelectorAll('button[name=preview]')
-        .forEach((previewButton: HTMLElement) => previewButton.style.display = 'none');
+      this.currentModal.querySelectorAll<HTMLElement>('button[name=preview]')
+        .forEach((previewButton) => previewButton.style.display = 'none');
     }
 
     /**
@@ -400,8 +400,8 @@ class ImageManipulation {
           this.syncEnabled = target.checked;
           BrowserSession.set('sync-active-' + imageUid, this.syncEnabled ? 'true' : 'false');
           if (this.syncEnabled) {
-            this.currentModal.querySelectorAll('.panel-button[data-exclude-from-sync="true"]')
-              .forEach((e: HTMLElement) => e.setAttribute('disabled', 'disabled'));
+            this.currentModal.querySelectorAll<HTMLElement>('.panel-button[data-exclude-from-sync="true"]')
+              .forEach((e) => e.setAttribute('disabled', 'disabled'));
 
             // if the currently selected crop variant is now disabled, open the first available one.
             const isDisabled = this.currentModal.querySelector('.panel-button[data-crop-variant-id="' + this.currentCropVariant.id + '"][data-exclude-from-sync="true"]') !== null;
@@ -412,8 +412,8 @@ class ImageManipulation {
               }
             }
           } else {
-            this.currentModal.querySelectorAll('.panel-button[data-exclude-from-sync]')
-              .forEach((e: HTMLElement) => e.removeAttribute('disabled'));
+            this.currentModal.querySelectorAll<HTMLElement>('.panel-button[data-exclude-from-sync]')
+              .forEach((e) => e.removeAttribute('disabled'));
           }
         }
       ).delegateTo(this.currentModal, '#sync-crop-variants');
@@ -446,7 +446,7 @@ class ImageManipulation {
     this.imageOriginalSizeFactor = parseInt(image.dataset.originalWidth, 10) / imageData.naturalWidth;
 
     // iterate over the crop variants and set up their respective preview
-    this.cropVariantTriggers.forEach((elem: HTMLElement): void => {
+    this.cropVariantTriggers.forEach((elem): void => {
       const cropVariantId: string = elem.dataset.cropVariantId;
       const cropArea: Area = this.convertRelativeToAbsoluteCropArea(
         this.data[cropVariantId].cropArea,
@@ -507,9 +507,9 @@ class ImageManipulation {
 
     if (this.syncAvailable && this.syncEnabled) {
       const data = this.data;
-      Object.keys(this.data).forEach((cropVariant: string): void => {
+      Object.keys(this.data).forEach((cropVariant): void => {
         let trigger: HTMLElement = null;
-        this.cropVariantTriggers.forEach((e: HTMLElement) => {
+        this.cropVariantTriggers.forEach((e) => {
           if (e.dataset.cropVariantId === cropVariant) {
             trigger = e;
           }
@@ -540,9 +540,9 @@ class ImageManipulation {
 
     if (this.syncAvailable && this.syncEnabled) {
       const data = this.data;
-      Object.keys(this.data).forEach((cropVariant: string): void => {
+      Object.keys(this.data).forEach((cropVariant): void => {
         let trigger: HTMLElement = null;
-        this.cropVariantTriggers.forEach((e: HTMLElement) => {
+        this.cropVariantTriggers.forEach((e) => {
           if (e.dataset.cropVariantId === cropVariant) {
             trigger = e;
           }
@@ -579,8 +579,8 @@ class ImageManipulation {
     this.setAspectRatio(selectedRatio);
     this.setCropArea(temp.cropArea);
     this.currentCropVariant = Object.assign({}, temp, cropVariant);
-    this.cropBox?.querySelectorAll(this.coverAreaSelector)?.forEach((el: HTMLElement) => el.remove());
-    this.cropBox?.querySelectorAll(this.focusAreaSelector)?.forEach((el: HTMLElement) => el.remove());
+    this.cropBox?.querySelectorAll<HTMLElement>(this.coverAreaSelector)?.forEach((el) => el.remove());
+    this.cropBox?.querySelectorAll<HTMLElement>(this.focusAreaSelector)?.forEach((el) => el.remove());
 
     // check if new cropVariant has focusArea
     if (cropVariant.focusArea) {
@@ -655,7 +655,7 @@ class ImageManipulation {
    * @param {Array<Area>} coverAreas - An array of areas to construct the cover area elements from
    */
   private initCoverAreas(container: HTMLElement, coverAreas: Area[]): void {
-    coverAreas.forEach((coverArea: Area): void => {
+    coverAreas.forEach((coverArea): void => {
       const styles = {
         height: ImageManipulation.toCssPercent(coverArea.height),
         left: ImageManipulation.toCssPercent(coverArea.x),
@@ -782,7 +782,7 @@ class ImageManipulation {
       return false;
     }
     return coverAreas
-      .some((coverArea: Area): boolean => {
+      .some((coverArea): boolean => {
         return focusArea.x < coverArea.x + coverArea.width
           && coverArea.x < focusArea.x + focusArea.width
           && focusArea.y < coverArea.y + coverArea.height
@@ -831,7 +831,7 @@ class ImageManipulation {
     const imageData: Cropper.ImageData = this.cropper.getImageData();
 
     // iterate over the crop variants and set up their respective preview
-    Object.keys(data).forEach((cropVariantId: string) => {
+    Object.keys(data).forEach((cropVariantId) => {
       const cropVariant: CropVariant = data[cropVariantId];
       const cropData: Area = this.convertRelativeToAbsoluteCropArea(cropVariant.cropArea, imageData);
 
@@ -956,8 +956,8 @@ class ImageManipulation {
 
   private renderElements(template: TemplateResult, target: HTMLElement, selector?: string): HTMLElement|null {
     const nodes = renderNodes(template);
-    const elements = Array.from(nodes).filter((node: Node): boolean => node instanceof HTMLElement);
-    elements.forEach((element: HTMLElement) => target.appendChild(element));
+    const elements = Array.from(nodes).filter((node): node is HTMLElement => node instanceof HTMLElement);
+    elements.forEach((element) => target.appendChild(element));
     return selector ? target.querySelector(selector) : null;
   }
 }

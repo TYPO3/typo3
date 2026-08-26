@@ -93,7 +93,7 @@ class SystemMaintainer extends AbstractInteractableModule {
       const data: SystemMaintainersWrittenResponse = await response.resolve();
       if (data.success === true) {
         if (Array.isArray(data.status)) {
-          data.status.forEach((element: MessageInterface): void => {
+          data.status.forEach((element): void => {
             Notification.success(element.title, element.message);
           });
         }

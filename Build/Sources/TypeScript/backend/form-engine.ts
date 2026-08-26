@@ -65,7 +65,7 @@ const enum FormAction {
   saveAndAddRecord = '_savedokaddrecord',
 }
 
-type OnChangeFieldHandlerCallback = (data: object, e: Event) => void;
+type OnChangeFieldHandlerCallback = (data: never, e: Event) => void;
 type PreviewActionCallback = (targetName: string, previewUrl: string, $actionElement: JQuery, modal: ModalElement) => void;
 type NewActionCallback = (targetName: string, $actionElement: JQuery) => void;
 type DuplicateActionCallback = (targetName: string, $actionElement: JQuery) => void;
@@ -318,7 +318,7 @@ export default (function() {
         }
 
         if (reenableOptions && typeof optionEl !== 'undefined') {
-          optionEl.closest('select').querySelectorAll('[disabled]').forEach(function (disabledOption: HTMLOptionElement) {
+          optionEl.closest('select').querySelectorAll<HTMLOptionElement>('[disabled]').forEach(function (disabledOption) {
             disabledOption.classList.remove('hidden');
             disabledOption.disabled = false;
             FormEngine.enableOptGroup(disabledOption);
@@ -394,7 +394,7 @@ export default (function() {
    * @param {HTMLElement} originalFieldEl the hidden form field
    */
   FormEngine.updateHiddenFieldValueFromSelect = function(selectFieldEl: HTMLSelectElement, originalFieldEl: HTMLSelectElement): void {
-    const selectedValues: string[] = Array.from(selectFieldEl.options).map((el: HTMLOptionElement) => el.value);
+    const selectedValues: string[] = Array.from(selectFieldEl.options).map((el) => el.value);
 
     // make a comma separated list, if it is a multi-select
     // set the values to the final hidden field
@@ -672,8 +672,8 @@ export default (function() {
       }
     };
 
-    const minlengthElements = document.querySelectorAll('[minlength]:not([data-input-type="datetimepicker"]):not(.t3js-charcounter-min-initialized)');
-    minlengthElements.forEach((field: HTMLInputElement|HTMLTextAreaElement) => {
+    const minlengthElements = document.querySelectorAll<HTMLInputElement|HTMLTextAreaElement>('[minlength]:not([data-input-type="datetimepicker"]):not(.t3js-charcounter-min-initialized)');
+    minlengthElements.forEach((field) => {
       field.addEventListener('focus', (event) => {
         const minCharacterCountLeft = FormEngine.getMinCharacterLeftCount(field);
         if (minCharacterCountLeft > 0) {
@@ -720,7 +720,7 @@ export default (function() {
    * Initialize input / text field "null" checkbox CSS overlay if no placeholder is set.
    */
   FormEngine.initializeNullNoPlaceholderCheckboxes = function(): void {
-    document.querySelectorAll('.t3-form-field-eval-null-checkbox').forEach((el: HTMLElement) => {
+    document.querySelectorAll<HTMLElement>('.t3-form-field-eval-null-checkbox').forEach((el) => {
       // Add disabled class to "t3js-formengine-field-item" if the null checkbox is NOT set,
       // This activates a CSS overlay "disabling" the input field and everything around.
       const checkbox = el.querySelector('input[type="checkbox"]') as HTMLInputElement;
@@ -735,7 +735,7 @@ export default (function() {
    * Initialize input / text field "null" checkbox placeholder / real field if placeholder is set.
    */
   FormEngine.initializeNullWithPlaceholderCheckboxes = function(): void {
-    document.querySelectorAll('.t3js-form-field-eval-null-placeholder-checkbox').forEach((el: HTMLElement) => {
+    document.querySelectorAll<HTMLElement>('.t3js-form-field-eval-null-placeholder-checkbox').forEach((el) => {
       FormEngine.toggleCheckboxField(el.querySelector('input[type="checkbox"]'), false);
     });
   };
@@ -787,7 +787,7 @@ export default (function() {
    * Disable the input field on load if localization state selector is set to "parent" or "source"
    */
   FormEngine.initializeLocalizationStateSelector = function(): void {
-    document.querySelectorAll('.t3js-l10n-state-container').forEach((el: HTMLElement) => {
+    document.querySelectorAll<HTMLElement>('.t3js-l10n-state-container').forEach((el) => {
       const input = el.closest('.t3js-formengine-field-item')?.querySelector('[data-formengine-input-name]') as HTMLInputElement|null;
       if (input === undefined || input === null) {
         return;
@@ -1011,7 +1011,7 @@ export default (function() {
     items.forEach((item) => {
       const handler = onFieldChangeHandlers.get(item.name);
       if (handler instanceof Function) {
-        handler.call(null, item.data || null, evt);
+        handler.call(null, (item.data || null) as never, evt);
       }
     });
   };
@@ -1160,7 +1160,7 @@ export default (function() {
       }
     }
     const contentElement = document.createElement('p');
-    contentStrings.forEach((item: string, i: number): void => {
+    contentStrings.forEach((item, i): void => {
       contentElement.append(item);
       if (i !== contentStrings.length - 1) {
         contentElement.append(document.createElement('br'));

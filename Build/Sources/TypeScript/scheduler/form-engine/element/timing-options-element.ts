@@ -45,7 +45,7 @@ class TimingOptions extends HTMLElement {
     const selectedElement = <HTMLInputElement>this.querySelector(selector`input[name='${this.fieldPrefix}[runningType]']:checked`);
     const runningType = <string>selectedElement.value;
 
-    this.querySelectorAll('.t3js-timing-options-end, .t3js-timing-options-parallel, .t3js-timing-options-frequency').forEach((el: HTMLElement) => {
+    this.querySelectorAll<HTMLElement>('.t3js-timing-options-end, .t3js-timing-options-parallel, .t3js-timing-options-frequency').forEach((el) => {
       el.style.display = runningType === RunningType.recurring ? 'block' : 'none';
 
       if (el.classList.contains('t3js-timing-options-frequency')) {

@@ -163,7 +163,7 @@ export class CodeMirrorElement extends LitElement {
       root: document.body
     };
     const observer = new IntersectionObserver((entries: IntersectionObserverEntry[]): void => {
-      entries.forEach((entry: IntersectionObserverEntry): void => {
+      entries.forEach((entry): void => {
         if (entry.intersectionRatio > 0) {
           observer.unobserve(entry.target);
           if (this.firstElementChild && this.firstElementChild.nodeName.toLowerCase() === 'textarea') {

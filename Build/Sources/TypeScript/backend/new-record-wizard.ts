@@ -92,19 +92,19 @@ export class Category {
     return new Category(
       data.identifier,
       data.label,
-      data.items.map((item: DataItemInterface) => Item.fromData(item))
+      data.items.map((item) => Item.fromData(item))
     );
   }
 
   public reset(): void {
     this.disabled = false;
-    this.items.forEach((item: Item): void => {
+    this.items.forEach((item): void => {
       item.reset();
     });
   }
 
   public activeItems(): Item[] {
-    return this.items.filter((item: Item): boolean => item.visible) ?? [];
+    return this.items.filter((item): boolean => item.visible) ?? [];
   }
 }
 
@@ -116,18 +116,18 @@ export class Categories {
 
   public static fromData(data: DataCategoriesInterface) {
     return new Categories(
-      Object.values(data).map((item: DataCategoryInterface) => Category.fromData(item))
+      Object.values(data).map((item) => Category.fromData(item))
     );
   }
 
   public reset(): void {
-    this.items.forEach((item: Category): void => {
+    this.items.forEach((item): void => {
       item.reset();
     });
   }
 
   public categoriesWithItems(): Category[] {
-    return this.items.filter((item: Category): boolean => item.activeItems().length > 0) ?? [];
+    return this.items.filter((item): boolean => item.activeItems().length > 0) ?? [];
   }
 }
 
@@ -488,11 +488,11 @@ export class NewRecordWizard extends LitElement {
     }
 
     const needsCategoryChange: boolean = this.categories.categoriesWithItems()
-      .filter((item: Category): boolean => item === this.selectedCategory).length === 0;
+      .filter((item): boolean => item === this.selectedCategory).length === 0;
     if (needsCategoryChange) {
       if (savedCategoryIdentifier) {
         this.selectedCategory = this.categories.categoriesWithItems().find(
-          (category: Category): boolean => category.identifier === savedCategoryIdentifier
+          (category): boolean => category.identifier === savedCategoryIdentifier
         ) ?? this.categories.categoriesWithItems()[0] ?? null;
       } else {
         this.selectedCategory = this.categories.categoriesWithItems()[0] ?? null;
@@ -516,16 +516,16 @@ export class NewRecordWizard extends LitElement {
   protected filter(searchTerm: string): void {
     this.searchTerm = searchTerm;
     this.categories.reset();
-    this.categories.items.forEach((category: Category) => {
+    this.categories.items.forEach((category) => {
       const categoryText = category.label.trim().replace(/\s+/g, ' ');
       const categoryMatch: boolean = !(this.searchTerm !== '' && !RegExp(this.searchTerm, 'i').test(categoryText));
       if (!categoryMatch) {
-        category.items.forEach((item: Item) => {
+        category.items.forEach((item) => {
           const text = item.label.trim().replace(/\s+/g, ' ') + item.description?.trim().replace(/\s+/g, ' ');
           item.visible = !(this.searchTerm !== '' && !RegExp(this.searchTerm, 'i').test(text));
         });
       }
-      category.disabled = category.items.filter((item: Item): boolean => item.visible).length === 0;
+      category.disabled = category.items.filter((item): boolean => item.visible).length === 0;
     });
     this.selectAvailableCategory();
   }
@@ -601,7 +601,7 @@ export class NewRecordWizard extends LitElement {
   protected renderNavigationList(): TemplateResult {
     return html`
       <div class="navigation-list${(this.toggleMenu === true) ? ' show' : ''}" role="tablist" aria-orientation="vertical">
-    ${this.categories.items.map((category: Category) => {
+    ${this.categories.items.map((category) => {
     return html`
         <button
           data-identifier="${category.identifier}"
@@ -633,7 +633,7 @@ export class NewRecordWizard extends LitElement {
 
   protected handleNavigationKeydown(event: KeyboardEvent, category: Category): void {
     const activeCategories = this.categories.categoriesWithItems();
-    const currentIndex = activeCategories.findIndex((item: Category): boolean => item.identifier === category.identifier);
+    const currentIndex = activeCategories.findIndex((item): boolean => item.identifier === category.identifier);
     let selectedCategory: Category | undefined = undefined;
 
     if (event.key === KeyTypesEnum.UP) {
@@ -654,7 +654,7 @@ export class NewRecordWizard extends LitElement {
   protected renderCategories(): TemplateResult {
     return html`
       <div class="elementwizard-categories">
-  ${this.categories.items.map((category: Category) => {
+  ${this.categories.items.map((category) => {
     return this.renderCategory(category);
   })}
       </div>
@@ -672,7 +672,7 @@ export class NewRecordWizard extends LitElement {
     </div>`
     : nothing}
           <div class="elementwizard-category-items">
-            ${category.items.map((item: Item) => this.renderCategoryItem(item))}
+            ${category.items.map((item) => this.renderCategoryItem(item))}
           </div>
         </div>` :
       nothing

@@ -39,9 +39,9 @@ describe('@typo3/backend/form-engine/element/extra/select-box-filter', () => {
   });
 
   const visibleOptions = (): string[] => Array
-    .from(root.querySelectorAll('select[multiple] option'))
-    .filter((option: HTMLOptionElement): boolean => !option.hidden)
-    .map((option: HTMLOptionElement): string => option.textContent);
+    .from(root.querySelectorAll<HTMLOptionElement>('select[multiple] option'))
+    .filter((option): boolean => !option.hidden)
+    .map((option): string => option.textContent);
 
   const filterBy = (value: string): void => {
     filterField.value = value;

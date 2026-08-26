@@ -174,8 +174,8 @@ export default class SortableTable {
         icon.classList.remove('text-primary');
       });
 
-      const menuIcons = table.tHead.querySelectorAll('.dropdown-toggle[data-sorting-toggle] + .dropdown-menu typo3-backend-icon');
-      menuIcons.forEach((menuIcon: IconElement) => {
+      const menuIcons = table.tHead.querySelectorAll<IconElement>('.dropdown-toggle[data-sorting-toggle] + .dropdown-menu typo3-backend-icon');
+      menuIcons.forEach((menuIcon) => {
         menuIcon.identifier = 'empty-empty';
       });
 
@@ -192,8 +192,8 @@ export default class SortableTable {
         sortingIcon.identifier = 'actions-sort-amount-down';
       }
 
-      const sortingButtons = sortingDropdown.querySelectorAll('.dropdown-item');
-      sortingButtons.forEach((button: HTMLButtonElement) => {
+      const sortingButtons = sortingDropdown.querySelectorAll<HTMLButtonElement>('.dropdown-item');
+      sortingButtons.forEach((button) => {
         const sortingButtonDirection = button.dataset.sortDirection;
         const sortingButtonIcon = button.querySelector('typo3-backend-icon');
         if (sortingButtonDirection === sortingCell.ariaSort) {
@@ -205,5 +205,11 @@ export default class SortableTable {
     });
 
     new TablesortWithButtons(table);
+  }
+}
+
+declare global {
+  interface HTMLElementEventMap {
+    'afterSort': CustomEvent;
   }
 }

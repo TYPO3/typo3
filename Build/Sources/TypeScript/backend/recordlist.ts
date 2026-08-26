@@ -151,7 +151,7 @@ class Recordlist {
         return;
       }
       // Evaluate all checked records and if valid, add their uid to the list
-      eventDetails.checkboxes.forEach((checkbox: HTMLInputElement): void => {
+      eventDetails.checkboxes.forEach((checkbox): void => {
         const checkboxContainer: HTMLElement = checkbox.closest(MultiRecordSelectionSelectors.elementSelector);
         if (checkboxContainer !== null && checkboxContainer.dataset[configuration.idField]) {
           entityIdentifiers.push(checkboxContainer.dataset[configuration.idField]);
@@ -170,12 +170,12 @@ class Recordlist {
       returnUrl = target.dataset.returnUrl || '';
       columnsOnly = JSON.parse(target.dataset.columnsOnly || '{}');
       // Check if there are selected records, which would limit the records to edit
-      const selection: NodeListOf<HTMLElement> = tableContainer.querySelectorAll(
+      const selection: NodeListOf<HTMLInputElement> = tableContainer.querySelectorAll(
         this.identifier.entity + '[data-uid][data-table="' + tableName + '"] td.col-checkbox input[type="checkbox"]:checked'
       );
       if (selection.length) {
         // If there are selected records, only those are added to the list
-        selection.forEach((entity: HTMLInputElement): void => {
+        selection.forEach((entity): void => {
           entityIdentifiers.push((entity.closest(this.identifier.entity + selector`[data-uid][data-table="${tableName}"]`) as HTMLElement).dataset.uid);
         });
       } else {
@@ -184,7 +184,7 @@ class Recordlist {
         if (!entities.length) {
           return;
         }
-        entities.forEach((entity: HTMLElement): void => {
+        entities.forEach((entity): void => {
           entityIdentifiers.push(entity.dataset.uid);
         });
       }
@@ -201,7 +201,7 @@ class Recordlist {
       + '&returnUrl=' + Recordlist.getReturnUrl(returnUrl);
 
     if (columnsOnly.length > 0) {
-      editUrl += columnsOnly.map((column: string, i: number): string => '&columnsOnly[' + tableName + '][' + i + ']=' + column).join('');
+      editUrl += columnsOnly.map((column, i): string => '&columnsOnly[' + tableName + '][' + i + ']=' + column).join('');
     }
 
     window.location.href = editUrl;
@@ -273,7 +273,7 @@ class Recordlist {
   };
 
   private readonly registerPaginationEvents = (): void => {
-    document.querySelectorAll('.t3js-recordlist-paging').forEach((trigger: HTMLInputElement) => {
+    document.querySelectorAll<HTMLInputElement>('.t3js-recordlist-paging').forEach((trigger) => {
       trigger.addEventListener('keydown', (e: KeyboardEvent) => {
         if (e.key === 'Enter') {
           e.preventDefault();

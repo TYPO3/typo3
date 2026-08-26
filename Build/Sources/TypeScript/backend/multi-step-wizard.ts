@@ -293,7 +293,7 @@ class MultiStepWizard {
     this.initializeSlidePrevEvent($modal);
 
     // Event fires when the slide transition is invoked
-    this.setup.$carousel.get(0).addEventListener('slide.bs.carousel', (evt: Event & Carousel.Event): void => {
+    this.setup.$carousel.get(0).addEventListener('slide.bs.carousel', (evt): void => {
       if (evt.direction === 'left') {
         this.nextSlideChanges($modal);
       } else {
@@ -302,7 +302,7 @@ class MultiStepWizard {
     });
 
     // Event is fired when the carousel has completed its slide transition
-    this.setup.$carousel.get(0).addEventListener('slid.bs.carousel', (evt: Event & Carousel.Event): void => {
+    this.setup.$carousel.get(0).addEventListener('slid.bs.carousel', (evt): void => {
       const currentIndex = this.setup.$carousel.data('currentIndex');
       const slide = this.setup.slides[currentIndex];
 
@@ -567,3 +567,10 @@ if (!multistepWizardObject) {
 }
 
 export default multistepWizardObject;
+
+declare global {
+  interface HTMLElementEventMap {
+    'slide.bs.carousel': Event & Carousel.Event;
+    'slid.bs.carousel': Event & Carousel.Event;
+  }
+}

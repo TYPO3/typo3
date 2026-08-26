@@ -102,7 +102,7 @@ export class CollapseStatePersister {
 
   private recoverStates(): void {
     const collapseStateElements: NodeListOf<HTMLElement>|null = document.querySelectorAll('.collapse[data-persist-collapse-state="true"]');
-    collapseStateElements.forEach((element: HTMLElement) => {
+    collapseStateElements.forEach((element) => {
       const suffix: string = element.dataset.persistCollapseStateSuffix ?? this.localStorageKeyDefaultSuffix;
       const currentStates = this.fromStorage(suffix);
       const id: string = element.id;

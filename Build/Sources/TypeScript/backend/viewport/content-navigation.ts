@@ -467,4 +467,9 @@ declare global {
   interface HTMLElementTagNameMap {
     'typo3-backend-content-navigation': ContentNavigation;
   }
+
+  interface HTMLElementEventMap {
+    [NavigationToggleEvent.eventName]: NavigationToggleEvent;
+    [NavigationStateChangeEvent.eventName]: NavigationStateChangeEvent;
+  }
 }

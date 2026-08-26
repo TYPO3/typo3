@@ -23,7 +23,6 @@ import Router from '../../router';
 import RegularEvent from '@typo3/core/event/regular-event';
 import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import type { ModalElement } from '@typo3/backend/modal';
-import type { ProgressBarElement } from '@typo3/backend/element/progress-bar-element';
 import type MessageInterface from '@typo3/install/message-interface';
 
 enum Identifiers {
@@ -147,7 +146,7 @@ class UpgradeWizards extends AbstractInteractableModule {
   }
 
   private static removeLoadingMessage(container: HTMLElement): void {
-    container.querySelectorAll('typo3-backend-progress-bar').forEach((progressBar: ProgressBarElement): void => {
+    container.querySelectorAll('typo3-backend-progress-bar').forEach((progressBar): void => {
       progressBar.remove();
     });
   }
@@ -258,7 +257,7 @@ class UpgradeWizards extends AbstractInteractableModule {
           const data: UpgradeWizardBlockingDatabaseCharsetFixResponse = await response.resolve();
           if (data.success === true) {
             if (Array.isArray(data.status) && data.status.length > 0) {
-              data.status.forEach((element: MessageInterface): void => {
+              data.status.forEach((element): void => {
                 outputContainer.append(InfoBox.create(element.severity, element.title, element.message));
               });
             }
@@ -333,7 +332,7 @@ class UpgradeWizards extends AbstractInteractableModule {
         async (response: AjaxResponse): Promise<void> => {
           const data: UpgradeWizardsBlockingDatabaseExecuteResponse = await response.resolve();
           if (Array.isArray(data.status) && data.status.length > 0) {
-            data.status.forEach((element: MessageInterface): void => {
+            data.status.forEach((element): void => {
               outputContainer.append(InfoBox.create(element.severity, element.title, element.message));
             });
           }
@@ -453,7 +452,7 @@ class UpgradeWizards extends AbstractInteractableModule {
           const input = (modalContent.querySelector(Identifiers.wizardsInputTemplate) as HTMLTemplateElement).content.cloneNode(true) as HTMLElement;
           if (data.success === true) {
             if (Array.isArray(data.status)) {
-              data.status.forEach((element: MessageInterface): void => {
+              data.status.forEach((element): void => {
                 outputContainer.append(FlashMessage.create(element.severity, element.title, element.message));
               });
             }
@@ -501,7 +500,7 @@ class UpgradeWizards extends AbstractInteractableModule {
           if (data.success === true) {
             if (Array.isArray(data.status)) {
               const messages: InfoBox[] = [];
-              data.status.forEach((element: MessageInterface): void => {
+              data.status.forEach((element): void => {
                 messages.push(InfoBox.create(element.severity, element.title, element.message));
               });
               messagesContainer.append(...messages);
@@ -533,7 +532,7 @@ class UpgradeWizards extends AbstractInteractableModule {
           UpgradeWizards.removeLoadingMessage(outputContainer);
           if (data.success === true) {
             if (Array.isArray(data.status) && data.status.length > 0) {
-              data.status.forEach((element: MessageInterface): void => {
+              data.status.forEach((element): void => {
                 outputContainer.append(InfoBox.create(element.severity, element.title, element.message));
               });
             }
@@ -595,7 +594,7 @@ class UpgradeWizards extends AbstractInteractableModule {
           modalContent.querySelector(Identifiers.outputDoneContainer).replaceChildren();
 
           if (data.success === true && Array.isArray(data.status)) {
-            data.status.forEach((element: MessageInterface): void => {
+            data.status.forEach((element): void => {
               Notification.success(element.title, element.message);
               this.doneUpgrades();
               this.blockingUpgradesDatabaseCharsetTest();

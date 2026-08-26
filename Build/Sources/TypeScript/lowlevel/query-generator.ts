@@ -83,14 +83,14 @@ class QueryGenerator {
     }).delegateTo(this.form, 'select.t3js-addfield');
 
     (<NodeListOf<HTMLInputElement>>document.querySelectorAll('form[name="queryform"] .t3js-clearable')).forEach(
-      (clearableField: HTMLInputElement) => clearableField.clearable({
+      (clearableField) => clearableField.clearable({
         onClear: (): void => {
           this.doSubmit();
         },
       }),
     );
     (<NodeListOf<HTMLInputElement>>document.querySelectorAll('form[name="queryform"] .t3js-datetimepicker')).forEach(
-      (dateTimePickerElement: HTMLInputElement) => DateTimePicker.initialize(dateTimePickerElement)
+      (dateTimePickerElement) => DateTimePicker.initialize(dateTimePickerElement)
     );
   }
 

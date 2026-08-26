@@ -300,7 +300,7 @@ function addSortableEvents(): void {
   const draggableSelector = 'li:not(' + getHelper().getDomElementDataAttribute('noSorting', 'bracesWithKey') + ')';
   const handleSelector = 'div' + getHelper().getDomElementDataAttribute('elementIdentifier', 'bracesWithKey');
 
-  sortableLists.forEach(function (sortableList: HTMLElement) {
+  sortableLists.forEach(function (sortableList) {
     sortableList.querySelectorAll(handleSelector).forEach(function (draggable) {
       draggable.classList.add('formeditor-sortable-handle');
     });
@@ -706,7 +706,7 @@ export function renderPreviewStageArea(html: string): void {
 
   stageDomElement.querySelector('form')?.addEventListener('submit', (e) => e.preventDefault());
 
-  getAllFormElementDomElements().forEach(function(el: HTMLElement) {
+  getAllFormElementDomElements().forEach(function(el) {
     const formElement = getFormEditorApp()
       .getFormElementByIdentifierPath(el.dataset.elementIdentifierPath);
 
@@ -964,8 +964,8 @@ export function renderCheckboxTemplate(formElement: FormElement, template: HTMLE
 export function renderSimpleTemplate(formElement: FormElement, template: HTMLElement): void {
   assert(typeof formElement === 'object' && formElement !== null && !Array.isArray(formElement), 'Invalid parameter "formElement"', 1479035696);
 
-  eachTemplateProperty(formElement, template, (propertyPath, propertyValue: string, domElement) => {
-    setTemplateTextContent(domElement, propertyValue);
+  eachTemplateProperty(formElement, template, (propertyPath, propertyValue, domElement) => {
+    setTemplateTextContent(domElement, propertyValue as string);
   });
 
   const overlayIdentifier = formElement.get('renderingOptions.enabled') === false ? 'overlay-hidden' : null;

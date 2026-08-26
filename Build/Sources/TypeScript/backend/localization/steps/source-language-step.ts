@@ -33,7 +33,7 @@ export class SourceLanguageStep implements WizardStepInterface, WizardStepValueI
 
   constructor(private readonly context: LocalizationContext) {
     this.task = new Task(this.context.wizard, {
-      task: async ([recordType, recordUid, targetLanguageId]: [string, number, number | null]): Promise<LocalizationLanguageRecord[]> => {
+      task: async ([recordType, recordUid, targetLanguageId]): Promise<LocalizationLanguageRecord[]> => {
         if (targetLanguageId == null) {
           return [];
         }
@@ -47,7 +47,7 @@ export class SourceLanguageStep implements WizardStepInterface, WizardStepValueI
 
         return sourceLanguages;
       },
-      args: () => [this.context.recordType, this.context.recordUid, this.context.getStoreData('targetLanguage')],
+      args: () => [this.context.recordType, this.context.recordUid, this.context.getStoreData('targetLanguage')] as const,
       autoRun: false
     });
   }
@@ -108,7 +108,7 @@ export class SourceLanguageStep implements WizardStepInterface, WizardStepValueI
             <h2 class="h4">${localizationWizardLabels.get('step.source_language.headline')}</h2>
             <p>${localizationWizardLabels.get('step.source_language.description')}</p>
             <div class="form-check-card-container">
-              ${languages.map((language: LocalizationLanguageRecord) => html`
+              ${languages.map((language) => html`
                 <div class="form-check form-check-type-card">
                   <input
                     class="form-check-input"
@@ -159,7 +159,7 @@ export class SourceLanguageStep implements WizardStepInterface, WizardStepValueI
       return [];
     }
 
-    const selectedLanguage = this.task.value.find((lang: LocalizationLanguageRecord) => lang.uid === selectedSourceLanguage);
+    const selectedLanguage = this.task.value.find((lang) => lang.uid === selectedSourceLanguage);
     if (!selectedLanguage) {
       return [];
     }

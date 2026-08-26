@@ -65,7 +65,7 @@ export class SelectTree extends Tree
    * Expand all nodes and refresh view
    */
   public expandAll(): void {
-    this.nodes.forEach((node: TreeNodeInterface) => { this.showChildren(node); });
+    this.nodes.forEach((node) => { this.showChildren(node); });
   }
 
   /**
@@ -105,7 +105,7 @@ export class SelectTree extends Tree
     // A plain substring match, no RegExp involved, therefore nothing to escape either
     const foldedSearchTerm = SelectTree.fold(searchTerm ?? '');
 
-    this.nodes.forEach((node: any) => {
+    this.nodes.forEach((node) => {
       // skip the root node in searches
       if (node === firstNode) {
         return;
@@ -190,7 +190,7 @@ export class SelectTree extends Tree
    */
   private prepareLoadedNodes(evt: CustomEvent): void {
     const nodes = evt.detail.nodes as Array<TreeNodeInterface>;
-    evt.detail.nodes = nodes.map((node: TreeNodeInterface) => {
+    evt.detail.nodes = nodes.map((node) => {
       if (node.selectable === false) {
         this.settings.unselectableElements.push(node.identifier);
       }

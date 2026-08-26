@@ -71,7 +71,7 @@ export class PresetStep implements WizardStepInterface, WizardStepValueInterface
           <div class="dashboard-wizard-preset">
             <h2 class="h4">${labels.get('dashboard.wizard.preset.headline')}</h2>
             <div class="form-check-card-container">
-              ${presets.map((preset: DashboardPresetInterface) => html`
+              ${presets.map((preset) => html`
                 <div class="form-check form-check-type-card">
                   <input
                     class="form-check-input"
@@ -125,7 +125,7 @@ export class PresetStep implements WizardStepInterface, WizardStepValueInterface
       return [];
     }
 
-    const selectedPreset = this.task.value.find((preset: DashboardPresetInterface) => preset.identifier === selectedIdentifier);
+    const selectedPreset = this.task.value.find((preset) => preset.identifier === selectedIdentifier);
     if (!selectedPreset) {
       return [];
     }
@@ -154,7 +154,7 @@ export class PresetStep implements WizardStepInterface, WizardStepValueInterface
       task: async (): Promise<DashboardPresetInterface[]> => {
         const response = await new AjaxRequest(TYPO3.settings.ajaxUrls.dashboard_presets_get).get({ cache: 'no-cache' });
         const data = await response.resolve();
-        return Object.values(data as Record<string, DashboardPresetInterface>).filter((preset: DashboardPresetInterface) => preset.showInWizard);
+        return Object.values(data as Record<string, DashboardPresetInterface>).filter((preset) => preset.showInWizard);
       },
       autoRun: false
     });

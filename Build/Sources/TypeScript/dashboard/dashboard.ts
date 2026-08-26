@@ -351,7 +351,7 @@ export class Dashboard extends LitElement {
         .then(async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
           if (data.status === 'ok') {
-            const oldDashboard: DashboardInterface = this.dashboards.filter((dashboard: DashboardInterface): boolean => {
+            const oldDashboard: DashboardInterface = this.dashboards.filter((dashboard): boolean => {
               return dashboard.identifier === identifier;
             })[0];
             const index = this.dashboards.indexOf(oldDashboard);
@@ -385,7 +385,7 @@ export class Dashboard extends LitElement {
         .then(async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
           if (data.status === 'ok') {
-            const oldDashboard: DashboardInterface = this.dashboards.filter((dashboard: DashboardInterface): boolean => {
+            const oldDashboard: DashboardInterface = this.dashboards.filter((dashboard): boolean => {
               return dashboard.identifier === identifier;
             })[0];
             const index = this.dashboards.indexOf(oldDashboard);
@@ -412,7 +412,7 @@ export class Dashboard extends LitElement {
         .then(async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
           if (data.status === 'ok') {
-            this.dashboards = this.dashboards.filter((dashboard: DashboardInterface): boolean => {
+            this.dashboards = this.dashboards.filter((dashboard): boolean => {
               return dashboard.identifier !== identifier;
             });
             const selectedDashboard = this.getDashboardFirst();
@@ -1190,9 +1190,9 @@ export class DashboardWidget extends LitElement {
     onComplete: async () => {
       this.triggerContentRenderedEvent = true;
     },
-    onError: (error: Error|AjaxResponse) => {
+    onError: (error: unknown) => {
       console.error(`Error while retrieving widget [${this.identifier}]: ${
-        error instanceof AjaxResponse ? `${error.response.status} ${error.response.statusText}` : error.message
+        error instanceof AjaxResponse ? `${error.response.status} ${error.response.statusText}` : (error as Error).message
       }`);
     },
   });

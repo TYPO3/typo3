@@ -645,7 +645,7 @@ function setRandomIds(html: HTMLElement): void {
 
   const idReplacements: Record<string, string> = {};
 
-  html.querySelectorAll<HTMLElement>(getHelper().getDomElementDataAttribute('randomId', 'bracesWithKey')).forEach(function(element: HTMLElement) {
+  html.querySelectorAll<HTMLElement>(getHelper().getDomElementDataAttribute('randomId', 'bracesWithKey')).forEach(function(element) {
     const targetAttribute = element.getAttribute(getHelper().getDomElementDataAttribute('randomIdTarget'));
     const randomIdIndex = element.getAttribute(getHelper().getDomElementDataAttribute('randomIdIndex'));
 
@@ -1309,7 +1309,7 @@ export function renderCountrySelectEditor(
 
   selectElement?.addEventListener('change', function(this: HTMLSelectElement) {
     const selectValues: string[] = [];
-    this.querySelectorAll<HTMLOptionElement>('option:checked').forEach(function(opt: HTMLOptionElement) {
+    this.querySelectorAll<HTMLOptionElement>('option:checked').forEach(function(opt) {
       selectValues.push((opt as any)._dataValue);
     });
     getCurrentlySelectedFormElement().set(propertyPath, selectValues);
@@ -1436,7 +1436,7 @@ export function renderMultiSelectEditor(
 
   selectElement?.addEventListener('change', function(this: HTMLSelectElement) {
     const selectValues: string[] = [];
-    this.querySelectorAll<HTMLOptionElement>('option:checked').forEach(function(opt: HTMLOptionElement) {
+    this.querySelectorAll<HTMLOptionElement>('option:checked').forEach(function(opt) {
       selectValues.push((opt as any)._dataValue);
     });
     getCurrentlySelectedFormElement().set(propertyPath, selectValues);
@@ -1644,9 +1644,9 @@ export function renderPropertyGridEditor(
       }));
     } else if (typeof rawData === 'object') {
       // Handle object case: { value: label }
-      propertyEntries = Object.entries(rawData).map(([value, label]: [string, string]): PropertyGridEditorEntry => ({
+      propertyEntries = Object.entries(rawData).map(([value, label]): PropertyGridEditorEntry => ({
         id: 'fe' + Math.floor(Math.random() * 42) + Date.now(),
-        label,
+        label: label as string,
         value,
         selected: false,
       }));
@@ -2178,7 +2178,7 @@ function getFormElementSelectorEntries(): FormElementSelectorEntry[] {
   return ((): FormElementSelectorEntry[] => {
     const nonCompositeNonToplevelFormElements = getFormEditorApp().getNonCompositeNonToplevelFormElements();
 
-    return nonCompositeNonToplevelFormElements.map((nonCompositeNonToplevelFormElement: FormElement): FormElementSelectorEntry => ({
+    return nonCompositeNonToplevelFormElements.map((nonCompositeNonToplevelFormElement): FormElementSelectorEntry => ({
       icon: getFormElementDefinition(nonCompositeNonToplevelFormElement, 'iconIdentifier'),
       label: nonCompositeNonToplevelFormElement.get('label'),
       value: nonCompositeNonToplevelFormElement.get('identifier'),

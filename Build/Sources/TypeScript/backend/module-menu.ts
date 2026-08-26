@@ -160,7 +160,7 @@ class ModuleMenu {
 
   private static highlightModule(identifier: string): void {
     const menu = document.querySelector(ModuleMenuSelector.menu);
-    menu.querySelectorAll(ModuleMenuSelector.item).forEach((element: Element) => {
+    menu.querySelectorAll(ModuleMenuSelector.item).forEach((element) => {
       element.classList.remove('modulemenu-action-active');
       element.removeAttribute('aria-current');
     });
@@ -171,8 +171,8 @@ class ModuleMenu {
 
   private static highlightModuleMenuItem(module: Module, current: boolean = true): void {
     const menu = document.querySelector(ModuleMenuSelector.menu);
-    const menuElements = menu.querySelectorAll(ModuleMenuSelector.item + selector`[data-modulemenu-identifier="${module.name}"]`);
-    menuElements.forEach((element: HTMLElement) => {
+    const menuElements = menu.querySelectorAll<HTMLElement>(ModuleMenuSelector.item + selector`[data-modulemenu-identifier="${module.name}"]`);
+    menuElements.forEach((element) => {
       element.classList.add('modulemenu-action-active');
       if (current) {
         element.setAttribute('aria-current', 'location');

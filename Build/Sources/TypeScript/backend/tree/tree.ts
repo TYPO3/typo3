@@ -227,7 +227,7 @@ export class Tree extends LitElement {
       }
 
       if (parentNode !== null) {
-        nodes = nodes.filter((node: TreeNodeInterface) => {
+        nodes = nodes.filter((node) => {
           // Filter (already processed) parentNode from server response
           // (if given. note: filetree does not deliver this, pagetree does)
           return node.identifier !== parentNode.identifier;
@@ -244,7 +244,7 @@ export class Tree extends LitElement {
       }
 
       const all = await Promise.all(
-        nodes.map(async (node: TreeNodeInterface): Promise<TreeNodeInterface[]> => {
+        nodes.map(async (node): Promise<TreeNodeInterface[]> => {
           const parentNodeTreeIdentifier = node.__parents.join('_');
           const parentNode = nodes.find(p => p.__treeIdentifier === parentNodeTreeIdentifier) || null;
           const isVisible = parentNode === null || parentNode.__expanded;
@@ -535,7 +535,7 @@ export class Tree extends LitElement {
       return;
     }
     if (Array.isArray(error)) {
-      error.forEach((message: any) => { Notification.error(
+      error.forEach((message) => { Notification.error(
         message.title,
         message.message
       );});
@@ -549,7 +549,7 @@ export class Tree extends LitElement {
   }
 
   public getSelectedNodes(): TreeNodeInterface[] {
-    return this.nodes.filter((node: TreeNodeInterface) => node.checked);
+    return this.nodes.filter((node) => node.checked);
   }
 
   public getNodeByTreeIdentifier(treeIdentifier: string): TreeNodeInterface|null {
@@ -717,7 +717,7 @@ export class Tree extends LitElement {
       node.__hidden !== true &&
       !node.__treeParents.some(parentTreeIdentifier => this.getNodeByTreeIdentifier(parentTreeIdentifier).__expanded === false)
     ));
-    this.displayNodes.forEach((node: TreeNodeInterface, i: number) => {
+    this.displayNodes.forEach((node, i) => {
       node.__x = node.depth * this.indentWidth;
       node.__y = i * this.nodeHeight;
     });
@@ -725,7 +725,7 @@ export class Tree extends LitElement {
     this.lastRenderScrollPosition = this.currentScrollPosition;
     const visibleRows = Math.ceil(this.currentVisibleHeight / this.nodeHeight);
     const position = Math.floor(this.currentScrollPosition / this.nodeHeight);
-    const visibleNodes = this.displayNodes.filter((node: TreeNodeInterface, index: number) => {
+    const visibleNodes = this.displayNodes.filter((node, index) => {
       // first node is fallback target for tabindex, needs to be available every time
       if (this.getFirstNode() === node) {
         return true;
@@ -800,7 +800,7 @@ export class Tree extends LitElement {
   }
 
   protected resetSelectedNodes(): void {
-    this.getSelectedNodes().forEach((node: TreeNodeInterface) => {
+    this.getSelectedNodes().forEach((node) => {
       if (node.checked === true) {
         node.checked = false;
       }
@@ -1669,5 +1669,12 @@ export class Tree extends LitElement {
       console.error('Failed to check the existence of window.frameElement – using a foreign origin?');
       // Do nothing if an error occurred during the event registration
     }
+  }
+}
+
+declare global {
+  interface HTMLElementEventMap {
+    'typo3:tree:node-selected': CustomEvent<{ node: TreeNodeInterface, propagate: boolean }>;
+    'typo3:tree:nodes-prepared': CustomEvent<{ nodes: TreeNodeInterface[] }>;
   }
 }

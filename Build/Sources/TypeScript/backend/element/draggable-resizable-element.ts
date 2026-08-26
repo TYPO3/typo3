@@ -94,22 +94,22 @@ export class DraggableResizableElement extends LitElement {
 
   public override connectedCallback(): void {
     super.connectedCallback();
-    this.pointerEventNames.pointerDown.forEach((name: string): void =>
-      document.addEventListener(name, this.handleStart, true));
-    this.pointerEventNames.pointerMove.forEach((name: string): void =>
-      document.addEventListener(name, this.handleUpdate, true));
-    this.pointerEventNames.pointerUp.forEach((name: string): void =>
-      document.addEventListener(name, this.handleFinish, true));
+    this.pointerEventNames.pointerDown.forEach((name): void =>
+      document.addEventListener(name, this.handleStart as EventListener, true));
+    this.pointerEventNames.pointerMove.forEach((name): void =>
+      document.addEventListener(name, this.handleUpdate as EventListener, true));
+    this.pointerEventNames.pointerUp.forEach((name): void =>
+      document.addEventListener(name, this.handleFinish as EventListener, true));
   }
 
   public override disconnectedCallback(): void {
     super.disconnectedCallback();
-    this.pointerEventNames.pointerDown.forEach((name: string): void =>
-      document.removeEventListener(name, this.handleStart, true));
-    this.pointerEventNames.pointerMove.forEach((name: string): void =>
-      document.removeEventListener(name, this.handleUpdate, true));
-    this.pointerEventNames.pointerUp.forEach((name: string): void =>
-      document.removeEventListener(name, this.handleFinish, true));
+    this.pointerEventNames.pointerDown.forEach((name): void =>
+      document.removeEventListener(name, this.handleStart as EventListener, true));
+    this.pointerEventNames.pointerMove.forEach((name): void =>
+      document.removeEventListener(name, this.handleUpdate as EventListener, true));
+    this.pointerEventNames.pointerUp.forEach((name): void =>
+      document.removeEventListener(name, this.handleFinish as EventListener, true));
   }
 
   protected override render(): TemplateResult {
@@ -245,5 +245,11 @@ export class DraggableResizableElement extends LitElement {
 declare global {
   interface HTMLElementTagNameMap {
     'typo3-backend-draggable-resizable': DraggableResizableElement;
+  }
+
+  interface HTMLElementEventMap {
+    'draggable-resizable-started': DraggableResizableEvent;
+    'draggable-resizable-updated': DraggableResizableEvent;
+    'draggable-resizable-finished': DraggableResizableEvent;
   }
 }

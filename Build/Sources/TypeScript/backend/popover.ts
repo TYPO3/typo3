@@ -36,7 +36,7 @@ class Popover {
    */
   public initialize(selector?: string): void {
     selector = selector || this.DEFAULT_SELECTOR;
-    document.querySelectorAll(selector).forEach((element: HTMLElement): void => {
+    document.querySelectorAll<HTMLElement>(selector).forEach((element): void => {
       this.applyTitleIfAvailable(element);
       new BootstrapPopover(element);
     });
@@ -47,7 +47,7 @@ class Popover {
    * Popover wrapper function
    */
   public popover(element: NodeListOf<HTMLElement> | HTMLElement) {
-    this.toIterable(element).forEach((element: HTMLElement): void => {
+    this.toIterable(element).forEach((element): void => {
       this.applyTitleIfAvailable(element);
       new BootstrapPopover(element);
     });
@@ -138,12 +138,12 @@ class Popover {
     popover.toggle();
   }
 
-  private toIterable(element: NodeListOf<HTMLElement> | HTMLElement | unknown): NodeList | HTMLElement[] {
-    let elementList;
+  private toIterable(element: NodeListOf<HTMLElement> | HTMLElement | unknown): NodeListOf<HTMLElement> | HTMLElement[] {
+    let elementList: NodeListOf<HTMLElement> | HTMLElement[];
     if (element instanceof HTMLElement) {
       elementList = [element];
     } else if (element instanceof NodeList) {
-      elementList = element;
+      elementList = element as NodeListOf<HTMLElement>;
     } else {
       throw `Cannot consume element of type ${element.constructor.name}, expected NodeListOf<HTMLElement> or HTMLElement`;
     }

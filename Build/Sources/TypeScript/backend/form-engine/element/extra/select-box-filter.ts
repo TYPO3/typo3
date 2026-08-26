@@ -82,7 +82,7 @@ class SelectBoxFilter {
     // A plain substring match, no RegExp involved, therefore nothing to escape either
     const foldedFilterText = TextNormalizer.foldCaseAndDiacritics(TextNormalizer.normalizeInvisibleCharacters(filterText));
 
-    this.availableOptions.forEach((option: HTMLOptionElement, index: number): void => {
+    this.availableOptions.forEach((option, index): void => {
       option.hidden = filterText.length > 0 && !this.foldedLabels[index].includes(foldedFilterText);
       SelectBoxFilter.toggleOptGroup(option);
     });

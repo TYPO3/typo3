@@ -1,2 +1,2 @@
-document.querySelectorAll('a#referrer-refresh')
-  .forEach((element: HTMLAnchorElement) => element.click());
+document.querySelectorAll<HTMLAnchorElement>('a#referrer-refresh')
+  .forEach((element) => element.click());

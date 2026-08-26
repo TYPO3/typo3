@@ -11,15 +11,15 @@
  * The TYPO3 project - inspiring people to share!
 */
 
-import type { EventInterface, Listener } from './event-interface';
+import type { EventInterface, EventListenerWithTarget, Listener } from './event-interface';
 
-class RegularEvent implements EventInterface {
+class RegularEvent<E extends Event = Event, T extends Element = Element> implements EventInterface {
   protected eventName: string;
-  protected callback: Listener;
+  protected callback: Listener<E, T>;
   protected options: AddEventListenerOptions | boolean;
   private boundElement: EventTarget;
 
-  constructor(eventName: string, callback: Listener, options: AddEventListenerOptions | boolean = false) {
+  constructor(eventName: string, callback: Listener<E, T>, options: AddEventListenerOptions | boolean = false) {
     this.eventName = eventName;
     this.callback = callback;
     this.options = options;
@@ -31,7 +31,7 @@ class RegularEvent implements EventInterface {
       return;
     }
     this.boundElement = element;
-    element.addEventListener(this.eventName, this.callback, this.options);
+    element.addEventListener(this.eventName, this.callback as EventListener, this.options);
   }
 
   public delegateTo(element: EventTarget, selector: string): void {
@@ -43,7 +43,7 @@ class RegularEvent implements EventInterface {
     element.addEventListener(this.eventName, (e: Event): void => {
       for (let targetElement = <HTMLElement>e.target; targetElement && targetElement !== this.boundElement; targetElement = targetElement.parentElement) {
         if (targetElement.matches(selector)) {
-          this.callback.call(targetElement, e, targetElement);
+          (this.callback as EventListenerWithTarget).call(targetElement, e, targetElement);
           break;
         }
       }
@@ -51,7 +51,7 @@ class RegularEvent implements EventInterface {
   }
 
   public release(): void {
-    this.boundElement.removeEventListener(this.eventName, this.callback);
+    this.boundElement.removeEventListener(this.eventName, this.callback as EventListener);
   }
 }
 

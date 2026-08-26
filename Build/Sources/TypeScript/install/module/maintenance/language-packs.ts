@@ -152,7 +152,7 @@ class LanguagePacks extends AbstractInteractableModule {
           const data: LanguageActivationChangedResponse = await response.resolve();
           outputContainer.innerHTML = '';
           if (data.success === true && Array.isArray(data.status)) {
-            data.status.forEach((element: MessageInterface): void => {
+            data.status.forEach((element): void => {
               this.addNotification(InfoBox.create(element.severity, element.title, element.message));
             });
           } else {
@@ -184,7 +184,7 @@ class LanguagePacks extends AbstractInteractableModule {
           const data: LanguageActivationChangedResponse = await response.resolve();
           outputContainer.innerHTML = '';
           if (data.success === true && Array.isArray(data.status)) {
-            data.status.forEach((element: MessageInterface): void => {
+            data.status.forEach((element): void => {
               this.addNotification(InfoBox.create(element.severity, element.title, element.message));
             });
           } else {
@@ -229,8 +229,8 @@ class LanguagePacks extends AbstractInteractableModule {
     );
     contentContainer.innerHTML = '';
 
-    isos.forEach((isoCode: string): void => {
-      extensions.forEach((extensionKey: string): void => {
+    isos.forEach((isoCode): void => {
+      extensions.forEach((extensionKey): void => {
         this.getNotificationBox().innerHTML = '';
 
         (new AjaxRequest(Router.getUrl()))

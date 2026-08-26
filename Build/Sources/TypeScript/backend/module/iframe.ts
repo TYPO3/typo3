@@ -122,4 +122,14 @@ declare global {
   interface HTMLElementTagNameMap {
     'typo3-iframe-module': IframeModuleElement;
   }
+
+  interface HTMLElementEventMap {
+    'typo3-iframe-load': CustomEvent<ModuleState>;
+    'typo3-iframe-loaded': CustomEvent<ModuleState>;
+  }
+
+  interface DocumentEventMap {
+    'typo3-iframe-load': CustomEvent<ModuleState>;
+    'typo3-iframe-loaded': CustomEvent<ModuleState>;
+  }
 }

@@ -60,12 +60,12 @@ class Hotkeys {
   }
 
   public register(hotkey: Hotkey, handler: (e: KeyboardEvent) => void, options: Partial<Options> = {}): void {
-    if (hotkey.filter((hotkeyPart: string) => !Object.values<string>(ModifierKeys).includes(hotkeyPart)).length === 0) {
+    if (hotkey.filter((hotkeyPart) => !Object.values<string>(ModifierKeys).includes(hotkeyPart)).length === 0) {
       throw new Error('Attempted to register hotkey "' + hotkey.join('+') + '" without a non-modifier key.');
     }
 
     // Normalize trigger
-    hotkey = hotkey.map((h: string) => h.toLowerCase());
+    hotkey = hotkey.map((h) => h.toLowerCase());
 
     const mergedConfiguration: Options = { ...this.defaultOptions, ...options };
     if (!this.scopedHotkeyMap.has(mergedConfiguration.scope)) {
@@ -161,7 +161,7 @@ class Hotkeys {
     }
 
     // The standard requires to have modifier keys to be at first
-    parts.sort((a: string, b: string): number => {
+    parts.sort((a, b): number => {
       const aIsModifierKey = Object.values<string>(ModifierKeys).includes(a);
       const bIsModifierKey = Object.values<string>(ModifierKeys).includes(b);
 

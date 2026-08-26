@@ -37,23 +37,23 @@
 
     constructor() {
       this.adminPanel = document.querySelector(AdminPanelSelectors.adminPanelRole) as HTMLFormElement;
-      this.modules = (this.querySelectorAll(AdminPanelSelectors.moduleTriggerRole) as Element[]).map(
-        (moduleTrigger: HTMLElement) => {
+      this.modules = this.querySelectorAll(AdminPanelSelectors.moduleTriggerRole).map(
+        (moduleTrigger) => {
           const moduleParent = moduleTrigger.closest(AdminPanelSelectors.moduleParentClass);
           return new AdminPanelModule(this, moduleParent, moduleTrigger);
         },
       );
       this.popups = this.querySelectorAll(AdminPanelSelectors.popupTriggerRole).map(
-        (popupTrigger: HTMLElement) => new AdminPanelPopup(this, popupTrigger),
+        (popupTrigger) => new AdminPanelPopup(this, popupTrigger),
       );
       this.querySelectorAll(AdminPanelSelectors.panelTriggerRole).forEach(
-        (panelTrigger: HTMLElement) => {
+        (panelTrigger) => {
           const panelParent = panelTrigger.closest(AdminPanelSelectors.panelParentClass);
           new AdminPanelPanel(panelParent, panelTrigger);
         },
       );
       this.querySelectorAll(AdminPanelSelectors.contentSettingsTriggerRole).forEach(
-        (contentSettingTrigger: HTMLElement) => {
+        (contentSettingTrigger) => {
           const contentSettingElement = contentSettingTrigger
             .closest(AdminPanelSelectors.contentParentClass)
             .querySelector(AdminPanelSelectors.contentSettingsParentClass);
@@ -67,11 +67,11 @@
     }
 
     disableModules(): void {
-      this.modules.forEach((module: AdminPanelModule) => module.disable());
+      this.modules.forEach((module) => module.disable());
     }
 
     disablePopups(): void {
-      this.popups.forEach((popup: AdminPanelPopup) => popup.disable());
+      this.popups.forEach((popup) => popup.disable());
     }
 
     renderBackdrop(): void {
@@ -93,33 +93,33 @@
       }
     }
 
-    private querySelectorAll(selectors: string, subject: Element = null): Node[] {
+    private querySelectorAll<T extends HTMLElement = HTMLElement>(selectors: string, subject: Element = null): T[] {
       if (subject === null) {
-        return Array.from(document.querySelectorAll(selectors));
+        return Array.from(document.querySelectorAll<T>(selectors));
       }
-      return Array.from(subject.querySelectorAll(selectors));
+      return Array.from(subject.querySelectorAll<T>(selectors));
     }
 
     private initializeEvents(): void {
       this
         .querySelectorAll(AdminPanelSelectors.contentTabRole)
-        .forEach((tab: HTMLElement) => tab.addEventListener('click', this.switchTab.bind(this)));
+        .forEach((tab) => tab.addEventListener('click', this.switchTab.bind(this)));
       this
         .querySelectorAll(AdminPanelSelectors.zoomTarget)
-        .forEach((zoomTrigger: HTMLElement) => zoomTrigger.addEventListener('click', this.openZoom.bind(this)));
+        .forEach((zoomTrigger) => zoomTrigger.addEventListener('click', this.openZoom.bind(this)));
       this
         .querySelectorAll(AdminPanelSelectors.zoomClose)
-        .forEach((zoomTrigger: HTMLElement) => zoomTrigger.addEventListener('click', this.closeZoom.bind(this)));
+        .forEach((zoomTrigger) => zoomTrigger.addEventListener('click', this.closeZoom.bind(this)));
       this
         .querySelectorAll(AdminPanelSelectors.triggerRole)
-        .forEach((trigger: HTMLElement) => trigger.addEventListener('click', this.toggleAdminPanelState.bind(this)));
+        .forEach((trigger) => trigger.addEventListener('click', this.toggleAdminPanelState.bind(this)));
       this
         .querySelectorAll(AdminPanelSelectors.saveButtonRole)
-        .forEach((elm: HTMLElement) => elm.addEventListener('click', this.sendAdminPanelForm.bind(this)));
+        .forEach((elm) => elm.addEventListener('click', this.sendAdminPanelForm.bind(this)));
 
       this
         .querySelectorAll('[data-typo3-role=typo3-adminPanel-content-close]')
-        .forEach((elm: HTMLElement) => {
+        .forEach((elm) => {
           elm.addEventListener('click', () => {
             this.disableModules();
             this.removeBackdrop();
@@ -127,7 +127,7 @@
         });
       this
         .querySelectorAll('.typo3-adminPanel-table th, .typo3-adminPanel-table td')
-        .forEach((elm: HTMLElement) => {
+        .forEach((elm) => {
           elm.addEventListener('click', () => {
             elm.focus();
             try {
@@ -149,9 +149,9 @@
       const contentTabs = this.querySelectorAll(AdminPanelSelectors.contentTabRole, currentContent);
       const contentPanes = this.querySelectorAll(AdminPanelSelectors.contentPaneRole, currentContent);
 
-      contentTabs.forEach((element: HTMLElement) => element.classList.remove(activeTabClass));
+      contentTabs.forEach((element) => element.classList.remove(activeTabClass));
       currentTab.classList.add(activeTabClass);
-      contentPanes.forEach((element: HTMLElement) => element.classList.remove(activePaneClass));
+      contentPanes.forEach((element) => element.classList.remove(activePaneClass));
 
       const activePane = document.querySelector('[data-typo3-tab-id=' + currentTab.dataset.typo3TabTarget + ']');
       activePane.classList.add(activePaneClass);
@@ -196,7 +196,7 @@
      */
     private getCleanReloadUrl(): string {
       const urlParams: string[] = [];
-      location.search.substr(1).split('&').forEach((item: string): void => {
+      location.search.substr(1).split('&').forEach((item): void => {
         if (item && !item.includes('ADMCMD_')) {
           urlParams.push(item);
         }
@@ -208,12 +208,12 @@
 
     private addBackdropListener(): void {
       this.querySelectorAll('.' + AdminPanelClasses.backdrop)
-        .forEach((elm: HTMLElement) => {
+        .forEach((elm) => {
           elm.addEventListener('click', () => {
             this.removeBackdrop();
             this
               .querySelectorAll(AdminPanelSelectors.moduleTriggerRole)
-              .forEach((innerElm: HTMLElement) => {
+              .forEach((innerElm) => {
                 innerElm.closest(AdminPanelSelectors.moduleParentClass)
                   .classList.remove(AdminPanelClasses.activeModule);
               });

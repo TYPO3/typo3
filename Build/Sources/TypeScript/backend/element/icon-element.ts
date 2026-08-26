@@ -48,10 +48,10 @@ export class IconElement extends LitElement {
   @property({ type: String }) raw?: string = null;
 
   private readonly iconTask = new Task(this, {
-    task: async ([identifier, size, overlay, state, markup]: [string, Sizes, States, string, MarkupIdentifiers], { signal }): Promise<string> => {
+    task: async ([identifier, size, overlay, state, markup], { signal }): Promise<string> => {
       return await Icons.getIcon(identifier, size, overlay, state, markup, signal);
     },
-    args: () => [this.identifier, this.size, this.overlay, this.state, this.markup]
+    args: () => [this.identifier, this.size, this.overlay, this.state, this.markup] as const
   });
 
   protected override render(): TemplateResult | symbol {

@@ -29,9 +29,9 @@ class TranslationStatus {
   private async toggleNewButton(this: HTMLInputElement): Promise<void> {
     const relatedCreationButton = document.querySelector(`.t3js-language-new[data-lang="${this.dataset.lang}"]`) as HTMLAnchorElement;
     const relatedCreationButtonIcon = relatedCreationButton.querySelector('.t3js-icon') as HTMLSpanElement;
-    const selectedButtons = document.querySelectorAll(`input[type="checkbox"][data-lang="${this.dataset.lang}"]:checked`);
+    const selectedButtons = document.querySelectorAll<HTMLInputElement>(`input[type="checkbox"][data-lang="${this.dataset.lang}"]:checked`);
     const actionUrl = new URL(location.origin + relatedCreationButton.dataset.editUrl);
-    selectedButtons.forEach((element: HTMLInputElement): void => {
+    selectedButtons.forEach((element): void => {
       actionUrl.searchParams.set(`cmd[pages][${element.dataset.uid}][localize]`, this.dataset.lang);
     });
 

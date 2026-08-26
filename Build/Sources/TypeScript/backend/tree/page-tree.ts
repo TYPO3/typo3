@@ -57,7 +57,7 @@ export class PageTree extends Tree
       return Promise.resolve();
     }
 
-    if (this.nodes.find((node: TreeNodeInterface) => node.checked)) {
+    if (this.nodes.find((node) => node.checked)) {
       return Promise.resolve();
     }
 
@@ -168,5 +168,11 @@ export class PageTree extends Tree
       return true;
     }
     return false;
+  }
+}
+
+declare global {
+  interface DocumentEventMap {
+    'typo3:pagetree:mountPoint': CustomEvent<{ pageId: number }>;
   }
 }

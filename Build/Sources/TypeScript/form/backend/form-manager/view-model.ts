@@ -39,7 +39,7 @@ enum Identifiers {
 }
 
 function newFormSetup(formManagerApp: FormManager): void {
-  document.querySelectorAll<HTMLElement>(Identifiers.newFormModalTrigger).forEach((element: HTMLElement): void => {
+  document.querySelectorAll<HTMLElement>(Identifiers.newFormModalTrigger).forEach((element): void => {
     element.addEventListener('click', async (e: Event): Promise<void> => {
       e.preventDefault();
       await topLevelModuleImport('@typo3/form/backend/form-wizard/form-wizard.js');
@@ -59,7 +59,7 @@ function newFormSetup(formManagerApp: FormManager): void {
 }
 
 function removeFormSetup(formManagerApp: FormManager): void {
-  document.querySelectorAll<HTMLElement>(Identifiers.removeFormModalTrigger).forEach((element: HTMLElement): void => {
+  document.querySelectorAll<HTMLElement>(Identifiers.removeFormModalTrigger).forEach((element): void => {
     element.addEventListener('click', async (e: Event): Promise<void> => {
       const modalButtons = [];
 
@@ -106,7 +106,7 @@ function removeFormSetup(formManagerApp: FormManager): void {
 }
 
 function duplicateFormSetup(formManagerApp: FormManager): void {
-  document.querySelectorAll<HTMLElement>(Identifiers.duplicateFormModalTrigger).forEach((element: HTMLElement): void => {
+  document.querySelectorAll<HTMLElement>(Identifiers.duplicateFormModalTrigger).forEach((element): void => {
     element.addEventListener('click', async (e: Event): Promise<void> => {
       e.preventDefault();
       await topLevelModuleImport('@typo3/form/backend/form-wizard/form-wizard.js');
@@ -134,7 +134,7 @@ function duplicateFormSetup(formManagerApp: FormManager): void {
 }
 
 function showReferencesSetup(formManagerApp: FormManager): void {
-  document.querySelectorAll<HTMLElement>(Identifiers.showReferences).forEach((element: HTMLElement): void => {
+  document.querySelectorAll<HTMLElement>(Identifiers.showReferences).forEach((element): void => {
     element.addEventListener('click', (e: Event): void => {
       e.preventDefault();
       const url = formManagerApp.getAjaxEndpoint('references') + '&formPersistenceIdentifier=' + element.dataset.formPersistenceIdentifier;
@@ -202,7 +202,7 @@ function showReferencesSetup(formManagerApp: FormManager): void {
         template.innerHTML = htmlString;
         const fragment = template.content;
 
-        fragment.querySelectorAll<HTMLAnchorElement>(Identifiers.referenceLink).forEach((link: HTMLAnchorElement): void => {
+        fragment.querySelectorAll<HTMLAnchorElement>(Identifiers.referenceLink).forEach((link): void => {
           link.addEventListener('click', (e: Event): void => {
             e.preventDefault();
             Modal.currentModal.hideModal();

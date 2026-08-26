@@ -26,12 +26,12 @@ export const TreeModuleState = <T extends Constructor<LitElement>>(superClass: T
 
     public override connectedCallback(): void {
       super.connectedCallback();
-      document.addEventListener('typo3:module-state-storage:update:' + this.moduleStateType, this.moduleStateUpdated);
+      document.addEventListener('typo3:module-state-storage:update:' + this.moduleStateType, this.moduleStateUpdated as unknown as EventListener);
     }
 
     public override disconnectedCallback(): void {
       super.disconnectedCallback();
-      document.removeEventListener('typo3:module-state-storage:update:' + this.moduleStateType, this.moduleStateUpdated);
+      document.removeEventListener('typo3:module-state-storage:update:' + this.moduleStateType, this.moduleStateUpdated as unknown as EventListener);
     }
 
     protected transformModuleStateIdentifierToNodeIdentifier(moduleStateIdentifier: string): string {
@@ -102,7 +102,7 @@ export const TreeModuleState = <T extends Constructor<LitElement>>(superClass: T
         return;
       }
 
-      if (this.tree.nodes.find((node: TreeNodeInterface) => node.checked)) {
+      if (this.tree.nodes.find((node) => node.checked)) {
         return;
       }
 
@@ -115,7 +115,7 @@ export const TreeModuleState = <T extends Constructor<LitElement>>(superClass: T
         /* @todo store all module state updates in a stack to be consumed by a "slow" tree initialization */
         return;
       }
-      if (identifier && identifier === e.detail.oldState.identifier && this.tree.nodes.find((node: TreeNodeInterface) => node.checked)) {
+      if (identifier && identifier === e.detail.oldState.identifier && this.tree.nodes.find((node) => node.checked)) {
         return;
       }
 
@@ -130,7 +130,7 @@ export const TreeModuleState = <T extends Constructor<LitElement>>(superClass: T
 
       const nodeIdentifier = this.transformModuleStateIdentifierToNodeIdentifier(identifier);
       const node = this.tree.nodes.find((node) => node.identifier === nodeIdentifier);
-      const selectedNode = this.tree.nodes.find((node: TreeNodeInterface) => node.checked);
+      const selectedNode = this.tree.nodes.find((node) => node.checked);
       if (node && node === selectedNode) {
         // node is already selected, only ensure parents are expanded
         await this.tree.expandNodeParents(node);

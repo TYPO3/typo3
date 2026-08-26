@@ -96,7 +96,7 @@ class FileListTransferHandler {
 
   private transfer(type: FileListTransferType, resources: ResourceInterface[], target: ResourceInterface): void {
     const payload: FileListTransferOperation[] = [];
-    resources.forEach((resource: ResourceInterface) => {
+    resources.forEach((resource) => {
       const operation: FileListTransferOperation = {
         data: resource.identifier,
         target: target.identifier,
@@ -122,7 +122,7 @@ class FileListTransferHandler {
   }
 
   private handleMessages(messages: Message[]): void {
-    messages.forEach((message: Message): void => {
+    messages.forEach((message): void => {
       Notification.showMessage(
         message.title || '',
         message.message || '',

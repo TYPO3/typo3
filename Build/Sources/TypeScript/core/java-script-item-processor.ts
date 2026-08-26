@@ -169,3 +169,9 @@ export class JavaScriptItemProcessor {
     executeJavaScriptModuleInstruction(payload);
   }
 }
+
+declare global {
+  interface DocumentEventMap {
+    'typo3:import-javascript-module': CustomEvent<{ specifier: string, importPromise?: Promise<unknown> }>;
+  }
+}

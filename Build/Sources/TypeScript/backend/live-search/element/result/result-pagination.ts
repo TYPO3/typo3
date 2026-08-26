@@ -57,7 +57,7 @@ export class ResultPagination extends LitElement {
             </typo3-backend-live-search-result-page>
           </li>` : nothing}
         ${this.pagination.hasLessPages ? html`<li class="page-item disabled"><span class="page-link disabled">&hellip;</span></li>` : nothing}
-        ${this.pagination.allPageNumbers.map((page: number) => html`
+        ${this.pagination.allPageNumbers.map((page) => html`
           <li class="page-item">
             <typo3-backend-live-search-result-page page="${page}" perPage="${this.pagination.itemsPerPage}" class="page-link ${this.pagination.currentPage === page ? 'active' : ''}">${page}</typo3-backend-live-search-result-page>
           </li>

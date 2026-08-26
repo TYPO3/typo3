@@ -33,14 +33,14 @@ class ConsumerScope {
 
   public detach(consumer: Consumable): void {
     this.consumers = this.consumers.filter(
-      (currentConsumer: Consumable) => currentConsumer !== consumer,
+      (currentConsumer) => currentConsumer !== consumer,
     );
   }
 
   public async invoke(request: InteractionRequest): Promise<void> {
     const promises: Promise<void>[] = [];
     this.consumers.forEach(
-      (consumer: Consumable) => {
+      (consumer) => {
         const promise: Promise<void> = consumer.consume.call(consumer, request);
         if (promise) {
           promises.push(promise);

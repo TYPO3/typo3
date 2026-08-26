@@ -82,7 +82,7 @@ class Features extends AbstractInteractableModule {
         async (response: AjaxResponse): Promise<void> => {
           const data: FeaturesWrittenResponse = await response.resolve();
           if (data.success === true && Array.isArray(data.status)) {
-            data.status.forEach((element: MessageInterface): void => {
+            data.status.forEach((element): void => {
               Notification.showMessage(element.title, element.message, element.severity);
             });
             this.getContent();

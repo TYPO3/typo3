@@ -314,9 +314,9 @@ class DragDrop {
       iconIdentifier = contentElementIcon.dataset.identifier;
     }
 
-    const contentImagePreviews = contentElement.querySelectorAll('.preview-thumbnails-element-image img');
+    const contentImagePreviews = contentElement.querySelectorAll<HTMLImageElement>('.preview-thumbnails-element-image img');
     if (contentImagePreviews.length > 0) {
-      contentImagePreviews.forEach((image: HTMLImageElement): void => {
+      contentImagePreviews.forEach((image): void => {
         thumbnails.push({
           src: image.src,
           height: image.height,
@@ -343,7 +343,7 @@ class DragDrop {
   }
 
   protected showDropZones(): void {
-    document.querySelectorAll(Identifiers.dropZone).forEach((element: HTMLElement): void => {
+    document.querySelectorAll<HTMLElement>(Identifiers.dropZone).forEach((element): void => {
       if (!isContentTypeAllowedInColumn(this.draggedContentType, element.closest('[data-colpos]'))) {
         return;
       }
@@ -357,7 +357,7 @@ class DragDrop {
   }
 
   protected hideDropZones(): void {
-    document.querySelectorAll(Identifiers.dropZone).forEach((element: HTMLElement): void => {
+    document.querySelectorAll<HTMLElement>(Identifiers.dropZone).forEach((element): void => {
       element.hidden = true;
       const addContentButton = element.parentElement.querySelector(Identifiers.addContent) as HTMLElement;
       if (addContentButton !== null) {

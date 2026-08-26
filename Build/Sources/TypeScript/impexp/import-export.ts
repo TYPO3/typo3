@@ -52,7 +52,7 @@ class ImportExport {
     const checkboxes: NodeListOf<HTMLInputElement> = document.querySelectorAll('table.t3js-impexp-preview tr[data-active="hidden"] input.t3js-exclude-checkbox');
     if (checkboxes.length > 0) {
       const firstCheckbox = checkboxes.item(0);
-      checkboxes.forEach((element: HTMLInputElement): void => {
+      checkboxes.forEach((element): void => {
         element.checked = !firstCheckbox.checked;
       });
     }

@@ -82,7 +82,7 @@ export class RecordDownloadButton extends PseudoButtonLitElement {
 
         formatSelect.addEventListener('change', (e: Event): void => {
           const selectetFormat: string = (<HTMLSelectElement>e.target).value;
-          formatOptions.forEach((option: HTMLDivElement) => {
+          formatOptions.forEach((option) => {
             if (option.dataset.formatname !== selectetFormat) {
               option.classList.add('hide');
             } else {

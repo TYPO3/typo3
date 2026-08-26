@@ -41,7 +41,7 @@ class FileListDragDrop {
 
       const checkedItems = document.querySelectorAll(MultiRecordSelectionSelectors.checkboxSelector + ':checked') as NodeListOf<HTMLInputElement>;
       if (checkedItems.length) {
-        checkedItems.forEach((checkbox: HTMLInputElement) => {
+        checkedItems.forEach((checkbox) => {
           if (checkbox.checked) {
             const element = checkbox.closest(FileListActionSelector.elementSelector) as HTMLInputElement;
             element.dataset.filelistDragdropTransferItem = 'true';
@@ -100,8 +100,8 @@ class FileListDragDrop {
 
   private getPreviewItems(selectedItems: ResourceInterface[]): DragDropThumbnail[] {
     return selectedItems
-      .filter((item: ResourceInterface): boolean => item.hasPreview)
-      .map((item: ResourceInterface) => {
+      .filter((item): boolean => item.hasPreview)
+      .map((item) => {
         const thumbnailUrl = new URL(top.TYPO3.settings.Resource.thumbnailUrl, window.origin);
         thumbnailUrl.searchParams.set('identifier', item.uid.toString(10));
 
@@ -115,7 +115,7 @@ class FileListDragDrop {
 
   private getPreviewLabel(selectedItems: ResourceInterface[]): string {
     // Counter
-    const previewItems = selectedItems.filter((item: ResourceInterface): boolean => item.hasPreview);
+    const previewItems = selectedItems.filter((item): boolean => item.hasPreview);
     const count = selectedItems.length - previewItems.length;
     if (count > 0) {
       return (previewItems.length > 0 ? '+' : '') + count.toString();
@@ -124,7 +124,7 @@ class FileListDragDrop {
   }
 
   private reset(): void {
-    document.querySelectorAll(FileListActionSelector.elementSelector).forEach((element: HTMLElement) => {
+    document.querySelectorAll<HTMLElement>(FileListActionSelector.elementSelector).forEach((element) => {
       delete element.dataset.filelistDragdropTransferItem;
       element.classList.remove('success');
     });

@@ -24,3 +24,9 @@ export class StepSummaryEvent extends CustomEvent<{summaryData: SummaryItem[]}> 
     });
   }
 }
+
+declare global {
+  interface HTMLElementEventMap {
+    [StepSummaryEvent.eventName]: StepSummaryEvent;
+  }
+}

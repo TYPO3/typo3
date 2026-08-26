@@ -57,9 +57,9 @@ export class AjaxDispatcher {
     throw 'Undefined endpoint for route "' + routeName + '"';
   }
 
-  public send(request: AjaxRequest, params: Array<string>): Promise<AjaxDispatcherResponse> {
-    const sentRequest = request.post(this.createRequestBody(params)).then(async (response: AjaxResponse): Promise<AjaxDispatcherResponse> => {
-      return this.processResponse(await response.resolve());
+  public send<T extends AjaxDispatcherResponse = AjaxDispatcherResponse>(request: AjaxRequest, params: Array<string>): Promise<T> {
+    const sentRequest = request.post(this.createRequestBody(params)).then(async (response: AjaxResponse): Promise<T> => {
+      return this.processResponse(await response.resolve()) as T;
     });
     sentRequest.catch((reason: Error): void => {
       if (reason instanceof DOMException && reason.name === 'AbortError') {

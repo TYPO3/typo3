@@ -34,7 +34,7 @@ export interface PageWizardDataStore extends DataStore {
 type PageWizardDataStoreKey = keyof PageWizardDataStore;
 
 export interface PageWizardContext {
-  wizard: Wizard;
+  wizard: Wizard<PageWizardDataStore>;
   configuration?: PageWizardConfiguration,
   getStoreData: <T extends PageWizardDataStoreKey>(key: T) => NoInfer<PageWizardDataStore[T]>;
   setStoreData: <T extends PageWizardDataStoreKey>(key: T, value: NoInfer<PageWizardDataStore[T]>) => void;
@@ -50,7 +50,7 @@ export class PageWizard extends LitElement {
   @state() steps: WizardStepInterface[] = [];
   @state() submissionService: SubmissionServiceInterface;
 
-  @query('typo3-backend-wizard') wizard!: Wizard;
+  @query('typo3-backend-wizard') wizard!: Wizard<PageWizardDataStore>;
 
   private fixedSteps: WizardStepInterface[] = [];
 

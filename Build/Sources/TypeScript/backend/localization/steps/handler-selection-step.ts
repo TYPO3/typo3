@@ -40,7 +40,7 @@ export class HandlerSelectionStep implements WizardStepInterface, WizardStepValu
 
   constructor(private readonly context: LocalizationContext) {
     this.task = new Task(this.context.wizard, {
-      task: async ([recordType, recordUid, sourceLanguage, targetLanguage, mode]: [string, number, number | null, number | null, string | null]): Promise<LocalizationHandler[]> => {
+      task: async ([recordType, recordUid, sourceLanguage, targetLanguage, mode]): Promise<LocalizationHandler[]> => {
         if (sourceLanguage == null || targetLanguage == null || mode == null) {
           return [];
         }
@@ -58,7 +58,7 @@ export class HandlerSelectionStep implements WizardStepInterface, WizardStepValu
 
         return handlers;
       },
-      args: () => [this.context.recordType, this.context.recordUid, this.context.getStoreData('sourceLanguage'), this.context.getStoreData('targetLanguage'), this.context.getStoreData('localizationMode')],
+      args: () => [this.context.recordType, this.context.recordUid, this.context.getStoreData('sourceLanguage'), this.context.getStoreData('targetLanguage'), this.context.getStoreData('localizationMode')] as const,
       autoRun: false
     });
   }
@@ -114,7 +114,7 @@ export class HandlerSelectionStep implements WizardStepInterface, WizardStepValu
             <h2 class="h4">${localizationWizardLabels.get('step.handler_selection.headline')}</h2>
             <p>${localizationWizardLabels.get('step.handler_selection.description')}</p>
             <div class="form-check-card-container">
-              ${handlers.map((handler: LocalizationHandler) => this.renderHandlerOption(handler))}
+              ${handlers.map((handler) => this.renderHandlerOption(handler))}
             </div>
           </div>
         `;
@@ -147,7 +147,7 @@ export class HandlerSelectionStep implements WizardStepInterface, WizardStepValu
       return [];
     }
 
-    const handler = this.task.value.find((h: LocalizationHandler) => h.identifier === selectedHandler);
+    const handler = this.task.value.find((h) => h.identifier === selectedHandler);
     if (!handler) {
       return [];
     }

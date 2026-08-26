@@ -48,7 +48,7 @@ export class MoveContentElement {
         ? miscLabels.get('copyElementToHere')
         : miscLabels.get('moveElementToHere');
 
-      document.querySelectorAll('[data-action="paste"]').forEach((button: HTMLButtonElement): void => {
+      document.querySelectorAll<HTMLButtonElement>('[data-action="paste"]').forEach((button): void => {
         button.querySelector('span.t3js-button-label').textContent = buttonLabel;
       });
     }).delegateTo(container, '#makeCopy');

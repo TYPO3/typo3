@@ -19,3 +19,9 @@ export class AutoAdvanceEvent extends CustomEvent<void> {
     });
   }
 }
+
+declare global {
+  interface HTMLElementEventMap {
+    'auto-advance': AutoAdvanceEvent;
+  }
+}

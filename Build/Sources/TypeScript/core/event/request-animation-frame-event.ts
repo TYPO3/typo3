@@ -17,13 +17,13 @@ import type { Listener } from './event-interface';
 /**
  * Creates a event aimed for high performance visual operations
  */
-class RequestAnimationFrameEvent extends RegularEvent {
-  constructor(eventName: string, callback: Listener) {
+class RequestAnimationFrameEvent<E extends Event = Event, T extends Element = Element> extends RegularEvent<E, T> {
+  constructor(eventName: string, callback: Listener<E, T>) {
     super(eventName, callback);
     this.callback = this.req(this.callback);
   }
 
-  private req(callback: Listener): Listener {
+  private req(callback: Listener<E, T>): Listener<E, T> {
     let timeout: number = null;
 
     return (...args: unknown[]) => {
@@ -33,7 +33,7 @@ class RequestAnimationFrameEvent extends RegularEvent {
 
       timeout = window.requestAnimationFrame(() => {
         // Run our scroll functions
-        callback.apply(this, args);
+        callback.apply(this, args as Parameters<Listener<E, T>>);
       });
     };
   }

@@ -119,7 +119,7 @@ export class FileStorageBrowser extends LitElement {
   private readonly selectActiveNode = (evt: CustomEvent): void => {
     // Activate the current node
     const nodes = evt.detail.nodes as Array<TreeNodeInterface>;
-    evt.detail.nodes = nodes.map((node: TreeNodeInterface) => {
+    evt.detail.nodes = nodes.map((node) => {
       if (decodeURIComponent(node.identifier) === this.activeFolder) {
         node.checked = true;
       }

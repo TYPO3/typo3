@@ -32,8 +32,8 @@ class ContextHelp {
 
   public async initialize(): Promise<void> {
     await DocumentService.ready();
-    const elements = document.querySelectorAll(this.selector);
-    elements.forEach((element: HTMLElement): void => {
+    const elements = document.querySelectorAll<HTMLElement>(this.selector);
+    elements.forEach((element): void => {
       element.dataset.bsHtml = 'true';
       element.dataset.bsPlacement = this.placement;
       element.dataset.bsTrigger = this.trigger;
@@ -56,7 +56,7 @@ class ContextHelp {
 
     new RegularEvent('click', (e: Event): void => {
       const me = e.target as HTMLElement;
-      elements.forEach((element: HTMLElement): void => {
+      elements.forEach((element): void => {
         if (!element.isEqualNode(me)) {
           Popover.hide(element);
         }

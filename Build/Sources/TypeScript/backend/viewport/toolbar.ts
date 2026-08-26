@@ -68,7 +68,7 @@ class Toolbar {
     }
 
     // Clear existing highlights
-    toolbar.querySelectorAll(ModuleSelector.link + '.dropdown-item').forEach((element: Element) => {
+    toolbar.querySelectorAll(ModuleSelector.link + '.dropdown-item').forEach((element) => {
       element.classList.remove('active');
       element.removeAttribute('aria-current');
     });
@@ -79,8 +79,8 @@ class Toolbar {
   }
 
   private highlightModuleItem(toolbar: Element, module: Module, current: boolean): boolean {
-    const toolbarElements = toolbar.querySelectorAll(ModuleSelector.link + selector`[data-moduleroute-identifier="${module.name}"].dropdown-item`);
-    toolbarElements.forEach((element: HTMLElement) => {
+    const toolbarElements = toolbar.querySelectorAll<HTMLElement>(ModuleSelector.link + selector`[data-moduleroute-identifier="${module.name}"].dropdown-item`);
+    toolbarElements.forEach((element) => {
       element.classList.add('active');
       if (current) {
         element.setAttribute('aria-current', 'location');

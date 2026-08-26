@@ -281,8 +281,8 @@ class Permissions {
     if (editControllerSelector !== null) {
       // Click events to change permissions (in template Edit.html)
       new RegularEvent('click', (e: Event, currentTarget: Element): void => {
-        const args = (currentTarget as HTMLElement).dataset.checkChangePermissions.split(',').map((item: string) => item.trim());
-        Permissions.updatePermissionValue.apply(this, args);
+        const args = (currentTarget as HTMLElement).dataset.checkChangePermissions.split(',').map((item) => item.trim());
+        Permissions.updatePermissionValue.apply(this, args as [string, string]);
       }).delegateTo(editControllerSelector, '[data-check-change-permissions]');
     }
   }

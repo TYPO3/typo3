@@ -82,7 +82,7 @@ export class InputTransformer {
   }
 
   private static filter(obj: GenericKeyValue): GenericKeyValue {
-    Object.keys(obj).forEach((key: string): void => {
+    Object.keys(obj).forEach((key): void => {
       if (typeof obj[key] === 'undefined') {
         delete obj[key];
       }

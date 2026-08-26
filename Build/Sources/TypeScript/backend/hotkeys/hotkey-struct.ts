@@ -34,7 +34,7 @@ export class HotkeyStruct {
   }
 
   public static fromHotkey(hotkey: string[]): HotkeyStruct {
-    const nonModifierCodes = hotkey.filter((hotkeyPart: string) => !Object.values<string>(ModifierKeys).includes(hotkeyPart));
+    const nonModifierCodes = hotkey.filter((hotkeyPart) => !Object.values<string>(ModifierKeys).includes(hotkeyPart));
     if (nonModifierCodes.length > 1) {
       throw new Error('Cannot create HotkeyStruct with more than one non-modifier key, "' + nonModifierCodes.join('+') + '" given.');
     }

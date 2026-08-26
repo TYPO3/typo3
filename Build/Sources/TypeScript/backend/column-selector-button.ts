@@ -116,7 +116,7 @@ export class ColumnSelectorButton extends PseudoButtonLitElement {
    * @private
    */
   private static filterColumns(columnsFilter: HTMLInputElement, columns: NodeListOf<HTMLInputElement>): void {
-    columns.forEach((column: HTMLInputElement) => {
+    columns.forEach((column) => {
       const columnContainer: HTMLDivElement = column.closest(Selectors.columnsContainerSelector);
       if (!column.disabled && columnContainer !== null) {
         const filterValue: string = columnContainer.querySelector('.form-check-label')?.textContent;
@@ -218,7 +218,7 @@ export class ColumnSelectorButton extends PseudoButtonLitElement {
     ColumnSelectorButton.toggleSelectorActions(columns, selectAll, selectNone, true);
 
     // Add event listener for each column to toggle the selector actions after change
-    columns.forEach((column: HTMLInputElement) => {
+    columns.forEach((column) => {
       column.addEventListener('change', (): void => {
         ColumnSelectorButton.toggleSelectorActions(columns, selectAll, selectNone);
       });
@@ -248,7 +248,7 @@ export class ColumnSelectorButton extends PseudoButtonLitElement {
 
     // Add event listener for all columns select actions. querySelectorAll will return
     // at least two actions (selectAll and selectNone) which we checked above already
-    columnsSelectorActions.querySelectorAll('button[data-action]').forEach((action: HTMLButtonElement) => {
+    columnsSelectorActions.querySelectorAll<HTMLButtonElement>('button[data-action]').forEach((action) => {
       action.addEventListener('click', (e: Event): void => {
         e.preventDefault();
 
@@ -261,21 +261,21 @@ export class ColumnSelectorButton extends PseudoButtonLitElement {
         // Perform requested action
         switch (target.dataset.action) {
           case SelectorActions.toggle:
-            columns.forEach((column: HTMLInputElement) => {
+            columns.forEach((column) => {
               if (!column.disabled && !ColumnSelectorButton.isColumnHidden(column)) {
                 column.checked = !column.checked;
               }
             });
             break;
           case SelectorActions.all:
-            columns.forEach((column: HTMLInputElement) => {
+            columns.forEach((column) => {
               if (!column.disabled && !ColumnSelectorButton.isColumnHidden(column)) {
                 column.checked = true;
               }
             });
             break;
           case SelectorActions.none:
-            columns.forEach((column: HTMLInputElement) => {
+            columns.forEach((column) => {
               if (!column.disabled && !ColumnSelectorButton.isColumnHidden(column)) {
                 column.checked = false;
               }
