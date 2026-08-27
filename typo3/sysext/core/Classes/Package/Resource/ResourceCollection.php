@@ -36,17 +36,6 @@ final readonly class ResourceCollection implements ResourceCollectionInterface
         private bool $createResourcesOnTheFly = true,
     ) {}
 
-    /**
-     * @internal Only to be used in VirtualAppPackage. Will be removed when deprecated asset config is removed
-     */
-    public function withAdditionalResources(self $resources): ResourceCollectionInterface
-    {
-        return new self(
-            array_merge($this->resourceDefinitions, $resources->resourceDefinitions),
-            $this->iconIdentifier,
-        );
-    }
-
     public function definitionForPath(string $relativePath): ResourceDefinitionInterface
     {
         foreach ($this->resourceDefinitions as $config) {
