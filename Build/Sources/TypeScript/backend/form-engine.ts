@@ -133,7 +133,7 @@ export default (function() {
           btnClass: 'btn-' + Severity.getCssClass(Severity.warning),
           name: 'ok',
           trigger: () => {
-            FormEngine.closeModalsRecursive();
+            modal.hideModal();
             saveDocumentWithoutValidation();
           }
         }
