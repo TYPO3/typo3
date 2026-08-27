@@ -1,0 +1,10 @@
+"pages",,,,,,,,,,
+,"uid","pid","title","deleted","perms_everybody","sys_language_uid","l10n_parent","t3ver_oid","t3ver_wsid","t3ver_state","t3ver_stage"
+,1,0,"Root",0,15,0,0,0,0,0,0
+,2,1,"Move target",0,15,0,0,0,0,0,0
+"tt_content",,,,,,,,,,
+,"uid","pid","header","deleted","sys_language_uid","l18n_parent","t3ver_oid","t3ver_wsid","t3ver_state","t3ver_stage",
+,1,1,"Content in default language - to be moved from page 1 to page 2",0,0,0,0,0,0,0,
+,2,1,"Content in language 1 - to be moved from page 1 to page 2",0,1,1,0,0,0,0,
+,101,2,"Content in default language - \"moved in version\"",0,0,0,1,91,4,0,
+,102,2,"Content in language 1 - \"moved in version\"",0,1,1,2,91,4,0,

@@ -36,7 +36,6 @@ use TYPO3\CMS\Core\Schema\TcaSchema;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
@@ -300,7 +299,7 @@ readonly class WorkspaceService
                 $newRecord['t3ver_oid'] = $newRecord['uid'];
             }
             unset($newRecord);
-            $moveRecs = $this->getMovedRecordsFromPages($schema, $pageList, $wsid, $stage);
+            $moveRecs = $this->getMovedRecordsFromPages($schema, $pageList, $wsid, $stage, $language);
             $recs = array_merge($recs, $newRecords, $moveRecs);
             $recs = $this->filterPermittedElements($recs, $table);
             if (!empty($recs)) {
@@ -389,7 +388,7 @@ readonly class WorkspaceService
             }
         }
 
-        if ($schema->isLanguageAware() && MathUtility::canBeInterpretedAsInteger($language)) {
+        if ($schema->isLanguageAware() && $language !== null) {
             $constraints[] = $queryBuilder->expr()->eq(
                 'A.' . $schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName(),
                 $queryBuilder->createNamedParameter($language, Connection::PARAM_INT)
@@ -508,10 +507,10 @@ readonly class WorkspaceService
             }
         }
 
-        if ($schema->isLanguageAware() && MathUtility::canBeInterpretedAsInteger($language)) {
+        if ($schema->isLanguageAware() && $language !== null) {
             $constraints[] = $queryBuilder->expr()->eq(
                 $languageField,
-                $queryBuilder->createNamedParameter((int)$language, Connection::PARAM_INT)
+                $queryBuilder->createNamedParameter($language, Connection::PARAM_INT)
             );
         }
 
@@ -544,8 +543,13 @@ readonly class WorkspaceService
     /**
      * Find all moved records at their new position.
      */
-    protected function getMovedRecordsFromPages(TcaSchema $schema, string $pageList, int $wsid, int $stage): array
+    protected function getMovedRecordsFromPages(TcaSchema $schema, string $pageList, int $wsid, int $stage, ?int $language = null): array
     {
+        // If table is not localizable, but localized records shall
+        // be collected, an empty result array needs to be returned:
+        if (!$schema->isLanguageAware() && $language > 0) {
+            return [];
+        }
         $table = $schema->getName();
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable($table);
         $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
@@ -586,6 +590,13 @@ readonly class WorkspaceService
             $constraints[] = $queryBuilder->expr()->eq(
                 'C.t3ver_stage',
                 $queryBuilder->createNamedParameter($stage, Connection::PARAM_INT)
+            );
+        }
+
+        if ($schema->isLanguageAware() && $language !== null) {
+            $constraints[] = $queryBuilder->expr()->eq(
+                'C.' . $schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName(),
+                $queryBuilder->createNamedParameter($language, Connection::PARAM_INT)
             );
         }
 
