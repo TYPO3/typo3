@@ -577,8 +577,9 @@ class Query implements QueryInterface
      */
     public function __wakeup()
     {
-        $this->persistenceManager = GeneralUtility::makeInstance(PersistenceManagerInterface::class);
-        $this->dataMapFactory = GeneralUtility::makeInstance(DataMapFactory::class);
+        $this->container = GeneralUtility::getContainer();
+        $this->persistenceManager = $this->container->get(PersistenceManagerInterface::class);
+        $this->dataMapFactory = $this->container->get(DataMapFactory::class);
         $this->qomFactory = GeneralUtility::makeInstance(QueryObjectModelFactory::class);
     }
 

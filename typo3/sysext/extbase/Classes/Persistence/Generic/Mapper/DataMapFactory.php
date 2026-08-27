@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Persistence\Generic\Mapper;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
@@ -33,6 +34,7 @@ use TYPO3\CMS\Extbase\Reflection\ReflectionService;
  * A factory for a data map to map a single table configured in $TCA on a domain object.
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
+#[Autoconfigure(public: true)]
 class DataMapFactory implements SingletonInterface
 {
     /**

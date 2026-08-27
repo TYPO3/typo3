@@ -247,6 +247,11 @@ class QueryResult implements QueryResultInterface
     {
         $this->persistenceManager = GeneralUtility::makeInstance(PersistenceManagerInterface::class);
         $this->dataMapper = GeneralUtility::makeInstance(DataMapper::class);
+        if ($this->query !== null) {
+            // Mirrors setQuery(): the data mapper needs the query to resolve the
+            // language aspect and the parent query of lazy relations.
+            $this->dataMapper->setQuery($this->query);
+        }
     }
 
     /**
