@@ -116,4 +116,41 @@ final class WorkspaceServiceTest extends FunctionalTestCase
         self::assertCount(1, $result['pages'], 'Wrong amount of page versions found within workspace 91');
         self::assertEquals(103, $result['pages'][0]['uid'], 'Wrong move-to pointer found for page 3 in workspace 91');
     }
+
+    #[Test]
+    public function movedElementsAreRestrictedToTheGivenLanguage(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/WorkspaceServiceTestMovedTranslatedContent.csv');
+        $subject = $this->get(WorkspaceService::class);
+
+        $result = $subject->selectVersionsInWorkspace(91, -99, 2, 0, 'tables_select', 0);
+        self::assertSame([101], array_column($result['tt_content'], 'uid'));
+
+        $result = $subject->selectVersionsInWorkspace(91, -99, 2, 0, 'tables_select', 1);
+        self::assertSame([102], array_column($result['tt_content'], 'uid'));
+
+        $result = $subject->selectVersionsInWorkspace(91, -99, 2, 0, 'tables_select', 2);
+        self::assertArrayNotHasKey('tt_content', $result);
+    }
+
+    #[Test]
+    public function movedElementsOfAllLanguagesAreFoundWithoutLanguageRestriction(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/WorkspaceServiceTestMovedTranslatedContent.csv');
+        $result = $this->get(WorkspaceService::class)->selectVersionsInWorkspace(91, -99, 2);
+        self::assertSame([101, 102], array_column($result['tt_content'], 'uid'));
+    }
+
+    #[Test]
+    public function movedElementsOfNotLocalizableTablesAreOnlyFoundForTheDefaultLanguage(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/WorkspaceServiceTestMovedNonLocalizableContent.csv');
+        $subject = $this->get(WorkspaceService::class);
+
+        $result = $subject->selectVersionsInWorkspace(91, -99, 2, 0, 'tables_select', 0);
+        self::assertSame([201], array_column($result['backend_layout'], 'uid'));
+
+        $result = $subject->selectVersionsInWorkspace(91, -99, 2, 0, 'tables_select', 1);
+        self::assertArrayNotHasKey('backend_layout', $result);
+    }
 }
