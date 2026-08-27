@@ -56,15 +56,6 @@ final readonly class PolymorphicDeserializer
     }
 
     /**
-     * @return list<class-string>
-     * @deprecated use DeserializationService::parseClassNames instead; will be removed in v15
-     */
-    public function parseClassNames(string $payload): array
-    {
-        return $this->deserializationService->parseClassNames($payload);
-    }
-
-    /**
      * @param list<class-string> $allowedClassNames
      */
     private function isInstanceOf(string $className, array $allowedClassNames): bool
