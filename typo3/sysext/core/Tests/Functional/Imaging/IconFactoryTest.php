@@ -20,6 +20,8 @@ namespace TYPO3\CMS\Core\Tests\Functional\Imaging;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\DependencyInjection\Container;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Domain\RecordFactory;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Imaging\Event\ModifyRecordOverlayIconIdentifierEvent;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -436,6 +438,36 @@ final class IconFactoryTest extends FunctionalTestCase
         $mockRecord['hidden'] = '1';
         $result = $this->subject->getIconForRecord('tt_content', $mockRecord)->render();
         self::assertStringContainsString('<span class="t3js-icon icon icon-size-medium icon-state-default icon-mimetypes-x-content-text" data-identifier="mimetypes-x-content-text" aria-hidden="true">', $result);
+        self::assertStringContainsString('<span class="icon-overlay icon-overlay-hidden">', $result);
+    }
+
+    /**
+     * Overlays are calculated from the enable columns, which a resolved record keeps in its
+     * system properties instead of its regular properties. Only the raw record carries them.
+     */
+    #[Test]
+    public function getIconForRecordObjectDeterminesTableAndOverlayFromRecord(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/tt_content.csv');
+        $record = $this->get(RecordFactory::class)->createFromDatabaseRow(
+            'tt_content',
+            BackendUtility::getRecord('tt_content', 1)
+        );
+        $result = $this->subject->getIconForRecordObject($record)->render();
+        self::assertStringContainsString('data-identifier="mimetypes-x-content-text-media"', $result);
+        self::assertStringContainsString('<span class="icon-overlay icon-overlay-hidden">', $result);
+    }
+
+    #[Test]
+    public function getIconForRecordObjectDeterminesTableAndOverlayFromRawRecord(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/tt_content.csv');
+        $record = $this->get(RecordFactory::class)->createRawRecord(
+            'tt_content',
+            BackendUtility::getRecord('tt_content', 1)
+        );
+        $result = $this->subject->getIconForRecordObject($record)->render();
+        self::assertStringContainsString('data-identifier="mimetypes-x-content-text-media"', $result);
         self::assertStringContainsString('<span class="icon-overlay icon-overlay-hidden">', $result);
     }
 

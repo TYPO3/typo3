@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Core\Imaging;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Domain\RecordInterface;
 use TYPO3\CMS\Core\Imaging\Event\ModifyIconForResourcePropertiesEvent;
 use TYPO3\CMS\Core\Imaging\Event\ModifyRecordOverlayIconIdentifierEvent;
 use TYPO3\CMS\Core\Resource\File;
@@ -75,7 +76,9 @@ readonly class IconFactory
     }
 
     /**
-     * This method is used throughout the TYPO3 Backend to show icons for a DB record
+     * This method is used throughout the TYPO3 Backend to show icons for a DB record.
+     *
+     * For record objects, use getIconForRecordObject() instead.
      */
     public function getIconForRecord(string $table, array $row, IconSize $size = IconSize::MEDIUM, ?TcaSchema $schema = null): Icon
     {
@@ -86,6 +89,17 @@ readonly class IconFactory
         $iconIdentifier = $this->mapRecordTypeToIconIdentifier($table, $row, $schema);
         $overlayIdentifier = $this->mapRecordTypeToOverlayIdentifier($table, $row, $schema);
         return $this->getIcon($iconIdentifier, $size, $overlayIdentifier);
+    }
+
+    /**
+     * Same as getIconForRecord(), but for a record object, which already carries its table.
+     */
+    public function getIconForRecordObject(RecordInterface $record, IconSize $size = IconSize::MEDIUM, ?TcaSchema $schema = null): Icon
+    {
+        // The raw record is preferred, since overlays are calculated from fields a
+        // resolved record keeps in its system properties instead of its properties.
+        $row = $record->getRawRecord()?->toArray() ?? $record->toArray();
+        return $this->getIconForRecord($record->getMainType(), $row, $size, $schema);
     }
 
     /**
