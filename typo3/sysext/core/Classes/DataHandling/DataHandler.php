@@ -7641,15 +7641,6 @@ class DataHandler
     }
 
     /**
-     * @deprecated will be removed in TYPO3 v15.0 (it was always internal -> no deprecation logging)
-     * @internal Strictly internal. May change or vanish any time.
-     */
-    public function hasPagePermission(int $perms, array $page, bool $useDeleteClause = true): bool
-    {
-        return $this->hasPageContextPermission('pages', $perms, $page, $useDeleteClause);
-    }
-
-    /**
      * Checks whether the current backend user holds the requested permissions
      * for a record of $table in the context of the given page.
      *
