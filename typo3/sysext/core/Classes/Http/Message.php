@@ -380,54 +380,6 @@ class Message implements MessageInterface
     }
 
     /**
-     * Filter a header value
-     *
-     * Ensures CRLF header injection vectors are filtered.
-     *
-     * Per RFC 7230, only VISIBLE ASCII characters, spaces, and horizontal
-     * tabs are allowed in values; header continuations MUST consist of
-     * a single CRLF sequence followed by a space or horizontal tab.
-     *
-     * This method filters any values not allowed from the string, and is
-     * lossy.
-     *
-     * @see http://en.wikipedia.org/wiki/HTTP_response_splitting
-     * @todo: Unused? And why is this public? Maybe align with zend-diactoros again
-     */
-    public function filter(string $value): string
-    {
-        $length = strlen($value);
-        $string = '';
-        for ($i = 0; $i < $length; $i += 1) {
-            $ascii = ord($value[$i]);
-
-            // Detect continuation sequences
-            if ($ascii === 13) {
-                $lf = ord($value[$i + 1]);
-                $ws = ord($value[$i + 2]);
-                if ($lf === 10 && in_array($ws, [9, 32], true)) {
-                    $string .= $value[$i] . $value[$i + 1];
-                    $i += 1;
-                }
-                continue;
-            }
-
-            // Non-visible, non-whitespace characters
-            // 9 === horizontal tab
-            // 32-126, 128-254 === visible
-            // 127 === DEL
-            // 255 === null byte
-            if (($ascii < 32 && $ascii !== 9) || $ascii === 127 || $ascii > 254) {
-                continue;
-            }
-
-            $string .= $value[$i];
-        }
-
-        return $string;
-    }
-
-    /**
      * Check whether a header name is valid and throw an exception.
      *
      * @see https://tools.ietf.org/html/rfc7230#section-3.2
