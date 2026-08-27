@@ -108,6 +108,15 @@
       <trans-unit id="labels.fieldsChanged">
         <source>Important: There are unsaved changes in the form. Continuing without saving will discard your changes. Continue?</source>
       </trans-unit>
+      <trans-unit id="labels.fieldNotCorrectlyFilledIn">
+        <source>This field is not yet correctly filled in.</source>
+      </trans-unit>
+      <trans-unit id="labels.fieldHasUnsavedChanges">
+        <source>This field has unsaved changes.</source>
+      </trans-unit>
+      <trans-unit id="labels.tabContainsInvalidEntries">
+        <source>(contains invalid entries)</source>
+      </trans-unit>
       <trans-unit id="labels.remainingCharacters">
         <source>Remaining characters: {0}</source>
       </trans-unit>
