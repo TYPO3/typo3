@@ -311,12 +311,7 @@ class BrokenLinkRepository
                 ->executeQuery()
                 ->fetchAllAssociative();
             foreach ($records as &$record) {
-                $response = json_decode($record['url_response'], true);
-                // Fallback mechanism to still support the old serialized data, could be removed in TYPO3 v12 or later
-                if ($response === null) {
-                    $response = unserialize($record['url_response'], ['allowed_classes' => false]);
-                }
-                $record['url_response'] = $response;
+                $record['url_response'] = json_decode($record['url_response'], true);
                 $results[] = $record;
             }
         }
