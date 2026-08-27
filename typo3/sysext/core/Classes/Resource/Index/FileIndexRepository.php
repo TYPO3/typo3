@@ -156,57 +156,6 @@ readonly class FileIndexRepository
     }
 
     /**
-     * Find all records for files in an array of Folders
-     *
-     * @param Folder[] $folders
-     */
-    public function findByFolders(array $folders, bool $includeMissing = true, ?string $fileName = null): array
-    {
-        $storageUids = [];
-        $folderIdentifiers = [];
-        foreach ($folders as $folder) {
-            $storageUids[] = $folder->getStorage()->getUid();
-            $folderIdentifiers[] = $folder->getHashedIdentifier();
-        }
-        $storageUids = array_unique($storageUids);
-        $folderIdentifiers = array_unique($folderIdentifiers);
-
-        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_file');
-        $queryBuilder
-            ->select(...self::FIELDS)
-            ->from('sys_file')
-            ->where(
-                $queryBuilder->expr()->in('folder_hash', $queryBuilder->createNamedParameter($folderIdentifiers, Connection::PARAM_STR_ARRAY)),
-                $queryBuilder->expr()->in('storage', $queryBuilder->createNamedParameter($storageUids, Connection::PARAM_INT_ARRAY))
-            );
-        if (isset($fileName)) {
-            $nameParts = str_getcsv($fileName, ' ', '"', '\\');
-            foreach ($nameParts as $part) {
-                $part = trim($part);
-                if ($part !== '') {
-                    $queryBuilder->andWhere(
-                        $queryBuilder->expr()->like(
-                            'name',
-                            $queryBuilder->createNamedParameter(
-                                '%' . $queryBuilder->escapeLikeWildcards($part) . '%'
-                            )
-                        )
-                    );
-                }
-            }
-        }
-        if (!$includeMissing) {
-            $queryBuilder->andWhere($queryBuilder->expr()->eq('missing', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)));
-        }
-        $result = $queryBuilder->executeQuery();
-        $fileRecords = [];
-        while ($fileRecord = $result->fetchAssociative()) {
-            $fileRecords[$fileRecord['identifier']] = $fileRecord;
-        }
-        return $fileRecords;
-    }
-
-    /**
      * Adds a file to the index
      */
     public function add(File $file): void
