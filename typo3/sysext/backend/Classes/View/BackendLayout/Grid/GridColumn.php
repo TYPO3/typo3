@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\View\BackendLayout\Grid;
 
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Backend\View\BackendLayoutView;
 use TYPO3\CMS\Backend\View\PageLayoutContext;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -107,6 +108,39 @@ class GridColumn
     public function getColumnNumber(): ?int
     {
         return $this->columnNumber;
+    }
+
+    /**
+     * Comma-separated list of CTypes allowed in this column, based on the backend layout
+     * column configuration. An empty string means "no allow list" (all types allowed).
+     */
+    public function getAllowedContentTypes(): string
+    {
+        return (string)($this->getColPosConfiguration()['allowedContentTypes'] ?? '');
+    }
+
+    /**
+     * Comma-separated list of CTypes disallowed in this column, based on the backend layout
+     * column configuration.
+     */
+    public function getDisallowedContentTypes(): string
+    {
+        return (string)($this->getColPosConfiguration()['disallowedContentTypes'] ?? '');
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    protected function getColPosConfiguration(): array
+    {
+        if ($this->columnNumber === null) {
+            return [];
+        }
+        return GeneralUtility::makeInstance(BackendLayoutView::class)->getColPosConfigurationForPage(
+            $this->context->getBackendLayout(),
+            $this->columnNumber,
+            $this->context->getPageId(),
+        );
     }
 
     public function getColumnName(): string

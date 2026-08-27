@@ -22,6 +22,7 @@ import RegularEvent from '@typo3/core/event/regular-event';
 import { DataTransferTypes } from '@typo3/backend/enum/data-transfer-types';
 import BroadcastService from '@typo3/backend/broadcast-service';
 import { BroadcastMessage } from '@typo3/backend/broadcast-message';
+import { isContentTypeAllowedInColumn } from '@typo3/backend/layout-module/column-restriction';
 import type ResponseInterface from '../ajax-data-handler/response-interface';
 import type { DragDropThumbnail, DragTooltipMetadata } from '@typo3/backend/drag-tooltip';
 import DragDropUtility from '@typo3/backend/utility/drag-drop-utility';
@@ -36,6 +37,7 @@ export type ContentElementDragDropData = {
   pid: number;
   uid: number;
   language: number;
+  cType: string;
   content: string;
   moveElementUrl: string;
 };
@@ -54,6 +56,8 @@ enum Classes {
 }
 
 class DragDrop {
+  private draggedContentType: string = '';
+
   constructor() {
     DocumentService.ready().then((): void => {
       this.initialize();
@@ -116,10 +120,13 @@ class DragDrop {
   protected onDragStart(event: DragEvent, target: HTMLElement): void {
     const content = target.closest(Identifiers.content) as HTMLElement;
 
+    this.draggedContentType = content.dataset.ctype ?? '';
+
     event.dataTransfer.setData(DataTransferTypes.content, JSON.stringify({
       pid: this.getCurrentPageId(),
       uid: parseInt(content.dataset.uid, 10),
       language: parseInt(content.dataset.languageUid, 10),
+      cType: this.draggedContentType,
       content: content.outerHTML,
       moveElementUrl: content.dataset.moveElementUrl,
     } as ContentElementDragDropData));
@@ -133,6 +140,7 @@ class DragDrop {
   }
 
   protected onDragEnd(): void {
+    this.draggedContentType = '';
     this.hideDropZones();
   }
 
@@ -335,6 +343,9 @@ class DragDrop {
 
   protected showDropZones(): void {
     document.querySelectorAll(Identifiers.dropZone).forEach((element: HTMLElement): void => {
+      if (!isContentTypeAllowedInColumn(this.draggedContentType, element.closest('[data-colpos]'))) {
+        return;
+      }
       element.hidden = false;
       const addContentButton = element.parentElement.querySelector(Identifiers.addContent) as HTMLElement;
       if (addContentButton !== null) {

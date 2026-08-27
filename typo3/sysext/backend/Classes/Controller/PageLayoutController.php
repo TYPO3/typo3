@@ -510,6 +510,7 @@ class PageLayoutController
                     ->instance([
                         'itemOnClipboardUid' => $pasteItem,
                         'itemOnClipboardTitle' => $pasteTitle,
+                        'itemOnClipboardCType' => (string)($pasteRecord['CType'] ?? ''),
                         'copyMode' => $clipboard->clipData['normal']['mode'] ?? '',
                     ])
             );
