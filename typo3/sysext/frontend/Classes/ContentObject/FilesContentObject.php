@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Frontend\ContentObject;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Frontend\Resource\FileCollectionSorting;
 use TYPO3\CMS\Frontend\Resource\FileCollector;
 
 /**
@@ -129,7 +130,9 @@ class FilesContentObject extends AbstractContentObject
         // Enable sorting for multiple fileObjects
         $sortingProperty = (string)$this->cObj->stdWrapValue('sorting', $conf);
         if ($sortingProperty !== '') {
-            $sortingDirection = $this->cObj->stdWrapValue('direction', $conf['sorting.'] ?? []);
+            $sortingDirection = FileCollectionSorting::fromKeyword(
+                (string)$this->cObj->stdWrapValue('direction', $conf['sorting.'] ?? [], FileCollectionSorting::Ascending->value),
+            );
             $fileCollector->sort($sortingProperty, $sortingDirection);
         }
 

@@ -197,16 +197,11 @@ class FileCollector implements \Countable, LoggerAwareInterface
 
     /**
      * Sort the file objects based on a property.
-     *
-     * @param string $sortingProperty The sorting property
-     * @param 'ascending'|'descending'|'random' $sortingOrder The sorting order
      */
-    public function sort(string $sortingProperty = '', string $sortingOrder = 'ascending'): void
+    public function sort(string $sortingProperty = '', FileCollectionSorting $sortingOrder = FileCollectionSorting::Ascending): void
     {
-        $sortingOrder = strtolower($sortingOrder);
-
         if ($sortingProperty !== '' && count($this->files) > 1) {
-            $sortMultiplier = in_array($sortingOrder, ['descending', 'desc'], true) ? -1 : 1;
+            $sortMultiplier = $sortingOrder === FileCollectionSorting::Descending ? -1 : 1;
             @usort(
                 $this->files,
                 static function (
@@ -220,11 +215,8 @@ class FileCollector implements \Countable, LoggerAwareInterface
                 }
             );
 
-            switch ($sortingOrder) {
-                case 'random':
-                case 'rand':
-                    shuffle($this->files);
-                    break;
+            if ($sortingOrder === FileCollectionSorting::Random) {
+                shuffle($this->files);
             }
         }
     }

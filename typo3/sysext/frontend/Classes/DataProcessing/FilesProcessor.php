@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Frontend\DataProcessing;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\DataProcessorInterface;
+use TYPO3\CMS\Frontend\Resource\FileCollectionSorting;
 use TYPO3\CMS\Frontend\Resource\FileCollector;
 
 /**
@@ -105,10 +106,12 @@ class FilesProcessor implements DataProcessorInterface
         // make sure to sort the files
         $sortingProperty = $cObj->stdWrapValue('sorting', $processorConfiguration);
         if ($sortingProperty) {
-            $sortingDirection = $cObj->stdWrapValue(
-                'direction',
-                $processorConfiguration['sorting.'] ?? [],
-                'ascending'
+            $sortingDirection = FileCollectionSorting::fromKeyword(
+                (string)$cObj->stdWrapValue(
+                    'direction',
+                    $processorConfiguration['sorting.'] ?? [],
+                    FileCollectionSorting::Ascending->value,
+                ),
             );
 
             $fileCollector->sort($sortingProperty, $sortingDirection);
