@@ -21,6 +21,43 @@ mod {
                     }
                 }
             }
+            StyleguideContentRestrictions {
+                title = LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:backendLayouts.styleguideContentRestrictions.title
+                config {
+                    backend_layout {
+                        colCount = 2
+                        rowCount = 2
+                        rows {
+                            1 {
+                                columns {
+                                    1 {
+                                        name =  LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:backendLayouts.styleguideContentRestrictions.colpos.0
+                                        colPos = 0
+                                        colspan = 2
+                                        identifier = unrestricted
+                                    }
+                                }
+                            }
+                            2 {
+                                columns {
+                                    1 {
+                                        name =  LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:backendLayouts.styleguideContentRestrictions.colpos.1
+                                        colPos = 1
+                                        identifier = restricted-allowed
+                                        allowedContentTypes = header, text, textmedia
+                                    }
+                                    2 {
+                                        name =  LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:backendLayouts.styleguideContentRestrictions.colpos.2
+                                        colPos = 2
+                                        identifier = restricted-disallowed
+                                        disallowedContentTypes = image, html, textmedia
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

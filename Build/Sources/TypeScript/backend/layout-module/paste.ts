@@ -24,18 +24,21 @@ import Severity from '../severity';
 import '@typo3/backend/element/icon-element';
 import { SeverityEnum } from '../enum/severity';
 import RegularEvent from '@typo3/core/event/regular-event';
+import { isContentTypeAllowedForTarget } from '@typo3/backend/layout-module/column-restriction';
 import type ResponseInterface from '../ajax-data-handler/response-interface';
 import layoutLabels from '~labels/backend.layout';
 
 type PasteOptions = {
   itemOnClipboardUid: number;
   itemOnClipboardTitle: string;
+  itemOnClipboardCType: string;
   copyMode: string;
 };
 
 class Paste {
   private readonly itemOnClipboardUid: number = 0;
   private readonly itemOnClipboardTitle: string = '';
+  private readonly itemOnClipboardCType: string = '';
   private readonly copyMode: string = '';
   private readonly elementIdentifier: string = '.t3js-page-ce';
   private pasteAfterLinkTemplate: string = '';
@@ -47,6 +50,7 @@ class Paste {
   constructor(args: PasteOptions) {
     this.itemOnClipboardUid = args.itemOnClipboardUid;
     this.itemOnClipboardTitle = args.itemOnClipboardTitle;
+    this.itemOnClipboardCType = args.itemOnClipboardCType;
     this.copyMode = args.copyMode;
 
     DocumentService.ready().then((): void => {
@@ -96,6 +100,9 @@ class Paste {
   private activatePasteIcons(): void {
     if (this.pasteAfterLinkTemplate && this.pasteIntoLinkTemplate) {
       document.querySelectorAll('.t3js-page-new-ce').forEach((el: HTMLElement): void => {
+        if (!isContentTypeAllowedForTarget(this.itemOnClipboardCType, el)) {
+          return;
+        }
         const template = el.parentElement.dataset.page ? this.pasteIntoLinkTemplate : this.pasteAfterLinkTemplate;
         el.append(document.createRange().createContextualFragment(template));
       });
