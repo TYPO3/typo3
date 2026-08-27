@@ -22,6 +22,7 @@ use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Http\ApplicationType;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 
 /**
@@ -236,5 +237,36 @@ class Typo3QuerySettings implements QuerySettingsInterface
     public function getIncludeDeleted(): bool
     {
         return $this->includeDeleted;
+    }
+
+    /**
+     * Only the settings themselves are serialized. The injected services are runtime
+     * dependencies and would otherwise drag the whole DI container into the payload.
+     *
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     */
+    public function __sleep(): array
+    {
+        return [
+            'respectStoragePage',
+            'storagePageIds',
+            'ignoreEnableFields',
+            'enableFieldsToBeIgnored',
+            'includeDeleted',
+            'respectSysLanguage',
+            'languageAspect',
+        ];
+    }
+
+    /**
+     * Restores the runtime dependencies stripped by __sleep().
+     *
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     */
+    public function __wakeup(): void
+    {
+        // QuerySettings should always keep its own Context, see __construct()
+        $this->context = clone GeneralUtility::makeInstance(Context::class);
+        $this->configurationManager = GeneralUtility::makeInstance(ConfigurationManagerInterface::class);
     }
 }
