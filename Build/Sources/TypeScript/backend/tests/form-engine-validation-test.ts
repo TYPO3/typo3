@@ -335,4 +335,79 @@ describe('TYPO3/CMS/Backend/FormEngineValidationTest:', () => {
       expect(FormEngineValidation.parseDouble('-1.005', 2)).to.equal('-1.01');
     });
   });
+
+  describe('tests for updateLabelTitle', () => {
+    const createLabel = (...classes: string[]): HTMLElement => {
+      const label = document.createElement('label');
+      label.classList.add('t3js-formengine-label', ...classes);
+      return label;
+    };
+
+    it('adds no title to a label without state', () => {
+      const label = createLabel();
+      FormEngineValidation.updateLabelTitle(label);
+      expect(label.hasAttribute('title')).to.be.false;
+    });
+    it('describes an invalid field', () => {
+      const label = createLabel('has-error');
+      FormEngineValidation.updateLabelTitle(label);
+      expect(label.getAttribute('title')).to.equal('labels.fieldNotCorrectlyFilledIn');
+    });
+    it('describes a changed field', () => {
+      const label = createLabel('has-change');
+      FormEngineValidation.updateLabelTitle(label);
+      expect(label.getAttribute('title')).to.equal('labels.fieldHasUnsavedChanges');
+    });
+    it('prefers the invalid state over the changed state', () => {
+      const label = createLabel('has-change', 'has-error');
+      FormEngineValidation.updateLabelTitle(label);
+      expect(label.getAttribute('title')).to.equal('labels.fieldNotCorrectlyFilledIn');
+    });
+    it('removes an obsolete title', () => {
+      const label = createLabel('has-error');
+      FormEngineValidation.updateLabelTitle(label);
+      label.classList.remove('has-error');
+      FormEngineValidation.updateLabelTitle(label);
+      expect(label.hasAttribute('title')).to.be.false;
+    });
+  });
+
+  describe('tests for updateTabValidationState', () => {
+    const createTabLink = (): HTMLElement => {
+      const tabLink = document.createElement('button');
+      tabLink.textContent = 'General';
+      return tabLink;
+    };
+
+    it('adds a hidden hint to a tab containing invalid fields', () => {
+      const tabLink = createTabLink();
+      FormEngineValidation.updateTabValidationState(tabLink, false);
+      const hint = tabLink.querySelector('.t3js-validation-hint');
+      expect(hint).to.not.be.null;
+      expect(hint.classList.contains('visually-hidden')).to.be.true;
+      expect(hint.textContent).to.equal(' labels.tabContainsInvalidEntries');
+    });
+    it('keeps the visible label of the tab untouched', () => {
+      const tabLink = createTabLink();
+      FormEngineValidation.updateTabValidationState(tabLink, false);
+      expect(tabLink.firstChild.textContent).to.equal('General');
+    });
+    it('adds the hint only once', () => {
+      const tabLink = createTabLink();
+      FormEngineValidation.updateTabValidationState(tabLink, false);
+      FormEngineValidation.updateTabValidationState(tabLink, false);
+      expect(tabLink.querySelectorAll('.t3js-validation-hint').length).to.equal(1);
+    });
+    it('adds no hint to a valid tab', () => {
+      const tabLink = createTabLink();
+      FormEngineValidation.updateTabValidationState(tabLink, true);
+      expect(tabLink.querySelector('.t3js-validation-hint')).to.be.null;
+    });
+    it('removes an obsolete hint', () => {
+      const tabLink = createTabLink();
+      FormEngineValidation.updateTabValidationState(tabLink, false);
+      FormEngineValidation.updateTabValidationState(tabLink, true);
+      expect(tabLink.querySelector('.t3js-validation-hint')).to.be.null;
+    });
+  });
 });

@@ -57,7 +57,9 @@ export default class FormEngineValidation {
   public static markerSelector: string = '.t3js-formengine-validation-marker';
   public static labelSelector: string = '.t3js-formengine-label';
   public static errorClass: string = 'has-error';
+  public static changeClass: string = 'has-change';
   public static validationErrorClass: string = 'has-validation-error';
+  public static validationHintClass: string = 't3js-validation-hint';
   public static passwordDummy: string = '********';
 
   /**
@@ -199,6 +201,25 @@ export default class FormEngineValidation {
       if (humanReadableField.value !== formattedValue) {
         humanReadableField.value = formattedValue;
       }
+    }
+  }
+
+  /**
+   * The state of a field is visualized with an icon in front of its label, which is
+   * rendered via CSS and therefore has no text of its own. Explain it with a title.
+   */
+  public static updateLabelTitle(label: HTMLElement): void {
+    let title: string = '';
+    if (label.classList.contains(FormEngineValidation.errorClass)) {
+      title = coreCoreLabels.get('labels.fieldNotCorrectlyFilledIn');
+    } else if (label.classList.contains(FormEngineValidation.changeClass)) {
+      title = coreCoreLabels.get('labels.fieldHasUnsavedChanges');
+    }
+
+    if (title === '') {
+      label.removeAttribute('title');
+    } else {
+      label.setAttribute('title', title);
     }
   }
 
@@ -371,7 +392,11 @@ export default class FormEngineValidation {
     const isValid = !markParent;
     field.classList.toggle(FormEngineValidation.errorClass, !isValid);
     field.setAttribute('aria-invalid', markParent.toString());
-    field.closest(FormEngineValidation.markerSelector)?.querySelector(FormEngineValidation.labelSelector)?.classList.toggle(FormEngineValidation.errorClass, !isValid);
+    const label = field.closest(FormEngineValidation.markerSelector)?.querySelector<HTMLElement>(FormEngineValidation.labelSelector);
+    if (label) {
+      label.classList.toggle(FormEngineValidation.errorClass, !isValid);
+      FormEngineValidation.updateLabelTitle(label);
+    }
 
     FormEngineValidation.markParentTab(field, isValid);
     formEngineInstance.formElement.dispatchEvent(new CustomEvent<PostValidationEvent>('t3-formengine-postfieldvalidation', { detail: { field: field, isValid: isValid }, cancelable: false, bubbles: true }));
@@ -502,6 +527,7 @@ export default class FormEngineValidation {
     if (typeof section === 'undefined' || section instanceof Document) {
       formEngineInstance.formElement.querySelectorAll<HTMLElement>(FormEngineValidation.markerSelector + ', [role="tablist"] > .nav-item').forEach((tabMenuItem): void => {
         tabMenuItem.classList.remove(FormEngineValidation.validationErrorClass);
+        tabMenuItem.querySelector('.' + FormEngineValidation.validationHintClass)?.remove();
       });
     }
 
@@ -578,11 +604,30 @@ export default class FormEngineValidation {
       }
 
       const id = pane.id;
-      formEngineInstance.formElement
-        .querySelector(selector`[data-typo3-tab="${'#' + id}"]`)
+      const tabLink = formEngineInstance.formElement
+        .querySelector<HTMLElement>(selector`[data-typo3-tab="${'#' + id}"]`);
+      tabLink
         .closest('.nav-item')
         .classList.toggle(FormEngineValidation.validationErrorClass, !isValid);
+      FormEngineValidation.updateTabValidationState(tabLink, isValid);
     });
+  }
+
+  /**
+   * The error state of a tab is visualized with an icon, which is rendered via CSS
+   * and is therefore not exposed to assistive technology. Add a hidden text to the
+   * tab instead, which extends the visible label rather than overriding it.
+   */
+  public static updateTabValidationState(tabLink: HTMLElement, isValid: boolean): void {
+    const hint = tabLink.querySelector('.' + FormEngineValidation.validationHintClass);
+    if (isValid) {
+      hint?.remove();
+    } else if (hint === null) {
+      const element = document.createElement('span');
+      element.classList.add(FormEngineValidation.validationHintClass, 'visually-hidden');
+      element.textContent = ' ' + coreCoreLabels.get('labels.tabContainsInvalidEntries');
+      tabLink.append(element);
+    }
   }
 
   /**

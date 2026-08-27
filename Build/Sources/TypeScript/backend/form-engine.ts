@@ -875,10 +875,11 @@ export default (function() {
    * Helper function to mark a field as changed.
    */
   FormEngine.markFieldAsChanged = function (field: FormEngineFieldElement): void {
-    field.classList.add('has-change');
-    const fieldLabel = field.closest('.t3js-formengine-palette-field')?.querySelector('.t3js-formengine-label');
+    field.classList.add(FormEngineValidation.changeClass);
+    const fieldLabel = field.closest('.t3js-formengine-palette-field')?.querySelector<HTMLElement>('.t3js-formengine-label');
     if (fieldLabel !== null && fieldLabel !== undefined) {
-      fieldLabel.classList.add('has-change');
+      fieldLabel.classList.add(FormEngineValidation.changeClass);
+      FormEngineValidation.updateLabelTitle(fieldLabel);
     }
   };
 
