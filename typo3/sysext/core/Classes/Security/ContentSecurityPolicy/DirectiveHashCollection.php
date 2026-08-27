@@ -134,16 +134,6 @@ final class DirectiveHashCollection implements \JsonSerializable
         return true;
     }
 
-    public function countInlineHashValues(?string $aspect = null): int
-    {
-        if ($aspect === null) {
-            return array_sum(
-                array_map(count(...), $this->hashValues['inline'])
-            );
-        }
-        return count($this->hashValues['inline'][$aspect] ?? []);
-    }
-
     public function jsonSerialize(): array
     {
         $serialized = [];
