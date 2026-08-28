@@ -33,6 +33,7 @@ use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\SetupSettingsViewMode;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Configuration\Exception\SiteConfigurationWriteException;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
@@ -207,7 +208,30 @@ readonly class SiteSettingsController
 
         $newSettings = $this->siteSettingsService->createSettingsFromFormData($site, $parsedBody['settings'] ?? []);
         $settingsDiff = $this->siteSettingsService->computeSettingsDiff($site, $newSettings);
-        $this->siteSettingsService->writeSettings($site, $settingsDiff->asArray());
+        try {
+            $this->siteSettingsService->writeSettings($site, $settingsDiff->asArray());
+        } catch (SiteConfigurationWriteException $e) {
+            $this->getBackendUser()->writelog(
+                Type::SITE,
+                SettingAction::CHANGE,
+                SystemLogErrorClassification::SYSTEM_ERROR,
+                null,
+                'Failed to write site settings for \'%s\': %s',
+                [$site->getIdentifier(), $e->getMessage()],
+                'site'
+            );
+            $message = sprintf(
+                $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_sitesettings.xlf:save.error.writeSettings'),
+                $site->getIdentifier()
+            );
+            $flashMessage = new FlashMessage($message, '', ContextualFeedbackSeverity::ERROR, true);
+            $this->flashMessageService->getMessageQueueByIdentifier()->enqueue($flashMessage);
+            $editRoute = $this->uriBuilder->buildUriFromRoute('site_configuration.editSettings', array_filter([
+                'site' => $site->getIdentifier(),
+                'returnUrl' => $returnUrl,
+            ], static fn(?string $v): bool => $v !== null));
+            return new RedirectResponse($editRoute);
+        }
 
         if ($settingsDiff->changes !== [] || $settingsDiff->deletions !== []) {
             $this->getBackendUser()->writelog(

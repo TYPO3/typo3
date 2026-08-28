@@ -21,8 +21,6 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Configuration\Exception\SiteConfigurationWriteException;
 use TYPO3\CMS\Core\Configuration\SiteWriter;
-use TYPO3\CMS\Core\Messaging\FlashMessage;
-use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Settings\SettingDefinition;
 use TYPO3\CMS\Core\Settings\Settings;
 use TYPO3\CMS\Core\Settings\SettingsDiff;
@@ -32,8 +30,6 @@ use TYPO3\CMS\Core\Settings\SettingsTypeRegistry;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteSettings;
 use TYPO3\CMS\Core\Site\Set\SetRegistry;
-use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * @internal
@@ -48,7 +44,6 @@ readonly class SiteSettingsService
         protected SiteSettingsFactory $siteSettingsFactory,
         protected SettingsFactory $settingsFactory,
         protected SettingsTypeRegistry $settingsTypeRegistry,
-        protected FlashMessageService $flashMessageService,
     ) {}
 
     public function hasSettingsDefinitions(Site $site): bool
@@ -107,15 +102,12 @@ readonly class SiteSettingsService
         );
     }
 
+    /**
+     * @throws SiteConfigurationWriteException when the settings file cannot be written
+     */
     public function writeSettings(Site $site, array $settings): void
     {
-        try {
-            $this->siteWriter->writeSettings($site->getIdentifier(), $settings);
-        } catch (SiteConfigurationWriteException $e) {
-            $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $e->getMessage(), '', ContextualFeedbackSeverity::ERROR, true);
-            $defaultFlashMessageQueue = $this->flashMessageService->getMessageQueueByIdentifier();
-            $defaultFlashMessageQueue->enqueue($flashMessage);
-        }
+        $this->siteWriter->writeSettings($site->getIdentifier(), $settings);
         // SiteWriter currently does not invalidate the code cache, see #103804
         $this->codeCache->flush();
     }

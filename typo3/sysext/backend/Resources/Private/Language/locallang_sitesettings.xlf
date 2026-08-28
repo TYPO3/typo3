@@ -51,6 +51,9 @@
       <trans-unit id="labels.edit">
         <source>Edit Site Settings "%s"</source>
       </trans-unit>
+      <trans-unit id="save.error.writeSettings">
+        <source>Unable to save site settings for site '%s'.</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>
