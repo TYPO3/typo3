@@ -45,6 +45,9 @@
 			<trans-unit id="save.message.updated">
 				<source>Settings updated.</source>
 			</trans-unit>
+			<trans-unit id="save.error.writeSettings">
+				<source>Unable to save site settings for site '%s'.</source>
+			</trans-unit>
 			<trans-unit id="categories.other">
 				<source>Other</source>
 			</trans-unit>
