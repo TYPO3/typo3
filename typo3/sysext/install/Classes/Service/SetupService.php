@@ -406,8 +406,9 @@ TYPOSCRIPT;
         // but this has other drawbacks and is for another day
         $this->executeWithBackendUser(
             function (ContainerInterface $container) {
-                $extensionsToSetUp = $this->packageManager->getActivePackages(true);
-                $container->get(PackageSetup::class)->setup($extensionsToSetUp);
+                $container->get(PackageSetup::class)->setup(
+                    $this->packageManager->getActivePackages()
+                );
             },
             $container,
         );

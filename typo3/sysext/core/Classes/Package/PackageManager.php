@@ -705,7 +705,7 @@ class PackageManager implements SingletonInterface
      *
      * @return array<array-key|PackageKey, PackageInterface>
      */
-    public function getActivePackages(bool $includeAppPackage = false)
+    public function getActivePackages()
     {
         if (empty($this->activePackages) && !empty($this->packageStatesConfiguration['packages'])) {
             foreach ($this->packageStatesConfiguration['packages'] as $packageKey => $packageConfig) {
@@ -713,9 +713,11 @@ class PackageManager implements SingletonInterface
             }
         }
         $activePackages = $this->activePackages;
-        if (!$includeAppPackage) {
-            unset($activePackages[VirtualAppPackage::APP_PACKAGE_KEY]);
-        }
+        // The VirtualAppPackage must never be handled as active
+        // to avoid resources (TCA, sql schema, etc) to be evaluated for it.
+        // This will change, once it is possible for each package to configure
+        // which resources it exposes.
+        unset($activePackages[VirtualAppPackage::APP_PACKAGE_KEY]);
         return $activePackages;
     }
 
