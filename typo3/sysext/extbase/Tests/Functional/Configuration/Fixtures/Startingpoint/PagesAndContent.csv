@@ -1,0 +1,62 @@
+"pages",,,,,,
+,"uid","pid","title","slug","doktype","backend_layout"
+,1,0,"Root","/",1,"pagets__Standard"
+,2,1,"FluidTemplate page","/fluidtemplate",1,"pagets__Standard"
+,3,1,"PageView page","/pageview",1,"pagets__Standard"
+,4,1,"FluidTemplate page recursive","/fluidtemplate-recursive",1,"pagets__Standard"
+,5,1,"PageView page recursive","/pageview-recursive",1,"pagets__Standard"
+,6,1,"PageView cObject page","/pageview-cobject",1,"pagets__CObjectPageview"
+,7,1,"PageView cObject page recursive","/pageview-cobject-recursive",1,"pagets__CObjectPageview"
+,12,1,"FluidTemplate page (no pages)","/fluidtemplate-no-pages",1,"pagets__Standard"
+,13,1,"PageView page (no pages)","/pageview-no-pages",1,"pagets__Standard"
+,14,1,"FluidTemplate page recursive (no pages)","/fluidtemplate-recursive-no-pages",1,"pagets__Standard"
+,15,1,"PageView page recursive (no pages)","/pageview-recursive-no-pages",1,"pagets__Standard"
+,16,1,"PageView cObject page (no pages)","/pageview-cobject-no-pages",1,"pagets__CObjectPageview"
+,17,1,"PageView cObject page recursive (no pages)","/pageview-cobject-recursive-no-pages",1,"pagets__CObjectPageview"
+,20,1,"Storage folder","/storage",254,""
+,21,20,"Storage subfolder","/storage/sub",254,""
+,30,1,"Decoy folder","/decoy",254,""
+"tt_content",,,,,,,
+,"uid","pid","CType","header","colPos","pages","recursive"
+# Use startingpoint override `tt_content.pages` to override extbase persistence storagePageIds
+,100,2,"blogexample_content","Plugin FT",0,"20",0
+,101,3,"blogexample_content","Plugin PV",0,"20",0
+,102,4,"blogexample_content","Plugin FT recursive",0,"20",1
+,103,5,"blogexample_content","Plugin PV recursive",0,"20",1
+,104,6,"blogexample_content","Plugin PV cObject",0,"20",0
+,105,7,"blogexample_content","Plugin PV cObject recursive",0,"20",1
+,110,2,"teststartingpoint_frameworkstoragepid","Probe FT",0,"20",0
+,111,3,"teststartingpoint_frameworkstoragepid","Probe PV",0,"20",0
+,112,4,"teststartingpoint_frameworkstoragepid","Probe FT recursive",0,"20",1
+,113,5,"teststartingpoint_frameworkstoragepid","Probe PV recursive",0,"20",1
+,114,6,"teststartingpoint_frameworkstoragepid","Probe PV cObject",0,"20",0
+,115,7,"teststartingpoint_frameworkstoragepid","Probe PV cObject recursive",0,"20",1
+,120,2,"teststartingpoint_querysettingsstoragepid","Probe FT DefaultQuerySettings",0,"20",0
+,121,3,"teststartingpoint_querysettingsstoragepid","Probe PV DefaultQuerySettings",0,"20",0
+,122,4,"teststartingpoint_querysettingsstoragepid","Probe FT recursive DefaultQuerySettings",0,"20",1
+,123,5,"teststartingpoint_querysettingsstoragepid","Probe PV recursive DefaultQuerySettings",0,"20",1
+,124,6,"teststartingpoint_querysettingsstoragepid","Probe PV cObject DefaultQuerySettings",0,"20",0
+,125,7,"teststartingpoint_querysettingsstoragepid","Probe PV cObject recursive DefaultQuerySettings",0,"20",1
+# Use soley extbase storagePageId configuration (TypoScript)
+,200,12,"blogexample_content","Plugin FT",0,"",0
+,201,13,"blogexample_content","Plugin PV",0,"",0
+,202,14,"blogexample_content","Plugin FT recursive",0,"",1
+,203,15,"blogexample_content","Plugin PV recursive",0,"",1
+,204,16,"blogexample_content","Plugin PV cObject",0,"",0
+,205,17,"blogexample_content","Plugin PV cObject recursive",0,"",1
+,210,12,"teststartingpoint_frameworkstoragepid","Probe FT",0,"",0
+,211,13,"teststartingpoint_frameworkstoragepid","Probe PV",0,"",0
+,212,14,"teststartingpoint_frameworkstoragepid","Probe FT recursive",0,"",1
+,213,15,"teststartingpoint_frameworkstoragepid","Probe PV recursive",0,"",1
+,214,16,"teststartingpoint_frameworkstoragepid","Probe PV cObject",0,"",0
+,215,17,"teststartingpoint_frameworkstoragepid","Probe PV cObject recursive",0,"",1
+,220,12,"teststartingpoint_querysettingsstoragepid","Probe FT DefaultQuerySettings",0,"",0
+,221,13,"teststartingpoint_querysettingsstoragepid","Probe PV DefaultQuerySettings",0,"",0
+,222,14,"teststartingpoint_querysettingsstoragepid","Probe FT recursive DefaultQuerySettings",0,"",1
+,223,15,"teststartingpoint_querysettingsstoragepid","Probe PV recursive DefaultQuerySettings",0,"",1
+,224,16,"teststartingpoint_querysettingsstoragepid","Probe PV cObject DefaultQuerySettings",0,"",0
+,225,17,"teststartingpoint_querysettingsstoragepid","Probe PV cObject recursive DefaultQuerySettings",0,"",1
+# Records in storage folders to test repository resolving
+,301,20,"text","Record in folder 20",0,"",0
+,302,21,"text","Record in subfolder 21",0,"",0
+,303,30,"text","Record in decoy folder 30",0,"",0
