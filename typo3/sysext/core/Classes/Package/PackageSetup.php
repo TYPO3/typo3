@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Database\Schema\SqlReader;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Package\Event\PackageInitializationEvent;
 use TYPO3\CMS\Core\Package\Initialization\CheckForImportRequirements;
+use TYPO3\CMS\Core\SystemResource\Publishing\SystemResourcePublisherInterface;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 
 /**
@@ -39,6 +40,8 @@ readonly class PackageSetup
         private SchemaMigrator $schemaMigrator,
         private ExtensionConfiguration $extensionConfiguration,
         private EventDispatcherInterface $eventDispatcher,
+        private SystemResourcePublisherInterface $resourcePublisher,
+        private PackageManager $packageManager,
     ) {}
 
     /**
@@ -48,6 +51,7 @@ readonly class PackageSetup
     {
         $messages = [];
         $this->updateDatabaseSchemaForAllPackages();
+        $this->resourcePublisher->publishResources($this->packageManager->getPackage(VirtualAppPackage::APP_PACKAGE_KEY));
         foreach ($packagesToSetUp as $packageKey => $package) {
             $this->extensionConfiguration->synchronizeExtConfTemplateWithLocalConfiguration($packageKey);
             $event = $this->eventDispatcher->dispatch(

@@ -18,10 +18,15 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Install\Tests\Functional\Service;
 
 use PHPUnit\Framework\Attributes\Test;
+use Psr\Container\ContainerInterface;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
 use TYPO3\CMS\Core\Configuration\SiteWriter;
+use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Package\FailsafePackageManager;
+use TYPO3\CMS\Core\Package\PackageSetup;
+use TYPO3\CMS\Core\Package\VirtualAppPackage;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Install\Service\SetupService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -29,6 +34,53 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 final class SetupServiceTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = ['install', 'dashboard'];
+
+    #[Test]
+    public function setupExtensionsDoesNotSetUpVirtualAppPackage(): void
+    {
+        $packageSetup = $this->createMock(PackageSetup::class);
+        $packageSetup
+            ->expects($this->once())
+            ->method('setup')
+            ->with(self::callback(
+                static function (array $packages): bool {
+                    self::assertNotEmpty($packages);
+                    self::assertArrayNotHasKey(VirtualAppPackage::APP_PACKAGE_KEY, $packages);
+                    return true;
+                }
+            ));
+
+        $container = self::createStub(ContainerInterface::class);
+        $container
+            ->method('get')
+            ->willReturnCallback(
+                fn(string $serviceName): mixed => $serviceName === PackageSetup::class
+                    ? $packageSetup
+                    : $this->get($serviceName)
+            );
+
+        $previousBackendUser = $GLOBALS['BE_USER'] ?? null;
+        $GLOBALS['BE_USER'] = new BackendUserAuthentication();
+
+        try {
+            $packageManager = new FailsafePackageManager(new DependencyOrderingService());
+            $packageManager->setPackageCache(Bootstrap::createPackageCache($this->get('cache.core')));
+            $packageManager->initialize();
+            $subject = new SetupService(
+                $this->get(ConfigurationManager::class),
+                $this->get(SiteWriter::class),
+                $this->get(YamlFileLoader::class),
+                $packageManager,
+            );
+            $subject->setupExtensions($container);
+        } finally {
+            if ($previousBackendUser === null) {
+                unset($GLOBALS['BE_USER']);
+            } else {
+                $GLOBALS['BE_USER'] = $previousBackendUser;
+            }
+        }
+    }
 
     #[Test]
     public function multipleCreateBackendUserGroupsCreatesGroupsOnce(): void
