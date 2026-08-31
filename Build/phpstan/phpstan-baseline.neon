@@ -1585,6 +1585,30 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/TypoScript/IncludeTree/Visitor/IncludeTreeConditionMatcherVisitor.php
 
 		-
+			message: '#^Negated boolean expression is always false\.$#'
+			identifier: booleanNot.alwaysFalse
+			count: 1
+			path: ../../typo3/sysext/core/Classes/TypoScript/Tokenizer/LosslessTokenizer.php
+
+		-
+			message: '#^Result of && is always false\.$#'
+			identifier: booleanAnd.alwaysFalse
+			count: 1
+			path: ../../typo3/sysext/core/Classes/TypoScript/Tokenizer/LosslessTokenizer.php
+
+		-
+			message: '#^Negated boolean expression is always false\.$#'
+			identifier: booleanNot.alwaysFalse
+			count: 1
+			path: ../../typo3/sysext/core/Classes/TypoScript/Tokenizer/LossyTokenizer.php
+
+		-
+			message: '#^Result of && is always false\.$#'
+			identifier: booleanAnd.alwaysFalse
+			count: 1
+			path: ../../typo3/sysext/core/Classes/TypoScript/Tokenizer/LossyTokenizer.php
+
+		-
 			message: '#^Call to function is_array\(\) with non\-empty\-array will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
 			count: 1
