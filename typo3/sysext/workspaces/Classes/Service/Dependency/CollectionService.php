@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Workspaces\Service\Dependency;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Workspaces\Dependency\DependencyCollectionAction;
 use TYPO3\CMS\Workspaces\Dependency\DependencyResolver;
@@ -31,7 +30,7 @@ use TYPO3\CMS\Workspaces\Dependency\ReferenceEntity;
  *
  * @internal
  */
-class CollectionService implements SingletonInterface
+class CollectionService
 {
     protected ?DependencyResolver $dependencyResolver = null;
     protected array $dataArray;

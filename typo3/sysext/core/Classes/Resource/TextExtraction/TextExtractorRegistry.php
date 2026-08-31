@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Resource\TextExtraction;
 
 use TYPO3\CMS\Core\Resource\FileInterface;
-use TYPO3\CMS\Core\SingletonInterface;
 
 /**
  * Registry for text extractors, which are registered as tagged services
@@ -27,7 +26,7 @@ use TYPO3\CMS\Core\SingletonInterface;
  * extractor with a higher priority is asked first whether it can
  * extract text from a file.
  */
-class TextExtractorRegistry implements SingletonInterface
+class TextExtractorRegistry
 {
     /**
      * Instance cache for text extractor classes

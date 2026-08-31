@@ -17,15 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\MetaTag;
 
-use TYPO3\CMS\Core\SingletonInterface;
-
 /**
  * Holds all available meta tag managers, which are registered as tagged
  * services via the #[AsMetaTagManager] attribute or the 'metatag.manager'
  * service tag. Managers are ordered by their "before" and "after"
  * constraints at container compile time.
  */
-class MetaTagManagerRegistry implements SingletonInterface
+class MetaTagManagerRegistry
 {
     /**
      * @var MetaTagManagerInterface[]|null keyed by manager identifier

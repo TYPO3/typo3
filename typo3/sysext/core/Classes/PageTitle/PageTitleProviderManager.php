@@ -21,14 +21,13 @@ use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * This class will take care of the different providers and returns the title with the highest priority
  */
-class PageTitleProviderManager implements SingletonInterface
+class PageTitleProviderManager
 {
     private array $pageTitleCache = [];
 

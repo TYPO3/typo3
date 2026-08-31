@@ -22,7 +22,6 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\LinkHandler\RecordLinkHandler;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
-use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -162,7 +161,6 @@ final class DatabaseRecordLinkBuilderTest extends UnitTestCase
         $frontendTypoScript->setSetupArray($typoScriptConfig);
         $request = new ServerRequest()->withAttribute('frontend.typoscript', $frontendTypoScript)->withAttribute('currentContentObject', $contentObjectRendererMock);
         $contentObjectRendererMock->method('getRequest')->willReturn($request);
-        GeneralUtility::setSingletonInstance(Context::class, new Context());
         GeneralUtility::addInstance(ContentObjectRenderer::class, $contentObjectRendererMock);
 
         $pageRepositoryMock

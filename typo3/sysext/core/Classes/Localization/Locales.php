@@ -22,7 +22,6 @@ use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Log\LogManager;
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -33,7 +32,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * These system languages are used for determining the proper language labels of XLF files.
  */
-class Locales implements SingletonInterface
+class Locales
 {
     /**
      * Supported TYPO3 languages with locales

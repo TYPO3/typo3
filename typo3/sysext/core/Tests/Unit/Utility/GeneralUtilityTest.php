@@ -3272,7 +3272,7 @@ final class GeneralUtilityTest extends UnitTestCase
         $cacheMock->expects($this->atLeastOnce())->method('set')->with('generalUtilityXml2Array', self::anything());
         $cacheManager = new CacheManager();
         $cacheManager->registerCache($cacheMock);
-        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManager);
+        GeneralUtility::addInstance(CacheManager::class, $cacheManager);
         GeneralUtility::xml2array('<?xml version="1.0" encoding="utf-8" standalone="yes"?>', 'T3:');
     }
 

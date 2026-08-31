@@ -19,11 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Page;
 
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\Test;
-use TYPO3\CMS\Core\Page\ImportMap;
-use TYPO3\CMS\Core\Page\ImportMapFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Security\ContentSecurityPolicy\ConsumableNonce;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -31,20 +27,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 final class PageRendererTest extends UnitTestCase
 {
     use PageRendererFactoryTrait;
-
-    protected bool $resetSingletonInstances = true;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $importMapMock = $this->createMock(ImportMap::class);
-        $importMapMock->expects($this->atMost(PHP_INT_MAX))->method('render')
-            ->with(self::isString(), self::isInstanceOf(ConsumableNonce::class))
-            ->willReturn('');
-        $importMapFactoryStub = self::createStub(ImportMapFactory::class);
-        $importMapFactoryStub->method('create')->willReturn($importMapMock);
-        GeneralUtility::setSingletonInstance(ImportMapFactory::class, $importMapFactoryStub);
-    }
 
     #[Test]
     public function addBodyContentAddsContent(): void

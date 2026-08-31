@@ -49,7 +49,7 @@ class SchedulerExecuteCommand extends Command
         protected readonly Context $context,
         protected readonly SchedulerTaskRepository $taskRepository,
         protected readonly TaskService $taskService,
-        protected Scheduler $scheduler,
+        protected readonly Scheduler $scheduler,
     ) {
         parent::__construct();
     }

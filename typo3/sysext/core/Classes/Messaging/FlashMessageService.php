@@ -17,13 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Messaging;
 
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * A class representing flash messages.
  */
-class FlashMessageService implements SingletonInterface
+class FlashMessageService
 {
     /**
      * Array of \TYPO3\CMS\Core\Messaging\FlashMessageQueue objects

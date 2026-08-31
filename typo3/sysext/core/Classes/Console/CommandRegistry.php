@@ -23,12 +23,11 @@ use Symfony\Component\Console\CommandLoader\CommandLoaderInterface;
 use Symfony\Component\Console\Descriptor\ApplicationDescription;
 use Symfony\Component\Console\Exception\CommandNotFoundException;
 use TYPO3\CMS\Core\Attribute\AsNonSchedulableCommand;
-use TYPO3\CMS\Core\SingletonInterface;
 
 /**
  * Registry for Symfony commands, populated via dependency injection tags
  */
-class CommandRegistry implements CommandLoaderInterface, SingletonInterface
+class CommandRegistry implements CommandLoaderInterface
 {
     /**
      * Map of command configurations with the command name as key

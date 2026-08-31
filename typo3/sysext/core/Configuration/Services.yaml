@@ -26,6 +26,9 @@ services:
       $renderers: !tagged_iterator fal.file_renderer
 
   TYPO3\CMS\Core\Resource\TextExtraction\TextExtractorRegistry:
+    # Public: no Core class consumes the registry, it is resolved by
+    # extensions through GeneralUtility::makeInstance().
+    public: true
     arguments:
       $textExtractors: !tagged_iterator fal.text_extractor
 

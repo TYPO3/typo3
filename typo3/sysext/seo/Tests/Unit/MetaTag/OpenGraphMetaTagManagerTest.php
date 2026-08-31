@@ -20,23 +20,12 @@ namespace TYPO3\CMS\Seo\Tests\Unit\MetaTag;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
-use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Seo\MetaTag\OpenGraphMetaTagManager;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 #[AllowMockObjectsWithoutExpectations]
 final class OpenGraphMetaTagManagerTest extends UnitTestCase
 {
-    protected bool $resetSingletonInstances = true;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $pageRenderer = $this->getMockBuilder(PageRenderer::class)->disableOriginalConstructor()->onlyMethods([])->getMock();
-        GeneralUtility::setSingletonInstance(PageRenderer::class, $pageRenderer);
-    }
-
     #[Test]
     public function checkIfGetAllHandledPropertiesReturnsNonEmptyArray(): void
     {

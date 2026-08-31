@@ -23,14 +23,13 @@ use TYPO3\CMS\Adminpanel\ModuleApi\ModuleInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\OnSubmitActorInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\SubmoduleProviderInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\SingletonInterface;
 
 /**
  * Admin Panel Service Class for Configuration Handling
  *
  * Scope: User TSConfig + Backend User UC
  */
-class ConfigurationService implements SingletonInterface
+class ConfigurationService
 {
     /**
      * Get MainConfiguration (User TSConfig admPanel)

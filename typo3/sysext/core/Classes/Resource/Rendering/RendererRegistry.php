@@ -16,7 +16,6 @@
 namespace TYPO3\CMS\Core\Resource\Rendering;
 
 use TYPO3\CMS\Core\Resource\FileInterface;
-use TYPO3\CMS\Core\SingletonInterface;
 
 /**
  * Registry for file renderers, which are registered as tagged services
@@ -26,7 +25,7 @@ use TYPO3\CMS\Core\SingletonInterface;
  *
  * @internal not part of TYPO3's Core API. Register file renderers via the #[AsFileRenderer] attribute instead.
  */
-class RendererRegistry implements SingletonInterface
+class RendererRegistry
 {
     /**
      * Instance cache for renderer classes

@@ -22,16 +22,15 @@ use TYPO3\CMS\Adminpanel\Utility\StateUtility;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Resource\Event\AfterFileProcessingEvent;
-use TYPO3\CMS\Core\SingletonInterface;
 
 /**
  * Collects the images processed during the current frontend request, so the
- * "Info" admin panel module can list them. Implemented as a singleton so that
- * all processing calls of a request accumulate in the same instance.
+ * "Info" admin panel module can list them. The service is shared, so all
+ * processing calls of a request accumulate in the same instance.
  *
  * @internal
  */
-final class ProcessedImageCollector implements SingletonInterface
+final class ProcessedImageCollector
 {
     /**
      * @var array<string, array{name: string, size: int, width: int, height: int}>

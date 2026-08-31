@@ -82,6 +82,7 @@ readonly class GridDataService
         private VisibleSchemaFieldsCollector $visibleSchemaFieldsCollector,
         private Avatar $avatar,
         private TranslationConfigurationProvider $translationConfigurationProvider,
+        private CollectionService $dependencyCollectionService,
     ) {}
 
     /**
@@ -502,12 +503,11 @@ readonly class GridDataService
      */
     protected function resolveDataArrayDependencies(array $dataArray): array
     {
-        $collectionService = $this->getDependencyCollectionService();
-        $dependencyResolver = $collectionService->getDependencyResolver();
+        $dependencyResolver = $this->dependencyCollectionService->getDependencyResolver();
         foreach ($dataArray as $dataElement) {
             $dependencyResolver->addElement($dataElement['table'], $dataElement['uid']);
         }
-        return $collectionService->process($dataArray);
+        return $this->dependencyCollectionService->process($dataArray);
     }
 
     /**
@@ -822,11 +822,6 @@ readonly class GridDataService
             'live' => $liveInformation,
             'differences' => $differences,
         ];
-    }
-
-    protected function getDependencyCollectionService(): CollectionService
-    {
-        return GeneralUtility::makeInstance(CollectionService::class);
     }
 
     protected function getBackendUser(): BackendUserAuthentication

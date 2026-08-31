@@ -17,22 +17,30 @@ declare(strict_types=1);
 
 namespace TYPO3Tests\TestMeta\Controller;
 
+use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Attribute\AsAllowedCallable;
 use TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Tests\TestMeta\PageTitle\CustomPageTitleProvider;
 
+// User functions are resolved with GeneralUtility::makeInstance(), which only
+// consults the container for public services.
+#[Autoconfigure(public: true)]
 class MetaPluginController
 {
+    public function __construct(
+        private readonly MetaTagManagerRegistry $metaTagManagerRegistry,
+        private readonly CustomPageTitleProvider $pageTitleProvider,
+    ) {}
+
     #[AsAllowedCallable]
-    public function setMetaData(string $content, array $configuration): string
+    public function setMetaData(string $content, array $configuration, ServerRequestInterface $request): string
     {
-        $pageId = $GLOBALS['TYPO3_REQUEST']->getQueryParams()['id'];
+        $pageId = $request->getQueryParams()['id'];
         if (!empty($configuration['setTitle'])) {
-            GeneralUtility::makeInstance(CustomPageTitleProvider::class)
-                          ->setTitle('static title with pageId: ' . $pageId . ' and pluginNumber: ' . $configuration['pluginNumber']);
+            $this->pageTitleProvider->setTitle('static title with pageId: ' . $pageId . ' and pluginNumber: ' . $configuration['pluginNumber']);
         }
-        $metaTagManager = GeneralUtility::makeInstance(MetaTagManagerRegistry::class)->getManagerForProperty('og:title');
+        $metaTagManager = $this->metaTagManagerRegistry->getManagerForProperty('og:title');
         $metaTagManager->addProperty(
             'og:title',
             'OG title from a controller with pageId: ' . $pageId . ' and pluginNumber: ' . $configuration['pluginNumber'],

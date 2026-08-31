@@ -17,13 +17,12 @@ namespace TYPO3\CMS\Core\Resource\OnlineMedia\Helpers;
 
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Online Media Source Registry
  */
-class OnlineMediaHelperRegistry implements SingletonInterface
+class OnlineMediaHelperRegistry
 {
     /**
      * Checks if there is a helper for this file extension

@@ -40,7 +40,7 @@ final class CachingFrameworkGarbageCollectionTest extends UnitTestCase
         $cache->expects($this->atLeastOnce())->method('collectGarbage');
         $mockCacheManager = new CacheManager();
         $mockCacheManager->registerCache($cache);
-        GeneralUtility::setSingletonInstance(CacheManager::class, $mockCacheManager);
+        GeneralUtility::addInstance(CacheManager::class, $mockCacheManager);
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'] = [
             'cache' => [
                 'frontend' => VariableFrontend::class,
@@ -63,7 +63,7 @@ final class CachingFrameworkGarbageCollectionTest extends UnitTestCase
         $cache->expects($this->never())->method('collectGarbage');
         $mockCacheManager = new CacheManager();
         $mockCacheManager->registerCache($cache);
-        GeneralUtility::setSingletonInstance(CacheManager::class, $mockCacheManager);
+        GeneralUtility::addInstance(CacheManager::class, $mockCacheManager);
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'] = [
             'cache' => [
                 'frontend' => VariableFrontend::class,
@@ -79,5 +79,7 @@ final class CachingFrameworkGarbageCollectionTest extends UnitTestCase
             ->getMock();
         $subject->selectedBackends = [NullBackend::class];
         $subject->execute();
+        // execute() must not have resolved the CacheManager for a backend that is not selected
+        self::assertSame($mockCacheManager, GeneralUtility::makeInstance(CacheManager::class));
     }
 }

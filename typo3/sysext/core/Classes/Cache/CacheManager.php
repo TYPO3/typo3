@@ -29,9 +29,8 @@ use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException;
 use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheGroupException;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
-use TYPO3\CMS\Core\SingletonInterface;
 
-class CacheManager implements SingletonInterface
+class CacheManager
 {
     /**
      * @var FrontendInterface[]

@@ -21,7 +21,6 @@ use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Registry;
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Scheduler\Domain\Repository\SchedulerTaskRepository;
 use TYPO3\CMS\Scheduler\Event\AfterTaskExecutionEvent;
 use TYPO3\CMS\Scheduler\Exception\InvalidTaskException;
@@ -31,7 +30,7 @@ use TYPO3\CMS\Scheduler\Task\TaskSerializer;
 /**
  * TYPO3 Scheduler. This class handles scheduling and execution of tasks.
  */
-class Scheduler implements SingletonInterface
+class Scheduler
 {
     /**
      * @var array $extConf Settings from the extension manager

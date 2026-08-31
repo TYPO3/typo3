@@ -20,9 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Folder;
-use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -122,7 +120,6 @@ final class FolderTest extends UnitTestCase
         $mockedStorage = $this->createMock(ResourceStorage::class);
         $mockedStorage->expects($this->once())->method('hasFolderInFolder')->with(self::equalTo('someSubfolder'))->willReturn(true);
 
-        $factoryStub = self::createStub(ResourceFactory::class);
         $folderFixture = $this->createFolderFixture(
             '/somePath/someFolder/',
             'someFolder',
@@ -134,10 +131,6 @@ final class FolderTest extends UnitTestCase
             $mockedStorage
         );
         $mockedStorage->expects($this->once())->method('getFolderInFolder')->willReturn($subfolderFixture);
-        GeneralUtility::setSingletonInstance(
-            ResourceFactory::class,
-            $factoryStub
-        );
         self::assertEquals($subfolderFixture, $folderFixture->getSubfolder('someSubfolder'));
     }
 

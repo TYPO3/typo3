@@ -30,7 +30,6 @@ use TYPO3\CMS\Core\Session\Backend\HashableSessionBackendInterface;
 use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
 use TYPO3\CMS\Core\Session\SessionManager;
 use TYPO3\CMS\Core\Session\UserSession;
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Install\Exception;
 use TYPO3\CMS\Install\Service\Session\FileSessionHandler;
 
@@ -39,7 +38,7 @@ use TYPO3\CMS\Install\Service\Session\FileSessionHandler;
  *
  * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
-class SessionService implements SingletonInterface
+class SessionService
 {
     use BlockSerializationTrait;
 

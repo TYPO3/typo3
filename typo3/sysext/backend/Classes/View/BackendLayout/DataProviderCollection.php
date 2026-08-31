@@ -18,13 +18,12 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\View\BackendLayout;
 
 use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Collection of backend layout data providers.
  */
-class DataProviderCollection implements SingletonInterface
+class DataProviderCollection
 {
     /**
      * @var array<non-empty-string, DataProviderInterface>
