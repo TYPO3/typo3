@@ -23,7 +23,6 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Error\Http\StatusException;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Http\NormalizedParams;
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\SysLog\Action as SystemLogGenericAction;
 use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
 use TYPO3\CMS\Core\SysLog\Type as SystemLogType;
@@ -35,7 +34,7 @@ use TYPO3\CMS\Core\Utility\HttpUtility;
  *
  * This file is a backport from TYPO3 Flow
  */
-abstract class AbstractExceptionHandler implements ExceptionHandlerInterface, SingletonInterface, LoggerAwareInterface
+abstract class AbstractExceptionHandler implements ExceptionHandlerInterface, LoggerAwareInterface
 {
     use LoggerAwareTrait;
 

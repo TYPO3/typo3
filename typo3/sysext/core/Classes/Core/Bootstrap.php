@@ -22,6 +22,7 @@ use Composer\InstalledVersions;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Log\LoggerAwareInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\Backend\BackendInterface;
 use TYPO3\CMS\Core\Cache\Backend\NullBackend;
@@ -91,12 +92,7 @@ readonly class Bootstrap
         $configurationManager->exportConfiguration();
 
         $logManager = new LogManager($requestId);
-        // LogManager is used by the core ErrorHandler (using GeneralUtility::makeInstance),
-        // therefore we have to push the LogManager to GeneralUtility, in case there
-        // happen errors before we call GeneralUtility::setContainer().
-        GeneralUtility::setSingletonInstance(LogManager::class, $logManager);
-
-        static::initializeErrorHandling();
+        static::initializeErrorHandling($logManager);
 
         $disableCaching = $failsafe ? true : false;
         /** @var PhpFrontend $coreCache */
@@ -136,10 +132,6 @@ readonly class Bootstrap
         // Push the container to GeneralUtility as we want to make sure its
         // makeInstance() method creates classes using the container from now on.
         GeneralUtility::setContainer($container);
-
-        // Reset LogManager singleton instance in order for GeneralUtility::makeInstance()
-        // to proxy LogManager retrieval to ContainerInterface->get() from now on.
-        GeneralUtility::removeSingletonInstance(LogManager::class, $logManager);
 
         // Push PackageManager instance to ExtensionManagementUtility
         ExtensionManagementUtility::setPackageManager($packageManager);
@@ -207,9 +199,9 @@ readonly class Bootstrap
      * @param string $packageManagerClassName Define an alternative package manager implementation (usually for the installer)
      * @internal This is not a public API method, do not use in own extensions
      */
-    public static function createPackageManager($packageManagerClassName, PackageCacheInterface $packageCache): PackageManager
+    public static function createPackageManager(string $packageManagerClassName, PackageCacheInterface $packageCache): PackageManager
     {
-        $dependencyOrderingService = GeneralUtility::makeInstance(DependencyOrderingService::class);
+        $dependencyOrderingService = new DependencyOrderingService();
         /** @var PackageManager $packageManager */
         $packageManager = new $packageManagerClassName($dependencyOrderingService);
         $packageManager->setPackageCache($packageCache);
@@ -306,7 +298,7 @@ readonly class Bootstrap
     /**
      * Configure and set up exception and error handling
      */
-    protected static function initializeErrorHandling(): void
+    protected static function initializeErrorHandling(LogManager $logManager): void
     {
         $productionExceptionHandlerClassName = $GLOBALS['TYPO3_CONF_VARS']['SYS']['productionExceptionHandler'];
         $debugExceptionHandlerClassName = $GLOBALS['TYPO3_CONF_VARS']['SYS']['debugExceptionHandler'];
@@ -344,7 +336,10 @@ readonly class Bootstrap
 
         if (!empty($errorHandlerClassName)) {
             // Register an error handler for the given errorHandlerError
-            $errorHandler = GeneralUtility::makeInstance($errorHandlerClassName, $errorHandlerErrors);
+            $errorHandler = new $errorHandlerClassName($errorHandlerErrors);
+            if ($errorHandler instanceof LoggerAwareInterface) {
+                $errorHandler->setLogger($logManager->getLogger($errorHandlerClassName));
+            }
             $errorHandler->setExceptionalErrors($exceptionalErrors);
             if (is_callable([$errorHandler, 'setDebugMode'])) {
                 $errorHandler->setDebugMode($displayErrors === 1);
@@ -354,8 +349,10 @@ readonly class Bootstrap
             }
         }
         if (!empty($exceptionHandlerClassName)) {
-            // Registering the exception handler is done in the constructor
-            GeneralUtility::makeInstance($exceptionHandlerClassName);
+            $exceptionHandler = new $exceptionHandlerClassName();
+            if ($exceptionHandler instanceof LoggerAwareInterface) {
+                $exceptionHandler->setLogger($logManager->getLogger($exceptionHandlerClassName));
+            }
         }
     }
 
