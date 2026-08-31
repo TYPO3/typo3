@@ -39,7 +39,7 @@
 		"typo3/cms-core": "15.0.*@dev",
 		"typo3/cms-fluid": "15.0.*@dev",
 		"typo3/cms-frontend": "15.0.*@dev",
-		"typo3fluid/fluid": "^5.3.1"
+		"typo3fluid/fluid": "^5.3.2"
 	},
 	"conflict": {
 		"typo3/cms": "*"
