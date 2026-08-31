@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3d68e2503837a9b729aeaf8ce5e82390",
+    "content-hash": "e69921543350b7c0f490e95f1cd456b0",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -6697,11 +6697,11 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "2.2.7",
+            "version": "2.2.10",
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/692db47b9dddb0487934e5236e77d48594aef921",
-                "reference": "692db47b9dddb0487934e5236e77d48594aef921",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/36d1509c998b0602811824143526b4a9ee2774e7",
+                "reference": "36d1509c998b0602811824143526b4a9ee2774e7",
                 "shasum": ""
             },
             "require": {
@@ -6757,7 +6757,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-07-29T17:39:32+00:00"
+            "time": "2026-08-30T12:46:16+00:00"
         },
         {
             "name": "phpstan/phpstan-phpunit",
