@@ -56,17 +56,25 @@ class TimeTracker implements SingletonInterface
     public bool $LR = true;
 
     protected array $wrapError = [
-        LogLevel::INFO => ['', ''],
-        LogLevel::NOTICE => ['<strong>', '</strong>'],
-        LogLevel::WARNING => ['<strong style="color:#ff6600;">', '</strong>'],
+        LogLevel::EMERGENCY => ['<strong style="color:#ff0000;">', '</strong>'],
+        LogLevel::ALERT => ['<strong style="color:#ff0000;">', '</strong>'],
+        LogLevel::CRITICAL => ['<strong style="color:#ff0000;">', '</strong>'],
         LogLevel::ERROR => ['<strong style="color:#ff0000;">', '</strong>'],
+        LogLevel::WARNING => ['<strong style="color:#ff6600;">', '</strong>'],
+        LogLevel::NOTICE => ['<strong>', '</strong>'],
+        LogLevel::INFO => ['', ''],
+        LogLevel::DEBUG => ['', ''],
     ];
 
     protected array $wrapIcon = [
-        LogLevel::INFO => '',
-        LogLevel::NOTICE => 'actions-document-info',
-        LogLevel::WARNING => 'status-dialog-warning',
+        LogLevel::EMERGENCY => 'status-dialog-error',
+        LogLevel::ALERT => 'status-dialog-error',
+        LogLevel::CRITICAL => 'status-dialog-error',
         LogLevel::ERROR => 'status-dialog-error',
+        LogLevel::WARNING => 'status-dialog-warning',
+        LogLevel::NOTICE => 'actions-document-info',
+        LogLevel::INFO => '',
+        LogLevel::DEBUG => '',
     ];
 
     protected int $uniqueCounter = 0;
@@ -152,8 +160,11 @@ class TimeTracker implements SingletonInterface
         if (strlen($content) > 30) {
             $placeholder = '<br /><span style="width: 300px; height: 1px; display: inline-block;"></span>';
         }
+        // Unknown log levels are rendered like LogLevel::INFO instead of failing
+        $icon = $this->wrapIcon[$logLevel] ?? $this->wrapIcon[LogLevel::INFO];
+        [$wrapBefore, $wrapAfter] = $this->wrapError[$logLevel] ?? $this->wrapError[LogLevel::INFO];
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $this->tsStackLog[$k]['message'][] = $iconFactory->getIcon($this->wrapIcon[$logLevel], IconSize::SMALL)->render() . $this->wrapError[$logLevel][0] . htmlspecialchars($content) . $this->wrapError[$logLevel][1] . $placeholder;
+        $this->tsStackLog[$k]['message'][] = $iconFactory->getIcon($icon, IconSize::SMALL)->render() . $wrapBefore . htmlspecialchars($content) . $wrapAfter . $placeholder;
     }
 
     /**
