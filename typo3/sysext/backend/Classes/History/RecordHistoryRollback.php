@@ -72,16 +72,20 @@ readonly class RecordHistoryRollback
             }
         }
         // Writes the data:
+        $correlationId = null;
         if ($commandMapArray) {
             $tce = GeneralUtility::makeInstance(DataHandler::class);
             $tce->dontProcessTransformations = true;
             $tce->start([], $commandMapArray, $backendUserAuthentication);
             $tce->process_cmdmap();
+            // Both runs are one rollback, so the second one continues with the same correlation id
+            $correlationId = $tce->getCorrelationId();
             unset($tce);
         }
         if ($diff['oldData'] ?? false) {
             // PROCESS CHANGES
-            // create an array for process_datamap
+            // create an array for process_datamap, the command map above used $data for its own shape
+            $data = [];
             $diffModified = [];
             foreach ($diff['oldData'] as $key => $value) {
                 $splitKey = explode(':', $key);
@@ -100,7 +104,7 @@ readonly class RecordHistoryRollback
             // Writes the data:
             $tce = GeneralUtility::makeInstance(DataHandler::class);
             $tce->dontProcessTransformations = true;
-            $tce->start($data, [], $backendUserAuthentication);
+            $tce->start($data, [], $backendUserAuthentication, null, $correlationId);
             $tce->process_datamap();
             unset($tce);
         }
