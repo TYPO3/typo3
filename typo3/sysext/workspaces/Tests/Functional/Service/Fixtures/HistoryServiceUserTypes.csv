@@ -1,0 +1,8 @@
+"pages",,,,,,
+,"uid","pid","title","deleted","perms_everybody",
+,1,0,"Root",0,31,
+
+"sys_history",,,,,,,,,,
+,"uid","tstamp","actiontype","usertype","userid","tablename","recuid","history_data","workspace","correlation_id"
+,1,1700000000,2,"BE",1,"pages",1,"{""oldRecord"":{""title"":""First""},""newRecord"":{""title"":""Second""}}",0,"0400$aaa:bbb"
+,2,1700000000,2,"FE",1,"pages",1,"{""oldRecord"":{""title"":""Second""},""newRecord"":{""title"":""Third""}}",0,"0400$aaa:ccc"

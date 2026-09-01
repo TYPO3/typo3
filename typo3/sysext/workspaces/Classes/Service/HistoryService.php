@@ -88,14 +88,20 @@ readonly class HistoryService
             $differences = $this->getDifferences($entry);
         }
 
-        $beUserRecord = BackendUtility::getRecord('be_users', $entry['userid']);
+        // Only backend users can be resolved from be_users, a frontend user must not be
+        // attributed to the backend user that happens to have the same uid.
+        $beUserRecord = null;
+        if ((string)($entry['usertype'] ?? '') === RecordHistoryStore::USER_BACKEND) {
+            $beUserRecord = BackendUtility::getRecord('be_users', $entry['userid']);
+        }
 
         return [
             'datetime' => htmlspecialchars(BackendUtility::datetime($entry['tstamp'])),
             'user' => htmlspecialchars($beUserRecord['username'] ?? 'unknown'),
             'user_realName' => htmlspecialchars($beUserRecord['realName'] ?? ''),
             'user_uid' => (int)($beUserRecord['uid'] ?? 0),
-            'user_avatar' => $this->avatar->render($beUserRecord),
+            // Avatar->render() falls back to the *current* backend user when handed no record
+            'user_avatar' => $beUserRecord !== null ? $this->avatar->render($beUserRecord) : '',
             'differences' => $differences,
         ];
     }

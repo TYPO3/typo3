@@ -46,7 +46,14 @@
                                     </f:if>
                                 </f:then>
                                 <f:else>
-                                    {f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:externalChange')}
+                                    <f:if condition="{historyRow.frontendUserUid}">
+                                        <f:then>
+                                            {f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:frontendUser')} #{historyRow.frontendUserUid}
+                                        </f:then>
+                                        <f:else>
+                                            {f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:externalChange')}
+                                        </f:else>
+                                    </f:if>
                                 </f:else>
                             </f:if>
                             <f:if condition="{historyRow.originalBackendUserUid}">
