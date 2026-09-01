@@ -18,6 +18,7 @@ This is considered a breaking change in case consumers are
 not adjusted for strict types.
 
 - :php:`\TYPO3\CMS\Backend\Utility::daysUntil` - Parameter `$tstamp` can now only be of type `integer` or `DateTimeInterface` - cast to `(int)` if strings were passed to this argument before.
+- :php:`\TYPO3\CMS\Backend\Form\FormDataGroupInterface::compile` - Return type now specifies `array`, implementations of this interface need to declare this as well.
 
 Impact
 ======
