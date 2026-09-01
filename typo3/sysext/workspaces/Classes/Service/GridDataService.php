@@ -107,7 +107,40 @@ readonly class GridDataService
                 return (int)($element['Workspaces_CollectionLevel'] ?? 0) === 0;
             })),
             'data' => $this->getDataArray($dataArray, $start, $limit),
+            'additionalColumns' => $this->determineAdditionalColumns($dataArray),
         ];
+    }
+
+    /**
+     * Additional columns are contributed by listeners of AfterDataGeneratedForWorkspaceEvent, which add an
+     * 'additional' section to the rows they want to enrich:
+     *
+     * $row['additional']['myColumn'] = ['label' => 'My column', 'value' => 'Some value', 'icon' => 'actions-clock'];
+     *
+     * A column is rendered as soon as one row declares it, its label is taken from the first row that provides
+     * a non-empty one and falls back to the column identifier. The columns are determined from all rows of the
+     * workspace and not only from those of the current page, so the table header does not change while paging.
+     *
+     * @return array<string, string> Column labels, indexed by column identifier
+     */
+    protected function determineAdditionalColumns(array $dataArray): array
+    {
+        $columns = [];
+        foreach ($dataArray as $row) {
+            foreach (($row['additional'] ?? []) as $identifier => $column) {
+                $identifier = (string)$identifier;
+                $label = (string)($column['label'] ?? '');
+                if (!array_key_exists($identifier, $columns) || ($columns[$identifier] === '' && $label !== '')) {
+                    $columns[$identifier] = $label;
+                }
+            }
+        }
+        foreach ($columns as $identifier => $label) {
+            if ($label === '') {
+                $columns[$identifier] = $identifier;
+            }
+        }
+        return $columns;
     }
 
     /**

@@ -469,6 +469,7 @@ class Backend extends Workspaces {
     }
 
     const workspacesRecordTable = document.querySelector('typo3-workspaces-record-table');
+    workspacesRecordTable.additionalColumns = result.additionalColumns ?? {};
     workspacesRecordTable.results = result.data;
   }
 

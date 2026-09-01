@@ -24,6 +24,14 @@ import '@typo3/backend/element/icon-element';
 import '@typo3/backend/element/qrcode-modal-button';
 import 'bootstrap'; // for data-bs-toggle="dropdown"
 
+export type AdditionalColumnValue = {
+  label?: string,
+  value?: string,
+  icon?: string,
+  title?: string,
+  url?: string
+};
+
 export type RecordData = {
   table: string,
   id: string,
@@ -67,13 +75,20 @@ export type RecordData = {
   integrity: {
     status: string,
     messages: string
-  }
+  },
+  additional?: Record<string, AdditionalColumnValue>
 };
 
 @customElement('typo3-workspaces-record-table')
 export class RecordTableElement extends LitElement {
   @property({ type: Array })
   public results: RecordData[] = [];
+
+  /**
+   * Labels of columns added by third party extensions, indexed by column identifier.
+   */
+  @property({ type: Object })
+  public additionalColumns: Record<string, string> = {};
 
   private latestPath: string | null = null;
 
@@ -139,6 +154,7 @@ export class RecordTableElement extends LitElement {
             <th class="col-state">${labels.get('column.wsStateAction')}</th>
             <th class="col-state">${labels.get('column.integrity')}</th>
             <th>${labels.get('column.stage')}</th>
+            ${Object.values(this.additionalColumns).map((label: string) => html`<th>${label}</th>`)}
             <th class="col-control nowrap">
               <span class="visually-hidden">${coreLabels.get('labels._CONTROL_')}</span>
             </th>
@@ -200,7 +216,7 @@ export class RecordTableElement extends LitElement {
     return html`
       ${latestPathChanged ? html`
         <tr>
-          <th colspan="8" class="col-white-space-normal">
+          <th colspan=${8 + Object.keys(this.additionalColumns).length} class="col-white-space-normal">
             <a href=${data.urlToPage}>${data.path_Workspace}</a>
           </th>
         </tr>
@@ -263,11 +279,32 @@ export class RecordTableElement extends LitElement {
           </span>
         ` : nothing}</td>
         <td>${data.label_Stage}</td>
+        ${Object.keys(this.additionalColumns).map((identifier: string) => this.renderAdditionalColumn(data, identifier))}
         <td class="col-control nowrap">
           <div class="btn-group">${this.renderElementActions(data)}</div>
           <div class="btn-group">${this.renderVersioningActions(data)}</div>
         </td>
       </tr>
+    `;
+  }
+
+  protected renderAdditionalColumn(data: RecordData, identifier: string): TemplateResult {
+    const column = data.additional?.[identifier];
+    if (column === undefined) {
+      return html`<td></td>`;
+    }
+
+    const content = html`
+      ${column.icon ? html`
+        <typo3-backend-icon identifier=${column.icon} size="small"></typo3-backend-icon>
+      ` : nothing}
+      ${column.value ?? ''}
+    `;
+
+    return html`
+      <td title=${ifDefined(column.title || undefined)}>
+        ${column.url ? html`<a href=${column.url}>${content}</a>` : content}
+      </td>
     `;
   }
 
