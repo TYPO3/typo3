@@ -1,0 +1,19 @@
+{
+	"name": "typo3tests/test-startingpoint",
+	"type": "typo3-cms-extension",
+	"description": "Extbase plugin Startingpoint (pages/recursive) rendering test",
+	"license": "GPL-2.0-or-later",
+	"require": {
+		"typo3/cms-core": "13.4.*@dev"
+	},
+	"extra": {
+		"typo3/cms": {
+			"extension-key": "test_startingpoint"
+		}
+	},
+	"autoload": {
+		"psr-4": {
+			"TYPO3Tests\\TestStartingpoint\\": "Classes/"
+		}
+	}
+}

@@ -15,4 +15,9 @@ defined('TYPO3') or die();
         'BlogPostEditing',
         'Blog listing and editing (Fluid forms)'
     );
+    ExtensionUtility::registerPlugin(
+        'blog_example',
+        'Content',
+        'Content listing (JSON)'
+    );
 })();

@@ -1,0 +1,7 @@
+page = PAGE
+page.10 = PAGEVIEW
+page.10.paths.100 = EXT:test_startingpoint/Resources/Private/PageTemplates/
+page.10.dataProcessing.10 = page-content
+# Decoy storage pid: a set "Startingpoint" (pages field) must overrule this
+plugin.tx_blogexample.persistence.storagePid = 30
+plugin.tx_teststartingpoint.persistence.storagePid = 30
