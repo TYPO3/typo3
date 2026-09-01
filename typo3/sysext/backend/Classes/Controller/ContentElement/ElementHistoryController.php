@@ -358,15 +358,21 @@ class ElementHistoryController
             // Build up single line
             $singleLine = [];
 
-            // Get user names
-            $singleLine['backendUserUid'] = $entry['userid'];
-            $singleLine['backendUserName'] = $beUserArray[$entry['userid']]['username'] ?? '';
-            $singleLine['backendUserRealName'] = $beUserArray[$entry['userid']]['realName'] ?? '';
-            // Executed by switch user
-            if (!empty($entry['originaluserid'])) {
-                $singleLine['originalBackendUserUid'] = $entry['originaluserid'];
-                $singleLine['originalBackendUserName'] = $beUserArray[$entry['originaluserid']]['username'] ?? '';
-                $singleLine['originalBackendRealName'] = $beUserArray[$entry['originaluserid']]['realName'] ?? '';
+            // Get user names. Only backend users can be resolved from be_users, a frontend user
+            // must not be attributed to the backend user that happens to have the same uid.
+            $userType = (string)($entry['usertype'] ?? '');
+            if ($userType === RecordHistoryStore::USER_BACKEND) {
+                $singleLine['backendUserUid'] = $entry['userid'];
+                $singleLine['backendUserName'] = $beUserArray[$entry['userid']]['username'] ?? '';
+                $singleLine['backendUserRealName'] = $beUserArray[$entry['userid']]['realName'] ?? '';
+                // Executed by switch user
+                if (!empty($entry['originaluserid'])) {
+                    $singleLine['originalBackendUserUid'] = $entry['originaluserid'];
+                    $singleLine['originalBackendUserName'] = $beUserArray[$entry['originaluserid']]['username'] ?? '';
+                    $singleLine['originalBackendRealName'] = $beUserArray[$entry['originaluserid']]['realName'] ?? '';
+                }
+            } elseif ($userType === RecordHistoryStore::USER_FRONTEND) {
+                $singleLine['frontendUserUid'] = (int)$entry['userid'];
             }
 
             // Is a change in a workspace?

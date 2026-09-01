@@ -51,6 +51,9 @@
       <trans-unit id="externalChange">
         <source>Automated process (missing user information)</source>
       </trans-unit>
+      <trans-unit id="frontendUser">
+        <source>Frontend user</source>
+      </trans-unit>
       <trans-unit id="viaUser">
         <source>via</source>
       </trans-unit>
