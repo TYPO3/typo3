@@ -1,0 +1,6 @@
+page = PAGE
+page.10 = FLUIDTEMPLATE
+page.10.file = EXT:test_startingpoint/Resources/Private/Templates/Main.fluid.html
+# Decoy storage pid: a set "Startingpoint" (pages field) must overrule this
+plugin.tx_blogexample.persistence.storagePid = 30
+plugin.tx_teststartingpoint.persistence.storagePid = 30

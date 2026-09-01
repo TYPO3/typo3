@@ -1,0 +1,43 @@
+mod.web_layout.BackendLayouts {
+  Standard {
+    title = Standard Test Page Layout
+    config {
+      backend_layout {
+        colCount = 1
+        rowCount = 1
+        rows {
+          1 {
+            columns {
+              1 {
+                name = Main
+                colPos = 0
+                identifier = main
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  CObjectPageview {
+    title = CObject Pageview Test Page Layout
+    config {
+      backend_layout {
+        colCount = 1
+        rowCount = 1
+        rows {
+          1 {
+            columns {
+              1 {
+                name = Main
+                colPos = 0
+                identifier = main
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
