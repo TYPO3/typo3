@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Property\TypeConverter;
 
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface;
 use TYPO3\CMS\Extbase\Property\TypeConverterInterface;
 
@@ -25,7 +24,7 @@ use TYPO3\CMS\Extbase\Property\TypeConverterInterface;
  * Type converter which provides sensible default implementations for most methods. If you extend this class
  * you only need to implement convertFrom()
  */
-abstract class AbstractTypeConverter implements TypeConverterInterface, SingletonInterface
+abstract class AbstractTypeConverter implements TypeConverterInterface
 {
     /**
      * @todo The concept of this method is flawed because it enables the override of the target type depending on the

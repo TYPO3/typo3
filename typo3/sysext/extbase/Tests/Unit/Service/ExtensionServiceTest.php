@@ -21,6 +21,7 @@ use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
+use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Exception;
@@ -41,9 +42,8 @@ final class ExtensionServiceTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->extensionService = new ExtensionService();
         $this->mockConfigurationManager = $this->createMock(ConfigurationManagerInterface::class);
-        $this->extensionService->injectConfigurationManager($this->mockConfigurationManager);
+        $this->extensionService = new ExtensionService($this->mockConfigurationManager, new NullFrontend('runtime'));
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'] = [
             'ExtensionName' => [
                 'plugins' => [
@@ -260,7 +260,7 @@ final class ExtensionServiceTest extends UnitTestCase
             ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK,
             'extension'
         )->willReturn([]);
-        $this->extensionService->injectConfigurationManager($configurationManagerMock);
+        $this->extensionService = new ExtensionService($configurationManagerMock, new NullFrontend('runtime'));
 
         $result = $this->extensionService->getTargetPageTypeByFormat('extension', 'json');
 
@@ -281,7 +281,7 @@ final class ExtensionServiceTest extends UnitTestCase
                 ],
             ],
         ]);
-        $this->extensionService->injectConfigurationManager($configurationManagerMock);
+        $this->extensionService = new ExtensionService($configurationManagerMock, new NullFrontend('runtime'));
 
         $result = $this->extensionService->getTargetPageTypeByFormat('extension', 'json');
 

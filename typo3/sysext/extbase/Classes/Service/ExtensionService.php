@@ -17,11 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Service;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Exception;
@@ -30,22 +32,14 @@ use TYPO3\CMS\Extbase\Exception;
  * Service for determining basic extension params
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
-class ExtensionService implements SingletonInterface
+#[Autoconfigure(shared: false)]
+class ExtensionService
 {
-    protected ConfigurationManagerInterface $configurationManager;
-
-    /**
-     * Cache of result for getTargetPidByPlugin()
-     * @var array
-     * @todo: Fishy. This should be at least a runtime cache or something
-     *        if it can't be refactored away.
-     */
-    protected $targetPidPluginCache = [];
-
-    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager): void
-    {
-        $this->configurationManager = $configurationManager;
-    }
+    public function __construct(
+        protected readonly ConfigurationManagerInterface $configurationManager,
+        #[Autowire(service: 'cache.runtime')]
+        protected readonly FrontendInterface $runtimeCache,
+    ) {}
 
     /**
      * Determines the plugin namespace of the specified plugin (defaults to "tx_[extensionname]_[pluginname]")
@@ -164,8 +158,10 @@ class ExtensionService implements SingletonInterface
         }
         $pluginSignature = strtolower($extensionName . '_' . $pluginName);
         if ($frameworkConfiguration['view']['defaultPid'] === 'auto') {
-            if (!array_key_exists($pluginSignature, $this->targetPidPluginCache)) {
-                $languageId = GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('language', 'id', 0);
+            // The looked up plugin is language specific, so the language has to be part of the cache identifier
+            $languageId = (int)GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('language', 'id', 0);
+            $cacheIdentifier = 'extbase-extension-service-target-pid-' . $pluginSignature . '-' . $languageId;
+            if (!$this->runtimeCache->has($cacheIdentifier)) {
                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                     ->getQueryBuilderForTable('tt_content');
                 $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
@@ -190,9 +186,13 @@ class ExtensionService implements SingletonInterface
                 if (count($pages) > 1) {
                     throw new Exception('There is more than one "' . $pluginSignature . '" plugin in the current page tree. Please remove one plugin or set the TypoScript configuration "plugin.tx_' . $pluginSignature . '.view.defaultPid" to a fixed page id', 1280773643);
                 }
-                $this->targetPidPluginCache[$pluginSignature] = !empty($pages) ? (int)$pages[0]['pid'] : null;
+                $targetPid = !empty($pages) ? (int)$pages[0]['pid'] : null;
+                $this->runtimeCache->set($cacheIdentifier, $targetPid);
+
+                return $targetPid;
             }
-            return $this->targetPidPluginCache[$pluginSignature];
+
+            return $this->runtimeCache->get($cacheIdentifier);
         }
         return (int)$frameworkConfiguration['view']['defaultPid'];
     }

@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Form\Mvc\Property\TypeConverter;
 
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Exception\Crypto\InvalidHashStringException;
@@ -47,8 +48,16 @@ use TYPO3\CMS\Form\Slot\ResourcePublicationSlot;
 
 /**
  * Scope: frontend
+ * About the Autoconfigure Attribute:
+ *   This converter is not registered with the "extbase.type_converter"
+ *   tag: it is not resolved by source and target type, but set explicitly
+ *   on the property mapping configuration. It is fetched with
+ *   GeneralUtility::makeInstance() from form elements, which are not services
+ *   themselves, and therefore has to be public.
+ *
  * @internal
  */
+#[Autoconfigure(public: true)]
 class UploadedFileReferenceConverter extends AbstractTypeConverter implements LoggerAwareInterface
 {
     use LoggerAwareTrait;

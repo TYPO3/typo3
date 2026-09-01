@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Validation;
 
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -34,9 +35,14 @@ use TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface;
 /**
  * Validator resolver to automatically find an appropriate validator for a given subject.
  *
+ * About the Autoconfigure Attribute:
+ *    Form Renderables are not services and fetch this resolver from the container,
+ *    see AbstractRenderable::createValidator(), so it has to stay public.
+ *
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
-class ValidatorResolver implements SingletonInterface
+#[Autoconfigure(public: true)]
+class ValidatorResolver
 {
     protected array $baseValidatorConjunctions = [];
 

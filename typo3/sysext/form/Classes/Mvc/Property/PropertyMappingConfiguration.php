@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Mvc\Property;
 
 use TYPO3\CMS\Core\Attribute\AsEventListener;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
 use TYPO3\CMS\Form\Domain\Model\FormElements\FileUpload;
@@ -36,6 +35,10 @@ use TYPO3\CMS\Form\Mvc\Validation\MimeTypeValidator;
 #[AsEventListener(identifier: 'form/property-mapping-configuration')]
 class PropertyMappingConfiguration
 {
+    public function __construct(
+        private readonly ValidatorResolver $validatorResolver,
+    ) {}
+
     public function __invoke(AfterFormStateInitializedEvent $event): void
     {
         foreach ($event->formRuntime->getFormDefinition()->getRenderablesRecursively() as $renderable) {
@@ -136,7 +139,7 @@ class PropertyMappingConfiguration
             }
         }
 
-        $mimeTypeValidator = GeneralUtility::makeInstance(ValidatorResolver::class)
+        $mimeTypeValidator = $this->validatorResolver
             ->createValidator(MimeTypeValidator::class, ['allowedMimeTypes' => $allowedMimeTypes]);
         $processingRule->addValidator($mimeTypeValidator);
     }
