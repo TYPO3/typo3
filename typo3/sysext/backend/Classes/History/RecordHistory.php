@@ -225,21 +225,30 @@ class RecordHistory
         // traverse changelog array
         foreach ($changeLog as $value) {
             $field = $value['tablename'] . ':' . $value['recuid'];
-            // inserts / deletes
-            if ((int)$value['actiontype'] !== RecordHistoryStore::ACTION_MODIFY) {
-                if (!isset($insertsDeletes[$field])) {
-                    $insertsDeletes[$field] = 0;
+            $actionType = (int)$value['actiontype'];
+            if ($actionType === RecordHistoryStore::ACTION_MODIFY) {
+                if (!isset($newArr[$field])) {
+                    $newArr[$field] = $value['newRecord'];
+                    $differences[$field] = $value['oldRecord'];
+                } else {
+                    $differences[$field] = array_merge($differences[$field], $value['oldRecord']);
                 }
-                ($value['action'] ?? '') === 'insert' ? $insertsDeletes[$field]++ : $insertsDeletes[$field]--;
-                // unset not needed fields
-                if ($insertsDeletes[$field] === 0) {
-                    unset($insertsDeletes[$field]);
-                }
-            } elseif (!isset($newArr[$field])) {
-                $newArr[$field] = $value['newRecord'];
-                $differences[$field] = $value['oldRecord'];
-            } else {
-                $differences[$field] = array_merge($differences[$field], $value['oldRecord']);
+                continue;
+            }
+            // Only the existence of a record can be rolled back here. Moving, changing the stage
+            // and publishing a record do not add or remove one, so they are not counted at all.
+            $existenceChange = match ($actionType) {
+                RecordHistoryStore::ACTION_ADD, RecordHistoryStore::ACTION_UNDELETE => 1,
+                RecordHistoryStore::ACTION_DELETE => -1,
+                default => 0,
+            };
+            if ($existenceChange === 0) {
+                continue;
+            }
+            $insertsDeletes[$field] = ($insertsDeletes[$field] ?? 0) + $existenceChange;
+            // unset not needed fields
+            if ($insertsDeletes[$field] === 0) {
+                unset($insertsDeletes[$field]);
             }
         }
         // remove entries where there were no changes effectively

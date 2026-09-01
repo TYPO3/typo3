@@ -45,11 +45,11 @@ readonly class RecordHistoryRollback
         // rewrite inserts and deletes
         $commandMapArray = [];
         $data = [];
-        if ($diff['insertsDeletes']) {
+        if ($diff['insertsDeletes'] ?? []) {
             if ($rollbackDataCount === 1) {
                 // all tables
                 $data = $diff['insertsDeletes'];
-            } elseif ($rollbackDataCount === 2 && $diff['insertsDeletes'][$rollbackFields]) {
+            } elseif ($rollbackDataCount === 2 && !empty($diff['insertsDeletes'][$rollbackFields])) {
                 // one record
                 $data[$rollbackFields] = $diff['insertsDeletes'][$rollbackFields];
             }
@@ -90,10 +90,10 @@ readonly class RecordHistoryRollback
             if ($rollbackDataCount === 1) {
                 // all tables
                 $data = $diffModified;
-            } elseif ($rollbackDataCount === 2) {
+            } elseif ($rollbackDataCount === 2 && isset($diffModified[$rollbackData[0]][$rollbackData[1]])) {
                 // one record
                 $data[$rollbackData[0]][$rollbackData[1]] = $diffModified[$rollbackData[0]][$rollbackData[1]];
-            } elseif ($rollbackDataCount === 3) {
+            } elseif ($rollbackDataCount === 3 && isset($diffModified[$rollbackData[0]][$rollbackData[1]][$rollbackData[2]])) {
                 // one field in one record
                 $data[$rollbackData[0]][$rollbackData[1]][$rollbackData[2]] = $diffModified[$rollbackData[0]][$rollbackData[1]][$rollbackData[2]];
             }
