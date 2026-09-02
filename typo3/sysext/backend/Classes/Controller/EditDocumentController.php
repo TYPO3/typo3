@@ -783,7 +783,8 @@ class EditDocumentController
                 ],
             ];
 
-            $duplicateTce->start([], $duplicateCmd);
+            // The duplicate belongs to the same save, so it continues the correlation id
+            $duplicateTce->start([], $duplicateCmd, null, null, $dataHandler->getCorrelationId());
             $duplicateTce->process_cmdmap();
             $duplicateUid = $duplicateTce->copyMappingArray[$nTable][$nUid] ?? null;
             if ($duplicateUid !== null) {

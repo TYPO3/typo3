@@ -78,6 +78,7 @@ class Backend implements BackendInterface
         protected readonly EventDispatcherInterface $eventDispatcher,
         protected readonly ReferenceIndex $referenceIndex,
         protected readonly TcaSchemaFactory $tcaSchemaFactory,
+        protected readonly PersistenceCorrelationScope $correlationScope,
     ) {
         $this->aggregateRootObjects = new ObjectStorage();
         $this->deletedEntities = new ObjectStorage();
@@ -233,6 +234,7 @@ class Backend implements BackendInterface
      */
     public function commit()
     {
+        $this->correlationScope->reset();
         $this->persistObjects();
         $this->processDeletedObjects();
     }
