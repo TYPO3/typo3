@@ -1,0 +1,18 @@
+{
+	"name": "typo3tests/test-unique",
+	"type": "typo3-cms-extension",
+	"description": "A test extension for core",
+	"version": "1.0.0",
+	"license": "GPL-2.0-or-later",
+	"require": {
+		"typo3/cms-core": "15.0.*@dev"
+	},
+	"extra": {
+		"typo3/cms": {
+			"extension-key": "test_unique",
+			"Package": {
+				"providesPackages": []
+			}
+		}
+	}
+}
