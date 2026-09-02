@@ -1,0 +1,9 @@
+"pages",,,,,,
+,"uid","pid","title","deleted","perms_everybody",
+,2,1,"Source page",0,31,
+,3,1,"Target page",0,31,
+,4,2,"Movable page",0,31,
+
+"sys_history",,,,,,,,,,
+,"uid","tstamp","actiontype","usertype","userid","tablename","recuid","history_data","workspace","correlation_id"
+,10,1700000900,6,"BE",1,"pages",1,"{""current"":0,""next"":1,""comment"":""Please review this page""}",0,"0400$b:1"

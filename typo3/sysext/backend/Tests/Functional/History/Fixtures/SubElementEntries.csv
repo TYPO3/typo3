@@ -1,0 +1,14 @@
+"pages",,,,,,
+,"uid","pid","title","deleted","perms_everybody",
+,1,0,"Root",0,31,
+,2,1,"Parent",0,31,
+,3,2,"Child A",0,31,
+,4,2,"Child B",0,31,
+
+"sys_history",,,,,,,,,,
+,"uid","tstamp","actiontype","usertype","userid","tablename","recuid","history_data","workspace","correlation_id"
+,1,1700000100,2,"BE",1,"pages",3,"{""oldRecord"":{""title"":""a1""},""newRecord"":{""title"":""a2""}}",0,"0400$a:1"
+,2,1700000200,2,"BE",1,"pages",3,"{""oldRecord"":{""title"":""a2""},""newRecord"":{""title"":""a3""}}",0,"0400$a:2"
+,3,1700000300,2,"BE",1,"pages",4,"{""oldRecord"":{""title"":""b1""},""newRecord"":{""title"":""b2""}}",0,"0400$a:3"
+,4,1700000400,2,"BE",1,"pages",4,"{""oldRecord"":{""title"":""b2""},""newRecord"":{""title"":""b3""}}",0,"0400$a:4"
+,5,1700000500,2,"BE",1,"pages",2,"{""oldRecord"":{""title"":""p1""},""newRecord"":{""title"":""p2""}}",0,"0400$a:5"

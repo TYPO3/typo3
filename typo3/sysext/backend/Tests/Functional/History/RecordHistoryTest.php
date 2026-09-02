@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Backend\Tests\Functional\History;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\History\RecordHistory;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class RecordHistoryTest extends FunctionalTestCase
@@ -59,5 +60,23 @@ final class RecordHistoryTest extends FunctionalTestCase
 
         // The record was deleted, undeleted and deleted again, uid 4 is the current deletion
         self::assertSame(14, $subject->getUserIdFromDeleteActionForRecord('pages', 5));
+    }
+
+    #[Test]
+    public function maxStepsLimitsTheMergedChangeLogOfAPage(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/SubElementEntries.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $backendUser = $this->setUpBackendUser(1);
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
+
+        $subject = new RecordHistory('pages:2');
+        $subject->setShowSubElements(true);
+        $subject->setMaxSteps(2);
+        $changeLog = $subject->getChangeLog();
+
+        // Five entries exist across the page and its two sub pages, the two newest are wanted
+        self::assertCount(2, $changeLog);
+        self::assertSame([1700000500, 1700000400], array_column($changeLog, 'tstamp'));
     }
 }

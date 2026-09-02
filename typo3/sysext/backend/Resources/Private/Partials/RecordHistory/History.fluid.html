@@ -90,6 +90,15 @@
                             </span>
                         </td>
                         <td class="col-differences">
+                            <f:if condition="{historyRow.movedToPage}">
+                                <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:historyRow.movedFromTo" arguments="{0: historyRow.movedFromPage, 1: historyRow.movedToPage}" />
+                            </f:if>
+                            <f:if condition="{historyRow.movedWithinPage}">
+                                <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:historyRow.movedWithinPage" />
+                            </f:if>
+                            <f:if condition="{historyRow.stageComment}">
+                                <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:historyRow.stageComment" />: {historyRow.stageComment}
+                            </f:if>
                             <f:if condition="{historyRow.fieldNames}">
                                 {historyRow.fieldNames}
                             </f:if>
