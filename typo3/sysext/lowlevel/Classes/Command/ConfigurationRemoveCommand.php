@@ -24,6 +24,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use TYPO3\CMS\Core\Attribute\AsNonSchedulableCommand;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 
@@ -31,6 +32,7 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
  * CLI command for removing configuration values from system/settings.php
  */
 #[AsCommand('configuration:remove', 'Remove configuration value(s) from system/settings.php')]
+#[AsNonSchedulableCommand]
 class ConfigurationRemoveCommand extends Command
 {
     public function __construct(
