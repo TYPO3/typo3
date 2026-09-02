@@ -24,12 +24,14 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use TYPO3\CMS\Core\Attribute\AsNonSchedulableCommand;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 
 /**
  * CLI command for setting a configuration value in system/settings.php
  */
 #[AsCommand('configuration:set', 'Set a configuration value in system/settings.php')]
+#[AsNonSchedulableCommand]
 class ConfigurationSetCommand extends Command
 {
     public function __construct(

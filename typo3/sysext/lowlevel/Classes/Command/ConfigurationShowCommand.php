@@ -24,6 +24,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use TYPO3\CMS\Core\Attribute\AsNonSchedulableCommand;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 
@@ -31,6 +32,7 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
  * CLI command for showing configuration values
  */
 #[AsCommand('configuration:show', 'Show configuration value')]
+#[AsNonSchedulableCommand]
 class ConfigurationShowCommand extends Command
 {
     public function __construct(
