@@ -250,7 +250,7 @@ class DataHandlerHook
         $workspaceId = (int)$workspaceInfo['uid'];
         // Write the stage change to history
         $historyStore = $this->getRecordHistoryStore($workspaceId, $dataHandler->BE_USER);
-        $historyStore->changeStageForRecord($table, $id, ['current' => $currentStage, 'next' => $stageId, 'comment' => $comment, 'recipients' => $notificationAlternativeRecipients]);
+        $historyStore->changeStageForRecord($table, $id, ['current' => $currentStage, 'next' => $stageId, 'comment' => $comment, 'recipients' => $notificationAlternativeRecipients], $dataHandler->getCorrelationId());
         if ((int)$workspaceInfo['stagechg_notification'] > 0) {
             $this->notificationInfo = $this->createNotificationInformation($this->notificationInfo, $workspaceInfo, $table, $id, $stageId, $comment, $notificationAlternativeRecipients);
         }
@@ -433,7 +433,7 @@ class DataHandlerHook
             'recipients' => $notificationAlternativeRecipients,
         ];
         $historyStore = $this->getRecordHistoryStore((int)$wsAccess['uid'], $dataHandler->BE_USER);
-        $historyStore->publishRecord($table, $id, $swapWith, $publishPayload);
+        $historyStore->publishRecord($table, $id, $swapWith, $publishPayload, $dataHandler->getCorrelationId());
 
         $this->notificationInfo = $this->createNotificationInformation(
             $this->notificationInfo,
@@ -636,7 +636,8 @@ class DataHandlerHook
                 'workspaceId' => $workspaceId,
                 'comment' => $comment,
                 'recipients' => $notificationAlternativeRecipients,
-            ]
+            ],
+            $dataHandler->getCorrelationId()
         );
         $this->notificationInfo = $this->createNotificationInformation(
             $this->notificationInfo,

@@ -1,0 +1,12 @@
+"sys_workspace",,,
+,"uid","pid","title"
+,1,0,"Workspace 1"
+
+"pages",,,,,,,,,
+,"uid","pid","title","sorting","t3ver_oid","t3ver_stage","t3ver_wsid","deleted","perms_everybody"
+,1,0,"Root",128,0,0,0,0,31
+,2,1,"Page",128,0,0,0,0,31
+
+"tt_content",,,,,,,,
+,"uid","pid","header","sorting","t3ver_oid","t3ver_stage","t3ver_wsid","deleted"
+,1,2,"CE one",256,0,0,0,0
