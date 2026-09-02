@@ -42,7 +42,7 @@ final class NonPublicStorageIndexingTest extends FunctionalTestCase
         parent::setUp();
         $this->importCSVDataSet(__DIR__ . '/Fixtures/Indexer/non_public_storage.csv');
         $site = new Site('website-local', 1, ['base' => 'https://example.com/', 'languages' => []]);
-        $request = (new ServerRequest('https://example.com/', 'GET', null, [], ['HTTP_HOST' => 'example.com', 'SCRIPT_NAME' => '/index.php', 'HTTPS' => 'on']))
+        $request = new ServerRequest('https://example.com/', 'GET', null, [], ['HTTP_HOST' => 'example.com', 'SCRIPT_NAME' => '/index.php', 'HTTPS' => 'on'])
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withAttribute('site', $site)
             ->withAttribute('language', $site->getDefaultLanguage());
