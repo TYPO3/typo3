@@ -312,6 +312,11 @@ class RecordHistory
             }
             return 0;
         });
+        if ($this->maxSteps > 0) {
+            // The limit is applied per record in findEventsForRecord() as well. That keeps the
+            // amount of rows to merge low, but only this one limits the merged changelog.
+            $historyDataForRecord = array_slice($historyDataForRecord, 0, $this->maxSteps);
+        }
         return $historyDataForRecord;
     }
 

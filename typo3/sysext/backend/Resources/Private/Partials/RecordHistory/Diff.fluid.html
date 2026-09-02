@@ -14,12 +14,23 @@
             </f:spaceless></div>
             <f:if condition="{differences -> f:count()} > 1">
                 <div class="diff-item-button col-control nowrap">
-                    <f:if condition="{differencesItem.rollbackUrl}">
+                    <f:if condition="{differencesItem.rollbackFields}">
                         <div class="btn-group">
-                            <a href="{differencesItem.rollbackUrl}" class="btn btn-default">
+                            <button
+                                type="submit"
+                                form="record-history-rollback"
+                                name="rollbackFields"
+                                value="{differencesItem.rollbackFields}"
+                                class="btn btn-default t3js-modal-trigger"
+                                data-severity="warning"
+                                data-title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:revertField')}"
+                                data-content="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:rollback.confirm')}"
+                                data-button-close-text="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel')}"
+                                data-button-ok-text="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:rollback.confirm.button')}"
+                            >
                                 <core:icon identifier="actions-edit-undo" />
                                 {f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:revertField')}
-                            </a>
+                            </button>
                         </div>
                     </f:if>
                 </div>

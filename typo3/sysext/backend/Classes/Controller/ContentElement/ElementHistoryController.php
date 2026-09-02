@@ -93,7 +93,8 @@ class ElementHistoryController
         $this->returnUrl = GeneralUtility::sanitizeLocalUrl($parsedBody['returnUrl'] ?? $queryParams['returnUrl'] ?? '', $request);
 
         $lastHistoryEntry = (int)($parsedBody['historyEntry'] ?? $queryParams['historyEntry'] ?? 0);
-        $rollbackFields = $parsedBody['rollbackFields'] ?? $queryParams['rollbackFields'] ?? null;
+        // A rollback changes records, so it is only accepted as POST
+        $rollbackFields = $parsedBody['rollbackFields'] ?? null;
         $element = $parsedBody['element'] ?? $queryParams['element'] ?? null;
         $moduleSettings = $this->processSettings($request);
         $this->view->assign('isUserInWorkspace', $backendUser->workspace > 0);
@@ -329,13 +330,14 @@ class ElementHistoryController
                     }
                 }
                 $elParts = explode(':', $key);
-                $singleLine['revertRecordUrl'] = $this->buildUrl(['rollbackFields' => $key]);
+                $singleLine['rollbackFields'] = $key;
                 $singleLine['title'] = $this->generateTitle($elParts[0], $elParts[1]);
                 $singleLine['recordTable'] = $elParts[0];
                 $singleLine['recordUid'] = $elParts[1];
                 $lines[] = $singleLine;
             }
-            $this->view->assign('revertAllUrl', $this->buildUrl(['rollbackFields' => 'ALL']));
+            // The rollback is submitted as POST, so the form only carries the current view state
+            $this->view->assign('rollbackFormUrl', $this->buildUrl());
             $this->view->assign('multipleDiff', $lines);
         }
         $this->view->assign('showDifferences', true);
@@ -390,7 +392,23 @@ class ElementHistoryController
 
             $singleLine['elementUrl'] = $this->buildUrl(['element' => $entry['tablename'] . ':' . $entry['recuid']]);
             $singleLine['actiontype'] = $entry['actiontype'];
-            if ((int)$entry['actiontype'] === RecordHistoryStore::ACTION_MODIFY || (int)$entry['actiontype'] === RecordHistoryStore::ACTION_PUBLISH) {
+            $actionType = (int)$entry['actiontype'];
+            if ($actionType === RecordHistoryStore::ACTION_MOVE) {
+                // A move stores its payload under different keys than a modification and holds
+                // fields that are not part of TCA, so it cannot go through renderDiff()
+                $oldPageId = (int)($entry['history_data']['oldData']['pid'] ?? 0);
+                $newPageId = (int)($entry['history_data']['newData']['pid'] ?? 0);
+                if ($oldPageId !== $newPageId) {
+                    $singleLine['movedFromPage'] = $this->generatePageTitle($oldPageId);
+                    $singleLine['movedToPage'] = $this->generatePageTitle($newPageId);
+                } else {
+                    $singleLine['movedWithinPage'] = true;
+                }
+            }
+            if ($actionType === RecordHistoryStore::ACTION_STAGECHANGE) {
+                $singleLine['stageComment'] = trim((string)($entry['history_data']['comment'] ?? ''));
+            }
+            if ($actionType === RecordHistoryStore::ACTION_MODIFY || $actionType === RecordHistoryStore::ACTION_PUBLISH) {
                 // show changes
                 if (!$this->showDiff) {
                     // Display field names instead of full diff
@@ -457,13 +475,13 @@ class ElementHistoryController
                         $new = (string)BackendUtility::getProcessedValue($table, $fN, ($entry['newRecord'][$fN] ?? ''), 0, true, false, $rollbackUid);
                         $diffResult = $this->diffUtility->diff(strip_tags($old), strip_tags($new));
                     }
-                    $rollbackUrl = '';
+                    $rollbackFields = '';
                     if ($rollbackUid && $showRollbackLink) {
-                        $rollbackUrl = $this->buildUrl(['rollbackFields' => $table . ':' . $rollbackUid . ':' . $fN]);
+                        $rollbackFields = $table . ':' . $rollbackUid . ':' . $fN;
                     }
                     $lines[] = [
                         'title' => $languageService->sL($fieldInformation->getLabel()),
-                        'rollbackUrl' => $rollbackUrl,
+                        'rollbackFields' => $rollbackFields,
                         'result' => str_replace('\n', PHP_EOL, str_replace('\r\n', '\n', $diffResult)),
                     ];
                 }
@@ -507,6 +525,16 @@ class ElementHistoryController
             return BackendUtility::getRecordTitle($table, $record);
         }
         return '';
+    }
+
+    /**
+     * Renders a page reference of a move as title plus uid, so a page that has been deleted
+     * in the meantime is still identifiable.
+     */
+    protected function generatePageTitle(int $pageId): string
+    {
+        $title = $pageId > 0 ? $this->generateTitle('pages', (string)$pageId) : '';
+        return $title !== '' ? $title . ' [' . $pageId . ']' : '[' . $pageId . ']';
     }
 
     /**

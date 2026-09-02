@@ -42,6 +42,12 @@
       <trans-unit id="revertRecord">
         <source>Rollback single record</source>
       </trans-unit>
+      <trans-unit id="rollback.confirm">
+        <source>Are you sure you want to roll back these changes? Records may be deleted, restored or overwritten.</source>
+      </trans-unit>
+      <trans-unit id="rollback.confirm.button">
+        <source>Roll back</source>
+      </trans-unit>
       <trans-unit id="revertField">
         <source>Rollback single field</source>
       </trans-unit>
@@ -101,6 +107,15 @@
       </trans-unit>
       <trans-unit id="historyRow.actiontype.7">
         <source>published</source>
+      </trans-unit>
+      <trans-unit id="historyRow.movedFromTo">
+        <source>Moved from %s to %s</source>
+      </trans-unit>
+      <trans-unit id="historyRow.movedWithinPage">
+        <source>Position changed on the same page</source>
+      </trans-unit>
+      <trans-unit id="historyRow.stageComment">
+        <source>Comment</source>
       </trans-unit>
       <trans-unit id="rollback.plannedAction.insert">
         <source>The record has been deleted and will be restored again with the rollback.</source>

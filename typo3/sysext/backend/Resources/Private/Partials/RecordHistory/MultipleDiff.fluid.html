@@ -4,7 +4,7 @@
 >
 <h2>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:mergedDifferences')}</h2>
 
-<f:if condition="{revertAllUrl}">
+<f:if condition="{rollbackFormUrl}">
     <f:then>
         <p><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:mergedDifferences.description" /></p>
 
@@ -31,10 +31,33 @@
                         </f:if>
                     </div>
                 </div>
-                <a href="{historyRow.revertRecordUrl}" class="btn btn-default">{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:revertRecord')}</a>
+                <button
+                    type="submit"
+                    form="record-history-rollback"
+                    name="rollbackFields"
+                    value="{historyRow.rollbackFields}"
+                    class="btn btn-default t3js-modal-trigger"
+                    data-severity="warning"
+                    data-title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:revertRecord')}"
+                    data-content="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:rollback.confirm')}"
+                    data-button-close-text="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel')}"
+                    data-button-ok-text="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:rollback.confirm.button')}"
+                >{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:revertRecord')}</button>
             </f:for>
         </div>
-        <a href="{revertAllUrl}" class="btn btn-default">{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:revertAll')}</a>
+        <button
+            type="submit"
+            form="record-history-rollback"
+            name="rollbackFields"
+            value="ALL"
+            class="btn btn-default t3js-modal-trigger"
+            data-severity="warning"
+            data-title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:revertAll')}"
+            data-content="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:rollback.confirm')}"
+            data-button-close-text="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel')}"
+            data-button-ok-text="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:rollback.confirm.button')}"
+        >{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:revertAll')}</button>
+        <form action="{rollbackFormUrl}" id="record-history-rollback" method="post" class="hidden"></form>
     </f:then>
     <f:else>
         <p>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:noDifferences')}</p>
