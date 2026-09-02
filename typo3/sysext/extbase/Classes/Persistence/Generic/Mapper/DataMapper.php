@@ -251,7 +251,7 @@ class DataMapper
             }
             $propertyValue = $row[$columnMap->columnName];
 
-            $nonProxyPropertyTypes = $property->getFilteredTypes([$property, 'filterLazyLoadingProxyAndLazyObjectStorage']);
+            $nonProxyPropertyTypes = $property->getFilteredTypes($property->filterLazyLoadingProxyAndLazyObjectStorage(...));
             if ($nonProxyPropertyTypes === []) {
                 throw new UnknownPropertyTypeException(
                     'The type of property ' . $className . '::' . $propertyName . ' could not be identified, therefore the desired value ('

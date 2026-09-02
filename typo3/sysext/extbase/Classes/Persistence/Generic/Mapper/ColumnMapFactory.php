@@ -46,7 +46,7 @@ readonly class ColumnMapFactory
         $propertyCollectionValueType = null;
         try {
             $property = $this->reflectionService->getClassSchema($className)->getProperty($propertyName);
-            $nonProxyPropertyTypes = $property->getFilteredTypes([$property, 'filterLazyLoadingProxyAndLazyObjectStorage']);
+            $nonProxyPropertyTypes = $property->getFilteredTypes($property->filterLazyLoadingProxyAndLazyObjectStorage(...));
             $primaryType = $nonProxyPropertyTypes[0] ?? null;
             $propertyType = $primaryType?->getClassName() ?? $primaryType?->getBuiltinType() ?? null;
             if ($primaryType?->isCollection() && $primaryType->getCollectionValueTypes() !== []) {

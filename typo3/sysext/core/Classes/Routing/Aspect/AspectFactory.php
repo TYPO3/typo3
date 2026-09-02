@@ -43,7 +43,7 @@ class AspectFactory
             },
             $aspects
         );
-        uasort($aspects, [$this, 'sortAspects']);
+        uasort($aspects, $this->sortAspects(...));
         return $aspects;
     }
 

@@ -33,6 +33,17 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 final class AbstractServiceProviderTest extends UnitTestCase
 {
     #[Test]
+    public function getExtensionsPreservesConcreteServiceProviderClass(): void
+    {
+        $extensions = new Package1ServiceProviderMock()->getExtensions();
+
+        self::assertSame(
+            [Package1ServiceProviderMock::class, 'configureFluidComponentCollections'],
+            $extensions['fluid.component.collections']
+        );
+    }
+
+    #[Test]
     public function configureMiddlewaresReturnsMergedMiddlewares(): void
     {
         $containerStub = self::createStub(ContainerInterface::class);

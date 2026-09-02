@@ -434,7 +434,7 @@ final readonly class FileFormsToDatabaseUpgradeWizard implements UpgradeWizardIn
         foreach ($this->getAccessibleFormStorageFolders() as $folder) {
             $storage = $folder->getStorage();
             $storage->setFileAndFolderNameFilters([
-                [$fileExtensionFilter, 'filterFileList'],
+                $fileExtensionFilter->filterFileList(...),
             ]);
             $files = $folder->getFiles(0, 0, Folder::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS, true);
             array_push($filesFromStorageFolders, ...array_values($files));

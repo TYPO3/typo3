@@ -64,7 +64,7 @@ class ApplicableConjunction implements Applicable
     {
         return sprintf(
             '{%s}',
-            implode(' | ', array_map([$this, 'describeItem'], $this->applicables))
+            implode(' | ', array_map($this->describeItem(...), $this->applicables))
         );
     }
 

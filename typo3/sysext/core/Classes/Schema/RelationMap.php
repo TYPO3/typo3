@@ -113,7 +113,7 @@ final class RelationMap
      */
     public function getActiveRelations(string $tableName, string $fieldName): array
     {
-        return array_map([$this, 'makeActiveRelation'], $this->relations[$tableName][$fieldName] ?? []);
+        return array_map($this->makeActiveRelation(...), $this->relations[$tableName][$fieldName] ?? []);
     }
 
     private function makeActiveRelation(array $relation): ActiveRelation

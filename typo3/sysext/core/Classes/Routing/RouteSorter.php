@@ -60,7 +60,7 @@ class RouteSorter
 
     public function sortRoutesForGeneration(): self
     {
-        uasort($this->routes, [$this, 'compareForGeneration']);
+        uasort($this->routes, $this->compareForGeneration(...));
         return $this;
     }
 

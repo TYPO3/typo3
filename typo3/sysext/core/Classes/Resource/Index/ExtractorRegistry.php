@@ -44,7 +44,7 @@ readonly class ExtractorRegistry
         foreach ($this->extractors as $extractor) {
             $extractors[] = $extractor;
         }
-        usort($extractors, [$this, 'compareExtractorPriority']);
+        usort($extractors, $this->compareExtractorPriority(...));
         return $extractors;
 
     }

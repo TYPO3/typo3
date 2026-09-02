@@ -70,7 +70,7 @@ class CacheHashConfiguration
     public function __construct(?array $configuration = null)
     {
         $configuration = $configuration ?? $GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash'] ?? [];
-        $this->configuration = array_filter($configuration, [$this, 'isAllowedProperty'], ARRAY_FILTER_USE_KEY);
+        $this->configuration = array_filter($configuration, $this->isAllowedProperty(...), ARRAY_FILTER_USE_KEY);
         $this->processConfiguration();
     }
 

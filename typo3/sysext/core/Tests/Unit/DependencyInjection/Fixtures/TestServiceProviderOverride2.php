@@ -37,7 +37,7 @@ class TestServiceProviderOverride2 implements ServiceProviderInterface
     public function getExtensions(): array
     {
         return [
-            'serviceA' => [self::class, 'overrideServiceA'],
+            'serviceA' => self::overrideServiceA(...),
             'serviceC' => static function (ContainerInterface $container, \stdClass $instance): \stdClass {
                 $instance->serviceB = $container->get('serviceB');
 

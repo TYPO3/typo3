@@ -251,7 +251,7 @@ readonly class ImportController
         if ($folder !== null) {
             $filter = GeneralUtility::makeInstance(FileExtensionFilter::class);
             $filter->setAllowedFileExtensions(['t3d', 'xml']);
-            $folder->getStorage()->addFileAndFolderNameFilter([$filter, 'filterFileList']);
+            $folder->getStorage()->addFileAndFolderNameFilter($filter->filterFileList(...));
             $exportFiles = $folder->getFiles();
         }
         $selectableFiles = [''];

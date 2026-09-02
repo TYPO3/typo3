@@ -249,7 +249,7 @@ final class RouteSorterTest extends UnitTestCase
             ->withRoutes($givenRoutes)
             ->withOriginalParameters($givenParameters);
         $routes = $sorter->sortRoutesForGeneration()->getRoutes();
-        $routePaths = array_map([$this, 'getRoutePath'], array_values($routes));
+        $routePaths = array_map($this->getRoutePath(...), array_values($routes));
         self::assertSame($expectation, $routePaths);
     }
 

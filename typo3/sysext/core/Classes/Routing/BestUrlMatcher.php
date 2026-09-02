@@ -37,7 +37,7 @@ class BestUrlMatcher extends UrlMatcher
         if ($matches === 1) {
             return $matchedRoutes[0]->getRouteResult();
         }
-        usort($matchedRoutes, [$this, 'sortMatchedRoutes']);
+        usort($matchedRoutes, $this->sortMatchedRoutes(...));
         return array_shift($matchedRoutes)->getRouteResult();
     }
 
