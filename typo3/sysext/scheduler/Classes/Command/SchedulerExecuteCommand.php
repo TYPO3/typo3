@@ -74,7 +74,7 @@ class SchedulerExecuteCommand extends Command
         if (count($input->getOption('task')) > 0) {
             $taskGroups = $this->taskRepository->getGroupedTasks()['taskGroupsWithTasks'];
             $tasksToRun = $this->getTasksToRun($taskGroups, $input->getOption('task'));
-            $this->runTasks($tasksToRun, $taskGroups);
+            $this->runTasks(array_keys($tasksToRun), $taskGroups, $tasksToRun);
 
             return Command::SUCCESS;
         }
@@ -102,7 +102,7 @@ class SchedulerExecuteCommand extends Command
         $this->runTasks($tasksToRun, $taskGroups);
     }
 
-    private function runTasks($selectedTasks, $taskGroups): void
+    private function runTasks($selectedTasks, $taskGroups, array $resolvedTasks = []): void
     {
         $taskUids = $this->getTaskUidsFromSelection($selectedTasks, $taskGroups);
         ksort($taskUids);
@@ -111,7 +111,7 @@ class SchedulerExecuteCommand extends Command
         foreach ($taskUids as $taskUid) {
             try {
                 $uid = (int)$taskUid;
-                $task = $this->taskRepository->findByUid($uid);
+                $task = $resolvedTasks[$uid] ?? $this->taskRepository->findByUid($uid);
                 $additionalInformation = $task->getAdditionalInformation() === '' ? '' : ' (' . $task->getAdditionalInformation() . ')';
                 $taskDetails = $this->taskService->getTaskDetailsFromTask($task);
                 $space = str_repeat(' ', $numLength - strlen((string)$task->getTaskUid()));
@@ -149,11 +149,13 @@ class SchedulerExecuteCommand extends Command
     private function getTasksToRun(array $taskGroups, array $taskList): array
     {
         $taskUids = array_unique($this->getTaskUidsFromSelection($taskList, $taskGroups));
+        $tasks = [];
         foreach ($taskUids as $taskUid) {
             // This will throw an exception if the task uid was not found and print it to the console.
-            $this->taskRepository->findByUid((int)$taskUid);
+            $taskUid = (int)$taskUid;
+            $tasks[$taskUid] = $this->taskRepository->findByUid($taskUid);
         }
-        return $taskUids;
+        return $tasks;
     }
 
     protected function getSelectableTasks(mixed $taskGroups): array
