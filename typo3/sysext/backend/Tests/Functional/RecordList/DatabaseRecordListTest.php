@@ -288,6 +288,37 @@ final class DatabaseRecordListTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function pageTranslationsListUsesTheSameTableNameForTableAndRows(): void
+    {
+        $site = $this->get(SiteFinder::class)->getSiteByIdentifier('test');
+        $request = (new ServerRequest('http://localhost/'))
+            ->withAttribute('route', (new Route('/typo3/module/content/records', ['_identifier' => 'records'])))
+            ->withAttribute('site', $site);
+
+        $pageContextFactory = $this->get(PageContextFactory::class);
+        $pageContext = $pageContextFactory->createWithLanguages($request, 1100, [0, 1, 2], $this->backendUser);
+        $request = $request->withAttribute('pageContext', $pageContext);
+
+        // Mimic how the record list module renders the "Page Translation" section
+        $recordList = $this->get(DatabaseRecordList::class);
+        $recordList->setRequest($request);
+        $recordList->start(1100, '', 0);
+        $recordList->calcPerms = $pageContext->pagePermissions;
+        $recordList->disableSingleTableView = true;
+        $recordList->setLanguagesAllowedForUser($site->getAvailableLanguages($this->backendUser, false, 1100));
+        $recordList->showOnlyTranslatedRecords(true);
+
+        $listHtml = $recordList->getTable('pages');
+
+        self::assertStringContainsString('FR: Welcome', $listHtml);
+        self::assertStringContainsString('t3js-record-edit-multiple', $listHtml);
+        // The table element must carry the real table name, since JavaScript resolves the records
+        // to edit by matching it against the "data-table" attribute of the rendered rows.
+        self::assertStringContainsString('<table data-table="pages"', $listHtml);
+        self::assertStringNotContainsString('<table data-table="pages_translated"', $listHtml);
+    }
+
+    #[Test]
     public function afterRecordListRowPreparedEventIsTriggered(): void
     {
         $request = (new ServerRequest('http://localhost/'))

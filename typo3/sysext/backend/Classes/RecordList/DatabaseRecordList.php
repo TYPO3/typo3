@@ -950,7 +950,7 @@ class DatabaseRecordList
                     ' . $recordListMessages . '
                     <div class="' . $collapseClass . '" data-state="' . $dataState . '" id="recordlist-' . htmlspecialchars($tableIdentifier) . '">
                         <div class="table-fit">
-                            <table data-table="' . htmlspecialchars($tableIdentifier) . '" class="table table-striped table-hover">
+                            <table data-table="' . htmlspecialchars($table) . '" class="table table-striped table-hover">
                                 <thead>
                                     ' . $columnsOutput . '
                                 </thead>
