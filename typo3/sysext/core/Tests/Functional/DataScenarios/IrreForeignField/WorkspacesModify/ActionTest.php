@@ -684,6 +684,13 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     #[Test]
+    public function inlineLocalizeSynchronizeSortsNewChildLikeOriginal(): void
+    {
+        parent::inlineLocalizeSynchronizeSortsNewChildLikeOriginal();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/inlineLocalizeSynchronizeSortsNewChildLikeOriginal.csv');
+    }
+
+    #[Test]
     public function inlineLocalizeSynchronizeLocalizeMissing(): void
     {
         parent::inlineLocalizeSynchronizeLocalizeMissing();

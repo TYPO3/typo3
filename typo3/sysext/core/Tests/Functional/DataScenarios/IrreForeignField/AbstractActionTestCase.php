@@ -661,6 +661,93 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         );
     }
 
+    /**
+     * Content element 297 has two children, both are localized. A third child is then created in the
+     * default language *between* the two existing ones and synchronized into the translation. The new
+     * translated child must end up between the two existing translations, not appended after them.
+     */
+    public function inlineLocalizeSynchronizeSortsNewChildLikeOriginal(): void
+    {
+        // Translate page 89 first
+        $newTableIds = $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
+        $this->recordIds['localizedPageId'] = $newTableIds[self::TABLE_Page][self::VALUE_PageId];
+        // Localize CE 297 which has two hotels, those are localized, too.
+        $newTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, self::VALUE_LanguageId);
+        $this->recordIds['localizedContentId'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdFirst];
+        // Add a third hotel to the default language CE, sorted between the two existing ones.
+        $this->actionService->modifyRecords(
+            self::VALUE_PageId,
+            [
+                self::TABLE_Content => [
+                    'uid' => self::VALUE_ContentIdFirst,
+                    self::FIELD_ContentHotel => self::VALUE_HotelIdFirst . ',__nextUid,' . self::VALUE_HotelIdSecond,
+                ],
+                self::TABLE_Hotel => ['uid' => '__NEW', 'title' => 'Hotel #1.5'],
+            ]
+        );
+        // Now inlineLocalizeSynchronize->synchronize - This is the 'synchronize with original language'
+        // button when inline 'appearance' 'showSynchronizationLink' has been enabled.
+        $this->actionService->invoke(
+            [],
+            [
+                self::TABLE_Content => [
+                    $this->recordIds['localizedContentId'] => [
+                        'inlineLocalizeSynchronize' => [
+                            'field' => self::FIELD_ContentHotel,
+                            'language' => self::VALUE_LanguageId,
+                            'action' => 'synchronize',
+                        ],
+                    ],
+                ],
+            ]
+        );
+    }
+
+    /**
+     * Content element 297 has two children, both are localized. A hotel that only exists in the
+     * translation is then added as *first* child of the localized content element. Synchronizing
+     * must sort the translations like their originals, but keep the translation-only child at the
+     * position the editor put it.
+     */
+    public function inlineLocalizeSynchronizeKeepsTranslationOnlyChildPosition(): void
+    {
+        // Translate page 89 first
+        $newTableIds = $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
+        $this->recordIds['localizedPageId'] = $newTableIds[self::TABLE_Page][self::VALUE_PageId];
+        // Localize CE 297 which has two hotels, those are localized, too.
+        $newTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, self::VALUE_LanguageId);
+        $this->recordIds['localizedContentId'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdFirst];
+        $this->recordIds['localizedHotelIdFirst'] = $newTableIds[self::TABLE_Hotel][self::VALUE_HotelIdFirst];
+        $this->recordIds['localizedHotelIdSecond'] = $newTableIds[self::TABLE_Hotel][self::VALUE_HotelIdSecond];
+        // Add a hotel to the localized CE only, sorted before the two translated ones.
+        $this->actionService->modifyRecords(
+            self::VALUE_PageId,
+            [
+                self::TABLE_Content => [
+                    'uid' => $this->recordIds['localizedContentId'],
+                    self::FIELD_ContentHotel => '__nextUid,' . $this->recordIds['localizedHotelIdFirst'] . ',' . $this->recordIds['localizedHotelIdSecond'],
+                ],
+                self::TABLE_Hotel => ['uid' => '__NEW', 'sys_language_uid' => self::VALUE_LanguageId, 'title' => 'Hotel in dansk only'],
+            ]
+        );
+        // Now inlineLocalizeSynchronize->synchronize - This is the 'synchronize with original language'
+        // button when inline 'appearance' 'showSynchronizationLink' has been enabled.
+        $this->actionService->invoke(
+            [],
+            [
+                self::TABLE_Content => [
+                    $this->recordIds['localizedContentId'] => [
+                        'inlineLocalizeSynchronize' => [
+                            'field' => self::FIELD_ContentHotel,
+                            'language' => self::VALUE_LanguageId,
+                            'action' => 'synchronize',
+                        ],
+                    ],
+                ],
+            ]
+        );
+    }
+
     public function inlineLocalizeSynchronizeLocalizeMissing(): void
     {
         // Translate page 89 first

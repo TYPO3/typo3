@@ -656,4 +656,13 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setRecordIdentifier(self::TABLE_Page . ':' . self::VALUE_PageId)->setRecordField(self::FIELD_PageHotel)
             ->setTable(self::TABLE_Hotel)->setField('title')->setValues('Hotel #0', 'Hotel #007'));
     }
+
+    #[Test]
+    public function inlineLocalizeSynchronizeSortsNewChildLikeOriginal(): void
+    {
+        parent::inlineLocalizeSynchronizeSortsNewChildLikeOriginal();
+        $this->actionService->publishRecord(self::TABLE_Page, $this->recordIds['localizedPageId']);
+        $this->actionService->publishRecord(self::TABLE_Content, $this->recordIds['localizedContentId']);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/inlineLocalizeSynchronizeSortsNewChildLikeOriginal.csv');
+    }
 }
