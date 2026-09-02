@@ -1,0 +1,7 @@
+"sys_history",,,,,,,,,,
+,"uid","tstamp","actiontype","usertype","userid","tablename","recuid","history_data","workspace","correlation_id"
+,1,1700000100,1,"BE",1,"tt_content",0,,0,"0400$a:1"
+,2,1700000200,1,"BE",1,"tt_content",99,,1,"0400$a:2"
+,3,1700000300,2,"BE",1,"tt_content",99,,1,"0400$a:3"
+,4,1700000400,2,"BE",1,"tt_content",99,,0,"0400$a:4"
+,5,1700000500,2,"BE",1,"pages",99,,1,"0400$a:5"
