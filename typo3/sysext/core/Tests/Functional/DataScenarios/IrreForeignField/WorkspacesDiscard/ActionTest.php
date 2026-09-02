@@ -363,4 +363,12 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         ]);
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageAddMonoglotHotelChildNCopyPageWSynchronization.csv');
     }
+
+    #[Test]
+    public function inlineLocalizeSynchronizeSortsNewChildLikeOriginal(): void
+    {
+        parent::inlineLocalizeSynchronizeSortsNewChildLikeOriginal();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['localizedContentId']);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/inlineLocalizeSynchronizeSortsNewChildLikeOriginal.csv');
+    }
 }

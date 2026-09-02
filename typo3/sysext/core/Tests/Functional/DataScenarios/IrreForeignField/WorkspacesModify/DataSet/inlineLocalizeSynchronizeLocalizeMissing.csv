@@ -16,8 +16,8 @@
 ,3,89,1,0,0,0,0,0,0,0,0,"Hotel #1",297,"tt_content","1nff.hotels",2
 ,4,89,1026,0,0,0,0,0,0,0,0,"Hotel #2",297,"tt_content","1nff.hotels",1
 ,5,89,1,0,0,0,0,0,0,0,0,"Hotel #1",298,"tt_content","1nff.hotels",1
-,7,89,1,0,1,4,4,1,1,0,0,"[Translate to Dansk:] Hotel #2",299,"tt_content","1nff.hotels",1
-,8,89,2,0,1,3,3,1,1,0,0,"[Translate to Dansk:] Hotel #1",299,"tt_content","1nff.hotels",2
+,7,89,2,0,1,4,4,1,1,0,0,"[Translate to Dansk:] Hotel #2",299,"tt_content","1nff.hotels",1
+,8,89,1,0,1,3,3,1,1,0,0,"[Translate to Dansk:] Hotel #1",299,"tt_content","1nff.hotels",2
 "tx_testirreforeignfield_offer",,,,,,,,,,,,,,,,
 ,"uid","pid","sorting","deleted","sys_language_uid","l18n_parent","t3_origuid","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","title","parentid","parenttable","parentidentifier","prices"
 ,5,89,1,0,0,0,0,0,0,0,0,"Offer #1.1",3,"tx_testirreforeignfield_hotel",,3
@@ -83,5 +83,5 @@
 ,"7ebce5db245c0e81bb1dbd7e75cc1f84","tx_testirreforeignfield_hotel",8,"l18n_parent",0,0,2147483647,1,,,,0,1,"tx_testirreforeignfield_hotel",3,,0,0,2147483647,0,0,
 ,"6be375cd98e5a2137350ebe7a0d90fc2","tx_testirreforeignfield_hotel",8,"offers",0,0,2147483647,1,,,,0,1,"tx_testirreforeignfield_offer",12,,0,0,2147483647,1,0,
 ,"17a2e8371773e5d647daa25b1021eb75","tx_testirreforeignfield_hotel",8,"offers",0,0,2147483647,1,,,,1,1,"tx_testirreforeignfield_offer",13,,0,0,2147483647,1,0,
-,"148a001d06740873eb9fbb89469a1058","tt_content",299,"tx_testirreforeignfield_hotels",0,0,2147483647,1,,,,0,1,"tx_testirreforeignfield_hotel",7,,0,0,2147483647,1,0,
-,"e1d13420d52ad96c4f138165fd29e771","tt_content",299,"tx_testirreforeignfield_hotels",0,0,2147483647,1,,,,1,1,"tx_testirreforeignfield_hotel",8,,0,0,2147483647,1,0,
+,"0d50297f1f2d72de661bb37bc09258be","tt_content",299,"tx_testirreforeignfield_hotels",0,0,2147483647,1,,,,0,1,"tx_testirreforeignfield_hotel",8,,0,0,2147483647,1,0,
+,"ae6c1d5e08d4aaff1456278444e42201","tt_content",299,"tx_testirreforeignfield_hotels",0,0,2147483647,1,,,,1,1,"tx_testirreforeignfield_hotel",7,,0,0,2147483647,1,0,
