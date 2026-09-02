@@ -146,7 +146,7 @@ class ServiceProvider extends AbstractServiceProvider
             TypoScript\TypoScriptService::class => self::getTypoScriptService(...),
             TypoScript\AST\Traverser\AstTraverser::class => self::getAstTraverser(...),
             TypoScript\AST\CommentAwareAstBuilder::class => self::getCommentAwareAstBuilder(...),
-            TypoScript\Tokenizer\LosslessTokenizer::class => [ self::class, 'getLosslessTokenizer'],
+            TypoScript\Tokenizer\LosslessTokenizer::class => self::getLosslessTokenizer(...),
             'icons' => self::getIcons(...),
             'middlewares' => self::getMiddlewares(...),
             'cache.assets' => self::getAssetsCache(...),

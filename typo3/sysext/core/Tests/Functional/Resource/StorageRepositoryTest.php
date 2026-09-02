@@ -476,7 +476,7 @@ final class StorageRepositoryTest extends FunctionalTestCase
             $search = $search->withRecursive();
         }
         $result = $subject->searchFiles($search, $folder);
-        $expectedFiles = array_map([$subject, 'getFile'], $expectedIdentifiers);
+        $expectedFiles = array_map($subject->getFile(...), $expectedIdentifiers);
         self::assertSame($expectedFiles, iterator_to_array($result));
         // Check if search also works for non-hierarchical storages/drivers
         // This is a hack, as capabilities is not settable from the outside
@@ -484,7 +484,7 @@ final class StorageRepositoryTest extends FunctionalTestCase
         $property = $objectReflection->getProperty('capabilities');
         $property->setValue($subject, $subject->getCapabilities()->addCapabilities(Capabilities::CAPABILITY_BROWSABLE, Capabilities::CAPABILITY_PUBLIC, Capabilities::CAPABILITY_WRITABLE));
         $result = $subject->searchFiles($search, $folder);
-        $expectedFiles = array_map([$subject, 'getFile'], $expectedIdentifiers);
+        $expectedFiles = array_map($subject->getFile(...), $expectedIdentifiers);
         self::assertSame($expectedFiles, iterator_to_array($result));
     }
 

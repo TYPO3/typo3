@@ -206,7 +206,7 @@ final class MimeTypeValidatorTest extends FunctionalTestCase
 
         $resource = new PseudoFile($uploadData);
         $result = $validator->validate($resource);
-        $errorCodes = array_map([$this, 'resolveErrorCode'], $result->getErrors());
+        $errorCodes = array_map($this->resolveErrorCode(...), $result->getErrors());
         self::assertSame($expectedErrorCodes, $errorCodes);
     }
 

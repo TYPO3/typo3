@@ -380,7 +380,7 @@ class SlugHelper
      */
     public function buildSlugForUniqueInSite(string $slug, RecordState $state): string
     {
-        return $this->buildSlug($slug, $state, [$this, 'isUniqueInSite']);
+        return $this->buildSlug($slug, $state, $this->isUniqueInSite(...));
     }
 
     /**
@@ -390,7 +390,7 @@ class SlugHelper
      */
     public function buildSlugForUniqueInPid(string $slug, RecordState $state): string
     {
-        return $this->buildSlug($slug, $state, [$this, 'isUniqueInPid']);
+        return $this->buildSlug($slug, $state, $this->isUniqueInPid(...));
     }
 
     /**
@@ -401,7 +401,7 @@ class SlugHelper
      */
     public function buildSlugForUniqueInTable(string $slug, RecordState $state): string
     {
-        return $this->buildSlug($slug, $state, [$this, 'isUniqueInTable']);
+        return $this->buildSlug($slug, $state, $this->isUniqueInTable(...));
     }
 
     protected function createPreparedQueryBuilder(): QueryBuilder

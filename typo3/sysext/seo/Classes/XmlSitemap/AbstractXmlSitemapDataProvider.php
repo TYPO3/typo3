@@ -79,6 +79,6 @@ abstract class AbstractXmlSitemapDataProvider implements XmlSitemapDataProviderI
             $this->numberOfItemsPerPage
         );
 
-        return array_map([$this, 'defineUrl'], $items);
+        return array_map($this->defineUrl(...), $items);
     }
 }

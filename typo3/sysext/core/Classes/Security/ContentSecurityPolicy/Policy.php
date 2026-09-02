@@ -214,7 +214,7 @@ class Policy
         $nonceProxyDirectives = SourceKeyword::nonceProxy->getApplicableDirectives();
 
         $directives = clone $target->directives;
-        $comparator = [$this, 'compareSources'];
+        $comparator = $this->compareSources(...);
         /**
          * @var Directive $directive
          * @var SourceCollection $collection

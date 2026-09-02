@@ -572,7 +572,7 @@ class DataHandlerHook
             $dataHandler->addRemapAction(
                 $tableName,
                 (int)$liveData['uid'],
-                [$this, 'updateInlineForeignFieldSorting'],
+                $this->updateInlineForeignFieldSorting(...),
                 [(int)$liveData['uid'], $foreignTable, $liveRelations->tableArray[$foreignTable], $configuration, $dataHandler->BE_USER->workspace]
             );
         }
@@ -580,7 +580,7 @@ class DataHandlerHook
             $dataHandler->addRemapAction(
                 $tableName,
                 (int)$liveData['uid'],
-                [$this, 'updateInlineForeignFieldSorting'],
+                $this->updateInlineForeignFieldSorting(...),
                 [(int)$liveData['uid'], $foreignTable, $versionRelations->tableArray[$foreignTable], $configuration, 0]
             );
         }

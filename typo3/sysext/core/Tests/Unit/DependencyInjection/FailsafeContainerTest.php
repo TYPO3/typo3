@@ -412,6 +412,10 @@ final class FailsafeContainerTest extends UnitTestCase
                 [self::class, 'factory'],
             ],
             [
+                // Static first class callable
+                self::factory(...),
+            ],
+            [
                 // Closure
                 static function () {
                     return new Service();
@@ -437,6 +441,15 @@ final class FailsafeContainerTest extends UnitTestCase
                     },
                     'factory',
                 ],
+            ],
+            [
+                // Non-static first class callable
+                (new class {
+                    public function factory(): Service
+                    {
+                        return new Service();
+                    }
+                })->factory(...),
             ],
         ];
     }

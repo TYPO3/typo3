@@ -49,7 +49,7 @@ readonly class ModelService
     public function buildMutationCollectionFromArray(array $array): MutationCollection
     {
         $mutations = array_map(
-            [$this, 'buildMutationFromArray'],
+            $this->buildMutationFromArray(...),
             $array['mutations'] ?? []
         );
         return new MutationCollection(...$mutations);

@@ -49,7 +49,7 @@ class VariablesContext implements Applicable
         $missingApplicables = array_udiff(
             $this->requiredApplicables,
             $applicables,
-            [$this, 'compareApplicables']
+            $this->compareApplicables(...)
         );
         return count($missingApplicables) === 0;
     }

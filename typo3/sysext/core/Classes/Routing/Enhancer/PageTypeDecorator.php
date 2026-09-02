@@ -192,11 +192,11 @@ class PageTypeDecorator extends AbstractEnhancer implements DecoratingEnhancerIn
         if ($this->default !== '' && !in_array($this->default, $items, true)) {
             $items[] = $this->default;
         }
-        $slashedItems = array_filter($items, [$this, 'needsSlashPrefix']);
+        $slashedItems = array_filter($items, $this->needsSlashPrefix(...));
         $regularItems = array_diff($items, $slashedItems);
 
-        $slashedItems = array_map([$this, 'quoteForRegularExpressionPattern'], $slashedItems);
-        $regularItems = array_map([$this, 'quoteForRegularExpressionPattern'], $regularItems);
+        $slashedItems = array_map($this->quoteForRegularExpressionPattern(...), $slashedItems);
+        $regularItems = array_map($this->quoteForRegularExpressionPattern(...), $regularItems);
 
         $patterns = [];
         if (!empty($slashedItems)) {
