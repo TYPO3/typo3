@@ -38,7 +38,11 @@
                             id="cropper-accordion-heading-{cropVariantIterator.cycle}"
                         >
                             <span class="caret"></span>
-                            <div class="panel-title">{cropVariant.title -> f:translate(id: cropVariant.title)}</div>
+                            <div class="panel-title">
+                                <f:if condition="{cropVariant.title}">
+                                    <f:translate id="{cropVariant.title}" default="{cropVariant.title}" />
+                                </f:if>
+                            </div>
                             <div class="cropper-preview-thumbnail {f:if(condition:'{image.properties.width}>{image.properties.height}', then:'wide', else: 'tall')}">
                                 <img class="cropper-preview-thumbnail-image" src="{f:uri.image(image:image, maxWidth:'300', maxHeight: '300')}">
                                 <div class="cropper-preview-thumbnail-crop-area t3js-cropper-preview-thumbnail-crop-area">
