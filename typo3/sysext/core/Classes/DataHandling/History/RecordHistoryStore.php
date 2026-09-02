@@ -220,15 +220,19 @@ class RecordHistoryStore
 
     protected function migrateWorkspaceHistory(string $table, int $versionedId, int $liveUid): void
     {
-        $connection = $this->getDatabaseConnection();
+        if ($versionedId <= 0) {
+            // A record created in a workspace keeps its uid when published, so there is no
+            // separate versioned record whose entries would have to be migrated.
+            return;
+        }
 
         // Update all history entries from workspace record to point to live record
-        $connection->update(
+        $this->getDatabaseConnection()->update(
             'sys_history',
             [
                 'recuid' => $liveUid,
             ],
-            ['tablename' => $table, 'recuid' => $versionedId]
+            ['tablename' => $table, 'recuid' => $versionedId, 'workspace' => $this->workspaceId]
         );
     }
 
