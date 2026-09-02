@@ -40,4 +40,24 @@ final class RecordHistoryTest extends FunctionalTestCase
         $subject = new RecordHistory();
         self::assertCount($amountOfEntries, $subject->findEventsForCorrelation($correlationId));
     }
+
+    #[Test]
+    public function getCreationInformationForRecordReturnsTheFirstAddEntry(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/RecordLifecycleEntries.csv');
+        $subject = new RecordHistory();
+
+        // uid 5 is a later "add" entry of the same record, the creation is uid 1
+        self::assertSame(11, (int)$subject->getCreationInformationForRecord('pages', ['uid' => 5])['userid']);
+    }
+
+    #[Test]
+    public function getUserIdFromDeleteActionForRecordReturnsTheLatestDeleteEntry(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/RecordLifecycleEntries.csv');
+        $subject = new RecordHistory();
+
+        // The record was deleted, undeleted and deleted again, uid 4 is the current deletion
+        self::assertSame(14, $subject->getUserIdFromDeleteActionForRecord('pages', 5));
+    }
 }

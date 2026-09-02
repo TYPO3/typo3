@@ -360,6 +360,8 @@ class RecordHistory
                     $queryBuilder->createNamedParameter(RecordHistoryStore::ACTION_DELETE, Connection::PARAM_INT)
                 )
             )
+            // A record can have been deleted, undeleted and deleted again, the last one counts
+            ->orderBy('uid', 'DESC')
             ->setMaxResults(1);
 
         return (int)$queryBuilder->executeQuery()->fetchOne();
@@ -424,6 +426,9 @@ class RecordHistory
                 $queryBuilder->expr()->eq('recuid', $queryBuilder->createNamedParameter($record['uid'], Connection::PARAM_INT)),
                 $queryBuilder->expr()->eq('actiontype', $queryBuilder->createNamedParameter(RecordHistoryStore::ACTION_ADD, Connection::PARAM_INT))
             )
+            // Publishing migrates the "add" entry of a workspace version onto the live record,
+            // so there can be more than one. The oldest one is the actual creation.
+            ->orderBy('uid', 'ASC')
             ->setMaxResults(1)
             ->executeQuery()
             ->fetchAssociative();
