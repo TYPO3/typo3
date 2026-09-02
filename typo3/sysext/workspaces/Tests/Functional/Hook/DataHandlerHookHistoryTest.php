@@ -60,13 +60,13 @@ final class DataHandlerHookHistoryTest extends FunctionalTestCase
             ->fetchOne();
     }
 
-    private function getCorrelationScopeOfLatestEntry(int $actionType): ?string
+    private function getCorrelationScopeOfLatestEntry(int $actionType, string $table = 'tt_content'): ?string
     {
         $correlationId = $this->getConnectionPool()
             ->getConnectionForTable('sys_history')
             ->executeQuery(
-                'SELECT correlation_id FROM sys_history WHERE actiontype = ? ORDER BY uid DESC',
-                [$actionType]
+                'SELECT correlation_id FROM sys_history WHERE actiontype = ? AND tablename = ? ORDER BY uid DESC',
+                [$actionType, $table]
             )
             ->fetchOne();
         self::assertNotFalse($correlationId, 'No history entry of action type ' . $actionType . ' was written');
@@ -109,6 +109,24 @@ final class DataHandlerHookHistoryTest extends FunctionalTestCase
         self::assertSame(
             $dataHandler->getCorrelationId()->getScope(),
             $this->getCorrelationScopeOfLatestEntry(RecordHistoryStore::ACTION_PUBLISH)
+        );
+    }
+
+    #[Test]
+    public function discardingAWorkspaceSharesTheCorrelationIdScopeOfItsDataHandlerRun(): void
+    {
+        $this->createWorkspaceVersion();
+
+        // Deleting the workspace record happens in live and discards all of its records
+        $GLOBALS['BE_USER']->workspace = 0;
+        $this->get(Context::class)->setAspect('workspace', new WorkspaceAspect(0));
+        $dataHandler = $this->get(DataHandler::class);
+        $dataHandler->start([], ['sys_workspace' => [1 => ['delete' => 1]]]);
+        $dataHandler->process_cmdmap();
+
+        self::assertSame(
+            $dataHandler->getCorrelationId()->getScope(),
+            $this->getCorrelationScopeOfLatestEntry(RecordHistoryStore::ACTION_DELETE)
         );
     }
 }

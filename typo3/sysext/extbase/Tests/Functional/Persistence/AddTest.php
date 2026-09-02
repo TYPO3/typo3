@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\DataHandling\Model\CorrelationId;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -223,6 +224,53 @@ final class AddTest extends FunctionalTestCase
         $this->persistentManager->persistAll();
 
         $this->assertCSVDataSet(__DIR__ . '/Fixtures/TestResultAddObjectDoesNotWriteHistoryEntry.csv');
+    }
+
+    #[Test]
+    public function historyEntriesOfOnePersistenceRunShareOneCorrelationScope(): void
+    {
+        $newBlog = new Blog();
+        $newBlog->setTitle('A test blog');
+
+        $this->blogRepository->add($newBlog);
+        $this->persistentManager->persistAll();
+
+        // Adding a blog writes an "add" and a "modify" entry, both belong to the same run
+        $scopes = $this->getCorrelationScopes();
+        self::assertGreaterThanOrEqual(2, count($scopes));
+        self::assertNotNull($scopes[0]);
+        self::assertCount(1, array_unique($scopes));
+    }
+
+    #[Test]
+    public function historyEntriesOfSeparatePersistenceRunsUseDifferentCorrelationScopes(): void
+    {
+        $newBlog = new Blog();
+        $newBlog->setTitle('A test blog');
+        $this->blogRepository->add($newBlog);
+        $this->persistentManager->persistAll();
+        $scopesOfFirstRun = array_unique($this->getCorrelationScopes());
+
+        $newBlog->setTitle('A renamed test blog');
+        $this->blogRepository->update($newBlog);
+        $this->persistentManager->persistAll();
+        $scopesOfBothRuns = array_unique($this->getCorrelationScopes());
+
+        self::assertCount(1, $scopesOfFirstRun);
+        self::assertCount(2, $scopesOfBothRuns);
+    }
+
+    /**
+     * @return list<string|null>
+     */
+    private function getCorrelationScopes(): array
+    {
+        return array_map(
+            static fn(string $correlationId): ?string => CorrelationId::fromString($correlationId)->getScope(),
+            $this->getConnectionPool()->getConnectionForTable('sys_history')
+                ->executeQuery('SELECT correlation_id FROM sys_history')
+                ->fetchFirstColumn()
+        );
     }
 
     #[Test]

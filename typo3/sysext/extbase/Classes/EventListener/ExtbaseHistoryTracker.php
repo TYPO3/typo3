@@ -33,6 +33,7 @@ use TYPO3\CMS\Extbase\Event\Persistence\EntityRemovedFromPersistenceEvent;
 use TYPO3\CMS\Extbase\Event\Persistence\EntityUpdatedInPersistenceEvent;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory;
+use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceCorrelationScope;
 
 /**
  * Event listener that automatically tracks history for all Extbase domain entities
@@ -45,6 +46,7 @@ final readonly class ExtbaseHistoryTracker
         private Context $context,
         private TcaSchemaFactory $tcaSchemaFactory,
         private Features $features,
+        private PersistenceCorrelationScope $correlationScope,
     ) {}
 
     #[AsEventListener('extbase-history-tracker-persisted')]
@@ -103,7 +105,8 @@ final readonly class ExtbaseHistoryTracker
             RecordHistoryStore::ACTION_ADD => $historyStore->addRecord(
                 $tableName,
                 $object->getUid(),
-                $this->extractObjectData($object, $dataMap)
+                $this->extractObjectData($object, $dataMap),
+                $this->correlationScope->get()
             ),
             RecordHistoryStore::ACTION_MODIFY => $historyStore->modifyRecord(
                 $tableName,
@@ -114,10 +117,12 @@ final readonly class ExtbaseHistoryTracker
                     '_pid' => $object->getPid(),
                     '_extbase_class' => $object::class,
                 ],
+                $this->correlationScope->get()
             ),
             RecordHistoryStore::ACTION_DELETE => $historyStore->deleteRecord(
                 $tableName,
-                $object->getUid()
+                $object->getUid(),
+                $this->correlationScope->get()
             ),
             default => throw new \InvalidArgumentException(
                 sprintf('Unsupported history action: %d', $action),

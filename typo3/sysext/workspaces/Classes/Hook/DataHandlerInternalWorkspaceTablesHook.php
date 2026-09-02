@@ -68,7 +68,7 @@ final readonly class DataHandlerInternalWorkspaceTablesHook
             if ($table === 'sys_workspace_stage') {
                 $this->setRecordsInStageToEditing($uid, $dataHandler);
             } elseif ($table === 'sys_workspace') {
-                $this->discardRecordsOfWorkspace($uid);
+                $this->discardRecordsOfWorkspace($uid, $dataHandler);
                 BackendUtility::setUpdateSignal('updateTopbar');
                 BackendUtility::setUpdateSignal('updateWorkspaces');
             }
@@ -116,7 +116,7 @@ final readonly class DataHandlerInternalWorkspaceTablesHook
      *        code reachable from the workspace BE module. It *may* be better to establish a
      *        dedicated DataHandler command for this.
      */
-    private function discardRecordsOfWorkspace(int $workspaceUid): void
+    private function discardRecordsOfWorkspace(int $workspaceUid, DataHandler $dataHandler): void
     {
         $command = [];
         foreach ($this->tcaSchemaFactory->all() as $tcaTable => $schema) {
@@ -163,10 +163,11 @@ final readonly class DataHandlerInternalWorkspaceTablesHook
             $context = GeneralUtility::makeInstance(Context::class);
             $savedWorkspaceContext = $context->getAspect('workspace');
             $context->setAspect('workspace', new WorkspaceAspect($workspaceUid));
-            /** @var DataHandler $dataHandler */
-            $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
-            $dataHandler->start([], $command, $backendUser);
-            $dataHandler->process_cmdmap();
+            // Discarding is part of deleting the workspace, so it continues the correlation id
+            /** @var DataHandler $discardDataHandler */
+            $discardDataHandler = GeneralUtility::makeInstance(DataHandler::class);
+            $discardDataHandler->start([], $command, $backendUser, null, $dataHandler->getCorrelationId());
+            $discardDataHandler->process_cmdmap();
             $backendUser->workspace = $savedWorkspace;
             $context->setAspect('workspace', $savedWorkspaceContext);
         }
