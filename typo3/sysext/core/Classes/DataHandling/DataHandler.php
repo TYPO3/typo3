@@ -2592,7 +2592,7 @@ class DataHandler
      * @param int $id UID to filter out in the lookup (the record itself...)
      * @param int $newPid If set, the value will be unique for this PID
      * @return string Modified value (if not-unique). Will be the value appended with a number (until 100, then the function just breaks).
-     * @todo: consider workspaces, especially when publishing a unique value which has a unique value already in live
+     * @todo: publishing a workspace value that is already taken in live is not handled, see #52070
      * @internal should only be used from within DataHandler
      */
     public function getUnique($table, $field, $value, $id, $newPid = 0)
@@ -2664,6 +2664,14 @@ class DataHandler
                 $queryBuilder->expr()->eq($field, $queryBuilder->createPositionalParameter($value)),
                 $queryBuilder->expr()->neq('uid', $queryBuilder->createPositionalParameter($uid, Connection::PARAM_INT))
             );
+        // Editing in a workspace writes to a versioned record, which lives on the same pid as its
+        // live counterpart and starts out with the very same values. Ignore that live record, it is
+        // the record being edited and must not be treated as a collision with its own version.
+        if ($this->BE_USER->workspace > 0 && ($liveId = $this->resolveLiveVersionId($table, $uid)) > 0) {
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->neq('uid', $queryBuilder->createPositionalParameter($liveId, Connection::PARAM_INT))
+            );
+        }
         // ignore translations of current record if field is configured with l10n_mode = "exclude"
         $schema = $this->tcaSchemaFactory->get($table);
         $tcaField = $schema->getField($field);
@@ -2693,6 +2701,22 @@ class DataHandler
             );
         }
         return $queryBuilder;
+    }
+
+    /**
+     * Uid of the live record a workspace version belongs to, or 0 if there is none.
+     *
+     * For an existing record the database is authoritative. A record that is about to be
+     * inserted has no uid yet: creating a workspace version runs the whole field array
+     * through checkValue() from insertNewCopyVersion(), and only the "t3ver_oid" of that
+     * field array tells which live record is being versionized.
+     */
+    protected function resolveLiveVersionId(string $table, int $uid): int
+    {
+        if ($uid > 0) {
+            return (int)(BackendUtility::getLiveVersionIdOfRecord($table, $uid) ?? 0);
+        }
+        return (int)($this->checkValue_currentRecord['t3ver_oid'] ?? 0);
     }
 
     /**

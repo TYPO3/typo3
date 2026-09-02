@@ -23,6 +23,10 @@ use TYPO3\CMS\Core\Tests\Functional\DataScenarios\UniqueValue\AbstractActionWork
 
 /**
  * Values as an editor sees them in the workspace, before publishing.
+ *
+ * A versioned record lives on the same pid as its live counterpart and starts out with the
+ * very same values, so the live record must never be treated as a collision of its own
+ * version - neither when the version is created nor on any later save.
  */
 final class ActionTest extends AbstractActionWorkspacesTestCase
 {
@@ -41,17 +45,9 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         parent::modifyElementWithItsOwnValues();
 
         self::assertSame([
-            // WRONG, see https://forge.typo3.org/issues/101227: nothing was changed, so all
-            // three values should be unchanged as well. Editing in a workspace writes to the
-            // versioned record, which lives on the same pid as the live record and carries the
-            // same values. getUniqueCountStatement() has no workspace restriction and does not
-            // exclude the live counterpart of the record being checked, so the live record is
-            // counted as a collision and a counter is appended on every single save.
-            'input unique' => 'alpha0',
-            'input uniqueInPid' => 'delta0',
-            'input unique (l10n excluded)' => 'omega0',
-            // Correct: SlugHelper::applyRecordConstraint() excludes the live counterpart and
-            // applies a WorkspaceRestriction, which is exactly what is missing above
+            'input unique' => 'alpha',
+            'input uniqueInPid' => 'delta',
+            'input unique (l10n excluded)' => 'omega',
             'slug unique' => 'alpha',
             'slug uniqueInSite' => 'sigma',
             'slug uniqueInPid' => 'delta',
@@ -124,13 +120,12 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         parent::moveElement();
 
         self::assertSame([
-            // WRONG, see https://forge.typo3.org/issues/101227: moving a live record in a
-            // workspace versionizes it first, and fixUniqueInPid() then compares the version
-            // against its own live record. This is the "only the sorting was changed" symptom
-            // of the issue - the values were never touched by the editor at all.
-            'input unique' => 'alpha0',
-            'input uniqueInPid' => 'delta0',
-            'input unique (l10n excluded)' => 'omega0',
+            'input unique' => 'alpha',
+            // Element 3 on the target page uses "delta" as well, so this should have been
+            // de-duplicated. moveRecord() evaluates "uniqueInPid" against the source page
+            // instead of the target page, which is an unrelated defect of its own.
+            'input uniqueInPid' => 'delta',
+            'input unique (l10n excluded)' => 'omega',
             'slug unique' => 'alpha',
             'slug uniqueInSite' => 'sigma',
             'slug uniqueInPid' => 'delta',

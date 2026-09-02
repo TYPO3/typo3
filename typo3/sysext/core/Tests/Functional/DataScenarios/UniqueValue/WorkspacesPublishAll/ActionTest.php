@@ -41,11 +41,6 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(self::SCENARIO_DataSet);
     }
 
-    /**
-     * The counter that https://forge.typo3.org/issues/101227 wrongly appends in the workspace
-     * does not reach the live record - the "keep fields" of
-     * https://forge.typo3.org/issues/52070 happen to discard it along with everything else.
-     */
     #[Test]
     public function modifyElementWithItsOwnValues(): void
     {
