@@ -91,7 +91,7 @@ class ServerRequestFactory implements ServerRequestFactoryInterface
             $request = $request->withQueryParams($_GET);
         }
         $parsedBody = $_POST;
-        if (empty($parsedBody) && in_array($method, ['PUT', 'PATCH', 'DELETE'])) {
+        if (empty($parsedBody) && in_array($method, ['PUT', 'PATCH', 'DELETE', 'QUERY'])) {
             parse_str((string)file_get_contents('php://input'), $parsedBody);
         }
         if (!empty($parsedBody)) {
