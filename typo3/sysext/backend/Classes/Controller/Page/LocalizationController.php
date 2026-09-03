@@ -26,11 +26,13 @@ use TYPO3\CMS\Backend\Controller\Event\AfterRecordSummaryForLocalizationEvent;
 use TYPO3\CMS\Backend\Domain\Repository\Localization\LocalizationRepository;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendLayoutView;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 
@@ -89,6 +91,10 @@ class LocalizationController
         $pageId = (int)$params['pageId'];
         $languageId = (int)$params['languageId'];
 
+        if (!$this->hasPageAccess($pageId)) {
+            return new JsonResponse(null, 403);
+        }
+
         $translationProvider = GeneralUtility::makeInstance(TranslationConfigurationProvider::class);
         $systemLanguages = $translationProvider->getSystemLanguages($pageId);
 
@@ -145,6 +151,10 @@ class LocalizationController
         $destLanguageId = (int)$params['destLanguageId'];
         $languageId = (int)$params['languageId'];
 
+        if (!$this->hasPageAccess($pageId)) {
+            return new JsonResponse(null, 403);
+        }
+
         $records = [];
         $result = $this->localizationRepository->getRecordsToCopyDatabaseResult(
             $pageId,
@@ -194,6 +204,10 @@ class LocalizationController
             return $response;
         }
 
+        if (!$this->hasPageAccess((int)$params['pageId'])) {
+            return new JsonResponse(null, 403);
+        }
+
         // Filter transmitted but invalid uids
         $params['uidList'] = $this->filterInvalidUids(
             (int)$params['pageId'],
@@ -205,6 +219,20 @@ class LocalizationController
         $this->process($params);
 
         return new JsonResponse([]);
+    }
+
+    /**
+     * Whether the current backend user may see the page the records to localize live on.
+     *
+     * For localizeRecords() this is a second barrier only, DataHandler remains the
+     * authority for the write itself.
+     */
+    protected function hasPageAccess(int $pageId): bool
+    {
+        return (bool)BackendUtility::readPageAccess(
+            $pageId,
+            $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW)
+        );
     }
 
     /**
@@ -278,5 +306,10 @@ class LocalizationController
             'columns' => $event->getColumns(),
             'columnList' => $event->getColumnList(),
         ];
+    }
+
+    protected function getBackendUser(): BackendUserAuthentication
+    {
+        return $GLOBALS['BE_USER'];
     }
 }

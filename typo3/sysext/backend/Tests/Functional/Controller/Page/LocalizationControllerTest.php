@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\Controller\Page;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Controller\Page\LocalizationController;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
@@ -300,5 +301,82 @@ final class LocalizationControllerTest extends FunctionalTestCase
         }
         $localizeSummary = $recordLocalizeSummary['records'];
         self::assertEquals($expectedRecords, $localizeSummary);
+    }
+
+    public static function pageAccessDataProvider(): \Generator
+    {
+        yield 'getUsedLanguagesInPage for admin on inaccessible page' => ['getUsedLanguagesInPage', 1, 10, 200];
+        yield 'getUsedLanguagesInPage for editor on inaccessible page' => ['getUsedLanguagesInPage', 10, 10, 403];
+        yield 'getUsedLanguagesInPage for editor on accessible page' => ['getUsedLanguagesInPage', 10, 1, 200];
+        yield 'getRecordLocalizeSummary for admin on inaccessible page' => ['getRecordLocalizeSummary', 1, 10, 200];
+        yield 'getRecordLocalizeSummary for editor on inaccessible page' => ['getRecordLocalizeSummary', 10, 10, 403];
+        yield 'getRecordLocalizeSummary for editor on accessible page' => ['getRecordLocalizeSummary', 10, 1, 200];
+        yield 'localizeRecords for admin on inaccessible page' => ['localizeRecords', 1, 10, 200];
+        yield 'localizeRecords for editor on inaccessible page' => ['localizeRecords', 10, 10, 403];
+        yield 'localizeRecords for editor on accessible page' => ['localizeRecords', 10, 1, 200];
+    }
+
+    #[DataProvider('pageAccessDataProvider')]
+    #[Test]
+    public function endpointsCheckPageAccess(string $endpoint, int $backendUserId, int $pageId, int $expectedStatusCode): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/be_users_editor.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/pages_restricted.csv');
+        $backendUser = $this->setUpBackendUser($backendUserId);
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
+        $subject = $this->getAccessibleMock(LocalizationController::class, null);
+
+        $response = match ($endpoint) {
+            'getUsedLanguagesInPage' => $subject->getUsedLanguagesInPage(
+                (new ServerRequest())->withQueryParams([
+                    'pageId' => $pageId,
+                    'languageId' => self::LANGUAGE_PRESETS['DA']['id'],
+                ])
+            ),
+            'getRecordLocalizeSummary' => $subject->getRecordLocalizeSummary(
+                (new ServerRequest())->withQueryParams([
+                    'pageId' => $pageId,
+                    'destLanguageId' => self::LANGUAGE_PRESETS['DA']['id'],
+                    'languageId' => self::LANGUAGE_PRESETS['EN']['id'],
+                ])
+            ),
+            'localizeRecords' => $subject->localizeRecords(
+                (new ServerRequest())->withQueryParams([
+                    'pageId' => $pageId,
+                    'srcLanguageId' => self::LANGUAGE_PRESETS['EN']['id'],
+                    'destLanguageId' => self::LANGUAGE_PRESETS['DA']['id'],
+                    'action' => LocalizationController::ACTION_LOCALIZE,
+                    'uidList' => [10],
+                ])
+            ),
+            default => self::fail('Unknown endpoint ' . $endpoint),
+        };
+
+        self::assertEquals($expectedStatusCode, $response->getStatusCode());
+    }
+
+    #[Test]
+    public function localizeRecordsDoesNotTranslateRecordsOfAnInaccessiblePage(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/be_users_editor.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/pages_restricted.csv');
+        $backendUser = $this->setUpBackendUser(10);
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
+        $subject = $this->getAccessibleMock(LocalizationController::class, null);
+
+        $subject->localizeRecords(
+            (new ServerRequest())->withQueryParams([
+                'pageId' => 10,
+                'srcLanguageId' => self::LANGUAGE_PRESETS['EN']['id'],
+                'destLanguageId' => self::LANGUAGE_PRESETS['DA']['id'],
+                'action' => LocalizationController::ACTION_LOCALIZE,
+                'uidList' => [10],
+            ])
+        );
+
+        $translations = $this->getConnectionPool()
+            ->getConnectionForTable('tt_content')
+            ->count('uid', 'tt_content', ['pid' => 10, 'sys_language_uid' => self::LANGUAGE_PRESETS['DA']['id']]);
+        self::assertSame(0, $translations);
     }
 }
