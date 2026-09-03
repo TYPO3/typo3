@@ -395,11 +395,20 @@ final class RequestTest extends UnitTestCase
         new Request(null, 'GET', 'php://memory', [$name => $value]);
     }
 
-    #[Test]
-    public function supportedRequestMethodsWork(): void
+    public static function supportedRequestMethodsDataProvider(): array
     {
-        $request = new Request('some-uri', 'PURGE');
-        self::assertEquals('PURGE', $request->getMethod());
+        return [
+            'purge' => ['PURGE'],
+            'query' => ['QUERY'],
+        ];
+    }
+
+    #[DataProvider('supportedRequestMethodsDataProvider')]
+    #[Test]
+    public function supportedRequestMethodsWork(string $method): void
+    {
+        $request = new Request('some-uri', $method);
+        self::assertSame($method, $request->getMethod());
     }
 
     #[Test]
