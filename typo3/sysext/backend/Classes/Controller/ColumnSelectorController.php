@@ -26,6 +26,7 @@ use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchema;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\View\ViewInterface;
 
@@ -121,6 +122,10 @@ readonly class ColumnSelectorController
             $fields = array_merge(BackendUtility::getAllowedFieldsForTable($table), self::PSEUDO_FIELDS);
         }
 
+        $excludedFields = $table !== '_FILE' && $this->tcaSchemaFactory->has($table)
+            ? $this->getExcludedRecordFields($this->tcaSchemaFactory->get($table))
+            : [];
+
         $columns = $specialColumns = $disabledColumns = [];
         foreach ($fields as $fieldName) {
             $concreteTableName = $table;
@@ -129,6 +134,8 @@ readonly class ColumnSelectorController
             // concrete table name, which is either sys_file or sys_file_metadata.
             if ($table === '_FILE') {
                 [$concreteTableName, $fieldName] = explode('|', $fieldName);
+            } elseif (in_array($fieldName, $excludedFields, true)) {
+                continue;
             }
 
             // Hide field if disabled
@@ -178,6 +185,36 @@ readonly class ColumnSelectorController
         // Disabled columns go first, followed by standard columns
         // and special columns, which do not have a label.
         return array_merge($disabledColumns, $columns, $specialColumns);
+    }
+
+    /**
+     * Fields, which are not relevant in the listing and are therefore
+     * not selectable. Since those fields are configurable, their names
+     * are resolved from the schema of the corresponding table.
+     *
+     * @return list<string>
+     */
+    protected function getExcludedRecordFields(TcaSchema $schema): array
+    {
+        $excludedFields = [];
+
+        // Deleted records are never listed
+        if ($schema->hasCapability(TcaSchemaCapability::SoftDelete)) {
+            $excludedFields[] = $schema->getCapability(TcaSchemaCapability::SoftDelete)->getFieldName();
+        }
+
+        // The translation source and the diff source fields are not editable
+        if ($schema->isLanguageAware()) {
+            $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
+            if ($languageCapability->hasTranslationSourceField()) {
+                $excludedFields[] = $languageCapability->getTranslationSourceField()->getName();
+            }
+            if ($languageCapability->hasDiffSourceField()) {
+                $excludedFields[] = $languageCapability->getDiffSourceField()->getName();
+            }
+        }
+
+        return $excludedFields;
     }
 
     /**
