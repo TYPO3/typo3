@@ -172,7 +172,6 @@ final readonly class BreadcrumbFactory
     public function forPageArray(array $pageRecord): BreadcrumbContext
     {
         if (!isset($pageRecord['uid'])) {
-            $this->logger->warning('Page record array must contain uid for breadcrumb');
             return new BreadcrumbContext(null, []);
         }
 
