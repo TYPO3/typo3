@@ -73,7 +73,11 @@ class AudioTagRenderer implements FileRendererInterface
 
         $additionalAttributes = [];
         if (isset($options['additionalAttributes']) && is_array($options['additionalAttributes'])) {
-            $additionalAttributes[] = GeneralUtility::implodeAttributes($options['additionalAttributes'], true, true);
+            $additionalAttributes[] = GeneralUtility::implodeAttributes(
+                array_filter($options['additionalAttributes'], static fn(mixed $value): bool => $value !== null && $value !== false),
+                true,
+                true
+            );
         }
         if (isset($options['data']) && is_array($options['data'])) {
             array_walk($options['data'], static function (string &$value, string $key): void {

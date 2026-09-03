@@ -223,11 +223,14 @@ class VimeoRenderer implements FileRendererInterface
     {
         $attributeList = [];
         foreach ($attributes as $name => $value) {
+            if ($value === null || $value === false) {
+                continue;
+            }
             $name = preg_replace('/[^\p{L}0-9_.-]/u', '', $name);
             if ($value === true) {
                 $attributeList[] = $name;
             } else {
-                $attributeList[] = $name . '="' . htmlspecialchars($value, ENT_QUOTES | ENT_HTML5) . '"';
+                $attributeList[] = $name . '="' . htmlspecialchars((string)$value, ENT_QUOTES | ENT_HTML5) . '"';
             }
         }
         return implode(' ', $attributeList);
