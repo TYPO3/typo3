@@ -342,8 +342,15 @@ final class SlugSiteRequestTest extends AbstractTestCase
         );
     }
 
+    public static function unconfiguredPageTypeReturnsExpectedStatusCodeDataProvider(): \Generator
+    {
+        yield 'missing mandatory default type' => ['type=0', 500, 'No page configured for type=0.'];
+        yield 'unconfigured non-zero type' => ['type=13', 404, 'No page configured for type=13.'];
+    }
+
+    #[DataProvider('unconfiguredPageTypeReturnsExpectedStatusCodeDataProvider')]
     #[Test]
-    public function unconfiguredTypeNumResultsIn500Error(): void
+    public function unconfiguredPageTypeReturnsExpectedStatusCode(string $query, int $expectedStatus, string $expectedMessage): void
     {
         $this->writeSiteConfiguration(
             'website-local',
@@ -351,20 +358,18 @@ final class SlugSiteRequestTest extends AbstractTestCase
             [
                 $this->buildDefaultLanguageConfiguration('EN', '/en-en/'),
             ],
-            $this->buildErrorHandlingConfiguration('Fluid', [500])
+            $this->buildErrorHandlingConfiguration('Fluid', [404, 500])
+        );
+        // Replace the default template with one that defines no default PAGE (typeNum=0).
+        $this->setUpFrontendRootPage(
+            1000,
+            ['EXT:frontend/Tests/Functional/SiteHandling/Fixtures/NoDefaultPage.typoscript']
         );
 
-        $uri = 'https://website.local/en-en/?type=13';
-        $response = $this->executeFrontendSubRequest(new InternalRequest($uri));
+        $response = $this->executeFrontendSubRequest(new InternalRequest('https://website.local/en-en/?' . $query));
 
-        self::assertSame(
-            500,
-            $response->getStatusCode()
-        );
-        self::assertStringContainsString(
-            'message: No page configured for type=13.',
-            (string)$response->getBody()
-        );
+        self::assertSame($expectedStatus, $response->getStatusCode());
+        self::assertStringContainsString($expectedMessage, (string)$response->getBody());
     }
 
     public static function pageIsRenderedWithPathsDataProvider(): array

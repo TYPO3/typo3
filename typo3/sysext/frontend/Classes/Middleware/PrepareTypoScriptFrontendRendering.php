@@ -250,12 +250,7 @@ final readonly class PrepareTypoScriptFrontendRendering implements MiddlewareInt
                 $request,
             );
             if ($needsFullSetup && !$frontendTypoScript->hasPage()) {
-                $this->logger->error('No page configured for type={type}. There is no TypoScript object of type PAGE with typeNum={type}.', ['type' => $pageType]);
-                return $this->errorController->internalErrorAction(
-                    $request,
-                    'No page configured for type=' . $pageType . '.',
-                    ['code' => PageAccessFailureReasons::RENDERING_INSTRUCTIONS_NOT_CONFIGURED]
-                );
+                return $this->unconfiguredPageTypeResponse($request, $pageType);
             }
             $setupConfigAst = $frontendTypoScript->getConfigTree();
             if ($setupConfigAst->getChildByName('no_cache')?->getValue()) {
@@ -342,5 +337,31 @@ final readonly class PrepareTypoScriptFrontendRendering implements MiddlewareInt
             ->getPageCacheIdentifierParameters();
 
         return $pageId . '_' . hash('xxh3', serialize($pageCacheIdentifierParameters));
+    }
+
+    /**
+     * type=0 is the mandatory default page representation. If it is missing, the site cannot
+     * render at all, which is a server misconfiguration that warrants a 500 and an error log.
+     *
+     * A non-zero type requests an optional page representation. If it does not exist, the
+     * resource in that representation is simply not available: respond with the configurable
+     * 404 handling instead of logging an error for every such (possibly malicious) request.
+     */
+    private function unconfiguredPageTypeResponse(ServerRequestInterface $request, string $pageType): ResponseInterface
+    {
+        $message = 'No page configured for type=' . $pageType . '.';
+        $reasons = [
+            'code' => PageAccessFailureReasons::RENDERING_INSTRUCTIONS_NOT_CONFIGURED,
+        ];
+        $logMessage = 'No page configured for type={type}. There is no TypoScript object of type PAGE with typeNum={type}.';
+        $logContext = [
+            'type' => $pageType,
+        ];
+        if ($pageType === '0') {
+            $this->logger->error($logMessage, $logContext);
+            return $this->errorController->internalErrorAction($request, $message, $reasons);
+        }
+        $this->logger->debug($logMessage, $logContext);
+        return $this->errorController->pageNotFoundAction($request, $message, $reasons);
     }
 }
