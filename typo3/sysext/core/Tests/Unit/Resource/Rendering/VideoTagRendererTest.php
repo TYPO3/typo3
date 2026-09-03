@@ -94,6 +94,11 @@ final class VideoTagRendererTest extends UnitTestCase
             ],
             [
                 '//:path/myVideoFile',
+                ['additionalAttributes' => ['muted' => '', 'poster' => null, 'loop' => false, 'foo' => 'bar']],
+                '<video muted="" foo="bar" width="300" height="200" controls><source src="//:path/myVideoFile" type="video/mp4"></video>',
+            ],
+            [
+                '//:path/myVideoFile',
                 ['data' => ['js-required' => 'yes', 'custom-id' => 'video-123']],
                 '<video data-js-required="yes" data-custom-id="video-123" width="300" height="200" controls><source src="//:path/myVideoFile" type="video/mp4"></video>',
             ],

@@ -142,6 +142,17 @@ final class VimeoRendererTest extends UnitTestCase
     }
 
     #[Test]
+    public function renderOutputOmitsNullAndFalseAdditionalAttributes(): void
+    {
+        $fileResourceStub = self::createStub(File::class);
+
+        self::assertSame(
+            '<iframe src="https://player.vimeo.com/video/7331?dnt=1&amp;title=0&amp;byline=0&amp;portrait=0" allowfullscreen foo="bar" empty="" playsinline width="300" height="200" allow="fullscreen"></iframe>',
+            $this->subject->render($fileResourceStub, '300m', '200', ['additionalAttributes' => ['foo' => 'bar', 'poster' => null, 'muted' => false, 'empty' => '', 'playsinline' => true]])
+        );
+    }
+
+    #[Test]
     public function renderOutputWithDataAttributesForCustomization(): void
     {
         $fileResourceStub = self::createStub(File::class);

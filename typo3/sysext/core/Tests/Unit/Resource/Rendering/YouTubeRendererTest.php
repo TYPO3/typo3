@@ -232,6 +232,17 @@ final class YouTubeRendererTest extends UnitTestCase
     }
 
     #[Test]
+    public function renderOutputOmitsNullAndFalseAdditionalAttributes(): void
+    {
+        $fileResourceStub = self::createStub(File::class);
+
+        self::assertSame(
+            '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=0&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org" allowfullscreen foo="bar" empty="" playsinline width="300" height="200" allow="fullscreen"></iframe>',
+            $this->subject->render($fileResourceStub, '300m', '200', ['controls' => 0, 'additionalAttributes' => ['foo' => 'bar', 'poster' => null, 'muted' => false, 'empty' => '', 'playsinline' => true]])
+        );
+    }
+
+    #[Test]
     public function renderOutputWithDataAttributesForCustomization(): void
     {
         $fileResourceStub = self::createStub(File::class);
