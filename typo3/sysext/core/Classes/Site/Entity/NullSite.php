@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Error\PageErrorHandler\PageErrorHandlerInterface;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -131,9 +132,8 @@ class NullSite implements SiteInterface
     {
         $availableLanguages = [];
 
-        // Check if we need to add language "-1"
-        if ($includeAllLanguagesFlag && $user->checkLanguageAccess(-1)) {
-            $availableLanguages[-1] = new SiteLanguage(-1, '', $this->getBase(), [
+        if ($includeAllLanguagesFlag && $user->checkLanguageAccess(LanguageMarker::ALL_LANGUAGES)) {
+            $availableLanguages[LanguageMarker::ALL_LANGUAGES] = new SiteLanguage(LanguageMarker::ALL_LANGUAGES, '', $this->getBase(), [
                 'title' => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:multipleLanguages'),
                 'flag' => 'flags-multiple',
             ]);

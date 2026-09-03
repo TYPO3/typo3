@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Backend\Form\FormDataProvider;
 
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 
 /**
  * Remove or disable fields (select, category, language) in the form when no
@@ -120,7 +121,7 @@ readonly class TcaColumnsRemoveEmptyRelations implements FormDataProviderInterfa
         $realLanguageCount = 0;
         foreach ($items as $item) {
             $value = $item['value'] ?? '';
-            if ((string)$value === '--div--' || (int)$value === -1) {
+            if ((string)$value === '--div--' || (int)$value === LanguageMarker::ALL_LANGUAGES) {
                 continue;
             }
             $realLanguageCount++;

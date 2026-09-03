@@ -56,6 +56,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Schema\SchemaLabelResolver;
 use TYPO3\CMS\Core\Schema\TcaSchema;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
@@ -656,8 +657,7 @@ class PageLayoutController
 
         $languageField = $this->schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName();
 
-        // Build list of language IDs to include: always include -1 (all languages) and all selected languages
-        $languageIds = [-1];
+        $languageIds = [LanguageMarker::ALL_LANGUAGES];
         foreach ($this->pageContext->selectedLanguageIds as $languageId) {
             $languageIds[] = $languageId;
             // In comparison mode, also include default language (0) if not already selected

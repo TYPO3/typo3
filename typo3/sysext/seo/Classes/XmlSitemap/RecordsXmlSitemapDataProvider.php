@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Schema\Capability\LanguageAwareSchemaCapability;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Seo\XmlSitemap\Exception\MissingConfigurationException;
@@ -83,7 +84,7 @@ class RecordsXmlSitemapDataProvider implements XmlSitemapDataProviderInterface
             $constraints[] = $queryBuilder->expr()->in(
                 $languageCapability->getLanguageField()->getName(),
                 [
-                    -1, // All languages
+                    LanguageMarker::ALL_LANGUAGES,
                     $this->getLanguageId(),  // Current language
                 ]
             );

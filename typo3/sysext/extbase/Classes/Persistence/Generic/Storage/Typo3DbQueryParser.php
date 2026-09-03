@@ -35,6 +35,7 @@ use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Schema\Capability\RootLevelCapability;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
@@ -770,14 +771,14 @@ class Typo3DbQueryParser
         if (!$languageAspect->getContentId()) {
             return $this->queryBuilder->expr()->in(
                 $tableAlias . '.' . $languageField,
-                [$languageAspect->getContentId(), -1]
+                [$languageAspect->getContentId(), LanguageMarker::ALL_LANGUAGES]
             );
         }
 
         if (!$languageAspect->doOverlays()) {
             return $this->queryBuilder->expr()->in(
                 $tableAlias . '.' . $languageField,
-                [$languageAspect->getContentId(), -1]
+                [$languageAspect->getContentId(), LanguageMarker::ALL_LANGUAGES]
             );
         }
 
@@ -795,7 +796,7 @@ class Typo3DbQueryParser
 
         $andConditions = [];
         // records in language 'all'
-        $andConditions[] = $this->queryBuilder->expr()->eq($tableAlias . '.' . $languageField, -1);
+        $andConditions[] = $this->queryBuilder->expr()->eq($tableAlias . '.' . $languageField, LanguageMarker::ALL_LANGUAGES);
         // translated records where a default language exists
         $andConditions[] = $this->queryBuilder->expr()->and(
             $this->queryBuilder->expr()->eq($tableAlias . '.' . $languageField, $languageAspect->getContentId()),

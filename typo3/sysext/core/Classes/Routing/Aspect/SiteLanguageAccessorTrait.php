@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Routing\Aspect;
 
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Context\LanguageAspectFactory;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Site\SiteLanguageAwareTrait;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
@@ -68,7 +69,7 @@ trait SiteLanguageAccessorTrait
      */
     protected function resolveAllRelevantLanguageIds()
     {
-        $languageIds = [-1, $this->siteLanguage->getLanguageId()];
+        $languageIds = [LanguageMarker::ALL_LANGUAGES, $this->siteLanguage->getLanguageId()];
         foreach ($this->getLanguageAspect()->getFallbackChain() as $item) {
             if (in_array($item, $languageIds, true) || !MathUtility::canBeInterpretedAsInteger($item)) {
                 continue;

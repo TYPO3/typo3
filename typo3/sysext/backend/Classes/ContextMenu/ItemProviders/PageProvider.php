@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Backend\ContextMenu\ItemProviders;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -267,7 +268,7 @@ class PageProvider extends RecordProvider
             return false;
         }
         if ($this->getLanguageField() !== ''
-            && !in_array($this->record[$this->getLanguageField()] ?? false, [0, -1])
+            && !in_array($this->record[$this->getLanguageField()] ?? false, [0, LanguageMarker::ALL_LANGUAGES])
         ) {
             return false;
         }
@@ -320,7 +321,7 @@ class PageProvider extends RecordProvider
             return false;
         }
         if ($this->getLanguageField() !== ''
-            && !in_array($this->record[$this->getLanguageField()] ?? false, [0, -1])
+            && !in_array($this->record[$this->getLanguageField()] ?? false, [0, LanguageMarker::ALL_LANGUAGES])
         ) {
             return false;
         }
@@ -341,7 +342,7 @@ class PageProvider extends RecordProvider
             return false;
         }
         if ($this->getLanguageField() !== ''
-            && !in_array($this->record[$this->getLanguageField()] ?? false, [0, -1])
+            && !in_array($this->record[$this->getLanguageField()] ?? false, [0, LanguageMarker::ALL_LANGUAGES])
         ) {
             return false;
         }

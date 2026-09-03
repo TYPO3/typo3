@@ -74,6 +74,7 @@ use TYPO3\CMS\Core\Schema\Field\FieldTranslationBehaviour;
 use TYPO3\CMS\Core\Schema\Field\FileFieldType;
 use TYPO3\CMS\Core\Schema\Field\GroupFieldType;
 use TYPO3\CMS\Core\Schema\Field\InlineFieldType;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Schema\Struct\SelectItemCollection;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
@@ -3255,7 +3256,7 @@ class DataHandler
                                 unset($value['update'][$languageField]);
                             }
                             // Reset language for a -1 element from original record if copied or moved into language 0
-                            if ($row[$languageField] === -1 && (int)$languageId === 0) {
+                            if ($row[$languageField] === LanguageMarker::ALL_LANGUAGES && (int)$languageId === 0) {
                                 $value['update'][$languageField] = $row[$languageField];
                             }
                         }

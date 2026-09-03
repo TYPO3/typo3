@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Pagination\ArrayPaginator;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Schema\TcaSchema;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\SiteFinder;
@@ -242,7 +243,7 @@ final readonly class RecyclerService
         $languageInformation = $this->runtimeCache->get($cacheId);
         if ($languageInformation === false) {
             $languageInformation = ['title' => '', 'icon' => ''];
-            if ($languageId === -1) {
+            if ($languageId === LanguageMarker::ALL_LANGUAGES) {
                 $languageInformation = [
                     'title' => $this->getLanguageService()->sL('core.general:LGL.allLanguages'),
                     'icon' => $this->iconFactory->getIcon('flags-multiple', IconSize::SMALL)->render(),

@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\DataHandling\Model\RecordStateFactory;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Slug\SlugNormalizer;
@@ -469,7 +470,7 @@ class SlugHelper
         if (!$schema->isLanguageAware()) {
             return;
         }
-        if ($languageId === -1) {
+        if ($languageId === LanguageMarker::ALL_LANGUAGES) {
             // if language is -1 "all languages" we need to check against all languages, thus not adding
             // any kind of language constraints.
             return;
@@ -485,7 +486,7 @@ class SlugHelper
                 ),
                 $queryBuilder->expr()->eq(
                     $languageFieldName,
-                    $queryBuilder->createNamedParameter(-1, Connection::PARAM_INT)
+                    $queryBuilder->createNamedParameter(LanguageMarker::ALL_LANGUAGES, Connection::PARAM_INT)
                 )
             )
         );

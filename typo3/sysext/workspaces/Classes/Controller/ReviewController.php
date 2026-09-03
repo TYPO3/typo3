@@ -32,6 +32,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Workspaces\Authorization\WorkspacePublishGate;
 use TYPO3\CMS\Workspaces\Domain\Model\WorkspaceStage;
@@ -187,8 +188,8 @@ final readonly class ReviewController
     private function getSystemLanguages(int $pageId, string $selectedLanguage): array
     {
         $languages = $this->translationConfigurationProvider->getSystemLanguages($pageId);
-        if (isset($languages[-1])) {
-            $languages[-1]['uid'] = 'all';
+        if (isset($languages[LanguageMarker::ALL_LANGUAGES])) {
+            $languages[LanguageMarker::ALL_LANGUAGES]['uid'] = 'all';
         }
         foreach ($languages as &$language) {
             // needs to be strict type checking as this is not possible in fluid

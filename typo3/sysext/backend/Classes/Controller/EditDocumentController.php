@@ -78,6 +78,7 @@ use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
@@ -1673,7 +1674,7 @@ class EditDocumentController
             }
             $currentLanguage = (int)$rowCurrent[$languageField];
             // Disabled for records with [all] language!
-            if ($currentLanguage > -1) {
+            if ($currentLanguage > LanguageMarker::ALL_LANGUAGES) {
                 // Get record in default language if needed
                 if ($currentLanguage && $rowCurrent[$transOrigPointerField]) {
                     $rowsByLang[0] = BackendUtility::getLiveVersionOfRecord(
@@ -1857,7 +1858,7 @@ class EditDocumentController
         // Fetch the current translations of this page, to only show the ones where there is a page translation
         $allLanguages = array_filter(
             GeneralUtility::makeInstance(TranslationConfigurationProvider::class)->getSystemLanguages($pageId),
-            static fn(array $language): bool => (int)$language['uid'] !== -1
+            static fn(array $language): bool => (int)$language['uid'] !== LanguageMarker::ALL_LANGUAGES
         );
         if ($table !== 'pages' && $id > 0) {
             $translatedPages = $this->localizationRepository->getPageTranslations($pageId, [], $this->getBackendUser()->workspace);

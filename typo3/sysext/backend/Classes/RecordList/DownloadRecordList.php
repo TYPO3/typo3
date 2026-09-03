@@ -21,6 +21,7 @@ use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 
 /**
@@ -92,7 +93,7 @@ class DownloadRecordList
             }
             // Guard clause so we can quickly return if a record is localized to "all languages"
             // It should only be possible to localize a record off default (uid 0)
-            if ((int)$row[$languageField] === -1) {
+            if ((int)$row[$languageField] === LanguageMarker::ALL_LANGUAGES) {
                 continue;
             }
             $translationsRaw = $this->translationConfigurationProvider->translationInfo($table, $row['uid'], 0, $row, $selectFields);

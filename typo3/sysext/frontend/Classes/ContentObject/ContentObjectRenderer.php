@@ -64,6 +64,7 @@ use TYPO3\CMS\Core\Resource\FolderInterface;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Schema\TcaSchema;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Security\AllowedCallableAssertion;
@@ -4848,7 +4849,7 @@ class ContentObjectRenderer
         if ($languageAspect->doOverlays() && !empty($localizationParentField)) {
             // Sys language content is set to zero/-1 - and it is expected that whatever routine processes the output will
             // OVERLAY the records with localized versions!
-            $languageQuery = $expressionBuilder->in($languageField, [0, -1]);
+            $languageQuery = $expressionBuilder->in($languageField, [0, LanguageMarker::ALL_LANGUAGES]);
             // Use this option to include records that don't have a default language counterpart ("free mode")
             // (originalpointerfield is 0 and the language field contains the requested language)
             if (isset($conf['includeRecordsWithoutDefaultTranslation']) || !empty($conf['includeRecordsWithoutDefaultTranslation.'])) {
@@ -4874,7 +4875,7 @@ class ContentObjectRenderer
             return $languageQuery;
         }
         // No overlays = only fetch records given for the requested language and "all languages"
-        return $expressionBuilder->in($languageField, [$languageAspect->getContentId(), -1]);
+        return $expressionBuilder->in($languageField, [$languageAspect->getContentId(), LanguageMarker::ALL_LANGUAGES]);
     }
 
     /**

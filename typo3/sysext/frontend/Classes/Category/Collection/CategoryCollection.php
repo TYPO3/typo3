@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -139,7 +140,7 @@ class CategoryCollection extends CoreCategoryCollection
 
             $languageConstraint = $queryBuilder->expr()->in(
                 $languageField,
-                $queryBuilder->createNamedParameter([0, -1], Connection::PARAM_INT_ARRAY)
+                $queryBuilder->createNamedParameter([0, LanguageMarker::ALL_LANGUAGES], Connection::PARAM_INT_ARRAY)
             );
 
             // If not in default language, also consider items in current language with no original

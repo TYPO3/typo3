@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -187,7 +188,7 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
                         ),
                         $queryBuilder->expr()->in(
                             'sys_language_uid',
-                            $queryBuilder->createNamedParameter([$activePageRecord['sys_language_uid'], -1], Connection::PARAM_INT_ARRAY)
+                            $queryBuilder->createNamedParameter([$activePageRecord['sys_language_uid'], LanguageMarker::ALL_LANGUAGES], Connection::PARAM_INT_ARRAY)
                         )
                     )
                 )

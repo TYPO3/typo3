@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\DataHandling\TableColumnType;
 use TYPO3\CMS\Core\Domain\DateTimeFactory;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -528,7 +529,7 @@ class DataMapper
                 //the languageUid is used for getRecordOverlay later on, despite RespectSysLanguage being false
                 $parentLanguageUid = (int)$parentObject->_getProperty(AbstractDomainObject::PROPERTY_LANGUAGE_UID);
                 // do not override the language when the parent language uid is set to all languages (-1)
-                if ($parentLanguageUid !== -1) {
+                if ($parentLanguageUid !== LanguageMarker::ALL_LANGUAGES) {
                     $languageUid = $parentLanguageUid;
                 }
             }
