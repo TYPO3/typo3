@@ -133,12 +133,28 @@ class ValidatorTask extends AbstractTask
 
         if ($this->email !== ''
             && $linkAnalyzerResult->getTotalBrokenLinksCount() > 0
-            && (!$this->emailOnBrokenLinkOnly || $linkAnalyzerResult->isDifferentToLastResult())
+            && (!$this->emailOnBrokenLinkOnly
+                || $linkAnalyzerResult->isDifferentToLastResult()
+                || $this->hasLastExecutionFailed())
         ) {
             $successfullyExecuted = $this->reportEmail($linkAnalyzerResult);
         }
 
         return $successfullyExecuted;
+    }
+
+    /**
+     * @todo This is ok for now but in TYPO3 v16 this should be replaced with DI and a method in
+     *       SchedulerTaskRepository named "findRawRecordByUid"
+     */
+    protected function hasLastExecutionFailed(): bool
+    {
+        $taskRecord = BackendUtility::getRecord(
+            'tx_scheduler_task',
+            $this->getTaskUid(),
+            'lastexecution_failure',
+        );
+        return (string)($taskRecord['lastexecution_failure'] ?? '') !== '';
     }
 
     /**
