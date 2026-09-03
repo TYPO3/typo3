@@ -412,10 +412,6 @@ class Clipboard
                 $queryBuilder->expr()->neq(
                     $languageCapability->getLanguageField()->getName(),
                     $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
-                ),
-                $queryBuilder->expr()->gt(
-                    'pid',
-                    $queryBuilder->createNamedParameter(-1, Connection::PARAM_INT)
                 )
             )
             ->orderBy($languageCapability->getLanguageField()->getName());

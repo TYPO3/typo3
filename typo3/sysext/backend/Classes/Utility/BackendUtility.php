@@ -2062,7 +2062,7 @@ class BackendUtility
 
     /**
      * Returns the REAL pid of the record, if possible.
-     * If both $uid and $pid is strings, then pid=-1 is returned as an error indication.
+     * If the pid cannot be resolved, null is returned as an error indication.
      *
      * @param string $table Table name
      * @param int|string $uid Record uid

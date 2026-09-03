@@ -689,26 +689,20 @@ abstract class AbstractItemProvider
             }
         }
 
-        // rootLevel = -1 means that elements can be on the rootlevel OR on any page (pid!=-1)
-        // rootLevel = 0 means that elements are not allowed on root level
-        // rootLevel = 1 means that elements are only on the root level (pid=0)
+        // TYPE_BOTH means that elements can be on the root level OR on any page, so no restriction applies
+        // TYPE_ONLY_ON_PAGES means that elements are not allowed on root level
+        // TYPE_ONLY_ON_ROOTLEVEL means that elements are only allowed on the root level (pid=0)
         /** @var RootLevelCapability $rootLevelCapability */
         $rootLevelCapability = $schema->getCapability(TcaSchemaCapability::RestrictionRootLevel);
-        if ($rootLevelCapability->getRootLevelType() === -1) {
-            $queryBuilder->andWhere(
-                $queryBuilder->expr()->neq(
-                    $foreignTableName . '.pid',
-                    $wrapQueryBuilder->createNamedParameter(-1, Connection::PARAM_INT)
-                )
-            );
-        } elseif ($rootLevelCapability->getRootLevelType() === 1) {
+        $rootLevelType = $rootLevelCapability->getRootLevelType();
+        if ($rootLevelType === RootLevelCapability::TYPE_ONLY_ON_ROOTLEVEL) {
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->eq(
                     $foreignTableName . '.pid',
                     $wrapQueryBuilder->createNamedParameter(0, Connection::PARAM_INT)
                 )
             );
-        } else {
+        } elseif ($rootLevelType !== RootLevelCapability::TYPE_BOTH) {
             $queryBuilder->andWhere($backendUser->getPagePermsClause(Permission::PAGE_SHOW));
             if ($foreignTableName !== 'pages') {
                 $queryBuilder
