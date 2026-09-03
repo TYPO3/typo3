@@ -106,6 +106,34 @@ final class ImageProcessingInstructionsTest extends UnitTestCase
         ];
 
         $result = new ImageProcessingInstructions(
+            width: 1200,
+            height: 800,
+        );
+        yield 'minWidth must not shrink a source image that is already wider than minWidth' => [
+            1200,
+            800,
+            '',
+            '',
+            ['minW' => 30, 'maxW' => 1500],
+            true,
+            $result,
+        ];
+
+        $result = new ImageProcessingInstructions(
+            width: 800,
+            height: 1200,
+        );
+        yield 'minHeight must not shrink a source image that is already taller than minHeight' => [
+            800,
+            1200,
+            '',
+            '',
+            ['minH' => 30, 'maxH' => 1500],
+            true,
+            $result,
+        ];
+
+        $result = new ImageProcessingInstructions(
             width: 0,
             height: 0,
         );

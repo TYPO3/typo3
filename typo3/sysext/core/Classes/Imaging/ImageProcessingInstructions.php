@@ -192,13 +192,13 @@ readonly class ImageProcessingInstructions
         }
 
         if (!empty($options['minWidth'])) {
-            if ($width < $options['minWidth'] || ($width === 0 && $cropArea->getWidth() < $options['minWidth'])) {
+            if (($width > 0 && $width < $options['minWidth']) || ($width === 0 && $cropArea->getWidth() < $options['minWidth'])) {
                 $width = (int)$options['minWidth'];
                 $height = max(1, (int)round($cropArea->getHeight() * ($width / $cropArea->getWidth())));
             }
         }
         if (!empty($options['minHeight'])) {
-            if ($height < $options['minHeight'] || ($height === 0 && $cropArea->getHeight() < $options['minHeight'])) {
+            if (($height > 0 && $height < $options['minHeight']) || ($height === 0 && $cropArea->getHeight() < $options['minHeight'])) {
                 $height = (int)$options['minHeight'];
                 $width = max(1, (int)round($cropArea->getWidth() * ($height / $cropArea->getHeight())));
             }
