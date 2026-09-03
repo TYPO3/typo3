@@ -1190,44 +1190,46 @@ readonly class DefaultTcaSchema
                     );
                 }
 
-                $hasTablenamesFieldname = false;
-                if ( // Local side of MM with MM_oppositeUsage forces tablenames and fieldname
-                    !empty($fieldConfiguration['MM_oppositeUsage'])
+                // This local table can be the target of multiple foreign tables and table fields. The mm table
+                // thus needs two further fields to specify which foreign/table field combination links is used.
+                // Those are stored in two additional fields called "tablenames" and "fieldname". Both are
+                // forced by the local side of an MM with MM_oppositeUsage, and by an MM group that allows
+                // more than one table.
+                $hasTablenamesFieldname = !empty($fieldConfiguration['MM_oppositeUsage'])
                     || (
-                        // MM group with allowed more than one table forces tablenames and fieldname
                         $field->isType(TableColumnType::GROUP) && !empty($fieldConfiguration['allowed'])
                         && (
                             count(GeneralUtility::trimExplode(',', $fieldConfiguration['allowed'])) > 1
                             || $fieldConfiguration['allowed'] === '*'
                         )
-                    )
-                ) {
-                    $hasTablenamesFieldname = true;
-                    // This local table can be the target of multiple foreign tables and table fields. The mm table
-                    // thus needs two further fields to specify which foreign/table field combination links is used.
-                    // Those are stored in two additional fields called "tablenames" and "fieldname".
-                    if (!$this->isColumnDefinedForTable($tables, $mmTableName, 'tablenames')) {
-                        $tables[$mmTableName]->addColumn(
-                            $this->quote('tablenames'),
-                            Types::STRING,
-                            [
-                                'default' => '',
-                                'length' => 64,
-                                'notnull' => true,
-                            ]
-                        );
-                    }
-                    if (!$this->isColumnDefinedForTable($tables, $mmTableName, 'fieldname')) {
-                        $tables[$mmTableName]->addColumn(
-                            $this->quote('fieldname'),
-                            Types::STRING,
-                            [
-                                'default' => '',
-                                'length' => 64,
-                                'notnull' => true,
-                            ]
-                        );
-                    }
+                    );
+                // An MM group with "prepend_tname" stores the table name of each relation, even when only a
+                // single table is allowed. RelationHandler never writes "fieldname" in that case, so only
+                // "tablenames" is added and the primary key below stays untouched.
+                $hasTablenames = $hasTablenamesFieldname
+                    || ($field->isType(TableColumnType::GROUP) && !empty($fieldConfiguration['prepend_tname']));
+
+                if ($hasTablenames && !$this->isColumnDefinedForTable($tables, $mmTableName, 'tablenames')) {
+                    $tables[$mmTableName]->addColumn(
+                        $this->quote('tablenames'),
+                        Types::STRING,
+                        [
+                            'default' => '',
+                            'length' => 64,
+                            'notnull' => true,
+                        ]
+                    );
+                }
+                if ($hasTablenamesFieldname && !$this->isColumnDefinedForTable($tables, $mmTableName, 'fieldname')) {
+                    $tables[$mmTableName]->addColumn(
+                        $this->quote('fieldname'),
+                        Types::STRING,
+                        [
+                            'default' => '',
+                            'length' => 64,
+                            'notnull' => true,
+                        ]
+                    );
                 }
 
                 // Primary key handling: If there is a uid field, PK has been added above already.
