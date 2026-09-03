@@ -1498,6 +1498,82 @@ final class DefaultTcaSchemaTest extends UnitTestCase
     }
 
     #[Test]
+    public function enrichAddsMmWithTablenamesWithGroupAndPrependTname(): void
+    {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
+        $tca['aTable']['columns']['aField']['config'] = [
+            'type' => 'group',
+            'MM' => 'tx_myext_atable_afield_mm',
+            'allowed' => 'be_users',
+            'prepend_tname' => true,
+        ];
+        $subject = new DefaultTcaSchema($this->getPreparedTcaSchemaFactory($tca));
+        $result = $subject->enrich(['aTable' => $this->defaultTable]);
+        $expectedMmTable = new Table(
+            'tx_myext_atable_afield_mm',
+            [
+                new Column(
+                    '`uid_local`',
+                    new IntegerType(),
+                    [
+                        'default' => 0,
+                        'unsigned' => true,
+                    ]
+                ),
+                new Column(
+                    '`uid_foreign`',
+                    new IntegerType(),
+                    [
+                        'default' => 0,
+                        'unsigned' => true,
+                    ]
+                ),
+                new Column(
+                    '`sorting`',
+                    new IntegerType(),
+                    [
+                        'default' => 0,
+                        'unsigned' => true,
+                    ]
+                ),
+                new Column(
+                    '`sorting_foreign`',
+                    new IntegerType(),
+                    [
+                        'default' => 0,
+                        'unsigned' => true,
+                    ]
+                ),
+                new Column(
+                    '`tablenames`',
+                    new StringType(),
+                    [
+                        'default' => '',
+                        'length' => 64,
+                    ]
+                ),
+            ],
+            [
+                new Index(
+                    'uid_foreign',
+                    ['uid_foreign']
+                ),
+                new Index(
+                    'primary',
+                    ['uid_local', 'uid_foreign'],
+                    true,
+                    true
+                ),
+                new Index(
+                    'uid_local',
+                    ['uid_local']
+                ),
+            ]
+        );
+        self::assertEquals($expectedMmTable, $result['tx_myext_atable_afield_mm']);
+    }
+
+    #[Test]
     public function enrichAddsSlug(): void
     {
         $this->mockDefaultConnectionPlatformInConnectionPool();
