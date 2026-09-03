@@ -37,6 +37,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -85,7 +86,7 @@ readonly class ContentFetcher
             foreach ($records as $record) {
                 $recordLanguage = (int)$record['sys_language_uid'];
                 $recordColumnNumber = (int)$record['colPos'];
-                if ($recordLanguage === -1) {
+                if ($recordLanguage === LanguageMarker::ALL_LANGUAGES) {
                     // Record is set to "all languages", place it according to view mode.
                     if ($isLanguageComparisonMode) {
                         // Force the record to only be shown in default language in "Languages" view mode.
@@ -156,14 +157,14 @@ readonly class ContentFetcher
                 array_column(
                     // Eliminate records with "-1" as sys_language_uid since they can not be translated
                     array_filter($contentRecordsInDefaultLanguage, static function (array $record): bool {
-                        return (int)($record['sys_language_uid'] ?? 0) !== -1;
+                        return (int)($record['sys_language_uid'] ?? 0) !== LanguageMarker::ALL_LANGUAGES;
                     }),
                     'uid'
                 )
             );
 
             foreach ($contentElements as $contentElement) {
-                if ((int)$contentElement['sys_language_uid'] === -1) {
+                if ((int)$contentElement['sys_language_uid'] === LanguageMarker::ALL_LANGUAGES) {
                     continue;
                 }
                 if ((int)$contentElement['l18n_parent'] === 0) {

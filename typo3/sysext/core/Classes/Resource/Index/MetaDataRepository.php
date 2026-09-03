@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\Resource\Event\EnrichFileMetaDataEvent;
 use TYPO3\CMS\Core\Resource\Exception\InvalidUidException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileType;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -103,7 +104,7 @@ readonly class MetaDataRepository
             ->from('sys_file_metadata')
             ->where(
                 $queryBuilder->expr()->eq('file', $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)),
-                $queryBuilder->expr()->in('sys_language_uid', $queryBuilder->createNamedParameter([0, -1], Connection::PARAM_INT_ARRAY))
+                $queryBuilder->expr()->in('sys_language_uid', $queryBuilder->createNamedParameter([0, LanguageMarker::ALL_LANGUAGES], Connection::PARAM_INT_ARRAY))
             )
             // assure deterministic sorting across all databases
             ->orderBy('uid', 'ASC')

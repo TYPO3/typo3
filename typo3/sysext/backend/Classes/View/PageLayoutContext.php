@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Domain\Persistence\RecordIdentityMap;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
@@ -206,8 +207,8 @@ class PageLayoutContext
         if ($languageId === null) {
             return $this->siteLanguage;
         }
-        if ($languageId === -1) {
-            return $this->siteLanguages[-1];
+        if ($languageId === LanguageMarker::ALL_LANGUAGES) {
+            return $this->siteLanguages[LanguageMarker::ALL_LANGUAGES];
         }
 
         return $this->pageContext->site->getLanguageById($languageId);

@@ -70,6 +70,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\Field\DateTimeFieldType;
 use TYPO3\CMS\Core\Schema\Field\NumberFieldType;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Schema\SearchableSchemaFieldsCollector;
 use TYPO3\CMS\Core\Schema\TcaSchema;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
@@ -830,7 +831,7 @@ class DatabaseRecordList
                     // It should only be possible to localize a record off default (uid 0)
                     $filterLanguages = $this->getSelectedLanguageIds();
                     $rowLanguage = ($languageFieldName !== '' ? ($record->getRawRecord()->toArray()[$languageFieldName] ?? false) : false);
-                    if ($l10nEnabled && $rowLanguage !== -1) {
+                    if ($l10nEnabled && $rowLanguage !== LanguageMarker::ALL_LANGUAGES) {
                         $translationsRaw = $this->translateTools->translationInfo($table, $record->getUid(), 0, $record->getRawRecord()->toArray(), '*');
                         if (is_array($translationsRaw)) {
                             $translationEnabled = true;
@@ -2593,8 +2594,7 @@ class DatabaseRecordList
             // Restrict to filtered language(s)
             $filterLanguages = $this->getSelectedLanguageIds();
             if (!empty($filterLanguages)) {
-                // Build list of allowed languages: always include "all languages" marker (-1) + selected languages
-                $allowedLanguages = [-1, ...$filterLanguages];
+                $allowedLanguages = [LanguageMarker::ALL_LANGUAGES, ...$filterLanguages];
 
                 // Filter to only show records in the selected languages
                 $queryBuilder->andWhere(

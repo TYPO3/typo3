@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\QueryRestrictionInterface;
 use TYPO3\CMS\Core\Schema\Field\FieldTypeInterface;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -249,7 +250,7 @@ class EditableRestriction implements QueryRestrictionInterface
                     ),
                     $expressionBuilder->eq(
                         'tx_linkvalidator_link.language',
-                        $this->queryBuilder->quote('-1')
+                        $this->queryBuilder->quote((string)LanguageMarker::ALL_LANGUAGES)
                     )
                 );
             }

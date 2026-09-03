@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -59,7 +60,7 @@ class CategoryBasedFileCollection extends AbstractFileCollection
     {
         $context = GeneralUtility::makeInstance(Context::class);
         $languageAspect = $context->getAspect('language');
-        $languageIds = array_unique([-1, 0, $languageAspect->getContentId()]);
+        $languageIds = array_unique([LanguageMarker::ALL_LANGUAGES, 0, $languageAspect->getContentId()]);
 
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_category');
         $queryBuilder->getRestrictions()->removeAll();

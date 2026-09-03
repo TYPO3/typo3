@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\DataHandling\TableColumnType;
 use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Schema\VisibleSchemaFieldsCollector;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -226,7 +227,7 @@ class LinkAnalyzer
                 if ($languageFieldName && isset($entryValue['row'][$languageFieldName])) {
                     $record['language'] = $entryValue['row'][$languageFieldName];
                 } else {
-                    $record['language'] = -1;
+                    $record['language'] = LanguageMarker::ALL_LANGUAGES;
                 }
                 if (!empty($entryValue['pageAndAnchor'] ?? '')) {
                     // Page with anchor, e.g. 18#1580

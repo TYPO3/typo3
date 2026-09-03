@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Configuration\Tca;
 
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
@@ -89,7 +90,7 @@ readonly class TcaPreparation
                 $fieldConfig['config']['foreign_table'] = 'sys_category';
                 // Initialize default column configuration and merge it with already defined
                 $fieldConfig['config']['size'] ??= 20;
-                $fieldConfig['config']['foreign_table_where'] ??= ' AND {#sys_category}.{#sys_language_uid} IN (-1, 0)';
+                $fieldConfig['config']['foreign_table_where'] ??= ' AND {#sys_category}.{#sys_language_uid} IN (' . LanguageMarker::ALL_LANGUAGES . ', 0)';
                 if (empty($fieldConfig['config']['relationship'])) {
                     // In case no relationship is given, set "manyToMany" for non flex form, but "oneToMany" with flex form.
                     $fieldConfig['config']['relationship'] = $isFlexForm ? 'oneToMany' : 'manyToMany';

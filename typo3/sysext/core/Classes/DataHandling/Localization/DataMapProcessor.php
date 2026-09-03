@@ -35,6 +35,7 @@ use TYPO3\CMS\Core\DataHandling\TableColumnType;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Schema\TcaSchema;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\SiteFinder;
@@ -262,7 +263,7 @@ class DataMapProcessor
                 $item = DataMapItem::build($tableName, $id, $values, $recordValues, $fieldNames);
 
                 // elements using "all language" cannot be localized
-                if ($item->getLanguage() === -1) {
+                if ($item->getLanguage() === LanguageMarker::ALL_LANGUAGES) {
                     unset($item);
                     continue;
                 }

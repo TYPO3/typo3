@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Form\FormDataProvider;
 
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
 
@@ -83,7 +84,7 @@ class TcaLanguage extends AbstractItemProvider implements FormDataProviderInterf
 
                 // Add system languages available for the current site
                 foreach ($result['systemLanguageRows'] as $languageId => $language) {
-                    if ($languageId === -1) {
+                    if ($languageId === LanguageMarker::ALL_LANGUAGES) {
                         continue;
                     }
                     if ($isLanguageField && $table === 'pages') {
@@ -131,7 +132,7 @@ class TcaLanguage extends AbstractItemProvider implements FormDataProviderInterf
             }
 
             // Add the "special" group for "ALL" and / or user defined items
-            if (($table !== 'pages' && isset($result['systemLanguageRows'][-1])) || $userDefinedItems !== []) {
+            if (($table !== 'pages' && isset($result['systemLanguageRows'][LanguageMarker::ALL_LANGUAGES])) || $userDefinedItems !== []) {
                 $fieldConfig['config']['items'][] = [
                     'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.specialLanguages',
                     'value' => '--div--',
@@ -139,10 +140,10 @@ class TcaLanguage extends AbstractItemProvider implements FormDataProviderInterf
             }
             // Add "-1" for all TCA records except pages in case the user is allowed to.
             // The item is added to the "special" group, in order to not provide it as default by accident.
-            if ($table !== 'pages' && isset($result['systemLanguageRows'][-1])) {
+            if ($table !== 'pages' && isset($result['systemLanguageRows'][LanguageMarker::ALL_LANGUAGES])) {
                 $fieldConfig['config']['items'][] = [
                     'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages',
-                    'value' => -1,
+                    'value' => LanguageMarker::ALL_LANGUAGES,
                     'icon' => 'flags-multiple',
                 ];
             }

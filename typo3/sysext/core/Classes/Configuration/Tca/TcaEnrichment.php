@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Configuration\Tca;
 
+use TYPO3\CMS\Core\Schema\LanguageMarker;
+
 /**
  * Automatically "enrich" TCA. This mainly adds "columns" definitions
  * based on "ctrl" settings. This is *not* for migration or preparation.
@@ -202,7 +204,7 @@ final readonly class TcaEnrichment
 
     /**
      * When 'languageField' is set, 'transOrigPointerField' must be set as well.
-     * We silently add 'transOrigPointerField' if that iss not the case.
+     * We silently add 'transOrigPointerField' if that is not the case.
      *
      * @todo: This obviously needs a consolidation in ctrl. We should have a single, probably
      *        boolean ctrl toggle to make a table 'localization' aware, with core then handling
@@ -238,7 +240,7 @@ final readonly class TcaEnrichment
                             ],
                         ],
                         'foreign_table' => $table,
-                        'foreign_table_where' => 'AND {#' . $table . '}.{#pid}=###CURRENT_PID### AND {#' . $table . '}.{#' . $languageFieldName . '} IN (-1,0)',
+                        'foreign_table_where' => 'AND {#' . $table . '}.{#pid}=###CURRENT_PID### AND {#' . $table . '}.{#' . $languageFieldName . '} IN (' . LanguageMarker::ALL_LANGUAGES . ',0)',
                         'default' => 0,
                     ],
                 ];

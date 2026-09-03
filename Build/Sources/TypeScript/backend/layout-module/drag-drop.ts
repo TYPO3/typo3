@@ -184,6 +184,7 @@ class DragDrop {
 
       // the dragged elements language uid
       let language = contentElementDragDropData.language;
+      // Keep in sync with LanguageMarker::ALL_LANGUAGES on the PHP side.
       if (language !== -1) {
         // new elements language must be the same as the column the element is dropped in if element is not -1
         language = parseInt((dropContainer.closest('[data-language-uid]') as HTMLElement).dataset.languageUid, 10);

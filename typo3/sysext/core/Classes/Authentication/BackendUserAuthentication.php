@@ -45,6 +45,7 @@ use TYPO3\CMS\Core\Resource\Filter\FileNameFilter;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Schema\TcaSchema;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Security\PermissionSet\PrincipalRole;
@@ -648,7 +649,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             $langValue = (int)$langValue;
         }
         // Language must either be explicitly allowed OR the lang Value be "-1" (all languages)
-        if ($langValue !== -1 && !$this->check('allowed_languages', (string)$langValue)) {
+        if ($langValue !== LanguageMarker::ALL_LANGUAGES && !$this->check('allowed_languages', (string)$langValue)) {
             return false;
         }
         return true;

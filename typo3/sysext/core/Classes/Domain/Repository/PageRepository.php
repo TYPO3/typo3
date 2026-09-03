@@ -53,6 +53,7 @@ use TYPO3\CMS\Core\Exception\Page\CircularPageReferenceChainException;
 use TYPO3\CMS\Core\Exception\Page\PageReferenceResolvingReachedIterationLimitException;
 use TYPO3\CMS\Core\LinkHandling\PageTypeLinkResolver;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\Bitmask\PageTranslationVisibility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -655,7 +656,7 @@ class PageRepository implements LoggerAwareInterface
         $incomingLanguageId = (int)($row[$languageField] ?? 0);
 
         // Return record for ALL languages untouched
-        if ($incomingLanguageId === -1) {
+        if ($incomingLanguageId === LanguageMarker::ALL_LANGUAGES) {
             return $row;
         }
 

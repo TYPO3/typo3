@@ -43,6 +43,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -268,7 +269,7 @@ readonly class LocalizationController
         $availableLanguages = [];
         foreach ($systemLanguages as $languageUid => $language) {
             // Exclude "All languages" (-1) and default language (0) for target language selection
-            if ($languageUid !== -1 && $languageUid !== 0) {
+            if ($languageUid !== LanguageMarker::ALL_LANGUAGES && $languageUid !== 0) {
                 $availableLanguages[] = $language;
             }
         }
@@ -341,7 +342,7 @@ readonly class LocalizationController
         // Language "All" should not appear as a source of translations (see bug 92757) and keys should be sequential
         $availableLanguages = array_values(
             array_filter($availableLanguages, static function (array $languageRecord): bool {
-                return (int)$languageRecord['uid'] !== -1;
+                return (int)$languageRecord['uid'] !== LanguageMarker::ALL_LANGUAGES;
             })
         );
 
