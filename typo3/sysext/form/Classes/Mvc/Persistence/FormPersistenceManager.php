@@ -22,7 +22,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\DependencyInjection\Attribute\AsAlias;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
-use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Form\Domain\DTO\FormConfiguration\PersistenceManagerConfiguration;
 use TYPO3\CMS\Form\Domain\DTO\FormData;
@@ -56,6 +55,7 @@ readonly class FormPersistenceManager implements FormPersistenceManagerInterface
         private EventDispatcherInterface $eventDispatcher,
         private TypoScriptService $typoScriptService,
         private DatabaseService $databaseService,
+        private FormDefinitionOverrideProcessor $formDefinitionOverrideProcessor,
     ) {}
 
     /**
@@ -81,7 +81,7 @@ readonly class FormPersistenceManager implements FormPersistenceManagerInterface
                 $typoScriptSettings['formDefinitionOverrides'][$formDefinition['identifier']],
                 $request
             );
-            ArrayUtility::mergeRecursiveWithOverrule($formDefinition, $formDefinitionOverrides);
+            $formDefinition = $this->formDefinitionOverrideProcessor->process($formDefinition, $formDefinitionOverrides);
         }
 
         return $formDefinition;

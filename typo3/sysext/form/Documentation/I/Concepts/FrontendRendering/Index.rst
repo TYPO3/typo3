@@ -935,3 +935,31 @@ form elements using the above-mentioned concept of :ref:`hooks<concepts-frontend
         }
       }
     }
+
+Recipient options
+~~~~~~~~~~~~~~~~~
+
+The options :yaml:`recipients`, :yaml:`carbonCopyRecipients`,
+:yaml:`blindCarbonCopyRecipients` and :yaml:`replyToRecipients` must be configured
+as structured lists. The numeric key is only a stable list identifier. The email
+address is a value and must not be used as a TypoScript key:
+
+..  code-block:: typoscript
+
+    plugin.tx_form.settings.formDefinitionOverrides.contactForm.finishers {
+      0.options.recipients {
+        10 {
+          email = test@test.de
+          name = Test recipient
+        }
+        20 {
+          email.data = TSFE : fe_user|user|email
+          name = Dynamic recipient
+        }
+      }
+    }
+
+When one of these options is overridden, the complete existing recipient list is
+replaced. This prevents recipients from the form definition and the TypoScript
+override from being merged accidentally. Existing configurations using an email
+address as the TypoScript key are no longer supported.
