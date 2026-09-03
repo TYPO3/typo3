@@ -331,7 +331,9 @@ readonly class WorkspaceService
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable($table);
         $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
-        $fields = ['A.uid', 'A.pid', 'A.t3ver_oid', 'A.t3ver_stage', 'B.pid', 'B.pid AS wspid', 'B.pid AS livepid'];
+        // Move pointers are excluded below, so the version (A) always lives on the pid of its live record (B),
+        // which is why "wspid" and "livepid" are both taken from B.
+        $fields = ['A.uid', 'A.t3ver_oid', 'A.t3ver_stage', 'B.pid', 'B.pid AS wspid', 'B.pid AS livepid'];
         if ($schema->isLanguageAware()) {
             $fields[] = 'A.' . $schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName();
             $fields[] = 'A.' . $schema->getCapability(TcaSchemaCapability::Language)->getTranslationOriginPointerField()->getName();

@@ -2686,14 +2686,10 @@ class DataHandler
                     )
                 );
         }
+        // A pid of 0 means the value has to be unique across all pages, no pid constraint is added then.
         if ($pid !== 0) {
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->eq('pid', $queryBuilder->createPositionalParameter($pid, Connection::PARAM_INT))
-            );
-        } else {
-            // pid>=0 for versioning
-            $queryBuilder->andWhere(
-                $queryBuilder->expr()->gte('pid', $queryBuilder->createPositionalParameter(0, Connection::PARAM_INT))
             );
         }
         return $queryBuilder;
@@ -4331,7 +4327,7 @@ class DataHandler
             //        an existing workspace overlay to a different page, when the live record is moved. There are various
             //        edge cases we need to think about when doing this: What should happen if a live record is just resorted
             //        on the same page? What if a live record is moved that has a workspace-moved overlay already? And what
-            //        if that move-overlay is a combination of "has first been changed, then turned into a move placeholder"?
+            //        if that move-overlay is a combination of "has first been changed, then turned into a move pointer"?
             $this->log($table, $uid, SystemLogDatabaseAction::MOVE, null, SystemLogErrorClassification::SYSTEM_ERROR, 'Attempt to move workspace record {table}:{uid} and user is not in this workspace', null, ['table' => $table, 'uid' => $uid], $plainRecord['pid']);
             return;
         }
@@ -4362,7 +4358,7 @@ class DataHandler
                 }
             } else {
                 // We are in workspace requesting to move a live record that has no overlay yet.
-                // This will create "move placeholder" records down below.
+                // This will create "move pointer" records down below.
                 $liveRecord = $plainRecord;
             }
             // Do not work on $potentialWorkspaceOverlay anymore
@@ -4393,7 +4389,7 @@ class DataHandler
         // At this point we have:
         // * $liveRecord set and $workspaceRecord is null: We're moving a live record.
         // * $liveRecord null and $workspaceRecord is set: We're moving a "new placeholder", turning it into
-        //   a "move placeholder" if all goes well. The table is workspace aware.
+        //   a "move pointer" if all goes well. The table is workspace aware.
         // * $liveRecord set and $workspaceRecord set: We're moving an existing workspace overlay. The table
         //   is workspace aware.
 
@@ -4401,7 +4397,7 @@ class DataHandler
         if ($isMovingInWorkspaces && $workspaceRecord === null && $isTableWorkspaceAware) {
             // Create version of record first, if it does not exist
             // @todo: This strategy is odd. A "dummy" record is created in correct workspace, but it is a
-            //        DEFAULT_STATE one, not a MOVE_POINTER. This is then later updated to a move placeholder.
+            //        DEFAULT_STATE one, not a MOVE_POINTER. This is then later updated to a move pointer.
             //        This is complex and risky, we can for instance end up with a dangling record when a
             //        permission check fails down below. Next issue is that versionizeRecord() does
             //        a lot of stuff that we checked above already, but we can't change versionizeRecord()
@@ -4528,7 +4524,7 @@ class DataHandler
             // Moving a not workspace aware record while in workspaces, but user, table TCA or sys_workspace record do not allow live editing this table.
             // Can happen when moving a workspace aware parent record with children not being workspace aware.
             // @todo: See DataScenarios/IrreForeignFieldNonWs/WorkspacesModify/ActionTest.php for a rough overview on what is broken in this case.
-            // @todo: This means the parent record *is* moved (gets a move placeholder), while children are not.
+            // @todo: This means the parent record *is* moved (gets a move pointer), while children are not.
             //        This is fine when only resorting parent on the same page. Its problematic when parent is moved
             //        to a different page since the child stays on the old page. It is also unclear what happens when
             //        the parent is later published (should children *then* be moved to recreate integrity?). At
@@ -4656,10 +4652,10 @@ class DataHandler
             // Late changes after moveRecord_raw() moved stuff in workspaces.
             // This is a "changed", "deleted" or "already moved" record.
             if (VersionState::tryFrom($workspaceRecord['t3ver_state']) !== VersionState::DELETE_PLACEHOLDER) {
-                // Update the state of this record to a move placeholder. This is allowed if the
+                // Update the state of this record to a move pointer. This is allowed if the
                 // record is a 'changed' (t3ver_state=0) record: Changing a record and moving it
                 // around later, should switch it from 'changed' to 'moved'. Deleted placeholders
-                // however are an 'end-state', they should not be switched to a move placeholder.
+                // however are an 'end-state', they should not be switched to a move pointer.
                 // Scenario: For a live page that has a localization, the localization is first
                 // marked as to-delete in workspace, creating a delete placeholder for that
                 // localization. Later, the page is moved around, moving the localization along
@@ -5329,7 +5325,7 @@ class DataHandler
         $copyMappingArray = $this->copyMappingArray;
         $this->versionizeRecord($table, $uid, 'DELETED!', true);
         // Determine newly created versions to delete localization overlays:
-        // Remove placeholders are copied and modified, thus they appear in the copyMappingArray
+        // Delete placeholders are copied and modified, thus they appear in the copyMappingArray
         $versionedElements = ArrayUtility::arrayDiffKeyRecursive($this->copyMappingArray, $copyMappingArray);
         foreach ($versionedElements as $versionedTableName => $versionedOriginalIds) {
             // Delete localization overlays
@@ -9411,7 +9407,7 @@ class DataHandler
      *
      * @param string $table Table of the record
      * @param int $id UID of record
-     * @param int|null $recpid PID of record
+     * @param int|null $recpid PID of record, not evaluated anymore since versions live on the pid of their live record
      * @return bool TRUE if ok.
      */
     protected function workspaceAllowAutoCreation(string $table, $id, $recpid): bool
@@ -9422,9 +9418,6 @@ class DataHandler
         }
         // No versioning support for this table, so no version can be created
         if (!$this->tcaSchemaFactory->get($table)->isWorkspaceAware()) {
-            return false;
-        }
-        if ($recpid < 0) {
             return false;
         }
         // There must be no existing version of this record in workspace

@@ -134,7 +134,7 @@ If you want to get more detailed information, use the --verbose option.')
         }
 
         // Display soft references to offline version records
-        // These records are offline versions having a pid=-1 and references should never occur directly to their uids.
+        // These records are offline versions (t3ver_oid>0) and references should never occur directly to their uids.
         if ($io->isVerbose() && count($results['offlineVersionRecordsInSoftReferenceRelations'])) {
             $io->note([
                 'Found ' . count($results['offlineVersionRecordsInSoftReferenceRelations']) . ' soft-references pointing to offline versions, which should never be referenced directly.',
@@ -311,7 +311,7 @@ If you want to get more detailed information, use the --verbose option.')
             // Non-existing records to which there are references (softref)
             'nonExistingRecordsInSoftReferenceRelations' => ArrayUtility::sortByKeyRecursive($nonExistingRecordsInSoftReferenceRelations),
             // Offline version records (managed)
-            // These records are offline versions having a pid=-1 and references should never occur directly to their uids.
+            // These records are offline versions (t3ver_oid>0) and references should never occur directly to their uids.
             'offlineVersionRecords' => ArrayUtility::sortByKeyRecursive($offlineVersionRecords),
             // Offline version records (softref)
             'offlineVersionRecordsInSoftReferenceRelations' => ArrayUtility::sortByKeyRecursive($offlineVersionRecordsInSoftReferenceRelations),
