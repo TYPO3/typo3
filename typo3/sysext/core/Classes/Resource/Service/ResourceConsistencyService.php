@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Resource\Service;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Localization\LabelBag;
@@ -39,6 +40,7 @@ use TYPO3\CMS\Core\Validation\ResultMessage;
  * @phpstan-type ExceptionItemCollection array<string, ExceptionItem>
  * @internal
  */
+#[Autoconfigure(public: true)]
 final class ResourceConsistencyService
 {
     /**
