@@ -80,6 +80,39 @@ final class GridDataServiceTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function getRowDetailsReturnsEmptyStageInformationForAStageThatNoLongerExists(): void
+    {
+        $workspace = $this->get(WorkspaceRepository::class)->findByUid($this->backendUser->workspace);
+        $stages = $this->get(WorkspaceStageRepository::class)->findAllStagesByWorkspace(
+            $this->backendUser,
+            $workspace
+        );
+
+        $instruction = new \stdClass();
+        $instruction->table = 'tt_content';
+        $instruction->t3ver_oid = 1;
+        $instruction->uid = 101;
+        $instruction->stage = 5;
+
+        $result = $this->get(GridDataService::class)->getRowDetails($stages, $instruction);
+
+        self::assertSame('', $result['data'][0]['label_Stage']);
+        self::assertSame(0, $result['data'][0]['stage_position']);
+    }
+
+    #[Test]
+    public function generateGridListFromVersionsRendersRecordsInAStageThatNoLongerExists(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/GridData/tt_content-removed-stage.csv');
+
+        $result = $this->generateGridList();
+
+        $rows = array_column($result['data'], null, 'id');
+        self::assertArrayHasKey('tt_content:103', $rows);
+        self::assertSame('', $rows['tt_content:103']['label_Stage']);
+    }
+
+    #[Test]
     public function generateGridListFromVersionsReturnsNoAdditionalColumnsWithoutListener(): void
     {
         $result = $this->generateGridList();
@@ -154,6 +187,66 @@ final class GridDataServiceTest extends FunctionalTestCase
         self::assertSame('pages:102', $firstPage['data'][0]['id']);
         self::assertArrayNotHasKey('additional', $firstPage['data'][0]);
         self::assertSame(['scheduled' => 'Scheduled'], $firstPage['additionalColumns']);
+    }
+
+    #[Test]
+    public function generateGridListFromVersionsAddsTheActionsOfTheModuleToEveryRow(): void
+    {
+        $result = $this->generateGridList();
+
+        $rows = array_column($result['data'], null, 'id');
+        self::assertSame(
+            ['preview', 'qrcode', 'open', 'version', 'expand', 'changes', 'publish', 'remove'],
+            array_keys($rows['tt_content:101']['actions'])
+        );
+        self::assertSame(['group' => 'element', 'enabled' => true], $rows['tt_content:101']['actions']['open']);
+        // The record has no sub items and is not part of a collection
+        self::assertFalse($rows['tt_content:101']['actions']['expand']['enabled']);
+    }
+
+    #[Test]
+    public function actionsCanBeDisabledHiddenAndAddedByListeners(): void
+    {
+        $this->registerDataListener(static function (array $row): array {
+            return [
+                'publish' => ['enabled' => false],
+                'remove' => ['visible' => false],
+                'schedule' => ['icon' => 'actions-clock', 'title' => 'Schedule publication'],
+            ];
+        });
+
+        $result = $this->generateGridList();
+
+        $actions = array_column($result['data'], null, 'id')['tt_content:101']['actions'];
+        // Turning an action off keeps everything else the module knows about it
+        self::assertSame(['group' => 'version', 'enabled' => false], $actions['publish']);
+        self::assertSame(['group' => 'version', 'enabled' => true, 'visible' => false], $actions['remove']);
+        self::assertSame(
+            ['group' => 'custom', 'icon' => 'actions-clock', 'title' => 'Schedule publication'],
+            $actions['schedule']
+        );
+    }
+
+    /**
+     * Registers a listener that merges the given actions into every row, the way a third party
+     * extension would do it.
+     */
+    private function registerDataListener(callable $actionsForRow): void
+    {
+        /** @var Container $container */
+        $container = $this->get('service_container');
+        $container->set(
+            'workspace-actions-listener',
+            static function (AfterDataGeneratedForWorkspaceEvent $event) use ($actionsForRow): void {
+                $data = $event->getData();
+                foreach ($data as $identifier => $row) {
+                    $data[$identifier]['actions'] = $actionsForRow($row);
+                }
+                $event->setData($data);
+            }
+        );
+        $container->get(ListenerProvider::class)
+            ->addListener(AfterDataGeneratedForWorkspaceEvent::class, 'workspace-actions-listener');
     }
 
     /**
