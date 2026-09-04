@@ -34,6 +34,10 @@ use TYPO3\CMS\Reactions\Model\ReactionInstruction;
  */
 class ReactionRepository
 {
+    public function __construct(
+        private readonly ConnectionPool $connectionPool,
+    ) {}
+
     public function findAll(): array
     {
         return $this->map($this->getQueryBuilder()
@@ -139,9 +143,7 @@ class ReactionRepository
 
     protected function getQueryBuilder(bool $addDefaultOrderByClause = true): QueryBuilder
     {
-        // @todo ConnectionPool could be injected
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('sys_reaction');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_reaction');
         $queryBuilder->getRestrictions()
             ->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class));

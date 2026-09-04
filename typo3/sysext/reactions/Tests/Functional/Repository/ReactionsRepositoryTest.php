@@ -62,7 +62,7 @@ final class ReactionsRepositoryTest extends FunctionalTestCase
     public function findByDemandWorks(ReactionDemand $demand, int $resultCount): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/ReactionsRepositoryTest_reactions.csv');
-        $results = new ReactionRepository()->findByDemand($demand);
+        $results = $this->get(ReactionRepository::class)->findByDemand($demand);
         self::assertCount($resultCount, $results);
     }
 
@@ -70,7 +70,7 @@ final class ReactionsRepositoryTest extends FunctionalTestCase
     public function findAllWorks(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/ReactionsRepositoryTest_reactions.csv');
-        $results = new ReactionRepository()->findAll();
+        $results = $this->get(ReactionRepository::class)->findAll();
         self::assertCount(4, $results);
     }
 
@@ -78,7 +78,7 @@ final class ReactionsRepositoryTest extends FunctionalTestCase
     public function getReactionRecordsWithoutDemand(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/ReactionsRepositoryTest_reactions.csv');
-        $reactions = new ReactionRepository()->getReactionRecords();
+        $reactions = $this->get(ReactionRepository::class)->getReactionRecords();
         self::assertCount(4, $reactions);
     }
 }
