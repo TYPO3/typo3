@@ -613,6 +613,71 @@ final class LocalizationControllerTest extends FunctionalTestCase
         self::assertEquals([1], array_column($result, 'uid'), 'Only Dansk is allowed for this editor');
     }
 
+    public static function inaccessiblePageDataProvider(): \Generator
+    {
+        yield 'getRecord for admin' => ['getRecord', 1, 200];
+        yield 'getRecord for editor' => ['getRecord', 11, 403];
+        yield 'getHandlers for admin' => ['getHandlers', 1, 200];
+        yield 'getHandlers for editor' => ['getHandlers', 11, 403];
+        yield 'getContent for admin' => ['getContent', 1, 200];
+        yield 'getContent for editor' => ['getContent', 11, 403];
+    }
+
+    #[DataProvider('inaccessiblePageDataProvider')]
+    #[Test]
+    public function wizardEndpointsCheckPageAccess(string $endpoint, int $backendUserId, int $expectedStatusCode): void
+    {
+        $this->setUpInaccessiblePageScenario($backendUserId);
+        $request = new ServerRequest();
+
+        $response = match ($endpoint) {
+            'getRecord' => $this->get(LocalizationController::class)->getRecord(
+                $request->withQueryParams(['recordType' => 'tt_content', 'recordUid' => 10])
+            ),
+            'getHandlers' => $this->get(LocalizationController::class)->getHandlers(
+                $request->withQueryParams([
+                    'recordType' => 'tt_content',
+                    'recordUid' => 10,
+                    'sourceLanguage' => 0,
+                    'targetLanguage' => self::LANGUAGE_PRESETS['DA']['id'],
+                    'mode' => LocalizationMode::TRANSLATE->value,
+                ])
+            ),
+            'getContent' => $this->get(LocalizationController::class)->getContent(
+                $request->withQueryParams([
+                    'pageUid' => 10,
+                    'sourceLanguage' => 0,
+                    'targetLanguage' => self::LANGUAGE_PRESETS['DA']['id'],
+                ])
+            ),
+            default => self::fail('Unknown endpoint ' . $endpoint),
+        };
+
+        self::assertEquals($expectedStatusCode, $response->getStatusCode());
+    }
+
+    #[Test]
+    public function getRecordAllowsRootLevelRecordForEditorWithTableAccess(): void
+    {
+        $request = $this->setUpRootLevelScenario(10);
+
+        $response = $this->get(LocalizationController::class)->getRecord($request);
+
+        self::assertEquals(200, $response->getStatusCode());
+    }
+
+    /**
+     * Imports a page no editor has access to, carrying one tt_content record,
+     * and initializes the given backend user.
+     */
+    private function setUpInaccessiblePageScenario(int $backendUserId): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/be_users_editors.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/pages_restricted.csv');
+        $backendUser = $this->setUpBackendUser($backendUserId);
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
+    }
+
     /**
      * Imports a sys_file_metadata record on the root level, initializes the given
      * backend user and returns the request for the wizard endpoints.
