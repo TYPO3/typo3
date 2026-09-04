@@ -264,6 +264,94 @@ final class DatabaseRecordListTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function searchResultShowsTranslationsOfMatchingRecords(): void
+    {
+        $request = new ServerRequest('http://localhost/')
+            ->withAttribute('route', (new Route('/typo3/module/content/records', ['_identifier' => 'records'])))
+            ->withAttribute('site', $this->get(SiteFinder::class)->getSiteByIdentifier('test'));
+
+        $pageContextFactory = $this->get(PageContextFactory::class);
+        $pageContext = $pageContextFactory->createWithLanguages($request, 1100, [0, 1, 2, 3], $this->backendUser);
+        $request = $request->withAttribute('pageContext', $pageContext);
+
+        $recordList = $this->get(DatabaseRecordList::class);
+        $recordList->setRequest($request);
+        $recordList->start(1100, 'tt_content', 0, 'Content Element #1');
+
+        $listHtml = $recordList->generateList();
+
+        self::assertStringContainsString('EN: Content Element #1', $listHtml);
+        self::assertStringContainsString('FR: Content Element #1', $listHtml);
+        self::assertStringContainsString('FR-CA: Content Element #1', $listHtml);
+    }
+
+    #[Test]
+    public function searchResultNestsTranslationsBelowTheirParentRecord(): void
+    {
+        $request = new ServerRequest('http://localhost/')
+            ->withAttribute('route', (new Route('/typo3/module/content/records', ['_identifier' => 'records'])))
+            ->withAttribute('site', $this->get(SiteFinder::class)->getSiteByIdentifier('test'));
+
+        $pageContextFactory = $this->get(PageContextFactory::class);
+        $pageContext = $pageContextFactory->createWithLanguages($request, 1100, [0, 1, 2, 3], $this->backendUser);
+        $request = $request->withAttribute('pageContext', $pageContext);
+
+        $recordList = $this->get(DatabaseRecordList::class);
+        $recordList->setRequest($request);
+        $recordList->start(1100, 'tt_content', 0, 'Content Element');
+
+        $listHtml = $recordList->generateList();
+        $listHtml = preg_replace('/(<svg.*<\/svg>)/Uui', '', $listHtml);
+
+        libxml_use_internal_errors(true);
+        $dom = new \DOMDocument();
+        $dom->loadHTML($listHtml);
+        $xpath = new \DOMXPath($dom);
+        $rows = $xpath->query('//tr[@data-table="tt_content"]');
+        $titles = [];
+        foreach ($rows as $row) {
+            $titleCell = $xpath->query('.//td[contains(@class, "col-title")]', $row)->item(0);
+            self::assertNotNull($titleCell);
+            $titles[] = trim(preg_replace('/\s+/', ' ', $titleCell->textContent));
+        }
+
+        self::assertSame(
+            [
+                'EN: Content Element #1',
+                'FR: Content Element #1',
+                'FR-CA: Content Element #1',
+                'EN: Content Element #2',
+            ],
+            $titles
+        );
+    }
+
+    #[Test]
+    public function searchResultFindsRecordsMatchingOnlyInATranslation(): void
+    {
+        $request = new ServerRequest('http://localhost/')
+            ->withAttribute('route', (new Route('/typo3/module/content/records', ['_identifier' => 'records'])))
+            ->withAttribute('site', $this->get(SiteFinder::class)->getSiteByIdentifier('test'));
+
+        $pageContextFactory = $this->get(PageContextFactory::class);
+        $pageContext = $pageContextFactory->createWithLanguages($request, 1100, [0, 1, 2, 3], $this->backendUser);
+        $request = $request->withAttribute('pageContext', $pageContext);
+
+        $recordList = $this->get(DatabaseRecordList::class);
+        $recordList->setRequest($request);
+        // "FR-CA:" only occurs in the French (CA) translation, never in the default language record
+        $recordList->start(1100, 'tt_content', 0, 'FR-CA:');
+
+        $listHtml = $recordList->generateList();
+
+        self::assertStringContainsString('FR-CA: Content Element #1', $listHtml);
+        // The default language parent is shown as context for the matching translation
+        self::assertStringContainsString('EN: Content Element #1', $listHtml);
+        // Records that neither match themselves nor via a translation are not listed
+        self::assertStringNotContainsString('EN: Content Element #2', $listHtml);
+    }
+
+    #[Test]
     public function localizationPanelDoesNotOfferLanguageWithoutPageTranslation(): void
     {
         // Create PageContext with only default language [0] for page 1200

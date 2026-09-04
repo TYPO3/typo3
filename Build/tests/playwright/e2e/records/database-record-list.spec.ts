@@ -46,18 +46,61 @@ test.describe('Database record list filtering', () => {
     // module which would dismiss a previously-toggled search bar.
     await selectLanguageInDropdown(backend, 'styleguide demo language danish');
 
-    await contentFrame.locator(`${docHeaderButtons} button.dropdown-toggle`).first().click();
-    await contentFrame.locator(`${docHeaderButtons} .dropdown-menu [title="Show search"]`).click({ force: true });
-
-    await contentFrame.locator('[name="searchTerm"]').fill('2');
-    const moduleResponse = backend.waitForModuleResponse();
-    await contentFrame.locator('.recordsearchbox-container button[name="search"]').click();
-    await moduleResponse;
+    await search(backend, '2');
 
     await expect(contentFrame.locator('.module-docheader .icon-flags-dk')).toBeAttached();
     await checkRowVisibility(backend, ['1', '2'], ['3', '4', '5']);
   });
+
+  // The styleguide displaycond records are uid 1 (default language), uid 3 and uid 4
+  // (connected translations of uid 1) plus uid 2 and uid 5 (free mode translations
+  // without a parent). All of them carry the same "lipsum" texts, so they can only be
+  // told apart by their uid.
+  test('search lists connected translations below their parent', async ({ backend }) => {
+    await selectLanguageInDropdown(backend, 'styleguide demo language german');
+    await search(backend, 'lipsum');
+
+    // The german translation is a record of its own in the database, but is listed
+    // as a child of the default language record it belongs to.
+    await checkRows(backend, [
+      { uid: '1', l10nparent: '0' },
+      { uid: '3', l10nparent: '1' },
+    ]);
+  });
+
+  test('search finds a record by the content of its translation', async ({ backend }) => {
+    await selectLanguageInDropdown(backend, 'styleguide demo language german');
+    // Only the german translation (uid 3) matches, its default language record does not.
+    await search(backend, '3');
+
+    await checkRows(backend, [
+      { uid: '1', l10nparent: '0' },
+      { uid: '3', l10nparent: '1' },
+    ]);
+  });
 });
+
+async function search(backend: BackendPage, searchTerm: string): Promise<void> {
+  const contentFrame = backend.contentFrame;
+  // Selecting a language navigates the module and dismisses the search bar,
+  // so the search bar is toggled after the language filter has been applied.
+  await contentFrame.locator(`${docHeaderButtons} button.dropdown-toggle`).first().click();
+  await contentFrame.locator(`${docHeaderButtons} .dropdown-menu [title="Show search"]`).click({ force: true });
+
+  await contentFrame.locator('[name="searchTerm"]').fill(searchTerm);
+  const moduleResponse = backend.waitForModuleResponse();
+  await contentFrame.locator('.recordsearchbox-container button[name="search"]').click();
+  await moduleResponse;
+}
+
+async function checkRows(backend: BackendPage, expectedRows: { uid: string, l10nparent: string }[]): Promise<void> {
+  const rows = backend.contentFrame.locator(`${dataTable} tbody tr[data-uid]`);
+  await expect(rows).toHaveCount(expectedRows.length);
+  for (const [index, expectedRow] of expectedRows.entries()) {
+    await expect(rows.nth(index)).toHaveAttribute('data-uid', expectedRow.uid);
+    await expect(rows.nth(index)).toHaveAttribute('data-l10nparent', expectedRow.l10nparent);
+  }
+}
 
 async function openLanguageDropdown(backend: BackendPage): Promise<void> {
   await backend.contentFrame.locator(`${docHeaderNav} button.dropdown-toggle`).click();

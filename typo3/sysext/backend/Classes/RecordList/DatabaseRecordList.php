@@ -812,10 +812,9 @@ class DatabaseRecordList
             // Build a set of UIDs already in the result set to prevent rendering duplicates
             $resultSetUids = array_flip($currentIdList);
 
-            // If no search happened it means that the selected
-            // records are either default or All language and here we will not select translations
-            // which point to the main record:
-            $listTranslatedRecords = $l10nEnabled && $this->searchString === '' && !($this->hideTranslations === '*' || GeneralUtility::inList($this->hideTranslations, $table));
+            // The query only selects default language records, translations are rendered
+            // nested below the record they belong to:
+            $listTranslatedRecords = $l10nEnabled && !($this->hideTranslations === '*' || GeneralUtility::inList($this->hideTranslations, $table));
             foreach ($accRows as $record) {
                 // Render item row if counter < limit
                 if ($cc < $itemsPerPage) {
@@ -2721,29 +2720,96 @@ class DatabaseRecordList
      */
     protected function makeSearchString(string $table, int $currentPid, QueryBuilder $queryBuilder)
     {
-        $expressionBuilder = $queryBuilder->expr();
-        $constraints = [];
-        $tablePidField = $table === 'pages' ? 'uid' : 'pid';
         // Make query only if table is valid and a search string is actually defined
         if (empty($this->searchString)) {
             return '';
         }
+        $constraints = $this->makeSearchConstraints($table, $table, $currentPid, $queryBuilder);
+        // If no search field conditions have been built ensure no results are returned
+        if ($constraints === []) {
+            return '0=1';
+        }
+        $searchConstraint = (string)$queryBuilder->expr()->or(...$constraints);
+        $translationConstraint = $this->makeTranslationSearchConstraint($table, $currentPid, $queryBuilder);
+        if ($translationConstraint !== '') {
+            $searchConstraint = (string)$queryBuilder->expr()->or($searchConstraint, $translationConstraint);
+        }
+        return $searchConstraint;
+    }
+
+    /**
+     * Records are listed by their default language record, translations are rendered nested below
+     * their parent. A record must therefore also be part of the result set when the search string
+     * only matches one of its translations, otherwise translated content becomes unfindable.
+     *
+     * @return string A constraint matching all records having a matching translation, empty if not applicable.
+     */
+    protected function makeTranslationSearchConstraint(string $table, int $currentPid, QueryBuilder $queryBuilder): string
+    {
+        $schema = $this->tcaSchemaFactory->get($table);
+        // Page translations are listed as records of their own, so they are matched directly.
+        if ($table === 'pages'
+            || !$schema->isLanguageAware()
+            || $this->hideTranslations === '*'
+            || GeneralUtility::inList($this->hideTranslations, $table)
+        ) {
+            return '';
+        }
+        $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
+        $languageFieldName = $languageCapability->getLanguageField()->getName();
+        $transOrigPointerFieldName = $languageCapability->getTranslationOriginPointerField()->getName();
+        $alias = 'translation';
+        $subQueryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $subQueryBuilder->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->getBackendUserAuthentication()->workspace));
+        $constraints = $this->makeSearchConstraints($table, $alias, $currentPid, $subQueryBuilder);
+        if ($constraints === []) {
+            return '';
+        }
+        $subQueryBuilder
+            ->select($alias . '.' . $transOrigPointerFieldName)
+            ->from($table, $alias)
+            ->andWhere(
+                $subQueryBuilder->expr()->gt($alias . '.' . $transOrigPointerFieldName, 0),
+                $subQueryBuilder->expr()->in(
+                    $alias . '.' . $languageFieldName,
+                    $subQueryBuilder->quoteArrayBasedValueListToIntegerList($this->getSelectedLanguageIds())
+                ),
+                $subQueryBuilder->expr()->or(...$constraints)
+            );
+
+        return $queryBuilder->expr()->in($table . '.uid', '(' . $subQueryBuilder->getSQL() . ')');
+    }
+
+    /**
+     * Builds the search constraints for all searchable fields of $table. Fields are prefixed with
+     * $tableAlias, so the constraints can also be used for the table joined under a different name.
+     *
+     * @return string[]
+     */
+    protected function makeSearchConstraints(string $table, string $tableAlias, int $currentPid, QueryBuilder $queryBuilder): array
+    {
+        $expressionBuilder = $queryBuilder->expr();
+        $constraints = [];
+        $tablePidField = $table === 'pages' ? 'uid' : 'pid';
 
         $searchableFields = $this->searchableSchemaFieldsCollector->getFields($table);
         [$subSchemaDivisorFieldName, $fieldsSubSchemaTypes] = $this->searchableSchemaFieldsCollector->getSchemaFieldSubSchemaTypes($table);
         // Get fields from ctrl section of TCA first
         if (MathUtility::canBeInterpretedAsInteger($this->searchString)) {
-            $constraints[] = $expressionBuilder->eq($table . '.uid', (int)$this->searchString);
+            $constraints[] = $expressionBuilder->eq($tableAlias . '.uid', (int)$this->searchString);
             foreach ($searchableFields as $field) {
                 $searchConstraint = null;
                 if ($field instanceof NumberFieldType || $field instanceof DateTimeFieldType) {
                     $searchConstraint = $expressionBuilder->and(
-                        $expressionBuilder->eq($table . '.' . $field->getName(), (int)$this->searchString),
-                        $expressionBuilder->eq($table . '.' . $tablePidField, $currentPid)
+                        $expressionBuilder->eq($tableAlias . '.' . $field->getName(), (int)$this->searchString),
+                        $expressionBuilder->eq($tableAlias . '.' . $tablePidField, $currentPid)
                     );
                 } else {
                     $searchConstraint = $expressionBuilder->like(
-                        $table . '.' . $field->getName(),
+                        $tableAlias . '.' . $field->getName(),
                         $queryBuilder->quote('%' . $this->searchString . '%')
                     );
                 }
@@ -2760,7 +2826,7 @@ class DatabaseRecordList
                     $searchConstraint = $queryBuilder->expr()->and(
                         $searchConstraint,
                         $queryBuilder->expr()->in(
-                            $table . '.' . $subSchemaDivisorFieldName,
+                            $tableAlias . '.' . $subSchemaDivisorFieldName,
                             $queryBuilder->quoteArrayBasedValueListToStringList($fieldsSubSchemaTypes[$field->getName()])
                         ),
                     );
@@ -2772,7 +2838,7 @@ class DatabaseRecordList
             $like = $queryBuilder->quote('%' . $queryBuilder->escapeLikeWildcards($this->searchString) . '%');
             foreach ($searchableFields as $field) {
                 $searchConstraint = $expressionBuilder->comparison(
-                    'LOWER(' . $queryBuilder->castFieldToTextType($table . '.' . $field->getName()) . ')',
+                    'LOWER(' . $queryBuilder->castFieldToTextType($tableAlias . '.' . $field->getName()) . ')',
                     'LIKE',
                     'LOWER(' . $like . ')'
                 );
@@ -2788,7 +2854,7 @@ class DatabaseRecordList
                     $searchConstraint = $queryBuilder->expr()->and(
                         $searchConstraint,
                         $queryBuilder->expr()->in(
-                            $table . '.' . $subSchemaDivisorFieldName,
+                            $tableAlias . '.' . $subSchemaDivisorFieldName,
                             $queryBuilder->quoteArrayBasedValueListToStringList($fieldsSubSchemaTypes[$field->getName()])
                         ),
                     );
@@ -2797,12 +2863,8 @@ class DatabaseRecordList
                 $constraints[] = $searchConstraint;
             }
         }
-        // If no search field conditions have been built ensure no results are returned
-        if (empty($constraints)) {
-            return '0=1';
-        }
 
-        return (string)$expressionBuilder->or(...$constraints);
+        return $constraints;
     }
 
     /**
