@@ -4,7 +4,7 @@
 >
 <h2>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:mergedDifferences')}</h2>
 
-<f:if condition="{rollbackFormUrl}">
+<f:if condition="{multipleDiff}">
     <f:then>
         <p><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:mergedDifferences.description" /></p>
 
@@ -63,7 +63,6 @@
             data-button-close-text="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel')}"
             data-button-ok-text="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:rollback.confirm.button')}"
         >{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:revertAll')}</button>
-        <form action="{rollbackFormUrl}" id="record-history-rollback" method="post" class="hidden"></form>
     </f:then>
     <f:else>
         <p>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:noDifferences')}</p>

@@ -60,6 +60,11 @@ class ElementHistoryController
      * Display inline differences or not
      */
     protected bool $showDiff = true;
+
+    /**
+     * Show entries of one operation as a group instead of a flat list
+     */
+    protected bool $groupByOperation = false;
     protected array $recordCache = [];
 
     protected ModuleTemplate $view;
@@ -95,11 +100,13 @@ class ElementHistoryController
         $lastHistoryEntry = (int)($parsedBody['historyEntry'] ?? $queryParams['historyEntry'] ?? 0);
         // A rollback changes records, so it is only accepted as POST
         $rollbackFields = $parsedBody['rollbackFields'] ?? null;
+        $rollbackScope = $parsedBody['rollbackScope'] ?? null;
         $element = $parsedBody['element'] ?? $queryParams['element'] ?? null;
         $moduleSettings = $this->processSettings($request);
         $this->view->assign('isUserInWorkspace', $backendUser->workspace > 0);
 
         $this->showDiff = (bool)$moduleSettings['showDiff'];
+        $this->groupByOperation = (bool)($moduleSettings['groupByOperation'] ?? false);
 
         // Start history object
         $this->historyObject = GeneralUtility::makeInstance(RecordHistory::class, $element);
@@ -111,6 +118,9 @@ class ElementHistoryController
 
         // Do the actual logic now (rollback, show a diff for certain changes,
         // or show the full history of a page or a specific record)
+        if ($rollbackScope !== null) {
+            $this->rollbackOperation((string)$rollbackScope);
+        }
         $changeLog = $this->historyObject->getChangeLog();
         if (!empty($changeLog)) {
             if ($rollbackFields !== null) {
@@ -162,6 +172,7 @@ class ElementHistoryController
         $this->view->assign('editLock', $editLock);
         $this->view->assign('moduleSettings', $moduleSettings);
         $this->view->assign('settingsFormUrl', $this->buildUrl());
+        $this->view->assign('rollbackFormUrl', $this->buildUrl());
 
         // Setting up the buttons and markers for docheader
         $this->getButtons();
@@ -212,7 +223,7 @@ class ElementHistoryController
         // Get current selection from UC, merge data, write it back to UC
         $currentSelection = $this->getBackendUser()->getModuleData('history');
         if (!is_array($currentSelection)) {
-            $currentSelection = ['maxSteps' => '', 'showDiff' => 1, 'showSubElements' => 1];
+            $currentSelection = ['maxSteps' => '', 'showDiff' => 1, 'showSubElements' => 1, 'groupByOperation' => 0];
         }
         $currentSelectionOverride = $request->getParsedBody()['settings'] ?? null;
         if (is_array($currentSelectionOverride) && !empty($currentSelectionOverride)) {
@@ -350,8 +361,6 @@ class ElementHistoryController
                 $singleLine['recordUid'] = $elParts[1];
                 $lines[] = $singleLine;
             }
-            // The rollback is submitted as POST, so the form only carries the current view state
-            $this->view->assign('rollbackFormUrl', $this->buildUrl());
             $this->view->assign('multipleDiff', $lines);
         }
         $this->view->assign('showDifferences', true);
@@ -405,6 +414,9 @@ class ElementHistoryController
             $singleLine['recordUid'] = $entry['recuid'];
 
             $singleLine['elementUrl'] = $this->buildUrl(['element' => $entry['tablename'] . ':' . $entry['recuid']]);
+            if ($this->groupByOperation) {
+                $singleLine['operationScope'] = $this->historyObject->getScopeOfEvent($entry);
+            }
             $singleLine['actiontype'] = $entry['actiontype'];
             $actionType = (int)$entry['actiontype'];
             if ($actionType === RecordHistoryStore::ACTION_MOVE) {
@@ -451,7 +463,71 @@ class ElementHistoryController
             // put line together
             $lines[] = $singleLine;
         }
+        if ($this->groupByOperation) {
+            $lines = $this->groupLinesByOperation($lines);
+        }
         $this->view->assign('history', $lines);
+    }
+
+    /**
+     * Rolls back every change of one operation at once. The entries of an operation share the
+     * scope of their correlation id, and they already carry everything a rollback needs, so the
+     * regular rollback runs over the whole set instead of a single record.
+     */
+    protected function rollbackOperation(string $scope): void
+    {
+        $events = $this->historyObject->findEventsForScope($scope);
+        if ($events === []) {
+            return;
+        }
+        GeneralUtility::makeInstance(RecordHistoryRollback::class)->performRollback(
+            'ALL',
+            $this->historyObject->getDiff($events)
+        );
+    }
+
+    /**
+     * Puts the entries of one operation next to each other and marks the first of them, so the
+     * view can introduce the group with a header. Entries written during the same DataHandler
+     * run share the scope of their correlation id, but they are spread over the changelog
+     * because it is sorted by time, and one operation writes all its entries in the same second.
+     *
+     * Entries without a scope cannot be attributed to an operation and stay on their own.
+     */
+    protected function groupLinesByOperation(array $lines): array
+    {
+        $groups = [];
+        $ungrouped = 0;
+        foreach ($lines as $line) {
+            $scope = $line['operationScope'] ?? null;
+            $groups[$scope !== null ? 'scope:' . $scope : 'single:' . $ungrouped++][] = $line;
+        }
+
+        $recordCounts = [];
+        $result = [];
+        foreach ($groups as $key => $group) {
+            if (str_starts_with($key, 'scope:')) {
+                $scope = substr($key, 6);
+                $recordCounts[$scope] ??= $this->countRecordsInOperation($scope);
+                $group[0]['operationStart'] = true;
+                $group[0]['operationRecordCount'] = $recordCounts[$scope];
+            }
+            array_push($result, ...$group);
+        }
+        return $result;
+    }
+
+    /**
+     * How many records the whole operation touched, which is more than the changelog of a single
+     * record shows. Only records the user may see are counted.
+     */
+    protected function countRecordsInOperation(string $scope): int
+    {
+        $records = [];
+        foreach ($this->historyObject->findEventsForScope($scope) as $event) {
+            $records[$event['tablename'] . ':' . $event['recuid']] = true;
+        }
+        return count($records);
     }
 
     /**

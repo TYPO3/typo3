@@ -83,6 +83,17 @@ final class CorrelationIdTest extends UnitTestCase
     }
 
     #[Test]
+    public function scopePrefixMatchesTheSerializedRepresentation(): void
+    {
+        $correlationId = CorrelationId::forScope('scope')->withSubject('subject');
+        self::assertStringStartsWith(
+            CorrelationId::scopePrefix('scope'),
+            (string)$correlationId
+        );
+        self::assertSame('0400$scope:', CorrelationId::scopePrefix('scope'));
+    }
+
+    #[Test]
     public function doesNotVary(): void
     {
         $correlationId = '0400$scope:subject/aspect-a/aspect-b';

@@ -20,6 +20,9 @@
     </f:if>
     <f:render partial="RecordHistory/History" arguments="{_all}" />
 
+    <f:comment>Rollback buttons of both partials submit through this form</f:comment>
+    <form action="{rollbackFormUrl}" id="record-history-rollback" method="post" class="hidden"></form>
+
 </f:section>
 
 </html>

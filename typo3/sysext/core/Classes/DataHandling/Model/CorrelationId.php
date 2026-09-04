@@ -46,6 +46,17 @@ class CorrelationId implements \JsonSerializable
         return $target;
     }
 
+    /**
+     * The serialized prefix every correlation id of one scope starts with, "FLAGS $ SCOPE :".
+     * All history entries written during the same operation share it, while their subject
+     * differs per record, so it is the way to look up a whole operation.
+     */
+    public static function scopePrefix(string $scope): string
+    {
+        // 6-bit version 10-bit capabilities, freshly created ids never carry capabilities
+        return sprintf('%s$%s:', bin2hex(pack('n', self::DEFAULT_VERSION << 10)), $scope);
+    }
+
     public static function forSubject(string $subject, string ...$aspects): self
     {
         return static::create()

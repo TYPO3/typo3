@@ -33,6 +33,15 @@
                     </label>
                 </div>
             </div>
+            <div class="form-group">
+                <div class="form-check form-switch form-check-size-input">
+                    <input type="hidden" value="0" name="settings[groupByOperation]" />
+                    <input type="checkbox" id="groupByOperation" value="1" name="settings[groupByOperation]" data-global-event="change" data-action-submit="$form" class="form-check-input" {f:if(condition: '{moduleSettings.groupByOperation}', then: 'checked')} />
+                    <label class="form-check-label" for="groupByOperation">
+                        <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:groupByOperation" />
+                    </label>
+                </div>
+            </div>
         </div>
     </form>
 </div>

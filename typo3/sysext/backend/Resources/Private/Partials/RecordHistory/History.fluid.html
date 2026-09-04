@@ -23,6 +23,31 @@
             </thead>
             <tbody>
                 <f:for each="{historyEntries}" as="historyRow">
+                    <f:if condition="{historyRow.operationStart}">
+                        <tr class="table-active">
+                            <td colspan="7">
+                                <core:icon identifier="actions-link" />
+                                <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:operationGroup.records" arguments="{count: historyRow.operationRecordCount}" />
+                            </td>
+                            <td class="col-control nowrap">
+                                <button
+                                    type="submit"
+                                    form="record-history-rollback"
+                                    name="rollbackScope"
+                                    value="{historyRow.operationScope}"
+                                    class="btn btn-default btn-sm t3js-modal-trigger"
+                                    data-severity="warning"
+                                    data-title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:rollback.operation')}"
+                                    data-content="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:rollback.operation.confirm')}"
+                                    data-button-close-text="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel')}"
+                                    data-button-ok-text="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:rollback.confirm.button')}"
+                                >
+                                    <core:icon identifier="actions-edit-undo" />
+                                    {f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:rollback.operation')}
+                                </button>
+                            </td>
+                        </tr>
+                    </f:if>
                     <tr>
                         <td class="col-time">
                             <f:format.date format="H:i:s">{historyRow.timestamp}</f:format.date>

@@ -61,6 +61,46 @@ final class ElementHistoryControllerTest extends FunctionalTestCase
         return (string)$this->get(ElementHistoryController::class)->mainAction($request)->getBody();
     }
 
+    private function renderHistoryWithSettings(string $element, array $settings): string
+    {
+        $request = new ServerRequest('https://example.com/typo3/record/history', 'POST')
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            ->withAttribute('route', $this->get(Router::class)->getRoute('record_history'))
+            ->withQueryParams(['element' => $element])
+            ->withParsedBody(['settings' => $settings]);
+        $request = $request->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
+
+        return (string)$this->get(ElementHistoryController::class)->mainAction($request)->getBody();
+    }
+
+    /**
+     * @return string[] titles of the pages the operation tests work with
+     */
+    private function getPageTitles(): array
+    {
+        return $this->getConnectionPool()
+            ->getConnectionForTable('pages')
+            ->executeQuery('SELECT title FROM pages WHERE uid IN (1, 2) ORDER BY uid')
+            ->fetchFirstColumn();
+    }
+
+    private function getPageId(int $uid): int
+    {
+        return (int)$this->getConnectionPool()
+            ->getConnectionForTable('pages')
+            ->executeQuery('SELECT pid FROM pages WHERE uid = ?', [$uid])
+            ->fetchOne();
+    }
+
+    private function undoOperation(string $scope, string $method = 'POST'): void
+    {
+        $request = $this->buildRollbackRequest($method, 0)->withQueryParams(['element' => 'pages:1']);
+        $request = $method === 'POST'
+            ? $request->withParsedBody(['rollbackScope' => $scope])
+            : $request->withQueryParams(['element' => 'pages:1', 'rollbackScope' => $scope]);
+        $this->get(ElementHistoryController::class)->mainAction($request);
+    }
+
     #[Test]
     public function backendUserIsShownForBackendEntries(): void
     {
@@ -176,5 +216,98 @@ final class ElementHistoryControllerTest extends FunctionalTestCase
         // Without this the preview claims there is nothing to roll back, while there is
         self::assertStringContainsString('will be moved back to Source page', $body);
         self::assertStringNotContainsString('There are no differences', $body);
+    }
+
+    #[Test]
+    public function operationGroupsAreNotShownByDefault(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/ElementHistoryOperations.csv');
+
+        self::assertStringNotContainsString('This operation changed', $this->renderHistoryOfRootPage());
+    }
+
+    #[Test]
+    public function operationGroupsCountTheRecordsOfTheWholeOperation(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/ElementHistoryOperations.csv');
+
+        $body = $this->renderHistoryWithSettings('pages:1', ['groupByOperation' => 1, 'showSubElements' => 1]);
+
+        // "op1" touched three pages, "op2" two of them, "aaa" of the base data set only one
+        self::assertStringContainsString('This operation changed 3 records', $body);
+        self::assertStringContainsString('This operation changed 2 records', $body);
+        self::assertStringContainsString('This operation changed 1 record', $body);
+    }
+
+    #[Test]
+    public function operationGroupsPutTheEntriesOfOneOperationNextToEachOther(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/ElementHistoryOperations.csv');
+
+        $body = $this->renderHistoryWithSettings('pages:1', ['groupByOperation' => 1, 'showSubElements' => 1]);
+
+        // The changelog is sorted by time, and both operations wrote all their entries in the
+        // same second, so they arrive interleaved. Three operations must still yield three
+        // headers, not one per switch between them.
+        self::assertSame(3, substr_count($body, 'This operation changed'));
+    }
+
+    #[Test]
+    public function undoingAnOperationRollsBackEveryRecordItChanged(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/ElementHistoryOperations.csv');
+        $dataHandler = $this->get(DataHandler::class);
+        $dataHandler->start(['pages' => [1 => ['title' => 'Changed root'], 2 => ['title' => 'Changed child']]], []);
+        $dataHandler->process_datamap();
+        self::assertSame(['Changed root', 'Changed child'], $this->getPageTitles());
+
+        $this->undoOperation((string)$dataHandler->getCorrelationId()->getScope());
+
+        self::assertSame(['Root', 'Child A'], $this->getPageTitles());
+    }
+
+    #[Test]
+    public function undoingAnOperationAlsoMovesItsRecordsBack(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/ElementHistoryOperations.csv');
+        $dataHandler = $this->get(DataHandler::class);
+        $dataHandler->start(
+            ['pages' => [2 => ['title' => 'Changed child']]],
+            ['pages' => [3 => ['move' => 2]]]
+        );
+        $dataHandler->process_datamap();
+        $dataHandler->process_cmdmap();
+        self::assertSame(2, $this->getPageId(3));
+
+        // Both runs belong to the same DataHandler, so they share one correlation scope
+        $this->undoOperation((string)$dataHandler->getCorrelationId()->getScope());
+
+        self::assertSame(['Root', 'Child A'], $this->getPageTitles());
+        self::assertSame(1, $this->getPageId(3));
+    }
+
+    #[Test]
+    public function undoingAnOperationIsNotPerformedOnGetRequest(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/ElementHistoryOperations.csv');
+        $dataHandler = $this->get(DataHandler::class);
+        $dataHandler->start(['pages' => [1 => ['title' => 'Changed root']]], []);
+        $dataHandler->process_datamap();
+
+        $this->undoOperation((string)$dataHandler->getCorrelationId()->getScope(), 'GET');
+
+        self::assertSame('Changed root', $this->getPageTitles()[0]);
+    }
+
+    #[Test]
+    public function operationGroupsOfferToUndoTheWholeOperation(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/ElementHistoryOperations.csv');
+
+        $body = $this->renderHistoryWithSettings('pages:1', ['groupByOperation' => 1, 'showSubElements' => 1]);
+
+        self::assertStringContainsString('Undo this operation', $body);
+        self::assertStringContainsString('name="rollbackScope"', $body);
+        self::assertStringContainsString('value="op1"', $body);
     }
 }

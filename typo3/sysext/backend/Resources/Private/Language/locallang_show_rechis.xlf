@@ -48,6 +48,12 @@
       <trans-unit id="rollback.confirm.button">
         <source>Roll back</source>
       </trans-unit>
+      <trans-unit id="rollback.operation">
+        <source>Undo this operation</source>
+      </trans-unit>
+      <trans-unit id="rollback.operation.confirm">
+        <source>This restores every record of this operation to the state it had before. Changes made to those records afterwards are overwritten.</source>
+      </trans-unit>
       <trans-unit id="revertField">
         <source>Rollback single field</source>
       </trans-unit>
@@ -155,6 +161,12 @@
       </trans-unit>
       <trans-unit id="showSubElements">
         <source>Show sub elements</source>
+      </trans-unit>
+      <trans-unit id="groupByOperation">
+        <source>Group by operation</source>
+      </trans-unit>
+      <trans-unit id="operationGroup.records">
+        <source>{count, plural, one {This operation changed # record} other {This operation changed # records}}</source>
       </trans-unit>
       <trans-unit id="no">
         <source>No</source>

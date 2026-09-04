@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\DataHandling\History\RecordHistoryStore;
+use TYPO3\CMS\Core\DataHandling\Model\CorrelationId;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\TcaSchema;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
@@ -459,7 +460,6 @@ class RecordHistory
      */
     public function findEventsForRecord(string $table, int $uid, int $limit = 0, ?int $minimumUid = null): array
     {
-        $backendUser = $this->getBackendUser();
         $queryBuilder = $this->getQueryBuilder();
         $queryBuilder
             ->select('*')
@@ -468,18 +468,7 @@ class RecordHistory
                 $queryBuilder->expr()->eq('tablename', $queryBuilder->createNamedParameter($table)),
                 $queryBuilder->expr()->eq('recuid', $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT))
             );
-        if ($backendUser->workspace === 0) {
-            $queryBuilder->andWhere(
-                $queryBuilder->expr()->eq('workspace', 0)
-            );
-        } else {
-            $queryBuilder->andWhere(
-                $queryBuilder->expr()->or(
-                    $queryBuilder->expr()->eq('workspace', 0),
-                    $queryBuilder->expr()->eq('workspace', $queryBuilder->createNamedParameter($backendUser->workspace, Connection::PARAM_INT))
-                )
-            );
-        }
+        $this->addWorkspaceRestriction($queryBuilder);
         if ($limit) {
             $queryBuilder->setMaxResults($limit);
         }
@@ -491,6 +480,60 @@ class RecordHistory
         return $this->prepareEventDataFromQueryBuilder($queryBuilder);
     }
 
+    /**
+     * All entries written during one operation, no matter which record they belong to. They share
+     * the scope of their correlation id, while the subject differs per record, so an operation can
+     * only be looked up by the prefix the whole scope has in common.
+     *
+     * The result is limited to what the user may see: one operation can span tables and pages, and
+     * a record history must not become a way around table or page permissions.
+     */
+    public function findEventsForScope(string $scope, int $limit = 0): array
+    {
+        if ($scope === '') {
+            return [];
+        }
+        $queryBuilder = $this->getQueryBuilder();
+        $queryBuilder
+            ->select('*')
+            ->from('sys_history')
+            ->where(
+                $queryBuilder->expr()->like(
+                    'correlation_id',
+                    $queryBuilder->createNamedParameter(
+                        $queryBuilder->escapeLikeWildcards(CorrelationId::scopePrefix($scope)) . '%'
+                    )
+                )
+            );
+        $this->addWorkspaceRestriction($queryBuilder);
+        if ($limit) {
+            $queryBuilder->setMaxResults($limit);
+        }
+
+        return array_filter(
+            $this->prepareEventDataFromQueryBuilder($queryBuilder),
+            fn(array $event): bool => $this->hasTableAccess($event['tablename'])
+                && $this->hasPageAccess($event['tablename'], (int)$event['recuid'])
+        );
+    }
+
+    /**
+     * The scope an entry was written in, or null for entries that carry no correlation id at all.
+     */
+    public function getScopeOfEvent(array $event): ?string
+    {
+        $correlationId = (string)($event['correlation_id'] ?? '');
+        if ($correlationId === '') {
+            return null;
+        }
+        try {
+            return CorrelationId::fromString($correlationId)->getScope();
+        } catch (\InvalidArgumentException) {
+            // Entries written before the current format, or by third party code
+            return null;
+        }
+    }
+
     public function findEventsForCorrelation(string $correlationId): array
     {
         $queryBuilder = $this->getQueryBuilder();
@@ -500,6 +543,24 @@ class RecordHistory
             ->where($queryBuilder->expr()->eq('correlation_id', $queryBuilder->createNamedParameter($correlationId)));
 
         return $this->prepareEventDataFromQueryBuilder($queryBuilder);
+    }
+
+    /**
+     * Entries of a workspace are only visible to a user working in that very workspace.
+     */
+    protected function addWorkspaceRestriction(QueryBuilder $queryBuilder): void
+    {
+        $workspace = $this->getBackendUser()->workspace;
+        if ($workspace === 0) {
+            $queryBuilder->andWhere($queryBuilder->expr()->eq('workspace', 0));
+            return;
+        }
+        $queryBuilder->andWhere(
+            $queryBuilder->expr()->or(
+                $queryBuilder->expr()->eq('workspace', 0),
+                $queryBuilder->expr()->eq('workspace', $queryBuilder->createNamedParameter($workspace, Connection::PARAM_INT))
+            )
+        );
     }
 
     protected function prepareEventDataFromQueryBuilder(QueryBuilder $queryBuilder): array
