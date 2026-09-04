@@ -22,6 +22,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Redirects\Repository\Demand;
@@ -119,7 +120,10 @@ class CleanupRedirectsCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        Bootstrap::initializeBackendAuthentication();
+
         $this->redirectRepository->removeByDemand(Demand::fromCommandInput($input));
+
         return Command::SUCCESS;
     }
 }
