@@ -47,6 +47,7 @@ class ExtensionXmlParserObserverFixture implements \SplObserver
                 'authorcompany' => $subject->getAuthorcompany(),
                 'lastuploaddate' => $subject->getLastuploaddate(),
                 't3xfilemd5' => $subject->getT3xfilemd5(),
+                'artifactsha256' => $subject->getArtifactSha256(),
                 'state' => $subject->getState(),
                 'reviewstate' => $subject->getReviewstate(),
                 'category' => $subject->getCategory(),

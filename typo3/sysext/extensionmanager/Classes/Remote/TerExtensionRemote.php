@@ -26,7 +26,7 @@ use TYPO3\CMS\Extensionmanager\Domain\Repository\BulkExtensionRepositoryWriter;
 use TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility;
 
 /**
- * Class for downloading .t3x files from extensions.typo3.org and validating the results.
+ * Class for downloading extension archives from extensions.typo3.org and validating the results.
  * This also includes the ListableRemoteInterface, which means it downloads extensions.xml.gz files and can import
  * it in the database.
  *
@@ -38,6 +38,8 @@ use TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility;
  */
 class TerExtensionRemote implements ExtensionDownloaderRemoteInterface, ListableRemoteInterface
 {
+    protected const SHA256_PREFIX = 'sha256:';
+
     protected string $identifier;
     protected string $localExtensionListCacheFile;
     protected string $remoteBase = 'https://extensions.typo3.org/fileadmin/ter/';
@@ -133,16 +135,72 @@ class TerExtensionRemote implements ExtensionDownloaderRemoteInterface, Listable
     }
 
     /**
-     * Downloads a single extension, and extracts the t3x file into a target location folder.
+     * Downloads a single extension and extracts it into a target location folder.
      *
-     * @param string|null $verificationHash
+     * The zip archive is preferred whenever the extension list provides a SHA-256
+     * hash for it, since it is the artifact the extension author uploaded. Without
+     * such a hash the legacy t3x file is fetched and the extension is rebuilt from
+     * its serialized contents.
+     *
+     * @param string|null $verificationHash either "sha256:<hash>" for the zip archive, or a plain MD5 hash of the t3x file
      * @throws DownloadFailedException
      * @throws VerificationFailedException
      */
     public function downloadExtension(string $extensionKey, string $version, FileHandlingUtility $fileHandler, ?string $verificationHash = null, string $pathType = 'Local'): void
     {
-        $extensionPath = strtolower($extensionKey);
-        $remotePath = $extensionPath[0] . '/' . $extensionPath[1] . '/' . $extensionPath . '_' . $version . '.t3x';
+        $artifactSha256 = $this->extractArtifactSha256($verificationHash);
+        if ($artifactSha256 !== null) {
+            $this->downloadZipArchive($extensionKey, $version, $fileHandler, $artifactSha256);
+            return;
+        }
+        $this->downloadExchangeFile($extensionKey, $version, $fileHandler, $verificationHash);
+    }
+
+    /**
+     * Returns the bare hash of a "sha256:<hash>" verification hash, and null for
+     * anything else - which is what makes an extension list without artifact
+     * hashes fall back to the t3x file.
+     */
+    protected function extractArtifactSha256(?string $verificationHash): ?string
+    {
+        if ($verificationHash === null || !str_starts_with($verificationHash, self::SHA256_PREFIX)) {
+            return null;
+        }
+        return substr($verificationHash, strlen(self::SHA256_PREFIX)) ?: null;
+    }
+
+    /**
+     * @throws DownloadFailedException
+     * @throws VerificationFailedException
+     */
+    protected function downloadZipArchive(string $extensionKey, string $version, FileHandlingUtility $fileHandler, string $expectedSha256): void
+    {
+        $remotePath = $this->buildRemotePath($extensionKey, $version, 'zip');
+        try {
+            $downloadedContent = $this->downloadFile($remotePath)->getBody()->getContents();
+        } catch (\Throwable $e) {
+            throw new DownloadFailedException(sprintf('The zip file "%s" could not be fetched. Possible reasons: network problems, allow_url_fopen is off, cURL is not available.', $this->remoteBase . $remotePath), 1788537156);
+        }
+        $actualSha256 = hash('sha256', $downloadedContent);
+        if (!hash_equals($expectedSha256, $actualSha256)) {
+            throw new VerificationFailedException('SHA-256 hash of downloaded file not as expected: ' . $actualSha256 . ' != ' . $expectedSha256, 1788537157);
+        }
+        $temporaryFile = GeneralUtility::tempnam('extension-download-', '.zip');
+        try {
+            GeneralUtility::writeFile($temporaryFile, $downloadedContent);
+            $fileHandler->unzipExtensionFromFile($temporaryFile, $extensionKey, $version);
+        } finally {
+            @unlink($temporaryFile);
+        }
+    }
+
+    /**
+     * @throws DownloadFailedException
+     * @throws VerificationFailedException
+     */
+    protected function downloadExchangeFile(string $extensionKey, string $version, FileHandlingUtility $fileHandler, ?string $verificationHash): void
+    {
+        $remotePath = $this->buildRemotePath($extensionKey, $version, 't3x');
         try {
             $downloadedContent = (string)$this->downloadFile($remotePath)->getBody()->getContents();
         } catch (\Throwable $e) {
@@ -157,6 +215,12 @@ class TerExtensionRemote implements ExtensionDownloaderRemoteInterface, Listable
         } else {
             throw new VerificationFailedException('Downloaded t3x file could not be extracted', 1334426698);
         }
+    }
+
+    protected function buildRemotePath(string $extensionKey, string $version, string $fileExtension): string
+    {
+        $extensionPath = strtolower($extensionKey);
+        return $extensionPath[0] . '/' . $extensionPath[1] . '/' . $extensionPath . '_' . $version . '.' . $fileExtension;
     }
 
     /**

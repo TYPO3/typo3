@@ -13,6 +13,7 @@ CREATE TABLE tx_extensionmanager_domain_model_extension (
   author_email varchar(255) NOT NULL default '',
   ownerusername varchar(50) NOT NULL default '',
   md5hash varchar(35) NOT NULL default '',
+  artifact_sha256 varchar(64) NOT NULL default '',
   authorcompany varchar(255) NOT NULL default '',
   integer_version int(11) NOT NULL default '0',
   lastreviewedversion int(3) NOT NULL default '0',
