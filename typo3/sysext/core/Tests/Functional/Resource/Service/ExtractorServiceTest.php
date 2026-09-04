@@ -69,4 +69,19 @@ final class ExtractorServiceTest extends FunctionalTestCase
             $result
         );
     }
+
+    #[Test]
+    public function extractMetaDataKeepsEmptyValuesToAllowUnsettingMetaData(): void
+    {
+        $fileStub = self::createStub(File::class);
+        $fileStub->method('getType')->willReturn(FileType::TEXT->value);
+        $fileStub->method('getNameWithoutExtension')->willReturn('aNameWithoutExtension');
+        $fileStub->method('getExtension')->willReturn('anExtension');
+        // Activate TextFileExtractor3, which unsets the title of the lower prioritized TextFileExtractor1
+        $resourceStorageStub = self::createStub(ResourceStorage::class);
+        $resourceStorageStub->method('getDriverType')->willReturn('anUnsettingDriverRestriction');
+        $fileStub->method('getStorage')->willReturn($resourceStorageStub);
+        $result = $this->get(ExtractorService::class)->extractMetaData($fileStub);
+        self::assertSame(['title' => ''], $result);
+    }
 }
