@@ -118,8 +118,6 @@ class ReferenceIndex
 
         $isWorkspacesLoaded = ExtensionManagementUtility::isLoaded('workspaces');
         $tcaTableNames = $this->tcaSchemaFactory->all()->getNames();
-        // @todo: Ensure tcaSchemaFactory->all() always sorts alphabetically (or add test to verify), then remove this sort()
-        sort($tcaTableNames);
 
         $progressListener?->log('Remember to create missing tables and columns before running this.', LogLevel::WARNING);
 
