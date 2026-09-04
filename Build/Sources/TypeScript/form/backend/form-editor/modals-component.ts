@@ -54,6 +54,13 @@ const defaultConfiguration: Partial<HelperConfiguration> = {
     rowItem: 'rowItem',
     rowLink: 'rowLink',
     rowsContainer: 'rowsContainer',
+    elementIdentifier: 'elementIdentifier',
+    elementType: 'elementType',
+    validationErrors: 'validationErrors',
+    validationErrorGroup: 'validationErrorGroup',
+    validationErrorGroupLabel: 'validationErrorGroupLabel',
+    validationErrorGroupItems: 'validationErrorGroupItems',
+    validationError: 'validationError',
     templateInsertElements: 'Modal-InsertElements',
     templateInsertPages: 'Modal-InsertPages',
     templateValidationErrors: 'Modal-ValidationErrors'
@@ -206,7 +213,7 @@ function _validationErrorsModalSetup(
   modalContent: DocumentFragment,
   validationResults: ValidationResultsRecursive
 ): void {
-  let formElement, newRowItem;
+  let formElement: FormElement, newRowItem: HTMLElement | null;
 
   assert(
     Array.isArray(validationResults),
@@ -235,13 +242,70 @@ function _validationErrorsModalSetup(
       formElement = getFormEditorApp()
         .getFormElementByIdentifierPath(validationResults[i].formElementIdentifierPath);
       newRowItem = rowItemTemplate?.cloneNode(true) as HTMLElement | null;
-      const rowLink = newRowItem?.querySelector(getHelper().getDomElementDataIdentifierSelector('rowLink'));
-      if (rowLink) {
+      if (newRowItem) {
+        const rowLink = newRowItem;
         rowLink.setAttribute(
           getHelper().getDomElementDataAttribute('elementIdentifier'),
           validationResults[i].formElementIdentifierPath
         );
-        rowLink.replaceChildren(_buildTitleByFormElement(formElement));
+        const rowLinkTitle = rowLink.querySelector('.form-editor-validation-error-title');
+        rowLinkTitle?.replaceChildren(_buildTitleByFormElement(formElement));
+        rowLink.querySelector(
+          getHelper().getDomElementDataIdentifierSelector('elementIdentifier')
+        )?.replaceChildren(document.createTextNode(formElement.get('identifier')));
+        rowLink.querySelector(
+          getHelper().getDomElementDataIdentifierSelector('elementType')
+        )?.replaceChildren(document.createTextNode(
+          getFormElementDefinition(formElement, 'label') || formElement.get('type')
+        ));
+        const validationErrors = rowLink.querySelector(
+          getHelper().getDomElementDataIdentifierSelector('validationErrors')
+        );
+        const validationErrorGroupTemplate = validationErrors?.querySelector(
+          getHelper().getDomElementDataIdentifierSelector('validationErrorGroup')
+        );
+        const validationErrorTemplate = validationErrors?.querySelector(
+          getHelper().getDomElementDataIdentifierSelector('validationError')
+        );
+        validationErrors?.replaceChildren();
+        const validationErrorGroups = new Map<string, HTMLElement>();
+        validationResults[i].validationResults.forEach((propertyValidationResult) => {
+          const propertyLabel = _getPropertyLabelByPath(formElement, propertyValidationResult.propertyPath);
+          const finisherIndex = _getFinisherIndexByPropertyPath(propertyValidationResult.propertyPath);
+          const validatorIdentifier = _getValidatorIdentifierByPropertyPath(formElement, propertyValidationResult.propertyPath);
+          const groupLabel = finisherIndex
+            ? _getFinisherLabelByIdentifier(formElement, finisherIndex)
+            : validatorIdentifier;
+          const groupKey = finisherIndex
+            ? `finisher-${finisherIndex}`
+            : `validator-${validatorIdentifier}`;
+          const validationMessage = propertyValidationResult.validationResults.join(' ');
+          if (groupLabel && validationErrorGroupTemplate) {
+            let validationErrorGroup = validationErrorGroups.get(groupKey);
+            if (!validationErrorGroup) {
+              validationErrorGroup = validationErrorGroupTemplate.cloneNode(true) as HTMLElement;
+              validationErrorGroup.querySelector(
+                getHelper().getDomElementDataIdentifierSelector('validationErrorGroupLabel')
+              )?.replaceChildren(document.createTextNode(groupLabel));
+              validationErrorGroup.querySelector(
+                getHelper().getDomElementDataIdentifierSelector('validationErrorGroupItems')
+              )?.replaceChildren();
+              validationErrorGroups.set(groupKey, validationErrorGroup);
+              validationErrors?.append(validationErrorGroup);
+            }
+            const validationError = validationErrorTemplate?.cloneNode() as HTMLElement | undefined;
+            validationError?.replaceChildren(document.createTextNode(
+              propertyLabel ? `${propertyLabel}: ${validationMessage}` : validationMessage
+            ));
+            validationErrorGroup.querySelector(
+              getHelper().getDomElementDataIdentifierSelector('validationErrorGroupItems')
+            )?.append(validationError);
+          } else {
+            const validationError = validationErrorTemplate?.cloneNode() as HTMLElement | undefined;
+            validationError?.replaceChildren(document.createTextNode(propertyLabel ? `${propertyLabel}: ${validationMessage}` : validationMessage));
+            validationErrors?.append(validationError);
+          }
+        });
       }
       const rowsContainer = modalContent.querySelector(getHelper().getDomElementDataIdentifierSelector('rowsContainer'));
       if (rowsContainer && newRowItem) {
@@ -251,7 +315,8 @@ function _validationErrorsModalSetup(
   }
 
   modalContent.querySelectorAll<HTMLAnchorElement>('a').forEach((a) => {
-    a.addEventListener('click', function() {
+    a.addEventListener('click', function(event: MouseEvent) {
+      event.preventDefault();
       getPublisherSubscriber().publish('view/modal/validationErrors/element/clicked', [
         a.getAttribute(getHelper().getDomElementDataAttribute('elementIdentifier'))
       ]);
@@ -270,6 +335,50 @@ function _buildTitleByFormElement(formElement: FormElement): HTMLElement {
   const span = document.createElement('span');
   span.textContent = formElement.get('label') ? formElement.get('label') : formElement.get('identifier');
   return span;
+}
+
+function _getPropertyLabelByPath(formElement: FormElement, propertyPath: string): string {
+  return _getEditorConfigurationByPropertyPath(formElement, propertyPath)?.label || '';
+}
+
+function _getValidatorIdentifierByPropertyPath(formElement: FormElement, propertyPath: string): string {
+  const editorConfiguration = _getEditorConfigurationByPropertyPath(formElement, propertyPath);
+  const validatorIdentifier = editorConfiguration?.propertyValidators?.find((identifier) => identifier !== 'NotEmpty');
+  return validatorIdentifier || '';
+}
+
+function _getEditorConfigurationByPropertyPath(
+  formElement: FormElement,
+  propertyPath: string
+): FormElementDefinition['editors'][number] | undefined {
+  const formElementDefinition = getFormElementDefinition(formElement, undefined) as FormElementDefinition;
+  const editors = [
+    ...(formElementDefinition.editors || []),
+    ...Object.values(formElementDefinition.propertyCollections || {}).flatMap((collection) =>
+      collection.flatMap((collectionElement) => collectionElement.editors || [])
+    )
+  ];
+  return editors.find((editorConfiguration) =>
+    editorConfiguration.propertyPath === propertyPath
+    || propertyPath.endsWith(`.${editorConfiguration.propertyPath}`)
+  );
+}
+
+function _getFinisherIndexByPropertyPath(propertyPath: string): string {
+  const match = propertyPath.match(/^finishers\.(\d+)\./);
+  if (!match) {
+    return '';
+  }
+  return match[1];
+}
+
+function _getFinisherLabelByIdentifier(formElement: FormElement, finisherIndex: string): string {
+  const finishers = formElement.get('finishers') as Array<{ identifier: string }> | undefined;
+  const finisherIdentifier = finishers?.[Number(finisherIndex)]?.identifier;
+  if (!finisherIdentifier) {
+    return '';
+  }
+  return getFormEditorApp().getFormEditorDefinition('finishers', finisherIdentifier)?.label || '';
 }
 
 /* *************************************************************

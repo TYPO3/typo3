@@ -364,13 +364,19 @@
         <source>The form could not be saved:</source>
       </trans-unit>
       <trans-unit id="formEditor.modals.validationErrors.dialogTitle">
-        <source>Alert</source>
+        <source>Form configuration needs attention</source>
       </trans-unit>
       <trans-unit id="formEditor.modals.validationErrors.dialogMessage">
-        <source>Some elements are not configured properly. Please check the following elements:</source>
+        <source>The following elements need to be configured. Select an element to open its settings:</source>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.validationErrors.identifier">
+        <source>Identifier</source>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.validationErrors.type">
+        <source>Type</source>
       </trans-unit>
       <trans-unit id="formEditor.modals.validationErrors.confirmButton">
-        <source>OK</source>
+        <source>Close</source>
       </trans-unit>
       <trans-unit id="formEditor.modals.insertElements.dialogTitle">
         <source>New element</source>

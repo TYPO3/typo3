@@ -6,11 +6,38 @@
                 <p><f:translate key="LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.modals.validationErrors.dialogMessage" /></p>
             </div>
             <div class="col-sm-12">
-                <dl data-identifier="rowsContainer">
-                    <dt data-identifier="rowItem">
-                        <span class="text-danger" aria-hidden="true"><core:icon identifier="actions-exclamation-triangle" size="small" /></span> <a data-identifier="rowLink"></a>
-                    </dt>
-                </dl>
+                <div class="list-group" data-identifier="rowsContainer">
+                    <a href="#" class="list-group-item list-group-item-action" data-identifier="rowItem">
+                        <div class="d-flex">
+                            <div class="align-self-start pe-3">
+                                <span class="text-danger" aria-hidden="true"><core:icon identifier="actions-exclamation-triangle" size="small" /></span>
+                            </div>
+                            <div class="flex-grow-1">
+                                <div class="fw-bold mb-1 form-editor-validation-error-title"></div>
+                                <div class="d-flex flex-wrap gap-3 mb-1 small text-body-secondary">
+                                    <span>
+                                        <strong><f:translate key="form.database:formEditor.modals.validationErrors.identifier" />:</strong>
+                                        <span class="font-monospace text-break" data-identifier="elementIdentifier"></span>
+                                    </span>
+                                    <span>
+                                        <strong><f:translate key="form.database:formEditor.modals.validationErrors.type" />:</strong>
+                                        <span data-identifier="elementType"></span>
+                                    </span>
+                                </div>
+                                <div class="small text-danger">
+                                    <ul class="mb-0 ps-3" data-identifier="validationErrors">
+                                        <li data-identifier="validationErrorGroup">
+                                            <span class="fw-bold" data-identifier="validationErrorGroupLabel"></span>
+                                            <ul class="mb-0 ps-3" data-identifier="validationErrorGroupItems">
+                                                <li data-identifier="validationError"></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
             </div>
         </div>
     </div>
