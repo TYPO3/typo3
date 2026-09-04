@@ -52,13 +52,13 @@ readonly class ExtractorService
         // Sort metadata by priority so that merging happens in order of precedence.
         ksort($newMetaData);
         // Merge the collected metadata.
-        $metaData = [[]];
+        $metaData = [];
         foreach ($newMetaData as $dataFromExtractors) {
             foreach ($dataFromExtractors as $data) {
                 $metaData[] = $data;
             }
         }
-        return array_filter(array_merge(...$metaData));
+        return array_merge(...$metaData);
     }
 
     /**
