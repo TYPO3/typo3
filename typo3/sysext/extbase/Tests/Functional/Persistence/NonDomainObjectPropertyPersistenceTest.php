@@ -134,7 +134,8 @@ final class NonDomainObjectPropertyPersistenceTest extends FunctionalTestCase
 
         $row = $this->fetchRawRow('tx_testjsonfields_domain_model_example', 1);
         self::assertIsString($row['nullable_typed_json_field']);
-        self::assertSame(['nullable' => true, 'values' => [1, 2]], json_decode($row['nullable_typed_json_field'], true));
+        // MySQL normalizes the key order of native JSON columns, therefore the keys are compared order-insensitive.
+        self::assertEquals(['nullable' => true, 'values' => [1, 2]], json_decode($row['nullable_typed_json_field'], true));
     }
 
     #[Test]
