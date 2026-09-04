@@ -307,7 +307,7 @@ class ExtensionManagementService
                     $extension->extensionKey,
                     $extension->version,
                     $this->fileHandlingUtility,
-                    $extension->md5hash
+                    $extension->artifactSha256 !== '' ? 'sha256:' . $extension->artifactSha256 : $extension->md5hash
                 );
         }
     }

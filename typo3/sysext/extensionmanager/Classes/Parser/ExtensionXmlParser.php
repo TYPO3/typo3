@@ -57,6 +57,7 @@ class ExtensionXmlParser implements \SplSubject
     protected int $reviewstate = 0;
     protected string $state = '';
     protected string $t3xfilemd5 = '';
+    protected string $artifactSha256 = '';
     protected string $title = '';
     protected string $uploadcomment = '';
     protected string $version = '';
@@ -210,6 +211,9 @@ class ExtensionXmlParser implements \SplSubject
             case 't3xfilemd5':
                 $this->t3xfilemd5 = $this->elementData;
                 break;
+            case 'artifactsha256':
+                $this->artifactSha256 = $this->elementData;
+                break;
             case 'documentation_link':
                 $this->documentationLink = $this->elementData;
                 break;
@@ -236,7 +240,7 @@ class ExtensionXmlParser implements \SplSubject
         // Resetting at least class property "version" is mandatory as we need to do some magic in
         // regards to an extension's and version's child node "downloadcounter"
         $this->version = $this->authorcompany = $this->authorname = $this->authoremail = $this->category = $this->dependencies = $this->state = '';
-        $this->description = $this->ownerusername = $this->t3xfilemd5 = $this->title = $this->uploadcomment = $this->documentationLink = $this->distributionImage = $this->distributionWelcomeImage = '';
+        $this->description = $this->ownerusername = $this->t3xfilemd5 = $this->artifactSha256 = $this->title = $this->uploadcomment = $this->documentationLink = $this->distributionImage = $this->distributionWelcomeImage = '';
         $this->lastuploaddate = $this->reviewstate = $this->versionDownloadCounter = 0;
         if ($resetAll) {
             $this->extensionKey = '';
@@ -400,6 +404,17 @@ class ExtensionXmlParser implements \SplSubject
     public function getT3xfilemd5(): string
     {
         return $this->t3xfilemd5;
+    }
+
+    /**
+     * Returns the SHA-256 hash of the zip artifact of an extension's version.
+     *
+     * Empty for remotes that do not publish it, and for versions uploaded
+     * before the remote started to record it.
+     */
+    public function getArtifactSha256(): string
+    {
+        return $this->artifactSha256;
     }
 
     /**

@@ -42,6 +42,7 @@ class Extension
     public string $ownerusername = '';
     public bool $currentVersion = false;
     public string $md5hash = '';
+    public string $artifactSha256 = '';
     public int $reviewState = 0;
     public int $alldownloadcounter = 0;
     public string $serializedDependencies = '';
@@ -75,6 +76,7 @@ class Extension
         $extension->ownerusername = $row['ownerusername'] ?? '';
         $extension->currentVersion = (bool)($row['current_version'] ?? false);
         $extension->md5hash = $row['md5hash'] ?? '';
+        $extension->artifactSha256 = $row['artifact_sha256'] ?? '';
         $extension->reviewState = (int)($row['review_state'] ?? 0);
         $extension->integerVersion = (int)($row['integer_version'] ?? 0);
         $extension->documentationLink = $row['documentation_link'] ?? '';

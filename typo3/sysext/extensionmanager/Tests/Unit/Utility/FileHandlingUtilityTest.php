@@ -148,6 +148,68 @@ final class FileHandlingUtilityTest extends UnitTestCase
         self::assertTrue(is_file($absoluteDirectoryPath . $relativeFilePath));
     }
 
+    /**
+     * Both unpacking routines have to leave the same state behind: a package that
+     * is already installed keeps its old metadata in the PackageManager and its
+     * old bytecode in the opcode cache otherwise, so an update of it stays
+     * invisible on installations running opcache.validate_timestamps=0.
+     */
+    #[Test]
+    public function unzipExtensionFromFileReloadsThePackageInformationOfAnInstalledExtension(): void
+    {
+        $extensionKey = 'test';
+        $packageManager = $this->createMock(PackageManager::class);
+        $packageManager->method('isPackageAvailable')->willReturn(true);
+        $packageManager->expects($this->once())->method('reloadPackageInformation')->with($extensionKey);
+        $opcodeCacheService = $this->createMock(OpcodeCacheService::class);
+        $opcodeCacheService->expects($this->once())->method('clearAllActive');
+        $zipService = $this->createMock(ZipService::class);
+        $zipService->method('verify')->willReturn(true);
+
+        $subject = $this->getAccessibleMock(
+            FileHandlingUtility::class,
+            ['makeAndClearExtensionDir', 'enrichComposerJsonWithComposerCapableFields'],
+            [
+                $packageManager,
+                new EmConfUtility(),
+                $opcodeCacheService,
+                $zipService,
+                $this->createMock(LanguageServiceFactory::class),
+                new NullLogger(),
+            ]
+        );
+        $subject->method('makeAndClearExtensionDir')->willReturn('my_path/');
+
+        $subject->unzipExtensionFromFile('archive.zip', $extensionKey);
+    }
+
+    #[Test]
+    public function unpackExtensionFromExtensionDataArrayReloadsThePackageInformationOfAnInstalledExtension(): void
+    {
+        $extensionKey = 'test';
+        $packageManager = $this->createMock(PackageManager::class);
+        $packageManager->method('isPackageAvailable')->willReturn(true);
+        $packageManager->expects($this->once())->method('reloadPackageInformation')->with($extensionKey);
+        $opcodeCacheService = $this->createMock(OpcodeCacheService::class);
+        $opcodeCacheService->expects($this->once())->method('clearAllActive');
+
+        $subject = $this->getAccessibleMock(
+            FileHandlingUtility::class,
+            ['makeAndClearExtensionDir', 'writeEmConfToFile', 'enrichComposerJsonWithComposerCapableFields'],
+            [
+                $packageManager,
+                new EmConfUtility(),
+                $opcodeCacheService,
+                $this->createMock(ZipService::class),
+                $this->createMock(LanguageServiceFactory::class),
+                new NullLogger(),
+            ]
+        );
+        $subject->method('makeAndClearExtensionDir')->willReturn('my_path/');
+
+        $subject->unpackExtensionFromExtensionDataArray($extensionKey, [], '1.0.0');
+    }
+
     #[Test]
     public function unpackExtensionFromExtensionDataArrayCreatesTheExtensionDirectory(): void
     {

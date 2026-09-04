@@ -20,6 +20,7 @@
             <authorcompany>The Georg Company</authorcompany>
             <ownerusername>supergeorg</ownerusername>
             <t3xfilemd5>8b2bcd42d41f54564b150d3d1ed33030</t3xfilemd5>
+            <artifactsha256>d6f2c3b1a49e0f7c5b8d2e1a0c9b8a7d6e5f4c3b2a1908f7e6d5c4b3a2918070</artifactsha256>
             <documentation_link>https://docs.typo3.org/typo3cms/extensions/news</documentation_link>
         </version>
         <version version="0.1.0">

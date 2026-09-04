@@ -113,11 +113,12 @@ class FileHandlingUtility
      * Unzip an extension.zip.
      *
      * @param string $file path to zip file
-     * @param string $fileName file name
+     * @param string $extensionKey the key of the extension the archive holds
+     * @param string $version the version to write into composer.json, read from ext_emconf.php when empty
      */
-    public function unzipExtensionFromFile(string $file, string $fileName): void
+    public function unzipExtensionFromFile(string $file, string $extensionKey, string $version = ''): void
     {
-        $extensionDir = $this->makeAndClearExtensionDir($fileName);
+        $extensionDir = $this->makeAndClearExtensionDir($extensionKey);
         try {
             if ($this->zipService->verify($file)) {
                 $this->zipService->extract($file, $extensionDir);
@@ -126,7 +127,8 @@ class FileHandlingUtility
             $this->logger->error('Extracting the extension archive failed', ['exception' => $e]);
             throw new ExtensionManagerException('Extracting the extension archive failed: ' . $e->getMessage(), 1565777179, $e);
         }
-        $this->enrichComposerJsonWithComposerCapableFields($fileName, $extensionDir);
+        $this->enrichComposerJsonWithComposerCapableFields($extensionKey, $extensionDir, $version);
+        $this->reloadPackageInformation($extensionKey);
     }
 
     /**

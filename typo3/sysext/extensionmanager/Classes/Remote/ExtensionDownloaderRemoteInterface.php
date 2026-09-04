@@ -37,7 +37,9 @@ interface ExtensionDownloaderRemoteInterface
      * @param string $extensionKey a lower-cased extension key
      * @param string $version the version to be fetched e.g. 1.5.2
      * @param FileHandlingUtility $fileHandler the file handler which deals with unpacking the files
-     * @param string|null $verificationHash if given the file is verified (depending on the remote, the verification hash can be anything)
+     * @param string|null $verificationHash if given the file is verified (depending on the remote, the verification hash can be anything).
+     *                                       Hashes of a known algorithm are prefixed with it, e.g. "sha256:<hash>", so a
+     *                                       remote can tell which artifact the hash belongs to and pick it accordingly.
      * @param string $pathType either "Local", "System" or "Global"
      * @throws DownloadFailedException when a remote file could not be loaded.
      * @throws VerificationFailedException when the remote file could not be unpacked or validated.
