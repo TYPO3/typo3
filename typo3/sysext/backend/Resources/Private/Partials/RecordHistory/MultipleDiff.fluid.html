@@ -13,13 +13,19 @@
                 <h3>{historyRow.title}</h3>
                 <div class="row">
                     <div class="col">
-                        <f:if condition="{historyRow.insertDelete} || {historyRow.fieldNames} || {historyRow.differences -> f:count()}">
+                        <f:if condition="{historyRow.insertDelete} || {historyRow.movedBackToPage} || {historyRow.movedBackWithinPage} || {historyRow.fieldNames} || {historyRow.differences -> f:count()}">
                             <div class="diff-group">
                                 <f:if condition="{historyRow.insertDelete} == 'delete'">
                                     <p><strong>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:rollback.plannedAction.delete')}</strong></p>
                                 </f:if>
                                 <f:if condition="{historyRow.insertDelete} == 'insert'">
                                     <p><strong>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:rollback.plannedAction.insert')}</strong></p>
+                                </f:if>
+                                <f:if condition="{historyRow.movedBackToPage}">
+                                    <p><strong><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:rollback.plannedAction.move" arguments="{0: historyRow.movedBackToPage}" /></strong></p>
+                                </f:if>
+                                <f:if condition="{historyRow.movedBackWithinPage}">
+                                    <p><strong>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:rollback.plannedAction.moveWithinPage')}</strong></p>
                                 </f:if>
                                 <f:if condition="{historyRow.fieldNames}">
                                     <p>{historyRow.fieldNames}</p>

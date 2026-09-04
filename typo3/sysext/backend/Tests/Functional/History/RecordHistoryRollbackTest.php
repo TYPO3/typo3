@@ -88,6 +88,42 @@ final class RecordHistoryRollbackTest extends FunctionalTestCase
         );
     }
 
+    private function getLatestHistoryEntry(): int
+    {
+        return (int)$this->getConnectionPool()
+            ->getConnectionForTable('sys_history')
+            ->executeQuery('SELECT MAX(uid) FROM sys_history')
+            ->fetchOne();
+    }
+
+    private function movePage(int $uid, int $destination): int
+    {
+        $dataHandler = $this->get(DataHandler::class);
+        $dataHandler->start([], ['pages' => [$uid => ['move' => $destination]]]);
+        $dataHandler->process_cmdmap();
+
+        return $this->getLatestHistoryEntry();
+    }
+
+    private function getDiffForRollbackOf(string $element, int $firstEntryOfRollback): array
+    {
+        $recordHistory = new RecordHistory($element);
+        $recordHistory->setLastHistoryEntryNumber($firstEntryOfRollback);
+        return $recordHistory->getDiff($recordHistory->getChangeLog());
+    }
+
+    /**
+     * @return array{pid: int, sorting: int}
+     */
+    private function getPosition(int $uid): array
+    {
+        $row = $this->getConnectionPool()
+            ->getConnectionForTable('pages')
+            ->executeQuery('SELECT pid, sorting FROM pages WHERE uid = ?', [$uid])
+            ->fetchAssociative();
+        return ['pid' => (int)$row['pid'], 'sorting' => (int)$row['sorting']];
+    }
+
     #[Test]
     public function rollbackOfASingleRecordRestoresAndUndeletesIt(): void
     {
@@ -120,5 +156,56 @@ final class RecordHistoryRollbackTest extends FunctionalTestCase
         // The undelete is written by the command map run, the field restore by the data map run
         self::assertGreaterThanOrEqual(2, count($scopes));
         self::assertCount(1, array_unique($scopes));
+    }
+
+    #[Test]
+    public function rollbackMovesARecordBackToItsPreviousPage(): void
+    {
+        $firstEntryOfRollback = $this->movePage(4, 1);
+        self::assertSame(1, $this->getPosition(4)['pid']);
+
+        $this->get(RecordHistoryRollback::class)->performRollback(
+            'ALL',
+            $this->getDiffForRollbackOf('pages:4', $firstEntryOfRollback)
+        );
+
+        // The sorting value itself is handed out by DataHandler and is not restored literally,
+        // page 4 is the only child of page 3 so its position is defined by the page alone
+        self::assertSame(3, $this->getPosition(4)['pid']);
+    }
+
+    #[Test]
+    public function rollbackRestoresThePositionAmongTheSiblingsOfThePreviousPage(): void
+    {
+        // pages 2 and 5 are both children of page 1, page 5 comes second
+        $firstEntryOfRollback = $this->movePage(5, 3);
+        self::assertSame(3, $this->getPosition(5)['pid']);
+
+        $this->get(RecordHistoryRollback::class)->performRollback(
+            'ALL',
+            $this->getDiffForRollbackOf('pages:5', $firstEntryOfRollback)
+        );
+
+        self::assertSame(1, $this->getPosition(5)['pid']);
+        self::assertGreaterThan($this->getPosition(2)['sorting'], $this->getPosition(5)['sorting']);
+    }
+
+    #[Test]
+    public function rollbackRestoresThePositionWithinTheSamePage(): void
+    {
+        // pages 2 and 5 are both children of page 1, page 5 comes second
+        self::assertGreaterThan($this->getPosition(2)['sorting'], $this->getPosition(5)['sorting']);
+
+        // Moving page 5 to the top of page 1 puts it in front of page 2
+        $firstEntryOfRollback = $this->movePage(5, 1);
+        self::assertLessThan($this->getPosition(2)['sorting'], $this->getPosition(5)['sorting']);
+
+        $this->get(RecordHistoryRollback::class)->performRollback(
+            'ALL',
+            $this->getDiffForRollbackOf('pages:5', $firstEntryOfRollback)
+        );
+
+        self::assertSame(1, $this->getPosition(5)['pid']);
+        self::assertGreaterThan($this->getPosition(2)['sorting'], $this->getPosition(5)['sorting']);
     }
 }

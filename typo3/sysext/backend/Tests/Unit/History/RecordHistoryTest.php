@@ -129,14 +129,44 @@ final class RecordHistoryTest extends UnitTestCase
     }
 
     #[Test]
-    public function movedRecordDoesNotProduceRollbackData(): void
+    public function movedRecordIsRolledBackAsAMoveAndNotAsAFieldChange(): void
     {
         $subject = new RecordHistory('tt_content:5');
         $result = $subject->getDiff([
             self::entry(RecordHistoryStore::ACTION_MOVE, [
+                'history_data' => [
+                    'oldData' => ['pid' => 1, 'sorting' => 128],
+                    'newData' => ['pid' => 2, 'sorting' => 256],
+                ],
+            ]),
+        ]);
+        self::assertSame([], $result['newData']);
+        self::assertSame([], $result['oldData']);
+        self::assertSame([], $result['insertsDeletes']);
+        self::assertSame(['tt_content:5' => ['pid' => 1, 'sorting' => 128]], $result['moves']);
+    }
+
+    #[Test]
+    public function theOldestOfSeveralMovesDefinesWhereARecordIsMovedBackTo(): void
+    {
+        $subject = new RecordHistory('tt_content:5');
+        // The changelog is ordered from new to old
+        $result = $subject->getDiff([
+            self::entry(RecordHistoryStore::ACTION_MOVE, [
+                'history_data' => ['oldData' => ['pid' => 2], 'newData' => ['pid' => 3]],
+            ]),
+            self::entry(RecordHistoryStore::ACTION_MOVE, [
                 'history_data' => ['oldData' => ['pid' => 1], 'newData' => ['pid' => 2]],
             ]),
         ]);
-        self::assertSame(['newData' => [], 'oldData' => [], 'insertsDeletes' => []], $result);
+        self::assertSame(['tt_content:5' => ['pid' => 1]], $result['moves']);
+    }
+
+    #[Test]
+    public function moveWithoutAPreviousPositionIsIgnored(): void
+    {
+        $subject = new RecordHistory('tt_content:5');
+        $result = $subject->getDiff([self::entry(RecordHistoryStore::ACTION_MOVE)]);
+        self::assertSame([], $result['moves']);
     }
 }

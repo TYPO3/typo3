@@ -282,7 +282,12 @@ class ElementHistoryController
 
         // Get all array keys needed
         /** @var string[] $arrayKeys */
-        $arrayKeys = array_merge(array_keys($diff['newData']), array_keys($diff['insertsDeletes']), array_keys($diff['oldData']));
+        $arrayKeys = array_merge(
+            array_keys($diff['newData']),
+            array_keys($diff['insertsDeletes']),
+            array_keys($diff['oldData']),
+            array_keys($diff['moves'] ?? [])
+        );
         $arrayKeys = array_unique($arrayKeys);
         if (!empty($arrayKeys)) {
             $lines = [];
@@ -329,7 +334,16 @@ class ElementHistoryController
                         $singleLine['differences'] = $this->renderDiff($tmpArr, $elParts[0], (int)$elParts[1], true);
                     }
                 }
-                $elParts = explode(':', $key);
+                if (isset($diff['moves'][$key])) {
+                    // A move is undone as a whole, there is no field to show a difference for
+                    $previousPageId = (int)($diff['moves'][$key]['pid'] ?? 0);
+                    $currentRecord = BackendUtility::getRecord($elParts[0], $elParts[1], 'pid', '', false);
+                    if ($currentRecord !== null && (int)$currentRecord['pid'] === $previousPageId) {
+                        $singleLine['movedBackWithinPage'] = true;
+                    } else {
+                        $singleLine['movedBackToPage'] = $this->generatePageTitle($previousPageId);
+                    }
+                }
                 $singleLine['rollbackFields'] = $key;
                 $singleLine['title'] = $this->generateTitle($elParts[0], $elParts[1]);
                 $singleLine['recordTable'] = $elParts[0];

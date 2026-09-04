@@ -123,6 +123,12 @@
       <trans-unit id="rollback.plannedAction.delete">
         <source>The record will be deleted with the rollback.</source>
       </trans-unit>
+      <trans-unit id="rollback.plannedAction.move">
+        <source>The record will be moved back to %s with the rollback.</source>
+      </trans-unit>
+      <trans-unit id="rollback.plannedAction.moveWithinPage">
+        <source>The previous position of the record on this page will be restored.</source>
+      </trans-unit>
       <trans-unit id="undelete">
         <source>undelete</source>
       </trans-unit>

@@ -222,6 +222,7 @@ class RecordHistory
         $insertsDeletes = [];
         $newArr = [];
         $differences = [];
+        $moves = [];
         // traverse changelog array
         foreach ($changeLog as $value) {
             $field = $value['tablename'] . ':' . $value['recuid'];
@@ -235,8 +236,19 @@ class RecordHistory
                 }
                 continue;
             }
-            // Only the existence of a record can be rolled back here. Moving, changing the stage
-            // and publishing a record do not add or remove one, so they are not counted at all.
+            if ($actionType === RecordHistoryStore::ACTION_MOVE) {
+                // A move stores where the record came from under other keys than a modification,
+                // and neither pid nor sorting is a TCA column, so it cannot be rolled back as a
+                // field. The changelog is traversed from new to old, so the last one wins and
+                // that is the position the record had before the oldest move shown.
+                $previousPosition = $value['history_data']['oldData'] ?? [];
+                if (isset($previousPosition['pid'])) {
+                    $moves[$field] = $previousPosition;
+                }
+                continue;
+            }
+            // Only the existence of a record can be rolled back here. Changing the stage and
+            // publishing a record do not add or remove one, so they are not counted at all.
             $existenceChange = match ($actionType) {
                 RecordHistoryStore::ACTION_ADD, RecordHistoryStore::ACTION_UNDELETE => 1,
                 RecordHistoryStore::ACTION_DELETE => -1,
@@ -266,6 +278,7 @@ class RecordHistory
             'newData' => $newArr,
             'oldData' => $differences,
             'insertsDeletes' => $insertsDeletes,
+            'moves' => $moves,
         ];
     }
 
