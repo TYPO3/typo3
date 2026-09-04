@@ -24,7 +24,8 @@ namespace TYPO3\CMS\Form\ViewHelpers;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Form\Domain\Model\FormElements\FormElementInterface;
 use TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface;
-use TYPO3\CMS\Form\Event\ModifyFormValueForRenderingEvent;
+use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
+use TYPO3\CMS\Form\Event\BeforeFormValueIsRenderedEvent;
 use TYPO3\CMS\Form\Service\FormValueResolver;
 use TYPO3Fluid\Fluid\Core\Variables\ScopedVariableProvider;
 use TYPO3Fluid\Fluid\Core\Variables\StandardVariableProvider;
@@ -64,6 +65,10 @@ final class RenderFormValueViewHelper extends AbstractViewHelper
         if (!$element instanceof FormElementInterface || !self::isEnabled($element)) {
             return '';
         }
+        /** @var FormRuntime $formRuntime */
+        $formRuntime = $this->renderingContext
+            ->getViewHelperVariableContainer()
+            ->get(RenderRenderableViewHelper::class, 'formRuntime');
         $renderingOptions = $element->getRenderingOptions();
         if ($renderingOptions['_isSection'] ?? false) {
             $data = [
@@ -73,9 +78,6 @@ final class RenderFormValueViewHelper extends AbstractViewHelper
         } elseif ($renderingOptions['_isCompositeFormElement'] ?? false) {
             return '';
         } else {
-            $formRuntime = $this->renderingContext
-                ->getViewHelperVariableContainer()
-                ->get(RenderRenderableViewHelper::class, 'formRuntime');
             $value = $formRuntime[$element->getIdentifier()];
             $data = [
                 'element' => $element,
@@ -84,10 +86,10 @@ final class RenderFormValueViewHelper extends AbstractViewHelper
                 'isMultiValue' => is_iterable($value),
             ];
         }
-        $event = new ModifyFormValueForRenderingEvent($data);
+        $event = new BeforeFormValueIsRenderedEvent($data, $element, $formRuntime);
         $this->eventDispatcher->dispatch($event);
 
-        $variableProvider = new ScopedVariableProvider($this->renderingContext->getVariableProvider(), new StandardVariableProvider([$this->arguments['as'] => $event->getData()]));
+        $variableProvider = new ScopedVariableProvider($this->renderingContext->getVariableProvider(), new StandardVariableProvider([$this->arguments['as'] => $event->data]));
         $this->renderingContext->setVariableProvider($variableProvider);
         $output = (string)$this->renderChildren();
         $this->renderingContext->setVariableProvider($variableProvider->getGlobalVariableProvider());

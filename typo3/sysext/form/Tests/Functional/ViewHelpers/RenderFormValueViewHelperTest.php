@@ -31,7 +31,7 @@ use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\CMS\Form\Domain\Factory\ArrayFormFactory;
 use TYPO3\CMS\Form\Domain\Model\FormDefinition;
-use TYPO3\CMS\Form\Event\ModifyFormValueForRenderingEvent;
+use TYPO3\CMS\Form\Event\BeforeFormValueIsRenderedEvent;
 use TYPO3\CMS\Form\ViewHelpers\RenderRenderableViewHelper;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -124,7 +124,7 @@ final class RenderFormValueViewHelperTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function respectsModifyFormValueForRenderingEvent(): void
+    public function respectsBeforeFormValueIsRenderedEvent(): void
     {
         $template = '<formvh:renderFormValue renderable="{element}" as="var">{var.processedValue}</formvh:renderFormValue>';
 
@@ -139,21 +139,21 @@ final class RenderFormValueViewHelperTest extends FunctionalTestCase
         /** @var Container $container */
         $container = $this->get('service_container');
         $container->set(
-            'modify-form-value-for-rendering-listener',
-            static function (ModifyFormValueForRenderingEvent $event) use ($element): void {
-                $data = $event->getData();
+            'before-form-value-is-rendered-listener',
+            static function (BeforeFormValueIsRenderedEvent $event) use ($element, $runtime): void {
                 self::assertSame([
                     'element' => $element,
                     'value' => 'element value',
                     'processedValue' => 'element value',
                     'isMultiValue' => false,
-                ], $data);
-                $data['processedValue'] = 'processed value';
-                $event->setData($data);
+                ], $event->data);
+                self::assertSame($element, $event->element);
+                self::assertSame($runtime, $event->formRuntime);
+                $event->data['processedValue'] = 'processed value';
             }
         );
         $eventListener = $container->get(ListenerProvider::class);
-        $eventListener->addListener(ModifyFormValueForRenderingEvent::class, 'modify-form-value-for-rendering-listener');
+        $eventListener->addListener(BeforeFormValueIsRenderedEvent::class, 'before-form-value-is-rendered-listener');
 
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getVariableProvider()->add('element', $element);
