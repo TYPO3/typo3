@@ -32,6 +32,15 @@ export type AdditionalColumnValue = {
   url?: string
 };
 
+export type ActionData = {
+  group?: string,
+  enabled?: boolean,
+  visible?: boolean,
+  icon?: string,
+  title?: string,
+  url?: string
+};
+
 export type RecordData = {
   table: string,
   id: string,
@@ -76,7 +85,8 @@ export type RecordData = {
     status: string,
     messages: string
   },
-  additional?: Record<string, AdditionalColumnValue>
+  additional?: Record<string, AdditionalColumnValue>,
+  actions?: Record<string, ActionData>
 };
 
 @customElement('typo3-workspaces-record-table')
@@ -280,10 +290,7 @@ export class RecordTableElement extends LitElement {
         ` : nothing}</td>
         <td>${data.label_Stage}</td>
         ${Object.keys(this.additionalColumns).map((identifier: string) => this.renderAdditionalColumn(data, identifier))}
-        <td class="col-control nowrap">
-          <div class="btn-group">${this.renderElementActions(data)}</div>
-          <div class="btn-group">${this.renderVersioningActions(data)}</div>
-        </td>
+        <td class="col-control nowrap">${this.renderActions(data)}</td>
       </tr>
     `;
   }
@@ -308,42 +315,94 @@ export class RecordTableElement extends LitElement {
     `;
   }
 
+  /**
+   * The action buttons of a row, rendered as one button group per group declared by the server.
+   * Which actions exist is decided there, the module only knows how to present its own ones.
+   */
+  protected renderActions(data: RecordData): TemplateResult[] {
+    const groups = new Map<string, TemplateResult[]>();
+
+    for (const [ identifier, action ] of Object.entries(data.actions ?? {})) {
+      if (action.visible === false) {
+        continue;
+      }
+      const group = action.group ?? 'custom';
+      if (!groups.has(group)) {
+        groups.set(group, []);
+      }
+      groups.get(group).push(this.renderAction(identifier, action, data));
+    }
+
+    return Array.from(groups.values()).map((actions: TemplateResult[]) => html`
+      <div class="btn-group">${actions}</div>
+    `);
+  }
+
+  protected renderAction(identifier: string, action: ActionData, data: RecordData): TemplateResult {
+    const enabled = action.enabled !== false;
+
+    if (identifier === 'qrcode') {
+      return this.getQrCodeAction(data, enabled);
+    }
+
+    const defaults = this.getActionDefaults(identifier, data, enabled);
+    const attributes: Record<string, string> = { ...defaults.attributes };
+    const title = action.title || defaults.title;
+    if (title !== '') {
+      attributes.title = title;
+    }
+    const icon = action.icon || defaults.icon;
+
+    if (action.url && enabled) {
+      return html`
+        <a class="btn btn-default" href=${action.url} title=${ifDefined(attributes.title)}>
+          <typo3-backend-icon identifier=${IconHelper.getIconIdentifier(icon || 'empty-empty')} size="small"></typo3-backend-icon>
+        </a>
+      `;
+    }
+
+    return this.getAction(enabled, identifier, icon, attributes);
+  }
+
   protected renderIndent(level: number) {
     return html`<span class="indent indent-inline-block" style="--indent-level: ${level}"></span>`;
   }
 
-  private renderElementActions(data: RecordData): TemplateResult[] {
-    return [
-      this.getAction(
-        (data.allowedAction_view && data.previewUrl !== ''),
-        'preview',
-        'actions-version-workspace-preview',
-        {
-          'title': labels.get('tooltip.viewElementAction')
-        }
-      ),
-      this.getQrCodeAction(data),
-      this.getAction(
-        data.allowedAction_edit && data.state_Workspace !== 'deleted',
-        'open',
-        'actions-open',
-        {
-          'title': labels.get('tooltip.editElementAction')
-        }
-      ),
-      this.getAction(
-        data.allowedAction_versionPageOpen,
-        'version',
-        'actions-version-page-open',
-        {
-          'title': labels.get('tooltip.openPage')
-        }
-      )
-    ];
+  /**
+   * Icon, title and attributes of the actions the module handles itself. Actions of third party
+   * extensions are unknown here and are presented with what their payload provides.
+   */
+  private getActionDefaults(identifier: string, data: RecordData, enabled: boolean): { icon: string, title: string, attributes: Record<string, string> } {
+    switch (identifier) {
+      case 'preview':
+        return { icon: 'actions-version-workspace-preview', title: labels.get('tooltip.viewElementAction'), attributes: {} };
+      case 'open':
+        return { icon: 'actions-open', title: labels.get('tooltip.editElementAction'), attributes: {} };
+      case 'version':
+        return { icon: 'actions-version-page-open', title: labels.get('tooltip.openPage'), attributes: {} };
+      case 'expand':
+        return {
+          icon: data.expanded ? 'actions-caret-down' : 'actions-caret-right',
+          title: labels.get('tooltip.expand'),
+          attributes: {
+            'data-bs-target': '[data-collection="' + data.Workspaces_CollectionCurrent + '"]',
+            'aria-expanded': !enabled || data.expanded ? 'true' : 'false',
+            'data-bs-toggle': 'collapse',
+          }
+        };
+      case 'changes':
+        return { icon: 'actions-document-info', title: labels.get('tooltip.showChanges'), attributes: {} };
+      case 'publish':
+        return { icon: 'actions-version-swap-version', title: labels.get('tooltip.publish'), attributes: {} };
+      case 'remove':
+        return { icon: 'actions-delete', title: labels.get('tooltip.discardVersion'), attributes: {} };
+      default:
+        return { icon: '', title: '', attributes: {} };
+    }
   }
 
-  private getQrCodeAction(data: RecordData): TemplateResult {
-    if (!data.previewUrl) {
+  private getQrCodeAction(data: RecordData, enabled: boolean): TemplateResult {
+    if (!enabled || !data.previewUrl) {
       return html`
         <button type="button" class="btn btn-default" disabled>
           <typo3-backend-icon identifier="empty-empty" size="small"></typo3-backend-icon>
@@ -359,48 +418,6 @@ export class RecordTableElement extends LitElement {
         <typo3-backend-icon identifier="actions-qrcode" size="small"></typo3-backend-icon>
       </typo3-qrcode-modal-button>
     `;
-  }
-
-  private renderVersioningActions(data: RecordData): TemplateResult[] {
-    const hasSubitems = data.Workspaces_CollectionChildren > 0 && data.Workspaces_CollectionCurrent !== '';
-
-    return [
-      this.getAction(
-        hasSubitems,
-        'expand',
-        (data.expanded ? 'actions-caret-down' : 'actions-caret-right'),
-        {
-          'title': labels.get('tooltip.expand'),
-          'data-bs-target': '[data-collection="' + data.Workspaces_CollectionCurrent + '"]',
-          'aria-expanded': !hasSubitems || data.expanded ? 'true' : 'false',
-          'data-bs-toggle': 'collapse',
-        }
-      ),
-      this.getAction(
-        data.hasChanges,
-        'changes',
-        'actions-document-info',
-        {
-          'title': labels.get('tooltip.showChanges')
-        }
-      ),
-      this.getAction(
-        data.allowedAction_publish && data.Workspaces_CollectionParent === '',
-        'publish',
-        'actions-version-swap-version',
-        {
-          'title': labels.get('tooltip.publish')
-        }
-      ),
-      this.getAction(
-        data.allowedAction_delete,
-        'remove',
-        'actions-delete',
-        {
-          'title': labels.get('tooltip.discardVersion')
-        }
-      )
-    ];
   }
 
   /**

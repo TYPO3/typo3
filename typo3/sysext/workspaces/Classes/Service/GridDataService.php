@@ -101,7 +101,7 @@ readonly class GridDataService
         $filterTxt = $parameter->filterTxt ?? '';
         $start = isset($parameter->start) ? (int)$parameter->start : 0;
         $limit = isset($parameter->limit) ? (int)$parameter->limit : 30;
-        $dataArray = $this->generateDataArray($stages, $versions, $filterTxt);
+        $dataArray = $this->determineActions($this->generateDataArray($stages, $versions, $filterTxt));
         return [
             // Only count parent records for pagination
             'total' => count(array_filter($dataArray, static function ($element) {
@@ -110,6 +110,61 @@ readonly class GridDataService
             'data' => $this->getDataArray($dataArray, $start, $limit),
             'additionalColumns' => $this->determineAdditionalColumns($dataArray),
         ];
+    }
+
+    /**
+     * The action buttons of a row, indexed by their identifier and rendered in the order and grouping
+     * given here. Listeners of AfterDataGeneratedForWorkspaceEvent turn an action off ('enabled'),
+     * remove it from the row ('visible') or add an own one ('icon', 'title', 'url'), which is why the
+     * default set is determined after that event has been dispatched and merged with what listeners
+     * provided. Actions the module does not know itself are rendered from the payload alone and are
+     * picked up by the JavaScript of the declaring extension via their 'data-action' attribute.
+     */
+    protected function determineActions(array $dataArray): array
+    {
+        foreach ($dataArray as &$row) {
+            $actions = [
+                'preview' => [
+                    'group' => 'element',
+                    'enabled' => (bool)($row['allowedAction_view'] ?? false) && ($row['previewUrl'] ?? '') !== '',
+                ],
+                'qrcode' => [
+                    'group' => 'element',
+                    'enabled' => ($row['previewUrl'] ?? '') !== '',
+                ],
+                'open' => [
+                    'group' => 'element',
+                    'enabled' => (bool)($row['allowedAction_edit'] ?? false) && ($row['state_Workspace'] ?? '') !== 'deleted',
+                ],
+                'version' => [
+                    'group' => 'element',
+                    'enabled' => (bool)($row['allowedAction_versionPageOpen'] ?? false),
+                ],
+                'expand' => [
+                    'group' => 'version',
+                    'enabled' => (int)($row['Workspaces_CollectionChildren'] ?? 0) > 0 && ($row['Workspaces_CollectionCurrent'] ?? '') !== '',
+                ],
+                'changes' => [
+                    'group' => 'version',
+                    'enabled' => (bool)($row['hasChanges'] ?? false),
+                ],
+                'publish' => [
+                    'group' => 'version',
+                    'enabled' => (bool)($row['allowedAction_publish'] ?? false) && ($row['Workspaces_CollectionParent'] ?? '') === '',
+                ],
+                'remove' => [
+                    'group' => 'version',
+                    'enabled' => (bool)($row['allowedAction_delete'] ?? false),
+                ],
+            ];
+            foreach (($row['actions'] ?? []) as $identifier => $action) {
+                $identifier = (string)$identifier;
+                $actions[$identifier] = array_replace($actions[$identifier] ?? ['group' => 'custom'], $action);
+            }
+            $row['actions'] = $actions;
+        }
+        unset($row);
+        return $dataArray;
     }
 
     /**
@@ -319,10 +374,10 @@ readonly class GridDataService
                     'icon_Workspace_Overlay' => $iconWorkspace->getOverlayIcon()?->getIdentifier() ?? '',
                     'comments' => $commentsForRecord,
                     'path_Live' => BackendUtility::getRecordPath($liveRecord['pid'], '', 999),
-                    'label_Stage' => $currentStage->title,
+                    'label_Stage' => $currentStage !== null ? $currentStage->title : '',
                     'label_PrevStage' => $previousStageSendToTitle ? ['title' => $previousStageSendToTitle] : false,
                     'label_NextStage' => $nextStageSendToTitle ? ['title' => $nextStageSendToTitle] : false,
-                    'stage_position' => $this->stagesService->getPositionOfCurrentStage($stages, $currentStage->uid),
+                    'stage_position' => $currentStage !== null ? $this->stagesService->getPositionOfCurrentStage($stages, $currentStage->uid) : 0,
                     'stage_count' => count($stages) - 1, // Do not count 'pseudo' execute stage
                     'parent' => [
                         'table' => $table,
@@ -387,7 +442,8 @@ readonly class GridDataService
                     $nextStage = $this->stagesService->getNextStage($stages, $currentStage->uid);
                     $previousStage = $this->stagesService->getPreviousStage($stages, $currentStage->uid);
                 } catch (WorkspaceStageNotFoundException) {
-                    // Shouldn't happen except for 'editing' stage, which has no previous stage.
+                    // The 'editing' stage has no previous stage, and a record may sit in a
+                    // stage that has been removed from the workspace in the meantime.
                 }
 
                 if ($hiddenField !== null) {
