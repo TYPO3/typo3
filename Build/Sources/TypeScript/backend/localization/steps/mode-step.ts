@@ -46,15 +46,20 @@ export class ModeStep implements WizardStepInterface, WizardStepValueInterface, 
           return [];
         }
 
-        const response = await new AjaxRequest(TYPO3.settings.ajaxUrls.wizard_localization_get_modes).withQueryArguments({
-          recordType: recordType,
-          recordUid: recordUid,
-          targetLanguage: targetLanguage,
-          sourceLanguage: sourceLanguage,
-        }).get();
-        const modes: LocalizationMode[] = await response.resolve();
+        try {
+          const response = await new AjaxRequest(TYPO3.settings.ajaxUrls.wizard_localization_get_modes).withQueryArguments({
+            recordType: recordType,
+            recordUid: recordUid,
+            targetLanguage: targetLanguage,
+            sourceLanguage: sourceLanguage,
+          }).get();
+          const modes: LocalizationMode[] = await response.resolve();
 
-        return modes;
+          return modes;
+        } catch (error) {
+          console.warn('Failed to fetch localization modes:', error);
+          return [];
+        }
       },
       args: () => [this.context.recordType, this.context.recordUid, this.context.getStoreData('targetLanguage'), this.context.getStoreData('sourceLanguage')],
       autoRun: false

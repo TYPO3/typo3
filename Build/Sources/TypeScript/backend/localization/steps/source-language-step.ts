@@ -38,14 +38,19 @@ export class SourceLanguageStep implements WizardStepInterface, WizardStepValueI
           return [];
         }
 
-        const response = await new AjaxRequest(TYPO3.settings.ajaxUrls.wizard_localization_get_sources).withQueryArguments({
-          recordType: recordType,
-          recordUid: recordUid,
-          targetLanguage: targetLanguageId,
-        }).get();
-        const sourceLanguages: LocalizationLanguageRecord[] = await response.resolve();
+        try {
+          const response = await new AjaxRequest(TYPO3.settings.ajaxUrls.wizard_localization_get_sources).withQueryArguments({
+            recordType: recordType,
+            recordUid: recordUid,
+            targetLanguage: targetLanguageId,
+          }).get();
+          const sourceLanguages: LocalizationLanguageRecord[] = await response.resolve();
 
-        return sourceLanguages;
+          return sourceLanguages;
+        } catch (error) {
+          console.warn('Failed to fetch source languages:', error);
+          return [];
+        }
       },
       args: () => [this.context.recordType, this.context.recordUid, this.context.getStoreData('targetLanguage')],
       autoRun: false
