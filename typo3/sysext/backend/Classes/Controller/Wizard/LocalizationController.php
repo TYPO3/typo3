@@ -85,11 +85,6 @@ readonly class LocalizationController
             return new JsonResponse(null, 404);
         }
 
-        $page = $recordType === 'pages' ? $recordUid : (int)$record['pid'];
-        if (!$this->hasLocalizationAccess($page, $recordType)) {
-            return new JsonResponse(null, 403);
-        }
-
         $schema = $this->schemaFactory->get($recordType);
         $recordTitle = BackendUtility::getRecordTitle($recordType, $record);
         $recordInfo = [
@@ -119,22 +114,6 @@ readonly class LocalizationController
         } catch (\InvalidArgumentException) {
             // Validate required parameters
             return new JsonResponse(null, 400);
-        }
-
-        $recordType = $localizationInstructions->mainRecordType;
-        $recordUid = $localizationInstructions->recordUid;
-        if ($recordType === 'pages') {
-            $page = $recordUid;
-        } else {
-            $record = BackendUtility::getRecord($recordType, $recordUid);
-            if (!$record) {
-                return new JsonResponse(null, 404);
-            }
-            $page = (int)$record['pid'];
-        }
-
-        if (!$this->hasLocalizationAccess($page, $recordType)) {
-            return new JsonResponse(null, 403);
         }
 
         // Get available handlers from registry
@@ -362,10 +341,6 @@ readonly class LocalizationController
         $targetLanguage = (int)$params['targetLanguage'];
         $sourceLanguage = (int)$params['sourceLanguage'];
 
-        if (!BackendUtility::readPageAccess($pageUid, $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW))) {
-            return new JsonResponse(null, 403);
-        }
-
         $records = [];
         $result = $this->localizationRepository->getRecordsToCopyDatabaseResult(
             $pageUid,
@@ -431,20 +406,6 @@ readonly class LocalizationController
         $targetLanguage = (int)$params['data']['targetLanguage'];
         $modeIdentifier = $params['data']['localizationMode'];
         $handlerIdentifier = $params['data']['localizationHandler'] ?? 'manual';
-
-        if ($recordType === 'pages') {
-            $page = $recordUid;
-        } else {
-            $record = BackendUtility::getRecord($recordType, $recordUid);
-            if (!$record) {
-                return new JsonResponse(null, 404);
-            }
-            $page = (int)$record['pid'];
-        }
-
-        if (!$this->hasLocalizationAccess($page, $recordType)) {
-            return new JsonResponse(null, 403);
-        }
 
         // Prepare Additional Data
         $additionalData = $params['data'];

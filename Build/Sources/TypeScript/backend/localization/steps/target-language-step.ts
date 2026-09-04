@@ -37,19 +37,24 @@ export class TargetLanguageStep implements WizardStepInterface, WizardStepValueI
   constructor(private readonly context: LocalizationContext) {
     this.task = new Task(this.context.wizard, {
       task: async ([recordType, recordUid]: [string, number]): Promise<LocalizationLanguageRecord[]> => {
-        const response = await new AjaxRequest(TYPO3.settings.ajaxUrls.wizard_localization_get_targets).withQueryArguments({
-          recordType: recordType,
-          recordUid: recordUid,
-        }).get();
-        let targetLanguages: LocalizationLanguageRecord[] = await response.resolve();
+        try {
+          const response = await new AjaxRequest(TYPO3.settings.ajaxUrls.wizard_localization_get_targets).withQueryArguments({
+            recordType: recordType,
+            recordUid: recordUid,
+          }).get();
+          let targetLanguages: LocalizationLanguageRecord[] = await response.resolve();
 
-        // Filter to only the predefined target language if one exists vsia property
-        const predefinedTargetLanguage = this.context.targetLanguage;
-        if (predefinedTargetLanguage != null) {
-          targetLanguages = targetLanguages.filter(lang => lang.uid === predefinedTargetLanguage);
+          // Filter to only the predefined target language if one exists vsia property
+          const predefinedTargetLanguage = this.context.targetLanguage;
+          if (predefinedTargetLanguage != null) {
+            targetLanguages = targetLanguages.filter(lang => lang.uid === predefinedTargetLanguage);
+          }
+
+          return targetLanguages;
+        } catch (error) {
+          console.warn('Failed to fetch target languages:', error);
+          return [];
         }
-
-        return targetLanguages;
       },
       args: () => [this.context.recordType, this.context.recordUid],
       autoRun: false
