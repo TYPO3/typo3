@@ -23,7 +23,12 @@ use TYPO3\CMS\Backend\History\Event\AfterHistoryRollbackFinishedEvent;
 use TYPO3\CMS\Backend\History\Event\BeforeHistoryRollbackStartEvent;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Database\Connection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 #[Autoconfigure(public: true)]
@@ -31,6 +36,8 @@ readonly class RecordHistoryRollback
 {
     public function __construct(
         private EventDispatcherInterface $eventDispatcher,
+        private TcaSchemaFactory $tcaSchemaFactory,
+        private ConnectionPool $connectionPool,
     ) {}
 
     /**
@@ -68,6 +75,29 @@ readonly class RecordHistoryRollback
                         // deleted records should be inserted again
                         $commandMapArray[$elParts[0]][$elParts[1]]['undelete'] = 1;
                     }
+                }
+            }
+        }
+        // PROCESS MOVES
+        // Moving a record back is a command of its own, the data map below only knows fields
+        if ($diff['moves'] ?? []) {
+            $moves = [];
+            if ($rollbackDataCount === 1) {
+                // all tables
+                $moves = $diff['moves'];
+            } elseif ($rollbackDataCount === 2 && !empty($diff['moves'][$rollbackFields])) {
+                // one record
+                $moves[$rollbackFields] = $diff['moves'][$rollbackFields];
+            }
+            foreach ($moves as $key => $previousPosition) {
+                [$moveTable, $moveUid] = explode(':', $key);
+                if (isset($commandMapArray[$moveTable][$moveUid]['delete'])) {
+                    // The record is removed by this rollback, so it must not be moved anywhere
+                    continue;
+                }
+                $target = $this->resolveMoveTarget($moveTable, (int)$moveUid, $previousPosition);
+                if ($target !== null) {
+                    $commandMapArray[$moveTable][$moveUid]['move'] = $target;
                 }
             }
         }
@@ -112,5 +142,50 @@ readonly class RecordHistoryRollback
             BackendUtility::setUpdateSignal('updatePageTree');
         }
         $this->eventDispatcher->dispatch(new AfterHistoryRollbackFinishedEvent($rollbackFields, $diff, $data, $this, $backendUserAuthentication));
+    }
+
+    /**
+     * Where a record has to go to sit at its previous position again. DataHandler takes the uid
+     * of a page to put the record on top of it, or the negative uid of the record it should
+     * follow. A stored sorting value alone says nothing, it only has a meaning next to the
+     * records that are on the page now, so the predecessor is looked up at rollback time.
+     *
+     * Returns null when the previous position is unknown.
+     */
+    private function resolveMoveTarget(string $table, int $uid, array $previousPosition): ?int
+    {
+        $previousPageId = (int)($previousPosition['pid'] ?? -1);
+        if ($previousPageId < 0) {
+            return null;
+        }
+        if (!$this->tcaSchemaFactory->has($table)) {
+            return null;
+        }
+        $schema = $this->tcaSchemaFactory->get($table);
+        if (!$schema->hasCapability(TcaSchemaCapability::SortByField)) {
+            return $previousPageId;
+        }
+        $sortByFieldName = $schema->getCapability(TcaSchemaCapability::SortByField)->getFieldName();
+        if (!isset($previousPosition[$sortByFieldName])) {
+            return $previousPageId;
+        }
+
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable($table);
+        $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        $predecessor = $queryBuilder
+            ->select('uid')
+            ->from($table)
+            ->where(
+                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($previousPageId, Connection::PARAM_INT)),
+                $queryBuilder->expr()->neq('uid', $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)),
+                $queryBuilder->expr()->lt($sortByFieldName, $queryBuilder->createNamedParameter((int)$previousPosition[$sortByFieldName], Connection::PARAM_INT))
+            )
+            ->orderBy($sortByFieldName, 'DESC')
+            ->setMaxResults(1)
+            ->executeQuery()
+            ->fetchOne();
+
+        // Nothing came before it, so the record was the first one on that page
+        return $predecessor === false ? $previousPageId : -(int)$predecessor;
     }
 }

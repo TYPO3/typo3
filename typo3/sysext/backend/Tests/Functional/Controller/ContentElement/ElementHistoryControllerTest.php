@@ -156,4 +156,25 @@ final class ElementHistoryControllerTest extends FunctionalTestCase
 
         self::assertStringContainsString('Please review this page', $this->renderHistoryOfRootPage());
     }
+
+    #[Test]
+    public function rollbackPreviewAnnouncesThatARecordIsMovedBack(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/ElementHistoryMoveAndStage.csv');
+        $dataHandler = $this->get(DataHandler::class);
+        $dataHandler->start([], ['pages' => [4 => ['move' => 3]]]);
+        $dataHandler->process_cmdmap();
+        $historyEntry = (int)$this->getConnectionPool()
+            ->getConnectionForTable('sys_history')
+            ->executeQuery('SELECT MAX(uid) FROM sys_history')
+            ->fetchOne();
+
+        $request = $this->buildRollbackRequest('GET', $historyEntry)
+            ->withQueryParams(['element' => 'pages:4', 'historyEntry' => $historyEntry]);
+        $body = (string)$this->get(ElementHistoryController::class)->mainAction($request)->getBody();
+
+        // Without this the preview claims there is nothing to roll back, while there is
+        self::assertStringContainsString('will be moved back to Source page', $body);
+        self::assertStringNotContainsString('There are no differences', $body);
+    }
 }
