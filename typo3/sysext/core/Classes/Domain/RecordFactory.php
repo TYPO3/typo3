@@ -68,7 +68,6 @@ readonly class RecordFactory
      * based on the type of the record.
      *
      * This method does not handle special expansion of fields.
-     * @todo Now unused - we might want to remove this again
      */
     public function createFromDatabaseRow(string $table, array $record): RecordInterface
     {
