@@ -27,9 +27,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Domain\RecordFactory;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
-use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerWriter;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -86,7 +84,7 @@ final class BackendLayoutRendererTest extends FunctionalTestCase
         ];
         $pageLayoutContext = $this->getPageLayoutContext(1100, $configuration);
         $subject = new BackendLayoutRenderer(
-            new BackendViewFactory($this->get(RenderingContextFactory::class), $this->get(PackageManager::class)),
+            $this->get(BackendViewFactory::class),
             $this->get(RecordFactory::class),
             $this->get(FlashMessageService::class),
         );
@@ -105,7 +103,7 @@ final class BackendLayoutRendererTest extends FunctionalTestCase
         ];
         $pageLayoutContext = $this->getPageLayoutContext(1100, $configuration);
         $subject = new BackendLayoutRenderer(
-            new BackendViewFactory($this->get(RenderingContextFactory::class), $this->get(PackageManager::class)),
+            $this->get(BackendViewFactory::class),
             $this->get(RecordFactory::class),
             $this->get(FlashMessageService::class),
         );
@@ -128,7 +126,7 @@ final class BackendLayoutRendererTest extends FunctionalTestCase
         ];
         $pageLayoutContext = $this->getPageLayoutContext(1100, $configuration);
         $subject = new BackendLayoutRenderer(
-            new BackendViewFactory($this->get(RenderingContextFactory::class), $this->get(PackageManager::class)),
+            $this->get(BackendViewFactory::class),
             $this->get(RecordFactory::class),
             $this->get(FlashMessageService::class),
         );
@@ -151,7 +149,7 @@ final class BackendLayoutRendererTest extends FunctionalTestCase
         ];
         $pageLayoutContext = $this->getPageLayoutContext(1100, $configuration);
         $subject = new BackendLayoutRenderer(
-            new BackendViewFactory($this->get(RenderingContextFactory::class), $this->get(PackageManager::class)),
+            $this->get(BackendViewFactory::class),
             $this->get(RecordFactory::class),
             $this->get(FlashMessageService::class),
         );
@@ -175,7 +173,7 @@ final class BackendLayoutRendererTest extends FunctionalTestCase
         ];
         $pageLayoutContext = $this->getPageLayoutContext(1100, $configuration);
         $subject = new BackendLayoutRenderer(
-            new BackendViewFactory($this->get(RenderingContextFactory::class), $this->get(PackageManager::class)),
+            $this->get(BackendViewFactory::class),
             $this->get(RecordFactory::class),
             $this->get(FlashMessageService::class),
         );
@@ -205,7 +203,7 @@ final class BackendLayoutRendererTest extends FunctionalTestCase
         ];
         $pageLayoutContext = $this->getPageLayoutContext(1100, $configuration);
         $subject = new BackendLayoutRenderer(
-            new BackendViewFactory($this->get(RenderingContextFactory::class), $this->get(PackageManager::class)),
+            $this->get(BackendViewFactory::class),
             $this->get(RecordFactory::class),
             $this->get(FlashMessageService::class),
         );
@@ -239,7 +237,7 @@ final class BackendLayoutRendererTest extends FunctionalTestCase
         ];
         $pageLayoutContext = $this->getPageLayoutContext(1100, $configuration);
         $subject = new BackendLayoutRenderer(
-            new BackendViewFactory($this->get(RenderingContextFactory::class), $this->get(PackageManager::class)),
+            $this->get(BackendViewFactory::class),
             $this->get(RecordFactory::class),
             $this->get(FlashMessageService::class),
         );
@@ -279,7 +277,7 @@ final class BackendLayoutRendererTest extends FunctionalTestCase
         ];
         $pageLayoutContext = $this->getPageLayoutContext(1100, $configuration);
         $subject = new BackendLayoutRenderer(
-            new BackendViewFactory($this->get(RenderingContextFactory::class), $this->get(PackageManager::class)),
+            $this->get(BackendViewFactory::class),
             $this->get(RecordFactory::class),
             $this->get(FlashMessageService::class),
         );
@@ -307,7 +305,7 @@ final class BackendLayoutRendererTest extends FunctionalTestCase
         ];
         $pageLayoutContext = $this->getPageLayoutContext(1100, $configuration);
         $subject = new BackendLayoutRenderer(
-            new BackendViewFactory($this->get(RenderingContextFactory::class), $this->get(PackageManager::class)),
+            $this->get(BackendViewFactory::class),
             $this->get(RecordFactory::class),
             $this->get(FlashMessageService::class),
         );

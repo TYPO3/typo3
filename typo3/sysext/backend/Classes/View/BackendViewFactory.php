@@ -23,10 +23,9 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\View\ViewFactoryData;
+use TYPO3\CMS\Core\View\ViewFactoryInterface;
 use TYPO3\CMS\Core\View\ViewInterface as CoreViewInterface;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
-use TYPO3\CMS\Fluid\View\FluidViewAdapter;
-use TYPO3Fluid\Fluid\View\TemplateView as FluidTemplateView;
 
 /**
  * Creates a View for backend usage. This is a low level factory. Extensions typically use ModuleTemplate instead.
@@ -34,7 +33,7 @@ use TYPO3Fluid\Fluid\View\TemplateView as FluidTemplateView;
 final readonly class BackendViewFactory
 {
     public function __construct(
-        private RenderingContextFactory $renderingContextFactory,
+        private ViewFactoryInterface $viewFactory,
         private PackageManager $packageManager,
     ) {}
 
@@ -112,9 +111,11 @@ final readonly class BackendViewFactory
             }
         }
 
-        // @todo: Inject ViewFactoryInterface instead, and use it.
-        $renderingContext = $this->renderingContextFactory->create($templatePaths, $request);
-        $fluidView = new FluidTemplateView($renderingContext);
-        return new FluidViewAdapter($fluidView);
+        return $this->viewFactory->create(new ViewFactoryData(
+            templateRootPaths: $templatePaths['templateRootPaths'],
+            partialRootPaths: $templatePaths['partialRootPaths'],
+            layoutRootPaths: $templatePaths['layoutRootPaths'],
+            request: $request,
+        ));
     }
 }
