@@ -62,11 +62,9 @@ abstract class AbstractBackend implements BackendInterface, LoggerAwareInterface
     /**
      * Sets the default lifetime for this cache backend
      *
-     * @param int $defaultLifetime Default lifetime of this cache backend in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited lifetime.
-     * @internal Misused for testing purposes.
-     * @todo: Fix tests and protect or remove
+     * @param int $defaultLifetime Default lifetime in seconds, "0" means unlimited lifetime
      */
-    public function setDefaultLifetime(int $defaultLifetime): void
+    protected function setDefaultLifetime(int $defaultLifetime): void
     {
         if ($defaultLifetime < 0) {
             throw new \InvalidArgumentException('The default lifetime must be given as a positive integer.', 1233072774);

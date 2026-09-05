@@ -133,11 +133,10 @@ final class RedisBackendTest extends FunctionalTestCase
     #[Test]
     public function setSavesEntryWithDefaultLifeTime(): void
     {
-        $subject = $this->setUpSubject();
+        $defaultLifetime = 42;
+        $subject = $this->setUpSubject(['defaultLifetime' => $defaultLifetime]);
         $redis = $this->setUpRedis();
         $identifier = StringUtility::getUniqueId('identifier');
-        $defaultLifetime = 42;
-        $subject->setDefaultLifetime($defaultLifetime);
         $subject->set($identifier, 'data');
         $lifetimeRegisteredInBackend = $redis->ttl('identData:' . $identifier);
         self::assertSame($defaultLifetime, $lifetimeRegisteredInBackend);
@@ -281,22 +280,6 @@ final class RedisBackendTest extends FunctionalTestCase
         $subject->set($identifier, $data, [], $lifetime);
         $lifetimeRegisteredInBackend = $redis->ttl('identData:' . $identifier);
         self::assertSame($lifetime, $lifetimeRegisteredInBackend);
-    }
-
-    #[Test]
-    public function setOverwritesExistingEntryWithNewDefaultLifetime(): void
-    {
-        $subject = $this->setUpSubject();
-        $redis = $this->setUpRedis();
-        $data = 'data';
-        $identifier = StringUtility::getUniqueId('identifier');
-        $lifetime = 42;
-        $subject->set($identifier, $data, [], $lifetime);
-        $newDefaultLifetime = 43;
-        $subject->setDefaultLifetime($newDefaultLifetime);
-        $subject->set($identifier, $data, [], $newDefaultLifetime);
-        $lifetimeRegisteredInBackend = $redis->ttl('identData:' . $identifier);
-        self::assertSame($newDefaultLifetime, $lifetimeRegisteredInBackend);
     }
 
     #[Test]
