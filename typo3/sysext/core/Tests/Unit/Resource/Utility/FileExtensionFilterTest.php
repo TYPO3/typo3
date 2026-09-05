@@ -19,6 +19,8 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\Utility;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Resource\Driver\DriverInterface;
+use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -35,6 +37,18 @@ final class FileExtensionFilterTest extends UnitTestCase
         $resourceFactoryMock->expects($this->never())->method('getFileReferenceObject');
         GeneralUtility::setSingletonInstance(ResourceFactory::class, $resourceFactoryMock);
         new FileExtensionFilter()->filter([0, '', null, false], '', '');
+    }
+
+    #[Test]
+    public function filterFileListExcludesFileThatNoLongerExists(): void
+    {
+        $driver = self::createStub(DriverInterface::class);
+        $driver->method('fileExists')->willReturn(true);
+        $driver->method('getFileInfoByIdentifier')->willThrowException(new FileDoesNotExistException());
+        $subject = new FileExtensionFilter();
+        $subject->setAllowedFileExtensions('jpg');
+
+        self::assertSame(-1, $subject->filterFileList('missing.jpg', '/missing.jpg', '/', [], $driver));
     }
 
     public static function extensionFilterIgnoresCaseInAllowedExtensionCheckDataProvider(): array

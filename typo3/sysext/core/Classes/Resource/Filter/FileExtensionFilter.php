@@ -93,7 +93,7 @@ class FileExtensionFilter
         if ($driver->fileExists($itemIdentifier)) {
             try {
                 $fileInfo = $driver->getFileInfoByIdentifier($itemIdentifier, ['extension']);
-            } catch (\InvalidArgumentException $e) {
+            } catch (ResourceDoesNotExistException $e) {
                 $fileInfo = [];
             }
             if (!$this->isAllowed((string)($fileInfo['extension'] ?? ''))) {

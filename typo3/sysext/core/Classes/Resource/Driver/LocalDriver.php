@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\SelfEmittableLazyOpenStream;
 use TYPO3\CMS\Core\Resource\Capabilities;
 use TYPO3\CMS\Core\Resource\Exception\ExistingTargetFileNameException;
+use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Exception\FileOperationErrorException;
 use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Exception\InvalidConfigurationException;
@@ -251,8 +252,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
         // don't use $this->fileExists() because we need the absolute path to the file anyway, so we can directly
         // use PHP's filesystem method.
         if (!file_exists($absoluteFilePath) || !is_file($absoluteFilePath)) {
-            // @todo: This should be turned into a specific exception instead!
-            throw new \InvalidArgumentException('File ' . $fileIdentifier . ' does not exist.', 1314516809);
+            throw new FileDoesNotExistException('File ' . $fileIdentifier . ' does not exist.', 1314516809);
         }
 
         $dirPath = dirname($fileIdentifier);

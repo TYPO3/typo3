@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Resource\Capabilities;
 use TYPO3\CMS\Core\Resource\Driver\LocalDriver;
 use TYPO3\CMS\Core\Resource\Exception\ExistingTargetFileNameException;
+use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Exception\FileOperationErrorException;
 use TYPO3\CMS\Core\Resource\Exception\InvalidFileNameException;
 use TYPO3\CMS\Core\Tests\Functional\Resource\Driver\Fixtures\LocalDriverFilenameFilter;
@@ -557,7 +558,7 @@ final class LocalDriverTest extends FunctionalTestCase
     #[Test]
     public function getFileThrowsExceptionIfFileDoesNotExist(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(FileDoesNotExistException::class);
         $this->expectExceptionCode(1314516809);
         $subject = $this->getDefaultInitializedSubject();
         $subject->getFileInfoByIdentifier('/some/file/at/a/random/path');

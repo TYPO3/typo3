@@ -56,17 +56,12 @@ final class FileLinkHandlerTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function resolveThrowsExceptionWithInvalidIdentifier(): void
+    public function resolveReturnsNullFileWithInvalidIdentifier(): void
     {
-        // @todo: This test shouldn't be here, but should be relocated, it tests for an exception
-        //        thrown by LocalDriver, and this exception should be turned into a specific
-        //        one. See the comment in LocalDriver->getFileInfoByIdentifier()
         $input = [
             'identifier' => 'this-identifier-cant-be-resolved',
         ];
         $subject = new FileLinkHandler();
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionCode(1314516809);
-        $subject->resolveHandlerData($input);
+        self::assertSame(['file' => null], $subject->resolveHandlerData($input));
     }
 }
