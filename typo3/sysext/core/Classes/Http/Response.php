@@ -160,10 +160,10 @@ class Response extends Message implements ResponseInterface
         if (!array_key_exists($code, $this->availableStatusCodes)) {
             throw new \InvalidArgumentException('The given status code is not a valid HTTP status code', 1436717279);
         }
-        $clonedObject = clone $this;
-        $clonedObject->statusCode = $code;
-        $clonedObject->reasonPhrase = $reasonPhrase !== '' ? $reasonPhrase : $this->availableStatusCodes[$code];
-        return $clonedObject;
+        return clone($this, [
+            'statusCode' => $code,
+            'reasonPhrase' => $reasonPhrase !== '' ? $reasonPhrase : $this->availableStatusCodes[$code],
+        ]);
     }
 
     /**

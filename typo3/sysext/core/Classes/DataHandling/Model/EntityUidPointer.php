@@ -56,9 +56,7 @@ class EntityUidPointer implements EntityPointer
         if ($this->identifier === $identifier) {
             return $this;
         }
-        $target = clone $this;
-        $target->identifier = $identifier;
-        return $target;
+        return clone($this, ['identifier' => $identifier]);
     }
 
     public function isNode(): bool

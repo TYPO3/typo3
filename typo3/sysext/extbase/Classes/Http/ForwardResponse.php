@@ -40,23 +40,17 @@ class ForwardResponse extends Response
 
     public function withControllerName(string $controllerName): self
     {
-        $clone = clone $this;
-        $clone->controllerName = $controllerName;
-        return $clone;
+        return clone($this, ['controllerName' => $controllerName]);
     }
 
     public function withoutControllerName(): self
     {
-        $clone = clone $this;
-        $clone->controllerName = null;
-        return $clone;
+        return clone($this, ['controllerName' => null]);
     }
 
     public function withExtensionName(string $extensionName): self
     {
-        $clone = clone $this;
-        $clone->extensionName = $extensionName;
-        return $clone;
+        return clone($this, ['extensionName' => $extensionName]);
     }
 
     public function withoutExtensionName(): self
@@ -68,9 +62,7 @@ class ForwardResponse extends Response
 
     public function withArguments(array $arguments): self
     {
-        $clone = clone $this;
-        $clone->arguments = $arguments;
-        return $clone;
+        return clone($this, ['arguments' => $arguments]);
     }
 
     public function withoutArguments(): self
@@ -82,9 +74,7 @@ class ForwardResponse extends Response
 
     public function withArgumentsValidationResult(Result $argumentsValidationResult): self
     {
-        $clone = clone $this;
-        $clone->argumentsValidationResult = $argumentsValidationResult;
-        return $clone;
+        return clone($this, ['argumentsValidationResult' => $argumentsValidationResult]);
     }
 
     public function withFlashMessages(FlashMessage ...$flashMessages): self
@@ -92,9 +82,7 @@ class ForwardResponse extends Response
         if ($flashMessages === []) {
             return $this;
         }
-        $clone = clone $this;
-        $clone->flashMessages = array_merge($this->flashMessages, $flashMessages);
-        return $clone;
+        return clone($this, ['flashMessages' => array_merge($this->flashMessages, $flashMessages)]);
     }
 
     public function getActionName(): string

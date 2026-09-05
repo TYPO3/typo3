@@ -99,9 +99,7 @@ final class SelectItem implements \ArrayAccess
 
     public function withLabel(string $label): SelectItem
     {
-        $clone = clone $this;
-        $clone->label = $label;
-        return $clone;
+        return clone($this, ['label' => $label]);
     }
 
     public function getValue(): int|string|null
@@ -111,9 +109,7 @@ final class SelectItem implements \ArrayAccess
 
     public function withValue(int|string|null $value): SelectItem
     {
-        $clone = clone $this;
-        $clone->value = $value;
-        return $clone;
+        return clone($this, ['value' => $value]);
     }
 
     public function getIcon(): ?string
@@ -128,9 +124,7 @@ final class SelectItem implements \ArrayAccess
 
     public function withIcon(?string $icon): SelectItem
     {
-        $clone = clone $this;
-        $clone->icon = $icon;
-        return $clone;
+        return clone($this, ['icon' => $icon]);
     }
 
     public function getGroup(): ?string
@@ -145,9 +139,7 @@ final class SelectItem implements \ArrayAccess
 
     public function withGroup(?string $group): SelectItem
     {
-        $clone = clone $this;
-        $clone->group = $group;
-        return $clone;
+        return clone($this, ['group' => $group]);
     }
 
     public function getDescription(): string|array|null
@@ -162,9 +154,7 @@ final class SelectItem implements \ArrayAccess
 
     public function withDescription(string|array|null $description): SelectItem
     {
-        $clone = clone $this;
-        $clone->description = $description;
-        return $clone;
+        return clone($this, ['description' => $description]);
     }
 
     public function invertStateDisplay(): bool
@@ -224,9 +214,7 @@ final class SelectItem implements \ArrayAccess
 
     public function withIconOverlay(?string $iconOverlay): SelectItem
     {
-        $clone = clone $this;
-        $clone->iconOverlay = $iconOverlay;
-        return $clone;
+        return clone($this, ['iconOverlay' => $iconOverlay]);
     }
 
     public function isDivider(): bool

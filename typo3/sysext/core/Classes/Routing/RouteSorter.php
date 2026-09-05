@@ -46,16 +46,12 @@ class RouteSorter
 
     public function withRoutes(array $routes): self
     {
-        $target = clone $this;
-        $target->routes = $routes;
-        return $target;
+        return clone($this, ['routes' => $routes]);
     }
 
     public function withOriginalParameters(array $originalParameters): self
     {
-        $target = clone $this;
-        $target->originalParameters = $originalParameters;
-        return $target;
+        return clone($this, ['originalParameters' => $originalParameters]);
     }
 
     public function sortRoutesForGeneration(): self

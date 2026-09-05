@@ -694,10 +694,11 @@ class ConnectionMigrator
                 // Treat each renamed index with a new diff to get a dedicated suggestions
                 // just for this index.
                 foreach ($changedTable->renamedIndexes as $key => $renamedIndex) {
-                    $indexDiff = clone $tableDiff;
-                    $indexDiff->renamedIndexes = [
-                        $changedTable->getOldTable()->getIndex($key)->getQuotedName($databasePlatform) => $renamedIndex,
-                    ];
+                    $indexDiff = clone($tableDiff, [
+                        'renamedIndexes' => [
+                            $changedTable->getOldTable()->getIndex($key)->getQuotedName($databasePlatform) => $renamedIndex,
+                        ],
+                    ]);
 
                     $temporarySchemaDiff = new Typo3SchemaDiff(
                         // createdSchemas
@@ -855,8 +856,9 @@ class ConnectionMigrator
                 );
 
                 foreach ($changedTable->modifiedForeignKeys as $changedForeignKey) {
-                    $foreignKeyDiff = clone $tableDiff;
-                    $foreignKeyDiff->modifiedForeignKeys = [$this->buildQuotedForeignKey($changedForeignKey)];
+                    $foreignKeyDiff = clone($tableDiff, [
+                        'modifiedForeignKeys' => [$this->buildQuotedForeignKey($changedForeignKey)],
+                    ]);
 
                     $temporarySchemaDiff = new Typo3SchemaDiff(
                         // createdSchemas

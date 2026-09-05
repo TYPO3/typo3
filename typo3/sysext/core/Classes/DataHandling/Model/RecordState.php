@@ -93,9 +93,7 @@ class RecordState
         if ($this->languageLink === $languageLink) {
             return $this;
         }
-        $target = clone $this;
-        $target->languageLink = $languageLink;
-        return $target;
+        return clone($this, ['languageLink' => $languageLink]);
     }
 
     /**
@@ -114,9 +112,7 @@ class RecordState
         if ($this->versionLink === $versionLink) {
             return $this;
         }
-        $target = clone $this;
-        $target->versionLink = $versionLink;
-        return $target;
+        return clone($this, ['versionLink' => $versionLink]);
     }
 
     public function isNew(): bool

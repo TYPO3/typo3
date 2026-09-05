@@ -44,9 +44,6 @@ final class Step implements \JsonSerializable
 
     public function withConfigurationData(array $configurationData): self
     {
-        $new = clone $this;
-        $new->configurationData = $configurationData;
-
-        return $new;
+        return clone($this, ['configurationData' => $configurationData]);
     }
 }

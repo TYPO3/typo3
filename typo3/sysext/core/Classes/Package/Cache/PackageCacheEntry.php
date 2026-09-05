@@ -189,10 +189,7 @@ class PackageCacheEntry
 
     public function withIdentifier(string $identifier): self
     {
-        $newEntry = clone $this;
-        $newEntry->identifier = $identifier;
-
-        return $newEntry;
+        return clone($this, ['identifier' => $identifier]);
     }
 
     /**

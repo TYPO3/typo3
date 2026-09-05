@@ -255,9 +255,10 @@ class ListUtility
             if ($terObject instanceof Extension) {
                 // Found in TER now, set version information to the known ones, so we can look if there is a newer one
                 // Use a cloned object, otherwise wrong information is stored in persistenceManager
-                $terObject = clone $terObject;
-                $terObject->version = $version;
-                $terObject->integerVersion = VersionNumberUtility::convertVersionNumberToInteger($terObject->version);
+                $terObject = clone($terObject, [
+                    'version' => $version,
+                    'integerVersion' => VersionNumberUtility::convertVersionNumberToInteger($version),
+                ]);
             } else {
                 $terObject = null;
             }

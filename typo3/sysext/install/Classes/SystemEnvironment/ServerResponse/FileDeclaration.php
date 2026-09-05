@@ -166,44 +166,32 @@ class FileDeclaration
 
     public function withExpectedContentType(string $contentType): self
     {
-        $target = clone $this;
-        $target->expectedContentType = $contentType;
-        return $target;
+        return clone($this, ['expectedContentType' => $contentType]);
     }
 
     public function withUnexpectedContentType(string $contentType): self
     {
-        $target = clone $this;
-        $target->unexpectedContentType = $contentType;
-        return $target;
+        return clone($this, ['unexpectedContentType' => $contentType]);
     }
 
     public function withExpectedContent(string $content): self
     {
-        $target = clone $this;
-        $target->expectedContent = $content;
-        return $target;
+        return clone($this, ['expectedContent' => $content]);
     }
 
     public function withUnexpectedContent(string $content): self
     {
-        $target = clone $this;
-        $target->unexpectedContent = $content;
-        return $target;
+        return clone($this, ['unexpectedContent' => $content]);
     }
 
     public function withHandler(\Closure $handler): self
     {
-        $target = clone $this;
-        $target->handler = $handler;
-        return $target;
+        return clone($this, ['handler' => $handler]);
     }
 
     public function withBuildFlags(int $buildFlags): self
     {
-        $target = clone $this;
-        $target->buildFlags = $buildFlags;
-        return $target;
+        return clone($this, ['buildFlags' => $buildFlags]);
     }
 
     public function getFileLocation(): FileLocation

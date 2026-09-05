@@ -104,9 +104,7 @@ class CorrelationId implements \JsonSerializable
         if ($this->subject === $subject) {
             return $this;
         }
-        $target = clone $this;
-        $target->subject = $subject;
-        return $target;
+        return clone($this, ['subject' => $subject]);
     }
 
     public function withAspects(string ...$aspects): self
@@ -114,9 +112,7 @@ class CorrelationId implements \JsonSerializable
         if ($this->aspects === $aspects) {
             return $this;
         }
-        $target = clone $this;
-        $target->aspects = $aspects;
-        return $target;
+        return clone($this, ['aspects' => $aspects]);
     }
 
     public function getScope(): ?string

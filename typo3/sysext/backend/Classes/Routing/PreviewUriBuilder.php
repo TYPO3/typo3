@@ -145,9 +145,7 @@ class PreviewUriBuilder
         if ($this->moduleLoading === $moduleLoading) {
             return $this;
         }
-        $target = clone $this;
-        $target->moduleLoading = $moduleLoading;
-        return $target;
+        return clone($this, ['moduleLoading' => $moduleLoading]);
     }
 
     /**
@@ -159,9 +157,7 @@ class PreviewUriBuilder
         if ($this->rootLine === $rootLine) {
             return $this;
         }
-        $target = clone $this;
-        $target->rootLine = $rootLine;
-        return $target;
+        return clone($this, ['rootLine' => $rootLine]);
     }
 
     /**
@@ -173,9 +169,7 @@ class PreviewUriBuilder
         if ($this->languageId === $language) {
             return $this;
         }
-        $target = clone $this;
-        $target->languageId = $language;
-        return $target;
+        return clone($this, ['languageId' => $language]);
     }
 
     /**
@@ -187,9 +181,7 @@ class PreviewUriBuilder
         if ($this->section === $section) {
             return $this;
         }
-        $target = clone $this;
-        $target->section = $section;
-        return $target;
+        return clone($this, ['section' => $section]);
     }
 
     /**
@@ -214,10 +206,10 @@ class PreviewUriBuilder
             return $this;
         }
 
-        $target = clone $this;
-        $target->additionalQueryParameters = $additionalQueryParams;
-        $target->languageId = $languageId;
-        return $target;
+        return clone($this, [
+            'additionalQueryParameters' => $additionalQueryParams,
+            'languageId' => $languageId,
+        ]);
     }
 
     public function isPreviewable(): bool

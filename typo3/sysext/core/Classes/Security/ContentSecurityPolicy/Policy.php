@@ -251,9 +251,7 @@ class Policy
                 }
             }
         }
-        $result = clone $target;
-        $result->directives = $directives;
-        return $result;
+        return clone($target, ['directives' => $directives]);
     }
 
     /**

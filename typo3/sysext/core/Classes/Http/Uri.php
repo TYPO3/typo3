@@ -406,9 +406,7 @@ class Uri implements UriInterface
     public function withScheme(string $scheme): UriInterface
     {
         $scheme = $this->sanitizeScheme($scheme);
-        $clonedObject = clone $this;
-        $clonedObject->scheme = $scheme;
-        return $clonedObject;
+        return clone($this, ['scheme' => $scheme]);
     }
 
     /**
@@ -433,9 +431,7 @@ class Uri implements UriInterface
             $userInfo .= ':' . $password;
         }
 
-        $clonedObject = clone $this;
-        $clonedObject->userInfo = $userInfo;
-        return $clonedObject;
+        return clone($this, ['userInfo' => $userInfo]);
     }
 
     /**
@@ -455,9 +451,7 @@ class Uri implements UriInterface
         if (filter_var($host, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) !== false) {
             $host = '[' . $host . ']';
         }
-        $clonedObject = clone $this;
-        $clonedObject->host = $host;
-        return $clonedObject;
+        return clone($this, ['host' => $host]);
     }
 
     /**
@@ -483,9 +477,7 @@ class Uri implements UriInterface
             throw new \InvalidArgumentException('Invalid port "' . $port . '" specified, must be a valid TCP/UDP port.', 1436717326);
         }
 
-        $clonedObject = clone $this;
-        $clonedObject->port = $port;
-        return $clonedObject;
+        return clone($this, ['port' => $port]);
     }
 
     protected function validatePort(int $port): bool
@@ -529,9 +521,7 @@ class Uri implements UriInterface
         }
 
         $path = $this->sanitizePath($path);
-        $clonedObject = clone $this;
-        $clonedObject->path = $path;
-        return $clonedObject;
+        return clone($this, ['path' => $path]);
     }
 
     /**
@@ -556,9 +546,7 @@ class Uri implements UriInterface
         }
 
         $query = $this->sanitizeQuery($query);
-        $clonedObject = clone $this;
-        $clonedObject->query = $query;
-        return $clonedObject;
+        return clone($this, ['query' => $query]);
     }
 
     /**
@@ -578,9 +566,7 @@ class Uri implements UriInterface
     public function withFragment(string $fragment): UriInterface
     {
         $fragment = $this->sanitizeFragment($fragment);
-        $clonedObject = clone $this;
-        $clonedObject->fragment = $fragment;
-        return $clonedObject;
+        return clone($this, ['fragment' => $fragment]);
     }
 
     /**

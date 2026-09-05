@@ -48,9 +48,7 @@ class EntityContext
         if ($this->workspaceId === $workspaceId) {
             return $this;
         }
-        $target = clone $this;
-        $target->workspaceId = $workspaceId;
-        return $target;
+        return clone($this, ['workspaceId' => $workspaceId]);
     }
 
     public function getLanguageId(): int
@@ -66,8 +64,6 @@ class EntityContext
         if ($this->languageId === $languageId) {
             return $this;
         }
-        $target = clone $this;
-        $target->languageId = $languageId;
-        return $target;
+        return clone($this, ['languageId' => $languageId]);
     }
 }

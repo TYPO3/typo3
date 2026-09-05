@@ -240,9 +240,7 @@ class Request extends Message implements RequestInterface
         if (preg_match('#\s#', $requestTarget)) {
             throw new \InvalidArgumentException('Invalid request target provided which contains whitespaces.', 1436717273);
         }
-        $clonedObject = clone $this;
-        $clonedObject->requestTarget = $requestTarget;
-        return $clonedObject;
+        return clone($this, ['requestTarget' => $requestTarget]);
     }
 
     /**
@@ -269,9 +267,7 @@ class Request extends Message implements RequestInterface
      */
     public function withMethod(string $method): static
     {
-        $clonedObject = clone $this;
-        $clonedObject->method = $method;
-        return $clonedObject;
+        return clone($this, ['method' => $method]);
     }
 
     /**
@@ -320,8 +316,7 @@ class Request extends Message implements RequestInterface
      */
     public function withUri(UriInterface $uri, bool $preserveHost = false): static
     {
-        $clonedObject = clone $this;
-        $clonedObject->uri = $uri;
+        $clonedObject = clone($this, ['uri' => $uri]);
 
         if ($preserveHost) {
             return $clonedObject;

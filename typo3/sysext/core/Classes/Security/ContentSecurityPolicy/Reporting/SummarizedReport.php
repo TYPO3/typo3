@@ -35,9 +35,7 @@ class SummarizedReport extends Report
 
     public function withCount(int $count): self
     {
-        $target = clone $this;
-        $target->count = $count;
-        return $target;
+        return clone($this, ['count' => $count]);
     }
 
     public function withAttribute(ReportAttribute $attribute): self
@@ -55,9 +53,7 @@ class SummarizedReport extends Report
         if ($this->mutationHashes === $mutationHashes) {
             return $this;
         }
-        $target = clone $this;
-        $target->mutationHashes = $mutationHashes;
-        return $target;
+        return clone($this, ['mutationHashes' => $mutationHashes]);
     }
 
     public function jsonSerialize(): array

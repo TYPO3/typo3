@@ -120,9 +120,7 @@ final class HashProxy implements \JsonSerializable, SourceValueInterface
         if ($this->type === $type) {
             return $this;
         }
-        $target = clone $this;
-        $target->type = $type;
-        return $target;
+        return clone($this, ['type' => $type]);
     }
 
     public function isEmpty(): bool

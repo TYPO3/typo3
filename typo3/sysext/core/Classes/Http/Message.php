@@ -79,9 +79,7 @@ class Message implements MessageInterface
      */
     public function withProtocolVersion(string $version): MessageInterface
     {
-        $clonedObject = clone $this;
-        $clonedObject->protocolVersion = $version;
-        return $clonedObject;
+        return clone($this, ['protocolVersion' => $version]);
     }
 
     /**
@@ -306,9 +304,7 @@ class Message implements MessageInterface
      */
     public function withBody(StreamInterface $body): MessageInterface
     {
-        $clonedObject = clone $this;
-        $clonedObject->body = $body;
-        return $clonedObject;
+        return clone($this, ['body' => $body]);
     }
 
     /**

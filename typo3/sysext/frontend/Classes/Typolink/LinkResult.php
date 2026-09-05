@@ -76,9 +76,7 @@ class LinkResult implements LinkResultInterface, \Stringable, \JsonSerializable
 
     public function withTarget(string $target): self
     {
-        $newObject = clone $this;
-        $newObject->target = $target;
-        return $newObject;
+        return clone($this, ['target' => $target]);
     }
 
     /**
@@ -91,16 +89,12 @@ class LinkResult implements LinkResultInterface, \Stringable, \JsonSerializable
 
     public function withLinkConfiguration(array $configuration): self
     {
-        $newObject = clone $this;
-        $newObject->linkConfiguration = $configuration;
-        return $newObject;
+        return clone($this, ['linkConfiguration' => $configuration]);
     }
 
     public function withLinkText(string $linkText): self
     {
-        $newObject = clone $this;
-        $newObject->linkText = $linkText;
-        return $newObject;
+        return clone($this, ['linkText' => $linkText]);
     }
 
     public function getLinkText(): ?string
@@ -196,9 +190,7 @@ class LinkResult implements LinkResultInterface, \Stringable, \JsonSerializable
         if ($this->flags === $flags) {
             return $this;
         }
-        $target = clone $this;
-        $target->flags = $flags;
-        return $target;
+        return clone($this, ['flags' => $flags]);
     }
 
     protected function filterAdditionalAttributes(array $attributes): array

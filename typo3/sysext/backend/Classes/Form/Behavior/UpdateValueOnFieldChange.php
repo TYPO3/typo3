@@ -41,9 +41,7 @@ class UpdateValueOnFieldChange implements OnFieldChangeInterface
         if ($this->elementName === $elementName) {
             return $this;
         }
-        $target = clone $this;
-        $target->elementName = $elementName;
-        return $target;
+        return clone($this, ['elementName' => $elementName]);
     }
 
     public function toArray(): array

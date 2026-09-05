@@ -81,9 +81,7 @@ final class ContentArea implements \IteratorAggregate, \Countable
      */
     public function withRecords(array $records): self
     {
-        $self = clone $this;
-        $self->records = $records;
-        return $self;
+        return clone($this, ['records' => $records]);
     }
 
     public function getIterator(): \Traversable

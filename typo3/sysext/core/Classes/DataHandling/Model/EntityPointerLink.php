@@ -61,8 +61,6 @@ class EntityPointerLink
         if ($this->ancestor === $ancestor) {
             return $this;
         }
-        $target = clone $this;
-        $target->ancestor = $ancestor;
-        return $target;
+        return clone($this, ['ancestor' => $ancestor]);
     }
 }

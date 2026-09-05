@@ -663,12 +663,13 @@ class RecordListController
 
     protected function renderPageTranslations(DatabaseRecordList $dbList, array $siteLanguages): string
     {
-        $pageTranslationsDatabaseRecordList = clone $dbList;
-        $pageTranslationsDatabaseRecordList->id = $this->pageContext->pageId;
-        $pageTranslationsDatabaseRecordList->listOnlyInSingleTableMode = false;
-        $pageTranslationsDatabaseRecordList->disableSingleTableView = true;
-        $pageTranslationsDatabaseRecordList->deniedNewTables = ['pages'];
-        $pageTranslationsDatabaseRecordList->hideTranslations = '';
+        $pageTranslationsDatabaseRecordList = clone($dbList, [
+            'id' => $this->pageContext->pageId,
+            'listOnlyInSingleTableMode' => false,
+            'disableSingleTableView' => true,
+            'deniedNewTables' => ['pages'],
+            'hideTranslations' => '',
+        ]);
         $pageTranslationsDatabaseRecordList->setLanguagesAllowedForUser($siteLanguages);
         $pageTranslationsDatabaseRecordList->showOnlyTranslatedRecords(true);
         return $pageTranslationsDatabaseRecordList->getTable('pages');

@@ -100,10 +100,7 @@ class SiteRouteResult implements RouteResultInterface
      */
     public function withLanguage(SiteLanguage $language): self
     {
-        $clone = clone $this;
-        $clone->language = $language;
-
-        return $clone;
+        return clone($this, ['language' => $language]);
     }
 
     /**

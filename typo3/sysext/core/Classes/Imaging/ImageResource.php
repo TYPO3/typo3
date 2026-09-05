@@ -71,9 +71,7 @@ class ImageResource
 
     public function withWidth(int $width): self
     {
-        $imageResource = clone $this;
-        $imageResource->width = $width;
-        return $imageResource;
+        return clone($this, ['width' => $width]);
     }
 
     public function getHeight(): int
@@ -83,9 +81,7 @@ class ImageResource
 
     public function withHeight(int $height): self
     {
-        $imageResource = clone $this;
-        $imageResource->height = $height;
-        return $imageResource;
+        return clone($this, ['height' => $height]);
     }
 
     public function getExtension(): string
@@ -95,9 +91,7 @@ class ImageResource
 
     public function withExtension(string $extension): self
     {
-        $imageResource = clone $this;
-        $imageResource->extension = $extension;
-        return $imageResource;
+        return clone($this, ['extension' => $extension]);
     }
 
     public function getFullPath(): string
@@ -107,9 +101,7 @@ class ImageResource
 
     public function withFullPath(string $fullPath): self
     {
-        $imageResource = clone $this;
-        $imageResource->fullPath = $fullPath;
-        return $imageResource;
+        return clone($this, ['fullPath' => $fullPath]);
     }
 
     public function getPublicUrl(): ?string
@@ -119,9 +111,7 @@ class ImageResource
 
     public function withPublicUrl(string $publicUrl): self
     {
-        $imageResource = clone $this;
-        $imageResource->publicUrl = $publicUrl;
-        return $imageResource;
+        return clone($this, ['publicUrl' => $publicUrl]);
     }
 
     public function getOriginalFile(): ?File
@@ -131,9 +121,7 @@ class ImageResource
 
     public function withOriginalFile(?File $originalFile): self
     {
-        $imageResource = clone $this;
-        $imageResource->originalFile = $originalFile;
-        return $imageResource;
+        return clone($this, ['originalFile' => $originalFile]);
     }
 
     public function getProcessedFile(): ?ProcessedFile
@@ -143,9 +131,7 @@ class ImageResource
 
     public function withProcessedFile(?ProcessedFile $processedFile): self
     {
-        $imageResource = clone $this;
-        $imageResource->processedFile = $processedFile;
-        return $imageResource;
+        return clone($this, ['processedFile' => $processedFile]);
     }
 
     /**

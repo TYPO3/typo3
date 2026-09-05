@@ -114,9 +114,7 @@ class ServerRequest extends Request implements ServerRequestInterface
      */
     public function withCookieParams(array $cookies): static
     {
-        $clonedObject = clone $this;
-        $clonedObject->cookieParams = $cookies;
-        return $clonedObject;
+        return clone($this, ['cookieParams' => $cookies]);
     }
 
     /**
@@ -156,9 +154,7 @@ class ServerRequest extends Request implements ServerRequestInterface
      */
     public function withQueryParams(array $query): static
     {
-        $clonedObject = clone $this;
-        $clonedObject->queryParams = $query;
-        return $clonedObject;
+        return clone($this, ['queryParams' => $query]);
     }
 
     /**
@@ -191,9 +187,7 @@ class ServerRequest extends Request implements ServerRequestInterface
     public function withUploadedFiles(array $uploadedFiles): static
     {
         $this->validateUploadedFiles($uploadedFiles);
-        $clonedObject = clone $this;
-        $clonedObject->uploadedFiles = $uploadedFiles;
-        return $clonedObject;
+        return clone($this, ['uploadedFiles' => $uploadedFiles]);
     }
 
     /**
@@ -245,9 +239,7 @@ class ServerRequest extends Request implements ServerRequestInterface
      */
     public function withParsedBody($data): static
     {
-        $clonedObject = clone $this;
-        $clonedObject->parsedBody = $data;
-        return $clonedObject;
+        return clone($this, ['parsedBody' => $data]);
     }
 
     /**
