@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Attribute\AsNonSchedulableCommand;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Scheduler\Domain\Repository\SchedulerTaskRepository;
+use TYPO3\CMS\Scheduler\Exception\InvalidTaskException;
 use TYPO3\CMS\Scheduler\Scheduler;
 use TYPO3\CMS\Scheduler\Service\TaskService;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
@@ -200,7 +201,7 @@ Call it like this: typo3/sysext/core/bin/typo3 scheduler:run --task=13 -f')
                     // The exception message has been recorded to the database anyway
                     continue;
                 }
-            } catch (\UnexpectedValueException $e) {
+            } catch (InvalidTaskException|\UnexpectedValueException $e) {
                 $this->io->getErrorStyle()->error($e->getMessage());
                 $hasError = true;
                 continue;
@@ -217,6 +218,7 @@ Call it like this: typo3/sysext/core/bin/typo3 scheduler:run --task=13 -f')
      *
      * Without the --task option we ask the scheduler for the next task with pending execution.
      *
+     * @throws InvalidTaskException
      * @throws \UnexpectedValueException When no task is found by the provided UID or the task is not marked for execution.
      */
     protected function fetchNextTask(): ?AbstractTask

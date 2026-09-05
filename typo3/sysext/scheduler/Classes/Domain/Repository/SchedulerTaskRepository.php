@@ -172,7 +172,7 @@ readonly class SchedulerTaskRepository
      *
      * @param int $uid Primary key of a task
      * @throws \OutOfBoundsException
-     * @throws \UnexpectedValueException
+     * @throws InvalidTaskException
      */
     public function findByUid(int $uid): AbstractTask
     {
@@ -205,7 +205,7 @@ readonly class SchedulerTaskRepository
      * Fetch and unserialize a task object from the db. Returns the object representing the
      * next due task is returned. If there are no due tasks, the method throws an exception.
      *
-     * @throws \UnexpectedValueException
+     * @throws InvalidTaskException
      */
     public function findNextExecutableTask(): ?AbstractTask
     {
@@ -390,9 +390,7 @@ readonly class SchedulerTaskRepository
                     ->getConnectionForTable(self::TABLE_NAME)
                     ->update(self::TABLE_NAME, [$fieldName => 1], ['uid' => (int)$row['uid']]);
             }
-            // Throw an exception to raise the problem
-            // @todo: This should most likely be changed to a specific exception.
-            throw new \UnexpectedValueException('Could not unserialize task', 1255083671);
+            throw new InvalidTaskException('Could not unserialize task', 1255083671);
         }
 
         // The task is valid, return it

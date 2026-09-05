@@ -39,6 +39,7 @@ use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\View\ViewInterface;
 use TYPO3\CMS\Scheduler\Domain\Repository\SchedulerTaskRepository;
+use TYPO3\CMS\Scheduler\Exception\InvalidTaskException;
 use TYPO3\CMS\Scheduler\Execution;
 use TYPO3\CMS\Scheduler\Scheduler;
 use TYPO3\CMS\Scheduler\Service\TaskService;
@@ -140,7 +141,7 @@ final readonly class SchedulerModuleController
                     $this->addMessage($view, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.deleteError'));
                 }
             }
-        } catch (\UnexpectedValueException) {
+        } catch (InvalidTaskException) {
             // The task could not be unserialized, simply update the database record setting it to deleted
             $result = $this->taskRepository->remove($taskUid);
             if ($result) {
@@ -182,7 +183,7 @@ final readonly class SchedulerModuleController
             }
         } catch (\OutOfBoundsException $e) {
             $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.taskNotFound'), $taskUid), ContextualFeedbackSeverity::ERROR);
-        } catch (\UnexpectedValueException $e) {
+        } catch (InvalidTaskException $e) {
             $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.stopTaskFailed'), $taskUid, $e->getMessage()), ContextualFeedbackSeverity::ERROR);
         }
     }
@@ -218,7 +219,7 @@ final readonly class SchedulerModuleController
             $this->taskRepository->updateExecution($task);
         } catch (\OutOfBoundsException) {
             $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.taskNotFound'), $taskUid), ContextualFeedbackSeverity::ERROR);
-        } catch (\UnexpectedValueException $e) {
+        } catch (InvalidTaskException $e) {
             $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.toggleDisableFailed'), $taskUid, $e->getMessage()), ContextualFeedbackSeverity::ERROR);
         }
     }
@@ -279,7 +280,7 @@ final readonly class SchedulerModuleController
                 $this->taskRepository->updateExecution($task);
             } catch (\OutOfBoundsException $e) {
                 $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.taskNotFound'), $uid), ContextualFeedbackSeverity::ERROR);
-            } catch (\UnexpectedValueException $e) {
+            } catch (InvalidTaskException $e) {
                 $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.schedulingFailed'), $uid, $e->getMessage()), ContextualFeedbackSeverity::ERROR);
             }
         }

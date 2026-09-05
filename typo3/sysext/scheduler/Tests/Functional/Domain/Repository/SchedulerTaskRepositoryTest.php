@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Scheduler\Domain\Repository\SchedulerTaskRepository;
+use TYPO3\CMS\Scheduler\Exception\InvalidTaskException;
 use TYPO3\CMS\Scheduler\Task\TaskStatus;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -67,6 +68,22 @@ final class SchedulerTaskRepositoryTest extends FunctionalTestCase
         // Task 4 is more overdue and should be picked first
         self::assertNotNull($task);
         self::assertSame(4, $task->getTaskUid());
+    }
+
+    #[Test]
+    public function findByUidThrowsInvalidTaskExceptionAndDisablesInvalidTask(): void
+    {
+        $connection = $this->getConnectionPool()->getConnectionForTable('tx_scheduler_task');
+        $connection->update('tx_scheduler_task', ['tasktype' => 'invalid'], ['uid' => 1]);
+
+        try {
+            $this->get(SchedulerTaskRepository::class)->findByUid(1);
+            self::fail('An invalid task must throw an exception');
+        } catch (InvalidTaskException $exception) {
+            self::assertSame(1255083671, $exception->getCode());
+        }
+
+        self::assertSame(1, (int)$connection->fetchOne('SELECT disable FROM tx_scheduler_task WHERE uid = 1'));
     }
 
     #[Test]
