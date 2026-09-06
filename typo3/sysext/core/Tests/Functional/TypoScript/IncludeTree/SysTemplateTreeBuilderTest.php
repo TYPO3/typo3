@@ -17,11 +17,15 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\TypoScript\IncludeTree;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\IncludeStaticFileDatabaseInclude;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\RootInclude;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\SysTemplateRepository;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\SysTemplateTreeBuilder;
@@ -311,6 +315,50 @@ final class SysTemplateTreeBuilderTest extends FunctionalTestCase
         $ast = $this->getAst($includeTree);
         self::assertSame('fooValue', $ast->getChildByName('foo')->getValue());
         self::assertSame('includeStaticTarget', $ast->getChildByName('bar')->getValue());
+    }
+
+    public static function duplicateStaticIncludesDataProvider(): array
+    {
+        return [
+            'constants before basedOn' => ['constants', false],
+            'constants after basedOn' => ['constants', true],
+            'setup before basedOn' => ['setup', false],
+            'setup after basedOn' => ['setup', true],
+        ];
+    }
+
+    #[Test]
+    #[DataProvider('duplicateStaticIncludesDataProvider')]
+    public function duplicateStaticIncludesAreIncludedOnce(string $type, bool $includeStaticAfterBasedOn): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/SysTemplate/singleRootTemplate.csv');
+        $firstInclude = 'EXT:core/Tests/Functional/TypoScript/IncludeTree/Fixtures/SysTemplate';
+        $secondInclude = 'EXT:core/Tests/Functional/TypoScript/IncludeTree/Fixtures/AtImport/AbsoluteImport/Scenario1';
+        $this->get(ConnectionPool::class)->getConnectionForTable('sys_template')->update(
+            'sys_template',
+            [
+                'include_static_file' => $firstInclude . ', ' . $secondInclude . ', , ' . $firstInclude . ',',
+                'includeStaticAfterBasedOn' => (int)$includeStaticAfterBasedOn,
+            ],
+            ['uid' => 1]
+        );
+        $rows = $this->get(SysTemplateRepository::class)->getSysTemplateRowsByRootline([['uid' => 1, 'pid' => 0, 'is_siteroot' => 0]]);
+        $subject = $this->get(SysTemplateTreeBuilder::class);
+        $cache = $this->get(CacheManager::class)->getCache('typoscript');
+        self::assertInstanceOf(PhpFrontend::class, $cache);
+        foreach ([null, $cache, $cache] as $typoScriptCache) {
+            $tree = $subject->getTreeBySysTemplateRowsAndSite($type, $rows, new LossyTokenizer(), null, $typoScriptCache);
+            $includes = [];
+            foreach (iterator_to_array($tree->getNextChild())[0]->getNextChild() as $child) {
+                if ($child instanceof IncludeStaticFileDatabaseInclude) {
+                    $includes[] = $child->getName();
+                }
+            }
+            self::assertCount(2, $includes);
+            if ($typoScriptCache === null) {
+                self::assertSame([$firstInclude, $secondInclude], $includes);
+            }
+        }
     }
 
     /**

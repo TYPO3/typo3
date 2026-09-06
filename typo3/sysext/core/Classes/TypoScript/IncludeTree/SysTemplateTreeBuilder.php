@@ -247,7 +247,6 @@ final class SysTemplateTreeBuilder
             $includeStaticFileFileInclude->setPath($path . 'include_static_file.txt');
             $parentNode->addChild($includeStaticFileFileInclude);
             $includeStaticFileFileIncludeContent = (string)file_get_contents($includeStaticFileFileIncludePath);
-            // @todo: There is no array_unique() for DB based include_static_file content?!
             $includeStaticFileFileIncludeArray = array_unique(GeneralUtility::trimExplode(',', $includeStaticFileFileIncludeContent, true));
             foreach ($includeStaticFileFileIncludeArray as $includeStaticFileFileIncludeString) {
                 $this->handleSingleIncludeStaticFile($includeStaticFileFileInclude, $includeStaticFileFileIncludeString);
@@ -318,7 +317,7 @@ final class SysTemplateTreeBuilder
      */
     private function handleIncludeStaticFileArray(IncludeInterface $parentNode, string $includeStaticFileString): void
     {
-        $includeStaticFileIncludeArray = GeneralUtility::trimExplode(',', $includeStaticFileString, true);
+        $includeStaticFileIncludeArray = array_unique(GeneralUtility::trimExplode(',', $includeStaticFileString, true));
         foreach ($includeStaticFileIncludeArray as $includeStaticFile) {
             $cacheIdentifier = preg_replace('/[^[:alnum:]]/u', '-', mb_strtolower($includeStaticFile)) . '-' . $this->type;
             if ($this->cache) {
@@ -425,7 +424,6 @@ final class SysTemplateTreeBuilder
             $includeStaticFileFileInclude->setPath($includeStaticFileString);
             $parentNode->addChild($includeStaticFileFileInclude);
             $includeStaticFileFileIncludeContent = (string)file_get_contents($includeStaticFileFileIncludePath);
-            // @todo: There is no array_unique() for DB based include_static_file content?!
             $includeStaticFileFileIncludeArray = array_unique(GeneralUtility::trimExplode(',', $includeStaticFileFileIncludeContent, true));
             foreach ($includeStaticFileFileIncludeArray as $includeStaticFileFileIncludeString) {
                 $this->handleSingleIncludeStaticFile($includeStaticFileFileInclude, $includeStaticFileFileIncludeString);
