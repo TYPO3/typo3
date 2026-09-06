@@ -239,7 +239,6 @@ class RootlineUtility
 
         if (!empty($localRelationColumns) && empty($foreignRelationColumns)) {
             // We only have local side relations. Run a simple refindex query. Typically, this does not kick in with pages since it has categories MM.
-            // @todo: Add at least one test that manipulates TCA to verify this code branch works.
             $queryBuilder = $this->createQueryBuilder('sys_refindex');
             $result = $queryBuilder->select('tablename', 'field', 'ref_uid')
                 ->from('sys_refindex')
@@ -276,7 +275,6 @@ class RootlineUtility
 
         if (empty($localRelationColumns)) {
             // We only have foreign side relations. Run a simple refindex query. Typically, this does not kick in with pages since it has inline media.
-            // @todo: Add at least one test that manipulates TCA to verify this code branch works.
             $queryBuilder = $this->createQueryBuilder('sys_refindex');
             $result = $queryBuilder->select('tablename', 'field', 'recuid', 'ref_field')
                 ->from('sys_refindex')

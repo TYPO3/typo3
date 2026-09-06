@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\Domain\DateTimeFactory;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Exception\Page\CircularRootLineException;
 use TYPO3\CMS\Core\Exception\Page\PageNotFoundException;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
@@ -1394,6 +1395,34 @@ final class RootlineUtilityTest extends FunctionalTestCase
         $context->setAspect('visibility', new VisibilityAspect(false, $includeHiddenRecords, false, false));
         $result = new RootlineUtility($uid, '', $context)->get();
         self::assertSame($expected, $this->filterExpectedValues($result, $testFields));
+    }
+
+    public static function getResolvesSingleRelationSideDataProvider(): \Generator
+    {
+        yield 'local relations without hidden records' => [true, false, '1600'];
+        yield 'local relations with hidden records' => [true, true, '1600,1601'];
+        yield 'foreign relations without hidden records' => [false, false, '10'];
+        yield 'foreign relations with hidden records' => [false, true, '10,50'];
+    }
+
+    #[DataProvider('getResolvesSingleRelationSideDataProvider')]
+    #[Test]
+    public function getResolvesSingleRelationSide(bool $localRelations, bool $includeHiddenRecords, string $expected): void
+    {
+        if ($localRelations) {
+            unset($GLOBALS['TCA']['pages']['columns']['categories'], $GLOBALS['TCA']['pages']['columns']['categories_other']);
+        } else {
+            unset($GLOBALS['TCA']['pages']['columns']['media'], $GLOBALS['TCA']['pages']['columns']['tx_testrootlineutility_hotels']);
+        }
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+        $context = new Context();
+        $context->setAspect('visibility', new VisibilityAspect(false, $includeHiddenRecords, false, false));
+        $result = new RootlineUtility(5010, '', $context)->get();
+        $field = $localRelations ? 'tx_testrootlineutility_hotels' : 'categories';
+
+        self::assertSame($expected, $result[2][$field]);
+        self::assertSame('', $result[1][$field]);
+        self::assertSame('', $result[0][$field]);
     }
 
     public static function getResolvesStarttimeEndtimeRelationsCorrectlyDataProvider(): \Generator
