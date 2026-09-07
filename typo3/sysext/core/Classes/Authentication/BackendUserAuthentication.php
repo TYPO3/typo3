@@ -1106,6 +1106,10 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             // which thus reflects the order of the TypoScript in TSconfig)
             $this->userGroupsUID = array_reverse(array_unique(array_reverse($this->userGroupsUID)));
 
+            // User TSconfig conditions like '[backend.user.isAdmin]' are evaluated against the
+            // 'backend.user' aspect. Refresh the snapshot before parsing: group data is resolved
+            // at this point, and the aspect would otherwise still be the empty default one.
+            GeneralUtility::makeInstance(Context::class)->setAspect('backend.user', new UserAspect($this));
             $this->prepareUserTsConfig();
 
             // Processing webmounts

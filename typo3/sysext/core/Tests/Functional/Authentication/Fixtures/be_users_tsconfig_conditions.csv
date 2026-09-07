@@ -1,0 +1,20 @@
+be_users
+,uid,pid,tstamp,username,password,admin,disable,starttime,endtime,options,crdate,workspace_perms,deleted,TSconfig,lastlogin,workspace_id,usergroup,mfa
+,10,0,1366642540,admin_with_condition,$1$tCrlLajZ$C0sikFQQ3SWaFAZ1Me0Z/1,1,0,0,0,0,1366642540,1,0,"[backend.user.isAdmin]
+isAdminMatched = yes
+[END]
+[!backend.user.isAdmin]
+isNotAdminMatched = yes
+[END]
+[backend.user.isLoggedIn]
+isLoggedInMatched = yes
+[END]",1371033743,0,,
+,11,0,1366642540,editor_with_condition,$1$tCrlLajZ$C0sikFQQ3SWaFAZ1Me0Z/1,0,0,0,0,3,1366642540,1,0,"[backend.user.isAdmin]
+isAdminMatched = yes
+[END]
+[!backend.user.isAdmin]
+isNotAdminMatched = yes
+[END]
+[backend.user.isLoggedIn]
+isLoggedInMatched = yes
+[END]",1371033743,0,1,
