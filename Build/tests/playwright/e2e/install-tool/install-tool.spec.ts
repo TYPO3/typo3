@@ -123,6 +123,33 @@ test.describe('Install Tool', () => {
       await expect(page.locator('.callout-success .callout-title')).toContainText('Database schema is up to date. Good job!');
     });
 
+    test('analyze database structure removes an unused table', async ({ installTool, page }) => {
+      const unusedTable = await installTool.createUnusedTable();
+      try {
+        const modal = await installTool.openModal('Analyze database…');
+        await expect(modal.locator('.modal-header-title')).toContainText('Analyze Database Structure');
+
+        await test.step('Assert the unused table is offered for renaming with its row count', async () => {
+          const renameBlock = modal.locator('fieldset', { has: page.locator('h4', { hasText: 'Remove tables (rename with prefix)' }) });
+          const renameLine = renameBlock.locator('.t3js-databaseAnalyzer-suggestion-line', { hasText: unusedTable.table });
+          await expect(renameLine).toBeVisible();
+          await expect(renameLine).toContainText(`Rows in table: ${unusedTable.rows}`);
+          await renameLine.locator('input[type="checkbox"]').check();
+        });
+
+        await test.step('Apply the rename and assert the table is offered for dropping afterwards', async () => {
+          await modal.getByRole('button', { name: 'Apply selected changes' }).click();
+          await installTool.expectFlashMessage('Executed database updates');
+          const dropBlock = modal.locator('fieldset', { has: page.locator('h4', { hasText: 'Drop tables (really!)' }) });
+          const dropLine = dropBlock.locator('.t3js-databaseAnalyzer-suggestion-line', { hasText: unusedTable.deletedTable });
+          await expect(dropLine).toBeVisible();
+          await expect(dropLine).toContainText(`Rows in table: ${unusedTable.rows}`);
+        });
+      } finally {
+        await installTool.dropUnusedTable();
+      }
+    });
+
     test('remove temporary assets works', async ({ installTool }) => {
       const modal = await installTool.openModal('Scan temporary files…');
       await expect(modal.locator('.modal-header-title')).toContainText('Remove Temporary Assets');

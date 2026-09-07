@@ -17,11 +17,15 @@ declare(strict_types=1);
 
 namespace TYPO3Tests\PlaywrightHelper\Middleware;
 
+use Doctrine\DBAL\Schema\Table;
+use Doctrine\DBAL\Types\Types;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Database\Connection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Install\Service\EnableFileService;
 
@@ -51,6 +55,12 @@ final readonly class PlaywrightHelperMiddleware implements MiddlewareInterface
     private const PATH_PREFIX = '/typo3/playwright-helper/';
     private const SECRET_HEADER = 'X-Playwright-Helper-Secret';
     private const SECRET_FILE = '/transient/playwright-helper.secret';
+    private const UNUSED_TABLE = 'tx_playwrighthelper_unused_table';
+    private const DELETED_PREFIX = 'zzz_deleted_';
+
+    public function __construct(
+        private ConnectionPool $connectionPool,
+    ) {}
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
@@ -64,18 +74,74 @@ final readonly class PlaywrightHelperMiddleware implements MiddlewareInterface
         switch (substr($path, strlen(self::PATH_PREFIX))) {
             case 'install-tool/enable':
                 EnableFileService::createInstallToolEnableFile();
-                break;
+                return $this->createInstallToolStatusResponse();
             case 'install-tool/disable':
                 EnableFileService::removeInstallToolEnableFile();
-                break;
+                return $this->createInstallToolStatusResponse();
             case 'install-tool/status':
-                break;
+                return $this->createInstallToolStatusResponse();
+            case 'database/unused-table/create':
+                return $this->createUnusedTable();
+            case 'database/unused-table/drop':
+                return $this->dropUnusedTable();
             default:
                 return new JsonResponse(['error' => 'not found'], 404);
         }
+    }
+
+    private function createInstallToolStatusResponse(): ResponseInterface
+    {
         return new JsonResponse([
             'enabled' => EnableFileService::installToolEnableFileExists(),
         ]);
+    }
+
+    /**
+     * Creates a table with one row that no ext_tables.sql defines, so the
+     * database analyzer offers to rename it with the deletion prefix and to
+     * drop it afterwards.
+     */
+    private function createUnusedTable(): ResponseInterface
+    {
+        $connection = $this->getDefaultConnection();
+        $this->dropUnusedTables($connection);
+        $table = new Table(self::UNUSED_TABLE);
+        $table->addColumn('uid', Types::INTEGER);
+        $connection->createSchemaManager()->createTable($table);
+        $connection->insert(self::UNUSED_TABLE, ['uid' => 1]);
+        return new JsonResponse([
+            'table' => self::UNUSED_TABLE,
+            'deletedTable' => self::DELETED_PREFIX . self::UNUSED_TABLE,
+            'rows' => 1,
+        ]);
+    }
+
+    /**
+     * Drops the unused table, no matter whether the analyzer has already
+     * renamed it with the deletion prefix.
+     */
+    private function dropUnusedTable(): ResponseInterface
+    {
+        $this->dropUnusedTables($this->getDefaultConnection());
+        return new JsonResponse([
+            'table' => self::UNUSED_TABLE,
+            'deletedTable' => self::DELETED_PREFIX . self::UNUSED_TABLE,
+        ]);
+    }
+
+    private function dropUnusedTables(Connection $connection): void
+    {
+        $schemaManager = $connection->createSchemaManager();
+        foreach ([self::UNUSED_TABLE, self::DELETED_PREFIX . self::UNUSED_TABLE] as $tableName) {
+            if ($schemaManager->tablesExist([$tableName])) {
+                $schemaManager->dropTable($tableName);
+            }
+        }
+    }
+
+    private function getDefaultConnection(): Connection
+    {
+        return $this->connectionPool->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
     }
 
     private function isAuthenticated(ServerRequestInterface $request): bool
