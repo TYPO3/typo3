@@ -45,6 +45,12 @@ use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\IncludeInterface;
 #[Autoconfigure(public: true, shared: false)]
 final class IncludeTreeConditionMatcherVisitor implements IncludeTreeVisitorInterface
 {
+    /**
+     * Same pattern IncludeTreeSetupConditionConstantSubstitutionVisitor uses to substitute
+     * constants. A match that survived until here could not be resolved to a value.
+     */
+    private const CONSTANT_PATTERN = '/{\$(.[^}]*)}/';
+
     private Resolver $resolver;
     private array $conditionList = [];
 
@@ -169,6 +175,19 @@ final class IncludeTreeConditionMatcherVisitor implements IncludeTreeVisitorInte
             return;
         }
         $conditionExpression = $include->getConditionToken()->getValue();
+        if (preg_match(self::CONSTANT_PATTERN, $conditionExpression)) {
+            // A constant used within this condition could not be substituted, which leaves
+            // the expression unparsable for symfony expression language. This is not an error:
+            // Page TSconfig is calculated for pages outside a site as well - the page tree root
+            // and the DataHandler in CLI context, for instance - where site settings do not
+            // exist at all. Such conditions simply never match.
+            $this->logger->notice('TypoScript condition [{expression}] contains a constant that could not be substituted and is considered not matching.', [
+                'expression' => $conditionExpression,
+            ]);
+            $this->conditionList[$conditionExpression] = $include->isConditionNegated();
+            $include->setConditionVerdict($include->isConditionNegated());
+            return;
+        }
         try {
             $verdict = (bool)$this->resolver->evaluate($conditionExpression);
         } catch (SyntaxError $e) {
