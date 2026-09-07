@@ -56,5 +56,8 @@ test.describe('Backend login', () => {
     await page.getByRole('link', { name: 'Logout' }).click();
 
     await expect(page.getByLabel('Username')).toBeVisible();
+
+    const cookies = await page.context().cookies();
+    await expect(cookies.filter(cookie => cookie.name === 'be_typo_user')).toHaveLength(0);
   });
 });
