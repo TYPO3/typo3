@@ -175,13 +175,23 @@ class SetCookieService
      */
     public function removeCookie(NormalizedParams $normalizedParams): Cookie
     {
+        $cookieSameSite = $this->sanitizeSameSiteCookieValue(
+            strtolower($GLOBALS['TYPO3_CONF_VARS'][$this->loginType]['cookieSameSite'] ?? Cookie::SAMESITE_STRICT)
+        );
+        // Use the secure option when the current request is served by a secure connection:
+        // SameSite "none" needs the secure option (only allowed on HTTPS)
+        $isSecure = $cookieSameSite === Cookie::SAMESITE_NONE || $normalizedParams->isHttps();
         $scope = $this->getCookieScope($normalizedParams);
         return new Cookie(
             $this->name,
             '',
             -1,
             $scope->path,
-            $scope->domain
+            $scope->hostOnly ? null : $scope->domain,
+            $isSecure,
+            true,
+            false,
+            $cookieSameSite
         );
     }
 }

@@ -169,8 +169,14 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
     }
 
     /**
-     * Backend requests should always apply Set-Cookie information and never be cacheable.
+     * Backend requests should almost always apply Set-Cookie information and never be cacheable.
      * This is also needed if there is a redirect from somewhere in the code.
+     *
+     * The cookie is omitted from the response, if no cookie is set and
+     * the user has not just been logged in, because that means we
+     * a) do not delete a cookie and b) must not delete a cookie
+     * that was omitted by the browser due to SameSite=strict handling
+     * in cross-site requests.
      *
      * @throws \TYPO3\CMS\Core\Context\Exception\AspectNotFoundException
      */
@@ -179,13 +185,20 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
         ResponseInterface $response,
         ?BackendUserAuthentication $userAuthentication
     ): ResponseInterface {
+        $setCookie = true;
         if ($userAuthentication) {
+            $isCookieSet = isset($request->getCookieParams()[$userAuthentication->name]);
             // If no backend user is logged-in, the cookie should be removed
             if (!$this->context->getAspect('backend.user')->isLoggedIn()) {
-                $userAuthentication->removeCookie();
+                if ($isCookieSet) {
+                    $userAuthentication->removeCookie();
+                } else {
+                    $setCookie = false;
+                }
             }
-            // Ensure to always apply a cookie
-            $response = $this->applyCookieToResponse($response, $request, $userAuthentication);
+            if ($setCookie) {
+                $response = $this->applyCookieToResponse($response, $request, $userAuthentication);
+            }
         }
         // Additional headers to never cache any PHP request should be sent at any time when
         // accessing the TYPO3 Backend
