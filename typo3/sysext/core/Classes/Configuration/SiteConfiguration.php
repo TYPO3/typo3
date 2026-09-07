@@ -114,6 +114,8 @@ readonly class SiteConfiguration
     {
         $sites = [];
         foreach ($this->getAllResolvedSiteData($useCache) as $identifier => $data) {
+            // cast $identifier to string, as the identifier can potentially only consist of (int) digit numbers
+            $identifier = (string)$identifier;
             // The Site object is always created at runtime, as the constructor evaluates
             // base variant expressions, which must not be cached persistently.
             $site = new Site(

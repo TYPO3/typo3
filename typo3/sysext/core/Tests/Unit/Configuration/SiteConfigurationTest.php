@@ -95,4 +95,36 @@ final class SiteConfigurationTest extends UnitTestCase
         self::assertSame(42, $currentSite->getRootPageId());
         self::assertEquals(new Uri('https://example.com'), $currentSite->getBase());
     }
+
+    #[Test]
+    public function resolveAllExistingSitesReadsConfigurationWithNumericIdentifier(): void
+    {
+        $configuration = [
+            'rootPageId' => 42,
+            'base' => 'https://example.com',
+        ];
+        $yamlFileContents = Yaml::dump($configuration, 99, 2);
+        GeneralUtility::mkdir($this->fixturePath . '/123');
+        GeneralUtility::writeFile($this->fixturePath . '/123/config.yaml', $yamlFileContents, true);
+        $sites = $this->siteConfiguration->resolveAllExistingSites();
+        self::assertCount(1, $sites);
+        $currentSite = current($sites);
+        self::assertSame('123', $currentSite->getIdentifier());
+    }
+
+    #[Test]
+    public function resolveAllExistingSitesRawReadsConfigurationWithNumericIdentifier(): void
+    {
+        $configuration = [
+            'rootPageId' => 42,
+            'base' => 'https://example.com',
+        ];
+        $yamlFileContents = Yaml::dump($configuration, 99, 2);
+        GeneralUtility::mkdir($this->fixturePath . '/123');
+        GeneralUtility::writeFile($this->fixturePath . '/123/config.yaml', $yamlFileContents, true);
+        $sites = $this->siteConfiguration->resolveAllExistingSitesRaw();
+        self::assertCount(1, $sites);
+        $currentSite = current($sites);
+        self::assertSame('123', $currentSite->getIdentifier());
+    }
 }
