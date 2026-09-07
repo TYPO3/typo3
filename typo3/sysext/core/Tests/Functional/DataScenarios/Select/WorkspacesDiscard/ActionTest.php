@@ -111,6 +111,28 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     #[Test]
+    public function modifyBothSidesOfRelationInSingleRequest(): void
+    {
+        parent::modifyBothSidesOfRelationInSingleRequest();
+        $this->actionService->clearWorkspaceRecords([
+            self::TABLE_Content => [self::VALUE_ContentIdFirst],
+            self::TABLE_Element => [self::VALUE_ElementIdFirst],
+        ]);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyBothSidesOfRelationInSingleRequest.csv');
+    }
+
+    #[Test]
+    public function modifyBothSidesOfLocalizedRelationInSingleRequest(): void
+    {
+        parent::modifyBothSidesOfLocalizedRelationInSingleRequest();
+        $this->actionService->clearWorkspaceRecords([
+            self::TABLE_Content => [$this->recordIds['localizedContentId']],
+            self::TABLE_Element => [$this->recordIds['localizedElementIdFirst']],
+        ]);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyBothSidesOfLocalizedRelationInSingleRequest.csv');
+    }
+
+    #[Test]
     public function deleteContentOfRelation(): void
     {
         parent::deleteContentOfRelation();
