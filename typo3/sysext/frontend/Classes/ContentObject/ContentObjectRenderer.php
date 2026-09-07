@@ -2267,6 +2267,12 @@ class ContentObjectRenderer
         if (!isset($conf['cache.'])) {
             return $content;
         }
+        // Do not persist content that has been rendered with disabled caching, for instance
+        // when a backend user previews hidden pages and records: The cache entry would be
+        // delivered to regular visitors afterwards.
+        if (!$this->getRequest()->getAttribute('frontend.cache.instruction')->isCachingAllowed()) {
+            return $content;
+        }
         $key = $this->calculateCacheKey($conf['cache.']);
         if (empty($key)) {
             return $content;
