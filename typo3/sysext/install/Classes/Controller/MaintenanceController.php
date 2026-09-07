@@ -224,7 +224,7 @@ class MaintenanceController extends AbstractController
      */
     public function databaseAnalyzerAnalyzeAction(ServerRequestInterface $request): ResponseInterface
     {
-        $container = $this->lateBootService->loadExtLocalconfDatabase();
+        $container = $this->lateBootService->loadExtLocalconfDatabase(false);
         $schemaMigrator = $container->get(SchemaMigrator::class);
 
         $messageQueue = new FlashMessageQueue('install');
@@ -378,7 +378,7 @@ class MaintenanceController extends AbstractController
      */
     public function databaseAnalyzerExecuteAction(ServerRequestInterface $request): ResponseInterface
     {
-        $container = $this->lateBootService->loadExtLocalconfDatabase();
+        $container = $this->lateBootService->loadExtLocalconfDatabase(false);
         $messageQueue = new FlashMessageQueue('install');
         $selectedHashes = $request->getParsedBody()['install']['hashes'] ?? [];
         if (empty($selectedHashes)) {

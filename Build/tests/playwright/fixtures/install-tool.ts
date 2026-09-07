@@ -23,6 +23,12 @@ export interface InstallToolStatus {
   enabled: boolean;
 }
 
+export interface UnusedTable {
+  table: string;
+  deletedTable: string;
+  rows: number;
+}
+
 export class InstallTool {
   private readonly page: Page;
   private readonly request: APIRequestContext;
@@ -45,6 +51,19 @@ export class InstallTool {
   async getStatus(): Promise<InstallToolStatus> {
     const response = await this.request.get(`${config.baseUrl}playwright-helper/install-tool/status`, { headers: this.helperHeaders });
     return await response.json();
+  }
+
+  /**
+   * Creates a table with one row that no ext_tables.sql defines, so the
+   * database analyzer has something to remove. Drop it with dropUnusedTable().
+   */
+  async createUnusedTable(): Promise<UnusedTable> {
+    const response = await this.request.get(`${config.baseUrl}playwright-helper/database/unused-table/create`, { headers: this.helperHeaders });
+    return await response.json();
+  }
+
+  async dropUnusedTable(): Promise<void> {
+    await this.request.get(`${config.baseUrl}playwright-helper/database/unused-table/drop`, { headers: this.helperHeaders });
   }
 
   async goto(): Promise<void> {
