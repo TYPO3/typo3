@@ -13,6 +13,8 @@ Description
 
 New CLI commands have been introduced to manage TYPO3 system configuration
 (stored in :file:`config/system/settings.php`) directly from the command line.
+The commands are provided by the system extension
+:composer:`typo3/cms-lowlevel` and are only available if it is installed.
 
 The following commands are now available:
 
@@ -88,5 +90,12 @@ from the command line, which is especially useful for:
 The commands respect TYPO3 configuration path restrictions and only allow
 writing to paths that are defined in the default configuration or explicitly
 allowed (such as :php:`EXTENSIONS`, :php:`EXTCONF`, :php:`DB`).
+
+Installations that do not have :composer:`typo3/cms-lowlevel` installed need
+to add it first:
+
+..  code-block:: bash
+
+    composer require typo3/cms-lowlevel
 
 ..  index:: CLI, LocalConfiguration, ext:lowlevel
