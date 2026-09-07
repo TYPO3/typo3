@@ -24,7 +24,6 @@ use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Context\LanguageAspectFactory;
-use TYPO3\CMS\Core\Context\VisibilityAspect;
 use TYPO3\CMS\Core\Domain\DateTimeFactory;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Routing\PageArguments;
@@ -82,8 +81,7 @@ readonly class PreviewSimulator implements MiddlewareInterface
             $this->context->setAspect('frontend.preview', new PreviewAspect($isPreview));
 
             if ($showHiddenPages || $rootlineRequiresPreviewFlag) {
-                $newAspect = new VisibilityAspect(true, $visibilityAspect->includeHiddenContent(), $visibilityAspect->includeDeletedRecords(), $visibilityAspect->includeScheduledRecords());
-                $this->context->setAspect('visibility', $newAspect);
+                $this->context->setAspect('visibility', $visibilityAspect->withIncludeHiddenPages(true));
             }
         }
 

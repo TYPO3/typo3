@@ -44,6 +44,16 @@ final readonly class VisibilityAspect implements AspectInterface
     ) {}
 
     /**
+     * Creates an empty VisibilityAspect with all values set to false.
+     * you should consider using the existing instance of VisibilityAspect from the Context instead of creating a new instance.
+     * only if you want to reset the VisibilityAspect you should use this method to create a new instance.
+     */
+    public static function create(): VisibilityAspect
+    {
+        return new self();
+    }
+
+    /**
      * Fetch the values
      *
      * @throws AspectPropertyNotFoundException
@@ -86,5 +96,45 @@ final readonly class VisibilityAspect implements AspectInterface
     public function includeDeletedRecords(): bool
     {
         return $this->includeDeletedRecords;
+    }
+
+    public function withIncludeHiddenPages(bool $includeHiddenPages): VisibilityAspect
+    {
+        return new self(
+            $includeHiddenPages,
+            $this->includeHiddenContent,
+            $this->includeDeletedRecords,
+            $this->includeScheduledRecords,
+        );
+    }
+
+    public function withIncludeHiddenContent(bool $includeHiddenContent): VisibilityAspect
+    {
+        return new self(
+            $this->includeHiddenPages,
+            $includeHiddenContent,
+            $this->includeDeletedRecords,
+            $this->includeScheduledRecords,
+        );
+    }
+
+    public function withIncludeDeletedRecords(bool $includeDeletedRecords): VisibilityAspect
+    {
+        return new self(
+            $this->includeHiddenPages,
+            $this->includeHiddenContent,
+            $includeDeletedRecords,
+            $this->includeScheduledRecords,
+        );
+    }
+
+    public function withIncludeScheduledRecords(bool $includeScheduledRecords): VisibilityAspect
+    {
+        return new self(
+            $this->includeHiddenPages,
+            $this->includeHiddenContent,
+            $this->includeDeletedRecords,
+            $includeScheduledRecords,
+        );
     }
 }

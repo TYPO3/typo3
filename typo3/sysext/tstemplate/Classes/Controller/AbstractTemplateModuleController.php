@@ -297,12 +297,8 @@ abstract class AbstractTemplateModuleController
         // the ActiveTypoScriptController / TemplateAnalyzerController, only
         // non-hidden records with matching time constraints should be evaluated,
         // just like in the frontend.
-        return new VisibilityAspect(
-            includeHiddenPages: true,
-            includeHiddenContent: false,
-            includeDeletedRecords: false,
-            includeScheduledRecords: false,
-        );
+        return VisibilityAspect::create()
+            ->withIncludeHiddenPages(true);
     }
 
     protected function getLanguageService(): LanguageService

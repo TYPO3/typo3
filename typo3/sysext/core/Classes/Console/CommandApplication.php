@@ -182,7 +182,13 @@ class CommandApplication implements ApplicationInterface
     protected function initializeContext(): void
     {
         $this->context->setAspect('date', new DateTimeAspect(DateTimeFactory::createFromTimestamp($GLOBALS['EXEC_TIME'])));
-        $this->context->setAspect('visibility', new VisibilityAspect(true, true, false, true));
+        $this->context->setAspect(
+            'visibility',
+            VisibilityAspect::create()
+                ->withIncludeHiddenPages(true)
+                ->withIncludeHiddenContent(true)
+                ->withIncludeScheduledRecords(true)
+        );
         $this->context->setAspect('workspace', new WorkspaceAspect(0));
         $this->context->setAspect('backend.user', new UserAspect(null));
     }

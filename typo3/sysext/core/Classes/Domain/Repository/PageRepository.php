@@ -2117,7 +2117,7 @@ readonly class PageRepository
             // Fetch overlay of page if in workspace and check if it is hidden. The visibility aspect is
             // reset on a cloned context so the workspace version is evaluated against default visibility.
             $context = clone $this->context;
-            $context->setAspect('visibility', new VisibilityAspect());
+            $context->setAspect('visibility', VisibilityAspect::create());
             $targetPage = $this->getWorkspaceVersionOfRecord('pages', $page, false, $context);
             // Also checks if the workspace version is NOT hidden but the live version is in fact still hidden
             $result = $targetPage === -1 || $targetPage === -2 || (is_array($targetPage) && $targetPage['hidden'] == 0 && $page['hidden'] == 1);

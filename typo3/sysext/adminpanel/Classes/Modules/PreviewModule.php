@@ -182,7 +182,13 @@ class PreviewModule extends AbstractModule implements RequestEnricherInterface, 
         $this->clearPreviewSettings($context);
 
         // Modify visibility settings (hidden pages + hidden content)
-        $context->setAspect('visibility', new VisibilityAspect($showHiddenPages, $showHiddenRecords, false, $showScheduledRecords));
+        $context->setAspect(
+            'visibility',
+            VisibilityAspect::create()
+                ->withIncludeHiddenPages($showHiddenPages)
+                ->withIncludeHiddenContent($showHiddenRecords)
+                ->withIncludeScheduledRecords($showScheduledRecords)
+        );
 
         // Simulate date
         $simTime = null;
@@ -220,7 +226,7 @@ class PreviewModule extends AbstractModule implements RequestEnricherInterface, 
     {
         $GLOBALS['SIM_EXEC_TIME'] = $GLOBALS['EXEC_TIME'];
         $context->setAspect('date', new DateTimeAspect(DateTimeFactory::createFromTimestamp($GLOBALS['SIM_EXEC_TIME'])));
-        $context->setAspect('visibility', new VisibilityAspect());
+        $context->setAspect('visibility', VisibilityAspect::create());
     }
 
     /**

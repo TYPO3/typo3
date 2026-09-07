@@ -65,7 +65,7 @@ class Application extends AbstractApplication
     protected function initializeContext(): void
     {
         $this->context->setAspect('date', new DateTimeAspect(DateTimeFactory::createFromTimestamp($GLOBALS['EXEC_TIME'])));
-        $this->context->setAspect('visibility', new VisibilityAspect());
+        $this->context->setAspect('visibility', VisibilityAspect::create());
         $this->context->setAspect('workspace', new WorkspaceAspect(0));
         $this->context->setAspect('backend.user', new UserAspect(null));
         $this->context->setAspect('frontend.user', new UserAspect(null, [0, -1]));

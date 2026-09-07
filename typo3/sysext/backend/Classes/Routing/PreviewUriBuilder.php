@@ -128,7 +128,12 @@ class PreviewUriBuilder
     {
         $this->pageId = $pageId;
         $this->context = clone GeneralUtility::makeInstance(Context::class);
-        $this->context->setAspect('visibility', new VisibilityAspect(true, false, false, true));
+        $this->context->setAspect(
+            'visibility',
+            VisibilityAspect::create()
+                ->withIncludeHiddenPages(true)
+                ->withIncludeScheduledRecords(true)
+        );
     }
 
     /**

@@ -89,7 +89,7 @@ class Context implements SingletonInterface
                     $this->setAspect('date', new DateTimeAspect(DateTimeFactory::createFromTimestamp($GLOBALS['EXEC_TIME'])));
                     break;
                 case 'visibility':
-                    $this->setAspect('visibility', new VisibilityAspect());
+                    $this->setAspect('visibility', VisibilityAspect::create());
                     break;
                 case 'backend.user':
                     $this->setAspect('backend.user', new UserAspect());

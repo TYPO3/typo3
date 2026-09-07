@@ -29,7 +29,6 @@ use TYPO3\CMS\Core\Cache\CacheTag;
 use TYPO3\CMS\Core\Cache\Event\AddCacheTagEvent;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
-use TYPO3\CMS\Core\Context\VisibilityAspect;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -225,12 +224,15 @@ readonly class Typo3DbBackend implements BackendInterface
                 || in_array('starttime', $ignoredEnableFields, true)
                 || in_array('endtime', $ignoredEnableFields, true);
             $visibility = $context->getAspect('visibility');
-            $context->setAspect('visibility', new VisibilityAspect(
-                includeHiddenPages: $includeHidden || $visibility->get('includeHiddenPages'),
-                includeHiddenContent: $includeHidden || $visibility->get('includeHiddenContent'),
-                includeDeletedRecords: $visibility->get('includeDeletedRecords'),
-                includeScheduledRecords: $includeScheduled || $visibility->get('includeScheduledRecords'),
-            ));
+            if ($includeHidden) {
+                $visibility = $visibility
+                    ->withIncludeHiddenPages(true)
+                    ->withIncludeHiddenContent(true);
+            }
+            if ($includeScheduled) {
+                $visibility = $visibility->withIncludeScheduledRecords(true);
+            }
+            $context->setAspect('visibility', $visibility);
         }
         if ($statement instanceof Statement && !$statement->getStatement() instanceof QueryBuilder) {
             $rows = $this->getObjectDataByRawQuery($statement);

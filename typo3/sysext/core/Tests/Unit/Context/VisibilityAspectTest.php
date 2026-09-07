@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Context;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Context\Exception\AspectPropertyNotFoundException;
 use TYPO3\CMS\Core\Context\VisibilityAspect;
@@ -61,5 +62,32 @@ final class VisibilityAspectTest extends UnitTestCase
         $this->expectExceptionCode(1527780439);
         $subject = new VisibilityAspect();
         $subject->get('football');
+    }
+
+    public static function withMethodDataProvider(): array
+    {
+        return [
+            'enable hidden pages' => ['withIncludeHiddenPages', true, [false, true, false, true], [true, true, false, true]],
+            'disable hidden pages' => ['withIncludeHiddenPages', false, [true, false, true, false], [false, false, true, false]],
+            'enable hidden content' => ['withIncludeHiddenContent', true, [true, false, true, false], [true, true, true, false]],
+            'disable hidden content' => ['withIncludeHiddenContent', false, [false, true, false, true], [false, false, false, true]],
+            'enable deleted records' => ['withIncludeDeletedRecords', true, [false, true, false, true], [false, true, true, true]],
+            'disable deleted records' => ['withIncludeDeletedRecords', false, [true, false, true, false], [true, false, false, false]],
+            'enable scheduled records' => ['withIncludeScheduledRecords', true, [true, false, true, false], [true, false, true, true]],
+            'disable scheduled records' => ['withIncludeScheduledRecords', false, [false, true, false, true], [false, true, false, false]],
+        ];
+    }
+
+    #[Test]
+    #[DataProvider('withMethodDataProvider')]
+    public function withMethodReturnsNewInstanceWithOnlyRequestedFlagChanged(string $method, bool $value, array $initialValues, array $expectedValues): void
+    {
+        $subject = new VisibilityAspect(...$initialValues);
+
+        $result = $subject->$method($value);
+
+        self::assertNotSame($subject, $result);
+        self::assertEquals(new VisibilityAspect(...$expectedValues), $result);
+        self::assertEquals(new VisibilityAspect(...$initialValues), $subject);
     }
 }
