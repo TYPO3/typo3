@@ -124,12 +124,10 @@ final readonly class AddPageTypeZeroSource
      */
     private function getAdjustedContext(): Context
     {
-        $adjustedVisibility = new VisibilityAspect(
-            true,
-            true,
-            false,
-            true,
-        );
+        $adjustedVisibility = VisibilityAspect::create()
+            ->withIncludeHiddenPages(true)
+            ->withIncludeHiddenContent(true)
+            ->withIncludeScheduledRecords(true);
         $originalContext = GeneralUtility::makeInstance(Context::class);
         $context = clone $originalContext;
         $context->setAspect('visibility', $adjustedVisibility);
