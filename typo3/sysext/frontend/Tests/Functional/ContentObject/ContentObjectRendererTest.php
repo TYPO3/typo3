@@ -73,6 +73,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
+use TYPO3\CMS\Frontend\Cache\CacheInstruction;
 use TYPO3\CMS\Frontend\ContentObject\AbstractContentObject;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\Event\AfterContentObjectRendererInitializedEvent;
@@ -1171,6 +1172,7 @@ content="benni">',
             ->disableOriginalConstructor()
             ->getMock();
         $subject->expects($this->exactly($times))->method('calculateCacheKey')->with($confCache)->willReturn($key);
+        $subject->setRequest((new ServerRequest())->withAttribute('frontend.cache.instruction', new CacheInstruction()));
         self::assertSame($content, $subject->stdWrap_cacheStore($content, $conf));
     }
 
