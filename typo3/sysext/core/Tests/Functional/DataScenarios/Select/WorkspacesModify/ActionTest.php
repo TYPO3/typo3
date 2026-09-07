@@ -192,6 +192,31 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     #[Test]
+    public function modifyBothSidesOfRelationInSingleRequest(): void
+    {
+        parent::modifyBothSidesOfRelationInSingleRequest();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyBothSidesOfRelationInSingleRequest.csv');
+
+        $response = $this->executeFrontendSubRequest(
+            new InternalRequest()->withPageId(self::VALUE_PageId),
+            new InternalRequestContext()->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
+        );
+        $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
+        self::assertThat($responseSections, new StructureHasRecordConstraint()
+            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField(self::FIELD_ContentElement)
+            ->setTable(self::TABLE_Element)->setField('title')->setValues('Testing #1', 'Element #2'));
+        self::assertThat($responseSections, new HasRecordConstraint()
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
+    }
+
+    #[Test]
+    public function modifyBothSidesOfLocalizedRelationInSingleRequest(): void
+    {
+        parent::modifyBothSidesOfLocalizedRelationInSingleRequest();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyBothSidesOfLocalizedRelationInSingleRequest.csv');
+    }
+
+    #[Test]
     public function deleteContentOfRelation(): void
     {
         parent::deleteContentOfRelation();

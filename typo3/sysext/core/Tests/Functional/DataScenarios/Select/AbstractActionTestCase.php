@@ -136,6 +136,21 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, ['header' => 'Testing #1']);
     }
 
+    public function modifyBothSidesOfRelationInSingleRequest(): void
+    {
+        $this->actionService->modifyRecords(
+            self::VALUE_PageId,
+            [
+                self::TABLE_Element => ['uid' => self::VALUE_ElementIdFirst, 'title' => 'Testing #1'],
+                self::TABLE_Content => [
+                    'uid' => self::VALUE_ContentIdFirst,
+                    'header' => 'Testing #1',
+                    self::FIELD_ContentElement => self::VALUE_ElementIdFirst . ',' . self::VALUE_ElementIdSecond,
+                ],
+            ]
+        );
+    }
+
     public function deleteContentOfRelation(): void
     {
         $this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdLast);

@@ -1,0 +1,37 @@
+"pages",,,,,,,,,,,,
+,"uid","pid","sorting","deleted","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","title",,,
+,1,0,256,0,0,0,0,0,"FunctionalTest",,,
+,88,1,256,0,0,0,0,0,"DataHandlerTest",,,
+,89,88,256,0,0,0,0,0,"Relations",,,
+,90,88,512,0,0,0,0,0,"Target",,,
+"tt_content",,,,,,,,,,,,
+,"uid","pid","sorting","deleted","sys_language_uid","l18n_parent","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","header","tx_testdatahandler_select"
+,297,89,256,0,0,0,0,0,0,0,"Regular Element #1","1,2"
+,298,89,512,0,0,0,0,0,0,0,"Regular Element #2","2,3"
+,299,89,384,0,1,297,0,0,0,0,"[Translate to Dansk:] Regular Element #1","4,5"
+,300,89,384,0,1,297,1,0,0,299,"Testing #1","4,5"
+"tx_testdatahandler_element",,,,,,,,,,,,
+,"uid","pid","sorting","deleted","sys_language_uid","l10n_parent","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","title",
+,1,89,256,0,0,0,0,0,0,0,"Element #1",
+,2,89,512,0,0,0,0,0,0,0,"Element #2",
+,3,89,768,0,0,0,0,0,0,0,"Element #3",
+,4,89,384,0,1,1,0,0,0,0,"[Translate to Dansk:] Element #1",
+,5,89,448,0,1,2,0,0,0,0,"[Translate to Dansk:] Element #2",
+,6,89,384,0,1,1,1,0,0,4,"Testing #1",
+"sys_refindex"
+,"hash","tablename","recuid","field","hidden","starttime","endtime","t3ver_state","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_field","ref_hidden","ref_starttime","ref_endtime","ref_t3ver_state","ref_sorting","ref_string"
+,"6f85cfacfff942817392efe26ff1ade0","sys_workspace",1,"custom_stages",0,0,2147483647,0,,,,0,0,"sys_workspace_stage",1,,0,0,2147483647,0,0,
+,"96a6b7ec63daee0e0ce5d4908b6eda6f","sys_workspace_stage",1,"responsible_persons",0,0,2147483647,0,,,,0,0,"be_users",3,,0,0,2147483647,0,0,
+,"6d7bcceedf262d7023fea362d8d44859","tt_content",297,"tx_testdatahandler_select",0,0,2147483647,0,,,,0,0,"tx_testdatahandler_element",1,,0,0,2147483647,0,0,
+,"d5a13ace149f5768325745e87f0843bc","tt_content",297,"tx_testdatahandler_select",0,0,2147483647,0,,,,1,0,"tx_testdatahandler_element",2,,0,0,2147483647,0,0,
+,"794264e98721ed970ce545e238b93d70","tt_content",298,"tx_testdatahandler_select",0,0,2147483647,0,,,,0,0,"tx_testdatahandler_element",2,,0,0,2147483647,0,0,
+,"191a3585c0803ac6477fd8c53c9d74e8","tt_content",298,"tx_testdatahandler_select",0,0,2147483647,0,,,,1,0,"tx_testdatahandler_element",3,,0,0,2147483647,0,0,
+,"8713545256fcc6c28d80c42642259c50","tx_testdatahandler_element",4,"l10n_parent",0,0,2147483647,0,,,,0,0,"tx_testdatahandler_element",1,,0,0,2147483647,0,0,
+,"70a75c9856c54045bfaca6e32505e48a","tx_testdatahandler_element",5,"l10n_parent",0,0,2147483647,0,,,,0,0,"tx_testdatahandler_element",2,,0,0,2147483647,0,0,
+,"8dcf0c1366897e0e3d62c4ac36a7da18","tt_content",299,"l18n_parent",0,0,2147483647,0,,,,0,0,"tt_content",297,,0,0,2147483647,0,0,
+,"023d11fe1424a5500adb51f81faf2cf6","tt_content",299,"tx_testdatahandler_select",0,0,2147483647,0,,,,0,0,"tx_testdatahandler_element",4,,0,0,2147483647,0,0,
+,"78a6882a7bb74b7abf69bfba4cfb0f69","tt_content",299,"tx_testdatahandler_select",0,0,2147483647,0,,,,1,0,"tx_testdatahandler_element",5,,0,0,2147483647,0,0,
+,"36df7927812c4b668aac85de6adbbf8c","tx_testdatahandler_element",6,"l10n_parent",0,0,2147483647,0,,,,0,1,"tx_testdatahandler_element",1,,0,0,2147483647,0,0,
+,"e8ebc1ef219b813df94ec4b0ead8cc64","tt_content",300,"l18n_parent",0,0,2147483647,0,,,,0,1,"tt_content",297,,0,0,2147483647,0,0,
+,"85bbdc45494187021155dfc27b6d620e","tt_content",300,"tx_testdatahandler_select",0,0,2147483647,0,,,,0,1,"tx_testdatahandler_element",4,,0,0,2147483647,0,0,
+,"1e7c199fa67aca88317b9abae4140950","tt_content",300,"tx_testdatahandler_select",0,0,2147483647,0,,,,1,1,"tx_testdatahandler_element",5,,0,0,2147483647,0,0,

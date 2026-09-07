@@ -7402,19 +7402,29 @@ class DataHandler
         }
         $schema = $this->tcaSchemaFactory->get($table);
         foreach ($incomingFieldArray as $field => $value) {
-            $foreignTable = $schema->hasField($field) ? $schema->getField($field)->getConfiguration()['foreign_table'] ?? '' : '';
-            if (($registerDBList[$table][$id][$field] ?? false)
-                && !empty($foreignTable)
-            ) {
-                $newValueArray = [];
-                $origValueArray = is_array($value) ? $value : explode(',', $value);
-                // Update the uids of the copied records, but also take care about new records:
-                foreach ($origValueArray as $childId) {
-                    $newValueArray[] = $this->autoVersionIdMap[$foreignTable][$childId] ?? $childId;
-                }
-                // Set the changed value to the $incomingFieldArray
-                $incomingFieldArray[$field] = implode(',', $newValueArray);
+            if (!($registerDBList[$table][$id][$field] ?? false) || !$schema->hasField($field)) {
+                continue;
             }
+            $fieldInformation = $schema->getField($field);
+            // Only children owned by the record are versionized along with it, so only they can
+            // have received a new uid. Relations to independent records - "select", "group",
+            // "category" - must keep the live uid: Their version is gone after publishing, which
+            // would leave the published record with a relation to a no longer existing uid.
+            if (!in_array($fieldInformation->getType(), ['inline', 'file'], true)) {
+                continue;
+            }
+            $foreignTable = $fieldInformation->getConfiguration()['foreign_table'] ?? '';
+            if ($foreignTable === '') {
+                continue;
+            }
+            $newValueArray = [];
+            $origValueArray = is_array($value) ? $value : explode(',', $value);
+            // Update the uids of the copied records, but also take care about new records:
+            foreach ($origValueArray as $childId) {
+                $newValueArray[] = $this->autoVersionIdMap[$foreignTable][$childId] ?? $childId;
+            }
+            // Set the changed value to the $incomingFieldArray
+            $incomingFieldArray[$field] = implode(',', $newValueArray);
         }
         // Clean up the $registerDBList array:
         unset($registerDBList[$table][$id]);
