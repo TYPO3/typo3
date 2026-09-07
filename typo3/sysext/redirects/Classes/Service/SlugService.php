@@ -305,6 +305,16 @@ class SlugService implements LoggerAwareInterface
         $schema = $this->tcaSchemaFactory->get('pages');
         $slugHelper = GeneralUtility::makeInstance(SlugHelper::class, 'pages', 'slug', $schema->getField('slug')->getConfiguration());
 
+        // Slug modifiers may build the slug from something else than the parent slug and the own
+        // slug segment, so they have to be applied here as well - the slug is not simply the old
+        // one with an exchanged parent prefix for them.
+        $newSlug = $slugHelper->sanitize($slugHelper->applyPostModifiers(
+            $newSlug,
+            $subPageRecord,
+            (int)$subPageRecord['pid'],
+            trim($newSlugOfParentPage, '/')
+        ));
+
         if (!$slugHelper->isUniqueInSite($newSlug, $state)) {
             $newSlug = $slugHelper->buildSlugForUniqueInSite($newSlug, $state);
         }
