@@ -42,6 +42,7 @@ use TYPO3\CMS\Redirects\RedirectUpdate\SlugRedirectChangeItemFactory;
 use TYPO3\CMS\Redirects\Service\RedirectCacheService;
 use TYPO3\CMS\Redirects\Service\SlugService;
 use TYPO3\CMS\Redirects\Service\TemporaryPermissionMutationService;
+use TYPO3\CMS\Redirects\Tests\Functional\Service\Fixtures\SlugPostModifierFixture;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
@@ -246,6 +247,50 @@ final class SlugServiceTest extends FunctionalTestCase
             '/test-new/dummy-1-2-5',
             '/test-new/dummy-1-2-6',
             '/test-new/dummy-1-2-7',
+            '/dummy-1-3/dummy-1-3-8',
+            '/dummy-1-3/dummy-1-3-9',
+            '/dummy-1-4/dummy-1-4-10',
+        ];
+
+        // This redirects should exist, after rebuildSlugsForSlugChange() has run
+        $redirects = [
+            ['source_host' => '*', 'source_path' => '/dummy-1-2', 'target' => 't3://page?uid=2&_language=0'],
+            ['source_host' => '*', 'source_path' => '/dummy-1-2/dummy-1-2-5', 'target' => 't3://page?uid=5&_language=0'],
+            ['source_host' => '*', 'source_path' => '/dummy-1-2/dummy-1-2-6', 'target' => 't3://page?uid=6&_language=0'],
+            ['source_host' => '*', 'source_path' => '/dummy-1-2/dummy-1-2-7', 'target' => 't3://page?uid=7&_language=0'],
+        ];
+
+        $this->assertSlugsAndRedirectsExists($slugs, $redirects);
+    }
+
+    /**
+     * Slug modifiers registered as "postModifiers" may build a slug from something else than the
+     * plain parent slug, so they have to be applied when sub page slugs are rebuilt as well.
+     */
+    #[Test]
+    public function rebuildSlugsForSlugChangeAppliesPostModifiersToSubPageSlugs(): void
+    {
+        $newPageSlug = '/test-new';
+        $GLOBALS['TCA']['pages']['columns']['slug']['config']['generatorOptions']['postModifiers'][]
+            = SlugPostModifierFixture::class . '->modify';
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+        $this->buildBaseSite();
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/SlugServiceTest_pages_test1.csv');
+        $subject = $this->createSubject();
+        $changeItem = $this->get(SlugRedirectChangeItemFactory::class)->create(2);
+        $changeItem = $changeItem->withChanged(array_merge($changeItem->getOriginal(), ['slug' => $newPageSlug]));
+        $subject->rebuildSlugsForSlugChange(2, $changeItem, $this->createCorrelationId());
+        $this->setPageSlug(2, $newPageSlug);
+
+        // These are the slugs after rebuildSlugsForSlugChange() has run
+        $slugs = [
+            '/',
+            '/test-new',
+            '/dummy-1-3',
+            '/dummy-1-4',
+            '/test-new/dummy-1-2-5-modified',
+            '/test-new/dummy-1-2-6-modified',
+            '/test-new/dummy-1-2-7-modified',
             '/dummy-1-3/dummy-1-3-8',
             '/dummy-1-3/dummy-1-3-9',
             '/dummy-1-4/dummy-1-4-10',

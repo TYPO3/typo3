@@ -207,7 +207,20 @@ class SlugHelper
             $slug = $prefix . $slug;
         }
 
-        // Hook for alternative ways of filling/modifying the slug data
+        return $this->sanitize($this->applyPostModifiers($slug, $recordData, $pid, $prefix));
+    }
+
+    /**
+     * Applies the "postModifiers" of the field configuration, the hook for alternative ways of
+     * filling/modifying the slug data.
+     *
+     * Slugs are not always built by the generator alone: EXT:redirects rebuilds the slugs of sub
+     * pages when the slug of a parent page changes, and has to apply the modifiers as well.
+     *
+     * @internal Only to be used by TYPO3 Core, may change without further notice.
+     */
+    public function applyPostModifiers(string $slug, array $recordData, int $pid, string $prefix = ''): string
+    {
         foreach ($this->configuration['generatorOptions']['postModifiers'] ?? [] as $funcName) {
             $hookParameters = [
                 'slug' => $slug,
@@ -221,7 +234,7 @@ class SlugHelper
             ];
             $slug = GeneralUtility::callUserFunction($funcName, $hookParameters, $this);
         }
-        return $this->sanitize($slug);
+        return $slug;
     }
 
     /**
