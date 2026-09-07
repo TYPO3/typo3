@@ -31,6 +31,8 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
+use TYPO3\CMS\Core\Database\RelationHandler;
+use TYPO3\CMS\Core\DataHandling\TableColumnType;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Localization\DateFormatter;
 use TYPO3\CMS\Core\Localization\Locale;
@@ -523,6 +525,7 @@ class Export extends ImportExport
                 //        of those a relation is bound. This is currently most likely not handled during import and
                 //        should have more test coverage.
                 $relations = $this->referenceIndex->getRelations($table, $row, 0);
+                $relations = $this->addCategoryRelations($table, $row, $relations);
                 // Data:
                 $this->dat['records'][$recordIdentifier] = ['data' => $sanitizedRow];
                 // There are no refindex entries for l10n_source of pages and tt_content, so we have to add them here manually for now.
@@ -578,6 +581,42 @@ class Export extends ImportExport
         } else {
             $this->addError('Record ' . $recordIdentifier . ' was outside your database mounts!');
         }
+    }
+
+    /**
+     * Add category relations of the record, which the reference index does not deliver.
+     *
+     * Category fields carry "MM_opposite_field", and ReferenceIndex::getRelations()
+     * returns nothing for that side of a relation. The database column of such a field
+     * holds the *number* of assigned categories, not a list of uids, so without
+     * resolving the relation here, the import would take that number for a uid list and
+     * relate the record to whatever happens to have that uid.
+     */
+    protected function addCategoryRelations(string $table, array $row, array $relations): array
+    {
+        if (!$this->tcaSchemaFactory->has($table)) {
+            return $relations;
+        }
+        foreach ($this->tcaSchemaFactory->get($table)->getFields() as $field) {
+            $fieldName = $field->getName();
+            $fieldConfig = $field->getConfiguration();
+            if (isset($relations[$fieldName])
+                || !$field->isType(TableColumnType::CATEGORY)
+                || empty($fieldConfig['MM'])
+                || empty($fieldConfig['foreign_table'])
+            ) {
+                continue;
+            }
+            $relationHandler = GeneralUtility::makeInstance(RelationHandler::class);
+            $relationHandler->initializeForField($table, $field, $row, $row[$fieldName] ?? '');
+            if ($relationHandler->itemArray !== []) {
+                $relations[$fieldName] = [
+                    'type' => 'db',
+                    'itemArray' => $relationHandler->itemArray,
+                ];
+            }
+        }
+        return $relations;
     }
 
     /**
