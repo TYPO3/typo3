@@ -1,0 +1,7 @@
+"sys_category",,,,
+,"uid","pid","title","deleted"
+,1,1,"Category 1",0
+,2,1,"Category 2",0
+"sys_category_record_mm",,,,,
+,"uid_local","uid_foreign","tablenames","fieldname","sorting_foreign"
+,2,1,"tt_content","categories",1
