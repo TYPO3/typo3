@@ -144,5 +144,6 @@ final class BackendLoginCest
         $I->click('#typo3-cms-backend-backend-toolbaritems-usertoolbaritem > button');
         $I->click('Logout');
         $I->waitForElement('#t3-username');
+        $I->dontSeeCookie('be_typo_user');
     }
 }
