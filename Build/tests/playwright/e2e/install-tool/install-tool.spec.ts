@@ -250,27 +250,43 @@ test.describe('Install Tool', () => {
     });
 
     test('configuration presets works', async ({ installTool, page }) => {
-      const modal = await installTool.openModal('Choose Preset…');
-      await modal.locator('.panel-heading', { hasText: 'Cache settings' }).click();
-      await expect(page.locator('#t3-install-tool-configuration-cache-file')).toBeVisible();
+      const activePreset = 'input[type="radio"][name="install[values][Cache][enable]"]:checked';
 
-      // First ensure we're on "File" so switching to "Database" is an actual change
-      await page.locator('#t3-install-tool-configuration-cache-file').click();
-      await modal.getByRole('button', { name: 'Activate preset' }).click();
+      const openCacheSettings = async (): Promise<void> => {
+        const modal = await installTool.openModal('Choose Preset…');
+        await modal.locator('.panel-heading', { hasText: 'Cache settings' }).click();
+        await expect(page.locator('#t3-install-tool-configuration-cache-file')).toBeVisible();
+      };
 
-      // Switch to "Database"
-      await page.locator('#t3-install-tool-configuration-cache-database').click();
-      await modal.getByRole('button', { name: 'Activate preset' }).click();
-      await installTool.expectFlashMessage('Configuration written');
+      // Activating a preset does not render the form again, so the radio only ever
+      // reflects the click. The module disables the modal buttons for the duration
+      // of the request, which is what tells us the configuration has been written.
+      const activatePreset = async (preset: 'file' | 'database'): Promise<void> => {
+        const activate = installTool.getModal().getByRole('button', { name: 'Activate preset' });
+        await page.locator(`#t3-install-tool-configuration-cache-${preset}`).click();
+        await activate.click();
+        await expect(activate).toBeEnabled();
+      };
 
-      // Verify the preset is now "Database"
-      await expect(page.locator('input[type="radio"][name="install[values][Cache][enable]"]:checked')).toHaveValue('Database');
+      // The instance is set up with the database backed caches, which own the
+      // cache_hash, cache_pages and cache_rootline tables together with their tag
+      // tables. Switching the preset away never drops them, so the test ends on
+      // "Database" again. Any other preset leaves those tables behind as unused
+      // ones, and every database schema assertion afterwards fails on them.
+      await openCacheSettings();
+      try {
+        await activatePreset('file');
+        await installTool.expectFlashMessage('Configuration written');
+      } finally {
+        await activatePreset('database');
+      }
+      await installTool.closeModal();
 
-      // Switch back to "File"
-      await page.locator('#t3-install-tool-configuration-cache-file').click();
-      await modal.getByRole('button', { name: 'Activate preset' }).click();
-      await installTool.expectFlashMessage('Configuration written');
-
+      // The written preset is only rendered into a fresh form, so the restore is
+      // verified here instead of by its own flash message, which does not show up
+      // when a failure above leaves it with nothing to write.
+      await openCacheSettings();
+      await expect(page.locator(activePreset)).toHaveValue('Database');
       await installTool.closeModal();
     });
 
