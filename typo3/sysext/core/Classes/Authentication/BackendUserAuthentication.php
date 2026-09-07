@@ -23,6 +23,8 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\Event\AfterUserLoggedInEvent;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -1149,6 +1151,10 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             // which thus reflects the order of the TypoScript in TSconfig)
             $this->userGroupsUID = array_reverse(array_unique(array_reverse($this->userGroupsUID)));
 
+            // User TSconfig conditions like '[backend.user.isAdmin]' are evaluated against the
+            // 'backend.user' aspect. Refresh the snapshot before parsing: group data is resolved
+            // at this point, and the aspect would otherwise still be the empty default one.
+            GeneralUtility::makeInstance(Context::class)->setAspect('backend.user', new UserAspect($this));
             $this->prepareUserTsConfig();
 
             // Processing webmounts

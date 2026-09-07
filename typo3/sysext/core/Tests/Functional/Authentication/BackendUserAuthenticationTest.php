@@ -149,4 +149,24 @@ final class BackendUserAuthenticationTest extends FunctionalTestCase
         $subject = $this->setUpBackendUser($userId);
         self::assertEquals($expected, $subject->isExportEnabled());
     }
+
+    #[Test]
+    public function userTsConfigConditionMatchesAdminUser(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/be_users_tsconfig_conditions.csv');
+        $userTsConfig = $this->setUpBackendUser(10)->getTSConfig();
+        self::assertSame('yes', $userTsConfig['isAdminMatched'] ?? null);
+        self::assertArrayNotHasKey('isNotAdminMatched', $userTsConfig);
+        self::assertSame('yes', $userTsConfig['isLoggedInMatched'] ?? null);
+    }
+
+    #[Test]
+    public function userTsConfigConditionMatchesNonAdminUser(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/be_users_tsconfig_conditions.csv');
+        $userTsConfig = $this->setUpBackendUser(11)->getTSConfig();
+        self::assertArrayNotHasKey('isAdminMatched', $userTsConfig);
+        self::assertSame('yes', $userTsConfig['isNotAdminMatched'] ?? null);
+        self::assertSame('yes', $userTsConfig['isLoggedInMatched'] ?? null);
+    }
 }
