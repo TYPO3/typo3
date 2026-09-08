@@ -26,6 +26,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class ExtractorServiceTest extends FunctionalTestCase
 {
+    protected bool $initializeDatabase = false;
+
     protected array $testExtensionsToLoad = ['typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_metadata_extraction'];
 
     #[Test]

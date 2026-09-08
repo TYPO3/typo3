@@ -29,6 +29,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 final class AstBuilderInterfaceTest extends FunctionalTestCase
 {
+    protected bool $initializeDatabase = false;
+
     protected array $coreExtensionsToLoad = ['tstemplate'];
 
     protected array $testExtensionsToLoad = [

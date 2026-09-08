@@ -35,6 +35,8 @@ use TYPO3Fluid\Fluid\View\TemplateView;
 
 final class RecordViewHelperTest extends FunctionalTestCase
 {
+    protected bool $initializeDatabase = false;
+
     private array $dispatchedEvents = [];
 
     #[Test]

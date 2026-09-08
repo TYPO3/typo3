@@ -35,6 +35,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class PasswordSetCommandTest extends FunctionalTestCase
 {
+    protected bool $initializeDatabase = false;
+
     private string $originalSettings = '';
     protected array $coreExtensionsToLoad = ['install'];
 

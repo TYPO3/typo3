@@ -26,6 +26,8 @@ use TYPO3Tests\TestFileRenderer\Rendering\TextRenderer;
 
 final class AsFileRendererAttributeTest extends FunctionalTestCase
 {
+    protected bool $initializeDatabase = false;
+
     protected array $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_file_renderer',
     ];

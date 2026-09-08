@@ -29,6 +29,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class CaseContentObjectTest extends FunctionalTestCase
 {
+    protected bool $initializeDatabase = false;
+
     private CaseContentObject $subject;
 
     protected function setUp(): void

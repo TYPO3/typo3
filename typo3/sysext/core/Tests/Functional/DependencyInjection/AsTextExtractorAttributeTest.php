@@ -26,6 +26,8 @@ use TYPO3Tests\TestTextExtractor\TextExtraction\MarkdownTextExtractor;
 
 final class AsTextExtractorAttributeTest extends FunctionalTestCase
 {
+    protected bool $initializeDatabase = false;
+
     protected array $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_text_extractor',
     ];

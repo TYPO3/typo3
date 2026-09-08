@@ -27,6 +27,8 @@ use TYPO3Tests\TestDi\Command\VisibleTestCommand;
 
 final class AsCommandAttributeTest extends FunctionalTestCase
 {
+    protected bool $initializeDatabase = false;
+
     protected array $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_di',
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_schedulable_command',

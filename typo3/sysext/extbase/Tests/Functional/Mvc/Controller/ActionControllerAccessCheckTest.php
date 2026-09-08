@@ -32,6 +32,8 @@ use TYPO3Tests\ActionControllerTest\Controller\AccessCheckController;
 
 final class ActionControllerAccessCheckTest extends FunctionalTestCase
 {
+    protected bool $initializeDatabase = false;
+
     protected array $testExtensionsToLoad = [
         'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/action_controller_test',
     ];

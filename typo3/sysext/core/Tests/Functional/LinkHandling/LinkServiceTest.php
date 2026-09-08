@@ -26,6 +26,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class LinkServiceTest extends FunctionalTestCase
 {
+    protected bool $initializeDatabase = false;
+
     /**
      * @var array<string, non-empty-string>
      */

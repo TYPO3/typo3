@@ -31,6 +31,8 @@ use TYPO3Fluid\Fluid\View\TemplateView;
 
 final class CheckboxViewHelperTest extends FunctionalTestCase
 {
+    protected bool $initializeDatabase = false;
+
     public static function renderDataProvider(): array
     {
         return [

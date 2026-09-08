@@ -29,6 +29,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 final class PackageStatesTest extends FunctionalTestCase
 {
+    protected bool $initializeDatabase = false;
+
     protected array $configurationToUseInTestInstance = [
         'SYS' => [
             'caching' => [

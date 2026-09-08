@@ -37,6 +37,7 @@ use TYPO3Fluid\Fluid\View\TemplateView;
 final class RenderRenderableViewHelperTest extends FunctionalTestCase
 {
     protected const string BEFORE_RENDERABLE_IS_RENDERED_LISTENER_KEY = 'before-renderable-is-rendered-listener';
+    protected bool $initializeDatabase = false;
 
     protected array $coreExtensionsToLoad = ['form'];
 

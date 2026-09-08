@@ -25,6 +25,8 @@ use TYPO3Tests\TestMetaTagManager\MetaTag\FixtureMetaTagManager;
 
 final class AsMetaTagManagerAttributeTest extends FunctionalTestCase
 {
+    protected bool $initializeDatabase = false;
+
     protected array $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_meta_tag_manager',
     ];

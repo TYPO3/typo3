@@ -32,6 +32,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class RteHtmlParserTest extends FunctionalTestCase
 {
+    protected bool $initializeDatabase = false;
+
     private array $procOptions = ['overruleMode' => 'default', 'allowTagsOutside' => 'hr,abbr,figure'];
 
     #[Test]

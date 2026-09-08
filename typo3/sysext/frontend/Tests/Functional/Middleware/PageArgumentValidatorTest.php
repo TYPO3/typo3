@@ -29,6 +29,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class PageArgumentValidatorTest extends FunctionalTestCase
 {
+    protected bool $initializeDatabase = false;
+
     private RequestHandlerInterface $responseOutputHandler;
 
     protected function setUp(): void

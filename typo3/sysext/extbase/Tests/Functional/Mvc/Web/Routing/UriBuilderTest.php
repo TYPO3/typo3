@@ -29,6 +29,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class UriBuilderTest extends FunctionalTestCase
 {
+    protected bool $initializeDatabase = false;
+
     #[Test]
     #[AllowMockObjectsWithoutExpectations]
     public function buildTypolinkConfigurationUsesCurrentPageUidIfTargetPageUidIsNotSet(): void

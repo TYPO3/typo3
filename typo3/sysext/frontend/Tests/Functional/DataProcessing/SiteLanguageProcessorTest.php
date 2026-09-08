@@ -26,6 +26,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class SiteLanguageProcessorTest extends FunctionalTestCase
 {
+    protected bool $initializeDatabase = false;
+
     #[Test]
     public function siteLanguageIsRetrieved(): void
     {

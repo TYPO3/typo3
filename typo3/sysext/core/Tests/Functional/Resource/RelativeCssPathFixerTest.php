@@ -30,6 +30,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class RelativeCssPathFixerTest extends FunctionalTestCase
 {
+    protected bool $initializeDatabase = false;
+
     public static function fixRelativeUrlPathsDataProvider(): array
     {
         return [

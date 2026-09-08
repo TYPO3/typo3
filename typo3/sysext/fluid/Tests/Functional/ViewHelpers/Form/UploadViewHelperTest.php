@@ -30,6 +30,8 @@ use TYPO3Fluid\Fluid\View\TemplateView;
 
 final class UploadViewHelperTest extends FunctionalTestCase
 {
+    protected bool $initializeDatabase = false;
+
     #[Test]
     public function renderCorrectlySetsTagName(): void
     {
