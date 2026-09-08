@@ -147,7 +147,7 @@ final class ProcessedFileTest extends FunctionalTestCase
 
     private function createBackendRequest(): ServerRequest
     {
-        $request = (new ServerRequest('https://example.com/typo3/index.php'))
+        $request = new ServerRequest('https://example.com/typo3/index.php')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         return $request->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
     }
