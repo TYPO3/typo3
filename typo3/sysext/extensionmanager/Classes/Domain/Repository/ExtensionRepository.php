@@ -55,9 +55,13 @@ readonly class ExtensionRepository
     }
 
     /**
+     * Returns one page of the catalogue. The order is stabilised by the extension
+     * key, as "last_updated" alone is not unique and offset based paging needs a
+     * total order to not repeat or skip rows between pages.
+     *
      * @return Extension[]
      */
-    public function findAll(): array
+    public function findAll(int $offset, int $limit): array
     {
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable(self::TABLE_NAME);
         $result = $queryBuilder->select('*')
@@ -67,6 +71,9 @@ readonly class ExtensionRepository
                 $queryBuilder->expr()->gte('review_state', 0),
             )
             ->orderBy('last_updated', 'DESC')
+            ->addOrderBy('extension_key', 'ASC')
+            ->setFirstResult($offset)
+            ->setMaxResults($limit)
             ->executeQuery()
             ->fetchAllAssociative();
         $extensions = [];
@@ -193,10 +200,13 @@ readonly class ExtensionRepository
      * Find extensions by title, author name or extension key.
      * Uses a simple scoring to sort matches.
      *
+     * The relevance ranking is not unique, so the extension key stabilises the order:
+     * offset based paging needs a total order to not repeat or skip rows between pages.
+     *
      * @param string $searchString The string to search for extensions
      * @return Extension[]
      */
-    public function findByTitleOrAuthorNameOrExtensionKey(string $searchString): array
+    public function findByTitleOrAuthorNameOrExtensionKey(string $searchString, int $offset, int $limit): array
     {
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable(self::TABLE_NAME);
         $searchPlaceholderForLike = '%' . $queryBuilder->escapeLikeWildcards($searchString) . '%';
@@ -239,6 +249,9 @@ readonly class ExtensionRepository
                 $queryBuilder->expr()->in('review_state', $queryBuilder->createNamedParameter([0, -2], Connection::PARAM_INT_ARRAY))
             )
             ->orderBy('position', 'DESC')
+            ->addOrderBy('extension_key', 'ASC')
+            ->setFirstResult($offset)
+            ->setMaxResults($limit)
             ->executeQuery()
             ->fetchAllAssociative();
         $extensions = [];
@@ -246,6 +259,32 @@ readonly class ExtensionRepository
             $extensions[] = Extension::createObjectFromRow($row);
         }
         return $extensions;
+    }
+
+    /**
+     * The number of records {@see findByTitleOrAuthorNameOrExtensionKey} matches,
+     * without the relevance ranking, which only determines their order.
+     */
+    public function countByTitleOrAuthorNameOrExtensionKey(string $searchString): int
+    {
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable(self::TABLE_NAME);
+        $searchPlaceholderForLike = '%' . $queryBuilder->escapeLikeWildcards($searchString) . '%';
+        return (int)$queryBuilder
+            ->count('*')
+            ->from(self::TABLE_NAME)
+            ->where(
+                $queryBuilder->expr()->or(
+                    $queryBuilder->expr()->eq('extension_key', $queryBuilder->createNamedParameter($searchString)),
+                    $queryBuilder->expr()->like('extension_key', $queryBuilder->createNamedParameter($searchPlaceholderForLike)),
+                    $queryBuilder->expr()->like('title', $queryBuilder->createNamedParameter($searchPlaceholderForLike)),
+                    $queryBuilder->expr()->like('description', $queryBuilder->createNamedParameter($searchPlaceholderForLike)),
+                    $queryBuilder->expr()->like('author_name', $queryBuilder->createNamedParameter($searchPlaceholderForLike)),
+                ),
+                $queryBuilder->expr()->eq('current_version', $queryBuilder->createNamedParameter(1, Connection::PARAM_INT)),
+                $queryBuilder->expr()->in('review_state', $queryBuilder->createNamedParameter([0, -2], Connection::PARAM_INT_ARRAY))
+            )
+            ->executeQuery()
+            ->fetchOne();
     }
 
     /**

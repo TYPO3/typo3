@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extensionmanager\Tests\Functional\Domain\Repository;
 
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Extensionmanager\Domain\Model\PackageIdentifier;
 use TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionNotFoundException;
@@ -64,20 +65,111 @@ final class ExtensionRepositoryTest extends FunctionalTestCase
         self::assertNull($repository->findOneByPackageIdentifier(new PackageIdentifier('ext_dependency', '1.0.0', 'unknown-remote')));
     }
 
-    private function createRemoteExtensionRecord(string $extensionKey, string $version): void
+    /**
+     * The catalogue is ordered by "last_updated", which is not unique. Without a
+     * tie breaker the database is free to return rows in any order within one
+     * timestamp, and offset based paging would then repeat or skip extensions.
+     */
+    #[Test]
+    public function findAllReturnsTheRequestedPageInAStableOrder(): void
+    {
+        foreach (['epsilon', 'delta', 'charlie', 'bravo', 'alpha'] as $extensionKey) {
+            $this->createRemoteExtensionRecord($extensionKey, '1.0.0', ['last_updated' => 1757260800]);
+        }
+        $repository = $this->get(ExtensionRepository::class);
+
+        self::assertSame(['alpha', 'bravo'], $this->extensionKeysOf($repository->findAll(0, 2)));
+        self::assertSame(['charlie', 'delta'], $this->extensionKeysOf($repository->findAll(2, 2)));
+        self::assertSame(['epsilon'], $this->extensionKeysOf($repository->findAll(4, 2)));
+    }
+
+    #[Test]
+    public function findAllOrdersTheNewestExtensionFirst(): void
+    {
+        $this->createRemoteExtensionRecord('older', '1.0.0', ['last_updated' => 1600000000]);
+        $this->createRemoteExtensionRecord('newer', '1.0.0', ['last_updated' => 1700000000]);
+
+        self::assertSame(
+            ['newer', 'older'],
+            $this->extensionKeysOf($this->get(ExtensionRepository::class)->findAll(0, 10))
+        );
+    }
+
+    #[Test]
+    public function countAllCountsEveryRecordFindAllPagesThrough(): void
+    {
+        $this->createRemoteExtensionRecord('alpha', '1.0.0');
+        $this->createRemoteExtensionRecord('bravo', '1.0.0');
+        $this->createRemoteExtensionRecord('charlie', '1.0.0', ['current_version' => 0]);
+
+        self::assertSame(2, $this->get(ExtensionRepository::class)->countAll());
+    }
+
+    #[Test]
+    public function findByTitleOrAuthorNameOrExtensionKeyPagesThroughRankedResults(): void
+    {
+        $this->createRemoteExtensionRecord('news', '1.0.0', ['title' => 'Anything']);
+        $this->createRemoteExtensionRecord('news_extra', '1.0.0', ['title' => 'Anything']);
+        $this->createRemoteExtensionRecord('by_title', '1.0.0', ['title' => 'all the news']);
+        $this->createRemoteExtensionRecord('by_author', '1.0.0', ['title' => 'Anything', 'author_name' => 'news reporter']);
+        $this->createRemoteExtensionRecord('unrelated', '1.0.0', ['title' => 'Anything']);
+        $repository = $this->get(ExtensionRepository::class);
+
+        self::assertSame(
+            ['news', 'news_extra'],
+            $this->extensionKeysOf($repository->findByTitleOrAuthorNameOrExtensionKey('news', 0, 2))
+        );
+        self::assertSame(
+            ['by_title', 'by_author'],
+            $this->extensionKeysOf($repository->findByTitleOrAuthorNameOrExtensionKey('news', 2, 2))
+        );
+        self::assertSame([], $this->extensionKeysOf($repository->findByTitleOrAuthorNameOrExtensionKey('news', 4, 2)));
+    }
+
+    #[Test]
+    public function countByTitleOrAuthorNameOrExtensionKeyCountsEveryMatch(): void
+    {
+        $this->createRemoteExtensionRecord('news', '1.0.0', ['title' => 'Anything']);
+        $this->createRemoteExtensionRecord('news_extra', '1.0.0', ['title' => 'Anything']);
+        $this->createRemoteExtensionRecord('by_title', '1.0.0', ['title' => 'all the news']);
+        $this->createRemoteExtensionRecord('by_author', '1.0.0', ['title' => 'Anything', 'author_name' => 'news reporter']);
+        $this->createRemoteExtensionRecord('unrelated', '1.0.0', ['title' => 'Anything']);
+
+        self::assertSame(4, $this->get(ExtensionRepository::class)->countByTitleOrAuthorNameOrExtensionKey('news'));
+    }
+
+    /**
+     * @param Extension[] $extensions
+     * @return string[]
+     */
+    private function extensionKeysOf(array $extensions): array
+    {
+        return array_map(static fn(Extension $extension): string => $extension->extensionKey, $extensions);
+    }
+
+    /**
+     * @param array<string, mixed> $additionalFields
+     */
+    private function createRemoteExtensionRecord(string $extensionKey, string $version, array $additionalFields = []): void
     {
         $this->getConnectionPool()
             ->getConnectionForTable('tx_extensionmanager_domain_model_extension')
             ->insert(
                 'tx_extensionmanager_domain_model_extension',
-                [
-                    'extension_key' => $extensionKey,
-                    'remote' => 'ter',
-                    'version' => $version,
-                    'title' => $extensionKey,
-                    'current_version' => 1,
-                    'review_state' => 0,
-                ]
+                array_merge(
+                    [
+                        'extension_key' => $extensionKey,
+                        'remote' => 'ter',
+                        'version' => $version,
+                        'title' => $extensionKey,
+                        'description' => '',
+                        'author_name' => '',
+                        'last_updated' => 0,
+                        'current_version' => 1,
+                        'review_state' => 0,
+                    ],
+                    $additionalFields
+                )
             );
     }
 }
