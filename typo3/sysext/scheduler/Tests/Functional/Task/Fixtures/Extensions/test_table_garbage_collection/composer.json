@@ -1,0 +1,18 @@
+{
+	"name": "typo3tests/table-garbage-collection",
+	"type": "typo3-cms-extension",
+	"description": "TableGarbageCollectionTask Test",
+	"version": "1.0.0",
+	"license": "GPL-2.0-or-later",
+	"require": {
+		"typo3/cms-core": "15.0.*@dev"
+	},
+	"extra": {
+		"typo3/cms": {
+			"extension-key": "test_table_garbage_collection",
+			"Package": {
+				"providesPackages": []
+			}
+		}
+	}
+}
