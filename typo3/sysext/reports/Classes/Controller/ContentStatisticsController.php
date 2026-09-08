@@ -47,8 +47,8 @@ final readonly class ContentStatisticsController
         $view = $this->moduleTemplateFactory->create($request);
         $view->setLayout(ModuleLayout::NORMAL);
         $view->setTitle(
-            $languageService->sL('reports.messages:mlang_tabs_tab'),
-            $languageService->sL('reports.messages:contentStatistics.title')
+            (string)$languageService->translate('title', 'reports.modules.overview'),
+            (string)$languageService->translate('contentStatistics.title', 'reports.messages'),
         );
         $view->makeDocHeaderModuleMenu();
 
