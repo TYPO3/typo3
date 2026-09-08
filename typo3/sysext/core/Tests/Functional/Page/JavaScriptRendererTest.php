@@ -24,6 +24,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class JavaScriptRendererTest extends FunctionalTestCase
 {
+    protected bool $initializeDatabase = false;
+
     /**
      * Ensures closing comment block cannot be injected.
      */

@@ -39,6 +39,8 @@ use TYPO3Tests\FileUpload\Domain\Model\ModelWithTextfield;
 
 final class FileHandlingServiceTest extends FunctionalTestCase
 {
+    protected bool $initializeDatabase = false;
+
     protected array $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/file_upload'];
 
     protected FileHandlingService $fileHandlingService;

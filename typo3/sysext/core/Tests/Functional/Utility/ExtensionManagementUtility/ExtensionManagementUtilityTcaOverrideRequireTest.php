@@ -21,6 +21,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class ExtensionManagementUtilityTcaOverrideRequireTest extends FunctionalTestCase
 {
+    protected bool $initializeDatabase = false;
+
     protected array $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_tcaoverride_a',
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_tcaoverride_b',

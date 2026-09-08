@@ -66,6 +66,8 @@ final class PackageStatesTest extends FunctionalTestCase
         'workspaces',
     ];
 
+    protected bool $initializeDatabase = false;
+
     protected array $configurationToUseInTestInstance = [
         'SYS' => [
             'caching' => [

@@ -31,6 +31,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 final class RteHtmlParserTest extends FunctionalTestCase
 {
     protected array $procOptions = ['overruleMode' => 'default', 'allowTagsOutside' => 'hr,abbr,figure'];
+    protected bool $initializeDatabase = false;
 
     #[Test]
     public function beforeTransformTextForRichTextEditorEventIsTriggered(): void

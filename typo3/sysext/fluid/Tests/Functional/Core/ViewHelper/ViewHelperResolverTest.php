@@ -25,6 +25,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class ViewHelperResolverTest extends FunctionalTestCase
 {
+    protected bool $initializeDatabase = false;
+
     protected array $testExtensionsToLoad = [
         'typo3/sysext/fluid/Tests/Functional/Fixtures/Extensions/resolverdelegate_test',
     ];

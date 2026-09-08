@@ -30,6 +30,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 final class BitmapIconProviderTest extends UnitTestCase
 {
     protected ?BitmapIconProvider $subject;
+    protected bool $initializeDatabase = false;
 
     /**
      * @var Icon

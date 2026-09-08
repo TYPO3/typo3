@@ -34,6 +34,8 @@ final class CaseContentObjectTest extends UnitTestCase
 
     protected CaseContentObject $subject;
 
+    protected bool $initializeDatabase = false;
+
     protected function setUp(): void
     {
         parent::setUp();

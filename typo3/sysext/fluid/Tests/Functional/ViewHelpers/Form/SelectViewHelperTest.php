@@ -37,6 +37,8 @@ use TYPO3Fluid\Fluid\View\TemplateView;
 
 final class SelectViewHelperTest extends FunctionalTestCase
 {
+    protected bool $initializeDatabase = false;
+
     #[Test]
     public function selectCorrectlySetsTagName(): void
     {

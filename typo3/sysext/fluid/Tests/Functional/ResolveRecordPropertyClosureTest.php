@@ -29,6 +29,8 @@ use TYPO3Fluid\Fluid\View\TemplateView;
 
 final class ResolveRecordPropertyClosureTest extends FunctionalTestCase
 {
+    protected bool $initializeDatabase = false;
+
     #[Test]
     public function recordPropertyClosureOfFlexIsResolved(): void
     {

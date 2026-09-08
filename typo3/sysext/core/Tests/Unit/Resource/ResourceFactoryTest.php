@@ -29,7 +29,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 final class ResourceFactoryTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
-
+    protected bool $initializeDatabase = false;
     protected bool $backupEnvironment = true;
 
     /**
