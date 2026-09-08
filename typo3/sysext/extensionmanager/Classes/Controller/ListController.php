@@ -27,13 +27,13 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Pagination\ArrayPaginator;
 use TYPO3\CMS\Core\Pagination\SimplePagination;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
+use TYPO3\CMS\Extensionmanager\Pagination\ExtensionListPaginator;
 use TYPO3\CMS\Extensionmanager\Remote\RemoteRegistry;
 use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
 
@@ -106,13 +106,18 @@ class ListController extends AbstractController
         $this->addComposerModeNotification();
         $search = trim($search);
         if (!empty($search)) {
-            $extensions = $this->extensionRepository->findByTitleOrAuthorNameOrExtensionKey($search);
-            $paginator = new ArrayPaginator($extensions, $currentPage);
+            $paginator = new ExtensionListPaginator(
+                fn(int $offset, int $limit): array => $this->extensionRepository->findByTitleOrAuthorNameOrExtensionKey($search, $offset, $limit),
+                $this->extensionRepository->countByTitleOrAuthorNameOrExtensionKey($search),
+                $currentPage
+            );
             $tableId = 'terSearchTable';
         } else {
-            $extensions = $this->extensionRepository->findAll();
-
-            $paginator = new ArrayPaginator($extensions, $currentPage);
+            $paginator = new ExtensionListPaginator(
+                fn(int $offset, int $limit): array => $this->extensionRepository->findAll($offset, $limit),
+                $this->extensionRepository->countAll(),
+                $currentPage
+            );
             $tableId = 'terTable';
         }
         $pagination = new SimplePagination($paginator);
@@ -120,7 +125,7 @@ class ListController extends AbstractController
         $view = $this->initializeModuleTemplate($this->request);
         $view = $this->registerDocHeaderButtons($view);
         $view->assignMultiple([
-            'extensions' => $extensions,
+            'extensions' => $paginator->getPaginatedItems(),
             'paginator' => $paginator,
             'pagination' => $pagination,
             'search' => $search,
