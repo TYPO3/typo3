@@ -25,6 +25,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class SiteConfigurationTest extends FunctionalTestCase
 {
+    protected bool $initializeDatabase = false;
+
     protected function tearDown(): void
     {
         putenv('SITE_CACHE_TEST');

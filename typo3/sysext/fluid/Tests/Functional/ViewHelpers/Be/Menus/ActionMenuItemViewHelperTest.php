@@ -29,6 +29,8 @@ use TYPO3Fluid\Fluid\View\TemplateView;
 
 final class ActionMenuItemViewHelperTest extends FunctionalTestCase
 {
+    protected bool $initializeDatabase = false;
+
     public static function isRenderedDataProvider(): array
     {
         return [

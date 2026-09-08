@@ -40,6 +40,8 @@ use TYPO3Fluid\Fluid\View\TemplateView;
 
 final class ContentAreaViewHelperTest extends FunctionalTestCase
 {
+    protected bool $initializeDatabase = false;
+
     private array $dispatchedEvents = [];
 
     #[Test]

@@ -30,6 +30,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 final class BitmapIconProviderTest extends FunctionalTestCase
 {
+    protected bool $initializeDatabase = false;
+
     private BitmapIconProvider $subject;
 
     private Icon $icon;

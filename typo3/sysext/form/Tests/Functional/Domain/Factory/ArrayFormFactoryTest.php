@@ -39,6 +39,8 @@ final class ArrayFormFactoryTest extends FunctionalTestCase
     public const BEFORE_RENDERABLE_IS_ADDED_TO_FORM_LISTENER_KEY = 'before-renderable-is-added-to-form-listener';
     public const AFTER_FORM_IS_BUILT_LISTENER_KEY = 'after-form-is-built-listener';
 
+    protected bool $initializeDatabase = false;
+
     protected array $coreExtensionsToLoad = [
         'form',
     ];

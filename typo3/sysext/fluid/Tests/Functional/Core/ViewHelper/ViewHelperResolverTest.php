@@ -27,6 +27,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class ViewHelperResolverTest extends FunctionalTestCase
 {
+    protected bool $initializeDatabase = false;
+
     protected array $testExtensionsToLoad = [
         'typo3/sysext/fluid/Tests/Functional/Fixtures/Extensions/fluid_test',
         'typo3/sysext/fluid/Tests/Functional/Fixtures/Extensions/fluid_namespace_override',

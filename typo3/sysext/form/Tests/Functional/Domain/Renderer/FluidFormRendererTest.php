@@ -36,6 +36,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 final class FluidFormRendererTest extends FunctionalTestCase
 {
     protected const BEFORE_RENDERABLE_IS_RENDERED_LISTENER_KEY = 'before-renderable-is-rendered-listener';
+    protected bool $initializeDatabase = false;
 
     protected array $coreExtensionsToLoad = ['form'];
 

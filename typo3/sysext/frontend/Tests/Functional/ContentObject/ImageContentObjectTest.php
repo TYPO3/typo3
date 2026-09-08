@@ -38,6 +38,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class ImageContentObjectTest extends FunctionalTestCase
 {
+    protected bool $initializeDatabase = false;
+
     #[Test]
     public function cImageRendersNothingForImageResourceWithoutPublicUrl(): void
     {

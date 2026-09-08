@@ -27,6 +27,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class AllowedCallableAssertionTest extends FunctionalTestCase
 {
+    protected bool $initializeDatabase = false;
+
     public static function allowedDataProvider(): \Generator
     {
         include_once __DIR__ . '/Fixtures/GlobalUserFunction.php';

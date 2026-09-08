@@ -28,6 +28,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class StandardPreviewRendererResolverTest extends FunctionalTestCase
 {
+    protected bool $initializeDatabase = false;
+
     private StandardPreviewRendererResolver $subject;
     private TcaSchemaFactory $tcaSchemaFactory;
 

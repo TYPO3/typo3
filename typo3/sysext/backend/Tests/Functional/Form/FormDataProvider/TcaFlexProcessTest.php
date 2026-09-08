@@ -34,6 +34,8 @@ final class TcaFlexProcessTest extends FunctionalTestCase
 {
     private BackendUserAuthentication&MockObject $backendUserMock;
 
+    protected bool $initializeDatabase = false;
+
     protected function setUp(): void
     {
         parent::setUp();

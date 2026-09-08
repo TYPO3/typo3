@@ -28,6 +28,8 @@ use TYPO3Tests\TestMessageHandler\Message\Princesses;
 
 final class AsMessageHandlerAttributeTest extends FunctionalTestCase
 {
+    protected bool $initializeDatabase = false;
+
     protected array $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_message_handler',
     ];

@@ -26,6 +26,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class ResourceFactoryTest extends FunctionalTestCase
 {
+    protected bool $initializeDatabase = false;
+
     private array $filesCreated = [];
 
     protected function tearDown(): void

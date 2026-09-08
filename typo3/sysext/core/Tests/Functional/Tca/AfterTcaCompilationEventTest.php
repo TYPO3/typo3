@@ -22,6 +22,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class AfterTcaCompilationEventTest extends FunctionalTestCase
 {
+    protected bool $initializeDatabase = false;
+
     protected array $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_tca_event',
     ];

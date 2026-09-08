@@ -36,6 +36,8 @@ use TYPO3Fluid\Fluid\View\TemplateView;
 
 final class RenderFormValueViewHelperTest extends FunctionalTestCase
 {
+    protected bool $initializeDatabase = false;
+
     protected array $coreExtensionsToLoad = ['form'];
 
     public static function renderDataProvider(): array

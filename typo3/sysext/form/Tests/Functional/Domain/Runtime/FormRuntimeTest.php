@@ -49,6 +49,8 @@ final class FormRuntimeTest extends FunctionalTestCase
     public const AFTER_CURRENT_PAGE_IS_RESOLVED_LISTENER_KEY = 'after-current-page-is-resolved-listener';
     public const BEFORE_RENDERABLE_IS_VALIDATED_LISTENER_KEY = 'before-renderable-is-validated-listener';
 
+    protected bool $initializeDatabase = false;
+
     protected array $coreExtensionsToLoad = [
         'form',
     ];
