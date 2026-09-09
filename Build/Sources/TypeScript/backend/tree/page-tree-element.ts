@@ -247,6 +247,11 @@ export class EditablePageTree extends PageTree {
       command: TreeNodeCommandEnum.MOVE
     };
 
+    if (!this.settings.displayCopyMoveConfirmation) {
+      this.sendChangeCommand(options);
+      return;
+    }
+
     let modalText = '';
     const languageArguments = [node.name, target.name] as const;
     switch(position) {

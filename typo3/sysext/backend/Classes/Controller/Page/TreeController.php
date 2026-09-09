@@ -176,6 +176,7 @@ class TreeController
         $configuration = [
             'allowDragMove' => $this->isDragMoveAllowed(),
             'doktypes' => $this->getDokTypes($request),
+            'displayCopyMoveConfirmation' => $backendUser->jsConfirmation(JsConfirmation::COPY_MOVE_PASTE),
             'displayDeleteConfirmation' => $backendUser->jsConfirmation(JsConfirmation::DELETE),
             'temporaryMountPoint' => $this->getMountPointPath((int)($backendUser->uc['pageTree_temporaryMountPoint'] ?? 0)),
             'showIcons' => true,

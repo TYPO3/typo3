@@ -26,6 +26,7 @@ use TYPO3\CMS\Backend\Tests\Functional\Tree\Repository\Fixtures\Tree\NormalizeTr
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Http\Uri;
@@ -69,6 +70,24 @@ final class TreeControllerTest extends FunctionalTestCase
 
         // Regular editor, non admin
         $this->backendUser = $this->setUpBackendUser(9);
+    }
+
+    #[Test]
+    public function fetchConfigurationActionProvidesCopyMoveConfirmationSetting(): void
+    {
+        $this->get(ConnectionPool::class)->getConnectionForTable('be_users')->update(
+            'be_users',
+            ['TSconfig' => 'options.alertPopups = 253'],
+            ['uid' => 9],
+        );
+        $this->backendUser = $this->setUpBackendUser(9);
+        $request = new ServerRequest(new Uri('https://example.com'));
+
+        $response = $this->get(TreeController::class)->fetchConfigurationAction($request);
+        $configuration = json_decode((string)$response->getBody(), true);
+
+        self::assertFalse($configuration['displayCopyMoveConfirmation']);
+        self::assertTrue($configuration['displayDeleteConfirmation']);
     }
 
     #[Test]
