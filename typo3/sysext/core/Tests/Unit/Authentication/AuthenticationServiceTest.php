@@ -21,8 +21,11 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Authentication\AuthenticationService;
+use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
+use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashInterface;
 use TYPO3\CMS\Core\Session\UserSession;
 use TYPO3\CMS\Core\Tests\Functional\Authentication\Fixtures\AnyUserAuthentication;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class AuthenticationServiceTest extends UnitTestCase
@@ -191,6 +194,15 @@ final class AuthenticationServiceTest extends UnitTestCase
     #[Test]
     public function authUserReturns200IfPasswordMatch(): void
     {
+        $passwordHash = $this->createMock(PasswordHashInterface::class);
+        $passwordHash->expects($this->once())->method('checkPassword')->with('myPassword', 'storedHash')->willReturn(true);
+        $passwordHash->expects($this->once())->method('isHashUpdateNeeded')->with('storedHash')->willReturn(false);
+        $passwordHash->expects($this->never())->method('getHashedPassword');
+        $passwordHashFactory = $this->createMock(PasswordHashFactory::class);
+        $passwordHashFactory->expects($this->once())->method('get')->with('storedHash', 'BE')->willReturn($passwordHash);
+        $passwordHashFactory->expects($this->once())->method('getDefaultHashInstance')->with('BE')->willReturn($passwordHash);
+        GeneralUtility::addInstance(PasswordHashFactory::class, $passwordHashFactory);
+
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '12345';
         $sessionId = 'f20bd8643811f5a2792605a689b619bc02caa7dc';
         $userSession = UserSession::createNonFixated($sessionId);
@@ -211,8 +223,7 @@ final class AuthenticationServiceTest extends UnitTestCase
             $anyUserAuthentication
         );
         $dbUser = [
-            // an argon2id hash of 'myPassword'
-            'password' => '$argon2id$v=19$m=65536,t=16,p=1$cjBVcVJJUkxQWnFsdExsZw$Ss2WRXeeGTFerTg8EdTNE4IDcIwX6hGTvKmH6XvvFX8',
+            'password' => 'storedHash',
         ];
         self::assertSame(200, $subject->authUser($dbUser));
     }
