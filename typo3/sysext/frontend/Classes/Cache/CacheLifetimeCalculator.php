@@ -112,7 +112,7 @@ class CacheLifetimeCalculator
             // Cache period was set for the page:
             $cacheTimeout = (int)$pageRecord['cache_timeout'];
         } else {
-            // Cache period was set via TypoScript "config.cache_period", otherwise it's the default of 24 hours
+            // Cache period was set via TypoScript "config.cache_period", otherwise the default cache timeout is used
             $cacheTimeout = (int)($renderingInstructions['cache_period'] ?? self::defaultCacheTimeout);
         }
 
