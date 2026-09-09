@@ -71,6 +71,7 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
+use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\ContentObject\AbstractContentObject;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -4552,6 +4553,136 @@ content="benni">',
         $expected = str_replace(['[', ']'], [$quoteChar, $quoteChar], $expected);
         self::assertEquals($expected, $selectValue);
         $tcaSchemaFactory->load($backedupTca, true);
+    }
+
+    public static function getRecordsRespectsUidInListOrderDataProvider(): array
+    {
+        return [
+            'preserves uidInList order before applying limit' => [
+                [],
+                [30, 10],
+            ],
+            'explicit orderBy takes precedence' => [
+                ['orderBy' => 'uid DESC'],
+                [30, 20],
+            ],
+            'first occurrence of duplicate uid defines order' => [
+                ['uidInList' => '20,30,20,10', 'max' => '3'],
+                [20, 30, 10],
+            ],
+        ];
+    }
+
+    #[DataProvider('getRecordsRespectsUidInListOrderDataProvider')]
+    #[Test]
+    public function getRecordsRespectsUidInListOrder(array $configuration, array $expectedUids): void
+    {
+        $connection = $this->get(ConnectionPool::class)->getConnectionForTable('tt_content');
+        foreach ([10, 20, 30] as $uid) {
+            $connection->insert('tt_content', ['uid' => $uid, 'pid' => 1, 'header' => (string)$uid]);
+        }
+
+        $pageInformation = new PageInformation();
+        $pageInformation->setId(1);
+        $pageInformation->setContentFromPid(1);
+        $subject = $this->get(ContentObjectRenderer::class);
+        $subject->setRequest($this->getPreparedRequest()->withAttribute('frontend.page.information', $pageInformation));
+
+        $records = $subject->getRecords('tt_content', array_replace([
+            'uidInList' => '30,10,20',
+            'pidInList' => '1',
+            'max' => '2',
+        ], $configuration));
+
+        self::assertSame($expectedUids, array_column($records, 'uid'));
+    }
+
+    #[Test]
+    public function execGetQueryUidInListOrderConsidersMovePointersInWorkspace(): void
+    {
+        $connection = $this->get(ConnectionPool::class)->getConnectionForTable('tt_content');
+        $connection->insert('tt_content', ['uid' => 10, 'pid' => 1, 'header' => '10']);
+        $connection->insert('tt_content', ['uid' => 20, 'pid' => 1, 'header' => '20']);
+        $connection->insert('tt_content', ['uid' => 30, 'pid' => 2, 'header' => '30']);
+        // Record 30 moved to page 1 in workspace 1
+        $connection->insert('tt_content', ['uid' => 31, 'pid' => 1, 'header' => '30', 't3ver_oid' => 30, 't3ver_wsid' => 1, 't3ver_state' => VersionState::MOVE_POINTER->value]);
+        $this->get(Context::class)->setAspect('workspace', new WorkspaceAspect(1));
+
+        $pageInformation = new PageInformation();
+        $pageInformation->setId(1);
+        $pageInformation->setContentFromPid(1);
+        $subject = $this->get(ContentObjectRenderer::class);
+        $subject->setRequest($this->getPreparedRequest()->withAttribute('frontend.page.information', $pageInformation));
+
+        $rows = $subject->exec_getQuery('tt_content', [
+            'uidInList' => '30,10,20',
+            'pidInList' => '1',
+        ])->fetchAllAssociative();
+
+        self::assertSame([31, 10, 20], array_column($rows, 'uid'));
+    }
+
+    public static function execGetQueryUidInListOrderIsNotAppliedToAggregatesDataProvider(): array
+    {
+        return [
+            'count' => [
+                ['selectFields' => 'count(*) AS counted'],
+                [['counted' => 3]],
+            ],
+            'distinct' => [
+                ['selectFields' => 'DISTINCT pid'],
+                [['pid' => 1]],
+            ],
+            'groupBy' => [
+                ['selectFields' => 'pid, count(*) AS counted', 'groupBy' => 'pid'],
+                [['pid' => 1, 'counted' => 3]],
+            ],
+        ];
+    }
+
+    #[DataProvider('execGetQueryUidInListOrderIsNotAppliedToAggregatesDataProvider')]
+    #[Test]
+    public function execGetQueryUidInListOrderIsNotAppliedToAggregates(array $configuration, array $expectedRows): void
+    {
+        $connection = $this->get(ConnectionPool::class)->getConnectionForTable('tt_content');
+        foreach ([10, 20, 30] as $uid) {
+            $connection->insert('tt_content', ['uid' => $uid, 'pid' => 1, 'header' => (string)$uid]);
+        }
+
+        $pageInformation = new PageInformation();
+        $pageInformation->setId(1);
+        $pageInformation->setContentFromPid(1);
+        $subject = $this->get(ContentObjectRenderer::class);
+        $subject->setRequest($this->getPreparedRequest()->withAttribute('frontend.page.information', $pageInformation));
+
+        $configuration = array_replace([
+            'uidInList' => '30,10,20',
+            'pidInList' => '1',
+        ], $configuration);
+
+        self::assertStringNotContainsString('ORDER BY', $subject->getQuery($connection, 'tt_content', $configuration));
+        $rows = $subject->exec_getQuery('tt_content', $configuration)->fetchAllAssociative();
+        // Database drivers return integer columns either as int or string
+        self::assertSame($expectedRows, array_map(static fn(array $row): array => array_map(intval(...), $row), $rows));
+    }
+
+    #[Test]
+    public function getQueryUidInListOrderIsNotAppliedWithGroupBy(): void
+    {
+        $pageInformation = new PageInformation();
+        $pageInformation->setId(1);
+        $pageInformation->setContentFromPid(1);
+        $subject = $this->get(ContentObjectRenderer::class);
+        $subject->setRequest($this->getPreparedRequest()->withAttribute('frontend.page.information', $pageInformation));
+
+        $query = $subject->getQuery($this->get(ConnectionPool::class)->getConnectionForTable('tt_content'), 'tt_content', [
+            'uidInList' => '30,10,20',
+            'pidInList' => '1',
+            'selectFields' => 'pid',
+            'groupBy' => 'pid',
+        ]);
+
+        self::assertStringNotContainsString('ORDER BY', $query);
     }
 
     #[Test]
