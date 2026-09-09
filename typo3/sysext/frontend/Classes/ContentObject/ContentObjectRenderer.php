@@ -4918,6 +4918,11 @@ class ContentObjectRenderer implements LoggerAwareInterface
             foreach ($queryParts['orderBy'] as $orderBy) {
                 $queryBuilder->addOrderBy(...$orderBy);
             }
+        } elseif (($queryParts['uidInListOrderBy'] ?? null) !== null
+            && !($queryParts['groupBy'] ?? false)
+            && !preg_match('/(count|max|min|avg|sum)\([^\)]+\)|distinct/i', $conf['selectFields'] ?? '*')
+        ) {
+            $queryBuilder->getConcreteQueryBuilder()->addOrderBy($queryParts['uidInListOrderBy']);
         }
 
         // Fields:
@@ -5024,6 +5029,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             'where' => null,
             'groupBy' => null,
             'orderBy' => null,
+            'uidInListOrderBy' => null,
         ];
 
         $isInWorkspace = GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('workspace', 'isOffline');
@@ -5033,7 +5039,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         );
 
         if (trim($conf['uidInList'] ?? '')) {
-            $listArr = GeneralUtility::intExplode(',', str_replace('this', (string)$contentPid, $conf['uidInList']));
+            $listArr = array_values(array_unique(GeneralUtility::intExplode(',', str_replace('this', (string)$contentPid, $conf['uidInList']))));
 
             // If moved records shall be considered, select via t3ver_oid
             if ($considerMovePointers) {
@@ -5050,6 +5056,19 @@ class ContentObjectRenderer implements LoggerAwareInterface
             } else {
                 $constraints[] = (string)$expressionBuilder->in($table . '.uid', $listArr);
             }
+            $orderByParts = [];
+            foreach ($listArr as $position => $uid) {
+                $condition = $expressionBuilder->eq($table . '.uid', $uid);
+                if ($considerMovePointers) {
+                    $condition = $expressionBuilder->or(
+                        $condition,
+                        $expressionBuilder->eq($table . '.t3ver_oid', $uid)
+                    );
+                }
+                $orderByParts[] = 'WHEN ' . (string)$condition . ' THEN ' . $position;
+            }
+            // @todo Add a caseElse() method to ExpressionBuilder and use it here.
+            $queryParts['uidInListOrderBy'] = 'CASE ' . implode(' ', $orderByParts) . ' ELSE ' . count($listArr) . ' END';
             $pid_uid_flag++;
         }
 
