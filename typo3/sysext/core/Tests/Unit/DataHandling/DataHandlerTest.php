@@ -32,7 +32,9 @@ use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Configuration\Richtext;
+use TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
+use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashInterface;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -72,6 +74,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 final class DataHandlerTest extends UnitTestCase
 {
     private DataHandler&MockObject&AccessibleObjectInterface $subject;
+    private PasswordHashFactory&MockObject $passwordHashFactory;
     private TcaSchemaFactory $tcaSchemaFactory;
 
     protected function setUp(): void
@@ -92,6 +95,7 @@ final class DataHandlerTest extends UnitTestCase
         $connectionMock->method('lastInsertId')->willReturn('1');
         $connectionPoolMock = self::createStub(ConnectionPool::class);
         $connectionPoolMock->method('getConnectionForTable')->willReturn($connectionMock);
+        $this->passwordHashFactory = $this->createMock(PasswordHashFactory::class);
         $constructorArguments = [
             new NoopEventDispatcher(),
             self::createStub(CacheManager::class),
@@ -103,7 +107,7 @@ final class DataHandlerTest extends UnitTestCase
             new PageDoktypeRegistry($this->tcaSchemaFactory),
             self::createStub(FlexFormTools::class),
             self::createStub(Richtext::class),
-            new PasswordHashFactory(),
+            $this->passwordHashFactory,
             new Random(),
             new TypoLinkCodecService(new NoopEventDispatcher()),
             new OpcodeCacheService(),
@@ -257,8 +261,13 @@ final class DataHandlerTest extends UnitTestCase
     public function checkValuePasswordWithSaltedPasswordReturnsHashForSaltedPassword(): void
     {
         $inputValue = 'myPassword';
+        $passwordHash = $this->createMock(PasswordHashInterface::class);
+        $passwordHash->expects($this->once())->method('getHashedPassword')->with($inputValue)->willReturn('hashedPassword');
+        $this->passwordHashFactory->expects($this->once())->method('getDefaultHashInstance')->with('BE')->willReturn($passwordHash);
+        $this->passwordHashFactory->expects($this->once())->method('get')->with($inputValue, 'BE')->willThrowException(new InvalidPasswordHashException());
+
         $result = $this->subject->_call('checkValueForPassword', $inputValue, [], 'be_users', 0, 0);
-        self::assertNotSame($inputValue, $result['value']);
+        self::assertSame('hashedPassword', $result['value']);
     }
 
     #[Test]
@@ -268,6 +277,11 @@ final class DataHandlerTest extends UnitTestCase
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
         $eventDispatcher->expects($this->once())->method('dispatch')->willReturn($event);
         $connectionPoolStub = self::createStub(ConnectionPool::class);
+        $passwordHash = $this->createMock(PasswordHashInterface::class);
+        $passwordHash->expects($this->once())->method('getHashedPassword')->with('myPassword')->willReturn('hashedPassword');
+        $passwordHashFactory = $this->createMock(PasswordHashFactory::class);
+        $passwordHashFactory->expects($this->once())->method('getDefaultHashInstance')->with('BE')->willReturn($passwordHash);
+        $passwordHashFactory->expects($this->once())->method('get')->with('myPassword', 'BE')->willThrowException(new InvalidPasswordHashException());
         $constructorArguments = [
             $eventDispatcher,
             self::createStub(CacheManager::class),
@@ -279,7 +293,7 @@ final class DataHandlerTest extends UnitTestCase
             new PageDoktypeRegistry($this->tcaSchemaFactory),
             self::createStub(FlexFormTools::class),
             self::createStub(Richtext::class),
-            new PasswordHashFactory(),
+            $passwordHashFactory,
             new Random(),
             new TypoLinkCodecService(new NoopEventDispatcher()),
             new OpcodeCacheService(),
@@ -293,7 +307,7 @@ final class DataHandlerTest extends UnitTestCase
         $subject = $this->getAccessibleMock(DataHandler::class, null, $constructorArguments, '');
         $inputValue = 'myPassword';
         $result = $subject->_call('checkValueForPassword', $inputValue, [], 'be_users', 0, 0);
-        self::assertNotSame($inputValue, $result['value']);
+        self::assertSame('hashedPassword', $result['value']);
     }
 
     public static function numberValueCheckRecognizesStringValuesAsIntegerValuesCorrectlyDataProvider(): array

@@ -21,6 +21,8 @@ use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
+use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Form\Domain\Finishers\Exception\FinisherException;
 use TYPO3\CMS\Form\Domain\Finishers\FinisherContext;
 use TYPO3\CMS\Form\Domain\Finishers\SaveToDatabaseFinisher;
@@ -140,6 +142,12 @@ final class SaveToDatabaseFinisherTest extends UnitTestCase
     #[Test]
     public function prepareDataHashesValue(): void
     {
+        $passwordHash = $this->createMock(PasswordHashInterface::class);
+        $passwordHash->expects($this->once())->method('getHashedPassword')->with('rawValue')->willReturn('hashedValue');
+        $passwordHashFactory = $this->createMock(PasswordHashFactory::class);
+        $passwordHashFactory->expects($this->once())->method('getDefaultHashInstance')->with('FE')->willReturn($passwordHash);
+        GeneralUtility::addInstance(PasswordHashFactory::class, $passwordHashFactory);
+
         $elementsConfiguration = [
             'password' => [
                 'mapOnDatabaseColumn' => 'password',
@@ -154,8 +162,7 @@ final class SaveToDatabaseFinisherTest extends UnitTestCase
         $saveToDatabaseFinisher->method('getElementByIdentifier')->willReturn(self::createStub(FormElementInterface::class));
         $databaseData = $saveToDatabaseFinisher->_call('prepareData', $elementsConfiguration, []);
 
-        $passwordHash = new PasswordHashFactory()->getDefaultHashInstance('FE');
-        self::assertTrue($passwordHash->checkPassword('rawValue', $databaseData['password']));
+        self::assertSame('hashedValue', $databaseData['password']);
     }
 
     #[Test]
