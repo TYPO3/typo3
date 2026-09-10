@@ -69,15 +69,13 @@ final readonly class BackendViewFactory
 
         // @todo: This assumes the pageId is *always* given as 'id' in request.
         // @todo: It would be cool if a middleware adds final pageTS - already overlayed by userTS - as attribute to request, to use it here.
-        $pageTs = [];
         $pageId = $request->getParsedBody()['id'] ?? $request->getQueryParams()['id'] ?? 0;
-        if (MathUtility::canBeInterpretedAsInteger($pageId)) {
+        if (!MathUtility::canBeInterpretedAsInteger($pageId)) {
             // Some BE controllers misuse the 'id' argument for something else than the page-uid (especially filelist module).
-            // We check if 'id' is an integer here to skip pageTsConfig calculation if that is the case.
-            // @todo: Mid-term, misuses should vanish, making 'id' a Backend convention. Affected is
-            //        at least ext:filelist, plus record linking modals that use 'pid'.
-            $pageTs = BackendUtility::getPagesTSconfig((int)$pageId);
+            // Fall back to the global pageTsConfig (including userTsConfig overrides) in that case.
+            $pageId = 0;
         }
+        $pageTs = BackendUtility::getPagesTSconfig((int)$pageId);
 
         $templatePaths = [
             'templateRootPaths' => [],
