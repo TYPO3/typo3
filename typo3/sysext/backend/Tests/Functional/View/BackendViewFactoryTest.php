@@ -166,4 +166,21 @@ final class BackendViewFactoryTest extends FunctionalTestCase
         self::assertStringContainsString('Foo layout from extension test_templates_b', $result);
         self::assertStringContainsString('Foo partial from extension test_templates_b', $result);
     }
+
+    #[Test]
+    public function createAllowsOverridesUsingTsConfigWithNonIntegerId(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/BackendViewFactoryTestBackendUser.csv');
+        $this->setUpBackendUser(1);
+        $request = new ServerRequest()
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            ->withAttribute('route', new Route('testing', ['packageName' => 'typo3tests/cms-test-templates-a']))
+            ->withQueryParams(['id' => '1:/user_upload/']);
+        $subject = $this->get(BackendViewFactory::class);
+        $view = $subject->create($request);
+        $result = $view->render('Foo');
+        self::assertStringContainsString('Foo template from extension test_templates_b', $result);
+        self::assertStringContainsString('Foo layout from extension test_templates_b', $result);
+        self::assertStringContainsString('Foo partial from extension test_templates_b', $result);
+    }
 }
