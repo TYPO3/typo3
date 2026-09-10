@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Extensionmanager\Domain\Repository;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
+use TYPO3\CMS\Extensionmanager\Domain\ExtensionCatalogueInterface;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Extensionmanager\Domain\Model\PackageIdentifier;
 use TYPO3\CMS\Extensionmanager\Enum\ExtensionCategory;
@@ -33,7 +34,7 @@ use TYPO3\CMS\Extensionmanager\Exception\ExtensionNotFoundException;
  *
  * @internal This class is a specific domain repository implementation and is not part of the Public TYPO3 API.
  */
-readonly class ExtensionRepository
+readonly class ExtensionRepository implements ExtensionCatalogueInterface
 {
     private const TABLE_NAME = 'tx_extensionmanager_domain_model_extension';
 

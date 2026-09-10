@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extensionmanager\Tests\Functional\Domain\Repository;
 
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Extensionmanager\Domain\ExtensionCatalogueInterface;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Extensionmanager\Domain\Model\PackageIdentifier;
 use TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository;
@@ -29,6 +30,20 @@ final class ExtensionRepositoryTest extends FunctionalTestCase
     protected array $coreExtensionsToLoad = [
         'extensionmanager',
     ];
+
+    /**
+     * The list views depend on the contract, not on the repository, so the
+     * container has to hand out an implementation for it. Without the alias in
+     * Services.yaml the "Get Extensions" module cannot be instantiated at all.
+     */
+    #[Test]
+    public function theExtensionCatalogueContractIsServedByTheRepository(): void
+    {
+        $catalogue = $this->get(ExtensionCatalogueInterface::class);
+
+        self::assertInstanceOf(ExtensionRepository::class, $catalogue);
+        self::assertSame(0, $catalogue->countAll());
+    }
 
     #[Test]
     public function getByPackageIdentifierReturnsExtensionForExistingRecord(): void

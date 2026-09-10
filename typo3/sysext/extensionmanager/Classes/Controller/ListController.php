@@ -31,7 +31,7 @@ use TYPO3\CMS\Core\Pagination\SimplePagination;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository;
+use TYPO3\CMS\Extensionmanager\Domain\ExtensionCatalogueInterface;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 use TYPO3\CMS\Extensionmanager\Pagination\ExtensionListPaginator;
 use TYPO3\CMS\Extensionmanager\Remote\RemoteRegistry;
@@ -47,7 +47,7 @@ class ListController extends AbstractController
 {
     public function __construct(
         protected readonly PageRenderer $pageRenderer,
-        protected readonly ExtensionRepository $extensionRepository,
+        protected readonly ExtensionCatalogueInterface $extensionCatalogue,
         protected readonly ListUtility $listUtility,
         protected readonly IconFactory $iconFactory,
         protected readonly RemoteRegistry $remoteRegistry,
@@ -107,15 +107,15 @@ class ListController extends AbstractController
         $search = trim($search);
         if (!empty($search)) {
             $paginator = new ExtensionListPaginator(
-                fn(int $offset, int $limit): array => $this->extensionRepository->findByTitleOrAuthorNameOrExtensionKey($search, $offset, $limit),
-                $this->extensionRepository->countByTitleOrAuthorNameOrExtensionKey($search),
+                fn(int $offset, int $limit): array => $this->extensionCatalogue->findByTitleOrAuthorNameOrExtensionKey($search, $offset, $limit),
+                $this->extensionCatalogue->countByTitleOrAuthorNameOrExtensionKey($search),
                 $currentPage
             );
             $tableId = 'terSearchTable';
         } else {
             $paginator = new ExtensionListPaginator(
-                fn(int $offset, int $limit): array => $this->extensionRepository->findAll($offset, $limit),
-                $this->extensionRepository->countAll(),
+                fn(int $offset, int $limit): array => $this->extensionCatalogue->findAll($offset, $limit),
+                $this->extensionCatalogue->countAll(),
                 $currentPage
             );
             $tableId = 'terTable';
@@ -154,8 +154,8 @@ class ListController extends AbstractController
             } catch (ExtensionManagerException $e) {
                 $this->addFlashMessage($e->getMessage(), (string)$e->getCode(), ContextualFeedbackSeverity::ERROR);
             }
-            $officialDistributions = $this->extensionRepository->findAllOfficialDistributions($showUnsuitableDistributions);
-            $communityDistributions = $this->extensionRepository->findAllCommunityDistributions($showUnsuitableDistributions);
+            $officialDistributions = $this->extensionCatalogue->findAllOfficialDistributions($showUnsuitableDistributions);
+            $communityDistributions = $this->extensionCatalogue->findAllCommunityDistributions($showUnsuitableDistributions);
             $view->assign('officialDistributions', $officialDistributions);
             $view->assign('communityDistributions', $communityDistributions);
         }
@@ -181,8 +181,8 @@ class ListController extends AbstractController
      */
     protected function showAllVersionsAction(string $extensionKey): ResponseInterface
     {
-        $currentVersion = $this->extensionRepository->findOneByCurrentVersionByExtensionKey($extensionKey);
-        $extensions = $this->extensionRepository->findByExtensionKeyOrderedByVersion($extensionKey);
+        $currentVersion = $this->extensionCatalogue->findOneByCurrentVersionByExtensionKey($extensionKey);
+        $extensions = $this->extensionCatalogue->findByExtensionKeyOrderedByVersion($extensionKey);
         $view = $this->initializeModuleTemplate($this->request);
         $view = $this->registerDocHeaderButtons($view);
         $view->assignMultiple([
