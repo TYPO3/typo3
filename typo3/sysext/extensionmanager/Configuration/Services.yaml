@@ -10,6 +10,9 @@ services:
     # EXT:reports to be installed, ignore for now.
     exclude: '../Classes/{Task,Report}'
 
+  TYPO3\CMS\Extensionmanager\Domain\ExtensionCatalogueInterface:
+    alias: TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository
+
   TYPO3\CMS\Extensionmanager\Command\ActivateExtensionCommand:
     tags:
       - name: 'console.command'
