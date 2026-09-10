@@ -190,6 +190,7 @@ class SelectSingleElement extends AbstractFormElement
         $selectAttributes = [
             'id' => $selectId,
             'name' => (string)($parameterArray['itemFormElName'] ?? ''),
+            'data-formengine-input-name' => (string)($parameterArray['itemFormElName'] ?? ''),
             'data-formengine-validation-rules' => $this->getValidationDataAsJsonString($config),
             'class' => implode(' ', $classList),
         ];
