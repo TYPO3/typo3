@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Resource\Exception\InvalidConfigurationException;
 use TYPO3\CMS\Core\Resource\Exception\InvalidPathException;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ProcessedFileRepository;
+use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
@@ -107,46 +108,40 @@ final readonly class CleanUpLocalProcessedFilesService
      */
     public function getRecordsToClean(bool $fullReset = false): array
     {
+        $storageUids = array_map(
+            static fn(ResourceStorage $storage): int => $storage->getUid(),
+            $this->storageRepository->findByStorageType('Local')
+        );
+        if ($fullReset) {
+            // When removing all records, also the fallback storage needs to be cleared.
+            $storageUids[] = 0;
+        }
+        if ($storageUids === []) {
+            return [];
+        }
+
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_file_processedfile');
-        // Neither sys_file_processedfile nor sys_file_storage have TCA enablecolumns, so
-        // there is nothing to remove here. Kept defensively in case that ever changes.
+        // sys_file_processedfile has no TCA enablecolumns, so there is nothing to remove
+        // here. Kept defensively in case that ever changes.
         $queryBuilder->getRestrictions()->removeAll();
         $conditions = [
-            $queryBuilder->expr()->eq(
-                'sfs.driver',
-                $queryBuilder->createNamedParameter('Local')
+            $queryBuilder->expr()->in(
+                'storage',
+                $queryBuilder->createNamedParameter($storageUids, Connection::PARAM_INT_ARRAY)
             ),
         ];
-
         if (!$fullReset) {
             $conditions[] = $queryBuilder->expr()->neq(
-                'sfp.identifier',
+                'identifier',
                 $queryBuilder->createNamedParameter('')
-            );
-            $storageJoinCondition = $queryBuilder->expr()->eq(
-                'sfp.storage',
-                $queryBuilder->quoteIdentifier('sfs.uid')
-            );
-        } else {
-            // When removing all records, also the fallback storage needs to be cleared.
-            $storageJoinCondition = $queryBuilder->expr()->gte(
-                'sfp.storage',
-                0
             );
         }
 
-        $queryBuilder
-            ->select('sfp.storage', 'sfp.identifier', 'sfp.uid')
-            ->from('sys_file_processedfile', 'sfp')
-            ->leftJoin(
-                'sfp',
-                'sys_file_storage',
-                'sfs',
-                $storageJoinCondition
-            )
-            ->where(...$conditions);
-
-        $results = $queryBuilder->executeQuery();
+        $results = $queryBuilder
+            ->select('storage', 'identifier', 'uid')
+            ->from('sys_file_processedfile')
+            ->where(...$conditions)
+            ->executeQuery();
         $processedToDelete = [];
         while ($processedFile = $results->fetchAssociative()) {
             if ($fullReset) {

@@ -39,7 +39,7 @@ return [
                 'items' => [
                     ['label' => '', 'value' => 0],
                 ],
-                'foreign_table' => 'sys_file_storage',
+                'itemsProcFunc' => \TYPO3\CMS\Core\Hooks\TcaItemsProcessorFunctions::class . '->populateFileStorages',
             ],
         ],
         'identifier' => [

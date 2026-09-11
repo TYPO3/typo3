@@ -164,7 +164,7 @@ return [
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'foreign_table' => 'sys_file_storage',
+                'itemsProcFunc' => \TYPO3\CMS\Core\Hooks\TcaItemsProcessorFunctions::class . '->populateFileStorages',
                 'size' => 1,
                 'minitems' => 1,
                 'maxitems' => 1,

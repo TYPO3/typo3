@@ -21,6 +21,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Module\ModuleFactory;
 use TYPO3\CMS\Backend\Module\ModuleProvider;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
@@ -28,6 +29,8 @@ use TYPO3\CMS\Core\Hooks\TcaItemsProcessorFunctions;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Resource\Driver\LocalDriver;
+use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -45,6 +48,12 @@ final class TcaItemsProcessorFunctionsTest extends FunctionalTestCase
         $GLOBALS['LANG'] = $languageServiceMock;
         $iconRegistryMock = $this->createMock(IconRegistry::class);
         GeneralUtility::setSingletonInstance(IconRegistry::class, $iconRegistryMock);
+    }
+
+    protected function tearDown(): void
+    {
+        unset($GLOBALS['BE_USER']);
+        parent::tearDown();
     }
 
     #[Test]
@@ -592,6 +601,64 @@ final class TcaItemsProcessorFunctionsTest extends FunctionalTestCase
             ],
         ];
         $this->get(TcaItemsProcessorFunctions::class)->populateCustomPermissionOptions($fieldDefinition);
+        self::assertSame($expected, $fieldDefinition);
+    }
+
+    #[Test]
+    public function populateFileStoragesAddsStoragesOfBackendUser(): void
+    {
+        $localDriver = new LocalDriver(['basePath' => $this->instancePath]);
+        $storages = [
+            1 => new ResourceStorage($localDriver, ['uid' => 1, 'name' => 'fileadmin'], new NoopEventDispatcher()),
+            3 => new ResourceStorage($localDriver, ['uid' => 3, 'name' => 'assets'], new NoopEventDispatcher()),
+        ];
+        $backendUserStub = self::createStub(BackendUserAuthentication::class);
+        $backendUserStub->method('getFileStorages')->willReturn($storages);
+        $GLOBALS['BE_USER'] = $backendUserStub;
+
+        $fieldDefinition = [
+            'items' => [
+                0 => [
+                    'label' => '',
+                    'value' => 0,
+                ],
+            ],
+        ];
+        $expected = [
+            'items' => [
+                0 => [
+                    'label' => '',
+                    'value' => 0,
+                ],
+                1 => [
+                    'label' => 'fileadmin',
+                    'value' => 1,
+                    'icon' => 'mimetypes-x-sys_file_storage',
+                ],
+                2 => [
+                    'label' => 'assets',
+                    'value' => 3,
+                    'icon' => 'mimetypes-x-sys_file_storage',
+                ],
+            ],
+        ];
+        $this->get(TcaItemsProcessorFunctions::class)->populateFileStorages($fieldDefinition);
+        self::assertSame($expected, $fieldDefinition);
+    }
+
+    #[Test]
+    public function populateFileStoragesAddsNoItemsWithoutBackendUser(): void
+    {
+        $fieldDefinition = [
+            'items' => [
+                0 => [
+                    'label' => '',
+                    'value' => 0,
+                ],
+            ],
+        ];
+        $expected = $fieldDefinition;
+        $this->get(TcaItemsProcessorFunctions::class)->populateFileStorages($fieldDefinition);
         self::assertSame($expected, $fieldDefinition);
     }
 

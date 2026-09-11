@@ -76,6 +76,24 @@ class StorageRepository
         return null;
     }
 
+    /**
+     * Resolves the uid of the default storage without instantiating any storage object.
+     * As with all other lookups of this repository, the default local storage is created
+     * if no storage record exists yet.
+     *
+     * @internal Needed while file mounts are resolved, as instantiating a storage applies them.
+     */
+    public function getDefaultStorageUid(): ?int
+    {
+        $this->initializeLocalCache();
+        foreach ($this->storageRowCache as $uid => $storageRow) {
+            if (!empty($storageRow['is_default'])) {
+                return $uid;
+            }
+        }
+        return null;
+    }
+
     public function findByUid(int $uid): ?ResourceStorage
     {
         $this->initializeLocalCache();

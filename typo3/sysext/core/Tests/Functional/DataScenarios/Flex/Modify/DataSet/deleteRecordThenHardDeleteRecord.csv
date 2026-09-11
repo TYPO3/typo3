@@ -79,8 +79,6 @@
 </T3FlexForms>"
 "sys_refindex"
 ,"hash","tablename","recuid","field","hidden","starttime","endtime","t3ver_state","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_field","ref_hidden","ref_starttime","ref_endtime","ref_t3ver_state","ref_sorting","ref_string"
-,"662118c0b7a0096482db813011801a45","sys_file",1,"storage",0,0,2147483647,0,,,,0,0,"sys_file_storage",1,,0,0,2147483647,0,0,
-,"b29f51a7f7e6e6dcc6d99be7849ae442","sys_file",2,"storage",0,0,2147483647,0,,,,0,0,"sys_file_storage",1,,0,0,2147483647,0,0,
 ,"bee7419b079bf1311d4a280440fd7887","sys_file",1,"metadata",0,0,2147483647,0,,,,0,0,"sys_file_metadata",1,,0,0,2147483647,0,0,
 ,"5cf62de176f58998d1750ec070eb9269","sys_file",2,"metadata",0,0,2147483647,0,,,,0,0,"sys_file_metadata",2,,0,0,2147483647,0,0,
 ,"f9c64f1c71a8b40ffa94f38fcbb366b0","sys_file_metadata",1,"file",0,0,2147483647,0,,,,0,0,"sys_file",1,,0,0,2147483647,0,0,

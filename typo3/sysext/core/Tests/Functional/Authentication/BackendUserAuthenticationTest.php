@@ -20,6 +20,8 @@ namespace TYPO3\CMS\Core\Tests\Functional\Authentication;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaRequiredException;
+use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class BackendUserAuthenticationTest extends FunctionalTestCase
@@ -43,6 +45,68 @@ final class BackendUserAuthenticationTest extends FunctionalTestCase
     {
         $backendUser = $this->setUpBackendUser(3);
         self::assertCount(3, $backendUser->getFileMountRecords());
+    }
+
+    #[Test]
+    public function readOnlyMountPointWithStorageIsAddedToFileMountRecords(): void
+    {
+        $this->get(CacheManager::class)->getCache('runtime')->remove('backendUserAuthenticationFileMountRecords');
+        $backendUser = $this->setUpBackendUser(3);
+        $backendUser->user['TSconfig'] = 'options.folderTree.altElementBrowserMountPoints = 1:/read-only/';
+        $backendUser->fetchGroupData();
+
+        $fileMountRecords = $backendUser->getFileMountRecords();
+
+        self::assertCount(4, $fileMountRecords);
+        self::assertSame(1, $fileMountRecords['1/read-only/-readonly']['base']);
+        self::assertSame('1:/read-only/', $fileMountRecords['1/read-only/-readonly']['identifier']);
+        self::assertTrue($fileMountRecords['1/read-only/-readonly']['read_only']);
+    }
+
+    #[Test]
+    public function readOnlyMountPointWithoutStorageUsesDefaultStorage(): void
+    {
+        $this->get(CacheManager::class)->getCache('runtime')->remove('backendUserAuthenticationFileMountRecords');
+        $this->getConnectionPool()->getConnectionForTable('sys_file_storage')
+            ->update('sys_file_storage', ['is_default' => 1], ['uid' => 1]);
+        $this->get(StorageRepository::class)->flush();
+        $backendUser = $this->setUpBackendUser(3);
+        $backendUser->user['TSconfig'] = 'options.folderTree.altElementBrowserMountPoints = /read-only/';
+        $backendUser->fetchGroupData();
+
+        $fileMountRecords = $backendUser->getFileMountRecords();
+
+        self::assertSame(1, $fileMountRecords['1/read-only/-readonly']['base']);
+        self::assertSame('1:/read-only/', $fileMountRecords['1/read-only/-readonly']['identifier']);
+    }
+
+    #[Test]
+    public function readOnlyMountPointWithoutStorageThrowsIfNoDefaultStorageExists(): void
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1404472382);
+        $this->get(CacheManager::class)->getCache('runtime')->remove('backendUserAuthenticationFileMountRecords');
+        $backendUser = $this->setUpBackendUser(3);
+        $backendUser->user['TSconfig'] = 'options.folderTree.altElementBrowserMountPoints = /read-only/';
+        $backendUser->fetchGroupData();
+        $backendUser->getFileMountRecords();
+    }
+
+    #[Test]
+    public function readOnlyMountPointWithoutStorageUsesCreatedDefaultStorageIfNoStorageExists(): void
+    {
+        $this->getConnectionPool()->getConnectionForTable('sys_file_storage')->truncate('sys_file_storage');
+        $storageRepository = $this->get(StorageRepository::class);
+        $storageRepository->flush();
+        $backendUser = $this->setUpBackendUser(3);
+        $backendUser->user['TSconfig'] = 'options.folderTree.altElementBrowserMountPoints = /read-only/';
+        $backendUser->fetchGroupData();
+
+        $fileMountRecords = $backendUser->getFileMountRecords();
+
+        $defaultStorageUid = $storageRepository->getDefaultStorageUid();
+        self::assertNotNull($defaultStorageUid);
+        self::assertSame($defaultStorageUid, $fileMountRecords[$defaultStorageUid . '/read-only/-readonly']['base']);
     }
 
     #[Test]

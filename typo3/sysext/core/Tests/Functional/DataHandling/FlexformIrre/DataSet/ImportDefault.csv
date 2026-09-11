@@ -17,7 +17,6 @@
 ,1,1,20,100,"tt_content","files",1,0,0,0,0,,
 "sys_refindex",,,,,,,,,,,,,,
 ,"hash","tablename","recuid","field","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_string",,
-,"0ad00e77a175a4a5d134cc2b115839fd","sys_file",20,"storage",,,,0,0,"sys_file_storage",1,,,
 ,"ba70fb18121c539edb3c4f20287907d1","sys_file_reference",1,"uid_local",,,,0,0,"sys_file",20,,,
 ,"db6d026c89fe7d3caa9d747b4f1f792f","tt_content",100,"tx_testirreforeignfield_flexform","sDEF/lDEF/files/vDEF/",,,0,0,"sys_file_reference",1,,,
 ,"e4712fb3d70caa07319ee0da0925cdb3","sys_workspace",1,"db_mountpoints",,,,0,0,"pages",88,,,

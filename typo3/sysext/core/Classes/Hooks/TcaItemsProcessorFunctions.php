@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Hooks;
 
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Module\ModuleProvider;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidIdentifierException;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry;
@@ -197,6 +198,24 @@ readonly class TcaItemsProcessorFunctions
                     'description' => $helpText,
                 ];
             }
+        }
+    }
+
+    /**
+     * Populates the file storages the current backend user has access to
+     */
+    public function populateFileStorages(array &$fieldDefinition): void
+    {
+        $backendUser = $GLOBALS['BE_USER'] ?? null;
+        if (!$backendUser instanceof BackendUserAuthentication) {
+            return;
+        }
+        foreach ($backendUser->getFileStorages() as $storage) {
+            $fieldDefinition['items'][] = [
+                'label' => $storage->getName(),
+                'value' => $storage->getUid(),
+                'icon' => 'mimetypes-x-sys_file_storage',
+            ];
         }
     }
 

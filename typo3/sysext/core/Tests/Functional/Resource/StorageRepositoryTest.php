@@ -580,4 +580,44 @@ final class StorageRepositoryTest extends FunctionalTestCase
         self::assertEquals($fileToCopyMetaData['title'], $newFile->getMetaData()->get()['title']);
         self::assertEquals($fileToCopyMetaData['description'], $newFile->getMetaData()->get()['description']);
     }
+
+    #[Test]
+    public function getDefaultStorageUidReturnsUidOfDefaultStorageWithoutInstantiatingStorages(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
+        $this->getConnectionPool()->getConnectionForTable('sys_file_storage')
+            ->update('sys_file_storage', ['is_default' => 1], ['uid' => 1]);
+        $subject = $this->get(StorageRepository::class);
+        $subject->flush();
+
+        self::assertSame(1, $subject->getDefaultStorageUid());
+        self::assertSame([], (new \ReflectionProperty($subject, 'storageInstances'))->getValue($subject));
+    }
+
+    #[Test]
+    public function getDefaultStorageUidReturnsNullIfNoStorageIsDefault(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
+        $subject = $this->get(StorageRepository::class);
+        $subject->flush();
+
+        self::assertNull($subject->getDefaultStorageUid());
+    }
+
+    #[Test]
+    public function getDefaultStorageUidCreatesDefaultStorageIfNoStorageExists(): void
+    {
+        $subject = $this->get(StorageRepository::class);
+        $subject->flush();
+
+        $defaultStorageUid = $subject->getDefaultStorageUid();
+
+        self::assertNotNull($defaultStorageUid);
+        $storageRows = $this->getConnectionPool()->getConnectionForTable('sys_file_storage')
+            ->select(['uid', 'is_default'], 'sys_file_storage')
+            ->fetchAllAssociative();
+        self::assertCount(1, $storageRows);
+        self::assertSame($defaultStorageUid, (int)$storageRows[0]['uid']);
+        self::assertSame(1, (int)$storageRows[0]['is_default']);
+    }
 }

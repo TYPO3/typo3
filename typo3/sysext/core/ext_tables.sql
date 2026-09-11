@@ -113,6 +113,7 @@ CREATE TABLE sys_file (
 	modification_date int(11) DEFAULT '0' NOT NULL,
 	# Default int(11) too small. Keep same size (20) from earlier TYPO3 versions
 	size bigint(20) DEFAULT '0' NOT NULL,
+	storage int(11) unsigned DEFAULT '0' NOT NULL,
 
 	KEY sel01 (storage,identifier_hash),
 	KEY folder (storage,folder_hash),
