@@ -1337,17 +1337,9 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         // Read-only file mounts
         $readOnlyMountPoints = trim($this->getTSConfig()['options.']['folderTree.']['altElementBrowserMountPoints'] ?? '');
         if ($readOnlyMountPoints) {
-            // We cannot use the API here but need to fetch the default storage record directly
-            // to not instantiate it (which directly applies mount points) before all mount points are resolved!
-            $queryBuilder = $connectionPool->getQueryBuilderForTable('sys_file_storage');
-            $defaultStorageRow = $queryBuilder->select('uid')
-                ->from('sys_file_storage')
-                ->where(
-                    $queryBuilder->expr()->eq('is_default', $queryBuilder->createNamedParameter(1, Connection::PARAM_INT))
-                )
-                ->setMaxResults(1)
-                ->executeQuery()
-                ->fetchAssociative();
+            // Only the uid is resolved here: instantiating the default storage would apply
+            // the file mounts before all of them are resolved.
+            $defaultStorageUid = GeneralUtility::makeInstance(StorageRepository::class)->getDefaultStorageUid();
 
             $readOnlyMountPointArray = GeneralUtility::trimExplode(',', $readOnlyMountPoints);
             foreach ($readOnlyMountPointArray as $readOnlyMountPoint) {
@@ -1357,11 +1349,11 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                     $storageUid = (int)$readOnlyMountPointConfiguration[0];
                     $path = $readOnlyMountPointConfiguration[1];
                 } else {
-                    if (empty($defaultStorageRow)) {
+                    if ($defaultStorageUid === null) {
                         throw new \RuntimeException('Read only mount points have been defined in user TSconfig without specific storage, but a default storage could not be resolved.', 1404472382);
                     }
                     // Backwards compatibility: If no storage is passed, we use the default storage
-                    $storageUid = $defaultStorageRow['uid'];
+                    $storageUid = $defaultStorageUid;
                     $path = $readOnlyMountPointConfiguration[0];
                 }
                 $fileMountRecordCache[$storageUid . $path . '-readonly'] = [

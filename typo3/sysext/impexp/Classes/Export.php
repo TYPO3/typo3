@@ -541,6 +541,23 @@ class Export extends ImportExport
                         ];
                     }
                 }
+                // The storage column of sys_file has no reference index entry, as its items come from an
+                // items processor function. The import needs the storage record to map the file to an
+                // equivalent storage of the target system, so the relation is added here manually.
+                // @todo: Revisit once file storages are no longer database records, see #110684.
+                if ($table === 'sys_file' && (int)($row['storage'] ?? 0) > 0) {
+                    $relations = [
+                        'storage' => [
+                            'type' => 'db',
+                            'itemArray' => [
+                                [
+                                    'id' => (int)$row['storage'],
+                                    'table' => 'sys_file_storage',
+                                ],
+                            ],
+                        ],
+                    ] + $relations;
+                }
                 if ($relations !== []) {
                     $this->dat['records'][$recordIdentifier]['rels'] = $relations;
                 }

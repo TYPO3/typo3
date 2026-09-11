@@ -163,7 +163,7 @@ final class CleanUpLocalProcessedFilesTest extends FunctionalTestCase
         self::assertStringContainsString('[RECORD] Would delete /_processed_/a/SomeMissingFile.png', $output);
         self::assertStringContainsString('Are you sure you want to delete these processed files and records', $output);
         self::assertStringContainsString('Deleted 5 processed records', $output);
-        self::assertStringContainsString('Failed to delete 5 records', $output);
+        self::assertStringNotContainsString('Failed to delete', $output);
         self::assertStringContainsString('Deleted 6 processed files', $output);
     }
 
@@ -209,5 +209,28 @@ final class CleanUpLocalProcessedFilesTest extends FunctionalTestCase
         $this->commandTester->execute(['--force' => true, '--all' => true]);
 
         $this->assertCSVDataSet(__DIR__ . '/../Fixtures/Modify/allDeleted.csv');
+    }
+
+    #[Test]
+    public function databaseRecordsOfNonLocalStoragesAreKeptWithAllOption(): void
+    {
+        $this->getConnectionPool()->getConnectionForTable('sys_file_storage')->insert(
+            'sys_file_storage',
+            ['uid' => 3, 'pid' => 0, 'name' => 'remote-storage', 'driver' => 'Remote', 'configuration' => '']
+        );
+        $this->getConnectionPool()->getConnectionForTable('sys_file_processedfile')->insert(
+            'sys_file_processedfile',
+            ['uid' => 6, 'storage' => 3, 'original' => 83, 'identifier' => '/_processed_/remote.png', 'name' => 'remote.png']
+        );
+        $this->get(StorageRepository::class)->flush();
+
+        $this->commandTester->execute(['--force' => true, '--all' => true]);
+
+        $remainingUids = $this->getConnectionPool()->getQueryBuilderForTable('sys_file_processedfile')
+            ->select('uid')
+            ->from('sys_file_processedfile')
+            ->executeQuery()
+            ->fetchFirstColumn();
+        self::assertSame([6], array_map(intval(...), $remainingUids));
     }
 }
