@@ -37,6 +37,7 @@ use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Localization\TranslationDomainResolver;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
@@ -73,6 +74,7 @@ final readonly class NewRecordController
         private SystemResourceFactory $resourceFactory,
         private SystemResourcePublisherInterface $resourcePublisher,
         private SchemaLabelResolver $schemaLabelResolver,
+        private TranslationDomainResolver $translationDomainResolver,
     ) {}
 
     /**
@@ -235,22 +237,32 @@ final readonly class NewRecordController
                 }
             } else {
                 $nameParts = explode('_', $table);
-                $groupName = $schema->getRawConfiguration()['groupName'] ?? '';
+                $configuredGroupName = $schema->getRawConfiguration()['groupName'] ?? '';
+                $groupName = $configuredGroupName;
                 if (!isset($iconFile[$groupName]) || $nameParts[0] === 'tx' || $nameParts[0] === 'tt') {
                     $groupName = $groupName ?: ($nameParts[1] ?? null);
                     // Try to extract extension name
                     if ($groupName) {
                         $_EXTKEY = '';
-                        $titleIsTranslatableLabel = str_starts_with($ctrlTitle, 'LLL:EXT:');
-                        if ($titleIsTranslatableLabel) {
-                            // In case the title is a locallang reference, we can simply
-                            // extract the extension name from the given extension path.
-                            $_EXTKEY = substr($ctrlTitle, 8);
-                            $_EXTKEY = substr($_EXTKEY, 0, (int)strpos($_EXTKEY, '/'));
-                        } elseif (ExtensionManagementUtility::isLoaded($groupName)) {
-                            // In case $title is not a locallang reference, we check the groupName to
-                            // be a valid extension key. This most probably work since by convention the
-                            // first part after tx_ / tt_ is the extension key.
+                        if ($configuredGroupName === '') {
+                            $titleIsTranslatableLabel = str_starts_with($ctrlTitle, 'LLL:EXT:');
+                            if ($titleIsTranslatableLabel) {
+                                // In case the title is a locallang reference, we can simply
+                                // extract the extension name from the given extension path.
+                                $_EXTKEY = substr($ctrlTitle, 8);
+                                $_EXTKEY = substr($_EXTKEY, 0, (int)strpos($_EXTKEY, '/'));
+                            } else {
+                                $labelReference = str_starts_with($ctrlTitle, 'LLL:') ? substr($ctrlTitle, 4) : $ctrlTitle;
+                                $labelReferenceParts = explode(':', $labelReference, 2);
+                                if (isset($labelReferenceParts[1]) && $this->translationDomainResolver->isValidDomainName($labelReferenceParts[0])) {
+                                    [$extensionKey] = explode('.', $labelReferenceParts[0], 2);
+                                    if (ExtensionManagementUtility::isLoaded($extensionKey)) {
+                                        $_EXTKEY = $extensionKey;
+                                    }
+                                }
+                            }
+                        }
+                        if ($_EXTKEY === '' && ExtensionManagementUtility::isLoaded($groupName)) {
                             $_EXTKEY = $groupName;
                         }
                         // Fetch the group title from the extension name
