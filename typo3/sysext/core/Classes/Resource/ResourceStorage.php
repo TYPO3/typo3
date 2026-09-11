@@ -19,8 +19,10 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UploadedFileInterface;
+use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\CacheTag;
 use TYPO3\CMS\Core\Cache\Event\AddCacheTagEvent;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Core\Environment;
@@ -32,7 +34,6 @@ use TYPO3\CMS\Core\Http\FalDumpFileContentsDecoratorStream;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\UploadedFile;
 use TYPO3\CMS\Core\Log\LogManager;
-use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Resource\Driver\DriverInterface;
 use TYPO3\CMS\Core\Resource\Driver\StreamableDriverInterface;
 use TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior;
@@ -137,6 +138,12 @@ class ResourceStorage implements ResourceStorageInterface
      * Levels numbers used to generate hashed subfolders in the processing folder
      */
     public const PROCESSING_FOLDER_LEVELS = 2;
+
+    /**
+     * Seconds a storage stays offline after markAsTemporaryOffline()
+     */
+    private const TEMPORARY_OFFLINE_LIFETIME = 300;
+
     /**
      * The configuration belonging to this storage (decoded from the configuration field).
      */
@@ -431,14 +438,7 @@ class ResourceStorage implements ResourceStorageInterface
                     // All files are ALWAYS available in the frontend
                     $this->isOnline = true;
                 } else {
-                    // check if the storage is disabled temporary for now
-                    $registryObject = GeneralUtility::makeInstance(Registry::class);
-                    $offlineUntil = $registryObject->get('core', 'sys_file_storage-' . $this->getUid() . '-offline-until');
-                    if ($offlineUntil && $offlineUntil > time()) {
-                        $this->isOnline = false;
-                    } else {
-                        $this->isOnline = true;
-                    }
+                    $this->isOnline = !$this->getOfflineStateCache()->has($this->getOfflineStateCacheIdentifier());
                 }
             }
         }
@@ -484,10 +484,19 @@ class ResourceStorage implements ResourceStorageInterface
      */
     public function markAsTemporaryOffline(): void
     {
-        $registryObject = GeneralUtility::makeInstance(Registry::class);
-        $registryObject->set('core', 'sys_file_storage-' . $this->getUid() . '-offline-until', time() + 60 * 5);
+        $this->getOfflineStateCache()->set($this->getOfflineStateCacheIdentifier(), true, [], self::TEMPORARY_OFFLINE_LIFETIME);
         $this->storageRecord['is_online'] = 0;
         $this->isOnline = false;
+    }
+
+    private function getOfflineStateCache(): FrontendInterface
+    {
+        return GeneralUtility::makeInstance(CacheManager::class)->getCache('hash');
+    }
+
+    private function getOfflineStateCacheIdentifier(): string
+    {
+        return 'offline-' . $this->getUid();
     }
 
     /*********************************
