@@ -32,6 +32,10 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class NewRecordControllerTest extends FunctionalTestCase
 {
+    protected array $testExtensionsToLoad = [
+        'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_translation_domain',
+    ];
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -177,6 +181,36 @@ final class NewRecordControllerTest extends FunctionalTestCase
 
         self::assertEquals(200, $response->getStatusCode());
         self::assertStringNotContainsString('Files from a selected folder', $content);
+    }
+
+    #[Test]
+    public function translationDomainDeterminesRecordGroupPackage(): void
+    {
+        $groupedLinks = [];
+
+        /** @var Container $container */
+        $container = $this->get('service_container');
+        $container->set(
+            'test-new-record-group-listener',
+            static function (ModifyNewRecordCreationLinksEvent $event) use (&$groupedLinks): void {
+                $groupedLinks = $event->groupedCreationLinks;
+            }
+        );
+        $container->get(ListenerProvider::class)->addListener(
+            ModifyNewRecordCreationLinksEvent::class,
+            'test-new-record-group-listener'
+        );
+
+        $controller = $this->get(NewRecordController::class);
+        $controller->mainAction($this->createRequest('/record/new', ['id' => 1]));
+
+        self::assertArrayHasKey('testtranslationdomain', $groupedLinks);
+        self::assertSame(
+            'A test extension for translation domain mapping',
+            $groupedLinks['testtranslationdomain']['title']
+        );
+        self::assertSame('TYPO3 CMS Backend', $groupedLinks['backend']['title']);
+        self::assertNotSame($groupedLinks['testtranslationdomain']['icon'], $groupedLinks['backend']['icon']);
     }
 
     private function createRequest(string $path, array $queryParams = []): ServerRequest
