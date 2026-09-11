@@ -569,7 +569,7 @@ class FileListController implements LoggerAwareInterface
                     ->setHref($this->filelist->createModuleUri([
                         'sortField' => $field,
                         'currentPage' => 0,
-                        'sortDirection' => (int)($this->filelist->sortDirection === SortDirection::DESCENDING),
+                        'sortDirection' => $this->filelist->sortDirection->value,
                     ]))
                     ->setLabel($label);
             }
