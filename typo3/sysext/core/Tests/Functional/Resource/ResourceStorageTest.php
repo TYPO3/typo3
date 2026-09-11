@@ -20,6 +20,8 @@ namespace TYPO3\CMS\Core\Tests\Functional\Resource;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend;
+use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Http\UploadedFile;
 use TYPO3\CMS\Core\Resource\Driver\DriverInterface;
@@ -29,16 +31,34 @@ use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\Index\Indexer;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
+use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 #[AllowMockObjectsWithoutExpectations]
 final class ResourceStorageTest extends FunctionalTestCase
 {
+    /**
+     * The testing framework replaces the "hash" cache with a NullBackend,
+     * the offline state of a storage needs a persisting one.
+     */
+    protected array $configurationToUseInTestInstance = [
+        'SYS' => [
+            'caching' => [
+                'cacheConfigurations' => [
+                    'hash' => [
+                        'backend' => Typo3DatabaseBackend::class,
+                    ],
+                ],
+            ],
+        ],
+    ];
+
     protected function setUp(): void
     {
         parent::setUp();
         mkdir($this->instancePath . '/resource-storage-test');
+        $this->get(CacheManager::class)->getCache('hash')->flush();
     }
 
     protected function tearDown(): void
@@ -72,6 +92,76 @@ final class ResourceStorageTest extends FunctionalTestCase
         );
         $subject->markAsPermanentlyOffline();
         self::assertNull($subject->getPublicUrl($file));
+    }
+
+    #[Test]
+    public function markAsTemporaryOfflineDoesNotWriteTheStorageRecord(): void
+    {
+        $storageRepository = $this->get(StorageRepository::class);
+        $uid = $storageRepository->createLocalStorage('testing', $this->instancePath . '/resource-storage-test', 'absolute');
+        $subject = $storageRepository->findByUid($uid);
+        self::assertTrue($subject->isOnline());
+
+        $subject->markAsTemporaryOffline();
+
+        self::assertFalse($subject->isOnline());
+        $isOnlineInDatabase = $this->getConnectionPool()
+            ->getConnectionForTable('sys_file_storage')
+            ->select(['is_online'], 'sys_file_storage', ['uid' => $uid])
+            ->fetchOne();
+        self::assertSame(1, (int)$isOnlineInDatabase);
+    }
+
+    #[Test]
+    public function temporaryOfflineStateIsSharedAcrossInstancesUntilCachesAreFlushed(): void
+    {
+        $storageRepository = $this->get(StorageRepository::class);
+        $uid = $storageRepository->createLocalStorage('testing', $this->instancePath . '/resource-storage-test', 'absolute');
+        $storageRepository->findByUid($uid)->markAsTemporaryOffline();
+
+        $storageRepository->flush();
+        self::assertFalse($storageRepository->findByUid($uid)->isOnline());
+
+        $this->get(CacheManager::class)->getCache('hash')->flush();
+        $storageRepository->flush();
+        self::assertTrue($storageRepository->findByUid($uid)->isOnline());
+    }
+
+    #[Test]
+    public function temporaryOfflineStateExpiresAfterFiveMinutes(): void
+    {
+        $storageRepository = $this->get(StorageRepository::class);
+        $uid = $storageRepository->createLocalStorage('testing', $this->instancePath . '/resource-storage-test', 'absolute');
+        $storageRepository->findByUid($uid)->markAsTemporaryOffline();
+
+        $storageRepository->flush();
+        self::assertFalse($storageRepository->findByUid($uid)->isOnline());
+
+        $originalExecTime = $GLOBALS['EXEC_TIME'];
+        try {
+            $GLOBALS['EXEC_TIME'] = $originalExecTime + 299;
+            $storageRepository->flush();
+            self::assertFalse($storageRepository->findByUid($uid)->isOnline());
+
+            $GLOBALS['EXEC_TIME'] = $originalExecTime + 301;
+            $storageRepository->flush();
+            self::assertTrue($storageRepository->findByUid($uid)->isOnline());
+        } finally {
+            $GLOBALS['EXEC_TIME'] = $originalExecTime;
+        }
+    }
+
+    #[Test]
+    public function offlineStateIsNotPersistedInRegistry(): void
+    {
+        $storageRepository = $this->get(StorageRepository::class);
+        $uid = $storageRepository->createLocalStorage('testing', $this->instancePath . '/resource-storage-test', 'absolute');
+        $storageRepository->findByUid($uid)->markAsTemporaryOffline();
+
+        $registryEntries = $this->getConnectionPool()
+            ->getConnectionForTable('sys_registry')
+            ->count('*', 'sys_registry', ['entry_namespace' => 'core']);
+        self::assertSame(0, $registryEntries);
     }
 
     /**
