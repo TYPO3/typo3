@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-if(document.currentScript)switch(document.currentScript.dataset.action){case"window.close":window.close();break;default:}
+document.currentScript&&document.currentScript.dataset.action==="window.close"&&window.close();
