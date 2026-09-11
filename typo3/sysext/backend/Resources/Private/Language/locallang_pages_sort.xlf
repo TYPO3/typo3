@@ -21,7 +21,7 @@
       <trans-unit id="fieldSubtitle">
         <source>Subtitle</source>
       </trans-unit>
-      <trans-unit id="fieldNavitle">
+      <trans-unit id="fieldNavTitle">
         <source>Navigation title</source>
       </trans-unit>
       <trans-unit id="fieldCrdate">
