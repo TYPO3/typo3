@@ -36,6 +36,18 @@ class DebugUtility
      */
     public static function debug(mixed $var = '', string $header = 'Debug'): void
     {
+        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
+        $caller = $backtrace[0] ?? null;
+        if ($caller !== null) {
+            $absolutePath = ($caller['file'] ?? 'unknown');
+            $projectPath = Environment::getProjectPath() . '/';
+            $path = str_starts_with($absolutePath, $projectPath)
+                ? '/' . substr($absolutePath, strlen($projectPath))
+                : $absolutePath;
+
+            $header .= ': ' . $path . ':' . ($caller['line'] ?? '?');
+        }
+
         // buffer the output of debug if no buffering started before
         if (ob_get_level() === 0) {
             ob_start();

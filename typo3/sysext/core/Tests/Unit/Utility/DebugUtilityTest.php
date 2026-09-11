@@ -52,6 +52,67 @@ final class DebugUtilityTest extends UnitTestCase
     }
 
     #[Test]
+    public function debugAppendsCallerPathToDefaultHeader(): void
+    {
+        DebugUtility::usePlainTextOutput(true);
+        DebugUtility::useAnsiColor(false);
+
+        ob_start();
+        DebugUtility::debug('Foobar');
+        $output = ob_get_contents();
+        ob_end_clean();
+
+        self::assertStringContainsString(
+            'Debug: /typo3/sysext/core/Tests/Unit/Utility/DebugUtilityTest.php:61',
+            $output
+        );
+    }
+
+    #[Test]
+    public function debugAppendsCallerPathToDefaultHeaderOutsideProjectRoot(): void
+    {
+        DebugUtility::usePlainTextOutput(true);
+        DebugUtility::useAnsiColor(false);
+
+        // Create a temporary file outside the project root
+        $file = tempnam(sys_get_temp_dir(), 'debugutility-test-');
+        self::assertNotFalse($file);
+
+        file_put_contents($file, <<<'PHP'
+<?php
+use TYPO3\CMS\Core\Utility\DebugUtility;
+DebugUtility::debug('Foobar');
+PHP);
+
+        ob_start();
+        require_once $file;
+        $output = ob_get_contents();
+        ob_end_clean();
+
+        self::assertStringContainsString(
+            'Debug: ' . $file . ':3',
+            $output
+        );
+    }
+
+    #[Test]
+    public function debugAppendsCallerPathToCustomHeader(): void
+    {
+        DebugUtility::usePlainTextOutput(true);
+        DebugUtility::useAnsiColor(false);
+
+        ob_start();
+        DebugUtility::debug('Foobar', header: 'Barfoo');
+        $output = ob_get_contents();
+        ob_end_clean();
+
+        self::assertStringContainsString(
+            'Barfoo: /typo3/sysext/core/Tests/Unit/Utility/DebugUtilityTest.php:105',
+            $output
+        );
+    }
+
+    #[Test]
     public function debugEncodesHtmlInputIfNoPlainText(): void
     {
         DebugUtility::usePlainTextOutput(false);
@@ -88,17 +149,17 @@ final class DebugUtilityTest extends UnitTestCase
                     ],
                 ],
                 'array (3 items)' . PHP_EOL
-                    . '   0 => "foo" (3 chars)' . PHP_EOL
-                    . '   1 => "bar" (3 chars)' . PHP_EOL
-                    . '   baz => array (1 item)' . PHP_EOL
-                    . '      0 => 42 (integer)',
+                . '   0 => "foo" (3 chars)' . PHP_EOL
+                . '   1 => "bar" (3 chars)' . PHP_EOL
+                . '   baz => array (1 item)' . PHP_EOL
+                . '      0 => 42 (integer)',
             ],
             'Debug object' => [
                 $object,
                 'stdClass prototype object' . PHP_EOL
-                    . '   foo => public 42 (integer)' . PHP_EOL
-                    . '   bar => public array (1 item)' . PHP_EOL
-                    . '      0 => "baz" (3 chars)',
+                . '   foo => public 42 (integer)' . PHP_EOL
+                . '   bar => public array (1 item)' . PHP_EOL
+                . '      0 => "baz" (3 chars)',
             ],
         ];
     }
