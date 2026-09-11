@@ -21,6 +21,7 @@ use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Domain\DateTimeFactory;
 use TYPO3\CMS\Core\Http\RequestFactory;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extensionmanager\Domain\Repository\BulkExtensionRepositoryWriter;
 use TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility;
@@ -128,7 +129,12 @@ class TerExtensionRemote implements ExtensionDownloaderRemoteInterface, Listable
     {
         try {
             $requestFactory = GeneralUtility::makeInstance(RequestFactory::class);
-            return $requestFactory->request($this->remoteBase . $remotePath);
+            $typo3Version = new Typo3Version();
+            return $requestFactory->request(
+                $this->remoteBase . $remotePath,
+                'GET',
+                ['headers' => ['User-Agent' => 'TYPO3/' . $typo3Version->getVersion()]]
+            );
         } catch (\Throwable $e) {
             throw new DownloadFailedException(sprintf('The file "%s" could not be fetched. Possible reasons: network problems, allow_url_fopen is off, cURL is not available', $this->remoteBase . $remotePath), 1334426297);
         }

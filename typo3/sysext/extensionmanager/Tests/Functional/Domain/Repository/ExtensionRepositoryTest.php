@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Functional\Domain\Repository;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Extensionmanager\Domain\ExtensionCatalogueInterface;
+use TYPO3\CMS\Extensionmanager\Domain\FallbackExtensionCatalogue;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Extensionmanager\Domain\Model\PackageIdentifier;
 use TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository;
@@ -33,17 +34,17 @@ final class ExtensionRepositoryTest extends FunctionalTestCase
     ];
 
     /**
-     * The list views depend on the contract, not on the repository, so the
-     * container has to hand out an implementation for it. Without the alias in
-     * Services.yaml the "Get Extensions" module cannot be instantiated at all.
+     * The list views depend on the contract, not on an implementation, so the
+     * container has to hand one out. Without the alias in Services.yaml the
+     * "Get Extensions" module cannot be instantiated at all.
+     *
+     * No method is called here on purpose: the wired implementation asks TER,
+     * and a test may not depend on the network being there.
      */
     #[Test]
-    public function theExtensionCatalogueContractIsServedByTheRepository(): void
+    public function theExtensionCatalogueContractIsServedByTheRemoteCatalogueWithALocalFallback(): void
     {
-        $catalogue = $this->get(ExtensionCatalogueInterface::class);
-
-        self::assertInstanceOf(ExtensionRepository::class, $catalogue);
-        self::assertSame(0, $catalogue->countAll());
+        self::assertInstanceOf(FallbackExtensionCatalogue::class, $this->get(ExtensionCatalogueInterface::class));
     }
 
     #[Test]

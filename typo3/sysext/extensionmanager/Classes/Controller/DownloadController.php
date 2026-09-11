@@ -30,6 +30,7 @@ use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Extensionmanager\Domain\Model\PackageIdentifier;
 use TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
+use TYPO3\CMS\Extensionmanager\Exception\ExtensionNotFoundException;
 use TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService;
 
 /**
@@ -67,7 +68,20 @@ class DownloadController extends AbstractController
      */
     public function checkDependenciesAction(PackageIdentifier $identifier): ResponseInterface
     {
-        $extension = $this->extensionRepository->getByPackageIdentifier($identifier);
+        try {
+            $extension = $this->extensionRepository->getByPackageIdentifier($identifier);
+        } catch (ExtensionNotFoundException $e) {
+            // The list may show a version the imported list has no record for
+            $this->view->assign('value', [
+                'dependencies' => null,
+                'url' => '',
+                'message' => $e->getMessage(),
+                'hasErrors' => true,
+                'hasDependencies' => false,
+                'title' => $this->translate('extensionList.dependenciesResolveDownloadError.title'),
+            ]);
+            return $this->jsonResponse();
+        }
         $message = '';
         $title = '';
         $hasDependencies = false;
@@ -201,9 +215,8 @@ class DownloadController extends AbstractController
             ], JSON_THROW_ON_ERROR));
         }
 
-        $extension = $this->extensionRepository->getByPackageIdentifier($identifier);
-
         try {
+            $extension = $this->extensionRepository->getByPackageIdentifier($identifier);
             $dependencyTypes = $this->managementService->getAndResolveDependencies($extension);
             $dependencyErrors = $this->managementService->getDependencyErrors();
 
@@ -238,8 +251,15 @@ class DownloadController extends AbstractController
      */
     public function installDistributionAction(PackageIdentifier $identifier): ResponseInterface
     {
-        $extension = $this->extensionRepository->getByPackageIdentifier($identifier);
         $this->assertAllowedHttpMethod($this->request, 'POST');
+        try {
+            $extension = $this->extensionRepository->getByPackageIdentifier($identifier);
+        } catch (ExtensionNotFoundException $e) {
+            return $this->jsonResponse(json_encode([
+                'success' => false,
+                'error' => $e->getMessage(),
+            ], JSON_THROW_ON_ERROR));
+        }
 
         if (!ExtensionManagementUtility::isLoaded('impexp')) {
             return $this->jsonResponse(json_encode([
