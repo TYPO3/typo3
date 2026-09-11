@@ -29,13 +29,13 @@ use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extensionmanager\Controller\DownloadController;
-use TYPO3\CMS\Extensionmanager\Exception\ExtensionNotFoundException;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class DownloadControllerTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = [
         'extensionmanager',
+        'impexp',
     ];
 
     protected function setUp(): void
@@ -98,23 +98,81 @@ final class DownloadControllerTest extends FunctionalTestCase
         self::assertSame(400, $response->getStatusCode());
     }
 
+    /**
+     * The catalogue is read from TER while the package to download is resolved
+     * against the imported list, so a version shown in the list may have no
+     * record - as it may after an extension list update, which drops and
+     * recreates all records of a remote. The answer has to tell the user.
+     */
     #[Test]
-    public function checkDependenciesActionThrowsSpeakingExceptionForOutdatedIdentifier(): void
+    public function checkDependenciesActionReportsAPackageMissingFromTheImportedList(): void
     {
-        $this->createRemoteExtensionRecord('ext_dependency', '1.0.0');
-        // Simulates an extension list update, which drops and recreates all records of a remote.
-        $this->getConnectionPool()
-            ->getConnectionForTable('tx_extensionmanager_domain_model_extension')
-            ->delete('tx_extensionmanager_domain_model_extension', ['extension_key' => 'ext_dependency']);
-
         $request = $this->createCheckDependenciesRequest(
             ['packageKey' => 'ext_dependency', 'version' => '1.0.0', 'remote' => 'ter']
         );
+        $response = $this->get(DownloadController::class)->processRequest(new Request($request));
 
-        $this->expectException(ExtensionNotFoundException::class);
-        $this->expectExceptionCode(1784926081);
+        self::assertSame(200, $response->getStatusCode());
+        $result = json_decode((string)$response->getBody(), true, 512, JSON_THROW_ON_ERROR);
+        self::assertTrue($result['hasErrors']);
+        self::assertFalse($result['hasDependencies']);
+        self::assertNotSame('', $result['title']);
+        self::assertStringContainsString('"ext_dependency" in version "1.0.0"', $result['message']);
+        self::assertStringContainsString('update it again', $result['message']);
+    }
 
-        $this->get(DownloadController::class)->processRequest(new Request($request));
+    #[Test]
+    public function checkDependenciesActionAnswersAFailedDependencyCheckWithATitledError(): void
+    {
+        // "requires" is not a dependency type, so building the dependencies throws
+        $this->createRemoteExtensionRecord(
+            'ext_with_dependency',
+            '2.0.0',
+            ['requires' => ['ext_dependency' => '1.0.0-1.99.99']]
+        );
+
+        $request = $this->createCheckDependenciesRequest(
+            ['packageKey' => 'ext_with_dependency', 'version' => '2.0.0', 'remote' => 'ter']
+        );
+        $response = $this->get(DownloadController::class)->processRequest(new Request($request));
+
+        $result = json_decode((string)$response->getBody(), true, 512, JSON_THROW_ON_ERROR);
+        self::assertTrue($result['hasErrors']);
+        self::assertStringContainsString('requires was not a valid dependency type', $result['message']);
+        self::assertSame('Dependencies could not be resolved', $result['title']);
+    }
+
+    #[Test]
+    public function checkDistributionDependenciesActionReportsAPackageMissingFromTheImportedList(): void
+    {
+        $request = $this->createDownloadRequest(
+            'checkDistributionDependencies',
+            ['packageKey' => 'ext_distribution', 'version' => '1.0.0', 'remote' => 'ter'],
+            'POST'
+        );
+        $response = $this->get(DownloadController::class)->processRequest(new Request($request));
+
+        self::assertSame(200, $response->getStatusCode());
+        $result = json_decode((string)$response->getBody(), true, 512, JSON_THROW_ON_ERROR);
+        self::assertFalse($result['installed']);
+        self::assertFalse($result['hasDependencyErrors']);
+        self::assertStringContainsString('"ext_distribution" in version "1.0.0"', $result['error']);
+    }
+
+    #[Test]
+    public function installDistributionActionReportsAPackageMissingFromTheImportedList(): void
+    {
+        $request = $this->createDownloadRequest(
+            'installDistribution',
+            ['packageKey' => 'ext_distribution', 'version' => '1.0.0', 'remote' => 'ter'],
+            'POST'
+        );
+        $response = $this->get(DownloadController::class)->processRequest(new Request($request));
+
+        self::assertSame(200, $response->getStatusCode());
+        $result = json_decode((string)$response->getBody(), true, 512, JSON_THROW_ON_ERROR);
+        self::assertFalse($result['success']);
+        self::assertStringContainsString('"ext_distribution" in version "1.0.0"', $result['error']);
     }
 
     /**
@@ -140,18 +198,26 @@ final class DownloadControllerTest extends FunctionalTestCase
     }
 
     /**
-     * @param array{packageKey: string, version: string, remote: string} $identifier
+     * @param array{packageKey?: string, version?: string, remote?: string} $identifier
      */
     private function createCheckDependenciesRequest(array $identifier): ServerRequest
+    {
+        return $this->createDownloadRequest('checkDependencies', $identifier);
+    }
+
+    /**
+     * @param array{packageKey?: string, version?: string, remote?: string} $identifier
+     */
+    private function createDownloadRequest(string $actionName, array $identifier, string $method = 'GET'): ServerRequest
     {
         $extbaseRequestParameters = new ExtbaseRequestParameters();
         $extbaseRequestParameters->setPluginName('extensionmanager');
         $extbaseRequestParameters->setControllerExtensionName('Extensionmanager');
         $extbaseRequestParameters->setControllerName('Download');
-        $extbaseRequestParameters->setControllerActionName('checkDependencies');
+        $extbaseRequestParameters->setControllerActionName($actionName);
         $extbaseRequestParameters->setFormat('json');
         $extbaseRequestParameters->setArgument('identifier', $identifier);
-        $request = new ServerRequest('https://example.com/typo3/module/extensions')
+        $request = new ServerRequest('https://example.com/typo3/module/extensions', $method)
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('extbase', $extbaseRequestParameters)
             ->withAttribute('moduleData', new ModuleData('extensionmanager', []))

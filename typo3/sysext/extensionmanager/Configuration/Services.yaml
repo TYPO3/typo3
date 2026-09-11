@@ -11,7 +11,21 @@ services:
     exclude: '../Classes/{Task,Report}'
 
   TYPO3\CMS\Extensionmanager\Domain\ExtensionCatalogueInterface:
-    alias: TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository
+    alias: TYPO3\CMS\Extensionmanager\Domain\FallbackExtensionCatalogue
+
+  cache.extensionmanager_ter_api:
+    class: TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
+    factory: ['@TYPO3\CMS\Core\Cache\CacheManager', 'getCache']
+    arguments: ['extensionmanager_ter_api']
+
+  TYPO3\CMS\Extensionmanager\Remote\TerApiClient:
+    arguments:
+      $cache: '@cache.extensionmanager_ter_api'
+
+  TYPO3\CMS\Extensionmanager\Domain\FallbackExtensionCatalogue:
+    arguments:
+      $remoteCatalogue: '@TYPO3\CMS\Extensionmanager\Domain\TerExtensionCatalogue'
+      $localCatalogue: '@TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository'
 
   TYPO3\CMS\Extensionmanager\Command\ActivateExtensionCommand:
     tags:

@@ -243,6 +243,9 @@
       <trans-unit id="downloadExtension.dependencies.resolveAutomatically">
         <source>Shall these dependencies be resolved automatically?</source>
       </trans-unit>
+      <trans-unit id="downloadExtension.dependencies.errorTitle">
+        <source>Dependencies could not be resolved</source>
+      </trans-unit>
       <trans-unit id="dependencyCheck.modalTitle.activate">
         <source>Activate Extension "%s"</source>
       </trans-unit>

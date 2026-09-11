@@ -17,9 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Remote;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\StreamFactory;
+use TYPO3\CMS\Core\Information\Typo3Version;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extensionmanager\Remote\TerExtensionRemote;
 use TYPO3\CMS\Extensionmanager\Remote\VerificationFailedException;
 use TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility;
@@ -93,6 +97,29 @@ final class TerExtensionRemoteTest extends UnitTestCase
             ->willReturn($this->buildResponse($t3xContent));
 
         $subject->downloadExtension('my_ext', '1.2.3', $fileHandler, md5($t3xContent));
+    }
+
+    /**
+     * TER tells installations apart by their version, for the extension list
+     * as much as for the archives.
+     */
+    #[Test]
+    #[AllowMockObjectsWithoutExpectations]
+    public function downloadsNameTheExactTypo3Version(): void
+    {
+        $options = [];
+        $requestFactory = self::createStub(RequestFactory::class);
+        $requestFactory->method('request')->willReturnCallback(function (string $uri, string $method = 'GET', array $requestOptions = []) use (&$options): Response {
+            $options = $requestOptions;
+            return $this->buildResponse('');
+        });
+        GeneralUtility::addInstance(RequestFactory::class, $requestFactory);
+        $typo3Version = new Typo3Version();
+
+        $subject = $this->getAccessibleMock(TerExtensionRemote::class, null, ['ter']);
+        $subject->_call('downloadFile', 'extensions.xml.gz');
+
+        self::assertSame('TYPO3/' . $typo3Version->getVersion(), $options['headers']['User-Agent'] ?? null);
     }
 
     private function buildResponse(string $body): Response
