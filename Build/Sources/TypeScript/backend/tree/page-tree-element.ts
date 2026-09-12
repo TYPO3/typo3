@@ -103,7 +103,9 @@ export class EditablePageTree extends PageTree {
         '&data[pages][' + data.node.identifier + '][title]=' + encodeURIComponent(newData.title) +
         '&data[pages][' + data.node.identifier + '][doktype]=' + encodeURIComponent(newData.doktype);
     } else if (data.command === TreeNodeCommandEnum.EDIT) {
-      params = '&data[pages][' + data.node.identifier + '][title]=' + encodeURIComponent(data.title);
+      // The tree may show nav_title instead of title, so write back to the field that is displayed
+      const nameSourceField = data.node.nameSourceField || 'title';
+      params = '&data[pages][' + data.node.identifier + '][' + nameSourceField + ']=' + encodeURIComponent(data.title);
     } else if (data.command === TreeNodeCommandEnum.DELETE) {
       // @todo currently it's "If uid of deleted record (data.uid) is still selected, randomly select the first node"
       const moduleStateStorage = ModuleStateStorage.current('web');
