@@ -32,9 +32,11 @@ use TYPO3\CMS\Core\Resource\Driver\LocalDriver;
 use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
+use TYPO3\CMS\Core\Resource\InaccessibleFolder;
 use TYPO3\CMS\Core\Resource\Index\Indexer;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
+use TYPO3\CMS\Core\Resource\ResourceStorageInterface;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -485,5 +487,69 @@ final class ResourceStorageTest extends FunctionalTestCase
 
         self::assertSame($uploadedFilePath, $subject->getUploadedLocalFilePath($uploadedFile));
         self::assertSame('directory__up_loaded.txt', $subject->getUploadedTargetFileName($uploadedFile));
+    }
+
+    #[Test]
+    public function getProcessingFolderReturnsFolderCreatedByAParallelRequest(): void
+    {
+        mkdir($this->instancePath . '/resource-storage-test/_processed_');
+        $subject = new ResourceStorage(
+            $this->createDriverReportingTheProcessingFolderAsMissingOnce($this->instancePath . '/resource-storage-test'),
+            ['uid' => 1, 'name' => 'testing', 'is_writable' => true, 'is_browsable' => true, 'is_online' => true],
+            new NoopEventDispatcher()
+        );
+
+        $processingFolder = $subject->getProcessingFolder();
+
+        self::assertNotInstanceOf(InaccessibleFolder::class, $processingFolder);
+        self::assertSame('/_processed_/', $processingFolder->getIdentifier());
+    }
+
+    #[Test]
+    public function getProcessingFolderReturnsFolderOfAnotherStorageCreatedByAParallelRequest(): void
+    {
+        mkdir($this->instancePath . '/resource-storage-test/processing');
+        mkdir($this->instancePath . '/resource-storage-test/processing/_processed_');
+        $processingStorage = new ResourceStorage(
+            $this->createDriverReportingTheProcessingFolderAsMissingOnce($this->instancePath . '/resource-storage-test/processing'),
+            ['uid' => 2, 'name' => 'processing', 'is_writable' => true, 'is_browsable' => true, 'is_online' => true],
+            new NoopEventDispatcher()
+        );
+        $storageRepository = $this->createMock(StorageRepository::class);
+        $storageRepository->method('findByUid')->willReturn($processingStorage);
+        GeneralUtility::addInstance(StorageRepository::class, $storageRepository);
+        $subject = new ResourceStorage(
+            new LocalDriver(['basePath' => $this->instancePath . '/resource-storage-test']),
+            ['uid' => 1, 'name' => 'testing', 'is_writable' => true, 'is_browsable' => true, 'is_online' => true, 'processingfolder' => '2:/_processed_/'],
+            new NoopEventDispatcher()
+        );
+
+        $processingFolder = $subject->getProcessingFolder();
+
+        self::assertNotInstanceOf(InaccessibleFolder::class, $processingFolder);
+        self::assertSame('/_processed_/', $processingFolder->getIdentifier());
+        self::assertSame(2, $processingFolder->getStorage()->getUid());
+    }
+
+    /**
+     * The returned driver reports the processing folder as missing on the very first check only,
+     * which mimics a parallel request creating that folder right after the check.
+     */
+    private function createDriverReportingTheProcessingFolderAsMissingOnce(string $basePath): LocalDriver
+    {
+        return new class (['basePath' => $basePath]) extends LocalDriver {
+            private bool $processingFolderReportedAsMissing = false;
+
+            public function folderExists(string $folderIdentifier): bool
+            {
+                if (!$this->processingFolderReportedAsMissing
+                    && trim($folderIdentifier, '/') === ResourceStorageInterface::DEFAULT_ProcessingFolder
+                ) {
+                    $this->processingFolderReportedAsMissing = true;
+                    return false;
+                }
+                return parent::folderExists($folderIdentifier);
+            }
+        };
     }
 }

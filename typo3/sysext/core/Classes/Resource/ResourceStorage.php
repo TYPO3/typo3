@@ -2709,6 +2709,9 @@ class ResourceStorage implements ResourceStorageInterface
                                 ltrim($processingFolderIdentifier, '/'),
                                 $rootFolder
                             );
+                        } catch (ExistingTargetFolderException) {
+                            // The folder may have been created meanwhile in a parallel process, which is fine, we take it.
+                            $this->processingFolder = $storage->getFolder($processingFolderIdentifier);
                         } finally {
                             $storage->setEvaluatePermissions($currentEvaluatePermissions);
                         }
@@ -2723,7 +2726,11 @@ class ResourceStorage implements ResourceStorageInterface
                                 $processingFolder,
                                 $rootFolder
                             );
-                        } catch (\InvalidArgumentException $e) {
+                        } catch (ExistingTargetFolderException) {
+                            // The folder may have been created meanwhile in a parallel process, which is fine, we take it.
+                            $data = $this->driver->getFolderInfoByIdentifier($processingFolder);
+                            $this->processingFolder = $this->createFolderObject($data['identifier'], $data['name']);
+                        } catch (\InvalidArgumentException) {
                             $this->processingFolder = GeneralUtility::makeInstance(
                                 InaccessibleFolder::class,
                                 $this,
