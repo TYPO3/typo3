@@ -11,16 +11,19 @@ See :issue:`108720`
 Description
 ===========
 
-A new QR code button has been added next to the :guilabel:`View` button in various backend
-modules. Clicking the button opens a modal displaying a scannable QR code for
-the frontend preview URI.
+A new QR code button has been added next to the :guilabel:`View` button in
+various backend modules. Clicking the button opens a modal displaying a
+scannable QR code for the frontend preview URI.
 
 The button is available in the following locations:
 
-*   :guilabel:`Content > Web` module (Layout view and Language Comparison view)
-*   :guilabel:`Web > List` module
-*   :guilabel:`Web > View` module
-*   :guilabel:`Web > Workspaces` module
+*   :guilabel:`Content > Records` module
+*   :guilabel:`Content > Preview` module
+*   :guilabel:`Content > Publish` module (workspaces)
+
+In addition, the :guilabel:`Show QR code` item in the context menu of a page
+opens the same modal, which makes the QR code available wherever a page is
+listed, for example in the page tree.
 
 Inside a workspace a QR code contains a special preview URI that will
 work without backend authentication. This makes it easy to share workspace
