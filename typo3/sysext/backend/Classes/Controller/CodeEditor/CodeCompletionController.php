@@ -95,17 +95,7 @@ readonly class CodeCompletionController
         foreach ($treeBranch as $key => $value) {
             $key = is_int($key) ? (string)$key : $key;
             //type definition or value-assignment
-            if (substr($key, -1) !== '.') {
-                if ($value != '') {
-                    if (mb_strlen($value) > 20) {
-                        $value = mb_substr($value, 0, 20);
-                    }
-                    if (!isset($cleanedTreeBranch[$key])) {
-                        $cleanedTreeBranch[$key] = [];
-                    }
-                    $cleanedTreeBranch[$key]['v'] = $value;
-                }
-            } else {
+            if (is_array($value)) {
                 // subtree (definition of properties)
                 $subBranch = $this->treeWalkCleanup($value);
                 if ($subBranch) {
@@ -116,6 +106,17 @@ readonly class CodeCompletionController
                         $cleanedTreeBranch[$key] = [];
                     }
                     $cleanedTreeBranch[$key]['c'] = $subBranch;
+                }
+            } else {
+                // type definition or value-assignment
+                if ($value != '') {
+                    if (mb_strlen($value) > 20) {
+                        $value = mb_substr($value, 0, 20);
+                    }
+                    if (!isset($cleanedTreeBranch[$key])) {
+                        $cleanedTreeBranch[$key] = [];
+                    }
+                    $cleanedTreeBranch[$key]['v'] = $value;
                 }
             }
         }
