@@ -120,7 +120,7 @@ class ResourceUtilityRenderer
         $allowedTextFileList = [];
         foreach ($textFileExt as $fileExt) {
             if ($fileNameVerifier->isValid('.' . $fileExt)) {
-                $allowedTextFileList[] = '<li class="badge badge-secondary">' . strtoupper(htmlspecialchars($fileExt)) . '</li>';
+                $allowedTextFileList[] = '<li><span class="badge badge-secondary">' . htmlspecialchars(strtolower($fileExt)) . '</span></li>';
             }
         }
 
@@ -179,7 +179,7 @@ class ResourceUtilityRenderer
             if ($fileNameVerifier->isValid('.' . $fileExt)
                 && ($fileExtensionFilter === null || $fileExtensionFilter->isAllowed($fileExt))
             ) {
-                $allowedOnlineMediaList[] = '<li class="badge badge-secondary">' . strtoupper(htmlspecialchars($fileExt)) . '</li>';
+                $allowedOnlineMediaList[] = '<li><span class="badge badge-secondary">' . htmlspecialchars(strtolower($fileExt)) . '</span></li>';
             }
         }
 
@@ -243,7 +243,7 @@ class ResourceUtilityRenderer
 
         foreach ($list as $fileExt) {
             if (($fileExt === '*' && !$denyList) || $fileNameVerifier->isValid('.' . $fileExt)) {
-                $allowedFileExtensionsList[] = '<li class="badge ' . ($denyList ? 'badge-danger' : 'badge-secondary') . '">' . strtoupper(htmlspecialchars($fileExt)) . '</li>';
+                $allowedFileExtensionsList[] = '<li><span class="badge ' . ($denyList ? 'badge-danger' : 'badge-secondary') . '">' . htmlspecialchars(strtolower($fileExt)) . '</span></li>';
             }
         }
 
@@ -306,7 +306,7 @@ class ResourceUtilityRenderer
 
         foreach ($list as $fileExt) {
             if (($fileExt === '*' && !$denyList) || $fileNameVerifier->isValid('.' . $fileExt)) {
-                $allowedFileExtensionsList[] = '<li class="badge ' . ($denyList ? 'badge-danger' : 'badge-secondary') . '">' . strtoupper(htmlspecialchars($fileExt)) . '</li>';
+                $allowedFileExtensionsList[] = '<li><span class="badge ' . ($denyList ? 'badge-danger' : 'badge-secondary') . '">' . htmlspecialchars(strtolower($fileExt)) . '</span></li>';
             }
         }
 
