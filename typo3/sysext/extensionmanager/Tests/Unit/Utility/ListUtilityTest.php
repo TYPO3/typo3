@@ -19,11 +19,14 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Utility;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
+use TYPO3\CMS\Core\Package\MetaData;
 use TYPO3\CMS\Core\Package\Package;
 use TYPO3\CMS\Core\Package\PackageManager;
-use TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository;
-use TYPO3\CMS\Extensionmanager\Utility\EmConfUtility;
+use TYPO3\CMS\Core\Package\Resource\ResourceCollectionInterface;
+use TYPO3\CMS\Core\SystemResource\Publishing\SystemResourcePublisherInterface;
+use TYPO3\CMS\Core\SystemResource\SystemResourceFactory;
 use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -116,35 +119,38 @@ final class ListUtilityTest extends UnitTestCase
         self::assertEquals($expectedResult, $this->subject->getAvailableAndInstalledExtensions($availableExtensions));
     }
 
-    public static function enrichExtensionsWithEmConfInformationDataProvider(): array
-    {
-        return [
-            'simple key value array emconf' => [
-                [
-                    'lang' => ['property1' => 'oldvalue'],
-                    'news' => [],
-                    'felogin' => [],
-                ],
-                [
-                    'property1' => 'property value1',
-                ],
-                [
-                    'lang' => ['property1' => 'oldvalue', 'state' => 'stable'],
-                    'news' => ['property1' => 'property value1', 'state' => 'stable'],
-                    'felogin' => ['property1' => 'property value1', 'state' => 'stable'],
-                ],
-            ],
-        ];
-    }
-
-    #[DataProvider('enrichExtensionsWithEmConfInformationDataProvider')]
+    /**
+     * The list template renders the description as the title attribute of the
+     * extension name. It has to come from the package metadata, which is fed
+     * from composer.json; ext_emconf.php is not evaluated anymore.
+     */
     #[Test]
-    public function enrichExtensionsWithEmConfInformation(array $extensions, array $emConf, array $expectedResult): void
+    public function getAvailableExtensionsExposesTitleAndDescriptionFromThePackageMetaData(): void
     {
-        $this->subject->injectExtensionRepository(self::createStub(ExtensionRepository::class));
-        $emConfUtilityStub = self::createStub(EmConfUtility::class);
-        $emConfUtilityStub->method('includeEmConf')->willReturn($emConf);
-        $this->subject->injectEmConfUtility($emConfUtilityStub);
-        self::assertEquals($expectedResult, $this->subject->enrichExtensionsWithEmConfAndTerInformation($extensions));
+        $metaData = new MetaData('my_ext');
+        $metaData->setPackageType('typo3-cms-extension');
+        $metaData->setVersion('1.2.3');
+        $metaData->setTitle('My Extension');
+        $metaData->setDescription('Does things');
+        $resources = self::createStub(ResourceCollectionInterface::class);
+        $resources->method('getPackageIcon')->willReturn(null);
+        $package = self::createStub(Package::class);
+        $package->method('getPackageKey')->willReturn('my_ext');
+        $package->method('getPackagePath')->willReturn(Environment::getExtensionsPath() . '/my_ext/');
+        $package->method('getPackageMetaData')->willReturn($metaData);
+        $package->method('getResources')->willReturn($resources);
+        $packageManager = self::createStub(PackageManager::class);
+        $packageManager->method('getAvailablePackages')->willReturn(['my_ext' => $package]);
+        $subject = new ListUtility();
+        $subject->injectEventDispatcher(new NoopEventDispatcher());
+        $subject->injectPackageManager($packageManager);
+        $subject->injectResourceFactory(self::createStub(SystemResourceFactory::class));
+        $subject->injectResourcePublisher(self::createStub(SystemResourcePublisherInterface::class));
+
+        $extensions = $subject->getAvailableExtensions();
+
+        self::assertSame('My Extension', $extensions['my_ext']['title']);
+        self::assertSame('Does things', $extensions['my_ext']['description']);
+        self::assertSame('1.2.3', $extensions['my_ext']['version']);
     }
 }

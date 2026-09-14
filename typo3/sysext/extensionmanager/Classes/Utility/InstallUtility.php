@@ -129,14 +129,13 @@ class InstallUtility implements LoggerAwareInterface
     public function enrichExtensionWithDetails(string $extensionKey, bool $loadTerInformation = true): array
     {
         $extension = $this->getExtensionArray($extensionKey);
-        if (!$loadTerInformation) {
-            $availableAndInstalledExtensions = $this->listUtility->enrichExtensionsWithEmConfInformation([$extensionKey => $extension]);
-        } else {
-            $availableAndInstalledExtensions = $this->listUtility->enrichExtensionsWithEmConfAndTerInformation([$extensionKey => $extension]);
+        $availableAndInstalledExtensions = [$extensionKey => $extension];
+        if ($loadTerInformation) {
+            $availableAndInstalledExtensions = $this->listUtility->enrichExtensionsWithTerInformation($availableAndInstalledExtensions);
         }
         if (!isset($availableAndInstalledExtensions[$extensionKey])) {
             throw new ExtensionManagerException(
-                'Please check your uploaded extension "' . $extensionKey . '". The configuration file "ext_emconf.php" seems to be invalid.',
+                'Please check your uploaded extension "' . $extensionKey . '". Its "composer.json" seems to be invalid.',
                 1391432222
             );
         }

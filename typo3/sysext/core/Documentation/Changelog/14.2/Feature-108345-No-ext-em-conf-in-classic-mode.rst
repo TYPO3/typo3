@@ -29,7 +29,7 @@ to contain information that was previously defined in
 Extension title and description
 -------------------------------
 
-See :ref:`feature-108653-1767199420` for how the extension title and description can be set
+See :ref:`breaking-108304-1764058005` for how the extension title and description can be set
 individually in :file:`composer.json`.
 
 Extension version

@@ -111,7 +111,7 @@ class UploadExtensionFileController extends AbstractController
                     1603087515
                 );
             }
-            $this->extractExtensionFromZipFile($tempFile, $extensionKey, (bool)$overwrite);
+            $this->extractExtensionFromZipFile($tempFile, $extensionKey, (bool)$overwrite, $this->getVersionFromFileName($fileName));
             $isAutomaticInstallationEnabled = (bool)$this->extensionConfiguration->get('extensionmanager', 'automaticInstallation');
             if (!$isAutomaticInstallationEnabled) {
                 $this->addFlashMessage(
@@ -173,9 +173,10 @@ class UploadExtensionFileController extends AbstractController
      *
      * @param string $uploadedFile Path to uploaded file
      * @param bool $overwrite Overwrite existing extension if TRUE
+     * @param string $version The version the archive name carries, written into composer.json when the manifest declares none
      * @throws ExtensionManagerException
      */
-    protected function extractExtensionFromZipFile(string $uploadedFile, string $extensionKey, bool $overwrite = false): string
+    protected function extractExtensionFromZipFile(string $uploadedFile, string $extensionKey, bool $overwrite = false, string $version = ''): string
     {
         $isExtensionAvailable = $this->managementService->isAvailable($extensionKey);
         if (!$overwrite && $isExtensionAvailable) {
@@ -185,8 +186,22 @@ class UploadExtensionFileController extends AbstractController
             $this->copyExtensionFolderToTempFolder($extensionKey);
         }
         $this->removeFromOriginalPath = true;
-        $this->fileHandlingUtility->unzipExtensionFromFile($uploadedFile, $extensionKey);
+        $this->fileHandlingUtility->unzipExtensionFromFile($uploadedFile, $extensionKey, $version);
         return $extensionKey;
+    }
+
+    /**
+     * Reads the version from an archive name of the form "<key>_<x.y.z>.zip".
+     * Both TER and the upload form name archives this way.
+     *
+     * @return string The version, "" when the name carries none
+     */
+    protected function getVersionFromFileName(string $fileName): string
+    {
+        if (preg_match('/_(\d+)[.\-](\d+)[.\-](\d+)(?!\d)/', $fileName, $matches) !== 1) {
+            return '';
+        }
+        return $matches[1] . '.' . $matches[2] . '.' . $matches[3];
     }
 
     /**
