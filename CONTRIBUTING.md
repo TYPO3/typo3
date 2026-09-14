@@ -13,6 +13,12 @@ If you like to contribute to our [documentation][5], use the "Edit me on GitHub"
  in the top right of each manual or reference or just make a pull request in any of the repositories
  that can be found in the TYPO3 [documentation team GitHub organisation][6].
 
+Tree wide mechanical changes, such as coding style runs, bury the commit that actually
+ wrote a line. They are collected in `.git-blame-ignore-revs`, which GitHub applies to its
+ blame view on its own. Tell your local git about it once:
+
+    git config blame.ignoreRevsFile .git-blame-ignore-revs
+
 [1]: https://docs.typo3.org/core-contribution
 [2]: https://git.typo3.org/typo3/typo3
 [3]: https://review.typo3.org/q/project:Packages/TYPO3.CMS

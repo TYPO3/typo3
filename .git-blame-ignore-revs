@@ -1,0 +1,94 @@
+# Commits listed here are skipped by "git blame", so that tree wide mechanical
+# changes - coding style runs, annotation clean ups, namespace moves - do not
+# obscure the commit that actually wrote a line.
+#
+# Enable it locally once with:
+#
+#   git config blame.ignoreRevsFile .git-blame-ignore-revs
+#
+# GitHub applies the file automatically in its blame view.
+#
+# Only add commits that changed no behaviour at all and touched a large part of
+# the tree. One full commit hash per line, newest last, with the subject as a
+# comment above it.
+
+# [TASK] Move and Namespace classes (2325 files)
+4612259a457f43edaf723e1f4a8ef4ae89d00a34
+
+# [TASK] Remove @package and @subpackage annotations (1087 files)
+c7cafbee11501e81dcf680eaac2e9d8ce2565266
+
+# [TASK] Update copyright year to 2013 (1336 files)
+4d46397664f9d7262cc98d8a030f44b36c2ae257
+
+# [TASK] Remove closing PHP tags (2579 files)
+77f29a3c69a7cbb27b34072754aa503bace6c9f1
+
+# [TASK] Fix typo in copyright notice (1216 files)
+8289e607267f008e4c6a5fdc50ca4db680b091bc
+
+# [TASK] Re-work/simplify copyright header in PHP files - Part 1 to 9,
+# one operation split into chunks, 2142 files in total
+6c359595b09a275c9eadd2c5301d54706f2cf25e
+02670b20c25d653bb491fc86b4d45dfc2b2ddf5b
+601b20edb2f778308cb016c0c62d2b9af49348eb
+60eb4f47f365940d6ef42f2e7009fdaadea65d98
+5f608be7b283750b760f7674b4e9101c3a40fd33
+526c060fba1ab0fb118ea5eefd4ba4c03abc9e4a
+47a9bb0313f9c46dfbb5f3bd93dceac854b30a26
+bde6364c17fab12f7347d3a90daa44d7276d4c1d
+2ffb721cc10d0f6531884d6782d293383bc507cd
+
+# [TASK] Re-work/simplify copyright header in JS files (116 files)
+1ae7b94b86a64ab6a86d7417a5dfb1f19777ee75
+
+# [CLEANUP] Use comments not PHPDoc style comments in copyright block (2319 files)
+36dca4b6912b6d82be464c443b72d02c146eb44a
+
+# [TASK] Remove @author lines (1284 files)
+c5555a97c27ac98208248ebc4d918f3f441f1679
+
+# [TASK] Make TYPO3 Core PSR-2 standard compliant (3020 files)
+b362e3667087e37e8730ae6ffb7c47bc6fa73f87
+
+# [TASK] Migrate to short array syntax (1682 files)
+f73029edc3cd8aa0cacb352034aa81e6d5465689
+
+# [TASK] Call static PHPUnit methods via self:: instead of $this-> (796 files)
+362affbadcbc0a19ab5fc55c5a8ebeb2fe29c0f7
+
+# [TASK] Use declare(strict_types=1) without spaces (1951 files)
+d9b3f0a34dd0a4db64f2e1401732ebda6536676b
+
+# [TASK] PSR-12: Add empty lines at the beginning of PHP files (3949 files)
+ccc3ba5ea6f83001318f28b06ba2eb32a8e8ba1c
+
+# [TASK] Set php header comment via php-cs-fixer (3733 files)
+7b919798c8784ba3a3dd8cb82ab2d8a7e777878a
+
+# [TASK] Enforce trailing commas in multi line arrays with PHP CS Fixer (1222 files)
+f7b7507cb75d325e0696715b5925922fdfcb25f8
+
+# [DOCS] Align with new TYPO3 documentation standards (2906 files)
+a93634c17c547e60254e8bd186dc1ca48057fe78
+
+# [DOCS] Introduce unique link targets per Changelog (2437 files)
+9334103af79378af611a678076a3f290af9d2dc1
+
+# [TASK] Remove useless @param annotations (1234 files)
+7c478e10a2fc289235db6d04a1e9fc8212c7e15a
+
+# [TASK] Declare all test classes final (1089 files)
+54dac6c2e312e26d4958bfb5b18ccdd8ec3c70ef
+
+# [TASK] Bump friendsofphp/php-cs-fixer:^3.35.1 (1124 files)
+41e66f9cb1a331efdb3c10337b1aa7093df83304
+
+# [TASK] Normalize formatting of all XLF files (398 files)
+1040faeab75bdf9adf1a3960ffbb789846973cae
+
+# [TASK] Upgrade php-cs-fixer ruleset to @PER-CS3x0 (358 files)
+19a47d9521a26d230518db987da62fb974b2d530
+
+# [TASK] Enable "new_expression_parentheses" rule in php-cs-fixer (659 files)
+01a93de1cfba3de3b3222ecb9284cb13a7e582d6
