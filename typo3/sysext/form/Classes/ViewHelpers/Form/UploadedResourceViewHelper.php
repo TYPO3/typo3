@@ -80,14 +80,15 @@ final class UploadedResourceViewHelper extends AbstractFormFieldViewHelper
                     $this->buildResourcePointerIdAttribute(),
                 );
             } elseif ($resource instanceof ObjectStorage) {
+                $index = 0;
                 foreach ($resource as $file) {
-                    $index = $resource->getPosition($file);
                     $resourcePointerValue = $file->getUid() ?? ('file:' . $file->getOriginalResource()->getOriginalFile()->getUid());
                     $output .= $this->buildResourcePointerInput(
                         $index,
                         (string)$resourcePointerValue,
                         $this->buildResourcePointerIdAttribute('-' . $index),
                     );
+                    $index++;
                 }
             }
 

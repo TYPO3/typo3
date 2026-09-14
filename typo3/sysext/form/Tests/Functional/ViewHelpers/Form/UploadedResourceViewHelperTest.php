@@ -122,6 +122,48 @@ final class UploadedResourceViewHelperTest extends FunctionalTestCase
         self::assertCount(2, array_unique($names), 'Each resourcePointer name must have a unique index');
     }
 
+    /*
+     * Regression test for https://forge.typo3.org/issues/110480
+     * ObjectStorage::getPosition() is nullable and returns null for objects that are not
+     * registered in the storage's internal position bookkeeping, for instance when a form
+     * state serialized by an older TYPO3 version is restored. The index of the resource
+     * pointer inputs is a pure rendering detail and must not depend on that bookkeeping.
+     */
+    #[Test]
+    public function resourcePointersAreRenderedForStorageWithoutInternalPositions(): void
+    {
+        $extbaseRequest = $this->buildExtbaseRequest();
+
+        $fileRef1 = self::createStub(FileReference::class);
+        $fileRef1->method('getUid')->willReturn(1);
+        $fileRef2 = self::createStub(FileReference::class);
+        $fileRef2->method('getUid')->willReturn(2);
+
+        /** @var ObjectStorage<FileReference> $storage */
+        $storage = new ObjectStorage();
+        // Restores a payload in the format of TYPO3 v14: its spl_object_hash() based keys do not
+        // belong to the objects of the current process, so no internal positions are recovered.
+        $storage->__unserialize([
+            'storage' => [
+                'staleObjectHashOne' => ['obj' => $fileRef1, 'inf' => null],
+                'staleObjectHashTwo' => ['obj' => $fileRef2, 'inf' => null],
+            ],
+        ]);
+
+        $context = $this->get(RenderingContextFactory::class)->create([], $extbaseRequest);
+        $context->getTemplatePaths()->setTemplateSource(
+            '<formvh:form.uploadedResource name="upload" id="my-field" as="resource" value="{storage}" />'
+        );
+        $context->getVariableProvider()->add('storage', $storage);
+
+        $result = new TemplateView($context)->render();
+
+        self::assertStringContainsString('name="upload[__submittedFiles][0][submittedFile][resourcePointer]"', $result);
+        self::assertStringContainsString('name="upload[__submittedFiles][1][submittedFile][resourcePointer]"', $result);
+        self::assertStringContainsString('id="my-field-file-reference-0"', $result);
+        self::assertStringContainsString('id="my-field-file-reference-1"', $result);
+    }
+
     private function buildExtbaseRequest(): Request
     {
         $extbaseRequestParameters = new ExtbaseRequestParameters();
