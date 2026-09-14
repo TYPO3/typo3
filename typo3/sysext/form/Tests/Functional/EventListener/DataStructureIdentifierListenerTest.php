@@ -21,7 +21,12 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Configuration\Event\AfterFlexFormDataStructureIdentifierInitializedEvent;
 use TYPO3\CMS\Core\Configuration\Event\AfterFlexFormDataStructureParsedEvent;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Http\Uri;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface as ExtbaseConfigurationManagerInterface;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
 use TYPO3\CMS\Form\Domain\DTO\FormMetadata;
@@ -38,6 +43,12 @@ final class DataStructureIdentifierListenerTest extends FunctionalTestCase
     protected array $coreExtensionsToLoad = [
         'form',
     ];
+
+    protected function tearDown(): void
+    {
+        unset($GLOBALS['TYPO3_REQUEST']);
+        parent::tearDown();
+    }
 
     #[Test]
     public function modifyIdentifiersReturnsIdentifierForNotMatchingScenario(): void
@@ -57,6 +68,7 @@ final class DataStructureIdentifierListenerTest extends FunctionalTestCase
             self::createStub(FlashMessageService::class),
             self::createStub(ExtbaseConfigurationManagerInterface::class),
             self::createStub(ExtFormConfigurationManagerInterface::class),
+            $this->get(LanguageServiceFactory::class),
         );
         $subject->modifyDataStructureIdentifier($event);
         self::assertSame($givenIdentifier, $event->getIdentifier());
@@ -79,6 +91,7 @@ final class DataStructureIdentifierListenerTest extends FunctionalTestCase
             self::createStub(FlashMessageService::class),
             self::createStub(ExtbaseConfigurationManagerInterface::class),
             self::createStub(ExtFormConfigurationManagerInterface::class),
+            $this->get(LanguageServiceFactory::class),
         );
         $subject->modifyDataStructureIdentifier($event);
         self::assertEquals(
@@ -128,6 +141,7 @@ final class DataStructureIdentifierListenerTest extends FunctionalTestCase
             self::createStub(FlashMessageService::class),
             self::createStub(ExtbaseConfigurationManagerInterface::class),
             self::createStub(ExtFormConfigurationManagerInterface::class),
+            $this->get(LanguageServiceFactory::class),
         );
         $subject->modifyDataStructureIdentifier($event);
         self::assertEquals($expected, $event->getIdentifier());
@@ -170,6 +184,7 @@ final class DataStructureIdentifierListenerTest extends FunctionalTestCase
             self::createStub(FlashMessageService::class),
             self::createStub(ExtbaseConfigurationManagerInterface::class),
             self::createStub(ExtFormConfigurationManagerInterface::class),
+            $this->get(LanguageServiceFactory::class),
         );
         $subject->modifyDataStructureIdentifier($event);
         self::assertEquals($expected, $event->getIdentifier());
@@ -191,6 +206,7 @@ final class DataStructureIdentifierListenerTest extends FunctionalTestCase
             self::createStub(FlashMessageService::class),
             self::createStub(ExtbaseConfigurationManagerInterface::class),
             self::createStub(ExtFormConfigurationManagerInterface::class),
+            $this->get(LanguageServiceFactory::class),
         );
         $subject->modifyDataStructure($event);
         self::assertEquals($expected, $event->getDataStructure());
@@ -291,8 +307,123 @@ final class DataStructureIdentifierListenerTest extends FunctionalTestCase
             self::createStub(FlashMessageService::class),
             self::createStub(ExtbaseConfigurationManagerInterface::class),
             self::createStub(ExtFormConfigurationManagerInterface::class),
+            $this->get(LanguageServiceFactory::class),
         );
         $subject->modifyDataStructure($event);
         self::assertEquals($expected, $event->getDataStructure());
+    }
+
+    /**
+     * Record->toArray() parses flex form data structures in the frontend as well, where
+     * $GLOBALS['LANG'] only exists while a backend user is logged in.
+     */
+    #[Test]
+    public function modifyDataStructureTranslatesInFrontendWithoutBackendUser(): void
+    {
+        unset($GLOBALS['LANG']);
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest('https://example.com/')
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
+            ->withAttribute('language', new SiteLanguage(0, 'en_US.UTF-8', new Uri('/'), []));
+
+        $event = new AfterFlexFormDataStructureParsedEvent(
+            [
+                'sheets' => [
+                    'sDEF' => ['ROOT' => ['el' => ['settings.persistenceIdentifier' => ['config' => ['items' => []]]]]],
+                ],
+            ],
+            ['ext-form-persistenceIdentifier' => 'gone.form.yaml'],
+        );
+        $formPersistenceManagerMock = $this->createMock(FormPersistenceManagerInterface::class);
+        $formPersistenceManagerMock->expects($this->atLeastOnce())->method('listForms')->willReturn([]);
+        $subject = new DataStructureIdentifierListener(
+            $formPersistenceManagerMock,
+            self::createStub(ConfigurationService::class),
+            self::createStub(TranslationService::class),
+            self::createStub(FlashMessageService::class),
+            self::createStub(ExtbaseConfigurationManagerInterface::class),
+            self::createStub(ExtFormConfigurationManagerInterface::class),
+            $this->get(LanguageServiceFactory::class),
+        );
+
+        $subject->modifyDataStructure($event);
+
+        $items = $event->getDataStructure()['sheets']['sDEF']['ROOT']['el']['settings.persistenceIdentifier']['config']['items'];
+        self::assertSame('gone.form.yaml', $items[0]['value']);
+        self::assertStringContainsString('gone.form.yaml', $items[0]['label']);
+    }
+
+    /**
+     * The finisher override sheets are built by FinisherOptionGenerator, which labels each
+     * option with its default value. That label is translated without $GLOBALS['LANG'] as well.
+     */
+    #[Test]
+    public function modifyDataStructureTranslatesFinisherOverridesInFrontendWithoutBackendUser(): void
+    {
+        unset($GLOBALS['LANG']);
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest('https://example.com/')
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
+            ->withAttribute('language', new SiteLanguage(0, 'en_US.UTF-8', new Uri('/'), []));
+
+        $persistenceIdentifier = 'EXT:form/Tests/Functional/myForm.form.yaml';
+        $event = new AfterFlexFormDataStructureParsedEvent(
+            ['sheets' => ['sDEF' => ['ROOT' => ['el' => []]]]],
+            [
+                'ext-form-persistenceIdentifier' => $persistenceIdentifier,
+                'ext-form-overrideFinishers' => 'enabled',
+            ],
+        );
+        $formPersistenceManagerStub = self::createStub(FormPersistenceManagerInterface::class);
+        $formPersistenceManagerStub->method('listForms')->willReturn([
+            new FormMetadata(
+                identifier: 'myForm',
+                type: 'Form',
+                name: 'My form',
+                prototypeName: 'standard',
+                persistenceIdentifier: $persistenceIdentifier,
+                storageType: 'extension',
+            ),
+        ]);
+        $formPersistenceManagerStub->method('load')->willReturn([
+            'identifier' => 'myForm',
+            'prototypeName' => 'standard',
+            'finishers' => [
+                ['identifier' => 'EmailToReceiver', 'options' => ['subject' => 'Hello']],
+            ],
+        ]);
+        $configurationServiceStub = self::createStub(ConfigurationService::class);
+        $configurationServiceStub->method('getPrototypeConfiguration')->willReturn([
+            'finishersDefinition' => [
+                'EmailToReceiver' => [
+                    'FormEngine' => [
+                        'label' => 'Email to receiver',
+                        'elements' => [
+                            'subject' => ['label' => 'Subject', 'config' => ['type' => 'input']],
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+        $translationServiceStub = self::createStub(TranslationService::class);
+        $translationServiceStub->method('translateValuesRecursive')->willReturnArgument(0);
+        $subject = new DataStructureIdentifierListener(
+            $formPersistenceManagerStub,
+            $configurationServiceStub,
+            $translationServiceStub,
+            self::createStub(FlashMessageService::class),
+            self::createStub(ExtbaseConfigurationManagerInterface::class),
+            self::createStub(ExtFormConfigurationManagerInterface::class),
+            $this->get(LanguageServiceFactory::class),
+        );
+
+        $subject->modifyDataStructure($event);
+
+        $sheetIdentifier = md5($persistenceIdentifier . 'standard' . 'myForm' . 'EmailToReceiver');
+        self::assertSame(
+            [
+                'label' => 'Subject (Default: "Hello")',
+                'config' => ['type' => 'input', 'default' => 'Hello'],
+            ],
+            $event->getDataStructure()['sheets'][$sheetIdentifier]['ROOT']['el']['settings.finishers.EmailToReceiver.subject']
+        );
     }
 }
