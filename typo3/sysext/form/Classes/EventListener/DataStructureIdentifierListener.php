@@ -27,8 +27,10 @@ use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -74,6 +76,7 @@ readonly class DataStructureIdentifierListener
         protected ExtbaseConfigurationManagerInterface $extbaseConfigurationManager,
         #[Autowire(lazy: ExtFormConfigurationManagerInterface::class)]
         protected ExtFormConfigurationManagerInterface $extFormConfigurationManager,
+        protected LanguageServiceFactory $languageServiceFactory,
     ) {}
 
     /**
@@ -265,7 +268,7 @@ readonly class DataStructureIdentifierListener
                     'convertToFlexFormSheets',
                     // Parse top level elements and section containers.
                     '^(.*)(?:\.config\.type|\.section)$',
-                    GeneralUtility::makeInstance(FinisherOptionGenerator::class, $converterDto)
+                    GeneralUtility::makeInstance(FinisherOptionGenerator::class, $converterDto, $this->getLanguageService())
                 )
             );
             $sheet[$sheetIdentifier]['ROOT']['el'] = $converterDto->getResult();
@@ -346,8 +349,20 @@ readonly class DataStructureIdentifierListener
         return $finishersDefinition;
     }
 
+    /**
+     * Data structures are not only parsed in the backend: Record->toArray() does so in the
+     * frontend as well, where $GLOBALS['LANG'] is only set up while a backend user is logged in.
+     */
     protected function getLanguageService(): LanguageService
     {
-        return $GLOBALS['LANG'];
+        if (($GLOBALS['LANG'] ?? null) instanceof LanguageService) {
+            return $GLOBALS['LANG'];
+        }
+        $request = $GLOBALS['TYPO3_REQUEST'] ?? null;
+        $siteLanguage = $request instanceof ServerRequestInterface ? $request->getAttribute('language') : null;
+        if ($siteLanguage instanceof SiteLanguage) {
+            return $this->languageServiceFactory->createFromSiteLanguage($siteLanguage);
+        }
+        return $this->languageServiceFactory->createFromUserPreferences($GLOBALS['BE_USER'] ?? null);
     }
 }

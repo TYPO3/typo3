@@ -28,6 +28,11 @@ use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
  */
 class FinisherOptionGenerator extends AbstractProcessor
 {
+    public function __construct(ProcessorDto $converterDto, private readonly LanguageService $languageService)
+    {
+        parent::__construct($converterDto);
+    }
+
     /**
      * @param string $_ unused in this context
      * @param mixed $__ unused in this context
@@ -76,23 +81,17 @@ class FinisherOptionGenerator extends AbstractProcessor
             $elementConfiguration['config']['default'] = $optionValue;
         }
 
-        $languageService = $this->getLanguageService();
         $elementConfiguration['label'] = (string)($elementConfiguration['label'] ?? '');
         if (empty($optionValue)) {
-            $optionValue = $languageService->sL('LLL:EXT:form/Resources/Private/Language/Database.xlf:empty');
+            $optionValue = $this->languageService->sL('LLL:EXT:form/Resources/Private/Language/Database.xlf:empty');
         } elseif (is_array($optionValue)) {
             $optionValue = implode(',', $optionValue);
         }
-        $elementConfiguration['label'] .= sprintf(' (%s: "%s")', $languageService->sL('LLL:EXT:form/Resources/Private/Language/Database.xlf:default'), $optionValue);
+        $elementConfiguration['label'] .= sprintf(' (%s: "%s")', $this->languageService->sL('LLL:EXT:form/Resources/Private/Language/Database.xlf:default'), $optionValue);
 
         $sheetElements = $this->converterDto->getResult();
         $sheetElements['settings.finishers.' . $finisherIdentifier . '.' . $optionKey] = $elementConfiguration;
 
         $this->converterDto->setResult($sheetElements);
-    }
-
-    protected function getLanguageService(): LanguageService
-    {
-        return $GLOBALS['LANG'];
     }
 }
