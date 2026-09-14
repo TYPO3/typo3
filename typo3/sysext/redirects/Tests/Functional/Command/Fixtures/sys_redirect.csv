@@ -1,0 +1,8 @@
+sys_redirect,,,,,,,,,,,,,,,
+,uid,pid,createdon,deleted,disabled,starttime,endtime,source_host,source_path,target,target_statuscode,hitcount,protected,creation_type,redirect_type
+,1,0,1,0,0,0,0,*,/outdated,https://example.com/outdated,301,0,0,0,default
+,2,0,1,0,0,0,0,foo.com,/protected,https://example.com/protected,301,0,1,0,default
+,3,0,2147483647,0,0,0,0,bar.com,/recent,https://example.com/recent,301,0,0,0,default
+,4,0,1,0,1,0,0,*,/disabled,https://example.com/disabled,301,0,0,0,default
+,5,0,1,1,0,0,0,*,/soft-deleted,https://example.com/soft-deleted,301,0,0,0,default
+,6,0,1,0,0,0,2,*,/expired,https://example.com/expired,301,0,0,0,default

@@ -42,6 +42,33 @@
       <trans-unit id="cleanupRedirectsCommand.label.redirectType">
         <source>Cleanup redirects matching provided redirect type</source>
       </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.label.dryRun">
+        <source>Show which redirects would be deleted, without deleting anything</source>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.dryRun.noMatches">
+        <source>No redirect matches the given constraints, nothing would be deleted.</source>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.dryRun.summary">
+        <source>{count, plural, one {# redirect would be deleted.} other {# redirects would be deleted.}} Nothing has been deleted, this was a dry run.</source>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.dryRun.column.uid">
+        <source>UID</source>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.dryRun.column.sourceHost">
+        <source>Source host</source>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.dryRun.column.sourcePath">
+        <source>Source path</source>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.dryRun.column.target">
+        <source>Target</source>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.dryRun.column.statusCode">
+        <source>Status code</source>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.dryRun.column.hitCount">
+        <source>Hits</source>
+      </trans-unit>
       <trans-unit id="created_on">
         <source>on</source>
       </trans-unit>

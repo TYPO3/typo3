@@ -139,6 +139,25 @@ final class RedirectRepositoryTest extends FunctionalTestCase
         self::assertSame($redirectAfterCleanup, $this->getRedirectCount());
     }
 
+    #[DataProvider('demandProvider')]
+    #[Test]
+    public function findRedirectsToRemoveByDemandReturnsTheRedirectsRemovedByRemoveByDemand(Demand $demand, int $redirectBeforeCleanup, int $redirectAfterCleanup): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/sys_redirect.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/sys_file.csv');
+
+        self::assertSame($redirectBeforeCleanup, $this->getRedirectCount());
+        $repository = $this->get(RedirectRepository::class);
+        $redirectsToRemove = $repository->findRedirectsToRemoveByDemand($demand);
+
+        self::assertCount($redirectBeforeCleanup - $redirectAfterCleanup, $redirectsToRemove);
+        self::assertSame($redirectBeforeCleanup, $this->getRedirectCount());
+
+        $repository->removeByDemand($demand);
+        self::assertSame($redirectAfterCleanup, $this->getRedirectCount());
+        self::assertSame([], array_intersect(array_map(intval(...), array_column($redirectsToRemove, 'uid')), $this->getRedirectUids()));
+    }
+
     public static function countRedirectsByDemandCountsCorrectlyDataProvider(): iterable
     {
         yield 'default demand' => [
@@ -379,6 +398,21 @@ final class RedirectRepositoryTest extends FunctionalTestCase
         );
 
         self::assertSame([1, 6], array_slice(array_column($redirects, 'uid'), 0, 2));
+    }
+
+    /**
+     * @return list<int>
+     */
+    private function getRedirectUids(): array
+    {
+        $queryBuilder = $this->get(ConnectionPool::class)
+            ->getQueryBuilderForTable('sys_redirect');
+        $uids = $queryBuilder
+            ->select('uid')
+            ->from('sys_redirect')
+            ->executeQuery()
+            ->fetchFirstColumn();
+        return array_map(intval(...), $uids);
     }
 
     private function getRedirectCount(): int

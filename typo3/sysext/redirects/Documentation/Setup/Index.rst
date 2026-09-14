@@ -187,6 +187,33 @@ and have a status code of 302 or 303.
             --age 90 --hitCount 100 --path "/foo/bar%" --statusCode 302 --statusCode 303
 
 
+**Example 3:** List all redirects which the given constraints would remove,
+without removing anything, by adding the `--dry-run` option.
+
+..  versionadded:: 15.0
+    :changelog: feature-110603-1789401735
+
+..  tabs::
+
+    ..  group-tab:: Composer-based installation
+
+        ..  code-block:: bash
+
+            vendor/bin/typo3 redirects:cleanup --domain foo.com --dry-run
+
+    ..  group-tab:: Legacy installation
+
+        ..  code-block:: bash
+
+            typo3/sysext/core/bin/typo3 redirects:cleanup --domain foo.com --dry-run
+
+
+..  hint::
+
+    Since a cleanup deletes redirects permanently, it is recommended to verify
+    new constraints with `--dry-run` first.
+
+
 ..  _redirects-checkintegrity:
 
 redirects:checkintegrity

@@ -506,13 +506,47 @@ class RedirectRepository
 
     public function removeByDemand(Demand $demand): void
     {
-        $queryBuilder = $this->connectionPool
-            ->getQueryBuilderForTable('sys_redirect');
+        $queryBuilder = $this->getQueryBuilderForCleanup();
+        $queryBuilder->delete('sys_redirect');
+        $this->applyCleanupConstraints($queryBuilder, $demand);
+        $queryBuilder->executeStatement();
+    }
+
+    /**
+     * Returns all redirects which would be removed by removeByDemand() for the given demand, which
+     * allows previewing a cleanup, for example in a dry run of the "redirects:cleanup" command.
+     *
+     * @return list<array<string, mixed>>
+     */
+    public function findRedirectsToRemoveByDemand(Demand $demand): array
+    {
+        $queryBuilder = $this->getQueryBuilderForCleanup();
         $queryBuilder
-            ->delete('sys_redirect')
-            ->where(
-                $queryBuilder->expr()->eq('protected', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT))
-            );
+            ->select('uid', 'source_host', 'source_path', 'target', 'target_statuscode', 'hitcount')
+            ->from('sys_redirect');
+        $this->applyCleanupConstraints($queryBuilder, $demand);
+        return $queryBuilder
+            ->orderBy('source_host')
+            ->addOrderBy('source_path')
+            ->executeQuery()
+            ->fetchAllAssociative();
+    }
+
+    /**
+     * A cleanup is not limited to redirects visible in the backend, therefore no restriction is applied.
+     */
+    private function getQueryBuilderForCleanup(): QueryBuilder
+    {
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_redirect');
+        $queryBuilder->getRestrictions()->removeAll();
+        return $queryBuilder;
+    }
+
+    private function applyCleanupConstraints(QueryBuilder $queryBuilder, Demand $demand): void
+    {
+        $queryBuilder->andWhere(
+            $queryBuilder->expr()->eq('protected', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT))
+        );
 
         if ($demand->hasMaxHits()) {
             $queryBuilder->andWhere(
@@ -552,8 +586,6 @@ class RedirectRepository
                 $queryBuilder->expr()->eq('integrity_status', $queryBuilder->createNamedParameter($demand->getIntegrityStatus(), Connection::PARAM_STR))
             );
         }
-
-        $queryBuilder->executeStatement();
     }
 
     /**

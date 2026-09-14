@@ -22,6 +22,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
@@ -48,7 +49,7 @@ class CleanupRedirectsCommand extends Command
                 'domain',
                 'd',
                 InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
-                $this->languageService->sL('LLL:EXT:redirects/Resources/Private/Language/locallang.xlf:cleanupRedirectsCommand.label.domain'),
+                $this->translate('cleanupRedirectsCommand.label.domain'),
                 null,
                 function (): array {
                     return array_column($this->redirectRepository->findHostsOfRedirects(), 'name');
@@ -58,7 +59,7 @@ class CleanupRedirectsCommand extends Command
                 'statusCode',
                 's',
                 InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
-                $this->languageService->sL('LLL:EXT:redirects/Resources/Private/Language/locallang.xlf:cleanupRedirectsCommand.label.statusCode'),
+                $this->translate('cleanupRedirectsCommand.label.statusCode'),
                 null,
                 function (): array {
                     return array_column($this->redirectRepository->findStatusCodesOfRedirects(), 'code');
@@ -68,28 +69,28 @@ class CleanupRedirectsCommand extends Command
                 'days',
                 'a',
                 InputOption::VALUE_OPTIONAL,
-                $this->languageService->sL('LLL:EXT:redirects/Resources/Private/Language/locallang.xlf:cleanupRedirectsCommand.label.days'),
+                $this->translate('cleanupRedirectsCommand.label.days'),
                 null
             )
             ->addOption(
                 'hitCount',
                 'c',
                 InputOption::VALUE_OPTIONAL,
-                $this->languageService->sL('LLL:EXT:redirects/Resources/Private/Language/locallang.xlf:cleanupRedirectsCommand.label.hitCount'),
+                $this->translate('cleanupRedirectsCommand.label.hitCount'),
                 null
             )
             ->addOption(
                 'path',
                 'p',
                 InputOption::VALUE_OPTIONAL,
-                $this->languageService->sL('LLL:EXT:redirects/Resources/Private/Language/locallang.xlf:cleanupRedirectsCommand.label.path'),
+                $this->translate('cleanupRedirectsCommand.label.path'),
                 null
             )
             ->addOption(
                 'creationType',
                 't',
                 InputOption::VALUE_OPTIONAL,
-                $this->languageService->sL('LLL:EXT:redirects/Resources/Private/Language/locallang.xlf:cleanupRedirectsCommand.label.creationType'),
+                $this->translate('cleanupRedirectsCommand.label.creationType'),
                 null,
                 function (): array {
                     return array_keys($this->redirectRepository->findCreationTypes());
@@ -99,7 +100,7 @@ class CleanupRedirectsCommand extends Command
                 'integrityStatus',
                 'i',
                 InputOption::VALUE_OPTIONAL,
-                $this->languageService->sL('LLL:EXT:redirects/Resources/Private/Language/locallang.xlf:cleanupRedirectsCommand.label.integrityStatus'),
+                $this->translate('cleanupRedirectsCommand.label.integrityStatus'),
                 null,
                 function (): array {
                     return array_keys($this->redirectRepository->findIntegrityStatusCodes());
@@ -109,11 +110,17 @@ class CleanupRedirectsCommand extends Command
                 'redirectType',
                 null,
                 InputOption::VALUE_OPTIONAL,
-                $this->languageService->sL('LLL:EXT:redirects/Resources/Private/Language/locallang.xlf:cleanupRedirectsCommand.label.redirectType'),
+                $this->translate('cleanupRedirectsCommand.label.redirectType'),
                 Demand::DEFAULT_REDIRECT_TYPE,
                 function (): array {
                     return array_keys($this->redirectRepository->findRedirectTypes());
                 }
+            )
+            ->addOption(
+                'dry-run',
+                null,
+                InputOption::VALUE_NONE,
+                $this->translate('cleanupRedirectsCommand.label.dryRun')
             )
         ;
     }
@@ -122,8 +129,48 @@ class CleanupRedirectsCommand extends Command
     {
         Bootstrap::initializeBackendAuthentication();
 
-        $this->redirectRepository->removeByDemand(Demand::fromCommandInput($input));
+        $demand = Demand::fromCommandInput($input);
+
+        if (!$input->getOption('dry-run')) {
+            $this->redirectRepository->removeByDemand($demand);
+            return Command::SUCCESS;
+        }
+
+        $io = new SymfonyStyle($input, $output);
+        $redirects = $this->redirectRepository->findRedirectsToRemoveByDemand($demand);
+        if ($redirects === []) {
+            $io->note($this->translate('cleanupRedirectsCommand.dryRun.noMatches'));
+            return Command::SUCCESS;
+        }
+
+        $io->table(
+            [
+                $this->translate('cleanupRedirectsCommand.dryRun.column.uid'),
+                $this->translate('cleanupRedirectsCommand.dryRun.column.sourceHost'),
+                $this->translate('cleanupRedirectsCommand.dryRun.column.sourcePath'),
+                $this->translate('cleanupRedirectsCommand.dryRun.column.target'),
+                $this->translate('cleanupRedirectsCommand.dryRun.column.statusCode'),
+                $this->translate('cleanupRedirectsCommand.dryRun.column.hitCount'),
+            ],
+            array_map(
+                static fn(array $redirect): array => [
+                    $redirect['uid'],
+                    $redirect['source_host'],
+                    $redirect['source_path'],
+                    $redirect['target'],
+                    $redirect['target_statuscode'],
+                    $redirect['hitcount'],
+                ],
+                $redirects
+            )
+        );
+        $io->note($this->translate('cleanupRedirectsCommand.dryRun.summary', ['count' => count($redirects)]));
 
         return Command::SUCCESS;
+    }
+
+    private function translate(string $id, array $arguments = []): string
+    {
+        return (string)$this->languageService->translate($id, 'redirects.messages', $arguments);
     }
 }

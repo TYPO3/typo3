@@ -1,0 +1,4 @@
+sys_redirect,,,,,,,,,,,,,,,
+,uid,pid,createdon,deleted,disabled,starttime,endtime,source_host,source_path,target,target_statuscode,hitcount,protected,creation_type,redirect_type
+,2,0,1,0,0,0,0,foo.com,/protected,https://example.com/protected,301,0,1,0,default
+,3,0,2147483647,0,0,0,0,bar.com,/recent,https://example.com/recent,301,0,0,0,default
