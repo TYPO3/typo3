@@ -1,6 +1,18 @@
 @import "../../../node_modules/alwan/dist/css/alwan.min";
 
 //
+// The popover container ships with `transform: translate(0)`, which establishes a
+// stacking context while the container itself stays at `z-index: auto`. The
+// `z-index: 999999` of the popup inside is therefore scoped to that context, and
+// the whole picker ends up below every positioned backend element carrying a
+// z-index of its own - form tabs, the character counter, the date picker.
+//
+.alwan__popover-container {
+    position: relative;
+    z-index: var(--typo3-zindex-dropdown);
+}
+
+//
 // See https://github.com/sefianecho/alwan/blob/main/src/assets/scss/_theme.scss
 // for a list of upstream theme variables
 //
