@@ -1,0 +1,17 @@
+//
+// CSS for custom element:
+// <typo3-reactions-field-map-row>
+//
+typo3-reactions-field-map-row {
+    //
+    // A row set to not write its field keeps the control of the target table visible, so
+    // the row still says which field it is and what the table would apply. The control is
+    // not disabled for it: a control reading that state while it sets itself up, as the
+    // colour picker does, would never set itself up at all. The row is made inert instead.
+    //
+    [data-fieldmap-pane][inert] {
+        cursor: not-allowed;
+        opacity: .4;
+        filter: grayscale(1);
+    }
+}

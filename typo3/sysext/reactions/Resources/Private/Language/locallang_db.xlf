@@ -67,7 +67,7 @@
         <source>Fields</source>
       </trans-unit>
       <trans-unit id="sys_reaction.fields.description">
-        <source>The available fields depend on the selected table. The usage of placeholders like ${foo.bar} is possible.</source>
+        <source>Which fields are offered depends on the selected table. Each field is either fixed to a value, filled from the request with a placeholder such as ${foo.bar} addressing a key of the payload the caller sends, or not set at all. A field that is not set, and one whose placeholder the request does not carry, keeps the default of the table.</source>
       </trans-unit>
       <trans-unit id="palette.config">
         <source>Configuration</source>
@@ -83,6 +83,21 @@
       </trans-unit>
       <trans-unit id="fieldMapElement.noFields">
         <source>The selected table '%s' does not define any valid fields to be configured.</source>
+      </trans-unit>
+      <trans-unit id="fieldMapElement.valueSource">
+        <source>Value source</source>
+      </trans-unit>
+      <trans-unit id="fieldMapElement.valueSource.unset">
+        <source>Do not set</source>
+      </trans-unit>
+      <trans-unit id="fieldMapElement.valueSource.fixed">
+        <source>Fixed value</source>
+      </trans-unit>
+      <trans-unit id="fieldMapElement.valueSource.payload">
+        <source>Payload value</source>
+      </trans-unit>
+      <trans-unit id="fieldMapElement.valueSource.payload.inverted">
+        <source>This field is displayed inverted, so the value 1 means the opposite of the label above.</source>
       </trans-unit>
     </body>
   </file>

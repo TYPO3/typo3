@@ -1,0 +1,24 @@
+{
+	"name": "typo3tests/test-throwing-items",
+	"type": "typo3-cms-extension",
+	"description": "This extension provides itemsProcFunc implementations that refuse to run.",
+	"version": "1.0.0",
+	"license": "GPL-2.0-or-later",
+	"require": {
+		"typo3/cms-core": "15.0.*@dev",
+		"typo3/cms-reactions": "15.0.*@dev"
+	},
+	"extra": {
+		"typo3/cms": {
+			"extension-key": "test_throwing_items",
+			"Package": {
+				"providesPackages": []
+			}
+		}
+	},
+	"autoload": {
+		"psr-4": {
+			"TYPO3Tests\\TestThrowingItems\\": "Classes/"
+		}
+	}
+}

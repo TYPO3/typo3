@@ -68,7 +68,11 @@ $GLOBALS['TCA']['sys_reaction']['ctrl']['typeicon_classes'][\TYPO3\CMS\Reactions
 
 $GLOBALS['TCA']['sys_reaction']['palettes']['createRecord'] = [
     'label' => 'reactions.db:palette.additional',
-    'showitem' => 'table_name, --linebreak--, storage_pid, impersonate_user, --linebreak--, fields',
+    'showitem' => 'table_name, --linebreak--, storage_pid, impersonate_user',
+];
+
+$GLOBALS['TCA']['sys_reaction']['palettes']['createRecordFieldMap'] = [
+    'showitem' => 'fields',
 ];
 
 $GLOBALS['TCA']['sys_reaction']['types'][\TYPO3\CMS\Reactions\Reaction\CreateRecordReaction::getType()] = [
@@ -76,6 +80,7 @@ $GLOBALS['TCA']['sys_reaction']['types'][\TYPO3\CMS\Reactions\Reaction\CreateRec
         --div--;core.form.tabs:general,
         --palette--;;config,
         --palette--;;createRecord,
+        --palette--;;createRecordFieldMap,
         --div--;core.form.tabs:access,
         --palette--;;access',
     'columnsOverrides' => [

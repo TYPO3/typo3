@@ -1,0 +1,21 @@
+sys_reaction,,,,,,,,,,,,,
+,uid,pid,createdon,deleted,disabled,name,secret,reaction_type,table_name,fields,storage_pid,identifier,impersonate_user
+,10,0,1,0,0,Rejected Field,secret10,create-record,pages,"{""title"":""Test ${foo}"",""author_email"":""no-address-at-all""}",1,8f5e5d0a-1f2b-4c3d-9e7a-0b1c2d3e4f50,1
+,11,0,1,0,0,Checkbox Wording,secret11,create-record,pages,"{""title"":""Test ${foo}"",""hidden"":""true""}",1,8f5e5d0a-1f2b-4c3d-9e7a-0b1c2d3e4f51,1
+,12,0,1,0,0,Checkbox Bitmask,secret12,create-record,pages,"{""title"":""Test ${foo}"",""l18n_cfg"":""${flag}""}",1,8f5e5d0a-1f2b-4c3d-9e7a-0b1c2d3e4f52,1
+,13,0,1,0,0,Checkbox Wording Multi,secret13,create-record,pages,"{""title"":""Test ${foo}"",""l18n_cfg"":""true""}",1,8f5e5d0a-1f2b-4c3d-9e7a-0b1c2d3e4f53,1
+,14,0,1,0,0,Select Valid,secret14,create-record,pages,"{""title"":""Test ${foo}"",""doktype"":""${type}""}",1,8f5e5d0a-1f2b-4c3d-9e7a-0b1c2d3e4f54,1
+,15,0,1,0,0,Stale Key,secret15,create-record,pages,"{""title"":""Test ${foo}"",""perms_everybody"":""31"",""fe_group"":""1"",""nonsense"":""x""}",1,8f5e5d0a-1f2b-4c3d-9e7a-0b1c2d3e4f55,1
+,16,0,1,0,0,Unresolvable,secret16,create-record,pages,"{""title"":""Test ${foo}"",""doktype"":""${nothing.here}""}",1,8f5e5d0a-1f2b-4c3d-9e7a-0b1c2d3e4f56,1
+,17,0,1,0,0,Unset Field,secret17,create-record,pages,"{""title"":""Test ${foo}"",""doktype"":"""",""hidden"":""""}",1,8f5e5d0a-1f2b-4c3d-9e7a-0b1c2d3e4f57,1
+,18,0,1,0,0,Nothing Mapped,secret18,create-record,pages,"{""title"":"""",""doktype"":""""}",1,8f5e5d0a-1f2b-4c3d-9e7a-0b1c2d3e4f58,1
+,19,0,1,0,0,Nothing Resolved,secret19,create-record,pages,"{""title"":""${nope}""}",1,8f5e5d0a-1f2b-4c3d-9e7a-0b1c2d3e4f59,1
+,20,0,1,0,0,Placeholder In Payload,secret20,create-record,pages,"{""title"":""Test ${pub} ${sec}""}",1,8f5e5d0a-1f2b-4c3d-9e7a-0b1c2d3e4f5a,1
+,21,0,1,0,0,Skipped Before Refusal,secret21,create-record,pages,"{""title"":""Test ${foo}"",""nav_title"":""${nope}"",""doktype"":""9999""}",1,8f5e5d0a-1f2b-4c3d-9e7a-0b1c2d3e4f5b,1
+,22,0,1,0,0,Composed Items,secret22,create-record,pages,"{""title"":""Test ${foo}"",""backend_layout"":""${layout}""}",1,8f5e5d0a-1f2b-4c3d-9e7a-0b1c2d3e4f5c,1
+,23,0,1,0,0,Radio Value,secret23,create-record,pages,"{""title"":""Test ${foo}"",""mount_pid_ol"":""${flag}""}",1,8f5e5d0a-1f2b-4c3d-9e7a-0b1c2d3e4f5d,1
+,24,0,1,0,0,Throwing Processor,secret24,create-record,pages,"{""title"":""Test ${foo}"",""layout"":""${mode}""}",1,8f5e5d0a-1f2b-4c3d-9e7a-0b1c2d3e4f5e,1
+,25,0,1,0,0,Erroring Processor,secret25,create-record,pages,"{""title"":""Test ${foo}"",""shortcut_mode"":""${mode}""}",1,8f5e5d0a-1f2b-4c3d-9e7a-0b1c2d3e4f5f,1
+,26,0,1,0,0,Stale Empty Keys,secret26,create-record,pages,"{""title"":""Test ${foo}"",""perms_everybody"":"""",""nonsense"":""""}",1,8f5e5d0a-1f2b-4c3d-9e7a-0b1c2d3e4f60,1
+,27,0,1,0,0,Link Value,secret27,create-record,pages,"{""title"":""Test ${foo}"",""link"":""${target}""}",1,8f5e5d0a-1f2b-4c3d-9e7a-0b1c2d3e4f61,1
+,28,0,1,0,0,Throwing Checkbox,secret28,create-record,pages,"{""title"":""Test ${foo}"",""php_tree_stop"":""${flag}""}",1,8f5e5d0a-1f2b-4c3d-9e7a-0b1c2d3e4f62,1

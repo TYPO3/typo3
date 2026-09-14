@@ -86,6 +86,29 @@ Fields
     can be a simple string or a path to a nested value like
     :code:`${key.nested}`.
 
+    Text, e-mail, number, date, colour, link, checkbox, radio button and
+    single-value select fields can be mapped. Relations cannot, and neither can a select
+    submitting more than one value, since the map holds one string per field.
+    Only the fields you may edit yourself are offered, and the reaction writes
+    only those the backend user it impersonates may write.
+
+    Every field renders the control the editing form of the target table would
+    show: a calendar for a date, a colour picker for a colour, the link browser
+    for a link, the items of a select, except a :code:`text` column, which
+    keeps a plain box. Each field is set to one of three things: "Do not set",
+    which leaves the field to the default of the target table, "Fixed value",
+    taken from the control itself, or "Payload value", a placeholder as
+    described above. Every row starts on "Do not set", so a reaction writes
+    the fields it was configured to write and no others.
+
+    A field that is not set is left out of the created record entirely, and so
+    is one the target table cannot hold the value of: a placeholder the request
+    does not carry or answers with nothing, a select or radio value the field
+    does not offer, and a checkbox value that is neither one of the wordings
+    :code:`true`, :code:`yes` and :code:`on` nor a number the boxes of that
+    field can hold. A call that resolves no value for any field creates no
+    record and is answered with :code:`400`.
+
 For our example we select the :guilabel:`Page Content` table and populate the
 following fields:
 
@@ -132,6 +155,19 @@ If something went wrong, this is also visible, for example:
 ..  code-block:: json
 
     {"success":false,"error":"Invalid secret given"}
+
+A record can also be created while single fields of it were not written, for
+example because a placeholder was not part of the payload. Those fields are
+named in an additional :code:`skippedFields` key, together with the reason they
+were left out, and the key is absent when everything was written:
+
+..  code-block:: json
+
+    {"success":true,"skippedFields":{"doktype":"placeholderUnresolved"}}
+
+Where the target table itself rejected a value, a :code:`warnings` key says so
+without naming the field. Those messages are written for the backend log, which
+is where they stay, so look them up in :guilabel:`System > Log`.
 
 The content is now available on the configured page:
 

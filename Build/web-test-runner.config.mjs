@@ -146,6 +146,7 @@ export default {
             '@typo3/install/': './typo3/sysext/install/Resources/Public/JavaScript/',
             '@typo3/info/': './typo3/sysext/info/Resources/Public/JavaScript/',
             '@typo3/linkvalidator/': './typo3/sysext/linkvalidator/Resources/Public/JavaScript/',
+            '@typo3/reactions/': './typo3/sysext/reactions/Resources/Public/JavaScript/',
             '@typo3/redirects/': './typo3/sysext/redirects/Resources/Public/JavaScript/',
             '@typo3/recycler/': './typo3/sysext/recycler/Resources/Public/JavaScript/',
 
