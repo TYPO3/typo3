@@ -73,4 +73,28 @@ final class UploadExtensionFileControllerTest extends UnitTestCase
         $subject = $this->getAccessibleMock(UploadExtensionFileController::class, null, [], '', false);
         self::assertEquals($expectedKey, $subject->_call('getExtensionKeyFromFileName', $filename));
     }
+
+    public static function getVersionFromFileNameDataProvider(): array
+    {
+        return [
+            'key and version' => ['news_12.3.0.zip', '12.3.0'],
+            'key with digits' => ['ws_t3x_1.2.3.zip', '1.2.3'],
+            'dashes between the numbers' => ['news_12-3-0.zip', '12.3.0'],
+            'upper case' => ['News_1.2.3.ZIP', '1.2.3'],
+            'no version' => ['news.zip', ''],
+            'two numbers only' => ['news_1.2.zip', ''],
+        ];
+    }
+
+    /**
+     * The archive name is the only place a manually uploaded archive carries its
+     * version when composer.json declares none; TER names its archives the same way.
+     */
+    #[DataProvider('getVersionFromFileNameDataProvider')]
+    #[Test]
+    public function getVersionFromFileNameReadsTheVersionTheArchiveIsNamedWith(string $filename, string $expectedVersion): void
+    {
+        $subject = $this->getAccessibleMock(UploadExtensionFileController::class, null, [], '', false);
+        self::assertSame($expectedVersion, $subject->_call('getVersionFromFileName', $filename));
+    }
 }

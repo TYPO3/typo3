@@ -43,11 +43,6 @@ use TYPO3\CMS\Extensionmanager\Enum\ExtensionType;
 class ListUtility
 {
     /**
-     * @var EmConfUtility
-     */
-    protected $emConfUtility;
-
-    /**
      * @var ExtensionRepository
      */
     protected $extensionRepository;
@@ -81,11 +76,6 @@ class ListUtility
     public function injectEventDispatcher(EventDispatcherInterface $eventDispatcher)
     {
         $this->eventDispatcher = $eventDispatcher;
-    }
-
-    public function injectEmConfUtility(EmConfUtility $emConfUtility)
-    {
-        $this->emConfUtility = $emConfUtility;
     }
 
     public function injectExtensionRepository(ExtensionRepository $extensionRepository)
@@ -150,6 +140,7 @@ class ListUtility
                     'excludeFromUpdates' => $metaData->isExcludedFromUpdates(),
                     'icon' => $icon ? (string)$this->resourcePublisher->generateUri($this->resourceFactory->createPublicResource($icon), null) : '',
                     'title' => $metaData->getTitle(),
+                    'description' => $metaData->getDescription() ?? '',
                 ];
                 $constraints = $metaData->getConstraints();
                 if (count($constraints) > 0) {
@@ -222,27 +213,10 @@ class ListUtility
     }
 
     /**
-     * Adds the information from the emconf array to the extension information
+     * Adds the information from TER to the extension information
      */
-    public function enrichExtensionsWithEmConfInformation(array $extensions): array
+    public function enrichExtensionsWithTerInformation(array $extensions): array
     {
-        foreach ($extensions as $extensionKey => $properties) {
-            $emConf = $this->emConfUtility->includeEmConf($extensionKey, $properties['packagePath'] ?? '');
-            if (!is_array($emConf)) {
-                continue;
-            }
-            $extensions[$extensionKey] = array_merge($emConf, $properties);
-            $extensions[$extensionKey]['state'] = $emConf['state'] ?? $extensions[$extensionKey]['state'] ?? 'stable';
-        }
-        return $extensions;
-    }
-
-    /**
-     * Adds the information from the emconf array and TER to the extension information
-     */
-    public function enrichExtensionsWithEmConfAndTerInformation(array $extensions): array
-    {
-        $extensions = $this->enrichExtensionsWithEmConfInformation($extensions);
         foreach ($extensions as $extensionKey => $properties) {
             $terObject = $this->getExtensionTerData($extensionKey, $properties['version'] ?? '');
             if ($terObject === null) {
@@ -300,7 +274,7 @@ class ListUtility
     {
         $availableExtensions = $this->getAvailableExtensions($filter);
         $availableAndInstalledExtensions = $this->getAvailableAndInstalledExtensions($availableExtensions);
-        return $this->enrichExtensionsWithEmConfAndTerInformation($availableAndInstalledExtensions);
+        return $this->enrichExtensionsWithTerInformation($availableAndInstalledExtensions);
     }
 
     /**

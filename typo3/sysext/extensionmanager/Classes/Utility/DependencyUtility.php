@@ -45,11 +45,6 @@ class DependencyUtility
     protected $listUtility;
 
     /**
-     * @var EmConfUtility
-     */
-    protected $emConfUtility;
-
-    /**
      * @var ExtensionManagementService
      */
     protected $managementService;
@@ -77,11 +72,6 @@ class DependencyUtility
     public function injectListUtility(ListUtility $listUtility)
     {
         $this->listUtility = $listUtility;
-    }
-
-    public function injectEmConfUtility(EmConfUtility $emConfUtility)
-    {
-        $this->emConfUtility = $emConfUtility;
     }
 
     public function injectManagementService(ExtensionManagementService $managementService)
@@ -389,11 +379,7 @@ class DependencyUtility
     protected function isAvailableVersionCompatible(Dependency $dependency): bool
     {
         $this->setAvailableExtensions();
-        $extensionData = $this->emConfUtility->includeEmConf(
-            $dependency->getIdentifier(),
-            $this->availableExtensions[$dependency->getIdentifier()]['packagePath'] ?? ''
-        );
-        $version = $this->availableExtensions[$dependency->getIdentifier()]['version'] ?? $extensionData['version'] ?: '';
+        $version = (string)($this->availableExtensions[$dependency->getIdentifier()]['version'] ?? '');
         return $dependency->isVersionCompatible($version);
     }
 

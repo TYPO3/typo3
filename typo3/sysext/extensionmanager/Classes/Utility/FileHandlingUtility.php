@@ -114,7 +114,7 @@ class FileHandlingUtility
      *
      * @param string $file path to zip file
      * @param string $extensionKey the key of the extension the archive holds
-     * @param string $version the version to write into composer.json, read from ext_emconf.php when empty
+     * @param string $version the version to write into composer.json when the manifest declares none
      */
     public function unzipExtensionFromFile(string $file, string $extensionKey, string $version = ''): void
     {
@@ -133,18 +133,29 @@ class FileHandlingUtility
 
     /**
      * Enriches an extension's composer.json with version and providesPackages
-     * if these fields are not yet present. The version is taken from the
-     * provided $version parameter, or read from ext_emconf.php as fallback.
-     * Packages listed in require/suggest that are neither TYPO3 framework
-     * packages nor known Composer dependencies are added as provided packages,
-     * as they cannot be installed via Composer in classic mode.
+     * if these fields are not yet present. Both are mandatory in classic mode:
+     * a package without them is not registered at all. The version is the one
+     * the caller knows, from the TER listing or the archive name; ext_emconf.php
+     * is not evaluated anymore. Packages listed in require/suggest that are
+     * neither TYPO3 framework packages nor known Composer dependencies are added
+     * as provided packages, as they cannot be installed via Composer in classic mode.
      */
     protected function enrichComposerJsonWithComposerCapableFields(string $extensionKey, string $extensionDir, string $version = ''): void
     {
         $composerJsonPath = $extensionDir . 'composer.json';
-        $composerJson = json_decode(file_get_contents($composerJsonPath), true, 512, JSON_THROW_ON_ERROR);
+        if (!is_file($composerJsonPath)) {
+            throw new ExtensionManagerException(
+                'The archive of extension "' . $extensionKey . '" contains no composer.json. Since TYPO3 v14 every extension needs one, see the changelog entry "Require composer.json in classic mode".',
+                1789399168
+            );
+        }
+        try {
+            $composerJson = json_decode((string)file_get_contents($composerJsonPath), true, 512, JSON_THROW_ON_ERROR);
+        } catch (\JsonException $e) {
+            throw new ExtensionManagerException('Reading the composer.json of extension "' . $extensionKey . '" failed: ' . $e->getMessage(), 1775064630, $e);
+        }
         if (!is_array($composerJson)) {
-            throw new ExtensionManagerException('Reading the composer.json failed', 1775064630);
+            throw new ExtensionManagerException('Reading the composer.json of extension "' . $extensionKey . '" failed: it is not a JSON object.', 1789399169);
         }
         $hasVersion = isset($composerJson['version']) || isset($composerJson['extra']['typo3/cms']['version']);
         $hasProvidesPackages = isset($composerJson['extra']['typo3/cms']['Package']['providesPackages']);
@@ -153,12 +164,12 @@ class FileHandlingUtility
         }
         if (!$hasVersion) {
             if ($version === '') {
-                $emConf = $this->emConfUtility->includeEmConf($extensionKey, $extensionDir);
-                $version = is_array($emConf) ? ($emConf['version'] ?? '') : '';
+                throw new ExtensionManagerException(
+                    'The version of extension "' . $extensionKey . '" could not be determined. Declare it in composer.json or name the archive "' . $extensionKey . '_1.2.3.zip".',
+                    1789399167
+                );
             }
-            if ($version !== '') {
-                $composerJson['extra']['typo3/cms']['version'] = $version;
-            }
+            $composerJson['extra']['typo3/cms']['version'] = $version;
         }
         if (!$hasProvidesPackages) {
             $providesPackages = [];
