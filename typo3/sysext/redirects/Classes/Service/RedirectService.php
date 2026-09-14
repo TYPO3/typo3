@@ -379,7 +379,11 @@ readonly class RedirectService
         if ($redirectRecord['keep_query_parameters']) {
             $configuration['additionalParams'] = HttpUtility::buildQueryString($queryParams, '&');
         }
-        $request = $originalRequest->withAttribute('currentContentObject', $contentObjectRenderer);
+        // bootFrontendController() attached page information and TypoScript to a clone of the
+        // request and handed that clone to the ContentObjectRenderer. Link builders need those
+        // attributes as well, so the enriched request is taken from there instead of using the
+        // untouched $originalRequest.
+        $request = $contentObjectRenderer->getRequest()->withAttribute('currentContentObject', $contentObjectRenderer);
         try {
             $result = $linkBuilder->buildLink($linkDetails, $configuration, $request);
             $this->cleanupContext();

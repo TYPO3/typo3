@@ -1,0 +1,18 @@
+config {
+    no_cache = 1
+    debug = 0
+    admPanel = 0
+}
+
+config.recordLinks.content {
+    typolink {
+        parameter.field = pid
+    }
+}
+
+page = PAGE
+page {
+    typeNum = 0
+    10 = TEXT
+    10.value = Test
+}

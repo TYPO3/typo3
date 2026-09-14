@@ -1,0 +1,10 @@
+"pages",,,,,,,,
+,"uid","pid","hidden","deleted","sys_language_uid","l10n_parent","slug","TSconfig"
+,1,0,0,0,0,0,"/","TCEMAIN.linkHandler.content.configuration.table = tt_content"
+,10,1,0,0,0,0,"/target-page",""
+"tt_content",,,,,,,,
+,"uid","pid","hidden","deleted","sys_language_uid","CType","header",
+,100,10,0,0,0,"text","Target content",
+"sys_redirect",,,,,,,,
+,"uid","pid","target_statuscode","disabled","deleted","source_host","source_path","target",
+,1,0,301,0,0,"acme.com","/record-source","t3://record?identifier=content&uid=100",

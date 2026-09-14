@@ -558,6 +558,36 @@ final class RedirectServiceTest extends FunctionalTestCase
         }
     }
 
+    /*
+     * Regression test for https://forge.typo3.org/issues/109912
+     * A redirect pointing to a database record is resolved by DatabaseRecordLinkBuilder,
+     * which needs the page information and the TypoScript setup that
+     * RedirectService::bootFrontendController() assembles.
+     */
+    #[Test]
+    public function targetOfRecordLinkTypeIsResolved(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/RedirectService_recordTarget.csv');
+        $this->writeSiteConfiguration(
+            'acme-com',
+            $this->buildSiteConfiguration(1, 'https://acme.com/')
+        );
+        $this->setUpFrontendRootPage(
+            1,
+            ['EXT:redirects/Tests/Functional/Service/Fixtures/RedirectsRecordLinks.typoscript']
+        );
+
+        $response = $this->executeFrontendSubRequest(
+            new InternalRequest('https://acme.com/record-source'),
+            null,
+            false
+        );
+
+        self::assertEquals(301, $response->getStatusCode());
+        self::assertEquals('TYPO3 Redirect 1', $response->getHeader('X-Redirect-By')[0]);
+        self::assertEquals('https://acme.com/target-page', $response->getHeader('location')[0]);
+    }
+
     public static function samePathWithSameDomainAndRelativeTargetDataProvider(): array
     {
         return [
