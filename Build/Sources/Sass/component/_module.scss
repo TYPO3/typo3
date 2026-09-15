@@ -165,6 +165,10 @@ body:has(.module) *:target {
     padding: 0;
 }
 
+.module-docheader-buttons[inert] {
+    opacity: .5;
+}
+
 // From small viewports on, the navigation bar is pinned as well
 @include media-breakpoint-up('sm') {
     :root {

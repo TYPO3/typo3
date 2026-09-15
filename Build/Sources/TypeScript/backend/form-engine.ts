@@ -1033,8 +1033,12 @@ export default (function() {
   };
 
   /**
-   * Enables all doc header buttons.
-   * Called after FormEngine initialization is complete to restore button interactivity.
+   * Releases the doc header button bar, which is rendered "inert" as long as the
+   * ui block is shown, to prevent unintended operations while FormEngine is loading.
+   * Called after FormEngine initialization is complete.
+   *
+   * The block is applied to the button bar as a whole, never to the single buttons,
+   * so that the disabled state of individual buttons remains untouched.
    */
   FormEngine.enableDocHeaderButtons = function(): void {
     const docHeaderBar = document.querySelector('.t3js-module-docheader-buttons');
@@ -1042,16 +1046,8 @@ export default (function() {
       return;
     }
 
-    // Enable all buttons and links in the doc header
-    docHeaderBar.querySelectorAll('button, a, input[type="submit"]').forEach((element: HTMLElement): void => {
-      if (element instanceof HTMLButtonElement || element instanceof HTMLInputElement) {
-        element.disabled = false;
-      } else if (element instanceof HTMLAnchorElement) {
-        // For anchor elements - remove TYPO3 disabled state
-        element.classList.remove('disabled');
-        element.removeAttribute('aria-disabled');
-      }
-    });
+    docHeaderBar.removeAttribute('inert');
+    docHeaderBar.removeAttribute('aria-busy');
   };
 
   /**

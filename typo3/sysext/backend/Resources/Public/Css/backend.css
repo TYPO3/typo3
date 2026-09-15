@@ -2335,6 +2335,7 @@ body>.module{min-height:100dvh}
 .module-docheader .dropdown-menu{max-height:calc(100dvh - var(--module-docheader-height))}
 .module-docheader-navigation{border-bottom:var(--module-docheader-border-width) solid var(--module-docheader-border-color);min-height:calc(var(--module-docheader-bar-height) + var(--module-docheader-border-width))}
 .module-docheader-buttons:has(.module-docheader-column:empty){padding:0}
+.module-docheader-buttons[inert]{opacity:.5}
 @media (min-width:576px){
 :root{--module-docheader-sticky-height:var(--module-docheader-height);--module-docheader-box-shadow-range:var(--module-body-padding-y)}}
 @keyframes module-docheader-shadow{
