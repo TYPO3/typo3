@@ -190,4 +190,33 @@ final class RelationHandlerTest extends FunctionalTestCase
 
         self::assertTrue($subject->purgeItemArray(1));
     }
+
+    #[Test]
+    public function readMmFromLocalSideIgnoresTablenamesMatchFieldNotReferringToForeignTable(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/RelationHandler/readMmLocalSideWithTablenamesMatchFieldImport.csv');
+        $fieldConfig = [
+            'type' => 'select',
+            'foreign_table' => 'sys_category',
+            'MM' => 'sys_category_record_mm',
+            'MM_match_fields' => [
+                'tablenames' => 'pages',
+                'fieldname' => 'test',
+            ],
+        ];
+        $subject = new RelationHandler();
+        $subject->start('', 'sys_category', 'sys_category_record_mm', 1000, 'pages', $fieldConfig);
+        self::assertSame(
+            [
+                [
+                    'id' => 10,
+                    'table' => 'sys_category',
+                    'fieldname' => 'test',
+                    'sorting' => 1,
+                    'sorting_foreign' => 0,
+                ],
+            ],
+            $subject->itemArray
+        );
+    }
 }

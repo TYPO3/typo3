@@ -1,0 +1,10 @@
+"sys_category"
+,"uid","pid","parent","deleted","hidden","starttime","endtime","sorting","sys_language_uid","l10n_parent","t3ver_wsid","t3ver_oid","t3ver_state","title"
+,10,1,0,0,0,0,0,10,0,0,0,0,0,"Category 10"
+"pages"
+,"uid","pid","deleted","sys_language_uid","l10n_parent","t3ver_wsid","t3ver_oid","t3ver_state","slug","title"
+,1,0,0,0,0,0,0,0,"/","Root"
+,1000,1,0,0,0,0,0,0,"/page1000","Page 1000 has category 10"
+"sys_category_record_mm"
+,"uid_local","uid_foreign","tablenames","fieldname","sorting","sorting_foreign"
+,1000,10,"pages","test",1,0
