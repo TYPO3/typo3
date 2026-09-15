@@ -1,0 +1,22 @@
+"pages"
+,"uid","pid","sorting","deleted","title","doktype","is_siteroot","backend_layout","backend_layout_next_level","TSconfig"
+,1,0,256,0,"Restricted",1,1,"pagets__restricted","","mod.web_layout.BackendLayouts.restricted {
+  title = Restricted
+  config.backend_layout {
+    colCount = 2
+    rowCount = 1
+    rows.1.columns {
+      1 {
+        name = Main
+        colPos = 0
+        disallowedContentTypes = html
+      }
+      2 {
+        name = Header only
+        colPos = 1
+        allowedContentTypes = header
+      }
+    }
+  }
+}"
+,2,1,256,0,"Restricted for sub pages",1,0,"","pagets__restricted",""
