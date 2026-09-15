@@ -497,7 +497,11 @@ class GraphicalFunctions
         GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/typo3temp/assets/images/');
         $output = Environment::getPublicPath() . '/typo3temp/assets/images/' . $this->filenamePrefix . $theOutputName . '.' . $targetFileExtension;
         if ($this->dontCheckForExistingTempFile || !file_exists($output)) {
-            $this->imageMagickExec($sourceFile, $output, $command, $frame);
+            $temporaryOutput = $this->temporaryOutputPath($output);
+            $this->imageMagickExec($sourceFile, $temporaryOutput, $command, $frame);
+            if (file_exists($temporaryOutput)) {
+                rename($temporaryOutput, $output);
+            }
         }
         if (file_exists($output)) {
             // params might change some image data, so this should be calculated again
@@ -681,22 +685,42 @@ class GraphicalFunctions
         $noAlpha = $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor'] === 'ImageMagick' ? ' -alpha off ' : ' +matte ';
         $this->imageMagickExec($mask, $theMask, '-colorspace GRAY' . $noAlpha);
 
+        $temporaryOutput = $this->temporaryOutputPath($output);
         $parameters = '-compose over'
             . ' -quality ' . $this->jpegQuality
             . $noAlpha
             . ImageMagickFile::fromFilePath($input) . ' '
             . ImageMagickFile::fromFilePath($overlay) . ' '
             . ImageMagickFile::fromFilePath($theMask) . ' '
-            . CommandUtility::escapeShellArgument($output);
+            . CommandUtility::escapeShellArgument($temporaryOutput);
         $cmd = CommandUtility::imageMagickCommand('combine', $parameters);
         $this->IM_commands[] = [$output, $cmd];
         $ret = CommandUtility::exec($cmd);
+        if (file_exists($temporaryOutput)) {
+            rename($temporaryOutput, $output);
+        }
         // Change the permissions of the file
         GeneralUtility::fixPermissions($output);
         if (is_file($theMask)) {
             @unlink($theMask);
         }
         return $ret;
+    }
+
+    /**
+     * Returns a path next to $output, guaranteed not to collide with a concurrent call,
+     * ending in the same file extension - the image processor infers the output format
+     * from it. Write here, then rename() onto $output once writing has finished, so
+     * file_exists($output) is never true for a still-incomplete file.
+     */
+    protected function temporaryOutputPath(string $output): string
+    {
+        $pathInfo = pathinfo($output);
+        $temporaryName = $pathInfo['filename'] . '.' . uniqid('', true) . '.tmp';
+        if (($pathInfo['extension'] ?? '') !== '') {
+            $temporaryName .= '.' . $pathInfo['extension'];
+        }
+        return ($pathInfo['dirname'] !== '.' ? $pathInfo['dirname'] . '/' : '') . $temporaryName;
     }
 
     /**

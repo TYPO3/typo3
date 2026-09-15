@@ -19,11 +19,80 @@ namespace TYPO3\CMS\Core\Tests\Unit\Imaging;
 
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class GraphicalFunctionsTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
+
+    #[Test]
+    public function resizeWritesToATemporaryFileAndRenamesItIntoPlace(): void
+    {
+        $sourceFile = GeneralUtility::tempnam('graphical-functions-resize-test-source-') . '.png';
+        $gdImage = imagecreatetruecolor(10, 10);
+        imagepng($gdImage, $sourceFile);
+
+        $subject = $this->getMockBuilder(GraphicalFunctions::class)
+            ->onlyMethods(['imageMagickExec'])
+            ->getMock();
+
+        // Stands in for the real ImageMagick/GraphicsMagick binary: whatever path resize()
+        // asks it to write to, it creates that exact file. If resize() ever passes its own
+        // public, final output path here directly (instead of a private temporary one),
+        // that path becomes readable - "exists" - before this callback returns, exactly
+        // the window a concurrent request could observe a still-incomplete file in.
+        $capturedOutputArgument = null;
+        $subject->expects($this->once())->method('imageMagickExec')->willReturnCallback(
+            function (string $input, string $output, string $params, int $frame = 0) use (&$capturedOutputArgument, $sourceFile): string {
+                $capturedOutputArgument = $output;
+                copy($sourceFile, $output);
+                return '';
+            }
+        );
+
+        $result = $subject->resize($sourceFile, 'png', '5', '5');
+
+        self::assertNotNull($result);
+        self::assertFileExists($result->getRealPath());
+        self::assertNotSame(
+            $capturedOutputArgument,
+            $result->getRealPath(),
+            'imageMagickExec() must be asked to write to a temporary path, not directly to the public, final output path.'
+        );
+        self::assertFileDoesNotExist(
+            $capturedOutputArgument,
+            'the temporary file must have been renamed into place, not left behind next to it.'
+        );
+
+        unlink($sourceFile);
+        unlink($result->getRealPath());
+    }
+
+    #[Test]
+    public function temporaryOutputPathEndsWithTheSameExtensionAsTheFinalOutput(): void
+    {
+        $subject = $this->getAccessibleMock(GraphicalFunctions::class, null, [], '', false);
+
+        $temporary = $subject->_call('temporaryOutputPath', '/typo3temp/assets/images/abc123.png');
+
+        self::assertNotSame('/typo3temp/assets/images/abc123.png', $temporary);
+        self::assertStringStartsWith('/typo3temp/assets/images/abc123.', $temporary);
+        self::assertStringEndsWith('.tmp.png', $temporary);
+        // exactly one occurrence of the extension - not doubled by naively appending it
+        self::assertSame(1, substr_count($temporary, '.png'));
+    }
+
+    #[Test]
+    public function temporaryOutputPathIsUniquePerCall(): void
+    {
+        $subject = $this->getAccessibleMock(GraphicalFunctions::class, null, [], '', false);
+
+        $first = $subject->_call('temporaryOutputPath', '/typo3temp/assets/images/abc123.png');
+        $second = $subject->_call('temporaryOutputPath', '/typo3temp/assets/images/abc123.png');
+
+        self::assertNotSame($first, $second);
+    }
 
     #[Test]
     public function imageMagickIdentifyReturnsFormattedValues(): void
