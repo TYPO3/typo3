@@ -22,6 +22,7 @@ use TYPO3\CMS\Backend\Controller\Event\AfterRecordOpenedEvent;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Opendocs\Domain\Repository\OpenDocumentRepository;
@@ -101,6 +102,12 @@ final readonly class TrackOpenDocumentsEventListener
      */
     private function isBackendContext(): bool
     {
+        // The CLI request is flagged as a backend request, but the "_cli_" backend
+        // user has no user session, so reading module data from it raises an error.
+        // There is no recent documents list to keep up to date on CLI anyway.
+        if (Environment::isCli()) {
+            return false;
+        }
         return ($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
             && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend();
     }
