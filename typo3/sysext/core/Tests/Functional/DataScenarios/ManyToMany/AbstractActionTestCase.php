@@ -322,6 +322,14 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $this->recordIds['localizedSurfId'] = $localizedTableIds[self::TABLE_TEST_MM][self::VALUE_TestMMIdThird];
     }
 
+    public function localizeTestMMSelect1MMUnidirectional(): void
+    {
+        unset($GLOBALS['TCA'][self::TABLE_Content]['columns'][self::FIELD_SELECT_MM_1_FOREIGN]['config']['MM_opposite_field']);
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+        $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_TEST_MM, self::VALUE_TestMMIdThird, self::VALUE_LanguageId);
+        $this->recordIds['localizedSurfId'] = $localizedTableIds[self::TABLE_TEST_MM][self::VALUE_TestMMIdThird];
+    }
+
     public function localizeTestMMSelect1MMLocalWithExclude(): void
     {
         $GLOBALS['TCA'][self::TABLE_TEST_MM]['columns'][self::FIELD_SELECT_MM_1_LOCAL]['config']['l10n_mode'] = 'exclude';

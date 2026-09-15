@@ -338,6 +338,13 @@ final class ActionTest extends AbstractActionTestCase
     }
 
     #[Test]
+    public function localizeTestMMSelect1MMUnidirectional(): void
+    {
+        parent::localizeTestMMSelect1MMUnidirectional();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeTestMMSelect1MMLocalWithExclude.csv');
+    }
+
+    #[Test]
     public function localizeTestMMSelect1MMLocalWithExclude(): void
     {
         parent::localizeTestMMSelect1MMLocalWithExclude();
