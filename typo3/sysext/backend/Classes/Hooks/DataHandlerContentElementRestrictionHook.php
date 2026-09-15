@@ -79,48 +79,72 @@ readonly class DataHandlerContentElementRestrictionHook
         }
     }
 
-    public function processDatamap_beforeStart(DataHandler $dataHandler): void
+    /**
+     * Records are checked one by one when they are processed, not before DataHandler starts: records of
+     * table "pages" are processed first, so a "NEW..." pid of a content element on a new page can be
+     * resolved to the real page here, together with the backend layout of that page.
+     *
+     * @param-out array|null $incomingFieldArray
+     */
+    public function processDatamap_preProcessFieldArray(array &$incomingFieldArray, string $table, string|int $id, DataHandler $dataHandler): void
     {
-        $datamap = $dataHandler->datamap;
-        if (empty($datamap['tt_content'])) {
+        if ($table !== 'tt_content') {
             return;
         }
-        foreach ($datamap['tt_content'] as $id => $incomingFieldArray) {
-            if (MathUtility::canBeInterpretedAsInteger($id)) {
-                $record = BackendUtility::getRecord('tt_content', $id);
-                if (!is_array($record)) {
-                    // Skip this if the record could not be determined for whatever reason
-                    continue;
-                }
-                $recordData = array_merge($record, $incomingFieldArray);
-            } else {
-                $recordData = array_merge($dataHandler->defaultValues['tt_content'] ?? [], $incomingFieldArray);
+        if (MathUtility::canBeInterpretedAsInteger($id)) {
+            $record = BackendUtility::getRecord('tt_content', $id);
+            if (!is_array($record)) {
+                // Skip this if the record could not be determined for whatever reason
+                return;
             }
-            if (empty($recordData['CType']) || !array_key_exists('colPos', $recordData)) {
-                // No idea what happened here, but we stop with this record if there is no CType or colPos
-                continue;
-            }
-            $pageId = (int)$recordData['pid'];
-            if ($pageId < 0) {
-                $previousRecord = BackendUtility::getRecord('tt_content', abs($pageId), 'pid');
-                if ($previousRecord === null) {
-                    // Broken target data. Stop here and let DH handle this mess.
-                    continue;
-                }
-                $pageId = (int)$previousRecord['pid'];
-            }
-            $colPos = (int)$recordData['colPos'];
-            $backendLayout = $this->backendLayoutView->getBackendLayoutForPage($pageId);
-            $columnConfiguration = $this->backendLayoutView->getColPosConfigurationForPage($backendLayout, $colPos, $pageId);
-            $allowedContentElementsInTargetColPos = GeneralUtility::trimExplode(',', $columnConfiguration['allowedContentTypes'] ?? '', true);
-            $disallowedContentElementsInTargetColPos = GeneralUtility::trimExplode(',', $columnConfiguration['disallowedContentTypes'] ?? '', true);
-            if ((!empty($allowedContentElementsInTargetColPos) && !in_array($recordData['CType'], $allowedContentElementsInTargetColPos, true))
-                || (!empty($disallowedContentElementsInTargetColPos) && in_array($recordData['CType'], $disallowedContentElementsInTargetColPos, true))
-            ) {
-                // Not allowed to create in this colPos on this page. Unset this command and create a log entry which may be turned into a notification when called by BE.
-                unset($dataHandler->datamap['tt_content'][$id]);
-                $dataHandler->log('tt_content', $id, 1, null, 1, 'The record "tt_content:%s" with CType "%s" in colPos "%s" couldn\'t be saved due to disallowed value(s).', null, [$id, $recordData['CType'], $colPos]);
-            }
+            $recordData = array_merge($record, $incomingFieldArray);
+            $pageId = $this->resolvePageId($dataHandler, $recordData['pid'] ?? 0);
+        } else {
+            $pageId = $this->resolvePageId($dataHandler, $incomingFieldArray['pid'] ?? 0);
+            $recordData = array_merge($dataHandler->defaultValues['tt_content'] ?? [], $incomingFieldArray);
         }
+        if ($pageId === null) {
+            // Broken or unresolvable target. Stop here and let DH handle this mess.
+            return;
+        }
+        if (empty($recordData['CType']) || !array_key_exists('colPos', $recordData)) {
+            // No idea what happened here, but we stop with this record if there is no CType or colPos
+            return;
+        }
+        $colPos = (int)$recordData['colPos'];
+        $backendLayout = $this->backendLayoutView->getBackendLayoutForPage($pageId);
+        $columnConfiguration = $this->backendLayoutView->getColPosConfigurationForPage($backendLayout, $colPos, $pageId);
+        $allowedContentElementsInTargetColPos = GeneralUtility::trimExplode(',', $columnConfiguration['allowedContentTypes'] ?? '', true);
+        $disallowedContentElementsInTargetColPos = GeneralUtility::trimExplode(',', $columnConfiguration['disallowedContentTypes'] ?? '', true);
+        if ((!empty($allowedContentElementsInTargetColPos) && !in_array($recordData['CType'], $allowedContentElementsInTargetColPos, true))
+            || (!empty($disallowedContentElementsInTargetColPos) && in_array($recordData['CType'], $disallowedContentElementsInTargetColPos, true))
+        ) {
+            // Not allowed to create in this colPos on this page. Skip this record and create a log entry which may be turned into a notification when called by BE.
+            $incomingFieldArray = null;
+            $dataHandler->log('tt_content', $id, 1, null, 1, 'The record "tt_content:%s" with CType "%s" in colPos "%s" couldn\'t be saved due to disallowed value(s).', null, [$id, $recordData['CType'], $colPos]);
+        }
+    }
+
+    /**
+     * Resolves the page a content element is (or will be) located on. A "NEW..." pid or a "-NEW..." pid
+     * (placed after a new content element) refers to a record of the current datamap, which is resolved
+     * once DataHandler has created it. Returns null if the page cannot be determined (yet).
+     */
+    private function resolvePageId(DataHandler $dataHandler, int|string $pid): ?int
+    {
+        $pid = (string)$pid;
+        if (str_contains($pid, 'NEW')) {
+            $placeholder = ltrim($pid, '-');
+            if (!isset($dataHandler->substNEWwithIDs[$placeholder])) {
+                return null;
+            }
+            $pid = ($pid[0] === '-' ? '-' : '') . $dataHandler->substNEWwithIDs[$placeholder];
+        }
+        $pageId = (int)$pid;
+        if ($pageId < 0) {
+            $previousRecord = BackendUtility::getRecord('tt_content', abs($pageId), 'pid');
+            return $previousRecord === null ? null : (int)$previousRecord['pid'];
+        }
+        return $pageId;
     }
 }
