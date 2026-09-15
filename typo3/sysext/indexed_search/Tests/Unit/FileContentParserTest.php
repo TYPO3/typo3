@@ -26,6 +26,12 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class FileContentParserTest extends UnitTestCase
 {
+    protected function tearDown(): void
+    {
+        unset($GLOBALS['TYPO3_REQUEST']);
+        parent::tearDown();
+    }
+
     #[Test]
     public function splitPdfInfoDoesNotOverrideValues(): void
     {

@@ -36,6 +36,13 @@ final class YouTubeRendererTest extends UnitTestCase
 {
     private YouTubeRenderer&MockObject $subject;
 
+    protected function tearDown(): void
+    {
+        // The mocked request cannot be restored by the global state backup
+        unset($GLOBALS['TYPO3_REQUEST']);
+        parent::tearDown();
+    }
+
     protected function setUp(): void
     {
         parent::setUp();
