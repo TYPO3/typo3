@@ -3996,6 +3996,75 @@ final class TcaMigrationTest extends UnitTestCase
     }
 
     #[Test]
+    public function removeAlwaysAllowLiveEditFromWorkspaceAwareTables(): void
+    {
+        $input = [
+            'aTable' => [
+                'ctrl' => [
+                    'versioningWS' => true,
+                    'versioningWS_alwaysAllowLiveEdit' => true,
+                ],
+            ],
+        ];
+        $expected = [
+            'aTable' => [
+                'ctrl' => [
+                    'versioningWS' => true,
+                ],
+            ],
+        ];
+
+        $result = (new TcaMigration())->migrate($input);
+        self::assertSame($expected, $result->getTca());
+        self::assertCount(1, $result->getMessages());
+    }
+
+    #[Test]
+    public function keepAlwaysAllowLiveEditForTablesWithoutVersioning(): void
+    {
+        $input = [
+            'aTable' => [
+                'ctrl' => [
+                    'versioningWS_alwaysAllowLiveEdit' => true,
+                ],
+            ],
+        ];
+
+        $result = (new TcaMigration())->migrate($input);
+        self::assertSame($input, $result->getTca());
+        self::assertSame([], $result->getMessages());
+    }
+
+    #[Test]
+    public function removeAlwaysAllowLiveEditFromInlineChildrenMadeWorkspaceAware(): void
+    {
+        $input = [
+            'parentTable' => [
+                'ctrl' => [
+                    'versioningWS' => true,
+                ],
+                'columns' => [
+                    'children' => [
+                        'config' => [
+                            'type' => 'inline',
+                            'foreign_table' => 'childTable',
+                        ],
+                    ],
+                ],
+            ],
+            'childTable' => [
+                'ctrl' => [
+                    'versioningWS_alwaysAllowLiveEdit' => true,
+                ],
+            ],
+        ];
+
+        $tca = (new TcaMigration())->migrate($input)->getTca();
+        self::assertTrue($tca['childTable']['ctrl']['versioningWS']);
+        self::assertArrayNotHasKey('versioningWS_alwaysAllowLiveEdit', $tca['childTable']['ctrl']);
+    }
+
+    #[Test]
     public function removeFieldSearchConfigOptions(): void
     {
         $input = [
