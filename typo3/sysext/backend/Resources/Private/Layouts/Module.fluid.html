@@ -12,7 +12,7 @@
         </f:then>
     </f:if>
     <f:if condition="{docHeader.enabled}">
-        <f:render partial="DocHeader" arguments="{docHeader:docHeader}" />
+        <f:render partial="DocHeader" arguments="{docHeader:docHeader, uiBlock:uiBlock}" />
     </f:if>
     <div class="module-body t3js-module-body">
         <div class="module-body-container t3js-module-body-container">

@@ -285,6 +285,10 @@ final class ModuleTemplate implements ViewInterface, ResponsableViewInterface
      * UI block is a spinner shown during browser rendering phase of the module,
      * automatically removed when rendering finished. This is done by default,
      * but the UI block can be turned off when needed for whatever reason.
+     *
+     * While the UI block is active, the doc header button bar is rendered "inert"
+     * as well, so that its buttons stay visible but can not be operated. It is
+     * released together with the spinner.
      */
     public function setUiBlock(bool $uiBlock): self
     {

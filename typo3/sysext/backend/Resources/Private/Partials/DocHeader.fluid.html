@@ -27,7 +27,7 @@
         </div>
     </div>
     <f:if condition="{docHeader.buttons.left -> f:count()} > 0 || {docHeader.buttons.right -> f:count()} > 0">
-        <div class="module-docheader module-docheader-buttons t3js-module-docheader-buttons">
+        <div class="module-docheader module-docheader-buttons t3js-module-docheader-buttons"{f:if(condition: uiBlock, then: ' inert aria-busy="true"')}>
             <div class="module-docheader-column module-docheader-column-grow">
                 <f:render section="buttonbar" arguments="{buttons:docHeader.buttons.left}" />
             </div>
