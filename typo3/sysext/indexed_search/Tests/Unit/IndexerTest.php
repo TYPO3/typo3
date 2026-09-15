@@ -40,6 +40,12 @@ final class IndexerTest extends UnitTestCase
         $GLOBALS['TYPO3_REQUEST'] = $request;
     }
 
+    protected function tearDown(): void
+    {
+        unset($GLOBALS['TYPO3_REQUEST']);
+        parent::tearDown();
+    }
+
     #[Test]
     public function extractHyperLinksDoesNotReturnNonExistingLocalPath(): void
     {

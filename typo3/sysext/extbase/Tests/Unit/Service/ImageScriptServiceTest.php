@@ -32,6 +32,12 @@ final class ImageScriptServiceTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
+    protected function tearDown(): void
+    {
+        unset($GLOBALS['TYPO3_REQUEST']);
+        parent::tearDown();
+    }
+
     #[Test]
     public function fileIsUnwrappedFromReferenceForProcessing(): void
     {
