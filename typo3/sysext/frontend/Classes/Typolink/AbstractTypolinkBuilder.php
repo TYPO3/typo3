@@ -82,7 +82,7 @@ abstract class AbstractTypolinkBuilder
         // This part typically touches ONLY files/folders and external URLs, and ONLY the ones that do not have
         // "config.forceAbsoluteUrls" but only "typolink.forceAbsoluteUrl" set. Ideally, we could evaluate this
         // in the FAL ResourceUriGenerator and then remove this logic. Also see the comment below with the @todo
-        if (!empty($url) && $forceAbsoluteUrl && preg_match('#^(?:([a-z]+)(://)([^/]*)/?)?(.*)$#', $url, $matches)) {
+        if (!empty($url) && $forceAbsoluteUrl && preg_match('#^(?:([a-z]+):)?(?:(//)([^/]*))?(.*)$#', $url, $matches)) {
             $urlParts = [
                 'scheme' => $matches[1],
                 'delimiter' => '://',
@@ -126,6 +126,7 @@ abstract class AbstractTypolinkBuilder
             }
             // Recreate the absolute URL:
             if ($isUrlModified) {
+                $urlParts['delimiter'] = $urlParts['scheme'] !== '' ? '://' : '//';
                 $url = implode('', $urlParts);
             }
         }

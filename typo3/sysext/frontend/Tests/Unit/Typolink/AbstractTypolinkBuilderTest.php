@@ -117,6 +117,23 @@ final class AbstractTypolinkBuilderTest extends UnitTestCase
                     ],
                 ],
             ],
+            'Schemeless (protocol-relative) URL stays unchanged' => [
+                '//example.org/foo',
+                '//example.org/foo',
+                [
+                    'forceAbsoluteUrl' => '1',
+                ],
+            ],
+            'Scheme can be forced on schemeless URL' => [
+                'typo3://example.org/foo',
+                '//example.org/foo',
+                [
+                    'forceAbsoluteUrl' => '1',
+                    'forceAbsoluteUrl.' => [
+                        'scheme' => 'typo3',
+                    ],
+                ],
+            ],
         ];
     }
 
