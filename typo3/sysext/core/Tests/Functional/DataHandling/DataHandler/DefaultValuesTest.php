@@ -161,6 +161,31 @@ final class DefaultValuesTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function defaultValuesFromPageTSconfigAreNotAppliedToRecordsOnOtherPages(): void
+    {
+        $this->actionService->modifyRecord('pages', 89, [
+            'TSconfig' => 'TCAdefaults.tt_content.header_layout = 3',
+        ]);
+
+        // Both records are created by the same DataHandler instance, the record on page 89 first.
+        $this->actionService->invoke(
+            [
+                'tt_content' => [
+                    'NEW1' => ['pid' => 89, 'header' => 'On page with TCAdefaults'],
+                    'NEW2' => ['pid' => 90, 'header' => 'On page without TCAdefaults'],
+                ],
+            ],
+            []
+        );
+        $substNEWwithIDs = $this->actionService->getDataHandler()->substNEWwithIDs;
+
+        $recordOnPageWithDefaults = BackendUtility::getRecord('tt_content', $substNEWwithIDs['NEW1']);
+        self::assertEquals(3, $recordOnPageWithDefaults['header_layout']);
+        $recordOnPageWithoutDefaults = BackendUtility::getRecord('tt_content', $substNEWwithIDs['NEW2']);
+        self::assertEquals(0, $recordOnPageWithoutDefaults['header_layout']);
+    }
+
+    #[Test]
     public function defaultValueForNullTextfieldsIsConsidered(): void
     {
         // New content element without bodytext
