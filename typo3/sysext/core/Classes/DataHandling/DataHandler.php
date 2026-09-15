@@ -71,6 +71,7 @@ use TYPO3\CMS\Core\Schema\Capability\RootLevelCapability;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\Field\FieldCollection;
 use TYPO3\CMS\Core\Schema\Field\FieldTranslationBehaviour;
+use TYPO3\CMS\Core\Schema\Field\FieldTypeInterface;
 use TYPO3\CMS\Core\Schema\Field\FileFieldType;
 use TYPO3\CMS\Core\Schema\Field\GroupFieldType;
 use TYPO3\CMS\Core\Schema\Field\InlineFieldType;
@@ -4953,12 +4954,7 @@ class DataHandler
                 }
             }
             if (($field->getConfiguration()['MM'] ?? false)
-                // To determine the local side for fields with 'MM' config, we check if the field either
-                // has "MM_oppositeUsage" (foreign table names / field names) defined — e.g., sys_category with
-                // opposite usage to the table "pages" with the field "categories" — or if it does not have
-                // "MM_opposite_field" set. This field is set by the foreign side (e.g., an inline child)
-                // to allow editing the connection from both sides (bidirectional).
-                && (!empty($field->getConfiguration()['MM_oppositeUsage']) || !isset($field->getConfiguration()['MM_opposite_field']))
+                && $this->isLocalSideOfBidirectionalMmRelation($table, $field)
             ) {
                 // We are localizing the 'local' side of an MM relation. (eg. localizing a category).
                 // In this case, MM relations connected to the default lang record should not be copied,
@@ -6860,6 +6856,30 @@ class DataHandler
     private function mmRelationIsLocalSide(array $config): bool
     {
         return empty($config['MM_opposite_field']);
+    }
+
+    private function isLocalSideOfBidirectionalMmRelation(string $tableName, FieldTypeInterface $field): bool
+    {
+        $configuration = $field->getConfiguration();
+        if (!empty($configuration['MM_oppositeUsage'])) {
+            return true;
+        }
+        foreach ($this->tcaSchemaFactory->get($tableName)->getPassiveRelations() as $passiveRelation) {
+            $oppositeFieldName = $passiveRelation->fromField();
+            if ($oppositeFieldName === null) {
+                continue;
+            }
+            $oppositeConfiguration = $this->tcaSchemaFactory
+                ->get($passiveRelation->fromTable())
+                ->getField($oppositeFieldName)
+                ->getConfiguration();
+            if (($oppositeConfiguration['MM'] ?? null) === $configuration['MM']
+                && ($oppositeConfiguration['MM_opposite_field'] ?? null) === $field->getName()
+            ) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

@@ -26,7 +26,7 @@
             'foreign_table' => 'tx_test_mm',
             'foreign_table_where' => 'AND tx_test_mm.sys_language_uid IN (-1, 0) ORDER BY tx_test_mm.title ASC',
             'MM' => 'select_mm_1_relations_mm',
-            'MM_opposite_field' => 'posts',
+            'MM_opposite_field' => 'select_mm_1_local',
         ],
     ],
 ]);
