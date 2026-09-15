@@ -560,8 +560,11 @@ class RelationHandler
         while ($row = $statement->fetchAssociative()) {
             // Default
             if (!$this->MM_is_foreign) {
-                // If tablenames columns exists and contain a name, then this value is the table, else it's the firstTable...
-                $theTable = !empty($row['tablenames']) ? $row['tablenames'] : $this->firstTable;
+                // If tablenames column contains one of the allowed tables, then this value is the table, else it's the firstTable.
+                // tablenames may also hold a MM_match_fields value referring to the local table.
+                $theTable = !empty($row['tablenames']) && isset($this->tableArray[$row['tablenames']])
+                    ? $row['tablenames']
+                    : $this->firstTable;
             }
             if (($row[$uidForeign_field] || $theTable === 'pages') && $theTable && isset($this->tableArray[$theTable])) {
                 $item = [
