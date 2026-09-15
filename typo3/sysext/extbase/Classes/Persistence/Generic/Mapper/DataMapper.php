@@ -90,12 +90,10 @@ class DataMapper
     /**
      * Maps the given rows on objects
      *
-     * @param string $className The name of the class
-     * @param array $rows An array of arrays with field_name => value pairs
-     * @return array An array of objects of the given class
      * @template T of DomainObjectInterface
-     * @phpstan-param class-string<T> $className
-     * @phpstan-return list<T>
+     * @param class-string<T> $className The name of the class
+     * @param array $rows An array of arrays with field_name => value pairs
+     * @return list<T> An array of objects of the given class
      */
     public function map($className, array $rows)
     {
@@ -109,11 +107,9 @@ class DataMapper
     /**
      * Returns the target type for the given row.
      *
-     * @param string $className The name of the class
+     * @param class-string $className The name of the class
      * @param array $row A single array with field_name => value pairs
-     * @return string The target type (a class name)
-     * @phpstan-param class-string $className
-     * @phpstan-return class-string
+     * @return class-string The target type (a class name)
      */
     public function getTargetType($className, array $row)
     {
@@ -134,12 +130,10 @@ class DataMapper
     /**
      * Maps a single row on an object of the given class
      *
-     * @param string $className The name of the target class
-     * @param array $row A single array with field_name => value pairs
-     * @return object An object of the given class
      * @template T of DomainObjectInterface
-     * @phpstan-param class-string<T> $className
-     * @phpstan-return T
+     * @param class-string<T> $className The name of the target class
+     * @param array $row A single array with field_name => value pairs
+     * @return T An object of the given class
      */
     protected function mapSingleRow($className, array $row)
     {
@@ -190,11 +184,10 @@ class DataMapper
      * but *do call* initializeObject() if exists and obey
      * eventually registered implementation overrides ("xclass").
      *
-     * @param class-string $className Name of the class to create a skeleton for
-     * @throws InvalidClassException
      * @template T of DomainObjectInterface
-     * @phpstan-param class-string<T> $className
-     * @phpstan-return T
+     * @param class-string<T> $className Name of the class to create a skeleton for
+     * @return T
+     * @throws InvalidClassException
      */
     protected function createEmptyObject(string $className): DomainObjectInterface
     {
@@ -567,8 +560,7 @@ class DataMapper
     /**
      * Get orderings array for extbase query by columnMap
      *
-     * @phpstan-return array<non-empty-string, QueryInterface::ORDER_*>|null
-     * @return array<string, string>|null
+     * @return array<non-empty-string, QueryInterface::ORDER_*>|null
      */
     public function getOrderingsForColumnMap(ColumnMap $columnMap): ?array
     {

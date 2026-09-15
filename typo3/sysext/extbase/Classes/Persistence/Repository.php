@@ -37,8 +37,7 @@ class Repository implements RepositoryInterface, SingletonInterface
     protected bool $autoTagging;
 
     /**
-     * @var string
-     * @phpstan-var class-string<T>
+     * @var class-string<T>
      */
     protected $objectType;
 
@@ -81,8 +80,7 @@ class Repository implements RepositoryInterface, SingletonInterface
     /**
      * Adds an object to this repository
      *
-     * @param object $object The object to add
-     * @phpstan-param T $object
+     * @param T $object The object to add
      * @throws Exception\IllegalObjectTypeException
      */
     public function add($object)
@@ -96,8 +94,7 @@ class Repository implements RepositoryInterface, SingletonInterface
     /**
      * Removes an object from this repository.
      *
-     * @param object $object The object to remove
-     * @phpstan-param T $object
+     * @param T $object The object to remove
      * @throws Exception\IllegalObjectTypeException
      */
     public function remove($object)
@@ -111,8 +108,7 @@ class Repository implements RepositoryInterface, SingletonInterface
     /**
      * Replaces an existing object with the same identifier by the given object
      *
-     * @param object $modifiedObject The modified object
-     * @phpstan-param T $modifiedObject
+     * @param T $modifiedObject The modified object
      * @throws Exception\UnknownObjectException
      * @throws Exception\IllegalObjectTypeException
      */
@@ -127,8 +123,7 @@ class Repository implements RepositoryInterface, SingletonInterface
     /**
      * Returns all objects of this repository.
      *
-     * @return QueryResultInterface
-     * @phpstan-return QueryResultInterface<int,T>
+     * @return QueryResultInterface<int,T>
      */
     public function findAll()
     {
@@ -164,8 +159,7 @@ class Repository implements RepositoryInterface, SingletonInterface
      * Finds an object matching the given identifier.
      *
      * @param int $uid The identifier of the object to find
-     * @return object|null The matching object if found, otherwise NULL
-     * @phpstan-return T|null
+     * @return T|null The matching object if found, otherwise NULL
      */
     public function findByUid($uid)
     {
@@ -176,8 +170,7 @@ class Repository implements RepositoryInterface, SingletonInterface
      * Finds an object matching the given identifier.
      *
      * @param mixed $identifier The identifier of the object to find
-     * @return object|null The matching object if found, otherwise NULL
-     * @phpstan-return T|null
+     * @return T|null The matching object if found, otherwise NULL
      */
     public function findByIdentifier($identifier)
     {
@@ -218,8 +211,7 @@ class Repository implements RepositoryInterface, SingletonInterface
     /**
      * Returns a query for objects of this repository
      *
-     * @return QueryInterface
-     * @phpstan-return QueryInterface<T>
+     * @return QueryInterface<T>
      */
     public function createQuery()
     {
@@ -234,11 +226,11 @@ class Repository implements RepositoryInterface, SingletonInterface
     }
 
     /**
-     * @phpstan-param array<non-empty-string, mixed> $criteria
-     * @phpstan-param array<non-empty-string, QueryInterface::ORDER_*>|null $orderBy
-     * @phpstan-param 0|positive-int|null $limit
-     * @phpstan-param 0|positive-int|null $offset
-     * @phpstan-return QueryResultInterface<int,T>
+     * @param array<non-empty-string, mixed> $criteria
+     * @param array<non-empty-string, QueryInterface::ORDER_*>|null $orderBy
+     * @param non-negative-int|null $limit
+     * @param non-negative-int|null $offset
+     * @return QueryResultInterface<int,T>
      */
     public function findBy(array $criteria, ?array $orderBy = null, ?int $limit = null, ?int $offset = null): QueryResultInterface
     {
@@ -274,9 +266,9 @@ class Repository implements RepositoryInterface, SingletonInterface
     }
 
     /**
-     * @phpstan-param array<non-empty-string, mixed> $criteria
-     * @phpstan-param array<non-empty-string, QueryInterface::ORDER_*>|null $orderBy
-     * @phpstan-return T|null
+     * @param array<non-empty-string, mixed> $criteria
+     * @param array<non-empty-string, QueryInterface::ORDER_*>|null $orderBy
+     * @return T|null
      */
     public function findOneBy(array $criteria, ?array $orderBy = null): ?object
     {
@@ -284,8 +276,8 @@ class Repository implements RepositoryInterface, SingletonInterface
     }
 
     /**
-     * @phpstan-param array<non-empty-string, mixed> $criteria
-     * @phpstan-return 0|positive-int
+     * @param array<non-empty-string, mixed> $criteria
+     * @return non-negative-int
      */
     public function count(array $criteria): int
     {

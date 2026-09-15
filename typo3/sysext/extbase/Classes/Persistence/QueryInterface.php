@@ -115,8 +115,7 @@ interface QueryInterface
      * Executes the query and returns the result.
      *
      * @param bool $returnRawQueryResult avoids the object mapping by the persistence
-     * @return QueryResultInterface|list<array<string,mixed>> The query result object or an array if $returnRawQueryResult is TRUE
-     * @phpstan-return ($returnRawQueryResult is true ? list<array<string,mixed>> : QueryResultInterface<int,T>)
+     * @return ($returnRawQueryResult is true ? list<array<string,mixed>> : QueryResultInterface<int,T>) The query result object or an array if $returnRawQueryResult is TRUE
      */
     public function execute($returnRawQueryResult = false);
 
@@ -128,8 +127,7 @@ interface QueryInterface
      * )
      *
      * @param array<string,string> $orderings The property names to order by
-     * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface
-     * @phpstan-return QueryInterface<T>
+     * @return QueryInterface<T>
      */
     public function setOrderings(array $orderings);
 
@@ -138,8 +136,7 @@ interface QueryInterface
      *
      * @param string|DynamicOperandInterface $operand The property name or a dynamic operand (e.g., concat(), trim())
      * @param string $order The order direction (QueryInterface::ORDER_ASCENDING or ORDER_DESCENDING)
-     * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface
-     * @phpstan-return QueryInterface<T>
+     * @return QueryInterface<T>
      */
     public function orderBy(string|DynamicOperandInterface $operand, string $order = self::ORDER_ASCENDING);
 
@@ -148,8 +145,7 @@ interface QueryInterface
      *
      * @param string|DynamicOperandInterface $operand The property name or a dynamic operand (e.g., concat(), trim())
      * @param string $order The order direction (QueryInterface::ORDER_ASCENDING or ORDER_DESCENDING)
-     * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface
-     * @phpstan-return QueryInterface<T>
+     * @return QueryInterface<T>
      */
     public function addOrderBy(string|DynamicOperandInterface $operand, string $order = self::ORDER_ASCENDING);
 
@@ -179,8 +175,7 @@ interface QueryInterface
      * for chaining (fluid interface).
      *
      * @param int $limit
-     * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface
-     * @phpstan-return QueryInterface<T>
+     * @return QueryInterface<T>
      */
     public function setLimit($limit);
 
@@ -189,8 +184,7 @@ interface QueryInterface
      * allow for chaining (fluid interface).
      *
      * @param int $offset
-     * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface
-     * @phpstan-return QueryInterface<T>
+     * @return QueryInterface<T>
      */
     public function setOffset($offset);
 
@@ -199,8 +193,7 @@ interface QueryInterface
      * for chaining (fluid interface).
      *
      * @param ConstraintInterface $constraint Some constraint, depending on the backend
-     * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface
-     * @phpstan-return QueryInterface<T>
+     * @return QueryInterface<T>
      */
     public function matching($constraint);
 
@@ -316,15 +309,14 @@ interface QueryInterface
 
     /**
      * Set the type this query cares for.
-     * @phpstan-param class-string<T> $type
+     * @param class-string<T> $type
      */
     public function setType(string $type): void;
 
     /**
      * Returns the type this query cares for.
      *
-     * @return string
-     * @phpstan-return class-string<T>
+     * @return class-string<T>
      */
     public function getType();
 

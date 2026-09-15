@@ -39,8 +39,8 @@ abstract class AbstractHierarchicalFilesystemDriver extends AbstractDriver
     /**
      * Makes sure the given path is valid.
      *
-     * @phpstan-param non-empty-string $filePath The file path (including the file name!)
-     * @phpstan-return non-empty-string
+     * @param non-empty-string $filePath The file path (including the file name!)
+     * @return non-empty-string
      */
     protected function canonicalizeAndCheckFilePath(string $filePath): string
     {
@@ -72,8 +72,8 @@ abstract class AbstractHierarchicalFilesystemDriver extends AbstractDriver
     /**
      * Makes sure the Path given as parameter is valid.
      *
-     * @phpstan-param non-empty-string $folderIdentifier The file path (including the file name!)
-     * @phpstan-return non-empty-string
+     * @param non-empty-string $folderIdentifier The file path (including the file name!)
+     * @return non-empty-string
      */
     protected function canonicalizeAndCheckFolderIdentifier(string $folderIdentifier): string
     {
@@ -86,8 +86,8 @@ abstract class AbstractHierarchicalFilesystemDriver extends AbstractDriver
     /**
      * Returns the identifier of the folder the file resides in.
      *
-     * @phpstan-param non-empty-string $fileIdentifier
-     * @phpstan-return non-empty-string
+     * @param non-empty-string $fileIdentifier
+     * @return non-empty-string
      */
     public function getParentFolderIdentifierOfIdentifier(string $fileIdentifier): string
     {

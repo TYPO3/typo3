@@ -84,8 +84,6 @@ class FlashMessageQueue extends \SplQueue implements \JsonSerializable
 
     /**
      * This method is empty, as it will not move any flash message (e.g. from the session)
-     *
-     * @phpstan-return null
      */
     public function dequeue(): mixed
     {

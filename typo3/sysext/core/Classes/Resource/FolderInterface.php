@@ -38,7 +38,7 @@ interface FolderInterface extends ResourceInterface
     public const ROLE_USER_MOUNT = 'user-mount';
 
     /**
-     * @phpstan-return array<array-key, FolderInterface>
+     * @return array<array-key, FolderInterface>
      */
     public function getSubfolders(): array;
 

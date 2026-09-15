@@ -41,13 +41,12 @@ class QueryResult implements QueryResultInterface
     protected $numberOfResults;
 
     /**
-     * @phpstan-var QueryInterface<TValue>|null
+     * @var QueryInterface<TValue>|null
      */
     protected ?QueryInterface $query = null;
 
     /**
-     * @var array|null
-     * @phpstan-var list<TValue>|null
+     * @var list<TValue>|null
      */
     protected $queryResult;
 
@@ -60,7 +59,7 @@ class QueryResult implements QueryResultInterface
     }
 
     /**
-     * @phpstan-param QueryInterface<TValue> $query
+     * @param QueryInterface<TValue> $query
      */
     public function setQuery(QueryInterface $query): void
     {
@@ -81,8 +80,7 @@ class QueryResult implements QueryResultInterface
     /**
      * Returns a clone of the query object
      *
-     * @return QueryInterface
-     * @phpstan-return QueryInterface<TValue>
+     * @return QueryInterface<TValue>
      */
     public function getQuery()
     {
@@ -92,8 +90,7 @@ class QueryResult implements QueryResultInterface
     /**
      * Returns the first object in the result set
      *
-     * @return object
-     * @phpstan-return TValue|null
+     * @return TValue|null
      */
     public function getFirst()
     {
@@ -132,8 +129,7 @@ class QueryResult implements QueryResultInterface
     /**
      * Returns an array with the objects in the result set
      *
-     * @return array
-     * @phpstan-return list<TValue>
+     * @return list<TValue>
      */
     public function toArray()
     {
@@ -167,8 +163,7 @@ class QueryResult implements QueryResultInterface
      * This method has no effect on the persisted objects but only on the result set
      *
      * @param mixed $offset
-     * @param mixed $value
-     * @phpstan-param TValue $value
+     * @param TValue $value
      */
     public function offsetSet($offset, $value): void
     {

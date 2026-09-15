@@ -67,8 +67,7 @@ class Query implements QueryInterface
     public const CHARSET = 'utf-8';
 
     /**
-     * @var string
-     * @phpstan-var class-string<T>
+     * @var class-string<T>
      */
     protected $type;
 
@@ -125,7 +124,7 @@ class Query implements QueryInterface
     }
 
     /**
-     * @phpstan-param class-string<T> $type
+     * @param class-string<T> $type
      */
     public function setType(string $type): void
     {
@@ -165,8 +164,7 @@ class Query implements QueryInterface
     /**
      * Returns the type this query cares for.
      *
-     * @return string
-     * @phpstan-return class-string<T>
+     * @return class-string<T>
      */
     public function getType()
     {
@@ -205,15 +203,14 @@ class Query implements QueryInterface
      * Executes the query against the database and returns the result
      *
      * @param bool $returnRawQueryResult avoids the object mapping by the persistence
-     * @return QueryResultInterface|list<array<string,mixed>> The query result object or an array if $returnRawQueryResult is TRUE
-     * @phpstan-return ($returnRawQueryResult is true ? list<array<string,mixed>> : QueryResultInterface<int,T>)
+     * @return ($returnRawQueryResult is true ? list<array<string,mixed>> : QueryResultInterface<int,T>) The query result object or an array if $returnRawQueryResult is TRUE
      */
     public function execute($returnRawQueryResult = false)
     {
         if ($returnRawQueryResult) {
             return $this->persistenceManager->getObjectDataByQuery($this);
         }
-        /** @phpstan-var QueryResultInterface<int,T> $queryResult */
+        /** @var QueryResultInterface<int,T> $queryResult */
         $queryResult = $this->container->get(QueryResultInterface::class);
         $queryResult->setQuery($this);
         return $queryResult;
@@ -228,8 +225,7 @@ class Query implements QueryInterface
      * where 'foo' and 'bar' are property names.
      *
      * @param array $orderings The property names to order by
-     * @return QueryInterface
-     * @phpstan-return QueryInterface<T>
+     * @return QueryInterface<T>
      */
     public function setOrderings(array $orderings)
     {
@@ -256,8 +252,7 @@ class Query implements QueryInterface
      *
      * @param string|DynamicOperandInterface $operand The property name or a dynamic operand
      * @param string $order The order direction
-     * @return QueryInterface
-     * @phpstan-return QueryInterface<T>
+     * @return QueryInterface<T>
      */
     public function orderBy(string|DynamicOperandInterface $operand, string $order = QueryInterface::ORDER_ASCENDING)
     {
@@ -270,8 +265,7 @@ class Query implements QueryInterface
      *
      * @param string|DynamicOperandInterface $operand The property name or a dynamic operand
      * @param string $order The order direction
-     * @return QueryInterface
-     * @phpstan-return QueryInterface<T>
+     * @return QueryInterface<T>
      */
     public function addOrderBy(string|DynamicOperandInterface $operand, string $order = QueryInterface::ORDER_ASCENDING)
     {
@@ -341,8 +335,7 @@ class Query implements QueryInterface
      *
      * @param int $limit
      * @throws \InvalidArgumentException
-     * @return QueryInterface
-     * @phpstan-return QueryInterface<T>
+     * @return QueryInterface<T>
      */
     public function setLimit($limit)
     {
@@ -357,7 +350,7 @@ class Query implements QueryInterface
      * Resets a previously set maximum size of the result set. Returns $this to allow
      * for chaining (fluid interface)
      *
-     * @return QueryInterface
+     * @return QueryInterface<T>
      */
     public function unsetLimit()
     {
@@ -381,8 +374,7 @@ class Query implements QueryInterface
      *
      * @param int $offset
      * @throws \InvalidArgumentException
-     * @return QueryInterface
-     * @phpstan-return QueryInterface<T>
+     * @return QueryInterface<T>
      */
     public function setOffset($offset)
     {
@@ -408,8 +400,7 @@ class Query implements QueryInterface
      * for chaining (fluid interface)
      *
      * @param \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface $constraint
-     * @return QueryInterface
-     * @phpstan-return QueryInterface<T>
+     * @return QueryInterface<T>
      */
     public function matching($constraint)
     {
@@ -423,7 +414,7 @@ class Query implements QueryInterface
      *
      * @param string|\TYPO3\CMS\Core\Database\Query\QueryBuilder|\Doctrine\DBAL\Statement $statement The statement
      * @param array $parameters An array of parameters. These will be bound to placeholders '?' in the $statement.
-     * @return QueryInterface
+     * @return QueryInterface<T>
      */
     public function statement($statement, array $parameters = [])
     {

@@ -37,10 +37,9 @@ readonly class QueryFactory implements QueryFactoryInterface
     /**
      * Creates a query object working on the given class name
      *
-     * @param string $className The class name
      * @template T of object
-     * @phpstan-param class-string<T> $className
-     * @phpstan-return QueryInterface<T>
+     * @param class-string<T> $className The class name
+     * @return QueryInterface<T>
      */
     public function create($className): QueryInterface
     {

@@ -27,18 +27,12 @@ class EmptyFileSearchResult implements FileSearchResultInterface
         return 0;
     }
 
-    /**
-     * @phpstan-return null
-     */
     public function current(): mixed
     {
         // Noop
         return null;
     }
 
-    /**
-     * @phpstan-return null
-     */
     public function key(): mixed
     {
         // Noop

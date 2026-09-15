@@ -26,32 +26,28 @@ interface RepositoryInterface
     /**
      * Adds an object to this repository.
      *
-     * @param object $object The object to add
-     * @phpstan-param T $object
+     * @param T $object The object to add
      */
     public function add($object);
 
     /**
      * Removes an object from this repository.
      *
-     * @param object $object The object to remove
-     * @phpstan-param T $object
+     * @param T $object The object to remove
      */
     public function remove($object);
 
     /**
      * Replaces an existing object with the same identifier by the given object
      *
-     * @param object $modifiedObject The modified object
-     * @phpstan-param T $modifiedObject
+     * @param T $modifiedObject The modified object
      */
     public function update($modifiedObject);
 
     /**
      * Returns all objects of this repository.
      *
-     * @return iterable The iterable query result
-     * @phpstan-return iterable<T>
+     * @return iterable<T> The iterable query result
      */
     public function findAll();
 
@@ -72,8 +68,7 @@ interface RepositoryInterface
      * Finds an object matching the given identifier.
      *
      * @param int $uid The identifier of the object to find
-     * @return object The matching object if found, otherwise NULL
-     * @phpstan-return T|null
+     * @return T|null The matching object if found, otherwise NULL
      */
     public function findByUid($uid);
 
@@ -81,8 +76,7 @@ interface RepositoryInterface
      * Finds an object matching the given identifier.
      *
      * @param mixed $identifier The identifier of the object to find
-     * @return object The matching object if found, otherwise NULL
-     * @phpstan-return T|null
+     * @return T|null The matching object if found, otherwise NULL
      */
     public function findByIdentifier($identifier);
 
@@ -108,8 +102,7 @@ interface RepositoryInterface
     /**
      * Returns a query for objects of this repository
      *
-     * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface
-     * @phpstan-return QueryInterface<T>
+     * @return QueryInterface<T>
      */
     public function createQuery();
 }
