@@ -819,9 +819,11 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         ) {
             return true;
         }
-        // Always for Live workspace, AND if live-edit is enabled
-        // and tables are completely without versioning it is ok as well.
-        if ($this->getTcaSchema($table)?->getRawConfiguration()['versioningWS_alwaysAllowLiveEdit'] ?? false) {
+        // Tables without versioning may allow live editing in any workspace
+        $schema = $this->getTcaSchema($table);
+        if (($schema?->getRawConfiguration()['versioningWS_alwaysAllowLiveEdit'] ?? false)
+            && !$schema->isWorkspaceAware()
+        ) {
             return true;
         }
         // If the answer is FALSE it means the only valid way to create or edit records by creating records in the workspace

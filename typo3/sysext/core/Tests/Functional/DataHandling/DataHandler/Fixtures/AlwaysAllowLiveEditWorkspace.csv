@@ -1,0 +1,9 @@
+"pages"
+,"uid","pid","deleted","hidden","title","doktype","perms_everybody"
+,1,0,0,0,"Root",1,31
+"sys_workspace"
+,"uid","pid","deleted","title"
+,1,0,0,"Workspace #1"
+"tt_content"
+,"uid","pid","deleted","hidden","header","CType","t3ver_wsid","t3ver_oid","t3ver_state"
+,1,1,0,0,"Live content","text",0,0,0

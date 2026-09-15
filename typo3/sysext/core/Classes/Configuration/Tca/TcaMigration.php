@@ -91,6 +91,7 @@ readonly class TcaMigration
         $tcaProcessingResult = $this->removeAllowLanguageSynchronizationFromColumnsOverrides($tcaProcessingResult);
         $tcaProcessingResult = $this->removeSubTypesConfiguration($tcaProcessingResult);
         $tcaProcessingResult = $this->addWorkspaceAwarenessToInlineChildren($tcaProcessingResult);
+        $tcaProcessingResult = $this->removeAlwaysAllowLiveEditFromWorkspaceAwareTables($tcaProcessingResult);
         $tcaProcessingResult = $this->removeEvalYearFlag($tcaProcessingResult);
         $tcaProcessingResult = $this->removeIsStaticControlOption($tcaProcessingResult);
         $tcaProcessingResult = $this->removeFieldSearchConfigOptions($tcaProcessingResult);
@@ -1700,6 +1701,27 @@ readonly class TcaMigration
                     }
                 }
             }
+        }
+        return $tcaProcessingResult->withTca($tca);
+    }
+
+    /**
+     * Live editing records of a workspace aware table within a workspace bypasses versioning,
+     * so "versioningWS_alwaysAllowLiveEdit" is removed from tables having "versioningWS" enabled.
+     */
+    protected function removeAlwaysAllowLiveEditFromWorkspaceAwareTables(TcaProcessingResult $tcaProcessingResult): TcaProcessingResult
+    {
+        $tca = $tcaProcessingResult->getTca();
+        foreach ($tca as $table => &$configuration) {
+            if (!($configuration['ctrl']['versioningWS'] ?? false)
+                || !array_key_exists('versioningWS_alwaysAllowLiveEdit', $configuration['ctrl'])
+            ) {
+                continue;
+            }
+            $tcaProcessingResult = $tcaProcessingResult->withAdditionalMessages('The \'' . $table . '\' TCA configuration'
+                . ' \'versioningWS_alwaysAllowLiveEdit\' inside the \'ctrl\' section can not be combined with'
+                . ' \'versioningWS\' and is therefore removed. Please adjust your TCA accordingly.');
+            unset($configuration['ctrl']['versioningWS_alwaysAllowLiveEdit']);
         }
         return $tcaProcessingResult->withTca($tca);
     }
