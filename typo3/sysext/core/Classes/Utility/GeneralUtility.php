@@ -1499,8 +1499,8 @@ class GeneralUtility
         if (!@is_file($file)) {
             $changePermissions = true;
         }
-        if ($fd = fopen($file, 'wb')) {
-            $res = fwrite($fd, $content);
+        if ($fd = @fopen($file, 'wb')) {
+            $res = @fwrite($fd, $content);
             fclose($fd);
             if ($res === false) {
                 return false;
@@ -1556,7 +1556,7 @@ class GeneralUtility
             }
             // Call recursive if recursive flag if set and $path is directory
             if ($recursive && @is_dir($path)) {
-                $handle = opendir($path);
+                $handle = @opendir($path);
                 if (is_resource($handle)) {
                     while (($file = readdir($handle)) !== false) {
                         $recursionResult = null;
