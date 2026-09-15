@@ -611,11 +611,13 @@ class DataHandler
     {
         // First set TCAdefaults respecting the given PageID
         $tcaDefaults = BackendUtility::getPagesTSconfig($pageId)['TCAdefaults.'] ?? null;
-        // Re-apply $this->defaultValues settings
+        // Page TSconfig defaults are only valid for this record, restore the previous defaults afterwards
+        $defaultValues = $this->defaultValues;
         $this->setDefaultsFromUserTS($tcaDefaults);
         // Merge incoming field array to have access to record type for type-specific defaults
         $recordContext = array_merge($prepopulatedFieldArray, $incomingFieldArray);
         $cleanFieldArray = $this->newFieldArray($table, $recordContext);
+        $this->defaultValues = $defaultValues;
         if (isset($prepopulatedFieldArray['pid'])) {
             $cleanFieldArray['pid'] = $prepopulatedFieldArray['pid'];
         }
