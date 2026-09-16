@@ -155,4 +155,30 @@ final class MediaViewHelperTest extends FunctionalTestCase
         $result = $view->render();
         self::assertEquals($expected, $result);
     }
+
+    #[Test]
+    public function focusAreaAttributeIsRelativeToProcessedImage(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/ViewHelpers/MediaViewHelper/fal_image.csv');
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
+        $frontendTypoScript->setConfigArray([]);
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest('https://www.example.com/')
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
+            ->withAttribute('frontend.typoscript', $frontendTypoScript)
+            ->withAttribute('normalizedParams', NormalizedParams::createFromServerParams([
+                'HTTP_HOST' => 'www.example.com',
+            ]));
+        $fileReference = $this->get(ResourceFactory::class)->getFileReferenceObject(1);
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:media file="{file}" />');
+        $view = new TemplateView($context);
+        $view->assign('file', $fileReference);
+
+        // Source is 400x300 and cropped to 200x150. The focus area is stored
+        // relative to the crop area, so it must be based on the processed image.
+        self::assertMatchesRegularExpression(
+            '@^<img data-focus-area="\{&quot;x&quot;:100,&quot;y&quot;:75,&quot;width&quot;:50,&quot;height&quot;:75\}" src="fileadmin/_processed_/.*\.jpg" width="200" height="150".*/>$@',
+            $view->render(),
+        );
+    }
 }

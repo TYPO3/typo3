@@ -677,6 +677,40 @@ final class ImageViewHelperTest extends FunctionalTestCase
         );
     }
 
+    #[Test]
+    public function focusAreaAttributeIsRelativeToScaledImage(): void
+    {
+        // Based on 400x300 dimensions, scaled down to 200x150
+        $cropVariantCollection = new CropVariantCollection([
+            new CropVariant('default', 'Default', Area::createEmpty(), null, null, new Area(0.5, 0.5, 0.25, 0.5)),
+        ]);
+
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $context->getVariableProvider()->add('crop', (string)$cropVariantCollection);
+        $context->getTemplatePaths()->setTemplateSource('<f:image src="fileadmin/ImageViewHelperTest.jpg" crop="{crop}" width="200" />');
+        self::assertMatchesRegularExpression(
+            '@^<img data-focus-area="\{&quot;x&quot;:100,&quot;y&quot;:75,&quot;width&quot;:50,&quot;height&quot;:75\}" src="fileadmin/_processed_/.*\.jpg" width="200" height="150" alt="" />$@',
+            new TemplateView($context)->render(),
+        );
+    }
+
+    #[Test]
+    public function focusAreaAttributeIsRelativeToCroppedImage(): void
+    {
+        // Based on 400x300 dimensions, cropped to 200x150. The focus area is relative to the crop area.
+        $cropVariantCollection = new CropVariantCollection([
+            new CropVariant('default', 'Default', new Area(0.25, 0.25, 0.5, 0.5), null, null, new Area(0.5, 0.5, 0.25, 0.5)),
+        ]);
+
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $context->getVariableProvider()->add('crop', (string)$cropVariantCollection);
+        $context->getTemplatePaths()->setTemplateSource('<f:image src="fileadmin/ImageViewHelperTest.jpg" crop="{crop}" />');
+        self::assertMatchesRegularExpression(
+            '@^<img data-focus-area="\{&quot;x&quot;:100,&quot;y&quot;:75,&quot;width&quot;:50,&quot;height&quot;:75\}" src="fileadmin/_processed_/.*\.jpg" width="200" height="150" alt="" />$@',
+            new TemplateView($context)->render(),
+        );
+    }
+
     public static function missingFileDataProvider(): \Generator
     {
         yield 'file object' => ['<f:image image="{file}" />'];
