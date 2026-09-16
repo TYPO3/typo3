@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\Upgrades;
 
-use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Upgrades\UserSettingsNormalizationMigration;
@@ -32,24 +31,17 @@ final class UserSettingsNormalizationMigrationTest extends FunctionalTestCase
     {
         $connection = $this->get(ConnectionPool::class)->getConnectionForTable('be_users');
 
-        // Create a user with uc but without user_settings
         $connection->insert(
             'be_users',
             [
                 'username' => 'testuser',
                 'uc' => serialize(['colorScheme' => 'dark', 'titleLen' => 50]),
-                // The array would normally be passed directly to prevent double JSON encoding;
-                // however, in this case the desired test context requires it to be intentionally
-                // JSON-encoded here.
-                // See: https://review.typo3.org/c/Packages/TYPO3.CMS/+/89293
+                // Encode before JSON conversion to create a double-encoded value.
                 'user_settings' => json_encode(['colorScheme' => 'dark', 'titleLen' => 50]),
             ],
             [
                 'uc' => Connection::PARAM_LOB,
-                // @todo This behavior cannot be modified yet; the array value must be passed directly
-                //       until https://review.typo3.org/c/Packages/TYPO3.CMS/+/89293 is merged,
-                //       otherwise the value will be JSON-encoded twice.
-                'user_settings' => Type::getType(Types::JSON),
+                'user_settings' => Types::JSON,
             ],
         );
 
@@ -58,26 +50,20 @@ final class UserSettingsNormalizationMigrationTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function updateNecessaryReturnsWhenWhenDoubleJsonEncodedUserSettingsExists(): void
+    public function updateNecessaryReturnsFalseWhenUserSettingsAreSingleJsonEncoded(): void
     {
         $connection = $this->get(ConnectionPool::class)->getConnectionForTable('be_users');
 
-        // Create a user with uc but without user_settings
         $connection->insert(
             'be_users',
             [
                 'username' => 'testuser',
                 'uc' => serialize(['colorScheme' => 'dark', 'titleLen' => 50]),
-                // The array must be passed directly to prevent double JSON encoding.
-                // See: https://review.typo3.org/c/Packages/TYPO3.CMS/+/89293
                 'user_settings' => ['colorScheme' => 'dark', 'titleLen' => 50],
             ],
             [
                 'uc' => Connection::PARAM_LOB,
-                // @todo This behavior cannot be modified yet; the array value must be passed directly
-                //       until https://review.typo3.org/c/Packages/TYPO3.CMS/+/89293 is merged,
-                //       otherwise the value will be JSON-encoded twice.
-                'user_settings' => Type::getType(Types::JSON),
+                'user_settings' => Types::JSON,
             ],
         );
 
@@ -90,22 +76,17 @@ final class UserSettingsNormalizationMigrationTest extends FunctionalTestCase
     {
         $connection = $this->get(ConnectionPool::class)->getConnectionForTable('be_users');
 
-        // Create a user with uc but without user_settings
         $connection->insert(
             'be_users',
             [
                 'username' => 'testuser',
                 'uc' => serialize(['colorScheme' => 'dark', 'titleLen' => 50]),
-                // The array must be passed directly to prevent double JSON encoding.
-                // See: https://review.typo3.org/c/Packages/TYPO3.CMS/+/89293
+                // Encode before JSON conversion to create a double-encoded value.
                 'user_settings' => json_encode(['colorScheme' => 'dark', 'titleLen' => 50]),
             ],
             [
                 'uc' => Connection::PARAM_LOB,
-                // @todo This behavior cannot be modified yet; the array value must be passed directly
-                //       until https://review.typo3.org/c/Packages/TYPO3.CMS/+/89293 is merged,
-                //       otherwise the value will be JSON-encoded twice.
-                'user_settings' => Type::getType(Types::JSON),
+                'user_settings' => Types::JSON,
             ],
         );
         $userId = (int)$connection->lastInsertId();
