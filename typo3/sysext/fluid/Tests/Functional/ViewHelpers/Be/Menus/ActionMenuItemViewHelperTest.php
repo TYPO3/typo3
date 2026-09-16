@@ -76,4 +76,53 @@ final class ActionMenuItemViewHelperTest extends FunctionalTestCase
         $view->assignMultiple($variables);
         self::assertSame($expectation, $view->render());
     }
+
+    public static function selectedStateIsEvaluatedDataProvider(): array
+    {
+        return [
+            'current controller and action selected despite additional request arguments' => [
+                '<f:be.menus.actionMenuItem label="Start" controller="Message" action="start" />',
+                'Message',
+                'start',
+                ['token' => 'dummyToken', 'route' => '/module/web/MessageModule', 'id' => '123'],
+                '<option value="" selected="selected">Start</option>',
+            ],
+            'other controller and action not selected' => [
+                '<f:be.menus.actionMenuItem label="List" controller="Appointment" action="list" />',
+                'Message',
+                'start',
+                ['token' => 'dummyToken', 'route' => '/module/web/MessageModule', 'id' => '123'],
+                '<option value="">List</option>',
+            ],
+            'matching item arguments selected' => [
+                '<f:be.menus.actionMenuItem label="List" controller="Blog" action="list" arguments="{type: \'1\'}" />',
+                'Blog',
+                'list',
+                ['token' => 'dummyToken', 'type' => '1'],
+                '<option value="" selected="selected">List</option>',
+            ],
+            'differing item arguments not selected' => [
+                '<f:be.menus.actionMenuItem label="List" controller="Blog" action="list" arguments="{type: \'2\'}" />',
+                'Blog',
+                'list',
+                ['token' => 'dummyToken', 'type' => '1'],
+                '<option value="">List</option>',
+            ],
+        ];
+    }
+
+    #[DataProvider('selectedStateIsEvaluatedDataProvider')]
+    #[Test]
+    public function selectedStateIsEvaluated(string $source, string $controllerName, string $actionName, array $requestArguments, string $expectation): void
+    {
+        $extbaseRequestParameters = new ExtbaseRequestParameters();
+        $extbaseRequestParameters->setControllerName($controllerName);
+        $extbaseRequestParameters->setControllerActionName($actionName);
+        $extbaseRequestParameters->setArguments($requestArguments);
+        $serverRequest = (new ServerRequest())->withAttribute('extbase', $extbaseRequestParameters)
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
+        $context->getTemplatePaths()->setTemplateSource($source);
+        self::assertSame($expectation, (new TemplateView($context))->render());
+    }
 }
