@@ -24,7 +24,6 @@ use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspectFactory;
-use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Domain\Page;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\ExpressionLanguage\Resolver;
@@ -45,8 +44,6 @@ use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
-use TYPO3\CMS\Frontend\Page\CacheHashConfiguration;
 
 /**
  * Page Router - responsible for a page based on a request, by looking up the slug of the page path.
@@ -78,7 +75,6 @@ class PageRouter implements RouterInterface
     protected Site $site;
     protected EnhancerFactory $enhancerFactory;
     protected AspectFactory $aspectFactory;
-    protected CacheHashCalculator $cacheHashCalculator;
     protected Context $context;
     protected RequestContextFactory $requestContextFactory;
     protected EventDispatcherInterface $eventDispatcher;
@@ -92,11 +88,6 @@ class PageRouter implements RouterInterface
         $this->context = $context ?? GeneralUtility::makeInstance(Context::class);
         $this->enhancerFactory = GeneralUtility::makeInstance(EnhancerFactory::class);
         $this->aspectFactory = GeneralUtility::makeInstance(AspectFactory::class, $this->context);
-        $this->cacheHashCalculator = GeneralUtility::makeInstance(
-            CacheHashCalculator::class,
-            GeneralUtility::makeInstance(CacheHashConfiguration::class),
-            GeneralUtility::makeInstance(HashService::class)
-        );
         $this->requestContextFactory = GeneralUtility::makeInstance(RequestContextFactory::class);
         $this->eventDispatcher = GeneralUtility::makeInstance(EventDispatcherInterface::class);
     }
@@ -316,7 +307,8 @@ class PageRouter implements RouterInterface
         );
         $collection->add('default', $defaultRouteForPage);
 
-        // cHash is never considered because cHash is built by this very method.
+        // cHash is never considered as an input parameter, since it is calculated by
+        // an AfterPageUriGeneratedEvent listener, once the final URI has been generated.
         unset($originalParameters['cHash']);
         $enhancers = $this->getEnhancersForPage($pageId, $language, $page);
         foreach ($enhancers as $enhancer) {
@@ -389,21 +381,20 @@ class PageRouter implements RouterInterface
             // if it does happen, generator logic has flaws
             throw new InvalidRouteArgumentsException('Route arguments are dirty', 1537613247);
         }
+        if ($pageRouteResult === null) {
+            // for generating URLs this should(!) never happen, as $pageRouteResult is always set together with $uri
+            throw new InvalidRouteArgumentsException('Uri could not be built for page "' . $pageId . '"', 1789567896);
+        }
 
-        if ($matchedRoute && $pageRouteResult && !empty($pageRouteResult->getDynamicArguments())) {
-            $cacheHash = $this->generateCacheHash($pageId, $pageRouteResult);
-
+        if (!empty($pageRouteResult->getDynamicArguments())) {
             $queryArguments = $pageRouteResult->getQueryArguments();
-            if (!empty($cacheHash)) {
-                $queryArguments['cHash'] = $cacheHash;
-            }
             $uri = $uri->withQuery(http_build_query($queryArguments, '', '&', PHP_QUERY_RFC3986));
         }
         if ($fragment) {
             $uri = $uri->withFragment($fragment);
         }
 
-        $event = new AfterPageUriGeneratedEvent($uri, $route, $originalParameters, $fragment, $type, $language, $this->site);
+        $event = new AfterPageUriGeneratedEvent($uri, $route, $originalParameters, $fragment, $type, $language, $this->site, $pageId, $pageRouteResult);
         $this->eventDispatcher->dispatch($event);
         return $event->getUri();
     }
@@ -534,21 +525,6 @@ class PageRouter implements RouterInterface
             }
         }
         return false;
-    }
-
-    protected function generateCacheHash(int $pageId, PageArguments $arguments): string
-    {
-        return $this->cacheHashCalculator->calculateCacheHash(
-            $this->getCacheHashParameters($pageId, $arguments)
-        );
-    }
-
-    protected function getCacheHashParameters(int $pageId, PageArguments $arguments): array
-    {
-        $hashParameters = $arguments->getDynamicArguments();
-        $hashParameters['id'] = $pageId;
-        $uri = http_build_query($hashParameters, '', '&', PHP_QUERY_RFC3986);
-        return $this->cacheHashCalculator->getRelevantParameters($uri);
     }
 
     /**

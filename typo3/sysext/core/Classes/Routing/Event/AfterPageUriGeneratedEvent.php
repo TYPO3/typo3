@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Routing\Event;
 
 use Psr\Http\Message\UriInterface;
 use TYPO3\CMS\Core\Domain\Page;
+use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 
@@ -32,6 +33,8 @@ final class AfterPageUriGeneratedEvent
         private readonly string $type,
         private readonly SiteLanguage $language,
         private readonly Site $site,
+        private readonly int $pageId,
+        private readonly PageArguments $pageArguments,
     ) {}
 
     public function getUri(): UriInterface
@@ -72,5 +75,15 @@ final class AfterPageUriGeneratedEvent
     public function getSite(): Site
     {
         return $this->site;
+    }
+
+    public function getPageId(): int
+    {
+        return $this->pageId;
+    }
+
+    public function getPageArguments(): PageArguments
+    {
+        return $this->pageArguments;
     }
 }
