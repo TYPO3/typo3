@@ -1506,18 +1506,7 @@ final class GeneralUtilityTest extends UnitTestCase
             'https domain with quad slash' => ['https:////www.google.de'],
             'https domain with newline' => ["htt\nps://www.google.de"],
             'domain without schema' => ['//www.google.de/'],
-            'domain without schema escape at start' => ['\\//www.google.de', true],
-            'domain without schema escape in between' => ['/\\/www.google.de', true],
-            'domain without schema escape after' => ['//\\www.google.de', true],
-            'domain without schema escape instead of slash' => ['/\\www.google.de', true],
-            'domain without schema with double backslash' => ['\\\\www.google.de', true],
-            'domain without schema with double backslash and one slash' => ['\\/www.google.de', true],
             'domain without schema with quad slash' => ['////www.google.de'],
-            'domain without schema with newline' => ["/\n/www.google.de", true],
-            'domain without schema with EOT' => ["\x04//google.de", true],
-            'domain without schema with bell' => ["\x07//google.de", true],
-            'domain without schema with backspace' => ["\x08//google.de", true],
-            'domain without schema with form feed' => ["\x0c//google.de", true],
             'XSS attempt' => ['" onmouseover="alert(123)"'],
             'invalid URL, UNC path' => ['\\\\foo\\bar\\'],
             'invalid URL, HTML break out attempt' => ['" >blabuubb'],
@@ -1525,15 +1514,36 @@ final class GeneralUtilityTest extends UnitTestCase
             'relative URL with location header injection via leading space' => [' //evil.site/'],
             'relative URL with location header injection via leading horizontal tab' => ["\t" . '//evil.site/'],
             'relative URL with location header injection attempt (not known to work) via vertical white space' => ["\v" . '//evil.site/'],
-            'HTTP header smuggling attempt' => ["/\r\nX-Injected: evil", true],
             'null-byte break out attempt' => ["http\x00://www.google.de"],
-            'path invalid because it contains unencoded spaces' => ['/cms/typo3/alt_intro.php&param=oneparam with spaces', true],
+        ];
+    }
+
+    /**
+     * @return array<string, array{0: string}>
+     */
+    public static function sanitizeLocalUrlInvalidOnlyWhenNotEncodedDataProvider(): array
+    {
+        return [
+            'domain without schema escape at start' => ['\\//www.google.de'],
+            'domain without schema escape in between' => ['/\\/www.google.de'],
+            'domain without schema escape after' => ['//\\www.google.de'],
+            'domain without schema escape instead of slash' => ['/\\www.google.de'],
+            'domain without schema with double backslash' => ['\\\\www.google.de'],
+            'domain without schema with double backslash and one slash' => ['\\/www.google.de'],
+            'domain without schema with newline' => ["/\n/www.google.de"],
+            'domain without schema with EOT' => ["\x04//google.de"],
+            'domain without schema with bell' => ["\x07//google.de"],
+            'domain without schema with backspace' => ["\x08//google.de"],
+            'domain without schema with form feed' => ["\x0c//google.de"],
+            'HTTP header smuggling attempt' => ["/\r\nX-Injected: evil"],
+            'path invalid because it contains unencoded spaces' => ['/cms/typo3/alt_intro.php&param=oneparam with spaces'],
         ];
     }
 
     #[DataProvider('sanitizeLocalUrlInvalidDataProvider')]
+    #[DataProvider('sanitizeLocalUrlInvalidOnlyWhenNotEncodedDataProvider')]
     #[Test]
-    public function sanitizeLocalUrlDeniesPlainInvalidUrls(string $url, bool $skipExplicitEncodeTest = false): void
+    public function sanitizeLocalUrlDeniesPlainInvalidUrls(string $url): void
     {
         Environment::initialize(
             Environment::getContext(),
@@ -1555,11 +1565,8 @@ final class GeneralUtilityTest extends UnitTestCase
 
     #[DataProvider('sanitizeLocalUrlInvalidDataProvider')]
     #[Test]
-    public function sanitizeLocalUrlDeniesEncodedInvalidUrls(string $url, bool $skipExplicitEncodeTest = false): void
+    public function sanitizeLocalUrlDeniesEncodedInvalidUrls(string $url): void
     {
-        if ($skipExplicitEncodeTest) {
-            self::markTestSkipped('Explicit rawurlencoding skipped because the contents are considered allowed payload if encoded');
-        }
         $request = (new ServerRequest())->withAttribute('normalizedParams', NormalizedParams::createFromServerParams([]));
         self::assertEquals('', GeneralUtility::sanitizeLocalUrl(rawurlencode($url), $request));
     }
