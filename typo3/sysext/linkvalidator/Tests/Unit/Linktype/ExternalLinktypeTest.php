@@ -184,7 +184,7 @@ final class ExternalLinktypeTest extends UnitTestCase
         $subject = new ExternalLinktype(new RequestFactory(new GuzzleClientFactory()));
         $method = new \ReflectionMethod($subject, 'preprocessUrl');
         $result = $method->invokeArgs($subject, [$inputUrl]);
-        self::assertEquals($result, $expectedResult);
+        self::assertEquals($expectedResult, $result);
     }
 
     #[Test]

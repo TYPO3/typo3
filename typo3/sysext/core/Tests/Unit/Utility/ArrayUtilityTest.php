@@ -2860,7 +2860,7 @@ final class ArrayUtilityTest extends UnitTestCase
     public function filterAndSortByNumericKeysBehavesCorrectlyForAcceptAnyKeysIsTrue(array $input, array $expected): void
     {
         $result = ArrayUtility::filterAndSortByNumericKeys($input, true);
-        self::assertEquals($result, $expected);
+        self::assertEquals($expected, $result);
     }
 
     public static function filterAndSortByNumericKeysWithoutAcceptAnyKeyDataProvider(): array
