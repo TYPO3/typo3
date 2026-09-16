@@ -37,7 +37,7 @@ final class AsTextExtractorAttributeTest extends FunctionalTestCase
     {
         $textExtractorRegistry = $this->get(TextExtractorRegistry::class);
 
-        self::assertInstanceOf(MarkdownTextExtractor::class, $textExtractorRegistry->getTextExtractor($this->createFileMock('text/markdown')));
+        self::assertInstanceOf(MarkdownTextExtractor::class, $textExtractorRegistry->getTextExtractor($this->createFileStub('text/markdown')));
     }
 
     #[Test]
@@ -45,13 +45,13 @@ final class AsTextExtractorAttributeTest extends FunctionalTestCase
     {
         $textExtractorRegistry = $this->get(TextExtractorRegistry::class);
 
-        self::assertInstanceOf(HighPriorityPlainTextExtractor::class, $textExtractorRegistry->getTextExtractor($this->createFileMock('text/plain')));
+        self::assertInstanceOf(HighPriorityPlainTextExtractor::class, $textExtractorRegistry->getTextExtractor($this->createFileStub('text/plain')));
     }
 
-    private function createFileMock(string $mimeType): File
+    private function createFileStub(string $mimeType): File
     {
-        $fileMock = $this->createMock(File::class);
-        $fileMock->method('getMimeType')->willReturn($mimeType);
-        return $fileMock;
+        $fileStub = self::createStub(File::class);
+        $fileStub->method('getMimeType')->willReturn($mimeType);
+        return $fileStub;
     }
 }

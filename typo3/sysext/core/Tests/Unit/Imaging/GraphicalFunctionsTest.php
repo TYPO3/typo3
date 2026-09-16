@@ -72,9 +72,7 @@ final class GraphicalFunctionsTest extends UnitTestCase
     #[Test]
     public function temporaryOutputPathEndsWithTheSameExtensionAsTheFinalOutput(): void
     {
-        $subject = $this->getAccessibleMock(GraphicalFunctions::class, null, [], '', false);
-
-        $temporary = $subject->_call('temporaryOutputPath', '/typo3temp/assets/images/abc123.png');
+        $temporary = $this->invokeTemporaryOutputPath('/typo3temp/assets/images/abc123.png');
 
         self::assertNotSame('/typo3temp/assets/images/abc123.png', $temporary);
         self::assertStringStartsWith('/typo3temp/assets/images/abc123.', $temporary);
@@ -86,12 +84,17 @@ final class GraphicalFunctionsTest extends UnitTestCase
     #[Test]
     public function temporaryOutputPathIsUniquePerCall(): void
     {
-        $subject = $this->getAccessibleMock(GraphicalFunctions::class, null, [], '', false);
-
-        $first = $subject->_call('temporaryOutputPath', '/typo3temp/assets/images/abc123.png');
-        $second = $subject->_call('temporaryOutputPath', '/typo3temp/assets/images/abc123.png');
+        $first = $this->invokeTemporaryOutputPath('/typo3temp/assets/images/abc123.png');
+        $second = $this->invokeTemporaryOutputPath('/typo3temp/assets/images/abc123.png');
 
         self::assertNotSame($first, $second);
+    }
+
+    private function invokeTemporaryOutputPath(string $output): string
+    {
+        $subject = new \ReflectionClass(GraphicalFunctions::class)->newInstanceWithoutConstructor();
+        $method = new \ReflectionMethod(GraphicalFunctions::class, 'temporaryOutputPath');
+        return $method->invoke($subject, $output);
     }
 
     #[Test]
