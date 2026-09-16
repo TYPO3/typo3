@@ -2216,7 +2216,7 @@ final class GeneralUtilityTest extends UnitTestCase
             $this->testFilesToDelete[] = $pathToCleanUp;
         }
         $result = GeneralUtility::writeFileToTypo3tempDir($invalidFilePath, 'dummy content to be written');
-        self::assertSame($result, $expectedResult);
+        self::assertSame($expectedResult, $result);
     }
 
     /**
