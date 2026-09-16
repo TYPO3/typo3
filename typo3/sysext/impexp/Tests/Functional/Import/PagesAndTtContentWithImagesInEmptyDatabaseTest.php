@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Impexp\Tests\Functional\Import;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Impexp\Exception\ImportFailedException;
 use TYPO3\CMS\Impexp\Import;
 use TYPO3\CMS\Impexp\Tests\Functional\AbstractImportExportTestCase;
 
@@ -146,11 +147,14 @@ final class PagesAndTtContentWithImagesInEmptyDatabaseTest extends AbstractImpor
         $subject = $this->get(Import::class);
         $subject->setPid(0);
 
+        $subject->loadFile('EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent-with-image-with-forced-uids.xml');
+        $subject->setForceAllUids(true);
         try {
-            $subject->loadFile('EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent-with-image-with-forced-uids.xml');
-            $subject->setForceAllUids(true);
             $subject->importData();
-        } catch (\Exception $e) {
+            self::fail('ImportFailedException was not thrown');
+        } catch (ImportFailedException $exception) {
+            self::assertSame(1484484613, $exception->getCode());
+            self::assertSame('The import has failed.', $exception->getMessage());
         }
 
         $this->testFilesToDelete[] = Environment::getPublicPath() . '/fileadmin/user_upload/typo3_image2.jpg';
@@ -187,10 +191,13 @@ final class PagesAndTtContentWithImagesInEmptyDatabaseTest extends AbstractImpor
     {
         $subject = $this->get(Import::class);
         $subject->setPid(0);
+        $subject->loadFile('EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent-with-missing-image.xml');
         try {
-            $subject->loadFile('EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent-with-missing-image.xml');
             $subject->importData();
-        } catch (\Exception $e) {
+            self::fail('ImportFailedException was not thrown');
+        } catch (ImportFailedException $exception) {
+            self::assertSame(1484484613, $exception->getCode());
+            self::assertSame('The import has failed.', $exception->getMessage());
         }
 
         $expectedErrors = [
