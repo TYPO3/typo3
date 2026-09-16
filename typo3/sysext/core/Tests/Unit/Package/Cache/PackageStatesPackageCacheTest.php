@@ -19,8 +19,11 @@ namespace TYPO3\CMS\Core\Tests\Unit\Package\Cache;
 
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Package\Cache\PackageStatesPackageCache;
 use TYPO3\CMS\Core\Package\Exception\PackageManagerCacheUnavailableException;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class PackageStatesPackageCacheTest extends UnitTestCase
@@ -30,15 +33,10 @@ final class PackageStatesPackageCacheTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->packageStatesFile = sys_get_temp_dir() . '/PackageStates_' . uniqid('', true) . '.php';
-    }
-
-    protected function tearDown(): void
-    {
-        if (file_exists($this->packageStatesFile)) {
-            @unlink($this->packageStatesFile);
-        }
-        parent::tearDown();
+        $testDirectory = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('package-states-cache-');
+        GeneralUtility::mkdir_deep($testDirectory);
+        $this->testFilesToDelete[] = $testDirectory;
+        $this->packageStatesFile = $testDirectory . '/PackageStates.php';
     }
 
     #[Test]

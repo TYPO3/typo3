@@ -30,6 +30,8 @@ use Symfony\Component\Mime\Email;
 use Symfony\Component\Mime\RawMessage;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Mail\FileSpool;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class FileSpoolTest extends UnitTestCase
@@ -44,7 +46,9 @@ final class FileSpoolTest extends UnitTestCase
     {
         parent::setUp();
 
-        $this->spoolPath = Environment::getVarPath() . '/spool/';
+        $this->spoolPath = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('file-spool-') . '/';
+        GeneralUtility::mkdir_deep($this->spoolPath);
+        $this->testFilesToDelete[] = $this->spoolPath;
         $this->loggerMock = $this->createMock(LoggerInterface::class);
         $this->subject = new FileSpool($this->spoolPath, null, $this->loggerMock);
         $this->subject->setMessageLimit(10);
@@ -144,8 +148,6 @@ final class FileSpoolTest extends UnitTestCase
         self::assertNotNull($exception);
         self::assertFileDoesNotExist($message);
         self::assertFileExists($messageSending);
-
-        unlink($messageSending);
     }
 
     #[Test]

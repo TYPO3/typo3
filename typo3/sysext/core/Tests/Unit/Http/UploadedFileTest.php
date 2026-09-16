@@ -26,22 +26,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class UploadedFileTest extends UnitTestCase
 {
-    private $tmpFile;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->tmpFile = null;
-    }
-
-    protected function tearDown(): void
-    {
-        if (is_string($this->tmpFile) && file_exists($this->tmpFile)) {
-            unlink($this->tmpFile);
-        }
-        parent::tearDown();
-    }
-
     public static function invalidStreamsDataProvider(): array
     {
         return [
@@ -101,7 +85,8 @@ final class UploadedFileTest extends UnitTestCase
     #[Test]
     public function getStreamReturnsStreamForFile(): void
     {
-        $this->tmpFile = $stream = tempnam(sys_get_temp_dir(), 'phly');
+        $stream = GeneralUtility::tempnam('phly');
+        $this->testFilesToDelete[] = $stream;
         $upload = new UploadedFile($stream, 0, UPLOAD_ERR_OK);
         $uploadStream = $upload->getStream();
         $r = new \ReflectionProperty($uploadStream, 'stream');
@@ -115,7 +100,8 @@ final class UploadedFileTest extends UnitTestCase
         $stream->write('Foo bar!');
         $upload = new UploadedFile($stream, 0, UPLOAD_ERR_OK);
 
-        $this->tmpFile = $to = GeneralUtility::tempnam('psr7');
+        $to = GeneralUtility::tempnam('psr7');
+        $this->testFilesToDelete[] = $to;
         $upload->moveTo($to);
         self::assertFileExists($to);
         $contents = file_get_contents($to);
@@ -140,7 +126,8 @@ final class UploadedFileTest extends UnitTestCase
         $stream->write('Foo bar!');
         $upload = new UploadedFile($stream, 0, UPLOAD_ERR_OK);
 
-        $this->tmpFile = $to = GeneralUtility::tempnam('psr7');
+        $to = GeneralUtility::tempnam('psr7');
+        $this->testFilesToDelete[] = $to;
         $upload->moveTo($to);
         self::assertFileExists($to);
 
@@ -156,7 +143,8 @@ final class UploadedFileTest extends UnitTestCase
         $stream->write('Foo bar!');
         $upload = new UploadedFile($stream, 0, UPLOAD_ERR_OK);
 
-        $this->tmpFile = $to = GeneralUtility::tempnam('psr7');
+        $to = GeneralUtility::tempnam('psr7');
+        $this->testFilesToDelete[] = $to;
         $upload->moveTo($to);
         self::assertFileExists($to);
 

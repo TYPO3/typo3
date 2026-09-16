@@ -21,6 +21,7 @@ use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Localization\Loader\XliffLoader;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 #[BackupGlobals(true)]
@@ -198,16 +199,12 @@ final class XliffLoaderTest extends UnitTestCase
     {
         $this->expectException(\TYPO3\CMS\Core\Localization\Exception\InvalidXmlFileException::class);
 
-        // Create a temporary invalid XML file
-        $tempFile = tempnam(sys_get_temp_dir(), 'invalid_xlf_');
+        $tempFile = GeneralUtility::tempnam('invalid_xlf_');
+        $this->testFilesToDelete[] = $tempFile;
         file_put_contents($tempFile, '<?xml version="1.0"?><invalid><unclosed>');
 
-        try {
-            $subject = new XliffLoader();
-            $subject->load($tempFile, 'en');
-        } finally {
-            unlink($tempFile);
-        }
+        $subject = new XliffLoader();
+        $subject->load($tempFile, 'en');
     }
 
     #[Test]

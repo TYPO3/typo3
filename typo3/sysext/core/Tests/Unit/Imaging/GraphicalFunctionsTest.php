@@ -29,7 +29,9 @@ final class GraphicalFunctionsTest extends UnitTestCase
     #[Test]
     public function resizeWritesToATemporaryFileAndRenamesItIntoPlace(): void
     {
-        $sourceFile = GeneralUtility::tempnam('graphical-functions-resize-test-source-') . '.png';
+        $sourceFile = GeneralUtility::tempnam('graphical-functions-resize-test-source-', '.png');
+        $this->testFilesToDelete[] = $sourceFile;
+        $capturedOutputArgument = null;
         $gdImage = imagecreatetruecolor(10, 10);
         imagepng($gdImage, $sourceFile);
 
@@ -42,7 +44,6 @@ final class GraphicalFunctionsTest extends UnitTestCase
         // public, final output path here directly (instead of a private temporary one),
         // that path becomes readable - "exists" - before this callback returns, exactly
         // the window a concurrent request could observe a still-incomplete file in.
-        $capturedOutputArgument = null;
         $subject->expects($this->once())->method('imageMagickExec')->willReturnCallback(
             function (string $input, string $output, string $params, int $frame = 0) use (&$capturedOutputArgument, $sourceFile): string {
                 $capturedOutputArgument = $output;
@@ -54,19 +55,21 @@ final class GraphicalFunctionsTest extends UnitTestCase
         $result = $subject->resize($sourceFile, 'png', '5', '5');
 
         self::assertNotNull($result);
-        self::assertFileExists($result->getRealPath());
+        $resultFile = $result->getRealPath();
+        self::assertFileExists($resultFile);
+        $this->testFilesToDelete[] = $resultFile;
         self::assertNotSame(
             $capturedOutputArgument,
-            $result->getRealPath(),
+            $resultFile,
             'imageMagickExec() must be asked to write to a temporary path, not directly to the public, final output path.'
         );
+        if (is_string($capturedOutputArgument) && $capturedOutputArgument !== $resultFile && is_file($capturedOutputArgument)) {
+            $this->testFilesToDelete[] = $capturedOutputArgument;
+        }
         self::assertFileDoesNotExist(
             $capturedOutputArgument,
             'the temporary file must have been renamed into place, not left behind next to it.'
         );
-
-        unlink($sourceFile);
-        unlink($result->getRealPath());
     }
 
     #[Test]

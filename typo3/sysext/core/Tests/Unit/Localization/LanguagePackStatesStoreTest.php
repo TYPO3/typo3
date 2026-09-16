@@ -37,6 +37,7 @@ final class LanguagePackStatesStoreTest extends UnitTestCase
         unlink($this->projectPath);
         $varPath = $this->projectPath . '/var';
         GeneralUtility::mkdir_deep($varPath);
+        $this->testFilesToDelete[] = $this->projectPath;
         Environment::initialize(
             Environment::getContext(),
             Environment::isCli(),
@@ -48,12 +49,6 @@ final class LanguagePackStatesStoreTest extends UnitTestCase
             Environment::getCurrentScript(),
             Environment::isWindows() ? 'WINDOWS' : 'UNIX'
         );
-    }
-
-    protected function tearDown(): void
-    {
-        GeneralUtility::rmdir($this->projectPath, true);
-        parent::tearDown();
     }
 
     private function createSubject(): LanguagePackStatesStore
