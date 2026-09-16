@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Imaging;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Imaging\GraphicsCanvas;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class GraphicsCanvasTest extends UnitTestCase
@@ -255,19 +256,16 @@ final class GraphicsCanvasTest extends UnitTestCase
     #[Test]
     public function saveToFileAndLoadFileRoundTripPreservesDimensionsAndColour(): void
     {
-        $path = tempnam(sys_get_temp_dir(), 'gc') . '.png';
-        try {
-            $canvas = GraphicsCanvas::create(12, 7, 200, 100, 50);
-            self::assertTrue($canvas->saveToFile($path, 'png'));
+        $path = GeneralUtility::tempnam('graphics-canvas-', '.png');
+        $this->testFilesToDelete[] = $path;
+        $canvas = GraphicsCanvas::create(12, 7, 200, 100, 50);
+        self::assertTrue($canvas->saveToFile($path, 'png'));
 
-            $loaded = GraphicsCanvas::loadFile($path);
-            self::assertNotNull($loaded);
-            self::assertSame(12, $loaded->width());
-            self::assertSame(7, $loaded->height());
-            self::assertSame([200, 100, 50], self::rgb($loaded, 0, 0));
-        } finally {
-            @unlink($path);
-        }
+        $loaded = GraphicsCanvas::loadFile($path);
+        self::assertNotNull($loaded);
+        self::assertSame(12, $loaded->width());
+        self::assertSame(7, $loaded->height());
+        self::assertSame([200, 100, 50], self::rgb($loaded, 0, 0));
     }
 
     #[Test]

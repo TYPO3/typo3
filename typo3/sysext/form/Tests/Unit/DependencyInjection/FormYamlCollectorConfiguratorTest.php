@@ -21,8 +21,11 @@ use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\Stub;
 use Psr\Log\LoggerInterface;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Package\PackageInterface;
 use TYPO3\CMS\Core\Package\PackageManager;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Form\DependencyInjection\FormYamlCollectorConfigurator;
 use TYPO3\CMS\Form\Mvc\Configuration\FormYamlCollector;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -35,29 +38,9 @@ final class FormYamlCollectorConfiguratorTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->tempDir = sys_get_temp_dir() . '/typo3_form_yaml_test_' . uniqid('', true);
-        mkdir($this->tempDir, 0777, true);
-    }
-
-    protected function tearDown(): void
-    {
-        $this->removeDirectory($this->tempDir);
-        parent::tearDown();
-    }
-
-    private function removeDirectory(string $path): void
-    {
-        if (!is_dir($path)) {
-            return;
-        }
-        foreach (scandir($path) as $entry) {
-            if ($entry === '.' || $entry === '..') {
-                continue;
-            }
-            $full = $path . '/' . $entry;
-            is_dir($full) ? $this->removeDirectory($full) : unlink($full);
-        }
-        rmdir($path);
+        $this->tempDir = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('form-yaml-');
+        GeneralUtility::mkdir_deep($this->tempDir);
+        $this->testFilesToDelete[] = $this->tempDir;
     }
 
     /**
