@@ -5,7 +5,7 @@ test.describe('Database Module', () => {
     await backend.gotoModule('system_database');
   });
 
-  test('Full search', async ({ page, backend }) => {
+  test('Full search', async ({ backend }) => {
     const contentFrame = backend.contentFrame;
     await expect(contentFrame.locator('h1')).toHaveText('Database');
 
@@ -21,9 +21,7 @@ test.describe('Database Module', () => {
     const tableRows = contentFrame.locator('.table').getByText('styleguide demo group 2');
     await expect(tableRows).toHaveCount(0);
 
-    // @todo: Use the modal fixture to be introduced with https://review.typo3.org/c/Packages/TYPO3.CMS/+/89163
-    await contentFrame.locator('a[data-dispatch-args-list]').first().click();
-    const modalFrame = page.frameLocator('.modal-iframe');
-    await expect(modalFrame.locator('.card-title')).toContainText('styleguide demo group 1');
+    const modalContent = await backend.modal.open(contentFrame.locator('a[data-dispatch-args-list]').first());
+    await expect(modalContent.locator('.card-title')).toContainText('styleguide demo group 1');
   });
 });
