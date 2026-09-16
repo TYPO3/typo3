@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Http\UploadedFile;
 use TYPO3\CMS\Core\Resource\Driver\DriverInterface;
 use TYPO3\CMS\Core\Resource\Driver\LocalDriver;
+use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\Index\Indexer;
@@ -311,6 +312,73 @@ final class ResourceStorageTest extends FunctionalTestCase
         $localDriver = new LocalDriver(['basePath' => $this->instancePath . '/resource-storage-test']);
         $subject = new ResourceStorage($localDriver, ['uid' => 1, 'name' => 'testing'], new NoopEventDispatcher());
         $subject->setEvaluatePermissions(true);
+        self::assertTrue($subject->getEvaluatePermissions());
+    }
+
+    #[Test]
+    public function getProcessingFolderRestoresPermissionEvaluationWhenFolderCreationFails(): void
+    {
+        $localDriver = new LocalDriver(['basePath' => $this->instancePath . '/resource-storage-test']);
+        $subject = $this->getMockBuilder(ResourceStorage::class)
+            ->onlyMethods(['createFolder'])
+            ->setConstructorArgs([$localDriver, ['uid' => 1, 'name' => 'testing'], new NoopEventDispatcher()])
+            ->getMock();
+        $subject->method('createFolder')->willThrowException(new \InvalidArgumentException());
+        $subject->setEvaluatePermissions(true);
+        $subject->setUserPermissions(['readFolder' => false]);
+        self::assertFalse($subject->checkUserActionPermission('read', 'folder'));
+
+        $subject->getProcessingFolder();
+
+        self::assertFalse($subject->checkUserActionPermission('read', 'folder'));
+    }
+
+    #[Test]
+    public function getProcessingFolderRestoresPermissionEvaluationOnConfiguredStorageWhenFolderCreationFails(): void
+    {
+        $localDriver = new LocalDriver(['basePath' => $this->instancePath . '/resource-storage-test']);
+        $configuredStorage = $this->getMockBuilder(ResourceStorage::class)
+            ->onlyMethods(['createFolder'])
+            ->setConstructorArgs([$localDriver, ['uid' => 2, 'name' => 'configured'], new NoopEventDispatcher()])
+            ->getMock();
+        $configuredStorage->method('createFolder')->willThrowException(new \InvalidArgumentException());
+        $configuredStorage->setEvaluatePermissions(true);
+        $configuredStorage->setUserPermissions(['readFolder' => true]);
+        $storageRepository = $this->createMock(StorageRepository::class);
+        $storageRepository->expects($this->once())->method('findByUid')->with(2)->willReturn($configuredStorage);
+        GeneralUtility::addInstance(StorageRepository::class, $storageRepository);
+        $subject = new ResourceStorage(
+            $localDriver,
+            ['uid' => 1, 'name' => 'testing', 'processingfolder' => '2:/_processed_/'],
+            new NoopEventDispatcher(),
+        );
+        self::assertTrue($configuredStorage->getEvaluatePermissions());
+
+        try {
+            $subject->getProcessingFolder();
+        } catch (\InvalidArgumentException) {
+        }
+
+        self::assertTrue($configuredStorage->getEvaluatePermissions());
+    }
+
+    #[Test]
+    public function getProcessingFolderRestoresPermissionEvaluationWhenNestedFolderCreationFails(): void
+    {
+        $subject = $this->getAccessibleMock(ResourceStorage::class, null, [], '', false);
+        $subject->setEvaluatePermissions(true);
+        $file = self::createStub(File::class);
+        $file->method('getIdentifier')->willReturn('/file.txt');
+        $processingFolder = $this->createMock(Folder::class);
+        $processingFolder->method('getSubfolder')->willThrowException(new FolderDoesNotExistException());
+        $processingFolder->method('getStorage')->willReturn($subject);
+        $processingFolder->method('createFolder')->willThrowException(new \InvalidArgumentException());
+
+        try {
+            $subject->_call('getNestedProcessingFolder', $file, $processingFolder);
+        } catch (\InvalidArgumentException) {
+        }
+
         self::assertTrue($subject->getEvaluatePermissions());
     }
 
