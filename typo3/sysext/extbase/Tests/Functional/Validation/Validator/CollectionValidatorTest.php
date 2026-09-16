@@ -137,4 +137,30 @@ final class CollectionValidatorTest extends FunctionalTestCase
         $subject->setOptions(['elementType' => $elementType]);
         $subject->validate($objectStorage);
     }
+
+    #[Test]
+    public function collectionValidatorUsesNumericIndexesForObjectStorageElements(): void
+    {
+        $objectStorage = new ObjectStorage();
+        $objectStorage->attach(new Entity('Foo'));
+        $objectStorage->attach(new Entity('Bar'));
+
+        $subject = $this->get(CollectionValidator::class);
+        $subject->setOptions(['elementValidator' => 'Integer']);
+        $result = $subject->validate($objectStorage);
+
+        self::assertSame([0, 1], array_keys($result->getFlattenedErrors()));
+        self::assertTrue($result->forProperty('0')->hasErrors());
+        self::assertTrue($result->forProperty('1')->hasErrors());
+    }
+
+    #[Test]
+    public function collectionValidatorKeepsTheKeysOfAPlainArray(): void
+    {
+        $subject = $this->get(CollectionValidator::class);
+        $subject->setOptions(['elementValidator' => 'Integer']);
+        $result = $subject->validate(['first' => new Entity('Foo'), 'second' => new Entity('Bar')]);
+
+        self::assertSame(['first', 'second'], array_keys($result->getFlattenedErrors()));
+    }
 }

@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
 
 use TYPO3\CMS\Extbase\Error\Result;
 use TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
 use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
 
@@ -77,6 +78,12 @@ final class CollectionValidator extends AbstractGenericObjectValidator
      */
     protected function isValid(mixed $value): void
     {
+        if ($value instanceof ObjectStorage) {
+            // ObjectStorage is keyed by spl_object_hash(), which is an internal detail and would end up
+            // as the property path of the validation result. Consumers address collection elements by
+            // their position instead, for example `<f:form.textfield property="toppings.0.title" />`.
+            $value = $value->toArray();
+        }
         foreach ($value as $index => $collectionElement) {
             if (isset($this->options['elementValidator'])) {
                 $collectionElementValidator = $this->validatorResolver->createValidator($this->options['elementValidator']);
