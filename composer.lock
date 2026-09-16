@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f7fa775cbf5b1c9e54d515675977342c",
+    "content-hash": "1c22be6317660bdbdb66f879c722797f",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -9151,21 +9151,21 @@
         },
         {
             "name": "typo3/testing-framework",
-            "version": "9.5.0",
+            "version": "9.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/testing-framework.git",
-                "reference": "bc918e46acc8d10c3e883b90f39b7fcdc339ab65"
+                "reference": "8ace1015f82c1609ed5bfa88a7b4d4c1630ea8e3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/bc918e46acc8d10c3e883b90f39b7fcdc339ab65",
-                "reference": "bc918e46acc8d10c3e883b90f39b7fcdc339ab65",
+                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/8ace1015f82c1609ed5bfa88a7b4d4c1630ea8e3",
+                "reference": "8ace1015f82c1609ed5bfa88a7b4d4c1630ea8e3",
                 "shasum": ""
             },
             "require": {
                 "composer/class-map-generator": "^1.3.4",
-                "guzzlehttp/psr7": "^2.5.0",
+                "guzzlehttp/psr7": "^2.5.0 || ^3.0",
                 "php": "^8.2",
                 "phpunit/phpunit": "^11.2.5 || ^12.1.2 || ^13.0.2",
                 "psr/container": "^2.0",
@@ -9223,9 +9223,9 @@
             "support": {
                 "general": "https://typo3.org/support/",
                 "issues": "https://github.com/TYPO3/testing-framework/issues",
-                "source": "https://github.com/TYPO3/testing-framework/tree/9.5.0"
+                "source": "https://github.com/TYPO3/testing-framework/tree/9.7.0"
             },
-            "time": "2026-03-25T21:37:25+00:00"
+            "time": "2026-09-16T16:46:54+00:00"
         }
     ],
     "aliases": [],

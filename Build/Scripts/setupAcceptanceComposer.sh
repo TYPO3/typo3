@@ -53,7 +53,7 @@ composer require \
     --dev \
     typo3tests/dataset-import:@dev \
     typo3tests/playwright-helper:@dev \
-    typo3/testing-framework:dev-main \
+    typo3/testing-framework:^9.7.0 \
     ${EXTRA_PACKAGES}
 
 TYPO3_SERVER_TYPE=apache \
