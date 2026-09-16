@@ -115,6 +115,28 @@ final class FolderTest extends UnitTestCase
     }
 
     #[Test]
+    public function getFilesWithFilterModeNoFiltersKeepsStorageFilters(): void
+    {
+        $mockedStorage = $this->createMock(ResourceStorage::class);
+        $mockedStorage->method('getFilesInFolder')->willReturn([]);
+        $mockedStorage->expects($this->never())->method('setFileAndFolderNameFilters');
+
+        $fixture = $this->createFolderFixture('/somePath', 'someName', $mockedStorage);
+        $fixture->getFiles(0, 0, Folder::FILTER_MODE_NO_FILTERS);
+    }
+
+    #[Test]
+    public function getSubfoldersWithFilterModeNoFiltersKeepsStorageFilters(): void
+    {
+        $mockedStorage = $this->createMock(ResourceStorage::class);
+        $mockedStorage->method('getFoldersInFolder')->willReturn([]);
+        $mockedStorage->expects($this->never())->method('setFileAndFolderNameFilters');
+
+        $fixture = $this->createFolderFixture('/somePath', 'someName', $mockedStorage);
+        $fixture->getSubfolders(0, 0, Folder::FILTER_MODE_NO_FILTERS);
+    }
+
+    #[Test]
     public function getSubfolderCallsFactoryWithCorrectArguments(): void
     {
         $mockedStorage = $this->createMock(ResourceStorage::class);
