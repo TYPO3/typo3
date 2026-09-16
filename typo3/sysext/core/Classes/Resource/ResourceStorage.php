@@ -2704,23 +2704,25 @@ class ResourceStorage implements ResourceStorageInterface
                         $rootFolder = $storage->getRootLevelFolder(false);
                         $currentEvaluatePermissions = $storage->getEvaluatePermissions();
                         $storage->setEvaluatePermissions(false);
-                        $this->processingFolder = $storage->createFolder(
-                            ltrim($processingFolderIdentifier, '/'),
-                            $rootFolder
-                        );
-                        $storage->setEvaluatePermissions($currentEvaluatePermissions);
+                        try {
+                            $this->processingFolder = $storage->createFolder(
+                                ltrim($processingFolderIdentifier, '/'),
+                                $rootFolder
+                            );
+                        } finally {
+                            $storage->setEvaluatePermissions($currentEvaluatePermissions);
+                        }
                     }
                 } else {
                     if ($this->driver->folderExists($processingFolder) === false) {
                         $rootFolder = $this->getRootLevelFolder(false);
+                        $currentEvaluatePermissions = $this->evaluatePermissions;
+                        $this->evaluatePermissions = false;
                         try {
-                            $currentEvaluatePermissions = $this->evaluatePermissions;
-                            $this->evaluatePermissions = false;
                             $this->processingFolder = $this->createFolder(
                                 $processingFolder,
                                 $rootFolder
                             );
-                            $this->evaluatePermissions = $currentEvaluatePermissions;
                         } catch (\InvalidArgumentException $e) {
                             $this->processingFolder = GeneralUtility::makeInstance(
                                 InaccessibleFolder::class,
@@ -2728,6 +2730,8 @@ class ResourceStorage implements ResourceStorageInterface
                                 $processingFolder,
                                 $processingFolder
                             );
+                        } finally {
+                            $this->evaluatePermissions = $currentEvaluatePermissions;
                         }
                     } else {
                         $data = $this->driver->getFolderInfoByIdentifier($processingFolder);
@@ -2765,17 +2769,18 @@ class ResourceStorage implements ResourceStorageInterface
             try {
                 $processingFolder = $processingFolder->getSubfolder($folderName);
             } catch (FolderDoesNotExistException) {
-                $currentEvaluatePermissions = $processingFolder->getStorage()->getEvaluatePermissions();
-                $processingFolder->getStorage()->setEvaluatePermissions(false);
+                $storage = $processingFolder->getStorage();
+                $currentEvaluatePermissions = $storage->getEvaluatePermissions();
+                $storage->setEvaluatePermissions(false);
 
                 try {
                     $processingFolder = $processingFolder->createFolder($folderName);
                 } catch (ExistingTargetFolderException) {
                     // The folder may have been created meanwhile in a parallel process, which is fine, we take it.
                     $processingFolder = $processingFolder->getSubfolder($folderName);
+                } finally {
+                    $storage->setEvaluatePermissions($currentEvaluatePermissions);
                 }
-
-                $processingFolder->getStorage()->setEvaluatePermissions($currentEvaluatePermissions);
             }
         }
         return $processingFolder;
