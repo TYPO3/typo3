@@ -20,8 +20,7 @@ namespace TYPO3\CMS\Form\Tests\Functional\Controller;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\DependencyInjection\Container;
-use Symfony\Component\Routing\Route as SymfonyRoute;
-use TYPO3\CMS\Backend\Routing\Route as BackendRoute;
+use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\UriBuilder as CoreUriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
@@ -679,8 +678,9 @@ final class FormManagerControllerTest extends FunctionalTestCase
 
         $testEnv = 'TEST';
         putenv('FORM_ENV=' . $testEnv);
-        $route = $this->createBackendRouteFromSymfonyRoute(
-            $this->get(Router::class)->getRoute('web_FormFormbuilder.FormManager_create')
+        $route = Route::fromSymfonyRoute(
+            $this->get(Router::class)->getRoute('web_FormFormbuilder.FormManager_create'),
+            'web_FormFormbuilder.FormManager_create',
         );
         $serverRequest = new ServerRequest()
             ->withMethod('POST')
@@ -705,17 +705,5 @@ final class FormManagerControllerTest extends FunctionalTestCase
         $record = $connection->select(['configuration'], 'form_definition', [])->fetchAssociative();
         self::assertNotFalse($record, 'Form was saved to database');
         self::assertStringContainsString('Form env:' . $testEnv, $record['configuration']);
-    }
-
-    /**
-     * @todo this transformation should be in Backend\Routing\Route::fromSymfonyRoute
-     * @see https://review.typo3.org/c/Packages/TYPO3.CMS/+/90148
-     */
-    private function createBackendRouteFromSymfonyRoute(SymfonyRoute $symfonyRoute): BackendRoute
-    {
-        $symfonyRouteOptions = $symfonyRoute->getOptions();
-        $symfonyRouteOptions['_identifier'] = 'web_FormFormbuilder.FormManager_create';
-        unset($symfonyRouteOptions['methods']);
-        return new BackendRoute($symfonyRoute->getPath(), $symfonyRouteOptions);
     }
 }
