@@ -1402,14 +1402,19 @@ abstract class AbstractMenuContentObject
             $cachePagesNextLevel = array_map(
                 static fn(array $page) => array_intersect_key(
                     $page,
-                    array_flip(['uid', 'pid', 'doktype', 'nav_hide', 'l18n_cfg', '_LOCALIZED_UID']),
+                    array_flip(['uid', 'pid', 'doktype', 'nav_hide', 'l18n_cfg', '_LOCALIZED_UID', '_MOUNT_POINT_ORIGINAL_PAGE_PID']),
                 ),
                 $fullPages,
             );
             $runtimeCache->set($cacheIdentifierPagesNextLevel, $cachePagesNextLevel);
         }
 
-        $recs = array_filter($cachePagesNextLevel, static fn(array $item) => (int)$item['pid'] === (int)$uid);
+        // A mount point in overlay mode has been replaced by the mounted page, whose "pid"
+        // points elsewhere. _MOUNT_POINT_ORIGINAL_PAGE_PID keeps the parent it was found below.
+        $recs = array_filter(
+            $cachePagesNextLevel,
+            static fn(array $item) => (int)($item['_MOUNT_POINT_ORIGINAL_PAGE_PID'] ?? $item['pid']) === (int)$uid
+        );
 
         $hasSubPages = false;
         $bannedUids = $this->getBannedUids();

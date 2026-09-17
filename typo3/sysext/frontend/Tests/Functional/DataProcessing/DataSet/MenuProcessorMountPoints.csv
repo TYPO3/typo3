@@ -1,0 +1,15 @@
+"pages",
+,"uid","pid","title","nav_title","subtitle","doktype","hidden","nav_hide","sorting","link","shortcut","shortcut_mode","mount_pid","mount_pid_ol"
+,1,0,"Home","","",1,0,0,0,"",0,0,0,0
+,2,1,"Normal Parent","","",1,0,0,128,"",0,0,0,0
+,3,2,"Normal Child","","",1,0,0,0,"",0,0,0,0
+,4,1,"Mount Parent","","",1,0,0,256,"",0,0,0,0
+,5,4,"Mount Point","","",7,0,0,0,"",0,0,7,1
+,6,0,"Other Root","","",1,0,0,1024,"",0,0,0,0
+,7,6,"Mounted Target","","",1,0,0,0,"",0,0,0,0
+,8,1,"Shortcut Parent","","",1,0,0,384,"",0,0,0,0
+,9,8,"Shortcut Child","","",4,0,0,0,"",7,0,0,0
+,10,1,"Link Parent","","",1,0,0,512,"",0,0,0,0
+,11,10,"Link Child","","",3,0,0,0,"https://example.com",0,0,0,0
+,12,1,"Spacer Parent","","",199,0,0,640,"",0,0,0,0
+,13,12,"Mount Point Below Spacer","","",7,0,0,0,"",0,0,7,1

@@ -102,6 +102,7 @@ class PageRepository implements LoggerAwareInterface
         '_ORIG_uid',
         '_ORIG_pid',
         '_SHORTCUT_ORIGINAL_PAGE_UID',
+        '_MOUNT_POINT_ORIGINAL_PAGE_PID',
     ];
 
     protected Context $context;
@@ -947,7 +948,10 @@ class PageRepository implements LoggerAwareInterface
      * If the given page record is a mount point in overlay mode, the page
      * record is replaced by the record of the overlaying page. The overlay
      * record is enriched by setting the mount point mapping into the field
-     * _MP_PARAM as string for example '23-14'.
+     * _MP_PARAM as string for example '23-14'. Since the replacement record
+     * lives somewhere else in the page tree, its "pid" no longer points to the
+     * parent the mount point was found below. That parent is kept in
+     * _MOUNT_POINT_ORIGINAL_PAGE_PID.
      *
      * In all other cases the given page record is returned as is.
      *
@@ -968,6 +972,7 @@ class PageRepository implements LoggerAwareInterface
 
         // There is a valid mount point in overlay mode.
         if (is_array($mountPointInfo) && $mountPointInfo['overlay']) {
+            $mountPointPagePid = (int)$page['pid'];
             // Using "getPage" is OK since we need the check for enableFields AND for type 2
             // of mount pids we DO require a doktype < 200!
             $mountPointPage = $this->getPage((int)$mountPointInfo['mount_pid'], $disableGroupAccessCheck);
@@ -975,6 +980,7 @@ class PageRepository implements LoggerAwareInterface
             if (!empty($mountPointPage)) {
                 $page = $mountPointPage;
                 $page['_MP_PARAM'] = $mountPointInfo['MPvar'];
+                $page['_MOUNT_POINT_ORIGINAL_PAGE_PID'] = $mountPointPagePid;
             } else {
                 $page = [];
             }
