@@ -2061,7 +2061,7 @@ class DataHandler
             || ($tcaFieldConf['itemsProcessors'] ?? []) !== []
         ) {
             $processingService = GeneralUtility::makeInstance(ItemProcessingService::class);
-            $itemsCollection = SelectItemCollection::createFromArray($tcaFieldConf['items'], $tcaFieldConf['type']);
+            $itemsCollection = SelectItemCollection::createFromArray($items ?? [], $tcaFieldConf['type']);
             $context = new ItemsProcessorContext(
                 table: $table,
                 field: $field,
@@ -2071,7 +2071,12 @@ class DataHandler
                 realPid: $realPid,
                 site: $processingService->resolveSite($realPid)
             );
-            $items = $processingService->processItems($itemsCollection, $context)->toArray();
+            try {
+                $items = $processingService->processItems($itemsCollection, $context)->toArray();
+            } catch (ItemsProcessorExecutionFailedException) {
+                // A processor that cannot run leaves the boxes the field itself declares,
+                // the way getProcessingItems() keeps them for the editing form.
+            }
         }
 
         $itemC = 0;
@@ -2169,7 +2174,14 @@ class DataHandler
                 realPid: $pid,
                 site: $processingService->resolveSite($pid)
             );
-            foreach ($processingService->processItems($itemsCollection, $context) as $set) {
+            try {
+                $processedItems = $processingService->processItems($itemsCollection, $context);
+            } catch (ItemsProcessorExecutionFailedException) {
+                // The declared items have been compared already, and a processor that cannot
+                // run names none of its own, so there is nothing left to compare against.
+                $processedItems = new SelectItemCollection();
+            }
+            foreach ($processedItems as $set) {
                 if ((string)$set['value'] === (string)$value) {
                     $res['value'] = $value;
                     break;
