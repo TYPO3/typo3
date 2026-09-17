@@ -3,8 +3,10 @@ import { FrameLocator } from '@playwright/test';
 import { BackendPage } from '../../fixtures/backend-page';
 
 test.describe('Backend Users module', () => {
-  const expectedUsersMax = 5;
-  const expectedUsersMin = 3;
+  const fixtureUsers = {
+    admin: 'Klaus Admin (admin)',
+    editor: 'editor',
+  };
 
   test.beforeEach(async ({ backend }) => {
     await backend.gotoModule('backend_user_management');
@@ -19,7 +21,7 @@ test.describe('Backend Users module', () => {
     const resetResponse = backend.waitForModuleResponse();
     await contentFrame.locator('button[value="reset-filters"]').click();
     await resetResponse;
-    await expect(contentFrame.locator('#typo3-backend-user-list tbody > tr')).toHaveCount(expectedUsersMax);
+    await expectFixtureUsers(contentFrame);
 
     // Clear compare list if it exists to prevent state leakage between tests
     const clearButton = contentFrame.getByRole('button', { name: 'Clear compare list' });
@@ -32,14 +34,14 @@ test.describe('Backend Users module', () => {
 
 
   test('Shows heading and lists backend users', async ({ backend }) => {
-    await checkCountOfUsers(backend.contentFrame, expectedUsersMax);
+    await expectFixtureUsers(backend.contentFrame);
   });
 
   test('Filter users by username', async ({ backend }) => {
     const contentFrame = backend.contentFrame;
     const inputUsername = contentFrame.getByLabel('Username');
 
-    await expect(contentFrame.locator('#typo3-backend-user-list tbody > tr')).toHaveCount(expectedUsersMax);
+    await expectFixtureUsers(contentFrame);
 
     // Filter the list of user by valid username admin
     await inputUsername.fill('admin');
@@ -73,7 +75,7 @@ test.describe('Backend Users module', () => {
   test('Filter users by admin', async ({ backend }) => {
     const contentFrame = backend.contentFrame;
     await expect(contentFrame.locator('#typo3-backend-user-list')).toBeVisible();
-    await expect(contentFrame.locator('#typo3-backend-user-list tbody tr')).toHaveCount(expectedUsersMax);
+    await expectFixtureUsers(contentFrame);
 
     await contentFrame.locator('#tx_Beuser_usertype').selectOption('Admin');
     const filterButton = contentFrame.getByRole('button', { name: 'Filter' });
@@ -85,7 +87,8 @@ test.describe('Backend Users module', () => {
 
     await expect(contentFrame.locator('#typo3-backend-user-list')).toBeVisible();
 
-    await checkCountOfUsers(contentFrame, expectedUsersMin);
+    await expectFixtureUser(contentFrame, fixtureUsers.admin, true);
+    await expectFixtureUser(contentFrame, fixtureUsers.editor, false);
 
     await contentFrame.locator('#tx_Beuser_usertype').selectOption('Normal user');
 
@@ -95,6 +98,8 @@ test.describe('Backend Users module', () => {
     await filterResponse2;
 
     await expect(contentFrame.locator('#typo3-backend-user-list')).toBeVisible();
+    await expectFixtureUser(contentFrame, fixtureUsers.admin, false);
+    await expectFixtureUser(contentFrame, fixtureUsers.editor, true);
   });
 
   test('Filter users by status', async ({ backend }) => {
@@ -106,7 +111,7 @@ test.describe('Backend Users module', () => {
     await contentFrame.locator('button[value="reset-filters"]').click();
     await resetResponse;
 
-    await checkCountOfUsers(contentFrame, expectedUsersMax);
+    await expectFixtureUsers(contentFrame);
 
     const filterButton = contentFrame.getByRole('button', { name: 'Filter' });
     await contentFrame.locator('#tx_Beuser_status').selectOption('Enabled');
@@ -118,7 +123,7 @@ test.describe('Backend Users module', () => {
 
     await expect(contentFrame.locator('#typo3-backend-user-list')).toBeVisible();
 
-    await checkCountOfUsers(contentFrame, expectedUsersMin);
+    await expectFixtureUsers(contentFrame);
 
     await contentFrame.locator('#tx_Beuser_status').selectOption('Disabled');
 
@@ -129,15 +134,15 @@ test.describe('Backend Users module', () => {
 
     await expect(contentFrame.locator('#typo3-backend-user-list')).toBeVisible();
 
-    // Expect two matching Backend Users created from the Fixtures
-    await checkCountOfUsers(contentFrame, 2);
+    await expectFixtureUser(contentFrame, fixtureUsers.admin, false);
+    await expectFixtureUser(contentFrame, fixtureUsers.editor, false);
   });
 
   test('Filter users by login', async ({ backend }) => {
     const contentFrame = backend.contentFrame;
     await expect(contentFrame.locator('#typo3-backend-user-list')).toBeVisible();
 
-    await checkCountOfUsers(contentFrame, expectedUsersMax);
+    await expectFixtureUsers(contentFrame);
 
     const filterButton = contentFrame.getByRole('button', { name: 'Filter' });
     await contentFrame.locator('#tx_Beuser_logins').selectOption('Logged in before');
@@ -149,8 +154,7 @@ test.describe('Backend Users module', () => {
 
     await expect(contentFrame.locator('#typo3-backend-user-list')).toBeVisible();
 
-    // Expect two matching Backend Users created from the Fixtures
-    await checkCountOfUsers(contentFrame, 2);
+    await expectFixtureUsers(contentFrame);
 
     await contentFrame.locator('#tx_Beuser_logins').selectOption('Never logged in');
 
@@ -161,14 +165,15 @@ test.describe('Backend Users module', () => {
 
     await expect(contentFrame.locator('#typo3-backend-user-list')).toBeVisible();
 
-    await checkCountOfUsers(contentFrame, expectedUsersMin);
+    await expectFixtureUser(contentFrame, fixtureUsers.admin, false);
+    await expectFixtureUser(contentFrame, fixtureUsers.editor, false);
   });
 
   test('Filter users by user group', async ({ backend }) => {
     const contentFrame = backend.contentFrame;
     await expect(contentFrame.locator('#typo3-backend-user-list')).toBeVisible();
 
-    await checkCountOfUsers(contentFrame, expectedUsersMax);
+    await expectFixtureUsers(contentFrame);
 
     // Expect one Backend User created from the Fixtures has the usergroup named 'editor-group'
     const filterButton = contentFrame.getByRole('button', { name: 'Filter' });
@@ -182,8 +187,8 @@ test.describe('Backend Users module', () => {
 
     await expect(contentFrame.locator('#typo3-backend-user-list')).toBeVisible();
 
-    // Expect one matching Backend Users created from the Fixtures
-    await checkCountOfUsers(contentFrame, 1);
+    await expectFixtureUser(contentFrame, fixtureUsers.admin, false);
+    await expectFixtureUser(contentFrame, fixtureUsers.editor, true);
   });
 
   test('Can edit users from index list view', async ({ page }) => {
@@ -192,7 +197,7 @@ test.describe('Backend Users module', () => {
     await expect(contentFrame.locator('#typo3-backend-user-list')).toBeVisible();
 
     const username = 'admin';
-    const adminRow = contentFrame.locator('#typo3-backend-user-list tr', { has: contentFrame.getByRole('link', { name: 'Klaus Admin (admin)' }) });
+    const adminRow = getFixtureUserRow(contentFrame, fixtureUsers.admin);
 
     await contentFrame.locator('button[value="reset-filters"]').click();
 
@@ -208,17 +213,14 @@ test.describe('Backend Users module', () => {
     });
   });
 
-  test('Editing BE user records from compare view works', async ({ page, backend }) => {
+  test('Editing BE user records from compare view works', async ({ backend }) => {
     const contentFrame = backend.contentFrame;
 
     await test.step('Put two users into compare list', async () => {
-      // Add first user to compare list (using first button)
-      await contentFrame.locator('#typo3-backend-user-list').locator('[form="form-add-to-compare-list"]').getByText('Compare').first().click();
+      await getFixtureUserRow(contentFrame, fixtureUsers.admin).getByText('Compare').click();
       await expect(contentFrame.locator('#typo3-backend-user-list-compare tbody').getByRole('row')).toHaveCount(1);
 
-      // Add second user to compare list (using first remaining button)
-      // await contentFrame.locator('#typo3-backend-user-list [data-identifier="actions-plus"]').first().click();
-      await contentFrame.locator('#typo3-backend-user-list').locator('[form="form-add-to-compare-list"]').getByText('Compare').first().click();
+      await getFixtureUserRow(contentFrame, fixtureUsers.editor).getByText('Compare').click();
 
       await expect(contentFrame.locator('#typo3-backend-user-list-compare tbody').getByRole('row')).toHaveCount(2);
 
@@ -227,11 +229,10 @@ test.describe('Backend Users module', () => {
     });
 
     await test.step('First user can be edited', async () => {
-      const usernameFirstCompare = await contentFrame.locator('.beuser-comparison-table thead tr > th:nth-child(2)').textContent() ?? '';
-      await contentFrame.locator('.beuser-comparison-table thead tr > th:nth-child(2) a[title="Edit"]').click();
+      await contentFrame.getByRole('columnheader', { name: /^admin \[\d+]$/ }).getByRole('link', { name: 'Edit' }).click();
 
       await expect(contentFrame.locator('#EditDocumentController')).toBeVisible();
-      await expect(contentFrame.locator('h1')).toContainText(usernameFirstCompare.trim().split('[')[0].trimEnd());
+      await expect(contentFrame.locator('h1')).toContainText('admin');
     });
 
     await test.step('Go back to compare view', async () => {
@@ -242,11 +243,10 @@ test.describe('Backend Users module', () => {
     });
 
     await test.step('Second user can be edited', async () => {
-      const usernameSecondCompare = await contentFrame.locator('.beuser-comparison-table thead tr > th:nth-child(3)').textContent() ?? '';
-      await contentFrame.locator('.beuser-comparison-table thead tr > th:nth-child(3) a[title="Edit"]').click();
+      await contentFrame.getByRole('columnheader', { name: /^editor \[\d+]$/ }).getByRole('link', { name: 'Edit' }).click();
 
       await expect(contentFrame.locator('#EditDocumentController')).toBeVisible();
-      await expect(contentFrame.locator('h1')).toContainText(usernameSecondCompare.trim().split('[')[0].trimEnd());
+      await expect(contentFrame.locator('h1')).toContainText('editor');
 
       await contentFrame.getByRole('button', { name: 'Go back' });
     });
@@ -254,13 +254,17 @@ test.describe('Backend Users module', () => {
     await test.step('Remove all users from compare list', async () => {
       await backend.gotoModule('backend_user_management');
 
-      // await contentFrame.locator('#typo3-backend-user-list-compare [data-identifier="actions-minus"]').first().click();
+      const compareList = contentFrame.locator('#typo3-backend-user-list-compare');
+      const editorRow = compareList.locator('tbody > tr', {
+        has: contentFrame.getByRole('link', { name: fixtureUsers.editor, exact: true }),
+      });
+      await editorRow.getByTitle('Remove from compare list').click();
+      await expect(editorRow).not.toBeVisible();
 
-      // locator('#typo3-backend-user-list-compare').getByRole('row').locator('button[name="uid"]')
-      await contentFrame.locator('#typo3-backend-user-list-compare').getByTitle('Remove from compare list').nth(1).click();
-      await expect(page.frameLocator('iframe[name="list_frame"]').getByRole('row', { name: 'online Open context menu Klaus Admin (admin)', exact: true }).getByRole('link')).not.toBeVisible();
-
-      await contentFrame.locator('#typo3-backend-user-list-compare').getByTitle('Remove from compare list').first().click();
+      const adminRow = compareList.locator('tbody > tr', {
+        has: contentFrame.getByRole('link', { name: fixtureUsers.admin, exact: true }),
+      });
+      await adminRow.getByTitle('Remove from compare list').click();
       await expect(contentFrame.locator('#typo3-backend-user-list-compare')).not.toBeVisible();
     });
   });
@@ -273,6 +277,25 @@ test.describe('Backend Users module', () => {
     await expect(contentFrame.locator('#typo3-backend-user-list tbody > tr')).toHaveCount(countOfUsers);
     await expect(contentFrame.locator('#typo3-backend-user-list tfoot tr')).toHaveCount(1);
     await expect(contentFrame.locator('#typo3-backend-user-list tfoot tr')).toContainText(countOfUsers + ' User');
+  }
+
+  async function expectFixtureUsers(contentFrame: FrameLocator) {
+    await expectFixtureUser(contentFrame, fixtureUsers.admin, true);
+    await expectFixtureUser(contentFrame, fixtureUsers.editor, true);
+  }
+
+  async function expectFixtureUser(contentFrame: FrameLocator, name: string, visible: boolean) {
+    if (visible) {
+      await expect(getFixtureUserRow(contentFrame, name)).toBeVisible();
+    } else {
+      await expect(getFixtureUserRow(contentFrame, name)).not.toBeVisible();
+    }
+  }
+
+  function getFixtureUserRow(contentFrame: FrameLocator, name: string) {
+    return contentFrame.locator('#typo3-backend-user-list tbody > tr', {
+      has: contentFrame.getByRole('link', { name, exact: true }),
+    });
   }
 
   async function openAndCloseTheEditForm(contentFrame: FrameLocator, username: string) {
