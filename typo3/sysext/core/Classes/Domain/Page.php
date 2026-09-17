@@ -34,6 +34,7 @@ class Page extends Record implements \ArrayAccess
         '_ORIG_uid',
         '_ORIG_pid',
         '_SHORTCUT_ORIGINAL_PAGE_UID',
+        '_MOUNT_POINT_ORIGINAL_PAGE_PID',
         '_TRANSLATION_SOURCE',
     ];
 

@@ -206,4 +206,62 @@ final class MenuProcessorTest extends FunctionalTestCase
         self::assertSame($expected, $result['menu']);
     }
 
+    /**
+     * A mount point in overlay mode is replaced by the mounted page, whose pid points
+     * somewhere else. The parent of such a mount point must still be recognized as having
+     * subpages, and its submenu must be built.
+     */
+    #[Test]
+    public function mountPointsAreRecognizedAsSubpages(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/DataSet/MenuProcessorMountPoints.csv');
+
+        $result = $this->processMenu(['levels' => 2, 'includeSpacer' => 1]);
+
+        self::assertSame(
+            [
+                ['title' => 'Normal Parent', 'hasSubpages' => 1, 'children' => ['Normal Child']],
+                ['title' => 'Mount Parent', 'hasSubpages' => 1, 'children' => ['Mounted Target']],
+                ['title' => 'Shortcut Parent', 'hasSubpages' => 1, 'children' => ['Shortcut Child']],
+                ['title' => 'Link Parent', 'hasSubpages' => 1, 'children' => ['Link Child']],
+                ['title' => 'Spacer Parent', 'hasSubpages' => 1, 'children' => ['Mounted Target']],
+            ],
+            $this->reduceMenu($result['menu'])
+        );
+    }
+
+    private function processMenu(array $configuration): array
+    {
+        $site = new Site('main', 1, []);
+        $page = ['uid' => 1, 'title' => 'Home'];
+        $pageInformation = new PageInformation();
+        $pageInformation->setId(1);
+        $pageInformation->setPageRecord($page);
+        $pageInformation->setLocalRootLine([
+            0 => $page,
+        ]);
+        $typoScript = new FrontendTypoScript(new RootNode(), [], [], []);
+        $typoScript->setConfigArray([]);
+        $request = new ServerRequest()
+            ->withAttribute('site', $site)
+            ->withAttribute('frontend.page.information', $pageInformation)
+            ->withAttribute('frontend.register.stack', new RegisterStack())
+            ->withAttribute('frontend.typoscript', $typoScript);
+        $cObj = $this->get(ContentObjectRenderer::class);
+        $cObj->setRequest($request);
+
+        return $this->get(MenuProcessor::class)->process($cObj, [], $configuration, []);
+    }
+
+    private function reduceMenu(array $menu): array
+    {
+        return array_map(
+            static fn(array $item) => [
+                'title' => $item['title'],
+                'hasSubpages' => $item['hasSubpages'],
+                'children' => array_column($item['children'] ?? [], 'title'),
+            ],
+            $menu
+        );
+    }
 }
