@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="da" datatype="plaintext" original="EXT:frontend/Tests/Functional/Rendering/Fixtures/Language/locallang.xlf" date="2026-09-17T00:00:00Z" product-name="frontend">
+    <header/>
+    <body>
+      <trans-unit id="inline.label">
+        <source>English label</source>
+        <target>Dansk etiket</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
