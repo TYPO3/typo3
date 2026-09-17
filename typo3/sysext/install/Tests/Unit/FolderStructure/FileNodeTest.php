@@ -397,6 +397,28 @@ final class FileNodeTest extends AbstractFolderStructureTestCase
     }
 
     #[Test]
+    public function fixSelfFixesPermissionOfCreatedFileIfTargetContentIsNull(): void
+    {
+        $node = $this->getAccessibleMock(
+            FileNode::class,
+            ['exists', 'createFile', 'setContent', 'getAbsolutePath', 'isFile', 'isPermissionCorrect', 'fixPermission'],
+            [],
+            '',
+            false
+        );
+        $node->method('exists')->willReturn(false);
+        $node->method('isFile')->willReturn(true);
+        $node->method('isPermissionCorrect')->willReturn(false);
+        $createMessage = new FlashMessage('foo');
+        $node->method('createFile')->willReturn($createMessage);
+        $node->_set('targetContent', null);
+        $node->expects($this->never())->method('setContent');
+        $fixPermissionMessage = new FlashMessage('bar');
+        $node->expects($this->once())->method('fixPermission')->willReturn($fixPermissionMessage);
+        self::assertSame([$createMessage, $fixPermissionMessage], $node->_call('fixSelf'));
+    }
+
+    #[Test]
     public function fixSelfReturnsErrorStatusIfNodeExistsButIsNotAFileAndReturnsResult(): void
     {
         $node = $this->getAccessibleMock(
@@ -450,9 +472,9 @@ final class FileNodeTest extends AbstractFolderStructureTestCase
     public function createFileThrowsExceptionIfNodeExists(): void
     {
         $this->expectException(Exception::class);
-        $this->expectExceptionCode(1366398198);
-        $node = $this->getAccessibleMock(FileNode::class, ['exists', 'getAbsolutePath'], [], '', false);
-        $node->expects($this->once())->method('getAbsolutePath')->willReturn('');
+        $this->expectExceptionCode(1367048077);
+        $node = $this->getAccessibleMock(FileNode::class, ['exists', 'getRelativePathBelowSiteRoot'], [], '', false);
+        $node->method('getRelativePathBelowSiteRoot')->willReturn('');
         $node->expects($this->once())->method('exists')->willReturn(true);
         $node->_call('createFile');
     }

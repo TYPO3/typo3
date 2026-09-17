@@ -139,10 +139,10 @@ class FileNode extends AbstractNode implements NodeInterface
         if (!$this->exists()) {
             $resultCreateFile = $this->createFile();
             $result[] = $resultCreateFile;
-            if ($resultCreateFile->getSeverity() === ContextualFeedbackSeverity::OK
-                && $this->targetContent !== null
-            ) {
-                $result[] = $this->setContent();
+            if ($resultCreateFile->getSeverity() === ContextualFeedbackSeverity::OK) {
+                if ($this->targetContent !== null) {
+                    $result[] = $this->setContent();
+                }
                 if (!$this->isPermissionCorrect()) {
                     $result[] = $this->fixPermission();
                 }
