@@ -114,21 +114,23 @@ class TypolinkTagSoftReferenceParser extends AbstractSoftReferenceParser
                         ];
                     } elseif ($linkDetails['type'] === LinkService::TYPE_EMAIL) {
                         $token = $this->makeTokenID((string)$key);
+                        $tokenValue = (string)($linkDetails['email'] ?? '');
                         $elements[$key]['matchString'] = $foundValue;
-                        $linkTags[$key] = str_replace($matches[1], '{softref:' . $token . '}', $foundValue);
+                        $linkTags[$key] = str_replace($matches[1], $this->tokenizeLinkValue($matches[1], $tokenValue, $token), $foundValue);
                         $elements[$key]['subst'] = [
                             'type' => 'string',
                             'tokenID' => $token,
-                            'tokenValue' => (string)($linkDetails['email'] ?? ''),
+                            'tokenValue' => $tokenValue,
                         ];
                     } elseif ($linkDetails['type'] === LinkService::TYPE_TELEPHONE) {
                         $token = $this->makeTokenID((string)$key);
+                        $tokenValue = (string)($linkDetails['telephone'] ?? '');
                         $elements[$key]['matchString'] = $foundValue;
-                        $linkTags[$key] = str_replace($matches[1], '{softref:' . $token . '}', $foundValue);
+                        $linkTags[$key] = str_replace($matches[1], $this->tokenizeLinkValue($matches[1], $tokenValue, $token), $foundValue);
                         $elements[$key]['subst'] = [
                             'type' => 'string',
                             'tokenID' => $token,
-                            'tokenValue' => (string)($linkDetails['telephone'] ?? ''),
+                            'tokenValue' => $tokenValue,
                         ];
                     } else {
                         $token = $this->makeTokenID((string)$key);
@@ -151,5 +153,19 @@ class TypolinkTagSoftReferenceParser extends AbstractSoftReferenceParser
             implode('', $linkTags),
             $elements
         );
+    }
+
+    /**
+     * Substitutes only the resolved value inside the href, so that a scheme like "mailto:"
+     * or "tel:" and any trailing parameters are not part of the token and therefore survive
+     * a later import, which replaces the token with the bare tokenValue again.
+     */
+    private function tokenizeLinkValue(string $href, string $tokenValue, string $token): string
+    {
+        $position = $tokenValue === '' ? false : strpos($href, $tokenValue);
+        if ($position === false) {
+            return '{softref:' . $token . '}';
+        }
+        return substr_replace($href, '{softref:' . $token . '}', $position, strlen($tokenValue));
     }
 }
