@@ -16,6 +16,8 @@
 namespace TYPO3\CMS\Impexp\Tests\Functional;
 
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Impexp\Export;
 use TYPO3\CMS\Impexp\Import;
 
@@ -52,5 +54,37 @@ final class ImportExportTest extends AbstractImportExportTestCase
             __DIR__ . '/Fixtures/XmlImports/irre-records.xml',
             $actual
         );
+    }
+
+    #[Test]
+    public function importExportKeepsSchemeOfMailtoAndTelephoneLinks(): void
+    {
+        $bodytext = '<p><a href="mailto:info@example.org">Write us</a><br /> <a href="tel:0123456789">Call us</a></p>';
+
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/DatabaseImports/pages.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/DatabaseImports/tt_content-with-mailto-and-tel-links.csv');
+
+        $export = $this->get(Export::class);
+        $export->setPid(1);
+        $export->setLevels(1);
+        $export->setTables(['_ALL']);
+        $export->process();
+
+        $exportFile = Environment::getPublicPath() . '/fileadmin/xml_exports/mailto-and-tel-links.xml';
+        GeneralUtility::mkdir_deep(dirname($exportFile));
+        GeneralUtility::writeFile($exportFile, $export->render(), true);
+        $this->testFilesToDelete[] = $exportFile;
+
+        $import = $this->get(Import::class);
+        $import->setPid(0);
+        $import->loadFile('fileadmin/xml_exports/mailto-and-tel-links.xml');
+        $import->importData();
+
+        $importedBodytext = $this->getConnectionPool()
+            ->getConnectionForTable('tt_content')
+            ->executeQuery('SELECT bodytext FROM tt_content WHERE uid > 1 ORDER BY uid ASC')
+            ->fetchOne();
+
+        self::assertSame($bodytext, $importedBodytext);
     }
 }
