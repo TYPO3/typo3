@@ -97,6 +97,39 @@ defined('TYPO3') or die();
                 'default' => 0,
             ],
         ],
+        'tx_testdatahandler_checkbox_undefined_items' => [
+            'exclude' => true,
+            'label' => 'DataHandler Test Checkbox composing its only box',
+            'config' => [
+                'type' => 'check',
+                'itemsProcFunc' => \TYPO3Tests\TestDatahandler\Tca\CheckboxElementItems::class . '->getItems',
+                'default' => 0,
+            ],
+        ],
+        'tx_testdatahandler_checkbox_failing_items' => [
+            'exclude' => true,
+            'label' => 'DataHandler Test Checkbox whose processor refuses to run',
+            'config' => [
+                'type' => 'check',
+                'items' => [
+                    ['label' => 'predefined label'],
+                ],
+                'itemsProcFunc' => \TYPO3Tests\TestDatahandler\Tca\FailingElementItems::class . '->getItems',
+                'default' => 0,
+            ],
+        ],
+        'tx_testdatahandler_radio_failing_items' => [
+            'exclude' => true,
+            'label' => 'DataHandler Test Radio whose processor refuses to run',
+            'config' => [
+                'type' => 'radio',
+                'items' => [
+                    ['label' => 'predefined label', 'value' => 'predefined value'],
+                ],
+                'itemsProcFunc' => \TYPO3Tests\TestDatahandler\Tca\FailingElementItems::class . '->getItems',
+                'default' => '',
+            ],
+        ],
         'tx_testdatahandler_checkbox_with_eval' => [
             'exclude' => true,
             'label' => 'DataHandler Test Checkbox with eval and validation',
@@ -152,5 +185,7 @@ defined('TYPO3') or die();
     '--div--;DataHandler Test,'
     . 'tx_testdatahandler_category,tx_testdatahandler_categories, tx_testdatahandler_select,tx_testdatahandler_select_dynamic, tx_testdatahandler_group,'
     . 'tx_testdatahandler_radio,tx_testdatahandler_checkbox, tx_testdatahandler_checkbox_with_eval,'
+    . 'tx_testdatahandler_checkbox_undefined_items,tx_testdatahandler_checkbox_failing_items,'
+    . 'tx_testdatahandler_radio_failing_items,'
     . 'tx_testdatahandler_input_minvalue,tx_testdatahandler_input_minvalue_zero, tx_testdatahandler_text_minvalue,tx_testdatahandler_richttext_minvalue '
 );
