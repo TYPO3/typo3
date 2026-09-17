@@ -1,0 +1,9 @@
+page = PAGE
+page {
+  10 = TEXT
+  10.value = Hello World
+
+  inlineLanguageLabelFiles {
+    test = EXT:frontend/Tests/Functional/Rendering/Fixtures/Language/locallang.xlf
+  }
+}
