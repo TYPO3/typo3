@@ -21,6 +21,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\LinkHandling\TypolinkParameter;
 use TYPO3\CMS\Core\Routing\PageArguments;
@@ -274,7 +275,8 @@ EOT
     #[Test]
     public function renderWithAssignedParameters(string $template, array $assigns, string $expected): void
     {
-        $request = new ServerRequest('http://localhost/');
+        $request = new ServerRequest('http://localhost/', 'GET', null, [], ['HTTP_HOST' => 'localhost', 'REQUEST_URI' => '/']);
+        $request = $request->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
         $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
         $request = $request->withAttribute('routing', new PageArguments(1, '0', []));
         $request = $request->withAttribute('site', new Site(

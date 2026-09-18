@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\Typolink;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\TestWith;
+use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
 use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
@@ -90,6 +91,19 @@ final class LinkFactoryTest extends FunctionalTestCase
         self::assertEquals('something noreferrer', $result->getAttribute('rel'));
     }
 
+    #[Test]
+    public function internalLinkDoesNotGetSecurityRelValue(): void
+    {
+        $subject = $this->get(LinkFactory::class);
+        $cObject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+        $cObject->setRequest($this->buildRequestWithTypoScriptConfigArray([]));
+
+        // Absolute URL opened in new window, but on the same host.
+        $result = $subject->create('link text', ['parameter' => 'https://internal.example _blank'], $cObject);
+
+        self::assertNull($result->getAttribute('rel'));
+    }
+
     /**
      * Build and return a ServerRequest object where attribute "frontend.typoscript" exists
      * and has the given array set as $configArray
@@ -99,6 +113,16 @@ final class LinkFactoryTest extends FunctionalTestCase
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
         $frontendTypoScript->setConfigArray($configArray);
-        return new ServerRequest()->withAttribute('frontend.typoscript', $frontendTypoScript);
+        $request = new ServerRequest(
+            'https://internal.example/',
+            'GET',
+            null,
+            [],
+            ['HTTP_HOST' => 'internal.example', 'REQUEST_URI' => '/', 'HTTPS' => 'on']
+        );
+        $normalizedParams = NormalizedParams::createFromRequest($request);
+        return $request
+            ->withAttribute('normalizedParams', $normalizedParams)
+            ->withAttribute('frontend.typoscript', $frontendTypoScript);
     }
 }
