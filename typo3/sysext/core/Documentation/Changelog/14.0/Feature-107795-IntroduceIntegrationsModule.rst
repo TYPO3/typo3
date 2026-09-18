@@ -44,7 +44,7 @@ Module navigation
 =================
 
 The third-level modules (:guilabel:`Administration > Integrations > Webhooks`
-and :guilabel:`Administration > Integrations > Reactions) now
+and :guilabel:`Administration > Integrations > Reactions`) now
 include:
 
 *   **Doc header module menu** - Quick navigation dropdown to switch between
