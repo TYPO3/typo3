@@ -11,12 +11,14 @@ Usage
 Redirects module
 ================
 
-Access the redirects module in the TYPO3 backend under :guilabel:`Sites > Redirects`.
+Access the redirects module in the TYPO3 backend under
+:guilabel:`Sites > Link Management > Redirects`.
 
 .. figure:: ../Images/RedirectsMenu.png
+    :alt: The Link Management overview in the Sites menu with the Redirects, QR Codes and Short URLs modules
     :class: with-shadow
 
-    Open Redirects module
+    Open the Redirects module from :guilabel:`Sites > Link Management`
 
 ..  _usage-redirects-module-list:
 
