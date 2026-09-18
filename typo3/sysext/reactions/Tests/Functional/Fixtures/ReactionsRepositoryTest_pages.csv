@@ -1,3 +1,3 @@
-pages,,,,,,,,,,,
-,uid,pid,crdate,deleted,hidden,title,TSconfig
-,1,0,2147483647,0,0,Test Parent,TCEFORM.pages.doktype.addItems.123 = Custom Type
+pages,,,,,,,,,,,,,,
+,uid,pid,crdate,deleted,hidden,doktype,title,TSconfig,perms_groupid,perms_group
+,1,0,2147483647,0,0,1,Test Parent,TCEFORM.pages.doktype.addItems.123 = Custom Type,10,31

@@ -22,6 +22,7 @@ use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Configuration\SiteWriter;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -50,6 +51,7 @@ final class CreateRecordReactionTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/ReactionsRepositoryTest_pages.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/ReactionsRepositoryTest_reactions.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/CreateRecordReactionTest_reactions.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/CreateRecordReactionTest_impersonation.csv');
     }
 
     #[Test]
@@ -579,6 +581,80 @@ final class CreateRecordReactionTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function reactWritesOnlyWhatTheImpersonatedUserIsAllowedTo(): void
+    {
+        // The reaction runs as the user it impersonates, and that user is not the one who
+        // configured the map: reaction 29 is written by an editor granted pages:nav_title
+        // and nothing else. DataHandler drops the two fields the editor may not write
+        // without logging anything, so the caller would read the 201 as "all of it landed"
+        // while subtitle and TSconfig kept their defaults.
+        $this->writeSiteConfigurationForTheStoragePage();
+
+        $response = $this->dispatchReaction('8f5e5d0a-1f2b-4c3d-9e7a-0b1c2d3e4f63', ['foo' => 'bar']);
+        $body = json_decode((string)$response->getBody(), true);
+
+        self::assertEquals(201, $response->getStatusCode());
+        // The reported order follows the stored map, which a JSON column normalises on some
+        // database platforms, so only the entries are compared.
+        self::assertArrayHasKey('skippedFields', $body);
+        $skippedFields = $body['skippedFields'];
+        ksort($skippedFields);
+        self::assertSame(
+            [
+                // Shown to admins only, and the editor is none.
+                'TSconfig' => 'notPermitted',
+                // Declares "exclude" and is not in the non_exclude_fields of the editor.
+                'subtitle' => 'notPermitted',
+            ],
+            $skippedFields
+        );
+
+        $pages = $this->getTestPages();
+        self::assertCount(1, $pages);
+        self::assertSame('Nav bar', (string)$pages[0]['nav_title']);
+        self::assertSame('', (string)$pages[0]['subtitle']);
+        self::assertSame('', (string)$pages[0]['TSconfig']);
+    }
+
+    #[Test]
+    public function reactWritesTheSameMapInFullForAnImpersonatedAdmin(): void
+    {
+        // Reaction 30 carries the map of the one above and impersonates an admin instead.
+        // Nothing about the map decides what is written, so the same three fields land.
+        $response = $this->dispatchReaction('8f5e5d0a-1f2b-4c3d-9e7a-0b1c2d3e4f64', ['foo' => 'bar']);
+        $body = json_decode((string)$response->getBody(), true);
+
+        self::assertEquals(201, $response->getStatusCode());
+        self::assertArrayNotHasKey('skippedFields', $body);
+        self::assertArrayNotHasKey('warnings', $body);
+
+        $pages = $this->getTestPages();
+        self::assertCount(1, $pages);
+        self::assertSame('Nav bar', (string)$pages[0]['nav_title']);
+        self::assertSame('Sub bar', (string)$pages[0]['subtitle']);
+        self::assertSame('foo = bar', (string)$pages[0]['TSconfig']);
+    }
+
+    #[Test]
+    public function reactCreatesNoRecordWhereTheImpersonatedUserMayWriteNoFieldOfIt(): void
+    {
+        // Every field of the map is refused, so what is left is the defaults of the table
+        // alone. Writing the record out of those would answer the call with a page the
+        // caller asked nothing about.
+        $this->writeSiteConfigurationForTheStoragePage();
+
+        $response = $this->dispatchReaction('8f5e5d0a-1f2b-4c3d-9e7a-0b1c2d3e4f65', ['foo' => 'bar']);
+        $body = json_decode((string)$response->getBody(), true);
+
+        self::assertEquals(400, $response->getStatusCode());
+        self::assertFalse($body['success']);
+        self::assertSame('No field of the record could be written', $body['error']);
+        self::assertSame(['subtitle' => 'notPermitted'], $body['skippedFields']);
+        self::assertCount(0, $this->getTestPages('Test bar'));
+        self::assertCount(0, $this->getTestPages('Sub bar'));
+    }
+
+    #[Test]
     public function theFieldMapIsShownInAPaletteOfItsOwn(): void
     {
         // A column in a palette no showitem names is a field nobody can reach, so the two
@@ -591,6 +667,30 @@ final class CreateRecordReactionTest extends FunctionalTestCase
             $tca['types'][CreateRecordReaction::getType()]['showitem']
         );
         self::assertStringNotContainsString('fields', $tca['palettes']['createRecord']['showitem']);
+    }
+
+    /**
+     * A record written by a user who is no admin needs a language it may use, and
+     * DataHandler takes that from the site of the page the record lands on. Without one it
+     * refuses the record before any field of it is looked at, which is not what the tests
+     * impersonating an editor are about.
+     */
+    private function writeSiteConfigurationForTheStoragePage(): void
+    {
+        $this->get(SiteWriter::class)->write('reactions', [
+            'rootPageId' => 1,
+            'base' => '/',
+            'languages' => [
+                [
+                    'title' => 'English',
+                    'enabled' => true,
+                    'languageId' => 0,
+                    'base' => '/',
+                    'locale' => 'en_US.UTF-8',
+                    'flag' => 'us',
+                ],
+            ],
+        ]);
     }
 
     private function dispatchReaction(string $identifier, array $payload): ResponseInterface

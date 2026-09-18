@@ -1,0 +1,6 @@
+"be_groups",,,,,,
+,"uid","pid","deleted","title","tables_modify","non_exclude_fields","pagetypes_select"
+,10,0,0,"Reaction Editor","pages","pages:nav_title","1"
+"be_users",,,,,,
+,"uid","pid","username","usergroup","db_mountpoints","deleted","admin","options"
+,10,0,"reaction_editor","10","1",0,0,0
