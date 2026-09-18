@@ -62,7 +62,6 @@ use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
-use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\TypoScript\AST\AstBuilder;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
 use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
@@ -4750,7 +4749,7 @@ content="benni">',
     {
         $linkService = $this->getMockBuilder(LinkService::class)->disableOriginalConstructor()->getMock();
         $linkService->method('resolve')->with('foo')->willThrowException(new InvalidPathException('', 1666303735));
-        $linkFactory = new LinkFactory($linkService, $this->get(EventDispatcherInterface::class), $this->get(TypoLinkCodecService::class), $this->get('cache.runtime'), $this->get(SiteFinder::class), new NullLogger());
+        $linkFactory = new LinkFactory($linkService, $this->get(EventDispatcherInterface::class), $this->get(TypoLinkCodecService::class), new NullLogger());
         $this->get('service_container')->set(LinkFactory::class, $linkFactory);
         $subject = $this->get(ContentObjectRenderer::class);
         $subject->setRequest($this->getPreparedRequest());
@@ -4764,7 +4763,7 @@ content="benni">',
         $linkService->method('resolve')->with('foo')->willThrowException(new InvalidPathException('', 1666303765));
         $logger = $this->getMockBuilder(Logger::class)->disableOriginalConstructor()->getMock();
         $logger->expects($this->atLeastOnce())->method('warning')->with('The link could not be generated', self::anything());
-        $linkFactory = new LinkFactory($linkService, $this->get(EventDispatcherInterface::class), $this->get(TypoLinkCodecService::class), $this->get('cache.runtime'), $this->get(SiteFinder::class), $logger);
+        $linkFactory = new LinkFactory($linkService, $this->get(EventDispatcherInterface::class), $this->get(TypoLinkCodecService::class), $logger);
         $this->get('service_container')->set(LinkFactory::class, $linkFactory);
         $subject = $this->get(ContentObjectRenderer::class);
         $subject->setRequest($this->getPreparedRequest());

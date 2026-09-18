@@ -21,14 +21,11 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
-use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\LinkHandling\TypoLinkCodecService;
 use TYPO3\CMS\Core\Page\DefaultJavaScriptAssetTrait;
 use TYPO3\CMS\Core\Resource\Exception\InvalidPathException;
-use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Event\AfterLinkIsGeneratedEvent;
@@ -46,9 +43,6 @@ readonly class LinkFactory
         protected LinkService $linkService,
         protected EventDispatcherInterface $eventDispatcher,
         protected TypoLinkCodecService $typoLinkCodecService,
-        #[Autowire(service: 'cache.runtime')]
-        protected FrontendInterface $runtimeCache,
-        protected SiteFinder $siteFinder,
         protected LoggerInterface $logger,
     ) {}
 
@@ -336,8 +330,7 @@ readonly class LinkFactory
     /**
      * Checks whether the given url is an internal url.
      *
-     * It will check the host part only, against all configured sites
-     * whether the given host is any. If so, the url is considered internal.
+     * It will check the host part only.
      *
      * Note: It would be good to move this to EXT:core/Classes/Site which accepts also a PSR-7 request and
      * also accepts a PSR-7 Uri.
@@ -345,27 +338,10 @@ readonly class LinkFactory
     protected function isInternalUrl(string $url, ServerRequestInterface $request): bool
     {
         $parsedUrl = parse_url($url);
-        $foundDomains = 0;
         if (!isset($parsedUrl['host'])) {
             return true;
         }
 
-        $cacheIdentifier = sha1('isInternalDomain' . $parsedUrl['host']);
-
-        if ($this->runtimeCache->has($cacheIdentifier) === false) {
-            foreach ($this->siteFinder->getAllSites() as $site) {
-                if ($site->getBase()->getHost() === $parsedUrl['host']) {
-                    ++$foundDomains;
-                    break;
-                }
-                if ($site->getBase()->getHost() === '' && GeneralUtility::isOnCurrentHost($url, $request)) {
-                    ++$foundDomains;
-                    break;
-                }
-            }
-            $this->runtimeCache->set($cacheIdentifier, $foundDomains > 0);
-        }
-
-        return (bool)$this->runtimeCache->get($cacheIdentifier);
+        return GeneralUtility::isOnCurrentHost($url, $request);
     }
 }
