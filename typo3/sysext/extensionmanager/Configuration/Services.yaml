@@ -45,11 +45,6 @@ services:
         alias: true
         schedulable: false
 
-  TYPO3\CMS\Extensionmanager\Report\ExtensionComposerStatus:
-    public: true
-    tags:
-      - name: reports.status
-
   TYPO3\CMS\Extensionmanager\Report\ExtensionStatus:
     tags:
       - name: reports.status

@@ -64,11 +64,6 @@ class AbstractController extends ActionController
                 'action' => 'index',
                 'label' => $this->translate('installedExtensions'),
             ],
-            'extensionComposerStatus' => [
-                'controller' => 'ExtensionComposerStatus',
-                'action' => 'list',
-                'label' => $this->translate('extensionComposerStatus'),
-            ],
         ];
 
         if (!(bool)($this->settings['offlineMode'] ?? false) && !Environment::isComposerMode()) {

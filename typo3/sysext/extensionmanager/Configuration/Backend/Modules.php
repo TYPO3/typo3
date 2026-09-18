@@ -4,7 +4,6 @@ use TYPO3\CMS\Backend\Security\SudoMode\Access\AccessLifetime;
 use TYPO3\CMS\Extensionmanager\Controller\ActionController;
 use TYPO3\CMS\Extensionmanager\Controller\DistributionController;
 use TYPO3\CMS\Extensionmanager\Controller\DownloadController;
-use TYPO3\CMS\Extensionmanager\Controller\ExtensionComposerStatusController;
 use TYPO3\CMS\Extensionmanager\Controller\ListController;
 use TYPO3\CMS\Extensionmanager\Controller\UpdateFromTerController;
 use TYPO3\CMS\Extensionmanager\Controller\UploadExtensionFileController;
@@ -40,9 +39,6 @@ return [
             ],
             DistributionController::class => [
                 'show',
-            ],
-            ExtensionComposerStatusController::class => [
-                'list', 'detail',
             ],
         ],
         'routeOptions' => [
