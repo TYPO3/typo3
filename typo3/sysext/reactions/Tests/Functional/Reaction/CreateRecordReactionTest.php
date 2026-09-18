@@ -279,12 +279,17 @@ final class CreateRecordReactionTest extends FunctionalTestCase
         $body = json_decode((string)$response->getBody(), true);
 
         self::assertEquals(201, $response->getStatusCode());
+        // The reported order follows the stored map, which a JSON column normalises on some
+        // database platforms, so only the entries are compared.
+        self::assertArrayHasKey('skippedFields', $body);
+        $skippedFields = $body['skippedFields'];
+        ksort($skippedFields);
         self::assertSame(
             [
-                'nav_title' => 'placeholderUnresolved',
                 'doktype' => 'valueNotOffered',
+                'nav_title' => 'placeholderUnresolved',
             ],
-            $body['skippedFields']
+            $skippedFields
         );
         $pages = $this->getTestPages();
         self::assertCount(1, $pages);
@@ -505,13 +510,19 @@ final class CreateRecordReactionTest extends FunctionalTestCase
         self::assertNotSame('1', (string)$pages[0]['fe_group']);
 
         // Skipping them silently would leave the caller reading a 201 as "all of it landed".
+        // The reported order follows the stored map, which a JSON column normalises on some
+        // database platforms, so only the entries are compared.
+        $body = json_decode((string)$response->getBody(), true);
+        self::assertArrayHasKey('skippedFields', $body);
+        $skippedFields = $body['skippedFields'];
+        ksort($skippedFields);
         self::assertSame(
             [
-                'perms_everybody' => 'notMappable',
                 'fe_group' => 'notMappable',
                 'nonsense' => 'notMappable',
+                'perms_everybody' => 'notMappable',
             ],
-            json_decode((string)$response->getBody(), true)['skippedFields']
+            $skippedFields
         );
     }
 
