@@ -19,9 +19,13 @@ namespace TYPO3\CMS\Form\Tests\Functional\Mvc\Property;
 
 use PHPUnit\Framework\Attributes\Test;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface as ExtbaseConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Domain\Model\FileReference;
+use TYPO3\CMS\Extbase\Error\Error;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Form\Domain\Factory\ArrayFormFactory;
@@ -29,6 +33,7 @@ use TYPO3\CMS\Form\Domain\Model\FormDefinition;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime\FormSession;
 use TYPO3\CMS\Form\Event\AfterFormStateInitializedEvent;
+use TYPO3\CMS\Form\Mvc\Property\TypeConverter\UploadedFileReferenceConverter;
 use TYPO3\CMS\Form\Mvc\Validation\MimeTypeValidator;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -53,6 +58,13 @@ final class FileUploadMimeTypeValidatorRegistrationTest extends FunctionalTestCa
         // ConfigurationManager, which requires a request to be set.
         $request = new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $this->get(ExtbaseConfigurationManagerInterface::class)->setRequest($request);
+        GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/fileadmin/user_upload/');
+    }
+
+    protected function tearDown(): void
+    {
+        GeneralUtility::rmdir(Environment::getPublicPath() . '/fileadmin/user_upload/', true);
+        parent::tearDown();
     }
 
     private function buildFormDefinition(array $fileUploadProperties): FormDefinition
@@ -103,6 +115,49 @@ final class FileUploadMimeTypeValidatorRegistrationTest extends FunctionalTestCa
         return false;
     }
 
+    /**
+     * Runs a PDF upload through the type converter with the property mapping
+     * configuration that was set up for the "file-1" element.
+     */
+    private function uploadPdf(FormDefinition $formDefinition): mixed
+    {
+        $tmpPath = $this->instancePath . '/typo3temp/var/transient/';
+        GeneralUtility::mkdir_deep($tmpPath);
+        copy(__DIR__ . '/TypeConverter/Fixtures/test-document.pdf', $tmpPath . 'upload.pdf');
+
+        $source = [
+            'error' => \UPLOAD_ERR_OK,
+            'name' => 'upload.pdf',
+            'type' => 'application/pdf',
+            'tmp_name' => $tmpPath . 'upload.pdf',
+            'size' => filesize($tmpPath . 'upload.pdf'),
+        ];
+
+        return $this->get(UploadedFileReferenceConverter::class)->convertFrom(
+            $source,
+            FileReference::class,
+            [],
+            $formDefinition->getProcessingRules()['file-1']->getPropertyMappingConfiguration()
+        );
+    }
+
+    /**
+     * @return list<string>
+     */
+    private function collectUploadedFiles(): array
+    {
+        $files = [];
+        $iterator = new \RecursiveIteratorIterator(
+            new \RecursiveDirectoryIterator(Environment::getPublicPath() . '/fileadmin/user_upload/', \FilesystemIterator::SKIP_DOTS)
+        );
+        foreach ($iterator as $fileInfo) {
+            if ($fileInfo->isFile() && $fileInfo->getFilename() !== 'index.html') {
+                $files[] = $fileInfo->getFilename();
+            }
+        }
+        return $files;
+    }
+
     #[Test]
     public function mimeTypeValidatorIsRegisteredForConfiguredAllowedMimeTypes(): void
     {
@@ -119,8 +174,24 @@ final class FileUploadMimeTypeValidatorRegistrationTest extends FunctionalTestCa
     }
 
     #[Test]
-    public function mimeTypeValidatorIsNotRegisteredWhenNoAllowedMimeTypesConfigured(): void
+    public function mimeTypeValidatorIsRegisteredWhenNoAllowedMimeTypesConfigured(): void
     {
+        $formDefinition = $this->buildFormDefinition(['allowedMimeTypes' => []]);
+
+        $this->get(EventDispatcherInterface::class)->dispatch(
+            new AfterFormStateInitializedEvent($this->runtimeAllowingSubmission($formDefinition), new Request(new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters())))
+        );
+
+        self::assertTrue(
+            $this->processingRuleHasMimeTypeValidator($formDefinition),
+            'MimeTypeValidator must be registered even when no allowedMimeTypes are configured.'
+        );
+    }
+
+    #[Test]
+    public function mimeTypeValidatorIsNotRegisteredWhenEmptyAndFeatureToggleEnabled(): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['features']['security.form.allowUnrestrictedFileUploadMimeTypes'] = true;
         $formDefinition = $this->buildFormDefinition(['allowedMimeTypes' => []]);
 
         $this->get(EventDispatcherInterface::class)->dispatch(
@@ -129,7 +200,7 @@ final class FileUploadMimeTypeValidatorRegistrationTest extends FunctionalTestCa
 
         self::assertFalse(
             $this->processingRuleHasMimeTypeValidator($formDefinition),
-            'MimeTypeValidator must not be registered when no allowedMimeTypes are configured.'
+            'MimeTypeValidator must not be registered when the feature toggle allows an empty list.'
         );
     }
 
@@ -155,5 +226,46 @@ final class FileUploadMimeTypeValidatorRegistrationTest extends FunctionalTestCa
         }
 
         self::assertSame(1, $mimeTypeValidatorCount, 'MimeTypeValidator was registered more than once.');
+    }
+
+    #[Test]
+    public function uploadIsRefusedAndNotPersistedWhenNoAllowedMimeTypesConfigured(): void
+    {
+        $formDefinition = $this->buildFormDefinition([
+            'saveToFileMount' => '1:/user_upload/',
+            'allowedMimeTypes' => [],
+        ]);
+        $this->get(EventDispatcherInterface::class)->dispatch(
+            new AfterFormStateInitializedEvent(
+                $this->runtimeAllowingSubmission($formDefinition),
+                new Request(new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters()))
+            )
+        );
+
+        $result = $this->uploadPdf($formDefinition);
+
+        self::assertInstanceOf(Error::class, $result);
+        self::assertSame(1793200460, $result->getCode());
+        self::assertSame([], $this->collectUploadedFiles(), 'A refused upload must not be persisted.');
+    }
+
+    #[Test]
+    public function uploadIsPersistedWhenMimeTypeIsAllowed(): void
+    {
+        $formDefinition = $this->buildFormDefinition([
+            'saveToFileMount' => '1:/user_upload/',
+            'allowedMimeTypes' => ['application/pdf'],
+        ]);
+        $this->get(EventDispatcherInterface::class)->dispatch(
+            new AfterFormStateInitializedEvent(
+                $this->runtimeAllowingSubmission($formDefinition),
+                new Request(new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters()))
+            )
+        );
+
+        $result = $this->uploadPdf($formDefinition);
+
+        self::assertInstanceOf(FileReference::class, $result);
+        self::assertSame(['upload.pdf'], $this->collectUploadedFiles());
     }
 }

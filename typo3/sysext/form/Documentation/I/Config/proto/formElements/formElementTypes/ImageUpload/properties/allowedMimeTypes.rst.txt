@@ -43,4 +43,35 @@ properties.allowedMimeTypes
     ToDo
 
 :aspect:`Description`
-    The allowed mime types for the image uploads.
+      The allowed mime types for the image uploads, used as an allow list.
+
+      This property is mandatory. If the list is **empty**, image uploads for this
+      element are refused completely (security by default) - configure at least
+      one allowed mime type. This behavior can be disabled by enabling the
+      feature toggle :php:`security.form.allowUnrestrictedFileUploadMimeTypes`,
+      which however is not recommended.
+
+      In the form editor, only the mime types listed in the
+      :ref:`selectOptions <prototypes.prototypeIdentifier.formelementsdefinition.imageupload.formeditor.editors.300>`
+      of the editor can be selected. If a required mime type is missing, add it
+      to the select options in a
+      :ref:`custom form configuration <concepts-configuration-yamlregistration>`
+      instead of leaving the list empty:
+
+      ..  code-block:: yaml
+
+          prototypes:
+            standard:
+              formElementsDefinition:
+                ImageUpload:
+                  formEditor:
+                    editors:
+                      300:
+                        selectOptions:
+                          100:
+                            value: image/webp
+                            label: 'WebP image (.webp)'
+
+      Only add mime types that are safe to be uploaded by website visitors.
+      Avoid browser-active content such as :yaml:`image/svg+xml`.
+

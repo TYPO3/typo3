@@ -31,6 +31,8 @@ formEditor.editors.300
                 templateName: Inspector-MultiSelectEditor
                 label: formEditor.elements.ImageUpload.editor.allowedMimeTypes.label
                 propertyPath: properties.allowedMimeTypes
+                propertyValidators:
+                  10: NotEmpty
                 selectOptions:
                   10:
                     value: image/jpeg
