@@ -142,7 +142,7 @@ The translation keys are put together based on a specific pattern and there is a
 order (fallback chain) for the translations that depends on translation scenarios.
 These are the translation scenarios:
 
-*   translation of a form element property for a specific form (`formDefinitionIdentifier) and form
+*   translation of a form element property for a specific form (`formDefinitionIdentifier`) and form
     element (`ElementIdentifier`)
 *   translation of a form element property for a specific form element (`formElementIdentifier`) and
     various forms
