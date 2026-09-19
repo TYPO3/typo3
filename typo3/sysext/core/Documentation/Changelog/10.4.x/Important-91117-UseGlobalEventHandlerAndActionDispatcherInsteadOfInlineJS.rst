@@ -44,7 +44,7 @@ Navigates to URL once selected drop-down was changed
 
 Navigates to URL once selected drop-down was changed, including selected value
 (`$data` refers to value of :html:`data-navigate-value`, `$value` to selected value,
-`$data=~s/$value/` replaces literal `${value}` with selected value in `:html:`data-navigate-value`)
+`$data=~s/$value/` replaces literal `${value}` with selected value in :html:`data-navigate-value`)
 
 
 .. code-block:: html

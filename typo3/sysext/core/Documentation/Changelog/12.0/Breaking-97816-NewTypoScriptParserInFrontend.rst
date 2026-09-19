@@ -28,7 +28,7 @@ The change has impact on Frontend caching, hooks, some classes and properties. I
 
 * The classes :php:`TYPO3\CMS\Core\TypoScript\TemplateService` and :php:`TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser`
   have been marked as deprecated and shouldn't be used anymore.
-  An instance of :php:`TemplateService` is still kept as property :php:`TypoScriptFrontendController->tmpl` (:php:`$GLOBALS['TSFE']->tmpl)
+  An instance of :php:`TemplateService` is still kept as property :php:`TypoScriptFrontendController->tmpl` (:php:`$GLOBALS['TSFE']->tmpl`)
   as backwards compatible layer, and the most important properties within the class, namely especially :php:`TemplateService->setup` is
   still set. To avoid using these properties, the Frontend request object will contain this state.
   In rare cases, where extensions need to parse TypoScript on their own, they should switch to the Tokenizer and AstBuilder structures

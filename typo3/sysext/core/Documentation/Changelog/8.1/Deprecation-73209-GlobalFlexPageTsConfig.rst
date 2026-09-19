@@ -21,7 +21,7 @@ Example for a now deprecated global TSConfig value:
 `TCEFORM.tt_content.pi_flexform.PAGE_TSCONFIG_ID = 42`
 
 This should now be restricted to specific fields of the flexfrom data structure, if for example
-the flexform `foreign_table_where` of field `settings.categories` of a `tt_content` plugin`s
+the flexform `foreign_table_where` of field `settings.categories` of a `tt_content` plugin's
 data structure should be set, the new page TSConfig option should look like:
 
 `TCEFORM.tt_content.pi_flexform.theDataStructure.theSheet.settings\.categories.PAGE_TSCONFIG_ID = 42`

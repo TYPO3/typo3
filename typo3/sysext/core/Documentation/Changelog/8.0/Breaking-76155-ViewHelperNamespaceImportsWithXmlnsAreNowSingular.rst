@@ -12,7 +12,7 @@ See :issue:`76155`
 Description
 ===========
 
-Fluid templates which use **multiple** ´<div xmlns:xyz="...">` in one template file are affected. Only the first
+Fluid templates which use **multiple** `<div xmlns:xyz="...">` in one template file are affected. Only the first
 such node is now detected and respected. The reasons for this new limitation are the reworked internals of Fluid since
 the standalone version.
 

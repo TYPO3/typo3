@@ -15,7 +15,7 @@ Description
 Font tags are not used any more in HTML since years.
 
 -  :php:`ContentObjectRenderer::stdWrap_fontTag()`
--  :typoscript:`stdWrap.fontTag``
+-  :typoscript:`stdWrap.fontTag`
 
 
 Impact

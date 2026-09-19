@@ -23,7 +23,7 @@ For TYPO3 9.1, the system extension "redirects" adds URL redirects to the main m
 Impact
 ======
 
-To add a new module to the Site main module, register a module within an extensions` :php:'ext_tables.php' file:
+To add a new module to the Site main module, register a module within an extensions' :php:`ext_tables.php` file:
 
 .. code-block:: php
 
