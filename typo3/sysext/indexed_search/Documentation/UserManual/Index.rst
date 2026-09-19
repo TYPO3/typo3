@@ -71,7 +71,7 @@ Indexed search plugin trouble shooting for TYPO3 backend editors
         :header-level: 4
 
         This link can be removed by an integrator via
-        :ref:`TypoScript setting plugin.tx_indexedsearch.settings.displayAdvancedSearchLink <typo3/cms-indexed-search:confval-displayadvancedsearchlink>`.
+        :ref:`TypoScript setting plugin.tx_indexedsearch.settings.displayAdvancedSearchLink <confval-displayadvancedsearchlink>`.
 
     ..  accordion-item:: No search results but the search page itself displayed
         :name: noSearchResults
