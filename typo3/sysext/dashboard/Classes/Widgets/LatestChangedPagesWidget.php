@@ -60,6 +60,7 @@ readonly class LatestChangedPagesWidget implements WidgetRendererInterface
     public function __construct(
         private BackendViewFactory $backendViewFactory,
         private ConnectionPool $connectionPool,
+        private Context $context,
         private WidgetConfigurationInterface $configuration,
         private SiteFinder $siteFinder,
         array $options = [],
@@ -106,7 +107,7 @@ readonly class LatestChangedPagesWidget implements WidgetRendererInterface
     private function getSysHistoryEntries(int $limit, bool $restrictToCurrentUser): array
     {
         $queryBuilder = $this->getQueryBuilderSysHistory();
-        $workspaceId = GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('workspace', 'id');
+        $workspaceId = $this->context->getPropertyFromAspect('workspace', 'id');
         $queryBuilder
             ->select('tablename', 'recuid', 'tstamp', 'userid')
             ->from('sys_history')

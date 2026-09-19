@@ -31,7 +31,6 @@ use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Redirects\Repository\Demand;
 use TYPO3\CMS\Redirects\Repository\RedirectRepository;
 use TYPO3\CMS\Redirects\Service\ModulePaginationService;
@@ -52,6 +51,7 @@ readonly class ShortUrlModuleController
         protected ModuleTemplateFactory $moduleTemplateFactory,
         protected ComponentFactory $componentFactory,
         protected ModulePaginationService $modulePaginationService,
+        private Features $features,
     ) {}
 
     /**
@@ -82,7 +82,7 @@ readonly class ShortUrlModuleController
             'protocol' => $request->getUri()->getScheme(),
             'defaultIntegrityStatus' => RedirectConflict::NO_CONFLICT,
             'demand' => $demand,
-            'showHitCounter' => GeneralUtility::makeInstance(Features::class)->isFeatureEnabled('redirects.hitCount'),
+            'showHitCounter' => $this->features->isFeatureEnabled('redirects.hitCount'),
             'pagination' => $pagination,
             'returnUrl' => $this->uriBuilder->buildUriFromRoute('short_urls', $demand->getUriParameters()),
             'actions' => [

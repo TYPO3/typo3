@@ -21,7 +21,6 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\SysLog\Type as SystemLogType;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Dashboard\WidgetApi;
 use TYPO3\CMS\Dashboard\Widgets\ChartDataProviderInterface;
 
@@ -36,7 +35,10 @@ class SysLogErrorsDataProvider implements ChartDataProviderInterface
     /**
      * @param int $days Number of days to gather information for.
      */
-    public function __construct(protected readonly int $days = 31) {}
+    public function __construct(
+        private readonly ConnectionPool $connectionPool,
+        protected readonly int $days = 31,
+    ) {}
 
     public function getChartData(): array
     {
@@ -57,7 +59,7 @@ class SysLogErrorsDataProvider implements ChartDataProviderInterface
 
     protected function getNumberOfErrorsInPeriod(int $start, int $end): int
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_log');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_log');
         return (int)$queryBuilder
             ->count('*')
             ->from('sys_log')

@@ -63,7 +63,10 @@ final class WorkspacePreview implements MiddlewareInterface
     private bool $previewNotificationEnabled = false;
     private ?string $previewMessage = null;
 
-    public function __construct(private readonly Context $context) {}
+    public function __construct(
+        private readonly Context $context,
+        private readonly ConnectionPool $connectionPool,
+    ) {}
 
     /**
      * Initializes a possible preview user (by checking for GET/cookie of name "ADMCMD_prev")
@@ -272,7 +275,7 @@ final class WorkspacePreview implements MiddlewareInterface
      */
     private function getPreviewData(string $keyword)
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_preview');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_preview');
         return $queryBuilder
             ->select('*')
             ->from('sys_preview')
@@ -343,7 +346,7 @@ final class WorkspacePreview implements MiddlewareInterface
      */
     private function getWorkspaceTitle(int $workspaceId): string
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_workspace');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_workspace');
         $title = $queryBuilder
             ->select('title')
             ->from('sys_workspace')

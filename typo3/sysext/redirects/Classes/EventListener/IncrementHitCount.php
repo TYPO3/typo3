@@ -21,7 +21,6 @@ use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Redirects\Event\RedirectWasHitEvent;
 
 /**
@@ -29,7 +28,10 @@ use TYPO3\CMS\Redirects\Event\RedirectWasHitEvent;
  */
 final readonly class IncrementHitCount
 {
-    public function __construct(private Features $features) {}
+    public function __construct(
+        private Features $features,
+        private ConnectionPool $connectionPool,
+    ) {}
 
     #[AsEventListener('redirects-increment-hit-count')]
     public function __invoke(RedirectWasHitEvent $event): void
@@ -42,7 +44,7 @@ final readonly class IncrementHitCount
             return;
         }
 
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_redirect');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_redirect');
         $queryBuilder
             ->update('sys_redirect')
             ->where(

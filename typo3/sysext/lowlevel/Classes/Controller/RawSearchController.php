@@ -55,6 +55,7 @@ class RawSearchController
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
         protected readonly TcaSchemaFactory $tcaSchemaFactory,
         protected readonly ComponentFactory $componentFactory,
+        protected readonly ConnectionPool $connectionPool,
     ) {}
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
@@ -95,7 +96,7 @@ class RawSearchController
                 continue;
             }
             // Get fields list
-            $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
+            $connection = $this->connectionPool->getConnectionForTable($table);
             $tableColumnInfos = $connection->getSchemaInformation()->listTableColumnInfos($table);
             $normalizedTableColumns = [];
             $fields = [];

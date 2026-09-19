@@ -48,6 +48,7 @@ final readonly class PageTsConfigRecordsOverviewController
         private IconFactory $iconFactory,
         private UriBuilder $uriBuilder,
         private ModuleTemplateFactory $moduleTemplateFactory,
+        private ConnectionPool $connectionPool,
     ) {}
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
@@ -104,7 +105,7 @@ final readonly class PageTsConfigRecordsOverviewController
      */
     private function getOverviewOfPagesUsingTSConfig(ModuleInterface $currentModule): array
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('pages');
         $queryBuilder->getRestrictions()
             ->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class))

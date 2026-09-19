@@ -22,15 +22,15 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\SysLog\Action\Login as SystemLogLoginAction;
 use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
 use TYPO3\CMS\Core\SysLog\Type as SystemLogType;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Dashboard\Widgets\NumberWithIconDataProviderInterface;
 
 class NumberOfFailedLoginsDataProvider implements NumberWithIconDataProviderInterface
 {
+    public function __construct(private readonly ConnectionPool $connectionPool) {}
+
     public function getNumber(int $secondsBack = 86400): int
     {
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        $queryBuilder = $connectionPool->getQueryBuilderForTable('sys_log');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_log');
 
         return (int)$queryBuilder->count('uid')
             ->from('sys_log')

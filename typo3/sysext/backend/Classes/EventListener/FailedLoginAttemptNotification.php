@@ -57,6 +57,7 @@ final class FailedLoginAttemptNotification
     public function __construct(
         private readonly TemplatedEmailFactory $templatedEmailFactory,
         private readonly MailerInterface $mailer,
+        private readonly ConnectionPool $connectionPool,
         ?string $notificationRecipientEmailAddress = null,
         private readonly int $warningPeriod = 3600,
         private readonly int $failedLoginAttemptsThreshold = 3,
@@ -163,7 +164,7 @@ final class FailedLoginAttemptNotification
 
     private function createPreparedQueryBuilder(int $earliestLogDate, int $loginAction): QueryBuilder
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+        $queryBuilder = $this->connectionPool
             ->getQueryBuilderForTable('sys_log');
         $queryBuilder
             ->from('sys_log')

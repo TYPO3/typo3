@@ -32,7 +32,6 @@ use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Redirects\Event\ModifyRedirectManagementControllerViewDataEvent;
 use TYPO3\CMS\Redirects\Repository\Demand;
 use TYPO3\CMS\Redirects\Repository\RedirectRepository;
@@ -55,6 +54,7 @@ class ManagementController
         private EventDispatcherInterface $eventDispatcher,
         protected ComponentFactory $componentFactory,
         protected ModulePaginationService $modulePaginationService,
+        private readonly Features $features,
     ) {}
 
     /**
@@ -86,7 +86,7 @@ class ManagementController
                 $this->redirectRepository->findHostsOfRedirects($redirectType),
                 $this->redirectRepository->findStatusCodesOfRedirects($redirectType),
                 $this->redirectRepository->findCreationTypes($redirectType),
-                GeneralUtility::makeInstance(Features::class)->isFeatureEnabled('redirects.hitCount'),
+                $this->features->isFeatureEnabled('redirects.hitCount'),
                 $view,
                 $request,
                 $this->redirectRepository->findIntegrityStatusCodes($redirectType),

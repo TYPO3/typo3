@@ -20,13 +20,15 @@ namespace TYPO3\CMS\Dashboard\Widgets\Provider;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Dashboard\WidgetApi;
 use TYPO3\CMS\Dashboard\Widgets\ChartDataProviderInterface;
 
 readonly class TypeOfUsersChartDataProvider implements ChartDataProviderInterface
 {
-    public function __construct(private LanguageServiceFactory $languageServiceFactory) {}
+    public function __construct(
+        private LanguageServiceFactory $languageServiceFactory,
+        private ConnectionPool $connectionPool,
+    ) {}
 
     public function getChartData(): array
     {
@@ -50,7 +52,7 @@ readonly class TypeOfUsersChartDataProvider implements ChartDataProviderInterfac
 
     protected function getNumberOfUsers(bool $admin = false): int
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_users');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('be_users');
         return (int)$queryBuilder
             ->count('*')
             ->from('be_users')
