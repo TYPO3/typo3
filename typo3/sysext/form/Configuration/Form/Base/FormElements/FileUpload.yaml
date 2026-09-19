@@ -27,6 +27,8 @@ prototypes:
               templateName: Inspector-MultiSelectEditor
               label: formEditor.elements.FileUpload.editor.allowedMimeTypes.label
               propertyPath: properties.allowedMimeTypes
+              propertyValidators:
+                10: NotEmpty
               selectOptions:
                 10:
                   value: application/msword
