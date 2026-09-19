@@ -60,7 +60,6 @@ The following example introduces log rotation for the "main" log file.
             'interval' => \TYPO3\CMS\Core\Log\Writer\Enum\Interval::DAILY,
             'maxFiles' => 5,
         ],
-        \TYPO3\CMS\Core\Log\Writer\DatabaseWriter::class => [], // this is part of the default configuration
     ];
 
 The following example introduces log rotation for the "deprecation" log file.
@@ -75,7 +74,6 @@ The following example introduces log rotation for the "deprecation" log file.
             'maxFiles' => 4,
             'disabled' => false,
         ],
-        \TYPO3\CMS\Core\Log\Writer\DatabaseWriter::class => [], // this is part of the default configuration
     ];
 
 Impact
