@@ -119,7 +119,7 @@ Example scenarios:
     `main` branch.
     The backport to the `14.3` branch will have the two identical files in both
     directories, too.
-    The `13.4 branch backport contains only the
+    The `13.4` branch backport contains only the
     :file:`typo3/sysext/core/Documentation/Changelog/14.3.x`, because the `14.3.x`
     directory does not exist in that branch.
 

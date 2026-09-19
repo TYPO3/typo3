@@ -19,7 +19,7 @@ have been removed:
 * :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['pageLoadedFromCache']`,
   no direct substitution, use event :php:`AfterTypoScriptDeterminedEvent` or an own middleware
   after :php:`typo3/cms-frontend/prepare-tsfe-rendering` instead.
-* :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['createHashBase']',
+* :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['createHashBase']`,
   substituted by event :php:`BeforePageCacheIdentifierIsHashedEvent`.
 
 

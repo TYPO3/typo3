@@ -22,7 +22,7 @@ Methods:
 * :php:`TYPO3\CMS\Backend\Utility\BackendUtility::getOriginalTranslationTable()`
 
 Additionally, the automatic TCA migration performed by the TYPO3 bootstrap now merges flags of type
-:php:`['columns']['someField']['config']['behaviour']['allowLanguageSynchronization'] from
+:php:`['columns']['someField']['config']['behaviour']['allowLanguageSynchronization']` from
 table `pages_language_overlay` into `pages`.
 
 
