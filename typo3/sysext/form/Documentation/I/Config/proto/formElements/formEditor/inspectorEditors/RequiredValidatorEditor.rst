@@ -100,7 +100,7 @@ propertyPath
       - :ref:`"Inspector"<concepts-formeditor-inspector>`
 
 :aspect:`Description`
-      An property path which should be written into the `form definition`` if the checkbox is set.
+      An property path which should be written into the `form definition` if the checkbox is set.
 
 
 .. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.propertyvalue-requiredvalidatoreditor:
@@ -124,4 +124,4 @@ propertyValue
       - :ref:`"Inspector"<concepts-formeditor-inspector>`
 
 :aspect:`Description`
-      The value for the property path which should be written into the `form definition`` if the checkbox is set.
+      The value for the property path which should be written into the `form definition` if the checkbox is set.

@@ -317,7 +317,7 @@ selectablePrototypesConfiguration.*.newFormTemplates.*.templatePath
       - :ref:`Translate "Start template" options<concepts-formmanager-translation-starttemplate>`
 
 :aspect:`Description`
-      The filesystem path to the `Start template`` YAML file.
+      The filesystem path to the `Start template` YAML file.
 
 
 .. _formmanager.selectableprototypesconfiguration.*.newformtemplates.*.label:
