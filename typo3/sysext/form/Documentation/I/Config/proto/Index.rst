@@ -80,7 +80,7 @@ prototypeIdentifier
       - :ref:`"Form configuration vs. form definition"<concepts-formdefinition-vs-formconfiguration>`
 
 :aspect:`Description`
-      This array key identifies the `prototype``. Every ``form definition`` references to such a ``<prototypeIdentifier>`` through the property ``prototypeName``.
+      This array key identifies the `prototype`. Every ``form definition`` references to such a ``<prototypeIdentifier>`` through the property ``prototypeName``.
 
 
 Subproperties
