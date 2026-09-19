@@ -276,8 +276,8 @@ Default configuration added by the TYPO3 Core:
         ],
     ],
 
-`$GLOBALS['TCA']`['ctrl']['languageField']` and `transOrigPointerField`
-.......................................................................
+`$GLOBALS['TCA']['ctrl']['languageField']` and `transOrigPointerField`
+......................................................................
 
 These setting make database table rows "localization aware": Backend editors
 can create localized versions of a record. Note when :php:`languageField` is

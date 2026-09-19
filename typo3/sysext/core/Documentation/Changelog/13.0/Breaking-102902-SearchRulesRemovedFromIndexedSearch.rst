@@ -22,7 +22,7 @@ Impact
 
 The Indexed Search plugin doesn't show the rules anymore. The Fluid partial file
 :file:`Resources/Private/Partials/Rules.html` and the related TypoScript
-configuration :typoscript`:`plugin.tx_indexedsearch.settings.displayRules`
+configuration :typoscript:`plugin.tx_indexedsearch.settings.displayRules`
 have been removed.
 
 
@@ -46,7 +46,7 @@ overridden :file:`Resources/Private/Partials/Form.html` partial file.
 TypoScript
 ----------
 
-If configured, remove the :typoscript`:`plugin.tx_indexedsearch.settings.displayRules`
+If configured, remove the :typoscript:`plugin.tx_indexedsearch.settings.displayRules`
 configuration.
 
 .. index:: Frontend, TypoScript, NotScanned, ext:indexed_search

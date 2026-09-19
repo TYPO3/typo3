@@ -54,7 +54,7 @@ TYPO3 v13.4, see :ref:`deprecation-105230-1728374467`.
 * :php:`TypoScriptFrontendController->contentPid` - Avoid usages altogether, available as :php:`@internal` call using
   :php:`$request->getAttribute('frontend.page.information')->getContentFromPid()`
 * :php:`TypoScriptFrontendController->sys_page` - Avoid altogether, create own instance using :php:`GeneralUtility::makeInstance(PageRepository::class)`
-* :php:`TypoScriptFrontendController->config['config']` - Use :php:`$request->getAttribute('frontend.typoscript')->getConfigArray()` instead`
+* :php:`TypoScriptFrontendController->config['config']` - Use :php:`$request->getAttribute('frontend.typoscript')->getConfigArray()` instead
 * :php:`TypoScriptFrontendController->config['rootLine']` - Use :php:`$request->getAttribute('frontend.page.information')->getLocalRootLine()` instead
 * :php:`TypoScriptFrontendController->cObj` - Create an own :php:`ContentObjectRenderer` instance, call :php:`setRequest($request)`
   and :php:`start($request->getAttribute('frontend.page.information')->getPageRecord(), 'pages')`

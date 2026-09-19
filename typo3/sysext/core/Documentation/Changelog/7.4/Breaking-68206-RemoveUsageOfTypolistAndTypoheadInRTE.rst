@@ -32,7 +32,7 @@ All installations that use the method `internalizeFontTags()` will throw an fata
 Migration
 =========
 
-Substitute the tags by a tag `ul``or `header`.
+Substitute the tags by a tag `ul` or `header`.
 Remove any usage of `internalizeFontTags()`
 
 

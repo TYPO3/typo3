@@ -24,7 +24,7 @@ Using this method will trigger a PHP :php:`E_USER_DEPRECATED` error.
 Affected Installations
 ======================
 
-Any 3rd party extension calling :php:`:php:`TYPO3\CMS\Core\Resource\File::_getMetaData()` is affected.
+Any 3rd party extension calling :php:`TYPO3\CMS\Core\Resource\File::_getMetaData()` is affected.
 
 
 Migration

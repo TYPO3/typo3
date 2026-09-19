@@ -37,7 +37,7 @@ Migration
 =========
 
 In most cases, data that was previously retrieved from the
-:php-short:`\TYPO3\CMS\Frontend\Controller\`TypoScriptFrontendController`
+:php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController`
 instance can now be accessed through the request object, available via
 :php:`$event->getRequest()`.
 

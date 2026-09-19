@@ -23,7 +23,7 @@ Impact
 ======
 
 Calling the methods :php:`convertIntegerToVersionNumber`, :php:`splitVersionRange` or :php:`raiseVersionNumber` of
-:php:\TYPO3\CMS\Core\Utility\VersionNumberUtility` will trigger a PHP :php:`E_USER_DEPRECATED` error.
+:php:`\TYPO3\CMS\Core\Utility\VersionNumberUtility` will trigger a PHP :php:`E_USER_DEPRECATED` error.
 
 
 Affected Installations

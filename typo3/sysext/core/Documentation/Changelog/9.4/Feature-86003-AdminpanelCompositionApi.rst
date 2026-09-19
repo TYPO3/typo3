@@ -41,7 +41,7 @@ Since TYPO3 v9 TYPO3 uses PSR-15 middlewares. The adminpanel brings three that a
 * :php:`AdminPanelDataPersister` - Called at nearly the end of a frontend request to store the collected data (this is where module data gets saved)
 * :php:`AdminPanelRenderer` - Called as one of the last steps in the rendering process, currently replacing the closing body tag with its own code (this is where module content gets rendered)
 
-When building own modules keep in mind at which step your modules` methods get called.
+When building own modules keep in mind at which step your modules' methods get called.
 In the last step for example (the rendering), you should not depend on any data outside of
 that provided to the module directly (for example do not rely on :php:`$GLOBALS` to be filled).
 

@@ -14,7 +14,7 @@ Description
 The functionality to register any command line script via
 :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['cliKeys']['my_extension']` has been marked as deprecated.
 
-The entry-point '`typo3/cli_dispatch.phpsh`` as well as the corresponding :php:`Application` class and
+The entry-point `typo3/cli_dispatch.phpsh` as well as the corresponding :php:`Application` class and
 the :php:`CliRequestHandler` class have been marked as deprecated as well.
 
 The functionality has been superseded by Symfony Console and the new entry-point within
