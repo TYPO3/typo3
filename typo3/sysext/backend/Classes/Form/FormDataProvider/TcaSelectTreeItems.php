@@ -64,8 +64,6 @@ class TcaSelectTreeItems extends AbstractItemProvider implements FormDataProvide
                 $fieldConfig['config']['maxitems'] = 99999;
             }
 
-            $fieldConfig = $this->parseStartingPointsFromSiteConfiguration($result, $fieldConfig);
-
             // A couple of tree specific config parameters can be overwritten via page TS.
             // Pick those that influence the data fetching and write them into the config
             // given to the tree data provider. This is additionally used in SelectTreeElement, so always do that.
@@ -73,7 +71,7 @@ class TcaSelectTreeItems extends AbstractItemProvider implements FormDataProvide
                 $pageTsConfig = $result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['config.']['treeConfig.'];
                 if (isset($pageTsConfig['startingPoints'])) {
                     $fieldConfig['config']['treeConfig']['startingPoints']
-                        = implode(',', array_unique(GeneralUtility::intExplode(',', (string)$pageTsConfig['startingPoints'])));
+                        = implode(',', array_unique(GeneralUtility::trimExplode(',', (string)$pageTsConfig['startingPoints'], true)));
                 }
                 if (isset($pageTsConfig['appearance.']['expandAll'])) {
                     $fieldConfig['config']['treeConfig']['appearance']['expandAll'] = (bool)$pageTsConfig['appearance.']['expandAll'];
@@ -85,6 +83,9 @@ class TcaSelectTreeItems extends AbstractItemProvider implements FormDataProvide
                     $fieldConfig['config']['treeConfig']['appearance']['nonSelectableLevels'] = $pageTsConfig['appearance.']['nonSelectableLevels'];
                 }
             }
+
+            $fieldConfig = $this->parseStartingPointsFromSiteConfiguration($result, $fieldConfig);
+            $fieldConfig = $this->parseStartingPointsFromMarkers($result, $fieldName, $fieldConfig);
 
             // Prepare the list of currently selected nodes using RelationHandler
             // This is needed to ensure a correct value initialization before the actual tree is loaded

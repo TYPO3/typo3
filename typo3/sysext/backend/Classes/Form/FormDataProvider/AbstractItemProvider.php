@@ -1043,6 +1043,74 @@ abstract class AbstractItemProvider
     }
 
     /**
+     * A field's [treeConfig][startingPoints] may contain markers, resolve them.
+     *
+     * ###CURRENT_PID### - is the current page id (pid of the record).
+     * ###SITEROOT### - is the uid of the site root page within the current rootline.
+     * ###PAGE_TSCONFIG_ID### - a value you can set from page TSconfig dynamically.
+     * ###PAGE_TSCONFIG_IDLIST### - a value you can set from page TSconfig dynamically.
+     *
+     * Markers that can not be resolved are dropped from the list.
+     */
+    protected function parseStartingPointsFromMarkers(array $result, string $fieldName, array $fieldConfig): array
+    {
+        $startingPoints = (string)($fieldConfig['config']['treeConfig']['startingPoints'] ?? '');
+        if (!str_contains($startingPoints, '###')) {
+            return $fieldConfig;
+        }
+
+        $effectivePid = (int)($result['effectivePid'] ?? 0);
+        if (str_contains($startingPoints, '###CURRENT_PID###')) {
+            // Use pid from parent page clause if in flex form context
+            if (!empty($result['flexParentDatabaseRow']['pid'])) {
+                $effectivePid = (int)$result['flexParentDatabaseRow']['pid'];
+            } elseif (!$effectivePid && !empty($result['databaseRow']['pid'])) {
+                // Use pid from database row if in inline context
+                $effectivePid = (int)$result['databaseRow']['pid'];
+            }
+        }
+
+        $siteRootUid = 0;
+        foreach ($result['rootline'] ?? [] as $rootlinePage) {
+            if (!empty($rootlinePage['is_siteroot'])) {
+                $siteRootUid = (int)$rootlinePage['uid'];
+                break;
+            }
+        }
+
+        $fieldTsConfig = $result['pageTsConfig']['TCEFORM.'][$result['tableName'] . '.'][$fieldName . '.'] ?? [];
+        $pageTsConfigId = (int)($fieldTsConfig['PAGE_TSCONFIG_ID'] ?? 0);
+        $pageTsConfigIdList = implode(',', array_filter(
+            GeneralUtility::trimExplode(',', (string)($fieldTsConfig['PAGE_TSCONFIG_IDLIST'] ?? ''), true),
+            MathUtility::canBeInterpretedAsInteger(...)
+        ));
+
+        $startingPoints = str_replace(
+            [
+                '###CURRENT_PID###',
+                '###SITEROOT###',
+                '###PAGE_TSCONFIG_ID###',
+                '###PAGE_TSCONFIG_IDLIST###',
+            ],
+            [
+                (string)$effectivePid,
+                $siteRootUid > 0 ? (string)$siteRootUid : '',
+                $pageTsConfigId > 0 ? (string)$pageTsConfigId : '',
+                $pageTsConfigIdList,
+            ],
+            $startingPoints
+        );
+
+        // Add the resolved starting points while removing empty values
+        $fieldConfig['config']['treeConfig']['startingPoints'] = implode(
+            ',',
+            GeneralUtility::trimExplode(',', $startingPoints, true)
+        );
+
+        return $fieldConfig;
+    }
+
+    /**
      * Convert the current database values into an array
      *
      * @param array $row database row

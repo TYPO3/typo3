@@ -56,8 +56,9 @@ class TcaCategory extends AbstractItemProvider implements FormDataProviderInterf
             }
 
             $fieldConfig = $this->initializeDefaultFieldConfig($fieldConfig);
-            $fieldConfig = $this->parseStartingPointsFromSiteConfiguration($result, $fieldConfig);
             $fieldConfig = $this->overrideConfigFromPageTSconfig($result, $table, $fieldName, $fieldConfig);
+            $fieldConfig = $this->parseStartingPointsFromSiteConfiguration($result, $fieldConfig);
+            $fieldConfig = $this->parseStartingPointsFromMarkers($result, $fieldName, $fieldConfig);
 
             // Prepare the list of currently selected nodes using RelationHandler
             // This is needed to ensure a correct value initialization before the actual tree is loaded
@@ -152,7 +153,7 @@ class TcaCategory extends AbstractItemProvider implements FormDataProviderInterf
         }
 
         if (isset($pageTsConfig['startingPoints'])) {
-            $fieldConfig['config']['treeConfig']['startingPoints'] = implode(',', array_unique(GeneralUtility::intExplode(',', (string)$pageTsConfig['startingPoints'])));
+            $fieldConfig['config']['treeConfig']['startingPoints'] = implode(',', array_unique(GeneralUtility::trimExplode(',', (string)$pageTsConfig['startingPoints'], true)));
         }
         if (isset($pageTsConfig['appearance.']['expandAll'])) {
             $fieldConfig['config']['treeConfig']['appearance']['expandAll'] = (bool)$pageTsConfig['appearance.']['expandAll'];

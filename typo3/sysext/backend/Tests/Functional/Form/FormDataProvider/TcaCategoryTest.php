@@ -284,6 +284,133 @@ final class TcaCategoryTest extends FunctionalTestCase
         self::assertEquals($expected, $result);
     }
 
+    public static function addDataResolvesMarkersInStartingPointsDataProvider(): array
+    {
+        return [
+            'current pid' => [
+                'inputStartingPoints' => '###CURRENT_PID###',
+                'expectedStartingPoints' => '89',
+                'rootline' => [],
+                'pageTsConfig' => [],
+            ],
+            'site root from rootline' => [
+                'inputStartingPoints' => '###SITEROOT###',
+                'expectedStartingPoints' => '5',
+                'rootline' => [['uid' => 89, 'is_siteroot' => 0], ['uid' => 5, 'is_siteroot' => 1]],
+                'pageTsConfig' => [],
+            ],
+            'page tsconfig id' => [
+                'inputStartingPoints' => '###PAGE_TSCONFIG_ID###',
+                'expectedStartingPoints' => '13',
+                'rootline' => [],
+                'pageTsConfig' => ['PAGE_TSCONFIG_ID' => '13'],
+            ],
+            'page tsconfig idlist' => [
+                'inputStartingPoints' => '###PAGE_TSCONFIG_IDLIST###',
+                'expectedStartingPoints' => '13,14',
+                'rootline' => [],
+                'pageTsConfig' => ['PAGE_TSCONFIG_IDLIST' => '13, 14, invalid'],
+            ],
+            'unresolved markers are removed' => [
+                'inputStartingPoints' => '42,###PAGE_TSCONFIG_ID###,###SITEROOT###,12',
+                'expectedStartingPoints' => '42,12',
+                'rootline' => [],
+                'pageTsConfig' => [],
+            ],
+            'marker combined with site configuration marker' => [
+                'inputStartingPoints' => '###CURRENT_PID###,###SITE:categories.contentCategory###',
+                'expectedStartingPoints' => '89,4711',
+                'rootline' => [],
+                'pageTsConfig' => [],
+            ],
+        ];
+    }
+
+    #[DataProvider('addDataResolvesMarkersInStartingPointsDataProvider')]
+    #[Test]
+    public function addDataResolvesMarkersInStartingPoints(string $inputStartingPoints, string $expectedStartingPoints, array $rootline, array $pageTsConfig): void
+    {
+        $input = [
+            'command' => 'edit',
+            'tableName' => 'tt_content',
+            'effectivePid' => 89,
+            'databaseRow' => [
+                'uid' => 298,
+                'categories' => '2',
+            ],
+            'processedTca' => [
+                'columns' => [
+                    'categories' => [
+                        'config' => $this->getFieldConfiguration([
+                            'type' => 'category',
+                            'treeConfig' => [
+                                'startingPoints' => $inputStartingPoints,
+                            ],
+                        ]),
+                    ],
+                ],
+            ],
+            'pageTsConfig' => [
+                'TCEFORM.' => [
+                    'tt_content.' => [
+                        'categories.' => $pageTsConfig,
+                    ],
+                ],
+            ],
+            'site' => new Site('some-site', 1, ['rootPageId' => 1, 'categories' => ['contentCategory' => 4711]]),
+            'rootline' => $rootline,
+        ];
+
+        $result = $this->createSubject()->addData($this->addTcaSchemata($input));
+
+        self::assertSame($expectedStartingPoints, $result['processedTca']['columns']['categories']['config']['treeConfig']['startingPoints']);
+    }
+
+    #[Test]
+    public function addDataResolvesMarkersInStartingPointsOverriddenByPageTsConfig(): void
+    {
+        $input = [
+            'command' => 'edit',
+            'tableName' => 'tt_content',
+            'effectivePid' => 89,
+            'databaseRow' => [
+                'uid' => 298,
+                'categories' => '2',
+            ],
+            'processedTca' => [
+                'columns' => [
+                    'categories' => [
+                        'config' => $this->getFieldConfiguration([
+                            'type' => 'category',
+                            'treeConfig' => [
+                                'startingPoints' => '42',
+                            ],
+                        ]),
+                    ],
+                ],
+            ],
+            'pageTsConfig' => [
+                'TCEFORM.' => [
+                    'tt_content.' => [
+                        'categories.' => [
+                            'config.' => [
+                                'treeConfig.' => [
+                                    'startingPoints' => '###CURRENT_PID###,###SITE:categories.contentCategory###',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'site' => new Site('some-site', 1, ['rootPageId' => 1, 'categories' => ['contentCategory' => 4711]]),
+            'rootline' => [],
+        ];
+
+        $result = $this->createSubject()->addData($this->addTcaSchemata($input));
+
+        self::assertSame('89,4711', $result['processedTca']['columns']['categories']['config']['treeConfig']['startingPoints']);
+    }
+
     #[Test]
     public function addDataProcessesCategoryFieldValue(): void
     {
