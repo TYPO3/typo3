@@ -55,6 +55,7 @@ readonly class TcaMigration
         $tcaProcessingResult = $this->removeSetToDefaultOnCopy($tcaProcessingResult);
         $tcaProcessingResult = $this->removeEnableMultiSelectFilterTextfieldConfiguration($tcaProcessingResult);
         $tcaProcessingResult = $this->removeExcludeFieldForTransOrigPointerField($tcaProcessingResult);
+        $tcaProcessingResult = $this->removeExcludeFieldForLanguageField($tcaProcessingResult);
         $tcaProcessingResult = $this->removeShowRecordFieldListField($tcaProcessingResult);
         $tcaProcessingResult = $this->removeMaxDBListItems($tcaProcessingResult);
         $tcaProcessingResult = $this->removeWorkspacePlaceholderShadowColumnsConfiguration($tcaProcessingResult);
@@ -288,6 +289,35 @@ readonly class TcaMigration
                     . ' as excluded field which is no longer needed and should therefore be removed.');
                 unset($configuration['columns'][$configuration['ctrl']['transOrigPointerField']]['exclude']);
             }
+        }
+        return $tcaProcessingResult->withTca($tca);
+    }
+
+    /**
+     * Removes $TCA[$mytable][columns][_languageField_][exclude] if enabled.
+     *
+     * Access to the language field is governed by the backend user group
+     * permission 'allowed_languages', not by 'non_exclude_fields'.
+     */
+    protected function removeExcludeFieldForLanguageField(TcaProcessingResult $tcaProcessingResult): TcaProcessingResult
+    {
+        $tca = $tcaProcessingResult->getTca();
+        foreach ($tca as $table => &$configuration) {
+            $languageField = $configuration['ctrl']['languageField'] ?? null;
+            if ($languageField === null) {
+                continue;
+            }
+            // The (bool) cast mirrors AbstractFieldType::supportsAccessControl(), so the
+            // legacy notation 'exclude' => 1 is migrated as well. An explicitly disabled
+            // flag is left untouched on purpose.
+            if ((bool)($configuration['columns'][$languageField]['exclude'] ?? false) !== true) {
+                continue;
+            }
+            $tcaProcessingResult = $tcaProcessingResult->withAdditionalMessages('The \'' . $table . '\' TCA tables languageField '
+                . '\'' . $languageField . '\' is defined as excluded field. Access to the language field is '
+                . 'governed by the backend user group permission \'allowed_languages\' instead, the \'exclude\' '
+                . 'flag is therefore ignored and should be removed.');
+            unset($configuration['columns'][$languageField]['exclude']);
         }
         return $tcaProcessingResult->withTca($tca);
     }

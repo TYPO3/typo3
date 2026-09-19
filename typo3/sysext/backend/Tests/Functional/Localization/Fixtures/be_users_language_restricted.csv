@@ -1,0 +1,6 @@
+"be_groups"
+,"uid","pid","title","db_mountpoints","pagetypes_select","tables_select","tables_modify","non_exclude_fields","explicit_allowdeny","allowed_languages"
+,20,0,"Editor restricted to Dansk","1","1,4,254","pages,tt_content","pages,tt_content","pages:title,pages:sys_language_uid,tt_content:header,tt_content:CType,tt_content:sys_language_uid","tt_content:CType:text,tt_content:CType:bullets","1"
+"be_users"
+,"uid","pid","username","usergroup","admin","deleted","disable","workspace_perms"
+,20,0,"editor-language-restricted",20,0,0,0,1

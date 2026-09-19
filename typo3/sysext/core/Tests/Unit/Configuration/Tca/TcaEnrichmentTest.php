@@ -326,7 +326,6 @@ final class TcaEnrichmentTest extends UnitTestCase
             ],
         ];
         $expected = [
-            'exclude' => true,
             'label' => 'core.db.general:language',
             'config' => [
                 'type' => 'language',

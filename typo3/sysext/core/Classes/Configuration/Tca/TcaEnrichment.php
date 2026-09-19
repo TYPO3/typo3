@@ -192,7 +192,6 @@ final readonly class TcaEnrichment
             $languageFieldName = $tableDefinition['ctrl']['languageField'] ?? null;
             if ($languageFieldName && !is_array($tableDefinition['columns'][$languageFieldName] ?? null)) {
                 $tca[$table]['columns'][$languageFieldName] = [
-                    'exclude' => true,
                     'label' => 'core.db.general:language',
                     'config' => [
                         'type' => 'language',

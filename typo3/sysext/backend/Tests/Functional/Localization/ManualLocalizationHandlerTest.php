@@ -495,6 +495,136 @@ final class ManualLocalizationHandlerTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function recordsGetTranslatedByEditorWithoutDefaultLanguageAccess(): void
+    {
+        $this->getConnectionPool()->getConnectionForTable('pages')->update('pages', ['perms_everybody' => 31], ['uid' => 1]);
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/be_users_language_restricted.csv');
+        $backendUser = $this->setUpBackendUser(20);
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
+
+        $subject = $this->get(ManualLocalizationHandler::class);
+
+        $result = $subject->processLocalization(new LocalizationInstructions(
+            mainRecordType: 'tt_content',
+            recordUid: 1,
+            sourceLanguageId: self::LANGUAGE_PRESETS['EN']['id'],
+            targetLanguageId: self::LANGUAGE_PRESETS['DA']['id'],
+            mode: LocalizationMode::TRANSLATE,
+            additionalData: []
+        ));
+
+        self::assertTrue($result->isSuccess(), 'Localization should succeed: ' . var_export($result->errors, true));
+
+        $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable('tt_content');
+        $queryBuilder->getRestrictions()->removeByType(HiddenRestriction::class);
+        $translations = $queryBuilder
+            ->select('uid', 'sys_language_uid', 'l18n_parent')
+            ->from('tt_content')
+            ->where($queryBuilder->expr()->eq('l18n_parent', $queryBuilder->createNamedParameter(1, Connection::PARAM_INT)))
+            ->executeQuery()
+            ->fetchAllAssociative();
+
+        self::assertCount(1, $translations);
+        self::assertSame(1, (int)$translations[0]['sys_language_uid']);
+    }
+
+    #[Test]
+    public function pageGetsTranslatedByEditorWithoutDefaultLanguageAccess(): void
+    {
+        $this->getConnectionPool()->getConnectionForTable('pages')->update('pages', ['perms_everybody' => 31], ['uid' => 1]);
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/be_users_language_restricted.csv');
+        $backendUser = $this->setUpBackendUser(20);
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
+
+        $subject = $this->get(ManualLocalizationHandler::class);
+
+        $result = $subject->processLocalization(new LocalizationInstructions(
+            mainRecordType: 'pages',
+            recordUid: 1,
+            sourceLanguageId: self::LANGUAGE_PRESETS['EN']['id'],
+            targetLanguageId: self::LANGUAGE_PRESETS['DA']['id'],
+            mode: LocalizationMode::TRANSLATE,
+            additionalData: ['selectedRecordUids' => [1, 2, 3]]
+        ));
+
+        self::assertTrue($result->isSuccess(), 'Localization should succeed: ' . var_export($result->errors, true));
+
+        $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable('pages');
+        $queryBuilder->getRestrictions()->removeByType(HiddenRestriction::class);
+        $translations = $queryBuilder
+            ->select('uid', 'sys_language_uid')
+            ->from('pages')
+            ->where($queryBuilder->expr()->eq('l10n_parent', $queryBuilder->createNamedParameter(1, Connection::PARAM_INT)))
+            ->executeQuery()
+            ->fetchAllAssociative();
+
+        self::assertCount(1, $translations);
+    }
+
+    #[Test]
+    public function recordsGetTranslatedByEditorWithoutExcludeFieldAccessForLanguageField(): void
+    {
+        $this->getConnectionPool()->getConnectionForTable('pages')->update('pages', ['perms_everybody' => 31], ['uid' => 1]);
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/be_users_editor.csv');
+        $backendUser = $this->setUpBackendUser(21);
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
+
+        $subject = $this->get(ManualLocalizationHandler::class);
+
+        $result = $subject->processLocalization(new LocalizationInstructions(
+            mainRecordType: 'tt_content',
+            recordUid: 1,
+            sourceLanguageId: self::LANGUAGE_PRESETS['EN']['id'],
+            targetLanguageId: self::LANGUAGE_PRESETS['DA']['id'],
+            mode: LocalizationMode::TRANSLATE,
+            additionalData: []
+        ));
+
+        self::assertTrue($result->isSuccess(), 'Localization should succeed: ' . var_export($result->errors, true));
+
+        $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable('tt_content');
+        $queryBuilder->getRestrictions()->removeByType(HiddenRestriction::class);
+        $translations = $queryBuilder
+            ->select('uid', 'sys_language_uid', 'l18n_parent')
+            ->from('tt_content')
+            ->where($queryBuilder->expr()->eq('l18n_parent', $queryBuilder->createNamedParameter(1, Connection::PARAM_INT)))
+            ->executeQuery()
+            ->fetchAllAssociative();
+
+        self::assertCount(1, $translations);
+        self::assertSame(1, (int)$translations[0]['sys_language_uid']);
+    }
+
+    #[Test]
+    public function plainCopyOfTranslatedRecordKeepsLanguageForEditorWithoutExcludeFieldAccess(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../Controller/Page/Fixtures/tt_content-danish-language.csv');
+        $this->getConnectionPool()->getConnectionForTable('pages')->update('pages', ['perms_everybody' => 31], ['uid' => 1]);
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/be_users_editor.csv');
+        $backendUser = $this->setUpBackendUser(21);
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
+
+        $dataHandler = $this->get(DataHandler::class);
+        $dataHandler->start([], ['tt_content' => [4 => ['copy' => 1]]]);
+        $dataHandler->process_cmdmap();
+        self::assertSame([], $dataHandler->errorLog);
+
+        $newUid = (int)($dataHandler->copyMappingArray_merged['tt_content'][4] ?? 0);
+        self::assertGreaterThan(0, $newUid);
+
+        $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable('tt_content');
+        $queryBuilder->getRestrictions()->removeByType(HiddenRestriction::class);
+        $copy = $queryBuilder
+            ->select('uid', 'sys_language_uid')
+            ->from('tt_content')
+            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($newUid, Connection::PARAM_INT)))
+            ->executeQuery()
+            ->fetchAssociative();
+
+        self::assertSame(1, (int)$copy['sys_language_uid']);
+    }
+
+    #[Test]
     public function handlerReturnsCorrectMetadata(): void
     {
         $subject = $this->get(ManualLocalizationHandler::class);

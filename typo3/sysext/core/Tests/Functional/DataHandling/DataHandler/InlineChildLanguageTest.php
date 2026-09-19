@@ -49,7 +49,7 @@ final class InlineChildLanguageTest extends FunctionalTestCase
         ]);
 
         self::assertSame([], $dataHandler->errorLog);
-        $this->assertCSVDataSet(__DIR__ . '/Fixtures/InlineChildLanguageOfNewParentWithoutLanguageAccess.csv');
+        $this->assertCSVDataSet(__DIR__ . '/Fixtures/InlineChildLanguageOfNewParent.csv');
     }
 
     #[Test]

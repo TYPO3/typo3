@@ -1,0 +1,6 @@
+"be_groups"
+,"uid","pid","title","db_mountpoints","pagetypes_select","tables_select","tables_modify","non_exclude_fields","explicit_allowdeny","allowed_languages"
+,21,0,"Editor without sys_language_uid exclude right","1","1,4,254","pages,tt_content","pages,tt_content","tt_content:header,tt_content:CType","tt_content:CType:text,tt_content:CType:bullets",""
+"be_users"
+,"uid","pid","username","usergroup","admin","deleted","disable","workspace_perms"
+,21,0,"editor",21,0,0,0,1

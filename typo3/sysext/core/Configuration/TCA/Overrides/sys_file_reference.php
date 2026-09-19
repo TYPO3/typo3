@@ -2,8 +2,7 @@
 
 defined('TYPO3') or die();
 
-// 'sys_language_uid' and 'hidden' are part of a hidden palette, there is no access rights configuration for them.
-unset($GLOBALS['TCA']['sys_file_reference']['columns']['sys_language_uid']['exclude']);
+// 'hidden' is part of a hidden palette, there is no access rights configuration for it.
 unset($GLOBALS['TCA']['sys_file_reference']['columns']['hidden']['exclude']);
 
 // @todo: transOrigPointerField is configured differently. Needed? Possible to keep default?

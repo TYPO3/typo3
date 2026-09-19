@@ -412,6 +412,26 @@ final class TcaMigrationTest extends UnitTestCase
         self::assertEquals($expected, $subject->migrate($input)->getTca());
     }
 
+    public static function excludeFieldForLanguageFieldDataProvider(): iterable
+    {
+        $ctrl = ['languageField' => 'sys_language_uid'];
+        yield 'exclude true is removed' => [$ctrl, ['exclude' => true], []];
+        yield 'legacy notation exclude 1 is removed' => [$ctrl, ['exclude' => 1], []];
+        yield 'exclude false is kept' => [$ctrl, ['exclude' => false], ['exclude' => false]];
+        yield 'missing exclude is kept' => [$ctrl, [], []];
+        yield 'column without languageField in ctrl is kept' => [[], ['exclude' => true], ['exclude' => true]];
+    }
+
+    #[DataProvider('excludeFieldForLanguageFieldDataProvider')]
+    #[Test]
+    public function removeExcludeFieldForLanguageField(array $ctrl, array $column, array $expectedColumn): void
+    {
+        $config = ['config' => ['type' => 'language']];
+        $input = ['aTable' => ['ctrl' => $ctrl, 'columns' => ['sys_language_uid' => $column + $config]]];
+        $expected = ['aTable' => ['ctrl' => $ctrl, 'columns' => ['sys_language_uid' => $expectedColumn + $config]]];
+        self::assertEquals($expected, new TcaMigration()->migrate($input)->getTca());
+    }
+
     #[Test]
     public function removeShowRecordFieldListFieldIsRemoved(): void
     {

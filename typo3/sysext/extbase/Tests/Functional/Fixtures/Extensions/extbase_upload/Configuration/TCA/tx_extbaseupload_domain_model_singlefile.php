@@ -45,7 +45,6 @@ return [
     ],
     'columns' => [
         'sys_language_uid' => [
-            'exclude' => true,
             'label' => 'core.db.general:fe_group.language',
             'config' => [
                 'type' => 'language',
