@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Mvc\Property;
 
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -40,7 +41,10 @@ use TYPO3\CMS\Form\Mvc\Validation\MimeTypeValidator;
 #[Autoconfigure(public: true)]
 class PropertyMappingConfiguration implements AfterFormStateInitializedInterface
 {
-    public function __construct(protected readonly ValidatorResolver $validatorResolver) {}
+    public function __construct(
+        protected readonly ValidatorResolver $validatorResolver,
+        protected readonly Features $features,
+    ) {}
 
     /**
      * This hook is called for each form element after the class
@@ -78,7 +82,14 @@ class PropertyMappingConfiguration implements AfterFormStateInitializedInterface
             if (isset($renderable->getProperties()['allowedMimeTypes']) && is_array($renderable->getProperties()['allowedMimeTypes'])) {
                 $allowedMimeTypes = array_filter($renderable->getProperties()['allowedMimeTypes']);
             }
-            if (!empty($allowedMimeTypes)) {
+
+            // An empty "allowedMimeTypes" list is treated as "no allowed mime type" and therefore rejects every upload.
+            // The insecure legacy behaviour can be restored globally via feature toggle.
+            // @todo: In TYPO3 v15 LTS, drop the check and feature toggle in favour of an explicit per-form opt-in via
+            //        'allowedMimeTypes' => ['*'] (requires wildcard support in MimeTypeValidator).
+            if ($allowedMimeTypes !== []
+                || !$this->features->isFeatureEnabled('security.form.allowUnrestrictedFileUploadMimeTypes')
+            ) {
                 $mimeTypeValidator = $this->validatorResolver->createValidator(MimeTypeValidator::class, ['allowedMimeTypes' => $allowedMimeTypes]);
                 $validators = [$mimeTypeValidator];
             }

@@ -226,6 +226,9 @@ SYS:
               security.frontend.allowInsecureSiteResolutionByQueryParameters:
                 type: bool
                 description: 'If on, site resolution can be overwritten by `&id=...&L=...` parameters, URI path & host are just used as default.'
+              security.form.allowUnrestrictedFileUploadMimeTypes:
+                type: bool
+                description: 'If on, an empty `allowedMimeTypes` list on an ext:form FileUpload/ImageUpload element applies no mime type restriction (legacy behaviour). Should not be enabled as this allows anonymous visitors to upload arbitrary (non-PHP) file content, including browser-active files such as `.html` and `.svg`, into public storage. If off (default), an empty `allowedMimeTypes` list rejects every upload.'
               security.system.enforceAllowedFileExtensions:
                 type: bool
                 description: 'If on, only file extensions configured in `textfile_ext`, `mediafile_ext` and `miscfile_ext` are allowed to be processed in the File Abstraction Layer.'

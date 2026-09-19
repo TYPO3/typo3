@@ -71,6 +71,9 @@ final class MimeTypeValidator extends AbstractValidator
         }
 
         $allowedMimeTypes = $this->options['allowedMimeTypes'];
+
+        // @todo: add wildcard support (see EXT:form/Classes/Mvc/Property/PropertyMappingConfiguration.php, afterBuildingFinished)
+
         if (!in_array($mimeType, $allowedMimeTypes, true)) {
             $this->addError(
                 $this->translateErrorMessage(

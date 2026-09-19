@@ -93,6 +93,7 @@ return [
             'security.frontend.reportContentSecurityPolicy' => false,
             'security.frontend.allowInsecureSiteResolutionByQueryParameters' => false,
             'security.frontend.allowInsecureFrameOptionInShowImageController' => false,
+            'security.form.allowUnrestrictedFileUploadMimeTypes' => false,
             // only file extensions configured in 'textfile_ext', 'mediafile_ext', 'miscfile_ext' are accepted
             'security.system.enforceAllowedFileExtensions' => false,
             // only files having file-extension to mime-type matches are allowed

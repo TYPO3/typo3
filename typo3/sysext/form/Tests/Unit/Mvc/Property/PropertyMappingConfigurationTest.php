@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Form\Tests\Unit\Mvc\Property;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
+use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -88,7 +89,7 @@ final class PropertyMappingConfigurationTest extends UnitTestCase
             ->method('getIdentifier')
             ->willReturn('foobar');
 
-        $this->propertyMappingConfiguration = new PropertyMappingConfiguration($this->createMock(ValidatorResolver::class));
+        $this->propertyMappingConfiguration = new PropertyMappingConfiguration($this->createMock(ValidatorResolver::class), $this->createMock(Features::class));
     }
 
     /**
@@ -114,7 +115,7 @@ final class PropertyMappingConfigurationTest extends UnitTestCase
             ->with(UploadedFileReferenceConverter::class);
 
         // Property Mapping Configuration
-        $propertyMappingConfiguration = new PropertyMappingConfiguration($this->createMock(ValidatorResolver::class));
+        $propertyMappingConfiguration = new PropertyMappingConfiguration($this->createMock(ValidatorResolver::class), $this->createMock(Features::class));
         $propertyMappingConfiguration->afterBuildingFinished($this->fileUpload);
     }
 
@@ -153,7 +154,69 @@ final class PropertyMappingConfigurationTest extends UnitTestCase
             MimeTypeValidator::class,
             ['allowedMimeTypes' => ['text/plain', 'application/x-www-form-urlencoded']]
         )->willReturn($mimeTypeValidator);
-        $propertyMappingConfiguration = new PropertyMappingConfiguration($validatorResolver);
+        $propertyMappingConfiguration = new PropertyMappingConfiguration($validatorResolver, $this->createMock(Features::class));
+        $propertyMappingConfiguration->afterBuildingFinished($this->fileUpload);
+    }
+
+    #[Test]
+    public function afterBuildingFinishedAddsMimeTypeValidatorForEmptyAllowedMimeTypes(): void
+    {
+        $this->processingRule
+            ->method('getValidators')
+            ->willReturn(new \SplObjectStorage());
+
+        $this->fileUpload
+            ->method('getProperties')
+            ->willReturn(['allowedMimeTypes' => []]);
+
+        $this->extbasePropertyMappingConfiguration
+            ->expects($this->atLeastOnce())
+            ->method('setTypeConverterOptions')
+            ->willReturnCallback(function (string $typeConverter, array $options): ExtbasePropertyMappingConfiguration {
+                $this->assertArrayHasKey(UploadedFileReferenceConverter::CONFIGURATION_FILE_VALIDATORS, $options);
+                $validators = $options[UploadedFileReferenceConverter::CONFIGURATION_FILE_VALIDATORS];
+
+                $this->assertInstanceOf(MimeTypeValidator::class, $validators[0]);
+
+                return $this->extbasePropertyMappingConfiguration;
+            });
+
+        $mimeTypeValidator = new MimeTypeValidator();
+        $mimeTypeValidator->setOptions(['allowedMimeTypes' => []]);
+        $validatorResolver = $this->createMock(ValidatorResolver::class);
+        $validatorResolver->expects($this->once())->method('createValidator')->with(
+            MimeTypeValidator::class,
+            ['allowedMimeTypes' => []]
+        )->willReturn($mimeTypeValidator);
+        $propertyMappingConfiguration = new PropertyMappingConfiguration($validatorResolver, $this->createMock(Features::class));
+        $propertyMappingConfiguration->afterBuildingFinished($this->fileUpload);
+    }
+
+    #[Test]
+    public function afterBuildingFinishedDoesNotAddMimeTypeValidatorForEmptyAllowedMimeTypesIfFeatureIsEnabled(): void
+    {
+        $this->processingRule
+            ->method('getValidators')
+            ->willReturn(new \SplObjectStorage());
+
+        $this->fileUpload
+            ->method('getProperties')
+            ->willReturn(['allowedMimeTypes' => []]);
+
+        $this->extbasePropertyMappingConfiguration
+            ->expects($this->atLeastOnce())
+            ->method('setTypeConverterOptions')
+            ->willReturnCallback(function (string $typeConverter, array $options): ExtbasePropertyMappingConfiguration {
+                $this->assertSame([], $options[UploadedFileReferenceConverter::CONFIGURATION_FILE_VALIDATORS]);
+
+                return $this->extbasePropertyMappingConfiguration;
+            });
+
+        $validatorResolver = $this->createMock(ValidatorResolver::class);
+        $validatorResolver->expects($this->never())->method('createValidator');
+        $features = $this->createMock(Features::class);
+        $features->method('isFeatureEnabled')->with('security.form.allowUnrestrictedFileUploadMimeTypes')->willReturn(true);
+        $propertyMappingConfiguration = new PropertyMappingConfiguration($validatorResolver, $features);
         $propertyMappingConfiguration->afterBuildingFinished($this->fileUpload);
     }
 
