@@ -160,7 +160,7 @@ which are shown in top.
 The categorization is only displayed, when the "Category" selector in the
 "Advanced" search form is set to "All categorized". You can preset the
 selector to use this setting by default:
-:ref:`plugin.tx_indexedsearch.settings.defaultOptions.freeIndexUid <typo3/cms-indexed-search:confval-defaultoptions-freeindexuid>`.
+:ref:`plugin.tx_indexedsearch.settings.defaultOptions.freeIndexUid <confval-defaultoptions-freeindexuid>`.
 
 For example:
 

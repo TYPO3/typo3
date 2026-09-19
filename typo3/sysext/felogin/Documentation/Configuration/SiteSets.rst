@@ -76,7 +76,7 @@ The site settings are named like the TypoScript constants used before
 site sets. However the TypoScript constants are not always named the same
 like the :ref:`TypoScript setup settings <plugin-tx-felogin-login>`.
 
-For each :ref:`TypoScript setup / FlexForm setting <typo3/cms-felogin:plugin-tx-felogin-login>`
+For each :ref:`TypoScript setup / FlexForm setting <plugin-tx-felogin-login>`
 we list the corresponding site set setting in the overview table of the configuration values.
 
 For example, the setting :confval:`felogin.pid <felogin-felogin-pid>` sets

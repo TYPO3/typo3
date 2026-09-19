@@ -73,13 +73,13 @@ The :php:`\TYPO3\CMS\Seo\XmlSitemap\PagesXmlSitemapDataProvider` will generate a
 sitemap of pages based on the detected site root. You can configure whether you
 have additional conditions for selecting the pages.
 
-Via setting :ref:`seo.sitemap.pages.excludedDoktypes <typo3/cms-seo:confval-seo-settings-seo-sitemap-pages-excludeddoktypes>`
+Via setting :ref:`seo.sitemap.pages.excludedDoktypes <confval-seo-settings-seo-sitemap-pages-excludeddoktypes>`
 it is possible to exclude certain `Types of pages <https://docs.typo3.org/permalink/t3coreapi:list-of-page-types>`_.
 
 Additionally, you may exclude page subtrees from the sitemap
 (for example internal pages). This can be
 configured using setting
-:ref:`seo.sitemap.pages.excludePagesRecursive <typo3/cms-seo:confval-seo-settings-seo-sitemap-pages-excludepagesrecursive>`.
+:ref:`seo.sitemap.pages.excludePagesRecursive <confval-seo-settings-seo-sitemap-pages-excludepagesrecursive>`.
 
 If your site still depend on TypoScript records instead of site sets, you can
 make these settings via TypoScript constants.
