@@ -76,9 +76,10 @@ class ConfigurationStatus implements StatusProviderInterface
         $severity = ContextualFeedbackSeverity::OK;
 
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_refindex');
-        $count = $queryBuilder
-            ->count('*')
+        $reference = $queryBuilder
+            ->select('hash')
             ->from('sys_refindex')
+            ->setMaxResults(1)
             ->executeQuery()
             ->fetchOne();
 
@@ -86,7 +87,7 @@ class ConfigurationStatus implements StatusProviderInterface
         $lastRefIndexUpdate = $registry->get('core', 'sys_refindex_lastUpdate');
 
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        if (!$count && $lastRefIndexUpdate) {
+        if (!$reference && $lastRefIndexUpdate) {
             $value = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_empty');
             $severity = ContextualFeedbackSeverity::WARNING;
             $url = (string)$uriBuilder->buildUriFromRoute('system_maintenance');
