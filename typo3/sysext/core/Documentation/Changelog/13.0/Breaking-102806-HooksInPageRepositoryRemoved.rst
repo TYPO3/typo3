@@ -11,10 +11,10 @@ See :issue:`102806`
 Description
 ===========
 
-The following hooks in TYPO3's Core API class :php:`\TYPO3\CMS\Core\Domain\PageRepository`
+The following hooks in TYPO3's Core API class :php:`\TYPO3\CMS\Core\Domain\Repository\PageRepository`
 have been removed:
 
-* :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][\TYPO3\CMS\Core\Domain\PageRepository::class]['init']`
+* :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][\TYPO3\CMS\Core\Domain\Repository\PageRepository::class]['init']`
 * :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getPage']`
 
 Later hook has been replaced by the new PSR-14 event
@@ -35,7 +35,7 @@ TYPO3 installations with custom extensions using these hooks.
 Migration
 =========
 
-The hook :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][\TYPO3\CMS\Core\Domain\PageRepository::class]['init']`
+The hook :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][\TYPO3\CMS\Core\Domain\Repository\PageRepository::class]['init']`
 is removed without substitution. Back in TYPO3 v4.x this hook was useful to modify
 public properties after everything was initialized. Nowadays, this is not
 necessary anymore, as the properties are not public anymore and calculated

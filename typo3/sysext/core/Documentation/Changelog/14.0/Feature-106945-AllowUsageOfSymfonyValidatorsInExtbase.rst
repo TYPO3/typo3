@@ -20,7 +20,7 @@ Once a constraint attribute is detected while reflecting properties or methods,
 it is decorated by the new
 :php-short:`\TYPO3\CMS\Extbase\Validation\Validator\ConstraintDecoratingValidator`
 class, which is compatible with Extbase's
-:php-short:`\TYPO3\CMS\Extbase\Validation\ValidatorInterface`.
+:php-short:`\TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface`.
 
 Decorated constraints may include localizable messages. If a message contains
 valid `LLL:` syntax, the label will be translated automatically. The decorating

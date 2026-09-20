@@ -14,7 +14,7 @@ Description
 TYPO3 parses :file:`ext_tables.sql` files into a Doctrine
 :abbr:`DBAL (Database Abstraction Layer)` object schema to define a virtual
 database scheme, enriched with
-:php:`\TYPO3\CMS\Core\Schema\DefaultTcaSchema` information for
+:php:`\TYPO3\CMS\Core\Database\Schema\DefaultTcaSchema` information for
 :abbr:`TCA (Table Configuration Array)` managed tables and fields.
 
 Fixed- and variable-length variants have been parsed in the past, but failed

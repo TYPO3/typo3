@@ -23,7 +23,7 @@ identifier has to be provided by the service directly using the
 :php:`ElementBrowserInterface`.
 
 In case a custom `element browser` extends
-:php:`\TYPO3\CMS\Backend\Browser\AbstractElementBrowser`,
+:php:`\TYPO3\CMS\Backend\ElementBrowser\AbstractElementBrowser`,
 only the class property `$identifier` has to be set, e.g.
 :php:`protected string $identifier = 'my_browser';`.
 

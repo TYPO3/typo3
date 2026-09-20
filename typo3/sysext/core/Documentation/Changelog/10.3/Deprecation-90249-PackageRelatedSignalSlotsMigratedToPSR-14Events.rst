@@ -21,7 +21,7 @@ which can be used as 1:1 equivalents:
 * :php:`TYPO3\CMS\Extensionmanager\Utility\InstallUtility::afterExtensionStaticSqlImport`
 * :php:`TYPO3\CMS\Extensionmanager\Utility\InstallUtility::afterExtensionFileImport`
 * :php:`TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService::willInstallExtensions`
-* :php:`TYPO3\CMS\Extensionmanager\ViewHelper\ProcessAvailableActionsViewHelper::processActions`
+* :php:`TYPO3\CMS\Extensionmanager\ViewHelpers\ProcessAvailableActionsViewHelper::processActions`
 
 
 Impact

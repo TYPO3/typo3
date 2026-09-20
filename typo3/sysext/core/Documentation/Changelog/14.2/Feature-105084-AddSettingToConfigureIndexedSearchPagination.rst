@@ -37,6 +37,6 @@ Integrators can now switch between core pagination implementations using
 TypoScript, without having to use custom PHP code.
 
 Advanced, fully-customized pagination logic can still be implemented using
-:php-short:`\TYPO3\CMS\IndexedSearch\Event\ModifySearchResultSetsEvent`.
+:php-short:`\TYPO3\CMS\IndexedSearch\Event\AfterSearchResultSetsAreGeneratedEvent`.
 
 ..  index:: Frontend, TypoScript, ext:indexed_search

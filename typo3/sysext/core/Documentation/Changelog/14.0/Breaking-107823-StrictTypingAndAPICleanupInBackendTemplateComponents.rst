@@ -26,8 +26,8 @@ New ComponentInterface
 
 A new :php:`\TYPO3\CMS\Backend\Template\Components\ComponentInterface`
 has been introduced as the parent interface for both
-:php-short:`\TYPO3\CMS\Backend\Template\Components\ButtonInterface` and
-:php-short:`\TYPO3\CMS\Backend\Template\Components\DropDownItemInterface`.
+:php-short:`\TYPO3\CMS\Backend\Template\Components\Buttons\ButtonInterface` and
+:php-short:`\TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownItemInterface`.
 This unifies the common contract for all renderable backend components.
 
 Both interfaces now extend
@@ -38,14 +38,14 @@ which defines:
 *   :php:`getType(): string`
 *   :php:`render(): string`
 
-Custom implementations of :php-short:`\TYPO3\CMS\Backend\Template\Components\ButtonInterface`
-or :php-short:`\TYPO3\CMS\Backend\Template\Components\DropDownItemInterface` will
+Custom implementations of :php-short:`\TYPO3\CMS\Backend\Template\Components\Buttons\ButtonInterface`
+or :php-short:`\TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownItemInterface` will
 now trigger a :php:`\TypeError` if these return types are missing.
 
 PositionInterface enforced
 --------------------------
 
-The :php:`\TYPO3\CMS\Backend\Template\Components\PositionInterface` now enforces
+The :php:`\TYPO3\CMS\Backend\Template\Components\Buttons\PositionInterface` now enforces
 strict type hints:
 
 *   :php:`getPosition(): string`
@@ -141,7 +141,7 @@ Example: implementing ButtonInterface
 
 ..  code-block:: php
 
-    use TYPO3\CMS\Backend\Template\Components\ButtonInterface;
+    use TYPO3\CMS\Backend\Template\Components\Buttons\ButtonInterface;
 
     // Before
     class CustomButton implements ButtonInterface {
@@ -152,7 +152,7 @@ Example: implementing ButtonInterface
 
 ..  code-block:: php
 
-    use TYPO3\CMS\Backend\Template\Components\ButtonInterface;
+    use TYPO3\CMS\Backend\Template\Components\Buttons\ButtonInterface;
 
     // After
     class CustomButton implements ButtonInterface {

@@ -57,7 +57,7 @@ getItemLabel
 ..  code-block:: php
 
     use TYPO3\CMS\Backend\Utility\BackendUtility;
-    use TYPO3\CMS\Core\Schema\TcaSchemaCapability;
+    use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
     use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 
     // Before
@@ -78,7 +78,7 @@ isTableLocalizable
 ..  code-block:: php
 
     use TYPO3\CMS\Backend\Utility\BackendUtility;
-    use TYPO3\CMS\Core\Schema\TcaSchemaCapability;
+    use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
     use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 
     // Before
@@ -96,7 +96,7 @@ isTableWorkspaceEnabled
 ..  code-block:: php
 
     use TYPO3\CMS\Backend\Utility\BackendUtility;
-    use TYPO3\CMS\Core\Schema\TcaSchemaCapability;
+    use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
     use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 
     // Before
@@ -114,7 +114,7 @@ isRootLevelRestrictionIgnored
 ..  code-block:: php
 
     use TYPO3\CMS\Backend\Utility\BackendUtility;
-    use TYPO3\CMS\Core\Schema\TcaSchemaCapability;
+    use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
     use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 
     // Before
@@ -134,7 +134,7 @@ isWebMountRestrictionIgnored
 ..  code-block:: php
 
     use TYPO3\CMS\Backend\Utility\BackendUtility;
-    use TYPO3\CMS\Core\Schema\TcaSchemaCapability;
+    use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
     use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 
     // Before

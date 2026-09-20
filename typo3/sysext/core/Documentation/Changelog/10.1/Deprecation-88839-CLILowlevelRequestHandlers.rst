@@ -24,7 +24,7 @@ the class have been marked as deprecated.
 Impact
 ======
 
-When instantiating the CLI :php:`\TYPO3\CMS\Core\Console\RequestHandler` class,
+When instantiating the CLI :php:`\TYPO3\CMS\Core\Console\CommandRequestHandler` class,
 a PHP :php:`E_USER_DEPRECATED` error will be triggered.
 
 
