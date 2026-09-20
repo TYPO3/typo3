@@ -67,7 +67,7 @@ readonly class MediaFieldsZeroToNullUpdateWizard implements UpgradeWizardInterfa
 
     public function updateNecessary(): bool
     {
-        return $this->getCountOfRowsWhichNeedUpdate() > 0;
+        return $this->getCountOfRowsWhichNeedUpdate() > 0 || $this->getSchemaChanges() !== [];
     }
 
     /**
@@ -82,6 +82,11 @@ readonly class MediaFieldsZeroToNullUpdateWizard implements UpgradeWizardInterfa
 
     public function executeUpdate(): bool
     {
+        $connection = $this->connectionPool->getConnectionForTable('tt_content');
+        foreach ($this->getSchemaChanges() as $statement) {
+            $connection->executeStatement($statement);
+        }
+
         foreach (['imagewidth', 'imageheight'] as $fieldName) {
             $qb = $this->connectionPool->getQueryBuilderForTable('tt_content');
             $qb
@@ -91,5 +96,21 @@ readonly class MediaFieldsZeroToNullUpdateWizard implements UpgradeWizardInterfa
                 ->executeStatement();
         }
         return true;
+    }
+
+    /**
+     * @return string[]
+     */
+    private function getSchemaChanges(): array
+    {
+        $connection = $this->connectionPool->getConnectionForTable('tt_content');
+        $schemaManager = $connection->createSchemaManager();
+        $currentTable = $schemaManager->introspectTable('tt_content');
+        $updatedTable = clone $currentTable;
+        foreach (['imagewidth', 'imageheight'] as $fieldName) {
+            $updatedTable->getColumn($fieldName)->setNotnull(false)->setDefault(null);
+        }
+        $diff = $schemaManager->createComparator()->compareTables($currentTable, $updatedTable);
+        return $connection->getDatabasePlatform()->getAlterTableSQL($diff);
     }
 }
