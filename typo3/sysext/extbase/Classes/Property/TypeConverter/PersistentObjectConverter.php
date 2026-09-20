@@ -41,15 +41,9 @@ use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
  */
 class PersistentObjectConverter extends ObjectConverter
 {
-    /**
-     * @var int
-     */
-    public const CONFIGURATION_MODIFICATION_ALLOWED = 1;
+    public const int CONFIGURATION_MODIFICATION_ALLOWED = 1;
 
-    /**
-     * @var int
-     */
-    public const CONFIGURATION_CREATION_ALLOWED = 2;
+    public const int CONFIGURATION_CREATION_ALLOWED = 2;
 
     protected PersistenceManagerInterface $persistenceManager;
 

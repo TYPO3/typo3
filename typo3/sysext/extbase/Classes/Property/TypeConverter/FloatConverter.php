@@ -30,12 +30,12 @@ class FloatConverter extends AbstractTypeConverter
     /**
      * @var string
      */
-    public const CONFIGURATION_THOUSANDS_SEPARATOR = 'thousandsSeparator';
+    public const string CONFIGURATION_THOUSANDS_SEPARATOR = 'thousandsSeparator';
 
     /**
      * @var string
      */
-    public const CONFIGURATION_DECIMAL_POINT = 'decimalPoint';
+    public const string CONFIGURATION_DECIMAL_POINT = 'decimalPoint';
 
     /**
      * Actually convert from $source to $targetType, by doing a typecast.

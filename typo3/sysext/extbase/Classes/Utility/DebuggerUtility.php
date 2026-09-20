@@ -40,7 +40,7 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
  */
 class DebuggerUtility
 {
-    public const PLAINTEXT_INDENT = '   ';
+    public const string PLAINTEXT_INDENT = '   ';
 
     /**
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage

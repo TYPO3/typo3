@@ -49,22 +49,22 @@ class Query implements QueryInterface
     /**
      * An inner join.
      */
-    public const JCR_JOIN_TYPE_INNER = '{http://www.jcp.org/jcr/1.0}joinTypeInner';
+    public const string JCR_JOIN_TYPE_INNER = '{http://www.jcp.org/jcr/1.0}joinTypeInner';
 
     /**
      * A left-outer join.
      */
-    public const JCR_JOIN_TYPE_LEFT_OUTER = '{http://www.jcp.org/jcr/1.0}joinTypeLeftOuter';
+    public const string JCR_JOIN_TYPE_LEFT_OUTER = '{http://www.jcp.org/jcr/1.0}joinTypeLeftOuter';
 
     /**
      * A right-outer join.
      */
-    public const JCR_JOIN_TYPE_RIGHT_OUTER = '{http://www.jcp.org/jcr/1.0}joinTypeRightOuter';
+    public const string JCR_JOIN_TYPE_RIGHT_OUTER = '{http://www.jcp.org/jcr/1.0}joinTypeRightOuter';
 
     /**
      * Charset of strings in QOM
      */
-    public const CHARSET = 'utf-8';
+    public const string CHARSET = 'utf-8';
 
     /**
      * @var class-string<T>

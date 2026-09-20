@@ -42,7 +42,7 @@ use TYPO3\CMS\Extbase\Validation\ValidatorClassNameResolver;
  */
 class ClassSchema
 {
-    private const BIT_CLASS_IS_CONTROLLER = 1 << 3;
+    private const int BIT_CLASS_IS_CONTROLLER = 1 << 3;
     private BitSet $bitSet;
     private static array $propertyObjects = [];
     private static array $methodObjects = [];

@@ -26,7 +26,7 @@ use TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface;
  */
 class CountryConverter extends AbstractTypeConverter
 {
-    public const CONFIGURATION_FROM = 'alpha2IsoCode';
+    public const string CONFIGURATION_FROM = 'alpha2IsoCode';
 
     protected CountryProvider $countryProvider;
 

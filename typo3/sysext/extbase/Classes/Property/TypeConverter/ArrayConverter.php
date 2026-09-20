@@ -26,9 +26,9 @@ use TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface;
  */
 class ArrayConverter extends AbstractTypeConverter
 {
-    public const CONFIGURATION_DELIMITER = 'delimiter';
-    public const CONFIGURATION_REMOVE_EMPTY_VALUES = 'removeEmptyValues';
-    public const CONFIGURATION_LIMIT = 'limit';
+    public const string CONFIGURATION_DELIMITER = 'delimiter';
+    public const string CONFIGURATION_REMOVE_EMPTY_VALUES = 'removeEmptyValues';
+    public const string CONFIGURATION_LIMIT = 'limit';
 
     /**
      * Convert from $source to $targetType, a noop if the source is an array.

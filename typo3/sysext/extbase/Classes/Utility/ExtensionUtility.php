@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ExtensionUtility
 {
-    public const PLUGIN_TYPE_CONTENT_ELEMENT = 'CType';
+    public const string PLUGIN_TYPE_CONTENT_ELEMENT = 'CType';
 
     /**
      * Add auto-generated TypoScript to configure the Extbase Dispatcher.

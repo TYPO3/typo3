@@ -26,9 +26,9 @@ use TYPO3\CMS\Extbase\Configuration\Exception\NoServerRequestGivenException;
  */
 interface ConfigurationManagerInterface extends SingletonInterface
 {
-    public const CONFIGURATION_TYPE_FRAMEWORK = 'Framework';
-    public const CONFIGURATION_TYPE_SETTINGS = 'Settings';
-    public const CONFIGURATION_TYPE_FULL_TYPOSCRIPT = 'FullTypoScript';
+    public const string CONFIGURATION_TYPE_FRAMEWORK = 'Framework';
+    public const string CONFIGURATION_TYPE_SETTINGS = 'Settings';
+    public const string CONFIGURATION_TYPE_FULL_TYPOSCRIPT = 'FullTypoScript';
 
     /**
      * Returns the specified configuration.

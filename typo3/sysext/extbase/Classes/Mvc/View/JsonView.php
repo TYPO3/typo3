@@ -37,13 +37,13 @@ class JsonView implements ViewInterface
      * Setting this value, the object's class name is fully
      * put out, including the namespace.
      */
-    public const EXPOSE_CLASSNAME_FULLY_QUALIFIED = 1;
+    public const int EXPOSE_CLASSNAME_FULLY_QUALIFIED = 1;
 
     /**
      * Puts out only the actual class name without namespace.
      * See EXPOSE_CLASSNAME_FULL for the meaning of the constant at all.
      */
-    public const EXPOSE_CLASSNAME_UNQUALIFIED = 2;
+    public const int EXPOSE_CLASSNAME_UNQUALIFIED = 2;
 
     /**
      * Only variables whose name is contained in this array will be rendered

@@ -33,15 +33,9 @@ use TYPO3\CMS\Extbase\Reflection\ReflectionService;
  */
 class ObjectConverter extends AbstractTypeConverter
 {
-    /**
-     * @var int
-     */
-    public const CONFIGURATION_TARGET_TYPE = 3;
+    public const int CONFIGURATION_TARGET_TYPE = 3;
 
-    /**
-     * @var int
-     */
-    public const CONFIGURATION_OVERRIDE_TARGET_TYPE_ALLOWED = 4;
+    public const int CONFIGURATION_OVERRIDE_TARGET_TYPE_ALLOWED = 4;
 
     protected ContainerInterface $container;
 

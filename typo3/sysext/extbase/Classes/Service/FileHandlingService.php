@@ -55,7 +55,7 @@ readonly class FileHandlingService
 {
     use ResourceInstructionTrait;
 
-    public const DELETE_IDENTIFIER = '@delete';
+    public const string DELETE_IDENTIFIER = '@delete';
 
     public function __construct(
         protected ReflectionService $reflectionService,

@@ -66,7 +66,7 @@ class DateTimeConverter extends AbstractTypeConverter
     /**
      * @var string
      */
-    public const CONFIGURATION_DATE_FORMAT = 'dateFormat';
+    public const string CONFIGURATION_DATE_FORMAT = 'dateFormat';
 
     /**
      * The default date format is "YYYY-MM-DDT##:##:##+##:##", for example "2005-08-15T15:52:01+00:00"
@@ -74,7 +74,7 @@ class DateTimeConverter extends AbstractTypeConverter
      *
      * @var string
      */
-    public const DEFAULT_DATE_FORMAT = \DateTimeInterface::W3C;
+    public const string DEFAULT_DATE_FORMAT = \DateTimeInterface::W3C;
 
     /**
      * Converts $source to a \DateTime using the configured dateFormat

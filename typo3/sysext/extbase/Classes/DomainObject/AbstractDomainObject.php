@@ -31,11 +31,11 @@ use TYPO3\CMS\Extbase\Persistence\ObjectMonitoringInterface;
  */
 abstract class AbstractDomainObject implements DomainObjectInterface
 {
-    public const PROPERTY_UID = 'uid';
-    public const PROPERTY_PID = 'pid';
-    public const PROPERTY_LOCALIZED_UID = '_localizedUid';
-    public const PROPERTY_LANGUAGE_UID = '_languageUid';
-    public const PROPERTY_VERSIONED_UID = '_versionedUid';
+    public const string PROPERTY_UID = 'uid';
+    public const string PROPERTY_PID = 'pid';
+    public const string PROPERTY_LOCALIZED_UID = '_localizedUid';
+    public const string PROPERTY_LANGUAGE_UID = '_languageUid';
+    public const string PROPERTY_VERSIONED_UID = '_versionedUid';
 
     /**
      * @var int<1, max>|null The uid of the record. The uid is only unique in the context of the database table.

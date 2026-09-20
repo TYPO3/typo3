@@ -24,9 +24,9 @@ use TYPO3\CMS\Core\Type\BitSet;
  */
 final class PropertyCharacteristics extends BitSet
 {
-    public const VISIBILITY_PRIVATE = 1 << 0;
-    public const VISIBILITY_PROTECTED = 1 << 1;
-    public const VISIBILITY_PUBLIC = 1 << 2;
-    public const ANNOTATED_LAZY = 1 << 4;
-    public const ANNOTATED_TRANSIENT = 1 << 5;
+    public const int VISIBILITY_PRIVATE = 1 << 0;
+    public const int VISIBILITY_PROTECTED = 1 << 1;
+    public const int VISIBILITY_PUBLIC = 1 << 2;
+    public const int ANNOTATED_LAZY = 1 << 4;
+    public const int ANNOTATED_TRANSIENT = 1 << 5;
 }
