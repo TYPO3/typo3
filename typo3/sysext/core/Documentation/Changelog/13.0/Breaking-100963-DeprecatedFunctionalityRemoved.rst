@@ -139,7 +139,7 @@ The following PHP class methods that have previously been marked as deprecated w
 - :php:`\TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder->orX()`
 - :php:`\TYPO3\CMS\Core\Database\Query\QueryBuilder->execute()`
 - :php:`\TYPO3\CMS\Core\Domain\Repository\PageRepository->getExtURL()`
-- :php:`\TYPO3\CMS\Core\Environment->getBackendPath()`
+- :php:`\TYPO3\CMS\Core\Core\Environment->getBackendPath()`
 - :php:`\TYPO3\CMS\Core\Localization\LanguageService->getLL()`
 - :php:`\TYPO3\CMS\Core\Localization\Locales->getIsoMapping()`
 - :php:`\TYPO3\CMS\Core\Page\JavaScriptModuleInstruction->shallLoadRequireJs()`
@@ -175,10 +175,10 @@ The following PHP class methods that have previously been marked as deprecated w
 - :php:`\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings->getLanguageOverlayMode()`
 - :php:`\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings->setLanguageUid()`
 - :php:`\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings->getLanguageUid()`
-- :php:`\TYPO3\CMS\Extbase\Property\AbstractTypeConverter->canConvertFrom()`
-- :php:`\TYPO3\CMS\Extbase\Property\AbstractTypeConverter->getPriority()`
-- :php:`\TYPO3\CMS\Extbase\Property\AbstractTypeConverter->getSupportedTargetType()`
-- :php:`\TYPO3\CMS\Extbase\Property\AbstractTypeConverter->getSupportedSourceTypes()`
+- :php:`\TYPO3\CMS\Extbase\Property\TypeConverter\AbstractTypeConverter->canConvertFrom()`
+- :php:`\TYPO3\CMS\Extbase\Property\TypeConverter\AbstractTypeConverter->getPriority()`
+- :php:`\TYPO3\CMS\Extbase\Property\TypeConverter\AbstractTypeConverter->getSupportedTargetType()`
+- :php:`\TYPO3\CMS\Extbase\Property\TypeConverter\AbstractTypeConverter->getSupportedSourceTypes()`
 - :php:`\TYPO3\CMS\Fluid\View\StandaloneView->getFormat()`
 - :php:`\TYPO3\CMS\Fluid\View\StandaloneView->getRequest()`
 - :php:`\TYPO3\CMS\Fluid\View\StandaloneView->getTemplatePathAndFilename()`
@@ -262,7 +262,7 @@ The following methods changed signature according to previous deprecations in v1
 - :php:`\TYPO3\CMS\Core\Messaging\FlashMessageQueue->getAllMessagesAndFlush()` (argument 1 is now of type :php:`ContextualFeedbackSeverity|null`)
 - :php:`\TYPO3\CMS\Core\Messaging\FlashMessageQueue->getAllMessages()` (argument 1 is now of type :php:`ContextualFeedbackSeverity|null`)
 - :php:`\TYPO3\CMS\Core\Messaging\FlashMessageQueue->removeAllFlashMessagesFromSession()` (argument 1 is now of type :php:`ContextualFeedbackSeverity|null`)
-- :php:`\TYPO3\CMS\Core\Messaging\FlashMessages->__construct()` (argument 3 is now of type :php:`ContextualFeedbackSeverity`)
+- :php:`\TYPO3\CMS\Core\Messaging\FlashMessage->__construct()` (argument 3 is now of type :php:`ContextualFeedbackSeverity`)
 - :php:`\TYPO3\CMS\Core\Page\PageRenderer->setLanguage()` (argument 1 is now of type :php:`Locale`)
 - :php:`\TYPO3\CMS\Core\Utility\File\ExtendedFileUtility->addMessageToFlashMessageQueue()` (argument 2 is now of type :php:`ContextualFeedbackSeverity|null`)
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::intExplode()` (argument 4 :php:`$limit` has been removed)

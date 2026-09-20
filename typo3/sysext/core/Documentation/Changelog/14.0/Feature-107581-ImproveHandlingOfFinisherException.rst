@@ -11,7 +11,7 @@ See :issue:`107581`
 Description
 ===========
 
-:php-short:`\TYPO3\CMS\Form\Exception\FinisherException` instances thrown during
+:php-short:`\TYPO3\CMS\Form\Domain\Finishers\Exception\FinisherException` instances thrown during
 form processing are now caught within their respective finisher. Instead of
 resulting in a generic 503 error page, the exception is logged, and a
 user-friendly error message is displayed to the user, indicating that the form

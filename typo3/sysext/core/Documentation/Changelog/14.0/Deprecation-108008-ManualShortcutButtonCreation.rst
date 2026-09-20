@@ -12,7 +12,7 @@ Description
 ===========
 
 Manually creating and adding
-:php-short:`\TYPO3\CMS\Backend\Template\Components\Buttons\ShortcutButton`
+:php-short:`\TYPO3\CMS\Backend\Template\Components\Buttons\Action\ShortcutButton`
 instances to the button bar is deprecated and will trigger a deprecation
 warning.
 
@@ -24,7 +24,7 @@ Impact
 ======
 
 Controllers that manually create and add
-:php-short:`\TYPO3\CMS\Backend\Template\Components\Buttons\ShortcutButton`
+:php-short:`\TYPO3\CMS\Backend\Template\Components\Buttons\Action\ShortcutButton`
 instances to the button bar will trigger a deprecation warning. The shortcut
 button will still work as expected.
 

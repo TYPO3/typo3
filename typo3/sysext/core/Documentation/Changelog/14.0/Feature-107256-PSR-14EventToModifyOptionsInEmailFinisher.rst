@@ -13,7 +13,7 @@ Description
 
 A new PSR-14 event :php:`\TYPO3\CMS\Form\Event\BeforeEmailFinisherInitializedEvent`
 has been introduced. This event is dispatched before the
-:php-short:`\TYPO3\CMS\Form\Finisher\EmailFinisher` is initialized and allows
+:php-short:`\TYPO3\CMS\Form\Domain\Finishers\EmailFinisher` is initialized and allows
 listeners to modify the finisher options dynamically.
 
 This enables developers to customize email behavior programmatically, such as:
@@ -27,7 +27,7 @@ This enables developers to customize email behavior programmatically, such as:
 The event provides access to both the finisher context (read-only) and the
 options array, allowing for flexible manipulation of the email configuration.
 
-To modify the :php-short:`\TYPO3\CMS\Form\Finisher\EmailFinisher` options, the
+To modify the :php-short:`\TYPO3\CMS\Form\Domain\Finishers\EmailFinisher` options, the
 following methods are available:
 
 *   :php:`getFinisherContext()`: Returns the
@@ -79,11 +79,11 @@ Impact
 ======
 
 It is now possible to dynamically modify
-:php-short:`\TYPO3\CMS\Form\Finisher\EmailFinisher` options before email
+:php-short:`\TYPO3\CMS\Form\Domain\Finishers\EmailFinisher` options before email
 processing begins, using the new PSR-14 event
 :php-short:`\TYPO3\CMS\Form\Event\BeforeEmailFinisherInitializedEvent`. This
 provides developers with full control over email configuration without needing
 to extend or override the
-:php-short:`\TYPO3\CMS\Form\Finisher\EmailFinisher` class.
+:php-short:`\TYPO3\CMS\Form\Domain\Finishers\EmailFinisher` class.
 
 ..  index:: PHP-API, ext:form

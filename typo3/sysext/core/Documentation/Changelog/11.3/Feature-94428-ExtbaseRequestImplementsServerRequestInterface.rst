@@ -26,11 +26,11 @@ Extbase controllers from :php:`$this->request`.
 Developers of Fluid ViewHelpers can now retrieve the main PSR-7 request
 in many contexts from :php:`$renderingContext->getRequest()`, in addition
 to the Extbase specific information specified by
-:php:`TYPO3\CMS\Extbase\Mvc\Request\RequestInterface`.
+:php:`TYPO3\CMS\Extbase\Mvc\RequestInterface`.
 
 Note that with future patches, the request assigned to ViewHelper
 :php:`RenderingContext` may NOT implement Extbase
-:php:`TYPO3\CMS\Extbase\Mvc\Request\RequestInterface` anymore, and
+:php:`TYPO3\CMS\Extbase\Mvc\RequestInterface` anymore, and
 only PSR-7 :php:`ServerRequestInterface`. This will be the case when the
 ViewHelper is not called from within an Extbase plugin, but when Fluid
 is started as "standalone view" in non-extbase based plugins: Often in

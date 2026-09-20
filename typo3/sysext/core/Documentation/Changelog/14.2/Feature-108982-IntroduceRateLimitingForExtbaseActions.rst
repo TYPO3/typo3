@@ -69,7 +69,7 @@ PSR-14 event: BeforeActionRateLimitResponseEvent
 ------------------------------------------------
 
 The new PSR-14 event
-:php:`\TYPO3\CMS\Extbase\Event\BeforeActionRateLimitResponseEvent`
+:php:`\TYPO3\CMS\Extbase\Event\Mvc\BeforeActionRateLimitResponseEvent`
 is dispatched when a rate limit is triggered but before the response is
 returned. This allows extension developers to modify the response or perform
 additional actions, such as logging, throwing a custom exception, and enqueuing
@@ -84,7 +84,7 @@ limit is reached. It is handled by a configured site error handler.
     use TYPO3\CMS\Core\Attribute\AsEventListener;
     use TYPO3\CMS\Core\Http\PropagateResponseException;
     use TYPO3\CMS\Core\Utility\GeneralUtility;
-    use TYPO3\CMS\Extbase\Event\BeforeActionRateLimitResponseEvent;
+    use TYPO3\CMS\Extbase\Event\Mvc\BeforeActionRateLimitResponseEvent;
     use TYPO3\CMS\Frontend\Controller\ErrorController;
 
     final readonly class MyEventListener

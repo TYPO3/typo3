@@ -234,7 +234,7 @@ Extending the expression language with own functions (like old userFunc)
 ------------------------------------------------------------------------
 
 It is possible to extend the expression language with own functions like before userFunc in the old conditions.
-An example could be :php:`TYPO3\CMS\Core\ExpressionLanguage\FunctionsProvider\TypoScriptConditionFunctionsProvider` which implements
+An example could be :php:`TYPO3\CMS\Core\ExpressionLanguage\TypoScriptConditionFunctionsProvider` which implements
 the most core functions.
 
 Please read .. _the introduction: https://docs.typo3.org/typo3cms/extensions/core/Changelog/9.4/Feature-85828-MoveSymfonyExpressionLanguageHandlingIntoEXTcore.html first.

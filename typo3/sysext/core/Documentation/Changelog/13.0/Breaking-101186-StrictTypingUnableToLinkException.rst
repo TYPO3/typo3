@@ -11,7 +11,7 @@ See :issue:`101186`
 Description
 ===========
 
-The class constructor in :php:`\TYPO3\CMS\Frontend\Exception\UnableToLinkException`
+The class constructor in :php:`\TYPO3\CMS\Frontend\Typolink\UnableToLinkException`
 is now strictly typed. In addition, the variable :php:`$linkText` has type :php:`string`.
 
 Impact
@@ -22,7 +22,7 @@ The class constructor is now strictly typed.
 Affected installations
 ======================
 
-TYPO3 sites using the :php:`\TYPO3\CMS\Frontend\Exception\UnableToLinkException` exception.
+TYPO3 sites using the :php:`\TYPO3\CMS\Frontend\Typolink\UnableToLinkException` exception.
 
 Migration
 =========

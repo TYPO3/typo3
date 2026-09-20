@@ -47,7 +47,7 @@ Example
     namespace MyVendor\MyExtension\EventListener;
 
     use TYPO3\CMS\Backend\Localization\Event\ModifyLocalizationHandlerIsAvailableEvent;
-    use TYPO3\CMS\Backend\Localization\Handler\ManualLocalizationHandler;
+    use TYPO3\CMS\Backend\Localization\ManualLocalizationHandler;
     use TYPO3\CMS\Backend\Localization\LocalizationMode;
     use TYPO3\CMS\Core\Attribute\AsEventListener;
 

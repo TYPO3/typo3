@@ -31,7 +31,7 @@ The following PHP classes that have been previously deprecated for v8 have been 
 * :php:`TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper`
 * :php:`TYPO3\CMS\Form\Domain\Model\FormElements\AdvancedPassword`
 * :php:`TYPO3\CMS\Form\ViewHelpers\Form\CheckboxViewHelper`
-* :php:`TYPO3\CMS\Form\ViewHelpers\Form\PlainTextMailViewHelper`
+* :php:`TYPO3\CMS\Form\ViewHelpers\PlainTextMailViewHelper`
 * :php:`TYPO3\CMS\Frontend\Page\FramesetRenderer`
 * :php:`TYPO3\CMS\Lowlevel\CleanerCommand`
 
@@ -41,7 +41,7 @@ The following PHP interfaces have been dropped:
 
 The following PHP interface signatures have been changed:
 
-* :php:`TYPO3\CMS\Extbase\Persistence\Generic\QueryInterface->like()` - Third argument dropped
+* :php:`TYPO3\CMS\Extbase\Persistence\QueryInterface->like()` - Third argument dropped
 
 The following PHP static class methods that have been previously deprecated for v8 have been removed:
 
@@ -105,7 +105,7 @@ The following PHP class methods that have been previously deprecated for v8 have
 * :php:`TYPO3\CMS\Backend\Controller\BackendController->addJavascriptFile()`
 * :php:`TYPO3\CMS\Backend\Controller\BackendController->includeLegacyBackendItems()`
 * :php:`TYPO3\CMS\Backend\Controller\Page\LocalizationController->getRecordUidsToCopy()`
-* :php:`TYPO3\CMS\Backend\Controller\Page\PageLayoutController->printContent()`
+* :php:`TYPO3\CMS\Backend\Controller\PageLayoutController->printContent()`
 * :php:`TYPO3\CMS\Backend\Domain\Repository\Localization\LocalizationRepository->getAllowedLanguagesForBackendUser()`
 * :php:`TYPO3\CMS\Backend\Domain\Repository\Localization\LocalizationRepository->getExcludeQueryPart()`
 * :php:`TYPO3\CMS\Backend\Domain\Repository\Localization\LocalizationRepository->getPreviousLocalizedRecordUid()`
@@ -115,8 +115,8 @@ The following PHP class methods that have been previously deprecated for v8 have
 * :php:`[NotScanned] TYPO3\CMS\Backend\Module\AbstractFunctionModule->getDatabaseConnection()`
 * :php:`TYPO3\CMS\Backend\Module\AbstractFunctionModule->incLocalLang()`
 * :php:`[NotScanned] TYPO3\CMS\Backend\Module\BaseScriptClass->getDatabaseConnection()`
-* :php:`TYPO3\CMS\Backend\Form\AbstractFormElement->isWizardsDisabled()`
-* :php:`TYPO3\CMS\Backend\Form\AbstractFormElement->renderWizards()`
+* :php:`TYPO3\CMS\Backend\Form\Element\AbstractFormElement->isWizardsDisabled()`
+* :php:`TYPO3\CMS\Backend\Form\Element\AbstractFormElement->renderWizards()`
 * :php:`TYPO3\CMS\Backend\Form\AbstractNode->getValidationDataAsDataAttribute()`
 * :php:`TYPO3\CMS\Backend\Form\FormResultCompiler->JStop()`
 * :php:`TYPO3\CMS\Backend\Routing\UriBuilder->buildUriFromAjaxId()`

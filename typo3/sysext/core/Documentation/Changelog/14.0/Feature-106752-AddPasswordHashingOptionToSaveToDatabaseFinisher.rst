@@ -12,7 +12,7 @@ Description
 ===========
 
 A new option :yaml:`hashed` has been added to the
-:php-short:`\TYPO3\CMS\Form\Finishers\SaveToDatabaseFinisher` of the system
+:php-short:`\TYPO3\CMS\Form\Domain\Finishers\SaveToDatabaseFinisher` of the system
 extension :composer:`typo3/cms-form`.
 
 When saving form data to a database table, setting :yaml:`hashed: true` for a
@@ -38,7 +38,7 @@ Impact
 ======
 
 Integrators can now ensure secure password storage when saving form data with
-the :php-short:`\TYPO3\CMS\Form\Finishers\SaveToDatabaseFinisher`, without
+the :php-short:`\TYPO3\CMS\Form\Domain\Finishers\SaveToDatabaseFinisher`, without
 implementing custom logic.
 
 ..  index:: ext:form

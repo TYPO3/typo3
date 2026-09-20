@@ -53,7 +53,7 @@ The following PHP classes that have been previously deprecated for v9 have been 
 * :php:`TYPO3\CMS\Extbase\Mvc\Cli\RequestBuilder`
 * :php:`TYPO3\CMS\Extbase\Mvc\Cli\RequestHandler`
 * :php:`TYPO3\CMS\Extbase\Mvc\Cli\Response`
-* :php:`TYPO3\CMS\Extbase\Mvc\Cli\Controller\CommandController`
+* :php:`TYPO3\CMS\Extbase\Mvc\Controller\CommandController`
 * :php:`TYPO3\CMS\Extbase\Mvc\Exception\AmbiguousCommandIdentifierException`
 * :php:`TYPO3\CMS\Extbase\Mvc\Exception\CommandException`
 * :php:`TYPO3\CMS\Extbase\Mvc\Exception\NoSuchCommandException`
@@ -81,7 +81,7 @@ The following PHP classes that have been previously deprecated for v9 have been 
 The following PHP interfaces that have been previously deprecated for v9 have been removed:
 
 * :php:`TYPO3\CMS\Adminpanel\View\AdminPanelViewHookInterface`
-* :php:`TYPO3\CMS\Extbase\Mvc\Cli\Controller\CommandControllerInterface`
+* :php:`TYPO3\CMS\Extbase\Mvc\Controller\CommandControllerInterface`
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\ComposedPasswordHashInterface`
 * :php:`TYPO3\CMS\Frontend\Http\UrlHandlerInterface`
 
@@ -227,7 +227,7 @@ The following PHP class methods that have been previously deprecated for v9 have
 * :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->openInNewWindowLink()`
 * :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->setDocument()`
 * :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->shortCutLink()`
-* :php:`TYPO3\CMS\Backend\Controller\EditFileController->getButtons()`
+* :php:`TYPO3\CMS\Backend\Controller\File\EditFileController->getButtons()`
 * :php:`TYPO3\CMS\Backend\Controller\File\FileController->finish()`
 * :php:`TYPO3\CMS\Backend\Controller\File\FileUploadController->main()`
 * :php:`TYPO3\CMS\Backend\Controller\File\FileUploadController->renderUploadForm()`
@@ -285,8 +285,8 @@ The following PHP class methods that have been previously deprecated for v9 have
 * :php:`TYPO3\CMS\Core\Authentication\BackendUserAuthentication->getTSConfigVal()`
 * :php:`TYPO3\CMS\Core\Authentication\BackendUserAuthentication->isPSet()`
 * :php:`TYPO3\CMS\Core\Authentication\BackendUserAuthentication->simplelog()`
-* :php:`TYPO3\CMS\Core\Cache\PhpFrontend->getByTag()`
-* :php:`TYPO3\CMS\Core\Cache\VariableFrontend->getByTag()`
+* :php:`TYPO3\CMS\Core\Cache\Frontend\PhpFrontend->getByTag()`
+* :php:`TYPO3\CMS\Core\Cache\Frontend\VariableFrontend->getByTag()`
 * :php:`TYPO3\CMS\Core\Charset\CharsetConverter->convArray()`
 * :php:`TYPO3\CMS\Core\Charset\CharsetConverter->convCaseFirst()`
 * :php:`TYPO3\CMS\Core\Charset\CharsetConverter->crop()`

@@ -47,9 +47,9 @@ After:
     :caption: MyClass
 
     use TYPO3\CMS\Core\Http\ServerRequestInterface;
-    use TYPO3\CMS\Core\Resource\SystemResourceFactory;
-    use TYPO3\CMS\Core\Resource\SystemResourcePublisherInterface;
-    use TYPO3\CMS\Core\Resource\UriGenerationOptions;
+    use TYPO3\CMS\Core\SystemResource\SystemResourceFactory;
+    use TYPO3\CMS\Core\SystemResource\Publishing\SystemResourcePublisherInterface;
+    use TYPO3\CMS\Core\SystemResource\Publishing\UriGenerationOptions;
 
     public function __construct(
         private readonly SystemResourceFactory $systemResourceFactory,

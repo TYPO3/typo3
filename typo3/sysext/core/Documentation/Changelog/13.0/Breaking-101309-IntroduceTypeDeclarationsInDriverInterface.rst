@@ -25,7 +25,7 @@ In consequence, all implementations of :php:`\TYPO3\CMS\Core\Resource\Driver\Dri
 to reflect those changes and add the same return and param type declarations.
 
 In case, any of the Core implementations are extended, overridden methods might need to be adjusted.
-The Core classes, implementing :php:`\TYPO3\CMS\Core\Resource\DriverInterface`, are:
+The Core classes, implementing :php:`\TYPO3\CMS\Core\Resource\Driver\DriverInterface`, are:
 
 - :php:`\TYPO3\CMS\Core\Resource\Driver\AbstractDriver`
 - :php:`\TYPO3\CMS\Core\Resource\Driver\AbstractHierarchicalFilesystemDriver`
@@ -48,7 +48,7 @@ implement method :php:`sanitizeFileName()`.
 Affected installations
 ======================
 
-All installations that implement :php:`\TYPO3\CMS\Core\Resource\DriverInterface` or that
+All installations that implement :php:`\TYPO3\CMS\Core\Resource\Driver\DriverInterface` or that
 extend either :php:`\TYPO3\CMS\Core\Resource\Driver\AbstractDriver` or
 :php:`\TYPO3\CMS\Core\Resource\Driver\AbstractHierarchicalFilesystemDriver`.
 

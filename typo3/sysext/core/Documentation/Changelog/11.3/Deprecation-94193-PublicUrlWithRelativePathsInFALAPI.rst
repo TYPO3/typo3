@@ -58,7 +58,7 @@ when calling :php:`getPublicUrl()` on a FAL object, for example
 :php:`\TYPO3\CMS\Core\Resource\Folder`.
 
 All installations which manually call :php:`getPublicUrl()` on an
-:php:`\TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelper`,
+:php:`\TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperInterface`,
 for example :php:`\TYPO3\CMS\Core\Resource\Rendering\YoutubeRenderer`.
 
 All installation which access :php:`isRelativeToCurrentScript()` on the
@@ -74,7 +74,7 @@ Remove the :php:`$relativeToCurrentScript` parameter from all calls to
 
 Remove the :php:`$relativeToCurrentScript` parameter from all manual calls
 to :php:`getPublicUrl()` on a
-:php:`\TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelper`,
+:php:`\TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperInterface`,
 for example :php:`\TYPO3\CMS\Core\Resource\Rendering\YoutubeRenderer`.
 
 Remove all calls to

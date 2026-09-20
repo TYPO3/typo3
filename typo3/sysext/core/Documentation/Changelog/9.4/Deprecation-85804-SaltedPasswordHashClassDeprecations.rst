@@ -37,8 +37,8 @@ These interfaces and classes have been marked as deprecated and should not be im
 
 * :php:`TYPO3\CMS\Saltedpasswords\Salt\ComposedSaltInterface`
 * :php:`TYPO3\CMS\Saltedpasswords\Salt\AbstractComposedSalt`
-* :php:`TYPO3\CMS\Saltedpasswords\Salt\Utility\ExtensionManagerConfigurationUtility`
-* :php:`TYPO3\CMS\Saltedpasswords\Salt\Utility\SaltedPasswordsUtility`
+* :php:`TYPO3\CMS\Saltedpasswords\Utility\ExtensionManagerConfigurationUtility`
+* :php:`TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility`
 
 An interface has been changed:
 

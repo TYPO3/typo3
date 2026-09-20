@@ -12,7 +12,7 @@ Description
 ===========
 
 Due to many refactorings in TYPO3's tree implementations in the past versions,
-many implementations and functionality of the legacy rendering :php:`\TYPO3\CMS\Backend\Tree\AbstractTreeView`
+many implementations and functionality of the legacy rendering :php:`\TYPO3\CMS\Backend\Tree\View\AbstractTreeView`
 is not needed anymore.
 
 The following PHP classes are not in use anymore and have been marked as deprecated:
