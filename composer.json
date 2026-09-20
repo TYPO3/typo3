@@ -125,7 +125,7 @@
 		"phpstan/phpstan": "^2.2.14",
 		"phpstan/phpstan-phpunit": "^2.0.16",
 		"phpunit/phpunit": "^13.3.0",
-		"sokil/php-isocodes-db-i18n": "^4.0.28",
+		"sokil/php-isocodes-db-i18n": "^4.0.29",
 		"symfony/cache-contracts": "^3.7",
 		"typo3/testing-framework": "dev-main",
 		"webmozart/assert": "^2.3.0"

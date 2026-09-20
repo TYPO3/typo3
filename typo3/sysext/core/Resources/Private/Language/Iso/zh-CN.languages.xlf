@@ -224,7 +224,7 @@
       </trans-unit>
       <trans-unit id="bnt" approved="yes">
         <source>Bantu languages</source>
-        <target>Bantu languages</target>
+        <target>班图语支</target>
       </trans-unit>
       <trans-unit id="bo" approved="yes">
         <source>Tibetan</source>
@@ -424,7 +424,7 @@
       </trans-unit>
       <trans-unit id="dgr" approved="yes">
         <source>Tlicho; Dogrib</source>
-        <target>Tlicho; Dogrib</target>
+        <target>多格里布语</target>
       </trans-unit>
       <trans-unit id="din" approved="yes">
         <source>Dinka</source>
@@ -1212,11 +1212,11 @@
       </trans-unit>
       <trans-unit id="nb" approved="yes">
         <source>Norwegian Bokmål</source>
-        <target>Norwegian Bokmål</target>
+        <target>书面挪威语</target>
       </trans-unit>
       <trans-unit id="nd" approved="yes">
         <source>North Ndebele</source>
-        <target>North Ndebele</target>
+        <target>北恩德贝勒语</target>
       </trans-unit>
       <trans-unit id="nds" approved="yes">
         <source>Low German; Low Saxon; German, Low; Saxon, Low</source>
@@ -1228,7 +1228,7 @@
       </trans-unit>
       <trans-unit id="new" approved="yes">
         <source>Nepal Bhasa; Newar; Newari</source>
-        <target>Nepal Bhasa; Newar; Newari</target>
+        <target>尼瓦尔语</target>
       </trans-unit>
       <trans-unit id="ng" approved="yes">
         <source>Ndonga</source>
@@ -1252,7 +1252,7 @@
       </trans-unit>
       <trans-unit id="nn" approved="yes">
         <source>Norwegian Nynorsk</source>
-        <target>Norwegian Nynorsk</target>
+        <target>新挪威语</target>
       </trans-unit>
       <trans-unit id="no" approved="yes">
         <source>Norwegian</source>
@@ -1272,7 +1272,7 @@
       </trans-unit>
       <trans-unit id="nr" approved="yes">
         <source>South Ndebele</source>
-        <target>South Ndebele</target>
+        <target>南恩德贝勒语</target>
       </trans-unit>
       <trans-unit id="nso" approved="yes">
         <source>Pedi; Sepedi; Northern Sotho</source>
@@ -1312,7 +1312,7 @@
       </trans-unit>
       <trans-unit id="oc" approved="yes">
         <source>Occitan (post 1500)</source>
-        <target>Occitan (post 1500)</target>
+        <target>奥克语</target>
       </trans-unit>
       <trans-unit id="oj" approved="yes">
         <source>Ojibwa</source>
@@ -1400,7 +1400,7 @@
       </trans-unit>
       <trans-unit id="pro" approved="yes">
         <source>Provençal, Old (to 1500); Occitan, Old (to 1500)</source>
-        <target>Provençal, Old (to 1500); Occitan, Old (to 1500)</target>
+        <target>古普罗旺斯语; 古奥克语</target>
       </trans-unit>
       <trans-unit id="ps" approved="yes">
         <source>Pushto; Pashto</source>
@@ -1476,7 +1476,7 @@
       </trans-unit>
       <trans-unit id="sai" approved="yes">
         <source>South American Indian languages</source>
-        <target>South American Indian languages</target>
+        <target>南美洲印第安语</target>
       </trans-unit>
       <trans-unit id="sal" approved="yes">
         <source>Salishan languages</source>
@@ -1858,6 +1858,10 @@
         <source>Wakashan languages</source>
         <target>瓦卡什诸语言</target>
       </trans-unit>
+      <trans-unit id="wal" approved="yes">
+        <source>Wolaitta; Wolaytta</source>
+        <target>沃莱塔语</target>
+      </trans-unit>
       <trans-unit id="war" approved="yes">
         <source>Waray</source>
         <target>瓦赖语</target>
@@ -1924,7 +1928,7 @@
       </trans-unit>
       <trans-unit id="zh" approved="yes">
         <source>Chinese</source>
-        <target>汉语</target>
+        <target>中文</target>
       </trans-unit>
       <trans-unit id="znd" approved="yes">
         <source>Zande languages</source>
