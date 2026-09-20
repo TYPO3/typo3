@@ -16,10 +16,10 @@ to the new system extension ext:typo3db_legacy.
 
 The following classes have been moved and renamed, including an alias to the original class name:
 
-* :php:`TYPO3\CMS\Core\Database\DatabaseConnection` to :php:`TYPO3\CMS\Typo3DbLegacy\Database\DatabaseConnection`
-* :php:`TYPO3\CMS\Core\Database\PreparedStatement` to :php:`TYPO3\CMS\Typo3DbLegacy\Database\PreparedStatement`
-* :php:`TYPO3\CMS\Core\Database\PostProcessQueryHookInterface` to :php:`TYPO3\CMS\Typo3DbLegacy\Database\PostProcessQueryHookInterface`
-* :php:`TYPO3\CMS\Core\Database\PreProcessQueryHookInterface` to :php:`TYPO3\CMS\Typo3DbLegacy\Database\PreProcessQueryHookInterface`
+* :php:`TYPO3\CMS\Core\Database\DatabaseConnection` to :php:`TYPO3\CMS\Typo3dbLegacy\Database\DatabaseConnection`
+* :php:`TYPO3\CMS\Core\Database\PreparedStatement` to :php:`TYPO3\CMS\Typo3dbLegacy\Database\PreparedStatement`
+* :php:`TYPO3\CMS\Core\Database\PostProcessQueryHookInterface` to :php:`TYPO3\CMS\Typo3dbLegacy\Database\PostProcessQueryHookInterface`
+* :php:`TYPO3\CMS\Core\Database\PreProcessQueryHookInterface` to :php:`TYPO3\CMS\Typo3dbLegacy\Database\PreProcessQueryHookInterface`
 
 Impact
 ======

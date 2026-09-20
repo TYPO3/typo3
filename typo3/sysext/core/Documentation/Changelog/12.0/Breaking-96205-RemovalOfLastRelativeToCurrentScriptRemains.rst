@@ -23,7 +23,7 @@ argument from following PHP class methods:
 - :php:`\TYPO3\CMS\Core\Resource\Rendering\FileRendererInterface->render()`
 - :php:`\TYPO3\CMS\Core\Resource\Rendering\VideoTagRenderer->render()`
 - :php:`\TYPO3\CMS\Core\Resource\Rendering\VimeoRenderer->render()`
-- :php:`\TYPO3\CMS\Core\Resource\Rendering\YoutubeRenderer->render()`
+- :php:`\TYPO3\CMS\Core\Resource\Rendering\YouTubeRenderer->render()`
 
 Further is :php:`$relativeToCurrentScript` removed as last argument
 from :php:`\TYPO3\CMS\Backend\Backend\Avatar->getUrl()`.

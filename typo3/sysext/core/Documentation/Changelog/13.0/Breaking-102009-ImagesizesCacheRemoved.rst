@@ -55,7 +55,7 @@ Migration
 
 The now unused database tables are automatically removed when using the database
 compare update is called. When trying to retrieve image dimensions,
-the :php:`\TYPO3\CMS\Core\Type\File\Imageinfo` PHP class should be used instead in
+the :php:`\TYPO3\CMS\Core\Type\File\ImageInfo` PHP class should be used instead in
 favor of the main :php:`GraphicalFunctions` method.
 
 The removed methods should be moved also towards the :php:`Imageinfo` PHP class.
