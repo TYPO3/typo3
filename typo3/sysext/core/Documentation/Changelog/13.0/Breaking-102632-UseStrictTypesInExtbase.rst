@@ -17,27 +17,27 @@ All properties, except the :php:`$view` property, in
 In addition, all function arguments and function return types are now strictly
 typed.
 
-Also, the properties in the :php:`\TYPO3\CMS\Extbase\Annotation\Annotation`
+Also, the properties in the :php:`\TYPO3\CMS\Extbase\Annotation`
 namespace now have native PHP types for their properties.
 
 In summary, the following classes have received strict types:
 
 - :php:`\TYPO3\CMS\Extbase\Mvc\Controller\ActionController`
-- :php:`\TYPO3\CMS\Extbase\TYPO3\CMS\Extbase\Annotation\IgnoreValidation`
-- :php:`\TYPO3\CMS\Extbase\TYPO3\CMS\Extbase\Annotation\ORM\Cascade`
-- :php:`\TYPO3\CMS\Extbase\TYPO3\CMS\Extbase\Annotation\Required\Validate`
-- :php:`\TYPO3\CMS\Extbase\TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject`
-- :php:`\TYPO3\CMS\Extbase\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface`
-- :php:`\TYPO3\CMS\Extbase\TYPO3\CMS\Extbase\Domain\Model\AbstractFileFolder`
-- :php:`\TYPO3\CMS\Extbase\TYPO3\CMS\Extbase\Domain\Model\Category`
-- :php:`\TYPO3\CMS\Extbase\TYPO3\CMS\Extbase\Domain\Model\FileReference`
-- :php:`\TYPO3\CMS\Extbase\TYPO3\CMS\Extbase\Domain\Model\File`
-- :php:`\TYPO3\CMS\Extbase\TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage`
-- :php:`\TYPO3\CMS\Extbase\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager`
-- :php:`\TYPO3\CMS\Extbase\TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface`
-- :php:`\TYPO3\CMS\Extbase\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings`
-- :php:`\TYPO3\CMS\Extbase\TYPO3\CMS\Extbase\Persistence\ObjectStorage`
-- :php:`\TYPO3\CMS\Extbase\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface`
+- :php:`\TYPO3\CMS\Extbase\Annotation\IgnoreValidation`
+- :php:`\TYPO3\CMS\Extbase\Annotation\ORM\Cascade`
+- :php:`\TYPO3\CMS\Extbase\Annotation\Validate`
+- :php:`\TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject`
+- :php:`\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface`
+- :php:`\TYPO3\CMS\Extbase\Domain\Model\AbstractFileFolder`
+- :php:`\TYPO3\CMS\Extbase\Domain\Model\Category`
+- :php:`\TYPO3\CMS\Extbase\Domain\Model\FileReference`
+- :php:`\TYPO3\CMS\Extbase\Domain\Model\File`
+- :php:`\TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage`
+- :php:`\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager`
+- :php:`\TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface`
+- :php:`\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings`
+- :php:`\TYPO3\CMS\Extbase\Persistence\ObjectStorage`
+- :php:`\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface`
 
 
 Impact
