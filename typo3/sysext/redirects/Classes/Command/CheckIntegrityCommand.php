@@ -97,7 +97,7 @@ class CheckIntegrityCommand extends Command
                 $conflict['redirect']['uid'],
                 $conflict['redirect']['source_host'],
                 $conflict['redirect']['source_path'],
-                $conflict['uri'],
+                $conflict['redirect']['target'],
                 LocalizationUtility::translate(
                     self::LANGUAGE_FILE_PATH . $integrityStatusLabel . $conflict['redirect']['integrity_status']
                 ),
