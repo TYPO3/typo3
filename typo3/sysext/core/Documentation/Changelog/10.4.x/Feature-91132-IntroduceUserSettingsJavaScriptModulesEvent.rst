@@ -18,7 +18,7 @@ JavaScript module to handle custom events
 
 This new PSR-14 event is introduced:
 
-* :php:`\TYPO3\CMS\SetupEvent\AddJavaScriptModulesEvent`
+* :php:`\TYPO3\CMS\Setup\Event\AddJavaScriptModulesEvent`
 
 These public methods are exposed:
 
@@ -47,7 +47,7 @@ A listener using mentioned PSR-14 event could look like the following.
              tags:
                - name: event.listener
                  identifier: 'myExtension/CustomUserSettingsListener'
-                 event: TYPO3\CMS\SetupEvent\AddJavaScriptModulesEvent
+                 event: TYPO3\CMS\Setup\Event\AddJavaScriptModulesEvent
 
 
    2. Implement Listener to load JavaScript module `TYPO3/CMS/MyExtension/CustomUserSettingsModule`
@@ -56,7 +56,7 @@ A listener using mentioned PSR-14 event could look like the following.
 
          namespace MyVendor\MyExtension\EventListener;
 
-         use TYPO3\CMS\SetupEvent\AddJavaScriptModulesEvent;
+         use TYPO3\CMS\Setup\Event\AddJavaScriptModulesEvent;
 
          class CustomUserSettingsListener
          {

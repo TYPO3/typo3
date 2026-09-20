@@ -32,7 +32,7 @@ itemsProcFunc
 _____________
 
 The :php:`items` array handed over to custom :php:`itemsProcFunc` functions
-contains the new object type :php:`TYPO3\CMS\Core\Schema\Struct\SelectionItem`
+contains the new object type :php:`TYPO3\CMS\Core\Schema\Struct\SelectItem`
 which acts as a compatibility layer for old style indexed keys. Accessing,
 writing and reading items still work in the old way. Added items will be
 automatically converted. For third-party extensions supporting both TYPO3 v11

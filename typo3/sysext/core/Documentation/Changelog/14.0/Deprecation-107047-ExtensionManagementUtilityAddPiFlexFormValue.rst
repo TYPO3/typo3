@@ -75,7 +75,7 @@ This is also supported since :ref:`feature-107047-1751984817`.
     use TYPO3\CMS\Core\Imaging\IconRegistry;
     use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
     use TYPO3\CMS\Core\Utility\GeneralUtility;
-    use TYPO3\CMS\Core\Utility\SelectItemUtility\SelectItem;
+    use TYPO3\CMS\Core\Schema\Struct\SelectItem;
 
     ExtensionManagementUtility::addPlugin(
         new SelectItem(

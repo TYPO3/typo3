@@ -29,7 +29,7 @@ All content you write into these sections will be output in the respective locat
 to resolve extension asset paths.
 
 The feature only applies to ActionController (thus excluding CommandController) and will only attempt to render the
-section if the view is an instance of :php:`TYPO3Fluid\\Fluid\\View\\TemplateView` (thus including any View in TYPO3 which
+section if the view is an instance of :php:`TYPO3Fluid\Fluid\View\TemplateView` (thus including any View in TYPO3 which
 extends either TemplateView or AbstractTemplateView from TYPO3's Fluid adapter).
 
 
