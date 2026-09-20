@@ -12,9 +12,9 @@ Description
 ===========
 
 The salted passwords factory allowed to register custom saltings has been changed. All custom salts
-need to implement :php:`TYPO3\CMS\SaltedPasswords\Salt\SaltInterface`. Before, this was
-handled by extending from :php:`TYPO3\CMS\SaltedPasswords\Salt\AbstractSalt`, which has been renamed to
-:php:`TYPO3\CMS\SaltedPasswords\Salt\AbstractComposedSalt` when the salting is implemented.
+need to implement :php:`TYPO3\CMS\Saltedpasswords\Salt\SaltInterface`. Before, this was
+handled by extending from :php:`TYPO3\CMS\Saltedpasswords\Salt\AbstractSalt`, which has been renamed to
+:php:`TYPO3\CMS\Saltedpasswords\Salt\AbstractComposedSalt` when the salting is implemented.
 
 
 Impact

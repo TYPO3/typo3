@@ -11,7 +11,7 @@ See :issue:`84994`
 Description
 ===========
 
-Method :php:`TYPO3\CMS\backend\Utility\BackendUtility::getPidForModTSconfig()` has
+Method :php:`TYPO3\CMS\Backend\Utility\BackendUtility::getPidForModTSconfig()` has
 been marked as deprecated and should not be used any longer.
 
 

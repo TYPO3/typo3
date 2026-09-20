@@ -11,7 +11,7 @@ See :issue:`94889`
 Description
 ===========
 
-The method signature of :php:`\TYPO3\CMS\Frontend\Typolink\AbstractTypoLinkBuilder` has changed, as
+The method signature of :php:`\TYPO3\CMS\Frontend\Typolink\AbstractTypolinkBuilder` has changed, as
 :php:`array` return type has been removed, thus loosening the inheritance
 criteria for TYPO3 v11.
 

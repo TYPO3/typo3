@@ -11,7 +11,7 @@ See :issue:`100229`
 Description
 ===========
 
-The class :php:`\TYPO3\CMS\Core\Type\Bitmask\JSConfirmation` is replaced by
+The class :php:`\TYPO3\CMS\Core\Type\Bitmask\JsConfirmation` is replaced by
 :php:`\TYPO3\CMS\Core\Authentication\JsConfirmation`. The new class is
 extending the :php:`\TYPO3\CMS\Core\Type\BitSet` class instead of
 :php:`\TYPO3\CMS\Core\Type\Enumeration`.
@@ -39,8 +39,8 @@ Custom TYPO3 extensions calling public methods:
 - :php:`isValid()`
 
 Custom TYPO3 extensions calling static methods in
-:php:`\TYPO3\CMS\Core\Type\Bitmask\JSConfirmation`
-except for the method :php:`\TYPO3\CMS\Core\Type\Bitmask\JSConfirmation::compare()`.
+:php:`\TYPO3\CMS\Core\Type\Bitmask\JsConfirmation`
+except for the method :php:`\TYPO3\CMS\Core\Type\Bitmask\JsConfirmation::compare()`.
 
 Custom TYPO3 extensions calling
 :php:`\TYPO3\CMS\Core\Authentication\BackendUserAuthentication->jsConfirmation()`,
@@ -49,7 +49,7 @@ if first argument passed is not an :php:`int`.
 Migration
 =========
 
-Replace existing usages of :php:`\TYPO3\CMS\Core\Type\Bitmask\JSConfirmation`
+Replace existing usages of :php:`\TYPO3\CMS\Core\Type\Bitmask\JsConfirmation`
 with :php:`\TYPO3\CMS\Core\Authentication\JsConfirmation`.
 
 There is no migration for the methods:
@@ -59,9 +59,9 @@ There is no migration for the methods:
 - :php:`isValid()`
 
 Remove existing calls to static methods
-:php:`\TYPO3\CMS\Core\Type\Bitmask\JSConfirmation::method()`
+:php:`\TYPO3\CMS\Core\Type\Bitmask\JsConfirmation::method()`
 and where :php:`JSConfirmation::compare()` is used, replace the namespace from
-:php:`\TYPO3\CMS\Core\Type\Bitmask\JSConfirmation` to
+:php:`\TYPO3\CMS\Core\Type\Bitmask\JsConfirmation` to
 :php:`\TYPO3\CMS\Core\Authentication\JsConfirmation`.
 
 Ensure an int value is passed to:

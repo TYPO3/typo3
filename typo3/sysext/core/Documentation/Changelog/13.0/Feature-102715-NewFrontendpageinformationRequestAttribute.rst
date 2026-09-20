@@ -13,7 +13,7 @@ Description
 
 TYPO3 v13 introduces the new frontend-related PSR-7 request attribute :php:`frontend.page.information`
 implemented by class :php:`\TYPO3\CMS\Frontend\Page\PageInformation`. The object aims to replace
-various page related properties of :php:`\TYPO3\CMS\Frontend\Controller\TyposcriptFrontendController`.
+various page related properties of :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController`.
 
 
 Impact
