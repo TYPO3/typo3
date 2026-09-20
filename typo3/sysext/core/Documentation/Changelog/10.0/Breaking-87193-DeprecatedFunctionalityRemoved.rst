@@ -15,9 +15,9 @@ The following PHP classes that have been previously deprecated for v9 have been 
 
 * :php:`TYPO3\CMS\Adminpanel\View\AdminPanelView`
 * :php:`TYPO3\CMS\Backend\Controller\LoginFramesetController`
-* :php:`TYPO3\CMS\Backend\Form\Form\FieldWizard\FileThumbnails`
-* :php:`TYPO3\CMS\Backend\Form\Form\FieldWizard\FileTypeList`
-* :php:`TYPO3\CMS\Backend\Form\Form\FieldWizard\FileUpload`
+* :php:`TYPO3\CMS\Backend\Form\FieldWizard\FileThumbnails`
+* :php:`TYPO3\CMS\Backend\Form\FieldWizard\FileTypeList`
+* :php:`TYPO3\CMS\Backend\Form\FieldWizard\FileUpload`
 * :php:`TYPO3\CMS\Backend\Http\AjaxRequestHandler`
 * :php:`TYPO3\CMS\Backend\Module\AbstractFunctionModule`
 * :php:`TYPO3\CMS\Backend\Module\AbstractModule`
