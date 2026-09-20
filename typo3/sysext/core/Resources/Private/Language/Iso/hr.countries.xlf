@@ -1540,11 +1540,11 @@
       </trans-unit>
       <trans-unit id="TW.name" approved="yes">
         <source>Taiwan, Province of China</source>
-        <target>Tajvan (provincija, NR Kina)</target>
+        <target>Tajvan, kineska provincija</target>
       </trans-unit>
       <trans-unit id="TW.official_name" approved="yes">
         <source>Taiwan, Province of China</source>
-        <target>Tajvan (provincija, NR Kina)</target>
+        <target>Tajvan, kineska provincija</target>
       </trans-unit>
       <trans-unit id="TZ.name" approved="yes">
         <source>Tanzania, United Republic of</source>

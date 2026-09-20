@@ -624,7 +624,7 @@
       </trans-unit>
       <trans-unit id="HK.official_name" approved="yes">
         <source>Hong Kong Special Administrative Region of China</source>
-        <target>Осо́бый административный район Гонконг</target>
+        <target>Особый административный район Гонконг</target>
       </trans-unit>
       <trans-unit id="HM.name" approved="yes">
         <source>Heard Island and McDonald Islands</source>
@@ -712,7 +712,7 @@
       </trans-unit>
       <trans-unit id="IR.official_name" approved="yes">
         <source>Islamic Republic of Iran</source>
-        <target>Исламская Респу́блика Иран</target>
+        <target>Исламская Республика Иран</target>
       </trans-unit>
       <trans-unit id="IS.name" approved="yes">
         <source>Iceland</source>
@@ -956,7 +956,7 @@
       </trans-unit>
       <trans-unit id="MH.official_name" approved="yes">
         <source>Republic of the Marshall Islands</source>
-        <target>Респу́блика Маршалловы Острова</target>
+        <target>Республика Маршалловы Острова</target>
       </trans-unit>
       <trans-unit id="MK.name" approved="yes">
         <source>North Macedonia</source>
@@ -1568,7 +1568,7 @@
       </trans-unit>
       <trans-unit id="UM.name" approved="yes">
         <source>United States Minor Outlying Islands</source>
-        <target>Соединенные штаты Малых Удаленных островов</target>
+        <target>Внешние малые острова США</target>
       </trans-unit>
       <trans-unit id="US.name" approved="yes">
         <source>United States</source>
