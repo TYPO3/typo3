@@ -34,9 +34,9 @@ An example event listener could look like this:
     :caption: Example event listener class
 
     use TYPO3\CMS\Core\Attribute\AsEventListener;
-    use TYPO3\CMS\Core\Error\Error;
+    use TYPO3\CMS\Extbase\Error\Error;
     use TYPO3\CMS\Core\Utility\GeneralUtility;
-    use TYPO3\CMS\Core\Localization\TranslationService;
+    use TYPO3\CMS\Form\Service\TranslationService;
     use TYPO3\CMS\Form\Event\BeforeRenderableIsValidatedEvent;
 
     final class BeforeRenderableIsValidatedEventListener

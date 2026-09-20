@@ -12,7 +12,7 @@ Description
 ===========
 
 The :guilabel:`Content > List` backend module has been refactored to use the
-:php-short:`\TYPO3\CMS\Backend\Record\RecordInterface` and related Record API
+:php-short:`\TYPO3\CMS\Core\Domain\RecordInterface` and related Record API
 internally instead of working with raw database row arrays.
 
 This modernization introduces stricter typing and improves data consistency.
@@ -50,7 +50,7 @@ Impact
 ======
 
 Code that calls these methods directly must be updated to pass
-:php-short:`\TYPO3\CMS\Backend\Record\RecordInterface` objects instead of
+:php-short:`\TYPO3\CMS\Core\Domain\RecordInterface` objects instead of
 database row arrays.
 
 Affected installations
@@ -82,7 +82,7 @@ from a database row:
     :caption: Migrating from array-based record handling to the Record API (after)
 
     use TYPO3\CMS\Backend\RecordList\DatabaseRecordList;
-    use TYPO3\CMS\Backend\Record\RecordFactory;
+    use TYPO3\CMS\Core\Domain\RecordFactory;
     use TYPO3\CMS\Core\Utility\GeneralUtility;
 
     $recordFactory = GeneralUtility::makeInstance(RecordFactory::class);

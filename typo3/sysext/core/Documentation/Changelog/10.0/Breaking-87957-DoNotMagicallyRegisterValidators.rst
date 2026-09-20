@@ -15,7 +15,7 @@ There were several validators that Extbase applies automatically. One example ar
 if created in a specific directory. Another one is the type validator which is created if a validator with a specific
 name exists.
 
-The method :php:`TYPO3\CMS\Extbase\Utility\ClassNamingUtility::translateModelNameToValidatorName` has
+The method :php:`TYPO3\CMS\Core\Utility\ClassNamingUtility::translateModelNameToValidatorName` has
 been removed without substitution. This leads to no automatically registered validators anymore.
 
 Domain Validators
