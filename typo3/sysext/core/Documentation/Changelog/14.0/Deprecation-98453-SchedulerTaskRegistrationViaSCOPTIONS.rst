@@ -80,7 +80,7 @@ Migration steps:
 1.  Remove the registration from :file:`ext_localconf.php`.
 2.  Create a TCA override file in :file:`Configuration/TCA/Overrides/scheduler_my_task_type.php`.
 3.  Update your task class to implement the new parameter methods.
-4.  Remove the :php-short:`\TYPO3\CMS\Scheduler\AdditionalFieldProvider` class if it exists.
+4.  Remove the AdditionalFieldProvider class if it exists.
 
 ..  note::
     The new TCA-based approach automatically migrates existing task data.
@@ -287,7 +287,7 @@ The new TCA-based approach uses three key methods for parameter handling:
 **setTaskParameters(array $parameters): void**
     Sets field values from an associative array. This method handles:
 
-    *   Migration from old :php-short:`\TYPO3\CMS\Scheduler\AdditionalFieldProvider`
+    *   Migration from old AdditionalFieldProvider
         field names to new TCA field names.
     *   Loading saved task configurations when editing or executing tasks.
     *   Parameter mapping during task creation and updates.
