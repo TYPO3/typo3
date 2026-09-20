@@ -81,15 +81,16 @@ readonly class ConfigurationStatus implements StatusProviderInterface
         $severity = ContextualFeedbackSeverity::OK;
 
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_refindex');
-        $count = $queryBuilder
-            ->count('*')
+        $reference = $queryBuilder
+            ->select('hash')
             ->from('sys_refindex')
+            ->setMaxResults(1)
             ->executeQuery()
             ->fetchOne();
 
         $lastRefIndexUpdate = $this->registry->get('core', 'sys_refindex_lastUpdate');
 
-        if (!$count && $lastRefIndexUpdate) {
+        if (!$reference && $lastRefIndexUpdate) {
             $value = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_empty');
             $severity = ContextualFeedbackSeverity::WARNING;
             $url = (string)$this->uriBuilder->buildUriFromRoute('system_maintenance');
