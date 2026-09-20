@@ -161,7 +161,7 @@ database driven select fields, Flex Form handling and similar.
 
 The example below shows the experimental feature adding a field to site in an extensions file
 :file:`Configuration/SiteConfiguration/Overrides/sites.php`. Note the helper methods of class
-:php:`TYPO3\CMS\core\Utility\ExtensionManagementUtility` can not be used.
+:php:`TYPO3\CMS\Core\Utility\ExtensionManagementUtility` can not be used.
 
 .. code-block:: php
 
@@ -184,7 +184,7 @@ The example below shows the experimental feature adding a field to site in an ex
     );
 
 The field will be shown in the edit form of the configuration module and it's value stored in the .yaml
-file. Using the site object :php:`TYPO3\CMS\core\Site\Entity\Site`, the value can be fetched using
+file. Using the site object :php:`TYPO3\CMS\Core\Site\Entity\Site`, the value can be fetched using
 :php:`->getConfiguration()['myNewField']`.
 
 

@@ -13,7 +13,7 @@ Description
 
 The following method of the saltedpasswords extension has been marked as deprecated:
 
-* :php:`TYPO3\CMS\saltedpasswords\Utility\SaltedPasswordsUtility::isUsageEnabled()`, it always returns TRUE.
+* :php:`TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility::isUsageEnabled()`, it always returns TRUE.
 
 
 Impact

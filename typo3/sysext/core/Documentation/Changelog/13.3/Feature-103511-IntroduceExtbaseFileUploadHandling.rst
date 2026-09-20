@@ -305,7 +305,7 @@ section of the :php-short:`\TYPO3\CMS\Extbase\Annotation\FileUpload` attribute:
 *   :php:`minFiles`
 *   :php:`maxFiles`
 *   :php:`fileExtension`  (for :php:`TYPO3\CMS\Extbase\Validation\Validator\FileExtensionValidator`)
-*   :php:`fileSize`  (for :php:`TYPO3\CMS\Extbase\Validation\Validator\FilesizeValidator`)
+*   :php:`fileSize`  (for :php:`TYPO3\CMS\Extbase\Validation\Validator\FileSizeValidator`)
 *   :php:`imageDimensions` (for :php:`TYPO3\CMS\Extbase\Validation\Validator\ImageDimensionsValidator`)
 *   :php:`mimeType` (for :php:`TYPO3\CMS\Extbase\Validation\Validator\MimeTypeValidator`)
 *   :php:`allowedMimeTypes` (shorthand notation for configuration option :php:`allowedMimeTypes` of the :php:`MimeTypeValidator`)

@@ -13,24 +13,24 @@ Description
 
 Some user TSconfig related methods have been deprecated:
 
-* :php:`TYPO3\CMS\core\Authentication\BackendUserAuthentication->getTSConfigVal()`
-* :php:`TYPO3\CMS\core\Authentication\BackendUserAuthentication->getTSConfigProp()`
+* :php:`TYPO3\CMS\Core\Authentication\BackendUserAuthentication->getTSConfigVal()`
+* :php:`TYPO3\CMS\Core\Authentication\BackendUserAuthentication->getTSConfigProp()`
 
 Changed method signatures:
 
-* :php:`TYPO3\CMS\core\Authentication\BackendUserAuthentication->getTSConfig()`, no argument allowed any longer
+* :php:`TYPO3\CMS\Core\Authentication\BackendUserAuthentication->getTSConfig()`, no argument allowed any longer
 
 Some page TSconfig related methods have been marked as deprecated:
 
-* :php:`TYPO3\CMS\backend\Utility\BackendUtility::getModTSconfig()`
-* :php:`TYPO3\CMS\backend\Utility\BackendUtility::unsetMenuItems()`
-* :php:`TYPO3\CMS\backend\Tree\View\PagePositionMap->getModConfig()`
-* :php:`TYPO3\CMS\core\DataHandling\DataHandler->getTCEMAIN_TSconfig()`
+* :php:`TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig()`
+* :php:`TYPO3\CMS\Backend\Utility\BackendUtility::unsetMenuItems()`
+* :php:`TYPO3\CMS\Backend\Tree\View\PagePositionMap->getModConfig()`
+* :php:`TYPO3\CMS\Core\DataHandling\DataHandler->getTCEMAIN_TSconfig()`
 
 These properties have been set to protected, should not be used any longer and trigger a deprecation error on access:
 
-* :php:`TYPO3\CMS\backend\Tree\View\PagePositionMap->getModConfigCache`
-* :php:`TYPO3\CMS\backend\Tree\View\PagePositionMap->modConfigStr`
+* :php:`TYPO3\CMS\Backend\Tree\View\PagePositionMap->getModConfigCache`
+* :php:`TYPO3\CMS\Backend\Tree\View\PagePositionMap->modConfigStr`
 
 
 Impact

@@ -15,7 +15,7 @@ Description
 The value returned by :php:`AbstractPlugin::pi_exec_query` has changed.
 
 Instead of returning one of :php:`bool`, :php:`\mysqli_result` or :php:`object`
-the method always returns a :php:`Doctrine\Dbal\Driver\Statement`.
+the method always returns a :php:`Doctrine\DBAL\Driver\Statement`.
 
 
 Impact
