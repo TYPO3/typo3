@@ -16,7 +16,7 @@
       </trans-unit>
       <trans-unit id="AF.name" approved="yes">
         <source>Afghanistan</source>
-        <target>Afghanistan</target>
+        <target>Affganistan</target>
       </trans-unit>
       <trans-unit id="AF.official_name" approved="yes">
         <source>Islamic Republic of Afghanistan</source>
@@ -68,7 +68,7 @@
       </trans-unit>
       <trans-unit id="AS.name" approved="yes">
         <source>American Samoa</source>
-        <target>Samoa America</target>
+        <target>Samoa Americanaidd</target>
       </trans-unit>
       <trans-unit id="AT.name" approved="yes">
         <source>Austria</source>
@@ -100,7 +100,7 @@
       </trans-unit>
       <trans-unit id="BA.name" approved="yes">
         <source>Bosnia and Herzegovina</source>
-        <target>Bosnia a Hercegovina</target>
+        <target>Bosnia a Herzegovina</target>
       </trans-unit>
       <trans-unit id="BA.official_name" approved="yes">
         <source>Republic of Bosnia and Herzegovina</source>
@@ -124,7 +124,7 @@
       </trans-unit>
       <trans-unit id="BE.official_name" approved="yes">
         <source>Kingdom of Belgium</source>
-        <target>Brenhiniaeth Belg</target>
+        <target>Teyrnas Gwlad Belg</target>
       </trans-unit>
       <trans-unit id="BF.name" approved="yes">
         <source>Burkina Faso</source>
@@ -148,7 +148,7 @@
       </trans-unit>
       <trans-unit id="BI.name" approved="yes">
         <source>Burundi</source>
-        <target>Bwrwndi</target>
+        <target>Burundi</target>
       </trans-unit>
       <trans-unit id="BI.official_name" approved="yes">
         <source>Republic of Burundi</source>
@@ -176,11 +176,11 @@
       </trans-unit>
       <trans-unit id="BO.name" approved="yes">
         <source>Bolivia, Plurinational State of</source>
-        <target>Bolifia, Gwladwriaeth Amlgenedlaethol</target>
+        <target>Bolivia, Gwladwriaeth Amlgenedl</target>
       </trans-unit>
       <trans-unit id="BO.official_name" approved="yes">
         <source>Plurinational State of Bolivia</source>
-        <target>Gwladwriaeth Amlgenedlaethol Bolifia</target>
+        <target>Gwladwriaeth Amlgenedl Bolivia</target>
       </trans-unit>
       <trans-unit id="BQ.name" approved="yes">
         <source>Bonaire, Sint Eustatius and Saba</source>
@@ -212,7 +212,7 @@
       </trans-unit>
       <trans-unit id="BT.official_name" approved="yes">
         <source>Kingdom of Bhutan</source>
-        <target>Brenhiniaeth Bhutan</target>
+        <target>Teyrnas Bhutan</target>
       </trans-unit>
       <trans-unit id="BV.name" approved="yes">
         <source>Bouvet Island</source>
@@ -1460,7 +1460,7 @@
       </trans-unit>
       <trans-unit id="TF.name" approved="yes">
         <source>French Southern Territories</source>
-        <target>French Southern Territories</target>
+        <target>Tiriogaethau Deheuol Ffrainc</target>
       </trans-unit>
       <trans-unit id="TG.name" approved="yes">
         <source>Togo</source>
@@ -1624,7 +1624,7 @@
       </trans-unit>
       <trans-unit id="VI.official_name" approved="yes">
         <source>Virgin Islands of the United States</source>
-        <target>Ynysoedd Virgin Unol Daleithiau America</target>
+        <target>Ynysoedd yr Wyryf Unol Daleithiau America</target>
       </trans-unit>
       <trans-unit id="VN.name" approved="yes">
         <source>Viet Nam</source>
@@ -1652,7 +1652,7 @@
       </trans-unit>
       <trans-unit id="WS.official_name" approved="yes">
         <source>Independent State of Samoa</source>
-        <target>Talaith Annibynol Samoa</target>
+        <target>Gwladwriaeth Annibynnol Samoa</target>
       </trans-unit>
       <trans-unit id="YE.name" approved="yes">
         <source>Yemen</source>

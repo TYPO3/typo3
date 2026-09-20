@@ -224,7 +224,7 @@
       </trans-unit>
       <trans-unit id="bnt" approved="yes">
         <source>Bantu languages</source>
-        <target>Bantu languages</target>
+        <target>Idiomas bantos</target>
       </trans-unit>
       <trans-unit id="bo" approved="yes">
         <source>Tibetan</source>
@@ -380,7 +380,7 @@
       </trans-unit>
       <trans-unit id="cu" approved="yes">
         <source>Church Slavic; Old Slavonic; Church Slavonic; Old Bulgarian; Old Church Slavonic</source>
-        <target>Eslavo Eclesiástico; Eslavo Antigo; Eslavo Eclesiástico; Búlgaro Antigo; Eslavônico Antigo Eclesiástico</target>
+        <target>Eslavo Eclesiástico; Eslavo Antigo; Eslavo Eclesiástico; Búlgaro Antigo; Eslavo Eclesiástico Antigo</target>
       </trans-unit>
       <trans-unit id="cus" approved="yes">
         <source>Cushitic languages</source>
@@ -564,7 +564,7 @@
       </trans-unit>
       <trans-unit id="fro" approved="yes">
         <source>French, Old (842-ca. 1400)</source>
-        <target>Francês, antigo (842-apr. 1400)</target>
+        <target>Francês, Antigo (842-apr. 1400)</target>
       </trans-unit>
       <trans-unit id="frr" approved="yes">
         <source>Northern Frisian</source>
@@ -628,7 +628,7 @@
       </trans-unit>
       <trans-unit id="goh" approved="yes">
         <source>German, Old High (ca. 750-1050)</source>
-        <target>Alemão, medieval antigo (apr. 750-1050)</target>
+        <target>Alemão, Medieval Antigo (apr. 750-1050)</target>
       </trans-unit>
       <trans-unit id="gon" approved="yes">
         <source>Gondi</source>
@@ -1212,11 +1212,11 @@
       </trans-unit>
       <trans-unit id="nb" approved="yes">
         <source>Norwegian Bokmål</source>
-        <target>Norwegian Bokmål</target>
+        <target>Norueguês Bokmål</target>
       </trans-unit>
       <trans-unit id="nd" approved="yes">
         <source>North Ndebele</source>
-        <target>North Ndebele</target>
+        <target>Ndebele do Norte</target>
       </trans-unit>
       <trans-unit id="nds" approved="yes">
         <source>Low German; Low Saxon; German, Low; Saxon, Low</source>
@@ -1228,7 +1228,7 @@
       </trans-unit>
       <trans-unit id="new" approved="yes">
         <source>Nepal Bhasa; Newar; Newari</source>
-        <target>Nepal Bhasa; Newar; Newari</target>
+        <target>Nepal Bhasa; Neuari</target>
       </trans-unit>
       <trans-unit id="ng" approved="yes">
         <source>Ndonga</source>
@@ -1252,7 +1252,7 @@
       </trans-unit>
       <trans-unit id="nn" approved="yes">
         <source>Norwegian Nynorsk</source>
-        <target>Norwegian Nynorsk</target>
+        <target>Norueguês Nynorsk</target>
       </trans-unit>
       <trans-unit id="no" approved="yes">
         <source>Norwegian</source>
@@ -1264,7 +1264,7 @@
       </trans-unit>
       <trans-unit id="non" approved="yes">
         <source>Norse, Old</source>
-        <target>Nórdico, Arcaico</target>
+        <target>Nórdico, Antigo</target>
       </trans-unit>
       <trans-unit id="nqo" approved="yes">
         <source>N'Ko</source>
@@ -1272,7 +1272,7 @@
       </trans-unit>
       <trans-unit id="nr" approved="yes">
         <source>South Ndebele</source>
-        <target>South Ndebele</target>
+        <target>Ndebele do Sul</target>
       </trans-unit>
       <trans-unit id="nso" approved="yes">
         <source>Pedi; Sepedi; Northern Sotho</source>
@@ -1312,7 +1312,7 @@
       </trans-unit>
       <trans-unit id="oc" approved="yes">
         <source>Occitan (post 1500)</source>
-        <target>Occitan (post 1500)</target>
+        <target>Occitano (pós-1500)</target>
       </trans-unit>
       <trans-unit id="oj" approved="yes">
         <source>Ojibwa</source>
@@ -1372,7 +1372,7 @@
       </trans-unit>
       <trans-unit id="peo" approved="yes">
         <source>Persian, Old (ca. 600-400 B.C.)</source>
-        <target>Persa, antigo (apr. 600-400 AC)</target>
+        <target>Persa, Antigo (apr. 600-400 AC)</target>
       </trans-unit>
       <trans-unit id="phi" approved="yes">
         <source>Philippine languages</source>
@@ -1400,7 +1400,7 @@
       </trans-unit>
       <trans-unit id="pro" approved="yes">
         <source>Provençal, Old (to 1500); Occitan, Old (to 1500)</source>
-        <target>Provençal, Old (to 1500); Occitan, Old (to 1500)</target>
+        <target>Provençal, Arcaico (até 1500); Occitano, Arcaico (até 1500)</target>
       </trans-unit>
       <trans-unit id="ps" approved="yes">
         <source>Pushto; Pashto</source>
@@ -1476,7 +1476,7 @@
       </trans-unit>
       <trans-unit id="sai" approved="yes">
         <source>South American Indian languages</source>
-        <target>South American Indian languages</target>
+        <target>Idiomas indígenas sul-americanos</target>
       </trans-unit>
       <trans-unit id="sal" approved="yes">
         <source>Salishan languages</source>
@@ -1857,6 +1857,10 @@
       <trans-unit id="wak" approved="yes">
         <source>Wakashan languages</source>
         <target>Idiomas Wakashan</target>
+      </trans-unit>
+      <trans-unit id="wal" approved="yes">
+        <source>Wolaitta; Wolaytta</source>
+        <target>Wolaitta; Wolaita; Wolaytta</target>
       </trans-unit>
       <trans-unit id="war" approved="yes">
         <source>Waray</source>

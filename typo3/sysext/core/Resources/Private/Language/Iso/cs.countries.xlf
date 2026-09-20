@@ -260,7 +260,7 @@
       </trans-unit>
       <trans-unit id="CG.official_name" approved="yes">
         <source>Republic of the Congo</source>
-        <target>Konžská republika</target>
+        <target>Republika Kongo</target>
       </trans-unit>
       <trans-unit id="CH.name" approved="yes">
         <source>Switzerland</source>
@@ -528,7 +528,7 @@
       </trans-unit>
       <trans-unit id="GF.name" approved="yes">
         <source>French Guiana</source>
-        <target>Francouzská Guayana</target>
+        <target>Francouzská Guyana</target>
       </trans-unit>
       <trans-unit id="GG.name" approved="yes">
         <source>Guernsey</source>
@@ -628,7 +628,7 @@
       </trans-unit>
       <trans-unit id="HM.name" approved="yes">
         <source>Heard Island and McDonald Islands</source>
-        <target>Heardův a McDonaldovy ostrovy</target>
+        <target>Heardův ostrov a McDonaldovy ostrovy</target>
       </trans-unit>
       <trans-unit id="HN.name" approved="yes">
         <source>Honduras</source>
@@ -1568,7 +1568,7 @@
       </trans-unit>
       <trans-unit id="UM.name" approved="yes">
         <source>United States Minor Outlying Islands</source>
-        <target>Menší odlehlé ostrovy Spojených států</target>
+        <target>Menší odlehlé ostrovy Spojených států amerických</target>
       </trans-unit>
       <trans-unit id="US.name" approved="yes">
         <source>United States</source>

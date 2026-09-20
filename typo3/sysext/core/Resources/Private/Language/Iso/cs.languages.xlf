@@ -224,7 +224,7 @@
       </trans-unit>
       <trans-unit id="bnt" approved="yes">
         <source>Bantu languages</source>
-        <target>Bantu languages</target>
+        <target>bantuské jazyky</target>
       </trans-unit>
       <trans-unit id="bo" approved="yes">
         <source>Tibetan</source>
@@ -424,7 +424,7 @@
       </trans-unit>
       <trans-unit id="dgr" approved="yes">
         <source>Tlicho; Dogrib</source>
-        <target>Tlicho; Dogrib</target>
+        <target>tlicho; dogrib</target>
       </trans-unit>
       <trans-unit id="din" approved="yes">
         <source>Dinka</source>
@@ -1212,11 +1212,11 @@
       </trans-unit>
       <trans-unit id="nb" approved="yes">
         <source>Norwegian Bokmål</source>
-        <target>Norwegian Bokmål</target>
+        <target>norština (bokmål)</target>
       </trans-unit>
       <trans-unit id="nd" approved="yes">
         <source>North Ndebele</source>
-        <target>North Ndebele</target>
+        <target>severní ndebelština</target>
       </trans-unit>
       <trans-unit id="nds" approved="yes">
         <source>Low German; Low Saxon; German, Low; Saxon, Low</source>
@@ -1228,7 +1228,7 @@
       </trans-unit>
       <trans-unit id="new" approved="yes">
         <source>Nepal Bhasa; Newar; Newari</source>
-        <target>Nepal Bhasa; Newar; Newari</target>
+        <target>nepálská bhasa, névárština</target>
       </trans-unit>
       <trans-unit id="ng" approved="yes">
         <source>Ndonga</source>
@@ -1252,7 +1252,7 @@
       </trans-unit>
       <trans-unit id="nn" approved="yes">
         <source>Norwegian Nynorsk</source>
-        <target>Norwegian Nynorsk</target>
+        <target>norština (nynorsk)</target>
       </trans-unit>
       <trans-unit id="no" approved="yes">
         <source>Norwegian</source>
@@ -1272,7 +1272,7 @@
       </trans-unit>
       <trans-unit id="nr" approved="yes">
         <source>South Ndebele</source>
-        <target>South Ndebele</target>
+        <target>jižní ndebelština</target>
       </trans-unit>
       <trans-unit id="nso" approved="yes">
         <source>Pedi; Sepedi; Northern Sotho</source>
@@ -1312,7 +1312,7 @@
       </trans-unit>
       <trans-unit id="oc" approved="yes">
         <source>Occitan (post 1500)</source>
-        <target>Occitan (post 1500)</target>
+        <target>okcitánština (po 1500)</target>
       </trans-unit>
       <trans-unit id="oj" approved="yes">
         <source>Ojibwa</source>
@@ -1400,7 +1400,7 @@
       </trans-unit>
       <trans-unit id="pro" approved="yes">
         <source>Provençal, Old (to 1500); Occitan, Old (to 1500)</source>
-        <target>Provençal, Old (to 1500); Occitan, Old (to 1500)</target>
+        <target>provensálština, stará (do 1500), okcitánština (do 1500)</target>
       </trans-unit>
       <trans-unit id="ps" approved="yes">
         <source>Pushto; Pashto</source>
@@ -1476,7 +1476,7 @@
       </trans-unit>
       <trans-unit id="sai" approved="yes">
         <source>South American Indian languages</source>
-        <target>South American Indian languages</target>
+        <target>jihoamerické indiánské jazyky</target>
       </trans-unit>
       <trans-unit id="sal" approved="yes">
         <source>Salishan languages</source>
