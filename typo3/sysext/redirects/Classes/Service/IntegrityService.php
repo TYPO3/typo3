@@ -65,6 +65,7 @@ readonly class IntegrityService
                             'integrity_status' => RedirectConflict::SELF_REFERENCE,
                             'source_host' => $matchingRedirect['source_host'],
                             'source_path' => $matchingRedirect['source_path'],
+                            'target' => $matchingRedirect['target'],
                             'uid' => $matchingRedirect['uid'],
                         ],
                     ];
