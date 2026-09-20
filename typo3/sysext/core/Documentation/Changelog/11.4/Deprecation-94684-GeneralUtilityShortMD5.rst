@@ -11,7 +11,7 @@ See :issue:`94684`
 Description
 ===========
 
-:php:`\TYPO3\CMS\Core\Utility\GeneralUtility\GeneralUtility::shortMD5()` is a
+:php:`\TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5()` is a
 shorthand method to create an MD5 string trimmed to a defined length, by default
 10 characters.
 

@@ -12,7 +12,7 @@ Description
 ===========
 
 The helper method
-:php:`TYPO3\CMS\Core\Utility\GeneralUtility\GeneralUtility::isFirstPartOfStr()`
+:php:`TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr()`
 has been marked as deprecated, as the newly available PHP built-in
 function :php:`str_starts_with()` can be used instead, which
 supports proper typing and is faster on PHP 8.0.
