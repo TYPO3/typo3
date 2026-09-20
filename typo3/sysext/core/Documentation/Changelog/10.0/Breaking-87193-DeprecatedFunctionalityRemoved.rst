@@ -60,7 +60,7 @@ The following PHP classes that have been previously deprecated for v9 have been 
 * :php:`TYPO3\CMS\Extbase\Scheduler\FieldProvider`
 * :php:`TYPO3\CMS\Extbase\Scheduler\Task`
 * :php:`TYPO3\CMS\Extbase\Scheduler\TaskExecutor`
-* :php:`TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator\AbstractValidatorTestcase`
+* :php:`TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator\AbstractValidatorTest`
 * :php:`TYPO3\CMS\Extbase\Validation\Validator\RawValidator`
 * :php:`TYPO3\CMS\Extensionmanager\Command\ExtensionCommandController`
 * :php:`TYPO3\CMS\Form\Domain\Model\FormElements\GridContainer`
@@ -178,7 +178,7 @@ The following PHP class aliases that have been previously deprecated for v9 have
 * :php:`TYPO3\CMS\Saltedpasswords\Salt\Pbkdf2Salt`
 * :php:`TYPO3\CMS\Saltedpasswords\Salt\PhpassSalt`
 * :php:`TYPO3\CMS\Saltedpasswords\SaltedPasswordService`
-* :php:`TYPO3\CMS\Saltedpasswords\Utility\ExensionManagerConfigurationUtility`
+* :php:`TYPO3\CMS\Saltedpasswords\Utility\ExtensionManagerConfigurationUtility`
 * :php:`TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility`
 * :php:`TYPO3\CMS\Sv\AbstractAuthenticationService`
 * :php:`TYPO3\CMS\Sv\AuthenticationService`
@@ -660,7 +660,7 @@ The following public class properties have been dropped:
 * :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->imgNamePrefix`
 * :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->INPfixMD5`
 * :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->nameAttribute`
-* :php:`TYPO3C\MS\Frontend\ContentObject\Menu\AbstractMenuContentObject->WMfreezePrefix`
+* :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->WMfreezePrefix`
 * :php:`TYPO3\CMS\Frontend\Page\PageRepository->error_getRootLine_failPid`
 * :php:`TYPO3\CMS\Frontend\Page\PageRepository->error_getRootLine`
 * :php:`TYPO3\CMS\Frontend\Page\PageRepository->versioningPreview`
@@ -1441,7 +1441,7 @@ The following features have been removed:
 * TCA auto migration from core v6 to core v7 compatible TCA
 * TCA auto migration from core v7 to core v8 compatible TCA
 * TCA :php:`type='group'` with :php:`internal_type='file'` and :php:`internal_type='file_reference`
-* Cache creation using :php:`\TYPO3\CMS\Cache\CacheManger` during :file:`ext_localconf.php` loading
+* Cache creation using :php:`\TYPO3\CMS\Core\Cache\CacheManager` during :file:`ext_localconf.php` loading
 * All install tool upgrade wizards upgrading from v7 to v8
 * The array key :php:`uploadfolder` in extensions :file:`ext_emconf.php` files is obsolete and ignored.
 * Standalone install tool entry point :file:`typo3/install/index.php` has been dropped, use :file:`typo3/install.php` instead

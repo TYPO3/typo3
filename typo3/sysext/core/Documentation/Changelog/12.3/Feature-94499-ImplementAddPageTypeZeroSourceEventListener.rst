@@ -20,7 +20,7 @@ into account, for example, the `PageType route decorator`.
 ..  note::
 
     If `source_host` and `source_path` lead to the same outcome for page type 0
-    using full URI building, like the :php:`\TYPO3\CMS\Redirects\RedirectUpdate\PlainSlugReplacementSource`, the
+    using full URI building, like the :php:`\TYPO3\CMS\Redirects\RedirectUpdate\PlainSlugReplacementRedirectSource`, the
     :php:`PlainSlugReplacementSource` is replaced with the :php:`PageTypeSource`.
 
 It is not possible to configure page types for which sources should be added. If

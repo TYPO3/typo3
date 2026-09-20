@@ -14,7 +14,7 @@ Description
 The class :php:`\TYPO3\CMS\Core\Type\Bitmask\JSConfirmation` is replaced by
 :php:`\TYPO3\CMS\Core\Authentication\JsConfirmation`. The new class is
 extending the :php:`\TYPO3\CMS\Core\Type\BitSet` class instead of
-:php:`\TYPO3\CMS\Core\TypeEnumeration\Enumeration`.
+:php:`\TYPO3\CMS\Core\Type\Enumeration`.
 
 Impact
 ======

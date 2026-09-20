@@ -32,7 +32,7 @@ The following classes have been renamed:
 * :php:`TYPO3\CMS\Saltedpasswords\Salt\PhpassSalt::class` to :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\PhpassPasswordHash::class`
 * (deprecated) :php:`TYPO3\CMS\Saltedpasswords\Salt\AbstractComposedSalt::class` to :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\AbstractComposedSalt::class`
 * (deprecated) :php:`TYPO3\CMS\Saltedpasswords\Salt\ComposedSaltInterface::class` to :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\ComposedPasswordHashInterface::class`
-* (deprecated) :php:`TYPO3\CMS\Saltedpasswords\Utility\ExensionManagerConfigurationUtility::class` to :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\ExtensionManagerConfigurationUtility::class`
+* (deprecated) :php:`TYPO3\CMS\Saltedpasswords\Utility\ExtensionManagerConfigurationUtility::class` to :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\ExtensionManagerConfigurationUtility::class`
 * (deprecated) :php:`TYPO3\CMS\Saltedpasswords\SaltedPasswordService::class` to :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\SaltedPasswordService::class`
 * (deprecated) :php:`TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility::class` to :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\SaltedPasswordsUtility::class`
 
