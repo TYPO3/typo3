@@ -13,7 +13,7 @@ Description
 
 A new PSR-14 event :php:`\TYPO3\CMS\Backend\Controller\Event\AfterRecordSummaryForLocalizationEvent`
 has been added to TYPO3 Core. This event is fired in the
-:php:`\TYPO3\CMS\Backend\Controller\Page\RecordSummaryForLocalization` class
+:php:`\TYPO3\CMS\Backend\Controller\Page\LocalizationController` class
 and allows extensions to modify the payload of the :php:`JsonResponse`
 in the :php:`getRecordLocalizeSummary` method.
 

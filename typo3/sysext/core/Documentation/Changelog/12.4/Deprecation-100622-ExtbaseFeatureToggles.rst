@@ -33,7 +33,7 @@ Affected installations
 ======================
 
 Extensions should not rely on
-:php:`\TYPO3\CMS\Extbase\ConfigurationConfigurationManagerInterface->isFeatureEnabled()`.
+:php:`\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface->isFeatureEnabled()`.
 The method is marked as internal and should never have been used by extensions. The
 extension scanner still finds usages of this method in extensions as weak match.
 

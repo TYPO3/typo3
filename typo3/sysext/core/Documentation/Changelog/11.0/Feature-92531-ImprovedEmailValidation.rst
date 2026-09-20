@@ -28,7 +28,7 @@ By default, the validator :php:`\Egulias\EmailValidator\Validation\RFCValidation
 is used. The following validators are available by default:
 
 - :php:`\Egulias\EmailValidator\Validation\DNSCheckValidation`
-- :php:`\Egulias\EmailValidator\Validation\SpoofCheckValidation`
+- :php:`\Egulias\EmailValidator\Validation\Extra\SpoofCheckValidation`
 - :php:`\Egulias\EmailValidator\Validation\NoRFCWarningsValidation`
 
 Additionally it is possible to provide an own implementation by implementing the

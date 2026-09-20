@@ -29,7 +29,7 @@ by automatically detecting the sendmail path by checking PHP.ini settings, but
 should be reviewed on update.
 
 In addition, the MailMessage API to create Email messages now inherits from
-:php:`Symfony\Mail\Email` instead of :php:`Swift_Message`, and adds certain shortcuts
+:php:`Symfony\Component\Mime\Email` instead of :php:`Swift_Message`, and adds certain shortcuts
 and more flexibility, but is also stricter in validation.
 
 Especially custom extensions using the MailMessage API need to be evaluated,

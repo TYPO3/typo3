@@ -42,7 +42,7 @@ The arguments for removing context sensitive help were:
 
 The route `help_cshmanual_popup` has been removed.
 
-Help buttons :php:`Components\Buttons\Action\HelpButton` only return an
+Help buttons :php:`TYPO3\CMS\Backend\Template\Components\Buttons\Action\HelpButton` only return an
 empty string and trigger a deprecation warning.
 
 The CSH descriptions are not loaded any longer for tables.
