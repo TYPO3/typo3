@@ -25,9 +25,9 @@ To use this feature, an additional parameter :php:`$correlationId` has been adde
 * :php:`moveRecord(string $table, int $uid, array $payload, CorrelationId $correlationId = null)`
 
 To resolve all entries for a given :php:`$correlationId` a new method has been added to the
-:php:`\TYPO3\CMS\Core\DataHandling\History\RecordHistory` class:
+:php:`\TYPO3\CMS\Backend\History\RecordHistory` class:
 
-* :php:`\TYPO3\CMS\Core\DataHandling\History\RecordHistory::findEventsForCorrelation(string $correlationId): array`
+* :php:`\TYPO3\CMS\Backend\History\RecordHistory::findEventsForCorrelation(string $correlationId): array`
 
 
 .. index:: Backend, PHP-API, ext:backend

@@ -346,8 +346,8 @@ The following class properties have been marked as internal:
 - :php:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->formfield_status`
 - :php:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->loginSessionStarted`
 - :php:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->dontSetCookie`
-- :php:`\TYPO3\CMS\Core\Authentication\FrontendUserAuthentication->formfield_permanent`
-- :php:`\TYPO3\CMS\Core\Authentication\FrontendUserAuthentication->is_permanent`
+- :php:`\TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication->formfield_permanent`
+- :php:`\TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication->is_permanent`
 
 The following class property has changed/enforced type:
 

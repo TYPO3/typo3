@@ -11,7 +11,7 @@ See :issue:`95077`
 Description
 ===========
 
-A new PSR-14 event :php:`\TYPO3\CMS\Core\Configuration\Event\ProcessFileListActionsEvent` has been added to
+A new PSR-14 event :php:`\TYPO3\CMS\Filelist\Event\ProcessFileListActionsEvent` has been added to
 TYPO3 Core. This event is fired after generating the actions for the
 files and folders listing in the :guilabel:`File > Filelist` module.
 

@@ -22,7 +22,7 @@ manual process during the deletion process is needed.
 
 For reasons of consistency and de-cluttering the UI, the former functionality
 has been removed from TYPO3 Core, along with the PHP class
-constant :php:`\TYPO3\CMS\Domain\Repository\PageRepository::DOKTYPE_RECYCLER`.
+constant :php:`\TYPO3\CMS\Core\Domain\Repository\PageRepository::DOKTYPE_RECYCLER`.
 
 
 Impact

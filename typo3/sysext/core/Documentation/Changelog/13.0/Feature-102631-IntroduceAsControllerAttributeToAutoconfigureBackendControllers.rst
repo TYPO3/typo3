@@ -31,7 +31,7 @@ can be set on the class:
 
     The attribute is a drop-in replacement for the
     :ref:`deprecated <deprecation-102631-1702031387>`
-    :php:`\TYPO3\CMS\Core\Attribute\Controller` attribute.
+    :php:`\TYPO3\CMS\Backend\Attribute\Controller` attribute.
 
 Impact
 ======
