@@ -13,7 +13,7 @@ Description
 
 The class :php:`\TYPO3\CMS\Core\PageTitle\RecordTitleProvider`
 introduces a new page title provider with the identifier `recordTitle`.
-It is executed before the :php-short:`\TYPO3\CMS\Core\PageTitle\SeoTitlePageTitleProvider`,
+It is executed before the :php-short:`\TYPO3\CMS\Seo\PageTitle\SeoTitlePageTitleProvider`,
 which uses the TypoScript identifier `seo`.
 
 This provider can be used by third-party extensions to set the page title

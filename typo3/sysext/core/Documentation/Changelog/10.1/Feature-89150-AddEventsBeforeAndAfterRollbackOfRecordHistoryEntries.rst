@@ -21,7 +21,7 @@ Both events resolve some information about the :php-short:`\TYPO3\CMS\Backend\Hi
 * :php:`getRecordHistoryRollback()` returns the :php:`\TYPO3\CMS\Backend\History\RecordHistoryRollback` object
 * :php:`getRollbackFields()` returns a string with the rollback fields
 * :php:`getDiff()` returns an array with the differences
-* :php:`getBackendUserAuthentication()` returns a :php:`\TYPO3\CMS\Backend\BackendUserAuthentication` object, which is used for this rollback operation
+* :php:`getBackendUserAuthentication()` returns a :php:`\TYPO3\CMS\Core\Authentication\BackendUserAuthentication` object, which is used for this rollback operation
 
 Additionally the :php:`\TYPO3\CMS\Backend\History\Event\AfterHistoryRollbackFinishedEvent` gets the DataHandler input data:
 

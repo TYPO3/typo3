@@ -12,7 +12,7 @@ Description
 ===========
 
 A new option :html:`timezone` has been added to the
-:php:`\TYPO3Fluid\Fluid\ViewHelpers\Format\DateViewHelper` to render a date
+:php:`\TYPO3\CMS\Fluid\ViewHelpers\Format\DateViewHelper` to render a date
 with a provided time zone.
 
 ..  code-block:: html

@@ -18,7 +18,7 @@ all frontend and backend operations on Extbase entities without requiring
 any code changes.
 
 The feature leverages TYPO3's existing
-:php-short:`TYPO3\CMS\Backend\History\RecordHistoryStore`
+:php-short:`TYPO3\CMS\Core\DataHandling\History\RecordHistoryStore`
 infrastructure and integrates seamlessly with the backend record history
 functionality.
 

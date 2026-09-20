@@ -67,7 +67,7 @@ After:
 ..  code-block:: php
     :caption: MyClass
 
-    use TYPO3\CMS\Core\Http\ServerRequestInterface;
+    use Psr\Http\Message\ServerRequestInterface;
     use TYPO3\CMS\Core\SystemResource\SystemResourceFactory;
     use TYPO3\CMS\Core\SystemResource\Publishing\SystemResourcePublisherInterface;
     use TYPO3\CMS\Core\SystemResource\Publishing\UriGenerationOptions;

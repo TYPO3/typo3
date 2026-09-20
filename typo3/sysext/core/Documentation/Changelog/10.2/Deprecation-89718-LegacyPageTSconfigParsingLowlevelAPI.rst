@@ -21,7 +21,7 @@ As this API is more consistent, and flexible, as well as agnostic
 of the current Context of backend or frontend, the following
 functionality has been marked as deprecated:
 
-- :php:`TYPO3\CMS\Core\Configuration\TsConfigParser`
+- :php:`TYPO3\CMS\Backend\Configuration\TsConfigParser`
 - :php:`TYPO3\CMS\Backend\Utility\BackendUtility::getRawPagesTSconfig()`
 
 

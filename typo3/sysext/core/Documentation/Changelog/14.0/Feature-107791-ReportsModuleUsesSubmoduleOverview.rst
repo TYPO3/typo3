@@ -77,7 +77,7 @@ The controller returns a standard PSR-7 response with rendered content:
 ..  code-block:: php
     :caption: EXT:my_extension/Classes/Controller/MyReportController.php
 
-    use TYPO3\CMS\Core\Attribute\AsController;
+    use TYPO3\CMS\Backend\Attribute\AsController;
     use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
     use Psr\Http\Message\ResponseInterface;
     use Psr\Http\Message\ServerRequestInterface;
