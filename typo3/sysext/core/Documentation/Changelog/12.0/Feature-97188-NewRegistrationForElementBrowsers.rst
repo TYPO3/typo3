@@ -27,7 +27,7 @@ one can manually tag a custom `element browser` with the
 
 Due to the autoconfiguration, the identifier has to be provided by the
 class directly, using the now required :php:`getIdentifier()` method.
-When extending :php:`\TYPO3\CMS\Backend\Browser\AbstractElementBrowser`
+When extending :php:`\TYPO3\CMS\Backend\ElementBrowser\AbstractElementBrowser`
 it's sufficient to set the `$identifier` class property.
 
 Impact

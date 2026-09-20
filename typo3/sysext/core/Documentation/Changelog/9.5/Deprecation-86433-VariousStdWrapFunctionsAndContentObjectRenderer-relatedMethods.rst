@@ -17,7 +17,7 @@ The following TypoScript :typoscript:`stdWrap` sub-properties and functions have
 * :typoscript:`stdWrap.filelist`
 * :typoscript:`stdWrap.filelink`
 
-In conjunction with the properties, the following methods of class :php:`TYPO3\CMS\Frontend\ContentObjectRenderer` have been marked as deprecated:
+In conjunction with the properties, the following methods of class :php:`TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer` have been marked as deprecated:
 
 * :php:`stdWrap_addParams()`
 * :php:`stdWrap_filelink()`

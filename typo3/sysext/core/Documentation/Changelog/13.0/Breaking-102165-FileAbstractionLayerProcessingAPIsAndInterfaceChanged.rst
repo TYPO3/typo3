@@ -27,7 +27,7 @@ The PHP class :php:`\TYPO3\CMS\Core\Resource\Processing\AbstractGraphicalTask`
 has been removed in order to reduce complexity, as all of the methods have
 been moved into the respective subclasses.
 
-The PHP class :php:`\TYPO3\CMS\Core\Resource\Processing\Task` now has two
+The PHP class :php:`\TYPO3\CMS\Core\Resource\Processing\AbstractTask` now has two
 abstract methods :php:`getName()` and :php:`getType()` in favor of the protected
 properties :php:`$name` and :php:`$type`.
 

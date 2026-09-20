@@ -12,7 +12,7 @@ Description
 ===========
 
 Using the hooks
-:php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][\TYPO3\CMS\Core\Domain\PageRepository::class]['init']`
+:php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][\TYPO3\CMS\Core\Domain\Repository\PageRepository::class]['init']`
 and :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getPage']`,
 implementations had to implement the :php:`\TYPO3\CMS\Core\Domain\Repository\PageRepositoryInitHookInterface`
 respectively :php:`\TYPO3\CMS\Core\Domain\Repository\PageRepositoryGetPageHookInterface`

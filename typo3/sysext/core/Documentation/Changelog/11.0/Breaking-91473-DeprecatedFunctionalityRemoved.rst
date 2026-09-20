@@ -80,7 +80,7 @@ The following PHP class methods that have previously been marked as deprecated f
 - :php:`\TYPO3\CMS\Core\Resource\Index\FileIndexRepository->findBySearchWordInMetaData`
 - :php:`\TYPO3\CMS\Core\Resource\ResourceFactory->getInstance`
 - :php:`\TYPO3\CMS\Core\Resource\ResourceStorage->checkFileAndFolderNameFilters`
-- :php:`\TYPO3\CMS\Core\Utility\BasicFileUtility->setFileExtensionPermissions`
+- :php:`\TYPO3\CMS\Core\Utility\File\BasicFileUtility->setFileExtensionPermissions`
 - :php:`\TYPO3\CMS\Extbase\Mvc\Controller\ActionController->emitBeforeCallActionMethodSignal`
 - :php:`\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder->setUseCacheHash`
 - :php:`\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder->getUseCacheHash`
@@ -134,9 +134,9 @@ The following methods changed signature according to previous deprecations in v1
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::getUrl` (arguments 2, 3 and 4 are dropped)
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstanceService` (arguments 3 :php:`$excludeServiceKeys` is now an array)
 - :php:`\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper->__construct` (argument :php:`$query` is removed)
-- :php:`\TYPO3\CMS\Extbase\Persistence\Reflection\ObjectAccess->setProperty` (argument :php:`$forceDirectAccess` is removed)
-- :php:`\TYPO3\CMS\Extbase\Persistence\Reflection\ObjectAccess->getProperty` (argument :php:`$forceDirectAccess` is removed)
-- :php:`\TYPO3\CMS\Extbase\Persistence\Reflection\ObjectAccess->getPropertyInternal` (argument :php:`$forceDirectAccess` is removed)
+- :php:`\TYPO3\CMS\Extbase\Reflection\ObjectAccess->setProperty` (argument :php:`$forceDirectAccess` is removed)
+- :php:`\TYPO3\CMS\Extbase\Reflection\ObjectAccess->getProperty` (argument :php:`$forceDirectAccess` is removed)
+- :php:`\TYPO3\CMS\Extbase\Reflection\ObjectAccess->getPropertyInternal` (argument :php:`$forceDirectAccess` is removed)
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->__construct`
 
 The following public class properties have been dropped:
@@ -328,7 +328,7 @@ The following signals have been removed:
 - :php:`\TYPO3\CMS\Extensionmanager\Utility\InstallUtility::afterExtensionStaticSqlImport`
 - :php:`\TYPO3\CMS\Extensionmanager\Utility\InstallUtility::afterExtensionFileImport`
 - :php:`\TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService::willInstallExtensions`
-- :php:`\TYPO3\CMS\Extensionmanager\ViewHelper\ProcessAvailableActionsViewHelper::processActions`
+- :php:`\TYPO3\CMS\Extensionmanager\ViewHelpers\ProcessAvailableActionsViewHelper::processActions`
 - :php:`\TYPO3\CMS\Install\Service\SqlExpectedSchemaService::tablesDefinitionIsBeingBuilt`
 - :php:`\TYPO3\CMS\Impexp\Utility\ImportExportUtility::afterImportExportInitialisation`
 - :php:`\TYPO3\CMS\Lang\Service\TranslationService::postProcessMirrorUrl`

@@ -24,7 +24,7 @@ been marked as deprecated and will be removed with v12:
 * :php:`TYPO3\CMS\Extbase\Object\Container\Container` - Internal lifecycle management
 * :php:`TYPO3\CMS\Extbase\Object\Exception` - Base exception
 * :php:`TYPO3\CMS\Extbase\Object\Exception\CannotBuildObjectException` - Detail exception
-* :php:`TYPO3\CMS\Extbase\Object\Container\Exception\CannotReconstituteObjectException` - Detail exception
+* :php:`TYPO3\CMS\Extbase\Object\Exception\CannotReconstituteObjectException` - Detail exception
 * :php:`TYPO3\CMS\Extbase\Object\Container\Exception\UnknownObjectException` - Detail exception
 * :php:`TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException` - Detail exception, obsolete
   by deprecation of Extbase signal slot dispatcher already.

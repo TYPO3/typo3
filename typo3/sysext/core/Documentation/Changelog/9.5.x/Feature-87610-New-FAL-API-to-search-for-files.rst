@@ -41,8 +41,8 @@ Searching for files in a complete storage works like this:
    $searchDemand = FileSearchDemand::createForSearchTerm($searchWord)->withRecursive();
    $files = $storage->searchFiles($searchDemand);
 
-It is possible to further limit the result set, by adding additional restrictions to :php:`TYPO3\CMS\Core\Resource\Folder\FileSearchDemand`.
-Please note, that :php:`TYPO3\CMS\Core\Resource\Folder\FileSearchDemand` is an immutable value object, but allows chaining methods for ease of use:
+It is possible to further limit the result set, by adding additional restrictions to :php:`TYPO3\CMS\Core\Resource\Search\FileSearchDemand`.
+Please note, that :php:`TYPO3\CMS\Core\Resource\Search\FileSearchDemand` is an immutable value object, but allows chaining methods for ease of use:
 
 .. code-block:: php
 
