@@ -67,8 +67,13 @@ final class ImageViewHelperTest extends FunctionalTestCase
             ],
             [
                 '<f:uri.image src="EXT:fluid/Resources/Private/Language/" />',
-                1509741907,
-                'Unable to render image URI: Tried to access a private resource file "EXT:fluid/Resources/Private/Language/" from fallback compatibility storage. This storage only handles public files.',
+                1789915802,
+                'Unable to render image URI: Resolved resource "PKG:typo3/cms-fluid:Resources/Private/Language/" is not a public resource. Given resource identifier: "EXT:fluid/Resources/Private/Language/"',
+            ],
+            [
+                '<f:uri.image image="{f:resource(identifier: \'EXT:fluid/Resources/Private/Language/\')}" />',
+                1789915802,
+                'Unable to render image URI: Resolved resource "PKG:typo3/cms-fluid:Resources/Private/Language/" is not a public resource. Given resource identifier: "PKG:typo3/cms-fluid:Resources/Private/Language/"',
             ],
             [
                 '<f:uri.image src="fileadmin/image.jpg" />',
@@ -116,8 +121,13 @@ final class ImageViewHelperTest extends FunctionalTestCase
             ],
             [
                 '<f:uri.image src="EXT:fluid/Resources/Private/Language/" />',
-                1509741907,
-                'Unable to render image URI in "tt_content:123": Tried to access a private resource file "EXT:fluid/Resources/Private/Language/" from fallback compatibility storage. This storage only handles public files.',
+                1789915802,
+                'Unable to render image URI in "tt_content:123": Resolved resource "PKG:typo3/cms-fluid:Resources/Private/Language/" is not a public resource. Given resource identifier: "EXT:fluid/Resources/Private/Language/"',
+            ],
+            [
+                '<f:uri.image image="{f:resource(identifier: \'EXT:fluid/Resources/Private/Language/\')}" />',
+                1789915802,
+                'Unable to render image URI in "tt_content:123": Resolved resource "PKG:typo3/cms-fluid:Resources/Private/Language/" is not a public resource. Given resource identifier: "PKG:typo3/cms-fluid:Resources/Private/Language/"',
             ],
             [
                 '<f:uri.image src="fileadmin/image.jpg" />',
@@ -351,6 +361,19 @@ final class ImageViewHelperTest extends FunctionalTestCase
             '@^fileadmin/_processed_/5/3/csm_ImageViewHelperTest_.*\.png$@',
             new TemplateView($context)->render(),
         );
+    }
+
+    #[Test]
+    public function systemResourceObjectIsRenderedLikeItsIdentifier(): void
+    {
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:uri.image src="EXT:fluid/Resources/Public/Icons/Extension.svg" width="16" fileExtension="png" />');
+        $expected = new TemplateView($context)->render();
+        self::assertStringStartsWith('/typo3temp/assets/images/system/', $expected);
+
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:uri.image image="{f:resource(identifier: \'EXT:fluid/Resources/Public/Icons/Extension.svg\')}" width="16" fileExtension="png" />');
+        self::assertSame($expected, new TemplateView($context)->render());
     }
 
     #[Test]

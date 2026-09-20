@@ -114,7 +114,7 @@ final class AbsoluteUriPrefixRenderingTest extends FunctionalTestCase
         yield 'none' => [
             'none',
             [
-                'local' => ['url' => '"/{{CANDIDATE}}"', 'count' => 1],
+                'local' => ['url' => '"/{{CANDIDATE}}\?\d+"', 'count' => 1],
                 'extension' => ['url' => '"/{{CANDIDATE}}\?\d+"', 'count' => 3],
                 'external' => ['url' => '"{{CANDIDATE}}"', 'count' => 1],
                 'link' => ['url' => 'href="{{CANDIDATE}}"', 'count' => 1],
@@ -124,7 +124,7 @@ final class AbsoluteUriPrefixRenderingTest extends FunctionalTestCase
         yield 'with-prefix' => [
             '1',
             [
-                'local' => ['url' => '"http://localhost/{{CANDIDATE}}"', 'count' => 1],
+                'local' => ['url' => '"http://localhost/{{CANDIDATE}}\?\d+"', 'count' => 1],
                 'extension' => ['url' => '"http://localhost/{{CANDIDATE}}\?\d+"', 'count' => 3],
                 'external' => ['url' => '"{{CANDIDATE}}"', 'count' => 1],
                 'link' => ['url' => 'href="http://localhost{{CANDIDATE}}"', 'count' => 1],
@@ -134,7 +134,7 @@ final class AbsoluteUriPrefixRenderingTest extends FunctionalTestCase
         yield 'without-global-config' => [
             '2',
             [
-                'fal' => ['url' => 'href="http://localhost/{{CANDIDATE}}"', 'count' => 1],
+                'fal' => ['url' => 'href="http://localhost/{{CANDIDATE}}\?\d+"', 'count' => 1],
             ],
         ];
     }

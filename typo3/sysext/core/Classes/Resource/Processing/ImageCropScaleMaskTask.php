@@ -21,7 +21,8 @@ use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * A task that takes care of cropping, scaling and/or masking an image.
+ * A task that takes care of cropping, scaling and/or masking an image, whether its
+ * source is a FAL File or a resource outside the File Abstraction Layer.
  */
 class ImageCropScaleMaskTask extends AbstractTask
 {

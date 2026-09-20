@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\Processing\ImageCropScaleMaskTask;
 use TYPO3\CMS\Core\Resource\Processing\ImagePreviewTask;
 use TYPO3\CMS\Core\Resource\Processing\TaskInterface;
+use TYPO3\CMS\Core\SystemResource\Exception\CanNotDetectImageDimensionOfSystemResourceException;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -183,13 +184,32 @@ final class ImageDimensionTest extends UnitTestCase
         self::assertEquals($expectedImageDimension, $calculatedDimension);
     }
 
+    #[Test]
+    public function dimensionOfANonImageFileIsTakenFromItsMetadata(): void
+    {
+        $originalFile = self::createStub(File::class);
+        $originalFile->method('getExtension')->willReturn('pdf');
+        $originalFile->method('getProperty')->willReturnMap([['width', 595], ['height', 842]]);
+        $originalFile->method('getImageDimension')->willThrowException(
+            new CanNotDetectImageDimensionOfSystemResourceException('File is not an image.', 1789990001)
+        );
+        $processedFile = self::createStub(ProcessedFile::class);
+        $processedFile->method('getOriginalFile')->willReturn($originalFile);
+        $processedFile->method('getOriginalResource')->willReturn($originalFile);
+        $task = new ImageCropScaleMaskTask($processedFile, ['width' => '64m', 'height' => '64m']);
+
+        self::assertEquals(new ImageDimension(45, 64), ImageDimension::fromProcessingTask($task));
+    }
+
     private function createTask(array $processingConfiguration, ImageDimension $originalImageDimension, string $fileExtension, string $taskClass = ImageCropScaleMaskTask::class): TaskInterface
     {
         $originalFileMock = self::createStub(File::class);
         $originalFileMock->method('getExtension')->willReturn($fileExtension);
         $originalFileMock->method('getProperty')->willReturnOnConsecutiveCalls($originalImageDimension->getWidth(), $originalImageDimension->getHeight());
+        $originalFileMock->method('getImageDimension')->willReturn($originalImageDimension);
         $processedFileMock = self::createStub(ProcessedFile::class);
         $processedFileMock->method('getOriginalFile')->willReturn($originalFileMock);
+        $processedFileMock->method('getOriginalResource')->willReturn($originalFileMock);
 
         /** @var TaskInterface $task */
         $task = new $taskClass(

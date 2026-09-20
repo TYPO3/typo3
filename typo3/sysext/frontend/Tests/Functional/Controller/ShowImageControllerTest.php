@@ -28,6 +28,10 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class ShowImageControllerTest extends FunctionalTestCase
 {
+    protected array $testExtensionsToLoad = [
+        'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_system_resources',
+    ];
+
     protected array $pathsToProvideInTestInstance = [
         'typo3/sysext/frontend/Tests/Functional/Fixtures/Images/' => 'fileadmin/',
     ];
@@ -143,5 +147,41 @@ final class ShowImageControllerTest extends FunctionalTestCase
         $request = new InternalRequest((string)$uri);
         $response = $this->executeFrontendSubRequest($request);
         self::assertSame($expectedHttpStatusCode, $response->getStatusCode());
+    }
+
+    #[Test]
+    public function contentIsGeneratedForSystemResources(): void
+    {
+        $identifier = 'PKG:typo3tests/test-system-resources:Resources/Public/Images/typo3-logo.png';
+        $parameters = base64_encode((string)json_encode(['width' => '119']));
+        $queryParams = [
+            'file' => $identifier,
+            'parameters' => [$parameters],
+            'md5' => $this->get(HashService::class)->hmac(implode('|', [$identifier, $parameters]), 'tx_cms_showpic', HashAlgo::SHA3_256),
+        ];
+        $uri = new Uri('https://website.local/?eID=tx_cms_showpic&' . http_build_query($queryParams));
+
+        $response = $this->executeFrontendSubRequest(new InternalRequest((string)$uri));
+
+        self::assertSame(200, $response->getStatusCode());
+        $images = new HTML5()->loadHTML((string)$response->getBody())->getElementsByTagName('img');
+        self::assertStringContainsString('typo3temp/assets/images/system/', $images->item(0)->getAttribute('src'));
+        self::assertSame('119', $images->item(0)->getAttribute('width'));
+        self::assertSame('50', $images->item(0)->getAttribute('height'));
+    }
+
+    #[Test]
+    public function privateSystemResourceReturns404ResponseHttpStatusCode(): void
+    {
+        $identifier = 'PKG:typo3tests/test-system-resources:Resources/Private/Icons/Extension.svg';
+        $parameters = base64_encode((string)json_encode([]));
+        $queryParams = [
+            'file' => $identifier,
+            'parameters' => [$parameters],
+            'md5' => $this->get(HashService::class)->hmac(implode('|', [$identifier, $parameters]), 'tx_cms_showpic', HashAlgo::SHA3_256),
+        ];
+        $uri = new Uri('https://website.local/?eID=tx_cms_showpic&' . http_build_query($queryParams));
+
+        self::assertSame(404, $this->executeFrontendSubRequest(new InternalRequest((string)$uri))->getStatusCode());
     }
 }

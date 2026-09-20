@@ -1401,7 +1401,13 @@ class ResourceStorage implements ResourceStorageInterface
         if ($fileObject->getStorage() !== $this) {
             throw new \InvalidArgumentException('Cannot process files of foreign storage', 1353401835);
         }
-        return $this->getFileProcessingService()->processFile($fileObject, $context, $this->driver, $configuration);
+        $processedFile = $this->getFileProcessingService()->processFile($fileObject, $context, $this->driver, $configuration);
+        if (!$processedFile instanceof ProcessedFile) {
+            // FileProcessingService also processes resources outside the File
+            // Abstraction Layer, but a File|FileReference given here always stays FAL.
+            throw new \RuntimeException(sprintf('Processing the FAL file "%s" must always yield a ProcessedFile, %s given.', $fileObject->getCombinedIdentifier(), get_debug_type($processedFile)), 1789915700);
+        }
+        return $processedFile;
     }
 
     /**

@@ -111,10 +111,12 @@ final class SvgImageViewHelperTest extends FunctionalTestCase
 
         $maximum = count($dimensionMap);
 
-        $storageDirOriginal = '{{EXT:svg_image_test/Resources/Public/Images}}';
         $storageDirTemp     = 'typo3temp/assets/_processed_/[0-9a-f]/[0-9a-f]';
         $storageDirFal      = 'fileadmin/user_upload';
         $storageDirFalTemp  = 'fileadmin/_processed_/[0-9a-f]/[0-9a-f]';
+        // A system resource outside the File Abstraction Layer is cached under its own
+        // identifier-keyed directory, not FAL's _processed_/ - see ProcessedResourceCache.
+        $storageDirSystemResource = '/typo3temp/assets/images/system/[0-9a-f]{32}';
 
         // To prevent excess copy and paste labor, this is done programmatically:
         for ($i = 1; $i <= $maximum; $i++) {
@@ -128,6 +130,10 @@ final class SvgImageViewHelperTest extends FunctionalTestCase
             // Note: Uncropped SVGs are returned from their original location. No conversion/tampering is done.
 
             //# SECTION 1: Referenced via EXT: ###
+            // Uncropped: the resource's own public URL, generated the same way any other
+            // system resource's is - not a path guessed by this test.
+            $ownPublicUrlPlaceholder = sprintf('{{EXT:svg_image_test/Resources/Public/Images/%s}}', $fn);
+
             $expected[sprintf('no crop (%s)', $fn)] = [
                 sprintf(
                     '<f:image src="EXT:svg_image_test/Resources/Public/Images/%s" width="%d" height="%d" />',
@@ -136,9 +142,8 @@ final class SvgImageViewHelperTest extends FunctionalTestCase
                     $height,
                 ),
                 sprintf(
-                    '@^<img src="(%s/%s)" width="%d" height="%d" alt="" />$@',
-                    $storageDirOriginal,
-                    $fn,
+                    '@^<img src="(/%s)" width="%d" height="%d" alt="" />$@',
+                    $ownPublicUrlPlaceholder,
                     $width,
                     $height,
                 ),
@@ -154,9 +159,8 @@ final class SvgImageViewHelperTest extends FunctionalTestCase
                     $height,
                 ),
                 sprintf(
-                    '@^<img src="(%s/%s)" width="%d" height="%d" alt="" />$@',
-                    $storageDirOriginal,
-                    $fn,
+                    '@^<img src="(/%s)" width="%d" height="%d" alt="" />$@',
+                    $ownPublicUrlPlaceholder,
                     $width,
                     $height,
                 ),
@@ -174,9 +178,8 @@ final class SvgImageViewHelperTest extends FunctionalTestCase
                     $dimensionMap[$fn]['fixedCrop60px'][3] // crop-string offset left/top
                 ),
                 sprintf(
-                    '@^<img src="(%s/csm_ImageViewHelperTest%d_.*\.svg)" width="%d" height="%d" alt="" />$@',
-                    $storageDirTemp,
-                    $i,
+                    '@^<img src="(%s/[0-9a-f]{10}-[0-9a-f]{32}\.svg)" width="%d" height="%d" alt="" />$@',
+                    $storageDirSystemResource,
                     $dimensionMap[$fn]['fixedCrop60px'][0],
                     $dimensionMap[$fn]['fixedCrop60px'][1],
                 ),
@@ -191,9 +194,8 @@ final class SvgImageViewHelperTest extends FunctionalTestCase
                     $dimensionMap[$fn]['relativeCrop80Percent'][3] // crop-string offset left/top
                 ),
                 sprintf(
-                    '@^<img src="(%s/csm_ImageViewHelperTest%d_.*\.svg)" width="%d" height="%d" alt="" />$@',
-                    $storageDirTemp,
-                    $i,
+                    '@^<img src="(%s/[0-9a-f]{10}-[0-9a-f]{32}\.svg)" width="%d" height="%d" alt="" />$@',
+                    $storageDirSystemResource,
                     $dimensionMap[$fn]['relativeCrop80Percent'][0],
                     $dimensionMap[$fn]['relativeCrop80Percent'][1],
                 ),
@@ -208,9 +210,8 @@ final class SvgImageViewHelperTest extends FunctionalTestCase
                     $height,
                 ),
                 sprintf(
-                    '@^<img src="(%s/csm_ImageViewHelperTest%d_.*\.png)" width="%d" height="%d" alt="" />$@',
-                    $storageDirTemp,
-                    $i,
+                    '@^<img src="(%s/[0-9a-f]{10}-[0-9a-f]{32}\.png)" width="%d" height="%d" alt="" />$@',
+                    $storageDirSystemResource,
                     $width,
                     $height,
                 ),
@@ -227,9 +228,8 @@ final class SvgImageViewHelperTest extends FunctionalTestCase
                     $dimensionMap[$fn]['relativeCrop80Percent'][3] // crop-string offset left/top
                 ),
                 sprintf(
-                    '@^<img src="(%s/csm_ImageViewHelperTest%d_.*\.png)" width="%d" height="%d" alt="" />$@',
-                    $storageDirTemp,
-                    $i,
+                    '@^<img src="(%s/[0-9a-f]{10}-[0-9a-f]{32}\.png)" width="%d" height="%d" alt="" />$@',
+                    $storageDirSystemResource,
                     $dimensionMap[$fn]['relativeCrop80Percent'][0],
                     $dimensionMap[$fn]['relativeCrop80Percent'][1],
                 ),
@@ -501,7 +501,11 @@ final class SvgImageViewHelperTest extends FunctionalTestCase
         self::assertMatchesRegularExpression($this->resolveResourcePlaceholders($expected), $actual);
 
         $dumpTable = 'sys_file_processedfile';
-        $expectedRecords = 1;
+        // A source referenced via EXT:/PKG: is not a FAL file, so it is cached by
+        // ProcessedResourceCache on disk, not as a sys_file_processedfile row - unlike a
+        // FAL source (numeric uid), which still gets exactly one row, whether or not it
+        // needed any actual processing.
+        $expectedRecords = str_contains($template, 'EXT:') ? 0 : 1;
 
         $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable($dumpTable);
         $rows
@@ -513,7 +517,7 @@ final class SvgImageViewHelperTest extends FunctionalTestCase
 
         self::assertEquals(count($rows), $expectedRecords, sprintf('Expected post-conversion database records in %s do not match.', $dumpTable));
 
-        if ($expectProcessedFile) {
+        if ($expectProcessedFile && $rows !== []) {
             // Only SVGs count
             if (str_ends_with($rows[0]['identifier'], '.svg')) {
                 $this->verifySvg($rows[0], $cropResult);

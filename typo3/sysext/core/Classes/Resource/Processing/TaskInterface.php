@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Resource\Processing;
 
 use TYPO3\CMS\Core\Resource;
+use TYPO3\CMS\Core\SystemResource\Type\SystemResourceInterface;
 
 /**
  * A task is a unit of work that can be performed by a file processor. This may include multiple steps in any order,
@@ -45,12 +46,12 @@ interface TaskInterface
     /**
      * Returns the processed file this task is executed on.
      */
-    public function getTargetFile(): Resource\ProcessedFile;
+    public function getTargetFile(): Resource\ProcessedResourceInterface;
 
     /**
      * Returns the original file this task is based on.
      */
-    public function getSourceFile(): Resource\File;
+    public function getSourceFile(): SystemResourceInterface;
 
     /**
      * Returns the configuration for this task.

@@ -91,6 +91,9 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 final class ContentObjectRendererTest extends FunctionalTestCase
 {
     protected array $pathsToProvideInTestInstance = ['typo3/sysext/frontend/Tests/Functional/Fixtures/Images' => 'fileadmin/user_upload'];
+    protected array $testExtensionsToLoad = [
+        'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_system_resources',
+    ];
 
     private function getPreparedRequest(): ServerRequestInterface
     {
@@ -5730,6 +5733,110 @@ content="benni">',
 
         self::assertEquals($expectedWidth, $result->getWidth());
         self::assertEquals($expectedHeight, $result->getHeight());
+    }
+
+    #[Test]
+    public function getImgResourceProcessesASystemResourceImage(): void
+    {
+        $subject = $this->get(ContentObjectRenderer::class);
+        $subject->setRequest($this->getPreparedRequest());
+
+        // A crop, rather than a plain width/height scale, is required to force an SVG
+        // to actually be re-rendered - a scale-only SVG is reported at the requested
+        // dimensions but otherwise uses the untouched original, the same as for FAL.
+        // The offset must be non-zero: with only "crop" and no separate width/height,
+        // fromCropScaleValues() treats a crop area that exactly covers "the whole
+        // incoming image" (which, in that case, is defined as the crop area's own
+        // dimensions) as no crop at all - existing, correct behaviour this test must
+        // respect, not trigger by accident.
+        $result = $subject->getImgResource('EXT:test_system_resources/Resources/Public/Icons/Extension.svg', [
+            'crop' => '{"default":{"cropArea":{"x":0.25,"y":0.25,"width":0.5,"height":0.5},"selectedRatio":"NaN","focusArea":null}}',
+        ]);
+
+        self::assertNotNull($result);
+        self::assertSame(32, $result->getWidth());
+        self::assertSame(32, $result->getHeight());
+        self::assertNotNull($result->getPublicUrl());
+        self::assertStringContainsString('typo3temp/assets/images/system/', (string)$result->getPublicUrl());
+    }
+
+    #[Test]
+    public function getImgResourceReusesThePublishedOriginalWhenNoProcessingIsNeeded(): void
+    {
+        $subject = $this->get(ContentObjectRenderer::class);
+        $subject->setRequest($this->getPreparedRequest());
+
+        $result = $subject->getImgResource('EXT:test_system_resources/Resources/Public/Icons/Extension.svg', []);
+
+        self::assertNotNull($result);
+        self::assertSame(64, $result->getWidth());
+        self::assertSame(64, $result->getHeight());
+        self::assertNotNull($result->getPublicUrl());
+        self::assertStringNotContainsString('typo3temp/assets/images/system/', (string)$result->getPublicUrl());
+    }
+
+    #[Test]
+    public function getImgResourceReturnsNullForAPrivateSystemResource(): void
+    {
+        $subject = $this->get(ContentObjectRenderer::class);
+        $subject->setRequest($this->getPreparedRequest());
+
+        self::assertNull($subject->getImgResource('EXT:test_system_resources/Resources/Private/Icons/Extension.svg', []));
+    }
+
+    public static function getImgResourceAppliesASystemResourceAsMaskDataProvider(): iterable
+    {
+        yield 'FAL image' => ['1', 200, 133];
+        yield 'system resource' => ['EXT:test_system_resources/Resources/Public/Images/typo3-logo.png', 119, 50];
+    }
+
+    #[DataProvider('getImgResourceAppliesASystemResourceAsMaskDataProvider')]
+    #[Test]
+    public function getImgResourceAppliesASystemResourceAsMask(string $file, int $expectedWidth, int $expectedHeight): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/DataSet/FileReferences.csv');
+        $subject = $this->get(ContentObjectRenderer::class);
+        $subject->setRequest($this->getPreparedRequest());
+
+        $result = $subject->getImgResource($file, [
+            'width' => (string)$expectedWidth,
+            'm.' => [
+                'mask' => 'EXT:test_system_resources/Resources/Public/Images/typo3-logo.png',
+                'bgImg' => 'EXT:test_system_resources/Resources/Public/Images/typo3-logo.png',
+            ],
+        ]);
+
+        self::assertNotNull($result);
+        self::assertSame($expectedWidth, $result->getWidth());
+        self::assertSame($expectedHeight, $result->getHeight());
+        self::assertNotSame($subject->getImgResource($file, ['width' => (string)$expectedWidth])->getPublicUrl(), $result->getPublicUrl());
+        self::assertSame(1, $this->getConnectionPool()->getConnectionForTable('sys_file')->count('*', 'sys_file', []));
+    }
+
+    #[Test]
+    public function imageLinkWrapOfASystemResourceImageLinksToShowpicWithoutIndexingIt(): void
+    {
+        $subject = $this->get(ContentObjectRenderer::class);
+        $typoScript = new FrontendTypoScript(new RootNode(), [], [], []);
+        $typoScript->setConfigArray([]);
+        $subject->setRequest($this->getPreparedRequest()->withAttribute('frontend.typoscript', $typoScript));
+
+        $result = $subject->cObjGetSingle('IMAGE', [
+            'file' => 'EXT:test_system_resources/Resources/Public/Images/typo3-logo.png',
+            'imageLinkWrap' => '1',
+            'imageLinkWrap.' => [
+                'enable' => '1',
+                'width' => '119',
+                'JSwindow' => '1',
+            ],
+        ]);
+
+        self::assertStringContainsString(
+            'href="index.php?eID=tx_cms_showpic&amp;file=' . rawurlencode('PKG:typo3tests/test-system-resources:Resources/Public/Images/typo3-logo.png') . '&amp;md5=',
+            $result
+        );
+        self::assertStringContainsString('data-window-features="width=119,height=50,', $result);
+        self::assertSame(0, $this->getConnectionPool()->getConnectionForTable('sys_file')->count('*', 'sys_file', []));
     }
 
     #[Test]

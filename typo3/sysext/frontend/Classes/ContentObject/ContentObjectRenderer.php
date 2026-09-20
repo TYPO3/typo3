@@ -54,6 +54,7 @@ use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Page\DefaultJavaScriptAssetTrait;
 use TYPO3\CMS\Core\Page\PageLayoutResolver;
+use TYPO3\CMS\Core\Resource\AbstractFile;
 use TYPO3\CMS\Core\Resource\Exception;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\File;
@@ -61,6 +62,7 @@ use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\FolderInterface;
+use TYPO3\CMS\Core\Resource\ProcessableFileInterface;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
@@ -72,6 +74,7 @@ use TYPO3\CMS\Core\Security\RawValue;
 use TYPO3\CMS\Core\SystemResource\Publishing\SystemResourcePublisherInterface;
 use TYPO3\CMS\Core\SystemResource\Publishing\UriGenerationOptions;
 use TYPO3\CMS\Core\SystemResource\SystemResourceFactory;
+use TYPO3\CMS\Core\SystemResource\Type\SystemResourceInterface;
 use TYPO3\CMS\Core\Text\TextCropper;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Type\BitSet;
@@ -813,7 +816,7 @@ class ContentObjectRenderer
      * Wraps the input string in link-tags that opens the image in a new window.
      *
      * @param string $string String to wrap, probably an <img> tag
-     * @param string|File|FileReference $imageFile The original image file
+     * @param string|File|FileReference $imageFile The original image file, or an EXT:/PKG: system resource identifier
      * @param array $conf TypoScript properties for the "imageLinkWrap" function
      * @return string The input string, $string, wrapped as configured.
      * @internal This method should be used within TYPO3 Core only
@@ -834,6 +837,9 @@ class ContentObjectRenderer
             $file = $imageFile;
         } elseif ($imageFile instanceof FileReference) {
             $file = $imageFile->getOriginalFile();
+        } elseif (is_string($imageFile) && (str_starts_with($imageFile, 'EXT:') || str_starts_with($imageFile, 'PKG:'))) {
+            $resource = $this->systemResourceFactory->createPublicResource($imageFile);
+            $file = $resource instanceof SystemResourceInterface && $resource instanceof ProcessableFileInterface ? $resource : null;
         } elseif (MathUtility::canBeInterpretedAsInteger($imageFile)) {
             $file = $this->resourceFactory->getFileObject((int)$imageFile);
         } else {
@@ -864,17 +870,22 @@ class ContentObjectRenderer
             $cropVariantCollection = CropVariantCollection::create((string)$cropString);
             $cropVariant = ($parameters['cropVariant'] ?? null) ?: 'default';
             $cropArea = $cropVariantCollection->getCropArea($cropVariant);
-            $conf['crop'] = $cropArea->isEmpty() ? null : $cropArea->makeAbsoluteBasedOnFile($file);
-            $parameters['crop'] = json_encode($cropArea->makeAbsoluteBasedOnFile($file)->asArray());
+            $absoluteCropArea = $file instanceof FileInterface
+                ? $cropArea->makeAbsoluteBasedOnFile($file)
+                : $cropArea->makeAbsoluteBasedOnDimension($file->getImageDimension());
+            $conf['crop'] = $cropArea->isEmpty() ? null : $absoluteCropArea;
+            $parameters['crop'] = json_encode($absoluteCropArea->asArray());
 
+            // A system resource has no uid, showpic resolves it by its identifier instead
+            $fileIdentifier = $file instanceof AbstractFile ? (string)$file->getUid() : $file->getResourceIdentifier();
             $parametersEncoded = base64_encode((string)json_encode($parameters));
-            $hmac = $this->hashService->hmac(implode('|', [$file->getUid(), $parametersEncoded]), 'tx_cms_showpic', HashAlgo::SHA3_256);
+            $hmac = $this->hashService->hmac(implode('|', [$fileIdentifier, $parametersEncoded]), 'tx_cms_showpic', HashAlgo::SHA3_256);
             $params = '&md5=' . $hmac;
             foreach (str_split($parametersEncoded, 64) as $index => $chunk) {
                 $params .= '&parameters' . rawurlencode('[') . $index . rawurlencode(']') . '=' . rawurlencode($chunk);
             }
             $absRefPrefix = $this->frontendUrlPrefix->getUrlPrefix($this->getRequest());
-            $url = $absRefPrefix . 'index.php?eID=tx_cms_showpic&file=' . $file->getUid() . $params;
+            $url = $absRefPrefix . 'index.php?eID=tx_cms_showpic&file=' . rawurlencode($fileIdentifier) . $params;
             $directImageLink = $this->stdWrapValue('directImageLink', $conf);
             if ($directImageLink) {
                 $imgResourceConf = [
@@ -3380,7 +3391,9 @@ class ContentObjectRenderer
                         }
                     }
 
-                    if (MathUtility::canBeInterpretedAsInteger($file)) {
+                    if (is_string($file) && (str_starts_with($file, 'EXT:') || str_starts_with($file, 'PKG:'))) {
+                        $fileObject = $this->systemResourceFactory->createPublicResource($file);
+                    } elseif (MathUtility::canBeInterpretedAsInteger($file)) {
                         $treatIdAsReference = $this->stdWrapValue('treatIdAsReference', $fileArray);
                         if (!empty($treatIdAsReference)) {
                             $fileReference = $this->resourceFactory->getFileReferenceObject((int)$file);
@@ -3404,7 +3417,9 @@ class ContentObjectRenderer
                     return null;
                 }
             }
-            if ($fileObject instanceof File) {
+            if ($fileObject instanceof ProcessedFile) {
+                $imageResource = ImageResource::createFromProcessedFile($fileObject);
+            } elseif ($fileObject instanceof File || ($fileObject instanceof SystemResourceInterface && $fileObject instanceof ProcessableFileInterface)) {
                 $processingConfiguration['width'] = $this->stdWrapValue('width', $fileArray);
                 $processingConfiguration['height'] = $this->stdWrapValue('height', $fileArray);
                 $processingConfiguration['fileExtension'] = $this->stdWrapValue('ext', $fileArray);
@@ -3443,8 +3458,6 @@ class ContentObjectRenderer
                         $imageResource = ImageResource::createFromProcessedFile($processedFileObject);
                     }
                 }
-            } elseif ($fileObject instanceof ProcessedFile) {
-                $imageResource = ImageResource::createFromProcessedFile($fileObject);
             }
         }
 
@@ -3484,7 +3497,7 @@ class ContentObjectRenderer
      * Returns an ImageManipulation\Area object for the given cropVariant (or 'default')
      * or null if the crop settings or crop area is empty.
      */
-    protected function getCropAreaFromFromTypoScriptSettings(FileInterface $file, array $fileArray): ?Area
+    protected function getCropAreaFromFromTypoScriptSettings(FileInterface|SystemResourceInterface $file, array $fileArray): ?Area
     {
         $cropArea = null;
         // Resolve TypoScript configured cropping.
@@ -3497,7 +3510,9 @@ class ContentObjectRenderer
             // Get cropArea from CropVariantCollection, if cropSettings is a valid json.
             // CropVariantCollection::create does json_decode.
             $jsonCropArea = $this->createCropAreaFromJsonString($cropSettings, $cropVariant);
-            $cropArea = $jsonCropArea->isEmpty() ? null : $jsonCropArea->makeAbsoluteBasedOnFile($file);
+            $cropArea = $jsonCropArea->isEmpty() ? null : ($file instanceof FileInterface
+                ? $jsonCropArea->makeAbsoluteBasedOnFile($file)
+                : $jsonCropArea->makeAbsoluteBasedOnDimension($file->getImageDimension()));
             // Cropping is configured in TypoScript in the following way: file.crop = 50,50,100,100
             if ($jsonCropArea->isEmpty() && preg_match('/^[0-9]+,[0-9]+,[0-9]+,[0-9]+$/', $cropSettings)) {
                 $cropSettings = explode(',', $cropSettings);

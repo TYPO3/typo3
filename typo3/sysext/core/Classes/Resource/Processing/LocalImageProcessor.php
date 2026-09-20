@@ -23,13 +23,16 @@ use TYPO3\CMS\Core\Imaging\ImageProcessingInstructions;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\FileType;
+use TYPO3\CMS\Core\Resource\ProcessedFile;
+use TYPO3\CMS\Core\Resource\ProcessedResourceInterface;
+use TYPO3\CMS\Core\SystemResource\Type\SystemResourceInterface;
 use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Processes Local Images files
  */
-class LocalImageProcessor implements ProcessorInterface, LoggerAwareInterface
+class LocalImageProcessor implements ResourceAwareProcessorInterface, LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
@@ -43,13 +46,54 @@ class LocalImageProcessor implements ProcessorInterface, LoggerAwareInterface
     }
 
     /**
+     * Some call sites (checkForExistingTargetFile()) are genuinely FAL-only - there is
+     * no non-FAL equivalent of a ResourceStorage processing folder. Narrow back to a
+     * concrete File/ProcessedFile there, rather than at every such call site.
+     */
+    protected function getConcreteSourceFile(TaskInterface $task): File
+    {
+        $sourceFile = $task->getSourceFile();
+        if (!$sourceFile instanceof File) {
+            throw new \InvalidArgumentException(sprintf('%s can only process a FAL File.', static::class), 1789624490);
+        }
+        return $sourceFile;
+    }
+
+    protected function getConcreteTargetFile(TaskInterface $task): ProcessedFile
+    {
+        $targetFile = $task->getTargetFile();
+        if (!$targetFile instanceof ProcessedFile) {
+            throw new \InvalidArgumentException(sprintf('%s can only process a FAL ProcessedFile.', static::class), 1789624491);
+        }
+        return $targetFile;
+    }
+
+    /**
+     * A resource outside the File Abstraction Layer deliberately exposes no local path
+     * of its own (SystemResourceInterface has none) - GraphicalFunctions needs one
+     * regardless, since it shells out to ImageMagick/GraphicsMagick, so this writes its
+     * content to a private temporary file instead. The caller is responsible for
+     * removing it once done - unlike a FAL File's local copy, nothing else owns or
+     * later cleans this one up.
+     */
+    protected function createTemporaryLocalCopy(SystemResourceInterface $sourceFile): string
+    {
+        $temporaryFile = GeneralUtility::tempnam('system-resource-', '.' . $sourceFile->getExtension());
+        GeneralUtility::writeFile($temporaryFile, $sourceFile->getContents(), true);
+        return $temporaryFile;
+    }
+
+    /**
      * Processes the given task.
      *
      * @throws \InvalidArgumentException
      */
     public function processTask(TaskInterface $task): void
     {
-        if ($this->checkForExistingTargetFile($task)) {
+        // A non-FAL target is only ever handed to processTask() once
+        // FileProcessingService already confirmed it needs processing, so unlike
+        // checkForExistingTargetFile() below, there is no reuse check to repeat here.
+        if ($task->getTargetFile() instanceof ProcessedFile && $this->checkForExistingTargetFile($task)) {
             return;
         }
         $this->processTaskWithLocalFile($task, null);
@@ -119,18 +163,19 @@ class LocalImageProcessor implements ProcessorInterface, LoggerAwareInterface
     protected function checkForExistingTargetFile(TaskInterface $task): bool
     {
         // the storage of the processed file, not of the original file!
-        $storage = $task->getTargetFile()->getStorage();
-        $processingFolder = $storage->getProcessingFolder($task->getSourceFile());
+        $targetFile = $this->getConcreteTargetFile($task);
+        $storage = $targetFile->getStorage();
+        $processingFolder = $storage->getProcessingFolder($this->getConcreteSourceFile($task));
 
         // explicitly check for the raw filename here, as we check for files that existed before we even started
         // processing, i.e. that were processed earlier
         if ($processingFolder->hasFile($task->getTargetFileName())) {
             // When the processed file already exists set it as processed file
-            $task->getTargetFile()->setName($task->getTargetFileName());
+            $targetFile->setName($task->getTargetFileName());
 
             // If the processed file is stored on a remote server, we must fetch a local copy of the file, as we
             // have no API for fetching file metadata from a remote file.
-            $localProcessedFile = $storage->getFileForLocalProcessing($task->getTargetFile(), false);
+            $localProcessedFile = $storage->getFileForLocalProcessing($targetFile, false);
             $task->setExecuted(true);
             $imageInformation = GeneralUtility::makeInstance(ImageInfo::class, $localProcessedFile);
             $properties = [
@@ -139,7 +184,7 @@ class LocalImageProcessor implements ProcessorInterface, LoggerAwareInterface
                 'size' => $imageInformation->getSize(),
                 'checksum' => $task->getConfigurationChecksum(),
             ];
-            $task->getTargetFile()->updateProperties($properties);
+            $targetFile->updateProperties($properties);
 
             return true;
         }
@@ -168,7 +213,16 @@ class LocalImageProcessor implements ProcessorInterface, LoggerAwareInterface
      */
     protected function processCropScaleMask(TaskInterface $task): ?array
     {
-        return $this->processCropScaleMaskWithLocalFile($task, $task->getSourceFile()->getForLocalProcessing(false));
+        $sourceFile = $task->getSourceFile();
+        if ($sourceFile instanceof File) {
+            return $this->processCropScaleMaskWithLocalFile($task, $sourceFile->getForLocalProcessing(false));
+        }
+        $temporaryLocalFile = $this->createTemporaryLocalCopy($sourceFile);
+        try {
+            return $this->processCropScaleMaskWithLocalFile($task, $temporaryLocalFile);
+        } finally {
+            @unlink($temporaryLocalFile);
+        }
     }
 
     /**
@@ -202,41 +256,46 @@ class LocalImageProcessor implements ProcessorInterface, LoggerAwareInterface
         } else {
             $temporaryFileName = $this->getFilenameForImageCropScaleMask($task);
             $maskImage = $configuration['maskImages']['maskImage'] ?? null;
-            $maskBackgroundImage = $configuration['maskImages']['backgroundImage'];
-            if ($maskImage instanceof FileInterface && $maskBackgroundImage instanceof FileInterface) {
-                // This converts the original image to a temporary PNG file during all steps of the masking process
-                $tempFileInfo = $imageOperations->resize(
-                    $originalFileName,
-                    'png',
-                    $configuration['width'] ?? '',
-                    $configuration['height'] ?? '',
-                    $configuration['additionalParameters'],
-                    $configuration
-                );
-                if ($tempFileInfo !== null) {
-                    // Scaling
-                    $command = '-geometry ' . $tempFileInfo->getWidth() . 'x' . $tempFileInfo->getHeight() . '!';
-                    $imageOperations->mask(
-                        $tempFileInfo->getRealPath(),
-                        $temporaryFileName,
-                        $maskImage->getForLocalProcessing(),
-                        $maskBackgroundImage->getForLocalProcessing(),
-                        $command,
+            $maskBackgroundImage = $configuration['maskImages']['backgroundImage'] ?? null;
+            if ($this->isMaskImage($maskImage) && $this->isMaskImage($maskBackgroundImage)) {
+                $temporaryMaskFiles = [];
+                try {
+                    // This converts the original image to a temporary PNG file during all steps of the masking process
+                    $tempFileInfo = $imageOperations->resize(
+                        $originalFileName,
+                        'png',
+                        $configuration['width'] ?? '',
+                        $configuration['height'] ?? '',
+                        $configuration['additionalParameters'],
                         $configuration
                     );
-                    $maskBottomImage = $configuration['maskImages']['maskBottomImage'] ?? null;
-                    $maskBottomImageMask = $configuration['maskImages']['maskBottomImageMask'] ?? null;
-                    if ($maskBottomImage instanceof FileInterface && $maskBottomImageMask instanceof FileInterface) {
-                        // Uses the temporary PNG file from the previous step and applies another mask
+                    if ($tempFileInfo !== null) {
+                        // Scaling
+                        $command = '-geometry ' . $tempFileInfo->getWidth() . 'x' . $tempFileInfo->getHeight() . '!';
                         $imageOperations->mask(
+                            $tempFileInfo->getRealPath(),
                             $temporaryFileName,
-                            $temporaryFileName,
-                            $maskBottomImage->getForLocalProcessing(),
-                            $maskBottomImageMask->getForLocalProcessing(),
+                            $this->getLocalPathOfMaskImage($maskImage, $temporaryMaskFiles),
+                            $this->getLocalPathOfMaskImage($maskBackgroundImage, $temporaryMaskFiles),
                             $command,
                             $configuration
                         );
+                        $maskBottomImage = $configuration['maskImages']['maskBottomImage'] ?? null;
+                        $maskBottomImageMask = $configuration['maskImages']['maskBottomImageMask'] ?? null;
+                        if ($this->isMaskImage($maskBottomImage) && $this->isMaskImage($maskBottomImageMask)) {
+                            // Uses the temporary PNG file from the previous step and applies another mask
+                            $imageOperations->mask(
+                                $temporaryFileName,
+                                $temporaryFileName,
+                                $this->getLocalPathOfMaskImage($maskBottomImage, $temporaryMaskFiles),
+                                $this->getLocalPathOfMaskImage($maskBottomImageMask, $temporaryMaskFiles),
+                                $command,
+                                $configuration
+                            );
+                        }
                     }
+                } finally {
+                    array_map(unlink(...), $temporaryMaskFiles);
                 }
                 $result = $tempFileInfo;
             }
@@ -276,8 +335,9 @@ class LocalImageProcessor implements ProcessorInterface, LoggerAwareInterface
         // Note: This should only happen if no image has been generated ($result === null).
         if ($result === null && ($configuration['noScale'] ?? false)) {
             $configuration = $task->getConfiguration();
-            $localProcessedFile = $task->getSourceFile()->getForLocalProcessing(false);
-            $imageDimensions = $imageOperations->getImageDimensions($localProcessedFile, true);
+            // $originalFileName is always this method's own source-file resolution
+            // (see processCropScaleMask()), still valid and not yet cleaned up here.
+            $imageDimensions = $imageOperations->getImageDimensions($originalFileName, true);
             $imageScaleInfo = ImageProcessingInstructions::fromCropScaleValues(
                 $imageDimensions->getWidth(),
                 $imageDimensions->getHeight(),
@@ -295,6 +355,26 @@ class LocalImageProcessor implements ProcessorInterface, LoggerAwareInterface
     }
 
     /**
+     * A mask is a FAL file, or a processed resource outside the File Abstraction Layer
+     * (e.g. a scaled EXT:/PKG: system resource).
+     */
+    protected function isMaskImage(mixed $maskImage): bool
+    {
+        return $maskImage instanceof FileInterface || $maskImage instanceof ProcessedResourceInterface;
+    }
+
+    /**
+     * @param string[] $temporaryFiles receives the path when a temporary copy had to be created
+     */
+    protected function getLocalPathOfMaskImage(FileInterface|ProcessedResourceInterface $maskImage, array &$temporaryFiles): string
+    {
+        if ($maskImage instanceof FileInterface) {
+            return $maskImage->getForLocalProcessing();
+        }
+        return $temporaryFiles[] = $this->createTemporaryLocalCopy($maskImage);
+    }
+
+    /**
      * Returns the filename for a cropped/scaled/masked file which will be put in typo3temp for the time being.
      */
     protected function getFilenameForImageCropScaleMask(TaskInterface $task): string
@@ -309,9 +389,10 @@ class LocalImageProcessor implements ProcessorInterface, LoggerAwareInterface
      */
     protected function generateProcessedFileNameWithoutExtension(TaskInterface $task): string
     {
+        $sourceFile = $task->getSourceFile();
         return implode('_', [
-            $task->getSourceFile()->getNameWithoutExtension(),
-            $task->getSourceFile()->getUid(),
+            $sourceFile->getNameWithoutExtension(),
+            $sourceFile instanceof File ? $sourceFile->getUid() : md5($sourceFile->getResourceIdentifier()),
             $task->getConfigurationChecksum(),
         ]);
     }
@@ -338,7 +419,7 @@ class LocalImageProcessor implements ProcessorInterface, LoggerAwareInterface
      */
     protected function processPreview(TaskInterface $task): ?array
     {
-        $sourceFile = $task->getSourceFile();
+        $sourceFile = $this->getConcreteSourceFile($task);
         $task->sanitizeConfiguration();
         $configuration = $task->getConfiguration();
 

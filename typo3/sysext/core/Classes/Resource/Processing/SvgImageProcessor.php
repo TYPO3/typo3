@@ -26,6 +26,8 @@ use TYPO3\CMS\Core\Imaging\ImageProcessingInstructions;
 use TYPO3\CMS\Core\Imaging\Svg\SvgDocumentFactory;
 use TYPO3\CMS\Core\Imaging\Svg\SvgDocumentService;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderReadPermissionsException;
+use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -35,7 +37,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * into FAL again.
  */
 #[Autoconfigure(public: true)]
-readonly class SvgImageProcessor implements ProcessorInterface
+readonly class SvgImageProcessor implements ResourceAwareProcessorInterface
 {
     private const int DEFAULT_SVG_DIMENSION = 64;
 
@@ -49,6 +51,29 @@ readonly class SvgImageProcessor implements ProcessorInterface
         return $task->getType() === 'Image'
             && in_array($task->getName(), ['Preview', 'CropScaleMask'], true)
             && $task->getTargetFileExtension() === 'svg';
+    }
+
+    /**
+     * Some call sites (checkForExistingTargetFile()) are genuinely FAL-only - there is
+     * no non-FAL equivalent of a ResourceStorage processing folder. Narrow back to a
+     * concrete File/ProcessedFile there, rather than at every such call site.
+     */
+    private function getConcreteSourceFile(TaskInterface $task): File
+    {
+        $sourceFile = $task->getSourceFile();
+        if (!$sourceFile instanceof File) {
+            throw new \InvalidArgumentException(sprintf('%s can only process a FAL File.', self::class), 1789624492);
+        }
+        return $sourceFile;
+    }
+
+    private function getConcreteTargetFile(TaskInterface $task): ProcessedFile
+    {
+        $targetFile = $task->getTargetFile();
+        if (!$targetFile instanceof ProcessedFile) {
+            throw new \InvalidArgumentException(sprintf('%s can only process a FAL ProcessedFile.', self::class), 1789624493);
+        }
+        return $targetFile;
     }
 
     /**
@@ -73,21 +98,33 @@ readonly class SvgImageProcessor implements ProcessorInterface
             );
         }
 
+        $sourceFile = $task->getSourceFile();
         $task->getTargetFile()->updateProperties(
             [
                 'width' => $imageDimension->getWidth(),
                 'height' => $imageDimension->getHeight(),
-                'size' => $task->getSourceFile()->getSize(),
+                'size' => $sourceFile instanceof File ? $sourceFile->getSize() : strlen($sourceFile->getContents()),
                 'checksum' => $task->getConfigurationChecksum(),
             ]
         );
 
-        if ($this->checkForExistingTargetFile($task)) {
+        // A non-FAL target is only ever handed to processTask() once
+        // FileProcessingService already confirmed it needs processing, so unlike
+        // checkForExistingTargetFile() below, there is no reuse check to repeat here.
+        if ($task->getTargetFile() instanceof ProcessedFile && $this->checkForExistingTargetFile($task)) {
             return;
         }
 
         $cropArea = $processingInstructions->cropArea;
-        if ($cropArea === null || $cropArea->makeRelativeBasedOnFile($task->getSourceFile())->isEmpty()) {
+        if ($cropArea === null) {
+            $task->setExecuted(true);
+            $task->getTargetFile()->setUsesOriginalFile();
+            return;
+        }
+        $relativeCropArea = $sourceFile instanceof File
+            ? $cropArea->makeRelativeBasedOnFile($sourceFile)
+            : $cropArea->makeRelativeBasedOnDimension($sourceFile->getImageDimension());
+        if ($relativeCropArea->isEmpty()) {
             $task->setExecuted(true);
             $task->getTargetFile()->setUsesOriginalFile();
             return;
@@ -104,7 +141,15 @@ readonly class SvgImageProcessor implements ProcessorInterface
     protected function applyCropping(TaskInterface $task, Area $cropArea, ImageDimension $imageDimension): void
     {
         try {
-            $document = $this->svgDocumentFactory->fromFile($task->getSourceFile());
+            $sourceFile = $task->getSourceFile();
+            // Keep passing the File object itself for the FAL case unchanged - it reads
+            // through the storage driver, which is not necessarily the same as a locally
+            // cached copy for a remote storage. fromFile() reads a plain local path for
+            // that case; a non-FAL source has none to give it, but does not need one
+            // either - fromString() is exactly what fromFile() delegates to internally.
+            $document = $sourceFile instanceof File
+                ? $this->svgDocumentFactory->fromFile($sourceFile)
+                : $this->svgDocumentFactory->fromString($sourceFile->getContents());
             $processedSvg = $this->svgDocumentService->cropScale($document, $cropArea, $imageDimension);
         } catch (InvalidSvgException) {
             // Source SVG could not be parsed - fall back to the unprocessed original.
@@ -141,18 +186,19 @@ readonly class SvgImageProcessor implements ProcessorInterface
     protected function checkForExistingTargetFile(TaskInterface $task): bool
     {
         // the storage of the processed file, not of the original file!
-        $storage = $task->getTargetFile()->getStorage();
-        $processingFolder = $storage->getProcessingFolder($task->getSourceFile());
+        $targetFile = $this->getConcreteTargetFile($task);
+        $storage = $targetFile->getStorage();
+        $processingFolder = $storage->getProcessingFolder($this->getConcreteSourceFile($task));
 
         // explicitly check for the raw filename here, as we check for files that existed before we even started
         // processing, i.e. that were processed earlier
         if ($processingFolder->hasFile($task->getTargetFileName())) {
             // When the processed file already exists set it as processed file
-            $task->getTargetFile()->setName($task->getTargetFileName());
+            $targetFile->setName($task->getTargetFileName());
 
             // If the processed file is stored on a remote server, we must fetch a local copy of the file, as we
             // have no API for fetching file metadata from a remote file.
-            $localProcessedFile = $storage->getFileForLocalProcessing($task->getTargetFile(), false);
+            $localProcessedFile = $storage->getFileForLocalProcessing($targetFile, false);
             $task->setExecuted(true);
             $imageInformation = GeneralUtility::makeInstance(ImageInfo::class, $localProcessedFile);
             $properties = [
@@ -161,7 +207,7 @@ readonly class SvgImageProcessor implements ProcessorInterface
                 'size' => $imageInformation->getSize(),
                 'checksum' => $task->getConfigurationChecksum(),
             ];
-            $task->getTargetFile()->updateProperties($properties);
+            $targetFile->updateProperties($properties);
 
             return true;
         }
@@ -183,9 +229,10 @@ readonly class SvgImageProcessor implements ProcessorInterface
      */
     protected function generateProcessedFileNameWithoutExtension(TaskInterface $task): string
     {
+        $sourceFile = $task->getSourceFile();
         return implode('_', [
-            $task->getSourceFile()->getNameWithoutExtension(),
-            $task->getSourceFile()->getUid(),
+            $sourceFile->getNameWithoutExtension(),
+            $sourceFile instanceof File ? $sourceFile->getUid() : md5($sourceFile->getResourceIdentifier()),
             $task->getConfigurationChecksum(),
         ]);
     }

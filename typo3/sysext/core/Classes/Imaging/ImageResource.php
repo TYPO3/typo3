@@ -17,9 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Imaging;
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
+use TYPO3\CMS\Core\Resource\ProcessedResourceInterface;
+use TYPO3\CMS\Core\SystemResource\Exception\SystemResourceException;
+use TYPO3\CMS\Core\SystemResource\Type\SystemResourceInterface;
 use TYPO3\CMS\Core\Type\File\ImageInfo;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
@@ -36,8 +41,8 @@ class ImageResource
         protected string $extension,
         protected string $fullPath,
         protected ?string $publicUrl = null,
-        protected ?File $originalFile = null,
-        protected ?ProcessedFile $processedFile = null
+        protected File|SystemResourceInterface|null $originalFile = null,
+        protected ?ProcessedResourceInterface $processedFile = null
     ) {}
 
     public static function createFromImageInfo(ImageInfo $imageInfo): self
@@ -51,17 +56,57 @@ class ImageResource
         );
     }
 
-    public static function createFromProcessedFile(ProcessedFile $processedFile): self
+    public static function createFromProcessedFile(ProcessedResourceInterface $processedFile): self
     {
+        $imageDimension = self::getImageDimensionOfProcessedResource($processedFile);
+        if ($processedFile instanceof ProcessedFile) {
+            return new self(
+                width: $imageDimension->getWidth(),
+                height: $imageDimension->getHeight(),
+                extension: $processedFile->getExtension(),
+                fullPath: $processedFile->getForLocalProcessing(false),
+                publicUrl: $processedFile->getPublicUrl(),
+                originalFile: $processedFile->getOriginalFile(),
+                processedFile: $processedFile
+            );
+        }
         return new self(
-            width: (int)$processedFile->getProperty('width'),
-            height: (int)$processedFile->getProperty('height'),
+            width: $imageDimension->getWidth(),
+            height: $imageDimension->getHeight(),
             extension: $processedFile->getExtension(),
-            fullPath: $processedFile->getForLocalProcessing(false),
+            fullPath: self::createLocalCopyOfProcessedResource($processedFile),
             publicUrl: $processedFile->getPublicUrl(),
-            originalFile: $processedFile->getOriginalFile(),
-            processedFile: $processedFile
+            originalFile: $processedFile->getOriginalResource(),
+            processedFile: $processedFile,
         );
+    }
+
+    /**
+     * A processing result without detectable dimensions (e.g. a non-image) keeps
+     * being reported as 0x0, it is not an error at this point.
+     */
+    private static function getImageDimensionOfProcessedResource(ProcessedResourceInterface $processedResource): ImageDimension
+    {
+        try {
+            return $processedResource->getImageDimension();
+        } catch (SystemResourceException) {
+            return new ImageDimension(0, 0);
+        }
+    }
+
+    /**
+     * A system resource has no local path of its own, but GIFBUILDER needs one to embed
+     * it as an IMAGE sub-object. The path must stay stable across requests, since
+     * GifBuilder folds it into its own output filename hash.
+     */
+    private static function createLocalCopyOfProcessedResource(ProcessedResourceInterface $processedResource): string
+    {
+        $path = Environment::getVarPath() . '/transient/system-resource-' . md5($processedResource->getResourceIdentifier() . $processedResource->getHash()) . '.' . $processedResource->getExtension();
+        if (!is_file($path)) {
+            GeneralUtility::mkdir_deep(dirname($path));
+            GeneralUtility::writeFile($path, $processedResource->getContents(), true);
+        }
+        return $path;
     }
 
     public function getWidth(): int
@@ -114,22 +159,22 @@ class ImageResource
         return clone($this, ['publicUrl' => $publicUrl]);
     }
 
-    public function getOriginalFile(): ?File
+    public function getOriginalFile(): File|SystemResourceInterface|null
     {
         return $this->originalFile;
     }
 
-    public function withOriginalFile(?File $originalFile): self
+    public function withOriginalFile(File|SystemResourceInterface|null $originalFile): self
     {
         return clone($this, ['originalFile' => $originalFile]);
     }
 
-    public function getProcessedFile(): ?ProcessedFile
+    public function getProcessedFile(): ?ProcessedResourceInterface
     {
         return $this->processedFile;
     }
 
-    public function withProcessedFile(?ProcessedFile $processedFile): self
+    public function withProcessedFile(?ProcessedResourceInterface $processedFile): self
     {
         return clone($this, ['processedFile' => $processedFile]);
     }
@@ -147,7 +192,7 @@ class ImageResource
             2 => $this->extension,
             3 => $this->fullPath,
             'origFile' => $this->publicUrl,
-            'origFile_mtime' => $this->originalFile?->getModificationTime(),
+            'origFile_mtime' => $this->originalFile instanceof File ? $this->originalFile->getModificationTime() : null,
         ];
     }
 }

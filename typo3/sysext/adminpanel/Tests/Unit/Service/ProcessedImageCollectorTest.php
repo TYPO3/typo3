@@ -21,10 +21,12 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Adminpanel\Service\ProcessedImageCollector;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Imaging\ImageDimension;
 use TYPO3\CMS\Core\Resource\Driver\DriverInterface;
 use TYPO3\CMS\Core\Resource\Event\AfterFileProcessingEvent;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
+use TYPO3\CMS\Core\SystemResource\Exception\CanNotDetectImageDimensionOfSystemResourceException;
 use TYPO3\CMS\Frontend\Authentication\FrontendBackendUserAuthentication;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -106,7 +108,7 @@ final class ProcessedImageCollectorTest extends UnitTestCase
     }
 
     #[Test]
-    public function missingFilesAreCollectedWithZeroSize(): void
+    public function missingFilesAreCollectedWithZeroSizeAndDimensions(): void
     {
         $this->setUpFrontendRequestWithOpenAdminPanel();
         $subject = new ProcessedImageCollector();
@@ -114,7 +116,7 @@ final class ProcessedImageCollectorTest extends UnitTestCase
         $processedFile = self::createStub(ProcessedFile::class);
         $processedFile->method('getPublicUrl')->willReturn('/fileadmin/_processed_/gone.png');
         $processedFile->method('getSize')->willThrowException(new \RuntimeException('File has been deleted.', 1329821480));
-        $processedFile->method('getProperty')->willReturn(0);
+        $processedFile->method('getImageDimension')->willThrowException(new CanNotDetectImageDimensionOfSystemResourceException('No dimensions.', 1789624489));
 
         $subject->collect(new AfterFileProcessingEvent(
             self::createStub(DriverInterface::class),
@@ -124,7 +126,10 @@ final class ProcessedImageCollectorTest extends UnitTestCase
             []
         ));
 
-        self::assertSame(0, $subject->getImages()['/fileadmin/_processed_/gone.png']['size']);
+        self::assertSame(
+            ['name' => '/fileadmin/_processed_/gone.png', 'size' => 0, 'width' => 0, 'height' => 0],
+            $subject->getImages()['/fileadmin/_processed_/gone.png']
+        );
     }
 
     private function setUpFrontendRequestWithOpenAdminPanel(): void
@@ -142,10 +147,7 @@ final class ProcessedImageCollectorTest extends UnitTestCase
         $processedFile = self::createStub(ProcessedFile::class);
         $processedFile->method('getPublicUrl')->willReturn($publicUrl);
         $processedFile->method('getSize')->willReturn($size);
-        $processedFile->method('getProperty')->willReturnMap([
-            ['width', $width],
-            ['height', $height],
-        ]);
+        $processedFile->method('getImageDimension')->willReturn(new ImageDimension($width, $height));
 
         return new AfterFileProcessingEvent(
             self::createStub(DriverInterface::class),

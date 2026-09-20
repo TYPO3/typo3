@@ -44,6 +44,9 @@ final class PreviewProcessing extends LocalImageProcessor implements ProcessorIn
             return false;
         }
         $sourceFile = $task->getSourceFile();
+        if (!$sourceFile instanceof File) {
+            return false;
+        }
         if (!$this->onlineMediaHelperRegistry->hasOnlineMediaHelper($sourceFile->getExtension())) {
             return false;
         }
@@ -55,7 +58,7 @@ final class PreviewProcessing extends LocalImageProcessor implements ProcessorIn
     {
         $this->processTaskWithLocalFile(
             $task,
-            $this->getPreviewImageFromOnlineMedia($task->getSourceFile())
+            $this->getPreviewImageFromOnlineMedia($this->getConcreteSourceFile($task))
         );
     }
 

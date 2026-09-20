@@ -31,6 +31,9 @@ use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
+use TYPO3\CMS\Core\SystemResource\Exception\SystemResourceException;
+use TYPO3\CMS\Core\SystemResource\SystemResourceFactory;
+use TYPO3\CMS\Core\SystemResource\Type\PackageResource;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
@@ -60,7 +63,7 @@ class ShowImageController
     protected $request;
 
     /**
-     * @var File|Folder|null
+     * @var File|Folder|PackageResource|null
      */
     protected $file;
 
@@ -114,6 +117,7 @@ EOF;
         protected readonly Features $features,
         private readonly FileNameValidator $fileNameValidator,
         private readonly ResourceFactory $resourceFactory,
+        private readonly SystemResourceFactory $systemResourceFactory,
     ) {}
 
     /**
@@ -154,10 +158,21 @@ EOF;
 
         if (MathUtility::canBeInterpretedAsInteger($fileUid)) {
             $this->file = $this->resourceFactory->getFileObject((int)$fileUid);
+        } elseif (str_starts_with($fileUid, 'EXT:') || str_starts_with($fileUid, 'PKG:')) {
+            try {
+                $resource = $this->systemResourceFactory->createPublicResource($fileUid);
+            } catch (SystemResourceException $e) {
+                throw new Exception('System resource can not be shown', 1791265002, $e);
+            }
+            if (!$resource instanceof PackageResource) {
+                throw new Exception('System resource can not be shown', 1791265003);
+            }
+            $this->file = $resource;
         } else {
             $this->file = $this->resourceFactory->retrieveFileOrFolderObject($fileUid);
         }
-        if (!($this->file instanceof FileInterface && $this->isFileValid($this->file))) {
+        // A public system resource has no storage to validate, it resolved as public already
+        if (!$this->file instanceof PackageResource && !($this->file instanceof FileInterface && $this->isFileValid($this->file))) {
             throw new Exception('File processing for local storage is denied', 1594043425);
         }
 
@@ -176,16 +191,17 @@ EOF;
     public function main()
     {
         $processedImage = $this->processImage();
+        $title = ($this->file instanceof FileInterface ? $this->file->getProperty('title') : null) ?: $this->title;
         $imageAttributes = [
             'src' => $processedImage->getPublicUrl() ?? '',
-            'alt' => $this->file->getProperty('alternative') ?: $this->title,
-            'title' => $this->file->getProperty('title') ?: $this->title,
+            'alt' => ($this->file instanceof FileInterface ? $this->file->getProperty('alternative') : null) ?: $this->title,
+            'title' => $title,
             'width' => (string)$processedImage->getProperty('width'),
             'height' => (string)$processedImage->getProperty('height'),
         ];
 
         $markerArray = [
-            '###TITLE###' => htmlspecialchars($this->file->getProperty('title') ?: $this->title),
+            '###TITLE###' => htmlspecialchars($title),
             '###IMAGE###' => sprintf('<img %s>', GeneralUtility::implodeAttributes($imageAttributes, true)),
             '###BODY###' => $this->bodyTag,
         ];
@@ -196,7 +212,7 @@ EOF;
     /**
      * Does the actual image processing
      *
-     * @return \TYPO3\CMS\Core\Resource\ProcessedFile
+     * @return \TYPO3\CMS\Core\Resource\ProcessedResourceInterface
      */
     protected function processImage()
     {

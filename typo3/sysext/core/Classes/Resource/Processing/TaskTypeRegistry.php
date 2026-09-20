@@ -15,7 +15,7 @@
 
 namespace TYPO3\CMS\Core\Resource\Processing;
 
-use TYPO3\CMS\Core\Resource\ProcessedFile;
+use TYPO3\CMS\Core\Resource\ProcessedResourceInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -44,7 +44,7 @@ class TaskTypeRegistry
     /**
      * @throws \RuntimeException
      */
-    public function getTaskForType(string $taskType, ProcessedFile $processedFile, array $processingConfiguration): TaskInterface
+    public function getTaskForType(string $taskType, ProcessedResourceInterface $processedFile, array $processingConfiguration): TaskInterface
     {
         $taskClass = $this->getClassForTaskType($taskType);
         if ($taskClass === null) {

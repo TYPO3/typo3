@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Imaging\ImageManipulation;
 
+use TYPO3\CMS\Core\Imaging\ImageDimension;
 use TYPO3\CMS\Core\Resource\FileInterface;
 
 class Area
@@ -134,12 +135,51 @@ class Area
     }
 
     /**
+     * Same as makeAbsoluteBasedOnFile(), for a source whose dimensions are already
+     * known rather than read from a FileInterface's cached width/height properties -
+     * for example a system resource outside the File Abstraction Layer, which has no
+     * such properties to read.
+     */
+    public function makeAbsoluteBasedOnDimension(ImageDimension $dimension): self
+    {
+        return new self(
+            $this->x * $dimension->getWidth(),
+            $this->y * $dimension->getHeight(),
+            $this->width * $dimension->getWidth(),
+            $this->height * $dimension->getHeight()
+        );
+    }
+
+    /**
      * @return Area
      */
     public function makeRelativeBasedOnFile(FileInterface $file)
     {
         $width = $file->getProperty('width');
         $height = $file->getProperty('height');
+
+        if (empty($width) || empty($height)) {
+            return self::createEmpty();
+        }
+
+        return new self(
+            $this->x / $width,
+            $this->y / $height,
+            $this->width / $width,
+            $this->height / $height
+        );
+    }
+
+    /**
+     * Same as makeRelativeBasedOnFile(), for a source whose dimensions are already
+     * known rather than read from a FileInterface's cached width/height properties -
+     * for example a system resource outside the File Abstraction Layer, which has no
+     * such properties to read.
+     */
+    public function makeRelativeBasedOnDimension(ImageDimension $dimension): self
+    {
+        $width = $dimension->getWidth();
+        $height = $dimension->getHeight();
 
         if (empty($width) || empty($height)) {
             return self::createEmpty();

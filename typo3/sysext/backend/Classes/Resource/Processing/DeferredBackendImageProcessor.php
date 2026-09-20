@@ -23,6 +23,8 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Imaging\Exception\ZeroImageDimensionException;
 use TYPO3\CMS\Core\Imaging\ImageDimension;
+use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ProcessedFileRepository;
 use TYPO3\CMS\Core\Resource\Processing\ProcessorInterface;
 use TYPO3\CMS\Core\Resource\Processing\TaskInterface;
@@ -35,16 +37,20 @@ class DeferredBackendImageProcessor implements ProcessorInterface
 {
     public function canProcessTask(TaskInterface $task): bool
     {
+        $sourceFile = $task->getSourceFile();
+        if (!$sourceFile instanceof File) {
+            return false;
+        }
         $context = GeneralUtility::makeInstance(Context::class);
         return ($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
             && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend()
             && $task->getType() === 'Image'
             && in_array($task->getName(), ['Preview', 'CropScaleMask'], true)
             && (!$context->hasAspect('fileProcessing') || $context->getPropertyFromAspect('fileProcessing', 'deferProcessing'))
-            && $task->getSourceFile()->getProperty('width') > 0
-            && $task->getSourceFile()->getProperty('height') > 0
+            && $sourceFile->getProperty('width') > 0
+            && $sourceFile->getProperty('height') > 0
             // Let the local image processor update the properties in case the target file exists already
-            && !$task->getSourceFile()->getStorage()->getProcessingFolder($task->getSourceFile())->hasFile($task->getTargetFileName());
+            && !$sourceFile->getStorage()->getProcessingFolder($sourceFile)->hasFile($task->getTargetFileName());
     }
 
     public function processTask(TaskInterface $task): void
@@ -56,6 +62,10 @@ class DeferredBackendImageProcessor implements ProcessorInterface
             $imageDimension = new ImageDimension(64, 64);
         }
         $processedFile = $task->getTargetFile();
+        if (!$processedFile instanceof ProcessedFile) {
+            // canProcessTask() already restricted this processor to FAL files.
+            throw new \InvalidArgumentException(sprintf('%s can only process a FAL ProcessedFile.', self::class), 1789624494);
+        }
         if (!$processedFile->isPersisted()) {
             // For now, we need to persist the processed file in the repository to be able to reference its uid
             // We could instead introduce a processing queue and persist the information there

@@ -19,8 +19,10 @@ namespace TYPO3\CMS\Core\Imaging;
 
 use TYPO3\CMS\Core\Imaging\Exception\ZeroImageDimensionException;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\Area;
+use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\Processing\TaskInterface;
+use TYPO3\CMS\Core\SystemResource\Exception\CanNotDetectImageDimensionOfSystemResourceException;
 
 /**
  * A DTO representing all information needed to process an image,
@@ -49,15 +51,27 @@ readonly class ImageProcessingInstructions
     public static function fromProcessingTask(TaskInterface $task): ImageProcessingInstructions
     {
         $config = self::getConfigurationForImageCropScaleMask($task);
-        $processedFile = $task->getTargetFile();
         $isCropped = false;
         if (($config['crop'] ?? null) instanceof Area) {
             $isCropped = true;
             $imageWidth = (int)round($config['crop']->getWidth());
             $imageHeight = (int)round($config['crop']->getHeight());
         } else {
-            $imageWidth = (int)$processedFile->getOriginalFile()->getProperty('width');
-            $imageHeight = (int)$processedFile->getOriginalFile()->getProperty('height');
+            $sourceFile = $task->getSourceFile();
+            if ($sourceFile instanceof File) {
+                // A non-image file (e.g. a PDF) has no image dimension, but its
+                // metadata still carries the width/height its preview is based on
+                $imageWidth = (int)$sourceFile->getProperty('width');
+                $imageHeight = (int)$sourceFile->getProperty('height');
+            } else {
+                try {
+                    $imageDimension = $sourceFile->getImageDimension();
+                } catch (CanNotDetectImageDimensionOfSystemResourceException) {
+                    throw new ZeroImageDimensionException('Width and height of the image must be greater than zero.', 1791265001);
+                }
+                $imageWidth = $imageDimension->getWidth();
+                $imageHeight = $imageDimension->getHeight();
+            }
         }
         if ($imageWidth <= 0 || $imageHeight <= 0) {
             throw new ZeroImageDimensionException('Width and height of the image must be greater than zero.', 1597310560);

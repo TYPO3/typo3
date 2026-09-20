@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Resource\Service;
 
 use TYPO3\CMS\Core\Resource\FileInterface;
+use TYPO3\CMS\Core\SystemResource\Type\SystemResourceInterface;
 
 /**
  * Resources can contain configurations: For example to define image dimensions or
@@ -48,6 +49,9 @@ class ConfigurationService
             }
             if ($value instanceof FileInterface) {
                 return $value->toArray();
+            }
+            if ($value instanceof SystemResourceInterface) {
+                return [$value->getResourceIdentifier(), $value->getHash()];
             }
             return $value;
         }, $configuration);

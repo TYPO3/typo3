@@ -17,8 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Resource;
 
+use TYPO3\CMS\Core\Imaging\ImageDimension;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\Area;
 use TYPO3\CMS\Core\Resource\Service\ConfigurationService;
+use TYPO3\CMS\Core\SystemResource\Exception\CanNotDetectImageDimensionOfSystemResourceException;
+use TYPO3\CMS\Core\SystemResource\Identifier\FalResourceIdentifier;
+use TYPO3\CMS\Core\SystemResource\Type\SystemResourceInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
@@ -43,7 +47,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  * database, to indicate that no processing is required. With such files, the identifier and name fields in the
  * database are empty to show this.
  */
-class ProcessedFile extends AbstractFile
+class ProcessedFile extends AbstractFile implements ProcessedResourceInterface
 {
     /*********************************************
      * FILE PROCESSING CONTEXTS
@@ -257,6 +261,11 @@ class ProcessedFile extends AbstractFile
     public function getOriginalFile(): File
     {
         return $this->originalFile;
+    }
+
+    public function getOriginalResource(): SystemResourceInterface
+    {
+        return $this->getOriginalFile();
     }
 
     /**
@@ -526,5 +535,41 @@ class ProcessedFile extends AbstractFile
             return $this->getOriginalFile()->getPublicUrl();
         }
         return $this->getStorage()->getPublicUrl($this);
+    }
+
+    /***********************************
+     * System Resources implementation *
+     ***********************************/
+    public function getHash(): string
+    {
+        return $this->getSha1();
+    }
+
+    public function getResourceIdentifier(): string
+    {
+        return (string)(new FalResourceIdentifier(
+            (string)$this->getStorage()->getUid(),
+            $this->getIdentifier(),
+            sprintf('ProcessedFile: uid: %d, identifier: %s', $this->getUid(), $this->getIdentifier()),
+        ));
+    }
+
+    public function __toString(): string
+    {
+        return $this->getResourceIdentifier();
+    }
+
+    public function getImageDimension(): ImageDimension
+    {
+        if (!$this->isImage()) {
+            throw new CanNotDetectImageDimensionOfSystemResourceException(sprintf('Cannot determine image dimensions for processed file "%s". File is not an image.', $this->getResourceIdentifier()), 1789624488);
+        }
+        $width = (int)$this->getProperty('width');
+        $height = (int)$this->getProperty('height');
+        if ($width === 0 || $height === 0) {
+            throw new CanNotDetectImageDimensionOfSystemResourceException(sprintf('Cannot determine image dimensions for processed file "%s".', $this->getResourceIdentifier()), 1789624489);
+        }
+
+        return new ImageDimension($width, $height);
     }
 }

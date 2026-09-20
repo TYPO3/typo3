@@ -18,13 +18,17 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Fluid\ViewHelpers;
 
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Imaging\ImageDimension;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\FileReference;
+use TYPO3\CMS\Core\Resource\ImageSourceResolver;
+use TYPO3\CMS\Core\Resource\ProcessableFileInterface;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
-use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\SystemResource\Exception\SystemResourceException;
+use TYPO3\CMS\Core\SystemResource\Type\SystemResourceInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
@@ -35,10 +39,10 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\InvalidArgumentValueException;
  * ViewHelper to resize, crop or convert a given image (if required) and render
  * the corresponding HTML `<img>` tag showing the processed image.
  *
- * Note that image operations (cropping, scaling, converting) on
- * non-FAL files (i.e. extension resources) may be changed in future TYPO3
- * versions, since those operations are coupled with FAL metadata. Each
- * non-FAL image operation creates a "fake" FAL record, which may lead to problems.
+ * Works for images within FAL storages, as well as system resources shipped
+ * with an extension and referenced via an EXT:/PKG: identifier. A system
+ * resource has none of FAL's stored metadata (crop, alt, title, ...), so it
+ * only ever uses this ViewHelper's own arguments for those.
  *
  * External URLs are not processed.
  *
@@ -57,7 +61,7 @@ final class ImageViewHelper extends AbstractTagBasedViewHelper
     protected $tagName = 'img';
 
     public function __construct(
-        private readonly ResourceFactory $resourceFactory
+        private readonly ImageSourceResolver $imageSourceResolver
     ) {
         parent::__construct();
     }
@@ -67,7 +71,7 @@ final class ImageViewHelper extends AbstractTagBasedViewHelper
         parent::initializeArguments();
         $this->registerArgument('src', 'string', 'a path to a file, a combined FAL identifier or an uid (int). If $treatIdAsReference is set, the integer is considered the uid of the sys_file_reference record. If you already got a FAL object, consider using the $image parameter instead', false, '');
         $this->registerArgument('treatIdAsReference', 'bool', 'given src argument is a sys_file_reference record', false, false);
-        $this->registerArgument('image', 'object', 'a FAL object (\\TYPO3\\CMS\\Core\\Resource\\File or \\TYPO3\\CMS\\Core\\Resource\\FileReference)');
+        $this->registerArgument('image', 'object', 'a FAL object (\\TYPO3\\CMS\\Core\\Resource\\File or \\TYPO3\\CMS\\Core\\Resource\\FileReference) or a public system resource, as returned by <f:resource>');
         $this->registerArgument('alt', 'string', 'Alternative text for the image. Falls back to the "alternative" metadata property of the image, an empty string excludes the image from screen readers.');
         $this->registerArgument('crop', 'string|bool|array', 'overrule cropping of image (setting to FALSE disables the cropping set in FileReference)');
         $this->registerArgument('cropVariant', 'string', 'select a cropping variant, in case multiple croppings have been specified or stored in FileReference', false, 'default');
@@ -106,12 +110,15 @@ final class ImageViewHelper extends AbstractTagBasedViewHelper
         }
 
         try {
-            $image = $this->resourceFactory->resolveFileObject($this->arguments['image'] ?? $src, (bool)$this->arguments['treatIdAsReference']);
+            $image = $this->imageSourceResolver->resolve($this->arguments['image'] ?? $src, (bool)$this->arguments['treatIdAsReference']);
             if ($this->isUnavailable($image)) {
                 return '';
             }
+            // A resource outside the File Abstraction Layer has none of FAL's stored
+            // metadata (crop, alt, title) - there is nothing to fall back to, the
+            // ViewHelper's own arguments are the only source for those.
             $cropString = $this->arguments['crop'];
-            if ($cropString === null && $image->hasProperty('crop') && $image->getProperty('crop')) {
+            if ($cropString === null && $image instanceof FileInterface && $image->hasProperty('crop') && $image->getProperty('crop')) {
                 $cropString = $image->getProperty('crop');
             }
 
@@ -130,7 +137,11 @@ final class ImageViewHelper extends AbstractTagBasedViewHelper
                 'minHeight' => $this->arguments['minHeight'],
                 'maxWidth' => $this->arguments['maxWidth'],
                 'maxHeight' => $this->arguments['maxHeight'],
-                'crop' => $cropArea->isEmpty() ? null : $cropArea->makeAbsoluteBasedOnFile($image),
+                'crop' => $cropArea->isEmpty() ? null : (
+                    $image instanceof FileInterface
+                        ? $cropArea->makeAbsoluteBasedOnFile($image)
+                        : $cropArea->makeAbsoluteBasedOnDimension($this->getSystemResourceImageDimension($image))
+                ),
             ];
             if (!empty($this->arguments['fileExtension'] ?? '')) {
                 $processingInstructions['fileExtension'] = $this->arguments['fileExtension'];
@@ -157,7 +168,10 @@ final class ImageViewHelper extends AbstractTagBasedViewHelper
             if (!$this->tag->hasAttribute('data-focus-area')) {
                 $focusArea = $cropVariantCollection->getFocusArea($cropVariant);
                 if (!$focusArea->isEmpty()) {
-                    $this->tag->addAttribute('data-focus-area', (string)$focusArea->makeAbsoluteBasedOnFile($processedImage));
+                    $absoluteFocusArea = $processedImage instanceof ProcessedFile
+                        ? $focusArea->makeAbsoluteBasedOnFile($processedImage)
+                        : $focusArea->makeAbsoluteBasedOnDimension($processedImage->getImageDimension());
+                    $this->tag->addAttribute('data-focus-area', (string)$absoluteFocusArea);
                 }
             }
             $this->tag->addAttribute('src', $imageSrc);
@@ -170,14 +184,14 @@ final class ImageViewHelper extends AbstractTagBasedViewHelper
                 $this->tag->addAttribute('alt', $this->arguments['alt']);
             } else {
                 // The alt-attribute is mandatory to have valid html-code, therefore use "alternative" property or empty
-                $this->tag->addAttribute('alt', $image->getProperty('alternative') ?? '');
+                $this->tag->addAttribute('alt', ($image instanceof FileInterface ? $image->getProperty('alternative') : null) ?? '');
             }
             // Only add title-attribute from image if not set in additional-arguments.
             // In case the "title" attribute is explicitly set to an empty string,
             // it will not fallback to an image-title.
             // This allows excluding it explicitly from screen readers, improving accessibility.
             if (!isset($this->additionalArguments['title'])) {
-                $title = trim((string)($image->hasProperty('title') ? $image->getProperty('title') : ''));
+                $title = trim((string)($image instanceof FileInterface && $image->hasProperty('title') ? $image->getProperty('title') : ''));
                 // The title-attribute is not mandatory, therefore use "title" property or omit fully
                 if ($title !== '') {
                     $this->tag->addAttribute('title', $title);
@@ -192,6 +206,9 @@ final class ImageViewHelper extends AbstractTagBasedViewHelper
         } catch (\InvalidArgumentException $e) {
             // thrown if file storage does not exist
             throw new Exception($this->getExceptionMessage($e->getMessage()), 1509741914, $e);
+        } catch (SystemResourceException $e) {
+            // thrown if an EXT:/PKG: system resource does not exist or is not public
+            throw new Exception($this->getExceptionMessage($e->getMessage()), 1789915801, $e);
         }
         return $this->tag->render();
     }
@@ -199,15 +216,31 @@ final class ImageViewHelper extends AbstractTagBasedViewHelper
     /**
      * A file that has been flagged as missing by the file indexer, that has been deleted, or that
      * resides in an offline storage can not be processed and has no public URL. Rendering an "img"
-     * tag for it would result in an empty "src" attribute, so nothing is rendered instead.
+     * tag for it would result in an empty "src" attribute, so nothing is rendered instead. A system
+     * resource outside the File Abstraction Layer has none of these states - if it resolved at all,
+     * it is available.
      */
-    private function isUnavailable(FileInterface $image): bool
+    private function isUnavailable(ProcessableFileInterface $image): bool
     {
         $file = $image instanceof FileReference ? $image->getOriginalFile() : $image;
         if (!$file instanceof File) {
             return false;
         }
         return $file->isMissing() || $file->isDeleted() || !$file->getStorage()->isOnline();
+    }
+
+    /**
+     * $image is never a FileInterface at this point (that branch is handled
+     * separately) - the only other concrete ProcessableFileInterface implementor is a
+     * system resource, which is also a SystemResourceInterface and therefore has real
+     * dimensions to report.
+     */
+    private function getSystemResourceImageDimension(ProcessableFileInterface $image): ImageDimension
+    {
+        if (!$image instanceof SystemResourceInterface) {
+            throw new \LogicException(sprintf('%s can only process a FAL File/FileReference or a system resource, %s given.', self::class, $image instanceof File || $image instanceof FileReference ? 'FAL file "' . $image->getCombinedIdentifier() . '"' : get_debug_type($image)), 1789915803);
+        }
+        return $image->getImageDimension();
     }
 
     private function getExceptionMessage(string $detailedMessage): string

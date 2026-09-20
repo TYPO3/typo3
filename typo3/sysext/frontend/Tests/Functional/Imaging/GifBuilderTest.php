@@ -34,6 +34,10 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class GifBuilderTest extends FunctionalTestCase
 {
+    protected array $testExtensionsToLoad = [
+        'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_system_resources',
+    ];
+
     private function setupFullTestEnvironment(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
@@ -305,6 +309,43 @@ final class GifBuilderTest extends FunctionalTestCase
                 'file.' => [
                     'align' => 'l,t',
                     'width' => 100,
+                ],
+            ],
+        ];
+
+        $gifBuilder = new GifBuilder();
+        $gifBuilder->start($conf, []);
+        $setup1 = $gifBuilder->setup;
+        $imageResource1 = $gifBuilder->gifBuild();
+
+        // Recreate a fresh GifBuilder instance, to catch inconsistencies in hashing for different instances
+        $gifBuilder = new GifBuilder();
+        $gifBuilder->start($conf, []);
+        $setup2 = $gifBuilder->setup;
+        $imageResource2 = $gifBuilder->gifBuild();
+
+        self::assertSame($setup1, $setup2, 'The Setup resulting from two equal configurations must be equal');
+        self::assertSame($imageResource1->getPublicUrl(), $imageResource2->getPublicUrl());
+    }
+
+    /**
+     * A system resource embedded as a GIFBUILDER IMAGE sub-object has no local path of
+     * its own to give GifBuilder - unlike overlayImagesHasStableHash() above, whose FAL
+     * fixture's own storage path is already stable, this exercises ImageResource's own
+     * materialization of one, which must be just as stable across separate instances or
+     * every request would produce a fresh, uncached GIFBUILDER canvas.
+     */
+    #[Test]
+    public function overlayingASystemResourceImageHasStableHash(): void
+    {
+        $conf = [
+            'XY' => '[10.w],[10.h]',
+            'format' => 'png',
+            '10' => 'IMAGE',
+            '10.' => [
+                'file' => 'EXT:test_system_resources/Resources/Public/Icons/Extension.svg',
+                'file.' => [
+                    'width' => 30,
                 ],
             ],
         ];

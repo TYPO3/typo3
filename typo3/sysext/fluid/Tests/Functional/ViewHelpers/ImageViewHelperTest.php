@@ -38,6 +38,10 @@ use TYPO3Fluid\Fluid\View\TemplateView;
 
 final class ImageViewHelperTest extends FunctionalTestCase
 {
+    protected array $testExtensionsToLoad = [
+        'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_system_resources',
+    ];
+
     protected array $pathsToProvideInTestInstance = [
         'typo3/sysext/fluid/Tests/Functional/Fixtures/ViewHelpers/ImageViewHelper/Folders/fileadmin/' => 'fileadmin/',
     ];
@@ -68,8 +72,13 @@ final class ImageViewHelperTest extends FunctionalTestCase
             ],
             [
                 '<f:image src="EXT:fluid/Resources/Private/Language/" />',
-                1509741911,
-                'Unable to render image tag: Tried to access a private resource file "EXT:fluid/Resources/Private/Language/" from fallback compatibility storage. This storage only handles public files.',
+                1789915801,
+                'Unable to render image tag: Resolved resource "PKG:typo3/cms-fluid:Resources/Private/Language/" is not a public resource. Given resource identifier: "EXT:fluid/Resources/Private/Language/"',
+            ],
+            [
+                '<f:image image="{f:resource(identifier: \'EXT:fluid/Resources/Private/Language/\')}" />',
+                1789915801,
+                'Unable to render image tag: Resolved resource "PKG:typo3/cms-fluid:Resources/Private/Language/" is not a public resource. Given resource identifier: "PKG:typo3/cms-fluid:Resources/Private/Language/"',
             ],
             [
                 '<f:image src="fileadmin/image.jpg" />',
@@ -117,8 +126,13 @@ final class ImageViewHelperTest extends FunctionalTestCase
             ],
             [
                 '<f:image src="EXT:fluid/Resources/Private/Language/" />',
-                1509741911,
-                'Unable to render image tag in "tt_content:123": Tried to access a private resource file "EXT:fluid/Resources/Private/Language/" from fallback compatibility storage. This storage only handles public files.',
+                1789915801,
+                'Unable to render image tag in "tt_content:123": Resolved resource "PKG:typo3/cms-fluid:Resources/Private/Language/" is not a public resource. Given resource identifier: "EXT:fluid/Resources/Private/Language/"',
+            ],
+            [
+                '<f:image image="{f:resource(identifier: \'EXT:fluid/Resources/Private/Language/\')}" />',
+                1789915801,
+                'Unable to render image tag in "tt_content:123": Resolved resource "PKG:typo3/cms-fluid:Resources/Private/Language/" is not a public resource. Given resource identifier: "PKG:typo3/cms-fluid:Resources/Private/Language/"',
             ],
             [
                 '<f:image src="fileadmin/image.jpg" />',
@@ -631,6 +645,30 @@ final class ImageViewHelperTest extends FunctionalTestCase
             '@^<img src="fileadmin/_processed_/5/3/csm_ImageViewHelperTest_.*\.png" width="202" height="152" alt="" />$@',
             new TemplateView($context)->render(),
         );
+    }
+
+    #[Test]
+    public function systemResourceUsedAsIsIsRenderedWithItsDimensions(): void
+    {
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:image src="EXT:test_system_resources/Resources/Public/Images/typo3-logo.png" />');
+        $result = new TemplateView($context)->render();
+
+        self::assertStringContainsString('width="238"', $result);
+        self::assertStringContainsString('height="100"', $result);
+    }
+
+    #[Test]
+    public function systemResourceObjectIsRenderedLikeItsIdentifier(): void
+    {
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:image src="EXT:fluid/Resources/Public/Icons/Extension.svg" width="16" fileExtension="png" />');
+        $expected = new TemplateView($context)->render();
+        self::assertStringContainsString('"/typo3temp/assets/images/system/', $expected);
+
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:image image="{f:resource(identifier: \'EXT:fluid/Resources/Public/Icons/Extension.svg\')}" width="16" fileExtension="png" />');
+        self::assertSame($expected, new TemplateView($context)->render());
     }
 
     #[Test]

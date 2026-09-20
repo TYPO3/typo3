@@ -19,10 +19,17 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Uri;
 
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Imaging\ImageDimension;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
+use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\FileInterface;
+use TYPO3\CMS\Core\Resource\FileReference;
+use TYPO3\CMS\Core\Resource\ImageSourceResolver;
+use TYPO3\CMS\Core\Resource\ProcessableFileInterface;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
-use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\SystemResource\Exception\SystemResourceException;
+use TYPO3\CMS\Core\SystemResource\Type\SystemResourceInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
@@ -34,25 +41,19 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\InvalidArgumentValueException;
  * ViewHelper to resize, crop or convert a given image (if required) and return
  * the URL to this processed file.
  *
- * This ViewHelper should only be used for images within FAL storages,
- * or where graphical operations shall be performed.
+ * This ViewHelper works for images within FAL storages, as well as system
+ * resources shipped with an extension and referenced via an EXT:/PKG: identifier.
+ * A system resource has none of FAL's stored metadata (crop, title, ...), so it
+ * only ever uses this ViewHelper's own arguments for that.
  *
- * Note that when the contents of a non-FAL image are changed,
- * an image may not show updated processed contents unless either the
- * FAL record is updated/removed, or the temporary processed images are
- * cleared.
- *
- * Also note that image operations (cropping, scaling, converting) on
- * non-FAL files may be changed in future TYPO3 versions, since those operations
- * are coupled with FAL metadata. Each non-FAL image operation creates a
- * "fake" FAL record, which may lead to problems.
- *
- * For extension resource files, use `<f:uri.resource>` instead.
+ * For an extension resource that should not go through image processing at all,
+ * use `<f:uri.resource>` instead.
  *
  * External URLs are not processed and just returned as is.
  *
  * ```
  *   <f:uri.image src="{variableWithFileadminLocation}" width="100c" />
+ *   <f:uri.image src="EXT:myext/Resources/Public/typo3_logo.png" width="100c" />
  *   <f:uri.image image="{imageObject}" maxWidth="400" maxHeight="400" fileExtension="webp" />
  * ```
  *
@@ -62,14 +63,14 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\InvalidArgumentValueException;
 final class ImageViewHelper extends AbstractViewHelper
 {
     public function __construct(
-        private readonly ResourceFactory $resourceFactory
+        private readonly ImageSourceResolver $imageSourceResolver
     ) {}
 
     public function initializeArguments(): void
     {
         $this->registerArgument('src', 'string', 'src', false, '');
         $this->registerArgument('treatIdAsReference', 'bool', 'given src argument is a sys_file_reference record', false, false);
-        $this->registerArgument('image', 'object', 'image');
+        $this->registerArgument('image', 'object', 'a FAL object (\\TYPO3\\CMS\\Core\\Resource\\File or \\TYPO3\\CMS\\Core\\Resource\\FileReference) or a public system resource, as returned by <f:resource>');
         $this->registerArgument('crop', 'string|bool|array', 'overrule cropping of image (setting to FALSE disables the cropping set in FileReference)');
         $this->registerArgument('cropVariant', 'string', 'select a cropping variant, in case multiple croppings have been specified or stored in FileReference', false, 'default');
         $this->registerArgument('fileExtension', 'string', 'Custom file extension to use');
@@ -108,9 +109,12 @@ final class ImageViewHelper extends AbstractViewHelper
             );
         }
         try {
-            $image = $this->resourceFactory->resolveFileObject($image ?? $src, $treatIdAsReference);
+            $image = $this->imageSourceResolver->resolve($image ?? $src, $treatIdAsReference);
 
-            if ($cropString === null && $image->hasProperty('crop') && $image->getProperty('crop')) {
+            // A resource outside the File Abstraction Layer has none of FAL's stored
+            // metadata (crop) - there is nothing to fall back to, the ViewHelper's own
+            // arguments are the only source for it.
+            if ($cropString === null && $image instanceof FileInterface && $image->hasProperty('crop') && $image->getProperty('crop')) {
                 $cropString = $image->getProperty('crop');
             }
 
@@ -129,7 +133,11 @@ final class ImageViewHelper extends AbstractViewHelper
                 'minHeight' => $this->arguments['minHeight'],
                 'maxWidth' => $this->arguments['maxWidth'],
                 'maxHeight' => $this->arguments['maxHeight'],
-                'crop' => $cropArea->isEmpty() ? null : $cropArea->makeAbsoluteBasedOnFile($image),
+                'crop' => $cropArea->isEmpty() ? null : (
+                    $image instanceof FileInterface
+                        ? $cropArea->makeAbsoluteBasedOnFile($image)
+                        : $cropArea->makeAbsoluteBasedOnDimension($this->getSystemResourceImageDimension($image))
+                ),
             ];
             if (!empty($this->arguments['fileExtension'])) {
                 $processingInstructions['fileExtension'] = $this->arguments['fileExtension'];
@@ -157,7 +165,24 @@ final class ImageViewHelper extends AbstractViewHelper
         } catch (\InvalidArgumentException $e) {
             // thrown if file storage does not exist
             throw new Exception(self::getExceptionMessage($e->getMessage(), $this->renderingContext), 1509741910, $e);
+        } catch (SystemResourceException $e) {
+            // thrown if an EXT:/PKG: system resource does not exist or is not public
+            throw new Exception(self::getExceptionMessage($e->getMessage(), $this->renderingContext), 1789915802, $e);
         }
+    }
+
+    /**
+     * $image is never a FileInterface at this point (that branch is handled
+     * separately) - the only other concrete ProcessableFileInterface implementor is a
+     * system resource, which is also a SystemResourceInterface and therefore has real
+     * dimensions to report.
+     */
+    private function getSystemResourceImageDimension(ProcessableFileInterface $image): ImageDimension
+    {
+        if (!$image instanceof SystemResourceInterface) {
+            throw new \LogicException(sprintf('%s can only process a FAL File/FileReference or a system resource, %s given.', self::class, $image instanceof File || $image instanceof FileReference ? 'FAL file "' . $image->getCombinedIdentifier() . '"' : get_debug_type($image)), 1789915804);
+        }
+        return $image->getImageDimension();
     }
 
     private static function getExceptionMessage(string $detailedMessage, RenderingContextInterface $renderingContext): string

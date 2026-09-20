@@ -100,7 +100,7 @@ final class UriPrefixRenderingTest extends FunctionalTestCase
             'none' => [
                 'none',
                 [
-                    'local' => '"{{CANDIDATE}}"',
+                    'local' => '"{{CANDIDATE}}\?\d+"',
                     'extension' => '"{{CANDIDATE}}\?\d+"',
                     'external' => '"{{CANDIDATE}}"',
                 ],
@@ -108,7 +108,7 @@ final class UriPrefixRenderingTest extends FunctionalTestCase
             'auto' => [
                 'auto',
                 [
-                    'local' => '"/{{CANDIDATE}}"',
+                    'local' => '"/{{CANDIDATE}}\?\d+"',
                     'extension' => '"/{{CANDIDATE}}\?\d+"',
                     'external' => '"{{CANDIDATE}}"',
                 ],
@@ -116,7 +116,7 @@ final class UriPrefixRenderingTest extends FunctionalTestCase
             'absolute-with-host' => [
                 'absolute-with-host',
                 [
-                    'local' => '"http://localhost/{{CANDIDATE}}"',
+                    'local' => '"http://localhost/{{CANDIDATE}}\?\d+"',
                     'extension' => '"http://localhost/{{CANDIDATE}}\?\d+"',
                     'external' => '"{{CANDIDATE}}"',
                 ],
@@ -124,7 +124,7 @@ final class UriPrefixRenderingTest extends FunctionalTestCase
             'absolute-without-host' => [
                 'absolute-without-host',
                 [
-                    'local' => '"/{{CANDIDATE}}"',
+                    'local' => '"/{{CANDIDATE}}\?\d+"',
                     'extension' => '"/{{CANDIDATE}}\?\d+"',
                     'external' => '"{{CANDIDATE}}"',
                 ],

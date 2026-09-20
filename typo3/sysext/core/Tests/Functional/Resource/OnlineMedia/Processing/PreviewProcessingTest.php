@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\YouTubeHelper;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Processing\PreviewProcessing;
 use TYPO3\CMS\Core\Resource\Processing\AbstractTask;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
+use TYPO3\CMS\Core\SystemResource\Type\SystemResourceInterface;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class PreviewProcessingTest extends FunctionalTestCase
@@ -88,5 +89,21 @@ final class PreviewProcessingTest extends FunctionalTestCase
         self::assertEquals($file, $afterVideoPreviewFetchedEvent->getFile());
         self::assertEquals($onlineMediaId, $afterVideoPreviewFetchedEvent->getOnlineMediaId());
         self::assertEquals($newPreviewImageFilename, $afterVideoPreviewFetchedEvent->getPreviewImageFilename());
+    }
+
+    #[Test]
+    public function taskOfANonFalResourceIsNotProcessed(): void
+    {
+        $onlineMediaHelperRegistry = self::createStub(OnlineMediaHelperRegistry::class);
+        $onlineMediaHelperRegistry->method('hasOnlineMediaHelper')->willReturn(true);
+        $subject = new PreviewProcessing($onlineMediaHelperRegistry, $this->get(EventDispatcherInterface::class));
+        $sourceResource = self::createStub(SystemResourceInterface::class);
+        $sourceResource->method('getExtension')->willReturn('youtube');
+        $taskStub = self::createStub(AbstractTask::class);
+        $taskStub->method('getSourceFile')->willReturn($sourceResource);
+        $taskStub->method('getType')->willReturn('Image');
+        $taskStub->method('getName')->willReturn('CropScaleMask');
+
+        self::assertFalse($subject->canProcessTask($taskStub));
     }
 }

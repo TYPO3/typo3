@@ -18,8 +18,9 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Resource\Processing;
 
 use TYPO3\CMS\Core\Resource;
-use TYPO3\CMS\Core\Resource\ProcessedFile;
+use TYPO3\CMS\Core\Resource\ProcessedResourceInterface;
 use TYPO3\CMS\Core\Resource\Service\ConfigurationService;
+use TYPO3\CMS\Core\SystemResource\Type\SystemResourceInterface;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
@@ -27,27 +28,39 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 abstract class AbstractTask implements TaskInterface
 {
-    protected Resource\File $sourceFile;
+    protected SystemResourceInterface $sourceFile;
     protected bool $executed = false;
     protected bool $successful;
 
     public function __construct(
-        protected ProcessedFile $targetFile,
+        protected ProcessedResourceInterface $targetFile,
         protected array $configuration
     ) {
-        $this->sourceFile = $targetFile->getOriginalFile();
+        $this->sourceFile = $targetFile->getOriginalResource();
     }
 
     /**
      * Sets parameters needed in the checksum. Can be overridden to add additional parameters to the checksum.
      * This should include all parameters that could possibly vary between different task instances, e.g. the
      * TYPO3 image configuration in TYPO3_CONF_VARS[GFX] for graphic processing tasks.
+     *
+     * A FAL File is keyed off its sys_file uid and modification time; a system resource
+     * has neither, so it is keyed off its own identifier and content hash instead.
      */
     protected function getChecksumData(): array
     {
+        $sourceFile = $this->getSourceFile();
+        if ($sourceFile instanceof Resource\File) {
+            return [
+                $sourceFile->getUid(),
+                $this->getType() . '.' . $this->getName() . $sourceFile->getModificationTime(),
+                new ConfigurationService()->serialize($this->configuration),
+            ];
+        }
         return [
-            $this->getSourceFile()->getUid(),
-            $this->getType() . '.' . $this->getName() . $this->getSourceFile()->getModificationTime(),
+            $sourceFile->getResourceIdentifier(),
+            $sourceFile->getHash(),
+            $this->getType() . '.' . $this->getName(),
             new ConfigurationService()->serialize($this->configuration),
         ];
     }
@@ -89,12 +102,12 @@ abstract class AbstractTask implements TaskInterface
      */
     abstract public function getType(): string;
 
-    public function getTargetFile(): Resource\ProcessedFile
+    public function getTargetFile(): ProcessedResourceInterface
     {
         return $this->targetFile;
     }
 
-    public function getSourceFile(): Resource\File
+    public function getSourceFile(): SystemResourceInterface
     {
         return $this->sourceFile;
     }

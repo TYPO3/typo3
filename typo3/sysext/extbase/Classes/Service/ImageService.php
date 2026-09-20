@@ -18,7 +18,9 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Service;
 
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileInterface;
+use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\ProcessableFileInterface;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -39,7 +41,11 @@ readonly class ImageService
      */
     public function applyProcessingInstructions(ProcessableFileInterface $image, array $processingInstructions): ProcessedFile
     {
-        return $image->process(ProcessedFile::CONTEXT_IMAGECROPSCALEMASK, $processingInstructions);
+        $processedResource = $image->process(ProcessedFile::CONTEXT_IMAGECROPSCALEMASK, $processingInstructions);
+        if (!$processedResource instanceof ProcessedFile) {
+            throw new \RuntimeException(sprintf('ImageService can only process a File Abstraction Layer file, but processing "%s" yielded %s.', $image instanceof File || $image instanceof FileReference ? $image->getCombinedIdentifier() : get_debug_type($image), get_debug_type($processedResource)), 1789916800);
+        }
+        return $processedResource;
     }
 
     /**

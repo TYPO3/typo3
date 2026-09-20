@@ -20,6 +20,10 @@ namespace TYPO3\CMS\Core\SystemResource\Type;
 use TYPO3\CMS\Core\Imaging\ImageDimension;
 use TYPO3\CMS\Core\Package\Resource\Definition\ResourceDefinitionInterface;
 use TYPO3\CMS\Core\Resource\FileType;
+use TYPO3\CMS\Core\Resource\ProcessableFileInterface;
+use TYPO3\CMS\Core\Resource\ProcessedFile;
+use TYPO3\CMS\Core\Resource\ProcessedResource;
+use TYPO3\CMS\Core\Resource\Service\FileProcessingService;
 use TYPO3\CMS\Core\SystemResource\Exception\CanNotDetectImageDimensionOfSystemResourceException;
 use TYPO3\CMS\Core\SystemResource\Exception\SystemResourceDoesNotExistException;
 use TYPO3\CMS\Core\SystemResource\Identifier\PackageResourceIdentifier;
@@ -31,7 +35,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 /**
  * @internal Only to be used in TYPO3\CMS\Core\SystemResource namespace
  */
-class PackageResource implements SystemResourceInterface
+class PackageResource implements SystemResourceInterface, ProcessableFileInterface
 {
     private ?FileInfo $fileInfo = null;
     private ?ImageDimension $imageDimension = null;
@@ -121,6 +125,18 @@ class PackageResource implements SystemResourceInterface
     {
         $fileInfo = $this->getValidatedFileInfo();
         return md5_file($fileInfo->getPathname());
+    }
+
+    /**
+     * Returns a processed (resized/cropped/converted) version of this resource. Unlike
+     * File::process(), which delegates to the ResourceStorage it already holds a
+     * reference to, this resource is constructed directly by SystemResourceFactory, not
+     * through a service with a FileProcessingService reference to delegate to - so this
+     * reaches it the same way GraphicalFunctions and the processors themselves do.
+     */
+    public function process(string $taskType, array $configuration): ProcessedFile|ProcessedResource
+    {
+        return GeneralUtility::makeInstance(FileProcessingService::class)->processFile($this, $taskType, null, $configuration);
     }
 
     /**

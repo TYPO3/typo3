@@ -84,7 +84,8 @@ class ImageContentObject extends AbstractContentObject
         // an image resource without public URL. Render nothing in this case, just
         // like for an image resource that could not be resolved at all.
         if ($source === null) {
-            $identifier = $imageResource->getOriginalFile()?->getIdentifier() ?: $imageResource->getFullPath();
+            $originalFile = $imageResource->getOriginalFile();
+            $identifier = ($originalFile instanceof File ? $originalFile->getIdentifier() : $originalFile?->getResourceIdentifier()) ?: $imageResource->getFullPath();
             $this->logger->warning('The image "{file}" has no public URL, the file is probably missing, and won\'t be included in frontend output', [
                 'file' => $identifier,
             ]);
@@ -120,7 +121,11 @@ class ImageContentObject extends AbstractContentObject
         if ($linkWrap !== '') {
             $theValue = $this->linkWrap($theValue, $linkWrap);
         } elseif ($conf['imageLinkWrap'] ?? false) {
-            $originalFile = urldecode($imageResource->getFullPath());
+            $originalFile = $imageResource->getOriginalFile();
+            // A system resource is linked by its identifier, its full path is a private local copy
+            $originalFile = $originalFile !== null && !$originalFile instanceof File
+                ? $originalFile->getResourceIdentifier()
+                : urldecode($imageResource->getFullPath());
             $theValue = $this->cObj->imageLinkWrap($theValue, $originalFile, $conf['imageLinkWrap.']);
         }
         $wrap = $this->cObj->stdWrapValue('wrap', $conf);

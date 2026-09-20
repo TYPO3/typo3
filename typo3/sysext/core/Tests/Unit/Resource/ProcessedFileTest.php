@@ -22,10 +22,12 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Stub;
+use TYPO3\CMS\Core\Imaging\ImageDimension;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
+use TYPO3\CMS\Core\SystemResource\Exception\CanNotDetectImageDimensionOfSystemResourceException;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -107,5 +109,80 @@ final class ProcessedFileTest extends UnitTestCase
         $processedDatabaseRow['identifier'] = null;
         $processedFile = $this->getProcessedFileFixture($processedDatabaseRow);
         $processedFile->delete(true);
+    }
+
+    #[Test]
+    public function getOriginalResourceReturnsTheSameObjectAsGetOriginalFile(): void
+    {
+        $originalFile = $this->getFileFixture();
+        $processedFile = $this->getProcessedFileFixture(null, $originalFile);
+        self::assertSame($originalFile, $processedFile->getOriginalResource());
+    }
+
+    #[Test]
+    public function getHashDelegatesToGetSha1(): void
+    {
+        $processedFile = $this->getProcessedFileFixture();
+        self::assertSame($processedFile->getSha1(), $processedFile->getHash());
+    }
+
+    #[Test]
+    public function getResourceIdentifierIsBasedOnTheProcessedFilesOwnIdentifier(): void
+    {
+        $processedDatabaseRow = $this->databaseRow;
+        $processedDatabaseRow['identifier'] = 'processed_dummy.txt';
+        $processedFile = $this->getProcessedFileFixture($processedDatabaseRow);
+        self::assertSame('FAL:5:processed_dummy.txt', $processedFile->getResourceIdentifier());
+        self::assertSame((string)$processedFile, $processedFile->getResourceIdentifier());
+    }
+
+    #[Test]
+    public function getImageDimensionThrowsIfTheProcessedFileIsNotAnImage(): void
+    {
+        $processedDatabaseRow = $this->databaseRow;
+        $processedDatabaseRow['identifier'] = 'processed_dummy.txt';
+        $processedFile = $this->getProcessedFileFixture($processedDatabaseRow);
+        $this->expectException(CanNotDetectImageDimensionOfSystemResourceException::class);
+        $processedFile->getImageDimension();
+    }
+
+    #[Test]
+    public function getImageDimensionReturnsTheWidthAndHeightProperties(): void
+    {
+        $processedDatabaseRow = $this->databaseRow;
+        $processedDatabaseRow['identifier'] = 'processed_dummy.png';
+        $processedDatabaseRow['name'] = 'processed_dummy.png';
+        $processedDatabaseRow['size'] = 100;
+        $processedDatabaseRow['width'] = 400;
+        $processedDatabaseRow['height'] = 300;
+        $processedFile = $this->getProcessedFileFixture($processedDatabaseRow);
+        self::assertEquals(new ImageDimension(400, 300), $processedFile->getImageDimension());
+    }
+
+    #[Test]
+    public function getImageDimensionAcceptsNumericStringProperties(): void
+    {
+        $processedDatabaseRow = $this->databaseRow;
+        $processedDatabaseRow['identifier'] = 'processed_dummy.png';
+        $processedDatabaseRow['name'] = 'processed_dummy.png';
+        $processedDatabaseRow['size'] = 100;
+        $processedDatabaseRow['width'] = '400';
+        $processedDatabaseRow['height'] = '300';
+        $processedFile = $this->getProcessedFileFixture($processedDatabaseRow);
+        self::assertEquals(new ImageDimension(400, 300), $processedFile->getImageDimension());
+    }
+
+    #[Test]
+    public function getImageDimensionThrowsIfWidthAndHeightPropertiesAreMissing(): void
+    {
+        $processedDatabaseRow = $this->databaseRow;
+        $processedDatabaseRow['identifier'] = 'processed_dummy.png';
+        $processedDatabaseRow['name'] = 'processed_dummy.png';
+        $processedDatabaseRow['size'] = 100;
+        unset($processedDatabaseRow['width'], $processedDatabaseRow['height']);
+        $processedFile = $this->getProcessedFileFixture($processedDatabaseRow);
+        $this->expectException(CanNotDetectImageDimensionOfSystemResourceException::class);
+        $this->expectExceptionCode(1789624489);
+        $processedFile->getImageDimension();
     }
 }

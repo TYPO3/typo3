@@ -18,7 +18,12 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Resource;
 
 /**
- * File objects that can be processed with TYPO3's imaging pipeline
+ * Resources that can be processed with TYPO3's imaging pipeline - a FAL File, a FAL
+ * FileReference, or a resource outside the File Abstraction Layer (for example a
+ * system resource shipped with a package). FileReference does not implement
+ * SystemResourceInterface, so this cannot extend it the way ProcessedResourceInterface
+ * does - consumers that need SystemResourceInterface-level members (getImageDimension()
+ * and friends) narrow with an instanceof check first, same as for File-specific members.
  *
  * @internal
  */
@@ -30,5 +35,5 @@ interface ProcessableFileInterface
      * @param string $taskType The task type of this processing
      * @param array $configuration the processing configuration, see manual for that
      */
-    public function process(string $taskType, array $configuration): ProcessedFile;
+    public function process(string $taskType, array $configuration): ProcessedFile|ProcessedResource;
 }

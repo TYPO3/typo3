@@ -22,6 +22,7 @@ use TYPO3\CMS\Adminpanel\Utility\StateUtility;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Resource\Event\AfterFileProcessingEvent;
+use TYPO3\CMS\Core\SystemResource\Exception\SystemResourceException;
 
 /**
  * Collects the images processed during the current frontend request, so the
@@ -48,17 +49,25 @@ final class ProcessedImageCollector
         if ($publicUrl === null) {
             return;
         }
+        // A missing, deleted or non-image file must not break rendering of the admin panel
         try {
             $size = $processedFile->getSize();
-        } catch (\RuntimeException) {
-            // A missing or deleted file must not break rendering of the admin panel
+        } catch (\RuntimeException|SystemResourceException) {
             $size = 0;
+        }
+        try {
+            $imageDimension = $processedFile->getImageDimension();
+            $width = $imageDimension->getWidth();
+            $height = $imageDimension->getHeight();
+        } catch (\RuntimeException|SystemResourceException) {
+            $width = 0;
+            $height = 0;
         }
         $this->images[$publicUrl] = [
             'name' => $publicUrl,
             'size' => $size,
-            'width' => (int)$processedFile->getProperty('width'),
-            'height' => (int)$processedFile->getProperty('height'),
+            'width' => $width,
+            'height' => $height,
         ];
     }
 

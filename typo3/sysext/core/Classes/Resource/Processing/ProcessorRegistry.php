@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Resource\Processing;
 
+use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -60,6 +61,14 @@ class ProcessorRegistry
                     'Processor "' . get_class($processor) . '" needs to implement interface "' . ProcessorInterface::class . '".',
                     1560876288
                 );
+            }
+
+            if (!$task->getSourceFile() instanceof File && !$processor instanceof ResourceAwareProcessorInterface) {
+                // Never offer a task whose source is not a FAL File to a processor that has not
+                // explicitly declared, by implementing ResourceAwareProcessorInterface, that it
+                // understands one.
+                $processor = null;
+                continue;
             }
 
             if ($processor->canProcessTask($task)) {
