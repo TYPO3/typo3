@@ -59,7 +59,7 @@ final class AnnotationChecker extends AbstractPhpIntegrityChecker
                     // static code analysis
                     'template', 'implements', 'extends',
                     // phpstan specific annotations
-                    'phpstan-var', 'phpstan-param', 'phpstan-return',
+                    'phpstan-var', 'phpstan-param', 'phpstan-return', 'not-deprecated',
                 ];
                 // allow annotation only on class level
                 if (get_class($node) === Node\Stmt\Class_::class) {

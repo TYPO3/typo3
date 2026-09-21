@@ -133,6 +133,7 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
      * are deprecated and will be removed with Doctrine DBAL 5.0. The quoting is done
      * here instead, identical to the removed implementation.
      *
+     * @not-deprecated
      * @param string $identifier The name to be quoted.
      * @return string The quoted name.
      */
