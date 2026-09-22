@@ -120,6 +120,9 @@ class ImportCommand extends Command
             $this->import->loadFile((string)$input->getArgument('file'));
             $this->import->checkImportPrerequisites();
             $this->import->importData();
+            foreach ($this->import->getWarningLog() as $warning) {
+                $io->warning($warning);
+            }
             $io->success('Importing ' . $input->getArgument('file') . ' to page ' . $input->getArgument('pid') . ' succeeded.');
             return Command::SUCCESS;
         } catch (\Exception $e) {

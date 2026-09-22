@@ -104,7 +104,7 @@ return [
         => [
             'ref' => 'sys_file_storage:1',
             'type' => 'rel',
-            'msg' => 'LOST RELATION (Path: /)',
+            'msg' => 'LOST RELATION (Record not found!)',
             'title' => '<span title="/">sys_file_storage:1</span>',
             'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 4"></span><span title="sys_file_storage:1" class="t3js-icon icon icon-size-small icon-state-default icon-status-dialog-warning" data-identifier="status-dialog-warning" aria-hidden="true">
 	<span class="icon-markup">
@@ -113,7 +113,7 @@ return [
 	
 </span>',
             'controls' => '',
-            'message' => '<span class="text-danger">LOST RELATION (Path: /)</span>',
+            'message' => '<span class="text-danger">LOST RELATION (Record not found!)</span>',
         ],
         5
         => [
@@ -213,7 +213,7 @@ return [
         => [
             'ref' => 'sys_file_storage:1',
             'type' => 'rel',
-            'msg' => 'LOST RELATION (Path: /)',
+            'msg' => 'LOST RELATION (Record not found!)',
             'title' => '<span title="/">sys_file_storage:1</span>',
             'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="sys_file_storage:1" class="t3js-icon icon icon-size-small icon-state-default icon-status-dialog-warning" data-identifier="status-dialog-warning" aria-hidden="true">
 	<span class="icon-markup">
@@ -222,7 +222,7 @@ return [
 	
 </span>',
             'controls' => '',
-            'message' => '<span class="text-danger">LOST RELATION (Path: /)</span>',
+            'message' => '<span class="text-danger">LOST RELATION (Record not found!)</span>',
         ],
         2
         => [

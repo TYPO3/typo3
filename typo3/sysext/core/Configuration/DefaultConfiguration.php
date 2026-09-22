@@ -316,7 +316,6 @@ return [
                 'Local' => [
                     'class' => \TYPO3\CMS\Core\Resource\Driver\LocalDriver::class,
                     'shortName' => 'Local',
-                    'flexFormDS' => 'FILE:EXT:core/Configuration/Resource/Driver/LocalDriverFlexForm.xml',
                     'label' => 'Local filesystem',
                 ],
             ],

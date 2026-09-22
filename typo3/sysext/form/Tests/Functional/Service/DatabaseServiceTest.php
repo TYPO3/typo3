@@ -30,6 +30,7 @@ final class DatabaseServiceTest extends FunctionalTestCase
         'typo3/sysext/form/Tests/Functional/Service/Fixtures/FileadminPublic/Forms/' => 'fileadmin/',
         'typo3/sysext/form/Tests/Functional/Service/Fixtures/FileadminPrivate/Forms/' => 'fileadmin-private/',
         'typo3/sysext/form/Tests/Functional/Service/Fixtures/FileadminOffline/Forms/' => 'fileadmin-offline/',
+        'typo3/sysext/form/Tests/Functional/Service/Fixtures/FileStorages/public-private-offline.yaml' => 'typo3conf/system/file-storages.yaml',
     ];
 
     public function setUp(): void

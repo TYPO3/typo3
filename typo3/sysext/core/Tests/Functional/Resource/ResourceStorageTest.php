@@ -22,11 +22,13 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend;
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Http\UploadedFile;
+use TYPO3\CMS\Core\Resource\Configuration\FileStorageConfiguration;
 use TYPO3\CMS\Core\Resource\Driver\DriverInterface;
 use TYPO3\CMS\Core\Resource\Driver\LocalDriver;
 use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
@@ -69,6 +71,7 @@ final class ResourceStorageTest extends FunctionalTestCase
 
     protected function tearDown(): void
     {
+        @unlink(Environment::getConfigPath() . '/system/file-storages.yaml');
         GeneralUtility::rmdir($this->instancePath . '/resource-storage-test', true);
         parent::tearDown();
     }
@@ -79,7 +82,7 @@ final class ResourceStorageTest extends FunctionalTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1319552745);
         $localDriver = new LocalDriver(['basePath' => $this->instancePath . '/resource-storage-test']);
-        $subject = new ResourceStorage($localDriver, ['uid' => 1, 'name' => 'testing'], new NoopEventDispatcher());
+        $subject = new ResourceStorage($localDriver, ['identifier' => 1, 'name' => 'testing'], new NoopEventDispatcher());
         $folder = new Folder($subject, 'someName', 'someName');
         $subject->addFile('/some/random/file', $folder);
     }
@@ -88,7 +91,7 @@ final class ResourceStorageTest extends FunctionalTestCase
     public function getPublicUrlReturnsNullIfStorageIsNotOnline(): void
     {
         $localDriver = new LocalDriver(['basePath' => $this->instancePath . '/resource-storage-test']);
-        $subject = new ResourceStorage($localDriver, ['uid' => 1, 'name' => 'testing'], new NoopEventDispatcher());
+        $subject = new ResourceStorage($localDriver, ['identifier' => 1, 'name' => 'testing'], new NoopEventDispatcher());
         $file = new File(
             [
                 'identifier' => 'myIdentifier',
@@ -105,7 +108,7 @@ final class ResourceStorageTest extends FunctionalTestCase
     {
         unset($GLOBALS['TYPO3_REQUEST']);
         $localDriver = new LocalDriver(['basePath' => $this->instancePath . '/resource-storage-test']);
-        $subject = new ResourceStorage($localDriver, ['uid' => 1, 'name' => 'testing', 'is_online' => 1, 'is_public' => 0], new NoopEventDispatcher());
+        $subject = new ResourceStorage($localDriver, ['identifier' => 1, 'name' => 'testing', 'online' => true, 'public' => false], new NoopEventDispatcher());
         $file = new File(['uid' => 5, 'identifier' => '/private/foo.jpg', 'name' => 'foo.jpg'], $subject);
 
         self::assertNull($subject->getPublicUrl($file));
@@ -119,7 +122,7 @@ final class ResourceStorageTest extends FunctionalTestCase
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
         $localDriver = new LocalDriver(['basePath' => $this->instancePath . '/resource-storage-test']);
-        $subject = new ResourceStorage($localDriver, ['uid' => 1, 'name' => 'testing', 'is_online' => 1, 'is_public' => 0], new NoopEventDispatcher());
+        $subject = new ResourceStorage($localDriver, ['identifier' => 1, 'name' => 'testing', 'online' => true, 'public' => false], new NoopEventDispatcher());
         $file = new File(['uid' => 5, 'identifier' => '/private/foo.jpg', 'name' => 'foo.jpg'], $subject);
 
         $publicUrl = $subject->getPublicUrl($file);
@@ -137,25 +140,21 @@ final class ResourceStorageTest extends FunctionalTestCase
     public function markAsTemporaryOfflineDoesNotWriteTheStorageRecord(): void
     {
         $storageRepository = $this->get(StorageRepository::class);
-        $uid = $storageRepository->createLocalStorage('testing', $this->instancePath . '/resource-storage-test', 'absolute');
+        $uid = $storageRepository->addLocalStorage('testing', $this->instancePath . '/resource-storage-test');
         $subject = $storageRepository->findByUid($uid);
         self::assertTrue($subject->isOnline());
 
         $subject->markAsTemporaryOffline();
 
         self::assertFalse($subject->isOnline());
-        $isOnlineInDatabase = $this->getConnectionPool()
-            ->getConnectionForTable('sys_file_storage')
-            ->select(['is_online'], 'sys_file_storage', ['uid' => $uid])
-            ->fetchOne();
-        self::assertSame(1, (int)$isOnlineInDatabase);
+        self::assertTrue($this->get(FileStorageConfiguration::class)->get($uid)['online']);
     }
 
     #[Test]
     public function temporaryOfflineStateIsSharedAcrossInstancesUntilCachesAreFlushed(): void
     {
         $storageRepository = $this->get(StorageRepository::class);
-        $uid = $storageRepository->createLocalStorage('testing', $this->instancePath . '/resource-storage-test', 'absolute');
+        $uid = $storageRepository->addLocalStorage('testing', $this->instancePath . '/resource-storage-test');
         $storageRepository->findByUid($uid)->markAsTemporaryOffline();
 
         $storageRepository->flush();
@@ -170,7 +169,7 @@ final class ResourceStorageTest extends FunctionalTestCase
     public function temporaryOfflineStateExpiresAfterFiveMinutes(): void
     {
         $storageRepository = $this->get(StorageRepository::class);
-        $uid = $storageRepository->createLocalStorage('testing', $this->instancePath . '/resource-storage-test', 'absolute');
+        $uid = $storageRepository->addLocalStorage('testing', $this->instancePath . '/resource-storage-test');
         $storageRepository->findByUid($uid)->markAsTemporaryOffline();
 
         $storageRepository->flush();
@@ -194,7 +193,7 @@ final class ResourceStorageTest extends FunctionalTestCase
     public function offlineStateIsNotPersistedInRegistry(): void
     {
         $storageRepository = $this->get(StorageRepository::class);
-        $uid = $storageRepository->createLocalStorage('testing', $this->instancePath . '/resource-storage-test', 'absolute');
+        $uid = $storageRepository->addLocalStorage('testing', $this->instancePath . '/resource-storage-test');
         $storageRepository->findByUid($uid)->markAsTemporaryOffline();
 
         $registryEntries = $this->getConnectionPool()
@@ -245,7 +244,7 @@ final class ResourceStorageTest extends FunctionalTestCase
         // Let all other checks pass
         $subject = $this->getMockBuilder(ResourceStorage::class)
             ->onlyMethods(['isWritable', 'isBrowsable', 'checkUserActionPermission', 'getResourceFactoryInstance'])
-            ->setConstructorArgs([$localDriver, ['uid' => 1], new NoopEventDispatcher()])
+            ->setConstructorArgs([$localDriver, ['identifier' => 1], new NoopEventDispatcher()])
             ->getMock();
         $subject->method('isWritable')->willReturn(true);
         $subject->method('isBrowsable')->willReturn(true);
@@ -259,7 +258,7 @@ final class ResourceStorageTest extends FunctionalTestCase
     public function checkUserActionPermissionsAlwaysReturnsTrueIfNoUserPermissionsAreSet(): void
     {
         $localDriver = new LocalDriver(['basePath' => $this->instancePath . '/resource-storage-test']);
-        $subject = new ResourceStorage($localDriver, ['uid' => 1, 'name' => 'testing'], new NoopEventDispatcher());
+        $subject = new ResourceStorage($localDriver, ['identifier' => 1, 'name' => 'testing'], new NoopEventDispatcher());
         self::assertTrue($subject->checkUserActionPermission('read', 'folder'));
     }
 
@@ -267,7 +266,7 @@ final class ResourceStorageTest extends FunctionalTestCase
     public function checkUserActionPermissionReturnsFalseIfPermissionIsSetToZero(): void
     {
         $localDriver = new LocalDriver(['basePath' => $this->instancePath . '/resource-storage-test']);
-        $subject = new ResourceStorage($localDriver, ['uid' => 1, 'name' => 'testing'], new NoopEventDispatcher());
+        $subject = new ResourceStorage($localDriver, ['identifier' => 1, 'name' => 'testing'], new NoopEventDispatcher());
         $subject->setUserPermissions(['readFolder' => true, 'writeFile' => true]);
         self::assertTrue($subject->checkUserActionPermission('read', 'folder'));
     }
@@ -301,7 +300,7 @@ final class ResourceStorageTest extends FunctionalTestCase
     public function checkUserActionPermissionAcceptsArbitrarilyCasedArguments(array $permissions, string $action, string $type): void
     {
         $localDriver = new LocalDriver(['basePath' => $this->instancePath . '/resource-storage-test']);
-        $subject = new ResourceStorage($localDriver, ['uid' => 1, 'name' => 'testing'], new NoopEventDispatcher());
+        $subject = new ResourceStorage($localDriver, ['identifier' => 1, 'name' => 'testing'], new NoopEventDispatcher());
         $subject->setUserPermissions($permissions);
         self::assertTrue($subject->checkUserActionPermission($action, $type));
     }
@@ -310,7 +309,7 @@ final class ResourceStorageTest extends FunctionalTestCase
     public function userActionIsDisallowedIfPermissionIsSetToFalse(): void
     {
         $localDriver = new LocalDriver(['basePath' => $this->instancePath . '/resource-storage-test']);
-        $subject = new ResourceStorage($localDriver, ['uid' => 1, 'name' => 'testing'], new NoopEventDispatcher());
+        $subject = new ResourceStorage($localDriver, ['identifier' => 1, 'name' => 'testing'], new NoopEventDispatcher());
         $subject->setEvaluatePermissions(true);
         $subject->setUserPermissions(['readFolder' => false]);
         self::assertFalse($subject->checkUserActionPermission('read', 'folder'));
@@ -320,7 +319,7 @@ final class ResourceStorageTest extends FunctionalTestCase
     public function userActionIsDisallowedIfPermissionIsNotSet(): void
     {
         $localDriver = new LocalDriver(['basePath' => $this->instancePath . '/resource-storage-test']);
-        $subject = new ResourceStorage($localDriver, ['uid' => 1, 'name' => 'testing'], new NoopEventDispatcher());
+        $subject = new ResourceStorage($localDriver, ['identifier' => 1, 'name' => 'testing'], new NoopEventDispatcher());
         $subject->setEvaluatePermissions(true);
         $subject->setUserPermissions(['readFolder' => true]);
         self::assertFalse($subject->checkUserActionPermission('write', 'folder'));
@@ -330,7 +329,7 @@ final class ResourceStorageTest extends FunctionalTestCase
     public function metaDataEditIsNotAllowedWhenWhenNoFileMountsAreSet(): void
     {
         $localDriver = new LocalDriver(['basePath' => $this->instancePath . '/resource-storage-test']);
-        $subject = new ResourceStorage($localDriver, ['uid' => 1, 'name' => 'testing'], new NoopEventDispatcher());
+        $subject = new ResourceStorage($localDriver, ['identifier' => 1, 'name' => 'testing'], new NoopEventDispatcher());
         $subject->setEvaluatePermissions(true);
         self::assertFalse($subject->checkFileActionPermission('editMeta', new File(['identifier' => '/foo/bar.jpg'], $subject)));
     }
@@ -339,7 +338,7 @@ final class ResourceStorageTest extends FunctionalTestCase
     public function getEvaluatePermissionsWhenSetFalse(): void
     {
         $localDriver = new LocalDriver(['basePath' => $this->instancePath . '/resource-storage-test']);
-        $subject = new ResourceStorage($localDriver, ['uid' => 1, 'name' => 'testing'], new NoopEventDispatcher());
+        $subject = new ResourceStorage($localDriver, ['identifier' => 1, 'name' => 'testing'], new NoopEventDispatcher());
         $subject->setEvaluatePermissions(false);
         self::assertFalse($subject->getEvaluatePermissions());
     }
@@ -348,7 +347,7 @@ final class ResourceStorageTest extends FunctionalTestCase
     public function getEvaluatePermissionsWhenSetTrue(): void
     {
         $localDriver = new LocalDriver(['basePath' => $this->instancePath . '/resource-storage-test']);
-        $subject = new ResourceStorage($localDriver, ['uid' => 1, 'name' => 'testing'], new NoopEventDispatcher());
+        $subject = new ResourceStorage($localDriver, ['identifier' => 1, 'name' => 'testing'], new NoopEventDispatcher());
         $subject->setEvaluatePermissions(true);
         self::assertTrue($subject->getEvaluatePermissions());
     }
@@ -359,7 +358,7 @@ final class ResourceStorageTest extends FunctionalTestCase
         $localDriver = new LocalDriver(['basePath' => $this->instancePath . '/resource-storage-test']);
         $subject = $this->getMockBuilder(ResourceStorage::class)
             ->onlyMethods(['createFolder'])
-            ->setConstructorArgs([$localDriver, ['uid' => 1, 'name' => 'testing'], new NoopEventDispatcher()])
+            ->setConstructorArgs([$localDriver, ['identifier' => 1, 'name' => 'testing'], new NoopEventDispatcher()])
             ->getMock();
         $subject->method('createFolder')->willThrowException(new \InvalidArgumentException());
         $subject->setEvaluatePermissions(true);
@@ -377,7 +376,7 @@ final class ResourceStorageTest extends FunctionalTestCase
         $localDriver = new LocalDriver(['basePath' => $this->instancePath . '/resource-storage-test']);
         $configuredStorage = $this->getMockBuilder(ResourceStorage::class)
             ->onlyMethods(['createFolder'])
-            ->setConstructorArgs([$localDriver, ['uid' => 2, 'name' => 'configured'], new NoopEventDispatcher()])
+            ->setConstructorArgs([$localDriver, ['identifier' => 2, 'name' => 'configured'], new NoopEventDispatcher()])
             ->getMock();
         $configuredStorage->method('createFolder')->willThrowException(new \InvalidArgumentException());
         $configuredStorage->setEvaluatePermissions(true);
@@ -387,7 +386,7 @@ final class ResourceStorageTest extends FunctionalTestCase
         GeneralUtility::addInstance(StorageRepository::class, $storageRepository);
         $subject = new ResourceStorage(
             $localDriver,
-            ['uid' => 1, 'name' => 'testing', 'processingfolder' => '2:/_processed_/'],
+            ['identifier' => 1, 'name' => 'testing', 'processingFolder' => '2:/_processed_/'],
             new NoopEventDispatcher(),
         );
         self::assertTrue($configuredStorage->getEvaluatePermissions());
@@ -452,7 +451,7 @@ final class ResourceStorageTest extends FunctionalTestCase
 
         $subject = $this->getMockBuilder(ResourceStorage::class)
             ->onlyMethods(['assureFileRenamePermissions', 'getIndexer'])
-            ->setConstructorArgs([$driverMock, ['uid' => 1, 'name' => 'testing'], new NoopEventDispatcher()])
+            ->setConstructorArgs([$driverMock, ['identifier' => 1, 'name' => 'testing'], new NoopEventDispatcher()])
             ->getMock();
         $subject->method('getIndexer')
             ->willReturn($indexerMock);
@@ -472,7 +471,7 @@ final class ResourceStorageTest extends FunctionalTestCase
     public function pathAndNameOfUploadedFileIsResolved(): void
     {
         $localDriver = new LocalDriver(['basePath' => $this->instancePath . '/resource-storage-test']);
-        $subject = new ResourceStorage($localDriver, ['uid' => 1, 'name' => 'testing'], new NoopEventDispatcher());
+        $subject = new ResourceStorage($localDriver, ['identifier' => 1, 'name' => 'testing'], new NoopEventDispatcher());
 
         // the file is not written to the test file-system
         $uploadedFilePath = $this->instancePath . '/resource-storage-test/source.txt';
@@ -495,7 +494,7 @@ final class ResourceStorageTest extends FunctionalTestCase
         mkdir($this->instancePath . '/resource-storage-test/_processed_');
         $subject = new ResourceStorage(
             $this->createDriverReportingTheProcessingFolderAsMissingOnce($this->instancePath . '/resource-storage-test'),
-            ['uid' => 1, 'name' => 'testing', 'is_writable' => true, 'is_browsable' => true, 'is_online' => true],
+            ['identifier' => 1, 'name' => 'testing', 'writable' => true, 'browsable' => true, 'online' => true],
             new NoopEventDispatcher()
         );
 
@@ -512,7 +511,7 @@ final class ResourceStorageTest extends FunctionalTestCase
         mkdir($this->instancePath . '/resource-storage-test/processing/_processed_');
         $processingStorage = new ResourceStorage(
             $this->createDriverReportingTheProcessingFolderAsMissingOnce($this->instancePath . '/resource-storage-test/processing'),
-            ['uid' => 2, 'name' => 'processing', 'is_writable' => true, 'is_browsable' => true, 'is_online' => true],
+            ['identifier' => 2, 'name' => 'processing', 'writable' => true, 'browsable' => true, 'online' => true],
             new NoopEventDispatcher()
         );
         $storageRepository = $this->createMock(StorageRepository::class);
@@ -520,7 +519,7 @@ final class ResourceStorageTest extends FunctionalTestCase
         GeneralUtility::addInstance(StorageRepository::class, $storageRepository);
         $subject = new ResourceStorage(
             new LocalDriver(['basePath' => $this->instancePath . '/resource-storage-test']),
-            ['uid' => 1, 'name' => 'testing', 'is_writable' => true, 'is_browsable' => true, 'is_online' => true, 'processingfolder' => '2:/_processed_/'],
+            ['identifier' => 1, 'name' => 'testing', 'writable' => true, 'browsable' => true, 'online' => true, 'processingFolder' => '2:/_processed_/'],
             new NoopEventDispatcher()
         );
 

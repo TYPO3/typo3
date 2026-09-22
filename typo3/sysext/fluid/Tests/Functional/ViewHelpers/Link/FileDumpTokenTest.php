@@ -20,10 +20,11 @@ namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Link;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Controller\FileDumpController;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
-use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Resource\Configuration\FileStorageConfigurationWriter;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -49,9 +50,17 @@ final class FileDumpTokenTest extends FunctionalTestCase
     {
         parent::setUp();
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/ViewHelpers/Link/FileViewHelper/DatabaseImport.csv');
-        $this->get(ConnectionPool::class)
-            ->getConnectionForTable('sys_file_storage')
-            ->update('sys_file_storage', ['is_public' => 0], ['uid' => 1]);
+        $this->get(FileStorageConfigurationWriter::class)->write(1, [
+            'name' => 'fileadmin',
+            'public' => false,
+            'configuration' => ['basePath' => 'fileadmin/'],
+        ]);
+    }
+
+    protected function tearDown(): void
+    {
+        @unlink(Environment::getConfigPath() . '/system/file-storages.yaml');
+        parent::tearDown();
     }
 
     public static function renderedLinkDataProvider(): \Generator

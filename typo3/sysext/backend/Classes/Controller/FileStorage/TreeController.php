@@ -175,8 +175,7 @@ readonly class TreeController
     {
         foreach ($items as &$item) {
             $folder = $item['resource'];
-            $isStorage = $item['recordType'] !== 'sys_file';
-            $item['resourceType'] = $isStorage ? 'storage' : 'folder';
+            $isStorage = ($item['resourceType'] ?? 'folder') === 'storage';
             if ($isStorage && !$folder->getStorage()->isOnline()) {
                 $item['name'] .= ' (' . $this->getLanguageService()->translate('is_offline', 'core.db.sys_file_storage') . ')';
             }

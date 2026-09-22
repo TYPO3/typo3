@@ -60,6 +60,29 @@ class LocalPath
     }
 
     /**
+     * Resolves the base path of a local driver configuration: an absolute
+     * path is used as is, a relative path with the legacy "pathType" option
+     * set to "relative" is resolved against the public path, any other
+     * relative path against the project path.
+     *
+     * @return self|null null when the configuration has no base path
+     */
+    public static function fromDriverConfiguration(array $configuration): ?self
+    {
+        $basePath = (string)($configuration['basePath'] ?? '');
+        if ($basePath === '') {
+            return null;
+        }
+        if (($configuration['pathType'] ?? '') === 'relative') {
+            return new self($basePath, self::TYPE_RELATIVE);
+        }
+        if (PathUtility::isAbsolutePath($basePath)) {
+            return new self($basePath, self::TYPE_ABSOLUTE);
+        }
+        return new self(Environment::getProjectPath() . '/' . $basePath, self::TYPE_ABSOLUTE);
+    }
+
+    /**
      * @return string normalized path as provided
      */
     public function getRaw(): string

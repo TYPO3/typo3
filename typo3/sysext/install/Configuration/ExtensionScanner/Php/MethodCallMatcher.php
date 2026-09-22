@@ -1,6 +1,27 @@
 <?php
 
 return [
+    'TYPO3\CMS\Core\Resource\ResourceStorage->getStorageRecord' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-110762-ResourceStorageGetStorageRecord.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Resource\StorageRepository->createLocalStorage' => [
+        'numberOfMandatoryArguments' => 3,
+        'maximumNumberOfArguments' => 5,
+        'restFiles' => [
+            'Deprecation-110762-StorageRepositoryCreateLocalStorage.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Resource\Driver\DriverRegistry->addDriversToTCA' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Breaking-110762-FileStoragesAreConfiguredInAFileInsteadOfTheDatabase.rst',
+        ],
+    ],
     // Removed methods
     'TYPO3\CMS\Backend\Clipboard\Clipboard->confirmMsg' => [
         'numberOfMandatoryArguments' => 4,

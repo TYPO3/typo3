@@ -51,7 +51,6 @@ final class FileListTest extends FunctionalTestCase
     {
         parent::setUp();
         $this->importCSVDataSet(__DIR__ . '/Fixtures/be_users.csv');
-        $this->importCSVDataSet(__DIR__ . '/Fixtures/sys_file_storage.csv');
         $backendUser = $this->setUpBackendUser(1);
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
     }

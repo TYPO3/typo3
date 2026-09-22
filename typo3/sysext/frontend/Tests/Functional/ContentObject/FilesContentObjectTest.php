@@ -33,6 +33,7 @@ final class FilesContentObjectTest extends FunctionalTestCase
         'typo3/sysext/frontend/Tests/Functional/Fixtures/Images' => 'fileadmin/images',
         'typo3/sysext/frontend/Tests/Functional/ContentObject/ImagesInStorage2' => 'storage2/images',
         'typo3/sysext/frontend/Tests/Functional/ContentObject/ImagesInStorage3' => 'storage3/images',
+        'typo3/sysext/frontend/Tests/Functional/ContentObject/Fixtures/FileStorages/three-storages.yaml' => 'typo3conf/system/file-storages.yaml',
     ];
 
     protected function setUp(): void

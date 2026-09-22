@@ -1,0 +1,17 @@
+storages:
+  1:
+    name: 'Storage 1'
+    default: true
+    configuration:
+      basePath: fileadmin/
+      caseSensitive: true
+  2:
+    name: 'Storage 2'
+    configuration:
+      basePath: storage2/
+      caseSensitive: true
+  3:
+    name: 'Storage 3'
+    configuration:
+      basePath: storage3/
+      caseSensitive: true

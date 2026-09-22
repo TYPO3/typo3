@@ -35,12 +35,15 @@ final class TreeControllerTest extends FunctionalTestCase
 {
     private BackendUserAuthentication $backendUser;
 
+    protected array $pathsToProvideInTestInstance = [
+        'typo3/sysext/backend/Tests/Functional/Controller/FileStorage/Fixtures/FileStorages/two-storages.yaml' => 'typo3conf/system/file-storages.yaml',
+    ];
+
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->importCSVDataSet(__DIR__ . '/Fixtures/be_users.csv');
-        $this->importCSVDataSet(__DIR__ . '/Fixtures/sys_file_storage.csv');
 
         $this->backendUser = $this->setUpBackendUser(1);
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($this->backendUser);
@@ -252,6 +255,7 @@ final class TreeControllerTest extends FunctionalTestCase
         self::assertEquals('fileadmin', $storageItems[0]['name']);
         self::assertEquals('apps-filetree-mount', $storageItems[0]['icon']);
         self::assertEquals('storage', $storageItems[0]['resourceType']);
+        self::assertEquals('sys_file', $storageItems[0]['recordType']);
         self::assertEquals(1, $storageItems[0]['storage']);
     }
 }

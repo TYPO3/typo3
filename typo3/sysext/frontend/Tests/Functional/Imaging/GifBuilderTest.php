@@ -40,7 +40,6 @@ final class GifBuilderTest extends FunctionalTestCase
 
     private function setupFullTestEnvironment(): void
     {
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $this->setUpBackendUser(1);
         GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/fileadmin');

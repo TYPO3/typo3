@@ -318,6 +318,12 @@
       <trans-unit id="importdata_siteConfigurationsAdminOnly">
         <source>This import contains site configurations that will not be imported because importing site configurations requires administrator privileges.</source>
       </trans-unit>
+      <trans-unit id="importdata_fileStorages">
+        <source>File storages</source>
+      </trans-unit>
+      <trans-unit id="importdata_fileStoragesNotImported">
+        <source>File storages are not imported. Files are imported into the storage with the same base path, or into the default storage.</source>
+      </trans-unit>
       <trans-unit id="importdata_siteIdentifier">
         <source>Identifier</source>
       </trans-unit>

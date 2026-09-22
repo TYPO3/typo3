@@ -39,7 +39,6 @@ final class ShowImageControllerTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/fileadmin_images.csv');
     }
 

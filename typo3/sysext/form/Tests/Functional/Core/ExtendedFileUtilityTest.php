@@ -20,9 +20,9 @@ namespace TYPO3\CMS\Form\Tests\Functional\Core;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\UploadedFile;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Resource\Configuration\FileStorageConfigurationWriter;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Utility\File\ExtendedFileUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -46,6 +46,12 @@ final class ExtendedFileUtilityTest extends FunctionalTestCase
             GeneralUtility::rmdir($fileCommandsPath, true);
         }
         GeneralUtility::mkdir($fileCommandsPath);
+    }
+
+    protected function tearDown(): void
+    {
+        @unlink(Environment::getConfigPath() . '/system/file-storages.yaml');
+        parent::tearDown();
     }
 
     public static function fileCommandsAreProcessedDataProvider(): iterable
@@ -136,35 +142,14 @@ final class ExtendedFileUtilityTest extends FunctionalTestCase
 
     private function createDefaultFileStorage(bool $caseSensitive): void
     {
-        $caseSensitiveValue = $caseSensitive ? 1 : 0;
-        $configuration = <<<XML
-            <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-            <T3FlexForms>
-            <data>
-            <sheet index="sDEF">
-            <language index="lDEF">
-            <field index="basePath"><value index="vDEF">fileadmin/</value></field>
-            <field index="pathType"><value index="vDEF">relative</value></field>
-            <field index="caseSensitive"><value index="vDEF">{$caseSensitiveValue}</value></field>
-            </language>
-            </sheet>
-            </data>
-            </T3FlexForms>
-            XML;
-        $this->get(ConnectionPool::class)
-            ->getConnectionForTable('sys_file_storage')
-            ->insert('sys_file_storage', [
-                'uid' => 1,
-                'pid' => 0,
-                'name' => 'fileadmin/ (auto-created)',
-                'processingfolder' => 'temp/assets/_processed_/',
-                'driver' => 'Local',
-                'is_browsable' => 1,
-                'is_public' => 1,
-                'is_writable' => 1,
-                'is_online' => 1,
-                'configuration' => $configuration,
-            ]);
+        $this->get(FileStorageConfigurationWriter::class)->write(1, [
+            'name' => 'fileadmin',
+            'processingFolder' => 'temp/assets/_processed_/',
+            'configuration' => [
+                'basePath' => 'fileadmin/',
+                'caseSensitive' => $caseSensitive,
+            ],
+        ]);
     }
 
     private function createUploadedFile(string $filePath): UploadedFile

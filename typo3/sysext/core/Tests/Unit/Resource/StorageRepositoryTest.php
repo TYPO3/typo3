@@ -20,9 +20,15 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
+use TYPO3\CMS\Core\Cache\Backend\NullBackend;
+use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
+use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
+use TYPO3\CMS\Core\Resource\Configuration\FileStorageConfiguration;
+use TYPO3\CMS\Core\Resource\Configuration\FileStorageConfigurationWriter;
 use TYPO3\CMS\Core\Resource\Driver\DriverRegistry;
 use TYPO3\CMS\Core\Resource\LocalPath;
 use TYPO3\CMS\Core\Resource\StorageRepository;
@@ -81,12 +87,15 @@ final class StorageRepositoryTest extends UnitTestCase
     #[Test]
     public function findBestMatchingStorageByLocalPathReturnsDefaultStorageIfNoMatchIsFound(array $storageConfiguration, string $path, int $expectedStorageId): void
     {
+        $configuration = new FileStorageConfiguration('/non/existing/dir', new YamlFileLoader(new NullLogger()), new NullLogger(), new PhpFrontend('core', new NullBackend()));
         $subject = new StorageRepository(
             new NoopEventDispatcher(),
-            self::createStub(ConnectionPool::class),
+            $configuration,
+            new FileStorageConfigurationWriter($configuration, new NoopEventDispatcher()),
             self::createStub(DriverRegistry::class),
-            self::createStub(FlexFormTools::class),
             self::createStub(LoggerInterface::class),
+            self::createStub(ConnectionPool::class),
+            self::createStub(FlexFormTools::class),
         );
         $mock = \Closure::bind(static function (StorageRepository $storageRepository) use (&$path, $storageConfiguration) {
             $storageRepository->localDriverStorageCache = $storageConfiguration;

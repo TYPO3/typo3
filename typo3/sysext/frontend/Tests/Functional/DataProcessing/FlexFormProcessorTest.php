@@ -48,7 +48,6 @@ final class FlexFormProcessorTest extends FunctionalTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
         $this->importCSVDataSet(__DIR__ . '/DataSet/FlexformDataProcessor.csv');
 
         $this->writeSiteConfiguration(

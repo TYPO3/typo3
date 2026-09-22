@@ -55,7 +55,6 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         parent::setUp();
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/TcaSelectItems/be_users.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/TcaSelectItems/base.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/TcaSelectItems/sys_file_storage.csv');
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('en');
         $GLOBALS['BE_USER'] = $this->setUpBackendUser(1);
     }
@@ -1586,60 +1585,6 @@ final class TcaSelectItemsTest extends FunctionalTestCase
                 'label' => 'aPrefixItem 1',
                 'value' => 1,
                 'icon' => 'default-not-found',
-                'iconOverlay' => null,
-                'group' => null,
-                'description' => null,
-            ],
-        ];
-
-        $selectItems = (new TcaSelectItems($this->get(SelectItemProcessor::class), $this->get(EnvPlaceholderProcessor::class)));
-        $selectItems->injectIconFactory($this->get(IconFactory::class));
-        $selectItems->injectFlashMessageService($this->get(FlashMessageService::class));
-        $selectItems->injectConnectionPool($this->get(ConnectionPool::class));
-        $result = $this->get(TcaSelectItems::class)->addData($this->addTcaSchemata($input));
-        foreach ($expected as $key => $value) {
-            self::assertEquals($value, $result[$key]);
-        }
-    }
-
-    #[Test]
-    public function addDataRemovesItemsThatAreRestrictedByUserStorageAddedByForeignTable(): void
-    {
-        $input = [
-            'databaseRow' => [
-                'uid' => 1,
-                'aField' => '',
-            ],
-            'tableName' => 'aTable',
-            'effectivePid' => 1,
-            'processedTca' => [
-                'columns' => [
-                    'aField' => [
-                        'config' => [
-                            'type' => 'select',
-                            'renderType' => 'selectSingle',
-                            'foreign_table' => 'sys_file_storage',
-                            'items' => [
-                                [
-                                    'label' => 'some other file storage',
-                                    'value' => 2,
-                                ],
-                            ],
-                            'maxitems' => 99999,
-                        ],
-                    ],
-                ],
-            ],
-            'rootline' => [],
-        ];
-
-        $expected = $input;
-        $expected['databaseRow']['aField'] = [];
-        $expected['processedTca']['columns']['aField']['config']['items'] = [
-            [
-                'label' => 'fileadmin/ (auto-created)',
-                'value' => 1,
-                'icon' => 'mimetypes-x-sys_file_storage',
                 'iconOverlay' => null,
                 'group' => null,
                 'description' => null,

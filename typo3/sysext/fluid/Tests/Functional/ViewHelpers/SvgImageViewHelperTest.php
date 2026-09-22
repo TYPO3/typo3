@@ -33,6 +33,7 @@ final class SvgImageViewHelperTest extends FunctionalTestCase
     ];
 
     protected array $pathsToProvideInTestInstance = [
+        'typo3/sysext/core/Tests/Functional/Fixtures/FileStorages/case-sensitive-fileadmin.yaml' => 'typo3conf/system/file-storages.yaml',
         'typo3/sysext/fluid/Tests/Functional/Fixtures/Extensions/svg_image_test/Resources/Public/Images/ImageViewHelperTest1.svg' => 'fileadmin/user_upload/FALImageViewHelperTest1.svg',
         'typo3/sysext/fluid/Tests/Functional/Fixtures/Extensions/svg_image_test/Resources/Public/Images/ImageViewHelperTest2.svg' => 'fileadmin/user_upload/FALImageViewHelperTest2.svg',
         'typo3/sysext/fluid/Tests/Functional/Fixtures/Extensions/svg_image_test/Resources/Public/Images/ImageViewHelperTest3.svg' => 'fileadmin/user_upload/FALImageViewHelperTest3.svg',

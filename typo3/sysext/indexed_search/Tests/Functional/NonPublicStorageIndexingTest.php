@@ -35,6 +35,7 @@ final class NonPublicStorageIndexingTest extends FunctionalTestCase
 
     protected array $pathsToProvideInTestInstance = [
         'typo3/sysext/indexed_search/Tests/Functional/Fixtures/Files/nonpublic.txt' => 'fileadmin/user_upload/nonpublic.txt',
+        'typo3/sysext/indexed_search/Tests/Functional/Fixtures/FileStorages/non-public-storage.yaml' => 'typo3conf/system/file-storages.yaml',
     ];
 
     protected function setUp(): void

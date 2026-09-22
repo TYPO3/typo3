@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Impexp\Tests\Functional\Import;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Resource\Configuration\FileStorageConfigurationWriter;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Impexp\Import;
 use TYPO3\CMS\Impexp\Tests\Functional\AbstractImportExportTestCase;
@@ -34,6 +35,12 @@ final class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImpo
         'typo3/sysext/impexp/Tests/Functional/Fixtures/Folders/fileadmin/user_upload/typo3_image2.jpg' => 'fileadmin/user_upload/typo3_image2.jpg',
     ];
 
+    protected function tearDown(): void
+    {
+        @unlink(Environment::getConfigPath() . '/system/file-storages.yaml');
+        parent::tearDown();
+    }
+
     #[Test]
     public function importPagesAndRelatedTtContentWithDifferentImageToExistingData(): void
     {
@@ -42,7 +49,6 @@ final class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImpo
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_metadata.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_reference.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_storage.csv');
 
         $subject = $this->get(Import::class);
         $subject->setPid(0);
@@ -65,7 +71,6 @@ final class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImpo
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_metadata.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_reference.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_storage.csv');
 
         $subject = $this->get(Import::class);
         try {
@@ -97,7 +102,6 @@ final class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImpo
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_metadata.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_reference.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_storage.csv');
 
         $subject = $this->get(Import::class);
         try {
@@ -133,7 +137,6 @@ final class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImpo
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_metadata.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_reference.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_storage.csv');
 
         $subject = $this->get(Import::class);
         try {
@@ -164,7 +167,6 @@ final class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImpo
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_metadata.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_reference.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_storage.csv');
 
         $subject = $this->get(Import::class);
         $subject->setPid(0);
@@ -203,7 +205,6 @@ final class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImpo
     {
         // Have a single sys_file entry with uid 1
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_single_image.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_storage.csv');
 
         $subject = $this->get(Import::class);
         $subject->setPid(0);
@@ -225,7 +226,10 @@ final class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImpo
     public function importImageIntoSystemAndMatchingThePathOfTheSecondStorage(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_single_image.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_storages.csv');
+        $this->get(FileStorageConfigurationWriter::class)->writeAll([
+            1 => ['name' => 'fileadminA', 'default' => true, 'configuration' => ['basePath' => 'fileadmin_invalid_path/']],
+            2 => ['name' => 'fileadminB', 'configuration' => ['basePath' => 'fileadmin/']],
+        ]);
 
         $subject = $this->get(Import::class);
         $subject->setPid(0);

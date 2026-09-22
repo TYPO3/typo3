@@ -38,6 +38,7 @@ use TYPO3Fluid\Fluid\View\TemplateView;
 final class ImageViewHelperTest extends FunctionalTestCase
 {
     protected array $pathsToProvideInTestInstance = [
+        'typo3/sysext/core/Tests/Functional/Fixtures/FileStorages/case-sensitive-fileadmin.yaml' => 'typo3conf/system/file-storages.yaml',
         'typo3/sysext/fluid/Tests/Functional/Fixtures/ViewHelpers/ImageViewHelper/Folders/fileadmin/' => 'fileadmin/',
     ];
 

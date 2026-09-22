@@ -111,7 +111,7 @@ final class RecyclerGarbageCollectionTaskTest extends FunctionalTestCase
         // Resolve the default fileadmin storage first, so it gets uid 1
         $storageRepository = $this->get(StorageRepository::class);
         $storageRepository->findAll();
-        $storageRepository->createLocalStorage('documents', 'documents/', 'relative');
+        $storageRepository->addLocalStorage('documents', 'documents/');
 
         $task = new RecyclerGarbageCollectionTask();
         $task->setTaskParameters(['number_of_days' => 30]);

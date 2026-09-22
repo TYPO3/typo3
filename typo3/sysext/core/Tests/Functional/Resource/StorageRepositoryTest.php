@@ -21,6 +21,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Resource\Capabilities;
+use TYPO3\CMS\Core\Resource\Configuration\FileStorageConfigurationWriter;
 use TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior;
 use TYPO3\CMS\Core\Resource\Exception\ExistingTargetFileNameException;
 use TYPO3\CMS\Core\Resource\Exception\InvalidTargetFolderException;
@@ -39,6 +40,7 @@ final class StorageRepositoryTest extends FunctionalTestCase
 {
     protected function tearDown(): void
     {
+        @unlink(Environment::getConfigPath() . '/system/file-storages.yaml');
         GeneralUtility::rmdir(Environment::getPublicPath() . '/fileadmin', true);
         mkdir(Environment::getPublicPath() . '/fileadmin');
         GeneralUtility::rmdir(Environment::getPublicPath() . '/typo3temp/assets/_processed_', true);
@@ -95,38 +97,39 @@ final class StorageRepositoryTest extends FunctionalTestCase
         yield ['{public}/docs/doc.pdf', '5:/doc.pdf'];
         yield ['{public}//files/nested/images/img.png', '6:/images/img.png'];
         yield ['{public}/files/nested/images/img.png', '6:/images/img.png'];
+
+        // using storages with a path relative to the project path (no pathType)
+        yield ['/media/img.png', '7:/img.png'];
+        yield ['media/img.png', '7:/img.png'];
+        yield ['{public}/media/img.png', '7:/img.png'];
     }
 
     #[DataProvider('bestStorageIsResolvedDataProvider')]
     #[Test]
     public function bestStorageIsResolved(string $sourceIdentifier, string $expectedCombinedIdentifier): void
     {
-        $subject = $this->get(StorageRepository::class);
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $this->setUpBackendUser(1);
         $publicPath = Environment::getPublicPath();
-        $prefixDelegate = static function (string $value) use ($publicPath): string {
-            return $publicPath . '/' . $value;
-        };
-        // array indexes are not relevant here, but are those expected to be used as storage UID (`1:/file.png`)
+        // array indexes are the storage identifiers expected in the combined identifiers (`1:/file.png`)
         // @todo it is possible to create ambiguous storages, e.g. `fileadmin/` AND `/fileadmin/`
-        $relativeNames = [1 => 'fileadmin/', 2 => 'documents/', 3 => 'fileadmin/nested/'];
-        // @todo: All these directories must exist. This is because createLocalStorage() calls testCaseSensitivity()
-        //        which creates a file in each directory without checking if the directory does exist. Arguably, this
-        //        should be handled in testCaseSensitivity(). For now, we create the directories in question and
-        //        suppress errors so only the first test creates them and subsequent tests don't emit a warning here.
+        $storages = [
+            1 => ['name' => 'rel:fileadmin/', 'default' => true, 'configuration' => ['basePath' => 'fileadmin/']],
+            2 => ['name' => 'rel:documents/', 'configuration' => ['basePath' => 'documents/']],
+            3 => ['name' => 'rel:fileadmin/nested/', 'configuration' => ['basePath' => 'fileadmin/nested/']],
+            4 => ['name' => 'abs:files/', 'configuration' => ['basePath' => $publicPath . '/files/']],
+            5 => ['name' => 'abs:docs/', 'configuration' => ['basePath' => $publicPath . '/docs/']],
+            6 => ['name' => 'abs:files/nested', 'configuration' => ['basePath' => $publicPath . '/files/nested']],
+            7 => ['name' => 'project:media/', 'configuration' => ['basePath' => 'media/']],
+        ];
         @mkdir($this->instancePath . '/documents');
-        @mkdir(Environment::getPublicPath() . '/fileadmin/nested');
-        $absoluteNames = array_map($prefixDelegate, [4 => 'files/', 5 => 'docs/', 6 => 'files/nested']);
+        @mkdir($this->instancePath . '/fileadmin/nested');
         @mkdir($this->instancePath . '/files');
         @mkdir($this->instancePath . '/docs');
         @mkdir($this->instancePath . '/files/nested');
-        foreach ($relativeNames as $relativeName) {
-            $subject->createLocalStorage('rel:' . $relativeName, $relativeName, 'relative');
-        }
-        foreach ($absoluteNames as $absoluteName) {
-            $subject->createLocalStorage('abs:' . $absoluteName, $absoluteName, 'absolute');
-        }
+        @mkdir($this->instancePath . '/media');
+        $this->get(FileStorageConfigurationWriter::class)->writeAll($storages);
+        $subject = $this->get(StorageRepository::class);
         $sourceIdentifier = str_replace('{public}', Environment::getPublicPath(), $sourceIdentifier);
         $storage = $subject->getStorageObject(0, [], $sourceIdentifier);
         $combinedIdentifier = sprintf('%d:%s', $storage->getUid(), $sourceIdentifier);
@@ -140,7 +143,6 @@ final class StorageRepositoryTest extends FunctionalTestCase
     #[Test]
     public function getNestedProcessingFolderTest(): void
     {
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $this->setUpBackendUser(1);
         $subject = $this->get(StorageRepository::class)->findByUid(1);
@@ -212,7 +214,6 @@ final class StorageRepositoryTest extends FunctionalTestCase
     #[Test]
     public function isWithinFileMountBoundariesRespectsReadOnlyFileMounts(string $targetDirectory, string $fileMountFolder, bool $isFileMountReadOnly, bool $checkWriteAccess, bool $expectedResult): void
     {
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
         $fileName = 'bar.txt';
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $this->setUpBackendUser(1);
@@ -233,19 +234,17 @@ final class StorageRepositoryTest extends FunctionalTestCase
     #[Test]
     public function getProcessingRootFolderTest(): void
     {
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $this->setUpBackendUser(1);
         $subject = $this->get(StorageRepository::class)->findByUid(1);
         $processingFolder = $subject->getProcessingFolder();
-        self::assertSame('/temp/assets/_processed_/', $processingFolder->getIdentifier());
+        self::assertSame('/_processed_/', $processingFolder->getIdentifier());
     }
 
     #[Test]
     public function getRoleReturnsDefaultForRegularFolders(): void
     {
         $folderIdentifier = StringUtility::getUniqueId();
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $this->setUpBackendUser(1);
         $subject = $this->get(StorageRepository::class)->findByUid(1);
@@ -257,7 +256,6 @@ final class StorageRepositoryTest extends FunctionalTestCase
     #[Test]
     public function replaceFileFailsIfLocalFileDoesNotExist(): void
     {
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $this->setUpBackendUser(1);
         $subject = $this->get(StorageRepository::class)->findByUid(1);
@@ -272,7 +270,6 @@ final class StorageRepositoryTest extends FunctionalTestCase
     #[Test]
     public function createFolderThrowsExceptionIfParentFolderDoesNotExist(): void
     {
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $this->setUpBackendUser(1);
         $subject = $this->get(StorageRepository::class)->findByUid(1);
@@ -284,7 +281,6 @@ final class StorageRepositoryTest extends FunctionalTestCase
     #[Test]
     public function deleteFileMovesFileToRecyclerFolderIfAvailable(): void
     {
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $this->setUpBackendUser(1);
         $subject = $this->get(StorageRepository::class)->findByUid(1);
@@ -300,7 +296,6 @@ final class StorageRepositoryTest extends FunctionalTestCase
     #[Test]
     public function deleteFolderMovesFolderToRecyclerFolderIfAvailable(): void
     {
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $this->setUpBackendUser(1);
         $subject = $this->get(StorageRepository::class)->findByUid(1);
@@ -317,7 +312,6 @@ final class StorageRepositoryTest extends FunctionalTestCase
     #[Test]
     public function deleteFolderRemovesFolderWithinRecyclerFolder(): void
     {
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $this->setUpBackendUser(1);
         $subject = $this->get(StorageRepository::class)->findByUid(1);
@@ -333,7 +327,6 @@ final class StorageRepositoryTest extends FunctionalTestCase
     #[Test]
     public function deleteFileUnlinksFileIfNoRecyclerFolderAvailable(): void
     {
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $this->setUpBackendUser(1);
         $subject = $this->get(StorageRepository::class)->findByUid(1);
@@ -473,7 +466,6 @@ final class StorageRepositoryTest extends FunctionalTestCase
     #[Test]
     public function searchFilesFindsFilesInFolder(string $searchTerm, ?string $searchFolder, bool $recursive, array $filters, array $expectedIdentifiers): void
     {
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
         $this->importCSVDataSet(__DIR__ . '/Fixtures/FileSearch.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $this->setUpBackendUser(1);
@@ -508,7 +500,6 @@ final class StorageRepositoryTest extends FunctionalTestCase
     public function copyFolderThrowsErrorWhenFolderAlreadyExistsInTargetFolderAndConflictModeIsCancel(): void
     {
         $conflictMode = DuplicationBehavior::CANCEL;
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $this->setUpBackendUser(1);
         $subject = $this->get(StorageRepository::class)->findByUid(1);
@@ -524,7 +515,6 @@ final class StorageRepositoryTest extends FunctionalTestCase
     public function copyFolderGeneratesNewFolderNameWhenFolderAlreadyExistsInTargetFolderAndConflictModeIsRename(): void
     {
         $conflictMode = DuplicationBehavior::RENAME;
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $this->setUpBackendUser(1);
         $subject = $this->get(StorageRepository::class)->findByUid(1);
@@ -540,7 +530,6 @@ final class StorageRepositoryTest extends FunctionalTestCase
     public function copyFileThrowsErrorWhenFileWithSameNameAlreadyExistsInTargetFolderAndConflictModeIsCancel(): void
     {
         $conflictMode = DuplicationBehavior::CANCEL;
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $this->setUpBackendUser(1);
         mkdir(Environment::getPublicPath() . '/fileadmin/foo');
@@ -558,7 +547,6 @@ final class StorageRepositoryTest extends FunctionalTestCase
     public function copyFileGeneratesNewFileNameWhenFileAlreadyExistsInTargetFolderAndConflictModeIsRename(): void
     {
         $conflictMode = DuplicationBehavior::RENAME;
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $this->setUpBackendUser(1);
         mkdir(Environment::getPublicPath() . '/fileadmin/foo');
@@ -575,7 +563,6 @@ final class StorageRepositoryTest extends FunctionalTestCase
     #[Test]
     public function copyFileCopiesMetadata(): void
     {
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $this->setUpBackendUser(1);
         mkdir(Environment::getPublicPath() . '/fileadmin/foo');
@@ -600,40 +587,38 @@ final class StorageRepositoryTest extends FunctionalTestCase
     #[Test]
     public function getDefaultStorageUidReturnsUidOfDefaultStorageWithoutInstantiatingStorages(): void
     {
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
-        $this->getConnectionPool()->getConnectionForTable('sys_file_storage')
-            ->update('sys_file_storage', ['is_default' => 1], ['uid' => 1]);
+        $this->get(FileStorageConfigurationWriter::class)->writeAll([
+            2 => ['name' => 'media', 'configuration' => ['basePath' => 'fileadmin/']],
+            5 => ['name' => 'files', 'default' => true, 'configuration' => ['basePath' => 'fileadmin/']],
+        ]);
         $subject = $this->get(StorageRepository::class);
         $subject->flush();
 
-        self::assertSame(1, $subject->getDefaultStorageUid());
+        self::assertSame(5, $subject->getDefaultStorageUid());
         self::assertSame([], new \ReflectionProperty($subject, 'storageInstances')->getValue($subject));
     }
 
     #[Test]
-    public function getDefaultStorageUidReturnsNullIfNoStorageIsDefault(): void
+    public function findAllReturnsStoragesSortedByName(): void
     {
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
+        $this->get(FileStorageConfigurationWriter::class)->writeAll([
+            1 => ['name' => 'zeta', 'default' => true, 'configuration' => ['basePath' => 'fileadmin/']],
+            2 => ['name' => 'Beta', 'configuration' => ['basePath' => 'fileadmin/']],
+            3 => ['name' => 'alpha', 'configuration' => ['basePath' => 'fileadmin/']],
+        ]);
         $subject = $this->get(StorageRepository::class);
         $subject->flush();
 
-        self::assertNull($subject->getDefaultStorageUid());
+        self::assertSame([3, 2, 1], array_map(static fn(ResourceStorage $storage): int => $storage->getUid(), $subject->findAll()));
     }
 
     #[Test]
-    public function getDefaultStorageUidCreatesDefaultStorageIfNoStorageExists(): void
+    public function getDefaultStorageUidUsesImplicitDefaultWithoutConfigurationFile(): void
     {
         $subject = $this->get(StorageRepository::class);
         $subject->flush();
 
-        $defaultStorageUid = $subject->getDefaultStorageUid();
-
-        self::assertNotNull($defaultStorageUid);
-        $storageRows = $this->getConnectionPool()->getConnectionForTable('sys_file_storage')
-            ->select(['uid', 'is_default'], 'sys_file_storage')
-            ->fetchAllAssociative();
-        self::assertCount(1, $storageRows);
-        self::assertSame($defaultStorageUid, (int)$storageRows[0]['uid']);
-        self::assertSame(1, (int)$storageRows[0]['is_default']);
+        self::assertSame(1, $subject->getDefaultStorageUid());
+        self::assertFileDoesNotExist(Environment::getConfigPath() . '/system/file-storages.yaml');
     }
 }

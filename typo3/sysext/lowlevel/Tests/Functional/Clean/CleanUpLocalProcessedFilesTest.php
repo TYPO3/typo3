@@ -23,6 +23,7 @@ use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Resource\Configuration\FileStorageConfigurationWriter;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lowlevel\Command\CleanUpLocalProcessedFilesCommand;
@@ -52,6 +53,12 @@ final class CleanUpLocalProcessedFilesTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $this->setUpBackendUser(1);
 
+        // fileadmin (1) is the implicit default storage, add an additional absolute local storage (2)
+        $this->get(StorageRepository::class)->addLocalStorage(
+            'another-storage',
+            Environment::getPublicPath() . '/local-storage/'
+        );
+
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DataSet/sys_file_processedfile.csv');
         $cleanUpLocalProcessedFilesCommand = $this->get(CleanUpLocalProcessedFilesCommand::class);
 
@@ -61,19 +68,6 @@ final class CleanUpLocalProcessedFilesTest extends FunctionalTestCase
         $cleanUpLocalProcessedFilesCommand->setHelperSet($helperSet);
         $this->commandTester = new CommandTester($cleanUpLocalProcessedFilesCommand);
         $this->setUpBackendUser(1);
-
-        // create fileadmin (1) and an additional absolute local storage (2)
-        $subject = $this->get(StorageRepository::class);
-        $subject->createLocalStorage(
-            'fileadmin',
-            'fileadmin/',
-            'relative'
-        );
-        $subject->createLocalStorage(
-            'another-storage',
-            Environment::getPublicPath() . '/local-storage/',
-            'absolute'
-        );
 
         // check for existing files to ensure setup is complete for this test
         foreach ($this->pathsToProvideInTestInstance as $instanceFilePath) {
@@ -88,6 +82,7 @@ final class CleanUpLocalProcessedFilesTest extends FunctionalTestCase
         // really needed.
         $testbase = new Testbase();
         $testbase->providePathsInTestInstance(Environment::getPublicPath(), $this->pathsToProvideInTestInstance);
+        @unlink(Environment::getConfigPath() . '/system/file-storages.yaml');
 
         parent::tearDown();
     }
@@ -214,15 +209,11 @@ final class CleanUpLocalProcessedFilesTest extends FunctionalTestCase
     #[Test]
     public function databaseRecordsOfNonLocalStoragesAreKeptWithAllOption(): void
     {
-        $this->getConnectionPool()->getConnectionForTable('sys_file_storage')->insert(
-            'sys_file_storage',
-            ['uid' => 3, 'pid' => 0, 'name' => 'remote-storage', 'driver' => 'Remote', 'configuration' => '']
-        );
+        $this->get(FileStorageConfigurationWriter::class)->write(3, ['name' => 'remote-storage', 'driver' => 'Remote']);
         $this->getConnectionPool()->getConnectionForTable('sys_file_processedfile')->insert(
             'sys_file_processedfile',
             ['uid' => 6, 'storage' => 3, 'original' => 83, 'identifier' => '/_processed_/remote.png', 'name' => 'remote.png']
         );
-        $this->get(StorageRepository::class)->flush();
 
         $this->commandTester->execute(['--force' => true, '--all' => true]);
 

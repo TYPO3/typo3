@@ -3507,6 +3507,23 @@ final class ArrayUtilityTest extends UnitTestCase
                     'bar' => 'keep',
                 ],
             ],
+            'empty array keeps integer keys of second array' => [
+                [
+                    'storages' => [],
+                ],
+                [
+                    'storages' => [
+                        1 => 'keep',
+                        5 => 'keep',
+                    ],
+                ],
+                [
+                    'storages' => [
+                        1 => 'keep',
+                        5 => 'keep',
+                    ],
+                ],
+            ],
         ];
     }
 

@@ -34,7 +34,6 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Resource\FileRepository;
-use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Schema\Capability\RootLevelCapability;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\Struct\SelectItemCollection;
@@ -561,40 +560,6 @@ abstract class AbstractItemProvider
         }
 
         return $items;
-    }
-
-    /**
-     * Remove items if sys_file_storage is not allowed for non-admin users.
-     *
-     * Used by TcaSelectItems data providers
-     *
-     * @param array $result Result array
-     * @param string $fieldName Current handle field name
-     * @param array $items Incoming items
-     * @return array Modified item array
-     */
-    protected function removeItemsByUserStorageRestriction(array $result, $fieldName, array $items)
-    {
-        $referencedTableName = $result['processedTca']['columns'][$fieldName]['config']['foreign_table'] ?? null;
-        if ($referencedTableName !== 'sys_file_storage') {
-            return $items;
-        }
-
-        $allowedStorageIds = array_map(
-            static function (ResourceStorage $storage): int {
-                return $storage->getUid();
-            },
-            $this->getBackendUser()->getFileStorages()
-        );
-
-        return array_filter(
-            $items,
-            static function (array $item) use ($allowedStorageIds): bool {
-                $itemValue = $item['value'] ?? null;
-                return empty($itemValue)
-                    || in_array((int)$itemValue, $allowedStorageIds, true);
-            }
-        );
     }
 
     /**

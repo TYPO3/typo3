@@ -1,0 +1,10 @@
+# The implicit fileadmin storage detects the case sensitivity of the file
+# system. Tests asserting identifiers with upper case letters pin it, so they
+# behave the same on case-insensitive file systems, e.g. a macOS bind mount.
+storages:
+  1:
+    name: fileadmin
+    default: true
+    configuration:
+      basePath: fileadmin/
+      caseSensitive: true

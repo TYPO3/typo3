@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Resource\Driver;
 
 use PHPUnit\Framework\Attributes\BackupGlobals;
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Resource\Driver\DriverInterface;
 use TYPO3\CMS\Core\Resource\Driver\DriverRegistry;
@@ -87,6 +88,23 @@ final class DriverRegistryTest extends UnitTestCase
                 'class' => $className,
             ],
         ];
+        $subject = new DriverRegistry();
+        self::assertEquals($className, $subject->getDriverClass($shortName));
+    }
+
+    #[Test]
+    #[IgnoreDeprecations]
+    public function registeredFlexFormDataStructureTriggersDeprecation(): void
+    {
+        $className = get_class(self::createStub(DriverInterface::class));
+        $shortName = StringUtility::getUniqueId('class_');
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['registeredDrivers'] = [
+            $shortName => [
+                'class' => $className,
+                'flexFormDS' => 'FILE:EXT:my_driver/Configuration/FlexForm/Driver.xml',
+            ],
+        ];
+        $this->expectUserDeprecationMessageMatches('/registers a "flexFormDS", which is not evaluated anymore/');
         $subject = new DriverRegistry();
         self::assertEquals($className, $subject->getDriverClass($shortName));
     }

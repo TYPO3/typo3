@@ -1,0 +1,14 @@
+storages:
+  1:
+    name: fileadmin
+    default: true
+    processingFolder: 'temp/assets/_processed_/'
+    configuration:
+      basePath: fileadmin/
+      caseSensitive: true
+  2:
+    name: user_upload
+    processingFolder: 'temp/user_upload/_processed_/'
+    configuration:
+      basePath: user_upload/
+      caseSensitive: true

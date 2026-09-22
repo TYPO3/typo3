@@ -47,7 +47,7 @@ readonly class FileStorageTreeProvider
             $tableName = 'sys_filemount';
             $isStorage = true;
         } elseif ($parentFolder === null || $folder->getIdentifier() === $storage->getRootLevelFolder()->getIdentifier()) {
-            $tableName = 'sys_file_storage';
+            $tableName = 'sys_file';
             $isStorage = true;
         } else {
             $tableName = 'sys_file';
@@ -69,6 +69,7 @@ readonly class FileStorageTreeProvider
             'hasChildren' => $hasSubfolders,
             'parentIdentifier' => !$isStorage ? rawurlencode($parentFolder->getCombinedIdentifier()) : null,
             'recordType' => $tableName,
+            'resourceType' => $isStorage ? 'storage' : 'folder',
         ];
     }
 

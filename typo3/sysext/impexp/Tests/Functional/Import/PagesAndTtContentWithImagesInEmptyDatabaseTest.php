@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Impexp\Tests\Functional\Import;
 
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Impexp\Exception\ImportFailedException;
 use TYPO3\CMS\Impexp\Import;
 use TYPO3\CMS\Impexp\Tests\Functional\AbstractImportExportTestCase;
@@ -171,10 +170,8 @@ final class PagesAndTtContentWithImagesInEmptyDatabaseTest extends AbstractImpor
     }
 
     #[Test]
-    public function importPagesAndRelatedTtContentWithImagesAndNewStorage(): void
+    public function importPagesAndRelatedTtContentWithImagesOfUnknownStorageIntoDefaultStorage(): void
     {
-        GeneralUtility::mkdir(Environment::getPublicPath() . '/fileadmin_invalid_path');
-
         $subject = $this->get(Import::class);
         $subject->setPid(0);
         $subject->loadFile('EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent-with-image-with-invalid-storage.xml');
@@ -182,8 +179,14 @@ final class PagesAndTtContentWithImagesInEmptyDatabaseTest extends AbstractImpor
 
         self::assertFileEquals(
             __DIR__ . '/../Fixtures/Folders/fileadmin/user_upload/typo3_image2.jpg',
-            Environment::getPublicPath() . '/fileadmin_invalid_path/user_upload/typo3_image2.jpg'
+            Environment::getPublicPath() . '/fileadmin/user_upload/typo3_image2.jpg'
         );
+        self::assertDirectoryDoesNotExist(Environment::getPublicPath() . '/fileadmin_invalid_path');
+        self::assertSame(
+            ['Files of storage 1 "fileadmin" (' . Environment::getPublicPath() . '/fileadmin_invalid_path/) are imported into the default storage 1 "fileadmin".'],
+            $subject->getWarningLog()
+        );
+        self::assertSame([], $subject->getErrorLog());
     }
 
     #[Test]

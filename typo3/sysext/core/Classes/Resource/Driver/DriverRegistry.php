@@ -40,6 +40,12 @@ class DriverRegistry implements SingletonInterface
         $driverConfigurations = $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['registeredDrivers'];
         foreach ($driverConfigurations as $shortName => $driverConfig) {
             $shortName = $shortName ?: $driverConfig['shortName'] ?? '';
+            if (!empty($driverConfig['flexFormDS'])) {
+                trigger_error(
+                    'The file storage driver "' . $shortName . '" registers a "flexFormDS", which is not evaluated anymore since TYPO3 v15. Storages are configured in config/system/file-storages.yaml, document the driver options for its "configuration" map instead and remove "flexFormDS".',
+                    E_USER_DEPRECATED
+                );
+            }
             $this->registerDriverClass($driverConfig['class'] ?? '', $shortName, $driverConfig['label'] ?? '', $driverConfig['flexFormDS'] ?? '');
         }
     }
@@ -50,7 +56,7 @@ class DriverRegistry implements SingletonInterface
      * @param string $className
      * @param string|null $shortName
      * @param string $label
-     * @param string $flexFormDataStructurePathAndFilename
+     * @param string $flexFormDataStructurePathAndFilename No longer evaluated, storages are configured in config/system/file-storages.yaml
      * @return bool TRUE if registering succeeded
      * @throws \InvalidArgumentException
      */
@@ -85,25 +91,6 @@ class DriverRegistry implements SingletonInterface
             'flexFormDS' => $flexFormDataStructurePathAndFilename,
         ];
         return true;
-    }
-
-    /**
-     * Adds the TCA information so the registered drivers can be selected when creating a sys_file_storage
-     * in the TYPO3 Backend.
-     */
-    public function addDriversToTCA(): void
-    {
-        $driverFieldConfig = &$GLOBALS['TCA']['sys_file_storage']['columns']['driver']['config'];
-        $types = &$GLOBALS['TCA']['sys_file_storage']['types'];
-        foreach ($this->driverConfigurations as $driver) {
-            $label = $driver['label'] ?: $driver['class'];
-            $driverId = $driver['shortName'];
-            $driverFieldConfig['items'][$driverId] = ['label' => $label, 'value' => $driverId];
-            $types[$driverId] = $types['0'];
-            if ($driver['flexFormDS']) {
-                $types[$driverId]['columnsOverrides']['configuration']['config']['ds'] = $driver['flexFormDS'];
-            }
-        }
     }
 
     /**

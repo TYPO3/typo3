@@ -21,6 +21,7 @@ use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Result;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
@@ -38,7 +39,9 @@ use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderWritePermissionsException;
 use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\LocalPath;
 use TYPO3\CMS\Core\Resource\ResourceInstructionTrait;
+use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Schema\Capability\LanguageAwareSchemaCapability;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\TcaSchema;
@@ -111,6 +114,8 @@ class Export extends ImportExport
         protected readonly ReferenceIndex $referenceIndex,
         protected readonly SiteConfiguration $siteConfiguration,
         protected readonly Context $context,
+        protected readonly StorageRepository $storageRepository,
+        protected readonly FlexFormTools $flexFormTools,
     ) {}
 
     /**
@@ -541,10 +546,8 @@ class Export extends ImportExport
                         ];
                     }
                 }
-                // The storage column of sys_file has no reference index entry, as its items come from an
-                // items processor function. The import needs the storage record to map the file to an
-                // equivalent storage of the target system, so the relation is added here manually.
-                // @todo: Revisit once file storages are no longer database records, see #110684.
+                // The storage column of sys_file has no reference index entry. The import needs the
+                // storage to map the file to a storage of the target system, so the relation is added here.
                 if ($table === 'sys_file' && (int)($row['storage'] ?? 0) > 0) {
                     $relations = [
                         'storage' => [
@@ -571,12 +574,66 @@ class Export extends ImportExport
                 if ($flatSoftRefs !== []) {
                     $this->dat['header']['records'][$table][$recordUid]['softrefs'] = $flatSoftRefs;
                 }
+                if ($table === 'sys_file' && (int)($row['storage'] ?? 0) > 0) {
+                    $this->exportAddSysFileStorage((int)$row['storage'], $relationLevel + 1);
+                }
             } else {
                 $this->addError('Record ' . $recordIdentifier . ' already added.');
             }
         } else {
             $this->addError('Record ' . $recordIdentifier . ' was outside your database mounts!');
         }
+    }
+
+    /**
+     * Adds the storage of exported files as sys_file_storage record. A storage is
+     * configuration, not content: the record only carries what the import needs to
+     * find the matching storage of the target system. Driver configuration of other
+     * drivers than "Local" is never exported, as it may contain credentials.
+     */
+    protected function exportAddSysFileStorage(int $storageUid, int $relationLevel): void
+    {
+        $recordIdentifier = 'sys_file_storage:' . $storageUid;
+        if (isset($this->dat['records'][$recordIdentifier])) {
+            return;
+        }
+        $storage = $this->storageRepository->findByUid($storageUid);
+        if ($storage === null) {
+            $this->addError('The file storage ' . $storageUid . ' does not exist.');
+            return;
+        }
+        $data = [
+            'uid' => (string)$storageUid,
+            'pid' => '0',
+            'name' => $storage->getName(),
+            'driver' => $storage->getDriverType(),
+        ];
+        $localPath = $storage->getDriverType() === 'Local'
+            ? LocalPath::fromDriverConfiguration($storage->getConfiguration())
+            : null;
+        if ($localPath !== null) {
+            // A path below the public path is exported relative to it, to match the
+            // same directory of a target system installed in another location.
+            $relativePath = ltrim((string)$localPath->getRelative(), '/');
+            $data['configuration'] = $this->flexFormTools->flexArray2Xml([
+                'data' => [
+                    'sDEF' => [
+                        'lDEF' => [
+                            'basePath' => ['vDEF' => $relativePath !== '' ? $relativePath : $localPath->getAbsolute()],
+                            'pathType' => ['vDEF' => $relativePath !== '' ? 'relative' : 'absolute'],
+                        ],
+                    ],
+                ],
+            ]);
+        }
+        $this->dat['header']['records']['sys_file_storage'][$storageUid] = [
+            'uid' => $storageUid,
+            'pid' => 0,
+            'title' => GeneralUtility::fixed_lgd_cs($storage->getName(), 40),
+            'relationLevel' => $relationLevel,
+        ];
+        $this->dat['header']['pid_lookup'][0]['sys_file_storage'][$storageUid] = 1;
+        $this->dat['records'][$recordIdentifier] = ['data' => $data];
     }
 
     /**

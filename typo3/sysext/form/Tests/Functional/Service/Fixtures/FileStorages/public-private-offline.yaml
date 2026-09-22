@@ -1,0 +1,25 @@
+storages:
+  1:
+    name: fileadmin
+    default: true
+    processingFolder: 'temp/assets/_processed_/'
+    configuration:
+      basePath: fileadmin/
+      caseSensitive: true
+  2:
+    name: fileadmin-private
+    public: false
+    writable: false
+    processingFolder: 'temp/private_assets/_processed_/'
+    configuration:
+      basePath: fileadmin-private/
+      caseSensitive: true
+  3:
+    name: fileadmin-offline
+    public: false
+    writable: false
+    online: false
+    processingFolder: 'temp/offline_assets/_processed_/'
+    configuration:
+      basePath: fileadmin-offline/
+      caseSensitive: true

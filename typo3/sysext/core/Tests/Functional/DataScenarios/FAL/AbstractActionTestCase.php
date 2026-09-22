@@ -62,7 +62,6 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $GLOBALS['TCA']['tt_content']['ctrl']['hideAtCopy'] = false;
         $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
         $this->importCSVDataSet(static::SCENARIO_DataSet);
-        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/sys_file_storage.csv');
         $this->writeSiteConfiguration(
             'test',
             $this->buildSiteConfiguration(1, '/'),

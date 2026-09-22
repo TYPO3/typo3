@@ -225,6 +225,13 @@ readonly class ImportController
                 if ($inputData['import_file'] ?? false) {
                     $import->importData();
                     BackendUtility::setUpdateSignal('updatePageTree');
+                    foreach ($import->getWarningLog() as $warning) {
+                        $view->addFlashMessage(
+                            $warning,
+                            $this->getLanguageService()->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_fileStorages'),
+                            ContextualFeedbackSeverity::WARNING
+                        );
+                    }
                 }
             } catch (\Exception $e) {
                 $view->addFlashMessage($e->getMessage(), '', ContextualFeedbackSeverity::ERROR);

@@ -28,7 +28,6 @@ use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Crypto\HashService;
-use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Http\FalDumpFileContentsDecoratorStream;
 use TYPO3\CMS\Core\Http\Response;
@@ -94,6 +93,7 @@ use TYPO3\CMS\Core\Resource\Search\Result\FileSearchResultInterface;
 use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
 use TYPO3\CMS\Core\Resource\Service\FileProcessingService;
 use TYPO3\CMS\Core\Resource\Service\ResourceConsistencyService;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\Exception\NotImplementedMethodException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -200,42 +200,36 @@ class ResourceStorage implements ResourceStorageInterface
     /**
      * Constructor for a storage object.
      *
-     * @param array $storageRecord The storage record row from the database
+     * @param array $storageRecord The normalized storage definition, see FileStorageConfiguration::normalize()
      */
     public function __construct(
         protected DriverInterface $driver,
         /**
-         * The database record for this storage
+         * The normalized storage definition for this storage
          */
         protected array $storageRecord,
         ?EventDispatcherInterface $eventDispatcher = null
     ) {
-        if (!isset($this->storageRecord['uid'])) {
+        if (!isset($this->storageRecord['identifier'])) {
             throw new \InvalidArgumentException(
-                '$storageRecord[\'uid\'] is unexpectedly not set',
+                '$storageRecord[\'identifier\'] is unexpectedly not set',
                 1688920972
             );
         }
 
         $this->eventDispatcher = $eventDispatcher ?? GeneralUtility::makeInstance(EventDispatcherInterface::class);
-        if (is_array($this->storageRecord['configuration'] ?? null)) {
-            $this->configuration = $this->storageRecord['configuration'];
-        } elseif (!empty($this->storageRecord['configuration'] ?? '')) {
-            $this->configuration = GeneralUtility::makeInstance(FlexFormTools::class)->convertFlexFormContentToArray($this->storageRecord['configuration']);
-        } else {
-            $this->configuration = [];
-        }
+        $this->configuration = is_array($this->storageRecord['configuration'] ?? null) ? $this->storageRecord['configuration'] : [];
 
         $capabilityBits = 0;
-        $capabilityBits += ($this->storageRecord['is_browsable'] ?? null ? Capabilities::CAPABILITY_BROWSABLE : 0);
-        $capabilityBits += ($this->storageRecord['is_public'] ?? null ? Capabilities::CAPABILITY_PUBLIC : 0);
-        $capabilityBits += ($this->storageRecord['is_writable'] ?? null ? Capabilities::CAPABILITY_WRITABLE : 0);
+        $capabilityBits += (($this->storageRecord['browsable'] ?? false) ? Capabilities::CAPABILITY_BROWSABLE : 0);
+        $capabilityBits += (($this->storageRecord['public'] ?? false) ? Capabilities::CAPABILITY_PUBLIC : 0);
+        $capabilityBits += (($this->storageRecord['writable'] ?? false) ? Capabilities::CAPABILITY_WRITABLE : 0);
         // Always let the driver decide whether to set this capability
         $capabilityBits += Capabilities::CAPABILITY_HIERARCHICAL_IDENTIFIERS;
 
         $this->capabilities = new Capabilities($capabilityBits);
 
-        $this->driver->setStorageUid((int)$this->storageRecord['uid']);
+        $this->driver->setStorageUid((int)$this->storageRecord['identifier']);
         $this->driver->mergeConfigurationCapabilities($this->capabilities);
         try {
             $this->driver->processConfiguration();
@@ -256,7 +250,7 @@ class ResourceStorage implements ResourceStorageInterface
         $this->driver->initialize();
         $this->capabilities = $this->driver->getCapabilities();
 
-        $this->isDefault = (isset($this->storageRecord['is_default']) && $this->storageRecord['is_default'] == 1);
+        $this->isDefault = (bool)($this->storageRecord['default'] ?? false);
         $this->resetFileAndFolderNameFiltersToDefault();
     }
 
@@ -270,9 +264,48 @@ class ResourceStorage implements ResourceStorageInterface
         $this->configuration = $configuration;
     }
 
+    /**
+     * Returns the storage definition in the shape of the former sys_file_storage
+     * database row.
+     *
+     * @deprecated since TYPO3 v15, will be removed in TYPO3 v16. Use the getters of this class
+     *             or the normalized definition of FileStorageConfiguration instead.
+     */
     public function getStorageRecord(): array
     {
-        return $this->storageRecord;
+        trigger_error(
+            'ResourceStorage->getStorageRecord() is deprecated and will be removed in TYPO3 v16. Storages are configured in config/system/file-storages.yaml, use the getters of ResourceStorage instead.',
+            E_USER_DEPRECATED
+        );
+        return [
+            'uid' => $this->getUid(),
+            'pid' => 0,
+            'name' => $this->getName(),
+            'description' => '',
+            'driver' => $this->getDriverType(),
+            'configuration' => $this->getConfigurationAsFlexFormXml(),
+            'is_default' => $this->isDefault ? 1 : 0,
+            'is_browsable' => ($this->storageRecord['browsable'] ?? false) ? 1 : 0,
+            'is_public' => ($this->storageRecord['public'] ?? false) ? 1 : 0,
+            'is_writable' => ($this->storageRecord['writable'] ?? false) ? 1 : 0,
+            'is_online' => ($this->storageRecord['online'] ?? true) ? 1 : 0,
+            'auto_extract_metadata' => $this->autoExtractMetadataEnabled() ? 1 : 0,
+            'processingfolder' => (string)($this->storageRecord['processingFolder'] ?? ''),
+        ];
+    }
+
+    /**
+     * The driver configuration in the FlexForm format of the former sys_file_storage row.
+     *
+     * @deprecated since TYPO3 v15, will be removed in TYPO3 v16 together with getStorageRecord().
+     */
+    private function getConfigurationAsFlexFormXml(): string
+    {
+        $fields = [];
+        foreach (ArrayUtility::flatten($this->configuration) as $key => $value) {
+            $fields[$key] = ['vDEF' => is_bool($value) ? (string)(int)$value : (string)$value];
+        }
+        return GeneralUtility::makeInstance(FlexFormTools::class)->flexArray2Xml(['data' => ['sDEF' => ['lDEF' => $fields]]]);
     }
 
     /**
@@ -301,7 +334,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     public function getName(): string
     {
-        return $this->storageRecord['name'];
+        return (string)($this->storageRecord['name'] ?? '');
     }
 
     /**
@@ -309,7 +342,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     public function getUid(): int
     {
-        return (int)($this->storageRecord['uid'] ?? 0);
+        return (int)($this->storageRecord['identifier'] ?? 0);
     }
 
     /**
@@ -427,8 +460,8 @@ class ResourceStorage implements ResourceStorageInterface
             if ($this->getUid() === 0) {
                 $this->isOnline = true;
             }
-            // the storage is not marked as online for a longer time
-            if ($this->storageRecord['is_online'] == 0) {
+            // the storage is taken offline by configuration
+            if (($this->storageRecord['online'] ?? true) === false) {
                 $this->isOnline = false;
             }
             if ($this->isOnline !== false) {
@@ -450,29 +483,21 @@ class ResourceStorage implements ResourceStorageInterface
      */
     public function autoExtractMetadataEnabled(): bool
     {
-        return !empty($this->storageRecord['auto_extract_metadata']);
+        return (bool)($this->storageRecord['autoExtractMetadata'] ?? false);
     }
 
     /**
-     * Blows the "fuse" and marks the storage as offline.
+     * Blows the "fuse" and marks the storage as offline until the caches are flushed.
      *
-     * Can only be modified by an admin.
-     *
-     * Typically, this is only done if the configuration is wrong.
+     * Typically, this is only done if the configuration is wrong. A storage that
+     * should stay offline is configured with "online: false" instead.
      */
     public function markAsPermanentlyOffline(): void
     {
         if ($this->getUid() > 0) {
-            // @todo: move this to the storage repository
-            GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getConnectionForTable('sys_file_storage')
-                ->update(
-                    'sys_file_storage',
-                    ['is_online' => 0],
-                    ['uid' => (int)$this->getUid()]
-                );
+            $this->getOfflineStateCache()->set($this->getOfflineStateCacheIdentifier(), true, [], 0);
         }
-        $this->storageRecord['is_online'] = 0;
+        $this->storageRecord['online'] = false;
         $this->isOnline = false;
     }
 
@@ -485,7 +510,7 @@ class ResourceStorage implements ResourceStorageInterface
     public function markAsTemporaryOffline(): void
     {
         $this->getOfflineStateCache()->set($this->getOfflineStateCacheIdentifier(), true, [], self::TEMPORARY_OFFLINE_LIFETIME);
-        $this->storageRecord['is_online'] = 0;
+        $this->storageRecord['online'] = false;
         $this->isOnline = false;
     }
 
@@ -1633,7 +1658,7 @@ class ResourceStorage implements ResourceStorageInterface
             foreach ($allStorages as $storage) {
                 // To circumvent the permission check of the folder, we use the factory to create it "manually" instead of directly using $storage->getProcessingFolder()
                 // See #66695 for details
-                [$storageUid, $processingFolderIdentifier] = array_pad(GeneralUtility::trimExplode(':', $storage->getStorageRecord()['processingfolder'] ?? ''), 2, null);
+                [$storageUid, $processingFolderIdentifier] = array_pad(GeneralUtility::trimExplode(':', (string)($storage->storageRecord['processingFolder'] ?? '')), 2, null);
                 if (empty($processingFolderIdentifier) || (int)$storageUid !== $this->getUid()) {
                     continue;
                 }
@@ -2697,8 +2722,8 @@ class ResourceStorage implements ResourceStorageInterface
         }
         if (!isset($this->processingFolder)) {
             $processingFolder = self::DEFAULT_ProcessingFolder;
-            if (!empty($this->storageRecord['processingfolder'])) {
-                $processingFolder = $this->storageRecord['processingfolder'];
+            if (!empty($this->storageRecord['processingFolder'])) {
+                $processingFolder = $this->storageRecord['processingFolder'];
             }
             try {
                 if (str_contains($processingFolder, ':')) {
@@ -2822,7 +2847,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     public function getDriverType(): string
     {
-        return $this->storageRecord['driver'];
+        return (string)($this->storageRecord['driver'] ?? '');
     }
 
     protected function getIndexer(): Indexer

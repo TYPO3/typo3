@@ -608,8 +608,8 @@ final class TcaItemsProcessorFunctionsTest extends FunctionalTestCase
     {
         $localDriver = new LocalDriver(['basePath' => $this->instancePath]);
         $storages = [
-            1 => new ResourceStorage($localDriver, ['uid' => 1, 'name' => 'fileadmin'], new NoopEventDispatcher()),
-            3 => new ResourceStorage($localDriver, ['uid' => 3, 'name' => 'assets'], new NoopEventDispatcher()),
+            1 => new ResourceStorage($localDriver, ['identifier' => 1, 'name' => 'fileadmin'], new NoopEventDispatcher()),
+            3 => new ResourceStorage($localDriver, ['identifier' => 3, 'name' => 'assets'], new NoopEventDispatcher()),
         ];
         $backendUserStub = self::createStub(BackendUserAuthentication::class);
         $backendUserStub->method('getFileStorages')->willReturn($storages);

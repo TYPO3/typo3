@@ -1,6 +1,11 @@
 <?php
 
 return [
+    'TYPO3\CMS\Backend\Form\Element\UserSysFileStorageIsPublicElement' => [
+        'restFiles' => [
+            'Breaking-110762-FileStoragesAreConfiguredInAFileInsteadOfTheDatabase.rst',
+        ],
+    ],
     // Removed classes
     'RemoveXSS' => [
         'restFiles' => [

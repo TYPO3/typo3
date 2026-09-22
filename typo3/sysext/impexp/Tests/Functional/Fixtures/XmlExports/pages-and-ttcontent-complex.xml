@@ -75,6 +75,14 @@
 					</relations>
 				</rec>
 			</table>
+			<table index="sys_file_storage" type="array">
+				<rec index="1" type="array">
+					<uid>1</uid>
+					<pid>0</pid>
+					<title>fileadmin</title>
+					<relationLevel>2</relationLevel>
+				</rec>
+			</table>
 		</records>
 		<pid_lookup type="array">
 			<page_contents index="0" type="array">
@@ -83,6 +91,9 @@
 				</table>
 				<table index="sys_file" type="array">
 					<item index="2">1</item>
+				</table>
+				<table index="sys_file_storage" type="array">
+					<item index="1">1</item>
 				</table>
 			</page_contents>
 			<page_contents index="1" type="array">
@@ -211,6 +222,29 @@
 					</relations>
 				</field>
 			</related>
+		</tablerow>
+		<tablerow index="sys_file_storage:1" type="array">
+			<fieldlist index="data" type="array">
+				<field index="uid">1</field>
+				<field index="pid">0</field>
+				<field index="name">fileadmin</field>
+				<field index="driver">Local</field>
+				<field index="configuration">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; standalone=&quot;yes&quot; ?&gt;
+&lt;T3FlexForms&gt;
+    &lt;data&gt;
+        &lt;sheet index=&quot;sDEF&quot;&gt;
+            &lt;language index=&quot;lDEF&quot;&gt;
+                &lt;field index=&quot;basePath&quot;&gt;
+                    &lt;value index=&quot;vDEF&quot;&gt;fileadmin/&lt;/value&gt;
+                &lt;/field&gt;
+                &lt;field index=&quot;pathType&quot;&gt;
+                    &lt;value index=&quot;vDEF&quot;&gt;relative&lt;/value&gt;
+                &lt;/field&gt;
+            &lt;/language&gt;
+        &lt;/sheet&gt;
+    &lt;/data&gt;
+&lt;/T3FlexForms&gt;</field>
+			</fieldlist>
 		</tablerow>
 	</records>
 	<files_fal type="array">

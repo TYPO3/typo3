@@ -99,12 +99,8 @@ class ContextMenuActions {
   }
 
   public static openInfoPopUp(table: string, uid: string): void {
-    if (table === 'sys_file_storage') {
-      top.TYPO3.InfoWindow.showItem(table, uid);
-    } else {
-      // Files and folders
-      top.TYPO3.InfoWindow.showItem('_FILE', uid);
-    }
+    // Files and folders
+    top.TYPO3.InfoWindow.showItem('_FILE', uid);
   }
 
   public static createFolder(table: string, uid: string, dataset: DOMStringMap): void {

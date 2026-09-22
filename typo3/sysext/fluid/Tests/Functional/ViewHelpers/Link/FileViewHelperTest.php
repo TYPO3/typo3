@@ -20,9 +20,9 @@ namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Link;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
-use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Resource\Configuration\FileStorageConfigurationWriter;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
@@ -68,6 +68,7 @@ final class FileViewHelperTest extends FunctionalTestCase
                 unlink($file);
             }
         }
+        @unlink(Environment::getConfigPath() . '/system/file-storages.yaml');
 
         parent::tearDown();
     }
@@ -110,9 +111,7 @@ final class FileViewHelperTest extends FunctionalTestCase
     #[Test]
     public function renderTagsForNonPublicFileTest(): void
     {
-        // Set storage to non-public
-        $connection = $this->get(ConnectionPool::class)->getConnectionForTable('sys_file_storage');
-        $connection->update('sys_file_storage', ['is_public' => 0], ['uid' => 1]);
+        $this->setStorageNonPublic();
         $normalizedParams = NormalizedParams::createFromServerParams(['HTTP_HOST' => 'localhost', 'SCRIPT_NAME' => '/index.php']);
         $request = new ServerRequest()
             ->withAttribute('normalizedParams', $normalizedParams)
@@ -168,9 +167,7 @@ final class FileViewHelperTest extends FunctionalTestCase
     #[Test]
     public function renderTagsForNonPublicFileReferenceTest(): void
     {
-        // Set storage to non-public
-        $connection = $this->get(ConnectionPool::class)->getConnectionForTable('sys_file_storage');
-        $connection->update('sys_file_storage', ['is_public' => 0], ['uid' => 1]);
+        $this->setStorageNonPublic();
         $normalizedParams = NormalizedParams::createFromServerParams(['HTTP_HOST' => 'localhost', 'SCRIPT_NAME' => '/index.php']);
         $request = new ServerRequest()
             ->withAttribute('normalizedParams', $normalizedParams)
@@ -226,9 +223,7 @@ final class FileViewHelperTest extends FunctionalTestCase
     #[Test]
     public function renderTagsForNonPublicProcessedFileTest(): void
     {
-        // Set storage to non-public
-        $connection = $this->get(ConnectionPool::class)->getConnectionForTable('sys_file_storage');
-        $connection->update('sys_file_storage', ['is_public' => 0], ['uid' => 1]);
+        $this->setStorageNonPublic();
         $normalizedParams = NormalizedParams::createFromServerParams(['HTTP_HOST' => 'localhost', 'SCRIPT_NAME' => '/index.php']);
         $request = new ServerRequest()
             ->withAttribute('normalizedParams', $normalizedParams)
@@ -255,6 +250,15 @@ final class FileViewHelperTest extends FunctionalTestCase
         foreach (array_values(array_filter(explode(LF, $view->render()))) as $key => $tag) {
             self::assertStringContainsString($expected[$key], $tag);
         }
+    }
+
+    private function setStorageNonPublic(): void
+    {
+        $this->get(FileStorageConfigurationWriter::class)->write(1, [
+            'name' => 'fileadmin',
+            'public' => false,
+            'configuration' => ['basePath' => 'fileadmin/'],
+        ]);
     }
 
     private function getFile(int $fileUid): File

@@ -282,6 +282,11 @@ return [
             'Breaking-88376-RemovedObsoletePageNotFound_handlingSettings.rst',
         ],
     ],
+    '$GLOBALS[\'TCA\'][\'sys_file_storage\']' => [
+        'restFiles' => [
+            'Breaking-110762-FileStoragesAreConfiguredInAFileInsteadOfTheDatabase.rst',
+        ],
+    ],
     '$GLOBALS[\'TCA\'][\'sys_history\']' => [
         'restFiles' => [
             'Breaking-87936-TCAForSysHistoryRemoved.rst',

@@ -414,6 +414,18 @@ abstract class ImportExport
             // Record is a soft reference
             $line['preCode'] = $this->renderIndent($indent);
             $line['title'] = '<em>' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_singlereco_softReferencesFiles')) . '</em>';
+        } elseif ($table === 'sys_file_storage') {
+            // Storages are configuration and never imported, files are assigned to a storage of this installation
+            $line['preCode'] = $this->renderIndent($indent)
+                . $this->iconFactory
+                    ->getIcon('mimetypes-x-sys_file_storage', IconSize::SMALL)
+                    ->setTitle($line['ref'])
+                    ->render();
+            $line['title'] = htmlspecialchars((string)($record['title'] ?? ''));
+            $line['active'] = 'active';
+            if ($this->mode === 'import') {
+                $line['msg'] = $this->getLanguageService()->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_fileStoragesNotImported');
+            }
         } elseif (!$this->tcaSchemaFactory->has($table)) {
             // Record is of unknown table
             $line['preCode'] = $this->renderIndent($indent);

@@ -85,11 +85,6 @@ CREATE TABLE sys_be_shortcuts_group (
 	KEY user_groups (userid)
 );
 
-CREATE TABLE sys_file_storage (
-	# @todo: type=user currently needs manual configuration
-	is_public tinyint(4) DEFAULT '0' NOT NULL
-);
-
 CREATE TABLE sys_file (
 	# No TCA column
 	last_indexed int(11) DEFAULT '0' NOT NULL,

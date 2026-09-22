@@ -58,6 +58,7 @@ final class LocalDriverTest extends FunctionalTestCase
     {
         $driverConfiguration = [
             'basePath' => $this->baseDirectory,
+            'caseSensitive' => true,
         ];
         $subject = new LocalDriver($driverConfiguration);
         $subject->processConfiguration();
@@ -182,11 +183,104 @@ final class LocalDriverTest extends FunctionalTestCase
         self::assertSame($expectedPublicUrl, $subject->getPublicUrl($fileName));
     }
 
+    public static function basePathIsResolvedAgainstProjectPathDataProvider(): array
+    {
+        return [
+            'relative path below public directory' => [
+                ['basePath' => 'public/files/'],
+                '{project}/public/files/',
+                true,
+                'files/foo.txt',
+            ],
+            'relative path outside public directory' => [
+                ['basePath' => 'files/'],
+                '{project}/files/',
+                false,
+                null,
+            ],
+            'relative path outside public directory with base uri' => [
+                ['basePath' => 'files/', 'baseUri' => 'https://host.tld/'],
+                '{project}/files/',
+                true,
+                'https://host.tld/foo.txt',
+            ],
+            'relative path with legacy pathType absolute' => [
+                ['basePath' => 'files/', 'pathType' => 'absolute'],
+                '{project}/files/',
+                false,
+                null,
+            ],
+            'absolute path below public directory' => [
+                ['basePath' => '{project}/public/files/'],
+                '{project}/public/files/',
+                true,
+                'files/foo.txt',
+            ],
+            'legacy pathType relative resolves against public directory' => [
+                ['basePath' => 'files/', 'pathType' => 'relative'],
+                '{project}/public/files/',
+                true,
+                'files/foo.txt',
+            ],
+        ];
+    }
+
+    #[DataProvider('basePathIsResolvedAgainstProjectPathDataProvider')]
+    #[Test]
+    public function basePathIsResolvedAgainstProjectPath(array $driverConfiguration, string $expectedAbsoluteBasePath, bool $expectedIsPublic, ?string $expectedPublicUrl): void
+    {
+        $projectPath = $this->baseDirectory . '/app';
+        $publicPath = $projectPath . '/public';
+        mkdir($projectPath);
+        mkdir($publicPath);
+        mkdir($projectPath . '/files');
+        mkdir($publicPath . '/files');
+        Environment::initialize(
+            Environment::getContext(),
+            true,
+            true,
+            $projectPath,
+            $publicPath,
+            Environment::getVarPath(),
+            Environment::getConfigPath(),
+            Environment::getCurrentScript(),
+            Environment::isUnix() ? 'UNIX' : 'WINDOWS'
+        );
+        $driverConfiguration['basePath'] = str_replace('{project}', $projectPath, $driverConfiguration['basePath']);
+        $subject = $this->getAccessibleMock(LocalDriver::class, null, [$driverConfiguration]);
+        $subject->processConfiguration();
+        self::assertSame(str_replace('{project}', $projectPath, $expectedAbsoluteBasePath), $subject->_get('absoluteBasePath'));
+        self::assertSame($expectedIsPublic, $subject->hasCapability(Capabilities::CAPABILITY_PUBLIC));
+        self::assertSame('/foo.txt', $subject->createFile('foo.txt', '/'));
+        self::assertSame($expectedPublicUrl, $subject->getPublicUrl('foo.txt'));
+    }
+
+    public static function caseSensitiveOptionIsReadAsBooleanDataProvider(): array
+    {
+        return [
+            'boolean false' => [false, false],
+            'string false from placeholder' => ['false', false],
+            'string zero' => ['0', false],
+            'boolean true' => [true, true],
+            'string true from placeholder' => ['true', true],
+            'string one' => ['1', true],
+        ];
+    }
+
+    #[DataProvider('caseSensitiveOptionIsReadAsBooleanDataProvider')]
+    #[Test]
+    public function caseSensitiveOptionIsReadAsBoolean(mixed $value, bool $expected): void
+    {
+        $subject = new LocalDriver(['basePath' => $this->baseDirectory, 'caseSensitive' => $value]);
+        self::assertSame($expected, $subject->isCaseSensitiveFileSystem());
+    }
+
     #[Test]
     public function createFolderRecursiveSanitizesFilename(): void
     {
         $driverConfiguration = [
             'basePath' => $this->baseDirectory,
+            'caseSensitive' => true,
         ];
         $subject = $this->getAccessibleMock(LocalDriver::class, ['sanitizeFilename'], [$driverConfiguration]);
         $subject->processConfiguration();
@@ -288,6 +382,7 @@ final class LocalDriverTest extends FunctionalTestCase
     {
         $driverConfiguration = [
             'basePath' => $this->baseDirectory,
+            'caseSensitive' => true,
         ];
         $subject = $this->getAccessibleMock(LocalDriver::class, null, [$driverConfiguration]);
         $subject->processConfiguration();
@@ -299,6 +394,7 @@ final class LocalDriverTest extends FunctionalTestCase
     {
         $driverConfiguration = [
             'basePath' => $this->baseDirectory,
+            'caseSensitive' => true,
         ];
         $subject = $this->getAccessibleMock(LocalDriver::class, null, [$driverConfiguration]);
         $subject->processConfiguration();
@@ -371,6 +467,7 @@ final class LocalDriverTest extends FunctionalTestCase
         file_put_contents($this->baseDirectory . '/someFolder/file1.ext', 'asdfg');
         $driverConfiguration = [
             'basePath' => $this->baseDirectory,
+            'caseSensitive' => true,
         ];
         $subject = $this->getAccessibleMock(LocalDriver::class, null, [$driverConfiguration]);
         $subject->processConfiguration();
@@ -454,6 +551,7 @@ final class LocalDriverTest extends FunctionalTestCase
         $driverConfiguration = [
             'baseUri' => $baseUri,
             'basePath' => $this->baseDirectory,
+            'caseSensitive' => true,
         ];
         $subject = new LocalDriver($driverConfiguration);
         $subject->processConfiguration();
@@ -479,6 +577,7 @@ final class LocalDriverTest extends FunctionalTestCase
         $driverConfiguration = [
             'baseUri' => $baseUri,
             'basePath' => $this->baseDirectory,
+            'caseSensitive' => true,
         ];
         $subject = new LocalDriver($driverConfiguration);
         $subject->processConfiguration();
@@ -733,6 +832,7 @@ final class LocalDriverTest extends FunctionalTestCase
         file_put_contents($this->baseDirectory . '/someDir/someFile', 'asdfgh');
         $driverConfiguration = [
             'basePath' => $this->baseDirectory,
+            'caseSensitive' => true,
         ];
         $subject = $this->getAccessibleMock(LocalDriver::class, ['copyFileToTemporaryPath'], [$driverConfiguration]);
         $subject->processConfiguration();
@@ -757,6 +857,7 @@ final class LocalDriverTest extends FunctionalTestCase
         file_put_contents($this->baseDirectory . '/someDir/someFile.ext', 'asdfgh');
         $driverConfiguration = [
             'basePath' => $this->baseDirectory,
+            'caseSensitive' => true,
         ];
         $subject = $this->getAccessibleMock(LocalDriver::class, null, [$driverConfiguration]);
         $subject->processConfiguration();
@@ -926,6 +1027,7 @@ final class LocalDriverTest extends FunctionalTestCase
         file_put_contents($this->baseDirectory . '/sourceFolder/file', 'asdfg');
         $driverConfiguration = [
             'basePath' => $this->baseDirectory,
+            'caseSensitive' => true,
         ];
         $subject = $this->getAccessibleMock(LocalDriver::class, ['createIdentifierMap'], [$driverConfiguration]);
         $subject->processConfiguration();
@@ -1117,6 +1219,7 @@ final class LocalDriverTest extends FunctionalTestCase
         ];
         $driverConfiguration = [
             'basePath' => $this->baseDirectory,
+            'caseSensitive' => true,
         ];
         $subject = $this->getAccessibleMock(LocalDriver::class, null, [$driverConfiguration]);
         $subject->processConfiguration();

@@ -39,7 +39,6 @@ final class PagesAndTtContentWithImagesTest extends AbstractImportExportTestCase
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/tt_content-with-image.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_metadata.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_reference.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_storage.csv');
     }
 
     #[Test]
@@ -140,7 +139,6 @@ final class PagesAndTtContentWithImagesTest extends AbstractImportExportTestCase
         $subject->setRelOnlyTables([
             'sys_file',
             'sys_file_metadata',
-            'sys_file_storage',
         ]);
         $subject->process();
     }

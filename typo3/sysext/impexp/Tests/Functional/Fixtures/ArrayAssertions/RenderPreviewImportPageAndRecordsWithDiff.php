@@ -116,7 +116,7 @@ return [
         => [
             'ref' => 'sys_file_storage:1',
             'type' => 'record',
-            'msg' => 'TABLE "sys_file_storage" will be inserted on ROOT LEVEL! ',
+            'msg' => 'File storages are not imported. Files are imported into the storage with the same base path, or into the default storage.',
             'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="sys_file_storage:1" class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-x-sys_file_storage" data-identifier="mimetypes-x-sys_file_storage" aria-hidden="true">
 	<span class="icon-markup">
 <svg class="icon-color"><use xlink:href="' . $coreAssetPath . 'Icons/T3Icons/sprites/mimetypes.svg?' . $fileMtimeMime . '#mimetypes-x-sys_file_storage" /></svg>
@@ -125,7 +125,6 @@ return [
 </span>',
             'title' => 'fileadmin',
             'active' => 'active',
-            'showDiffContent' => '',
             'controls' => '',
             'message' => '',
         ],

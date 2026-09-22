@@ -34,8 +34,8 @@ final class TypeUserPalette
         $html = [];
         $html[] = '
 			<div class="t3-form-field-item">
-				<input name="data[sys_file_storage][{uid}][is_public]" value="0" type="hidden">
-				<input class="checkbox" value="1" name="data[sys_file_storage][{uid}][is_public]_0" type="checkbox" %s>
+				<input name="data[tx_styleguide_elements_basic][{uid}][is_public]" value="0" type="hidden">
+				<input class="checkbox" value="1" name="data[tx_styleguide_elements_basic][{uid}][is_public]_0" type="checkbox" %s>
 			</div>';
         return implode(chr(10), $html);
     }

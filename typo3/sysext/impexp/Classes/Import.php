@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\DataHandling\TableColumnType;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\LocalPath;
 use TYPO3\CMS\Core\Resource\ResourceInstructionTrait;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\StorageRepository;
@@ -120,6 +121,13 @@ class Import extends ImportExport
     protected ?ResourceStorage $defaultStorage = null;
 
     /**
+     * Messages about the import that do not make it fail
+     *
+     * @var list<string>
+     */
+    protected array $warningLog = [];
+
+    /**
      * When false, processSiteConfigurations() is skipped. Set to false when the caller
      * (e.g. a distribution installer) handles site configuration import itself.
      */
@@ -146,9 +154,6 @@ class Import extends ImportExport
 
     /**
      * Fetch all available file storages and index by storage UID
-     *
-     * Note: It also creates a default storage record if the database table sys_file_storage is empty,
-     * e.g. during tests.
      */
     protected function fetchStorages(): void
     {
@@ -361,46 +366,6 @@ class Import extends ImportExport
             );
         }
 
-        // Check #2: Presence of imported storage paths
-        foreach ($this->dat['header']['records']['sys_file_storage'] ?? [] as $sysFileStorageUid => $_) {
-            $storageRecord = &$this->dat['records']['sys_file_storage:' . $sysFileStorageUid]['data'];
-            if ($storageRecord['driver'] === 'Local'
-                && ($storageRecord['is_writable'] ?? 1)
-                && ($storageRecord['is_online'] ?? 1)
-            ) {
-                $storageMapUid = -1;
-                foreach ($this->storages as $storage) {
-                    if ($this->isEquivalentStorage($storage, $storageRecord)) {
-                        $storageMapUid = $storage->getUid();
-                        break;
-                    }
-                }
-                // The storage from the import does not have an equivalent storage
-                // in the current instance (same driver, same path, etc.). Before
-                // the storage record can get inserted later on take care the path
-                // it points to really exists and is accessible.
-                if ($storageMapUid === -1) {
-                    // Unset the storage record UID when trying to create the storage object
-                    // as the record does not already exist in database. The constructor of the
-                    // storage object will check whether the target folder exists and set the
-                    // isOnline flag depending on the outcome.
-                    $storageRecordWithUid0 = $storageRecord;
-                    $storageRecordWithUid0['uid'] = 0;
-                    $storageObject = $this->storageRepository->createFromRecord($storageRecordWithUid0);
-                    if (!$storageObject->isOnline()) {
-                        $configuration = $storageObject->getConfiguration();
-                        $this->addError(
-                            sprintf(
-                                'The file storage "%s" does not exist. '
-                                . 'Please create the directory prior to starting the import!',
-                                $storageObject->getName() . $configuration['basePath']
-                            )
-                        );
-                    }
-                }
-            }
-        }
-
         if ($this->hasErrors()) {
             throw new PrerequisitesNotMetException(
                 'Prerequisites for file import are not met.',
@@ -418,8 +383,8 @@ class Import extends ImportExport
     {
         $this->initializeImport();
 
-        // Write sys_file_storages first
-        $this->writeSysFileStorageRecords();
+        // Map the storages of the export to the storages of this installation
+        $this->mapSysFileStorageRecords();
         // Write sys_file records and write the binary file data
         $this->writeSysFileRecords();
         // Write records, first pages, then the rest
@@ -516,91 +481,98 @@ class Import extends ImportExport
     }
 
     /**
-     * Imports the sys_file_storage records from memory data.
+     * Maps the sys_file_storage records of the import file to the storages of this
+     * installation. Storage records are never imported: a storage is configuration,
+     * not content. A local storage with the same base path is used when it exists,
+     * the files of any other storage of the import file go to the default storage.
      */
-    protected function writeSysFileStorageRecords(): void
+    protected function mapSysFileStorageRecords(): void
     {
-        if (!isset($this->dat['header']['records']['sys_file_storage'])) {
-            return;
-        }
-
-        $importData = [];
-
-        $storageUidsToBeResetToDefaultStorage = [];
-        foreach ($this->dat['header']['records']['sys_file_storage'] as $sysFileStorageUid => $_) {
-            $storageRecord = &$this->dat['records']['sys_file_storage:' . $sysFileStorageUid]['data'];
-            if ($storageRecord['driver'] === 'Local'
-                && ($storageRecord['is_writable'] ?? 1)
-                && ($storageRecord['is_online'] ?? 1)
-            ) {
-                foreach ($this->storages as $storage) {
-                    if ($this->isEquivalentStorage($storage, $storageRecord)) {
-                        $this->importMapId['sys_file_storage'][$sysFileStorageUid] = $storage->getUid();
-                        break;
-                    }
-                }
-
-                if (!isset($this->importMapId['sys_file_storage'][$sysFileStorageUid])) {
-                    // Local, writable and online storage. May be used later for writing files.
-                    // Does not currently exist, mark the storage for import.
-                    $this->addSingle($importData, 'sys_file_storage', $sysFileStorageUid, 0);
-                }
-            } else {
-                // Storage with non-local drivers can be imported, but must not be used to save files as you cannot
-                // be sure that this is supported. In this case the default storage is used. Non-writable and
-                // non-online storage may be created as duplicates because you were unable to check the detailed
-                // configuration options at that time.
-                $this->addSingle($importData, 'sys_file_storage', $sysFileStorageUid, 0);
-                $storageUidsToBeResetToDefaultStorage[] = $sysFileStorageUid;
+        foreach ($this->dat['header']['records']['sys_file_storage'] ?? [] as $sysFileStorageUid => $headerRecord) {
+            $sysFileStorageUid = (int)$sysFileStorageUid;
+            $storageRecord = $this->dat['records']['sys_file_storage:' . $sysFileStorageUid]['data'] ?? [];
+            $storage = $this->findEquivalentStorage($sysFileStorageUid, $storageRecord);
+            if ($storage === null) {
+                $storage = $this->defaultStorage;
+                $this->addStorageMappingWarning(
+                    $sysFileStorageUid,
+                    (string)($storageRecord['name'] ?? $headerRecord['title'] ?? ''),
+                    $this->getExportedStoragePath($storageRecord) ?? (string)($storageRecord['driver'] ?? '')
+                );
             }
+            $this->importMapId['sys_file_storage'][$sysFileStorageUid] = $storage?->getUid();
         }
-
-        // Write new storages to the database
-        $dataHandler = $this->createDataHandler();
-        // Because all records are submitted in the correct order with positive pid numbers,
-        // we should internally reverse the order of submission.
-        $dataHandler->reverseOrder = true;
-        $dataHandler->isImporting = true;
-        $dataHandler->start($importData, []);
-        $dataHandler->process_datamap();
-        $this->addToMapId($importData, $dataHandler->substNEWwithIDs);
-
-        // Refresh internal storage representation after potential storage import
-        $this->fetchStorages();
-
-        // Map references of non-local / non-writable / non-online storages to the default storage
-        $defaultStorageUid = $this->defaultStorage?->getUid();
-        foreach ($storageUidsToBeResetToDefaultStorage as $storageUidToBeResetToDefaultStorage) {
-            $this->importMapId['sys_file_storage'][$storageUidToBeResetToDefaultStorage] = $defaultStorageUid;
-        }
-
         // Unset the sys_file_storage records to prevent an import in writeRecords()
         unset($this->dat['header']['records']['sys_file_storage']);
+        foreach ($this->dat['header']['pid_lookup'] ?? [] as $pid => $_) {
+            unset($this->dat['header']['pid_lookup'][$pid]['sys_file_storage']);
+        }
     }
 
     /**
-     * Determines whether the passed storage object and the storage record (sys_file_storage) can be considered
-     * equivalent during the import.
-     *
-     * @param ResourceStorage $storageObject The storage object which should get compared
-     * @param array $storageRecord The storage record which should get compared
-     * @return bool Returns TRUE if both storage representations can be considered equal
+     * Maps a storage of the import file without storage record to the default storage.
      */
-    protected function isEquivalentStorage(ResourceStorage $storageObject, array &$storageRecord): bool
+    protected function mapUnknownSysFileStorage(int $sysFileStorageUid): void
     {
-        if ($storageObject->getDriverType() === $storageRecord['driver']
-            && $storageObject->isWritable() === (bool)($storageRecord['is_writable'] ?? 1)
-            && $storageObject->isOnline() === (bool)($storageRecord['is_online'] ?? 1)
-        ) {
-            $storageRecordConfiguration = $this->flexFormTools->convertFlexFormContentToArray($storageRecord['configuration'] ?? '');
-            $storageObjectConfiguration = $storageObject->getConfiguration();
-            if ($storageRecordConfiguration['pathType'] === $storageObjectConfiguration['pathType']
-                && $storageRecordConfiguration['basePath'] === $storageObjectConfiguration['basePath']
-            ) {
-                return true;
+        if (array_key_exists($sysFileStorageUid, $this->importMapId['sys_file_storage'] ?? [])) {
+            return;
+        }
+        $this->addStorageMappingWarning($sysFileStorageUid, '', null);
+        $this->importMapId['sys_file_storage'][$sysFileStorageUid] = $this->defaultStorage?->getUid();
+    }
+
+    protected function addStorageMappingWarning(int $sysFileStorageUid, string $name, ?string $location): void
+    {
+        if ($this->defaultStorage === null) {
+            return;
+        }
+        $source = sprintf('storage %d', $sysFileStorageUid)
+            . ($name !== '' ? sprintf(' "%s"', $name) : '')
+            . ($location !== null && $location !== '' ? sprintf(' (%s)', $location) : '');
+        $this->addWarning(sprintf(
+            'Files of %s are imported into the default storage %d "%s".',
+            $source,
+            $this->defaultStorage->getUid(),
+            $this->defaultStorage->getName()
+        ));
+    }
+
+    /**
+     * Returns the absolute base path of a local storage record of the import file,
+     * resolved against the paths of this installation.
+     */
+    protected function getExportedStoragePath(array $storageRecord): ?string
+    {
+        if (($storageRecord['driver'] ?? '') !== 'Local') {
+            return null;
+        }
+        $configuration = is_array($storageRecord['configuration'] ?? null)
+            ? $storageRecord['configuration']
+            : $this->flexFormTools->convertFlexFormContentToArray((string)($storageRecord['configuration'] ?? ''));
+        return LocalPath::fromDriverConfiguration($configuration)?->getAbsolute();
+    }
+
+    /**
+     * Finds the local storage of this installation with the base path of the given
+     * storage record of the import file. The storage with the same uid is preferred.
+     */
+    protected function findEquivalentStorage(int $sysFileStorageUid, array $storageRecord): ?ResourceStorage
+    {
+        $exportedPath = $this->getExportedStoragePath($storageRecord);
+        if ($exportedPath === null) {
+            return null;
+        }
+        $candidates = $this->storagesAvailableForImport;
+        if (isset($candidates[$sysFileStorageUid])) {
+            $candidates = [$sysFileStorageUid => $candidates[$sysFileStorageUid]] + $candidates;
+        }
+        foreach ($candidates as $storage) {
+            $storagePath = LocalPath::fromDriverConfiguration($storage->getConfiguration());
+            if ($storagePath !== null && $storagePath->getAbsolute() === $exportedPath) {
+                return $storage;
             }
         }
-        return false;
+        return null;
     }
 
     /**
@@ -653,14 +625,17 @@ class Import extends ImportExport
                 }
             }
 
-            $storageUid = $this->importMapId['sys_file_storage'][$fileRecord['storage']] ?? $fileRecord['storage'];
-            if (isset($this->storagesAvailableForImport[$storageUid])) {
-                $storage = $this->storagesAvailableForImport[$storageUid];
-            } elseif ($storageUid === 0 || $storageUid === '0') {
+            $sourceStorageUid = (int)$fileRecord['storage'];
+            if ($sourceStorageUid === 0) {
                 $storage = $this->storageRepository->findByUid(0);
-            } elseif ($this->defaultStorage !== null) {
-                $storage = $this->defaultStorage;
             } else {
+                $this->mapUnknownSysFileStorage($sourceStorageUid);
+                $storageUid = $this->importMapId['sys_file_storage'][$sourceStorageUid];
+                $storage = $storageUid !== null
+                    ? $this->storagesAvailableForImport[$storageUid] ?? $this->defaultStorage
+                    : null;
+            }
+            if ($storage === null) {
                 $this->addError(sprintf(
                     'Error: No storage available for the file "%s" with storage uid "%s"',
                     $fileRecord['identifier'],
@@ -1185,13 +1160,7 @@ class Import extends ImportExport
                     // inside will not be processed properly. In fact references will point to no file
                     // or existing files (in which case there will be double-references which is a big problem of
                     // course!).
-                    //
-                    // BUT for the field "configuration" of the table "sys_file_storage" the relation MUST NOT be
-                    // cleared, because the configuration array contains only string values, which are furthermore
-                    // important for the further import, e.g. the base path.
-                    if (!($table === 'sys_file_storage' && $field === 'configuration')) {
-                        $importData[$table][$ID][$field] = $this->getReferenceDefaultValue($schema->getField($field)->getConfiguration());
-                    }
+                    $importData[$table][$ID][$field] = $this->getReferenceDefaultValue($schema->getField($field)->getConfiguration());
                     break;
             }
         }
@@ -1437,10 +1406,7 @@ class Import extends ImportExport
                     $schema = $this->tcaSchemaFactory->get($table);
                     $actualUid = BackendUtility::wsMapId($table, $this->importMapId[$table][$uid]);
                     foreach ($this->dat['records'][$table . ':' . $uid]['rels'] ?? [] as $field => $relation) {
-                        // Field "configuration" of sys_file_storage needs no update because it has not been removed
-                        // and has no relations.
-                        // @see Import::addSingle()
-                        if (isset($relation['type']) && $relation['type'] == 'flex' && !($table === 'sys_file_storage' && $field === 'configuration')) {
+                        if (isset($relation['type']) && $relation['type'] == 'flex') {
                             // Re-insert temporarily removed original FlexForm data as fallback
                             // @see Import::addSingle()
                             $updateData[$table][$actualUid][$field] = $this->dat['records'][$table . ':' . $uid]['data'][$field];
@@ -1747,5 +1713,18 @@ class Import extends ImportExport
     public function setEnableLogging(bool $enableLogging): void
     {
         $this->enableLogging = $enableLogging;
+    }
+
+    protected function addWarning(string $message): void
+    {
+        $this->warningLog[] = $message;
+    }
+
+    /**
+     * @return list<string>
+     */
+    public function getWarningLog(): array
+    {
+        return $this->warningLog;
     }
 }

@@ -17,6 +17,8 @@ namespace TYPO3\CMS\Impexp\Tests\Functional;
 
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Resource\Configuration\FileStorageConfigurationWriter;
+use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Impexp\Export;
 use TYPO3\CMS\Impexp\Import;
@@ -32,6 +34,15 @@ final class ImportExportTest extends AbstractImportExportTestCase
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_mnattributesimple',
         'typo3/sysext/impexp/Tests/Functional/Fixtures/Extensions/template_extension',
     ];
+
+    protected function tearDown(): void
+    {
+        @unlink(Environment::getConfigPath() . '/system/file-storages.yaml');
+        foreach (['media', 'other'] as $directory) {
+            GeneralUtility::rmdir(Environment::getPublicPath() . '/' . $directory, true);
+        }
+        parent::tearDown();
+    }
 
     #[Test]
     public function importExportPingPongSucceeds(): void
@@ -86,5 +97,93 @@ final class ImportExportTest extends AbstractImportExportTestCase
             ->fetchOne();
 
         self::assertSame($bodytext, $importedBodytext);
+    }
+
+    #[Test]
+    public function exportedFilesAreImportedIntoStorageWithSameBasePathInsteadOfStorageWithSameUid(): void
+    {
+        $exportFile = $this->exportFileOfMediaStorage();
+        $this->get(FileStorageConfigurationWriter::class)->apply([
+            2 => ['name' => 'Other', 'configuration' => ['basePath' => 'other/']],
+            3 => ['name' => 'Media', 'configuration' => ['basePath' => 'media/']],
+        ]);
+
+        $import = $this->get(Import::class);
+        $import->setPid(0);
+        $import->loadFile($exportFile);
+        $import->importData();
+
+        self::assertFileExists(Environment::getPublicPath() . '/media/user_upload/typo3_image2.jpg');
+        self::assertFileDoesNotExist(Environment::getPublicPath() . '/other/user_upload/typo3_image2.jpg');
+        self::assertSame([3], $this->getStoragesOfFiles());
+        self::assertSame([], $import->getWarningLog());
+        self::assertSame([], $import->getErrorLog());
+    }
+
+    #[Test]
+    public function exportedFilesOfUnknownBasePathAreImportedIntoDefaultStorage(): void
+    {
+        $exportFile = $this->exportFileOfMediaStorage();
+        $this->get(FileStorageConfigurationWriter::class)->apply([
+            2 => ['name' => 'Other', 'configuration' => ['basePath' => 'other/']],
+        ]);
+        $this->testFilesToDelete[] = Environment::getPublicPath() . '/fileadmin/user_upload/typo3_image2.jpg';
+
+        $import = $this->get(Import::class);
+        $import->setPid(0);
+        $import->loadFile($exportFile);
+        $import->importData();
+
+        self::assertFileExists(Environment::getPublicPath() . '/fileadmin/user_upload/typo3_image2.jpg');
+        self::assertFileDoesNotExist(Environment::getPublicPath() . '/other/user_upload/typo3_image2.jpg');
+        self::assertSame([1], $this->getStoragesOfFiles());
+        self::assertSame(
+            ['Files of storage 2 "Media" (' . Environment::getPublicPath() . '/media/) are imported into the default storage 1 "fileadmin".'],
+            $import->getWarningLog()
+        );
+        self::assertSame([], $import->getErrorLog());
+    }
+
+    /**
+     * Exports a file of the local storage 2 "Media" and removes the file and its
+     * record afterwards, so that the import has to write it again.
+     */
+    private function exportFileOfMediaStorage(): string
+    {
+        $publicPath = Environment::getPublicPath();
+        GeneralUtility::mkdir_deep($publicPath . '/media/user_upload');
+        GeneralUtility::mkdir($publicPath . '/other');
+        copy(__DIR__ . '/Fixtures/Folders/fileadmin/user_upload/typo3_image2.jpg', $publicPath . '/media/user_upload/typo3_image2.jpg');
+        $this->get(FileStorageConfigurationWriter::class)->writeAll([
+            1 => ['name' => 'fileadmin', 'default' => true, 'configuration' => ['basePath' => 'fileadmin/']],
+            2 => ['name' => 'Media', 'configuration' => ['basePath' => 'media/']],
+        ]);
+        $file = $this->get(StorageRepository::class)->findByUid(2)->getFile('/user_upload/typo3_image2.jpg');
+
+        $export = $this->get(Export::class);
+        $export->setRecord(['sys_file:' . $file->getUid()]);
+        $export->process();
+        $exportFile = $publicPath . '/fileadmin/xml_exports/media-storage.xml';
+        GeneralUtility::mkdir_deep(dirname($exportFile));
+        GeneralUtility::writeFile($exportFile, $export->render(), true);
+        $this->testFilesToDelete[] = $exportFile;
+
+        unlink($publicPath . '/media/user_upload/typo3_image2.jpg');
+        $this->getConnectionPool()->getConnectionForTable('sys_file')->truncate('sys_file');
+        return $exportFile;
+    }
+
+    /**
+     * @return list<int>
+     */
+    private function getStoragesOfFiles(): array
+    {
+        return array_map(
+            intval(...),
+            $this->getConnectionPool()
+                ->getConnectionForTable('sys_file')
+                ->executeQuery('SELECT storage FROM sys_file')
+                ->fetchFirstColumn()
+        );
     }
 }

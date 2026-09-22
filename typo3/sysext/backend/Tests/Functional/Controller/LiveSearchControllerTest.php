@@ -232,13 +232,13 @@ final class LiveSearchControllerTest extends FunctionalTestCase
 
         $subject = $this->get(DatabaseRecordProvider::class);
         $subject->count($searchDemand);
-        // We have 12 "accessible" tables by default. The event is dispatched once per table.
+        // We have 11 "accessible" tables by default. The event is dispatched once per table.
         // This test will likely report a failure when the TYPO3 core adds new "accessible tables".
         // This can actually act as a safeguard then to recognize the DatabaseRecordProvider works
         // correctly, and the count is adjusted. If this is reported as false negative too often,
         // the logic here should not use a fixed number but calculate the number of accessible tables
         // either via a proper method call, or a mock should lock the number to 1 table only.
-        self::assertCount(12, $dispatchedEvents);
+        self::assertCount(11, $dispatchedEvents);
     }
 
 }

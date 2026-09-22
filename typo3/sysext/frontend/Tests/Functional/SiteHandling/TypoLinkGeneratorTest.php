@@ -79,15 +79,7 @@ final class TypoLinkGeneratorTest extends AbstractTestCase
 
     private function setUpFileStorage(): void
     {
-        $storageRepository = $this->get(StorageRepository::class);
-        $storageId = $storageRepository->createLocalStorage(
-            'fileadmin',
-            'fileadmin/',
-            'relative',
-            'Default storage created in TypoLinkTest',
-            true
-        );
-        $storage = $storageRepository->findByUid($storageId);
+        $storage = $this->get(StorageRepository::class)->getDefaultStorage();
         new Indexer($storage)->processChangesInStorages();
     }
 

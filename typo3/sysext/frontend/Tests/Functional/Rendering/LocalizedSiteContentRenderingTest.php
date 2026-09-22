@@ -122,7 +122,6 @@ final class LocalizedSiteContentRenderingTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
         $this->importCSVDataSet(__DIR__ . '/DataSet/LiveDefaultPages.csv');
         $this->importCSVDataSet(__DIR__ . '/DataSet/LiveDefaultElements.csv');
         $this->setUpFrontendRootPage(1, [

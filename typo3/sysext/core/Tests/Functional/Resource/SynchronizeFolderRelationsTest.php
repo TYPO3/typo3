@@ -94,7 +94,7 @@ final class SynchronizeFolderRelationsTest extends FunctionalTestCase
 
     private function getAfterFolderRenamedEvent(string $targetIdentifier): AfterFolderRenamedEvent
     {
-        $storage = new ResourceStorage(self::createStub(LocalDriver::class), ['uid' => 1]);
+        $storage = new ResourceStorage(self::createStub(LocalDriver::class), ['identifier' => 1]);
         $targetFolder = new Folder($storage, $targetIdentifier, 'renamed folder');
         $sourceFolder = new Folder($storage, '/foo/bar/', 'some folder');
         return new AfterFolderRenamedEvent($targetFolder, $sourceFolder);

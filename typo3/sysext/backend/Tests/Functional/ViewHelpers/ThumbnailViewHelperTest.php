@@ -27,6 +27,7 @@ use TYPO3Fluid\Fluid\View\TemplateView;
 final class ThumbnailViewHelperTest extends FunctionalTestCase
 {
     protected array $pathsToProvideInTestInstance = [
+        'typo3/sysext/core/Tests/Functional/Fixtures/FileStorages/case-sensitive-fileadmin.yaml' => 'typo3conf/system/file-storages.yaml',
         'typo3/sysext/backend/Tests/Functional/ViewHelpers/Fixtures/ThumbnailViewHelper/Folders/fileadmin/' => 'fileadmin/',
     ];
 

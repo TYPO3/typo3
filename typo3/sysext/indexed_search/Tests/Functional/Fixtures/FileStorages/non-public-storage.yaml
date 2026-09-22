@@ -1,0 +1,7 @@
+storages:
+  1:
+    name: fileadmin
+    public: false
+    configuration:
+      basePath: fileadmin/
+      caseSensitive: true

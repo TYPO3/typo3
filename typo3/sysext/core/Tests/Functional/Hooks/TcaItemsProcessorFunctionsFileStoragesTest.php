@@ -19,8 +19,9 @@ namespace TYPO3\CMS\Core\Tests\Functional\Hooks;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Hooks\TcaItemsProcessorFunctions;
-use TYPO3\CMS\Core\Resource\StorageRepository;
+use TYPO3\CMS\Core\Resource\Configuration\FileStorageConfigurationWriter;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class TcaItemsProcessorFunctionsFileStoragesTest extends FunctionalTestCase
@@ -31,12 +32,17 @@ final class TcaItemsProcessorFunctionsFileStoragesTest extends FunctionalTestCas
         $this->importCSVDataSet(__DIR__ . '/../Authentication/Fixtures/be_groups.csv');
         $this->importCSVDataSet(__DIR__ . '/../Authentication/Fixtures/be_users.csv');
         $this->importCSVDataSet(__DIR__ . '/../Authentication/Fixtures/sys_filemounts.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
-        $connection = $this->getConnectionPool()->getConnectionForTable('sys_file_storage');
-        $storageRow = $connection->select(['*'], 'sys_file_storage', ['uid' => 1])->fetchAssociative();
-        $connection->insert('sys_file_storage', array_merge($storageRow, ['uid' => 2, 'name' => 'second storage']));
-        $connection->insert('sys_file_storage', array_merge($storageRow, ['uid' => 3, 'name' => 'unregistered driver', 'driver' => 'NotRegistered']));
-        $this->get(StorageRepository::class)->flush();
+        $this->get(FileStorageConfigurationWriter::class)->writeAll([
+            1 => ['name' => 'fileadmin', 'default' => true, 'configuration' => ['basePath' => 'fileadmin/']],
+            2 => ['name' => 'second storage', 'configuration' => ['basePath' => 'fileadmin/']],
+            3 => ['name' => 'unregistered driver', 'driver' => 'NotRegistered'],
+        ]);
+    }
+
+    protected function tearDown(): void
+    {
+        @unlink(Environment::getConfigPath() . '/system/file-storages.yaml');
+        parent::tearDown();
     }
 
     public static function populateFileStoragesListsStoragesOfBackendUserDataProvider(): \Generator

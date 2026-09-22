@@ -23,7 +23,6 @@ tablesModify: &tablesModify
   - sys_file_collection
   - sys_file_metadata
   - sys_file_reference
-  - sys_file_storage
   - backend_layout
   - tt_content
   - sys_note

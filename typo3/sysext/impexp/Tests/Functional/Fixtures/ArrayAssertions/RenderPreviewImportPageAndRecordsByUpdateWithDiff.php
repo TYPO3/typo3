@@ -128,7 +128,7 @@ return [
         => [
             'ref' => 'sys_file_storage:1',
             'type' => 'record',
-            'msg' => 'TABLE "sys_file_storage" will be inserted on ROOT LEVEL! ',
+            'msg' => 'File storages are not imported. Files are imported into the storage with the same base path, or into the default storage.',
             'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="sys_file_storage:1" class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-x-sys_file_storage" data-identifier="mimetypes-x-sys_file_storage" aria-hidden="true">' . "\n"
                 . "\t" . '<span class="icon-markup">' . "\n"
                 . '<svg class="icon-color"><use xlink:href="' . $coreAssetPath . 'Icons/T3Icons/sprites/mimetypes.svg?' . $fileMtimeMime . '#mimetypes-x-sys_file_storage" /></svg>' . "\n"
@@ -137,30 +137,6 @@ return [
                 . '</span>',
             'title' => 'fileadmin',
             'active' => 'active',
-            'updatePath' => '/',
-            'updateMode' => sprintf('<select class="form-select form-select-sm" name="tx_impexp[import_mode][sys_file_storage:1]" style="width: 100px"><option value="0">Update</option><option value="%s">Import as new</option><option value="%s">Ignore PID</option><option value="%s">Exclude</option></select>', \TYPO3\CMS\Impexp\Import::IMPORT_MODE_AS_NEW, \TYPO3\CMS\Impexp\Import::IMPORT_MODE_IGNORE_PID, \TYPO3\CMS\Impexp\Import::IMPORT_MODE_EXCLUDE),
-            'showDiffContent' => '<strong class="text-nowrap">[sys_file_storage:1 =&gt; 1]:</strong>' . "\n"
-                . '<table class="table table-striped table-hover">' . "\n"
-                . '<tr><td>Is default storage? (is_default)</td><td><del>Yes</del><ins>No</ins></td></tr>' . "\n"
-                . '<tr><td>Driver Configuration (configuration)</td><td>' . "\n\n"
-                . '<del>    \\n        \\n            \\n                \\n                    fileadmin/\\n                \\n                \\n                    relative\\n                \\n                \\n                    1\\n                \\n            \\n        \\n    \\n</del><ins>' . "\t\n"
-                . "\t\t\n"
-                . "\t\t\t\n"
-                . "\t\t\t\t\n"
-                . "\t\t\t\t\t" . 'fileadmin/' . "\n"
-                . "\t\t\t\t\n"
-                . "\t\t\t\t\n"
-                . "\t\t\t\t\t" . 'relative' . "\n"
-                . "\t\t\t\t\n"
-                . "\t\t\t\t\n"
-                . "\t\t\t\t\t" . '1' . "\n"
-                . "\t\t\t\t\n"
-                . "\t\t\t\n"
-                . "\t\t\n"
-                . "\t\n"
-                . '</ins></td></tr>
-<tr><td>Description (description)</td><td><strong>Field missing</strong> in database</td></tr>
-</table>',
             'controls' => '',
             'message' => '',
         ],

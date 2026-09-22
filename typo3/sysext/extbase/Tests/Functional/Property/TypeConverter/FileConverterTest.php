@@ -32,7 +32,6 @@ final class FileConverterTest extends FunctionalTestCase
         $GLOBALS['BE_USER']->user = ['admin' => true];
 
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_storage.csv');
 
         $propertyMapper = $this->get(PropertyMapper::class);
 

@@ -1,6 +1,3 @@
-sys_file_storage,,,,,,,,,,,,,,
-,uid,pid,name,driver,configuration,is_browsable,is_public,is_writable,is_online,,,,,
-,1,0,fileadmin,Local,"<?xml version=""1.0"" encoding=""utf-8"" standalone=""yes"" ?><T3FlexForms><data><sheet index=""sDEF""><language index=""lDEF""><field index=""basePath""><value index=""vDEF"">fileadmin/</value></field><field index=""pathType""><value index=""vDEF"">relative</value></field><field index=""caseSensitive""><value index=""vDEF"">1</value></field></language></sheet></data></T3FlexForms>",1,1,1,1,,,,,
 sys_file,,,,,,,,,,,,,,
 ,uid,pid,storage,type,identifier,identifier_hash,folder_hash,extension,mime_type,name,sha1,size,creation_date,modification_date
 ,1,0,1,2,/user_upload/FALImageViewHelperTest1.svg,cd3af075d80618729520920802d0fd25b535b74c,19669f1e02c2f16705ec7587044c66443be70725,svg,image/svg+xml,FALImageViewHelperTest1.svg,b6bcefe7804cb2f0de8d5d2834c7c546c3766dd7,64735,1389878273,1389878273

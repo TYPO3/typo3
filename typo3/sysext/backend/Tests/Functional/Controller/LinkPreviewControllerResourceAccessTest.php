@@ -39,6 +39,7 @@ final class LinkPreviewControllerResourceAccessTest extends FunctionalTestCase
         self::FIXTURE_PATH . '/Files/allowed.txt' => 'fileadmin/user_upload/allowed.txt',
         self::FIXTURE_PATH . '/Files/secret.txt' => 'fileadmin/restricted/secret.txt',
         self::FIXTURE_PATH . '/Files/outside.txt' => 'typo3conf/outside.txt',
+        self::FIXTURE_PATH . '/FileStorages/fileadmin.yaml' => 'typo3conf/system/file-storages.yaml',
     ];
 
     protected function setUp(): void
@@ -46,7 +47,6 @@ final class LinkPreviewControllerResourceAccessTest extends FunctionalTestCase
         parent::setUp();
         $this->importCSVDataSet(__DIR__ . '/Fixtures/LinkPreviewResourceAccess/be_groups.csv');
         $this->importCSVDataSet(__DIR__ . '/Fixtures/LinkPreviewResourceAccess/be_users.csv');
-        $this->importCSVDataSet(__DIR__ . '/Fixtures/LinkPreviewResourceAccess/sys_file_storage.csv');
         $this->importCSVDataSet(__DIR__ . '/Fixtures/LinkPreviewResourceAccess/sys_filemounts.csv');
         $this->importCSVDataSet(__DIR__ . '/Fixtures/LinkPreviewResourceAccess/sys_file.csv');
     }

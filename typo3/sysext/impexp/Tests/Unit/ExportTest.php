@@ -17,12 +17,14 @@ namespace TYPO3\CMS\Impexp\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Localization\Locales;
+use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Impexp\Export;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -111,6 +113,8 @@ final class ExportTest extends UnitTestCase
             self::createStub(ReferenceIndex::class),
             self::createStub(SiteConfiguration::class),
             new Context(),
+            self::createStub(StorageRepository::class),
+            self::createStub(FlexFormTools::class),
         );
     }
 }

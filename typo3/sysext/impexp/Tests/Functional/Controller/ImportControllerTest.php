@@ -74,7 +74,6 @@ final class ImportControllerTest extends AbstractImportExportTestCase
 
     private function createImportFolder(): Folder
     {
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_storage.csv');
         $importFolder = GeneralUtility::makeInstance(Import::class)->getOrCreateDefaultImportExportFolder();
         self::assertNotNull($importFolder);
         return $importFolder;

@@ -56,6 +56,8 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
      */
     protected ?string $baseUri = null;
 
+    protected ?bool $caseSensitiveFileSystem = null;
+
     /**
      * @var array<non-empty-string, FolderInterface::ROLE_*>
      */
@@ -110,6 +112,37 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
     public function initialize(): void {}
 
     /**
+     * Uses the configured value, and detects the behaviour of the file system
+     * below the base path when the option "caseSensitive" is not set.
+     */
+    public function isCaseSensitiveFileSystem(): bool
+    {
+        if (isset($this->configuration['caseSensitive'])) {
+            // Values from "%env()%" placeholders arrive as strings like "false"
+            return filter_var($this->configuration['caseSensitive'], FILTER_VALIDATE_BOOLEAN);
+        }
+        if ($this->caseSensitiveFileSystem === null) {
+            $this->caseSensitiveFileSystem = $this->detectCaseSensitivity($this->absoluteBasePath);
+        }
+        return $this->caseSensitiveFileSystem;
+    }
+
+    /**
+     * A case-insensitive file system resolves the base path with swapped case
+     * as well. Paths without letters cannot be told apart and count as sensitive.
+     * This matches the check TYPO3 did when it created the fileadmin storage, so
+     * existing identifiers keep their case.
+     */
+    protected function detectCaseSensitivity(string $absoluteBasePath): bool
+    {
+        $swapped = strtolower($absoluteBasePath) === $absoluteBasePath ? strtoupper($absoluteBasePath) : strtolower($absoluteBasePath);
+        if ($swapped === $absoluteBasePath || !is_dir($absoluteBasePath)) {
+            return true;
+        }
+        return !is_dir($swapped);
+    }
+
+    /**
      * Determines the base URL for this driver, from the configuration or
      * the public path.
      */
@@ -133,7 +166,11 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
     }
 
     /**
-     * Calculates the absolute path to this driver's storage location
+     * Calculates the absolute path to this driver's storage location.
+     *
+     * A relative base path is resolved against the project path, unless the
+     * legacy "pathType" option is set to "relative", which resolves it against
+     * the public path.
      */
     protected function calculateBasePath(array $configuration): string
     {
@@ -144,11 +181,13 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
             );
         }
 
-        if (!empty($configuration['pathType']) && $configuration['pathType'] === 'relative') {
-            $relativeBasePath = $configuration['basePath'];
-            $absoluteBasePath = Environment::getPublicPath() . '/' . $relativeBasePath;
+        $basePath = (string)$configuration['basePath'];
+        if (($configuration['pathType'] ?? '') === 'relative') {
+            $absoluteBasePath = Environment::getPublicPath() . '/' . $basePath;
+        } elseif (PathUtility::isAbsolutePath($basePath)) {
+            $absoluteBasePath = $basePath;
         } else {
-            $absoluteBasePath = $configuration['basePath'];
+            $absoluteBasePath = Environment::getProjectPath() . '/' . $basePath;
         }
         $absoluteBasePath = $this->canonicalizeAndCheckFilePath($absoluteBasePath);
         $absoluteBasePath = rtrim($absoluteBasePath, '/') . '/';

@@ -971,6 +971,10 @@ readonly class ArrayUtility
      */
     public static function replaceAndAppendScalarValuesRecursive(array $array1, array $array2): array
     {
+        // An empty array is a list as well, but must not renumber the integer keys of the second array
+        if ($array1 === []) {
+            return $array2;
+        }
         // Simple lists get merged / added up
         if (array_is_list($array1)) {
             return array_merge($array1, $array2);

@@ -17,12 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Lowlevel\Service;
 
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Resource\Exception\InvalidConfigurationException;
 use TYPO3\CMS\Core\Resource\Exception\InvalidPathException;
 use TYPO3\CMS\Core\Resource\Folder;
+use TYPO3\CMS\Core\Resource\LocalPath;
 use TYPO3\CMS\Core\Resource\ProcessedFileRepository;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\StorageRepository;
@@ -198,17 +198,11 @@ final readonly class CleanUpLocalProcessedFilesService
 
     private function getAbsoluteBasePath(array $configuration): string
     {
-        $absoluteBasePath = ($configuration['basePath'] ?? null) ?: throw new InvalidConfigurationException(
+        $localPath = LocalPath::fromDriverConfiguration($configuration) ?? throw new InvalidConfigurationException(
             'Configuration must contain base path.',
             1640297535
         );
-
-        if (($configuration['pathType'] ?? '') === 'relative') {
-            $relativeBasePath = $configuration['basePath'];
-            $absoluteBasePath = Environment::getPublicPath() . '/' . $relativeBasePath;
-        }
-        $absoluteBasePath = PathUtility::getCanonicalPath($absoluteBasePath);
-        $absoluteBasePath = rtrim($absoluteBasePath, '/') . '/';
+        $absoluteBasePath = $localPath->getAbsolute();
         if (!is_dir($absoluteBasePath)) {
             throw new InvalidConfigurationException(
                 'Base path "' . $absoluteBasePath . '" does not exist or is no directory.',

@@ -53,7 +53,6 @@ final class FileMetadataTranslationTest extends AbstractTestCase
         );
 
         $this->withDatabaseSnapshot(function () {
-            $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
             $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
 
             $fileIdentifier = '/kasper-skarhoj1.jpg';
