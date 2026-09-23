@@ -20,9 +20,11 @@ namespace TYPO3\CMS\Backend\Tests\Functional\Controller\Wizard;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Controller\Wizard\PageWizardController;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class PageWizardControllerTest extends FunctionalTestCase
@@ -122,6 +124,22 @@ final class PageWizardControllerTest extends FunctionalTestCase
             ],
             $payload
         );
+    }
+
+    #[Test]
+    public function disabledRecordTypeIsNotOfferedByPageWizard(): void
+    {
+        $GLOBALS['TCA']['pages']['types'][(string)PageRepository::DOKTYPE_SHORTCUT]['creationOptions']['enableDirectRecordTypeCreation'] = false;
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+
+        $request = (new ServerRequest('https://example.com/typo3/', 'GET'))->withQueryParams([
+            'data' => ['position' => ['pageUid' => 1, 'insertPosition' => 'inside']],
+        ]);
+        $response = $this->subject->getDoktypesAction($request);
+        $payload = json_decode((string)$response->getBody(), true, 512, JSON_THROW_ON_ERROR);
+
+        self::assertNotContains((string)PageRepository::DOKTYPE_SHORTCUT, array_column($payload, 'value'));
+        self::assertContains((string)PageRepository::DOKTYPE_DEFAULT, array_column($payload, 'value'));
     }
 
     #[Test]
