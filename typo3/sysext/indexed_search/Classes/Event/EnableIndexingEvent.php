@@ -22,6 +22,7 @@ use Psr\Http\Message\ServerRequestInterface;
 final class EnableIndexingEvent
 {
     private bool $enableIndexing = false;
+    private bool $disableIndexing = false;
 
     public function __construct(
         private readonly ServerRequestInterface $request,
@@ -37,8 +38,22 @@ final class EnableIndexingEvent
         $this->enableIndexing = true;
     }
 
+    /**
+     * Prevents indexing of the current page. Takes precedence over
+     * enableIndexing() and over the "disableFrontendIndexing" extension setting.
+     */
+    public function disableIndexing(): void
+    {
+        $this->disableIndexing = true;
+    }
+
     public function isIndexingEnabled(): bool
     {
-        return $this->enableIndexing;
+        return $this->enableIndexing && !$this->disableIndexing;
+    }
+
+    public function isIndexingDisabled(): bool
+    {
+        return $this->disableIndexing;
     }
 }

@@ -1,0 +1,4 @@
+config.index_enable = 1
+page = PAGE
+page.10 = TEXT
+page.10.value = Xylographica sample content

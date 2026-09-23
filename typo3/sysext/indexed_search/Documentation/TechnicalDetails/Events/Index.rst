@@ -12,6 +12,12 @@ PSR 14 events:
 
 *   `BeforeFinalSearchQueryIsExecutedEvent <https://docs.typo3.org/permalink/t3coreapi:beforefinalsearchqueryisexecutedevent>`_
 *   :php:`TYPO3\CMS\IndexedSearch\Event\EnableIndexingEvent`
+
+    Dispatched during frontend rendering to decide whether the current page is
+    indexed. Listeners can force indexing with :php:`enableIndexing()` even if
+    frontend indexing is disabled, or prevent it with :php:`disableIndexing()`,
+    which takes precedence.
+
 *   :php:`TYPO3\CMS\IndexedSearch\Event\AfterSearchResultSetsAreGeneratedEvent`
 
     Dispatched after all result sets have been built in
