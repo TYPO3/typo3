@@ -23,7 +23,7 @@ renderingOptions.addQueryString
 :aspect:`Default value (for prototype 'standard')`
       .. code-block:: yaml
          :linenos:
-         :emphasize-lines: 11
+         :emphasize-lines: 12
 
          Form:
            renderingOptions:

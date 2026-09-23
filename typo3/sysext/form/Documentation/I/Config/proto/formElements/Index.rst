@@ -385,19 +385,19 @@ properties.gridColumnClassAutoConfiguration
         If the form element lies within a GridRow you can define the number of columns which the form element should occupy.
         Each ``viewPorts`` configuration key has to match with on ofe the defined viewports within ``prototypes.<prototypeIdentifier>.formElementsDefinition.GridRow.properties.gridColumnClassAutoConfiguration.viewPorts``
 
-              .. code-block:: yaml
-                 :linenos:
+        .. code-block:: yaml
+           :linenos:
 
-                  gridColumnClassAutoConfiguration:
-                    viewPorts:
-                      lg:
-                        numbersOfColumnsToUse: '2'
-                      md:
-                        numbersOfColumnsToUse: '3'
-                      sm:
-                        numbersOfColumnsToUse: '4'
-                      xs:
-                        numbersOfColumnsToUse: '5'
+           gridColumnClassAutoConfiguration:
+             viewPorts:
+               lg:
+                 numbersOfColumnsToUse: '2'
+               md:
+                 numbersOfColumnsToUse: '3'
+               sm:
+                 numbersOfColumnsToUse: '4'
+               xs:
+                 numbersOfColumnsToUse: '5'
 
 .. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.label:
 
