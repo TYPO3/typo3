@@ -318,13 +318,7 @@ class RecordHistory
             }
         }
         usort($historyDataForRecord, static function (array $a, array $b): int {
-            if ($a['tstamp'] < $b['tstamp']) {
-                return 1;
-            }
-            if ($a['tstamp'] > $b['tstamp']) {
-                return -1;
-            }
-            return 0;
+            return ($b['tstamp'] <=> $a['tstamp']) ?: ($b['uid'] <=> $a['uid']);
         });
         if ($this->maxSteps > 0) {
             // The limit is applied per record in findEventsForRecord() as well. That keeps the
