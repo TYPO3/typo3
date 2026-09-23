@@ -28,7 +28,8 @@ use TYPO3\CMS\Core\Context\Context;
  *
  * Notice that all Content outside the length of the content-length header will be cut off!
  * Therefore, content of unknown length from later-on middlewares and if admin users are logged
- * in (admin panel might show...), we disable it!
+ * in (admin panel might show...), we disable it! The same applies to response bodies that do
+ * not know their size, which PSR-7 signals with a NULL return value of StreamInterface::getSize().
  *
  * @internal
  */
@@ -40,12 +41,14 @@ final readonly class ContentLengthResponseHeader implements MiddlewareInterface
     {
         $response = $handler->handle($request);
         $typoScriptConfigArray = $request->getAttribute('frontend.typoscript')->getConfigArray();
+        $bodySize = $response->getBody()->getSize();
         if (
-            (!isset($typoScriptConfigArray['enableContentLengthHeader']) || $typoScriptConfigArray['enableContentLengthHeader'])
+            $bodySize !== null
+            && (!isset($typoScriptConfigArray['enableContentLengthHeader']) || $typoScriptConfigArray['enableContentLengthHeader'])
             && !$this->context->getPropertyFromAspect('backend.user', 'isLoggedIn', false)
             && !$this->context->getPropertyFromAspect('workspace', 'isOffline', false)
         ) {
-            $response = $response->withHeader('Content-Length', (string)$response->getBody()->getSize());
+            $response = $response->withHeader('Content-Length', (string)$bodySize);
         }
         return $response;
     }
