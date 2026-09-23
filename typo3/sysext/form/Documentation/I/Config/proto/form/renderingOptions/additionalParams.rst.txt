@@ -23,7 +23,7 @@ renderingOptions.additionalParams
 :aspect:`Default value (for prototype 'standard')`
       .. code-block:: yaml
          :linenos:
-         :emphasize-lines: 13
+         :emphasize-lines: 14
 
          Form:
            renderingOptions:

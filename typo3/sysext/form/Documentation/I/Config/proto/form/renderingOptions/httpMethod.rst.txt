@@ -23,7 +23,7 @@ renderingOptions.httpMethod
 :aspect:`Default value (for prototype 'standard')`
       .. code-block:: yaml
          :linenos:
-         :emphasize-lines: 15
+         :emphasize-lines: 16
 
          Form:
            renderingOptions:

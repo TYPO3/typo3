@@ -23,7 +23,7 @@ renderingOptions._isCompositeFormElement
 :aspect:`Default value (for prototype 'standard')`
       .. code-block:: yaml
          :linenos:
-         :emphasize-lines: 17
+         :emphasize-lines: 18
 
          Form:
            renderingOptions:

@@ -23,7 +23,7 @@ renderingOptions.skipUnknownElements
 :aspect:`Default value (for prototype 'standard')`
       .. code-block:: yaml
          :linenos:
-         :emphasize-lines: 23
+         :emphasize-lines: 24
 
          Form:
            renderingOptions:

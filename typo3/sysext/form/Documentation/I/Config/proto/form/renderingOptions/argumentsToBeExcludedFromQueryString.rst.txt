@@ -23,7 +23,7 @@ renderingOptions.argumentsToBeExcludedFromQueryString
 :aspect:`Default value (for prototype 'standard')`
       .. code-block:: yaml
          :linenos:
-         :emphasize-lines: 12
+         :emphasize-lines: 13
 
          Form:
            renderingOptions:
