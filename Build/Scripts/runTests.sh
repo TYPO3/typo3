@@ -273,8 +273,16 @@ runPlaywright() {
     if [ "${CHUNKS}" -gt 0 ]; then
         PLAYWRIGHT_SHARD=" --shard=${THISCHUNK}/${CHUNKS}"
     fi
-    COMMAND="npm --prefix=${CORE_ROOT}/Build run playwright:run -- ${PLAYWRIGHT_PROJECT}${PLAYWRIGHT_SHARD}"
-    COMMAND_UI="npm --prefix=${CORE_ROOT}/Build run playwright:open -- ${PLAYWRIGHT_PROJECT}"
+    # Remaining positional arguments (a spec file path, "--grep <pattern>", ...) are
+    # forwarded to Playwright as-is, same as e.g. "-s functional path/to/fileTest.php".
+    # They must come before "--project", which Playwright parses as a variadic
+    # option that would otherwise swallow a following file path as another project name.
+    PLAYWRIGHT_TEST_ARGS=""
+    if [ $# -gt 0 ]; then
+        PLAYWRIGHT_TEST_ARGS="$* "
+    fi
+    COMMAND="npm --prefix=${CORE_ROOT}/Build run playwright:run -- ${PLAYWRIGHT_TEST_ARGS}${PLAYWRIGHT_PROJECT}${PLAYWRIGHT_SHARD}"
+    COMMAND_UI="npm --prefix=${CORE_ROOT}/Build run playwright:open -- ${PLAYWRIGHT_TEST_ARGS}${PLAYWRIGHT_PROJECT}"
     PLAYWRIGHT_GUI_PORT=43837
 
     if [[ ${PLAYWRIGHT_PREPARE_ONLY} -eq 0 && ${PLAYWRIGHT_BROWSER} -eq 1 ]]; then
@@ -760,6 +768,11 @@ Options:
         For -s e2e this maps to Playwright's native --shard=#chunk/#numberOfChunks.
         Example -c 3/13
 
+    [file] with -s e2e|e2e-browser|e2e-prepare
+        A trailing spec file path (or other Playwright CLI arguments, e.g. "--grep
+        <pattern>") is forwarded to Playwright as-is, restricting the run to that
+        file/pattern instead of the full e2e suite.
+
     -p <8.2|8.3|8.4|8.5|8.6>
         Specifies the PHP minor version to be used
             - 8.2 (default): use PHP 8.2
@@ -767,7 +780,6 @@ Options:
             - 8.4: use PHP 8.4
             - 8.5: use PHP 8.5
             - 8.6: use PHP 8.6
-
     -x
         Only with -s functional|unit|unitRandom|e2e-install
         Send information to host instance for test or system under test break points. This is especially
@@ -811,6 +823,9 @@ Examples:
 
     # Run installer tests of a new instance on sqlite
     ./Build/Scripts/runTests.sh -s e2e-install -d sqlite
+
+    # Run a single Playwright e2e spec file
+    ./Build/Scripts/runTests.sh -s e2e Build/tests/playwright/e2e/form-engine/elements-rte-source-editing.spec.ts
 
     # Run composer require to require a dependency
     ./Build/Scripts/runTests.sh -s composer -- require --dev typo3/testing-framework:dev-main
@@ -1062,18 +1077,18 @@ case ${TEST_SUITE} in
     e2e)
         PLAYWRIGHT_PROJECT="--project e2e"
         PLAYWRIGHT_PREPARE_ONLY=0
-        runPlaywright
+        runPlaywright "$@"
         ;;
     e2e-browser)
         PLAYWRIGHT_PROJECT="--project e2e"
         PLAYWRIGHT_PREPARE_ONLY=0
         PLAYWRIGHT_BROWSER=1
-        runPlaywright
+        runPlaywright "$@"
         ;;
     e2e-prepare)
         PLAYWRIGHT_PROJECT="--project e2e"
         PLAYWRIGHT_PREPARE_ONLY=1
-        runPlaywright
+        runPlaywright "$@"
         ;;
     e2e-install)
         PLAYWRIGHT_PROJECT="--project e2e-install"
