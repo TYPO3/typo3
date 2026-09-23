@@ -79,4 +79,19 @@ final class RecordHistoryTest extends FunctionalTestCase
         self::assertCount(2, $changeLog);
         self::assertSame([1700000500, 1700000400], array_column($changeLog, 'tstamp'));
     }
+
+    #[Test]
+    public function mergedEntriesWithEqualTimestampsAreOrderedByHistoryUid(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/SubElementEntries.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $backendUser = $this->setUpBackendUser(1);
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
+
+        $subject = new RecordHistory('pages:2');
+        $subject->setShowSubElements(true);
+        $subject->setMaxSteps(0);
+
+        self::assertSame([5, 4, 3, 2, 1], array_column($subject->getChangeLog(), 'uid'));
+    }
 }
