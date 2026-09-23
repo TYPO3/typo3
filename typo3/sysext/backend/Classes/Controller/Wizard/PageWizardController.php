@@ -36,6 +36,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -50,7 +51,8 @@ final readonly class PageWizardController
 {
     public function __construct(
         private IconFactory $iconFactory,
-        private FormDataCompiler $formDataCompiler
+        private FormDataCompiler $formDataCompiler,
+        private TcaSchemaFactory $tcaSchemaFactory,
     ) {}
 
     public function getDoktypesAction(ServerRequestInterface $request): ResponseInterface
@@ -93,8 +95,15 @@ final readonly class PageWizardController
                 $formDataGroup
             )['processedTca']['columns']['doktype']['config']['items'] ?? [];
 
+        $pageSchema = $this->tcaSchemaFactory->get('pages');
         $result = [];
         foreach ($doktypes as $doktype) {
+            $type = (string)($doktype['value'] ?? '');
+            if ($pageSchema->hasSubSchema($type)
+                && (bool)($pageSchema->getSubSchema($type)->getRawConfiguration()['creationOptions']['enableDirectRecordTypeCreation'] ?? true) === false
+            ) {
+                continue;
+            }
             $result[] = [
                 'value' => $doktype['value'] ?? '',
                 'label' => $doktype['label'] ?? '',
