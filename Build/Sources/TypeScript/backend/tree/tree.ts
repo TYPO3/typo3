@@ -631,7 +631,7 @@ export class Tree extends LitElement {
 
       // State
       if (this.searchTerm) {
-        node.__expanded = node.loaded && node.hasChildren;
+        node.__expanded = (node.loaded || node.depth === 0) && node.hasChildren;
       } else if (node.hasChildren) {
         node.__expanded = (this.settings.expandUpToLevel !== null)
           ? node.depth < this.settings.expandUpToLevel
