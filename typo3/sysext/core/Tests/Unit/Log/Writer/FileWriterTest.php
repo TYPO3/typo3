@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Log\Writer;
 
-use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\Log\LogLevel;
@@ -28,7 +27,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-#[AllowMockObjectsWithoutExpectations]
 final class FileWriterTest extends UnitTestCase
 {
     private string $logFileDirectory = 'Log';
@@ -149,9 +147,7 @@ final class FileWriterTest extends UnitTestCase
     #[Test]
     public function aSecondLogWriterToTheSameFileDoesNotOpenTheFileTwice(): void
     {
-        $firstWriter = $this->getMockBuilder(FileWriter::class)
-            ->onlyMethods([])
-            ->getMock();
+        $firstWriter = new FileWriter();
         $secondWriter = $this->getMockBuilder(FileWriter::class)
             ->onlyMethods(['createLogFile'])
             ->getMock();
