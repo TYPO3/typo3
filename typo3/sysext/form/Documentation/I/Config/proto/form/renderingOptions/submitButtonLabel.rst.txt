@@ -23,7 +23,7 @@ renderingOptions.submitButtonLabel
 :aspect:`Default value (for prototype 'standard')`
       .. code-block:: yaml
          :linenos:
-         :emphasize-lines: 22
+         :emphasize-lines: 23
 
          Form:
            renderingOptions:

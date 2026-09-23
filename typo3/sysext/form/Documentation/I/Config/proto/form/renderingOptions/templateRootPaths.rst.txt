@@ -23,7 +23,7 @@ renderingOptions.templateRootPaths
 :aspect:`Default value (for prototype 'standard')`
       .. code-block:: yaml
          :linenos:
-         :emphasize-lines: 5-6
+         :emphasize-lines: 6-7
 
          Form:
            renderingOptions:

@@ -23,7 +23,7 @@ renderingOptions.honeypot.enable
 :aspect:`Default value (for prototype 'standard')`
       .. code-block:: yaml
          :linenos:
-         :emphasize-lines: 20
+         :emphasize-lines: 21
 
          Form:
            renderingOptions:
