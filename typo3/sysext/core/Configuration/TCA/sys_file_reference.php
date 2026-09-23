@@ -118,6 +118,7 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 20,
+                'max' => 1024,
                 'nullable' => true,
                 'placeholder' => '__row|uid_local|metadata|alternative',
                 'mode' => 'useOrOverridePlaceholder',

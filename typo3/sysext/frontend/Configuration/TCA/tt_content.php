@@ -105,6 +105,7 @@ return [
                         'value' => '3',
                     ],
                 ],
+                'dbFieldLength' => 20,
                 'default' => 0,
             ],
         ],
@@ -124,6 +125,7 @@ return [
                     ['label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:frame_class.none', 'value' => 'none'],
                 ],
                 'default' => 'default',
+                'dbFieldLength' => 60,
             ],
         ],
         'space_before_class' => [

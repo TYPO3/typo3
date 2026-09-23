@@ -87,9 +87,7 @@ CREATE TABLE sys_be_shortcuts_group (
 
 CREATE TABLE sys_file_storage (
 	# @todo: type=user currently needs manual configuration
-	is_public tinyint(4) DEFAULT '0' NOT NULL,
-	# @todo: This can be a varchar(255), but it needs clarification if it can be nullable.
-	processingfolder tinytext
+	is_public tinyint(4) DEFAULT '0' NOT NULL
 );
 
 CREATE TABLE sys_file (
@@ -103,10 +101,6 @@ CREATE TABLE sys_file (
 	folder_hash varchar(40) DEFAULT '' NOT NULL,
 	# No TCA column
 	extension varchar(255) DEFAULT '' NOT NULL,
-	# @todo: Restrict to varchar(255)?
-	name tinytext,
-	# No TCA column
-	sha1 varchar(40) DEFAULT '' NOT NULL,
 	# No TCA column
 	creation_date int(11) DEFAULT '0' NOT NULL,
 	# No TCA column
@@ -123,11 +117,6 @@ CREATE TABLE sys_file (
 );
 
 CREATE TABLE sys_file_metadata (
-	# @todo: Restrict to varchar(255)?
-	title tinytext,
-	# @todo: Restrict to varchar(255)?
-	alternative text,
-
 	KEY file (file)
 );
 
@@ -157,23 +146,12 @@ CREATE TABLE sys_file_processedfile (
 CREATE TABLE sys_file_reference (
 	# @todo: type=group field, but rely on integer.
 	uid_local int(11) DEFAULT '0' NOT NULL,
-	# @todo: Restrict to varchar(255)?
-	title tinytext,
-	# @todo: Restrict to varchar(255)?
-	alternative text,
 
 	KEY tablenames_fieldname (tablenames(32),fieldname(12)),
 	KEY deleted (deleted),
 	KEY uid_local (uid_local),
 	KEY uid_foreign (uid_foreign),
 	KEY combined_1 (l10n_parent, t3ver_oid, t3ver_wsid, t3ver_state, deleted)
-);
-
-CREATE TABLE sys_file_collection (
-	# @todo: Restrict to varchar(255)?
-	title tinytext,
-	# @todo: db analyzer would remove default. needs another look.
-	type varchar(30) DEFAULT 'static' NOT NULL,
 );
 
 # Define table and fields since it has no TCA
@@ -286,9 +264,6 @@ CREATE TABLE sys_log (
 );
 
 CREATE TABLE sys_category (
-	# @todo: type=group fields, but rely on integer.
-	items int(11) DEFAULT '0' NOT NULL,
-
 	KEY category_parent (parent),
 	KEY category_list (pid,deleted,sys_language_uid)
 );

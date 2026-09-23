@@ -84,6 +84,13 @@ test('FAL metadata flow: create CE, edit metadata, propagate to reference', asyn
   await fileButton.click();
   await editFormReady();
 
+  // title and alternative are nullable and stay disabled until their checkbox is set
+  for (const fieldName of ['title', 'alternative']) {
+    await backend.contentFrame
+      .locator(`xpath=//input[contains(@name, "[${fieldName}]") and @type="checkbox" and contains(@name, "control[active][sys_file_metadata]")]`)
+      .check();
+  }
+
   await backend.contentFrame
     .locator('xpath=//input[contains(@data-formengine-input-name, "data[sys_file_metadata]") and contains(@data-formengine-input-name, "[title]")]')
     .fill('Test title');

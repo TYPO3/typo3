@@ -45,6 +45,7 @@ defined('TYPO3') or die();
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:table_caption',
             'config' => [
                 'type' => 'input',
+                'nullable' => true,
             ],
         ],
         'table_delimiter' => [

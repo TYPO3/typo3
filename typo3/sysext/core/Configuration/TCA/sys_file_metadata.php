@@ -59,6 +59,7 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 30,
+                'nullable' => true,
                 'placeholder' => '__row|file|name',
             ],
         ],
@@ -78,6 +79,8 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 30,
+                'max' => 1024,
+                'nullable' => true,
             ],
         ],
         'width' => [

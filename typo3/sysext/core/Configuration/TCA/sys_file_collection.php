@@ -33,6 +33,8 @@ return [
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
+                'default' => 'static',
+                'dbFieldLength' => 30,
                 'items' => [
                     ['label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_collection.type.0', 'value' => 'static'],
                     ['label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_collection.type.1', 'value' => 'folder'],

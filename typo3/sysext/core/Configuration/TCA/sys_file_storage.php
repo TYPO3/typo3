@@ -85,6 +85,7 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 20,
+                'nullable' => true,
             ],
         ],
         'driver' => [
