@@ -9,6 +9,8 @@ import { default as modalObject, type ModalElement } from '@typo3/backend/modal'
 import type { ViewAttributeElement, ViewElement, ModelSchema, ModelWriter } from '@ckeditor/ckeditor5-engine';
 import type { GeneralHtmlSupport, DataFilter, GHSViewAttributes } from '@ckeditor/ckeditor5-html-support';
 import { IconLink, IconPencil, IconUnlink } from '@ckeditor/ckeditor5-icons';
+import { resolveLink, needsResolving, openResolvedLink } from '@typo3/backend/link-resolver';
+import '@typo3/backend/element/icon-element';
 
 export const LINK_ALLOWED_ATTRIBUTES = ['href', 'title', 'class', 'target', 'rel', 'download'];
 
@@ -119,10 +121,10 @@ export class Typo3LinkCommand extends Core.Command {
               attributes.set(attribute, value);
             }
           }
-          const { end: positionAfter } = model.insertContent(writer.createText(href, attributes as any), position);
-          // Put the selection at the end of the inserted link.
-          // Using end of range returned from insertContent in case nodes with the same attributes got merged.
-          writer.setSelection(positionAfter);
+          const insertedRange = model.insertContent(writer.createText(linkAttr.linkText || href, attributes as any), position);
+          // Select the inserted link, so it can be adjusted right away and the balloon is shown.
+          writer.setSelection(insertedRange);
+          return;
         }
         // Remove the `linkHref` attribute and all link decorators from the selection.
         // It stops adding a new content into the link element.
@@ -355,11 +357,31 @@ export class Typo3LinkEditing extends Core.Plugin {
     // @ts-ignore
     editor.commands.add('link', new Typo3LinkCommand(editor));
     editor.commands.add('unlink', new Typo3UnlinkCommand(editor));
+
+    this.registerLinkOpener();
+  }
+
+  /**
+   * Ctrl/Cmd+Click and Alt+Enter would open the raw href (e.g. "t3://page?uid=3").
+   * Such links are resolved to their frontend URL first.
+   */
+  private registerLinkOpener(): void {
+    const linkEditing = this.editor.plugins.get(Link.LinkEditing) as unknown as { _registerLinkOpener(opener: (href: string) => boolean): void };
+    linkEditing._registerLinkOpener((href: string): boolean => {
+      if (!needsResolving(href)) {
+        return false;
+      }
+      openResolvedLink(href);
+      return true;
+    });
   }
 }
 
 export class Typo3LinkPreviewButtonView extends UI.ButtonView {
   declare public href: string | undefined;
+  declare public linkTitle: string | undefined;
+  declare public linkTooltip: string | undefined;
+  declare public iconIdentifier: string;
 
   constructor(locale?: Utils.Locale) {
     super(locale);
@@ -367,6 +389,9 @@ export class Typo3LinkPreviewButtonView extends UI.ButtonView {
     const bind = this.bindTemplate;
     this.set({
       href: undefined,
+      linkTitle: undefined,
+      linkTooltip: undefined,
+      iconIdentifier: 'actions-link',
       withText: true
     });
 
@@ -374,9 +399,23 @@ export class Typo3LinkPreviewButtonView extends UI.ButtonView {
       tag: 'span',
       attributes: {
         class: ['ck-link-toolbar__preview'],
-        title: bind.to('href'),
+        title: bind.to('linkTooltip'),
       },
-      children: [{ text: bind.to('href') }]
+      children: [
+        {
+          tag: 'typo3-backend-icon',
+          attributes: {
+            class: ['ck-link-toolbar__preview-icon'],
+            identifier: bind.to('iconIdentifier'),
+            size: 'small',
+          }
+        },
+        {
+          tag: 'span',
+          attributes: { class: ['ck-link-toolbar__preview-title'] },
+          children: [{ text: bind.to('linkTitle') }]
+        },
+      ]
     });
   }
 }
@@ -425,7 +464,11 @@ export class Typo3LinkUI extends Core.Plugin {
   private createToolbarView(): UI.ToolbarView {
     const editor = this.editor;
     const toolbarView = new UI.ToolbarView(editor.locale);
-    const toolbarItems = editor.config.get('link.toolbar');
+    // TYPO3 has no manual link decorators, hence 'linkProperties' is not available
+    const toolbarItems = editor.config.get('link.toolbar').filter(item => item !== 'linkProperties');
+    if (!toolbarItems.includes('openLink')) {
+      toolbarItems.splice(Math.max(toolbarItems.indexOf('editLink'), 0), 0, 'openLink');
+    }
     toolbarView.fillFromConfig(toolbarItems, editor.ui.componentFactory);
     // Close the panel on esc key press when the **link toolbar have focus**.
     toolbarView.keystrokes.set('Esc', (data, cancel) => {
@@ -487,15 +530,22 @@ export class Typo3LinkUI extends Core.Plugin {
         return href && Link._ensureSafeLinkUrl(href, allowedProtocols);
       });
 
-      button.icon = undefined;
-
       const setHref = (href: string) => {
+        button.label = href || undefined;
+        button.linkTitle = href || undefined;
+        button.linkTooltip = href || undefined;
+        button.iconIdentifier = 'actions-link';
         if (!href) {
-          button.label = undefined;
           return;
         }
-
-        button.label = href;
+        resolveLink(href).then(resolved => {
+          if (linkCommand.value !== href) {
+            return;
+          }
+          button.linkTitle = resolved.title ?? href;
+          button.linkTooltip = resolved.path ? resolved.path + '\n' + href : href;
+          button.iconIdentifier = resolved.icon;
+        });
       };
 
       setHref(linkCommand.value);
@@ -520,6 +570,35 @@ export class Typo3LinkUI extends Core.Plugin {
         this.hideUI();
       });
 
+      return button;
+    });
+
+    editor.ui.componentFactory.add('openLink', locale => {
+      const linkCommand = editor.commands.get('link');
+      const button = new UI.ButtonView(locale);
+      button.set({
+        label: locale.t('Open link in new tab'),
+        icon: IconLink,
+        tooltip: true
+      });
+      button.set('isEnabled', false);
+      const updateEnabled = (href: string | undefined) => {
+        button.isEnabled = !!href;
+        if (href && needsResolving(href)) {
+          resolveLink(href).then(resolved => {
+            if (linkCommand.value === href) {
+              button.isEnabled = resolved.url !== null;
+            }
+          });
+        }
+      };
+      updateEnabled(linkCommand.value as string | undefined);
+      this.listenTo(linkCommand, 'change:value', (evt, name, href) => {
+        updateEnabled(href);
+      });
+      this.listenTo(button, 'execute', () => {
+        openResolvedLink(linkCommand.value as string);
+      });
       return button;
     });
 

@@ -1,0 +1,3 @@
+"be_groups"
+,"uid","pid","title","file_mountpoints","file_permissions","hidden","deleted"
+,1,0,"editor group","1","readFolder,readFile",0,0

@@ -65,12 +65,22 @@
     --ck-style-panel-button-hover-border-color: color-mix(in srgb, var(--ck-style-panel-button-hover-label-background), currentColor 25%);
 
     &.ck-toolbar > .ck-toolbar__items > .ck-link-toolbar__preview {
-        // @todo: this styling becomes obsolete once the link preview can render <a> tags
+        display: flex;
+        align-items: center;
+        gap: var(--ck-spacing-standard);
         padding: 0 var(--ck-spacing-medium);
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
-        max-width: 80vw;
+        max-width: min(24rem, 80vw);
+        min-width: 0;
+
+        &-icon {
+            flex: 0 0 auto;
+        }
+
+        &-title {
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
     }
 
     &.ck-fullscreen {

@@ -13,6 +13,7 @@
 
 import LinkBrowser, { type LinkAttributes } from '@typo3/backend/link-browser';
 import Modal from '@typo3/backend/modal';
+import { resolveLink } from '@typo3/backend/link-resolver';
 import RegularEvent from '@typo3/core/event/regular-event';
 import { type Typo3LinkDict, LINK_ALLOWED_ATTRIBUTES, addLinkPrefix } from '@typo3/rte-ckeditor/plugin/typo3-link';
 import type * as Core from '@ckeditor/ckeditor5-core';
@@ -49,18 +50,23 @@ class RteLinkBrowser {
    *
    * @param {String} link The select element or anything else which identifies the link (e.g. "page:<pageUid>" or "file:<uid>")
    */
-  public finalizeFunction(link: string): void {
+  public async finalizeFunction(link: string): Promise<void> {
     const attributes = LinkBrowser.getLinkAttributeValues();
     const queryParams = attributes.params ? attributes.params : '';
     delete attributes.params;
 
-    const linkText = ''; // @todo future feature: e.g. add page title as link-text (if applicable)
+    const href = this.sanitizeLink(link, queryParams);
+    // Only relevant when no text is selected: the link title (if filled) or the resolved
+    // title of the target (e.g. the page title) is used as text of the new link.
+    const linkText = this.selectionStartPosition.isEqual(this.selectionEndPosition)
+      ? (attributes.title || (await resolveLink(href)).title || '')
+      : '';
     const linkAttrs = this.convertAttributes(attributes, linkText);
 
     this.restoreSelection();
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    this.editor.execute('link', this.sanitizeLink(link, queryParams), linkAttrs);
+    this.editor.execute('link', href, linkAttrs);
 
     Modal.dismiss();
   }
@@ -110,4 +116,4 @@ class RteLinkBrowser {
 // @todo check whether this is still required - if, document why/where
 const rteLinkBrowser = new RteLinkBrowser();
 export default rteLinkBrowser;
-LinkBrowser.finalizeFunction = (link: string): void => { rteLinkBrowser.finalizeFunction(link); };
+LinkBrowser.finalizeFunction = (link: string): void => { void rteLinkBrowser.finalizeFunction(link); };

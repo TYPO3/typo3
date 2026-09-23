@@ -43,6 +43,13 @@ return [
         'target' => Controller\LinkController::class . '::resourceAction',
     ],
 
+    // Resolve a link to title, path and frontend URL
+    'link_preview' => [
+        'path' => '/link/preview',
+        'methods' => ['GET'],
+        'target' => Controller\LinkPreviewController::class . '::resolveAction',
+    ],
+
     // File processing
     'file_process' => [
         'path' => '/file/process',

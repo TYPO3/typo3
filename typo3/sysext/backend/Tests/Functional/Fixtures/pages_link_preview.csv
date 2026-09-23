@@ -1,0 +1,5 @@
+"pages"
+,"uid","pid","title","slug","doktype","perms_everybody","hidden","deleted","sorting"
+,1,0,"Home","/",1,15,0,0,256
+,2,1,"About us","/about-us",1,15,0,0,256
+,3,2,"Team","/about-us/team",1,15,0,0,256

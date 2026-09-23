@@ -1,0 +1,5 @@
+"sys_file"
+,"uid","pid","storage","type","identifier","identifier_hash","folder_hash","extension","mime_type","name","sha1","size","missing"
+,1,0,1,2,"/user_upload/allowed.txt","44c16f224b97886c979753e9599f5a4a86de678b","85b130b44ae1a7dae9348a42b3d4a68e5450fc44","txt","text/plain","allowed.txt","c3de44d531c00ca3e0383de27927f390a0f419ac",7,0
+,2,0,1,2,"/restricted/secret.txt","dfbdbce91c58c1e7e2461fcfd2bac83417e8f76a","dc27410e3f940c67788fb63dbb6efe50a1b1df2e","txt","text/plain","secret.txt","e5e9fa1ba31ecd1ae84f75caaa474f3a663f05f4",6,0
+,3,0,0,2,"/typo3conf/outside.txt","e35cf5b4f5f845b653c3c716ca14083e47857e30","fbd6714e8a0ab708e885ba5befd0ae86c5ab8d45","txt","text/plain","outside.txt","45e18dad51fd9e8869897fba48fa93d118e5e404",7,0
