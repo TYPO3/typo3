@@ -84,6 +84,8 @@ CI=true ./Build/Scripts/runTests.sh -s build      # TypeScript + Sass + assets
 
 # end-to-end (Playwright)
 ./Build/Scripts/runTests.sh -s e2e
+./Build/Scripts/runTests.sh -s e2e Build/tests/playwright/e2e/form-engine/elements-rte-source-editing.spec.ts
+./Build/Scripts/runTests.sh -s e2e -- --grep login
 ./Build/Scripts/runTests.sh -s e2e-install -d sqlite
 ./Build/Scripts/runTests.sh -s e2e-prepare        # boot an instance for manual poking
 ./Build/Scripts/runTests.sh -s e2e-browser        # same specs with the GUI on http://127.0.0.1:43837
