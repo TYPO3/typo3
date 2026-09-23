@@ -43,3 +43,14 @@ export async function openElementsBasicEditor(backend: BackendPage, tab?: string
     tab,
   });
 }
+
+/**
+ * Convenience wrapper for the elements_rte record.
+ */
+export async function openElementsRteEditor(backend: BackendPage, tab?: string): Promise<void> {
+  await openStyleguideTcaEditor(backend, {
+    pageName: 'elements rte',
+    listId: 'tx_styleguide_elements_rte',
+    tab,
+  });
+}
