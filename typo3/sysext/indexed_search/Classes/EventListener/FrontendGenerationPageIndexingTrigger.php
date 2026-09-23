@@ -68,9 +68,15 @@ final readonly class FrontendGenerationPageIndexingTrigger
 
         // Indexer configuration from Extension Manager interface:
         $disableFrontendIndexing = (bool)$this->extensionConfiguration->get('indexed_search', 'disableFrontendIndexing');
-        $forceIndexing = $this->eventDispatcher->dispatch(new EnableIndexingEvent($event->getRequest()))->isIndexingEnabled();
+        $enableIndexingEvent = $this->eventDispatcher->dispatch(new EnableIndexingEvent($event->getRequest()));
+        $forceIndexing = $enableIndexingEvent->isIndexingEnabled();
 
         $this->timeTracker->push('Index page');
+        if ($enableIndexingEvent->isIndexingDisabled()) {
+            $this->timeTracker->setTSlogMessage('Index page? No, Indexing was disabled by an event listener.');
+            $this->timeTracker->pull();
+            return;
+        }
         if ($disableFrontendIndexing && !$forceIndexing) {
             $this->timeTracker->setTSlogMessage('Index page? No, Ordinary Frontend indexing during rendering is disabled.');
             return;
