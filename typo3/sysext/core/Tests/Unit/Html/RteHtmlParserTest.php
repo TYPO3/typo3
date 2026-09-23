@@ -754,6 +754,27 @@ final class RteHtmlParserTest extends UnitTestCase
         self::assertEquals('<p><span>Not allowed outside of p-tag</span></p>', $subject->transformTextForRichTextEditor('<span>Not allowed outside of p-tag</span>', $this->procOptions));
     }
 
+    public static function allowAttributesRestrictsAttributesOfParagraphTagsDataProvider(): array
+    {
+        return [
+            'comma separated list' => [['allowAttributes' => 'class,id']],
+            'array' => [['allowAttributes.' => ['class', 'id']]],
+        ];
+    }
+
+    #[DataProvider('allowAttributesRestrictsAttributesOfParagraphTagsDataProvider')]
+    #[Test]
+    public function allowAttributesRestrictsAttributesOfParagraphTags(array $options): void
+    {
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $subject = new RteHtmlParser($eventDispatcher);
+        $result = $subject->transformTextForPersistence(
+            '<p class="a" id="b" title="c" dir="ltr">Text</p>',
+            ['mode' => 'default'] + $options
+        );
+        self::assertSame('<p class="a" id="b">Text</p>', $result);
+    }
+
     #[Test]
     public function tableAndFigureApplyCorrectlyOutsideOfParagraphTags(): void
     {

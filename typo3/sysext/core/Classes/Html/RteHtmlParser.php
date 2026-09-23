@@ -78,7 +78,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
 
     /**
      * A list of HTML attributes for <p> tags. Because <p> tags are wrapped currently in a special handling,
-     * they have a special place for configuration via 'proc.keepPDIVattribs'
+     * they are configured via the processing option 'allowAttributes'
      */
     protected array $allowedAttributesForParagraphTags = [
         'class',
@@ -145,7 +145,9 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
 
         // Define which attributes are allowed on <p> tags
         if (isset($this->procOptions['allowAttributes.'])) {
-            $this->allowedAttributesForParagraphTags = $this->procOptions['allowAttributes.'];
+            $this->allowedAttributesForParagraphTags = (array)$this->procOptions['allowAttributes.'];
+        } elseif (!empty($this->procOptions['allowAttributes'])) {
+            $this->allowedAttributesForParagraphTags = GeneralUtility::trimExplode(',', strtolower($this->procOptions['allowAttributes']), true);
         }
         // Override tags which are allowed outside of <p> tags
         if (isset($this->procOptions['allowTagsOutside'])) {
