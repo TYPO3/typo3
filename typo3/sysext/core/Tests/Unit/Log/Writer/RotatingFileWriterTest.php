@@ -45,15 +45,6 @@ final class RotatingFileWriterTest extends UnitTestCase
         $this->testFilesToDelete[] = $this->testRoot;
     }
 
-    private function createWriter(string $prependName = ''): RotatingFileWriter
-    {
-        $logFileName = $this->getDefaultFileName($prependName);
-        if (file_exists($logFileName)) {
-            unlink($logFileName);
-        }
-        return new RotatingFileWriter(['logFile' => $logFileName]);
-    }
-
     /**
      * @return non-empty-string
      */
@@ -69,7 +60,7 @@ final class RotatingFileWriterTest extends UnitTestCase
 
         touch($logFileName);
 
-        $writer = $this->createWriter();
+        $writer = new RotatingFileWriter(['logFile' => $logFileName]);
         $simpleRecord = new LogRecord(StringUtility::getUniqueId('test.core.log.rotatingFileWriter.simpleRecord.'), LogLevel::INFO, 'test record');
         $writer->writeLog($simpleRecord);
 
