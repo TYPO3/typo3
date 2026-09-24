@@ -2916,7 +2916,7 @@ final class ArrayUtilityTest extends UnitTestCase
     public function filterAndSortByNumericKeysBehavesCorrectlyForAcceptAnyKeysIsFalse(array $input, array $expected): void
     {
         $result = ArrayUtility::filterAndSortByNumericKeys($input);
-        self::assertEquals($result, $expected);
+        self::assertEquals($expected, $result);
     }
 
     public static function sortArrayWithIntegerKeysDataProvider(): array
@@ -2966,7 +2966,7 @@ final class ArrayUtilityTest extends UnitTestCase
     public function sortArrayWithIntegerKeysSortsNumericArrays(array $arrayToSort, array $expectedArray): void
     {
         $sortedArray = ArrayUtility::sortArrayWithIntegerKeys($arrayToSort);
-        self::assertSame($sortedArray, $expectedArray);
+        self::assertSame($expectedArray, $sortedArray);
     }
 
     #[Test]

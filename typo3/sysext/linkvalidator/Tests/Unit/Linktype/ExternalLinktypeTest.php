@@ -91,8 +91,8 @@ final class ExternalLinktypeTest extends UnitTestCase
         $subject->checkLink($url, [], $this->getMockBuilder(LinkAnalyzer::class)->disableOriginalConstructor()->getMock());
         $errorParams = $subject->getErrorParams();
 
-        self::assertSame($errorParams['errorType'], 'httpStatusCode');
-        self::assertSame($errorParams['errno'], 404);
+        self::assertSame('httpStatusCode', $errorParams['errorType']);
+        self::assertSame(404, $errorParams['errno']);
     }
 
     private function getRequestHeaderOptions(): array
