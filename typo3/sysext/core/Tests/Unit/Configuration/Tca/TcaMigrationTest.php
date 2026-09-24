@@ -2189,7 +2189,7 @@ final class TcaMigrationTest extends UnitTestCase
                             'config' => [
                                 'type' => 'input',
                                 'renderType' => 'inputDateTime',
-                                'default' => time(),
+                                'default' => 1700000000,
                             ],
                         ],
                     ],
@@ -2224,7 +2224,7 @@ final class TcaMigrationTest extends UnitTestCase
                         'eColumn' => [
                             'config' => [
                                 'type' => 'datetime',
-                                'default' => time(),
+                                'default' => 1700000000,
                             ],
                         ],
                     ],

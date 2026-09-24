@@ -31,7 +31,7 @@ final class CacheHashConfigurationTest extends TestCase
             [
                 CacheHashConfiguration::ASPECT_CACHED_PARAMETERS_WHITELIST,
                 CacheHashConfiguration::ASPECT_EXCLUDED_PARAMETERS,
-                CacheHashConfiguration::ASPECT_EXCLUDED_PARAMETERS,
+                CacheHashConfiguration::ASPECT_EXCLUDED_PARAMETERS_IF_EMPTY,
                 CacheHashConfiguration::ASPECT_REQUIRED_CACHE_HASH_PRESENCE_PARAMETERS,
             ],
             ['true', true, 1, new \stdClass()],
@@ -53,7 +53,7 @@ final class CacheHashConfigurationTest extends TestCase
             [
                 CacheHashConfiguration::ASPECT_CACHED_PARAMETERS_WHITELIST,
                 CacheHashConfiguration::ASPECT_EXCLUDED_PARAMETERS,
-                CacheHashConfiguration::ASPECT_EXCLUDED_PARAMETERS,
+                CacheHashConfiguration::ASPECT_EXCLUDED_PARAMETERS_IF_EMPTY,
                 CacheHashConfiguration::ASPECT_REQUIRED_CACHE_HASH_PRESENCE_PARAMETERS,
             ],
             [null, [], new \stdClass()],
@@ -75,7 +75,7 @@ final class CacheHashConfigurationTest extends TestCase
             [
                 CacheHashConfiguration::ASPECT_CACHED_PARAMETERS_WHITELIST,
                 CacheHashConfiguration::ASPECT_EXCLUDED_PARAMETERS,
-                CacheHashConfiguration::ASPECT_EXCLUDED_PARAMETERS,
+                CacheHashConfiguration::ASPECT_EXCLUDED_PARAMETERS_IF_EMPTY,
                 CacheHashConfiguration::ASPECT_REQUIRED_CACHE_HASH_PRESENCE_PARAMETERS,
             ],
             ['=', '^', '~'],
@@ -97,7 +97,7 @@ final class CacheHashConfigurationTest extends TestCase
             [
                 CacheHashConfiguration::ASPECT_CACHED_PARAMETERS_WHITELIST,
                 CacheHashConfiguration::ASPECT_EXCLUDED_PARAMETERS,
-                CacheHashConfiguration::ASPECT_EXCLUDED_PARAMETERS,
+                CacheHashConfiguration::ASPECT_EXCLUDED_PARAMETERS_IF_EMPTY,
                 CacheHashConfiguration::ASPECT_REQUIRED_CACHE_HASH_PRESENCE_PARAMETERS,
             ],
             [['equals-a', '=equals-b', '^equals', '~equals']],
@@ -125,7 +125,7 @@ final class CacheHashConfigurationTest extends TestCase
             [
                 CacheHashConfiguration::ASPECT_CACHED_PARAMETERS_WHITELIST,
                 CacheHashConfiguration::ASPECT_EXCLUDED_PARAMETERS,
-                CacheHashConfiguration::ASPECT_EXCLUDED_PARAMETERS,
+                CacheHashConfiguration::ASPECT_EXCLUDED_PARAMETERS_IF_EMPTY,
                 CacheHashConfiguration::ASPECT_REQUIRED_CACHE_HASH_PRESENCE_PARAMETERS,
             ],
             [['equals-a', '=equals-b', '^equals', '~equals']],
@@ -153,7 +153,7 @@ final class CacheHashConfigurationTest extends TestCase
             [
                 CacheHashConfiguration::ASPECT_CACHED_PARAMETERS_WHITELIST,
                 CacheHashConfiguration::ASPECT_EXCLUDED_PARAMETERS,
-                CacheHashConfiguration::ASPECT_EXCLUDED_PARAMETERS,
+                CacheHashConfiguration::ASPECT_EXCLUDED_PARAMETERS_IF_EMPTY,
                 CacheHashConfiguration::ASPECT_REQUIRED_CACHE_HASH_PRESENCE_PARAMETERS,
             ],
             [['equals-a', '=equals-b', '^equals', '~equals']],

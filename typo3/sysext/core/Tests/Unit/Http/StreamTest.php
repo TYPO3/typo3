@@ -67,7 +67,7 @@ final class StreamTest extends UnitTestCase
     {
         yield 'r' => ['r', false];
         yield 'w' => ['w', true];
-        yield 'a' => ['w', true];
+        yield 'a' => ['a', true];
         yield 'r+' => ['r+', true];
         yield 'w+' => ['w+', true];
         yield 'a+' => ['a+', true];
