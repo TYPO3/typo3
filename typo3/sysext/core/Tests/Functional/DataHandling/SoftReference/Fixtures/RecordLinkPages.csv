@@ -1,0 +1,6 @@
+"pages"
+,"uid","pid","title","TSconfig"
+,1,0,"Root","TCEMAIN.linkHandler.news.configuration.table = tx_news_domain_model_news"
+"tt_content"
+,"uid","pid","CType"
+,1,1,"text"

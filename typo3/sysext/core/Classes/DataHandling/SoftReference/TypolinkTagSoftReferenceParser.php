@@ -92,6 +92,17 @@ class TypolinkTagSoftReferenceParser extends AbstractSoftReferenceParser
                             }
                         }
                         $linkTags[$key] = str_replace($matches[1], $content, $foundValue);
+                    } elseif ($linkDetails['type'] === LinkService::TYPE_RECORD) {
+                        $token = $this->makeTokenID((string)$key);
+                        $elements[$key]['matchString'] = $foundValue;
+                        $linkTags[$key] = str_replace($matches[1], '{softref:' . $token . '}', $foundValue);
+                        $recordTable = $this->resolveRecordLinkTable((string)$linkDetails['identifier'], $table, $uid);
+                        $elements[$key]['subst'] = [
+                            'type' => 'db',
+                            'recordRef' => $recordTable . ':' . $linkDetails['uid'],
+                            'tokenID' => $token,
+                            'tokenValue' => $matches[1],
+                        ];
                     } elseif ($linkDetails['type'] === LinkService::TYPE_URL) {
                         $token = $this->makeTokenID((string)$key);
                         $elements[$key]['matchString'] = $foundValue;

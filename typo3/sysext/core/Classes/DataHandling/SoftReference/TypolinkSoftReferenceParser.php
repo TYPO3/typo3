@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\DataHandling\SoftReference;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\DataHandling\Event\AppendLinkHandlerElementsEvent;
 use TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
@@ -101,17 +100,7 @@ class TypolinkSoftReferenceParser extends AbstractSoftReferenceParser
             $linkData = $linkService->resolve($link_param);
             switch ($linkData['type']) {
                 case LinkService::TYPE_RECORD:
-                    $referencePageId = $referenceTable === 'pages'
-                        ? $referenceUid
-                        : (int)(BackendUtility::getRecord($referenceTable, $referenceUid)['pid'] ?? 0);
-                    if ($referencePageId) {
-                        $pageTsConfig = BackendUtility::getPagesTSconfig($referencePageId);
-                        $table = $pageTsConfig['TCEMAIN.']['linkHandler.'][$linkData['identifier'] . '.']['configuration.']['table'] ?? $linkData['identifier'];
-                    } else {
-                        // Backwards compatibility for the old behaviour, where the identifier was saved as the table.
-                        $table = $linkData['identifier'];
-                    }
-                    $finalTagParts['table'] = $table;
+                    $finalTagParts['table'] = $this->resolveRecordLinkTable($linkData['identifier'], $referenceTable, $referenceUid);
                     $finalTagParts['uid'] = $linkData['uid'];
                     break;
                 case LinkService::TYPE_PAGE:
