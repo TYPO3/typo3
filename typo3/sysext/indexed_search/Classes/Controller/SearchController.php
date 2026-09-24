@@ -117,10 +117,7 @@ class SearchController extends ActionController
 
         $this->loadSettings();
 
-        // setting default values
-        if (is_array($this->settings['defaultOptions'])) {
-            $searchData = array_merge($this->settings['defaultOptions'], $searchData);
-        }
+        $searchData = $this->applyDefaultOptions($searchData);
         // Hand in the current site language as languageUid
         $searchData['languageUid'] = $this->context->getPropertyFromAspect('language', 'id', 0);
 
@@ -160,6 +157,14 @@ class SearchController extends ActionController
         // $this->searchData is used in $this->getSearchWords
         $this->searchWords = $this->getSearchWords($searchData, (bool)$searchData['defaultOperand']);
 
+        return $searchData;
+    }
+
+    protected function applyDefaultOptions(array $searchData): array
+    {
+        if (is_array($this->settings['defaultOptions'] ?? null)) {
+            return array_merge($this->settings['defaultOptions'], $searchData);
+        }
         return $searchData;
     }
 
@@ -819,6 +824,9 @@ class SearchController extends ActionController
      */
     protected function getAllAvailableIndexConfigurationsOptions(): array
     {
+        if ($this->settings['blind']['freeIndexUid'] ?? false) {
+            return [];
+        }
         foreach ([IndexingConfiguration::ALL_MIXED, IndexingConfiguration::ALL_CATEGORIZED, IndexingConfiguration::PAGES] as $indexingConfiguration) {
             $value = $indexingConfiguration->value;
             $allOptions[$value] = LocalizationUtility::translate('indexingConfigurations.' . $value, 'IndexedSearch');

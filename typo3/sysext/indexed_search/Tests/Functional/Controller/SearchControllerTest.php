@@ -244,4 +244,45 @@ final class SearchControllerTest extends FunctionalTestCase
 
         $controller->searchAction(['sword' => 'typo3', 'freeIndexUid' => '1,2,3']);
     }
+
+    #[Test]
+    public function indexConfigurationOptionsAreEmptyIfBlindFreeIndexUidIsSet(): void
+    {
+        $controller = $this->createControllerWithSettings(['blind' => ['freeIndexUid' => 1]]);
+        self::assertSame([], $this->callProtectedMethod($controller, 'getAllAvailableIndexConfigurationsOptions'));
+    }
+
+    #[Test]
+    public function indexConfigurationOptionsAreAvailableIfBlindFreeIndexUidIsDisabled(): void
+    {
+        $controller = $this->createControllerWithSettings(['blind' => ['freeIndexUid' => 0]]);
+        self::assertNotSame([], $this->callProtectedMethod($controller, 'getAllAvailableIndexConfigurationsOptions'));
+    }
+
+    #[Test]
+    public function extendedSearchCanBeEnabledViaDefaultOptions(): void
+    {
+        $controller = $this->createControllerWithSettings(['defaultOptions' => ['extendedSearch' => 1]]);
+        self::assertSame(['extendedSearch' => 1, 'sword' => 'foo'], $this->callProtectedMethod($controller, 'applyDefaultOptions', ['sword' => 'foo']));
+        self::assertSame(['extendedSearch' => 0], $this->callProtectedMethod($controller, 'applyDefaultOptions', ['extendedSearch' => 0]));
+    }
+
+    private function createControllerWithSettings(array $settings): SearchController
+    {
+        $controller = new SearchController(
+            self::createStub(Context::class),
+            self::createStub(IndexSearchRepository::class),
+            self::createStub(TypoScriptService::class),
+            self::createStub(Lexer::class),
+            self::createStub(LinkFactory::class),
+            self::createStub(PageRepository::class),
+        );
+        new \ReflectionProperty($controller, 'settings')->setValue($controller, $settings);
+        return $controller;
+    }
+
+    private function callProtectedMethod(SearchController $controller, string $method, mixed ...$arguments): mixed
+    {
+        return new \ReflectionMethod($controller, $method)->invoke($controller, ...$arguments);
+    }
 }

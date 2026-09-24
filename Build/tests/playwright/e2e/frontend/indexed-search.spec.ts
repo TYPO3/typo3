@@ -7,7 +7,6 @@ const advancedSelectors = [
   '#tx-indexedsearch-selectbox-defaultoperand',
   '#tx-indexedsearch-selectbox-media',
   '#tx-indexedsearch-selectbox-sections',
-  '#tx-indexedsearch-selectbox-freeIndexUid',
   '#tx-indexedsearch-selectbox-order',
   '#tx-indexedsearch-selectbox-desc',
   '#tx-indexedsearch-selectbox-results',

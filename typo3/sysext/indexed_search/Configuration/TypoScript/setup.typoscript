@@ -62,6 +62,7 @@ plugin.tx_indexedsearch {
 		}
 
 		defaultOptions {
+			extendedSearch = 0
 			defaultOperand = 0
 			sections = 0
 			freeIndexUid = -1
