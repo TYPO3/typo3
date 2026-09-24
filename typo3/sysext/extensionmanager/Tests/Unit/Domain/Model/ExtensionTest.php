@@ -55,7 +55,7 @@ final class ExtensionTest extends UnitTestCase
         foreach ($dependencyObjects as $resultingDependency) {
             $identifiers[] = $resultingDependency->getIdentifier();
         }
-        self::assertSame($identifiers, ['php', 'typo3', 'fn_lib']);
+        self::assertSame(['php', 'typo3', 'fn_lib'], $identifiers);
     }
 
     public static function convertDependenciesToObjectSetsVersionDataProvider(): array

@@ -156,8 +156,8 @@ final class ObjectAccessTest extends UnitTestCase
     public function getPropertyCanAccessPropertiesOfAnArray(): void
     {
         $array = ['key' => 'value'];
-        $expected = ObjectAccess::getProperty($array, 'key');
-        self::assertEquals('value', $expected, 'getProperty does not work with Array property.');
+        $actual = ObjectAccess::getProperty($array, 'key');
+        self::assertEquals('value', $actual, 'getProperty does not work with Array property.');
     }
 
     #[Test]
@@ -252,7 +252,7 @@ final class ObjectAccessTest extends UnitTestCase
         GeneralUtility::setSingletonInstance(ReflectionService::class, new ReflectionService(new NullFrontend('extbase'), 'ClassSchemata'));
         $gettablePropertyNames = ObjectAccess::getGettablePropertyNames($this->dummyObject);
         $expectedPropertyNames = ['anotherBooleanProperty', 'anotherProperty', 'booleanProperty', 'property', 'property2', 'publicProperty', 'publicProperty2', 'someValue'];
-        self::assertEquals($gettablePropertyNames, $expectedPropertyNames, 'getGettablePropertyNames returns not all gettable properties.');
+        self::assertEquals($expectedPropertyNames, $gettablePropertyNames, 'getGettablePropertyNames returns not all gettable properties.');
     }
 
     #[Test]
@@ -273,7 +273,7 @@ final class ObjectAccessTest extends UnitTestCase
         GeneralUtility::setSingletonInstance(ReflectionService::class, new ReflectionService(new NullFrontend('extbase'), 'ClassSchemata'));
         $settablePropertyNames = ObjectAccess::getSettablePropertyNames($this->dummyObject);
         $expectedPropertyNames = ['anotherBooleanProperty', 'anotherProperty', 'property', 'property2', 'publicProperty', 'publicProperty2', 'writeOnlyMagicProperty'];
-        self::assertEquals($settablePropertyNames, $expectedPropertyNames, 'getSettablePropertyNames returns not all settable properties.');
+        self::assertEquals($expectedPropertyNames, $settablePropertyNames, 'getSettablePropertyNames returns not all settable properties.');
     }
 
     #[Test]
@@ -302,7 +302,7 @@ final class ObjectAccessTest extends UnitTestCase
             'publicProperty2' => 42,
             'someValue' => true,
         ];
-        self::assertEquals($allProperties, $expectedProperties, 'expectedProperties did not return the right values for the properties.');
+        self::assertEquals($expectedProperties, $allProperties, 'expectedProperties did not return the right values for the properties.');
     }
 
     #[Test]

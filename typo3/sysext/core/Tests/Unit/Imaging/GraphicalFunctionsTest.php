@@ -135,6 +135,6 @@ final class GraphicalFunctionsTest extends UnitTestCase
         $subject->_set('processorEnabled', true);
         $subject->expects($this->once())->method('executeIdentifyCommandForImageFile')->with($file)->willReturn('200+0+0 400+0+0 png PNG');
         $result = $subject->imageMagickIdentify($file);
-        self::assertEquals($result, $expected);
+        self::assertEquals($expected, $result);
     }
 }

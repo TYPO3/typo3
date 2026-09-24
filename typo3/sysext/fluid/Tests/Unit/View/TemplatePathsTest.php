@@ -87,13 +87,13 @@ final class TemplatePathsTest extends UnitTestCase
 
     #[DataProvider('getPathSetterMethodTestValues')]
     #[Test]
-    public function pathSetterMethodSortsPathsByKeyDescending(string $method, array $paths, array $expected): void
+    public function pathSetterMethodSortsNumericPathsByKeyAscending(string $method, array $paths, array $expected): void
     {
         $setter = 'set' . ucfirst($method);
         $getter = 'get' . ucfirst($method);
         $subject = $this->getMockBuilder(TemplatePaths::class)->onlyMethods(['sanitizePath'])->getMock();
         $subject->method('sanitizePath')->willReturnArgument(0);
         $subject->$setter($paths);
-        self::assertEquals($expected, $subject->$getter());
+        self::assertSame($expected, $subject->$getter());
     }
 }
