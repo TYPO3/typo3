@@ -39,6 +39,7 @@
 	},
 	"suggest": {
 		"ext-exif": "Used to extract exif metadata 'COMMENT' and 'ImageDescription' of uploaded images",
+		"typo3/cms-reports": "For the status report about the MySQL fulltext minimum word length",
 		"typo3/cms-scheduler": "For garbage collection of search statistics"
 	},
 	"extra": {
