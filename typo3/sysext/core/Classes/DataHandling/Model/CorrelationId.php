@@ -64,7 +64,7 @@ class CorrelationId implements \JsonSerializable
         $target = static::create()
             ->withSubject($matches['subject'])
             ->withAspects(...$aspects);
-        $target->scope = $matches['scope'] ?? null;
+        $target->scope = $matches['scope'];
         $target->version = $flags >> 10;
         $target->capabilities = $flags & ((1 << 10) - 1);
         return $target;
