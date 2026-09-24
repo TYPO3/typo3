@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\DataHandling\SoftReference;
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+
 /**
  * A generic parser class useful if tokenID prefixes are needed.
  */
@@ -50,6 +52,23 @@ abstract class AbstractSoftReferenceParser implements SoftReferenceParserInterfa
     public function getParserKey(): string
     {
         return $this->parserKey;
+    }
+
+    /**
+     * Resolves the database table of a record link (t3://record?identifier=...). The identifier is
+     * mapped to a table via the link handler configuration of the page TSconfig of the referencing
+     * record, otherwise the identifier is used as table name (behaviour before the mapping existed).
+     */
+    protected function resolveRecordLinkTable(string $identifier, string $referenceTable, int $referenceUid): string
+    {
+        $referencePageId = $referenceTable === 'pages'
+            ? $referenceUid
+            : (int)(BackendUtility::getRecord($referenceTable, $referenceUid)['pid'] ?? 0);
+        if (!$referencePageId) {
+            return $identifier;
+        }
+        $pageTsConfig = BackendUtility::getPagesTSconfig($referencePageId);
+        return $pageTsConfig['TCEMAIN.']['linkHandler.'][$identifier . '.']['configuration.']['table'] ?? $identifier;
     }
 
     protected function setTokenIdBasePrefix(string $table, string $uid, string $field, string $structurePath): void
