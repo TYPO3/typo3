@@ -51,19 +51,6 @@ final class NonPublicStorageIndexingTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function publicUrlOfNonPublicStorageIsResolvedToALocalPath(): void
-    {
-        $subject = $this->get(Indexer::class);
-        $result = $subject->extractHyperLinks('<a href="' . htmlspecialchars($this->getFileDumpUrl()) . '">nonpublic.txt</a>');
-
-        self::assertCount(1, $result);
-        self::assertSame(
-            $this->instancePath . '/fileadmin/user_upload/nonpublic.txt',
-            $result[0]['localPath']
-        );
-    }
-
-    #[Test]
     public function fileOfNonPublicStorageIsIndexed(): void
     {
         $this->indexPageWithLink(htmlspecialchars($this->getFileDumpUrl()));

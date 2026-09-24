@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\IndexedSearch;
 
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
+use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\Environment;
@@ -26,14 +27,22 @@ use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Html\HtmlParser;
-use TYPO3\CMS\Core\Http\RequestFactory;
+use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\FileInterface;
+use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Resource\TextExtraction\ExtractedText;
+use TYPO3\CMS\Core\Resource\TextExtraction\TextExtractorRegistry;
+use TYPO3\CMS\Core\SystemResource\Type\SystemResourceInterface;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\IndexedSearch\Dto\IndexingDataAsArray;
 use TYPO3\CMS\IndexedSearch\Dto\IndexingDataAsString;
+use TYPO3\CMS\IndexedSearch\Service\ExternalMediaTypes;
+use TYPO3\CMS\IndexedSearch\TextExtraction\ExternalToolConfiguration;
+use TYPO3\CMS\IndexedSearch\TextExtraction\PartitionedDocument;
+use TYPO3\CMS\IndexedSearch\TextExtraction\PartitionedTextExtractorInterface;
 use TYPO3\CMS\IndexedSearch\Type\IndexStatus;
 use TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility;
 
@@ -48,11 +57,6 @@ class Indexer
      * HTML code blocks to exclude from indexing
      */
     public string $excludeSections = 'script,style';
-
-    /**
-     * Supported Extensions for external files
-     */
-    public array $external_parsers = [];
 
     /**
      * If set, this tells a number of seconds that is the maximum age of an indexed document.
@@ -102,7 +106,6 @@ class Indexer
      * Content of TYPO3 page
      */
     public string $content_md5h = '';
-    public string $indexExternalUrl_content = '';
     public int $freqRange = 32000;
     public float $freqMax = 0.1;
     public int $flagBitMask;
@@ -110,11 +113,14 @@ class Indexer
     public function __construct(
         private readonly TimeTracker $timeTracker,
         private readonly Lexer $lexer,
-        private readonly RequestFactory $requestFactory,
         private readonly ConnectionPool $connectionPool,
         private readonly ResourceFactory $resourceFactory,
         private readonly HashService $hashService,
+        private readonly TextExtractorRegistry $textExtractorRegistry,
+        private readonly ExternalToolConfiguration $externalToolConfiguration,
+        private readonly ExternalMediaTypes $externalMediaTypes,
         ExtensionConfiguration $extensionConfiguration,
+        private readonly LoggerInterface $logger,
     ) {
         // Indexer configuration from Extension Manager interface
         $this->indexerConfig = $extensionConfiguration->get('indexed_search');
@@ -133,23 +139,6 @@ class Indexer
         }
         // Setting phash / phash_grouping which identifies the indexed page based on some of these variables:
         $this->setT3Hashes();
-        // Initialize external document parsers:
-        // Example configuration, see ext_localconf.php of this file!
-        if ($this->conf['index_externals']) {
-            $this->initializeExternalParsers();
-        }
-    }
-
-    public function initializeExternalParsers(): void
-    {
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['external_parsers'] ?? [] as $extension => $className) {
-            $this->external_parsers[$extension] = GeneralUtility::makeInstance($className);
-            $this->external_parsers[$extension]->pObj = $this;
-            // Init parser and if it returns FALSE, unset its entry again:
-            if (!$this->external_parsers[$extension]->initParser($extension)) {
-                unset($this->external_parsers[$extension]);
-            }
-        }
     }
 
     /********************************
@@ -399,61 +388,20 @@ class Indexer
      */
     public function extractLinks(string $content): void
     {
-        // Get links:
-        $list = $this->extractHyperLinks($content);
-        // Traverse links:
-        foreach ($list as $linkInfo) {
-            // Decode entities:
-            if ($linkInfo['localPath']) {
-                // localPath means: This file is sent by a download script. While the indexed URL has to point to $linkInfo['href'], the absolute path to the file is specified here!
-                $linkSource = htmlspecialchars_decode($linkInfo['localPath']);
-            } else {
-                $linkSource = htmlspecialchars_decode($linkInfo['href']);
-            }
-            // Parse URL:
-            $qParts = parse_url($linkSource);
-            // Check for jumpurl (TYPO3 specific thing...)
-            if (($qParts['query'] ?? false) && str_contains($qParts['query'], 'jumpurl=')) {
-                parse_str($qParts['query'], $getP);
-                $linkSource = $getP['jumpurl'];
-                $qParts = parse_url($linkSource);
-            }
-            if (!$linkInfo['localPath'] && ($qParts['scheme'] ?? false)) {
-                if ($this->indexerConfig['indexExternalURLs']) {
-                    // Index external URL (http or otherwise)
-                    $this->indexExternalUrl($linkSource);
-                }
-            } elseif (!($qParts['query'] ?? false)) {
-                if ($linkInfo['localPath']) {
-                    // Already resolved to an absolute path by createLocalPath(), which may point
-                    // outside the public web path in case of a storage which is not public.
-                    $localFile = $linkSource;
-                } else {
-                    $linkSource = urldecode($linkSource);
-                    if (GeneralUtility::isAllowedAbsPath($linkSource)) {
-                        $localFile = $linkSource;
-                    } else {
-                        $localFile = GeneralUtility::getFileAbsFileName(Environment::getPublicPath() . '/' . $linkSource);
-                    }
-                }
-                if ($localFile && @is_file($localFile)) {
-                    // Index local file:
-                    if ($linkInfo['localPath']) {
-                        $fI = pathinfo($linkSource);
-                        $ext = strtolower($fI['extension']);
-                        $this->indexRegularDocument($linkInfo['href'], false, $linkSource, $ext);
-                    } else {
-                        $this->indexRegularDocument($linkSource);
-                    }
-                }
+        $supportedExtensions = null;
+        foreach ($this->extractHyperLinks($content) as $linkInfo) {
+            $supportedExtensions ??= $this->externalMediaTypes->getSupportedExtensions();
+            $file = $this->createFileObject(urldecode($linkInfo['href']), $supportedExtensions);
+            if ($file !== null) {
+                $this->indexFileDocument($file, $linkInfo['href']);
             }
         }
     }
 
     /**
-     * Extracts all links to external documents from the HTML content string
+     * Extracts all links from the HTML content string.
      *
-     * @return array<int, array{tag: string, href: string, localPath: string}>
+     * @return array<int, array{tag: string, href: string}>
      */
     public function extractHyperLinks(string $html): array
     {
@@ -469,7 +417,6 @@ class Indexer
                         $hyperLinksData[] = [
                             'tag' => $tagData,
                             'href' => $tagAttributes[0]['href'],
-                            'localPath' => $this->createLocalPath(urldecode($tagAttributes[0]['href'])),
                         ];
                     }
                 }
@@ -503,96 +450,73 @@ class Indexer
 
     /******************************************
      *
-     * Indexing; external URL
+     * Resolving linked files
      *
      ******************************************/
     /**
-     * Index External URLs HTML content
+     * Resolves the target of a link to a file of a FAL storage. Links to files
+     * outside of any storage and links to other websites are not resolved. A
+     * public file is only resolved if its extension can be indexed, so FAL does
+     * not add other files to its index.
      *
-     * @param string $externalUrl URL, eg. "https://typo3.org/
+     * @param list<string> $supportedExtensions
      */
-    public function indexExternalUrl(string $externalUrl): void
+    protected function createFileObject(string $sourcePath, array $supportedExtensions): ?FileInterface
     {
-        // Get headers:
-        $urlHeaders = $this->getUrlHeaders($externalUrl);
-        if (is_array($urlHeaders) && stripos($urlHeaders['Content-Type'], 'text/html') !== false) {
-            $content = ($this->indexExternalUrl_content = GeneralUtility::getUrl($externalUrl));
-            if ((string)$content !== '') {
-                // Create temporary file:
-                $tmpFile = GeneralUtility::tempnam('EXTERNAL_URL');
-                GeneralUtility::writeFile($tmpFile, $content, true);
-                // Index that file:
-                $this->indexRegularDocument($externalUrl, true, $tmpFile, 'html');
-                // Using "TRUE" for second parameter to force indexing of external URLs (mtime doesn't make sense, does it?)
-                unlink($tmpFile);
-            }
+        $file = $this->createFileFromFileDumpUrl($sourcePath);
+        if ($file !== null) {
+            return $file;
         }
+        $localPath = $this->createLocalPathUsingAbsRefPrefix($sourcePath)
+            ?: $this->createLocalPathUsingDomainURL($sourcePath)
+            ?: $this->createLocalPathFromAbsoluteURL($sourcePath)
+            ?: $this->createLocalPathFromRelativeURL($sourcePath);
+        if ($localPath === ''
+            || !in_array(strtolower(pathinfo($localPath, PATHINFO_EXTENSION)), $supportedExtensions, true)
+        ) {
+            return null;
+        }
+        return $this->createFileFromLocalPath($localPath);
     }
 
     /**
-     * Getting HTTP request headers of URL
-     *
-     * @param string $url The URL
-     * @return array<string, string>|false If no answer, returns FALSE. Otherwise, an array where HTTP headers are keys
+     * Finds the file in the public storage which contains the file in the public web path.
      */
-    public function getUrlHeaders(string $url): array|false
+    protected function createFileFromLocalPath(string $localPath): ?FileInterface
     {
+        $identifier = substr($localPath, strlen(Environment::getPublicPath()));
+        if ($identifier === '' || str_contains($identifier, ':')) {
+            return null;
+        }
         try {
-            $response = $this->requestFactory->request($url, 'HEAD');
-            $headers = $response->getHeaders();
-            $retVal = [];
-            foreach ($headers as $key => $value) {
-                $retVal[$key] = implode('', $value);
+            $file = $this->resourceFactory->getFileObjectFromCombinedIdentifier($identifier);
+            if (!$file instanceof File) {
+                return null;
             }
-            return $retVal;
-        } catch (\Exception $e) {
-            // fail silently if the HTTP request failed
-            return false;
+            if (!$file->getStorage()->isPublic() || $file->isMissing()) {
+                return null;
+            }
+            return $file;
+        } catch (\Exception) {
+            return null;
         }
-    }
-
-    /**
-     * Checks if the file is local
-     *
-     * @return string Absolute path to file if file is local, else empty string
-     */
-    protected function createLocalPath(string $sourcePath): string
-    {
-        $localPath = $this->createLocalPathFromFileDumpUrl($sourcePath);
-        if ($localPath !== '') {
-            return $localPath;
-        }
-        $localPath = $this->createLocalPathUsingAbsRefPrefix($sourcePath);
-        if ($localPath !== '') {
-            return $localPath;
-        }
-        $localPath = $this->createLocalPathUsingDomainURL($sourcePath);
-        if ($localPath !== '') {
-            return $localPath;
-        }
-        $localPath = $this->createLocalPathFromAbsoluteURL($sourcePath);
-        if ($localPath !== '') {
-            return $localPath;
-        }
-        return $this->createLocalPathFromRelativeURL($sourcePath);
     }
 
     /**
      * Files of storages which are not publicly accessible are not linked directly, but delivered
-     * by the file dump eID script. Such a URL is resolved back into the FAL object it points to,
-     * which is then made available locally for the external file parsers.
+     * by the file dump eID script. Such a URL is resolved back into the FAL object it points to.
      */
-    protected function createLocalPathFromFileDumpUrl(string $sourcePath): string
+    protected function createFileFromFileDumpUrl(string $sourcePath): ?FileInterface
     {
         // Not using parse_url() here, since the URL may be relative or not well-formed at all
         $queryString = strstr($sourcePath, '?');
         if ($queryString === false) {
-            return '';
+            return null;
         }
         // Strip the leading "?" as well as a possibly appended fragment
         parse_str(explode('#', substr($queryString, 1))[0], $queryParameters);
         if (($queryParameters['eID'] ?? '') !== 'dumpFile') {
-            return '';
+            return null;
         }
         $parameters = $this->buildFileDumpParameters($queryParameters);
         $token = $queryParameters['token'] ?? '';
@@ -603,25 +527,25 @@ class Indexer
             $token
         );
         if (!$isTokenValid) {
-            return '';
+            return null;
         }
         try {
             if (isset($parameters['f'])) {
                 $file = $this->resourceFactory->getFileObject($parameters['f']);
                 if ($file->isDeleted() || $file->isMissing()) {
-                    return '';
+                    return null;
                 }
             } elseif (isset($parameters['r'])) {
                 $file = $this->resourceFactory->getFileReferenceObject($parameters['r']);
                 if ($file->isMissing()) {
-                    return '';
+                    return null;
                 }
             } else {
-                return '';
+                return null;
             }
-            return $file->getForLocalProcessing(false);
+            return $file;
         } catch (\Exception) {
-            return '';
+            return null;
         }
     }
 
@@ -735,159 +659,147 @@ class Indexer
 
     /******************************************
      *
-     * Indexing; external files (PDF, DOC, etc)
+     * Indexing; files (PDF, DOC, etc)
      *
      ******************************************/
     /**
-     * Indexing a regular document given as $file (relative to public web path, local file)
+     * Indexes a file of a FAL storage with the text extractor which is responsible for it.
      *
-     * @param string $file Relative Filename, relative to public web path. It can also be an absolute path as long as it is inside the lockRootPath. Finally, if $contentTmpFile is set, this value can be anything, most likely a URL
+     * @param FileInterface $file The file to index
+     * @param string $fileUrl The URL the file was linked with on the page, which identifies the file in the index
      * @param bool $force If set, indexing is forced (despite content hashes, mtime etc).
-     * @param string $contentTmpFile Temporary file with the content to read it from (instead of $file). Used when the $file is a URL.
-     * @param string $altExtension File extension for temporary file.
      */
-    public function indexRegularDocument(string $file, bool $force = false, string $contentTmpFile = '', string $altExtension = ''): void
+    public function indexFileDocument(FileInterface $file, string $fileUrl, bool $force = false): void
     {
-        $fI = pathinfo($file);
-        $ext = $altExtension ?: strtolower($fI['extension']);
-        // Create abs-path
-        if (!$contentTmpFile) {
-            if (!PathUtility::isAbsolutePath($file)) {
-                // Relative, prepend public web path:
-                $absFile = GeneralUtility::getFileAbsFileName(Environment::getPublicPath() . '/' . $file);
-            } else {
-                // Absolute, pass-through:
-                $absFile = $file;
-            }
-            $absFile = GeneralUtility::isAllowedAbsPath($absFile) ? $absFile : '';
-        } else {
-            $absFile = $contentTmpFile;
+        $ext = strtolower($file->getExtension());
+        if ($this->externalToolConfiguration->isIgnored($ext)) {
+            $this->log_setTSlogMessage('Indexing not possible; The extension "' . $ext . '" is ignored.', LogLevel::WARNING);
+            return;
         }
-        // Indexing the document:
-        if ($absFile && @is_file($absFile)) {
-            if ($this->external_parsers[$ext] ?? false) {
-                $fileInfo = stat($absFile);
-                $cParts = $this->fileContentParts($ext, $absFile);
-                foreach ($cParts as $cPKey) {
-                    $this->timeTracker->push('Index: ' . str_replace('.', '_', basename($file)) . ($cPKey ? '#' . $cPKey : ''));
-                    $Pstart = $this->milliseconds();
-                    $subinfo = ['key' => $cPKey];
-                    // Setting page range. This is "0" (zero) when no division is made, otherwise a range like "1-3"
-                    $phash_arr = ($this->file_phash_arr = $this->setExtHashes($file, $subinfo));
-                    $indexStatus = $this->getIndexStatus($fileInfo['mtime'], $phash_arr['phash']);
-                    $reindexingRequired = $indexStatus->reindexRequired();
-                    if ($reindexingRequired || $force) {
-                        if ($reindexingRequired) {
-                            $this->log_setTSlogMessage('Indexing needed, reason: ' . $indexStatus->reason(), LogLevel::NOTICE);
-                        } else {
-                            $this->log_setTSlogMessage('Indexing forced by flag', LogLevel::NOTICE);
-                        }
-                        // Check external file counter:
-                        if ($this->externalFileCounter < $this->maxExternalFiles || $force) {
-                            // Divide into title,keywords,description and body:
-                            $this->timeTracker->push('Split content');
-                            $indexingDataDtoAsString = $this->readFileContent($ext, $absFile, $cPKey);
+        try {
+            $textExtractor = $this->textExtractorRegistry->findTextExtractor($file);
+            if ($textExtractor === null) {
+                $this->log_setTSlogMessage('Indexing not possible; No text extractor found for the file "' . $file->getIdentifier() . '" of MIME type "' . $file->getMimeType() . '".');
+                return;
+            }
+            $resource = $file instanceof FileReference ? $file->getOriginalFile() : $file;
+            if ($textExtractor instanceof PartitionedTextExtractorInterface && $resource instanceof SystemResourceInterface) {
+                $textExtractor->withPartitionedDocument(
+                    $resource,
+                    fn(PartitionedDocument $document) => $this->indexFileParts($file, $fileUrl, $ext, $force, $document->parts, $document->extractPart(...))
+                );
+                return;
+            }
+            $this->indexFileParts($file, $fileUrl, $ext, $force, ['0'], fn(): ?ExtractedText => $this->textExtractorRegistry->extract($file));
+        } catch (\Exception $e) {
+            $this->log_setTSlogMessage('Indexing failed for the file "' . $file->getIdentifier() . '": ' . $e->getMessage(), LogLevel::ERROR);
+            $this->logger->error('Indexing the file "{identifier}" of storage {storage} failed', [
+                'identifier' => $file->getIdentifier(),
+                'storage' => $file->getStorage()->getUid(),
+                'exception' => $e,
+            ]);
+        }
+    }
+
+    /**
+     * @param list<string> $parts Parts of the document, "0" when no division is made, otherwise page ranges like "1-3"
+     * @param \Closure(string): ?ExtractedText $extractPart
+     */
+    private function indexFileParts(FileInterface $file, string $fileUrl, string $ext, bool $force, array $parts, \Closure $extractPart): void
+    {
+        $mtime = $file->getModificationTime();
+        $ctime = $file->getCreationTime();
+        $size = $file->getSize();
+        foreach ($parts as $part) {
+            // Setting page range. This is "0" (zero) when no division is made, otherwise a range like "1-3"
+            $cPKey = $part === '0' ? 0 : $part;
+            $this->timeTracker->push('Index: ' . str_replace('.', '_', basename($fileUrl)) . ($cPKey ? '#' . $cPKey : ''));
+            $Pstart = $this->milliseconds();
+            $subinfo = ['key' => $cPKey];
+            $phash_arr = ($this->file_phash_arr = $this->setExtHashes($fileUrl, $subinfo));
+            $indexStatus = $this->getIndexStatus($mtime, $phash_arr['phash']);
+            $reindexingRequired = $indexStatus->reindexRequired();
+            if ($reindexingRequired || $force) {
+                if ($reindexingRequired) {
+                    $this->log_setTSlogMessage('Indexing needed, reason: ' . $indexStatus->reason(), LogLevel::NOTICE);
+                } else {
+                    $this->log_setTSlogMessage('Indexing forced by flag', LogLevel::NOTICE);
+                }
+                // Check external file counter:
+                if ($this->externalFileCounter < $this->maxExternalFiles || $force) {
+                    // Divide into title,keywords,description and body:
+                    $this->timeTracker->push('Split content');
+                    $extractedText = $extractPart($part);
+                    $this->timeTracker->pull();
+                    if ($extractedText !== null) {
+                        $indexingDataDtoAsString = $this->createIndexingData($extractedText, $file);
+                        // Calculating a hash over what is to be the actual content. (see indexTypo3PageContent())
+                        $content_md5h = md5(implode('', $indexingDataDtoAsString->toArray()));
+                        if ($this->checkExternalDocContentHash($phash_arr['phash_grouping'], $content_md5h) || $force) {
+                            // Increment counter:
+                            $this->externalFileCounter++;
+
+                            // Splitting words
+                            $this->timeTracker->push('Extract words from content');
+                            $splitInWords = $this->processWordsInArrays($indexingDataDtoAsString);
                             $this->timeTracker->pull();
-                            if ($indexingDataDtoAsString !== null) {
-                                // Calculating a hash over what is to be the actual content. (see indexTypo3PageContent())
-                                $content_md5h = md5(implode('', $indexingDataDtoAsString->toArray()));
-                                if ($this->checkExternalDocContentHash($phash_arr['phash_grouping'], $content_md5h) || $force) {
-                                    // Increment counter:
-                                    $this->externalFileCounter++;
 
-                                    // Splitting words
-                                    $this->timeTracker->push('Extract words from content');
-                                    $splitInWords = $this->processWordsInArrays($indexingDataDtoAsString);
-                                    $this->timeTracker->pull();
+                            // Analyze the indexed words.
+                            $this->timeTracker->push('Analyze the extracted words');
+                            $indexArr = $this->indexAnalyze($splitInWords);
+                            $this->timeTracker->pull();
 
-                                    // Analyze the indexed words.
-                                    $this->timeTracker->push('Analyze the extracted words');
-                                    $indexArr = $this->indexAnalyze($splitInWords);
-                                    $this->timeTracker->pull();
+                            // Submitting page (phash) record
+                            $this->timeTracker->push('Submitting page');
 
-                                    // Submitting page (phash) record
-                                    $this->timeTracker->push('Submitting page');
+                            // Unfortunately the original creation time cannot be determined, therefore we fall back to the modification date
+                            $this->submitFilePage($phash_arr, $fileUrl, $subinfo, $ext, $mtime, $ctime, $size, $content_md5h, $indexingDataDtoAsString);
+                            $this->timeTracker->pull();
 
-                                    // Unfortunately the original creation time cannot be determined, therefore we fall back to the modification date
-                                    $this->submitFilePage($phash_arr, $file, $subinfo, $ext, $fileInfo['mtime'], $fileInfo['ctime'], $fileInfo['size'], $content_md5h, $indexingDataDtoAsString);
-                                    $this->timeTracker->pull();
-
-                                    // Check words and submit to word list if not there
-                                    $this->timeTracker->push('Check word list and submit words');
-                                    if (!IndexedSearchUtility::isMysqlFullTextEnabled()) {
-                                        $indexArr = $this->removePhashCollisions($indexArr);
-                                        $this->checkWordList($indexArr);
-                                        $this->submitWords($indexArr, $phash_arr['phash']);
-                                    }
-                                    $this->timeTracker->pull();
-
-                                    // Set parsetime
-                                    $this->updateParsetime($phash_arr['phash'], $this->milliseconds() - $Pstart);
-                                } else {
-                                    // Update the timestamp
-                                    $this->updateTstamp($phash_arr['phash'], $fileInfo['mtime']);
-                                    $this->log_setTSlogMessage('Indexing not needed, the contentHash, ' . $content_md5h . ', has not changed. Timestamp updated.');
-                                }
-                            } else {
-                                $this->log_setTSlogMessage('Could not index file! Unsupported extension.');
+                            // Check words and submit to word list if not there
+                            $this->timeTracker->push('Check word list and submit words');
+                            if (!IndexedSearchUtility::isMysqlFullTextEnabled()) {
+                                $indexArr = $this->removePhashCollisions($indexArr);
+                                $this->checkWordList($indexArr);
+                                $this->submitWords($indexArr, $phash_arr['phash']);
                             }
+                            $this->timeTracker->pull();
+
+                            // Set parsetime
+                            $this->updateParsetime($phash_arr['phash'], $this->milliseconds() - $Pstart);
                         } else {
-                            $this->log_setTSlogMessage('The limit of ' . $this->maxExternalFiles . ' has already been exceeded, so no indexing will take place this time.');
+                            // Update the timestamp
+                            $this->updateTstamp($phash_arr['phash'], $mtime);
+                            $this->log_setTSlogMessage('Indexing not needed, the contentHash, ' . $content_md5h . ', has not changed. Timestamp updated.');
                         }
                     } else {
-                        $this->log_setTSlogMessage('Indexing not needed, reason: ' . $indexStatus->reason());
+                        $this->log_setTSlogMessage('Could not index file! No text could be extracted.');
                     }
-                    // Checking and setting sections:
-                    $this->submitFile_section($phash_arr['phash']);
-                    // Setting a section-record for the file. This is done also if the file is not indexed. Notice that section records are deleted when the page is indexed.
-                    $this->timeTracker->pull();
+                } else {
+                    $this->log_setTSlogMessage('The limit of ' . $this->maxExternalFiles . ' has already been exceeded, so no indexing will take place this time.');
                 }
             } else {
-                $this->log_setTSlogMessage('Indexing not possible; The extension "' . $ext . '" was not supported.');
+                $this->log_setTSlogMessage('Indexing not needed, reason: ' . $indexStatus->reason());
             }
-        } else {
-            $this->log_setTSlogMessage('Indexing not possible; File "' . $absFile . '" not found or valid.');
+            // Checking and setting sections:
+            $this->submitFile_section($phash_arr['phash']);
+            // Setting a section-record for the file. This is done also if the file is not indexed. Notice that section records are deleted when the page is indexed.
+            $this->timeTracker->pull();
         }
     }
 
     /**
-     * Reads the content of an external file being indexed.
-     * The content from the external parser MUST be returned in utf-8!
-     *
-     * @param string $fileExtension File extension, eg. "pdf", "doc" etc.
-     * @param string $absoluteFileName Absolute filename of file (must exist and be validated OK before calling function)
-     * @param string|int $sectionPointer Pointer to section (zero for all other than PDF which will have an indication of pages into which the document should be splitted.)
+     * If there is no title, the file name is set as title. This will raise
+     * the hits considerably if the search matches the document name.
      */
-    public function readFileContent(string $fileExtension, string $absoluteFileName, string|int $sectionPointer): ?IndexingDataAsString
+    protected function createIndexingData(ExtractedText $extractedText, FileInterface $file): IndexingDataAsString
     {
-        $indexingDataDto = null;
-        // Consult relevant external document parser
-        if (is_object($this->external_parsers[$fileExtension])) {
-            $indexingDataDto = $this->external_parsers[$fileExtension]->readFileContent($fileExtension, $absoluteFileName, $sectionPointer);
-        }
-
-        if ($indexingDataDto instanceof IndexingDataAsString) {
-            return $indexingDataDto;
-        }
-
-        return null;
-    }
-
-    /**
-     * Creates an array with pointers to divisions of document.
-     *
-     * @param string $ext File extension
-     * @param string $absFile Absolute filename (must exist and be validated OK before calling function)
-     * @return array Array of pointers to sections that the document should be divided into
-     */
-    public function fileContentParts(string $ext, string $absFile): array
-    {
-        $cParts = [0];
-        // Consult relevant external document parser:
-        if (is_object($this->external_parsers[$ext])) {
-            $cParts = $this->external_parsers[$ext]->fileContentParts($ext, $absFile);
-        }
-        return $cParts;
+        return new IndexingDataAsString(
+            title: $extractedText->title ?: str_replace('_', ' ', $file->getName()),
+            body: $extractedText->text,
+            keywords: $extractedText->keywords,
+            description: $extractedText->description,
+        );
     }
 
     /**
@@ -1148,7 +1060,7 @@ class Indexer
 
         // Removing all index_section records with hash_t3 set to this hash (this includes such
         // records set for external media on the page as well!). The re-insert of these records
-        // are done in indexRegularDocument($file).
+        // are done in indexFileDocument().
         $this->connectionPool->getConnectionForTable('index_section')->delete('index_section', ['phash_t3' => $phash]);
     }
 
@@ -1172,12 +1084,9 @@ class Indexer
     public function submitFilePage(array $hash, string $file, array $subinfo, string $ext, int $mtime, int $ctime, int $size, string $content_md5h, IndexingDataAsString $indexingDataDto): void
     {
         // Find item Type:
-        $storeItemType = $this->external_parsers[$ext]->ext2itemtype_map[$ext];
-        $storeItemType = $storeItemType ?: $ext;
+        $storeItemType = $this->externalMediaTypes->getItemType($ext);
         // Remove any current data for this phash:
         $this->removeOldIndexedFiles($hash['phash']);
-        // Split filename:
-        $fileParts = parse_url($file);
         // Setting new
         $fields = [
             'phash' => $hash['phash'],
@@ -1194,7 +1103,7 @@ class Indexer
             'tstamp' => $GLOBALS['EXEC_TIME'],
             'crdate' => $GLOBALS['EXEC_TIME'],
             'gr_list' => $this->conf['gr_list'],
-            'externalUrl' => ($fileParts['scheme'] ?? false) ? 1 : 0,
+            'externalUrl' => 0,
             'recordUid' => (int)$this->conf['recordUid'],
             'freeIndexUid' => (int)$this->conf['freeIndexUid'],
             'freeIndexSetId' => (int)$this->conf['freeIndexSetId'],

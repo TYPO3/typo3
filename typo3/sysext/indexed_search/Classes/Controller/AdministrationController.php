@@ -33,11 +33,9 @@ use TYPO3\CMS\Core\Http\AllowedMethodsTrait;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\IndexedSearch\Domain\Repository\AdministrationRepository;
-use TYPO3\CMS\IndexedSearch\FileContentParser;
 use TYPO3\CMS\IndexedSearch\Indexer;
 
 /**
@@ -374,15 +372,6 @@ class AdministrationController extends ActionController
      */
     protected function statisticAction(int $depth = 1, string $mode = 'overview'): ResponseInterface
     {
-        $externalParsers = [];
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['external_parsers'] ?? [] as $extension => $className) {
-            /** @var FileContentParser $fileContentParser */
-            $fileContentParser = GeneralUtility::makeInstance($className);
-            if ($fileContentParser->softInit($extension)) {
-                $externalParsers[$extension] = $fileContentParser;
-            }
-        }
-        $this->administrationRepository->external_parsers = $externalParsers;
         $tree = $this->administrationRepository->getTree($this->pageUid, $depth, $mode);
         $view = $this->initializeModuleTemplate($this->request);
         $view->assignMultiple([

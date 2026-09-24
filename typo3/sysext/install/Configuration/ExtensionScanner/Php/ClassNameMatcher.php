@@ -2866,4 +2866,9 @@ return [
             'Breaking-110485-MenuContentObjectRegistrationChanged.rst',
         ],
     ],
+    'TYPO3\CMS\IndexedSearch\FileContentParser' => [
+        'restFiles' => [
+            'Breaking-110775-ExternalDocumentParsersOfIndexedSearchReplacedByTextExtractors.rst',
+        ],
+    ],
 ];

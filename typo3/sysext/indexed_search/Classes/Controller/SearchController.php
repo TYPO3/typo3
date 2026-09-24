@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Exception\Page\RootLineException;
 use TYPO3\CMS\Core\Html\HtmlParser;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Pagination\PaginationInterface;
 use TYPO3\CMS\Core\Pagination\SimplePagination;
 use TYPO3\CMS\Core\Pagination\SlidingWindowPagination;
@@ -41,6 +42,7 @@ use TYPO3\CMS\IndexedSearch\Domain\Repository\IndexSearchRepository;
 use TYPO3\CMS\IndexedSearch\Event\AfterSearchResultSetsAreGeneratedEvent;
 use TYPO3\CMS\IndexedSearch\Lexer;
 use TYPO3\CMS\IndexedSearch\Pagination\SlicePaginator;
+use TYPO3\CMS\IndexedSearch\Service\ExternalMediaTypes;
 use TYPO3\CMS\IndexedSearch\Type\DefaultOperand;
 use TYPO3\CMS\IndexedSearch\Type\GroupOption;
 use TYPO3\CMS\IndexedSearch\Type\IndexingConfiguration;
@@ -74,7 +76,6 @@ class SearchController extends ActionController
 
     protected int $defaultResultNumber = 10;
     protected array $availableResultsNumbers = [];
-    protected array $externalParsers = [];
 
     /**
      * Will hold the first row in result - used to calculate relative hit-ratings.
@@ -100,6 +101,8 @@ class SearchController extends ActionController
         private readonly Lexer $lexer,
         private readonly LinkFactory $linkFactory,
         private readonly PageRepository $pageRepository,
+        private readonly ExternalMediaTypes $externalMediaTypes,
+        private readonly LanguageServiceFactory $languageServiceFactory,
     ) {}
 
     /**
@@ -121,7 +124,6 @@ class SearchController extends ActionController
         // Hand in the current site language as languageUid
         $searchData['languageUid'] = $this->context->getPropertyFromAspect('language', 'id', 0);
 
-        $this->initializeExternalParsers();
         // If "_sections" is set, this value overrides any existing value.
         if ($searchData['_sections'] ?? false) {
             $searchData['sections'] = $searchData['_sections'];
@@ -153,7 +155,7 @@ class SearchController extends ActionController
         if ($rootPidListFromSettings) {
             $this->searchRootPageIdList = implode(',', GeneralUtility::intExplode(',', $rootPidListFromSettings));
         }
-        $this->searchRepository->initialize($this->settings, $searchData, $this->externalParsers, $this->searchRootPageIdList);
+        $this->searchRepository->initialize($this->settings, $searchData, $this->searchRootPageIdList);
         // $this->searchData is used in $this->getSearchWords
         $this->searchWords = $this->getSearchWords($searchData, (bool)$searchData['defaultOperand']);
 
@@ -388,7 +390,7 @@ class SearchController extends ActionController
         $typoScriptConfigArray = $this->request->getAttribute('frontend.typoscript')->getConfigArray();
         $resultData = $row;
         $resultData['headerOnly'] = $headerOnly;
-        if (isset($row['static_page_arguments']) && $this->multiplePagesType($row['item_type'])) {
+        if (isset($row['static_page_arguments']) && $this->externalMediaTypes->isMultiPageItemType($row['item_type'])) {
             try {
                 $dat = json_decode($row['static_page_arguments'], true, 512, JSON_THROW_ON_ERROR);
                 if (is_string($dat['key'] ?? null) && $dat['key'] !== '') {
@@ -464,7 +466,7 @@ class SearchController extends ActionController
         // is selected due to user-login (phash_grouping))
         if (is_array($row['_sub'] ?? false)) {
             $resultData['subresults'] = [];
-            if ($this->multiplePagesType($row['item_type'])) {
+            if ($this->externalMediaTypes->isMultiPageItemType($row['item_type'])) {
                 $resultData['subresults']['header'] = LocalizationUtility::translate('result.otherMatching', 'IndexedSearch');
                 foreach ($row['_sub'] as $subRow) {
                     $resultData['subresults']['items'][] = $this->compileSingleResultRow($searchData, $subRow, 1);
@@ -753,14 +755,18 @@ class SearchController extends ActionController
             } else {
                 $additionalMedia = [];
             }
-            foreach ($this->externalParsers as $extension => $obj) {
+            $translator = $this->languageServiceFactory->createFromSiteLanguage(
+                $this->request->getAttribute('language') ?? $this->request->getAttribute('site')->getDefaultLanguage()
+            );
+            foreach ($this->externalMediaTypes->getSupportedExtensions() as $extension) {
                 // Skip unwanted extensions
                 if (!empty($additionalMedia) && !in_array($extension, $additionalMedia, true)) {
                     continue;
                 }
-                if ($name = $obj->searchTypeMediaTitle($extension)) {
-                    $translatedName = LocalizationUtility::translate('mediaTypes.' . $extension, 'IndexedSearch');
-                    $allOptions[$extension] = $translatedName ?: $name;
+                $label = LocalizationUtility::translate('mediaTypes.' . $extension, 'IndexedSearch')
+                    ?: $this->externalMediaTypes->getLabel($extension, $translator);
+                if ($label !== '') {
+                    $allOptions[$extension] = $label;
                 }
             }
         }
@@ -1046,33 +1052,6 @@ class SearchController extends ActionController
             $this->pathCache[$identStr] = $path;
         }
         return $this->pathCache[$identStr];
-    }
-
-    /**
-     * simple function to initialize possible external parsers
-     * feeds the $this->externalParsers array
-     */
-    protected function initializeExternalParsers(): void
-    {
-        // Initialize external document parsers for icon display and other soft operations
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['external_parsers'] ?? [] as $extension => $className) {
-            $this->externalParsers[$extension] = GeneralUtility::makeInstance($className);
-            // Init parser and if it returns FALSE, unset its entry again
-            if (!$this->externalParsers[$extension]->softInit($extension)) {
-                unset($this->externalParsers[$extension]);
-            }
-        }
-    }
-
-    /**
-     * Returns if an item type is a multipage item type
-     *
-     * @param string $item_type Item type
-     * @return bool TRUE if multipage capable
-     */
-    protected function multiplePagesType(string $item_type): bool
-    {
-        return is_object($this->externalParsers[$item_type] ?? false) && $this->externalParsers[$item_type]->isMultiplePageExtension($item_type);
     }
 
     /**

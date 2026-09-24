@@ -27,7 +27,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\IndexedSearch\FileContentParser;
+use TYPO3\CMS\IndexedSearch\Service\ExternalMediaTypes;
 
 /**
  * Administration repository
@@ -35,13 +35,10 @@ use TYPO3\CMS\IndexedSearch\FileContentParser;
  */
 class AdministrationRepository
 {
-    /**
-     * @var FileContentParser[]
-     */
-    public array $external_parsers = [];
-
     protected array $allPhashListed = [];
     protected array $iconFileNameCache = [];
+
+    public function __construct(private readonly ExternalMediaTypes $externalMediaTypes) {}
 
     /**
      * Get group list information
@@ -772,8 +769,8 @@ class AdministrationRepository
             $icon = '';
             if ($itemType === '0') {
                 $icon = 'EXT:indexed_search/Resources/Public/Icons/FileTypes/pages.gif';
-            } elseif ($this->external_parsers[$itemType] ?? false) {
-                $icon = $this->external_parsers[$itemType]->getIcon($itemType);
+            } elseif (in_array($itemType, $this->externalMediaTypes->getSupportedExtensions(), true)) {
+                $icon = $this->externalMediaTypes->getIcon($itemType);
             }
             $this->iconFileNameCache[$itemType] = $icon;
         }

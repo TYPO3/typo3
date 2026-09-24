@@ -9,46 +9,46 @@
       <trans-unit id="mod2_indexed_search">
         <source>Indexed search statistics</source>
       </trans-unit>
-      <trans-unit id="ignoreExtensions">
+      <trans-unit id="ignoreExtensions" x-unused-since="15.0">
         <source>Extension %s was set to be ignored.</source>
       </trans-unit>
-      <trans-unit id="pdfToolsNotFound">
+      <trans-unit id="pdfToolsNotFound" x-unused-since="15.0">
         <source>PDF tools was not found in paths '%1$spdftotext' and/or '%1$spdfinfo'</source>
       </trans-unit>
-      <trans-unit id="pdfToolsDisabled">
+      <trans-unit id="pdfToolsDisabled" x-unused-since="15.0">
         <source>PDF tools disabled</source>
       </trans-unit>
-      <trans-unit id="pdfToolsFailed">
+      <trans-unit id="pdfToolsFailed" x-unused-since="15.0">
         <source>PDFtoText Failed on this document: '%s'. Maybe the PDF file is locked for printing or encrypted.</source>
       </trans-unit>
-      <trans-unit id="catdocNotFound">
+      <trans-unit id="catdocNotFound" x-unused-since="15.0">
         <source>'catdoc' tool for reading Word-files was not found in path '%scatdoc'</source>
       </trans-unit>
-      <trans-unit id="catdocDisabled">
+      <trans-unit id="catdocDisabled" x-unused-since="15.0">
         <source>catdoc tools (Word-files) disabled</source>
       </trans-unit>
-      <trans-unit id="ppthtmlNotFound">
+      <trans-unit id="ppthtmlNotFound" x-unused-since="15.0">
         <source>'ppthtml' tool for reading Powerpoint-files was not found in path '%sppthtml'</source>
       </trans-unit>
-      <trans-unit id="ppthtmlDisabled">
+      <trans-unit id="ppthtmlDisabled" x-unused-since="15.0">
         <source>ppthtml tools (Powerpoint-files) disabled</source>
       </trans-unit>
-      <trans-unit id="xlhtmlNotFound">
+      <trans-unit id="xlhtmlNotFound" x-unused-since="15.0">
         <source>'xlhtml' tool for reading Excel-files was not found in path '%sxlhtml'</source>
       </trans-unit>
-      <trans-unit id="xlhtmlDisabled">
+      <trans-unit id="xlhtmlDisabled" x-unused-since="15.0">
         <source>xlhtml tools (Excel-files) disabled</source>
       </trans-unit>
-      <trans-unit id="unzipNotFound">
+      <trans-unit id="unzipNotFound" x-unused-since="15.0">
         <source>'unzip' tool for reading OpenOffice.org-files was not found in path '%sunzip'</source>
       </trans-unit>
-      <trans-unit id="unzipDisabled">
+      <trans-unit id="unzipDisabled" x-unused-since="15.0">
         <source>unzip tool (OpenOffice.org-files) disabled</source>
       </trans-unit>
-      <trans-unit id="unrtfNotFound">
+      <trans-unit id="unrtfNotFound" x-unused-since="15.0">
         <source>'unrtf' tool for reading RTF-files was not found in path '%sunrtf'</source>
       </trans-unit>
-      <trans-unit id="unrtfDisabled">
+      <trans-unit id="unrtfDisabled" x-unused-since="15.0">
         <source>unrtf tool (RTF-files) disabled</source>
       </trans-unit>
       <trans-unit id="extension.PDF">

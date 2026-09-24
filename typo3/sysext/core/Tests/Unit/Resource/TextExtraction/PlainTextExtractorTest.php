@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\TextExtraction;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\TextExtraction\PlainTextExtractor;
+use TYPO3\CMS\Core\SystemResource\Type\SystemResourceInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class PlainTextExtractorTest extends UnitTestCase
@@ -44,5 +45,20 @@ final class PlainTextExtractorTest extends UnitTestCase
         $fileResourceStub->method('getMimeType')->willReturn('video/mp4');
 
         self::assertFalse($plainTextExtractor->canExtractText($fileResourceStub));
+    }
+
+    #[Test]
+    public function extractStructuredTextReturnsContentsOfSystemResource(): void
+    {
+        $resource = self::createStub(SystemResourceInterface::class);
+        $resource->method('getContents')->willReturn('quokka');
+
+        self::assertSame('quokka', new PlainTextExtractor()->extractStructuredText($resource)->text);
+    }
+
+    #[Test]
+    public function getSupportedMimeTypesDeclaresTextPlain(): void
+    {
+        self::assertSame(['text/plain'], new PlainTextExtractor()->getSupportedMimeTypes());
     }
 }

@@ -1,0 +1,3 @@
+"sys_file"
+,"uid","pid","tstamp","last_indexed","storage","type","metadata","identifier","identifier_hash","folder_hash","extension","mime_type","name","sha1","size","creation_date","modification_date","missing"
+,1,0,1697814707,1697814707,1,5,0,"/user_upload/document.docx","07b19c277e3669ac11233b7c9c5a6b47abbc1e9a","85b130b44ae1a7dae9348a42b3d4a68e5450fc44","docx","application/zip","document.docx","0d5f769d96abefa7113c4a6231e918a673bb69b2",1553,1697814707,1697814707,0

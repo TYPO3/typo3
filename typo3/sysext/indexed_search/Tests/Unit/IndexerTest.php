@@ -20,11 +20,8 @@ namespace TYPO3\CMS\IndexedSearch\Tests\Unit;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\Attributes\Test;
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
-use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
-use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\IndexedSearch\Dto\IndexingDataAsArray;
 use TYPO3\CMS\IndexedSearch\Indexer;
@@ -46,51 +43,15 @@ final class IndexerTest extends UnitTestCase
     }
 
     #[Test]
-    public function extractHyperLinksDoesNotReturnNonExistingLocalPath(): void
+    public function extractHyperLinksExtractsHrefWithoutResolvingFile(): void
     {
-        $html = 'test <a href="' . StringUtility::getUniqueId() . '">test</a> test';
+        $href = StringUtility::getUniqueId();
+        $html = 'test <a href="' . $href . '">test</a> test';
         $subject = $this->getMockBuilder(Indexer::class)->disableOriginalConstructor()->onlyMethods([])->getMock();
         $result = $subject->extractHyperLinks($html);
         self::assertCount(1, $result);
-        self::assertEquals('', $result[0]['localPath']);
-    }
-
-    #[Test]
-    public function extractHyperLinksReturnsCorrectPathWithBaseUrl(): void
-    {
-        $baseURL = $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getSiteUrl();
-        $html = 'test <a href="' . $baseURL . 'index.php">test</a> test';
-        $subject = $this->getMockBuilder(Indexer::class)->disableOriginalConstructor()->onlyMethods([])->getMock();
-        $result = $subject->extractHyperLinks($html);
-        self::assertCount(1, $result);
-        self::assertEquals(Environment::getPublicPath() . '/index.php', $result[0]['localPath']);
-    }
-
-    #[Test]
-    public function extractHyperLinksFindsCorrectPathWithAbsolutePath(): void
-    {
-        $html = 'test <a href="index.php">test</a> test';
-        $subject = $this->getMockBuilder(Indexer::class)->disableOriginalConstructor()->onlyMethods([])->getMock();
-        $result = $subject->extractHyperLinks($html);
-        self::assertCount(1, $result);
-        self::assertEquals(Environment::getPublicPath() . '/index.php', $result[0]['localPath']);
-    }
-
-    #[Test]
-    public function extractHyperLinksFindsCorrectPathUsingAbsRefPrefix(): void
-    {
-        $absRefPrefix = '/' . StringUtility::getUniqueId();
-        $html = 'test <a href="' . $absRefPrefix . 'index.php">test</a> test';
-        $typoScript = new FrontendTypoScript(new RootNode(), [], [], []);
-        $typoScript->setConfigArray([
-            'absRefPrefix' => $absRefPrefix,
-        ]);
-        $request = new ServerRequest()->withAttribute('frontend.typoscript', $typoScript);
-        $GLOBALS['TYPO3_REQUEST'] = $request;
-        $subject = $this->getMockBuilder(Indexer::class)->disableOriginalConstructor()->onlyMethods([])->getMock();
-        $result = $subject->extractHyperLinks($html);
-        self::assertCount(1, $result);
-        self::assertEquals(Environment::getPublicPath() . '/index.php', $result[0]['localPath']);
+        self::assertSame(['tag', 'href'], array_keys($result[0]));
+        self::assertSame($href, $result[0]['href']);
     }
 
     #[Test]

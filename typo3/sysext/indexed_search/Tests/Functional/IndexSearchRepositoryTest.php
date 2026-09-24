@@ -167,7 +167,7 @@ final class IndexSearchRepositoryTest extends FunctionalTestCase
             'searchType' => SearchType::PART_OF_WORD->value,
             'extResume' => 1,
         ];
-        $searchRepository->initialize([], $searchRepositoryDefaultOptions, [], -1);
+        $searchRepository->initialize([], $searchRepositoryDefaultOptions, -1);
         self::assertSame($expected, $getMediaType->getValue($searchRepository));
         self::assertSame($expectedSql, preg_replace('@["\'`]@imsU', '', $mediaTypeWhere->invoke($searchRepository)));
     }
@@ -214,7 +214,7 @@ final class IndexSearchRepositoryTest extends FunctionalTestCase
             'searchType' => $searchType->value,
             'extResume' => 1,
         ];
-        $searchRepository->initialize([], $searchRepositoryDefaultOptions, [], -1);
+        $searchRepository->initialize([], $searchRepositoryDefaultOptions, -1);
         return $searchRepository;
     }
 }

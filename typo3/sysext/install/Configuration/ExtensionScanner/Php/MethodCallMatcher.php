@@ -7115,6 +7115,48 @@ return [
             'Breaking-111189-V5SharpenSharpensOnTheScaleOfGd.rst',
         ],
     ],
+    'TYPO3\CMS\IndexedSearch\Indexer->indexRegularDocument' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 4,
+        'restFiles' => [
+            'Breaking-110775-ExternalDocumentParsersOfIndexedSearchReplacedByTextExtractors.rst',
+        ],
+    ],
+    'TYPO3\CMS\IndexedSearch\Indexer->indexExternalUrl' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Breaking-110775-ExternalDocumentParsersOfIndexedSearchReplacedByTextExtractors.rst',
+        ],
+    ],
+    'TYPO3\CMS\IndexedSearch\Indexer->getUrlHeaders' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Breaking-110775-ExternalDocumentParsersOfIndexedSearchReplacedByTextExtractors.rst',
+        ],
+    ],
+    'TYPO3\CMS\IndexedSearch\Indexer->initializeExternalParsers' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Breaking-110775-ExternalDocumentParsersOfIndexedSearchReplacedByTextExtractors.rst',
+        ],
+    ],
+    'TYPO3\CMS\IndexedSearch\Indexer->readFileContent' => [
+        'numberOfMandatoryArguments' => 3,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Breaking-110775-ExternalDocumentParsersOfIndexedSearchReplacedByTextExtractors.rst',
+        ],
+    ],
+    'TYPO3\CMS\IndexedSearch\Indexer->fileContentParts' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Breaking-110775-ExternalDocumentParsersOfIndexedSearchReplacedByTextExtractors.rst',
+        ],
+    ],
     /** Note (leave this at the bottom):
      *  The FQCN object definitions here are not actually checked, only
      *  the method name itself. That means, never list generic method names

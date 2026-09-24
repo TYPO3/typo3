@@ -6,8 +6,10 @@ External media
 ==============
 
 External media (pdf, doc, html, txt) is tricky. External media is
-always detected as links to local files in the content of a TYPO3 page
-which is being indexed. But external media can the linked to from more
+always detected as links to files of a FAL storage in the content of a TYPO3
+page which is being indexed. Files which are not part of a FAL storage and
+files of other websites are not indexed. The text of a file is read by the
+text extractor registered for the file type. But external media can the linked to from more
 than one page. So the index\_section table may hold many entries for a
 single external phash-record, one for each position it's found. Also
 it's important to notice that external media is only indexed or

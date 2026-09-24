@@ -37,8 +37,9 @@ The indexing engine has several features:
 -   HTML data priority: 1) <title>-data 2) <meta-keywords>, 3) <meta-
     description>, 4) <body>
 
--   Indexing external files: Text formats like html and txt and doc, pdf
-    by external programs (catdoc / pdftotext)
+-   Indexing files of FAL storages: Text formats like html and txt and doc, pdf
+    by the registered text extractors (which may use external programs
+    like catdoc / pdftotext)
 
 -   Wordcounting and frequency used to rate results
 

@@ -23,12 +23,17 @@ use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Pagination\PaginationInterface;
 use TYPO3\CMS\Core\Pagination\SimplePagination;
 use TYPO3\CMS\Core\Pagination\SlidingWindowPagination;
+use TYPO3\CMS\Core\Resource\TextExtraction\StructuredTextExtractorInterface;
+use TYPO3\CMS\Core\Resource\TextExtraction\TextExtractorRegistry;
+use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\View\ViewInterface;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
@@ -40,6 +45,8 @@ use TYPO3\CMS\IndexedSearch\Domain\Repository\IndexSearchRepository;
 use TYPO3\CMS\IndexedSearch\Event\AfterSearchResultSetsAreGeneratedEvent;
 use TYPO3\CMS\IndexedSearch\Lexer;
 use TYPO3\CMS\IndexedSearch\Pagination\SlicePaginator;
+use TYPO3\CMS\IndexedSearch\Service\ExternalMediaTypes;
+use TYPO3\CMS\IndexedSearch\TextExtraction\ExternalToolConfiguration;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class SearchControllerTest extends FunctionalTestCase
@@ -48,6 +55,16 @@ final class SearchControllerTest extends FunctionalTestCase
 
     protected array $coreExtensionsToLoad = [
         'indexed_search',
+    ];
+
+    protected array $configurationToUseInTestInstance = [
+        'LANG' => [
+            'resourceOverrides' => [
+                'EXT:indexed_search/Resources/Private/Language/locallang.xlf' => [
+                    'EXT:indexed_search/Tests/Functional/Fixtures/Language/locallang_media_types.xlf',
+                ],
+            ],
+        ],
     ];
 
     #[Test]
@@ -96,6 +113,8 @@ final class SearchControllerTest extends FunctionalTestCase
             $this->createStub(Lexer::class),
             $this->createStub(LinkFactory::class),
             $this->createStub(PageRepository::class),
+            $this->get(ExternalMediaTypes::class),
+            $this->createStub(LanguageServiceFactory::class),
         ) extends SearchController {
             public function initializeForTest(ViewInterface $view, Request $request): void
             {
@@ -155,6 +174,8 @@ final class SearchControllerTest extends FunctionalTestCase
             $this->createStub(Lexer::class),
             $this->createStub(LinkFactory::class),
             $this->createStub(PageRepository::class),
+            $this->get(ExternalMediaTypes::class),
+            $this->createStub(LanguageServiceFactory::class),
         ) extends SearchController {
             public function callBuildPagination(array $searchData, array $rows, int $count): PaginationInterface
             {
@@ -213,6 +234,8 @@ final class SearchControllerTest extends FunctionalTestCase
             $this->createStub(Lexer::class),
             $this->createStub(LinkFactory::class),
             $this->createStub(PageRepository::class),
+            $this->get(ExternalMediaTypes::class),
+            $this->createStub(LanguageServiceFactory::class),
         ) extends SearchController {
             public function prepareForTest(ViewInterface $view, Request $request): void
             {
@@ -267,7 +290,28 @@ final class SearchControllerTest extends FunctionalTestCase
         self::assertSame(['extendedSearch' => 0], $this->callProtectedMethod($controller, 'applyDefaultOptions', ['extendedSearch' => 0]));
     }
 
-    private function createControllerWithSettings(array $settings): SearchController
+    #[Test]
+    public function mediaTypeOptionsContainFileTypeOfCustomTextExtractorWithLabel(): void
+    {
+        $epubTextExtractor = self::createStub(StructuredTextExtractorInterface::class);
+        $epubTextExtractor->method('getSupportedMimeTypes')->willReturn(['application/epub+zip']);
+        $externalMediaTypes = new ExternalMediaTypes(new TextExtractorRegistry([$epubTextExtractor]), $this->get(ExternalToolConfiguration::class));
+        $controller = $this->createControllerWithSettings(['blind' => ['mediaType' => 0], 'mediaList' => ''], $externalMediaTypes);
+        $site = new Site('website-local', 1, ['base' => 'https://example.com/', 'languages' => []]);
+        $request = new ServerRequest('https://example.com/')
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
+            ->withAttribute('site', $site)
+            ->withAttribute('language', $site->getDefaultLanguage())
+            ->withAttribute('extbase', new ExtbaseRequestParameters());
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+        new \ReflectionProperty($controller, 'request')->setValue($controller, new Request($request));
+
+        $options = $this->callProtectedMethod($controller, 'getAllAvailableMediaTypesOptions');
+
+        self::assertSame('E-books', $options['epub'] ?? null);
+    }
+
+    private function createControllerWithSettings(array $settings, ?ExternalMediaTypes $externalMediaTypes = null): SearchController
     {
         $controller = new SearchController(
             self::createStub(Context::class),
@@ -276,6 +320,8 @@ final class SearchControllerTest extends FunctionalTestCase
             self::createStub(Lexer::class),
             self::createStub(LinkFactory::class),
             self::createStub(PageRepository::class),
+            $externalMediaTypes ?? $this->get(ExternalMediaTypes::class),
+            self::createStub(LanguageServiceFactory::class),
         );
         new \ReflectionProperty($controller, 'settings')->setValue($controller, $settings);
         return $controller;

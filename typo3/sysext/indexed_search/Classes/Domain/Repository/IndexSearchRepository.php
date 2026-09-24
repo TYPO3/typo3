@@ -32,7 +32,7 @@ use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\IndexedSearch\Event\BeforeFinalSearchQueryIsExecutedEvent;
-use TYPO3\CMS\IndexedSearch\FileContentParser;
+use TYPO3\CMS\IndexedSearch\Service\ExternalMediaTypes;
 use TYPO3\CMS\IndexedSearch\Type\MediaType;
 use TYPO3\CMS\IndexedSearch\Type\SearchType;
 use TYPO3\CMS\IndexedSearch\Type\SectionType;
@@ -44,11 +44,6 @@ use TYPO3\CMS\IndexedSearch\Utility\LikeWildcard;
  */
 class IndexSearchRepository
 {
-    /**
-     * External Parsers
-     */
-    protected array $externalParsers = [];
-
     /**
      * Frontend User Group List
      */
@@ -141,6 +136,7 @@ class IndexSearchRepository
         private readonly ConnectionPool $connectionPool,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly PageRepository $pageRepository,
+        private readonly ExternalMediaTypes $externalMediaTypes,
     ) {}
 
     /**
@@ -149,9 +145,8 @@ class IndexSearchRepository
      * @param array $settings the extbase plugin settings
      * @param array $searchData the search data
      */
-    public function initialize(array $settings, array $searchData, array $externalParsers, int|string $searchRootPageIdList): void
+    public function initialize(array $settings, array $searchData, int|string $searchRootPageIdList): void
     {
-        $this->externalParsers = $externalParsers;
         $this->searchRootPageIdList = (string)$searchRootPageIdList;
         $this->frontendUserGroupList = implode(',', $this->context->getPropertyFromAspect('frontend.user', 'groupIds', [0, -1]));
         if ($settings['exactCount'] ?? false) {
@@ -251,7 +246,7 @@ class IndexSearchRepository
                     // Only if the resume may be shown are we going to filter out duplicates...
                     if ($row['show_resume'] || $this->displayForbiddenRecords) {
                         // Only on documents which are not multiple pages documents
-                        if (!$this->multiplePagesType((string)($row['item_type'] ?? ''))) {
+                        if (!$this->externalMediaTypes->isMultiPageItemType((string)($row['item_type'] ?? ''))) {
                             $grouping_phashes[] = $row['phash_grouping'];
                         }
                         $grouping_chashes[] = $row['contentHash'] . '.' . $row['data_page_id'];
@@ -1091,19 +1086,6 @@ class IndexSearchRepository
             $desc = !$desc;
         }
         return $desc ? 'DESC' : 'ASC';
-    }
-
-    /**
-     * Returns if an item type is a multipage item type
-     *
-     * @param string $itemType Item type
-     * @return bool TRUE if multipage capable
-     */
-    protected function multiplePagesType(string $itemType): bool
-    {
-        /** @var FileContentParser|null $fileContentParser */
-        $fileContentParser = $this->externalParsers[$itemType] ?? null;
-        return is_object($fileContentParser) && $fileContentParser->isMultiplePageExtension($itemType);
     }
 
     /**

@@ -22,7 +22,10 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use TYPO3\CMS\Core\Attribute\AsTextExtractor;
 use TYPO3\CMS\Core\DependencyInjection\TextExtractorPass;
+use TYPO3\CMS\Core\Resource\TextExtraction\ExtractedText;
 use TYPO3\CMS\Core\Resource\TextExtraction\PlainTextExtractor;
+use TYPO3\CMS\Core\Resource\TextExtraction\StructuredTextExtractorInterface;
+use TYPO3\CMS\Core\SystemResource\Type\SystemResourceInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class TextExtractorPassTest extends UnitTestCase
@@ -38,6 +41,30 @@ final class TextExtractorPassTest extends UnitTestCase
         new TextExtractorPass(AsTextExtractor::TAG_NAME)->process($container);
 
         self::assertTrue($container->hasDefinition(PlainTextExtractor::class));
+    }
+
+    #[Test]
+    public function taggedServiceImplementingOnlyStructuredTextExtractorInterfaceIsAccepted(): void
+    {
+        $structuredTextExtractor = new class implements StructuredTextExtractorInterface {
+            public function getSupportedMimeTypes(): array
+            {
+                return ['application/pdf'];
+            }
+
+            public function extractStructuredText(SystemResourceInterface $resource): ExtractedText
+            {
+                return new ExtractedText('');
+            }
+        };
+        $container = new ContainerBuilder();
+        $definition = new Definition($structuredTextExtractor::class);
+        $definition->addTag(AsTextExtractor::TAG_NAME);
+        $container->setDefinition('structured-text-extractor', $definition);
+
+        new TextExtractorPass(AsTextExtractor::TAG_NAME)->process($container);
+
+        self::assertTrue($container->hasDefinition('structured-text-extractor'));
     }
 
     #[Test]

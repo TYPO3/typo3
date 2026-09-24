@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use TYPO3\CMS\Core\Resource\TextExtraction\StructuredTextExtractorInterface;
 use TYPO3\CMS\Core\Resource\TextExtraction\TextExtractorInterface;
 
 /**
@@ -38,9 +39,9 @@ final class TextExtractorPass implements CompilerPassInterface
                 continue;
             }
             $className = $definition->getClass() ?? $id;
-            if (!is_a($className, TextExtractorInterface::class, true)) {
+            if (!is_a($className, TextExtractorInterface::class, true) && !is_a($className, StructuredTextExtractorInterface::class, true)) {
                 throw new \InvalidArgumentException(
-                    'Service "' . $id . '" is tagged as "' . $this->tagName . '", but its class "' . $className . '" does not implement ' . TextExtractorInterface::class . '.',
+                    'Service "' . $id . '" is tagged as "' . $this->tagName . '", but its class "' . $className . '" implements neither ' . TextExtractorInterface::class . ' nor ' . StructuredTextExtractorInterface::class . '.',
                     1784879763
                 );
             }

@@ -18,26 +18,29 @@ declare(strict_types=1);
 namespace TYPO3\CMS\IndexedSearch\Hook;
 
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\IndexedSearch\Domain\Repository\AdministrationRepository;
 
 /**
  * @internal This class is a hook implementation and is not part of the TYPO3 Core API.
  */
-class DeleteIndexedData
+readonly class DeleteIndexedData
 {
+    public function __construct(
+        private AdministrationRepository $administrationRepository,
+        private ExtensionConfiguration $extensionConfiguration,
+    ) {}
+
     public function delete(array $params): void
     {
         if (isset($params['uid_page']) && $this->isEnabled()) {
-            $administrationRepository = GeneralUtility::makeInstance(AdministrationRepository::class);
-            $administrationRepository->removeIndexedPageContent((int)$params['uid_page']);
+            $this->administrationRepository->removeIndexedPageContent((int)$params['uid_page']);
         }
     }
 
     protected function isEnabled(): bool
     {
         try {
-            return (bool)GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('indexed_search', 'deleteFromIndexAfterEditing');
+            return (bool)$this->extensionConfiguration->get('indexed_search', 'deleteFromIndexAfterEditing');
         } catch (\Exception $e) {
             // do nothing
         }

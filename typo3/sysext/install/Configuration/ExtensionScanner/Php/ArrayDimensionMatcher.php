@@ -1138,6 +1138,11 @@ return [
             'Breaking-102900-MetaphoneSearchRemovedFromIndexed_search.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'EXTCONF\'][\'indexed_search\'][\'external_parsers\']' => [
+        'restFiles' => [
+            'Breaking-110775-ExternalDocumentParsersOfIndexedSearchReplacedByTextExtractors.rst',
+        ],
+    ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'EXTCONF\'][\'indexed_search\'][\'pi1_hooks\'][\'initialize_postProc\']' => [
         'restFiles' => [
             'Breaking-102937-Pi1_hooksHookRemovedFromIndexedSearch.rst',

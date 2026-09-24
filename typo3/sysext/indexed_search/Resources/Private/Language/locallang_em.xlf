@@ -40,9 +40,9 @@
         <source>Bitmask for Flags (Advanced): Define the weighting of HTML metadata during indexing (value range: 0–255). &lt;title&gt; = 128, &lt;keywords&gt; = 64, &lt;description&gt; = 32. Set to 0 to give these fields no additional weight. Default 192 prioritizes title and keywords in search results.</source>
       </trans-unit>
       <trans-unit id="indexedsearch.config.ignoreExtensions">
-        <source>Ignore Extensions: Specify a comma-separated list of file extensions that the external parser should ignore, even if supported.</source>
+        <source>Ignore Extensions: Specify a comma-separated list of file extensions that must not be indexed, even if a text extractor supports them.</source>
       </trans-unit>
-      <trans-unit id="indexedsearch.config.indexExternalURLs">
+      <trans-unit id="indexedsearch.config.indexExternalURLs" x-unused-since="15.0">
         <source>Index External HTML URLs: Enable indexing of external links when the target content type is "text/html"..</source>
       </trans-unit>
       <trans-unit id="indexedsearch.config.useMysqlFulltext">

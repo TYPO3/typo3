@@ -1255,5 +1255,20 @@ return [
             'Breaking-110188-DataHandlerDropPropertyBypassAccessCheckForRecords.rst',
         ],
     ],
+    'TYPO3\CMS\IndexedSearch\Indexer->external_parsers' => [
+        'restFiles' => [
+            'Breaking-110775-ExternalDocumentParsersOfIndexedSearchReplacedByTextExtractors.rst',
+        ],
+    ],
+    'TYPO3\CMS\IndexedSearch\Indexer->indexExternalUrl_content' => [
+        'restFiles' => [
+            'Breaking-110775-ExternalDocumentParsersOfIndexedSearchReplacedByTextExtractors.rst',
+        ],
+    ],
+    'TYPO3\CMS\IndexedSearch\Domain\Repository\AdministrationRepository->external_parsers' => [
+        'restFiles' => [
+            'Breaking-110775-ExternalDocumentParsersOfIndexedSearchReplacedByTextExtractors.rst',
+        ],
+    ],
 
 ];

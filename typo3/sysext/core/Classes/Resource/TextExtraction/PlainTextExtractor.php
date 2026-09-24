@@ -19,19 +19,33 @@ namespace TYPO3\CMS\Core\Resource\TextExtraction;
 
 use TYPO3\CMS\Core\Attribute\AsTextExtractor;
 use TYPO3\CMS\Core\Resource\FileInterface;
+use TYPO3\CMS\Core\SystemResource\Type\SystemResourceInterface;
 
 /**
  * A simple text extractor to extract text from plain text files.
  */
 #[AsTextExtractor]
-class PlainTextExtractor implements TextExtractorInterface
+class PlainTextExtractor implements TextExtractorInterface, StructuredTextExtractorInterface
 {
+    /**
+     * @return list<string>
+     */
+    public function getSupportedMimeTypes(): array
+    {
+        return ['text/plain'];
+    }
+
+    public function extractStructuredText(SystemResourceInterface $resource): ExtractedText
+    {
+        return new ExtractedText($resource->getContents());
+    }
+
     /**
      * Checks if the given file can be read by this extractor
      */
     public function canExtractText(FileInterface $file): bool
     {
-        return $file->getMimeType() === 'text/plain';
+        return in_array($file->getMimeType(), $this->getSupportedMimeTypes(), true);
     }
 
     /**
