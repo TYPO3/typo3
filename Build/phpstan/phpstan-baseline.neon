@@ -1,6 +1,12 @@
 parameters:
 	ignoreErrors:
 		-
+			rawMessage: 'Call to function is_array() with array will always evaluate to true.'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: ../../typo3/sysext/backend/Classes/Form/Wizard/SuggestWizardDefaultReceiver.php
+
+		-
 			rawMessage: 'Property TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::$writeAttemptLog (bool) on left side of ?? is not nullable.'
 			identifier: nullCoalesce.property
 			count: 1

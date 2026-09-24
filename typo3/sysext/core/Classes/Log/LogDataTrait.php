@@ -58,7 +58,7 @@ trait LogDataTrait
         // Handles placeholders with "%" first
         try {
             $detailString = vsprintf($detailString, $substitutes);
-        } catch (\ValueError|\ArgumentCountError) {
+        } catch (\ValueError) {
             // Ignore if $substitutes doesn't contain the number of "%" found in $detailString
         }
 
