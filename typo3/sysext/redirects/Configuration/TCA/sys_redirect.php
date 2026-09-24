@@ -221,7 +221,7 @@ return [
             'exclude' => true,
             'label' => 'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.hitcount',
             'config' => [
-                'type' => 'input',
+                'type' => 'number',
                 'size' => 5,
                 'default' => 0,
                 'readOnly' => true,

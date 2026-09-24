@@ -61,8 +61,8 @@ return [
             'updateMode' => '',
             'showDiffContent' => '<strong class="text-nowrap">[sys_file:1 =&gt; 1]:</strong>
 <table class="table table-striped table-hover">
-<tr><td>Identifier (identifier)</td><td><del>/user_upload/typo3_image3.</del><ins>/user_upload/used-1.</ins>jpg</td></tr>
 <tr><td>Size (size)</td><td><del>5565</del><ins>7958</ins></td></tr>
+<tr><td>Identifier (identifier)</td><td><del>/user_upload/typo3_image3.</del><ins>/user_upload/used-1.</ins>jpg</td></tr>
 <tr><td>Filename (name)</td><td><del>typo3_image3.</del><ins>used-1.</ins>jpg</td></tr>
 <tr><td>SHA1 (sha1)</td><td><del>e873c1e2ffd0f191e183a1057de3eef4d62e782d</del><ins>da9acdf1e105784a57bbffec9520969578287797</ins></td></tr>
 </table>',
@@ -101,8 +101,8 @@ return [
             'updateMode' => '',
             'showDiffContent' => '<strong class="text-nowrap">[sys_file:2 =&gt; 1]:</strong>
 <table class="table table-striped table-hover">
-<tr><td>Identifier (identifier)</td><td><del>/user_upload/used-2.</del><ins>/user_upload/typo3_image3.</ins>jpg</td></tr>
 <tr><td>Size (size)</td><td><del>7425</del><ins>5565</ins></td></tr>
+<tr><td>Identifier (identifier)</td><td><del>/user_upload/used-2.</del><ins>/user_upload/typo3_image3.</ins>jpg</td></tr>
 <tr><td>Filename (name)</td><td><del>used-2.</del><ins>typo3_image3.</ins>jpg</td></tr>
 <tr><td>SHA1 (sha1)</td><td><del>c3511df85d21bc578faf71c6a19eeb3ff44af370</del><ins>e873c1e2ffd0f191e183a1057de3eef4d62e782d</ins></td></tr>
 </table>',

@@ -48,6 +48,8 @@ return [
                 'readOnly' => true,
                 'type' => 'input',
                 'size' => 30,
+                'max' => 65535,
+                'nullable' => true,
             ],
         ],
         'name' => [

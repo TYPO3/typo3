@@ -93,8 +93,6 @@ CREATE TABLE sys_file_storage (
 CREATE TABLE sys_file (
 	# No TCA column
 	last_indexed int(11) DEFAULT '0' NOT NULL,
-	# @todo: Incomplete or broken TCA
-	identifier text,
 	# No TCA column
 	identifier_hash varchar(40) DEFAULT '' NOT NULL,
 	# No TCA column
