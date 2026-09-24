@@ -68,9 +68,12 @@
                     <div class="tx-indexedsearch-search-select-group">
                         <label for="tx-indexedsearch-selectbox-group"><f:translate domain="indexed_search.messages" key="form.style" />:</label>
                         <f:form.select name="search[group]" options="{allGroups}" value="{searchParams.group}" id="tx-indexedsearch-selectbox-group" class="tx-indexedsearch-selectbox-group" />
-                        <f:if condition="{settings.blind.extResume} == 0">
-                            <f:form.checkbox name="search[extResume]" id="tx_indexedsearch_extResume" checked="{searchParams.extResume}" value="1" />
-                        </f:if>
+                    </div>
+                </f:if>
+                <f:if condition="{settings.blind.extResume} == 0">
+                    <div class="tx-indexedsearch-search-extresume">
+                        <f:form.checkbox name="search[extResume]" id="tx_indexedsearch_extResume" checked="{searchParams.extResume}" value="1" />
+                        <label for="tx_indexedsearch_extResume"><f:translate domain="indexed_search.messages" key="form.extResume" /></label>
                     </div>
                 </f:if>
             </f:if>

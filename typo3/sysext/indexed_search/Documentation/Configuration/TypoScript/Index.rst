@@ -577,6 +577,21 @@ Default: Extended resume
     :Default: 1
     :Path: plugin.tx_indexedsearch.settings
 
+..  _defaultOptions-extendedSearch:
+
+Default: Advanced search
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+..  confval:: defaultOptions.extendedSearch
+
+    :Type: boolean
+    :Default: 0
+    :Path: plugin.tx_indexedsearch.settings
+
+    Set to 1 to display the advanced search fields by default. The value
+    can be overridden per request via the `search[extendedSearch]`
+    parameter, which is sent via GET or POST.
+
 ..  _blind:
 
 Blind
@@ -635,6 +650,9 @@ Blind: Free index UID
     :Type: boolean
     :Default: 1
     :Path: plugin.tx_indexedsearch.settings
+
+    If set, the "Category" selector (indexing configurations) is not
+    displayed in the advanced search.
 
 ..  _blind-mediaType:
 
@@ -716,6 +734,9 @@ Blind: Extended resume
     :Type: boolean
     :Default: 1
     :Path: plugin.tx_indexedsearch.settings
+
+    If set, the "Extended resume" checkbox is not displayed in the advanced
+    search.
 
 
 [tsref:plugin.tx\_indexedsearch]
