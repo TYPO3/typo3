@@ -112,6 +112,7 @@ final class ErrorHandlerTest extends UnitTestCase
             // An exception happened when it shouldn't; let PHPUnit deal with it.
             throw $e;
         }
+        self::assertNull($exceptionMessage);
         self::assertEquals($expectedReturn, $return);
         if ($deprecationsLogMessage) {
             $deprecationLogger = $logManager->getLogger('TYPO3.CMS.deprecations');

@@ -32,7 +32,6 @@ use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Typolink\DatabaseRecordLinkBuilder;
-use TYPO3\CMS\Frontend\Typolink\UnableToLinkException;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 #[AllowMockObjectsWithoutExpectations]
@@ -174,7 +173,7 @@ final class DatabaseRecordLinkBuilderTest extends UnitTestCase
             );
 
         $contentObjectRendererMock->expects($this->once())->method('start');
-        $contentObjectRendererMock->expects($this->once())->method('createLink');
+        $contentObjectRendererMock->expects($this->once())->method('createLink')->with($linkText, $expectedConfiguration);
 
         // Act
         $databaseRecordLinkBuilder = $this->getMockBuilder(DatabaseRecordLinkBuilder::class)
@@ -188,11 +187,6 @@ final class DatabaseRecordLinkBuilderTest extends UnitTestCase
             ])
             ->getMock();
         $databaseRecordLinkBuilder->method('getPageTsConfig')->willReturn($pageTsConfig);
-        try {
-            $databaseRecordLinkBuilder->buildLink($extractedLinkDetails, $confFromDb, $request, $linkText);
-        } catch (UnableToLinkException) {
-            // Assert
-            $contentObjectRendererMock->expects($this->once())->method('typoLink')->with($linkText, $expectedConfiguration);
-        }
+        $databaseRecordLinkBuilder->buildLink($extractedLinkDetails, $confFromDb, $request, $linkText);
     }
 }

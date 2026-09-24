@@ -130,6 +130,7 @@ final class DatabaseEditRowTest extends UnitTestCase
 
         try {
             $this->subject->addData($input);
+            self::fail('Expected a DatabaseRecordException.');
         } catch (DatabaseRecordException $e) {
             self::assertSame('tt_content', $e->getTableName());
             self::assertSame(10, $e->getUid());

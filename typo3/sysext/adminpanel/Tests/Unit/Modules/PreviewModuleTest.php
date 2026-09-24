@@ -81,14 +81,15 @@ final class PreviewModuleTest extends UnitTestCase
         $previewModule->enrich(new ServerRequest());
 
         $dateAspect = GeneralUtility::makeInstance(Context::class)->getAspect('date');
-        self::assertSame($GLOBALS['SIM_EXEC_TIME'], $expectedExecTime, 'EXEC_TIME');
-        self::assertSame($dateAspect->getTimestampWithMinutePrecision(), $expectedAccessTime, 'ACCESS_TIME');
+        self::assertSame($expectedExecTime, $GLOBALS['SIM_EXEC_TIME'], 'EXEC_TIME');
+        self::assertSame($expectedAccessTime, $dateAspect->getTimestampWithMinutePrecision(), 'ACCESS_TIME');
     }
 
     #[Test]
     public function initializeFrontendPreviewSetsUserGroupForSimulation(): void
     {
-        $request = new ServerRequest()->withAttribute('frontend.user', $this->getMockBuilder(FrontendUserAuthentication::class)->getMock());
+        $frontendUser = self::createStub(FrontendUserAuthentication::class);
+        $request = new ServerRequest()->withAttribute('frontend.user', $frontendUser);
 
         $configurationService = $this->getMockBuilder(ConfigurationService::class)->disableOriginalConstructor()->getMock();
         $configurationService->expects($this->once())->method('getMainConfiguration')->willReturn([]);
@@ -102,25 +103,22 @@ final class PreviewModuleTest extends UnitTestCase
         ];
         $configurationService->method('getConfigurationOption')->willReturnMap($valueMap);
 
-        $context = $this->getMockBuilder(Context::class)->getMock();
-        $context->expects($this->atLeastOnce())->method('hasAspect')->with('frontend.preview')->willReturn(false);
-        $context->expects($this->atLeastOnce())->method('setAspect')
-            ->willReturnCallback(fn(string $name): bool => match (true) {
-                $name === 'date',
-                $name === 'visibility',
-                $name === 'frontend.user',
-                $name === 'frontend.preview' => true,
-                default => throw new \LogicException('Unexpected argument "' . $name . '" provided.', 1679482900),
-            });
+        $context = new Context();
         GeneralUtility::setSingletonInstance(Context::class, $context);
+        $groupResolver = self::createStub(GroupResolver::class);
+        $groupResolver->method('resolveGroupsForUser')->willReturn([['uid' => 1]]);
 
         $previewModule = new PreviewModule(
             self::createStub(CacheManager::class),
             self::createStub(ViewFactoryInterface::class),
             self::createStub(LoggerInterface::class),
-            self::createStub(GroupResolver::class),
+            $groupResolver,
         );
         $previewModule->injectConfigurationService($configurationService);
         $previewModule->enrich($request);
+
+        self::assertSame('1', $frontendUser->user[$frontendUser->usergroup_column]);
+        self::assertSame([-2, 1], $context->getPropertyFromAspect('frontend.user', 'groupIds'));
+        self::assertTrue($context->getPropertyFromAspect('frontend.preview', 'isPreview'));
     }
 }

@@ -22,9 +22,11 @@ use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\NullLogger;
-use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Mailer\Event\MessageEvent;
 use Symfony\Component\Mailer\Transport\NullTransport;
+use Symfony\Component\Mailer\Transport\SendmailTransport;
 use Symfony\Component\Mailer\Transport\Smtp\EsmtpTransport;
 use Symfony\Component\Mailer\Transport\Smtp\Stream\SocketStream;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
@@ -56,6 +58,16 @@ final class TransportFactoryTest extends UnitTestCase
         $logManager->method('getLogger')->willReturn($logger);
         $dispatcher = $eventDispatcher;
         return new TransportFactory($dispatcher, $logManager, $logger, new FileNameValidator());
+    }
+
+    private function expectMessageDispatch(EventDispatcherInterface&MockObject $eventDispatcher): void
+    {
+        $eventDispatcher->expects($this->once())->method('dispatch')
+            ->with(self::isInstanceOf(MessageEvent::class))
+            ->willReturnCallback(static function (MessageEvent $event): MessageEvent {
+                $event->reject();
+                return $event;
+            });
     }
 
     /**
@@ -253,18 +265,15 @@ final class TransportFactoryTest extends UnitTestCase
         ];
 
         $transport = $this->getSubject($eventDispatcher)->get($mailSettings);
-        $eventDispatcher->expects($this->atLeastOnce())->method('dispatch');
+        self::assertInstanceOf(EsmtpTransport::class, $transport);
+        $this->expectMessageDispatch($eventDispatcher);
 
         $message = new MailMessage();
         $message->setTo(['foo@bar.com'])
             ->text('foo')
             ->from('bar@foo.com')
         ;
-        try {
-            $transport->send($message);
-        } catch (TransportExceptionInterface $exception) {
-            // connection is not valid in tests, so we just catch the exception here.
-        }
+        $transport->send($message);
     }
 
     #[Test]
@@ -311,18 +320,15 @@ final class TransportFactoryTest extends UnitTestCase
         ];
 
         $transport = $this->getSubject($eventDispatcher)->get($mailSettings);
-        $eventDispatcher->expects($this->atLeastOnce())->method('dispatch');
+        self::assertInstanceOf(EsmtpTransport::class, $transport);
+        $this->expectMessageDispatch($eventDispatcher);
 
         $message = new MailMessage();
         $message->setTo(['foo@bar.com'])
             ->text('foo')
             ->from('bar@foo.com')
         ;
-        try {
-            $transport->send($message);
-        } catch (TransportExceptionInterface $exception) {
-            // connection is not valid in tests, so we just catch the exception here.
-        }
+        $transport->send($message);
     }
 
     #[Test]
@@ -345,18 +351,15 @@ final class TransportFactoryTest extends UnitTestCase
         ];
 
         $transport = $this->getSubject($eventDispatcher)->get($mailSettings);
-        $eventDispatcher->expects($this->atLeastOnce())->method('dispatch');
+        self::assertInstanceOf(SendmailTransport::class, $transport);
+        $this->expectMessageDispatch($eventDispatcher);
 
         $message = new MailMessage();
         $message->setTo(['foo@bar.com'])
             ->text('foo')
             ->from('bar@foo.com')
         ;
-        try {
-            $transport->send($message);
-        } catch (TransportExceptionInterface $exception) {
-            // connection is not valid in tests, so we just catch the exception here.
-        }
+        $transport->send($message);
     }
 
     #[Test]

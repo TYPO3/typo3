@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Resource\Collection;
 
 use PHPUnit\Framework\Attributes\BackupGlobals;
-use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Resource\Collection\FileCollectionRegistry;
 use TYPO3\CMS\Core\Tests\Unit\Resource\Collection\Fixtures\OtherTestingFileCollection;
@@ -72,7 +71,6 @@ final class FileCollectionRegistryTest extends UnitTestCase
     }
 
     #[Test]
-    #[DoesNotPerformAssertions]
     public function registerFileCollectionClassOverridesExistingRegisteredFileCollectionClass(): void
     {
         $className = TestingFileCollection::class;
@@ -80,6 +78,7 @@ final class FileCollectionRegistryTest extends UnitTestCase
         $subject = new FileCollectionRegistry();
         $subject->registerFileCollectionClass($className, 'foobar');
         $subject->registerFileCollectionClass($className2, 'foobar', true);
+        self::assertSame($className2, $subject->getFileCollectionClass('foobar'));
     }
 
     #[Test]

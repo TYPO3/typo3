@@ -187,13 +187,38 @@ final class PackageManagerTest extends UnitTestCase
         $packageManager = $this->getAccessibleMock(PackageManager::class, ['sortAndSavePackageStates'], [new DependencyOrderingService()]);
         $packageManager->_set('packagesBasePath', $this->testRoot . 'Packages/');
         $packageManager->_set('packageStatesPathAndFilename', $this->testRoot . 'Configuration/PackageStates.php');
+        $packageManager->_set('packagesBasePaths', [$this->testRoot . 'Packages/Application/*/']);
 
         $packageManager->_set('packages', []);
-        $packageManager->scanAvailablePackages();
-
-        $packageStates = require $this->testRoot . 'Configuration/PackageStates.php';
-        $actualPackageKeys = array_keys($packageStates['packages']);
-        self::assertEquals(sort($expectedPackageKeys), sort($actualPackageKeys));
+        $composerMode = Environment::isComposerMode();
+        Environment::initialize(
+            Environment::getContext(),
+            Environment::isCli(),
+            false,
+            Environment::getProjectPath(),
+            Environment::getPublicPath(),
+            Environment::getVarPath(),
+            Environment::getConfigPath(),
+            Environment::getCurrentScript(),
+            Environment::isWindows() ? 'WINDOWS' : 'UNIX'
+        );
+        try {
+            $packageManager->scanAvailablePackages();
+            $actualPackageKeys = array_keys($packageManager->getAvailablePackages());
+        } finally {
+            Environment::initialize(
+                Environment::getContext(),
+                Environment::isCli(),
+                $composerMode,
+                Environment::getProjectPath(),
+                Environment::getPublicPath(),
+                Environment::getVarPath(),
+                Environment::getConfigPath(),
+                Environment::getCurrentScript(),
+                Environment::isWindows() ? 'WINDOWS' : 'UNIX'
+            );
+        }
+        self::assertEqualsCanonicalizing($expectedPackageKeys, $actualPackageKeys);
     }
 
     #[Test]
@@ -232,6 +257,8 @@ final class PackageManagerTest extends UnitTestCase
             'version' => 5,
         ]);
         $packageManager->scanAvailablePackages();
+        $actualPackageKeys = array_keys($packageManager->getAvailablePackages());
+        self::assertEqualsCanonicalizing($expectedPackageKeys, $actualPackageKeys);
         $packageManager->_call('sortAndSavePackageStates');
 
         $packageStates = require $this->testRoot . 'Configuration/PackageStates.php';

@@ -18,9 +18,9 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Configuration;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Yaml\Yaml;
 use TYPO3\CMS\Core\Configuration\Exception\SiteConfigurationWriteException;
 use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
 use TYPO3\CMS\Core\Configuration\SiteWriter;
@@ -138,7 +138,6 @@ final class SiteWriterTest extends UnitTestCase
 
     #[DataProvider('writingPlaceholdersIsHandledDataProvider')]
     #[Test]
-    #[DoesNotPerformAssertions]
     public function writingPlaceholdersIsHandled(array $changes): void
     {
         $identifier = 'testsite';
@@ -159,6 +158,7 @@ final class SiteWriterTest extends UnitTestCase
             new YamlFileLoader(self::createStub(LoggerInterface::class))
         );
         $subject->write($identifier, $configuration, true);
+        self::assertSame($changes['customProperty'], Yaml::parseFile($siteConfig)['customProperty']);
     }
 
     #[Test]
