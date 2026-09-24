@@ -30,7 +30,7 @@ class DeleteIndexedData
     {
         if (isset($params['uid_page']) && $this->isEnabled()) {
             $administrationRepository = GeneralUtility::makeInstance(AdministrationRepository::class);
-            $administrationRepository->removeIndexedPhashRow('ALL', $params['uid_page'], 0);
+            $administrationRepository->removeIndexedPageContent((int)$params['uid_page']);
         }
     }
 

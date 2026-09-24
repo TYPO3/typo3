@@ -88,6 +88,12 @@ single view plugin of news.
     The chash will be automatically attached. This must correspond with
     what the plugin takes of parameters.
 
+*   Index Records immediately when saved?: When enabled, records of the
+    configured table are indexed as soon as they are saved in the backend.
+    This applies to records located on the page of the configuration, or on
+    the Alternative Source Page, if set. Hiding or deleting a record removes
+    it from the index.
+
 If a record is removed its indexing entry will also be
 removed upon next indexing. The UID of the record is saved in the index for
 that purpose.

@@ -12,3 +12,6 @@ services:
 
   TYPO3\CMS\IndexedSearch\Indexer:
     shared: false
+
+  TYPO3\CMS\IndexedSearch\Hook\RecordIndexingDataHandlerHook:
+    public: true

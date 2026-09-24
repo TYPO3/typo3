@@ -1,0 +1,5 @@
+"pages"
+,"uid","pid","title","slug","doktype","is_siteroot"
+,1,0,"Root","/",1,1
+,2,1,"Records","/records",1,0
+,3,1,"Other","/other",1,0

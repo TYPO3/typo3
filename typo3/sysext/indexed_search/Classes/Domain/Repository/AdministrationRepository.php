@@ -661,6 +661,28 @@ class AdministrationRepository
     }
 
     /**
+     * Removes the index of a page's own content, which is created when the page is rendered in the frontend.
+     * Entries created by indexing configurations (records, external URLs, files) are kept.
+     */
+    public function removeIndexedPageContent(int $pageId): void
+    {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('index_phash');
+        $phashes = $queryBuilder
+            ->select('IP.phash')
+            ->from('index_phash', 'IP')
+            ->innerJoin('IP', 'index_section', 'ISEC', $queryBuilder->expr()->eq('IP.phash', $queryBuilder->quoteIdentifier('ISEC.phash')))
+            ->where(
+                $queryBuilder->expr()->eq('ISEC.page_id', $queryBuilder->createNamedParameter($pageId, Connection::PARAM_INT)),
+                $queryBuilder->expr()->eq('IP.freeIndexUid', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT))
+            )
+            ->executeQuery()
+            ->fetchFirstColumn();
+        if ($phashes !== []) {
+            $this->removeIndexedPhashRow(implode(',', array_unique($phashes)), $pageId, 0);
+        }
+    }
+
+    /**
      * Remove indexed phash row
      */
     public function removeIndexedPhashRow(string $phashList, int $pageId, int $depth = 4): void
