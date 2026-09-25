@@ -179,9 +179,12 @@ the :ref:`settings-editor`.
     An empty value (default) falls back to the current root page ID.
 
     ..  note::
-        By "root page" we mean a website root defined by a TypoScript record!
-        If you just want to search in branches of your site, use the possibility
-        of searching in levels.
+        By "root page" we mean the root page of a website, as it is stored in
+        the index field :sql:`rl0`. Setting a page from within the page tree
+        (for example a page below the site root) returns no results.
+        If you just want to search in branches of your site, restrict the
+        search to sections via
+        :ref:`defaultOptions.sections <defaultOptions-sections>`.
 
 ..  _search-pagination-type:
 
@@ -478,6 +481,21 @@ Default: Sections
     :Type: string (list of integers, separated by comma)
     :Default: 0
     :Path: plugin.tx_indexedsearch.settings
+
+    Restricts the search to a branch of the page tree. The value is
+    :typoscript:`rl1_<uid>` or :typoscript:`rl2_<uid>`, with the page ID of
+    a page on the first or second level below the site root. Several page
+    IDs can be given comma-separated, for example :typoscript:`rl1_12,15`.
+
+    ..  code-block:: typoscript
+        :caption: EXT:my_site/Configuration/TypoScript/setup.typoscript
+
+        plugin.tx_indexedsearch.settings.defaultOptions.sections = rl2_42
+
+    ..  note::
+        The index stores only the first three levels of the rootline
+        (:sql:`rl0`, :sql:`rl1` and :sql:`rl2`). Pages on deeper levels
+        cannot be used as the starting point of a restricted search.
 
 ..  _defaultOptions-freeIndexUid:
 
