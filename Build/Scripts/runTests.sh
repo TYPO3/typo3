@@ -488,6 +488,47 @@ executeRstRendering() {
     return ${exitCode}
 }
 
+executeRstRenderingForSystemExtensions() {
+    local exitCode=0
+    local systemExtensionName
+    local singleExitCode
+    for systemExtensionName in "$@"; do
+        if [[ ! -d "typo3/sysext/${systemExtensionName}/Documentation" ]]; then
+            echo "Skipping \"${systemExtensionName}\": no \"Documentation\" folder"
+            continue
+        fi
+        executeRstRendering "${systemExtensionName}"
+        singleExitCode=$?
+        if [ ${singleExitCode} -ne 0 ]; then
+            exitCode=${singleExitCode}
+        fi
+    done
+    return ${exitCode}
+}
+
+collectSystemExtensionsWithDocumentation() {
+    local systemExtensionFolder
+    for systemExtensionFolder in typo3/sysext/*/Documentation; do
+        [[ -d "${systemExtensionFolder}" ]] || continue
+        basename "$(dirname "${systemExtensionFolder}")"
+    done
+}
+
+determineChangedFiles() {
+    # "git" is not necessarily available on the host (for instance in the CI job containers),
+    # so the file list is determined in a container and written to a file for further processing.
+    local gitCompareTo="$1"
+    local targetFile="$2"
+    local command="git rev-parse --verify --quiet \"${gitCompareTo}^{commit}\" >/dev/null && git diff --name-only \"${gitCompareTo}\" HEAD > \"${targetFile}\""
+    ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name git-changed-files-${SUFFIX} ${IMAGE_PHP} /bin/sh -c "${command}"
+    return $?
+}
+
+collectSystemExtensionsWithChangedDocumentation() {
+    local changedFilesFile="$1"
+    sed -n 's#^typo3/sysext/\([^/]\{1,\}\)/Documentation/.*#\1#p' "${changedFilesFile}" | sort -u
+}
+
 executeRstRenderingWithWatch() {
     local GREEN='\033[0;32m'
     local YELLOW='\033[1;33m'
@@ -673,6 +714,7 @@ Options:
             - checkPermissions: test some core files for correct executable bits
             - checkRst: test .rst files for integrity
             - checkRstRenderingAll: Test all system extension .rst files for rendering errors
+            - checkRstRenderingChanged: Test GIT changed (HEAD~1) .rst files for rendering errors
             - checkRstRenderingSingle: Test specified system extension .rst files for rendering errors
             - watchRst: Live documentation editing of specified system extension (can interactively create changelog entries).
             - clean: clean up build, cache and testing related files and folders
@@ -854,6 +896,11 @@ Examples:
 
     # Run lintTypescript fixer
     ./Build/Scripts/runTests.sh -s lintTypescript -- --fix
+
+    # Render the documentation of all system extensions touched by the last commit
+    # or by all commits not yet in origin/main
+    ./Build/Scripts/runTests.sh -s checkRstRenderingChanged
+    ./Build/Scripts/runTests.sh -s checkRstRenderingChanged origin/main
 
     # Run ReST live (hot reload) rendering with provided local webserver
     ./Build/Scripts/runTests.sh -s watchRst core interactive
@@ -1232,17 +1279,34 @@ case ${TEST_SUITE} in
         SUITE_EXIT_CODE=$?
         ;;
     checkRstRenderingAll)
-        SUITE_EXIT_CODE=0
         echo "Scanning typo3/sysext for directories with Documentation..."
-        for systemExtensionFolder in typo3/sysext/*/Documentation; do
-            systemExtensionName="${systemExtensionFolder%/Documentation}"
-            systemExtensionName=$(basename "${systemExtensionName}")
-            executeRstRendering "${systemExtensionName}"
-            TMP_SUITE_EXIT_CODE=$?
-            if [ ${TMP_SUITE_EXIT_CODE} -ne 0 ]; then
-                SUITE_EXIT_CODE=${TMP_SUITE_EXIT_CODE}
+        executeRstRenderingForSystemExtensions $(collectSystemExtensionsWithDocumentation)
+        SUITE_EXIT_CODE=$?
+        ;;
+    checkRstRenderingChanged)
+        SUITE_EXIT_CODE=0
+        RST_GIT_COMPARE_TO="${1:-HEAD~1}"
+        RST_CHANGED_FILES_FILE="typo3temp/var/tests/changed-files-${SUFFIX}.txt"
+        if ! determineChangedFiles "${RST_GIT_COMPARE_TO}" "${RST_CHANGED_FILES_FILE}"; then
+            echo "Error: Could not determine changed files, invalid git revision provided for comparison: \"${RST_GIT_COMPARE_TO}\""
+            SUITE_EXIT_CODE=1
+        elif grep -qx 'Build/Scripts/runTests.sh' "${RST_CHANGED_FILES_FILE}"; then
+            # The rendering setup itself changed (for instance the used container image),
+            # so the documentation of all system extensions is rendered.
+            echo "Build/Scripts/runTests.sh changed since ${RST_GIT_COMPARE_TO}, rendering all documentation."
+            executeRstRenderingForSystemExtensions $(collectSystemExtensionsWithDocumentation)
+            SUITE_EXIT_CODE=$?
+        else
+            CHANGED_SYSTEM_EXTENSIONS=$(collectSystemExtensionsWithChangedDocumentation "${RST_CHANGED_FILES_FILE}")
+            if [ -z "${CHANGED_SYSTEM_EXTENSIONS}" ]; then
+                echo "No system extension documentation changed since ${RST_GIT_COMPARE_TO}, nothing to render."
+            else
+                echo "Changed system extension documentation since ${RST_GIT_COMPARE_TO}:" ${CHANGED_SYSTEM_EXTENSIONS}
+                executeRstRenderingForSystemExtensions ${CHANGED_SYSTEM_EXTENSIONS}
+                SUITE_EXIT_CODE=$?
             fi
-        done
+        fi
+        rm -f "${RST_CHANGED_FILES_FILE}"
         ;;
     checkRstRenderingSingle)
         systemExtensionKey="${1}"
