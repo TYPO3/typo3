@@ -186,6 +186,18 @@ final class IndexerTest extends FunctionalTestCase
         self::assertSame([$expectedFrequency], array_values(array_unique(array_column($rows, 'freq'))));
     }
 
+    #[Test]
+    public function indexerStoresWordCountWithinRangeOfIndexRelCountColumn(): void
+    {
+        $indexer = $this->get(Indexer::class);
+        $indexer->init($this->buildIndexerConfiguration(1, 'Repeated', str_repeat('repeated ', 300)));
+        $indexer->indexTypo3PageContent();
+
+        $count = (int)$this->getConnectionPool()->getConnectionForTable('index_rel')
+            ->executeQuery('SELECT MAX(count) FROM index_rel')->fetchOne();
+        self::assertLessThanOrEqual(255, $count);
+    }
+
     private function buildIndexerConfiguration(int $pageId, string $title, string $body): array
     {
         return [
