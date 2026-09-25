@@ -1,0 +1,48 @@
+"pages"
+,"uid","pid","sorting","deleted","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","title"
+,1,0,256,0,0,0,0,0,"Root"
+,20,1,256,0,0,0,0,0,"Conformance storage"
+,21,1,512,0,0,0,0,0,"Move target"
+"tx_blogexample_domain_model_blog"
+,"uid","pid","title","sys_language_uid","l18n_parent","administrator","subtitle","description","deleted","hidden","posts","logo","t3ver_oid","t3ver_wsid","t3ver_state"
+,1,20,"Blog A",0,0,0,,,0,0,6,0,0,0,0
+,2,20,"Blog A DA",1,1,0,,,0,0,4,0,0,0,0
+,101,20,"Blog A WS",0,0,0,,,0,0,6,0,1,1,0
+"tx_blogexample_domain_model_post"
+,"uid","pid","sorting","title","sys_language_uid","l18n_parent","blog","author","tags","date","content","hidden","deleted","t3ver_oid","t3ver_wsid","t3ver_state"
+,1,20,100,"P1",0,0,1,3,0,1502275450,"e",0,0,0,0,0
+,2,20,200,"P2",0,0,1,1,2,1502275450,"d",0,0,0,0,0
+,3,20,300,"P3 hidden",0,0,1,1,0,1502275450,"c",1,0,0,0,0
+,4,20,400,"P4 all languages",-1,0,1,1,0,1502275450,"b",0,0,0,0,0
+,5,20,500,"P5",0,0,1,1,0,1502275450,"a",0,0,0,0,0
+,8,20,800,"P8 moved in WS",0,0,1,1,0,1502275450,"f",0,0,0,0,0
+,11,20,201,"P2 DA",1,2,2,1,2,1502275450,"z",0,0,0,0,0
+,13,20,301,"P3 DA",1,3,2,1,0,1502275450,"y",0,0,0,0,0
+,15,20,501,"P5 DA hidden",1,5,2,1,0,1502275450,"x",1,0,0,0,0
+,16,20,600,"P16 floating DA",1,0,2,1,0,1502275450,"w",0,0,0,0,0
+,22,20,202,"P2 DE",2,2,1,1,0,1502275450,"v",0,0,0,0,0
+,102,20,200,"P2 WS",0,0,1,1,2,1502275450,"d",0,0,2,1,0
+,105,20,500,"P5",0,0,1,1,0,1502275450,"a",0,0,5,1,2
+,106,20,700,"P6 new in WS",0,0,1,1,0,1502275450,"g",0,0,0,1,1
+,107,20,100,"P1 hidden in WS",0,0,1,3,0,1502275450,"e",1,0,1,1,0
+,108,21,800,"P8 moved in WS",0,0,1,1,0,1502275450,"f",0,0,8,1,4
+,111,20,201,"P2 DA WS",1,2,2,1,2,1502275450,"z",0,0,11,1,0
+"tx_blogexample_domain_model_person"
+,"uid","pid","firstname","lastname","sys_language_uid","l10n_parent","email","tags","tags_special","deleted","hidden"
+,1,20,"John","Doe",0,0,,0,0,0,0
+,2,20,"John DA","Doe",1,1,,0,0,0,0
+,3,20,"Henry","Doe",0,0,,0,0,0,0
+"tx_blogexample_domain_model_tag"
+,"uid","pid","name","sys_language_uid","l18n_parent","deleted","hidden"
+,1,20,"T1",0,0,0,0
+,2,20,"T2",0,0,0,0
+,3,20,"T3",0,0,0,0
+,21,20,"T1 DA",1,1,0,0
+"tx_blogexample_domain_model_tag_mm"
+,"uid_local","uid_foreign","tablenames","fieldname","sorting","sorting_foreign"
+,1,2,"tx_blogexample_domain_model_post","tags",1,1
+,2,2,"tx_blogexample_domain_model_post","tags",1,2
+,1,11,"tx_blogexample_domain_model_post","tags",2,1
+,3,11,"tx_blogexample_domain_model_post","tags",1,2
+,2,102,"tx_blogexample_domain_model_post","tags",2,1
+,3,102,"tx_blogexample_domain_model_post","tags",2,2
