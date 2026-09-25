@@ -165,4 +165,46 @@ final class IndexerTest extends FunctionalTestCase
         $subject->conf = ['index_descrLgd' => 200];
         self::assertSame($invalidUtf8, $subject->bodyDescription($indexingDataDto));
     }
+
+    #[Test]
+    public function indexerComputesFrequencyFromWordCountOfCurrentDocumentOnly(): void
+    {
+        $indexer = $this->get(Indexer::class);
+        $indexer->init($this->buildIndexerConfiguration(1, 'First', str_repeat('lorem ipsum dolor sit amet consectetur adipiscing elit ', 10)));
+        $indexer->indexTypo3PageContent();
+
+        $indexer->init($this->buildIndexerConfiguration(2, 'Second', 'apple banana cherry damson elder fig grape hazel iris jasmine kiwi lemon mango nectarine olive peach quince rose sage thyme'));
+        $indexer->indexTypo3PageContent();
+
+        $phash = (string)$this->getConnectionPool()->getConnectionForTable('index_phash')
+            ->executeQuery('SELECT phash FROM index_phash WHERE data_page_id = 2')->fetchOne();
+        $rows = $this->getConnectionPool()->getConnectionForTable('index_rel')
+            ->executeQuery('SELECT count, freq FROM index_rel WHERE phash = ?', [$phash])->fetchAllAssociative();
+        self::assertNotEmpty($rows);
+        $ownWordCount = array_sum(array_column($rows, 'count'));
+        $expectedFrequency = $indexer->freqMap(1 / $ownWordCount);
+        self::assertSame([$expectedFrequency], array_values(array_unique(array_column($rows, 'freq'))));
+    }
+
+    private function buildIndexerConfiguration(int $pageId, string $title, string $body): array
+    {
+        return [
+            'id' => $pageId,
+            'type' => 0,
+            'MP' => '',
+            'staticPageArguments' => null,
+            'sys_language_uid' => 0,
+            'gr_list' => '0,-1',
+            'recordUid' => null,
+            'freeIndexUid' => null,
+            'freeIndexSetId' => null,
+            'index_descrLgd' => 200,
+            'index_metatags' => true,
+            'index_externals' => false,
+            'mtime' => time(),
+            'crdate' => time(),
+            'content' => '<html><head><title>' . $title . '</title></head><body>' . $body . '</body></html>',
+            'indexedDocTitle' => '',
+        ];
+    }
 }
