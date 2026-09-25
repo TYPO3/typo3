@@ -19,6 +19,8 @@ namespace TYPO3\CMS\IndexedSearch\Tests\Functional\Controller;
 
 use PHPUnit\Framework\Attributes\Test;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\Http\Message\ResponseFactoryInterface;
+use Psr\Http\Message\StreamFactoryInterface;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
@@ -31,6 +33,7 @@ use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\View\ViewInterface;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
+use TYPO3\CMS\Frontend\Page\PageInformation;
 use TYPO3\CMS\Frontend\Typolink\LinkFactory;
 use TYPO3\CMS\IndexedSearch\Controller\SearchController;
 use TYPO3\CMS\IndexedSearch\Domain\Repository\IndexSearchRepository;
@@ -193,5 +196,52 @@ final class SearchControllerTest extends FunctionalTestCase
         $fallbackPagination = $controller->callBuildPagination($searchData, $resultRows, $resultCount);
         self::assertInstanceOf(SimplePagination::class, $fallbackPagination);
         self::assertCount(20, $fallbackPagination->getAllPageNumbers());
+    }
+
+    #[Test]
+    public function searchActionWritesSearchStatisticsOnceForMultipleFreeIndexUids(): void
+    {
+        $searchRepository = $this->createMock(IndexSearchRepository::class);
+        $searchRepository->method('doSearch')->willReturn(false);
+        $searchRepository->method('getIndexConfigurationById')->willReturn(null);
+        $searchRepository->expects($this->once())->method('writeSearchStat')->with(1, [['sword' => 'typo3', 'oper' => 'AND']]);
+
+        $controller = new class (
+            $this->createStub(Context::class),
+            $searchRepository,
+            $this->createStub(TypoScriptService::class),
+            $this->createStub(Lexer::class),
+            $this->createStub(LinkFactory::class),
+            $this->createStub(PageRepository::class),
+        ) extends SearchController {
+            public function prepareForTest(ViewInterface $view, Request $request): void
+            {
+                $this->view = $view;
+                $this->request = $request;
+                $this->settings = ['results' => []];
+            }
+
+            protected function initialize(array $searchData = []): array
+            {
+                $this->searchWords = [['sword' => 'typo3', 'oper' => 'AND']];
+                return ['freeIndexUid' => '1,2,3'];
+            }
+
+            protected function getDisplayResults(array $searchData, array $searchWords, array|bool $resultData, int $freeIndexUid = -1): array
+            {
+                return [];
+            }
+        };
+        $pageInformation = new PageInformation();
+        $pageInformation->setId(1);
+        $serverRequest = new ServerRequest('https://example.com/', 'GET')
+            ->withAttribute('extbase', new ExtbaseRequestParameters())
+            ->withAttribute('frontend.page.information', $pageInformation);
+        $controller->injectEventDispatcher($this->get(EventDispatcherInterface::class));
+        $controller->injectResponseFactory($this->get(ResponseFactoryInterface::class));
+        $controller->injectStreamFactory($this->get(StreamFactoryInterface::class));
+        $controller->prepareForTest(self::createStub(ViewInterface::class), new Request($serverRequest));
+
+        $controller->searchAction(['sword' => 'typo3', 'freeIndexUid' => '1,2,3']);
     }
 }
