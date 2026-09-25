@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
 use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
 use TYPO3\CMS\Core\Utility\StringUtility;
+use TYPO3\CMS\IndexedSearch\Dto\IndexingDataAsArray;
 use TYPO3\CMS\IndexedSearch\Indexer;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -217,5 +218,16 @@ EOT;
         self::assertSame('My title', $result->title);
         self::assertStringContainsString('alpha', $result->keywords);
         self::assertStringContainsString('My description', $result->description);
+    }
+
+    #[Test]
+    public function analyzeBodyKeepsMultiByteWordsShorterThanSixtyCharactersIntact(): void
+    {
+        $word = 'a' . str_repeat('ä', 35);
+        $subject = $this->getMockBuilder(Indexer::class)->disableOriginalConstructor()->onlyMethods([])->getMock();
+        $indexArray = [];
+        $subject->analyzeBody($indexArray, new IndexingDataAsArray(body: [$word]));
+        self::assertSame([$word], array_keys($indexArray));
+        self::assertSame(md5($word), $indexArray[$word]['hash']);
     }
 }

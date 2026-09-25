@@ -1006,7 +1006,7 @@ class Indexer
     public function analyzeBody(array &$retArr, IndexingDataAsArray $indexingDataDto): void
     {
         foreach ($indexingDataDto->body as $key => $val) {
-            $val = substr($val, 0, 60);
+            $val = mb_substr($val, 0, 60);
             // Cut after 60 chars because the index_words.baseword varchar field has this length. This MUST be the same.
             if (!isset($retArr[$val])) {
                 // First occurrence (used for ranking results)
