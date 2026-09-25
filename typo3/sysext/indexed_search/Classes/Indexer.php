@@ -1578,7 +1578,8 @@ class Indexer
             $rows[] = [
                 $phash,
                 $val['hash'],
-                (int)$val['count'],
+                // index_rel.count is an unsigned tinyint
+                min(255, (int)$val['count']),
                 (int)($val['first'] ?? 0),
                 $this->freqMap($val['count'] / $this->wordcount),
                 ($val['cmp'] ?? 0) & $this->flagBitMask,
