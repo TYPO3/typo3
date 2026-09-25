@@ -285,8 +285,7 @@ class Execution
                     $date = $this->getStart();
                 } else {
                     // Otherwise calculate date based on interval
-                    $now = time();
-                    $date = $now + $this->getInterval() - ($now - $this->getStart()) % $this->getInterval();
+                    $date = $this->calculateNextIntervalExecution(time());
                 }
                 // If date is in the future, throw an exception
                 if (!empty($this->getEnd()) && $date > $this->getEnd()) {
@@ -298,6 +297,32 @@ class Execution
             throw new \OutOfBoundsException('Task is past end date.', 1250715544);
         }
         return $date;
+    }
+
+    /**
+     * Calculates the first interval-based execution after the given point in time
+     *
+     * @param int $now Reference timestamp
+     * @return int Timestamp of the next execution
+     */
+    public function calculateNextIntervalExecution(int $now): int
+    {
+        $interval = $this->getInterval();
+        if ($interval % 86400 !== 0) {
+            return $now + $interval - ($now - $this->getStart()) % $interval;
+        }
+        // Whole-day intervals are stepped in local time, so a daily task keeps
+        // its wall-clock time across daylight saving time changes
+        $days = intdiv($interval, 86400);
+        // @todo Uses the PHP default timezone. Switch to the timezone of the
+        //       backend user once a per-user backend timezone exists (#61110).
+        $start = new \DateTimeImmutable('@' . $this->getStart())->setTimezone(new \DateTimeZone(date_default_timezone_get()));
+        $steps = max(0, intdiv($now - $this->getStart(), $interval) - 1);
+        $next = $start->modify('+' . ($steps * $days) . ' days');
+        while ($next->getTimestamp() <= $now) {
+            $next = $next->modify('+' . $days . ' days');
+        }
+        return $next->getTimestamp();
     }
 
     /**
