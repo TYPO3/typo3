@@ -21,7 +21,9 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
+use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
 use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
@@ -93,12 +95,26 @@ final class BehaviourConformanceTest extends FunctionalTestCase
         return $languageAspect;
     }
 
+    private function setWorkspace(int $workspaceId): void
+    {
+        $this->get(Context::class)->setAspect('workspace', new WorkspaceAspect($workspaceId));
+    }
+
     private function createPostQuery(LanguageAspect $languageAspect, bool $respectSysLanguage = true): QueryInterface
     {
         $query = $this->get(PostRepository::class)->createQuery();
         $query->getQuerySettings()->setLanguageAspect($languageAspect);
         $query->getQuerySettings()->setRespectSysLanguage($respectSysLanguage);
         $query->setOrderings(['content' => QueryInterface::ORDER_ASCENDING, 'uid' => QueryInterface::ORDER_ASCENDING]);
+        return $query;
+    }
+
+    private function createWorkspacePostQuery(LanguageAspect $languageAspect): QueryInterface
+    {
+        $query = $this->get(PostRepository::class)->createQuery();
+        $query->getQuerySettings()->setLanguageAspect($languageAspect);
+        $query->getQuerySettings()->setRespectStoragePage(false);
+        $query->setOrderings(['uid' => QueryInterface::ORDER_ASCENDING]);
         return $query;
     }
 
@@ -122,17 +138,40 @@ final class BehaviourConformanceTest extends FunctionalTestCase
         );
     }
 
+    private static function describeVersion(Post|Blog|null $object): string
+    {
+        if ($object === null) {
+            return 'null';
+        }
+        return sprintf(
+            '%s|%d|%d|%d',
+            $object->getTitle(),
+            $object->getUid(),
+            $object->_getProperty(AbstractDomainObject::PROPERTY_VERSIONED_UID),
+            $object->getPid(),
+        );
+    }
+
     /**
      * @param iterable<DomainObjectInterface> $objects
      * @return list<string>
      */
-    private static function describeAll(iterable $objects): array
+    private static function describeAll(iterable $objects, bool $version = false): array
     {
         $result = [];
         foreach ($objects as $object) {
-            $result[] = self::describe($object);
+            $result[] = $version && ($object instanceof Post || $object instanceof Blog) ? self::describeVersion($object) : self::describe($object);
         }
         return $result;
+    }
+
+    private function fetchPostRow(int $uid, array $fields = ['title', 'deleted']): array
+    {
+        $queryBuilder = $this->get(ConnectionPool::class)->getQueryBuilderForTable('tx_blogexample_domain_model_post');
+        $queryBuilder->getRestrictions()->removeAll();
+        return $queryBuilder->select(...$fields)->from('tx_blogexample_domain_model_post')
+            ->where($queryBuilder->expr()->eq('uid', $uid))
+            ->executeQuery()->fetchAssociative();
     }
 
     public static function rootQueryDataProvider(): array
@@ -417,5 +456,173 @@ final class BehaviourConformanceTest extends FunctionalTestCase
         $query = $this->createPostQuery($languageAspect, false);
         $query->setLimit(3);
         self::assertSame(['P4 all languages|4|4|-1', 'P2 DA|2|11|1'], self::describeAll($query->execute()));
+    }
+
+    /**
+     * With respectSysLanguage the SQL already excludes default rows without a visible translation, so the limit
+     * counts only rows that are returned and Extbase returns the full limit.
+     */
+    #[Test]
+    public function limitWithRespectSysLanguageIsAppliedAfterLanguageFiltering(): void
+    {
+        $languageAspect = $this->setLanguage(1, LanguageAspect::OVERLAYS_ON);
+        $query = $this->createPostQuery($languageAspect);
+        $query->setLimit(2);
+        self::assertSame(['P4 all languages|4|4|-1', 'P2 DA|2|11|1'], self::describeAll($query->execute()));
+    }
+
+    public static function workspaceReadDataProvider(): array
+    {
+        return [
+            // Versions replace live content but keep the live uid (_versionedUid = version uid).
+            // Dropped: P1 (hidden in the workspace), P3 (hidden live), P5 (delete placeholder) and
+            // P8, whose live row is removed as a moved record while the move pointer is not selected.
+            // P6 exists only in the workspace, so uid and _versionedUid are the new record's uid.
+            'default language' => [0, LanguageAspect::OVERLAYS_ON, [
+                'P2 WS|2|102|20', 'P4 all languages|4|4|20', 'P6 new in WS|106|106|20',
+            ]],
+            // The translation's own version (111) is used.
+            'DA, overlays on' => [1, LanguageAspect::OVERLAYS_ON, [
+                'P4 all languages|4|4|20', 'P2 DA WS|2|111|20',
+            ]],
+            'DA, overlays mixed' => [1, LanguageAspect::OVERLAYS_MIXED, [
+                'P4 all languages|4|4|20', 'P2 DA WS|2|111|20', 'P6 new in WS|106|106|20',
+            ]],
+        ];
+    }
+
+    /**
+     * Workspace overlay of versions, new records, placeholders and hidden versions.
+     */
+    #[DataProvider('workspaceReadDataProvider')]
+    #[Test]
+    public function workspaceQueryReturnsVersionedRows(int $languageId, string $overlayType, array $expected): void
+    {
+        $this->setWorkspace(1);
+        $languageAspect = $this->setLanguage($languageId, $overlayType);
+        self::assertSame($expected, self::describeAll($this->createWorkspacePostQuery($languageAspect)->execute(), true));
+    }
+
+    /**
+     * With ignored enable fields hidden versions and hidden live records are returned,
+     * placeholders and moved records are still dropped.
+     */
+    #[Test]
+    public function workspaceQueryWithIgnoredEnableFieldsReturnsHiddenVersions(): void
+    {
+        $this->setWorkspace(1);
+        $languageAspect = $this->setLanguage(0, LanguageAspect::OVERLAYS_ON);
+        $query = $this->createWorkspacePostQuery($languageAspect);
+        $query->getQuerySettings()->setIgnoreEnableFields(true);
+        self::assertSame(
+            ['P1 hidden in WS|1|107|20', 'P2 WS|2|102|20', 'P3 hidden|3|3|20', 'P4 all languages|4|4|20', 'P6 new in WS|106|106|20'],
+            self::describeAll($query->execute(), true)
+        );
+    }
+
+    /**
+     * A single moved record resolves to its move pointer (new pid). In lists it is dropped,
+     * see workspaceQueryReturnsVersionedRows().
+     */
+    #[Test]
+    public function movedRecordIsResolvedWhenFetchedAlone(): void
+    {
+        $this->setWorkspace(1);
+        $this->setLanguage(0, LanguageAspect::OVERLAYS_ON);
+        self::assertSame('P8 moved in WS|8|108|21', self::describeVersion($this->get(PostRepository::class)->findByUid(8)));
+    }
+
+    // A direct findByUid(108) (108 is the move-version of live post 8, t3ver_oid=8) cannot reach
+    // it, because Typo3DbQueryParser::addTypo3Constraints() always adds `t3ver_oid = 0` for
+    // workspace-aware tables, filtering row 108 out before PageRepository::versionOL() ever runs.
+    // movedRecordIsResolvedWhenFetchedAlone() above already exercises this branch through
+    // findByUid(8), the live uid: Typo3DbBackend::resolveMovedRecordsInWorkspace() re-queries for
+    // the move pointer and feeds it back into versionOL() as $row. No further test is needed here.
+
+    /**
+     * @todo in a workspace count() counts live rows and new versions without the overlay.
+     * @todo the goal is LIMIT after the overlay. In a workspace Extbase fetches twice the limit and
+     *       truncates after the overlay, an approximation that can still return fewer rows than the limit.
+     */
+    #[Test]
+    public function workspaceCountAndLimit(): void
+    {
+        $this->setWorkspace(1);
+        $languageAspect = $this->setLanguage(0, LanguageAspect::OVERLAYS_ON);
+        self::assertCount(7, $this->createWorkspacePostQuery($languageAspect)->execute());
+        $query = $this->createWorkspacePostQuery($languageAspect);
+        $query->setLimit(2);
+        self::assertSame(['P2 WS|2|102|20', 'P4 all languages|4|4|20'], self::describeAll($query->execute(), true));
+    }
+
+    public static function workspaceRelationsDataProvider(): array
+    {
+        return [
+            // @todo the DE translation of P2 is listed with the default blog; it also
+            //       carries the _versionedUid (102) of the default record's version.
+            'default language' => [0, LanguageAspect::OVERLAYS_ON, [
+                'Blog A WS|1|101|20', ['P2 WS|2|102|20', 'P2 DE|2|102|20', 'P4 all languages|4|4|20', 'P6 new in WS|106|106|20'],
+            ]],
+            // The DA blog has no version of its own, but _versionedUid is the default record's version (101).
+            // @todo P3 DA (13) is missing: Typo3DbBackend re-fetches its default record P3 (hidden) via
+            //       PageRepository::getRawRecord(), whose versionOL() drops it in a workspace. Live and the
+            //       Record API keep P3 DA.
+            'DA, overlays on' => [1, LanguageAspect::OVERLAYS_ON, [
+                'Blog A DA|1|101|20', ['P2 DA WS|2|111|20', 'P16 floating DA|16|16|20'],
+            ]],
+        ];
+    }
+
+    /**
+     * Relations in a workspace are resolved through the versions.
+     */
+    #[DataProvider('workspaceRelationsDataProvider')]
+    #[Test]
+    public function workspaceRelationsResolveVersions(int $languageId, string $overlayType, array $expected): void
+    {
+        $this->setWorkspace(1);
+        $this->setLanguage($languageId, $overlayType);
+        $blog = $this->get(BlogRepository::class)->findByUid(1);
+        self::assertSame($expected, [self::describeVersion($blog), self::describeAll($blog->getPosts(), true)]);
+    }
+
+    /**
+     * MM rows of a version (102: T2, T3) replace those of the live record (2: T1, T2).
+     */
+    #[Test]
+    public function workspaceMmRelationsUseTheVersionedUid(): void
+    {
+        $this->setWorkspace(1);
+        $this->setLanguage(0, LanguageAspect::OVERLAYS_ON);
+        $post = $this->get(PostRepository::class)->findByUid(2);
+        self::assertSame(['T2|2|2|0', 'T3|3|3|0'], self::describeAll($post->getTags()));
+    }
+
+    public static function workspaceUpdateDataProvider(): array
+    {
+        return [
+            'default language' => [0, 2, 102, 'P2 WS'],
+            'DA' => [1, 11, 111, 'P2 DA WS'],
+        ];
+    }
+
+    /**
+     * Known hole: updating an object loaded in a workspace writes the live row (the localized uid),
+     * the version row stays unchanged. Extbase never writes to versions.
+     */
+    #[DataProvider('workspaceUpdateDataProvider')]
+    #[Test]
+    public function updateInWorkspaceWritesLiveRow(int $languageId, int $liveUid, int $versionUid, string $versionTitle): void
+    {
+        $this->setWorkspace(1);
+        $this->setLanguage($languageId, LanguageAspect::OVERLAYS_ON);
+        $postRepository = $this->get(PostRepository::class);
+        $post = $postRepository->findByUid(2);
+        self::assertSame($versionTitle, $post->getTitle());
+        $post->setTitle('changed in workspace');
+        $postRepository->update($post);
+        $this->get(PersistenceManager::class)->persistAll();
+        self::assertSame(['title' => 'changed in workspace', 'deleted' => 0], $this->fetchPostRow($liveUid));
+        self::assertSame(['title' => $versionTitle, 'deleted' => 0], $this->fetchPostRow($versionUid));
     }
 }
