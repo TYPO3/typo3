@@ -57,13 +57,13 @@ class RatingViewHelper extends AbstractViewHelper
                     $base = $row['order_val1'] * 256;
                     // 15-3 MSB = 12
                     $freqNumber = $row['order_val2'] / $firstRow['order_val2'] * 2 ** 12;
-                    $total = MathUtility::forceIntegerInRange($base + $freqNumber, 0, 32767);
+                    $total = MathUtility::forceIntegerInRange($base + $freqNumber, 1, 32767);
                     return ceil(log($total) / log(32767) * 100) . '%';
                 }
                 return $default;
             case 'rank_freq':
                 $max = 10000;
-                $total = MathUtility::forceIntegerInRange($row['order_val'], 0, $max);
+                $total = MathUtility::forceIntegerInRange($row['order_val'], 1, $max);
                 return ceil(log($total) / log($max) * 100) . '%';
             case 'crdate':
                 $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
