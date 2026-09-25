@@ -46,7 +46,7 @@ class IndexedSearchUtility
                     $operator = self::getOperator($val, $operatorTranslateTable);
                     if ($operator) {
                         $lastoper = $operator;
-                    } elseif (strlen($val) > 1) {
+                    } elseif (mb_strlen($val) > 1) {
                         // A searchword MUST be at least two characters long!
                         $swordArray[$i]['sword'] = $val;
                         $swordArray[$i]['oper'] = $lastoper ?: $defaultOperator;
