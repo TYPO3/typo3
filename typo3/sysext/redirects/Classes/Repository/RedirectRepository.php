@@ -267,6 +267,26 @@ class RedirectRepository
             );
         }
 
+        if ($demand->hasCreatedBy()) {
+            if ($demand->getCreatedBy() === Demand::CREATOR_NOT_FOUND) {
+                // All tracked creators, whose backend user record is deleted or gone
+                $existingUsers = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_users');
+                $existingUsers->getRestrictions()
+                    ->removeAll()
+                    ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+                $existingUsers->select('uid')->from('be_users');
+                $constraints[] = $queryBuilder->expr()->and(
+                    $queryBuilder->expr()->neq('createdby', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)),
+                    $queryBuilder->expr()->notIn('createdby', $existingUsers->getSQL())
+                );
+            } else {
+                $constraints[] = $queryBuilder->expr()->eq(
+                    'createdby',
+                    $queryBuilder->createNamedParameter($demand->getCreatedBy(), Connection::PARAM_INT)
+                );
+            }
+        }
+
         if (!empty($constraints)) {
             $queryBuilder->where(...$constraints);
         }
@@ -324,6 +344,57 @@ class RedirectRepository
         }
 
         return $statusCodes;
+    }
+
+    /**
+     * Get the backend users, which created at least one redirect, as a map of their uid
+     * and their be_users record. Redirects without a tracked creator are mapped to the
+     * "0" key. Deleted backend users are not resolved, so an empty record means the user
+     * is either untracked or gone, leaving it to the consumer to label those cases.
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    public function findCreators(?string $type = null): array
+    {
+        $creatorIds = array_map(intval(...), array_column($this->getGroupedRows('createdby', 'creator', $type), 'creator'));
+        if ($creatorIds === []) {
+            return [];
+        }
+
+        $users = [];
+        $userIds = array_values(array_filter($creatorIds));
+        if ($userIds !== []) {
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_users');
+            $queryBuilder->getRestrictions()
+                ->removeAll()
+                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+            $users = $queryBuilder
+                ->select('*')
+                ->from('be_users')
+                ->where(
+                    $queryBuilder->expr()->in(
+                        'uid',
+                        $queryBuilder->createNamedParameter($userIds, Connection::PARAM_INT_ARRAY)
+                    )
+                )
+                ->orderBy('realName')
+                ->addOrderBy('username')
+                ->executeQuery()
+                ->fetchAllAssociative();
+        }
+
+        $creators = [];
+        foreach ($users as $user) {
+            $creators[(int)$user['uid']] = $user;
+        }
+        foreach (array_diff($userIds, array_keys($creators)) as $unresolvedUserId) {
+            $creators[$unresolvedUserId] = [];
+        }
+        if (in_array(0, $creatorIds, true)) {
+            $creators[0] = [];
+        }
+
+        return $creators;
     }
 
     /**

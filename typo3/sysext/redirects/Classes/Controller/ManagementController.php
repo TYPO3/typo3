@@ -21,6 +21,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
+use TYPO3\CMS\Backend\Backend\Avatar\Avatar;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\Components\MultiRecordSelection\Action;
@@ -54,6 +55,7 @@ class ManagementController
         private EventDispatcherInterface $eventDispatcher,
         protected ComponentFactory $componentFactory,
         protected ModulePaginationService $modulePaginationService,
+        protected Avatar $avatar,
     ) {}
 
     /**
@@ -75,10 +77,11 @@ class ManagementController
             return $view->renderResponse('Management/Overview');
         }
 
+        $redirects = $this->redirectRepository->findRedirectsByDemand($demand);
         $event = $this->eventDispatcher->dispatch(
             new ModifyRedirectManagementControllerViewDataEvent(
                 $demand,
-                $this->redirectRepository->findRedirectsByDemand($demand),
+                $redirects,
                 $this->redirectRepository->findHostsOfRedirects($redirectType),
                 $this->redirectRepository->findStatusCodesOfRedirects($redirectType),
                 $this->redirectRepository->findCreationTypes($redirectType),
@@ -86,6 +89,7 @@ class ManagementController
                 $view,
                 $request,
                 $this->redirectRepository->findIntegrityStatusCodes($redirectType),
+                $this->prepareCreators($this->redirectRepository->findCreators($redirectType), $redirects),
             )
         );
         $requestUri = $request->getAttribute('normalizedParams')->getRequestUri();
@@ -99,6 +103,8 @@ class ManagementController
             'statusCodes' => $event->getStatusCodes(),
             'creationTypes' => $event->getCreationTypes(),
             'integrityStatusCodes' => $event->getIntegrityStatusCodes(),
+            'creators' => $event->getCreators(),
+            'creatorFilterOptions' => $this->buildCreatorFilterOptions($event->getCreators()),
             'defaultIntegrityStatus' => RedirectConflict::NO_CONFLICT,
             'demand' => $event->getDemand(),
             'showHitCounter' => $event->getShowHitCounter(),
@@ -139,6 +145,51 @@ class ManagementController
             ] : [],
         ]);
         return $view->renderResponse('Management/Overview');
+    }
+
+    /**
+     * @param array<int, array<string, mixed>> $creatorRecords
+     * @param list<array<string, mixed>> $redirects
+     * @return array<int, array{label: string, avatar: string, filterValue: int}>
+     */
+    protected function prepareCreators(array $creatorRecords, array $redirects): array
+    {
+        $languageService = $this->getLanguageService();
+        $listedCreators = array_map(intval(...), array_column($redirects, 'createdby'));
+        $creators = [];
+        foreach ($creatorRecords as $userId => $user) {
+            if ($user === []) {
+                $creators[$userId] = [
+                    'label' => $languageService->sL($userId === 0
+                        ? 'LLL:EXT:redirects/Resources/Private/Language/locallang.xlf:not_tracked'
+                        : 'LLL:EXT:redirects/Resources/Private/Language/locallang.xlf:user_not_found'),
+                    'avatar' => '',
+                    'filterValue' => $userId === 0 ? 0 : Demand::CREATOR_NOT_FOUND,
+                ];
+                continue;
+            }
+            $realName = (string)($user['realName'] ?? '');
+            $userName = (string)($user['username'] ?? '');
+            $creators[$userId] = [
+                'label' => $realName !== '' ? sprintf('%s (%s)', $realName, $userName) : $userName,
+                'avatar' => in_array($userId, $listedCreators, true) ? $this->avatar->render($user, 16) : '',
+                'filterValue' => $userId,
+            ];
+        }
+        return $creators;
+    }
+
+    /**
+     * @param array<int, array{label: string, avatar: string, filterValue: int}> $creators
+     * @return array<int, string>
+     */
+    protected function buildCreatorFilterOptions(array $creators): array
+    {
+        $options = [];
+        foreach ($creators as $creator) {
+            $options[$creator['filterValue']] = $creator['label'];
+        }
+        return $options;
     }
 
     protected function canListRedirects(): bool

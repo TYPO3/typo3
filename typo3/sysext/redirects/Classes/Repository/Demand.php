@@ -26,6 +26,11 @@ use Symfony\Component\Console\Input\InputInterface;
  */
 class Demand
 {
+    /**
+     * Filter value aggregating all creators without an existing backend user record
+     */
+    public const CREATOR_NOT_FOUND = -2;
+
     public const DEFAULT_REDIRECT_TYPE = 'default';
     public const QRCODE_REDIRECT_TYPE = 'qrcode';
     public const SHORT_URL_REDIRECT_TYPE = 'short_url';
@@ -34,7 +39,7 @@ class Demand
     protected const ORDER_ASCENDING = 'asc';
     protected const DEFAULT_ORDER_FIELD = 'source_host';
     protected const DEFAULT_SECONDARY_ORDER_FIELD = 'source_host';
-    protected const ORDER_FIELDS = ['source_host', 'source_path', 'lasthiton', 'hitcount', 'protected'];
+    protected const ORDER_FIELDS = ['source_host', 'source_path', 'lasthiton', 'hitcount', 'protected', 'createdon'];
 
     protected string $orderField;
     protected string $orderDirection;
@@ -59,6 +64,7 @@ class Demand
     protected ?int $creationType = -1;
     protected ?int $protected = -1;
     protected ?string $integrityStatus = null;
+    protected ?int $createdBy = -1;
 
     public function __construct(
         int $page = 1,
@@ -73,7 +79,8 @@ class Demand
         ?\DateTimeInterface $olderThan = null,
         ?int $creationType = -1,
         ?int $protected = -1,
-        ?string $integrityStatus = null
+        ?string $integrityStatus = null,
+        ?int $createdBy = -1
     ) {
         $this->page = $page;
         if (!in_array($orderField, self::ORDER_FIELDS, true)) {
@@ -95,6 +102,7 @@ class Demand
         $this->creationType = $creationType;
         $this->protected = $protected;
         $this->integrityStatus = $integrityStatus;
+        $this->createdBy = $createdBy;
     }
 
     public static function fromRequest(ServerRequestInterface $request): self
@@ -117,7 +125,8 @@ class Demand
         $creationType = isset($demand['creation_type']) ? ((int)$demand['creation_type']) : -1;
         $protected = isset($demand['protected']) ? ((int)$demand['protected']) : -1;
         $integrityStatus = isset($demand['integrity_status']) ? ((string)$demand['integrity_status']) : null;
-        return new self($page, $orderField, $orderDirection, $redirectType, $sourceHosts, $sourcePath, $target, $statusCodes, $maxHits, null, $creationType, $protected, $integrityStatus);
+        $createdBy = isset($demand['createdby']) ? ((int)$demand['createdby']) : -1;
+        return new self($page, $orderField, $orderDirection, $redirectType, $sourceHosts, $sourcePath, $target, $statusCodes, $maxHits, null, $creationType, $protected, $integrityStatus, $createdBy);
     }
 
     public static function fromCommandInput(InputInterface $input): self
@@ -236,6 +245,11 @@ class Demand
         return $this->integrityStatus;
     }
 
+    public function getCreatedBy(): ?int
+    {
+        return $this->createdBy;
+    }
+
     public function getFirstStatusCode(): int
     {
         return $this->statusCodes[0] ?? 0;
@@ -281,6 +295,11 @@ class Demand
         return $this->integrityStatus !== null && $this->integrityStatus !== '';
     }
 
+    public function hasCreatedBy(): bool
+    {
+        return $this->createdBy !== null && $this->createdBy !== -1;
+    }
+
     public function hasRedirectType(): bool
     {
         return !empty($this->redirectType);
@@ -299,7 +318,8 @@ class Demand
             || $this->hasMaxHits()
             || $this->hasCreationType()
             || $this->hasProtected()
-            || $this->hasIntegrityStatus();
+            || $this->hasIntegrityStatus()
+            || $this->hasCreatedBy();
     }
 
     /**
@@ -347,6 +367,9 @@ class Demand
         }
         if ($this->hasIntegrityStatus()) {
             $parameters['integrity_status'] = $this->getIntegrityStatus();
+        }
+        if ($this->hasCreatedBy()) {
+            $parameters['createdby'] = $this->getCreatedBy();
         }
         return $parameters;
     }

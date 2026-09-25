@@ -188,6 +188,26 @@ final class RedirectRepositoryTest extends FunctionalTestCase
             new Demand(protected: 1),
             1,
         ];
+        yield 'demand with creator' => [
+            new Demand(createdBy: 2),
+            2,
+        ];
+        yield 'demand with deleted creator' => [
+            new Demand(createdBy: 3),
+            1,
+        ];
+        yield 'demand with creator, which does not exist' => [
+            new Demand(createdBy: 99),
+            1,
+        ];
+        yield 'demand with untracked creator' => [
+            new Demand(createdBy: 0),
+            1,
+        ];
+        yield 'demand with all creators without a backend user record' => [
+            new Demand(createdBy: Demand::CREATOR_NOT_FOUND),
+            2,
+        ];
     }
 
     #[DataProvider('countRedirectsByDemandCountsCorrectlyDataProvider')]
@@ -252,6 +272,14 @@ final class RedirectRepositoryTest extends FunctionalTestCase
             new Demand(protected: 1),
             1,
         ];
+        yield 'demand with creator' => [
+            new Demand(createdBy: 2),
+            1,
+        ];
+        yield 'demand with untracked creator' => [
+            new Demand(createdBy: 0),
+            1,
+        ];
     }
 
     #[DataProvider('countRedirectsByDemandRespectsUserPermissionsDataProvider')]
@@ -306,6 +334,51 @@ final class RedirectRepositoryTest extends FunctionalTestCase
         $redirects = $repository->findRedirectsByDemand($demand);
         $redirectUids = array_column($redirects, 'uid');
         self::assertSame($expectation, $redirectUids);
+    }
+
+    #[Test]
+    public function findCreatorsDoesNotResolveDeletedOrUnknownBackendUsers(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/sys_redirect.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/sys_file.csv');
+
+        $creators = $this->get(RedirectRepository::class)->findCreators();
+
+        // Uid 3 has been deleted, uid 99 never existed and uid 0 is the untracked creator
+        self::assertSame([1, 2, 3, 99, 0], array_keys($creators));
+        self::assertSame('admin', $creators[1]['username']);
+        self::assertSame('editor', $creators[2]['username']);
+        self::assertSame([[], [], []], [$creators[3], $creators[99], $creators[0]]);
+    }
+
+    #[Test]
+    public function findCreatorsRespectsUserPermissions(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/sys_redirect.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/sys_file.csv');
+
+        $this->get(StorageRepository::class)->getStorageObject(1)->setEvaluatePermissions(true);
+        $backendUser = $this->setUpBackendUser(2);
+        $backendUser->userGroupsUID = [1];
+        $backendUser->groupData['webmounts'] = '13';
+
+        $creators = $this->get(RedirectRepository::class)->findCreators();
+
+        self::assertSame([1, 2, 0], array_keys($creators));
+        self::assertSame([], $creators[0]);
+    }
+
+    #[Test]
+    public function redirectsCanBeSortedByCreationDate(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/sys_redirect.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/sys_file.csv');
+
+        $redirects = $this->get(RedirectRepository::class)->findRedirectsByDemand(
+            new Demand(orderField: 'createdon', orderDirection: 'desc')
+        );
+
+        self::assertSame([1, 6], array_slice(array_column($redirects, 'uid'), 0, 2));
     }
 
     private function getRedirectCount(): int

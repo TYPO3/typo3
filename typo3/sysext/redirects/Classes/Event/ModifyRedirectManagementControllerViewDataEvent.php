@@ -39,6 +39,7 @@ final class ModifyRedirectManagementControllerViewDataEvent
         private ViewInterface $view,
         private readonly ServerRequestInterface $request,
         private array $integrityStatusCodes,
+        private array $creators,
     ) {}
 
     /**
@@ -175,5 +176,25 @@ final class ModifyRedirectManagementControllerViewDataEvent
     public function setIntegrityStatusCodes(array $integrityStatusCodes): void
     {
         $this->integrityStatusCodes = $integrityStatusCodes;
+    }
+
+    /**
+     * Returns the backend users, which created the redirects.
+     *
+     * @return array<int, array{label: string, avatar: string}>
+     */
+    public function getCreators(): array
+    {
+        return $this->creators;
+    }
+
+    /**
+     * Can be used to update which backend users are available in the filter.
+     *
+     * @param array<int, array{label: string, avatar: string}> $creators
+     */
+    public function setCreators(array $creators): void
+    {
+        $this->creators = $creators;
     }
 }
