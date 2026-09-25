@@ -45,6 +45,10 @@ final class ModifyRedirectManagementControllerViewDataEventTest extends UnitTest
         $integrityStatusCodes = [
             ['dummy' => 'value1'],
         ];
+        $creators = [
+            1 => ['label' => 'admin', 'avatar' => '<span class="avatar"></span>'],
+            0 => ['label' => '[Not Tracked]', 'avatar' => ''],
+        ];
         $showHitCounter = true;
         $view = self::createStub(ViewInterface::class);
         $event = new ModifyRedirectManagementControllerViewDataEvent(
@@ -57,6 +61,7 @@ final class ModifyRedirectManagementControllerViewDataEventTest extends UnitTest
             $view,
             new ServerRequest(),
             $integrityStatusCodes,
+            $creators,
         );
         self::assertSame($demand, $event->getDemand());
         self::assertSame($redirects, $event->getRedirects());
@@ -66,5 +71,6 @@ final class ModifyRedirectManagementControllerViewDataEventTest extends UnitTest
         self::assertSame($showHitCounter, $event->getShowHitCounter());
         self::assertSame($view, $event->getView());
         self::assertSame($integrityStatusCodes, $event->getIntegrityStatusCodes());
+        self::assertSame($creators, $event->getCreators());
     }
 }

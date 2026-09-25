@@ -48,6 +48,9 @@
       <trans-unit id="filter.creationType.showAll">
         <source>Show All</source>
       </trans-unit>
+      <trans-unit id="filter.createdBy.showAll">
+        <source>Show All</source>
+      </trans-unit>
       <trans-unit id="filter.protected">
         <source>Protected</source>
       </trans-unit>

@@ -135,6 +135,9 @@
       <trans-unit id="sys_redirect.createdby">
         <source>Created by</source>
       </trans-unit>
+      <trans-unit id="sys_redirect.createdon">
+        <source>Created</source>
+      </trans-unit>
       <trans-unit id="sys_redirect.short_url">
         <source>Short URL</source>
       </trans-unit>

@@ -23,6 +23,11 @@ exists and who created it. Displaying the creator (backend user) and creation
 date directly in the backend module makes auditing and communication
 significantly easier.
 
+Both are shown in the redirect record itself and in a "Created" column of the
+redirects backend module listing, which can be sorted by creation date. The
+module's filter has been extended by a "Created by" select box, allowing to
+narrow the listing down to the redirects of a single backend user.
+
 Impact
 ======
 

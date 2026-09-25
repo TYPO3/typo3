@@ -76,6 +76,14 @@ final class DemandTest extends UnitTestCase
                 [12, '', '', Demand::DEFAULT_REDIRECT_TYPE, [], '', '', [], 0, null, null, null, 'self_reference'],
                 ['integrity_status' => RedirectConflict::SELF_REFERENCE],
             ],
+            [
+                [13, '', '', Demand::DEFAULT_REDIRECT_TYPE, [], '', '', [], 0, null, -1, -1, null, 2],
+                ['createdby' => 2],
+            ],
+            [
+                [14, '', '', Demand::DEFAULT_REDIRECT_TYPE, [], '', '', [], 0, null, -1, -1, null, 0],
+                ['createdby' => 0],
+            ],
         ];
     }
 
@@ -84,5 +92,21 @@ final class DemandTest extends UnitTestCase
     public function getParametersRespectsDemandState(array $input, array $expected): void
     {
         self::assertEquals($expected, array_filter(new Demand(...$input)->getParameters(), static fn(string $key): bool => $key !== 'redirect_type', ARRAY_FILTER_USE_KEY));
+    }
+
+    public static function hasConstraintsRespectsCreatedByDataProvider(): array
+    {
+        return [
+            'no creator' => [-1, false],
+            'untracked creator' => [0, true],
+            'backend user' => [2, true],
+        ];
+    }
+
+    #[DataProvider('hasConstraintsRespectsCreatedByDataProvider')]
+    #[Test]
+    public function hasConstraintsRespectsCreatedBy(int $createdBy, bool $expected): void
+    {
+        self::assertSame($expected, new Demand(createdBy: $createdBy)->hasConstraints());
     }
 }
