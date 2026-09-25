@@ -94,4 +94,6 @@ documentation rendering pre-merge:
           # Execute documentation rending in case any file in a documentation subfolder is changed.
           - typo3/sysext/*/Documentation/**/*
   script:
-    - Build/Scripts/runTests.sh -s checkRstRenderingAll
+    # Renders only the documentation of those system extensions changed in the last
+    # commit - or all of them, if runTests.sh itself changed.
+    - Build/Scripts/runTests.sh -s checkRstRenderingChanged HEAD~1
