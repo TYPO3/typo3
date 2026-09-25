@@ -203,4 +203,19 @@ EOT;
         self::assertTrue($result);
         self::assertEquals($expected, $body);
     }
+
+    #[Test]
+    public function splitHTMLContentFindsTitleAndMetaTagsWithoutBodyTag(): void
+    {
+        $subject = $this->getMockBuilder(Indexer::class)->disableOriginalConstructor()->onlyMethods([])->getMock();
+        $subject->conf = ['index_metatags' => true];
+        $result = $subject->splitHTMLContent(
+            '<html><head><title>My title</title>'
+            . '<meta name="keywords" content="alpha,beta">'
+            . '<meta name="description" content="My description"></head></html>'
+        );
+        self::assertSame('My title', $result->title);
+        self::assertStringContainsString('alpha', $result->keywords);
+        self::assertStringContainsString('My description', $result->description);
+    }
 }

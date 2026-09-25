@@ -250,7 +250,8 @@ class Indexer
     {
         $indexingDataDto = IndexingDataAsString::fromArray($this->defaultIndexingDataPayload);
         $indexingDataDto->body = stristr($content, '<body') ?: '';
-        $headPart = substr($content, 0, -strlen($indexingDataDto->body));
+        // Without a body tag the whole content is the head, as substr() with a length of "-0" would return an empty string
+        $headPart = $indexingDataDto->body === '' ? $content : substr($content, 0, -strlen($indexingDataDto->body));
         // get title
         $this->embracingTags($headPart, 'TITLE', $indexingDataDto->title, $dummy2, $dummy);
         $titleParts = explode(':', $indexingDataDto->title, 2);
