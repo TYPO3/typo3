@@ -213,10 +213,10 @@ class SearchController extends ActionController
                     $resultsets[$freeIndexUid]['categoryTitle'] = $categoryTitle;
                 }
             }
-            // Write search statistics
-            $pageId = $this->request->getAttribute('frontend.page.information')->getId();
-            $this->searchRepository->writeSearchStat($pageId, $this->searchWords ?: []);
         }
+        // Write search statistics
+        $pageId = $this->request->getAttribute('frontend.page.information')->getId();
+        $this->searchRepository->writeSearchStat($pageId, $this->searchWords ?: []);
         $this->view->assign('searchParams', $searchData);
         $this->view->assign('firstRow', $this->firstRow);
         $this->view->assign('searchWords', array_map($this->addOperatorLabel(...), $this->searchWords));
