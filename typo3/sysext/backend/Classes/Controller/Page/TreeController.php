@@ -350,7 +350,7 @@ class TreeController
         $suffix = '';
         $prefix = '';
         $nameSourceField = 'title';
-        $visibleText = $page['title'];
+        $visibleText = $page['title'] ?? '';
         $tooltip = BackendUtility::titleAttribForPages($page, '', false, $this->useNavTitle);
         if ($pageId !== 0) {
             $icon = $this->iconFactory->getIconForRecord('pages', $page, IconSize::SMALL);
@@ -596,7 +596,7 @@ class TreeController
         $path = [];
         foreach ($rootline as $rootlineElement) {
             $record = BackendUtility::getRecordWSOL('pages', $rootlineElement['uid'], 'title, nav_title', '', true, true);
-            $text = $record['title'];
+            $text = $record['title'] ?? '';
             if ($this->useNavTitle && trim($record['nav_title'] ?? '') !== '') {
                 $text = $record['nav_title'];
             }
