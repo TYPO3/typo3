@@ -228,4 +228,13 @@ EOT;
         self::assertSame([$word], array_keys($indexArray));
         self::assertSame(md5($word), $indexArray[$word]['hash']);
     }
+
+    #[Test]
+    public function wordcountOnlyCoversTheLastAnalyzedDocument(): void
+    {
+        $subject = $this->getMockBuilder(Indexer::class)->disableOriginalConstructor()->onlyMethods([])->getMock();
+        $subject->indexAnalyze(new IndexingDataAsArray(body: ['one', 'two', 'three', 'four']));
+        $subject->indexAnalyze(new IndexingDataAsArray(body: ['five', 'six']));
+        self::assertSame(2, $subject->wordcount);
+    }
 }

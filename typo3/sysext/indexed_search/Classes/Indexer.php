@@ -962,6 +962,8 @@ class Indexer
      */
     public function indexAnalyze(IndexingDataAsArray $indexingDataDto): array
     {
+        // The frequency of a word is relative to the words of the analyzed document only
+        $this->wordcount = 0;
         $indexArr = [];
         $this->analyzeHeaderinfo($indexArr, $indexingDataDto->title, 7);
         $this->analyzeHeaderinfo($indexArr, $indexingDataDto->keywords, 6);
