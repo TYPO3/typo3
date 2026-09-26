@@ -71,10 +71,11 @@ final class CronCommandTest extends UnitTestCase
     #[Test]
     public function constructorSetsTimestampToNowPlusOneMinuteRoundedDownToSixtySeconds(): void
     {
+        $before = time();
         $instance = new CronCommand('* * * * *');
-        $currentTime = time();
-        $expectedTime = $currentTime - ($currentTime % 60) + 60;
-        self::assertSame($expectedTime, $instance->getTimestamp());
+        $after = time();
+        self::assertGreaterThanOrEqual($before - ($before % 60) + 60, $instance->getTimestamp());
+        self::assertLessThanOrEqual($after - ($after % 60) + 60, $instance->getTimestamp());
     }
 
     #[Test]
