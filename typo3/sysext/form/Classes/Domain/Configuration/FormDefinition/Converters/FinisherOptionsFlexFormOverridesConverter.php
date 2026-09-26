@@ -52,7 +52,6 @@ class FinisherOptionsFlexFormOverridesConverter
     public function __invoke(string $_, $__, array $matches): void
     {
         [, $optionKey] = $matches;
-        $prototypeFinisherDefinition = $this->converterDto->getPrototypeFinisherDefinition();
         $finisherDefinition = $this->converterDto->getFinisherDefinition();
         $finisherIdentifier = $this->converterDto->getFinisherIdentifier();
         $flexFormSheetSettings = $this->converterDto->getFlexFormSheetSettings();
@@ -67,7 +66,7 @@ class FinisherOptionsFlexFormOverridesConverter
             return;
         }
 
-        $fieldConfiguration = $prototypeFinisherDefinition['FormEngine']['elements'][$optionKey] ?? [];
+        $fieldConfiguration = $this->converterDto->getFormEngineDefinition()?->elements[$optionKey] ?? [];
 
         if ($fieldConfiguration['section'] ?? false) {
             if (!is_array($value) || $value === []) {

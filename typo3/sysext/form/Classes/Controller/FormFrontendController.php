@@ -29,6 +29,7 @@ use TYPO3\CMS\Form\Domain\Configuration\ArrayProcessing\ArrayProcessor;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
 use TYPO3\CMS\Form\Domain\Configuration\FormDefinition\Converters\FinisherOptionsFlexFormOverridesConverter;
 use TYPO3\CMS\Form\Domain\Configuration\FormDefinition\Converters\FlexFormFinisherOverridesConverterDto;
+use TYPO3\CMS\Form\Domain\DTO\FormConfiguration\Prototype\PrototypeConfiguration;
 use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface;
 
 /**
@@ -95,22 +96,24 @@ class FormFrontendController extends ActionController
         }
         if (isset($formDefinition['finishers'])) {
             $prototypeName = $formDefinition['prototypeName'] ?? 'standard';
-            $prototypeConfiguration = $this->configurationService->getPrototypeConfiguration($prototypeName);
+            $prototypeConfiguration = PrototypeConfiguration::fromArray(
+                $this->configurationService->getPrototypeConfiguration($prototypeName)
+            );
             foreach ($formDefinition['finishers'] as $index => $formFinisherDefinition) {
                 $finisherIdentifier = $formFinisherDefinition['identifier'];
                 $sheetIdentifier = $this->getFlexformSheetIdentifier($formDefinition, $prototypeName, $finisherIdentifier);
                 $flexFormSheetSettings = $this->getFlexFormSettingsFromSheet($flexFormData, $sheetIdentifier);
                 if (($this->settings['overrideFinishers'] ?? false) && isset($flexFormSheetSettings['finishers'][$finisherIdentifier])) {
-                    $prototypeFinisherDefinition = $prototypeConfiguration['finishersDefinition'][$finisherIdentifier] ?? [];
+                    $finisherDefinition = $prototypeConfiguration->finishers->get($finisherIdentifier);
                     $converterDto = GeneralUtility::makeInstance(
                         FlexFormFinisherOverridesConverterDto::class,
-                        $prototypeFinisherDefinition,
+                        $finisherDefinition?->formEngine,
                         $formFinisherDefinition,
                         $finisherIdentifier,
                         $flexFormSheetSettings
                     );
                     // Iterate over all `prototypes.<prototypeName>.finishersDefinition.<finisherIdentifier>.FormEngine.elements` values
-                    GeneralUtility::makeInstance(ArrayProcessor::class, $prototypeFinisherDefinition['FormEngine']['elements'])->forEach(
+                    GeneralUtility::makeInstance(ArrayProcessor::class, $finisherDefinition?->formEngine->elements ?? [])->forEach(
                         GeneralUtility::makeInstance(
                             ArrayProcessing::class,
                             'modifyFinisherOptionsFromFlexFormOverrides',

@@ -17,15 +17,17 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Domain\Configuration\FormDefinition\Converters;
 
+use TYPO3\CMS\Form\Domain\DTO\FormConfiguration\Prototype\FormEngineDefinition;
+
 /**
  * @internal
  */
 class FlexFormFinisherOverridesConverterDto
 {
     /**
-     * @var array
+        * @var FormEngineDefinition|null
      */
-    protected $prototypeFinisherDefinition = [];
+    protected ?FormEngineDefinition $formEngineDefinition = null;
 
     /**
      * @var array
@@ -43,20 +45,20 @@ class FlexFormFinisherOverridesConverterDto
     protected $flexFormSheetSettings = [];
 
     public function __construct(
-        array $prototypeFinisherDefinition,
+        ?FormEngineDefinition $formEngineDefinition,
         array $finisherDefinition,
         string $finisherIdentifier,
         array $flexFormSheetSettings
     ) {
-        $this->prototypeFinisherDefinition = $prototypeFinisherDefinition;
+        $this->formEngineDefinition = $formEngineDefinition;
         $this->finisherDefinition = $finisherDefinition;
         $this->finisherIdentifier = $finisherIdentifier;
         $this->flexFormSheetSettings = $flexFormSheetSettings;
     }
 
-    public function getPrototypeFinisherDefinition(): array
+    public function getFormEngineDefinition(): ?FormEngineDefinition
     {
-        return $this->prototypeFinisherDefinition;
+        return $this->formEngineDefinition;
     }
 
     public function getFinisherDefinition(): array

@@ -38,12 +38,13 @@ class FinisherOptionGenerator extends AbstractProcessor
         [, $optionKey] = $matches;
 
         $finisherIdentifier = $this->converterDto->getFinisherIdentifier();
-        $finisherDefinitionFromSetup = $this->converterDto->getFinisherDefinitionFromSetup();
+        $formEngineElements = $this->converterDto->getFormEngineDefinition()->elements;
+        $finisherOptionsFromSetup = $this->converterDto->getFinisherOptionsFromSetup();
         $finisherDefinitionFromFormDefinition = $this->converterDto->getFinisherDefinitionFromFormDefinition();
 
         try {
             $elementConfiguration = ArrayUtility::getValueByPath(
-                $finisherDefinitionFromSetup['FormEngine']['elements'],
+                $formEngineElements,
                 $optionKey,
                 '.'
             );
@@ -54,8 +55,8 @@ class FinisherOptionGenerator extends AbstractProcessor
         // use the option value from the ext:form setup from the current finisher as default value
         try {
             $optionValue = ArrayUtility::getValueByPath(
-                $finisherDefinitionFromSetup,
-                sprintf('options.%s', $optionKey),
+                $finisherOptionsFromSetup,
+                $optionKey,
                 '.'
             );
         } catch (MissingArrayPathException $exception) {

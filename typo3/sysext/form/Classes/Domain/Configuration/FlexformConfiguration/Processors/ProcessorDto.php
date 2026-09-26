@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Domain\Configuration\FlexformConfiguration\Processors;
 
+use TYPO3\CMS\Form\Domain\DTO\FormConfiguration\Prototype\FormEngineDefinition;
+
 /**
  * Data container for finisher FlexForm processing
  *
@@ -30,9 +32,14 @@ class ProcessorDto
     protected $finisherIdentifier;
 
     /**
-     * @var array
+        * @var FormEngineDefinition
      */
-    protected $finisherDefinitionFromSetup;
+    protected $formEngineDefinition;
+
+    /**
+     * @var array<string, mixed>
+     */
+    protected $finisherOptionsFromSetup;
 
     /**
      * @var array
@@ -46,11 +53,13 @@ class ProcessorDto
 
     public function __construct(
         string $finisherIdentifier,
-        array $finisherDefinitionFromSetup,
+        FormEngineDefinition $formEngineDefinition,
+        array $finisherOptionsFromSetup,
         array $finisherDefinitionFromFormDefinition
     ) {
         $this->finisherIdentifier = $finisherIdentifier;
-        $this->finisherDefinitionFromSetup = $finisherDefinitionFromSetup;
+        $this->formEngineDefinition = $formEngineDefinition;
+        $this->finisherOptionsFromSetup = $finisherOptionsFromSetup;
         $this->finisherDefinitionFromFormDefinition = $finisherDefinitionFromFormDefinition;
     }
 
@@ -59,9 +68,17 @@ class ProcessorDto
         return $this->finisherIdentifier;
     }
 
-    public function getFinisherDefinitionFromSetup(): array
+    public function getFormEngineDefinition(): FormEngineDefinition
     {
-        return $this->finisherDefinitionFromSetup;
+        return $this->formEngineDefinition;
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function getFinisherOptionsFromSetup(): array
+    {
+        return $this->finisherOptionsFromSetup;
     }
 
     public function getFinisherDefinitionFromFormDefinition(): array

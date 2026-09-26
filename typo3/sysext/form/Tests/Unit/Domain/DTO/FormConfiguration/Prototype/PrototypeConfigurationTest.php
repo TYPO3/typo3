@@ -43,6 +43,34 @@ final class PrototypeConfigurationTest extends UnitTestCase
         $configuration = PrototypeConfiguration::fromArray([]);
 
         self::assertSame(0, $configuration->formEditor->maximumUndoSteps);
+        self::assertNull($configuration->formEngine);
+    }
+
+    #[Test]
+    public function fromArrayCreatesPrototypeFormEngineDtoAndPreservesTranslationFileKeys(): void
+    {
+        $configuration = PrototypeConfiguration::fromArray([
+            'formEngine' => [
+                'translationFiles' => [10 => 'EXT:site/locallang.xlf', 90 => 'EXT:site/extra.xlf'],
+            ],
+        ]);
+
+        self::assertSame([10 => 'EXT:site/locallang.xlf', 90 => 'EXT:site/extra.xlf'], $configuration->formEngine?->translationFiles);
+        self::assertSame(
+            [10 => 'EXT:site/locallang.xlf', 90 => 'EXT:site/extra.xlf'],
+            $configuration->formEngine->get('translationFiles'),
+        );
+    }
+
+    #[Test]
+    public function malformedPrototypeFormEngineTranslationFilesNormalizeToEmptyAndRemainRaw(): void
+    {
+        $configuration = PrototypeConfiguration::fromArray([
+            'formEngine' => ['translationFiles' => 'invalid'],
+        ]);
+
+        self::assertSame([], $configuration->formEngine?->translationFiles);
+        self::assertSame('invalid', $configuration->formEngine->get('translationFiles'));
     }
 
     #[Test]
@@ -62,6 +90,7 @@ final class PrototypeConfigurationTest extends UnitTestCase
             ['submitButtonLabel' => 'Submit'],
             $configuration->formElements->require('Form')->renderingOptions,
         );
+        self::assertNull($configuration->finishers->get('CustomFinisher'));
         self::assertTrue($configuration->has('formElementsDefinition.Form'));
         self::assertFalse($configuration->has('finishersDefinition'));
     }
@@ -100,6 +129,7 @@ final class PrototypeConfigurationTest extends UnitTestCase
                 'CustomValidator' => ['label' => 'Custom validator'],
             ],
         ], $configuration->getFormEditorDefinitions());
+        self::assertSame('Custom finisher', $configuration->finishers->require('CustomFinisher')->formEditor->label);
     }
 
     #[Test]

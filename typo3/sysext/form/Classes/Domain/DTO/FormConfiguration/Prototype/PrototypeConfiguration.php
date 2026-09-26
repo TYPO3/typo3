@@ -29,9 +29,6 @@ use TYPO3\CMS\Form\Domain\DTO\FormConfiguration\RawConfigurationTrait;
  * accessors; everything else stays reachable through
  * {@see RawConfigurationTrait::getRaw()} / ::get().
  *
- * Typed accessors for "finishersDefinition", "validatorsDefinition" and
- * "formEngine" are added in the respective work packages.
- *
  * @internal
  */
 final readonly class PrototypeConfiguration
@@ -42,11 +39,15 @@ final readonly class PrototypeConfiguration
      * @param array<string, mixed> $raw The complete, untouched prototype configuration array
      * @param FormEditorConfiguration $formEditor Typed "formEditor" sub configuration
      * @param FormElementDefinitionCollection $formElements Typed form element registry
+     * @param FinisherDefinitionCollection $finishers Typed finisher registry
+     * @param FormEngineDefinition|null $formEngine Typed prototype-level FormEngine configuration
      */
     public function __construct(
         public array $raw,
         public FormEditorConfiguration $formEditor,
         public FormElementDefinitionCollection $formElements,
+        public FinisherDefinitionCollection $finishers,
+        public ?FormEngineDefinition $formEngine,
     ) {}
 
     /**
@@ -64,6 +65,10 @@ final readonly class PrototypeConfiguration
             formElements: FormElementDefinitionCollection::fromArray(
                 is_array($configuration['formElementsDefinition'] ?? null) ? $configuration['formElementsDefinition'] : []
             ),
+            finishers: FinisherDefinitionCollection::fromArray(
+                is_array($configuration['finishersDefinition'] ?? null) ? $configuration['finishersDefinition'] : []
+            ),
+            formEngine: is_array($configuration['formEngine'] ?? null) ? FormEngineDefinition::fromArray($configuration['formEngine']) : null,
         );
     }
 
@@ -86,6 +91,14 @@ final readonly class PrototypeConfiguration
                         $formEditorDefinitions[$reducedKey][$formElementDefinition->identifier] = $formElementDefinition->has('formEditor')
                             ? $formElementDefinition->formEditor->getRaw()
                             : $formElementDefinition->getRaw();
+                    }
+                    continue;
+                }
+                if ($firstLevelItemKey === 'finishersDefinition') {
+                    foreach ($this->finishers as $finisherDefinition) {
+                        $formEditorDefinitions[$reducedKey][$finisherDefinition->identifier] = $finisherDefinition->has('formEditor')
+                            ? $finisherDefinition->formEditor->getRaw()
+                            : $finisherDefinition->getRaw();
                     }
                     continue;
                 }
