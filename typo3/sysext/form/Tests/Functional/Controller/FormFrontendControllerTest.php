@@ -25,6 +25,7 @@ use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Form\Controller\FormFrontendController;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
+use TYPO3\CMS\Form\Domain\DTO\FormConfiguration\Prototype\PrototypeConfiguration;
 use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -97,7 +98,7 @@ final class FormFrontendControllerTest extends FunctionalTestCase
                 ],
             ]),
         ];
-        $configurationServiceStub->method('getPrototypeConfiguration')->willReturn([
+        $configurationServiceStub->method('getPrototypeConfigurationDto')->willReturn(PrototypeConfiguration::fromArray([
             'finishersDefinition' => [
                 'EmailToReceiver' => [
                     'FormEngine' => [
@@ -109,7 +110,7 @@ final class FormFrontendControllerTest extends FunctionalTestCase
                     ],
                 ],
             ],
-        ]);
+        ]));
         $subjectMock->_set('settings', [
             'overrideFinishers' => 0,
             'finishers' => [
@@ -218,7 +219,7 @@ final class FormFrontendControllerTest extends FunctionalTestCase
                 ],
             ]),
         ];
-        $configurationServiceStub->method('getPrototypeConfiguration')->willReturn([
+        $configurationServiceStub->method('getPrototypeConfigurationDto')->willReturn(PrototypeConfiguration::fromArray([
             'finishersDefinition' => [
                 'EmailToReceiver' => [
                     'FormEngine' => [
@@ -243,7 +244,7 @@ final class FormFrontendControllerTest extends FunctionalTestCase
                     ],
                 ],
             ],
-        ]);
+        ]));
         $subjectMock->_set('settings', [
             'overrideFinishers' => 1,
             'finishers' => [
@@ -363,7 +364,7 @@ final class FormFrontendControllerTest extends FunctionalTestCase
                 ],
             ]),
         ];
-        $configurationServiceStub->method('getPrototypeConfiguration')->willReturn([
+        $configurationServiceStub->method('getPrototypeConfigurationDto')->willReturn(PrototypeConfiguration::fromArray([
             'finishersDefinition' => [
                 'EmailToReceiver' => [
                     'FormEngine' => [
@@ -383,7 +384,7 @@ final class FormFrontendControllerTest extends FunctionalTestCase
                     ],
                 ],
             ],
-        ]);
+        ]));
         $mockController->_set('settings', [
             'overrideFinishers' => 1,
             'finishers' => [

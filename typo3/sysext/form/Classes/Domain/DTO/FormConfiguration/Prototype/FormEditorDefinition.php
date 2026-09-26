@@ -29,8 +29,8 @@ final readonly class FormEditorDefinition
     use RawConfigurationTrait;
 
     /**
-    * @param array<string, mixed> $raw
-    * @param array<string, mixed> $predefinedDefaults
+     * @param array<string, mixed> $raw
+     * @param array<string, mixed> $predefinedDefaults
      */
     public function __construct(
         public array $raw,
@@ -40,7 +40,7 @@ final readonly class FormEditorDefinition
         public ?int $groupSorting,
         public array $predefinedDefaults,
         public EditorDefinitionCollection $editors,
-        public PropertyCollectionDefinitionCollection $propertyCollections,
+        public PropertyCollectionsDefinition $propertyCollections,
     ) {}
 
     /**
@@ -58,7 +58,7 @@ final readonly class FormEditorDefinition
             editors: EditorDefinitionCollection::fromArray(
                 is_array($configuration['editors'] ?? null) ? $configuration['editors'] : []
             ),
-            propertyCollections: PropertyCollectionDefinitionCollection::fromArray(
+            propertyCollections: PropertyCollectionsDefinition::fromArray(
                 is_array($configuration['propertyCollections'] ?? null) ? $configuration['propertyCollections'] : []
             ),
         );
@@ -70,13 +70,5 @@ final readonly class FormEditorDefinition
     public function getPropertyGridPropertyPaths(): array
     {
         return $this->editors->getPropertyPathsForTemplate('Inspector-PropertyGridEditor');
-    }
-
-    /**
-     * @return list<string>
-     */
-    public function getPropertyGridPropertyPathsForCollection(string $identifier): array
-    {
-        return $this->propertyCollections->getPropertyPathsForIdentifierAndTemplate($identifier, 'Inspector-PropertyGridEditor');
     }
 }

@@ -25,6 +25,10 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+use TYPO3\CMS\Form\Domain\DTO\FormConfiguration\Prototype\FinisherDefinitionCollection;
+use TYPO3\CMS\Form\Domain\DTO\FormConfiguration\Prototype\FormElementDefinitionCollection;
+use TYPO3\CMS\Form\Domain\DTO\FormConfiguration\Prototype\PrototypeConfiguration;
+use TYPO3\CMS\Form\Domain\DTO\FormConfiguration\Prototype\ValidatorDefinitionCollection;
 use TYPO3\CMS\Form\Domain\Exception\IdentifierNotValidException;
 use TYPO3\CMS\Form\Domain\Exception\TypeDefinitionNotFoundException;
 use TYPO3\CMS\Form\Domain\Finishers\FinisherInterface;
@@ -263,20 +267,11 @@ final class FormDefinition extends AbstractCompositeRenderable implements Variab
      */
     protected string $rendererClassName = '';
 
-    /**
-     * @var array<string, array<string, mixed>>
-     */
-    protected array $typeDefinitions = [];
+    protected FormElementDefinitionCollection $typeDefinitions;
 
-    /**
-     * @var array<string, array<string, mixed>>
-     */
-    protected array $validatorsDefinition = [];
+    protected ValidatorDefinitionCollection $validatorsDefinition;
 
-    /**
-     * @var array<string, array<string, mixed>>
-     */
-    protected array $finishersDefinition = [];
+    protected FinisherDefinitionCollection $finishersDefinition;
 
     /**
      * The persistence identifier of the form
@@ -287,20 +282,23 @@ final class FormDefinition extends AbstractCompositeRenderable implements Variab
      * Constructor. Creates a new FormDefinition with the given identifier.
      *
      * @param string $identifier The Form Definition's identifier, must be a non-empty string.
-     * @param array $prototypeConfiguration overrides form defaults of this definition
+     * @param array|PrototypeConfiguration $prototypeConfiguration overrides form defaults of this definition
      * @param string $type element type of this form
      * @param string|null $persistenceIdentifier the persistence identifier of the form
      * @throws IdentifierNotValidException if the identifier was not valid
      */
     public function __construct(
         string $identifier,
-        array $prototypeConfiguration = [],
+        array|PrototypeConfiguration $prototypeConfiguration = [],
         string $type = 'Form',
         ?string $persistenceIdentifier = null
     ) {
-        $this->typeDefinitions = $prototypeConfiguration['formElementsDefinition'] ?? [];
-        $this->validatorsDefinition = $prototypeConfiguration['validatorsDefinition'] ?? [];
-        $this->finishersDefinition = $prototypeConfiguration['finishersDefinition'] ?? [];
+        $prototypeConfiguration = is_array($prototypeConfiguration)
+            ? PrototypeConfiguration::fromArray($prototypeConfiguration)
+            : $prototypeConfiguration;
+        $this->typeDefinitions = $prototypeConfiguration->formElements;
+        $this->validatorsDefinition = $prototypeConfiguration->validators;
+        $this->finishersDefinition = $prototypeConfiguration->finishers;
 
         if ($identifier === '') {
             throw new IdentifierNotValidException('The given identifier was empty.', 1477082503);
@@ -310,7 +308,7 @@ final class FormDefinition extends AbstractCompositeRenderable implements Variab
         $this->type = $type;
         $this->persistenceIdentifier = (string)$persistenceIdentifier;
 
-        if ($prototypeConfiguration !== []) {
+        if ($prototypeConfiguration->getRaw() !== []) {
             $this->initializeFromFormDefaults();
         }
     }
@@ -323,11 +321,11 @@ final class FormDefinition extends AbstractCompositeRenderable implements Variab
      */
     protected function initializeFromFormDefaults()
     {
-        if (!isset($this->typeDefinitions[$this->type])) {
+        $typeDefinition = $this->typeDefinitions->get($this->type);
+        if ($typeDefinition === null) {
             throw new TypeDefinitionNotFoundException(sprintf('Type "%s" not found. Probably some configuration is missing.', $this->type), 1474905835);
         }
-        $typeDefinition = $this->typeDefinitions[$this->type];
-        $this->setOptions($typeDefinition);
+        $this->setOptions($typeDefinition->getRaw());
     }
 
     /**
@@ -386,38 +384,38 @@ final class FormDefinition extends AbstractCompositeRenderable implements Variab
      */
     public function createPage(string $identifier, string $typeName = 'Page'): Page
     {
-        if (!isset($this->typeDefinitions[$typeName])) {
+        $typeDefinition = $this->typeDefinitions->get($typeName);
+        if ($typeDefinition === null) {
             throw new TypeDefinitionNotFoundException(sprintf('Type "%s" not found. Probably some configuration is missing.', $typeName), 1474905953);
         }
 
-        $typeDefinition = $this->typeDefinitions[$typeName];
-
-        if (!isset($typeDefinition['implementationClassName'])) {
+        if ($typeDefinition->implementationClassName === null) {
             throw new TypeDefinitionNotFoundException(sprintf('The "implementationClassName" was not set in type definition "%s".', $typeName), 1477083126);
         }
-        $implementationClassName = $typeDefinition['implementationClassName'];
+        $implementationClassName = $typeDefinition->implementationClassName;
+        $typeDefinitionConfiguration = $typeDefinition->getRaw();
 
         /** @var Page $page */
         $page = GeneralUtility::makeInstance($implementationClassName, $identifier, $typeName);
 
-        if (isset($typeDefinition['label'])) {
-            $page->setLabel($typeDefinition['label']);
+        if (isset($typeDefinitionConfiguration['label'])) {
+            $page->setLabel($typeDefinitionConfiguration['label']);
         }
 
-        if (isset($typeDefinition['renderingOptions'])) {
-            foreach ($typeDefinition['renderingOptions'] as $key => $value) {
+        if (isset($typeDefinitionConfiguration['renderingOptions'])) {
+            foreach ($typeDefinitionConfiguration['renderingOptions'] as $key => $value) {
                 $page->setRenderingOption($key, $value);
             }
         }
 
-        if (isset($typeDefinition['variants'])) {
-            foreach ($typeDefinition['variants'] as $variantConfiguration) {
+        if (isset($typeDefinitionConfiguration['variants'])) {
+            foreach ($typeDefinitionConfiguration['variants'] as $variantConfiguration) {
                 $page->createVariant($variantConfiguration);
             }
         }
 
         ArrayUtility::assertAllArrayKeysAreValid(
-            $typeDefinition,
+            $typeDefinitionConfiguration,
             ['implementationClassName', 'label', 'renderingOptions', 'formEditor', 'variants']
         );
 
@@ -491,9 +489,10 @@ final class FormDefinition extends AbstractCompositeRenderable implements Variab
      */
     public function createFinisher(string $finisherIdentifier, array $options = []): FinisherInterface
     {
-        if (isset($this->finishersDefinition[$finisherIdentifier]['implementationClassName'])) {
-            $implementationClassName = $this->finishersDefinition[$finisherIdentifier]['implementationClassName'];
-            $defaultOptions = $this->finishersDefinition[$finisherIdentifier]['options'] ?? [];
+        $finisherDefinition = $this->finishersDefinition->get($finisherIdentifier);
+        if ($finisherDefinition?->implementationClassName !== null) {
+            $implementationClassName = $finisherDefinition->implementationClassName;
+            $defaultOptions = $finisherDefinition->options;
             ArrayUtility::mergeRecursiveWithOverrule($defaultOptions, $options);
             /** @var FinisherInterface $finisher */
             $finisher = GeneralUtility::makeInstance($implementationClassName);
@@ -653,19 +652,17 @@ final class FormDefinition extends AbstractCompositeRenderable implements Variab
     }
 
     /**
-     * @return array<string, array<string, mixed>>
      * @internal
      */
-    public function getTypeDefinitions(): array
+    public function getTypeDefinitions(): FormElementDefinitionCollection
     {
         return $this->typeDefinitions;
     }
 
     /**
-     * @return array<string, array<string, mixed>>
      * @internal
      */
-    public function getValidatorsDefinition(): array
+    public function getValidatorsDefinition(): ValidatorDefinitionCollection
     {
         return $this->validatorsDefinition;
     }

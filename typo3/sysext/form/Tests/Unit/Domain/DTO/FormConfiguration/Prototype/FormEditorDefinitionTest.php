@@ -45,12 +45,28 @@ final class FormEditorDefinitionTest extends UnitTestCase
                 90 => ['templateName' => 'Inspector-PropertyGridEditor', 'propertyPath' => 'properties.options'],
             ],
             'propertyCollections' => [
-                10 => [
-                    'identifier' => 'CustomFinisher',
-                    'editors' => [
-                        50 => ['templateName' => 'Inspector-PropertyGridEditor', 'propertyPath' => 'options.recipients'],
+                'validators' => [
+                    10 => [
+                        'identifier' => 'CustomValidator',
+                        'editors' => [
+                            200 => ['templateName' => 'Inspector-TextEditor', 'propertyPath' => 'options.minimum'],
+                        ],
                     ],
-                    'thirdPartyOption' => ['preserve' => true],
+                ],
+                'finishers' => [
+                    30 => [
+                        'identifier' => 'CustomFinisher',
+                        'editors' => [
+                            50 => ['templateName' => 'Inspector-PropertyGridEditor', 'propertyPath' => 'options.recipients'],
+                        ],
+                        'thirdPartyOption' => ['preserve' => true],
+                    ],
+                    20 => [
+                        'identifier' => 'CustomFinisher',
+                        'editors' => [
+                            60 => ['templateName' => 'Inspector-PropertyGridEditor', 'propertyPath' => 'options.carbonCopy'],
+                        ],
+                    ],
                 ],
             ],
             'customEditorOption' => ['template' => 'Vendor/Inspector'],
@@ -68,12 +84,42 @@ final class FormEditorDefinitionTest extends UnitTestCase
         self::assertSame('LLL:EXT:site/editor.label', $editor->label);
         self::assertSame('LLL:EXT:site/editor.description', $editor->description);
         self::assertSame(['properties.options'], $definition->getPropertyGridPropertyPaths());
-        self::assertSame(['options.recipients'], $definition->getPropertyGridPropertyPathsForCollection('CustomFinisher'));
+        self::assertSame(
+            ['CustomFinisher' => ['options.recipients', 'options.carbonCopy']],
+            $definition->propertyCollections->get('finishers')->getPropertyPathsForTemplateByIdentifier('Inspector-PropertyGridEditor'),
+        );
         self::assertSame(['template' => 'Vendor/Inspector'], $definition->get('customEditorOption'));
         self::assertSame([20, 90], array_keys(iterator_to_array($definition->editors)));
-        self::assertSame([10], array_keys(iterator_to_array($definition->propertyCollections)));
+        self::assertSame(['validators', 'finishers'], array_keys(iterator_to_array($definition->propertyCollections)));
+        self::assertSame([30, 20], array_keys(iterator_to_array($definition->propertyCollections->get('finishers'))));
+        $validatorCollection = iterator_to_array($definition->propertyCollections->get('validators'))[10];
+        self::assertSame('CustomValidator', $validatorCollection->identifier);
+        self::assertSame(['options.minimum'], $validatorCollection->editors->getPropertyPathsForTemplate('Inspector-TextEditor'));
+        self::assertSame(['preserve' => true], iterator_to_array($definition->propertyCollections->get('finishers'))[30]->get('thirdPartyOption'));
+        self::assertSame([], iterator_to_array($definition->propertyCollections->get('unknown')));
         self::assertSame($configuration['editors'], $definition->editors->getRaw());
         self::assertSame($configuration['propertyCollections'], $definition->propertyCollections->getRaw());
+    }
+
+    #[Test]
+    public function treatsEmptyPropertyCollectionIdentifierAsMissing(): void
+    {
+        $definition = FormEditorDefinition::fromArray([
+            'propertyCollections' => [
+                'finishers' => [
+                    10 => [
+                        'identifier' => '',
+                        'editors' => [
+                            50 => ['templateName' => 'Inspector-PropertyGridEditor', 'propertyPath' => 'options.recipients'],
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+
+        $finisherCollections = $definition->propertyCollections->get('finishers');
+        self::assertNull(iterator_to_array($finisherCollections)[10]->identifier);
+        self::assertSame([], $finisherCollections->getPropertyPathsForTemplateByIdentifier('Inspector-PropertyGridEditor'));
     }
 
     #[Test]

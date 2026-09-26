@@ -28,6 +28,7 @@ use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
 use TYPO3\CMS\Form\Domain\Configuration\Exception\PropertyException;
 use TYPO3\CMS\Form\Domain\Configuration\Exception\PrototypeNotFoundException;
 use TYPO3\CMS\Form\Domain\Configuration\FormDefinition\Validators\ValidationDto;
+use TYPO3\CMS\Form\Domain\DTO\FormConfiguration\Prototype\PrototypeConfiguration;
 use TYPO3\CMS\Form\Event\AfterFormDefinitionValidationConfigurationIsBuiltEvent;
 use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface as ExtFormConfigurationManagerInterface;
 use TYPO3\CMS\Form\Service\TranslationService;
@@ -597,17 +598,17 @@ final class ConfigurationServiceTest extends FunctionalTestCase
     {
         $subjectMock = $this->getAccessibleMock(
             ConfigurationService::class,
-            ['getPrototypeConfiguration'],
+            ['getPrototypeConfigurationDto'],
             [],
             '',
             false
         );
-        $configuration = [
+        $configuration = PrototypeConfiguration::fromArray([
             'formElementsDefinition' => [
                 'Text' => [],
             ],
-        ];
-        $subjectMock->method('getPrototypeConfiguration')->willReturn($configuration);
+        ]);
+        $subjectMock->method('getPrototypeConfigurationDto')->willReturn($configuration);
         $validationDto = new ValidationDto('standard', 'Text');
         self::assertTrue($subjectMock->isFormElementTypeDefinedInFormSetup($validationDto));
         $validationDto = new ValidationDto('standard', 'Foo');

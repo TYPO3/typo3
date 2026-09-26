@@ -27,7 +27,6 @@ use TYPO3\CMS\Form\Domain\Exception\TypeDefinitionNotFoundException;
 use TYPO3\CMS\Form\Domain\Exception\TypeDefinitionNotValidException;
 use TYPO3\CMS\Form\Domain\Model\Exception\FormDefinitionConsistencyException;
 use TYPO3\CMS\Form\Domain\Model\Renderable\AbstractCompositeRenderable;
-use TYPO3\CMS\Form\Domain\Model\Renderable\VariableRenderableInterface;
 
 /**
  * A base class for "section-like" form parts like "Page" or "Section" (which
@@ -116,10 +115,8 @@ abstract class AbstractSection extends AbstractCompositeRenderable
     {
         $formDefinition = $this->getRootForm();
 
-        $typeDefinitions = $formDefinition->getTypeDefinitions();
-        if (isset($typeDefinitions[$typeName])) {
-            $typeDefinition = $typeDefinitions[$typeName];
-        } else {
+        $typeDefinition = $formDefinition->getTypeDefinitions()->get($typeName);
+        if ($typeDefinition === null) {
             $renderingOptions = $formDefinition->getRenderingOptions();
             $skipUnknownElements = isset($renderingOptions['skipUnknownElements']) && $renderingOptions['skipUnknownElements'] === true;
             if (!$skipUnknownElements) {
@@ -131,20 +128,20 @@ abstract class AbstractSection extends AbstractCompositeRenderable
             return $element;
         }
 
-        if (!isset($typeDefinition['implementationClassName'])) {
+        if ($typeDefinition->implementationClassName === null) {
             throw new TypeDefinitionNotFoundException(sprintf('The "implementationClassName" was not set in type definition "%s".', $typeName), 1325689855);
         }
 
-        /** @var class-string<FormElementInterface&VariableRenderableInterface> $implementationClassName */
-        $implementationClassName = $typeDefinition['implementationClassName'];
+        $implementationClassName = $typeDefinition->implementationClassName;
+        $typeDefinitionConfiguration = $typeDefinition->getRaw();
         $element = GeneralUtility::makeInstance($implementationClassName, $identifier, $typeName);
         if (!$element instanceof FormElementInterface) {
             throw new TypeDefinitionNotValidException(sprintf('The "implementationClassName" for element "%s" ("%s") does not implement the FormElementInterface.', $identifier, $implementationClassName), 1327318156);
         }
-        unset($typeDefinition['implementationClassName']);
+        unset($typeDefinitionConfiguration['implementationClassName']);
 
         $this->addElement($element);
-        $element->setOptions($typeDefinition);
+        $element->setOptions($typeDefinitionConfiguration);
 
         $element->initializeFormElement();
         return $element;

@@ -23,7 +23,6 @@ use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Http\ApplicationType;
-use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface as ExtbaseConfigurationManagerInterface;
 use TYPO3\CMS\Form\Domain\Configuration\ArrayProcessing\ArrayProcessing;
@@ -44,6 +43,7 @@ use TYPO3\CMS\Form\Domain\Configuration\FrameworkConfiguration\Extractors\Proper
 use TYPO3\CMS\Form\Domain\Configuration\FrameworkConfiguration\Extractors\PropertyCollectionElement\PropertyPathsExtractor as CollectionPropertyPathsExtractor;
 use TYPO3\CMS\Form\Domain\Configuration\FrameworkConfiguration\Extractors\PropertyCollectionElement\SelectOptionsExtractor as CollectionSelectOptionsExtractor;
 use TYPO3\CMS\Form\Domain\DTO\FormConfiguration\FormConfiguration;
+use TYPO3\CMS\Form\Domain\DTO\FormConfiguration\Prototype\PrototypeConfiguration;
 use TYPO3\CMS\Form\Event\AfterFormDefinitionValidationConfigurationIsBuiltEvent;
 use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface as ExtFormConfigurationManagerInterface;
 use TYPO3\CMS\Form\Service\TranslationService;
@@ -80,7 +80,17 @@ class ConfigurationService
      */
     public function getPrototypeConfiguration(string $prototypeName): array
     {
-        return $this->getFormConfiguration()->prototypes->require($prototypeName)->getRaw();
+        return $this->getPrototypeConfigurationDto($prototypeName)->getRaw();
+    }
+
+    /**
+     * Get the typed prototype configuration.
+     *
+     * @internal
+     */
+    public function getPrototypeConfigurationDto(string $prototypeName): PrototypeConfiguration
+    {
+        return $this->getFormConfiguration()->prototypes->require($prototypeName);
     }
 
     /**
@@ -437,12 +447,9 @@ class ConfigurationService
      */
     public function isFormElementTypeDefinedInFormSetup(ValidationDto $dto): bool
     {
-        $prototypeConfiguration = $this->getPrototypeConfiguration($dto->getPrototypeName());
-        return ArrayUtility::isValidPath(
-            $prototypeConfiguration,
-            'formElementsDefinition.' . $dto->getFormElementType(),
-            '.'
-        );
+        return $this->getPrototypeConfigurationDto($dto->getPrototypeName())
+            ->formElements
+            ->get($dto->getFormElementType()) !== null;
     }
 
     /**
@@ -462,11 +469,10 @@ class ConfigurationService
 
     public function getAllBackendTranslationsForTranslationKey(string $key, string $prototypeName): array
     {
-        $prototypeConfiguration = $this->getPrototypeConfiguration($prototypeName);
         return $this->translationService->translateToAllBackendLanguages(
             $key,
             [],
-            $prototypeConfiguration['formEditor']['translationFiles'] ?? []
+            $this->getPrototypeConfigurationDto($prototypeName)->formEditor->translationFiles
         );
     }
 

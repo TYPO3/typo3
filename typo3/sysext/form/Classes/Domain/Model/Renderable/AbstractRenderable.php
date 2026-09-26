@@ -196,10 +196,10 @@ abstract class AbstractRenderable implements RenderableInterface, VariableRender
      */
     public function createValidator(string $validatorIdentifier, array $options = []): ?ValidatorInterface
     {
-        $validatorsDefinition = $this->getRootForm()->getValidatorsDefinition();
-        if (isset($validatorsDefinition[$validatorIdentifier]) && is_array($validatorsDefinition[$validatorIdentifier]) && isset($validatorsDefinition[$validatorIdentifier]['implementationClassName'])) {
-            $implementationClassName = $validatorsDefinition[$validatorIdentifier]['implementationClassName'];
-            $defaultOptions = $validatorsDefinition[$validatorIdentifier]['options'] ?? [];
+        $validatorDefinition = $this->getRootForm()->getValidatorsDefinition()->get($validatorIdentifier);
+        if ($validatorDefinition?->implementationClassName !== null) {
+            $implementationClassName = $validatorDefinition->implementationClassName;
+            $defaultOptions = $validatorDefinition->options;
             ArrayUtility::mergeRecursiveWithOverrule($defaultOptions, $options);
             // @todo: It would be great if Renderable's and FormElements could use DI, but especially
             //        FormElements which extend AbstractRenderable pollute __construct() with manual

@@ -124,8 +124,8 @@ class FormEditorController extends ActionController
             }
         }
         $formDefinition['prototypeName'] = $prototypeName;
-        $prototypeConfiguration = $this->configurationService->getPrototypeConfiguration($prototypeName);
-        $formEditorConfiguration = PrototypeConfiguration::fromArray($prototypeConfiguration)->formEditor;
+        $prototypeConfiguration = $this->configurationService->getPrototypeConfigurationDto($prototypeName);
+        $formEditorConfiguration = $prototypeConfiguration->formEditor;
         $formDefinition = $this->transformFormDefinitionForFormEditor($prototypeConfiguration, $formDefinition, $formPersistenceIdentifier);
         $formEditorDefinitions = $this->getFormEditorDefinitions($prototypeConfiguration);
         $additionalViewModelJavaScriptModules = array_map(
@@ -231,7 +231,7 @@ class FormEditorController extends ActionController
             }
             $this->formPersistenceManager->save($formPersistenceIdentifier, $formDefinition, []);
             $this->flushPageCache($formPersistenceIdentifier);
-            $prototypeConfiguration = $this->configurationService->getPrototypeConfiguration($formDefinition['prototypeName']);
+            $prototypeConfiguration = $this->configurationService->getPrototypeConfigurationDto($formDefinition['prototypeName']);
             $formDefinition = $this->transformFormDefinitionForFormEditor($prototypeConfiguration, $formDefinition, $formPersistenceIdentifier);
             $response['formDefinition'] = $formDefinition;
         } catch (PersistenceManagerException $e) {
@@ -313,11 +313,10 @@ class FormEditorController extends ActionController
      * Prepare the formElements.*.formEditor section from the YAML settings.
      * Sort all formElements into groups and add additional data.
      */
-    protected function getInsertRenderablesPanelConfiguration(array $prototypeConfiguration, array $formElementsDefinition, bool $isInsertPages = false): array
+    protected function getInsertRenderablesPanelConfiguration(PrototypeConfiguration $prototype, array $formElementsDefinition, bool $isInsertPages = false): array
     {
         /** @var array<string, list<array<string, array{key: string, cssKey: string, label: string, description: string, sorting: int, iconIdentifier: string}>>> $formElementsByGroup */
         $formElementsByGroup = [];
-        $prototype = PrototypeConfiguration::fromArray($prototypeConfiguration);
         $definitions = [];
         foreach ($formElementsDefinition as $identifier => $formElementConfiguration) {
             if (is_string($identifier) && is_array($formElementConfiguration)) {
@@ -371,9 +370,8 @@ class FormEditorController extends ActionController
     /**
      * Reduce the YAML settings by the 'formEditor' keyword.
      */
-    protected function getFormEditorDefinitions(array $prototypeConfiguration): array
+    protected function getFormEditorDefinitions(PrototypeConfiguration $prototype): array
     {
-        $prototype = PrototypeConfiguration::fromArray($prototypeConfiguration);
         $formEditorDefinitions = $prototype->getFormEditorDefinitions();
         $formEditorDefinitions = ArrayUtility::reIndexNumericArrayKeysRecursive($formEditorDefinitions);
         $formEditorDefinitions = $this->formEditorEnrichmentService->enrichFormEditorDefinitions($formEditorDefinitions);
@@ -428,10 +426,11 @@ class FormEditorController extends ActionController
     /**
      * Render the form editor templates.
      */
-    protected function renderFormEditorTemplates(array $prototypeConfiguration, array $formEditorDefinitions): string
+    protected function renderFormEditorTemplates(PrototypeConfiguration $prototype, array $formEditorDefinitions): string
     {
-        $fluidConfiguration = $prototypeConfiguration['formEditor']['formEditorFluidConfiguration'] ?? null;
-        $formEditorPartials = $prototypeConfiguration['formEditor']['formEditorPartials'] ?? null;
+        $formEditorConfiguration = $prototype->formEditor;
+        $fluidConfiguration = $formEditorConfiguration->formEditorFluidConfiguration;
+        $formEditorPartials = $formEditorConfiguration->formEditorPartials;
         if (!isset($fluidConfiguration['templatePathAndFilename'])) {
             throw new RenderingException('The option templatePathAndFilename must be set.', 1485636499);
         }
@@ -442,8 +441,8 @@ class FormEditorController extends ActionController
             throw new RenderingException('The option partialRootPaths must be set.', 1480294722);
         }
 
-        $elementsCategories = $this->getInsertRenderablesPanelConfiguration($prototypeConfiguration, $formEditorDefinitions['formElements']);
-        $pagesCategories = $this->getInsertRenderablesPanelConfiguration($prototypeConfiguration, $formEditorDefinitions['formElements'], true);
+        $elementsCategories = $this->getInsertRenderablesPanelConfiguration($prototype, $formEditorDefinitions['formElements']);
+        $pagesCategories = $this->getInsertRenderablesPanelConfiguration($prototype, $formEditorDefinitions['formElements'], true);
         $viewFactoryData = new ViewFactoryData(
             templatePathAndFilename: $fluidConfiguration['templatePathAndFilename'],
             partialRootPaths: $fluidConfiguration['partialRootPaths'],
@@ -462,31 +461,18 @@ class FormEditorController extends ActionController
     /**
      * @todo move this to FormDefinitionConversionService
      */
-    protected function transformFormDefinitionForFormEditor(array $prototypeConfiguration, array $formDefinition, string $formPersistenceIdentifier): array
+    protected function transformFormDefinitionForFormEditor(PrototypeConfiguration $prototype, array $formDefinition, string $formPersistenceIdentifier): array
     {
         /** @var array<string, list<string>> $multiValueFormElementProperties */
         $multiValueFormElementProperties = [];
-        /** @var array<string, list<string>> $multiValueFinisherProperties */
-        $multiValueFinisherProperties = [];
-        $prototype = PrototypeConfiguration::fromArray($prototypeConfiguration);
         foreach ($prototype->formElements as $formElementDefinition) {
             $propertyPaths = $formElementDefinition->formEditor->getPropertyGridPropertyPaths();
             if ($propertyPaths !== []) {
                 $multiValueFormElementProperties[$formElementDefinition->identifier] = $propertyPaths;
             }
         }
-        $formDefinitionConfiguration = $prototype->formElements->get('Form');
-        if ($formDefinitionConfiguration !== null) {
-            foreach ($formDefinitionConfiguration->formEditor->propertyCollections as $propertyCollectionDefinition) {
-                if ($propertyCollectionDefinition->identifier === null) {
-                    continue;
-                }
-                $propertyPaths = $propertyCollectionDefinition->editors->getPropertyPathsForTemplate('Inspector-PropertyGridEditor');
-                if ($propertyPaths !== []) {
-                    $multiValueFinisherProperties[$propertyCollectionDefinition->identifier] = $propertyPaths;
-                }
-            }
-        }
+        $multiValueFinisherProperties = $prototype->getFinisherPropertyCollections()
+            ->getPropertyPathsForTemplateByIdentifier('Inspector-PropertyGridEditor');
         $formDefinition = $this->filterEmptyArrays($formDefinition);
         $formDefinition = $this->migrateEmailFinisherRecipients($formDefinition);
 
@@ -501,7 +487,7 @@ class FormEditorController extends ActionController
             $multiValueFinisherProperties
         );
 
-        $rtePropertyPaths = $this->formDefinitionConversionService->extractRtePropertyPaths($prototypeConfiguration);
+        $rtePropertyPaths = $this->formDefinitionConversionService->extractRtePropertyPaths($prototype);
         if ($rtePropertyPaths !== []) {
             $formDefinition = $this->formDefinitionConversionService->transformRteContentForRichTextEditor(
                 $formDefinition,

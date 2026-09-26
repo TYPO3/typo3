@@ -40,6 +40,7 @@ final readonly class PrototypeConfiguration
      * @param FormEditorConfiguration $formEditor Typed "formEditor" sub configuration
      * @param FormElementDefinitionCollection $formElements Typed form element registry
      * @param FinisherDefinitionCollection $finishers Typed finisher registry
+     * @param ValidatorDefinitionCollection $validators Typed validator registry
      * @param FormEngineDefinition|null $formEngine Typed prototype-level FormEngine configuration
      */
     public function __construct(
@@ -47,6 +48,7 @@ final readonly class PrototypeConfiguration
         public FormEditorConfiguration $formEditor,
         public FormElementDefinitionCollection $formElements,
         public FinisherDefinitionCollection $finishers,
+        public ValidatorDefinitionCollection $validators,
         public ?FormEngineDefinition $formEngine,
     ) {}
 
@@ -68,48 +70,97 @@ final readonly class PrototypeConfiguration
             finishers: FinisherDefinitionCollection::fromArray(
                 is_array($configuration['finishersDefinition'] ?? null) ? $configuration['finishersDefinition'] : []
             ),
+            validators: ValidatorDefinitionCollection::fromArray(
+                is_array($configuration['validatorsDefinition'] ?? null) ? $configuration['validatorsDefinition'] : []
+            ),
             formEngine: is_array($configuration['formEngine'] ?? null) ? FormEngineDefinition::fromArray($configuration['formEngine']) : null,
         );
     }
 
     /**
+     * Finisher inspector editors, configured on the root "Form" element.
+     */
+    public function getFinisherPropertyCollections(): PropertyCollectionDefinitionCollection
+    {
+        return $this->formElements->get('Form')?->formEditor->propertyCollections->get('finishers')
+            ?? PropertyCollectionDefinitionCollection::fromArray([]);
+    }
+
+    /**
      * Reduce the definition registries to their form editor configuration.
      *
-     * @return array<string, array<string, mixed>>
+     * @return array<string, array<int|string, mixed>>
      */
     public function getFormEditorDefinitions(): array
     {
         $formEditorDefinitions = [];
-        foreach ([$this->raw, $this->formEditor->getRaw()] as $configuration) {
-            foreach ($configuration as $firstLevelItemKey => $firstLevelItemValue) {
-                if (!str_ends_with($firstLevelItemKey, 'Definition')) {
-                    continue;
-                }
-                $reducedKey = substr($firstLevelItemKey, 0, -10);
-                if ($firstLevelItemKey === 'formElementsDefinition') {
-                    foreach ($this->formElements as $formElementDefinition) {
-                        $formEditorDefinitions[$reducedKey][$formElementDefinition->identifier] = $formElementDefinition->has('formEditor')
-                            ? $formElementDefinition->formEditor->getRaw()
-                            : $formElementDefinition->getRaw();
-                    }
-                    continue;
-                }
-                if ($firstLevelItemKey === 'finishersDefinition') {
-                    foreach ($this->finishers as $finisherDefinition) {
-                        $formEditorDefinitions[$reducedKey][$finisherDefinition->identifier] = $finisherDefinition->has('formEditor')
-                            ? $finisherDefinition->formEditor->getRaw()
-                            : $finisherDefinition->getRaw();
-                    }
-                    continue;
-                }
-                foreach ($firstLevelItemValue as $formEditorDefinitionKey => $formEditorDefinitionValue) {
-                    if (isset($formEditorDefinitionValue['formEditor'])) {
-                        $formEditorDefinitions[$reducedKey][$formEditorDefinitionKey] = $formEditorDefinitionValue['formEditor'];
-                    } else {
-                        $formEditorDefinitions[$reducedKey][$formEditorDefinitionKey] = $formEditorDefinitionValue;
-                    }
-                }
+        foreach ($this->raw as $key => $configuration) {
+            if (self::isRegistryKey($key)) {
+                $formEditorDefinitions = self::mergeFormEditorDefinitions($formEditorDefinitions, $key, match ($key) {
+                    'formElementsDefinition' => self::reduceTypedDefinitions($this->formElements),
+                    'finishersDefinition' => self::reduceTypedDefinitions($this->finishers),
+                    'validatorsDefinition' => self::reduceTypedDefinitions($this->validators),
+                    default => self::reduceUntypedDefinitions($configuration),
+                });
             }
+        }
+        foreach ($this->formEditor->getRaw() as $key => $configuration) {
+            if (self::isRegistryKey($key)) {
+                $formEditorDefinitions = self::mergeFormEditorDefinitions($formEditorDefinitions, $key, self::reduceUntypedDefinitions($configuration));
+            }
+        }
+        return $formEditorDefinitions;
+    }
+
+    private static function isRegistryKey(int|string $key): bool
+    {
+        return is_string($key) && str_ends_with($key, 'Definition');
+    }
+
+    /**
+     * @param array<string, array<int|string, mixed>> $formEditorDefinitions
+     * @param array<int|string, mixed> $definitions
+     * @return array<string, array<int|string, mixed>>
+     */
+    private static function mergeFormEditorDefinitions(array $formEditorDefinitions, string $registryKey, array $definitions): array
+    {
+        if ($definitions !== []) {
+            $reducedKey = substr($registryKey, 0, -strlen('Definition'));
+            $formEditorDefinitions[$reducedKey] = array_replace($formEditorDefinitions[$reducedKey] ?? [], $definitions);
+        }
+        return $formEditorDefinitions;
+    }
+
+    /**
+     * @param iterable<FormElementDefinition|FinisherDefinition|ValidatorDefinition> $definitions
+     * @return array<string, array<string, mixed>>
+     */
+    private static function reduceTypedDefinitions(iterable $definitions): array
+    {
+        $formEditorDefinitions = [];
+        foreach ($definitions as $definition) {
+            $formEditorDefinitions[$definition->identifier] = $definition->has('formEditor')
+                ? $definition->formEditor->getRaw()
+                : $definition->getRaw();
+        }
+        return $formEditorDefinitions;
+    }
+
+    /**
+     * Fallback for definition registries without a DTO, e.g. extension-defined ones.
+     *
+     * @return array<int|string, mixed>
+     */
+    private static function reduceUntypedDefinitions(mixed $configuration): array
+    {
+        if (!is_array($configuration)) {
+            return [];
+        }
+        $formEditorDefinitions = [];
+        foreach ($configuration as $identifier => $definition) {
+            $formEditorDefinitions[$identifier] = is_array($definition) && isset($definition['formEditor'])
+                ? $definition['formEditor']
+                : $definition;
         }
         return $formEditorDefinitions;
     }

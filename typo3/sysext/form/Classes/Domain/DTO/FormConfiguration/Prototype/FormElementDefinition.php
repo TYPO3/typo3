@@ -18,6 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Domain\DTO\FormConfiguration\Prototype;
 
 use TYPO3\CMS\Form\Domain\DTO\FormConfiguration\RawConfigurationTrait;
+use TYPO3\CMS\Form\Domain\Model\FormElements\FormElementInterface;
+use TYPO3\CMS\Form\Domain\Model\Renderable\VariableRenderableInterface;
 
 /**
  * Identified, open form element definition from a prototype registry.
@@ -30,6 +32,7 @@ final readonly class FormElementDefinition
 
     /**
      * @param array<string, mixed> $raw
+     * @param class-string<FormElementInterface&VariableRenderableInterface> $implementationClassName
      * @param array<string, mixed> $properties
      * @param array<string, mixed> $renderingOptions
      * @param array<int|string, mixed> $validators

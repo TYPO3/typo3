@@ -28,6 +28,7 @@ use TYPO3\CMS\Form\Domain\Configuration\FormDefinition\Converters\AddHmacDataCon
 use TYPO3\CMS\Form\Domain\Configuration\FormDefinition\Converters\ConverterDto;
 use TYPO3\CMS\Form\Domain\Configuration\FormDefinition\Converters\FinisherTranslationLanguageConverter;
 use TYPO3\CMS\Form\Domain\Configuration\FormDefinition\Converters\RemoveHmacDataConverter;
+use TYPO3\CMS\Form\Domain\DTO\FormConfiguration\Prototype\PrototypeConfiguration;
 use TYPO3\CMS\Form\Service\RichTextConfigurationService;
 use TYPO3\HtmlSanitizer\Sanitizer;
 
@@ -278,7 +279,7 @@ readonly class FormDefinitionConversionService
      * to find editors with enableRichtext=true and returns their property paths
      * along with the RTE preset name, organized by element type.
      *
-     * @param array $prototypeConfiguration The prototype configuration array
+     * @param array|PrototypeConfiguration $prototypeConfiguration The prototype configuration
      * @return array Map of element types to their RTE property paths
      *               Format: [
      *                   'Checkbox' => ['label' => 'form-label'],
@@ -286,18 +287,21 @@ readonly class FormDefinitionConversionService
      *                   '_finishers' => ['Confirmation' => ['options.message' => 'form-label']]
      *               ]
      */
-    public function extractRtePropertyPaths(array $prototypeConfiguration): array
+    public function extractRtePropertyPaths(array|PrototypeConfiguration $prototypeConfiguration): array
     {
+        $prototypeConfiguration = is_array($prototypeConfiguration)
+            ? PrototypeConfiguration::fromArray($prototypeConfiguration)
+            : $prototypeConfiguration;
         $rtePropertyPaths = [];
 
         // Extract from form elements definition
-        $formElementsDefinition = $prototypeConfiguration['formElementsDefinition'] ?? [];
-        foreach ($formElementsDefinition as $formElementType => $elementConfig) {
-            $editors = $elementConfig['formEditor']['editors'] ?? [];
+        foreach ($prototypeConfiguration->formElements as $formElementDefinition) {
+            $formElementType = $formElementDefinition->identifier;
+            $editors = $formElementDefinition->formEditor->editors;
             foreach ($editors as $editor) {
-                if ($this->isRteEditor($editor)) {
-                    $propertyPath = $editor['propertyPath'] ?? '';
-                    $presetName = $editor['richtextConfiguration'] ?? 'form-label';
+                if ($this->isRteEditor($editor->getRaw())) {
+                    $propertyPath = $editor->propertyPath ?? '';
+                    $presetName = $editor->get('richtextConfiguration') ?? 'form-label';
                     if ($propertyPath !== '') {
                         $rtePropertyPaths[$formElementType][$propertyPath] = $presetName;
                     }
@@ -305,20 +309,16 @@ readonly class FormDefinitionConversionService
             }
         }
 
-        // Extract from finisher property collections on the Form element
-        // Finisher editors are defined in:
-        // formElementsDefinition.Form.formEditor.propertyCollections.finishers.<index>.editors
-        $finisherCollections = $formElementsDefinition['Form']['formEditor']['propertyCollections']['finishers'] ?? [];
-        foreach ($finisherCollections as $finisherCollection) {
-            $finisherIdentifier = $finisherCollection['identifier'] ?? '';
-            if ($finisherIdentifier === '') {
+        foreach ($prototypeConfiguration->getFinisherPropertyCollections() as $finisherCollection) {
+            $finisherIdentifier = $finisherCollection->identifier;
+            if ($finisherIdentifier === null) {
                 continue;
             }
-            $editors = $finisherCollection['editors'] ?? [];
+            $editors = $finisherCollection->editors;
             foreach ($editors as $editor) {
-                if ($this->isRteEditor($editor)) {
-                    $propertyPath = $editor['propertyPath'] ?? '';
-                    $presetName = $editor['richtextConfiguration'] ?? 'form-label';
+                if ($this->isRteEditor($editor->getRaw())) {
+                    $propertyPath = $editor->propertyPath ?? '';
+                    $presetName = $editor->get('richtextConfiguration') ?? 'form-label';
                     if ($propertyPath !== '') {
                         $rtePropertyPaths['_finishers'][$finisherIdentifier][$propertyPath] = $presetName;
                     }

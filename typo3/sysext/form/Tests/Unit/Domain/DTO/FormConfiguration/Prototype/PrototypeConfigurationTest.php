@@ -102,14 +102,24 @@ final class PrototypeConfigurationTest extends UnitTestCase
             'formElementsDefinition' => [
                 'FancyCaptcha' => [
                     'formEditor' => ['label' => 'Fancy captcha'],
-                    'customOption' => ['kept' => true],
                 ],
             ],
             'finishersDefinition' => [
                 'CustomFinisher' => [
                     'formEditor' => ['label' => 'Custom finisher'],
-                    'customOption' => ['kept' => true],
                 ],
+            ],
+            'validatorsDefinition' => [
+                'FancyCaptcha' => [
+                    'implementationClassName' => 'Vendor\\Extension\\Validation\\FancyCaptchaValidator',
+                    'formEditor' => ['label' => 'Fancy captcha validation'],
+                ],
+                'WithoutEditor' => [
+                    'implementationClassName' => 'Vendor\\Extension\\Validation\\WithoutEditorValidator',
+                ],
+            ],
+            'customRegistryDefinition' => [
+                'Custom' => ['formEditor' => ['label' => 'Custom registry entry']],
             ],
             'formEditor' => [
                 'formElementPropertyValidatorsDefinition' => [
@@ -125,11 +135,73 @@ final class PrototypeConfigurationTest extends UnitTestCase
             'finishers' => [
                 'CustomFinisher' => ['label' => 'Custom finisher'],
             ],
+            'validators' => [
+                'FancyCaptcha' => ['label' => 'Fancy captcha validation'],
+                'WithoutEditor' => ['implementationClassName' => 'Vendor\\Extension\\Validation\\WithoutEditorValidator'],
+            ],
+            'customRegistry' => [
+                'Custom' => ['label' => 'Custom registry entry'],
+            ],
             'formElementPropertyValidators' => [
                 'CustomValidator' => ['label' => 'Custom validator'],
             ],
         ], $configuration->getFormEditorDefinitions());
         self::assertSame('Custom finisher', $configuration->finishers->require('CustomFinisher')->formEditor->label);
+    }
+
+    #[Test]
+    public function getFinisherPropertyCollectionsReadsFinisherEditorsOfFormElement(): void
+    {
+        $configuration = PrototypeConfiguration::fromArray([
+            'formElementsDefinition' => [
+                'Form' => [
+                    'formEditor' => [
+                        'propertyCollections' => [
+                            'finishers' => [
+                                10 => ['identifier' => 'CustomFinisher', 'editors' => []],
+                            ],
+                        ],
+                    ],
+                ],
+                'Text' => [
+                    'formEditor' => [
+                        'propertyCollections' => [
+                            'validators' => [
+                                10 => ['identifier' => 'StringLength', 'editors' => []],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+
+        $finisherCollections = iterator_to_array($configuration->getFinisherPropertyCollections());
+
+        self::assertSame([10], array_keys($finisherCollections));
+        self::assertSame('CustomFinisher', $finisherCollections[10]->identifier);
+        self::assertSame([], iterator_to_array(PrototypeConfiguration::fromArray([])->getFinisherPropertyCollections()));
+    }
+
+    #[Test]
+    public function retainsCustomValidatorDefinitionAndEditorMetadata(): void
+    {
+        $configuration = PrototypeConfiguration::fromArray([
+            'validatorsDefinition' => [
+                'FancyCaptcha' => [
+                    'implementationClassName' => 'Vendor\\Extension\\Validation\\FancyCaptchaValidator',
+                    'options' => ['customOption' => ['enabled' => true]],
+                    'formEditor' => ['label' => 'Fancy captcha validation'],
+                ],
+            ],
+        ]);
+
+        $validator = $configuration->validators->get('FancyCaptcha');
+
+        self::assertNotNull($validator);
+        self::assertSame('Vendor\\Extension\\Validation\\FancyCaptchaValidator', $validator->implementationClassName);
+        self::assertSame(['customOption' => ['enabled' => true]], $validator->options);
+        self::assertSame('Fancy captcha validation', $validator->formEditor->label);
+        self::assertSame(['enabled' => true], $validator->get('options.customOption'));
     }
 
     #[Test]

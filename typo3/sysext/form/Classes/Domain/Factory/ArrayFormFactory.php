@@ -59,7 +59,7 @@ class ArrayFormFactory extends AbstractFormFactory
 
         // Get prototype configuration once and reuse it
         $prototypeConfiguration = GeneralUtility::makeInstance(ConfigurationService::class)
-            ->getPrototypeConfiguration($prototypeName);
+            ->getPrototypeConfigurationDto($prototypeName);
 
         // Get RTE property paths for proper sanitization
         $rtePropertyPaths = $this->getFormDefinitionConversionService()->extractRtePropertyPaths($prototypeConfiguration);

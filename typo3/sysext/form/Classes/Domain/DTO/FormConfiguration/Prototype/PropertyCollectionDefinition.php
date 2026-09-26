@@ -44,7 +44,7 @@ final readonly class PropertyCollectionDefinition
     {
         return new self(
             raw: $configuration,
-            identifier: is_string($configuration['identifier'] ?? null) ? $configuration['identifier'] : null,
+            identifier: is_string($configuration['identifier'] ?? null) && $configuration['identifier'] !== '' ? $configuration['identifier'] : null,
             editors: EditorDefinitionCollection::fromArray(
                 is_array($configuration['editors'] ?? null) ? $configuration['editors'] : []
             ),

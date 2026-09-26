@@ -35,6 +35,7 @@ use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Form\Controller\FormEditorController;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
 use TYPO3\CMS\Form\Domain\Configuration\FormDefinitionConversionService;
+use TYPO3\CMS\Form\Domain\DTO\FormConfiguration\Prototype\PrototypeConfiguration;
 use TYPO3\CMS\Form\Domain\Exception\RenderingException;
 use TYPO3\CMS\Form\Domain\Factory\ArrayFormFactory;
 use TYPO3\CMS\Form\Event\BeforeFormIsSavedEvent;
@@ -158,7 +159,7 @@ final class FormEditorControllerTest extends FunctionalTestCase
                 'label' => 'Select elements',
             ],
         ];
-        $result = $subjectMock->_call('getInsertRenderablesPanelConfiguration', $prototypeConfiguration, $input);
+        $result = $subjectMock->_call('getInsertRenderablesPanelConfiguration', PrototypeConfiguration::fromArray($prototypeConfiguration), $input);
         self::assertSame($expected, $result);
     }
 
@@ -294,7 +295,7 @@ final class FormEditorControllerTest extends FunctionalTestCase
                 ],
             ],
         ];
-        self::assertSame($expected, $subjectMock->_call('getFormEditorDefinitions', $prototypeConfiguration));
+        self::assertSame($expected, $subjectMock->_call('getFormEditorDefinitions', PrototypeConfiguration::fromArray($prototypeConfiguration)));
     }
 
     #[Test]
@@ -305,13 +306,13 @@ final class FormEditorControllerTest extends FunctionalTestCase
         $mockController = $this->getAccessibleMock(FormEditorController::class, null, [], '', false);
         $mockController->_call(
             'renderFormEditorTemplates',
-            [
+            PrototypeConfiguration::fromArray([
                 'formEditor' => [
                     'formEditorFluidConfiguration' => [
                         'templatePathAndFilename' => '',
                     ],
                 ],
-            ],
+            ]),
             []
         );
     }
@@ -324,14 +325,14 @@ final class FormEditorControllerTest extends FunctionalTestCase
         $mockController = $this->getAccessibleMock(FormEditorController::class, null, [], '', false);
         $mockController->_call(
             'renderFormEditorTemplates',
-            [
+            PrototypeConfiguration::fromArray([
                 'formEditor' => [
                     'formEditorFluidConfiguration' => [
                         'templatePathAndFilename' => '',
                         'layoutRootPaths' => '',
                     ],
                 ],
-            ],
+            ]),
             []
         );
     }
@@ -344,14 +345,14 @@ final class FormEditorControllerTest extends FunctionalTestCase
         $mockController = $this->getAccessibleMock(FormEditorController::class, null, [], '', false);
         $mockController->_call(
             'renderFormEditorTemplates',
-            [
+            PrototypeConfiguration::fromArray([
                 'formEditor' => [
                     'formEditorFluidConfiguration' => [
                         'templatePathAndFilename' => '',
                         'layoutRootPaths' => [],
                     ],
                 ],
-            ],
+            ]),
             []
         );
     }
@@ -364,14 +365,14 @@ final class FormEditorControllerTest extends FunctionalTestCase
         $mockController = $this->getAccessibleMock(FormEditorController::class, null, [], '', false);
         $mockController->_call(
             'renderFormEditorTemplates',
-            [
+            PrototypeConfiguration::fromArray([
                 'formEditor' => [
                     'formEditorFluidConfiguration' => [
                         'templatePathAndFilename' => '',
                         'layoutRootPaths' => [],
                     ],
                 ],
-            ],
+            ]),
             []
         );
     }
@@ -384,11 +385,11 @@ final class FormEditorControllerTest extends FunctionalTestCase
         $mockController = $this->getAccessibleMock(FormEditorController::class, null, [], '', false);
         $mockController->_call(
             'renderFormEditorTemplates',
-            [
+            PrototypeConfiguration::fromArray([
                 'formEditor' => [
                     'formEditorFluidConfiguration' => [],
                 ],
-            ],
+            ]),
             []
         );
     }
@@ -465,6 +466,79 @@ final class FormEditorControllerTest extends FunctionalTestCase
             ],
         ];
         self::assertSame($expected, $mockController->_call('transformMultiValuePropertiesForFormEditor', $input, 'type', $multiValueProperties));
+    }
+
+    /**
+     * Finisher editors live below the "finishers" collection name of the Form
+     * element, so the property grid paths must be resolved through that level.
+     */
+    #[Test]
+    public function transformFormDefinitionForFormEditorConvertsFinisherPropertyGridValues(): void
+    {
+        $formDefinitionConversionServiceStub = self::createStub(FormDefinitionConversionService::class);
+        $formDefinitionConversionServiceStub->method('extractRtePropertyPaths')->willReturn([]);
+        $formDefinitionConversionServiceStub->method('sanitizeHtml')->willReturnArgument(0);
+        $formDefinitionConversionServiceStub->method('addHmacData')->willReturnArgument(0);
+        $formDefinitionConversionServiceStub->method('migrateFinisherConfiguration')->willReturnArgument(0);
+        $subject = $this->getAccessibleMock(
+            FormEditorController::class,
+            null,
+            [
+                $this->get(ModuleTemplateFactory::class),
+                self::createStub(PageRenderer::class),
+                self::createStub(IconFactory::class),
+                $formDefinitionConversionServiceStub,
+                self::createStub(FormPersistenceManagerInterface::class),
+                self::createStub(ExtFormConfigurationManagerInterface::class),
+                self::createStub(TranslationService::class),
+                self::createStub(ConfigurationService::class),
+                self::createStub(UriBuilder::class),
+                self::createStub(ArrayFormFactory::class),
+                self::createStub(ViewFactoryInterface::class),
+                self::createStub(DatabaseService::class),
+                self::createStub(CacheManager::class),
+                self::createStub(ComponentFactory::class),
+                self::createStub(FormEditorEnrichmentService::class),
+            ],
+        );
+        $prototypeConfiguration = [
+            'formElementsDefinition' => [
+                'Form' => [
+                    'formEditor' => [
+                        'propertyCollections' => [
+                            'finishers' => [
+                                10 => [
+                                    'identifier' => 'CustomFinisher',
+                                    'editors' => [
+                                        50 => [
+                                            'templateName' => 'Inspector-PropertyGridEditor',
+                                            'propertyPath' => 'options.choices',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $formDefinition = [
+            'type' => 'Form',
+            'identifier' => 'test',
+            'finishers' => [
+                [
+                    'identifier' => 'CustomFinisher',
+                    'options' => ['choices' => ['a' => 'Alpha', 'b' => 'Beta']],
+                ],
+            ],
+        ];
+
+        $result = $subject->_call('transformFormDefinitionForFormEditor', PrototypeConfiguration::fromArray($prototypeConfiguration), $formDefinition, '1:/form.form.yaml');
+
+        self::assertSame(
+            [['_label' => 'Alpha', '_value' => 'a'], ['_label' => 'Beta', '_value' => 'b']],
+            $result['finishers'][0]['options']['choices'],
+        );
     }
 
     #[Test]
@@ -642,7 +716,7 @@ final class FormEditorControllerTest extends FunctionalTestCase
             ],
         ];
 
-        $result = $subject->_call('getFormEditorDefinitions', $prototypeConfiguration);
+        $result = $subject->_call('getFormEditorDefinitions', PrototypeConfiguration::fromArray($prototypeConfiguration));
 
         self::assertArrayHasKey('formElements', $result);
         self::assertArrayHasKey('finishers', $result);

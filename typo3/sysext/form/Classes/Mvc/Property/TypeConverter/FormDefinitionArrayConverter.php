@@ -192,7 +192,7 @@ class FormDefinitionArrayConverter extends AbstractTypeConverter
         }
 
         try {
-            $prototypeConfiguration = $this->configurationService->getPrototypeConfiguration($prototypeName);
+            $prototypeConfiguration = $this->configurationService->getPrototypeConfigurationDto($prototypeName);
             return $this->formDefinitionConversionService->extractRtePropertyPaths($prototypeConfiguration);
         } catch (\Exception $e) {
             // If prototype configuration is not available, return empty array

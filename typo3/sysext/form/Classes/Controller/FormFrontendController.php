@@ -29,7 +29,6 @@ use TYPO3\CMS\Form\Domain\Configuration\ArrayProcessing\ArrayProcessor;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
 use TYPO3\CMS\Form\Domain\Configuration\FormDefinition\Converters\FinisherOptionsFlexFormOverridesConverter;
 use TYPO3\CMS\Form\Domain\Configuration\FormDefinition\Converters\FlexFormFinisherOverridesConverterDto;
-use TYPO3\CMS\Form\Domain\DTO\FormConfiguration\Prototype\PrototypeConfiguration;
 use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface;
 
 /**
@@ -96,9 +95,7 @@ class FormFrontendController extends ActionController
         }
         if (isset($formDefinition['finishers'])) {
             $prototypeName = $formDefinition['prototypeName'] ?? 'standard';
-            $prototypeConfiguration = PrototypeConfiguration::fromArray(
-                $this->configurationService->getPrototypeConfiguration($prototypeName)
-            );
+            $prototypeConfiguration = $this->configurationService->getPrototypeConfigurationDto($prototypeName);
             foreach ($formDefinition['finishers'] as $index => $formFinisherDefinition) {
                 $finisherIdentifier = $formFinisherDefinition['identifier'];
                 $sheetIdentifier = $this->getFlexformSheetIdentifier($formDefinition, $prototypeName, $finisherIdentifier);

@@ -58,14 +58,18 @@ final readonly class PropertyCollectionDefinitionCollection implements \Iterator
     }
 
     /**
-     * @return list<string>
+     * @return array<string, list<string>> Property paths keyed by collection element identifier
      */
-    public function getPropertyPathsForIdentifierAndTemplate(string $identifier, string $templateName): array
+    public function getPropertyPathsForTemplateByIdentifier(string $templateName): array
     {
         $propertyPaths = [];
         foreach ($this->definitions as $definition) {
-            if ($definition->identifier === $identifier) {
-                array_push($propertyPaths, ...$definition->editors->getPropertyPathsForTemplate($templateName));
+            if ($definition->identifier === null) {
+                continue;
+            }
+            $definitionPropertyPaths = $definition->editors->getPropertyPathsForTemplate($templateName);
+            if ($definitionPropertyPaths !== []) {
+                $propertyPaths[$definition->identifier] = [...$propertyPaths[$definition->identifier] ?? [], ...$definitionPropertyPaths];
             }
         }
         return $propertyPaths;
