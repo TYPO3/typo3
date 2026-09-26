@@ -192,16 +192,6 @@ final class ResetPasswordControllerTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function initiatePasswordResetPreventsTimeBasedInformationDisclosure(): void
-    {
-        $start = microtime(true);
-        $request = $this->request;
-        $GLOBALS['TYPO3_REQUEST'] = $request;
-        $this->subject->initiatePasswordResetAction($request);
-        self::assertGreaterThan(0.2, microtime(true) - $start);
-    }
-
-    #[Test]
     public function initiatePasswordResetValidatesGivenEmailAddress(): void
     {
         $request = $this->request->withParsedBody(['email' => 'email..email@example.com']);

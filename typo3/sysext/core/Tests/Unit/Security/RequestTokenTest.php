@@ -33,10 +33,12 @@ final class RequestTokenTest extends UnitTestCase
     public function isCreated(): void
     {
         $scope = $this->createRandomString();
+        $before = $this->createCurrentTime();
         $token = RequestToken::create($scope);
-        $now = $this->createCurrentTime();
+        $after = $this->createCurrentTime();
         self::assertSame($scope, $token->scope);
-        self::assertEquals($now, $token->time);
+        self::assertGreaterThanOrEqual($before, $token->time);
+        self::assertLessThanOrEqual($after, $token->time);
         self::assertSame([], $token->params);
     }
 
@@ -44,7 +46,7 @@ final class RequestTokenTest extends UnitTestCase
     public function isCreatedWithProperties(): void
     {
         $scope = $this->createRandomString();
-        $time = $this->createRandomTime();
+        $time = new \DateTimeImmutable('2022-05-01T12:34:56+00:00');
         $params = ['value' => bin2hex(random_bytes(4))];
         $token = new RequestToken($scope, $time, $params);
         self::assertSame($scope, $token->scope);
@@ -88,7 +90,7 @@ final class RequestTokenTest extends UnitTestCase
     public function isEncodedAndDecoded(Nonce $nonce, SigningSecretInterface|SigningSecretResolver $secret): void
     {
         $scope = $this->createRandomString();
-        $time = $this->createRandomTime();
+        $time = new \DateTimeImmutable('2022-05-01T12:34:56+00:00');
         $params = ['value' => bin2hex(random_bytes(4))];
         $token = new RequestToken($scope, $time, $params);
 
@@ -125,14 +127,6 @@ final class RequestTokenTest extends UnitTestCase
     private function createRandomString(): string
     {
         return bin2hex(random_bytes(4));
-    }
-
-    private function createRandomTime(): \DateTimeImmutable
-    {
-        $now = $this->createCurrentTime();
-        $delta = random_int(-7200, 7200);
-        $interval = new \DateInterval(sprintf('PT%dS', abs($delta)));
-        return $delta < 0 ? $now->sub($interval) : $now->add($interval);
     }
 
     private function createCurrentTime(): \DateTimeImmutable

@@ -59,7 +59,7 @@ final class NonceTest extends UnitTestCase
     public function isCreatedWithProperties(): void
     {
         $binary = random_bytes(40);
-        $time = $this->createRandomTime();
+        $time = new \DateTimeImmutable('2022-05-01T12:34:56+00:00');
         $nonce = new Nonce($binary, $time);
         self::assertSame($binary, $nonce->binary);
         self::assertEquals($time, $nonce->time);
@@ -79,17 +79,5 @@ final class NonceTest extends UnitTestCase
         $this->expectException(NonceException::class);
         $this->expectExceptionCode(1651771351);
         Nonce::fromHashSignedJwt('no-jwt-at-all');
-    }
-
-    private function createRandomTime(): \DateTimeImmutable
-    {
-        // drop microtime, second is the minimum date-interval here
-        $now = \DateTimeImmutable::createFromFormat(
-            \DateTimeImmutable::RFC3339,
-            (new \DateTimeImmutable())->format(\DateTimeImmutable::RFC3339)
-        );
-        $delta = random_int(-7200, 7200);
-        $interval = new \DateInterval(sprintf('PT%dS', abs($delta)));
-        return $delta < 0 ? $now->sub($interval) : $now->add($interval);
     }
 }
