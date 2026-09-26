@@ -6351,6 +6351,13 @@ return [
             'Deprecation-104463-FluidStandaloneOverrideArgument.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Authentication\BackendUserAuthentication->returnWebmounts' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-104607-BackendUserAuthenticationReturnWebmounts.rst',
+        ],
+    ],
     'TYPO3\CMS\Fluid\View\TemplatePaths->fillDefaultsByPackageName' => [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 1,
