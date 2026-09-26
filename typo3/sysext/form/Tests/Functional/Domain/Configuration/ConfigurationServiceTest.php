@@ -88,6 +88,45 @@ final class ConfigurationServiceTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function getFormConfigurationReturnsTypedConfiguration(): void
+    {
+        $configurationManagerStub = self::createStub(ExtFormConfigurationManagerInterface::class);
+        $configurationManagerStub->method('getYamlConfiguration')
+            ->willReturn([
+                'persistenceManager' => ['sortAscending' => false],
+                'formManager' => ['selectablePrototypesConfiguration' => [
+                    100 => [
+                        'identifier' => 'sitePackage',
+                        'label' => 'formManager.selectablePrototypesConfiguration.sitePackage.label',
+                        'newFormTemplates' => [
+                            100 => [
+                                'templatePath' => 'EXT:site_package/Resources/Private/Forms/Contact.yaml',
+                                'label' => 'formManager.selectablePrototypesConfiguration.sitePackage.newFormTemplates.contact.label',
+                            ],
+                        ],
+                    ],
+                ]],
+                'prototypes' => [
+                    'sitePackage' => ['customSetting' => ['enabled' => true]],
+                ],
+            ]);
+        $subject = new ConfigurationService(
+            self::createStub(ExtbaseConfigurationManagerInterface::class),
+            $configurationManagerStub,
+            self::createStub(TranslationService::class),
+            self::createStub(PhpFrontend::class),
+            self::createStub(PhpFrontend::class),
+            self::createStub(EventDispatcherInterface::class),
+        );
+
+        $configuration = $subject->getFormConfiguration();
+
+        self::assertFalse($configuration->persistenceManager->sortAscending);
+        self::assertSame(['sitePackage'], $configuration->formManager->getSelectablePrototypeIdentifiers());
+        self::assertTrue($configuration->prototypes->get('sitePackage')?->get('customSetting.enabled'));
+    }
+
+    #[Test]
     public function getSelectablePrototypeNamesDefinedInFormEditorSetupReturnsPrototypes(): void
     {
         $configurationManagerStub = self::createStub(ExtFormConfigurationManagerInterface::class);

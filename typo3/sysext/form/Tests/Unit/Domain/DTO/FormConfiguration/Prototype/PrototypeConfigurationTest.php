@@ -18,6 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Tests\Unit\Domain\DTO\FormConfiguration\Prototype;
 
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Form\Domain\Configuration\Exception\PrototypeNotFoundException;
+use TYPO3\CMS\Form\Domain\DTO\FormConfiguration\Prototype\PrototypeCollection;
 use TYPO3\CMS\Form\Domain\DTO\FormConfiguration\Prototype\PrototypeConfiguration;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -58,5 +60,28 @@ final class PrototypeConfigurationTest extends UnitTestCase
         );
         self::assertTrue($configuration->has('formElementsDefinition.Form'));
         self::assertFalse($configuration->has('finishersDefinition'));
+    }
+
+    #[Test]
+    public function collectionRetainsCustomPrototypeIdentifiersAndRawConfiguration(): void
+    {
+        $collection = PrototypeCollection::fromArray([
+            'standard' => ['formEditor' => ['maximumUndoSteps' => 10]],
+            'simple' => ['formEditor' => ['maximumUndoSteps' => 5]],
+        ]);
+
+        self::assertSame(['standard', 'simple'], array_keys(iterator_to_array($collection)));
+        self::assertSame(5, $collection->get('simple')?->get('formEditor.maximumUndoSteps'));
+        self::assertSame(['maximumUndoSteps' => 5], $collection->require('simple')->get('formEditor'));
+    }
+
+    #[Test]
+    public function collectionThrowsExistingExceptionForMissingPrototype(): void
+    {
+        $collection = PrototypeCollection::fromArray([]);
+
+        $this->expectException(PrototypeNotFoundException::class);
+        $this->expectExceptionCode(1475924277);
+        $collection->require('standard');
     }
 }

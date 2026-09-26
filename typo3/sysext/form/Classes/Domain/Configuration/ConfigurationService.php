@@ -43,7 +43,7 @@ use TYPO3\CMS\Form\Domain\Configuration\FrameworkConfiguration\Extractors\Proper
 use TYPO3\CMS\Form\Domain\Configuration\FrameworkConfiguration\Extractors\PropertyCollectionElement\PredefinedDefaultsExtractor as CollectionPredefinedDefaultsExtractor;
 use TYPO3\CMS\Form\Domain\Configuration\FrameworkConfiguration\Extractors\PropertyCollectionElement\PropertyPathsExtractor as CollectionPropertyPathsExtractor;
 use TYPO3\CMS\Form\Domain\Configuration\FrameworkConfiguration\Extractors\PropertyCollectionElement\SelectOptionsExtractor as CollectionSelectOptionsExtractor;
-use TYPO3\CMS\Form\Domain\DTO\FormConfiguration\FormManagerConfiguration;
+use TYPO3\CMS\Form\Domain\DTO\FormConfiguration\FormConfiguration;
 use TYPO3\CMS\Form\Event\AfterFormDefinitionValidationConfigurationIsBuiltEvent;
 use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface as ExtFormConfigurationManagerInterface;
 use TYPO3\CMS\Form\Service\TranslationService;
@@ -80,11 +80,17 @@ class ConfigurationService
      */
     public function getPrototypeConfiguration(string $prototypeName): array
     {
-        $formSettings = $this->getFormSettings();
-        if (!isset($formSettings['prototypes'][$prototypeName])) {
-            throw new PrototypeNotFoundException(sprintf('The Prototype "%s" was not found.', $prototypeName), 1475924277);
-        }
-        return $formSettings['prototypes'][$prototypeName];
+        return $this->getFormConfiguration()->prototypes->require($prototypeName)->getRaw();
+    }
+
+    /**
+     * Get the typed form configuration.
+     *
+     * @internal
+     */
+    public function getFormConfiguration(): FormConfiguration
+    {
+        return FormConfiguration::fromArray($this->getFormSettings());
     }
 
     /**
@@ -94,8 +100,7 @@ class ConfigurationService
      */
     public function getSelectablePrototypeNamesDefinedInFormEditorSetup(): array
     {
-        $formSettings = $this->getFormSettings();
-        return FormManagerConfiguration::fromArray($formSettings['formManager'] ?? [])
+        return $this->getFormConfiguration()->formManager
             ->getSelectablePrototypeIdentifiers();
     }
 
