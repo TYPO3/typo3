@@ -6404,6 +6404,14 @@ return [
             'Breaking-108148-Fluid50.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Authentication\BackendUserAuthentication->returnWebmounts' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-104607-BackendUserAuthenticationReturnWebmounts.rst',
+            'Breaking-105377-DeprecatedFunctionalityRemoved.rst',
+        ],
+    ],
     'TYPO3\CMS\Fluid\View\TemplatePaths->fillDefaultsByPackageName' => [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 1,
