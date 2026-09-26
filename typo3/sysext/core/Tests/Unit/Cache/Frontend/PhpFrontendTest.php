@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Cache\Frontend;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\Backend\FileBackend;
 use TYPO3\CMS\Core\Cache\Backend\PhpCapableBackendInterface;
@@ -44,10 +43,9 @@ final class PhpFrontendTest extends UnitTestCase
 
     #[Test]
     #[DataProvider('constructAcceptsValidIdentifiersDataProvider')]
-    #[DoesNotPerformAssertions]
     public function constructAcceptsValidIdentifiers(string $identifier): void
     {
-        new PhpFrontend($identifier, self::createStub(PhpCapableBackendInterface::class));
+        self::assertSame($identifier, new PhpFrontend($identifier, self::createStub(PhpCapableBackendInterface::class))->getIdentifier());
     }
 
     public static function constructRejectsInvalidIdentifiersDataProvider(): array

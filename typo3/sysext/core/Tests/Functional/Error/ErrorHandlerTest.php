@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Error;
 
-use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Error\ErrorHandler;
@@ -43,7 +42,6 @@ final class ErrorHandlerTest extends FunctionalTestCase
     }
 
     #[Test]
-    #[DoesNotPerformAssertions]
     public function handleErrorFetchesDeprecations(): void
     {
         trigger_error(
@@ -54,6 +52,7 @@ final class ErrorHandlerTest extends FunctionalTestCase
             'The second error should be caught by ErrorHandler as well.',
             E_USER_DEPRECATED
         );
+        self::assertContains('TYPO3.CMS.deprecations', GeneralUtility::makeInstance(LogManager::class)->getLoggerNames());
     }
 
     /**

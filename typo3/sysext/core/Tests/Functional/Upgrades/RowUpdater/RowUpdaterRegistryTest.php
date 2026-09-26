@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Upgrades\RowUpdater;
 
-use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Upgrades\DatabaseRowsUpdateWizard;
 use TYPO3\CMS\Core\Upgrades\RowUpdater\RowUpdaterRegistry;
@@ -35,11 +34,10 @@ final class RowUpdaterRegistryTest extends FunctionalTestCase
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_rowupdater',
     ];
 
-    #[DoesNotPerformAssertions]
     #[Test]
     public function rowUpdaterRegistryIsInjectedIntoTestService(): void
     {
-        $this->get(InjectionTestService::class);
+        self::assertSame($this->get(RowUpdaterRegistry::class), $this->get(InjectionTestService::class)->registry);
     }
 
     #[Test]

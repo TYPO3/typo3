@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Resource;
 
-use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\NormalizedParams;
@@ -51,7 +50,6 @@ final class ProcessedFileTest extends FunctionalTestCase
     }
 
     #[Test]
-    #[DoesNotPerformAssertions]
     public function processedFileArrayCanBeSerialized(): void
     {
         $resourceFactory = $this->get(ResourceFactory::class);
@@ -73,7 +71,8 @@ final class ProcessedFileTest extends FunctionalTestCase
                 ],
             ],
         );
-        serialize($processedFile->toArray());
+        $array = $processedFile->toArray();
+        self::assertSame($array, unserialize(serialize($array), ['allowed_classes' => false]));
     }
 
     #[Test]

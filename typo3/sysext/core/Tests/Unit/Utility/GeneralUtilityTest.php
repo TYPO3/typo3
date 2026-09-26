@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\ServerRequestInterface;
@@ -2758,13 +2757,6 @@ final class GeneralUtilityTest extends UnitTestCase
     }
 
     #[Test]
-    #[DoesNotPerformAssertions]
-    public function makeInstanceCanInstantiateStdClass(): void
-    {
-        GeneralUtility::makeInstance(\stdClass::class);
-    }
-
-    #[Test]
     public function makeInstancePassesParametersToConstructor(): void
     {
         $instance = GeneralUtility::makeInstance(TwoParametersConstructorFixture::class, 'one parameter', 'another parameter');
@@ -2813,11 +2805,10 @@ final class GeneralUtilityTest extends UnitTestCase
     }
 
     #[Test]
-    #[DoesNotPerformAssertions]
     public function makeInstanceInjectsLogger(): void
     {
         $instance = GeneralUtility::makeInstance(GeneralUtilityMakeInstanceInjectLoggerFixture::class);
-        $instance->getLogger();
+        self::assertInstanceOf(\Psr\Log\LoggerInterface::class, $instance->getLogger());
     }
 
     #[Test]

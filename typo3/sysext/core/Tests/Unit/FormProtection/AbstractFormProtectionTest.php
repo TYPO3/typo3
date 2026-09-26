@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\FormProtection;
 
 use PHPUnit\Framework\Attributes\BackupGlobals;
-use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Tests\Unit\FormProtection\Fixtures\FormProtectionTesting;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -84,27 +83,24 @@ final class AbstractFormProtectionTest extends UnitTestCase
     }
 
     #[Test]
-    #[DoesNotPerformAssertions]
     public function generateTokenFormForEmptyActionNotThrowsException(): void
     {
         $subject = new FormProtectionTesting();
-        $subject->generateToken('foo', '', '42');
+        self::assertMatchesRegularExpression('/^[0-9a-f]{64}$/', $subject->generateToken('foo', '', '42'));
     }
 
     #[Test]
-    #[DoesNotPerformAssertions]
     public function generateTokenFormForEmptyFormInstanceNameNotThrowsException(): void
     {
         $subject = new FormProtectionTesting();
-        $subject->generateToken('foo', 'edit', '');
+        self::assertMatchesRegularExpression('/^[0-9a-f]{64}$/', $subject->generateToken('foo', 'edit', ''));
     }
 
     #[Test]
-    #[DoesNotPerformAssertions]
     public function generateTokenFormForOmittedActionAndFormInstanceNameNotThrowsException(): void
     {
         $subject = new FormProtectionTesting();
-        $subject->generateToken('foo');
+        self::assertMatchesRegularExpression('/^[0-9a-f]{64}$/', $subject->generateToken('foo'));
     }
 
     #[Test]
@@ -122,19 +118,17 @@ final class AbstractFormProtectionTest extends UnitTestCase
     }
 
     #[Test]
-    #[DoesNotPerformAssertions]
     public function validateTokenWithFourEmptyParametersNotThrowsException(): void
     {
         $subject = new FormProtectionTesting();
-        $subject->validateToken('', '', '', '');
+        self::assertFalse($subject->validateToken('', '', '', ''));
     }
 
     #[Test]
-    #[DoesNotPerformAssertions]
     public function validateTokenWithTwoEmptyAndTwoMissingParametersNotThrowsException(): void
     {
         $subject = new FormProtectionTesting();
-        $subject->validateToken('', '');
+        self::assertFalse($subject->validateToken('', ''));
     }
 
     #[Test]

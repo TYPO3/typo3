@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Http;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\Stream;
@@ -38,20 +37,6 @@ final class StreamTest extends UnitTestCase
         $this->testFilesToDelete[] = $path;
         GeneralUtility::mkdir_deep($path);
         return $path;
-    }
-
-    #[Test]
-    #[DoesNotPerformAssertions]
-    public function canBeInstantiatedWithStreamIdentifier(): void
-    {
-        new Stream('php://memory', 'wb+');
-    }
-
-    #[Test]
-    #[DoesNotPerformAssertions]
-    public function canBeInstantiatedWithStreamResource(): void
-    {
-        new Stream(fopen('php://memory', 'wb+'));
     }
 
     #[Test]

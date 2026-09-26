@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Functional\Database;
 
 use Doctrine\DBAL\Platforms\TrimMode;
-use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\Connection;
@@ -55,7 +54,6 @@ final class ConnectionTest extends FunctionalTestCase
     }
 
     #[Test]
-    #[DoesNotPerformAssertions]
     public function datetimeInstanceCanBePersistedToDatabaseWithoutSpecifyingType(): void
     {
         $value = new \DateTime('2023-11-23T11:49:00+01:00');
@@ -64,10 +62,10 @@ final class ConnectionTest extends FunctionalTestCase
         $connection->insert('datetime_tests', [
             'mutable_object' => $value,
         ]);
+        self::assertSame('2023-11-23 11:49:00', $connection->select(['mutable_object'], 'datetime_tests', [])->fetchOne());
     }
 
     #[Test]
-    #[DoesNotPerformAssertions]
     public function datetimeInstanceCanBePersistedToDatabaseIfTypeIsExplicitlySpecified(): void
     {
         $value = new \DateTime('2023-11-23T11:49:00+01:00');
@@ -78,10 +76,10 @@ final class ConnectionTest extends FunctionalTestCase
         ], [
             'mutable_object' => 'datetime',
         ]);
+        self::assertSame('2023-11-23 11:49:00', $connection->select(['mutable_object'], 'datetime_tests', [])->fetchOne());
     }
 
     #[Test]
-    #[DoesNotPerformAssertions]
     public function datetimeImmutableInstanceCanBePersistedToDatabaseWithoutSpecifyingType(): void
     {
         $value = new \DateTimeImmutable('2023-11-23T11:49:00+01:00');
@@ -90,10 +88,10 @@ final class ConnectionTest extends FunctionalTestCase
         $connection->insert('datetime_tests', [
             'immutable_object' => $value,
         ]);
+        self::assertSame('2023-11-23 11:49:00', $connection->select(['immutable_object'], 'datetime_tests', [])->fetchOne());
     }
 
     #[Test]
-    #[DoesNotPerformAssertions]
     public function datetimeImmutableInstanceCanBePersistedToDatabaseIfTypeIsExplicitlySpecified(): void
     {
         $value = new \DateTimeImmutable('2023-11-23T11:49:00+01:00');
@@ -104,6 +102,7 @@ final class ConnectionTest extends FunctionalTestCase
         ], [
             'immutable_object' => 'datetime_immutable',
         ]);
+        self::assertSame('2023-11-23 11:49:00', $connection->select(['immutable_object'], 'datetime_tests', [])->fetchOne());
     }
 
     #[Group('not-postgres')]

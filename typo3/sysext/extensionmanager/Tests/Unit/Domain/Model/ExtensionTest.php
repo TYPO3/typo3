@@ -18,27 +18,12 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Domain\Model;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ExtensionTest extends UnitTestCase
 {
-    #[Test]
-    #[DoesNotPerformAssertions]
-    public function convertDependenciesToObjectsDoesNotFail(): void
-    {
-        $serializedDependencies = [
-            'depends' => [
-                'php' => '5.1.0-0.0.0',
-                'typo3' => '4.2.0-4.4.99',
-                'fn_lib' => '',
-            ],
-        ];
-        Extension::createFromExtensionArray(['key' => 'no-name', 'constraints' => $serializedDependencies])->getDependencies();
-    }
-
     #[Test]
     public function convertDependenciesToObjectsSetsIdentifier(): void
     {
