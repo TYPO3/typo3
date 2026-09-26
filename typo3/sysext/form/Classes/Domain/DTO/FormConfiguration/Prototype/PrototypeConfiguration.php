@@ -29,9 +29,8 @@ use TYPO3\CMS\Form\Domain\DTO\FormConfiguration\RawConfigurationTrait;
  * accessors; everything else stays reachable through
  * {@see RawConfigurationTrait::getRaw()} / ::get().
  *
- * Typed accessors for "formElementsDefinition", "finishersDefinition",
- * "validatorsDefinition" and "formEngine" are added in the respective work
- * packages.
+ * Typed accessors for "finishersDefinition", "validatorsDefinition" and
+ * "formEngine" are added in the respective work packages.
  *
  * @internal
  */
@@ -42,10 +41,12 @@ final readonly class PrototypeConfiguration
     /**
      * @param array<string, mixed> $raw The complete, untouched prototype configuration array
      * @param FormEditorConfiguration $formEditor Typed "formEditor" sub configuration
+     * @param FormElementDefinitionCollection $formElements Typed form element registry
      */
     public function __construct(
         public array $raw,
         public FormEditorConfiguration $formEditor,
+        public FormElementDefinitionCollection $formElements,
     ) {}
 
     /**
@@ -60,6 +61,43 @@ final readonly class PrototypeConfiguration
             formEditor: FormEditorConfiguration::fromArray(
                 is_array($configuration['formEditor'] ?? null) ? $configuration['formEditor'] : []
             ),
+            formElements: FormElementDefinitionCollection::fromArray(
+                is_array($configuration['formElementsDefinition'] ?? null) ? $configuration['formElementsDefinition'] : []
+            ),
         );
+    }
+
+    /**
+     * Reduce the definition registries to their form editor configuration.
+     *
+     * @return array<string, array<string, mixed>>
+     */
+    public function getFormEditorDefinitions(): array
+    {
+        $formEditorDefinitions = [];
+        foreach ([$this->raw, $this->formEditor->getRaw()] as $configuration) {
+            foreach ($configuration as $firstLevelItemKey => $firstLevelItemValue) {
+                if (!str_ends_with($firstLevelItemKey, 'Definition')) {
+                    continue;
+                }
+                $reducedKey = substr($firstLevelItemKey, 0, -10);
+                if ($firstLevelItemKey === 'formElementsDefinition') {
+                    foreach ($this->formElements as $formElementDefinition) {
+                        $formEditorDefinitions[$reducedKey][$formElementDefinition->identifier] = $formElementDefinition->has('formEditor')
+                            ? $formElementDefinition->formEditor->getRaw()
+                            : $formElementDefinition->getRaw();
+                    }
+                    continue;
+                }
+                foreach ($firstLevelItemValue as $formEditorDefinitionKey => $formEditorDefinitionValue) {
+                    if (isset($formEditorDefinitionValue['formEditor'])) {
+                        $formEditorDefinitions[$reducedKey][$formEditorDefinitionKey] = $formEditorDefinitionValue['formEditor'];
+                    } else {
+                        $formEditorDefinitions[$reducedKey][$formEditorDefinitionKey] = $formEditorDefinitionValue;
+                    }
+                }
+            }
+        }
+        return $formEditorDefinitions;
     }
 }

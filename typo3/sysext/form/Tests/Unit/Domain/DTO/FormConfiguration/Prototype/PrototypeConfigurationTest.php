@@ -58,8 +58,48 @@ final class PrototypeConfigurationTest extends UnitTestCase
             'Submit',
             $configuration->get('formElementsDefinition.Form.renderingOptions.submitButtonLabel'),
         );
+        self::assertSame(
+            ['submitButtonLabel' => 'Submit'],
+            $configuration->formElements->require('Form')->renderingOptions,
+        );
         self::assertTrue($configuration->has('formElementsDefinition.Form'));
         self::assertFalse($configuration->has('finishersDefinition'));
+    }
+
+    #[Test]
+    public function reducesDefinitionRegistriesToFormEditorConfiguration(): void
+    {
+        $configuration = PrototypeConfiguration::fromArray([
+            'formElementsDefinition' => [
+                'FancyCaptcha' => [
+                    'formEditor' => ['label' => 'Fancy captcha'],
+                    'customOption' => ['kept' => true],
+                ],
+            ],
+            'finishersDefinition' => [
+                'CustomFinisher' => [
+                    'formEditor' => ['label' => 'Custom finisher'],
+                    'customOption' => ['kept' => true],
+                ],
+            ],
+            'formEditor' => [
+                'formElementPropertyValidatorsDefinition' => [
+                    'CustomValidator' => ['label' => 'Custom validator'],
+                ],
+            ],
+        ]);
+
+        self::assertSame([
+            'formElements' => [
+                'FancyCaptcha' => ['label' => 'Fancy captcha'],
+            ],
+            'finishers' => [
+                'CustomFinisher' => ['label' => 'Custom finisher'],
+            ],
+            'formElementPropertyValidators' => [
+                'CustomValidator' => ['label' => 'Custom validator'],
+            ],
+        ], $configuration->getFormEditorDefinitions());
     }
 
     #[Test]

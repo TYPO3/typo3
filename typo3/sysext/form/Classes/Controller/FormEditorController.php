@@ -47,6 +47,7 @@ use TYPO3\CMS\Extbase\Mvc\View\JsonView;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
 use TYPO3\CMS\Form\Domain\Configuration\FormDefinitionConversionService;
 use TYPO3\CMS\Form\Domain\DTO\FormConfiguration\PersistenceManagerConfiguration;
+use TYPO3\CMS\Form\Domain\DTO\FormConfiguration\Prototype\FormElementDefinitionCollection;
 use TYPO3\CMS\Form\Domain\DTO\FormConfiguration\Prototype\PrototypeConfiguration;
 use TYPO3\CMS\Form\Domain\Exception\RenderingException;
 use TYPO3\CMS\Form\Domain\Factory\ArrayFormFactory;
@@ -305,19 +306,28 @@ class FormEditorController extends ActionController
     {
         /** @var array<string, list<array<string, array{key: string, cssKey: string, label: string, description: string, sorting: int, iconIdentifier: string}>>> $formElementsByGroup */
         $formElementsByGroup = [];
-        foreach ($formElementsDefinition as $formElementName => $formElementConfiguration) {
-            if (!isset($formElementConfiguration['group']) || ($isInsertPages && $formElementConfiguration['group'] !== 'page') || (!$isInsertPages && $formElementConfiguration['group'] === 'page')) {
+        $prototype = PrototypeConfiguration::fromArray($prototypeConfiguration);
+        $definitions = [];
+        foreach ($formElementsDefinition as $identifier => $formElementConfiguration) {
+            if (is_string($identifier) && is_array($formElementConfiguration)) {
+                $definitions[$identifier] = ['formEditor' => $formElementConfiguration];
+            }
+        }
+        $formElements = FormElementDefinitionCollection::fromArray($definitions);
+        foreach ($formElements as $formElementDefinition) {
+            $formEditorDefinition = $formElementDefinition->formEditor;
+            if ($formEditorDefinition->group === null || ($isInsertPages && $formEditorDefinition->group !== 'page') || (!$isInsertPages && $formEditorDefinition->group === 'page')) {
                 continue;
             }
-            if (!isset($formElementsByGroup[$formElementConfiguration['group']])) {
-                $formElementsByGroup[$formElementConfiguration['group']] = [];
+            if (!isset($formElementsByGroup[$formEditorDefinition->group])) {
+                $formElementsByGroup[$formEditorDefinition->group] = [];
             }
             $formElementConfiguration = $this->translationService->translateValuesRecursive(
-                $formElementConfiguration,
-                $prototypeConfiguration['formEditor']['translationFiles'] ?? []
+                $formEditorDefinition->getRaw(),
+                $prototype->formEditor->translationFiles,
             );
-            $formElementsByGroup[$formElementConfiguration['group']][] = [
-                'identifier' => $formElementName,
+            $formElementsByGroup[$formEditorDefinition->group][] = [
+                'identifier' => $formElementDefinition->identifier,
                 'label' => $formElementConfiguration['label'],
                 'description' => $formElementConfiguration['description'] ?? '',
                 'requestType' => 'event',
@@ -327,7 +337,7 @@ class FormEditorController extends ActionController
             ];
         }
         $formGroups = [];
-        foreach ($prototypeConfiguration['formEditor']['formElementGroups'] ?? [] as $groupName => $groupConfiguration) {
+        foreach ($prototype->formEditor->formElementGroups as $groupName => $groupConfiguration) {
             if (!isset($formElementsByGroup[$groupName])) {
                 continue;
             }
@@ -336,7 +346,7 @@ class FormEditorController extends ActionController
             });
             $groupConfiguration = $this->translationService->translateValuesRecursive(
                 $groupConfiguration,
-                $prototypeConfiguration['formEditor']['translationFiles'] ?? []
+                $prototype->formEditor->translationFiles,
             );
             $formGroups[$groupName] = [
                 'identifier' => $groupName,
@@ -352,28 +362,13 @@ class FormEditorController extends ActionController
      */
     protected function getFormEditorDefinitions(array $prototypeConfiguration): array
     {
-        $formEditorDefinitions = [];
-        foreach ([$prototypeConfiguration, $prototypeConfiguration['formEditor']] as $configuration) {
-            foreach ($configuration as $firstLevelItemKey => $firstLevelItemValue) {
-                if (!str_ends_with($firstLevelItemKey, 'Definition')) {
-                    continue;
-                }
-                $reducedKey = substr($firstLevelItemKey, 0, -10);
-                foreach ($firstLevelItemValue as $formEditorDefinitionKey => $formEditorDefinitionValue) {
-                    if (isset($formEditorDefinitionValue['formEditor'])) {
-                        $formEditorDefinitionValue = array_intersect_key($formEditorDefinitionValue, array_flip(['formEditor']));
-                        $formEditorDefinitions[$reducedKey][$formEditorDefinitionKey] = $formEditorDefinitionValue['formEditor'];
-                    } else {
-                        $formEditorDefinitions[$reducedKey][$formEditorDefinitionKey] = $formEditorDefinitionValue;
-                    }
-                }
-            }
-        }
+        $prototype = PrototypeConfiguration::fromArray($prototypeConfiguration);
+        $formEditorDefinitions = $prototype->getFormEditorDefinitions();
         $formEditorDefinitions = ArrayUtility::reIndexNumericArrayKeysRecursive($formEditorDefinitions);
         $formEditorDefinitions = $this->formEditorEnrichmentService->enrichFormEditorDefinitions($formEditorDefinitions);
         return $this->translationService->translateValuesRecursive(
             $formEditorDefinitions,
-            $prototypeConfiguration['formEditor']['translationFiles'] ?? []
+            $prototype->formEditor->translationFiles,
         );
     }
 
@@ -462,23 +457,22 @@ class FormEditorController extends ActionController
         $multiValueFormElementProperties = [];
         /** @var array<string, list<string>> $multiValueFinisherProperties */
         $multiValueFinisherProperties = [];
-        foreach ($prototypeConfiguration['formElementsDefinition'] as $type => $configuration) {
-            if (!isset($configuration['formEditor']['editors'])) {
-                continue;
-            }
-            foreach ($configuration['formEditor']['editors'] as $editorConfiguration) {
-                if (($editorConfiguration['templateName'] ?? '') === 'Inspector-PropertyGridEditor') {
-                    $multiValueFormElementProperties[$type][] = $editorConfiguration['propertyPath'];
-                }
+        $prototype = PrototypeConfiguration::fromArray($prototypeConfiguration);
+        foreach ($prototype->formElements as $formElementDefinition) {
+            $propertyPaths = $formElementDefinition->formEditor->getPropertyGridPropertyPaths();
+            if ($propertyPaths !== []) {
+                $multiValueFormElementProperties[$formElementDefinition->identifier] = $propertyPaths;
             }
         }
-        foreach ($prototypeConfiguration['formElementsDefinition']['Form']['formEditor']['propertyCollections']['finishers'] ?? [] as $configuration) {
-            if (!isset($configuration['editors'])) {
-                continue;
-            }
-            foreach ($configuration['editors'] as $editorConfiguration) {
-                if (($editorConfiguration['templateName'] ?? '') === 'Inspector-PropertyGridEditor') {
-                    $multiValueFinisherProperties[$configuration['identifier']][] = $editorConfiguration['propertyPath'];
+        $formDefinitionConfiguration = $prototype->formElements->get('Form');
+        if ($formDefinitionConfiguration !== null) {
+            foreach ($formDefinitionConfiguration->formEditor->propertyCollections as $propertyCollectionDefinition) {
+                if ($propertyCollectionDefinition->identifier === null) {
+                    continue;
+                }
+                $propertyPaths = $propertyCollectionDefinition->editors->getPropertyPathsForTemplate('Inspector-PropertyGridEditor');
+                if ($propertyPaths !== []) {
+                    $multiValueFinisherProperties[$propertyCollectionDefinition->identifier] = $propertyPaths;
                 }
             }
         }
