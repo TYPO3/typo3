@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Imaging\ImageManipulation;
 
-use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariant;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\InvalidConfigurationException;
@@ -86,12 +85,11 @@ final class CropVariantTest extends UnitTestCase
     }
 
     #[Test]
-    #[DoesNotPerformAssertions]
     public function selectedRatioCanBeNull(): void
     {
         $tca = self::TCA;
         unset($tca['selectedRatio']);
-        CropVariant::createFromConfiguration($this->getExpectedConfig()['id'], $tca);
+        self::assertSame('16:9', CropVariant::createFromConfiguration($this->getExpectedConfig()['id'], $tca)->asArray()['selectedRatio']);
     }
 
     #[Test]

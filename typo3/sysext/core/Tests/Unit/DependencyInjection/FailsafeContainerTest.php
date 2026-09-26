@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\DependencyInjection;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
@@ -30,13 +29,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class FailsafeContainerTest extends UnitTestCase
 {
-    #[Test]
-    #[DoesNotPerformAssertions]
-    public function canBeInstantiated(): void
-    {
-        new Container();
-    }
-
     #[Test]
     public function withString(): void
     {
