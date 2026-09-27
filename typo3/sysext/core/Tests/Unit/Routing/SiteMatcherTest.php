@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
 use TYPO3\CMS\Core\Routing\RequestContextFactory;
 use TYPO3\CMS\Core\Routing\SiteMatcher;
 use TYPO3\CMS\Core\Routing\SiteRouteResult;
+use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -112,15 +113,38 @@ final class SiteMatcherTest extends UnitTestCase
         // Matches english
         self::assertEquals(0, $result->getLanguage()->getLanguageId());
 
-        // @todo this is a random result and needs to be refined
-        // www.example.com is not defined at all, but it actually "matches"...
+        // The relative site base matches any host.
         $request = new ServerRequest('http://www.example.com/');
         /** @var SiteRouteResult $result */
         $result = $subject->matchRequest($request);
-        // finds the second site, since that configuration does not have a host part, thus only `/` matches
-        // @todo for future versions (TYPO3 v12+) this should be adjusted and be more explicit by enforcing host names
         self::assertNull($result->getLanguage());
-        self::assertEquals('second', $result->getSite()->getIdentifier());
+        self::assertSame($secondSite, $result->getSite());
+    }
+
+    #[Test]
+    public function unknownHostDoesNotMatchSiteWithAbsoluteBase(): void
+    {
+        $site = new Site('main', 1, [
+            'base' => 'https://example.com/',
+            'languages' => [
+                0 => [
+                    'languageId' => 0,
+                    'base' => 'https://example.com/',
+                    'locale' => 'en-US',
+                ],
+            ],
+        ]);
+        $subject = new SiteMatcher(
+            $this->createFeaturesMock(),
+            $this->createSiteFinder($site),
+            new RequestContextFactory(new BackendEntryPointResolver())
+        );
+
+        $result = $subject->matchRequest(new ServerRequest('https://other.example.com/'));
+
+        self::assertInstanceOf(SiteRouteResult::class, $result);
+        self::assertInstanceOf(NullSite::class, $result->getSite());
+        self::assertNull($result->getLanguage());
     }
 
     /**
