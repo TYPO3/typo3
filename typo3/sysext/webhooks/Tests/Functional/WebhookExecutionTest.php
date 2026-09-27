@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Webhooks\Tests\Functional;
 
 use Doctrine\DBAL\Types\JsonType;
+use GuzzleHttp\Promise\FulfilledPromise;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\RequestInterface;
@@ -78,8 +79,10 @@ final class WebhookExecutionTest extends FunctionalTestCase
         $GLOBALS['TYPO3_CONF_VARS']['HTTP']['handler']['logger'] = function () use ($inspector) {
             return function (RequestInterface $request) use ($inspector) {
                 $inspector($request);
-                return new ResponseFactory()->createResponse()
-                    ->withBody(new StreamFactory()->createStream('success'));
+                return new FulfilledPromise(
+                    new ResponseFactory()->createResponse()
+                        ->withBody(new StreamFactory()->createStream('success'))
+                );
             };
         };
     }
@@ -101,19 +104,16 @@ final class WebhookExecutionTest extends FunctionalTestCase
         self::assertEquals(1, $numberOfRequestsFired);
     }
 
-    /**
-     * @todo This test might not test what should be tested.
-     */
     #[Test]
     public function oneMessageWithMultipleRequestsIsTriggeredAndDispatched(): void
     {
-        $numberOfRequestsFired = 0;
-        $inspector = function (RequestInterface $request) use (&$numberOfRequestsFired) {
+        $requestUrls = [];
+        $inspector = function (RequestInterface $request) use (&$requestUrls) {
             $payload = json_decode($request->getBody()->getContents(), true);
             self::assertSame('backend', $payload['context']);
             self::assertSame('han-solo', $payload['loginData']['uname']);
             self::assertSame('********', $payload['loginData']['uident']);
-            $numberOfRequestsFired++;
+            $requestUrls[] = (string)$request->getUri();
         };
         $this->registerRequestInspector($inspector);
         $securityAspect = SecurityAspect::provideIn($this->get(Context::class));
@@ -131,9 +131,10 @@ final class WebhookExecutionTest extends FunctionalTestCase
 
         $userRequest = GeneralUtility::makeInstance(BackendUserAuthentication::class);
         $userRequest->start($request);
-        // second request
-        $userRequest->start($request);
-        self::assertEquals(2, $numberOfRequestsFired);
+        self::assertEqualsCanonicalizing(
+            ['https://localhost', 'https://t3main.devbox.example.com/'],
+            $requestUrls
+        );
     }
 
     #[Test]
