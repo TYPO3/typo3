@@ -4587,44 +4587,6 @@ class ContentObjectRenderer
             $queryBuilder->selectLiteral($this->sanitizeSelectPart($connection, $conf['selectFields'], $table));
         }
 
-        // Setting LIMIT:
-        if (($conf['max'] ?? false) || ($conf['begin'] ?? false)) {
-            // Finding the total number of records, if used:
-            if (str_contains(strtolower(($conf['begin'] ?? '') . ($conf['max'] ?? '')), 'total')) {
-                $countQueryBuilder = $connection->createQueryBuilder();
-                $countQueryBuilder->getRestrictions()->removeAll();
-                $countQueryBuilder->count('*')
-                    ->from($table)
-                    ->where($queryParts['where']);
-
-                if (is_array($queryParts['groupBy'])) {
-                    $countQueryBuilder->groupBy(...$queryParts['groupBy']);
-                }
-
-                try {
-                    $count = $countQueryBuilder->executeQuery()->fetchOne();
-                    if (isset($conf['max'])) {
-                        $conf['max'] = str_ireplace('total', $count, (string)$conf['max']);
-                    }
-                    if (isset($conf['begin'])) {
-                        $conf['begin'] = str_ireplace('total', $count, (string)$conf['begin']);
-                    }
-                } catch (DBALException $e) {
-                    $this->timeTracker->setTSlogMessage($e->getMessage());
-                    return '';
-                }
-            }
-
-            if (isset($conf['begin']) && $conf['begin'] > 0) {
-                $conf['begin'] = MathUtility::forceIntegerInRange((int)ceil($this->calc($conf['begin'])), 0);
-                $queryBuilder->setFirstResult($conf['begin']);
-            }
-            if (isset($conf['max'])) {
-                $conf['max'] = MathUtility::forceIntegerInRange((int)ceil($this->calc($conf['max'])), 0);
-                $queryBuilder->setMaxResults($conf['max'] ?: 100000);
-            }
-        }
-
         // Setting up tablejoins:
         if ($conf['join'] ?? false) {
             $joinParts = QueryHelper::parseJoin($conf['join']);
@@ -4650,6 +4612,37 @@ class ContentObjectRenderer
                 $joinParts['tableAlias'],
                 $joinParts['joinCondition']
             );
+        }
+
+        // Setting LIMIT:
+        if (($conf['max'] ?? false) || ($conf['begin'] ?? false)) {
+            // Finding the total number of records, if used:
+            if (str_contains(strtolower(($conf['begin'] ?? '') . ($conf['max'] ?? '')), 'total')) {
+                $countQueryBuilder = clone $queryBuilder;
+                $countQueryBuilder->count('*')->resetOrderBy();
+
+                try {
+                    $count = $countQueryBuilder->executeQuery()->fetchOne();
+                    if (isset($conf['max'])) {
+                        $conf['max'] = str_ireplace('total', $count, (string)$conf['max']);
+                    }
+                    if (isset($conf['begin'])) {
+                        $conf['begin'] = str_ireplace('total', $count, (string)$conf['begin']);
+                    }
+                } catch (DBALException $e) {
+                    $this->timeTracker->setTSlogMessage($e->getMessage());
+                    return '';
+                }
+            }
+
+            if (isset($conf['begin']) && $conf['begin'] > 0) {
+                $conf['begin'] = MathUtility::forceIntegerInRange((int)ceil($this->calc($conf['begin'])), 0);
+                $queryBuilder->setFirstResult($conf['begin']);
+            }
+            if (isset($conf['max'])) {
+                $conf['max'] = MathUtility::forceIntegerInRange((int)ceil($this->calc($conf['max'])), 0);
+                $queryBuilder->setMaxResults($conf['max'] ?: 100000);
+            }
         }
 
         // Convert the QueryBuilder object into a SQL statement.

@@ -4562,6 +4562,36 @@ content="benni">',
         $tcaSchemaFactory->load($backedupTca, true);
     }
 
+    #[Test]
+    public function totalLimitUsesJoinedTableInCountQuery(): void
+    {
+        $connection = $this->get(ConnectionPool::class)->getConnectionForTable('tt_content');
+        $connection->insert('pages', ['uid' => 1, 'pid' => 0, 'title' => 'Page']);
+        foreach ([10, 20] as $uid) {
+            $connection->insert('tt_content', ['uid' => $uid, 'pid' => 1, 'header' => (string)$uid]);
+        }
+
+        $pageInformation = new PageInformation();
+        $pageInformation->setId(1);
+        $pageInformation->setContentFromPid(1);
+        $subject = $this->get(ContentObjectRenderer::class);
+        $subject->setRequest($this->getPreparedRequest()->withAttribute('frontend.page.information', $pageInformation));
+
+        $configuration = [
+            'pidInList' => '1',
+            'selectFields' => 'tt_content.uid',
+            'join' => 'pages ON pages.uid = tt_content.pid',
+            'where' => 'pages.uid = 1',
+            'orderBy' => 'tt_content.uid',
+        ];
+
+        $rows = $subject->exec_getQuery('tt_content', $configuration + ['max' => 'total - 1'])->fetchAllAssociative();
+        self::assertSame([10], array_map(intval(...), array_column($rows, 'uid')));
+
+        $rows = $subject->exec_getQuery('tt_content', $configuration + ['begin' => 'total - 1'])->fetchAllAssociative();
+        self::assertSame([20], array_map(intval(...), array_column($rows, 'uid')));
+    }
+
     public static function getRecordsRespectsUidInListOrderDataProvider(): array
     {
         return [
