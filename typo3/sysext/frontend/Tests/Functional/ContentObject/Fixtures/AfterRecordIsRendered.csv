@@ -1,0 +1,7 @@
+"pages"
+,"uid","pid","title","slug"
+,1,0,"Root","/"
+"tt_content"
+,"uid","pid","sorting","CType","header"
+,1,1,256,"header","First"
+,2,1,512,"header","Second"

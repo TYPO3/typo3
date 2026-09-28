@@ -15,11 +15,14 @@
 
 namespace TYPO3\CMS\Frontend\ContentObject;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LogLevel;
 use TYPO3\CMS\Core\Database\RelationHandler;
+use TYPO3\CMS\Core\Domain\RecordFactory;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Category\Collection\CategoryCollection;
+use TYPO3\CMS\Frontend\ContentObject\Event\AfterRecordIsRenderedEvent;
 
 /**
  * Contains RECORDS class object.
@@ -40,7 +43,11 @@ class RecordsContentObject extends AbstractContentObject
      */
     protected $data = [];
 
-    public function __construct(protected readonly TimeTracker $timeTracker) {}
+    public function __construct(
+        protected readonly TimeTracker $timeTracker,
+        protected readonly EventDispatcherInterface $eventDispatcher,
+        protected readonly RecordFactory $recordFactory,
+    ) {}
 
     /**
      * Rendering the cObject, RECORDS
@@ -107,7 +114,7 @@ class RecordsContentObject extends AbstractContentObject
                         $this->cObj->lastChanged($row['tstamp'] ?? 0);
                         $cObj->setRequest($this->request);
                         $cObj->start($row, $val['table']);
-                        $tmpValue = $cObj->cObjGetSingle($renderObjName, $renderObjConf, $renderObjKey);
+                        $tmpValue = $this->dispatchAfterRecordIsRenderedEvent($cObj->cObjGetSingle($renderObjName, $renderObjConf, $renderObjKey), $val['table'], $row);
                         $theValue .= $tmpValue;
                     }
                 }
@@ -220,5 +227,21 @@ class RecordsContentObject extends AbstractContentObject
                 }
             }
         }
+    }
+
+    private function dispatchAfterRecordIsRenderedEvent(string $content, string $table, array $row): string
+    {
+        try {
+            $record = $this->recordFactory->createResolvedRecordFromDatabaseRow($table, $row);
+        } catch (\Exception) {
+            try {
+                // e.g. a custom "selectFields" omitting system fields prevents resolving
+                $record = $this->recordFactory->createRawRecord($table, $row);
+            } catch (\Exception) {
+                // e.g. tables without TCA or rows lacking the type field must still render
+                return $content;
+            }
+        }
+        return $this->eventDispatcher->dispatch(new AfterRecordIsRenderedEvent($content, $record, $this->request))->getRenderedRecord();
     }
 }
