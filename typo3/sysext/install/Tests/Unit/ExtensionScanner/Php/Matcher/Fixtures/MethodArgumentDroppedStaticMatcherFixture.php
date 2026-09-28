@@ -44,5 +44,7 @@ class MethodArgumentDroppedStaticMatcherFixture
         $foo::getFileAbsFileName('foo', 'bar');
         // Match (again). No longer ignored.
         \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('foo', 'bar');
+        // No match: First-class callable syntax, there are no arguments to count
+        GeneralUtility::getFileAbsFileName(...);
     }
 }
