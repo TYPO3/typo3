@@ -124,7 +124,7 @@
         <source>Delete redirects</source>
       </trans-unit>
       <trans-unit id="labels.delete.message">
-        <source>Are you sure you want to delete all marked redirects?</source>
+        <source>Delete all marked redirects? You can restore deleted redirects from the TYPO3 recycler.</source>
       </trans-unit>
     </body>
   </file>
