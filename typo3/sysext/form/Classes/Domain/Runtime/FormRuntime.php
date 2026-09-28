@@ -40,6 +40,7 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Error\Error;
 use TYPO3\CMS\Extbase\Error\Result;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
@@ -63,7 +64,6 @@ use TYPO3\CMS\Form\Event\BeforeRenderableIsValidatedEvent;
 use TYPO3\CMS\Form\Exception as FormException;
 use TYPO3\CMS\Form\Mvc\Validation\EmptyValidator;
 use TYPO3\CMS\Form\Security\HashScope;
-use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
@@ -110,8 +110,6 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 #[Autoconfigure(public: true, shared: false)]
 class FormRuntime implements RootRenderableInterface, \ArrayAccess
 {
-    public const HONEYPOT_NAME_SESSION_IDENTIFIER = 'tx_form_honeypot_name_';
-
     protected FormDefinition $formDefinition;
     protected RequestInterface $request;
     protected ResponseInterface $response;
@@ -162,6 +160,8 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
      * @var FinisherInterface
      */
     protected $currentFinisher;
+
+    private bool $honeypotNameIsMissing = false;
 
     public function __construct(
         protected readonly ContainerInterface $container,
@@ -360,12 +360,14 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
                 return;
             }
 
-            $honeypotNameFromSession = $this->getHoneypotNameFromSession($this->lastDisplayedPage);
-            if ($honeypotNameFromSession) {
-                $honeypotElement = $this->lastDisplayedPage->createElement($honeypotNameFromSession, $renderingOptions['honeypot']['formElementToUse']);
-                $validator = $this->validatorResolver->createValidator(EmptyValidator::class, [], $this->request);
-                $honeypotElement->addValidator($validator);
+            $honeypotName = $this->formState->getHoneypotName($this->lastDisplayedPage->getIndex());
+            if ($honeypotName === null) {
+                $this->honeypotNameIsMissing = true;
+                return;
             }
+            $honeypotElement = $this->lastDisplayedPage->createElement($honeypotName, $renderingOptions['honeypot']['formElementToUse']);
+            $validator = $this->validatorResolver->createValidator(EmptyValidator::class, [], $this->request);
+            $honeypotElement->addValidator($validator);
         }
     }
 
@@ -392,9 +394,9 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
             }
 
             if (!$this->isFirstRequest()) {
-                $honeypotNameFromSession = $this->getHoneypotNameFromSession($this->lastDisplayedPage);
-                if ($honeypotNameFromSession) {
-                    $honeypotElement = $this->formDefinition->getElementByIdentifier($honeypotNameFromSession);
+                $previousHoneypotName = $this->formState->getHoneypotName($this->lastDisplayedPage->getIndex());
+                if ($previousHoneypotName !== null) {
+                    $honeypotElement = $this->formDefinition->getElementByIdentifier($previousHoneypotName);
                     if ($honeypotElement instanceof FormElementInterface) {
                         $this->lastDisplayedPage->removeElement($honeypotElement);
                     }
@@ -415,52 +417,8 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
             } else {
                 $this->currentPage->moveElementBefore($honeypotElement, $referenceElement);
             }
-            $this->setHoneypotNameInSession($this->currentPage, $honeypotName);
+            $this->formState->setHoneypotName($this->currentPage->getIndex(), $honeypotName);
         }
-    }
-
-    /**
-     * @return string|null
-     */
-    protected function getHoneypotNameFromSession(Page $page)
-    {
-        if ($this->isFrontendUserAuthenticated()) {
-            $honeypotNameFromSession = $this->getFrontendUser()->getKey(
-                'user',
-                self::HONEYPOT_NAME_SESSION_IDENTIFIER . $this->getIdentifier() . $page->getIdentifier()
-            );
-        } else {
-            $honeypotNameFromSession = $this->getFrontendUser()->getKey(
-                'ses',
-                self::HONEYPOT_NAME_SESSION_IDENTIFIER . $this->getIdentifier() . $page->getIdentifier()
-            );
-        }
-        return $honeypotNameFromSession;
-    }
-
-    protected function setHoneypotNameInSession(Page $page, string $honeypotName)
-    {
-        if ($this->isFrontendUserAuthenticated()) {
-            $this->getFrontendUser()->setKey(
-                'user',
-                self::HONEYPOT_NAME_SESSION_IDENTIFIER . $this->getIdentifier() . $page->getIdentifier(),
-                $honeypotName
-            );
-        } else {
-            $this->getFrontendUser()->setKey(
-                'ses',
-                self::HONEYPOT_NAME_SESSION_IDENTIFIER . $this->getIdentifier() . $page->getIdentifier(),
-                $honeypotName
-            );
-        }
-    }
-
-    /**
-     * Necessary to know if honeypot information should be stored in the user session info, or in the anonymous session.
-     */
-    protected function isFrontendUserAuthenticated(): bool
-    {
-        return (bool)$this->context->getPropertyFromAspect('frontend.user', 'isLoggedIn', false);
     }
 
     protected function processVariants(): void
@@ -523,6 +481,9 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     protected function processSubmittedFormValues()
     {
         $result = $this->mapAndValidatePage($this->lastDisplayedPage);
+        if ($this->honeypotNameIsMissing) {
+            $result->addError(new Error('The form state does not contain the honeypot name of the submitted page.', 1792099637));
+        }
         if ($result->hasErrors() && !$this->userWentBackToPreviousStep()) {
             $this->currentPage = $this->lastDisplayedPage;
             /** @var ExtbaseRequestParameters $extbaseRequestParameters */
@@ -1090,11 +1051,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
                 'siteLanguage' => $this->getRequest()->getAttribute('language'),
             ]
         );
-    }
-
-    protected function getFrontendUser(): FrontendUserAuthentication
-    {
-        return $this->request->getAttribute('frontend.user');
     }
 
     protected function isRenderableEnabled(RenderableInterface $renderable): bool

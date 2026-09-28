@@ -30,10 +30,15 @@ use Symfony\Component\Mime\RawMessage;
 use TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Crypto\HashAlgo;
+use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Serializer\PolymorphicDeserializer;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
+use TYPO3\CMS\Form\Domain\Runtime\FormState;
+use TYPO3\CMS\Form\Security\HashScope;
+use TYPO3\CMS\Form\Tests\Functional\Framework\FormHandling\FormData;
 use TYPO3\CMS\Form\Tests\Functional\Framework\FormHandling\FormDataFactory;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerFactory;
@@ -513,5 +518,65 @@ final class RequestHandlingTest extends FunctionalTestCase
         $honeypotIdFromRevisit = $formData->getHoneypotId();
 
         self::assertNotEquals($honeypotIdFromRevisit, $honeypotId, 'honeypot differs from historical honeypot');
+    }
+
+    #[DataProvider('theCachingBehavesTheSameForAllFormIntegrationVariantsDataProvider')]
+    #[Test]
+    public function theFormIsShownAgainIfTheHoneypotIsFilledWithoutFrontendSession(string $formIdentifier, string $formNamePrefix): void
+    {
+        $uri = static::ROOT_PAGE_BASE_URI . '/form';
+        $subject = new FormDataFactory();
+
+        $internalRequest = new InternalRequest($uri)->withAttribute('currentContentObject', $this->get(ContentObjectRenderer::class));
+        $pageMarkup = (string)$this->executeFrontendSubRequest($internalRequest, null, true)->getBody();
+        $formData = $subject->fromHtmlMarkupAndXpath($pageMarkup, '//form[@id="' . $formIdentifier . '"]');
+        $honeypotId = $formData->getHoneypotId();
+        self::assertNotEmpty($honeypotId, 'honeypot element exists');
+
+        // sub requests carry no frontend session cookie
+        $internalRequest = new InternalRequest($uri)->withAttribute('currentContentObject', $this->get(ContentObjectRenderer::class));
+        $formPostRequest = $formData->with('text-1', 'FOObarBAZ')->with($honeypotId, 'spam')->toPostRequest($internalRequest);
+        $pageMarkup = (string)$this->executeFrontendSubRequest($formPostRequest, null, true)->getBody();
+        $formData = $subject->fromHtmlMarkupAndXpath($pageMarkup, '//form[@id="' . $formIdentifier . '"]');
+
+        $this->assertFirstFormStepIsShownAgain($formData, $formNamePrefix . '[' . $formIdentifier . '][text-1]');
+    }
+
+    #[DataProvider('theCachingBehavesTheSameForAllFormIntegrationVariantsDataProvider')]
+    #[Test]
+    public function theFormIsShownAgainIfTheFormStateHasNoHoneypotName(string $formIdentifier, string $formNamePrefix): void
+    {
+        $uri = static::ROOT_PAGE_BASE_URI . '/form';
+        $subject = new FormDataFactory();
+
+        $internalRequest = new InternalRequest($uri)->withAttribute('currentContentObject', $this->get(ContentObjectRenderer::class));
+        $pageMarkup = (string)$this->executeFrontendSubRequest($internalRequest, null, true)->getBody();
+        $formData = $subject->fromHtmlMarkupAndXpath($pageMarkup, '//form[@id="' . $formIdentifier . '"]');
+
+        // a validly signed state as rendered before the honeypot name was stored in it
+        $formState = new FormState();
+        $formState->setLastDisplayedPageIndex(0);
+        $serializedFormState = $this->get(HashService::class)->appendHmac(
+            base64_encode(serialize($formState)),
+            HashScope::FormState->prefix(),
+            HashAlgo::SHA3_256
+        );
+
+        $internalRequest = new InternalRequest($uri)->withAttribute('currentContentObject', $this->get(ContentObjectRenderer::class));
+        $formPostRequest = $formData->with('text-1', 'FOObarBAZ')->with('__state', $serializedFormState)->toPostRequest($internalRequest);
+        $pageMarkup = (string)$this->executeFrontendSubRequest($formPostRequest, null, true)->getBody();
+        $formData = $subject->fromHtmlMarkupAndXpath($pageMarkup, '//form[@id="' . $formIdentifier . '"]');
+
+        $this->assertFirstFormStepIsShownAgain($formData, $formNamePrefix . '[' . $formIdentifier . '][text-1]');
+    }
+
+    private function assertFirstFormStepIsShownAgain(FormData $formData, string $textElementName): void
+    {
+        $formMarkup = $formData->getFormMarkup();
+        self::assertStringNotContainsString('Summary step', $formMarkup, 'the summary form step is not shown');
+        self::assertStringNotContainsString('Form is submitted', $formMarkup, 'the finisher text is not shown');
+        self::assertNotEmpty($formData->getHoneypotId(), 'the first form step with a honeypot is shown again');
+        self::assertEquals('FOObarBAZ', $formData->toArray()['elementData'][$textElementName]['value'] ?? null, 'the submitted value is shown again');
+        self::assertCount(0, $this->getMailSpoolMessages(), 'no mail is sent');
     }
 }

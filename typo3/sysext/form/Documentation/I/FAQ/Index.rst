@@ -184,16 +184,6 @@ your TYPO3 database permanently. The great folks of Pagemachine created an
 `extension <https://github.com/pagemachine/typo3-formlog>`_ for this.
 
 
-..  _faq-honeypt-session:
-
-The honeypot does not work with static site caching. What can I do?
-===================================================================
-
-If you want to use static site caching - for example using the
-staticfilecache extension - you should disable the automatic inclusion of the
-honeypot. Read more :ref:`here<prototypes.prototypeIdentifier.formelementsdefinition.form.renderingoptions.honeypot.enable>`.
-
-
 ..  _faq-form-element-default-value:
 
 How do I set a default value for my form element?
