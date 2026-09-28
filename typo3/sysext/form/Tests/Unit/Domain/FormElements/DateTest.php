@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Tests\Unit\Domain\FormElements;
 
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration;
 use TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter;
 use TYPO3\CMS\Form\Domain\Model\FormDefinition;
@@ -46,21 +47,10 @@ final class DateTest extends UnitTestCase
             ->method('getPropertyMappingConfiguration')
             ->willReturn($propertyMappingConfiguration);
 
-        $rootForm = $this->createMock(FormDefinition::class);
-        $rootForm
-            ->expects($this->exactly(2))
-            ->method('getProcessingRule')
-            ->with('birthDate')
-            ->willReturn($processingRule);
-
-        $subject = $this->getMockBuilder(Date::class)
-            ->onlyMethods(['getRootForm'])
-            ->setConstructorArgs(['birthDate', 'BirthDate'])
-            ->getMock();
-        $subject
-            ->expects($this->exactly(2))
-            ->method('getRootForm')
-            ->willReturn($rootForm);
+        $rootForm = new FormDefinition('root');
+        GeneralUtility::addInstance(ProcessingRule::class, $processingRule);
+        $subject = new Date('birthDate', 'BirthDate');
+        $subject->setParentRenderable($rootForm);
 
         self::assertSame('BirthDate', $subject->getType());
         $subject->initializeFormElement();
