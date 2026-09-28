@@ -107,7 +107,8 @@ class SimpleParser
         $characters = str_split($string);
         foreach ($characters as $i => $character) {
             // skip tokens that already haven been processed
-            if ($skip > 0 && $skip-- > 0) {
+            if ($skip > 0) {
+                --$skip;
                 continue;
             }
             // CDATA start

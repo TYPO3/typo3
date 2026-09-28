@@ -85,12 +85,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/DependencyInjection/ServiceProviderRegistry.php
 
 		-
-			rawMessage: Comparison operation ">" between 1|2|3|6|7|8 and 0 is always true.
-			identifier: greater.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Html/SimpleParser.php
-
-		-
 			rawMessage: Cannot assign offset 'address' to string.
 			identifier: offsetAssign.dimType
 			count: 1
