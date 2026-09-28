@@ -169,12 +169,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Tree/TableConfiguration/ArrayTreeRenderer.php
 
 		-
-			rawMessage: 'Call to function is_callable() with callable-string will always evaluate to true.'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Utility/GeneralUtility.php
-
-		-
 			rawMessage: PHPDoc tag @var with type TYPO3\CMS\Core\Authentication\AbstractAuthenticationService|null is not subtype of native type object.
 			identifier: varTag.nativeType
 			count: 1

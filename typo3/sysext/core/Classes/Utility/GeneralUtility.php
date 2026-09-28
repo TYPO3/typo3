@@ -2391,7 +2391,7 @@ class GeneralUtility
             } else {
                 throw new \InvalidArgumentException('No class named ' . $parts[0], 1294585866);
             }
-        } elseif (function_exists($funcName) && is_callable($funcName)) {
+        } elseif (function_exists($funcName)) {
             // It's a function
             if (!$isTrusted) {
                 $invokableAssertion?->assertCallable($funcName);
