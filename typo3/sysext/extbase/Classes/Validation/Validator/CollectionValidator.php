@@ -46,7 +46,7 @@ final class CollectionValidator extends AbstractGenericObjectValidator
         $this->result = new Result();
 
         if ($this->acceptsEmptyValues === false || $this->isEmpty($value) === false) {
-            if ((is_object($value) && !TypeHandlingUtility::isCollectionType(get_class($value))) && !is_array($value)) {
+            if (is_object($value) && !TypeHandlingUtility::isCollectionType(get_class($value))) {
                 $this->addError('The given subject was not a collection.', 1317204797);
                 return $this->result;
             }
