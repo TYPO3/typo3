@@ -72,9 +72,8 @@ class MethodArgumentUnusedMatcher extends AbstractCoreMatcher
                     // and the registered argument is not given as null.
                     if (!$isArgumentUnpackingUsed
                         && $numberOfArguments >= $droppedArgumentNumber
-                        && !($node->args[$droppedArgumentNumber - 1]->value instanceof ConstFetch)
-                        && (!isset($node->args[$droppedArgumentNumber - 1]->value->name->name->parts[0])
-                            || $node->args[$droppedArgumentNumber - 1]->value->name->name->parts[0] !== null)
+                        && !($node->args[$droppedArgumentNumber - 1]->value instanceof ConstFetch
+                            && strtolower($node->args[$droppedArgumentNumber - 1]->value->name->toString()) === 'null')
                     ) {
                         $isPossibleMatch = true;
                         $match['message'] = 'Call to method "' . $node->name->name . '()" with'

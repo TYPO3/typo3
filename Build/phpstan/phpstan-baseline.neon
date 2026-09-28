@@ -275,27 +275,3 @@ parameters:
 			identifier: nullCoalesce.offset
 			count: 1
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/RecordsContentObject.php
-
-		-
-			rawMessage: Result of || is always true.
-			identifier: booleanOr.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/install/Classes/ExtensionScanner/Php/Matcher/ConstructorArgumentMatcher.php
-
-		-
-			rawMessage: 'Strict comparison using !== between mixed and null will always evaluate to true.'
-			identifier: notIdentical.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/install/Classes/ExtensionScanner/Php/Matcher/ConstructorArgumentMatcher.php
-
-		-
-			rawMessage: Result of || is always true.
-			identifier: booleanOr.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/install/Classes/ExtensionScanner/Php/Matcher/MethodArgumentUnusedMatcher.php
-
-		-
-			rawMessage: 'Strict comparison using !== between mixed and null will always evaluate to true.'
-			identifier: notIdentical.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/install/Classes/ExtensionScanner/Php/Matcher/MethodArgumentUnusedMatcher.php
