@@ -187,12 +187,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Classes/Property/TypeConverter/AbstractFileFolderConverter.php
 
 		-
-			rawMessage: 'Call to function is_array() with object will always evaluate to false.'
-			identifier: function.impossibleType
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Validation/Validator/CollectionValidator.php
-
-		-
 			rawMessage: 'Call to static method PHPUnit\Framework\Assert::assertSame() with TYPO3Tests\TestDataMapper\Domain\Model\Enum\IntegerBackedEnum::ONE and TYPO3Tests\TestDataMapper\Domain\Model\Enum\IntegerBackedEnum will always evaluate to true.'
 			identifier: staticMethod.alreadyNarrowedType
 			count: 1
