@@ -181,12 +181,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Functional/Persistence/RepositoryTest.php
 
 		-
-			rawMessage: 'Call to function is_object() with object will always evaluate to true.'
-			identifier: function.alreadyNarrowedType
-			count: 2
-			path: ../../typo3/sysext/fluid/Classes/ViewHelpers/Form/SelectViewHelper.php
-
-		-
 			rawMessage: 'Strict comparison using !== between mixed and null will always evaluate to true.'
 			identifier: notIdentical.alwaysTrue
 			count: 1

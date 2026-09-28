@@ -183,7 +183,7 @@ final class SelectViewHelper extends AbstractFormFieldViewHelper
                 }
             } elseif (!$this->persistenceManager->isNewObject($value)) {
                 $key = $this->persistenceManager->getIdentifierByObject($value);
-            } elseif (is_object($value) && method_exists($value, '__toString')) {
+            } elseif (method_exists($value, '__toString')) {
                 $key = (string)$value;
             } elseif (is_object($value)) {
                 throw new InvalidArgumentValueException('No identifying value for object of class "' . get_class($value) . '" found.', 1247826696);
@@ -197,7 +197,7 @@ final class SelectViewHelper extends AbstractFormFieldViewHelper
                         throw new InvalidArgumentValueException('Label value for object of class "' . get_class($value) . '" was an object without a __toString() method.', 1247827553);
                     }
                 }
-            } elseif (is_object($value) && method_exists($value, '__toString')) {
+            } elseif (method_exists($value, '__toString')) {
                 $value = (string)$value;
             } elseif (!$this->persistenceManager->isNewObject($value)) {
                 $value = $this->persistenceManager->getIdentifierByObject($value);
