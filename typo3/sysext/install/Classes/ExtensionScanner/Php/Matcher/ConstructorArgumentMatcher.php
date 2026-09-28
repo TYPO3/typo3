@@ -202,11 +202,8 @@ class ConstructorArgumentMatcher extends AbstractCoreMatcher
             static function (int $position) use ($arguments) {
                 $index = $position - 1;
                 return isset($arguments[$index]->value)
-                    && !$arguments[$index]->value instanceof ConstFetch
-                    && (
-                        !isset($arguments[$index]->value->name->name->parts[0])
-                        || $arguments[$index]->value->name->name->parts[0] !== null
-                    );
+                    && !($arguments[$index]->value instanceof ConstFetch
+                        && strtolower($arguments[$index]->value->name->toString()) === 'null');
             }
         );
         if (empty($unusedArgumentPositions)) {

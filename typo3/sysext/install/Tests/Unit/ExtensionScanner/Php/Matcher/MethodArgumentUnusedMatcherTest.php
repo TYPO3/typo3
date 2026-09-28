@@ -147,6 +147,18 @@ final class MethodArgumentUnusedMatcherTest extends UnitTestCase
                 $someVar->aMethod(\'arg1\', null, null);',
                 [], // no hit
             ],
+            'boolean constant in unused argument is reported' => [
+                [
+                    'Foo->aMethod' => [
+                        'unusedArgumentNumbers' => [2],
+                        'restFiles' => ['Foo-1.rst'],
+                    ],
+                ],
+                '<?php $someVar->aMethod("arg1", true);',
+                [
+                    ['restFiles' => ['Foo-1.rst']],
+                ],
+            ],
             'one match, third argument still given not null' => [
                 [
                     'Foo->aMethod' => [

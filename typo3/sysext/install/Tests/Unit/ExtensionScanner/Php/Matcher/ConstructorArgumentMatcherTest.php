@@ -100,4 +100,24 @@ final class ConstructorArgumentMatcherTest extends TestCase
         $lineNumbers = array_column($subject->getMatches(), 'line');
         self::assertEquals($expectation, $lineNumbers);
     }
+
+    #[Test]
+    public function nonNullConstantInUnusedConstructorArgumentIsReported(): void
+    {
+        $parser = (new ParserFactory())->createForVersion(PhpVersion::fromComponents(8, 5));
+        $statements = $parser->parse('<?php new \\TYPO3\\CMS\\Install\\Tests\\Unit\\ExtensionScanner\\Php\\Matcher\\Fixtures\\Subject("a", false);');
+        $subject = new ConstructorArgumentMatcher([
+            Subject::class => [
+                'unused' => [
+                    'unusedArgumentNumbers' => [2],
+                    'restFiles' => ['Foo-1.rst'],
+                ],
+            ],
+        ]);
+        $traverser = new NodeTraverser();
+        $traverser->addVisitor($subject);
+        $traverser->traverse($statements);
+
+        self::assertCount(1, $subject->getMatches());
+    }
 }
