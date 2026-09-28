@@ -96,7 +96,7 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
                 return $this->sendExternalRequest($resolvedUrl, $request);
             }
             // Create a sub-request and do not take any special query parameters into account
-            $subRequest = $request->withQueryParams([])->withUri(new Uri($resolvedUrl))->withMethod('GET');
+            $subRequest = $request->withoutAttribute('extbase')->withQueryParams([])->withUri(new Uri($resolvedUrl))->withMethod('GET');
             $subResponse = $this->sendSubRequest($subRequest, $urlParams['pageuid'], $request);
 
             if ($subResponse->getStatusCode() >= 300) {

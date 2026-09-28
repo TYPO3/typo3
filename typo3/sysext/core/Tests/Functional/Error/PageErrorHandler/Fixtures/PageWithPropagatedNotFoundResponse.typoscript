@@ -10,9 +10,16 @@ page.footerData.10.value = <!-- footerDataOfRequestedPage -->
 page.10.value = contentOfNotFoundPage
 page.headerData.10.value = <meta name="marker" content="headerDataOfNotFoundPage">
 page.footerData.10.value = <!-- footerDataOfNotFoundPage -->
+page.30 = USER_INT
+page.30.userFunc = TYPO3\CMS\Core\Tests\Functional\Error\PageErrorHandler\Fixtures\PageContentErrorHandlerUserFuncs->renderRequestType
 [global]
 
 [page["uid"] == 100]
 page.20 = USER_INT
 page.20.userFunc = TYPO3\CMS\Core\Tests\Functional\Error\PageErrorHandler\Fixtures\PageContentErrorHandlerUserFuncs->propagateNotFoundResponse
+[global]
+
+[page["uid"] == 101]
+page.20 = USER_INT
+page.20.userFunc = TYPO3\CMS\Core\Tests\Functional\Error\PageErrorHandler\Fixtures\PageContentErrorHandlerUserFuncs->propagateNotFoundResponseFromExtbasePlugin
 [global]
