@@ -19,12 +19,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Authentication/AbstractUserAuthentication.php
 
 		-
-			rawMessage: 'Parameter #2 $values of function vsprintf expects array<bool|float|int|string|null>, array<int|string, array<int, string>> given.'
-			identifier: argument.type
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Authentication/AuthenticationService.php
-
-		-
 			rawMessage: 'Unsafe usage of new static().'
 			identifier: new.static
 			count: 1

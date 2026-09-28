@@ -215,7 +215,7 @@ class AuthenticationService extends AbstractAuthenticationService implements Mim
      * If a marker ###IP### is present in the message, it is automatically replaced with the REMOTE_ADDR
      *
      * @param string $message Message to output
-     * @param array<int,string> $params
+     * @param string ...$params Values used for formatting
      */
     protected function writeLogMessage(string $message, ...$params): void
     {
