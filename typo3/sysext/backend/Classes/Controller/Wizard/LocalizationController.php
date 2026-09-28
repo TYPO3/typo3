@@ -469,7 +469,8 @@ readonly class LocalizationController
                 $sourceLanguage,
                 $targetLanguage,
                 $mode,
-                $additionalData
+                $additionalData,
+                GeneralUtility::sanitizeLocalUrl((string)($params['returnUrl'] ?? ''), $request) ?: null,
             );
         } catch (\ValueError) {
             return new JsonResponse(['error' => 'Invalid localization mode'], 400);

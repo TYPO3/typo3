@@ -1791,6 +1791,9 @@ class EditDocumentController
                                 ->setAttribute('record-uid', (string)$rowsByLang[LanguageMarker::DEFAULT_LANGUAGE]['uid'])
                                 ->setAttribute('target-language', (string)$languageId)
                                 ->setLabel($selectorOptionLabel);
+                            if ($this->returnUrl) {
+                                $languageItem->setAttribute('return-url', $this->returnUrl);
+                            }
                             if (!empty($language['flagIcon'])) {
                                 $languageItem->setIcon($this->iconFactory->getIcon($language['flagIcon']));
                             }

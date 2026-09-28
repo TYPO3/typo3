@@ -2259,6 +2259,7 @@ class DatabaseRecordList
                     . ' record-type="' . $table . '"'
                     . ' record-uid="' . $record->getUid() . '"'
                     . ' target-language="' . $lUid_OnPage . '"'
+                    . ' return-url="' . htmlspecialchars((string)$this->listURL()->withFragment('t3-table-' . $table . (($table === 'pages' && $this->showOnlyTranslatedRecords) ? '_translated' : ''))) . '"'
                     . '>'
                     . $lC
                     . '</typo3-backend-localization-button>';

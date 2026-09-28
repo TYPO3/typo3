@@ -52,6 +52,7 @@ export interface LocalizationContext {
   targetLanguage: number;
   recordType: string;
   recordUid: number;
+  returnUrl?: string;
   recordInfo: RecordInfo;
   getStoreData: <T extends LocalizationDataStoreKey>(key: T) => NoInfer<LocalizationDataStore[T]>;
   setStoreData: <T extends LocalizationDataStoreKey>(key: T, value: NoInfer<LocalizationDataStore[T]>) => void;
@@ -71,6 +72,7 @@ export class LocalizationWizard extends LitElement {
   @property({ type: String, attribute: 'record-type' }) recordType: string;
   @property({ type: Number, attribute: 'record-uid' }) recordUid: number;
   @property({ type: Number, attribute: 'target-language' }) targetLanguage?: number;
+  @property({ type: String, attribute: 'return-url' }) returnUrl?: string;
 
   @query('typo3-backend-wizard') wizard!: Wizard<LocalizationDataStore>;
 
@@ -117,6 +119,7 @@ export class LocalizationWizard extends LitElement {
       wizard: this.wizard,
       recordType: this.recordType,
       recordUid: this.recordUid,
+      returnUrl: this.returnUrl,
       recordInfo: this.recordInfoTask.value,
       targetLanguage: this.targetLanguage,
       getStoreData: this.wizard.getStoreData.bind(this.wizard),
