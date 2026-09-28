@@ -53,6 +53,11 @@ class FormState
     protected $formValues = [];
 
     /**
+     * @var array<int, string> honeypot element identifiers, indexed by page index
+     */
+    protected array $honeypotNames = [];
+
+    /**
      * @return bool FALSE if the form has never been submitted before, TRUE otherwise
      */
     public function isFormSubmitted(): bool
@@ -98,5 +103,15 @@ class FormState
         } catch (MissingArrayPathException $exception) {
             return null;
         }
+    }
+
+    public function getHoneypotName(int $pageIndex): ?string
+    {
+        return $this->honeypotNames[$pageIndex] ?? null;
+    }
+
+    public function setHoneypotName(int $pageIndex, string $honeypotName): void
+    {
+        $this->honeypotNames[$pageIndex] = $honeypotName;
     }
 }
