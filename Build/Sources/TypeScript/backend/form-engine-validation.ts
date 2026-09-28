@@ -389,6 +389,10 @@ export default class FormEngineValidation {
       }
     }
 
+    if (!markParent && field.willValidate && !field.validity.valid) {
+      markParent = true;
+    }
+
     const isValid = !markParent;
     field.classList.toggle(FormEngineValidation.errorClass, !isValid);
     field.setAttribute('aria-invalid', markParent.toString());
@@ -666,6 +670,25 @@ export default class FormEngineValidation {
   }
 
   public static registerSubmitCallback() {
+    // The browser's constraint validation (e.g. of `type="email"`) cancels the submit before any submit
+    // handler runs, and cannot report a field located in an inactive tab. Report it the FormEngine way instead.
+    let errorModalPending = false;
+    formEngineInstance.formElement.addEventListener('invalid', (e: Event): void => {
+      const field = e.target as FormEngineFieldElement;
+      if (!field.matches(FormEngineValidation.rulesSelector)) {
+        return;
+      }
+      e.preventDefault();
+      FormEngineValidation.validateField(field);
+      if (!errorModalPending) {
+        errorModalPending = true;
+        window.setTimeout((): void => {
+          errorModalPending = false;
+          FormEngineValidation.showErrorModal();
+        });
+      }
+    }, true);
+
     const submitInterceptor = new SubmitInterceptor(formEngineInstance.formElement);
     submitInterceptor.addPreSubmitCallback((): boolean => {
       if (validationSuspended || FormEngineValidation.isValid()) {

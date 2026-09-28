@@ -48,8 +48,7 @@ const numberValidation: (ElementsBasicInputValidationData & { comment: string })
       { inputValue: '', expectedValue: '', expectedInternalValue: '', expectError: false },
       // `1-2` triggers Chrome's native `bad input` for number fields. Chrome
       // still displays `1-2` to the user but reports an empty value.
-      // @todo: This should show a FormEngine validation-error
-      { inputValue: '1-2', expectedValue: '', expectedInternalValue: '', expectError: false },
+      { inputValue: '1-2', expectedValue: '', expectedInternalValue: '', expectError: true },
       // Empty string should clear the displayed error.
       { inputValue: '', expectedValue: '', expectedInternalValue: '', expectError: false },
     ],
