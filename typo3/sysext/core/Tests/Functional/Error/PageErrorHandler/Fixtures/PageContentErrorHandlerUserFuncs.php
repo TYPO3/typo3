@@ -21,6 +21,9 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Attribute\AsAllowedCallable;
 use TYPO3\CMS\Core\Http\PropagateResponseException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
+use TYPO3\CMS\Extbase\Mvc\Request;
+use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Frontend\Controller\ErrorController;
 
 final readonly class PageContentErrorHandlerUserFuncs
@@ -36,5 +39,28 @@ final readonly class PageContentErrorHandlerUserFuncs
             GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction($request, 'Content unavailable'),
             1756468231
         );
+    }
+
+    /**
+     * Mimics an Extbase action passing its own $this->request to the ErrorController.
+     */
+    #[AsAllowedCallable]
+    public function propagateNotFoundResponseFromExtbasePlugin($_, $__, ServerRequestInterface $request): string
+    {
+        $extbaseRequest = new Request(
+            $request->withAttribute('extbase', (new ExtbaseRequestParameters())->setPluginName('Failing'))
+        );
+        throw new PropagateResponseException(
+            GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction($extbaseRequest, 'Content unavailable'),
+            1790588114
+        );
+    }
+
+    #[AsAllowedCallable]
+    public function renderRequestType($_, $__, ServerRequestInterface $request): string
+    {
+        return $request instanceof RequestInterface || $request->getAttribute('extbase') !== null
+            ? 'renderedWithExtbaseRequest'
+            : 'renderedWithPlainRequest';
     }
 }

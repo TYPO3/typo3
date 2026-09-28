@@ -60,4 +60,15 @@ final class PageContentErrorHandlerTest extends FunctionalTestCase
         self::assertStringContainsString('footerDataOfNotFoundPage', $body);
         self::assertStringNotContainsString('footerDataOfRequestedPage', $body);
     }
+
+    #[Test]
+    public function errorPageSubRequestDoesNotInheritExtbaseRequestOfThePluginItAnswers(): void
+    {
+        $response = $this->executeFrontendSubRequest(new InternalRequest('https://website.local/failing-extbase-plugin'));
+        $body = (string)$response->getBody();
+
+        self::assertSame(404, $response->getStatusCode());
+        self::assertStringContainsString('contentOfNotFoundPage', $body);
+        self::assertStringContainsString('renderedWithPlainRequest', $body);
+    }
 }
