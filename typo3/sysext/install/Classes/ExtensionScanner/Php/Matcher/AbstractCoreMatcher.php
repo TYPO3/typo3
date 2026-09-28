@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Install\ExtensionScanner\Php\Matcher;
 
 use PhpParser\Node;
 use PhpParser\Node\Stmt\Class_;
+use PhpParser\Node\VariadicPlaceholder;
 use PhpParser\NodeVisitorAbstract;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\ExtensionScanner\CodeScannerInterface;
@@ -162,12 +163,15 @@ abstract class AbstractCoreMatcher extends NodeVisitorAbstract implements CodeSc
      * Test if one argument is given as "...$someArray".
      * If so, it kinda defeats any "argument count" approach.
      *
+     * A first-class callable ("foo(...)") has a single VariadicPlaceholder
+     * instead of arguments, so there is nothing to count either.
+     *
      * @param array $arguments List of arguments
      */
     protected function isArgumentUnpackingUsed(array $arguments = []): bool
     {
         foreach ($arguments as $arg) {
-            if ($arg->unpack === true) {
+            if ($arg instanceof VariadicPlaceholder || $arg->unpack === true) {
                 return true;
             }
         }

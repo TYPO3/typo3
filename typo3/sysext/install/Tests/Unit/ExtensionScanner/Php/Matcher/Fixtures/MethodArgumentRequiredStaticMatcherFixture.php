@@ -40,6 +40,8 @@ class MethodArgumentRequiredStaticMatcherFixture
         // No match: All needed args are given
         $foo::addNavigationComponent('foo', 'bar', 'baz');
         $foo::addNavigationComponent(...'foo');
+        // No match: First-class callable syntax, there are no arguments to count
+        ExtensionManagementUtility::addNavigationComponent(...);
         // @extensionScannerIgnoreLine
         ExtensionManagementUtility::addNavigationComponent('foo', 'bar');
         // Match (again). No longer ignored.
