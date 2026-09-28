@@ -106,7 +106,7 @@ readonly class SchemaMigrator
      * filtered by the statements hashes, one by one.
      *
      * @param string[] $statements The CREATE TABLE statements
-     * @param string[] $selectedStatements The hashes of the update suggestions to execute
+     * @param array<array-key, mixed> $selectedStatements Hashes as keys
      * @throws DBALException
      * @throws SchemaException
      * @throws \InvalidArgumentException
