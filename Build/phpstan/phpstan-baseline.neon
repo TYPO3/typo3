@@ -169,12 +169,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Functional/Persistence/RepositoryTest.php
 
 		-
-			rawMessage: 'Strict comparison using !== between mixed and null will always evaluate to true.'
-			identifier: notIdentical.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/fluid/Classes/ViewHelpers/FormViewHelper.php
-
-		-
 			rawMessage: 'Parameter #2 $imageFile of method TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::imageLinkWrap() expects string|TYPO3\CMS\Core\Resource\File|TYPO3\CMS\Core\Resource\FileReference, TYPO3\CMS\Core\Resource\FileInterface given.'
 			identifier: argument.type
 			count: 1
