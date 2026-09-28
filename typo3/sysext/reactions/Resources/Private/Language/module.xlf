@@ -79,7 +79,7 @@
         <source>Delete reactions</source>
       </trans-unit>
       <trans-unit id="labels.delete.message">
-        <source>Are you sure you want to delete all marked reactions?</source>
+        <source>Delete all marked reactions? You can restore deleted reactions from the TYPO3 recycler.</source>
       </trans-unit>
     </body>
   </file>
