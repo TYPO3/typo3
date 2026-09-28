@@ -21,6 +21,9 @@
       <trans-unit id="stopPreview">
         <source>Stop preview</source>
       </trans-unit>
+      <trans-unit id="highlightChanges">
+        <source>Highlight changes (%s)</source>
+      </trans-unit>
       <trans-unit id="previewLogoutSuccess">
         <source>You logged out from Workspace preview mode. Click this link to %1$s go back to the website%2$s</source>
       </trans-unit>

@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
+use TYPO3\CMS\Core\Core\RequestId;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\CookieHeaderTrait;
@@ -37,6 +38,8 @@ use TYPO3\CMS\Core\Http\Stream;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Routing\RouteResultInterface;
+use TYPO3\CMS\Core\SystemResource\Publishing\SystemResourcePublisherInterface;
+use TYPO3\CMS\Core\SystemResource\SystemResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Frontend\Cache\CacheInstruction;
@@ -60,12 +63,23 @@ final class WorkspacePreview implements MiddlewareInterface
      */
     private const string PREVIEW_KEY = 'ADMCMD_prev';
 
+    /**
+     * Request attribute set when the live version is rendered for a backend user,
+     * which the frontend preview uses to compare records against (see FrontendPreviewChangeMarker)
+     *
+     * @internal
+     */
+    public const string LIVE_COMPARISON_ATTRIBUTE = 'workspaces.preview.liveComparison';
+
     private bool $previewNotificationEnabled = false;
     private ?string $previewMessage = null;
 
     public function __construct(
         private readonly Context $context,
         private readonly ConnectionPool $connectionPool,
+        private readonly SystemResourceFactory $systemResourceFactory,
+        private readonly SystemResourcePublisherInterface $systemResourcePublisher,
+        private readonly RequestId $requestId,
     ) {}
 
     /**
@@ -122,22 +136,18 @@ final class WorkspacePreview implements MiddlewareInterface
             $this->setBackendUserAspect($GLOBALS['BE_USER']);
             $cacheInstruction = $request->getAttribute('frontend.cache.instruction', new CacheInstruction());
             $cacheInstruction->disableCache('EXT:workspaces: Disabled FE cache with BE_USER previewing live workspace');
-            $request = $request->withAttribute('frontend.cache.instruction', $cacheInstruction);
+            $request = $request
+                ->withAttribute('frontend.cache.instruction', $cacheInstruction)
+                ->withAttribute(self::LIVE_COMPARISON_ATTRIBUTE, true);
             $setCookieOnCurrentRequest = false;
         }
 
         $response = $handler->handle($request);
 
-        // Add an info box to the frontend content
-        if ($this->context->getPropertyFromAspect('workspace', 'isOffline', false)) {
-            $previewInfo = $this->renderPreviewInfo($request->getUri());
-            $body = $response->getBody();
-            $body->rewind();
-            $content = $body->getContents();
-            $content = str_ireplace('</body>', $previewInfo . '</body>', $content);
-            $body = new Stream('php://temp', 'rw');
-            $body->write($content);
-            $response = $response->withBody($body);
+        if ($this->context->getPropertyFromAspect('workspace', 'isOffline', false)
+            || $request->getAttribute(self::LIVE_COMPARISON_ATTRIBUTE) === true
+        ) {
+            $response = $this->finalizeResponse($request, $response);
         }
 
         // If the GET parameter ADMCMD_prev is set, then a cookie is set for the next request to keep the preview user
@@ -145,6 +155,30 @@ final class WorkspacePreview implements MiddlewareInterface
             $response = $this->addCookie($keyword, $normalizedParams, $response);
         }
         return $response;
+    }
+
+    /**
+     * Adds an info box to HTML pages of a workspace preview. Record markers of the change
+     * highlighting are removed from other responses, e.g. JSON, which they would break.
+     */
+    private function finalizeResponse(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    {
+        $body = $response->getBody();
+        $body->rewind();
+        $content = $body->getContents();
+        if (stripos($content, '</body>') !== false) {
+            if (!$this->context->getPropertyFromAspect('workspace', 'isOffline', false)) {
+                return $response;
+            }
+            $content = str_ireplace('</body>', $this->renderPreviewInfo($request) . '</body>', $content);
+        } elseif (str_contains($content, 'typo3-workspace-record')) {
+            $content = preg_replace('#<!--/?typo3-workspace-record[^>]*-->#', '', $content);
+        } else {
+            return $response;
+        }
+        $body = new Stream('php://temp', 'rw');
+        $body->write($content);
+        return $response->withBody($body);
     }
 
     /**
@@ -295,8 +329,9 @@ final class WorkspacePreview implements MiddlewareInterface
      *   config.message_preview_workspace = This is not the online version but the version of "%s" workspace (ID: %s).
      * via TypoScript.
      */
-    private function renderPreviewInfo(UriInterface $currentUrl): string
+    private function renderPreviewInfo(ServerRequestInterface $request): string
     {
+        $currentUrl = $request->getUri();
         $content = '';
         if ($this->previewNotificationEnabled) {
             // get the title of the current workspace
@@ -319,6 +354,14 @@ final class WorkspacePreview implements MiddlewareInterface
                     $urlForStoppingPreview = (string)$this->removePreviewParameterFromUrl($currentUrl, 'LOGOUT');
                     $text .= '<br><a style="color: #000; pointer-events: visible;" href="' . htmlspecialchars($urlForStoppingPreview) . '">' . $stopPreviewText . '</a>';
                 }
+                $highlightChangesText = sprintf(
+                    htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang_mod.xlf:highlightChanges')),
+                    '<span id="typo3-preview-highlight-changes-count">0</span>'
+                );
+                $liveUrl = (string)$this->removePreviewParameterFromUrl($currentUrl, 'LIVE');
+                $text .= '<br><label style="pointer-events: visible; cursor: pointer; font-weight: normal">'
+                    . '<input type="checkbox" id="typo3-preview-highlight-changes" data-live-url="' . htmlspecialchars($liveUrl) . '" style="margin: 0 4px 0 0; vertical-align: middle"> '
+                    . $highlightChangesText . '</label>';
                 $styles = [];
                 $styles[] = 'position: fixed';
                 $styles[] = 'top: 15px';
@@ -335,7 +378,11 @@ final class WorkspacePreview implements MiddlewareInterface
                 $styles[] = 'pointer-events: none';
                 $styles[] = 'text-align: center';
                 $styles[] = 'border-radius: 2px';
-                $content = '<div id="typo3-preview-info" style="' . implode(';', $styles) . '">' . $text . '</div>';
+                $content = '<div id="typo3-preview-info" style="' . implode(';', $styles) . '">' . $text . '</div>'
+                    . '<script type="module" nonce="' . htmlspecialchars($this->requestId->nonce->consumeStatic()) . '" src="' . htmlspecialchars((string)$this->systemResourcePublisher->generateUri(
+                        $this->systemResourceFactory->createPublicResource('EXT:workspaces/Resources/Public/JavaScript/frontend-change-highlighter.js'),
+                        $request
+                    )) . '"></script>';
             }
         }
         return $content;

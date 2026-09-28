@@ -1,0 +1,26 @@
+page = PAGE
+page.10 = PAGEVIEW
+page.10.paths.10 = EXT:workspaces/Tests/Functional/EventListener/Fixtures/Frontend/
+page.10.dataProcessing.10 = database-query
+page.10.dataProcessing.10.as = mainContent
+page.10.dataProcessing.10.table = tt_content
+page.10.dataProcessing.10.select.orderBy = sorting
+page.10.dataProcessing.10.dataProcessing.10 = record-transformation
+
+json = PAGE
+json.typeNum = 123
+json.config.disableAllHeaderCode = 1
+json.config.additionalHeaders.10.header = Content-Type: application/json
+json.10 < page.10
+
+tt_content = TEXT
+tt_content.field = bodytext
+
+classic = PAGE
+classic.typeNum = 124
+classic.10 = CONTENT
+classic.10.table = tt_content
+classic.10.select.orderBy = sorting
+classic.10.renderObj = TEXT
+classic.10.renderObj.field = bodytext
+classic.10.renderObj.wrap = [|]
