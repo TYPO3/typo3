@@ -24,7 +24,7 @@ for (const data of emailCases) {
 
 const emailValidation: (ElementsBasicInputValidationData & { comment: string })[] = [
   {
-    comment: 'email_1 normalisation and tolerated invalid syntax',
+    comment: 'email_1 normalisation and invalid syntax',
     label: 'email_1',
     testSequence: [
       { inputValue: '', expectedValue: '', expectedInternalValue: '', expectError: false },
@@ -35,12 +35,11 @@ const emailValidation: (ElementsBasicInputValidationData & { comment: string })[
         expectedInternalValue: 'spaces-around@example.com',
         expectError: false,
       },
-      // @todo: This should show a FormEngine validation-error
       {
         inputValue: 'invalid-email-syntax',
         expectedValue: 'invalid-email-syntax',
         expectedInternalValue: 'invalid-email-syntax',
-        expectError: false,
+        expectError: true,
       },
     ],
   },
@@ -51,6 +50,24 @@ for (const data of emailValidation) {
     await backend.formEngine.runInputFieldValidationTest(data);
   });
 }
+
+test('elements_basic email with invalid syntax marks its tab when saving from another tab', async ({ backend, page }) => {
+  const input = backend.formEngine.elementsBasicFormSection('email_1').locator('input[data-formengine-input-name]').first();
+  await input.fill('invalid-email-syntax');
+  await input.blur();
+
+  await backend.contentFrame.getByRole('tab', { name: 'input', exact: true }).click();
+  await backend.formEngine.saveButton.click();
+
+  await expect(page.getByRole('dialog', { name: 'Alert' })).toBeVisible();
+  await backend.modal.click({ name: 'ok' });
+  // The tab label gains an "(contains invalid entries)" suffix once it is marked
+  const emailTab = backend.contentFrame.locator('.nav-item').filter({
+    has: backend.contentFrame.getByRole('tab', { name: /^email\b/ }),
+  });
+  await expect(emailTab).toHaveClass(/has-validation-error/);
+  await expect(input).toHaveClass(/has-error/);
+});
 
 test('elements_basic email_5 value picker fills field with chosen option', async ({ backend, page }) => {
   const formSection = backend.formEngine.elementsBasicFormSection('email_5');
