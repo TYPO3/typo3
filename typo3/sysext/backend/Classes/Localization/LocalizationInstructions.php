@@ -33,7 +33,9 @@ final readonly class LocalizationInstructions
         public int $targetLanguageId,
         public LocalizationMode $mode,
         // Additional data from the wizard steps (e.g., selected records for pages)
-        public array $additionalData
+        public array $additionalData,
+        // URL of the backend view the localization was started from
+        public ?string $returnUrl = null,
     ) {}
 
     public static function create(array $parameters): self
@@ -52,7 +54,8 @@ final readonly class LocalizationInstructions
             (int)$parameters['sourceLanguage'],
             (int)$parameters['targetLanguage'],
             $mode,
-            $parameters['additionalData'] ?? []
+            $parameters['additionalData'] ?? [],
+            $parameters['returnUrl'] ?? null,
         );
     }
 }

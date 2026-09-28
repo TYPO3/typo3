@@ -26,6 +26,7 @@ export class LocalizationSubmissionService implements SubmissionServiceInterface
       .post({
         recordType: this.context.recordType,
         recordUid: this.context.recordUid,
+        ...(this.context.returnUrl ? { returnUrl: this.context.returnUrl } : {}),
         data: this.context.getDataStore()
       });
     return await response.resolve();

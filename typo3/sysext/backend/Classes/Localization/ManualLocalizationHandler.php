@@ -80,7 +80,7 @@ readonly class ManualLocalizationHandler implements LocalizationHandlerInterface
         }
 
         // Handle single record localization for other record types
-        return $this->processSingleRecordLocalization($instructions->mode, $instructions->mainRecordType, $instructions->recordUid, $instructions->targetLanguageId);
+        return $this->processSingleRecordLocalization($instructions->mode, $instructions->mainRecordType, $instructions->recordUid, $instructions->targetLanguageId, $instructions->returnUrl);
     }
 
     /**
@@ -90,7 +90,8 @@ readonly class ManualLocalizationHandler implements LocalizationHandlerInterface
         LocalizationMode $mode,
         string $type,
         int $uid,
-        int $targetLanguage
+        int $targetLanguage,
+        ?string $returnUrl = null
     ): LocalizationResult {
         // Validate that the record exists
         $record = BackendUtility::getRecord($type, $uid);
@@ -141,7 +142,7 @@ readonly class ManualLocalizationHandler implements LocalizationHandlerInterface
         }
 
         // Generate redirect finisher or use reload finisher as fallback
-        $redirectUrl = $newUid !== null ? $this->generateRedirectUrl($type, $newUid, $targetLanguage) : null;
+        $redirectUrl = $newUid !== null ? $this->generateRedirectUrl($type, $newUid, $targetLanguage, $returnUrl) : null;
 
         return LocalizationResult::success(
             $redirectUrl !== null
@@ -217,7 +218,7 @@ readonly class ManualLocalizationHandler implements LocalizationHandlerInterface
     /**
      * Generate redirect URL based on record type
      */
-    protected function generateRedirectUrl(string $type, int $uid, int $targetLanguage): ?string
+    protected function generateRedirectUrl(string $type, int $uid, int $targetLanguage, ?string $returnUrl = null): ?string
     {
         if ($type === 'pages') {
             // Redirect to page layout module with the target language
@@ -230,9 +231,7 @@ readonly class ManualLocalizationHandler implements LocalizationHandlerInterface
         // For other record types, redirect to the edit form of the translated record
         $record = BackendUtility::getRecord($type, $uid);
         if ($record && isset($record['pid'])) {
-            $returnUrl = null;
-
-            if ($type === 'sys_file_metadata') {
+            if ($returnUrl === null && $type === 'sys_file_metadata') {
                 // Get the file from the metadata record and build return URL to filelist module
                 try {
                     $file = $this->resourceFactory->getFileObject((int)$record['file']);

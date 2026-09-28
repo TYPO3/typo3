@@ -18,11 +18,14 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Tests\Functional\Controller\Wizard;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Controller\Wizard\LocalizationController;
 use TYPO3\CMS\Backend\Localization\LocalizationMode;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
+use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
@@ -424,6 +427,60 @@ final class LocalizationControllerTest extends FunctionalTestCase
         self::assertIsArray($result);
         self::assertTrue($result['success']);
         self::assertArrayHasKey('finisher', $result);
+    }
+
+    #[Test]
+    #[IgnoreDeprecations] // GeneralUtility::sanitizeLocalUrl() triggers a deprecation for relative URLs
+    public function localizeRedirectsBackToGivenReturnUrl(): void
+    {
+        $backendUser = $this->setUpBackendUser(1);
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
+        $returnUrl = $this->get(UriBuilder::class)->buildUriFromRoute('records', ['id' => 1]) . '#t3-table-tt_content';
+
+        $request = new ServerRequest()->withParsedBody([
+            'recordType' => 'tt_content',
+            'recordUid' => 1,
+            'returnUrl' => $returnUrl,
+            'data' => [
+                'sourceLanguage' => self::LANGUAGE_PRESETS['EN']['id'],
+                'targetLanguage' => self::LANGUAGE_PRESETS['DA']['id'],
+                'localizationMode' => LocalizationMode::TRANSLATE->value,
+                'localizationHandler' => 'manual',
+            ],
+        ]);
+        $request = $request->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
+
+        $response = $this->get(LocalizationController::class)->localize($request);
+
+        $result = json_decode((string)$response->getBody(), true);
+        parse_str((string)parse_url($result['finisher']['data']['url'], PHP_URL_QUERY), $redirectParameters);
+        self::assertSame($returnUrl, $redirectParameters['returnUrl']);
+    }
+
+    #[Test]
+    public function localizeIgnoresExternalReturnUrl(): void
+    {
+        $backendUser = $this->setUpBackendUser(1);
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
+
+        $request = new ServerRequest()->withParsedBody([
+            'recordType' => 'tt_content',
+            'recordUid' => 1,
+            'returnUrl' => 'https://example.com/',
+            'data' => [
+                'sourceLanguage' => self::LANGUAGE_PRESETS['EN']['id'],
+                'targetLanguage' => self::LANGUAGE_PRESETS['DA']['id'],
+                'localizationMode' => LocalizationMode::TRANSLATE->value,
+                'localizationHandler' => 'manual',
+            ],
+        ]);
+        $request = $request->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
+
+        $response = $this->get(LocalizationController::class)->localize($request);
+
+        $result = json_decode((string)$response->getBody(), true);
+        parse_str((string)parse_url($result['finisher']['data']['url'], PHP_URL_QUERY), $redirectParameters);
+        self::assertStringStartsWith('/typo3/module/web/layout', $redirectParameters['returnUrl']);
     }
 
     #[Test]
