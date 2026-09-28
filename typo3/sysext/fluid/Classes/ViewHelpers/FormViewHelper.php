@@ -147,7 +147,7 @@ class FormViewHelper extends AbstractFormViewHelper
 
         $formContent = $this->renderChildren();
 
-        if (isset($this->arguments['hiddenFieldClassName']) && $this->arguments['hiddenFieldClassName'] !== null) {
+        if (isset($this->arguments['hiddenFieldClassName'])) {
             $content = LF . '<div class="' . htmlspecialchars($this->arguments['hiddenFieldClassName']) . '">';
         } else {
             $content = LF . '<div>';
