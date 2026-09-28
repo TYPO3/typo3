@@ -344,7 +344,7 @@ class UserSessionManager implements LoggerAwareInterface
         );
         $lifetime = (int)($GLOBALS['TYPO3_CONF_VARS'][$loginType]['lifetime'] ?? 0);
         $sessionLifetime = $sessionLifetime ?? (int)$GLOBALS['TYPO3_CONF_VARS'][$loginType]['sessionTimeout'];
-        if ($sessionLifetime > 0 && $sessionLifetime < $lifetime && $lifetime > 0) {
+        if ($sessionLifetime > 0 && $sessionLifetime < $lifetime) {
             // If server session timeout is non-zero but less than client session timeout: Copy this value instead.
             $sessionLifetime = $lifetime;
         }
