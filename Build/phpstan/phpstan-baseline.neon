@@ -163,12 +163,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Schema/Struct/FlexSheet.php
 
 		-
-			rawMessage: 'Comparison operation ">" between int<2, max> and 0 is always true.'
-			identifier: greater.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Session/UserSessionManager.php
-
-		-
 			rawMessage: 'Parameter #1 $node of method TYPO3\CMS\Core\Tree\TableConfiguration\ArrayTreeRenderer::renderNode() expects TYPO3\CMS\Backend\Tree\TreeRepresentationNode, TYPO3\CMS\Backend\Tree\TreeNode given.'
 			identifier: argument.type
 			count: 1
