@@ -171,6 +171,7 @@ class Typo3DbQueryParser
             $leftSource = $source->getLeft();
             $leftTableName = $leftSource->getSelectorName();
             $this->queryBuilder = $this->connectionPool->getQueryBuilderForTable($leftTableName);
+            $this->queryBuilder->getRestrictions()->removeAll();
             $leftTableAlias = $this->getUniqueAlias($leftTableName);
             $this->queryBuilder
                 ->select($leftTableAlias . '.*')
