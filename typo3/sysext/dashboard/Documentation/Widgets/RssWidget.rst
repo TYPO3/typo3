@@ -16,6 +16,12 @@ RSS Widget
 Widgets using this class will show a list of items of the configured RSS feed
 or Atom feed.
 
+..  figure:: /Images/Widgets/RssWidget.png
+    :alt: RSS widget with the latest TYPO3 news
+
+    The widget "TYPO3 news" shipped with the dashboard extension is
+    an RSS widget.
+
 The "RSS Widget" supports both RSS and Atom feeds via automatic detection.
 
 Widget instances are fully configurable with custom labels, feed URLs, and

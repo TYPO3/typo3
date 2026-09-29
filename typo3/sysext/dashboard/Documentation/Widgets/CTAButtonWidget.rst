@@ -16,6 +16,12 @@ defining a button provider.
 You can use this kind of widget to link to for example a manual or to an important
 website that is used a lot by the users.
 
+..  figure:: /Images/Widgets/CtaWidget.png
+    :alt: CTA button widget with a text and a button
+
+    The widget "Getting Started with TYPO3" shipped with the
+    dashboard extension is a CTA button widget.
+
 ..  _cta-button-widget-example:
 
 Example

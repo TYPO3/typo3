@@ -15,6 +15,12 @@ historical data.
 
 .. php:class:: TYPO3\CMS\Dashboard\Widgets\BarChartWidget
 
+..  figure:: /Images/Widgets/BarChartWidget.png
+    :alt: Bar chart widget with a bar chart of system log errors
+
+    The widget "Number of errors in system log" shipped with the
+    dashboard extension is a bar chart widget.
+
 ..  _bar-chart-widget-example:
 
 Example

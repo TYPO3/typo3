@@ -14,6 +14,12 @@ Widgets using this class will show a doughnut chart with the provided data.
 This kind of widgets are useful if you want to show the relational proportions
 between data.
 
+..  figure:: /Images/Widgets/DoughnutChartWidget.png
+    :alt: Doughnut chart widget with the proportion of normal and admin users
+
+    The widget "Type of backend users" shipped with the dashboard
+    extension is a doughnut chart widget.
+
 ..  _doughnut-chart-widget-example:
 
 Example
