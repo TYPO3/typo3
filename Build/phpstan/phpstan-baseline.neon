@@ -133,12 +133,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Mail/Rfc822AddressesParser.php
 
 		-
-			rawMessage: 'Call to an undefined method TYPO3\CMS\Core\Cache\Frontend\FrontendInterface::require().'
-			identifier: method.notFound
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Package/Cache/PackageStatesPackageCache.php
-
-		-
 			rawMessage: Offset string does not exist on null.
 			identifier: offsetAccess.notFound
 			count: 1
