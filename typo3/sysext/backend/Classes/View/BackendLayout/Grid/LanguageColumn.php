@@ -113,7 +113,7 @@ class LanguageColumn
 
     public function getRecordIdentity(): string
     {
-        return GeneralUtility::makeInstance(RecordIdentityRenderer::class)->render('pages', $this->getPageRecord());
+        return GeneralUtility::makeInstance(RecordIdentityRenderer::class)->render('pages', $this->getPageRecord(), true);
     }
 
     public function getPageEditUrl(): string

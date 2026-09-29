@@ -376,6 +376,16 @@ final class BackendLayoutRendererLanguageComparisonTest extends FunctionalTestCa
         self::assertStringNotContainsString('DE free content #1', $html);
     }
 
+    #[Test]
+    public function pageIconOfEachLanguageColumnTriggersContextMenuOfLocalizedPage(): void
+    {
+        $html = $this->renderLanguageComparisonView();
+
+        self::assertStringContainsString('data-contextmenu-table="pages" data-contextmenu-uid="1100"', $html);
+        self::assertStringContainsString('data-contextmenu-table="pages" data-contextmenu-uid="1101"', $html);
+        self::assertStringContainsString('data-contextmenu-table="pages" data-contextmenu-uid="1102"', $html);
+    }
+
     private function tableRowContaining(string $needle, string $html): string
     {
         preg_match_all('#<tr\b[^>]*>.*?</tr>#s', $html, $matches);
