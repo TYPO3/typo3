@@ -20,4 +20,5 @@ namespace TYPO3Tests\TestDataMapper\Domain\Model\Enum;
 enum IntegerBackedEnum: int
 {
     case ONE = 1;
+    case TWO = 2;
 }

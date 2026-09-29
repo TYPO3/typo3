@@ -175,18 +175,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Classes/Property/TypeConverter/AbstractFileFolderConverter.php
 
 		-
-			rawMessage: 'Call to static method PHPUnit\Framework\Assert::assertSame() with TYPO3Tests\TestDataMapper\Domain\Model\Enum\IntegerBackedEnum::ONE and TYPO3Tests\TestDataMapper\Domain\Model\Enum\IntegerBackedEnum will always evaluate to true.'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Persistence/Generic/Mapper/DataMapperTest.php
-
-		-
-			rawMessage: 'Call to static method PHPUnit\Framework\Assert::assertSame() with TYPO3Tests\TestDataMapper\Domain\Model\Enum\StringBackedEnum::ONE and TYPO3Tests\TestDataMapper\Domain\Model\Enum\StringBackedEnum will always evaluate to true.'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Persistence/Generic/Mapper/DataMapperTest.php
-
-		-
 			rawMessage: 'Parameter #1 $criteria of method TYPO3\CMS\Extbase\Persistence\Repository<TYPO3Tests\BlogExample\Domain\Model\Post>::findBy() expects array<non-empty-string, mixed>, array{''author''} given.'
 			identifier: argument.type
 			count: 1
