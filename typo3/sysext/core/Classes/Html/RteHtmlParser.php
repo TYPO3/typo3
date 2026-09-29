@@ -620,9 +620,10 @@ class RteHtmlParser extends HtmlParser
                     $paragraphBlocks[$k] = $this->processContentWithinParagraph($subLines, $paragraphBlocks[$k]);
                 }
                 // If it turns out the line is just blank (containing a &nbsp; possibly) then just make it pure blank.
-                // But, prevent filtering of lines that are blank in sense above, but whose tags contain attributes.
-                // Those attributes should have been filtered before; if they are still there they must be considered as possible content.
-                if (trim(strip_tags($paragraphBlocks[$k])) === '&nbsp;' && !preg_match('/\\<(img)(\\s[^>]*)?\\/?>/si', $paragraphBlocks[$k]) && !preg_match('/\\<([^>]*)?( align| class| style| id| title| dir| lang| xml:lang)([^>]*)?>/si', trim($paragraphBlocks[$k]))) {
+                // But, prevent filtering of lines that are blank in sense above, but contain embedded content like images or media,
+                // or whose tags contain attributes. Those attributes should have been filtered before; if they are still there
+                // they must be considered as possible content.
+                if (trim(strip_tags($paragraphBlocks[$k])) === '&nbsp;' && !preg_match('/\\<(img|picture|source|audio|video|iframe|embed|object|svg|canvas)(\\s[^>]*)?\\/?>/si', $paragraphBlocks[$k]) && !preg_match('/\\<([^>]*)?( align| class| style| id| title| dir| lang| xml:lang)([^>]*)?>/si', trim($paragraphBlocks[$k]))) {
                     $paragraphBlocks[$k] = '';
                 }
             } else {
