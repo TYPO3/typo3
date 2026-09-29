@@ -152,4 +152,26 @@ final class ArrayPaginatorTest extends UnitTestCase
         self::assertSame(24, $paginator->getKeyOfLastPaginatedItem());
         self::assertSame([21, 22, 23, 24, 25], array_values($paginator->getPaginatedItems()));
     }
+
+    #[Test]
+    public function paginatorReturnsNumberOfItems(): void
+    {
+        $paginator = new ArrayPaginator(
+            $this->fixture,
+            2,
+            10
+        );
+
+        self::assertSame(14, $paginator->getTotalNumberOfItems());
+        self::assertSame(4, $paginator->getNumberOfItemsOnCurrentPage());
+    }
+
+    #[Test]
+    public function paginatorReturnsNumberOfItemsForEmptyItems(): void
+    {
+        $paginator = new ArrayPaginator([]);
+
+        self::assertSame(0, $paginator->getTotalNumberOfItems());
+        self::assertSame(0, $paginator->getNumberOfItemsOnCurrentPage());
+    }
 }
