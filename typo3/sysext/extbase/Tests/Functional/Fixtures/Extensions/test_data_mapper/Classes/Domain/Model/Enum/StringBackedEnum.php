@@ -20,4 +20,5 @@ namespace TYPO3Tests\TestDataMapper\Domain\Model\Enum;
 enum StringBackedEnum: string
 {
     case ONE = 'One';
+    case TWO = 'Two';
 }
