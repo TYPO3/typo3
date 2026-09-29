@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Reactions\Repository;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
@@ -80,6 +81,21 @@ class ReactionRepository
             return $this->mapSingleRow($result);
         }
         return null;
+    }
+
+    /**
+     * Used within the backend module, so hidden and scheduled reactions are found as well.
+     */
+    public function getReactionRecordByUid(int $uid): ?ReactionInstruction
+    {
+        $queryBuilder = $this->getQueryBuilder(false);
+        $result = $queryBuilder
+            ->where(
+                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT))
+            )
+            ->executeQuery()
+            ->fetchAssociative();
+        return $result !== false ? $this->mapSingleRow($result) : null;
     }
 
     public function findByDemand(ReactionDemand $demand): array

@@ -71,15 +71,7 @@ readonly class ReactionHandler
 
     protected function getPayload(ServerRequestInterface $request): array
     {
-        $body = (string)$request->getBody();
-
-        try {
-            $payload = json_decode($body, true, 512, JSON_THROW_ON_ERROR);
-            return is_array($payload) ? $payload : [];
-        } catch (\JsonException $e) {
-            // do nothing
-            return [];
-        }
+        return PayloadDecoder::decode((string)$request->getBody()) ?? [];
     }
 
     protected function buildReactionResponse(ResponseInterface $response): ResponseInterface

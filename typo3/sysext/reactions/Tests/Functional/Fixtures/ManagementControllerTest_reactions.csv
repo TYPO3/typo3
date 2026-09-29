@@ -1,0 +1,10 @@
+sys_reaction,,,,,,,,,,,,,
+,uid,pid,createdon,deleted,disabled,name,secret,reaction_type,table_name,fields,storage_pid,identifier,impersonate_user
+,30,0,1,0,0,Mapped Reaction,secret30,create-record,pages,"{""title"":""${headline}"",""nav_title"":""${customer.name}""}",1,8f5e5d0a-1f2b-4c3d-9e7a-0b1c2d3e4f70,1
+,31,0,1,0,0,Fixed Only Reaction,secret31,create-record,pages,"{""title"":""Always this""}",1,8f5e5d0a-1f2b-4c3d-9e7a-0b1c2d3e4f71,1
+,32,0,1,0,0,Orphaned Reaction,secret32,no-such-type,pages,"{""title"":""${headline}""}",1,8f5e5d0a-1f2b-4c3d-9e7a-0b1c2d3e4f72,1
+,33,0,1,0,0,Editor Reaction,secret33,create-record,pages,"{""title"":""${headline}"",""nav_title"":""${customer.name}""}",1,8f5e5d0a-1f2b-4c3d-9e7a-0b1c2d3e4f73,9
+,34,0,1,0,1,Disabled Reaction,secret34,create-record,pages,"{""title"":""${headline}""}",1,8f5e5d0a-1f2b-4c3d-9e7a-0b1c2d3e4f74,1
+pages,,,,,,,,,
+,uid,pid,title,doktype,perms_userid,perms_user,perms_groupid,perms_group,perms_everybody
+,1,0,Storage,254,1,31,0,0,31

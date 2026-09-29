@@ -1,0 +1,22 @@
+sys_reaction,,,,,,,,,,,,,,,
+,uid,pid,createdon,deleted,disabled,starttime,endtime,name,secret,reaction_type,table_name,fields,storage_pid,identifier,impersonate_user
+,40,0,1,0,0,0,0,Granted Editor Reaction,secret40,create-record,pages,"{""title"":""${headline}"",""nav_title"":""${customer.name}"",""layout"":""${layout}""}",1,8f5e5d0a-1f2b-4c3d-9e7a-0b1c2d3e4f80,11
+,41,0,1,0,1,0,0,Disabled Reaction,secret41,create-record,pages,"{""title"":""${headline}""}",1,8f5e5d0a-1f2b-4c3d-9e7a-0b1c2d3e4f81,1
+,42,0,1,0,0,2147483647,0,Scheduled Reaction,secret42,create-record,pages,"{""title"":""${headline}""}",1,8f5e5d0a-1f2b-4c3d-9e7a-0b1c2d3e4f82,1
+,43,0,1,0,0,0,1,Expired Reaction,secret43,create-record,pages,"{""title"":""${headline}""}",1,8f5e5d0a-1f2b-4c3d-9e7a-0b1c2d3e4f83,1
+,44,0,1,0,0,0,0,Anonymous Reaction,secret44,create-record,pages,"{""title"":""${headline}""}",1,8f5e5d0a-1f2b-4c3d-9e7a-0b1c2d3e4f84,0
+,45,0,1,0,0,0,0,No Tables Reaction,secret45,create-record,pages,"{""title"":""${headline}""}",1,8f5e5d0a-1f2b-4c3d-9e7a-0b1c2d3e4f85,12
+,46,0,1,0,0,0,0,Locked Page Reaction,secret46,create-record,pages,"{""title"":""${headline}""}",2,8f5e5d0a-1f2b-4c3d-9e7a-0b1c2d3e4f86,11
+,47,0,1,0,0,0,0,Missing Page Reaction,secret47,create-record,pages,"{""title"":""${headline}""}",99,8f5e5d0a-1f2b-4c3d-9e7a-0b1c2d3e4f87,1
+pages,,,,,,,,,
+,uid,pid,title,doktype,perms_userid,perms_user,perms_groupid,perms_group,perms_everybody
+,1,0,Storage,254,1,31,0,0,31
+,2,0,Locked,254,1,31,0,0,0
+be_groups,,,,,,
+,uid,pid,deleted,title,tables_modify,non_exclude_fields
+,11,0,0,Granted Editors,pages,"pages:nav_title,pages:layout"
+,12,0,0,Editors Without Tables,,pages:nav_title
+be_users,,,,,,,,
+,uid,pid,username,usergroup,db_mountpoints,deleted,admin,options
+,11,0,granted_editor,11,"1,2",0,0,3
+,12,0,no_tables_editor,12,1,0,0,3

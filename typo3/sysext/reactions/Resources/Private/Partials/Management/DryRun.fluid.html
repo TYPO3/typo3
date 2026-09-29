@@ -1,0 +1,15 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+<form class="mt-4" data-reactions-dry-run="{dryRun.url}" data-reactions-dry-run-error="{f:translate(key: 'reactions.module:dry_run_error')}">
+    <h4><f:translate key="reactions.module:dry_run"/></h4>
+    <p class="text-body-secondary"><f:translate key="reactions.module:dry_run_hint"/></p>
+    <div class="form-group">
+        <typo3-t3editor-codemirror mode="{dryRun.editorMode}" nolazyload label="{f:translate(key: 'reactions.module:dry_run_payload')}">
+            <textarea class="form-control font-monospace" name="payload" rows="8" wrap="off" id="reactions-dry-run-payload" aria-label="{f:translate(key: 'reactions.module:dry_run_payload')}">{dryRun.payload}</textarea>
+        </typo3-t3editor-codemirror>
+    </div>
+    <button type="button" class="btn btn-primary" data-reactions-dry-run-submit disabled><f:translate key="reactions.module:dry_run_submit"/></button>
+    <div class="mt-3" data-reactions-dry-run-result aria-live="polite"></div>
+</form>
+</html>

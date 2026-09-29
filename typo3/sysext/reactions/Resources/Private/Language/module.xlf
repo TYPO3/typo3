@@ -39,6 +39,90 @@
       <trans-unit id="reaction_example">
         <source>Example</source>
       </trans-unit>
+      <trans-unit id="reaction_try_out">
+        <source>Try Out</source>
+      </trans-unit>
+      <trans-unit id="reaction_try_out_title">
+        <source>Try Out: %s</source>
+      </trans-unit>
+      <trans-unit id="reaction_example_hint">
+        <source>Send this request from an external system. Replace the placeholder with the secret of the reaction and customize the field values.</source>
+      </trans-unit>
+      <trans-unit id="reaction_example_copy">
+        <source>Copy example</source>
+      </trans-unit>
+      <trans-unit id="dry_run">
+        <source>Dry run</source>
+      </trans-unit>
+      <trans-unit id="dry_run_hint">
+        <source>Resolves a payload against the field map as the user this reaction impersonates. No record is written and the secret is not checked. The target table may still reject a value when the record is actually written.</source>
+      </trans-unit>
+      <trans-unit id="dry_run_error">
+        <source>The dry run could not be resolved.</source>
+      </trans-unit>
+      <trans-unit id="dry_run_payload">
+        <source>Payload</source>
+      </trans-unit>
+      <trans-unit id="dry_run_submit">
+        <source>Execute dry run</source>
+      </trans-unit>
+      <trans-unit id="dry_run_invalid_json">
+        <source>The payload is not a JSON object. The endpoint treats such a request as an empty payload.</source>
+      </trans-unit>
+      <trans-unit id="dry_run_no_record">
+        <source>No record would be created</source>
+      </trans-unit>
+      <trans-unit id="dry_run_record">
+        <source>A record would be created in table "%1$s" on page %2$s, as user "%3$s".</source>
+      </trans-unit>
+      <trans-unit id="dry_run_obstacle.disabled">
+        <source>The reaction is disabled, so the endpoint rejects every request.</source>
+      </trans-unit>
+      <trans-unit id="dry_run_obstacle.scheduled">
+        <source>The reaction is not active yet, so the endpoint rejects every request until its start date.</source>
+      </trans-unit>
+      <trans-unit id="dry_run_obstacle.expired">
+        <source>The reaction has expired, so the endpoint rejects every request.</source>
+      </trans-unit>
+      <trans-unit id="dry_run_obstacle.noUser">
+        <source>The reaction impersonates no backend user, or one that is disabled or deleted, so there is nobody to write the record as.</source>
+      </trans-unit>
+      <trans-unit id="dry_run_obstacle.tableNotPermitted">
+        <source>The impersonated user may not modify records of the target table.</source>
+      </trans-unit>
+      <trans-unit id="dry_run_obstacle.pageMissing">
+        <source>The storage page does not exist.</source>
+      </trans-unit>
+      <trans-unit id="dry_run_obstacle.pageNotPermitted">
+        <source>The impersonated user may not create records on the storage page.</source>
+      </trans-unit>
+      <trans-unit id="dry_run_fields">
+        <source>Fields resolved from the payload</source>
+      </trans-unit>
+      <trans-unit id="dry_run_skipped">
+        <source>Fields that would be skipped</source>
+      </trans-unit>
+      <trans-unit id="dry_run_reason.notMappable">
+        <source>The target table offers no such field.</source>
+      </trans-unit>
+      <trans-unit id="dry_run_reason.notPermitted">
+        <source>The impersonated user may not write this field.</source>
+      </trans-unit>
+      <trans-unit id="dry_run_reason.placeholderUnresolved">
+        <source>The payload carries no value under the path of the placeholder.</source>
+      </trans-unit>
+      <trans-unit id="dry_run_reason.resolvedToNothing">
+        <source>The payload carries nothing under the path of the placeholder.</source>
+      </trans-unit>
+      <trans-unit id="dry_run_reason.valueNotHoldable">
+        <source>The checkbox cannot hold this value.</source>
+      </trans-unit>
+      <trans-unit id="dry_run_reason.valueNotOffered">
+        <source>The field does not offer this value.</source>
+      </trans-unit>
+      <trans-unit id="reaction_endpoint">
+        <source>Endpoint</source>
+      </trans-unit>
       <trans-unit id="filter.sendButton">
         <source>Filter</source>
       </trans-unit>

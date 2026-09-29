@@ -7,6 +7,7 @@
 
 <f:section name="Content">
     <f:asset.module identifier="@typo3/backend/context-menu.js"/>
+    <f:asset.module identifier="@typo3/reactions/try-out-modal.js"/>
     <f:asset.module identifier="@typo3/backend/modal.js"/>
     <f:asset.module identifier="@typo3/backend/multi-record-selection.js"/>
     <f:asset.module identifier="@typo3/backend/multi-record-selection-edit-action.js"/>
@@ -108,7 +109,7 @@
                 </th>
                 <th colspan="2"><f:render section="listHeaderSorting" arguments="{field: 'name', label: 'sys_reaction.name', demand: demand}"/></th>
                 <th><f:render section="listHeaderSorting" arguments="{field: 'reaction_type', label: 'sys_reaction.reaction_type', demand: demand}"/></th>
-                <th>URL</th>
+                <th></th>
                 <th class="col-control"></th>
             </tr>
             </thead>
@@ -150,7 +151,15 @@
                                 <f:translate key="{reactionTypes.{reaction.type}.description}" default="{reactionTypes.{reaction.type}.description}"/>
                             </td>
                             <td>
-                                <f:render section="codesnippet" arguments="{reaction: reaction}" />
+                                <typo3-reactions-try-out
+                                    class="btn btn-default"
+                                    url="{f:be.uri(route: 'ajax_reactions_try_out', parameters: {reaction: reaction.uid})}"
+                                    modal-title="{f:translate(key: 'reactions.module:reaction_try_out_title', arguments: {0: reaction.name})}"
+                                    close-label="{f:translate(key: 'core.mod_web_list:button.close')}"
+                                >
+                                    <core:icon identifier="actions-play" />
+                                    <f:translate key="reactions.module:reaction_try_out"/>
+                                </typo3-reactions-try-out>
                             </td>
                             <td class="col-control">
                                 <f:render section="controls" arguments="{_all}" />
@@ -279,24 +288,6 @@
             </div>
         </div>
     </form>
-</f:section>
-
-<f:section name="codesnippet">
-    <code class="my-1 p-2 me-2 bg-dark text-bg-primary">
-        <f:be.uri route="reaction" referenceType="url" />/{reaction.identifier}
-    </code>
-    <button type="button" class="btn btn-default" data-bs-target="#codesnippet-{reaction.identifier}" data-bs-toggle="collapse">
-        <f:translate key="LLL:EXT:reactions/Resources/Private/Language/module.xlf:reaction_example" />
-    </button>
-    <div class="collapse" id="codesnippet-{reaction.identifier}">
-<pre class="my-1 p-2 bg-dark text-bg-primary">
-<code><span>curl -X </span><span class="text-info">'POST'</span><span> \</span><span>
-    </span><span class="text-info">'<f:be.uri route="reaction" referenceType="url" />/{reaction.identifier}'</span><span> \</span>
-    <span>  -d </span><span class="text-info">'{"my-payload":"my-value","field-b":"my-input"}'</span><span> \</span>
-    <span>  -H </span><span class="text-info">'accept: application/json'</span><span> \</span>
-    <span>  -H </span><span class="text-info">'x-api-key: ***your-secret***'</span>
-</code></pre>
-    </div>
 </f:section>
 
 <f:section name="controls">

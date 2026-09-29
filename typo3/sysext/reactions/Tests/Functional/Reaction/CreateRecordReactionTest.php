@@ -83,12 +83,7 @@ final class CreateRecordReactionTest extends FunctionalTestCase
     #[Test]
     public function reactFailsOnInvalidTable(): void
     {
-        $reactionRecord = $this->get(ReactionRepository::class)->getReactionRecordByIdentifier('5d37024e-2af4-4323-abcd-494a9ec37927');
-        $reaction = $this->get(CreateRecordReaction::class);
-        $request = new ServerRequest('http://localhost/', 'POST');
-        $request = $request->withHeader('x-api-key', $reactionRecord->toArray()['secret']);
-
-        $response = $reaction->react($request, [], $reactionRecord);
+        $response = $this->dispatchReaction('5d37024e-2af4-4323-abcd-494a9ec37927', []);
         self::assertEquals(400, $response->getStatusCode());
         self::assertEquals('Invalid argument "table_name"', json_decode((string)$response->getBody(), true)['error']);
     }
@@ -96,12 +91,7 @@ final class CreateRecordReactionTest extends FunctionalTestCase
     #[Test]
     public function reactFailsOnInvalidFields(): void
     {
-        $reactionRecord = $this->get(ReactionRepository::class)->getReactionRecordByIdentifier('9d5167ef-d9f6-4d02-9dd3-b132e50492f1');
-        $reaction = $this->get(CreateRecordReaction::class);
-        $request = new ServerRequest('http://localhost/', 'POST');
-        $request = $request->withHeader('x-api-key', $reactionRecord->toArray()['secret']);
-
-        $response = $reaction->react($request, [], $reactionRecord);
+        $response = $this->dispatchReaction('9d5167ef-d9f6-4d02-9dd3-b132e50492f1', []);
         self::assertEquals(400, $response->getStatusCode());
         self::assertEquals('No fields given.', json_decode((string)$response->getBody(), true)['error']);
     }
@@ -652,6 +642,58 @@ final class CreateRecordReactionTest extends FunctionalTestCase
         self::assertSame(['subtitle' => 'notPermitted'], $body['skippedFields']);
         self::assertCount(0, $this->getTestPages('Test bar'));
         self::assertCount(0, $this->getTestPages('Sub bar'));
+    }
+
+    #[Test]
+    public function resolveComposesTheRecordWithoutWritingIt(): void
+    {
+        $reactionRecord = $this->get(ReactionRepository::class)->getReactionRecordByIdentifier('8f5e5d0a-1f2b-4c3d-9e7a-0b1c2d3e4f64');
+        $user = $this->setUpReactionBackendUser(new ServerRequest('http://localhost/', 'POST'), $reactionRecord);
+
+        $resolution = $this->get(CreateRecordReaction::class)->resolve(['foo' => 'bar'], $reactionRecord, $user);
+
+        self::assertNull($resolution->error);
+        self::assertSame('pages', $resolution->table);
+        self::assertSame(1, $resolution->storagePid);
+        $fields = $resolution->fields;
+        ksort($fields);
+        self::assertSame(
+            ['TSconfig' => 'foo = bar', 'nav_title' => 'Nav bar', 'subtitle' => 'Sub bar', 'title' => 'Test bar'],
+            $fields
+        );
+        self::assertSame([], $resolution->skippedFields);
+        self::assertCount(0, $this->getTestPages());
+    }
+
+    #[Test]
+    public function resolveChecksThePermissionsOfTheUserItIsGiven(): void
+    {
+        // Reaction 29 impersonates an editor granted pages:nav_title only. The user is handed
+        // in rather than read from the request, so a backend module can resolve the record
+        // as that editor without the session of whoever asks being touched.
+        $reactionRecord = $this->get(ReactionRepository::class)->getReactionRecordByIdentifier('8f5e5d0a-1f2b-4c3d-9e7a-0b1c2d3e4f63');
+        $user = $this->setUpReactionBackendUser(new ServerRequest('http://localhost/', 'POST'), $reactionRecord);
+
+        $resolution = $this->get(CreateRecordReaction::class)->resolve(['foo' => 'bar'], $reactionRecord, $user);
+
+        $skippedFields = $resolution->skippedFields;
+        ksort($skippedFields);
+        self::assertSame(['TSconfig' => 'notPermitted', 'subtitle' => 'notPermitted'], $skippedFields);
+        self::assertSame(['title', 'nav_title'], array_keys($resolution->fields));
+    }
+
+    #[Test]
+    public function resolveSaysWhyNoFieldOfTheRecordCouldBeWritten(): void
+    {
+        // Reaction 29 as its editor, with an empty payload: the placeholders do not resolve
+        // and the fixed TSconfig is not the editor's to write, which leaves nothing.
+        $reactionRecord = $this->get(ReactionRepository::class)->getReactionRecordByIdentifier('8f5e5d0a-1f2b-4c3d-9e7a-0b1c2d3e4f63');
+        $user = $this->setUpReactionBackendUser(new ServerRequest('http://localhost/', 'POST'), $reactionRecord);
+
+        $resolution = $this->get(CreateRecordReaction::class)->resolve([], $reactionRecord, $user);
+
+        self::assertSame('No field of the record could be written', $resolution->error);
+        self::assertSame('placeholderUnresolved', $resolution->skippedFields['title']);
     }
 
     #[Test]

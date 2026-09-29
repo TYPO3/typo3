@@ -1,0 +1,64 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+<f:if condition="!{isValidPayload}">
+    <f:be.infobox state="1"><f:translate key="reactions.module:dry_run_invalid_json"/></f:be.infobox>
+</f:if>
+
+<f:if condition="{result.obstacles}">
+    <f:be.infobox state="2" title="{f:translate(key: 'reactions.module:dry_run_no_record')}">
+        <ul class="mb-0">
+            <f:for each="{result.obstacles}" as="obstacle">
+                <li><f:translate key="reactions.module:dry_run_obstacle.{obstacle.value}"/></li>
+            </f:for>
+        </ul>
+    </f:be.infobox>
+</f:if>
+
+<f:if condition="{result.resolution}">
+    <f:if condition="{result.resolution.error}">
+        <f:then>
+            <f:be.infobox state="2" title="{f:translate(key: 'reactions.module:dry_run_no_record')}">{result.resolution.error}</f:be.infobox>
+        </f:then>
+        <f:else if="!{result.obstacles}">
+            <f:be.infobox state="0"><f:translate key="reactions.module:dry_run_record" arguments="{0: result.resolution.table, 1: result.resolution.storagePid, 2: result.username}"/></f:be.infobox>
+        </f:else>
+    </f:if>
+
+    <f:if condition="{result.resolution.fields}">
+        <h5><f:translate key="reactions.module:dry_run_fields"/></h5>
+        <div class="table-fit">
+            <table class="table table-striped">
+                <tbody>
+                <f:for each="{result.resolution.fields}" key="fieldName" as="value">
+                    <tr>
+                        <th scope="row" class="col-nowrap"><f:render section="field" arguments="{fieldName: fieldName, label: '{result.fieldLabels.{fieldName}}'}"/></th>
+                        <td class="font-monospace">{value}</td>
+                    </tr>
+                </f:for>
+                </tbody>
+            </table>
+        </div>
+    </f:if>
+
+    <f:if condition="{result.resolution.skippedFields}">
+        <h5><f:translate key="reactions.module:dry_run_skipped"/></h5>
+        <div class="table-fit">
+            <table class="table table-striped">
+                <tbody>
+                <f:for each="{result.resolution.skippedFields}" key="fieldName" as="reason">
+                    <tr>
+                        <th scope="row" class="col-nowrap"><f:render section="field" arguments="{fieldName: fieldName, label: '{result.fieldLabels.{fieldName}}'}"/></th>
+                        <td><f:translate key="reactions.module:dry_run_reason.{reason}" default="{reason}"/></td>
+                    </tr>
+                </f:for>
+                </tbody>
+            </table>
+        </div>
+    </f:if>
+</f:if>
+
+<f:section name="field">
+    <f:if condition="{label}"><f:translate key="{label}" default="{label}"/> </f:if><code>{fieldName}</code>
+</f:section>
+</html>

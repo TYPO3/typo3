@@ -20,16 +20,27 @@ namespace TYPO3\CMS\Reactions\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
+use TYPO3\CMS\Backend\CodeEditor\CodeEditorConfiguration;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\Components\MultiRecordSelection\Action;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
+use TYPO3\CMS\Backend\View\BackendViewFactory;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Pagination\SimplePagination;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Reactions\Http\PayloadDecoder;
+use TYPO3\CMS\Reactions\Model\ReactionExample;
+use TYPO3\CMS\Reactions\Model\ReactionInstruction;
 use TYPO3\CMS\Reactions\Pagination\DemandedArrayPaginator;
+use TYPO3\CMS\Reactions\Reaction\CreateRecordDryRun;
+use TYPO3\CMS\Reactions\Reaction\CreateRecordReaction;
 use TYPO3\CMS\Reactions\ReactionRegistry;
 use TYPO3\CMS\Reactions\Repository\ReactionDemand;
 use TYPO3\CMS\Reactions\Repository\ReactionRepository;
@@ -49,6 +60,9 @@ readonly class ManagementController
         private ReactionRegistry $reactionRegistry,
         private ReactionRepository $reactionRepository,
         private ComponentFactory $componentFactory,
+        private BackendViewFactory $backendViewFactory,
+        private CodeEditorConfiguration $codeEditorConfiguration,
+        private CreateRecordDryRun $createRecordDryRun,
     ) {}
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
@@ -100,6 +114,90 @@ readonly class ManagementController
         ])->renderResponse('Management/Overview');
     }
 
+    /**
+     * The AJAX route inherits the access of the module, which is admin only. It is checked
+     * here as well, since the actions are not bound to be reached through that route.
+     */
+    public function tryOutAction(ServerRequestInterface $request): ResponseInterface
+    {
+        if (!$this->getBackendUser()->isAdmin()) {
+            return new HtmlResponse('', 403);
+        }
+        $reaction = $this->reactionRepository->getReactionRecordByUid($this->getRequestedReactionUid($request));
+        if ($reaction === null) {
+            return new HtmlResponse('', 404);
+        }
+        $url = (string)$this->uriBuilder->buildUriFromRoute(
+            'reaction',
+            ['reactionIdentifier' => $reaction->getIdentifier()],
+            UriBuilder::ABSOLUTE_URL
+        );
+        $createRecordReaction = $this->getCreateRecordReaction($reaction);
+        $example = ReactionExample::forFieldMap(
+            $url,
+            $createRecordReaction !== null ? (array)($reaction->toArray()['fields'] ?? []) : []
+        );
+        $view = $this->backendViewFactory->create($request);
+        $view->assign('example', $example);
+        if ($createRecordReaction !== null) {
+            $view->assign('dryRun', [
+                'url' => (string)$this->uriBuilder->buildUriFromRoute('ajax_reactions_dry_run', ['reaction' => $reaction->getUid()]),
+                'payload' => $example->getFormattedPayload(),
+                'editorMode' => GeneralUtility::jsonEncodeForHtmlAttribute($this->getJsonEditorMode(), false),
+            ]);
+        }
+
+        return new HtmlResponse($view->render('Management/TryOut'));
+    }
+
+    public function resolveDryRunAction(ServerRequestInterface $request): ResponseInterface
+    {
+        if (!$this->getBackendUser()->isAdmin()) {
+            return new HtmlResponse('', 403);
+        }
+        $reaction = $this->reactionRepository->getReactionRecordByUid($this->getRequestedReactionUid($request));
+        $createRecordReaction = $reaction !== null ? $this->getCreateRecordReaction($reaction) : null;
+        if ($createRecordReaction === null) {
+            return new HtmlResponse('', 404);
+        }
+
+        $payload = PayloadDecoder::decode($this->getSubmittedPayload($request));
+        $view = $this->backendViewFactory->create($request);
+        $view->assignMultiple([
+            'result' => $this->createRecordDryRun->run($reaction, $createRecordReaction, $payload),
+            'isValidPayload' => $payload !== null,
+        ]);
+
+        return new HtmlResponse($view->render('Management/DryRunResult'));
+    }
+
+    protected function getJsonEditorMode(): JavaScriptModuleInstruction
+    {
+        $mode = $this->codeEditorConfiguration->hasMode('json')
+            ? $this->codeEditorConfiguration->getModeByFormatCode('json')
+            : $this->codeEditorConfiguration->getDefaultMode();
+        return $mode->module;
+    }
+
+    protected function getCreateRecordReaction(ReactionInstruction $reaction): ?CreateRecordReaction
+    {
+        $implementation = $this->reactionRegistry->getReactionByType($reaction->getType());
+        return $implementation instanceof CreateRecordReaction ? $implementation : null;
+    }
+
+    protected function getRequestedReactionUid(ServerRequestInterface $request): int
+    {
+        $uid = $request->getQueryParams()['reaction'] ?? 0;
+        return is_scalar($uid) ? (int)$uid : 0;
+    }
+
+    protected function getSubmittedPayload(ServerRequestInterface $request): string
+    {
+        $body = $request->getParsedBody();
+        $payload = is_array($body) ? ($body['payload'] ?? '') : '';
+        return is_string($payload) ? $payload : '';
+    }
+
     protected function registerDocHeaderButtons(ModuleTemplate $view, ReactionDemand $demand): void
     {
         $languageService = $this->getLanguageService();
@@ -127,6 +225,11 @@ readonly class ManagementController
                 'orderDirection' => $demand->getOrderDirection(),
             ])
         );
+    }
+
+    protected function getBackendUser(): BackendUserAuthentication
+    {
+        return $GLOBALS['BE_USER'];
     }
 
     protected function getLanguageService(): LanguageService

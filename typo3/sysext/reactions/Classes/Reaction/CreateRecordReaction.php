@@ -22,6 +22,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\DataHandling\ItemProcessingService;
 use TYPO3\CMS\Core\DataHandling\ItemsProcessorContext;
@@ -45,6 +46,11 @@ use TYPO3\CMS\Reactions\Validation\CreateRecordReactionTable;
  */
 class CreateRecordReaction implements ReactionInterface
 {
+    /**
+     * A placeholder of the field map, "${path.in.payload}", with the path as its only group.
+     */
+    public const string PLACEHOLDER_PATTERN = '/\$\{([^\}]*)\}/';
+
     public function __construct(
         private readonly ResponseFactoryInterface $responseFactory,
         private readonly StreamFactoryInterface $streamFactory,
@@ -70,19 +76,50 @@ class CreateRecordReaction implements ReactionInterface
     public function react(ServerRequestInterface $request, array $payload, ReactionInstruction $reaction): ResponseInterface
     {
         // @todo: Response needs to be based on given accept headers
+        $resolution = $this->resolve($payload, $reaction, $this->getBackendUser());
+        if ($resolution->error !== null) {
+            return $this->jsonResponse($this->withReport([
+                'success' => false,
+                'error' => $resolution->error,
+            ], $resolution->skippedFields), 400);
+        }
+
+        $dataHandlerData = $resolution->fields;
+        $dataHandlerData['pid'] = $resolution->storagePid;
+
+        $data[$resolution->table][StringUtility::getUniqueId('NEW')] = $dataHandlerData;
+        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+        $dataHandler->start($data, [], $this->getBackendUser());
+        $dataHandler->process_datamap();
+
+        return $this->buildResponseFromDataHandler($dataHandler, 201, $resolution->skippedFields);
+    }
+
+    /**
+     * Composes the record react() writes for this payload, without writing it.
+     *
+     * The field permissions are checked for the user handed in. Item processors of a field
+     * still read $GLOBALS['BE_USER'], so a caller resolving as a user other than the global
+     * one has to set it up there as well. What DataHandler would still reject is not known
+     * here.
+     *
+     * @internal only public for the dry run of the backend module
+     */
+    public function resolve(array $payload, ReactionInstruction $reaction, BackendUserAuthentication $user): CreateRecordResolution
+    {
         $table = (string)($reaction->toArray()['table_name'] ?? '');
         $fields = (array)($reaction->toArray()['fields'] ?? []);
+        $storagePid = (int)($reaction->toArray()['storage_pid'] ?? 0);
 
         if (!new CreateRecordReactionTable($table)->isAllowedForCreation()) {
-            return $this->jsonResponse(['success' => false, 'error' => 'Invalid argument "table_name"'], 400);
+            return new CreateRecordResolution($table, $storagePid, [], [], 'Invalid argument "table_name"');
         }
 
         if ($fields === []) {
-            return $this->jsonResponse(['success' => false, 'error' => 'No fields given.'], 400);
+            return new CreateRecordResolution($table, $storagePid, [], [], 'No fields given.');
         }
 
         $schema = $this->tcaSchemaFactory->get($table);
-        $storagePid = (int)($reaction->toArray()['storage_pid'] ?? 0);
         $dataHandlerData = [];
         $skipped = [];
         foreach ($fields as $fieldName => $value) {
@@ -101,7 +138,7 @@ class CreateRecordReaction implements ReactionInterface
                 continue;
             }
             $field = $schema->getField($fieldName);
-            if (!CreateRecordReactionField::isWritableBy($field, $table, $fieldName, $this->getBackendUser())) {
+            if (!CreateRecordReactionField::isWritableBy($field, $table, $fieldName, $user)) {
                 $skipped[$fieldName] = SkippedFieldReason::NOT_PERMITTED->value;
                 continue;
             }
@@ -131,19 +168,10 @@ class CreateRecordReaction implements ReactionInterface
         }
 
         if ($dataHandlerData === []) {
-            return $this->jsonResponse($this->withReport([
-                'success' => false,
-                'error' => 'No field of the record could be written',
-            ], $skipped), 400);
+            return new CreateRecordResolution($table, $storagePid, [], $skipped, 'No field of the record could be written');
         }
-        $dataHandlerData['pid'] = $storagePid;
 
-        $data[$table][StringUtility::getUniqueId('NEW')] = $dataHandlerData;
-        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
-        $dataHandler->start($data, [], $this->getBackendUser());
-        $dataHandler->process_datamap();
-
-        return $this->buildResponseFromDataHandler($dataHandler, 201, $skipped);
+        return new CreateRecordResolution($table, $storagePid, $dataHandlerData, $skipped);
     }
 
     /**
@@ -160,7 +188,7 @@ class CreateRecordReaction implements ReactionInterface
         }
         $unresolved = false;
         $resolved = preg_replace_callback(
-            '/\$\{([^\}]*)\}/',
+            self::PLACEHOLDER_PATTERN,
             static function (array $match) use ($payload, &$unresolved): string {
                 try {
                     $replacement = ArrayUtility::getValueByPath($payload, $match[1], '.');

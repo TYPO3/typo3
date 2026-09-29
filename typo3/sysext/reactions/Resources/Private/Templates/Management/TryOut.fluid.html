@@ -1,0 +1,34 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+<h4><f:translate key="reactions.module:reaction_endpoint"/></h4>
+<div class="input-group mb-3">
+    <input type="text" class="form-control font-monospace" value="{example.url}" readonly>
+    <typo3-copy-to-clipboard
+        class="btn btn-default"
+        text="{example.url}"
+        title="{f:translate(key: 'backend.copytoclipboard:copyToClipboard.title', arguments: {0: '{f:translate(key: \'reactions.module:reaction_endpoint\')}'})}"
+    >
+        <core:icon identifier="actions-clipboard" />
+    </typo3-copy-to-clipboard>
+</div>
+
+<h4><f:translate key="reactions.module:reaction_example"/></h4>
+<p class="text-body-secondary"><f:translate key="reactions.module:reaction_example_hint"/></p>
+<div class="example example--slim example--simple">
+    <pre class="mb-0"><code>{example.curlCommand}</code></pre>
+</div>
+<typo3-copy-to-clipboard
+    class="btn btn-default align-self-start mt-0"
+    text="{example.curlCommand}"
+    title="{f:translate(key: 'backend.copytoclipboard:copyToClipboard.title', arguments: {0: '{f:translate(key: \'reactions.module:reaction_example\')}'})}"
+>
+    <core:icon identifier="actions-clipboard" />
+    <f:translate key="reactions.module:reaction_example_copy"/>
+</typo3-copy-to-clipboard>
+
+<f:if condition="{dryRun}">
+    <f:render partial="Management/DryRun" arguments="{dryRun: dryRun}"/>
+</f:if>
+</html>
