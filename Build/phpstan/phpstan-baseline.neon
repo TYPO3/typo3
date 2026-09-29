@@ -31,12 +31,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Command/ConsumeMessagesCommand.php
 
 		-
-			rawMessage: If condition is always true.
-			identifier: if.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Command/ConsumeMessagesCommand.php
-
-		-
 			rawMessage: Negated boolean expression is always true.
 			identifier: booleanNot.alwaysTrue
 			count: 1
