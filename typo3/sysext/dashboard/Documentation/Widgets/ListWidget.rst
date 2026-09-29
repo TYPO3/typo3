@@ -12,6 +12,11 @@ List Widget
 Widgets using this class will show a simple list of items provided by a data
 provider.
 
+..  figure:: /Images/Widgets/ListWidget.png
+    :alt: List widget with four list items
+
+    A list widget showing the items returned by its data provider.
+
 ..  _list-widget-example:
 
 Example

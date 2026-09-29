@@ -14,6 +14,12 @@ text and an icon.
 
 This kind of widgets are useful if you want to show some simple stats.
 
+..  figure:: /Images/Widgets/NumberWithIconWidget.png
+    :alt: Number with icon widget with the number of failed backend logins
+
+    The widget "Failed backend logins" shipped with the dashboard
+    extension is a number with icon widget.
+
 ..  _number-widget-example:
 
 Example
