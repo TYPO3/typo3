@@ -1,0 +1,7 @@
+"pages"
+,"uid","pid","sorting","title","slug","is_siteroot","deleted","perms_userid","perms_groupid","perms_user","perms_group","perms_everybody"
+,1,0,256,"Main site","/",1,0,1,0,31,27,0
+,2,1,256,"About","/about",0,0,1,0,31,27,0
+,3,2,256,"Team","/team",0,0,1,0,31,27,0
+,10,0,512,"Second site","/",1,0,1,0,31,27,0
+,11,10,256,"Team","/team",0,0,1,0,31,27,0
