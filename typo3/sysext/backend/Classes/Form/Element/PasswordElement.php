@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Form\Element;
 
+use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\PasswordPolicy\PasswordPolicyAction;
 use TYPO3\CMS\Core\PasswordPolicy\PasswordPolicyValidator;
@@ -29,6 +31,10 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  */
 class PasswordElement extends AbstractFormElement
 {
+    public function __construct(
+        private readonly IconFactory $iconFactory,
+    ) {}
+
     /**
      * This will render a single-line password form field, possibly with various control/validation features
      *
@@ -126,7 +132,7 @@ class PasswordElement extends AbstractFormElement
         $mainFieldHtml[] = '<div class="form-control-wrap" style="max-width: ' . $width . 'px">';
         $mainFieldHtml[] =  '<div class="form-wizards-wrap">';
         $mainFieldHtml[] =      '<div class="form-wizards-item-element">';
-        $mainFieldHtml[] =          '<input type="password" ' . GeneralUtility::implodeAttributes($attributes, true) . ' />';
+        $mainFieldHtml[] =          $this->renderPasswordInput($attributes, $config, $resultArray);
         $mainFieldHtml[] =          '<input type="hidden" disabled data-enable-on-modification="true" name="' . $itemName . '" value="' . htmlspecialchars($this->getObfuscatedSecretValue($itemValue)) . '" />';
         $mainFieldHtml[] =      '</div>';
         if (!empty($fieldControlHtml)) {
@@ -222,6 +228,33 @@ class PasswordElement extends AbstractFormElement
         );
 
         return $resultArray;
+    }
+
+    /**
+     * A stored password is hashed and only shown obfuscated, so the copy button carries no
+     * text and is hidden: the element script offers it once the field holds a plain value,
+     * a generated one for instance. The wrapper only becomes an input group along with it,
+     * since a group squares the right corners of the input even while the button is hidden.
+     */
+    private function renderPasswordInput(array $attributes, array $config, array &$resultArray): string
+    {
+        $input = '<input type="password" ' . GeneralUtility::implodeAttributes($attributes, true) . ' />';
+        if (!($config['appearance']['copyToClipboard'] ?? false)) {
+            return $input;
+        }
+        $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create('@typo3/backend/copy-to-clipboard.js');
+        $languageService = $this->getLanguageService();
+        $title = sprintf(
+            $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_copytoclipboard.xlf:copyToClipboard.title'),
+            $languageService->sL((string)($this->data['parameterArray']['fieldConf']['label'] ?? ''))
+        );
+        return '
+            <div>
+                ' . $input . '
+                <typo3-copy-to-clipboard class="btn btn-default" title="' . htmlspecialchars($title) . '" hidden>
+                    ' . $this->iconFactory->getIcon('actions-clipboard', IconSize::SMALL) . '
+                </typo3-copy-to-clipboard>
+            </div>';
     }
 
     private function renderPasswordPolicyRequirements(

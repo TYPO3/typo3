@@ -82,6 +82,9 @@ return [
             'config' => [
                 'type' => 'password',
                 'required' => true,
+                'appearance' => [
+                    'copyToClipboard' => true,
+                ],
                 'fieldControl' => [
                     'passwordGenerator' => [
                         'renderType' => 'passwordGenerator',
