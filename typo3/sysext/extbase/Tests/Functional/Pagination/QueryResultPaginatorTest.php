@@ -147,4 +147,17 @@ final class QueryResultPaginatorTest extends FunctionalTestCase
         self::assertSame(13, $paginator->getKeyOfLastPaginatedItem());
         self::assertCount(14, $paginator->getPaginatedItems());
     }
+
+    #[Test]
+    public function paginatorReturnsNumberOfItems(): void
+    {
+        $paginator = new QueryResultPaginator(
+            $this->postRepository->findAll(),
+            2,
+            10
+        );
+
+        self::assertSame(14, $paginator->getTotalNumberOfItems());
+        self::assertSame(4, $paginator->getNumberOfItemsOnCurrentPage());
+    }
 }

@@ -90,6 +90,16 @@ abstract class AbstractPaginator implements PaginatorInterface
         return $this->keyOfLastPaginatedItem;
     }
 
+    public function getTotalNumberOfItems(): int
+    {
+        return $this->getTotalAmountOfItems();
+    }
+
+    public function getNumberOfItemsOnCurrentPage(): int
+    {
+        return $this->getAmountOfItemsOnCurrentPage();
+    }
+
     /**
      * Must update the paginated items, i.e. the subset of all items, limited and defined by
      * the given amount of items per page and offset

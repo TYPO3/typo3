@@ -178,6 +178,20 @@ final class QueryBuilderPaginatorTest extends FunctionalTestCase
         self::assertCount(14, $paginator->getPaginatedItems());
     }
 
+    #[Test]
+    public function paginatorReturnsNumberOfItems(): void
+    {
+        $queryBuilder = clone $this->getQueryBuilder();
+        $paginator = new QueryBuilderPaginator(
+            $queryBuilder,
+            2,
+            10
+        );
+
+        self::assertSame(14, $paginator->getTotalNumberOfItems());
+        self::assertSame(4, $paginator->getNumberOfItemsOnCurrentPage());
+    }
+
     private function getQueryBuilder()
     {
         $queryBuilder = $this->get(ConnectionPool::class)->getQueryBuilderForTable('tx_pagination_item');
