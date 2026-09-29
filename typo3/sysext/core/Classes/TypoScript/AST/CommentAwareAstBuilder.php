@@ -113,7 +113,7 @@ final class CommentAwareAstBuilder extends AbstractAstBuilder implements AstBuil
                 $node = $this->getOrAddNodeFromIdentifierStream($currentObjectPath, $line->getIdentifierTokenStream());
                 $functionValueTokenStream = $line->getFunctionValueTokenStream();
                 $node->setValue($this->evaluateValueModifier($line->getFunctionNameToken(), clone $functionValueTokenStream, $node->getValue()));
-                if ($functionValueTokenStream instanceof ConstantAwareTokenStream) {
+                if ($functionValueTokenStream instanceof ConstantAwareTokenStream && !$node->isValueNull()) {
                     // @todo: This is a bit unfortunate. When multiple functions manipulate a value after each other,
                     //        only the stream of the last one is preserved, previous ones are lost. This way, the BE modules
                     //        can not reflect when previous functions used constants. One idea to solve this is to turn existing

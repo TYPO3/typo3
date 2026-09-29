@@ -3198,6 +3198,14 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         self::assertEquals($expectedAst, $ast);
     }
 
+    #[Test]
+    public function buildCommentAwareDoesNotSetOriginalValueTokenStreamForUnknownFunctionWithConstantOnNullValue(): void
+    {
+        $tokens = (new LosslessTokenizer())->tokenize('foo := unknownFunction({$bar})');
+        $ast = (new CommentAwareAstBuilder(new NoopEventDispatcher()))->build($tokens, new RootNode());
+        self::assertNull($ast->getChildByName('foo')->getOriginalValueTokenStream());
+    }
+
     /**
      * The TYPO3 caching framework serializes cached objects.
      * A successful serialize/unserialize round-trip proves the AST is cacheable.
