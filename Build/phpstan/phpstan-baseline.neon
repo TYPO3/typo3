@@ -91,12 +91,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Html/SimpleParser.php
 
 		-
-			rawMessage: 'Call to an undefined method TYPO3\CMS\Core\Cache\Frontend\FrontendInterface::require().'
-			identifier: method.notFound
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Package/Cache/PackageStatesPackageCache.php
-
-		-
 			rawMessage: 'Parameter #2 $selectedStatements of method TYPO3\CMS\Core\Database\Schema\SchemaMigrator::migrate() expects array<string>, array<int|string, true> given.'
 			identifier: argument.type
 			count: 1

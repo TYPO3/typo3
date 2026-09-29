@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Package\Cache;
 
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Package\Exception\PackageManagerCacheUnavailableException;
 
@@ -33,11 +34,13 @@ class PackageStatesPackageCache implements PackageCacheInterface
     private const string CACHE_IDENTIFIER_PREFIX = 'PackageManager_';
     private ?string $cacheIdentifier;
     private string $packageStatesFile;
+    /** @var PhpFrontend */
     private FrontendInterface $coreCache;
 
     public function __construct(string $packageStatesFile, FrontendInterface $coreCache)
     {
         $this->packageStatesFile = $packageStatesFile;
+        /** @var PhpFrontend $coreCache */
         $this->coreCache = $coreCache;
     }
 
