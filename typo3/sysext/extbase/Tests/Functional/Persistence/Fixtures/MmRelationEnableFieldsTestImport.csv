@@ -1,0 +1,14 @@
+"pages"
+,"uid","pid","sorting","deleted","title"
+,1,0,256,0,"FunctionalTest"
+"tx_blogexample_domain_model_post"
+,"uid","pid","title","tags","deleted","hidden"
+,1,1,"Post 1",2,0,0
+"tx_blogexample_domain_model_tag"
+,"uid","pid","name","items","deleted","hidden"
+,1,1,"Tag 1",1,0,0
+,2,1,"Tag 2 hidden",1,0,1
+"tx_blogexample_domain_model_tag_mm"
+,"uid_local","uid_foreign","tablenames","fieldname","sorting","sorting_foreign"
+,1,1,"tx_blogexample_domain_model_post","tags",1,1
+,2,1,"tx_blogexample_domain_model_post","tags",2,1
