@@ -85,4 +85,19 @@ describe('@typo3/form/backend/form-editor/additional-element-property-paths', ()
       ['set', 'properties.a', ''],
     ]);
   });
+
+  it('handles checkbox states', () => {
+    const formElement = createFormElement();
+    const editorConfiguration = { additionalElementPropertyPaths: ['properties.a'], doNotSetIfPropertyValueIsEmpty: true };
+
+    writeAdditionalElementPropertyPaths(formElement, editorConfiguration, true, false);
+    writeAdditionalElementPropertyPaths(formElement, editorConfiguration, false, true);
+    writeAdditionalElementPropertyPaths(formElement, { additionalElementPropertyPaths: ['properties.a'] }, false, true);
+
+    expect(formElement.calls).to.deep.equal([
+      ['set', 'properties.a', true],
+      ['unset', 'properties.a'],
+      ['set', 'properties.a', false],
+    ]);
+  });
 });

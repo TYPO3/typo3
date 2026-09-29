@@ -58,3 +58,57 @@ templateName
 
 ..  _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.propertypath-checkboxeditor:
 ..  include:: properties/PropertyPath.rst.txt
+
+
+..  _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.additionalelementpropertypaths-checkboxeditor:
+
+additionalElementPropertyPaths
+------------------------------
+
+:aspect:`Data type`
+    array
+
+:aspect:`Needed by`
+    Backend (form editor)
+
+:aspect:`Mandatory`
+    No
+
+:aspect:`Good to know`
+    -   :ref:`Inspector <concepts-formeditor-inspector>`
+
+:aspect:`Description`
+    An array which holds property paths which should be written in addition to the propertyPath option.
+    The state of the checkbox is written as 'true' or 'false' to these property paths.
+
+    For example:
+
+    ..  code-block:: yaml
+
+        additionalElementPropertyPaths:
+          10: 'properties.fluidAdditionalAttributes.data-strict'
+
+
+..  _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.donotsetifpropertyvalueisempty-checkboxeditor:
+
+doNotSetIfPropertyValueIsEmpty
+------------------------------
+
+:aspect:`Data type`
+    bool
+
+:aspect:`Needed by`
+    Backend (form editor)
+
+:aspect:`Mandatory`
+    No
+
+:aspect:`Related options`
+    -   :ref:`additionalElementPropertyPaths <prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.additionalelementpropertypaths-checkboxeditor>`
+
+:aspect:`Good to know`
+    -   :ref:`Inspector <concepts-formeditor-inspector>`
+
+:aspect:`Description`
+    If set to true then the properties configured in ``additionalElementPropertyPaths`` will be removed within the ``form definition``
+    if the checkbox is unchecked instead of writing 'false' for these properties.

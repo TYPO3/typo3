@@ -1980,8 +1980,24 @@ export function renderCheckboxEditor(
     if (checkboxEl) { checkboxEl.checked = true; }
   }
 
+  // Catch up on values not written by this editor, e.g. from predefinedDefaults
+  if (checkboxEl && !getUtility().isUndefinedOrNull(propertyData)) {
+    writeAdditionalElementPropertyPaths(
+      getCurrentlySelectedFormElement(),
+      editorConfiguration,
+      checkboxEl.checked,
+      !checkboxEl.checked
+    );
+  }
+
   checkboxEl?.addEventListener('change', function(this: HTMLInputElement) {
     getCurrentlySelectedFormElement().set(propertyPath, this.checked);
+    writeAdditionalElementPropertyPaths(
+      getCurrentlySelectedFormElement(),
+      editorConfiguration,
+      this.checked,
+      !this.checked
+    );
   });
 }
 
