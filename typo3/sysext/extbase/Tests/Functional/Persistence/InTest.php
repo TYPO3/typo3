@@ -21,6 +21,7 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Exception\BadConstraintException;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Tests\BlogExample\Domain\Repository\BlogRepository;
@@ -43,6 +44,17 @@ final class InTest extends FunctionalTestCase
         $this->postRepository = $this->get(PostRepository::class);
         $request = new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $this->get(ConfigurationManagerInterface::class)->setRequest($request);
+    }
+
+    #[Test]
+    public function inConditionRejectsEmptyArray(): void
+    {
+        $query = $this->postRepository->createQuery();
+        $query->matching($query->in('uid', []));
+
+        $this->expectException(BadConstraintException::class);
+        $this->expectExceptionCode(1484828466);
+        $query->count();
     }
 
     #[Test]

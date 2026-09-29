@@ -384,16 +384,11 @@ class Typo3DbQueryParser
         $exprBuilder = $this->queryBuilder->expr();
         switch ($comparison->getOperator()) {
             case QueryInterface::OPERATOR_IN:
-                $hasValue = false;
                 $plainValues = [];
                 foreach ($value as $singleValue) {
-                    $plainValue = $this->dataMapper->getPlainValue($singleValue, $columnMap);
-                    if ($plainValue !== null) {
-                        $hasValue = true;
-                        $plainValues[] = $this->createTypedNamedParameter($singleValue, null, $columnMap);
-                    }
+                    $plainValues[] = $this->createTypedNamedParameter($singleValue, null, $columnMap);
                 }
-                if (!$hasValue) {
+                if ($plainValues === []) {
                     throw new BadConstraintException(
                         'The IN operator needs a non-empty value list to compare against. '
                         . 'The given value list is empty.',

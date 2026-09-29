@@ -115,12 +115,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Utility/GeneralUtility.php
 
 		-
-			rawMessage: 'Strict comparison using !== between int|string and null will always evaluate to true.'
-			identifier: notIdentical.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Storage/Typo3DbQueryParser.php
-
-		-
 			rawMessage: 'Parameter #1 $criteria of method TYPO3\CMS\Extbase\Persistence\Repository<TYPO3Tests\BlogExample\Domain\Model\Post>::findBy() expects array<non-empty-string, mixed>, array{''author''} given.'
 			identifier: argument.type
 			count: 1
