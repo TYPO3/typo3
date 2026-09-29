@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\View;
 
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\RecordIdentity\RecordTypeLabelResolver;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -37,9 +38,12 @@ readonly class RecordIdentityRenderer
         private RecordTypeLabelResolver $recordTypeLabelResolver,
     ) {}
 
-    public function render(string $table, array $row): string
+    public function render(string $table, array $row, bool $withContextMenu = false): string
     {
         $icon = $this->iconFactory->getIconForRecord($table, $row, IconSize::SMALL)->render();
+        if ($withContextMenu) {
+            $icon = BackendUtility::wrapClickMenuOnIcon($icon, $table, $row['uid'] ?? 0, '', $row);
+        }
         $tableTitle = $this->recordTypeLabelResolver->resolve($table, $row);
         $uid = (string)($row['uid'] ?? '');
 
