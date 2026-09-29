@@ -199,12 +199,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Mapper/DataMapper.php
 
 		-
-			rawMessage: 'Strict comparison using !== between int|string and null will always evaluate to true.'
-			identifier: notIdentical.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Storage/Typo3DbQueryParser.php
-
-		-
 			rawMessage: 'Property TYPO3\CMS\Extbase\Persistence\ObjectStorage::$warning is never read, only written.'
 			identifier: property.onlyWritten
 			count: 1
