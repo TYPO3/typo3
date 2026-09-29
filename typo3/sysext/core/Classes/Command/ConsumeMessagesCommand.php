@@ -248,11 +248,9 @@ EOF
         $io = new SymfonyStyle($input, $output instanceof ConsoleOutputInterface ? $output->getErrorOutput() : $output);
         $io->success(sprintf('Consuming messages from transport%s "%s".', count($receivers) > 1 ? 's' : '', implode(', ', $receiverNames)));
 
-        if ($stopsWhen) {
-            $last = array_pop($stopsWhen);
-            $stopsWhen = ($stopsWhen ? implode(', ', $stopsWhen) . ' or ' : '') . $last;
-            $io->comment("The worker will automatically exit once it has {$stopsWhen}.");
-        }
+        $last = array_pop($stopsWhen);
+        $stopsWhen = ($stopsWhen ? implode(', ', $stopsWhen) . ' or ' : '') . $last;
+        $io->comment("The worker will automatically exit once it has {$stopsWhen}.");
 
         $io->comment('Quit the worker with CONTROL-C.');
 
