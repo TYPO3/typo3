@@ -633,6 +633,7 @@ class PageRouter implements RouterInterface
         if ($variableNames === []) {
             return;
         }
+        /** @var array<StaticMappableAspectInterface&\Countable> $mappers */
         $mappers = $route->filterAspects(
             [StaticMappableAspectInterface::class, \Countable::class],
             $variableNames

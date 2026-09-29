@@ -163,12 +163,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Resource/Rendering/YouTubeRenderer.php
 
 		-
-			rawMessage: 'Parameter #1 $callback of function array_map expects (callable(TYPO3\CMS\Core\Routing\Aspect\AspectInterface): mixed)|null, Closure(array|Countable, 0|1=): int<0, max> given.'
-			identifier: argument.type
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Routing/PageRouter.php
-
-		-
 			rawMessage: 'Property TYPO3\CMS\Core\Schema\Struct\FlexSectionContainer::$description is never read, only written.'
 			identifier: property.onlyWritten
 			count: 1
