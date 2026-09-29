@@ -120,7 +120,6 @@ abstract class AbstractPaginator implements PaginatorInterface
      */
     protected function updateInternalState(): void
     {
-        $offset = (int)($this->itemsPerPage * ($this->currentPageNumber - 1));
         $totalAmountOfItems = $this->getTotalAmountOfItems();
 
         /*
@@ -145,6 +144,7 @@ abstract class AbstractPaginator implements PaginatorInterface
             return;
         }
 
+        $offset = $this->itemsPerPage * ($this->currentPageNumber - 1);
         $this->updatePaginatedItems($this->itemsPerPage, $offset);
 
         if (!$this->hasItemsOnCurrentPage()) {
