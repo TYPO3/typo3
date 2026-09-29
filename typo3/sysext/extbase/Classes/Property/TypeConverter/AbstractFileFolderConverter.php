@@ -17,6 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Property\TypeConverter;
 
+use TYPO3\CMS\Core\Resource\File as ResourceFile;
+use TYPO3\CMS\Core\Resource\FileReference as ResourceFileReference;
+use TYPO3\CMS\Core\Resource\Folder as ResourceFolder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -33,6 +36,7 @@ use TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface;
  */
 abstract class AbstractFileFolderConverter extends AbstractTypeConverter
 {
+    /** @var class-string<ResourceFile|ResourceFileReference|ResourceFolder> */
     protected string $expectedObjectType;
 
     protected ResourceFactory $fileFactory;
