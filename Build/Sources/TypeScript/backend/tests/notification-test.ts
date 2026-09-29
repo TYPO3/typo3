@@ -106,6 +106,124 @@ describe('@typo3/backend/notification:', () => {
     }
   });
 
+  describe('auto dismissal', () => {
+    async function showNotification(): Promise<{ element: LitElement, isCleared: () => boolean }> {
+      Notification.success('Title', 'Message', 1);
+      const element = document.querySelector('#alert-container typo3-notification-message:last-child') as LitElement;
+      await element.updateComplete;
+      let cleared = false;
+      element.addEventListener('typo3-notification-clear', (): void => {
+        cleared = true;
+      });
+      // Notifications appear with a delay, the countdown starts afterwards
+      await clock.tickAsync(200);
+      return { element, isCleared: (): boolean => cleared };
+    }
+
+    it('pauses while the notification is pointed at', async () => {
+      const { element, isCleared } = await showNotification();
+
+      element.dispatchEvent(new MouseEvent('mouseenter'));
+      await clock.tickAsync(5000);
+      expect(isCleared()).to.be.false;
+
+      element.dispatchEvent(new MouseEvent('mouseleave'));
+      await clock.tickAsync(1100);
+      expect(isCleared()).to.be.true;
+    });
+
+    it('pauses while the notification has the focus', async () => {
+      const { element, isCleared } = await showNotification();
+
+      element.dispatchEvent(new FocusEvent('focusin'));
+      await clock.tickAsync(5000);
+      expect(isCleared()).to.be.false;
+
+      element.dispatchEvent(new FocusEvent('focusout'));
+      await clock.tickAsync(1100);
+      expect(isCleared()).to.be.true;
+    });
+
+    it('continues with the time that was left', async () => {
+      const { element, isCleared } = await showNotification();
+
+      await clock.tickAsync(600);
+      element.dispatchEvent(new MouseEvent('mouseenter'));
+      await clock.tickAsync(5000);
+      element.dispatchEvent(new MouseEvent('mouseleave'));
+
+      await clock.tickAsync(300);
+      expect(isCleared()).to.be.false;
+      await clock.tickAsync(200);
+      expect(isCleared()).to.be.true;
+    });
+
+    it('stays paused when the pointer leaves while the focus is still inside', async () => {
+      const { element, isCleared } = await showNotification();
+
+      element.dispatchEvent(new FocusEvent('focusin'));
+      element.dispatchEvent(new MouseEvent('mouseenter'));
+      element.dispatchEvent(new MouseEvent('mouseleave'));
+      await clock.tickAsync(5000);
+      expect(isCleared()).to.be.false;
+
+      element.dispatchEvent(new FocusEvent('focusout'));
+      await clock.tickAsync(1100);
+      expect(isCleared()).to.be.true;
+    });
+
+    it('stays paused when the pointer rests on the notification before it appeared', async () => {
+      Notification.success('Title', 'Message', 1);
+      const element = document.querySelector('#alert-container typo3-notification-message:last-child') as LitElement;
+      await element.updateComplete;
+      let cleared = false;
+      element.addEventListener('typo3-notification-clear', (): void => {
+        cleared = true;
+      });
+
+      element.dispatchEvent(new MouseEvent('mouseenter'));
+      await clock.tickAsync(5000);
+      expect(cleared).to.be.false;
+
+      element.dispatchEvent(new MouseEvent('mouseleave'));
+      await clock.tickAsync(1100);
+      expect(cleared).to.be.true;
+    });
+
+    it('is not cleared by the countdown while an action is executing', async () => {
+      let finishAction: () => void;
+      Notification.success('Title', 'Message', 1, [
+        {
+          label: 'Undo',
+          action: new DeferredAction((): Promise<void> => new Promise((resolve): void => {
+            finishAction = resolve;
+          })),
+        },
+      ]);
+      const element = document.querySelector('#alert-container typo3-notification-message:last-child') as LitElement;
+      await element.updateComplete;
+      let cleared = false;
+      element.addEventListener('typo3-notification-clear', (): void => {
+        cleared = true;
+      });
+      await clock.tickAsync(200);
+
+      (element.querySelector('.alert-actions a') as HTMLAnchorElement).click();
+      await clock.tickAsync(5000);
+      expect(cleared).to.be.false;
+
+      finishAction();
+      await clock.tickAsync(0);
+      expect(cleared).to.be.true;
+    });
+  });
+
+  it('announces notifications to assistive technology', async () => {
+    Notification.info('Info message', 'Some text', 1);
+    await (document.querySelector('#alert-container typo3-notification-message:last-child') as LitElement).updateComplete;
+    expect(document.querySelector('#alert-container .alert-list').getAttribute('aria-live')).to.equal('polite');
+  });
+
   it('can render action buttons', async () => {
     Notification.info(
       'Info message',
@@ -157,5 +275,63 @@ describe('@typo3/backend/notification:', () => {
     (<HTMLAnchorElement>alertBox.querySelector('.alert-actions a')).click();
     await (document.querySelector('#alert-container typo3-notification-message:last-child') as LitElement).updateComplete;
     expect(called).to.be.true;
+  });
+
+  it('deferred action is called with its link', async () => {
+    let called = false;
+    Notification.info('Info message', 'Some text', 0, [
+      {
+        label: 'My deferred action',
+        action: new DeferredAction(async (): Promise<void> => {
+          called = true;
+        }),
+      },
+    ]);
+    const element = document.querySelector('#alert-container typo3-notification-message:last-child') as LitElement;
+    await element.updateComplete;
+
+    (element.querySelector('.alert-actions a') as HTMLAnchorElement).click();
+    await clock.tickAsync(0);
+
+    expect(called).to.be.true;
+  });
+
+  it('executes an action only once while it is executing', async () => {
+    let calls = 0;
+    let finishAction: () => void;
+    Notification.info('Info message', 'Some text', 0, [
+      {
+        label: 'Deferred action',
+        action: new DeferredAction((): Promise<void> => {
+          calls++;
+          return new Promise((resolve): void => {
+            finishAction = resolve;
+          });
+        }),
+      },
+      {
+        label: 'Other action',
+        action: new ImmediateAction((): void => {
+          calls++;
+        }),
+      },
+    ]);
+    const element = document.querySelector('#alert-container typo3-notification-message:last-child') as LitElement;
+    await element.updateComplete;
+    const [first, second] = Array.from(element.querySelectorAll('.alert-actions a')) as HTMLAnchorElement[];
+
+    first.click();
+    await clock.tickAsync(0);
+    // Keyboard activation still reaches a link which ignores the pointer
+    first.click();
+    second.click();
+    await clock.tickAsync(0);
+    expect(calls).to.equal(1);
+    expect(first.getAttribute('aria-disabled')).to.equal('true');
+    expect(second.getAttribute('aria-disabled')).to.equal('true');
+
+    finishAction();
+    await clock.tickAsync(0);
+    expect(calls).to.equal(1);
   });
 });

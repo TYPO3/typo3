@@ -963,6 +963,10 @@ class Modal {
     });
 
     currentModal.addEventListener('typo3-modal-hidden', (): void => {
+      // A notification shown while the modal closes is placed in it, and must not be removed along with it
+      if (currentModal.querySelector('#alert-container') !== null) {
+        remountAlertContainer(this.currentModal);
+      }
       currentModal.remove();
     });
 
