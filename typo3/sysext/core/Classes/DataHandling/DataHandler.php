@@ -8605,7 +8605,7 @@ class DataHandler
             }
         }
         if (!empty($newData)) {
-            $this->updateDB($table, (int)$row['uid'], $newData, (int)$row['pid']);
+            $this->updateFixedFields($table, $row, $newData);
         }
     }
 
@@ -8646,10 +8646,28 @@ class DataHandler
             }
         }
         if (!empty($newData)) {
-            $this->updateDB($table, (int)$row['uid'], $newData, (int)$row['pid']);
+            $this->updateFixedFields($table, $row, $newData);
             return true;
         }
         return false;
+    }
+
+    /**
+     * Values changed by DataHandler itself, to keep them unique after a move, are part of the
+     * operation, and the record history needs them to roll it back. Changes an earlier datamap
+     * recorded for the same record are already in the history and must not be written again.
+     */
+    private function updateFixedFields(string $table, array $row, array $newData): void
+    {
+        $historyKey = $table . ':' . $row['uid'];
+        $datamapHistory = $this->historyRecords[$historyKey] ?? null;
+        $this->historyRecords[$historyKey] = ['oldRecord' => array_intersect_key($row, $newData), 'newRecord' => $newData];
+        $this->updateDB($table, (int)$row['uid'], $newData, (int)$row['pid']);
+        if ($datamapHistory === null) {
+            unset($this->historyRecords[$historyKey]);
+        } else {
+            $this->historyRecords[$historyKey] = $datamapHistory;
+        }
     }
 
     /**
@@ -8661,10 +8679,7 @@ class DataHandler
         $subPages = $this->int_pageTreeInfo([], $pageId, 99, $pageId);
         // Now fix uniqueInSite for subpages
         foreach ($subPages as $thePageUid => $thePagePid) {
-            $recordWasModified = $this->fixUniqueInSite('pages', $thePageUid);
-            if ($recordWasModified) {
-                // @todo: Add logging and history - but how? we don't know the data that was in the system before
-            }
+            $this->fixUniqueInSite('pages', $thePageUid);
         }
     }
 
