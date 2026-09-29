@@ -775,6 +775,45 @@ final class RteHtmlParserTest extends UnitTestCase
         self::assertSame('<p class="a" id="b">Text</p>', $result);
     }
 
+    public static function paragraphWithSpaceAndEmbeddedContentIsKeptOnWayToDatabaseDataProvider(): array
+    {
+        return [
+            'audio with source' => [
+                '<p>&nbsp;' . LF . '<audio controls=""><source src="/fileadmin/audio.mp3" type="audio/mpeg" /></audio>' . LF . '</p>',
+                '<audio',
+            ],
+            'video with source' => [
+                '<p>&nbsp;<video controls=""><source src="/fileadmin/video.mp4" type="video/mp4" /></video></p>',
+                '<video',
+            ],
+            'video with src' => [
+                '<p>&nbsp;<video src="/fileadmin/video.mp4"></video></p>',
+                '<video',
+            ],
+            'iframe' => [
+                '<p>&nbsp;<iframe src="https://example.org/embed"></iframe></p>',
+                '<iframe',
+            ],
+            'img' => [
+                '<p>&nbsp;<img src="/fileadmin/image.jpg" alt="" /></p>',
+                '<img',
+            ],
+        ];
+    }
+
+    #[DataProvider('paragraphWithSpaceAndEmbeddedContentIsKeptOnWayToDatabaseDataProvider')]
+    #[Test]
+    public function paragraphWithSpaceAndEmbeddedContentIsKeptOnWayToDatabase(string $content, string $expectedTag): void
+    {
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $subject = new RteHtmlParser($eventDispatcher);
+        $result = $subject->transformTextForPersistence($content, [
+            'mode' => 'default',
+            'allowTags' => 'audio,video,source,iframe,img',
+        ]);
+        self::assertStringContainsString($expectedTag, $result);
+    }
+
     #[Test]
     public function tableAndFigureApplyCorrectlyOutsideOfParagraphTags(): void
     {
