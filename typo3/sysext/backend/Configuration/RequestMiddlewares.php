@@ -47,6 +47,16 @@ return [
                 'typo3/cms-backend/https-redirector',
             ],
         ],
+        /** internal: do not use or reference this middleware in your own code */
+        'typo3/cms-backend/fetch-metadata-guard' => [
+            'target' => \TYPO3\CMS\Backend\Middleware\FetchMetadataGuard::class,
+            'after' => [
+                'typo3/cms-backend/backend-routing',
+            ],
+            'before' => [
+                'typo3/cms-backend/authentication',
+            ],
+        ],
         'typo3/cms-core/request-token-middleware' => [
             'target' => \TYPO3\CMS\Core\Middleware\RequestTokenMiddleware::class,
             'after' => [

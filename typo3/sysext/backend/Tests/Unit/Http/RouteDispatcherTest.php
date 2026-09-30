@@ -63,7 +63,7 @@ final class RouteDispatcherTest extends UnitTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1425381442);
 
-        $route = new Route('not important', ['access' => 'public', 'target' => 42]);
+        $route = new Route('not important', ['access' => 'anonymous', 'target' => 42]);
         $request = new ServerRequest()->withAttribute('route', $route);
 
         $subject = new RouteDispatcher(
@@ -99,7 +99,7 @@ final class RouteDispatcherTest extends UnitTestCase
             new RouteDispatcherClassFixture(),
             'mainAction',
         ];
-        $route = new Route('not important', ['access' => 'public', 'target' => $target]);
+        $route = new Route('not important', ['access' => 'anonymous', 'target' => $target]);
         $request = new ServerRequest()->withAttribute('route', $route);
 
         $subject = new RouteDispatcher(
@@ -134,7 +134,7 @@ final class RouteDispatcherTest extends UnitTestCase
         $target = static function (ServerRequestInterface $request) {
             throw new \RuntimeException('I have been called. Good!', 1520756466);
         };
-        $route = new Route('not important', ['access' => 'public', 'target' => $target]);
+        $route = new Route('not important', ['access' => 'anonymous', 'target' => $target]);
         $request = new ServerRequest()->withAttribute('route', $route);
 
         $subject = new RouteDispatcher(
@@ -167,7 +167,7 @@ final class RouteDispatcherTest extends UnitTestCase
         $this->expectExceptionCode(1520756623);
 
         $target = RouteDispatcherClassInvokeFixture::class;
-        $route = new Route('not important', ['access' => 'public', 'target' => $target]);
+        $route = new Route('not important', ['access' => 'anonymous', 'target' => $target]);
         $request = new ServerRequest()->withAttribute('route', $route);
 
         $subject = new RouteDispatcher(
@@ -194,7 +194,7 @@ final class RouteDispatcherTest extends UnitTestCase
         $accessStorageStub = self::createStub(AccessStorage::class);
 
         $target = 'routedispatcher.classinvokefixture';
-        $route = new Route('not important', ['access' => 'public', 'target' => $target]);
+        $route = new Route('not important', ['access' => 'anonymous', 'target' => $target]);
         $request = new ServerRequest()->withAttribute('route', $route);
 
         $containerMock = $this->createMock(ContainerInterface::class);
@@ -234,7 +234,7 @@ final class RouteDispatcherTest extends UnitTestCase
         $this->expectExceptionCode(1442431631);
 
         $target = RouteDispatcherClassWithoutInvokeFixture::class;
-        $route = new Route('not important', ['access' => 'public', 'target' => $target]);
+        $route = new Route('not important', ['access' => 'anonymous', 'target' => $target]);
         $request = new ServerRequest()->withAttribute('route', $route);
 
         $subject = new RouteDispatcher(
@@ -267,7 +267,7 @@ final class RouteDispatcherTest extends UnitTestCase
         $this->expectExceptionCode(1520756142);
 
         $target = RouteDispatcherClassFixture::class . '::mainAction';
-        $route = new Route('not important', ['access' => 'public', 'target' => $target]);
+        $route = new Route('not important', ['access' => 'anonymous', 'target' => $target]);
         $request = new ServerRequest()->withAttribute('route', $route);
 
         $subject = new RouteDispatcher(
@@ -300,7 +300,7 @@ final class RouteDispatcherTest extends UnitTestCase
         $this->expectExceptionCode(1520757000);
 
         $target = RouteDispatcherStaticClassFixture::class . '::mainAction';
-        $route = new Route('not important', ['access' => 'public', 'target' => $target]);
+        $route = new Route('not important', ['access' => 'anonymous', 'target' => $target]);
         $request = new ServerRequest()->withAttribute('route', $route);
 
         $subject = new RouteDispatcher(

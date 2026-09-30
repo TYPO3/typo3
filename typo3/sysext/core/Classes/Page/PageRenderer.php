@@ -20,6 +20,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use TYPO3\CMS\Backend\Routing\RouteAccess;
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -1315,7 +1316,7 @@ class PageRenderer implements SingletonInterface
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $router = GeneralUtility::makeInstance(Router::class);
         foreach ($router->getRoutes() as $routeIdentifier => $route) {
-            if ($publicRoutesOnly && $route->getOption('access') !== 'public') {
+            if ($publicRoutesOnly && RouteAccess::fromRoute($route) !== RouteAccess::Anonymous) {
                 continue;
             }
             if ($route->getOption('ajax')) {

@@ -9,17 +9,17 @@ use TYPO3\CMS\Install\Controller\ServerResponseCheckController;
 
 return [
     'install.server-response-check.host' => [
-        'access' => 'public',
+        'access' => 'anonymous',
         'path' => '/install/server-response-check/host',
         'target' => ServerResponseCheckController::class . '::checkHostAction',
     ],
     'install.redirect' => [
-        'access' => 'public',
+        'access' => 'anonymous',
         'path' => '/install',
         'target' => EntryPointRedirectController::class . '::redirectAction',
     ],
     'install.php.redirect' => [
-        'access' => 'public',
+        'access' => 'anonymous',
         'path' => '/install.php',
         'target' => EntryPointRedirectController::class . '::redirectAction',
     ],

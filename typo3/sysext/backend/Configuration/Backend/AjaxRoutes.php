@@ -308,7 +308,7 @@ return [
     'login' => [
         'path' => '/login',
         'target' => \TYPO3\CMS\Backend\Controller\AjaxLoginController::class . '::loginAction',
-        'access' => 'public',
+        'access' => 'anonymous',
     ],
 
     // Log out from backend
@@ -316,27 +316,28 @@ return [
         'path' => '/logout',
         'methods' => ['POST'],
         'target' => \TYPO3\CMS\Backend\Controller\AjaxLoginController::class . '::logoutAction',
-        'access' => 'public',
+        'access' => 'anonymous',
     ],
 
     // Preflight check for login form
     'login_preflight' => [
         'path' => '/login/preflight',
         'target' => \TYPO3\CMS\Backend\Controller\AjaxLoginController::class . '::preflightAction',
-        'access' => 'public',
+        'access' => 'anonymous',
     ],
 
     // Refresh login of backend
     'login_refresh' => [
         'path' => '/login/refresh',
         'target' => \TYPO3\CMS\Backend\Controller\AjaxLoginController::class . '::refreshAction',
+        'access' => 'anonymous',
     ],
 
     // Check if backend session has timed out
     'login_timedout' => [
         'path' => '/login/timedout',
         'target' => \TYPO3\CMS\Backend\Controller\AjaxLoginController::class . '::isTimedOutAction',
-        'access' => 'public',
+        'access' => 'anonymous',
         'parameters' => [
             'skipSessionUpdate' => 1,
         ],

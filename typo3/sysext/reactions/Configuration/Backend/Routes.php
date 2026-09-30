@@ -6,7 +6,7 @@
 return [
     'reaction' => [
         'path' => '/reaction/{reactionIdentifier?}',
-        'access' => 'public',
+        'access' => 'anonymous',
         'methods' => ['POST'],
         'target' => \TYPO3\CMS\Reactions\Http\ReactionHandler::class . '::handleReaction',
     ],

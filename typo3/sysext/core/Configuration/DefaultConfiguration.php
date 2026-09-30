@@ -106,6 +106,7 @@ return [
             'redirects.hitCount' => false,
             'security.backend.htmlSanitizeRte' => false,
             'security.backend.enforceReferrer' => true,
+            'security.backend.enforceFetchMetadata' => true,
             'security.frontend.enforceContentSecurityPolicy' => false,
             'security.frontend.reportContentSecurityPolicy' => false,
             'security.frontend.allowInsecureSiteResolutionByQueryParameters' => false,

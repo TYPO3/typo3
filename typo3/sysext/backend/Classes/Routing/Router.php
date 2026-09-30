@@ -59,12 +59,29 @@ class Router
      */
     public function addRoute(string $routeIdentifier, Route $route, array $aliases = []): void
     {
+        $route = $this->migrateLegacyAccess($routeIdentifier, $route);
         $symfonyRoute = new SymfonyRoute($route->getPath(), [], [], $route->getOptions());
         $symfonyRoute->setMethods($route->getMethods());
         $this->routeCollection->add($routeIdentifier, $symfonyRoute);
         foreach ($aliases as $aliasName) {
             $this->routeCollection->addAlias($aliasName, $routeIdentifier);
         }
+    }
+
+    /**
+     * Migrates the legacy route access "public", which only omitted the request token.
+     */
+    private function migrateLegacyAccess(string $routeIdentifier, Route $route): Route
+    {
+        if ($route->getOption('module') === null && $route->getOption('access') === RouteAccess::LEGACY_PUBLIC) {
+            trigger_error(
+                'The route access "public" of the backend route "' . $routeIdentifier . '" has been deprecated in TYPO3 v15 and will be removed in TYPO3 v16.'
+                . ' Use "anonymous" to allow access without a backend user or "authenticated-without-token" to only omit the request token.',
+                E_USER_DEPRECATED
+            );
+            $route->setOption('access', RouteAccess::AuthenticatedWithoutToken->value);
+        }
+        return $route;
     }
 
     public function addRouteCollection(RouteCollection $routeCollection): void

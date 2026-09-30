@@ -88,6 +88,11 @@ class Route
         return $this;
     }
 
+    public function getAccess(): RouteAccess
+    {
+        return RouteAccess::fromRoute($this);
+    }
+
     /**
      * Returns the uppercased HTTP methods this route is restricted to.
      * An empty array means that any method is allowed.

@@ -47,27 +47,6 @@ use TYPO3\CMS\Core\Utility\HttpUtility;
  */
 class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAuthenticator
 {
-    /**
-     * List of requests that don't need a valid BE user
-     */
-    protected array $publicRoutes = [
-        '/login',
-        '/login/frame',
-        '/login/password-reset/forget',
-        '/login/password-reset/initiate-reset',
-        '/login/password-reset/validate',
-        '/login/password-reset/finish',
-        '/login/request-token',
-        '/install/server-response-check/host',
-        '/install',
-        '/install.php',
-        '/ajax/login',
-        '/ajax/logout',
-        '/ajax/login/preflight',
-        '/ajax/login/refresh',
-        '/ajax/login/timedout',
-    ];
-
     public function __construct(
         Context $context,
         private readonly LanguageServiceFactory $languageServiceFactory,
@@ -257,14 +236,14 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
 
     /**
      * Check if the user is required for the request.
-     * If we're trying to do a login or an ajax login, don't require a user.
+     * Routes declared with the access "anonymous" (login, password reset, ...) don't require a user.
      *
-     * @param Route $route the Route path to check against, something like '
+     * @param Route $route the Route to check against
      * @return bool true when the Route requires an authenticated backend user
      */
     protected function isLoggedInBackendUserRequired(Route $route): bool
     {
-        return in_array($route->getPath(), $this->publicRoutes, true) === false;
+        return $route->getAccess()->requiresAuthentication();
     }
 
     protected function ensureLoginRateLimit(BackendUserAuthentication $user, ServerRequestInterface $request): ?LimiterInterface

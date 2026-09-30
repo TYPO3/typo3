@@ -10,14 +10,13 @@ use TYPO3\CMS\Backend\Security\SudoMode\Access\AccessLifetime;
  * Please note that this setup is preliminary until all core use-cases are set up here.
  * Especially some more properties regarding modules will be added until TYPO3 CMS 7 LTS, and might change.
  *
- * Currently the "access" property is only used so no token creation + validation is made,
- * but will be extended further.
+ * The "access" property declares who can reach a route, see \TYPO3\CMS\Backend\Routing\RouteAccess.
  */
 return [
     // Login screen of the TYPO3 Backend
     'login' => [
         'path' => '/login',
-        'access' => 'public',
+        'access' => 'anonymous',
         // Refresh cross-site requests in order to obtain our SameSite=strict cookie
         'referrer' => 'refresh-cross-site',
         'target' => Controller\LoginController::class . '::formAction',
@@ -33,7 +32,7 @@ return [
     // IFrame dummy-url for browser-history state tracking of web component backend modules
     'state-tracker' => [
         'path' => '/state-tracker',
-        'access' => 'public',
+        'access' => 'authenticated-without-token',
         'target' => Controller\StateTrackerController::class . '::mainAction',
     ],
 
@@ -45,24 +44,24 @@ return [
     // Show the password forgotten form for entering the email
     'password_forget' => [
         'path' => '/login/password-reset/forget',
-        'access' => 'public',
+        'access' => 'anonymous',
         'target' => Controller\ResetPasswordController::class . '::forgetPasswordFormAction',
     ],
     // Send out the password reset email
     'password_forget_initiate_reset' => [
         'path' => '/login/password-reset/initiate-reset',
-        'access' => 'public',
+        'access' => 'anonymous',
         'methods' => ['POST'],
         'target' => Controller\ResetPasswordController::class . '::initiatePasswordResetAction',
     ],
     'password_reset_validate' => [
         'path' => '/login/password-reset/validate',
-        'access' => 'public',
+        'access' => 'anonymous',
         'target' => Controller\ResetPasswordController::class . '::passwordResetAction',
     ],
     'password_reset_finish' => [
         'path' => '/login/password-reset/finish',
-        'access' => 'public',
+        'access' => 'anonymous',
         'methods' => ['POST'],
         'target' => Controller\ResetPasswordController::class . '::passwordResetFinishAction',
     ],
@@ -82,14 +81,14 @@ return [
     // Register login frameset
     'login_frameset' => [
         'path' => '/login/frame',
-        'access' => 'public',
+        'access' => 'anonymous',
         'target' => Controller\LoginController::class . '::refreshAction',
     ],
 
     // Fetch RequestToken via AJAX
     'login_request_token' => [
         'path' => '/login/request-token',
-        'access' => 'public',
+        'access' => 'anonymous',
         'methods' => ['POST'],
         'target' => Controller\LoginController::class . '::requestTokenAction',
     ],
@@ -304,7 +303,6 @@ return [
         'path' => '/language/domain/{locale}/{cacheBustInfix}/{domain}',
         'methods' => ['GET'],
         'target' => Controller\JavaScriptLanguageDomainController::class . '::getLanguageDomainAction',
-        // Do not require a request token
-        'access' => 'public',
+        'access' => 'authenticated-without-token',
     ],
 ];

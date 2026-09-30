@@ -25,6 +25,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use TYPO3\CMS\Backend\Module\ModuleRegistry;
+use TYPO3\CMS\Backend\Routing\RouteAccess;
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Core\Attribute\AsNonSchedulableCommand;
 
@@ -64,6 +65,12 @@ class DebugBackendRoutesCommand extends Command
                 'l',
                 InputOption::VALUE_REQUIRED,
                 'Limit routes by type: ajax, module, or route'
+            )
+            ->addOption(
+                'access',
+                'a',
+                InputOption::VALUE_REQUIRED,
+                'Limit routes by access: anonymous, authenticated or authenticated-without-token'
             );
     }
 
@@ -73,6 +80,7 @@ class DebugBackendRoutesCommand extends Command
         $jsonOutput = $input->getOption('json');
         $filter = $input->getOption('filter');
         $limit = $input->getOption('limit');
+        $access = $input->getOption('access');
 
         // Validate limit option
         if ($limit !== null) {
@@ -83,8 +91,16 @@ class DebugBackendRoutesCommand extends Command
             }
         }
 
+        if ($access !== null) {
+            $access = RouteAccess::tryFrom(strtolower($access));
+            if ($access === null) {
+                $io->error('Invalid access. Valid options are: ' . implode(', ', array_column(RouteAccess::cases(), 'value')));
+                return Command::FAILURE;
+            }
+        }
+
         // Collect all routes
-        $routes = $this->collectAllRoutes($filter, $limit);
+        $routes = $this->collectAllRoutes($filter, $limit, $access);
 
         if (empty($routes)) {
             $messages = [];
@@ -93,6 +109,9 @@ class DebugBackendRoutesCommand extends Command
             }
             if ($limit) {
                 $messages[] = 'type: ' . $limit;
+            }
+            if ($access) {
+                $messages[] = 'access: ' . $access->value;
             }
             if ($messages) {
                 $io->warning('No routes found matching ' . implode(', ', $messages));
@@ -117,9 +136,9 @@ class DebugBackendRoutesCommand extends Command
     /**
      * Collect all routes from Router (including AJAX routes) and Module routes
      *
-     * @return array<string, array{name: string, method: string, path: string, target: string, type: string, options: array}>
+     * @return array<string, array{name: string, method: string, path: string, target: string, type: string, access: string, requestToken: bool, options: array}>
      */
-    private function collectAllRoutes(?string $filter, ?string $limitType): array
+    private function collectAllRoutes(?string $filter, ?string $limitType, ?RouteAccess $access = null): array
     {
         $routes = [];
 
@@ -154,6 +173,11 @@ class DebugBackendRoutesCommand extends Command
                 }
             }
 
+            $routeAccess = RouteAccess::fromRoute($route);
+            if ($access !== null && $routeAccess !== $access) {
+                continue;
+            }
+
             // Get methods - works for both Symfony and TYPO3 Route objects
             $methods = $route->getMethods();
             $methodString = empty($methods) ? 'ANY' : implode('|', $methods);
@@ -168,6 +192,8 @@ class DebugBackendRoutesCommand extends Command
                 'path' => $route->getPath(),
                 'target' => $target,
                 'type' => $type,
+                'access' => $routeAccess->value,
+                'requestToken' => $routeAccess->requiresRequestToken(),
                 'options' => $options,
             ];
         }
@@ -188,6 +214,8 @@ class DebugBackendRoutesCommand extends Command
                 'path' => $route['path'],
                 'target' => $route['target'],
                 'type' => $route['type'],
+                'access' => $route['access'],
+                'requestToken' => $route['requestToken'],
                 'options' => $route['options'],
             ];
         }
@@ -201,7 +229,7 @@ class DebugBackendRoutesCommand extends Command
     private function outputTable(array $routes, SymfonyStyle $io, OutputInterface $output): void
     {
         $table = new Table($output);
-        $table->setHeaders(['Name', 'Method', 'Path', 'Target', 'Type']);
+        $table->setHeaders(['Name', 'Method', 'Path', 'Target', 'Type', 'Access', 'Token']);
         $rows = [];
         foreach ($routes as $route) {
             $rows[] = [
@@ -210,6 +238,8 @@ class DebugBackendRoutesCommand extends Command
                 $route['path'],
                 $this->formatTarget($route['target']),
                 $route['type'],
+                $route['access'],
+                $route['requestToken'] ? 'yes' : 'no',
             ];
         }
 

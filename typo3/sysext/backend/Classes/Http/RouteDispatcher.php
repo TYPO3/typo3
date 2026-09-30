@@ -116,7 +116,7 @@ class RouteDispatcher extends Dispatcher
      */
     protected function assertRequestToken(ServerRequestInterface $request, Route $route): void
     {
-        if ($route->getOption('access') === 'public') {
+        if (!$route->getAccess()->requiresRequestToken()) {
             return;
         }
         $token = (string)($request->getParsedBody()['token'] ?? $request->getQueryParams()['token'] ?? '');
