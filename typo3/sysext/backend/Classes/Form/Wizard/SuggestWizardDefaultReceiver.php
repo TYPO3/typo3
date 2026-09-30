@@ -170,7 +170,7 @@ class SuggestWizardDefaultReceiver
                 $label = $this->getLabel($row);
                 $entry = [
                     'table' => $this->mmForeignTable ?: $this->table,
-                    'label' => strip_tags($label),
+                    'label' => $label,
                     'path' => $path,
                     'uid' => $uid,
                     'icon' => [
@@ -369,7 +369,9 @@ class SuggestWizardDefaultReceiver
      */
     protected function getLabel(array $row): string
     {
-        return BackendUtility::getRecordTitle($this->mmForeignTable ?: $this->table, $row, true);
+        return BackendUtility::cropToTitleLength(
+            BackendUtility::getRecordTitle($this->mmForeignTable ?: $this->table, $row)
+        );
     }
 
     /**
