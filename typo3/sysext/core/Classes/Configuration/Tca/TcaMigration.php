@@ -99,6 +99,7 @@ readonly class TcaMigration
         $tcaProcessingResult = $this->removeValuePickerMode($tcaProcessingResult);
         $tcaProcessingResult = $this->migrateSysRedirectDefaultType($tcaProcessingResult);
         $tcaProcessingResult = $this->migrateNumberFormat($tcaProcessingResult);
+        $tcaProcessingResult = $this->migrateUuidEnableCopyToClipboardToAppearance($tcaProcessingResult);
 
         return $tcaProcessingResult;
     }
@@ -1907,6 +1908,45 @@ readonly class TcaMigration
             );
         }
 
+        return $tcaProcessingResult->withTca($tca);
+    }
+
+    /**
+     * Migrates [config][enableCopyToClipboard] of type uuid to [config][appearance][copyToClipboard]
+     */
+    protected function migrateUuidEnableCopyToClipboardToAppearance(TcaProcessingResult $tcaProcessingResult): TcaProcessingResult
+    {
+        $tca = $tcaProcessingResult->getTca();
+        foreach ($tca as $table => &$tableDefinition) {
+            if (!isset($tableDefinition['columns']) || !is_array($tableDefinition['columns'])) {
+                continue;
+            }
+            foreach ($tableDefinition['columns'] as $fieldName => &$fieldConfig) {
+                if (($fieldConfig['config']['type'] ?? '') !== 'uuid' || !array_key_exists('enableCopyToClipboard', $fieldConfig['config'])) {
+                    continue;
+                }
+                $fieldConfig['config']['appearance']['copyToClipboard'] ??= $fieldConfig['config']['enableCopyToClipboard'];
+                unset($fieldConfig['config']['enableCopyToClipboard']);
+                $tcaProcessingResult = $tcaProcessingResult->withAdditionalMessages('The TCA field \'' . $fieldName . '\' of table \'' . $table . '\' uses '
+                    . '\'enableCopyToClipboard\', which has been migrated to [\'appearance\'][\'copyToClipboard\']. '
+                    . 'Please adjust your TCA accordingly.');
+            }
+            unset($fieldConfig);
+            foreach ($tableDefinition['types'] ?? [] as $typeName => $typeConfig) {
+                foreach ($typeConfig['columnsOverrides'] ?? [] as $columnOverride => $columnOverrideConfig) {
+                    $type = $columnOverrideConfig['config']['type'] ?? $tableDefinition['columns'][$columnOverride]['config']['type'] ?? '';
+                    if ($type !== 'uuid' || !array_key_exists('enableCopyToClipboard', $columnOverrideConfig['config'] ?? [])) {
+                        continue;
+                    }
+                    $overrideConfig = &$tableDefinition['types'][$typeName]['columnsOverrides'][$columnOverride]['config'];
+                    $overrideConfig['appearance']['copyToClipboard'] ??= $overrideConfig['enableCopyToClipboard'];
+                    unset($overrideConfig['enableCopyToClipboard'], $overrideConfig);
+                    $tcaProcessingResult = $tcaProcessingResult->withAdditionalMessages('The TCA column override \'' . $columnOverride . '\' of table \'' . $table . '\' uses '
+                        . '\'enableCopyToClipboard\', which has been migrated to [\'appearance\'][\'copyToClipboard\']. '
+                        . 'Please adjust your TCA accordingly.');
+                }
+            }
+        }
         return $tcaProcessingResult->withTca($tca);
     }
 }

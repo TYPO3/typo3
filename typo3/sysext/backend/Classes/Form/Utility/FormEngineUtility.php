@@ -55,7 +55,7 @@ class FormEngineUtility
         'password' => ['size', 'readOnly'],
         'datetime' => ['size', 'readOnly'],
         'color' => ['size', 'readOnly'],
-        'uuid' => ['size', 'enableCopyToClipboard'],
+        'uuid' => ['size', 'appearance', 'enableCopyToClipboard'],
         'text' => ['cols', 'rows', 'wrap', 'max', 'readOnly'],
         'json' => ['cols', 'rows', 'readOnly'],
         'check' => ['cols', 'readOnly'],
@@ -84,6 +84,15 @@ class FormEngineUtility
         if (is_array($TSconfig)) {
             $TSconfig = GeneralUtility::removeDotsFromTS($TSconfig);
             $type = $fieldConfig['type'] ?? '';
+            if ($type === 'uuid' && isset($TSconfig['config']['enableCopyToClipboard'])) {
+                trigger_error(
+                    'TSconfig option "config.enableCopyToClipboard" of TCA type "uuid" has been moved to'
+                    . ' "config.appearance.copyToClipboard" and will stop working in TYPO3 v16.0.',
+                    E_USER_DEPRECATED
+                );
+                $TSconfig['config']['appearance']['copyToClipboard'] = $TSconfig['config']['enableCopyToClipboard'];
+                unset($TSconfig['config']['enableCopyToClipboard']);
+            }
             if (isset($TSconfig['config']) && is_array($TSconfig['config']) && is_array(static::$allowOverrideMatrix[$type] ?? null)) {
                 // Check if the keys in TSconfig['config'] are allowed to override TCA field config:
                 foreach ($TSconfig['config'] as $key => $_) {

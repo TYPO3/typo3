@@ -1180,7 +1180,9 @@ backend_layout {
             'description' => 'uuid without copy icon',
             'config' => [
                 'type' => 'uuid',
-                'enableCopyToClipboard' => false,
+                'appearance' => [
+                    'copyToClipboard' => false,
+                ],
             ],
         ],
         'uuid_3' => [

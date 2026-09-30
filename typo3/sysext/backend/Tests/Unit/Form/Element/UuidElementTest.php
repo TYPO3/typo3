@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\Element;
 
 use PHPUnit\Framework\Attributes\BackupGlobals;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\Element\UuidElement;
 use TYPO3\CMS\Backend\Form\NodeExpansion\FieldInformation;
@@ -128,8 +129,15 @@ final class UuidElementTest extends UnitTestCase
         self::assertMatchesRegularExpression('/<input.*value="' . $uuid . '".*id="formengine-uuid-/s', $result['html']);
     }
 
+    public static function disabledCopyToClipboardDataProvider(): iterable
+    {
+        yield 'TCA' => [false];
+        yield 'TSconfig' => ['0'];
+    }
+
     #[Test]
-    public function renderReturnsInputElementWithUuidAndWithoutCopyToClipboardButton(): void
+    #[DataProvider('disabledCopyToClipboardDataProvider')]
+    public function renderReturnsInputElementWithUuidAndWithoutCopyToClipboardButton(bool|string $copyToClipboard): void
     {
         $uuid = 'b3190536-1431-453e-afbb-25b8c5022513';
         $data = [
@@ -142,7 +150,9 @@ final class UuidElementTest extends UnitTestCase
                     'label' => 'foo',
                     'config' => [
                         'type' => 'uuid',
-                        'enableCopyToClipboard' => false,
+                        'appearance' => [
+                            'copyToClipboard' => $copyToClipboard,
+                        ],
                     ],
                 ],
             ],

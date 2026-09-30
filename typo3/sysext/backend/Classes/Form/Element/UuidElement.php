@@ -80,7 +80,7 @@ class UuidElement extends AbstractFormElement
         $fieldInformationHtml = $fieldInformationResult['html'];
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldInformationResult, false);
 
-        if (($config['enableCopyToClipboard'] ?? true) !== false) {
+        if ((bool)($config['appearance']['copyToClipboard'] ?? true)) {
             $uuidElement = '
                 <div class="input-group">
                     ' . $uuidElement . '

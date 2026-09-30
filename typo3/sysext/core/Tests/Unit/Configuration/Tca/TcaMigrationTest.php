@@ -4503,4 +4503,184 @@ final class TcaMigrationTest extends UnitTestCase
         ];
     }
 
+    public static function uuidEnableCopyToClipboardDataProvider(): iterable
+    {
+        yield 'disabled copy to clipboard is moved to appearance' => [
+            'input' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'uuid',
+                                'enableCopyToClipboard' => false,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'expected' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'uuid',
+                                'appearance' => [
+                                    'copyToClipboard' => false,
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'expectedMessageCount' => 1,
+        ];
+        yield 'enabled copy to clipboard is moved to appearance' => [
+            'input' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'uuid',
+                                'enableCopyToClipboard' => true,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'expected' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'uuid',
+                                'appearance' => [
+                                    'copyToClipboard' => true,
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'expectedMessageCount' => 1,
+        ];
+        yield 'existing appearance options are kept and win over the old option' => [
+            'input' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'uuid',
+                                'enableCopyToClipboard' => false,
+                                'appearance' => [
+                                    'copyToClipboard' => true,
+                                    'someOption' => 'someValue',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'expected' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'uuid',
+                                'appearance' => [
+                                    'copyToClipboard' => true,
+                                    'someOption' => 'someValue',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'expectedMessageCount' => 1,
+        ];
+        yield 'columnsOverrides of a uuid column are migrated' => [
+            'input' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'uuid',
+                            ],
+                        ],
+                    ],
+                    'types' => [
+                        'aType' => [
+                            'columnsOverrides' => [
+                                'aColumn' => [
+                                    'config' => [
+                                        'enableCopyToClipboard' => false,
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'expected' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'uuid',
+                            ],
+                        ],
+                    ],
+                    'types' => [
+                        'aType' => [
+                            'columnsOverrides' => [
+                                'aColumn' => [
+                                    'config' => [
+                                        'appearance' => [
+                                            'copyToClipboard' => false,
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'expectedMessageCount' => 1,
+        ];
+        yield 'other types are left untouched' => [
+            'input' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'input',
+                                'enableCopyToClipboard' => false,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'expected' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'input',
+                                'enableCopyToClipboard' => false,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'expectedMessageCount' => 0,
+        ];
+    }
+
+    #[Test]
+    #[DataProvider('uuidEnableCopyToClipboardDataProvider')]
+    public function uuidEnableCopyToClipboardIsMigratedToAppearance(array $input, array $expected, int $expectedMessageCount): void
+    {
+        $result = new TcaMigration()->migrate($input);
+        self::assertSame($expected, $result->getTca());
+        self::assertCount($expectedMessageCount, $result->getMessages());
+    }
 }
