@@ -1,0 +1,17 @@
+be_groups
+,"uid","pid","title","tables_select","db_mountpoints"
+,1,0,"With mount","tt_content","10"
+,2,0,"Without mount","tt_content",""
+be_users
+,"uid","pid","username","admin","usergroup"
+,1,0,"admin",1,""
+,2,0,"editorWithMount",0,"1"
+,3,0,"editorWithoutMount",0,"2"
+pages
+,"uid","pid","title","perms_userid","perms_groupid","perms_user","perms_group","perms_everybody"
+,10,0,"Page Ten",1,1,31,31,0
+,20,0,"Page Twenty",1,1,31,31,1
+tt_content
+,"uid","pid","header"
+,1,10,"SecretHeader"
+,2,20,"UnmountedHeader"

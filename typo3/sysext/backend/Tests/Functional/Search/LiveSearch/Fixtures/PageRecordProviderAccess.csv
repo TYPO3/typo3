@@ -1,0 +1,15 @@
+be_groups
+,"uid","pid","title","db_mountpoints"
+,1,0,"Mounted","1"
+,2,0,"Unmounted",""
+be_users
+,"uid","pid","username","admin","usergroup"
+,1,0,"admin",1,""
+,2,0,"editor",0,"1"
+,3,0,"editorWithoutMount",0,"2"
+pages
+,"uid","pid","title","perms_userid","perms_groupid","perms_user","perms_group","perms_everybody"
+,1,0,"Mount root",1,1,31,31,0
+,10,1,"InMountPage",1,1,31,31,0
+,20,0,"OutOfMountPage",1,0,31,0,1
+,21,20,"OutOfMountChildPage",1,0,31,0,1
