@@ -152,6 +152,7 @@ class RecordsContentObject extends AbstractContentObject
      *
      * @param string $source Source of records
      * @param array $tables List of tables
+     * @phpstan-impure
      */
     protected function collectRecordsFromSource($source, array $tables)
     {
@@ -174,6 +175,7 @@ class RecordsContentObject extends AbstractContentObject
      * @param string $selectedCategories Comma-separated list of categories
      * @param array $tables List of tables
      * @param string $relationField Name of the field containing the categories relation
+     * @phpstan-impure
      */
     protected function collectRecordsFromCategories($selectedCategories, array $tables, $relationField)
     {
