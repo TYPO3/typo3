@@ -17,10 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Controller;
 
-use PhpParser\NodeTraverser;
-use PhpParser\NodeVisitor\NameResolver;
-use PhpParser\ParserFactory;
-use PhpParser\PhpVersion;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Finder\Finder;
@@ -45,33 +41,8 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Install\CoreVersion\CoreRelease;
-use TYPO3\CMS\Install\ExtensionScanner\CodeScannerInterface;
-use TYPO3\CMS\Install\ExtensionScanner\Php\CodeStatistics;
-use TYPO3\CMS\Install\ExtensionScanner\Php\GeneratorClassesResolver;
-use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\AbstractMethodImplementationMatcher;
-use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\ArrayDimensionMatcher;
-use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\ArrayGlobalMatcher;
-use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\ClassConstantMatcher;
-use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\ClassNameMatcher;
-use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\ConstantMatcher;
-use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\ConstructorArgumentMatcher;
-use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\FunctionCallMatcher;
-use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\InterfaceMethodChangedMatcher;
-use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\MethodAnnotationMatcher;
-use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\MethodArgumentDroppedMatcher;
-use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\MethodArgumentDroppedStaticMatcher;
-use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\MethodArgumentRequiredMatcher;
-use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\MethodArgumentRequiredStaticMatcher;
-use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\MethodArgumentUnusedMatcher;
-use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\MethodCallArgumentValueMatcher;
-use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\MethodCallMatcher;
-use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\MethodCallStaticMatcher;
-use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\PropertyAnnotationMatcher;
-use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\PropertyExistsStaticMatcher;
-use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\PropertyProtectedMatcher;
-use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\PropertyPublicMatcher;
-use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\ScalarStringMatcher;
-use TYPO3\CMS\Install\ExtensionScanner\Php\MatcherFactory;
+use TYPO3\CMS\Install\ExtensionScanner\ExtensionScannerService;
+use TYPO3\CMS\Install\ExtensionScanner\Result\ScanResult;
 use TYPO3\CMS\Install\Service\ClearCacheService;
 use TYPO3\CMS\Install\Service\CoreUpdateService;
 use TYPO3\CMS\Install\Service\CoreVersionService;
@@ -96,107 +67,6 @@ class UpgradeController extends AbstractController
      */
     protected $coreVersionService;
 
-    /**
-     * Matcher registry of extension scanner.
-     * Node visitors that implement CodeScannerInterface
-     *
-     * @var array
-     */
-    protected $matchers = [
-        [
-            'class' => ArrayDimensionMatcher::class,
-            'configurationFile' => 'EXT:install/Configuration/ExtensionScanner/Php/ArrayDimensionMatcher.php',
-        ],
-        [
-            'class' => ArrayGlobalMatcher::class,
-            'configurationFile' => 'EXT:install/Configuration/ExtensionScanner/Php/ArrayGlobalMatcher.php',
-        ],
-        [
-            'class' => ClassConstantMatcher::class,
-            'configurationFile' => 'EXT:install/Configuration/ExtensionScanner/Php/ClassConstantMatcher.php',
-        ],
-        [
-            'class' => ClassNameMatcher::class,
-            'configurationFile' => 'EXT:install/Configuration/ExtensionScanner/Php/ClassNameMatcher.php',
-        ],
-        [
-            'class' => ConstantMatcher::class,
-            'configurationFile' => 'EXT:install/Configuration/ExtensionScanner/Php/ConstantMatcher.php',
-        ],
-        [
-            'class' => ConstructorArgumentMatcher::class,
-            'configurationFile' => 'EXT:install/Configuration/ExtensionScanner/Php/ConstructorArgumentMatcher.php',
-        ],
-        [
-            'class' => PropertyAnnotationMatcher::class,
-            'configurationFile' => 'EXT:install/Configuration/ExtensionScanner/Php/PropertyAnnotationMatcher.php',
-        ],
-        [
-            'class' => MethodAnnotationMatcher::class,
-            'configurationFile' => 'EXT:install/Configuration/ExtensionScanner/Php/MethodAnnotationMatcher.php',
-        ],
-        [
-            'class' => FunctionCallMatcher::class,
-            'configurationFile' => 'EXT:install/Configuration/ExtensionScanner/Php/FunctionCallMatcher.php',
-        ],
-        [
-            'class' => AbstractMethodImplementationMatcher::class,
-            'configurationFile' => 'EXT:install/Configuration/ExtensionScanner/Php/AbstractMethodImplementationMatcher.php',
-        ],
-        [
-            'class' => InterfaceMethodChangedMatcher::class,
-            'configurationFile' => 'EXT:install/Configuration/ExtensionScanner/Php/InterfaceMethodChangedMatcher.php',
-        ],
-        [
-            'class' => MethodArgumentDroppedMatcher::class,
-            'configurationFile' => 'EXT:install/Configuration/ExtensionScanner/Php/MethodArgumentDroppedMatcher.php',
-        ],
-        [
-            'class' => MethodArgumentDroppedStaticMatcher::class,
-            'configurationFile' => 'EXT:install/Configuration/ExtensionScanner/Php/MethodArgumentDroppedStaticMatcher.php',
-        ],
-        [
-            'class' => MethodArgumentRequiredMatcher::class,
-            'configurationFile' => 'EXT:install/Configuration/ExtensionScanner/Php/MethodArgumentRequiredMatcher.php',
-        ],
-        [
-            'class' => MethodArgumentRequiredStaticMatcher::class,
-            'configurationFile' => 'EXT:install/Configuration/ExtensionScanner/Php/MethodArgumentRequiredStaticMatcher.php',
-        ],
-        [
-            'class' => MethodArgumentUnusedMatcher::class,
-            'configurationFile' => 'EXT:install/Configuration/ExtensionScanner/Php/MethodArgumentUnusedMatcher.php',
-        ],
-        [
-            'class' => MethodCallMatcher::class,
-            'configurationFile' => 'EXT:install/Configuration/ExtensionScanner/Php/MethodCallMatcher.php',
-        ],
-        [
-            'class' => MethodCallArgumentValueMatcher::class,
-            'configurationFile' => 'EXT:install/Configuration/ExtensionScanner/Php/MethodCallArgumentValueMatcher.php',
-        ],
-        [
-            'class' => MethodCallStaticMatcher::class,
-            'configurationFile' => 'EXT:install/Configuration/ExtensionScanner/Php/MethodCallStaticMatcher.php',
-        ],
-        [
-            'class' => PropertyExistsStaticMatcher::class,
-            'configurationFile' => 'EXT:install/Configuration/ExtensionScanner/Php/PropertyExistsStaticMatcher.php',
-        ],
-        [
-            'class' => PropertyProtectedMatcher::class,
-            'configurationFile' => 'EXT:install/Configuration/ExtensionScanner/Php/PropertyProtectedMatcher.php',
-        ],
-        [
-            'class' => PropertyPublicMatcher::class,
-            'configurationFile' => 'EXT:install/Configuration/ExtensionScanner/Php/PropertyPublicMatcher.php',
-        ],
-        [
-            'class' => ScalarStringMatcher::class,
-            'configurationFile' => 'EXT:install/Configuration/ExtensionScanner/Php/ScalarStringMatcher.php',
-        ],
-    ];
-
     public function __construct(
         protected readonly PackageManager $packageManager,
         private readonly LateBootService $lateBootService,
@@ -204,6 +74,7 @@ class UpgradeController extends AbstractController
         private readonly FormProtectionFactory $formProtectionFactory,
         private readonly LoadTcaService $loadTcaService,
         private readonly Registry $registry,
+        private readonly ExtensionScannerService $extensionScannerService,
     ) {}
 
     /**
@@ -662,13 +533,10 @@ class UpgradeController extends AbstractController
             );
         }
 
-        $finder = new Finder();
-        $files = $finder->files()->ignoreUnreadableDirs()->in($extensionBasePath)->name('*.php')->sortByName();
         // A list of file names relative to extension directory
         $relativeFileNames = [];
-        foreach ($files as $file) {
-            /** @var SplFileInfo $file */
-            $relativeFileNames[] = GeneralUtility::fixWindowsFilePath($file->getRelativePathname());
+        foreach ($this->extensionScannerService->findScannableFiles($extensionBasePath) as $absoluteFilePath) {
+            $relativeFileNames[] = ltrim(substr($absoluteFilePath, strlen(rtrim($extensionBasePath, '/'))), '/');
         }
         return new JsonResponse([
             'success' => true,
@@ -758,56 +626,43 @@ class UpgradeController extends AbstractController
             );
         }
 
-        $parser = (new ParserFactory())->createForVersion(PhpVersion::fromComponents(8, 2));
-        // Parse PHP file to AST and traverse tree calling visitors
-        $statements = $parser->parse(file_get_contents($absoluteFilePath));
-
-        // The built in NameResolver translates class names shortened with 'use' to fully qualified
-        // class names at all places. Incredibly useful for us and added as first visitor.
-        // IMPORTANT: first process completely to resolve fully qualified names of arguments
-        // (otherwise GeneratorClassesResolver will NOT get reliable results)
-        $traverser = new NodeTraverser();
-        $traverser->addVisitor(new NameResolver());
-        $statements = $traverser->traverse($statements);
-
-        // IMPORTANT: second process to actually work on the pre-resolved statements
-        $traverser = new NodeTraverser();
-        // Understand GeneralUtility::makeInstance('My\\Package\\Foo\\Bar') as fqdn class name in first argument
-        $traverser->addVisitor(new GeneratorClassesResolver());
-        // Count ignored lines, effective code lines, ...
-        $statistics = new CodeStatistics();
-        $traverser->addVisitor($statistics);
-
-        // Add all configured matcher classes
-        $matcherFactory = new MatcherFactory();
-        $matchers = $matcherFactory->createAll($this->matchers);
-        foreach ($matchers as $matcher) {
-            $traverser->addVisitor($matcher);
+        $result = $this->extensionScannerService->scanFile($absoluteFilePath);
+        if ($result->getParseError() !== null) {
+            throw new \RuntimeException(
+                'File ' . $file . ' could not be parsed: ' . $result->getParseError(),
+                1790540104
+            );
         }
 
-        $traverser->traverse($statements);
+        return new JsonResponse([
+            'success' => true,
+            'matches' => $this->extensionScannerPrepareMatches($result, $absoluteFilePath),
+            'isFileIgnored' => $result->isFileIgnored(),
+            'effectiveCodeLines' => $result->getEffectiveCodeLines(),
+            'ignoredLines' => $result->getIgnoredLines(),
+        ]);
+    }
 
-        // Gather code matches
-        $matches = [[]];
-        foreach ($matchers as $matcher) {
-            /** @var CodeScannerInterface $matcher */
-            $matches[] = $matcher->getMatches();
-        }
-        $matches = array_merge(...$matches);
-
-        // Prepare match output
+    /**
+     * Enrich the scan result for the install tool user interface: a DOM handle per hit, the
+     * matched source line, and the referenced changelog files resolved to documents.
+     *
+     * @return list<array<string, mixed>>
+     */
+    protected function extensionScannerPrepareMatches(ScanResult $result, string $absoluteFilePath): array
+    {
         $restFilesBasePath = ExtensionManagementUtility::extPath('core') . 'Documentation/Changelog';
         $documentationFile = new DocumentationFile();
         $preparedMatches = [];
-        foreach ($matches as $match) {
+        foreach ($result->getMatches() as $match) {
             $preparedHit = [];
             $preparedHit['uniqueId'] = StringUtility::getUniqueId();
-            $preparedHit['message'] = $match['message'];
-            $preparedHit['line'] = $match['line'];
-            $preparedHit['indicator'] = $match['indicator'];
-            $preparedHit['lineContent'] = $this->extensionScannerGetLineFromFile($absoluteFilePath, $match['line']);
+            $preparedHit['message'] = $match->getMessage();
+            $preparedHit['line'] = $match->getLine();
+            $preparedHit['indicator'] = $match->getIndicator()->value;
+            $preparedHit['lineContent'] = $this->extensionScannerGetLineFromFile($absoluteFilePath, $match->getLine());
             $preparedHit['restFiles'] = [];
-            foreach ($match['restFiles'] as $fileName) {
+            foreach ($match->getRestFiles() as $fileName) {
                 $finder = new Finder();
                 $restFileLocation = $finder->files()->ignoreUnreadableDirs()->in($restFilesBasePath)->name($fileName);
                 if ($restFileLocation->count() !== 1) {
@@ -827,22 +682,13 @@ class UpgradeController extends AbstractController
                     (string)realpath($restFileLocation)
                 ));
                 $parsedRestFile = array_pop($listEntries);
-                $version = GeneralUtility::trimExplode(DIRECTORY_SEPARATOR, $restFileLocation);
-                array_pop($version);
-                // something like "8.2" .. "8.7" .. "master"
-                $parsedRestFile['version'] = array_pop($version);
                 $parsedRestFile['uniqueId'] = StringUtility::getUniqueId();
                 $preparedHit['restFiles'][] = $parsedRestFile;
             }
             $preparedMatches[] = $preparedHit;
         }
-        return new JsonResponse([
-            'success' => true,
-            'matches' => $preparedMatches,
-            'isFileIgnored' => $statistics->isFileIgnored(),
-            'effectiveCodeLines' => $statistics->getNumberOfEffectiveCodeLines(),
-            'ignoredLines' => $statistics->getNumberOfIgnoredLines(),
-        ]);
+
+        return $preparedMatches;
     }
 
     /**
