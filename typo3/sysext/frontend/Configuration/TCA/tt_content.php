@@ -16,7 +16,7 @@ return [
         'type' => 'CType',
         'hideAtCopy' => true,
         'prependAtCopy' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.prependAtCopy',
-        'copyAfterDuplFields' => 'colPos,sys_language_uid',
+        'copyAfterDuplFields' => 'colPos',
         'useColumnsForDefaultValues' => 'colPos,sys_language_uid,CType',
         'transOrigPointerField' => 'l18n_parent',
         'transOrigDiffSourceField' => 'l18n_diffsource',

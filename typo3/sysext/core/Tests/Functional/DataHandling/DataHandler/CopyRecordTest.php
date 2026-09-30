@@ -17,8 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\DataHandler;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\DependencyInjection\Container;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\DataHandling\Event\BeforeRemoveNonCopyableFieldsEvent;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
@@ -50,6 +52,35 @@ final class CopyRecordTest extends FunctionalTestCase
         $dataHandler->process_cmdmap();
 
         $this->assertCSVDataSet(__DIR__ . '/DataSet/CopyRecord/PageRecordIsCopiedResult.csv');
+    }
+
+    public static function copyAfterAnotherRecordKeepsLanguageOfSourceRecordDataProvider(): array
+    {
+        return [
+            'all languages after language 1' => [10, 12, -1],
+            'default after language 1' => [11, 12, 0],
+            'language 1 after default' => [12, 11, 1],
+            'language 1 after all languages' => [12, 10, 1],
+            'default after all languages' => [11, 10, 0],
+        ];
+    }
+
+    #[Test]
+    #[DataProvider('copyAfterAnotherRecordKeepsLanguageOfSourceRecordDataProvider')]
+    public function copyAfterAnotherRecordKeepsLanguageOfSourceRecord(int $sourceUid, int $precedingUid, int $expectedLanguage): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/DataSet/CopyRecord/ContentLanguages.csv');
+        $dataHandler = $this->get(DataHandler::class);
+        $dataHandler->enableLogging = false;
+
+        $cmd['tt_content'][$sourceUid]['copy'] = -$precedingUid;
+        $dataHandler->start([], $cmd);
+        $dataHandler->process_cmdmap();
+
+        $copyUid = $dataHandler->copyMappingArray_merged['tt_content'][$sourceUid] ?? null;
+        self::assertIsInt($copyUid);
+        $copy = BackendUtility::getRecord('tt_content', $copyUid);
+        self::assertSame($expectedLanguage, (int)$copy['sys_language_uid']);
     }
 
     #[Test]
