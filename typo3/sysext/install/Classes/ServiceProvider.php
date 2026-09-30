@@ -102,6 +102,7 @@ class ServiceProvider extends AbstractServiceProvider
             Controller\MaintenanceController::class => self::getMaintenanceController(...),
             Controller\SettingsController::class => self::getSettingsController(...),
             Controller\UpgradeController::class => self::getUpgradeController(...),
+            ExtensionScanner\ExtensionScannerService::class => self::getExtensionScannerService(...),
             Command\PasswordSetCommand::class => self::getPasswordGenerateCommand(...),
             Command\SetupCommand::class => self::getSetupCommand(...),
             Command\SetupDefaultBackendUserGroupsCommand::class => self::getSetupDefaultBackendUserGroupsCommand(...),
@@ -339,6 +340,15 @@ class ServiceProvider extends AbstractServiceProvider
             $container->get(PackageManager::class),
             $container->get(Service\LateBootService::class),
             $container->get(FormProtectionFactory::class),
+            $container->get(ExtensionScanner\ExtensionScannerService::class),
+        );
+    }
+
+    public static function getExtensionScannerService(ContainerInterface $container): ExtensionScanner\ExtensionScannerService
+    {
+        return new ExtensionScanner\ExtensionScannerService(
+            new ExtensionScanner\Php\MatcherRegistry(),
+            new ExtensionScanner\Php\MatcherFactory(),
         );
     }
 

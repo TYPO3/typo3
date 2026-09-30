@@ -157,4 +157,22 @@ final class DocumentationFileTest extends FunctionalTestCase
         $firstResult = current($result);
         self::assertEquals($expected, $firstResult['tags']);
     }
+
+    #[Test]
+    public function getListEntrySetsTheVersionTheControllerUsedToRecompute(): void
+    {
+        // This file is created by setUp() above.
+        $file = Environment::getPublicPath() . '/Changelog/1.2/Breaking-12345-Issue.rst';
+        $subject = new DocumentationFile(Environment::getPublicPath() . '/Changelog');
+
+        $listEntries = $subject->getListEntry($file);
+        $entry = array_pop($listEntries);
+
+        // Exactly the computation UpgradeController used to perform on top of getListEntry()
+        $recomputed = GeneralUtility::trimExplode(DIRECTORY_SEPARATOR, $file);
+        array_pop($recomputed);
+
+        self::assertSame(array_pop($recomputed), $entry['version']);
+        self::assertSame('1.2', $entry['version']);
+    }
 }

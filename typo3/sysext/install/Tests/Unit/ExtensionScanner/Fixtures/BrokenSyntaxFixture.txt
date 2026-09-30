@@ -1,0 +1,5 @@
+<?php
+class Broken
+{
+    public function a(: void
+}
