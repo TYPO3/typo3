@@ -67,6 +67,7 @@ final class PreviewModuleTest extends FunctionalTestCase
         // Check groups inside user object
         $groupUidsInFrontendUser = array_column($frontendUser->userGroups, 'uid');
         self::assertEqualsCanonicalizing($expectedGroupUids, $groupUidsInFrontendUser);
+        self::assertEqualsCanonicalizing($expectedGroupUids, array_keys($frontendUser->userGroups));
 
         // Check aspect property. Additional internal group -2 (general logged in state) required
         self::assertEqualsCanonicalizing(array_merge($expectedGroupUids, [-2]), $frontendUserAspect->get('groupIds'));

@@ -202,7 +202,11 @@ class PreviewModule extends AbstractModule implements RequestEnricherInterface, 
         if ($simulateUserGroup) {
             $frontendUser = $request->getAttribute('frontend.user');
             $frontendUser->user[$frontendUser->usergroup_column] = (string)$simulateUserGroup;
-            $frontendUser->userGroups = $this->groupResolver->resolveGroupsForUser($frontendUser->user, 'fe_groups');
+            $frontendUser->userGroups = array_column(
+                $this->groupResolver->resolveGroupsForUser($frontendUser->user, 'fe_groups'),
+                null,
+                'uid'
+            );
             // let's fake having a user with that groups, too
             // This can be removed once #90989 is fixed
             $frontendUser->user['uid'] = PHP_INT_MAX;
