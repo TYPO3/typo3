@@ -1935,7 +1935,7 @@ class QuerySearchController
             return htmlspecialchars($labelFieldSelect[$val[$labelFieldName]]);
         }
         if ($val[$labelFieldName] ?? false) {
-            return htmlspecialchars($val[$labelFieldName]);
+            return htmlspecialchars((string)$val[$labelFieldName]);
         }
         if ($useAltSelectLabels) {
             if (isset($altLabelFieldSelect[$val[$altLabelFieldName]])) {
@@ -1945,14 +1945,14 @@ class QuerySearchController
             }
 
             // For old/invalid item associations (like CType=list), display the hardcoded value here instead the resolved item
-            return '[' . htmlspecialchars($val[$altLabelFieldName]) . ']';
+            return '[' . htmlspecialchars((string)$val[$altLabelFieldName]) . ']';
         }
         // This case happens when NO relations exist. Iterate existing label_alt configuration and
         // take the first non-empty value.
         foreach ($labelCapability->getAdditionalFieldNames() as $additionalFieldName) {
             if ($val[$additionalFieldName]) {
                 // First altLabelField that matches concludes the output.
-                return htmlspecialchars($val[$additionalFieldName]);
+                return htmlspecialchars((string)$val[$additionalFieldName]);
             }
         }
         // This happens when NONE of the label_alt fields contained an entry. We still need to be able to
