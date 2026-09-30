@@ -23,19 +23,18 @@ use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\ResponseFactoryInterface;
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry;
+use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\PropagateResponseException;
 use TYPO3\CMS\Core\Http\ServerRequest;
-use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Localization\Locales;
-use TYPO3\CMS\Core\Messaging\FlashMessageRendererResolver;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
+use TYPO3\CMS\Core\View\ViewFactoryData;
+use TYPO3\CMS\Fluid\View\FluidViewAdapter;
+use TYPO3\CMS\Fluid\View\FluidViewFactory;
 use TYPO3\CMS\Lowlevel\Controller\QuerySearchController;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -57,13 +56,9 @@ final class QuerySearchControllerTest extends FunctionalTestCase
     private function getConstructorArguments(): array
     {
         return [
-            $this->get(IconFactory::class),
             $this->get(UriBuilder::class),
             $this->get(ModuleTemplateFactory::class),
             $this->get(TcaSchemaFactory::class),
-            $this->get(FlashMessageRendererResolver::class),
-            $this->get(PageDoktypeRegistry::class),
-            $this->get(ComponentFactory::class),
             $this->get(Locales::class),
             $this->get(FlashMessageService::class),
             $this->get(ConnectionPool::class),
@@ -76,18 +71,18 @@ final class QuerySearchControllerTest extends FunctionalTestCase
     {
         $this->prepareRelatedPage();
         $subject = $this->getAccessibleMock(QuerySearchController::class, null, $this->getConstructorArguments());
-        $result = $subject->_call('makeValueList', 'relation', '1', ['type' => 'relation', 'allowed' => 'pages', 'prepend_tname' => false], 'tx_test', '<br>');
-        self::assertSame('Title &amp; more, Navigation title', $result);
+        $result = $subject->_call('makeValueList', 'relation', '1', ['type' => 'relation', 'allowed' => 'pages', 'prepend_tname' => false], 'tx_test', LF);
+        self::assertSame('Title & more, Navigation title', $result);
     }
 
     #[Test]
-    public function makeOptionListShowsRecordTitleOfRelatedRecords(): void
+    public function getValueOptionsShowsRecordTitleOfRelatedRecords(): void
     {
         $this->prepareRelatedPage();
         $subject = $this->getAccessibleMock(QuerySearchController::class, null, $this->getConstructorArguments());
         $subject->_set('fields', ['relation' => ['type' => 'relation', 'allowed' => 'pages', 'prepend_tname' => false]]);
-        $result = $subject->_call('makeOptionList', 'relation', ['inputValue' => ''], 'tx_test');
-        self::assertSame('<option value="1">[1] Title &amp; more, Navigation title</option>', $result);
+        $result = $subject->_call('getValueOptions', 'relation', ['inputValue' => ''], 'tx_test');
+        self::assertSame([['value' => '1', 'label' => '[1] Title & more, Navigation title', 'selected' => false]], $result);
     }
 
     private function prepareRelatedPage(): void
@@ -343,13 +338,9 @@ final class QuerySearchControllerTest extends FunctionalTestCase
         $tcaSchemaFactory = $this->get(TcaSchemaFactory::class);
         $tcaSchemaFactory->load($tca);
         $subject = $this->getAccessibleMock(QuerySearchController::class, null, [
-            $this->get(IconFactory::class),
             $this->get(UriBuilder::class),
             $this->get(ModuleTemplateFactory::class),
             $tcaSchemaFactory,
-            $this->get(FlashMessageRendererResolver::class),
-            $this->get(PageDoktypeRegistry::class),
-            $this->get(ComponentFactory::class),
             $this->get(Locales::class),
             $this->get(FlashMessageService::class),
             $this->get(ConnectionPool::class),
@@ -416,24 +407,14 @@ final class QuerySearchControllerTest extends FunctionalTestCase
         $settings = $this->prepareSettings($settings, $replacements);
         $settings['queryConfig'] = serialize($settings['queryConfig']);
 
-        $iconStub = self::createStub(Icon::class);
-        $iconStub->method('render')->willReturn('');
-
-        $iconFactoryStub = self::createStub(IconFactory::class);
-        $iconFactoryStub->method('getIcon')->willReturn($iconStub);
-
         $route = $this->get(Router::class)->getRoute('system_database');
         $route->setOption('_identifier', 'system_database');
         $request = new ServerRequest()->withAttribute('route', $route);
 
         $subject = $this->getAccessibleMock(QuerySearchController::class, null, [
-            $iconFactoryStub,
             $this->get(UriBuilder::class),
             $this->get(ModuleTemplateFactory::class),
             $this->get(TcaSchemaFactory::class),
-            $this->get(FlashMessageRendererResolver::class),
-            $this->get(PageDoktypeRegistry::class),
-            $this->get(ComponentFactory::class),
             $this->get(Locales::class),
             $this->get(FlashMessageService::class),
             $this->get(ConnectionPool::class),
@@ -459,7 +440,7 @@ final class QuerySearchControllerTest extends FunctionalTestCase
         ];
         $subject = $this->getAccessibleMock(QuerySearchController::class, null, $this->getConstructorArguments());
         try {
-            $subject->_call('getQueryResultCode', 'csv', $dataRows, 'pages', $request);
+            $subject->_call('getQueryResultData', 'csv', $dataRows, 'pages', $request);
             self::fail('Expected ' . PropagateResponseException::class . ' to be thrown');
         } catch (PropagateResponseException $e) {
             $response = $e->getResponse();
@@ -467,6 +448,120 @@ final class QuerySearchControllerTest extends FunctionalTestCase
             self::assertMatchesRegularExpression('/^attachment; filename=TYPO3_pages_export_\d{6}-\d{4}\.csv$/', $response->getHeaderLine('Content-Disposition'));
             self::assertSame("\"uid\",\"title\"\r\n1,\"First\"\r\n2,\"Second\"", (string)$response->getBody());
         }
+    }
+
+    #[Test]
+    public function fluidRendersNestedConditionsAndEscapesInput(): void
+    {
+        $subject = $this->getAccessibleMock(QuerySearchController::class, null, $this->getConstructorArguments());
+        $input = '<script>alert("query")</script> &amp;';
+        $settings = [
+            'queryFields' => 'uid,header',
+            'queryOrder' => 'uid',
+            'queryOrderDesc' => 1,
+            'queryLimit' => '20,10',
+            'search_query_smallparts' => 1,
+            'queryConfig' => serialize([
+                ['type' => 'FIELD_header', 'comparison' => 0, 'inputValue' => $input],
+                ['type' => 'newlevel', 'operator' => 'OR', 'nl' => [
+                    ['type' => 'FIELD_uid', 'comparison' => 37, 'negate' => 'on', 'inputValue' => 1, 'inputValue1' => 10],
+                    ['type' => 'FIELD_hidden', 'comparison' => 128, 'inputValue' => 1],
+                    ['type' => 'FIELD_tstamp', 'comparison' => 100, 'inputValue' => '2026-09-30T10:00:00Z', 'inputValue1' => '2026-10-01T10:00:00Z'],
+                    ['type' => 'FIELD_CType', 'comparison' => 64, 'inputValue' => 'text'],
+                ]],
+            ]),
+        ];
+        $subject->_call('init', 'queryConfig', 'tt_content', '', $settings);
+        $selector = $subject->_call('makeSelectorTable', $settings, new ServerRequest());
+        $html = $this->renderQuerySection('Selector', ['selector' => $selector, 'settings' => $settings, 'moduleUrl' => '/query']);
+        $document = new \DOMDocument();
+        @$document->loadHTML($html);
+        $xpath = new \DOMXPath($document);
+        self::assertSame($input, $xpath->evaluate('string(//input[@name="queryConfig[0][inputValue]"]/@value)'));
+        self::assertSame('10', $xpath->evaluate('string(//input[@name="queryConfig[1][nl][0][inputValue1]"]/@value)'));
+        self::assertSame('37', $xpath->evaluate('string(//select[@name="queryConfig[1][nl][0][comparison]"]/option[@selected]/@value)'));
+        self::assertSame(1, $xpath->query('//input[@name="queryConfig[1][nl][0][negate]"][@checked]')->length);
+        self::assertSame('1', $xpath->evaluate('string(//input[@name="queryConfig[1][nl][1][inputValue]"]/@value)'));
+        self::assertSame('datetime', $xpath->evaluate('string(//input[@data-formengine-input-name="queryConfig[1][nl][2][inputValue1]"]/@data-date-type)'));
+        self::assertSame('text', $xpath->evaluate('string(//select[@name="queryConfig[1][nl][3][inputValue]"]//option[@selected]/@value)'));
+        self::assertSame('OR', $xpath->evaluate('string(//select[@name="queryConfig[1][operator]"]/option[@selected]/@value)'));
+        self::assertSame(1, $xpath->query('//input[@name="SET[queryOrderDesc]"][@checked]')->length);
+        self::assertSame(0, $xpath->query('//input[@name="SET[queryOrder2Desc]"][@checked]')->length);
+        self::assertSame('/query&SET[queryOrderDesc]=${value}', $xpath->evaluate('string(//input[@name="SET[queryOrderDesc]"]/@data-navigate-value)'));
+        self::assertSame(0, $xpath->query('//script')->length);
+        self::assertStringContainsString('name="qG_remnl[1]"', $html);
+        self::assertStringContainsString('name="qG_ins[1][nl][0]"', $html);
+    }
+
+    #[Test]
+    public function fluidRendersQueryOptionsAndStoredQueries(): void
+    {
+        $subject = $this->getAccessibleMock(QuerySearchController::class, null, $this->getConstructorArguments());
+        $subject->_set('MOD_SETTINGS', [
+            'storeArray' => serialize([1 => '<script>saved</script> &amp;']),
+        ]);
+        $html = $this->renderQuerySection('Content', [
+            'queryMaker' => $subject->_call('queryMaker', new ServerRequest()),
+            'queryTypes' => ['all' => 'Select records', 'count' => 'Count results'],
+            'queryOptions' => ['search_query_smallparts' => 'showSQL', 'show_deleted' => 'showDeleted'],
+            'settings' => ['search_query_makeQuery' => 'count', 'search_query_smallparts' => 1],
+            'moduleUrl' => '/query',
+        ]);
+        $document = new \DOMDocument();
+        @$document->loadHTML($html);
+        $xpath = new \DOMXPath($document);
+        self::assertSame('count', $xpath->evaluate('string(//select[@name="SET[search_query_makeQuery]"]/option[@selected]/@value)'));
+        self::assertSame(1, $xpath->query('//input[@name="SET[search_query_smallparts]"][@checked]')->length);
+        self::assertSame(0, $xpath->query('//input[@name="SET[show_deleted]"][@checked]')->length);
+        self::assertSame('<script>saved</script> &amp;', $xpath->evaluate('string(//select[@name="storeControl[STORE]"]/option[@value="1"])'));
+        self::assertSame('/query&SET[search_query_makeQuery]=${value}', $xpath->evaluate('string(//select[@name="SET[search_query_makeQuery]"]/@data-navigate-value)'));
+        self::assertSame(0, $xpath->query('//script')->length);
+    }
+
+    public static function queryResultRenderingDataProvider(): array
+    {
+        return [
+            'count' => ['count', [0], '0'],
+            'records' => ['all', [['uid' => 12, 'header' => '<script>"record"</script> &amp;', 'pid' => 0, 'deleted' => 0]], '<script>"record"</script> &amp;'],
+            'deleted record' => ['all', [['uid' => 12, 'header' => 'Deleted', 'pid' => 0, 'deleted' => 1]], 'Deleted'],
+            'empty result' => ['all', [], 'No records found'],
+            'csv' => ['csv', [['uid' => 12, 'header' => '</textarea><script>record</script>']], '</textarea><script>record</script>'],
+            'explain' => ['explain', [['table' => 'tt_content', 'rows' => 12]], 'tt_content'],
+        ];
+    }
+
+    #[Test]
+    #[DataProvider('queryResultRenderingDataProvider')]
+    public function fluidRendersQueryResults(string $type, array $rows, string $expectedText): void
+    {
+        $subject = $this->getAccessibleMock(QuerySearchController::class, null, $this->getConstructorArguments());
+        $subject->_set('MOD_SETTINGS', ['queryFields' => 'uid,header']);
+        $request = new ServerRequest('https://example.com/query');
+        $request = $request->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
+        $result = $subject->_call('getQueryResultData', $type, $rows, 'tt_content', $request);
+        $html = $this->renderQuerySection('Result', ['result' => $result]);
+        $document = new \DOMDocument();
+        @$document->loadHTML($html);
+        $xpath = new \DOMXPath($document);
+        self::assertStringContainsString($expectedText, $document->textContent);
+        self::assertSame(0, $xpath->query('//script')->length);
+        if ($type === 'all' && $rows !== []) {
+            $action = $rows[0]['deleted'] ? 'actions-edit-restore' : 'actions-open';
+            self::assertStringContainsString($action, $html);
+            self::assertSame(2, $xpath->query('//tbody/tr/td[not(@class)]')->length);
+        }
+        if ($type === 'csv') {
+            self::assertSame(1, $xpath->query('//button[@name="download_file"]')->length);
+        }
+    }
+
+    private function renderQuerySection(string $section, array $variables): string
+    {
+        /** @var FluidViewAdapter $view */
+        $view = $this->get(FluidViewFactory::class)->create(new ViewFactoryData(
+            templatePathAndFilename: 'EXT:lowlevel/Resources/Private/Templates/SearchQuery.fluid.html',
+        ));
+        return $view->renderSection($section, $variables);
     }
 
     private function prepareSettings(array $settings, array $replacements): array

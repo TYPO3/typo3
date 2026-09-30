@@ -25,7 +25,6 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -33,17 +32,13 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
-use TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry;
 use TYPO3\CMS\Core\DataHandling\TableColumnType;
 use TYPO3\CMS\Core\Http\PropagateResponseException;
-use TYPO3\CMS\Core\Imaging\IconFactory;
-use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\DateFormatter;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\Locale;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
-use TYPO3\CMS\Core\Messaging\FlashMessageRendererResolver;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\TcaSchema;
@@ -51,7 +46,6 @@ use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\CsvUtility;
-use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -219,13 +213,9 @@ class QuerySearchController
     ];
 
     public function __construct(
-        protected IconFactory $iconFactory,
         protected readonly UriBuilder $uriBuilder,
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
         protected readonly TcaSchemaFactory $tcaSchemaFactory,
-        protected readonly FlashMessageRendererResolver $flashMessageRendererResolver,
-        protected readonly PageDoktypeRegistry $pageDoktypeRegistry,
-        protected readonly ComponentFactory $componentFactory,
         protected readonly Locales $locales,
         protected readonly FlashMessageService $flashMessageService,
         protected readonly ConnectionPool $connectionPool,
@@ -253,34 +243,18 @@ class QuerySearchController
         $title = $lang->translate('title', 'lowlevel.modules.database_integrity');
         $moduleTemplate->setTitle($title, $lang->translate('title', 'lowlevel.modules.database_query'));
 
-        $queryTypeSelect = '<div class="form-group">';
-        $queryTypeSelect .=   '<label for="search-query-make-query" class="form-label">' . $lang->translate('fullSearch.form.field.makeQuery.label', 'lowlevel.messages') . '</label>';
-        $queryTypeSelect .=   '<div class="input-group">' . $this->getDropdownMenu('SET[search_query_makeQuery]', $this->MOD_SETTINGS['search_query_makeQuery'], $this->MOD_MENU['search_query_makeQuery'], $request) . '</div>';
-        $queryTypeSelect .= '</div>';
-
-        $queryOptions = '<div class="form-row">';
-        $queryOptions .=   '<div class="form-group">';
-        $queryOptions .=     '<fieldset>';
-        $queryOptions .=       '<legend class="form-label">' . $lang->translate('fullSearch.section.queryOptions', 'lowlevel.messages') . '</legend>';
-        $queryOptions .=       '<div class="form-check form-switch form-check-size-input">' . $this->getFuncCheck('SET[search_query_smallparts]', $this->MOD_SETTINGS['search_query_smallparts'] ?? '', $request, 'id="checkSearch_query_smallparts"')
-            . '<label class="form-check-label" for="checkSearch_query_smallparts">' . $lang->translate('showSQL', 'lowlevel.messages') . '</label></div>';
-        $queryOptions .=       '<div class="form-check form-switch form-check-size-input">' . $this->getFuncCheck('SET[search_result_labels]', $this->MOD_SETTINGS['search_result_labels'] ?? '', $request, 'id="checkSearch_result_labels"')
-            . '<label class="form-check-label" for="checkSearch_result_labels">' . $lang->translate('useFormattedStrings', 'lowlevel.messages') . '</label></div>';
-        $queryOptions .=       '<div class="form-check form-switch form-check-size-input">' . $this->getFuncCheck('SET[labels_noprefix]', $this->MOD_SETTINGS['labels_noprefix'] ?? '', $request, 'id="checkLabels_noprefix"')
-            . '<label class="form-check-label" for="checkLabels_noprefix">' . $lang->translate('dontUseOrigValues', 'lowlevel.messages') . '</label></div>';
-        $queryOptions .=       '<div class="form-check form-switch form-check-size-input">' . $this->getFuncCheck('SET[options_sortlabel]', $this->MOD_SETTINGS['options_sortlabel'] ?? '', $request, 'id="checkOptions_sortlabel"')
-            . '<label class="form-check-label" for="checkOptions_sortlabel">' . $lang->translate('sortOptions', 'lowlevel.messages') . '</label></div>';
-        $queryOptions .=       '<div class="form-check form-switch form-check-size-input">' . $this->getFuncCheck('SET[show_deleted]', $this->MOD_SETTINGS['show_deleted'] ?? 0, $request, 'id="checkShow_deleted"')
-            . '<label class="form-check-label" for="checkShow_deleted">' . $lang->translate('showDeleted', 'lowlevel.messages') . '</label></div>';
-        $queryOptions .=     '</fieldset>';
-        $queryOptions .=   '</div>';
-        $queryOptions .= '</div>';
-
-        $moduleTemplate->assign('queryMaker', $this->queryMaker($request));
-
         $moduleTemplate->assignMultiple([
-            'queryOptions' => $queryOptions,
-            'queryTypeSelect' => $queryTypeSelect,
+            'queryMaker' => $this->queryMaker($request),
+            'queryTypes' => $this->MOD_MENU['search_query_makeQuery'],
+            'settings' => $this->MOD_SETTINGS,
+            'queryOptions' => [
+                'search_query_smallparts' => 'showSQL',
+                'search_result_labels' => 'useFormattedStrings',
+                'labels_noprefix' => 'dontUseOrigValues',
+                'options_sortlabel' => 'sortOptions',
+                'show_deleted' => 'showDeleted',
+            ],
+            'moduleUrl' => (string)$this->uriBuilder->buildUriFromRequest($request),
         ]);
 
         return $moduleTemplate->renderResponse('SearchQuery');
@@ -374,29 +348,17 @@ class QuerySearchController
         }
     }
 
-    protected function queryMaker(ServerRequestInterface $request): string
+    protected function queryMaker(ServerRequestInterface $request): array
     {
-        $lang = $this->getLanguageService();
-        $output = '';
-        $msg = $this->procesStoreControl($request);
+        $message = $this->procesStoreControl($request);
         $userTsConfig = $this->getBackendUserAuthentication()->getTSConfig();
-        if (!($userTsConfig['mod.']['dbint.']['disableStoreControl'] ?? false)) {
-            $output .= '<div class="card">';
-            $output .=   '<div class="card-body">';
-            $output .=     '<h2 class="card-title">' . $lang->translate('fullSearch.section.queryStorage', 'lowlevel.messages') . '</h2>';
-            $output .=       $this->makeStoreControl();
-            $output .=     '<div class="card-text">' . $msg . '</div>';
-            $output .=   '</div>';
-            $output .= '</div>';
-        }
-
-        // Query Maker:
         $this->init('queryConfig', $this->MOD_SETTINGS['queryTable'] ?? '', '', $this->MOD_SETTINGS);
-
-        $output .=  '<h2>' . $lang->translate('fullSearch.section.querySettings', 'lowlevel.messages') . '</h2>';
-        $output .=   '<fieldset class="form-section">';
-        $output .=     $this->makeSelectorTable($this->MOD_SETTINGS, $request);
-        $output .=   '</fieldset>';
+        $data = [
+            'showStoreControl' => !($userTsConfig['mod.']['dbint.']['disableStoreControl'] ?? false),
+            'storedQueries' => $this->initStoreArray(),
+            'storeMessage' => $message,
+            'selector' => $this->makeSelectorTable($this->MOD_SETTINGS, $request),
+        ];
         $mQ = $this->MOD_SETTINGS['search_query_makeQuery'] ?? '';
 
         // Make form elements:
@@ -432,39 +394,17 @@ class QuerySearchController
                         $fullQueryString = $selectQueryString;
                         $dataRows = $connection->executeQuery($selectQueryString)->fetchAllAssociative();
                     }
-                    if (!($userTsConfig['mod.']['dbint.']['disableShowSQLQuery'] ?? false)) {
-                        $output .= '<h2>' . $lang->translate('fullSearch.section.querySQL', 'lowlevel.messages') . '</h2>';
-                        $output .= '<pre class="language-sql">';
-                        $output .=   '<code class="language-sql">';
-                        $output .=     htmlspecialchars($fullQueryString);
-                        $output .=   '</code>';
-                        $output .= '</pre>';
-                    }
-                    $cPR = $this->getQueryResultCode($mQ, $dataRows, $this->table, $request);
-                    if ($cPR['header'] ?? null) {
-                        $output .= '<h2>' . $cPR['header'] . '</h2>';
-                    }
-                    if ($cPR['content'] ?? null) {
-                        $output .= $cPR['content'];
-                    }
+                    $data['result'] = $this->getQueryResultData($mQ, $dataRows, $this->table, $request);
                 } catch (DBALException $e) {
-                    if (!($userTsConfig['mod.']['dbint.']['disableShowSQLQuery'] ?? false)) {
-                        $output .= '<h2>' . $lang->translate('fullSearch.section.querySQL', 'lowlevel.messages') . '</h2>';
-                        $output .= '<pre class="language-sql">';
-                        $output .=   '<code class="language-sql">';
-                        $output .=     htmlspecialchars($fullQueryString);
-                        $output .=   '</code>';
-                        $output .= '</pre>';
-                    }
-                    $output .= '<h2>' . $lang->translate('fullSearch.section.querySQL.error', 'lowlevel.messages') . '</h2>';
-                    $output .= '<div class="alert alert-danger">';
-                    $output .=   '<p class="alert-message"><strong>Error:</strong> ' . htmlspecialchars($e->getMessage()) . '</p>';
-                    $output .= '</div>';
+                    $data['error'] = $e->getMessage();
+                }
+                if (!($userTsConfig['mod.']['dbint.']['disableShowSQLQuery'] ?? false)) {
+                    $data['sql'] = $fullQueryString;
                 }
             }
         }
 
-        return $output;
+        return $data;
     }
 
     protected function getSelectQuery(string $qString = ''): string
@@ -599,83 +539,55 @@ class QuerySearchController
     }
 
     /**
-     * @return array HTML-code for "header" and "content"
+     * @return array Query result data
      * @throws \TYPO3\CMS\Core\Exception
      */
-    protected function getQueryResultCode(string $type, array $dataRows, string $table, ServerRequestInterface $request): array
+    protected function getQueryResultData(string $type, array $dataRows, string $table, ServerRequestInterface $request): array
     {
-        $languageService = $this->getLanguageService();
-        $out = '';
-        $cPR = [];
-        $cPR['header'] = $languageService->translate('fullSearch.section.result', 'lowlevel.messages');
+        $result = ['type' => $type];
         switch ($type) {
             case 'count':
-                $cPR['content'] = '<p><strong>' . (int)$dataRows[0] . '</strong> ' . $languageService->translate('fullSearch.type.count.resultsFound', 'lowlevel.messages') . '</p>';
+                $result['count'] = (int)$dataRows[0];
                 break;
             case 'all':
-                $rowArr = [];
-                $dataRow = null;
+                $result['rows'] = [];
                 foreach ($dataRows as $dataRow) {
-                    $rowArr[] = $this->resultRowDisplay($dataRow, $table, $request);
+                    $result['rows'][] = $this->getResultRowData($dataRow, $table, $request);
                 }
-                if (!empty($rowArr)) {
-                    $out .= '<div class="table-fit">';
-                    $out .= '<table class="table table-striped table-hover">';
-                    $out .= $this->resultRowTitles((array)$dataRow, $table) . implode(LF, $rowArr);
-                    $out .= '</table>';
-                    $out .= '</div>';
+                if ($dataRows !== []) {
+                    $result['titles'] = $this->getResultRowTitles($dataRows[0], $table);
                 } else {
-                    $out .= '<p>' . $languageService->translate('fullSearch.type.all.noResultsFound', 'lowlevel.messages') . '</p>';
                     $this->renderNoResultsFoundMessage();
                 }
-
-                $cPR['content'] = $out;
                 break;
             case 'csv':
-                $rowArr = [];
-                $first = 1;
+                $rows = [];
                 foreach ($dataRows as $dataRow) {
-                    if ($first) {
-                        $rowArr[] = $this->csvValues(array_keys($dataRow));
-                        $first = 0;
+                    if ($rows === []) {
+                        $rows[] = $this->csvValues(array_keys($dataRow));
                     }
-                    $rowArr[] = $this->csvValues($dataRow, $table);
+                    $rows[] = $this->csvValues($dataRow, $table);
                 }
-                if (!empty($rowArr)) {
-                    $out .= '<div class="form-group">';
-                    $out .= '<textarea class="form-control" name="whatever" rows="20" class="font-monospace" style="width:100%">';
-                    $out .= htmlspecialchars(implode(LF, $rowArr));
-                    $out .= '</textarea>';
-                    $out .= '</div>';
-                    if (!$this->noDownloadB) {
-                        $out .= '<button class="btn btn-default" type="submit" name="download_file" value="Click to download file">';
-                        $out .=    $this->iconFactory->getIcon('actions-file-csv-download', IconSize::SMALL)->render();
-                        $out .= '  Click to download file';
-                        $out .= '</button>';
-                    }
+                if ($rows !== []) {
+                    $result['csv'] = implode(LF, $rows);
+                    $result['download'] = !$this->noDownloadB;
                     if ($request->getParsedBody()['download_file'] ?? false) {
                         $filename = 'TYPO3_' . $table . '_export_' . date('dmy-Hi') . '.csv';
                         $response = $this->responseFactory->createResponse()
                             ->withHeader('Content-Type', 'application/octet-stream')
                             ->withHeader('Content-Disposition', 'attachment; filename=' . $filename);
-                        $response->getBody()->write(implode(CRLF, $rowArr));
+                        $response->getBody()->write(implode(CRLF, $rows));
                         throw new PropagateResponseException($response, 1791542540);
                     }
                 } else {
-                    $out .= '<p>' . $languageService->translate('fullSearch.type.all.noResultsFound', 'lowlevel.messages') . '</p>';
                     $this->renderNoResultsFoundMessage();
                 }
-                $cPR['content'] = $out;
                 break;
             case 'explain':
             default:
-                foreach ($dataRows as $dataRow) {
-                    $out .= DebugUtility::viewArray($dataRow);
-                }
-                $cPR['content'] = $out;
+                $result['explain'] = $dataRows;
         }
-
-        return $cPR;
+        return $result;
     }
 
     protected function csvValues(array $row, string $table = ''): string
@@ -691,17 +603,15 @@ class QuerySearchController
     }
 
     /**
-     * @param array|null $row Table columns
+     * @param array $row Table columns
      */
-    protected function resultRowTitles(?array $row, string $table): string
+    protected function getResultRowTitles(array $row, string $table): array
     {
         $languageService = $this->getLanguageService();
         $tableHeader = [];
-        // Start header row
-        $tableHeader[] = '<thead><tr>';
         // Iterate over given columns
         $schema = $this->tcaSchemaFactory->get($table);
-        foreach ($row ?? [] as $fieldName => $fieldValue) {
+        foreach ($row as $fieldName => $fieldValue) {
             if (GeneralUtility::inList($this->MOD_SETTINGS['queryFields'] ?? '', $fieldName)
                 || !($this->MOD_SETTINGS['queryFields'] ?? false)
                 && $fieldName !== 'pid'
@@ -718,21 +628,15 @@ class QuerySearchController
                 } else {
                     $title = $languageService->sL($fieldName);
                 }
-                $tableHeader[] = '<th>' . htmlspecialchars($title) . '</th>';
+                $tableHeader[] = $title;
             }
         }
-        // Add empty icon column
-        $tableHeader[] = '<th></th>';
-        // Close header row
-        $tableHeader[] = '</tr></thead>';
-
-        return implode(LF, $tableHeader);
+        return $tableHeader;
     }
 
-    protected function resultRowDisplay(array $row, string $table, ServerRequestInterface $request): string
+    protected function getResultRowData(array $row, string $table, ServerRequestInterface $request): array
     {
-        $languageService = $this->getLanguageService();
-        $out = '<tr>';
+        $data = ['values' => [], 'table' => $table, 'uid' => $row['uid'], 'deleted' => (bool)($row['deleted'] ?? false)];
         foreach ($row as $fieldName => $fieldValue) {
             if (GeneralUtility::inList($this->MOD_SETTINGS['queryFields'] ?? '', $fieldName)
                 || !($this->MOD_SETTINGS['queryFields'] ?? false)
@@ -740,14 +644,13 @@ class QuerySearchController
                 && $fieldName !== 'deleted'
             ) {
                 if ($this->MOD_SETTINGS['search_result_labels'] ?? false) {
-                    $fVnew = $this->getProcessedValueExtra($table, $fieldName, (string)$fieldValue, '<br>');
+                    $fVnew = $this->getProcessedValueExtra($table, $fieldName, (string)$fieldValue, LF);
                 } else {
-                    $fVnew = htmlspecialchars((string)$fieldValue);
+                    $fVnew = (string)$fieldValue;
                 }
-                $out .= '<td>' . $fVnew . '</td>';
+                $data['values'][] = ($this->MOD_SETTINGS['search_result_labels'] ?? false) ? explode(LF, $fVnew) : [$fVnew];
             }
         }
-        $out .= '<td class="col-control">';
 
         if (!($row['deleted'] ?? false)) {
             // "Edit"
@@ -761,21 +664,7 @@ class QuerySearchController
                 'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri()
                     . HttpUtility::buildQueryString(['SET' => $request->getParsedBody()['SET'] ?? []], '&'),
             ]);
-            $editAction = '<a class="btn btn-default" href="' . htmlspecialchars($editActionUrl) . '"'
-                . ' title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:edit')) . '">'
-                . $this->iconFactory->getIcon('actions-open', IconSize::SMALL)->render()
-                . '</a>';
-
-            // "Info"
-            $infoActionTitle = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:showInfo'));
-            $infoAction = sprintf(
-                '<a class="btn btn-default" href="#" title="' . $infoActionTitle . '" data-dispatch-action="%s" data-dispatch-args-list="%s">%s</a>',
-                'TYPO3.InfoWindow.showItem',
-                htmlspecialchars($table . ',' . $row['uid']),
-                $this->iconFactory->getIcon('actions-document-info', IconSize::SMALL)->render()
-            );
-
-            $out .= '<div class="btn-group" role="group">' . $editAction . $infoAction . '</div>';
+            $data['editUrl'] = $editActionUrl;
         } else {
             $undeleteActionUrl = (string)$this->uriBuilder->buildUriFromRoute('tce_db', [
                 'cmd' => [
@@ -787,15 +676,10 @@ class QuerySearchController
                 ],
                 'redirect' => (string)$this->uriBuilder->buildUriFromRoute($this->moduleName),
             ]);
-            $undeleteAction = '<a class="btn btn-default" href="' . htmlspecialchars($undeleteActionUrl) . '"'
-                . ' title="' . htmlspecialchars($languageService->translate('undelete_only', 'lowlevel.modules.database_integrity')) . '">'
-                . $this->iconFactory->getIcon('actions-edit-restore', IconSize::SMALL)->render()
-                . '</a>';
-            $out .= '<div class="btn-group" role="group">' . $undeleteAction . '</div>';
+            $data['undeleteUrl'] = $undeleteActionUrl;
         }
-        $out .= '</td></tr>';
 
-        return $out;
+        return $data;
     }
 
     protected function getProcessedValueExtra(string $table, string $fieldName, string $fieldValue, string $splitString): string
@@ -910,7 +794,7 @@ class QuerySearchController
             case 'time':
                 if ($fieldValue != -1) {
                     $formatter = new DateFormatter();
-                    if ($splitString === '<br>') {
+                    if ($splitString === LF) {
                         $out = $formatter->format((int)$fieldValue, 'HH:mm\'' . $splitString . '\'dd-MM-yyyy', $locale);
                     } else {
                         $out = $formatter->format((int)$fieldValue, 'HH:mm dd-MM-yyyy', $locale);
@@ -926,7 +810,7 @@ class QuerySearchController
                 $out = $fieldValue ? 'True' : 'False';
                 break;
             default:
-                $out = htmlspecialchars($fieldValue);
+                $out = $fieldValue;
         }
 
         return $out;
@@ -946,7 +830,7 @@ class QuerySearchController
                     if ($out !== '') {
                         $out .= $splitString;
                     }
-                    $out .= htmlspecialchars($value);
+                    $out .= $value;
                 }
             }
         }
@@ -956,7 +840,7 @@ class QuerySearchController
                 if ($out !== '') {
                     $out .= $splitString;
                 }
-                $out .= htmlspecialchars($value);
+                $out .= $value;
             }
         }
         if ($fieldSetup['type'] === 'relation') {
@@ -972,7 +856,7 @@ class QuerySearchController
                     if ($out !== '') {
                         $out .= $splitString;
                     }
-                    $out .= htmlspecialchars($value);
+                    $out .= $value;
                 }
             }
             if (str_contains($fieldSetup['allowed'] ?? '', ',')) {
@@ -1083,7 +967,7 @@ class QuerySearchController
                             $out .= $splitString;
                         }
 
-                        $out .= htmlspecialchars(BackendUtility::getRecordTitle($from_table, $val, false, false));
+                        $out .= BackendUtility::getRecordTitle($from_table, $val, false, false);
                     }
                 }
             }
@@ -1232,23 +1116,14 @@ class QuerySearchController
         return $formattedDate && $formattedDate->format($format) === $date;
     }
 
-    protected function makeSelectorTable(array $modSettings, ServerRequestInterface $request): string
+    protected function makeSelectorTable(array $modSettings, ServerRequestInterface $request): array
     {
-        $languageService = $this->getLanguageService();
-        $out = [];
-        $enableArr = ['table', 'fields', 'query', 'group', 'order', 'limit'];
         $userTsConfig = $this->getBackendUserAuthentication()->getTSConfig();
-
-        // Make output
-
-        // Open form row
-        $out[] = '<div class="row">';
-        if (in_array('table', $enableArr) && !($userTsConfig['mod.']['dbint.']['disableSelectATable'] ?? false)) {
-            $out[] = '<div class="form-group">';
-            $out[] =   '<label class="form-label" for="select-table">' . $languageService->translate('fullSearch.form.field.queryTable.label', 'lowlevel.messages') . '</label>';
-            $out[] =   $this->mkTableSelect('SET[queryTable]', $this->table);
-            $out[] = '</div>';
-        }
+        $data = [
+            'table' => $this->table,
+            'tables' => $this->getTableOptions(),
+            'showTable' => !($userTsConfig['mod.']['dbint.']['disableSelectATable'] ?? false),
+        ];
 
         if ($this->table) {
             // Init fields:
@@ -1282,120 +1157,25 @@ class QuerySearchController
             $this->procesData($request, ($modSettings['queryConfig'] ?? '') ? unserialize((string)$modSettings['queryConfig'], ['allowed_classes' => false]) : []);
             $this->queryConfig = $this->cleanUpQueryConfig($this->queryConfig);
             $this->enableQueryParts = (bool)($modSettings['search_query_smallparts'] ?? false);
-            $codeArr = $this->getFormElements();
-            $queryCode = $this->printCodeArray($codeArr);
-
-            if (in_array('fields', $enableArr) && !($userTsConfig['mod.']['dbint.']['disableSelectFields'] ?? false)) {
-                $out[] = '<div class="form-group">';
-                $out[] =   '<label class="form-label" for="select-queryFields">' . $languageService->translate('fullSearch.form.field.queryFields.label', 'lowlevel.messages') . '</label>';
-                $out[] =    $this->mkFieldToInputSelect('SET[queryFields]', $this->extFieldLists['queryFields']);
-                $out[] = '</div>';
-            }
-            if (in_array('query', $enableArr) && !($userTsConfig['mod.']['dbint.']['disableMakeQuery'] ?? false)) {
-                $out[] = '<div class="form-group">';
-                $out[] =   '<label class="form-label">' . $languageService->translate('fullSearch.form.field.query.label', 'lowlevel.messages') . '</label>';
-                $out[] =    $queryCode;
-                $out[] = '</div>';
-            }
-
-            // 'Group by'
-            if (in_array('group', $enableArr) && !($userTsConfig['mod.']['dbint.']['disableGroupBy'] ?? false)) {
-                $out[] = '<div class="form-group col-sm-6">';
-                $out[] =   '<label class="form-label" for="SET[queryGroup]">' . $languageService->translate('fullSearch.form.field.groupBy.label', 'lowlevel.messages') . '</label>';
-                $out[] =   $this->mkTypeSelect('SET[queryGroup]', $this->extFieldLists['queryGroup'], '');
-                $out[] = '</div>';
-            }
-
-            // 'Order by'
-            if (in_array('order', $enableArr) && !($userTsConfig['mod.']['dbint.']['disableOrderBy'] ?? false)) {
-                $orderByArr = explode(',', $this->extFieldLists['queryOrder']);
-                $orderBy = [];
-                $orderBy[] = '<div class="form-group">';
-                $orderBy[] =   '<div class="input-group">';
-                $orderBy[] =     $this->mkTypeSelect('SET[queryOrder]', $orderByArr[0], '');
-                $orderBy[] =     '<div class="input-group-text">';
-                $orderBy[] =       '<div class="form-check form-check-type-toggle">';
-                $orderBy[] =         $this->getFuncCheck('SET[queryOrderDesc]', $modSettings['queryOrderDesc'] ?? '', $request, 'id="checkQueryOrderDesc"');
-                $orderBy[] =         '<label class="form-check-label" for="checkQueryOrderDesc">' . $languageService->translate('fullSearch.form.field.orderBy.descending', 'lowlevel.messages') . '</label>';
-                $orderBy[] =       '</div>';
-                $orderBy[] =     '</div>';
-                $orderBy[] =   '</div>';
-                $orderBy[] = '</div>';
-
-                if ($orderByArr[0]) {
-                    $orderBy[] = '<div class="form-group">';
-                    $orderBy[] =   '<div class="input-group">';
-                    $orderBy[] =     $this->mkTypeSelect('SET[queryOrder2]', $orderByArr[1] ?? '', '');
-                    $orderBy[] =     '<div class="input-group-text">';
-                    $orderBy[] =       '<div class="form-check form-check-type-toggle">';
-                    $orderBy[] =         $this->getFuncCheck('SET[queryOrder2Desc]', $modSettings['queryOrder2Desc'] ?? false, $request, 'id="checkQueryOrder2Desc"');
-                    $orderBy[] =         '<label class="form-check-label" for="checkQueryOrder2Desc">' . $languageService->translate('fullSearch.form.field.orderBy.descending', 'lowlevel.messages') . '</label>';
-                    $orderBy[] =       '</div>';
-                    $orderBy[] =     '</div>';
-                    $orderBy[] =   '</div>';
-                    $orderBy[] = '</div>';
-                }
-
-                $out[] = '<div class="form-group col-sm-6">';
-                $out[] =   '<label class="form-label">' . $languageService->translate('fullSearch.form.field.orderBy.label', 'lowlevel.messages') . '</label>';
-                $out[] =   implode(LF, $orderBy);
-                $out[] = '</div>';
-            }
-
-            // 'Limit'
-            if (in_array('limit', $enableArr) && !($userTsConfig['mod.']['dbint.']['disableLimit'] ?? false)) {
-                $limit = [];
-                $limit[] = '<div class="input-group">';
-                $limit[] =   $this->updateIcon();
-                $limit[] =   '<input type="text" class="form-control" value="' . htmlspecialchars($this->extFieldLists['queryLimit']) . '" name="SET[queryLimit]" id="queryLimit">';
-                $limit[] = '</div>';
-
-                $prevLimit = $limitBegin - $limitLength < 0 ? 0 : $limitBegin - $limitLength;
-                $prevButton = '';
-                $nextButton = '';
-
-                if ($limitBegin) {
-                    $prevButton = '<input type="button" class="btn btn-default" value="previous ' . htmlspecialchars((string)$limitLength) . '" data-value="' . htmlspecialchars($prevLimit . ',' . $limitLength) . '">';
-                }
-                if (!$limitLength) {
-                    $limitLength = 100;
-                }
-
-                $nextLimit = $limitBegin + $limitLength;
-                if ($nextLimit < 0) {
-                    $nextLimit = 0;
-                }
-                if ($nextLimit) {
-                    $nextButton = '<input type="button" class="btn btn-default" value="next ' . htmlspecialchars((string)$limitLength) . '" data-value="' . htmlspecialchars($nextLimit . ',' . $limitLength) . '">';
-                }
-
-                $out[] = '  <div class="form-group">';
-                $out[] = '    <label for="queryLimit" class="form-label">' . $languageService->translate('fullSearch.form.field.limit.label', 'lowlevel.messages') . '</label>';
-                $out[] = '    <div class="form-row">';
-                $out[] = '      <div class="form-group">';
-                $out[] =          implode(LF, $limit);
-                $out[] = '      </div>';
-                $out[] = '      <div class="form-group">';
-                $out[] = '        <div class="btn-group t3js-limit-submit">';
-                $out[] =            $prevButton;
-                $out[] =            $nextButton;
-                $out[] = '        </div>';
-                $out[] = '      </div>';
-                $out[] = '      <div class="form-group">';
-                $out[] = '        <div class="btn-group t3js-limit-submit">';
-                $out[] = '          <input type="button" class="btn btn-default" data-value="10" value="10">';
-                $out[] = '          <input type="button" class="btn btn-default" data-value="20" value="20">';
-                $out[] = '          <input type="button" class="btn btn-default" data-value="50" value="50">';
-                $out[] = '          <input type="button" class="btn btn-default" data-value="100" value="100">';
-                $out[] = '        </div>';
-                $out[] = '      </div>';
-                $out[] = '    </div>';
-                $out[] = '  </div>';
-            }
+            $nextLimit = max(0, $limitBegin + ($limitLength ?: 100));
+            $data += [
+                'conditions' => $this->getFormElements(),
+                'fields' => $this->getFieldOptions(),
+                'fieldLists' => $this->extFieldLists,
+                'orderBy' => explode(',', $this->extFieldLists['queryOrder']),
+                'showQueryParts' => $this->enableQueryParts,
+                'showFields' => !($userTsConfig['mod.']['dbint.']['disableSelectFields'] ?? false),
+                'showQuery' => !($userTsConfig['mod.']['dbint.']['disableMakeQuery'] ?? false),
+                'showGroup' => !($userTsConfig['mod.']['dbint.']['disableGroupBy'] ?? false),
+                'showOrder' => !($userTsConfig['mod.']['dbint.']['disableOrderBy'] ?? false),
+                'showLimit' => !($userTsConfig['mod.']['dbint.']['disableLimit'] ?? false),
+                'previousLimit' => $limitBegin ? max(0, $limitBegin - $limitLength) . ',' . $limitLength : '',
+                'previousLength' => $limitLength,
+                'nextLimit' => $nextLimit ? $nextLimit . ',' . ($limitLength ?: 100) : '',
+                'nextLength' => $limitLength ?: 100,
+            ];
         }
-        $out[] = '</div>';
-
-        return implode(LF, $out);
+        return $data;
     }
 
     protected function cleanUpQueryConfig(array $queryConfig): array
@@ -1475,18 +1255,14 @@ class QuerySearchController
 
     protected function getFormElements(int $subLevel = 0, string|array|null $queryConfig = null, string $parent = ''): array
     {
-        $codeArr = [];
+        $elements = [];
         if (!is_array($queryConfig)) {
             $queryConfig = $this->queryConfig;
         }
-        $c = 0;
-        $arrCount = 0;
         $loopCount = 0;
         foreach ($queryConfig as $key => $conf) {
-            $fieldName = '';
             $subscript = $parent . '[' . $key . ']';
-            $lineHTML = [];
-            $lineHTML[] = $this->mkOperatorSelect($this->name . $subscript, ($conf['operator'] ?? ''), (bool)$c, ($conf['type'] ?? '') !== 'FIELD_');
+            $fieldName = '';
             if (str_starts_with(($conf['type'] ?? ''), 'FIELD_')) {
                 $fieldName = substr($conf['type'], 6);
                 $this->fieldName = $fieldName;
@@ -1494,220 +1270,111 @@ class QuerySearchController
                 if ((int)($conf['comparison'] ?? 0) >> 5 !== (int)($this->comp_offsets[$fieldType] ?? 0)) {
                     $conf['comparison'] = (int)($this->comp_offsets[$fieldType] ?? 0) << 5;
                 }
-                //nasty nasty...
-                //make sure queryConfig contains _actual_ comparevalue.
-                //mkCompSelect don't care, but getQuery does.
                 $queryConfig[$key]['comparison'] += isset($conf['negate']) - $conf['comparison'] % 2;
             } elseif (($conf['type'] ?? '') === 'newlevel') {
-                $fieldType = $conf['type'];
+                $fieldType = 'newlevel';
             } else {
-                $fieldType = 'ignore';
+                $loopCount++;
+                continue;
             }
-            $fieldPrefix = htmlspecialchars($this->name . $subscript);
-            switch ($fieldType) {
-                case 'ignore':
-                    break;
-                case 'newlevel':
-                    if (!is_array($queryConfig[$key]['nl'] ?? null)) {
-                        $queryConfig[$key]['nl'] = [];
-                        $queryConfig[$key]['nl'][0]['type'] = 'FIELD_';
-                    }
-                    $lineHTML[] = '<input type="hidden" name="' . $fieldPrefix . '[type]" value="newlevel">';
-                    $codeArr[$arrCount]['sub'] = $this->getFormElements($subLevel + 1, $queryConfig[$key]['nl'], $subscript . '[nl]');
-                    break;
-                case 'userdef':
-                    $lineHTML[] = '';
-                    break;
-                case 'date':
-                    $lineHTML[] = '<div class="form-row">';
-                    $lineHTML[] = $this->makeComparisonSelector($subscript, $fieldName, $conf);
-                    if ($conf['comparison'] === 100 || $conf['comparison'] === 101) {
-                        // between
-                        $lineHTML[] = $this->getDateTimePickerField($fieldPrefix . '[inputValue]', (string)$conf['inputValue'], 'date');
-                        $lineHTML[] = $this->getDateTimePickerField($fieldPrefix . '[inputValue1]', (string)$conf['inputValue1'], 'date');
-                    } else {
-                        $lineHTML[] = $this->getDateTimePickerField($fieldPrefix . '[inputValue]', (string)$conf['inputValue'], 'date');
-                    }
-                    $lineHTML[] = '</div>';
-                    break;
-                case 'time':
-                    $lineHTML[] = '<div class="form-row">';
-                    $lineHTML[] = $this->makeComparisonSelector($subscript, $fieldName, $conf);
-                    if ($conf['comparison'] === 100 || $conf['comparison'] === 101) {
-                        // between:
-                        $lineHTML[] = $this->getDateTimePickerField($fieldPrefix . '[inputValue]', (string)$conf['inputValue'], 'datetime');
-                        $lineHTML[] = $this->getDateTimePickerField($fieldPrefix . '[inputValue1]', (string)$conf['inputValue1'], 'datetime');
-                    } else {
-                        $lineHTML[] = $this->getDateTimePickerField($fieldPrefix . '[inputValue]', (string)$conf['inputValue'], 'datetime');
-                    }
-                    $lineHTML[] = '</div>';
-                    break;
-                case 'multiple':
-                case 'binary':
-                case 'relation':
-                    $lineHTML[] = '<div class="form-row">';
-                    $lineHTML[] = $this->makeComparisonSelector($subscript, $fieldName, $conf);
-                    $lineHTML[] =   '<div class="form-group col col-sm-4">';
-                    if ($conf['comparison'] === 68 || $conf['comparison'] === 69 || $conf['comparison'] === 162 || $conf['comparison'] === 163) {
-                        $lineHTML[] = '<select class="form-select" name="' . $fieldPrefix . '[inputValue][]" multiple="multiple">';
-                    } elseif ($conf['comparison'] === 66 || $conf['comparison'] === 67) {
-                        if (is_array($conf['inputValue'] ?? null)) {
-                            $conf['inputValue'] = implode(',', $conf['inputValue']);
-                        }
-                        $lineHTML[] = '<input class="form-control form-control-clearable t3js-clearable" type="text" value="' . htmlspecialchars($conf['inputValue'] ?? '') . '" name="' . $fieldPrefix . '[inputValue]">';
-                    } elseif ($conf['comparison'] === 64) {
-                        if (is_array($conf['inputValue'] ?? null)) {
-                            $conf['inputValue'] = $conf['inputValue'][0];
-                        }
-                        $lineHTML[] = '<select class="form-select t3js-submit-change" name="' . $fieldPrefix . '[inputValue]">';
-                    } else {
-                        $lineHTML[] = '<select class="form-select t3js-submit-change" name="' . $fieldPrefix . '[inputValue]">';
-                    }
-                    if ($conf['comparison'] != 66 && $conf['comparison'] != 67) {
-                        $lineHTML[] =   $this->makeOptionList($fieldName, $conf, $this->table);
-                        $lineHTML[] = '</select>';
-                    }
-                    $lineHTML[] =   '</div>';
-                    $lineHTML[] = '</div>';
-                    break;
-                case 'boolean':
-                    $lineHTML[] = '<div class="form-row">';
-                    $lineHTML[] =   $this->makeComparisonSelector($subscript, $fieldName, $conf);
-                    $lineHTML[] =   '<input type="hidden" value="1" name="' . $fieldPrefix . '[inputValue]">';
-                    $lineHTML[] = '</div>';
-                    break;
-                default:
-                    $lineHTML[] = '<div class="form-row">';
-                    $lineHTML[] = $this->makeComparisonSelector($subscript, $fieldName, $conf);
-                    if ($conf['comparison'] === 37 || $conf['comparison'] === 36) {
-                        // between:
-                        $lineHTML[] = '<div class="form-group col col-sm-2">';
-                        $lineHTML[] = '  <input class="form-control form-control-clearable t3js-clearable" type="text" value="' . htmlspecialchars((string)($conf['inputValue'] ?? '')) . '" name="' . $fieldPrefix . '[inputValue]">';
-                        $lineHTML[] = '</div>';
-                        $lineHTML[] = '<div class="form-group col col-sm-2">';
-                        $lineHTML[] = '  <input class="form-control form-control-clearable t3js-clearable" type="text" value="' . htmlspecialchars((string)($conf['inputValue1'] ?? '')) . '" name="' . $fieldPrefix . '[inputValue1]">';
-                        $lineHTML[] = '</div>';
-                    } else {
-                        if (is_array($conf['inputValue'] ?? null)) {
-                            $conf['inputValue'] = '';
-                        }
-                        $lineHTML[] = '<div class="form-group col col-sm-4">';
-                        $lineHTML[] = '  <input class="form-control form-control-clearable t3js-clearable" type="text" value="' . htmlspecialchars((string)$conf['inputValue']) . '" name="' . $fieldPrefix . '[inputValue]">';
-                        $lineHTML[] = '</div>';
-                    }
-                    $lineHTML[] = '</div>';
+            $element = [
+                'name' => $this->name . $subscript,
+                'subscript' => $subscript,
+                'fieldName' => $fieldName,
+                'fieldType' => $fieldType,
+                'operator' => $conf['operator'] ?? '',
+                'showOperator' => $elements !== [],
+                'submitOperator' => ($conf['type'] ?? '') !== 'FIELD_',
+                'removable' => (bool)$loopCount,
+                'negate' => (bool)($conf['negate'] ?? false),
+                'comparison' => (int)($conf['comparison'] ?? 0),
+                'comparisons' => $this->getComparisonOptions((int)($conf['comparison'] ?? 0), (int)(bool)($conf['negate'] ?? false)),
+            ];
+            if ($fieldType === 'newlevel') {
+                if (!is_array($queryConfig[$key]['nl'] ?? null)) {
+                    $queryConfig[$key]['nl'] = [['type' => 'FIELD_']];
+                }
+                $element['sub'] = $this->getFormElements($subLevel + 1, $queryConfig[$key]['nl'], $subscript . '[nl]');
+            } elseif ($fieldType === 'date' || $fieldType === 'time') {
+                $type = $fieldType === 'date' ? 'date' : 'datetime';
+                $element['dateFields'][] = $this->getDateTimePickerData($element['name'] . '[inputValue]', (string)($conf['inputValue'] ?? ''), $type);
+                if ($conf['comparison'] === 100 || $conf['comparison'] === 101) {
+                    $element['dateFields'][] = $this->getDateTimePickerData($element['name'] . '[inputValue1]', (string)($conf['inputValue1'] ?? ''), $type);
+                }
+            } elseif (in_array($fieldType, ['multiple', 'binary', 'relation'], true)) {
+                $comparison = $element['comparison'];
+                $element['multiple'] = in_array($comparison, [68, 69, 162, 163], true);
+                $element['textInput'] = $comparison === 66 || $comparison === 67;
+                if ($element['textInput'] && is_array($conf['inputValue'] ?? null)) {
+                    $conf['inputValue'] = implode(',', $conf['inputValue']);
+                } elseif ($comparison === 64 && is_array($conf['inputValue'] ?? null)) {
+                    $conf['inputValue'] = $conf['inputValue'][0];
+                }
+                $element['options'] = $element['textInput'] ? [] : $this->getValueOptions($fieldName, $conf, $this->table);
+                $element['inputValue'] = $conf['inputValue'] ?? '';
+            } else {
+                $element['between'] = $conf['comparison'] === 36 || $conf['comparison'] === 37;
+                $element['inputValue'] = is_array($conf['inputValue'] ?? null) ? '' : ($conf['inputValue'] ?? '');
+                $element['inputValue1'] = $conf['inputValue1'] ?? '';
             }
-            if ($fieldType !== 'ignore') {
-                $lineHTML[] = '<div class="form-row">';
-                $lineHTML[] = '<div class="btn-group">';
-                $lineHTML[] = $this->updateIcon();
-                if ($loopCount) {
-                    $lineHTML[] = ''
-                        . '<button class="btn btn-default" title="Remove condition" name="qG_del' . htmlspecialchars($subscript) . '">'
-                        . $this->iconFactory->getIcon('actions-delete', IconSize::SMALL)->render()
-                        . '</button>';
-                }
-                $lineHTML[] = ''
-                    . '<button class="btn btn-default" title="Add condition" name="qG_ins' . htmlspecialchars($subscript) . '">'
-                    . $this->iconFactory->getIcon('actions-plus', IconSize::SMALL)->render()
-                    . '</button>';
-                if ($c != 0) {
-                    $lineHTML[] = ''
-                        . '<button class="btn btn-default" title="Move up" name="qG_up' . htmlspecialchars($subscript) . '">'
-                        . $this->iconFactory->getIcon('actions-chevron-up', IconSize::SMALL)->render()
-                        . '</button>';
-                }
-                if ($c != 0 && $fieldType !== 'newlevel') {
-                    $lineHTML[] = ''
-                        . '<button class="btn btn-default" title="New level" name="qG_nl' . htmlspecialchars($subscript) . '">'
-                        . $this->iconFactory->getIcon('actions-chevron-end', IconSize::SMALL)->render()
-                        . '</button>';
-                }
-                if ($fieldType === 'newlevel') {
-                    $lineHTML[] = ''
-                        . '<button class="btn btn-default" title="Collapse new level" name="qG_remnl' . htmlspecialchars($subscript) . '">'
-                        . $this->iconFactory->getIcon('actions-chevron-start', IconSize::SMALL)->render()
-                        . '</button>';
-                }
-                $lineHTML[] = '</div>';
-                $lineHTML[] = '</div>';
-                $codeArr[$arrCount]['html'] = implode(LF, $lineHTML);
-                $codeArr[$arrCount]['query'] = $this->getQuerySingle($conf, $c === 0);
-                $arrCount++;
-                $c++;
-            }
-            $loopCount = 1;
+            $element['query'] = $this->getQuerySingle($conf, $elements === []);
+            $elements[] = $element;
+            $loopCount++;
         }
         $this->queryConfig = $queryConfig;
-
-        return $codeArr;
+        return $elements;
     }
 
-    protected function getDateTimePickerField(string $name, string $timestamp, string $type): string
+    protected function getDateTimePickerData(string $name, string $timestamp, string $type): array
     {
-        $value = strtotime($timestamp) ? date($GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], (int)strtotime($timestamp)) : '';
-        $id = StringUtility::getUniqueId('dt_');
-        $html = [];
-        $html[] = '<div class="form-group">';
-        $html[] = '  <div class="input-group" id="' . $id . '-wrapper">';
-        $html[] = '	   <input data-formengine-input-name="' . htmlspecialchars($name) . '" value="' . $value . '" class="form-control form-control-clearable t3js-datetimepicker" data-date-type="' . htmlspecialchars($type) . '" type="text" id="' . $id . '">';
-        $html[] = '	   <input name="' . htmlspecialchars($name) . '" value="' . htmlspecialchars($timestamp) . '" type="hidden">';
-        $html[] = '	   <button class="btn btn-default" type="button" data-global-event="click" data-action-focus="#' . $id . '">';
-        $html[] =          $this->iconFactory->getIcon('actions-calendar-alternative', IconSize::SMALL)->render();
-        $html[] = '    </button>';
-        $html[] = '  </div>';
-        $html[] = '</div>';
-
-        return implode(LF, $html);
+        return [
+            'name' => $name,
+            'timestamp' => $timestamp,
+            'type' => $type,
+            'id' => StringUtility::getUniqueId('dt_'),
+            'value' => strtotime($timestamp) ? date($GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], (int)strtotime($timestamp)) : '',
+        ];
     }
 
-    protected function makeOptionList(string $fieldName, array $conf, string $table): string
+    protected function getValueOptions(string $fieldName, array $conf, string $table): array
     {
         $backendUserAuthentication = $this->getBackendUserAuthentication();
         $from_table_Arr = [];
         $out = [];
         $fieldSetup = $this->fields[$fieldName];
         $languageService = $this->getLanguageService();
+        $selectedValues = is_array($conf['inputValue'] ?? null)
+            ? array_map(strval(...), $conf['inputValue'])
+            : explode(',', (string)($conf['inputValue'] ?? ''));
         if ($fieldSetup['type'] === 'multiple') {
-            $optGroupOpen = false;
-            foreach (($fieldSetup['items'] ?? []) as $val) {
-                $value = $languageService->sL($val['label']);
-                if ($val['value'] === '--div--') {
-                    if ($optGroupOpen) {
-                        $out[] = '</optgroup>';
-                    }
-                    $optGroupOpen = true;
-                    $out[] = '<optgroup label="' . htmlspecialchars($value) . '">';
-                } elseif (GeneralUtility::inList($conf['inputValue'], (string)$val['value'])) {
-                    $out[] = '<option value="' . htmlspecialchars((string)$val['value']) . '" selected>' . htmlspecialchars($value) . '</option>';
-                } else {
-                    $out[] = '<option value="' . htmlspecialchars((string)$val['value']) . '">' . htmlspecialchars($value) . '</option>';
+            $group = null;
+            foreach (($fieldSetup['items'] ?? []) as $item) {
+                $label = $languageService->sL($item['label']);
+                if ($item['value'] === '--div--') {
+                    $out[] = ['label' => $label, 'group' => true, 'options' => []];
+                    $group = array_key_last($out);
+                    continue;
                 }
-            }
-            if ($optGroupOpen) {
-                $out[] = '</optgroup>';
+                $option = ['value' => (string)$item['value'], 'label' => $label, 'selected' => in_array((string)$item['value'], $selectedValues, true)];
+                if ($group === null) {
+                    $out[] = $option;
+                } else {
+                    $out[$group]['options'][] = $option;
+                }
             }
         }
         if ($fieldSetup['type'] === 'binary') {
-            foreach ($fieldSetup['items'] as $key => $val) {
-                $value = $languageService->sL($val['label']);
-                if (GeneralUtility::inList($conf['inputValue'], (string)(2 ** $key))) {
-                    $out[] = '<option value="' . 2 ** $key . '" selected>' . htmlspecialchars($value) . '</option>';
-                } else {
-                    $out[] = '<option value="' . 2 ** $key . '">' . htmlspecialchars($value) . '</option>';
-                }
+            foreach ($fieldSetup['items'] as $key => $item) {
+                $value = (string)(2 ** $key);
+                $out[] = ['value' => $value, 'label' => $languageService->sL($item['label']), 'selected' => in_array($value, $selectedValues, true)];
             }
         }
         if ($fieldSetup['type'] === 'relation') {
             $useTablePrefix = 0;
             $dontPrefixFirstTable = 0;
-            foreach (($fieldSetup['items'] ?? []) as $val) {
-                $value = $languageService->sL($val['label']);
-                if (GeneralUtility::inList($conf['inputValue'], (string)$val['value'])) {
-                    $out[] = '<option value="' . htmlspecialchars((string)$val['value']) . '" selected>' . htmlspecialchars($value) . '</option>';
-                } else {
-                    $out[] = '<option value="' . htmlspecialchars((string)$val['value']) . '">' . htmlspecialchars($value) . '</option>';
-                }
+            foreach (($fieldSetup['items'] ?? []) as $item) {
+                $value = (string)$item['value'];
+                $out[] = ['value' => $value, 'label' => $languageService->sL($item['label']), 'selected' => in_array($value, $selectedValues, true)];
             }
             $allowedFields = $fieldSetup['allowed'] ?? '';
             if (str_contains($allowedFields, ',')) {
@@ -1814,15 +1481,11 @@ class QuerySearchController
             foreach ($outArray as $key2 => $val2) {
                 $key2 = (string)$key2;
                 $val2 = (string)$val2;
-                if (GeneralUtility::inList($conf['inputValue'], $key2)) {
-                    $out[] = '<option value="' . htmlspecialchars($key2) . '" selected>[' . htmlspecialchars($key2) . '] ' . htmlspecialchars($val2) . '</option>';
-                } else {
-                    $out[] = '<option value="' . htmlspecialchars($key2) . '">[' . htmlspecialchars($key2) . '] ' . htmlspecialchars($val2) . '</option>';
-                }
+                $out[] = ['value' => $key2, 'label' => '[' . $key2 . '] ' . $val2, 'selected' => in_array($key2, $selectedValues, true)];
             }
         }
 
-        return implode(LF, $out);
+        return $out;
     }
 
     /**
@@ -1840,104 +1503,31 @@ class QuerySearchController
         return array_values(array_unique($selectFields));
     }
 
-    protected function mkOperatorSelect(string $name, string $op, bool $draw, bool $submit): string
+    protected function getComparisonOptions(int $comparison, int $negate): array
     {
-        $out = [];
-        if ($draw) {
-            $out[] = '<div class="form-group">';
-            $out[] = '  <select class="form-select' . ($submit ? ' t3js-submit-change' : '') . '" name="' . htmlspecialchars($name) . '[operator]">';
-            $out[] = '    <option value="AND"' . (!$op || $op === 'AND' ? ' selected' : '') . '>' . htmlspecialchars($this->lang['AND']) . '</option>';
-            $out[] = '    <option value="OR"' . ($op === 'OR' ? ' selected' : '') . '>' . htmlspecialchars($this->lang['OR']) . '</option>';
-            $out[] = '  </select>';
-            $out[] = '</div>';
-        } else {
-            $out[] = '<input type="hidden" value="' . htmlspecialchars($op) . '" name="' . htmlspecialchars($name) . '[operator]">';
-        }
-
-        return implode(LF, $out);
-    }
-
-    protected function makeComparisonSelector(string $subscript, string $fieldName, array $conf): string
-    {
-        $languageService = $this->getLanguageService();
-        $fieldPrefix = $this->name . $subscript;
-        $lineHTML = [];
-        $lineHTML[] = '<div class="form-group col col-sm-4">';
-        $lineHTML[] =    $this->mkTypeSelect($fieldPrefix . '[type]', $fieldName);
-        $lineHTML[] = '</div>';
-        $lineHTML[] = '<div class="form-group col">';
-        $lineHTML[] = '  <div class="input-group">';
-        $lineHTML[] =      $this->mkCompSelect($fieldPrefix . '[comparison]', (int)$conf['comparison'], ($conf['negate'] ?? null) ? 1 : 0);
-        $lineHTML[] = '    <span class="input-group-text">';
-        $lineHTML[] = '      <div class="form-check form-check-type-toggle">';
-        $lineHTML[] = '        <input type="checkbox" id="negateComparison" class="form-check-input t3js-submit-click"' . (($conf['negate'] ?? null) ? ' checked' : '') . ' name="' . htmlspecialchars($fieldPrefix) . '[negate]">';
-        $lineHTML[] = '        <label class="form-check-label" for="negateComparison">' . $languageService->translate('fullSearch.form.field.queryConfig.comparison.negate', 'lowlevel.messages') . '</label>';
-        $lineHTML[] = '      </div>';
-        $lineHTML[] = '    </span>';
-        $lineHTML[] = '  </div>';
-        $lineHTML[] = '</div>';
-
-        return implode(LF, $lineHTML);
-    }
-
-    protected function mkCompSelect(string $name, int $comparison, int $neg): string
-    {
-        $compOffSet = $comparison >> 5;
-        $out = [];
-        $out[] = '<select class="form-select t3js-submit-change" name="' . $name . '">';
-        for ($i = 32 * $compOffSet + $neg; $i < 32 * ($compOffSet + 1); $i += 2) {
+        $offset = $comparison >> 5;
+        $options = [];
+        for ($i = 32 * $offset + $negate; $i < 32 * ($offset + 1); $i += 2) {
             if ($this->lang['comparison'][$i . '_'] ?? false) {
-                $out[] = '<option value="' . $i . '"' . ($i >> 1 === $comparison >> 1 ? ' selected' : '') . '>' . htmlspecialchars($this->lang['comparison'][$i . '_']) . '</option>';
+                $options[] = [
+                    'value' => $i,
+                    'label' => $this->lang['comparison'][$i . '_'],
+                    'selected' => $i >> 1 === $comparison >> 1,
+                ];
             }
         }
-        $out[] = '</select>';
-
-        return implode(LF, $out);
+        return $options;
     }
 
-    protected function printCodeArray(array $codeArr, int $recursionLevel = 0): string
+    protected function getFieldOptions(): array
     {
-        $out = [];
-        foreach ($codeArr as $queryComponent) {
-            $out[] = '<div class="card">';
-            $out[] =     '<div class="card-body">';
-            $out[] =         $queryComponent['html'];
-
-            if ($this->enableQueryParts) {
-                $out[] = '<pre class="language-sql">';
-                $out[] =   '<code class="language-sql">' . htmlspecialchars($queryComponent['query']) . '</code>';
-                $out[] = '</pre>';
-            }
-            if (is_array($queryComponent['sub'] ?? null)) {
-                $out[] = $this->printCodeArray($queryComponent['sub'], $recursionLevel + 1);
-            }
-            $out[] =     '</div>';
-            $out[] = '</div>';
-        }
-
-        return implode(LF, $out);
-    }
-
-    protected function mkFieldToInputSelect(string $name, string $fieldName): string
-    {
-        $out = [];
-        $out[] = '<div class="input-group mb-1">';
-        $out[] =   $this->updateIcon();
-        $out[] =   '<input type="text" class="form-control form-control-clearable t3js-clearable" value="' . htmlspecialchars($fieldName) . '" name="' . htmlspecialchars($name) . '" id="select-queryFields">';
-        $out[] = '</div>';
-        $out[] = '<select class="form-select t3js-addfield" name="_fieldListDummy" size="5" data-field="' . htmlspecialchars($name) . '">';
-        foreach ($this->fields as $key => $value) {
-            if (!($value['exclude'] ?? false) || $this->getBackendUserAuthentication()->check('non_exclude_fields', $this->table . ':' . $key)) {
-                $label = $this->fields[$key]['label'];
-                if ($this->showFieldAndTableNames) {
-                    $label .= ' [' . $key . ']';
-                }
-                $out[] = '<option value="' . htmlspecialchars($key) . '"' . ($key === $fieldName ? ' selected' : '') . '>' . htmlspecialchars($label) . '</option>';
+        $options = [];
+        foreach ($this->fields as $name => $field) {
+            if (!($field['exclude'] ?? false) || $this->getBackendUserAuthentication()->check('non_exclude_fields', $this->table . ':' . $name)) {
+                $options[$name] = $field['label'] . ($this->showFieldAndTableNames ? ' [' . $name . ']' : '');
             }
         }
-        $out[] = '</select>';
-
-        return implode(LF, $out);
+        return $options;
     }
 
     protected function procesData(ServerRequestInterface $request, array $qC = []): void
@@ -2069,30 +1659,6 @@ class QuerySearchController
         return '';
     }
 
-    protected function mkTypeSelect(string $name, string $fieldName, string $prepend = 'FIELD_'): string
-    {
-        $out = [];
-        $out[] = '<select class="form-select t3js-submit-change" name="' . htmlspecialchars($name) . '" id="' . htmlspecialchars($name) . '">';
-        $out[] = '<option value=""></option>';
-        foreach ($this->fields as $key => $value) {
-            if (!($value['exclude'] ?? false) || $this->getBackendUserAuthentication()->check('non_exclude_fields', $this->table . ':' . $key)) {
-                $label = $this->fields[$key]['label'];
-                if ($this->showFieldAndTableNames) {
-                    $label .= ' [' . $key . ']';
-                }
-                $out[] = '<option value="' . htmlspecialchars($prepend . $key) . '"' . ($key === $fieldName ? ' selected' : '') . '>' . htmlspecialchars($label) . '</option>';
-            }
-        }
-        $out[] = '</select>';
-
-        return implode(LF, $out);
-    }
-
-    protected function updateIcon(): string
-    {
-        return '<button class="btn btn-default" title="Update" name="just_update">' . $this->iconFactory->getIcon('actions-refresh', IconSize::SMALL)->render() . '</button>';
-    }
-
     protected function setAndCleanUpExternalLists(string $name, string $list, string $force = ''): void
     {
         $fields = array_unique(GeneralUtility::trimExplode(',', $list . ',' . $force, true));
@@ -2105,7 +1671,7 @@ class QuerySearchController
         $this->extFieldLists[$name] = implode(',', $reList);
     }
 
-    protected function mkTableSelect(string $name, string $cur): string
+    protected function getTableOptions(): array
     {
         $tables = [];
         /** @var TcaSchema $schema */
@@ -2118,17 +1684,7 @@ class QuerySearchController
         }
         asort($tables);
 
-        $out = [];
-        $out[] = '<select class="form-select t3js-submit-change" name="' . $name . '" id="select-table">';
-        $out[] = '<option value=""></option>';
-        foreach ($tables as $tableName => $label) {
-            if ($this->getBackendUserAuthentication()->check('tables_select', $tableName)) {
-                $out[] = '<option value="' . htmlspecialchars($tableName) . '"' . ($tableName === $cur ? ' selected' : '') . '>' . htmlspecialchars($label) . '</option>';
-            }
-        }
-        $out[] = '</select>';
-
-        return implode(LF, $out);
+        return array_filter($tables, fn(string $tableName): bool => $this->getBackendUserAuthentication()->check('tables_select', $tableName), ARRAY_FILTER_USE_KEY);
     }
 
     /**
@@ -2298,50 +1854,7 @@ class QuerySearchController
         return implode(',', $fieldListArr);
     }
 
-    protected function makeStoreControl(): string
-    {
-        $languageService = $this->getLanguageService();
-
-        // Load/Save
-        $storeArray = $this->initStoreArray();
-
-        $opt = [];
-        foreach ($storeArray as $k => $v) {
-            $opt[] = '<option value="' . htmlspecialchars((string)$k) . '">' . htmlspecialchars((string)$v) . '</option>';
-        }
-
-        $markup = [];
-        $markup[] = '<div class="form-row">';
-        $markup[] = '  <div class="form-group">';
-        $markup[] = '    <label for="query-store" class="form-label">' . $languageService->translate('fullSearch.form.field.queryStore.storage.label', 'lowlevel.messages') . '</label>';
-        $markup[] = '    <div class="input-group">';
-        $markup[] = '      <select class="form-select" name="storeControl[STORE]" id="query-store" data-assign-store-control-title>' . implode(LF, $opt) . '</select>';
-        $markup[] = '    </div>';
-        $markup[] = '  </div>';
-        $markup[] = '  <div class="form-group">';
-        $markup[] = '    <label for="query-title" class="form-label">' . $languageService->translate('fullSearch.form.field.queryStore.title.label', 'lowlevel.messages') . '</label>';
-        $markup[] = '    <input class="form-control" name="storeControl[title]" id="query-title" value="" type="text" max="80">';
-        $markup[] = '  </div>';
-        $markup[] = '  <div class="form-group">';
-        $markup[] = '    <button class="btn btn-default" type="submit" name="storeControl[LOAD]" value="' . $languageService->translate('fullSearch.form.btn.load.label', 'lowlevel.messages') . '">';
-        $markup[] =        $this->iconFactory->getIcon('actions-upload', IconSize::SMALL)->render();
-        $markup[] =        $languageService->translate('fullSearch.form.btn.load.label', 'lowlevel.messages');
-        $markup[] = '    </button>';
-        $markup[] = '    <button class="btn btn-default" type="submit" name="storeControl[SAVE]" value="' . $languageService->translate('fullSearch.form.btn.save.label', 'lowlevel.messages') . '">';
-        $markup[] =        $this->iconFactory->getIcon('actions-save', IconSize::SMALL)->render();
-        $markup[] =        $languageService->translate('fullSearch.form.btn.save.label', 'lowlevel.messages');
-        $markup[] = '    </button>';
-        $markup[] = '    <button class="btn btn-default" type="submit" name="storeControl[REMOVE]" value="' . $languageService->translate('fullSearch.form.btn.delete.label', 'lowlevel.messages') . '">';
-        $markup[] =        $this->iconFactory->getIcon('actions-delete', IconSize::SMALL)->render();
-        $markup[] =        $languageService->translate('fullSearch.form.btn.delete.label', 'lowlevel.messages');
-        $markup[] = '    </button>';
-        $markup[] = '  </div>';
-        $markup[] = '</div>';
-
-        return implode(LF, $markup);
-    }
-
-    protected function procesStoreControl(ServerRequestInterface $request): string
+    protected function procesStoreControl(ServerRequestInterface $request): ?FlashMessage
     {
         $languageService = $this->getLanguageService();
         $flashMessage = null;
@@ -2351,7 +1864,6 @@ class QuerySearchController
         $storeIndex = (int)($storeControl['STORE'] ?? 0);
         $saveStoreArray = 0;
         $writeArray = [];
-        $msg = '';
         if (is_array($storeControl)) {
             if ($storeControl['LOAD'] ?? false) {
                 if ($storeIndex > 0) {
@@ -2386,11 +1898,6 @@ class QuerySearchController
                     $saveStoreArray = 1;
                 }
             }
-            if (!empty($flashMessage)) {
-                $msg = $this->flashMessageRendererResolver
-                    ->resolve()
-                    ->render([$flashMessage]);
-            }
         }
         if ($saveStoreArray) {
             // Making sure, index 0 is not set!
@@ -2406,7 +1913,7 @@ class QuerySearchController
             );
         }
 
-        return $msg;
+        return $flashMessage;
     }
 
     protected function cleanStoreQueryConfigs(array $storeQueryConfigs, array $storeArray): array
@@ -2466,87 +1973,4 @@ class QuerySearchController
         return $GLOBALS['LANG'];
     }
 
-    //################################
-    // copied over from BackendUtility to enable deprecation of the original method
-    // @todo finish fluidification of template and remove HTML generation from controller
-    //################################
-
-    /**
-     * Returns a selector box to switch the view.
-     *
-     * @param string $elementName The form elements name, probably something like "SET[...]
-     * @param string|int $currentValue The value to be selected currently.
-     * @param mixed $menuItems An array with the menu items for the selector box
-     * @return string HTML code for selector box
-     */
-    protected function getDropdownMenu(
-        string $elementName,
-        string|int $currentValue,
-        mixed $menuItems,
-        ServerRequestInterface $request
-    ): string {
-        if (!is_array($menuItems) || count($menuItems) <= 1) {
-            return '';
-        }
-        $scriptUrl = $this->uriBuilder->buildUriFromRequest($request);
-        $options = [];
-        foreach ($menuItems as $value => $label) {
-            $options[] = '<option value="'
-                . htmlspecialchars($value) . '"'
-                . ((string)$currentValue === (string)$value ? ' selected="selected"' : '') . '>'
-                . htmlspecialchars($label, ENT_COMPAT, 'UTF-8', false) . '</option>';
-        }
-        $dataMenuIdentifier = str_replace(['SET[', ']'], '', $elementName);
-        $dataMenuIdentifier = GeneralUtility::camelCaseToLowerCaseUnderscored($dataMenuIdentifier);
-        $dataMenuIdentifier = str_replace('_', '-', $dataMenuIdentifier);
-        // relies on module 'TYPO3/CMS/Backend/ActionDispatcher'
-        $attributes = GeneralUtility::implodeAttributes([
-            'name' => $elementName,
-            'id' => $dataMenuIdentifier,
-            'class' => 'form-select',
-            'data-menu-identifier' => $dataMenuIdentifier,
-            'data-global-event' => 'change',
-            'data-action-navigate' => '$data=~s/$value/',
-            'data-navigate-value' => $scriptUrl . '&' . $elementName . '=${value}',
-        ], true);
-
-        return '
-            <select class="form-select" ' . $attributes . '>
-                ' . implode(LF, $options) . '
-            </select>';
-    }
-
-    /**
-     * Checkbox function menu.
-     *
-     * @param string $elementName The form elements name, probably something like "SET[...]
-     * @param string|bool|int $currentValue The value to be selected currently.
-     * @param string $tagParams Additional attributes for the checkbox input tag
-     * @return string HTML code for checkbox
-     */
-    protected function getFuncCheck(
-        string $elementName,
-        string|bool|int $currentValue,
-        ServerRequestInterface $request,
-        string $tagParams = ''
-    ): string {
-        // relies on module 'TYPO3/CMS/Backend/ActionDispatcher'
-        $scriptUrl = $this->uriBuilder->buildUriFromRequest($request);
-        $attributes = GeneralUtility::implodeAttributes([
-            'type' => 'checkbox',
-            'class' => 'form-check-input',
-            'name' => $elementName,
-            'value' => '1',
-            'data-global-event' => 'change',
-            'data-action-navigate' => '$data=~s/$value/',
-            'data-navigate-value' => sprintf('%s&%s=${value}', $scriptUrl, $elementName),
-            'data-empty-value' => '0',
-        ], true);
-
-        return
-            '<input ' . $attributes
-            . ($currentValue ? ' checked="checked"' : '')
-            . ($tagParams ? ' ' . $tagParams : '')
-            . ' />';
-    }
 }
