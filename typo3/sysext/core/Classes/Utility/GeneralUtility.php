@@ -2799,24 +2799,22 @@ class GeneralUtility
                      (There are public extensions out there carrying around makeInstanceService() as a pre-dependency-injection methodology,
                      which we need to cut)
             */
-            /** @var AbstractAuthenticationService|null $obj */
+            /** @var AbstractAuthenticationService $obj */
             $obj = self::makeInstance($className);
-            if (is_object($obj)) {
-                if (!is_callable([$obj, 'init'])) {
-                    self::getLogger()->error('Requested service {class} has no init() method.', [
-                        'class' => $info['className'],
-                        'service' => $info,
-                    ]);
-                    throw new \RuntimeException('Broken service: ' . $info['className'], 1568119209);
-                }
-                $obj->info = $info;
-                // service available?
-                if ($obj->init()) {
-                    return $obj;
-                }
-                $error = $obj->getLastErrorArray();
-                unset($obj);
+            if (!is_callable([$obj, 'init'])) {
+                self::getLogger()->error('Requested service {class} has no init() method.', [
+                    'class' => $info['className'],
+                    'service' => $info,
+                ]);
+                throw new \RuntimeException('Broken service: ' . $info['className'], 1568119209);
             }
+            $obj->info = $info;
+            // service available?
+            if ($obj->init()) {
+                return $obj;
+            }
+            $error = $obj->getLastErrorArray();
+            unset($obj);
 
             // deactivate the service
             ExtensionManagementUtility::deactivateService($info['serviceType'], $info['serviceKey']);

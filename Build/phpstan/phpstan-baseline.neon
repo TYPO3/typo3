@@ -133,12 +133,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Tree/TableConfiguration/ArrayTreeRenderer.php
 
 		-
-			rawMessage: PHPDoc tag @var with type TYPO3\CMS\Core\Authentication\AbstractAuthenticationService|null is not subtype of native type object.
-			identifier: varTag.nativeType
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Utility/GeneralUtility.php
-
-		-
 			rawMessage: 'Parameter #1 $array (list<int|string>) of array_values is already a list, call has no effect.'
 			identifier: arrayValues.list
 			count: 1
