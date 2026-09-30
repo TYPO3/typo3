@@ -185,6 +185,25 @@ final class BookmarkServiceTest extends FunctionalTestCase
         }
     }
 
+    /**
+     * A bookmark may outlive the extension that provided its table. It stays
+     * listed, so the user can still remove it, and gets the default icon.
+     */
+    #[Test]
+    public function recordBookmarksOfTableWithoutTcaGetDefaultIcon(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/BookmarksWithoutTca.csv');
+
+        $bookmarks = [];
+        foreach ($this->subject->getBookmarks() as $bookmark) {
+            $bookmarks[$bookmark->id] = $bookmark;
+        }
+
+        self::assertSame('default-not-found', $bookmarks[20]->iconIdentifier);
+        self::assertFalse($bookmarks[20]->accessible);
+        self::assertSame('default-not-found', $bookmarks[21]->iconIdentifier);
+    }
+
     public static function invalidBookmarkArgumentsAreIgnoredDataProvider(): \Generator
     {
         yield 'record_edit invalid JSON' => [

@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 
 /**
  * @internal This class is a specific Backend implementation and is not considered part of the Public TYPO3 API.
@@ -48,6 +49,7 @@ readonly class BookmarkService
         protected ModuleProvider $moduleProvider,
         protected Router $router,
         protected UriBuilder $uriBuilder,
+        protected TcaSchemaFactory $tcaSchemaFactory,
     ) {}
 
     protected function getRouter(): Router
@@ -552,7 +554,9 @@ readonly class BookmarkService
                 $recordid = $bookmarkData['recordid'] ?? 0;
 
                 $action = $bookmarkData['action'] ?? '';
-                if ($action === 'edit') {
+                if (in_array($action, ['edit', 'new'], true) && !$this->tcaSchemaFactory->has($table)) {
+                    $icon = $this->iconFactory->getIcon('default-not-found', IconSize::SMALL);
+                } elseif ($action === 'edit') {
                     $row = BackendUtility::getRecordWSOL($table, (int)$recordid) ?? [];
                     $icon = $this->iconFactory->getIconForRecord($table, $row, IconSize::SMALL);
                 } elseif ($action === 'new') {
