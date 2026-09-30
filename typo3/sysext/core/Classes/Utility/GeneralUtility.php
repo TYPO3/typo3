@@ -759,16 +759,13 @@ class GeneralUtility
     public static function intExplode(string $delimiter, string $string, bool $removeEmptyValues = false): array
     {
         $result = explode($delimiter, $string);
-        foreach ($result as $key => &$value) {
-            if ($removeEmptyValues && trim($value) === '') {
-                unset($result[$key]);
+        for ($i = 0, $count = count($result); $i < $count; $i++) {
+            if ($removeEmptyValues && trim($result[$i]) === '') {
+                unset($result[$i]);
             } else {
-                $value = (int)$value;
+                $result[$i] = (int)$result[$i];
             }
         }
-        unset($value);
-
-        /** @var array<int, int> $result */
         return array_values($result);
     }
 

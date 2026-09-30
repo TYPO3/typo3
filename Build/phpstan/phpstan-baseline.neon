@@ -187,12 +187,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Utility/GeneralUtility.php
 
 		-
-			rawMessage: 'Parameter #1 $array (list<int|string>) of array_values is already a list, call has no effect.'
-			identifier: arrayValues.list
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Utility/GeneralUtility.php
-
-		-
 			rawMessage: 'Call to an undefined method TYPO3\CMS\Extbase\Persistence\Generic\Qom\JoinConditionInterface::getProperty1Name().'
 			identifier: method.notFound
 			count: 1
