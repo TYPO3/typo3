@@ -79,6 +79,28 @@ final class RouterTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function matchResultRejectsGetForAjaxLogout(): void
+    {
+        $subject = $this->get(Router::class);
+        $serverParams = array_replace($_SERVER, ['HTTP_HOST' => 'example.com', 'HTTPS' => 'on', 'SCRIPT_NAME' => '/index.php']);
+        $request = new ServerRequest('https://example.com/typo3/ajax/logout', 'GET', null, [], $serverParams);
+        $request = $request->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
+        $this->expectException(MethodNotAllowedException::class);
+        $subject->matchResult($request);
+    }
+
+    #[Test]
+    public function matchResultAcceptsPostForAjaxLogout(): void
+    {
+        $subject = $this->get(Router::class);
+        $serverParams = array_replace($_SERVER, ['HTTP_HOST' => 'example.com', 'HTTPS' => 'on', 'SCRIPT_NAME' => '/index.php']);
+        $request = new ServerRequest('https://example.com/typo3/ajax/logout', 'POST', null, [], $serverParams);
+        $request = $request->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
+        $result = $subject->matchResult($request);
+        self::assertSame('/ajax/logout', $result->getRoute()->getPath());
+    }
+
+    #[Test]
     public function matchResultReturnsRouteWithMethodLimitation(): void
     {
         $subject = $this->get(Router::class);

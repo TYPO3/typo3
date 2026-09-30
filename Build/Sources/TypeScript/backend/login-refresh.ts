@@ -155,7 +155,7 @@ class LoginRefresh {
       return;
     }
     // log off for sure
-    new AjaxRequest(TYPO3.settings.ajaxUrls.logout).get().then((): void => {
+    new AjaxRequest(TYPO3.settings.ajaxUrls.logout).post({}).then((): void => {
       if (TYPO3.configuration.showRefreshLoginPopup) {
         this.showLoginPopup();
       } else {

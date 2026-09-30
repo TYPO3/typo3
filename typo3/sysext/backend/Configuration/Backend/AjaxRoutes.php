@@ -314,6 +314,7 @@ return [
     // Log out from backend
     'logout' => [
         'path' => '/logout',
+        'methods' => ['POST'],
         'target' => \TYPO3\CMS\Backend\Controller\AjaxLoginController::class . '::logoutAction',
         'access' => 'public',
     ],
