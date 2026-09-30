@@ -31,6 +31,7 @@ use TYPO3\CMS\Core\Html\SanitizerBuilderFactory;
 use TYPO3\CMS\Core\Http\MiddlewareDispatcher;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Localization\TranslationDomainResolver;
@@ -106,6 +107,7 @@ class ServiceProvider extends AbstractServiceProvider
             Command\PasswordSetCommand::class => self::getPasswordGenerateCommand(...),
             Command\SetupCommand::class => self::getSetupCommand(...),
             Command\SetupDefaultBackendUserGroupsCommand::class => self::getSetupDefaultBackendUserGroupsCommand(...),
+            Command\UpgradeScanCommand::class => self::getUpgradeScanCommand(...),
             IconViewHelper::class => self::getIconViewHelper(...),
             HtmlViewHelper::class => self::getHtmlViewHelper(...),
             InfoboxViewHelper::class => self::getInfoboxViewHelper(...),
@@ -381,6 +383,18 @@ class ServiceProvider extends AbstractServiceProvider
         );
     }
 
+    public static function getUpgradeScanCommand(ContainerInterface $container): Command\UpgradeScanCommand
+    {
+        return new Command\UpgradeScanCommand(
+            'upgrade:scan',
+            $container->get(PackageManager::class),
+            $container->get(ExtensionScanner\ExtensionScannerService::class),
+            // Not fetched from the container: Typo3Version is registered neither in
+            // core's Services.yaml nor in its ServiceProvider.
+            new Typo3Version(),
+        );
+    }
+
     public static function getPermissionsCheck(ContainerInterface $container): Database\PermissionsCheck
     {
         return new Database\PermissionsCheck();
@@ -454,6 +468,11 @@ class ServiceProvider extends AbstractServiceProvider
             'install:password:set',
             Command\PasswordSetCommand::class,
             'Sets or generate a new install tool password'
+        );
+        $commandRegistry->addLazyCommand(
+            'upgrade:scan',
+            Command\UpgradeScanCommand::class,
+            'Scan extensions for usages of removed or deprecated TYPO3 Core code.'
         );
         return $commandRegistry;
     }

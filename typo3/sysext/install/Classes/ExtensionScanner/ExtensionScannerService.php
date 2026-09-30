@@ -36,10 +36,10 @@ use TYPO3\CMS\Install\ExtensionScanner\Result\ScanResult;
 /**
  * Scans PHP files for usages of removed or deprecated TYPO3 Core code.
  *
- * This is the engine behind the "Extension scanner" of the install tool. It reports what
- * static analysis found and where it came from; it deliberately does not resolve the
- * referenced changelog files to documents, and it does not read the matched source lines.
- * Both are presentation concerns of the caller.
+ * This is the engine behind both the "Extension scanner" of the install tool and the
+ * "upgrade:scan" console command. It reports what static analysis found and where it came
+ * from; it deliberately does not resolve the referenced changelog files to documents, and it
+ * does not read the matched source lines. Both are presentation concerns of the caller.
  *
  * Not declared final only because the unit tests of EXT:install replace it with a test double;
  * substitutability is not a promise of this API.
