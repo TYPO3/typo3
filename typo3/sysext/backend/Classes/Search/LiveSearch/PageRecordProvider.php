@@ -86,6 +86,7 @@ final class PageRecordProvider implements SearchProviderInterface
 
     public function count(SearchDemand $searchDemand): int
     {
+        $this->pageIdList = $this->getPageIdList();
         $searchDemand = $this->parseCommand($searchDemand);
         $queryBuilder = $this->getQueryBuilderForTable($searchDemand);
         return (int)$queryBuilder?->count('*')->executeQuery()->fetchOne();
@@ -161,7 +162,12 @@ final class PageRecordProvider implements SearchProviderInterface
             $queryBuilder->andWhere($this->userPermissions);
         }
 
-        if ($this->pageIdList !== []) {
+        if (!$this->getBackendUser()->isAdmin()) {
+            // Non-admin users must only find pages they can access. An empty page id list means the
+            // user has no accessible pages at all, so the search must not return any page.
+            if ($this->pageIdList === []) {
+                return null;
+            }
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->in(
                     'pid',
@@ -264,7 +270,7 @@ final class PageRecordProvider implements SearchProviderInterface
     }
 
     /**
-     * List of available page uids for user, empty array for admin users.
+     * List of available page uids for user, empty array for admin users and users without page mounts.
      *
      * @return int[]
      */
@@ -274,6 +280,9 @@ final class PageRecordProvider implements SearchProviderInterface
             return [];
         }
         $mounts = $this->getBackendUser()->getWebmounts();
+        if ($mounts === []) {
+            return [];
+        }
         $pageList = $mounts;
         $repository = GeneralUtility::makeInstance(PageTreeRepository::class);
         $repository->setAdditionalWhereClause($this->userPermissions);
