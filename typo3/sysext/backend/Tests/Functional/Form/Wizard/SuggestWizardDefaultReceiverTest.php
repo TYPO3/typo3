@@ -44,4 +44,52 @@ final class SuggestWizardDefaultReceiverTest extends FunctionalTestCase
         $result = $subject->queryTable($parameters);
         self::assertCount(5, $result);
     }
+
+    #[Test]
+    public function labelIsNotHtmlEncoded(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/pages_special_titles.csv');
+        $subject = new SuggestWizardDefaultReceiver('pages', [
+            'pidList' => '1',
+        ]);
+        $parameters = ['value' => 'quoted'];
+        $result = $subject->queryTable($parameters);
+        self::assertSame('Tom & Jerry "quoted" \'single\'', $result['pages_200']['label']);
+    }
+
+    #[Test]
+    public function labelIsCroppedToTitleLength(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/pages_special_titles.csv');
+        $subject = new SuggestWizardDefaultReceiver('pages', [
+            'pidList' => '1',
+        ]);
+        $parameters = ['value' => 'very long'];
+        $result = $subject->queryTable($parameters);
+        self::assertSame('Tom & Jerry with a very long title that exceeds th...', $result['pages_201']['label']);
+    }
+
+    #[Test]
+    public function labelWithLessThanSignIsNotStripped(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/pages_special_titles.csv');
+        $subject = new SuggestWizardDefaultReceiver('pages', [
+            'pidList' => '1',
+        ]);
+        $parameters = ['value' => 'Kids'];
+        $result = $subject->queryTable($parameters);
+        self::assertSame('Kids <12 years, a<b and c>d', $result['pages_203']['label']);
+    }
+
+    #[Test]
+    public function emptyLabelFallsBackToNoTitle(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/pages_special_titles.csv');
+        $subject = new SuggestWizardDefaultReceiver('pages', [
+            'pidList' => '1',
+        ]);
+        $parameters = ['value' => '202'];
+        $result = $subject->queryTable($parameters);
+        self::assertSame('[No title]', $result['pages_202']['label']);
+    }
 }
