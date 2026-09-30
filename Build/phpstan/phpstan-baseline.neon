@@ -37,12 +37,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Configuration/ExtensionConfiguration.php
 
 		-
-			rawMessage: 'Call to an undefined method Psr\Container\ContainerInterface::set().'
-			identifier: method.notFound
-			count: 2
-			path: ../../typo3/sysext/core/Classes/Core/BootService.php
-
-		-
 			rawMessage: 'Call to function is_array() with array will always evaluate to true.'
 			identifier: function.alreadyNarrowedType
 			count: 1

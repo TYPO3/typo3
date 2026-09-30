@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Core;
 
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\Configuration\Extension\ExtLocalconfFactory;
 use TYPO3\CMS\Core\Configuration\Tca\TcaFactory;
 use TYPO3\CMS\Core\Core\Event\BootCompletedEvent;
@@ -58,14 +59,16 @@ class BootService
         $failsafe = false;
 
         // Build a non-failsafe container which is required for loading ext_localconf
-        $this->container = $this->containerBuilder->createDependencyInjectionContainer($packageManager, $dependencyInjectionContainerCache, $failsafe);
-        $this->container->set('_early.boot-service', $this);
+        /** @var Container $container */
+        $container = $this->containerBuilder->createDependencyInjectionContainer($packageManager, $dependencyInjectionContainerCache, $failsafe);
+        $this->container = $container;
+        $container->set('_early.boot-service', $this);
         if ($allowCaching) {
             $this->container->get('boot.state')->cacheDisabled = false;
             $coreCache = Bootstrap::createCache('core');
             // Core cache is initialized with a NullBackend in failsafe mode.
             // Replace it with a new cache that uses the real backend.
-            $this->container->set('_early.cache.core', $coreCache);
+            $container->set('_early.cache.core', $coreCache);
             if (!Environment::isComposerMode()) {
                 $this->container->get(PackageManager::class)->setPackageCache(Bootstrap::createPackageCache($coreCache));
             }
