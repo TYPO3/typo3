@@ -38,11 +38,17 @@ final class VideoTagRendererTest extends UnitTestCase
         $fileResourceStub3->method('getMimeType')->willReturn('video/ogg');
         $fileResourceStub4 = self::createStub(File::class);
         $fileResourceStub4->method('getMimeType')->willReturn('application/ogg');
+        $fileResourceStub5 = self::createStub(File::class);
+        $fileResourceStub5->method('getMimeType')->willReturn('video/mp4;codecs="avc1.42E01E, mp4a.40.2"');
+        $fileResourceStub6 = self::createStub(File::class);
+        $fileResourceStub6->method('getMimeType')->willReturn('Video/MP4');
 
         self::assertTrue($VideoTagRenderer->canRender($fileResourceStub1));
         self::assertTrue($VideoTagRenderer->canRender($fileResourceStub2));
         self::assertTrue($VideoTagRenderer->canRender($fileResourceStub3));
         self::assertTrue($VideoTagRenderer->canRender($fileResourceStub4));
+        self::assertTrue($VideoTagRenderer->canRender($fileResourceStub5));
+        self::assertTrue($VideoTagRenderer->canRender($fileResourceStub6));
     }
 
     #[Test]

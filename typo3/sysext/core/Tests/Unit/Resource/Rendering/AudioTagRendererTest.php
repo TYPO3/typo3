@@ -36,10 +36,16 @@ final class AudioTagRendererTest extends UnitTestCase
         $fileResourceStub2->method('getMimeType')->willReturn('audio/wav');
         $fileResourceStub3 = self::createStub(File::class);
         $fileResourceStub3->method('getMimeType')->willReturn('audio/ogg');
+        $fileResourceStub4 = self::createStub(File::class);
+        $fileResourceStub4->method('getMimeType')->willReturn('audio/ogg; codecs=opus');
+        $fileResourceStub5 = self::createStub(File::class);
+        $fileResourceStub5->method('getMimeType')->willReturn('Audio/MPEG');
 
         self::assertTrue($audioTagRenderer->canRender($fileResourceStub1));
         self::assertTrue($audioTagRenderer->canRender($fileResourceStub2));
         self::assertTrue($audioTagRenderer->canRender($fileResourceStub3));
+        self::assertTrue($audioTagRenderer->canRender($fileResourceStub4));
+        self::assertTrue($audioTagRenderer->canRender($fileResourceStub5));
     }
 
     #[Test]
