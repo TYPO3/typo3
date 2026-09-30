@@ -37,6 +37,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
+use Symfony\Component\DependencyInjection\ContainerInterface as SymfonyContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\EventListener\StopWorkerOnFailureLimitListener;
 use Symfony\Component\Messenger\EventListener\StopWorkerOnMemoryLimitListener;
@@ -66,7 +67,8 @@ class ConsumeMessagesCommand extends Command
         private readonly ContainerInterface $receiverLocator,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly ListenerProvider $listenerProvider,
-        private readonly ContainerInterface $container,
+        #[Autowire(service: 'service_container')]
+        private readonly SymfonyContainerInterface $container,
         #[AutowireIterator('messenger.receiver', indexAttribute: 'identifier')]
         iterable $receiverNamesIterator,
         private readonly array $busIds = [],

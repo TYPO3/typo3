@@ -7,12 +7,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Collection/AbstractRecordCollection.php
 
 		-
-			rawMessage: 'Call to an undefined method Psr\Container\ContainerInterface::set().'
-			identifier: method.notFound
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Command/ConsumeMessagesCommand.php
-
-		-
 			rawMessage: 'Call to function is_array() with array will always evaluate to true.'
 			identifier: function.alreadyNarrowedType
 			count: 1
