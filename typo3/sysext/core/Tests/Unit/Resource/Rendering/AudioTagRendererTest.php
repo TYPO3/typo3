@@ -44,10 +44,15 @@ final class AudioTagRendererTest extends UnitTestCase
         $fileResourceMock2->method('getMimeType')->willReturn('audio/wav');
         $fileResourceMock3 = $this->createMock(File::class);
         $fileResourceMock3->method('getMimeType')->willReturn('audio/ogg');
-
+        $fileResourceMock4 = self::createMock(File::class);
+        $fileResourceMock4->method('getMimeType')->willReturn('audio/ogg; codecs=opus');
+        $fileResourceMock5 = self::createMock(File::class);
+        $fileResourceMock5->method('getMimeType')->willReturn('Audio/MPEG');
         self::assertTrue($audioTagRenderer->canRender($fileResourceMock1));
         self::assertTrue($audioTagRenderer->canRender($fileResourceMock2));
         self::assertTrue($audioTagRenderer->canRender($fileResourceMock3));
+        self::assertTrue($audioTagRenderer->canRender($fileResourceMock4));
+        self::assertTrue($audioTagRenderer->canRender($fileResourceMock5));
     }
 
     #[Test]

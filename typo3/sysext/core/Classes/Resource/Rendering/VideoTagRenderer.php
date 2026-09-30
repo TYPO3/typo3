@@ -57,7 +57,8 @@ class VideoTagRenderer implements FileRendererInterface
      */
     public function canRender(FileInterface $file)
     {
-        return in_array($file->getMimeType(), $this->possibleMimeTypes, true);
+        $mimeType = strtolower(trim(explode(';', $file->getMimeType(), 2)[0]));
+        return in_array($mimeType, $this->possibleMimeTypes, true);
     }
 
     /**

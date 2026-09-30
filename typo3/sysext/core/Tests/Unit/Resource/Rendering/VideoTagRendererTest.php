@@ -46,11 +46,16 @@ final class VideoTagRendererTest extends UnitTestCase
         $fileResourceMock3->method('getMimeType')->willReturn('video/ogg');
         $fileResourceMock4 = $this->createMock(File::class);
         $fileResourceMock4->method('getMimeType')->willReturn('application/ogg');
-
+        $fileResourceMock5 = self::createMock(File::class);
+        $fileResourceMock5->method('getMimeType')->willReturn('video/mp4;codecs="avc1.42E01E, mp4a.40.2"');
+        $fileResourceMock6 = self::createMock(File::class);
+        $fileResourceMock6->method('getMimeType')->willReturn('Video/MP4');
         self::assertTrue($VideoTagRenderer->canRender($fileResourceMock1));
         self::assertTrue($VideoTagRenderer->canRender($fileResourceMock2));
         self::assertTrue($VideoTagRenderer->canRender($fileResourceMock3));
         self::assertTrue($VideoTagRenderer->canRender($fileResourceMock4));
+        self::assertTrue($VideoTagRenderer->canRender($fileResourceMock5));
+        self::assertTrue($VideoTagRenderer->canRender($fileResourceMock6));
     }
 
     #[Test]
