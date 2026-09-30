@@ -1,0 +1,4 @@
+"sys_be_shortcuts",,,,,,
+,"uid","userid","description","sc_group","route","arguments"
+,20,1,"Edit record of removed table",1,"record_edit","{""edit"":{""tx_removed_table"":{""93"":""edit""}}}"
+,21,1,"Create record of removed table",1,"record_edit","{""edit"":{""tx_removed_table"":{""42"":""new""}}}"
