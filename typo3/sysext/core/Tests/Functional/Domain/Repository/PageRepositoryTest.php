@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\Domain\Repository;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
@@ -601,6 +602,49 @@ final class PageRepositoryTest extends FunctionalTestCase
         $subject->versionOL('pages', $input);
 
         self::assertSame($originalInput, $input);
+    }
+
+    /**
+     * @return array<string, array{0: bool}>
+     */
+    public static function versionOLForMovePointerWithoutLiveRecordDataProvider(): array
+    {
+        return [
+            'live record removed' => [false],
+            'live record soft-deleted' => [true],
+        ];
+    }
+
+    #[DataProvider('versionOLForMovePointerWithoutLiveRecordDataProvider')]
+    #[Test]
+    public function versionOLForMovePointerWithoutLiveRecordUnsetsRowAndLogsWarning(bool $liveRecordIsSoftDeleted): void
+    {
+        $connection = $this->get(ConnectionPool::class)->getConnectionForTable('pages');
+        if ($liveRecordIsSoftDeleted) {
+            $connection->insert('pages', ['uid' => 2001, 'pid' => 1, 'title' => 'Deleted live page', 'deleted' => 1]);
+        }
+        $connection->insert('pages', [
+            'uid' => 2002,
+            'pid' => 2,
+            'title' => 'Move pointer of page 2001',
+            't3ver_wsid' => 4,
+            't3ver_oid' => 2001,
+            't3ver_state' => VersionState::MOVE_POINTER->value,
+        ]);
+        $row = $connection->select(['*'], 'pages', ['uid' => 2002])->fetchAssociative();
+        $context = new Context();
+        $context->setAspect('workspace', new WorkspaceAspect(4));
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger->expects($this->once())->method('warning')->with(
+            self::stringContains('Move pointer'),
+            ['table' => 'pages', 'uid' => 2002, 'liveUid' => 2001, 'workspace' => 4]
+        );
+        $subject = new PageRepository($context);
+        $subject->setLogger($logger);
+
+        $subject->versionOL('pages', $row);
+
+        self::assertFalse($row);
     }
 
     #[Test]
