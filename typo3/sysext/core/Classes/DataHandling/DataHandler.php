@@ -3273,10 +3273,10 @@ class DataHandler
                     // Contains mapping information between new and old id numbers.
                     $this->copyMappingArray = [];
                     // process the command
+                    /** @var bool $commandIsProcessed */
                     $commandIsProcessed = false;
                     foreach ($hookObjectsArr as $hookObj) {
                         if (method_exists($hookObj, 'processCmdmap')) {
-                            /** @var bool $commandIsProcessed */
                             $hookObj->processCmdmap($command, $table, $id, $value, $commandIsProcessed, $this, $pasteUpdate);
                         }
                     }

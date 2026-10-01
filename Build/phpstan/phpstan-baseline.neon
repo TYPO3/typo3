@@ -49,12 +49,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
 
 		-
-			rawMessage: Negated boolean expression is always true.
-			identifier: booleanNot.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
-
-		-
 			rawMessage: Class TYPO3\CMS\Core\Database\Schema\SchemaDiff extends @final class Doctrine\DBAL\Schema\SchemaDiff.
 			identifier: class.extendsFinalByPhpDoc
 			count: 1
