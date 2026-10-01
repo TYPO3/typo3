@@ -99,4 +99,24 @@ final class DatabaseStoredFormTest extends FunctionalTestCase
         $formMarkup = $formData->getFormMarkup();
         self::assertStringContainsString('Form is submitted', $formMarkup, 'confirmation finisher message is shown');
     }
+
+    #[Test]
+    public function databaseStoredFormCombinesTypoScriptAndFlexFormOverrides(): void
+    {
+        $uri = static::ROOT_PAGE_BASE_URI . '/form';
+        $formIdentifier = 'db-test-form-1006';
+        $subject = new FormDataFactory();
+
+        $internalRequest = new InternalRequest($uri)->withAttribute('currentContentObject', $this->get(ContentObjectRenderer::class));
+        $pageMarkup = (string)$this->executeFrontendSubRequest($internalRequest, null, true)->getBody();
+        $formData = $subject->fromHtmlMarkupAndXpath($pageMarkup, '//form[@id="' . $formIdentifier . '"]');
+        $formMarkup = $formData->getFormMarkup();
+
+        self::assertStringContainsString('TypoScript overridden field', $formMarkup, 'TypoScript form-definition override is applied');
+
+        $formPostRequest = $formData->with('text-1', 'DatabaseFormOverrideTest')->toPostRequest($internalRequest);
+        $pageMarkup = (string)$this->executeFrontendSubRequest($formPostRequest, null, true)->getBody();
+
+        self::assertStringContainsString('FlexForm finisher override', $pageMarkup, 'FlexForm finisher override is applied after TypoScript configuration');
+    }
 }

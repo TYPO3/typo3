@@ -14,3 +14,5 @@ page {
     slide = -1
   }
 }
+
+plugin.tx_form.settings.formDefinitionOverrides.db-test-form.renderables.0.renderables.0.label = TypoScript overridden field

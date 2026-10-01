@@ -38,3 +38,29 @@ entities:
           entities:
             content:
               - self: {id: 1005, CType: form_formframework, pi_flexform: "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\" ?>\n<T3FlexForms>\n<data>\n<sheet index=\"sDEF\">\n<language index=\"lDEF\">\n<field index=\"settings.persistenceIdentifier\">\n<value index=\"vDEF\">1</value>\n</field>\n<field index=\"settings.overrideFinishers\">\n<value index=\"vDEF\">0</value>\n</field>\n</language>\n</sheet>\n</data>\n</T3FlexForms>"}
+              - self:
+                  id: 1006
+                  CType: form_formframework
+                  pi_flexform: |
+                    <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+                    <T3FlexForms>
+                      <data>
+                        <sheet index="sDEF">
+                          <language index="lDEF">
+                            <field index="settings.persistenceIdentifier">
+                              <value index="vDEF">1</value>
+                            </field>
+                            <field index="settings.overrideFinishers">
+                              <value index="vDEF">1</value>
+                            </field>
+                          </language>
+                        </sheet>
+                        <sheet index="886fec084be9de9cf5306f3ec17951f0">
+                          <language index="lDEF">
+                            <field index="settings.finishers.Confirmation.message">
+                              <value index="vDEF">FlexForm finisher override</value>
+                            </field>
+                          </language>
+                        </sheet>
+                      </data>
+                    </T3FlexForms>
