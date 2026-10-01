@@ -21,6 +21,7 @@ use PHPUnit\Framework\Attributes\Test;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Scheduler\Domain\Repository\SchedulerTaskRepository;
@@ -102,6 +103,62 @@ final class SchedulerTest extends FunctionalTestCase
         self::assertFalse($event->isSuccess());
         self::assertInstanceOf(\RuntimeException::class, $event->getException());
         self::assertSame(1748500000, $event->getException()->getCode());
+    }
+
+    #[Test]
+    public function constructorRemovesExecutionsOlderThanDefaultMaximumLifetimeOfOneHour(): void
+    {
+        $now = $GLOBALS['EXEC_TIME'];
+        $this->addTaskWithExecutions(1, [$now - 61 * 60]);
+        $this->addTaskWithExecutions(2, [$now - 59 * 60]);
+
+        $this->createScheduler();
+
+        self::assertSame('', $this->getSerializedExecutions(1));
+        self::assertSame((string)serialize([$now - 59 * 60]), $this->getSerializedExecutions(2));
+    }
+
+    #[Test]
+    public function constructorRemovesExecutionsOlderThanConfiguredMaximumLifetime(): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['scheduler']['maxLifetime'] = '10';
+        $now = $GLOBALS['EXEC_TIME'];
+        $this->addTaskWithExecutions(1, [$now - 11 * 60, $now - 9 * 60]);
+
+        $this->createScheduler();
+
+        self::assertSame(serialize([$now - 9 * 60]), $this->getSerializedExecutions(1));
+    }
+
+    private function createScheduler(): Scheduler
+    {
+        return new Scheduler(
+            new NullLogger(),
+            self::createStub(TaskSerializer::class),
+            self::createStub(SchedulerTaskRepository::class),
+            self::createStub(EventDispatcherInterface::class),
+            $this->get(Registry::class),
+            $this->get(ConnectionPool::class),
+            $this->get(ExtensionConfiguration::class),
+        );
+    }
+
+    private function addTaskWithExecutions(int $uid, array $executions): void
+    {
+        $this->get(ConnectionPool::class)->getConnectionForTable('tx_scheduler_task')->insert(
+            'tx_scheduler_task',
+            ['uid' => $uid, 'serialized_executions' => serialize($executions)],
+            ['serialized_executions' => Connection::PARAM_LOB]
+        );
+    }
+
+    private function getSerializedExecutions(int $uid): string
+    {
+        $value = $this->get(ConnectionPool::class)->getConnectionForTable('tx_scheduler_task')
+            ->select(['serialized_executions'], 'tx_scheduler_task', ['uid' => $uid])
+            ->fetchOne();
+        // PostgreSQL returns bytea columns as stream resources
+        return is_resource($value) ? (string)stream_get_contents($value) : (string)$value;
     }
 
     private function getSingleAfterTaskExecutionEvent(): AfterTaskExecutionEvent

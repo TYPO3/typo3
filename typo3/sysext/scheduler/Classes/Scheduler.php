@@ -52,14 +52,14 @@ class Scheduler
         // Get configuration from the extension manager
         $this->extConf = $extensionConfiguration->get('scheduler');
         if (empty($this->extConf['maxLifetime'])) {
-            $this->extConf['maxLifetime'] = 1440;
+            $this->extConf['maxLifetime'] = 60;
         }
         // Clean up the serialized execution arrays
         $this->cleanExecutionArrays();
     }
 
     /**
-     * Cleans the execution lists of the scheduled tasks, executions older than 24h are removed
+     * Cleans the execution lists of the scheduled tasks, executions older than the maximum lifetime are removed
      * @todo find a way to actually kill the job
      */
     protected function cleanExecutionArrays()

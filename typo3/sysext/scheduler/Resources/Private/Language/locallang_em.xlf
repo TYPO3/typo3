@@ -4,7 +4,7 @@
     <header/>
     <body>
       <trans-unit id="scheduler.config.maxLifetime">
-        <source>Maximum lifetime: Set the maximum runtime (in minutes) for a scheduler task. Tasks still running after this time are removed from the execution list but are not stopped.</source>
+        <source>Maximum lifetime (in minutes): A task that is still marked as running after this time is considered crashed, and its running mark is removed so it can be executed again. The process itself is not stopped. Set this higher than the runtime of your longest-running task, otherwise a task that disallows parallel execution may be started a second time while it is still running. Empty or 0 falls back to 60.</source>
       </trans-unit>
     </body>
   </file>
