@@ -17,8 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Dashboard\Widgets;
 
-use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
+use TYPO3\CMS\Core\Settings\SettingDefinition;
 
 /**
  * Concrete Number with Icon implementation
@@ -38,10 +38,8 @@ use TYPO3\CMS\Backend\View\BackendViewFactory;
  *
  * @see NumberWithIconDataProviderInterface
  */
-class NumberWithIconWidget implements WidgetInterface, RequestAwareWidgetInterface
+class NumberWithIconWidget implements WidgetRendererInterface
 {
-    private ServerRequestInterface $request;
-
     public function __construct(
         private readonly WidgetConfigurationInterface $configuration,
         private readonly NumberWithIconDataProviderInterface $dataProvider,
@@ -49,14 +47,17 @@ class NumberWithIconWidget implements WidgetInterface, RequestAwareWidgetInterfa
         private readonly array $options = [],
     ) {}
 
-    public function setRequest(ServerRequestInterface $request): void
+    /**
+     * @return SettingDefinition[]
+     */
+    public function getSettingsDefinitions(): array
     {
-        $this->request = $request;
+        return [];
     }
 
-    public function renderWidgetContent(): string
+    public function renderWidget(WidgetContext $context): WidgetResult
     {
-        $view = $this->backendViewFactory->create($this->request);
+        $view = $this->backendViewFactory->create($context->request);
         $view->assignMultiple([
             'icon' => $this->options['icon'] ?? '',
             'title' => $this->options['title'] ?? '',
@@ -65,11 +66,9 @@ class NumberWithIconWidget implements WidgetInterface, RequestAwareWidgetInterfa
             'options' => $this->options,
             'configuration' => $this->configuration,
         ]);
-        return $view->render('Widget/NumberWithIconWidget');
-    }
-
-    public function getOptions(): array
-    {
-        return $this->options;
+        return new WidgetResult(
+            content: $view->render('Widget/NumberWithIconWidget'),
+            refreshable: $this->options['refreshAvailable'] ?? false,
+        );
     }
 }

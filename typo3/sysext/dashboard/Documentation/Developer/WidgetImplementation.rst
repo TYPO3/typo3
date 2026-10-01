@@ -36,14 +36,12 @@ PHP class
 ---------
 
 Each Widget has to be a PHP class.
-This class has to implement the :php:`WidgetInterface` and could look like this:
+This class should implement the :php:`WidgetRendererInterface` and could look like this:
 
 ..  code-block:: php
 
-    class RssWidget implements WidgetInterface, RequestAwareWidgetInterface
+    class RssWidget implements WidgetRendererInterface
     {
-        private ServerRequestInterface $request;
-
         public function __construct(
             private readonly WidgetConfigurationInterface $configuration,
             private readonly Cache $cache,
@@ -53,21 +51,24 @@ This class has to implement the :php:`WidgetInterface` and could look like this:
         ) {
         }
 
-        public function setRequest(ServerRequestInterface $request): void
+        public function getSettingsDefinitions(): array
         {
-            $this->request = $request;
+            return [];
         }
 
-        public function renderWidgetContent(): string
+        public function renderWidget(WidgetContext $context): WidgetResult
         {
-            $view = $this->backendViewFactory->create($this->request);
+            $view = $this->backendViewFactory->create($context->request);
             $view->assignMultiple([
                 'items' => $this->getRssItems(),
                 'options' => $this->options,
                 'button' => $this->getButton(),
                 'configuration' => $this->configuration,
             ]);
-            return $view->render('Widget/RssWidget');
+            return new WidgetResult(
+                content: $view->render('Widget/RssWidget'),
+                refreshable: $this->options['refreshAvailable'] ?? false,
+            );
         }
 
         protected function getRssItems(): array
@@ -76,12 +77,15 @@ This class has to implement the :php:`WidgetInterface` and could look like this:
             // Logic to populate $items array
             return $items;
         }
-
-        public function getOptions(): array
-        {
-            return $this->options;
-        }
     }
+
+..  note::
+
+    The older :php:`WidgetInterface` in combination with
+    :php:`RequestAwareWidgetInterface` is still supported, but the
+    :php:`WidgetRendererInterface` should be preferred.
+    It receives the request and the settings of the widget instance via the
+    :php:`WidgetContext` and does not need to store the request.
 
 The class should always provide documentation how to use in :file:`Services.yaml`.
 The above class is documented at :ref:`rss-widget`.

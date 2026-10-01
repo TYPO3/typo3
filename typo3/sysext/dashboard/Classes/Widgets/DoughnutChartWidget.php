@@ -17,9 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Dashboard\Widgets;
 
-use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
+use TYPO3\CMS\Core\Settings\SettingDefinition;
 
 /**
  * Concrete Doughnut Chart widget implementation
@@ -32,10 +32,8 @@ use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
  * @see ChartDataProviderInterface
  * @see ButtonProviderInterface
  */
-class DoughnutChartWidget implements WidgetInterface, RequestAwareWidgetInterface, EventDataInterface, AdditionalCssInterface, JavaScriptInterface
+class DoughnutChartWidget implements WidgetRendererInterface, EventDataInterface, AdditionalCssInterface, JavaScriptInterface
 {
-    private ServerRequestInterface $request;
-
     public function __construct(
         private readonly WidgetConfigurationInterface $configuration,
         private readonly ChartDataProviderInterface $dataProvider,
@@ -44,20 +42,26 @@ class DoughnutChartWidget implements WidgetInterface, RequestAwareWidgetInterfac
         private readonly array $options = [],
     ) {}
 
-    public function setRequest(ServerRequestInterface $request): void
+    /**
+     * @return SettingDefinition[]
+     */
+    public function getSettingsDefinitions(): array
     {
-        $this->request = $request;
+        return [];
     }
 
-    public function renderWidgetContent(): string
+    public function renderWidget(WidgetContext $context): WidgetResult
     {
-        $view = $this->backendViewFactory->create($this->request);
+        $view = $this->backendViewFactory->create($context->request);
         $view->assignMultiple([
             'button' => $this->buttonProvider,
             'options' => $this->options,
             'configuration' => $this->configuration,
         ]);
-        return $view->render('Widget/ChartWidget');
+        return new WidgetResult(
+            content: $view->render('Widget/ChartWidget'),
+            refreshable: $this->options['refreshAvailable'] ?? false,
+        );
     }
 
     public function getEventData(): array
@@ -91,10 +95,5 @@ class DoughnutChartWidget implements WidgetInterface, RequestAwareWidgetInterfac
             JavaScriptModuleInstruction::create('@typo3/dashboard/contrib/chartjs.js'),
             JavaScriptModuleInstruction::create('@typo3/dashboard/chart-initializer.js'),
         ];
-    }
-
-    public function getOptions(): array
-    {
-        return $this->options;
     }
 }

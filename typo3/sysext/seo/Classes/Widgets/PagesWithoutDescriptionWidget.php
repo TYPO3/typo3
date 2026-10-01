@@ -17,20 +17,19 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Seo\Widgets;
 
-use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
-use TYPO3\CMS\Dashboard\Widgets\RequestAwareWidgetInterface;
+use TYPO3\CMS\Core\Settings\SettingDefinition;
 use TYPO3\CMS\Dashboard\Widgets\WidgetConfigurationInterface;
-use TYPO3\CMS\Dashboard\Widgets\WidgetInterface;
+use TYPO3\CMS\Dashboard\Widgets\WidgetContext;
+use TYPO3\CMS\Dashboard\Widgets\WidgetRendererInterface;
+use TYPO3\CMS\Dashboard\Widgets\WidgetResult;
 use TYPO3\CMS\Seo\Widgets\Provider\PagesWithoutDescriptionDataProvider;
 
 /**
  * @internal
  */
-final class PagesWithoutDescriptionWidget implements WidgetInterface, RequestAwareWidgetInterface
+final class PagesWithoutDescriptionWidget implements WidgetRendererInterface
 {
-    private ServerRequestInterface $request;
-
     public function __construct(
         private readonly WidgetConfigurationInterface $configuration,
         private readonly PagesWithoutDescriptionDataProvider $dataProvider,
@@ -38,24 +37,25 @@ final class PagesWithoutDescriptionWidget implements WidgetInterface, RequestAwa
         private readonly array $options,
     ) {}
 
-    public function setRequest(ServerRequestInterface $request): void
+    /**
+     * @return SettingDefinition[]
+     */
+    public function getSettingsDefinitions(): array
     {
-        $this->request = $request;
+        return [];
     }
 
-    public function renderWidgetContent(): string
+    public function renderWidget(WidgetContext $context): WidgetResult
     {
-        $view = $this->backendViewFactory->create($this->request, ['typo3/cms-dashboard', 'typo3/cms-seo']);
+        $view = $this->backendViewFactory->create($context->request, ['typo3/cms-dashboard', 'typo3/cms-seo']);
         $view->assignMultiple([
             'pages' => $this->dataProvider->getPages(),
-            'options' => $this->getOptions(),
+            'options' => $this->options,
             'configuration' => $this->configuration,
         ]);
-        return $view->render('Widget/PagesWithoutDescription');
-    }
-
-    public function getOptions(): array
-    {
-        return $this->options;
+        return new WidgetResult(
+            content: $view->render('Widget/PagesWithoutDescription'),
+            refreshable: $this->options['refreshAvailable'] ?? false,
+        );
     }
 }

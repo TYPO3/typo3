@@ -17,8 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Dashboard\Widgets;
 
-use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
+use TYPO3\CMS\Core\Settings\SettingDefinition;
 
 /**
  * Concrete List Widget implementation
@@ -31,10 +31,8 @@ use TYPO3\CMS\Backend\View\BackendViewFactory;
  * @see ListDataProviderInterface
  * @see ButtonProviderInterface
  */
-class ListWidget implements WidgetInterface, RequestAwareWidgetInterface
+class ListWidget implements WidgetRendererInterface
 {
-    private ServerRequestInterface $request;
-
     public function __construct(
         private readonly WidgetConfigurationInterface $configuration,
         private readonly ListDataProviderInterface $dataProvider,
@@ -43,30 +41,31 @@ class ListWidget implements WidgetInterface, RequestAwareWidgetInterface
         private readonly array $options = [],
     ) {}
 
-    public function setRequest(ServerRequestInterface $request): void
+    /**
+     * @return SettingDefinition[]
+     */
+    public function getSettingsDefinitions(): array
     {
-        $this->request = $request;
+        return [];
     }
 
-    public function renderWidgetContent(): string
+    public function renderWidget(WidgetContext $context): WidgetResult
     {
-        $view = $this->backendViewFactory->create($this->request);
+        $view = $this->backendViewFactory->create($context->request);
         $view->assignMultiple([
             'items' => $this->getItems(),
             'options' => $this->options,
             'button' => $this->buttonProvider,
             'configuration' => $this->configuration,
         ]);
-        return $view->render('Widget/ListWidget');
+        return new WidgetResult(
+            content: $view->render('Widget/ListWidget'),
+            refreshable: $this->options['refreshAvailable'] ?? false,
+        );
     }
 
     protected function getItems(): array
     {
         return $this->dataProvider->getItems();
-    }
-
-    public function getOptions(): array
-    {
-        return $this->options;
     }
 }

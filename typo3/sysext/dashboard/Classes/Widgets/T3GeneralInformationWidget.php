@@ -17,10 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Dashboard\Widgets;
 
-use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Information\Typo3Version;
+use TYPO3\CMS\Core\Settings\SettingDefinition;
 
 /**
  * Concrete TYPO3 information widget
@@ -29,26 +29,27 @@ use TYPO3\CMS\Core\Information\Typo3Version;
  *
  * There are no options available for this widget
  */
-class T3GeneralInformationWidget implements WidgetInterface, RequestAwareWidgetInterface
+class T3GeneralInformationWidget implements WidgetRendererInterface
 {
-    private ServerRequestInterface $request;
-
     public function __construct(
         private readonly WidgetConfigurationInterface $configuration,
         private readonly BackendViewFactory $backendViewFactory,
         private readonly array $options = [],
     ) {}
 
-    public function setRequest(ServerRequestInterface $request): void
+    /**
+     * @return SettingDefinition[]
+     */
+    public function getSettingsDefinitions(): array
     {
-        $this->request = $request;
+        return [];
     }
 
-    public function renderWidgetContent(): string
+    public function renderWidget(WidgetContext $context): WidgetResult
     {
         $typo3Information = new Typo3Information();
         $typo3Version = new Typo3Version();
-        $view = $this->backendViewFactory->create($this->request);
+        $view = $this->backendViewFactory->create($context->request);
         $view->assignMultiple([
             'title' => 'TYPO3 CMS ' . $typo3Version->getVersion(),
             'copyrightYear' => $typo3Information->getCopyrightYear(),
@@ -58,11 +59,9 @@ class T3GeneralInformationWidget implements WidgetInterface, RequestAwareWidgetI
             'options' => $this->options,
             'configuration' => $this->configuration,
         ]);
-        return $view->render('Widget/T3GeneralInformationWidget');
-    }
-
-    public function getOptions(): array
-    {
-        return $this->options;
+        return new WidgetResult(
+            content: $view->render('Widget/T3GeneralInformationWidget'),
+            refreshable: $this->options['refreshAvailable'] ?? false,
+        );
     }
 }

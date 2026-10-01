@@ -11,9 +11,29 @@ For up to date information, please check the source code.
 
 .. php:namespace:: TYPO3\CMS\Dashboard\Widgets
 
+.. php:class:: WidgetRendererInterface
+
+   Should be implemented by all widgets.
+   This interface defines public API used by ext:dashboard to interact with widgets.
+
+   .. php:method:: renderWidget(WidgetContext $context)
+
+      :returntype: WidgetResult
+      :returns: The rendered HTML to display, together with an optional label
+                and whether the widget can be refreshed. The context provides
+                the current request, the settings and the configuration of
+                the widget instance.
+
+   .. php:method:: getSettingsDefinitions()
+
+      :returntype: array
+      :returns: The :php:`SettingDefinition` objects of the settings an editor
+                can configure for an instance of the widget.
+
 .. php:class:: WidgetInterface
 
-   Has to be implemented by all widgets.
+   Can still be implemented by widgets, but :php:`WidgetRendererInterface`
+   should be preferred.
    This interface defines public API used by ext:dashboard to interact with widgets.
 
    .. php:method:: renderWidgetContent()
@@ -27,6 +47,10 @@ For up to date information, please check the source code.
       :returns: The options of the widget as set in the registration.
 
 .. php:class:: RequestAwareWidgetInterface
+
+   Only relevant for widgets implementing :php:`WidgetInterface`. Widgets
+   implementing :php:`WidgetRendererInterface` receive the request via the
+   :php:`WidgetContext`.
 
    This interface declares a widget has a dependency to the current PSR-7 request.
    When implemented, the dashboard controller will call :php:`setRequest()` immediately

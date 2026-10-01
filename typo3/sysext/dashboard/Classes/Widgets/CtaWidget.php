@@ -17,8 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Dashboard\Widgets;
 
-use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
+use TYPO3\CMS\Core\Settings\SettingDefinition;
 
 /**
  * Concrete CTA button implementation
@@ -32,13 +32,12 @@ use TYPO3\CMS\Backend\View\BackendViewFactory;
  *                                  normal string or a translation string (eg. LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.documentation.gettingStarted.text)
  * @see ButtonProviderInterface
  */
-class CtaWidget implements WidgetInterface, RequestAwareWidgetInterface
+class CtaWidget implements WidgetRendererInterface
 {
     /**
      * @var array{text: string}
      */
     private readonly array $options;
-    private ServerRequestInterface $request;
 
     public function __construct(
         private readonly WidgetConfigurationInterface $configuration,
@@ -49,25 +48,26 @@ class CtaWidget implements WidgetInterface, RequestAwareWidgetInterface
         $this->options =  array_merge(['text' => ''], $options);
     }
 
-    public function setRequest(ServerRequestInterface $request): void
+    /**
+     * @return SettingDefinition[]
+     */
+    public function getSettingsDefinitions(): array
     {
-        $this->request = $request;
+        return [];
     }
 
-    public function renderWidgetContent(): string
+    public function renderWidget(WidgetContext $context): WidgetResult
     {
-        $view = $this->backendViewFactory->create($this->request);
+        $view = $this->backendViewFactory->create($context->request);
         $view->assignMultiple([
             'text' => $this->options['text'],
             'options' => $this->options,
             'button' => $this->buttonProvider,
             'configuration' => $this->configuration,
         ]);
-        return $view->render('Widget/CtaWidget');
-    }
-
-    public function getOptions(): array
-    {
-        return $this->options;
+        return new WidgetResult(
+            content: $view->render('Widget/CtaWidget'),
+            refreshable: $this->options['refreshAvailable'] ?? false,
+        );
     }
 }
