@@ -110,6 +110,21 @@
     padding-top: 0;
 }
 
+.widget-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+
+    &:not(:last-child) {
+        margin-bottom: var(--widget-padding);
+    }
+}
+
+.widget-pagination-status {
+    font-size: var(--typo3-font-size-small, .875rem);
+}
+
 // Actions
 .widget-actions {
     color: var(--widget-title-color-state, var(--widget-title-color));

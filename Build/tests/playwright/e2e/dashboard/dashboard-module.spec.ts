@@ -77,6 +77,53 @@ test('Create, rename and delete dashboard',async ({ backend }) => {
   await expect(backend.contentFrame.locator('.dashboard-tab--active', { hasText: titleAfterRename })).not.toBeVisible();
 });
 
+test('Browse pages of a paginated widget', async ({ backend }) => {
+  const contentFrame = backend.contentFrame;
+  const title = 'Pagination Dashboard';
+
+  await createDashboard(backend, title);
+  const addWidget = contentFrame.locator('.dashboard-add-item .btn-dashboard-add-widget').first();
+  const widgetModalContent = await backend.modal.open(addWidget);
+  await widgetModalContent.locator('[data-identifier="systemInfo"]').click();
+  await widgetModalContent.locator('[data-identifier="latestBeLogins"]').click();
+
+  const widget = contentFrame.locator('[data-widget-key="latestBeLogins"]');
+  await setLoginsPerPage(backend, widget, 1);
+
+  const status = widget.locator('.widget-pagination-status');
+  const previous = widget.locator('[data-widget-pagination-direction="previous"]');
+  const next = widget.locator('[data-widget-pagination-direction="next"]');
+  await expect(status).toHaveText(/Page 1 of \d+/);
+  await expect(previous).toBeDisabled();
+
+  await next.click();
+  await expect(status).toHaveText(/Page 2 of \d+/);
+  await expect(previous).toBeEnabled();
+  await expect(next).toBeFocused();
+
+  // The previous button is disabled on the first page, the focus moves to the next button
+  await previous.click();
+  await expect(status).toHaveText(/Page 1 of \d+/);
+  await expect(next).toBeFocused();
+
+  // Changing the settings starts over on the first page
+  await next.click();
+  await expect(status).toHaveText(/Page 2 of \d+/);
+  await setLoginsPerPage(backend, widget, 2);
+  await expect(status).toHaveText(/Page 1 of \d+/);
+
+  const deleteModal = await open(backend, 'actions-delete');
+  await backend.modal.click({ name: 'delete' });
+  await expect(deleteModal).not.toBeVisible();
+});
+
+async function setLoginsPerPage(backend: BackendPage, widget: Locator, limit: number): Promise<void> {
+  const settingsModal = await backend.modal.open(widget.locator('.widget-action-settings'));
+  await settingsModal.locator('input[type="number"]').fill(String(limit));
+  await backend.modal.click({ name: 'save' });
+  await expect(backend.modal.element).toBeHidden();
+}
+
 function widgetTitle(contentFrame: FrameLocator, key: string): Locator {
   return contentFrame.locator(`[data-widget-key="${key}"] .widget-title`);
 }

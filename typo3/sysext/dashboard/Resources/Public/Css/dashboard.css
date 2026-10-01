@@ -50,6 +50,9 @@ typo3-dashboard{display:block;width:100%}
 .widget-content-title h2{margin-bottom:0}
 .widget-content-main{flex-basis:0;flex-grow:1;overflow-y:auto;padding:var(--widget-padding)}
 .widget-content-footer{padding:var(--widget-padding);padding-top:0}
+.widget-pagination{align-items:center;display:flex;gap:.5rem;justify-content:center}
+.widget-pagination:not(:last-child){margin-bottom:var(--widget-padding)}
+.widget-pagination-status{font-size:var(--typo3-font-size-small,.875rem)}
 .widget-actions{color:var(--widget-title-color-state,var(--widget-title-color));display:flex;inset-inline-end:calc(var(--widget-padding)/2)}
 .widget-action{-webkit-appearance:none;-moz-appearance:none;appearance:none;background:transparent;border:none;border-radius:4px;color:inherit;height:var(--widget-action-size);opacity:.5;position:relative;text-align:center;transition:opacity .2s ease-in-out;width:var(--widget-action-size)}
 .widget-action:focus,.widget-action:hover{opacity:1!important}

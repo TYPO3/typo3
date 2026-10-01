@@ -33,6 +33,24 @@
       <trans-unit id="widget.refresh">
         <source>Refresh Widget</source>
       </trans-unit>
+      <trans-unit id="widget.pagination.label">
+        <source>Widget pagination</source>
+      </trans-unit>
+      <trans-unit id="widget.pagination.previous">
+        <source>Previous page</source>
+      </trans-unit>
+      <trans-unit id="widget.pagination.next">
+        <source>Next page</source>
+      </trans-unit>
+      <trans-unit id="widget.pagination.setting.itemsPerPage.label">
+        <source>Items per page</source>
+      </trans-unit>
+      <trans-unit id="widget.pagination.setting.itemsPerPage.description">
+        <source>Number of items shown at once before the widget paginates.</source>
+      </trans-unit>
+      <trans-unit id="widget.pagination.status">
+        <source>Page %1$d of %2$d</source>
+      </trans-unit>
       <trans-unit id="widget.settings">
         <source>Widget Settings</source>
       </trans-unit>
@@ -313,7 +331,7 @@
         <source>Number of logins to display</source>
       </trans-unit>
       <trans-unit id="widgets.latestBeLogins.settings.limit.description">
-        <source>Maximum number of backend user logins to show in the widget</source>
+        <source>Number of backend user logins to show at once. Further logins are available via the pagination.</source>
       </trans-unit>
       <trans-unit id="widget_group.general">
         <source>General</source>

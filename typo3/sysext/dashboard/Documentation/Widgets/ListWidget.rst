@@ -49,15 +49,32 @@ Options
 
 .. include:: Options/RefreshAvailable.rst.txt
 
+..  confval:: itemsPerPage
+    :type: integer
+    :default: :yaml:`10`
+    :name: list-widget-itemsPerPage
+
+    Number of items shown at once. Only used if the data provider implements
+    the :php-short:`\TYPO3\CMS\Dashboard\Widgets\PaginatedListDataProviderInterface`.
+
+    Backend users can change the value in the widget settings, unless the
+    option is set in the widget registration. In that case the value is
+    fixed.
+
 ..  _list-widget-dependencies:
 
 Dependencies
 ------------
 
 ..  confval:: $dataProvider
-    :type: :php:`\TYPO3\CMS\Dashboard\Widgets\NumberWithIconDataProviderInterface`
+    :type: :php:`\TYPO3\CMS\Dashboard\Widgets\ListDataProviderInterface` or :php:`\TYPO3\CMS\Dashboard\Widgets\PaginatedListDataProviderInterface`
     :name: list-widget-dataProvider
 
     This class should provide the items to show.
     This data provider needs to implement the
-    :php-short:`\TYPO3\CMS\Dashboard\Widgets\NumberWithIconDataProviderInterface`.
+    :php-short:`\TYPO3\CMS\Dashboard\Widgets\ListDataProviderInterface`.
+
+    If the data provider implements the
+    :php-short:`\TYPO3\CMS\Dashboard\Widgets\PaginatedListDataProviderInterface`
+    instead, the widget renders a paginator in its footer and requests the
+    items of the current page from the returned paginator.

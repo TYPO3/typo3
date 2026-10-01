@@ -1,0 +1,33 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+        xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+        data-namespace-typo3-fluid="true">
+<f:if condition="{pagination} && {paginator.numberOfPages} > 1">
+    <nav class="widget-pagination" aria-label="{f:translate(key: 'widget.pagination.label', domain: 'dashboard.messages')}">
+        <button
+            type="button"
+            class="btn btn-default btn-sm"
+            data-widget-pagination-direction="previous"
+            data-widget-page="{pagination.previousPageNumber}"
+            title="{f:translate(key: 'widget.pagination.previous', domain: 'dashboard.messages')}"
+            {f:if(condition: '!{pagination.previousPageNumber}', then: 'disabled')}
+        >
+            <core:icon identifier="actions-arrow-left" size="small" />
+            <span class="visually-hidden">{f:translate(key: 'widget.pagination.previous', domain: 'dashboard.messages')}</span>
+        </button>
+        <span class="widget-pagination-status" aria-live="polite">
+            {f:translate(key: 'widget.pagination.status', domain: 'dashboard.messages', arguments: '{0: paginator.currentPageNumber, 1: paginator.numberOfPages}')}
+        </span>
+        <button
+            type="button"
+            class="btn btn-default btn-sm"
+            data-widget-pagination-direction="next"
+            data-widget-page="{pagination.nextPageNumber}"
+            title="{f:translate(key: 'widget.pagination.next', domain: 'dashboard.messages')}"
+            {f:if(condition: '!{pagination.nextPageNumber}', then: 'disabled')}
+        >
+            <core:icon identifier="actions-arrow-right" size="small" />
+            <span class="visually-hidden">{f:translate(key: 'widget.pagination.next', domain: 'dashboard.messages')}</span>
+        </button>
+    </nav>
+</f:if>
+</html>

@@ -20,6 +20,10 @@ namespace TYPO3\CMS\Dashboard\Widgets\Provider;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Pagination\PaginatorInterface;
+use TYPO3\CMS\Core\Pagination\QueryBuilderPaginator;
 use TYPO3\CMS\Core\SysLog\Action\Login as SystemLogLoginAction;
 use TYPO3\CMS\Core\SysLog\Type as SystemLogType;
 
@@ -35,27 +39,29 @@ readonly class LatestBeLoginsDataProvider
 
     public function getItems(int $limit = 10): array
     {
-        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_log');
-
-        $logEntries = $queryBuilder
-            ->select('uid', 'tstamp', 'userid', 'details')
-            ->from('sys_log')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'type',
-                    $queryBuilder->createNamedParameter(SystemLogType::LOGIN, Connection::PARAM_INT)
-                ),
-                $queryBuilder->expr()->eq(
-                    'action',
-                    $queryBuilder->createNamedParameter(SystemLogLoginAction::LOGIN, Connection::PARAM_INT)
-                )
-            )
-            ->orderBy('tstamp', 'DESC')
+        $logEntries = $this->createQueryBuilder()
             ->setMaxResults($limit)
             ->executeQuery()
             ->fetchAllAssociative();
 
-        // Enrich with user information
+        return $this->enrichLogEntries($logEntries);
+    }
+
+    /**
+     * Provides the successful backend logins, newest first. The paginated items are raw
+     * log entries, which can be turned into widget items via enrichLogEntries().
+     */
+    public function getPaginator(int $currentPage, int $itemsPerPage): PaginatorInterface
+    {
+        return new QueryBuilderPaginator($this->createQueryBuilder(), $currentPage, $itemsPerPage);
+    }
+
+    /**
+     * Enriches log entries with the information of the backend users. Entries of
+     * unknown (e.g. deleted) users are omitted.
+     */
+    public function enrichLogEntries(iterable $logEntries): array
+    {
         $items = [];
         $userNames = BackendUtility::getUserNames('username,realName,uid');
 
@@ -74,5 +80,37 @@ readonly class LatestBeLoginsDataProvider
         }
 
         return $items;
+    }
+
+    private function createQueryBuilder(): QueryBuilder
+    {
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_log');
+        // Only logins of existing users are shown, matching BackendUtility::getUserNames()
+        $queryBuilder->getRestrictions()->removeAll()->add(new DeletedRestriction());
+
+        return $queryBuilder
+            ->select('sys_log.uid', 'sys_log.tstamp', 'sys_log.userid', 'sys_log.details')
+            ->from('sys_log')
+            ->join(
+                'sys_log',
+                'be_users',
+                'be_users',
+                (string)$queryBuilder->expr()->and(
+                    $queryBuilder->expr()->eq('be_users.uid', $queryBuilder->quoteIdentifier('sys_log.userid')),
+                    $queryBuilder->expr()->eq('be_users.pid', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT))
+                )
+            )
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'sys_log.type',
+                    $queryBuilder->createNamedParameter(SystemLogType::LOGIN, Connection::PARAM_INT)
+                ),
+                $queryBuilder->expr()->eq(
+                    'sys_log.action',
+                    $queryBuilder->createNamedParameter(SystemLogLoginAction::LOGIN, Connection::PARAM_INT)
+                )
+            )
+            ->orderBy('sys_log.tstamp', 'DESC')
+            ->addOrderBy('sys_log.uid', 'DESC');
     }
 }

@@ -1172,15 +1172,17 @@ export class Dashboard extends LitElement {
 export class DashboardWidget extends LitElement {
   @property({ type: String, reflect: true }) public identifier: string;
   @state() moving: boolean = false;
+  @state() page: number = 1;
 
   private triggerContentRenderedEvent: boolean = false;
+  private paginationFocusDirection: string | null = null;
 
   private readonly fetchTask = new Task(this, {
-    args: () => [this.identifier] as const,
-    task: async ([identifier], { signal }): Promise<DashboardWidgetInterface> => {
+    args: () => [this.identifier, this.page] as const,
+    task: async ([identifier, page], { signal }): Promise<DashboardWidgetInterface> => {
       const url = TYPO3.settings.ajaxUrls.dashboard_widget_get;
       const response = await new AjaxRequest(url)
-        .withQueryArguments({ widget: identifier })
+        .withQueryArguments({ widget: identifier, page })
         .get({ signal });
       const data = await response.resolve();
       if (data.status !== 'ok') {
@@ -1217,6 +1219,7 @@ export class DashboardWidget extends LitElement {
       this.dispatchEvent(new DashboardWidgetContentRenderedEvent(widget));
       // Legacy event, kept for compatibility reasons
       this.dispatchEvent(new CustomEvent('widgetContentRendered', { bubbles: true, detail: this.widget.eventdata }));
+      this.restorePaginationFocus();
     }
   }
 
@@ -1286,6 +1289,7 @@ export class DashboardWidget extends LitElement {
         </div>
       </div>
       <div class="widget-content"
+        @click=${this.handlePaginationClick}
         @pointerenter=${(e: PointerEvent) => (e.target as HTMLElement).closest('.dashboard-item').removeAttribute('draggable')}
         @pointerleave=${(e: PointerEvent) => (e.target as HTMLElement).closest('.dashboard-item').setAttribute('draggable', 'true')}
         >${widgetContent(widget)}</div>
@@ -1302,6 +1306,32 @@ export class DashboardWidget extends LitElement {
       complete: (widget) => widgetRenderer(widget),
     });
     return html`<div class="widget ${this.moving ? ' widget-selected' : ''}">${content}</div>`;
+  }
+
+  private restorePaginationFocus(): void {
+    const direction = this.paginationFocusDirection;
+    this.paginationFocusDirection = null;
+    if (direction === null) {
+      return;
+    }
+    const buttons = Array.from(this.querySelectorAll<HTMLButtonElement>('.widget-pagination [data-widget-pagination-direction]'));
+    const target = buttons.find(button => button.dataset.widgetPaginationDirection === direction && !button.disabled)
+      ?? buttons.find(button => !button.disabled);
+    target?.focus();
+  }
+
+  private handlePaginationClick(event: Event): void {
+    const button = (event.target as HTMLElement).closest<HTMLButtonElement>('.widget-pagination [data-widget-page]');
+    if (button === null || button.disabled) {
+      return;
+    }
+    const page = parseInt(button.dataset.widgetPage, 10);
+    if (isNaN(page) || page < 1) {
+      return;
+    }
+    event.preventDefault();
+    this.paginationFocusDirection = button.dataset.widgetPaginationDirection ?? null;
+    this.page = page;
   }
 
   private moveStart(): void {
@@ -1431,7 +1461,11 @@ export class DashboardWidget extends LitElement {
               });
             const data = await response.resolve();
             if (data.status === 'ok') {
-              this.handleRefresh();
+              if (this.page !== 1) {
+                this.page = 1;
+              } else {
+                this.handleRefresh();
+              }
               currentModal.hideModal();
             } else if (data.status === 'info') {
               Notification.info('', data.message);

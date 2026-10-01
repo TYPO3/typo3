@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Dashboard\Widgets;
 
 use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Pagination\SimplePagination;
 use TYPO3\CMS\Core\Settings\SettingDefinition;
 use TYPO3\CMS\Dashboard\Widgets\Provider\LatestBeLoginsDataProvider;
 
@@ -30,7 +31,7 @@ use TYPO3\CMS\Dashboard\Widgets\Provider\LatestBeLoginsDataProvider;
  * - login time
  *
  * The following options are available during registration:
- * - limit `int` number of logins to display
+ * - limit `int` number of logins to display at once, further logins are available via pagination
  */
 readonly class LatestBeLoginsWidget implements WidgetRendererInterface, AdminOnlyWidgetInterface
 {
@@ -59,12 +60,14 @@ readonly class LatestBeLoginsWidget implements WidgetRendererInterface, AdminOnl
 
     public function renderWidget(WidgetContext $context): WidgetResult
     {
-        $limit = $context->settings->get('limit');
-        $items = $this->dataProvider->getItems($limit);
+        $currentPage = max(1, (int)($context->request->getQueryParams()['page'] ?? 1));
+        $paginator = $this->dataProvider->getPaginator($currentPage, max(1, (int)$context->settings->get('limit')));
 
         $view = $this->backendViewFactory->create($context->request);
         $view->assignMultiple([
-            'items' => $items,
+            'items' => $this->dataProvider->enrichLogEntries($paginator->getPaginatedItems()),
+            'paginator' => $paginator,
+            'pagination' => new SimplePagination($paginator),
             'button' => $this->buttonProvider,
             'configuration' => $this->configuration,
             'dateFormat' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'],

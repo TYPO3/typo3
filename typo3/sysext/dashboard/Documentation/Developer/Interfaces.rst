@@ -200,3 +200,13 @@ For up to date information, please check the source code.
       :returntype: array
       :returns: Provide the array if items.
                 Each entry should be a single string.
+
+.. php:class:: PaginatedListDataProviderInterface
+
+   .. php:method:: getPaginator(int $currentPage, int $itemsPerPage)
+
+      :returntype: \TYPO3\CMS\Core\Pagination\PaginatorInterface
+      :returns: Provide a paginator for the requested page, showing the
+                configured number of items per page. Implement this
+                interface instead of :php:`ListDataProviderInterface` to make
+                the :ref:`list widget <list-widget>` render a paginator.
