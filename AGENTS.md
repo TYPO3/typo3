@@ -234,10 +234,12 @@ folder name and the current major for deprecation docblocks, and `VERSION` (e.g.
   `Change-Id` line. Omit that line when writing a message — the hook adds it. When
   amending a commit that already has one, keep it byte-identical.
 - Subject tags: `[BUGFIX]`, `[FEATURE]`, `[TASK]`, `[DOCS]`, `[SECURITY]`. Imperative,
-  concise subject; body explains rationale and impact. **No line of the message may
-  reach 72 characters** — the hook rejects the commit, footer trailers included.
-- The commit-msg hook validates the footer and complains if it is incomplete. Use this
-  order:
+  concise subject; body explains rationale and impact. **Keep every line of the
+  message at 72 characters or less**, footer trailers included.
+- The commit-msg hook reports longer lines, a missing subject tag and an incomplete
+  footer, but it does **not** abort the commit and still adds the `Change-Id`. Read
+  its output after every commit and fix reported problems with `git commit --amend`.
+  Use this footer order:
 
   ```
   Resolves: #12345
@@ -246,8 +248,10 @@ folder name and the current major for deprecation docblocks, and `VERSION` (e.g.
   Change-Id: I0123456789abcdef0123456789abcdef01234567
   ```
 
-  `Resolves:` (or `Fixes:`) with a Forge issue number and `Releases:` are both
-  mandatory; use `Related: #12345` for further issues.
+  At least one `Resolves:` line with a Forge issue number and `Releases:` are
+  mandatory (the hook only accepts `Resolves:`, not `Fixes:`). Add a `Resolves:`
+  line for every issue the change fixes; use `Related: #12345` for issues that
+  are connected to the change but not resolved by it.
 - **Every commit needs its own Forge issue.** Do not reuse one issue number across the
   commits of a series, and do not squash separate steps into one commit to avoid
   opening issues: in Gerrit every commit is reviewed, merged and backported on its
