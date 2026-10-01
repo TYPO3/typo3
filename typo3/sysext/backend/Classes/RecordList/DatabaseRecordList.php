@@ -2875,7 +2875,7 @@ class DatabaseRecordList
                 // "Show" link
                 if (($attributes = $this->getPreviewUriBuilder($table, $record)->serializeDispatcherAttributes()) !== null) {
                     $title = htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'));
-                    $code = '<button ' . $attributes
+                    $code = '<button type="button" ' . $attributes
                         . ' title="' . $title . '"'
                         . ' aria-label="' . $title . '">'
                         . $code . '</button>';

@@ -170,6 +170,9 @@ abstract class AbstractDropDownItem implements \Stringable
     protected function getAttributesString(): string
     {
         $attributes = $this->getAttributes();
+        if ($this->getTag() === 'button') {
+            $attributes['type'] ??= 'button';
+        }
         $attributes['class'] = rtrim('dropdown-item dropdown-item-spaced ' . ($attributes['class'] ?? ''));
         if ($this->isActive()) {
             $attributes['aria-selected'] = 'true';

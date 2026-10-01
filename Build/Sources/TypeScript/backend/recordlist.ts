@@ -274,6 +274,11 @@ class Recordlist {
 
   private readonly registerPaginationEvents = (): void => {
     document.querySelectorAll('.t3js-recordlist-paging').forEach((trigger: HTMLInputElement) => {
+      trigger.addEventListener('keydown', (e: KeyboardEvent) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+        }
+      });
       trigger.addEventListener('keyup', (e: KeyboardEvent) => {
         e.preventDefault();
         let value = Number(trigger.value);

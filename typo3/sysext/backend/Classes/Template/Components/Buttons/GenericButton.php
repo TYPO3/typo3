@@ -219,6 +219,9 @@ class GenericButton implements ButtonInterface
     protected function getAttributesString(): string
     {
         $attributes = $this->getAttributes();
+        if ($this->getTag() === 'button') {
+            $attributes['type'] ??= 'button';
+        }
         $attributes['class'] = rtrim('btn ' . $this->getSize()->value . ' btn-default ' . $this->getClasses());
         if ($this->getHref()) {
             $attributes['href'] = $this->getHref();
