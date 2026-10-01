@@ -92,7 +92,7 @@ class AbstractAuthenticationService implements LoggerAwareInterface
         $this->login = $loginData;
         $this->authInfo = $authInfo;
         $this->db_user = $this->getServiceOption('db_user', $authInfo['db_user'] ?? [], false);
-        $this->writeAttemptLog = $this->pObj->writeAttemptLog ?? true;
+        $this->writeAttemptLog = $this->pObj->writeAttemptLog;
     }
 
     /**

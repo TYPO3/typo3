@@ -1,12 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			rawMessage: 'Property TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::$writeAttemptLog (bool) on left side of ?? is not nullable.'
-			identifier: nullCoalesce.property
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Authentication/AbstractAuthenticationService.php
-
-		-
 			rawMessage: Left side of && is always true.
 			identifier: booleanAnd.leftAlwaysTrue
 			count: 1

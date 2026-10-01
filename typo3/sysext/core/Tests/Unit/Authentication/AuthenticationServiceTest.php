@@ -38,6 +38,26 @@ final class AuthenticationServiceTest extends UnitTestCase
         parent::tearDown();
     }
 
+    public static function writeAttemptLogPreferenceDataProvider(): array
+    {
+        return [
+            'enabled' => [true],
+            'disabled' => [false],
+        ];
+    }
+
+    #[DataProvider('writeAttemptLogPreferenceDataProvider')]
+    #[Test]
+    public function initAuthRespectsWriteAttemptLogPreference(bool $preference): void
+    {
+        $parent = new AnyUserAuthentication(UserSession::createNonFixated('f20bd8643811f5a2792605a689b619bc02caa7dc'));
+        $parent->writeAttemptLog = $preference;
+        $subject = new AuthenticationService();
+        $subject->initAuth('mode', [], [], $parent);
+
+        self::assertSame($preference, $subject->writeAttemptLog);
+    }
+
     public static function processLoginDataProvider(): array
     {
         return [
