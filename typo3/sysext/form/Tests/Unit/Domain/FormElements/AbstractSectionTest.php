@@ -24,6 +24,8 @@ use TYPO3\CMS\Form\Domain\Exception\IdentifierNotValidException;
 use TYPO3\CMS\Form\Domain\Exception\TypeDefinitionNotFoundException;
 use TYPO3\CMS\Form\Domain\Exception\TypeDefinitionNotValidException;
 use TYPO3\CMS\Form\Domain\Model\FormDefinition;
+use TYPO3\CMS\Form\Domain\Model\FormElements\Page;
+use TYPO3\CMS\Form\Domain\Model\FormElements\Section;
 use TYPO3\CMS\Form\Domain\Model\FormElements\UnknownFormElement;
 use TYPO3\CMS\Form\Tests\Unit\Domain\FormElements\Fixtures\AbstractSectionFixture;
 use TYPO3\CMS\Form\Tests\Unit\Domain\FormElements\Fixtures\TestingFormElement;
@@ -32,6 +34,41 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 final class AbstractSectionTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
+
+    #[Test]
+    public function getElementsRecursivelyReturnsNestedFormElementsInOrder(): void
+    {
+        $subject = new AbstractSectionFixture('root', '');
+        self::assertSame([], $subject->getElementsRecursively());
+
+        $firstElement = new TestingFormElement();
+        $section = new Section('section', 'Fieldset');
+        $nestedElement = new TestingFormElement();
+        $lastElement = new TestingFormElement();
+        $section->addElement($nestedElement);
+        $subject->addElement($firstElement);
+        $subject->addElement($section);
+        $subject->addElement($lastElement);
+
+        self::assertSame([$firstElement, $section, $nestedElement, $lastElement], $subject->getElementsRecursively());
+    }
+
+    #[Test]
+    public function getRenderablesRecursivelyIncludesPagesAndNestedFormElements(): void
+    {
+        $form = new FormDefinition('form');
+        self::assertSame([], $form->getRenderablesRecursively());
+
+        $page = new Page('page');
+        $section = new Section('section', 'Fieldset');
+        $element = new TestingFormElement();
+        $section->addElement($element);
+        $page->addElement($section);
+        $form->addPage($page);
+
+        self::assertSame([$page, $section, $element], $form->getRenderablesRecursively());
+        self::assertSame([$section, $element], $page->getElementsRecursively());
+    }
 
     #[Test]
     public function constructThrowsExceptionWhenIdentifierIsEmpty(): void

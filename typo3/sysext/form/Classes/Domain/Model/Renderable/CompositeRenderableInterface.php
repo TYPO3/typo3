@@ -27,13 +27,15 @@ namespace TYPO3\CMS\Form\Domain\Model\Renderable;
  *
  * Scope: frontend
  * **This class is NOT meant to be sub classed by developers.**
+ *
+ * @template-covariant TRenderable of RenderableInterface = RenderableInterface
  */
 interface CompositeRenderableInterface extends RenderableInterface
 {
     /**
      * Returns all RenderableInterface instances of this composite renderable recursively
      *
-     * @return \TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface[]
+     * @return TRenderable[]
      * @internal
      */
     public function getRenderablesRecursively(): array;

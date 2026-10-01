@@ -119,9 +119,3 @@ parameters:
 			identifier: method.notFound
 			count: 1
 			path: ../../typo3/sysext/form/Classes/Domain/Model/FormElements/AbstractSection.php
-
-		-
-			rawMessage: 'Method TYPO3\CMS\Form\Domain\Model\FormElements\AbstractSection::getElementsRecursively() should return array<TYPO3\CMS\Form\Domain\Model\FormElements\FormElementInterface> but returns array<TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface>.'
-			identifier: return.type
-			count: 1
-			path: ../../typo3/sysext/form/Classes/Domain/Model/FormElements/AbstractSection.php

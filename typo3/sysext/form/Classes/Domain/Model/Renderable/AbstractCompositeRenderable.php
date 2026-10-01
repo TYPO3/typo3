@@ -29,13 +29,16 @@ use TYPO3\CMS\Form\Domain\Model\Exception\FormDefinitionConsistencyException;
  *
  * Scope: frontend
  * **This class is NOT meant to be sub classed by developers.**
+ *
+ * @template TRenderable of RenderableInterface = RenderableInterface
+ * @implements CompositeRenderableInterface<TRenderable>
  */
 abstract class AbstractCompositeRenderable extends AbstractRenderable implements CompositeRenderableInterface
 {
     /**
      * array of child renderables
      *
-     * @var \TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface[]
+     * @var TRenderable[]
      */
     protected $renderables = [];
 
@@ -45,7 +48,7 @@ abstract class AbstractCompositeRenderable extends AbstractRenderable implements
      * This function will be wrapped by the subclasses, f.e. with an "addPage"
      * or "addElement" method with the correct type hint.
      *
-     * @param RenderableInterface $renderable
+     * @param TRenderable $renderable
      * @throws FormDefinitionConsistencyException
      * @internal
      */
@@ -65,8 +68,8 @@ abstract class AbstractCompositeRenderable extends AbstractRenderable implements
      * This function will be wrapped by the subclasses, f.e. with an "movePageBefore"
      * or "moveElementBefore" method with the correct type hint.
      *
-     * @param RenderableInterface $renderableToMove
-     * @param RenderableInterface $referenceRenderable
+     * @param TRenderable $renderableToMove
+     * @param TRenderable $referenceRenderable
      * @throws FormDefinitionConsistencyException
      * @internal
      */
@@ -101,8 +104,8 @@ abstract class AbstractCompositeRenderable extends AbstractRenderable implements
      * This function will be wrapped by the subclasses, f.e. with an "movePageAfter"
      * or "moveElementAfter" method with the correct type hint.
      *
-     * @param RenderableInterface $renderableToMove
-     * @param RenderableInterface $referenceRenderable
+     * @param TRenderable $renderableToMove
+     * @param TRenderable $referenceRenderable
      * @throws FormDefinitionConsistencyException
      * @internal
      */
@@ -135,7 +138,7 @@ abstract class AbstractCompositeRenderable extends AbstractRenderable implements
     /**
      * Returns all RenderableInterface instances of this composite renderable recursively
      *
-     * @return RenderableInterface[]
+     * @return TRenderable[]
      * @internal
      */
     public function getRenderablesRecursively(): array
@@ -156,7 +159,7 @@ abstract class AbstractCompositeRenderable extends AbstractRenderable implements
      * This function will be wrapped by the subclasses, f.e. with an "removePage"
      * or "removeElement" method with the correct type hint.
      *
-     * @param RenderableInterface $renderableToRemove
+     * @param TRenderable $renderableToRemove
      * @throws FormDefinitionConsistencyException
      * @internal
      */

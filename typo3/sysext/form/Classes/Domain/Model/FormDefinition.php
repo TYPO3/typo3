@@ -218,6 +218,7 @@ use TYPO3\CMS\Form\Mvc\ProcessingRule;
  * **This class is NOT meant to be sub classed by developers.**
  *
  * @internal May change any time, use FormFactoryInterface to select a different FormDefinition if needed
+ * @extends AbstractCompositeRenderable<RenderableInterface>
  */
 final class FormDefinition extends AbstractCompositeRenderable implements VariableRenderableInterface
 {

@@ -38,6 +38,8 @@ use TYPO3\CMS\Form\Domain\Model\Renderable\AbstractCompositeRenderable;
  *
  * **This class is NOT meant to be sub classed by developers.**
  * Scope: frontend
+ *
+ * @extends AbstractCompositeRenderable<FormElementInterface>
  */
 abstract class AbstractSection extends AbstractCompositeRenderable
 {
