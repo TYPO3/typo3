@@ -1715,6 +1715,7 @@ readonly class PageRepository
         // will be overlaid with its workspace version again to fetch both PID fields.
         $incomingRecordIsAMoveVersion = (int)$row['t3ver_oid'] > 0 && VersionState::tryFrom($row['t3ver_state'] ?? 0) === VersionState::MOVE_POINTER;
         if ($incomingRecordIsAMoveVersion) {
+            $movePointer = $row;
             // Fetch the live version again if the given $row is a move pointer, so we know the original PID
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
             $queryBuilder->getRestrictions()
@@ -1725,6 +1726,19 @@ readonly class PageRepository
                 ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter((int)$row['t3ver_oid'], Connection::PARAM_INT)))
                 ->executeQuery()
                 ->fetchAssociative();
+            if ($row === false) {
+                // The live version is deleted, so the move pointer has nothing to point to
+                $this->logger->warning(
+                    'Move pointer {table}:{uid} in workspace {workspace} points to live record {table}:{liveUid}, which is deleted or does not exist',
+                    [
+                        'table' => $table,
+                        'uid' => (int)$movePointer['uid'],
+                        'liveUid' => (int)$movePointer['t3ver_oid'],
+                        'workspace' => (int)($movePointer['t3ver_wsid'] ?? $this->context->getPropertyFromAspect('workspace', 'id')),
+                    ]
+                );
+                return;
+            }
         }
         $wsAlt = $this->getWorkspaceVersionOfRecord($table, $row, $bypassEnableFieldsCheck);
         if (!$wsAlt) {
