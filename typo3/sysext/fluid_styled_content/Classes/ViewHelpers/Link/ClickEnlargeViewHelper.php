@@ -18,7 +18,9 @@ declare(strict_types=1);
 namespace TYPO3\CMS\FluidStyledContent\ViewHelpers\Link;
 
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileInterface;
+use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -57,7 +59,7 @@ final class ClickEnlargeViewHelper extends AbstractViewHelper
 
     public function render(): string
     {
-        /** @var FileInterface $image */
+        /** @var File|FileReference $image */
         $image = $this->arguments['image'];
         $request = $this->renderingContext->getAttribute(ServerRequestInterface::class);
         $contentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class);
