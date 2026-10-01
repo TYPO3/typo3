@@ -36,6 +36,7 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\View\ViewFactoryData;
@@ -177,10 +178,7 @@ class FormEditorController extends ActionController
         );
         array_map($pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction(...), $javaScriptModules);
         $pageRenderer->addInlineSettingArray('', $addInlineSettings);
-        $stylesheets = $formEditorConfiguration->stylesheets;
-        foreach ($stylesheets as $stylesheet) {
-            $pageRenderer->addCssFile($stylesheet);
-        }
+        $this->addFormEditorStylesheets($formEditorConfiguration->stylesheets);
         $moduleTemplate->setModuleClass($this->request->getPluginName() . '_' . $this->request->getControllerName());
         $moduleTemplate->setFlashMessageQueue($this->getFlashMessageQueue());
         $moduleTemplate->setTitle(
@@ -188,6 +186,19 @@ class FormEditorController extends ActionController
             $formDefinition['label']
         );
         return $moduleTemplate->renderResponse('Backend/FormEditor/Index');
+    }
+
+    /**
+     * Add configured stylesheets and CKEditor UI styles when rte_ckeditor is loaded.
+     */
+    protected function addFormEditorStylesheets(array $stylesheets): void
+    {
+        if (ExtensionManagementUtility::isLoaded('rte_ckeditor')) {
+            $stylesheets[] = 'EXT:rte_ckeditor/Resources/Public/Css/editor.css';
+        }
+        foreach (array_unique($stylesheets) as $stylesheet) {
+            $this->pageRenderer->addCssFile($stylesheet);
+        }
     }
 
     /**
