@@ -28,6 +28,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     protected const VALUE_PageId = 89;
     protected const VALUE_PageIdTarget = 90;
     protected const VALUE_PageIdWebsite = 1;
+    protected const VALUE_PageIdWithMedia = 91;
     protected const VALUE_ContentIdFirst = 330;
     protected const VALUE_ContentIdLast = 331;
     protected const VALUE_FileIdFirst = 1;
@@ -220,6 +221,23 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         // one being added in workspaces. now copy that element.
         $newTableIds = $this->actionService->copyRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_PageId);
         $this->recordIds['copiedContentId'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
+    }
+
+    public function localizeAndCopyPageWithMedia(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportPageWithMedia.csv');
+        $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Page, self::VALUE_PageIdWithMedia, self::VALUE_LanguageId);
+        $this->recordIds['localizedPageId'] = $localizedTableIds[self::TABLE_Page][self::VALUE_PageIdWithMedia];
+        $newTableIds = $this->actionService->copyRecord(self::TABLE_Page, self::VALUE_PageIdWithMedia, self::VALUE_PageIdTarget);
+        $this->recordIds['newPageId'] = $newTableIds[self::TABLE_Page][self::VALUE_PageIdWithMedia];
+    }
+
+    public function localizeAndMovePageWithMedia(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportPageWithMedia.csv');
+        $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Page, self::VALUE_PageIdWithMedia, self::VALUE_LanguageId);
+        $this->recordIds['localizedPageId'] = $localizedTableIds[self::TABLE_Page][self::VALUE_PageIdWithMedia];
+        $this->actionService->moveRecord(self::TABLE_Page, self::VALUE_PageIdWithMedia, self::VALUE_PageIdTarget);
     }
 
     protected function createContentWithFileReferenceAndDeleteFileReference(): void

@@ -312,4 +312,20 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/createContentWFileReferenceNDeleteFileReference.csv');
         // No FE test: Create and delete scenarios have FE coverage, this test is only about DB state.
     }
+
+    #[Test]
+    public function localizeAndCopyPageWithMedia(): void
+    {
+        parent::localizeAndCopyPageWithMedia();
+        $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeNCopyPageWMedia.csv');
+    }
+
+    #[Test]
+    public function localizeAndMovePageWithMedia(): void
+    {
+        parent::localizeAndMovePageWithMedia();
+        $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeNMovePageWMedia.csv');
+    }
 }

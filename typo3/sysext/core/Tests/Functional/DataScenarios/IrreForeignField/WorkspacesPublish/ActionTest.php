@@ -665,4 +665,12 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->actionService->publishRecord(self::TABLE_Content, $this->recordIds['localizedContentId']);
         $this->assertCSVDataSet(__DIR__ . '/DataSet/inlineLocalizeSynchronizeSortsNewChildLikeOriginal.csv');
     }
+
+    #[Test]
+    public function localizeParentContentAndMoveToDifferentPage(): void
+    {
+        parent::localizeParentContentAndMoveToDifferentPage();
+        $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeParentContentNMoveToDifferentPage.csv');
+    }
 }

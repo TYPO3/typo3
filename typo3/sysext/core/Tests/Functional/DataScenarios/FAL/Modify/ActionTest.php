@@ -321,4 +321,18 @@ final class ActionTest extends AbstractActionTestCase
         ]);
         $this->assertCSVDataSet(__DIR__ . '/DataSet/sysFileUnchanged.csv');
     }
+
+    #[Test]
+    public function localizeAndCopyPageWithMedia(): void
+    {
+        parent::localizeAndCopyPageWithMedia();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeNCopyPageWMedia.csv');
+    }
+
+    #[Test]
+    public function localizeAndMovePageWithMedia(): void
+    {
+        parent::localizeAndMovePageWithMedia();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeNMovePageWMedia.csv');
+    }
 }
