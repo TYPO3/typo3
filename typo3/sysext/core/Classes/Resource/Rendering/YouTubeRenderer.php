@@ -163,6 +163,7 @@ class YouTubeRenderer implements FileRendererInterface
         if ($file instanceof FileReference) {
             $orgFile = $file->getOriginalFile();
         } else {
+            /** @var File $orgFile */
             $orgFile = $file;
         }
 
