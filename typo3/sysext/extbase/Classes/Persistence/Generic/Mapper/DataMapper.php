@@ -44,6 +44,7 @@ use TYPO3\CMS\Extbase\Persistence\Generic\LoadingStrategyInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap\Relation;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\Exception\NonExistentPropertyException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\Exception\UnknownPropertyTypeException;
+use TYPO3\CMS\Extbase\Persistence\Generic\Qom\EquiJoinCondition;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom\JoinInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactory;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface;
@@ -620,7 +621,9 @@ class DataMapper
         if (!empty($resolvedRelationIds)) {
             $source = $query->getSource();
             if ($source instanceof JoinInterface) {
-                $constraint = $query->in($source->getJoinCondition()->getProperty1Name(), $resolvedRelationIds);
+                /** @var EquiJoinCondition $joinCondition */
+                $joinCondition = $source->getJoinCondition();
+                $constraint = $query->in($joinCondition->getProperty1Name(), $resolvedRelationIds);
                 // When querying MM relations directly, Typo3DbQueryParser uses enableFields and thus, filters
                 // out versioned records by default. However, we directly query versioned UIDs here, so we want
                 // to include the versioned records explicitly.

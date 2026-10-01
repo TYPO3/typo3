@@ -133,12 +133,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Utility/GeneralUtility.php
 
 		-
-			rawMessage: 'Call to an undefined method TYPO3\CMS\Extbase\Persistence\Generic\Qom\JoinConditionInterface::getProperty1Name().'
-			identifier: method.notFound
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Mapper/DataMapper.php
-
-		-
 			rawMessage: 'Strict comparison using !== between int|string and null will always evaluate to true.'
 			identifier: notIdentical.alwaysTrue
 			count: 1
