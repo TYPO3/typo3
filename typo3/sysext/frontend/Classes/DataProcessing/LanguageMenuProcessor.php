@@ -44,6 +44,11 @@ use TYPO3\CMS\Frontend\Utility\CanonicalizationUtility;
  */
 class LanguageMenuProcessor implements DataProcessorInterface
 {
+    protected const DEFAULT_MENU_CONFIG = [
+        'special' => 'language',
+        'addQueryString' => 1,
+    ];
+
     protected ContentObjectRenderer $cObj;
     protected array $processorConfiguration;
 
@@ -71,10 +76,7 @@ class LanguageMenuProcessor implements DataProcessorInterface
         'as',
     ];
 
-    protected array $menuConfig = [
-        'special' => 'language',
-        'addQueryString' => 1,
-    ];
+    protected array $menuConfig = [];
 
     protected array $menuDefaults = [
         'as' => 'languagemenu',
@@ -126,7 +128,7 @@ class LanguageMenuProcessor implements DataProcessorInterface
      */
     protected function prepareConfiguration(): void
     {
-        $this->menuConfig = array_merge($this->menuConfig, $this->processorConfiguration);
+        $this->menuConfig = array_merge(static::DEFAULT_MENU_CONFIG, $this->processorConfiguration);
 
         // Process languages
         $this->menuConfig['special.']['value'] = $this->cObj->stdWrapValue('languages', $this->menuConfig, 'auto');
