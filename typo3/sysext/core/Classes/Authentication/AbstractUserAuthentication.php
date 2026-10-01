@@ -417,8 +417,9 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
             if ($this->userSession->getUserId() > 0) {
                 $authenticatedUserFromSession = $this->fetchValidUserFromSessionOrDestroySession($skipSessionUpdate);
             }
-            $isExistingSession = !$this->userSession->isNew();
-            $anonymousSession = $isExistingSession && $this->userSession->isAnonymous();
+            $userSession = $this->userSession;
+            $isExistingSession = !$userSession->isNew();
+            $anonymousSession = $isExistingSession && $userSession->isAnonymous();
         }
 
         // Active login (eg. with login form).

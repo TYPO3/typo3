@@ -1,18 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			rawMessage: Left side of && is always true.
-			identifier: booleanAnd.leftAlwaysTrue
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Authentication/AbstractUserAuthentication.php
-
-		-
-			rawMessage: Negated boolean expression is always true.
-			identifier: booleanNot.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Authentication/AbstractUserAuthentication.php
-
-		-
 			rawMessage: 'Unsafe usage of new static().'
 			identifier: new.static
 			count: 1
