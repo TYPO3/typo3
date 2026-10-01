@@ -39,7 +39,7 @@ final class MetaDataAspectTest extends FunctionalTestCase
         parent::setUp();
         $this->importCSVDataSet(__DIR__ . '/Fixtures/MetaDataAspect/TranslatedMetaData.csv');
         // The language overlay of file metadata is only applied in frontend context
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://example.com/'))
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest('https://example.com/')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
     }
 
