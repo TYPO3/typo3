@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Configuration;
 use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
+use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -27,6 +28,31 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 #[BackupGlobals(true)]
 final class ExtensionConfigurationTest extends UnitTestCase
 {
+    #[Test]
+    public function getReturnsPathAddedDuringSynchronization(): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['someExtension'] = ['existing' => true];
+        $subject = $this->createPartialMock(ExtensionConfiguration::class, ['synchronizeExtConfTemplateWithLocalConfigurationOfAllExtensions']);
+        $subject->expects($this->once())->method('synchronizeExtConfTemplateWithLocalConfigurationOfAllExtensions')->with(true)
+            ->willReturnCallback(static function (): void {
+                $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['someExtension'] = ['enabled' => true];
+            });
+
+        self::assertTrue($subject->get('someExtension', 'enabled'));
+    }
+
+    #[Test]
+    public function getThrowsIfPathRemainsMissingAfterSynchronization(): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['someExtension'] = ['existing' => true];
+        $subject = $this->createPartialMock(ExtensionConfiguration::class, ['synchronizeExtConfTemplateWithLocalConfigurationOfAllExtensions']);
+        $subject->expects($this->once())->method('synchronizeExtConfTemplateWithLocalConfigurationOfAllExtensions')->with(true);
+
+        $this->expectException(ExtensionConfigurationPathDoesNotExistException::class);
+        $this->expectExceptionCode(1509977699);
+        $subject->get('someExtension', 'enabled');
+    }
+
     #[Test]
     public function getWithEmptyPathReturnsEntireExtensionConfiguration(): void
     {

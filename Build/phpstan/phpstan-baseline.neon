@@ -25,12 +25,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Command/ConsumeMessagesCommand.php
 
 		-
-			rawMessage: Negated boolean expression is always true.
-			identifier: booleanNot.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Configuration/ExtensionConfiguration.php
-
-		-
 			rawMessage: 'Call to function is_array() with array will always evaluate to true.'
 			identifier: function.alreadyNarrowedType
 			count: 1

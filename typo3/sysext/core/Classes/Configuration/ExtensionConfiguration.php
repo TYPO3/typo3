@@ -109,7 +109,8 @@ readonly class ExtensionConfiguration
                 $this->synchronizeExtConfTemplateWithLocalConfigurationOfAllExtensions(true);
             }
             // If there is still no such entry, even after sync -> throw
-            if (!ArrayUtility::isValidPath($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'], $extension . '/' . $path)) {
+            $configuration = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'];
+            if (!ArrayUtility::isValidPath($configuration, $extension . '/' . $path)) {
                 throw new ExtensionConfigurationPathDoesNotExistException(
                     'Path ' . $path . ' does not exist in extension configuration',
                     1509977699
