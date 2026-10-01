@@ -39,7 +39,7 @@ Payload value
     for example :php:`${customer.name}` or :php:`${flags.archived}`.
 
 The field map offers the fields the integrator configuring it may edit, so a
-field declaring :php:`exclude` needs the permission for it to be granted and one
+field declaring `exclude` needs the permission for it to be granted and one
 shown to admins only is not offered at all. The reaction applies the same rule
 to the user it impersonates when it writes the record, and names a field that
 user may not write in the response rather than leaving it out silently.
@@ -59,7 +59,7 @@ not written, and the field is left to the default of the target table:
 
 *   A select or radio value the field does not offer is left out rather than
     being stored as it stands. What the field offers is what the field map
-    offered: the items it declares, the ones an :php:`itemsProcFunc` composes
+    offered: the items it declares, the ones an `itemsProcFunc` composes
     for the storage page, and the ones
     :typoscript:`TCEFORM.<table>.<field>.addItems` declares on that page. Where
     a processor cannot be run at all, the value counts as not offered.
@@ -73,7 +73,7 @@ not written, and the field is left to the default of the target table:
     default the target table declares.
 
 The response names every field the reaction did not write, and why, in a
-:php:`skippedFields` key that is absent when it wrote all of them:
+`skippedFields` key that is absent when it wrote all of them:
 
 ..  code-block:: json
 
@@ -108,8 +108,8 @@ The reason is one of:
     A select or radio does not offer the value as one of its items.
 
 Where the target table rejected a value the reaction did pass on, a
-:php:`warnings` key says that it did without naming the field. What
-:php:`DataHandler` logs is written for the backend log rather than for whoever
+`warnings` key says that it did without naming the field. What
+:php-short:`\TYPO3\CMS\Core\DataHandling\DataHandler` logs is written for the backend log rather than for whoever
 holds the secret of a webhook — it names the page the record went to, the value
 another record already holds where a field has to be unique, and the message of
 the database driver — so it stays in that log.
@@ -123,7 +123,7 @@ the database driver — so it stays in that log.
         ]
     }
 
-An :php:`error` key stays what it was: the one reason a call failed, present
+An `error` key stays what it was: the one reason a call failed, present
 only where it did.
 
 A call that resolves no value for any field creates no record and is answered
@@ -154,7 +154,7 @@ offered, so no field of an existing reaction stops being written.
     contributes is not written, since the reaction composes the items of a field
     without reading the file system.
 
-    A checkbox displaying its state inverted, such as :sql:`pages.hidden`, is
+    A checkbox displaying its state inverted, such as `pages.hidden`, is
     labelled for what it displays while a payload value is written to the column
     as it is stored. The column name is shown beside the label of the payload
     input for that reason: :php:`${hidden}` resolving to :php:`true` hides the
@@ -173,7 +173,7 @@ Monday.
 That gap is closed, and configuring it no longer requires knowing what
 the database stores. The integrator picks a page type from the list the page
 tree uses, ticks the checkbox that hides a page, picks a date from a calendar
-and a colour from a colour picker. The very controls the editing form of that
+and a color from a color picker. The very controls the editing form of that
 table shows. A value only valid on the storage page, such as a backend layout
 defined there or an item added through :typoscript:`TCEFORM`, is part of that
 list too.
@@ -181,11 +181,11 @@ list too.
 This makes reactions usable for cases that previously needed an extension:
 
 *   A form service posts a submission and gets a content element of the right
-    :sql:`CType`, in the right column, hidden until someone reviews it.
+    `CType`, in the right column, hidden until someone reviews it.
 *   A product feed creates pages of a given doktype, each with the backend
     layout its section uses.
 *   An editorial system schedules what it sends by mapping
-    :sql:`starttime` and :sql:`endtime` from the payload.
+    `starttime` and `endtime` from the payload.
 
 What the caller gets back is more useful as well. A value the target table
 cannot hold is left out instead of written, a call carrying none of the expected

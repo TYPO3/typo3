@@ -12,7 +12,7 @@ Description
 ===========
 
 Saving a record in the backend rarely changes only that record. One
-:php:`DataHandler` run can create, modify, move and delete several records at
+:php-short:`\TYPO3\CMS\Core\DataHandling\DataHandler` run can create, modify, move and delete several records at
 once, and every history entry it writes shares the scope of the correlation id
 of that run. The record history module did not use this information, so a
 single save appeared as a number of unrelated lines.
@@ -35,14 +35,14 @@ The lookup behind it is available to extensions as well:
     $scope = $recordHistory->getScopeOfEvent($historyEntry);
     $events = $recordHistory->findEventsForScope($scope);
 
-:php:`RecordHistory->findEventsForScope()` returns every history entry written
+:php-short:`\TYPO3\CMS\Backend\History\RecordHistory->findEventsForScope()` returns every history entry written
 during one operation, no matter which table or record it belongs to. It only
 returns entries the current backend user is allowed to see, and it respects the
-workspace the user is working in. :php:`RecordHistory->getScopeOfEvent()`
+workspace the user is working in. :php-short:`\TYPO3\CMS\Backend\History\RecordHistory->getScopeOfEvent()`
 resolves the scope of a single entry, and returns :php:`null` for entries
 written without a correlation id.
 
-:php:`CorrelationId::scopePrefix()` exposes the serialized prefix all
+:php-short:`\TYPO3\CMS\Core\DataHandling\Model\CorrelationId::scopePrefix()` exposes the serialized prefix all
 correlation ids of one scope share, which is what makes such a lookup possible
 in the first place.
 

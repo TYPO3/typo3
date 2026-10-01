@@ -20,7 +20,7 @@ following breaking changes:
     will be removed in TYPO3 v16.0.
 
 -   The method :php:`removeAllManagers()` has been removed from
-    :php:`MetaTagManagerRegistry`, since the list of managers is
+    :php-short:`\TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry`, since the list of managers is
     compiled into the dependency injection container and cannot be
     changed at runtime anymore.
 
@@ -33,12 +33,12 @@ Impact
 ======
 
 Meta tag managers registered via
-:php:`MetaTagManagerRegistry->registerManager()` in
+:php-short:`\TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry->registerManager()` in
 :file:`ext_localconf.php` are no longer evaluated: their meta tag
 properties are handled by the generic meta tag manager until the manager
 is registered as a tagged service.
 
-Custom classes implementing :php:`MetaTagManagerInterface` directly
+Custom classes implementing :php-short:`\TYPO3\CMS\Core\MetaTag\MetaTagManagerInterface` directly
 without the adapted method signatures will cause a fatal PHP error.
 Classes extending :php:`\TYPO3\CMS\Core\MetaTag\AbstractMetaTagManager`
 are only affected if they override one of the changed methods.
@@ -47,14 +47,14 @@ Affected installations
 ======================
 
 All installations with custom extensions registering meta tag managers
-via :php:`MetaTagManagerRegistry->registerManager()`, or providing custom
-implementations of :php:`MetaTagManagerInterface`. The extension scanner
+via :php-short:`\TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry->registerManager()`, or providing custom
+implementations of :php-short:`\TYPO3\CMS\Core\MetaTag\MetaTagManagerInterface`. The extension scanner
 reports usages of the changed methods as weak match.
 
 Migration
 =========
 
-Remove the :php:`MetaTagManagerRegistry->registerManager()` call from
+Remove the :php-short:`\TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry->registerManager()` call from
 :file:`ext_localconf.php` and add the :php:`#[AsMetaTagManager]`
 attribute to the manager class instead:
 
@@ -70,7 +70,7 @@ attribute to the manager class instead:
         // ...
     }
 
-Move the manager name previously passed as first argument to
+Move the manager name previously passed as the first argument to
 :php:`registerManager()` to the :php:`identifier` argument of the
 attribute, and any :php:`before`/:php:`after` arguments to the
 corresponding attribute arguments.

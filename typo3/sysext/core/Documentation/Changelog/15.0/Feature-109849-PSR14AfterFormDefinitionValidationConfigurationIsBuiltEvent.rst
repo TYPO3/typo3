@@ -2,9 +2,9 @@
 
 ..  _feature-109849-1716115200:
 
-=============================================================================
-Feature: #109849 - PSR-14 Event after form definition validation config built
-=============================================================================
+================================================================================
+Feature: #109849 - PSR-14 Event after form definition validation config is built
+================================================================================
 
 See :issue:`109849`
 
@@ -23,7 +23,7 @@ form definition validation configuration has been built from the form editor
 setup. It allows event listeners to add additional writable property paths for
 custom form editor inspector editor implementations that do not declare their
 writable property paths via the standard YAML configuration (e.g.
-:yaml:`propertyPath`).
+`propertyPath`).
 
 The event provides the following API:
 
@@ -61,7 +61,7 @@ for a custom form element type:
 Impact
 ======
 
-With the new :php:`AfterFormDefinitionValidationConfigurationIsBuiltEvent`,
+With the new :php-short:`\TYPO3\CMS\Form\Event\AfterFormDefinitionValidationConfigurationIsBuiltEvent`,
 it is now possible to extend the form definition validation configuration
 using the modern PSR-14 event listener API.
 

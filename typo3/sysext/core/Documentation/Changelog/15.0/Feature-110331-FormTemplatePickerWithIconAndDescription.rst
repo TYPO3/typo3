@@ -2,9 +2,9 @@
 
 ..  _feature-110331-1785369600:
 
-============================================================================
+==========================================================================
 Feature: #110331 - Improved form template picker with icon and description
-============================================================================
+==========================================================================
 
 See :issue:`110331`
 
@@ -22,16 +22,16 @@ template's label, an icon, and an optional short description.  Selecting a card
 immediately advances the wizard to the next step.
 
 To support the new UI, two optional keys have been added to the
-:yaml:`newFormTemplates.*` configuration:
+`newFormTemplates.*` configuration:
 
-:yaml:`iconIdentifier`
+`iconIdentifier`
     A TYPO3 icon identifier shown on the template card.
-    Falls back to :yaml:`form-page` when omitted.
+    Falls back to `form-page` when omitted.
 
-:yaml:`description`
+`description`
     A short description text displayed below the template label on the card.
     Supports translation keys resolved against the configured
-    :yaml:`translationFiles`.
+    `translationFiles`.
 
 Example configuration in :file:`EXT:my_extension/Configuration/Form/formManager.yaml`:
 
@@ -57,8 +57,8 @@ Example configuration in :file:`EXT:my_extension/Configuration/Form/formManager.
 Impact
 ======
 
-Integrators can enrich form template entries with an :yaml:`iconIdentifier` and
-a :yaml:`description` to improve the editor experience in the "Create new form"
+Integrators can enrich form template entries with an `iconIdentifier` and
+a `description` to improve the editor experience in the "Create new form"
 wizard.  Both keys are optional; existing configurations continue to work
 without changes.
 

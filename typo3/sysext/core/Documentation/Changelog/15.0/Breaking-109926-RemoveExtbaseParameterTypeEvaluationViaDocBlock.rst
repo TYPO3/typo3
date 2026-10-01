@@ -3,7 +3,7 @@
 .. _breaking-109926-1780171221:
 
 ==========================================================================
-Breaking: #109926 - Removed extbase parameter type evaluation via DocBlock
+Breaking: #109926 - Removed Extbase parameter type evaluation via DocBlock
 ==========================================================================
 
 See :issue:`109926`

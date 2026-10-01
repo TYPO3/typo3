@@ -11,8 +11,8 @@ See :issue:`109846`
 Description
 ===========
 
-TCA fields with :php:`'type' => 'email'` now support the :php:`eval` keyword
-:php:`lower`, which has been available for :php:`'type' => 'input'` before:
+TCA fields with :php:`'type' => 'email'` now support the `eval` keyword
+`lower`, which has been available for :php:`'type' => 'input'` before:
 
 ..  code-block:: php
 
@@ -25,8 +25,8 @@ TCA fields with :php:`'type' => 'email'` now support the :php:`eval` keyword
     ],
 
 The backend form lowercases the value while the record is edited, and
-:php:`DataHandler` does so again when the record is saved.
-Lowercasing happens before the :php:`unique` and :php:`uniqueInPid`
+:php-short:`\TYPO3\CMS\Core\DataHandling\DataHandler` does so again when the record is saved.
+Lowercasing happens before the `unique` and `uniqueInPid`
 evaluations, so two addresses that differ in casing
 only are detected as the same value.
 
@@ -35,6 +35,6 @@ Impact
 
 Email addresses can be stored in a normalized, lowercase form, which makes
 them comparable - for instance when a field is additionally configured with
-:php:`unique`, or when the value is used to look up records.
+`unique`, or when the value is used to look up records.
 
 ..  index:: TCA, ext:core

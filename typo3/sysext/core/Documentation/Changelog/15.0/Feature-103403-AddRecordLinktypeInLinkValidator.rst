@@ -48,7 +48,7 @@ Caveat
 ======
 
 ..  warning::
-    The :php:`RecordLinktype` only validates the existence and visibility of
+    The :php-short:`\TYPO3\CMS\Linkvalidator\Linktype\RecordLinktype` only validates the existence and visibility of
     the record in the database. It does not check whether a public URL can be
     generated for the record, for example a detail page. Access restrictions
     (`fe_group`), the visibility of the page the record is stored on and

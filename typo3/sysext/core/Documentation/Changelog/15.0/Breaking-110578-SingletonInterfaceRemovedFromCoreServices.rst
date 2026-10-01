@@ -14,7 +14,7 @@ Description
 :php:`\TYPO3\CMS\Core\SingletonInterface` predates dependency injection.
 Today it has exactly one effect: it turns a class into a *shared* and
 *public* service in the dependency injection container, so that the legacy
-:php:`GeneralUtility::makeInstance()` can still reach it.
+:php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance()` can still reach it.
 
 Both properties are already the default for injected services. Every
 service in the container is shared, so every class that receives a service
@@ -29,7 +29,7 @@ change: they are still shared.
 Impact
 ======
 
-These classes do not implement :php:`SingletonInterface` anymore:
+These classes do not implement :php-short:`\TYPO3\CMS\Core\SingletonInterface` anymore:
 
 -   :php:`\TYPO3\CMS\Adminpanel\Service\ConfigurationService`
 -   :php:`\TYPO3\CMS\Adminpanel\Service\ProcessedImageCollector`
@@ -53,28 +53,28 @@ These classes do not implement :php:`SingletonInterface` anymore:
 -   :php:`\TYPO3\CMS\Scheduler\Scheduler`
 -   :php:`\TYPO3\CMS\Workspaces\Service\Dependency\CollectionService`
 
-:php:`GeneralUtility::setSingletonInstance()` and
-:php:`GeneralUtility::removeSingletonInstance()` only accept
-:php:`SingletonInterface` instances and raise a :php:`TypeError` for these
+:php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance()` and
+:php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::removeSingletonInstance()` only accept
+:php-short:`\TYPO3\CMS\Core\SingletonInterface` instances and raise a :php:`TypeError` for these
 classes. This mostly affects tests that substitute one of them.
 
-Every type converter extending :php:`AbstractTypeConverter` is affected as
+Every type converter extending :php-short:`\TYPO3\CMS\Extbase\Property\TypeConverter\AbstractTypeConverter` is affected as
 well, since the marker was inherited. Converters registered with the
 :yaml:`extbase.type_converter` tag stay public, because the tag makes them
 public on its own.
 
 Some of these services are not public anymore either, so fetching them
-with :php:`GeneralUtility::makeInstance()` or :php:`$container->get()`
+with :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance()` or :php:`$container->get()`
 fails with an :php:`ArgumentCountError` or a
-:php:`ServiceNotFoundException`. Whether a Core service is public is an
+:php-short:`\Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException`. Whether a Core service is public is an
 implementation detail and must not be relied upon.
 
 Affected installations
 ======================
 
 Installations with extensions that fetch one of the listed classes through
-:php:`GeneralUtility::makeInstance()` or the container, or that replace one
-of them in tests via :php:`GeneralUtility::setSingletonInstance()`.
+:php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance()` or the container, or that replace one
+of them in tests via :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance()`.
 
 Migration
 =========
@@ -101,7 +101,7 @@ injected instance is the same one the rest of the request uses:
     }
 
 The same applies to tests that replaced one of these classes globally with
-:php:`GeneralUtility::setSingletonInstance()`. Hand the dependency to the
+:php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance()`. Hand the dependency to the
 subject instead: a stub or a mock if the test only needs the collaborator
 to be there, or a functional test if it should exercise the real one.
 
@@ -110,7 +110,7 @@ PHP, and everything it works with is visible in the test itself, instead
 of being smuggled in through a global registry that the code under test
 happens to read from.
 
-:php:`SingletonInterface` itself is not deprecated and keeps working for
+:php-short:`\TYPO3\CMS\Core\SingletonInterface` itself is not deprecated and keeps working for
 custom classes. If a class of your own cannot use dependency injection -
 typically because it is instantiated with constructor arguments, which
 bypasses the container - it can also be made public explicitly, without

@@ -29,7 +29,7 @@ Impact
 ======
 
 Instantiating a data provider extending
-:php:`AbstractXmlSitemapDataProvider` triggers a PHP :php:`E_USER_DEPRECATED`
+:php-short:`\TYPO3\CMS\Seo\XmlSitemap\AbstractXmlSitemapDataProvider` triggers a PHP :php:`E_USER_DEPRECATED`
 error. The sitemap itself is rendered as before.
 
 The extension scanner detects usages of the deprecated class as strong match.
@@ -37,8 +37,8 @@ The extension scanner detects usages of the deprecated class as strong match.
 Affected installations
 ======================
 
-All installations with custom extensions providing an own XML sitemap data
-provider based on :php:`AbstractXmlSitemapDataProvider`.
+All installations with custom extensions providing their own XML sitemap data
+provider based on :php-short:`\TYPO3\CMS\Seo\XmlSitemap\AbstractXmlSitemapDataProvider`.
 
 Migration
 =========
@@ -46,7 +46,7 @@ Migration
 Implement :php:`\TYPO3\CMS\Seo\XmlSitemap\XmlSitemapDataProviderInterface`
 directly instead of extending the base class. The items are collected in
 :php:`getSitemap()` instead of the constructor, and the properties of the base
-class are replaced by the :php:`XmlSitemapRequest` argument:
+class are replaced by the :php-short:`\TYPO3\CMS\Seo\XmlSitemap\XmlSitemapRequest` argument:
 
 ..  code-block:: php
     :caption: EXT:my_extension/Classes/XmlSitemap/MyXmlSitemapDataProvider.php
@@ -128,20 +128,20 @@ The properties of the base class are mapped as follows:
 -   :php:`$this->request` becomes :php:`$sitemapRequest->request`
 -   :php:`$this->cObj` becomes :php:`$sitemapRequest->contentObjectRenderer`
 -   :php:`$this->items` becomes the items handed over to
-    :php:`XmlSitemap::forPage()`
+    :php-short:`\TYPO3\CMS\Seo\XmlSitemap\XmlSitemap::forPage()`
 -   :php:`$this->numberOfItemsPerPage` becomes the fourth argument of
-    :php:`XmlSitemap::forPage()`
+    :php-short:`\TYPO3\CMS\Seo\XmlSitemap\XmlSitemap::forPage()`
 
 The methods :php:`getKey()`, :php:`getItems()`, :php:`getLastModified()` and
 :php:`getNumberOfPages()` are not needed anymore: The returned
-:php:`XmlSitemap` provides the last modification date and the number of pages,
+:php-short:`\TYPO3\CMS\Seo\XmlSitemap\XmlSitemap` provides the last modification date and the number of pages,
 both calculated from the items of the sitemap.
 
 Registering a sitemap in TypoScript is unchanged: Data providers are still
 referenced by their class name.
 
 Extensions supporting TYPO3 v14 and v15 with a single implementation keep
-extending :php:`AbstractXmlSitemapDataProvider` and migrate once support for
+extending :php-short:`\TYPO3\CMS\Seo\XmlSitemap\AbstractXmlSitemapDataProvider` and migrate once support for
 TYPO3 v14 is dropped.
 
 ..  index:: PHP-API, FullyScanned, ext:seo

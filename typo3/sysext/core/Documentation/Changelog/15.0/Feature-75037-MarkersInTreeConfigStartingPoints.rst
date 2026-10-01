@@ -11,9 +11,9 @@ See :issue:`75037`
 Description
 ===========
 
-The TCA setting :php:`treeConfig.startingPoints`, used by
-:php:`renderType=selectTree` and :php:`type=category` fields, now resolves the
-same markers that are already available in :php:`foreign_table_where`:
+The TCA setting `treeConfig.startingPoints`, used by
+`renderType=selectTree` and `type=category` fields, now resolves the
+same markers that are already available in `foreign_table_where`:
 
 *  :php:`###CURRENT_PID###` - the page id the record is stored on
 *  :php:`###SITEROOT###` - the uid of the site root page of the current rootline
@@ -49,12 +49,12 @@ Markers may be combined with static uids and with the already available
 Impact
 ======
 
-Starting points of :php:`selectTree` and :php:`category` trees can be made
+Starting points of `selectTree` and `category` trees can be made
 dependent on the record's page, the site root or page TSconfig, without
 resorting to a page TSconfig override of the whole
 :typoscript:`config.treeConfig.startingPoints` setting.
 
-Markers which can not be resolved - for instance :php:`###SITEROOT###` outside
+Markers which cannot be resolved - for instance :php:`###SITEROOT###` outside
 of a site - are removed from the list instead of falling back to the page tree
 root.
 

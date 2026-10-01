@@ -46,12 +46,12 @@ Impact
 ======
 
 Extension authors can pass boolean values and arrays as tag attributes, for
-example via :typoscript:`tagAttributes` of the :php:`PageRenderer` or the
-:php:`additionalAttributes` option of the video and audio renderers.
+example via `tagAttributes` of the :php-short:`\TYPO3\CMS\Core\Page\PageRenderer` or the
+`additionalAttributes` option of the video and audio renderers.
 
 The default behavior of :php:`implodeAttributes()` is unchanged.
 
-In the video and audio renderers, :php:`true` in :php:`additionalAttributes`
+In the video and audio renderers, :php:`true` in `additionalAttributes`
 now renders an attribute without a value (:html:`playsinline`) instead of
 :html:`playsinline="1"`, and :php:`false` removes the attribute, including
 default ones such as :html:`controls`.

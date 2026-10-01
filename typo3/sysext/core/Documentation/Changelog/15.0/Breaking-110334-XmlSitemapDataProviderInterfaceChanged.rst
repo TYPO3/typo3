@@ -44,7 +44,7 @@ referenced by their class name.
 Impact
 ======
 
-Classes implementing :php:`XmlSitemapDataProviderInterface` without the method
+Classes implementing :php-short:`\TYPO3\CMS\Seo\XmlSitemap\XmlSitemapDataProviderInterface` without the method
 :php:`getSitemap()` will cause a fatal PHP error.
 
 Data providers that are not available as a service in the dependency injection
@@ -60,15 +60,15 @@ Affected installations
 ======================
 
 All installations with custom extensions implementing
-:php:`XmlSitemapDataProviderInterface` directly. This is a rarely used API,
-most data providers extend :php:`AbstractXmlSitemapDataProvider` instead.
+:php-short:`\TYPO3\CMS\Seo\XmlSitemap\XmlSitemapDataProviderInterface` directly. This is a rarely used API,
+most data providers extend :php-short:`\TYPO3\CMS\Seo\XmlSitemap\AbstractXmlSitemapDataProvider` instead.
 
 Migration
 =========
 
 Move the collecting of items from the constructor to :php:`getSitemap()` and
 take the configuration, the requested page and the content object renderer
-from the :php:`XmlSitemapRequest`. The constructor is free for dependency
+from the :php-short:`\TYPO3\CMS\Seo\XmlSitemap\XmlSitemapRequest`. The constructor is free for dependency
 injection afterwards:
 
 ..  code-block:: php
@@ -110,13 +110,13 @@ injection afterwards:
         }
     }
 
-:php:`XmlSitemap::forPage()` takes all items of a sitemap, extracts the items of
+:php-short:`\TYPO3\CMS\Seo\XmlSitemap\XmlSitemap::forPage()` takes all items of a sitemap, extracts the items of
 the requested page and calculates the last modification date and the number of
 pages needed by the sitemap index. The optional item mapper is applied to the
 items of the requested page only, and only when the items are rendered at all -
 the sitemap index does not generate any URL this way. Data providers taking care
 of paging themselves, for example by limiting their database query to the items
-of the requested page, use :php:`XmlSitemap::create()` instead:
+of the requested page, use :php-short:`\TYPO3\CMS\Seo\XmlSitemap\XmlSitemap::create()` instead:
 
 ..  code-block:: php
 
@@ -127,7 +127,7 @@ of the requested page, use :php:`XmlSitemap::create()` instead:
     );
 
 In case the extension supports both TYPO3 v14 and v15, extend
-:php:`AbstractXmlSitemapDataProvider` instead of implementing the interface
+:php-short:`\TYPO3\CMS\Seo\XmlSitemap\AbstractXmlSitemapDataProvider` instead of implementing the interface
 directly: Such a data provider is instantiated with its runtime information in
 v15 as well, at the cost of a deprecation message. It is then migrated to the
 new interface once support for TYPO3 v14 is dropped.

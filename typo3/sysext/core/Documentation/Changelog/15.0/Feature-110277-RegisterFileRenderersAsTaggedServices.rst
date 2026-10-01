@@ -76,12 +76,12 @@ benefits over the previous programmatic registration:
 
 -   The registration is validated at container compile time: a service
     tagged as :yaml:`fal.file_renderer` that does not implement
-    :php:`FileRendererInterface` fails the container build with a
+    :php-short:`\TYPO3\CMS\Core\Resource\Rendering\FileRendererInterface` fails the container build with a
     speaking exception, instead of causing errors when a file is
     rendered.
 
 Registration in :file:`ext_localconf.php` via
-:php:`RendererRegistry->registerRendererClass()` is not evaluated
+:php-short:`\TYPO3\CMS\Core\Resource\Rendering\RendererRegistry->registerRendererClass()` is not evaluated
 anymore, see :ref:`breaking-110277-1784812454` for the upgrade path.
 
 ..  index:: FAL, PHP-API, ext:core

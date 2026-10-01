@@ -23,7 +23,7 @@ has been removed as it was only used by the hook.
 Impact
 ======
 
-Hook implementations registered under :php:`afterFormStateInitialized` are
+Hook implementations registered under `afterFormStateInitialized` are
 no longer executed in TYPO3 v15.0 and later.
 
 Classes implementing
@@ -34,7 +34,7 @@ Affected installations
 ======================
 
 TYPO3 installations with custom extensions using this hook or implementing
-:php:`AfterFormStateInitializedInterface` are affected.
+:php-short:`\TYPO3\CMS\Form\Domain\Runtime\FormRuntime\Lifecycle\AfterFormStateInitializedInterface` are affected.
 
 The extension scanner reports any usage as a strong match.
 
@@ -60,7 +60,7 @@ Register a PSR-14 event listener for
     }
 
 Remove the hook registration from :file:`ext_localconf.php` and the
-:php:`AfterFormStateInitializedInterface` implementation from your hook class.
+:php-short:`\TYPO3\CMS\Form\Domain\Runtime\FormRuntime\Lifecycle\AfterFormStateInitializedInterface` implementation from your hook class.
 
 See also the :ref:`Feature entry <feature-109811-1759230000>`.
 

@@ -20,8 +20,8 @@ assigned to the Fluid variable provider.
 The event carries the following properties:
 
 *   :php:`$data`: The data array that is assigned to the Fluid variable
-    (:php:`element`, :php:`value`, :php:`processedValue`, :php:`isMultiValue`,
-    or :php:`element` and :php:`isSection` for sections). It can be modified,
+    (`element`, `value`, `processedValue`, `isMultiValue`,
+    or `element` and `isSection` for sections). It can be modified,
     and additional keys can be added for use in custom templates.
 *   :php:`$element`: The form element being rendered (read-only).
 *   :php:`$formRuntime`: The current form runtime (read-only), which gives

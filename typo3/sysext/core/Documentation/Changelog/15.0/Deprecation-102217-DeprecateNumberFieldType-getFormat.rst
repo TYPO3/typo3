@@ -12,32 +12,32 @@ Description
 ===========
 
 The method
-:php:`TYPO3\CMS\Core\Schema\Field\NumberFieldType->getFormat()` has been
+:php:`\TYPO3\CMS\Core\Schema\Field\NumberFieldType->getFormat()` has been
 marked as deprecated and will be removed in TYPO3 v16.0.
 
-The method is part of the TcaSchema API for the TCA type :php:`number`.
+The method is part of the TcaSchema API for the TCA type `number`.
 
 
 Impact
 ======
 
-Calling :php:`NumberFieldType->getFormat()` triggers a PHP
+Calling :php-short:`\TYPO3\CMS\Core\Schema\Field\NumberFieldType->getFormat()` triggers a PHP
 :php:`E_USER_DEPRECATED` error.
 
 
 Affected installations
 ======================
 
-All installations using the TcaSchema API for type :php:`number` and the
+All installations using the TcaSchema API for type `number` and the
 method :php:`getFormat()`
 
 
 Migration
 =========
 
-Use :php:`TYPO3\CMS\Core\Schema\Field\NumberFieldType->getScale()` to check
+Use :php:`\TYPO3\CMS\Core\Schema\Field\NumberFieldType->getScale()` to check
 the number of decimal digits.
-If it returns  :php:`0` it is of former format :php:`integer`,
-otherwise it is of former format :php:`decimal`.
+If it returns :php:`0` it is of former format `integer`,
+otherwise it is of former format `decimal`.
 
 ..  index:: PHP-API, NotScanned, ext:core

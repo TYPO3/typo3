@@ -19,7 +19,7 @@ rendered into the final table row markup.
 Unlike :php:`\TYPO3\CMS\Filelist\Event\ProcessFileListActionsEvent`, which
 only allows modifying the action icons in the control column, this event
 provides access to the already-rendered data of *every* column in the row
-(for example :php:`name`, :php:`size` or any additional metadata column
+(for example `name`, `size` or any additional metadata column
 added via the column selector), as well as the row's HTML tag attributes.
 This closes a gap compared to the classic record list in
 :guilabel:`Content > Records`, which has offered an equivalent event
@@ -31,7 +31,7 @@ An example event listener could look like this:
 ..  code-block:: php
     :caption: Example event listener class
 
-    namespace MyVendor\MyExtension\Form\EventListener;
+    namespace MyVendor\MyExtension\EventListener;
 
     use TYPO3\CMS\Core\Attribute\AsEventListener;
     use TYPO3\CMS\Filelist\Event\AfterFileListRowPreparedEvent;
@@ -52,8 +52,8 @@ Impact
 ======
 
 Extension authors can now decorate or override the rendered value of any
-column - not just the action icons - for a file or folder row in the File
-List module, without resorting to hooks or class-name-based reflection
+column - not just the action icons - for a file or folder row in the Media
+module, without resorting to hooks or class-name-based reflection
 workarounds.
 
 ..  index:: Backend, PHP-API, ext:filelist

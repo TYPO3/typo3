@@ -11,8 +11,8 @@ See :issue:`110637`
 Description
 ===========
 
-The :php:`SchedulerTaskRepository::findByUid()` and
-:php:`SchedulerTaskRepository::findNextExecutableTask()` methods now throw
+The :php-short:`\TYPO3\CMS\Scheduler\Domain\Repository\SchedulerTaskRepository::findByUid()` and
+:php-short:`\TYPO3\CMS\Scheduler\Domain\Repository\SchedulerTaskRepository::findNextExecutableTask()` methods now throw
 :php:`\TYPO3\CMS\Scheduler\Exception\InvalidTaskException` when a Scheduler
 task cannot be deserialized or is otherwise invalid. Previously, the global
 :php:`\UnexpectedValueException` was thrown.
@@ -27,13 +27,13 @@ Affected installations
 ======================
 
 Installations are affected when custom extension code directly uses
-:php:`SchedulerTaskRepository` and handles invalid tasks by catching
+:php-short:`\TYPO3\CMS\Scheduler\Domain\Repository\SchedulerTaskRepository` and handles invalid tasks by catching
 :php:`\UnexpectedValueException`.
 
 Migration
 =========
 
-Catch :php:`InvalidTaskException` instead of :php:`\UnexpectedValueException`.
+Catch :php-short:`\TYPO3\CMS\Scheduler\Exception\InvalidTaskException` instead of :php:`\UnexpectedValueException`.
 
 Before:
 

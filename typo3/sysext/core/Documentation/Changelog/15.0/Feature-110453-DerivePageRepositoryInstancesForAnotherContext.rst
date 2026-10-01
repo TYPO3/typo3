@@ -12,7 +12,7 @@ Description
 ===========
 
 :php:`\TYPO3\CMS\Core\Domain\Repository\PageRepository` is bound to a
-:php:`Context` when it is created. That Context decides which language overlay
+:php-short:`\TYPO3\CMS\Core\Context\Context` when it is created. That Context decides which language overlay
 and which workspace the resolved records belong to. Code that needed records
 for a *different* language - a link to a translated page, an hreflang tag, a
 menu rendered without overlays - had to clone the global Context, set the
@@ -25,7 +25,7 @@ language aspect on the clone, and then create a new instance by hand:
     $pageRepository = GeneralUtility::makeInstance(PageRepository::class, $context);
 
 This forced every consumer to build the object itself, which prevented
-:php:`PageRepository` from being injected as a regular service.
+:php-short:`\TYPO3\CMS\Core\Domain\Repository\PageRepository` from being injected as a regular service.
 
 Two methods now derive a new instance from an existing one:
 
@@ -40,7 +40,7 @@ frontend user - of the current Context and only exchanges the language aspect.
 instance if the given Context is already the active one.
 
 Both methods leave the original instance untouched, so a single injected
-:php:`PageRepository` can serve as the starting point for any number of
+:php-short:`\TYPO3\CMS\Core\Domain\Repository\PageRepository` can serve as the starting point for any number of
 derived ones:
 
 ..  code-block:: php
@@ -63,7 +63,7 @@ language overlay at all.
 Impact
 ======
 
-Extension authors can inject :php:`PageRepository` through dependency injection
+Extension authors can inject :php-short:`\TYPO3\CMS\Core\Domain\Repository\PageRepository` through dependency injection
 and derive Context-specific instances where they are needed, instead of
 cloning a Context and calling
 :php:`GeneralUtility::makeInstance(PageRepository::class, $context)`.

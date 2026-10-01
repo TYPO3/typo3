@@ -15,7 +15,7 @@ The PHP class :php:`\TYPO3\CMS\Core\Log\LogRecord` — the value object passed
 to log writers and processors — has been declared :php:`final` and is now
 instantiated directly via :php:`new` within
 :php:`\TYPO3\CMS\Core\Log\Logger`, instead of using
-:php:`GeneralUtility::makeInstance()`.
+:php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance()`.
 
 A log record is a plain data transfer object created for every single log
 entry. Routing its creation through :php:`makeInstance()` allowed the class
@@ -29,11 +29,11 @@ annotations.
 Impact
 ======
 
-Extending or XCLASSing :php:`LogRecord` is not possible anymore. Extension
+Extending or XCLASSing :php-short:`\TYPO3\CMS\Core\Log\LogRecord` is not possible anymore. Extension
 classes will raise a fatal PHP error, XCLASS configurations for this class
 are silently ignored.
 
-Calling a method of :php:`LogRecord` with a wrong argument type — for
+Calling a method of :php-short:`\TYPO3\CMS\Core\Log\LogRecord` with a wrong argument type — for
 example a non-float value for :php:`setCreated()` — will raise a PHP
 :php:`\TypeError`, depending on the :php:`strict_types` mode of the
 calling code.
@@ -48,14 +48,14 @@ Affected installations
 ======================
 
 TYPO3 installations with third-party extensions that extend or XCLASS the
-class :php:`LogRecord`, which is very unlikely.
+class :php-short:`\TYPO3\CMS\Core\Log\LogRecord`, which is very unlikely.
 
 Migration
 =========
 
 To enrich or modify log records, implement a custom log processor
-(:php:`ProcessorInterface`), which may return a modified or newly created
-:php:`LogRecord` instance. Custom output handling belongs into a log writer
-(:php:`WriterInterface`).
+(:php-short:`\TYPO3\CMS\Core\Log\Processor\ProcessorInterface`), which may return a modified or newly created
+:php-short:`\TYPO3\CMS\Core\Log\LogRecord` instance. Custom output handling belongs in a log writer
+(:php-short:`\TYPO3\CMS\Core\Log\Writer\WriterInterface`).
 
 .. index:: PHP-API, NotScanned, ext:core

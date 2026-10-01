@@ -12,8 +12,8 @@ Description
 ===========
 
 The TYPO3 Form Framework's :yaml:`CountrySelect` element now supports a
-:yaml:`defaultValue` property. Previously only :yaml:`prioritizedCountries`,
-:yaml:`onlyCountries`, and :yaml:`excludeCountries` could be configured — there
+`defaultValue` property. Previously only `prioritizedCountries`,
+`onlyCountries`, and `excludeCountries` could be configured — there
 was no way to pre-select a country when the form is initially rendered.
 
 The default value can be set in two ways:
@@ -38,15 +38,15 @@ YAML form definition example:
 
 The new inspector editor is a single-select country dropdown that appears in
 the Form Editor's inspector panel. It lists all available countries regardless
-of any configured :yaml:`onlyCountries`, :yaml:`excludeCountries`, or
-:yaml:`prioritizedCountries` filters. A description hint reminds editors to
+of any configured `onlyCountries`, `excludeCountries`, or
+`prioritizedCountries` filters. A description hint reminds editors to
 ensure the selected country is not excluded by the configured country filters.
 
-If the configured :yaml:`defaultValue` refers to a country that is excluded by
+If the configured `defaultValue` refers to a country that is excluded by
 a country filter, the default value has no visible effect on the frontend
 because the corresponding :html:`<option>` element will not be rendered.
 
-On the frontend the :yaml:`defaultValue` is resolved through the existing form
+On the frontend the `defaultValue` is resolved through the existing form
 framework property binding, so no additional rendering logic is required.
 
 Impact

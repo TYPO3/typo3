@@ -23,10 +23,10 @@ sending emails.
 Impact
 ======
 
-Instantiating or referencing the class :php:`Rfc822AddressesParser` will raise
+Instantiating or referencing the class :php-short:`\TYPO3\CMS\Core\Mail\Rfc822AddressesParser` will raise
 a fatal PHP error.
 
-In addition, :php:`MailUtility::parseAddresses()` now strips surrounding
+In addition, :php-short:`\TYPO3\CMS\Core\Utility\MailUtility::parseAddresses()` now strips surrounding
 double quotes from display names: parsing
 :php:`'"last, first" <email@example.org>'` previously returned the display
 name :php:`'"last, first"'` and now returns :php:`'last, first'`. Quoting is
@@ -37,7 +37,7 @@ Affected installations
 ======================
 
 TYPO3 installations with third-party extensions directly using the class
-:php:`Rfc822AddressesParser`. The extension scanner reports any usage as a
+:php-short:`\TYPO3\CMS\Core\Mail\Rfc822AddressesParser`. The extension scanner reports any usage as a
 strong match.
 
 Migration

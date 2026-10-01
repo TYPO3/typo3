@@ -16,7 +16,7 @@ added, which registers a class implementing
 :php:`\TYPO3\CMS\Core\Upgrades\RowUpdater\RowUpdaterInterface` as a row updater
 for the :php:`databaseRowsUpdateWizard` upgrade wizard.
 
-Row updaters are executed by the "Execute database row updates" upgrade wizard.
+Row updaters are executed by the "Execute database migrations on single rows" upgrade wizard.
 It iterates over all rows of all TCA tables once and hands each row to every
 registered row updater that announced a potential update for the table, which
 makes them the tool of choice for data migrations that cannot be expressed as a
@@ -86,7 +86,7 @@ Impact
 ======
 
 Extensions and projects can now ship their own row updaters and have them
-executed by the "Execute database row updates" upgrade wizard, both in the
+executed by the "Execute database migrations on single rows" upgrade wizard, both in the
 :guilabel:`Admin Tools > Upgrade` backend module and with the
 :bash:`upgrade:run` console command.
 

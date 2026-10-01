@@ -16,7 +16,7 @@ The global variables :php:`$GLOBALS['ACCESS_TIME']` and
 
 Both were introduced in 2008 and held the current (respectively the simulated)
 execution time floored to the full minute. Their only purpose was to keep the
-SQL of :sql:`starttime` / :sql:`endtime` comparisons textually identical for up
+SQL of `starttime` / `endtime` comparisons textually identical for up
 to 60 seconds, so that the MySQL query cache could serve repeated requests. That
 query cache has been removed from MySQL and is disabled by default in MariaDB,
 so the original motivation no longer applies.
@@ -26,7 +26,7 @@ and :php:`$GLOBALS['SIM_EXEC_TIME']` that had to be kept in sync manually, which
 was an error-prone contract.
 
 The minute granularity itself is kept, since record visibility and the frontend
-cache lifetime derived from :sql:`starttime` / :sql:`endtime` must use the very
+cache lifetime derived from `starttime` / `endtime` must use the very
 same clock. It now lives in the date aspect of the Context API, which gained two
 typed methods:
 

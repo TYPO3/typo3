@@ -22,7 +22,7 @@ following breaking changes:
 -   Extractors registered with the same priority are no longer
     guaranteed to be asked in the order they were added: previously,
     extractors kept the order in which
-    :php:`TextExtractorRegistry->registerTextExtractor()` was called from
+    :php-short:`\TYPO3\CMS\Core\Resource\TextExtraction\TextExtractorRegistry->registerTextExtractor()` was called from
     :file:`ext_localconf.php`. The order of same-priority tagged services
     is now an implementation detail of the dependency injection container
     and must not be relied upon. Extensions that depend on a specific
@@ -35,7 +35,7 @@ following breaking changes:
     and :php:`extractText(FileInterface $file): string`.
 
 -   The method :php:`createTextExtractorInstance()` has been removed
-    from :php:`TextExtractorRegistry`, the method
+    from :php-short:`\TYPO3\CMS\Core\Resource\TextExtraction\TextExtractorRegistry`, the method
     :php:`getTextExtractorInstances()` has been changed from public to
     protected visibility, and the remaining methods are now strictly
     typed. The public API of the registry is
@@ -46,25 +46,25 @@ Impact
 ======
 
 Text extractors registered via
-:php:`TextExtractorRegistry->registerTextExtractor()` in
+:php-short:`\TYPO3\CMS\Core\Resource\TextExtraction\TextExtractorRegistry->registerTextExtractor()` in
 :file:`ext_localconf.php` are no longer evaluated: no text is extracted
 by the custom extractor until it is registered as a tagged service.
 
-Custom extractor classes implementing :php:`TextExtractorInterface`
+Custom extractor classes implementing :php-short:`\TYPO3\CMS\Core\Resource\TextExtraction\TextExtractorInterface`
 without the adapted method signatures will cause a fatal PHP error.
 
 Affected installations
 ======================
 
 All installations with custom extensions registering text extractors
-via :php:`TextExtractorRegistry->registerTextExtractor()`, or providing
-custom implementations of :php:`TextExtractorInterface`. The extension
-scanner reports usages of :php:`registerTextExtractor()` as weak match.
+via :php-short:`\TYPO3\CMS\Core\Resource\TextExtraction\TextExtractorRegistry->registerTextExtractor()`, or providing
+custom implementations of :php-short:`\TYPO3\CMS\Core\Resource\TextExtraction\TextExtractorInterface`. The extension
+scanner reports usages of :php:`registerTextExtractor()` as a weak match.
 
 Migration
 =========
 
-Remove the :php:`TextExtractorRegistry->registerTextExtractor()` call
+Remove the :php-short:`\TYPO3\CMS\Core\Resource\TextExtraction\TextExtractorRegistry->registerTextExtractor()` call
 from :file:`ext_localconf.php` and add the :php:`#[AsTextExtractor]`
 attribute to the extractor class instead. Add the native type
 declarations to :php:`canExtractText()` and :php:`extractText()`:
@@ -96,9 +96,9 @@ evaluated in v14, the attribute in v15. The :php:`bool` and
 :php:`string` return type declarations are compatible with both
 versions.
 
-Code that called :php:`TextExtractorRegistry->getTextExtractorInstances()`
+Code that called :php-short:`\TYPO3\CMS\Core\Resource\TextExtraction\TextExtractorRegistry->getTextExtractorInstances()`
 to inspect all registered extractors should inject
-:php:`TextExtractorRegistry` and use :php:`getTextExtractor($file)` to
+:php-short:`\TYPO3\CMS\Core\Resource\TextExtraction\TextExtractorRegistry` and use :php:`getTextExtractor($file)` to
 retrieve the matching extractor for a given file instead.
 
 ..  index:: FAL, PHP-API, PartiallyScanned, ext:core

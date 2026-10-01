@@ -2,9 +2,9 @@
 
 ..  _deprecation-110202-1784146595:
 
-===================================================================
+=================================================================
 Deprecation: #110202 - StringUtility::multibyteStringPad() method
-===================================================================
+=================================================================
 
 See :issue:`110202`
 
@@ -28,7 +28,7 @@ Affected installations
 ======================
 
 TYPO3 installations with custom extensions or code that directly call
-:php:`StringUtility::multibyteStringPad()` are affected.
+:php-short:`\TYPO3\CMS\Core\Utility\StringUtility::multibyteStringPad()` are affected.
 
 The extension scanner will report any usage as a **strong match**.
 
@@ -38,7 +38,7 @@ Migration
 Use the native PHP function :php:`mb_str_pad()` instead.
 
 Note that :php:`mb_str_pad()` throws a :php:`\ValueError` when an empty pad
-string is passed, whereas :php:`StringUtility::multibyteStringPad()` returned
+string is passed, whereas :php-short:`\TYPO3\CMS\Core\Utility\StringUtility::multibyteStringPad()` returned
 the input unchanged. If an empty pad string can occur, guard against it.
 
 ..  code-block:: php

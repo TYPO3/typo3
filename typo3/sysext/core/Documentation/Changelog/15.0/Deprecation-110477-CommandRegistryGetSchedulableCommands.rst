@@ -2,9 +2,9 @@
 
 ..  _deprecation-110477-1786635811:
 
-==================================================================
+================================================================
 Deprecation: #110477 - CommandRegistry->getSchedulableCommands()
-==================================================================
+================================================================
 
 See :issue:`110477`
 
@@ -24,7 +24,7 @@ Affected installations
 ======================
 
 Installations with custom extensions that call
-:php:`CommandRegistry->getSchedulableCommands()` are affected. The method is
+:php-short:`\TYPO3\CMS\Core\Console\CommandRegistry->getSchedulableCommands()` are affected. The method is
 not used by TYPO3 Core.
 
 The extension scanner reports usages as a weak match.
@@ -32,9 +32,9 @@ The extension scanner reports usages as a weak match.
 Migration
 =========
 
-Use :php:`CommandRegistry->getSchedulableCommandsConfiguration()` to retrieve
+Use :php-short:`\TYPO3\CMS\Core\Console\CommandRegistry->getSchedulableCommandsConfiguration()` to retrieve
 the configuration indexed by command identifier. If command instances are
-needed, retrieve them individually with :php:`CommandRegistry->get()`:
+needed, retrieve them individually with :php-short:`\TYPO3\CMS\Core\Console\CommandRegistry->get()`:
 
 ..  code-block:: php
 

@@ -29,7 +29,7 @@ table selection. The language dropdown is only shown when there are
 at least two languages present, otherwise it defaults to showing
 all records.
 
-Additionally, the language icon and name is now shown inside the recycler
+Additionally, the language icon and name are now shown inside the recycler
 record listing for each record that is language aware and has a language
 set (also `-1` is evaluated as `all languages`).
 

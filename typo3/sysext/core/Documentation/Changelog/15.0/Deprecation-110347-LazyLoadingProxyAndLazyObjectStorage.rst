@@ -13,21 +13,21 @@ Description
 
 The internal Extbase lazy loading classes
 
-*   :php:`TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy`
-*   :php:`TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage`
-*   :php:`TYPO3\CMS\Extbase\Persistence\Generic\LoadingStrategyInterface`
+*   :php:`\TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy`
+*   :php:`\TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage`
+*   :php:`\TYPO3\CMS\Extbase\Persistence\Generic\LoadingStrategyInterface`
 
 have been marked as deprecated. Lazy relations of domain model properties
 annotated with :php:`#[Extbase\ORM\Lazy]` are created as
 :ref:`native PHP lazy objects <feature-110347-1785518009>` by the DataMapper
 instead: 1:n and m:n relations as lazy ghost instances of
-:php:`TYPO3\CMS\Extbase\Persistence\ObjectStorage`, 1:1 and n:1 relations as
+:php:`\TYPO3\CMS\Extbase\Persistence\ObjectStorage`, 1:1 and n:1 relations as
 lazy proxy instances of the actual target entity class.
 
 Impact
 ======
 
-Instantiating :php:`LazyLoadingProxy` or :php:`LazyObjectStorage` will trigger
+Instantiating :php-short:`\TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy` or :php-short:`\TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage` will trigger
 a PHP :php:`E_USER_DEPRECATED` error. All three classes will be removed in
 TYPO3 v16.0.
 
@@ -40,9 +40,9 @@ Affected installations
 
 Installations with extensions that reference these classes, for example in
 union type declarations of lazy model properties, in :php:`instanceof` checks,
-or by calling :php:`LazyLoadingProxy->_loadRealInstance()`.
+or by calling :php-short:`\TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy->_loadRealInstance()`.
 
-The extension scanner reports usages as weak match.
+The extension scanner reports usages as a strong match.
 
 Migration
 =========

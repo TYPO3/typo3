@@ -38,7 +38,7 @@ registered by adding the new PHP attribute
 The extractor priority is defined at registration time via the
 attribute. Extractors with a higher priority are asked first whether
 they can extract text from a given file (:php:`canExtractText()`). The
-:php:`PlainTextExtractor` shipped with TYPO3 Core is registered with the
+:php-short:`\TYPO3\CMS\Core\Resource\TextExtraction\PlainTextExtractor` shipped with TYPO3 Core is registered with the
 default priority :php:`0`, so any custom extractor using a priority
 above :php:`0` takes precedence. The order in which extractors of the
 same priority are evaluated is not defined and must not be relied upon;
@@ -75,12 +75,12 @@ benefits over the previous programmatic registration:
 
 -   The registration is validated at container compile time: a service
     tagged as :yaml:`fal.text_extractor` that does not implement
-    :php:`TextExtractorInterface` fails the container build with a
+    :php-short:`\TYPO3\CMS\Core\Resource\TextExtraction\TextExtractorInterface` fails the container build with a
     speaking exception, instead of causing errors when text is
     extracted.
 
 Registration in :file:`ext_localconf.php` via
-:php:`TextExtractorRegistry->registerTextExtractor()` is not evaluated
+:php-short:`\TYPO3\CMS\Core\Resource\TextExtraction\TextExtractorRegistry->registerTextExtractor()` is not evaluated
 anymore, see :ref:`breaking-110286-1784879763` for the upgrade path.
 
 ..  index:: FAL, PHP-API, ext:core

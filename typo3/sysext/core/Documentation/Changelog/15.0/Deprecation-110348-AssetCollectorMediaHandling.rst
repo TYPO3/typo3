@@ -14,15 +14,15 @@ Description
 The media related methods of :php:`\TYPO3\CMS\Core\Page\AssetCollector` have
 been marked as deprecated and will be removed in TYPO3 v16.0:
 
--   :php:`AssetCollector->addMedia()`
--   :php:`AssetCollector->getMedia()`
--   :php:`AssetCollector->hasMedia()`
--   :php:`AssetCollector->removeMedia()`
+-   :php-short:`\TYPO3\CMS\Core\Page\AssetCollector->addMedia()`
+-   :php-short:`\TYPO3\CMS\Core\Page\AssetCollector->getMedia()`
+-   :php-short:`\TYPO3\CMS\Core\Page\AssetCollector->hasMedia()`
+-   :php-short:`\TYPO3\CMS\Core\Page\AssetCollector->removeMedia()`
 
 Unlike JavaScript and stylesheet assets, collected media never contributed
 anything to the rendered output. The registry is a leftover of the
 :php:`$TSFE->imagesOnPage` property, which was moved to the
-:php:`AssetCollector` in TYPO3 v10.3 (see :ref:`deprecation-90522`) and only
+:php-short:`\TYPO3\CMS\Core\Page\AssetCollector` in TYPO3 v10.3 (see :ref:`deprecation-90522`) and only
 ever served the "Images on this page" section of the admin panel.
 
 Collecting this information by having every image renderer report into a
@@ -45,11 +45,11 @@ to do so no longer call :php:`addMedia()`:
 -   :php:`\TYPO3\CMS\Frontend\ContentObject\ImageContentObject` (the
     :typoscript:`IMAGE` content object)
 
-Consequently :php:`AssetCollector->getMedia()` only returns entries that were
+Consequently :php-short:`\TYPO3\CMS\Core\Page\AssetCollector->getMedia()` only returns entries that were
 added by third-party code.
 
 The admin panel keeps its "Images on this page" section. It now collects the
-data through a PSR-14 listener on :php:`AfterFileProcessingEvent`, which also
+data through a PSR-14 listener on :php-short:`\TYPO3\CMS\Core\Resource\Event\AfterFileProcessingEvent`, which also
 reports correct file sizes for images stored in remote storages and adds the
 image dimensions.
 
@@ -58,7 +58,7 @@ Affected installations
 
 Installations with extensions calling any of the deprecated methods, and
 installations relying on Core populating the registry. Custom image
-ViewHelpers or content objects that mirrored the Core behaviour by calling
+ViewHelpers or content objects that mirrored the Core behavior by calling
 :php:`addMedia()` are the most likely candidates.
 
 The methods are not covered by the extension scanner: their names are too

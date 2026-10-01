@@ -11,7 +11,7 @@ See :issue:`110501`
 Description
 ===========
 
-The :php:`slug` field of the :sql:`pages` table is generated from the page
+The `slug` field of the `pages` table is generated from the page
 title. Until now, a slash contained in the title was kept as-is.
 
 As a result, a page titled `Terms / Conditions` was given the slug
@@ -20,7 +20,7 @@ slug :samp:`/support-24/7`. The latter additionally introduces a path
 segment that does not exist as a page: the URL looks as if the page were a
 sub page :samp:`7` below a page :samp:`/support-24`.
 
-The TCA of :sql:`pages` now configures a slug generator replacement that
+The TCA of `pages` now configures a slug generator replacement that
 turns a slash into the fallback character :samp:`-`:
 
 ..  code-block:: php
@@ -62,7 +62,7 @@ regenerated.
 Manually entered slugs keep their slashes as before: a slash is a valid
 character in a page slug, it separates the path segments of a page.
 
-Sites relying on the previous behaviour can restore it by unsetting the
+Sites relying on the previous behavior can restore it by unsetting the
 new option in :file:`Configuration/TCA/Overrides/pages.php`:
 
 ..  code-block:: php

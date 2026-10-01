@@ -12,8 +12,8 @@ Description
 ===========
 
 The backend FormEngine now displays a compact badge for fields configured via
-TCA :php:`types` and :php:`renderTypes` when they use item count validation
-rules such as :php:`minItems` and :php:`maxItems`.
+TCA `types` and `renderTypes` when they use item count validation
+rules such as `minItems` and `maxItems`.
 
 The badge reflects the currently selected number of items and the configured
 minimum or maximum values, and it updates automatically when entries are
@@ -30,7 +30,7 @@ Impact
 ======
 
 Editors get immediate visual feedback about how many items are currently
-selected in relation to the configured :php:`minItems` and :php:`maxItems`
+selected in relation to the configured `minItems` and `maxItems`
 limits. The badge is injected on the client side for any field exposing item
 count validation rules, so it also applies to custom render types without
 requiring additional PHP code.

@@ -12,9 +12,9 @@ Description
 ===========
 
 Indexing configurations of type "Database Records" provide the option
-"Index Records immediately when saved?" (:php:`records_indexonchange`).
+"Index Records immediately when saved?" (`records_indexonchange`).
 Since the removal of the EXT:crawler integration in TYPO3 v11 this option
-had no effect anymore.
+has had no effect anymore.
 
 EXT:indexed_search now takes care of this on its own. When a record of the
 configured table is saved in the backend, it is indexed right away, using the

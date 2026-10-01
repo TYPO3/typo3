@@ -11,15 +11,15 @@ See :issue:`108649`
 Description
 ===========
 
-A new top-level DataHandler command ``publish`` has been introduced for
+A new top-level DataHandler command `publish` has been introduced for
 publishing workspace records to the live workspace. This command uses the
 **versioned UID** as the primary identifier (command map key), which is more
 intuitive since you are publishing the workspace version of a record.
 
 The new command automatically resolves:
 
-*   The **live record ID** from the versioned record's ``t3ver_oid`` field
-*   The **workspace ID** from the versioned record's ``t3ver_wsid`` field
+*   The **live record ID** from the versioned record's `t3ver_oid` field
+*   The **workspace ID** from the versioned record's `t3ver_wsid` field
 
 This means callers no longer need to know or pass the live ID when publishing.
 The workspace context is also set automatically based on the record being
@@ -105,16 +105,16 @@ The new command simplifies this by only requiring the versioned UID:
 Impact
 ======
 
-The new ``publish`` command simplifies the publishing workflow by:
+The new `publish` command simplifies the publishing workflow by:
 
 *   Using the versioned UID as the primary identifier (the record being published)
-*   Automatically resolving the live ID from the versioned record's ``t3ver_oid``
-*   Automatically setting the workspace context from the versioned record's ``t3ver_wsid``
+*   Automatically resolving the live ID from the versioned record's `t3ver_oid`
+*   Automatically setting the workspace context from the versioned record's `t3ver_wsid`
 *   Gracefully handling cascading operations (e.g., when publishing hierarchical
     deletes, child records that were already removed via cascade are silently skipped)
 
-The legacy ``version`` command with ``action => 'swap'`` or
-``action => 'publish'`` continues to work for backward compatibility.
+The legacy `version` command with `action => 'swap'` or
+`action => 'publish'` continues to work for backward compatibility.
 
 
 ..  index:: Backend, PHP-API, ext:workspaces

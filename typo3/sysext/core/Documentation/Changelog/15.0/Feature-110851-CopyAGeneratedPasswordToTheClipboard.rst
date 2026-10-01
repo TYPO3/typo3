@@ -11,15 +11,15 @@ See :issue:`110851`
 Description
 ===========
 
-Fields of TCA type :php:`password` accept the new option
-:php:`copyToClipboard` below :php:`appearance`.
+Fields of TCA type `password` accept the new option
+`copyToClipboard` below `appearance`.
 
 When it is enabled, a button copying the password to the clipboard is
 attached to the field.
 
 A stored password is hashed and only shown obfuscated, so the button
 is offered once the field holds a plain value, typically one created
-with the :php:`passwordGenerator` field control, and until the record
+with the `passwordGenerator` field control, and until the record
 is saved.
 
 ..  code-block:: php

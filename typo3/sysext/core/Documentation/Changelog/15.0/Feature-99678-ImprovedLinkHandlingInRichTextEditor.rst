@@ -27,7 +27,7 @@ information and uses it in the places where editors interact with links.
     URL of a file, instead of the unresolvable :html:`t3://` link.
 
 The information is provided by the new backend AJAX route
-:php:`link_preview`, which respects the page permissions of the
+`link_preview`, which respects the page permissions of the
 current backend user.
 
 Impact

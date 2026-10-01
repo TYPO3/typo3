@@ -47,8 +47,8 @@ previous default of :php:`registerManager()`.
     #[AsMetaTagManager(identifier: 'my-manager', before: ['opengraph'], after: ['html5'])]
 
 Alternatively, the service tag :yaml:`metatag.manager` can be used
-directly in :file:`Configuration/Services.yaml`, with :yaml:`before` and
-:yaml:`after` given as comma-separated lists:
+directly in :file:`Configuration/Services.yaml`, with `before` and
+`after` given as comma-separated lists:
 
 ..  code-block:: yaml
     :caption: EXT:my_extension/Configuration/Services.yaml
@@ -74,11 +74,11 @@ benefits over the previous programmatic registration:
 
 -   The registration is validated at container compile time: a service
     tagged as :yaml:`metatag.manager` that does not implement
-    :php:`MetaTagManagerInterface`, or is missing the :yaml:`identifier`
+    :php-short:`\TYPO3\CMS\Core\MetaTag\MetaTagManagerInterface`, or is missing the `identifier`
     tag attribute, fails the container build with a speaking exception.
 
 Registration in :file:`ext_localconf.php` via
-:php:`MetaTagManagerRegistry->registerManager()` is not evaluated
+:php-short:`\TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry->registerManager()` is not evaluated
 anymore, see :ref:`breaking-110287-1784904501` for the upgrade path.
 
 ..  index:: PHP-API, Frontend, ext:core

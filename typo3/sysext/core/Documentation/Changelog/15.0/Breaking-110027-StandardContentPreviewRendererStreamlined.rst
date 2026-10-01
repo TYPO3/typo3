@@ -29,12 +29,12 @@ Affected installations
 ======================
 
 Instances with third-party extensions that subclass
-:php:`StandardContentPreviewRenderer` or instantiate it manually.
+:php-short:`\TYPO3\CMS\Backend\Preview\StandardContentPreviewRenderer` or instantiate it manually.
 
 Migration
 =========
 
-Instead of subclassing :php:`StandardContentPreviewRenderer`, implement
+Instead of subclassing :php-short:`\TYPO3\CMS\Backend\Preview\StandardContentPreviewRenderer`, implement
 :php:`\TYPO3\CMS\Backend\Preview\PreviewRendererInterface` directly. The standard
 renderer may be composed and its rendering methods delegated to where its output
 is desired, as :php:`\TYPO3\CMS\Form\Preview\FormPagePreviewRenderer` demonstrates.

@@ -14,29 +14,29 @@ Description
 The PHP class :php:`\TYPO3\CMS\Core\Log\Logger` has been declared
 :php:`final` and is now instantiated directly via :php:`new` within
 :php:`\TYPO3\CMS\Core\Log\LogManager`, instead of using
-:php:`GeneralUtility::makeInstance()`.
+:php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance()`.
 
 The logger is a plain, per-channel object created and configured by the
-:php:`LogManager`. Routing its creation through :php:`makeInstance()` only
+:php-short:`\TYPO3\CMS\Core\Log\LogManager`. Routing its creation through :php:`makeInstance()` only
 served to allow overriding the class via XCLASS, which is not a supported
 extension point for the logging API.
 
 Impact
 ======
 
-Extending or XCLASSing :php:`Logger` is not possible anymore. Extension
+Extending or XCLASSing :php-short:`\TYPO3\CMS\Core\Log\Logger` is not possible anymore. Extension
 classes will raise a fatal PHP error, XCLASS configurations for this class
 are silently ignored.
 
 Obtaining and using loggers via dependency injection, the :php:`#[Channel]`
-attribute, :php:`LoggerAwareInterface` or
-:php:`LogManager->getLogger()` continues to work as before.
+attribute, :php-short:`\Psr\Log\LoggerAwareInterface` or
+:php-short:`\TYPO3\CMS\Core\Log\LogManager->getLogger()` continues to work as before.
 
 Affected installations
 ======================
 
 TYPO3 installations with third-party extensions that extend or XCLASS the
-class :php:`Logger`, which is very unlikely.
+class :php-short:`\TYPO3\CMS\Core\Log\Logger`, which is very unlikely.
 
 Migration
 =========

@@ -17,7 +17,7 @@ string but the new enum
 :php:`\TYPO3\CMS\Frontend\Resource\FileCollectionSorting` with the cases
 :php:`Ascending`, :php:`Descending` and :php:`Random`.
 
-:php:`FileCollector` is marked as :php:`@internal`, so this is not treated as a
+:php-short:`\TYPO3\CMS\Frontend\Resource\FileCollector` is marked as :php:`@internal`, so this is not treated as a
 breaking change. Extensions calling :php:`sort()` directly must nevertheless
 adapt their code:
 
@@ -35,7 +35,7 @@ adapt their code:
         FileCollectionSorting::fromKeyword($direction),
     );
 
-:php:`FileCollectionSorting::fromKeyword()` resolves both the short and the
+:php-short:`\TYPO3\CMS\Frontend\Resource\FileCollectionSorting::fromKeyword()` resolves both the short and the
 long keywords (:php:`asc`, :php:`ascending`, :php:`desc`, :php:`descending`,
 :php:`rand`, :php:`random`) case-insensitively, and throws a
 :php:`\ValueError` for anything else.

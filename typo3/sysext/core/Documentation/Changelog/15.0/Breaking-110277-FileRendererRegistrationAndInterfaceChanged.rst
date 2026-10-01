@@ -2,9 +2,9 @@
 
 ..  _breaking-110277-1784812454:
 
-======================================================================
+====================================================================
 Breaking: #110277 - File renderer registration and interface changed
-======================================================================
+====================================================================
 
 See :issue:`110277`
 
@@ -28,7 +28,7 @@ changes:
     container.
 
 -   The method :php:`getPriority()` has been removed from
-    :php:`FileRendererInterface`. The renderer priority is now defined at
+    :php-short:`\TYPO3\CMS\Core\Resource\Rendering\FileRendererInterface`. The renderer priority is now defined at
     registration time via the :php:`#[AsFileRenderer]` attribute or the
     :yaml:`fal.file_renderer` service tag. Note that the file renderers
     shipped with TYPO3 Core previously returned a priority of :php:`1`
@@ -41,24 +41,24 @@ changes:
 -   Renderers registered with the same priority are no longer guaranteed
     to be asked in the order they were added: previously, same-priority
     renderers kept the order in which
-    :php:`RendererRegistry->registerRendererClass()` was called from
+    :php-short:`\TYPO3\CMS\Core\Resource\Rendering\RendererRegistry->registerRendererClass()` was called from
     :file:`ext_localconf.php`. The order of same-priority tagged services
     is now an implementation detail of the dependency injection container
     and must not be relied upon. Extensions that depend on a specific
     evaluation order between renderers should assign distinct priorities
     instead.
 
--   The remaining methods of :php:`FileRendererInterface` are now
+-   The remaining methods of :php-short:`\TYPO3\CMS\Core\Resource\Rendering\FileRendererInterface` are now
     strictly typed: :php:`canRender(FileInterface $file): bool` and
     :php:`render(FileInterface $file, int|string $width, int|string $height, array $options = []): string`.
 
 -   The methods :php:`createRendererInstance()` and
     :php:`compareRendererPriority()` have been removed from
-    :php:`RendererRegistry`, the method :php:`getRendererInstances()` has
+    :php-short:`\TYPO3\CMS\Core\Resource\Rendering\RendererRegistry`, the method :php:`getRendererInstances()` has
     been changed from public to protected visibility, and the remaining
     methods are now strictly typed.
 
--   :php:`RendererRegistry` is now marked as :php:`@internal`, since
+-   :php-short:`\TYPO3\CMS\Core\Resource\Rendering\RendererRegistry` is now marked as :php:`@internal`, since
     registering file renderers does not require interacting with the
     registry anymore. TYPO3 Core resolves the matching renderer via
     :php:`getRenderer()` internally, for example in the
@@ -68,26 +68,26 @@ Impact
 ======
 
 File renderers registered via
-:php:`RendererRegistry->registerRendererClass()` in
+:php-short:`\TYPO3\CMS\Core\Resource\Rendering\RendererRegistry->registerRendererClass()` in
 :file:`ext_localconf.php` are no longer evaluated. The corresponding
 files (audio, video or online media) are no longer rendered by the custom
 renderer until it is registered as a tagged service.
 
-Custom renderer classes implementing :php:`FileRendererInterface` without
+Custom renderer classes implementing :php-short:`\TYPO3\CMS\Core\Resource\Rendering\FileRendererInterface` without
 the adapted method signatures will cause a fatal PHP error.
 
 Affected installations
 ======================
 
 All installations with custom extensions registering file renderers via
-:php:`RendererRegistry->registerRendererClass()`, or providing custom
-implementations of :php:`FileRendererInterface`. The extension scanner
-reports usages of :php:`registerRendererClass()` as weak match.
+:php-short:`\TYPO3\CMS\Core\Resource\Rendering\RendererRegistry->registerRendererClass()`, or providing custom
+implementations of :php-short:`\TYPO3\CMS\Core\Resource\Rendering\FileRendererInterface`. The extension scanner
+reports usages of :php:`registerRendererClass()` as a weak match.
 
 Migration
 =========
 
-Remove the :php:`RendererRegistry->registerRendererClass()` call from
+Remove the :php-short:`\TYPO3\CMS\Core\Resource\Rendering\RendererRegistry->registerRendererClass()` call from
 :file:`ext_localconf.php` and add the :php:`#[AsFileRenderer]` attribute
 to the renderer class instead. Move the priority previously returned by
 :php:`getPriority()` to the attribute and remove the method. Add the
@@ -123,8 +123,8 @@ not be narrowed in implementations, keep the :php:`$width` and
 and :php:`string` return type declarations are compatible with both
 versions.
 
-Code that called :php:`RendererRegistry->getRendererInstances()` to
-inspect all registered renderers should inject :php:`RendererRegistry`
+Code that called :php-short:`\TYPO3\CMS\Core\Resource\Rendering\RendererRegistry->getRendererInstances()` to
+inspect all registered renderers should inject :php-short:`\TYPO3\CMS\Core\Resource\Rendering\RendererRegistry`
 and use :php:`getRenderer($file)` to retrieve the matching renderer for
 a given file instead.
 

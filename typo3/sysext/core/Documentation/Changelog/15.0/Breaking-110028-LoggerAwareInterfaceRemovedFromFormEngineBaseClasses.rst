@@ -18,7 +18,7 @@ no longer implement :php:`\Psr\Log\LoggerAwareInterface` and no longer use
 :php:`\Psr\Log\LoggerAwareTrait`.
 
 Both base classes never read the injected logger themselves. The node hierarchy
-built on :php:`AbstractNode` does not use a logger at all. The two data provider
+built on :php-short:`\TYPO3\CMS\Backend\Form\AbstractNode` does not use a logger at all. The two data provider
 subclasses that did log, :php:`\TYPO3\CMS\Backend\Form\FormDataProvider\TcaFiles`
 and :php:`\TYPO3\CMS\Backend\Form\FormDataProvider\TcaInline`, now receive a
 :php:`\Psr\Log\LoggerInterface` through their constructor instead.

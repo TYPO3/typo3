@@ -159,7 +159,7 @@ The following methods changed signature according to previous deprecations in v1
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl()` - argument :php:`$request` is now mandatory :ref:`(Deprecation entry) <deprecation-109544-1775761298>`
 - :php:`\TYPO3\CMS\Extbase\Attribute\ORM\Cascade->__construct()` - argument :php:`$value` is now a :php:`?string` :ref:`(Deprecation entry) <deprecation-97559-1760453281>`
 - :php:`\TYPO3\CMS\Extbase\Attribute\IgnoreValidation->__construct()` - accepts no arguments any more :ref:`(Deprecation entry) <deprecation-97559-1760453281>`
-- :php:`\TYPO3\CMS\Extbase\Attribute\Validate->__construct()` - argument :php:`$validator` is not a :php:`string`, argument :php:`$param` has been removed :ref:`(Deprecation entry) <deprecation-97559-1760453281>`
+- :php:`\TYPO3\CMS\Extbase\Attribute\Validate->__construct()` - argument :php:`$validator` is now a :php:`string`, argument :php:`$param` has been removed :ref:`(Deprecation entry) <deprecation-97559-1760453281>`
 - :php:`\TYPO3\CMS\Filelist\FileList->start()` - argument :php:`$sortDirection` no longer accepts a :php:`bool`, a :php:`\TYPO3\CMS\Filelist\Type\SortDirection` enum is now required :ref:`(Deprecation entry) <deprecation-107225-1754640245>`
 
 The following public class properties have been dropped:
@@ -197,17 +197,17 @@ The following user TSconfig options have been removed:
 
 The following form yaml configurations that have previously been marked as deprecated for v14 have been removed:
 
-- :yaml:`fieldExplanationText` :ref:`(Deprecation entry) <deprecation-107068-1759214357>`
-- :yaml:`__inheritances` :ref:`(Deprecation entry) <deprecation-97857-1761224875>`
-- :yaml:`persistenceManager.allowedFileMounts` :ref:`(Deprecation entry) <deprecation-108653-1741600000>`
+- `fieldExplanationText` :ref:`(Deprecation entry) <deprecation-107068-1759214357>`
+- `__inheritances` :ref:`(Deprecation entry) <deprecation-97857-1761224875>`
+- `persistenceManager.allowedFileMounts` :ref:`(Deprecation entry) <deprecation-108653-1741600000>`
 
-The following global option handling have been dropped and are ignored:
+The following global options have been dropped and are ignored:
 
 - :php:`$GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid']['namespaces']` :ref:`(Deprecation entry) <deprecation-108524-1766073657>`
 - :php:`$GLOBALS['TYPO3_CONF_VARS']['DB']['Connections'][/*...*/]['tableoptions']` :ref:`(Deprecation entry) <deprecation-105297-1728836814>`
 - :php:`$GLOBALS['TYPO3_CONF_VARS']['DB']['Connections'][/*...*/]['defaultTableOptions']['collate']` :ref:`(Deprecation entry) <deprecation-105297-1728836814>`
 - :php:`$GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['fallbackToLegacyHash']`; the transitional fallback to the legacy md5-based cHash validation has been removed, only the HMAC-SHA3 cHash is accepted :ref:`(Breaking entry) <breaking-106307-1763824774>`
-- :php:`$GLOBALS['TYPO3_USER_SETTINGS']`; backend user profile settings are now configured via TCA (the :php:`be_users` ``user_settings`` column) using :php:`ExtensionManagementUtility::addUserSetting()` :ref:`(Deprecation entry) <deprecation-108843-1738600000>`
+- :php:`$GLOBALS['TYPO3_USER_SETTINGS']`; backend user profile settings are now configured via TCA (the `be_users` `user_settings` column) using :php-short:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addUserSetting()` :ref:`(Deprecation entry) <deprecation-108843-1738600000>`
 - :php:`$GLOBALS['TYPO3_CONF_VARS']['FE']['addAllowedPaths']`; additional public folders are now exposed via resource definitions instead :ref:`(Deprecation entry) <deprecation-109409-1774774806>`
 
 The following extension file loading has been removed:
@@ -217,9 +217,9 @@ The following extension file loading has been removed:
 
 The following TCA options are not evaluated anymore:
 
-- :php:`passwordRules` option of the :php:`passwordGenerator` field control; use :php:`passwordPolicy` instead :ref:`(Deprecation entry) <deprecation-69190-1770668741>`
+- `passwordRules` option of the `passwordGenerator` field control; use `passwordPolicy` instead :ref:`(Deprecation entry) <deprecation-69190-1770668741>`
 
-The following extbase attribute usages have been removed:
+The following Extbase attribute usages have been removed:
 
 - :php:`#[IgnoreValidation]` for parameters at method level :ref:`(Deprecation entry) <deprecation-108227-1763668119>`
 - :php:`#[Validate]` for parameters at method level :ref:`(Deprecation entry) <deprecation-108227-1763668119>`
@@ -230,23 +230,23 @@ The following fallbacks have been removed:
 - Page layout content area columns without an :html:`identifier` no longer fall back to a generated hash based on the page layout identifier and :html:`colPos`; a missing identifier now throws a :php:`\RuntimeException` :ref:`(Feature introduction) <feature-104974-1726401724>`
 - Manually creating and adding a :php:`\TYPO3\CMS\Backend\Template\Components\Buttons\Action\ShortcutButton` to the button bar is no longer detected and no longer suppresses the automatic shortcut button; controllers must use :php:`\TYPO3\CMS\Backend\Template\Components\DocHeaderComponent->setShortcutContext()` instead :ref:`(Deprecation entry) <deprecation-108008-1762896168>`
 - A legacy :file:`typo3conf/LocalConfiguration.php` and :file:`typo3conf/AdditionalConfiguration.php` are no longer automatically migrated to :file:`config/system/settings.php` and :file:`config/system/additional.php` on first request. The configuration files have to reside at their final location. :ref:`(Breaking entry) <breaking-98319-1664641595>`
-- The redis cache backend no longer accepts an array for the ``password`` option as a workaround to configure a username and password at once. Use the separate ``username`` and ``password`` options instead. :ref:`(Deprecation entry) <deprecation-107725-1760807740>`
-- The redis session backend no longer accepts an array for the ``password`` option as a workaround to configure a username and password at once. Use the separate ``username`` and ``password`` options instead. :ref:`(Deprecation entry) <deprecation-107802-1770827443>`
+- The redis cache backend no longer accepts an array for the `password` option as a workaround to configure a username and password at once. Use the separate `username` and `password` options instead. :ref:`(Deprecation entry) <deprecation-107725-1760807740>`
+- The redis session backend no longer accepts an array for the `password` option as a workaround to configure a username and password at once. Use the separate `username` and `password` options instead. :ref:`(Deprecation entry) <deprecation-107802-1770827443>`
 - Flex form pageTsConfig (:typoscript:`TCEFORM`) and exclude-field addressing no longer resolves comma-separated :php:`dataStructureKey` values (the legacy :php:`list_type,CType` form); the data structure key is used as-is :ref:`(Breaking entry) <breaking-107047-1751982363>`
 
 The following upgrade wizards have been removed:
 
-- :php:`\TYPO3\CMS\Core\Upgrades\SysFileMimeTypeMigration` (identifier ``sysFileMimeTypeMigration``)
-- :php:`\TYPO3\CMS\Core\Upgrades\PagesRecyclerDoktypeMigration` (identifier ``pagesRecyclerDoktypeMigration``)
-- :php:`\TYPO3\CMS\Core\Upgrades\NullToDefaultUpdateWizard` (identifier ``nullToDefaultUpdateWizard``)
-- :php:`\TYPO3\CMS\Frontend\Upgrades\SynchronizeColPosAndCTypeWithDefaultLanguage` (identifier ``synchronizeColPosAndCTypeWithDefaultLanguage``)
-- :php:`\TYPO3\CMS\IndexedSearch\Upgrades\IndexedSearchCTypeMigration` (identifier ``indexedSearchCTypeMigration``)
+- :php:`\TYPO3\CMS\Core\Upgrades\SysFileMimeTypeMigration` (identifier `sysFileMimeTypeMigration`)
+- :php:`\TYPO3\CMS\Core\Upgrades\PagesRecyclerDoktypeMigration` (identifier `pagesRecyclerDoktypeMigration`)
+- :php:`\TYPO3\CMS\Core\Upgrades\NullToDefaultUpdateWizard` (identifier `nullToDefaultUpdateWizard`)
+- :php:`\TYPO3\CMS\Frontend\Upgrades\SynchronizeColPosAndCTypeWithDefaultLanguage` (identifier `synchronizeColPosAndCTypeWithDefaultLanguage`)
+- :php:`\TYPO3\CMS\IndexedSearch\Upgrades\IndexedSearchCTypeMigration` (identifier `indexedSearchCTypeMigration`)
 
 The following JavaScript modules have been removed:
 
 - The legacy CKEditor5 alias modules :js:`@typo3/ckeditor5-bundle.js` and :js:`@typo3/ckeditor5-inspector.js` have been removed. Use the :js:`@ckeditor/ckeditor5-*` modules directly. The inspector is available as :js:`@ckeditor/ckeditor5-inspector`. :ref:`(Deprecation entry) <deprecation-102099>`
 
-The following JavaScript method behaviours have changed:
+The following JavaScript method behaviors have changed:
 
 - :js:`@typo3/backend/form-engine` no longer adds the :html:`doSave` hidden field to the form on save actions. Third-party code must no longer rely on the :html:`doSave` POST parameter. :ref:`(Deprecation entry) <deprecation-109029-1771804800>`
 - :js:`@typo3/backend/tab` no longer dispatches the legacy :js:`show.bs.tab` and :js:`shown.bs.tab` events on tab switches. Listen for :js:`typo3:tab:show` (:js:`TabShowEvent`) and :js:`typo3:tab:shown` (:js:`TabShownEvent`) instead. :ref:`(Deprecation entry) <deprecation-109171-1741254000>`
@@ -292,24 +292,24 @@ The following Fluid rendering mechanisms have been removed:
 The following asset ViewHelper arguments and options have been removed:
 
 - The :html:`useNonce` argument of the :html:`f:asset.script` and :html:`f:asset.css` ViewHelpers has been removed. Use the :html:`csp` argument instead. :ref:`(Deprecation entry) <deprecation-100887-1774712028>`
-- The :php:`useNonce` option key for JavaScript and stylesheet assets added via :php:`\TYPO3\CMS\Core\Page\AssetCollector` has been removed. Use the :php:`csp` option instead. :ref:`(Deprecation entry) <deprecation-100887-1774712028>`
+- The `useNonce` option key for JavaScript and stylesheet assets added via :php:`\TYPO3\CMS\Core\Page\AssetCollector` has been removed. Use the `csp` option instead. :ref:`(Deprecation entry) <deprecation-100887-1774712028>`
 
 The following FormEngine result array keys have been removed:
 
-- :php:`additionalHiddenFields`, hidden fields are now added to the :php:`html` key directly :ref:`(Deprecation entry) <deprecation-109102-1740480000>`
+- `additionalHiddenFields`, hidden fields are now added to the `html` key directly :ref:`(Deprecation entry) <deprecation-109102-1740480000>`
 
 The following cache action array keys have been removed:
 
-- :php:`href` in cache actions registered via :php:`\TYPO3\CMS\Backend\Backend\Event\ModifyClearCacheActionsEvent`; use :php:`endpoint` instead :ref:`(Deprecation entry) <deprecation-109107-1772108218>`
+- `href` in cache actions registered via :php:`\TYPO3\CMS\Backend\Backend\Event\ModifyClearCacheActionsEvent`; use `endpoint` instead :ref:`(Deprecation entry) <deprecation-109107-1772108218>`
 
 The following features are now always enabled:
 
-- :php:`extbase.consistentDateTimeHandling` - Extbase DateTime persistence is aligned with FormEngine and DataHandler, the feature flag has been dropped :ref:`(Feature introduction) <important-106467-1743452295>`
+- `extbase.consistentDateTimeHandling` - Extbase DateTime persistence is aligned with FormEngine and DataHandler, the feature flag has been dropped :ref:`(Important entry) <important-106467-1743452295>`
 
 Impact
 ======
 
 Using above removed functionality will most likely raise PHP fatal level errors,
-may change website output or crashes browser JavaScript.
+may change website output or crash browser JavaScript.
 
 .. index:: Backend, CLI, Database, FlexForm, Fluid, Frontend, JavaScript, LocalConfiguration, PHP-API, RTE, TCA, TSConfig, TypoScript, PartiallyScanned

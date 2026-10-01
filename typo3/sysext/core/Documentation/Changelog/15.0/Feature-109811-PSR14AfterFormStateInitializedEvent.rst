@@ -16,7 +16,7 @@ has been introduced. It serves as an improved replacement for the now
 :ref:`removed <breaking-109811-1759230001>` hook
 :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterFormStateInitialized']`.
 
-The new event is dispatched by :php:`FormRuntime` after the :php:`FormState`
+The new event is dispatched by :php-short:`\TYPO3\CMS\Form\Domain\Runtime\FormRuntime` after the :php-short:`\TYPO3\CMS\Form\Domain\Runtime\FormState`
 has been restored from the request. At this point both the form state
 (submitted values) and the static form definition are available, which makes
 it particularly suitable for enriching components that need runtime data (e.g.
@@ -24,7 +24,7 @@ configuring property mapping for file uploads).
 
 The event provides the following public properties:
 
-*   :php:`$formRuntime`: The form runtime object (read-only).
+*   :php:`$formRuntime`: The form runtime object.
 *   :php:`$request`: The current request (read-only).
 
 Example

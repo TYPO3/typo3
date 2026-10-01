@@ -14,8 +14,8 @@ Description
 The new PSR-14 event
 :php:`\TYPO3\CMS\Frontend\ContentObject\Event\AfterRecordIsRenderedEvent`
 is dispatched by the :typoscript:`CONTENT` and :typoscript:`RECORDS`
-content objects after each single record has been rendered. It allows to
-modify the rendered content of the record, for example to wrap it in
+content objects after each single record has been rendered. It allows
+modifying the rendered content of the record, for example to wrap it in
 additional markup.
 
 It is the counterpart to
@@ -35,7 +35,7 @@ The event provides the following methods:
 `getRecord()`
     Returns the rendered record as
     :php:`\TYPO3\CMS\Core\Domain\RecordInterface`, like
-    :php:`ModifyRenderedRecordEvent` does. This is usually a resolved
+    :php-short:`\TYPO3\CMS\Fluid\Event\ModifyRenderedRecordEvent` does. This is usually a resolved
     record. If the row cannot be resolved, for example because a custom
     :typoscript:`select.selectFields` omits system fields such as the
     language or workspace fields, a

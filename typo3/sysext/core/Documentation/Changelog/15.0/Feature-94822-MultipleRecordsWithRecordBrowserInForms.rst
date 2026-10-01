@@ -14,7 +14,7 @@ Description
 The record browser in forms can now be used to add multiple records to a property,
 if configured accordingly.
 
-When the option :yaml:`maxItems` of the :yaml:`Inspector-Typo3WinBrowserEditor` is
+When the option `maxItems` of the :yaml:`Inspector-Typo3WinBrowserEditor` is
 greater than 1, the UIDs of the selected records are added as a comma-separated list:
 
 .. code-block:: yaml
@@ -42,9 +42,9 @@ greater than 1, the UIDs of the selected records are added as a comma-separated 
 
 Custom logic must be added to actually make use of the multiple values.
 
-Whenever :yaml:`minItems` or :yaml:`maxItems` is configured, the number of
+Whenever `minItems` or `maxItems` is configured, the number of
 selected records is validated automatically through the new :yaml:`ItemCount`
-property validator, without the need to add it to :yaml:`propertyValidators`.
+property validator, without the need to add it to `propertyValidators`.
 
 There is also a new property validator:
 
@@ -55,10 +55,10 @@ There is also a new property validator:
 Impact
 ======
 
-Form definitions can be set up to allow editors the selection of multiple database
+Form definitions can be set up to allow editors to select multiple database
 records and then render them using custom logic.
 
-To avoid conflicts with existing configurations, :yaml:`minItems` is set to 0 and
-:yaml:`maxItems` to 1 by default.
+To avoid conflicts with existing configurations, `minItems` is set to 0 and
+`maxItems` to 1 by default.
 
 ..  index:: Backend, ext:form
