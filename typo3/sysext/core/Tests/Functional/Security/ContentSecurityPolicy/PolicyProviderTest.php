@@ -187,7 +187,7 @@ final class PolicyProviderTest extends FunctionalTestCase
             $request = $request
                 ->withAttribute('site', $site)
                 ->withAttribute(
-                    'siteLanguage',
+                    'language',
                     $languagePreset !== null
                         ? $site->getLanguageById($this->resolveLanguagePreset($languagePreset)['id'])
                         : $site->getDefaultLanguage()
