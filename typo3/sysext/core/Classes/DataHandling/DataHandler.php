@@ -7096,14 +7096,15 @@ class DataHandler
 
                 // Update child records if change to pid is required
                 if ($thePidToUpdate && !empty($updatePidForRecords)) {
-                    // Ensure that only the default language page is used as PID
-                    $thePidToUpdate = $this->getDefaultLanguagePageId($thePidToUpdate);
                     // @todo: this can probably go away
                     // ensure, only live page ids are used as 'pid' values
                     $liveId = BackendUtility::getLiveVersionIdOfRecord('pages', $theUidToUpdate);
                     if ($liveId !== null) {
                         $thePidToUpdate = $liveId;
                     }
+                    // Ensure that only the default language page is used as PID. This must happen after
+                    // resolving the live id, which is the id of the translated page for a page translation.
+                    $thePidToUpdate = $this->getDefaultLanguagePageId($thePidToUpdate);
                     $updateValues = ['pid' => $thePidToUpdate];
                     foreach ($updatePidForRecords as $tableName => $uids) {
                         if (empty($tableName)) {
@@ -7153,11 +7154,12 @@ class DataHandler
         }
 
         if ($thePidToUpdate && $updatePidForRecords !== []) {
-            $thePidToUpdate = $this->getDefaultLanguagePageId($thePidToUpdate);
             $liveId = BackendUtility::getLiveVersionIdOfRecord('pages', $theUidToUpdate);
             if ($liveId !== null) {
                 $thePidToUpdate = $liveId;
             }
+            // Resolve the default language page after the live id, see remapListedDBRecords_procInline()
+            $thePidToUpdate = $this->getDefaultLanguagePageId($thePidToUpdate);
             $updateValues = ['pid' => $thePidToUpdate];
             foreach ($updatePidForRecords as $tableName => $uids) {
                 if (empty($tableName)) {

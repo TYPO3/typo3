@@ -1,0 +1,10 @@
+"pages",,,,,,,,,,,,,
+,"uid","pid","sorting","deleted","sys_language_uid","l10n_parent","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","title","media",
+,91,88,768,0,0,0,0,0,0,0,"Page with media",1,
+"sys_file_reference",,,,,,,,,,,,,
+,"uid","pid","deleted","sys_language_uid","l10n_parent","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","uid_local","uid_foreign","tablenames","fieldname","sorting_foreign","title"
+,130,91,0,0,0,0,0,0,0,1,91,"pages","media",1,"Page media"
+"sys_refindex"
+,"hash","tablename","recuid","field","hidden","starttime","endtime","t3ver_state","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_field","ref_hidden","ref_starttime","ref_endtime","ref_t3ver_state","ref_sorting","ref_string"
+,"9f07b04f63064ed209e832dba5ebe738","pages",91,"media",0,0,2147483647,0,,,,0,0,"sys_file_reference",130,,0,0,2147483647,0,0,
+,"113e7bdc7013663c59f778bcc8dd5bc6","sys_file_reference",130,"uid_local",0,0,2147483647,0,,,,0,0,"sys_file",1,,0,0,2147483647,0,0,

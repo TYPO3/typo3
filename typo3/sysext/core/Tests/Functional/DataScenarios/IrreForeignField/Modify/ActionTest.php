@@ -706,4 +706,11 @@ final class ActionTest extends AbstractActionTestCase
         parent::deleteHotelWithMultipleOffersThenHardDelete();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteHotelWithMultipleOffersThenHardDelete.csv');
     }
+
+    #[Test]
+    public function localizeParentContentAndMoveToDifferentPage(): void
+    {
+        parent::localizeParentContentAndMoveToDifferentPage();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeParentContentNMoveToDifferentPage.csv');
+    }
 }

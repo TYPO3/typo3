@@ -696,4 +696,11 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         parent::inlineLocalizeSynchronizeLocalizeMissing();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/inlineLocalizeSynchronizeLocalizeMissing.csv');
     }
+
+    #[Test]
+    public function localizeParentContentAndMoveToDifferentPage(): void
+    {
+        parent::localizeParentContentAndMoveToDifferentPage();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeParentContentNMoveToDifferentPage.csv');
+    }
 }

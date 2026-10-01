@@ -1,0 +1,18 @@
+"pages"
+,"uid","pid","sorting","deleted","sys_language_uid","l10n_parent","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","title","media"
+,1,0,256,0,0,0,0,0,0,0,"FunctionalTest",0
+,88,1,256,0,0,0,0,0,0,0,"DataHandlerTest",0
+,89,88,256,0,0,0,0,0,0,0,"FAL",0
+,90,88,512,0,0,0,0,0,0,0,"Target",0
+,91,88,768,0,0,0,0,0,0,0,"Page with media",1
+,92,90,256,0,1,91,1,1,0,0,"[Translate to Dansk:] Page with media",1
+,93,90,256,0,0,0,1,4,0,91,"Page with media",1
+"sys_file_reference"
+,"uid","pid","deleted","sys_language_uid","l10n_parent","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","uid_local","uid_foreign","tablenames","fieldname","sorting_foreign","title"
+,126,89,0,0,0,0,0,0,0,1,330,"tt_content","image",2,"T3BOARD"
+,127,89,0,0,0,0,0,0,0,21,330,"tt_content","image",1,"Kasper"
+,128,89,0,0,0,0,0,0,0,21,331,"tt_content","image",1,"Taken at T3BOARD"
+,129,89,0,0,0,0,0,0,0,1,331,"tt_content","image",2,"This is Kasper"
+,130,91,0,0,0,0,0,0,0,1,91,"pages","media",1,"Page media"
+,131,91,0,1,130,1,1,0,0,1,92,"pages","media",1,"[Translate to Dansk:] Page media"
+,132,91,0,0,0,1,0,0,130,1,91,"pages","media",1,"Page media"
