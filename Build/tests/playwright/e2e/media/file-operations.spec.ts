@@ -149,4 +149,34 @@ test.describe('File Operations', () => {
       await expect(backend.contentFrame.locator('[data-multi-record-selection-element="true"]').getByText(randomUploadFileName).first()).toBeVisible();
     });
   });
+
+  test('Upload file by pasting it from the clipboard', async ({ backend, page }) => {
+    const pastedFileName = 'pasted' + Date.now() + '.txt';
+
+    await backend.contentFrame.locator('body').evaluate((body: HTMLElement, fileName: string) => {
+      const clipboardData = new DataTransfer();
+      clipboardData.items.add(new File(['pasted content'], fileName, { type: 'text/plain' }));
+      body.dispatchEvent(new ClipboardEvent('paste', { clipboardData, bubbles: true, cancelable: true }));
+    }, pastedFileName);
+
+    await expect(backend.contentFrame.locator('.upload-queue-item').getByText(pastedFileName)).toBeVisible();
+    await expect(page.locator('#alert-container').getByText(pastedFileName)).toBeVisible({ timeout: 12000 });
+  });
+
+  test('Pasting a file into a form field does not upload it', async ({ backend, page }) => {
+    const pasteFile = (selector: string, fileName: string) => backend.contentFrame.locator(selector).evaluate((element: HTMLElement, fileName: string) => {
+      const clipboardData = new DataTransfer();
+      clipboardData.items.add(new File(['pasted content'], fileName, { type: 'text/plain' }));
+      element.dispatchEvent(new ClipboardEvent('paste', { clipboardData, bubbles: true, cancelable: true }));
+    }, fileName);
+    const fieldFileName = 'pasted-into-field' + Date.now() + '.txt';
+    const pageFileName = 'pasted-into-page' + Date.now() + '.txt';
+
+    await pasteFile('input[name="searchTerm"]', fieldFileName);
+    // Paste into the page afterwards: once that upload has finished, one of the field would be queued as well
+    await pasteFile('body', pageFileName);
+
+    await expect(page.locator('#alert-container').getByText(pageFileName)).toBeVisible({ timeout: 12000 });
+    await expect(backend.contentFrame.locator('.upload-queue-item').getByText(fieldFileName)).toHaveCount(0);
+  });
 });

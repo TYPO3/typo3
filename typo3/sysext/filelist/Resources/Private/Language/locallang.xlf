@@ -37,7 +37,7 @@
         <source>This folder is empty</source>
       </trans-unit>
       <trans-unit id="flashmessage.no_items.message">
-        <source>Drag files here to upload them</source>
+        <source>Drag files here or paste them from the clipboard to upload them</source>
       </trans-unit>
       <trans-unit id="file_upload.php.pagetitle">
         <source>Upload files</source>

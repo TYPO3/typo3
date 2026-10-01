@@ -212,6 +212,10 @@ export default class DragUploader {
 
     document.addEventListener(uploadFinishedEventName, this.closeDropzone);
 
+    if (this.element.hasAttribute('data-upload-on-paste')) {
+      document.addEventListener('paste', this.handlePaste);
+    }
+
     // no filelist then create own progress table
     if (this.fileList === null) {
       this.fileList = document.createElement('table');
@@ -365,6 +369,19 @@ export default class DragUploader {
     this.ignoreDrop(event);
     this.hideDropzone(event);
     this.processFiles(event.dataTransfer.files);
+  };
+
+  public handlePaste = (event: ClipboardEvent): void => {
+    const files = event.clipboardData?.files;
+    if (event.defaultPrevented || !files || files.length === 0) {
+      return;
+    }
+    // Pasting into a form field is left to the field
+    if (event.target instanceof Element && event.target.closest('input, textarea, select, [contenteditable]:not([contenteditable="false"])') !== null) {
+      return;
+    }
+    event.preventDefault();
+    this.processFiles(files);
   };
 
   /**
