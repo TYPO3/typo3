@@ -104,8 +104,12 @@ final readonly class PageInformationFactory
         $pageInformation->setId($request->getAttribute('routing')->getPageId());
         if ($GLOBALS['TYPO3_CONF_VARS']['FE']['enable_mount_pids'] ?? false) {
             $mountPoint = (string)($request->getAttribute('routing')->getArguments()['MP'] ?? '');
-            // Ensure no additional arguments are given via the &MP=123-345,908-172 (e.g. "/")
-            $pageInformation->setMountPoint(preg_replace('/[^0-9,-]/', '', $mountPoint));
+            // Keep only valid pairs of &MP=123-345,908-172, same as RootlineUtility::sanitizeMountPointParameter()
+            $mountPointPairs = array_filter(
+                GeneralUtility::trimExplode(',', $mountPoint, true),
+                static fn(string $mountPointPair): bool => preg_match('/^\d+-\d+$/', $mountPointPair) === 1
+            );
+            $pageInformation->setMountPoint(implode(',', $mountPointPairs));
         }
 
         $event = $this->eventDispatcher->dispatch(new BeforePageIsResolvedEvent($request, $pageInformation));
