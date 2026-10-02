@@ -88,13 +88,16 @@ readonly class FileRepository
     {
         $itemList = [];
         $referenceUids = [];
+        $referenceData = [];
         if ($this->isFrontend()) {
+            $isLiveWorkspace = ($workspaceId === null || $workspaceId === 0)
+                && GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('workspace', 'id', 0) === 0;
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getQueryBuilderForTable('sys_file_reference');
 
             $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
             $res = $queryBuilder
-                ->select('uid')
+                ->select($isLiveWorkspace ? '*' : 'uid')
                 ->from('sys_file_reference')
                 ->where(
                     $queryBuilder->expr()->eq(
@@ -115,6 +118,9 @@ readonly class FileRepository
 
             while ($row = $res->fetchAssociative()) {
                 $referenceUids[] = $row['uid'];
+                if ($isLiveWorkspace) {
+                    $referenceData[$row['uid']] = $row;
+                }
             }
         } else {
             $schema = $this->tcaSchemaFactory->get($tableName);
@@ -134,9 +140,8 @@ readonly class FileRepository
         if (!empty($referenceUids)) {
             foreach ($referenceUids as $referenceUid) {
                 try {
-                    // Just passing the reference uid, the factory is doing workspace
-                    // overlays automatically depending on the current environment
-                    $itemList[] = $this->factory->getFileReferenceObject($referenceUid);
+                    // Workspace overlays are still resolved by the factory when no row is supplied.
+                    $itemList[] = $this->factory->getFileReferenceObject($referenceUid, $referenceData[$referenceUid] ?? []);
                 } catch (ResourceDoesNotExistException) {
                     // No handling, just omit the invalid reference uid
                 }
