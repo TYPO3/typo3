@@ -832,6 +832,34 @@ final class GeneralUtilityTest extends UnitTestCase
     public static function trimExplodeReturnsCorrectResultDataProvider(): array
     {
         return [
+            'keeps empty input' => [
+                ',',
+                '',
+                false,
+                0,
+                [''],
+            ],
+            'removes empty input' => [
+                ',',
+                '',
+                true,
+                0,
+                [],
+            ],
+            'removes all trim whitespace characters' => [
+                ',',
+                " \t\n\r\0\x0B, \t\n\r\0\x0B",
+                true,
+                0,
+                [],
+            ],
+            'retains zero when removing empty values' => [
+                ',',
+                " \0\t0\x0B , ",
+                true,
+                0,
+                ['0'],
+            ],
             'spaces at element start and end' => [
                 ',',
                 ' a , b , c ,d ,,  e,f,',
@@ -880,6 +908,13 @@ final class GeneralUtilityTest extends UnitTestCase
                 false,
                 -3,
                 ['a', 'b', 'c', 'd', '', 'e'],
+            ],
+            'returns no results with empty items if negative limit exceeds item count' => [
+                ',',
+                ' a , , b ',
+                false,
+                -5,
+                [],
             ],
             'keeps remaining results without empty items after reaching limit with negative parameter' => [
                 ',',

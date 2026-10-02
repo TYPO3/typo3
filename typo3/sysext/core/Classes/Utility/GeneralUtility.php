@@ -800,16 +800,22 @@ class GeneralUtility
      */
     public static function trimExplode(string $delim, string $string, bool $removeEmptyValues = false, int $limit = 0): array
     {
+        if (!$removeEmptyValues) {
+            return array_map(trim(...), $limit === 0 ? explode($delim, $string) : explode($delim, $string, $limit));
+        }
         $result = explode($delim, $string);
-        if ($removeEmptyValues) {
-            // Remove items that are just whitespace, but leave whitespace intact for the rest.
-            $result = array_values(array_filter($result, static fn(string $item): bool => trim($item) !== ''));
-        }
-
         if ($limit === 0) {
-            // Return everything.
-            return array_map(trim(...), $result);
+            $nonEmptyValues = [];
+            foreach ($result as $value) {
+                $value = trim($value);
+                if ($value !== '') {
+                    $nonEmptyValues[] = $value;
+                }
+            }
+            return $nonEmptyValues;
         }
+        // Remove items that are just whitespace, but leave whitespace intact for the rest.
+        $result = array_values(array_filter($result, static fn(string $item): bool => trim($item) !== ''));
 
         if ($limit < 0) {
             // Trim and return just the first $limit elements and ignore the rest.
