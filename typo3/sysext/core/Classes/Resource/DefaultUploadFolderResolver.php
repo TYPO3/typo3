@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
 use TYPO3\CMS\Core\Resource\Event\AfterDefaultUploadFolderWasResolvedEvent;
 use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
+use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
 
 /**
  * Finds the best matching upload folder for a specific backend user
@@ -71,7 +72,7 @@ readonly class DefaultUploadFolderResolver
         if ($uploadPath) {
             try {
                 $uploadFolder = $this->resourceFactory->getFolderObjectFromCombinedIdentifier($uploadPath);
-            } catch (FolderDoesNotExistException $e) {
+            } catch (FolderDoesNotExistException|InsufficientFolderAccessPermissionsException) {
             }
         }
 
