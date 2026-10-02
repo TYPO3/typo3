@@ -22,6 +22,7 @@ use TYPO3\CMS\Backend\ElementBrowser\AbstractElementBrowser;
 use TYPO3\CMS\Backend\ElementBrowser\ElementBrowserInterface;
 use TYPO3\CMS\Backend\Template\Components\Buttons\ButtonInterface;
 use TYPO3\CMS\Backend\Tree\View\LinkParameterProviderInterface;
+use TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior;
 use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\Folder;
@@ -64,6 +65,28 @@ abstract class AbstractResourceBrowser extends AbstractElementBrowser implements
         $this->pageRenderer->loadJavaScriptModule('@typo3/filelist/file-list-actions.js');
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/multi-record-selection.js');
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/global-event-handler.js');
+    }
+
+    protected function initializeDragUploader(): void
+    {
+        $lang = $this->getLanguageService();
+        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/drag-uploader.js');
+        $this->pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_core.xlf', 'file_upload');
+        $this->pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_core.xlf', 'file_download');
+        $this->pageRenderer->addInlineLanguageLabelArray([
+            'type.file' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:file'),
+            'permissions.read' => $lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:read'),
+            'permissions.write' => $lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:write'),
+            'online_media.update.success' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:online_media.update.success'),
+            'online_media.update.error' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:online_media.update.error'),
+            'labels.contextMenu.open' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.contextMenu.open'),
+        ]);
+        $defaultDuplicationBehavior = DuplicationBehavior::getDefaultDuplicationBehaviour($this->getBackendUser());
+        $this->view->assign('dragUploader', [
+            'fileDenyPattern' => $GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'] ?? null,
+            'maxFileSize' => GeneralUtility::getMaxUploadFileSize() * 1024,
+            'defaultDuplicationBehaviourAction' => $defaultDuplicationBehavior->value,
+        ]);
     }
 
     protected function initVariables(ServerRequestInterface $request): void

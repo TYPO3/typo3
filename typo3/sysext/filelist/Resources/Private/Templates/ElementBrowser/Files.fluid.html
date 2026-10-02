@@ -14,6 +14,16 @@
 </f:section>
 
 <f:section name="Content">
+    <f:if condition="{uploadAllowed}">
+        <div class="t3js-drag-uploader" data-target-folder="{selectedFolder.combinedIdentifier}"
+            data-dropzone-trigger=".t3js-drag-uploader-trigger" data-dropzone-target=".t3js-file-browser-dropzone-target"
+            data-dropzone-area=".element-browser-main-content"
+            data-file-allowed="{fileExtensions.allowed}" data-file-disallowed="{fileExtensions.disallowed}"
+            data-file-deny-pattern="{dragUploader.fileDenyPattern}" data-max-file-size="{dragUploader.maxFileSize}"
+            data-default-action="{dragUploader.defaultDuplicationBehaviourAction}" data-manual-table
+            data-upload-on-paste
+        ></div>
+    </f:if>
     <f:if condition="{selectedFolder}">
         <h4 class="text-truncate mb-4">
             <core:iconForResource resource="{selectedFolder}" />

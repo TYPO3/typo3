@@ -51,6 +51,14 @@ class BrowseFiles {
       InfoWindow.showItem('_' + resource.type.toUpperCase(), resource.identifier);
     }).bindTo(document);
 
+    // Show uploaded files in the list, so they can be selected
+    new RegularEvent('typo3:drag-uploader:upload-finished', (): void => {
+      const targetFolder = document.querySelector<HTMLElement>('.element-browser-body .t3js-drag-uploader')?.dataset.targetFolder;
+      if (targetFolder) {
+        this.loadFolder(targetFolder);
+      }
+    }).bindTo(document);
+
     // Handle import selection event, dispatched from MultiRecordSelection
     new RegularEvent('multiRecordSelection:action:import', this.importSelection).bindTo(document);
 
@@ -78,14 +86,19 @@ class BrowseFiles {
     if (resource.type !== 'folder') {
       return;
     }
-    const contentsUrl = document.location.href + '&contentOnly=1&expandFolder=' + resource.identifier;
+    await this.loadFolder(resource.identifier);
+  }
+
+  private async loadFolder(identifier: string): Promise<void>
+  {
+    const contentsUrl = document.location.href + '&contentOnly=1&expandFolder=' + identifier;
     const response = await new AjaxRequest(contentsUrl).get();
     const html = await response.resolve();
     const contentContainer = document.querySelector('.element-browser-main-content .element-browser-body') as HTMLElement;
     contentContainer.innerHTML = html;
     const tree = document.querySelector('typo3-backend-component-filestorage-browser-tree');
     if (tree) {
-      const treeNodeIdentifier = encodeURIComponent(resource.identifier);
+      const treeNodeIdentifier = encodeURIComponent(identifier);
       // @todo Support loading the node via rootline, in case the node has not be loaded in the tree yet, see @typo3/backend/tree/tree-module-state
       const node = tree.nodes.find((node) => node.identifier === treeNodeIdentifier);
       if (node) {

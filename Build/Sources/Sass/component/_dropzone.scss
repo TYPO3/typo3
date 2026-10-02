@@ -202,9 +202,10 @@
 }
 
 //
-// Improved DragUploader for filelist and file fields
+// Improved DragUploader for filelist, file browser and file fields
 //
 .filelist-main,
+.file-browser-upload,
 fieldset:has(> typo3-formengine-container-inline[data-type="file"]) {
     .dropzone {
         --dropzone-bg: #000;
@@ -241,4 +242,13 @@ fieldset:has(> typo3-formengine-container-inline[data-type="file"]) {
         top: 0;
         height: 100%;
     }
+}
+
+.element-browser-main-content:has(.file-browser-upload) {
+    position: relative;
+}
+
+.file-browser-upload .dropzone {
+    top: 0;
+    height: 100%;
 }

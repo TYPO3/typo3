@@ -108,16 +108,20 @@ class FileBrowser extends AbstractResourceBrowser
     public function render(): string
     {
         $this->initSelectedFolder();
+        // The module is loaded with the first folder, others are fetched as content only
+        $this->initializeDragUploader();
         $contentHtml = '';
 
         if ($this->selectedFolder instanceof Folder) {
             $markup = [];
 
             // Prepare search box, since the component should always be displayed, even if no files are available
-            $markup[] = '<div class="mb-4">';
+            // The dropzone of the uploader is placed in it, the upload queue below it
+            $markup[] = '<div class="file-browser-upload d-flex flex-column gap-3 mb-4">';
             $markup[] = GeneralUtility::makeInstance(RecordSearchBoxComponent::class)
                 ->setSearchWord($this->searchWord ?? '')
                 ->render($this->getRequest(), $this->createUri());
+            $markup[] = '<div class="t3js-file-browser-dropzone-target" hidden></div>';
             $markup[] = '</div>';
 
             // Create the filelist
@@ -160,7 +164,15 @@ class FileBrowser extends AbstractResourceBrowser
 
             // Build the file upload and folder creation form
             $resourceUtilityRenderer = GeneralUtility::makeInstance(ResourceUtilityRenderer::class, $this);
-            $markup[] = $resourceUtilityRenderer->uploadForm($this->getRequest(), $this->selectedFolder, $this->fileExtensionFilter);
+            $dragUploadTrigger = $resourceUtilityRenderer->createDragUpload($this->selectedFolder, $this->fileExtensionFilter, true);
+            $this->view->assignMultiple([
+                'uploadAllowed' => $dragUploadTrigger !== '',
+                'fileExtensions' => [
+                    'allowed' => implode(',', $this->fileExtensionFilter?->getAllowedFileExtensions() ?? []),
+                    'disallowed' => implode(',', $this->fileExtensionFilter?->getDisallowedFileExtensions() ?? []),
+                ],
+            ]);
+            $markup[] = $dragUploadTrigger;
             $markup[] = $resourceUtilityRenderer->addOnlineMedia($this->getRequest(), $this->selectedFolder, $this->fileExtensionFilter);
             $markup[] = $resourceUtilityRenderer->createFolder($this->getRequest(), $this->selectedFolder);
 

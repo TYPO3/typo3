@@ -698,7 +698,8 @@ export default class DragUploader {
       FilePasteHandler.register({
         scope: null,
         label: '',
-        isAvailable: (): boolean => true,
+        // A replaced uploader, e.g. of a previously shown folder, must not receive the files
+        isAvailable: (): boolean => this.element.isConnected,
         receive: (files: File[]): void => this.processFiles(files),
       });
       return;

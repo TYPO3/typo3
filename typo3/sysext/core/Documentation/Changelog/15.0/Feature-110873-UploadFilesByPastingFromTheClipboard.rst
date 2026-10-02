@@ -6,7 +6,7 @@
 Feature: #110873 - Upload files by pasting them from the clipboard
 ==================================================================
 
-See :issue:`110873` and :issue:`110881`
+See :issue:`110873`, :issue:`110881` and :issue:`110882`
 
 Description
 ===========
@@ -35,11 +35,20 @@ While files are dragged over a record, each of its file fields is covered by
 its dropzone, as in the :guilabel:`Media` module, so the files can be dropped
 anywhere onto the field instead of onto a small bar below it.
 
+The file browser, opened for example with :guilabel:`Add image` in a file field,
+now uses the same upload. Files can be uploaded to the folder shown by choosing
+them with the upload button, by dropping them anywhere onto the content area of
+the file browser and by pasting them. Afterwards the folder is reloaded, so the
+uploaded files can be selected right away. The allowed file extensions of the
+field apply. The :guilabel:`Overwrite existing files` toggle of the previous
+upload form is replaced by the dialog asking what to do with a file that already
+exists.
+
 Impact
 ======
 
-Files can be uploaded in the :guilabel:`Media` module and added to file fields
-of records with :kbd:`Cmd+V` or :kbd:`Ctrl+V` without dragging them from another
-window.
+Files can be uploaded in the :guilabel:`Media` module and in the file browser,
+and added to file fields of records, with :kbd:`Cmd+V` or :kbd:`Ctrl+V`
+without dragging them from another window.
 
 ..  index:: Backend, FAL, ext:backend, ext:filelist
