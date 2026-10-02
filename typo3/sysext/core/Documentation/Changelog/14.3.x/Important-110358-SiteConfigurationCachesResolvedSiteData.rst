@@ -34,4 +34,4 @@ However, changes applied directly to the files :file:`csp.yaml`,
 become active - as was already the case for :file:`config.yaml` and
 :file:`settings.yaml` before.
 
-..  index:: PHP-API, YAML, ext:core, NotScanned
+..  index:: PHP-API, YAML, ext:core

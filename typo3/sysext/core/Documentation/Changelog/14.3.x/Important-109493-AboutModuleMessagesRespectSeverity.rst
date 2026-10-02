@@ -43,4 +43,4 @@ Event listeners should therefore state the intended severity explicitly:
         }
     }
 
-..  index:: Backend, PHP-API, ext:backend, NotScanned
+..  index:: Backend, PHP-API, ext:backend

@@ -31,4 +31,4 @@ the data, remove the two fields and re-serialize the data. It
 is important to execute this wizard for safety. If the wizard
 does not show up, no serialized credential data is found.
 
-..  index:: Backend, PHP-API, ext:backend, NotScanned
+..  index:: Backend, PHP-API, ext:backend

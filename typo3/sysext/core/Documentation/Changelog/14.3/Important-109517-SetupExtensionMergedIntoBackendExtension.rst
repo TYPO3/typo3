@@ -126,4 +126,4 @@ Only listen to the new event :php:`TYPO3\CMS\Backend\Event\AddUserSettingsJavaSc
         }
     }
 
-..  index:: Backend, PHP-API, ext:backend, NotScanned
+..  index:: Backend, PHP-API, ext:backend

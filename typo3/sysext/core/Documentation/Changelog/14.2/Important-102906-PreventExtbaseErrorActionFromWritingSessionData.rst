@@ -46,4 +46,4 @@ forwarding requests and are restored from `ExtbaseRequestParameters` in
     :php:`\TYPO3\CMS\Extbase\Http\ForwardResponse` when forwarding
     requests from the error action.
 
-..  index:: Backend, Frontend, FullyScanned, ext:extbase
+..  index:: Backend, Frontend, ext:extbase
