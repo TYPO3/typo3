@@ -66,4 +66,30 @@ final class PageInformationFactoryTest extends FunctionalTestCase
         self::assertSame(array_keys($expectedLocalRootLine), array_keys($localRootLine));
         self::assertArrayIsEqualToArrayOnlyConsideringListOfKeys($expectedLocalRootLine, $localRootLine, ['uid', 'pid', 'title']);
     }
+
+    public static function createDiscardsInvalidMountPointParameterDataProvider(): \Generator
+    {
+        yield 'single number' => ['2'];
+        yield 'number with invalid characters' => ['<sz2B'];
+        yield 'text' => ['abc'];
+        yield 'three numbers' => ['1-2-3'];
+        yield 'missing mounted page' => ['1-'];
+        yield 'missing mount point page' => ['-2'];
+        yield 'list of invalid pairs' => ['2,3'];
+    }
+
+    #[DataProvider('createDiscardsInvalidMountPointParameterDataProvider')]
+    #[Test]
+    public function createDiscardsInvalidMountPointParameter(string $mountPoint): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/DataSet/PageInformationFactoryTestRootlineImport.csv');
+        $pageArguments = new PageArguments(89, '0', ['MP' => $mountPoint]);
+        $site = new Site('test', 2, []);
+        $request = (new ServerRequest())
+            ->withAttribute('routing', $pageArguments)
+            ->withAttribute('site', $site);
+        $subject = $this->get(PageInformationFactory::class);
+        $pageInformation = $subject->create($request);
+        self::assertSame('', $pageInformation->getMountPoint());
+    }
 }
