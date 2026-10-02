@@ -97,16 +97,24 @@ readonly class RedirectService
 
             // check if a flat redirect matches with the Query applied
             if (!empty($query)) {
-                $pathWithQuery = rtrim($path, '/') . '?' . ltrim($query, '?');
-                if (!empty($redirects['respect_query_parameters'][$pathWithQuery])) {
-                    if ($matchedRedirect = $this->getFirstActiveRedirectFromPossibleRedirects($redirects['respect_query_parameters'][$pathWithQuery])) {
-                        return $matchedRedirect;
-                    }
-                } else {
-                    $pathWithQueryAndSlash = rtrim($path, '/') . '/?' . ltrim($query, '?');
-                    if (!empty($redirects['respect_query_parameters'][$pathWithQueryAndSlash])) {
-                        if ($matchedRedirect = $this->getFirstActiveRedirectFromPossibleRedirects($redirects['respect_query_parameters'][$pathWithQueryAndSlash])) {
+                // Brackets in query parameters (e.g. "tx_ext[action]") are percent-encoded in the request,
+                // while redirect records may contain them literally.
+                $queryVariants = array_unique([
+                    ltrim($query, '?'),
+                    str_ireplace(['%5B', '%5D'], ['[', ']'], ltrim($query, '?')),
+                ]);
+                foreach ($queryVariants as $queryVariant) {
+                    $pathWithQuery = rtrim($path, '/') . '?' . $queryVariant;
+                    if (!empty($redirects['respect_query_parameters'][$pathWithQuery])) {
+                        if ($matchedRedirect = $this->getFirstActiveRedirectFromPossibleRedirects($redirects['respect_query_parameters'][$pathWithQuery])) {
                             return $matchedRedirect;
+                        }
+                    } else {
+                        $pathWithQueryAndSlash = rtrim($path, '/') . '/?' . $queryVariant;
+                        if (!empty($redirects['respect_query_parameters'][$pathWithQueryAndSlash])) {
+                            if ($matchedRedirect = $this->getFirstActiveRedirectFromPossibleRedirects($redirects['respect_query_parameters'][$pathWithQueryAndSlash])) {
+                                return $matchedRedirect;
+                            }
                         }
                     }
                 }

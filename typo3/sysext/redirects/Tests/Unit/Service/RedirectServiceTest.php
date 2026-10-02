@@ -233,6 +233,54 @@ final class RedirectServiceTest extends UnitTestCase
         self::assertSame($row, $result);
     }
 
+    public static function matchRedirectReturnsRedirectOnRespectQueryParametersMatchWithBracketsDataProvider(): array
+    {
+        return [
+            'source path with brackets' => [
+                '/foo?tx_myext[action]=list',
+            ],
+            'source path with encoded brackets' => [
+                '/foo?tx_myext%5Baction%5D=list',
+            ],
+        ];
+    }
+
+    #[DataProvider('matchRedirectReturnsRedirectOnRespectQueryParametersMatchWithBracketsDataProvider')]
+    #[Test]
+    public function matchRedirectReturnsRedirectOnRespectQueryParametersMatchWithBrackets(string $sourcePath): void
+    {
+        $row = [
+            'target' => 'https://example.com',
+            'force_https' => '0',
+            'keep_query_parameters' => '0',
+            'respect_query_parameters' => '1',
+            'target_statuscode' => '307',
+            'disabled' => '0',
+            'starttime' => '0',
+            'endtime' => '0',
+        ];
+        $this->redirectCacheServiceStub->method('getRedirects')->willReturnMap([
+            [
+                'example.com',
+                [
+                    'respect_query_parameters' => [
+                        $sourcePath => [
+                            1 => $row,
+                        ],
+                    ],
+                ],
+            ],
+            [
+                '*',
+                [],
+            ],
+        ]);
+
+        $result = $this->redirectService->matchRedirect('example.com', '/foo', 'tx_myext%5Baction%5D=list');
+
+        self::assertSame($row, $result);
+    }
+
     #[Test]
     public function matchRedirectReturnsRedirectOnRespectQueryParametersMatchWithSlash(): void
     {
