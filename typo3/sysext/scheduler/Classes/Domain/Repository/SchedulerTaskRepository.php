@@ -71,6 +71,10 @@ readonly class SchedulerTaskRepository
             return false;
         }
         $fields = $this->taskService->getFieldsForRecord($task);
+        $taskDetails = $this->taskService->getTaskDetailsFromTask($task);
+        if ($taskDetails['isNativeTask'] ?? false) {
+            $fields = array_merge($task->getTaskParameters(), $fields);
+        }
         $fields['pid'] = 0;
         $newId = uniqid('NEW');
         $dataHandler = GeneralUtility::makeInstance(DataHandler::class);

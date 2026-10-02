@@ -214,11 +214,18 @@ readonly class TaskService
             'tasktype' => $task->getTaskType(),
             'execution_details' => $task->getExecution()->toArray(),
         ];
+        $parameters = $task->getTaskParameters();
         $taskDetails = $this->getTaskDetailsFromTask($task);
-        // Put the parameters in a separate field
-        if (!($taskDetails['isNativeTask'] ?? false)) {
-            $fields['parameters'] = $task->getTaskParameters();
+        // Native tasks persist parameters having a TCA field in their own column
+        if ($taskDetails['isNativeTask'] ?? false) {
+            foreach ($taskDetails['additionalFields'] as $fieldName) {
+                if (array_key_exists($fieldName, $parameters)) {
+                    $fields[$fieldName] = $parameters[$fieldName];
+                    unset($parameters[$fieldName]);
+                }
+            }
         }
+        $fields['parameters'] = $parameters;
         return $fields;
     }
 
@@ -313,8 +320,20 @@ readonly class TaskService
             $incomingData['task_group'] = (int)substr($incomingData['task_group'], 24);
         }
         $task->setTaskGroup((int)($incomingData['task_group'] ?? 0));
+        $task->setTaskParameters(array_replace($task->getTaskParameters(), $this->getTaskParametersFromRequest($task, $incomingData)));
         $provider = $this->getAdditionalFieldProviderForTask($task->getTaskType());
         $provider?->saveAdditionalFields($incomingData, $task);
+    }
+
+    private function getTaskParametersFromRequest(AbstractTask $task, array $incomingData): array
+    {
+        $parameters = is_array($incomingData['parameters'] ?? null) ? $incomingData['parameters'] : [];
+        foreach ($this->getTaskDetailsFromTask($task)['additionalFields'] ?? [] as $fieldName) {
+            if (array_key_exists($fieldName, $incomingData)) {
+                $parameters[$fieldName] = $incomingData[$fieldName];
+            }
+        }
+        return $parameters;
     }
 
     /**
