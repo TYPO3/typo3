@@ -98,6 +98,7 @@ class Typo3DbQueryParser
      */
     protected array $unionTableAliasCache = [];
     protected bool $suggestDistinctQuery = false;
+    protected ?QuerySettingsInterface $querySettings = null;
 
     public function __construct(
         protected readonly DataMapper $dataMapper,
@@ -129,6 +130,7 @@ class Typo3DbQueryParser
             $this->queryBuilder = clone $query->getStatement()->getStatement();
             return $this->queryBuilder;
         }
+        $this->querySettings = $query->getQuerySettings();
         // Find the right table name
         $source = $query->getSource();
         $this->initializeQueryBuilder($source);
@@ -150,6 +152,7 @@ class Typo3DbQueryParser
         $this->tableAliasMap = [];
         $this->unionTableAliasCache = [];
         $this->queryBuilder = null;
+        $this->querySettings = null;
         return $queryBuilder;
     }
 
@@ -258,6 +261,11 @@ class Typo3DbQueryParser
     {
         $index = 0;
         foreach ($this->tableAliasMap as $tableAlias => $tableName) {
+            if (in_array($tableAlias, $this->unionTableAliasCache, true)) {
+                // Visibility of joined tables is part of the join condition, see addUnionStatement()
+                $index++;
+                continue;
+            }
             if ($index === 0) {
                 // We only add the pid and language check for the first table (aggregate root).
                 // We know the first table is always the main table for the current query run.
@@ -271,16 +279,7 @@ class Typo3DbQueryParser
                 $additionalWhereClauses[] = $statement;
             }
             if (!empty($additionalWhereClauses)) {
-                if (in_array($tableAlias, $this->unionTableAliasCache, true)) {
-                    $this->queryBuilder->andWhere(
-                        $this->queryBuilder->expr()->or(
-                            $this->queryBuilder->expr()->and(...$additionalWhereClauses),
-                            $this->queryBuilder->expr()->isNull($tableAlias . '.uid')
-                        )
-                    );
-                } else {
-                    $this->queryBuilder->andWhere(...$additionalWhereClauses);
-                }
+                $this->queryBuilder->andWhere(...$additionalWhereClauses);
             }
         }
     }
@@ -1006,7 +1005,8 @@ class Typo3DbQueryParser
             }
             $joinConditionExpression = $this->queryBuilder->expr()->and(
                 $basicJoinCondition,
-                $this->getAdditionalMatchFieldsStatement($this->queryBuilder->expr(), $columnMap, $childTableAlias, $realTableName)
+                $this->getAdditionalMatchFieldsStatement($this->queryBuilder->expr(), $columnMap, $childTableAlias, $realTableName),
+                $this->getJoinVisibilityConstraintStatement($childTableName, $childTableAlias)
             );
             $this->queryBuilder->leftJoin($tableName, $childTableName, $childTableAlias, (string)$joinConditionExpression);
             $this->unionTableAliasCache[] = $childTableAlias;
@@ -1025,7 +1025,8 @@ class Typo3DbQueryParser
             }
             $joinConditionExpression = $this->queryBuilder->expr()->and(
                 $basicJoinCondition,
-                $this->getAdditionalMatchFieldsStatement($this->queryBuilder->expr(), $columnMap, $childTableAlias, $realTableName)
+                $this->getAdditionalMatchFieldsStatement($this->queryBuilder->expr(), $columnMap, $childTableAlias, $realTableName),
+                $this->getJoinVisibilityConstraintStatement($childTableName, $childTableAlias)
             );
             $this->queryBuilder->leftJoin($tableName, $childTableName, $childTableAlias, (string)$joinConditionExpression);
             $this->unionTableAliasCache[] = $childTableAlias;
@@ -1044,11 +1045,14 @@ class Typo3DbQueryParser
                 $this->getAdditionalMatchFieldsStatement($this->queryBuilder->expr(), $columnMap, $relationTableAlias, $realTableName)
             );
             $this->queryBuilder->leftJoin($tableName, $relationTableName, $relationTableAlias, (string)$joinConditionExpression);
-            $joinConditionExpression = $this->queryBuilder->expr()->eq(
-                $relationTableAlias . '.' . $columnMap->childKeyFieldName,
-                $this->queryBuilder->quoteIdentifier($childTableAlias . '.uid')
+            $joinConditionExpression = $this->queryBuilder->expr()->and(
+                $this->queryBuilder->expr()->eq(
+                    $relationTableAlias . '.' . $columnMap->childKeyFieldName,
+                    $this->queryBuilder->quoteIdentifier($childTableAlias . '.uid')
+                ),
+                $this->getJoinVisibilityConstraintStatement($childTableName, $childTableAlias)
             );
-            $this->queryBuilder->leftJoin($relationTableAlias, $childTableName, $childTableAlias, $joinConditionExpression);
+            $this->queryBuilder->leftJoin($relationTableAlias, $childTableName, $childTableAlias, (string)$joinConditionExpression);
             $this->unionTableAliasCache[] = $childTableAlias;
             $this->suggestDistinctQuery = true;
         } else {
@@ -1057,6 +1061,19 @@ class Typo3DbQueryParser
         $propertyPath = $explodedPropertyPath[1];
         $tableName = $childTableAlias;
         $className = $this->dataMapper->getType($className, $propertyName);
+    }
+
+    /**
+     * Visibility constraints of a joined table belong into the join condition. Otherwise, a parent
+     * record with only invisible children would be removed from the result, as the joined rows of
+     * these children do not fulfill the visibility constraints in the WHERE clause.
+     */
+    protected function getJoinVisibilityConstraintStatement(string $tableName, string $tableAlias): string
+    {
+        if ($this->querySettings === null) {
+            return '';
+        }
+        return $this->getVisibilityConstraintStatement($this->querySettings, $tableName, $tableAlias);
     }
 
     /**

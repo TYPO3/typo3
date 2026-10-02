@@ -1,0 +1,32 @@
+"pages"
+,"uid","pid","sorting","deleted","title"
+,1,0,256,0,"FunctionalTest"
+"tx_blogexample_domain_model_blog"
+,"uid","pid","title","posts","deleted","hidden"
+,1,1,"Blog with visible post",1,0,0
+,2,1,"Blog with hidden post",1,0,0
+,3,1,"Blog with deleted post",1,0,0
+,4,1,"Blog without posts",0,0,0
+"tx_blogexample_domain_model_post"
+,"uid","pid","blog","title","author","tags","deleted","hidden"
+,1,1,1,"Visible post",1,1,0,0
+,2,1,2,"Hidden post",0,0,0,1
+,3,1,3,"Deleted post",0,0,1,0
+,4,1,0,"Article with hidden relations",2,1,0,0
+,5,1,0,"Article with deleted relations",3,1,0,0
+,6,1,0,"Article without relations",0,0,0,0
+"tx_blogexample_domain_model_person"
+,"uid","pid","firstname","lastname","deleted","hidden"
+,1,1,"Visible","Person",0,0
+,2,1,"Hidden","Person",0,1
+,3,1,"Deleted","Person",1,0
+"tx_blogexample_domain_model_tag"
+,"uid","pid","name","items","deleted","hidden"
+,1,1,"Visible tag",1,0,0
+,2,1,"Hidden tag",1,0,1
+,3,1,"Deleted tag",1,1,0
+"tx_blogexample_domain_model_tag_mm"
+,"uid_local","uid_foreign","tablenames","fieldname","sorting","sorting_foreign"
+,1,1,"tx_blogexample_domain_model_post","tags",1,1
+,2,4,"tx_blogexample_domain_model_post","tags",1,1
+,3,5,"tx_blogexample_domain_model_post","tags",1,1
