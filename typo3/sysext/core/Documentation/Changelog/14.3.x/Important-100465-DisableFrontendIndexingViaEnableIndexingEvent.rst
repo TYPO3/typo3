@@ -42,4 +42,4 @@ This replaces setting :php:`index_enable = 0` on
         }
     }
 
-..  index:: Frontend, PHP-API, ext:indexed_search, NotScanned
+..  index:: Frontend, PHP-API, ext:indexed_search

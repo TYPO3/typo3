@@ -28,4 +28,4 @@ In addition, the "Extended resume" checkbox now has a label and is no longer
 hidden by :typoscript:`blind.group`, and the advanced search can be enabled by
 default via :typoscript:`plugin.tx_indexedsearch.settings.defaultOptions.extendedSearch = 1`.
 
-..  index:: Frontend, TypoScript, NotScanned, ext:indexed_search
+..  index:: Frontend, TypoScript, ext:indexed_search

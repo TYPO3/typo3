@@ -67,4 +67,4 @@ UNIX timestamp value.
 
 *-- For the editor who has everything, but seconds.*
 
-..  index:: Backend, NotScanned, ext:core
+..  index:: Backend, ext:core

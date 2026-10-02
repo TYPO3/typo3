@@ -244,4 +244,4 @@ The following palette labels have been migrated to use
 *   pages.palettes.* (6 labels: seo, robots, opengraph, twittercards, canonical,
     sitemap)
 
-..  index:: TCA, NotScanned, ext:core
+..  index:: TCA, ext:core

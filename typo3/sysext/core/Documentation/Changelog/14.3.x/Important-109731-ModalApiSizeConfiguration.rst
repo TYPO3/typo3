@@ -62,4 +62,4 @@ Override only one axis (the other defaults to the modal's intrinsic size):
       size: { width: Size.medium },
     });
 
-..  index:: Backend, JavaScript, ext:backend, NotScanned
+..  index:: Backend, JavaScript, ext:backend

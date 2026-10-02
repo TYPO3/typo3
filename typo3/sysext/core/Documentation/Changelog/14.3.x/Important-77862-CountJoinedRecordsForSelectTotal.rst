@@ -17,4 +17,4 @@ count used to resolve :typoscript:`total` now includes that join. Conditions
 on joined tables therefore work with :typoscript:`total` instead of causing
 the content query to fail.
 
-..  index:: Frontend, TypoScript, NotScanned, ext:frontend
+..  index:: Frontend, TypoScript, ext:frontend

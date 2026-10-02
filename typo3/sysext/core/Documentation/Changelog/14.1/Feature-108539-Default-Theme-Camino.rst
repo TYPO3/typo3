@@ -106,4 +106,4 @@ afterwards.
 
 It is dependency-free and provides and utilizes site sets.
 
-..  index:: Frontend, NotScanned, ext:theme_camino
+..  index:: Frontend, ext:theme_camino

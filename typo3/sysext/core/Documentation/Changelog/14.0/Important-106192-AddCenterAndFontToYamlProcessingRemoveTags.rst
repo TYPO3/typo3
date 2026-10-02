@@ -62,4 +62,4 @@ but they will now be removed both when saving or when being rendered in the
 frontend. So these style definitions should be removed and/or adapted to
 :html:`<span style="...">` configurations.
 
-..  index:: Backend, Database, Frontend, RTE, YAML, NotScanned, ext:rte_ckeditor
+..  index:: Backend, Database, Frontend, RTE, YAML, ext:rte_ckeditor

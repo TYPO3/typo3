@@ -46,4 +46,4 @@ correctly.
            'message' => $languageService->sL('myext.locallang:notification.error.message'),
        ]);
 
-..  index:: Backend, PHP-API, ext:backend, NotScanned
+..  index:: Backend, PHP-API, ext:backend

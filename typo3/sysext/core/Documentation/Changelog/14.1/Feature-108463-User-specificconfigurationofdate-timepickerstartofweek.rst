@@ -34,4 +34,4 @@ Impact
 Editors can now choose the first day of a week as a user preference, independent
 from locale selection.
 
-..  index:: Backend, NotScanned, ext:core
+..  index:: Backend, ext:core

@@ -44,4 +44,4 @@ now receive a hash of a known algorithm prefixed with its name, for example
 value keeps its previous meaning, so a remote that only ever supplies MD5
 hashes of :file:`.t3x` files continues to work untouched.
 
-..  index:: PHP-API, ext:extensionmanager, NotScanned
+..  index:: PHP-API, ext:extensionmanager

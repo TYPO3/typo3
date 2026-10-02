@@ -31,4 +31,4 @@ files it describes. Otherwise, the backend's "Manage Language Packs" module
 will not display accurate "last updated" information for packs that already
 exist on disk.
 
-..  index:: Backend, NotScanned, ext:core
+..  index:: Backend, ext:core
