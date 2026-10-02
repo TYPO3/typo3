@@ -116,14 +116,22 @@ class DateTimeConverter extends AbstractTypeConverter
         if ($dateAsString === '') {
             return null;
         }
+        if (str_contains($dateAsString, "\0")) {
+            return $this->createNotRecognizedError($dateAsString, $dateFormat);
+        }
         if (ctype_digit($dateAsString) && $configuration === null && (!is_array($source) || !isset($source['dateFormat']))) {
             // todo: type converters are never called without a property mapping configuration
             $dateFormat = 'U';
         }
         if (is_array($source) && isset($source['timezone']) && (string)$source['timezone'] !== '') {
-            try {
-                $timezone = new \DateTimeZone($source['timezone']);
-            } catch (\Exception $e) {
+            $timezone = null;
+            if (!str_contains((string)$source['timezone'], "\0")) {
+                try {
+                    $timezone = new \DateTimeZone($source['timezone']);
+                } catch (\Exception) {
+                }
+            }
+            if ($timezone === null) {
                 throw new TypeConverterException('The specified timezone "' . $source['timezone'] . '" is invalid.', 1308240974);
             }
             $date = $targetType::createFromFormat($dateFormat, $dateAsString, $timezone);
@@ -131,18 +139,23 @@ class DateTimeConverter extends AbstractTypeConverter
             $date = $targetType::createFromFormat($dateFormat, $dateAsString);
         }
         if ($date === false) {
-            return new \TYPO3\CMS\Extbase\Validation\Error(
-                $this->translateErrorMessage(
-                    'LLL:EXT:extbase/Resources/Private/Language/locallang.xlf:converter.datetime.notrecognized',
-                ),
-                1307719788,
-                [$dateAsString, $dateFormat]
-            );
+            return $this->createNotRecognizedError($dateAsString, $dateFormat);
         }
         if (is_array($source)) {
             $date = $this->overrideTimeIfSpecified($date, $source);
         }
         return $date;
+    }
+
+    private function createNotRecognizedError(string $dateAsString, string $dateFormat): Error
+    {
+        return new \TYPO3\CMS\Extbase\Validation\Error(
+            $this->translateErrorMessage(
+                'LLL:EXT:extbase/Resources/Private/Language/locallang.xlf:converter.datetime.notrecognized',
+            ),
+            1307719788,
+            [$dateAsString, $dateFormat]
+        );
     }
 
     /**

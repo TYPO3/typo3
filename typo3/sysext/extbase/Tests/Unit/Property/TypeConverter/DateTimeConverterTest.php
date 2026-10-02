@@ -272,6 +272,38 @@ final class DateTimeConverterTest extends UnitTestCase
     }
 
     #[Test]
+    public function convertFromThrowsExceptionIfSpecifiedTimezoneContainsNullByte(): void
+    {
+        $this->expectException(TypeConverterException::class);
+        $this->expectExceptionCode(1308240974);
+        $source = [
+            'date' => '2011-06-16',
+            'dateFormat' => 'Y-m-d',
+            'timezone' => "Atlantic/Reykjavik\0",
+        ];
+        $this->converter->convertFrom($source, 'DateTime');
+    }
+
+    public static function convertFromSourceContainingNullByteDataProvider(): array
+    {
+        return [
+            'string' => ["2011-06-16\0"],
+            'string with leading null byte' => ["\0" . '2011-06-16'],
+            'array with date' => [['date' => "2011-06-16\0", 'dateFormat' => 'Y-m-d']],
+            'array with date and timezone' => [['date' => "2011-06-16\0", 'dateFormat' => 'Y-m-d', 'timezone' => 'Atlantic/Reykjavik']],
+        ];
+    }
+
+    #[DataProvider('convertFromSourceContainingNullByteDataProvider')]
+    #[Test]
+    public function convertFromReturnsErrorIfSourceContainsNullByte(string|array $source): void
+    {
+        $error = $this->converter->convertFrom($source, 'DateTime');
+        self::assertInstanceOf(Error::class, $error);
+        self::assertSame(1307719788, $error->getCode());
+    }
+
+    #[Test]
     public function convertFromArrayThrowsExceptionForEmptyArray(): void
     {
         $this->expectException(TypeConverterException::class);
