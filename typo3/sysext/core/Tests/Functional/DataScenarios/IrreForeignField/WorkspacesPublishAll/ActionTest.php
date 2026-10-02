@@ -648,4 +648,12 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeParentContentNMoveToDifferentPage.csv');
     }
+
+    #[Test]
+    public function copyPageWithNestedChildrenAndWorkspaceVersionOfTargetPage(): void
+    {
+        parent::copyPageWithNestedChildrenAndWorkspaceVersionOfTargetPage();
+        $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyPageWNestedChildrenNWorkspaceVersionOfTargetPage.csv');
+    }
 }

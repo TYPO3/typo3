@@ -7093,9 +7093,8 @@ class DataHandler
 
                 // Update child records if change to pid is required
                 if ($thePidToUpdate && !empty($updatePidForRecords)) {
-                    // @todo: this can probably go away
-                    // ensure, only live page ids are used as 'pid' values
-                    $liveId = BackendUtility::getLiveVersionIdOfRecord('pages', $theUidToUpdate);
+                    // Ensure only live page ids are used as 'pid' values, the page may be a workspace version
+                    $liveId = BackendUtility::getLiveVersionIdOfRecord('pages', $thePidToUpdate);
                     if ($liveId !== null) {
                         $thePidToUpdate = $liveId;
                     }
@@ -7151,7 +7150,7 @@ class DataHandler
         }
 
         if ($thePidToUpdate && $updatePidForRecords !== []) {
-            $liveId = BackendUtility::getLiveVersionIdOfRecord('pages', $theUidToUpdate);
+            $liveId = BackendUtility::getLiveVersionIdOfRecord('pages', $thePidToUpdate);
             if ($liveId !== null) {
                 $thePidToUpdate = $liveId;
             }

@@ -703,4 +703,11 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         parent::localizeParentContentAndMoveToDifferentPage();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeParentContentNMoveToDifferentPage.csv');
     }
+
+    #[Test]
+    public function copyPageWithNestedChildrenAndWorkspaceVersionOfTargetPage(): void
+    {
+        parent::copyPageWithNestedChildrenAndWorkspaceVersionOfTargetPage();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyPageWNestedChildrenNWorkspaceVersionOfTargetPage.csv');
+    }
 }
