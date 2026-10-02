@@ -20,7 +20,9 @@ namespace TYPO3\CMS\Core\Tests\Functional\Resource;
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Resource\DefaultUploadFolderResolver;
 use TYPO3\CMS\Core\Resource\Event\AfterDefaultUploadFolderWasResolvedEvent;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -33,13 +35,31 @@ final class DefaultUploadFolderResolverTest extends FunctionalTestCase
         parent::setUp();
         $this->importCSVDataSet(__DIR__ . '/Fixtures/DefaultUploadFolderResolver/be_users.csv');
         $this->importCSVDataSet(__DIR__ . '/Fixtures/DefaultUploadFolderResolver/pages.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/DefaultUploadFolderResolver/sys_filemounts.csv');
     }
 
     public function tearDown(): void
     {
         GeneralUtility::rmdir(Environment::getPublicPath() . '/fileadmin/admin_upload/', true);
+        GeneralUtility::rmdir(Environment::getPublicPath() . '/fileadmin/editor_upload/', true);
         GeneralUtility::rmdir(Environment::getPublicPath() . '/fileadmin/page_upload/', true);
         parent::tearDown();
+    }
+
+    #[Test]
+    public function resolveFallsBackToUserConfigIfPageConfigIsNotAccessible(): void
+    {
+        GeneralUtility::mkdir(Environment::getPublicPath() . '/fileadmin/editor_upload/');
+        GeneralUtility::mkdir(Environment::getPublicPath() . '/fileadmin/page_upload/');
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $backendUser = $this->setUpBackendUser(3);
+
+        $subject = $this->get(DefaultUploadFolderResolver::class);
+
+        self::assertEquals(
+            '1:/editor_upload/',
+            $subject->resolve($backendUser, 1)->getCombinedIdentifier()
+        );
     }
 
     #[Test]
