@@ -17,10 +17,9 @@ Fields of TCA type `password` accept the new option
 When it is enabled, a button copying the password to the clipboard is
 attached to the field.
 
-A stored password is hashed and only shown obfuscated, so the button
-is offered once the field holds a plain value, typically one created
-with the `passwordGenerator` field control, and until the record
-is saved.
+A stored password is only shown obfuscated, so the button is offered
+once the field holds a plain value, typically one created with the
+`passwordGenerator` field control, and until the record is saved.
 
 ..  code-block:: php
     :caption: EXT:my_extension/Configuration/TCA/tx_myextension_token.php
@@ -43,8 +42,8 @@ is saved.
         ],
     ],
 
-The option defaults to :php:`false`. The secret of a reaction in
-:guilabel:`Administration > Integrations > Reactions` enables it.
+The option defaults to :php:`false`. The secrets of reactions and webhooks
+in :guilabel:`Administration > Integrations` enable it.
 
 Impact
 ======

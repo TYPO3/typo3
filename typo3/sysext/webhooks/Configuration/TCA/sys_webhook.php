@@ -94,6 +94,9 @@ return [
                 'type' => 'password',
                 'hashed' => false, // Can't be hashed because it's used to create the signature
                 'required' => true,
+                'appearance' => [
+                    'copyToClipboard' => true,
+                ],
                 'fieldControl' => [
                     'passwordGenerator' => [
                         'renderType' => 'passwordGenerator',
