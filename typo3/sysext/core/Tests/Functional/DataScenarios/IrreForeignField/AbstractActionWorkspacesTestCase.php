@@ -23,7 +23,18 @@ abstract class AbstractActionWorkspacesTestCase extends AbstractActionTestCase
 
     protected const SCENARIO_DataSet = __DIR__ . '/DataSet/ImportDefaultWorkspaces.csv';
 
+    protected const VALUE_PageIdWithNestedHotel = 92;
+
     protected array $coreExtensionsToLoad = ['workspaces'];
+
+    public function copyPageWithNestedChildrenAndWorkspaceVersionOfTargetPage(): void
+    {
+        // Page 51 is a workspace version of the target page and has the uid the copied hotel gets.
+        // The copied offer below that hotel must end up on the copied page, not on the target page.
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportPageWithNestedHotelAndTargetPageVersion.csv');
+        $newTableIds = $this->actionService->copyRecord(self::TABLE_Page, self::VALUE_PageIdWithNestedHotel, self::VALUE_PageIdTarget);
+        $this->recordIds['newPageId'] = $newTableIds[self::TABLE_Page][self::VALUE_PageIdWithNestedHotel];
+    }
 
     public function createAndLocalizeParentContentWithHotelAndOfferChildrenAndDiscardLocalizedParent(): void
     {
