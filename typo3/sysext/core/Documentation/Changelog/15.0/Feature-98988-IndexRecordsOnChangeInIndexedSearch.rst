@@ -37,4 +37,4 @@ Records covered by an indexing configuration with the option "Index Records
 immediately when saved?" enabled are searchable as soon as an editor saves
 them, without any further indexing run.
 
-..  index:: Backend, ext:indexed_search, NotScanned
+..  index:: Backend, ext:indexed_search

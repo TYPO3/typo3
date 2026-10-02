@@ -38,4 +38,4 @@ listing `sys_language_uid` in their own `copyAfterDuplFields`
 setting. For `tt_content`, it has to be passed explicitly in the
 update data of the copy command.
 
-..  index:: TCA, NotScanned, ext:core, ext:frontend
+..  index:: TCA, ext:core, ext:frontend

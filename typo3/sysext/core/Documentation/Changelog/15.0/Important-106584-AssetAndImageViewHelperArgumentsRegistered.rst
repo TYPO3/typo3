@@ -38,4 +38,4 @@ before the ViewHelper renders. It is now written after :html:`src`,
 The attribute order carries no meaning in HTML, so this only affects tests and
 tooling that compare rendered markup as a string.
 
-..  index:: Fluid, ext:fluid, NotScanned
+..  index:: Fluid, ext:fluid

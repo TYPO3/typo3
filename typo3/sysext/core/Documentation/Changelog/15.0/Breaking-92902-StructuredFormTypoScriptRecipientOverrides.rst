@@ -59,4 +59,4 @@ be specified because an override replaces the existing list. Dynamic TypoScript
 values can be used for :typoscript:`email`, for example
 :typoscript:`email.data = TSFE : fe_user|user|email`.
 
-..  index:: Backend, Frontend, ext:form, FullyScanned
+..  index:: Backend, Frontend, ext:form, NotScanned

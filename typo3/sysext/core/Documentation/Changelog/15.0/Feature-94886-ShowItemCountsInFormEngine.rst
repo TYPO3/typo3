@@ -35,4 +35,4 @@ limits. The badge is injected on the client side for any field exposing item
 count validation rules, so it also applies to custom render types without
 requiring additional PHP code.
 
-..  index:: Backend, JavaScript, ext:backend, NotScanned
+..  index:: Backend, JavaScript, ext:backend

@@ -62,4 +62,4 @@ a `description` to improve the editor experience in the "Create new form"
 wizard.  Both keys are optional; existing configurations continue to work
 without changes.
 
-..  index:: Backend, ext:form, NotScanned
+..  index:: Backend, ext:form

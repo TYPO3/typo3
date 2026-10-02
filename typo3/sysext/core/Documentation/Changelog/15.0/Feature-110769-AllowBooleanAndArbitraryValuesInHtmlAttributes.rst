@@ -61,4 +61,4 @@ still be passed as the strings :php:`'true'` or :php:`'false'`, since
 omitting them is not the same as setting them to "false". Attributes without a
 value are not XML-compliant.
 
-..  index:: PHP-API, Frontend, ext:core, NotScanned
+..  index:: PHP-API, Frontend, ext:core

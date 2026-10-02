@@ -61,4 +61,4 @@ retrieve :php:`\TYPO3\CMS\Backend\Template\ModuleTemplate` or
 :php:`\TYPO3\CMS\Core\Page\PageRenderer` via dependency injection instead of the
 deprecated helper methods.
 
-.. index:: Fluid, FullyScanned, ext:fluid
+.. index:: Fluid, PartiallyScanned, ext:fluid

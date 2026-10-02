@@ -45,4 +45,4 @@ content object and of the :typoscript:`files` data processor keeps accepting the
 same keywords as before. An unknown keyword is no longer silently treated as
 "ascending" though, but now results in a :php:`\ValueError`.
 
-..  index:: FAL, Frontend, PHP-API, TypoScript, NotScanned, ext:frontend
+..  index:: FAL, Frontend, PHP-API, TypoScript, ext:frontend

@@ -59,4 +59,4 @@ Use the :typoscript:`en` or :typoscript:`en-US` key instead:
 Overrides for other languages and locales are not affected. Labels that exist
 in no XLIFF file still fall back to :typoscript:`_LOCAL_LANG.default`.
 
-..  index:: Frontend, TypoScript, NotScanned, ext:core
+..  index:: Frontend, TypoScript, ext:core

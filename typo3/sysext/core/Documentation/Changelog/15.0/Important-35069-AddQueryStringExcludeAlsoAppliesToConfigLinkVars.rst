@@ -44,4 +44,4 @@ Integrators who relied on :typoscript:`config.linkVars` overruling
 :typoscript:`addQueryString.exclude` need to remove the affected parameter from
 the :typoscript:`exclude` list.
 
-..  index:: Frontend, TypoScript, NotScanned, ext:frontend
+..  index:: Frontend, TypoScript, ext:frontend
