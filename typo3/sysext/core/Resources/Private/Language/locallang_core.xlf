@@ -756,6 +756,12 @@
       <trans-unit id="file_upload.dropzone.close">
         <source>Close file upload area</source>
       </trans-unit>
+      <trans-unit id="file_upload.pasteTarget.title">
+        <source>Add pasted files</source>
+      </trans-unit>
+      <trans-unit id="file_upload.pasteTarget.message">
+        <source>{count, plural, one {Select the field to add the pasted file to.} other {Select the field to add the # pasted files to.}}</source>
+      </trans-unit>
       <trans-unit id="file_upload.select-and-submit">
         <source>Select &amp; upload files</source>
       </trans-unit>

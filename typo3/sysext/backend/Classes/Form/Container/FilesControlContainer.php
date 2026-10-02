@@ -376,6 +376,8 @@ class FilesControlContainer extends AbstractContainer
                         'data-file-disallowed' => implode(',', $fileExtensionFilter->getDisallowedFileExtensions() ?? []),
                         'data-target-folder' => $folder->getCombinedIdentifier(),
                         'data-max-file-size' => (string)(GeneralUtility::getMaxUploadFileSize() * 1024),
+                        'data-upload-on-paste' => 'field',
+                        'data-dropzone-area' => 'fieldset',
                     ];
                     $controls[] = '
                         <button ' . GeneralUtility::implodeAttributes($attributes, true) . '>

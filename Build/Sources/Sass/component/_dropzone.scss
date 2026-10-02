@@ -202,9 +202,10 @@
 }
 
 //
-// Improved DragUploader for filelist
+// Improved DragUploader for filelist and file fields
 //
-.filelist-main {
+.filelist-main,
+fieldset:has(> typo3-formengine-container-inline[data-type="file"]) {
     .dropzone {
         --dropzone-bg: #000;
         position: absolute;
@@ -229,5 +230,15 @@
             border: var(--typo3-component-border-width) solid var(--typo3-component-border-color);
             box-shadow: var(--typo3-component-box-shadow-tooltip);
         }
+    }
+}
+
+// A record may contain several file fields, so each one is covered on its own
+fieldset:has(> typo3-formengine-container-inline[data-type="file"]) {
+    position: relative;
+
+    .dropzone {
+        top: 0;
+        height: 100%;
     }
 }

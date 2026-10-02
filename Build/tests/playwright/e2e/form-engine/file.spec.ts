@@ -82,3 +82,108 @@ test('an invalid file is reported in a notification and the valid files are uplo
   await expect(field.locator('.panel-title', { hasText: validFileName })).toBeVisible({ timeout: 12000 });
   await expect(backend.contentFrame.locator('.upload-queue-item', { hasText: invalidFileName })).toHaveCount(0);
 });
+
+async function pasteImage(backend, fileName: string): Promise<void> {
+  await backend.contentFrame.locator('body').evaluate((body: HTMLElement, { fileName, pngBase64 }) => {
+    const bytes = Uint8Array.from(atob(pngBase64), (character) => character.charCodeAt(0));
+    const clipboardData = new DataTransfer();
+    clipboardData.items.add(new File([bytes], fileName, { type: 'image/png' }));
+    body.dispatchEvent(new ClipboardEvent('paste', { clipboardData, bubbles: true, cancelable: true }));
+  }, { fileName, pngBase64 });
+}
+
+function fileField(backend, fieldName: string) {
+  return backend.contentFrame.locator(`fieldset:has(> legend:has-text("${fieldName} "))`);
+}
+
+test('pasting a file uploads it to the file field interacted with last', async ({ backend }) => {
+  await backend.contentFrame.getByRole('tab', { name: 'media', exact: true }).click();
+  const fileName = 'pasted' + Date.now() + '.png';
+
+  await fileField(backend, 'file_4').locator('legend').click();
+  await pasteImage(backend, fileName);
+
+  await expect(fileField(backend, 'file_4').locator('.panel-title', { hasText: fileName })).toBeVisible({ timeout: 12000 });
+  await expect(backend.contentFrame.locator('.panel-title', { hasText: fileName })).toHaveCount(1);
+});
+
+test('pasting a file uploads it to the only file field of the active tab without interacting with it', async ({ backend }) => {
+  const fileName = 'pasted' + Date.now() + '.png';
+
+  await pasteImage(backend, fileName);
+
+  await expect(fileField(backend, 'file_1').locator('.panel-title', { hasText: fileName })).toBeVisible({ timeout: 12000 });
+  await expect(backend.contentFrame.locator('.panel-title', { hasText: fileName })).toHaveCount(1);
+});
+
+test('pasting a file without interacting with one of several file fields asks for the field to add it to', async ({ backend, page }) => {
+  await backend.contentFrame.getByRole('tab', { name: 'media', exact: true }).click();
+  const fileName = 'pasted' + Date.now() + '.png';
+
+  await pasteImage(backend, fileName);
+  const fieldChoices = page.locator('typo3-backend-modal .t3js-modal-body button');
+  await expect(fieldChoices).toHaveCount(4);
+  await fieldChoices.filter({ hasText: 'file_4 ' }).click();
+
+  await expect(fileField(backend, 'file_4').locator('.panel-title', { hasText: fileName })).toBeVisible({ timeout: 12000 });
+  await expect(backend.contentFrame.locator('.panel-title', { hasText: fileName })).toHaveCount(1);
+});
+
+test('cancelling the choice of a file field does not upload the pasted file', async ({ backend, page }) => {
+  await backend.contentFrame.getByRole('tab', { name: 'media', exact: true }).click();
+  const ignoredFileName = 'pasted-ignored' + Date.now() + '.png';
+  const fileName = 'pasted' + Date.now() + '.png';
+
+  await pasteImage(backend, ignoredFileName);
+  await backend.modal.click({ name: 'cancel' });
+  await expect(page.locator('typo3-backend-modal')).toHaveCount(0);
+  // Paste into a field afterwards: once that upload has finished, the ignored one would be visible as well
+  await fileField(backend, 'file_3').locator('legend').click();
+  await pasteImage(backend, fileName);
+
+  await expect(fileField(backend, 'file_3').locator('.panel-title', { hasText: fileName })).toBeVisible({ timeout: 12000 });
+  await expect(backend.contentFrame.locator('.upload-queue-item, .panel-title').filter({ hasText: ignoredFileName })).toHaveCount(0);
+});
+
+test('a file dropped anywhere onto a file field is uploaded to that field', async ({ backend }) => {
+  await backend.contentFrame.getByRole('tab', { name: 'media', exact: true }).click();
+  const fileName = 'dropped' + Date.now() + '.png';
+
+  await fileField(backend, 'file_3').locator('.panel').first().evaluate((element: HTMLElement, { fileName, pngBase64 }) => {
+    const bytes = Uint8Array.from(atob(pngBase64), (character) => character.charCodeAt(0));
+    const dataTransfer = new DataTransfer();
+    dataTransfer.items.add(new File([bytes], fileName, { type: 'image/png' }));
+    const options = { bubbles: true, cancelable: true, dataTransfer };
+    element.dispatchEvent(new DragEvent('dragover', options));
+    // The drop hits whatever is shown on top of the element while dragging, e.g. the dropzone
+    const rect = element.getBoundingClientRect();
+    document.elementFromPoint(rect.left + rect.width / 2, rect.top + rect.height / 2).dispatchEvent(new DragEvent('drop', options));
+  }, { fileName, pngBase64 });
+
+  await expect(fileField(backend, 'file_3').locator('.panel-title', { hasText: fileName })).toBeVisible({ timeout: 12000 });
+  await expect(backend.contentFrame.locator('.panel-title', { hasText: fileName })).toHaveCount(1);
+});
+
+async function dragImage(target, eventType: 'dragover' | 'dragleave'): Promise<void> {
+  await target.evaluate((element: HTMLElement, eventType) => {
+    const dataTransfer = new DataTransfer();
+    dataTransfer.items.add(new File([''], 'dragged.png', { type: 'image/png' }));
+    element.dispatchEvent(new DragEvent(eventType, { bubbles: true, cancelable: true, dataTransfer }));
+  }, eventType);
+}
+
+test('the dropzone of a file field is only shown while a file is dragged over that field', async ({ backend }) => {
+  await backend.contentFrame.getByRole('tab', { name: 'media', exact: true }).click();
+  const dropzone = fileField(backend, 'file_3').locator('.dropzone');
+  const otherDropzone = fileField(backend, 'file_4').locator('.dropzone');
+
+  await dragImage(fileField(backend, 'file_3').locator('.panel').first(), 'dragover');
+  await expect(dropzone).toBeVisible();
+  await expect(otherDropzone).toBeHidden();
+
+  // Leaving the field closes its dropzone, the next dragover outside of it must not show it again
+  await dragImage(dropzone.locator('.dropzone-mask'), 'dragleave');
+  await dragImage(fileField(backend, 'file_4').locator('legend'), 'dragover');
+  await expect(dropzone).toBeHidden();
+  await expect(otherDropzone).toBeVisible();
+});
