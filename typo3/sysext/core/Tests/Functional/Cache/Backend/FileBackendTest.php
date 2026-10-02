@@ -196,6 +196,31 @@ final class FileBackendTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function getReadsUpdatedDataSizeOnEveryCall(): void
+    {
+        $subject = new FileBackend();
+        $subject->setCacheDirectory($this->instancePath . '/Foo/');
+        $subject->setCache(new NullFrontend('UnitTestCache'));
+        $subject->set('entry', '', ['tag'], 0);
+        self::assertSame('', $subject->get('entry'));
+        $subject->set('entry', "longer\0binary\xffdata", ['another-tag'], 0);
+        self::assertSame("longer\0binary\xffdata", $subject->get('entry'));
+        $subject->set('entry', 'short', [], 0);
+        self::assertSame('short', $subject->get('entry'));
+    }
+
+    #[Test]
+    public function getSupportsExpiryCheckOverrideWithoutReadingDataSize(): void
+    {
+        $subject = $this->getMockBuilder(FileBackend::class)->onlyMethods(['isCacheFileExpired'])->disableOriginalConstructor()->getMock();
+        $subject->setCacheDirectory($this->instancePath . '/Foo/');
+        $subject->setCache(new NullFrontend('UnitTestCache'));
+        $subject->set('entry', 'cached data', [], 0);
+        $subject->expects($this->once())->method('isCacheFileExpired')->willReturn(false);
+        self::assertSame('cached data', $subject->get('entry'));
+    }
+
+    #[Test]
     public function getReturnsFalseForExpiredEntries(): void
     {
         $mockCache = $this->createMock(AbstractFrontend::class);

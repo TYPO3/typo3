@@ -30,6 +30,9 @@ class FileBackend extends SimpleFileBackend implements TaggableBackendInterface
     protected const EXPIRYTIME_LENGTH = 14;
     protected const DATASIZE_DIGITS = 10;
 
+    /** @var array<string, int>|null */
+    private ?array $cacheFileDataSizes = null;
+
     /**
      * @throws Exception if the directory does not exist or is not writable or exceeds the maximum allowed path length, or if no cache frontend has been set.
      */
@@ -72,17 +75,18 @@ class FileBackend extends SimpleFileBackend implements TaggableBackendInterface
             throw new \InvalidArgumentException('The specified entry identifier must not contain a path segment.', 1282073033);
         }
         $pathAndFilename = $this->cacheDirectory . $entryIdentifier . $this->cacheEntryFileExtension;
-        if ($this->isCacheFileExpired($pathAndFilename)) {
-            return false;
+        // Share the size read by the expiry check only for this get() call.
+        $previousDataSizes = $this->cacheFileDataSizes;
+        $this->cacheFileDataSizes = [];
+        try {
+            if ($this->isCacheFileExpired($pathAndFilename)) {
+                return false;
+            }
+            $dataSize = $this->getCacheFileDataSize($pathAndFilename);
+            return file_get_contents($pathAndFilename, false, null, 0, $dataSize);
+        } finally {
+            $this->cacheFileDataSizes = $previousDataSizes;
         }
-        $dataSize = (int)file_get_contents(
-            $pathAndFilename,
-            false,
-            null,
-            filesize($pathAndFilename) - self::DATASIZE_DIGITS,
-            self::DATASIZE_DIGITS
-        );
-        return file_get_contents($pathAndFilename, false, null, 0, $dataSize);
     }
 
     public function has(string $entryIdentifier): bool
@@ -148,15 +152,27 @@ class FileBackend extends SimpleFileBackend implements TaggableBackendInterface
         if (file_exists($cacheEntryPathAndFilename) === false) {
             return true;
         }
-        $index = (int)file_get_contents(
+        $index = $this->getCacheFileDataSize($cacheEntryPathAndFilename);
+        $expiryTime = (int)file_get_contents($cacheEntryPathAndFilename, false, null, $index, self::EXPIRYTIME_LENGTH);
+        return $expiryTime !== 0 && $expiryTime < $GLOBALS['EXEC_TIME'];
+    }
+
+    private function getCacheFileDataSize(string $cacheEntryPathAndFilename): int
+    {
+        if (isset($this->cacheFileDataSizes[$cacheEntryPathAndFilename])) {
+            return $this->cacheFileDataSizes[$cacheEntryPathAndFilename];
+        }
+        $dataSize = (int)file_get_contents(
             $cacheEntryPathAndFilename,
             false,
             null,
             filesize($cacheEntryPathAndFilename) - self::DATASIZE_DIGITS,
             self::DATASIZE_DIGITS
         );
-        $expiryTime = (int)file_get_contents($cacheEntryPathAndFilename, false, null, $index, self::EXPIRYTIME_LENGTH);
-        return $expiryTime !== 0 && $expiryTime < $GLOBALS['EXEC_TIME'];
+        if ($this->cacheFileDataSizes !== null) {
+            $this->cacheFileDataSizes[$cacheEntryPathAndFilename] = $dataSize;
+        }
+        return $dataSize;
     }
 
     public function collectGarbage(): void
