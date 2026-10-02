@@ -211,11 +211,18 @@ readonly class TaskService
             'tasktype' => $task->getTaskType(),
             'execution_details' => $task->getExecution()->toArray(),
         ];
+        $parameters = $task->getTaskParameters();
         $taskDetails = $this->getTaskDetailsFromTask($task);
-        // Put the parameters in a separate field
-        if (!($taskDetails['isNativeTask'] ?? false)) {
-            $fields['parameters'] = $task->getTaskParameters();
+        // Native tasks persist parameters having a TCA field in their own column
+        if ($taskDetails['isNativeTask'] ?? false) {
+            foreach ($taskDetails['additionalFields'] as $fieldName) {
+                if (array_key_exists($fieldName, $parameters)) {
+                    $fields[$fieldName] = $parameters[$fieldName];
+                    unset($parameters[$fieldName]);
+                }
+            }
         }
+        $fields['parameters'] = $parameters;
         return $fields;
     }
 

@@ -271,6 +271,18 @@ final readonly class SchedulerTaskPersistenceValidator
             $incomingData['task_group'] = (int)substr($incomingData['task_group'], 24);
         }
         $task->setTaskGroup((int)($incomingData['task_group'] ?? 0));
+        $task->setTaskParameters(array_replace($task->getTaskParameters(), $this->getTaskParametersFromRequest($task, $incomingData)));
+    }
+
+    private function getTaskParametersFromRequest(AbstractTask $task, array $incomingData): array
+    {
+        $parameters = is_array($incomingData['parameters'] ?? null) ? $incomingData['parameters'] : [];
+        foreach ($this->taskService->getTaskDetailsFromTask($task)['additionalFields'] ?? [] as $fieldName) {
+            if (array_key_exists($fieldName, $incomingData)) {
+                $parameters[$fieldName] = $incomingData[$fieldName];
+            }
+        }
+        return $parameters;
     }
 
     private function getLanguageService(): LanguageService
