@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Country\Country;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DataHandling\RecordFieldTransformer;
 use TYPO3\CMS\Core\Domain\Exception\FlexFieldPropertyException;
 use TYPO3\CMS\Core\Domain\Exception\FlexFieldPropertyNotFoundException;
@@ -1147,6 +1148,85 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         self::assertNull($resolvedRecord->get('typo3tests_contentelementb_country_nullable'));
     }
 
+    public static function canConvertNumberDataProvider(): \Generator
+    {
+        yield 'integer from string' => [
+            'fieldName' => 'typo3tests_contentelementb_number',
+            'input' => '12',
+            'expected' => 12,
+        ];
+        yield 'integer from empty string' => [
+            'fieldName' => 'typo3tests_contentelementb_number',
+            'input' => '',
+            'expected' => 0,
+        ];
+        yield 'decimal from decimal string' => [
+            'fieldName' => 'typo3tests_contentelementb_number_decimal',
+            'input' => '12.50',
+            'expected' => 12.5,
+        ];
+        yield 'decimal from integer string' => [
+            'fieldName' => 'typo3tests_contentelementb_number_decimal',
+            'input' => '12',
+            'expected' => 12.0,
+        ];
+        yield 'decimal from empty string' => [
+            'fieldName' => 'typo3tests_contentelementb_number_decimal',
+            'input' => '',
+            'expected' => 0.0,
+        ];
+        yield 'nullable decimal from decimal string' => [
+            'fieldName' => 'typo3tests_contentelementb_number_decimal_nullable',
+            'input' => '0.25',
+            'expected' => 0.25,
+        ];
+        yield 'nullable decimal from null' => [
+            'fieldName' => 'typo3tests_contentelementb_number_decimal_nullable',
+            'input' => null,
+            'expected' => null,
+        ];
+    }
+
+    #[Test]
+    #[DataProvider('canConvertNumberDataProvider')]
+    public function canConvertNumber(string $fieldName, ?string $input, int|float|null $expected): void
+    {
+        $dummyRecord = $this->createTestRecordObject([
+            $fieldName => $input,
+        ]);
+        $fieldInformation = $this->get(TcaSchemaFactory::class)->get('tt_content')->getField($fieldName);
+        $result = $this->get(RecordFieldTransformer::class)->transformField(
+            $fieldInformation,
+            $dummyRecord,
+            $this->get(Context::class),
+            GeneralUtility::makeInstance(RecordIdentityMap::class)
+        );
+        self::assertSame($expected, $result);
+
+        $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
+        self::assertSame($expected, $resolvedRecord->get($fieldName));
+    }
+
+    #[Test]
+    public function canConvertNumberFromDatabase(): void
+    {
+        $connection = $this->get(ConnectionPool::class)->getConnectionForTable('tt_content');
+        $connection->insert('tt_content', [
+            'uid' => 1,
+            'pid' => 1,
+            'CType' => 'typo3tests_contentelementb',
+            'typo3tests_contentelementb_number' => 12,
+            'typo3tests_contentelementb_number_decimal' => '12.50',
+            'typo3tests_contentelementb_number_decimal_nullable' => null,
+        ]);
+        $row = $connection->select(['*'], 'tt_content', ['uid' => 1])->fetchAssociative();
+
+        $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $row);
+        self::assertSame(12, $resolvedRecord->get('typo3tests_contentelementb_number'));
+        self::assertSame(12.5, $resolvedRecord->get('typo3tests_contentelementb_number_decimal'));
+        self::assertNull($resolvedRecord->get('typo3tests_contentelementb_number_decimal_nullable'));
+    }
+
     #[Test]
     public function canResolveSelectSingle(): void
     {
@@ -1719,9 +1799,9 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         self::assertSame('t3://page?uid=13', $result->get('link')->url);
         self::assertSame('2013-04-20', $result['datetime']->format('Y-m-d'));
         self::assertSame('2013-04-20', $result->get('datetime')->format('Y-m-d'));
-        self::assertSame('12', $result['some']['number']);
-        self::assertSame('12', $result->get('some')['number']);
-        self::assertSame('12', $result->get('some.number'));
+        self::assertSame(12, $result['some']['number']);
+        self::assertSame(12, $result->get('some')['number']);
+        self::assertSame(12, $result->get('some.number'));
         self::assertSame('t3://page?uid=14', $result['some']['link']->url);
         self::assertSame('t3://page?uid=14', $result->get('some')['link']->url);
         self::assertSame('t3://page?uid=14', $result->get('some.link')->url);
@@ -1739,9 +1819,9 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         self::assertSame('t3://page?uid=13', $resolvedRelation->get('link')->url);
         self::assertSame('2013-04-20', $resolvedRelation['datetime']->format('Y-m-d'));
         self::assertSame('2013-04-20', $resolvedRelation->get('datetime')->format('Y-m-d'));
-        self::assertSame('12', $resolvedRelation['some']['number']);
-        self::assertSame('12', $resolvedRelation->get('some')['number']);
-        self::assertSame('12', $resolvedRelation->get('some.number'));
+        self::assertSame(12, $resolvedRelation['some']['number']);
+        self::assertSame(12, $resolvedRelation->get('some')['number']);
+        self::assertSame(12, $resolvedRelation->get('some.number'));
         self::assertSame('t3://page?uid=14', $resolvedRelation['some']['link']->url);
         self::assertSame('t3://page?uid=14', $resolvedRelation->get('some')['link']->url);
         self::assertSame('t3://page?uid=14', $resolvedRelation->get('some.link')->url);
@@ -2041,9 +2121,9 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         self::assertSame('t3://page?uid=13', $result->get('link')->url);
         self::assertSame('2013-04-20', $result['datetime']->format('Y-m-d'));
         self::assertSame('2013-04-20', $result->get('datetime')->format('Y-m-d'));
-        self::assertSame('12', $result['some']['number']);
-        self::assertSame('12', $result->get('some')['number']);
-        self::assertSame('12', $result->get('some.number'));
+        self::assertSame(12, $result['some']['number']);
+        self::assertSame(12, $result->get('some')['number']);
+        self::assertSame(12, $result->get('some.number'));
         self::assertSame('t3://page?uid=14', $result['some']['further']['link']->url);
         self::assertSame('t3://page?uid=14', $result->get('some')['further']['link']->url);
         self::assertSame('t3://page?uid=14', $result->get('some.further.link')->url);
@@ -2061,9 +2141,9 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         self::assertSame('t3://page?uid=13', $resolvedRelation->get('link')->url);
         self::assertSame('2013-04-20', $resolvedRelation['datetime']->format('Y-m-d'));
         self::assertSame('2013-04-20', $resolvedRelation->get('datetime')->format('Y-m-d'));
-        self::assertSame('12', $resolvedRelation['some']['number']);
-        self::assertSame('12', $resolvedRelation->get('some')['number']);
-        self::assertSame('12', $resolvedRelation->get('some.number'));
+        self::assertSame(12, $resolvedRelation['some']['number']);
+        self::assertSame(12, $resolvedRelation->get('some')['number']);
+        self::assertSame(12, $resolvedRelation->get('some.number'));
         self::assertSame('t3://page?uid=14', $resolvedRelation['some']['further']['link']->url);
         self::assertSame('t3://page?uid=14', $resolvedRelation->get('some')['further']['link']->url);
         self::assertSame('t3://page?uid=14', $resolvedRelation->get('some.further.link')->url);
@@ -2089,9 +2169,9 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         self::assertSame('t3://page?uid=13', $result[0]->get('flexA')->get('link')->url);
         self::assertSame('2013-04-20', $result[0]->get('flexA')['datetime']->format('Y-m-d'));
         self::assertSame('2013-04-20', $result[0]->get('flexA')->get('datetime')->format('Y-m-d'));
-        self::assertSame('12', $result[0]->get('flexA')['some']['number']);
-        self::assertSame('12', $result[0]->get('flexA')->get('some')['number']);
-        self::assertSame('12', $result[0]->get('flexA')->get('some.number'));
+        self::assertSame(12, $result[0]->get('flexA')['some']['number']);
+        self::assertSame(12, $result[0]->get('flexA')->get('some')['number']);
+        self::assertSame(12, $result[0]->get('flexA')->get('some.number'));
         self::assertSame('t3://page?uid=14', $result[0]->get('flexA')['some']['link']->url);
         self::assertSame('t3://page?uid=14', $result[0]->get('flexA')->get('some')['link']->url);
         self::assertSame('t3://page?uid=14', $result[0]->get('flexA')->get('some.link')->url);
@@ -2104,9 +2184,9 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         self::assertSame('t3://page?uid=13', $resolvedRecord->get('typo3tests_contentelementb_collection')[0]->get('flexA')->get('link')->url);
         self::assertSame('2013-04-20', $resolvedRecord->get('typo3tests_contentelementb_collection')[0]->get('flexA')['datetime']->format('Y-m-d'));
         self::assertSame('2013-04-20', $resolvedRecord->get('typo3tests_contentelementb_collection')[0]->get('flexA')->get('datetime')->format('Y-m-d'));
-        self::assertSame('12', $resolvedRecord->get('typo3tests_contentelementb_collection')[0]->get('flexA')['some']['number']);
-        self::assertSame('12', $resolvedRecord->get('typo3tests_contentelementb_collection')[0]->get('flexA')->get('some')['number']);
-        self::assertSame('12', $resolvedRecord->get('typo3tests_contentelementb_collection')[0]->get('flexA')->get('some.number'));
+        self::assertSame(12, $resolvedRecord->get('typo3tests_contentelementb_collection')[0]->get('flexA')['some']['number']);
+        self::assertSame(12, $resolvedRecord->get('typo3tests_contentelementb_collection')[0]->get('flexA')->get('some')['number']);
+        self::assertSame(12, $resolvedRecord->get('typo3tests_contentelementb_collection')[0]->get('flexA')->get('some.number'));
         self::assertSame('t3://page?uid=14', $resolvedRecord->get('typo3tests_contentelementb_collection')[0]->get('flexA')['some']['link']->url);
         self::assertSame('t3://page?uid=14', $resolvedRecord->get('typo3tests_contentelementb_collection')[0]->get('flexA')->get('some')['link']->url);
         self::assertSame('t3://page?uid=14', $resolvedRecord->get('typo3tests_contentelementb_collection')[0]->get('flexA')->get('some.link')->url);
@@ -2132,9 +2212,9 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         self::assertSame('t3://page?uid=13', $result[0]->get('collection_inner')[0]->get('flexB')['link']->url);
         self::assertSame('t3://page?uid=13', $result[0]->get('collection_inner')[0]->get('flexB')->get('link')->url);
         self::assertSame('2013-04-20', $result[0]->get('collection_inner')[0]->get('flexB')->get('datetime')->format('Y-m-d'));
-        self::assertSame('12', $result[0]->get('collection_inner')[0]->get('flexB')['some']['number']);
-        self::assertSame('12', $result[0]->get('collection_inner')[0]->get('flexB')->get('some')['number']);
-        self::assertSame('12', $result[0]->get('collection_inner')[0]->get('flexB')->get('some.number'));
+        self::assertSame(12, $result[0]->get('collection_inner')[0]->get('flexB')['some']['number']);
+        self::assertSame(12, $result[0]->get('collection_inner')[0]->get('flexB')->get('some')['number']);
+        self::assertSame(12, $result[0]->get('collection_inner')[0]->get('flexB')->get('some.number'));
         self::assertSame('t3://page?uid=14', $result[0]->get('collection_inner')[0]->get('flexB')['some']['link']->url);
         self::assertSame('t3://page?uid=14', $result[0]->get('collection_inner')[0]->get('flexB')->get('some')['link']->url);
         self::assertSame('t3://page?uid=14', $result[0]->get('collection_inner')[0]->get('flexB')->get('some.link')->url);
@@ -2148,9 +2228,9 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         self::assertSame('t3://page?uid=13', $resolvedRecord->get('typo3tests_contentelementb_collection_recursive')[0]->get('collection_inner')[0]->get('flexB')->get('link')->url);
         self::assertSame('2013-04-20', $resolvedRecord->get('typo3tests_contentelementb_collection_recursive')[0]->get('collection_inner')[0]->get('flexB')['datetime']->format('Y-m-d'));
         self::assertSame('2013-04-20', $resolvedRecord->get('typo3tests_contentelementb_collection_recursive')[0]->get('collection_inner')[0]->get('flexB')->get('datetime')->format('Y-m-d'));
-        self::assertSame('12', $resolvedRecord->get('typo3tests_contentelementb_collection_recursive')[0]->get('collection_inner')[0]->get('flexB')['some']['number']);
-        self::assertSame('12', $resolvedRecord->get('typo3tests_contentelementb_collection_recursive')[0]->get('collection_inner')[0]->get('flexB')->get('some')['number']);
-        self::assertSame('12', $resolvedRecord->get('typo3tests_contentelementb_collection_recursive')[0]->get('collection_inner')[0]->get('flexB')->get('some.number'));
+        self::assertSame(12, $resolvedRecord->get('typo3tests_contentelementb_collection_recursive')[0]->get('collection_inner')[0]->get('flexB')['some']['number']);
+        self::assertSame(12, $resolvedRecord->get('typo3tests_contentelementb_collection_recursive')[0]->get('collection_inner')[0]->get('flexB')->get('some')['number']);
+        self::assertSame(12, $resolvedRecord->get('typo3tests_contentelementb_collection_recursive')[0]->get('collection_inner')[0]->get('flexB')->get('some.number'));
         self::assertSame('t3://page?uid=14', $resolvedRecord->get('typo3tests_contentelementb_collection_recursive')[0]->get('collection_inner')[0]->get('flexB')['some']['link']->url);
         self::assertSame('t3://page?uid=14', $resolvedRecord->get('typo3tests_contentelementb_collection_recursive')[0]->get('collection_inner')[0]->get('flexB')->get('some')['link']->url);
         self::assertSame('t3://page?uid=14', $resolvedRecord->get('typo3tests_contentelementb_collection_recursive')[0]->get('collection_inner')[0]->get('flexB')->get('some.link')->url);
