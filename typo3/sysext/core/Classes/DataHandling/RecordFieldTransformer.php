@@ -42,6 +42,7 @@ use TYPO3\CMS\Core\Schema\Field\DateTimeFieldType;
 use TYPO3\CMS\Core\Schema\Field\FieldTypeInterface;
 use TYPO3\CMS\Core\Schema\Field\FileFieldType;
 use TYPO3\CMS\Core\Schema\Field\FlexFormFieldType;
+use TYPO3\CMS\Core\Schema\Field\NumberFieldType;
 use TYPO3\CMS\Core\Schema\Field\RelationalFieldTypeInterface;
 use TYPO3\CMS\Core\Schema\Field\StaticSelectFieldType;
 use TYPO3\CMS\Core\Schema\FlexFormSchemaFactory;
@@ -189,6 +190,9 @@ readonly class RecordFieldTransformer
                 return null;
             }
             return $this->countryProvider->getByIsoCode((string)$fieldValue) ?? '';
+        }
+        if ($fieldInformation instanceof NumberFieldType && is_string($fieldValue)) {
+            return $fieldInformation->getScale() === 0 ? (int)$fieldValue : (float)$fieldValue;
         }
         return $fieldValue;
     }
