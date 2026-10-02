@@ -48,7 +48,7 @@ final readonly class FormElementData
     public function hasDeleteAccess(): bool
     {
         $permission = new Permission($this->userPermissionOnPage);
-        return $permission->get($this->table ? Permission::PAGE_DELETE : Permission::CONTENT_EDIT);
+        return $permission->get($this->table === 'pages' ? Permission::PAGE_DELETE : Permission::CONTENT_EDIT);
     }
 
     /**
