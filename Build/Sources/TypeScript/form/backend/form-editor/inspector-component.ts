@@ -32,6 +32,7 @@ import '@typo3/form/backend/form-editor/component/date-editor';
 import {
   DateEditorChangeEvent
 } from '@typo3/form/backend/form-editor/component/date-editor';
+import { writeAdditionalElementPropertyPaths } from '@typo3/form/backend/form-editor/additional-element-property-paths';
 
 import type { FormEditor } from '@typo3/form/backend/form-editor';
 import type {
@@ -1183,14 +1184,7 @@ export function renderTextEditor(
   const inputEl = getHelper().getTemplatePropertyElement('propertyPath', editorHtml) as HTMLInputElement | null;
   if (inputEl) { inputEl.value = propertyData ?? ''; }
 
-  if (
-    !getUtility().isUndefinedOrNull(editorConfiguration.additionalElementPropertyPaths)
-    && Array.isArray(editorConfiguration.additionalElementPropertyPaths)
-  ) {
-    for (let i = 0, len = editorConfiguration.additionalElementPropertyPaths.length; i < len; ++i) {
-      getCurrentlySelectedFormElement().set(editorConfiguration.additionalElementPropertyPaths[i], propertyData);
-    }
-  }
+  writeAdditionalElementPropertyPaths(getCurrentlySelectedFormElement(), editorConfiguration, propertyData, false);
 
   renderFormElementSelectorEditorAddition(editorConfiguration, editorHtml, propertyPath);
 
@@ -1207,21 +1201,12 @@ export function renderTextEditor(
       getCurrentlySelectedFormElement().set(propertyPath, this.value);
     }
     validateCollectionElement(propertyPath, editorHtml);
-    if (
-      !getUtility().isUndefinedOrNull(editorConfiguration.additionalElementPropertyPaths)
-      && Array.isArray(editorConfiguration.additionalElementPropertyPaths)
-    ) {
-      for (let i = 0, len = editorConfiguration.additionalElementPropertyPaths.length; i < len; ++i) {
-        if (
-          !!editorConfiguration.doNotSetIfPropertyValueIsEmpty
-          && !getUtility().isNonEmptyString(this.value)
-        ) {
-          getCurrentlySelectedFormElement().unset(editorConfiguration.additionalElementPropertyPaths[i]);
-        } else {
-          getCurrentlySelectedFormElement().set(editorConfiguration.additionalElementPropertyPaths[i], this.value);
-        }
-      }
-    }
+    writeAdditionalElementPropertyPaths(
+      getCurrentlySelectedFormElement(),
+      editorConfiguration,
+      this.value,
+      !getUtility().isNonEmptyString(this.value)
+    );
   }
 }
 
