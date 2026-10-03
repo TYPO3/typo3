@@ -68,7 +68,7 @@ class SetupDatabaseService
 
     /**
      * @param array $values
-     * @return array
+     * @return array{0: bool, 1: FlashMessage[], 2: array} Success state, messages and the default connection settings written to the configuration
      */
     public function setDefaultConnectionSettings(array $values): array
     {
@@ -197,7 +197,7 @@ class SetupDatabaseService
             $this->configurationManager->setLocalConfigurationValuesByPathValuePairs($localConfigurationPathValuePairs);
         }
 
-        return [$success, $messages];
+        return [$success, $messages, $defaultConnectionSettings];
     }
 
     /**
