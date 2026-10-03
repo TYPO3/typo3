@@ -222,6 +222,8 @@ final class GeneratorFrontend extends AbstractGenerator
         $this->populateTtContentPages();
         $this->populateTtContentRecords();
         $this->populateFeUserAndGroup();
+
+        $this->clearAllCachesOnCli();
     }
 
     public function delete(): void
@@ -250,6 +252,7 @@ final class GeneratorFrontend extends AbstractGenerator
         }
         // Delete records data
         $this->executeDataHandler([], $commands);
+        $this->clearAllCachesOnCli();
 
         // Delete created files
         $this->deleteFalFolder('styleguide_frontend');
