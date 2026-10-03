@@ -28,7 +28,6 @@ use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 use TYPO3\CMS\Core\Authentication\CommandLineUserCreation;
-use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Package\FailsafePackageManager;
@@ -58,7 +57,6 @@ class SetupCommand extends Command
     public function __construct(
         string $name,
         private readonly SetupService $setupService,
-        private readonly ConfigurationManager $configurationManager,
         private readonly LateBootService $lateBootService,
         private readonly FailsafePackageManager $packageManager,
     ) {
@@ -400,7 +398,7 @@ EOT
             $databaseConnection['availableSet'] = 'sqliteManualConfiguration';
         }
 
-        [$success, $messages] = $setupDatabaseService->setDefaultConnectionSettings($databaseConnection);
+        [$success, $messages, $connectionSettings] = $setupDatabaseService->setDefaultConnectionSettings($databaseConnection);
         if (!$success) {
             foreach ($messages as $message) {
                 $this->writeError($output, $message->getMessage());
@@ -409,8 +407,14 @@ EOT
             return Command::FAILURE;
         }
 
-        // Load the actual config written to disk
-        $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections'][ConnectionPool::DEFAULT_CONNECTION_NAME] = $this->configurationManager->getLocalConfigurationValueByPath('DB/Connections/Default');
+        // Use the connection settings written to disk, amended by the bootstrap configuration, e.g. initCommands
+        // Load the concrete configuration that SetupDatabaseService just wrote to
+        // system/settings.php, including previous additional.php settings which may
+        // amend the database connection, e.g. with initCommands
+        $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections'][ConnectionPool::DEFAULT_CONNECTION_NAME] = [
+            ...($GLOBALS['TYPO3_CONF_VARS']['DB']['Connections'][ConnectionPool::DEFAULT_CONNECTION_NAME] ?? []),
+            ...$connectionSettings,
+        ];
 
         $setupDatabaseService->checkRequiredDatabasePermissions();
         $importResults = $setupDatabaseService->importDatabaseData();

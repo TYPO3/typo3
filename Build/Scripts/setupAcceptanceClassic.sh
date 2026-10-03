@@ -53,7 +53,8 @@ $GLOBALS['TYPO3_CONF_VARS']['MAIL']['transport'] = 'mbox';
 $GLOBALS['TYPO3_CONF_VARS']['MAIL']['transport_mbox_file'] = \TYPO3\CMS\Core\Core\Environment::getVarPath() . '/log/mail.mbox';
 
 // SQLite optimization: enable WAL mode and busy timeout to prevent "database is locked" errors
-if (($GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['driver'] ?? '') === 'pdo_sqlite') {
+// `typo3 setup` boots without a configured driver, TYPO3_DB_DRIVER makes the settings apply there as well
+if (($GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['driver'] ?? '') === 'pdo_sqlite' || getenv('TYPO3_DB_DRIVER') === 'sqlite') {
     $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['driverOptions'] = [
         \PDO::ATTR_TIMEOUT => 120,
     ];
