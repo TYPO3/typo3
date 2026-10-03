@@ -144,6 +144,8 @@ final class Generator extends AbstractGenerator
             }
             $generator->handle($mainTable);
         }
+
+        $this->clearAllCachesOnCli();
     }
 
     /**
@@ -180,6 +182,7 @@ final class Generator extends AbstractGenerator
 
         // Process commands to delete records
         $this->executeDataHandler([], $commands);
+        $this->clearAllCachesOnCli();
 
         // Delete demo images in fileadmin again
         $this->deleteFalFolder('styleguide');
@@ -224,8 +227,9 @@ final class Generator extends AbstractGenerator
             // These edge cases are ignored for now.
 
             // Add two be_users, one admin user, one non-admin user, both hidden and with a random password
-            $passwordHash = GeneralUtility::makeInstance(PasswordHashFactory::class)->getDefaultHashInstance('BE');
-            $random = GeneralUtility::makeInstance(Random::class);
+            $hashedPassword = GeneralUtility::makeInstance(PasswordHashFactory::class)
+                ->getDefaultHashInstance('BE')
+                ->getHashedPassword(GeneralUtility::makeInstance(Random::class)->generateRandomBytes(10));
             $fields = [
                 'pid' => 0,
                 'disable' => 1,
@@ -233,14 +237,13 @@ final class Generator extends AbstractGenerator
                 'tx_styleguide_isdemorecord' => 1,
                 'username' => 'styleguide demo user 1',
                 'usergroup' => implode(',', $demoGroupUids),
-                'password' => $passwordHash->getHashedPassword($random->generateRandomBytes(10)),
+                'password' => $hashedPassword,
             ];
             $connection = $this->connectionPool->getConnectionForTable('be_users');
             $connection->insert('be_users', $fields);
             $fields['admin'] = 1;
             $fields['username'] = 'styleguide demo user 2';
             $fields['usergroup'] = '';
-            $fields['password'] = $passwordHash->getHashedPassword($random->generateRandomBytes(10));
             $connection->insert('be_users', $fields);
         }
 
