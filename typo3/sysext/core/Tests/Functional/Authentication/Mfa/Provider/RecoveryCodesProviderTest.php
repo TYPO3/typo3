@@ -102,7 +102,7 @@ final class RecoveryCodesProviderTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function verifyTest(): void
+    public function verifyValidatesRecoveryCode(): void
     {
         $code = '12345678';
         $hash = $this->get(PasswordHashFactory::class)

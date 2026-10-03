@@ -95,7 +95,7 @@ final class TotpProviderTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function verifyTest(): void
+    public function verifyValidatesTotp(): void
     {
         $request = (new ServerRequest('https://example.com', 'POST'));
         $timestamp = $this->get(Context::class)->getPropertyFromAspect('date', 'timestamp');
