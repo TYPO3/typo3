@@ -36,6 +36,13 @@ final class TypePassword extends AbstractFieldGenerator implements FieldGenerato
         ],
     ];
 
+    /**
+     * Hashing is slow by design, hash each plain text password only once
+     *
+     * @var array<string, string>
+     */
+    private array $hashedPasswords = [];
+
     public function __construct(
         private readonly KauderwelschService $kauderwelschService,
         private readonly PasswordHashFactory $passwordHashFactory,
@@ -43,11 +50,10 @@ final class TypePassword extends AbstractFieldGenerator implements FieldGenerato
 
     public function generate(array $data): string
     {
-        $defaultHashInstance = $this->passwordHashFactory->getDefaultHashInstance('BE');
         $plainText = $this->kauderwelschService->getPassword();
         if (array_key_exists('default', $data['fieldConfig']['config'])) {
             $plainText = $data['fieldConfig']['config']['default'];
         }
-        return $defaultHashInstance->getHashedPassword($plainText);
+        return $this->hashedPasswords[$plainText] ??= $this->passwordHashFactory->getDefaultHashInstance('BE')->getHashedPassword($plainText);
     }
 }
