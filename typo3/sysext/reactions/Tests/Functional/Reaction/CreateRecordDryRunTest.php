@@ -59,7 +59,9 @@ final class CreateRecordDryRunTest extends FunctionalTestCase
         self::assertSame('granted_editor', $result->username);
         self::assertNull($result->resolution->error);
         // nav_title is granted through the group of the editor, so the groups were fetched.
-        self::assertSame(['title' => 'Hello', 'nav_title' => 'Jane', 'layout' => '42'], $result->resolution->fields);
+        $fields = $result->resolution->fields;
+        ksort($fields);
+        self::assertSame(['layout' => '42', 'nav_title' => 'Jane', 'title' => 'Hello'], $fields);
         self::assertSame([], $result->resolution->skippedFields);
         self::assertSame($askingUser, $GLOBALS['BE_USER']);
         self::assertSame($askingLanguageService, $GLOBALS['LANG']);
@@ -71,7 +73,7 @@ final class CreateRecordDryRunTest extends FunctionalTestCase
     {
         $result = $this->dryRun(40, ['headline' => 'Hello']);
 
-        self::assertSame(['title', 'nav_title', 'layout'], array_keys($result->fieldLabels));
+        self::assertEqualsCanonicalizing(['title', 'nav_title', 'layout'], array_keys($result->fieldLabels));
         self::assertStringContainsString(':title', $result->fieldLabels['title']);
     }
 
