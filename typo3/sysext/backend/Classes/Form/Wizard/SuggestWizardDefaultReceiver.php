@@ -239,7 +239,7 @@ class SuggestWizardDefaultReceiver
             $selectFields = GeneralUtility::trimExplode(',', $this->config['additionalSearchFields'], true);
         }
         $labelCapability = $this->tcaSchema->getCapability(TcaSchemaCapability::Label);
-        $selectFields = array_unique(array_merge($selectFields, $labelCapability->getAllLabelFieldNames()));
+        $selectFields = array_unique(array_merge($selectFields, $labelCapability->getLabelFieldNamesOfAllRecordTypes()));
         foreach ($selectFields as $field) {
             $selectParts = $selectParts->with($expressionBuilder->like($field, $this->queryBuilder->createPositionalParameter($likeCondition)));
         }

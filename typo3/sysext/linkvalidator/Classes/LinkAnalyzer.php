@@ -140,7 +140,7 @@ class LinkAnalyzer
 
             if ($schema->hasCapability(TcaSchemaCapability::Label)) {
                 $labelCapability = $schema->getCapability(TcaSchemaCapability::Label);
-                $selectFields = array_unique(array_merge($selectFields, $labelCapability->getAllLabelFieldNames()));
+                $selectFields = array_unique(array_merge($selectFields, $labelCapability->getLabelFieldNamesOfAllRecordTypes()));
             }
 
             if ($schema->isLanguageAware()) {
@@ -290,7 +290,7 @@ class LinkAnalyzer
         $selectFields = ['uid', 'pid', $field];
         if ($schema->hasCapability(TcaSchemaCapability::Label)) {
             $labelCapability = $schema->getCapability(TcaSchemaCapability::Label);
-            $selectFields = array_unique(array_merge($selectFields, $labelCapability->getAllLabelFieldNames()));
+            $selectFields = array_unique(array_merge($selectFields, $labelCapability->getLabelFieldNamesOfAllRecordTypes()));
         }
 
         $updatedFieldName = null;

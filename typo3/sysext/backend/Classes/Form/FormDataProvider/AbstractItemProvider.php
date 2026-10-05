@@ -1328,7 +1328,10 @@ abstract class AbstractItemProvider
         $fields = ['uid', 'pid'];
 
         if ($schema->hasCapability(TcaSchemaCapability::Label)) {
-            $fields = array_merge($fields, $schema->getCapability(TcaSchemaCapability::Label)->getAllLabelFieldNames());
+            $fields = array_merge($fields, $schema->getCapability(TcaSchemaCapability::Label)->getLabelFieldNamesOfAllRecordTypes());
+        }
+        if ($schema->supportsSubSchema()) {
+            $fields[] = $schema->getSubSchemaTypeInformation()->getFieldName();
         }
         if ($schema->isWorkspaceAware()) {
             $fields[] = 't3ver_state';

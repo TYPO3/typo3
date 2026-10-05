@@ -619,7 +619,7 @@ class DatabaseRecordList
             }
         }
         $labelCapability = $schema->getCapability(TcaSchemaCapability::Label);
-        $selectFields = array_unique(array_merge($selectFields, $labelCapability->getAllLabelFieldNames()));
+        $selectFields = array_unique(array_merge($selectFields, $labelCapability->getLabelFieldNamesOfAllRecordTypes()));
         $fieldListFields = BackendUtility::getAllowedFieldsForTable($table, false);
         // Making sure that the fields in the field-list ARE in the field-list from TCA!
         return array_intersect($selectFields, $fieldListFields);
