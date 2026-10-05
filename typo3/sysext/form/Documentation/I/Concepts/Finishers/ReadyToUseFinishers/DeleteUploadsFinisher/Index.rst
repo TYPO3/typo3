@@ -14,7 +14,9 @@ in your TYPO3 installation.
 
     Finishers are only executed when a form is successfully submitted. If a user uploads
     a file but does not finish filling out the form, the uploaded files will not
-    be deleted.
+    be deleted. Use the console command
+    `vendor/bin/typo3 form:cleanup:uploads` to remove these files, see
+    :ref:`Cleaning up uploaded form files <howtos-cleanup-upload-folders>`.
 
 ..  contents:: Table of contents
 

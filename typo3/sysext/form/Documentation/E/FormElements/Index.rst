@@ -26,22 +26,31 @@ Overview of form elements
 Form element settings
 ---------------------
 
-Most form elements have these 7 basic settings:
+Most form elements have these 8 basic settings:
 
-- **Label**: Label of the element.
-- **Description**: Description of the element. Can be used to
-  provide the user with more information about the expected input.
-- **Placeholder**: Example of the expected content. Disappears with the user's
-  input.
-- **Default value**: Preset value. Pre-entered by the system and does not
-  disappear with the user's input.
-- **Mandatory field**: Specify whether the field is a mandatory field and thus
-  must be filled in by the user.
-- **Custom error message**: Custom message that will be displayed to the user
-  if the field is not filled in. If you don't provide a message, a default
-  message is shown.
-- **Validators**: Validators are used to check the data entered in the
-  field. The system displays error messages if there are errors.
+-   **Label**: Label of the element.
+-   **Description**: Description of the element. Can be used to
+    provide the user with more information about the expected input.
+-   **Field visible**: Specify whether the element is displayed in the
+    frontend. Clear the checkbox to hide the element. The form editor marks
+    hidden elements with an overlay icon. See also the
+    :ref:`rendering option enabled <concepts-variants-enabled-property>`.
+-   **Placeholder**: Example of the expected content. Disappears with the user's
+    input.
+-   **Default value**: Preset value. Pre-entered by the system and does not
+    disappear with the user's input.
+-   **Mandatory field**: Specify whether the field is a mandatory field and thus
+    must be filled in by the user.
+-   **Custom error message**: Custom message that will be displayed to the user
+    if the field is not filled in. If you don't provide a message, a default
+    message is shown.
+-   **Validators**: Validators are used to check the data entered in the
+    field. The system displays error messages if there are errors.
+
+..  versionadded:: 14.1
+    :changelog: feature-108663-1737166800
+
+    The setting **Field visible** was added.
 
 .. warning::
 
@@ -222,7 +231,25 @@ A single-line text field for entering a date.
 which the user can select the date. This element has the
 :ref:`basic settings <form-elements-settings>`. Additional settings:
 
-- **Frequency**: default value "1" means that the user can select every day.
+-   **Frequency**: default value "1" means that the user can select every day.
+-   **Default value**: Preset date. Select one of these options:
+
+    -   **No value**: The field has no preset date.
+    -   **Today**: The current date at the time the form is displayed.
+    -   **Absolute date**: A fixed date that you select in a date picker.
+    -   **Relative date**: A date relative to the current day. Select "past"
+        or "future", enter an amount, and select days, weeks, months, or
+        years.
+    -   **Custom relative expression**: Enter any other relative date
+        expression, for example "sunday next month".
+
+    TYPO3 calculates relative dates when the form is displayed.
+
+..  versionadded:: 14.2
+    :changelog: feature-109126-1740000000
+
+    Previously, you had to type the **Default value** of the date element
+    as text.
 
 .. figure:: Images/form_elements_date_1.png
    :alt: Element 'Date' - preview in the frontend.
@@ -257,6 +284,11 @@ Checkbox
 ========
 
 A simple checkbox. This element has the :ref:`basic settings <form-elements-settings>`.
+You can format the **Label** in a rich text editor. You can use bold
+and italic text and insert links, for example to your privacy policy.
+
+..  versionadded:: 14.2
+    :changelog: feature-108966-1738963200
 
 .. figure:: Images/form_elements_checkbox_1.png
    :alt: Element 'Checkbox' - preview in the frontend.
@@ -417,10 +449,24 @@ File upload
 An element to upload a file to the :guilabel:`File > Filelist` module. This element has the
 :ref:`basic settings <form-elements-settings>`. Additional settings:
 
-- **Allowed Mime Types**: Select the allowed file extensions a user is able to
-  upload.
-- **Storage path for uploads**: Select the storage path in your TYPO3 installation.
-  This is where the uploaded file will be saved.
+-   **Allowed Mime Types**: Select the allowed file extensions a user is able to
+    upload.
+-   **Storage path for uploads**: Select the storage path in your TYPO3 installation.
+    This is where the uploaded file will be saved.
+-   **Allow multiple upload**: Check this to allow users to upload more
+    than one file in this field.
+-   **Allow removal of uploaded files**: Check this to show a "Remove"
+    checkbox next to each uploaded file. Users can then remove a file before
+    they submit the form.
+
+To limit the number of uploaded files, add a
+:ref:`validator for the number of files <validators-number-of-files>`.
+
+..  versionadded:: 14.2
+    :changelog: feature-105708-1739721600
+
+    The settings **Allow multiple upload** and
+    **Allow removal of uploaded files** were added.
 
 .. figure:: Images/form_elements_fileUpload_1.png
    :alt: Element 'File upload' - preview in the frontend.
@@ -471,10 +517,24 @@ Image upload
 An element to upload an image to :guilabel:`File > Filelist`. This element has the
 :ref:`basic settings <form-elements-settings>`. Other settings:
 
-- **Allowed Mime Types**: Select the file extensions a user is allowed to
-  upload.
-- **Storage path for uploads**: Select the storage path in your TYPO3 installation.
-  This is where the uploaded file will be saved.
+-   **Allowed Mime Types**: Select the file extensions a user is allowed to
+    upload.
+-   **Storage path for uploads**: Select the storage path in your TYPO3 installation.
+    This is where the uploaded file will be saved.
+-   **Allow multiple upload**: Check this to allow users to upload more
+    than one file in this field.
+-   **Allow removal of uploaded files**: Check this to show a "Remove"
+    checkbox next to each uploaded file. Users can then remove a file before
+    they submit the form.
+
+To limit the number of uploaded files, add a
+:ref:`validator for the number of files <validators-number-of-files>`.
+
+..  versionadded:: 14.2
+    :changelog: feature-105708-1739721600
+
+    The settings **Allow multiple upload** and
+    **Allow removal of uploaded files** were added.
 
 .. figure:: Images/form_elements_imageUpload_1.png
    :alt: Element 'Image upload' - preview in the frontend.
@@ -524,12 +584,18 @@ is useful for registration forms. This element has the
 Static text
 ===========
 
-A field for static text. This text cannot be formatted, which means you can't
-insert links or highlight text. Instead, the text is output in the style of
-your website. The settings for this element are:
+A field for static text. The text is output in the style of your website.
+The settings for this element are:
 
-- **Heading**: Heading for the element.
-- **Text**: Content for the element.
+-   **Header**: Heading for the element.
+-   **Text**: Content for the element. You can format the text in a rich
+    text editor. You can use bold and italic text, links, and bulleted or
+    numbered lists.
+
+..  versionchanged:: 14.2
+    :changelog: feature-108966-1738963200
+
+    Previously, the text of the static text element could not be formatted.
 
 .. figure:: Images/form_elements_staticText_1.png
    :alt: Element 'Static text' - preview in the frontend.

@@ -7,7 +7,7 @@ formEditor.propertyCollections.validators.10.editors.300
       prototypes.<prototypeIdentifier>.formElementsDefinition.Date.formEditor.propertyCollections.validators.10.editors.300
 
 :aspect:`Data type`
-      array/ :ref:`[TextEditor] <prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.texteditor>`
+      array/ :ref:`[DateEditor] <prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.dateeditor>`
 
 :aspect:`Needed by`
       Backend (form editor)
@@ -29,9 +29,8 @@ formEditor.propertyCollections.validators.10.editors.300
                    editors:
                      300:
                        identifier: maximum
-                       templateName: Inspector-TextEditor
+                       templateName: Inspector-DateEditor
                        label: formEditor.elements.DatePicker.validators.DateRange.editor.maximum
-                       placeholder: formEditor.elements.DatePicker.validators.DateRange.editor.maximum.placeholder
                        propertyPath: options.maximum
                        propertyValidators:
                          10: RFC3339FullDateOrEmpty

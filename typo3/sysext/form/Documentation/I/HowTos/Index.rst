@@ -14,3 +14,4 @@ with the TYPO3 Form Framework.
    :titlesonly:
 
    CustomFormElement/Index
+   CleanupUploadFolders/Index

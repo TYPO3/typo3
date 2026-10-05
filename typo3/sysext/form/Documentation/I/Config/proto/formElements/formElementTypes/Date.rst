@@ -61,8 +61,9 @@ Properties
 .. _prototypes.prototypeIdentifier.formelementsdefinition.date.formeditor.editors.230:
 .. include:: Date/formEditor/editors/230.rst.txt
 
+..  _prototypes.prototypeIdentifier.formelementsdefinition.date.formeditor.editors.300:
 .. _prototypes.prototypeIdentifier.formelementsdefinition.date.formeditor.editors.500:
-.. include:: Date/formEditor/editors/500.rst.txt
+..  include:: Date/formEditor/editors/300.rst.txt
 
 .. _prototypes.prototypeIdentifier.formelementsdefinition.date.formeditor.editors.550:
 .. include:: Date/formEditor/editors/550.rst.txt

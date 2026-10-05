@@ -68,6 +68,13 @@ validator has two options:
 - Minimum [:yaml:`options.minimum`]: The minimum count to accept.
 - Maximum [:yaml:`options.maximum`]: The maximum count to accept.
 
+..  versionadded:: 14.2
+    :changelog: feature-105708-1739721600
+
+Use the :yaml:`Count` validator with :yaml:`FileUpload` and
+:yaml:`ImageUpload` elements to limit the number of uploaded files. The
+element property :yaml:`multiple` must be enabled.
+
 
 .. _concepts-validators-date_range:
 
@@ -79,14 +86,46 @@ checks if a value is a valid DateTime object and within a specified
 date range. The range can be defined by providing a minimum and/or maximum date.
 The validator has two options:
 
-- Format [:yaml:`options.format`]: The format of the minimum and maximum option.
-  Default: [:yaml:`Y-m-d`].
-- Minimum date [:yaml:`options.minimum`]: The minimum date formatted as `Y-m-d`.
-- Maximum date [:yaml:`options.maximum`]: The maximum date formatted as `Y-m-d`.
+-   Format [:yaml:`options.format`]: The format of the absolute minimum and
+    maximum dates. Default: [:yaml:`Y-m-d`].
+-   Minimum date [:yaml:`options.minimum`]: The minimum date. Use an absolute
+    date in the format `Y-m-d` or a relative date expression.
+-   Maximum date [:yaml:`options.maximum`]: The maximum date. Use an absolute
+    date in the format `Y-m-d` or a relative date expression.
 
-The options :yaml:`minimum` and :yaml:`maximum` must have the format 'Y-m-d' which
-represents the `RFC 3339 <https://www.w3.org/TR/2011/WD-html-markup-20110405/input.date.html>`__
+Absolute dates use the format 'Y-m-d', which represents the
+`RFC 3339 <https://www.w3.org/TR/2011/WD-html-markup-20110405/input.date.html>`__
 'full-date' format.
+
+..  versionadded:: 14.2
+    :changelog: feature-106681-1740000000
+
+    Before, the options :yaml:`minimum` and :yaml:`maximum` only accepted
+    absolute dates.
+
+Relative date expressions follow the syntax of the PHP function
+`strtotime() <https://www.php.net/strtotime>`__, for example `today`,
+`tomorrow`, `-18 years`, or `+1 month`. They are evaluated when the form is
+validated. You can mix absolute and relative dates.
+
+The following example accepts only dates of birth at least 18 years in the
+past:
+
+..  code-block:: yaml
+
+    type: Date
+    identifier: date-of-birth
+    label: 'Date of birth'
+    validators:
+      -
+        identifier: DateRange
+        options:
+          minimum: '1900-01-01'
+          maximum: '-18 years'
+
+The HTML attributes `min` and `max` of the rendered date input can also
+contain relative date expressions. They are resolved to absolute `Y-m-d`
+dates when the form is rendered.
 
 The input must be a DateTime object. This input can be tested against a minimum
 date and a maximum date. The minimum date and the maximum date are strings. The minimum
@@ -292,3 +331,46 @@ As mentioned above, EXT:form uses Extbase validators. That said,
 your own validators should extend :php:`\TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator`.
 Read more in "TYPO3 Explained":
 :ref:`t3coreapi:extbase_domain_validator`.
+
+
+..  _concepts-validators-customvalidatorimplementations-objectstorage:
+
+Validating multi-value fields
+"""""""""""""""""""""""""""""
+
+..  versionadded:: 14.2
+    :changelog: feature-105708-1739721600
+
+Some form elements submit several values as an
+:php-short:`\TYPO3\CMS\Extbase\Persistence\ObjectStorage`, for example a
+:yaml:`FileUpload` element with :yaml:`multiple` enabled. By default, a
+validator receives the whole
+:php-short:`\TYPO3\CMS\Extbase\Persistence\ObjectStorage`. Use this for
+validators that check the collection as a whole, such as the :yaml:`Count`
+validator.
+
+If a validator checks single items, implement the marker interface
+:php-short:`\TYPO3\CMS\Form\Mvc\Validation\ObjectStorageElementValidatorInterface`.
+The validator is then called once for each item. The validators
+:php-short:`\TYPO3\CMS\Form\Mvc\Validation\MimeTypeValidator` and
+:php-short:`\TYPO3\CMS\Form\Mvc\Validation\FileSizeValidator` work this way.
+
+..  code-block:: php
+    :caption: EXT:my_site_package/Classes/Domain/Validation/CustomFileValidator.php
+
+    use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
+    use TYPO3\CMS\Form\Mvc\Validation\ObjectStorageElementValidatorInterface;
+
+    final class CustomFileValidator extends AbstractValidator implements
+      ObjectStorageElementValidatorInterface
+    {
+      public function isValid(mixed $value): void
+      {
+        // $value is a single item of the ObjectStorage,
+        // for example a FileReference
+      }
+    }
+
+For values that are not an
+:php-short:`\TYPO3\CMS\Extbase\Persistence\ObjectStorage`, the interface
+has no effect.

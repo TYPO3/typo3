@@ -42,9 +42,8 @@ formEditor.propertyCollections.validators.10
                        propertyPath: properties.validationErrorMessages
                      250:
                        identifier: minimum
-                       templateName: Inspector-TextEditor
+                       templateName: Inspector-DateEditor
                        label: formEditor.elements.DatePicker.validators.DateRange.editor.minimum
-                       placeholder: formEditor.elements.DatePicker.validators.DateRange.editor.minimum.placeholder
                        propertyPath: options.minimum
                        propertyValidators:
                          10: RFC3339FullDateOrEmpty
@@ -52,9 +51,8 @@ formEditor.propertyCollections.validators.10
                          10: properties.fluidAdditionalAttributes.min
                      300:
                        identifier: maximum
-                       templateName: Inspector-TextEditor
+                       templateName: Inspector-DateEditor
                        label: formEditor.elements.DatePicker.validators.DateRange.editor.maximum
-                       placeholder: formEditor.elements.DatePicker.validators.DateRange.editor.maximum.placeholder
                        propertyPath: options.maximum
                        propertyValidators:
                          10: RFC3339FullDateOrEmpty

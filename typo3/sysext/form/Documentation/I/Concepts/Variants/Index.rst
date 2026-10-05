@@ -74,6 +74,12 @@ the form is submitted. Setting :yaml:`enabled: false` skips the finisher.
 
 By default, :yaml:`enabled` is set to :yaml:`true`.
 
+..  versionadded:: 14.1
+    :changelog: feature-108663-1737166800
+
+Editors can set the rendering option :yaml:`enabled` of most form elements
+in the `form editor` with the inspector checkbox :guilabel:`Field visible`.
+
 See :ref:`examples<concepts-variants-examples-hide-form-elements>`
 below to learn more.
 
@@ -278,6 +284,57 @@ or an empty array if no content object is available.
 For example:
 
 :yaml:`contentObject["pid"] in [23, 42]`.
+
+..  _concepts-variants-conditions-functions:
+
+Functions
+^^^^^^^^^
+
+The form framework also adds functions to the expression language.
+
+..  _concepts-variants-conditions-functions-getformvalue:
+
+`getFormValue()`
+""""""""""""""""""
+
+:yaml:`getFormValue(identifier, default)` returns the submitted value of the
+form element with the given identifier. If no value has been submitted, the
+function returns the second argument. The second argument is optional and
+defaults to `null`.
+
+For example:
+
+:yaml:`getFormValue("text-1") == "yes"`.
+
+Use an empty array as default value to check values of multi-value form
+elements with the :yaml:`in` operator:
+
+..  code-block:: yaml
+
+    variants:
+      -
+        identifier: variant-1
+        condition: '"foo" in getFormValue("multiCheckbox-1", [])'
+
+..  versionadded:: 13.0
+    :changelog: feature-102077-1696240251
+
+    Before, :yaml:`getFormValue()` had no second argument and always returned
+    `null` if no value had been submitted.
+
+..  _concepts-variants-conditions-functions-getrootformproperty:
+
+`getRootFormProperty()`
+"""""""""""""""""""""""""
+
+:yaml:`getRootFormProperty(path)` returns a property of the root form element
+(:php:`\TYPO3\CMS\Form\Domain\Model\FormDefinition`). The path is a
+dot-separated property path. If the property does not exist, the function
+returns `null`.
+
+For example:
+
+:yaml:`getRootFormProperty("renderingOptions.submitButtonLabel") == "Send"`.
 
 
 .. _concepts-variants-programmatically:

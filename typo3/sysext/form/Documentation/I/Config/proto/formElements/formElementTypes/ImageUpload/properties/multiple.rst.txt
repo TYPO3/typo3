@@ -1,0 +1,42 @@
+..  include:: /Includes.rst.txt
+properties.multiple
+-------------------
+
+:aspect:`Option path`
+      prototypes.<prototypeIdentifier>.formElementsDefinition.ImageUpload.properties.multiple
+
+:aspect:`Data type`
+      bool
+
+:aspect:`Needed by`
+      Frontend/ Backend (form editor)
+
+:aspect:`Overwritable within form definition`
+      Yes
+
+:aspect:`form editor can write this property into the form definition (for prototype 'standard')`
+      Yes
+
+:aspect:`Mandatory`
+      No
+
+:aspect:`Default value (for prototype 'standard')`
+      false (not set)
+
+:aspect:`Description`
+      ..  versionadded:: 14.2
+          :changelog: feature-105708-1739721600
+
+      If set to true, the upload field accepts more than one file. The file
+      input is rendered with the HTML `multiple` attribute.
+
+      The value of the element is then an
+      :php:`\TYPO3\CMS\Extbase\Persistence\ObjectStorage` of file references
+      instead of a single file reference. Custom finishers that process
+      uploads must handle both cases.
+
+      Use the :ref:`Count validator <prototypes.prototypeIdentifier.validatorsdefinition.count>`
+      to limit the number of uploaded files.
+
+      In the form editor, this property is set with the "Allow multiple upload"
+      checkbox.

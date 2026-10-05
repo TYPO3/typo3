@@ -13,14 +13,18 @@
 Validation error codes
 ======================
 
-- Error code: `1521293685`
-- Error message: `You must enter an instance of \DateTime.`
+-   Error code: `1521293685`
+-   Error message: `You must enter an instance of \DateTime.`
 
-- Error code: `1521293686`
-- Error message: `You must select a date before %s.`
+-   Error code: `1521293686`
+-   Error message: `You must select a date before %s.`
 
-- Error code: `1521293687`
-- Error message: `You must select a date after %s.`
+-   Error code: `1521293687`
+-   Error message: `You must select a date after %s.`
+
+-   Error code: `1748345955`
+-   Error message: `This field cannot be validated due to a configuration
+    error. Please contact the website owner.`
 
 
 .. _prototypes.prototypeIdentifier.validatorsdefinition.daterange-properties:
@@ -51,7 +55,7 @@ implementationClassName
          :linenos:
          :emphasize-lines: 2
 
-         Count:
+         DateRange:
            implementationClassName: TYPO3\CMS\Form\Mvc\Validation\DateRangeValidator
 
 :aspect:`Good to know`
@@ -99,7 +103,7 @@ options.minimum
       prototypes.<prototypeIdentifier>.validatorsDefinition.DateRange.options.minimum
 
 :aspect:`Data type`
-      int
+      string
 
 :aspect:`Needed by`
       Frontend
@@ -111,7 +115,40 @@ options.minimum
       undefined
 
 :aspect:`Description`
-      The minimum date formatted as Y-m-d.
+      The minimum date. Use an absolute date in the format of
+      `options.format` or a relative date expression.
+
+      ..  versionadded:: 14.2
+          :changelog: feature-106681-1740000000
+
+          Relative date expressions.
+
+      A relative date expression follows the syntax of the PHP function
+      `strtotime()`. Examples are `today`, `tomorrow`, `-18 years`, and
+      `+1 month`. The expression is evaluated when the form is validated.
+      Absolute and relative dates can be mixed in one validator.
+
+      The validator compares dates at midnight, so the time of day is ignored.
+      If a value cannot be parsed, the validator adds the configuration error
+      `1748345955` and logs the details.
+
+      For a `Date` element, the form editor also writes the values into the
+      HTML `min` and `max` attributes of the field. Relative expressions in
+      these attributes are resolved to absolute `Y-m-d` dates when the form
+      is rendered.
+
+      ..  code-block:: yaml
+          :caption: Example: The date of birth must be at least 18 years ago
+
+          type: Date
+          identifier: date-of-birth
+          label: 'Date of birth'
+          validators:
+            -
+              identifier: DateRange
+              options:
+                minimum: '1900-01-01'
+                maximum: '-18 years'
 
 
 .. _prototypes.prototypeIdentifier.validatorsdefinition.daterange.options.maximum:
@@ -123,7 +160,7 @@ options.maximum
       prototypes.<prototypeIdentifier>.validatorsDefinition.DateRange.options.maximum
 
 :aspect:`Data type`
-      int
+      string
 
 :aspect:`Needed by`
       Frontend
@@ -135,7 +172,15 @@ options.maximum
       undefined
 
 :aspect:`Description`
-      The maximum date formatted as Y-m-d.
+      The maximum date. Use an absolute date in the format of
+      `options.format` or a relative date expression. The rules for relative
+      date expressions are described in
+      :ref:`options.minimum <prototypes.prototypeIdentifier.validatorsdefinition.daterange.options.minimum>`.
+
+      ..  versionadded:: 14.2
+          :changelog: feature-106681-1740000000
+
+          Relative date expressions.
 
 
 .. _prototypes.prototypeIdentifier.validatorsdefinition.daterange.formeditor.iconidentifier:

@@ -33,6 +33,12 @@ Properties
 .. _prototypes.prototypeIdentifier.formelementsdefinition.imageupload.properties.allowedmimetypes:
 .. include:: ImageUpload/properties/allowedMimeTypes.rst.txt
 
+..  _prototypes.prototypeIdentifier.formelementsdefinition.imageupload.properties.multiple:
+..  include:: ImageUpload/properties/multiple.rst.txt
+
+..  _prototypes.prototypeIdentifier.formelementsdefinition.imageupload.properties.allowremoval:
+..  include:: ImageUpload/properties/allowRemoval.rst.txt
+
 .. _prototypes.prototypeIdentifier.formelementsdefinition.imageupload.properties.imagelinkmaxwidth:
 .. include:: ImageUpload/properties/imageLinkMaxWidth.rst.txt
 
@@ -59,6 +65,12 @@ Properties
 
 .. _prototypes.prototypeIdentifier.formelementsdefinition.imageupload.formeditor.editors.400:
 .. include:: ImageUpload/formEditor/editors/400.rst.txt
+
+..  _prototypes.prototypeIdentifier.formelementsdefinition.imageupload.formeditor.editors.500:
+..  include:: ImageUpload/formEditor/editors/500.rst.txt
+
+..  _prototypes.prototypeIdentifier.formelementsdefinition.imageupload.formeditor.editors.550:
+..  include:: ImageUpload/formEditor/editors/550.rst.txt
 
 .. _prototypes.prototypeIdentifier.formelementsdefinition.imageupload.formeditor.editors.700:
 .. include:: ImageUpload/formEditor/editors/700.rst.txt

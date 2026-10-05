@@ -33,6 +33,12 @@ Properties
 .. _prototypes.prototypeIdentifier.formelementsdefinition.fileupload.properties.allowedmimetypes:
 .. include:: FileUpload/properties/allowedMimeTypes.rst.txt
 
+..  _prototypes.prototypeIdentifier.formelementsdefinition.fileupload.properties.multiple:
+..  include:: FileUpload/properties/multiple.rst.txt
+
+..  _prototypes.prototypeIdentifier.formelementsdefinition.fileupload.properties.allowremoval:
+..  include:: FileUpload/properties/allowRemoval.rst.txt
+
 .. _prototypes.prototypeIdentifier.formelementsdefinition.fileupload.formeditor:
 .. include:: FileUpload/formEditor.rst.txt
 
@@ -50,6 +56,12 @@ Properties
 
 .. _prototypes.prototypeIdentifier.formelementsdefinition.fileupload.formeditor.editors.400:
 .. include:: FileUpload/formEditor/editors/400.rst.txt
+
+..  _prototypes.prototypeIdentifier.formelementsdefinition.fileupload.formeditor.editors.500:
+..  include:: FileUpload/formEditor/editors/500.rst.txt
+
+..  _prototypes.prototypeIdentifier.formelementsdefinition.fileupload.formeditor.editors.550:
+..  include:: FileUpload/formEditor/editors/550.rst.txt
 
 .. _prototypes.prototypeIdentifier.formelementsdefinition.fileupload.formeditor.editors.700:
 .. include:: FileUpload/formEditor/editors/700.rst.txt

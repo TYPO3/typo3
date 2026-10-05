@@ -26,7 +26,7 @@ implementationClassName
          :emphasize-lines: 2
 
          MultiCheckbox:
-           implementationClassName: TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement
+           implementationClassName: TYPO3\CMS\Form\Domain\Model\FormElements\GenericOptionableFormElement
 
 .. :aspect:`Good to know`
       ToDo

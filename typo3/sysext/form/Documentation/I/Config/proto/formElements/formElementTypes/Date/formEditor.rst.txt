@@ -19,7 +19,7 @@ formEditor
          :linenos:
          :emphasize-lines: 2-
 
-         DatePicker:
+         Date:
            formEditor:
              editors:
                100:
@@ -35,12 +35,11 @@ formEditor
                  templateName: Inspector-TextEditor
                  label: formEditor.elements.FormElement.editor.elementDescription.label
                  propertyPath: properties.elementDescription
-               500:
+               300:
                  identifier: defaultValue
-                 templateName: Inspector-TextEditor
+                 templateName: Inspector-DateEditor
                  label: formEditor.elements.TextMixin.editor.defaultValue.label
                  propertyPath: defaultValue
-                 placeholder: formEditor.elements.Date.editor.defaultValue.placeholder
                  propertyValidators:
                    10: RFC3339FullDateOrEmpty
                550:

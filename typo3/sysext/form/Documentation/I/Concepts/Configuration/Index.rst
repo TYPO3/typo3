@@ -118,17 +118,21 @@ used depends on the setup.
 .. t3-field-list-table::
  :header-rows: 1
 
- - :a: YAML file
-   :b: YAML loader
+ -   :a: YAML file
+     :b: YAML loader
 
- - :a: YAML configuration
-   :b: TYPO3 core
+ -   :a: YAML configuration
+     :b: TYPO3 Core
 
- - :a: YAML definition stored in file system (default when using the ``form editor``)
-   :b: TYPO3 Form Framework
+ -   :a: YAML definition stored in file system (default when using the ``form editor``)
+     :b: TYPO3 Form Framework
 
- - :a: YAML definition stored in an extension
-   :b: TYPO3 core
+ -   :a: YAML definition stored in an extension
+     :b: TYPO3 Core
+
+ -   :a: :ref:`Start template <concepts-formmanager-starttemplate>` used to
+         create a new form in the `form manager`
+     :b: TYPO3 Core
 
 
 .. _concepts-configuration-configurationaspects:
