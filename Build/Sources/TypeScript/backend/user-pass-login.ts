@@ -41,7 +41,6 @@ class UserPassLogin {
     // register submit handler
     Login.options.submitHandler = this.resetPassword;
 
-    [usernameField, passwordField].forEach((field) => new RegularEvent('keypress', this.showCapslockWarning).bindTo(field));
     ['input', 'change'].forEach((eventName) => new RegularEvent(eventName, this.showPasswordToggle).bindTo(passwordField));
     new RegularEvent('keydown', this.toggleCopyright).bindTo(copyrightLink);
 
@@ -56,37 +55,6 @@ class UserPassLogin {
     } else {
       passwordField.focus();
     }
-  }
-
-  /**
-   * Checks whether capslock is enabled (returns TRUE if enabled, false otherwise)
-   * thanks to http://24ways.org/2007/capturing-caps-lock
-   *
-   * @param {Event} e
-   * @returns {boolean}
-   */
-  private isCapslockEnabled(e: any): boolean {
-    const ev = e ? e : window.event;
-    if (!ev) {
-      return false;
-    }
-    // get key pressed
-    let pressedKeyAsciiCode = -1;
-    if (ev.which) {
-      pressedKeyAsciiCode = ev.which;
-    } else if (ev.keyCode) {
-      pressedKeyAsciiCode = ev.keyCode;
-    }
-    // get shift status
-    let shiftPressed = false;
-    if (ev.shiftKey) {
-      shiftPressed = ev.shiftKey;
-    } else if (ev.modifiers) {
-      /* tslint:disable:no-bitwise */
-      shiftPressed = !!(ev.modifiers & 4);
-    }
-    return (pressedKeyAsciiCode >= 65 && pressedKeyAsciiCode <= 90 && !shiftPressed)
-      || (pressedKeyAsciiCode >= 97 && pressedKeyAsciiCode <= 122 && shiftPressed);
   }
 
   /**
@@ -110,77 +78,6 @@ class UserPassLogin {
   private readonly toggleCopyright = (event: KeyboardEvent): void => {
     if (event.key === ' ') {
       (event.target as HTMLLinkElement).click();
-    }
-  };
-
-  /**
-   * Capslock handling
-   */
-  private readonly attachCapslockWarning = (element: HTMLInputElement, label: string, message: string) => {
-    const targetContainer = element.closest('.input-group');
-    if (!targetContainer) {
-      return;
-    }
-
-    if (targetContainer.querySelector('.input-group-text-warning-capslock')) {
-      return;
-    }
-
-    const parentElement = element.parentElement;
-
-    // create icon
-    const warningIcon = `
-      <span class="icon icon-size-small icon-state-default">
-          <span class="icon-markup">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><g fill="currentColor"><path d="m8 5.414 3.536 3.536.707-.707L8 4 3.757 8.243l.707.707L8 5.414zM4 11h8v1H4z"/></g></svg>
-          </span>
-      </span>
-    `;
-
-    // create message
-    const warningMessage = document.createElement('span');
-    warningMessage.classList.add('visually-hidden');
-    warningMessage.textContent = message;
-
-    // create element
-    const warningElement = document.createElement('span');
-    warningElement.classList.add('input-group-text', 'input-group-text-warning' ,'input-group-text-warning-capslock');
-    warningElement.role = 'status';
-    warningElement.innerHTML = warningIcon;
-    warningElement.title = label;
-    warningElement.appendChild(warningMessage);
-
-    if (parentElement.classList.contains('form-control-clearable-wrapper')) {
-      parentElement.insertAdjacentElement('afterend', warningElement);
-      return;
-    }
-
-    element.insertAdjacentElement('afterend', warningElement);
-  };
-
-  private readonly removeCapslockWarning = (element: HTMLInputElement) => {
-    const targetContainer = element.closest('.input-group');
-    if (!targetContainer) {
-      return;
-    }
-
-    const warningElement = targetContainer.querySelector('.input-group-text-warning-capslock');
-    if (!warningElement) {
-      return;
-    }
-
-    warningElement.remove();
-  };
-
-  private readonly showCapslockWarning = (event: Event): void => {
-    const targetElement = (event.target as HTMLInputElement);
-    const title = targetElement.dataset.capslockwarningTitle;
-    const message = targetElement.dataset.capslockwarningMessage;
-
-    if (this.isCapslockEnabled(event)) {
-      this.attachCapslockWarning(targetElement, title, message);
-    } else {
-      this.removeCapslockWarning(targetElement);
     }
   };
 
