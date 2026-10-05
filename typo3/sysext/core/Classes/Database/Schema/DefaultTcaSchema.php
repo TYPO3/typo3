@@ -884,6 +884,24 @@ readonly class DefaultTcaSchema
                                         ]
                                     );
                                 }
+                                // Add definition for "foreign_sortby" (contains sorting of child records) in the child table if it
+                                // is not defined in child TCA or if it is "just" a "passthrough" field, and not manually configured
+                                // in ext_tables.sql
+                                $childTableForeignSortbyFieldName = $fieldTypeConfiguration['foreign_sortby'] ?? '';
+                                if ($childTableForeignSortbyFieldName !== ''
+                                    && (!$childSchema->hasField($childTableForeignSortbyFieldName) || $childSchema->getField($childTableForeignSortbyFieldName)->isType(TableColumnType::PASSTHROUGH))
+                                    && !$this->isColumnDefinedForTable($tables, $childTable, $childTableForeignSortbyFieldName)
+                                ) {
+                                    $tables[$childTable]->addColumn(
+                                        $this->quote($childTableForeignSortbyFieldName),
+                                        Types::INTEGER,
+                                        [
+                                            'default' => 0,
+                                            'notnull' => true,
+                                            'unsigned' => false,
+                                        ]
+                                    );
+                                }
                             }
                         }
                         break;
