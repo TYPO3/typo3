@@ -96,6 +96,7 @@ available inspector editors
 
    inspectorEditors/CheckboxEditor
    inspectorEditors/CollectionElementHeaderEditor
+   inspectorEditors/CountrySingleSelectEditor
    inspectorEditors/DateEditor
    inspectorEditors/FinishersEditor
    inspectorEditors/FormElementHeaderEditor

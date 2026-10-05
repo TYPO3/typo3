@@ -426,13 +426,21 @@ Country select
 An element to create a country selectbox. This element has the
 :ref:`basic settings <form-elements-settings>` Additional settings:
 
-- **First option**: Define the "empty option", i.e. the first element of the
-  select. You can use this to provide additional guidance for the user.
-- **Prioritized countries**: A multi-selection of country names, which should
-  be listed as the top options in the form element.
-- **Only countries**: Restrict the countries to be rendered in the selection.
-- **Exclude countries**: Define which countries should not appear in the
-  selection.
+-   **Default value**: Select the country that is preselected when the form
+    is displayed. Make sure that the country filters below do not exclude
+    this country. Otherwise, no country is preselected.
+-   **First option**: Define the "empty option", i.e. the first element of the
+    select. You can use this to provide additional guidance for the user.
+-   **Prioritized countries**: A multi-selection of country names, which should
+    be listed as the top options in the form element.
+-   **Only countries**: Restrict the countries to be rendered in the selection.
+-   **Exclude countries**: Define which countries should not appear in the
+    selection.
+
+..  versionadded:: 15.0
+    :changelog: feature-109444-1744012800
+
+    Before, a country select could not preselect a country.
 
 
 .. _form-elements-advanced-elements:

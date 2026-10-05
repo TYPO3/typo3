@@ -1,0 +1,43 @@
+:orphan:
+
+..  include:: /Includes.rst.txt
+
+..  _form-not-found:
+
+===================
+Content was removed
+===================
+
+..  contents::
+
+..  _form-not-found-15:
+
+TYPO3 v15
+=========
+
+..  _form-not-found-stage-templates:
+..  _apireference-formeditor-stage-commonabstractformelementtemplates-simpletemplate:
+..  _apireference-formeditor-stagetemplates-fluid-simpletemplate:
+..  _apireference-formeditor-stage-commonabstractformelementtemplates-selecttemplate:
+..  _apireference-formeditor-stagetemplates-fluid-selecttemplate:
+
+Stage templates of the form editor removed
+------------------------------------------
+
+..  deprecated:: 14.2
+    :changelog: deprecation-109306-1774010043
+
+The Fluid partials `Stage/SimpleTemplate` and `Stage/SelectTemplate` and the
+other partials in
+:file:`EXT:form/Resources/Private/Backend/Partials/FormEditor/Stage/` were
+removed with TYPO3 v15. The rendering helpers
+:js:`renderSimpleTemplateWithValidators()` and :js:`renderSelectTemplates()`
+were removed as well.
+
+To migrate a custom form element, use one of the following options:
+
+-   Remove `formEditorPartials` from the configuration of the form element.
+    The form editor then renders the element with the
+    :ref:`built-in stage web component <apireference-formeditor-stagetemplates>`.
+-   Render the element yourself with DOM manipulation in a subscriber to the
+    :ref:`view/stage/abstract/render/template/perform event <apireference-formeditor-jsevents-view-stage-abstract-render-template-perform>`.
