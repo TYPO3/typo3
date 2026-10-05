@@ -20,13 +20,15 @@ namespace TYPO3\CMS\Backend\Middleware;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Psr\Log\LoggerInterface;
-use Symfony\Component\RateLimiter\LimiterInterface;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\RouteRedirect;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Backend\Security\MfaChallengeResponseFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Authentication\Mfa\MfaRequiredException;
+use TYPO3\CMS\Core\Authentication\Pipeline\Authenticated;
+use TYPO3\CMS\Core\Authentication\Pipeline\AuthenticatorManager;
+use TYPO3\CMS\Core\Authentication\Pipeline\Challenge;
+use TYPO3\CMS\Core\Authentication\Pipeline\Realm;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Controller\ErrorPageController;
 use TYPO3\CMS\Core\Http\HtmlResponse;
@@ -34,14 +36,13 @@ use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\SetCookieService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
-use TYPO3\CMS\Core\RateLimiter\RateLimiterFactoryInterface;
-use TYPO3\CMS\Core\RateLimiter\RequestRateLimitedException;
 use TYPO3\CMS\Core\Session\UserSessionManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\HttpUtility;
 
 /**
- * Initializes the backend user authentication object (BE_USER) and the global LANG object.
+ * Authenticates the request against the backend realm of the authentication
+ * pipeline, initializes $GLOBALS['BE_USER'] and the global LANG object, and
+ * provides the established principal as "backend.principal" request attribute.
  *
  * @internal
  */
@@ -50,49 +51,46 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
     public function __construct(
         Context $context,
         private readonly LanguageServiceFactory $languageServiceFactory,
-        private readonly RateLimiterFactoryInterface $rateLimiterFactory,
-        private readonly LoggerInterface $logger,
         private readonly UriBuilder $uriBuilder,
+        private readonly AuthenticatorManager $authenticatorManager,
+        private readonly MfaChallengeResponseFactory $mfaChallengeResponseFactory,
     ) {
         parent::__construct($context);
     }
 
     /**
-     * Calls the bootstrap process to set up $GLOBALS['BE_USER'] AND $GLOBALS['LANG']
+     * Resolves the request to an authentication outcome and sets up
+     * $GLOBALS['BE_USER'] and $GLOBALS['LANG']
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         /** @var Route $route */
         $route = $request->getAttribute('route');
         $isAjaxCall = (bool)($route->getOption('ajax') ?? false);
-
-        // The global must be available very early, because methods below
-        // might trigger code which relies on it. See: #45625
-        $GLOBALS['BE_USER'] = GeneralUtility::makeInstance(BackendUserAuthentication::class);
-        // Rate Limiting
-        $rateLimiter = $this->ensureLoginRateLimit($GLOBALS['BE_USER'], $request);
         // Whether multi-factor authentication is requested
         $mfaRequested = $route->getOption('_identifier') === 'auth_mfa';
-        try {
-            $GLOBALS['BE_USER']->start($request);
-        } catch (MfaRequiredException $mfaRequiredException) {
-            // If MFA is required and we are not already on the "auth_mfa"
-            // route, force the user to it for further authentication.
-            if (!$mfaRequested && $this->isLoggedInBackendUserRequired($route)) {
-                if ($isAjaxCall) {
-                    return new Response(statusCode: 401);
-                }
-                return $this->redirectToMfaEndpoint(
-                    'auth_mfa',
-                    $GLOBALS['BE_USER'],
-                    $request,
-                    ['identifier' => $mfaRequiredException->getProvider()->getIdentifier()]
-                );
-            }
+        $realm = Realm::backend();
+
+        $result = $this->authenticatorManager->authenticate($request, $realm);
+        if ($result instanceof Challenge) {
+            // An interactive authentication step is required (e.g. multi-factor
+            // authentication) - the challenge response initiates it.
+            return $result->response;
+        }
+        if ($result instanceof Authenticated && $result->hasAttribute('legacyUser')) {
+            /** @var BackendUserAuthentication $backendUser */
+            $backendUser = $result->getAttribute('legacyUser');
+            $GLOBALS['BE_USER'] = $backendUser;
+        } else {
+            // During the migration period the legacy user object is guaranteed to
+            // be established by LegacyBackendAuthenticator, even for anonymous
+            // requests and failed authentication attempts.
+            /** @var BackendUserAuthentication $backendUser */
+            $backendUser = $GLOBALS['BE_USER'];
         }
 
         // Register the backend user as aspect and initializing workspace once for TSconfig conditions
-        $this->setBackendUserAspect($GLOBALS['BE_USER'], (int)($GLOBALS['BE_USER']->user['workspace_id'] ?? 0));
+        $this->setBackendUserAspect($backendUser, (int)($backendUser->user['workspace_id'] ?? 0));
         if ($this->isLoggedInBackendUserRequired($route)) {
             if (!$this->context->getAspect('backend.user')->isLoggedIn()) {
                 if ($isAjaxCall) {
@@ -104,9 +102,9 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
                     RouteRedirect::createFromRoute($route, $request->getQueryParams())
                 );
                 $response = new RedirectResponse($uri);
-                return $this->enrichResponseWithHeadersAndCookieInformation($request, $response, $GLOBALS['BE_USER']);
+                return $this->enrichResponseWithHeadersAndCookieInformation($request, $response, $backendUser);
             }
-            if (!$GLOBALS['BE_USER']->isUserAllowedToLogin()) {
+            if (!$backendUser->isUserAllowedToLogin()) {
                 $content = GeneralUtility::makeInstance(ErrorPageController::class)->errorAction(
                     'Login Error',
                     'TYPO3 is in maintenance mode at the moment. Only administrators are allowed access.',
@@ -114,37 +112,36 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
                     503
                 );
                 $response = new HtmlResponse($content, 503);
-                return $this->enrichResponseWithHeadersAndCookieInformation($request, $response, $GLOBALS['BE_USER']);
+                return $this->enrichResponseWithHeadersAndCookieInformation($request, $response, $backendUser);
             }
         }
         if ($this->context->getAspect('backend.user')->isLoggedIn()) {
-            $GLOBALS['BE_USER']->initializeBackendLogin($request);
-            // Reset the limiter after successful login
-            if ($rateLimiter) {
-                $rateLimiter->reset();
-            }
+            $backendUser->initializeBackendLogin($request);
             // In case the current request is not targeted to authenticate against MFA, the "mfa"
             // key is not yet set in session (indicating that MFA has already been passed) and it's
             // no "switch-user" mode, check whether the user is required to set up MFA and redirect
             // to the corresponding setup endpoint if not already on it.
             if (!$mfaRequested
-                && !(bool)($GLOBALS['BE_USER']->getSessionData('mfa') ?? false)
-                && !$GLOBALS['BE_USER']->getOriginalUserIdWhenInSwitchUserMode()
-                && $GLOBALS['BE_USER']->isMfaSetupRequired()
+                && !(bool)($backendUser->getSessionData('mfa') ?? false)
+                && !$backendUser->getOriginalUserIdWhenInSwitchUserMode()
+                && $backendUser->isMfaSetupRequired()
                 && $route->getOption('_identifier') !== 'setup_mfa'
             ) {
                 if ($isAjaxCall) {
                     return new Response(statusCode: 401);
                 }
-                return $this->redirectToMfaEndpoint('setup_mfa', $GLOBALS['BE_USER'], $request);
+                return $this->mfaChallengeResponseFactory->createRedirect('setup_mfa', $backendUser, $request);
             }
         }
-        $GLOBALS['LANG'] = $this->languageServiceFactory->createFromUserPreferences($GLOBALS['BE_USER']);
+        if ($result instanceof Authenticated) {
+            $request = $request->withAttribute('backend.principal', $result->principal);
+        }
+        $GLOBALS['LANG'] = $this->languageServiceFactory->createFromUserPreferences($backendUser);
         // Re-setting the user and take the workspace from the user object now
-        $this->setBackendUserAspect($GLOBALS['BE_USER']);
+        $this->setBackendUserAspect($backendUser);
         $response = $handler->handle($request);
         $this->sessionGarbageCollection();
-        return $this->enrichResponseWithHeadersAndCookieInformation($request, $response, $GLOBALS['BE_USER']);
+        return $this->enrichResponseWithHeadersAndCookieInformation($request, $response, $backendUser);
     }
 
     /**
@@ -194,30 +191,6 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
     }
 
     /**
-     * Initiate a redirect to the given MFA endpoint with necessary cookies and headers appended
-     */
-    protected function redirectToMfaEndpoint(
-        string $endpoint,
-        BackendUserAuthentication $user,
-        ServerRequestInterface $request,
-        array $parameters = []
-    ): ResponseInterface {
-        $routeRedirect
-            // when intercepting {entryPoint}/login?redirect=media_management
-            = RouteRedirect::createFromRequest($request)
-            // when intercepting {entryPoint}/module/file/list
-            ?? RouteRedirect::createFromRoute($request->getAttribute('route'), $request->getQueryParams());
-        $response = new RedirectResponse(
-            $this->uriBuilder->buildUriWithRedirect($endpoint, $parameters, $routeRedirect)
-        );
-        // Add necessary cookies and headers to the response so
-        // the already passed authentication step is not lost.
-        $response = $this->applyCookieToResponse($response, $request, $user);
-        $response = $this->applyHeadersToResponse($response);
-        return $response;
-    }
-
-    /**
      * Applies the session cookie as evaluated by the authentication process
      * to the response.
      */
@@ -244,27 +217,5 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
     protected function isLoggedInBackendUserRequired(Route $route): bool
     {
         return $route->getAccess()->requiresAuthentication();
-    }
-
-    protected function ensureLoginRateLimit(BackendUserAuthentication $user, ServerRequestInterface $request): ?LimiterInterface
-    {
-        if (!$user->isActiveLogin($request)) {
-            return null;
-        }
-        $loginRateLimiter = $this->rateLimiterFactory->createLoginRateLimiter($request, $user->loginType);
-        $limit = $loginRateLimiter->consume();
-        if (!$limit->isAccepted()) {
-            $this->logger->debug('Login request has been rate limited for IP address {ipAddress}', ['ipAddress' => $request->getAttribute('normalizedParams')->getRemoteAddress()]);
-            $dateformat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'];
-            $lockedUntil = $limit->getRetryAfter()->getTimestamp() > 0
-                ? ' until ' . date($dateformat, $limit->getRetryAfter()->getTimestamp()) : '';
-            throw new RequestRateLimitedException(
-                HttpUtility::HTTP_STATUS_403,
-                'The login is locked' . $lockedUntil . ' due to too many failed login attempts from your IP address.',
-                'Login Request Rate Limited',
-                1616175867
-            );
-        }
-        return $loginRateLimiter;
     }
 }

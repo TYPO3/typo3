@@ -17,59 +17,50 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Middleware;
 
-use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Psr\Log\LoggerInterface;
-use Symfony\Component\RateLimiter\LimiterInterface;
-use TYPO3\CMS\Core\Authentication\Event\AfterUserLoggedInEvent;
+use TYPO3\CMS\Core\Authentication\Pipeline\Authenticated;
+use TYPO3\CMS\Core\Authentication\Pipeline\AuthenticatorManager;
+use TYPO3\CMS\Core\Authentication\Pipeline\Challenge;
+use TYPO3\CMS\Core\Authentication\Pipeline\Realm;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Http\SetCookieService;
-use TYPO3\CMS\Core\RateLimiter\RateLimiterFactoryInterface;
-use TYPO3\CMS\Core\RateLimiter\RequestRateLimitedException;
 use TYPO3\CMS\Core\Session\UserSessionManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 
 /**
- * This middleware authenticates a Frontend User (fe_users).
+ * Authenticates the request against the frontend realm of the authentication
+ * pipeline, stores the frontend user object in the current request as
+ * attribute, and provides the established principal as "frontend.principal"
+ * request attribute.
  */
 readonly class FrontendUserAuthenticator implements MiddlewareInterface
 {
     public function __construct(
         protected Context $context,
-        protected RateLimiterFactoryInterface $rateLimiterFactory,
-        protected EventDispatcherInterface $eventDispatcher,
-        protected LoggerInterface $logger,
+        protected AuthenticatorManager $authenticatorManager,
     ) {}
 
-    /**
-     * Creates a frontend user authentication object, tries to authenticate a user and stores
-     * it in the current request as attribute.
-     */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $frontendUser = GeneralUtility::makeInstance(FrontendUserAuthentication::class);
-
-        // Rate Limiting
-        $rateLimiter = $this->ensureLoginRateLimit($frontendUser, $request);
-
-        // Authenticate now
-        $frontendUser->start($request);
-        // no matter if we have an active user we try to fetch matching groups which can
-        // be set without an user (simulation for instance!)
-        $frontendUser->fetchGroupData($request);
-
-        // Register the frontend user as aspect and within the request
-        $this->context->setAspect('frontend.user', $frontendUser->createUserAspect());
         $request = $request->withAttribute('frontend.user', $frontendUser);
 
-        if ($this->context->getAspect('frontend.user')->isLoggedIn() && $rateLimiter) {
-            $rateLimiter->reset();
-            $this->eventDispatcher->dispatch(new AfterUserLoggedInEvent($frontendUser, $request));
+        $realm = Realm::frontend($request->getAttribute('site'));
+        $result = $this->authenticatorManager->authenticate($request, $realm);
+        if ($result instanceof Challenge) {
+            // An interactive authentication step is required - the challenge
+            // response initiates it.
+            return $result->response;
+        }
+
+        // Register the frontend user as aspect and the principal within the request
+        $this->context->setAspect('frontend.user', $frontendUser->createUserAspect());
+        if ($result instanceof Authenticated) {
+            $request = $request->withAttribute('frontend.principal', $result->principal);
         }
 
         $response = $handler->handle($request);
@@ -96,27 +87,5 @@ readonly class FrontendUserAuthenticator implements MiddlewareInterface
     protected function sessionGarbageCollection(): void
     {
         UserSessionManager::create('FE')->collectGarbage();
-    }
-
-    protected function ensureLoginRateLimit(FrontendUserAuthentication $user, ServerRequestInterface $request): ?LimiterInterface
-    {
-        if (!$user->isActiveLogin($request)) {
-            return null;
-        }
-        $loginRateLimiter = $this->rateLimiterFactory->createLoginRateLimiter($request, $user->loginType);
-        $limit = $loginRateLimiter->consume();
-        if (!$limit->isAccepted()) {
-            $this->logger->debug('Login request has been rate limited for IP address {ipAddress}', ['ipAddress' => $request->getAttribute('normalizedParams')->getRemoteAddress()]);
-            $dateformat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'];
-            $lockedUntil = $limit->getRetryAfter()->getTimestamp() > 0
-                ? ' until ' . date($dateformat, $limit->getRetryAfter()->getTimestamp()) : '';
-            throw new RequestRateLimitedException(
-                HttpUtility::HTTP_STATUS_403,
-                'The login is locked' . $lockedUntil . ' due to too many failed login attempts from your IP address.',
-                'Login Request Rate Limited',
-                1616175847
-            );
-        }
-        return $loginRateLimiter;
     }
 }

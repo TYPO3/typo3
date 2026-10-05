@@ -234,6 +234,11 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     public $firstMainGroup = 0;
 
     /**
+     * Whether fetchGroupData() resolved the group data of the user already
+     */
+    protected bool $groupDataFetched = false;
+
+    /**
      * User Config Default values:
      * The array may contain other fields for configuration.
      * For this, see "setup" extension and "TSconfig" document (User TSconfig, "setup.[xxx]....")
@@ -1176,6 +1181,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             }
             // Setting up workspace situation (after webmounts are processed!):
             $this->workspaceInit();
+            $this->groupDataFetched = true;
         }
     }
 
@@ -1900,9 +1906,12 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      */
     public function initializeBackendLogin(?ServerRequestInterface $request = null): void
     {
-        // The groups are fetched and ready for permission checking in this initialization.
+        // The groups are fetched and ready for permission checking in this initialization,
+        // unless the authenticator already did so to establish the principal.
         // Tables.php must be read before this because stuff like the modules has impact in this
-        $this->fetchGroupData();
+        if (!$this->groupDataFetched) {
+            $this->fetchGroupData();
+        }
         // Refresh the user aspect snapshot now that the group data is resolved, as user
         // TSconfig conditions evaluated during the UC initialization below rely on it.
         GeneralUtility::makeInstance(Context::class)->setAspect('backend.user', new UserAspect($this));
