@@ -1494,6 +1494,9 @@
       <trans-unit id="labels.contextMenu.open.recordLabel">
         <source>Open context menu for record: %s</source>
       </trans-unit>
+      <trans-unit id="labels.invalidSiteSets">
+        <source>Invalid site sets</source>
+      </trans-unit>
       <trans-unit id="error.site.invalidSetDependencies">
         <source>This site depends on invalid site sets</source>
       </trans-unit>
