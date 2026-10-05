@@ -21,9 +21,11 @@ use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\Index;
 use Doctrine\DBAL\Schema\SchemaException;
 use Doctrine\DBAL\Schema\Table;
+use Doctrine\DBAL\Types\BigIntType;
 use Doctrine\DBAL\Types\IntegerType;
 use Doctrine\DBAL\Types\StringType;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
@@ -2533,6 +2535,55 @@ final class DefaultTcaSchemaTest extends UnitTestCase
             ]
         );
         self::assertSame($expectedChildColumnForForeignTableField->toArray(), $result['bTable']->getColumn('cField')->toArray());
+    }
+
+    #[Test]
+    public function enrichAddsInlineForeignSortbyFieldToChildTable(): void
+    {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
+        $tca['aTable']['columns']['inline_ff'] = [
+            'label' => 'aLabel',
+            'config' => [
+                'type' => 'inline',
+                'foreign_table' => 'bTable',
+                'foreign_field' => 'bField',
+                'foreign_sortby' => 'bSorting',
+            ],
+        ];
+        $tca['bTable']['columns'] = [];
+        $subject = new DefaultTcaSchema($this->getPreparedTcaSchemaFactory($tca));
+        $result = $subject->enrich(['aTable' => $this->defaultTable, 'bTable' => new Table('bTable')]);
+        $expectedColumn = new Column(
+            'bSorting',
+            Type::getType('integer'),
+            [
+                'default' => 0,
+                'notnull' => true,
+                'unsigned' => false,
+            ]
+        );
+        self::assertSame($expectedColumn->toArray(), $result['bTable']->getColumn('bSorting')->toArray());
+    }
+
+    #[Test]
+    public function enrichDoesNotAddInlineForeignSortbyFieldIfDefinedInChildTable(): void
+    {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
+        $tca['aTable']['columns']['inline_ff'] = [
+            'label' => 'aLabel',
+            'config' => [
+                'type' => 'inline',
+                'foreign_table' => 'bTable',
+                'foreign_field' => 'bField',
+                'foreign_sortby' => 'bSorting',
+            ],
+        ];
+        $tca['bTable']['columns'] = [];
+        $bTable = new Table('bTable');
+        $bTable->addColumn('bSorting', Types::BIGINT);
+        $subject = new DefaultTcaSchema($this->getPreparedTcaSchemaFactory($tca));
+        $result = $subject->enrich(['aTable' => $this->defaultTable, 'bTable' => $bTable]);
+        self::assertInstanceOf(BigIntType::class, $result['bTable']->getColumn('bSorting')->getType());
     }
 
     #[Test]
