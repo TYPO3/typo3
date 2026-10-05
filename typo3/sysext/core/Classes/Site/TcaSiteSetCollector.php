@@ -51,17 +51,32 @@ final readonly class TcaSiteSetCollector
             }
             $fieldConfiguration['items'][] = [
                 'label' => $this->getLanguageService()->sL($set->label) . (
-                    $hidden ? ' (' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.hidden') . ')' : ''
+                    $hidden ? ' (' . $this->getLanguageService()->sL('core.core:labels.hidden') . ')' : ''
                 ),
                 'value' => $set->name,
             ];
             unset($selectedSets[$set->name]);
         }
 
+        $invalidSets = $this->setRegistry->getInvalidSets();
+        $invalidSetNames = array_keys($selectedSets);
+        foreach (array_keys($invalidSets) as $invalidSet) {
+            if (!isset($selectedSets[$invalidSet]) && !in_array($invalidSet, $hiddenSets, true)) {
+                $invalidSetNames[] = $invalidSet;
+            }
+        }
+        if ($invalidSetNames === []) {
+            return;
+        }
+
         $flashMessageQueue = $this->flashMessageService->getMessageQueueByIdentifier();
         $languageService = $this->getLanguageService();
-        foreach ($selectedSets as $invalidSet => $_) {
-            $reason = $this->setRegistry->getInvalidSets()[$invalidSet] ?? [
+        $fieldConfiguration['items'][] = [
+            'label' => $languageService->sL('core.core:labels.invalidSiteSets'),
+            'value' => '--div--',
+        ];
+        foreach ($invalidSetNames as $invalidSet) {
+            $reason = $invalidSets[$invalidSet] ?? [
                 'error' => SetError::notFound,
                 'name' => $invalidSet,
                 'context' => 'site:' . ($fieldConfiguration['row']['identifier'] ?? ''),
@@ -74,16 +89,19 @@ final readonly class TcaSiteSetCollector
 
             $fieldConfiguration['items'][] = [
                 'label' => sprintf(
-                    $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.noMatchingValue'),
+                    $languageService->sL('core.core:labels.noMatchingValue'),
                     $error
                 ),
                 'value' => $invalidSet,
             ];
 
+            if (!isset($selectedSets[$invalidSet])) {
+                continue;
+            }
             $flashMessage = GeneralUtility::makeInstance(
                 FlashMessage::class,
                 $error,
-                $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:error.site.invalidSetDependencies'),
+                $languageService->sL('core.core:error.site.invalidSetDependencies'),
                 ContextualFeedbackSeverity::ERROR,
                 false
             );
