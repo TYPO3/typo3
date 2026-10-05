@@ -998,6 +998,9 @@ class GeneralUtility
      */
     public static function implodeAttributes(array $arr, bool $xhtmlSafe = false, bool $keepBlankAttributes = false, bool $convertValues = false): string
     {
+        if ($arr === []) {
+            return '';
+        }
         if ($convertValues) {
             $newArr = [];
             foreach ($arr as $attributeName => $attributeValue) {
@@ -1025,9 +1028,12 @@ class GeneralUtility
                 if (isset($newArr[$attributeName])) {
                     continue;
                 }
-                $newArr[$attributeName] = htmlspecialchars((string)$attributeValue);
+                $attributeValue = (string)$attributeValue;
+                $newArr[$attributeName] = $attributeValue !== '' || $keepBlankAttributes
+                    ? $attributeName . '="' . htmlspecialchars($attributeValue) . '"'
+                    : '';
             }
-            $arr = $newArr;
+            return implode(' ', $keepBlankAttributes ? $newArr : array_filter($newArr));
         }
         $list = [];
         foreach ($arr as $attributeName => $attributeValue) {

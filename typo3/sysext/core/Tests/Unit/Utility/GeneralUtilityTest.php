@@ -1661,6 +1661,7 @@ final class GeneralUtilityTest extends UnitTestCase
 
     public static function implodeAttributesDataProvider(): \Iterator
     {
+        yield 'Empty attribute array' => [[], true, false, ''];
         yield 'Generic input without xhtml' => [
             ['hREf' => 'https://example.com', 'title' => 'above'],
             false,
@@ -1691,6 +1692,30 @@ final class GeneralUtilityTest extends UnitTestCase
             true,
             'title="example" 2011=""',
         ];
+        yield 'Duplicate attribute keeps first value and order' => [
+            ['TITLE' => 'first', 'id' => 'example', 'title' => 'second'],
+            true,
+            false,
+            'title="first" id="example"',
+        ];
+        yield 'Blank attribute blocks duplicate without adding whitespace' => [
+            ['TITLE' => '', 'id' => 'example', 'title' => 'second', 'class' => ''],
+            true,
+            false,
+            'id="example"',
+        ];
+        yield 'Zero and whitespace values are not blank' => [
+            ['zero' => '0', 'integer' => 0, 'space' => ' '],
+            true,
+            false,
+            'zero="0" integer="0" space=" "',
+        ];
+        yield 'Special characters and invalid UTF-8 are escaped' => [
+            ['title' => '<>&"\'&amp;' . "\xFF"],
+            true,
+            false,
+            'title="&lt;&gt;&amp;&quot;&#039;&amp;amp;' . "\u{FFFD}" . '"',
+        ];
     }
 
     #[DataProvider('implodeAttributesDataProvider')]
@@ -1702,6 +1727,7 @@ final class GeneralUtilityTest extends UnitTestCase
 
     public static function implodeAttributesArbitraryDataProvider(): \Iterator
     {
+        yield 'Empty attribute array with HTML5 conversion' => [[], false, true, ''];
         yield 'Generic input' => [
             ['href' => 'https://example.com', 'title' => 'above'],
             false,
@@ -1788,6 +1814,30 @@ final class GeneralUtilityTest extends UnitTestCase
             false,
             true,
             'href="https://example.com" data-highlight="{&quot;above&quot;:true,&quot;below&quot;:&quot;20px&quot;}" aria-hidden="true" defer',
+        ];
+        yield 'Null duplicate is replaced without changing attribute order' => [
+            ['TITLE' => null, 'id' => 'example', 'title' => 'second'],
+            false,
+            true,
+            'title="second" id="example"',
+        ];
+        yield 'False duplicate blocks later value' => [
+            ['DISABLED' => false, 'id' => 'example', 'disabled' => true],
+            true,
+            true,
+            'id="example"',
+        ];
+        yield 'Blank duplicate blocks later value' => [
+            ['TITLE' => '', 'id' => 'example', 'title' => 'second'],
+            false,
+            true,
+            'id="example"',
+        ];
+        yield 'Boolean attribute with zero key is retained' => [
+            [0 => true, 'id' => 'example'],
+            false,
+            true,
+            '0 id="example"',
         ];
     }
 
