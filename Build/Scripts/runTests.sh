@@ -98,14 +98,14 @@ handleDbmsOptions() {
             if [ "${DATABASE_DRIVER}" != "mysqli" ] && [ "${DATABASE_DRIVER}" != "pdo_mysql" ]; then
                 echo "Invalid combination -d ${DBMS} -a ${DATABASE_DRIVER}" >&2
                 echo >&2
-                echo "Use \".Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
+                echo "Use \"Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
                 exit 1
             fi
             [ -z "${DBMS_VERSION}" ] && DBMS_VERSION="10.4"
             if ! [[ ${DBMS_VERSION} =~ ^(10.4|10.5|10.6|10.7|10.8|10.9|10.10|10.11|11.0|11.1|11.2|11.3|11.4|11.5|11.6|11.7|11.8)$ ]]; then
                 echo "Invalid combination -d ${DBMS} -i ${DBMS_VERSION}" >&2
                 echo >&2
-                echo "Use \".Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
+                echo "Use \"Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
                 exit 1
             fi
             ;;
@@ -114,14 +114,14 @@ handleDbmsOptions() {
             if [ "${DATABASE_DRIVER}" != "mysqli" ] && [ "${DATABASE_DRIVER}" != "pdo_mysql" ]; then
                 echo "Invalid combination -d ${DBMS} -a ${DATABASE_DRIVER}" >&2
                 echo >&2
-                echo "Use \".Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
+                echo "Use \"Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
                 exit 1
             fi
             [ -z "${DBMS_VERSION}" ] && DBMS_VERSION="8.0"
             if ! [[ ${DBMS_VERSION} =~ ^(8.0|8.1|8.2|8.3|8.4)$ ]]; then
                 echo "Invalid combination -d ${DBMS} -i ${DBMS_VERSION}" >&2
                 echo >&2
-                echo "Use \".Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
+                echo "Use \"Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
                 exit 1
             fi
             ;;
@@ -129,14 +129,14 @@ handleDbmsOptions() {
             if [ -n "${DATABASE_DRIVER}" ]; then
                 echo "Invalid combination -d ${DBMS} -a ${DATABASE_DRIVER}" >&2
                 echo >&2
-                echo "Use \".Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
+                echo "Use \"Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
                 exit 1
             fi
             [ -z "${DBMS_VERSION}" ] && DBMS_VERSION="10"
             if ! [[ ${DBMS_VERSION} =~ ^(10|11|12|13|14|15|16|17|18)$ ]]; then
                 echo "Invalid combination -d ${DBMS} -i ${DBMS_VERSION}" >&2
                 echo >&2
-                echo "Use \".Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
+                echo "Use \"Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
                 exit 1
             fi
             ;;
@@ -144,20 +144,20 @@ handleDbmsOptions() {
             if [ -n "${DATABASE_DRIVER}" ]; then
                 echo "Invalid combination -d ${DBMS} -a ${DATABASE_DRIVER}" >&2
                 echo >&2
-                echo "Use \".Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
+                echo "Use \"Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
                 exit 1
             fi
             if [ -n "${DBMS_VERSION}" ]; then
                 echo "Invalid combination -d ${DBMS} -i ${DATABASE_DRIVER}" >&2
                 echo >&2
-                echo "Use \".Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
+                echo "Use \"Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
                 exit 1
             fi
             ;;
         *)
             echo "Invalid option -d ${DBMS}" >&2
             echo >&2
-            echo "Use \".Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
+            echo "Use \"Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
             exit 1
             ;;
     esac
@@ -1034,7 +1034,7 @@ if [ ${#INVALID_OPTIONS[@]} -ne 0 ]; then
         echo "-"${I} >&2
     done
     echo >&2
-    echo "Use \".Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
+    echo "Use \"Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
     exit 1
 fi
 
