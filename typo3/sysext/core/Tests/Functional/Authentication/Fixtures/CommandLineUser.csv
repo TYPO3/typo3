@@ -1,0 +1,6 @@
+be_groups
+,uid,pid,title
+,1,0,CLI group
+be_users
+,uid,pid,username,admin,usergroup
+,7,0,_cli_,0,1

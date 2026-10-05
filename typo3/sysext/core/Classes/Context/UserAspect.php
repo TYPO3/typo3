@@ -19,7 +19,9 @@ namespace TYPO3\CMS\Core\Context;
 
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Authentication\Principal;
 use TYPO3\CMS\Core\Context\Exception\AspectPropertyNotFoundException;
+use TYPO3\CMS\Core\Security\PermissionSet\PrincipalRole;
 
 /**
  * The aspect contains information about a user.
@@ -28,6 +30,10 @@ use TYPO3\CMS\Core\Context\Exception\AspectPropertyNotFoundException;
  * The aspect is an immutable snapshot: all information is captured when the
  * aspect is created. Code changing the state of a user object needs to set
  * a newly created aspect afterwards to make the change visible.
+ *
+ * The aspect can be created from a legacy user authentication object or
+ * from a Principal established by the authentication pipeline. For a
+ * Principal, "isAdmin" is derived from the role of its context.
  *
  * Allowed properties:
  * - id
@@ -49,8 +55,25 @@ final readonly class UserAspect implements AspectInterface
     /**
      * @param array|null $alternativeGroups Alternative list of groups, usually useful for frontend logins with "magic" groups like "-1" and "-2"
      */
-    public function __construct(?AbstractUserAuthentication $user = null, ?array $alternativeGroups = null)
+    public function __construct(AbstractUserAuthentication|Principal|null $user = null, ?array $alternativeGroups = null)
     {
+        if ($user instanceof Principal) {
+            $this->id = $user->context->id;
+            $this->username = $user->username;
+            // Maintainers are admins, see BackendUserAuthentication::getRole()
+            $this->isAdmin = in_array($user->context->role, [PrincipalRole::ADMIN, PrincipalRole::MAINTAINER], true);
+            $this->isFrontendUser = $user->belongsToFrontendRealm();
+            if (is_array($alternativeGroups)) {
+                $this->groupIds = $alternativeGroups;
+            } elseif ($this->isFrontendUser) {
+                // A principal always denotes a logged in user, always add "-2"
+                $this->groupIds = array_merge([0, -2], $user->context->groupIds);
+            } else {
+                $this->groupIds = $user->context->groupIds;
+            }
+            $this->groupNames = $user->groupNames;
+            return;
+        }
         $this->id = (int)($user?->user[$user->userid_column] ?? 0);
         $this->username = (string)($user?->user[$user->username_column] ?? '');
         $this->isAdmin = $user instanceof BackendUserAuthentication && $user->isAdmin();

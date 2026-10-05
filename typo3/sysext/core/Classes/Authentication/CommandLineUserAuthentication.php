@@ -81,18 +81,15 @@ class CommandLineUserAuthentication extends BackendUserAuthentication
      */
     public function authenticate()
     {
+        $identityProvider = GeneralUtility::makeInstance(LocalIdentityProvider::class);
         // check if a _CLI_ user exists, if not, create one
-        $this->setBeUserByName(CommandLineUserCreation::CLI_USERNAME);
+        $this->user = $identityProvider->findBackendUserByUsername(CommandLineUserCreation::CLI_USERNAME);
         if (empty($this->user['uid'])) {
-            $userCreation = GeneralUtility::makeInstance(CommandLineUserCreation::class);
-            // create a new BE user in the database
-            if (!$userCreation->ensureCliUserExists()) {
-                throw new \RuntimeException('No backend user named "_cli_" could be authenticated, maybe this user is "hidden"?', 1484050401);
-            }
-            $this->setBeUserByName(CommandLineUserCreation::CLI_USERNAME);
+            GeneralUtility::makeInstance(CommandLineUserCreation::class)->ensureCliUserExists();
+            $this->user = $identityProvider->findBackendUserByUsername(CommandLineUserCreation::CLI_USERNAME);
         }
         if (empty($this->user['uid'])) {
-            throw new \RuntimeException('No backend user named "_cli_" could be created.', 1476107195);
+            throw new \RuntimeException('No backend user named "_cli_" could be authenticated, maybe this user is disabled, restricted by start or end time, not on the root level or exists more than once?', 1484050401);
         }
         $this->unpack_uc();
         // The groups are fetched and ready for permission checking in this initialization.

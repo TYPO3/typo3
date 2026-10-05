@@ -1219,18 +1219,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     }
 
     /**
-     * Raw initialization of the be_user with username=$name
-     *
-     * @param string $name The username to look up.
-     * @see \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::setBeUserByUid()
-     * @internal
-     */
-    public function setBeUserByName($name)
-    {
-        $this->user = $this->getRawUserByName($name) ?: null;
-    }
-
-    /**
      * Fetching raw user record with uid=$uid
      *
      * @param int $uid The UID of the backend user to set in ->user
@@ -1244,25 +1232,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         $query->select('*')
             ->from($this->user_table)
             ->where($query->expr()->eq($this->userid_column, $query->createNamedParameter($uid, Connection::PARAM_INT)));
-
-        return $query->executeQuery()->fetchAssociative();
-    }
-
-    /**
-     * Fetching raw user record with username=$name
-     *
-     * @param string $name The username to look up.
-     * @return array user record or FALSE
-     * @see \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::getUserByUid()
-     * @internal
-     */
-    public function getRawUserByName($name)
-    {
-        $query = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->user_table);
-        $query->setRestrictions($this->userConstraints());
-        $query->select('*')
-            ->from($this->user_table)
-            ->where($query->expr()->eq($this->username_column, $query->createNamedParameter($name)));
 
         return $query->executeQuery()->fetchAssociative();
     }

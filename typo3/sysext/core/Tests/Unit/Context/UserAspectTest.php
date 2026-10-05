@@ -20,8 +20,11 @@ namespace TYPO3\CMS\Core\Tests\Unit\Context;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Authentication\Principal;
 use TYPO3\CMS\Core\Context\Exception\AspectPropertyNotFoundException;
 use TYPO3\CMS\Core\Context\UserAspect;
+use TYPO3\CMS\Core\Security\PermissionSet\PrincipalContext;
+use TYPO3\CMS\Core\Security\PermissionSet\PrincipalRole;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -202,5 +205,75 @@ final class UserAspectTest extends UnitTestCase
         $this->expectExceptionCode(1529996567);
         $subject = new UserAspect();
         $subject->get('football');
+    }
+
+    #[Test]
+    public function aspectCanBeCreatedFromBackendPrincipal(): void
+    {
+        $principal = new Principal(
+            context: new PrincipalContext(role: PrincipalRole::MAINTAINER, id: 13, groupIds: [2, 7]),
+            realmIdentifier: 'backend',
+            username: 'maintainer',
+            groupNames: ['Editors', 'Maintainers'],
+        );
+        $subject = new UserAspect($principal);
+        self::assertSame(13, $subject->get('id'));
+        self::assertSame('maintainer', $subject->get('username'));
+        self::assertTrue($subject->isLoggedIn());
+        self::assertTrue($subject->isAdmin());
+        self::assertSame([2, 7], $subject->getGroupIds());
+        self::assertSame(['Editors', 'Maintainers'], $subject->getGroupNames());
+        self::assertTrue($subject->isUserOrGroupSet());
+    }
+
+    #[Test]
+    public function aspectCreatedFromFrontendPrincipalContainsMagicGroups(): void
+    {
+        $principal = new Principal(
+            context: new PrincipalContext(role: PrincipalRole::USER, id: 10, groupIds: [5]),
+            realmIdentifier: 'frontend:main',
+            username: 'feuser',
+            groupNames: ['Members'],
+        );
+        $subject = new UserAspect($principal);
+        self::assertSame(10, $subject->get('id'));
+        self::assertTrue($subject->isLoggedIn());
+        self::assertFalse($subject->isAdmin());
+        self::assertSame([0, -2, 5], $subject->getGroupIds());
+        self::assertSame(['Members'], $subject->getGroupNames());
+        self::assertTrue($subject->isUserOrGroupSet());
+    }
+
+    #[Test]
+    public function alternativeGroupsOverruleGroupsOfPrincipal(): void
+    {
+        $principal = new Principal(
+            context: new PrincipalContext(role: PrincipalRole::USER, id: 10, groupIds: [5]),
+            realmIdentifier: 'frontend',
+            username: 'feuser',
+        );
+        $subject = new UserAspect($principal, [0, -2, 42]);
+        self::assertSame([0, -2, 42], $subject->getGroupIds());
+    }
+
+    public static function aspectCreatedFromPrincipalIsAdminForAdminAndMaintainerRolesDataProvider(): array
+    {
+        return [
+            'admin' => [PrincipalRole::ADMIN, true],
+            'maintainer' => [PrincipalRole::MAINTAINER, true],
+            'user' => [PrincipalRole::USER, false],
+        ];
+    }
+
+    #[DataProvider('aspectCreatedFromPrincipalIsAdminForAdminAndMaintainerRolesDataProvider')]
+    #[Test]
+    public function aspectCreatedFromPrincipalIsAdminForAdminAndMaintainerRoles(PrincipalRole $role, bool $expected): void
+    {
+        $principal = new Principal(
+            context: new PrincipalContext(role: $role, id: 13),
+            realmIdentifier: 'backend',
+            username: 'editor',
+        );
+        self::assertSame($expected, new UserAspect($principal)->isAdmin());
     }
 }

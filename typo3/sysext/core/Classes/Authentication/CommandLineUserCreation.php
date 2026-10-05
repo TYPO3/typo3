@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Locking\LockFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -35,17 +36,33 @@ final readonly class CommandLineUserCreation
     public function __construct(
         private ConnectionPool $connectionPool,
         private PasswordHashFactory $passwordHashFactory,
+        private LockFactory $lockFactory,
     ) {}
 
     /**
      * Create a record in the DB table be_users called "_cli_" with no other information,
-     * when it does not exist already
+     * when it does not exist already. Only a missing user is checked again and created
+     * under an exclusive lock, so that processes starting at the same time create the
+     * user only once, and an existing user never waits for the lock.
      */
-    public function ensureCliUserExists(): bool
+    public function ensureCliUserExists(): void
     {
         if ($this->cliUserExists()) {
-            return false;
+            return;
         }
+        $lock = $this->lockFactory->createLocker('cli-user-creation');
+        $lock->acquire();
+        try {
+            if (!$this->cliUserExists()) {
+                $this->createCliUser();
+            }
+        } finally {
+            $lock->release();
+        }
+    }
+
+    private function createCliUser(): void
+    {
         $userFields = [
             'username' => self::CLI_USERNAME,
             'password' => $this->generateHashedPassword(),
@@ -56,12 +73,13 @@ final readonly class CommandLineUserCreation
 
         $databaseConnection = $this->connectionPool->getConnectionForTable('be_users');
         $databaseConnection->insert('be_users', $userFields);
-        return true;
     }
 
     /**
      * Check if a user with username "_cli_" exists. Deleted users are left out
      * but hidden and start / endtime restricted users are considered.
+     *
+     * @phpstan-impure
      */
     private function cliUserExists(): bool
     {

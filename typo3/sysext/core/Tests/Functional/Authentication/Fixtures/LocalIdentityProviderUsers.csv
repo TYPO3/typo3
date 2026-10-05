@@ -1,0 +1,22 @@
+pages
+,uid,pid,title,doktype
+,10,0,Members,254
+,11,0,Other members,254
+be_users
+,uid,pid,username,admin,disable,deleted,starttime,endtime
+,100,0,rootadmin,1,0,0,0,0
+,101,0,disablededitor,0,1,0,0,0
+,102,0,deletededitor,0,0,1,0,0
+,103,10,strayeditor,0,0,0,0,0
+,104,0,futureeditor,0,0,0,2000000000,0
+,105,0,expirededitor,0,0,0,0,1000000000
+,106,0,twineditor,0,0,0,0,0
+,107,0,twineditor,0,0,0,0,0
+fe_users
+,uid,pid,username,disable,deleted,starttime,endtime
+,200,10,member,0,0,0,0
+,201,11,othermember,0,0,0,0
+,202,10,disabledmember,1,0,0,0
+,203,11,member,0,0,0,0
+,204,10,futuremember,0,0,2000000000,0
+,205,10,expiredmember,0,0,0,1000000000
