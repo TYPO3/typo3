@@ -28,6 +28,8 @@ final readonly class LabelCapability implements SchemaCapabilityInterface
         private array $additionalFieldNames,
         private bool $alwaysRenderAdditionalFields,
         private array $configuration,
+        /** @var string[] */
+        private array $labelFieldNamesOfAllRecordTypes = [],
     ) {}
 
     public function getPrimaryFieldName(): ?string
@@ -51,6 +53,18 @@ final readonly class LabelCapability implements SchemaCapabilityInterface
     public function getAllLabelFieldNames(): array
     {
         return array_unique(array_filter(array_merge([$this->primaryFieldName], $this->additionalFieldNames)));
+    }
+
+    /**
+     * Returns the label fields of this schema, together with the label fields
+     * defined by any of its record types. Use this to determine the fields to
+     * select for record title rendering, when the record type is not known yet.
+     *
+     * @return string[]
+     */
+    public function getLabelFieldNamesOfAllRecordTypes(): array
+    {
+        return array_values(array_unique(array_merge($this->getAllLabelFieldNames(), $this->labelFieldNamesOfAllRecordTypes)));
     }
 
     public function alwaysRenderAdditionalFields(): bool

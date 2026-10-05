@@ -715,8 +715,11 @@ class EditDocumentController
                     // This is the case when EditDocumentController is booted in single field mode (e.g.
                     // Template module > 'info/modify' > edit 'setup' field) or in case the field is
                     // not in "showitem" or is set to readonly (e.g. "file" in sys_file_metadata).
-                    $labelCapability = $this->tcaSchemaFactory->get($table)->getCapability(TcaSchemaCapability::Label);
-                    $labelFields = $labelCapability->getAllLabelFieldNames();
+                    $schema = $this->tcaSchemaFactory->get($table);
+                    $labelFields = $schema->getCapability(TcaSchemaCapability::Label)->getLabelFieldNamesOfAllRecordTypes();
+                    if ($schema->supportsSubSchema()) {
+                        $labelFields[] = $schema->getSubSchemaTypeInformation()->getFieldName();
+                    }
                     foreach ($labelFields as $labelField) {
                         if (!isset($row[$labelField])) {
                             $tmpRecord = BackendUtility::getRecord($table, $uid, $labelFields);

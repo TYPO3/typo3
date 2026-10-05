@@ -32,6 +32,7 @@ use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerFactory;
@@ -360,5 +361,14 @@ final class DatabaseRecordListTest extends FunctionalTestCase
 
         self::assertStringContainsString('NEW LABEL', $listRow);
         self::assertStringContainsString('NEW rowDescription', $listRow);
+    }
+
+    #[Test]
+    public function fieldsToSelectContainTypeSpecificLabelFields(): void
+    {
+        $GLOBALS['TCA']['tt_content']['types']['shortcut']['label_alt'] = 'records';
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+
+        self::assertContains('records', $this->recordList->getFieldsToSelect('tt_content', []));
     }
 }

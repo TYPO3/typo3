@@ -226,8 +226,23 @@ readonly class TcaSchema implements SchemaInterface
             $this->schemaConfiguration['label'] ?? null,
             array_unique(GeneralUtility::trimExplode(',', $this->schemaConfiguration['label_alt'] ?? '', true)),
             (bool)($this->schemaConfiguration['label_alt_force'] ?? false),
-            $labelConfiguration
+            $labelConfiguration,
+            $this->getLabelFieldNamesOfSubSchemata()
         );
+    }
+
+    /**
+     * @return string[]
+     */
+    protected function getLabelFieldNamesOfSubSchemata(): array
+    {
+        $fieldNames = [];
+        foreach ($this->subSchemata ?? [] as $subSchema) {
+            if ($subSchema->hasCapability(TcaSchemaCapability::Label)) {
+                $fieldNames = array_merge($fieldNames, $subSchema->getCapability(TcaSchemaCapability::Label)->getAllLabelFieldNames());
+            }
+        }
+        return array_values(array_unique($fieldNames));
     }
 
     public function hasSubSchema(string $subSchema): bool

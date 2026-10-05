@@ -165,4 +165,27 @@ final class TcaSchemaTest extends FunctionalTestCase
         self::assertEquals('\Foo\Bar\Formatter\User->func', $labelCapability->getConfiguration()['formatter']);
         self::assertEquals(['baz' => 'bar'], $labelCapability->getConfiguration()['formatterOptions']);
     }
+
+    #[Test]
+    public function labelFieldNamesOfAllRecordTypesContainTypeSpecificLabelFields(): void
+    {
+        $GLOBALS['TCA']['tt_content']['ctrl']['label'] = 'header';
+        $GLOBALS['TCA']['tt_content']['ctrl']['label_alt'] = 'subheader';
+        $GLOBALS['TCA']['tt_content']['types']['text']['label'] = 'bodytext';
+        $GLOBALS['TCA']['tt_content']['types']['shortcut']['label_alt'] = 'records,subheader';
+
+        $factory = $this->get(TcaSchemaFactory::class);
+        $factory->rebuild($GLOBALS['TCA']);
+        $schema = $factory->get('tt_content');
+
+        self::assertSame(['header', 'subheader'], $schema->getCapability(TcaSchemaCapability::Label)->getAllLabelFieldNames());
+        self::assertSame(
+            ['header', 'subheader', 'bodytext', 'records'],
+            $schema->getCapability(TcaSchemaCapability::Label)->getLabelFieldNamesOfAllRecordTypes()
+        );
+        self::assertSame(
+            ['header', 'records', 'subheader'],
+            $schema->getSubSchema('shortcut')->getCapability(TcaSchemaCapability::Label)->getLabelFieldNamesOfAllRecordTypes()
+        );
+    }
 }
