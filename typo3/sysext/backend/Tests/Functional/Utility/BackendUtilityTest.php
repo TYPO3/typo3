@@ -237,6 +237,59 @@ final class BackendUtilityTest extends FunctionalTestCase
         self::assertSame('Fallback Value', BackendUtility::getRecordTitle('test_table', $record));
     }
 
+    public static function getRecordTitleEvaluatesLabelAltDataProvider(): \Generator
+    {
+        yield 'label set' => [
+            ['title' => 'Title', 'subtitle' => 'Subtitle', 'description' => 'Description'],
+            false,
+            'Title',
+        ];
+        yield 'empty label uses first label_alt field' => [
+            ['title' => '', 'subtitle' => 'Subtitle', 'description' => 'Description'],
+            false,
+            'Subtitle',
+        ];
+        yield 'empty label skips empty label_alt fields' => [
+            ['title' => '', 'subtitle' => '', 'description' => 'Description'],
+            false,
+            'Description',
+        ];
+        yield 'label_alt_force with label set' => [
+            ['title' => 'Title', 'subtitle' => 'Subtitle', 'description' => 'Description'],
+            true,
+            'Title, Subtitle, Description',
+        ];
+        yield 'label_alt_force with empty label' => [
+            ['title' => '', 'subtitle' => 'Subtitle', 'description' => 'Description'],
+            true,
+            'Subtitle, Description',
+        ];
+    }
+
+    #[DataProvider('getRecordTitleEvaluatesLabelAltDataProvider')]
+    #[Test]
+    public function getRecordTitleEvaluatesLabelAlt(array $record, bool $labelAltForce, string $expected): void
+    {
+        $GLOBALS['TCA']['test_table'] = [
+            'ctrl' => [
+                'label' => 'title',
+                'label_alt' => 'subtitle,description',
+                'label_alt_force' => $labelAltForce,
+            ],
+            'columns' => [
+                'title' => ['config' => ['type' => 'input']],
+                'subtitle' => ['config' => ['type' => 'input']],
+                'description' => ['config' => ['type' => 'input']],
+            ],
+            'types' => [
+                '0' => ['showitem' => 'title,subtitle,description'],
+            ],
+        ];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+
+        self::assertSame($expected, BackendUtility::getRecordTitle('test_table', ['uid' => 1, ...$record]));
+    }
+
     public static function enableFieldsStatementIsCorrectDataProvider(): array
     {
         // Expected sql should contain identifier escaped in mysql/mariadb identifier quotings "`", which are

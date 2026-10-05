@@ -1122,6 +1122,9 @@ class BackendUtility
                         $altLabel = self::getProcessedValue($table, $fieldName, $altLabel, 0, false, false, $row['uid'] ?? 0, true, 0, $row) ?? '';
                         if ($altLabel) {
                             $alternatives[] = $altLabel;
+                            if (!$labelCapability->alwaysRenderAdditionalFields()) {
+                                break;
+                            }
                         }
                     }
                 }
