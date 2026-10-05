@@ -41,7 +41,7 @@ templateName
       Inspector-TextEditor
 
 :aspect:`Good to know`
-      - :ref:`"Inspector"<concepts-formeditor-inspector>`
+      -   :ref:`Inspector <concepts-formeditor-inspector>`
 
 :aspect:`Description`
       .. include:: properties/TemplateName.rst.txt
@@ -77,7 +77,7 @@ doNotSetIfPropertyValueIsEmpty
       @ToDo
 
 :aspect:`Good to know`
-      - :ref:`"Inspector"<concepts-formeditor-inspector>`
+      -   :ref:`Inspector <concepts-formeditor-inspector>`
 
 :aspect:`Description`
       If set to true then the property which should be written through this ``inspector editor`` will be removed within the ``form definition`` if the
@@ -102,7 +102,7 @@ propertyValidators
       - :ref:`"formElementPropertyValidatorsDefinition"<prototypes.prototypeIdentifier.formeditor.formelementpropertyvalidatorsdefinition>`
 
 :aspect:`Good to know`
-      - :ref:`"Inspector"<concepts-formeditor-inspector>`
+      -   :ref:`Inspector <concepts-formeditor-inspector>`
 
 :aspect:`Description`
       This ``inspector editors`` is able to validate it's value through JavaScript methods.
@@ -143,7 +143,7 @@ propertyValidatorsMode
       OR/ AND
 
 :aspect:`Good to know`
-      - :ref:`"Inspector"<concepts-formeditor-inspector>`
+      -   :ref:`Inspector <concepts-formeditor-inspector>`
 
 :aspect:`Description`
       If set to 'OR' then at least one validator must be valid to accept the ``inspector editor`` value. If set to 'AND' then all validators must be valid.
@@ -167,8 +167,8 @@ description
       @ToDo
 
 :aspect:`Good to know`
-      - :ref:`"Inspector"<concepts-formeditor-inspector>`
-      - :ref:`"Translate form editor settings"<concepts-formeditor-translation-formeditor>`
+      -   :ref:`Inspector <concepts-formeditor-inspector>`
+      -   :ref:`"Translate form editor settings"<concepts-formeditor-translation-formeditor>`
 
 :aspect:`Description`
       A text which is shown at the bottom of the ``inspector editor``.
@@ -192,7 +192,7 @@ additionalElementPropertyPaths
       @ToDo
 
 :aspect:`Good to know`
-      - :ref:`"Inspector"<concepts-formeditor-inspector>`
+      -   :ref:`Inspector <concepts-formeditor-inspector>`
 
 :aspect:`Description`
       An array which holds property paths which should be written in addition to the propertyPath option.
@@ -203,3 +203,39 @@ additionalElementPropertyPaths
 
          additionalElementPropertyPaths:
            10: 'properties.fluidAdditionalAttributes.maxlength'
+
+
+..  _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.enableformelementselectionbutton-texteditor:
+
+enableFormelementSelectionButton
+--------------------------------
+
+:aspect:`Data type`
+      bool
+
+:aspect:`Needed by`
+      Backend (form editor)
+
+:aspect:`Mandatory`
+      No
+
+:aspect:`Default value`
+      false
+
+:aspect:`Related options`
+      -   :ref:`[PropertyGridEditor] gridColumns <prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.gridcolumns-propertygrideditor>`
+
+:aspect:`Good to know`
+      -   :ref:`Inspector <concepts-formeditor-inspector>`
+
+:aspect:`Description`
+      If set to true, a button is shown next to the textfield. The button lists
+      the form elements of the form, except pages and container elements such
+      as fieldsets. Selecting a form element appends its identifier in curly
+      braces, for example `{email-1}`, to the textfield value.
+
+      For example:
+
+      ..  code-block:: yaml
+
+          enableFormelementSelectionButton: true

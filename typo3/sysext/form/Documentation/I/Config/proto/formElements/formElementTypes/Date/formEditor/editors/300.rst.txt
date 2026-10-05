@@ -1,0 +1,48 @@
+..  include:: /Includes.rst.txt
+
+formEditor.editors.300
+----------------------
+
+:aspect:`Option path`
+      prototypes.<prototypeIdentifier>.formElementsDefinition.Date.formEditor.editors.300
+
+:aspect:`Data type`
+      array/ :ref:`[DateEditor] <prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.dateeditor>`
+
+:aspect:`Needed by`
+      Backend (form editor)
+
+:aspect:`Mandatory`
+      Recommended
+
+..  :aspect:`Related options`
+      @ToDo
+
+:aspect:`Default value (for prototype 'standard')`
+      ..  code-block:: yaml
+          :linenos:
+          :emphasize-lines: 4-
+
+          Date:
+            formEditor:
+              editors:
+                300:
+                  identifier: defaultValue
+                  templateName: Inspector-DateEditor
+                  label: formEditor.elements.TextMixin.editor.defaultValue.label
+                  propertyPath: defaultValue
+                  propertyValidators:
+                    10: RFC3339FullDateOrEmpty
+
+:aspect:`Description`
+      ..  versionchanged:: 14.2
+          :changelog: feature-109126-1740000000
+
+          Before, the default value was set with the
+          :ref:`[TextEditor] <prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.texteditor>`.
+
+      The default value is set with the
+      :ref:`[DateEditor] <prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.dateeditor>`.
+      It accepts an absolute date in the format `Y-m-d` or a relative date
+      expression, for example `today` or `+1 day`. A relative expression
+      is resolved when the form is rendered.

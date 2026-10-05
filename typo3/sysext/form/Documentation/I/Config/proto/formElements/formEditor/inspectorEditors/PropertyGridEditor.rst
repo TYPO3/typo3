@@ -41,7 +41,7 @@ templateName
       Inspector-PropertyGridEditor
 
 :aspect:`Good to know`
-      - :ref:`"Inspector"<concepts-formeditor-inspector>`
+      -   :ref:`Inspector <concepts-formeditor-inspector>`
 
 :aspect:`Description`
       .. include:: properties/TemplateName.rst.txt
@@ -77,7 +77,7 @@ isSortable
       @ToDo
 
 :aspect:`Good to know`
-      - :ref:`"Inspector"<concepts-formeditor-inspector>`
+      -   :ref:`Inspector <concepts-formeditor-inspector>`
 
 :aspect:`Description`
       If set to 'false' the rows are not sortable.
@@ -101,7 +101,7 @@ enableAddRow
       @ToDo
 
 :aspect:`Good to know`
-      - :ref:`"Inspector"<concepts-formeditor-inspector>`
+      -   :ref:`Inspector <concepts-formeditor-inspector>`
 
 :aspect:`Description`
       If set to 'false' the "add new row" button is disabled.
@@ -125,7 +125,7 @@ enableDeleteRow
       @ToDo
 
 :aspect:`Good to know`
-      - :ref:`"Inspector"<concepts-formeditor-inspector>`
+      -   :ref:`Inspector <concepts-formeditor-inspector>`
 
 :aspect:`Description`
       If set to 'false' the "delete row" button is disabled.
@@ -149,7 +149,7 @@ multiSelection
       @ToDo
 
 :aspect:`Good to know`
-      - :ref:`"Inspector"<concepts-formeditor-inspector>`
+      -   :ref:`Inspector <concepts-formeditor-inspector>`
 
 :aspect:`Description`
       If set to 'false' only one row can be marked as preselected.
@@ -173,8 +173,8 @@ removeLastAvailableRowFlashMessageTitle
       @ToDo
 
 :aspect:`Good to know`
-      - :ref:`"Inspector"<concepts-formeditor-inspector>`
-      - :ref:`"Translate form editor settings"<concepts-formeditor-translation-formeditor>`
+      -   :ref:`Inspector <concepts-formeditor-inspector>`
+      -   :ref:`Translate form editor settings <concepts-formeditor-translation-formeditor>`
 
 :aspect:`Description`
       There must be at least one existing row within this ``inspector editor``. If the last existing row is tried to be removed a flash message is shown.
@@ -199,9 +199,60 @@ removeLastAvailableRowFlashMessageMessage
       @ToDo
 
 :aspect:`Good to know`
-      - :ref:`"Inspector"<concepts-formeditor-inspector>`
-      - :ref:`"Translate form editor settings"<concepts-formeditor-translation-formeditor>`
+      -   :ref:`Inspector <concepts-formeditor-inspector>`
+      -   :ref:`Translate form editor settings <concepts-formeditor-translation-formeditor>`
 
 :aspect:`Description`
       There must be at least one existing row within this ``inspector editor``. If the last existing row is tried to be removed a flash message is shown.
       This property defines the text for the flash message.
+
+
+..  _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.gridcolumns-propertygrideditor:
+
+gridColumns
+-----------
+
+:aspect:`Data type`
+      array
+
+:aspect:`Needed by`
+      Backend (form editor)
+
+:aspect:`Mandatory`
+      No
+
+:aspect:`Good to know`
+      -   :ref:`Inspector <concepts-formeditor-inspector>`
+      -   :ref:`Translate form editor settings <concepts-formeditor-translation-formeditor>`
+
+:aspect:`Description`
+      A list of column configurations. Each item configures one column of the
+      grid. The `name` key selects the column: `label`, `value`, or
+      `selected`. The `title` key sets the column header.
+
+      The `label` and `value` columns also accept the
+      `enableFormelementSelectionButton` key. If it is set to true, each row
+      shows a button next to the input field of this column. The button lists
+      the form elements of the form, except pages and container elements such
+      as fieldsets. Selecting a form element appends its identifier in curly
+      braces, for example `{email-1}`, to the field value.
+
+      ..  versionadded:: 14.2
+          :changelog: feature-91924-1656664855
+
+          The `enableFormelementSelectionButton` key for the `label` and
+          `value` columns.
+
+      For example:
+
+      ..  code-block:: yaml
+
+          gridColumns:
+            -
+              name: value
+              title: formEditor.elements.Form.finisher.EmailToSender.editor.recipients.gridColumns.value.title
+              enableFormelementSelectionButton: true
+            -
+              name: label
+              title: formEditor.elements.Form.finisher.EmailToSender.editor.recipients.gridColumns.label.title
+              enableFormelementSelectionButton: true

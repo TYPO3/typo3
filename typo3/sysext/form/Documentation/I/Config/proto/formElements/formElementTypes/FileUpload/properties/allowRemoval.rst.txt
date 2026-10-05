@@ -1,0 +1,35 @@
+..  include:: /Includes.rst.txt
+properties.allowRemoval
+-----------------------
+
+:aspect:`Option path`
+      prototypes.<prototypeIdentifier>.formElementsDefinition.FileUpload.properties.allowRemoval
+
+:aspect:`Data type`
+      bool
+
+:aspect:`Needed by`
+      Frontend/ Backend (form editor)
+
+:aspect:`Overwritable within form definition`
+      Yes
+
+:aspect:`form editor can write this property into the form definition (for prototype 'standard')`
+      Yes
+
+:aspect:`Mandatory`
+      No
+
+:aspect:`Default value (for prototype 'standard')`
+      false (not set)
+
+:aspect:`Description`
+      ..  versionadded:: 14.2
+          :changelog: feature-105708-1739721600
+
+      If set to true, a "Remove" checkbox is shown next to each uploaded file.
+      Users can check it to remove the file when they submit the form. This
+      works for single and multiple uploads.
+
+      In the form editor, this property is set with the
+      "Allow removal of uploaded files" checkbox.

@@ -1,0 +1,30 @@
+..  include:: /Includes.rst.txt
+
+formEditor.editors.500
+----------------------
+
+:aspect:`Option path`
+      prototypes.<prototypeIdentifier>.formElementsDefinition.FileUpload.formEditor.editors.500
+
+:aspect:`Data type`
+      array/ :ref:`[CheckboxEditor] <prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.checkboxeditor>`
+
+:aspect:`Needed by`
+      Backend (form editor)
+
+:aspect:`Mandatory`
+      Recommended
+
+:aspect:`Default value (for prototype 'standard')`
+      ..  code-block:: yaml
+          :linenos:
+          :emphasize-lines: 4-
+
+          FileUpload:
+            formEditor:
+              editors:
+                500:
+                  identifier: multiple
+                  templateName: Inspector-CheckboxEditor
+                  label: formEditor.elements.FileUpload.editor.multiple.label
+                  propertyPath: properties.multiple

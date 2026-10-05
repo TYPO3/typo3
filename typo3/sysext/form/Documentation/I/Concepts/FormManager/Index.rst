@@ -16,10 +16,17 @@ You will find the ``form manager`` in the backend :guilabel:`Web > Forms` backen
 module. Editors can use the ``form manager`` to administer forms stored on file
 mounts that they have access to. The ``form manager``:
 
-- lists all forms
-- allows users to create, edit, duplicate, and delete forms
-- identifies the storage folder
-- gives an overview of which pages the forms are on.
+-   lists all forms
+-   allows users to search for forms
+-   allows users to create, edit, duplicate, and delete forms
+-   identifies the storage folder
+-   gives an overview of which pages the forms are on.
+
+The search field above the list filters the forms by their name or their
+persistence identifier. The search is case-insensitive.
+
+..  versionadded:: 13.0
+    :changelog: feature-97664-1656981240
 
 Creation and duplication of forms is made easier by a ``form wizard``.
 The wizard guides the editor through form creation and offers a
@@ -91,6 +98,44 @@ chosen ``prototype``.The ``identifier`` of the root form element ('Form') is set
 to the entered "Form name". This name is also used for the
 property `` label`` of the 'Form' element. Finally, the ``form editor`` is
 loaded and displays the newly created form.
+
+..  versionadded:: 14.0
+    :changelog: feature-106477-1753393923
+
+    Before, a `Start template` could not import other YAML files or
+    contain placeholders.
+
+The `form manager` loads a `Start template` with the TYPO3 Core
+:ref:`YAML loader <t3coreapi:yamlFileLoader>`. A `Start template` can import
+other YAML files and contain environment variable placeholders such as
+`%env(ENV_NAME)%`. The imports and placeholders are resolved when the new
+form is created. The new form definition contains the resolved values.
+
+..  code-block:: yaml
+    :caption: EXT:my_extension/Resources/Private/Backend/Templates/FormEditor/Yaml/NewForms/ContactForm.yaml
+
+    imports:
+      - { resource: 'ContactFormPages.yaml' }
+    type: Form
+    identifier: contactForm
+    label: 'Contact form'
+    finishers:
+      -
+        identifier: EmailToReceiver
+        options:
+          subject: 'Contact request from %env(SITE_NAME)%'
+          recipients:
+            office@example.com: 'Office'
+          senderAddress: '%env(FORM_SENDER_ADDRESS)%'
+
+..  code-block:: yaml
+    :caption: EXT:my_extension/Resources/Private/Backend/Templates/FormEditor/Yaml/NewForms/ContactFormPages.yaml
+
+    renderables:
+      -
+        type: Page
+        identifier: page-1
+        label: 'Contact data'
 
 
 .. _concepts-formmanager-translation-starttemplate:

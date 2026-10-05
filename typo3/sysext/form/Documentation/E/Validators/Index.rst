@@ -251,13 +251,35 @@ Date range
 ==========
 
 This validator checks whether an entered value is within a specific
-**date range**. The range can be defined by specifying a **start** and/ or
-**end date**. The settings of the validator are as follows:
+**date range**. The range can be defined by specifying a **minimum** and/ or
+**maximum date**. The settings of the validator are as follows:
 
-- **Start date**: The beginning of the date range (input: YYYY-MM-DD).
-- **End date**: The end of the date range (input: YYYY-MM-DD).
-- **Custom error message**: Custom error message that will be shown if the
-  validation fails.
+-   **Minimum date**: The beginning of the date range.
+-   **Maximum date**: The end of the date range.
+-   **Custom error message**: Custom error message that will be shown if the
+    validation fails.
+
+For **Minimum date** and **Maximum date**, select one of these options:
+
+-   **No value**: The range has no limit on this side.
+-   **Today**: The current date at the time the form is displayed or
+    submitted.
+-   **Absolute date**: A fixed date that you select in a date picker.
+-   **Relative date**: A date relative to the current day. Select "past" or
+    "future", enter an amount, and select days, weeks, months, or years.
+-   **Custom relative expression**: Enter any other relative date
+    expression, for example "+1 month +3 days".
+
+TYPO3 calculates relative dates each time the form is displayed or
+submitted. For example, set **Maximum date** to **Relative date**, "past",
+"18", and "Years". Users must then enter a date of birth at least 18 years
+ago. You can combine an absolute date with a relative date. See also the
+:ref:`configuration of the date range validator <concepts-validators-date_range>`.
+
+..  versionadded:: 14.2
+    :changelog: feature-106681-1740000000
+
+    Previously, the date range accepted only absolute dates.
 
 **The validator is available for the following form elements**:
 
@@ -312,13 +334,40 @@ environment.
 
 **The validator is available for the following form elements**:
 
-- :ref:`"File upload"<form-elements-advanced-elements-file-upload>`
-- :ref:`"Image upload"<form-elements-advanced-elements-image-upload>`
+-   :ref:`File upload <form-elements-advanced-elements-file-upload>`
+-   :ref:`Image upload <form-elements-advanced-elements-image-upload>`
 
 .. figure:: Images/form_validators_fileSize.png
    :alt: In the Inspector - Settings of the 'File size' validator.
 
    In the Inspector - Settings of the 'File size' validator.
+
+
+..  _validators-number-of-files:
+
+Number of files
+===============
+
+The validator checks how many files a user uploads in one field. Use it
+together with the setting **Allow multiple upload**. In the Inspector, the
+validator is shown as "Number of uploaded files". The settings of the
+validator are as follows:
+
+-   **Minimum**: The minimum number of uploaded files.
+-   **Maximum**: The maximum number of uploaded files.
+
+**The validator is available for the following form elements**:
+
+-   :ref:`File upload <form-elements-advanced-elements-file-upload>`
+-   :ref:`Image upload <form-elements-advanced-elements-image-upload>`
+
+See also the
+:ref:`configuration of the number of submitted values validator <concepts-validators-count>`.
+
+..  versionadded:: 14.2
+    :changelog: feature-105708-1739721600
+
+    The validator was added for upload elements.
 
 
 .. _validators-date-time:

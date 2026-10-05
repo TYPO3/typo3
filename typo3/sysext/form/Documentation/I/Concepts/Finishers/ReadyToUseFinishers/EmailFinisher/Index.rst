@@ -156,6 +156,41 @@ Options of the email finisher
 
     The title shown in the email.
 
+..  _apireference-finisheroptions-emailfinisher-options-message:
+
+..  confval:: Message [message]
+    :name: emailfinisher-message
+    :type: string
+    :required: false
+    :default: `''`
+
+    ..  versionadded:: 14.2
+        :changelog: feature-88470-1771684874
+
+    Custom message shown in the email. Editors can format it with the rich
+    text editor (RTE preset `form-content`).
+
+    Use the placeholder `{formValues}` to position the table of submitted form
+    values in the message. Only the first occurrence of the placeholder is
+    replaced. If the message has no placeholder, the email contains only
+    the message and no table of form values. If the message is empty, the
+    email contains only the table of form values.
+
+    Editors can override the message in the form plugin.
+
+    ..  code-block:: yaml
+        :caption: public/fileadmin/forms/my_form.yaml
+
+        finishers:
+          -
+            identifier: EmailToReceiver
+            options:
+              subject: 'New contact request'
+              recipients:
+                office@example.com: 'Office'
+              senderAddress: 'noreply@example.com'
+              message: '<p>A new request has arrived:</p>{formValues}<p>Please answer within two days.</p>'
+
 ..  _apireference-finisheroptions-emailfinisher-options-translation-language:
 
 ..  confval:: Translation language [translation.language]

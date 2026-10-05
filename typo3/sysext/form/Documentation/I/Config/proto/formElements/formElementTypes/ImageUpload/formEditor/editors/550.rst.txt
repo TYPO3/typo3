@@ -1,0 +1,30 @@
+..  include:: /Includes.rst.txt
+
+formEditor.editors.550
+----------------------
+
+:aspect:`Option path`
+      prototypes.<prototypeIdentifier>.formElementsDefinition.ImageUpload.formEditor.editors.550
+
+:aspect:`Data type`
+      array/ :ref:`[CheckboxEditor] <prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.checkboxeditor>`
+
+:aspect:`Needed by`
+      Backend (form editor)
+
+:aspect:`Mandatory`
+      Recommended
+
+:aspect:`Default value (for prototype 'standard')`
+      ..  code-block:: yaml
+          :linenos:
+          :emphasize-lines: 4-
+
+          ImageUpload:
+            formEditor:
+              editors:
+                550:
+                  identifier: allowRemoval
+                  templateName: Inspector-CheckboxEditor
+                  label: formEditor.elements.FileUpload.editor.allowRemoval.label
+                  propertyPath: properties.allowRemoval

@@ -41,7 +41,7 @@ templateName
       Inspector-TextareaEditor
 
 :aspect:`Good to know`
-      - :ref:`"Inspector"<concepts-formeditor-inspector>`
+      -   :ref:`Inspector <concepts-formeditor-inspector>`
 
 :aspect:`Description`
       .. include:: properties/TemplateName.rst.txt
@@ -76,15 +76,34 @@ enableRichtext
 :aspect:`Default value`
       false
 
+:aspect:`Related options`
+      -   :ref:`richtextConfiguration <prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.richtextconfiguration-textareaeditor>`
+
+:aspect:`Good to know`
+      -   :ref:`Inspector <concepts-formeditor-inspector>`
+
 :aspect:`Description`
-      If set to true, the textarea will be rendered as a rich text editor using CKEditor 5.
-      This allows for formatted text input with features like bold, italic, links, and lists.
+      ..  versionadded:: 14.2
+          :changelog: feature-108966-1738963200
 
-      The RTE configuration is loaded from the global TYPO3 RTE presets defined in the
-      system configuration. Use the ``richtextConfiguration`` option to specify which
-      preset should be used.
+          Rich text editing in the form editor.
 
-.. :aspect:`Example`
+      If set to true, the textarea is rendered as a rich text editor using
+      CKEditor 5. Editors can then format the text, for example with bold,
+      italic, and links.
+
+      The editor configuration is loaded from a global TYPO3 RTE preset. Use
+      the `richtextConfiguration` option to select the preset.
+
+      The following editors of the `standard` prototype enable rich text
+      editing by default:
+
+      -   The text of the `StaticText` element (preset `form-content`)
+      -   The label of the `Checkbox` element (preset `form-label`)
+      -   The message of the `EmailToSender`, `EmailToReceiver`, and
+          `Confirmation` finishers (preset `form-content`)
+
+:aspect:`Example`
       .. code-block:: yaml
 
          prototypes:
@@ -93,12 +112,13 @@ enableRichtext
                StaticText:
                  formEditor:
                    editors:
-                     100:
-                       identifier: text
+                     300:
+                       identifier: staticText
                        templateName: Inspector-TextareaEditor
-                       label: formEditor.elements.StaticText.editor.text.label
-                       propertyPath: text
+                       label: formEditor.elements.StaticText.editor.staticText.label
+                       propertyPath: properties.text
                        enableRichtext: true
+                       richtextConfiguration: form-content
 
 
 .. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.richtextconfiguration-textareaeditor:
@@ -116,26 +136,36 @@ richtextConfiguration
       No
 
 :aspect:`Default value`
-      'form-label'
+      form-label
 
 :aspect:`Related options`
       - :ref:`prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.enablerichtext-textareaeditor`
 
+:aspect:`Good to know`
+      -   :ref:`Inspector <concepts-formeditor-inspector>`
+
 :aspect:`Description`
-      Defines which RTE preset configuration should be used when ``enableRichtext`` is true.
-      The preset name must correspond to a preset defined in the global TYPO3 RTE configuration.
+      ..  versionadded:: 14.2
+          :changelog: feature-108966-1738963200
 
-      Common preset names include:
+          Rich text editing in the form editor.
 
-      - ``form-label`` - Simple formatting for labels and short texts (bold, italic, link) - default
-      - ``form-content`` - Extended formatting for content fields (includes lists)
-      - ``default`` - The default TYPO3 RTE configuration
-      - ``minimal`` - A minimal configuration with basic formatting
-      - ``full`` - A full-featured configuration with all available features
+      Defines the RTE preset that is used if `enableRichtext` is true. The
+      preset must be registered in
+      `$GLOBALS['TYPO3_CONF_VARS']['RTE']['Presets']`. If this option is not
+      set, the `form-label` preset is used.
 
-      If the specified preset does not exist, the system will fall back to the 'form-label' preset.
+      EXT:form registers two presets in its :file:`ext_localconf.php`:
 
-.. :aspect:`Example`
+      -   `form-label` - Bold, italic, and link. Intended for labels and
+          short texts.
+      -   `form-content` - Bold, italic, link, bulleted lists, and numbered
+          lists. Intended for content fields.
+
+      The presets of EXT:rte_ckeditor, for example `default`, `minimal`,
+      and `full`, can be used as well.
+
+:aspect:`Example`
       .. code-block:: yaml
 
          prototypes:
@@ -154,5 +184,4 @@ richtextConfiguration
                              label: formEditor.elements.Form.finisher.Confirmation.editor.message.label
                              propertyPath: options.message
                              enableRichtext: true
-                             richtextConfiguration: form-label
-
+                             richtextConfiguration: form-content

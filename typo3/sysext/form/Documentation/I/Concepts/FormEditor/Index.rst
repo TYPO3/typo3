@@ -242,6 +242,110 @@ form element safely from the form editor:
              group: null
 
 
+..  _concepts-formeditor-richtext:
+
+Rich text editing
+-----------------
+
+..  versionadded:: 14.2
+    :changelog: feature-108966-1738963200
+
+Editors can format some texts in the `form editor` with the rich text editor
+(CKEditor 5). The following fields use it by default:
+
+..  t3-field-list-table::
+    :header-rows: 1
+
+    -   :a: Field
+        :b: RTE preset
+
+    -   :a: Text of the :yaml:`StaticText` element
+        :b: `form-content`
+
+    -   :a: Label of the :yaml:`Checkbox` element
+        :b: `form-label`
+
+    -   :a: Message of the :yaml:`Confirmation` finisher
+        :b: `form-content`
+
+    -   :a: Message of the :yaml:`EmailToSender` and :yaml:`EmailToReceiver`
+            finishers
+        :b: `form-content`
+
+EXT:form registers two RTE presets for these fields:
+
+`form-label`
+    Bold, italic, and links. Use it for labels and short texts.
+
+`form-content`
+    Bold, italic, links, bulleted lists, and numbered lists. Use it for longer
+    texts.
+
+To enable the rich text editor for another field, use the
+:ref:`TextareaEditor <prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.textareaeditor>`
+with the options :yaml:`enableRichtext` and :yaml:`richtextConfiguration`.
+The option :yaml:`richtextConfiguration` accepts the name of any registered
+RTE preset. If it is not set, the preset `form-label` is used.
+
+..  code-block:: yaml
+    :caption: EXT:my_extension/Configuration/Form/MyFormSet/config.yaml
+
+    prototypes:
+      standard:
+        formElementsDefinition:
+          MyCustomElement:
+            formEditor:
+              editors:
+                300:
+                  identifier: text
+                  templateName: Inspector-TextareaEditor
+                  label: formEditor.elements.StaticText.editor.staticText.label
+                  propertyPath: properties.text
+                  enableRichtext: true
+                  richtextConfiguration: form-content
+
+..  _concepts-formeditor-richtext-sanitizing:
+
+Sanitizing of rich text
+^^^^^^^^^^^^^^^^^^^^^^^
+
+The form framework sanitizes rich text twice:
+
+-   **Form definition:** The HTML sanitizer cleans the content of rich text
+    fields. It uses the sanitizer build that the RTE preset defines in
+    :yaml:`processing.HTMLparser_db.htmlSanitize.build`. HTML tags are removed
+    from the values of all other fields. This happens when the `form editor`
+    loads or saves a form definition and when the form is built for the
+    frontend.
+-   **Frontend output:** The Fluid templates pass rich text through the
+    ViewHelper :html:`<f:sanitize.html>` with the `default` sanitizer build.
+
+To use a custom sanitizer for the form definition, set it in your RTE preset:
+
+..  code-block:: yaml
+    :caption: EXT:my_extension/Configuration/RTE/MyPreset.yaml
+
+    processing:
+      HTMLparser_db:
+        htmlSanitize:
+          build: \MyVendor\MyExtension\Html\MySanitizerBuilder
+
+To change the sanitizing in the frontend, use one of the following options:
+
+-   Override the Fluid templates and pass a custom build to
+    :html:`<f:sanitize.html>`, for example
+    :html:`{text -> f:sanitize.html(build: 'myCustomBuild')}`.
+-   Register your sanitizer builder as `default` build in
+    :php:`$GLOBALS['TYPO3_CONF_VARS']['SYS']['htmlSanitizer']['default']`.
+    This changes the default build for the whole installation.
+
+..  note::
+    The frontend template of the :yaml:`Checkbox` element also removes all
+    tags except :html:`<a>`, :html:`<br>`, :html:`<i>`, and :html:`<strong>`
+    from the label. If you allow more tags in the RTE preset, override the
+    template as well.
+
+
 .. _concepts-formeditor-extending:
 
 Extending the form editor

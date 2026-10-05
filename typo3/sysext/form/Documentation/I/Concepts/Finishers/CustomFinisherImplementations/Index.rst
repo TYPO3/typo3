@@ -109,6 +109,106 @@ in the finisher configuration:
 You can use `{__currentTimestamp}` as an option value to return the
 current UNIX timestamp.
 
+..  _concepts-finishers-customfinisherimplementations-accessingoptions-displayvalue:
+
+Display values and submitted values
+-----------------------------------
+
+..  versionchanged:: 14.3.7
+    :changelog: important-106903-1787754756
+
+    Before, the built-in finishers used the submitted value, for example the
+    option key, in all options.
+
+`parseOption()` replaces `{<elementIdentifier>}` with the submitted value of
+the form element. For a select, radio button, multi checkbox, or country
+select element, this value is the option key, for example `mr`.
+
+`parseOptionAsDisplayValue()` replaces the placeholder with the display value
+instead. The form element provides this value, for example the translated
+option label `Mister`. Use it for options that are read by a human. Never use
+it for options that end up in a query, a stored record, or a URL.
+
+..  code-block:: php
+
+    // "Request from Mister" instead of "Request from mr"
+    $subject = $this->parseOptionAsDisplayValue('subject');
+
+The built-in finishers use display values for the following options:
+
+*   `EmailFinisher`: `subject`, `title`, `message`, and `senderName`
+*   `ConfirmationFinisher`: `message`
+*   `FlashMessageFinisher`: `messageBody` and `messageTitle`
+
+All other options of the built-in finishers keep the submitted value. This
+includes the email addresses, the redirect targets, and all options of the
+`SaveToDatabaseFinisher`.
+
+Both methods join an array value inside a longer string with `, `, for example
+the values of a multi select element in `Request for {interests}`.
+
+..  _concepts-finishers-customfinisherimplementations-fileuploads:
+
+Accessing uploaded files
+========================
+
+..  versionadded:: 14.2
+    :changelog: feature-105708-1739721600
+
+    Before, `FileUpload` and `ImageUpload` elements accepted only one file.
+
+The value of a `FileUpload` or `ImageUpload` element depends on its
+`multiple` property:
+
+*   Single upload: a :php-short:`\TYPO3\CMS\Extbase\Domain\Model\FileReference`
+*   Multiple upload: an
+    :php-short:`\TYPO3\CMS\Extbase\Persistence\ObjectStorage` of
+    :php-short:`\TYPO3\CMS\Extbase\Domain\Model\FileReference` objects
+
+Handle both cases in a custom finisher that processes uploaded files:
+
+..  code-block:: php
+    :caption: EXT:my_site_package/Classes/Domain/Finishers/CustomFinisher.php
+
+    use TYPO3\CMS\Core\Resource\FileInterface;
+    use TYPO3\CMS\Extbase\Domain\Model\FileReference;
+    use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+    use TYPO3\CMS\Form\Domain\Finishers\AbstractFinisher;
+    use TYPO3\CMS\Form\Domain\Model\FormElements\FileUpload;
+
+    class CustomFinisher extends AbstractFinisher
+    {
+      protected function executeInternal(): void
+      {
+        $formRuntime = $this->finisherContext->getFormRuntime();
+        $elements = $formRuntime->getFormDefinition()
+          ->getRenderablesRecursively();
+        foreach ($elements as $element) {
+          if (!$element instanceof FileUpload) {
+            continue;
+          }
+          $value = $formRuntime[$element->getIdentifier()];
+          if ($value instanceof FileReference) {
+            $this->processFile($value->getOriginalResource());
+          }
+          if ($value instanceof ObjectStorage) {
+            foreach ($value as $fileReference) {
+              if ($fileReference instanceof FileReference) {
+                $this->processFile(
+                  $fileReference->getOriginalResource()
+                );
+              }
+            }
+          }
+        }
+      }
+
+      private function processFile(FileInterface $file): void
+      {
+        // Your custom logic, for example move, copy, or attach the file
+      }
+    }
+
 ..  _concepts-finishers-customfinisherimplementations-finishercontext:
 
 Finisher Context
