@@ -116,6 +116,9 @@ final readonly class FrontendGenerationPageIndexingTrigger
             'content' => $event->getContent(),
             // Alternative title for indexing
             'indexedDocTitle' => $this->pageTitleProviderManager->getTitle($request),
+            // Keywords and description of the page record, the meta tags are not yet rendered into the cacheable content
+            'indexedDocKeywords' => (string)($pageRecord['keywords'] ?? ''),
+            'indexedDocDescription' => (string)($pageRecord['description'] ?? ''),
             // Most recent modification time (seconds) of the content on the page. Used to evaluate whether it should be re-indexed.
             'mtime' => $pageParts->getLastChanged(),
             // Whether to index external documents like PDF, DOC etc.
