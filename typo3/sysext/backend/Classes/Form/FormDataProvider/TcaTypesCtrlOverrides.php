@@ -34,12 +34,17 @@ class TcaTypesCtrlOverrides implements FormDataProviderInterface
      * This prevents arbitrary ctrl properties from being overridden which might
      * cause issues if they affect the structure or behavior of TCA processing.
      *
-     * Currently supported: 'title' and 'previewRenderer'.
-     * Additional properties may be added in the future.
+     * Currently supported: 'title', 'previewRenderer' and the record title
+     * properties. Additional properties may be added in the future.
      */
     protected array $allowedCtrlOverrides = [
         'title',
         'previewRenderer',
+        'label',
+        'label_alt',
+        'label_alt_force',
+        'label_userFunc',
+        'label_userFunc_options',
     ];
 
     public function addData(array $result): array

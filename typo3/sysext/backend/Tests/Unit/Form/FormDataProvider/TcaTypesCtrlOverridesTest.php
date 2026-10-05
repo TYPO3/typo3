@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaTypesCtrlOverrides;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -157,5 +158,38 @@ final class TcaTypesCtrlOverridesTest extends UnitTestCase
 
         // Empty string should override the base title
         self::assertSame('', $result['processedTca']['ctrl']['title']);
+    }
+
+    public static function typeSpecificLabelPropertiesOverrideCtrlLabelPropertiesDataProvider(): \Generator
+    {
+        yield 'label' => ['label', 'title', 'name'];
+        yield 'label_alt' => ['label_alt', 'subtitle', 'teaser,description'];
+        yield 'label_alt_force' => ['label_alt_force', false, true];
+        yield 'label_userFunc' => ['label_userFunc', 'Vendor\\Ext\\Base->label', 'Vendor\\Ext\\Type->label'];
+        yield 'label_userFunc_options' => ['label_userFunc_options', ['base' => true], ['type' => true]];
+    }
+
+    #[DataProvider('typeSpecificLabelPropertiesOverrideCtrlLabelPropertiesDataProvider')]
+    #[Test]
+    public function typeSpecificLabelPropertiesOverrideCtrlLabelProperties(string $property, mixed $ctrlValue, mixed $typeValue): void
+    {
+        $input = [
+            'recordTypeValue' => 'article',
+            'processedTca' => [
+                'ctrl' => [
+                    $property => $ctrlValue,
+                ],
+                'types' => [
+                    'article' => [
+                        $property => $typeValue,
+                        'showitem' => 'title',
+                    ],
+                ],
+            ],
+        ];
+
+        $result = new TcaTypesCtrlOverrides()->addData($input);
+
+        self::assertSame($typeValue, $result['processedTca']['ctrl'][$property]);
     }
 }
