@@ -13,6 +13,7 @@
 
 import 'bootstrap';
 import '@typo3/backend/input/clearable';
+import '@typo3/backend/login/capslock-warning';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import RegularEvent from '@typo3/core/event/regular-event';
