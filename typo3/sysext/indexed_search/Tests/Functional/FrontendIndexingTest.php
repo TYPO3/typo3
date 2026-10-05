@@ -81,6 +81,36 @@ final class FrontendIndexingTest extends FunctionalTestCase
         self::assertSame(0, $this->countIndexedPages());
     }
 
+    #[Test]
+    public function keywordsOfPageRecordAreIndexed(): void
+    {
+        $this->executeFrontendSubRequest(new InternalRequest('https://acme.com/'));
+
+        self::assertTrue($this->isWordIndexed('quokkakeyword'));
+        self::assertTrue($this->isWordIndexed('wombatkeyword'));
+    }
+
+    #[Test]
+    public function descriptionOfPageRecordIsIndexed(): void
+    {
+        $this->executeFrontendSubRequest(new InternalRequest('https://acme.com/'));
+
+        self::assertTrue($this->isWordIndexed('platypusdescription'));
+    }
+
+    private function isWordIndexed(string $word): bool
+    {
+        $queryBuilder = $this->get(ConnectionPool::class)->getQueryBuilderForTable('index_words');
+        $count = $queryBuilder
+            ->count('*')
+            ->from('index_words')
+            ->join('index_words', 'index_rel', 'index_rel', $queryBuilder->expr()->eq('index_rel.wid', $queryBuilder->quoteIdentifier('index_words.wid')))
+            ->where($queryBuilder->expr()->eq('index_words.baseword', $queryBuilder->createNamedParameter($word)))
+            ->executeQuery()
+            ->fetchOne();
+        return (int)$count > 0;
+    }
+
     private function countIndexedPages(): int
     {
         return (int)$this->get(ConnectionPool::class)

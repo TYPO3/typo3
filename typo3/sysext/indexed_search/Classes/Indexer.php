@@ -180,6 +180,14 @@ class Indexer
             if ($this->conf['indexedDocTitle']) {
                 $this->indexingDataStringDto->title = $this->conf['indexedDocTitle'];
             }
+            if ($this->conf['index_metatags']) {
+                if (($this->conf['indexedDocKeywords'] ?? '') !== '') {
+                    $this->indexingDataStringDto->keywords .= ',' . $this->addSpacesToKeywordList($this->conf['indexedDocKeywords']);
+                }
+                if (($this->conf['indexedDocDescription'] ?? '') !== '') {
+                    $this->indexingDataStringDto->description .= ',' . $this->conf['indexedDocDescription'];
+                }
+            }
             $this->timeTracker->pull();
             // Calculating a hash over what is to be the actual page content. Maybe this hash should not include title,description and keywords? The bodytext is the primary concern. (on the other hand a changed page-title would make no difference then, so don't!)
             $this->content_md5h = md5(implode('', $this->indexingDataStringDto->toArray()));
