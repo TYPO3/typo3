@@ -675,12 +675,26 @@ return [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordTypeValue::class,
                         ],
                     ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRawRecord::class => [
+                        'depends' => [
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues::class,
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordOverrideValues::class,
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultAsReadonly::class,
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordTypeValue::class,
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsOverrides::class,
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaTypesCtrlOverrides::class,
+                        ],
+                        'before' => [
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineExpandCollapseState::class,
+                        ],
+                    ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDateTimeFields::class => [
                         'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultAsReadonly::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsOverrides::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaTypesCtrlOverrides::class,
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRawRecord::class,
                         ],
                     ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineExpandCollapseState::class => [
@@ -1352,6 +1366,17 @@ return [
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaTypesCtrlOverrides::class => [
                         'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordTypeValue::class,
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRawRecord::class => [
+                        'depends' => [
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordOverrideValues::class,
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordTypeValue::class,
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsOverrides::class,
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaTypesCtrlOverrides::class,
+                        ],
+                        'before' => [
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineExpandCollapseState::class,
                         ],
                     ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineExpandCollapseState::class => [

@@ -1,4 +1,5 @@
 tt_content
-,uid,pid,CType,header
-,1,1,text,"Content with type text"
-,2,1,header,"Content with type header"
+,uid,pid,CType,header,date,pages
+,1,1,text,"Content with type text",0,
+,2,1,header,"Content with type header",0,
+,3,1,menu_subpages,"Content with date and pages",1700000000,1

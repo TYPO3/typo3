@@ -139,6 +139,12 @@ readonly class FormDataCompiler
             // The database row. For "edit" workspaceOL() was applied already.
             // @todo: rename to valueStructure or handledData or similar
             'databaseRow' => [],
+            // RecordInterface of the handled record, created from databaseRow before data providers process
+            // its values, e.g. into DateTime objects or arrays of relations. It contains the values in database
+            // format, including default and override values for "new", and the resolved record type. The uid
+            // of a not yet persisted record is 0. Within the "siteConfiguration" group, datetime fields have
+            // already been processed into DateTime objects.
+            'rawRecord' => null,
             // The "effective" page uid we're working on. This is the uid of a page if a page is edited, or the uid
             // of the parent page if a page or other record is added, or 0 if a record is added or edited below root node.
             'effectivePid' => 0,
