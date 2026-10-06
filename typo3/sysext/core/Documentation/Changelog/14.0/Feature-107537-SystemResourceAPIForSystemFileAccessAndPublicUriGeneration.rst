@@ -129,7 +129,8 @@ URIs relative to the current host can be specified by prefixing them with
 
 The string after the `URI:` prefix **must** be a valid URI. This means,
 that TYPO3 will now throw an exception, rather than rendering an invalid URI
-to HTML, when an invalid URI is provided.
+to HTML, when an invalid URI is provided. The :typoscript:`PAGE` include properties,
+such as :typoscript:`includeCSS`, catch this exception and leave out the file.
 
 Legacy resource annotations
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
