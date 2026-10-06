@@ -50,6 +50,16 @@ final class LiveSearchControllerTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function searchActionRespondsWithBadRequestForEmptyQuery(): void
+    {
+        $request = new ServerRequest('https://example.com/typo3/livesearch', 'POST')->withParsedBody(['query' => '']);
+        $response = $this->get(LiveSearchController::class)->searchAction($request);
+        self::assertSame(400, $response->getStatusCode());
+        self::assertSame('Argument "query" is missing or empty.', $response->getReasonPhrase());
+        self::assertSame('', (string)$response->getBody());
+    }
+
+    #[Test]
     public function formActionDispatchesBeforeLiveSearchFormIsBuiltEvent(): void
     {
         $dispatchedEvents = [];

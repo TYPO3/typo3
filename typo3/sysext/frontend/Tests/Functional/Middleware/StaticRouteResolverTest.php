@@ -24,8 +24,13 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\NullResponse;
+use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\LinkHandling\LinkService;
+use TYPO3\CMS\Core\Routing\InvalidRouteArgumentsException;
 use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\SystemResource\Publishing\SystemResourcePublisherInterface;
+use TYPO3\CMS\Core\SystemResource\SystemResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Middleware\StaticRouteResolver;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -104,6 +109,46 @@ final class StaticRouteResolverTest extends FunctionalTestCase
         $request = $request->withAttribute('site', $site);
         $response = $subject->process($request, $this->requestHandler);
         self::assertInstanceOf(NullResponse::class, $response);
+    }
+
+    #[Test]
+    public function invalidRouteArgumentsResultInNotFoundResponse(): void
+    {
+        $subject = new readonly class (
+            $this->get(RequestFactory::class),
+            $this->get(LinkService::class),
+            $this->get(SystemResourceFactory::class),
+            $this->get(SystemResourcePublisherInterface::class),
+        ) extends StaticRouteResolver {
+            protected function resolveByType(ServerRequestInterface $request, Site $site, string $type, array $routeConfig): array
+            {
+                throw new InvalidRouteArgumentsException('Invalid route arguments', 1791279001);
+            }
+        };
+        $site = new Site('lotus-flower', 13, [
+            'base' => 'https://example.com/',
+            'languages' => [
+                0 => [
+                    'languageId' => 0,
+                    'locale' => 'en_US.UTF-8',
+                    'base' => '/',
+                ],
+            ],
+            'routes' => [
+                [
+                    'route' => '/lotus/',
+                    'type' => 'uri',
+                    'source' => 't3://page?uid=1',
+                ],
+            ],
+        ]);
+
+        $request = new ServerRequest('https://example.com/lotus/');
+        $request = $request->withAttribute('site', $site);
+        $response = $subject->process($request, $this->requestHandler);
+        self::assertSame(404, $response->getStatusCode());
+        self::assertSame('text/plain', $response->getHeaderLine('Content-Type'));
+        self::assertSame('Invalid route', (string)$response->getBody());
     }
 
     #[Test]
