@@ -1,0 +1,15 @@
+"pages"
+,"uid","pid","sorting","deleted","title","is_siteroot","doktype"
+,1,0,256,0,"Root",1,1
+,2,1,256,0,"Storage",0,254
+,3,2,256,0,"Storage sub",0,254
+,4,3,256,0,"Storage sub sub",0,254
+"sys_template"
+,"uid","pid","title","root","clear","constants","deleted","hidden","sorting","config"
+,1,1,"Root TS",1,3,"",0,0,256,"
+module.tx_currentextensionname.persistence {
+    storagePid = 2
+    recursive = 2
+}
+module.tx_currentextensionname_flatplugin.persistence.recursive = 0
+"

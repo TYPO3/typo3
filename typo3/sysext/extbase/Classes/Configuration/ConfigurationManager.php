@@ -32,10 +32,19 @@ class ConfigurationManager implements ConfigurationManagerInterface
     private ?ServerRequestInterface $request = null;
     private array $configuration = [];
 
-    /**
-     * @todo Use runtime cache
-     */
     private array $feConfigCache = [];
+
+    /**
+     * Framework configuration resolved by the BackendConfigurationManager, indexed by the requested
+     * extension and plugin name. It is only valid for the plugin configuration set via setConfiguration(),
+     * the request and the backend user (storage pid permissions) it was built with.
+     *
+     * @var array<string, array>
+     */
+    private array $beConfigCache = [];
+
+    private ?ServerRequestInterface $beConfigCacheRequest = null;
+    private ?object $beConfigCacheBackendUser = null;
 
     public function __construct(
         private readonly FrontendConfigurationManager $feConfigManager,
@@ -51,6 +60,7 @@ class ConfigurationManager implements ConfigurationManagerInterface
     {
         $this->configuration = $configuration;
         $this->feConfigCache = [];
+        $this->beConfigCache = [];
     }
 
     /**
@@ -115,11 +125,30 @@ class ConfigurationManager implements ConfigurationManagerInterface
             throw new \RuntimeException('Invalid configuration type "' . $configurationType . '"', 1206031879);
         } else {
             return match ($configurationType) {
-                self::CONFIGURATION_TYPE_SETTINGS => $this->beConfigManager->getConfiguration($request, $this->configuration, $extensionName, $pluginName)['settings'] ?? [],
-                self::CONFIGURATION_TYPE_FRAMEWORK => $this->beConfigManager->getConfiguration($request, $this->configuration, $extensionName, $pluginName),
+                self::CONFIGURATION_TYPE_SETTINGS => $this->getBackendConfiguration($request, $extensionName, $pluginName)['settings'] ?? [],
+                self::CONFIGURATION_TYPE_FRAMEWORK => $this->getBackendConfiguration($request, $extensionName, $pluginName),
                 self::CONFIGURATION_TYPE_FULL_TYPOSCRIPT => $this->beConfigManager->getTypoScriptSetup($request),
                 default => throw new \RuntimeException('Invalid configuration type "' . $configurationType . '"', 1721928055),
             };
         }
+    }
+
+    /**
+     * Resolving the backend configuration is expensive: Next to merging the TypoScript, a configured
+     * "persistence.recursive" walks the page tree (one query per page). The QueryFactory fetches the
+     * configuration for each query, including every lazily loaded relation, so it is cached here.
+     */
+    private function getBackendConfiguration(ServerRequestInterface $request, ?string $extensionName, ?string $pluginName): array
+    {
+        $backendUser = $GLOBALS['BE_USER'] ?? null;
+        if ($request !== $this->beConfigCacheRequest || $backendUser !== $this->beConfigCacheBackendUser) {
+            $this->beConfigCache = [];
+            $this->beConfigCacheRequest = $request;
+            $this->beConfigCacheBackendUser = $backendUser;
+        }
+        // Explicitly given names select a different plugin configuration (and merge branch) than the
+        // names set via setConfiguration(), so null is kept distinct from the names given there.
+        $cacheKey = json_encode([$extensionName, $pluginName], JSON_THROW_ON_ERROR);
+        return $this->beConfigCache[$cacheKey] ??= $this->beConfigManager->getConfiguration($request, $this->configuration, $extensionName, $pluginName);
     }
 }
