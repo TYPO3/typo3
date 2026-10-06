@@ -35,6 +35,8 @@ You will see a list of the existing redirects with the following columns labels.
 #.  **Source Domain**
 #.  **Source Path**
 #.  **Target**
+#.  **Created**: Avatar and name of the backend user who created the
+    redirect, and the creation date
 #.  **Count**: Number of "hits" (only if hit counter is on)
 #.  **Last Hit on**: When was the most recent redirect "hit"  (only if hit
     counter is on)
@@ -44,9 +46,9 @@ You will see a list of the existing redirects with the following columns labels.
 
     Hover over the text to see the link markup (underline) and a tooltip.
 
-It is also possible to **sort** by clicking on the :guilabel:`Source Host` or
-:guilabel:`Source Path` column headers and changing the sort order by clicking
-again, as also done elsewhere in the backend.
+It is also possible to **sort** by clicking on the :guilabel:`Source Host`,
+:guilabel:`Source Path`, or :guilabel:`Created` column headers and changing the
+sort order by clicking again, as also done elsewhere in the backend.
 
 By clicking on the *Source Path* of one of the columns or on the pencil edit
 icon |edit_action_image|, you can **edit** the record. Clicking on a link in the
@@ -56,9 +58,19 @@ The :guilabel:`+` sign on the top will open an edit form to create a **new
 redirect**.
 
 It is also possible to **filter**, e.g. by the *Source Path*, *Status Code*,
-*Creation type*, *Protected* or only show redirect records which were "*Never hit*"
-(see Information on :ref:`Hit counter <hit-counter>` which must be explicitly
-enabled via Feature Toggle).
+*Creation type*, *Created by*, *Protected* or only show redirect records which
+were "*Never hit*" (see Information on :ref:`Hit counter <hit-counter>` which
+must be explicitly enabled via Feature Toggle).
+
+..  versionchanged:: 14.3.8
+    :changelog: feature-107755-1761763869
+
+    Before, the creator and the creation date were only shown in the edit
+    form of a redirect.
+
+The filter **Created by** lists the redirects of one backend user. Redirects
+whose creator has no backend user record, because the creator was not tracked
+or the user was deleted, are labelled as such.
 
 ..  _usage-redirects-module-edit-form:
 
