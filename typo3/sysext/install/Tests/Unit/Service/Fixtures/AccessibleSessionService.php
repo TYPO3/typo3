@@ -17,11 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Tests\Unit\Service\Fixtures;
 
+use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
 use TYPO3\CMS\Install\Service\SessionService;
 
 /**
  * Exposes the session cookie verification and feeds it with php ini values instead of reading
- * the ones of the process running the test suite.
+ * the ones of the process running the test suite. The backend user record is provided
+ * and the session backend directly instead of fetching them from the database and the session manager.
  */
 final class AccessibleSessionService extends SessionService
 {
@@ -31,6 +33,13 @@ final class AccessibleSessionService extends SessionService
     public array $iniValues = [];
 
     public bool $iniGetIsDisabled = false;
+
+    /**
+     * @var array<string, int>|null
+     */
+    public ?array $backendUserRecord = null;
+
+    public ?SessionBackendInterface $backendUserSessionBackend = null;
 
     public function callLogInsecureSessionCookieSettings(bool $https): void
     {
@@ -43,5 +52,15 @@ final class AccessibleSessionService extends SessionService
             throw new \Error('Call to undefined function ini_get()', 1788340725);
         }
         return $this->iniValues[$configOption] ?? null;
+    }
+
+    protected function getBackendUserRecord(int $uid): ?array
+    {
+        return $this->backendUserRecord;
+    }
+
+    protected function getBackendUserSessionBackend(): SessionBackendInterface
+    {
+        return $this->backendUserSessionBackend;
     }
 }
