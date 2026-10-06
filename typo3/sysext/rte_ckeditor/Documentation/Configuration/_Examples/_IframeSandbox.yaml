@@ -1,0 +1,6 @@
+editor:
+  config:
+    htmlSupport:
+      allow:
+        - { name: 'iframe', attributes: { src: true } }
+      htmlIframeSandbox: [ 'allow-scripts', 'allow-same-origin' ]

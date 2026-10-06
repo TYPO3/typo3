@@ -112,6 +112,31 @@ plugin option :yaml:`config.htmlSupport`.
 
 ..  _CKEditor 5 schema: https://ckeditor.com/docs/ckeditor5/latest/features/html/general-html-support.html#enabling-custom-elements
 
+CKEditor 5 runs iframes in the editing area in a sandbox. To allow scripts in
+such an iframe, for example in an embedded map, set the sandbox flags with
+:yaml:`htmlSupport.htmlIframeSandbox`:
+
+..  literalinclude:: _Examples/_IframeSandbox.yaml
+    :caption: EXT:my_sitepackage/Configuration/RTE/MyPreset.yaml
+
+The sandbox only applies to the editing area. It does not change the
+frontend output.
+
+..  _config-example-data-attributes:
+
+How do I allow data attributes?
+===============================
+
+The default configuration does not allow `data-*` attributes. Allow them per
+element via :yaml:`htmlSupport.allow`:
+
+..  literalinclude:: _Examples/_AllowDataAttributes.yaml
+    :caption: EXT:my_sitepackage/Configuration/RTE/MyPreset.yaml
+
+To allow all CSS classes of an element, do not use :yaml:`htmlSupport.allow`.
+Define the classes in :yaml:`style.definitions` instead. Editors then select
+them in the :guilabel:`Style` drop-down of the toolbar.
+
 
 ..  _config-example-fontplugin:
 
