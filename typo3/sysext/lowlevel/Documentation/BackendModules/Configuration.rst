@@ -61,6 +61,14 @@ The Configuration module displays various configuration settings:
 - :ref:`Reactions <ext_reactions:reactions-overview>` (with installed :doc:`Reactions system extension <ext_reactions:Index>`)
 - :ref:`Content Security Policy Mutations <t3coreapi:content-security-policy>`
 - :ref:`Doctrine DBAL Driver Middlewares <t3coreapi:database-middleware>`
+- :ref:`Extbase: Class Configuration <t3coreapi:extbase-manual-mapping>`
+  (merged :file:`Configuration/Extbase/Persistence/Classes.php` files of all
+  active extensions)
+
+..  versionadded:: 14.2
+    :changelog: feature-108975-1770984757
+
+    The entry *Extbase: Class Configuration* was added.
 
 ..  _module-configuration-extending:
 
