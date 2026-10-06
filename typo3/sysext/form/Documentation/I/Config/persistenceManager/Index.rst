@@ -112,15 +112,17 @@ sortByKeys
          The forms name.
 
       ``identifier``
-         The filename.
+         The form identifier.
 
       ``fileUid``
-         The files uid.
+         The UID of a form file in a file mount. Forms in the database and
+         in extensions have no file UID.
 
       ``persistenceIdentifier``
-         The files location.
+         The UID of a form record, or the path of a form file in an
+         extension.
 
-         Example: ``1:/form_definitions/contact.form.yaml``
+         Example: ``EXT:my_site_package/Resources/Private/Forms/contact.form.yaml``
 
       ``readOnly``
          Is the form readonly?
@@ -128,11 +130,20 @@ sortByKeys
       ``removable``
          Is the form removable?
 
-      ``location``
-         Either `storage` or `extension`
+      ``storageType``
+         Either `database` or `extension`.
+
+      ``storageLocation``
+         The location of the form in its storage.
 
       ``invalid``
          Does the form have an error?
+
+      ..  versionchanged:: 14.2
+          :changelog: feature-108653-1767199420
+
+          The key `location` was replaced by `storageType` and
+          `storageLocation`.
 
 
 .. _persistencemanager.sortAscending:

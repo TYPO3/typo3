@@ -13,13 +13,13 @@ What does it do?
 ----------------
 
 You will find the ``form manager`` in the backend :guilabel:`Web > Forms` backend
-module. Editors can use the ``form manager`` to administer forms stored on file
-mounts that they have access to. The ``form manager``:
+module. Editors can use the ``form manager`` to administer forms in the
+storages that they have access to. The ``form manager``:
 
 -   lists all forms
 -   allows users to search for forms
 -   allows users to create, edit, duplicate, and delete forms
--   identifies the storage folder
+-   shows where each form is stored
 -   gives an overview of which pages the forms are on.
 
 The search field above the list filters the forms by their name or their
@@ -30,13 +30,39 @@ persistence identifier. The search is case-insensitive.
 
 Creation and duplication of forms is made easier by a ``form wizard``.
 The wizard guides the editor through form creation and offers a
-variety of settings, such as the file
-mount, the prototype, and start templates.
+variety of settings, such as the storage, the prototype, and start
+templates.
 
 .. figure:: ../../Images/form_manager.png
    :alt: The form manager
 
    TYPO3 Backend with opened module 'Forms' displaying the form manager.
+
+
+..  _concepts-formmanager-storage:
+
+Storage
+-------
+
+..  versionadded:: 14.2
+    :changelog: feature-108653-1767199420
+
+In the step **Storage location**, editors select where the form
+is saved when they create or duplicate a form:
+
+:guilabel:`Database`
+    The form is saved as a record in the database.
+
+:guilabel:`Extension`
+    The form is saved in an extension folder. This option is only
+    available when integrators configure
+    :ref:`allowedExtensionPaths <persistencemanager.allowedExtensionPaths>`
+    and enable
+    :ref:`allowSaveToExtensionPaths <persistencemanager.allowSaveToExtensionPaths>`.
+
+If only one storage is available, the wizard skips this step. See
+:ref:`Form storage <concepts-form-file-storages>` for the permissions
+that each storage needs.
 
 
 .. _concepts-formmanager-starttemplate:
