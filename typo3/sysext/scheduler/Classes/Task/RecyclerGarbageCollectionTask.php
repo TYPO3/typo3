@@ -28,11 +28,13 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  * Recycler folder garbage collection task
  *
  * This task finds all "_recycler_" folders below all storages and
- * deletes all files in them that have not changed for more than
- * a given number of days.
+ * deletes all files in them that were recycled more than a given
+ * number of days ago.
  *
- * Compatible drivers should be implemented correctly for this. The shipped "local driver"
- * does a "touch()" after the file is moved into the recycler folder.
+ * Moving a file into a recycler folder keeps its modification time, so the
+ * time of recycling is derived from the change time (ctime) a move sets on
+ * the moved file or folder. Where a driver reports no such time, e.g. on
+ * Windows, the modification time is used.
  * @internal This class is a specific scheduler task implementation is not considered part of the Public TYPO3 API.
  */
 class RecyclerGarbageCollectionTask extends AbstractTask
@@ -64,10 +66,11 @@ class RecyclerGarbageCollectionTask extends AbstractTask
         // Execute cleanup
         $seconds = 60 * 60 * 24 * (int)$this->numberOfDays;
         $timestamp = $GLOBALS['EXEC_TIME'] - $seconds;
+        $success = true;
         foreach ($recyclerFolders as $recyclerFolder) {
-            $this->cleanupRecycledFiles($recyclerFolder, $timestamp);
+            $success = $this->cleanupRecycledFiles($recyclerFolder, $timestamp) && $success;
         }
-        return true;
+        return $success;
     }
 
     /**
@@ -101,22 +104,47 @@ class RecyclerGarbageCollectionTask extends AbstractTask
      * old ones.
      *
      * @param Folder $folder the folder
-     * @param int $timestamp Timestamp of the last file modification
+     * @param int $timestamp Timestamp before which a file must have been recycled to be removed
+     * @param int $folderRecycledAt Time the folder, or one of its parent folders within the
+     *                              recycler folder, was moved into the recycler folder
+     * @return bool FALSE if a file or folder could not be removed
      */
-    protected function cleanupRecycledFiles(Folder $folder, $timestamp)
+    protected function cleanupRecycledFiles(Folder $folder, int $timestamp, int $folderRecycledAt = 0): bool
     {
+        $success = true;
+        $storage = $folder->getStorage();
         foreach ($folder->getFiles() as $file) {
-            if ($timestamp > $file->getModificationTime()) {
-                $file->delete();
+            try {
+                $fileInfo = $storage->getFileInfoByIdentifier($file->getIdentifier(), ['mtime', 'ctime']);
+                if ($timestamp > max($folderRecycledAt, (int)$fileInfo['mtime'], (int)$fileInfo['ctime'])) {
+                    $file->delete();
+                }
+            } catch (\Exception $e) {
+                $success = false;
+                $this->logger?->warning('Recycled file "{file}" could not be removed: {message}', [
+                    'file' => $file->getCombinedIdentifier(),
+                    'message' => $e->getMessage(),
+                    'exception' => $e,
+                ]);
             }
         }
         foreach ($folder->getSubfolders() as $subFolder) {
-            $this->cleanupRecycledFiles($subFolder, $timestamp);
+            $success = $this->cleanupRecycledFiles($subFolder, $timestamp, max($folderRecycledAt, $subFolder->getCreationTime())) && $success;
             // if no more files and subdirectories are in the folder, remove the folder as well
-            if ($subFolder->getFileCount() === 0 && count($subFolder->getSubfolders()) === 0) {
-                $subFolder->delete(true);
+            try {
+                if ($subFolder->getFileCount() === 0 && count($subFolder->getSubfolders()) === 0) {
+                    $subFolder->delete(true);
+                }
+            } catch (\Exception $e) {
+                $success = false;
+                $this->logger?->warning('Recycled folder "{folder}" could not be removed: {message}', [
+                    'folder' => $subFolder->getCombinedIdentifier(),
+                    'message' => $e->getMessage(),
+                    'exception' => $e,
+                ]);
             }
         }
+        return $success;
     }
 
     public function getTaskParameters(): array
