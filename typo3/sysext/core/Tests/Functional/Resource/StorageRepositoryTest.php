@@ -315,6 +315,22 @@ final class StorageRepositoryTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function deleteFolderRemovesFolderWithinRecyclerFolder(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->setUpBackendUser(1);
+        $subject = $this->get(StorageRepository::class)->findByUid(1);
+        mkdir(Environment::getPublicPath() . '/fileadmin/_recycler_');
+        mkdir(Environment::getPublicPath() . '/fileadmin/foo/_recycler_/bar', 0777, true);
+        file_put_contents(Environment::getPublicPath() . '/fileadmin/foo/_recycler_/bar/baz.txt', 'myData');
+        $folder = $this->get(ResourceFactory::class)->getFolderObjectFromCombinedIdentifier('1:/foo/_recycler_/bar');
+        $subject->deleteFolder($folder, true);
+        self::assertDirectoryDoesNotExist(Environment::getPublicPath() . '/fileadmin/foo/_recycler_/bar');
+        self::assertDirectoryDoesNotExist(Environment::getPublicPath() . '/fileadmin/_recycler_/bar');
+    }
+
+    #[Test]
     public function deleteFileUnlinksFileIfNoRecyclerFolderAvailable(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');

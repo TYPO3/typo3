@@ -1117,12 +1117,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
     public function deleteFolder(string $folderIdentifier, bool $deleteRecursively = false): bool
     {
         $folderPath = $this->getAbsolutePath($folderIdentifier);
-        $recycleDirectory = $this->getRecycleDirectory($folderPath);
-        if (!empty($recycleDirectory) && $folderPath !== $recycleDirectory) {
-            $result = $this->recycleFileOrFolder($folderPath, $recycleDirectory);
-        } else {
-            $result = GeneralUtility::rmdir($folderPath, $deleteRecursively);
-        }
+        $result = GeneralUtility::rmdir($folderPath, $deleteRecursively);
         if ($result === false) {
             throw new FileOperationErrorException(
                 'Deleting folder "' . $folderIdentifier . '" failed.',
