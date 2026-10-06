@@ -18,8 +18,11 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Scheduler\Task;
 
 use TYPO3\CMS\Core\Resource\Folder;
+use TYPO3\CMS\Core\Resource\FolderInterface;
+use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Recycler folder garbage collection task
@@ -52,14 +55,9 @@ class RecyclerGarbageCollectionTask extends AbstractTask
     {
         $recyclerFolders = [];
         $storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
-        // takes only _recycler_ folder on the first level into account
         foreach ($storageRepository->findAll() as $storage) {
-            $rootLevelFolder = $storage->getRootLevelFolder(false);
-            foreach ($rootLevelFolder->getSubfolders() as $subFolder) {
-                if ($subFolder->getRole() === $subFolder::ROLE_RECYCLER) {
-                    $recyclerFolders[] = $subFolder;
-                    break;
-                }
+            if ($storage->isBrowsable()) {
+                array_push($recyclerFolders, ...$this->findRecyclerFolders($storage));
             }
         }
 
@@ -70,6 +68,32 @@ class RecyclerGarbageCollectionTask extends AbstractTask
             $this->cleanupRecycledFiles($recyclerFolder, $timestamp);
         }
         return true;
+    }
+
+    /**
+     * Finds the recycler folders at any depth of the storage. Only folder identifiers are
+     * listed, one level at a time, as a recursive listing of the whole storage is too slow
+     * for large storages. Neither recycler nor processing folders are descended into, as a
+     * recycler nested in a recycler is cleaned along with the outer one.
+     *
+     * @return Folder[]
+     */
+    protected function findRecyclerFolders(ResourceStorage $storage): array
+    {
+        $recyclerFolders = [];
+        $folderIdentifiers = [$storage->getRootLevelFolder(false)->getIdentifier()];
+        while (($folderIdentifier = array_pop($folderIdentifiers)) !== null) {
+            foreach ($storage->getFolderIdentifiersInFolder($folderIdentifier) as $subFolderIdentifier) {
+                $subFolder = new Folder($storage, $subFolderIdentifier, PathUtility::basename($subFolderIdentifier));
+                $role = $subFolder->getRole();
+                if ($role === FolderInterface::ROLE_RECYCLER) {
+                    $recyclerFolders[] = $subFolder;
+                } elseif ($role !== FolderInterface::ROLE_PROCESSING) {
+                    $folderIdentifiers[] = $subFolderIdentifier;
+                }
+            }
+        }
+        return $recyclerFolders;
     }
 
     /**
