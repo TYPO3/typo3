@@ -33,6 +33,11 @@ final class AbsoluteUriPrefixRenderingTest extends FunctionalTestCase
         'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8', 'iso' => 'en'],
     ];
 
+    protected array $pathsToProvideInTestInstance = [
+        'typo3/sysext/frontend/Tests/Functional/Fixtures/Assets/app.css' => 'typo3temp/assets/css/app.css',
+        'typo3/sysext/frontend/Tests/Functional/Fixtures/Assets/app.js' => 'typo3temp/assets/js/app.js',
+    ];
+
     protected array $configurationToUseInTestInstance = [
         'FE' => [
             'cacheHash' => [
@@ -51,6 +56,10 @@ final class AbsoluteUriPrefixRenderingTest extends FunctionalTestCase
         'externalJS' => 'https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js',
         'localImage' => 'EXT:frontend/Resources/Public/Icons/Extension.svg',
         'falImage' => 'EXT:frontend/Resources/Public/Icons/FileIcons/ico.gif',
+        'assetExtensionCSS' => 'EXT:backend/Resources/Public/Css/webfonts.css',
+        'assetExtensionJS' => 'EXT:frontend/Resources/Public/JavaScript/default_frontend.js',
+        'assetLocalCSS' => 'typo3temp/assets/css/app.css',
+        'assetLocalJS' => 'typo3temp/assets/js/app.js',
     ];
 
     /**
@@ -63,6 +72,10 @@ final class AbsoluteUriPrefixRenderingTest extends FunctionalTestCase
         'localImage' => 'typo3/sysext/frontend/Resources/Public/Icons/Extension.svg',
         'falImage' => 'typo3/sysext/frontend/Resources/Public/Icons/FileIcons/ico.gif',
         'link' => '/en/dummy-1-4-10',
+        'assetExtensionCSS' => 'typo3/sysext/backend/Resources/Public/Css/webfonts.css',
+        'assetExtensionJS' => 'typo3/sysext/frontend/Resources/Public/JavaScript/default_frontend.js',
+        'assetLocalCSS' => 'typo3temp/assets/css/app.css',
+        'assetLocalJS' => 'typo3temp/assets/js/app.js',
     ];
 
     protected array $coreExtensionsToLoad = ['rte_ckeditor'];
@@ -105,6 +118,7 @@ final class AbsoluteUriPrefixRenderingTest extends FunctionalTestCase
                 'extension' => ['url' => '"/{{CANDIDATE}}\?\d+"', 'count' => 3],
                 'external' => ['url' => '"{{CANDIDATE}}"', 'count' => 1],
                 'link' => ['url' => 'href="{{CANDIDATE}}"', 'count' => 1],
+                'asset' => ['url' => '"/{{CANDIDATE}}\?\d+"', 'count' => 1],
             ],
         ];
         yield 'with-prefix' => [
@@ -114,6 +128,7 @@ final class AbsoluteUriPrefixRenderingTest extends FunctionalTestCase
                 'extension' => ['url' => '"http://localhost/{{CANDIDATE}}\?\d+"', 'count' => 3],
                 'external' => ['url' => '"{{CANDIDATE}}"', 'count' => 1],
                 'link' => ['url' => 'href="http://localhost{{CANDIDATE}}"', 'count' => 1],
+                'asset' => ['url' => '"http://localhost/{{CANDIDATE}}\?\d+"', 'count' => 1],
             ],
         ];
         yield 'without-global-config' => [
