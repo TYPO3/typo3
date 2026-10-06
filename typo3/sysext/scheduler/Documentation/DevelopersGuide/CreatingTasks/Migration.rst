@@ -9,18 +9,23 @@ Migration to the TCA registration for scheduler tasks
 =====================================================
 
 ..  deprecated:: 14.0
-    Registering tasks and additional field providers via
-    :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']` has
-    been deprecated.
+    :changelog: deprecation-98453-1738408355
 
-    The :php-short:`\TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface` and
-    :php-short:`\TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider` have also
-    been deprecated.
+    Registering tasks via
+    :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']` has
+    been deprecated. It will stop working in TYPO3 v16.
+
+..  versionchanged:: 15.0
+    :changelog: breaking-109783-1776735296
+
+    :php:`\TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface` and
+    :php:`\TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider` were
+    removed.
+
+Tasks in general and additional fields for tasks are registered via TCA.
 
 ..  contents:: Table of contents
 
-    Tasks in general and additional fields for tasks are registered via TCA
-    instead.
 ..  _additional-fields-migration:
 
 Migrating tasks with AdditionalFieldProviders to TCA registration

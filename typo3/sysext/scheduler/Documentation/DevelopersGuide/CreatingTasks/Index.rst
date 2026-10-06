@@ -84,25 +84,22 @@ Providing additional fields for scheduler task
 ==============================================
 
 ..  deprecated:: 14.0
-    Registering tasks and additional field providers via
+    :changelog: deprecation-98453-1738408355
+
+    Registering tasks via
     :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']` has
-    been deprecated.
+    been deprecated. It will stop working in TYPO3 v16.
 
-    The :php-short:`\TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface` and
-    :php-short:`\TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider` have also
-    been deprecated.
+..  versionchanged:: 15.0
+    :changelog: breaking-109783-1776735296
 
-    Tasks in general and additional fields for tasks are registered via TCA
-    instead.
-
-    See also: `Migrating tasks with AdditionalFieldProviders to TCA registration <https://docs.typo3.org/permalink/typo3/cms-scheduler:additional-fields-migration>`_
+    :php:`\TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface` and
+    :php:`\TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider` were
+    removed. See
+    :ref:`Migrating tasks with AdditionalFieldProviders to TCA registration <additional-fields-migration>`.
 
 Additional fields for scheduler tasks are handled via FormEngine and can be
 configured via TCA.
-
-If the task should provide additional fields for configuration options in
-the backend module, you need to implement a second class, extending
-:php-short:`\TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider`.
 
 The task needs to be registered via TCA override:
 

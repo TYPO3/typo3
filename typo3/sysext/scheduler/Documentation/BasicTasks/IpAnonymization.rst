@@ -21,11 +21,11 @@ Example: Configure additional tables for the "IP Anonymization" task
 ====================================================================
 
 ..  deprecated:: 14.0
+    :changelog: deprecation-107562-1736193200
+
     The previous configuration method using
     :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\TYPO3\CMS\Scheduler\Task\IpAnonymizationTask::class]['options']['tables']`
-    has been deprecated and will be removed in TYPO3 v15.
-
-    See also: `Changelog Deprecation: #107562 - Ip Anonymization Task configuration via $GLOBALS <https://docs.typo3.org/permalink/changelog:deprecation-107562-1736193200>`_
+    has been deprecated and will stop working in TYPO3 v16.
 
 ..  literalinclude:: _codesnippets/_tx_scheduler_ip_anonymization.php.inc
     :language: php
