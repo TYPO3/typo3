@@ -50,7 +50,7 @@ readonly class LiveSearchController
     {
         $mutableSearchDemand = SearchDemand::fromRequest($request);
         if ($mutableSearchDemand->getQuery() === '') {
-            return new Response('', 400, [], 'Argument "query" is missing or empty.');
+            return new Response(statusCode: 400, reasonPhrase: 'Argument "query" is missing or empty.');
         }
 
         $results = $this->searchService->find($mutableSearchDemand);
