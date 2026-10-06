@@ -1,0 +1,14 @@
+"tt_content",,,,,,
+,"uid","pid","header","image","sys_language_uid","l18n_parent"
+,1,1,"DE C",1,1,2
+,2,1,"EN C with image",1,0,0
+,3,1,"DE B",0,1,5
+,4,1,"DE A",1,1,6
+,5,1,"EN B without image",0,0,0
+,6,1,"EN A with image",1,0,0
+"sys_file_reference",,,,,,,,,
+,"uid","pid","uid_local","uid_foreign","tablenames","fieldname","sys_language_uid","l10n_parent","deleted"
+,1,1,1,1,"tt_content","image",1,3,0
+,2,1,1,4,"tt_content","image",1,4,0
+,3,1,1,2,"tt_content","image",0,0,0
+,4,1,1,6,"tt_content","image",0,0,0

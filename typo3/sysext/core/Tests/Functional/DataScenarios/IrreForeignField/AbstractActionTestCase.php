@@ -247,6 +247,37 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     }
 
     /**
+     * Restores the relations of a translation and of its child in one data-map,
+     * the way an import does: both records exist already, but neither points to
+     * its language parent yet, and the values use the "<table>_<uid>" form.
+     */
+    public function restoreTranslationAndChildPointersWithLocalizationExclude(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportTranslationWithoutPointers.csv');
+        $GLOBALS['TCA'][self::TABLE_Content]['columns'][self::FIELD_ContentHotel]['l10n_mode'] = 'exclude';
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+        $dataHandler->start(
+            [
+                self::TABLE_Content => [
+                    self::VALUE_ContentIdLast => [
+                        self::FIELD_ContentHotel => self::TABLE_Hotel . '_' . self::VALUE_HotelIdThird,
+                    ],
+                    299 => [
+                        'l18n_parent' => self::TABLE_Content . '_' . self::VALUE_ContentIdLast,
+                        self::FIELD_ContentHotel => self::TABLE_Hotel . '_6',
+                    ],
+                ],
+                self::TABLE_Hotel => [
+                    6 => ['l18n_parent' => self::TABLE_Hotel . '_' . self::VALUE_HotelIdThird],
+                ],
+            ],
+            []
+        );
+        $dataHandler->process_datamap();
+    }
+
+    /**
      * Localize content with a monoglot (non-language-aware) hotel child table
      * using l10n_mode=exclude. The monoglot child table is kept as is
      * and not localized, but copied to the localized parent record.
