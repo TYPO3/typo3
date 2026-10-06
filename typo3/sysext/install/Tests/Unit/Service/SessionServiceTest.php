@@ -20,6 +20,9 @@ namespace TYPO3\CMS\Install\Tests\Unit\Service;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\Container;
+use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
+use TYPO3\CMS\Core\Session\SessionManager;
 use TYPO3\CMS\Install\Service\LateBootService;
 use TYPO3\CMS\Install\Tests\Unit\Service\Fixtures\AccessibleSessionService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -101,5 +104,44 @@ final class SessionServiceTest extends UnitTestCase
         $subject->iniGetIsDisabled = true;
 
         $subject->callLogInsecureSessionCookieSettings(true);
+    }
+
+    public static function hasActiveBackendUserRoleAndSessionDataProvider(): \Generator
+    {
+        yield 'all admins are maintainers if no maintainers are configured' => [null, true];
+        yield 'no admin is maintainer if an empty list is configured' => [[], false];
+        yield 'admin is maintainer if listed' => [[1], true];
+        yield 'admin is maintainer if listed as string' => [['1'], true];
+        yield 'admin is no maintainer if not listed' => [[2], false];
+    }
+
+    #[DataProvider('hasActiveBackendUserRoleAndSessionDataProvider')]
+    #[Test]
+    public function hasActiveBackendUserRoleAndSessionRespectsSystemMaintainers(?array $systemMaintainers, bool $expected): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemMaintainers'] = $systemMaintainers;
+        $_SESSION['backendUserSession'] = [
+            'userId' => 1,
+            'nonce' => 'nonce',
+            'hmac' => hash_hmac('sha256', 'session-id', 'nonce'),
+        ];
+
+        $sessionBackend = self::createStub(SessionBackendInterface::class);
+        $sessionBackend->method('getAll')->willReturn([['ses_userid' => 1, 'ses_id' => 'session-id']]);
+        $sessionManager = self::createStub(SessionManager::class);
+        $sessionManager->method('getSessionBackend')->willReturn($sessionBackend);
+        $container = new Container();
+        $container->set(SessionManager::class, $sessionManager);
+        $lateBootService = self::createStub(LateBootService::class);
+        $lateBootService->method('getContainer')->willReturn($container);
+
+        $subject = new AccessibleSessionService($lateBootService, self::createStub(LoggerInterface::class));
+        $subject->backendUserRecord = ['uid' => 1, 'admin' => 1];
+
+        try {
+            self::assertSame($expected, $subject->hasActiveBackendUserRoleAndSession());
+        } finally {
+            unset($_SESSION['backendUserSession']);
+        }
     }
 }
