@@ -59,3 +59,26 @@ test('FAL relation delete removes the inline record', async ({ backend, page }) 
 
   await expect(backend.contentFrame.locator(`${activeTab} .form-section`).first()).not.toContainText(filename);
 });
+
+// 1x1 transparent PNG
+const pngBase64 = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==';
+
+test('an invalid file is reported in a notification and the valid files are uploaded', async ({ backend, page }) => {
+  const validFileName = 'valid' + Date.now() + '.png';
+  const invalidFileName = 'invalid' + Date.now() + '.txt';
+  const field = backend.contentFrame.locator('fieldset:has(> legend:has-text("file_1 "))');
+
+  const fileChooserPromise = page.waitForEvent('filechooser');
+  await field.getByRole('button', { name: 'Select & upload files' }).click();
+  const fileChooser = await fileChooserPromise;
+  await fileChooser.setFiles([
+    { name: invalidFileName, mimeType: 'text/plain', buffer: Buffer.from('invalid') },
+    { name: validFileName, mimeType: 'image/png', buffer: Buffer.from(pngBase64, 'base64') },
+  ]);
+
+  const notification = page.locator('#alert-container .alert-danger');
+  await expect(notification.locator('.alert-title')).toHaveText('Upload failed');
+  await expect(notification.locator('.alert-message')).toContainText(`"${invalidFileName}" was not uploaded. Allowed file extensions: gif, jpg, jpeg`);
+  await expect(field.locator('.panel-title', { hasText: validFileName })).toBeVisible({ timeout: 12000 });
+  await expect(backend.contentFrame.locator('.upload-queue-item', { hasText: invalidFileName })).toHaveCount(0);
+});

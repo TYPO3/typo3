@@ -371,7 +371,21 @@ export default class DragUploader {
    * @param {FileList} files
    */
   public processFiles(files: FileList): void {
-    this.queueLength = files.length;
+    const validFiles: File[] = [];
+    for (const file of Array.from(files)) {
+      const error = this.validateFile(file);
+      if (error === null) {
+        validFiles.push(file);
+      } else {
+        Notification.error(coreLabels.get('file_upload.notUploaded.title'), error);
+      }
+    }
+    this.fileInput.value = '';
+    if (validFiles.length === 0) {
+      return;
+    }
+
+    this.queueLength = validFiles.length;
 
     if (this.fileList.parentElement.hasAttribute('hidden')) {
       // Show the filelist (table)
@@ -385,11 +399,11 @@ export default class DragUploader {
     this.overallProgressBar = document.createElement('typo3-backend-progress-bar');
     document.body.appendChild(this.overallProgressBar);
     this.overallProgressBar.start();
-    this.percentagePerFile = 1 / files.length;
+    this.percentagePerFile = 1 / validFiles.length;
 
     // Check for each file if is already exist before adding it to the queue
     const ajaxCalls: Promise<void>[] = [];
-    Array.from(files).forEach((file: File) => {
+    validFiles.forEach((file: File) => {
       const request = new AjaxRequest(TYPO3.settings.ajaxUrls.file_exists).withQueryArguments({
         fileName: file.name,
         fileTarget: this.target,
@@ -418,8 +432,6 @@ export default class DragUploader {
         this.overallProgressBar.done();
       }
     });
-
-    this.fileInput.value = '';
   }
 
   public fileInDropzone = (): void => {
@@ -631,6 +643,37 @@ export default class DragUploader {
       document.dispatchEvent(new CustomEvent(uploadFinishedEventName));
     });
   }
+
+  /**
+   * @returns the reason why the file cannot be uploaded, null if it can be uploaded
+   */
+  private validateFile(file: File): string | null {
+    const extension = file.name.split('.').pop().toLowerCase();
+    if (this.maxFileSize > 0 && file.size > this.maxFileSize) {
+      return coreLabels.get('file_upload.maxFileSizeExceeded', {
+        '0': file.name,
+        '1': FormatUtility.fileSizeAsString(this.maxFileSize),
+      });
+    }
+    if (this.fileDenyPattern && file.name.match(this.fileDenyPattern)) {
+      return coreLabels.get('file_upload.fileNotAllowed', {
+        '0': file.name,
+      });
+    }
+    if (this.filesExtensionsAllowed && !this.filesExtensionsAllowed.split(',').includes(extension)) {
+      return coreLabels.get('file_upload.notUploaded.extensionExpected', {
+        '0': file.name,
+        '1': this.filesExtensionsAllowed.split(',').join(', '),
+      });
+    }
+    if (this.filesExtensionsDisallowed && this.filesExtensionsDisallowed.split(',').includes(extension)) {
+      return coreLabels.get('file_upload.notUploaded.extensionDisallowed', {
+        '0': file.name,
+        '1': extension,
+      });
+    }
+    return null;
+  }
 }
 
 class FileQueueItem {
@@ -697,72 +740,41 @@ class FileQueueItem {
     // set dummy file icon
     this.iconCol.innerHTML = '<typo3-backend-icon identifier="mimetypes-other-other" />';
 
-    // check file size
-    if (this.dragUploader.maxFileSize > 0 && this.file.size > this.dragUploader.maxFileSize) {
-      this.updateMessage(coreLabels.get('file_upload.maxFileSizeExceeded', {
-        '0': this.file.name,
-        '1': FormatUtility.fileSizeAsString(this.dragUploader.maxFileSize),
-      }));
-      this.progressBar.value = 100;
-      this.progressBar.severity = SeverityEnum.error;
+    this.updateMessage('- ' + FormatUtility.fileSizeAsString(this.file.size));
 
-      // check filename/extension against deny pattern
-    } else if (this.dragUploader.fileDenyPattern && this.file.name.match(this.dragUploader.fileDenyPattern)) {
-      this.updateMessage(coreLabels.get('file_upload.fileNotAllowed', {
-        '0': this.file.name,
-      }));
-      this.progressBar.value = 100;
-      this.progressBar.severity = SeverityEnum.error;
+    const formData = new FormData();
+    formData.append('data[upload][1][target]', this.dragUploader.target);
+    formData.append('data[upload][1][data]', '1');
+    formData.append('overwriteExistingFiles', this.override);
+    formData.append('redirect', '');
+    formData.append('upload_1', this.file);
 
-    } else if (this.isProhibitedByAllowedExtensionsList()) {
-      this.updateMessage(coreLabels.get('file_upload.fileExtensionExpected', {
-        '0': this.dragUploader.filesExtensionsAllowed,
-      }));
-      this.progressBar.value = 100;
-      this.progressBar.severity = SeverityEnum.error;
-    } else if (this.isProhibitedByDisallowedExtensionsList()) {
-      this.updateMessage(coreLabels.get('file_upload.fileExtensionDisallowed', {
-        '0': this.dragUploader.filesExtensionsDisallowed,
-      }));
-      this.progressBar.value = 100;
-      this.progressBar.severity = SeverityEnum.error;
-    } else {
-      this.updateMessage('- ' + FormatUtility.fileSizeAsString(this.file.size));
-
-      const formData = new FormData();
-      formData.append('data[upload][1][target]', this.dragUploader.target);
-      formData.append('data[upload][1][data]', '1');
-      formData.append('overwriteExistingFiles', this.override);
-      formData.append('redirect', '');
-      formData.append('upload_1', this.file);
-
-      // We use XMLHttpRequest as we need the `progress` event which isn't supported by fetch()
-      const xhr = new XMLHttpRequest();
-      xhr.onreadystatechange = (): void => {
-        if (xhr.readyState === XMLHttpRequest.DONE) {
-          if (xhr.status === 200) {
-            try {
-              const response = JSON.parse(xhr.responseText);
-              if (!response.hasErrors) {
-                this.uploadSuccess(response);
-              } else {
-                this.uploadError(xhr);
-              }
-            }
-            catch {
-              // In case JSON can not be parsed, the upload failed due to server errors,
-              // e.g. "POST Content-Length exceeds limit". Just handle as upload error.
+    // We use XMLHttpRequest as we need the `progress` event which isn't supported by fetch()
+    const xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = (): void => {
+      if (xhr.readyState === XMLHttpRequest.DONE) {
+        if (xhr.status === 200) {
+          try {
+            const response = JSON.parse(xhr.responseText);
+            if (!response.hasErrors) {
+              this.uploadSuccess(response);
+            } else {
               this.uploadError(xhr);
             }
-          } else {
+          }
+          catch {
+            // In case JSON can not be parsed, the upload failed due to server errors,
+            // e.g. "POST Content-Length exceeds limit". Just handle as upload error.
             this.uploadError(xhr);
           }
+        } else {
+          this.uploadError(xhr);
         }
-      };
-      xhr.upload.addEventListener('progress', (e: ProgressEvent) => this.updateProgress(e));
-      xhr.open('POST', TYPO3.settings.ajaxUrls.file_process);
-      xhr.send(formData);
-    }
+      }
+    };
+    xhr.upload.addEventListener('progress', (e: ProgressEvent) => this.updateProgress(e));
+    xhr.open('POST', TYPO3.settings.ajaxUrls.file_process);
+    xhr.send(formData);
   }
 
   /**
@@ -924,26 +936,6 @@ class FileQueueItem {
     for (let i = this.row.querySelectorAll('td').length; i < this.dragUploader.fileListColumnCount; i++) {
       this.row.append(document.createElement('td'));
     }
-  }
-
-  public isProhibitedByAllowedExtensionsList(): boolean {
-    if (!this.dragUploader.filesExtensionsAllowed) {
-      return false;
-    }
-    const extension = this.file.name.split('.').pop();
-    const allowed = this.dragUploader.filesExtensionsAllowed.split(',');
-
-    return !allowed.includes(extension.toLowerCase());
-  }
-
-  public isProhibitedByDisallowedExtensionsList(): boolean {
-    if (!this.dragUploader.filesExtensionsDisallowed) {
-      return false;
-    }
-    const extension = this.file.name.split('.').pop();
-    const disallowed = this.dragUploader.filesExtensionsDisallowed.split(',');
-
-    return disallowed.includes(extension.toLowerCase());
   }
 }
 

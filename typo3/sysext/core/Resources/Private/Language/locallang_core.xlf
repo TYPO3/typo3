@@ -765,6 +765,15 @@
       <trans-unit id="file_upload.fileExtensionDisallowed">
         <source>Upload failed. The file extension "{0}" is not allowed.</source>
       </trans-unit>
+      <trans-unit id="file_upload.notUploaded.title">
+        <source>Upload failed</source>
+      </trans-unit>
+      <trans-unit id="file_upload.notUploaded.extensionExpected">
+        <source>"{0}" was not uploaded. Allowed file extensions: {1}</source>
+      </trans-unit>
+      <trans-unit id="file_upload.notUploaded.extensionDisallowed">
+        <source>"{0}" was not uploaded. The file extension "{1}" is not allowed.</source>
+      </trans-unit>
       <trans-unit id="file_upload.uploadFailed">
         <source>Upload failed for "{0}"</source>
       </trans-unit>
