@@ -516,7 +516,7 @@ class InlineControlContainer extends AbstractContainer
                 $createNewRelationText = htmlspecialchars($this->getLanguageService()->sL('core.core:cm.createNewRelation'));
             }
             $item .= '
-                <button type="button" class="btn btn-default t3js-create-new-button" title="' . $createNewRelationText . '">
+                <button type="button" class="btn btn-default t3js-create-new-button" data-use-selected-record="true" title="' . $createNewRelationText . '">
                     ' . $this->iconFactory->getIcon('actions-plus', IconSize::SMALL)->render() . $createNewRelationText . '
                 </button>';
         }

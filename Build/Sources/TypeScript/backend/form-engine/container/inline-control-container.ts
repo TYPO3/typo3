@@ -342,7 +342,10 @@ class InlineControlContainer extends HTMLElement {
           objectId += Separators.structureSeparator + targetElement.dataset.recordUid;
         }
 
-        this.importRecord([objectId, (this.querySelector<HTMLInputElement>(Selectors.createNewRecordBySelectorSelector))?.value], targetElement.dataset.recordUid ?? null);
+        const selectedRecordUid = targetElement.dataset.useSelectedRecord === 'true'
+          ? this.querySelector<HTMLSelectElement>(Selectors.createNewRecordBySelectorSelector)?.value
+          : undefined;
+        this.importRecord([objectId, selectedRecordUid], targetElement.dataset.recordUid ?? null);
       }
     }).delegateTo(this, Selectors.createNewRecordButtonSelector);
   }
