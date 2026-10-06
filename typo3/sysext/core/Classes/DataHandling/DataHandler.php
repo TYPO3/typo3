@@ -758,6 +758,10 @@ class DataHandler
                             $fieldArray = $this->resolveSortingAndPidForNewRecord($table, $pid_value, $fieldArray);
                         }
                     }
+                    if (!isset($fieldArray['pid'])) {
+                        $this->log($table, 0, SystemLogDatabaseAction::INSERT, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to insert record "{table}:{id}" failed: the page to store it on could not be resolved', null, ['table' => $table, 'id' => $id]);
+                        continue;
+                    }
                     $theRealPid = $fieldArray['pid'];
                     // Checks if records can be inserted on this $pid.
                     // If this is a page translation, the check needs to be done for the l10n_parent record
@@ -1036,11 +1040,17 @@ class DataHandler
             // If this table is sorted we better find the top sorting number
             // Because $pid is < 0, getSortNumber() returns an array
             $sortingInfo = $this->getSortNumber($table, 0, $pid);
+            if (!is_array($sortingInfo)) {
+                return $fieldArray;
+            }
             $fieldArray['pid'] = $sortingInfo['pid'];
             $fieldArray[$schema->getCapability(TcaSchemaCapability::SortByField)->getFieldName()] = $sortingInfo['sortNumber'];
         } else {
             // Here we fetch the PID of the record that we point to
             $record = BackendUtility::getRecord($table, abs($pid), '*', '', false);
+            if ($record === null) {
+                return $fieldArray;
+            }
             // Ensure that the "pid" is not a translated page ID, but the default page ID
             $fieldArray['pid'] = $this->getDefaultLanguagePageId($record['pid']);
         }

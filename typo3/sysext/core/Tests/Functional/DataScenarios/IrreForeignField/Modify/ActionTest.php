@@ -659,6 +659,13 @@ final class ActionTest extends AbstractActionTestCase
     }
 
     #[Test]
+    public function restoreTranslationAndChildPointersWithLocalizationExclude(): void
+    {
+        parent::restoreTranslationAndChildPointersWithLocalizationExclude();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/restoreTranslationNChildPointersWExclude.csv');
+    }
+
+    #[Test]
     public function inlineLocalizeSynchronizeSortsNewChildLikeOriginal(): void
     {
         parent::inlineLocalizeSynchronizeSortsNewChildLikeOriginal();

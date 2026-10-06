@@ -89,6 +89,11 @@ class Import extends ImportExport
      */
     protected array $importNewIdPids = [];
 
+    /**
+     * @var array<string, string[]>
+     */
+    private array $inlineParentPointerFieldNames = [];
+
     private array $supportedFileExtensions = [
         'xml',
         't3d',
@@ -1190,6 +1195,39 @@ class Import extends ImportExport
                     break;
             }
         }
+
+        // The pointer of an inline child to its parent still holds the uid the parent had in the
+        // export, which belongs to an unrelated record here. setRelations() restores it from the
+        // field of the parent.
+        if (!MathUtility::canBeInterpretedAsInteger($ID) && !isset($importData[$table][$ID]['uid'])) {
+            foreach ($this->getInlineParentPointerFieldNames($table) as $fieldName) {
+                if (isset($importData[$table][$ID][$fieldName])) {
+                    $importData[$table][$ID][$fieldName] = 0;
+                }
+            }
+        }
+    }
+
+    /**
+     * @return string[] Fields of the given table that point to the parent of an inline relation
+     */
+    private function getInlineParentPointerFieldNames(string $table): array
+    {
+        if (!isset($this->inlineParentPointerFieldNames[$table])) {
+            $fieldNames = [];
+            foreach ($this->tcaSchemaFactory->all() as $schema) {
+                foreach ([TableColumnType::INLINE, TableColumnType::FILE] as $type) {
+                    foreach ($schema->getFieldsOfType($type) as $field) {
+                        $configuration = $field->getConfiguration();
+                        if (($configuration['foreign_table'] ?? '') === $table && !empty($configuration['foreign_field'])) {
+                            $fieldNames[$configuration['foreign_field']] = $configuration['foreign_field'];
+                        }
+                    }
+                }
+            }
+            $this->inlineParentPointerFieldNames[$table] = array_values($fieldNames);
+        }
+        return $this->inlineParentPointerFieldNames[$table];
     }
 
     /**

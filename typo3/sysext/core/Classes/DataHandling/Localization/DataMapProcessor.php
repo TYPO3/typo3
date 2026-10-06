@@ -541,7 +541,8 @@ class DataMapProcessor
 
         // The dependent ID map points from language parent/source record to
         // localization, thus keys: parents/sources & values: localizations
-        $dependentIdMap = $this->fetchDependentIdMap($foreignTableName, $suggestedAncestorIds, (int)$item->getLanguage(), $backendUser);
+        $dependentIdMap = $this->fetchDependentIdMap($foreignTableName, $suggestedAncestorIds, (int)$item->getLanguage(), $backendUser)
+            + $this->resolveSuggestedDependentIdMap($foreignTableName, $suggestedAncestorIds, (int)$item->getLanguage(), $backendUser);
         // filter incomplete structures - this is a drawback of DataHandler's remap stack, since
         // just created IRRE translations still belong to the language parent - filter them out
         $suggestedAncestorIds = array_diff($suggestedAncestorIds, array_values($dependentIdMap));
@@ -693,7 +694,10 @@ class DataMapProcessor
         // determine suggested elements of either translation parent or source record
         // from data-map, in case the accordant language parent/source record was modified
         if ($this->isSetInDataMap($item->getTableName(), $fromId, $fieldName, $allDataMap)) {
-            $suggestedAncestorIds = GeneralUtility::trimExplode(',', $allDataMap[$item->getTableName()][$fromId][$fieldName], true);
+            $suggestedAncestorIds = array_map(
+                fn(string $id): string|int => $this->resolveRelationId($foreignTableName, $id),
+                GeneralUtility::trimExplode(',', $allDataMap[$item->getTableName()][$fromId][$fieldName], true)
+            );
         } elseif (MathUtility::canBeInterpretedAsInteger($fromId)) {
             // determine suggested elements of either translation parent or source record from storage
             $relationHandler = $this->createRelationHandler($backendUser);
@@ -738,6 +742,71 @@ class DataMapProcessor
         }
 
         return array_filter($persistedIds);
+    }
+
+    /**
+     * Determines translations of the given ancestors that are declared in the
+     * data-map, but not persisted yet - e.g. when an import restores records
+     * and their translation pointers in the same data-map.
+     *
+     * @param int[]|string[] $ids
+     * @return array<int, int> ancestor id => translation id
+     */
+    private function resolveSuggestedDependentIdMap(string $tableName, array $ids, int $desiredLanguage, BackendUserAuthentication $backendUser): array
+    {
+        $schema = $this->getSchema($tableName);
+        $ids = $this->filterNumericIds($ids);
+        if ($ids === [] || !($schema?->isLanguageAware() ?? false)) {
+            return [];
+        }
+        $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
+        $languageFieldName = $languageCapability->getLanguageField()->getName();
+        $parentFieldName = $languageCapability->getTranslationOriginPointerField()->getName();
+
+        $ancestorIds = [];
+        foreach ($this->allDataMap[$tableName] ?? [] as $id => $values) {
+            if (!MathUtility::canBeInterpretedAsInteger($id) || !isset($values[$parentFieldName])) {
+                continue;
+            }
+            $ancestorId = $this->resolveRelationId($tableName, (string)$values[$parentFieldName]);
+            if (MathUtility::canBeInterpretedAsInteger($ancestorId) && in_array((int)$ancestorId, $ids, true)) {
+                $ancestorIds[(int)$id] = (int)$ancestorId;
+            }
+        }
+        if ($ancestorIds === []) {
+            return [];
+        }
+
+        $persistedValues = $this->fetchTranslationValues(
+            $tableName,
+            ['uid' => 'uid', 'language' => $languageFieldName],
+            array_keys($ancestorIds),
+            $backendUser
+        );
+        $dependentIdMap = [];
+        foreach ($ancestorIds as $id => $ancestorId) {
+            $language = $this->allDataMap[$tableName][$id][$languageFieldName] ?? $persistedValues[$id][$languageFieldName] ?? null;
+            if ($language !== null && (int)$language === $desiredLanguage) {
+                $dependentIdMap[$ancestorId] = $id;
+            }
+        }
+        return $dependentIdMap;
+    }
+
+    /**
+     * Resolves a relation value of the "<table>_<uid>" form, which DataHandler
+     * accepts as input, to the plain uid of the given table.
+     */
+    private function resolveRelationId(string $tableName, string $id): string|int
+    {
+        if (MathUtility::canBeInterpretedAsInteger($id) || str_starts_with($id, 'NEW')) {
+            return $id;
+        }
+        [$relationTableName, $relationId] = BackendUtility::splitTable_Uid($id);
+        if ($relationTableName === $tableName && MathUtility::canBeInterpretedAsInteger($relationId)) {
+            return (int)$relationId;
+        }
+        return $id;
     }
 
     /**

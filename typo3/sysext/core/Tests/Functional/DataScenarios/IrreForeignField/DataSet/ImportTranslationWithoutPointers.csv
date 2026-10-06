@@ -1,0 +1,6 @@
+"tt_content",,,,,,,,,,,,,,,,,
+,"uid","pid","sorting","deleted","sys_language_uid","l18n_parent","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","header","image","tx_testirreforeignfield_hotels",,,
+,299,89,768,0,1,0,0,0,0,0,"[Translate to Dansk:] Regular Element #2",0,1,,,
+"tx_testirreforeignfield_hotel",,,,,,,,,,,,,,,,,
+,"uid","pid","sorting","deleted","sys_language_uid","l18n_parent","l18n_diffsource","t3_origuid","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","title","parentid","parenttable","parentidentifier","offers"
+,6,89,1,0,1,0,,0,0,0,0,0,"[Translate to Dansk:] Hotel #1",299,"tt_content","1nff.hotels",0
