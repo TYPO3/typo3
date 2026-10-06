@@ -21,6 +21,7 @@ use TYPO3\CMS\Backend\CodeEditor\CodeEditor;
 use TYPO3\CMS\Backend\CodeEditor\Registry\ModeRegistry;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Styleguide\Service\CodeExampleHeaderRenderer;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -48,6 +49,7 @@ final class CodeViewHelper extends AbstractViewHelper
         private readonly PageRenderer $pageRenderer,
         private readonly CodeEditor $codeEditor,
         private readonly ModeRegistry $modeRegistry,
+        private readonly CodeExampleHeaderRenderer $codeExampleHeaderRenderer,
     ) {}
 
     public function initializeArguments(): void
@@ -101,13 +103,15 @@ final class CodeViewHelper extends AbstractViewHelper
             $markup[] = '<div class="styleguide-example">';
             $markup[] =     '<div class="styleguide-example-code">';
         }
+        $content = str_replace('###UNIQUEID###', uniqid('code'), $content);
         $markup[] =             '<div class="example example--code">';
+        $markup[] =                 $this->codeExampleHeaderRenderer->render($this->arguments['decodeEntities'] ? htmlspecialchars_decode($content) : $content);
         $markup[] =                 '<typo3-t3editor-codemirror ' . GeneralUtility::implodeAttributes($codeMirrorConfig, true) . '>';
         $markup[] =                     '<textarea ' . GeneralUtility::implodeAttributes($attributes, true) . '>';
         if ($this->arguments['decodeEntities']) {
-            $markup[] =                     htmlspecialchars_decode(str_replace('###UNIQUEID###', uniqid('code'), $content));
+            $markup[] =                     htmlspecialchars_decode($content);
         } else {
-            $markup[] =                     htmlspecialchars(str_replace('###UNIQUEID###', uniqid('code'), $content));
+            $markup[] =                     htmlspecialchars($content);
         }
         $markup[] =                     '</textarea>';
         $markup[] =                 '</typo3-t3editor-codemirror>';
