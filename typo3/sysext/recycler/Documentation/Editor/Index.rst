@@ -37,6 +37,36 @@ The records can be filtered:
 *   Enter a search term in the search box if you are looking for a specific record.
 *   Select the depth (number of levels from the selected page).
 *   Select the type of record you are searching for.
+*   Select a language in the language drop-down in the module header. See
+    :ref:`Filter by language <recycler-filter-language>`.
+
+..  _recycler-filter-language:
+
+Filter by language
+------------------
+
+..  versionadded:: 15.0
+    :changelog: feature-107345-1783604196
+
+If you have access to at least two languages of the site of the selected page,
+the module header shows a language drop-down. The drop-down shows the selected
+language:
+
+*   Select a language to list only the deleted records in this language.
+    Records of tables without language support are not listed.
+*   Select :guilabel:`[All]` to list all deleted records, independent of their
+    language.
+
+The module remembers the selected language for your next visit.
+
+The list shows the flag and the name of the language below the page title of
+each record that has a language. Records for all languages show **[All]**.
+
+..  figure:: /Images/LanguageFilter.png
+    :class: with-shadow
+    :alt: Recycler module with the opened language drop-down and the language of each record
+
+    The language drop-down and the language of each record
 
 
 Details of a record
