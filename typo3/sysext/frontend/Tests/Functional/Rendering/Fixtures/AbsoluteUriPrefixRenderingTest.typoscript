@@ -32,6 +32,14 @@ page {
     parameter.cObject = IMG_RESOURCE
     parameter.cObject.file = {$falImage}
   }
+  40 = FLUIDTEMPLATE
+  40.template = TEXT
+  40.template.value (
+    <f:asset.css identifier="assetExtensionCSS" href="{$assetExtensionCSS}" />
+    <f:asset.script identifier="assetExtensionJS" src="{$assetExtensionJS}" />
+    <f:asset.css identifier="assetLocalCSS" href="{$assetLocalCSS}" />
+    <f:asset.script identifier="assetLocalJS" src="{$assetLocalJS}" />
+  )
 }
 
 [traverse(request.getQueryParams(), 'useAbsoluteUrls') == '1']
