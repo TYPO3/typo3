@@ -141,7 +141,7 @@ readonly class BookmarkService
         if (is_array($configGroups)) {
             foreach ($configGroups as $groupId => $configLabel) {
                 $groupId = (int)$groupId;
-                if ($groupId <= 0 || $groupId === 100 || $configLabel === '' || $configLabel === null) {
+                if ($groupId <= 0 || $groupId === 100 || $configLabel === '' || $configLabel === null || $configLabel === '0') {
                     continue;
                 }
                 $label = $languageService->sL((string)$configLabel);
