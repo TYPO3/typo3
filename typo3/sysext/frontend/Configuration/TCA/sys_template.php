@@ -68,7 +68,6 @@ return [
                 'wrap' => 'off',
                 'enableTabulator' => true,
                 'fixedFont' => true,
-                'softref' => 'email[subst],url[subst]',
             ],
         ],
         'include_static_file' => [
@@ -130,7 +129,6 @@ return [
                 'wrap' => 'off',
                 'enableTabulator' => true,
                 'fixedFont' => true,
-                'softref' => 'email[subst],url[subst]',
             ],
         ],
         'static_file_mode' => [
