@@ -10,6 +10,15 @@ Form definitions are stored in the database or in extensions. Editors
 select the storage in the
 :ref:`Storage step of the form wizard <concepts-formmanager-storage>`.
 
+..  versionchanged:: 15.0
+    :changelog: breaking-109783-1776735296
+
+    Form definitions can no longer be stored as YAML files in file mounts.
+    Run the upgrade wizard
+    :guilabel:`Migrate file-based forms to database storage` to move them
+    into the database. The wizard reads the folders from
+    `persistenceManager.allowedFileMounts`.
+
 ..  _concepts-form-storages-database:
 
 Database storage
