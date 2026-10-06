@@ -106,6 +106,8 @@ class PreviewModule extends AbstractModule implements RequestEnricherInterface, 
             $cacheInstruction = $request->getAttribute('frontend.cache.instruction', new CacheInstruction());
             $cacheInstruction->disableCache('EXT:adminpanel: "Show fluid debug output" disables cache.');
             $request = $request->withAttribute('frontend.cache.instruction', $cacheInstruction);
+            // Internal attribute, read by the admin panel's f:render override only. Not public API.
+            $request = $request->withAttribute('admin-panel.fluid.debug', true);
         }
         $this->initializeFrontendPreview(
             $this->config['showHiddenPages'],

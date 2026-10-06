@@ -18,9 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Adminpanel\ViewHelpers\Fluid;
 
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 use TYPO3Fluid\Fluid\View\Exception\InvalidPartialException;
 
@@ -43,9 +41,7 @@ final class RenderViewHelper extends \TYPO3Fluid\Fluid\ViewHelpers\RenderViewHel
     {
         // Output debugging information if feature in admin panel is active
         if ($this->renderingContext->hasAttribute(ServerRequestInterface::class)
-            && ApplicationType::fromRequest($this->renderingContext->getAttribute(ServerRequestInterface::class))->isFrontend()
-            && $this->getBackendUser() instanceof BackendUserAuthentication
-            && ($this->getAdmPanelUserTsConfiguration()['override.']['preview.']['showFluidDebug'] ?? $this->getBackendUser()->uc['AdminPanel']['preview_showFluidDebug'] ?? false)
+            && $this->renderingContext->getAttribute(ServerRequestInterface::class)->getAttribute('admin-panel.fluid.debug') === true
         ) {
             return $this->renderWithDebugInformation();
         }
@@ -144,15 +140,5 @@ final class RenderViewHelper extends \TYPO3Fluid\Fluid\ViewHelpers\RenderViewHel
             $debugContent,
             $content
         );
-    }
-
-    private function getAdmPanelUserTsConfiguration(): array
-    {
-        return $this->getBackendUser()?->getTSConfig()['admPanel.'] ?? [];
-    }
-
-    private function getBackendUser(): ?BackendUserAuthentication
-    {
-        return $GLOBALS['BE_USER'] ?? null;
     }
 }

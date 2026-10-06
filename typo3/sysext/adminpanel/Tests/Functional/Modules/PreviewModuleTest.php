@@ -72,4 +72,31 @@ final class PreviewModuleTest extends FunctionalTestCase
         // Check aspect property. Additional internal group -2 (general logged in state) required
         self::assertEqualsCanonicalizing(array_merge($expectedGroupUids, [-2]), $frontendUserAspect->get('groupIds'));
     }
+
+    #[Test]
+    #[TestWith(['1', true])]
+    #[TestWith(['0', false])]
+    public function showFluidDebugActivatesFluidDebugAndDisablesCache(string $showFluidDebug, bool $expected): void
+    {
+        $GLOBALS['BE_USER'] = new BackendUserAuthentication();
+        $request = (new ServerRequest())->withAttribute('frontend.user', new FrontendUserAuthentication());
+
+        $configurationService = self::createStub(ConfigurationService::class);
+        $configurationService->method('getMainConfiguration')->willReturn([]);
+        $configurationService->method('getConfigurationOption')->willReturnMap([
+            ['preview', 'showHiddenPages', '0'],
+            ['preview', 'simulateDate', '0'],
+            ['preview', 'simulateUserGroup', '0'],
+            ['preview', 'showScheduledRecords', '0'],
+            ['preview', 'showHiddenRecords', '0'],
+            ['preview', 'showFluidDebug', $showFluidDebug],
+        ]);
+
+        $previewModule = $this->get(PreviewModule::class);
+        $previewModule->injectConfigurationService($configurationService);
+        $request = $previewModule->enrich($request);
+
+        self::assertSame($expected, $request->getAttribute('admin-panel.fluid.debug', false));
+        self::assertSame($expected, !($request->getAttribute('frontend.cache.instruction')?->isCachingAllowed() ?? true));
+    }
 }
