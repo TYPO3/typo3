@@ -36,7 +36,8 @@ final class RecyclerGarbageCollectionTaskTest extends FunctionalTestCase
     {
         parent::setUp();
         $this->now = time();
-        $GLOBALS['EXEC_TIME'] = $this->now;
+        // Files created by a test count as recycled now, so the task runs 31 days later
+        $GLOBALS['EXEC_TIME'] = $this->now + 31 * self::DAY;
     }
 
     protected function tearDown(): void
@@ -50,8 +51,8 @@ final class RecyclerGarbageCollectionTaskTest extends FunctionalTestCase
     #[Test]
     public function removesExpiredFilesFromRecyclerFoldersAtAnyDepth(): void
     {
-        $old = $this->now - 31 * self::DAY;
-        $fresh = $this->now - 29 * self::DAY;
+        $old = $this->now;
+        $fresh = $this->now + 2 * self::DAY;
         $this->createFiles('fileadmin', [
             '_recycler_/old.txt' => $old,
             '_recycler_/fresh.txt' => $fresh,
@@ -97,8 +98,8 @@ final class RecyclerGarbageCollectionTaskTest extends FunctionalTestCase
     #[Test]
     public function removesExpiredFilesFromNestedRecyclerFoldersOfAllStorages(): void
     {
-        $old = $this->now - 31 * self::DAY;
-        $fresh = $this->now - 29 * self::DAY;
+        $old = $this->now;
+        $fresh = $this->now + 2 * self::DAY;
         $this->createFiles('fileadmin', [
             'folder/_recycler_/old.txt' => $old,
         ]);
@@ -123,7 +124,7 @@ final class RecyclerGarbageCollectionTaskTest extends FunctionalTestCase
     #[Test]
     public function removesExpiredFilesFromRecyclerFolderNestedInRecyclerFolder(): void
     {
-        $old = $this->now - 31 * self::DAY;
+        $old = $this->now;
         $this->createFiles('fileadmin', [
             '_recycler_/old.txt' => $old,
             '_recycler_/sub/old.txt' => $old,
@@ -136,6 +137,45 @@ final class RecyclerGarbageCollectionTaskTest extends FunctionalTestCase
         self::assertTrue($task->execute());
 
         $this->assertRemaining('fileadmin', []);
+    }
+
+    #[Test]
+    public function continuesCleanupIfAFileCannotBeRemoved(): void
+    {
+        $old = $this->now;
+        $this->createFiles('fileadmin', [
+            '_recycler_/denied.php' => $old,
+            '_recycler_/old.txt' => $old,
+            'folder/_recycler_/old.txt' => $old,
+        ]);
+
+        $task = new RecyclerGarbageCollectionTask();
+        $task->setTaskParameters(['number_of_days' => 30]);
+        self::assertFalse($task->execute());
+
+        $this->assertRemaining('fileadmin', ['_recycler_/denied.php']);
+    }
+
+    #[Test]
+    public function keepsRecentlyRecycledFilesRegardlessOfTheirModificationTime(): void
+    {
+        $GLOBALS['EXEC_TIME'] = $this->now;
+        $old = $this->now - 365 * self::DAY;
+        $this->createFiles('fileadmin', [
+            '_recycler_/old.txt' => $old,
+            '_recycler_/folder/old.txt' => $old,
+            '_recycler_/folder/sub/old.txt' => $old,
+        ]);
+
+        $task = new RecyclerGarbageCollectionTask();
+        $task->setTaskParameters(['number_of_days' => 30]);
+        self::assertTrue($task->execute());
+
+        $this->assertRemaining('fileadmin', [
+            '_recycler_/old.txt',
+            '_recycler_/folder/old.txt',
+            '_recycler_/folder/sub/old.txt',
+        ]);
     }
 
     /**
