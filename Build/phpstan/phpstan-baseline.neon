@@ -1549,6 +1549,18 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/TypoScript/AST/Traverser/AstTraverser.php
 
 		-
+			message: '#^Negated boolean expression is always true\.$#'
+			identifier: booleanNot.alwaysTrue
+			count: 1
+			path: ../../typo3/sysext/core/Classes/TypoScript/FrontendTypoScriptFactory.php
+
+		-
+			message: '#^Result of \|\| is always true\.$#'
+			identifier: booleanOr.alwaysTrue
+			count: 1
+			path: ../../typo3/sysext/core/Classes/TypoScript/FrontendTypoScriptFactory.php
+
+		-
 			message: '#^Call to function in_array\(\) with arguments ''constants''\|''setup'', array\{''constants'', ''setup''\} and true will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
 			count: 1
@@ -3409,6 +3421,12 @@ parameters:
 			path: ../../typo3/sysext/frontend/Classes/Category/Collection/CategoryCollection.php
 
 		-
+			message: '#^Right side of && is always true\.$#'
+			identifier: booleanAnd.rightAlwaysTrue
+			count: 1
+			path: ../../typo3/sysext/frontend/Classes/Content/RecordCollector.php
+
+		-
 			message: '#^Call to function is_array\(\) with array will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
 			count: 1
@@ -4163,6 +4181,12 @@ parameters:
 			identifier: instanceof.alwaysTrue
 			count: 1
 			path: ../../typo3/sysext/seo/Classes/XmlSitemap/XmlSitemapRenderer.php
+
+		-
+			message: '#^Right side of && is always true\.$#'
+			identifier: booleanAnd.rightAlwaysTrue
+			count: 1
+			path: ../../typo3/sysext/setup/Classes/Controller/SetupModuleController.php
 
 		-
 			message: '#^Strict comparison using \=\=\= between 1\|2\|4 and 0 will always evaluate to false\.$#'
