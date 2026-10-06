@@ -122,6 +122,22 @@
             display: none;
         }
 
+        &.example--code {
+            display: flex;
+            flex-direction: column;
+            gap: calc(var(--typo3-spacing) / 2);
+
+            > typo3-t3editor-codemirror {
+                min-width: 0;
+            }
+        }
+
+        .styleguide-example-code-header {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
         .styleguide-example-label {
             display: block;
             color: var(--typo3-example-label-color);

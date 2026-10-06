@@ -1622,6 +1622,12 @@
       <trans-unit id="elements.color.valid">
         <source>Valid (LLL)</source>
       </trans-unit>
+      <trans-unit id="example.code.copy">
+        <source>Copy</source>
+      </trans-unit>
+      <trans-unit id="example.code.copyToClipboard">
+        <source>Copy code to clipboard</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>

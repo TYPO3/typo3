@@ -3813,6 +3813,9 @@ td.permission-column-group .input-group select{min-width:100px}
 .styleguide-example .example:first-child{border-top-left-radius:var(--typo3-component-border-radius);border-top-right-radius:var(--typo3-component-border-radius)}
 .styleguide-example .example:last-child{border-bottom-left-radius:var(--typo3-component-border-radius);border-bottom-right-radius:var(--typo3-component-border-radius)}
 .styleguide-example .example:before{display:none}
+.styleguide-example .example.example--code{display:flex;flex-direction:column;gap:calc(var(--typo3-spacing)/2)}
+.styleguide-example .example.example--code>typo3-t3editor-codemirror{min-width:0}
+.styleguide-example .example .styleguide-example-code-header{align-items:center;display:flex;justify-content:flex-end}
 .styleguide-example .example .styleguide-example-label{color:var(--typo3-example-label-color);display:block;font-size:.9em;font-weight:700;margin-bottom:var(--typo3-example-label-margin-bottom)}
 .colorscheme-switch{align-items:center;display:flex;gap:.5em;padding-bottom:var(--typo3-spacing)}
 @container (min-width: 740px){
