@@ -103,7 +103,9 @@ final class UpgradeWizardsService
 
     /**
      * Mark one wizard as undone. This can be a "casual" wizard
-     * or a single "row updater".
+     * or a single "row updater". A wizard which reports that no update
+     * is necessary stays marked as done, as it would otherwise vanish
+     * from the list of executed wizards without being executable again.
      *
      * @param string $identifier Wizard or RowUpdater identifier
      * @return bool True if wizard has been marked as undone
@@ -116,6 +118,9 @@ final class UpgradeWizardsService
         $aWizardHasBeenMarkedUndone = false;
         foreach ($this->listOfWizardsDone() as $wizard) {
             if ($wizard['identifier'] === $identifier) {
+                if (!$this->getWizardInformationByIdentifier($identifier)['shouldRenderWizard']) {
+                    return false;
+                }
                 $aWizardHasBeenMarkedUndone = true;
                 $this->registry->set('installUpdate', $wizard['class'], 0);
             }
