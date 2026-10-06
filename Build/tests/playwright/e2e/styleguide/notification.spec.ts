@@ -24,7 +24,7 @@ test.describe('Styleguide notifications', () => {
     await expect(alertContainer.locator('typo3-notification-message')).toHaveCount(2);
     await expect(clearAll).toBeVisible();
 
-    await clearAll.click();
+    await clearAll.getByRole('button').click();
     await expect(alertContainer.locator('typo3-notification-message')).toHaveCount(0);
     await expect(clearAll).not.toBeVisible();
   });

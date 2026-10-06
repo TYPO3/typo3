@@ -203,7 +203,7 @@ export class ClearNotificationMessages extends LitElement {
   }
 
   protected override render(): TemplateResult {
-    return html`<div><button @click=${() => this.clearAll()} class="btn btn-default">
+    return html`<div><button @click=${() => this.clearAll()} class="btn btn-sm btn-default">
       <typo3-backend-icon identifier="actions-close" size="small"></typo3-backend-icon> ${coreLabels.get('notifications.button.clearAll')}
     </button></div>`;
   }

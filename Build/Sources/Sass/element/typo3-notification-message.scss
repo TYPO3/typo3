@@ -8,30 +8,22 @@
 //
 #alert-container[popover] {
     --typo3-alert-container-color: var(--typo3-text-color-base);
-    --typo3-alert-container-bg: var(--typo3-surface-container-high);
-    --typo3-alert-contanier-border-radius: var(--typo3-component-border-radius);
     --typo3-alert-container-padding: .5rem;
-    --typo3-alert-container-border-color: color-mix(in srgb, var(--typo3-alert-container-bg), var(--typo3-alert-container-color) var(--typo3-border-mix));
     --typo3-alert-container-shadow: var(--typo3-component-box-shadow-dialog);
     --typo3-alert-container-offset: calc(var(--typo3-spacing) * 1.5);
-    --typo3-alert-container-bar-shadow: var(--typo3-component-box-shadow-strong);
+    // Room for the shadow of the notifications, which the scrollable list would cut off otherwise
+    --typo3-alert-container-shadow-space: 2rem;
     width: 400px;
     max-width: calc(100% - (var(--typo3-alert-container-offset) * 2));
     padding: 0;
     bottom: var(--typo3-alert-container-offset);
     inset: auto 0 var(--typo3-alert-container-offset);
-    border-radius: var(--typo3-alert-contanier-border-radius);
-    border: 1px solid transparent;
+    border: none;
     background: none;
     color: var(--typo3-alert-container-color);
-    transition: background-color .1s ease-in, border .1s ease-in, box-shadow .1s ease-in;
     overflow: visible;
-
-    &:has(.alert-list > * + *) {
-        background-color: var(--typo3-alert-container-bg);
-        border: 1px solid var(--typo3-alert-container-border-color);
-        box-shadow: var(--typo3-alert-container-shadow);
-    }
+    // Only the notifications and the button are visible, the space around them must not catch clicks meant for the page
+    pointer-events: none;
 
     @media (min-width: 768px) {
         inset-inline-start: auto;
@@ -41,9 +33,15 @@
     .alert-list {
         display: grid;
         grid-template-columns: 1fr;
-        padding: var(--typo3-alert-container-padding);
+        padding: var(--typo3-alert-container-padding) calc(var(--typo3-alert-container-padding) + var(--typo3-alert-container-shadow-space)) calc(var(--typo3-alert-container-padding) + var(--typo3-alert-container-shadow-space));
+        margin: 0 calc(var(--typo3-alert-container-shadow-space) * -1) calc(var(--typo3-alert-container-shadow-space) * -1);
         gap: var(--typo3-alert-container-padding);
         max-height: calc(50dvh);
+        mask-image: linear-gradient(to bottom, transparent, #000 var(--typo3-alert-container-padding));
+
+        > * {
+            pointer-events: auto;
+        }
 
         &:has(> * + *) {
             overflow-y: auto;
@@ -51,17 +49,19 @@
         outline-offset: -2px;
 
         &:focus-visible {
-            outline: 2px solid color-mix(in srgb, var(--typo3-alert-container-border-color), currentColor 25%);
+            outline: 2px solid color-mix(in srgb, var(--typo3-alert-container-color), transparent 75%);
         }
     }
 
     typo3-notification-clear-all {
         display: block;
-        text-align: right;
-        padding: var(--typo3-alert-container-padding);
-        box-shadow: var(--typo3-alert-container-bar-shadow);
-        position: relative;
-        z-index: 1;
+        text-align: end;
+        padding: 0 var(--typo3-alert-container-padding);
+
+        .btn {
+            box-shadow: var(--typo3-alert-container-shadow);
+            pointer-events: auto;
+        }
     }
 }
 
@@ -69,11 +69,7 @@ typo3-notification-message {
     display: block;
 
     .alert {
-        transition: box-shadow .1s ease-in;
         --typo3-alert-margin-bottom: 0;
-    }
-
-    &:first-child:last-child .alert {
         box-shadow: var(--typo3-alert-container-shadow);
     }
 }
