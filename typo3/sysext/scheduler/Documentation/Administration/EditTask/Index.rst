@@ -99,6 +99,32 @@ Task executions timing details
 -   Parallel executions are denied for recurring tasks. They can be allowed by
     checking "Allow Parallel Execution"
 
+-   The **Priority** decides which task is executed first if several
+    tasks are due. See
+    :ref:`Task priority <adding-editing-task-form-priority>`.
+
 If an error occurs when validating a cron definition, the
 Scheduler's built-in cron parser tries to provide an explanation about
 what's wrong.
+
+..  _adding-editing-task-form-priority:
+
+Task priority
+-------------
+
+..  versionadded:: 14.2
+    :changelog: feature-109110-1742558400
+
+The field **Priority** has three levels:
+
+*   :guilabel:`High`
+*   :guilabel:`Regular` (default)
+*   :guilabel:`Low`
+
+If several tasks are due, the Scheduler executes the task with the highest
+priority first. A task with a higher priority is executed first, even if a
+task with a lower priority has waited longer. Tasks with the same priority
+are executed in the order of their next execution time.
+
+Extensions can add further levels. See
+:ref:`Task priority levels <task-storage-priority>`.
