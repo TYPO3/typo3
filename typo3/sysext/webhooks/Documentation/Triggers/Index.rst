@@ -20,6 +20,9 @@ Login Error Occurred
     Triggers when a login error occurred
 MFA Verification Error Occurred
     Triggers when a multi-factor authentication verification attempt fails
+Redirect Was Hit
+    Triggers when a redirect has been hit. Requires the system extension
+    :composer:`typo3/cms-redirects`.
 
 These triggers are meant as a first set of triggers that can be used to send
 webhooks. In most projects however, it is likely
