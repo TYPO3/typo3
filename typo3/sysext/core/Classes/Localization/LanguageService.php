@@ -134,7 +134,7 @@ class LanguageService implements TranslatorInterface
      * context)
      *
      * Example:
-     * Label is defined in `EXT:my_ext/Resources/Private/Language/locallang.xlf` as:
+     * Label is defined in `EXT:my_extension/Resources/Private/Language/locallang.xlf` as:
      *
      * ```
      * <trans-unit id="downloaded_times">
@@ -153,7 +153,7 @@ class LanguageService implements TranslatorInterface
      *   ->createFromSiteLanguage($language);
      * $label = sprintf(
      *      $languageService->sL(
-     *          'LLL:EXT:my_ext/Resources/Private/Language/locallang.xlf:downloaded_times'
+     *          'LLL:EXT:my_extension/Resources/Private/Language/locallang.xlf:downloaded_times'
      *      ),
      *      27,
      *      'several'
@@ -267,7 +267,7 @@ class LanguageService implements TranslatorInterface
      *
      * @param string $id The label identifier/key
      * @param string $domain The translation domain (file reference like 'EXT:core/Resources/Private/Language/locallang.xlf'
-     *                       or semantic domain like 'core.messages'). For ICU MessageFormat, suffix with '+intl-icu'.
+     *                       or semantic domain like 'core.messages').
      * @param array $arguments Optional arguments for placeholder replacement. For sprintf-style messages,
      *                         pass indexed values. For ICU messages, pass named values (e.g., ['count' => 5]).
      * @param string|null $default Optional default value

@@ -33,7 +33,7 @@ namespace TYPO3\CMS\Core\Localization;
  *     $translator->translate('record.count', 'backend.messages', [5]);
  *
  *     // ICU MessageFormat style for plurals (message: "{count, plural, one {# item} other {# items}}")
- *     $translator->translate('items.count', 'backend.messages+intl-icu', ['count' => 5]);
+ *     $translator->translate('items.count', 'backend.messages', ['count' => 5]);
  *
  * @see https://unicode-org.github.io/icu/userguide/format_parse/messages/ ICU MessageFormat
  */
@@ -44,7 +44,7 @@ interface TranslatorInterface
      *
      * @param string $id The label identifier/key
      * @param string $domain The translation domain (file reference like 'EXT:core/Resources/Private/Language/locallang.xlf'
-     *                       or semantic domain like 'core.messages'). For ICU MessageFormat, suffix with '+intl-icu'.
+     *                       or semantic domain like 'core.messages').
      * @param array $arguments Optional arguments for placeholder replacement. For sprintf-style messages,
      *                         pass indexed values. For ICU messages, pass named values (e.g., ['count' => 5]).
      * @param string|null $default Optional default value
@@ -67,10 +67,10 @@ interface TranslatorInterface
      * Example usage:
      *
      *     // Simple reference
-     *     $translator->label('myext.messages:button.save');
+     *     $translator->label('my_extension.messages:button.save');
      *
      *     // Simple reference (discouraged with file reference)
-     *     $translator->label('LLL:EXT:my_ext/Resources/Private/Language/locallang.xlf:button.save');
+     *     $translator->label('LLL:EXT:my_extension/Resources/Private/Language/locallang.xlf:button.save');
      *
      *     // With arguments
      *     $translator->label('core.messages:record.count', [5]);
