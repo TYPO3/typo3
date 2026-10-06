@@ -91,7 +91,7 @@
         <source>Exception</source>
       </trans-unit>
       <trans-unit id="action.exception.description">
-        <source>Shows how an exception is displayed. Throws an actual exception to also execute JavaScript (stacktrace copy).</source>
+        <source>Shows how an exception is displayed. Throws an actual exception inside a frame to also execute JavaScript (stacktrace copy).</source>
       </trans-unit>
       <trans-unit id="action.colorTokens">
         <source>Color Tokens</source>
@@ -629,6 +629,16 @@
       </trans-unit>
       <trans-unit id="component.developerTools.section.default.headline">
         <source>Default</source>
+      </trans-unit>
+      <!-- Component: Exception -->
+      <trans-unit id="component.exception.headline">
+        <source>Exception</source>
+      </trans-unit>
+      <trans-unit id="component.exception.introtext">
+        <source>Page rendered by the configured exception handler when an uncaught exception occurs. The example exception is thrown for demonstration only.</source>
+      </trans-unit>
+      <trans-unit id="component.exception.preview.title">
+        <source>Exception page</source>
       </trans-unit>
       <!-- Component: Flash message -->
       <trans-unit id="component.flashMessage.headline">

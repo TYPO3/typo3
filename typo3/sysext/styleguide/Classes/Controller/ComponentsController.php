@@ -111,6 +111,7 @@ final class ComponentsController
             'developerTools' => $this->renderDeveloperToolsView($request),
             'dropdown' => $this->renderDropdownView($request),
             'exception' => $this->renderExceptionView($request),
+            'exceptionPreview' => $this->renderExceptionPreview(),
             'flashMessages' => $this->renderFlashMessagesView($request),
             'form' => $this->renderFormView($request),
             'infobox' => $this->renderInfoboxView($request),
@@ -297,8 +298,20 @@ final class ComponentsController
 
     private function renderExceptionView(ServerRequestInterface $request): ResponseInterface
     {
-        // We're throwing an exception because it also needs to execute JavaScript, which in turn requires CSP disabled,
-        // which wouldn't work if we just execute `debugExceptionHandler->echoExceptionWeb($throwable)`.
+        $view = $this->createModuleTemplate($request, 'exception');
+        $view->assignMultiple([
+            'actions' => $this->allowedActions,
+            'currentAction' => 'exception',
+            'routeIdentifier' => 'styleguide_components',
+            'previewUri' => (string)$this->uriBuilder->buildUriFromRoute('styleguide_components', ['action' => 'exceptionPreview']),
+        ]);
+        return $view->renderResponse('Backend/Components/Exception');
+    }
+
+    private function renderExceptionPreview(): never
+    {
+        // An actual exception is thrown, so the configured exception handler renders the page
+        // including its inline JavaScript, which the CSP of a regular response would block.
         throw new StatusException(HttpUtility::HTTP_STATUS_200, 'Dummy exception', 'An exception', 1786056622);
     }
 

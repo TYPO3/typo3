@@ -1,0 +1,37 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:layout name="Module" />
+
+<f:section name="Content">
+
+    <f:render
+        partial="Backend/Navigation"
+        arguments="{
+            currentAction: currentAction,
+            actions: actions,
+            route: routeIdentifier
+        }"
+    />
+
+    <div class="styleguide-content">
+
+        <h1><f:translate key="component.exception.headline" domain="styleguide.messages" /></h1>
+        <p>
+            <f:translate key="component.exception.introtext" domain="styleguide.messages" />
+        </p>
+
+        <iframe
+            src="{previewUri}"
+            title="{f:translate(key: 'component.exception.preview.title', domain: 'styleguide.messages')}"
+            class="w-100 border rounded"
+            style="height: 75vh;"
+        ></iframe>
+
+    </div>
+
+</f:section>
+
+</html>
