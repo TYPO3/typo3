@@ -72,7 +72,8 @@ following:
 -   The fourth column shows whether the task is recurring or will run only
     a single time.
 
--   The fifth column shows the frequency.
+-   The fifth column shows the frequency and the
+    :ref:`priority <adding-editing-task-form-priority>` of the task.
 
 -   The sixth columns indicates whether parallel executions are allowed
     or not.
