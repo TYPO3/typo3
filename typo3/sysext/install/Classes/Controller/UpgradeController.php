@@ -946,7 +946,7 @@ class UpgradeController extends AbstractController
             ));
         } else {
             $messages->enqueue(new FlashMessage(
-                'The wizard "' . $wizardToBeMarkedAsUndone['title'] . '" has not been marked as undone.',
+                'The wizard "' . $wizardToBeMarkedAsUndone['title'] . '" has not been marked as undone, because it has not been executed yet or does not need to make any changes.',
                 'Wizard has not been marked undone',
                 ContextualFeedbackSeverity::ERROR
             ));

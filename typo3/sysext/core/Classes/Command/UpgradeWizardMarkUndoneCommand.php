@@ -79,7 +79,7 @@ class UpgradeWizardMarkUndoneCommand extends Command
             $io->success('The wizard "' . $wizardInformation['title'] . '" has been marked as undone.');
             return Command::SUCCESS;
         }
-        $io->error('The wizard "' . $wizardInformation['title'] . '" could not be marked undone, because it was most likely not yet run.');
+        $io->error('The wizard "' . $wizardInformation['title'] . '" could not be marked undone, because it was most likely not yet run or does not need to make any changes.');
         return Command::FAILURE;
     }
 }
