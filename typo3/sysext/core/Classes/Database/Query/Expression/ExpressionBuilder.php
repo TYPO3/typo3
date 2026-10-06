@@ -270,11 +270,21 @@ class ExpressionBuilder extends DoctrineExpressionBuilder
     }
 
     /**
-     * Returns a comparison that can find a value in a list field (CSV).
+     * Returns a comparison that is true if the comma-separated list stored in
+     * $fieldName contains $value, e.g. inSet('fe_group', $queryBuilder->quote('2'))
+     * matches a record with fe_group = '1,2,5'.
      *
-     * @param string $fieldName The field name. Will be quoted according to database platform automatically.
-     * @param string $value Argument to be used in FIND_IN_SET() comparison. No automatic quoting/escaping is done.
-     * @param bool $isColumn Set when the value to compare is a column on a table to activate casting
+     * Mind the argument order: the field holding the list (haystack) comes
+     * first, the value to look for (needle) second. This is the reverse of
+     * MySQL's FIND_IN_SET(needle, haystack). To check whether a field matches
+     * one of several given values, use in() instead.
+     *
+     * @param string $fieldName Field containing the comma-separated list (haystack). Quoted automatically.
+     * @param string $value Single value to look for (needle), must not contain a comma. It is NOT quoted
+     *                      automatically: pass a quoted literal, e.g. from quote() or literal(), or a quoted
+     *                      column identifier together with $isColumn. Placeholders are not supported on all
+     *                      database platforms.
+     * @param bool $isColumn Set if $value is a column identifier instead of a literal, to cast it to text
      * @throws \InvalidArgumentException
      * @throws \RuntimeException
      */
@@ -351,11 +361,16 @@ class ExpressionBuilder extends DoctrineExpressionBuilder
     }
 
     /**
-     * Returns a comparison that can find a value in a list field (CSV) but is negated.
+     * Returns a comparison that is true if the comma-separated list stored in
+     * $fieldName does not contain $value. This is the negation of inSet(),
+     * see there for details on the argument order.
      *
-     * @param string $fieldName The field name. Will be quoted according to database platform automatically.
-     * @param string $value Argument to be used in FIND_IN_SET() comparison. No automatic quoting/escaping is done.
-     * @param bool $isColumn Set when the value to compare is a column on a table to activate casting
+     * @param string $fieldName Field containing the comma-separated list (haystack). Quoted automatically.
+     * @param string $value Single value to look for (needle), must not contain a comma. It is NOT quoted
+     *                      automatically: pass a quoted literal, e.g. from quote() or literal(), or a quoted
+     *                      column identifier together with $isColumn. Placeholders are not supported on all
+     *                      database platforms.
+     * @param bool $isColumn Set if $value is a column identifier instead of a literal, to cast it to text
      * @throws \InvalidArgumentException
      * @throws \RuntimeException
      */
@@ -388,7 +403,7 @@ class ExpressionBuilder extends DoctrineExpressionBuilder
         if ($platform instanceof DoctrineSQLitePlatform) {
             if (str_starts_with($value, ':') || $value === '?') {
                 throw new \InvalidArgumentException(
-                    'ExpressionBuilder::inSet() for SQLite can not be used with placeholder arguments.',
+                    'ExpressionBuilder::notInSet() for SQLite can not be used with placeholder arguments.',
                     1627573103
                 );
             }
