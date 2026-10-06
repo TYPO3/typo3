@@ -185,6 +185,21 @@ final class BookmarkServiceTest extends FunctionalTestCase
         }
     }
 
+    #[Test]
+    public function bookmarkGroupSetToZeroIsNotShown(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/BookmarkGroupsTsConfig.csv');
+        $this->setUpBackendUser(10);
+
+        $groups = [];
+        foreach ($this->subject->getGroups() as $group) {
+            $groups[$group->id] = $group;
+        }
+
+        self::assertArrayNotHasKey(2, $groups);
+        self::assertArrayNotHasKey(-2, $groups);
+    }
+
     /**
      * A bookmark may outlive the extension that provided its table. It stays
      * listed, so the user can still remove it, and gets the default icon.
