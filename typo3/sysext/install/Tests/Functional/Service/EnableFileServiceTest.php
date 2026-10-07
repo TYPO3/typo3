@@ -105,6 +105,35 @@ final class EnableFileServiceTest extends FunctionalTestCase
         }
     }
 
+    /**
+     * Creates the files that count as FIRST_INSTALL file. "FIRST_INStall" can only
+     * exist next to "FIRST_INSTALL" on a case-sensitive file system, e.g. not on macOS.
+     *
+     * @return list<string> absolute paths of the created files
+     */
+    private function createValidFirstInstallFiles(string $path): array
+    {
+        $fileNames = ['FIRST_INSTALL', 'FIRST_INSTALL.txt'];
+        if ($this->isFileSystemCaseSensitive($path)) {
+            $fileNames[] = 'FIRST_INStall';
+        }
+        $files = [];
+        foreach ($fileNames as $fileName) {
+            file_put_contents($path . '/' . $fileName, '');
+            $files[] = $path . '/' . $fileName;
+        }
+        return $files;
+    }
+
+    private function isFileSystemCaseSensitive(string $path): bool
+    {
+        $probe = $path . '/CaseSensitivityProbe';
+        touch($probe);
+        $isCaseSensitive = !file_exists($path . '/casesensitivityprobe');
+        unlink($probe);
+        return $isCaseSensitive;
+    }
+
     #[Test]
     public function getFirstInstallFilePathsFindsValidFiles(): void
     {
@@ -114,16 +143,9 @@ final class EnableFileServiceTest extends FunctionalTestCase
         self::assertSame($projectPath, $publicPath);
         self::assertFalse(Environment::isComposerMode());
         mkdir($publicPath . '/FIRST_INSTALL2Folder');
-        file_put_contents($publicPath . '/FIRST_INSTALL', '');
-        file_put_contents($publicPath . '/FIRST_INStall', '');
-        file_put_contents($publicPath . '/FIRST_INSTALL.txt', 'with content');
+        $expected = $this->createValidFirstInstallFiles($publicPath);
         file_put_contents($publicPath . '/somethingelse', '');
         file_put_contents($publicPath . '/dadadaFIRST_INStall', '');
-        $expected = [
-            $publicPath . '/FIRST_INSTALL',
-            $publicPath . '/FIRST_INStall',
-            $publicPath . '/FIRST_INSTALL.txt',
-        ];
         $subject = $this->getAccessibleMock(EnableFileService::class, null);
         self::assertEquals([], array_diff($expected, $subject->_call('getFirstInstallFilePaths')));
     }
@@ -137,16 +159,9 @@ final class EnableFileServiceTest extends FunctionalTestCase
         self::assertNotSame($projectPath, $publicPath);
         self::assertTrue(Environment::isComposerMode());
 
-        file_put_contents($projectPath . '/FIRST_INSTALL', '');
-        file_put_contents($projectPath . '/FIRST_INStall', '');
-        file_put_contents($projectPath . '/FIRST_INSTALL.txt', 'with content');
+        $expected = $this->createValidFirstInstallFiles($projectPath);
         file_put_contents($projectPath . '/somethingelse', '');
 
-        $expected = [
-            $projectPath . '/FIRST_INSTALL',
-            $projectPath . '/FIRST_INStall',
-            $projectPath . '/FIRST_INSTALL.txt',
-        ];
         $subject = $this->getAccessibleMock(EnableFileService::class, null);
         $result = $subject->_call('getFirstInstallFilePaths');
 
@@ -163,18 +178,10 @@ final class EnableFileServiceTest extends FunctionalTestCase
         self::assertNotSame($projectPath, $publicPath);
         self::assertTrue(Environment::isComposerMode());
 
-        // Create files in public path
-        file_put_contents($publicPath . '/FIRST_INSTALL', '');
-        file_put_contents($publicPath . '/FIRST_INStall', '');
-
-        // Create files in project path
+        $expected = $this->createValidFirstInstallFiles($publicPath);
         file_put_contents($projectPath . '/FIRST_INSTALL.txt', 'with content');
+        $expected[] = $projectPath . '/FIRST_INSTALL.txt';
 
-        $expected = [
-            $publicPath . '/FIRST_INSTALL',
-            $publicPath . '/FIRST_INStall',
-            $projectPath . '/FIRST_INSTALL.txt',
-        ];
         $subject = $this->getAccessibleMock(EnableFileService::class, null);
         $result = $subject->_call('getFirstInstallFilePaths');
 
@@ -233,13 +240,10 @@ final class EnableFileServiceTest extends FunctionalTestCase
         self::assertSame($projectPath, $publicPath);
         self::assertFalse(Environment::isComposerMode());
         mkdir($publicPath . '/FIRST_INSTALL2Folder');
-        file_put_contents($publicPath . '/FIRST_INSTALL', '');
-        file_put_contents($publicPath . '/FIRST_INStall', '');
-        file_put_contents($publicPath . '/FIRST_INSTALL.txt', 'with content');
+        $validFiles = $this->createValidFirstInstallFiles($publicPath);
         file_put_contents($publicPath . '/somethingelse', '');
         file_put_contents($publicPath . '/dadadaFIRST_INStall', '');
-        $expected = scandir($publicPath);
-        unset($expected[2], $expected[3], $expected[5]);
+        $expected = array_diff(scandir($publicPath), array_map(basename(...), $validFiles));
         EnableFileService::removeFirstInstallFile();
         self::assertEquals(array_values($expected), array_values(scandir($publicPath)));
     }
@@ -253,16 +257,13 @@ final class EnableFileServiceTest extends FunctionalTestCase
         self::assertNotSame($projectPath, $publicPath);
         self::assertTrue(Environment::isComposerMode());
 
-        file_put_contents($projectPath . '/FIRST_INSTALL', '');
-        file_put_contents($projectPath . '/FIRST_INStall', '');
-        file_put_contents($projectPath . '/FIRST_INSTALL.txt', 'with content');
+        $validFiles = $this->createValidFirstInstallFiles($projectPath);
 
         EnableFileService::removeFirstInstallFile();
 
-        // Verify files were removed from project path
-        self::assertFileDoesNotExist($projectPath . '/FIRST_INSTALL');
-        self::assertFileDoesNotExist($projectPath . '/FIRST_INStall');
-        self::assertFileDoesNotExist($projectPath . '/FIRST_INSTALL.txt');
+        foreach ($validFiles as $file) {
+            self::assertFileDoesNotExist($file);
+        }
     }
 
     #[Test]
@@ -274,17 +275,15 @@ final class EnableFileServiceTest extends FunctionalTestCase
         self::assertNotSame($projectPath, $publicPath);
         self::assertTrue(Environment::isComposerMode());
 
-        // Create files in both paths
-        file_put_contents($publicPath . '/FIRST_INSTALL', '');
+        $validFiles = $this->createValidFirstInstallFiles($publicPath);
         file_put_contents($projectPath . '/FIRST_INSTALL', '');
-        file_put_contents($publicPath . '/FIRST_INStall', '');
+        $validFiles[] = $projectPath . '/FIRST_INSTALL';
 
         EnableFileService::removeFirstInstallFile();
 
-        // Verify files were removed from both paths
-        self::assertFileDoesNotExist($publicPath . '/FIRST_INSTALL');
-        self::assertFileDoesNotExist($projectPath . '/FIRST_INSTALL');
-        self::assertFileDoesNotExist($publicPath . '/FIRST_INStall');
+        foreach ($validFiles as $file) {
+            self::assertFileDoesNotExist($file);
+        }
     }
 
     #[Test]
