@@ -59,7 +59,13 @@ Secret
     The secret is necessary to authorize the reaction from the outside. It can
     be re-created anytime, but will be visible only once (until the record is
     saved). Click on the "dices" button next to the form field to create a
-    random secret. Store the secret somewhere safe.
+    random secret. Click the copy button next to the field to copy the secret
+    to the clipboard. Store the secret somewhere safe.
+
+    ..  versionadded:: 15.0
+        :changelog: feature-110851-1790717834
+
+        The button to copy the secret to the clipboard was added.
 
 The content of the "Additional configuration" section depends on the concrete
 reaction type. For the "Create database record" the following fields are
@@ -131,9 +137,31 @@ We now save and close the form - our newly created reaction is now visible:
 Call the reaction manually
 ==========================
 
-TYPO3 can now react on this reaction. Clicking on the :guilabel:`Example`
-button, the skeleton of a cURL request for use on the command line is showing
-up. We can adjust and run it on the console, using our placeholders as payload:
+TYPO3 can now react on this reaction. Click the :guilabel:`Try Out` button of
+the reaction. A modal shows:
+
+Endpoint
+    The URL of the reaction, with a button to copy it.
+
+Example
+    A cURL request for the command line, with a button to copy it. The JSON
+    body contains the placeholders of the field map. The placeholder
+    :code:`${customer.name}` becomes :json:`{"customer": {"name": "value"}}`.
+    The request contains a placeholder instead of the secret.
+
+..  figure:: /Images/ReactionTryOut.avif
+    :alt: The Try Out modal with endpoint, example request and dry run
+    :class: with-shadow
+
+    The :guilabel:`Try Out` modal of a reaction
+
+..  versionchanged:: 15.0
+    :changelog: feature-110850-1790715721
+
+    Before, the module showed the URL and a generic cURL example in the list.
+
+Replace the secret placeholder and the values, and run the request on the
+console:
 
 ..  code-block:: bash
 
@@ -177,6 +205,51 @@ The content is now available on the configured page:
 
     The created page content record on the configured page
 
+
+..  _create-database-record-dry-run:
+
+Check a payload with a dry run
+==============================
+
+..  versionadded:: 15.0
+    :changelog: feature-110850-1790715721
+
+Before an external system calls the reaction, check a payload in the
+:guilabel:`Dry run` section of the :guilabel:`Try Out` modal:
+
+#.  Edit the JSON in the field **Payload**. It is prefilled with the body of
+    the example request.
+#.  Click :guilabel:`Execute dry run`.
+
+..  figure:: /Images/ReactionDryRun.avif
+    :alt: Result of a dry run with the fields resolved from the payload
+    :class: with-shadow
+
+    Result of a dry run
+
+The dry run resolves the payload against the field map as the backend user
+that the reaction impersonates. It includes the item processors of a field.
+The result lists the fields that would be written, with their values, and
+the fields that would be skipped, with the reason. These are the same reasons
+that the endpoint returns in :code:`skippedFields`.
+
+The result also names problems that keep the endpoint from creating any
+record, whatever the payload is:
+
+*   The reaction is disabled, not active yet, or expired.
+*   The reaction impersonates no backend user, or a disabled or deleted one.
+*   The impersonated user may not modify records of the target table.
+*   The storage page does not exist, or the impersonated user may not create
+    records on it.
+
+The dry run writes no record and does not check the secret.
+
+..  note::
+
+    The dry run does not repeat every check of the DataHandler. Whether the
+    page type of the storage page allows the table, the root level
+    restrictions of the table, and the evaluation of a field value are only
+    checked when the record is written.
 
 ..  _create-database-record-extend-tables-list:
 
