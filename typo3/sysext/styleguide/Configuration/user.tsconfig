@@ -1,0 +1,5 @@
+TCAdefaults.tx_styleguide_type {
+  input_1 = From User TSconfig field default
+  input_1.types.withChangedFields = From User TSconfig type default
+  text_1.types.withColumnsOverrides = From User TSconfig type default
+}

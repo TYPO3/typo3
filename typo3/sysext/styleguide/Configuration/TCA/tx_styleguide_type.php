@@ -42,8 +42,10 @@ return [
         ],
         'input_1' => [
             'label' => 'input_1',
+            'description' => 'Page TSconfig field default; type-specific Page default for withChangedFields',
             'config' => [
                 'type' => 'input',
+                'default' => 'From TCA default',
             ],
         ],
         'color_1' => [
@@ -55,8 +57,10 @@ return [
 
         'text_1' => [
             'label' => 'text_1',
+            'description' => 'TCA default; type-specific User TSconfig default for withColumnsOverrides',
             'config' => [
                 'type' => 'text',
+                'default' => 'From TCA text default',
             ],
         ],
     ],

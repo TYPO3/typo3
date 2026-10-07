@@ -42,3 +42,8 @@ TCEFORM.tx_styleguide_elements_basic.color_palpreset.colorPalette = limitedStyle
 
 TCEFORM.tx_styleguide_elements_select.select_processors.itemsProcessors.100.label = From processor 100 via Page TSconfig
 TCEFORM.tx_styleguide_elements_basic.radio_processors.itemsProcessors.100.label = From processor 100 via Page TSconfig
+
+TCAdefaults.tx_styleguide_type {
+  input_1 = From Page TSconfig field default
+  input_1.types.withChangedFields = From Page TSconfig type default
+}
