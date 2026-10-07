@@ -194,15 +194,15 @@ class SlugElement {
       differentProposalField.classList.toggle('hidden', !data.hasConflicts);
       (data.hasConflicts ? differentProposalField : acceptedProposalField).querySelector('span').innerText = data.previewPath;
 
-      const isChanged = this.hiddenField.value !== data.proposal;
-      if (isChanged) {
-        this.fullElement.querySelector('input[data-formengine-input-name]')
-          .dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
-      }
       if (mode === ProposalModes.AUTO || mode === ProposalModes.RECREATE) {
+        const isChanged = this.hiddenField.value !== data.proposal || this.inputField.value !== data.proposal;
         this.readOnlyField.value = data.proposal;
         this.hiddenField.value = data.proposal;
         this.inputField.value = data.proposal;
+        if (isChanged) {
+          this.fullElement.querySelector('input[data-formengine-input-name]')
+            .dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
+        }
       } else {
         this.hiddenField.value = data.proposal;
       }

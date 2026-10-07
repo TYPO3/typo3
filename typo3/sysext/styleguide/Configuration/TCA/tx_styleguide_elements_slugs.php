@@ -173,6 +173,21 @@ return [
                 'eval' => 'uniqueInPid',
             ],
         ],
+        'slug_8' => [
+            'label' => 'slug_8',
+            'description' => 'required',
+            'config' => [
+                'type' => 'slug',
+                'generatorOptions' => [
+                    'fields' => ['input_1'],
+                    'prefixParentPageSlug' => false,
+                ],
+                'fallbackCharacter' => '-',
+                'eval' => 'uniqueInPid',
+                'required' => true,
+                'default' => '',
+            ],
+        ],
 
         'slug_8' => [
             'label' => 'slug_8 postModifiers',
