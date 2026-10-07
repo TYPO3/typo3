@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Routing;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
+use Symfony\Component\Routing\Exception\InvalidParameterException;
 use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use TYPO3\CMS\Core\Context\Context;
@@ -375,7 +376,7 @@ class PageRouter implements RouterInterface
                 }
                 $pageRouteResult = $this->buildPageArguments($routeCandidate, array_merge($appliedDefaults, $parameters), $remainingQueryParameters);
                 break;
-            } catch (MissingMandatoryParametersException $e) {
+            } catch (MissingMandatoryParametersException|InvalidParameterException) {
                 // no match
             }
         }

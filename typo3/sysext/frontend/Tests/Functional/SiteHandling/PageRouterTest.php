@@ -138,4 +138,36 @@ final class PageRouterTest extends AbstractTestCase
         );
         self::assertSame('https://acme.fr/bienvenue', (string)$result);
     }
+
+    #[Test]
+    public function generateUriFallsBackToNextRouteIfParameterDoesNotMatchRequirement(): void
+    {
+        $this->writeSiteConfiguration(
+            'acme-com',
+            array_merge(
+                $this->buildSiteConfiguration(1000, 'https://acme.com/'),
+                [
+                    'routeEnhancers' => [
+                        'Shop' => [
+                            'type' => 'Extbase',
+                            'namespace' => 'shop',
+                            'limitToPages' => [1000],
+                            'routes' => [
+                                ['routePath' => '/{name}/{pos}', '_controller' => 'Catalog::detail'],
+                                ['routePath' => '/{name}', '_controller' => 'Catalog::detail'],
+                            ],
+                        ],
+                    ],
+                ]
+            ),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', 'https://acme.us/'),
+            ]
+        );
+        $pageRouter = new PageRouter($this->get(SiteFinder::class)->getSiteByIdentifier('acme-com'));
+        $result = $pageRouter->generateUri(1000, [
+            'shop' => ['controller' => 'Catalog', 'action' => 'detail', 'name' => 'article', 'pos' => ''],
+        ]);
+        self::assertSame('/article', $result->getPath());
+    }
 }
