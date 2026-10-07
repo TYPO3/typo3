@@ -177,4 +177,23 @@ final class ElementHistoryControllerTest extends FunctionalTestCase
         self::assertStringContainsString('will be moved back to Source page', $body);
         self::assertStringNotContainsString('There are no differences', $body);
     }
+
+    #[Test]
+    public function mmRelationChangeShowsTheStoredRelationsInsteadOfTheCurrentOnes(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/ElementHistoryCategories.csv');
+        $this->setRootPageCategories('1');
+        $this->setRootPageCategories('1,2');
+
+        $body = $this->renderHistoryOfRootPage();
+
+        self::assertMatchesRegularExpression('#<ins>[^<]*Category B#', $body);
+    }
+
+    private function setRootPageCategories(string $categories): void
+    {
+        $dataHandler = $this->get(DataHandler::class);
+        $dataHandler->start(['pages' => [1 => ['categories' => $categories]]], []);
+        $dataHandler->process_datamap();
+    }
 }
