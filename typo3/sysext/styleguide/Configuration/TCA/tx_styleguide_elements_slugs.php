@@ -173,6 +173,21 @@ return [
                 'eval' => 'uniqueInPid',
             ],
         ],
+        'slug_8' => [
+            'label' => 'slug_8',
+            'description' => 'required',
+            'config' => [
+                'type' => 'slug',
+                'generatorOptions' => [
+                    'fields' => ['input_1'],
+                    'prefixParentPageSlug' => false,
+                ],
+                'fallbackCharacter' => '-',
+                'eval' => 'uniqueInPid',
+                'required' => true,
+                'default' => '',
+            ],
+        ],
 
     ],
 
@@ -180,7 +195,7 @@ return [
         '0' => [
             'showitem' => '
                 --div--;slug,
-                    input_1, input_2, slug_1, slug_2, slug_4, slug_5, input_3, slug_3, slug_6, slug_7,
+                    input_1, input_2, slug_1, slug_2, slug_4, slug_5, input_3, slug_3, slug_6, slug_7, slug_8,
                 --div--;meta,
                     disable, sys_language_uid, l10n_parent, l10n_source,
             ',
