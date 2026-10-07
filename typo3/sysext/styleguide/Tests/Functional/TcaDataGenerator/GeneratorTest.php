@@ -49,6 +49,12 @@ final class GeneratorTest extends FunctionalTestCase
         // Field generators created values for the column types
         self::assertNotSame('', (string)$basicRow['input_1']);
         self::assertNotSame('', (string)$basicRow['text_1']);
+        self::assertSame('0', (string)$basicRow['radio_processors']);
+        $selectRow = $connectionPool->getConnectionForTable('tx_styleguide_elements_select')
+            ->select(['select_processors'], 'tx_styleguide_elements_select', ['l10n_parent' => 0, 'sys_language_uid' => 0])
+            ->fetchAssociative();
+        self::assertIsArray($selectRow);
+        self::assertSame('0', (string)$selectRow['select_processors']);
         self::assertMatchesRegularExpression(
             '/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/',
             (string)$basicRow['uuid_1']

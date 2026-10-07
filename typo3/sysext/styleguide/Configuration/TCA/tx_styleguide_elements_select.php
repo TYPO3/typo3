@@ -883,6 +883,35 @@ return [
                             </items>
                         </config>
                     </select_single_1>
+                    <select_processors>
+                        <label>select_processors itemsProcessors in a FlexForm</label>
+                        <config>
+                            <type>select</type>
+                            <renderType>selectSingle</renderType>
+                            <items>
+                                <numIndex index="0">
+                                    <label>Static item</label>
+                                    <value>0</value>
+                                </numIndex>
+                            </items>
+                            <itemsProcessors>
+                                <numIndex index="100">
+                                    <class>TYPO3\CMS\Styleguide\UserFunctions\FormEngine\AddItemProcessor</class>
+                                    <parameters>
+                                        <label>From processor 100 in FlexForm</label>
+                                        <value>20</value>
+                                    </parameters>
+                                </numIndex>
+                                <numIndex index="50">
+                                    <class>TYPO3\CMS\Styleguide\UserFunctions\FormEngine\AddItemProcessor</class>
+                                    <parameters>
+                                        <label>From processor 50 in FlexForm</label>
+                                        <value>10</value>
+                                    </parameters>
+                                </numIndex>
+                            </itemsProcessors>
+                        </config>
+                    </select_processors>
                 </el>
             </ROOT>
         </sSingle>
@@ -1148,6 +1177,28 @@ return [
                 ],
             ],
         ],
+        'select_processors' => [
+            'label' => 'select_processors ordered itemsProcessors',
+            'description' => 'Processor 50 runs before 100; Page TSconfig overrides the label from processor 100',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'default' => 0,
+                'items' => [
+                    ['label' => 'Static item', 'value' => 0],
+                ],
+                'itemsProcessors' => [
+                    100 => [
+                        'class' => \TYPO3\CMS\Styleguide\UserFunctions\FormEngine\AddItemProcessor::class,
+                        'parameters' => ['label' => 'From processor 100', 'value' => 20],
+                    ],
+                    50 => [
+                        'class' => \TYPO3\CMS\Styleguide\UserFunctions\FormEngine\AddItemProcessor::class,
+                        'parameters' => ['label' => 'From processor 50', 'value' => 10],
+                    ],
+                ],
+            ],
+        ],
         'country_4' => [
             'label' => 'Country Basic, size=10, labelField=iso3',
             'config' => [
@@ -1181,7 +1232,7 @@ return [
                     select_single_7, select_single_12, select_single_8, select_single_13, select_single_10,
                     select_single_11, select_single_14, select_single_15,select_single_16,select_single_17,
                     select_single_18, select_single_19, select_single_20, select_single_21, select_single_22,
-                    select_single_23, select_single_24, select_single_25, select_single_26,
+                    select_single_23, select_single_24, select_single_25, select_single_26, select_processors,
                 --div--;renderType=selectSingleBox,
                     select_singlebox_1, select_singlebox_2,select_singlebox_3,
                 --div--;renderType=selectCheckBox,

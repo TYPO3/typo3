@@ -1677,6 +1677,27 @@ backend_layout {
             ],
         ],
 
+        'radio_processors' => [
+            'label' => 'radio_processors ordered itemsProcessors',
+            'description' => 'Processor 50 runs before 100; Page TSconfig overrides the label from processor 100',
+            'config' => [
+                'type' => 'radio',
+                'default' => 0,
+                'items' => [
+                    ['label' => 'Static item', 'value' => 0],
+                ],
+                'itemsProcessors' => [
+                    100 => [
+                        'class' => \TYPO3\CMS\Styleguide\UserFunctions\FormEngine\AddItemProcessor::class,
+                        'parameters' => ['label' => 'From processor 100', 'value' => 20],
+                    ],
+                    50 => [
+                        'class' => \TYPO3\CMS\Styleguide\UserFunctions\FormEngine\AddItemProcessor::class,
+                        'parameters' => ['label' => 'From processor 50', 'value' => 10],
+                    ],
+                ],
+            ],
+        ],
         'none_1' => [
             'label' => 'none_1',
             'description' => 'default',
@@ -2207,7 +2228,7 @@ backend_layout {
                     checkbox_20, checkbox_21, checkbox_22, checkbox_23, checkbox_3, checkbox_4, checkbox_6, checkbox_7, checkbox_8,
                     checkbox_10, checkbox_11, checkbox_12, checkbox_13, checkbox_14, checkbox_15, checkbox_16,
                 --div--;radio,
-                    radio_1, radio_2, radio_3, radio_4, radio_5, radio_6,
+                    radio_1, radio_2, radio_3, radio_4, radio_5, radio_6, radio_processors,
                 --div--;language,
                     language_1,
                 --div--;none,

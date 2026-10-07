@@ -39,3 +39,6 @@ colorPalettes {
 }
 
 TCEFORM.tx_styleguide_elements_basic.color_palpreset.colorPalette = limitedStyleguidePalette
+
+TCEFORM.tx_styleguide_elements_select.select_processors.itemsProcessors.100.label = From processor 100 via Page TSconfig
+TCEFORM.tx_styleguide_elements_basic.radio_processors.itemsProcessors.100.label = From processor 100 via Page TSconfig
