@@ -26,6 +26,8 @@ use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\DataHandling\Model\RecordStateFactory;
 use TYPO3\CMS\Core\DataHandling\SlugHelper;
 use TYPO3\CMS\Core\Http\JsonResponse;
+use TYPO3\CMS\Core\Routing\RouterInterface;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -39,7 +41,8 @@ readonly class FormSlugAjaxController extends AbstractFormEngineAjaxController
 {
     public function __construct(
         private Context $context,
-        private HashService $hashService
+        private HashService $hashService,
+        private SiteFinder $siteFinder,
     ) {}
 
     /**
@@ -83,7 +86,7 @@ readonly class FormSlugAjaxController extends AbstractFormEngineAjaxController
         $fieldName = $queryParameters['fieldName'];
 
         $fieldConfig = $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'] ?? [];
-        $row = (array)BackendUtility::getRecord($tableName, $recordId);
+        $row = (array)BackendUtility::getRecordWSOL($tableName, $recordId);
         $recordType = BackendUtility::getTCAtypeValue($tableName, $row, true);
         if ($recordType !== null) {
             $columnsOverridesConfigOfField = $GLOBALS['TCA'][$tableName]['types'][$recordType]['columnsOverrides'][$fieldName]['config'] ?? null;
@@ -150,7 +153,53 @@ readonly class FormSlugAjaxController extends AbstractFormEngineAjaxController
             'hasConflicts' => $hasConflict,
             'manual' => $values['manual'] ?? '',
             'proposal' => $proposal,
+            'previewPath' => $this->buildPreviewPath($tableName, $proposal, $pid, $languageId, $row, $values),
         ]);
+    }
+
+    /**
+     * Builds the path of the record as it will be shown below the language base in the frontend.
+     * For pages, the URL is generated through the router of the site, so decorators such as
+     * the "PageType" enhancer (e.g. a ".html" suffix) are taken into account.
+     */
+    private function buildPreviewPath(string $tableName, string $slug, int $pid, int $languageId, array $row, array $values): string
+    {
+        $previewPath = '/' . ltrim($slug, '/');
+        if ($tableName !== 'pages') {
+            return $previewPath;
+        }
+        // "manual" carries the raw input of the slug field, it is not a column of the page record
+        // and must not reach route enhancers, aspects or event listeners.
+        unset($values['manual']);
+        $page = array_replace($row, $values, ['slug' => $previewPath]);
+        $page['pid'] ??= $pid;
+        $page['uid'] = (int)($row['uid'] ?? 0);
+        $page['l10n_parent'] = (int)($row['l10n_parent'] ?? 0);
+        if ($page['l10n_parent'] > 0) {
+            $page['_LOCALIZED_UID'] = $page['uid'];
+            $page['uid'] = $page['l10n_parent'];
+        }
+        try {
+            $site = $this->siteFinder->getSiteByPageId($page['uid'] ?: $pid);
+            $language = $languageId > 0 ? $site->getLanguageById($languageId) : $site->getDefaultLanguage();
+            $page['sys_language_uid'] = $language->getLanguageId();
+            $uri = $site->getRouter($this->context)->generateUri(
+                $page,
+                ['_language' => $language],
+                '',
+                RouterInterface::ABSOLUTE_PATH
+            );
+        } catch (\Exception) {
+            // The preview is informational only. Route enhancers, aspects and AfterPageUriGeneratedEvent
+            // listeners may fail outside a frontend request, which must not break the slug suggestion.
+            return $previewPath;
+        }
+        $path = $uri->getPath();
+        $basePath = rtrim($language->getBase()->getPath(), '/');
+        if ($basePath !== '' && str_starts_with($path, $basePath)) {
+            $path = substr($path, strlen($basePath));
+        }
+        return '/' . ltrim(rawurldecode($path), '/');
     }
 
     /**

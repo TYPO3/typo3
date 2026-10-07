@@ -36,6 +36,7 @@ interface Response {
   hasConflicts: boolean;
   manual: string;
   proposal: ProposalModes;
+  previewPath: string;
 }
 
 enum Selectors {
@@ -184,13 +185,12 @@ class SlugElement {
       signature: this.options.signature,
     }).then(async (response: AjaxResponse): Promise<void> => {
       const data: Response = await response.resolve();
-      const visualProposal = '/' + data.proposal.replace(/^\//, '');
       const acceptedProposalField: HTMLElement = this.fullElement.querySelector('.t3js-form-proposal-accepted');
       const differentProposalField: HTMLElement = this.fullElement.querySelector('.t3js-form-proposal-different');
 
       acceptedProposalField.classList.toggle('hidden', data.hasConflicts);
       differentProposalField.classList.toggle('hidden', !data.hasConflicts);
-      (data.hasConflicts ? differentProposalField : acceptedProposalField).querySelector('span').innerText = visualProposal;
+      (data.hasConflicts ? differentProposalField : acceptedProposalField).querySelector('span').innerText = data.previewPath;
 
       const isChanged = this.hiddenField.value !== data.proposal;
       if (isChanged) {
