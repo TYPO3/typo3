@@ -166,6 +166,10 @@ final class AbstractNodeTest extends AbstractFolderStructureTestCase
         $subPath = $path . '/' . StringUtility::getUniqueId('dir_');
         mkdir($subPath);
         chmod($path, 02770);
+        clearstatcache();
+        if ((fileperms($path) & 02000) === 0) {
+            self::markTestSkipped('The file system of the test directory does not keep the setgid bit.');
+        }
         $node->_set('targetPermission', '2770');
         $node->method('getAbsolutePath')->willReturn($subPath);
         self::assertEquals(ContextualFeedbackSeverity::OK, $node->_call('fixPermission')->getSeverity());
