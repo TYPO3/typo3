@@ -310,4 +310,23 @@ final class ElementHistoryControllerTest extends FunctionalTestCase
         self::assertStringContainsString('name="rollbackScope"', $body);
         self::assertStringContainsString('value="op1"', $body);
     }
+
+    #[Test]
+    public function mmRelationChangeShowsTheStoredRelationsInsteadOfTheCurrentOnes(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/ElementHistoryCategories.csv');
+        $this->setRootPageCategories('1');
+        $this->setRootPageCategories('1,2');
+
+        $body = $this->renderHistoryOfRootPage();
+
+        self::assertMatchesRegularExpression('#<ins>[^<]*Category B#', $body);
+    }
+
+    private function setRootPageCategories(string $categories): void
+    {
+        $dataHandler = $this->get(DataHandler::class);
+        $dataHandler->start(['pages' => [1 => ['categories' => $categories]]], []);
+        $dataHandler->process_datamap();
+    }
 }

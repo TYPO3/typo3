@@ -30,6 +30,7 @@ use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\ValueFormatter\FlexFormValueFormatter;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\DataHandling\History\RecordHistoryStore;
 use TYPO3\CMS\Core\DataHandling\TableColumnType;
 use TYPO3\CMS\Core\Domain\DateTimeFactory;
@@ -38,6 +39,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\Field\FieldTypeInterface;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Site\SiteFinder;
@@ -560,6 +562,10 @@ class ElementHistoryController
                         $old = $this->flexFormValueFormatter->format($table, $fN, ($entry['oldRecord'][$fN] ?? ''), $rollbackUid, $colConfig);
                         $new = $this->flexFormValueFormatter->format($table, $fN, ($entry['newRecord'][$fN] ?? ''), $rollbackUid, $colConfig);
                         $diffResult = $this->diffUtility->diff(strip_tags($old), strip_tags($new), DiffGranularity::CHARACTER);
+                    } elseif (!empty($fieldInformation->getConfiguration()['MM'])) {
+                        $old = $this->resolveRelationTitles($table, $fieldInformation, (string)($entry['oldRecord'][$fN] ?? ''));
+                        $new = $this->resolveRelationTitles($table, $fieldInformation, (string)($entry['newRecord'][$fN] ?? ''));
+                        $diffResult = $this->diffUtility->diff($old, $new);
                     } else {
                         $old = (string)BackendUtility::getProcessedValue($table, $fN, ($entry['oldRecord'][$fN] ?? ''), 0, true, false, $rollbackUid);
                         $new = (string)BackendUtility::getProcessedValue($table, $fN, ($entry['newRecord'][$fN] ?? ''), 0, true, false, $rollbackUid);
@@ -578,6 +584,22 @@ class ElementHistoryController
             }
         }
         return $lines;
+    }
+
+    /**
+     * The history stores MM relations as a uid list, so the titles must be resolved from that
+     * list and not from the MM table, which only knows the current relations.
+     */
+    private function resolveRelationTitles(string $table, FieldTypeInterface $field, string $uidList): string
+    {
+        $relationHandler = GeneralUtility::makeInstance(RelationHandler::class);
+        $relationHandler->initializeForField($table, $field, 0, $uidList);
+        $relationHandler->getFromDB();
+        $titles = [];
+        foreach ($relationHandler->getResolvedItemArray() as $item) {
+            $titles[] = BackendUtility::getRecordTitle($item['table'], $item['record']);
+        }
+        return implode(', ', $titles);
     }
 
     /**
