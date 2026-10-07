@@ -1199,6 +1199,52 @@ return [
                 ],
             ],
         ],
+        'select_empty' => [
+            'label' => 'select_empty no selectable items',
+            'description' => 'Hidden normally; read-only with an info badge in backend debug mode',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'items' => [],
+            ],
+        ],
+        'select_empty_visible' => [
+            'label' => 'select_empty_visible showIfEmpty=true',
+            'description' => 'Visible despite empty items; compare with select_empty in backend debug mode',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'items' => [],
+                'showIfEmpty' => true,
+            ],
+        ],
+        'select_empty_foreign' => [
+            'label' => 'select_empty_foreign no matching foreign records',
+            'description' => 'Hidden normally; the foreign_table_where condition excludes all records',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'foreign_table' => 'tx_styleguide_staticdata',
+                'foreign_table_where' => 'AND {#tx_styleguide_staticdata}.{#uid} < 0',
+                'items' => [
+                    ['label' => 'No record', 'value' => 0],
+                ],
+            ],
+        ],
+        'select_empty_foreign_visible' => [
+            'label' => 'select_empty_foreign_visible showIfEmpty=true',
+            'description' => 'Visible despite no matching foreign records; compare with select_empty_foreign',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'foreign_table' => 'tx_styleguide_staticdata',
+                'foreign_table_where' => 'AND {#tx_styleguide_staticdata}.{#uid} < 0',
+                'items' => [
+                    ['label' => 'No record', 'value' => 0],
+                ],
+                'showIfEmpty' => true,
+            ],
+        ],
         'country_4' => [
             'label' => 'Country Basic, size=10, labelField=iso3',
             'config' => [
@@ -1233,6 +1279,8 @@ return [
                     select_single_11, select_single_14, select_single_15,select_single_16,select_single_17,
                     select_single_18, select_single_19, select_single_20, select_single_21, select_single_22,
                     select_single_23, select_single_24, select_single_25, select_single_26, select_processors,
+                --div--;Empty items and showIfEmpty,
+                    select_empty, select_empty_visible, select_empty_foreign, select_empty_foreign_visible,
                 --div--;renderType=selectSingleBox,
                     select_singlebox_1, select_singlebox_2,select_singlebox_3,
                 --div--;renderType=selectCheckBox,
