@@ -222,7 +222,8 @@ export default class Filelist {
     if (returnUrl === '') {
       const form = topWindow.list_frame.document.forms.namedItem('fileListForm');
       if (form !== null) {
-        returnUrl = form.action;
+        const formAction = new URL(form.action);
+        returnUrl = formAction.pathname + formAction.search;
       } else {
         returnUrl = topWindow.list_frame.document.location.pathname + topWindow.list_frame.document.location.search;
       }

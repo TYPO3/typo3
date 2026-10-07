@@ -1,4 +1,6 @@
 import { test, expect } from '../../fixtures/setup-fixtures';
+import * as path from 'node:path';
+import * as fs from 'node:fs';
 
 test.describe('File Metadata', () => {
   test.beforeEach(async ({ backend }) => {
@@ -32,6 +34,33 @@ test.describe('File Metadata', () => {
 
       // Verify the metadata editor heading
       await expect(backend.contentFrame.locator('h1')).toContainText('bus_lane.jpg');
+    });
+  });
+
+  test('Closing the metadata editor returns to a folder with special characters', async ({ backend }) => {
+    const folderName = 'Blüte ' + Date.now();
+    const fileName = 'metadata.txt';
+    const documentRoot = process.env.PLAYWRIGHT_DOCUMENT_ROOT
+      || path.join(__dirname, '../../../../../typo3temp/var/tests/playwright-composer/public');
+    fs.mkdirSync(path.join(documentRoot, 'fileadmin', folderName));
+    fs.writeFileSync(path.join(documentRoot, 'fileadmin', folderName, fileName), '');
+
+    await test.step('Open folder', async () => {
+      await backend.fileTree.refresh();
+      const folder = await backend.fileTree.open('fileadmin', folderName);
+      await folder.click();
+      await backend.fileTree.isReady();
+      await expect(backend.contentFrame.getByRole('button', { name: fileName })).toBeVisible();
+    });
+
+    await test.step('Open and close file metadata editor', async () => {
+      const formEngineReady = await backend.formEngine.formEngineLoaded();
+      await backend.contentFrame.getByRole('button', { name: fileName }).click();
+      await formEngineReady();
+      await expect(backend.contentFrame.locator('h1')).toContainText(fileName);
+
+      await backend.contentFrame.locator('.module-docheader .btn[title="Close"]').click();
+      await expect(backend.contentFrame.locator('.t3-filelist-container').getByRole('button', { name: fileName })).toBeVisible();
     });
   });
 });
