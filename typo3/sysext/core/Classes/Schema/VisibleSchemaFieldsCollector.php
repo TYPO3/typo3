@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Domain\RecordFactory;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\Field\FieldCollection;
 use TYPO3\CMS\Core\Schema\Field\FieldTypeInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class that provides record type dependant fields, visible for the current user, taking language context into account
@@ -62,7 +63,7 @@ readonly class VisibleSchemaFieldsCollector
 
         foreach ($fields as $field) {
             if (($field->supportsAccessControl() && !$backendUser->check('non_exclude_fields', $schemaName . ':' . $field->getName()))
-                || ($isOverlay && empty($field->getConfiguration()['l10n_display']) && ($field->getConfiguration()['l10n_mode'] ?? '') === 'exclude')
+                || ($isOverlay && !GeneralUtility::inList($field->getConfiguration()['l10n_display'] ?? '', 'defaultAsReadonly') && ($field->getConfiguration()['l10n_mode'] ?? '') === 'exclude')
             ) {
                 unset($fields[$field->getName()]);
             }

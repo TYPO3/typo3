@@ -83,7 +83,7 @@ final class VisibleSchemaFieldsCollectorTest extends FunctionalTestCase
             'type,foo',
             ['type' => 'invalid'],
             [],
-            ['type', 'foo', 'bar', 'baz', 'sys_language_uid', 'l10n_parent'],
+            ['type', 'foo', 'bar', 'baz', 'hidediff', 'readonly', 'sys_language_uid', 'l10n_parent'],
         ];
         yield 'record type given' => [
             'type,foo',
@@ -102,6 +102,18 @@ final class VisibleSchemaFieldsCollectorTest extends FunctionalTestCase
             ['sys_language_uid' => 1, 'l10n_parent' => 1],
             [],
             ['type'],
+        ];
+        yield 'translation with l10n_mode=exclude and l10n_display=hideDiff' => [
+            'type,hidediff',
+            ['sys_language_uid' => 1, 'l10n_parent' => 1],
+            [],
+            ['type'],
+        ];
+        yield 'translation with l10n_mode=exclude and l10n_display=defaultAsReadonly' => [
+            'type,readonly',
+            ['sys_language_uid' => 1, 'l10n_parent' => 1],
+            [],
+            ['type', 'readonly'],
         ];
         yield 'user permission exclude field' => [
             'type,foo,exclude',
@@ -129,6 +141,8 @@ final class VisibleSchemaFieldsCollectorTest extends FunctionalTestCase
                         'foo' => ['l10n_mode' => 'exclude', 'config' => ['type' => 'input']],
                         'bar' => ['config' => ['type' => 'input']],
                         'baz' => ['config' => ['type' => 'input']],
+                        'hidediff' => ['l10n_mode' => 'exclude', 'l10n_display' => 'hideDiff', 'config' => ['type' => 'input']],
+                        'readonly' => ['l10n_mode' => 'exclude', 'l10n_display' => 'hideDiff,defaultAsReadonly', 'config' => ['type' => 'input']],
                         'exclude' => ['exclude' => true, 'config' => ['type' => 'input']],
                         'sys_language_uid' => ['config' => ['type' => 'language']],
                         'l10n_parent' => ['config' => ['type' => 'input']],

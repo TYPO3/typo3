@@ -75,7 +75,8 @@ class SingleFieldContainer extends AbstractContainer
         // A couple of early returns in case the field should not be rendered
         $fieldIsExcluded = $parameterArray['fieldConf']['exclude'] ?? false;
         $fieldNotExcludable = $backendUser->check('non_exclude_fields', $table . ':' . $fieldName);
-        $fieldExcludedFromTranslatedRecords = empty($parameterArray['fieldConf']['l10n_display']) && ($parameterArray['fieldConf']['l10n_mode'] ?? '') === 'exclude';
+        $fieldExcludedFromTranslatedRecords = !GeneralUtility::inList($parameterArray['fieldConf']['l10n_display'] ?? '', 'defaultAsReadonly')
+            && ($parameterArray['fieldConf']['l10n_mode'] ?? '') === 'exclude';
         // Return if BE-user has no access rights to this field, @todo: another user access rights check!
         if (($fieldIsExcluded && !$fieldNotExcludable) || ($isOverlay && $fieldExcludedFromTranslatedRecords) || $this->inlineFieldShouldBeSkipped()) {
             return $resultArray;

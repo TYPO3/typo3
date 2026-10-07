@@ -517,6 +517,54 @@ return [
                 ',
             ],
         ],
+
+        // l10n_mode=exclude without defaultAsReadonly: hidden in translated records
+        'exclude_input' => [
+            'label' => 'exclude_input',
+            'description' => 'l10n_mode=exclude',
+            'l10n_mode' => 'exclude',
+            'config' => [
+                'type' => 'input',
+            ],
+        ],
+        'exclude_hidediff_input' => [
+            'label' => 'exclude_hidediff_input',
+            'description' => 'l10n_mode=exclude, l10n_display=hideDiff',
+            'l10n_mode' => 'exclude',
+            'l10n_display' => 'hideDiff',
+            'config' => [
+                'type' => 'input',
+            ],
+        ],
+        'exclude_hidediff_flex' => [
+            'label' => 'exclude_hidediff_flex',
+            'description' => 'l10n_mode=exclude, l10n_display=hideDiff',
+            'l10n_mode' => 'exclude',
+            'l10n_display' => 'hideDiff',
+            'config' => [
+                'type' => 'flex',
+                'ds' => '
+<T3DataStructure>
+    <sheets>
+        <sDEF>
+            <ROOT>
+                <sheetTitle>Sheet Title</sheetTitle>
+                <type>array</type>
+                <el>
+                    <input>
+                        <label>input</label>
+                        <config>
+                            <type>input</type>
+                        </config>
+                    </input>
+                </el>
+            </ROOT>
+        </sDEF>
+    </sheets>
+</T3DataStructure>
+                ',
+            ],
+        ],
     ],
 
     'types' => [
@@ -543,6 +591,8 @@ return [
                     --palette--;;inline,
                 --div--;Flex,
                     --palette--;;flex,
+                --div--;Exclude,
+                    --palette--;;exclude,
                 --div--;Meta,
                     sys_language_uid, l10n_parent, l10n_source,
             ',
@@ -619,6 +669,10 @@ return [
         'flex' => [
             'showitem' => 'flex',
             'label' => 'type=flex',
+        ],
+        'exclude' => [
+            'showitem' => 'exclude_input,exclude_hidediff_input,--linebreak--,exclude_hidediff_flex',
+            'label' => 'l10n_mode=exclude without defaultAsReadonly, hidden in translations',
         ],
     ],
 ];
