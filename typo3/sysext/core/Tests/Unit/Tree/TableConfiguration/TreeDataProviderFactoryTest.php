@@ -119,4 +119,32 @@ final class TreeDataProviderFactoryTest extends UnitTestCase
         $this->expectExceptionCode(1438875249);
         TreeDataProviderFactory::getDataProvider($tcaConfiguration, 'foo', 'bar', ['uid' => 1]);
     }
+
+    public static function unselectableItemsIncludeDescendantsDataProvider(): array
+    {
+        return [
+            'parent field of own table' => ['foo', 'parent', true],
+            'other field of own table' => ['foo', 'related', false],
+            'parent field of other table' => ['bar', 'parent', false],
+        ];
+    }
+
+    #[DataProvider('unselectableItemsIncludeDescendantsDataProvider')]
+    #[Test]
+    public function factoryMarksDescendantsAsUnselectableOnlyForParentFieldOfOwnTable(string $table, string $field, bool $expected): void
+    {
+        GeneralUtility::addInstance(DatabaseTreeDataProvider::class, new DatabaseTreeDataProvider(new NoopEventDispatcher()));
+
+        $tcaConfiguration = [
+            'type' => 'category',
+            'foreign_table' => 'foo',
+            'foreign_label' => 'labelFoo',
+            'treeConfig' => [
+                'parentField' => 'parent',
+            ],
+        ];
+        $dataProvider = TreeDataProviderFactory::getDataProvider($tcaConfiguration, $table, $field, ['uid' => 1]);
+
+        self::assertSame($expected, $dataProvider->getUnselectableItemsIncludeDescendants());
+    }
 }

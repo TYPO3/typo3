@@ -70,8 +70,9 @@ class TreeDataProviderFactory
                 $tableName = $tcaConfiguration['foreign_table'];
                 $dataProvider->setTableName($tableName);
                 if ($tableName == $table) {
-                    // The uid of the currently opened row cannot be selected in a table relation to "self"
-                    $unselectableUids = [$currentValue['uid']];
+                    // The uid of the currently opened row cannot be selected in a table relation to "self".
+                    // The tree lists live uids, so a workspace version is represented by its live record.
+                    $unselectableUids = [(int)($currentValue['t3ver_oid'] ?? 0) > 0 ? (int)$currentValue['t3ver_oid'] : $currentValue['uid']];
                     $dataProvider->setItemUnselectableList($unselectableUids);
                 }
             } else {
@@ -110,6 +111,10 @@ class TreeDataProviderFactory
             } elseif (isset($treeConfiguration['parentField'])) {
                 $dataProvider->setLookupMode(DatabaseTreeDataProvider::MODE_PARENT);
                 $dataProvider->setLookupField($treeConfiguration['parentField']);
+                if ($tableName === $table && $field === $treeConfiguration['parentField']) {
+                    // Descendants of the currently opened row cannot be selected as its parent either, as this would create a loop
+                    $dataProvider->setUnselectableItemsIncludeDescendants(true);
+                }
             } else {
                 throw new \InvalidArgumentException('TCA Tree configuration is invalid: neither "childrenField" nor "parentField" is set', 1288215889);
             }

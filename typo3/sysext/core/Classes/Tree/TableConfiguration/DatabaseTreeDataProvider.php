@@ -34,6 +34,7 @@ use TYPO3\CMS\Core\Schema\TcaSchema;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Tree\Event\ModifyTreeDataEvent;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * TCA tree data provider
@@ -64,6 +65,11 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
     protected string $lookupField = '';
 
     protected array $idCache = [];
+
+    /**
+     * Whether descendants of unselectable items are unselectable as well (parent mode only)
+     */
+    protected bool $unselectableItemsIncludeDescendants = false;
 
     /**
      * Stores TCA-Configuration of the LookUpField in tableName
@@ -147,6 +153,19 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
     public function getLookupMode(): int
     {
         return $this->lookupMode;
+    }
+
+    /**
+     * Sets whether descendants of unselectable items are unselectable as well (parent mode only)
+     */
+    public function setUnselectableItemsIncludeDescendants(bool $unselectableItemsIncludeDescendants): void
+    {
+        $this->unselectableItemsIncludeDescendants = $unselectableItemsIncludeDescendants;
+    }
+
+    public function getUnselectableItemsIncludeDescendants(): bool
+    {
+        return $this->unselectableItemsIncludeDescendants;
     }
 
     /**
@@ -234,10 +253,75 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
         if (isset($this->columnConfiguration['foreign_table']) && $this->columnConfiguration['foreign_table'] !== $this->getTableName()) {
             throw new \InvalidArgumentException('TCA Tree configuration is invalid: tree for different node-Tables is not implemented yet', 1290944650);
         }
+        if ($this->unselectableItemsIncludeDescendants && $this->getLookupMode() === self::MODE_PARENT) {
+            $this->addDescendantsToItemUnselectableList();
+        }
         $this->treeData = GeneralUtility::makeInstance(TreeNode::class);
         $this->loadTreeData();
         $event = $this->eventDispatcher->dispatch(new ModifyTreeDataEvent($this->treeData, $this));
         $this->treeData = $event->getTreeData();
+    }
+
+    /**
+     * Adds all descendants of the unselectable items to the list of unselectable
+     * items, as selecting one of them as parent would create a loop. Descendants
+     * are resolved from the available items and the database, so they are found
+     * even if an intermediate item is not part of the displayed tree, e.g. due to
+     * TSconfig "removeItems", starting points or category mounts.
+     */
+    protected function addDescendantsToItemUnselectableList(): void
+    {
+        $uidsToProcess = [];
+        $processedUids = [];
+        foreach ($this->getItemUnselectableList() as $uid) {
+            if (MathUtility::canBeInterpretedAsInteger($uid) && (int)$uid > 0) {
+                $uidsToProcess[] = (int)$uid;
+                $processedUids[(int)$uid] = true;
+            }
+        }
+        $descendantUids = [];
+        while ($uidsToProcess !== []) {
+            $uid = array_shift($uidsToProcess);
+            if (is_array($this->availableItems[$uid] ?? false)) {
+                // @todo: This is part of the category tree performance hack
+                $row = $this->availableItems[$uid];
+            } else {
+                $row = BackendUtility::getRecord($this->tableName, $uid, '*', '', false);
+            }
+            if (empty($row)) {
+                continue;
+            }
+            $childUids = $this->getChildrenUidsFromParentRelation($row);
+            if ($this->availableItems !== []) {
+                $childUids = array_merge($childUids, $this->getChildrenUidsFromParentRelationInDatabase($row));
+            }
+            foreach ($childUids as $childUid) {
+                $childUid = (int)$childUid;
+                if ($childUid > 0 && !isset($processedUids[$childUid])) {
+                    $processedUids[$childUid] = true;
+                    $descendantUids[] = $childUid;
+                    $uidsToProcess[] = $childUid;
+                }
+            }
+        }
+        $this->setItemUnselectableList(array_merge($this->getItemUnselectableList(), $descendantUids));
+    }
+
+    /**
+     * Resolves children in the database, without restricting them to the available items.
+     */
+    private function getChildrenUidsFromParentRelationInDatabase(array $row): array
+    {
+        $relationField = $this->lookupField;
+        if (in_array($this->columnConfiguration['type'] ?? '', ['select', 'category', 'inline', 'file'], true)) {
+            if ($this->columnConfiguration['MM'] ?? null) {
+                return [];
+            }
+            if ($this->columnConfiguration['foreign_field'] ?? null) {
+                $relationField = $this->columnConfiguration['foreign_field'];
+            }
+        }
+        return $this->listFieldQuery($relationField, (int)$row['uid']);
     }
 
     /**
