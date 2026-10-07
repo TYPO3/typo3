@@ -95,6 +95,13 @@ abstract class AbstractLinkBrowserController
      */
     protected array $linkAttributeValues = [];
 
+    /**
+     * CSS classes suggested in the class field
+     *
+     * @var list<array{value: string, label: string}>
+     */
+    protected array $cssClassItems = [];
+
     protected array $parameters;
 
     protected DependencyOrderingService $dependencyOrderingService;
@@ -242,6 +249,28 @@ abstract class AbstractLinkBrowserController
                 $this->linkAttributeValues['class'] = $defaultCssClass;
             }
         }
+    }
+
+    /**
+     * @return list<array{value: string, label: string}>
+     */
+    protected function getCssClassItems(array $pageTsConfig, string $handlerId): array
+    {
+        $itemsConfiguration = $pageTsConfig['TCEMAIN.']['linkHandler.'][$handlerId . '.']['cssClass.']['items.']
+            ?? $pageTsConfig['TCEMAIN.']['linkHandler.']['properties.']['cssClass.']['items.']
+            ?? [];
+        $items = [];
+        foreach ($itemsConfiguration as $itemConfiguration) {
+            $value = trim((string)(is_array($itemConfiguration) ? ($itemConfiguration['value'] ?? '') : ''));
+            if ($value === '') {
+                continue;
+            }
+            $items[] = [
+                'value' => $value,
+                'label' => (string)($itemConfiguration['label'] ?? $value),
+            ];
+        }
+        return $items;
     }
 
     /**
@@ -438,6 +467,10 @@ abstract class AbstractLinkBrowserController
      */
     protected function renderLinkAttributeFields(ViewInterface $view): string
     {
+        $this->cssClassItems = $this->getCssClassItems(
+            BackendUtility::getPagesTSconfig((int)($this->parameters['pid'] ?? 0)),
+            $this->displayedLinkHandlerId
+        );
         $fieldRenderingDefinitions = $this->getLinkAttributeFieldDefinitions();
         $fieldRenderingDefinitions = $this->displayedLinkHandler->modifyLinkAttributes($fieldRenderingDefinitions);
         $this->linkAttributeFields = $this->getAllowedLinkAttributes();
@@ -485,14 +518,24 @@ abstract class AbstractLinkBrowserController
                     value="' . htmlspecialchars($this->linkAttributeValues['title'] ?? '') . '" />
             </div>';
 
+        $classField = '<input id="lclass" type="text" name="lclass" class="form-control"
+                    value="' . htmlspecialchars($this->linkAttributeValues['class'] ?? '') . '" />';
+        if ($this->cssClassItems !== []) {
+            $classChoices = '';
+            foreach ($this->cssClassItems as $item) {
+                $classChoices .= '<typo3-backend-combobox-choice value="' . htmlspecialchars($item['value']) . '">'
+                    . htmlspecialchars($lang->sL($item['label']))
+                    . '</typo3-backend-combobox-choice>';
+            }
+            $classField = '<typo3-backend-combobox>' . $classField . $classChoices . '</typo3-backend-combobox>';
+        }
         $fieldRenderingDefinitions['class'] = '
             <!-- Selecting class for link: -->
             <div class="element-browser-form-group">
                 <label for="lclass" class="form-label">
                     ' . htmlspecialchars($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:class')) . '
                 </label>
-                <input id="lclass" type="text" name="lclass" class="form-control"
-                    value="' . htmlspecialchars($this->linkAttributeValues['class'] ?? '') . '" />
+                ' . $classField . '
             </div>';
 
         $fieldRenderingDefinitions['params'] = '

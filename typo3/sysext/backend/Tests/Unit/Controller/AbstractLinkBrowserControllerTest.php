@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Tests\Unit\Controller;
 
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Backend\Controller\LinkBrowserController;
@@ -50,6 +51,144 @@ final class AbstractLinkBrowserControllerTest extends UnitTestCase
         self::assertArrayHasKey('rel', $result);
         self::assertStringContainsString('name="lrel"', $result['rel']);
         self::assertStringContainsString('value="noopener"', $result['rel']);
+    }
+
+    #[Test]
+    public function getLinkAttributeFieldDefinitionsRendersPlainClassFieldWithoutCssClassItems(): void
+    {
+        $languageService = self::createStub(LanguageService::class);
+        $languageService->method('sL')->willReturnCallback(static fn(string $key): string => $key);
+        $this->subject->method('getLanguageService')->willReturn($languageService);
+        $this->subject->_set('linkAttributeValues', ['class' => 'my-class']);
+
+        $result = $this->subject->_call('getLinkAttributeFieldDefinitions');
+
+        self::assertStringContainsString('name="lclass"', $result['class']);
+        self::assertStringContainsString('value="my-class"', $result['class']);
+        self::assertStringNotContainsString('typo3-backend-combobox', $result['class']);
+    }
+
+    #[Test]
+    public function getLinkAttributeFieldDefinitionsRendersCssClassItemsAsComboboxChoices(): void
+    {
+        $languageService = self::createStub(LanguageService::class);
+        $languageService->method('sL')->willReturnCallback(static fn(string $key): string => $key);
+        $this->subject->method('getLanguageService')->willReturn($languageService);
+        $this->subject->_set('linkAttributeValues', ['class' => 'my-class']);
+        $this->subject->_set('cssClassItems', [
+            ['value' => 'btn btn-primary', 'label' => 'Button <primary>'],
+            ['value' => 'link-"download"', 'label' => 'Download'],
+        ]);
+
+        $result = $this->subject->_call('getLinkAttributeFieldDefinitions');
+
+        self::assertStringContainsString('<typo3-backend-combobox>', $result['class']);
+        self::assertStringContainsString('value="my-class"', $result['class']);
+        self::assertStringContainsString(
+            '<typo3-backend-combobox-choice value="btn btn-primary">Button &lt;primary&gt;</typo3-backend-combobox-choice>',
+            $result['class']
+        );
+        self::assertStringContainsString(
+            '<typo3-backend-combobox-choice value="link-&quot;download&quot;">Download</typo3-backend-combobox-choice>',
+            $result['class']
+        );
+    }
+
+    public static function getCssClassItemsDataProvider(): \Generator
+    {
+        yield 'no configuration' => [
+            [],
+            'page',
+            [],
+        ];
+        yield 'global items' => [
+            [
+                'properties.' => [
+                    'cssClass.' => [
+                        'items.' => [
+                            '10.' => ['value' => 'btn btn-primary', 'label' => 'Button'],
+                            '20.' => ['value' => 'link-external'],
+                        ],
+                    ],
+                ],
+            ],
+            'url',
+            [
+                ['value' => 'btn btn-primary', 'label' => 'Button'],
+                ['value' => 'link-external', 'label' => 'link-external'],
+            ],
+        ];
+        yield 'handler-specific items replace global items' => [
+            [
+                'properties.' => [
+                    'cssClass.' => [
+                        'items.' => [
+                            '10.' => ['value' => 'btn', 'label' => 'Button'],
+                        ],
+                    ],
+                ],
+                'file.' => [
+                    'cssClass.' => [
+                        'items.' => [
+                            '10.' => ['value' => 'link-download', 'label' => 'Download'],
+                        ],
+                    ],
+                ],
+            ],
+            'file',
+            [
+                ['value' => 'link-download', 'label' => 'Download'],
+            ],
+        ];
+        yield 'global items apply to handlers without own items' => [
+            [
+                'properties.' => [
+                    'cssClass.' => [
+                        'items.' => [
+                            '10.' => ['value' => 'btn', 'label' => 'Button'],
+                        ],
+                    ],
+                ],
+                'file.' => [
+                    'cssClass.' => [
+                        'items.' => [
+                            '10.' => ['value' => 'link-download', 'label' => 'Download'],
+                        ],
+                    ],
+                ],
+            ],
+            'page',
+            [
+                ['value' => 'btn', 'label' => 'Button'],
+            ],
+        ];
+        yield 'items without value are skipped' => [
+            [
+                'properties.' => [
+                    'cssClass.' => [
+                        'items.' => [
+                            '10.' => ['label' => 'No value'],
+                            '20.' => ['value' => '  ', 'label' => 'Blank value'],
+                            '30' => 'not an array',
+                            '40.' => ['value' => ' btn ', 'label' => 'Button'],
+                        ],
+                    ],
+                ],
+            ],
+            'page',
+            [
+                ['value' => 'btn', 'label' => 'Button'],
+            ],
+        ];
+    }
+
+    #[DataProvider('getCssClassItemsDataProvider')]
+    #[Test]
+    public function getCssClassItemsResolvesPageTsConfig(array $linkHandlerTsConfig, string $handlerId, array $expected): void
+    {
+        $pageTsConfig = $linkHandlerTsConfig === [] ? [] : ['TCEMAIN.' => ['linkHandler.' => $linkHandlerTsConfig]];
+
+        self::assertSame($expected, $this->subject->_call('getCssClassItems', $pageTsConfig, $handlerId));
     }
 
     #[Test]
