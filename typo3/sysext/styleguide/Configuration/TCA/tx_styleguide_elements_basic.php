@@ -940,6 +940,34 @@ return [
             ],
         ],
 
+        'email_6' => [
+            'label' => 'email_6',
+            'description' => 'eval=lower, valuePicker with mixed-case email',
+            'config' => [
+                'type' => 'email',
+                'eval' => 'lower',
+                'valuePicker' => [
+                    'items' => [
+                        ['label' => 'Mixed-case email', 'value' => 'Editor@Example.ORG'],
+                    ],
+                ],
+            ],
+        ],
+        'email_7' => [
+            'label' => 'email_7',
+            'description' => 'eval=lower,unique, valuePicker with differently cased emails',
+            'config' => [
+                'type' => 'email',
+                'eval' => 'lower,unique',
+                'valuePicker' => [
+                    'items' => [
+                        ['label' => 'Mixed-case email', 'value' => 'Editor@Example.ORG'],
+                        ['label' => 'Same email in uppercase', 'value' => 'EDITOR@EXAMPLE.ORG'],
+                    ],
+                ],
+            ],
+        ],
+
         'text_1' => [
             'l10n_mode' => 'prefixLangTitle description',
             'description' => 'field description',
@@ -2165,7 +2193,7 @@ backend_layout {
                 --div--;number,
                     number_1, number_2, number_3, number_4, number_5, number_7, number_8, number_9, number_10, number_11, number_12, number_13,
                 --div--;email,
-                    email_1, email_2, email_3, email_4, email_5,
+                    email_1, email_2, email_3, email_4, email_5, email_6, email_7,
                 --div--;text,
                     text_1, text_2, text_3, text_4, text_5, text_6, text_7, text_9, text_10,
                     text_11, text_12, text_13, text_18, text_14, text_15, text_16, text_17, text_19,
