@@ -18,7 +18,11 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Mvc\Property;
 
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
+use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
 use TYPO3\CMS\Form\Domain\Model\FormElements\FileUpload;
@@ -36,6 +40,10 @@ use TYPO3\CMS\Form\Mvc\Validation\MimeTypeValidator;
 #[Autoconfigure(public: true)]
 class PropertyMappingConfiguration implements AfterFormStateInitializedInterface
 {
+    public function __construct(
+        private readonly ResourceFactory $resourceFactory,
+    ) {}
+
     /**
      * @param FormRuntime $formRuntime holding current form state and static form definition
      */
@@ -53,6 +61,9 @@ class PropertyMappingConfiguration implements AfterFormStateInitializedInterface
      * unlike in initializeFormElement() which runs before YAML properties are set.
      *
      * This sets:
+     * - CONFIGURATION_UPLOAD_FOLDER: from the element's 'saveToFileMount' property,
+     *   falling back to the folder of the form definition. If neither is accessible,
+     *   the converter's default folder is used.
      * - CONFIGURATION_UPLOAD_SEED: derived from the form session identifier
      *   for creating storage sub-folders.
      * - CONFIGURATION_ALLOW_REMOVAL: from the element's 'allowRemoval' property
@@ -101,6 +112,15 @@ class PropertyMappingConfiguration implements AfterFormStateInitializedInterface
             );
         }
 
+        $uploadFolder = $this->resolveUploadFolder($renderable);
+        if ($uploadFolder !== null) {
+            $propertyMappingConfiguration->setTypeConverterOption(
+                UploadedFileReferenceConverter::class,
+                UploadedFileReferenceConverter::CONFIGURATION_UPLOAD_FOLDER,
+                $uploadFolder
+            );
+        }
+
         $propertyMappingConfiguration->setTypeConverterOption(
             UploadedFileReferenceConverter::class,
             UploadedFileReferenceConverter::CONFIGURATION_UPLOAD_SEED,
@@ -112,6 +132,41 @@ class PropertyMappingConfiguration implements AfterFormStateInitializedInterface
             UploadedFileReferenceConverter::CONFIGURATION_ALLOW_REMOVAL,
             (bool)($renderable->getProperties()['allowRemoval'] ?? false)
         );
+    }
+
+    private function resolveUploadFolder(FileUpload $renderable): ?string
+    {
+        // Backend users previewing a form may lack access to the upload storage
+        if ($renderable->getRootForm()->getRenderingOptions()['previewMode'] ?? false) {
+            return null;
+        }
+        $saveToFileMountIdentifier = (string)($renderable->getProperties()['saveToFileMount'] ?? '');
+        if ($this->isAccessibleFolder($saveToFileMountIdentifier)) {
+            return $saveToFileMountIdentifier;
+        }
+
+        $persistenceIdentifier = (string)$renderable->getRootForm()->getPersistenceIdentifier();
+        if ($persistenceIdentifier !== '') {
+            $pathinfo = PathUtility::pathinfo($persistenceIdentifier);
+            $persistenceFolderIdentifier = $pathinfo['dirname'];
+            if ($this->isAccessibleFolder($persistenceFolderIdentifier)) {
+                return $persistenceFolderIdentifier;
+            }
+        }
+        return null;
+    }
+
+    private function isAccessibleFolder(string $folderIdentifier): bool
+    {
+        if ($folderIdentifier === '' || PathUtility::isExtensionPath($folderIdentifier)) {
+            return false;
+        }
+        try {
+            $this->resourceFactory->getFolderObjectFromCombinedIdentifier($folderIdentifier);
+            return true;
+        } catch (\InvalidArgumentException|InsufficientFolderAccessPermissionsException|FolderDoesNotExistException) {
+            return false;
+        }
     }
 
     /**
