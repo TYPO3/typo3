@@ -165,6 +165,7 @@ abstract class AbstractLinkBrowserController
         $this->initCurrentUrl();
 
         $menuData = $this->buildMenuArray($request);
+        $this->initLinkAttributeDefaults();
         if ($this->displayedLinkHandler instanceof LinkHandlerViewProviderInterface) {
             $view = $this->displayedLinkHandler->createView($this->backendViewFactory, $request);
         } else {
@@ -228,27 +229,6 @@ abstract class AbstractLinkBrowserController
         $this->displayedLinkHandlerId = $queryParams['act'] ?? '';
         $this->parameters = $queryParams['P'] ?? [];
         $this->linkAttributeValues = $queryParams['linkAttributes'] ?? [];
-
-        $pageTsConfig = BackendUtility::getPagesTSconfig((int)($this->parameters['pid'] ?? 0));
-        $handlerId = $this->displayedLinkHandlerId ?: 'page';
-
-        if (empty($this->linkAttributeValues['target'])) {
-            $defaultTarget = $pageTsConfig['TCEMAIN.']['linkHandler.'][$handlerId . '.']['target.']['default']
-                ?? $pageTsConfig['TCEMAIN.']['linkHandler.']['properties.']['target.']['default']
-                ?? '';
-            if (!empty($defaultTarget)) {
-                $this->linkAttributeValues['target'] = $defaultTarget;
-            }
-        }
-
-        if (empty($this->linkAttributeValues['class'])) {
-            $defaultCssClass = $pageTsConfig['TCEMAIN.']['linkHandler.'][$handlerId . '.']['cssClass.']['default']
-                ?? $pageTsConfig['TCEMAIN.']['linkHandler.']['properties.']['cssClass.']['default']
-                ?? '';
-            if (!empty($defaultCssClass)) {
-                $this->linkAttributeValues['class'] = $defaultCssClass;
-            }
-        }
     }
 
     /**
@@ -327,6 +307,29 @@ abstract class AbstractLinkBrowserController
         return $this->eventDispatcher
             ->dispatch(new ModifyLinkHandlersEvent($linkHandlers, $this->currentLinkParts))
             ->getLinkHandlers();
+    }
+
+    /**
+     * Prefill target and class with the defaults of the displayed link handler,
+     * unless the request or the current link already carries a value
+     */
+    protected function initLinkAttributeDefaults(): void
+    {
+        $pageTsConfig = BackendUtility::getPagesTSconfig((int)($this->parameters['pid'] ?? 0));
+        $linkHandlerTsConfig = $pageTsConfig['TCEMAIN.']['linkHandler.'] ?? [];
+        $defaults = [
+            'target' => $linkHandlerTsConfig[$this->displayedLinkHandlerId . '.']['target.']['default']
+                ?? $linkHandlerTsConfig['properties.']['target.']['default']
+                ?? '',
+            'class' => $linkHandlerTsConfig[$this->displayedLinkHandlerId . '.']['cssClass.']['default']
+                ?? $linkHandlerTsConfig['properties.']['cssClass.']['default']
+                ?? '',
+        ];
+        foreach ($defaults as $attribute => $default) {
+            if (!empty($default) && empty($this->linkAttributeValues[$attribute]) && !isset($this->currentLinkParts[$attribute])) {
+                $this->linkAttributeValues[$attribute] = $default;
+            }
+        }
     }
 
     /**

@@ -42,6 +42,10 @@ final class LinkBrowserControllerTest extends FunctionalTestCase
                 'TSconfig' => implode("\n", [
                     'TCEMAIN.linkHandler.properties.cssClass.items.10.value = global-class',
                     'TCEMAIN.linkHandler.url.cssClass.items.10.value = url-class',
+                    'TCEMAIN.linkHandler.properties.target.default = global-target',
+                    'TCEMAIN.linkHandler.properties.cssClass.default = global-class',
+                    'TCEMAIN.linkHandler.url.target.default = url-target',
+                    'TCEMAIN.linkHandler.url.cssClass.default = url-class',
                 ]),
             ],
             ['uid' => 1]
@@ -74,6 +78,55 @@ final class LinkBrowserControllerTest extends FunctionalTestCase
     #[Test]
     public function cssClassItemsOfDisplayedLinkHandlerAreRendered(string $currentValue, array $queryParams, string $expectedClass, string $unexpectedClass): void
     {
+        $content = $this->renderLinkBrowser($queryParams, [], $currentValue);
+
+        self::assertStringContainsString('<typo3-backend-combobox-choice value="' . $expectedClass . '">', $content);
+        self::assertStringNotContainsString('<typo3-backend-combobox-choice value="' . $unexpectedClass . '">', $content);
+    }
+
+    public static function defaultsOfDisplayedLinkHandlerArePrefilledDataProvider(): \Generator
+    {
+        yield 'page tab opened by default' => [
+            [],
+            [],
+            'global-target',
+            'global-class',
+        ];
+        yield 'url tab selected explicitly' => [
+            ['act' => 'url'],
+            [],
+            'url-target',
+            'url-class',
+        ];
+        yield 'url tab opened as the only allowed type' => [
+            [],
+            ['allowedTypes' => 'url'],
+            'url-target',
+            'url-class',
+        ];
+    }
+
+    #[DataProvider('defaultsOfDisplayedLinkHandlerArePrefilledDataProvider')]
+    #[Test]
+    public function defaultsOfDisplayedLinkHandlerArePrefilled(array $queryParams, array $fieldParams, string $expectedTarget, string $expectedClass): void
+    {
+        $content = $this->renderLinkBrowser($queryParams, $fieldParams, '');
+
+        self::assertMatchesRegularExpression('/name="ltarget"[^>]*value="' . $expectedTarget . '"/', $content);
+        self::assertMatchesRegularExpression('/name="lclass"[^>]*value="' . $expectedClass . '"/', $content);
+    }
+
+    #[Test]
+    public function defaultsAreNotAppliedToExistingLink(): void
+    {
+        $content = $this->renderLinkBrowser([], [], 'https://typo3.org');
+
+        self::assertMatchesRegularExpression('/name="ltarget"[^>]*value=""/', $content);
+        self::assertMatchesRegularExpression('/name="lclass"[^>]*value=""/', $content);
+    }
+
+    private function renderLinkBrowser(array $queryParams, array $fieldParams, string $currentValue): string
+    {
         $request = new ServerRequest('https://www.example.com/typo3/wizard/link/browse', 'GET')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('normalizedParams', new NormalizedParams([], [], '', ''))
@@ -87,13 +140,11 @@ final class LinkBrowserControllerTest extends FunctionalTestCase
                     'formName' => 'editform',
                     'itemName' => 'data[tt_content][1][header_link]',
                     'currentValue' => $currentValue,
+                    'params' => $fieldParams,
                 ],
             ]));
         $GLOBALS['TYPO3_REQUEST'] = $request;
 
-        $content = (string)$this->get(LinkBrowserController::class)->mainAction($request)->getBody();
-
-        self::assertStringContainsString('<typo3-backend-combobox-choice value="' . $expectedClass . '">', $content);
-        self::assertStringNotContainsString('<typo3-backend-combobox-choice value="' . $unexpectedClass . '">', $content);
+        return (string)$this->get(LinkBrowserController::class)->mainAction($request)->getBody();
     }
 }
