@@ -33,6 +33,9 @@ return [
                     ['label' => 'type 0', 'value' => '0'],
                     ['label' => 'Type with changed fields', 'value' => 'withChangedFields'],
                     ['label' => 'Type with columnsOverrides', 'value' => 'withColumnsOverrides'],
+                    ['label' => 'Type with title and primary label overrides', 'value' => 'withTitleAndLabel'],
+                    ['label' => 'Type with alternative label fallback', 'value' => 'withAlternativeLabel'],
+                    ['label' => 'Type with forced alternative label', 'value' => 'withForcedAlternativeLabel'],
                     ['label' => 'Type with no fields', 'value' => 'withoutFieldsToRender'],
                 ],
             ],
@@ -82,6 +85,22 @@ return [
                     ],
                 ],
             ],
+        ],
+        'withTitleAndLabel' => [
+            'title' => 'Form engine - type-specific title and primary label',
+            'label' => 'text_1',
+            'showitem' => 'record_type, input_1, text_1',
+        ],
+        'withAlternativeLabel' => [
+            'title' => 'Form engine - type-specific alternative label fallback',
+            'label_alt' => 'text_1',
+            'showitem' => 'record_type, input_1, text_1',
+        ],
+        'withForcedAlternativeLabel' => [
+            'title' => 'Form engine - type-specific forced alternative label',
+            'label_alt' => 'text_1',
+            'label_alt_force' => true,
+            'showitem' => 'record_type, input_1, text_1',
         ],
         'withoutFieldsToRender' => [
             'showitem' => '',
