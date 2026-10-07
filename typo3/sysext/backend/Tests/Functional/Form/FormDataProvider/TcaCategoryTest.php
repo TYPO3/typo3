@@ -662,6 +662,180 @@ final class TcaCategoryTest extends FunctionalTestCase
         self::assertEquals($expected, $this->createSubject()->addData($input));
     }
 
+    #[Test]
+    public function addDataMarksCurrentRecordAndItsDescendantsAsUnselectableForParentField(): void
+    {
+        $input = [
+            'command' => 'edit',
+            'tableName' => 'sys_category',
+            'selectTreeCompileItems' => true,
+            'effectivePid' => 0,
+            'databaseRow' => [
+                'uid' => 28,
+                'parent' => '0',
+            ],
+            'processedTca' => [
+                'columns' => [
+                    'parent' => [
+                        'config' => $this->getFieldConfiguration([
+                            'type' => 'category',
+                            'relationship' => 'oneToOne',
+                        ]),
+                    ],
+                ],
+            ],
+            'rootline' => [],
+            'site' => null,
+        ];
+        $input = $this->addTcaSchemata($input);
+
+        $result = $this->createSubject()->addData($input);
+
+        $selectable = array_column($result['processedTca']['columns']['parent']['config']['items'], 'selectable', 'identifier');
+        self::assertSame(
+            [
+                0 => false,
+                28 => false,
+                31 => false,
+                29 => true,
+                30 => true,
+            ],
+            $selectable
+        );
+    }
+
+    #[Test]
+    public function addDataMarksDescendantsAsUnselectableForParentFieldIfTreeIsRootedInDescendant(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/CategoryGrandchild.csv');
+        $input = [
+            'command' => 'edit',
+            'tableName' => 'sys_category',
+            'selectTreeCompileItems' => true,
+            'effectivePid' => 0,
+            'databaseRow' => [
+                'uid' => 28,
+                'parent' => '0',
+            ],
+            'processedTca' => [
+                'columns' => [
+                    'parent' => [
+                        'config' => $this->getFieldConfiguration([
+                            'type' => 'category',
+                            'relationship' => 'oneToOne',
+                            'treeConfig' => [
+                                'startingPoints' => '31',
+                            ],
+                        ]),
+                    ],
+                ],
+            ],
+            'rootline' => [],
+            'site' => null,
+        ];
+        $input = $this->addTcaSchemata($input);
+
+        $result = $this->createSubject()->addData($input);
+
+        $selectable = array_column($result['processedTca']['columns']['parent']['config']['items'], 'selectable', 'identifier');
+        self::assertSame(
+            [
+                31 => false,
+                32 => false,
+            ],
+            $selectable
+        );
+    }
+
+    #[Test]
+    public function addDataMarksLiveRecordAndItsDescendantsAsUnselectableForParentFieldOfWorkspaceVersion(): void
+    {
+        $input = [
+            'command' => 'edit',
+            'tableName' => 'sys_category',
+            'selectTreeCompileItems' => true,
+            'effectivePid' => 0,
+            'databaseRow' => [
+                'uid' => 33,
+                't3ver_oid' => 28,
+                'parent' => '0',
+            ],
+            'processedTca' => [
+                'columns' => [
+                    'parent' => [
+                        'config' => $this->getFieldConfiguration([
+                            'type' => 'category',
+                            'relationship' => 'oneToOne',
+                        ]),
+                    ],
+                ],
+            ],
+            'rootline' => [],
+            'site' => null,
+        ];
+        $input = $this->addTcaSchemata($input);
+
+        $result = $this->createSubject()->addData($input);
+
+        $selectable = array_column($result['processedTca']['columns']['parent']['config']['items'], 'selectable', 'identifier');
+        self::assertSame(
+            [
+                0 => false,
+                28 => false,
+                31 => false,
+                29 => true,
+                30 => true,
+            ],
+            $selectable
+        );
+    }
+
+    #[Test]
+    public function addDataMarksDescendantsAsUnselectableForParentFieldIfIntermediateItemIsRemoved(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/CategoryGrandchild.csv');
+        $input = [
+            'command' => 'edit',
+            'tableName' => 'sys_category',
+            'selectTreeCompileItems' => true,
+            'effectivePid' => 0,
+            'databaseRow' => [
+                'uid' => 28,
+                'parent' => '0',
+            ],
+            'processedTca' => [
+                'columns' => [
+                    'parent' => [
+                        'config' => $this->getFieldConfiguration([
+                            'type' => 'category',
+                            'relationship' => 'oneToOne',
+                            'treeConfig' => [
+                                'startingPoints' => '32',
+                            ],
+                        ]),
+                    ],
+                ],
+            ],
+            'pageTsConfig' => [
+                'TCEFORM.' => [
+                    'sys_category.' => [
+                        'parent.' => [
+                            'removeItems' => '31',
+                        ],
+                    ],
+                ],
+            ],
+            'rootline' => [],
+            'site' => null,
+        ];
+        $input = $this->addTcaSchemata($input);
+
+        $result = $this->createSubject()->addData($input);
+
+        $selectable = array_column($result['processedTca']['columns']['parent']['config']['items'], 'selectable', 'identifier');
+        self::assertSame([32 => false], $selectable);
+    }
+
     private function createSubject(): TcaCategory
     {
         $category = new TcaCategory();
