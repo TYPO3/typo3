@@ -1106,6 +1106,48 @@ return [
                 ],
             ],
         ],
+        'select_single_24' => [
+            'label' => 'select_single_24 nullable integer items',
+            'description' => 'default=null, compare null with zero',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'default' => null,
+                'items' => [
+                    ['label' => 'No value (null)', 'value' => null],
+                    ['label' => 'Zero', 'value' => 0],
+                    ['label' => 'One', 'value' => 1],
+                ],
+            ],
+        ],
+        'select_single_25' => [
+            'label' => 'select_single_25 nullable string items',
+            'description' => 'default=null, compare null with an empty string',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'default' => null,
+                'items' => [
+                    ['label' => 'No value (null)', 'value' => null],
+                    ['label' => 'Empty string', 'value' => ''],
+                    ['label' => 'Some value', 'value' => 'some_value'],
+                ],
+            ],
+        ],
+        'select_single_26' => [
+            'label' => 'select_single_26 nullable foreign record',
+            'description' => 'default=null, foreign_table=tx_styleguide_staticdata',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'foreign_table' => 'tx_styleguide_staticdata',
+                'default' => null,
+                'items' => [
+                    ['label' => 'No value (null)', 'value' => null],
+                    ['label' => 'Zero', 'value' => 0],
+                ],
+            ],
+        ],
         'country_4' => [
             'label' => 'Country Basic, size=10, labelField=iso3',
             'config' => [
@@ -1139,7 +1181,7 @@ return [
                     select_single_7, select_single_12, select_single_8, select_single_13, select_single_10,
                     select_single_11, select_single_14, select_single_15,select_single_16,select_single_17,
                     select_single_18, select_single_19, select_single_20, select_single_21, select_single_22,
-                    select_single_23,
+                    select_single_23, select_single_24, select_single_25, select_single_26,
                 --div--;renderType=selectSingleBox,
                     select_singlebox_1, select_singlebox_2,select_singlebox_3,
                 --div--;renderType=selectCheckBox,
