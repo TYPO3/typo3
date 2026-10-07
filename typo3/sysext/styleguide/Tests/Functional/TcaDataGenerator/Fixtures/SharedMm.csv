@@ -1,0 +1,12 @@
+"pages"
+,"uid","pid","title"
+,1,0,"Shared MM example"
+
+"tx_styleguide_elements_select"
+,"uid","pid"
+,1,1
+,2,1
+
+"tx_styleguide_staticdata"
+,"uid","pid","value_1"
+,1,1,"Shared relation target"

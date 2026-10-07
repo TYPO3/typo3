@@ -1245,6 +1245,36 @@ return [
                 'showIfEmpty' => true,
             ],
         ],
+        'shared_mm_primary' => [
+            'label' => 'shared_mm_primary MM_match_fields',
+            'description' => 'Shares the MM table with shared_mm_secondary; reverse editing is available in static data records',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectMultipleSideBySide',
+                'foreign_table' => 'tx_styleguide_staticdata',
+                'MM' => 'tx_styleguide_staticdata_shared_mm',
+                'MM_match_fields' => [
+                    'fieldname' => 'shared_mm_primary',
+                    'tablenames' => 'tx_styleguide_elements_select',
+                ],
+                'MM_opposite_field' => 'shared_mm_primary_records',
+            ],
+        ],
+        'shared_mm_secondary' => [
+            'label' => 'shared_mm_secondary MM_match_fields',
+            'description' => 'Uses a different fieldname discriminator in the same MM table',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectMultipleSideBySide',
+                'foreign_table' => 'tx_styleguide_staticdata',
+                'MM' => 'tx_styleguide_staticdata_shared_mm',
+                'MM_match_fields' => [
+                    'fieldname' => 'shared_mm_secondary',
+                    'tablenames' => 'tx_styleguide_elements_select',
+                ],
+                'MM_opposite_field' => 'shared_mm_secondary_records',
+            ],
+        ],
         'country_4' => [
             'label' => 'Country Basic, size=10, labelField=iso3',
             'config' => [
@@ -1291,6 +1321,8 @@ return [
                     select_multiplesidebyside_5, select_multiplesidebyside_6,
                     select_multiplesidebyside_7, select_multiplesidebyside_8, select_multiplesidebyside_9,
                     select_multiplesidebyside_10,
+                --div--;Shared MM table,
+                    shared_mm_primary, shared_mm_secondary,
                 --div--;renderType=selectTree,
                     select_tree_1, select_tree_2, select_tree_3, select_tree_4, select_tree_5, select_tree_6, select_tree_7,
                 --div--;type=category,
