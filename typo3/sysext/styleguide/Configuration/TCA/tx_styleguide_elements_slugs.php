@@ -110,6 +110,11 @@ return [
             'config' => [
                 'type' => 'input',
                 'default' => 'Some Job in city1/city2 (f/m)',
+                'valuePicker' => [
+                    'items' => [
+                        ['label' => 'Mixed-case cities and different suffix', 'value' => 'Some Job in City1/CITY2 (contract)'],
+                    ],
+                ],
             ],
         ],
         'slug_3' => [
@@ -129,6 +134,45 @@ return [
                 'eval' => 'uniqueInPid',
             ],
         ],
+        'slug_6' => [
+            'label' => 'slug_6',
+            'description' => 'regexReplacements: remove parenthesized text, replacements: replace slash with hyphen',
+            'config' => [
+                'type' => 'slug',
+                'generatorOptions' => [
+                    'fields' => ['input_3'],
+                    'replacements' => [
+                        '/' => '-',
+                    ],
+                    'regexReplacements' => [
+                        '/\(.*\)/' => '',
+                    ],
+                ],
+                'fallbackCharacter' => '-',
+                'prependSlash' => true,
+                'eval' => 'uniqueInPid',
+            ],
+        ],
+        'slug_7' => [
+            'label' => 'slug_7',
+            'description' => 'regexReplacements: replace city with town case-insensitively and remove parenthesized text',
+            'config' => [
+                'type' => 'slug',
+                'generatorOptions' => [
+                    'fields' => ['input_3'],
+                    'replacements' => [
+                        '/' => '-',
+                    ],
+                    'regexReplacements' => [
+                        '/city/i' => 'town',
+                        '/\(.*\)/' => '',
+                    ],
+                ],
+                'fallbackCharacter' => '-',
+                'prependSlash' => true,
+                'eval' => 'uniqueInPid',
+            ],
+        ],
 
     ],
 
@@ -136,7 +180,7 @@ return [
         '0' => [
             'showitem' => '
                 --div--;slug,
-                    input_1, input_2, slug_1, slug_2, slug_4, slug_5, input_3, slug_3,
+                    input_1, input_2, slug_1, slug_2, slug_4, slug_5, input_3, slug_3, slug_6, slug_7,
                 --div--;meta,
                     disable, sys_language_uid, l10n_parent, l10n_source,
             ',
