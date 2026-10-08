@@ -199,6 +199,15 @@ readonly class SetupService
     }
 
     /**
+     * Clears the in-progress flag set by prepareSystemSettings(), so the installer
+     * can no longer run on this instance.
+     */
+    public function markInstallationFinished(): void
+    {
+        $this->configurationManager->setLocalConfigurationValueByPath('SYS/isInstalling', false);
+    }
+
+    /**
      * @throws ConfigurationFileAlreadyExistsException
      * @throws ConfigurationDirectoryDoesNotExistException
      */
@@ -225,6 +234,9 @@ readonly class SetupService
         $randomKey = GeneralUtility::makeInstance(Random::class)->generateRandomHexString(96);
         $this->configurationManager->setLocalConfigurationValueByPath('SYS/encryptionKey', $randomKey);
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = $randomKey;
+
+        // Mark this fresh installation as in progress.
+        $this->configurationManager->setLocalConfigurationValueByPath('SYS/isInstalling', true);
 
         // Get best matching configuration presets
         $featureManager = new FeatureManager();
