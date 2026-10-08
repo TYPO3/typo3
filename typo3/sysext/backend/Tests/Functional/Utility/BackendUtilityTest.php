@@ -312,6 +312,20 @@ final class BackendUtilityTest extends FunctionalTestCase
         self::assertSame('Title, Subtitle', BackendUtility::getRecordTitle('test_table', ['uid' => 1, 'title' => 'Title', 'subtitle' => 'Subtitle']));
     }
 
+    #[Test]
+    public function getRecordTitleStopsAtCyclicRelations(): void
+    {
+        $GLOBALS['TCA']['pages']['ctrl']['label'] = 'shortcut';
+        unset($GLOBALS['TCA']['pages']['ctrl']['label_alt']);
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+        $connection = $this->get(ConnectionPool::class)->getConnectionForTable('pages');
+        $connection->update('pages', ['shortcut' => 3], ['uid' => 2]);
+        $connection->update('pages', ['shortcut' => 2], ['uid' => 3]);
+
+        // Page 2 shows the title of page 3, which shows page 2 again, which is only referenced by its uid
+        self::assertSame('[2]', BackendUtility::getRecordTitle('pages', BackendUtility::getRecord('pages', 2)));
+    }
+
     public static function enableFieldsStatementIsCorrectDataProvider(): array
     {
         // Expected sql should contain identifier escaped in mysql/mariadb identifier quotings "`", which are
