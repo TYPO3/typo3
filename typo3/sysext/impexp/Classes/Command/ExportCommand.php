@@ -27,7 +27,6 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Impexp\Export;
 
 /**
@@ -189,7 +188,7 @@ class ExportCommand extends Command
         $io = new SymfonyStyle($input, $output);
 
         try {
-            $this->export->setExportFileName(PathUtility::basename((string)$input->getArgument('filename')));
+            $this->export->setExportFileName(basename((string)$input->getArgument('filename')));
             $this->export->setExportFileType((string)$input->getOption('type'));
             $this->export->setPid((int)$input->getOption('pid'));
             $this->export->setLevels((int)$input->getOption('levels'));

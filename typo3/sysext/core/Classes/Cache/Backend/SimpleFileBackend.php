@@ -23,7 +23,6 @@ use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
@@ -181,7 +180,7 @@ class SimpleFileBackend extends AbstractBackend implements PhpCapableBackendInte
 
     public function set(string $entryIdentifier, string $data, array $tags = [], ?int $lifetime = null): void
     {
-        if ($entryIdentifier !== PathUtility::basename($entryIdentifier)) {
+        if ($entryIdentifier !== basename($entryIdentifier)) {
             throw new \InvalidArgumentException('The specified entry identifier must not contain a path segment.', 1334756735);
         }
         if ($entryIdentifier === '') {
@@ -204,7 +203,7 @@ class SimpleFileBackend extends AbstractBackend implements PhpCapableBackendInte
 
     public function get(string $entryIdentifier): false|string
     {
-        if ($entryIdentifier !== PathUtility::basename($entryIdentifier)) {
+        if ($entryIdentifier !== basename($entryIdentifier)) {
             throw new \InvalidArgumentException('The specified entry identifier must not contain a path segment.', 1334756877);
         }
         $pathAndFilename = $this->cacheDirectory . $entryIdentifier . $this->cacheEntryFileExtension;
@@ -216,7 +215,7 @@ class SimpleFileBackend extends AbstractBackend implements PhpCapableBackendInte
 
     public function has(string $entryIdentifier): bool
     {
-        if ($entryIdentifier !== PathUtility::basename($entryIdentifier)) {
+        if ($entryIdentifier !== basename($entryIdentifier)) {
             throw new \InvalidArgumentException('The specified entry identifier must not contain a path segment.', 1334756878);
         }
         return file_exists($this->cacheDirectory . $entryIdentifier . $this->cacheEntryFileExtension);
@@ -224,7 +223,7 @@ class SimpleFileBackend extends AbstractBackend implements PhpCapableBackendInte
 
     public function remove(string $entryIdentifier): bool
     {
-        if ($entryIdentifier !== PathUtility::basename($entryIdentifier)) {
+        if ($entryIdentifier !== basename($entryIdentifier)) {
             throw new \InvalidArgumentException('The specified entry identifier must not contain a path segment.', 1334756960);
         }
         if ($entryIdentifier === '') {
@@ -263,7 +262,7 @@ class SimpleFileBackend extends AbstractBackend implements PhpCapableBackendInte
     public function requireOnce(string $entryIdentifier): mixed
     {
         $pathAndFilename = $this->cacheDirectory . $entryIdentifier . $this->cacheEntryFileExtension;
-        if ($entryIdentifier !== PathUtility::basename($entryIdentifier)) {
+        if ($entryIdentifier !== basename($entryIdentifier)) {
             throw new \InvalidArgumentException('The specified entry identifier must not contain a path segment.', 1282073037);
         }
         return file_exists($pathAndFilename) ? require_once $pathAndFilename : false;
@@ -272,7 +271,7 @@ class SimpleFileBackend extends AbstractBackend implements PhpCapableBackendInte
     public function require(string $entryIdentifier): mixed
     {
         $pathAndFilename = $this->cacheDirectory . $entryIdentifier . $this->cacheEntryFileExtension;
-        if ($entryIdentifier !== PathUtility::basename($entryIdentifier)) {
+        if ($entryIdentifier !== basename($entryIdentifier)) {
             throw new \InvalidArgumentException('The specified entry identifier must not contain a path segment.', 1532528267);
         }
         return file_exists($pathAndFilename) ? require $pathAndFilename : false;

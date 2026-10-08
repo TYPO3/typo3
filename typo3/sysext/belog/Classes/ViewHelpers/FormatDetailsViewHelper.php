@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Belog\ViewHelpers;
 
 use TYPO3\CMS\Belog\Domain\Model\LogEntry;
 use TYPO3\CMS\Core\Log\LogDataTrait;
-use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -68,7 +67,7 @@ final class FormatDetailsViewHelper extends AbstractViewHelper
     private static function stripPathFromFilenames(array $files = []): array
     {
         foreach ($files as $key => $file) {
-            $files[$key] = PathUtility::basename((string)$file);
+            $files[$key] = basename((string)$file);
         }
         return $files;
     }

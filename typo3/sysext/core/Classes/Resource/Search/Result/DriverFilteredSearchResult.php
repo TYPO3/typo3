@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Core\Resource\Search\Result;
 
 use TYPO3\CMS\Core\Resource\Driver\DriverInterface;
 use TYPO3\CMS\Core\Resource\File;
-use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Decorator for a search result with files, which filters
@@ -113,8 +112,8 @@ class DriverFilteredSearchResult implements FileSearchResultInterface
         $filteredFiles = [];
         foreach ($files as $file) {
             $itemIdentifier = $file->getIdentifier();
-            $itemName = PathUtility::basename($itemIdentifier);
-            $parentIdentifier = PathUtility::dirname($itemIdentifier);
+            $itemName = basename($itemIdentifier);
+            $parentIdentifier = dirname($itemIdentifier);
             $matches = true;
             foreach ($this->filters as $filter) {
                 if (!is_callable($filter)) {

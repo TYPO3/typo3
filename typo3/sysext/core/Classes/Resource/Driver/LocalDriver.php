@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Resource\Driver;
 
 use Psr\Http\Message\ResponseInterface;
-use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\SelfEmittableLazyOpenStream;
@@ -256,7 +255,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
             throw new \InvalidArgumentException('File ' . $fileIdentifier . ' does not exist.', 1314516809);
         }
 
-        $dirPath = PathUtility::dirname($fileIdentifier);
+        $dirPath = dirname($fileIdentifier);
         $dirPath = $this->canonicalizeAndCheckFolderIdentifier($dirPath);
         return $this->extractFileInformation($absoluteFilePath, $dirPath, $propertiesToExtract);
     }
@@ -286,7 +285,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
         $absolutePath = $this->getAbsolutePath($folderIdentifier);
         return [
             'identifier' => $folderIdentifier,
-            'name' => PathUtility::basename($folderIdentifier),
+            'name' => basename($folderIdentifier),
             'mtime' => filemtime($absolutePath),
             'ctime' => filectime($absolutePath),
             'storage' => $this->storageUid,
@@ -307,20 +306,10 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
     public function sanitizeFileName(string $fileName): string
     {
         $fileName = \Normalizer::normalize($fileName) ?: $fileName;
-        // Handle UTF-8 characters
-        if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
-            // Allow ".", "-", 0-9, a-z, A-Z and everything beyond U+C0 (latin capital letter a with grave)
-            $cleanFileName = (string)preg_replace('/[' . self::UNSAFE_FILENAME_CHARACTER_EXPRESSION . ']/u', '_', trim($fileName));
-            if (!$this->isCaseSensitiveFileSystem()) {
-                $cleanFileName = mb_strtolower($cleanFileName, 'utf-8');
-            }
-        } else {
-            $fileName = GeneralUtility::makeInstance(CharsetConverter::class)->utf8_char_mapping($fileName);
-            // Replace unwanted characters with underscores
-            $cleanFileName = (string)preg_replace('/[' . self::UNSAFE_FILENAME_CHARACTER_EXPRESSION . '\\xC0-\\xFF]/', '_', trim($fileName));
-            if (!$this->isCaseSensitiveFileSystem()) {
-                $cleanFileName = strtolower($cleanFileName);
-            }
+        // Allow ".", "-", 0-9, a-z, A-Z and everything beyond U+C0 (latin capital letter a with grave)
+        $cleanFileName = (string)preg_replace('/[' . self::UNSAFE_FILENAME_CHARACTER_EXPRESSION . ']/u', '_', trim($fileName));
+        if (!$this->isCaseSensitiveFileSystem()) {
+            $cleanFileName = mb_strtolower($cleanFileName, 'utf-8');
         }
         // Strip trailing dots and return
         $cleanFileName = rtrim($cleanFileName, '.');
@@ -547,7 +536,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
                 continue;
             }
             $entryIdentifier = '/' . substr($entry->getPathname(), $pathLength);
-            $entryName = PathUtility::basename($entryIdentifier);
+            $entryName = basename($entryIdentifier);
             if ($isDirectory) {
                 $entryIdentifier .= '/';
             }
@@ -657,7 +646,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
      */
     public function getSpecificFileInformation(string $fileIdentifier, string $containerPath, string $property): bool|int|string|null
     {
-        $identifier = $this->canonicalizeAndCheckFileIdentifier($containerPath . PathUtility::basename($fileIdentifier));
+        $identifier = $this->canonicalizeAndCheckFileIdentifier($containerPath . basename($fileIdentifier));
 
         $fileInfo = GeneralUtility::makeInstance(FileInfo::class, $fileIdentifier);
         return match ($property) {
@@ -665,8 +654,8 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
             'atime' => $fileInfo->getATime(),
             'mtime' => $fileInfo->getMTime(),
             'ctime' => $fileInfo->getCTime(),
-            'name' => PathUtility::basename($fileIdentifier),
-            'extension' => PathUtility::pathinfo($fileIdentifier, PATHINFO_EXTENSION),
+            'name' => basename($fileIdentifier),
+            'extension' => pathinfo($fileIdentifier, PATHINFO_EXTENSION),
             'mimetype' => (string)$fileInfo->getMimeType(),
             'identifier' => $identifier,
             'storage' => $this->storageUid,
@@ -728,7 +717,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
         if (str_starts_with($localFilePath, $this->absoluteBasePath) && $this->storageUid > 0) {
             throw new \InvalidArgumentException('Cannot add a file that is already part of this storage.', 1314778269);
         }
-        $newFileName = $this->sanitizeFileName($newFileName !== '' ? $newFileName : PathUtility::basename($localFilePath));
+        $newFileName = $this->sanitizeFileName($newFileName !== '' ? $newFileName : basename($localFilePath));
         $newFileIdentifier = $this->canonicalizeAndCheckFolderIdentifier($targetFolderIdentifier) . $newFileName;
         $targetPath = $this->getAbsolutePath($newFileIdentifier);
 
@@ -902,10 +891,10 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
      */
     protected function recycleFileOrFolder(string $filePath, string $recycleDirectory): bool
     {
-        $destinationFile = $recycleDirectory . '/' . PathUtility::basename($filePath);
+        $destinationFile = $recycleDirectory . '/' . basename($filePath);
         if (file_exists($destinationFile)) {
             $timeStamp = \DateTimeImmutable::createFromFormat('U.u', (string)microtime(true))->format('YmdHisu');
-            $destinationFile = $recycleDirectory . '/' . $timeStamp . '_' . PathUtility::basename($filePath);
+            $destinationFile = $recycleDirectory . '/' . $timeStamp . '_' . basename($filePath);
         }
         $result = @rename($filePath, $destinationFile);
         // Update the mtime for the file, so the recycler garbage collection task knows which files to delete
@@ -1031,7 +1020,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
     {
         // Makes sure the Path given as parameter is valid
         $newName = $this->sanitizeFileName($newName);
-        $newIdentifier = rtrim(GeneralUtility::fixWindowsFilePath(PathUtility::dirname($fileIdentifier)), '/') . '/' . $newName;
+        $newIdentifier = rtrim(GeneralUtility::fixWindowsFilePath(dirname($fileIdentifier)), '/') . '/' . $newName;
         $newIdentifier = $this->canonicalizeAndCheckFileIdentifier($newIdentifier);
         // The target should not exist already
         if ($this->fileExists($newIdentifier)) {
@@ -1062,7 +1051,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
         $folderIdentifier = $this->canonicalizeAndCheckFolderIdentifier($folderIdentifier);
         $newName = $this->sanitizeFileName($newName);
 
-        $newIdentifier = PathUtility::dirname($folderIdentifier) . '/' . $newName;
+        $newIdentifier = dirname($folderIdentifier) . '/' . $newName;
         $newIdentifier = $this->canonicalizeAndCheckFolderIdentifier($newIdentifier);
 
         $sourcePath = $this->getAbsolutePath($folderIdentifier);
@@ -1277,7 +1266,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
      */
     public function getRole(string $folderIdentifier): string
     {
-        $name = PathUtility::basename($folderIdentifier);
+        $name = basename($folderIdentifier);
         return $this->mappingFolderNameToRole[$name] ?? FolderInterface::ROLE_DEFAULT;
     }
 
@@ -1330,15 +1319,15 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
             return '';
         }
         $rootDirectory = rtrim($this->getAbsolutePath($this->getRootLevelFolder()), '/');
-        $searchDirectory = PathUtility::dirname($path);
+        $searchDirectory = dirname($path);
         // Check if file or folder to be deleted is inside a recycler directory
         if ($this->getRole($searchDirectory) === FolderInterface::ROLE_RECYCLER) {
-            $searchDirectory = PathUtility::dirname($searchDirectory);
+            $searchDirectory = dirname($searchDirectory);
             // Check if file or folder to be deleted is inside the root recycler
             if ($searchDirectory == $rootDirectory) {
                 return '';
             }
-            $searchDirectory = PathUtility::dirname($searchDirectory);
+            $searchDirectory = dirname($searchDirectory);
         }
         // Search for the closest recycler directory
         while ($searchDirectory) {
@@ -1349,7 +1338,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
             if ($searchDirectory === $rootDirectory) {
                 return '';
             }
-            $searchDirectory = PathUtility::dirname($searchDirectory);
+            $searchDirectory = dirname($searchDirectory);
         }
 
         return '';

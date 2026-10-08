@@ -761,7 +761,7 @@ class Indexer
                 $fileInfo = stat($absFile);
                 $cParts = $this->fileContentParts($ext, $absFile);
                 foreach ($cParts as $cPKey) {
-                    $this->timeTracker->push('Index: ' . str_replace('.', '_', PathUtility::basename($file)) . ($cPKey ? '#' . $cPKey : ''));
+                    $this->timeTracker->push('Index: ' . str_replace('.', '_', basename($file)) . ($cPKey ? '#' . $cPKey : ''));
                     $Pstart = $this->milliseconds();
                     $subinfo = ['key' => $cPKey];
                     // Setting page range. This is "0" (zero) when no division is made, otherwise a range like "1-3"
@@ -1178,7 +1178,7 @@ class Indexer
             'contentHash' => $content_md5h,
             'data_filename' => $file,
             'item_type' => $storeItemType,
-            'item_title' => trim($indexingDataDto->title) ?: PathUtility::basename($file),
+            'item_title' => trim($indexingDataDto->title) ?: basename($file),
             'item_description' => $this->bodyDescription($indexingDataDto),
             'item_mtime' => $mtime,
             'item_size' => $size,

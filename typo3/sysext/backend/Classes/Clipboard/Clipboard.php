@@ -42,7 +42,6 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * TYPO3 clipboard for records and files
@@ -576,10 +575,10 @@ class Clipboard
         $confirmationMessage = $this->getLanguageService()->sL($labelKey);
 
         if ($table === '_FILE' && is_string($reference)) {
-            $recordTitle = PathUtility::basename($reference);
+            $recordTitle = basename($reference);
             if ($this->current === 'normal') {
                 $selectedItem = reset($selectedElements);
-                $selectedRecordTitle = PathUtility::basename($selectedItem);
+                $selectedRecordTitle = basename($selectedItem);
             } else {
                 $selectedRecordTitle = (string)count($selectedElements);
             }

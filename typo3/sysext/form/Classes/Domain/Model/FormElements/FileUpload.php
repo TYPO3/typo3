@@ -73,7 +73,7 @@ class FileUpload extends AbstractFormElement implements StringableFormElementInt
                 // @todo Why should uploaded files be stored to the same directory as the *.form.yaml definitions?
                 $persistenceIdentifier = $this->getRootForm()->getPersistenceIdentifier();
                 if (!empty($persistenceIdentifier)) {
-                    $pathinfo = PathUtility::pathinfo($persistenceIdentifier);
+                    $pathinfo = pathinfo($persistenceIdentifier);
                     $saveToFileMountIdentifier = $pathinfo['dirname'];
                     if ($this->checkSaveFileMountAccess($saveToFileMountIdentifier)) {
                         $uploadConfiguration[UploadedFileReferenceConverter::CONFIGURATION_UPLOAD_FOLDER] = $saveToFileMountIdentifier;

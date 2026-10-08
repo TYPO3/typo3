@@ -30,7 +30,6 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\File\BasicFileUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
@@ -244,7 +243,7 @@ class GifBuilder
                     case 'IMAGE':
                         $imageResource = $this->getResource($conf['file'] ?? '', $conf['file.'] ?? []);
                         if ($imageResource !== null) {
-                            $this->combinedFileNames[] = preg_replace('/\\.[[:alnum:]]+$/', '', PathUtility::basename($imageResource->getFullPath()));
+                            $this->combinedFileNames[] = preg_replace('/\\.[[:alnum:]]+$/', '', basename($imageResource->getFullPath()));
                             if ($imageResource->getProcessedFile() instanceof ProcessedFile) {
                                 // Use processed file, if a FAL file has been processed by GIFBUILDER (e.g. scaled/cropped)
                                 $this->setup[$theKey . '.']['file'] = $imageResource->getProcessedFile()->getForLocalProcessing(false);
@@ -1175,7 +1174,7 @@ class GifBuilder
         }
         if ((string)$conf['text'] != '') {
             // Char range map thingie:
-            $fontBaseName = PathUtility::basename($conf['fontFile']);
+            $fontBaseName = basename($conf['fontFile']);
             if (is_array($this->charRangeMap[$fontBaseName] ?? null)) {
                 // Initialize splitRendering array:
                 if (!is_array($conf['splitRendering.'])) {

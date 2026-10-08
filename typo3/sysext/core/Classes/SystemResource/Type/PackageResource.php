@@ -30,7 +30,6 @@ use TYPO3\CMS\Core\SystemResource\Identifier\PackageResourceIdentifier;
 use TYPO3\CMS\Core\Type\File\FileInfo;
 use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * @internal Only to be used in TYPO3\CMS\Core\SystemResource namespace
@@ -47,17 +46,17 @@ class PackageResource implements SystemResourceInterface, ProcessableFileInterfa
 
     public function getName(): string
     {
-        return PathUtility::pathinfo($this->identifier->getRelativePath())['basename'];
+        return pathinfo($this->identifier->getRelativePath())['basename'];
     }
 
     public function getNameWithoutExtension(): string
     {
-        return PathUtility::pathinfo($this->identifier->getRelativePath())['filename'];
+        return pathinfo($this->identifier->getRelativePath())['filename'];
     }
 
     public function getExtension(): string
     {
-        return PathUtility::pathinfo($this->identifier->getRelativePath())['extension'] ?? '';
+        return pathinfo($this->identifier->getRelativePath())['extension'] ?? '';
     }
 
     /**

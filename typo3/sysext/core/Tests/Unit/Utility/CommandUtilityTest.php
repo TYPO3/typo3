@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresOperatingSystem;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -218,5 +219,44 @@ final class CommandUtilityTest extends UnitTestCase
         self::assertIsString($command);
         self::assertNotEmpty($command);
         self::assertStringContainsString('php', $command);
+    }
+
+    public static function escapeShellArgumentKeepsAllBytesDataProvider(): array
+    {
+        return [
+            'empty string' => ['', "''"],
+            'plain ascii' => ['image.jpg', "'image.jpg'"],
+            'path with spaces' => ['/var/www/file admin/a b.jpg', "'/var/www/file admin/a b.jpg'"],
+            'single quote' => ["it's.jpg", "'it'\\''s.jpg'"],
+            'shell metacharacters' => ['$(rm -rf /);`id`|&>"', "'$(rm -rf /);`id`|&>\"'"],
+            'umlauts' => ['/var/www/fileadmin/äöü.txt', "'/var/www/fileadmin/äöü.txt'"],
+            'leading multibyte character' => ['ätest.pdf', "'ätest.pdf'"],
+            'mixed latin' => ['Ünïcödé', "'Ünïcödé'"],
+            'japanese' => ['/a/日本語ファイル.pdf', "'/a/日本語ファイル.pdf'"],
+            'invalid utf-8 byte' => ["a\xFFb", "'a\xFFb'"],
+        ];
+    }
+
+    #[DataProvider('escapeShellArgumentKeepsAllBytesDataProvider')]
+    #[RequiresOperatingSystem('Linux|Darwin')]
+    #[Test]
+    public function escapeShellArgumentKeepsAllBytesRegardlessOfLocale(string $input, string $expected): void
+    {
+        $currentLocale = (string)setlocale(LC_CTYPE, '0');
+        setlocale(LC_CTYPE, 'C');
+        try {
+            self::assertSame($expected, CommandUtility::escapeShellArgument($input));
+            self::assertSame([$expected, $expected], CommandUtility::escapeShellArguments([$input, $input]));
+        } finally {
+            setlocale(LC_CTYPE, $currentLocale);
+        }
+    }
+
+    #[Test]
+    public function escapeShellArgumentThrowsOnNullByte(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1791464840);
+        CommandUtility::escapeShellArgument("a\0b");
     }
 }

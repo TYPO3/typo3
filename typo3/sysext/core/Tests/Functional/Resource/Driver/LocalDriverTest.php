@@ -1044,7 +1044,7 @@ final class LocalDriverTest extends FunctionalTestCase
      * - String value charset (none = '', utf-8, latin1, etc.)
      * - Expected result (cleaned fileName)
      */
-    public static function sanitizeFileNameUTF8FilesystemDataProvider(): array
+    public static function sanitizeFileNameDataProvider(): array
     {
         // Generate string containing all characters for the utf-8 Latin-1 Supplement (U+0080 to U+00FF)
         // without U+0080 to U+009F: control characters
@@ -1086,81 +1086,10 @@ final class LocalDriverTest extends FunctionalTestCase
         ];
     }
 
-    #[DataProvider('sanitizeFileNameUTF8FilesystemDataProvider')]
+    #[DataProvider('sanitizeFileNameDataProvider')]
     #[Test]
-    public function sanitizeFileNameUTF8Filesystem(string $fileName, string $expectedResult): void
+    public function sanitizeFileNameKeepsUnicodeCharacters(string $fileName, string $expectedResult): void
     {
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem'] = 1;
-        $subject = $this->getDefaultInitializedSubject();
-        self::assertEquals($expectedResult, $subject->sanitizeFileName($fileName));
-    }
-
-    /**
-     * Every array splits into:
-     * - String value fileName
-     * - Expected result (cleaned fileName)
-     */
-    public static function sanitizeFileNameNonUTF8FilesystemDataProvider(): array
-    {
-        // Generate string containing all characters for the utf-8 Latin-1 Supplement (U+0080 to U+00FF)
-        // without U+0080 to U+009F: control characters
-        // Based on http://www.utf8-chartable.de/unicode-utf8-table.pl
-        $utf8Latin1Supplement = '';
-        for ($i = 0xA0; $i <= 0xBF; $i++) {
-            $utf8Latin1Supplement .= chr(0xC2) . chr($i);
-        }
-        for ($i = 0x80; $i <= 0xBF; $i++) {
-            $utf8Latin1Supplement .= chr(0xC3) . chr($i);
-        }
-        // Generate string containing all characters for the utf-8 Latin-1 Extended-A (U+0100 to U+017F)
-        $utf8Latin1ExtendedA = '';
-        for ($i = 0x80; $i <= 0xBF; $i++) {
-            $utf8Latin1ExtendedA .= chr(0xC4) . chr($i);
-        }
-        for ($i = 0x80; $i <= 0xBF; $i++) {
-            $utf8Latin1ExtendedA .= chr(0xC5) . chr($i);
-        }
-
-        return [
-            // Characters ordered by ASCII table
-            'allowed characters utf-8' => [
-                '-.0123456789@ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz',
-                '-.0123456789@ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz',
-            ],
-            // Characters ordered by ASCII table (except for space-character, because space-character ist trimmed)
-            'replace special characters with _ (not allowed characters) utf-8' => [
-                '! "#$%&\'()*+,/:;<=>?[\\]^`{|}~',
-                '_____________________________',
-            ],
-            'utf-8 (Latin-1 Supplement)' => [
-                // chr(0xC2) . chr(0x0A) = NBSP (no-break space) => gets trimmed
-                $utf8Latin1Supplement,
-                '_centpound__yen______c_a_______R_______-23__u_____1o__1_41_23_4_AAAAAEAAAECEEEEIIIIDNOOOOOExOEUUUUEYTHssaaaaaeaaaeceeeeiiiidnoooooe_oeuuuueythy',
-            ],
-            'utf-8 (Latin-1 Extended A)' => [
-                $utf8Latin1ExtendedA,
-                'AaAaAaCcCcCcCcDdDdEeEeEeEeEeGgGgGgGgHhHhIiIiIiIiIiIJijJjKk__LlLlLlL_l_LlNnNnNn_n____OOooOoOoOEoeRrRrRrSsSsSsSsTtTtTtUuUuUuUuUuUuWwYyYZzZzZzs',
-            ],
-            'utf-8 but not in NFC (Canonical Composition)' => [
-                hex2bin('667275cc88686e65757a6569746c696368656e'),
-                'fruehneuzeitlichen',
-            ],
-            'trim leading and tailing spaces utf-8' => [
-                ' test.txt  ',
-                'test.txt',
-            ],
-            'remove tailing dot utf-8' => [
-                'test.txt.',
-                'test.txt',
-            ],
-        ];
-    }
-
-    #[DataProvider('sanitizeFileNameNonUTF8FilesystemDataProvider')]
-    #[Test]
-    public function sanitizeFileNameNonUTF8Filesystem(string $fileName, string $expectedResult): void
-    {
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem'] = 0;
         $subject = $this->getDefaultInitializedSubject();
         self::assertEquals($expectedResult, $subject->sanitizeFileName($fileName));
     }
@@ -1170,7 +1099,6 @@ final class LocalDriverTest extends FunctionalTestCase
     {
         $this->expectException(InvalidFileNameException::class);
         $this->expectExceptionCode(1320288991);
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem'] = 1;
         $subject = $this->getDefaultInitializedSubject();
         $subject->sanitizeFileName('');
     }

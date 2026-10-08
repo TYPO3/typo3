@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Core\Resource;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Abstract file representation in the file abstraction layer.
@@ -108,7 +107,7 @@ abstract class AbstractFile implements FileInterface
      */
     public function getNameWithoutExtension(): string
     {
-        return PathUtility::pathinfo($this->getName(), PATHINFO_FILENAME);
+        return pathinfo($this->getName(), PATHINFO_FILENAME);
     }
 
     /**
@@ -182,7 +181,7 @@ abstract class AbstractFile implements FileInterface
      */
     public function getExtension(): string
     {
-        $pathinfo = PathUtility::pathinfo($this->getName());
+        $pathinfo = pathinfo($this->getName());
         return strtolower($pathinfo['extension'] ?? '');
     }
 

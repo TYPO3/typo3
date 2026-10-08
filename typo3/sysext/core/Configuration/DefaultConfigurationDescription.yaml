@@ -121,15 +121,6 @@ SYS:
         phpTimeZone:
             type: text
             description: 'timezone to force for all date() and mktime() functions. A list of supported values can be found at <a href="https://php.net/manual/en/timezones.php" target="_blank" rel="noreferrer">php.net</a>. If this is not set, a valid fallback will be searched for by PHP (php.ini''s <a href="http://www.php.net/manual/en/datetime.configuration.php#ini.date.timezone" target="_blank" rel="noreferrer">date.timezone</a> setting, server defaults, etc); and if no fallback is found, the value of "UTC" is used instead.'
-        UTF8filesystem:
-            type: bool
-            description: |
-              If TRUE then TYPO3 uses utf-8 to store file names. This allows for accented Latin letters as well as any other non-latin characters like Cyrillic and Chinese.
-              <strong>IMPORTANT:</strong> This requires a UTF-8 compatible locale in order to work. Otherwise problems with filenames containing special characters will occur.
-              See [SYS][systemLocale] and <a href="https://php.net/manual/en/function.setlocale.php" target="_blank" rel="noreferrer">setlocale()</a>.
-        systemLocale:
-            type: text
-            description: 'Locale used for certain system related functions, e.g. escaping shell commands. If problems with filenames containing special characters occur, the value of this option is probably wrong. See <a href="https://php.net/manual/en/function.setlocale.php" target="_blank" rel="noreferrer">setlocale()</a>. Available locales: '
         reverseProxyIP:
             type: list
             description: 'List of IP addresses. If TYPO3 is behind one or more (intransparent) reverse proxies the IP addresses must be added here and <code>[SYS][reverseProxyHeaderMultiValue]</code> must be set to ''first'' or ''last''.'

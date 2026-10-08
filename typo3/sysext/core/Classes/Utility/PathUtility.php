@@ -72,7 +72,7 @@ readonly class PathUtility
             }
         } else {
             // Make an absolute path out of it
-            $targetPath = self::dirname(Environment::getCurrentScript()) . '/' . $targetPath;
+            $targetPath = dirname(Environment::getCurrentScript()) . '/' . $targetPath;
             $targetPath = self::stripPathSitePrefix($targetPath);
         }
 
@@ -163,76 +163,51 @@ readonly class PathUtility
     /**
      * Returns trailing name component of path
      *
-     * Since basename() is locale dependent we need to access
-     * the filesystem with the same locale of the system, not
-     * the rendering context.
-     *
      * @see http://www.php.net/manual/en/function.basename.php
-     *
-     * @param string $path
+     * @deprecated since v15, will be removed in v16. Use basename() instead.
      */
     public static function basename(string $path): string
     {
-        $targetLocale = $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale'] ?? '';
-        if (empty($targetLocale)) {
-            return basename($path);
-        }
-        $currentLocale = (string)setlocale(LC_CTYPE, '0');
-        setlocale(LC_CTYPE, $targetLocale);
-        $basename = basename($path);
-        setlocale(LC_CTYPE, $currentLocale);
-        return $basename;
+        trigger_error(
+            'PathUtility::basename() will be removed in TYPO3 v16. Use the native PHP function basename() instead.',
+            E_USER_DEPRECATED
+        );
+        return basename($path);
     }
 
     /**
      * Returns parent directory's path
      *
-     * Since dirname() is locale dependent we need to access
-     * the filesystem with the same locale of the system, not
-     * the rendering context.
-     *
      * @see http://www.php.net/manual/en/function.dirname.php
-     *
-     * @param string $path
+     * @deprecated since v15, will be removed in v16. Use dirname() instead.
      */
     public static function dirname(string $path): string
     {
-        $targetLocale = $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale'] ?? '';
-        if (empty($targetLocale)) {
-            return dirname($path);
-        }
-        $currentLocale = (string)setlocale(LC_CTYPE, '0');
-        setlocale(LC_CTYPE, $targetLocale);
-        $dirname = dirname($path);
-        setlocale(LC_CTYPE, $currentLocale);
-        return $dirname;
+        trigger_error(
+            'PathUtility::dirname() will be removed in TYPO3 v16. Use the native PHP function dirname() instead.',
+            E_USER_DEPRECATED
+        );
+        return dirname($path);
     }
 
     /**
-     * Returns parent directory's path
-     *
-     * Since pathinfo() is locale dependent we need to access
-     * the filesystem with the same locale of the system, not
-     * the rendering context.
+     * Returns information about a file path
      *
      * The valid flags for $options are the same as for the built-in
-     * phpinfo() function.
+     * pathinfo() function.
      *
      * @see http://www.php.net/manual/en/function.pathinfo.php
+     * @deprecated since v15, will be removed in v16. Use pathinfo() instead.
      *
      * @return ($options is PATHINFO_ALL ? array{dirname?: string, basename?: string, extension?: string, filename?: string} : string)
      */
     public static function pathinfo(string $path, int $options = PATHINFO_ALL): string|array
     {
-        $targetLocale = $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale'] ?? '';
-        if (empty($targetLocale)) {
-            return pathinfo($path, $options);
-        }
-        $currentLocale = (string)setlocale(LC_CTYPE, '0');
-        setlocale(LC_CTYPE, $targetLocale);
-        $pathinfo = pathinfo($path, $options);
-        setlocale(LC_CTYPE, $currentLocale);
-        return $pathinfo;
+        trigger_error(
+            'PathUtility::pathinfo() will be removed in TYPO3 v16. Use the native PHP function pathinfo() instead.',
+            E_USER_DEPRECATED
+        );
+        return pathinfo($path, $options);
     }
 
     /**
@@ -273,9 +248,9 @@ readonly class PathUtility
      */
     public static function getAbsolutePathOfRelativeReferencedFileOrPath(string $baseFilenameOrPath, string $includeFileName): string
     {
-        $fileName = static::basename($includeFileName);
-        $basePath = str_ends_with($baseFilenameOrPath, '/') ? $baseFilenameOrPath : static::dirname($baseFilenameOrPath);
-        $newDir = static::getCanonicalPath($basePath . '/' . static::dirname($includeFileName));
+        $fileName = basename($includeFileName);
+        $basePath = str_ends_with($baseFilenameOrPath, '/') ? $baseFilenameOrPath : dirname($baseFilenameOrPath);
+        $newDir = static::getCanonicalPath($basePath . '/' . dirname($includeFileName));
         // Avoid double slash on empty path
         return (($newDir !== '/') ? $newDir : '') . '/' . $fileName;
     }

@@ -20,7 +20,6 @@ use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
@@ -485,7 +484,7 @@ class GraphicalFunctions
             $command .= ' -colorspace ' . CommandUtility::escapeShellArgument($this->colorspace);
         }
         if ($this->alternativeOutputKey) {
-            $theOutputName = md5($command . $processingInstructions->cropArea . PathUtility::basename($sourceFile) . $this->alternativeOutputKey . '[' . $frame . ']');
+            $theOutputName = md5($command . $processingInstructions->cropArea . basename($sourceFile) . $this->alternativeOutputKey . '[' . $frame . ']');
         } else {
             $theOutputName = md5($command . $processingInstructions->cropArea . $sourceFile . filemtime($sourceFile) . '[' . $frame . ']');
         }

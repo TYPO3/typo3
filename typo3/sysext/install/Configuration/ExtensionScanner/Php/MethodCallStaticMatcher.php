@@ -1870,4 +1870,25 @@ return [
             'Breaking-110319-RemovedUnusedInternalBootstrapMethods.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Utility\PathUtility::basename' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-110966-PathUtilityBasenameDirnameAndPathinfo.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Utility\PathUtility::dirname' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-110966-PathUtilityBasenameDirnameAndPathinfo.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Utility\PathUtility::pathinfo' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-110966-PathUtilityBasenameDirnameAndPathinfo.rst',
+        ],
+    ],
 ];

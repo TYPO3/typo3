@@ -280,7 +280,7 @@ class ExtensionStorageAdapter extends AbstractFileStorageAdapter implements Stor
 
     protected function isFileWithinAccessibleExtensionFolders(string $fileName): bool
     {
-        $pathInfo = PathUtility::pathinfo($fileName, PATHINFO_DIRNAME);
+        $pathInfo = pathinfo($fileName, PATHINFO_DIRNAME);
         $dirName = rtrim($pathInfo, '/') . '/';
         return array_key_exists($dirName, $this->getAccessibleExtensionFolders());
     }

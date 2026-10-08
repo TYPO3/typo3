@@ -260,7 +260,7 @@ class CommandUtility
 
             if ($returnValue === 0) {
                 self::$applications[$cmd]['app'] = $cmd;
-                self::$applications[$cmd]['path'] = PathUtility::dirname($cmd) . '/';
+                self::$applications[$cmd]['path'] = dirname($cmd) . '/';
                 self::$applications[$cmd]['valid'] = true;
                 return true;
             }
@@ -404,8 +404,8 @@ class CommandUtility
                     continue;
                 }
                 [$cmd, $cmdPath] = GeneralUtility::trimExplode('=', $val, true, 2);
-                $cmdArr[$cmd]['app'] = PathUtility::basename($cmdPath);
-                $cmdArr[$cmd]['path'] = PathUtility::dirname($cmdPath) . '/';
+                $cmdArr[$cmd]['app'] = basename($cmdPath);
+                $cmdArr[$cmd]['path'] = dirname($cmdPath) . '/';
                 $cmdArr[$cmd]['valid'] = true;
             }
         }
@@ -474,29 +474,12 @@ class CommandUtility
     /**
      * Escape shell arguments (for example filenames) to be used on the local system.
      *
-     * The setting UTF8filesystem will be taken into account.
-     *
      * @param string[] $input Input arguments to be escaped
      * @return string[] Escaped shell arguments
      */
     public static function escapeShellArguments(array $input): array
     {
-        $isUTF8Filesystem = !empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']);
-        $currentLocale = false;
-        if ($isUTF8Filesystem) {
-            if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale'] ?? false) {
-                $currentLocale = setlocale(LC_CTYPE, '0');
-                setlocale(LC_CTYPE, $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale']);
-            }
-        }
-
-        $output = array_map('escapeshellarg', $input);
-
-        if ($isUTF8Filesystem && $currentLocale !== false) {
-            setlocale(LC_CTYPE, $currentLocale);
-        }
-
-        return $output;
+        return array_map(self::escapeShellArgument(...), $input);
     }
 
     /**
@@ -532,14 +515,22 @@ class CommandUtility
     /**
      * Escape a shell argument (for example a filename) to be used on the local system.
      *
-     * The setting UTF8filesystem will be taken into account.
+     * On POSIX systems, the argument is wrapped in single quotes byte by byte. Unlike
+     * escapeshellarg(), this does not depend on LC_CTYPE, which drops all non-ASCII
+     * bytes in the "C" locale.
      *
      * @param string $input Input-argument to be escaped
      * @return string Escaped shell argument
      */
     public static function escapeShellArgument(string $input): string
     {
-        return self::escapeShellArguments([$input])[0];
+        if (str_contains($input, "\0")) {
+            throw new \InvalidArgumentException('A shell argument must not contain null bytes.', 1791464840);
+        }
+        if (Environment::isWindows()) {
+            return escapeshellarg($input);
+        }
+        return "'" . str_replace("'", "'\\''", $input) . "'";
     }
 
     protected static function getLogger(): LoggerInterface

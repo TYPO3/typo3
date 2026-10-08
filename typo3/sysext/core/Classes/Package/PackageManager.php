@@ -432,7 +432,7 @@ class PackageManager implements SingletonInterface
                 }
                 $packageProvides = array_keys((array)($composerManifest->extra->{'typo3/cms'}->Package->providesPackages ?? []));
                 $this->installedPackageNames = array_merge($this->installedPackageNames, $packageProvides);
-                $path = PathUtility::dirname($fileInfo->getPathname());
+                $path = dirname($fileInfo->getPathname());
                 // Fix Windows backslashes
                 $currentPath = GeneralUtility::fixWindowsFilePath($path) . '/';
                 $packageKey = $this->getPackageKeyFromManifest($composerManifest, $currentPath);
@@ -930,7 +930,7 @@ class PackageManager implements SingletonInterface
                 $composerManifest = json_decode($json);
             }
             if (!$composerManifest instanceof \stdClass) {
-                throw new InvalidPackageManifestException('The composer.json found for extension "' . PathUtility::basename($manifestPath) . '" is invalid!', 1439555561);
+                throw new InvalidPackageManifestException('The composer.json found for extension "' . basename($manifestPath) . '" is invalid!', 1439555561);
             }
         }
 

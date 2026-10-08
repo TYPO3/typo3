@@ -133,8 +133,6 @@ return [
         'binSetup' => '',
         'setMemoryLimit' => 0,
         'phpTimeZone' => '',
-        'UTF8filesystem' => false,
-        'systemLocale' => '',
         'systemMaintainers' => null,    // @todo: This will be set up as an empty array once the installer can define a system maintainers
         'reverseProxyIP' => '',
         'reverseProxyHeaderMultiValue' => 'none',

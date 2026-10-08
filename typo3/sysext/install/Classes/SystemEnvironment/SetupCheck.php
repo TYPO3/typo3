@@ -50,8 +50,6 @@ class SetupCheck implements CheckInterface
 
         $this->checkTrustedHostPattern();
         $this->checkDownloadsPossible();
-        $this->checkSystemLocale();
-        $this->checkLocaleWithUTF8filesystem();
         $this->checkSomePhpOpcodeCacheIsLoaded();
         $this->isTrueTypeFontWorking();
 
@@ -114,78 +112,6 @@ class SetupCheck implements CheckInterface
                 'Either enable PHP runtime setting "allow_url_fopen"' . LF . 'or compile curl into your PHP with --with-curl.',
                 'Fetching external URLs is not allowed',
                 ContextualFeedbackSeverity::WARNING
-            ));
-        }
-    }
-
-    /**
-     * Check if systemLocale setting is correct (locale exists in the OS)
-     */
-    protected function checkSystemLocale()
-    {
-        $currentLocale = (string)setlocale(LC_CTYPE, '0');
-
-        // On Windows an empty locale value uses the regional settings from the Control Panel
-        if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale'] === '' && !Environment::isWindows()) {
-            $this->messageQueue->enqueue(new FlashMessage(
-                '$GLOBALS[TYPO3_CONF_VARS][SYS][systemLocale] is not set. This is fine as long as no UTF-8 file system is used.',
-                'Empty systemLocale setting',
-                ContextualFeedbackSeverity::INFO
-            ));
-        } elseif (setlocale(LC_CTYPE, $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale']) === false) {
-            $this->messageQueue->enqueue(new FlashMessage(
-                'Current value of the $GLOBALS[TYPO3_CONF_VARS][SYS][systemLocale] is incorrect. A locale with'
-                    . ' this name doesn\'t exist in the operating system.',
-                'Incorrect systemLocale setting',
-                ContextualFeedbackSeverity::ERROR
-            ));
-            setlocale(LC_CTYPE, $currentLocale);
-        } else {
-            $this->messageQueue->enqueue(new FlashMessage(
-                '',
-                'System locale is correct'
-            ));
-        }
-    }
-
-    /**
-     * Checks whether we can use file names with UTF-8 characters.
-     * Configured system locale must support UTF-8 when UTF8filesystem is set
-     */
-    protected function checkLocaleWithUTF8filesystem()
-    {
-        if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
-            // On Windows an empty local value uses the regional settings from the Control Panel
-            if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale'] === '' && !Environment::isWindows()) {
-                $this->messageQueue->enqueue(new FlashMessage(
-                    '$GLOBALS[TYPO3_CONF_VARS][SYS][UTF8filesystem] is set, but $GLOBALS[TYPO3_CONF_VARS][SYS][systemLocale]'
-                        . ' is empty. Make sure a valid locale which supports UTF-8 is set.',
-                    'System locale not set on UTF-8 file system',
-                    ContextualFeedbackSeverity::ERROR
-                ));
-            } else {
-                $testString = 'ÖöĄĆŻĘĆćążąęó.jpg';
-                $currentLocale = (string)setlocale(LC_CTYPE, '0');
-                $quote = Environment::isWindows() ? '"' : '\'';
-                setlocale(LC_CTYPE, $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale']);
-                if (escapeshellarg($testString) === $quote . $testString . $quote) {
-                    $this->messageQueue->enqueue(new FlashMessage(
-                        '',
-                        'File names with UTF-8 characters can be used.'
-                    ));
-                } else {
-                    $this->messageQueue->enqueue(new FlashMessage(
-                        'Please check your $GLOBALS[TYPO3_CONF_VARS][SYS][systemLocale] setting.',
-                        'System locale setting doesn\'t support UTF-8 file names.',
-                        ContextualFeedbackSeverity::ERROR
-                    ));
-                }
-                setlocale(LC_CTYPE, $currentLocale);
-            }
-        } else {
-            $this->messageQueue->enqueue(new FlashMessage(
-                '',
-                'Skipping test, as UTF8filesystem is not enabled.'
             ));
         }
     }

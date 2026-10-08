@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Core\Resource\TextExtraction;
 
 use TYPO3\CMS\Core\Attribute\AsTextExtractor;
 use TYPO3\CMS\Core\Resource\FileInterface;
-use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * A simple text extractor to extract text from plain text files.
@@ -49,7 +48,7 @@ class PlainTextExtractor implements TextExtractorInterface
         // original file in typo3temp must be removed
         // Simply compare the filenames, because the filename is so unique that
         // it is nearly impossible to have a file with this name in a storage
-        if (PathUtility::basename($localTempFile) !== $file->getName()) {
+        if (basename($localTempFile) !== $file->getName()) {
             unlink($localTempFile);
         }
 

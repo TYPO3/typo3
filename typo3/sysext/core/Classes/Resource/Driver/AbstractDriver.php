@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Core\Resource\Driver;
 
 use TYPO3\CMS\Core\Resource\Capabilities;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * An abstract implementation of a storage driver.
@@ -119,7 +118,7 @@ abstract class AbstractDriver implements DriverInterface
      */
     protected function getTemporaryPathForFile(string $fileIdentifier): string
     {
-        return GeneralUtility::tempnam('fal-tempfile-', '.' . PathUtility::pathinfo($fileIdentifier, PATHINFO_EXTENSION));
+        return GeneralUtility::tempnam('fal-tempfile-', '.' . pathinfo($fileIdentifier, PATHINFO_EXTENSION));
     }
 
     /**

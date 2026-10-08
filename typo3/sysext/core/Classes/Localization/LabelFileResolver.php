@@ -69,7 +69,7 @@ readonly class LabelFileResolver
             $searchPath = $packagePath . $searchPath;
             $files = GeneralUtility::getAllFilesAndFoldersInPath([], $searchPath, $allowedFileExtensions);
             foreach ($files as $file) {
-                $fileName = PathUtility::basename($file);
+                $fileName = basename($file);
                 $locale = $this->translationDomainResolver->getLocaleFromLanguageFile($fileName);
                 if ($locale === null) {
                     $locale = 'default';
@@ -311,7 +311,7 @@ readonly class LabelFileResolver
         }
 
         foreach ($possiblePrefixes as $fileNamePrefix) {
-            $fileName = PathUtility::basename($sourcePath);
+            $fileName = basename($sourcePath);
             if (str_starts_with($fileName, $fileNamePrefix . '.')) {
                 return $sourcePath;
             }

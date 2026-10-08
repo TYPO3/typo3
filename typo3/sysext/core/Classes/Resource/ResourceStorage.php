@@ -1232,7 +1232,7 @@ class ResourceStorage implements ResourceStorageInterface
             throw new \InvalidArgumentException('File "' . $localFilePath . '" does not exist.', 1319552745);
         }
 
-        $targetFileName = $this->sanitizeFileName($targetFileName ?: PathUtility::basename($localFilePath), $targetFolder);
+        $targetFileName = $this->sanitizeFileName($targetFileName ?: basename($localFilePath), $targetFolder);
 
         $targetFileName = $this->eventDispatcher->dispatch(
             new BeforeFileAddedEvent($targetFileName, $localFilePath, $targetFolder, $this, $this->driver)
@@ -2595,7 +2595,7 @@ class ResourceStorage implements ResourceStorageInterface
     {
         $maxNumber = 99;
         // Fetches info about path, name, extension of $theFile
-        $origFileInfo = PathUtility::pathinfo($theFile);
+        $origFileInfo = pathinfo($theFile);
         // Check if the file exists and if not - return the fileName...
         // The destinations file
         $theDestFile = $origFileInfo['basename'];

@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Core\Cache\Backend;
 use TYPO3\CMS\Core\Cache\Exception;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
@@ -36,7 +35,7 @@ class FileBackend extends SimpleFileBackend implements TaggableBackendInterface
      */
     public function set(string $entryIdentifier, string $data, array $tags = [], ?int $lifetime = null): void
     {
-        if ($entryIdentifier !== PathUtility::basename($entryIdentifier)) {
+        if ($entryIdentifier !== basename($entryIdentifier)) {
             throw new \InvalidArgumentException('The specified entry identifier must not contain a path segment.', 1282073032);
         }
         if ($entryIdentifier === '') {
@@ -69,7 +68,7 @@ class FileBackend extends SimpleFileBackend implements TaggableBackendInterface
      */
     public function get(string $entryIdentifier): false|string
     {
-        if ($entryIdentifier !== PathUtility::basename($entryIdentifier)) {
+        if ($entryIdentifier !== basename($entryIdentifier)) {
             throw new \InvalidArgumentException('The specified entry identifier must not contain a path segment.', 1282073033);
         }
         $pathAndFilename = $this->cacheDirectory . $entryIdentifier . $this->cacheEntryFileExtension;
@@ -88,7 +87,7 @@ class FileBackend extends SimpleFileBackend implements TaggableBackendInterface
 
     public function has(string $entryIdentifier): bool
     {
-        if ($entryIdentifier !== PathUtility::basename($entryIdentifier)) {
+        if ($entryIdentifier !== basename($entryIdentifier)) {
             throw new \InvalidArgumentException('The specified entry identifier must not contain a path segment.', 1282073034);
         }
         return !$this->isCacheFileExpired($this->cacheDirectory . $entryIdentifier . $this->cacheEntryFileExtension);
@@ -179,7 +178,7 @@ class FileBackend extends SimpleFileBackend implements TaggableBackendInterface
 
     public function requireOnce(string $entryIdentifier): mixed
     {
-        if ($entryIdentifier !== PathUtility::basename($entryIdentifier)) {
+        if ($entryIdentifier !== basename($entryIdentifier)) {
             throw new \InvalidArgumentException('The specified entry identifier must not contain a path segment.', 1282073036);
         }
         $pathAndFilename = $this->cacheDirectory . $entryIdentifier . $this->cacheEntryFileExtension;
@@ -188,7 +187,7 @@ class FileBackend extends SimpleFileBackend implements TaggableBackendInterface
 
     public function require(string $entryIdentifier): mixed
     {
-        if ($entryIdentifier !== PathUtility::basename($entryIdentifier)) {
+        if ($entryIdentifier !== basename($entryIdentifier)) {
             throw new \InvalidArgumentException('The specified entry identifier must not contain a path segment.', 1532528246);
         }
         $pathAndFilename = $this->cacheDirectory . $entryIdentifier . $this->cacheEntryFileExtension;

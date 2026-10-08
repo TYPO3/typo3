@@ -24,7 +24,6 @@ use TYPO3\CMS\Core\Localization\TranslatorInterface;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\IndexedSearch\Dto\IndexingDataAsString;
 
 /**
@@ -45,7 +44,6 @@ class FileContentParser
     public array $supportedExtensions = [];
     public Indexer $pObj;
     protected TranslatorInterface $translator;
-    protected ?string $lastLocale = null;
 
     /**
      * Constructs this external parsers object
@@ -439,9 +437,8 @@ class FileContentParser
         switch ($ext) {
             case 'pdf':
                 if ($this->app['pdfinfo']) {
-                    $this->setLocaleForServerFileSystem();
                     // Getting pdf-info:
-                    $cmd = $this->app['pdfinfo'] . ' -enc UTF-8 ' . escapeshellarg($absFile);
+                    $cmd = $this->app['pdfinfo'] . ' -enc UTF-8 ' . CommandUtility::escapeShellArgument($absFile);
                     CommandUtility::exec($cmd, $res);
                     $pdfInfo = $this->splitPdfInfo($res);
                     unset($res);
@@ -454,7 +451,7 @@ class FileContentParser
                             unlink($tempFileName);
                         }
                         // Get pdf content:
-                        $cmd = $this->app['pdftotext'] . ' -f ' . escapeshellarg((string)$low) . ' -l ' . escapeshellarg((string)$high) . ' -enc UTF-8 -q ' . escapeshellarg($absFile) . ' ' . escapeshellarg($tempFileName);
+                        $cmd = $this->app['pdftotext'] . ' -f ' . CommandUtility::escapeShellArgument((string)$low) . ' -l ' . CommandUtility::escapeShellArgument((string)$high) . ' -enc UTF-8 -q ' . CommandUtility::escapeShellArgument($absFile) . ' ' . CommandUtility::escapeShellArgument($tempFileName);
                         CommandUtility::exec($cmd);
                         if (@is_file($tempFileName)) {
                             $content = (string)file_get_contents($tempFileName);
@@ -470,45 +467,38 @@ class FileContentParser
                     if (!empty($pdfInfo['title'])) {
                         $indexingDataDto->title = $pdfInfo['title'];
                     }
-                    $this->setLocaleForServerFileSystem(true);
                 }
                 break;
             case 'doc':
                 if ($this->app['catdoc']) {
-                    $this->setLocaleForServerFileSystem();
-                    $cmd = $this->app['catdoc'] . ' -d utf-8 ' . escapeshellarg($absFile);
+                    $cmd = $this->app['catdoc'] . ' -d utf-8 ' . CommandUtility::escapeShellArgument($absFile);
                     CommandUtility::exec($cmd, $res);
                     $content = implode(LF, $res);
                     unset($res);
                     $indexingDataDto = $this->pObj->splitRegularContent($this->removeEndJunk($content));
-                    $this->setLocaleForServerFileSystem(true);
                 }
                 break;
             case 'pps':
             case 'ppt':
                 if ($this->app['ppthtml']) {
-                    $this->setLocaleForServerFileSystem();
-                    $cmd = $this->app['ppthtml'] . ' ' . escapeshellarg($absFile);
+                    $cmd = $this->app['ppthtml'] . ' ' . CommandUtility::escapeShellArgument($absFile);
                     CommandUtility::exec($cmd, $res);
                     $content = implode(LF, $res);
                     unset($res);
                     $content = $this->pObj->convertHTMLToUtf8($content);
                     $indexingDataDto = $this->pObj->splitHTMLContent($this->removeEndJunk($content));
-                    $indexingDataDto->title = PathUtility::basename($absFile);
-                    $this->setLocaleForServerFileSystem(true);
+                    $indexingDataDto->title = basename($absFile);
                 }
                 break;
             case 'xls':
                 if ($this->app['xlhtml']) {
-                    $this->setLocaleForServerFileSystem();
-                    $cmd = $this->app['xlhtml'] . ' -nc -te ' . escapeshellarg($absFile);
+                    $cmd = $this->app['xlhtml'] . ' -nc -te ' . CommandUtility::escapeShellArgument($absFile);
                     CommandUtility::exec($cmd, $res);
                     $content = implode(LF, $res);
                     unset($res);
                     $content = $this->pObj->convertHTMLToUtf8($content);
                     $indexingDataDto = $this->pObj->splitHTMLContent($this->removeEndJunk($content));
-                    $indexingDataDto->title = PathUtility::basename($absFile);
-                    $this->setLocaleForServerFileSystem(true);
+                    $indexingDataDto->title = basename($absFile);
                 }
                 break;
             case 'docx':
@@ -519,14 +509,13 @@ class FileContentParser
             case 'xlsx':
             case 'xltx':
                 if ($this->app['unzip']) {
-                    $this->setLocaleForServerFileSystem();
                     $utf8_content = null;
                     $cmd = '';
                     switch ($ext) {
                         case 'docx':
                         case 'dotx':
                             // Read document.xml:
-                            $cmd = $this->app['unzip'] . ' -p ' . escapeshellarg($absFile) . ' word/document.xml';
+                            $cmd = $this->app['unzip'] . ' -p ' . CommandUtility::escapeShellArgument($absFile) . ' word/document.xml';
                             break;
                         case 'ppsx':
                         case 'pptx':
@@ -536,7 +525,7 @@ class FileContentParser
                         case 'xlsx':
                         case 'xltx':
                             // Read sharedStrings.xml:
-                            $cmd = $this->app['unzip'] . ' -p ' . escapeshellarg($absFile) . ' xl/sharedStrings.xml';
+                            $cmd = $this->app['unzip'] . ' -p ' . CommandUtility::escapeShellArgument($absFile) . ' xl/sharedStrings.xml';
                             break;
                         default:
                             $cmd = '';
@@ -550,9 +539,9 @@ class FileContentParser
                     }
                     $indexingDataDto = $this->pObj->splitRegularContent($utf8_content);
                     // Make sure the title doesn't expose the absolute path!
-                    $indexingDataDto->title = PathUtility::basename($absFile);
+                    $indexingDataDto->title = basename($absFile);
                     // Meta information
-                    $cmd = $this->app['unzip'] . ' -p ' . escapeshellarg($absFile) . ' docProps/core.xml';
+                    $cmd = $this->app['unzip'] . ' -p ' . CommandUtility::escapeShellArgument($absFile) . ' docProps/core.xml';
                     CommandUtility::exec($cmd, $res);
                     $meta_xml = implode(LF, $res);
                     unset($res);
@@ -563,7 +552,6 @@ class FileContentParser
                         $indexingDataDto->description .= ' ' . ($metaContent['cp:coreProperties'][0]['ch']['dc:description'][0]['values'][0] ?? '');
                         $indexingDataDto->keywords = ($metaContent['cp:coreProperties'][0]['ch']['cp:keywords'][0]['values'][0] ?? '');
                     }
-                    $this->setLocaleForServerFileSystem(true);
                 }
                 break;
             case 'sxi':
@@ -573,20 +561,19 @@ class FileContentParser
             case 'odp':
             case 'odt':
                 if ($this->app['unzip']) {
-                    $this->setLocaleForServerFileSystem();
                     // Read content.xml:
-                    $cmd = $this->app['unzip'] . ' -p ' . escapeshellarg($absFile) . ' content.xml';
+                    $cmd = $this->app['unzip'] . ' -p ' . CommandUtility::escapeShellArgument($absFile) . ' content.xml';
                     CommandUtility::exec($cmd, $res);
                     $content_xml = implode(LF, $res);
                     unset($res);
                     // Read meta.xml:
-                    $cmd = $this->app['unzip'] . ' -p ' . escapeshellarg($absFile) . ' meta.xml';
+                    $cmd = $this->app['unzip'] . ' -p ' . CommandUtility::escapeShellArgument($absFile) . ' meta.xml';
                     CommandUtility::exec($cmd, $res);
                     $meta_xml = implode(LF, $res);
                     unset($res);
                     $utf8_content = trim(strip_tags(str_replace('<', ' <', $content_xml)));
                     $indexingDataDto = $this->pObj->splitRegularContent($utf8_content);
-                    $indexingDataDto->title = PathUtility::basename($absFile);
+                    $indexingDataDto->title = basename($absFile);
                     // Make sure the title doesn't expose the absolute path!
                     // Meta information
                     $metaContent = GeneralUtility::xml2tree($meta_xml);
@@ -601,33 +588,28 @@ class FileContentParser
                             }
                         }
                     }
-                    $this->setLocaleForServerFileSystem(true);
                 }
                 break;
             case 'rtf':
                 if ($this->app['unrtf']) {
-                    $this->setLocaleForServerFileSystem();
-                    $cmd = $this->app['unrtf'] . ' ' . escapeshellarg($absFile);
+                    $cmd = $this->app['unrtf'] . ' ' . CommandUtility::escapeShellArgument($absFile);
                     CommandUtility::exec($cmd, $res);
                     $fileContent = implode(LF, $res);
                     unset($res);
                     $fileContent = $this->pObj->convertHTMLToUtf8($fileContent);
                     $indexingDataDto = $this->pObj->splitHTMLContent($fileContent);
-                    $this->setLocaleForServerFileSystem(true);
                 }
                 break;
             case 'txt':
             case 'csv':
-                $this->setLocaleForServerFileSystem();
                 // Raw text
                 $content = GeneralUtility::getUrl($absFile);
                 // @todo Implement auto detection of charset (currently assuming utf-8)
                 $contentCharset = 'utf-8';
                 $content = $this->pObj->convertHTMLToUtf8($content, $contentCharset);
                 $indexingDataDto = $this->pObj->splitRegularContent($content);
-                $indexingDataDto->title = PathUtility::basename($absFile);
+                $indexingDataDto->title = basename($absFile);
                 // Make sure the title doesn't expose the absolute path!
-                $this->setLocaleForServerFileSystem(true);
                 break;
             case 'html':
             case 'htm':
@@ -636,7 +618,6 @@ class FileContentParser
                 $indexingDataDto = $this->pObj->splitHTMLContent($fileContent);
                 break;
             case 'xml':
-                $this->setLocaleForServerFileSystem();
                 // PHP strip-tags()
                 $fileContent = GeneralUtility::getUrl($absFile);
                 // Finding charset:
@@ -645,14 +626,12 @@ class FileContentParser
                 // Converting content:
                 $fileContent = $this->pObj->convertHTMLToUtf8(strip_tags(str_replace('<', ' <', $fileContent)), $charset);
                 $indexingDataDto = $this->pObj->splitRegularContent($fileContent);
-                $indexingDataDto->title = PathUtility::basename($absFile);
+                $indexingDataDto->title = basename($absFile);
                 // Make sure the title doesn't expose the absolute path!
-                $this->setLocaleForServerFileSystem(true);
                 break;
             case 'jpg':
             case 'jpeg':
             case 'tif':
-                $this->setLocaleForServerFileSystem();
                 // PHP EXIF
                 if (function_exists('exif_read_data')) {
                     $exif = @exif_read_data($absFile, 'IFD0');
@@ -665,9 +644,8 @@ class FileContentParser
                     $comment = '';
                 }
                 $indexingDataDto = $this->pObj->splitRegularContent($comment);
-                $indexingDataDto->title = PathUtility::basename($absFile);
+                $indexingDataDto->title = basename($absFile);
                 // Make sure the title doesn't expose the absolute path!
-                $this->setLocaleForServerFileSystem(true);
                 break;
             default:
                 return false;
@@ -675,42 +653,9 @@ class FileContentParser
         // If no title (and why should there be...) then the file-name is set as title. This will raise the hits considerably if the search matches the document name.
         if (!$indexingDataDto->title) {
             // Substituting "_" for " " because many filenames may have this instead of a space char.
-            $indexingDataDto->title = str_replace('_', ' ', PathUtility::basename($absFile));
+            $indexingDataDto->title = str_replace('_', ' ', basename($absFile));
         }
         return $indexingDataDto;
-    }
-
-    /**
-     * Sets the locale for LC_CTYPE to $TYPO3_CONF_VARS['SYS']['systemLocale']
-     * if $TYPO3_CONF_VARS['SYS']['UTF8filesystem'] is set.
-     *
-     * Parameter <code>$resetLocale</code> has to be FALSE and TRUE alternating for all calls.
-     *
-     * @staticvar string $lastLocale Stores the locale used before it is overridden by this method.
-     * @param bool $resetLocale TRUE resets the locale to $lastLocale.
-     * @throws \RuntimeException
-     */
-    protected function setLocaleForServerFileSystem(bool $resetLocale = false): void
-    {
-        if (!$GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
-            return;
-        }
-
-        if ($resetLocale) {
-            if ($this->lastLocale === null) {
-                throw new \RuntimeException('Cannot reset locale to NULL.', 1357064326);
-            }
-            setlocale(LC_CTYPE, $this->lastLocale);
-            $this->lastLocale = null;
-        } else {
-            if ($this->lastLocale !== null) {
-                throw new \RuntimeException('Cannot set new locale as locale has already been changed before.', 1357064437);
-            }
-            $this->lastLocale = setlocale(LC_CTYPE, '0') ?: null;
-            if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale'] ?? false) {
-                setlocale(LC_CTYPE, $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale']);
-            }
-        }
     }
 
     /**
@@ -728,9 +673,8 @@ class FileContentParser
         $cParts = [0];
         switch ($ext) {
             case 'pdf':
-                $this->setLocaleForServerFileSystem();
                 // Getting pdf-info:
-                $cmd = $this->app['pdfinfo'] . ' ' . escapeshellarg($absFile);
+                $cmd = $this->app['pdfinfo'] . ' ' . CommandUtility::escapeShellArgument($absFile);
                 CommandUtility::exec($cmd, $res);
                 $pdfInfo = $this->splitPdfInfo($res);
                 unset($res);
@@ -750,7 +694,6 @@ class FileContentParser
                         $cParts[] = $low . '-' . $high;
                     }
                 }
-                $this->setLocaleForServerFileSystem(true);
                 break;
             default:
         }
@@ -797,7 +740,7 @@ class FileContentParser
     protected function extractPptxContent(string $absFile): string
     {
         // Extract the list of slides:
-        $cmd = $this->app['unzip'] . ' -l ' . escapeshellarg($absFile);
+        $cmd = $this->app['unzip'] . ' -l ' . CommandUtility::escapeShellArgument($absFile);
         CommandUtility::exec($cmd, $res);
 
         $buffer = [];
@@ -805,7 +748,7 @@ class FileContentParser
             if (preg_match('#\s+(ppt/slides/slide\d+.xml)$#', $line, $matches)) {
                 $slideFile = $matches[1];
                 // Extract the content of the slide:
-                $cmd = $this->app['unzip'] . ' -p ' . escapeshellarg($absFile) . ' ' . $slideFile;
+                $cmd = $this->app['unzip'] . ' -p ' . CommandUtility::escapeShellArgument($absFile) . ' ' . $slideFile;
                 CommandUtility::exec($cmd, $xml);
                 $content_xml = implode(LF, $xml);
                 unset($xml);

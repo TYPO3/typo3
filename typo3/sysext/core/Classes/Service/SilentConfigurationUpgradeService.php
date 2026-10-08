@@ -219,6 +219,9 @@ class SilentConfigurationUpgradeService
         'FE/cacheHash/fallbackToLegacyHash',
         // #109986
         'FE/addAllowedPaths',
+        // #110966
+        'SYS/UTF8filesystem',
+        'SYS/systemLocale',
     ];
 
     public function __construct(private readonly ConfigurationManager $configurationManager) {}

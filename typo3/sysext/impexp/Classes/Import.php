@@ -40,7 +40,6 @@ use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Impexp\Exception\ImportFailedException;
 use TYPO3\CMS\Impexp\Exception\LoadingFileFailedException;
@@ -680,7 +679,7 @@ class Import extends ImportExport
             }
 
             if ($file === null) {
-                $folderName = PathUtility::dirname(ltrim($fileRecord['identifier'], '/'));
+                $folderName = dirname(ltrim($fileRecord['identifier'], '/'));
                 if (in_array($folderName, $sanitizedFolderMappings, true)) {
                     $folderName = $sanitizedFolderMappings[$folderName];
                 }

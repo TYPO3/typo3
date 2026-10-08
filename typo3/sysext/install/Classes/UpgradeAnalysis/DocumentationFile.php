@@ -21,7 +21,6 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 
 /**
@@ -104,7 +103,7 @@ final class DocumentationFile
         $lines = file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
         $lines = is_array($lines) ? $lines : [];
         $headline = $this->extractHeadline($lines);
-        $entry['version'] = PathUtility::basename(PathUtility::dirname($file));
+        $entry['version'] = basename(dirname($file));
         $entry['headline'] = $headline;
         $entry['filepath'] = $file;
         $entry['filename'] = pathinfo($file)['filename'];

@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Core\Resource;
 use Psr\Http\Message\UploadedFileInterface;
 use TYPO3\CMS\Core\Resource\Service\ResourceConsistencyService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Trait for creating skip-instructions for `ResourceConsistencyService::validate()`.
@@ -51,7 +50,7 @@ trait ResourceInstructionTrait
         string|FileInterface $resource,
         ?string $targetFileName = null,
     ): void {
-        $targetFileName ??= PathUtility::basename(
+        $targetFileName ??= basename(
             $resource instanceof FileInterface ? $resource->getName() : $resource
         );
         GeneralUtility::makeInstance(ResourceConsistencyService::class)->addExceptionItem(

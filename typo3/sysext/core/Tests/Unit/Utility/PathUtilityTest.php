@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 
 use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -541,5 +542,16 @@ final class PathUtilityTest extends UnitTestCase
     {
         $GLOBALS['TYPO3_CONF_VARS']['BE']['lockRootPath'] = $lockRootPath;
         self::assertSame($expectation, PathUtility::isAllowedAdditionalPath($path));
+    }
+
+    #[IgnoreDeprecations]
+    #[Test]
+    public function deprecatedLocaleWrappersReturnResultOfNativeFunctions(): void
+    {
+        $path = '/var/www/fileadmin/Übersicht/äöü.tar.gz';
+        self::assertSame(basename($path), PathUtility::basename($path));
+        self::assertSame(dirname($path), PathUtility::dirname($path));
+        self::assertSame(pathinfo($path), PathUtility::pathinfo($path));
+        self::assertSame(pathinfo($path, PATHINFO_FILENAME), PathUtility::pathinfo($path, PATHINFO_FILENAME));
     }
 }

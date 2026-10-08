@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Core\Imaging;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Self-contained GD image toolbox.
@@ -154,7 +153,7 @@ final class GraphicsCanvas
         if (!self::isAvailable()) {
             throw new \RuntimeException('GraphicsCanvas requires the PHP GD extension', 1746200001);
         }
-        $ext = strtolower(PathUtility::pathinfo($filePath, PATHINFO_EXTENSION));
+        $ext = strtolower(pathinfo($filePath, PATHINFO_EXTENSION));
         if (!self::supportsFormat($ext)) {
             return null;
         }
@@ -1096,7 +1095,7 @@ final class GraphicsCanvas
      */
     public function saveToFile(string $path, string $format = '', int $quality = -1, int $speed = -1): bool
     {
-        $ext = $format !== '' ? strtolower($format) : strtolower(PathUtility::pathinfo($path, PATHINFO_EXTENSION));
+        $ext = $format !== '' ? strtolower($format) : strtolower(pathinfo($path, PATHINFO_EXTENSION));
         if ($ext === 'webp' || $ext === 'avif') {
             // GD writes the full alpha channel for these two whatever the flag says.
             // The manual asks for it to be set deliberately rather than relied upon,

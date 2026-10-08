@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Core\Tests\Functional\Fixtures;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 
 class DummyFileCreationService
 {
@@ -58,7 +57,7 @@ class DummyFileCreationService
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['features']['security.system.enforceAllowedFileExtensions'] = false;
         $fileadminDir = '/' . trim($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'] ?? 'fileadmin', '/');
         $pathInFileadmin = $this->ensureFilesExistInPublicFolder($fileadminDir . $fileName, $contents);
-        $tempFile = Environment::getVarPath() . '/transient/' . PathUtility::basename($pathInFileadmin);
+        $tempFile = Environment::getVarPath() . '/transient/' . basename($pathInFileadmin);
         rename($pathInFileadmin, $tempFile);
         $storage->addFile(
             localFilePath: $tempFile,

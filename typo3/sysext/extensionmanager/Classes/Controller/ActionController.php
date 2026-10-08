@@ -194,7 +194,7 @@ class ActionController extends AbstractController
             ->createResponse()
             ->withAddedHeader('Content-Type', 'application/zip')
             ->withAddedHeader('Content-Length', (string)(filesize($fileName) ?: ''))
-            ->withAddedHeader('Content-Disposition', 'attachment; filename="' . PathUtility::basename($fileName) . '"')
+            ->withAddedHeader('Content-Disposition', 'attachment; filename="' . basename($fileName) . '"')
             ->withBody($this->streamFactory->createStreamFromFile($fileName));
 
         unlink($fileName);

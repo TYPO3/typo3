@@ -45,7 +45,6 @@ use TYPO3\CMS\Core\SystemResource\Type\SystemResourceInterface;
 use TYPO3\CMS\Core\SystemResource\Type\UriResource;
 use TYPO3\CMS\Core\Type\DocType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * TYPO3 pageRender class
@@ -1833,7 +1832,7 @@ class PageRenderer implements SingletonInterface
         } catch (SystemResourceDoesNotExistException) {
             return '';
         }
-        $cssInlineFix = $this->relativeCssPathFixer->fixRelativeUrlPaths($cssInline, PathUtility::dirname($resource->getResourceIdentifier()) . '/', $request);
+        $cssInlineFix = $this->relativeCssPathFixer->fixRelativeUrlPaths($cssInline, dirname($resource->getResourceIdentifier()) . '/', $request);
         // collect CSP hash - covers the content as it appears inside the <style> tag
         $this->directiveHashCollection->addInlineHash(Directive::StyleSrcElem, LF . $cssInlineFix . LF);
         $tagAttributes = [];

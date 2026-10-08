@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
+use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -357,7 +358,7 @@ class CoreUpdateService
                     ContextualFeedbackSeverity::ERROR
                 ));
             } else {
-                $unpackCommand = 'tar xf ' . escapeshellarg($fileLocation) . ' -C ' . escapeshellarg($this->downloadTargetPath) . ' 2>&1';
+                $unpackCommand = 'tar xf ' . CommandUtility::escapeShellArgument($fileLocation) . ' -C ' . CommandUtility::escapeShellArgument($this->downloadTargetPath) . ' 2>&1';
                 exec($unpackCommand, $output, $errorCode);
                 if ($errorCode) {
                     $success = false;

@@ -37,7 +37,6 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Impexp\Domain\Repository\PresetRepository;
 use TYPO3\CMS\Impexp\Exception\InsufficientUserPermissionsException;
 use TYPO3\CMS\Impexp\Exception\MalformedPresetException;
@@ -252,7 +251,7 @@ class ExportController
         $response = $this->responseFactory->createResponse()
             ->withHeader('Content-Type', 'application/octet-stream')
             ->withHeader('Content-Length', (string)strlen($fileContent))
-            ->withHeader('Content-Disposition', 'attachment; filename=' . PathUtility::basename($fileName));
+            ->withHeader('Content-Disposition', 'attachment; filename=' . basename($fileName));
         $response->getBody()->write($export->render());
         return $response;
     }

@@ -36,7 +36,6 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceInterface;
 use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 
 #[Autoconfigure(public: true)]
 readonly class FileDumpController
@@ -228,7 +227,7 @@ readonly class FileDumpController
      */
     protected function applyContentSecurityPolicy(ResourceInterface $file, ResponseInterface $response): ResponseInterface
     {
-        $extension = PathUtility::pathinfo($file->getName(), PATHINFO_EXTENSION);
+        $extension = pathinfo($file->getName(), PATHINFO_EXTENSION);
         // same as in `typo3/sysext/install/Resources/Private/FolderStructureTemplateFiles/resources-root-htaccess`
         if ($extension === 'pdf' || $response->getHeaderLine('content-type') === 'application/pdf') {
             $policy = "default-src 'self' 'unsafe-inline'; script-src 'none'; object-src 'self'; plugin-types application/pdf;";

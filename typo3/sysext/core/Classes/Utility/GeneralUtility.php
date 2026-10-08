@@ -2363,7 +2363,7 @@ class GeneralUtility
         }
         if ($fileSuffix === '') {
             $path = (string)tempnam($temporaryPath, $filePrefix);
-            $tempFileName = $temporaryPath . PathUtility::basename($path);
+            $tempFileName = $temporaryPath . basename($path);
         } else {
             do {
                 $tempFileName = $temporaryPath . $filePrefix . random_int(1, PHP_INT_MAX) . $fileSuffix;

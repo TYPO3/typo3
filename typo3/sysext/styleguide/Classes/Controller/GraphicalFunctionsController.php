@@ -689,7 +689,7 @@ final class GraphicalFunctionsController
         }
         $fullPath = $imageResource->getFullPath();
         if (!is_file($fullPath)) {
-            return ['url' => '', 'info' => '—', 'error' => 'Output file missing: ' . PathUtility::basename($fullPath), ...$base];
+            return ['url' => '', 'info' => '—', 'error' => 'Output file missing: ' . basename($fullPath), ...$base];
         }
         $info = sprintf(
             '%d×%d · %s',

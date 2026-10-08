@@ -22,7 +22,6 @@ use TYPO3\CMS\Core\Resource\FolderInterface;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Recycler folder garbage collection task
@@ -87,7 +86,7 @@ class RecyclerGarbageCollectionTask extends AbstractTask
         $folderIdentifiers = [$storage->getRootLevelFolder(false)->getIdentifier()];
         while (($folderIdentifier = array_pop($folderIdentifiers)) !== null) {
             foreach ($storage->getFolderIdentifiersInFolder($folderIdentifier) as $subFolderIdentifier) {
-                $subFolder = new Folder($storage, $subFolderIdentifier, PathUtility::basename($subFolderIdentifier));
+                $subFolder = new Folder($storage, $subFolderIdentifier, basename($subFolderIdentifier));
                 $role = $subFolder->getRole();
                 if ($role === FolderInterface::ROLE_RECYCLER) {
                     $recyclerFolders[] = $subFolder;

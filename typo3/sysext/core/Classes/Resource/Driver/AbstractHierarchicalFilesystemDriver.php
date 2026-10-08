@@ -92,6 +92,6 @@ abstract class AbstractHierarchicalFilesystemDriver extends AbstractDriver
     public function getParentFolderIdentifierOfIdentifier(string $fileIdentifier): string
     {
         $fileIdentifier = $this->canonicalizeAndCheckFileIdentifier($fileIdentifier);
-        return rtrim(GeneralUtility::fixWindowsFilePath(PathUtility::dirname($fileIdentifier)), '/') . '/';
+        return rtrim(GeneralUtility::fixWindowsFilePath(dirname($fileIdentifier)), '/') . '/';
     }
 }

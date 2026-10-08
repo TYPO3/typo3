@@ -25,7 +25,6 @@ use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderWritePermissionsExceptio
 use TYPO3\CMS\Core\Resource\Exception\ResourcePermissionsUnavailableException;
 use TYPO3\CMS\Core\Resource\Search\FileSearchDemand;
 use TYPO3\CMS\Core\Resource\Search\Result\FileSearchResultInterface;
-use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * A folder that groups files in a storage. This may be a folder on the local
@@ -265,7 +264,7 @@ class Folder implements FolderInterface
      */
     public function addFile(string $localFilePath, ?string $fileName = null, DuplicationBehavior $conflictMode = DuplicationBehavior::CANCEL): File
     {
-        $fileName = $fileName ?: PathUtility::basename($localFilePath);
+        $fileName = $fileName ?: basename($localFilePath);
 
         return $this->storage->addFile($localFilePath, $this, $fileName, $conflictMode);
     }
