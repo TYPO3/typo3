@@ -45,9 +45,7 @@ use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageRendererResolver;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
-use TYPO3\CMS\Core\Schema\Capability\LabelCapability;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
-use TYPO3\CMS\Core\Schema\Struct\SelectItem;
 use TYPO3\CMS\Core\Schema\TcaSchema;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
@@ -1010,10 +1008,7 @@ class QuerySearchController
                 $from_table_Arr[0] = $fieldSetup['foreign_table'];
             }
             $counter = 0;
-            $useSelectLabels = false;
-            $useAltSelectLabels = false;
             $tablePrefix = '';
-            $labelFieldSelect = [];
             foreach ($from_table_Arr as $from_table) {
                 if ($useTablePrefix && !$dontPrefixFirstTable && $counter !== 1 || $counter === 1) {
                     $tablePrefix = $from_table . '_';
@@ -1022,45 +1017,7 @@ class QuerySearchController
                 if (!$this->tcaSchemaFactory->has($from_table)) {
                     continue;
                 }
-                $selectFields = ['uid'];
-                $schema = $this->tcaSchemaFactory->get($from_table);
-                $labelCapability = $schema->getCapability(TcaSchemaCapability::Label);
-                $labelFieldName = null;
-                $altLabelFieldName = null;
-
-                if ($labelCapability->hasPrimaryField()) {
-                    $labelFieldName = $labelCapability->getPrimaryFieldName();
-                    $selectFields[] = $labelFieldName;
-                    $labelField = $schema->hasField($labelFieldName) ? $schema->getField($labelFieldName) : null;
-                    if ($labelField && $labelField->isType(TableColumnType::SELECT)) {
-                        foreach ($labelField->getConfiguration()['items'] ?? [] as $item) {
-                            $item = SelectItem::fromTcaItemArray($item);
-                            if ($item->isDivider()) {
-                                continue;
-                            }
-                            $labelFieldSelect[$item->getValue()] = $languageService->sL($item->getLabel());
-                        }
-                        $useSelectLabels = true;
-                    }
-                }
-                $altLabelFieldSelect = [];
-                foreach ($labelCapability->getAdditionalFieldNames() as $additionalFieldName) {
-                    $selectFields[] = $additionalFieldName;
-                    $additionalField = $schema->hasField($additionalFieldName) ? $schema->getField($additionalFieldName) : null;
-                    if ($additionalField && $additionalField->isType(TableColumnType::SELECT)) {
-                        foreach ($additionalField->getConfiguration()['items'] ?? [] as $item) {
-                            $item = SelectItem::fromTcaItemArray($item);
-                            if ($item->isDivider()) {
-                                continue;
-                            }
-                            $altLabelFieldSelect[$item->getValue()] = $languageService->sL($item->getLabel());
-                        }
-                        $altLabelFieldName = $additionalField->getName();
-                        // We only take the first alt-label field
-                        $useAltSelectLabels = true;
-                        break;
-                    }
-                }
+                $selectFields = $this->getSelectFieldsForRecordTitle($from_table);
 
                 if (empty($this->tableArray[$from_table])) {
                     $queryBuilder = $this->connectionPool->getQueryBuilderForTable($from_table);
@@ -1126,7 +1083,7 @@ class QuerySearchController
                             $out .= $splitString;
                         }
 
-                        $out .= $this->evaluateRelationDisplayWithLabels($useSelectLabels, $useAltSelectLabels, $labelCapability, $altLabelFieldName, $val, $labelFieldSelect, $altLabelFieldSelect, $labelFieldName);
+                        $out .= htmlspecialchars(BackendUtility::getRecordTitle($from_table, $val, false, false));
                     }
                 }
             }
@@ -1790,54 +1747,13 @@ class QuerySearchController
             $counter = 0;
             $tablePrefix = '';
             $outArray = [];
-            $labelFieldSelect = [];
             foreach ($from_table_Arr as $from_table) {
-                $useSelectLabels = false;
-                $useAltSelectLabels = false;
                 if ($useTablePrefix && !$dontPrefixFirstTable && $counter !== 1 || $counter === 1) {
                     $tablePrefix = $from_table . '_';
                 }
                 $counter = 1;
                 if ($this->tcaSchemaFactory->has($from_table)) {
-                    $schema = $this->tcaSchemaFactory->get($from_table);
-                    $labelCapability = $schema->getCapability(TcaSchemaCapability::Label);
-                    $labelFieldName = null;
-                    $altLabelFieldName = null;
-                    $selectFields = ['uid'];
-
-                    if ($labelCapability->hasPrimaryField()) {
-                        $labelFieldName = $labelCapability->getPrimaryFieldName();
-                        $selectFields[] = $labelFieldName;
-                        $labelField = $schema->hasField($labelFieldName) ? $schema->getField($labelFieldName) : null;
-                        if ($labelField && $labelField->isType(TableColumnType::SELECT)) {
-                            foreach ($labelField->getConfiguration()['items'] ?? [] as $item) {
-                                $item = SelectItem::fromTcaItemArray($item);
-                                if ($item->isDivider()) {
-                                    continue;
-                                }
-                                $labelFieldSelect[$item->getValue()] = $languageService->sL($item->getLabel());
-                            }
-                            $useSelectLabels = true;
-                        }
-                    }
-                    $altLabelFieldSelect = [];
-                    foreach ($labelCapability->getAdditionalFieldNames() as $additionalFieldName) {
-                        $selectFields[] = $additionalFieldName;
-                        $additionalField = $schema->hasField($additionalFieldName) ? $schema->getField($additionalFieldName) : null;
-                        if ($additionalField && $additionalField->isType(TableColumnType::SELECT)) {
-                            foreach ($additionalField->getConfiguration()['items'] ?? [] as $item) {
-                                $item = SelectItem::fromTcaItemArray($item);
-                                if ($item->isDivider()) {
-                                    continue;
-                                }
-                                $altLabelFieldSelect[$item->getValue()] = $languageService->sL($item->getLabel());
-                            }
-                            $altLabelFieldName = $additionalField->getName();
-                            // We only take the first alt-label field
-                            $useAltSelectLabels = true;
-                            break;
-                        }
-                    }
+                    $selectFields = $this->getSelectFieldsForRecordTitle($from_table);
 
                     if (!($this->tableArray[$from_table] ?? false)) {
                         $queryBuilder = $this->connectionPool->getQueryBuilderForTable($from_table);
@@ -1888,7 +1804,7 @@ class QuerySearchController
                     }
 
                     foreach ($this->tableArray[$from_table] ?? [] as $val) {
-                        $outArray[$tablePrefix . $val['uid']] = $this->evaluateRelationDisplayWithLabels($useSelectLabels, $useAltSelectLabels, $labelCapability, $altLabelFieldName, $val, $labelFieldSelect, $altLabelFieldSelect, $labelFieldName);
+                        $outArray[$tablePrefix . $val['uid']] = BackendUtility::getRecordTitle($from_table, $val, false, false);
                     }
                     if (isset($this->MOD_SETTINGS['options_sortlabel']) && $this->MOD_SETTINGS['options_sortlabel'] && $outArray !== []) {
                         natcasesort($outArray);
@@ -1910,55 +1826,18 @@ class QuerySearchController
     }
 
     /**
-     * Helper method to evaluate a specific field configuration and decide which label to return.
-     * This is used for both the dropdown when choosing a WHERE condition, but also for the record list itself,
-     * when inline relations are resolved in case the option "[search_result_labels]" is set.
-     * @param bool $useSelectLabels - Whether foreign resolving of a primary TCA 'label' field is required
-     * @param bool $useAltSelectLabels - Whether foreign resolving of the FIRST TCA 'label_alt' relation field is required
-     * @param LabelCapability $labelCapability - Schema capability information, used here for the table's label/label_alt evaluation
-     * @param string|null $altLabelFieldName - The name of the matched first TCA 'label_alt' relation field
-     * @param array $val - The DB SQL result row array
-     * @param array $labelFieldSelect - An array holding the possible select values of a 'label' relation
-     * @param array $altLabelFieldSelect - An array holding the possible select values of a 'label_alt' relation
-     * @param string|null $labelFieldName - The name of the primary TCA column used for the label
-     * @return string
-     * @todo Please refactor me.
+     * Returns the fields of the table, which are needed to resolve the record title
+     *
+     * @return string[]
      */
-    protected function evaluateRelationDisplayWithLabels(bool $useSelectLabels, bool $useAltSelectLabels, LabelCapability $labelCapability, ?string $altLabelFieldName, array $val, array $labelFieldSelect, array $altLabelFieldSelect, ?string $labelFieldName): string
+    protected function getSelectFieldsForRecordTitle(string $table): array
     {
-        // Several checks here to decide whether:
-        // 1. the primary label field contains resolved selectable values,
-        // 2. or a straight field value (no relation) for the primary label field is set,
-        // 3. or a fallback to the FIRST label_alt relation exists (guaranteed that ONE select relation exists!)
-        // 4. or a label_alt configuration is used where NO relations exist (final fallback)
-        // (this piece of code is similar (but not identical) in makeOptionList() AND makeValueList()!
-        if ($useSelectLabels) {
-            return htmlspecialchars($labelFieldSelect[$val[$labelFieldName]]);
+        $schema = $this->tcaSchemaFactory->get($table);
+        $selectFields = ['uid', 'pid', ...$schema->getCapability(TcaSchemaCapability::Label)->getLabelFieldNamesOfAllRecordTypes()];
+        if ($schema->supportsSubSchema()) {
+            $selectFields[] = $schema->getSubSchemaTypeInformation()->getFieldName();
         }
-        if ($val[$labelFieldName] ?? false) {
-            return htmlspecialchars((string)$val[$labelFieldName]);
-        }
-        if ($useAltSelectLabels) {
-            if (isset($altLabelFieldSelect[$val[$altLabelFieldName]])) {
-                // For example, altLabelFieldName=CType (for tt_content) and the row's CType is set to "text", this would return a string like "Regular Text element"
-                // Resolved labels are already html-encoded.
-                return $altLabelFieldSelect[$val[$altLabelFieldName]];
-            }
-
-            // For old/invalid item associations (like CType=list), display the hardcoded value here instead the resolved item
-            return '[' . htmlspecialchars((string)$val[$altLabelFieldName]) . ']';
-        }
-        // This case happens when NO relations exist. Iterate existing label_alt configuration and
-        // take the first non-empty value.
-        foreach ($labelCapability->getAdditionalFieldNames() as $additionalFieldName) {
-            if ($val[$additionalFieldName]) {
-                // First altLabelField that matches concludes the output.
-                return htmlspecialchars((string)$val[$additionalFieldName]);
-            }
-        }
-        // This happens when NONE of the label_alt fields contained an entry. We still need to be able to
-        // match this field, so we put in a special empty indicator ('').
-        return '';
+        return array_values(array_unique($selectFields));
     }
 
     protected function mkOperatorSelect(string $name, string $op, bool $draw, bool $submit): string

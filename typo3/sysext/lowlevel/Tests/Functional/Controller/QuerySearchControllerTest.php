@@ -72,6 +72,38 @@ final class QuerySearchControllerTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function makeValueListShowsRecordTitleOfRelatedRecords(): void
+    {
+        $this->prepareRelatedPage();
+        $subject = $this->getAccessibleMock(QuerySearchController::class, null, $this->getConstructorArguments());
+        $result = $subject->_call('makeValueList', 'relation', '1', ['type' => 'relation', 'allowed' => 'pages', 'prepend_tname' => false], 'tx_test', '<br>');
+        self::assertSame('Title &amp; more, Navigation title', $result);
+    }
+
+    #[Test]
+    public function makeOptionListShowsRecordTitleOfRelatedRecords(): void
+    {
+        $this->prepareRelatedPage();
+        $subject = $this->getAccessibleMock(QuerySearchController::class, null, $this->getConstructorArguments());
+        $subject->_set('fields', ['relation' => ['type' => 'relation', 'allowed' => 'pages', 'prepend_tname' => false]]);
+        $result = $subject->_call('makeOptionList', 'relation', ['inputValue' => ''], 'tx_test');
+        self::assertSame('<option value="1">[1] Title &amp; more, Navigation title</option>', $result);
+    }
+
+    private function prepareRelatedPage(): void
+    {
+        $GLOBALS['TCA']['pages']['ctrl']['label_alt'] = 'nav_title';
+        $GLOBALS['TCA']['pages']['ctrl']['label_alt_force'] = true;
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+        $this->get(ConnectionPool::class)->getConnectionForTable('pages')->insert('pages', [
+            'uid' => 1,
+            'pid' => 0,
+            'title' => 'Title & more',
+            'nav_title' => 'Navigation title',
+        ]);
+    }
+
+    #[Test]
     public function getTreeListReturnsIngoingIdIfDepthIsZero(): void
     {
         $id = 1;
