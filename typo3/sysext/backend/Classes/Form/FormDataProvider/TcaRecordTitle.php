@@ -108,7 +108,11 @@ class TcaRecordTitle implements FormDataProviderInterface
             : false;
         if (!empty($result['processedTca']['ctrl']['label_alt']) && ($labelAltForce || empty($titleByLabel))) {
             // Dive into label_alt evaluation if label_alt_force is set or if label did not came up with a title yet
-            $labelAltFields = GeneralUtility::trimExplode(',', $result['processedTca']['ctrl']['label_alt'], true);
+            // The label field is rendered anyway and must not be repeated
+            $labelAltFields = array_diff(
+                GeneralUtility::trimExplode(',', $result['processedTca']['ctrl']['label_alt'], true),
+                [$result['processedTca']['ctrl']['label']]
+            );
             foreach ($labelAltFields as $fieldName) {
                 $titleByLabelAlt = $this->getRecordTitleForField($fieldName, $result);
                 if (!empty($titleByLabelAlt)) {

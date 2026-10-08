@@ -167,6 +167,20 @@ final class TcaSchemaTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function labelFieldIsNotAddedAsAdditionalLabelField(): void
+    {
+        $GLOBALS['TCA']['tt_content']['ctrl']['label'] = 'header';
+        $GLOBALS['TCA']['tt_content']['ctrl']['label_alt'] = 'header,subheader,bodytext';
+        $GLOBALS['TCA']['tt_content']['types']['textmedia']['label'] = 'subheader';
+
+        $factory = $this->get(TcaSchemaFactory::class);
+        $factory->rebuild($GLOBALS['TCA']);
+        $schema = $factory->get('tt_content');
+        self::assertSame(['subheader', 'bodytext'], $schema->getCapability(TcaSchemaCapability::Label)->getAdditionalFieldNames());
+        self::assertSame(['header', 'bodytext'], $schema->getSubSchema('textmedia')->getCapability(TcaSchemaCapability::Label)->getAdditionalFieldNames());
+    }
+
+    #[Test]
     public function labelFieldNamesOfAllRecordTypesContainTypeSpecificLabelFields(): void
     {
         $GLOBALS['TCA']['tt_content']['ctrl']['label'] = 'header';
