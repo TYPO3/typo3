@@ -24,6 +24,39 @@
       <trans-unit id="reaction_create">
         <source>Create new reaction</source>
       </trans-unit>
+      <trans-unit id="reaction_types.title">
+        <source>Create your first reaction</source>
+      </trans-unit>
+      <trans-unit id="reaction_types.message">
+        <source>Choose what TYPO3 should do when an external system calls it. Each reaction gets its own endpoint and secret.</source>
+      </trans-unit>
+      <trans-unit id="reaction_type.create">
+        <source>Create reaction</source>
+      </trans-unit>
+      <trans-unit id="reaction_type.create.title">
+        <source>Create a reaction of type "%s"</source>
+      </trans-unit>
+      <trans-unit id="column.target">
+        <source>Target</source>
+      </trans-unit>
+      <trans-unit id="target.page_missing">
+        <source>Page %s does not exist</source>
+      </trans-unit>
+      <trans-unit id="user.missing">
+        <source>No user</source>
+      </trans-unit>
+      <trans-unit id="user.not_found">
+        <source>User %s does not exist</source>
+      </trans-unit>
+      <trans-unit id="user.disabled">
+        <source>disabled</source>
+      </trans-unit>
+      <trans-unit id="last_call.never">
+        <source>never</source>
+      </trans-unit>
+      <trans-unit id="last_call.status">
+        <source>HTTP %s</source>
+      </trans-unit>
       <trans-unit id="reaction_not_found_with_filter.title">
         <source>No reactions found</source>
       </trans-unit>
@@ -134,6 +167,18 @@
       </trans-unit>
       <trans-unit id="filter.reaction_type">
         <source>Reaction Type</source>
+      </trans-unit>
+      <trans-unit id="filter.onlyEnabled">
+        <source>Enabled</source>
+      </trans-unit>
+      <trans-unit id="filter.showAll">
+        <source>Show all</source>
+      </trans-unit>
+      <trans-unit id="filter.called.ever">
+        <source>Called at least once</source>
+      </trans-unit>
+      <trans-unit id="filter.called.never">
+        <source>Never called</source>
       </trans-unit>
       <trans-unit id="filter.reaction_type.showAll">
         <source>Show all</source>

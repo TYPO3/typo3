@@ -15,8 +15,8 @@ Navigate to the backend module
 ==============================
 
 To create a new reaction navigate to the :guilabel:`Administration > Integrations > Reactions` backend
-module. If you call it the first time you will see the invitation to create a
-new reaction:
+module. As long as no reaction exists, the module shows a card for each
+available reaction type:
 
 ..  figure:: /Images/BackendModuleEmpty.avif
     :alt: Backend module "Reactions" with no reactions available
@@ -29,7 +29,10 @@ new reaction:
 Create a new reaction
 =====================
 
-Click on the button :guilabel:`Create new reaction` to add a new reaction.
+Click on the button :guilabel:`Create reaction` on the card of the
+:guilabel:`Create database record` type to add a new reaction with that type
+already selected. Once reactions exist, use the button
+:guilabel:`Create new reaction` in the module header instead.
 
 ..  figure:: /Images/CreateDatabaseRecordConfiguration.avif
     :alt: Backend form to create a new database record

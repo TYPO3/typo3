@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Reactions\Http\Middleware;
 
+use Doctrine\DBAL\Exception as DbalException;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -26,10 +27,12 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Uid\Uuid;
 use TYPO3\CMS\Backend\Routing\RouteResult;
+use TYPO3\CMS\Core\Http\ImmediateResponseException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Reactions\Authentication\ReactionUserAuthentication;
 use TYPO3\CMS\Reactions\Exception\ReactionNotFoundException;
 use TYPO3\CMS\Reactions\Http\ReactionHandler;
+use TYPO3\CMS\Reactions\Model\ReactionInstruction;
 use TYPO3\CMS\Reactions\Repository\ReactionRepository;
 
 /**
@@ -79,10 +82,26 @@ readonly class ReactionResolver implements MiddlewareInterface
 
         // 4. Handle reaction
         try {
-            return $this->reactionHandler->handleReaction($request, $reaction, $user);
+            $response = $this->reactionHandler->handleReaction($request, $reaction, $user);
         } catch (ReactionNotFoundException $e) {
-            return $this->getFailureResponse($e->getMessage(), $request, 404);
+            $response = $this->getFailureResponse($e->getMessage(), $request, 404);
+        } catch (ImmediateResponseException $e) {
+            $this->recordCall($reaction, $e->getResponse()->getStatusCode(), $this->extractFailure($e->getResponse()));
+            throw $e;
+        } catch (\Throwable $e) {
+            $this->logger->warning('Reaction "{name}" ({identifier}) of type "{type}" failed unexpectedly: {error}', [
+                'name' => $reaction->getName(),
+                'identifier' => $reaction->getIdentifier(),
+                'type' => $reaction->getType(),
+                'error' => $e->getMessage(),
+                'exception' => $e,
+                'request' => $request,
+            ]);
+            $this->recordCall($reaction, 500, 'The reaction failed unexpectedly');
+            throw $e;
         }
+        $this->recordCall($reaction, $response->getStatusCode(), $this->extractFailure($response));
+        return $response;
     }
 
     protected function resolveReactionSecret(ServerRequestInterface $request): string
@@ -103,5 +122,42 @@ readonly class ReactionResolver implements MiddlewareInterface
             ->withBody(
                 $this->streamFactory->createStream((string)json_encode(['success' => false, 'error' => $errorMessage]))
             );
+    }
+
+    private function recordCall(ReactionInstruction $reaction, int $statusCode, string $failure): void
+    {
+        try {
+            $this->reactionRepository->updateLastCall($reaction->getUid(), $statusCode, $failure);
+        } catch (DbalException $e) {
+            $this->logger->warning('The call of reaction "{name}" ({identifier}) could not be recorded: {error}', [
+                'name' => $reaction->getName(),
+                'identifier' => $reaction->getIdentifier(),
+                'error' => $e->getMessage(),
+            ]);
+        }
+    }
+
+    /**
+     * The reason of a failure is the error the caller was sent, read without moving
+     * the body on, so the response goes out as it came in.
+     */
+    private function extractFailure(ResponseInterface $response): string
+    {
+        $statusCode = $response->getStatusCode();
+        $body = $response->getBody();
+        if (($statusCode >= 200 && $statusCode < 300)
+            || !$body->isSeekable()
+            || ($body->getSize() ?? PHP_INT_MAX) > 65536
+            || !str_contains($response->getHeaderLine('Content-Type'), 'json')
+        ) {
+            return '';
+        }
+        $position = $body->tell();
+        $data = json_decode((string)$body, true);
+        $body->seek($position);
+        if (!is_array($data) || !is_string($data['error'] ?? null)) {
+            return '';
+        }
+        return mb_strlen($data['error']) > 255 ? mb_substr($data['error'], 0, 254) . '…' : $data['error'];
     }
 }

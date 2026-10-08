@@ -125,5 +125,29 @@ return [
                 'dbFieldLength' => 255,
             ],
         ],
+        'last_called' => [
+            'label' => 'reactions.db:sys_reaction.last_called',
+            'config' => [
+                'type' => 'datetime',
+                'readOnly' => true,
+            ],
+        ],
+        'last_status' => [
+            'label' => 'reactions.db:sys_reaction.last_status',
+            'config' => [
+                'type' => 'number',
+                'range' => [
+                    'lower' => 0,
+                ],
+                'readOnly' => true,
+            ],
+        ],
+        'last_failure' => [
+            'label' => 'reactions.db:sys_reaction.last_failure',
+            'config' => [
+                'type' => 'text',
+                'readOnly' => true,
+            ],
+        ],
     ],
 ];

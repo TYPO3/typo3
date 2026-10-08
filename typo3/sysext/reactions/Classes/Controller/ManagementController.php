@@ -26,6 +26,7 @@ use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\Components\MultiRecordSelection\Action;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\HtmlResponse;
@@ -34,6 +35,7 @@ use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Pagination\SimplePagination;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Reactions\Http\PayloadDecoder;
 use TYPO3\CMS\Reactions\Model\ReactionExample;
@@ -63,18 +65,21 @@ readonly class ManagementController
         private BackendViewFactory $backendViewFactory,
         private CodeEditorConfiguration $codeEditorConfiguration,
         private CreateRecordDryRun $createRecordDryRun,
+        private TcaSchemaFactory $tcaSchemaFactory,
     ) {}
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
         $view = $this->moduleTemplateFactory->create($request);
         $demand = ReactionDemand::fromRequest($request);
+        $count = $this->reactionRepository->countAll($demand);
+        $demand = $demand->withPage(max(1, min($demand->getPage(), (int)ceil($count / $demand->getLimit()))));
 
         $this->registerDocHeaderButtons($view, $demand);
         $view->makeDocHeaderModuleMenu();
 
         $reactionRecords = $this->reactionRepository->getReactionRecords($demand);
-        $paginator = new DemandedArrayPaginator($reactionRecords, $demand->getPage(), $demand->getLimit(), $this->reactionRepository->countAll($demand));
+        $paginator = new DemandedArrayPaginator($reactionRecords, $demand->getPage(), $demand->getLimit(), $count);
         $pagination = new SimplePagination($paginator);
 
         $requestUri = $request->getAttribute('normalizedParams')->getRequestUri();
@@ -85,6 +90,12 @@ readonly class ManagementController
             'reactionTypes' => iterator_to_array($this->reactionRegistry->getAvailableReactionTypes()),
             'paginator' => $paginator,
             'pagination' => $pagination,
+            'rowDetails' => $this->getRowDetails($paginator->getPaginatedItems()),
+            'impersonatedUsers' => $this->reactionRepository->findImpersonatedUsers(),
+            'dateFormat' => [
+                'day' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] ?? 'd-m-y',
+                'time' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'] ?? 'H:i',
+            ],
             'actions' => [
                 new Action(
                     'edit',
@@ -169,6 +180,74 @@ readonly class ManagementController
         ]);
 
         return new HtmlResponse($view->render('Management/DryRunResult'));
+    }
+
+    /**
+     * @param iterable<ReactionInstruction> $reactions
+     * @return array<int, array{table: string, page: array{uid: int, title: string, exists: bool}, user: array{uid: int, username: string, disabled: bool, exists: bool}, lastCall: array{time: int, status: int, successful: bool, failure: string}}>
+     */
+    protected function getRowDetails(iterable $reactions): array
+    {
+        $pages = [];
+        $users = [];
+        $details = [];
+        foreach ($reactions as $reaction) {
+            $record = $reaction->toArray();
+            $table = (string)($record['table_name'] ?? '');
+            $tableTitle = $table;
+            if ($table !== '' && $this->tcaSchemaFactory->has($table)) {
+                $tableTitle = $this->tcaSchemaFactory->get($table)->getTitle($this->getLanguageService()->sL(...)) ?: $table;
+            }
+
+            $pageUid = (int)($record['storage_pid'] ?? 0);
+            $pages[$pageUid] ??= $this->getPageDetails($pageUid);
+            $userUid = (int)($record['impersonate_user'] ?? 0);
+            $users[$userUid] ??= $this->getUserDetails($userUid);
+            $lastStatus = (int)($record['last_status'] ?? 0);
+
+            $details[$reaction->getUid()] = [
+                'table' => $tableTitle,
+                'page' => $pages[$pageUid],
+                'user' => $users[$userUid],
+                'lastCall' => [
+                    'time' => (int)($record['last_called'] ?? 0),
+                    'status' => $lastStatus,
+                    'successful' => $lastStatus >= 200 && $lastStatus < 300,
+                    'failure' => (string)($record['last_failure'] ?? ''),
+                ],
+            ];
+        }
+        return $details;
+    }
+
+    /**
+     * @return array{uid: int, title: string, exists: bool}
+     */
+    protected function getPageDetails(int $uid): array
+    {
+        if ($uid === 0) {
+            return ['uid' => 0, 'title' => (string)($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ?? ''), 'exists' => true];
+        }
+        $page = BackendUtility::getRecord('pages', $uid);
+        return [
+            'uid' => $uid,
+            'title' => $page !== null ? BackendUtility::getRecordTitle('pages', $page) : '',
+            'exists' => $page !== null,
+        ];
+    }
+
+    /**
+     * @return array{uid: int, username: string, disabled: bool, exists: bool}
+     */
+    protected function getUserDetails(int $uid): array
+    {
+        $user = $uid > 0 ? BackendUtility::getRecord('be_users', $uid) : null;
+        return [
+            'uid' => $uid,
+            'username' => (string)($user['username'] ?? ''),
+            'disabled' => (bool)($user['disable'] ?? false),
+            'exists' => $user !== null,
+        ];
     }
 
     protected function getJsonEditorMode(): JavaScriptModuleInstruction

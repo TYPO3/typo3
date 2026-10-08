@@ -48,6 +48,15 @@
       <trans-unit id="sys_reaction.impersonate_user.description">
         <source>Select the user with the appropriate access rights that is allowed to add a record of this type. If in doubt, use the CLI user.</source>
       </trans-unit>
+      <trans-unit id="sys_reaction.last_called">
+        <source>Last called</source>
+      </trans-unit>
+      <trans-unit id="sys_reaction.last_status">
+        <source>Status of the last call</source>
+      </trans-unit>
+      <trans-unit id="sys_reaction.last_failure">
+        <source>Reason the last call failed</source>
+      </trans-unit>
       <trans-unit id="sys_reaction.table_name">
         <source>Table</source>
       </trans-unit>

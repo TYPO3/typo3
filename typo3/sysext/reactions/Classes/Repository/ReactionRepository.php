@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Reactions\Repository;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -37,6 +38,7 @@ class ReactionRepository
 {
     public function __construct(
         private readonly ConnectionPool $connectionPool,
+        private readonly Context $context,
     ) {}
 
     public function findAll(): array
@@ -98,6 +100,29 @@ class ReactionRepository
         return $result !== false ? $this->mapSingleRow($result) : null;
     }
 
+    /**
+     * Written without DataHandler on purpose: a call is no change of the reaction, so it
+     * neither touches the modification date nor ends up in the history or the log.
+     */
+    public function updateLastCall(int $uid, int $statusCode, string $failure): void
+    {
+        $this->connectionPool->getConnectionForTable('sys_reaction')->update(
+            'sys_reaction',
+            [
+                'last_called' => (int)$this->context->getPropertyFromAspect('date', 'timestamp'),
+                'last_status' => $statusCode,
+                'last_failure' => $failure,
+            ],
+            ['uid' => $uid],
+            [
+                'last_called' => Connection::PARAM_INT,
+                'last_status' => Connection::PARAM_INT,
+                'last_failure' => Connection::PARAM_STR,
+                'uid' => Connection::PARAM_INT,
+            ]
+        );
+    }
+
     public function findByDemand(ReactionDemand $demand): array
     {
         return $this->map($this->getQueryBuilderForDemand($demand)
@@ -111,35 +136,95 @@ class ReactionRepository
     {
         $queryBuilder = $this->getQueryBuilder(false);
         if ($addOrderBy) {
-            $queryBuilder->orderBy(
-                $demand->getOrderField(),
-                $demand->getOrderDirection()
-            );
-            // Ensure deterministic ordering.
-            if ($demand->getOrderField() !== 'uid') {
-                $queryBuilder->addOrderBy('uid', 'asc');
+            if ($demand->getOrderField() === 'impersonate_user') {
+                // A reaction without a user, or with one that does not exist, sorts as if the name were empty on every DBMS.
+                $queryBuilder
+                    ->addSelectLiteral(
+                        'COALESCE(' . $queryBuilder->quoteIdentifier('impersonated.username') . ', ' . $queryBuilder->quote('') . ')'
+                        . ' AS ' . $queryBuilder->quoteIdentifier('impersonated_username')
+                    )
+                    ->leftJoin(
+                        'sys_reaction',
+                        'be_users',
+                        'impersonated',
+                        $queryBuilder->expr()->eq('impersonated.uid', $queryBuilder->quoteIdentifier('sys_reaction.impersonate_user'))
+                    )
+                    ->orderBy('impersonated_username', $demand->getOrderDirection());
+            } else {
+                $queryBuilder->orderBy('sys_reaction.' . $demand->getOrderField(), $demand->getOrderDirection());
             }
+            // Ensure deterministic ordering.
+            $queryBuilder->addOrderBy('sys_reaction.uid', 'asc');
         }
 
         $constraints = [];
         if ($demand->hasName()) {
             $escapedLikeString = '%' . $queryBuilder->escapeLikeWildcards($demand->getName()) . '%';
             $constraints[] = $queryBuilder->expr()->like(
-                'name',
+                'sys_reaction.name',
                 $queryBuilder->createNamedParameter($escapedLikeString)
             );
         }
         if ($demand->hasReactionType()) {
             $constraints[] = $queryBuilder->expr()->eq(
-                'reaction_type',
+                'sys_reaction.reaction_type',
                 $queryBuilder->createNamedParameter($demand->getReactionType())
             );
+        }
+        if ($demand->isOnlyEnabled()) {
+            $constraints[] = $queryBuilder->expr()->eq(
+                'sys_reaction.disabled',
+                $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
+            );
+        }
+        if ($demand->hasImpersonateUser()) {
+            $constraints[] = $queryBuilder->expr()->eq(
+                'sys_reaction.impersonate_user',
+                $queryBuilder->createNamedParameter($demand->getImpersonateUser(), Connection::PARAM_INT)
+            );
+        }
+        if ($demand->hasCalled()) {
+            $constraints[] = $demand->getCalled() === 'ever'
+                ? $queryBuilder->expr()->gt('sys_reaction.last_called', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT))
+                : $queryBuilder->expr()->eq('sys_reaction.last_called', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT));
         }
 
         if (!empty($constraints)) {
             $queryBuilder->where(...$constraints);
         }
         return $queryBuilder;
+    }
+
+    /**
+     * The backend users that reactions impersonate, by username.
+     *
+     * @return array<int, string>
+     */
+    public function findImpersonatedUsers(): array
+    {
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('be_users');
+        $queryBuilder->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        $rows = $queryBuilder
+            ->select('be_users.uid', 'be_users.username')
+            ->distinct()
+            ->from('be_users')
+            ->join(
+                'be_users',
+                'sys_reaction',
+                'reaction',
+                $queryBuilder->expr()->eq('reaction.impersonate_user', $queryBuilder->quoteIdentifier('be_users.uid'))
+            )
+            ->orderBy('be_users.username')
+            ->addOrderBy('be_users.uid')
+            ->executeQuery()
+            ->fetchAllAssociative();
+        $users = [];
+        foreach ($rows as $row) {
+            $users[(int)$row['uid']] = (string)$row['username'];
+        }
+        return $users;
     }
 
     protected function map(array $rows): array
@@ -163,7 +248,7 @@ class ReactionRepository
         $queryBuilder->getRestrictions()
             ->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-        $queryBuilder->select('*')->from('sys_reaction');
+        $queryBuilder->select('sys_reaction.*')->from('sys_reaction');
         if ($addDefaultOrderByClause) {
             $queryBuilder
                 ->orderBy('name', 'asc')
