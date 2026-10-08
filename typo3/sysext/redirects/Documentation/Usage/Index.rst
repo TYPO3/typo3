@@ -349,6 +349,62 @@ Using a relative target is necessary if a redirect must work on multiple domains
     redirects enclosed in delimiters. Use tools like https://regex101.com/,
     if necessary.
 
+..  _usage-short-urls-module:
+
+Short URLs module
+=================
+
+..  versionadded:: 14.2
+    :changelog: feature-108826-1770219994
+
+A short URL is a short path on one of your domains, for example
+`https://example.com/spring`, that redirects visitors to a target. Use short
+URLs in print material, newsletters, or social media posts.
+
+Access the module in the TYPO3 backend under
+:guilabel:`Sites > Link Management > Short URLs`.
+
+..  figure:: ../Images/ShortUrlsModule.avif
+    :alt: The Short URLs module with a list of two short URLs
+    :class: with-shadow
+
+    The Short URLs module
+
+The list shows the short URL, the target, and the note of each short URL.
+Filter the list by **Source Domain**, **Source Path**, or **Target**. Click
+the copy button of a short URL to copy the complete URL, including the
+protocol and the domain, to the clipboard.
+
+Short URLs are redirect records of the type **Short URL**. The
+:ref:`Redirects module <usage-redirects-module>` does not list them.
+
+..  _usage-short-urls-module-create:
+
+Create a short URL
+------------------
+
+#.  Click :guilabel:`Add Short URL`.
+#.  In **Short URL**, select the domain and enter a path, for example
+    `/spring`. To get a random path with eight characters, click the
+    :guilabel:`Generate Short URL` button (dice icon) next to the path.
+#.  In **Target**, select the page, file, or URL that the short URL redirects
+    to.
+#.  Click :guilabel:`Save`.
+
+..  figure:: ../Images/ShortUrlNew.avif
+    :alt: Form to create a short URL with a domain and a generated path
+    :class: with-shadow
+
+    A new short URL with a generated path
+
+A short URL must be unique for its domain. The form marks the domain and the
+path if another short URL already uses them. TYPO3 also rejects a duplicate
+when you save.
+
+After you saved a short URL, you cannot change its domain and path. Shared
+links keep working this way. You can change the target at any time. The edit
+form also has a button to copy the short URL.
+
 ..  _automatic-redirect-creation:
 
 Automatic redirects creation
