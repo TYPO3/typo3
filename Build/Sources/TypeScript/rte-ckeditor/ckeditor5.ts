@@ -2,6 +2,7 @@ import { html, LitElement, type TemplateResult } from 'lit';
 import { customElement, property, queryAssignedElements } from 'lit/decorators.js';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import DebounceEvent from '@typo3/core/event/debounce-event';
+import DocumentService from '@typo3/core/document-service';
 import { prefixAndRebaseCss } from '@typo3/rte-ckeditor/css-prefixer';
 import { ClassicEditor } from '@ckeditor/ckeditor5-editor-classic';
 import type { Editor, EditorConfig, PluginConstructor } from '@ckeditor/ckeditor5-core';
@@ -95,6 +96,9 @@ export class CKEditor5Element extends LitElement {
     if (!(this.target[0] instanceof HTMLTextAreaElement)) {
       throw new Error('No rich-text <textarea> content target found.');
     }
+
+    // The textarea content may still be streamed in while the document is being parsed
+    await DocumentService.ready();
 
     const {
       // options handled by this wrapper
