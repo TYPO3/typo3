@@ -1357,6 +1357,14 @@ class BackendUtility
      */
     public static function getRecordTitle($table, $row, $prep = false, $forceResult = true)
     {
+        return static::resolveRecordTitle($table, $row, $prep, $forceResult, []);
+    }
+
+    /**
+     * @param array<string, true> $resolvingRecords Records ("table:uid"), whose relation labels are currently resolved
+     */
+    protected static function resolveRecordTitle($table, $row, $prep, $forceResult, array $resolvingRecords)
+    {
         $schema = $mainSchema = self::getTcaSchema($table);
         if ($schema === null) {
             return '';
@@ -1401,7 +1409,7 @@ class BackendUtility
             if ($ctrlLabelValue instanceof \DateTimeInterface) {
                 $ctrlLabelValue = $ctrlLabelValue->getTimestamp();
             }
-            $recordTitle = self::getProcessedValue($table, $ctrlLabel, (string)$ctrlLabelValue, 0, false, false, $row['uid'] ?? null, true, 0, $row) ?? '';
+            $recordTitle = static::resolveProcessedValue($table, $ctrlLabel, (string)$ctrlLabelValue, 0, false, false, $row['uid'] ?? null, 0, $row, [], $resolvingRecords) ?? '';
             if ($labelCapability->getAdditionalFieldNames() !== []
                 && ($labelCapability->alwaysRenderAdditionalFields() || $recordTitle === '')) {
                 // Add the resolved record title - based on "label" - to the array to have them, in case we deal with "label_alt_force"
@@ -1419,7 +1427,7 @@ class BackendUtility
                         }
                     }
                     if ($altLabel !== '') {
-                        $altLabel = self::getProcessedValue($table, $fieldName, $altLabel, 0, false, false, $row['uid'] ?? 0, true, 0, $row) ?? '';
+                        $altLabel = static::resolveProcessedValue($table, $fieldName, $altLabel, 0, false, false, $row['uid'] ?? 0, 0, $row, [], $resolvingRecords) ?? '';
                         if ($altLabel) {
                             $alternatives[] = $altLabel;
                             if (!$labelCapability->alwaysRenderAdditionalFields()) {
@@ -1549,6 +1557,26 @@ class BackendUtility
         $fullRow = [],
         $theColConf = []
     ) {
+        return static::resolveProcessedValue($table, $col, $value, $fixed_lgd_chars, $defaultPassthrough, $noRecordLookup, $uid, $pid, $fullRow, $theColConf, []);
+    }
+
+    /**
+     * @param array<string, true> $resolvingRecords Records ("table:uid"), whose relation labels are currently resolved
+     * @return string|int|null
+     */
+    protected static function resolveProcessedValue(
+        $table,
+        $col,
+        $value,
+        $fixed_lgd_chars,
+        $defaultPassthrough,
+        $noRecordLookup,
+        $uid,
+        $pid,
+        $fullRow,
+        $theColConf,
+        array $resolvingRecords
+    ) {
         if ($col === 'uid') {
             // uid is not in TCA-array
             return $value;
@@ -1601,7 +1629,7 @@ class BackendUtility
             case 'inline':
             case 'file':
                 if ($uid) {
-                    $finalValues = static::resolveRelationLabels($theColConf, $table, $uid, $value, $noRecordLookup);
+                    $finalValues = static::resolveRelationLabels($theColConf, $table, $uid, $value, $noRecordLookup, $resolvingRecords);
                     $l = implode(', ', $finalValues);
                 } else {
                     $l = $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:notAvailableAbbreviation');
@@ -1611,7 +1639,7 @@ class BackendUtility
             case 'category':
                 if (!empty($theColConf['MM'])) {
                     if ($uid) {
-                        $finalValues = static::resolveRelationLabels($theColConf, $table, $uid, $value, $noRecordLookup);
+                        $finalValues = static::resolveRelationLabels($theColConf, $table, $uid, $value, $noRecordLookup, $resolvingRecords);
                         $l = implode(', ', $finalValues);
                     } else {
                         $l = $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:notAvailableAbbreviation');
@@ -1640,7 +1668,7 @@ class BackendUtility
                         } else {
                             $finalValues = [];
                             if ($uid) {
-                                $finalValues = static::resolveRelationLabels($theColConf, $table, $uid, $value, $noRecordLookup);
+                                $finalValues = static::resolveRelationLabels($theColConf, $table, $uid, $value, $noRecordLookup, $resolvingRecords);
                             }
                             $l = implode(', ', $finalValues);
                         }
@@ -1653,7 +1681,7 @@ class BackendUtility
                 break;
             case 'group':
                 // resolve titles of DB records
-                $finalValues = static::resolveRelationLabels($theColConf, $table, $uid, $value, $noRecordLookup);
+                $finalValues = static::resolveRelationLabels($theColConf, $table, $uid, $value, $noRecordLookup, $resolvingRecords);
                 if ($finalValues !== []) {
                     $l = implode(', ', $finalValues);
                 } else {
@@ -1804,8 +1832,9 @@ class BackendUtility
      *
      * @param string|int|null $recordId
      * @param string|int $value
+     * @param array<string, true> $resolvingRecords Records ("table:uid"), whose relation labels are currently resolved
      */
-    protected static function resolveRelationLabels(array $theColConf, string $table, $recordId, $value, bool $noRecordLookup): array
+    protected static function resolveRelationLabels(array $theColConf, string $table, $recordId, $value, bool $noRecordLookup, array $resolvingRecords = []): array
     {
         $finalValues = [];
 
@@ -1813,21 +1842,23 @@ class BackendUtility
         $relationHandler->initializeForField($table, $theColConf, $recordId, $value);
 
         if ($noRecordLookup) {
-            $finalValues = array_column($relationHandler->itemArray, 'id');
-        } else {
-            $relationHandler->getFromDB();
-            foreach ($relationHandler->getResolvedItemArray() as $item) {
-                $relationRecord = $item['record'];
-                static::workspaceOL($item['table'], $relationRecord);
-                if (!is_array($relationRecord)) {
-                    $finalValues[] = '[' . $item['uid'] . ']';
-                } else {
-                    $title = static::getRecordTitle($item['table'], $relationRecord);
-                    if ($theColConf['foreign_table_prefix'] ?? null) {
-                        $title = static::getLanguageService()->sL($theColConf['foreign_table_prefix']) . $title;
-                    }
-                    $finalValues[] = $title;
+            return array_column($relationHandler->itemArray, 'id');
+        }
+
+        // Records, whose relations are currently resolved, are only referenced by their uid to stop cyclic relations
+        $resolvingRecords[$table . ':' . $recordId] = true;
+        $relationHandler->getFromDB();
+        foreach ($relationHandler->getResolvedItemArray() as $item) {
+            $relationRecord = $item['record'];
+            static::workspaceOL($item['table'], $relationRecord);
+            if (!is_array($relationRecord) || isset($resolvingRecords[$item['table'] . ':' . $item['uid']])) {
+                $finalValues[] = '[' . $item['uid'] . ']';
+            } else {
+                $title = static::resolveRecordTitle($item['table'], $relationRecord, false, true, $resolvingRecords);
+                if ($theColConf['foreign_table_prefix'] ?? null) {
+                    $title = static::getLanguageService()->sL($theColConf['foreign_table_prefix']) . $title;
                 }
+                $finalValues[] = $title;
             }
         }
 
