@@ -59,7 +59,7 @@ final class DoctrineCloseConnectionMiddlewareTest extends UnitTestCase
     {
         $connectionPool = $this->createMock(ConnectionPool::class);
         $connectionPool->method('getOpenConnectionNames')->willReturn(['Default']);
-        $connectionPool->method('getConnectionByName')->with('Default')->willReturn($connection);
+        $connectionPool->method('getConnectionByName')->willReturnMap([['Default', $connection]]);
         return $connectionPool;
     }
 
