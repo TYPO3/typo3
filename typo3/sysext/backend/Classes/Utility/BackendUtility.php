@@ -1592,7 +1592,7 @@ class BackendUtility
         $lang = static::getLanguageService();
         switch ((string)($theColConf['type'] ?? '')) {
             case 'radio':
-                $l = $lang->sL(GeneralUtility::makeInstance(SchemaLabelResolver::class)->getLabelForFieldValue($table, $col, $value, $fullRow, $theColConf));
+                $l = $lang->sL(GeneralUtility::makeInstance(SchemaLabelResolver::class)->getLabelForFieldValue($table, $col, (string)$value, $fullRow, [], $theColConf));
                 if ($l === '' && !empty($value)) {
                     // Use plain database value when label is empty
                     $l = $value;

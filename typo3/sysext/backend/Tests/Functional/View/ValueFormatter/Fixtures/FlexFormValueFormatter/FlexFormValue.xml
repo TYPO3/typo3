@@ -6,6 +6,9 @@
                 <field index="selectField">
                     <value index="vDEF">item2</value>
                 </field>
+                <field index="radioField">
+                    <value index="vDEF">2</value>
+                </field>
                 <field index="checkField">
                     <value index="vDEF">1</value>
                 </field>
