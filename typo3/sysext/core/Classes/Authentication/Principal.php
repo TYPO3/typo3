@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Authentication;
 
+use TYPO3\CMS\Core\Authentication\Pipeline\Realm;
 use TYPO3\CMS\Core\Security\PermissionSet\PrincipalContext;
 use TYPO3\CMS\Core\Security\PermissionSet\PrincipalRole;
 
@@ -76,7 +77,6 @@ final readonly class Principal
 
     public function belongsToFrontendRealm(): bool
     {
-        return $this->realmIdentifier === 'frontend'
-            || str_starts_with($this->realmIdentifier, 'frontend:');
+        return Realm::isFrontendIdentifier($this->realmIdentifier);
     }
 }

@@ -328,6 +328,7 @@
 			"TYPO3Tests\\TestDatahandler\\": "typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_datahandler/Classes/",
 			"TYPO3Tests\\TestDataMapper\\": "typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/test_data_mapper/Classes/",
 			"TYPO3Tests\\TestDi\\": "typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_di/Classes/",
+			"TYPO3Tests\\TestAuthenticator\\": "typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_authenticator/Classes/",
 			"TYPO3Tests\\TestFileRenderer\\": "typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_file_renderer/Classes/",
 			"TYPO3Tests\\TestSitemapLegacyProvider\\": "typo3/sysext/seo/Tests/Functional/Fixtures/Extensions/test_sitemap_legacy_provider/Classes/",
 			"TYPO3Tests\\TestStartingpoint\\": "typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/test_startingpoint/Classes/",

@@ -13,6 +13,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use TYPO3\CMS\Core\Attribute\AsAllowedCallable;
+use TYPO3\CMS\Core\Attribute\AsAuthenticator;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Attribute\AsFileRenderer;
 use TYPO3\CMS\Core\Attribute\AsMetaTagManager;
@@ -34,6 +35,13 @@ return static function (ContainerConfigurator $container, ContainerBuilder $cont
 
     // Icon providers are resolved via the container by IconFactory (on demand), therefore marked 'public'
     $containerBuilder->registerForAutoconfiguration(IconProviderInterface::class)->addTag('icon.provider');
+
+    $containerBuilder->registerAttributeForAutoconfiguration(
+        AsAuthenticator::class,
+        static function (ChildDefinition $definition, AsAuthenticator $attribute): void {
+            $definition->addTag(AsAuthenticator::TAG_NAME, ['realm' => $attribute->realm, 'priority' => $attribute->priority]);
+        },
+    );
 
     $containerBuilder->registerAttributeForAutoconfiguration(
         AsEventListener::class,
@@ -182,6 +190,7 @@ return static function (ContainerConfigurator $container, ContainerBuilder $cont
     $containerBuilder->addCompilerPass(new DependencyInjection\MfaProviderPass('mfa.provider'));
     $containerBuilder->addCompilerPass(new DependencyInjection\FileRendererPass(AsFileRenderer::TAG_NAME));
     $containerBuilder->addCompilerPass(new DependencyInjection\TextExtractorPass(AsTextExtractor::TAG_NAME));
+    $containerBuilder->addCompilerPass(new DependencyInjection\AuthenticatorPass(AsAuthenticator::TAG_NAME));
     $containerBuilder->addCompilerPass(new DependencyInjection\MetaTagManagerPass(AsMetaTagManager::TAG_NAME));
     $containerBuilder->addCompilerPass(new DependencyInjection\SoftReferenceParserPass('softreference.parser'));
     $containerBuilder->addCompilerPass(new DependencyInjection\ListenerProviderPass('event.listener'));
