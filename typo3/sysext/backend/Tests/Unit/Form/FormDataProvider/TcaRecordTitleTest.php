@@ -588,6 +588,43 @@ final class TcaRecordTitleTest extends UnitTestCase
     }
 
     #[Test]
+    public function addDataReturnsRecordTitleWithoutRepeatingLabelFieldListedInAlternativeLabels(): void
+    {
+        $input = [
+            'tableName' => 'aTable',
+            'isInlineChild' => false,
+            'databaseRow' => [
+                'uid' => '1',
+                'aField' => 'aField',
+                'anotherField' => 'anotherField',
+            ],
+            'processedTca' => [
+                'ctrl' => [
+                    'label' => 'aField',
+                    'label_alt' => 'aField,anotherField',
+                    'label_alt_force' => true,
+                ],
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'input',
+                        ],
+                    ],
+                    'anotherField' => [
+                        'config' => [
+                            'type' => 'input',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $expected = $input;
+        $expected['recordTitle'] = 'aField, anotherField';
+        self::assertSame($expected, (new TcaRecordTitle())->addData($input));
+    }
+
+    #[Test]
     public function addDataReturnsRecordTitleIgnoresEmptyAlternativeLabels(): void
     {
         $input = [

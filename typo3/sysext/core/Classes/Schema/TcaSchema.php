@@ -224,7 +224,11 @@ readonly class TcaSchema implements SchemaInterface
         }
         return new Capability\LabelCapability(
             $this->schemaConfiguration['label'] ?? null,
-            array_unique(GeneralUtility::trimExplode(',', $this->schemaConfiguration['label_alt'] ?? '', true)),
+            // The label field is rendered anyway and must not be repeated
+            array_values(array_diff(
+                array_unique(GeneralUtility::trimExplode(',', $this->schemaConfiguration['label_alt'] ?? '', true)),
+                [$this->schemaConfiguration['label'] ?? '']
+            )),
             (bool)($this->schemaConfiguration['label_alt_force'] ?? false),
             $labelConfiguration,
             $this->getLabelFieldNamesOfSubSchemata()

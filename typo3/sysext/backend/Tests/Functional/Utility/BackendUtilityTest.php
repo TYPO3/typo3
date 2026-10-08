@@ -315,6 +315,28 @@ final class BackendUtilityTest extends FunctionalTestCase
         self::assertSame($expected, BackendUtility::getRecordTitle('test_table', ['uid' => 1, ...$record]));
     }
 
+    #[Test]
+    public function getRecordTitleDoesNotRepeatLabelFieldListedInLabelAlt(): void
+    {
+        $GLOBALS['TCA']['test_table'] = [
+            'ctrl' => [
+                'label' => 'title',
+                'label_alt' => 'title,subtitle',
+                'label_alt_force' => true,
+            ],
+            'columns' => [
+                'title' => ['config' => ['type' => 'input']],
+                'subtitle' => ['config' => ['type' => 'input']],
+            ],
+            'types' => [
+                '0' => ['showitem' => 'title,subtitle'],
+            ],
+        ];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+
+        self::assertSame('Title, Subtitle', BackendUtility::getRecordTitle('test_table', ['uid' => 1, 'title' => 'Title', 'subtitle' => 'Subtitle']));
+    }
+
     public static function enableFieldsStatementIsCorrectDataProvider(): array
     {
         // Expected sql should contain identifier escaped in mysql/mariadb identifier quotings "`", which are
