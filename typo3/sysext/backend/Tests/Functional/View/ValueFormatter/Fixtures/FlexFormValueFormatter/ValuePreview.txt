@@ -2,6 +2,8 @@ Tab 1 configuration options
 --------------------------------------------------
 Select field: Item 2
 
+Radio field: Radio item 2
+
 Check field: Yes
 
 Input field: A custom value

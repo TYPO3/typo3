@@ -27,6 +27,23 @@
                         </config>
                     </selectField>
 
+                    <radioField>
+                        <label>Radio field</label>
+                        <config>
+                            <type>radio</type>
+                            <items>
+                                <numIndex index="0">
+                                    <label>Radio item 1</label>
+                                    <value>1</value>
+                                </numIndex>
+                                <numIndex index="1">
+                                    <label>Radio item 2</label>
+                                    <value>2</value>
+                                </numIndex>
+                            </items>
+                        </config>
+                    </radioField>
+
                     <checkField>
                         <label>LLL:EXT:backend/Tests/Functional/View/ValueFormatter/Fixtures/FlexFormValueFormatter/Language/Locallang.xlf:flexform_general.checkField</label>
                         <config>
