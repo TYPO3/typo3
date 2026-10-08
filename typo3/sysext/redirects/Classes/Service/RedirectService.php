@@ -82,6 +82,8 @@ readonly class RedirectService
 
     /**
      * Checks against all available redirects "flat" or "regexp", and against starttime/endtime
+     *
+     * @phpstan-impure
      */
     public function matchRedirect(string $domain, string $path, string $query = ''): ?array
     {
@@ -101,9 +103,6 @@ readonly class RedirectService
                 return $matchedRedirect;
             }
             $redirects = $this->fetchRedirects($domainName);
-            if (empty($redirects)) {
-                continue;
-            }
 
             // check if a flat redirect matches with the Query applied
             if (!empty($query)) {
@@ -113,28 +112,27 @@ readonly class RedirectService
                     ltrim($query, '?'),
                     str_ireplace(['%5B', '%5D'], ['[', ']'], ltrim($query, '?')),
                 ]);
+                $sourcePathsPerQueryVariant = [];
                 foreach ($queryVariants as $queryVariant) {
-                    $pathWithQuery = rtrim($path, '/') . '?' . $queryVariant;
-                    if (!empty($redirects['respect_query_parameters'][$pathWithQuery])) {
-                        if ($matchedRedirect = $this->getFirstActiveRedirectFromPossibleRedirects($redirects['respect_query_parameters'][$pathWithQuery])) {
-                            return $matchedRedirect;
-                        }
-                    } else {
-                        $pathWithQueryAndSlash = rtrim($path, '/') . '/?' . $queryVariant;
-                        if (!empty($redirects['respect_query_parameters'][$pathWithQueryAndSlash])) {
-                            if ($matchedRedirect = $this->getFirstActiveRedirectFromPossibleRedirects($redirects['respect_query_parameters'][$pathWithQueryAndSlash])) {
-                                return $matchedRedirect;
-                            }
-                        }
+                    $sourcePathsPerQueryVariant[] = [rtrim($path, '/') . '?' . $queryVariant, rtrim($path, '/') . '/?' . $queryVariant];
+                }
+                $possibleRedirectsPerSourcePath = $this->redirectCacheService->getRedirectsRespectingQueryParameters(
+                    $domainName,
+                    $redirects,
+                    array_merge(...$sourcePathsPerQueryVariant)
+                );
+                foreach ($sourcePathsPerQueryVariant as [$pathWithQuery, $pathWithQueryAndSlash]) {
+                    $possibleRedirects = $possibleRedirectsPerSourcePath[$pathWithQuery] ?? $possibleRedirectsPerSourcePath[$pathWithQueryAndSlash] ?? [];
+                    if ($matchedRedirect = $this->getFirstActiveRedirectFromPossibleRedirects($possibleRedirects)) {
+                        return $matchedRedirect;
                     }
                 }
             }
 
             // check if a flat redirect matches
-            if (!empty($redirects['flat'][rtrim($path, '/') . '/'])) {
-                if ($matchedRedirect = $this->getFirstActiveRedirectFromPossibleRedirects($redirects['flat'][rtrim($path, '/') . '/'])) {
-                    return $matchedRedirect;
-                }
+            $possibleRedirects = $this->redirectCacheService->getFlatRedirects($domainName, $redirects, $path);
+            if ($matchedRedirect = $this->getFirstActiveRedirectFromPossibleRedirects($possibleRedirects)) {
+                return $matchedRedirect;
             }
 
             // @todo Evaluate if regexp patterns could be validated on creation/edit to give feedback on creation.
@@ -217,8 +215,8 @@ readonly class RedirectService
     }
 
     /**
-     * Fetches all redirects from cache, with fallback to rebuild cache from the DB if caches was empty,
-     * grouped by the domain does NOT take starttime/endtime into account, as it is cached.
+     * Fetches all regular expression redirects from cache, with fallback to rebuild cache from the DB if caches
+     * was empty, grouped by the domain does NOT take starttime/endtime into account, as it is cached.
      */
     protected function fetchRedirects(string $sourceHost): array
     {
