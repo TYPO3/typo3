@@ -58,3 +58,28 @@ the real link to the document.
     number of hidden content elements! Instead use hidden pages. Better,
     more reliable.
 
+..  _access-restricted-media-non-public-storages:
+
+Files of storages that are not public
+-------------------------------------
+
+..  versionchanged:: 14.3.7
+    :changelog: important-59007-1786032000
+
+    Before, files of storages that are not public were not indexed.
+
+With :typoscript:`config.index_externals = 1`, Indexed Search also indexes
+files of storages that are not public. TYPO3 links such files through the file
+dump script, for example `index.php?eID=dumpFile&t=f&f=17&token=…`. Indexed
+Search resolves the link to the file and indexes its content. It only takes
+links with a valid token into account, which means links that TYPO3 created.
+
+The search result links to the file dump URL. The file dump script still
+checks the access when a user follows the link.
+
+..  warning::
+
+    To keep files of storages that are not public out of the search index,
+    disable :typoscript:`config.index_externals` or remove these files from
+    the index.
+
