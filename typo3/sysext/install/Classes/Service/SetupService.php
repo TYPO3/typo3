@@ -146,6 +146,15 @@ readonly class SetupService
     }
 
     /**
+     * Clears the in-progress flag set by prepareSystemSettings(), so the installer
+     * can no longer run on this instance.
+     */
+    public function markInstallationFinished(): void
+    {
+        $this->configurationManager->setLocalConfigurationValueByPath('SYS/isInstalling', false);
+    }
+
+    /**
      * @throws ConfigurationFileAlreadyExistsException
      * @throws ConfigurationDirectoryDoesNotExistException
      */
@@ -176,6 +185,9 @@ readonly class SetupService
 
         $extensionConfiguration = new ExtensionConfiguration();
         $extensionConfiguration->synchronizeExtConfTemplateWithLocalConfigurationOfAllExtensions();
+
+        // Mark this fresh installation as in progress.
+        $this->configurationManager->setLocalConfigurationValueByPath('SYS/isInstalling', true);
 
         // Get best matching configuration presets
         $featureManager = new FeatureManager();

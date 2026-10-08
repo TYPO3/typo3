@@ -596,6 +596,7 @@ final class InstallerController
         $formProtection = $this->formProtectionFactory->createFromRequest($request);
         $formProtection->clean();
 
+        $this->setupService->markInstallationFinished();
         EnableFileService::removeFirstInstallFile();
 
         return new JsonResponse([
