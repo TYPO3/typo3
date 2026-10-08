@@ -99,6 +99,7 @@ return [
         ],
         'fileCreateMask' => '0664',
         'folderCreateMask' => '2775',
+        'isInstalling' => false,
         'features' => [
             'extbase.enableHistoryTracking' => false,
             'frontend.cache.autoTagging' => false,

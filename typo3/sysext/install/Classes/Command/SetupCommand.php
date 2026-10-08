@@ -313,6 +313,7 @@ EOT
         $setupDatabaseService->markWizardsDone($container);
         Bootstrap::initializeBackendAuthentication();
         $this->setupService->setupExtensions($container);
+        $this->setupService->markInstallationFinished();
         $this->writeSuccess($output, 'Congratulations - TYPO3 Setup is done.');
 
         return Command::SUCCESS;

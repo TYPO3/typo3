@@ -15,7 +15,9 @@
 
 namespace TYPO3\CMS\Install\Service;
 
+use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -39,13 +41,28 @@ class EnableFileService
      */
     public const INSTALL_TOOL_ENABLE_FILE_LIFETIME = 3600;
 
+    /**
+     * A first install is allowed when a FIRST_INSTALL marker file exists and the
+     * instance is not yet installed: either no settings.php exists at all, or a
+     * fresh installation is currently running (SYS/isInstalling). This makes sure a
+     * marker file dropped into the public web root cannot re-open the installer on an
+     * already configured instance. A missing flag (instance upgraded from a version
+     * without it, or a finished installation) is treated as "not installing".
+     */
     public static function isFirstInstallAllowed(): bool
     {
-        $files = self::getFirstInstallFilePaths();
-        if (!empty($files)) {
+        if (empty(self::getFirstInstallFilePaths())) {
+            return false;
+        }
+        $configurationManager = new ConfigurationManager();
+        if (!@is_file($configurationManager->getSystemConfigurationFileLocation())) {
             return true;
         }
-        return false;
+        try {
+            return (bool)$configurationManager->getLocalConfigurationValueByPath('SYS/isInstalling');
+        } catch (MissingArrayPathException) {
+            return false;
+        }
     }
 
     /**
@@ -211,21 +228,26 @@ class EnableFileService
      */
     protected static function getFirstInstallFilePaths(): array
     {
+        $isFirstInstallFile = static fn(string $file): bool
+            => strcasecmp($file, self::FIRST_INSTALL_FILE_PATH) === 0
+            || strcasecmp($file, self::FIRST_INSTALL_FILE_PATH . '.txt') === 0;
         // Check in public path
         $files = scandir(Environment::getPublicPath() . '/');
         $files = is_array($files) ? $files : [];
-        $files = array_filter($files, static function ($file) {
-            return @is_file(Environment::getPublicPath() . '/' . $file) && preg_match('~^' . self::FIRST_INSTALL_FILE_PATH . '.*~i', $file);
-        });
+        $files = array_filter(
+            $files,
+            static fn(string $file): bool => @is_file(Environment::getPublicPath() . '/' . $file) && $isFirstInstallFile($file)
+        );
         $files = array_map(fn(string $file): string => Environment::getPublicPath() . '/' . $file, $files);
 
         // Check in project path (only if different from public path)
         if (Environment::getPublicPath() !== Environment::getProjectPath()) {
             $projectFiles = scandir(Environment::getProjectPath() . '/');
             $projectFiles = is_array($projectFiles) ? $projectFiles : [];
-            $projectFiles = array_filter($projectFiles, static function ($file) {
-                return @is_file(Environment::getProjectPath() . '/' . $file) && preg_match('~^' . self::FIRST_INSTALL_FILE_PATH . '.*~i', $file);
-            });
+            $projectFiles = array_filter(
+                $projectFiles,
+                static fn(string $file): bool => @is_file(Environment::getProjectPath() . '/' . $file) && $isFirstInstallFile($file)
+            );
             $projectFiles = array_map(fn(string $file): string => Environment::getProjectPath() . '/' . $file, $projectFiles);
             $files = array_unique(array_merge($files, $projectFiles));
         }

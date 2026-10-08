@@ -128,7 +128,7 @@ readonly class Installer implements MiddlewareInterface
 
     /**
      * First installation is in progress, if system/settings.php does not exist,
-     * or if FIRST_INSTALL file exists.
+     * or if the FIRST_INSTALL file exists and the SYS/isInstalling flag is `true`.
      */
     protected function canHandleRequest(): bool
     {
