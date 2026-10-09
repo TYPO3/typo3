@@ -143,44 +143,51 @@ class ExtensionScanner extends AbstractInteractableModule {
 
     this.setProgressForAll();
 
-    const scannerPromises = [...extensions].map(async (element) => {
+    const scannerPromises = [...extensions].map(async (element): Promise<number> => {
       const extension = element.dataset.extension;
       try {
-        await this.scanSingleExtension(extension);
+        return await this.scanSingleExtension(extension);
       } finally {
         element.dataset.scanned = String(true);
       }
     });
 
+    const results = await Promise.allSettled(scannerPromises);
+    const scanFailed = results.some((result) => result.status === 'rejected' || result.value > 0);
+    this.setModalButtonsState(true);
+
+    if (scanFailed) {
+      Notification.warning(
+        'Scan finished with errors',
+        'Some files or extensions could not be scanned. ReST files are not marked as not affected.',
+      );
+      return;
+    }
+
+    Notification.success('Scan finished', 'All extensions have been scanned.');
+
     try {
-      await Promise.allSettled(scannerPromises);
-    } finally {
-      this.setModalButtonsState(true);
-
-      Notification.success('Scan finished', 'All extensions have been scanned.');
-
-      try {
-        const response = await new AjaxRequest(Router.getUrl()).post({
-          install: {
-            action: 'extensionScannerMarkFullyScannedRestFiles',
-            token: this.getModuleContent().dataset.extensionScannerMarkFullyScannedRestFilesToken,
-            hashes: Array.from(new Set(this.listOfAffectedRestFileHashes)),
-          },
-        });
-        const data = await response.resolve();
-        if (data.success === true) {
-          Notification.success('Marked not affected files', 'Marked ' + data.markedAsNotAffected + ' ReST files as not affected.');
-        }
-      } catch (error: unknown) {
-        Router.handleAjaxError(error as AjaxResponse, this.getModalBody());
+      const response = await new AjaxRequest(Router.getUrl()).post({
+        install: {
+          action: 'extensionScannerMarkFullyScannedRestFiles',
+          token: this.getModuleContent().dataset.extensionScannerMarkFullyScannedRestFilesToken,
+          hashes: Array.from(new Set(this.listOfAffectedRestFileHashes)),
+        },
+      });
+      const data = await response.resolve();
+      if (data.success === true) {
+        Notification.success('Marked not affected files', 'Marked ' + data.markedAsNotAffected + ' ReST files as not affected.');
       }
+    } catch (error: unknown) {
+      Router.handleAjaxError(error as AjaxResponse, this.getModalBody());
     }
   }
 
-  private setStatusMessageForScan(extension: string, doneFiles: number, numberOfFiles: number): void {
+  private setStatusMessageForScan(extension: string, doneFiles: number, numberOfFiles: number, failedFiles: number = 0): void {
     const extensionContainer = this.findInModal(this.getExtensionSelector(extension));
     const numberOfFilesElement = extensionContainer.querySelector<HTMLElement>(Identifiers.numberOfFiles);
-    numberOfFilesElement.innerText = 'Checked ' + doneFiles + ' of ' + numberOfFiles + ' files';
+    numberOfFilesElement.innerText = 'Checked ' + doneFiles + ' of ' + numberOfFiles + ' files'
+      + (failedFiles > 0 ? ', ' + failedFiles + ' failed' : '');
   }
 
   private setProgressForScan(extension: string, doneFiles: number, numberOfFiles: number): void {
@@ -208,9 +215,9 @@ class ExtensionScanner extends AbstractInteractableModule {
   }
 
   /**
-   * Handle a single extension scan
+   * Handle a single extension scan, returns the number of failed files (1 if the extension itself could not be scanned)
    */
-  private async scanSingleExtension(extension: string): Promise<void> {
+  private async scanSingleExtension(extension: string): Promise<number> {
     const executeToken = this.getModuleContent().dataset.extensionScannerFilesToken;
     const modalContent = this.getModalBody();
     const extensionContainer = this.findInModal(this.getExtensionSelector(extension));
@@ -231,6 +238,7 @@ class ExtensionScanner extends AbstractInteractableModule {
 
     this.setProgressForAll();
 
+    let failedCount = 0;
     try {
       const response = await new AjaxRequest(Router.getUrl()).post({
         install: {
@@ -244,13 +252,19 @@ class ExtensionScanner extends AbstractInteractableModule {
         const numberOfFiles = data.files.length;
         if (numberOfFiles <= 0) {
           Notification.warning('No files found', 'The extension ' + extension + ' contains no scannable files');
-          return;
+          return 0;
         }
 
         this.setStatusMessageForScan(extension, 0, numberOfFiles);
         extensionContainer.querySelector<HTMLElement>('.t3js-extensionScanner-extension-body').innerText = '';
         extensionContainer.classList.add('panel-has-progress');
         let doneFiles = 0;
+        const failedFiles: string[] = [];
+        const markFileAsFailed = (file: string): void => {
+          failedFiles.push(file);
+          this.setStatusMessageForScan(extension, doneFiles, numberOfFiles, failedFiles.length);
+          this.setProgressForScan(extension, doneFiles + failedFiles.length, numberOfFiles);
+        };
         const filePromises = data.files.map((file): Promise<void> => new Promise<void>((resolve, reject): void => {
           AjaxQueue.add({
             method: 'POST',
@@ -264,67 +278,73 @@ class ExtensionScanner extends AbstractInteractableModule {
             },
             url: Router.getUrl(),
             onfulfilled: async (response: AjaxResponse): Promise<void> => {
-              const fileData: ExtensionScannerScanFileResponse = await response.resolve();
-              doneFiles++;
-              this.setStatusMessageForScan(extension, doneFiles, numberOfFiles);
-              this.setProgressForScan(extension, doneFiles, numberOfFiles);
-              if (fileData.success && Array.isArray(fileData.matches)) {
-                fileData.matches.forEach((match): void => {
-                  hitFound = true;
-                  const aMatch = modalContent.querySelector(hitTemplate + ' .panel').cloneNode(true) as HTMLElement;
-                  aMatch.querySelector<HTMLElement>('.t3js-extensionScanner-hit-file-panel-head').setAttribute('data-bs-target', '#collapse' + match.uniqueId);
-                  aMatch.querySelector<HTMLElement>('.t3js-extensionScanner-hit-file-panel-head').setAttribute('aria-controls', 'collapse' + match.uniqueId);
-                  aMatch.querySelector<HTMLElement>('.t3js-extensionScanner-hit-file-panel-body').setAttribute('id', 'collapse' + match.uniqueId);
-                  aMatch.querySelector<HTMLElement>('.t3js-extensionScanner-hit-filename').innerText = file;
-                  aMatch.querySelector<HTMLElement>('.t3js-extensionScanner-hit-message').innerText = match.message;
-                  if (match.indicator === 'strong') {
-                    aMatch.querySelector<HTMLElement>('.t3js-extensionScanner-hit-file-panel-head .t3js-extensionScanner-hit-badges')
-                      .innerHTML += '<span class="badge badge-danger" title="Reliable match, false positive unlikely">strong</span>';
-                  } else {
-                    aMatch.querySelector<HTMLElement>('.t3js-extensionScanner-hit-file-panel-head .t3js-extensionScanner-hit-badges')
-                      .innerHTML += '<span class="badge badge-warning" title="Probable match, but can be a false positive">weak</span>';
-                  }
-                  if (match.silenced === true) {
-                    aMatch.querySelector<HTMLElement>('.t3js-extensionScanner-hit-file-panel-head .t3js-extensionScanner-hit-badges')
-                      .innerHTML += '<span class="badge badge-info" title="Match has been annotated by extension author' +
-                      ' as false positive match">silenced</span>';
-                  }
-                  aMatch.querySelector<HTMLElement>('.t3js-extensionScanner-hit-file-lineContent').innerText = match.lineContent;
-                  aMatch.querySelector<HTMLElement>('.t3js-extensionScanner-hit-file-line').innerText = match.line + ': ';
-                  if (Array.isArray(match.restFiles)) {
-                    match.restFiles.forEach((restFile): void => {
-                      const aRest = modalContent.querySelector(restTemplate + ' .panel').cloneNode(true) as HTMLElement;
-                      aRest.querySelector<HTMLElement>('.t3js-extensionScanner-hit-rest-panel-head').setAttribute('data-bs-target', '#collapse' + restFile.uniqueId);
-                      aRest.querySelector<HTMLElement>('.t3js-extensionScanner-hit-rest-panel-head').setAttribute('aria-controls', 'collapse' + restFile.uniqueId);
-                      aRest.querySelector<HTMLElement>('.t3js-extensionScanner-hit-rest-panel-head .t3js-extensionScanner-hit-rest-badge').innerText = restFile.version;
-                      aRest.querySelector<HTMLElement>('.t3js-extensionScanner-hit-rest-panel-body').setAttribute('id', 'collapse' + restFile.uniqueId);
-                      aRest.querySelector<HTMLElement>('.t3js-extensionScanner-hit-rest-headline').innerText = restFile.headline;
-                      aRest.querySelector<HTMLElement>('.t3js-extensionScanner-hit-rest-body').innerText = restFile.content;
-                      aRest.classList.add('panel-' + restFile.class);
-                      aMatch.querySelector<HTMLElement>('.t3js-extensionScanner-hit-file-rest-container').append(aRest);
-                      this.listOfAffectedRestFileHashes.push(restFile.file_hash);
-                    });
-                  }
-                  const panelClass =
-                    aMatch.querySelectorAll('.panel-breaking, .t3js-extensionScanner-hit-file-rest-container').length > 0
-                      ? 'panel-danger'
-                      : 'panel-warning';
-                  aMatch.classList.add(panelClass);
-                  aMatch.classList.remove('panel-default');
-                  const extensionBody = extensionContainer.querySelector<HTMLElement>('.t3js-extensionScanner-extension-body');
-                  extensionBody.classList.remove('hide');
-                  extensionBody.append(aMatch);
-                  extensionContainer.classList.remove('panel-default');
-                  if (panelClass === 'panel-danger') {
-                    extensionContainer.classList.remove('panel-warning');
-                    extensionContainer.classList.add(panelClass);
-                  }
-                  if (panelClass === 'panel-warning' && !extensionContainer.classList.contains('panel-danger')) {
-                    extensionContainer.classList.add(panelClass);
-                  }
-                });
-              }
-              if (fileData.success) {
+              try {
+                const fileData: ExtensionScannerScanFileResponse = await response.resolve();
+                if (fileData.success !== true) {
+                  markFileAsFailed(file);
+                  console.error(fileData);
+                  resolve();
+                  return;
+                }
+                doneFiles++;
+                this.setStatusMessageForScan(extension, doneFiles, numberOfFiles, failedFiles.length);
+                this.setProgressForScan(extension, doneFiles + failedFiles.length, numberOfFiles);
+                if (Array.isArray(fileData.matches)) {
+                  fileData.matches.forEach((match): void => {
+                    hitFound = true;
+                    const aMatch = modalContent.querySelector(hitTemplate + ' .panel').cloneNode(true) as HTMLElement;
+                    aMatch.querySelector<HTMLElement>('.t3js-extensionScanner-hit-file-panel-head').setAttribute('data-bs-target', '#collapse' + match.uniqueId);
+                    aMatch.querySelector<HTMLElement>('.t3js-extensionScanner-hit-file-panel-head').setAttribute('aria-controls', 'collapse' + match.uniqueId);
+                    aMatch.querySelector<HTMLElement>('.t3js-extensionScanner-hit-file-panel-body').setAttribute('id', 'collapse' + match.uniqueId);
+                    aMatch.querySelector<HTMLElement>('.t3js-extensionScanner-hit-filename').innerText = file;
+                    aMatch.querySelector<HTMLElement>('.t3js-extensionScanner-hit-message').innerText = match.message;
+                    if (match.indicator === 'strong') {
+                      aMatch.querySelector<HTMLElement>('.t3js-extensionScanner-hit-file-panel-head .t3js-extensionScanner-hit-badges')
+                        .innerHTML += '<span class="badge badge-danger" title="Reliable match, false positive unlikely">strong</span>';
+                    } else {
+                      aMatch.querySelector<HTMLElement>('.t3js-extensionScanner-hit-file-panel-head .t3js-extensionScanner-hit-badges')
+                        .innerHTML += '<span class="badge badge-warning" title="Probable match, but can be a false positive">weak</span>';
+                    }
+                    if (match.silenced === true) {
+                      aMatch.querySelector<HTMLElement>('.t3js-extensionScanner-hit-file-panel-head .t3js-extensionScanner-hit-badges')
+                        .innerHTML += '<span class="badge badge-info" title="Match has been annotated by extension author' +
+                        ' as false positive match">silenced</span>';
+                    }
+                    aMatch.querySelector<HTMLElement>('.t3js-extensionScanner-hit-file-lineContent').innerText = match.lineContent;
+                    aMatch.querySelector<HTMLElement>('.t3js-extensionScanner-hit-file-line').innerText = match.line + ': ';
+                    if (Array.isArray(match.restFiles)) {
+                      match.restFiles.forEach((restFile): void => {
+                        const aRest = modalContent.querySelector(restTemplate + ' .panel').cloneNode(true) as HTMLElement;
+                        aRest.querySelector<HTMLElement>('.t3js-extensionScanner-hit-rest-panel-head').setAttribute('data-bs-target', '#collapse' + restFile.uniqueId);
+                        aRest.querySelector<HTMLElement>('.t3js-extensionScanner-hit-rest-panel-head').setAttribute('aria-controls', 'collapse' + restFile.uniqueId);
+                        aRest.querySelector<HTMLElement>('.t3js-extensionScanner-hit-rest-panel-head .t3js-extensionScanner-hit-rest-badge').innerText = restFile.version;
+                        aRest.querySelector<HTMLElement>('.t3js-extensionScanner-hit-rest-panel-body').setAttribute('id', 'collapse' + restFile.uniqueId);
+                        aRest.querySelector<HTMLElement>('.t3js-extensionScanner-hit-rest-headline').innerText = restFile.headline;
+                        aRest.querySelector<HTMLElement>('.t3js-extensionScanner-hit-rest-body').innerText = restFile.content;
+                        aRest.classList.add('panel-' + restFile.class);
+                        aMatch.querySelector<HTMLElement>('.t3js-extensionScanner-hit-file-rest-container').append(aRest);
+                        this.listOfAffectedRestFileHashes.push(restFile.file_hash);
+                      });
+                    }
+                    const panelClass =
+                      aMatch.querySelectorAll('.panel-breaking, .t3js-extensionScanner-hit-file-rest-container').length > 0
+                        ? 'panel-danger'
+                        : 'panel-warning';
+                    aMatch.classList.add(panelClass);
+                    aMatch.classList.remove('panel-default');
+                    const extensionBody = extensionContainer.querySelector<HTMLElement>('.t3js-extensionScanner-extension-body');
+                    extensionBody.classList.remove('hide');
+                    extensionBody.append(aMatch);
+                    extensionContainer.classList.remove('panel-default');
+                    if (panelClass === 'panel-danger') {
+                      extensionContainer.classList.remove('panel-warning');
+                      extensionContainer.classList.add(panelClass);
+                    }
+                    if (panelClass === 'panel-warning' && !extensionContainer.classList.contains('panel-danger')) {
+                      extensionContainer.classList.add(panelClass);
+                    }
+                  });
+                }
                 const currentLinesOfCode = parseInt(extensionContainer.querySelector<HTMLElement>('.t3js-extensionScanner-extension-body-loc').innerText, 10);
                 extensionContainer.querySelector<HTMLElement>('.t3js-extensionScanner-extension-body-loc')
                   .innerText = String(currentLinesOfCode + fileData.effectiveCodeLines);
@@ -341,24 +361,45 @@ class ExtensionScanner extends AbstractInteractableModule {
                 );
                 extensionContainer.querySelector<HTMLElement>('.t3js-extensionScanner-extension-body-ignored-lines')
                   .innerText = String(currentIgnoredLines + fileData.ignoredLines);
+                resolve();
+              } catch (error: unknown) {
+                markFileAsFailed(file);
+                console.error(error);
+                resolve();
               }
-              resolve();
             },
             onrejected: (reason: string): void => {
-              reject();
-              doneFiles = doneFiles + 1;
-              this.setStatusMessageForScan(extension, doneFiles, numberOfFiles);
-              this.setProgressForScan(extension, doneFiles, numberOfFiles);
-              extensionContainer.classList.remove('panel-has-progress');
-              this.setProgressForAll();
+              markFileAsFailed(file);
               console.error(reason);
+              reject();
             },
           });
         }));
 
         await Promise.allSettled(filePromises);
+        failedCount = failedFiles.length;
 
-        if (!hitFound) {
+        failedFiles.forEach((file: string): void => {
+          const aFailure = modalContent.querySelector(hitTemplate + ' .panel').cloneNode(true) as HTMLElement;
+          const head = aFailure.querySelector<HTMLElement>('.t3js-extensionScanner-hit-file-panel-head');
+          ['data-bs-toggle', 'data-bs-target', 'aria-controls', 'aria-expanded'].forEach((attribute: string): void => head.removeAttribute(attribute));
+          head.classList.remove('collapsed');
+          aFailure.querySelector<HTMLElement>('.t3js-extensionScanner-hit-file-panel-head .caret').remove();
+          aFailure.querySelector<HTMLElement>('.t3js-extensionScanner-hit-file-panel-body').remove();
+          aFailure.querySelector<HTMLElement>('.t3js-extensionScanner-hit-filename').innerText = file;
+          aFailure.querySelector<HTMLElement>('.t3js-extensionScanner-hit-message').innerText =
+            'This file could not be scanned, its result is missing. Please check the browser\'s console and TYPO3\'s log.';
+          aFailure.querySelector<HTMLElement>('.t3js-extensionScanner-hit-file-panel-head .t3js-extensionScanner-hit-badges')
+            .innerHTML += '<span class="badge badge-danger">failed</span>';
+          aFailure.classList.add('panel-danger');
+          const extensionBody = extensionContainer.querySelector<HTMLElement>('.t3js-extensionScanner-extension-body');
+          extensionBody.classList.remove('hide');
+          extensionBody.prepend(aFailure);
+        });
+        if (failedFiles.length > 0) {
+          extensionContainer.classList.remove('panel-default', 'panel-warning');
+          extensionContainer.classList.add('panel-danger');
+        } else if (!hitFound) {
           extensionContainer.classList.remove('panel-default');
           extensionContainer.classList.add('panel-success');
         }
@@ -371,10 +412,13 @@ class ExtensionScanner extends AbstractInteractableModule {
       } else {
         Notification.error('Oops, an error occurred', 'Please look at the browser console output for details');
         console.error(data);
+        return 1;
       }
     } catch (error: unknown) {
       Router.handleAjaxError(error as AjaxResponse, modalContent);
+      return 1;
     }
+    return failedCount;
   }
 }
 
