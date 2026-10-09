@@ -51,8 +51,10 @@ abstract class AbstractApplication implements ApplicationInterface, RequestHandl
             // then allow the PSR-7 response object to explicitly set it.
             // Otherwise let legacy code take precedence.
             // This code path can be deprecated once we expose the response object to third party code
+            $statusLine = null;
             if (http_response_code() === 200) {
-                header('HTTP/' . $response->getProtocolVersion() . ' ' . $response->getStatusCode() . ' ' . $response->getReasonPhrase());
+                $statusLine = 'HTTP/' . $response->getProtocolVersion() . ' ' . $response->getStatusCode() . ' ' . $response->getReasonPhrase();
+                header($statusLine);
             }
 
             foreach ($response->getHeaders() as $name => $values) {
@@ -63,6 +65,11 @@ abstract class AbstractApplication implements ApplicationInterface, RequestHandl
                     header($name . ': ' . $value, $replace);
                     $replace = false;
                 }
+            }
+            // PHP turns every response sending a WWW-Authenticate header into a 401,
+            // which breaks e.g. "403 insufficient_scope" (RFC 6750) and "400 invalid_request"
+            if ($statusLine !== null && $response->hasHeader('WWW-Authenticate')) {
+                header($statusLine);
             }
         }
         $body = $response->getBody();
