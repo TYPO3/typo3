@@ -23,7 +23,7 @@ return [
     ],
     'types' => [
         '0' => [
-            'showitem' => 'title,unique_input,unique_in_pid_input,unique_excluded_input,'
+            'showitem' => 'title,unique_input,unique_in_pid_input,unique_excluded_input,unique_in_pid_excluded_input,'
                 . 'unique_slug,unique_in_site_slug,unique_in_pid_slug,'
                 . 'hidden,sys_language_uid,l10n_parent',
         ],
@@ -57,6 +57,14 @@ return [
             'config' => [
                 'type' => 'input',
                 'eval' => 'unique',
+            ],
+        ],
+        'unique_in_pid_excluded_input' => [
+            'label' => 'input with eval=uniqueInPid, excluded from localization',
+            'l10n_mode' => 'exclude',
+            'config' => [
+                'type' => 'input',
+                'eval' => 'uniqueInPid',
             ],
         ],
         'unique_slug' => [
