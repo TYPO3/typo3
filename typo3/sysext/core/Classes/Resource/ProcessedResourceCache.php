@@ -21,7 +21,6 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Resource\Service\ConfigurationService;
 use TYPO3\CMS\Core\SystemResource\Type\SystemResourceInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Finds and persists ProcessedResource instances - the non-FAL counterpart to
@@ -102,7 +101,7 @@ class ProcessedResourceCache
 
         $configurationHash = $this->getConfigurationHash($processedResource->getTaskIdentifier(), $processedResource->getProcessingConfiguration());
         $contentHash = $this->getContentHash($originalResource);
-        $extension = strtolower(trim((string)(PathUtility::pathinfo($temporaryLocalFilePath)['extension'] ?? '')));
+        $extension = strtolower(trim((string)(pathinfo($temporaryLocalFilePath)['extension'] ?? '')));
         $finalPath = $directory . $configurationHash . '-' . $contentHash . ($extension !== '' ? '.' . $extension : '');
 
         $this->removeStaleVariants($originalResource, $configurationHash, $finalPath);

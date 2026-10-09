@@ -210,7 +210,7 @@ final class ProcessedResource implements ProcessedResourceInterface
         if ($this->usesOriginalFile()) {
             return $this->originalResource->getNameWithoutExtension();
         }
-        return PathUtility::pathinfo($this->getName())['filename'] ?? $this->getName();
+        return pathinfo($this->getName())['filename'] ?? $this->getName();
     }
 
     public function getExtension(): string
@@ -218,7 +218,7 @@ final class ProcessedResource implements ProcessedResourceInterface
         if ($this->usesOriginalFile()) {
             return $this->originalResource->getExtension();
         }
-        return strtolower((string)(PathUtility::pathinfo($this->getName())['extension'] ?? ''));
+        return strtolower((string)(pathinfo($this->getName())['extension'] ?? ''));
     }
 
     public function getMimeType(): string
