@@ -182,7 +182,14 @@ readonly class FalStatus implements StatusProviderInterface
     private function checkFolderConsistency(FolderInterface $folder): array
     {
         $inconsistencies = [];
-        foreach ($folder->getFiles() as $file) {
+        $folderIdentifier = $folder->getStorage()->getUid() . ':' . $folder->getIdentifier();
+        try {
+            $files = $folder->getFiles();
+        } catch (\Exception $exception) {
+            $files = [];
+            $inconsistencies[$folderIdentifier][] = 'Files could not be read: ' . $exception->getMessage();
+        }
+        foreach ($files as $file) {
             if (!$file instanceof File) {
                 continue;
             }
@@ -195,7 +202,13 @@ readonly class FalStatus implements StatusProviderInterface
                 );
             }
         }
-        foreach ($folder->getSubfolders() as $subFolder) {
+        try {
+            $subFolders = $folder->getSubfolders();
+        } catch (\Exception $exception) {
+            $subFolders = [];
+            $inconsistencies[$folderIdentifier][] = 'Subfolders could not be read: ' . $exception->getMessage();
+        }
+        foreach ($subFolders as $subFolder) {
             $inconsistencies = [...$inconsistencies, ...$this->checkFolderConsistency($subFolder)];
         }
         return $inconsistencies;
