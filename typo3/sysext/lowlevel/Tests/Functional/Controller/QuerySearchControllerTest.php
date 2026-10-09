@@ -20,12 +20,14 @@ namespace TYPO3\CMS\Lowlevel\Tests\Functional\Controller;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use Psr\Http\Message\ResponseFactoryInterface;
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry;
+use TYPO3\CMS\Core\Http\PropagateResponseException;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -65,6 +67,7 @@ final class QuerySearchControllerTest extends FunctionalTestCase
             $this->get(Locales::class),
             $this->get(FlashMessageService::class),
             $this->get(ConnectionPool::class),
+            $this->get(ResponseFactoryInterface::class),
         ];
     }
 
@@ -318,6 +321,7 @@ final class QuerySearchControllerTest extends FunctionalTestCase
             $this->get(Locales::class),
             $this->get(FlashMessageService::class),
             $this->get(ConnectionPool::class),
+            $this->get(ResponseFactoryInterface::class),
         ]);
         $subject->_set('table', 'aTable');
         $subject->_call('init', 'queryConfig', 'aTable');
@@ -401,6 +405,7 @@ final class QuerySearchControllerTest extends FunctionalTestCase
             $this->get(Locales::class),
             $this->get(FlashMessageService::class),
             $this->get(ConnectionPool::class),
+            $this->get(ResponseFactoryInterface::class),
         ]);
         $subject->_call('init', 'queryConfig', $settings['queryTable']);
         $subject->_call('makeSelectorTable', $settings, $request);
@@ -410,6 +415,26 @@ final class QuerySearchControllerTest extends FunctionalTestCase
         $query = $subject->_call('getSelectQuery', $queryString);
 
         self::assertStringNotContainsString($injector, $query);
+    }
+
+    #[Test]
+    public function csvDownloadIsPropagatedAsResponse(): void
+    {
+        $request = new ServerRequest('https://example.com/typo3/', 'POST')->withParsedBody(['download_file' => '1']);
+        $dataRows = [
+            ['uid' => 1, 'title' => 'First'],
+            ['uid' => 2, 'title' => 'Second'],
+        ];
+        $subject = $this->getAccessibleMock(QuerySearchController::class, null, $this->getConstructorArguments());
+        try {
+            $subject->_call('getQueryResultCode', 'csv', $dataRows, 'pages', $request);
+            self::fail('Expected ' . PropagateResponseException::class . ' to be thrown');
+        } catch (PropagateResponseException $e) {
+            $response = $e->getResponse();
+            self::assertSame('application/octet-stream', $response->getHeaderLine('Content-Type'));
+            self::assertMatchesRegularExpression('/^attachment; filename=TYPO3_pages_export_\d{6}-\d{4}\.csv$/', $response->getHeaderLine('Content-Disposition'));
+            self::assertSame("\"uid\",\"title\"\r\n1,\"First\"\r\n2,\"Second\"", (string)$response->getBody());
+        }
     }
 
     private function prepareSettings(array $settings, array $replacements): array

@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Lowlevel\Controller;
 use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\DBAL\Platforms\MariaDBPlatform as DoctrineMariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform as DoctrineMySQLPlatform;
+use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
@@ -34,6 +35,7 @@ use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry;
 use TYPO3\CMS\Core\DataHandling\TableColumnType;
+use TYPO3\CMS\Core\Http\PropagateResponseException;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\DateFormatter;
@@ -229,6 +231,7 @@ class QuerySearchController
         protected readonly Locales $locales,
         protected readonly FlashMessageService $flashMessageService,
         protected readonly ConnectionPool $connectionPool,
+        protected readonly ResponseFactoryInterface $responseFactory,
     ) {}
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
@@ -652,15 +655,13 @@ class QuerySearchController
                         $out .= '  Click to download file';
                         $out .= '</button>';
                     }
-                    // Downloads file:
-                    // @todo: args. routing anyone?
                     if ($request->getParsedBody()['download_file'] ?? false) {
                         $filename = 'TYPO3_' . $table . '_export_' . date('dmy-Hi') . '.csv';
-                        $mimeType = 'application/octet-stream';
-                        header('Content-Type: ' . $mimeType);
-                        header('Content-Disposition: attachment; filename=' . $filename);
-                        echo implode(CRLF, $rowArr);
-                        die;
+                        $response = $this->responseFactory->createResponse()
+                            ->withHeader('Content-Type', 'application/octet-stream')
+                            ->withHeader('Content-Disposition', 'attachment; filename=' . $filename);
+                        $response->getBody()->write(implode(CRLF, $rowArr));
+                        throw new PropagateResponseException($response, 1791542540);
                     }
                 } else {
                     $out .= '<p>' . $languageService->translate('fullSearch.type.all.noResultsFound', 'lowlevel.messages') . '</p>';
