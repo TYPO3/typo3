@@ -77,15 +77,15 @@ final class SvgSanitizerTest extends FunctionalTestCase
     public function removeLinksStripsAnchorElements(): void
     {
         $svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10">'
-            . '<a href="https://example.com"><rect width="10" height="10"/></a></svg>';
+            . '<a href="#anchor"><rect width="10" height="10"/></a></svg>';
 
         $withLinks = new SvgSanitizer()->sanitizeContent($svg, true);
         $withoutLinks = new SvgSanitizer()->sanitizeContent($svg, true, true);
 
         self::assertStringContainsString('<a', $withLinks);
-        self::assertStringContainsString('href="https://example.com"', $withLinks);
+        self::assertStringContainsString('href="#anchor"', $withLinks);
         self::assertStringNotContainsString('<a', $withoutLinks);
-        self::assertStringNotContainsString('href="https://example.com"', $withoutLinks);
+        self::assertStringNotContainsString('href="#anchor"', $withoutLinks);
     }
 
     #[Test]

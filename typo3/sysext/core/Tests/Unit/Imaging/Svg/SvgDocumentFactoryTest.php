@@ -69,13 +69,25 @@ final class SvgDocumentFactoryTest extends UnitTestCase
     }
 
     #[Test]
-    public function sanitizedKeepsLinksByDefault(): void
+    public function sanitizedKeepsAnchorLinksByDefault(): void
+    {
+        $svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10">'
+            . '<a href="#anchor"><rect width="10" height="10"/></a></svg>';
+
+        self::assertSame(
+            '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"><a href="#anchor"><rect width="10" height="10"/></a></svg>',
+            $this->serialize(new SvgDocumentFactory(new SvgSanitizer())->fromStringAndSanitize($svg)),
+        );
+    }
+
+    #[Test]
+    public function sanitizedRemovesExternalLinks(): void
     {
         $svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10">'
             . '<a href="https://example.com"><rect width="10" height="10"/></a></svg>';
 
         self::assertSame(
-            '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"><a href="https://example.com"><rect width="10" height="10"/></a></svg>',
+            '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"><a><rect width="10" height="10"/></a></svg>',
             $this->serialize(new SvgDocumentFactory(new SvgSanitizer())->fromStringAndSanitize($svg)),
         );
     }
@@ -117,7 +129,7 @@ final class SvgDocumentFactoryTest extends UnitTestCase
             . '<rect width="10" height="10"/></svg>';
 
         self::assertSame(
-            '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 10 10"><rect width="10" height="10"/></svg>',
+            '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 10 10"><use/><use/><rect width="10" height="10"/></svg>',
             $this->serialize(new SvgDocumentFactory(new SvgSanitizer())->fromStringAndSanitize($svg)),
         );
     }
