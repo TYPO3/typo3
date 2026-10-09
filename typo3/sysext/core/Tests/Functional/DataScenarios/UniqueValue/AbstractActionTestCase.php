@@ -40,6 +40,9 @@ use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
  * element 3 (page 90): unique "gamma", uniqueInPid "delta",   uniqueInSite "upsilon"
  * element 4 (page 51): unique "zeta",  uniqueInPid "delta",   uniqueInSite "sigma"
  *
+ * The "uniqueInPid" field excluded from localization uses "kappa" on pages 89, 90 and 51,
+ * and "lambda" for element 2.
+ *
  * "delta" is used on three different pages, which is allowed for "uniqueInPid".
  * "sigma" is used in both sites, which is allowed for "uniqueInSite".
  */
@@ -60,6 +63,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     protected const FIELD_UniqueInput = 'unique_input';
     protected const FIELD_UniqueInPidInput = 'unique_in_pid_input';
     protected const FIELD_UniqueExcludedInput = 'unique_excluded_input';
+    protected const FIELD_UniqueInPidExcludedInput = 'unique_in_pid_excluded_input';
     protected const FIELD_UniqueSlug = 'unique_slug';
     protected const FIELD_UniqueInSiteSlug = 'unique_in_site_slug';
     protected const FIELD_UniqueInPidSlug = 'unique_in_pid_slug';
@@ -111,6 +115,24 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
             'slug uniqueInSite' => $record[self::FIELD_UniqueInSiteSlug],
             'slug uniqueInPid' => $record[self::FIELD_UniqueInPidSlug],
         ];
+    }
+
+    /**
+     * The "uniqueInPid" value excluded from localization of a record together with the one of its
+     * localization, which must always carry the same value.
+     */
+    protected function getUniqueInPidExcludedValues(int $uid, int $localizedUid, bool $workspaceOverlay = false): array
+    {
+        $values = [];
+        foreach (['default' => $uid, 'localization' => $localizedUid] as $key => $recordUid) {
+            $record = BackendUtility::getRecord(self::TABLE_Element, $recordUid);
+            self::assertIsArray($record, 'Record ' . self::TABLE_Element . ':' . $recordUid . ' does not exist');
+            if ($workspaceOverlay) {
+                BackendUtility::workspaceOL(self::TABLE_Element, $record, $this->backendUser->workspace);
+            }
+            $values[$key] = $record[self::FIELD_UniqueInPidExcludedInput];
+        }
+        return $values;
     }
 
     /**
@@ -214,5 +236,14 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     {
         $newTableIds = $this->actionService->localizeRecord(self::TABLE_Element, self::VALUE_ElementIdFirst, self::VALUE_LanguageId);
         $this->recordIds['localizedElementId'] = $newTableIds[self::TABLE_Element][self::VALUE_ElementIdFirst];
+    }
+
+    /**
+     * Sort element 1 behind element 2 on the same page, its localization is moved along.
+     */
+    public function sortLocalizedElement(): void
+    {
+        $this->localizeElement();
+        $this->actionService->moveRecord(self::TABLE_Element, self::VALUE_ElementIdFirst, -self::VALUE_ElementIdSecond);
     }
 }

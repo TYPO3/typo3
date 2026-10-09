@@ -2692,12 +2692,14 @@ class DataHandler
         // Editing in a workspace writes to a versioned record, which lives on the same pid as its
         // live counterpart and starts out with the very same values. Ignore that live record, it is
         // the record being edited and must not be treated as a collision with its own version.
-        if ($this->BE_USER->workspace > 0 && ($liveId = $this->resolveLiveVersionId($table, $uid)) > 0) {
+        $liveId = $this->BE_USER->workspace > 0 ? $this->resolveLiveVersionId($table, $uid) : 0;
+        if ($liveId > 0) {
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->neq('uid', $queryBuilder->createPositionalParameter($liveId, Connection::PARAM_INT))
             );
         }
         // ignore translations of current record if field is configured with l10n_mode = "exclude"
+        // translations always point to the live record, also when a workspace version is checked
         $schema = $this->tcaSchemaFactory->get($table);
         $tcaField = $schema->getField($field);
         if ($schema->isLanguageAware() && $tcaField->getTranslationBehaviour() === FieldTranslationBehaviour::Excluded) {
@@ -2714,7 +2716,7 @@ class DataHandler
                         // translations of other records must be taken into account
                         $queryBuilder->expr()->neq(
                             $languageCapability->getTranslationOriginPointerField()->getName(),
-                            $queryBuilder->createPositionalParameter($uid, Connection::PARAM_INT)
+                            $queryBuilder->createPositionalParameter($liveId ?: $uid, Connection::PARAM_INT)
                         )
                     )
                 );
@@ -8623,6 +8625,9 @@ class DataHandler
      */
     protected function fixUniqueInPid(string $table, array $row): void
     {
+        // getUnique() reads translation and version information from the record being checked,
+        // which otherwise still holds the last record processed by the data map
+        $this->checkValue_currentRecord = $row;
         $newData = [];
         // Use type-specific sub-schema fields if available, otherwise main schema fields
         foreach ($this->getTypeSpecificFields($table, $row) as $field) {

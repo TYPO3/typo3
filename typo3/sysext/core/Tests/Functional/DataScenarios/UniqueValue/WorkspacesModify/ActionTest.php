@@ -146,4 +146,24 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             'slug uniqueInPid' => 'delta',
         ], $this->getUniqueValues($this->recordIds['localizedElementId'], true));
     }
+
+    #[Test]
+    public function sortLocalizedElement(): void
+    {
+        parent::sortLocalizedElement();
+
+        self::assertSame([
+            'input unique' => 'alpha',
+            'input uniqueInPid' => 'delta',
+            'input unique (l10n excluded)' => 'omega',
+            'slug unique' => 'alpha',
+            'slug uniqueInSite' => 'sigma',
+            'slug uniqueInPid' => 'delta',
+        ], $this->getUniqueValues(self::VALUE_ElementIdFirst, true));
+
+        self::assertSame(
+            ['default' => 'kappa', 'localization' => 'kappa'],
+            $this->getUniqueInPidExcludedValues(self::VALUE_ElementIdFirst, $this->recordIds['localizedElementId'], true)
+        );
+    }
 }
