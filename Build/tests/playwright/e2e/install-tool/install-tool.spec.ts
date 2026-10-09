@@ -378,6 +378,48 @@ test.describe('Install Tool', () => {
       await expect(modal).toContainText('ext_localconf.php of all loaded extensions successfully loaded');
     });
 
+    test('extension scanner reports a file whose scan failed', async ({ installTool, page }) => {
+      await page.route(/__typo3_install/, async (route) => {
+        const postData = route.request().postData() ?? '';
+        if (postData.includes('extensionScannerScanFile') && postData.includes('ext_localconf.php')) {
+          await route.fulfill({ status: 500, body: 'Internal Server Error' });
+          return;
+        }
+        await route.continue();
+      });
+
+      const modal = await installTool.openModal('Scan Extension Files…');
+      const extension = modal.locator('.t3js-extensionScanner-extension-playwright_helper');
+      await extension.getByRole('button', { name: /playwright_helper/ }).click();
+
+      await expect(extension.locator('.t3js-extensionScanner-number-of-files')).toHaveText('Checked 3 of 4 files, 1 failed');
+      await expect(extension).toHaveClass(/panel-danger/);
+      await expect(extension.locator('.t3js-extensionScanner-extension-body')).toContainText('ext_localconf.php');
+      await expect(extension.locator('.t3js-extensionScanner-extension-body')).toContainText('could not be scanned');
+    });
+
+    test('extension scanner does not mark ReST files when a scan failed', async ({ installTool, page }) => {
+      let markRequests = 0;
+      await page.route(/__typo3_install/, async (route) => {
+        const postData = route.request().postData() ?? '';
+        if (postData.includes('extensionScannerMarkFullyScannedRestFiles')) {
+          markRequests++;
+        }
+        if (postData.includes('extensionScannerScanFile') && postData.includes('ext_localconf.php')) {
+          await route.fulfill({ status: 500, body: 'Internal Server Error' });
+          return;
+        }
+        await route.continue();
+      });
+
+      const modal = await installTool.openModal('Scan Extension Files…');
+      await modal.locator('.t3js-extensionScanner-scan-all').click();
+
+      await expect(page.locator('typo3-notification-message', { hasText: 'Scan finished with errors' })).toBeVisible();
+      await expect(modal.locator('.t3js-extensionScanner-extension-playwright_helper')).toHaveClass(/panel-danger/);
+      expect(markRequests).toBe(0);
+    });
+
     test('check TCA migrations works', async ({ installTool }) => {
       const modal = await installTool.openModal('Check TCA Migrations…');
       await expect(modal).toContainText('Checks whether the current TCA needs migrations and displays the new migration paths which need to be adjusted manually');
