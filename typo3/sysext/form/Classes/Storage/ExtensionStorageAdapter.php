@@ -28,6 +28,7 @@ use TYPO3\CMS\Form\Domain\DTO\FormData;
 use TYPO3\CMS\Form\Domain\DTO\FormMetadata;
 use TYPO3\CMS\Form\Domain\DTO\SearchCriteria;
 use TYPO3\CMS\Form\Domain\DTO\StorageContext;
+use TYPO3\CMS\Form\Domain\DTO\StorageLocation;
 use TYPO3\CMS\Form\Domain\ValueObject\FormIdentifier;
 use TYPO3\CMS\Form\Mvc\Configuration\Exception\NoSuchFileException;
 use TYPO3\CMS\Form\Mvc\Configuration\YamlSource;
@@ -150,7 +151,7 @@ class ExtensionStorageAdapter extends AbstractFileStorageAdapter implements Stor
 
     public function existsByFormIdentifier(string $formIdentifier): bool
     {
-        foreach ($this->retrieveYamlFilesFromExtensionFolders() as $identifier) {
+        foreach (array_keys($this->retrieveYamlFilesFromExtensionFolders()) as $identifier) {
             $formMetadata = $this->loadMetaData($identifier);
             if ($this->looksLikeAFormDefinition($formMetadata) && $formMetadata->identifier === $formIdentifier) {
                 return true;
@@ -162,13 +163,14 @@ class ExtensionStorageAdapter extends AbstractFileStorageAdapter implements Stor
     public function findAll(SearchCriteria $criteria): array
     {
         $results = [];
-        foreach ($this->retrieveYamlFilesFromExtensionFolders() as $identifier) {
+        foreach ($this->retrieveYamlFilesFromExtensionFolders() as $identifier => $extensionPath) {
             $formMetadata = $this->loadMetaData($identifier);
 
             if (!$this->looksLikeAFormDefinition($formMetadata)) {
                 continue;
             }
 
+            $formMetadata = $formMetadata->withStorageLocation(new StorageLocation($extensionPath, $extensionPath));
             $readOnly = !$this->storageConfiguration->isAllowedToSaveToExtensionPaths();
             $formMetadata = $formMetadata->withReadOnly($readOnly);
 
@@ -228,7 +230,7 @@ class ExtensionStorageAdapter extends AbstractFileStorageAdapter implements Stor
      * Retrieves *.form.yaml files from extension folders for further processing.
      * At this time it's not determined yet, whether these files contain form data.
      *
-     * @return string[]
+     * @return array<string, string> persistence identifier => configured extension path it was found in
      */
     protected function retrieveYamlFilesFromExtensionFolders(): array
     {
@@ -238,7 +240,7 @@ class ExtensionStorageAdapter extends AbstractFileStorageAdapter implements Stor
                 if (!$fileInfo->isFile() || !$this->hasValidFileExtension($fileInfo->getFilename())) {
                     continue;
                 }
-                $filesFromExtensionFolders[] = $relativePath . $fileInfo->getFilename();
+                $filesFromExtensionFolders[$relativePath . $fileInfo->getFilename()] = $relativePath;
             }
         }
         return $filesFromExtensionFolders;
@@ -263,7 +265,7 @@ class ExtensionStorageAdapter extends AbstractFileStorageAdapter implements Stor
             return FormMetadata::createFromYaml(
                 $yaml,
                 $persistenceIdentifier,
-            )->withStorageLocation($this->buildStorageLocationLabel($persistenceIdentifier));
+            );
         } catch (\Exception $e) {
             return FormMetadata::createInvalid($persistenceIdentifier, $e->getMessage());
         }
@@ -338,14 +340,5 @@ class ExtensionStorageAdapter extends AbstractFileStorageAdapter implements Stor
     public function isAccessible(): bool
     {
         return $this->storageConfiguration->isAllowedToSaveToExtensionPaths() && !empty($this->getAccessibleExtensionFolders());
-    }
-
-    /**
-     * Build a user-friendly storage location label
-     * Format: "extension_key/Configuration/Forms/file.form.yaml"
-     */
-    protected function buildStorageLocationLabel(string $persistenceIdentifier): string
-    {
-        return $persistenceIdentifier;
     }
 }

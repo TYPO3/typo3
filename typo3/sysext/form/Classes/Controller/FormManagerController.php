@@ -41,6 +41,7 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\View\JsonView;
 use TYPO3\CMS\Form\Domain\DTO\FormConfiguration\FormManagerConfiguration;
+use TYPO3\CMS\Form\Domain\DTO\FormMetadata;
 use TYPO3\CMS\Form\Domain\DTO\SearchCriteria;
 use TYPO3\CMS\Form\Domain\Repository\FormDefinitionRepository;
 use TYPO3\CMS\Form\Event\BeforeFormIsCreatedEvent;
@@ -84,22 +85,42 @@ class FormManagerController extends ActionController
     /**
      * Display the Form Manager. The main showing available forms.
      */
-    protected function indexAction(int $page = 1, string $searchTerm = '', string $orderField = '', ?string $orderDirection = null): ResponseInterface
+    protected function indexAction(int $page = 1, string $searchTerm = '', string $orderField = '', ?string $orderDirection = null, string $storageFilter = ''): ResponseInterface
     {
+        if ($this->request->getMethod() === 'POST') {
+            return $this->redirect('index', null, null, array_filter([
+                'searchTerm' => trim($searchTerm),
+                'storageFilter' => $storageFilter,
+                'orderField' => $orderField,
+                'orderDirection' => (string)$orderDirection,
+            ], static fn(string $value): bool => $value !== ''));
+        }
         $formSettings = $this->getFormSettings();
         $formManagerConfiguration = FormManagerConfiguration::fromArray($formSettings['formManager']);
         $hasForms = $this->formPersistenceManager->hasForms([]);
         $searchCriteria = new SearchCriteria(searchTerm: trim($searchTerm), orderField: $orderField, orderDirection: $orderDirection);
         $returnUrl = $this->request->getAttribute('normalizedParams')->getRequestUri();
         $forms = $hasForms ? $this->getAvailableFormDefinitions($formSettings, $searchCriteria, $returnUrl) : [];
+        $storageFilterOptions = [];
+        if ($hasForms) {
+            $storageFilterOptions = $this->getStorageFilterOptions(
+                $searchCriteria->searchTerm === '' ? $forms : $this->formPersistenceManager->listForms($formSettings, new SearchCriteria())
+            );
+        }
+        if (count($storageFilterOptions) < 2 || !isset($storageFilterOptions[$storageFilter])) {
+            $storageFilter = '';
+        }
+        $forms = $this->filterFormsByStorage($forms, $storageFilter);
         $arrayPaginator = new ArrayPaginator($forms, $page, self::PAGINATION_MAX);
         $pagination = new SimplePagination($arrayPaginator);
-        $moduleTemplate = $this->initializeModuleTemplate($this->request, $page, $searchTerm);
+        $moduleTemplate = $this->initializeModuleTemplate($this->request, $page, $searchTerm, $storageFilter);
         $formManagerAppInitialData = $this->getFormManagerAppInitialData($formManagerConfiguration);
         $moduleTemplate->assignMultiple([
             'paginator' => $arrayPaginator,
             'pagination' => $pagination,
             'searchTerm' => $searchTerm,
+            'storageFilter' => $storageFilter,
+            'storageFilterOptions' => count($storageFilterOptions) > 1 ? $storageFilterOptions : [],
             'orderField' => $searchCriteria->orderField,
             'orderDirection' => $searchCriteria->orderDirection,
             'hasForms' => $hasForms,
@@ -428,6 +449,40 @@ class FormManagerController extends ActionController
     }
 
     /**
+     * Returns the storage locations the given forms are stored in,
+     * as filter value => label, sorted by label.
+     *
+     * @param FormMetadata[] $forms
+     * @return array<string, string>
+     */
+    protected function getStorageFilterOptions(array $forms): array
+    {
+        $options = [];
+        foreach ($forms as $formMetadata) {
+            if ($formMetadata->storageLocation !== null) {
+                $options[$formMetadata->storageLocation->identifier] = $formMetadata->storageLocation->label;
+            }
+        }
+        uasort($options, strnatcasecmp(...));
+        return $options;
+    }
+
+    /**
+     * @param FormMetadata[] $forms
+     * @return FormMetadata[]
+     */
+    protected function filterFormsByStorage(array $forms, string $storageFilter): array
+    {
+        if ($storageFilter === '') {
+            return $forms;
+        }
+        return array_values(array_filter(
+            $forms,
+            static fn(FormMetadata $formMetadata): bool => $formMetadata->storageLocation?->identifier === $storageFilter
+        ));
+    }
+
+    /**
      * Returns an array with information about the references for a
      * formDefinition identified by $persistenceIdentifier.
      */
@@ -509,7 +564,7 @@ class FormManagerController extends ActionController
     /**
      * Init ModuleTemplate and register document header buttons
      */
-    protected function initializeModuleTemplate(ServerRequestInterface $request, int $page, string $searchTerm): ModuleTemplate
+    protected function initializeModuleTemplate(ServerRequestInterface $request, int $page, string $searchTerm, string $storageFilter = ''): ModuleTemplate
     {
         $moduleTemplate = $this->moduleTemplateFactory->create($request);
         // Create new
@@ -524,6 +579,10 @@ class FormManagerController extends ActionController
         $arguments = [];
         if ($searchTerm) {
             $arguments['tx_form_web_formformbuilder']['searchTerm'] = $searchTerm;
+            $arguments['tx_form_web_formformbuilder']['controller'] = 'FormManager';
+        }
+        if ($storageFilter !== '') {
+            $arguments['tx_form_web_formformbuilder']['storageFilter'] = $storageFilter;
             $arguments['tx_form_web_formformbuilder']['controller'] = 'FormManager';
         }
         if ($page > 1) {

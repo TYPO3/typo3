@@ -1,4 +1,5 @@
 persistenceManager:
   allowedExtensionPaths:
     10: EXT:form_storage_tests/Resources/Private/Forms/
+    20: EXT:form_storage_tests/Resources/Private/Forms/Special
   allowDeleteFromExtensionPaths: true

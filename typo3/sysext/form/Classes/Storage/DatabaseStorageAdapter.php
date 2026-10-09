@@ -26,6 +26,7 @@ use TYPO3\CMS\Form\Domain\DTO\FormData;
 use TYPO3\CMS\Form\Domain\DTO\FormMetadata;
 use TYPO3\CMS\Form\Domain\DTO\SearchCriteria;
 use TYPO3\CMS\Form\Domain\DTO\StorageContext;
+use TYPO3\CMS\Form\Domain\DTO\StorageLocation;
 use TYPO3\CMS\Form\Domain\Repository\FormDefinitionRepository;
 use TYPO3\CMS\Form\Domain\ValueObject\FormIdentifier;
 use TYPO3\CMS\Form\Mvc\Persistence\Exception\PersistenceManagerException;
@@ -265,7 +266,7 @@ final readonly class DatabaseStorageAdapter implements StorageAdapterInterface
                 readOnly: !$hasWritePermission,
                 removable: $hasWritePermission,
                 fileUid: null,
-                storageLocation: $this->getStorageLocationLabel(),
+                storageLocation: $this->getStorageLocation(),
             );
 
             $results[] = $metadata;
@@ -284,7 +285,7 @@ final readonly class DatabaseStorageAdapter implements StorageAdapterInterface
             'allowedStorageLocations' => [
                 [
                     'value' => '0',
-                    'label' => $this->getStorageLocationLabel(),
+                    'label' => $this->getStorageLocation()->label,
                 ],
             ],
         ];
@@ -339,10 +340,10 @@ final readonly class DatabaseStorageAdapter implements StorageAdapterInterface
         return (int)$identifier->identifier;
     }
 
-    private function getStorageLocationLabel(): string
+    private function getStorageLocation(): StorageLocation
     {
-        $languageService = $this->getLanguageService();
-        return $languageService?->sL('LLL:EXT:form/Resources/Private/Language/Database.xlf:' . $this->getLabel()) ?: 'Database';
+        $label = $this->getLanguageService()?->sL('LLL:EXT:form/Resources/Private/Language/Database.xlf:' . $this->getLabel()) ?: 'Database';
+        return new StorageLocation($this->getTypeIdentifier(), $label);
     }
 
     private function getLanguageService(): ?LanguageService

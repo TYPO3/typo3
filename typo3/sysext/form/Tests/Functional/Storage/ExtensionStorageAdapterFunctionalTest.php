@@ -113,7 +113,10 @@ final class ExtensionStorageAdapterFunctionalTest extends FunctionalTestCase
             ],
         );
         self::assertSame(
-            ['EXT:form_storage_tests/Resources/Private/Forms/ContactForm.form.yaml'],
+            [
+                'EXT:form_storage_tests/Resources/Private/Forms/ContactForm.form.yaml' => 'EXT:form_storage_tests/Resources/Private/Forms/',
+                'EXT:form_storage_tests/Resources/Private/Forms/Special/SpecialForm.form.yaml' => 'EXT:form_storage_tests/Resources/Private/Forms/Special/',
+            ],
             $subject->_call('retrieveYamlFilesFromExtensionFolders')
         );
     }
@@ -126,7 +129,13 @@ final class ExtensionStorageAdapterFunctionalTest extends FunctionalTestCase
             static fn($formMetadata): ?string => $formMetadata->persistenceIdentifier,
             $subject->findAll(new SearchCriteria())
         );
-        self::assertSame(['EXT:form_storage_tests/Resources/Private/Forms/ContactForm.form.yaml'], $persistenceIdentifiers);
+        self::assertSame(
+            [
+                'EXT:form_storage_tests/Resources/Private/Forms/ContactForm.form.yaml',
+                'EXT:form_storage_tests/Resources/Private/Forms/Special/SpecialForm.form.yaml',
+            ],
+            $persistenceIdentifiers
+        );
     }
 
     public static function existsByFormIdentifierOnlyConsidersFilesWithFormDefinitionFileExtensionDataProvider(): iterable
@@ -142,5 +151,29 @@ final class ExtensionStorageAdapterFunctionalTest extends FunctionalTestCase
     {
         $subject = $this->get(ExtensionStorageAdapter::class);
         self::assertSame($expected, $subject->existsByFormIdentifier($formIdentifier));
+    }
+
+    #[Test]
+    public function findAllLocatesFormsByTheConfiguredExtensionPathTheyAreStoredIn(): void
+    {
+        $locations = [];
+        foreach ($this->get(ExtensionStorageAdapter::class)->findAll(new SearchCriteria()) as $formMetadata) {
+            $locations[$formMetadata->persistenceIdentifier] = [$formMetadata->storageLocation?->identifier, $formMetadata->storageLocation?->label];
+        }
+        ksort($locations);
+
+        self::assertSame(
+            [
+                'EXT:form_storage_tests/Resources/Private/Forms/ContactForm.form.yaml' => [
+                    'EXT:form_storage_tests/Resources/Private/Forms/',
+                    'EXT:form_storage_tests/Resources/Private/Forms/',
+                ],
+                'EXT:form_storage_tests/Resources/Private/Forms/Special/SpecialForm.form.yaml' => [
+                    'EXT:form_storage_tests/Resources/Private/Forms/Special/',
+                    'EXT:form_storage_tests/Resources/Private/Forms/Special/',
+                ],
+            ],
+            $locations
+        );
     }
 }

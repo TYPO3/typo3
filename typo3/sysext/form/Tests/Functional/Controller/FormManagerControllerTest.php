@@ -41,6 +41,7 @@ use TYPO3\CMS\Form\Controller\FormManagerController;
 use TYPO3\CMS\Form\Domain\DTO\FormConfiguration\FormManagerConfiguration;
 use TYPO3\CMS\Form\Domain\DTO\FormMetadata;
 use TYPO3\CMS\Form\Domain\DTO\SearchCriteria;
+use TYPO3\CMS\Form\Domain\DTO\StorageLocation;
 use TYPO3\CMS\Form\Event\BeforeFormIsCreatedEvent;
 use TYPO3\CMS\Form\Event\BeforeFormIsDeletedEvent;
 use TYPO3\CMS\Form\Event\BeforeFormIsDuplicatedEvent;
@@ -166,6 +167,49 @@ final class FormManagerControllerTest extends FunctionalTestCase
         ]);
 
         self::assertSame(2, $subjectMock->_call('getAvailableFormDefinitions', [], new SearchCriteria(''))[0]->referenceCount);
+    }
+
+    #[Test]
+    public function getStorageFilterOptionsReturnsEachStorageLocationOnceSortedByLabel(): void
+    {
+        $subjectMock = $this->getAccessibleMock(FormManagerController::class, null, [], '', false);
+        $database = new StorageLocation('database', 'Database');
+        $myExt = new StorageLocation('EXT:my_ext/Resources/Private/Forms/', 'EXT:my_ext/Resources/Private/Forms/');
+        $anotherExt = new StorageLocation('EXT:another_ext/Forms/', 'EXT:another_ext/Forms/');
+        $forms = [
+            new FormMetadata(identifier: 'a', type: 'Form', name: 'a', prototypeName: 'standard', storageLocation: $myExt),
+            new FormMetadata(identifier: 'b', type: 'Form', name: 'b', prototypeName: 'standard', storageLocation: $database),
+            new FormMetadata(identifier: 'c', type: 'Form', name: 'c', prototypeName: 'standard', storageLocation: $myExt),
+            new FormMetadata(identifier: 'd', type: 'Form', name: 'd', prototypeName: 'standard', storageLocation: $anotherExt),
+            new FormMetadata(identifier: 'e', type: 'Form', name: 'e', prototypeName: 'standard', storageLocation: $database),
+            new FormMetadata(identifier: 'f', type: 'Form', name: 'f', prototypeName: 'standard'),
+        ];
+        $expected = [
+            'database' => 'Database',
+            'EXT:another_ext/Forms/' => 'EXT:another_ext/Forms/',
+            'EXT:my_ext/Resources/Private/Forms/' => 'EXT:my_ext/Resources/Private/Forms/',
+        ];
+        self::assertSame($expected, $subjectMock->_call('getStorageFilterOptions', $forms));
+    }
+
+    #[Test]
+    public function filterFormsByStorageReturnsOnlyFormsOfTheSelectedStorageLocation(): void
+    {
+        $subjectMock = $this->getAccessibleMock(FormManagerController::class, null, [], '', false);
+        $database = new StorageLocation('database', 'Database');
+        $myExt = new StorageLocation('EXT:my_ext/Resources/Private/Forms/', 'EXT:my_ext/Resources/Private/Forms/');
+        $anotherExt = new StorageLocation('EXT:another_ext/Forms/', 'EXT:another_ext/Forms/');
+        $forms = [
+            new FormMetadata(identifier: 'a', type: 'Form', name: 'a', prototypeName: 'standard', storageLocation: $myExt),
+            new FormMetadata(identifier: 'b', type: 'Form', name: 'b', prototypeName: 'standard', storageLocation: $database),
+            new FormMetadata(identifier: 'c', type: 'Form', name: 'c', prototypeName: 'standard', storageLocation: $anotherExt),
+            new FormMetadata(identifier: 'd', type: 'Form', name: 'd', prototypeName: 'standard', storageLocation: $database),
+        ];
+        $identifiers = static fn(array $forms): array => array_map(static fn(FormMetadata $form): string => $form->identifier, $forms);
+
+        self::assertSame(['a', 'b', 'c', 'd'], $identifiers($subjectMock->_call('filterFormsByStorage', $forms, '')));
+        self::assertSame(['b', 'd'], $identifiers($subjectMock->_call('filterFormsByStorage', $forms, 'database')));
+        self::assertSame(['c'], $identifiers($subjectMock->_call('filterFormsByStorage', $forms, 'EXT:another_ext/Forms/')));
     }
 
     #[Test]

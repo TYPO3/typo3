@@ -201,6 +201,15 @@
       <trans-unit id="formManager.location">
         <source>Location</source>
       </trans-unit>
+      <trans-unit id="formManager.storage_filter.all">
+        <source>All locations</source>
+      </trans-unit>
+      <trans-unit id="formManager.filter.submit">
+        <source>Filter</source>
+      </trans-unit>
+      <trans-unit id="formManager.filter.reset">
+        <source>Reset filter</source>
+      </trans-unit>
       <trans-unit id="formManager.references">
         <source>References</source>
       </trans-unit>
@@ -222,11 +231,17 @@
       <trans-unit id="formManager.forms_not_found.message">
         <source>Once created, forms will be displayed here.</source>
       </trans-unit>
-      <trans-unit id="formManager.forms_not_found_by_search_term.message">
+      <trans-unit id="formManager.forms_not_found_by_search_term.message" x-unused-since="15.0">
         <source>There are currently no forms found containing the search term "%1s".</source>
       </trans-unit>
-      <trans-unit id="formManager.remove_search_term">
+      <trans-unit id="formManager.remove_search_term" x-unused-since="15.0">
         <source>Remove search term</source>
+      </trans-unit>
+      <trans-unit id="formManager.forms_not_found_by_filter.title">
+        <source>No forms found</source>
+      </trans-unit>
+      <trans-unit id="formManager.forms_not_found_by_filter.message">
+        <source>With the current set of filters applied, no form could be found.</source>
       </trans-unit>
       <trans-unit id="formManager.invalid">
         <source>Invalid form definition</source>

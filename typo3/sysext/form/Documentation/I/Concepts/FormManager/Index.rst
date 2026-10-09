@@ -29,6 +29,18 @@ persistence identifier. The search is case-insensitive.
 ..  versionadded:: 13.0
     :changelog: feature-97664-1656981240
 
+..  versionadded:: 15.0
+    :changelog: feature-89760-1791560506
+
+As soon as forms are stored in at least two locations, a
+:guilabel:`Location` select box is shown next to the search field. Each
+path configured in
+:ref:`allowedExtensionPaths <persistencemanager.allowedExtensionPaths>`
+that contains forms is one location, and all forms stored in the database
+are one location. Click :guilabel:`Filter` to apply the search term and
+the location, and :guilabel:`Reset filter` to show all forms again. The
+selected location is kept when paginating and sorting the list.
+
 Creation and duplication of forms is made easier by a ``form wizard``.
 The wizard guides the editor through form creation and offers a
 variety of settings, such as the storage, the prototype, and start

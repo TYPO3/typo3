@@ -39,7 +39,7 @@ final readonly class FormMetadata
         public ?int $fileUid = null,
         public int $referenceCount = 0,
         public ?string $editUrl = null,
-        public ?string $storageLocation = null,
+        public ?StorageLocation $storageLocation = null,
         public array $actions = [],
     ) {}
 
@@ -59,7 +59,6 @@ final readonly class FormMetadata
             fileUid: $data['fileUid'] ?? null,
             referenceCount: $data['referenceCount'] ?? 0,
             editUrl: $data['editUrl'] ?? null,
-            storageLocation: $data['storageLocation'] ?? null,
             actions: $data['actions'] ?? [],
         );
     }
@@ -101,7 +100,7 @@ final readonly class FormMetadata
             'readOnly' => $this->readOnly,
             'removable' => $this->removable,
             'storageType' => $this->storageType,
-            'storageLocation' => $this->storageLocation ?? $this->storageType,
+            'storageLocation' => $this->storageLocation->label ?? $this->storageType,
             'duplicateIdentifier' => $this->duplicateIdentifier,
             'fileUid' => $this->fileUid,
             'referenceCount' => $this->referenceCount,
@@ -176,7 +175,7 @@ final readonly class FormMetadata
         return $this->with(['editUrl' => $editUrl]);
     }
 
-    public function withStorageLocation(?string $storageLocation): self
+    public function withStorageLocation(StorageLocation $storageLocation): self
     {
         return $this->with(['storageLocation' => $storageLocation]);
     }
@@ -200,6 +199,9 @@ final readonly class FormMetadata
             return null;
         }
         $value = $this->$field;
+        if ($value instanceof StorageLocation) {
+            return $value->label;
+        }
         if (is_bool($value)) {
             return (int)$value;
         }

@@ -28,6 +28,7 @@ use TYPO3\CMS\Form\Domain\DTO\FormData;
 use TYPO3\CMS\Form\Domain\DTO\FormMetadata;
 use TYPO3\CMS\Form\Domain\DTO\SearchCriteria;
 use TYPO3\CMS\Form\Domain\DTO\StorageContext;
+use TYPO3\CMS\Form\Domain\DTO\StorageLocation;
 use TYPO3\CMS\Form\Domain\ValueObject\FormIdentifier;
 use TYPO3\CMS\Form\Mvc\Configuration\TypoScriptService;
 use TYPO3\CMS\Form\Mvc\Persistence\Event\AfterFormDefinitionLoadedEvent;
@@ -150,6 +151,9 @@ readonly class FormPersistenceManager implements FormPersistenceManagerInterface
                 foreach ($formDataList as $formData) {
                     if ($formData->storageType === null) {
                         $formData = $formData->withStorageType($adapter->getTypeIdentifier());
+                    }
+                    if ($formData->storageLocation === null) {
+                        $formData = $formData->withStorageLocation(new StorageLocation($adapter->getTypeIdentifier(), $adapter->getTypeIdentifier()));
                     }
                     $forms[] = $formData;
                     if (!isset($identifiers[$formData->identifier])) {

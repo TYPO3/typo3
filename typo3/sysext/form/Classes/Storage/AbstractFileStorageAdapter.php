@@ -56,12 +56,6 @@ abstract class AbstractFileStorageAdapter
     abstract public function findAll(SearchCriteria $criteria): array;
 
     /**
-     * Build a user-friendly storageLocation label for display
-     * Each storage adapter implements this to provide appropriate storageLocation information
-     */
-    abstract protected function buildStorageLocationLabel(string $persistenceIdentifier): string;
-
-    /**
      * This takes a form identifier and returns a unique persistence identifier for it.
      * By default, this is just similar to the identifier. But if a form with the same persistence identifier already
      * exists a suffix is appended until the persistence identifier is unique.

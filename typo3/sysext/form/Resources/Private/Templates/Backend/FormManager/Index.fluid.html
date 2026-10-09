@@ -15,34 +15,49 @@
 <f:section name="Content">
     <h1><f:translate key="form.database:formManager.headline" /></h1>
     <f:if condition="{hasForms}">
-        <form
-            class="form-inline"
-            data-global-event="submit"
-            data-action-navigate="$form=~s/$value/"
-            data-navigate-value="{f:uri.action(action:'index', arguments:'{searchTerm: \'$[value]\', orderField: orderField, orderDirection: orderDirection}')}"
-            data-value-selector="input[name='searchTerm']"
-        >
+        <f:form action="index">
+            <f:form.hidden name="orderField" value="{orderField}"/>
+            <f:form.hidden name="orderDirection" value="{orderDirection}"/>
             <div class="form-row">
                 <div class="form-group">
                     <label for="search_field" class="form-label">
                         <f:translate id="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.label.searchString"/>
                     </label>
-                    <div class="input-group">
-                        <input
-                            type="search"
-                            autocomplete="off"
-                            id="search_field"
-                            name="searchTerm"
-                            class="form-control"
-                            value="{searchTerm}"
+                    <f:form.textfield
+                        type="search"
+                        autocomplete="off"
+                        id="search_field"
+                        name="searchTerm"
+                        class="form-control"
+                        value="{searchTerm}"
+                    />
+                </div>
+                <f:if condition="{storageFilterOptions}">
+                    <div class="form-group">
+                        <label for="storage_filter" class="form-label">
+                            <f:translate key="form.database:formManager.location"/>
+                        </label>
+                        <f:form.select
+                            id="storage_filter"
+                            class="form-select"
+                            name="storageFilter"
+                            options="{storageFilterOptions}"
+                            value="{storageFilter}"
+                            prependOptionLabel="{f:translate(key: 'form.database:formManager.storage_filter.all')}"
+                            prependOptionValue=""
                         />
-                        <button class="btn btn-default" type="submit" name="search">
-                            <f:translate id="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.search"/>
-                        </button>
                     </div>
+                </f:if>
+                <div class="form-group align-self-end">
+                    <button type="submit" class="btn btn-default">
+                        <f:translate key="form.database:formManager.filter.submit"/>
+                    </button>
+                    <f:link.action action="index" class="btn btn-link">
+                        <f:translate key="form.database:formManager.filter.reset"/>
+                    </f:link.action>
                 </div>
             </div>
-        </form>
+        </f:form>
     </f:if>
     <f:if condition="{paginator.paginatedItems}">
         <f:then>
@@ -51,16 +66,16 @@
                     <thead>
                         <tr>
                             <th class="col-50 col-responsive" colspan="2">
-                                <f:render section="listHeaderSorting" arguments="{field: 'name', label: 'formManager.form_name', searchTerm: searchTerm, orderField: orderField, orderDirection: orderDirection}"/>
+                                <f:render section="listHeaderSorting" arguments="{field: 'name', label: 'formManager.form_name', searchTerm: searchTerm, storageFilter: storageFilter, orderField: orderField, orderDirection: orderDirection}"/>
                             </th>
                             <th class="col-path">
-                                <f:render section="listHeaderSorting" arguments="{field: 'storageLocation', label: 'formManager.location', searchTerm: searchTerm, orderField: orderField, orderDirection: orderDirection}"/>
+                                <f:render section="listHeaderSorting" arguments="{field: 'storageLocation', label: 'formManager.location', searchTerm: searchTerm, storageFilter: storageFilter, orderField: orderField, orderDirection: orderDirection}"/>
                             </th>
                             <th class="col-state">
-                                <f:render section="listHeaderSorting" arguments="{field: 'duplicateIdentifier', label: 'formManager.integrity', searchTerm: searchTerm, orderField: orderField, orderDirection: orderDirection}"/>
+                                <f:render section="listHeaderSorting" arguments="{field: 'duplicateIdentifier', label: 'formManager.integrity', searchTerm: searchTerm, storageFilter: storageFilter, orderField: orderField, orderDirection: orderDirection}"/>
                             </th>
                             <th class="col-state">
-                                <f:render section="listHeaderSorting" arguments="{field: 'referenceCount', label: 'formManager.references', searchTerm: searchTerm, orderField: orderField, orderDirection: orderDirection}"/>
+                                <f:render section="listHeaderSorting" arguments="{field: 'referenceCount', label: 'formManager.references', searchTerm: searchTerm, storageFilter: storageFilter, orderField: orderField, orderDirection: orderDirection}"/>
                             </th>
                             <th class="col-control">
                                 <span class="visually-hidden">{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels._CONTROL_')}</span>
@@ -98,7 +113,7 @@
                                     </f:if>
                                 </td>
                                 <td class="col-50 col-path">
-                                    {form.storageLocation}
+                                    {form.storageLocation.label}
                                 </td>
                                 <td class="col-state">
                                     <f:if condition="{form.invalid}">
@@ -239,12 +254,12 @@
         </f:then>
         <f:else if="{hasForms}">
             <f:be.infobox
-                state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::INFO')}"
-                title="{f:translate(key: 'form.database:formManager.forms_not_found.title')}"
+                state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::NOTICE')}"
+                title="{f:translate(key: 'form.database:formManager.forms_not_found_by_filter.title')}"
             >
-                <p><f:translate key="form.database:formManager.forms_not_found_by_search_term.message" arguments="{0: searchTerm}" /></p>
+                <p><f:translate key="form.database:formManager.forms_not_found_by_filter.message" /></p>
                 <a class="btn btn-primary" href="{f:be.uri(route:'web_FormFormbuilder')}">
-                    <f:translate key="form.database:formManager.remove_search_term"/>
+                    <f:translate key="form.database:formManager.filter.reset"/>
                 </a>
             </f:be.infobox>
         </f:else>
@@ -288,7 +303,7 @@
             <li>
                 <a
                         class="dropdown-item"
-                        href="{f:uri.action(action:'index', arguments:'{searchTerm: searchTerm, orderField: field, orderDirection: \'asc\'}')}"
+                        href="{f:uri.action(action:'index', arguments:'{searchTerm: searchTerm, storageFilter: storageFilter, orderField: field, orderDirection: \'asc\'}')}"
                         title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.sorting.asc')}"
                         aria-label="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.sorting.asc')}"
                 >
@@ -309,7 +324,7 @@
             <li>
                 <a
                         class="dropdown-item"
-                        href="{f:uri.action(action:'index', arguments:'{searchTerm: searchTerm, orderField: field, orderDirection: \'desc\'}')}"
+                        href="{f:uri.action(action:'index', arguments:'{searchTerm: searchTerm, storageFilter: storageFilter, orderField: field, orderDirection: \'desc\'}')}"
                         title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.sorting.desc')}"
                         aria-label="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.sorting.desc')}"
                 >

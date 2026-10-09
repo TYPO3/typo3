@@ -278,6 +278,18 @@ final class DatabaseStorageAdapterFunctionalTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function findAllLocatesEveryFormInTheDatabase(): void
+    {
+        $results = $this->getSubject()->findAll(new SearchCriteria());
+
+        self::assertNotEmpty($results);
+        foreach ($results as $formMetadata) {
+            self::assertSame('database', $formMetadata->storageLocation->identifier);
+            self::assertSame('Database', $formMetadata->storageLocation->label);
+        }
+    }
+
+    #[Test]
     public function findAllReturnsOnlyNonDeletedRecords(): void
     {
         $results = $this->getSubject()->findAll(new SearchCriteria());

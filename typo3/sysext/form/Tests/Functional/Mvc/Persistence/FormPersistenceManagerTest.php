@@ -20,6 +20,8 @@ namespace TYPO3\CMS\Form\Tests\Functional\Mvc\Persistence;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Form\Domain\DTO\SearchCriteria;
 use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManager;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -85,6 +87,25 @@ final class FormPersistenceManagerTest extends FunctionalTestCase
         self::assertSame('test-extension-form', $result['identifier']);
         self::assertSame('Test Extension Form', $result['label']);
         self::assertSame('standard', $result['prototypeName']);
+    }
+
+    #[Test]
+    public function listFormsReturnsTheStorageLocationTheAdapterReportsForEachForm(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/DatabaseImports/form_definition.csv');
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('default');
+        $subject = $this->get(FormPersistenceManager::class);
+
+        $locations = [];
+        foreach ($subject->listForms([], new SearchCriteria()) as $formMetadata) {
+            $locations[$formMetadata->persistenceIdentifier] = $formMetadata->storageLocation?->identifier;
+        }
+
+        self::assertSame('database', $locations['1'] ?? null);
+        self::assertSame(
+            'EXT:test_form_persistence/Resources/Private/Forms/',
+            $locations['EXT:test_form_persistence/Resources/Private/Forms/TestForm.form.yaml'] ?? null
+        );
     }
 
     #[Test]
