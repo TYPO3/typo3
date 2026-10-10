@@ -20,5 +20,8 @@ return [
                 'statistic', 'index', 'pages', 'externalDocuments', 'statisticDetails', 'deleteIndexedItem', 'saveStopwords', 'wordDetail',
             ],
         ],
+        'moduleData' => [
+            'menuAction' => 'statistic',
+        ],
     ],
 ];

@@ -36,6 +36,24 @@ test.describe('Indexed Search module', () => {
     await expect(moduleBody).toContainText('Detailed statistics');
     await expect(moduleBody).toContainText('Please select a page in the page tree.');
   });
+
+  test('selecting a page in the page tree keeps the selected module action', async ({ page, backend }) => {
+    await backend.gotoModule('content_status');
+    await backend.pageTree.isReady();
+    await page.locator('#typo3-pagetree-tree [role="treeitem"][data-id="0"] .node-contentlabel').click();
+
+    const contentFrame = backend.contentFrame;
+    await contentFrame.locator('a[aria-label="Open Indexing module"]').click();
+
+    await selectDocHeaderAction(contentFrame, 'List of indexed pages');
+    await expect(contentFrame.locator('h1')).toHaveText('List of indexed pages');
+
+    await backend.pageTree.open('styleguide TCA demo');
+    await expect(contentFrame.locator('h1')).toHaveText('List of indexed pages');
+
+    // Restore the default action, which is remembered for the user
+    await selectDocHeaderAction(contentFrame, 'Detailed statistics');
+  });
 });
 
 async function selectDocHeaderAction(contentFrame: FrameLocator, label: string): Promise<void> {
