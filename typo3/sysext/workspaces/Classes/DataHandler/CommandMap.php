@@ -192,9 +192,14 @@ readonly class CommandMap
     }
 
     /**
-     * Resolves workspaces related dependencies for clearing/flushing of the command map.
-     * Workspaces records that have children or (relative) parents which are versionized
-     * but not cleared/flushed with this request, are removed from the command map.
+     * Resolves workspaces related dependencies for discarding of the command map.
+     * Workspaces records that are children or (relative) parents of a discarded record
+     * and are delete placeholders, but not discarded with this request, are added to the
+     * command map.
+     *
+     * Every element keeps the command it was requested with, and dependent elements pulled
+     * in by the resolver take the command of the element that was requested, so the native
+     * "discard" command is never turned into an empty "version" command.
      */
     protected function resolveWorkspacesDiscardDependencies(array $commandMap, int $workspace): array
     {
@@ -202,17 +207,23 @@ readonly class CommandMap
         $dependency->setWorkspace($workspace);
         $dependency->setEventDispatcher($this->eventDispatcher);
         $dependency->setAction(DependencyCollectionAction::Discard);
-        // Traverses the cmd[] array and fetches the accordant actions:
         foreach ($commandMap as $table => $versionIdCollection) {
             foreach ($versionIdCollection as $versionId => $commandCollection) {
-                foreach ($commandCollection as $command => $properties) {
-                    if ($command === 'discard') {
-                        $dependency->addElement($table, $versionId, ['versionId' => $versionId, 'properties' => $properties]);
+                if (is_array($commandCollection) && array_key_exists('discard', $commandCollection)) {
+                    if ($this->isLegacyDiscardCommand($commandCollection['version'] ?? null)) {
+                        // Both commands address the same record, which must be discarded only once
+                        unset($commandMap[$table][$versionId]['version']);
                     }
-                    // @todo: this cane be removed once testing framework is not using 'cleaWSID' and 'flush' anymore
-                    if ($command === 'version' && isset($properties['action']) && ($properties['action'] === 'clearWSID' || $properties['action'] === 'flush')) {
-                        $dependency->addElement($table, $versionId, ['versionId' => $versionId, 'properties' => $properties]);
-                    }
+                    $dependency->addElement($table, (int)$versionId, [
+                        'command' => 'discard',
+                        'properties' => $commandCollection['discard'],
+                    ]);
+                } elseif ($this->isLegacyDiscardCommand($commandCollection['version'] ?? null)) {
+                    // @todo: can be removed once testing framework is not using 'clearWSID' and 'flush' anymore
+                    $dependency->addElement($table, (int)$versionId, [
+                        'command' => 'version',
+                        'properties' => $commandCollection['version'],
+                    ]);
                 }
             }
         }
@@ -226,16 +237,23 @@ readonly class CommandMap
             if (!empty($intersectingElements)) {
                 $intersectingElement = current($intersectingElements);
                 $orderedCommandMap = [];
-                $commonProperties = $this->getCommonClearProperties($intersectingElement);
                 /** @var ElementEntity $element */
                 foreach ($dependentElements as $element) {
                     $table = $element->getTable();
                     $id = $element->getId();
-                    unset($commandMap[$table][$id]['version']);
+                    unset($commandMap[$table][$id]['discard']);
+                    if ($this->isLegacyDiscardCommand($commandMap[$table][$id]['version'] ?? null)) {
+                        unset($commandMap[$table][$id]['version']);
+                    }
                     if ($element->isInvalid()) {
                         continue;
                     }
-                    $orderedCommandMap[$table][$id]['version'] = $commonProperties;
+                    $requestedElement = $element->hasDataValue('command') ? $element : $intersectingElement;
+                    if ($requestedElement->getDataValue('command') === 'version') {
+                        $orderedCommandMap[$table][$id]['version'] = $this->getCommonClearProperties($requestedElement);
+                    } else {
+                        $orderedCommandMap[$table][$id]['discard'] = $requestedElement->getDataValue('properties');
+                    }
                 }
                 // Ensure that ordered command map is on top of the command map:
                 ArrayUtility::mergeRecursiveWithOverrule($orderedCommandMap, $commandMap);
@@ -243,6 +261,11 @@ readonly class CommandMap
             }
         }
         return $commandMap;
+    }
+
+    protected function isLegacyDiscardCommand(mixed $properties): bool
+    {
+        return is_array($properties) && in_array($properties['action'] ?? null, ['clearWSID', 'flush'], true);
     }
 
     /**
