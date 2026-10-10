@@ -21,6 +21,7 @@ use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
+use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Workspaces\Event\AfterRecordPublishedEvent;
@@ -33,6 +34,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 final class DataHandlerHookTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = ['workspaces'];
+    protected array $testExtensionsToLoad = ['typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_csv'];
 
     #[Test]
     public function deletingSysWorkspaceDeletesWorkspaceRecords(): void
@@ -66,6 +68,34 @@ final class DataHandlerHookTest extends FunctionalTestCase
         $actionService->deleteRecord('sys_workspace', 1);
 
         $this->assertCSVDataSet(__DIR__ . '/DataSet/deletingSysWorkspaceDeletesWorkspaceRecordsResult.csv');
+    }
+
+    #[Test]
+    public function deletingSysWorkspaceDeletesDeletedInlineStructure(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $backendUser = $this->setUpBackendUser(1);
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
+        $this->importCSVDataSet(__DIR__ . '/DataSet/deletingSysWorkspaceDeletesWorkspaceRecords.csv');
+
+        $actionService = new ActionService();
+        $map = $actionService->createNewRecords(89, [
+            'tt_content' => ['header' => 'Live parent', 'tx_testirrecsv_hotels' => '__nextUid'],
+            'tx_testirrecsv_hotel' => ['title' => 'Live hotel'],
+        ]);
+        $backendUser->workspace = 1;
+        $this->get(Context::class)->setAspect('workspace', new WorkspaceAspect(1));
+        // Creates delete placeholders for the content element and its inline hotel
+        $actionService->deleteRecord('tt_content', (int)$map['tt_content'][0]);
+        $this->get(ReferenceIndex::class)->updateIndex(false);
+
+        $backendUser->workspace = 0;
+        $this->get(Context::class)->setAspect('workspace', new WorkspaceAspect(0));
+        $actionService->deleteRecord('sys_workspace', 1);
+
+        foreach (['tt_content', 'tx_testirrecsv_hotel'] as $table) {
+            self::assertSame(0, $this->getConnectionPool()->getConnectionForTable($table)->count('uid', $table, ['t3ver_wsid' => 1]));
+        }
     }
 
     #[Test]

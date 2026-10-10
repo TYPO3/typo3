@@ -149,7 +149,7 @@ final readonly class DataHandlerInternalWorkspaceTablesHook
                 ->orderBy('uid')
                 ->executeQuery();
             while (($recordId = $result->fetchOne()) !== false) {
-                $command[$tcaTable][$recordId]['version']['action'] = 'flush';
+                $command[$tcaTable][$recordId]['discard'] = true;
             }
         }
         if (!empty($command)) {
