@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Utility;
 
 use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Extbase\Tests\Unit\Utility\Fixtures\ExtensionUtilityAccessibleProxy;
 use TYPO3\CMS\Extbase\Tests\Unit\Utility\Fixtures\MyExtension\Controller\FirstController;
@@ -304,6 +305,62 @@ final class ExtensionUtilityTest extends UnitTestCase
                     'alias' => 'Third',
                     'actions' => ['create'],
                     'nonCacheableActions' => ['create'],
+                ],
+            ],
+        ];
+        self::assertEquals($expectedResult, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions']['MyExtension']['plugins']['Pi1']);
+    }
+
+    #[Test]
+    #[IgnoreDeprecations]
+    public function configurePluginTriggersDeprecationForCommaSeparatedControllerActions(): void
+    {
+        $this->expectUserDeprecationMessage(
+            'Passing actions as comma-separated string for controller "' . FirstController::class . '" to'
+            . ' ExtensionUtility::configurePlugin() is deprecated since TYPO3 v15.0 and will stop working'
+            . ' in TYPO3 v16.0. Pass an array of action names instead.'
+        );
+        $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.'] = [];
+        ExtensionUtility::configurePlugin(
+            'MyExtension',
+            'Pi1',
+            [FirstController::class => 'index, show'],
+        );
+        $expectedResult = [
+            'controllers' => [
+                FirstController::class => [
+                    'className' => FirstController::class,
+                    'alias' => 'First',
+                    'actions' => ['index', 'show'],
+                ],
+            ],
+        ];
+        self::assertEquals($expectedResult, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions']['MyExtension']['plugins']['Pi1']);
+    }
+
+    #[Test]
+    #[IgnoreDeprecations]
+    public function configurePluginTriggersDeprecationForCommaSeparatedNonCacheableControllerActions(): void
+    {
+        $this->expectUserDeprecationMessage(
+            'Passing actions as comma-separated string for controller "' . FirstController::class . '" to'
+            . ' ExtensionUtility::configurePlugin() is deprecated since TYPO3 v15.0 and will stop working'
+            . ' in TYPO3 v16.0. Pass an array of action names instead.'
+        );
+        $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.'] = [];
+        ExtensionUtility::configurePlugin(
+            'MyExtension',
+            'Pi1',
+            [FirstController::class => ['index', 'show']],
+            [FirstController::class => 'show'],
+        );
+        $expectedResult = [
+            'controllers' => [
+                FirstController::class => [
+                    'className' => FirstController::class,
+                    'alias' => 'First',
+                    'actions' => ['index', 'show'],
+                    'nonCacheableActions' => ['show'],
                 ],
             ],
         ];

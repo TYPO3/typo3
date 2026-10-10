@@ -39,8 +39,8 @@ class ExtensionUtility
      *
      * @param string $extensionName The extension name (in UpperCamelCase) or the extension key (in lower_underscore)
      * @param string $pluginName must be a unique id for your plugin in UpperCamelCase (the string length of the extension key added to the length of the plugin name should be less than 32!)
-     * @param array $controllerActions is an array of allowed combinations of controller and action stored in an array (controller name as key and a comma separated list of action names as value, the first controller and its first action is chosen as default)
-     * @param array $nonCacheableControllerActions is an optional array of controller name and  action names which should not be cached (array as defined in $controllerActions)
+     * @param array $controllerActions is an array of allowed combinations of controller and action stored in an array (controller class name as key and an array of action names as value, the first controller and its first action is chosen as default)
+     * @param array $nonCacheableControllerActions is an optional array of controller class names and action names which should not be cached (array as defined in $controllerActions)
      * @param string|null $pluginType must be omitted or set to \TYPO3\CMS\Extbase\Utility\ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT - actually unused in the method, for b/w compatibility only
      * @throws \InvalidArgumentException
      */
@@ -193,6 +193,13 @@ tt_content.' . $pluginSignature . ' {
             if (is_array($actionsList)) {
                 continue;
             }
+            // @deprecated since v15, will be removed in v16.
+            trigger_error(
+                'Passing actions as comma-separated string for controller "' . $controllerClassName . '" to'
+                . ' ExtensionUtility::configurePlugin() is deprecated since TYPO3 v15.0 and will stop working'
+                . ' in TYPO3 v16.0. Pass an array of action names instead.',
+                E_USER_DEPRECATED
+            );
             $actionsListArray = GeneralUtility::trimExplode(',', (string)$actionsList);
             $controllerActions[$controllerClassName] = $actionsListArray;
         }

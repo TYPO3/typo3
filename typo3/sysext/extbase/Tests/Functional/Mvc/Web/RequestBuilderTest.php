@@ -813,7 +813,7 @@ final class RequestBuilderTest extends FunctionalTestCase
             'path' => '/blog-example',
             'extensionName' => $extensionName,
             'controllerActions' => [
-                BlogController::class => '',
+                BlogController::class => [''],
             ],
         ]);
 

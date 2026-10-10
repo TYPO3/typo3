@@ -12,11 +12,11 @@ ExtensionUtility::configurePlugin(
     'extbase_upload',
     'Pi1',
     [
-        SingleFileUploadController::class => 'list,new,create,show,edit,update',
+        SingleFileUploadController::class => ['list', 'new', 'create', 'show', 'edit', 'update'],
     ],
     // non-cacheable actions
     [
-        SingleFileUploadController::class => 'list,new,create,show,edit,update',
+        SingleFileUploadController::class => ['list', 'new', 'create', 'show', 'edit', 'update'],
     ],
     ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
 );

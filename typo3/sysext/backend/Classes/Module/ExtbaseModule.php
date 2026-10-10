@@ -93,12 +93,22 @@ class ExtbaseModule extends BaseModule implements ModuleInterface
         return (string)str_replace(' ', '', ucwords(str_replace('_', ' ', $extensionName)));
     }
 
-    protected static function sanitizeControllerActions(array $controllerActions): array
+    protected static function sanitizeControllerActions(string $identifier, array $controllerActions): array
     {
         $sanitizedControllerActions = [];
         foreach ($controllerActions as $controllerName => $actions) {
+            if (!is_array($actions)) {
+                // @deprecated since v15, will be removed in v16.
+                trigger_error(
+                    'Passing actions as comma-separated string for controller "' . $controllerName . '" in the'
+                    . ' "controllerActions" configuration of backend module "' . $identifier . '" is deprecated since'
+                    . ' TYPO3 v15.0 and will stop working in TYPO3 v16.0. Pass an array of action names instead.',
+                    E_USER_DEPRECATED
+                );
+                $actions = GeneralUtility::trimExplode(',', (string)$actions);
+            }
             $sanitizedControllerActions[$controllerName] = [
-                'actions' => (is_array($actions) ? $actions : GeneralUtility::trimExplode(',', $actions)),
+                'actions' => $actions,
                 'alias' => ExtensionUtility::resolveControllerAliasFromControllerClassName($controllerName),
                 'className' => $controllerName,
             ];
@@ -110,7 +120,7 @@ class ExtbaseModule extends BaseModule implements ModuleInterface
     {
         $obj = parent::createFromConfiguration($identifier, $configuration);
         $obj->extensionName = self::sanitizeExtensionName((string)($configuration['extensionName'] ?? ''));
-        $obj->controllerActions = self::sanitizeControllerActions((array)($configuration['controllerActions'] ?? []));
+        $obj->controllerActions = self::sanitizeControllerActions($identifier, (array)($configuration['controllerActions'] ?? []));
         return $obj;
     }
 }
