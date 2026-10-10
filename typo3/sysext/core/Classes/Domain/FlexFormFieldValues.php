@@ -29,9 +29,16 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
  */
 class FlexFormFieldValues implements ContainerInterface, \ArrayAccess
 {
+    /**
+     * @var \WeakMap<RecordPropertyClosure, array{0: mixed}>
+     */
+    private \WeakMap $resolvedRecordPropertyClosures;
+
     public function __construct(
         protected array $sheets
-    ) {}
+    ) {
+        $this->resolvedRecordPropertyClosures = new \WeakMap();
+    }
 
     public function get(string $id)
     {
@@ -40,25 +47,16 @@ class FlexFormFieldValues implements ContainerInterface, \ArrayAccess
         }
 
         [$sheetName, $propertyPath] = $this->processId($id);
-
-        if ($sheetName === '' && $this->hasMultipleSheets()) {
-            // Get the sheet name for the requested property path - There is one, since has() returned true.
-            foreach ($this->sheets as $name => $sheet) {
-                if (ArrayUtility::isValidPath($sheet, $propertyPath, '.')) {
-                    $sheetName = $name;
-                    break;
-                }
-            }
+        if ($sheetName !== '') {
+            return $this->getFromSheet($sheetName, $propertyPath);
         }
 
-        $propertyValue = ArrayUtility::getValueByPath($this->sheets[$sheetName], $propertyPath, '.');
-        if (is_array($propertyValue)) {
-            array_walk_recursive($propertyValue, fn(mixed &$value): mixed => $value = $this->resolveRecordPropertyClosure($propertyPath, $value));
-        } else {
-            $propertyValue = $this->resolveRecordPropertyClosure($propertyPath, $propertyValue);
+        // No sheet name given for a multi sheet flex form - has() ensured the property path is unambiguous.
+        $propertyValues = [];
+        foreach ($this->findSheetsContainingPropertyPath($propertyPath) as $name) {
+            $propertyValues[] = $this->getFromSheet($name, $propertyPath);
         }
-        ArrayUtility::setValueByPath($this->sheets[$sheetName], $propertyPath, $propertyValue, '.');
-        return $propertyValue;
+        return count($propertyValues) === 1 ? $propertyValues[0] : $this->mergePropertyValues($propertyPath, $propertyValues);
     }
 
     public function has(string $id): bool
@@ -70,33 +68,23 @@ class FlexFormFieldValues implements ContainerInterface, \ArrayAccess
 
         [$sheetName, $propertyPath] = $this->processId($id);
 
-        if ($sheetName !== '' && !isset($this->sheets[$sheetName])) {
-            // Given sheet name does not exist
-            return false;
-        }
-        if ($this->hasMultipleSheets()) {
-            if ($sheetName !== '') {
-                return ArrayUtility::isValidPath($this->sheets[$sheetName], $propertyPath, '.');
-            }
-            // In case no sheet name is given, we try to execute fallback handling
-            // by searching for the requested $propertyPath in all sheets.
-            $occurences = [];
-            foreach ($this->sheets as $sheetName => $sheet) {
-                if (ArrayUtility::isValidPath($sheet, $propertyPath, '.')) {
-                    $occurences[$sheetName] = $propertyPath;
-                }
-            }
-
-            if (count($occurences) > 1) {
-                // This is a special case, which we handle with an exception to create awareness for the error.
-                throw new FlexFieldPropertyException('Given id is ambigious since the field exists in multiple sheets and no sheet is defined.', 1731962638);
-            }
-            // Whether the requested $propertyPath name exist in a sheet
-            return count($occurences) === 1;
+        if ($sheetName !== '') {
+            return isset($this->sheets[$sheetName]) && ArrayUtility::isValidPath($this->sheets[$sheetName], $propertyPath, '.');
         }
 
-        // Standard case, whether the $propertyPath exists in the given sheet name
-        return ArrayUtility::isValidPath($this->sheets[$sheetName], $propertyPath, '.');
+        // No sheet name given for a multi sheet flex form, therefore the requested $propertyPath is
+        // searched in all sheets. It may exist in multiple sheets only as a group of properties,
+        // e.g. "settings" for "settings.storagePid" in one sheet and "settings.limit" in another.
+        $sheetNames = $this->findSheetsContainingPropertyPath($propertyPath);
+        if (count($sheetNames) > 1) {
+            $propertyValues = [];
+            foreach ($sheetNames as $name) {
+                $propertyValues[] = ArrayUtility::getValueByPath($this->sheets[$name], $propertyPath, '.');
+            }
+            // Throws in case the property path is ambiguous
+            $this->mergePropertyValues($propertyPath, $propertyValues);
+        }
+        return $sheetNames !== [];
     }
 
     public function offsetExists(mixed $offset): bool
@@ -151,14 +139,67 @@ class FlexFormFieldValues implements ContainerInterface, \ArrayAccess
 
         // In case the $id does not contain a sheet name, but we have a
         // single sheet flex form, we fall back to this name automatically.
-        return [key($this->sheets), $id];
+        return [(string)key($this->sheets), $id];
+    }
+
+    protected function getFromSheet(string $sheetName, string $propertyPath): mixed
+    {
+        $propertyValue = ArrayUtility::getValueByPath($this->sheets[$sheetName], $propertyPath, '.');
+        if (is_array($propertyValue)) {
+            array_walk_recursive($propertyValue, fn(mixed &$value): mixed => $value = $this->resolveRecordPropertyClosure($propertyPath, $value));
+        } else {
+            $propertyValue = $this->resolveRecordPropertyClosure($propertyPath, $propertyValue);
+        }
+        return $propertyValue;
+    }
+
+    /**
+     * @return list<string>
+     */
+    protected function findSheetsContainingPropertyPath(string $propertyPath): array
+    {
+        $sheetNames = [];
+        foreach ($this->sheets as $sheetName => $sheet) {
+            if (ArrayUtility::isValidPath($sheet, $propertyPath, '.')) {
+                $sheetNames[] = (string)$sheetName;
+            }
+        }
+        return $sheetNames;
+    }
+
+    /**
+     * Merges the values of a property path, which exists in multiple sheets, recursively.
+     * This is only possible for groups of properties (non-empty associative arrays, created
+     * from dotted field names) whose properties are distinct. Any other value, e.g. a list
+     * or a single value, exists in more than one sheet and is therefore ambiguous.
+     */
+    protected function mergePropertyValues(string $propertyPath, array $propertyValues): array
+    {
+        $mergedValues = [];
+        foreach ($propertyValues as $propertyValue) {
+            if (!is_array($propertyValue) || $propertyValue === [] || array_is_list($propertyValue)) {
+                throw new FlexFieldPropertyException(
+                    'Given id "' . $propertyPath . '" is ambiguous since the field exists in multiple sheets and no sheet is defined.',
+                    1731962638
+                );
+            }
+            foreach ($propertyValue as $key => $value) {
+                $mergedValues[$key] = array_key_exists($key, $mergedValues)
+                    ? $this->mergePropertyValues($propertyPath . '.' . $key, [$mergedValues[$key], $value])
+                    : $value;
+            }
+        }
+        return $mergedValues;
     }
 
     protected function resolveRecordPropertyClosure(string $id, mixed $propertyValue): mixed
     {
         if ($propertyValue instanceof RecordPropertyClosure) {
+            if (isset($this->resolvedRecordPropertyClosures[$propertyValue])) {
+                return $this->resolvedRecordPropertyClosures[$propertyValue][0];
+            }
             try {
-                $propertyValue = $propertyValue->instantiate();
+                $resolvedValue = $propertyValue->instantiate();
             } catch (\Exception $e) {
                 // Consumers of this method can rely on catching ContainerExceptionInterface
                 throw new FlexFieldPropertyException(
@@ -167,6 +208,8 @@ class FlexFormFieldValues implements ContainerInterface, \ArrayAccess
                     $e
                 );
             }
+            $this->resolvedRecordPropertyClosures[$propertyValue] = [$resolvedValue];
+            return $resolvedValue;
         }
         return $propertyValue;
     }

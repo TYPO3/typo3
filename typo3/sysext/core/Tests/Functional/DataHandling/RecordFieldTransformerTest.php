@@ -1828,6 +1828,39 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function fallbackGroupedPropertyPathInMultipleSheets(): void
+    {
+        $dummyRecord = $this->createTestRecordObject([
+            'typo3tests_contentelementb_flexfield' => '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3FlexForms>
+    <data>
+        <sheet index="sDEF">
+            <language index="lDEF">
+                <field index="settings.storagePid">
+                    <value index="vDEF">123</value>
+                </field>
+            </language>
+        </sheet>
+        <sheet index="sheet2">
+            <language index="lDEF">
+                <field index="settings.layout">
+                    <value index="vDEF">Layout 1</value>
+                </field>
+            </language>
+        </sheet>
+    </data>
+</T3FlexForms>',
+        ]);
+
+        $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
+        $resolvedRelation = $resolvedRecord->get('typo3tests_contentelementb_flexfield');
+        self::assertInstanceOf(FlexFormFieldValues::class, $resolvedRelation);
+        self::assertSame(['storagePid' => '123', 'layout' => 'Layout 1'], $resolvedRelation['settings']);
+        self::assertSame('123', $resolvedRelation->get('settings.storagePid'));
+        self::assertSame(['layout' => 'Layout 1'], $resolvedRelation->get('sheet2/settings'));
+    }
+
+    #[Test]
     public function canResolveFlexFormWithSections(): void
     {
         $dummyRecord = $this->createTestRecordObject([
