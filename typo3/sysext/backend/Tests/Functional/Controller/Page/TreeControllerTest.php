@@ -72,6 +72,55 @@ final class TreeControllerTest extends FunctionalTestCase
         $this->backendUser = $this->setUpBackendUser(9);
     }
 
+    public static function mountPathsAreShownOnlyForMountsDataProvider(): array
+    {
+        $mountPath = ['8110' => '/Divisions/EMEA/Europe'];
+        return [
+            'ordinary mount' => [true, [8110], 0, [], false, $mountPath],
+            'disabled option' => [false, [8110], 0, [], false, []],
+            'temporary mount' => [true, [8110], 8110, [], false, $mountPath],
+            'child of temporary mount is also a DB mount' => [true, [8110, 811000], 8110, [], false, $mountPath],
+            'alternative entry point' => [true, [8110], 0, ['alternativeEntryPoints' => [8110]], false, $mountPath],
+            'root and deep mount' => [true, [0, 8110], 0, [], false, $mountPath],
+            'root mount does not label ordinary pages' => [true, [0], 0, [], false, []],
+            'multiple DB mounts' => [true, [1000, 8110], 0, [], false, ['1000' => '/ACME Inc', '8110' => '/Divisions/EMEA/Europe']],
+            'search result' => [true, [8110], 0, ['q' => 'Europe'], true, $mountPath],
+            'expanded mount' => [true, [8110], 0, ['parent' => 8110, 'mount' => 0, 'depth' => 1], false, $mountPath],
+        ];
+    }
+
+    #[Test]
+    #[DataProvider('mountPathsAreShownOnlyForMountsDataProvider')]
+    public function mountPathsAreShownOnlyForMounts(
+        bool $enabled,
+        array $mountPoints,
+        int $temporaryMount,
+        array $queryParams,
+        bool $search,
+        array $expectedNotes,
+    ): void {
+        $this->get(ConnectionPool::class)->getConnectionForTable('be_users')->update(
+            'be_users',
+            ['TSconfig' => 'options.pageTree.showPathAboveMounts = ' . (int)$enabled],
+            ['uid' => 9],
+        );
+        $this->backendUser = $this->setUpBackendUser(9);
+        $this->backendUser->setWebmounts($mountPoints);
+        $this->backendUser->uc['pageTree_temporaryMountPoint'] = $temporaryMount;
+        $request = (new ServerRequest(new Uri('https://example.com')))->withQueryParams($queryParams);
+        $subject = $this->get(TreeController::class);
+        $response = $search ? $subject->filterDataAction($request) : $subject->fetchDataAction($request);
+        $items = json_decode((string)$response->getBody(), true);
+        self::assertNotEmpty($items);
+        $notes = [];
+        foreach ($items as $item) {
+            if ($item['note'] !== '') {
+                $notes[$item['identifier']] = $item['note'];
+            }
+        }
+        self::assertSame($expectedNotes, $notes);
+    }
+
     #[Test]
     public function fetchConfigurationActionProvidesCopyMoveConfirmationSetting(): void
     {
@@ -208,7 +257,7 @@ final class TreeControllerTest extends FunctionalTestCase
     #[Test]
     public function getAllEntryPointPageTreesWithRootPageAsMountPoint(): void
     {
-        $this->backendUser->setWebMounts([0, 7000]);
+        $this->backendUser->setWebmounts([0, 7000]);
         $subject = $this->get(TreeController::class);
         $method = new \ReflectionMethod($subject, 'getAllEntryPointPageTrees');
         $result = $method->invoke($subject);
