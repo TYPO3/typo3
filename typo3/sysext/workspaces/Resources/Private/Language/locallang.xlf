@@ -126,6 +126,9 @@
       <trans-unit id="error.dispatch.unavailable">
         <source>The server could not be reached or sent an unexpected response. Please try again.</source>
       </trans-unit>
+      <trans-unit id="error.listUnavailable">
+        <source>The list of changes could not be loaded. Check the reported error and the TYPO3 log for details.</source>
+      </trans-unit>
       <trans-unit id="error.dispatch.unknown">
         <source>The server reported an error without further details.</source>
       </trans-unit>

@@ -103,6 +103,12 @@
                     state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::NOTICE')}"
                 />
             </div>
+            <div id="workspace-contents-error" style="display: none">
+                <f:be.infobox
+                    message="{f:translate(key:'LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:error.listUnavailable')}"
+                    state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR')}"
+                />
+            </div>
         </div>
         <nav id="workspace-pagination" class="mt-3"></nav>
     </div>

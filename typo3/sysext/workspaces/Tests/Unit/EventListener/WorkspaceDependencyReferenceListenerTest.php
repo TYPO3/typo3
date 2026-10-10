@@ -210,4 +210,23 @@ final class WorkspaceDependencyReferenceListenerTest extends UnitTestCase
             self::assertTrue($event->isDependency(), 'Expected dependency for action: ' . $action->name);
         }
     }
+
+    #[Test]
+    public function referenceFromTableWithoutSchemaIsNotADependency(): void
+    {
+        $listener = new WorkspaceDependencyReferenceListener($this->tcaSchemaFactory);
+        $event = new IsReferenceConsideredForDependencyEvent(
+            'tx_removed_table',
+            1,
+            'tx_irre_children',
+            'tx_irre_child',
+            42,
+            DependencyCollectionAction::Publish,
+            1,
+        );
+
+        $listener->__invoke($event);
+
+        self::assertFalse($event->isDependency());
+    }
 }

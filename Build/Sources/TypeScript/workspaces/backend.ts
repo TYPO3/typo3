@@ -63,6 +63,7 @@ enum Identifiers {
   container = '#workspace-panel',
   contentsContainer = '#workspace-contents',
   noContentsContainer = '#workspace-contents-empty',
+  errorContainer = '#workspace-contents-error',
   previewLinksButton = '.t3js-preview-link',
   pagination = '#workspace-pagination',
 }
@@ -459,7 +460,18 @@ class Backend extends Workspaces {
       this.generateRemotePayloadBody('getWorkspaceInfos', this.settings),
     ).then(async (response: AjaxResponse): Promise<void> => {
       this.renderWorkspaceInfos((await response.resolve())[0].result);
+    }).catch((): void => {
+      // The failure itself is already reported by sendRemoteRequest()
+      this.renderWorkspaceInfosFailure();
     });
+  }
+
+  private renderWorkspaceInfosFailure(): void {
+    this.resetMassActionState(false);
+    this.buildPagination(0);
+    (document.querySelector(Identifiers.contentsContainer) as HTMLElement).style.display = 'none';
+    (document.querySelector(Identifiers.noContentsContainer) as HTMLElement).style.display = 'none';
+    (document.querySelector(Identifiers.errorContainer) as HTMLElement).style.display = 'block';
   }
 
   /**
@@ -468,6 +480,7 @@ class Backend extends Workspaces {
   private renderWorkspaceInfos(result: any): void {
     const contentsContainer = document.querySelector(Identifiers.contentsContainer) as HTMLElement;
     const noContentsContainer = document.querySelector(Identifiers.noContentsContainer) as HTMLElement;
+    (document.querySelector(Identifiers.errorContainer) as HTMLElement).style.display = 'none';
 
     this.resetMassActionState(result.data.length);
     this.buildPagination(result.total);

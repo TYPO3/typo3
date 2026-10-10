@@ -40,6 +40,9 @@ final readonly class WorkspaceDependencyReferenceListener
 
     public function __invoke(IsReferenceConsideredForDependencyEvent $event): void
     {
+        if (!$this->tcaSchemaFactory->has($event->getTableName())) {
+            return;
+        }
         $schema = $this->tcaSchemaFactory->get($event->getTableName());
         if (!$schema->hasField($event->getFieldName())) {
             return;
