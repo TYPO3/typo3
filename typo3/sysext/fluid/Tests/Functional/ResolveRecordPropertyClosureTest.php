@@ -39,4 +39,14 @@ final class ResolveRecordPropertyClosureTest extends FunctionalTestCase
         $view->assign('flex', new FlexFormFieldValues(['sDEF' => ['some' => ['link' => new RecordPropertyClosure(fn(): TypolinkParameter => TypolinkParameter::createFromTypolinkParts($this->get(TypoLinkCodecService::class)->decode('t3://page?uid=14 _blank class title')))]]]));
         self::assertSame('t3://page?uid=14 // _blank // class // title', $view->render());
     }
+
+    #[Test]
+    public function groupedFlexFieldsInMultipleSheetsAreResolved(): void
+    {
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('{flex.settings.storagePid} // {flex.settings.layout}');
+        $view = new TemplateView($context);
+        $view->assign('flex', new FlexFormFieldValues(['sDEF' => ['settings' => ['storagePid' => 123]], 'sheet2' => ['settings' => ['layout' => 'foo']]]));
+        self::assertSame('123 // foo', $view->render());
+    }
 }
