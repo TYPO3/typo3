@@ -19,6 +19,7 @@ namespace TYPO3\CMS\IndexedSearch\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Module\ModuleData;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
@@ -47,6 +48,12 @@ use TYPO3\CMS\IndexedSearch\Indexer;
 class AdministrationController extends ActionController
 {
     use AllowedMethodsTrait;
+
+    /**
+     * Actions of the module menu. The last one used is restored when the module
+     * is opened without a specific action, e.g. after selecting a page in the tree.
+     */
+    private const MENU_ACTIONS = ['statistic', 'pages', 'externalDocuments', 'index'];
 
     protected int $pageUid = 0;
     protected array $indexerConfig = [];
@@ -153,34 +160,22 @@ class AdministrationController extends ActionController
         parent::initializeAction();
     }
 
-    /**
-     * Override the action name if found in the uc of the user
-     */
     public function processRequest(RequestInterface $request): ResponseInterface
     {
-        $arguments = $request->getArguments();
-        $beUser = $this->getBackendUserAuthentication();
-
-        if (isset($arguments['action']) && method_exists($this, $arguments['action'] . 'Action')) {
-            $action = $arguments['action'];
-            switch ($action) {
-                case 'saveStopwords':
-                    $action = 'statisticDetails';
-                    break;
-                case 'deleteIndexedItem':
-                    $action = 'statistic';
-                    break;
-            }
-            $beUser->uc['indexed_search']['action'] = $action;
-            $beUser->uc['indexed_search']['arguments'] = $arguments;
-            $beUser->writeUC();
-        } elseif (isset($beUser->uc['indexed_search']['action'])) {
-            $request = $request->withControllerActionName((string)$beUser->uc['indexed_search']['action']);
-            if (isset($beUser->uc['indexed_search']['arguments'])) {
-                $request = $request->withArguments($beUser->uc['indexed_search']['arguments']);
-            }
+        $moduleData = $request->getAttribute('moduleData');
+        if (!$moduleData instanceof ModuleData) {
+            return parent::processRequest($request);
         }
-
+        $actionName = $request->getControllerActionName();
+        if ($this->isActionRequested($request)) {
+            if (in_array($actionName, self::MENU_ACTIONS, true) && $moduleData->get('menuAction') !== $actionName) {
+                $moduleData->set('menuAction', $actionName);
+                $this->getBackendUserAuthentication()->pushModuleData($moduleData->getModuleIdentifier(), $moduleData->toArray());
+            }
+        } else {
+            $moduleData->clean('menuAction', self::MENU_ACTIONS);
+            $request = $request->withControllerActionName($moduleData->get('menuAction'));
+        }
         return parent::processRequest($request);
     }
 
@@ -414,6 +409,19 @@ class AdministrationController extends ActionController
     {
         $this->administrationRepository->removeIndexedPhashRow($itemId, $this->pageUid, $depth);
         return $this->redirect('statistic', null, null, ['depth' => $depth, 'mode' => $mode]);
+    }
+
+    /**
+     * The module's default route falls back to the first action, while each
+     * action has its own sub route. An action is therefore only requested
+     * explicitly via such a sub route or the "action" argument.
+     */
+    private function isActionRequested(RequestInterface $request): bool
+    {
+        $parsedBody = $request->getParsedBody();
+        return str_contains((string)$request->getAttribute('route')?->getOption('_identifier'), '.')
+            || isset($request->getQueryParams()['action'])
+            || (is_array($parsedBody) && isset($parsedBody['action']));
     }
 
     protected function getBackendUserAuthentication(): BackendUserAuthentication
