@@ -237,7 +237,7 @@ export default (function() {
     return Modal.advanced({
       type: Modal.types.iframe,
       content: FormEngine.browserUrl + '&' + (new URLSearchParams(queryParams)).toString(),
-      size: Modal.sizes.large
+      size: Modal.sizes.full
     });
   };
 
