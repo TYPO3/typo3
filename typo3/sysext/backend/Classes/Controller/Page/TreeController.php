@@ -473,10 +473,10 @@ class TreeController
         if ($stopPageTree) {
             $item['stopPageTree'] = true;
         }
-        if ($depth === 0) {
-            if ($this->showMountPathAboveMounts) {
-                $item['note'] = $this->getMountPointPath($pageId);
-            }
+        if ($this->showMountPathAboveMounts
+            && ($depth === 0 || ($entryPoint === 0 && $depth === 1 && in_array($pageId, $backendUser->getWebmounts(), true)))
+        ) {
+            $item['note'] = $this->getMountPointPath($pageId);
         }
 
         $items[] = $item;
