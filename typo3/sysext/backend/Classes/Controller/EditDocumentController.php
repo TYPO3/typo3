@@ -2059,7 +2059,7 @@ class EditDocumentController
             return $languageService->sL('backend.alt_doc:noEditForm');
         }
 
-        $typeLabel = htmlspecialchars($this->recordTypeLabelResolver->resolve($firstEl->table, $firstEl->record));
+        $typeLabel = $this->recordTypeLabelResolver->resolve($firstEl->table, $firstEl->record);
 
         if ($firstEl->command === 'new') {
             return $languageService->sL('core.core:labels.createNew') . ' ' . $typeLabel;
@@ -2078,7 +2078,6 @@ class EditDocumentController
             ? $firstEl->title
             : '[' . $languageService->sL('core.core:labels.no_title') . ']';
         $recordTitle = BackendUtility::cropToTitleLength($recordTitle);
-        $recordTitle = htmlspecialchars($recordTitle);
 
         return implode(' · ', array_filter([$recordTitle, $typeLabel, '#' . $firstEl->uid]));
     }
