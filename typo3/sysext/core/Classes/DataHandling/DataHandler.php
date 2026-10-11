@@ -8248,8 +8248,18 @@ class DataHandler
     public function newFieldArray($table, array $recordContext = []): array
     {
         $fieldArray = [];
-        foreach ($this->getTypeSpecificFields($table, $recordContext) as $field) {
+        if (!$this->tcaSchemaFactory->has($table)) {
+            return $fieldArray;
+        }
+        $schema = $this->tcaSchemaFactory->get($table);
+        $recordType = BackendUtility::getTCAtypeValue($table, $recordContext, true);
+        $subSchema = $recordType !== null && $schema->hasSubSchema($recordType) ? $schema->getSubSchema($recordType) : null;
+        foreach ($schema->getFields() as $field) {
             $fieldName = $field->getName();
+            // The sub-schema only contains the fields of the type's showitem, all others keep the main schema field
+            if ($subSchema !== null && $subSchema->hasField($fieldName)) {
+                $field = $subSchema->getField($fieldName);
+            }
             // PageTSconfig type-specific defaults take highest precedence
             if (($typeSpecificValue = $this->getTypeSpecificDefault($table, $fieldName, $recordContext)) !== null) {
                 $fieldArray[$fieldName] = $typeSpecificValue;
