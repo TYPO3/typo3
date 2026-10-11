@@ -359,7 +359,7 @@ final class QueryBuilderTest extends UnitTestCase
     {
         $this->connection->expects($this->atLeastOnce())->method('quoteIdentifier')->with('aTable')
             ->willReturnArgument(0);
-        $this->concreteQueryBuilder->expects($this->atMost(PHP_INT_MAX))->method('delete')->with('aTable')->willReturn($this->subject);
+        $this->concreteQueryBuilder->expects($this->once())->method('delete')->with('aTable')->willReturn($this->subject);
         $this->subject->delete('aTable');
     }
 
@@ -368,7 +368,7 @@ final class QueryBuilderTest extends UnitTestCase
     {
         $this->connection->expects($this->atLeastOnce())->method('quoteIdentifier')->with('aTable')
             ->willReturnArgument(0);
-        $this->concreteQueryBuilder->expects($this->atMost(PHP_INT_MAX))->method('update')->with('aTable')->willReturn($this->subject);
+        $this->concreteQueryBuilder->expects($this->once())->method('update')->with('aTable')->willReturn($this->subject);
         $this->subject->update('aTable');
     }
 
@@ -377,7 +377,7 @@ final class QueryBuilderTest extends UnitTestCase
     {
         $this->connection->expects($this->atLeastOnce())->method('quoteIdentifier')->with('aTable')
             ->willReturnArgument(0);
-        $this->concreteQueryBuilder->expects($this->atMost(PHP_INT_MAX))->method('insert')->with('aTable')->willReturn($this->subject);
+        $this->concreteQueryBuilder->expects($this->once())->method('insert')->with('aTable')->willReturn($this->subject);
         $this->subject->insert('aTable');
     }
 
@@ -389,7 +389,7 @@ final class QueryBuilderTest extends UnitTestCase
     {
         $this->connection->expects($this->atLeastOnce())->method('quoteIdentifier')->with('aTable')
             ->willReturnArgument(0);
-        $this->concreteQueryBuilder->expects($this->atMost(PHP_INT_MAX))->method('from')->with('aTable', self::anything())->willReturn($this->subject);
+        $this->concreteQueryBuilder->expects($this->once())->method('from')->with('aTable', self::anything())->willReturn($this->subject);
         $this->subject->from('aTable');
     }
 
