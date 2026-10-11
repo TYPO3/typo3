@@ -83,6 +83,8 @@ prototypeIdentifier
       This array key identifies the `prototype`. Every ``form definition`` references to such a ``<prototypeIdentifier>`` through the property ``prototypeName``.
 
 
+..  _prototypes-subproperties:
+
 Subproperties
 =============
 

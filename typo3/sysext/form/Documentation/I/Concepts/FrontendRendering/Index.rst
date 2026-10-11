@@ -506,6 +506,8 @@ or reordered.
     form element property. Arguments are not inserted into default
     values in a form definition.
 
+..  _concepts-frontendrendering-translation-arguments-finishers:
+
 Finishers
 ---------
 
@@ -935,6 +937,8 @@ form elements using the above-mentioned concept of :ref:`hooks<concepts-frontend
         }
       }
     }
+
+..  _concepts-frontendrendering-runtimemanipulation-typoscriptoverrides-recipient:
 
 Recipient options
 ~~~~~~~~~~~~~~~~~

@@ -16,6 +16,8 @@ How do I override EXT:Form frontend templates?
 There are three ways to override the frontend templates.
 
 
+..  _faq-override-frontend-templates-override-template-paths:
+
 Override template paths via site set settings (recommended)
 -----------------------------------------------------------
 
@@ -40,6 +42,8 @@ module under :guilabel:`Form Framework > Templates`.
    editor preview uses the YAML prototype defaults. If you need the backend
    preview to use custom templates, use a form set (see below).
 
+
+..  _faq-override-frontend-templates-add-fluid-search:
 
 Add fluid search paths via a form set
 -------------------------------------
@@ -86,6 +90,8 @@ registration is required.
 See :ref:`concepts-configuration-yaml-autodiscovery` for the full directory
 convention.
 
+
+..  _faq-override-frontend-templates-add-fluid-search-typoscript:
 
 Add fluid search paths via TypoScript ``yamlSettingsOverrides``
 ---------------------------------------------------------------
@@ -226,7 +232,7 @@ How do I create a custom validator for my form?
 :ref:`Learn how to create a custom validator here.<concepts-validators-customvalidatorimplementations>`
 
 
-.. faq-form-proposed-folder-structure:
+.. _faq-form-proposed-folder-structure:
 
 Which folder structure do you recommend?
 ========================================

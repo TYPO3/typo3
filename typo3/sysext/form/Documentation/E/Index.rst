@@ -6,11 +6,15 @@
 For Editors
 ===========
 
+..  _for-editors-introduction-forms:
+
 Introduction to forms
 ---------------------
 
 Forms are provided by the **Form TYPO3 extension**. Form is a TYPO3 core
 extension which has been available by default since TYPO3 version 8.
+
+..  _for-editors-what-form-can-do:
 
 What can Form do?
 -----------------
@@ -26,6 +30,8 @@ What can Form do?
 - automatic spam protection
 - multi-step forms
 
+..  _for-editors-what-form-cannot-do:
+
 What can't Form do?
 -------------------
 
@@ -35,6 +41,8 @@ Form has limited:
 - multilingual support
 - possibilities for textual design of emails
 
+..  _for-editors-when-to-use-form:
+
 When can I use Form?
 --------------------
 
@@ -42,6 +50,8 @@ When can I use Form?
 - for application forms
 - for simple or complex forms
 - for different forms on my pages
+
+..  _for-editors-notes-data-protection:
 
 Notes on data protection
 ------------------------

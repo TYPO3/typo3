@@ -13,6 +13,8 @@ with a disability, the elderly, non-native speakers, etc.
 The following should be kept in mind by editors creating forms
 in the backend form editor:
 
+..  _accessibility-labels:
+
 Labels
 ======
 
@@ -20,10 +22,14 @@ Always use clear, descriptive labels in the :guilabel:`Label` field. Simply
 putting the label in field :guilabel:`Placeholder` is not
 considered accessible.
 
+..  _accessibility-descriptions:
+
 Descriptions
 ============
 
 Add an extended description in the field :guilabel:`Description`.
+
+..  _accessibility-placeholder:
 
 Placeholder
 ===========
@@ -31,6 +37,8 @@ Placeholder
 The :guilabel:`Placeholder` field should not contain the label.
 It should contain example content to make filling out the field easier for
 users.
+
+..  _accessibility-autocomplete:
 
 Autocomplete
 ============

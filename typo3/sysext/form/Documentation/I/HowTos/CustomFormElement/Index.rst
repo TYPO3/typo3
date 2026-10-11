@@ -13,6 +13,8 @@ Framework. We'll create a "Gender Select" element as an example.
    :depth: 2
    :local:
 
+..  _howtos-custom-form-element-prerequisites:
+
 Prerequisites
 =============
 
@@ -21,11 +23,15 @@ Before you start, make sure you have:
 * Basic knowledge of YAML configuration
 * A sitepackage where you can add configuration files
 
+..  _howtos-custom-form-element-step-1-create:
+
 Step 1: Create the configuration files
 ======================================
 
 Create a form set directory in your extension. The sub-directory name is
 arbitrary — we use ``CustomElement`` here.
+
+..  _howtos-custom-form-element-step-1-create-file-location:
 
 File location
 -------------
@@ -40,6 +46,8 @@ Create the following structure in your extension:
           CustomElement/
             config.yaml
 
+..  _howtos-custom-form-element-step-1-create-configuration-structure:
+
 Configuration structure
 -----------------------
 
@@ -48,6 +56,8 @@ Here's the complete configuration for our Gender Select element:
 .. literalinclude:: _CustomFormSetup.yaml
    :language: yaml
    :caption: EXT:my_extension/Configuration/Form/CustomElement/config.yaml (after metadata)
+
+..  _howtos-custom-form-element-step-1-create-configuration-structure-common:
 
 Common inspector editors
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -109,6 +119,8 @@ See
 :ref:`Display values and submitted values <concepts-finishers-customfinisherimplementations-accessingoptions-displayvalue>`
 for the finisher options that use display values.
 
+..  _howtos-custom-form-element-step-2-register:
+
 Step 2: Register the configuration
 ===================================
 
@@ -140,10 +152,14 @@ Set the ``priority`` in :file:`config.yaml` to a value greater than ``10``
       standard:
         ...
 
+..  _howtos-custom-form-element-step-3-clear:
+
 Step 3: Clear Caches
 ====================
 
 After adding the configuration, you must clear all TYPO3 caches.
+
+..  _howtos-custom-form-element-step-4-custom:
 
 Step 4: Using your custom element
 ==================================
@@ -161,11 +177,15 @@ Now you can use your custom element in the form editor:
 The element will now be available in your forms and will render using the
 RadioButton template in the frontend.
 
+..  _howtos-custom-form-element-step-5-customizing:
+
 Step 5: Customizing frontend output (optional)
 ===============================================
 
 If you want to use a custom template instead of reusing an existing one, follow
 these steps:
+
+..  _howtos-custom-form-element-step-5-customizing-create-custom:
 
 Create custom template
 ----------------------
@@ -178,6 +198,8 @@ Create your own Fluid template:
    :language: html
    :caption: EXT:my_extension/Resources/Private/Partials/Form/GenderSelect.fluid.html
 
+
+..  _howtos-custom-form-element-step-5-customizing-update-configuration:
 
 Update configuration
 --------------------
@@ -199,6 +221,8 @@ Update your YAML configuration to use the custom partial template:
            renderingOptions:
              templateName: 'GenderSelect'
 
+
+..  _howtos-custom-form-element-further-reading:
 
 Further reading
 ===============
