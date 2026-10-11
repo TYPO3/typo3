@@ -51,7 +51,7 @@ final readonly class CleanUpLocalProcessedFilesService
         // sys_file_processedfile has no TCA enablecolumns, so there is nothing to remove
         // here. Kept defensively in case that ever changes.
         $queryBuilder->getRestrictions()->removeAll();
-        $localStorages = $this->storageRepository->findByStorageType('Local');
+        $localStorages = $this->getOnlineLocalStorages();
 
         $queryBuilder
             ->count('*')
@@ -110,7 +110,7 @@ final readonly class CleanUpLocalProcessedFilesService
     {
         $storageUids = array_map(
             static fn(ResourceStorage $storage): int => $storage->getUid(),
-            $this->storageRepository->findByStorageType('Local')
+            $this->getOnlineLocalStorages()
         );
         if ($fullReset) {
             // Records of the removed fallback storage (uid 0) are orphaned and removed as well
@@ -165,6 +165,28 @@ final readonly class CleanUpLocalProcessedFilesService
     public function deleteRecord(array $recordUids): int
     {
         return $this->processedFileRepository->removeByUids($recordUids);
+    }
+
+    /**
+     * @return ResourceStorage[]
+     */
+    public function getOfflineLocalStorages(): array
+    {
+        return array_values(array_filter(
+            $this->storageRepository->findByStorageType('Local'),
+            static fn(ResourceStorage $storage): bool => !$storage->isOnline()
+        ));
+    }
+
+    /**
+     * @return ResourceStorage[]
+     */
+    private function getOnlineLocalStorages(): array
+    {
+        return array_values(array_filter(
+            $this->storageRepository->findByStorageType('Local'),
+            static fn(ResourceStorage $storage): bool => $storage->isOnline()
+        ));
     }
 
     /**
