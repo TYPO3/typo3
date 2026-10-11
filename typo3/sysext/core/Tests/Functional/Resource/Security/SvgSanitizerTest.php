@@ -69,23 +69,40 @@ final class SvgSanitizerTest extends FunctionalTestCase
         $pretty = new SvgSanitizer()->sanitizeContent($svg);
         $minified = new SvgSanitizer()->sanitizeContent($svg, true);
 
-        self::assertStringContainsString("\n", $pretty);
-        self::assertStringNotContainsString("\n", $minified);
+        $expectedPretty = <<<'SVG'
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10">
+  <g>
+    <rect width="10" height="10"></rect>
+  </g>
+</svg>
+SVG;
+        $expectedMinified = '<?xml version="1.0" encoding="UTF-8"?> '
+            . '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10">'
+            . '<g><rect width="10" height="10"></rect></g></svg> ';
+        self::assertSame($expectedPretty . "\n", $pretty);
+        self::assertSame($expectedMinified, $minified);
     }
 
     #[Test]
     public function removeLinksStripsAnchorElements(): void
     {
         $svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10">'
-            . '<a href="#anchor"><rect width="10" height="10"/></a></svg>';
+            . '<a href="#anchor"><rect width="10" height="10"/></a>'
+            . '<circle cx="5" cy="5" r="2"/></svg>';
 
         $withLinks = new SvgSanitizer()->sanitizeContent($svg, true);
         $withoutLinks = new SvgSanitizer()->sanitizeContent($svg, true, true);
 
-        self::assertStringContainsString('<a', $withLinks);
-        self::assertStringContainsString('href="#anchor"', $withLinks);
-        self::assertStringNotContainsString('<a', $withoutLinks);
-        self::assertStringNotContainsString('href="#anchor"', $withoutLinks);
+        $expectedWithLinks = '<?xml version="1.0" encoding="UTF-8"?> '
+            . '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10">'
+            . '<a href="#anchor"><rect width="10" height="10"></rect></a>'
+            . '<circle cx="5" cy="5" r="2"></circle></svg> ';
+        $expectedWithoutLinks = '<?xml version="1.0" encoding="UTF-8"?> '
+            . '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10">'
+            . '<circle cx="5" cy="5" r="2"></circle></svg> ';
+        self::assertSame($expectedWithLinks, $withLinks);
+        self::assertSame($expectedWithoutLinks, $withoutLinks);
     }
 
     #[Test]
