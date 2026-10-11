@@ -29,20 +29,21 @@ final class LocalesTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    private string|bool $originalLocale = false;
+    private array $originalLocales = [];
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->originalLocale = setlocale(LC_COLLATE, '0');
+        foreach ([LC_COLLATE, LC_CTYPE, LC_MONETARY, LC_TIME] as $category) {
+            $this->originalLocales[$category] = setlocale($category, '0');
+        }
     }
 
     protected function tearDown(): void
     {
-        // Restore original locale
-        setlocale(LC_COLLATE, $this->originalLocale);
-        setlocale(LC_MONETARY, $this->originalLocale);
-        setlocale(LC_TIME, $this->originalLocale);
+        foreach ($this->originalLocales as $category => $locale) {
+            setlocale($category, $locale);
+        }
         parent::tearDown();
     }
 
@@ -236,7 +237,7 @@ final class LocalesTest extends UnitTestCase
         self::assertFalse($result);
         $currentLocale = setlocale(LC_COLLATE, '0');
         // Check that the locale was not overridden
-        self::assertEquals($this->originalLocale, $currentLocale);
+        self::assertEquals($this->originalLocales[LC_COLLATE], $currentLocale);
     }
 
     #[Test]

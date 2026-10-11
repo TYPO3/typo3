@@ -43,12 +43,14 @@ final class SiteResolverTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
     private RequestHandlerInterface $siteFoundRequestHandler;
-    private string $originalLocale;
+    private array $originalLocales = [];
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->originalLocale = setlocale(LC_COLLATE, '0');
+        foreach ([LC_COLLATE, LC_CTYPE, LC_MONETARY, LC_TIME] as $category) {
+            $this->originalLocales[$category] = setlocale($category, '0');
+        }
 
         // A request handler which expects a site to be found.
         $this->siteFoundRequestHandler = new class implements RequestHandlerInterface {
@@ -74,10 +76,9 @@ final class SiteResolverTest extends UnitTestCase
 
     protected function tearDown(): void
     {
-        // restore locale to original setting
-        setlocale(LC_COLLATE, $this->originalLocale);
-        setlocale(LC_MONETARY, $this->originalLocale);
-        setlocale(LC_TIME, $this->originalLocale);
+        foreach ($this->originalLocales as $category => $locale) {
+            setlocale($category, $locale);
+        }
         parent::tearDown();
     }
 
