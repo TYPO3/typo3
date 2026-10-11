@@ -209,32 +209,54 @@ final class QueryParserTest extends FunctionalTestCase
         $dateExample = $query->matching(
             $query->equals($property, new $objectType('2025-01-20T14:18:56'))
         )->execute()->getFirst();
-        self::assertNotNull($dateExample);
+        self::assertInstanceOf($query->getType(), $dateExample);
         self::assertSame(1, $dateExample->getUid());
 
         $dateExample = $query->matching(
             $query->greaterThan($property, new $objectType('2025-01-20T14:18:55'))
         )->execute()->getFirst();
-        self::assertNotNull($dateExample);
+        self::assertInstanceOf($query->getType(), $dateExample);
         self::assertSame(1, $dateExample->getUid());
 
         $dateExample = $query->matching(
             $query->greaterThanOrEqual($property, new $objectType('2025-01-20T14:18:56'))
         )->execute()->getFirst();
-        self::assertNotNull($dateExample);
+        self::assertInstanceOf($query->getType(), $dateExample);
+        self::assertSame(1, $dateExample->getUid());
+
+        $dateExample = $query->matching(
+            $query->greaterThanOrEqual($property, new $objectType('2025-01-20T14:18:55'))
+        )->execute()->getFirst();
+        self::assertInstanceOf($query->getType(), $dateExample);
         self::assertSame(1, $dateExample->getUid());
 
         $dateExample = $query->matching(
             $query->lessThan($property, new $objectType('2025-01-20T14:18:57'))
         )->execute()->getFirst();
-        self::assertNotNull($dateExample);
+        self::assertInstanceOf($query->getType(), $dateExample);
         self::assertSame(1, $dateExample->getUid());
 
         $dateExample = $query->matching(
             $query->lessThanOrEqual($property, new $objectType('2025-01-20T14:18:56'))
         )->execute()->getFirst();
-        self::assertNotNull($dateExample);
+        self::assertInstanceOf($query->getType(), $dateExample);
         self::assertSame(1, $dateExample->getUid());
+
+        $dateExample = $query->matching(
+            $query->lessThanOrEqual($property, new $objectType('2025-01-20T14:18:57'))
+        )->execute()->getFirst();
+        self::assertInstanceOf($query->getType(), $dateExample);
+        self::assertSame(1, $dateExample->getUid());
+
+        $dateExampleQueryInvalid = $query->matching(
+            $query->greaterThanOrEqual($property, new $objectType('2025-01-20T14:18:57'))
+        )->execute()->getFirst();
+        self::assertNull($dateExampleQueryInvalid);
+
+        $dateExampleQueryInvalid = $query->matching(
+            $query->lessThanOrEqual($property, new $objectType('2025-01-20T14:18:55'))
+        )->execute()->getFirst();
+        self::assertNull($dateExampleQueryInvalid);
 
         $dateExampleQueryInvalid = $query->matching(
             $query->equals($property, new $objectType('2025-01-20T14:18:55'))
