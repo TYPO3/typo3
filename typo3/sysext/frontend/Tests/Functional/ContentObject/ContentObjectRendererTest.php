@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\ContentObject;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\WithEnvironmentVariable;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -5997,13 +5998,11 @@ content="benni">',
     }
 
     #[Test]
+    #[WithEnvironmentVariable('TYPO3_FRONTEND_TEST_ENV', 'someValue')]
     public function getDataWithTypeGetenv(): void
     {
-        $envName = StringUtility::getUniqueId('frontendtest');
-        $value = StringUtility::getUniqueId('someValue');
-        putenv($envName . '=' . $value);
         $subject = $this->get(ContentObjectRenderer::class);
-        self::assertEquals($value, $subject->getData('getenv:' . $envName, []));
+        self::assertEquals('someValue', $subject->getData('getenv:TYPO3_FRONTEND_TEST_ENV', []));
     }
 
     #[Test]
@@ -6363,12 +6362,12 @@ content="benni">',
     }
 
     #[Test]
+    #[WithEnvironmentVariable('LOCAL_DEVELOPMENT', '1')]
     public function getDataWithTypeSiteWithBaseVariants(): void
     {
         $packageManager = new PackageManager(new DependencyOrderingService());
         GeneralUtility::addInstance(ProviderConfigurationLoader::class, new ProviderConfigurationLoader($packageManager, new NullFrontend('core'), 'ExpressionLanguageProviders'));
         GeneralUtility::addInstance(DefaultProvider::class, new DefaultProvider(new Typo3Version(), new Context(), new Features()));
-        putenv('LOCAL_DEVELOPMENT=1');
         $site = new Site('my-site', 123, [
             'base' => 'http://prod.com',
             'baseVariants' => [

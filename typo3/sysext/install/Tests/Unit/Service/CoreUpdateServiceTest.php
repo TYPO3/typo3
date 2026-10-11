@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Install\Tests\Unit\Service;
 
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\WithEnvironmentVariable;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Install\Service\CoreUpdateService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -36,32 +37,32 @@ final class CoreUpdateServiceTest extends UnitTestCase
     }
 
     #[Test]
+    #[WithEnvironmentVariable('TYPO3_DISABLE_CORE_UPDATER')]
+    #[WithEnvironmentVariable('REDIRECT_TYPO3_DISABLE_CORE_UPDATER')]
     public function isCoreUpdateEnabledReturnsTrueForEnvironmentVariableNotSet(): void
     {
         if (defined('TYPO3_COMPOSER_MODE') && TYPO3_COMPOSER_MODE) {
             self::markTestSkipped('This test is only available in Non-Composer mode.');
         }
         $instance = $this->getAccessibleMock(CoreUpdateService::class, null, [], '', false);
-        putenv('TYPO3_DISABLE_CORE_UPDATER');
-        putenv('REDIRECT_TYPO3_DISABLE_CORE_UPDATER');
         self::assertTrue($instance->isCoreUpdateEnabled());
     }
 
     #[Test]
+    #[WithEnvironmentVariable('TYPO3_DISABLE_CORE_UPDATER', '1')]
+    #[WithEnvironmentVariable('REDIRECT_TYPO3_DISABLE_CORE_UPDATER')]
     public function isCoreUpdateEnabledReturnsFalseFor_TYPO3_DISABLE_CORE_UPDATER_EnvironmentVariableSet(): void
     {
         $instance = $this->getAccessibleMock(CoreUpdateService::class, null, [], '', false);
-        putenv('TYPO3_DISABLE_CORE_UPDATER=1');
-        putenv('REDIRECT_TYPO3_DISABLE_CORE_UPDATER');
         self::assertFalse($instance->isCoreUpdateEnabled());
     }
 
     #[Test]
+    #[WithEnvironmentVariable('TYPO3_DISABLE_CORE_UPDATER')]
+    #[WithEnvironmentVariable('REDIRECT_TYPO3_DISABLE_CORE_UPDATER', '1')]
     public function isCoreUpdateEnabledReturnsFalseFor_REDIRECT_TYPO3_DISABLE_CORE_UPDATER_EnvironmentVariableSet(): void
     {
         $instance = $this->getAccessibleMock(CoreUpdateService::class, null, [], '', false);
-        putenv('TYPO3_DISABLE_CORE_UPDATER');
-        putenv('REDIRECT_TYPO3_DISABLE_CORE_UPDATER=1');
         self::assertFalse($instance->isCoreUpdateEnabled());
     }
 }

@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Form\Tests\Functional\Controller;
 
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\WithEnvironmentVariable;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\Router;
@@ -671,13 +672,12 @@ final class FormManagerControllerTest extends FunctionalTestCase
     }
 
     #[Test]
+    #[WithEnvironmentVariable('FORM_ENV', 'TEST')]
     public function formIsCreatedFromTemplateWithEnvSubstitution(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $this->setUpBackendUser(1);
 
-        $testEnv = 'TEST';
-        putenv('FORM_ENV=' . $testEnv);
         $route = Route::fromSymfonyRoute(
             $this->get(Router::class)->getRoute('web_FormFormbuilder.FormManager_create'),
             'web_FormFormbuilder.FormManager_create',
@@ -704,6 +704,6 @@ final class FormManagerControllerTest extends FunctionalTestCase
         $connection = $this->get(ConnectionPool::class)->getConnectionForTable('form_definition');
         $record = $connection->select(['configuration'], 'form_definition', [])->fetchAssociative();
         self::assertNotFalse($record, 'Form was saved to database');
-        self::assertStringContainsString('Form env:' . $testEnv, $record['configuration']);
+        self::assertStringContainsString('Form env:TEST', $record['configuration']);
     }
 }
