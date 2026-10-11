@@ -94,9 +94,9 @@ final class ServerRequestFactoryTest extends UnitTestCase
                 ],
                 'error' => [
                     'newExample' => [
-                        'image' => 0,
+                        'image' => UPLOAD_ERR_OK,
                         'imageCollection' => [
-                            0 => 0,
+                            0 => UPLOAD_ERR_PARTIAL,
                         ],
                     ],
                 ],
@@ -113,13 +113,19 @@ final class ServerRequestFactoryTest extends UnitTestCase
 
         $uploadedFiles = ServerRequestFactory::fromGlobals()->getUploadedFiles();
 
-        self::assertNotEmpty($uploadedFiles['tx_uploadexample_piexample']['newExample']['image']);
-        self::assertInstanceOf(UploadedFile::class, $uploadedFiles['tx_uploadexample_piexample']['newExample']['image']);
-        self::assertNotEmpty($uploadedFiles['tx_uploadexample_piexample']['newExample']['imageCollection'][0]);
-        self::assertInstanceOf(
-            UploadedFile::class,
-            $uploadedFiles['tx_uploadexample_piexample']['newExample']['imageCollection'][0]
-        );
+        $image = $uploadedFiles['tx_uploadexample_piexample']['newExample']['image'];
+        self::assertInstanceOf(UploadedFile::class, $image);
+        self::assertSame('o51pb.jpg', $image->getClientFilename());
+        self::assertSame('image/jpeg', $image->getClientMediaType());
+        self::assertSame(59065, $image->getSize());
+        self::assertSame(UPLOAD_ERR_OK, $image->getError());
+
+        $collectionImage = $uploadedFiles['tx_uploadexample_piexample']['newExample']['imageCollection'][0];
+        self::assertInstanceOf(UploadedFile::class, $collectionImage);
+        self::assertSame('composer.json', $collectionImage->getClientFilename());
+        self::assertSame('application/json', $collectionImage->getClientMediaType());
+        self::assertSame(683, $collectionImage->getSize());
+        self::assertSame(UPLOAD_ERR_PARTIAL, $collectionImage->getError());
     }
 
     #[Test]
