@@ -18,10 +18,12 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Lowlevel\Tests\Functional\Clean;
 
 use PHPUnit\Framework\Attributes\Test;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lowlevel\Command\CleanUpLocalProcessedFilesCommand;
@@ -231,5 +233,32 @@ final class CleanUpLocalProcessedFilesTest extends FunctionalTestCase
             ->executeQuery()
             ->fetchFirstColumn();
         self::assertSame([6], array_map(intval(...), $remainingUids));
+    }
+
+    #[Test]
+    public function localStorageWithMissingBasePathIsSkipped(): void
+    {
+        $missingBasePath = Environment::getPublicPath() . '/missing-storage/';
+        mkdir($missingBasePath);
+        $storageUid = $this->get(StorageRepository::class)->createLocalStorage('missing-storage', $missingBasePath, 'absolute');
+        rmdir($missingBasePath);
+        $this->getConnectionPool()->getConnectionForTable('sys_file_processedfile')->insert(
+            'sys_file_processedfile',
+            ['uid' => 6, 'storage' => $storageUid, 'original' => 83, 'identifier' => '/_processed_/missing.png', 'name' => 'missing.png']
+        );
+
+        $this->commandTester->execute(['--force' => true]);
+
+        $output = $this->commandTester->getDisplay();
+        self::assertSame(Command::SUCCESS, $this->commandTester->getStatusCode());
+        self::assertStringContainsString('Skipped offline storage "missing-storage" (UID ' . $storageUid . ')', $output);
+        self::assertStringContainsString($missingBasePath, $output);
+        self::assertStringContainsString('Deleted 4 processed files', $output);
+        $remainingUids = $this->getConnectionPool()->getQueryBuilderForTable('sys_file_processedfile')
+            ->select('uid')
+            ->from('sys_file_processedfile')
+            ->executeQuery()
+            ->fetchFirstColumn();
+        self::assertContains(6, array_map(intval(...), $remainingUids));
     }
 }

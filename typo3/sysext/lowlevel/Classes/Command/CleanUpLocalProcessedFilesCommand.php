@@ -71,6 +71,15 @@ class CleanUpLocalProcessedFilesCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        foreach ($this->cleanProcessedFilesService->getOfflineLocalStorages() as $storage) {
+            $output->writeln(sprintf(
+                '<fg=yellow>!</> Skipped offline storage "%s" (UID %d) with base path "%s"',
+                $storage->getName(),
+                $storage->getUid(),
+                $storage->getConfiguration()['basePath'] ?? ''
+            ));
+        }
+
         $files = $this->cleanProcessedFilesService->getFilesToClean($input->getOption('all'));
         $records = $this->cleanProcessedFilesService->getRecordsToClean($input->getOption('all'));
 
