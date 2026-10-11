@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Functional\Mvc\Validation;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
@@ -207,29 +208,47 @@ final class DateRangeValidatorTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function relativeYesterdayExpressionIsAccepted(): void
+    public function relativeMinimumYesterdayRejectsEarlierDate(): void
     {
         $input = new \DateTime('-2 days');
         $validator = $this->createValidator(['minimum' => 'yesterday']);
         $result = $validator->validate($input);
         self::assertTrue($result->hasErrors());
+        self::assertSame(1521293687, $result->getFirstError()->getCode());
     }
 
     #[Test]
-    public function relativeTomorrowExpressionIsAccepted(): void
+    public function relativeMaximumTomorrowRejectsLaterDate(): void
     {
         $input = new \DateTime('+2 days');
         $validator = $this->createValidator(['maximum' => 'tomorrow']);
         $result = $validator->validate($input);
         self::assertTrue($result->hasErrors());
+        self::assertSame(1521293686, $result->getFirstError()->getCode());
     }
 
     #[Test]
-    public function relativeFirstSundayOfNextMonthExpressionIsAccepted(): void
+    public function relativeMaximumFirstSundayOfNextMonthRejectsLaterDate(): void
     {
         $input = new \DateTime('+2 months');
         $validator = $this->createValidator(['maximum' => 'first sunday of next month']);
         $result = $validator->validate($input);
         self::assertTrue($result->hasErrors());
+        self::assertSame(1521293686, $result->getFirstError()->getCode());
+    }
+
+    public static function relativeDateExpressionDataProvider(): \Generator
+    {
+        yield 'minimum yesterday' => [['minimum' => 'yesterday']];
+        yield 'maximum tomorrow' => [['maximum' => 'tomorrow']];
+        yield 'maximum first Sunday of next month' => [['maximum' => 'first sunday of next month']];
+    }
+
+    #[Test]
+    #[DataProvider('relativeDateExpressionDataProvider')]
+    public function relativeDateExpressionAcceptsDateWithinRange(array $options): void
+    {
+        $validator = $this->createValidator($options);
+        self::assertFalse($validator->validate(new \DateTime('today'))->hasErrors());
     }
 }
