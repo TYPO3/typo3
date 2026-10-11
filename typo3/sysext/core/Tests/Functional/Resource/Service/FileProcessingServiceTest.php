@@ -19,16 +19,22 @@ namespace TYPO3\CMS\Core\Tests\Functional\Resource\Service;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\Area;
+use TYPO3\CMS\Core\Imaging\Svg\SvgDocumentFactory;
+use TYPO3\CMS\Core\Imaging\Svg\SvgDocumentService;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ProcessedResource;
 use TYPO3\CMS\Core\Resource\ProcessedResourceCache;
+use TYPO3\CMS\Core\Resource\Processing\SvgImageProcessor;
+use TYPO3\CMS\Core\Resource\Processing\TaskInterface;
 use TYPO3\CMS\Core\Resource\Service\FileProcessingService;
 use TYPO3\CMS\Core\SystemResource\SystemResourceFactory;
 use TYPO3\CMS\Core\SystemResource\Type\PackageResource;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
@@ -95,6 +101,22 @@ final class FileProcessingServiceTest extends FunctionalTestCase
     #[Test]
     public function processingTheSameSystemResourceAgainReusesTheCachedRenderInstead(): void
     {
+        // Start without renders left by other tests in this instance.
+        GeneralUtility::rmdir(Environment::getPublicPath() . '/typo3temp/assets/images/system', true);
+        $svgImageProcessor = new SvgImageProcessor($this->get(SvgDocumentFactory::class), $this->get(SvgDocumentService::class));
+        $processingCalls = 0;
+        $processor = $this->createMock(SvgImageProcessor::class);
+        $processor->method('canProcessTask')->willReturnCallback($svgImageProcessor->canProcessTask(...));
+        $processor->expects($this->once())->method('processTask')->willReturnCallback(
+            static function (TaskInterface $task) use ($svgImageProcessor, &$processingCalls): void {
+                $processingCalls++;
+                $svgImageProcessor->processTask($task);
+            }
+        );
+        /** @var Container $container */
+        $container = $this->get('service_container');
+        $container->set(SvgImageProcessor::class, $processor);
+
         $resource = $this->get(SystemResourceFactory::class)
             ->createResource('PKG:typo3tests/test-system-resources:Resources/Public/Icons/Extension.svg');
         assert($resource instanceof PackageResource);
@@ -102,6 +124,8 @@ final class FileProcessingServiceTest extends FunctionalTestCase
         $fileProcessingService = $this->get(FileProcessingService::class);
 
         $first = $fileProcessingService->processFile($resource, ProcessedFile::CONTEXT_IMAGECROPSCALEMASK, null, $configuration);
+        self::assertSame(1, $processingCalls);
+
         $second = $fileProcessingService->processFile($resource, ProcessedFile::CONTEXT_IMAGECROPSCALEMASK, null, $configuration);
 
         self::assertInstanceOf(ProcessedResource::class, $first);
