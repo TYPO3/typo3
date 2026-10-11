@@ -295,6 +295,25 @@ final class EditDocumentControllerTest extends FunctionalTestCase
         self::assertStringContainsString('columnsOnly[tt_content][0]=header', $decodedLocation);
     }
 
+    #[Test]
+    public function documentTitleIsEscapedOnce(): void
+    {
+        $this->getConnectionPool()->getConnectionForTable('tt_content')
+            ->update('tt_content', ['header' => 'Sample text & media'], ['uid' => 1]);
+
+        $request = (new ServerRequest('https://www.example.com/typo3/record/edit', 'GET'))
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            ->withAttribute('normalizedParams', $this->normalizedParams)
+            ->withAttribute('route', new Route('path', ['packageName' => 'typo3/cms-backend']))
+            ->withQueryParams(['edit' => ['tt_content' => [1 => 'edit']]]);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+
+        $html = (string)$this->subject->mainAction($request)->getBody();
+
+        self::assertStringContainsString('<title>Sample text &amp; media · ', $html);
+        self::assertStringContainsString('display-name="Sample text &amp; media · ', $html);
+    }
+
     private function getParsedBody(array $additionalData = []): array
     {
         return [
