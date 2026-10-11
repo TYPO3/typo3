@@ -9,6 +9,8 @@ Full Search
 Users with administrator rights can find this module at
 :guilabel:`System > Database > Full Search`.
 
+..  _module-db-check-full-search-raw-search-fields:
+
 Raw search of all fields
 ========================
 
@@ -19,6 +21,8 @@ The result is grouped by record type and there are buttons to edit or get to
 the info of each record.
 
 .. include:: /Images/AutomaticScreenshots/Modules/DB_Check_Full_search.rst.txt
+
+..  _module-db-check-full-search-advanced-query:
 
 Advanced query
 ==============
@@ -50,6 +54,8 @@ the info of each record.
 
 The :guilabel:`Advanced query` action can be
 :ref:`configured with user TSconfig <configuration-full-search>`.
+
+..  _module-db-check-full-search-advanced-query-example:
 
 Example
 -------

@@ -7,6 +7,8 @@
 General Concepts
 ================
 
+..  _general-concepts-user-interfaces:
+
 User interfaces
 ===============
 

@@ -19,6 +19,8 @@ names that are currently used:
     :local:
     :depth: 1
 
+..  _config-ref-yaml-processing:
+
 processing
 ----------
 
@@ -33,6 +35,8 @@ This configuration option was previously built within `RTE.proc` and can
 still be overridden via Page TSconfig. Everything defined via “processing”
 is available in RTE.proc and triggers RteHtmlParser options.
 
+..  _config-ref-yaml-editor:
+
 editor
 ------
 
@@ -44,6 +48,8 @@ All other sub-properties are usually handled via TYPO3 and then injected in the
 CKEditor instance at runtime. This is useful for registering extra plugins, like
 the TYPO3 core does with a custom :file:`typo3-link.js` plugin, or adding
 third-party plugins like handling images.
+
+..  _config-ref-yaml-editor-config:
 
 editor.config
 ~~~~~~~~~~~~~
@@ -229,6 +235,8 @@ A short overview:
 *   `buttons.link.[LinkType].properties.class.default` - Default CSS class per Link Type
 *   `classes` - Label definitions for CSS class names
 
+..  _config-linkbrowser-allowedoptions:
+
 allowedOptions
 ~~~~~~~~~~~~~~
 
@@ -278,6 +286,8 @@ To remove all options you can use an empty string:
 
     allowedOptions: ''
 
+..  _config-linkbrowser-allowedtypes:
+
 allowedTypes
 ~~~~~~~~~~~~
 
@@ -303,6 +313,8 @@ To remove all types you can use an empty string:
 
     allowedTypes: ''
 
+..  _config-linkbrowser-classesanchor:
+
 classesAnchor
 ~~~~~~~~~~~~~
 
@@ -322,11 +334,15 @@ This is a sub-array of default CSS classes and target attributes, per Link Type:
 Note that the available CSS class here must also be part of the
 `buttons.link.properties.class.allowedClasses` definition.
 
+..  _config-linkbrowser-buttons-link:
+
 buttons.link
 ~~~~~~~~~~~~
 
 This structure defines both global options as well as Link Type-specific
 options:
+
+..  _config-linkbrowser-buttons-link-options-removeitems:
 
 buttons.link.options.removeItems
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -341,6 +357,8 @@ Can be set to exclude certain Link Types:
         options:
           removeItems: 'telephone'
 
+..  _config-linkbrowser-buttons-link-relattribute-enabled:
+
 buttons.link.relAttribute.enabled
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -354,6 +372,8 @@ attributes, this option must also be enabled:
       link:
         relAttribute:
           enabled: true
+
+..  _config-linkbrowser-buttons-link-queryparametersselector-enabled:
 
 buttons.link.queryParametersSelector.enabled
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -370,6 +390,8 @@ attributes, this option must also be enabled:
           enabled: true
 
 
+..  _config-linkbrowser-buttons-link-targetselector-disabled:
+
 buttons.link.targetSelector.disabled
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -384,6 +406,8 @@ default. If you want to hide it, you must set this option to `true`:
         targetSelector:
           disabled: true
 
+..  _config-linkbrowser-buttons-link-properties-class-required:
+
 buttons.link.properties.class.required
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -397,6 +421,8 @@ A CSS class selection can be forced, so that it may not be empty:
         properties:
           class:
             required: true
+
+..  _config-linkbrowser-buttons-link-properties-class-allowedclasses:
 
 buttons.link.properties.class.allowedClasses
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -416,6 +442,8 @@ hierarchy (see below)
         properties:
           class:
             allowedClasses: 'globalCss1,globalCss1,CustomPageCssClass'
+
+..  _config-linkbrowser-buttons-link-linktype-properties-class-default:
 
 buttons.link.[linkType].properties.class.default
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -437,6 +465,8 @@ Link Type as a key:
 
 Note that the CSS class listed here must also be contained in
 `buttons.link.properties.class.allowedClasses`.
+
+..  _config-linkbrowser-classes-cssclassname:
 
 classes.[CssClassName]
 ~~~~~~~~~~~~~~~~~~~~~~

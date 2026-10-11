@@ -7,6 +7,8 @@
 Command line tools provided by EXT:lowlevel
 ===========================================
 
+..  _command-line-preparations:
+
 Preparations
 ============
 
@@ -36,6 +38,8 @@ Something like this will do::
 	myisamchk [path_to_mysql_databases]/[database_name]/*.MYI -s -r
 
 
+..  _command-line-running-script:
+
 Running the script
 ==================
 
@@ -58,6 +62,8 @@ Example with the tool "orphan_records"::
 
 	[typo3_site_directory]/typo3/sysext/core/bin/typo3 --help cleanup:orphanrecords
 
+
+..  _command-line-running-script-suggested-order-clean:
 
 Suggested order of clean up
 ---------------------------
@@ -96,6 +102,8 @@ you don't have to run the tests all over again.
         make sure nothing important is cleaned up.
 
 
+..  _command-line-running-script-nightly-reports-problems:
+
 Nightly reports of problems in the system
 -----------------------------------------
 
@@ -118,6 +126,8 @@ errors.
 You might also wish to disable tests like "deleted" which would report deleted
 records - something that might not warrant a warning, frankly speaking ...
 
+..  _command-line-running-script-example-script-checking:
+
 Example script for checking your installation
 ---------------------------------------------
 
@@ -129,6 +139,8 @@ Example script for checking your installation
     ./typo3/sysext/core/bin/typo3 cleanup:missingrelations -vv --dry-run
     ./typo3/sysext/core/bin/typo3 cleanup:flexforms -vv --dry-run
 
+
+..  _command-line-running-script-example-script-cleaning:
 
 Example script for cleaning your installation
 ---------------------------------------------

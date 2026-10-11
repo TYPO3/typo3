@@ -23,6 +23,8 @@ To use the backend module navigate to the :guilabel:`Content > Recycler` module:
 The records displayed depends on which page is selected in the page tree.
 
 
+..  _for-editors-filter-records:
+
 Filter records
 ==============
 
@@ -69,6 +71,8 @@ each record that has a language. Records for all languages show **[All]**.
     The language drop-down and the language of each record
 
 
+..  _for-editors-details-record:
+
 Details of a record
 ===================
 
@@ -88,6 +92,8 @@ The following details are displayed:
 *   The path to the record in the page tree.
 
 
+..  _for-editors-recovery-records:
+
 Recovery of records
 ===================
 
@@ -101,6 +107,8 @@ records and they are available again in the :guilabel:`Page` or
     A record is recovered with its previous visibility. If it was not hidden
     when it was deleted, it is visible in the frontend without any further action.
 
+
+..  _for-editors-delete-records-permanently:
 
 Delete records permanently
 ==========================

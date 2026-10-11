@@ -55,6 +55,8 @@ not be activated yet. Activate it as follows:
 
     Extension manager showing Fluid Styled Content extension
 
+..  _installation-next-step:
+
 Next step
 =========
 

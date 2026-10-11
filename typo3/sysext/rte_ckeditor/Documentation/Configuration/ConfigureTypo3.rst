@@ -26,6 +26,8 @@ override these settings through the page TSconfig.
 You can find a list of configuration properties in the :ref:`Page TSconfig
 reference, chapter RTE <t3tsref:pageTsRte>`.
 
+..  _config-typo3-page-tsconfig-relevant-settings-rte:
+
 Relevant Settings for `rte_ckeditor`
 ------------------------------------
 
@@ -57,6 +59,8 @@ Page TSconfig can be used to change:
         RTE.config.tt_content.bodytext.types.textmedia.preset = minimal
 
 
+..  _config-typo3-page-tsconfig-change-values:
+
 How to change values
 --------------------
 
@@ -71,6 +75,8 @@ Global Configuration
 
 Global Configuration is a system-wide general configuration.
 
+..  _config-typo3-global-configuration-relevant-settings-rte:
+
 Relevant Settings for `rte_ckeditor`
 ------------------------------------
 
@@ -81,6 +87,8 @@ By default, the presets "minimal", "default" and "full" are defined.
 
 If you add a new preset, you must add it to this array.
 
+
+..  _config-typo3-global-configuration-change-values:
 
 How to change values
 --------------------
@@ -104,6 +112,8 @@ You must either configure this in:
     }
 
 
+..  _config-typo3-global-configuration-view-settings:
+
 How to view settings
 --------------------
 
@@ -125,10 +135,14 @@ YAML
 Most of the configuration of `rte_ckeditor` will be done in a YAML file.
 
 
+..  _config-typo3-yaml-relevant-settings-rte:
+
 Relevant Settings for `rte_ckeditor`
 ------------------------------------
 
 See :ref:`config-ref`
+
+..  _config-typo3-yaml-change-values:
 
 How to change values
 --------------------
@@ -147,17 +161,23 @@ backend when edited. It is for example used to define that ``tt_content.bodytext
 with a rich text editor.
 
 
+..  _config-typo3-tca-relevant-settings-rte:
+
 Relevant Settings for `rte_ckeditor`
 ------------------------------------
 
 *   :ref:`t3tca:confval-text-enablerichtext`
 *   :ref:`t3tca:confval-text-richtextConfiguration`
 
+..  _config-typo3-tca-change-values:
+
 How to change values
 --------------------
 
 This must be done in an extension in :file:`Configuration/TCA`. Usually this is done within a custom sitepackage
 extension, see :ref:`best-practice-sitepackage`.
+
+..  _config-typo3-tca-view-settings:
 
 How to view settings
 --------------------

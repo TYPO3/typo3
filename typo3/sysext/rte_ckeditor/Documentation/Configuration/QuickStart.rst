@@ -9,6 +9,8 @@ Configuration Quickstart
 
 Here we explain, how to modify the existing configuration in a few simple steps.
 
+..  _config-quickstart-view-existing-configuration:
+
 View Existing Configuration
 ===========================
 
@@ -30,6 +32,8 @@ By default, TYPO3 is shipped with three configuration presets:
 *   default
 *   full
 *   minimal
+
+..  _config-quickstart-minimal-example:
 
 Minimal Example
 ===============

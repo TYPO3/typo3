@@ -49,6 +49,8 @@ site package's site set:
 ..  literalinclude:: _site_package_config.yaml
     :caption: EXT:my_site_package/Configuration/Sets/MySet/config.yaml
 
+..  _include-site-set-edit-settings:
+
 Edit the settings
 =================
 

@@ -10,6 +10,8 @@ Target group: **Administrators**
 
 This extension is part of the TYPO3 Core.
 
+..  _installation-composer:
+
 Installation with Composer
 ==========================
 
@@ -33,6 +35,8 @@ extension:
     composer require typo3/cms-sys-note
 
 The version installed depends on which version of the TYPO3 Core you are using.
+
+..  _installation-without-composer:
 
 Installation without Composer
 =============================

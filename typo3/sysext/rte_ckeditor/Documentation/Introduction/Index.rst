@@ -31,6 +31,8 @@ CKEditor is a :abbr:`WYSIWYG (what you see is what you get)` editor mostly writt
 in JavaScript, and is used in many systems due to its flexibility. There are hundreds
 of free open-source plugins for CKEditor to enhance the editing experience.
 
+..  _introduction-history:
+
 History
 =======
 
