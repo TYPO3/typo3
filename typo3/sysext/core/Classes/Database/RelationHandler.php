@@ -745,9 +745,9 @@ class RelationHandler
                         $insertFields = $this->completeOppositeUsageValues($tablename, $insertFields);
                     }
                     $connection->insert($MM_tableName, $insertFields);
-                    if ($this->MM_is_foreign) {
-                        $this->referenceIndexUpdater?->registerForUpdate($val['table'], (int)$val['id'], $this->getWorkspaceId());
-                    }
+                }
+                if ($this->MM_is_foreign) {
+                    $this->referenceIndexUpdater?->registerForUpdate($val['table'], (int)$val['id'], $this->getWorkspaceId());
                 }
             }
             // Delete all not-used relations:
