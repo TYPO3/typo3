@@ -21,6 +21,20 @@
       "sprite": "sprites/actions.svg#actions-archive",
       "bidi": false
     },
+    "actions-arrow-diagonal-collapse": {
+      "identifier": "actions-arrow-diagonal-collapse",
+      "category": "actions",
+      "svg": "svgs/actions/actions-arrow-diagonal-collapse.svg",
+      "sprite": "sprites/actions.svg#actions-arrow-diagonal-collapse",
+      "bidi": false
+    },
+    "actions-arrow-diagonal-expand": {
+      "identifier": "actions-arrow-diagonal-expand",
+      "category": "actions",
+      "svg": "svgs/actions/actions-arrow-diagonal-expand.svg",
+      "sprite": "sprites/actions.svg#actions-arrow-diagonal-expand",
+      "bidi": false
+    },
     "actions-arrow-down-alt": {
       "identifier": "actions-arrow-down-alt",
       "category": "actions",
@@ -833,11 +847,32 @@
       "sprite": "sprites/actions.svg#actions-close",
       "bidi": false
     },
+    "actions-cloud-check": {
+      "identifier": "actions-cloud-check",
+      "category": "actions",
+      "svg": "svgs/actions/actions-cloud-check.svg",
+      "sprite": "sprites/actions.svg#actions-cloud-check",
+      "bidi": false
+    },
+    "actions-cloud-close": {
+      "identifier": "actions-cloud-close",
+      "category": "actions",
+      "svg": "svgs/actions/actions-cloud-close.svg",
+      "sprite": "sprites/actions.svg#actions-cloud-close",
+      "bidi": false
+    },
     "actions-cloud-download": {
       "identifier": "actions-cloud-download",
       "category": "actions",
       "svg": "svgs/actions/actions-cloud-download.svg",
       "sprite": "sprites/actions.svg#actions-cloud-download",
+      "bidi": false
+    },
+    "actions-cloud-refresh": {
+      "identifier": "actions-cloud-refresh",
+      "category": "actions",
+      "svg": "svgs/actions/actions-cloud-refresh.svg",
+      "sprite": "sprites/actions.svg#actions-cloud-refresh",
       "bidi": false
     },
     "actions-cloud-slash": {
@@ -1106,6 +1141,13 @@
       "sprite": "sprites/actions.svg#actions-device-orientation-change",
       "bidi": false
     },
+    "actions-device-responsive": {
+      "identifier": "actions-device-responsive",
+      "category": "actions",
+      "svg": "svgs/actions/actions-device-responsive.svg",
+      "sprite": "sprites/actions.svg#actions-device-responsive",
+      "bidi": false
+    },
     "actions-device-tablet": {
       "identifier": "actions-device-tablet",
       "category": "actions",
@@ -1167,6 +1209,13 @@
       "category": "actions",
       "svg": "svgs/actions/actions-dice.svg",
       "sprite": "sprites/actions.svg#actions-dice",
+      "bidi": false
+    },
+    "actions-discard": {
+      "identifier": "actions-discard",
+      "category": "actions",
+      "svg": "svgs/actions/actions-discard.svg",
+      "sprite": "sprites/actions.svg#actions-discard",
       "bidi": false
     },
     "actions-document-add": {
@@ -1393,6 +1442,13 @@
       "sprite": "sprites/actions.svg#actions-eye-link",
       "bidi": false
     },
+    "actions-eye-slash": {
+      "identifier": "actions-eye-slash",
+      "category": "actions",
+      "svg": "svgs/actions/actions-eye-slash.svg",
+      "sprite": "sprites/actions.svg#actions-eye-slash",
+      "bidi": false
+    },
     "actions-eye": {
       "identifier": "actions-eye",
       "category": "actions",
@@ -1582,6 +1638,13 @@
       "sprite": "sprites/actions.svg#actions-form-insert-in",
       "bidi": false
     },
+    "actions-fullscreen-exit": {
+      "identifier": "actions-fullscreen-exit",
+      "category": "actions",
+      "svg": "svgs/actions/actions-fullscreen-exit.svg",
+      "sprite": "sprites/actions.svg#actions-fullscreen-exit",
+      "bidi": false
+    },
     "actions-fullscreen": {
       "identifier": "actions-fullscreen",
       "category": "actions",
@@ -1629,6 +1692,20 @@
       "category": "actions",
       "svg": "svgs/actions/actions-graduation-cap.svg",
       "sprite": "sprites/actions.svg#actions-graduation-cap",
+      "bidi": false
+    },
+    "actions-grip-horizontal": {
+      "identifier": "actions-grip-horizontal",
+      "category": "actions",
+      "svg": "svgs/actions/actions-grip-horizontal.svg",
+      "sprite": "sprites/actions.svg#actions-grip-horizontal",
+      "bidi": false
+    },
+    "actions-grip-vertical": {
+      "identifier": "actions-grip-vertical",
+      "category": "actions",
+      "svg": "svgs/actions/actions-grip-vertical.svg",
+      "sprite": "sprites/actions.svg#actions-grip-vertical",
       "bidi": false
     },
     "actions-hand-pointer": {
@@ -1727,6 +1804,20 @@
       "category": "actions",
       "svg": "svgs/actions/actions-key.svg",
       "sprite": "sprites/actions.svg#actions-key",
+      "bidi": false
+    },
+    "actions-layers": {
+      "identifier": "actions-layers",
+      "category": "actions",
+      "svg": "svgs/actions/actions-layers.svg",
+      "sprite": "sprites/actions.svg#actions-layers",
+      "bidi": false
+    },
+    "actions-library": {
+      "identifier": "actions-library",
+      "category": "actions",
+      "svg": "svgs/actions/actions-library.svg",
+      "sprite": "sprites/actions.svg#actions-library",
       "bidi": false
     },
     "actions-lightbulb-on": {
@@ -2583,6 +2674,13 @@
       "sprite": "sprites/actions.svg#actions-upload",
       "bidi": false
     },
+    "actions-user-edit": {
+      "identifier": "actions-user-edit",
+      "category": "actions",
+      "svg": "svgs/actions/actions-user-edit.svg",
+      "sprite": "sprites/actions.svg#actions-user-edit",
+      "bidi": false
+    },
     "actions-user-emulate": {
       "identifier": "actions-user-emulate",
       "category": "actions",
@@ -2716,6 +2814,20 @@
       "sprite": "sprites/actions.svg#actions-window-cog",
       "bidi": false
     },
+    "actions-window-maximize": {
+      "identifier": "actions-window-maximize",
+      "category": "actions",
+      "svg": "svgs/actions/actions-window-maximize.svg",
+      "sprite": "sprites/actions.svg#actions-window-maximize",
+      "bidi": false
+    },
+    "actions-window-minimize": {
+      "identifier": "actions-window-minimize",
+      "category": "actions",
+      "svg": "svgs/actions/actions-window-minimize.svg",
+      "sprite": "sprites/actions.svg#actions-window-minimize",
+      "bidi": false
+    },
     "actions-window-open": {
       "identifier": "actions-window-open",
       "category": "actions",
@@ -2742,6 +2854,41 @@
       "category": "actions",
       "svg": "svgs/actions/actions-workspace.svg",
       "sprite": "sprites/actions.svg#actions-workspace",
+      "bidi": false
+    },
+    "actions-zoom-fill": {
+      "identifier": "actions-zoom-fill",
+      "category": "actions",
+      "svg": "svgs/actions/actions-zoom-fill.svg",
+      "sprite": "sprites/actions.svg#actions-zoom-fill",
+      "bidi": false
+    },
+    "actions-zoom-fit": {
+      "identifier": "actions-zoom-fit",
+      "category": "actions",
+      "svg": "svgs/actions/actions-zoom-fit.svg",
+      "sprite": "sprites/actions.svg#actions-zoom-fit",
+      "bidi": false
+    },
+    "actions-zoom-in": {
+      "identifier": "actions-zoom-in",
+      "category": "actions",
+      "svg": "svgs/actions/actions-zoom-in.svg",
+      "sprite": "sprites/actions.svg#actions-zoom-in",
+      "bidi": false
+    },
+    "actions-zoom-out": {
+      "identifier": "actions-zoom-out",
+      "category": "actions",
+      "svg": "svgs/actions/actions-zoom-out.svg",
+      "sprite": "sprites/actions.svg#actions-zoom-out",
+      "bidi": false
+    },
+    "actions-zoom-reset": {
+      "identifier": "actions-zoom-reset",
+      "category": "actions",
+      "svg": "svgs/actions/actions-zoom-reset.svg",
+      "sprite": "sprites/actions.svg#actions-zoom-reset",
       "bidi": false
     },
     "apps-clipboard-images": {
