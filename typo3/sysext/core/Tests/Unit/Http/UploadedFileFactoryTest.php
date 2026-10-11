@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Http;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Http\Stream;
 use TYPO3\CMS\Core\Http\UploadedFileFactory;
@@ -48,16 +49,28 @@ final class UploadedFileFactoryTest extends UnitTestCase
         self::assertSame('text/html', $uploadedFile->getClientMediaType());
     }
 
+    public static function uploadedFileSizeDataProvider(): array
+    {
+        return [
+            'size inferred from stream' => [null, 5],
+            'explicit zero size' => [0, 0],
+            'explicit size differs from stream length' => [42, 42],
+        ];
+    }
+
     #[Test]
-    public function createUploadedFileCreateSizeFromStreamSize(): void
+    #[DataProvider('uploadedFileSizeDataProvider')]
+    public function createUploadedFilePreservesStreamAndUsesProvidedSizeOrStreamSize(?int $size, int $expectedSize): void
     {
         $stream = new Stream('php://memory', 'rw');
         $stream->write('12345');
 
         $factory = new UploadedFileFactory();
-        $uploadedFile = $factory->createUploadedFile($stream);
+        $uploadedFile = $factory->createUploadedFile($stream, $size);
 
-        self::assertSame(5, $uploadedFile->getSize());
+        self::assertSame($expectedSize, $uploadedFile->getSize());
+        self::assertSame($stream, $uploadedFile->getStream());
+        self::assertSame('12345', (string)$uploadedFile->getStream());
     }
 
     #[Test]
@@ -70,8 +83,6 @@ final class UploadedFileFactoryTest extends UnitTestCase
         $stream->detach();
 
         $factory = new UploadedFileFactory();
-        $uploadedFile = $factory->createUploadedFile($stream);
-
-        self::assertSame(3, $uploadedFile->getSize());
+        $factory->createUploadedFile($stream);
     }
 }
