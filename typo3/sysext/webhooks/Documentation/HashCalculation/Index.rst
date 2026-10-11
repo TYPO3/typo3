@@ -9,7 +9,7 @@ Hash calculation
 With every webhook request, the following HTTP headers are sent:
 
 ..  code-block:: plaintext
-    :caption: HTTP Header of a webhooks
+    :caption: HTTP headers of a webhook
 
     Content-Type: application/json
     Webhook-Signature-Algo: sha256
@@ -34,6 +34,6 @@ manipulated.
 To verify this on the receiving end, build the hash with the same algorithm and
 secret and compare it with the hash that was sent with the request.
 
-The hash is not meant to be used as a security mechanism, but as a way to verify
-that the request was sent from the TYPO3 instance.
+The hash is not meant to be used as a security mechanism, but as a way to
+verify that the request was sent from the TYPO3 instance.
 

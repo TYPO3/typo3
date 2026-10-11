@@ -9,7 +9,7 @@ Triggers
 The TYPO3 Core currently provides the following triggers for webhooks:
 
 Page Modification
-    Triggers when a page is created, updated or deleted
+    Triggers when a page is created, updated, or deleted
 File Added
     Triggers when a file is added
 File Updated
@@ -47,7 +47,8 @@ The following example shows how to create a simple webhook message for the
 ..  literalinclude:: _snippets/_FolderAddedMessage.php
     :caption: EXT:my_extension/Webhooks/Message/FolderAddedMessage.php
 
-#.  Create a final class implementing the :php-short:`\TYPO3\CMS\Core\Messaging\WebhookMessageInterface`.
+#.  Create a final class implementing the
+    :php-short:`\TYPO3\CMS\Core\Messaging\WebhookMessageInterface`.
 #.  Add the :php-short:`\TYPO3\CMS\Core\Attribute\WebhookMessage` attribute to
     the class. The attribute requires the
     following information:
@@ -57,38 +58,40 @@ The following example shows how to create a simple webhook message for the
         is used to describe the trigger in the TYPO3 backend.
     *   `method` (optional): The name of the static factory method that creates
         the message from the triggering event. Defaults to `createFromEvent`.
-#.  Add a static method `createFromEvent()` (or the method name given via `method`)
-    that creates a new instance of the message from the event you want to use as
-    a trigger.
-#.  Add a method `jsonSerialize()` that returns an array with the data that should be send with the webhook.
+#.  Add a static method `createFromEvent()` (or the method name given via
+    `method`) that creates a new instance of the message from the event you
+    want to use as a trigger.
+#.  Add a method `jsonSerialize()` that returns an array with the data that
+    should be sent with the webhook.
 
 ..  _custom-triggers-events-services.yaml:
 
 Use :file:`Services.yaml` instead of the PHP attribute
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Instead of the PHP attribute the :file:`Services.yaml` can be used to define the
-webhook message. The following example shows how to define the webhook message
-from the example above in the :file:`Services.yaml`:
+Instead of the PHP attribute the :file:`Services.yaml` can be used to define
+the webhook message. The following example shows how to define the webhook
+message from the example above in the :file:`Services.yaml`:
 
 ..  literalinclude:: _snippets/_Services.yaml
-    :caption: EXT: my_extension/Configuration/Services.yaml
+    :caption: EXT:my_extension/Configuration/Services.yaml
 
 ..  _custom-triggers-hooks:
 
 Trigger by hooks or custom code
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-In case a trigger is not provided by the TYPO3 Core or a PSR-14 event is not available,
-it is possible to create a custom trigger - for example by using a TYPO3 hook.
+In case a trigger is not provided by the TYPO3 Core or a PSR-14 event is not
+available, it is possible to create a custom trigger - for example by using a
+TYPO3 hook.
 
-The message itself should look similar to the example above, but does not need the
-:php:`createFromEvent()` method.
+The message itself should look similar to the example above, but does not need
+the :php:`createFromEvent()` method.
 
 Instead, the custom code (hook implementation) will create the message
 and dispatch it.
 
-Example hook implementation for a datahandler hook
+Example hook implementation for a DataHandler hook
 (see :php:`\TYPO3\CMS\Webhooks\Listener\PageModificationListener`):
 
 ..  literalinclude:: _snippets/_PageModificationListener.php
