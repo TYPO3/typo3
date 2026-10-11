@@ -736,6 +736,54 @@ final class DatabaseRowInitializeNewTest extends UnitTestCase
     }
 
     #[Test]
+    public function addDataSetsTypeSpecificDefaultOfZero(): void
+    {
+        $input = [
+            'command' => 'new',
+            'tableName' => 'tt_content',
+            'vanillaUid' => 23,
+            'neighborRow' => null,
+            'inlineChildChildUid' => null,
+            'isInlineChild' => false,
+            'databaseRow' => [],
+            'defaultValues' => [
+                'tt_content' => [
+                    'CType' => 'textmedia',
+                ],
+            ],
+            'userTsConfig' => [
+                'TCAdefaults.' => [
+                    'tt_content.' => [
+                        'header_layout' => '1',
+                        'header_layout.' => [
+                            'types.' => [
+                                'textmedia' => '0',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'processedTca' => [
+                'ctrl' => [
+                    'type' => 'CType',
+                ],
+                'columns' => [
+                    'header_layout' => [],
+                ],
+                'types' => [
+                    'textmedia' => ['showitem' => 'header_layout'],
+                ],
+            ],
+        ];
+        $expected = [
+            'header_layout' => '0',
+            'pid' => 23,
+        ];
+        $result = new DatabaseRowInitializeNew()->addData($input);
+        self::assertSame($expected, $result['databaseRow']);
+    }
+
+    #[Test]
     public function addDataUsesFieldLevelDefaultWhenNoTypeSpecificDefaultExists(): void
     {
         $input = [
