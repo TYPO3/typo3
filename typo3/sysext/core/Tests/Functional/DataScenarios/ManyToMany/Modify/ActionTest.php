@@ -54,18 +54,16 @@ final class ActionTest extends AbstractActionTestCase
     #[Test]
     public function changeGroupMM1SortingOnForeignSide(): void
     {
-        // @todo: Needs patch. Import data set should have sorting 1 for 29-298 in mm, then DH needs to
-        //        be fixed to trigger update of refindex properly on local-side resort. Workspaces may or
-        //        may not need adaption as well, at least the import has a dupe sorting as well.
-        self::markTestSkipped('currently disabled since DH does not update refindex properly');
-        parent::changeGroupMM1SortingOnForeignSide(); // @phpstan-ignore-line
+        $this->getConnectionPool()->getConnectionForTable('group_mm_1_relations_mm')
+            ->update('group_mm_1_relations_mm', ['sorting' => 1], ['uid_local' => 29, 'uid_foreign' => 298]);
+        parent::changeGroupMM1SortingOnForeignSide();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/changeGroupMM1SortingOnForeignSide.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, (new StructureHasRecordConstraint())
             ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField(self::FIELD_GROUP_MM_1_FOREIGN)
-            ->setTable(self::TABLE_TEST_MM)->setField('title')->setValues('Surf A', 'Surf B'));
+            ->setTable(self::TABLE_TEST_MM)->setField('title')->setValues('Surf B', 'Surf A'));
     }
 
     #[Test]

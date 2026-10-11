@@ -189,18 +189,16 @@ final class ActionTest extends AbstractActionTestCase
     #[Test]
     public function changeCategoryRelationSorting(): void
     {
-        // @todo: Needs patch. Import data set should have sorting 1 for 29-298 in mm, then DH needs to
-        //        be fixed to trigger update of refindex properly on local-side resort. Workspaces may or
-        //        may not need adaption as well, at least the import has a dupe sorting as well.
-        self::markTestSkipped('currently disabled since DH does not update refindex properly');
-        parent::changeCategoryRelationSorting(); // @phpstan-ignore-line
+        $this->getConnectionPool()->getConnectionForTable('sys_category_record_mm')
+            ->update('sys_category_record_mm', ['sorting' => 1], ['uid_local' => 29, 'uid_foreign' => 298]);
+        parent::changeCategoryRelationSorting();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/changeCategoryRelationSorting.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, (new StructureHasRecordConstraint())
             ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField('categories')
-            ->setTable(self::TABLE_Category)->setField('title')->setValues('Category A', 'Category B'));
+            ->setTable(self::TABLE_Category)->setField('title')->setValues('Category B', 'Category A'));
     }
 
     #[Test]
