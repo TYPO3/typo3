@@ -34,6 +34,8 @@ packages constants.typoscript and setup.typoscript:
 This is the recommended way as the import of TypoScript can be kept under
 version control this way.
 
+..  _include-default-typoscript-alternative:
+
 Alternative: Include the TypoScript set in the root TypoScript record
 =====================================================================
 
@@ -75,6 +77,8 @@ your website's visual style. This TypoScript set is optional, as it is common fo
 override the basic styling.
 
 Save the TypoScript record by using the save button at the top of the module.
+
+..  _include-default-typoscript-next-step:
 
 Next step
 =========

@@ -6,6 +6,8 @@
 Configuration Examples
 ======================
 
+..  _config-examples-use-different-preset:
+
 How do I use a different preset?
 ================================
 
@@ -40,6 +42,8 @@ with ctype="text":
 For more examples, see :ref:`t3tsref:pageTsRte` in "TSconfig Reference".
 
 
+..  _config-examples-create-own-preset:
+
 How do I create my own preset?
 ==============================
 
@@ -61,6 +65,8 @@ In :file:`Configuration/RTE/MyPreset.yaml`, create your configuration, for examp
     :caption: EXT:my_sitepackage/Configuration/RTE/MyPreset.yaml
 
 See also the note for :option:`editor.config.contentsCss`.
+
+..  _config-examples-customize-toolbar:
 
 How do I customize the toolbar?
 ===============================
@@ -92,6 +98,8 @@ example:
     :language: yaml
     :caption: EXT:my_sitepackage/Configuration/RTE/MyPreset.yaml
 
+
+..  _config-examples-allow-specific-tag:
 
 How do I allow a specific tag?
 ==============================
@@ -154,6 +162,8 @@ In order to use the font plugin, the RTE configuration needs to be adapted:
 More information can be found in the
 `official documentation of CKEditor <https://ckeditor.com/docs/ckeditor5/latest/features/font.html>`__.
 
+..  _config-examples-enable-fullscreen-plugin:
+
 How do I enable the fullscreen plugin?
 ======================================
 
@@ -180,6 +190,8 @@ YAML file.
 There are several configuration options available. Please see :ref:`config-linkbrowser` for
 the detailed reference, and :t3src:`rte_ckeditor/Configuration/RTE/Editor/LinkBrowser.yaml`
 for an example configuration.
+
+..  _config-examples-create-custom-plugin:
 
 How do I create a custom plugin?
 ================================

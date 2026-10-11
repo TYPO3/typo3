@@ -47,6 +47,8 @@ sitepackage to the file
 :file:`EXT:my_sitepackage/Configuration/RTE/MyConfiguration.yaml`.
 
 
+..  _config-best-practices-check-full-yaml:
+
 Check TYPO3's Core Full.yaml to gain insight into a more extensive configuration
 ================================================================================
 
@@ -55,6 +57,8 @@ It acts as an example.
 
 :file:`typo3/sysext/rte_ckeditor/Configuration/RTE/Full.yaml`
 
+
+..  _config-best-practices-core-includes:
 
 Use Core includes
 =================

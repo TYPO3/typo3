@@ -7,6 +7,8 @@ Configuration Concepts
 ======================
 
 
+..  _config-concepts-configuration-overview:
+
 Configuration Overview
 ======================
 
@@ -46,12 +48,16 @@ has everything preset (see :ref:`t3tsref:parsefunc`).
 Editor Configuration
 ====================
 
+..  _config-editor-yaml:
+
 YAML
 ----
 
 TYPO3 is using a custom :ref:`YAML API <t3coreapi:yaml-api>` for handling YAML
 in TYPO3 based on the Symfony YAML package. Therefore environment variables
 can be used.
+
+..  _config-editor-yaml-basics:
 
 YAML Basics
 ~~~~~~~~~~~
@@ -222,6 +228,8 @@ You can read more about
 
 ..  todo: diagram rte -> DB -> RTE
 
+..  _config-rte-transformations-brief-dive-history:
+
 A Brief Dive Into History
 -------------------------
 
@@ -298,6 +306,8 @@ typolink logic, the master for generating a link in the TYPO3 Frontend rendering
 ..  todo: [DIAGRAM DB => FE]
 
 
+..  _config-frontend-typoscript:
+
 TypoScript
 ----------
 
@@ -329,6 +339,8 @@ functionality. The shipped TypoScript code looks like this:
 If you already use Fluid Styled Content and CSS Styled Content and
 you haven’t touched that area of TypoScript yet, you’re good to go
 by including the TypoScript file.
+
+..  _config-frontend-fluid:
 
 Fluid
 -----

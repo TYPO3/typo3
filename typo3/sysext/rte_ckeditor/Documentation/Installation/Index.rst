@@ -12,6 +12,8 @@ This extension is part of the TYPO3 Core.
 ..  contents:: Table of contents
     :local:
 
+..  _installation-composer:
+
 Installation with Composer
 ==========================
 
@@ -35,6 +37,8 @@ the extension:
     composer require typo3/cms-rte-ckeditor
 
 The given version depends on the version of the TYPO3 Core you are using.
+
+..  _installation-without-composer:
 
 Installation without Composer
 =============================

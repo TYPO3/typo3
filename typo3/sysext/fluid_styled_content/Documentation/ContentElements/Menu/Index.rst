@@ -68,6 +68,8 @@ shown.
 In case no pages are selected, the menu will be rendered from the
 current page where the menu is put on.
 
+..  _content-element-menu-styling-current-page:
+
 Styling of the current page in a menu
 ======================================
 

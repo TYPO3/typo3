@@ -20,14 +20,20 @@ Site configuration
 The core comes with the following site settings for redirects which can be
 configured per site.
 
+..  _site-configuration-backend-module:
+
 Configuration via backend module
 ---------------------------------
 
 The redirect settings can be configured in the backend via
 :guilabel:`Site Management > Settings`.
 
+..  _site-configuration-yaml-files:
+
 Configuration via YAML files
 -----------------------------
+
+..  _site-configuration-yaml-files-site-sets:
 
 Sites using site sets (TYPO3 v13+)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -45,6 +51,8 @@ For sites using site sets, add the settings to
 Alternatively, you can define these settings in your site package at
 :file:`mysitepackage/Configuration/Sets/mysiteset/settings.yaml` to provide
 defaults for all sites using this site set.
+
+..  _site-configuration-yaml-files-legacy:
 
 Legacy site configuration (TYPO3 v12 and earlier)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -64,6 +72,8 @@ In legacy installations without site sets, add the settings to
 .. hint::
    In older installations, the file is found in
    :file:`typo3conf/sites/<site>/config.yaml`.
+
+..  _site-configuration-available-settings:
 
 Available settings
 ------------------

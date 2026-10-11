@@ -37,6 +37,8 @@ the extension:
 
 The given version depends on the version of the TYPO3 Core you are using.
 
+..  _installation-without-composer:
+
 Installation without Composer
 =============================
 

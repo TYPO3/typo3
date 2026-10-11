@@ -5,6 +5,8 @@
 Known problems
 ==============
 
+..  _known-problems-hyphenated-words:
+
 Searching for hy-phen-at-ed words
 =================================
 When using the fulltext index feature, searching for words with hyphens in

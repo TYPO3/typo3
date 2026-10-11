@@ -68,6 +68,8 @@ Based on the FLUIDTEMPLATE content object (cObj)
       <f:cObject typoscriptObjectPath="lib.dynamicContent" data="{colPos: '0'}" />
    </f:section>
 
+..  _inserting-content-page-template-next-step:
+
 Next step
 =========
 

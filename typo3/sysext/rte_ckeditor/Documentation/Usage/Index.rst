@@ -20,6 +20,8 @@ For information about working with content elements, see the section
 The following examples are done using the
 preset which is installed with the Introduction Package.
 
+..  _usage-example-bold:
+
 Example: Use bold
 =================
 
@@ -28,6 +30,8 @@ Select text and click on the **B** (for bold) button:
 ..  image:: images/rte_bold.png
     :class: with-shadow
 
+
+..  _usage-example-create-link:
 
 Example: Create a link
 ======================

@@ -219,6 +219,8 @@ Page links
     Defines the maximum number of result pages shown for
     :typoscript:`pagination_type = slidingWindow`.
 
+..  _typoscript-plugin-default-free-index:
+
 Default free index UID list
 ---------------------------
 
