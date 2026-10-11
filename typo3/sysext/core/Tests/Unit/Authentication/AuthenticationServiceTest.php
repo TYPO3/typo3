@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Authentication;
 
+use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\Log\NullLogger;
@@ -28,15 +29,10 @@ use TYPO3\CMS\Core\Tests\Functional\Authentication\Fixtures\AnyUserAuthenticatio
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
+#[BackupGlobals(true)]
 final class AuthenticationServiceTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
-
-    protected function tearDown(): void
-    {
-        unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']);
-        parent::tearDown();
-    }
 
     public static function writeAttemptLogPreferenceDataProvider(): array
     {

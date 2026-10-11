@@ -17,23 +17,19 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Session;
 
+use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Http\CookieScope;
 use TYPO3\CMS\Core\Session\UserSession;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
+#[BackupGlobals(true)]
 final class UserSessionTest extends UnitTestCase
 {
     public function setUp(): void
     {
         parent::setUp();
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '4408d27a916d51e624b69af3554f516dbab61037a9f7b9fd6f81b4d3bedeccb6';
-    }
-
-    public function tearDown(): void
-    {
-        unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']);
-        parent::tearDown();
     }
 
     #[Test]

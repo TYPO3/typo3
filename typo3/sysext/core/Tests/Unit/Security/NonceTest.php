@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Security;
 
+use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Security\Nonce;
@@ -24,18 +25,13 @@ use TYPO3\CMS\Core\Security\NonceException;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
+#[BackupGlobals(true)]
 final class NonceTest extends UnitTestCase
 {
     public function setUp(): void
     {
         parent::setUp();
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '4408d27a916d51e624b69af3554f516dbab61037a9f7b9fd6f81b4d3bedeccb6';
-    }
-
-    public function tearDown(): void
-    {
-        unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']);
-        parent::tearDown();
     }
 
     public static function nonceIsCreatedDataProvider(): \Generator
