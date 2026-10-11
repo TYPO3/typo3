@@ -78,6 +78,10 @@ final readonly class SiteSettingsProvider implements SettingsProviderInterface
         /** @var SettingValue[] $legacySettings */
         $legacySettings = [];
         foreach ($currentDefinitions as $definition) {
+            // Nothing left to find, skip probing the remaining definitions
+            if ($treeSettings === []) {
+                break;
+            }
             if (!ArrayUtility::isValidPath($treeSettings, $definition->key, '.')) {
                 continue;
             }
