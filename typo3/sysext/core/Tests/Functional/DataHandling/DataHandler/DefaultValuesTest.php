@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\DataHandler;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
@@ -390,5 +391,52 @@ final class DefaultValuesTest extends FunctionalTestCase
 
         // Should use TCA default
         self::assertSame($textRecord['header_layout'], 0);
+    }
+
+    public static function recordTypeDataProvider(): array
+    {
+        return [
+            'record type given' => [['CType' => 'text']],
+            'record type omitted, default type "text" is used' => [[]],
+        ];
+    }
+
+    /**
+     * imageborder is not part of the showitem of CType "text", so the
+     * sub-schema of that type does not contain it.
+     */
+    #[DataProvider('recordTypeDataProvider')]
+    #[Test]
+    public function defaultValueFromTcaIsAppliedToFieldOutsideShowitemOfRecordType(array $recordTypeData): void
+    {
+        $GLOBALS['TCA']['tt_content']['columns']['imageborder']['config']['default'] = 1;
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+
+        $map = $this->actionService->createNewRecord('tt_content', 88, $recordTypeData + [
+            'header' => 'Field outside showitem',
+        ]);
+        $newContentRecord = BackendUtility::getRecord('tt_content', reset($map['tt_content']));
+
+        self::assertSame(1, (int)$newContentRecord['imageborder']);
+    }
+
+    /**
+     * imageborder is not part of the showitem of CType "text", so the
+     * sub-schema of that type does not contain it.
+     */
+    #[DataProvider('recordTypeDataProvider')]
+    #[Test]
+    public function defaultValueFromPageTSconfigIsAppliedToFieldOutsideShowitemOfRecordType(array $recordTypeData): void
+    {
+        $this->actionService->modifyRecord('pages', 88, [
+            'TSconfig' => chr(10) . 'TCAdefaults.tt_content.imageborder = 1',
+        ]);
+
+        $map = $this->actionService->createNewRecord('tt_content', 88, $recordTypeData + [
+            'header' => 'Field outside showitem',
+        ]);
+        $newContentRecord = BackendUtility::getRecord('tt_content', reset($map['tt_content']));
+
+        self::assertSame(1, (int)$newContentRecord['imageborder']);
     }
 }

@@ -203,4 +203,32 @@ final class ColumnsOverridesTest extends FunctionalTestCase
         // The columnsOverrides default should have been applied
         self::assertEquals(5, $record['header_layout']);
     }
+
+    #[Test]
+    public function newFieldArrayAppliesColumnsOverridesDefaultOfPassthroughField(): void
+    {
+        $backendUser = $this->setUpBackendUser(1);
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
+
+        // subheader is part of the showitem of CType "text" via the headers palette
+        $GLOBALS['TCA']['tt_content']['columns']['subheader']['config'] = ['type' => 'passthrough'];
+        $GLOBALS['TCA']['tt_content']['types']['text']['columnsOverrides']['subheader']['config']['default'] = 'from columnsOverrides';
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+
+        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+        $dataHandler->start([
+            'tt_content' => [
+                'NEW1' => [
+                    'pid' => 1,
+                    'CType' => 'text',
+                    'header' => 'Test with passthrough default',
+                ],
+            ],
+        ], [], $backendUser);
+        $dataHandler->process_datamap();
+
+        $record = BackendUtility::getRecord('tt_content', $dataHandler->substNEWwithIDs['NEW1']);
+
+        self::assertSame('from columnsOverrides', $record['subheader']);
+    }
 }
