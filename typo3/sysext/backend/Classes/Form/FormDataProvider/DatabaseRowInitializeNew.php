@@ -360,7 +360,7 @@ class DatabaseRowInitializeNew implements FormDataProviderInterface
                     // If we have a matching type-specific configuration, merge it
                     if (!empty($typeSpecificConfiguration[$recordType . '.']) && is_array($typeSpecificConfiguration[$recordType . '.'])) {
                         ArrayUtility::mergeRecursiveWithOverrule($fieldDefault, $typeSpecificConfiguration[$recordType . '.']);
-                    } elseif (!empty($typeSpecificConfiguration[$recordType])) {
+                    } elseif (isset($typeSpecificConfiguration[$recordType])) {
                         // Simple value (not array)
                         $mergedDefaults[$fieldName] = $typeSpecificConfiguration[$recordType];
                         continue;
