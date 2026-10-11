@@ -110,13 +110,31 @@ final class CacheTagsAttributeTest extends UnitTestCase
         $response = $middleware->process($request, $requestHandlerMock);
         $GLOBALS['TYPO3_CONF_VARS']['FE']['debug'] = false;
 
-        self::assertTrue($response->hasHeader('X-TYPO3-Cache-Tags'));
-        self::assertTrue($response->hasHeader('X-TYPO3-Cache-Tags-1'));
-        self::assertTrue($response->hasHeader('X-TYPO3-Cache-Tags-2'));
-        self::assertTrue($response->hasHeader('X-TYPO3-Cache-Tags-3'));
-        self::assertTrue($response->hasHeader('X-TYPO3-Cache-Tags-3'));
-        self::assertTrue($response->hasHeader('X-TYPO3-Cache-Tags-5'));
-        self::assertTrue(strlen($response->getHeaderLine('X-TYPO3-Cache-Tags')) < 8000);
+        $headerNames = array_values(array_filter(
+            array_keys($response->getHeaders()),
+            static fn(string $name): bool => str_starts_with($name, 'X-TYPO3-Cache-Tags')
+        ));
+        self::assertSame([
+            'X-TYPO3-Cache-Tags',
+            'X-TYPO3-Cache-Tags-1',
+            'X-TYPO3-Cache-Tags-2',
+            'X-TYPO3-Cache-Tags-3',
+            'X-TYPO3-Cache-Tags-4',
+            'X-TYPO3-Cache-Tags-5',
+        ], $headerNames);
+
+        $actualTags = [];
+        foreach ($headerNames as $headerName) {
+            $headerValue = $response->getHeaderLine($headerName);
+            self::assertLessThan(8000, strlen($headerValue));
+            array_push($actualTags, ...explode(' ', $headerValue));
+        }
+        $expectedTags = array_map(
+            static fn(int $n): string => sprintf('tx_meineextension_domain_model_mitglied_%d', $n),
+            range(0, 1000)
+        );
+        sort($expectedTags);
+        self::assertSame($expectedTags, $actualTags);
     }
 
 }
