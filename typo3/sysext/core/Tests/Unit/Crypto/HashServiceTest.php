@@ -61,6 +61,42 @@ final class HashServiceTest extends UnitTestCase
         self::assertSame(strlen($hmac), $algo->length());
     }
 
+    public static function expectedHmacDataProvider(): \Generator
+    {
+        yield 'SHA1' => [HashAlgo::SHA1, '594c3e0dad9f077467256ef067150015814e0ecf'];
+        yield 'SHA256' => [HashAlgo::SHA256, 'e1f1d5241cf6fae654fcfe053ef48de41e54222e0b7134bc74e754fd96d95987'];
+        yield 'SHA3-256' => [HashAlgo::SHA3_256, '3a0b08d60c86c5cbb9545c7ba093d0f128511080e151f8a013456532dbb0362f'];
+    }
+
+    #[Test]
+    #[DataProvider('expectedHmacDataProvider')]
+    public function hmacReturnsExpectedHash(HashAlgo $algo, string $expectedHash): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 'installation-key';
+        self::assertSame($expectedHash, $this->subject->hmac('message', 'additional-secret', $algo));
+        self::assertTrue($this->subject->validateHmac('message', 'additional-secret', $expectedHash, $algo));
+    }
+
+    public static function changedHmacInputDataProvider(): \Generator
+    {
+        yield 'message changed' => ['changed-message', 'additional-secret', 'installation-key'];
+        yield 'additional secret changed' => ['message', 'changed-secret', 'installation-key'];
+        yield 'installation key changed' => ['message', 'additional-secret', 'changed-key'];
+    }
+
+    /**
+     * @param non-empty-string $additionalSecret
+     */
+    #[Test]
+    #[DataProvider('changedHmacInputDataProvider')]
+    public function validateHmacRejectsChangedInput(string $input, string $additionalSecret, string $encryptionKey): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 'installation-key';
+        $hash = $this->subject->hmac('message', 'additional-secret');
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = $encryptionKey;
+        self::assertFalse($this->subject->validateHmac($input, $additionalSecret, $hash));
+    }
+
     #[Test]
     #[DataProvider('hashAlgoDataProvider')]
     public function hmacReturnsEqualHashesForEqualInput(HashAlgo $algo): void
