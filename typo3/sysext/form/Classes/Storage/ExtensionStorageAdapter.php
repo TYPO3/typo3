@@ -168,10 +168,6 @@ class ExtensionStorageAdapter extends AbstractFileStorageAdapter implements Stor
                 continue;
             }
 
-            if (!$this->hasValidFileExtension($identifier)) {
-                continue;
-            }
-
             $readOnly = !$this->storageConfiguration->isAllowedToSaveToExtensionPaths();
             $formMetadata = $formMetadata->withReadOnly($readOnly);
 
@@ -228,7 +224,7 @@ class ExtensionStorageAdapter extends AbstractFileStorageAdapter implements Stor
     }
 
     /**
-     * Retrieves yaml files from extension folders for further processing.
+     * Retrieves *.form.yaml files from extension folders for further processing.
      * At this time it's not determined yet, whether these files contain form data.
      *
      * @return string[]
@@ -238,7 +234,7 @@ class ExtensionStorageAdapter extends AbstractFileStorageAdapter implements Stor
         $filesFromExtensionFolders = [];
         foreach ($this->getAccessibleExtensionFolders() as $relativePath => $fullPath) {
             foreach (new \DirectoryIterator($fullPath) as $fileInfo) {
-                if ($fileInfo->getExtension() !== 'yaml') {
+                if (!$fileInfo->isFile() || !$this->hasValidFileExtension($fileInfo->getFilename())) {
                     continue;
                 }
                 $filesFromExtensionFolders[] = $relativePath . $fileInfo->getFilename();

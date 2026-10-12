@@ -17,12 +17,17 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Functional\Storage;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Form\Domain\Configuration\PersistenceConfigurationService;
+use TYPO3\CMS\Form\Domain\DTO\SearchCriteria;
 use TYPO3\CMS\Form\Domain\ValueObject\FormIdentifier;
+use TYPO3\CMS\Form\Mvc\Configuration\YamlSource;
 use TYPO3\CMS\Form\Mvc\Persistence\Exception\PersistenceManagerException;
 use TYPO3\CMS\Form\Storage\ExtensionStorageAdapter;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -42,6 +47,8 @@ final class ExtensionStorageAdapterFunctionalTest extends FunctionalTestCase
         parent::setUp();
         $this->importCSVDataSet(__DIR__ . '/Fixtures/be_users.csv');
         $this->setUpBackendUser(1);
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest()
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
     }
 
     protected function tearDown(): void
@@ -65,25 +72,19 @@ final class ExtensionStorageAdapterFunctionalTest extends FunctionalTestCase
     #[DataProvider('readThrowsExceptionWhenFormDefinitionHasInvalidFileExtensionDataProvider')]
     public function readThrowsExceptionWhenFormDefinitionHasInvalidFileExtension(string $identifier, ?int $exceptionCode): void
     {
-        $request = new ServerRequest()
-            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
-        $GLOBALS['TYPO3_REQUEST'] = $request;
-
         if ($exceptionCode !== null) {
             $this->expectException(PersistenceManagerException::class);
             $this->expectExceptionCode($exceptionCode);
         }
 
         $subject = $this->get(ExtensionStorageAdapter::class);
-        $formData = $subject->read(new FormIdentifier($identifier), $request);
+        $formData = $subject->read(new FormIdentifier($identifier), $GLOBALS['TYPO3_REQUEST']);
         self::assertStringStartsWith('contact-form', $formData->identifier);
     }
 
     #[Test]
     public function deleteRemovesFormDefinitionFromPrivateExtensionPath(): void
     {
-        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest()
-            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $deletableForm = GeneralUtility::getFileAbsFileName(self::DELETABLE_FORM);
         copy(
             GeneralUtility::getFileAbsFileName('EXT:form_storage_tests/Resources/Private/Forms/ContactForm.form.yaml'),
@@ -93,5 +94,51 @@ final class ExtensionStorageAdapterFunctionalTest extends FunctionalTestCase
         $this->get(ExtensionStorageAdapter::class)->delete(new FormIdentifier(self::DELETABLE_FORM));
 
         self::assertFileDoesNotExist($deletableForm);
+    }
+
+    #[Test]
+    #[AllowMockObjectsWithoutExpectations]
+    public function retrieveYamlFilesFromExtensionFoldersSkipsFilesWithoutFormDefinitionFileExtension(): void
+    {
+        $subject = $this->getAccessibleMock(
+            ExtensionStorageAdapter::class,
+            null,
+            [
+                $this->get(YamlSource::class),
+                $this->get(ResourceFactory::class),
+                $this->get(PersistenceConfigurationService::class),
+                $this->get('cache.runtime'),
+            ],
+        );
+        self::assertSame(
+            ['EXT:form_storage_tests/Resources/Private/Forms/ContactForm.form.yaml'],
+            $subject->_call('retrieveYamlFilesFromExtensionFolders')
+        );
+    }
+
+    #[Test]
+    public function findAllOnlyListsFilesWithFormDefinitionFileExtension(): void
+    {
+        $subject = $this->get(ExtensionStorageAdapter::class);
+        $persistenceIdentifiers = array_map(
+            static fn($formMetadata): ?string => $formMetadata->persistenceIdentifier,
+            $subject->findAll(new SearchCriteria())
+        );
+        self::assertSame(['EXT:form_storage_tests/Resources/Private/Forms/ContactForm.form.yaml'], $persistenceIdentifiers);
+    }
+
+    public static function existsByFormIdentifierOnlyConsidersFilesWithFormDefinitionFileExtensionDataProvider(): iterable
+    {
+        yield 'form definition in *.form.yaml file' => ['contact-form', true];
+        yield 'form definition in *.yaml file' => ['contact-form-with-type', false];
+        yield 'yaml file without form type' => ['contact-form-without-type', false];
+    }
+
+    #[Test]
+    #[DataProvider('existsByFormIdentifierOnlyConsidersFilesWithFormDefinitionFileExtensionDataProvider')]
+    public function existsByFormIdentifierOnlyConsidersFilesWithFormDefinitionFileExtension(string $formIdentifier, bool $expected): void
+    {
+        $subject = $this->get(ExtensionStorageAdapter::class);
+        self::assertSame($expected, $subject->existsByFormIdentifier($formIdentifier));
     }
 }
