@@ -140,13 +140,25 @@ readonly class ArrayUtility
      */
     public static function isValidPath(array $array, array|string $path, string $delimiter = '/'): bool
     {
-        $isValid = true;
-        try {
-            static::getValueByPath($array, $path, $delimiter);
-        } catch (MissingArrayPathException) {
-            $isValid = false;
+        if (static::class !== self::class || $path === '') {
+            try {
+                static::getValueByPath($array, $path, $delimiter);
+                return true;
+            } catch (MissingArrayPathException) {
+                return false;
+            }
         }
-        return $isValid;
+        if (is_string($path)) {
+            $path = str_getcsv($path, $delimiter, '"', '\\');
+        }
+        $value = $array;
+        foreach ($path as $segment) {
+            if (!is_array($value) || !array_key_exists($segment, $value)) {
+                return false;
+            }
+            $value = $value[$segment];
+        }
+        return true;
     }
 
     /**

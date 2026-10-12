@@ -209,6 +209,62 @@ final class ArrayUtilityTest extends UnitTestCase
     }
 
     #[Test]
+    #[DataProvider('getValueByPathValidDataProvider')]
+    public function isValidPathAcceptsExistingPaths(array $array, string $path, mixed $_): void
+    {
+        self::assertTrue(ArrayUtility::isValidPath($array, $path));
+    }
+
+    #[Test]
+    #[DataProvider('getValueByPathInvalidPathDataProvider')]
+    public function isValidPathRejectsMissingPaths(array $array, string $path, mixed $_): void
+    {
+        self::assertFalse(ArrayUtility::isValidPath($array, $path));
+    }
+
+    public static function isValidPathEdgeCasesDataProvider(): array
+    {
+        return [
+            'empty array path' => [[], [], '/', true],
+            'null leaf with array path' => [['foo' => ['bar' => null]], ['foo', 'bar'], '/', true],
+            'null intermediate value' => [['foo' => null], ['foo', 'bar'], '/', false],
+            'numeric key' => [['foo' => [null]], ['foo', 0], '/', true],
+            'empty key' => [['' => null], [''], '/', true],
+            'custom delimiter' => [['foo' => ['bar' => null]], 'foo.bar', '.', true],
+            'quoted delimiter' => [['foo.bar' => ['baz' => null]], '"foo.bar".baz', '.', true],
+        ];
+    }
+
+    #[Test]
+    #[DataProvider('isValidPathEdgeCasesDataProvider')]
+    public function isValidPathHandlesEdgeCases(array $array, array|string $path, string $delimiter, bool $expected): void
+    {
+        self::assertSame($expected, ArrayUtility::isValidPath($array, $path, $delimiter));
+    }
+
+    #[Test]
+    public function isValidPathThrowsExceptionIfPathIsEmpty(): void
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1341397767);
+
+        ArrayUtility::isValidPath([], '');
+    }
+
+    #[Test]
+    public function isValidPathUsesOverriddenGetValueByPath(): void
+    {
+        $utility = new readonly class extends ArrayUtility {
+            public static function getValueByPath(array $array, array|string $path, string $delimiter = '/'): mixed
+            {
+                return null;
+            }
+        };
+
+        self::assertTrue($utility::isValidPath([], 'missing'));
+    }
+
+    #[Test]
     public function getValueByPathThrowsExceptionIfPathIsEmpty(): void
     {
         $this->expectException(\RuntimeException::class);
