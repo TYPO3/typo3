@@ -374,7 +374,7 @@ class GraphicalFunctions
         if (!$info) {
             return null;
         }
-        $originalFileExtension = $info->getExtension();
+        $originalFileExtension = strtolower($info->getExtension());
 
         // Determine the final target file extension
         $targetFileExtension = strtolower(trim($targetFileExtension));
@@ -432,7 +432,7 @@ class GraphicalFunctions
         // width / height is given or if the destination w/h matches the original image dimensions, or if
         // the option to not scale the image is set.
         $noScale = !$originalWidth && !$originalHeight || $processingInstructions->width === $info->getWidth() && $processingInstructions->height === $info->getHeight() || !empty($options['noScale']);
-        if ($noScale && !$processingInstructions->cropArea && !$additionalParameters && !$frame && $targetFileExtension === $info->getExtension() && !$forceCreation) {
+        if ($noScale && !$processingInstructions->cropArea && !$additionalParameters && !$frame && $targetFileExtension === $originalFileExtension && !$forceCreation) {
             // Set the new width and height before returning,
             // if the noScale option is set, otherwise the incoming
             // values are calculated.

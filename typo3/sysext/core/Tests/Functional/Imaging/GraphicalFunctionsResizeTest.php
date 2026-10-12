@@ -119,4 +119,38 @@ final class GraphicalFunctionsResizeTest extends FunctionalTestCase
         self::assertSame($expectedWidth, $result->getWidth());
         self::assertSame($expectedHeight, $result->getHeight());
     }
+
+    /**
+     * @return array<string, array{string}>
+     */
+    public static function resizeReturnsOriginalFileIfNothingChangesDataProvider(): array
+    {
+        return [
+            'lowercase extension' => ['GraphicalFunctionsResize.png'],
+            'uppercase extension' => ['GraphicalFunctionsResizeUppercase.PNG'],
+        ];
+    }
+
+    #[DataProvider('resizeReturnsOriginalFileIfNothingChangesDataProvider')]
+    #[Test]
+    public function resizeReturnsOriginalFileIfNothingChanges(string $fileName): void
+    {
+        $graphicalFunctions = $this->get(GraphicalFunctions::class);
+        if (!$graphicalFunctions->isProcessingEnabled()) {
+            self::markTestSkipped('Image processor (ImageMagick/GraphicsMagick) is not enabled.');
+        }
+
+        $sourceFile = Environment::getPublicPath() . '/fileadmin/user_upload/' . $fileName;
+        copy(__DIR__ . '/Fixtures/GraphicalFunctionsResize.png', $sourceFile);
+
+        $result = $graphicalFunctions->resize(
+            $sourceFile,
+            'png',
+            (string)self::FIXTURE_IMAGE_WIDTH,
+            (string)self::FIXTURE_IMAGE_HEIGHT
+        );
+
+        self::assertNotNull($result);
+        self::assertSame(realpath($sourceFile), realpath($result->getRealPath()));
+    }
 }
