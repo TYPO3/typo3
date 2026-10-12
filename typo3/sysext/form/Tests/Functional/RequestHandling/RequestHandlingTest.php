@@ -31,6 +31,7 @@ use TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Crypto\HashService;
+use TYPO3\CMS\Core\Error\Http\BadRequestException;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Serializer\PolymorphicDeserializer;
@@ -599,5 +600,34 @@ final class RequestHandlingTest extends FunctionalTestCase
         self::assertNotEmpty($formData->getHoneypotId(), 'the first form step with a honeypot is shown again');
         self::assertEquals('FOObarBAZ', $formData->toArray()['elementData'][$textElementName]['value'] ?? null, 'the submitted value is shown again');
         self::assertCount(0, $this->getMailSpoolMessages(), 'no mail is sent');
+    }
+
+    public static function invalidCurrentPageIndexIsRejectedDataProvider(): \Generator
+    {
+        yield 'SQL injection attempt' => ['-1 OR 5*5=25 -- '];
+        yield 'negative integer' => ['-1'];
+        yield 'non-numeric string' => ['foo'];
+        yield 'float' => ['1.5'];
+        yield 'empty string' => [''];
+    }
+
+    #[DataProvider('invalidCurrentPageIndexIsRejectedDataProvider')]
+    #[Test]
+    public function invalidCurrentPageIndexIsRejected(string $currentPageIndex): void
+    {
+        $uri = static::ROOT_PAGE_BASE_URI . '/form';
+        $formIdentifier = 'multistep-test-form-1001';
+        $subject = new FormDataFactory();
+
+        $internalRequest = (new InternalRequest($uri))->withAttribute('currentContentObject', $this->get(ContentObjectRenderer::class));
+        $pageMarkup = (string)$this->executeFrontendSubRequest($internalRequest, null, true)->getBody();
+        $formData = $subject->fromHtmlMarkupAndXpath($pageMarkup, '//form[@id="' . $formIdentifier . '"]');
+
+        $internalRequest = (new InternalRequest($uri))->withAttribute('currentContentObject', $this->get(ContentObjectRenderer::class));
+        $formPostRequest = $formData->with('text-1', 'FOObarBAZ')->with('__currentPage', $currentPageIndex)->toPostRequest($internalRequest);
+
+        $this->expectException(BadRequestException::class);
+        $this->expectExceptionCode(1791791661);
+        $this->executeFrontendSubRequest($formPostRequest, null, true);
     }
 }

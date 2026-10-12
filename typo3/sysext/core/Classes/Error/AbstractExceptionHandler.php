@@ -64,6 +64,10 @@ abstract class AbstractExceptionHandler implements ExceptionHandlerInterface, Si
         1704454152, // Failed HMAC validation due to too short HMAC string in Core HashService
     ];
 
+    public const IGNORED_INVALID_REQUEST_EXCEPTION_CODES = [
+        1791791661, // Invalid page index due to modified __currentPage in ext:form
+    ];
+
     protected bool $logExceptionStackTrace = false;
 
     /**
@@ -94,7 +98,11 @@ abstract class AbstractExceptionHandler implements ExceptionHandlerInterface, Si
     protected function writeLogEntries(\Throwable $exception, string $mode): void
     {
         // Do not write any logs for some messages to avoid filling up tables or files with illegal requests
-        $ignoredCodes = array_merge(self::IGNORED_EXCEPTION_CODES, self::IGNORED_HMAC_EXCEPTION_CODES);
+        $ignoredCodes = array_merge(
+            self::IGNORED_EXCEPTION_CODES,
+            self::IGNORED_HMAC_EXCEPTION_CODES,
+            self::IGNORED_INVALID_REQUEST_EXCEPTION_CODES,
+        );
         if (in_array($exception->getCode(), $ignoredCodes, true)) {
             return;
         }

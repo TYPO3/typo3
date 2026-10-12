@@ -75,8 +75,12 @@ class ProductionExceptionHandler implements ExceptionHandlerInterface
         $code = $this->context->getAspect('date')->getDateTime()->format('YmdHis') . $this->random->generateRandomHexString(8);
         $errorMessage = str_replace('%s', '{code}', $errorMessage);
 
-        // Log exception except HMAC validation exceptions caused by potentially forged requests
-        if (!in_array($exception->getCode(), AbstractExceptionHandler::IGNORED_HMAC_EXCEPTION_CODES, true)) {
+        // Log exceptions except known forged requests that should not flood the log
+        $ignoredExceptionCodes = array_merge(
+            AbstractExceptionHandler::IGNORED_HMAC_EXCEPTION_CODES,
+            AbstractExceptionHandler::IGNORED_INVALID_REQUEST_EXCEPTION_CODES,
+        );
+        if (!in_array($exception->getCode(), $ignoredExceptionCodes, true)) {
             $this->logger->alert($errorMessage, ['exception' => $exception, 'code' => $code, 'requestId' => $this->requestId]);
         }
 
