@@ -40,6 +40,7 @@ use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Error\Error;
 use TYPO3\CMS\Extbase\Error\Result;
@@ -307,12 +308,18 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
 
     /**
      * Get the current page index by resolving the request
+     *
+     * @throws BadRequestException
      */
     private function determineCurrentPageIndex(): int
     {
         /** @var ExtbaseRequestParameters $extbaseRequestParameters */
         $extbaseRequestParameters = $this->request->getAttribute('extbase');
-        $currentPageIndex = (int)$extbaseRequestParameters->getInternalArgument('__currentPage');
+        $currentPageIndexFromRequest = $extbaseRequestParameters->getInternalArgument('__currentPage') ?? 0;
+        if (!MathUtility::canBeInterpretedAsInteger($currentPageIndexFromRequest) || (int)$currentPageIndexFromRequest < 0) {
+            throw new BadRequestException('The requested form page index is invalid.', 1791791661);
+        }
+        $currentPageIndex = (int)$currentPageIndexFromRequest;
         if ($this->userWentBackToPreviousStep()) {
             if ($currentPageIndex < $this->lastDisplayedPage->getIndex()) {
                 $currentPageIndex = $this->lastDisplayedPage->getIndex();

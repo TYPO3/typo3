@@ -17,12 +17,16 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject\Exception;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Core\RequestId;
 use TYPO3\CMS\Core\Crypto\Random;
+use TYPO3\CMS\Core\Error\AbstractExceptionHandler;
+use TYPO3\CMS\Core\Error\Http\BadRequestException;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\ImmediateResponseException;
 use TYPO3\CMS\Core\Http\PropagateResponseException;
@@ -110,5 +114,33 @@ final class ProductionExceptionHandlerTest extends UnitTestCase
             'Custom error message: ' . date('YmdHis', $currentTimestamp) . $random,
             $exceptionHandler->handle(new \Exception('Some exception', 1629996091))
         );
+    }
+
+    public static function exceptionsFromForgedRequestsAreNotLoggedDataProvider(): \Generator
+    {
+        yield 'invalid form page index' => [1791791661];
+        yield 'invalid HMAC' => [1581862823];
+    }
+
+    #[DataProvider('exceptionsFromForgedRequestsAreNotLoggedDataProvider')]
+    #[Test]
+    public function handleDoesNotLogExceptionsCausedByForgedRequests(int $exceptionCode): void
+    {
+        $loggerMock = $this->createMock(LoggerInterface::class);
+        $loggerMock->expects($this->never())->method('alert');
+        $requestId = new RequestId();
+        $exceptionHandler = new ProductionExceptionHandler(new Context(), new Random(), $loggerMock, $requestId);
+
+        self::assertEquals(
+            'Oops, an error occurred! Request: ' . $requestId,
+            $exceptionHandler->handle(new BadRequestException('Invalid page index', $exceptionCode))
+        );
+    }
+
+    #[Test]
+    public function invalidFormPageIndexExceptionCodeIsNotClassifiedAsHmacException(): void
+    {
+        self::assertNotContains(1791791661, AbstractExceptionHandler::IGNORED_HMAC_EXCEPTION_CODES);
+        self::assertContains(1791791661, AbstractExceptionHandler::IGNORED_INVALID_REQUEST_EXCEPTION_CODES);
     }
 }
