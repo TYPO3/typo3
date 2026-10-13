@@ -754,7 +754,7 @@ readonly class WorkspaceService
 
             $newList = [];
             foreach ($pageIds as $pageId) {
-                if ((int)$pages[$pageId]['t3ver_oid'] > 0) {
+                if ((int)($pages[$pageId]['t3ver_oid'] ?? 0) > 0) {
                     $newList[] = (int)$pages[$pageId]['t3ver_oid'];
                 } else {
                     $newList[] = $pageId;
