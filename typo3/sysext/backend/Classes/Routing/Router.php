@@ -59,7 +59,7 @@ class Router
      */
     public function addRoute(string $routeIdentifier, Route $route, array $aliases = []): void
     {
-        $symfonyRoute = new SymfonyRoute($route->getPath(), [], [], $route->getOptions());
+        $symfonyRoute = new SymfonyRoute($route->getPath(), [], $route->getOptions()['requirements'] ?? [], $route->getOptions());
         $symfonyRoute->setMethods($route->getMethods());
         $this->routeCollection->add($routeIdentifier, $symfonyRoute);
         foreach ($aliases as $aliasName) {

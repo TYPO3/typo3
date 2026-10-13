@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Backend\Tests\Functional\Routing;
 
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
+use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -45,6 +46,15 @@ final class UriBuilderTest extends FunctionalTestCase
         $subject = $this->get(UriBuilder::class);
         $uri = $subject->buildUriFromRoute('site_configuration.edit');
         self::assertStringEndsWith('/module/site/configuration/edit', $uri->getPath());
+    }
+
+    #[Test]
+    public function buildUriFromRouteKeepsSlashesInPlaceholderAllowedByRequirements(): void
+    {
+        $this->get(Router::class)->addRoute('custom-route', new Route('/my-path/{subroute}', ['requirements' => ['subroute' => '.+']]));
+        $subject = $this->get(UriBuilder::class);
+        $uri = $subject->buildUriFromRoute('custom-route', ['subroute' => 'some/nested/path']);
+        self::assertStringStartsWith('/typo3/my-path/some/nested/path', $uri->getPath());
     }
 
     #[Test]

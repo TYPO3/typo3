@@ -128,6 +128,31 @@ final class RouterTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function matchResultAppliesRequirementsAllowingSlashesInPlaceholder(): void
+    {
+        $subject = $this->get(Router::class);
+        $subject->addRoute('custom-route', new Route('/my-path/{subroute}', ['requirements' => ['subroute' => '.+']]));
+        $serverParams = array_replace($_SERVER, ['HTTP_HOST' => 'example.com', 'HTTPS' => 'on', 'SCRIPT_NAME' => '/index.php']);
+        $request = new ServerRequest('https://example.com/typo3/my-path/some/nested/path', 'GET', null, [], $serverParams);
+        $request = $request->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
+        $result = $subject->matchResult($request);
+        self::assertEquals('custom-route', $result->getRouteName());
+        self::assertEquals(['subroute' => 'some/nested/path'], $result->getArguments());
+    }
+
+    #[Test]
+    public function matchResultThrowsExceptionIfRequirementIsNotFulfilled(): void
+    {
+        $subject = $this->get(Router::class);
+        $subject->addRoute('custom-route', new Route('/my-path/{id}', ['requirements' => ['id' => '\d+']]));
+        $serverParams = array_replace($_SERVER, ['HTTP_HOST' => 'example.com', 'HTTPS' => 'on', 'SCRIPT_NAME' => '/index.php']);
+        $request = new ServerRequest('https://example.com/typo3/my-path/not-a-number', 'GET', null, [], $serverParams);
+        $request = $request->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
+        $this->expectException(ResourceNotFoundException::class);
+        $subject->matchResult($request);
+    }
+
+    #[Test]
     public function matchResultReturnsRouteForSubRoute(): void
     {
         $subject = $this->get(Router::class);
