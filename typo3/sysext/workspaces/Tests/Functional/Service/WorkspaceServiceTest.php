@@ -18,7 +18,11 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Workspaces\Tests\Functional\Service;
 
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\WorkspaceAspect;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Workspaces\Service\WorkspaceService;
+use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\ActionService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class WorkspaceServiceTest extends FunctionalTestCase
@@ -63,6 +67,23 @@ final class WorkspaceServiceTest extends FunctionalTestCase
             $result['pages'],
             'The result is supposed to contain four versions for this page in workspace 91'
         );
+    }
+
+    #[Test]
+    public function versionsCanBeRequestedForAPageThatWasCreatedAndDeletedInTheWorkspace(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages.csv');
+        $GLOBALS['BE_USER']->workspace = 91;
+        $this->get(Context::class)->setAspect('workspace', new WorkspaceAspect(91));
+        $actionService = new ActionService();
+        $pageId = (int)$actionService->createNewRecord('pages', 1, ['title' => 'Created in workspace'])['pages'][0];
+        $actionService->deleteRecord('pages', $pageId);
+
+        $row = $this->get(ConnectionPool::class)->getConnectionForTable('pages')
+            ->select(['uid', 'deleted'], 'pages', ['uid' => $pageId])->fetchAssociative();
+        self::assertTrue($row === false || (int)$row['deleted'] === 1, 'The page is not available anymore');
+        $result = $this->get(WorkspaceService::class)->selectVersionsInWorkspace(91, -99, $pageId, 99);
+        self::assertSame([], array_filter($result), 'No versions are left for the deleted page');
     }
 
     #[Test]
