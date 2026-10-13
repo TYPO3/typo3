@@ -25,7 +25,7 @@ class TableConfigurationTree extends AbstractTree
     /**
      * Returns the root node
      *
-     * @return \TYPO3\CMS\Backend\Tree\TreeNode
+     * @return \TYPO3\CMS\Backend\Tree\TreeRepresentationNode
      */
     public function getRoot()
     {

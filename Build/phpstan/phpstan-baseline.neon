@@ -79,12 +79,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Schema/Struct/FlexSheet.php
 
 		-
-			rawMessage: 'Parameter #1 $node of method TYPO3\CMS\Core\Tree\TableConfiguration\ArrayTreeRenderer::renderNode() expects TYPO3\CMS\Backend\Tree\TreeRepresentationNode, TYPO3\CMS\Backend\Tree\TreeNode given.'
-			identifier: argument.type
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Tree/TableConfiguration/ArrayTreeRenderer.php
-
-		-
 			rawMessage: 'Parameter #1 $array (list<int|string>) of array_values is already a list, call has no effect.'
 			identifier: arrayValues.list
 			count: 1

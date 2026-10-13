@@ -23,14 +23,14 @@ abstract class AbstractTreeDataProvider
     /**
      * Root Node
      *
-     * @var TreeNode
+     * @var TreeRepresentationNode
      */
     protected $rootNode;
 
     /**
      * Returns the root node
      *
-     * @return TreeNode
+     * @return TreeRepresentationNode
      */
     abstract public function getRoot();
 }

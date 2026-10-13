@@ -65,7 +65,7 @@ abstract class AbstractTree
     /**
      * Returns the root node
      *
-     * @return \TYPO3\CMS\Backend\Tree\TreeNode
+     * @return \TYPO3\CMS\Backend\Tree\TreeRepresentationNode
      */
     abstract public function getRoot();
 }
