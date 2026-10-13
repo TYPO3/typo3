@@ -27,6 +27,7 @@ use TYPO3\CMS\Form\Domain\Exception\TypeDefinitionNotFoundException;
 use TYPO3\CMS\Form\Domain\Exception\TypeDefinitionNotValidException;
 use TYPO3\CMS\Form\Domain\Model\Exception\FormDefinitionConsistencyException;
 use TYPO3\CMS\Form\Domain\Model\Renderable\AbstractCompositeRenderable;
+use TYPO3\CMS\Form\Domain\Model\Renderable\VariableRenderableInterface;
 
 /**
  * A base class for "section-like" form parts like "Page" or "Section" (which
@@ -134,6 +135,7 @@ abstract class AbstractSection extends AbstractCompositeRenderable
             throw new TypeDefinitionNotFoundException(sprintf('The "implementationClassName" was not set in type definition "%s".', $typeName), 1325689855);
         }
 
+        /** @var class-string<FormElementInterface&VariableRenderableInterface> $implementationClassName */
         $implementationClassName = $typeDefinition['implementationClassName'];
         $element = GeneralUtility::makeInstance($implementationClassName, $identifier, $typeName);
         if (!$element instanceof FormElementInterface) {

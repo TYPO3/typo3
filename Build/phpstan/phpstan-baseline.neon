@@ -107,9 +107,3 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Functional/Persistence/RepositoryTest.php
-
-		-
-			rawMessage: 'Call to an undefined method TYPO3\CMS\Form\Domain\Model\FormElements\FormElementInterface::setOptions().'
-			identifier: method.notFound
-			count: 1
-			path: ../../typo3/sysext/form/Classes/Domain/Model/FormElements/AbstractSection.php
