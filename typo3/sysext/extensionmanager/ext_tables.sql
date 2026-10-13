@@ -7,7 +7,7 @@ CREATE TABLE tx_extensionmanager_domain_model_extension (
   version varchar(15) NOT NULL default '',
   alldownloadcounter int(11) unsigned NOT NULL default '0',
   downloadcounter int(11) unsigned NOT NULL default '0',
-  title varchar(150) NOT NULL default '',
+  title varchar(1024) NOT NULL default '',
   serialized_dependencies mediumtext,
   author_name varchar(255) NOT NULL default '',
   author_email varchar(255) NOT NULL default '',
