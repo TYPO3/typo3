@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Serializer;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Exception;
+use TYPO3\CMS\Core\Serializer\Exception\InvalidDataException;
 use TYPO3\CMS\Core\Serializer\Typo3XmlParser;
 use TYPO3\CMS\Core\Serializer\Typo3XmlParserOptions;
 use TYPO3\CMS\Core\Serializer\Typo3XmlSerializer;
@@ -350,17 +351,18 @@ final class Typo3XmlParserTest extends UnitTestCase
     public static function decodeHandlesBigXmlContentDataProvider(): array
     {
         return [
-            '1mb' => [1],
-            '5mb' => [5],
-            // @todo Since 8.1.29 | 8.2.20 | 8.3.8 this case is broken. Needs deeper investigation and issue report
-            //       on php itself. Using `\LIBXML_PARSEHUGE` would mitigate the issue, but have not been used before.
-            // '10mb' => [10],
+            '1 MiB' => [1],
+            '5 MiB' => [5],
+            '10 MiB with LIBXML_PARSEHUGE' => [
+                10,
+                [Typo3XmlSerializerOptions::LOAD_OPTIONS => \LIBXML_NONET | \LIBXML_NOBLANKS | \LIBXML_PARSEHUGE],
+            ],
         ];
     }
 
     #[DataProvider('decodeHandlesBigXmlContentDataProvider')]
     #[Test]
-    public function decodeHandlesBigXmlContent(int $megabytes): void
+    public function decodeHandlesBigXmlContent(int $megabytes, array $options = []): void
     {
         $testValue = str_repeat('1', $megabytes * 1024 * 1024);
         $input = '<?xml version="1.0" encoding="utf-8" standalone="yes"?>
@@ -379,7 +381,19 @@ final class Typo3XmlParserTest extends UnitTestCase
                 ],
             ],
         ];
-        self::assertSame($expected, $xmlDecoder->decode($input));
+        self::assertSame($expected, $xmlDecoder->decode($input, new Typo3XmlSerializerOptions($options)));
+    }
+
+    #[Test]
+    public function decodeRejectsTextNodeExceedingDefaultSizeLimit(): void
+    {
+        $input = '<phparray><node>' . str_repeat('1', 10000001) . '</node></phparray>';
+        $xmlDecoder = new Typo3XmlParser();
+
+        $this->expectException(InvalidDataException::class);
+        $this->expectExceptionCode(1630773230);
+
+        $xmlDecoder->decode($input);
     }
 
     /**
