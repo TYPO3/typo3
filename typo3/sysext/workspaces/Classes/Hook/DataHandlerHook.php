@@ -253,7 +253,7 @@ class DataHandlerHook
      * @param string $table Table name
      * @param int $stageId Stage ID to set
      * @param string $comment Comment that goes into log
-     * @param array $notificationAlternativeRecipients comma separated list of recipients to notify instead of normal be_users
+     * @param array $notificationAlternativeRecipients Recipients to notify, each an array with the key "email" and the optional keys "lang" and "realName"
      */
     protected function version_setStage(string $table, int $id, $stageId, string $comment, DataHandler $dataHandler, array $notificationAlternativeRecipients = []): void
     {
@@ -316,7 +316,7 @@ class DataHandlerHook
      * @param int $swapWith UID of the workspace version to swap with!
      * @param DataHandler $dataHandler DataHandler object
      * @param string $comment Notification comment
-     * @param array $notificationAlternativeRecipients comma separated list of recipients to notify instead of normal be_users
+     * @param array $notificationAlternativeRecipients Recipients to notify, each an array with the key "email" and the optional keys "lang" and "realName"
      */
     protected function version_swap(string $table, int $id, int $swapWith, DataHandler $dataHandler, string $comment, array $notificationAlternativeRecipients): void
     {

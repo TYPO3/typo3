@@ -57,11 +57,21 @@ Optional parameters can be passed to the change_stage command:
                 'change_stage' => [
                     'stage' => -10,
                     'comment' => 'Ready for review',
-                    'notificationAlternativeRecipients' => [1, 2, 3],
+                    'notificationAlternativeRecipients' => [
+                        ['email' => 'editor@example.org', 'lang' => 'de'],
+                        ['email' => 'reviewer@example.org'],
+                    ],
                 ],
             ],
         ],
     ];
+
+Each recipient is an array with the key :php:`email`. The keys :php:`lang`
+and :php:`realName` are optional. Notifications are only sent if the option
+:guilabel:`Send notifications upon state changes` is enabled in the workspace
+record. If :php:`notificationAlternativeRecipients` is missing or empty,
+nobody is notified. The recipients that are configured for the stage are not
+used.
 
 Comparison with the legacy command
 ----------------------------------

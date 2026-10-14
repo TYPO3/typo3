@@ -106,7 +106,7 @@ final class ChangeStageCommandTest extends FunctionalTestCase
         $this->processCommandMap(['tt_content' => [$versionId => ['change_stage' => [
             'stage' => -10,
             'comment' => 'Ready for review',
-            'notificationAlternativeRecipients' => ['editor@example.com'],
+            'notificationAlternativeRecipients' => [['email' => 'editor@example.com']],
         ]]]]);
 
         $history = $this->fetchStageChangeHistory('tt_content', $versionId);
@@ -114,7 +114,7 @@ final class ChangeStageCommandTest extends FunctionalTestCase
         self::assertSame(0, $history[0]['current']);
         self::assertSame(-10, $history[0]['next']);
         self::assertSame('Ready for review', $history[0]['comment']);
-        self::assertSame(['editor@example.com'], $history[0]['recipients']);
+        self::assertSame([['email' => 'editor@example.com']], $history[0]['recipients']);
     }
 
     #[Test]

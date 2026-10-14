@@ -61,11 +61,19 @@ Optional parameters can be passed to the publish command:
             $versionedUid => [
                 'publish' => [
                     'comment' => 'Publishing content update',
-                    'notificationAlternativeRecipients' => [1, 2, 3],
+                    'notificationAlternativeRecipients' => [
+                        ['email' => 'editor@example.org', 'lang' => 'de'],
+                        ['email' => 'reviewer@example.org'],
+                    ],
                 ],
             ],
         ],
     ];
+
+Each recipient is an array with the key :php:`email`. The keys :php:`lang`
+and :php:`realName` are optional. If :php:`notificationAlternativeRecipients`
+is missing or empty, nobody is notified. The recipients that are configured
+for the stage are not used.
 
 Comparison with the legacy command
 ----------------------------------
