@@ -23,6 +23,9 @@ class Cascade
     /**
      * Currently, Extbase does only support "remove".
      *
+     * "remove" deletes an object on persistence when it has been removed from the
+     * property. Re-assigning a collection with unchanged content does not remove anything.
+     *
      * Other possible cascade operations would be: "persist", "merge", "detach", "refresh", "all"
      * @see http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/working-with-associations.html#transitive-persistence-cascade-operations
      *

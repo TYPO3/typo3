@@ -177,6 +177,14 @@ class Blog extends AbstractEntity
     }
 
     /**
+     * @param ObjectStorage<Post> $posts
+     */
+    public function setPosts(ObjectStorage $posts): void
+    {
+        $this->posts = $posts;
+    }
+
+    /**
      * @return ObjectStorage<Post>
      */
     public function getPosts(): ObjectStorage
