@@ -9,25 +9,35 @@ Users Guide
 This section covers the workspace-related features in the
 backend.
 
-Most significantly workspaces have a selector box in the upper right
-corner of the backend.
+If you have access to more than one workspace, the workspace selector is at
+the top of the sidebar, above the module menu. It shows the name of the
+current workspace.
 
-.. figure:: ../Images/WorkspaceMenu.png
-   :alt: Workspace selector
+..  figure:: ../Images/WorkspaceMenu.png
+    :alt: Workspace selector in the sidebar with the open list of the
+        workspaces LIVE, Product launch, Spring campaign, and Translation
+        review
 
-   The workspace selector in the top bar
+    The workspace selector in the sidebar
 
+Click the workspace selector to open the list of your workspaces. Select a
+workspace from the list. TYPO3 then reloads the current module, the page
+tree, and the module menu in the selected workspace. A colored line on the
+left of each entry shows the color of the workspace. Point to an entry to
+see the description of the workspace as a tooltip.
 
-In this selector box you can choose between the workspaces available.
-The whole backend reloads each time one changes workspace.
+A bar at the top of the backend shows the name of the active workspace in
+the color of the workspace. Point to the name to see the description of the
+workspace:
 
-As a visual reminder that you are currently in a workspace, a section
-of the top bar changes to a different color:
+..  figure:: ../Images/WorkspaceIndicator.png
+    :alt: Teal bar with the text "Workspace: Product launch" at the top of the
+        backend
 
-.. figure:: ../Images/WorkspaceIndicator.png
-   :alt: Workspace indicator
+    The active workspace at the top of the backend
 
-   Activation of a workspace highlighted in the top bar
+An administrator sets the color and the description in the
+`workspace record <https://docs.typo3.org/permalink/typo3-cms-workspaces:custom-workspace-general>`_.
 
 
 As soon as you start editing inside a workspace, new versions
