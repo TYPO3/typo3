@@ -27,13 +27,21 @@ General
 ^^^^^^^
 
 .. figure:: ../../Images/CustomWorkspaceGeneralTab.png
-   :alt: The General tab of a custom workspace
+   :alt: The General tab of a custom workspace with the fields Title, Color,
+       and Send notifications upon state changes
 
    Entering the general information about the workspace
 
 
-As with most records in the TYPO3 CMS universe, this is just about
-setting a clear title and a helpful description.
+Enter a clear title for the workspace.
+
+In the field **Color**, select the color of the workspace. The
+backend shows the active workspace in this color in the workspace selector
+and in the bar at the top of the backend. New workspaces are orange.
+
+Enter a description on the tab :guilabel:`Notes`. Editors see the
+description as a tooltip on the workspace in the workspace selector and in
+the bar at the top of the backend.
 
 .. _custom-workspace-users:
 
