@@ -566,7 +566,7 @@ class DataMapProcessor
             }
         }
         // no children to be synchronized, but element order could have been changed
-        if (empty($removeAncestorIds) && empty($missingAncestorIds)) {
+        if (empty($removeIds) && empty($removeAncestorIds) && empty($missingAncestorIds)) {
             $this->modifyDataMap($item->getTableName(), $item->getId(), [$fieldName => implode(',', array_values($desiredIdMap))]);
             return;
         }

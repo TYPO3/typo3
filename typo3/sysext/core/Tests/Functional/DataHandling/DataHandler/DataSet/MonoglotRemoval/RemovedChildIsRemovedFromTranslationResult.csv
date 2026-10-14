@@ -1,0 +1,6 @@
+"tx_testirreforeignfield_offer"
+,"uid","parentid","title","t3_origuid","deleted"
+,1,1,"Breakfast included",0,0
+,2,1,"Late checkout",0,1
+,3,2,"Frühstück inklusive",1,0
+,4,2,"Später Check-out",2,1
