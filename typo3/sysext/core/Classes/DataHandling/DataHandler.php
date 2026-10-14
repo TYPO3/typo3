@@ -1200,7 +1200,7 @@ class DataHandler
                             // not "l10n_parent", this is 0 in default language record by definition
                             && $languageCapability->getTranslationOriginPointerField()->getName() !== (string)$field
                             // not "l10n_source", this is 0 in default language record by definition
-                            && !($languageCapability->hasTranslationSourceField() && $languageCapability->getTranslationOriginPointerField()->getName() === (string)$field)
+                            && !($languageCapability->hasTranslationSourceField() && $languageCapability->getTranslationSourceField()->getName() === (string)$field)
                         ) {
                             if (!is_array($originalLanguage_diffStorage)) {
                                 $originalLanguage_diffStorage = [];
