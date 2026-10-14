@@ -90,6 +90,7 @@ use TYPO3\CMS\Core\Resource\Search\Result\DriverFilteredSearchResult;
 use TYPO3\CMS\Core\Resource\Search\Result\EmptyFileSearchResult;
 use TYPO3\CMS\Core\Resource\Search\Result\FileSearchResult;
 use TYPO3\CMS\Core\Resource\Search\Result\FileSearchResultInterface;
+use TYPO3\CMS\Core\Resource\Security\AllowedFileExtensions;
 use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
 use TYPO3\CMS\Core\Resource\Service\FileProcessingService;
 use TYPO3\CMS\Core\Resource\Service\ResourceConsistencyService;
@@ -549,6 +550,17 @@ class ResourceStorage implements ResourceStorageInterface
                 $additionalData['title'] = $folderIdentifier;
             }
         }
+        if (
+            !empty($this->fileMounts[$folderIdentifier])
+            && empty($this->fileMounts[$folderIdentifier]['read_only'])
+            && empty($additionalData['read_only'])
+        ) {
+            // A writable file mount for the same folder is already added, e.g. as a
+            // user home folder, and both are combined since they add up
+            $additionalData['allowed_file_extensions'] = AllowedFileExtensions::fromList((string)($this->fileMounts[$folderIdentifier]['allowed_file_extensions'] ?? ''))
+                ->merge(AllowedFileExtensions::fromList((string)($additionalData['allowed_file_extensions'] ?? '')))
+                ->toString();
+        }
         $this->fileMounts[$folderIdentifier] = $additionalData;
     }
 
@@ -809,6 +821,90 @@ class ResourceStorage implements ResourceStorageInterface
     }
 
     /**
+     * The file extensions files may be added with to the folder, as restricted
+     * by the storage and the writable file mounts of the current user.
+     *
+     * @internal
+     */
+    public function getAllowedFileExtensionsInFolder(Folder $folder): AllowedFileExtensions
+    {
+        return $this->getAllowedFileExtensions()->intersect($this->getAllowedFileExtensionsOfFileMounts($folder->getIdentifier()));
+    }
+
+    private function getAllowedFileExtensions(): AllowedFileExtensions
+    {
+        return AllowedFileExtensions::fromList($this->storageRecord['allowedFileExtensions'] ?? []);
+    }
+
+    private function isFileExtensionAllowedInStorage(string $fileName): bool
+    {
+        return $this->getAllowedFileExtensions()->allowsFileName($fileName);
+    }
+
+    private function isFileExtensionAllowedInFileMounts(string $identifier, string $fileName): bool
+    {
+        return $this->getAllowedFileExtensionsOfFileMounts($identifier)->allowsFileName($fileName);
+    }
+
+    /**
+     * Combines the file extensions of all writable file mounts the identifier
+     * is located in. The identifier is unrestricted if none of them restricts it.
+     */
+    private function getAllowedFileExtensionsOfFileMounts(string $identifier): AllowedFileExtensions
+    {
+        if (!$this->evaluatePermissions) {
+            return AllowedFileExtensions::unrestricted();
+        }
+        $allowedFileExtensions = null;
+        foreach ($this->fileMounts as $fileMount) {
+            if (!empty($fileMount['read_only']) || !$this->driver->isWithin($fileMount['folder']->getIdentifier(), $identifier)) {
+                continue;
+            }
+            $allowedFileExtensionsOfFileMount = AllowedFileExtensions::fromList((string)($fileMount['allowed_file_extensions'] ?? ''));
+            $allowedFileExtensions = $allowedFileExtensions?->merge($allowedFileExtensionsOfFileMount) ?? $allowedFileExtensionsOfFileMount;
+        }
+        return $allowedFileExtensions ?? AllowedFileExtensions::unrestricted();
+    }
+
+    /**
+     * Folders are moved and copied by the driver as a whole, so the files they
+     * contain are checked here, as far as they are visible. As for a single file,
+     * a file moved within the storage may keep a file extension that is already
+     * not allowed where it is located.
+     *
+     * @throws IllegalFileExtensionException
+     */
+    private function assureFolderContentsAllowed(Folder $folder, Folder $targetParentFolder, string $newFolderName, bool $isMove): void
+    {
+        if ($folder->getStorage()->getUid() !== $this->getUid()) {
+            return;
+        }
+        $allowedFileExtensionsOfStorage = $isMove ? AllowedFileExtensions::unrestricted() : $this->getAllowedFileExtensions();
+        $allowedFileExtensionsOfFileMounts = $this->getAllowedFileExtensionsOfFileMounts(
+            rtrim($targetParentFolder->getIdentifier(), '/') . '/' . $newFolderName . '/'
+        );
+        if (!$allowedFileExtensionsOfStorage->isRestricted() && !$allowedFileExtensionsOfFileMounts->isRestricted()) {
+            return;
+        }
+        $fileIdentifiers = $this->driver->getFilesInFolder($folder->getIdentifier(), 0, 0, true, $this->getFileAndFolderNameFilters());
+        foreach ($fileIdentifiers as $fileIdentifier) {
+            if (!$allowedFileExtensionsOfStorage->allowsFileName($fileIdentifier)) {
+                throw new IllegalFileExtensionException('Extension of file "' . $fileIdentifier . '" is not allowed in storage "' . $this->getUid() . '"', 1791970433);
+            }
+            if ($allowedFileExtensionsOfFileMounts->allowsFileName($fileIdentifier)
+                || ($isMove && !$this->isFileExtensionAllowedInFileMounts($fileIdentifier, $fileIdentifier))
+            ) {
+                continue;
+            }
+            $message = 'Extension of file "' . $fileIdentifier . '" is not allowed in the file mounts of folder "' . $targetParentFolder->getIdentifier() . '"';
+            if ($isMove) {
+                throw new IllegalFileExtensionException($message, 1791969207);
+            }
+            throw new IllegalFileExtensionException($message, 1791969208);
+        }
+    }
+
+    /**
      * Check file extension of an existing file against the
      * current file deny pattern.
      */
@@ -996,6 +1092,12 @@ class ResourceStorage implements ResourceStorageInterface
         if (!$this->checkFileExtensionPermission($targetFileName)) {
             throw new IllegalFileExtensionException('Extension of file name is not allowed in "' . $targetFileName . '"!', 1322120271);
         }
+        if (!$this->isFileExtensionAllowedInStorage($targetFileName)) {
+            throw new IllegalFileExtensionException('Extension of file name "' . $targetFileName . '" is not allowed in storage "' . $this->getUid() . '"', 1791966674);
+        }
+        if (!$this->isFileExtensionAllowedInFileMounts($targetFolder->getIdentifier(), $targetFileName)) {
+            throw new IllegalFileExtensionException('Extension of file name "' . $targetFileName . '" is not allowed in the file mounts of folder "' . $targetFolder->getIdentifier() . '"', 1791967798);
+        }
         // Makes sure the user is allowed to upload
         if (!$this->checkUserActionPermission('add', 'File')) {
             throw new InsufficientUserPermissionsException('You are not allowed to add files to this storage "' . $this->getUid() . '"', 1376992145);
@@ -1062,6 +1164,19 @@ class ResourceStorage implements ResourceStorageInterface
         if (!$this->checkFileExtensionPermission($targetFileName)) {
             throw new IllegalFileExtensionException('Extension of file name is not allowed in "' . $targetFileName . '"!', 1378243279);
         }
+        // A file keeping its extension within the storage may still be moved if
+        // the extension is not allowed, as long as it does not leave a file mount
+        // that allowed it
+        $keepsFileExtensionWithinStorage = $file->getStorage()->getUid() === $this->getUid()
+            && strtolower(pathinfo($targetFileName, PATHINFO_EXTENSION)) === $file->getExtension();
+        if (!$keepsFileExtensionWithinStorage && !$this->isFileExtensionAllowedInStorage($targetFileName)) {
+            throw new IllegalFileExtensionException('Extension of file name "' . $targetFileName . '" is not allowed in storage "' . $this->getUid() . '"', 1791966675);
+        }
+        if (!$this->isFileExtensionAllowedInFileMounts($targetFolder->getIdentifier(), $targetFileName)
+            && (!$keepsFileExtensionWithinStorage || $this->isFileExtensionAllowedInFileMounts($file->getIdentifier(), $file->getName()))
+        ) {
+            throw new IllegalFileExtensionException('Extension of file name "' . $targetFileName . '" is not allowed in the file mounts of folder "' . $targetFolder->getIdentifier() . '"', 1791967799);
+        }
         // Check if user is allowed to move and $file is readable and writable
         if (!$file->getStorage()->checkFileActionPermission('move', $file)) {
             throw new InsufficientUserPermissionsException('You are not allowed to move files to storage "' . $this->getUid() . '"', 1319219349);
@@ -1084,6 +1199,14 @@ class ResourceStorage implements ResourceStorageInterface
         // Check if file extension is allowed
         if (!$this->checkFileExtensionPermission($targetFileName) || !$this->checkValidFileExtension($file)) {
             throw new IllegalFileExtensionException('You are not allowed to rename a file with this extension. File given: "' . $file->getName() . '"', 1371466663);
+        }
+        if (strtolower(pathinfo($targetFileName, PATHINFO_EXTENSION)) !== $file->getExtension()) {
+            if (!$this->isFileExtensionAllowedInStorage($targetFileName)) {
+                throw new IllegalFileExtensionException('Extension of file name "' . $targetFileName . '" is not allowed in storage "' . $this->getUid() . '"', 1791966676);
+            }
+            if (!$this->isFileExtensionAllowedInFileMounts($file->getIdentifier(), $targetFileName)) {
+                throw new IllegalFileExtensionException('Extension of file name "' . $targetFileName . '" is not allowed in the file mounts of file "' . $file->getIdentifier() . '"', 1791967800);
+            }
         }
         // Check if user is allowed to rename
         if (!$this->checkFileActionPermission('rename', $file)) {
@@ -1125,6 +1248,12 @@ class ResourceStorage implements ResourceStorageInterface
         // Check for a valid file extension
         if (!$this->checkFileExtensionPermission($targetFileName) || !$this->checkValidFileExtension($file)) {
             throw new IllegalFileExtensionException('You are not allowed to copy a file of that type.', 1319553317);
+        }
+        if (!$this->isFileExtensionAllowedInStorage($targetFileName)) {
+            throw new IllegalFileExtensionException('Extension of file name "' . $targetFileName . '" is not allowed in storage "' . $this->getUid() . '"', 1791966677);
+        }
+        if (!$this->isFileExtensionAllowedInFileMounts($targetFolder->getIdentifier(), $targetFileName)) {
+            throw new IllegalFileExtensionException('Extension of file name "' . $targetFileName . '" is not allowed in the file mounts of folder "' . $targetFolder->getIdentifier() . '"', 1791967801);
         }
     }
 
@@ -2191,6 +2320,7 @@ class ResourceStorage implements ResourceStorageInterface
         $this->assureFolderMovePermissions($folderToMove, $targetParentFolder);
         $sourceStorage = $folderToMove->getStorage();
         $sanitizedNewFolderName = $this->driver->sanitizeFileName($newFolderName ?: $folderToMove->getName());
+        $this->assureFolderContentsAllowed($folderToMove, $targetParentFolder, $sanitizedNewFolderName, true);
         // @todo check if folder already exists in $targetParentFolder, handle this conflict then
         $this->eventDispatcher->dispatch(
             new BeforeFolderMovedEvent($folderToMove, $targetParentFolder, $sanitizedNewFolderName)
@@ -2277,6 +2407,9 @@ class ResourceStorage implements ResourceStorageInterface
         // Folder exists, and we should find another name, let's find another one
         if ($conflictMode === DuplicationBehavior::RENAME && ($targetParentFolder->hasFolder($sanitizedNewFolderName) || $targetParentFolder->hasFile($sanitizedNewFolderName))) {
             $sanitizedNewFolderName = $this->getUniqueName($targetParentFolder, $sanitizedNewFolderName);
+        }
+        if ($folderToCopy instanceof Folder && $targetParentFolder instanceof Folder) {
+            $this->assureFolderContentsAllowed($folderToCopy, $targetParentFolder, $sanitizedNewFolderName, false);
         }
         $sourceStorage = $folderToCopy->getStorage();
         // call driver method to move the file

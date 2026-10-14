@@ -47,11 +47,21 @@ return [
                 'renderType' => 'checkboxToggle',
             ],
         ],
+        'allowed_file_extensions' => [
+            'label' => 'core.tca:sys_filemounts.allowed_file_extensions',
+            'description' => 'core.tca:sys_filemounts.allowed_file_extensions.description',
+            'config' => [
+                'type' => 'input',
+                'size' => 50,
+                'max' => 255,
+                'placeholder' => 'jpg,png,pdf',
+            ],
+        ],
     ],
     'types' => [
         '0' => ['showitem' => '
             --div--;core.form.tabs:general,
-                title, identifier, read_only,
+                title, identifier, read_only, allowed_file_extensions,
             --div--;core.form.tabs:access,
                 hidden,
             --div--;core.form.tabs:notes,

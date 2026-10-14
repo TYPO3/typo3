@@ -29,9 +29,11 @@ use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Http\UploadedFile;
 use TYPO3\CMS\Core\Resource\Configuration\FileStorageConfiguration;
+use TYPO3\CMS\Core\Resource\Configuration\FileStorageConfigurationWriter;
 use TYPO3\CMS\Core\Resource\Driver\DriverInterface;
 use TYPO3\CMS\Core\Resource\Driver\LocalDriver;
 use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
+use TYPO3\CMS\Core\Resource\Exception\IllegalFileExtensionException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\InaccessibleFolder;
@@ -486,6 +488,421 @@ final class ResourceStorageTest extends FunctionalTestCase
 
         self::assertSame($uploadedFilePath, $subject->getUploadedLocalFilePath($uploadedFile));
         self::assertSame('directory__up_loaded.txt', $subject->getUploadedTargetFileName($uploadedFile));
+    }
+
+    #[Test]
+    public function addFileThrowsIfFileExtensionIsNotAllowedInStorage(): void
+    {
+        $subject = $this->createStorageWithAllowedFileExtensions('images', 'jpg,png');
+
+        $this->expectException(IllegalFileExtensionException::class);
+        $this->expectExceptionCode(1791966674);
+        $subject->addFile($this->createLocalFile('document.pdf'), $subject->getRootLevelFolder(false));
+    }
+
+    #[Test]
+    public function addFileThrowsForFileWithoutExtensionIfAllowedFileExtensionsAreSet(): void
+    {
+        $subject = $this->createStorageWithAllowedFileExtensions('images', 'jpg');
+
+        $this->expectException(IllegalFileExtensionException::class);
+        $this->expectExceptionCode(1791966674);
+        $subject->addFile($this->createLocalFile('README'), $subject->getRootLevelFolder(false));
+    }
+
+    #[Test]
+    public function addFileAcceptsAllowedFileExtensionRegardlessOfCase(): void
+    {
+        $subject = $this->createStorageWithAllowedFileExtensions('images', ' JPG , png');
+
+        $file = $subject->addFile($this->createLocalFile('photo.Jpg'), $subject->getRootLevelFolder(false));
+
+        self::assertSame('photo.Jpg', $file->getName());
+    }
+
+    #[Test]
+    public function addFileAcceptsAnyFileExtensionIfAllowedFileExtensionsAreEmpty(): void
+    {
+        $subject = $this->createStorageWithAllowedFileExtensions('images', '');
+
+        $file = $subject->addFile($this->createLocalFile('document.pdf'), $subject->getRootLevelFolder(false));
+
+        self::assertSame('document.pdf', $file->getName());
+    }
+
+    /**
+     * The file deny pattern is a security measure, an allowed file
+     * extension of a storage must never be able to lift it.
+     */
+    #[Test]
+    public function fileDenyPatternTakesPrecedenceOverAllowedFileExtensions(): void
+    {
+        $subject = $this->createStorageWithAllowedFileExtensions('images', 'php');
+
+        $this->expectException(IllegalFileExtensionException::class);
+        $this->expectExceptionCode(1322120271);
+        $subject->addFile($this->createLocalFile('script.php'), $subject->getRootLevelFolder(false));
+    }
+
+    #[Test]
+    public function renameFileThrowsIfNewFileExtensionIsNotAllowedInStorage(): void
+    {
+        $subject = $this->createStorageWithAllowedFileExtensions('images', 'jpg');
+        $file = $this->createFileInStorage($subject, 'photo.jpg');
+
+        $this->expectException(IllegalFileExtensionException::class);
+        $this->expectExceptionCode(1791966676);
+        $subject->renameFile($file, 'photo.pdf');
+    }
+
+    /**
+     * Files that were in the storage before its allowed file extensions
+     * were restricted keep their extension and must stay manageable.
+     */
+    #[Test]
+    public function renameFileKeepingAFileExtensionThatIsNotAllowedInStorageIsPossible(): void
+    {
+        $subject = $this->createStorageWithAllowedFileExtensions('images', 'jpg');
+        $file = $this->createFileInStorage($subject, 'document.pdf');
+
+        $renamedFile = $subject->renameFile($file, 'renamed.pdf');
+
+        self::assertSame('renamed.pdf', $renamedFile->getName());
+    }
+
+    #[Test]
+    public function copyFileThrowsIfFileExtensionIsNotAllowedInTargetStorage(): void
+    {
+        $sourceStorage = $this->createStorageWithAllowedFileExtensions('documents', '');
+        $file = $this->createFileInStorage($sourceStorage, 'document.pdf');
+        $subject = $this->createStorageWithAllowedFileExtensions('images', 'jpg');
+
+        $this->expectException(IllegalFileExtensionException::class);
+        $this->expectExceptionCode(1791966677);
+        $subject->copyFile($file, $subject->getRootLevelFolder(false));
+    }
+
+    #[Test]
+    public function moveFileThrowsIfFileExtensionIsNotAllowedInTargetStorage(): void
+    {
+        $sourceStorage = $this->createStorageWithAllowedFileExtensions('documents', '');
+        $file = $this->createFileInStorage($sourceStorage, 'document.pdf');
+        $subject = $this->createStorageWithAllowedFileExtensions('images', 'jpg');
+
+        $this->expectException(IllegalFileExtensionException::class);
+        $this->expectExceptionCode(1791966675);
+        $subject->moveFile($file, $subject->getRootLevelFolder(false));
+    }
+
+    /**
+     * Deleting moves a file into the recycler folder of its storage,
+     * which must not be prevented by the allowed file extensions.
+     */
+    #[Test]
+    public function deleteFileMovesFileExtensionThatIsNotAllowedInStorageToRecycler(): void
+    {
+        $subject = $this->createStorageWithAllowedFileExtensions('images', 'jpg');
+        mkdir($this->instancePath . '/resource-storage-test/images/_recycler_');
+        $file = $this->createFileInStorage($subject, 'document.pdf');
+
+        $subject->deleteFile($file);
+
+        self::assertFileExists($this->instancePath . '/resource-storage-test/images/_recycler_/document.pdf');
+    }
+
+    #[Test]
+    public function fileAddedBesidesTypo3WithFileExtensionNotAllowedInStorageIsIndexed(): void
+    {
+        $subject = $this->createStorageWithAllowedFileExtensions('images', 'jpg');
+        touch($this->instancePath . '/resource-storage-test/images/document.pdf');
+
+        new Indexer($subject)->processChangesInStorages();
+
+        $files = $subject->getFilesInFolder($subject->getRootLevelFolder(false));
+        self::assertSame(['document.pdf'], array_values(array_map(static fn(File $file): string => $file->getName(), $files)));
+        self::assertTrue($subject->getFile('/document.pdf')->isIndexed());
+    }
+
+    #[Test]
+    public function addFileThrowsIfFileExtensionIsNotAllowedInFileMount(): void
+    {
+        $subject = $this->createStorageWithFileMounts(['/images/' => 'jpg']);
+
+        $this->expectException(IllegalFileExtensionException::class);
+        $this->expectExceptionCode(1791967798);
+        $subject->addFile($this->createLocalFile('document.pdf'), $subject->getFolder('/images/'));
+    }
+
+    #[Test]
+    public function addFileAcceptsFileExtensionAllowedByAnotherFileMountOfTheTargetFolder(): void
+    {
+        $subject = $this->createStorageWithFileMounts(['/' => '', '/images/' => 'jpg']);
+
+        $file = $subject->addFile($this->createLocalFile('document.pdf'), $subject->getFolder('/images/'));
+
+        self::assertSame('/images/document.pdf', $file->getIdentifier());
+    }
+
+    #[Test]
+    public function addFileIgnoresAllowedFileExtensionsOfFileMountsWithoutPermissionEvaluation(): void
+    {
+        $subject = $this->createStorageWithFileMounts(['/images/' => 'jpg']);
+        $subject->setEvaluatePermissions(false);
+
+        $file = $subject->addFile($this->createLocalFile('document.pdf'), $subject->getFolder('/images/'));
+
+        self::assertSame('/images/document.pdf', $file->getIdentifier());
+    }
+
+    public static function addFileMountMergesAllowedFileExtensionsOfTheSameFolderDataProvider(): \Generator
+    {
+        yield 'both restricted' => ['jpg', 'PNG, jpg', 'jpg,png'];
+        yield 'later one unrestricted' => ['jpg', '', ''];
+        yield 'earlier one unrestricted' => ['', 'jpg', ''];
+    }
+
+    #[DataProvider('addFileMountMergesAllowedFileExtensionsOfTheSameFolderDataProvider')]
+    #[Test]
+    public function addFileMountMergesAllowedFileExtensionsOfTheSameFolder(string $allowedFileExtensions, string $otherAllowedFileExtensions, string $expected): void
+    {
+        $subject = $this->createStorageWithFileMounts(['/images/' => $allowedFileExtensions]);
+
+        $subject->addFileMount('/images/', ['allowed_file_extensions' => $otherAllowedFileExtensions]);
+
+        self::assertSame($expected, $subject->getFileMounts()['/images/']['allowed_file_extensions']);
+    }
+
+    #[Test]
+    public function moveFileThrowsIfFileExtensionIsNotAllowedInTargetFileMount(): void
+    {
+        $subject = $this->createStorageWithFileMounts(['/documents/' => '', '/images/' => 'jpg']);
+        $file = $this->createFileInStorage($subject, 'documents/document.pdf');
+
+        $this->expectException(IllegalFileExtensionException::class);
+        $this->expectExceptionCode(1791967799);
+        $subject->moveFile($file, $subject->getFolder('/images/'));
+    }
+
+    #[Test]
+    public function moveFileWithinFileMountThatDoesNotAllowItsFileExtensionIsPossible(): void
+    {
+        $subject = $this->createStorageWithFileMounts(['/images/' => 'jpg']);
+        mkdir($this->instancePath . '/resource-storage-test/images/images/sub');
+        $file = $this->createFileInStorage($subject, 'images/document.pdf');
+
+        $movedFile = $subject->moveFile($file, $subject->getFolder('/images/sub/'));
+
+        self::assertSame('/images/sub/document.pdf', $movedFile->getIdentifier());
+    }
+
+    #[Test]
+    public function renameFileThrowsIfNewFileExtensionIsNotAllowedInFileMount(): void
+    {
+        $subject = $this->createStorageWithFileMounts(['/images/' => 'jpg']);
+        $file = $this->createFileInStorage($subject, 'images/photo.jpg');
+
+        $this->expectException(IllegalFileExtensionException::class);
+        $this->expectExceptionCode(1791967800);
+        $subject->renameFile($file, 'photo.pdf');
+    }
+
+    #[Test]
+    public function copyFileThrowsIfFileExtensionIsNotAllowedInTargetFileMount(): void
+    {
+        $subject = $this->createStorageWithFileMounts(['/documents/' => '', '/images/' => 'jpg']);
+        $file = $this->createFileInStorage($subject, 'documents/document.pdf');
+
+        $this->expectException(IllegalFileExtensionException::class);
+        $this->expectExceptionCode(1791967801);
+        $subject->copyFile($file, $subject->getFolder('/images/'));
+    }
+
+    #[Test]
+    public function moveFolderThrowsIfContainedFileExtensionIsNotAllowedInTargetFileMount(): void
+    {
+        $subject = $this->createStorageWithFileMounts(['/documents/' => '', '/images/' => 'jpg']);
+        mkdir($this->instancePath . '/resource-storage-test/images/documents/folder');
+        $this->createFileInStorage($subject, 'documents/folder/photo.jpg');
+        mkdir($this->instancePath . '/resource-storage-test/images/documents/folder/sub');
+        $this->createFileInStorage($subject, 'documents/folder/sub/document.pdf');
+
+        $this->expectException(IllegalFileExtensionException::class);
+        $this->expectExceptionCode(1791969207);
+        $subject->moveFolder($subject->getFolder('/documents/folder/'), $subject->getFolder('/images/'));
+    }
+
+    #[Test]
+    public function moveFolderAcceptsContainedFileExtensionsAllowedInTargetFileMount(): void
+    {
+        $subject = $this->createStorageWithFileMounts(['/documents/' => '', '/images/' => 'jpg']);
+        mkdir($this->instancePath . '/resource-storage-test/images/documents/folder');
+        $this->createFileInStorage($subject, 'documents/folder/photo.jpg');
+
+        $movedFolder = $subject->moveFolder($subject->getFolder('/documents/folder/'), $subject->getFolder('/images/'));
+
+        self::assertSame('/images/folder/', $movedFolder->getIdentifier());
+    }
+
+    #[Test]
+    public function moveFolderWithinFileMountThatDoesNotAllowAContainedFileExtensionIsPossible(): void
+    {
+        $subject = $this->createStorageWithFileMounts(['/images/' => 'jpg']);
+        mkdir($this->instancePath . '/resource-storage-test/images/images/folder');
+        mkdir($this->instancePath . '/resource-storage-test/images/images/archive');
+        $this->createFileInStorage($subject, 'images/folder/document.pdf');
+
+        $movedFolder = $subject->moveFolder($subject->getFolder('/images/folder/'), $subject->getFolder('/images/archive/'));
+
+        self::assertSame('/images/archive/folder/', $movedFolder->getIdentifier());
+    }
+
+    #[Test]
+    public function copyFolderThrowsIfContainedFileExtensionIsNotAllowedInTargetFileMount(): void
+    {
+        $subject = $this->createStorageWithFileMounts(['/documents/' => '', '/images/' => 'jpg']);
+        mkdir($this->instancePath . '/resource-storage-test/images/documents/folder');
+        $this->createFileInStorage($subject, 'documents/folder/document.pdf');
+
+        $this->expectException(IllegalFileExtensionException::class);
+        $this->expectExceptionCode(1791969208);
+        $subject->copyFolder($subject->getFolder('/documents/folder/'), $subject->getFolder('/images/'));
+    }
+
+    #[Test]
+    public function moveFileThrowsIfNewFileExtensionIsNotAllowedInStorage(): void
+    {
+        $subject = $this->createStorageWithAllowedFileExtensions('images', 'jpg');
+        mkdir($this->instancePath . '/resource-storage-test/images/sub');
+        $file = $this->createFileInStorage($subject, 'photo.jpg');
+
+        $this->expectException(IllegalFileExtensionException::class);
+        $this->expectExceptionCode(1791966675);
+        $subject->moveFile($file, $subject->getFolder('/sub/'), 'photo.pdf');
+    }
+
+    #[Test]
+    public function moveFileThrowsIfNewFileExtensionIsNotAllowedInFileMount(): void
+    {
+        $subject = $this->createStorageWithFileMounts(['/images/' => 'jpg']);
+        mkdir($this->instancePath . '/resource-storage-test/images/images/sub');
+        $file = $this->createFileInStorage($subject, 'images/photo.jpg');
+
+        $this->expectException(IllegalFileExtensionException::class);
+        $this->expectExceptionCode(1791967799);
+        $subject->moveFile($file, $subject->getFolder('/images/sub/'), 'photo.pdf');
+    }
+
+    #[Test]
+    public function addFileIgnoresAllowedFileExtensionsOfReadOnlyFileMounts(): void
+    {
+        $subject = $this->createStorageWithFileMounts(['/' => 'jpg']);
+        mkdir($this->instancePath . '/resource-storage-test/images/images');
+        $subject->addFileMount('/images/', ['read_only' => true, 'allowed_file_extensions' => '']);
+
+        $this->expectException(IllegalFileExtensionException::class);
+        $this->expectExceptionCode(1791967798);
+        $subject->addFile($this->createLocalFile('document.pdf'), $subject->getFolder('/images/'));
+    }
+
+    #[Test]
+    public function copyFolderThrowsIfContainedFileExtensionIsNotAllowedInStorage(): void
+    {
+        $subject = $this->createStorageWithAllowedFileExtensions('images', 'jpg');
+        mkdir($this->instancePath . '/resource-storage-test/images/folder');
+        $this->createFileInStorage($subject, 'folder/document.pdf');
+
+        $this->expectException(IllegalFileExtensionException::class);
+        $this->expectExceptionCode(1791970433);
+        $subject->copyFolder($subject->getFolder('/folder/'), $subject->getRootLevelFolder(false), 'copy');
+    }
+
+    #[Test]
+    public function moveFolderIgnoresHiddenFilesForFileMounts(): void
+    {
+        $subject = $this->createStorageWithFileMounts(['/documents/' => '', '/images/' => 'jpg']);
+        mkdir($this->instancePath . '/resource-storage-test/images/documents/folder');
+        $this->createFileInStorage($subject, 'documents/folder/photo.jpg');
+        touch($this->instancePath . '/resource-storage-test/images/documents/folder/.DS_Store');
+
+        $movedFolder = $subject->moveFolder($subject->getFolder('/documents/folder/'), $subject->getFolder('/images/'));
+
+        self::assertSame('/images/folder/', $movedFolder->getIdentifier());
+    }
+
+    #[Test]
+    public function getAllowedFileExtensionsInFolderCombinesStorageAndFileMounts(): void
+    {
+        $subject = $this->createStorageWithFileMounts(['/images/' => 'jpg,png,gif'], 'pdf,jpg,png');
+
+        self::assertSame(['jpg', 'png'], $subject->getAllowedFileExtensionsInFolder($subject->getFolder('/images/'))->toList());
+    }
+
+    #[Test]
+    public function getAllowedFileExtensionsInFolderIsUnrestrictedWithoutRestrictions(): void
+    {
+        $subject = $this->createStorageWithFileMounts(['/images/' => '']);
+
+        self::assertFalse($subject->getAllowedFileExtensionsInFolder($subject->getFolder('/images/'))->isRestricted());
+    }
+
+    #[Test]
+    public function getAllowedFileExtensionsInFolderIgnoresFileMountsWithoutPermissionEvaluation(): void
+    {
+        $subject = $this->createStorageWithFileMounts(['/images/' => 'jpg'], 'jpg,pdf');
+        $subject->setEvaluatePermissions(false);
+
+        self::assertSame(['jpg', 'pdf'], $subject->getAllowedFileExtensionsInFolder($subject->getFolder('/images/'))->toList());
+    }
+
+    /**
+     * @param array<string, string> $allowedFileExtensionsByFileMount
+     */
+    private function createStorageWithFileMounts(array $allowedFileExtensionsByFileMount, string $allowedFileExtensionsOfStorage = ''): ResourceStorage
+    {
+        $storage = $this->createStorageWithAllowedFileExtensions('images', $allowedFileExtensionsOfStorage);
+        foreach (array_keys($allowedFileExtensionsByFileMount) as $folderIdentifier) {
+            GeneralUtility::mkdir_deep($this->instancePath . '/resource-storage-test/images' . $folderIdentifier);
+        }
+        $storage->setEvaluatePermissions(true);
+        $storage->setUserPermissions(array_fill_keys(
+            ['readFolder', 'writeFolder', 'addFolder', 'copyFolder', 'moveFolder', 'addFile', 'readFile', 'writeFile', 'copyFile', 'moveFile', 'renameFile'],
+            true
+        ));
+        foreach ($allowedFileExtensionsByFileMount as $folderIdentifier => $allowedFileExtensions) {
+            $storage->addFileMount($folderIdentifier, ['allowed_file_extensions' => $allowedFileExtensions]);
+        }
+        return $storage;
+    }
+
+    private function createStorageWithAllowedFileExtensions(string $name, string $allowedFileExtensions): ResourceStorage
+    {
+        $basePath = $this->instancePath . '/resource-storage-test/' . $name;
+        mkdir($basePath);
+        $storageRepository = $this->get(StorageRepository::class);
+        $uid = $storageRepository->addLocalStorage($name, $basePath);
+        $this->get(FileStorageConfigurationWriter::class)->write($uid, [
+            'name' => $name,
+            'allowedFileExtensions' => $allowedFileExtensions,
+            'configuration' => ['basePath' => $basePath . '/'],
+        ]);
+        $storageRepository->flush();
+        return $storageRepository->findByUid($uid);
+    }
+
+    private function createLocalFile(string $fileName): string
+    {
+        $directory = $this->instancePath . '/resource-storage-test/local';
+        if (!is_dir($directory)) {
+            mkdir($directory);
+        }
+        touch($directory . '/' . $fileName);
+        return $directory . '/' . $fileName;
+    }
+
+    private function createFileInStorage(ResourceStorage $storage, string $fileName): File
+    {
+        touch($storage->getConfiguration()['basePath'] . $fileName);
+        return $storage->getFileByIdentifier('/' . $fileName);
     }
 
     #[Test]

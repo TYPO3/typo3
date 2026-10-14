@@ -165,10 +165,13 @@ class FileBrowser extends AbstractResourceBrowser
             // Build the file upload and folder creation form
             $resourceUtilityRenderer = GeneralUtility::makeInstance(ResourceUtilityRenderer::class, $this);
             $dragUploadTrigger = $resourceUtilityRenderer->createDragUpload($this->selectedFolder, $this->fileExtensionFilter, true);
+            $allowedFileExtensionsInFolder = $this->selectedFolder->getStorage()->getAllowedFileExtensionsInFolder($this->selectedFolder);
             $this->view->assignMultiple([
                 'uploadAllowed' => $dragUploadTrigger !== '',
                 'fileExtensions' => [
-                    'allowed' => implode(',', $this->fileExtensionFilter?->getAllowedFileExtensions() ?? []),
+                    'allowed' => $allowedFileExtensionsInFolder->isRestricted()
+                        ? implode(',', array_filter($allowedFileExtensionsInFolder->toList(), fn(string $fileExtension): bool => $this->fileExtensionFilter?->isAllowed($fileExtension) ?? true))
+                        : implode(',', $this->fileExtensionFilter?->getAllowedFileExtensions() ?? []),
                     'disallowed' => implode(',', $this->fileExtensionFilter?->getDisallowedFileExtensions() ?? []),
                 ],
             ]);

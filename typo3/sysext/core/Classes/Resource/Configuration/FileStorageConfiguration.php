@@ -56,6 +56,7 @@ final class FileStorageConfiguration
         'online' => true,
         'autoExtractMetadata' => true,
         'processingFolder' => '',
+        'allowedFileExtensions' => [],
         'configuration' => [],
     ];
 
@@ -225,6 +226,7 @@ final class FileStorageConfiguration
             'online' => $this->toBool($identifier, 'online', $entry['online']),
             'autoExtractMetadata' => $this->toBool($identifier, 'autoExtractMetadata', $entry['autoExtractMetadata']),
             'processingFolder' => trim((string)$entry['processingFolder']),
+            'allowedFileExtensions' => $this->toFileExtensionList($identifier, $entry['allowedFileExtensions']),
             'configuration' => $entry['configuration'],
         ];
     }
@@ -375,6 +377,7 @@ final class FileStorageConfiguration
             'online' => false,
             'autoExtractMetadata' => false,
             'processingFolder' => '',
+            'allowedFileExtensions' => [],
             'configuration' => [],
         ];
     }
@@ -392,6 +395,29 @@ final class FileStorageConfiguration
             $storages[$identifier]['default'] = $identifier === $defaultIdentifier;
         }
         return $storages;
+    }
+
+    /**
+     * Accepts a list or a comma-separated string, as known from TCA.
+     *
+     * @return list<non-empty-string>
+     * @throws InvalidFileStorageConfigurationException
+     */
+    private function toFileExtensionList(int $identifier, mixed $value): array
+    {
+        if (is_string($value)) {
+            $value = explode(',', $value);
+        }
+        if (!is_array($value) || !array_is_list($value) || array_filter($value, static fn(mixed $item): bool => !is_string($item)) !== []) {
+            throw new InvalidFileStorageConfigurationException(
+                'The option "allowedFileExtensions" of file storage ' . $identifier . ' must be a list of file extensions.',
+                1792160417
+            );
+        }
+        return array_values(array_unique(array_filter(array_map(
+            static fn(string $fileExtension): string => strtolower(trim($fileExtension)),
+            $value
+        ))));
     }
 
     private function toBool(int $identifier, string $option, mixed $value): bool

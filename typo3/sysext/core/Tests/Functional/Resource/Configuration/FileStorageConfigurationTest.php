@@ -79,6 +79,7 @@ YAML);
                     'online' => true,
                     'autoExtractMetadata' => true,
                     'processingFolder' => '',
+                    'allowedFileExtensions' => [],
                     'configuration' => ['basePath' => 'public/fileadmin/'],
                 ],
                 2 => [
@@ -92,6 +93,7 @@ YAML);
                     'online' => true,
                     'autoExtractMetadata' => true,
                     'processingFolder' => '1:/processed/assets/',
+                    'allowedFileExtensions' => [],
                     'configuration' => ['bucket' => 'assets'],
                 ],
             ],

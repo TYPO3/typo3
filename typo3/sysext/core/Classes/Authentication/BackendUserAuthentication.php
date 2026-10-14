@@ -41,6 +41,7 @@ use TYPO3\CMS\Core\Http\ImmediateResponseException;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Resource\Filter\FileNameFilter;
+use TYPO3\CMS\Core\Resource\Security\AllowedFileExtensions;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
@@ -1338,7 +1339,15 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             $fileMountRecords = $queryBuilder->executeQuery()->fetchAllAssociative();
             foreach ($fileMountRecords as $fileMount) {
                 $readOnlySuffix = $fileMount['read_only'] ? '-readonly' : '';
-                $fileMountRecordCache[$fileMount['identifier'] . $readOnlySuffix] = $fileMount;
+                $fileMountKey = $fileMount['identifier'] . $readOnlySuffix;
+                // Writable file mounts for the same folder end up as one, so their
+                // allowed file extensions are combined, since they add up
+                if (isset($fileMountRecordCache[$fileMountKey]) && !$fileMount['read_only']) {
+                    $fileMount['allowed_file_extensions'] = AllowedFileExtensions::fromList((string)($fileMountRecordCache[$fileMountKey]['allowed_file_extensions'] ?? ''))
+                        ->merge(AllowedFileExtensions::fromList((string)($fileMount['allowed_file_extensions'] ?? '')))
+                        ->toString();
+                }
+                $fileMountRecordCache[$fileMountKey] = $fileMount;
             }
         }
 

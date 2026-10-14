@@ -25,6 +25,8 @@ use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Http\UploadedFile;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Resource\Configuration\FileStorageConfiguration;
+use TYPO3\CMS\Core\Resource\Configuration\FileStorageConfigurationWriter;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\File\ExtendedFileUtility;
@@ -57,6 +59,12 @@ final class ExtendedFileUtilityTest extends FunctionalTestCase
             $fileCommandsPath . '/existing.png',
             file_get_contents(__DIR__ . '/Fixtures/temp.png')
         );
+    }
+
+    protected function tearDown(): void
+    {
+        @unlink(Environment::getConfigPath() . '/system/' . FileStorageConfiguration::CONFIG_FILE_NAME);
+        parent::tearDown();
     }
 
     #[Test]
@@ -281,6 +289,45 @@ final class ExtendedFileUtilityTest extends FunctionalTestCase
         $messages = $this->get(FlashMessageService::class)->getMessageQueueByIdentifier()->getAllMessages();
         self::assertCount(1, $messages);
         self::assertSame('Folder "/file-commands/" cannot be copied to "/file-commands/sub/", which is the folder itself or one of its subfolders.', $messages[0]->getMessage());
+    }
+
+    #[Test]
+    public function copyingFolderWithFileExtensionNotAllowedInStorageFailsWithoutException(): void
+    {
+        $this->get(FileStorageConfigurationWriter::class)->write(1, [
+            'name' => 'fileadmin',
+            'default' => true,
+            'allowedFileExtensions' => ['jpg'],
+            'configuration' => ['basePath' => Environment::getRelativePublicPath() . 'fileadmin/'],
+        ]);
+        $this->get(StorageRepository::class)->flush();
+
+        $extendedFileUtility = new ExtendedFileUtility();
+        $extendedFileUtility->start(['copy' => [1 => ['data' => '1:/file-commands/', 'target' => '1:/FolderWithUnusedFile/']]], []);
+        $result = $extendedFileUtility->processData();
+
+        self::assertNull($result['copy'][0]);
+        self::assertDirectoryDoesNotExist(Environment::getPublicPath() . '/fileadmin/FolderWithUnusedFile/file-commands');
+    }
+
+    #[Test]
+    public function movingFolderWithFileExtensionNotAllowedInFileMountFailsWithoutException(): void
+    {
+        $storage = $this->get(StorageRepository::class)->getDefaultStorage();
+        $storage->setEvaluatePermissions(true);
+        $storage->setUserPermissions(['readFolder' => true, 'writeFolder' => true, 'moveFolder' => true]);
+        $storage->addFileMount('/file-commands/');
+        $storage->addFileMount('/FolderWithUnusedFile/', ['allowed_file_extensions' => 'jpg']);
+        $folderPath = Environment::getPublicPath() . '/fileadmin/file-commands/folder';
+        GeneralUtility::mkdir($folderPath);
+        GeneralUtility::writeFile($folderPath . '/image.png', file_get_contents(__DIR__ . '/Fixtures/temp.png'));
+
+        $extendedFileUtility = new ExtendedFileUtility();
+        $extendedFileUtility->start(['move' => [1 => ['data' => '1:/file-commands/folder/', 'target' => '1:/FolderWithUnusedFile/']]], []);
+        $result = $extendedFileUtility->processData();
+
+        self::assertNull($result['move'][0]);
+        self::assertFileExists($folderPath . '/image.png');
     }
 
     private function normalizeProcessedDataResult(array $result): array

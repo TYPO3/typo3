@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\Resource\DefaultUploadFolderResolver;
 use TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry;
+use TYPO3\CMS\Core\Resource\Security\AllowedFileExtensions;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -59,6 +60,8 @@ class FilesControlContainer extends AbstractContainer
      * @var array<int,JavaScriptModuleInstruction|string|array<string,string>>
      */
     protected array $javaScriptModules = [];
+
+    private ?Folder $uploadFolder = null;
 
     protected $defaultFieldWizard = [
         'localizationStateSelector' => [
@@ -260,8 +263,16 @@ class FilesControlContainer extends AbstractContainer
             $fileExtensionFilter = GeneralUtility::makeInstance(FileExtensionFilter::class);
             $fileExtensionFilter->setAllowedFileExtensions($config['allowed'] ?? null);
             $fileExtensionFilter->setDisallowedFileExtensions($config['disallowed'] ?? null);
+            $this->uploadFolder = $this->resolveUploadFolder();
             $view->assign('fileSelectors', $this->getFileSelectors($inlineStructure, $config, $fileExtensionFilter));
-            $filteredFileExtensions = $fileExtensionFilter->getFilteredFileExtensions();
+            $allowedFileExtensionsInUploadFolder = $this->getAllowedFileExtensionsInUploadFolder();
+            if ($allowedFileExtensionsInUploadFolder->isRestricted()) {
+                $filteredFileExtensions = [
+                    'allowedFileExtensions' => array_values(array_filter($allowedFileExtensionsInUploadFolder->toList(), $fileExtensionFilter->isAllowed(...))),
+                ];
+            } else {
+                $filteredFileExtensions = $fileExtensionFilter->getFilteredFileExtensions();
+            }
             // Do not display "allowed file extensions" if all extensions are allowed (indicated by ['*'])
             if (($filteredFileExtensions['allowedFileExtensions'] ?? null) === ['*']) {
                 $filteredFileExtensions = [];
@@ -305,7 +316,6 @@ class FilesControlContainer extends AbstractContainer
     protected function getFileSelectors(array $inlineStructure, array $inlineConfiguration, FileExtensionFilter $fileExtensionFilter): array
     {
         $languageService = $this->getLanguageService();
-        $backendUser = $this->getBackendUserAuthentication();
 
         $currentStructureDomObjectIdPrefix = $this->inlineStackProcessor->getDomObjectIdPrefixFromStructure($inlineStructure, $this->data['inlineFirstPid']);
         $objectPrefix = $currentStructureDomObjectIdPrefix . '-' . self::FILE_REFERENCE_TABLE;
@@ -335,27 +345,29 @@ class FilesControlContainer extends AbstractContainer
                 </button>';
         }
 
+        $allowedFileExtensionsInUploadFolder = $this->getAllowedFileExtensionsInUploadFolder();
+        $onlineMediaFileExtensions = $this->onlineMediaHelperRegistry->getSupportedFileExtensions();
         $onlineMediaAllowed = [];
-        foreach ($this->onlineMediaHelperRegistry->getSupportedFileExtensions() as $supportedFileExtension) {
-            if ($fileExtensionFilter->isAllowed($supportedFileExtension)) {
+        foreach ($onlineMediaFileExtensions as $supportedFileExtension) {
+            if ($fileExtensionFilter->isAllowed($supportedFileExtension) && $allowedFileExtensionsInUploadFolder->allowsFileExtension($supportedFileExtension)) {
                 $onlineMediaAllowed[] = $supportedFileExtension;
             }
         }
+        $uploadAllowed = $fileExtensionFilter->getAllowedFileExtensions();
+        if ($allowedFileExtensionsInUploadFolder->isRestricted()) {
+            $uploadAllowed = array_values(array_filter(
+                array_diff($allowedFileExtensionsInUploadFolder->toList(), $onlineMediaFileExtensions),
+                $fileExtensionFilter->isAllowed(...)
+            ));
+        }
 
-        $showUpload = (bool)($inlineConfiguration['appearance']['fileUploadAllowed'] ?? true);
+        $showUpload = (bool)($inlineConfiguration['appearance']['fileUploadAllowed'] ?? true)
+            && (!$allowedFileExtensionsInUploadFolder->isRestricted() || $uploadAllowed !== []);
         $showByUrl = ($inlineConfiguration['appearance']['fileByUrlAllowed'] ?? true) && $onlineMediaAllowed !== [];
 
-        if (($showUpload || $showByUrl) && $backendUser->getUserSettings()->isUploadFieldsInTopOfEBEnabled()) {
-            $folder = $this->defaultUploadFolderResolver->resolve(
-                $backendUser,
-                $this->data['tableName'] === 'pages' ? $this->data['vanillaUid'] : ($this->data['parentPageRow']['uid'] ?? 0),
-                $this->data['tableName'],
-                $this->data['fieldName']
-            );
-            if (
-                $folder instanceof Folder
-                && $folder->getStorage()->checkUserActionPermission('add', 'File')
-            ) {
+        $folder = $this->uploadFolder;
+        if ($showUpload || $showByUrl) {
+            if ($folder !== null) {
                 if ($showUpload) {
                     if ($inlineConfiguration['appearance']['uploadFilesLinkTitle'] ?? false) {
                         $buttonText = $inlineConfiguration['appearance']['uploadFilesLinkTitle'];
@@ -372,7 +384,7 @@ class FilesControlContainer extends AbstractContainer
                         'data-dropzone-target' => '#' . StringUtility::escapeCssSelector($currentStructureDomObjectIdPrefix),
                         'data-insert-dropzone-before' => '1',
                         'data-file-irre-object' => $objectPrefix,
-                        'data-file-allowed' => implode(',', $fileExtensionFilter->getAllowedFileExtensions() ?? []),
+                        'data-file-allowed' => implode(',', $uploadAllowed ?? []),
                         'data-file-disallowed' => implode(',', $fileExtensionFilter->getDisallowedFileExtensions() ?? []),
                         'data-target-folder' => $folder->getCombinedIdentifier(),
                         'data-max-file-size' => (string)(GeneralUtility::getMaxUploadFileSize() * 1024),
@@ -424,6 +436,33 @@ class FilesControlContainer extends AbstractContainer
         );
         $this->javaScriptModules = $event->getJavaScriptModules();
         return $event->getSelectors();
+    }
+
+    /**
+     * The folder files are uploaded to, if the user may add files there.
+     */
+    private function resolveUploadFolder(): ?Folder
+    {
+        $backendUser = $this->getBackendUserAuthentication();
+        if (!$backendUser->getUserSettings()->isUploadFieldsInTopOfEBEnabled()) {
+            return null;
+        }
+        $folder = $this->defaultUploadFolderResolver->resolve(
+            $backendUser,
+            $this->data['tableName'] === 'pages' ? $this->data['vanillaUid'] : ($this->data['parentPageRow']['uid'] ?? 0),
+            $this->data['tableName'],
+            $this->data['fieldName']
+        );
+        if ($folder instanceof Folder && $folder->getStorage()->checkUserActionPermission('add', 'File')) {
+            return $folder;
+        }
+        return null;
+    }
+
+    private function getAllowedFileExtensionsInUploadFolder(): AllowedFileExtensions
+    {
+        $folder = $this->uploadFolder;
+        return $folder?->getStorage()->getAllowedFileExtensionsInFolder($folder) ?? AllowedFileExtensions::unrestricted();
     }
 
     /**

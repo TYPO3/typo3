@@ -44,6 +44,28 @@ final class BackendUserAuthenticationTest extends FunctionalTestCase
         self::assertCount(3, $backendUser->getFileMountRecords());
     }
 
+    public static function allowedFileExtensionsOfFileMountsOfTheSameFolderAreMergedDataProvider(): \Generator
+    {
+        yield 'both restricted' => ['jpg', 'png', 'jpg,png'];
+        yield 'later one unrestricted' => ['jpg', '', ''];
+        yield 'earlier one unrestricted' => ['', 'jpg', ''];
+    }
+
+    #[DataProvider('allowedFileExtensionsOfFileMountsOfTheSameFolderAreMergedDataProvider')]
+    #[Test]
+    public function allowedFileExtensionsOfFileMountsOfTheSameFolderAreMerged(string $allowedFileExtensions, string $otherAllowedFileExtensions, string $expected): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/sys_filemounts_same_folder.csv');
+        $connection = $this->getConnectionPool()->getConnectionForTable('sys_filemounts');
+        $connection->update('sys_filemounts', ['allowed_file_extensions' => $allowedFileExtensions], ['uid' => 1]);
+        $connection->update('sys_filemounts', ['allowed_file_extensions' => $otherAllowedFileExtensions], ['uid' => 4]);
+        $backendUser = $this->setUpBackendUser(8);
+
+        $fileMountRecords = $backendUser->getFileMountRecords();
+
+        self::assertSame($expected, $fileMountRecords['1:content']['allowed_file_extensions']);
+    }
+
     #[Test]
     public function getFileMountRecordsAreResolvedPerBackendUser(): void
     {

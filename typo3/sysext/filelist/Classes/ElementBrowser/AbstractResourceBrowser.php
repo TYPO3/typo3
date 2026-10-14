@@ -83,6 +83,7 @@ abstract class AbstractResourceBrowser extends AbstractElementBrowser implements
         ]);
         $defaultDuplicationBehavior = DuplicationBehavior::getDefaultDuplicationBehaviour($this->getBackendUser());
         $this->view->assign('dragUploader', [
+            'allowedFileExtensions' => $this->selectedFolder?->getStorage()->getAllowedFileExtensionsInFolder($this->selectedFolder)->toString() ?? '',
             'fileDenyPattern' => $GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'] ?? null,
             'maxFileSize' => GeneralUtility::getMaxUploadFileSize() * 1024,
             'defaultDuplicationBehaviourAction' => $defaultDuplicationBehavior->value,

@@ -28,18 +28,27 @@ use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Resource\Configuration\FileStorageConfigurationWriter;
+use TYPO3\CMS\Core\Resource\Event\AfterDefaultUploadFolderWasResolvedEvent;
+use TYPO3\CMS\Core\Resource\Folder;
+use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Schema\SchemaCollection;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class FilesControlContainerTest extends FunctionalTestCase
 {
-    protected bool $initializeDatabase = false;
-
     protected function setUp(): void
     {
         parent::setUp();
         $GLOBALS['BE_USER'] = new BackendUserAuthentication();
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('en');
+    }
+
+    protected function tearDown(): void
+    {
+        GeneralUtility::rmdir($this->instancePath . '/files-control-container-test', true);
+        parent::tearDown();
     }
 
     #[Test]
@@ -162,5 +171,125 @@ final class FilesControlContainerTest extends FunctionalTestCase
 
         self::assertContains('myCustomJavasScriptModule', $result['javaScriptModules']);
         self::assertEquals(3, count($customFileSelectorsEvent->getSelectors()));
+    }
+
+    #[Test]
+    public function allowedFileExtensionsAreNarrowedToTheUploadFolder(): void
+    {
+        $result = $this->renderWithUploadFolder(['allowed' => 'jpg,gif,pdf'], 'jpg,png');
+
+        self::assertStringContainsString('<span class="badge badge-secondary">jpg</span>', $result);
+        self::assertStringNotContainsString('<span class="badge badge-secondary">gif</span>', $result);
+        self::assertStringNotContainsString('<span class="badge badge-secondary">png</span>', $result);
+        self::assertStringContainsString('data-file-allowed="jpg"', $result);
+    }
+
+    #[Test]
+    public function allowedFileExtensionsOfTheUploadFolderAreShownIfTheFieldAllowsAll(): void
+    {
+        $result = $this->renderWithUploadFolder(['disallowed' => 'png'], 'jpg,png');
+
+        self::assertStringContainsString('<span class="badge badge-secondary">jpg</span>', $result);
+        self::assertStringNotContainsString('>png</span>', $result);
+        self::assertStringContainsString('data-file-allowed="jpg"', $result);
+    }
+
+    #[Test]
+    public function uploadIsOmittedIfTheFieldAllowsNoFileExtensionAllowedInTheUploadFolder(): void
+    {
+        $result = $this->renderWithUploadFolder(['allowed' => 'pdf'], 'jpg');
+
+        self::assertStringNotContainsString('t3js-drag-uploader', $result);
+        self::assertStringContainsString('t3js-element-browser', $result);
+    }
+
+    #[Test]
+    public function onlineMediaIsNarrowedToTheUploadFolder(): void
+    {
+        $result = $this->renderWithUploadFolder([], 'youtube,jpg');
+
+        self::assertStringContainsString('data-online-media-allowed="youtube"', $result);
+    }
+
+    #[Test]
+    public function onlineMediaFileExtensionsOfTheUploadFolderAreNotOfferedForUpload(): void
+    {
+        $result = $this->renderWithUploadFolder([], 'youtube,jpg');
+
+        self::assertStringContainsString('data-file-allowed="jpg"', $result);
+        self::assertStringContainsString('data-online-media-allowed="youtube"', $result);
+    }
+
+    #[Test]
+    public function uploadIsOmittedIfOnlyOnlineMediaFileExtensionsAreAllowedInTheUploadFolder(): void
+    {
+        $result = $this->renderWithUploadFolder([], 'youtube');
+
+        self::assertStringNotContainsString('t3js-drag-uploader', $result);
+        self::assertStringContainsString('data-online-media-allowed="youtube"', $result);
+    }
+
+    private function renderWithUploadFolder(array $fieldConfig, string $allowedFileExtensionsInStorage): string
+    {
+        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/be_users.csv');
+        $backendUser = $this->setUpBackendUser(1);
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
+        $uploadFolder = $this->createFolderInStorage($allowedFileExtensionsInStorage);
+
+        /** @var Container $container */
+        $container = $this->get('service_container');
+        $container->set(
+            'upload-folder-listener',
+            static function (AfterDefaultUploadFolderWasResolvedEvent $event) use ($uploadFolder) {
+                $event->setUploadFolder($uploadFolder);
+            }
+        );
+        $this->get(ListenerProvider::class)->addListener(AfterDefaultUploadFolderWasResolvedEvent::class, 'upload-folder-listener');
+
+        $subject = $this->get(FilesControlContainer::class);
+        $subject->setData([
+            'inlineData' => [],
+            'inlineStructure' => [],
+            'inlineFirstPid' => 123,
+            'fieldName' => 'assets',
+            'tableName' => 'my_table',
+            'renderType' => 'file',
+            'databaseRow' => [
+                'uid' => 123,
+            ],
+            'parentPageRow' => [
+                'uid' => 123,
+            ],
+            'tabAndInlineStack' => '',
+            'request' => new ServerRequest()
+                ->withAttribute('route', new Route('', []))
+                ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE),
+            'parameterArray' => [
+                'itemFormElName' => '',
+                'fieldConf' => [
+                    'label' => 'foobar',
+                    'config' => $fieldConfig,
+                    'children' => [],
+                ],
+            ],
+            'returnUrl' => '',
+            'tcaSchemata' => new SchemaCollection([]),
+        ]);
+        return $subject->render()['html'];
+    }
+
+    private function createFolderInStorage(string $allowedFileExtensions): Folder
+    {
+        $basePath = $this->instancePath . '/files-control-container-test/storage';
+        GeneralUtility::mkdir_deep($basePath);
+        $storageRepository = $this->get(StorageRepository::class);
+        $uid = $storageRepository->addLocalStorage('storage', $basePath);
+        $this->get(FileStorageConfigurationWriter::class)->write($uid, [
+            'name' => 'storage',
+            'allowedFileExtensions' => $allowedFileExtensions,
+            'configuration' => ['basePath' => $basePath . '/'],
+        ]);
+        $storageRepository->flush();
+        return $storageRepository->findByUid($uid)->getRootLevelFolder();
     }
 }

@@ -42,7 +42,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 #[Autoconfigure(public: true)]
 final readonly class FileStorageConfigurationWriter
 {
-    private const array KEY_ORDER = ['name', 'driver', 'default', 'browsable', 'public', 'writable', 'online', 'autoExtractMetadata', 'processingFolder', 'configuration'];
+    private const array KEY_ORDER = ['name', 'driver', 'default', 'browsable', 'public', 'writable', 'online', 'autoExtractMetadata', 'processingFolder', 'allowedFileExtensions', 'configuration'];
 
     public function __construct(
         private FileStorageConfiguration $configuration,
@@ -193,6 +193,7 @@ final readonly class FileStorageConfigurationWriter
                 'default' => $value === false,
                 'browsable', 'public', 'writable', 'online', 'autoExtractMetadata' => $value === true,
                 'processingFolder' => $value === '' || $value === null,
+                'allowedFileExtensions' => $value === [] || $value === '' || $value === null,
                 'configuration' => $value === [] || $value === null,
             };
             if (!$isDefaultValue) {

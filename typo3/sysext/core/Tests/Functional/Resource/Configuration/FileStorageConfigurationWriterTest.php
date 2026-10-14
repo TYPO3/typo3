@@ -65,6 +65,18 @@ final class FileStorageConfigurationWriterTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function writeKeepsAllowedFileExtensionsAndOmitsEmptyOnes(): void
+    {
+        $subject = $this->get(FileStorageConfigurationWriter::class);
+        $subject->write(2, ['name' => 'Images', 'allowedFileExtensions' => ['jpg', 'png'], 'configuration' => ['basePath' => 'images/']]);
+        $subject->write(3, ['name' => 'Documents', 'allowedFileExtensions' => [], 'configuration' => ['basePath' => 'documents/']]);
+        self::assertSame(
+            "storages:\n  1:\n    name: fileadmin\n    default: true\n    configuration:\n      basePath: fileadmin/\n  2:\n    name: Images\n    allowedFileExtensions:\n      - jpg\n      - png\n    configuration:\n      basePath: images/\n  3:\n    name: Documents\n    configuration:\n      basePath: documents/\n",
+            file_get_contents($this->configFile)
+        );
+    }
+
+    #[Test]
     public function writePreservesPlaceholdersAndImportsOfUntouchedEntries(): void
     {
         file_put_contents($this->configFile, "imports:\n  - { resource: 'more-storages.yaml' }\nstorages:\n  1:\n    name: fileadmin\n    default: true\n    configuration:\n      basePath: '%env(TYPO3_TEST_STORAGE_PATH)%'\n");

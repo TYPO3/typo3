@@ -653,6 +653,9 @@ class ExtendedFileUtility extends BasicFileUtility
             } catch (ExistingTargetFolderException $e) {
                 $this->writeLog(SystemLogFileAction::COPY, SystemLogErrorClassification::USER_ERROR, 'Target "{destination}" already exists', ['destination' => $targetFolderObject->getIdentifier()]);
                 $this->addMessageToFlashMessageQueue('FileUtility.TargetAlreadyExists', [$targetFolderObject->getIdentifier()]);
+            } catch (IllegalFileExtensionException $e) {
+                $this->writeLog(SystemLogFileAction::COPY, SystemLogErrorClassification::USER_ERROR, 'Extension of a file in "{identifier}" is not allowed in "{destination}"', ['identifier' => $sourceFolderObject->getIdentifier(), 'destination' => $targetFolderObject->getIdentifier()]);
+                $this->addMessageToFlashMessageQueue('FileUtility.FolderContainsFileExtensionNotAllowedIn', [$sourceFolderObject->getIdentifier(), $targetFolderObject->getIdentifier()]);
             } catch (NotImplementedMethodException $e) {
                 $this->writeLog(SystemLogFileAction::MOVE, SystemLogErrorClassification::USER_ERROR, 'The function to copy a folder between storages is not yet implemented');
                 $this->addMessageToFlashMessageQueue('FileUtility.TheFunctionToCopyAFolderBetweenStoragesIsNotYetImplemented');
@@ -753,6 +756,9 @@ class ExtendedFileUtility extends BasicFileUtility
             } catch (ExistingTargetFolderException $e) {
                 $this->writeLog(SystemLogFileAction::MOVE, SystemLogErrorClassification::USER_ERROR, 'Target "{destination}" already exists', ['destination' => $targetFolderObject->getIdentifier()]);
                 $this->addMessageToFlashMessageQueue('FileUtility.TargetAlreadyExists', [$targetFolderObject->getIdentifier()]);
+            } catch (IllegalFileExtensionException $e) {
+                $this->writeLog(SystemLogFileAction::MOVE, SystemLogErrorClassification::USER_ERROR, 'Extension of a file in "{identifier}" is not allowed in "{destination}"', ['identifier' => $sourceFolderObject->getIdentifier(), 'destination' => $targetFolderObject->getIdentifier()]);
+                $this->addMessageToFlashMessageQueue('FileUtility.FolderContainsFileExtensionNotAllowedIn', [$sourceFolderObject->getIdentifier(), $targetFolderObject->getIdentifier()]);
             } catch (NotImplementedMethodException $e) {
                 $this->writeLog(SystemLogFileAction::MOVE, SystemLogErrorClassification::USER_ERROR, 'The function to move a folder between storages is not yet implemented');
                 $this->addMessageToFlashMessageQueue('FileUtility.TheFunctionToMoveAFolderBetweenStoragesIsNotYetImplemented');

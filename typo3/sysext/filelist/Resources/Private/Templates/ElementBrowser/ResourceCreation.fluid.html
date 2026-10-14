@@ -17,6 +17,7 @@
     <f:if condition="{dragUploader}">
         <div class="t3js-drag-uploader" data-target-folder="{selectedFolder.combinedIdentifier}" data-progress-container="#typo3-filelist"
             data-dropzone-trigger=".t3js-drag-uploader-trigger" data-dropzone-target=".element-browser-body"
+            data-file-allowed="{dragUploader.allowedFileExtensions}"
             data-file-deny-pattern="{dragUploader.fileDenyPattern}" data-max-file-size="{dragUploader.maxFileSize}"
             data-default-action="{dragUploader.defaultDuplicationBehaviourAction}" data-manual-table
         ></div>

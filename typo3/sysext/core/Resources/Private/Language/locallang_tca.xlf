@@ -300,6 +300,12 @@
       <trans-unit id="sys_filemounts.read_only">
         <source>Read-only</source>
       </trans-unit>
+      <trans-unit id="sys_filemounts.allowed_file_extensions">
+        <source>Allowed file extensions</source>
+      </trans-unit>
+      <trans-unit id="sys_filemounts.allowed_file_extensions.description">
+        <source>Comma-separated list of file extensions that users of this file mount may add to it. Leave empty to allow all file extensions. Files already in the folder are not affected. Another writable file mount of the user for the same folder or a parent folder without this restriction lifts it.</source>
+      </trans-unit>
       <trans-unit id="sys_history">
         <source>System History</source>
       </trans-unit>

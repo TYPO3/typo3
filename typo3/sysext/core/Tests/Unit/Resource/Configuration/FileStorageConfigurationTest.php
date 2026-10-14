@@ -53,6 +53,7 @@ final class FileStorageConfigurationTest extends UnitTestCase
                     'online' => true,
                     'autoExtractMetadata' => true,
                     'processingFolder' => '',
+                    'allowedFileExtensions' => [],
                     'configuration' => [
                         'basePath' => Environment::getRelativePublicPath() . 'fileadmin/',
                     ],
@@ -94,6 +95,7 @@ final class FileStorageConfigurationTest extends UnitTestCase
                 'online' => true,
                 'autoExtractMetadata' => true,
                 'processingFolder' => '',
+                'allowedFileExtensions' => [],
                 'configuration' => [],
             ],
             $this->createSubject()->normalize(3, [])
@@ -123,6 +125,24 @@ final class FileStorageConfigurationTest extends UnitTestCase
         self::assertSame($expected, $this->createSubject()->normalize(1, ['public' => $value])['public']);
     }
 
+    public static function normalizeNormalizesAllowedFileExtensionsDataProvider(): array
+    {
+        return [
+            'list' => [['jpg', 'png'], ['jpg', 'png']],
+            'comma-separated string' => ['jpg, png', ['jpg', 'png']],
+            'case, whitespace, empty items and duplicates' => [[' JPG', '', 'png', 'jpg'], ['jpg', 'png']],
+            'empty string' => ['', []],
+            'empty list' => [[], []],
+        ];
+    }
+
+    #[DataProvider('normalizeNormalizesAllowedFileExtensionsDataProvider')]
+    #[Test]
+    public function normalizeNormalizesAllowedFileExtensions(string|array $value, array $expected): void
+    {
+        self::assertSame($expected, $this->createSubject()->normalize(1, ['allowedFileExtensions' => $value])['allowedFileExtensions']);
+    }
+
     public static function normalizeRejectsInvalidEntriesDataProvider(): array
     {
         return [
@@ -131,6 +151,9 @@ final class FileStorageConfigurationTest extends UnitTestCase
             'empty driver' => [1, ['driver' => ' '], 1789862405],
             'configuration not a map' => [1, ['configuration' => 'fileadmin/'], 1789862406],
             'boolean from arbitrary string' => [1, ['online' => 'maybe'], 1789862412],
+            'allowed file extensions as map' => [1, ['allowedFileExtensions' => ['jpg' => true]], 1792160417],
+            'allowed file extensions with non-string item' => [1, ['allowedFileExtensions' => ['jpg', ['png']]], 1792160417],
+            'allowed file extensions as boolean' => [1, ['allowedFileExtensions' => true], 1792160417],
         ];
     }
 

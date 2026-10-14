@@ -63,6 +63,9 @@
       <trans-unit id="FileUtility.ExtensionOfFileNameIsNotAllowedIn">
         <source>The file extension of "%s" is not permitted in "%s".</source>
       </trans-unit>
+      <trans-unit id="FileUtility.FolderContainsFileExtensionNotAllowedIn">
+        <source>The folder "%s" contains a file with a file extension that is not permitted in "%s".</source>
+      </trans-unit>
       <trans-unit id="FileUtility.ExtensionOfFileNameOrWasNotAllowed">
         <source>The file name %s or the extension %s is not allowed.</source>
       </trans-unit>

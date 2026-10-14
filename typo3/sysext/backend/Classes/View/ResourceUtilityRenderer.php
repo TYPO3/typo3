@@ -117,9 +117,10 @@ class ResourceUtilityRenderer
 
         // Create a list of allowed text file extensions
         $textFileExt = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'], true);
+        $allowedFileExtensionsInFolder = $folderObject->getStorage()->getAllowedFileExtensionsInFolder($folderObject);
         $allowedTextFileList = [];
         foreach ($textFileExt as $fileExt) {
-            if ($fileNameVerifier->isValid('.' . $fileExt)) {
+            if ($fileNameVerifier->isValid('.' . $fileExt) && $allowedFileExtensionsInFolder->allowsFileExtension($fileExt)) {
                 $allowedTextFileList[] = '<li><span class="badge badge-secondary">' . htmlspecialchars(strtolower($fileExt)) . '</span></li>';
             }
         }
@@ -174,9 +175,11 @@ class ResourceUtilityRenderer
 
         // Create a list of allowed online media file extensions
         $onlineMediaFileExt = $onlineMediaHelperRegistry->getSupportedFileExtensions();
+        $allowedFileExtensionsInFolder = $folderObject->getStorage()->getAllowedFileExtensionsInFolder($folderObject);
         $allowedOnlineMediaList = [];
         foreach ($onlineMediaFileExt as $fileExt) {
             if ($fileNameVerifier->isValid('.' . $fileExt)
+                && $allowedFileExtensionsInFolder->allowsFileExtension($fileExt)
                 && ($fileExtensionFilter === null || $fileExtensionFilter->isAllowed($fileExt))
             ) {
                 $allowedOnlineMediaList[] = '<li><span class="badge badge-secondary">' . htmlspecialchars(strtolower($fileExt)) . '</span></li>';
@@ -226,20 +229,8 @@ class ResourceUtilityRenderer
         $lang = $this->getLanguageService();
         $fileNameVerifier = GeneralUtility::makeInstance(FileNameValidator::class);
 
-        // Determine allowed/disallowed file extensions
-        $list = ['*'];
-        $denyList = false;
+        [$list, $denyList] = $this->resolveUploadFileExtensions($folderObject, $fileExtensionFilter);
         $allowedFileExtensionsList = [];
-
-        if ($fileExtensionFilter !== null) {
-            $resolvedFileExtensions = $fileExtensionFilter->getFilteredFileExtensions();
-            if (($resolvedFileExtensions['allowedFileExtensions'] ?? []) !== []) {
-                $list = $resolvedFileExtensions['allowedFileExtensions'];
-            } elseif (($resolvedFileExtensions['disallowedFileExtensions'] ?? []) !== []) {
-                $denyList = true;
-                $list = $resolvedFileExtensions['disallowedFileExtensions'];
-            }
-        }
 
         foreach ($list as $fileExt) {
             if (($fileExt === '*' && !$denyList) || $fileNameVerifier->isValid('.' . $fileExt)) {
@@ -289,20 +280,8 @@ class ResourceUtilityRenderer
         $lang = $this->getLanguageService();
         $fileNameVerifier = GeneralUtility::makeInstance(FileNameValidator::class);
 
-        // Determine allowed/disallowed file extensions
-        $list = ['*'];
-        $denyList = false;
+        [$list, $denyList] = $this->resolveUploadFileExtensions($folderObject, $fileExtensionFilter);
         $allowedFileExtensionsList = [];
-
-        if ($fileExtensionFilter !== null) {
-            $resolvedFileExtensions = $fileExtensionFilter->getFilteredFileExtensions();
-            if (($resolvedFileExtensions['allowedFileExtensions'] ?? []) !== []) {
-                $list = $resolvedFileExtensions['allowedFileExtensions'];
-            } elseif (($resolvedFileExtensions['disallowedFileExtensions'] ?? []) !== []) {
-                $denyList = true;
-                $list = $resolvedFileExtensions['disallowedFileExtensions'];
-            }
-        }
 
         foreach ($list as $fileExt) {
             if (($fileExt === '*' && !$denyList) || $fileNameVerifier->isValid('.' . $fileExt)) {
@@ -354,6 +333,39 @@ class ResourceUtilityRenderer
         $markup[] = '</form>';
 
         return implode(LF, $markup);
+    }
+
+    /**
+     * Files added to the folder are restricted by the storage and file mounts,
+     * which may be narrowed further by the filter, e.g. of a TCA field. Online
+     * media file extensions are left out, as those files are added by URL.
+     *
+     * @return array{0: array<string>, 1: bool} The file extensions, and whether they are disallowed
+     */
+    private function resolveUploadFileExtensions(Folder $folderObject, ?FileExtensionFilter $fileExtensionFilter): array
+    {
+        $allowedFileExtensionsInFolder = $folderObject->getStorage()->getAllowedFileExtensionsInFolder($folderObject);
+        if ($allowedFileExtensionsInFolder->isRestricted()) {
+            $onlineMediaFileExtensions = GeneralUtility::makeInstance(OnlineMediaHelperRegistry::class)->getSupportedFileExtensions();
+            return [
+                array_filter(
+                    $allowedFileExtensionsInFolder->toList(),
+                    static fn(string $fileExtension): bool => !in_array($fileExtension, $onlineMediaFileExtensions, true)
+                        && ($fileExtensionFilter === null || $fileExtensionFilter->isAllowed($fileExtension))
+                ),
+                false,
+            ];
+        }
+        if ($fileExtensionFilter !== null) {
+            $resolvedFileExtensions = $fileExtensionFilter->getFilteredFileExtensions();
+            if (($resolvedFileExtensions['allowedFileExtensions'] ?? []) !== []) {
+                return [$resolvedFileExtensions['allowedFileExtensions'], false];
+            }
+            if (($resolvedFileExtensions['disallowedFileExtensions'] ?? []) !== []) {
+                return [$resolvedFileExtensions['disallowedFileExtensions'], true];
+            }
+        }
+        return [['*'], false];
     }
 
     protected function getLanguageService(): LanguageService

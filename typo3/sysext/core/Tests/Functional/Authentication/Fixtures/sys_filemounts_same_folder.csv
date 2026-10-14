@@ -1,0 +1,9 @@
+be_groups,,,,,
+,uid,pid,title,file_mountpoints,
+,8,0,"group with two file mounts of the same folder","1,4",
+be_users,,,,,
+,uid,pid,username,admin,usergroup
+,8,0,editor_with_two_file_mounts_of_the_same_folder,0,8
+sys_filemounts,,,,,
+,uid,pid,sorting,title,identifier,read_only
+,4,0,512,content,1:content,0
