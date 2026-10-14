@@ -1204,7 +1204,11 @@ class DataHandler
                             $diffStorageFlag = true;
                         }
                     } elseif ($schema->hasCapability(TcaSchemaCapability::AncestorReferenceField) && $schema->getCapability(TcaSchemaCapability::AncestorReferenceField)->getFieldName() === $field) {
-                        // Allow value for original UID to pass by...
+                        // Allow value for original UID to pass by, a NEW-identifier is
+                        // resolved to the uid of the record that was created for it before
+                        if (str_contains((string)$fieldValue, 'NEW')) {
+                            $fieldValue = $this->substNEWwithIDs[$fieldValue] ?? 0;
+                        }
                         $fieldArray[$field] = $fieldValue;
                     }
             }
