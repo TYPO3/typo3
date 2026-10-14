@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\Controller;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Context\PageContextFactory;
 use TYPO3\CMS\Backend\Controller\RecordListController;
@@ -24,6 +25,7 @@ use TYPO3\CMS\Backend\Module\ModuleData;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
@@ -289,6 +291,38 @@ final class RecordListControllerTest extends FunctionalTestCase
 
         self::assertMatchesRegularExpression('/<a [^>]*data-dispatch-action="TYPO3.WindowManager.localOpen"[^>]*>(?:(?!<\/a>).)*View webpage<\/a>/s', $body);
         self::assertStringNotContainsString('<typo3-qrcode-modal-button', $body);
+    }
+
+    public static function searchBoxVisibilityDataProvider(): \Generator
+    {
+        yield 'no configuration, search box hidden by user' => ['', false, '', false, true];
+        yield 'no configuration, search box shown by user' => ['', true, '', true, true];
+        yield 'activated' => ['enableSearchBox = activated', false, '', true, false];
+        yield 'selectable, search box hidden by user' => ['enableSearchBox = selectable', false, '', false, true];
+        yield 'selectable, search box shown by user' => ['enableSearchBox = selectable', true, '', true, true];
+        yield 'deactivated' => ['enableSearchBox = deactivated', true, '', false, false];
+        yield 'removed disableSearchBox has no effect' => ['disableSearchBox = 1', true, '', true, true];
+        yield 'deactivated, search term given' => ['enableSearchBox = deactivated', false, 'foo', true, true];
+        yield 'activated, search term given' => ['enableSearchBox = activated', false, 'foo', true, false];
+    }
+
+    #[Test]
+    #[DataProvider('searchBoxVisibilityDataProvider')]
+    public function searchBoxVisibilityRespectsPageTsConfig(string $tsConfig, bool $searchBoxModuleData, string $searchTerm, bool $searchBoxRendered, bool $toggleRendered): void
+    {
+        if ($tsConfig !== '') {
+            $this->get(ConnectionPool::class)->getConnectionForTable('pages')
+                ->update('pages', ['TSconfig' => 'mod.web_list {' . "\n" . $tsConfig . "\n" . '}'], ['uid' => 1100]);
+        }
+        $site = $this->get(SiteFinder::class)->getSiteByIdentifier('test-site');
+        $moduleData = new ModuleData('records', ['searchBox' => $searchBoxModuleData], []);
+        $additionalParams = $searchTerm !== '' ? ['searchTerm' => $searchTerm] : [];
+
+        $response = $this->get(RecordListController::class)->mainAction($this->createRequest(1100, $site, $moduleData, $additionalParams));
+        $content = (string)$response->getBody();
+
+        self::assertSame($searchBoxRendered, str_contains($content, 'data-recordsearchbox-container'));
+        self::assertSame($toggleRendered, str_contains($content, 'searchBox='));
     }
 
     private function createRequest(int $pageId, object $site, ModuleData $moduleData, array $additionalParams = []): ServerRequest

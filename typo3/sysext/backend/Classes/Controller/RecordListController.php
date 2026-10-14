@@ -150,10 +150,17 @@ class RecordListController
         }
 
         // Check if SearchBox is allowed to be shown:
-        $this->allowSearch = !($this->modTSconfig['disableSearchBox'] ?? false);
+        $searchBoxMode = (string)($this->modTSconfig['enableSearchBox'] ?? '');
+        if ($searchBoxMode === 'activated') {
+            $this->moduleData->set('searchBox', true);
+            $this->allowSearch = false;
+        } elseif ($searchBoxMode === 'deactivated') {
+            $this->moduleData->set('searchBox', false);
+            $this->allowSearch = false;
+        }
 
         // Overwrite to show search on search request
-        if (!empty($this->searchTerm)) {
+        if (!empty($this->searchTerm) && $searchBoxMode !== 'activated') {
             $this->allowSearch = true;
             $this->moduleData->set('searchBox', true);
         }
@@ -209,7 +216,7 @@ class RecordListController
             $pageTranslationsHtml = $this->renderPageTranslations($dbList, $siteLanguages);
         }
         $searchBoxHtml = '';
-        if ($this->allowSearch && $this->moduleData->get('searchBox')) {
+        if ($this->moduleData->get('searchBox')) {
             $searchBoxHtml = $this->renderSearchBox($request, $dbList, $this->searchTerm, $search_levels);
         }
         $clipboardHtml = '';
