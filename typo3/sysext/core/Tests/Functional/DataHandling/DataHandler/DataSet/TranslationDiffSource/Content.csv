@@ -1,0 +1,6 @@
+"pages"
+,"uid","pid","sorting","deleted","title"
+,1,0,256,0,"Root"
+"tt_content"
+,"uid","pid","sorting","deleted","sys_language_uid","l18n_parent","l10n_source","CType","header"
+,1,1,256,0,0,0,0,"text","English header"
