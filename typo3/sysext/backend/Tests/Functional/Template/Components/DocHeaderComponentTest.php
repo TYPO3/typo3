@@ -21,6 +21,7 @@ use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownRadio;
 use TYPO3\CMS\Backend\Template\Components\Buttons\DropDownButton;
+use TYPO3\CMS\Backend\Template\Components\Buttons\LinkButton;
 use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\Components\DocHeaderComponent;
 use TYPO3\CMS\Backend\Template\Components\MenuRegistry;
@@ -163,5 +164,28 @@ final class DocHeaderComponentTest extends FunctionalTestCase
 
         $this->expectExceptionCode(1783447740);
         $this->subject->docHeaderContent($this->request);
+    }
+
+    #[Test]
+    public function buttonsAreNotSharedBetweenDocHeaderComponents(): void
+    {
+        $this->subject->getButtonBar()->addButton($this->componentFactory->createBackButton('#'));
+
+        self::assertFalse($this->get(DocHeaderComponent::class)->getButtonBar()->hasButtonOfType(LinkButton::class));
+    }
+
+    #[Test]
+    public function menusAreNotSharedBetweenDocHeaderComponents(): void
+    {
+        $menu = $this->componentFactory->createMenu();
+        $menu->setIdentifier('SomeModule');
+        $menu->addMenuItem(
+            $this->componentFactory->createMenuItem()
+                ->setTitle('Item 1.1')
+                ->setHref('#')
+        );
+        $this->registry->addMenu($menu);
+
+        self::assertSame([], $this->get(DocHeaderComponent::class)->getMenuRegistry()->getMenus());
     }
 }

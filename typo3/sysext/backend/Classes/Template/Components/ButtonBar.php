@@ -109,7 +109,7 @@ use TYPO3\CMS\Backend\Template\Components\Buttons\PositionInterface;
  *
  * @phpstan-type Buttons array<self::BUTTON_POSITION_*, array<int, list<ButtonInterface>>>
  */
-#[Autoconfigure(public: true)]
+#[Autoconfigure(public: true, shared: false)]
 class ButtonBar
 {
     /**
