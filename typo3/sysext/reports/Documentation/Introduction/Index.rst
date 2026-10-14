@@ -67,3 +67,68 @@ This module gives an overview of the count of records of different types.
 
 The records are counted installation-wide. Soft-deleted (flag `deleted = 1`)
 records are ignored.
+
+..  _content-statistics:
+
+Content statistics
+==================
+
+..  versionadded:: 14.2
+    :changelog: feature-107940-1761853022
+
+Backend users with administrator permissions can find this module at
+:guilabel:`Administration > Reports > Content Statistics`.
+
+The module lists all content element types and how often each type is used.
+The counts include visible and hidden records. Records that are flagged as
+deleted are not counted.
+
+..  figure:: /Images/ContentStatistics.avif
+    :alt: The module "Content Statistics" with the content element types of
+        the group "Typical page content" and the number of their records
+
+    The content element types and how often they are used
+
+The list is grouped by the groups of the content element types. The section
+**Unused content elements** lists the types that no record uses, or whose
+records are all deleted. For a type with deleted records, the number of
+deleted records is shown. Use this section to find content element types that
+you can remove from the configuration.
+
+A type that has records is not necessarily shown on a page. A record can be
+stored on a page that is not rendered, and content can also be rendered by
+TypoScript or Fluid. The module cannot detect such usage.
+
+..  _content-statistics-fields:
+
+Fields of a content element type
+--------------------------------
+
+Expand a content element type to see its fields. For each field the list
+shows:
+
+*   The field type, for example `input` or `select`
+*   **Always visible**: the field is not an exclude field, so backend user
+    groups cannot be denied access to it
+*   **Required**: the field must have a value
+
+..  figure:: /Images/ContentStatisticsFields.avif
+    :alt: The expanded content element type "Regular Text Element" with its
+        fields and the columns Name, Type, Always visible, and Required
+
+    The fields of a content element type
+
+..  _content-statistics-details:
+
+Records of a content element type
+---------------------------------
+
+Click :guilabel:`Details` to open the detail view of a content element type.
+It shows the number of enabled, disabled, and deleted records, and lists the
+records that are not deleted with their page and path. Click the edit button
+of a record to edit it.
+
+..  figure:: /Images/ContentStatisticsDetail.avif
+    :alt: The detail view of the content element type "Regular Text Element"
+
+    The detail view of a content element type
