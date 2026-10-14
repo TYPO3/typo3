@@ -36,6 +36,12 @@ workspace:
 
     The active workspace at the top of the backend
 
+In the LIVE workspace, the bar is only shown if you have access to more than
+one workspace. To hide the bar in the LIVE workspace, open the user menu and
+select :guilabel:`User Settings`. On the tab :guilabel:`Personalization`,
+turn off :guilabel:`Enable workspace Live indicator`. The bar is always shown
+in the other workspaces.
+
 An administrator sets the color and the description in the
 `workspace record <https://docs.typo3.org/permalink/typo3-cms-workspaces:custom-workspace-general>`_.
 
