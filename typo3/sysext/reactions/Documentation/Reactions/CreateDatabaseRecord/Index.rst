@@ -19,7 +19,8 @@ module. As long as no reaction exists, the module shows a card for each
 available reaction type:
 
 ..  figure:: /Images/BackendModuleEmpty.avif
-    :alt: Backend module "Reactions" with no reactions available
+    :alt: Backend module "Reactions" with the card "Create database record"
+        and the button "Create reaction"
     :class: with-shadow
 
     Backend module "Reactions" with no reactions available
@@ -130,10 +131,59 @@ following fields:
 We now save and close the form - our newly created reaction is now visible:
 
 ..  figure:: /Images/BackendModuleWithRecord.avif
-    :alt: Backend module with reaction
+    :alt: Backend module "Reactions" with the filter and a list of three
+        reactions with the columns Name, Reaction Type, Target, Impersonate
+        User, and Last called
     :class: with-shadow
 
-    Backend module with reaction
+    Backend module with reactions
+
+..  _reactions-list:
+
+The list of reactions
+=====================
+
+..  versionadded:: 15.0
+    :changelog: feature-110969-1791465467
+
+    The columns :guilabel:`Target`, :guilabel:`Impersonate User`, and
+    :guilabel:`Last called` and the matching filters were added.
+
+The list shows these columns for each reaction:
+
+Target
+    The table that the reaction creates records in. Below it, the storage page
+    with its title and uid. A storage page that does not exist is flagged.
+
+Impersonate User
+    The backend user that the reaction acts as. A disabled user is marked as
+    disabled. A reaction without a user, or with a user that does not exist,
+    is flagged.
+
+Last called
+    The date and the HTTP status of the last call. If the call failed, the
+    reason is shown below. A reaction that was never called shows
+    :guilabel:`never`.
+
+TYPO3 records a call only if the call passed the secret check. A call without
+a secret or with a wrong secret is not recorded. A call to a disabled,
+scheduled, or expired reaction is not recorded either. TYPO3 writes the call
+directly to the database, not with the DataHandler. The modification date of
+the reaction does not change, and no history or log entry is written. A copy of a reaction starts
+without a recorded call.
+
+Click the header of the columns :guilabel:`Name`, :guilabel:`Reaction Type`,
+:guilabel:`Impersonate User`, or :guilabel:`Last called` to sort the list.
+
+Use the filter above the list to show only some reactions:
+
+*   :guilabel:`Name`: reactions whose name contains the text.
+*   :guilabel:`Reaction Type`: reactions of one type.
+*   :guilabel:`Impersonate User`: reactions that act as one backend user.
+    Only users that a reaction impersonates are in the list.
+*   :guilabel:`Last called`: reactions that were called at least once, or
+    reactions that were never called.
+*   :guilabel:`Enabled`: only enabled reactions.
 
 ..  _call-reaction:
 
