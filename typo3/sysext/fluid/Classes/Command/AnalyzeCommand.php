@@ -78,10 +78,10 @@ final class AnalyzeCommand extends Command
             : $this->templateFinder->findTemplatesInAllPackages($input->getOption('include-system-extensions'));
 
         if ($input->getOption('json')) {
-            $result = $this->validateTemplateFiles($templates);
-            $result = $input->getOption('stdin') ? $result['php://stdin'] : $result;
-            $output->writeln(json_encode($result));
-            return Command::SUCCESS;
+            $results = $this->validateTemplateFiles($templates);
+            $output->writeln(json_encode($input->getOption('stdin') ? $results['php://stdin'] : $results));
+            $hasErrors = array_filter($results, static fn(TemplateValidatorResult $result): bool => $result->errors !== []) !== [];
+            return $hasErrors ? Command::FAILURE : Command::SUCCESS;
         }
 
         $formatter = new FormatterHelper();
