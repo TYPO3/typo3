@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface as ExtbaseConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
+use TYPO3\CMS\Form\Domain\Exception\RenderingException;
 use TYPO3\CMS\Form\Domain\Factory\ArrayFormFactory;
 use TYPO3\CMS\Form\Domain\Factory\FormFactoryInterface;
 use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface;
@@ -45,6 +46,9 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  * The factory class must implement :php:`TYPO3\CMS\Form\Domain\Factory\FormFactoryInterface`.
  *
  * Scope: frontend
+ *
+ * Requires an Extbase request, e.g. when rendered through the form plugin, an
+ * EXTBASEPLUGIN content object or a FLUIDTEMPLATE with "extbase.*" settings.
  *
  * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-form-render
  */
@@ -72,8 +76,14 @@ final class RenderViewHelper extends AbstractViewHelper
         $persistenceIdentifier = $this->arguments['persistenceIdentifier'];
         $prototypeName = $this->arguments['prototypeName'];
         $overrideConfiguration = $this->arguments['overrideConfiguration'];
-        /** @var RequestInterface $request */
         $request = $this->renderingContext->getAttribute(ServerRequestInterface::class);
+        if (!$request instanceof RequestInterface) {
+            throw new RenderingException(
+                'The ViewHelper formvh:render can only be used in an Extbase context. Render the form with the'
+                . ' form plugin, an EXTBASEPLUGIN content object or a FLUIDTEMPLATE with "extbase.*" settings instead.',
+                1791965474
+            );
+        }
         // @todo: formvh:render() does not make sense without a persistenceIdentifier, does it?
         if (!empty($persistenceIdentifier)) {
             // The ConfigurationManager of ext:form needs ext:extbase ConfigurationManager to retrieve basic TS
