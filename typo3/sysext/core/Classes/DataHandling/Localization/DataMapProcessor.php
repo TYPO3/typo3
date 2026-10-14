@@ -657,6 +657,10 @@ class DataMapProcessor
                     $duplicatedValues
                 );
             }
+            // non-translatable children keep their reference to the origin like copied children do
+            if (!$isTranslatable && $foreignTableSchema?->hasCapability(TcaSchemaCapability::AncestorReferenceField)) {
+                $duplicatedValues[$foreignTableSchema->getCapability(TcaSchemaCapability::AncestorReferenceField)->getFieldName()] = $populateAncestorId;
+            }
             // prefixes language title if applicable for the accordant field name in raw data-map item
             if ($isTranslatable && $isLocalized && !$isLocalizationModeExclude) {
                 $duplicatedValues = $this->prefixLanguageTitle(
