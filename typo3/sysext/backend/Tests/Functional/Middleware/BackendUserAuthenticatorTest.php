@@ -98,6 +98,7 @@ final class BackendUserAuthenticatorTest extends FunctionalTestCase
         $test = $this;
         $this->requestHandler = new class ($test) implements RequestHandlerInterface {
             public function __construct(private readonly BackendUserAuthenticatorTest $test) {}
+
             public function handle(ServerRequestInterface $request): ResponseInterface
             {
                 $this->test->markHandlerInvoked($request);
@@ -146,6 +147,7 @@ final class BackendUserAuthenticatorTest extends FunctionalTestCase
         $authenticatorManager = $this->get(AuthenticatorManager::class);
         $authenticator = new class ($authenticatorManager) implements AuthenticatorInterface {
             public function __construct(private readonly AuthenticatorManager $authenticatorManager) {}
+
             public function authenticate(ServerRequestInterface $request, Realm $realm): AuthenticationResult
             {
                 $result = $this->authenticatorManager->authenticate($request, $realm);

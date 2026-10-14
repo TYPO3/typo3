@@ -618,6 +618,7 @@ readonly class PageAncestryRepository
 
         return $traversal;
     }
+
     /**
      * Pages deleted in the workspace end the ancestry, unless they are explicitly included.
      */

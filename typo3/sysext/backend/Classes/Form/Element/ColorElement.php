@@ -280,5 +280,4 @@ class ColorElement extends AbstractFormElement
         }
         return sprintf('%s (%s)', $translatedLabel, $color);
     }
-
 }

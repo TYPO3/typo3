@@ -42,6 +42,7 @@ abstract class AbstractSvgIconProvider implements IconProviderInterface
     protected SvgDocumentService $svgDocumentService;
 
     abstract protected function generateMarkup(Icon $icon, array $options): string;
+
     abstract protected function generateInlineMarkup(array $options): string;
 
     // inject* setters keep the constructor of inheriting providers clean.

@@ -36,6 +36,7 @@ class YamlSetDefinitionProvider
 {
     /** @var array<string, SetDefinition> */
     protected array $sets = [];
+
     public function __construct(
         protected readonly SettingDefinitionValidation $settingDefinitionValidation,
         protected readonly YamlFileLoader $yamlFileLoader,

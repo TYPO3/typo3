@@ -294,5 +294,4 @@ class MenuProcessor implements DataProcessorInterface
 
         return $this->contentDataProcessor->process($recordContentObjectRenderer, $processorConfiguration, $page);
     }
-
 }

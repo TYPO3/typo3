@@ -186,6 +186,7 @@ final class ProcessedFileTest extends UnitTestCase
         $this->expectExceptionCode(1789624489);
         $processedFile->getImageDimension();
     }
+
     public static function processingConfigurationDataProvider(): array
     {
         return [
@@ -209,5 +210,4 @@ final class ProcessedFileTest extends UnitTestCase
         $processedFile = new ProcessedFile($this->getFileFixture(), 'dummy', $configuration, array_replace($databaseRow, $storedConfiguration));
         self::assertSame($expectedConfiguration, $processedFile->getProcessingConfiguration());
     }
-
 }

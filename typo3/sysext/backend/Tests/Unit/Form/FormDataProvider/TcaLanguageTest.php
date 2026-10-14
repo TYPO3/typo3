@@ -413,6 +413,7 @@ final class TcaLanguageTest extends UnitTestCase
             new TcaLanguage(self::createStub(SiteFinder::class))->addData($input)['processedTca']['columns']['aField']['config']['items']
         );
     }
+
     #[Test]
     public function addDataRepsetcsConfigurationOnAddingInvalidDatabaseValue(): void
     {

@@ -150,6 +150,7 @@ final class SiteConfigurationTest extends UnitTestCase
     {
         $logger = new class extends AbstractLogger {
             public array $records = [];
+
             public function log($level, string|\Stringable $message, array $context = []): void
             {
                 $this->records[] = ['level' => $level, 'identifier' => $context['identifier'] ?? null];

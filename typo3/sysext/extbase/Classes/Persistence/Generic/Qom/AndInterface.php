@@ -26,5 +26,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
 interface AndInterface extends ConstraintInterface
 {
     public function getConstraint1(): ConstraintInterface;
+
     public function getConstraint2(): ConstraintInterface;
 }

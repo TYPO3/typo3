@@ -53,6 +53,7 @@ final class ErrorHandlerTest extends UnitTestCase
         $this->trackingLogger = new class implements LoggerInterface {
             use LoggerTrait;
             public array $records = [];
+
             public function log($level, string|\Stringable $message, array $context = []): void
             {
                 $this->records[] = [
@@ -84,10 +85,12 @@ final class ErrorHandlerTest extends UnitTestCase
     ): void {
         $logManager = new class extends LogManager implements LogManagerInterface {
             protected array $loggers = [];
+
             public function getLogger(string $name = ''): LoggerInterface
             {
                 return $this->loggers[$name];
             }
+
             public function setLogger(string $name, LoggerInterface $logger): self
             {
                 $this->loggers[$name] = $logger;

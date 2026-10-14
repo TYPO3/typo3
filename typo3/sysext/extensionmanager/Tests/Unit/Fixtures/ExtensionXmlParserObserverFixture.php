@@ -61,5 +61,4 @@ class ExtensionXmlParserObserverFixture implements \SplObserver
             ];
         }
     }
-
 }

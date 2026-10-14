@@ -38,5 +38,6 @@ interface LineInterface
      * does not for performance reasons.
      */
     public function setTokenStream(TokenStreamInterface $tokenStream): static;
+
     public function getTokenStream(): TokenStreamInterface;
 }

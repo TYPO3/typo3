@@ -703,6 +703,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         self::assertThat($responseSections, new HasRecordConstraint()
             ->setTable(self::TABLE_Page)->setField('title')->setValues('Relations'));
     }
+
     #[Test]
     public function copyPageRecursively(): void
     {

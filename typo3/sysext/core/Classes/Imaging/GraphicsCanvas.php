@@ -1163,5 +1163,4 @@ final class GraphicsCanvas
         }
         return $result;
     }
-
 }

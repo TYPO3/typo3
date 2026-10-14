@@ -32,6 +32,7 @@ final class BackendGroupMountOption extends BitSet
     {
         return $this->get(self::INCLUDE_PAGE_MOUNTS);
     }
+
     public function shouldUserIncludeFileMountsFromAssociatedGroups(): bool
     {
         return $this->get(self::INCLUDE_FILE_MOUNTS);

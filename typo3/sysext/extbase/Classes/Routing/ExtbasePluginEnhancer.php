@@ -208,6 +208,7 @@ class ExtbasePluginEnhancer extends PluginEnhancer
         }
         return true;
     }
+
     /**
      * Check if action and controller are not empty.
      */

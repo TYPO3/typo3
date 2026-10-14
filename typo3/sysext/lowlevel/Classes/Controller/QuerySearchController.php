@@ -1994,5 +1994,4 @@ class QuerySearchController
     {
         return $GLOBALS['LANG'];
     }
-
 }

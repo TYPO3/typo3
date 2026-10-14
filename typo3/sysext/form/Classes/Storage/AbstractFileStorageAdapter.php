@@ -50,7 +50,9 @@ abstract class AbstractFileStorageAdapter
     }
 
     abstract public function exists(FormIdentifier $identifier): bool;
+
     abstract public function existsByFormIdentifier(string $formIdentifier): bool;
+
     abstract public function findAll(SearchCriteria $criteria): array;
 
     /**

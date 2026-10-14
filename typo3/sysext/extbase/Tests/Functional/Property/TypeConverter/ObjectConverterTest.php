@@ -113,10 +113,12 @@ final class ObjectConverterTest extends FunctionalTestCase
     {
         $class = new class ('') {
             private $name;
+
             public function __construct(string $name)
             {
                 $this->name = $name;
             }
+
             public function getName(): string
             {
                 return $this->name;
@@ -202,10 +204,12 @@ final class ObjectConverterTest extends FunctionalTestCase
     {
         $class = new class {
             private $name;
+
             public function setName(string $name): void
             {
                 $this->name = $name;
             }
+
             public function getName(): string
             {
                 return $this->name;
@@ -356,6 +360,7 @@ final class ObjectConverterTest extends FunctionalTestCase
         $class = new class ('', '') {
             public $name;
             public $color;
+
             public function __construct(string $name, ?string $color = 'red')
             {
                 $this->name = $name;
@@ -382,6 +387,7 @@ final class ObjectConverterTest extends FunctionalTestCase
         $class = new class ('', '') {
             public $name;
             public $color;
+
             public function __construct(string $name, string $color)
             {
                 $this->name = $name;

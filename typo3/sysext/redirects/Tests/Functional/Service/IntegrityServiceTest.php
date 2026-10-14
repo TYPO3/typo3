@@ -286,6 +286,7 @@ final class IntegrityServiceTest extends FunctionalTestCase
         $eventDispatcher = new class implements EventDispatcherInterface {
             /** @var list<RedirectIntegrityCheckEvent> */
             public array $dispatchedEvents = [];
+
             public function dispatch(object $event): object
             {
                 if ($event instanceof RedirectIntegrityCheckEvent) {

@@ -463,6 +463,7 @@ class MaintenanceController extends AbstractController
             'status' => $messageQueue,
         ]);
     }
+
     /**
      * Create Admin Get Data action
      */

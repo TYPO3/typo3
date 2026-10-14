@@ -104,6 +104,7 @@ final class NewContentElementControllerTest extends UnitTestCase
 
         self::assertSame($expected, $result);
     }
+
     #[Test]
     public function removeWizardsByPageTsTest(): void
     {

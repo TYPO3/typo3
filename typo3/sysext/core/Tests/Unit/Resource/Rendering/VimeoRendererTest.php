@@ -285,5 +285,4 @@ final class VimeoRendererTest extends UnitTestCase
             $this->subject->render($fileResourceStub, '300m', '200', ['srcAttribute' => 'data-src'])
         );
     }
-
 }

@@ -143,6 +143,7 @@ final class RssWidgetTest extends FunctionalTestCase
     {
         $logger = new class extends AbstractLogger {
             public array $records = [];
+
             public function log($level, string|\Stringable $message, array $context = []): void
             {
                 $this->records[] = $context;

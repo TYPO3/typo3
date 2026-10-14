@@ -47,6 +47,7 @@ final class BeforeMailerSentMessageEventTest extends UnitTestCase
         self::assertEquals($rawMessage, $event->getMessage());
         self::assertEquals($envelope, $event->getEnvelope());
     }
+
     #[Test]
     public function modifyingInitializedObjects(): void
     {

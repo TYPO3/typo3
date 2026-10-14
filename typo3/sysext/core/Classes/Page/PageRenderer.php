@@ -1903,5 +1903,4 @@ class PageRenderer implements SingletonInterface
         }
         return $GLOBALS['BE_USER'];
     }
-
 }

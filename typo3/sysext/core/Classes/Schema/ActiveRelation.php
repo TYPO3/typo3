@@ -59,5 +59,4 @@ final readonly class ActiveRelation
     {
         return new self(...$state);
     }
-
 }

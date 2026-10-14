@@ -72,31 +72,39 @@ final class LinktypeRegistryTest extends UnitTestCase
     {
         return new class ($identifier) implements LinktypeInterface, LabelledLinktypeInterface {
             private string $identifier;
+
             public function __construct(string $identifier)
             {
                 $this->identifier = $identifier;
             }
+
             public function getIdentifier(): string
             {
                 return $this->identifier;
             }
+
             public function checkLink(string $url, array $softRefEntry, LinkAnalyzer $reference): bool
             {
                 return true;
             }
+
             public function setAdditionalConfig(array $config): void {}
+
             public function fetchType(array $value, string $type, string $key): string
             {
                 return '';
             }
+
             public function getErrorParams(): array
             {
                 return [];
             }
+
             public function getBrokenUrl(array $row): string
             {
                 return '';
             }
+
             public function getErrorMessage(array $errorParams): string
             {
                 return '';

@@ -24,8 +24,8 @@ namespace TYPO3\CMS\Core\Schema;
 interface SchemaInterface
 {
     public function getName(): string;
+
     //public function getFields(?callable $filterFunction = null): FieldCollection;
     //public function hasField(string $fieldName): bool;
     public static function __set_state(array $state): SchemaInterface;
-
 }

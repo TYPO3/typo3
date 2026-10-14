@@ -44,6 +44,7 @@ final readonly class CheckIntegrityXliff
         'short_description',
     ];
     private const string XliffDeprecationKey = 'x-unused-since';
+
     public function execute(array $argv = []): int
     {
         $isVerbose = in_array('-v', $argv, true) || in_array('--verbose', $argv, true);

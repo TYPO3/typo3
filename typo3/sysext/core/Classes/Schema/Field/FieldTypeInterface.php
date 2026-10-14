@@ -25,18 +25,32 @@ use TYPO3\CMS\Core\DataHandling\TableColumnType;
 interface FieldTypeInterface
 {
     public function getType(): string;
+
     public function isType(TableColumnType ...$columnType): bool;
+
     public function getName(): string;
+
     public function getLabel(): string;
+
     public function supportsAccessControl(): bool;
+
     public function isRequired(): bool;
+
     public function isNullable(): bool;
+
     public function isSearchable(): bool;
+
     public function getDisplayConditions(): array|string;
+
     public function getDefaultValue(): mixed;
+
     public function hasDefaultValue(): bool;
+
     public function getTranslationBehaviour(): FieldTranslationBehaviour;
+
     public function getConfiguration(): array;
+
     public function getSoftReferenceKeys(): array|false;
+
     public static function __set_state(array $state): FieldTypeInterface;
 }

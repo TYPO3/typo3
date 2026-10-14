@@ -50,22 +50,27 @@ final class FluidViewAdapterTest extends UnitTestCase
     {
         $view = new class ($viewReturnValue) implements FluidStandaloneViewInterface, FluidStandaloneTemplateAwareViewInterface {
             public function __construct(private mixed $viewReturnValue) {}
+
             public function render(string $templateFileName = '')
             {
                 return $this->viewReturnValue;
             }
+
             public function assign($name, $value)
             {
                 return $this;
             }
+
             public function assignMultiple($variables)
             {
                 return $this;
             }
+
             public function renderPartial($partialName, $sectionName, array $variables, $ignoreUnknown = false)
             {
                 return '';
             }
+
             public function renderSection($sectionName, array $variables = [], $ignoreUnknown = false)
             {
                 return '';
@@ -92,22 +97,27 @@ final class FluidViewAdapterTest extends UnitTestCase
     {
         $view = new class ($viewReturnValue) implements FluidStandaloneViewInterface, FluidStandaloneTemplateAwareViewInterface {
             public function __construct(private mixed $viewReturnValue) {}
+
             public function render(string $templateFileName = '')
             {
                 return $this->viewReturnValue;
             }
+
             public function assign($name, $value)
             {
                 return $this;
             }
+
             public function assignMultiple($variables)
             {
                 return $this;
             }
+
             public function renderPartial($partialName, $sectionName, array $variables, $ignoreUnknown = false)
             {
                 return '';
             }
+
             public function renderSection($sectionName, array $variables = [], $ignoreUnknown = false)
             {
                 return '';

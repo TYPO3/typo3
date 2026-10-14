@@ -43,5 +43,4 @@ final class ExceptionConstructorResolver extends NodeVisitorAbstract
         $constructorParameters = $reflectionClass->getConstructor()->getParameters();
         $node->class->setAttribute('constructor', $constructorParameters);
     }
-
 }

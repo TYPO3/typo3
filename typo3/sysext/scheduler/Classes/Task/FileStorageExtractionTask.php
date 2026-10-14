@@ -80,6 +80,7 @@ class FileStorageExtractionTask extends AbstractTask
             'max_file_count' => $this->maxFileCount,
         ];
     }
+
     public function setTaskParameters(array $parameters): void
     {
         $this->storageUid = (int)($parameters['storageUid'] ?? $parameters['file_storage'] ?? -1);

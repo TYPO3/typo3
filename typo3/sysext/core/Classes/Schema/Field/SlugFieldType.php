@@ -43,6 +43,7 @@ final readonly class SlugFieldType extends AbstractFieldType
     {
         return true;
     }
+
     public function getDefaultValue(): string
     {
         return '';

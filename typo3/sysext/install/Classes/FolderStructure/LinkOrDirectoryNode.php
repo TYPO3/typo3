@@ -85,5 +85,4 @@ class LinkOrDirectoryNode extends DirectoryNode
         $path = $this->getAbsolutePath();
         return @is_link($path) && @is_dir(realpath($path));
     }
-
 }

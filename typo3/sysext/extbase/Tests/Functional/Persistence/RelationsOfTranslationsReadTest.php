@@ -1651,5 +1651,4 @@ final class RelationsOfTranslationsReadTest extends FunctionalTestCase
         // Then: the German review of post 2 is returned
         self::assertSame(['Erste Rezension'], $reviews);
     }
-
 }

@@ -63,6 +63,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         );
         $this->setUpFrontendRootPage(1, ['EXT:core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript']);
     }
+
     public function moveRecordBelowOtherRecordOnSamePage(): void
     {
         $this->actionService->moveRecord(self::TABLE_Element, self::VALUE_ElementIdFirst, -2);
@@ -77,6 +78,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     {
         $this->actionService->moveRecord(self::TABLE_Element, self::VALUE_ElementIdFirst, -3);
     }
+
     public function localizeRecord(): void
     {
         // Localize page first.

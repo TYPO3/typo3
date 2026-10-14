@@ -116,6 +116,7 @@ class BcryptPasswordHash implements PasswordHashInterface
         }
         return $result;
     }
+
     /**
      * Checks whether a user's hashed password needs to be replaced with a new hash.
      *

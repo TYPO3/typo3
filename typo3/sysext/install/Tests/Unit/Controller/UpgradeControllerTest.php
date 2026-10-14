@@ -81,6 +81,7 @@ final class UpgradeControllerTest extends UnitTestCase
             json_decode((string)$response->getBody(), true, 512, JSON_THROW_ON_ERROR)
         );
     }
+
     public static function versionDataProvider(): array
     {
         return [

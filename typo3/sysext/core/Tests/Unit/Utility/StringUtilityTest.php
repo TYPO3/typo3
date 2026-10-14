@@ -122,6 +122,7 @@ final class StringUtilityTest extends UnitTestCase
         yield 'empty string' => [''];
         yield 'non-empty string' => ['value'];
     }
+
     #[DataProvider('stringValueToFilterDataProvider')]
     #[Test]
     public function filterForStringValuesReturnsProvidedValue(string $value): void

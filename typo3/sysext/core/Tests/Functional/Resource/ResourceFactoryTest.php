@@ -179,6 +179,7 @@ final class ResourceFactoryTest extends FunctionalTestCase
         $file = self::createStub(File::class);
         $domainObject = new class ($file) implements FileCarrierInterface {
             public function __construct(private readonly File $file) {}
+
             public function getOriginalResource(): File
             {
                 return $this->file;

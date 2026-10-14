@@ -33,10 +33,15 @@ interface SystemResourceInterface extends StaticResourceInterface
      * @throws SystemResourceDoesNotExistException
      */
     public function getContents(): string;
+
     public function getName(): string;
+
     public function getNameWithoutExtension(): string;
+
     public function getExtension(): string;
+
     public function getMimeType(): string;
+
     public function getHash(): string;
 
     /**

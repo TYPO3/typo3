@@ -384,6 +384,7 @@ class DeletedRecords
 
         return (int)$pid;
     }
+
     /**
      * Checks the page access rights (Code for access check mostly taken from FormEngine)
      * as well as the table access rights of the user.
@@ -456,5 +457,4 @@ class DeletedRecords
         }
         return $schemata;
     }
-
 }

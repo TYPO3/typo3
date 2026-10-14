@@ -159,6 +159,7 @@ class LinkResult implements LinkResultInterface, \Stringable, \JsonSerializable
                 return isset($this->additionalAttributes[$attributeName]);
         }
     }
+
     public function getAttribute(string $attributeName): ?string
     {
         switch ($attributeName) {
@@ -170,6 +171,7 @@ class LinkResult implements LinkResultInterface, \Stringable, \JsonSerializable
                 return $this->additionalAttributes[$attributeName] ?? null;
         }
     }
+
     public function getAttributes(): array
     {
         $attributes = [];

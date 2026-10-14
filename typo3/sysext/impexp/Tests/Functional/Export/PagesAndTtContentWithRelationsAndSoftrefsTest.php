@@ -116,5 +116,4 @@ final class PagesAndTtContentWithRelationsAndSoftrefsTest extends AbstractImport
             $out
         );
     }
-
 }

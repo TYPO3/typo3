@@ -527,5 +527,4 @@ final readonly class FileFormsToDatabaseUpgradeWizard implements UpgradeWizardIn
     {
         return !empty($formMetadata->identifier) && trim($formMetadata->type) === 'Form';
     }
-
 }

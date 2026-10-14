@@ -106,5 +106,4 @@ final class TcaTypeCountryTest extends FunctionalTestCase
         self::assertSame('AT', $persons[0]->getCountry()->getAlpha2IsoCode());
         self::assertSame('FR', $persons[1]->getCountry()->getAlpha2IsoCode());
     }
-
 }

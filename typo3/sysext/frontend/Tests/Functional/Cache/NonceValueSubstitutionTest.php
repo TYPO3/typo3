@@ -27,6 +27,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 final class NonceValueSubstitutionTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
+
     public static function nonceIsSubstitutedIfNecessaryDataProvider(): \Generator
     {
         yield 'null on empty content' => [

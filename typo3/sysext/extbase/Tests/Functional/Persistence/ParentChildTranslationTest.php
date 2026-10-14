@@ -95,6 +95,7 @@ final class ParentChildTranslationTest extends FunctionalTestCase
             $children
         );
     }
+
     #[Test]
     public function multilevelFallbackOfChildrenRespects(): void
     {

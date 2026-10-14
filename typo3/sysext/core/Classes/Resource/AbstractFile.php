@@ -269,6 +269,7 @@ abstract class AbstractFile implements FileInterface
     {
         return GeneralUtility::inList(strtolower($GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'] ?? ''), $this->getExtension());
     }
+
     /******************
      * CONTENTS RELATED
      ******************/

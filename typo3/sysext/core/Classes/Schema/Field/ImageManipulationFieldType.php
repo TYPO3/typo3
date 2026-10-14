@@ -33,6 +33,7 @@ final readonly class ImageManipulationFieldType extends AbstractFieldType
     {
         return false;
     }
+
     public function hasDefaultValue(): false
     {
         return false;

@@ -136,5 +136,4 @@ final class CacheTagsAttributeTest extends UnitTestCase
         sort($expectedTags);
         self::assertSame($expectedTags, $actualTags);
     }
-
 }

@@ -115,5 +115,4 @@ class ContentController extends ActionController
         }
         return $this->request->getControllerActionName() . '(' . implode(', ', $arguments) . ')';
     }
-
 }

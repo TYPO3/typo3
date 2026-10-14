@@ -234,5 +234,4 @@ final class DataHandlerCountryTest extends FunctionalTestCase
         $newRecord = BackendUtility::getRecord('tx_testdatahandler_country', $uid);
         self::assertSame('DE', $newRecord['country_default']);
     }
-
 }

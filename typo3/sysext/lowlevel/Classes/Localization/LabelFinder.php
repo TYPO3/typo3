@@ -103,5 +103,4 @@ final readonly class LabelFinder
         return ($referenceStringMatch || $labelStringMatch)
             && ($referenceRegexMatch || $labelRegexMatch);
     }
-
 }

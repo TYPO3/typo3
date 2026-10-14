@@ -92,6 +92,7 @@ final class FrontendUserAuthenticatorTest extends FunctionalTestCase
         $test = $this;
         $this->requestHandler = new class ($test) implements RequestHandlerInterface {
             public function __construct(private readonly FrontendUserAuthenticatorTest $test) {}
+
             public function handle(ServerRequestInterface $request): ResponseInterface
             {
                 $this->test->markHandlerInvoked($request);

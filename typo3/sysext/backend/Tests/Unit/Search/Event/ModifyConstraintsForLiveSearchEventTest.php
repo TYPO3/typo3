@@ -170,5 +170,4 @@ final class ModifyConstraintsForLiveSearchEventTest extends UnitTestCase
 
         self::assertSame(array_merge($constraints, $addedConstraints), $event->getConstraints());
     }
-
 }

@@ -104,6 +104,7 @@ final class BackendLayoutRendererLanguageComparisonTest extends FunctionalTestCa
             ]
         );
     }
+
     private function renderLanguageComparisonView(array $selectedLanguageIds = [0, 1, 2]): string
     {
         $configuration = [];

@@ -136,6 +136,7 @@ final class PageAncestryResolverTest extends FunctionalTestCase
         $result = $this->get(DatabasePageRootline::class)->addData(['effectivePid' => 12]);
         self::assertSame([12, 3, 6, 1, 0], array_map(intval(...), array_column($result['rootline'], 'uid')));
     }
+
     public static function legacyRootLineWithoutVirtualRootMatchesRootlineUtilityDataProvider(): iterable
     {
         yield 'page on the root level' => [1];
@@ -156,6 +157,7 @@ final class PageAncestryResolverTest extends FunctionalTestCase
             $reduce($this->get(PageAncestryResolver::class)->resolve($pageId, 0)->toLegacyRootLine(false))
         );
     }
+
     #[Test]
     public function ancestryIsCachedForTheRequest(): void
     {

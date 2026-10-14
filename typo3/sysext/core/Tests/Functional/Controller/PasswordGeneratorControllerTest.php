@@ -148,5 +148,4 @@ final class PasswordGeneratorControllerTest extends FunctionalTestCase
 
         self::assertFalse($result['success']);
     }
-
 }

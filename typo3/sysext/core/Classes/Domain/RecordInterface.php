@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Domain\Record\ComputedProperties;
 interface RecordInterface extends ContainerInterface
 {
     public function getUid(): int;
+
     public function getPid(): int;
 
     /**

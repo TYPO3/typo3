@@ -172,6 +172,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $copiedTableIds = $this->actionService->copyRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, self::VALUE_PageId, $recordData);
         $this->recordIds['copiedContentId'] = $copiedTableIds[self::TABLE_Content][self::VALUE_ContentIdFirst];
     }
+
     public function copyLanguageAllContent(): void
     {
         $recordData = [
@@ -459,6 +460,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $this->recordIds['newContentIdFirst'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdFirst];
         $this->recordIds['newContentIdLast'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdSecond];
     }
+
     public function copyPageRecursively(): void
     {
         $this->backendUser->uc['copyLevels'] = 10;
@@ -564,6 +566,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $dataHandler->start([], []);
         $dataHandler->deleteAction(self::TABLE_Page, 91, true, true);
     }
+
     public function deleteThenRecreateThenHardDeleteLocalizedPage(): void
     {
         // Soft-delete the localized page. This sets attached localized content elements deleted=1, too.

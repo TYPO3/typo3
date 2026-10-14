@@ -47,6 +47,7 @@ class Registry
         protected readonly ConnectionPool $connectionPool,
         protected readonly DenyListDeserializer $deserializer,
     ) {}
+
     /**
      * Returns a persistent entry.
      *

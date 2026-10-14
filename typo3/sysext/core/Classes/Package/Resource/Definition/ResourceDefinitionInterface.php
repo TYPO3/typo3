@@ -23,6 +23,8 @@ namespace TYPO3\CMS\Core\Package\Resource\Definition;
 interface ResourceDefinitionInterface
 {
     public function matches(string $relativePath): bool;
+
     public function getRelativePath(): string;
+
     public function getIdentifier(): string;
 }

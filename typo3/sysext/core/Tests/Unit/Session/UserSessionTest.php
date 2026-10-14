@@ -97,6 +97,7 @@ final class UserSessionTest extends UnitTestCase
             $session->toArray()
         );
     }
+
     public static function sessionDataDataProvider(): array
     {
         return [
@@ -115,5 +116,4 @@ final class UserSessionTest extends UnitTestCase
     {
         self::assertSame($expectedData, UserSession::createFromRecord('session-id', $record)->getData());
     }
-
 }

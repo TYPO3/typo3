@@ -57,6 +57,7 @@ final class ImportMapFactory
         return new EventDispatcher(
             new class ($sitePath, $bust) implements ListenerProviderInterface {
                 public function __construct(private string $sitePath, private string $bust) {}
+
                 public function getListenersForEvent(object $event): iterable
                 {
                     if ($event instanceof ResolveVirtualJavaScriptImportEvent) {

@@ -134,6 +134,7 @@ final class CountrySelectViewHelperTest extends FunctionalTestCase
         self::assertStringNotContainsString('<option value="CN">Volksrepublik China</option>', $result);
         self::assertStringNotContainsString('<option value="RU">', $result);
     }
+
     #[Test]
     public function renderOnlyListsWantedCountries(): void
     {

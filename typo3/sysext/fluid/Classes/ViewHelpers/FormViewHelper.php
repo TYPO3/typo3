@@ -463,5 +463,4 @@ class FormViewHelper extends AbstractFormViewHelper
         ];
         return '<input ' . GeneralUtility::implodeAttributes($attrs, true) . ($this->shouldUseXHtmlSlash() ? '/' : '') . '>';
     }
-
 }

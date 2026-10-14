@@ -36,6 +36,7 @@ final readonly class XliffNormalizer
     private const int EXIT_OK = 0;
     private const int EXIT_NEEDS_FIX = 1;
     private const int EXIT_ERROR = 2;
+
     public function execute(array $argv): int
     {
         $script  = $argv[0] ?? 'xliffNormalizer.php';

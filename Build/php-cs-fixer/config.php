@@ -58,6 +58,11 @@ return new \PhpCsFixer\Config()
         '@PER-CS3x0' => true,
         // Override PER-CS3x0 default (single) to keep no space after cast operators
         'cast_spaces' => ['space' => 'none'],
+        'class_attributes_separation' => [
+            'elements' => [
+                'method' => 'one',
+            ],
+        ],
         'declare_parentheses' => true,
         'dir_constant' => true,
         'function_to_constant' => [

@@ -38,6 +38,7 @@ final class XmlSitemapFactoryTest extends UnitTestCase
         $sitemapRequest = $this->createSitemapRequest();
         $dataProvider = new class implements XmlSitemapDataProviderInterface {
             public ?XmlSitemapRequest $sitemapRequest = null;
+
             public function getSitemap(XmlSitemapRequest $sitemapRequest): XmlSitemap
             {
                 $this->sitemapRequest = $sitemapRequest;

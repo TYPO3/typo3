@@ -59,6 +59,7 @@ final class QueryHiddenTranslatedRecordsTest extends FunctionalTestCase
             ->withAttribute('frontend.typoscript', $frontendTypoScript);
         $this->get(ConfigurationManagerInterface::class)->setRequest($request);
     }
+
     #[Test]
     public function translatedRecordIsRenderedInWorkspaceWhenLiveRecordIsHidden(): void
     {

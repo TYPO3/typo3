@@ -91,6 +91,7 @@ final class NodeFactoryTest extends UnitTestCase
         ];
         new NodeFactory();
     }
+
     #[Test]
     public function constructThrowsExceptionIfOverridePriorityIsHigherThanHundred(): void
     {
@@ -182,6 +183,7 @@ final class NodeFactoryTest extends UnitTestCase
         ];
         new NodeFactory();
     }
+
     #[Test]
     public function constructThrowsExceptionIfResolverPriorityIsHigherThanHundred(): void
     {

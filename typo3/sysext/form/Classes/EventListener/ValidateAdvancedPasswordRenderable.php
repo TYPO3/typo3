@@ -52,5 +52,4 @@ readonly class ValidateAdvancedPasswordRenderable
         }
         $event->value = $elementValue['password'];
     }
-
 }

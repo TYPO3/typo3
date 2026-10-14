@@ -86,5 +86,4 @@ abstract class AbstractPhpIntegrityChecker extends NodeVisitorAbstract
     }
 
     abstract public function outputResult(SymfonyStyle $io, array $issueCollection): void;
-
 }

@@ -22,6 +22,8 @@ use TYPO3\CMS\Core\View\ViewInterface;
 interface LinkHandlerViewProviderInterface
 {
     public function createView(BackendViewFactory $backendViewFactory, ServerRequestInterface $request): ViewInterface;
+
     public function setView(ViewInterface $view): self;
+
     public function getView(): ViewInterface;
 }
