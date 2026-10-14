@@ -33,6 +33,10 @@ final class FluidTemplateContentObjectTest extends FunctionalTestCase
     ];
     protected const int ROOT_PAGE_ID = 1;
 
+    protected array $coreExtensionsToLoad = [
+        'felogin',
+    ];
+
     protected array $testExtensionsToLoad = [
         'typo3/sysext/frontend/Tests/Functional/Fixtures/Extensions/test_fluid_template',
     ];
@@ -125,6 +129,19 @@ final class FluidTemplateContentObjectTest extends FunctionalTestCase
         );
         $response = $this->executeFrontendSubRequest(new InternalRequest()->withPageId(self::ROOT_PAGE_ID));
         self::assertStringContainsString('Foobar', (string)$response->getBody());
+    }
+
+    #[Test]
+    public function extbaseControllerActionNameIsUsedForRegisteredPlugin(): void
+    {
+        $this->setUpFrontendRootPage(
+            self::ROOT_PAGE_ID,
+            [
+                'EXT:frontend/Tests/Functional/Fixtures/Extensions/test_fluid_template/Configuration/TypoScript/extbase_controller_action_name.typoscript',
+            ]
+        );
+        $response = $this->executeFrontendSubRequest(new InternalRequest()->withPageId(self::ROOT_PAGE_ID));
+        self::assertStringContainsString('name="tx_felogin_login[__referrer][@action]" value="overview"', (string)$response->getBody());
     }
 
     #[Test]

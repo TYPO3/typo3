@@ -222,6 +222,21 @@ class FluidTemplateContentObject extends AbstractContentObject
             }
             $requestBuilder = GeneralUtility::makeInstance(RequestBuilder::class);
             $request = $requestBuilder->build($request);
+            // A plugin registered via configurePlugin() resolves its own default controller and action,
+            // use the configured ones unless the incoming request explicitly targets a controller or action.
+            if (!$request->hasArgument('controller') && !$request->hasArgument('action')) {
+                $controllers = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$requestControllerExtensionName]['plugins'][$requestPluginName]['controllers'];
+                foreach ($controllers as $controllerConfiguration) {
+                    if (($controllerConfiguration['alias'] ?? null) === $requestControllerName
+                        && in_array($requestControllerActionName, $controllerConfiguration['actions'] ?? [], true)
+                    ) {
+                        $request = $request
+                            ->withControllerName($requestControllerName)
+                            ->withControllerActionName($requestControllerActionName);
+                        break;
+                    }
+                }
+            }
         }
         return $request;
     }
