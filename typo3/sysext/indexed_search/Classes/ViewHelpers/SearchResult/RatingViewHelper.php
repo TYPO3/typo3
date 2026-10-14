@@ -75,5 +75,4 @@ class RatingViewHelper extends AbstractViewHelper
                 return $default;
         }
     }
-
 }

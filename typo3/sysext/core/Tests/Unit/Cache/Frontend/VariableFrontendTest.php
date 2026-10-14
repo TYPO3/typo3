@@ -42,6 +42,7 @@ final class VariableFrontendTest extends UnitTestCase
             new DeserializationService(),
         );
     }
+
     public static function constructAcceptsValidIdentifiersDataProvider(): array
     {
         return [

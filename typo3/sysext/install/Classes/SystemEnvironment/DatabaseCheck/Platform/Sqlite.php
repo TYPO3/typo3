@@ -51,6 +51,7 @@ class Sqlite extends AbstractPlatform
 
         return $this->messageQueue;
     }
+
     /**
      * Checks the character set of the database and reports an error if it is not utf-8.
      *

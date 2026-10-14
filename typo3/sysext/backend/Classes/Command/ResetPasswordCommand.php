@@ -63,6 +63,7 @@ class ResetPasswordCommand extends Command
                 'The email address of a valid backend user'
             );
     }
+
     /**
      * Executes the command for sending out an email to reset the password.
      */

@@ -439,5 +439,4 @@ final class TypoScriptServiceTest extends UnitTestCase
         $result = $subject->flattenTypoScriptLabelArray($input);
         self::assertSame($expected, $result);
     }
-
 }

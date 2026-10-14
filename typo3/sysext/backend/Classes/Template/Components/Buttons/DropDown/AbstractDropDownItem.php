@@ -146,6 +146,7 @@ abstract class AbstractDropDownItem implements \Stringable
     {
         return $this->attributes;
     }
+
     public function isActive(): bool
     {
         return $this->active;

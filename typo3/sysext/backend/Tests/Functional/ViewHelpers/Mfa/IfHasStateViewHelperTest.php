@@ -51,6 +51,7 @@ final class IfHasStateViewHelperTest extends FunctionalTestCase
         self::assertStringNotContainsString('isLocked', $result);
         self::assertStringNotContainsString('isUnlocked', $result);
     }
+
     #[Test]
     public function renderReturnsActive(): void
     {
@@ -62,6 +63,7 @@ final class IfHasStateViewHelperTest extends FunctionalTestCase
         self::assertStringNotContainsString('isLocked', $result);
         self::assertStringContainsString('isUnlocked', $result);
     }
+
     #[Test]
     public function renderReturnsLocked(): void
     {

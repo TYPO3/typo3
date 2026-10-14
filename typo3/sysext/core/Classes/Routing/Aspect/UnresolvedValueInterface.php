@@ -23,5 +23,6 @@ namespace TYPO3\CMS\Core\Routing\Aspect;
 interface UnresolvedValueInterface
 {
     public function hasFallbackValue(): bool;
+
     public function getFallbackValue(): ?string;
 }

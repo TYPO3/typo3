@@ -286,5 +286,4 @@ Search only in the `core` extension using a regular expression:
     {
         return @preg_match($regex, '') !== false;
     }
-
 }

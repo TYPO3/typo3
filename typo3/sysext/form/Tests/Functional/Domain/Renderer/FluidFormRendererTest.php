@@ -119,5 +119,4 @@ final class FluidFormRendererTest extends FunctionalTestCase
             ],
         ], null, new ServerRequest());
     }
-
 }

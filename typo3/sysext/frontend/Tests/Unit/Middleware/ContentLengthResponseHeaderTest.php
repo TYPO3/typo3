@@ -73,6 +73,7 @@ final class ContentLengthResponseHeaderTest extends UnitTestCase
         $request = (new ServerRequest())->withAttribute('frontend.typoscript', $frontendTypoScript);
         $handler = new class ($response) implements RequestHandlerInterface {
             public function __construct(private readonly ResponseInterface $response) {}
+
             public function handle(ServerRequestInterface $request): ResponseInterface
             {
                 return $this->response;

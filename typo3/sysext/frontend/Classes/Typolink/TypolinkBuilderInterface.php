@@ -33,5 +33,4 @@ interface TypolinkBuilderInterface
      * @throws UnableToLinkException
      */
     public function buildLink(array $linkDetails, array $configuration, ServerRequestInterface $request, string $linkText = ''): LinkResultInterface;
-
 }

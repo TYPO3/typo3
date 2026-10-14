@@ -55,12 +55,14 @@ interface IncludeInterface
      * (e.g. in Frontend), the identifier is null and calling the getter will throw an exception.
      */
     public function setIdentifier(string $identifier): void;
+
     public function getIdentifier(): string;
 
     /**
      * A human-readable version of the identifier: Used in backend tree rendering.
      */
     public function setName(string $name): void;
+
     public function getName(): string;
 
     /**
@@ -74,12 +76,14 @@ interface IncludeInterface
      * depending on their parent path value.
      */
     public function setPath(string $path): void;
+
     public function getPath(): string;
 
     /**
      * Child maintenance methods.
      */
     public function addChild(IncludeInterface $node): void;
+
     public function hasChildren(): bool;
 
     /**
@@ -97,6 +101,7 @@ interface IncludeInterface
      * The source split into single lines by a tokenizer.
      */
     public function setLineStream(?LineStream $lineStream): void;
+
     public function getLineStream(): ?LineStream;
 
     /**
@@ -105,6 +110,7 @@ interface IncludeInterface
      * Relevant in backend tree and source display only.
      */
     public function setOriginalLine(LineInterface $line): void;
+
     public function getOriginalLine(): ?LineInterface;
 
     /**
@@ -114,12 +120,14 @@ interface IncludeInterface
      * This flag is set when a line stream is split and the children fully represent the source.
      */
     public function setSplit(): void;
+
     public function isSplit(): bool;
 
     /**
      * Set to true for IncludeTypoScriptInclude's (sys_template records) when "root" flag is set.
      */
     public function setRoot(bool $root): void;
+
     public function isRoot(): bool;
 
     /**
@@ -127,6 +135,7 @@ interface IncludeInterface
      * or "clear setup" is set. Depends on context if currently constants or setup are parsed.
      */
     public function setClear(bool $clear): void;
+
     public function isClear(): bool;
 
     /**
@@ -134,5 +143,6 @@ interface IncludeInterface
      * tree rendering only.
      */
     public function setPid(int $pid): void;
+
     public function getPid(): ?int;
 }

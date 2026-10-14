@@ -39,6 +39,7 @@ use TYPO3\CMS\Webhooks\WebhookTypesRegistry;
 final class WebhookCompilerPass implements CompilerPassInterface
 {
     private ContainerBuilder $container;
+
     public function __construct(
         private readonly string $tagName
     ) {}

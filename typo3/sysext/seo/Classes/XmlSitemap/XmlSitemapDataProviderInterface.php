@@ -26,8 +26,12 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 interface XmlSitemapDataProviderInterface
 {
     public function __construct(ServerRequestInterface $request, string $name, array $config = [], ?ContentObjectRenderer $cObj = null);
+
     public function getKey(): string;
+
     public function getItems(): array;
+
     public function getLastModified(): int;
+
     public function getNumberOfPages(): int;
 }

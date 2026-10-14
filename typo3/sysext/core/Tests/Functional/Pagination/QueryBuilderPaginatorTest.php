@@ -202,5 +202,4 @@ final class QueryBuilderPaginatorTest extends FunctionalTestCase
             ->orderBy('uid', 'asc');
         return $queryBuilder;
     }
-
 }

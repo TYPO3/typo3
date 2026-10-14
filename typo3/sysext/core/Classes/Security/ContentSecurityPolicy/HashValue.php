@@ -67,6 +67,7 @@ final class HashValue implements \Stringable, SourceValueInterface
     {
         return $this->type->value . '-' . $this->value;
     }
+
     public static function knows(string $value): bool
     {
         return preg_match(self::createParsingPattern(), $value) === 1;

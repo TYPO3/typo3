@@ -118,5 +118,4 @@ final class CacheTagsAttributeTest extends UnitTestCase
         self::assertTrue($response->hasHeader('X-TYPO3-Cache-Tags-5'));
         self::assertTrue(strlen($response->getHeaderLine('X-TYPO3-Cache-Tags')) < 8000);
     }
-
 }

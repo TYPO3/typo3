@@ -108,5 +108,4 @@ interface PackageInterface
      * Find package icon location relative to the package path or null if nothing was found.
      */
     public function getPackageIcon(): ?string;
-
 }

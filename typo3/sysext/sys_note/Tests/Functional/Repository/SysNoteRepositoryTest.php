@@ -89,5 +89,4 @@ final class SysNoteRepositoryTest extends FunctionalTestCase
 
         self::assertSame($expectedUids, $collectedUids);
     }
-
 }

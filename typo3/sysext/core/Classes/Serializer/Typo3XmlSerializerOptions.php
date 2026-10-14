@@ -48,30 +48,37 @@ class Typo3XmlSerializerOptions
     {
         $this->options = array_merge($this->options, $options);
     }
+
     public function getLoadOptions(): int
     {
         return $this->options[self::LOAD_OPTIONS];
     }
+
     public function getIgnoredNodeTypes(): array
     {
         return $this->options[self::IGNORED_NODE_TYPES];
     }
+
     public function includeRootNode(): bool
     {
         return $this->options[self::INCLUDE_ROOT_NODE];
     }
+
     public function hasNamespacePrefix(): bool
     {
         return $this->options[self::NAMESPACE_PREFIX] !== '';
     }
+
     public function getNamespacePrefix(): string
     {
         return $this->options[self::NAMESPACE_PREFIX];
     }
+
     public function allowUndefinedNamespaces(): bool
     {
         return $this->options[self::ALLOW_UNDEFINED_NAMESPACES];
     }
+
     public function returnRootNodeName(): bool
     {
         return $this->options[self::RETURN_ROOT_NODE_NAME];

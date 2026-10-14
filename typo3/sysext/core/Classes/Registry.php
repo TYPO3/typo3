@@ -43,6 +43,7 @@ class Registry implements SingletonInterface
     protected $loadedNamespaces = [];
 
     public function __construct(protected readonly DenyListDeserializer $deserializer) {}
+
     /**
      * Returns a persistent entry.
      *

@@ -97,5 +97,4 @@ abstract class AbstractImportExportTestCase extends FunctionalTestCase
         unlink($path);
         return $caseSensitive;
     }
-
 }

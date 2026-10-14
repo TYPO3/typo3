@@ -78,6 +78,7 @@ final class UpgradeControllerTest extends UnitTestCase
         $subject->method('initializeView')->willReturn($viewMock);
         $subject->upgradeDocsGetChangelogForVersionAction($request);
     }
+
     public static function versionDataProvider(): array
     {
         return [

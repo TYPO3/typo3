@@ -38,6 +38,7 @@ class Country
     {
         return $this->name;
     }
+
     public function getLocalizedNameLabel(): string
     {
         return 'LLL:' . self::LABEL_FILE . ':' . $this->alpha2 . '.name';

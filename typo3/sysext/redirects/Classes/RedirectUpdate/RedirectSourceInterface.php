@@ -24,6 +24,8 @@ namespace TYPO3\CMS\Redirects\RedirectUpdate;
 interface RedirectSourceInterface
 {
     public function getHost(): string;
+
     public function getPath(): string;
+
     public function getTargetLinkParameters(): array;
 }

@@ -20,5 +20,6 @@ namespace TYPO3\CMS\Core\Crypto\PasswordHashing;
 interface Argon2PasswordHashInterface
 {
     public function getPasswordAlgorithmName(): string;
+
     public function getPasswordHashPrefix(): string;
 }

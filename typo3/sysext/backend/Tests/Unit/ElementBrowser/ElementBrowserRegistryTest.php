@@ -76,18 +76,22 @@ final class ElementBrowserRegistryTest extends UnitTestCase
     {
         return new class ($identifier) implements ElementBrowserInterface {
             private string $identifier;
+
             public function __construct(string $identifier)
             {
                 $this->identifier = $identifier;
             }
+
             public function getIdentifier(): string
             {
                 return $this->identifier;
             }
+
             public function render()
             {
                 return '';
             }
+
             public function processSessionData($data)
             {
                 return [];

@@ -23,5 +23,6 @@ namespace TYPO3\CMS\Filelist\Matcher;
 interface MatcherInterface
 {
     public function supports(mixed $item): bool;
+
     public function match(mixed $item): bool;
 }

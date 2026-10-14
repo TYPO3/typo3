@@ -149,5 +149,4 @@ class FlexFormElementContainer extends AbstractContainer
     {
         return $GLOBALS['LANG'];
     }
-
 }

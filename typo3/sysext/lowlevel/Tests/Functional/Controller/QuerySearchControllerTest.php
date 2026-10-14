@@ -488,5 +488,4 @@ final class QuerySearchControllerTest extends FunctionalTestCase
         self::assertSame([1 => 'Existing query', 2 => 'Another query'], unserialize($storedSettings['storeArray'], ['allowed_classes' => false]));
         self::assertSame(['queryTable' => 'pages'], unserialize($storedSettings['storeQueryConfigs'], ['allowed_classes' => false])[1]);
     }
-
 }

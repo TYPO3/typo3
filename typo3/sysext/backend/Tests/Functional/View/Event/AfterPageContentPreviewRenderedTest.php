@@ -84,5 +84,4 @@ final class AfterPageContentPreviewRenderedTest extends FunctionalTestCase
         $preview = $mockedGridColumnItem->getPreview();
         self::assertEquals('_before_<div class="element-preview"><div class="element-preview-header">My Preview Header</div><div class="element-preview-content">My Content</div></div>_after_', $preview);
     }
-
 }

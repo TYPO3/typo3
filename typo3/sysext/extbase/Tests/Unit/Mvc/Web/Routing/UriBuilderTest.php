@@ -187,6 +187,7 @@ final class UriBuilderTest extends UnitTestCase
         $subject->uriFor(null, [], 'SomeController', 'SomeExtension');
         self::assertEquals($expectedArguments, $subject->getArguments());
     }
+
     #[Test]
     public function uriForSetsPluginNameFromRequestIfPluginNameIsNotSet(): void
     {

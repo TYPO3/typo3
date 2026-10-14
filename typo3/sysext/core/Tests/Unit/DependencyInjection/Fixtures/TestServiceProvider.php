@@ -24,6 +24,7 @@ function myFunctionFactory(): object
 {
     return new class {
         public int $number;
+
         public function __construct()
         {
             $this->number = 42;

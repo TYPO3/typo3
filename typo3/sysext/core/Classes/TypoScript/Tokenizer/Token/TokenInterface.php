@@ -61,8 +61,12 @@ namespace TYPO3\CMS\Core\TypoScript\Tokenizer\Token;
 interface TokenInterface
 {
     public function __toString(): string;
+
     public function getType(): TokenType;
+
     public function getValue(): string;
+
     public function getLine(): int;
+
     public function getColumn(): int;
 }

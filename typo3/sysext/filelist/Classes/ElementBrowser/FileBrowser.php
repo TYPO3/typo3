@@ -85,10 +85,12 @@ class FileBrowser extends AbstractResourceBrowser
                     ->setIgnoredExtensions($this->fileExtensionFilter->getDisallowedFileExtensions() ?? []),
                 new class (GeneralUtility::makeInstance(EventDispatcherInterface::class)) implements MatcherInterface {
                     public function __construct(private readonly EventDispatcherInterface $eventDispatcher) {}
+
                     public function supports(mixed $item): bool
                     {
                         return $item instanceof ResourceInterface;
                     }
+
                     public function match(mixed $item): bool
                     {
                         return $this->eventDispatcher->dispatch(new IsFileSelectableEvent($item))->isFileSelectable();

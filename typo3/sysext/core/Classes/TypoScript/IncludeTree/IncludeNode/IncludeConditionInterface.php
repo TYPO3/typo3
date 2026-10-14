@@ -34,6 +34,7 @@ interface IncludeConditionInterface
      * Set and get the condition token: "[foo = bar]"
      */
     public function setConditionToken(Token $token): void;
+
     public function getConditionToken(): Token;
 
     /**
@@ -45,6 +46,7 @@ interface IncludeConditionInterface
      * be fetched from getConditionToken().
      */
     public function setOriginalConditionToken(Token $token): void;
+
     public function getOriginalConditionToken(): ?Token;
 
     /**
@@ -57,5 +59,6 @@ interface IncludeConditionInterface
      * depending on the condition result.
      */
     public function setConditionVerdict(bool $verdict): void;
+
     public function getConditionVerdict(): bool;
 }

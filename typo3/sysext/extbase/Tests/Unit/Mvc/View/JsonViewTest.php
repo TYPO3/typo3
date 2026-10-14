@@ -86,10 +86,12 @@ final class JsonViewTest extends UnitTestCase
         $nestedObject = new class ($properties) {
             private array $properties;
             private string $prohibited = 'foo';
+
             public function __construct(array $properties)
             {
                 $this->properties = $properties;
             }
+
             public function getName(): string
             {
                 return 'name';
@@ -170,22 +172,27 @@ final class JsonViewTest extends UnitTestCase
         $object = new class ('foo') {
             private $value1 = '';
             private $child;
+
             public function __construct($value1)
             {
                 $this->value1 = $value1;
             }
+
             public function getValue1(): string
             {
                 return $this->value1;
             }
+
             public function setValue1(string $value1): void
             {
                 $this->value1 = $value1;
             }
+
             public function getChild()
             {
                 return $this->child;
             }
+
             public function setChild($child): void
             {
                 $this->child = $child;
@@ -222,26 +229,32 @@ final class JsonViewTest extends UnitTestCase
             private $value1 = '';
             private $children = [];
             private $secret = 'secret';
+
             public function __construct($value1)
             {
                 $this->value1 = $value1;
             }
+
             public function getValue1(): string
             {
                 return $this->value1;
             }
+
             public function setValue1(string $value1): void
             {
                 $this->value1 = $value1;
             }
+
             public function getChildren(): array
             {
                 return $this->children;
             }
+
             public function addChild($child): void
             {
                 $this->children[] = $child;
             }
+
             public function getSecret(): string
             {
                 return $this->secret;

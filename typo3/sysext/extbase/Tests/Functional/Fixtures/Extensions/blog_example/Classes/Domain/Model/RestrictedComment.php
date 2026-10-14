@@ -84,5 +84,4 @@ class RestrictedComment extends AbstractEntity
     {
         $this->customendtime = $customendtime;
     }
-
 }

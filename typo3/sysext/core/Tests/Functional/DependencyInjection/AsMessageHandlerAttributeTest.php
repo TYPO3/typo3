@@ -88,5 +88,4 @@ final class AsMessageHandlerAttributeTest extends FunctionalTestCase
         $messageBus->dispatch(new Envelope($knightsFromOther, [new ReceivedStamp('transport_other')]));
         self::assertEqualsCanonicalizing(['Arthur'], $knightsFromOther->names);
     }
-
 }

@@ -105,5 +105,4 @@ final class MultilingualPagesAndTtContentTest extends AbstractImportExportTestCa
             $out
         );
     }
-
 }

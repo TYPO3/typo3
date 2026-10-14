@@ -32,5 +32,6 @@ interface SystemResourceUriGeneratorInterface
     public function generateForPackageResource(
         ResourceUriBuildingContext $context,
     ): UriInterface;
+
     public function generateForFile(File $file): UriInterface;
 }

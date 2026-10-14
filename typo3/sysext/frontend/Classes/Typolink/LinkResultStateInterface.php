@@ -25,5 +25,6 @@ namespace TYPO3\CMS\Frontend\Typolink;
 interface LinkResultStateInterface
 {
     public static function fromState(array $state): self;
+
     public function getState(): array;
 }

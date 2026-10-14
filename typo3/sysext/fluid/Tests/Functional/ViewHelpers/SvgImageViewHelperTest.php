@@ -536,5 +536,4 @@ final class SvgImageViewHelperTest extends FunctionalTestCase
         self::assertEquals($cropResult, $svg->documentElement->getAttribute('viewBox'), 'SVG "viewBox" (crop) mismatch.');
         unlink($dir . $file['identifier']);
     }
-
 }

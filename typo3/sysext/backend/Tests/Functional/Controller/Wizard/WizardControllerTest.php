@@ -74,6 +74,7 @@ final class WizardControllerTest extends FunctionalTestCase
             (string)$response->getBody()
         );
     }
+
     #[Test]
     public function submitDataActionReturnsJsonFromProvider(): void
     {

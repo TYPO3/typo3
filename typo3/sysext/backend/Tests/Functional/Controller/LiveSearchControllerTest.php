@@ -240,5 +240,4 @@ final class LiveSearchControllerTest extends FunctionalTestCase
         // either via a proper method call, or a mock should lock the number to 1 table only.
         self::assertCount(12, $dispatchedEvents);
     }
-
 }

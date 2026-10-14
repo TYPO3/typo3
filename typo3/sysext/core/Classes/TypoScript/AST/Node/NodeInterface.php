@@ -46,33 +46,43 @@ interface NodeInterface
      * the identifier is null and calling the getter will throw an exception.
      */
     public function setIdentifier(string $identifier): void;
+
     public function getIdentifier(): string;
 
     /**
      * Helper methods for node name.
      */
     public function getName(): ?string;
+
     public function updateName(string $name): void;
 
     /**
      * Helper methods to operate on children.
      */
     public function addChild(ChildNodeInterface $node): void;
+
     public function getChildByName(string $name): ?ChildNodeInterface;
+
     public function removeChildByName(string $name): void;
+
     public function hasChildren(): bool;
+
     /**
      * @return iterable<ChildNodeInterface>
      */
     public function getNextChild(): iterable;
+
     public function sortChildren(): void;
 
     /**
      * Helper methods for value.
      */
     public function setValue(?string $value): void;
+
     public function appendValue(string $value): void;
+
     public function getValue(): ?string;
+
     public function isValueNull(): bool;
 
     /**
@@ -80,6 +90,7 @@ interface NodeInterface
      * constant editor to see if a value has been changed.
      */
     public function setPreviousValue(?string $value): void;
+
     public function getPreviousValue(): ?string;
 
     /**
@@ -87,6 +98,7 @@ interface NodeInterface
      * stream when a constant substitution happened, only set by CommentAwareAstBuilder.
      */
     public function setOriginalValueTokenStream(?TokenStreamInterface $tokenStream): void;
+
     public function getOriginalValueTokenStream(): ?TokenStreamInterface;
 
     /**
@@ -95,6 +107,7 @@ interface NodeInterface
      * by CommentAwareAstBuilder.
      */
     public function addComment(TokenStreamInterface $tokenStream): void;
+
     /**
      * @return TokenStreamInterface[]
      */

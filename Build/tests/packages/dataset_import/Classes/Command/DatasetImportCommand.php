@@ -46,5 +46,4 @@ class DatasetImportCommand extends Command
         DataSet::import($input->getArgument('path'));
         return Command::SUCCESS;
     }
-
 }

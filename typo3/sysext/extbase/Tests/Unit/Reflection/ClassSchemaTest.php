@@ -147,11 +147,14 @@ final class ClassSchemaTest extends UnitTestCase
     {
         $class = new class {
             public function __construct(public ?self $copy = null) {}
+
             public function injectCopy(self $copy): void {}
+
             public function foo($copy): self
             {
                 return $this;
             }
+
             public function bar(self $copy): void {}
         };
 

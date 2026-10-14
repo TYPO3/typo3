@@ -184,6 +184,7 @@ class LinkResult implements LinkResultInterface, LinkResultStateInterface, \Stri
                 return isset($this->additionalAttributes[$attributeName]);
         }
     }
+
     public function getAttribute(string $attributeName): ?string
     {
         switch ($attributeName) {
@@ -195,6 +196,7 @@ class LinkResult implements LinkResultInterface, LinkResultStateInterface, \Stri
                 return $this->additionalAttributes[$attributeName] ?? null;
         }
     }
+
     public function getAttributes(): array
     {
         $attributes = [];

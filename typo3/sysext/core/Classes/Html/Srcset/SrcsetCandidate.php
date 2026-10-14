@@ -54,6 +54,7 @@ abstract class SrcsetCandidate
     }
 
     abstract public function getDescriptor(): string;
+
     abstract public function getCalculatedWidth(): int;
 
     public function setUri(string $uri): static

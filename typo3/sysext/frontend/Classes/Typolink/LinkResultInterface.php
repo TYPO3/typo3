@@ -37,8 +37,12 @@ interface LinkResultInterface
     public function withTarget(string $target): self;
 
     public function withAttributes(array $additionalAttributes, bool $resetExistingAttributes = false): self;
+
     public function withAttribute(string $attributeName, ?string $attributeValue): self;
+
     public function hasAttribute(string $attributeName): bool;
+
     public function getAttribute(string $attributeName): ?string;
+
     public function getAttributes(): array;
 }

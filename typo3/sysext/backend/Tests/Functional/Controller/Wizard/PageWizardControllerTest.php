@@ -218,6 +218,7 @@ final class PageWizardControllerTest extends FunctionalTestCase
             'icon' => 'apps-pagetree-root',
         ], $body);
     }
+
     #[Test]
     public function getDoktypesActionReturns403IfMissingNewPagePermission(): void
     {

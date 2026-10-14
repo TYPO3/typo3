@@ -60,46 +60,57 @@ final class LinkResultServiceTest extends FunctionalTestCase
             {
                 return '';
             }
+
             public function getType(): string
             {
                 return '';
             }
+
             public function getTarget(): string
             {
                 return '';
             }
+
             public function getLinkConfiguration(): array
             {
                 return [];
             }
+
             public function getLinkText(): ?string
             {
                 return null;
             }
+
             public function withLinkText(string $linkText): LinkResultInterface
             {
                 return $this;
             }
+
             public function withTarget(string $target): LinkResultInterface
             {
                 return $this;
             }
+
             public function withAttributes(array $additionalAttributes, bool $resetExistingAttributes = false): LinkResultInterface
             {
                 return $this;
             }
+
             public function withAttribute(string $attributeName, ?string $attributeValue): LinkResultInterface
             {
                 return $this;
             }
+
             public function hasAttribute(string $attributeName): bool
             {
                 return false;
             }
+
             public function getAttribute(string $attributeName): ?string
             {
                 return null;
             }
+
             public function getAttributes(): array
             {
                 return [];
