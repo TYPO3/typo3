@@ -1,0 +1,11 @@
+page = PAGE
+page.10 = FLUIDTEMPLATE
+page.10 {
+  file = EXT:form_caching_tests/Resources/Private/Templates/FormFluidtemplate.fluid.html
+  settings {
+    persistenceIdentifier = EXT:form_caching_tests/Resources/Private/Form/Form1.form.yaml
+    formIdentifier = FormWithoutExtbaseContext
+    title = form without extbase context
+    controllerAction = perform
+  }
+}
