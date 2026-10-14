@@ -1,0 +1,40 @@
+"pages"
+,"uid","pid","title","doktype","sorting","perms_everybody"
+,1,0,"Site",1,128,15
+,2,1,"Blog storage",254,128,15
+"tx_blogexample_domain_model_person"
+,"uid","pid","firstname","lastname","email"
+,1,2,"Anna","Schmidt","anna@example.com"
+,2,2,"Ben","Meier","ben@example.com"
+,3,2,"Chris","Weber","chris@example.com"
+"tx_blogexample_domain_model_tag"
+,"uid","pid","name"
+,1,2,"TYPO3"
+,2,2,"PHP"
+,3,2,"Fluid"
+"tx_blogexample_domain_model_post"
+,"uid","pid","sys_language_uid","l18n_parent","title","date","author","reviewer","tags","comments","additional_info","sorting"
+,1,2,0,0,"Hello world",1768478400,1,2,2,0,1,1
+,2,2,1,1,"Hallo Welt",1768478400,1,2,2,0,1,2
+,3,2,2,1,"Bonjour le monde",1768478400,1,2,2,0,1,3
+,7,2,0,0,"Third post",1769342400,2,3,0,2,0,7
+,8,2,1,7,"Dritter Beitrag",1769342400,2,3,0,2,0,8
+"tx_blogexample_domain_model_comment"
+,"uid","pid","post","author","email","content","date","t3_origuid"
+,1,2,7,"Max","max@example.com","Nice read","2026-01-26 10:00:00",0
+,2,2,7,"Max","max@example.com","Well written","2026-01-26 11:00:00",0
+,3,2,8,"Max","max@example.com","Nice read","2026-01-26 10:00:00",1
+,4,2,8,"Max","max@example.com","Well written","2026-01-26 11:00:00",2
+"tx_blogexample_domain_model_info"
+,"uid","pid","post","name","sys_language_uid","l18n_parent","sorting"
+,1,2,1,"Extra details",0,0,1
+,2,2,2,"Zusätzliche Details",1,1,2
+,3,2,3,"Détails supplémentaires",2,1,3
+"tx_blogexample_domain_model_tag_mm"
+,"uid_local","uid_foreign","tablenames","fieldname","sorting","sorting_foreign"
+,1,1,"tx_blogexample_domain_model_post","tags",1,1
+,2,1,"tx_blogexample_domain_model_post","tags",1,2
+,1,2,"tx_blogexample_domain_model_post","tags",1,1
+,2,2,"tx_blogexample_domain_model_post","tags",1,2
+,1,3,"tx_blogexample_domain_model_post","tags",1,1
+,2,3,"tx_blogexample_domain_model_post","tags",1,2

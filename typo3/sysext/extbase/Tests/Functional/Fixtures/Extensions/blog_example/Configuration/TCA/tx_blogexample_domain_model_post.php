@@ -55,6 +55,7 @@ return [
         ],
         'date' => [
             'exclude' => true,
+            'l10n_mode' => 'exclude',
             'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xlf:tx_blogexample_domain_model_post.date',
             'config' => [
                 'type' => 'datetime',
@@ -73,6 +74,7 @@ return [
         ],
         'author' => [
             'exclude' => true,
+            'l10n_mode' => 'exclude',
             'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xlf:tx_blogexample_domain_model_post.author',
             'config' => [
                 'type' => 'select',
@@ -118,6 +120,7 @@ return [
         ],
         'reviewer' => [
             'exclude' => true,
+            'l10n_mode' => 'exclude',
             'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xlf:tx_blogexample_domain_model_post.reviewer',
             'config' => [
                 'type' => 'select',
@@ -147,6 +150,7 @@ return [
         ],
         'tags' => [
             'exclude' => true,
+            'l10n_mode' => 'exclude',
             'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xlf:tx_blogexample_domain_model_post.tags',
             'config' => [
                 'type' => 'select',
@@ -162,6 +166,7 @@ return [
         ],
         'comments' => [
             'exclude' => true,
+            'l10n_mode' => 'exclude',
             'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xlf:tx_blogexample_domain_model_post.comments',
             'config' => [
                 'type' => 'inline',
@@ -201,6 +206,7 @@ return [
         ],
         'additional_info' => [
             'exclude' => true,
+            'l10n_mode' => 'exclude',
             'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xlf:tx_blogexample_domain_model_post.additional_info',
             'config' => [
                 'type' => 'inline', // this will store the post uid in the post field of the info table

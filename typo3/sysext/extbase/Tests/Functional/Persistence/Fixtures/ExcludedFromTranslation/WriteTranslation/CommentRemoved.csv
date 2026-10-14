@@ -1,0 +1,14 @@
+"tx_blogexample_domain_model_post"
+,"uid","pid","sys_language_uid","l18n_parent","title","author","reviewer","date"
+,1,2,0,0,"Hello world",1,2,1768478400
+,2,2,1,1,"Hallo Welt",1,2,1768478400
+,3,2,2,1,"Bonjour le monde",1,2,1768478400
+,7,2,0,0,"Third post",2,3,1769342400
+,8,2,1,7,"Dritter Beitrag",2,3,1769342400
+"tx_blogexample_domain_model_comment"
+# Core keeps the post uid of the deleted comment, Extbase sets it to 0; the field of a deleted record does not matter.
+,"uid","pid","post","content","deleted"
+,1,2,7,"Nice read",0
+,2,2,7,"Well written",0
+,3,2,"\*","Nice read",1
+,4,2,8,"Well written",0

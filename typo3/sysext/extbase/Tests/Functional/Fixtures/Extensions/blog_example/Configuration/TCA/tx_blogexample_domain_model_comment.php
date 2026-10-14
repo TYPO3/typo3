@@ -10,6 +10,7 @@ return [
         'label_alt_force' => true,
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
+        'origUid' => 't3_origuid',
         'delete' => 'deleted',
         'enablecolumns' => [
             'disabled' => 'hidden',

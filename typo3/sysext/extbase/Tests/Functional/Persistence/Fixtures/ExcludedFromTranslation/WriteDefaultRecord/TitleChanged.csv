@@ -1,0 +1,23 @@
+"tx_blogexample_domain_model_post"
+,"uid","pid","sys_language_uid","l18n_parent","title","author","reviewer","date"
+,1,2,0,0,"Hello everyone",1,2,1768478400
+,2,2,1,1,"Hallo Welt",1,2,1768478400
+,3,2,2,1,"Bonjour le monde",1,2,1768478400
+,4,2,0,0,"Second post",3,1,1768910400
+,5,2,1,4,"Zweiter Beitrag",3,1,1768910400
+,6,2,2,4,"Deuxième article",3,1,1768910400
+,7,2,0,0,"Third post",2,3,1769342400
+,8,2,1,7,"Dritter Beitrag",2,3,1769342400
+"tx_blogexample_domain_model_info"
+,"uid","pid","post","name","sys_language_uid","l18n_parent","deleted"
+,1,2,1,"Extra details",0,0,0
+,2,2,2,"Zusätzliche Details",1,1,0
+,3,2,3,"Détails supplémentaires",2,1,0
+"tx_blogexample_domain_model_tag_mm"
+,"uid_local","uid_foreign","tablenames","fieldname"
+,1,1,"tx_blogexample_domain_model_post","tags"
+,2,1,"tx_blogexample_domain_model_post","tags"
+,1,2,"tx_blogexample_domain_model_post","tags"
+,2,2,"tx_blogexample_domain_model_post","tags"
+,1,3,"tx_blogexample_domain_model_post","tags"
+,2,3,"tx_blogexample_domain_model_post","tags"
