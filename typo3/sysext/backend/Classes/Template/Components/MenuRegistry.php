@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Template\Components;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Template\Components\Menu\Menu;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -56,6 +57,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * }
  * ```
  */
+#[Autoconfigure(shared: false)]
 class MenuRegistry
 {
     /**

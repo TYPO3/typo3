@@ -63,7 +63,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * }
  * ```
  */
-#[Autoconfigure(public: true)]
+#[Autoconfigure(public: true, shared: false)]
 class DocHeaderComponent
 {
     /**

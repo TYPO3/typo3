@@ -117,7 +117,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @phpstan-type Buttons array<self::BUTTON_POSITION_*, array<int, list<ButtonInterface>>>
  */
-#[Autoconfigure(public: true)]
+#[Autoconfigure(public: true, shared: false)]
 class ButtonBar
 {
     /**
