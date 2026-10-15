@@ -113,6 +113,7 @@ class LinkButton extends AbstractButton
             $attributes['data-' . $attributeName] = $attributeValue;
         }
         if ($this->isDisabled()) {
+            $attributes['tabindex'] = '-1';
             $attributes['aria-disabled'] = 'true';
             $attributes['class'] .= ' disabled';
         }

@@ -45,4 +45,19 @@ final class GenericButtonTest extends UnitTestCase
         $button = (new GenericButton())->setTag('typo3-backend-dispatch-modal-button');
         self::assertStringNotContainsString('type=', $button->render());
     }
+
+    #[Test]
+    public function renderIsNotDisabledByDefault(): void
+    {
+        $result = (new GenericButton())->render();
+        self::assertStringNotContainsString('disabled', $result);
+    }
+
+    #[Test]
+    public function renderDisablesButtonTag(): void
+    {
+        $result = (new GenericButton())->setDisabled(true)->render();
+        self::assertMatchesRegularExpression('/<button [^>]*\sdisabled="disabled"/', $result);
+        self::assertStringNotContainsString('class="btn btn-sm btn-default disabled"', $result);
+    }
 }
