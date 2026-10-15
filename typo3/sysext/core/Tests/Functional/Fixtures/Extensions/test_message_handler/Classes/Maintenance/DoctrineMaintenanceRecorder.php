@@ -32,10 +32,14 @@ final class DoctrineMaintenanceRecorder
 
     public static int $handledCount = 0;
 
+    /** @var array<int, array<int, array<string, mixed>>> */
+    public static array $rootlines = [];
+
     public static function reset(): void
     {
         self::$pingedConnections = [];
         self::$closedConnections = [];
         self::$handledCount = 0;
+        self::$rootlines = [];
     }
 }

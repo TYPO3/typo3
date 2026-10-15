@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Tests\TestMessageHandler\Maintenance\DoctrineMaintenanceRecorder;
 use TYPO3Tests\TestMessageHandler\Maintenance\MaintenanceTriggerMessage;
+use TYPO3Tests\TestMessageHandler\Maintenance\RootlineMessage;
 
 final class DoctrineConnectionMaintenanceTest extends FunctionalTestCase
 {
@@ -69,6 +70,26 @@ final class DoctrineConnectionMaintenanceTest extends FunctionalTestCase
         self::assertContains(ConnectionPool::DEFAULT_CONNECTION_NAME, DoctrineMaintenanceRecorder::$closedConnections);
         // The close middleware actually closed the connection after handling.
         self::assertFalse($connection->isConnected());
+    }
+
+    #[Test]
+    #[Group('not-sqlite')]
+    public function rootlineIsResolvedInConsecutiveWorkerConsumedMessages(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages.csv');
+        $this->openDefaultConnection();
+
+        // BackendUtility keeps a prepared statement in the runtime cache. The
+        // second message must not run it on the connection closed after the first.
+        foreach ([2, 3] as $pageId) {
+            $this->get(MessageBusInterface::class)->dispatch(new Envelope(new RootlineMessage($pageId), [
+                new ReceivedStamp('test'),
+                new ConsumedByWorkerStamp(),
+            ]));
+        }
+
+        self::assertSame(2, DoctrineMaintenanceRecorder::$rootlines[2][2]['uid']);
+        self::assertSame(3, DoctrineMaintenanceRecorder::$rootlines[3][2]['uid']);
     }
 
     #[Test]

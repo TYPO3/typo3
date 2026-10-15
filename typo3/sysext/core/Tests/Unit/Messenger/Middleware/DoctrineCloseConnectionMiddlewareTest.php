@@ -26,6 +26,8 @@ use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Middleware\MiddlewareInterface;
 use Symfony\Component\Messenger\Middleware\StackInterface;
 use Symfony\Component\Messenger\Stamp\ConsumedByWorkerStamp;
+use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Messenger\Event\BeforeMessengerDoctrineCloseEvent;
@@ -70,6 +72,18 @@ final class DoctrineCloseConnectionMiddlewareTest extends UnitTestCase
         return $dispatcher;
     }
 
+    private function cacheManagerWithRuntimeCache(FrontendInterface $runtimeCache): CacheManager
+    {
+        $cacheManager = $this->createMock(CacheManager::class);
+        $cacheManager->method('getCache')->willReturnMap([['runtime', $runtimeCache]]);
+        return $cacheManager;
+    }
+
+    private function cacheManager(): CacheManager
+    {
+        return $this->cacheManagerWithRuntimeCache($this->createMock(FrontendInterface::class));
+    }
+
     #[Test]
     public function passesThroughWithoutConsumedByWorkerStamp(): void
     {
@@ -77,7 +91,7 @@ final class DoctrineCloseConnectionMiddlewareTest extends UnitTestCase
         $connection->expects($this->never())->method('close');
         $envelope = new Envelope(new \stdClass());
 
-        $middleware = new DoctrineCloseConnectionMiddleware($this->connectionPoolWith($connection), $this->passThroughDispatcher());
+        $middleware = new DoctrineCloseConnectionMiddleware($this->connectionPoolWith($connection), $this->passThroughDispatcher(), $this->cacheManager());
         $middleware->handle($envelope, $this->stackReturning(static fn(Envelope $e): Envelope => $e));
     }
 
@@ -88,7 +102,7 @@ final class DoctrineCloseConnectionMiddlewareTest extends UnitTestCase
         $connection->expects($this->once())->method('close');
         $envelope = new Envelope(new \stdClass(), [new ConsumedByWorkerStamp()]);
 
-        $middleware = new DoctrineCloseConnectionMiddleware($this->connectionPoolWith($connection), $this->passThroughDispatcher());
+        $middleware = new DoctrineCloseConnectionMiddleware($this->connectionPoolWith($connection), $this->passThroughDispatcher(), $this->cacheManager());
         $middleware->handle($envelope, $this->stackReturning(static fn(Envelope $e): Envelope => $e));
     }
 
@@ -99,7 +113,7 @@ final class DoctrineCloseConnectionMiddlewareTest extends UnitTestCase
         $connection->expects($this->once())->method('close');
         $envelope = new Envelope(new \stdClass(), [new ConsumedByWorkerStamp()]);
 
-        $middleware = new DoctrineCloseConnectionMiddleware($this->connectionPoolWith($connection), $this->passThroughDispatcher());
+        $middleware = new DoctrineCloseConnectionMiddleware($this->connectionPoolWith($connection), $this->passThroughDispatcher(), $this->cacheManager());
         $this->expectException(\RuntimeException::class);
         $middleware->handle($envelope, $this->stackReturning(static function (): Envelope {
             throw new \RuntimeException('handling failed', 1721400000);
@@ -119,7 +133,37 @@ final class DoctrineCloseConnectionMiddlewareTest extends UnitTestCase
         });
         $envelope = new Envelope(new \stdClass(), [new ConsumedByWorkerStamp()]);
 
-        $middleware = new DoctrineCloseConnectionMiddleware($this->connectionPoolWith($connection), $dispatcher);
+        $middleware = new DoctrineCloseConnectionMiddleware($this->connectionPoolWith($connection), $dispatcher, $this->cacheManager());
+        $middleware->handle($envelope, $this->stackReturning(static fn(Envelope $e): Envelope => $e));
+    }
+
+    #[Test]
+    public function flushesRuntimeCacheAfterHandling(): void
+    {
+        $runtimeCache = $this->createMock(FrontendInterface::class);
+        $runtimeCache->expects($this->once())->method('flush');
+        $envelope = new Envelope(new \stdClass(), [new ConsumedByWorkerStamp()]);
+
+        $middleware = new DoctrineCloseConnectionMiddleware(
+            $this->connectionPoolWith($this->connection()),
+            $this->passThroughDispatcher(),
+            $this->cacheManagerWithRuntimeCache($runtimeCache),
+        );
+        $middleware->handle($envelope, $this->stackReturning(static fn(Envelope $e): Envelope => $e));
+    }
+
+    #[Test]
+    public function runtimeCacheIsKeptWithoutConsumedByWorkerStamp(): void
+    {
+        $runtimeCache = $this->createMock(FrontendInterface::class);
+        $runtimeCache->expects($this->never())->method('flush');
+        $envelope = new Envelope(new \stdClass());
+
+        $middleware = new DoctrineCloseConnectionMiddleware(
+            $this->connectionPoolWith($this->connection()),
+            $this->passThroughDispatcher(),
+            $this->cacheManagerWithRuntimeCache($runtimeCache),
+        );
         $middleware->handle($envelope, $this->stackReturning(static fn(Envelope $e): Envelope => $e));
     }
 
@@ -133,7 +177,7 @@ final class DoctrineCloseConnectionMiddlewareTest extends UnitTestCase
         $dispatcher->expects($this->never())->method('dispatch');
         $envelope = new Envelope(new \stdClass(), [new ConsumedByWorkerStamp()]);
 
-        $middleware = new DoctrineCloseConnectionMiddleware($this->connectionPoolWith($connection), $dispatcher);
+        $middleware = new DoctrineCloseConnectionMiddleware($this->connectionPoolWith($connection), $dispatcher, $this->cacheManager());
         $middleware->handle($envelope, $this->stackReturning(static fn(Envelope $e): Envelope => $e));
     }
 }

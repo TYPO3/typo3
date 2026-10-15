@@ -23,6 +23,7 @@ use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Middleware\MiddlewareInterface;
 use Symfony\Component\Messenger\Middleware\StackInterface;
 use Symfony\Component\Messenger\Stamp\ConsumedByWorkerStamp;
+use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Messenger\Event\BeforeMessengerDoctrineCloseEvent;
 
@@ -38,6 +39,10 @@ use TYPO3\CMS\Core\Messenger\Event\BeforeMessengerDoctrineCloseEvent;
  * even when handling throws, and individual connections can be excluded via
  * BeforeMessengerDoctrineCloseEvent.
  *
+ * The runtime cache is flushed along with the connections: it is meant to live
+ * for one request, so a worker treats each message like a request. This also
+ * drops prepared statements cached there that belong to a closed connection.
+ *
  * @internal not part of TYPO3 Core API
  */
 final readonly class DoctrineCloseConnectionMiddleware implements MiddlewareInterface
@@ -45,6 +50,7 @@ final readonly class DoctrineCloseConnectionMiddleware implements MiddlewareInte
     public function __construct(
         private ConnectionPool $connectionPool,
         private EventDispatcherInterface $eventDispatcher,
+        private CacheManager $cacheManager,
     ) {}
 
     public function handle(Envelope $envelope, StackInterface $stack): Envelope
@@ -58,6 +64,7 @@ final readonly class DoctrineCloseConnectionMiddleware implements MiddlewareInte
         try {
             return $stack->next()->handle($envelope, $stack);
         } finally {
+            $this->cacheManager->getCache('runtime')->flush();
             // Resolved after handling, so connections opened while handling the
             // message are closed too; already-open connections are returned from
             // the pool without opening a new one.

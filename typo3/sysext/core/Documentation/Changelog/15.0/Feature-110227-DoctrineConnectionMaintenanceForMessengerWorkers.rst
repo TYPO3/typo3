@@ -26,7 +26,11 @@ Two messenger middlewares now maintain the database connections of a worker:
     out to be stale.
 *   :php:`\TYPO3\CMS\Core\Messenger\Middleware\DoctrineCloseConnectionMiddleware`
     closes the open connections *after* a message has been handled - even when
-    handling throws - so the next message starts with a fresh connection.
+    handling throws - so the next message starts with a fresh connection. It
+    also flushes the :php:`runtime` cache, which is meant to live for one
+    request: a worker treats each message like a request, so nothing bound to
+    a closed connection (such as a cached prepared statement) or stale from the
+    previous message is kept.
 
 The middlewares are TYPO3-native and operate on
 :php:`\TYPO3\CMS\Core\Database\ConnectionPool`, so - unlike the equivalents in
