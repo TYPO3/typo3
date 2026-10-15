@@ -35,6 +35,7 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Page\ResourceHashCollection;
 use TYPO3\CMS\Core\Resource\RelativeCssPathFixer;
 use TYPO3\CMS\Core\Resource\StorageRepository;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\ConsumableNonce;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\DirectiveHashCollection;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\SystemResource\Publishing\SystemResourcePublisherInterface;
@@ -312,6 +313,22 @@ final class PageRendererTest extends FunctionalTestCase
         self::assertStringMatchesFormat('%a' . $expectedInlineAssignmentsPrefix . '%a', $renderedString);
         self::assertStringContainsString($expectedInlineLabelReturnValue, $renderedString);
         self::assertStringContainsString($expectedInlineSettingsReturnValue, $renderedString);
+    }
+
+    #[DataProvider('pageRendererRendersFooterValuesDataProvider')]
+    #[Test]
+    public function nonceHintIsAssignedWithoutRenderingImportMap(int $requestType): void
+    {
+        $request = $this->createRequest($requestType);
+        $subject = $this->createPageRenderer();
+        $subject->setLanguage(new Locale(), $request);
+        $subject->setNonce(new ConsumableNonce(str_repeat('n', 40)));
+        $subject->setApplyNonceHint(true);
+
+        $renderedString = $subject->render($request);
+
+        self::assertStringContainsString('<script nonce="' . str_repeat('n', 40) . '">Object.assign(globalThis, {"litNonce":"' . str_repeat('n', 40) . '"', $renderedString);
+        self::assertStringNotContainsString('type="importmap"', $renderedString);
     }
 
     #[Test]

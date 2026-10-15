@@ -65,6 +65,14 @@ final class JavaScriptRendererTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function importMapOmitsItemHandlerForGlobalAssignmentsOnly(): void
+    {
+        $subject = JavaScriptRenderer::create('');
+        $subject->addGlobalAssignment(['litNonce' => 'nonce-value']);
+        self::assertSame('', $subject->renderImportMap('/'));
+    }
+
+    #[Test]
     public function throwsExceptionForUnavailableModule(): void
     {
         $this->expectException(\InvalidArgumentException::class);
