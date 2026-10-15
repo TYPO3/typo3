@@ -1,0 +1,12 @@
+"pages",,,,,,,
+,"uid","pid","title","deleted","l10n_parent","l10n_source","sys_language_uid"
+,1,0,"Root",0,0,0,0
+,2,1,"Dummy no content",0,0,0,0
+,3,1,"Dummy only default language",0,0,0,0
+,4,1,"Dummy with 3 languages, no content [DEFAULT]",0,0,0,0
+,5,1,"Imported page 5",0,0,0,0
+,6,1,"Dummy with 3 languages, only default content [DEFAULT]",0,0,0,0
+,7,1,"Dummy with 3 languages, two translations [DEFAULT]",0,0,0,0
+,8,1,"Imported page 8",0,0,0,0
+,9,1,"Dummy with 3 languages, fully translated [FRENCH]",0,5,5,2
+,10,1,"Dummy with 3 languages, two languages [GERMAN]",0,7,7,1
