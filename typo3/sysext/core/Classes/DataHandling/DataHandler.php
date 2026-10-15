@@ -5267,11 +5267,19 @@ class DataHandler
         }
 
         if ((int)($recordToDelete['t3ver_wsid'] ?? null) !== 0) {
-            // When uid to a workspace record is given, then discard always. This is coming from workspace BE
-            // module "waste bin" icon, which sends the workspace uid of the record with the intention to
-            // discard the overlay.
-            // @todo: It might be better to have an own cmdmap action for 'discard' directly to avoid
-            //        live / workspace uid confusion with 'delete' and this dispatching.
+            $liveUid = (int)($recordToDelete['t3ver_oid'] ?? 0);
+            if ($liveUid > 0
+                && (int)$recordToDelete['t3ver_wsid'] === $this->BE_USER->workspace
+                && VersionState::tryFrom((int)($recordToDelete['t3ver_state'] ?? 0)) === VersionState::DEFAULT_STATE
+            ) {
+                // A modified version stands in for its live record, e.g. FormEngine names inline children
+                // by their workspace uid. Delete the live record, which turns the version into a delete placeholder.
+                $this->deleteAction($table, $liveUid, $noRecordCheck, $forceHardDelete);
+                return;
+            }
+            // New, moved and delete placeholder versions have no live state to delete in this workspace,
+            // removing them from the workspace is all a delete can do. Use the "discard" command to throw
+            // away a modified version.
             $this->discard($table, null, $recordToDelete);
             return;
         }
@@ -5305,6 +5313,7 @@ class DataHandler
                     [Connection::PARAM_INT]
                 );
                 $this->updateRefIndex($table, (int)$workspaceRecordOverlay['uid']);
+                $this->referenceIndexUpdater->registerUpdateForReferencesToItem($table, (int)$workspaceRecordOverlay['uid'], $beUserCurrentWorkspace);
                 // @todo: Optimize to hand over record and skip early for sys_language_uid !== 0 ??
                 $this->deleteL10nOverlayRecords($table, $uid);
             } else {

@@ -550,6 +550,32 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     #[Test]
+    public function modifyHotelChildThenModifyParentAndDeleteHotelChildByVersionId(): void
+    {
+        parent::modifyHotelChildThenModifyParentAndDeleteHotelChildByVersionId();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyHotelChildThenModifyParentNDeleteHotelChildByVersionId.csv');
+
+        $response = $this->executeFrontendSubRequest(
+            new InternalRequest()->withPageId(self::VALUE_PageId),
+            new InternalRequestContext()->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
+        );
+        $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections('Default', 'Extbase:list()');
+        self::assertThat($responseSections, new StructureHasRecordConstraint()
+            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField(self::FIELD_ContentHotel)
+            ->setTable(self::TABLE_Hotel)->setField('title')->setValues('Hotel #1'));
+        self::assertThat($responseSections, new StructureDoesNotHaveRecordConstraint()
+            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField(self::FIELD_ContentHotel)
+            ->setTable(self::TABLE_Hotel)->setField('title')->setValues('Hotel #2', 'Testing #1'));
+    }
+
+    #[Test]
+    public function localizeParentContentInLiveThenModifyAndDeleteLocalizedHotelChildByVersionId(): void
+    {
+        parent::localizeParentContentInLiveThenModifyAndDeleteLocalizedHotelChildByVersionId();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeInLiveThenModifyNDeleteLocalizedChildByVersionId.csv');
+    }
+
+    #[Test]
     public function modifyAndDiscardAndModifyParentWithHotelChild(): void
     {
         parent::modifyAndDiscardAndModifyParentWithHotelChild();

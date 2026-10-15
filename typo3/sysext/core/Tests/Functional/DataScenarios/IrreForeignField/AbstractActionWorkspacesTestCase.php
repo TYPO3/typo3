@@ -53,6 +53,39 @@ abstract class AbstractActionWorkspacesTestCase extends AbstractActionTestCase
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $versionedLocalizedContentId);
     }
 
+    /**
+     * FormEngine names an inline child by the uid of its workspace version,
+     * so removing a modified child sends the delete command for that uid.
+     */
+    public function modifyHotelChildThenModifyParentAndDeleteHotelChildByVersionId(): void
+    {
+        $this->actionService->modifyRecord(self::TABLE_Hotel, self::VALUE_HotelIdSecond, ['title' => 'Testing #1']);
+        $this->recordIds['versionedHotelId'] = $this->actionService->getDataHandler()->getAutoVersionId(self::TABLE_Hotel, self::VALUE_HotelIdSecond);
+        $this->actionService->modifyRecord(
+            self::TABLE_Content,
+            self::VALUE_ContentIdFirst,
+            [self::FIELD_ContentHotel => '3'],
+            [self::TABLE_Hotel => [$this->recordIds['versionedHotelId']]]
+        );
+    }
+
+    public function localizeParentContentInLiveThenModifyAndDeleteLocalizedHotelChildByVersionId(): void
+    {
+        $this->setWorkspaceId(0);
+        $newTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
+        $this->recordIds['localizedContentId'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
+        $this->recordIds['localizedHotelId'] = $newTableIds[self::TABLE_Hotel][self::VALUE_HotelIdThird];
+        $this->setWorkspaceId(static::VALUE_WorkspaceId);
+        $this->actionService->modifyRecord(self::TABLE_Hotel, $this->recordIds['localizedHotelId'], ['title' => 'Testing #1']);
+        $this->recordIds['versionedLocalizedHotelId'] = $this->actionService->getDataHandler()->getAutoVersionId(self::TABLE_Hotel, $this->recordIds['localizedHotelId']);
+        $this->actionService->modifyRecord(
+            self::TABLE_Content,
+            $this->recordIds['localizedContentId'],
+            [self::FIELD_ContentHotel => ''],
+            [self::TABLE_Hotel => [$this->recordIds['versionedLocalizedHotelId']]]
+        );
+    }
+
     public function modifyAndDiscardAndModifyParentWithHotelChild(): void
     {
         $this->actionService->modifyRecords(
