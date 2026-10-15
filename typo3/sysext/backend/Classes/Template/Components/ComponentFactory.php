@@ -170,6 +170,9 @@ readonly class ComponentFactory
      * Uses the typo3-qrcode-modal-button web component which displays a scannable QR code
      * in a modal dialog. The QR code can be downloaded as PNG or SVG.
      *
+     * Without a URL, the button is disabled, as the view button of createViewButton() without
+     * preview attributes.
+     *
      * @param string|UriInterface $previewUrl The URL to encode in the QR code
      * @param bool $showCopyUrl Whether to show the URL field with copy button in the modal
      */
@@ -189,7 +192,8 @@ readonly class ComponentFactory
             ->setLabel($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:showPageQrCode'))
             ->setTitle($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:showPageQrCode'))
             ->setIcon($this->iconFactory->getIcon('actions-qrcode', IconSize::SMALL))
-            ->setAttributes($attributes);
+            ->setAttributes($attributes)
+            ->setDisabled((string)$previewUrl === '');
     }
 
     /**

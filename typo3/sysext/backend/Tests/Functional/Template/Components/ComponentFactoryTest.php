@@ -132,4 +132,20 @@ final class ComponentFactoryTest extends FunctionalTestCase
         self::assertStringContainsString('actions-refresh', $html);
         self::assertStringContainsString('Reload', $html);
     }
+
+    #[Test]
+    public function createQrCodeButtonRendersTheUrl(): void
+    {
+        $button = $this->subject->createQrCodeButton('https://example.com/page');
+
+        self::assertFalse($button->isDisabled());
+        self::assertStringContainsString('content="https://example.com/page"', $button->render());
+    }
+
+    #[Test]
+    public function createQrCodeButtonIsDisabledWithoutUrlAsTheViewButtonWithoutPreview(): void
+    {
+        self::assertTrue($this->subject->createViewButton()->isDisabled());
+        self::assertTrue($this->subject->createQrCodeButton('')->isDisabled());
+    }
 }
