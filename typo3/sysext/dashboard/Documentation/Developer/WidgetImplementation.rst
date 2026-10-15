@@ -40,7 +40,7 @@ This class has to implement the :php:`WidgetInterface` and could look like this:
 
         public function __construct(
             private readonly WidgetConfigurationInterface $configuration,
-            private readonly Cache $cache,
+            private readonly FrontendInterface $cache,
             private readonly BackendViewFactory $backendViewFactory,
             private readonly ?ButtonProviderInterface $buttonProvider = null,
             private readonly array $options = []

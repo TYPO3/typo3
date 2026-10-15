@@ -88,7 +88,7 @@ An example implementation could look like this:
     {
         public function __construct(
             // …
-            private readonly ButtonProviderInterface $buttonProvider = null,
+            private readonly ?ButtonProviderInterface $buttonProvider = null,
             // …
         ) {
         }
