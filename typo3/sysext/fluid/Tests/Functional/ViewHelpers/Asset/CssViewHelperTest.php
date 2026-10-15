@@ -19,7 +19,11 @@ namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Asset;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Http\NormalizedParams;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Page\AssetCollector;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\CMS\Fluid\ViewHelpers\Asset\CssViewHelper;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -31,6 +35,10 @@ final class CssViewHelperTest extends FunctionalTestCase
 
     protected array $pathsToProvideInTestInstance = [
         'typo3/sysext/fluid/Tests/Functional/Fixtures/ViewHelpers/CssViewHelper.css' => 'test.css',
+    ];
+
+    protected array $testExtensionsToLoad = [
+        'typo3/sysext/fluid/Tests/Functional/Fixtures/Extensions/inline_css_test',
     ];
 
     public static function sourceDataProvider(): array
@@ -56,6 +64,25 @@ final class CssViewHelperTest extends FunctionalTestCase
         $collectedStyleSheets = $this->get(AssetCollector::class)->getStyleSheets();
         self::assertSame($href, $collectedStyleSheets['test']['source']);
         self::assertSame([], $collectedStyleSheets['test']['attributes']);
+    }
+
+    #[Test]
+    public function inlineStyleSheetFromFileHasRelativeUrlsRewritten(): void
+    {
+        $normalizedParams = self::createStub(NormalizedParams::class);
+        $normalizedParams->method('getSitePath')->willReturn('/');
+        $request = new ServerRequest('https://www.example.com/')
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
+            ->withAttribute('normalizedParams', $normalizedParams);
+        $context = $this->get(RenderingContextFactory::class)->create([], $request);
+        $context->getTemplatePaths()->setTemplateSource('<f:asset.css identifier="test" href="EXT:inline_css_test/Resources/Public/Css/inline.css" inline="1"/>');
+
+        new TemplateView($context)->render();
+
+        $collectedInlineStyleSheets = $this->get(AssetCollector::class)->getInlineStyleSheets();
+        $expectedUri = (string)PathUtility::getSystemResourceUri('EXT:inline_css_test/Resources/Public/Images/arrow.svg');
+        self::assertStringContainsString('url(\'' . $expectedUri . '\')', $collectedInlineStyleSheets['test']['source']);
+        self::assertStringNotContainsString('../Images/arrow.svg', $collectedInlineStyleSheets['test']['source']);
     }
 
     #[Test]
