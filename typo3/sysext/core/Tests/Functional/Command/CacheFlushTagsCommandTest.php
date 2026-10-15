@@ -17,11 +17,16 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Command;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\CacheManager;
 
 final class CacheFlushTagsCommandTest extends AbstractCommandTestCase
 {
+    protected array $testExtensionsToLoad = [
+        'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_cache_flush_tags',
+    ];
+
     protected array $configurationToUseInTestInstance = [
         'SYS' => [
             'caching' => [
@@ -46,5 +51,28 @@ final class CacheFlushTagsCommandTest extends AbstractCommandTestCase
         self::assertSame(0, $result['status']);
         self::assertFalse($pageCache->has('dummy-page-cache-hash-one'));
         self::assertTrue($pageCache->has('dummy-page-cache-hash-two'));
+    }
+
+    public static function extensionCacheIsFlushedByTagsDataProvider(): array
+    {
+        return [
+            'all groups' => ['cache:flushtags tag2'],
+            'pages group' => ['cache:flushtags tag2 --groups=pages'],
+        ];
+    }
+
+    #[DataProvider('extensionCacheIsFlushedByTagsDataProvider')]
+    #[Test]
+    public function extensionCacheIsFlushedByTags(string $command): void
+    {
+        // test_cache_flush_tags configures this cache in its ext_localconf.php
+        $extensionCache = $this->get(CacheManager::class)->getCache('test_cache_flush_tags');
+        $extensionCache->set('dummy-extension-cache-hash-one', 'dummy', ['tag1', 'tag2'], 0);
+        $extensionCache->set('dummy-extension-cache-hash-two', 'dummy', ['tag1'], 0);
+
+        $result = $this->executeConsoleCommand($command);
+        self::assertSame(0, $result['status']);
+        self::assertFalse($extensionCache->has('dummy-extension-cache-hash-one'));
+        self::assertTrue($extensionCache->has('dummy-extension-cache-hash-two'));
     }
 }

@@ -62,7 +62,9 @@ class CacheFlushTagsCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $container = $this->bootService->getContainer(true);
+        // Load ext_localconf.php like cache:flush does, so caches that extensions configure there
+        // are flushed as well, not only those of the base configuration.
+        $container = $this->bootService->loadExtLocalconfDatabaseAndExtTables(false, true);
         $cacheManager = $container->get(CacheManager::class);
         $groups = GeneralUtility::trimExplode(',', $input->getOption('groups') ?? '', true);
         $tags = GeneralUtility::trimExplode(',', $input->getArgument('tags') ?? '', true);
