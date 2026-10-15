@@ -21,6 +21,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
@@ -69,6 +70,54 @@ readonly class IntegrityService
                             'uid' => $matchingRedirect['uid'],
                         ],
                     ];
+                }
+            }
+        }
+    }
+
+    /**
+     * Resolves all redirects which can never match, because another redirect with the same source
+     * is matched first whenever the redirect itself would be active.
+     */
+    public function findShadowedRedirects(): \Generator
+    {
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_redirect');
+        $queryBuilder->getRestrictions()->removeAll()
+            ->add(GeneralUtility::makeInstance(HiddenRestriction::class))
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        $rows = $queryBuilder
+            ->select('uid', 'source_host', 'source_path', 'is_regexp', 'respect_query_parameters', 'starttime', 'endtime', 'target')
+            ->from('sys_redirect')
+            ->orderBy('uid', 'asc')
+            ->executeQuery()
+            ->fetchAllAssociative();
+
+        $groups = [];
+        foreach ($rows as $row) {
+            [$matchKey, $priority] = $this->getMatchKeyAndPriority($row);
+            $groups[$matchKey][$priority][] = $row;
+        }
+
+        foreach ($groups as $groupedByPriority) {
+            ksort($groupedByPriority);
+            $redirectsInMatchingOrder = array_merge(...$groupedByPriority);
+            foreach ($redirectsInMatchingOrder as $index => $redirect) {
+                for ($previousIndex = 0; $previousIndex < $index; $previousIndex++) {
+                    $previousRedirect = $redirectsInMatchingOrder[$previousIndex];
+                    if ($this->isActiveWhenever($previousRedirect, $redirect)) {
+                        yield [
+                            'uri' => $redirect['target'],
+                            'redirect' => [
+                                'integrity_status' => RedirectConflict::SHADOWED,
+                                'source_host' => $redirect['source_host'],
+                                'source_path' => $redirect['source_path'],
+                                'target' => $redirect['target'],
+                                'uid' => (int)$redirect['uid'],
+                                'shadowed_by' => (int)$previousRedirect['uid'],
+                            ],
+                        ];
+                        break;
+                    }
                 }
             }
         }
@@ -150,6 +199,46 @@ readonly class IntegrityService
                 'integrity_status' => RedirectConflict::NO_CONFLICT,
             ]);
         }
+    }
+
+    /**
+     * Redirects with the same match key compete for the same requests in {@see RedirectService::matchRedirect()},
+     * where redirects with a lower priority are checked first, followed by the lower uid.
+     *
+     * @return array{0: string, 1: int}
+     */
+    private function getMatchKeyAndPriority(array $redirect): array
+    {
+        $sourceHost = $redirect['source_host'] === '' ? '*' : $redirect['source_host'];
+        $sourcePath = (string)$redirect['source_path'];
+        $respectQueryParameters = (bool)$redirect['respect_query_parameters'];
+        if ($redirect['is_regexp']) {
+            return [$sourceHost . '|regexp|' . (int)$respectQueryParameters . '|' . $sourcePath, 0];
+        }
+        if (!$respectQueryParameters) {
+            return [$sourceHost . '|flat|' . rtrim($sourcePath, '/') . '/', 0];
+        }
+        if (!str_contains($sourcePath, '?')) {
+            return [$sourceHost . '|query|' . $sourcePath, 0];
+        }
+        // A source path with a slash before the query is only checked if none without the slash exists.
+        [$path, $query] = explode('?', $sourcePath, 2);
+        $trimmedPath = rtrim($path, '/');
+        return [$sourceHost . '|query|' . $trimmedPath . '?' . $query, $trimmedPath === $path ? 0 : 1];
+    }
+
+    /**
+     * Whether $redirect is active whenever $otherRedirect is active, considering starttime and endtime.
+     */
+    private function isActiveWhenever(array $redirect, array $otherRedirect): bool
+    {
+        if ((int)$redirect['starttime'] > (int)$otherRedirect['starttime']) {
+            return false;
+        }
+        if ((int)$redirect['endtime'] === 0) {
+            return true;
+        }
+        return (int)$otherRedirect['endtime'] !== 0 && (int)$redirect['endtime'] >= (int)$otherRedirect['endtime'];
     }
 
     private function getMatchingRedirectByUri(Uri $uri): ?array

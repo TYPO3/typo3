@@ -19,8 +19,10 @@ namespace TYPO3\CMS\Redirects\Tests\Functional\Command;
 
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\Console\Tester\CommandTester;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Redirects\Command\CheckIntegrityCommand;
+use TYPO3\CMS\Redirects\Utility\RedirectConflict;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class CheckIntegrityCommandTest extends FunctionalTestCase
@@ -60,6 +62,27 @@ final class CheckIntegrityCommandTest extends FunctionalTestCase
         $tester->execute([]);
 
         $this->assertCSVDataSet(__DIR__ . '/Fixtures/StaleIntegrityStatusResult.csv');
+    }
+
+    #[Test]
+    public function shadowedRedirectsAreMarked(): void
+    {
+        $this->writeSiteConfiguration('simple-page', $this->buildSiteConfiguration(1, 'https://example.com'));
+        $this->importCSVDataSet(__DIR__ . '/../Service/Fixtures/IntegrityServiceTest_shadowedRedirects.csv');
+
+        $tester = new CommandTester($this->get(CheckIntegrityCommand::class));
+        $tester->execute([]);
+
+        $queryBuilder = $this->get(ConnectionPool::class)->getQueryBuilderForTable('sys_redirect');
+        $queryBuilder->getRestrictions()->removeAll();
+        $shadowedUids = $queryBuilder
+            ->select('uid')
+            ->from('sys_redirect')
+            ->where($queryBuilder->expr()->eq('integrity_status', $queryBuilder->createNamedParameter(RedirectConflict::SHADOWED)))
+            ->orderBy('uid')
+            ->executeQuery()
+            ->fetchFirstColumn();
+        self::assertSame([2, 4, 10, 18, 24, 25, 28, 34, 35], array_map(intval(...), $shadowedUids));
     }
 
     #[Test]

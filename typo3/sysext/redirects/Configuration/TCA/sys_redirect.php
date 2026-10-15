@@ -326,6 +326,10 @@ return [
                         'label' => 'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.integrity_status.self_reference',
                         'value' => RedirectConflict::SELF_REFERENCE,
                     ],
+                    [
+                        'label' => 'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.integrity_status.shadowed',
+                        'value' => RedirectConflict::SHADOWED,
+                    ],
                 ],
                 'readOnly' => true,
             ],
