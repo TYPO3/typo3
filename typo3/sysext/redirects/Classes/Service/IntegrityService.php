@@ -119,6 +119,39 @@ readonly class IntegrityService
             ->executeStatement();
     }
 
+    /**
+     * Resets the integrity status of all redirects which are not listed in $conflictingUids,
+     * except those with a status listed in $statusesToKeep.
+     *
+     * @param int[] $conflictingUids
+     * @param string[] $statusesToKeep
+     */
+    public function resetIntegrityStatus(array $conflictingUids, array $statusesToKeep = []): void
+    {
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_redirect');
+        $queryBuilder->getRestrictions()->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        $rows = $queryBuilder
+            ->select('uid', 'integrity_status')
+            ->from('sys_redirect')
+            ->where(
+                $queryBuilder->expr()->neq('integrity_status', $queryBuilder->createNamedParameter(RedirectConflict::NO_CONFLICT))
+            )
+            ->executeQuery()
+            ->fetchAllAssociative();
+        foreach ($rows as $row) {
+            if (in_array((int)$row['uid'], $conflictingUids, true)
+                || in_array($row['integrity_status'], $statusesToKeep, true)
+            ) {
+                continue;
+            }
+            $this->setIntegrityStatus([
+                'uid' => (int)$row['uid'],
+                'integrity_status' => RedirectConflict::NO_CONFLICT,
+            ]);
+        }
+    }
+
     private function getMatchingRedirectByUri(Uri $uri): ?array
     {
         $port = $uri->getPort();

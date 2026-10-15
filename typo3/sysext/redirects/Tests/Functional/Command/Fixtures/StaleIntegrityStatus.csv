@@ -1,0 +1,6 @@
+"sys_redirect",,,,,,,,,
+,"uid","pid","deleted","disabled","source_host","source_path","target","redirect_type","integrity_status"
+,1,0,0,0,"example.com","/","/home","default","self_reference"
+,2,0,0,0,"example.com","/no-longer-a-page","/home","default","self_reference"
+,3,0,0,0,"example.com","/custom","/home","default","custom_status"
+,4,0,0,0,"example.com","/clean","/home","default","no_conflict"

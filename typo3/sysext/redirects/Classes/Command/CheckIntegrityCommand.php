@@ -67,6 +67,7 @@ class CheckIntegrityCommand extends Command
         $this->registry->remove(self::REGISTRY_NAMESPACE, self::REGISTRY_KEY_LAST_TIMESTAMP_CHECK_INTEGRITY);
 
         $conflictingRedirects = [];
+        $conflictingUids = [];
         $list = [];
         $site = $input->getArgument('site') ?: null;
 
@@ -103,6 +104,7 @@ class CheckIntegrityCommand extends Command
                 ),
             ];
             $list[] = $conflict;
+            $conflictingUids[] = (int)$conflict['redirect']['uid'];
             $this->integrityService->setIntegrityStatus($conflict['redirect']);
         }
 
@@ -119,10 +121,17 @@ class CheckIntegrityCommand extends Command
                     ) ?? $conflict['redirect']['integrity_status'],
                 ];
                 $list[] = $conflict;
+                $conflictingUids[] = (int)$conflict['redirect']['uid'];
             }
             // Always update redirect status
             $this->integrityService->setIntegrityStatus($conflict['redirect']);
         }
+
+        // Page conflicts of other sites are not checked when limited to a site, so keep their status.
+        $this->integrityService->resetIntegrityStatus(
+            $conflictingUids,
+            $site !== null ? [RedirectConflict::SELF_REFERENCE] : []
+        );
 
         if ($conflictingRedirects !== []) {
             $table->setRows($conflictingRedirects);
