@@ -48,4 +48,30 @@ final class CheckIntegrityCommandTest extends FunctionalTestCase
             $tester->getDisplay(),
         );
     }
+
+    #[Test]
+    public function integrityStatusOfResolvedConflictsIsReset(): void
+    {
+        $this->writeSiteConfiguration('simple-page', $this->buildSiteConfiguration(1, 'https://example.com'));
+        $this->importCSVDataSet(__DIR__ . '/../Service/Fixtures/SimplePages.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/StaleIntegrityStatus.csv');
+
+        $tester = new CommandTester($this->get(CheckIntegrityCommand::class));
+        $tester->execute([]);
+
+        $this->assertCSVDataSet(__DIR__ . '/Fixtures/StaleIntegrityStatusResult.csv');
+    }
+
+    #[Test]
+    public function selfReferenceStatusIsKeptWhenCheckIsLimitedToSite(): void
+    {
+        $this->writeSiteConfiguration('simple-page', $this->buildSiteConfiguration(1, 'https://example.com'));
+        $this->importCSVDataSet(__DIR__ . '/../Service/Fixtures/SimplePages.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/StaleIntegrityStatus.csv');
+
+        $tester = new CommandTester($this->get(CheckIntegrityCommand::class));
+        $tester->execute(['site' => 'simple-page']);
+
+        $this->assertCSVDataSet(__DIR__ . '/Fixtures/StaleIntegrityStatusResultForSite.csv');
+    }
 }
