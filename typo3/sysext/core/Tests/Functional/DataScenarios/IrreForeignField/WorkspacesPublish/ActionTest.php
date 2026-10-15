@@ -518,6 +518,22 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     #[Test]
+    public function modifyHotelChildThenModifyParentAndDeleteHotelChildByVersionId(): void
+    {
+        parent::modifyHotelChildThenModifyParentAndDeleteHotelChildByVersionId();
+        $this->actionService->publishRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyHotelChildThenModifyParentNDeleteHotelChildByVersionId.csv');
+    }
+
+    #[Test]
+    public function localizeParentContentInLiveThenModifyAndDeleteLocalizedHotelChildByVersionId(): void
+    {
+        parent::localizeParentContentInLiveThenModifyAndDeleteLocalizedHotelChildByVersionId();
+        $this->actionService->publishRecord(self::TABLE_Content, $this->recordIds['localizedContentId']);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeInLiveThenModifyNDeleteLocalizedChildByVersionId.csv');
+    }
+
+    #[Test]
     public function modifyAndDiscardAndModifyParentWithHotelChild(): void
     {
         parent::modifyAndDiscardAndModifyParentWithHotelChild();

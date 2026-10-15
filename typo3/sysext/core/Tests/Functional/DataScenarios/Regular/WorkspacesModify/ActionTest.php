@@ -1321,7 +1321,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     public function deleteModifiedContentByDraftUid(): void
     {
         parent::deleteModifiedContentByDraftUid();
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteModifiedContentByDraftUid.csv');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteModifiedContentByLiveUid.csv');
     }
 
     #[Test]

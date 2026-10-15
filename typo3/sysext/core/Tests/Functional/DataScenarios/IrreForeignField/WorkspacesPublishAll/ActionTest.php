@@ -499,6 +499,14 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     #[Test]
+    public function modifyHotelChildThenModifyParentAndDeleteHotelChildByVersionId(): void
+    {
+        parent::modifyHotelChildThenModifyParentAndDeleteHotelChildByVersionId();
+        $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyHotelChildThenModifyParentNDeleteHotelChildByVersionId.csv');
+    }
+
+    #[Test]
     public function modifyAndDiscardAndModifyParentWithHotelChild(): void
     {
         parent::modifyAndDiscardAndModifyParentWithHotelChild();
