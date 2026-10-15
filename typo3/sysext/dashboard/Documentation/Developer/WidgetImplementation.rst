@@ -44,7 +44,7 @@ This class should implement the :php:`WidgetRendererInterface` and could look li
     {
         public function __construct(
             private readonly WidgetConfigurationInterface $configuration,
-            private readonly Cache $cache,
+            private readonly FrontendInterface $cache,
             private readonly BackendViewFactory $backendViewFactory,
             private readonly ?ButtonProviderInterface $buttonProvider = null,
             private readonly array $options = []
