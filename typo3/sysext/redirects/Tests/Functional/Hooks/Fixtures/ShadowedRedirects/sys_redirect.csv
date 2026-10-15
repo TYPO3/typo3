@@ -1,0 +1,6 @@
+"sys_redirect",,,,,,,,,
+,"uid","pid","deleted","disabled","source_host","source_path","target","redirect_type","integrity_status"
+,1,0,0,0,"example.com","/duplicate","/first","default","no_conflict"
+,2,0,0,0,"example.com","/duplicate","/second","default","shadowed"
+,3,0,0,0,"example.com","/unique","/third","default","no_conflict"
+,4,0,0,0,"*","/any-host","/fourth","default","no_conflict"

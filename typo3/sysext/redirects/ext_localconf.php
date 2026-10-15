@@ -13,6 +13,7 @@ use TYPO3\CMS\Redirects\FormDataProvider\ShortUrlDataProvider;
 use TYPO3\CMS\Redirects\FormDataProvider\ValuePickerItemDataProvider;
 use TYPO3\CMS\Redirects\Hooks\DataHandlerCacheFlushingHook;
 use TYPO3\CMS\Redirects\Hooks\DataHandlerPermissionGuardHook;
+use TYPO3\CMS\Redirects\Hooks\DataHandlerShadowedRedirectHook;
 use TYPO3\CMS\Redirects\Hooks\DataHandlerSlugUpdateHook;
 use TYPO3\CMS\Redirects\Hooks\DispatchNotificationHook;
 use TYPO3\CMS\Redirects\Hooks\HandleNewQrCodeRecord;
@@ -26,6 +27,8 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['proc
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass']['redirects-qrcode'] = HandleNewQrCodeRecord::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass']['redirects-short-url'] = HandleNewShortUrlRecord::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass']['redirectsAccessGuard'] = DataHandlerPermissionGuardHook::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass']['redirects-shadowed'] = DataHandlerShadowedRedirectHook::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass']['redirects-shadowed'] = DataHandlerShadowedRedirectHook::class;
 
 // Inject sys_domains into valuepicker form
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaDatabaseRecord']

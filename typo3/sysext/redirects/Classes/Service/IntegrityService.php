@@ -78,19 +78,25 @@ readonly class IntegrityService
     /**
      * Resolves all redirects which can never match, because another redirect with the same source
      * is matched first whenever the redirect itself would be active.
+     *
+     * @param string[] $sourceHosts Limits the check to these source hosts, all are checked if empty
      */
-    public function findShadowedRedirects(): \Generator
+    public function findShadowedRedirects(array $sourceHosts = []): \Generator
     {
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_redirect');
         $queryBuilder->getRestrictions()->removeAll()
             ->add(GeneralUtility::makeInstance(HiddenRestriction::class))
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-        $rows = $queryBuilder
+        $queryBuilder
             ->select('uid', 'source_host', 'source_path', 'is_regexp', 'respect_query_parameters', 'starttime', 'endtime', 'target')
             ->from('sys_redirect')
-            ->orderBy('uid', 'asc')
-            ->executeQuery()
-            ->fetchAllAssociative();
+            ->orderBy('uid', 'asc');
+        if ($sourceHosts !== []) {
+            $queryBuilder->where(
+                $queryBuilder->expr()->in('source_host', $queryBuilder->createNamedParameter($sourceHosts, Connection::PARAM_STR_ARRAY))
+            );
+        }
+        $rows = $queryBuilder->executeQuery()->fetchAllAssociative();
 
         $groups = [];
         foreach ($rows as $row) {
@@ -166,6 +172,40 @@ readonly class IntegrityService
             )
             ->set('integrity_status', $redirect['integrity_status'])
             ->executeStatement();
+    }
+
+    /**
+     * Updates the shadowed integrity status of all redirects of the given source hosts.
+     *
+     * @param string[] $sourceHosts
+     * @return array<int, array> The shadowed redirects
+     */
+    public function updateShadowedIntegrityStatus(array $sourceHosts): array
+    {
+        $shadowedRedirects = iterator_to_array($this->findShadowedRedirects($sourceHosts), false);
+        $shadowedUids = [];
+        foreach ($shadowedRedirects as $shadowedRedirect) {
+            $shadowedUids[] = $shadowedRedirect['redirect']['uid'];
+            $this->setIntegrityStatus($shadowedRedirect['redirect']);
+        }
+
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_redirect');
+        $queryBuilder->getRestrictions()->removeAll();
+        $queryBuilder
+            ->update('sys_redirect')
+            ->set('integrity_status', RedirectConflict::NO_CONFLICT)
+            ->where(
+                $queryBuilder->expr()->in('source_host', $queryBuilder->createNamedParameter($sourceHosts, Connection::PARAM_STR_ARRAY)),
+                $queryBuilder->expr()->eq('integrity_status', $queryBuilder->createNamedParameter(RedirectConflict::SHADOWED))
+            );
+        if ($shadowedUids !== []) {
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->notIn('uid', $queryBuilder->createNamedParameter($shadowedUids, Connection::PARAM_INT_ARRAY))
+            );
+        }
+        $queryBuilder->executeStatement();
+
+        return $shadowedRedirects;
     }
 
     /**
