@@ -122,12 +122,12 @@ class PageProvider extends RecordProvider
                 ],
                 'showInMenus' => [
                     'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:CM_showInMenus',
-                    'iconIdentifier' => 'actions-view',
+                    'iconIdentifier' => 'actions-eye',
                     'callbackAction' => 'showInMenus',
                 ],
                 'hideInMenus' => [
                     'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:CM_hideInMenus',
-                    'iconIdentifier' => 'actions-ban',
+                    'iconIdentifier' => 'actions-eye-slash',
                     'callbackAction' => 'hideInMenus',
                 ],
             ],
