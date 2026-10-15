@@ -660,6 +660,23 @@ final class ImageViewHelperTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function publicFileOutsideOfAllFileStoragesIsProcessedAsSystemResource(): void
+    {
+        $directory = Environment::getPublicPath() . '/typo3temp/assets/outside-storages';
+        @mkdir($directory, 0777, true);
+        copy(__DIR__ . '/../../../../core/Tests/Functional/Fixtures/Extensions/test_system_resources/Resources/Public/Images/typo3-logo.png', $directory . '/typo3-logo.png');
+
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:image src="typo3temp/assets/outside-storages/typo3-logo.png" width="119" />');
+        $result = new TemplateView($context)->render();
+
+        self::assertStringContainsString('src="/typo3temp/assets/images/system/', $result);
+        self::assertStringContainsString('width="119"', $result);
+        self::assertStringContainsString('height="50"', $result);
+        self::assertSame(0, $this->getConnectionPool()->getConnectionForTable('sys_file')->count('*', 'sys_file', ['storage' => 0]));
+    }
+
+    #[Test]
     public function systemResourceObjectIsRenderedLikeItsIdentifier(): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();

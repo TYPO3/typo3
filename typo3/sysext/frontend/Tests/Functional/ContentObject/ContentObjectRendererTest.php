@@ -5777,6 +5777,42 @@ content="benni">',
     }
 
     #[Test]
+    public function getImgResourceProcessesAPublicFileOutsideOfAllFileStoragesAsSystemResource(): void
+    {
+        $directory = Environment::getPublicPath() . '/typo3temp/assets/outside-storages';
+        @mkdir($directory, 0777, true);
+        copy(__DIR__ . '/../../../../core/Tests/Functional/Fixtures/Extensions/test_system_resources/Resources/Public/Images/typo3-logo.png', $directory . '/typo3-logo.png');
+        $subject = $this->get(ContentObjectRenderer::class);
+        $subject->setRequest($this->getPreparedRequest());
+
+        $result = $subject->getImgResource('typo3temp/assets/outside-storages/typo3-logo.png', ['width' => 119]);
+
+        self::assertNotNull($result);
+        self::assertSame(119, $result->getWidth());
+        self::assertSame(50, $result->getHeight());
+        self::assertStringContainsString('typo3temp/assets/images/system/', (string)$result->getPublicUrl());
+        self::assertSame(0, $this->getConnectionPool()->getConnectionForTable('sys_file')->count('*', 'sys_file', []));
+    }
+
+    #[Test]
+    public function imageLinkWrapLinksAPublicFileOutsideOfAllFileStoragesByItsResourceIdentifier(): void
+    {
+        $directory = Environment::getPublicPath() . '/typo3temp/assets/outside-storages';
+        @mkdir($directory, 0777, true);
+        copy(__DIR__ . '/../../../../core/Tests/Functional/Fixtures/Extensions/test_system_resources/Resources/Public/Images/typo3-logo.png', $directory . '/typo3-logo.png');
+        $subject = $this->get(ContentObjectRenderer::class);
+        $typoScript = new FrontendTypoScript(new RootNode(), [], [], []);
+        $typoScript->setConfigArray([]);
+        $subject->setRequest($this->getPreparedRequest()->withAttribute('frontend.typoscript', $typoScript));
+
+        $result = $subject->imageLinkWrap('<img src="typo3-logo.png" />', 'typo3temp/assets/outside-storages/typo3-logo.png', ['enable' => 1]);
+
+        self::assertStringContainsString('eID=tx_cms_showpic&amp;file=PKG%3A', $result);
+        self::assertStringContainsString('<img src="typo3-logo.png" />', $result);
+        self::assertSame(0, $this->getConnectionPool()->getConnectionForTable('sys_file')->count('*', 'sys_file', []));
+    }
+
+    #[Test]
     public function getImgResourceReturnsNullForAPrivateSystemResource(): void
     {
         $subject = $this->get(ContentObjectRenderer::class);

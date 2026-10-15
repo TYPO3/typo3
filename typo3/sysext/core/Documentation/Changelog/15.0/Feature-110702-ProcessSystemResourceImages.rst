@@ -45,6 +45,16 @@ resources and FAL images in any combination, and :typoscript:`imageLinkWrap`:
         imageLinkWrap.enable = 1
     }
 
+The same applies to an image referenced by a plain path to a public file
+that is not part of any configured file storage, for example below
+:file:`typo3temp/assets/` or :file:`uploads/`. Only public paths of the
+project are considered, by default :file:`_assets/`,
+:file:`typo3temp/assets/` and :file:`uploads/`. Further public paths can be
+declared in :file:`config/system/resources.php`. Hidden files and files in
+hidden directories are never processed this way. Paths within a configured
+file storage, for example :file:`fileadmin/image.png`, keep resolving to
+that storage.
+
 This works without creating a :sql:`sys_file`/:sql:`sys_file_processedfile`
 database entry: a system resource is not indexed and never was, and
 processing it does not change that. A rendered variant is cached on disk
@@ -76,6 +86,13 @@ rendered on a site - accumulating indefinitely for any site with a
 non-trivial number of templates or crop variants using such images. None
 of that happens anymore: processing a system resource now never touches
 either database table, however many templates or configurations use it.
+
+The same applied to plain paths to public files outside all file storages,
+which were indexed in the FAL fallback storage (uid ``0``). Their processed
+variants are now placed in :file:`typo3temp/assets/images/system/` instead
+of :file:`typo3temp/assets/_processed_/`, and :typoscript:`imageLinkWrap`
+links them to the :php:`tx_cms_showpic` eID by their resource identifier
+instead of a :sql:`sys_file` uid.
 
 This relies on the interface widening described in
 :ref:`breaking-110702-1789915156`.

@@ -62,6 +62,7 @@ use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\FolderInterface;
+use TYPO3\CMS\Core\Resource\ImageSourceResolver;
 use TYPO3\CMS\Core\Resource\ProcessableFileInterface;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -382,6 +383,7 @@ class ContentObjectRenderer
         private readonly TimeTracker $timeTracker,
         private readonly TcaSchemaFactory $tcaSchemaFactory,
         private readonly PageRepository $pageRepository,
+        private readonly ImageSourceResolver $imageSourceResolver,
     ) {}
 
     public function setRequest(ServerRequestInterface $request): void
@@ -843,7 +845,8 @@ class ContentObjectRenderer
         } elseif (MathUtility::canBeInterpretedAsInteger($imageFile)) {
             $file = $this->resourceFactory->getFileObject((int)$imageFile);
         } else {
-            $file = $this->resourceFactory->getFileObjectFromCombinedIdentifier($imageFile);
+            $file = $this->imageSourceResolver->resolvePublicFileOutsideOfFileStorages($imageFile)
+                ?? $this->resourceFactory->getFileObjectFromCombinedIdentifier($imageFile);
         }
 
         // Create imageFileLink if not created with typolink
@@ -3407,7 +3410,8 @@ class ContentObjectRenderer
                         if ($importedFile && !empty($fileArray['import'])) {
                             $file = $fileArray['import'] . $file;
                         }
-                        $fileObject = $this->resourceFactory->retrieveFileOrFolderObject($file);
+                        $fileObject = $this->imageSourceResolver->resolvePublicFileOutsideOfFileStorages($file)
+                            ?? $this->resourceFactory->retrieveFileOrFolderObject($file);
                     }
                 } catch (Exception $exception) {
                     $this->logger->warning('The image "{file}" could not be found and won\'t be included in frontend output', [
