@@ -17,7 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\ViewHelpers\Asset;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Page\AssetCollector;
+use TYPO3\CMS\Core\Resource\RelativeCssPathFixer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\Parser\ParsingState;
 use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode;
@@ -56,6 +58,7 @@ final class CssViewHelper extends AbstractTagBasedViewHelper implements ViewHelp
 
     public function __construct(
         private readonly AssetCollector $assetCollector,
+        private readonly RelativeCssPathFixer $relativeCssPathFixer,
     ) {
         parent::__construct();
     }
@@ -107,6 +110,13 @@ final class CssViewHelper extends AbstractTagBasedViewHelper implements ViewHelp
             if ($this->arguments['inline'] ?? false) {
                 $content = @file_get_contents(GeneralUtility::getFileAbsFileName(trim($file)));
                 if ($content !== false) {
+                    if ($this->renderingContext->hasAttribute(ServerRequestInterface::class)) {
+                        $content = $this->relativeCssPathFixer->fixRelativeUrlPaths(
+                            $content,
+                            dirname(trim($file)) . '/',
+                            $this->renderingContext->getAttribute(ServerRequestInterface::class)
+                        );
+                    }
                     $this->assetCollector->addInlineStyleSheet($identifier, $content, $attributes, $options);
                 }
             } else {
