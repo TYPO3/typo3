@@ -1,35 +1,35 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 implementationClassName
 -----------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.formElementsDefinition.Date.implementationClassName
+    prototypes.<prototypeIdentifier>.formElementsDefinition.Date.implementationClassName
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Frontend/ Backend (form editor)
+    Frontend/ Backend (form editor)
 
 :aspect:`Overwritable within form definition`
-      No
+    No
 
 :aspect:`form editor can write this property into the form definition (for prototype 'standard')`
-      No
+    No
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
 :aspect:`Default value (for prototype 'standard')`
-      .. code-block:: yaml
-         :linenos:
-         :emphasize-lines: 2
+    ..  code-block:: yaml
+        :linenos:
+        :emphasize-lines: 2
 
-         Date:
-           implementationClassName: TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement
+        Date:
+          implementationClassName: TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement
 
-.. :aspect:`Good to know`
-      ToDo
+..  :aspect:`Good to know`
+    ToDo
 
 :aspect:`Description`
-      Classname which implements the form element.
+    Classname which implements the form element.

@@ -1,186 +1,186 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
 
-.. _prototypes.prototypeIdentifier.finishersdefinition.closure:
+..  _prototypes.prototypeIdentifier.finishersdefinition.closure:
 
 =========
 [Closure]
 =========
 
 
-.. _prototypes.prototypeIdentifier.finishersdefinitionclosure-properties:
+..  _prototypes.prototypeIdentifier.finishersdefinitionclosure-properties:
 
 Properties
 ==========
 
 
-.. _prototypes.prototypeIdentifier.finishersdefinition.closure.implementationclassname:
+..  _prototypes.prototypeIdentifier.finishersdefinition.closure.implementationclassname:
 
 implementationClassName
 -----------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.finishersDefinition.Closure.implementationClassName
+    prototypes.<prototypeIdentifier>.finishersDefinition.Closure.implementationClassName
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Frontend
+    Frontend
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
 :aspect:`Default value`
-      .. code-block:: yaml
-         :linenos:
-         :emphasize-lines: 2
+    ..  code-block:: yaml
+        :linenos:
+        :emphasize-lines: 2
 
-         Closure:
-           implementationClassName: TYPO3\CMS\Form\Domain\Finishers\ClosureFinisher
+        Closure:
+          implementationClassName: TYPO3\CMS\Form\Domain\Finishers\ClosureFinisher
 
 :aspect:`Good to know`
-      - :ref:`"Custom finisher implementations"<concepts-finishers-customfinisherimplementations>`
+    -   :ref:`"Custom finisher implementations"<concepts-finishers-customfinisherimplementations>`
 
 :aspect:`Description`
-      .. include:: ../properties/implementationClassName.rst.txt
+    ..  include:: ../properties/implementationClassName.rst.txt
 
 
-.. _prototypes.prototypeIdentifier.finishersdefinition.closure.options.closure:
+..  _prototypes.prototypeIdentifier.finishersdefinition.closure.options.closure:
 
 options.closure
 ---------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.finishersDefinition.Closure.options.closure
+    prototypes.<prototypeIdentifier>.finishersDefinition.Closure.options.closure
 
 :aspect:`Data type`
-      \Closure
+    \Closure
 
 :aspect:`Needed by`
-      Frontend
+    Frontend
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
 :aspect:`Default value`
-      null
+    null
 
-.. :aspect:`Good to know`
-      ToDo
-      - :ref:`"Closure finisher"<apireference-finisheroptions-closurefinisher>`
-      - :ref:`"Custom finisher implementations"<concepts-finishers-customfinisherimplementations>`
+..  :aspect:`Good to know`
+    ToDo
+    - :ref:`"Closure finisher"<apireference-finisheroptions-closurefinisher>`
+    - :ref:`"Custom finisher implementations"<concepts-finishers-customfinisherimplementations>`
 
 :aspect:`Description`
-      The closure which is invoked if the finisher is triggered.
+    The closure which is invoked if the finisher is triggered.
 
 
-.. _prototypes.prototypeIdentifier.finishersdefinition.closure.formeditor.iconidentifier:
+..  _prototypes.prototypeIdentifier.finishersdefinition.closure.formeditor.iconidentifier:
 
 formeditor.iconIdentifier
 -------------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.finishersDefinition.Closure.formEditor.iconIdentifier
+    prototypes.<prototypeIdentifier>.finishersDefinition.Closure.formEditor.iconIdentifier
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Backend (form editor)
+    Backend (form editor)
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
 :aspect:`Default value`
-      .. code-block:: yaml
-         :linenos:
-         :emphasize-lines: 3
+    ..  code-block:: yaml
+        :linenos:
+        :emphasize-lines: 3
 
-         Closure:
-           formEditor:
-             iconIdentifier: form-finisher
-             label: formEditor.elements.Form.finisher.Closure.editor.header.label
-             predefinedDefaults:
-               options:
-                 closure: ''
+        Closure:
+          formEditor:
+            iconIdentifier: form-finisher
+            label: formEditor.elements.Form.finisher.Closure.editor.header.label
+            predefinedDefaults:
+              options:
+                closure: ''
 
-.. :aspect:`Good to know`
-      ToDo
+..  :aspect:`Good to know`
+    ToDo
 
 :aspect:`Description`
-      .. include:: ../properties/iconIdentifier.rst.txt
+    ..  include:: ../properties/iconIdentifier.rst.txt
 
 
-.. _prototypes.prototypeIdentifier.finishersdefinition.closure.formeditor.label:
+..  _prototypes.prototypeIdentifier.finishersdefinition.closure.formeditor.label:
 
 formeditor.label
 ----------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.finishersDefinition.Closure.formEditor.label
+    prototypes.<prototypeIdentifier>.finishersDefinition.Closure.formEditor.label
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Backend (form editor)
+    Backend (form editor)
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
 :aspect:`Default value`
-      .. code-block:: yaml
-         :linenos:
-         :emphasize-lines: 4
+    ..  code-block:: yaml
+        :linenos:
+        :emphasize-lines: 4
 
-         Closure:
-           formEditor:
-             iconIdentifier: form-finisher
-             label: formEditor.elements.Form.finisher.Closure.editor.header.label
-             predefinedDefaults:
-               options:
-                 closure: ''
+        Closure:
+          formEditor:
+            iconIdentifier: form-finisher
+            label: formEditor.elements.Form.finisher.Closure.editor.header.label
+            predefinedDefaults:
+              options:
+                closure: ''
 
 :aspect:`Good to know`
-      - :ref:`"Translate form editor settings"<concepts-formeditor-translation-formeditor>`
+    -   :ref:`"Translate form editor settings"<concepts-formeditor-translation-formeditor>`
 
 :aspect:`Description`
-      .. include:: ../properties/label.rst.txt
+    ..  include:: ../properties/label.rst.txt
 
 
-.. _prototypes.prototypeIdentifier.finishersdefinition.closure.formeditor.predefineddefaults:
+..  _prototypes.prototypeIdentifier.finishersdefinition.closure.formeditor.predefineddefaults:
 
 formeditor.predefinedDefaults
 -----------------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.finishersDefinition.Closure.formEditor.predefinedDefaults
+    prototypes.<prototypeIdentifier>.finishersDefinition.Closure.formEditor.predefinedDefaults
 
 :aspect:`Data type`
-      array
+    array
 
 :aspect:`Needed by`
-      Backend (form editor)
+    Backend (form editor)
 
 :aspect:`Mandatory`
-      No
+    No
 
 :aspect:`Default value`
-      .. code-block:: yaml
-         :linenos:
-         :emphasize-lines: 5-
+    ..  code-block:: yaml
+        :linenos:
+        :emphasize-lines: 5-
 
-         Closure:
-           formEditor:
-             iconIdentifier: form-finisher
-             label: formEditor.elements.Form.finisher.Closure.editor.header.label
-             predefinedDefaults:
-               options:
-                 closure: ''
+        Closure:
+          formEditor:
+            iconIdentifier: form-finisher
+            label: formEditor.elements.Form.finisher.Closure.editor.header.label
+            predefinedDefaults:
+              options:
+                closure: ''
 
-.. :aspect:`Good to know`
-      ToDo
+..  :aspect:`Good to know`
+    ToDo
 
 :aspect:`Description`
-      .. include:: ../properties/predefinedDefaults.rst.txt
+    ..  include:: ../properties/predefinedDefaults.rst.txt

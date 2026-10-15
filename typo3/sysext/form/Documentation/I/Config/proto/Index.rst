@@ -1,96 +1,96 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
 
-.. _prototypes:
+..  _prototypes:
 
 ============
 [prototypes]
 ============
 
 
-.. _prototypes-properties:
+..  _prototypes-properties:
 
 Properties
 ==========
 
-.. _prototypes-properties-_prototypes:
+..  _prototypes-properties-_prototypes:
 
 prototypes
 ----------
 
 :aspect:`Option path`
-      prototypes
+    prototypes
 
 :aspect:`Data type`
-      array
+    array
 
 :aspect:`Needed by`
-      Frontend/ Backend (form manager/ form editor/ plugin)
+    Frontend/ Backend (form manager/ form editor/ plugin)
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
 :aspect:`Default value`
-      .. code-block:: yaml
-         :linenos:
+    ..  code-block:: yaml
+        :linenos:
 
-         prototypes:
-           standard:
-             [...]
+        prototypes:
+          standard:
+            [...]
 
 :aspect:`Good to know`
-      - :ref:`"Prototypes"<concepts-configuration-prototypes>`
-      - :ref:`"Form configuration vs. form definition"<concepts-formdefinition-vs-formconfiguration>`
+    -   :ref:`"Prototypes"<concepts-configuration-prototypes>`
+    -   :ref:`"Form configuration vs. form definition"<concepts-formdefinition-vs-formconfiguration>`
 
 :aspect:`Description`
-      Array which defines the available prototypes. Every key within this array is called the ``prototypeIdentifier``.
+    Array which defines the available prototypes. Every key within this array is called the ``prototypeIdentifier``.
 
 
-.. _prototypes.prototypeIdentifier:
+..  _prototypes.prototypeIdentifier:
 
 prototypeIdentifier
----------------------
+-------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>
+    prototypes.<prototypeIdentifier>
 
 :aspect:`Data type`
-      array
+    array
 
 :aspect:`Needed by`
-      Frontend/ Backend (form manager/ form editor/ plugin)
+    Frontend/ Backend (form manager/ form editor/ plugin)
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
 :aspect:`Related options`
-      - :ref:`"formManager.selectablePrototypesConfiguration.*.identifier"<formmanager.selectableprototypesconfiguration.*.identifier>`
+    -   :ref:`"formManager.selectablePrototypesConfiguration.*.identifier"<formmanager.selectableprototypesconfiguration.*.identifier>`
 
 :aspect:`Default value`
-      .. code-block:: yaml
-         :linenos:
-         :emphasize-lines: 2
+    ..  code-block:: yaml
+        :linenos:
+        :emphasize-lines: 2
 
-         prototypes:
-           standard:
-             [...]
+        prototypes:
+          standard:
+            [...]
 
 :aspect:`Good to know`
-      - :ref:`"Prototypes"<concepts-configuration-prototypes>`
-      - :ref:`"Form configuration vs. form definition"<concepts-formdefinition-vs-formconfiguration>`
+    -   :ref:`"Prototypes"<concepts-configuration-prototypes>`
+    -   :ref:`"Form configuration vs. form definition"<concepts-formdefinition-vs-formconfiguration>`
 
 :aspect:`Description`
-      This array key identifies the `prototype`. Every ``form definition`` references to such a ``<prototypeIdentifier>`` through the property ``prototypeName``.
+    This array key identifies the `prototype`. Every ``form definition`` references to such a ``<prototypeIdentifier>`` through the property ``prototypeName``.
 
 
 Subproperties
 =============
 
-.. toctree::
+..  toctree::
 
-   form/Index
-   formElements/Index
-   finishersDefinition/Index
-   validatorsDefinition/Index
-   formEditor/Index
-   formEngine/Index
+    form/Index
+    formElements/Index
+    finishersDefinition/Index
+    validatorsDefinition/Index
+    formEditor/Index
+    formEngine/Index

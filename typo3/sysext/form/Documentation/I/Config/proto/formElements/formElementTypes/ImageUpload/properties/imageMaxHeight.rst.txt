@@ -1,46 +1,46 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 properties.imageMaxHeight
 -------------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.formElementsDefinition.ImageUpload.properties.imageMaxHeight
+    prototypes.<prototypeIdentifier>.formElementsDefinition.ImageUpload.properties.imageMaxHeight
 
 :aspect:`Data type`
-      int
+    int
 
 :aspect:`Needed by`
-      Frontend/ Backend (form editor)
+    Frontend/ Backend (form editor)
 
 :aspect:`Overwritable within form definition`
-      Yes
+    Yes
 
 :aspect:`form editor can write this property into the form definition (for prototype 'standard')`
-      No
+    No
 
 :aspect:`Mandatory`
-      No
+    No
 
 :aspect:`Default value (for prototype 'standard')`
-      .. code-block:: yaml
-         :linenos:
-         :emphasize-lines: 13
+    ..  code-block:: yaml
+        :linenos:
+        :emphasize-lines: 13
 
-         ImageUpload:
-           properties:
-             containerClassAttribute: input
-             elementClassAttribute: lightbox
-             elementErrorClassAttribute: error
-             saveToFileMount: '1:/user_upload/'
-             allowedMimeTypes:
-               - image/jpeg
-               - image/png
-               - image/bmp
-             imageLinkMaxWidth: 500
-             imageMaxWidth: 500
-             imageMaxHeight: 500
+        ImageUpload:
+          properties:
+            containerClassAttribute: input
+            elementClassAttribute: lightbox
+            elementErrorClassAttribute: error
+            saveToFileMount: '1:/user_upload/'
+            allowedMimeTypes:
+              - image/jpeg
+              - image/png
+              - image/bmp
+            imageLinkMaxWidth: 500
+            imageMaxWidth: 500
+            imageMaxHeight: 500
 
-.. :aspect:`Good to know`
-      ToDo
+..  :aspect:`Good to know`
+    ToDo
 
 :aspect:`Description`
-      The max height for the uploaded image preview.
+    The max height for the uploaded image preview.

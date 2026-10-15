@@ -1,8 +1,9 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
 
-.. _concepts-form-file-storages:
+..  _concepts-form-file-storages:
 
+============
 Form storage
 ============
 
@@ -13,7 +14,7 @@ extensions. Editors select the storage in the
 ..  _concepts-form-storages-database:
 
 Database storage
-----------------
+================
 
 ..  versionadded:: 14.2
     :changelog: feature-108653-1767199420
@@ -40,7 +41,7 @@ shows the record history of a form.
 ..  _concepts-form-storages-filemount:
 
 File mount storage
-------------------
+==================
 
 ..  deprecated:: 14.2
     :changelog: deprecation-108653-1741600000
@@ -64,29 +65,29 @@ user to choose their preferred storage.
 
 Configure additional file mounts for form definitions as follows:
 
-.. code-block:: yaml
+..  code-block:: yaml
 
-   persistenceManager:
-     allowedFileMounts:
-       # default file mount, no need to redeclare it again
-       # just to show you the structure
-       # 10: 1:/form_definitions/
-       # additional file mounts
-       100: 1:/custom/forms/
-       110: 2:/cloudstorage/forms/
+    persistenceManager:
+      allowedFileMounts:
+        # default file mount, no need to redeclare it again
+        # just to show you the structure
+        # 10: 1:/form_definitions/
+        # additional file mounts
+        100: 1:/custom/forms/
+        110: 2:/cloudstorage/forms/
 
 ..  _concepts-form-storages-extension:
 
 Extension storage
------------------
+=================
 
 Form definitions can also be stored in and shipped with your own
 extensions and backend users can then
 embed your forms. Furthermore, you can configure that your form
 definitions:
 
-- can be edited in the ``form editor``,
-- can be deleted with the ``form manager``.
+-   can be edited in the ``form editor``,
+-   can be deleted with the ``form manager``.
 
 By default, all these options are turned off because dynamic content inside an
 extension - possibly version-controlled - is not a good idea. There is also no
@@ -94,30 +95,30 @@ ACL system available.
 
 Add a folder of your extension for form definitions as follows:
 
-.. code-block:: yaml
+..  code-block:: yaml
 
-   persistenceManager:
-     allowedExtensionPaths:
-       10: EXT:my_site_package/Resources/Private/Forms/
+    persistenceManager:
+      allowedExtensionPaths:
+        10: EXT:my_site_package/Resources/Private/Forms/
 
 Allow backend users to **edit** forms stored in your extension as follows:
 
-.. code-block:: yaml
+..  code-block:: yaml
 
-   persistenceManager:
-     allowSaveToExtensionPaths: true
+    persistenceManager:
+      allowSaveToExtensionPaths: true
 
 Allow backend users to **delete** forms stored in your extension as follows:
 
-.. code-block:: yaml
+..  code-block:: yaml
 
-   persistenceManager:
-     allowDeleteFromExtensionPaths: true
+    persistenceManager:
+      allowDeleteFromExtensionPaths: true
 
 ..  _concepts-form-storages-transfer:
 
 Transfer forms between storages
--------------------------------
+===============================
 
 The console command `form:definition:transfer` copies form definitions
 from one storage to another. Use it, for example, to move the forms of an
@@ -159,63 +160,63 @@ The command updates the references in content elements of the table
 ..  _concepts-form-storages-uploads:
 
 File uploads
-------------
+============
 
 **File uploads** are saved in file mounts. They are handled
 as FAL objects. The file mounts for file uploads can be configured.
 When adding/ editing a file upload element, backend users can select the
 storage for the uploads.
 
-.. note::
+..  note::
 
-   In principle, files in file mounts are publicly accessible. If the
-   uploaded files could contain sensitive data, you should suppress any
-   HTTP access to the file mount. You could do this by
-   creating a :file:`.htaccess` file if you are using an Apache web
-   server. The :file:`.htaccess` file directive is as follows:
+    In principle, files in file mounts are publicly accessible. If the
+    uploaded files could contain sensitive data, you should suppress any
+    HTTP access to the file mount. You could do this by
+    creating a :file:`.htaccess` file if you are using an Apache web
+    server. The :file:`.htaccess` file directive is as follows:
 
-   .. code-block:: apache
+    ..  code-block:: apache
 
-      # Apache ≥ 2.3
-      <IfModule mod_authz_core.c>
-         Require all denied
-      </IfModule>
+        # Apache ≥ 2.3
+        <IfModule mod_authz_core.c>
+           Require all denied
+        </IfModule>
 
-      # Apache < 2.3
-      <IfModule !mod_authz_core.c>
-         Order allow,deny
-         Deny from all
-         Satisfy All
-      </IfModule>
+        # Apache < 2.3
+        <IfModule !mod_authz_core.c>
+           Order allow,deny
+           Deny from all
+           Satisfy All
+        </IfModule>
 
 The following YAML shows the default file mount setup for file (and image) uploads.
 
-.. code-block:: yaml
+..  code-block:: yaml
 
-   prototypes:
-     standard:
-       formElementsDefinition:
-         FileUpload:
-           formEditor:
-             predefinedDefaults:
-               properties:
-                 saveToFileMount: '1:/user_upload/'
-             editors:
-               400:
-                 selectOptions:
-                   10:
-                     value: '1:/user_upload/'
-                     label: '1:/user_upload/'
-           properties:
-             saveToFileMount: '1:/user_upload/'
-         ImageUpload:
-           formEditor:
-             predefinedDefaults:
-               properties:
-                 saveToFileMount: '1:/user_upload/'
-             editors:
-               400:
-                 selectOptions:
-                   10:
-                     value: '1:/user_upload/'
-                     label: '1:/user_upload/'
+    prototypes:
+      standard:
+        formElementsDefinition:
+          FileUpload:
+            formEditor:
+              predefinedDefaults:
+                properties:
+                  saveToFileMount: '1:/user_upload/'
+              editors:
+                400:
+                  selectOptions:
+                    10:
+                      value: '1:/user_upload/'
+                      label: '1:/user_upload/'
+            properties:
+              saveToFileMount: '1:/user_upload/'
+          ImageUpload:
+            formEditor:
+              predefinedDefaults:
+                properties:
+                  saveToFileMount: '1:/user_upload/'
+              editors:
+                400:
+                  selectOptions:
+                    10:
+                      value: '1:/user_upload/'
+                      label: '1:/user_upload/'

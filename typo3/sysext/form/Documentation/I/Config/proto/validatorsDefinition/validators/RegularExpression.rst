@@ -1,182 +1,182 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
 
-.. _prototypes.prototypeIdentifier.validatorsdefinition.regularexpression:
+..  _prototypes.prototypeIdentifier.validatorsdefinition.regularexpression:
 
 ===================
 [RegularExpression]
 ===================
 
 
-.. _prototypes.prototypeIdentifier.validatorsdefinition.regularexpression-validationerrorcodes:
+..  _prototypes.prototypeIdentifier.validatorsdefinition.regularexpression-validationerrorcodes:
 
 Validation error codes
 ======================
 
-- Error code: `1221565130`
-- Error message: `The given subject did not match the pattern.`
+-   Error code: `1221565130`
+-   Error message: `The given subject did not match the pattern.`
 
 
-.. _prototypes.prototypeIdentifier.validatorsdefinition.regularexpression-properties:
+..  _prototypes.prototypeIdentifier.validatorsdefinition.regularexpression-properties:
 
 Properties
 ==========
 
 
-.. _prototypes.prototypeIdentifier.validatorsdefinition.regularexpression.implementationClassName:
+..  _prototypes.prototypeIdentifier.validatorsdefinition.regularexpression.implementationClassName:
 
 implementationClassName
 -----------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.validatorsDefinition.RegularExpression.implementationClassName
+    prototypes.<prototypeIdentifier>.validatorsDefinition.RegularExpression.implementationClassName
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Frontend
+    Frontend
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
 :aspect:`Default value (for prototype 'standard')`
-      .. code-block:: yaml
-         :linenos:
-         :emphasize-lines: 2
+    ..  code-block:: yaml
+        :linenos:
+        :emphasize-lines: 2
 
-         RegularExpression:
-           implementationClassName: TYPO3\CMS\Extbase\Validation\Validator\RegularExpressionValidator
+        RegularExpression:
+          implementationClassName: TYPO3\CMS\Extbase\Validation\Validator\RegularExpressionValidator
 
 :aspect:`Good to know`
-      - :ref:`"Custom validator implementations"<concepts-validators-customvalidatorimplementations>`
+    -   :ref:`"Custom validator implementations"<concepts-validators-customvalidatorimplementations>`
 
 :aspect:`Description`
-      .. include:: ../properties/implementationClassName.rst.txt
+    ..  include:: ../properties/implementationClassName.rst.txt
 
 
-.. _prototypes.prototypeIdentifier.validatorsdefinition.regularexpression.options.regularExpression:
+..  _prototypes.prototypeIdentifier.validatorsdefinition.regularexpression.options.regularExpression:
 
 options.regularExpression
 -------------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.validatorsDefinition.RegularExpression.options.regularExpression
+    prototypes.<prototypeIdentifier>.validatorsDefinition.RegularExpression.options.regularExpression
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Frontend
+    Frontend
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
 :aspect:`Default value (for prototype 'standard')`
-      undefined
+    undefined
 
 :aspect:`Description`
-      The regular expression to use for validation, used as given.
+    The regular expression to use for validation, used as given.
 
 
-.. _prototypes.prototypeIdentifier.validatorsdefinition.regularexpression.formeditor.iconidentifier:
+..  _prototypes.prototypeIdentifier.validatorsdefinition.regularexpression.formeditor.iconidentifier:
 
 formEditor.iconIdentifier
 -------------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.validatorsDefinition.RegularExpression.formEditor.iconIdentifier
+    prototypes.<prototypeIdentifier>.validatorsDefinition.RegularExpression.formEditor.iconIdentifier
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Backend (form editor)
+    Backend (form editor)
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
 :aspect:`Default value (for prototype 'standard')`
-      .. code-block:: yaml
-         :linenos:
-         :emphasize-lines: 3
+    ..  code-block:: yaml
+        :linenos:
+        :emphasize-lines: 3
 
-         RegularExpression:
-           formEditor:
-             iconIdentifier: form-validator
-             label: formEditor.elements.TextMixin.editor.validators.RegularExpression.label
+        RegularExpression:
+          formEditor:
+            iconIdentifier: form-validator
+            label: formEditor.elements.TextMixin.editor.validators.RegularExpression.label
 
-.. :aspect:`Good to know`
-      ToDo
+..  :aspect:`Good to know`
+    ToDo
 
 :aspect:`Description`
-      .. include:: ../properties/iconIdentifier.rst.txt
+    ..  include:: ../properties/iconIdentifier.rst.txt
 
 
-.. _prototypes.prototypeIdentifier.validatorsdefinition.regularexpression.formeditor.label:
+..  _prototypes.prototypeIdentifier.validatorsdefinition.regularexpression.formeditor.label:
 
 formEditor.label
 ----------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.validatorsDefinition.RegularExpression.formEditor.label
+    prototypes.<prototypeIdentifier>.validatorsDefinition.RegularExpression.formEditor.label
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Backend (form editor)
+    Backend (form editor)
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
 :aspect:`Default value (for prototype 'standard')`
-      .. code-block:: yaml
-         :linenos:
-         :emphasize-lines: 4
+    ..  code-block:: yaml
+        :linenos:
+        :emphasize-lines: 4
 
-         RegularExpression:
-           formEditor:
-             iconIdentifier: form-validator
-             label: formEditor.elements.TextMixin.editor.validators.RegularExpression.label
+        RegularExpression:
+          formEditor:
+            iconIdentifier: form-validator
+            label: formEditor.elements.TextMixin.editor.validators.RegularExpression.label
 
 :aspect:`Good to know`
-      - :ref:`"Translate form editor settings"<concepts-formeditor-translation-formeditor>`
+    -   :ref:`"Translate form editor settings"<concepts-formeditor-translation-formeditor>`
 
 :aspect:`Description`
-      .. include:: ../properties/label.rst.txt
+    ..  include:: ../properties/label.rst.txt
 
 
-.. _prototypes.prototypeIdentifier.validatorsdefinition.regularexpression.formeditor.predefineddefaults:
+..  _prototypes.prototypeIdentifier.validatorsdefinition.regularexpression.formeditor.predefineddefaults:
 
 formEditor.predefinedDefaults
 -----------------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.validatorsDefinition.RegularExpression.formEditor.predefinedDefaults
+    prototypes.<prototypeIdentifier>.validatorsDefinition.RegularExpression.formEditor.predefinedDefaults
 
 :aspect:`Data type`
-      array
+    array
 
 :aspect:`Needed by`
-      Backend (form editor)
+    Backend (form editor)
 
 :aspect:`Mandatory`
-      No
+    No
 
 :aspect:`Default value (for prototype 'standard')`
-      .. code-block:: yaml
-         :linenos:
-         :emphasize-lines: 3-
+    ..  code-block:: yaml
+        :linenos:
+        :emphasize-lines: 3-
 
-         RegularExpression:
-           formEditor:
-             predefinedDefaults:
-               options:
-                 regularExpression: ''
+        RegularExpression:
+          formEditor:
+            predefinedDefaults:
+              options:
+                regularExpression: ''
 
-.. :aspect:`Good to know`
-      ToDo
+..  :aspect:`Good to know`
+    ToDo
 
 :aspect:`Description`
-      .. include:: ../properties/predefinedDefaults.rst.txt
+    ..  include:: ../properties/predefinedDefaults.rst.txt

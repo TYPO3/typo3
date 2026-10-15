@@ -1,43 +1,43 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
 formEditor.propertyCollections.validators.80
 --------------------------------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.formElementsDefinition.Url.formEditor.propertyCollections.validators.80
+    prototypes.<prototypeIdentifier>.formElementsDefinition.Url.formEditor.propertyCollections.validators.80
 
 :aspect:`Data type`
-      array
+    array
 
 :aspect:`Needed by`
-      Backend (form editor)
+    Backend (form editor)
 
 :aspect:`Mandatory`
-      No
+    No
 
 :aspect:`Default value (for prototype 'standard')`
-      .. code-block:: yaml
-         :linenos:
-         :emphasize-lines: 5-
+    ..  code-block:: yaml
+        :linenos:
+        :emphasize-lines: 5-
 
-         Url:
-           formEditor:
-             propertyCollections:
-               validators:
-                 80:
-                   identifier: RegularExpression
-                   editors:
-                     100:
-                       identifier: header
-                       templateName: Inspector-CollectionElementHeaderEditor
-                       label: formEditor.elements.TextMixin.validators.RegularExpression.editor.header.label
-                     200:
-                       identifier: regex
-                       templateName: Inspector-TextEditor
-                       label: formEditor.elements.TextMixin.validators.RegularExpression.editor.regex.label
-                       description: formEditor.elements.TextMixin.validators.RegularExpression.editor.regex.description
-                       propertyPath: options.regularExpression
-                       propertyValidators:
-                         10: NotEmpty
-                         20: RegularExpressionPattern
+        Url:
+          formEditor:
+            propertyCollections:
+              validators:
+                80:
+                  identifier: RegularExpression
+                  editors:
+                    100:
+                      identifier: header
+                      templateName: Inspector-CollectionElementHeaderEditor
+                      label: formEditor.elements.TextMixin.validators.RegularExpression.editor.header.label
+                    200:
+                      identifier: regex
+                      templateName: Inspector-TextEditor
+                      label: formEditor.elements.TextMixin.validators.RegularExpression.editor.regex.label
+                      description: formEditor.elements.TextMixin.validators.RegularExpression.editor.regex.description
+                      propertyPath: options.regularExpression
+                      propertyValidators:
+                        10: NotEmpty
+                        20: RegularExpressionPattern
 

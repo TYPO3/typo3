@@ -1,37 +1,37 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
 formEditor.propertyCollections.validators.50
 --------------------------------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.formElementsDefinition.Password.formEditor.propertyCollections.validators.50
+    prototypes.<prototypeIdentifier>.formElementsDefinition.Password.formEditor.propertyCollections.validators.50
 
 :aspect:`Data type`
-      array
+    array
 
 :aspect:`Needed by`
-      Backend (form editor)
+    Backend (form editor)
 
 :aspect:`Mandatory`
-      No
+    No
 
 :aspect:`Default value (for prototype 'standard')`
-      .. code-block:: yaml
-         :linenos:
-         :emphasize-lines: 5-
+    ..  code-block:: yaml
+        :linenos:
+        :emphasize-lines: 5-
 
-         Password:
-           formEditor:
-             propertyCollections:
-               validators:
-                 50:
-                   identifier: Integer
-                   editors:
-                     100:
-                       identifier: header
-                       templateName: Inspector-CollectionElementHeaderEditor
-                       label: formEditor.elements.TextMixin.validators.Integer.editor.header.label
-                     9999:
-                       identifier: removeButton
-                       templateName: Inspector-RemoveElementEditor
+        Password:
+          formEditor:
+            propertyCollections:
+              validators:
+                50:
+                  identifier: Integer
+                  editors:
+                    100:
+                      identifier: header
+                      templateName: Inspector-CollectionElementHeaderEditor
+                      label: formEditor.elements.TextMixin.validators.Integer.editor.header.label
+                    9999:
+                      identifier: removeButton
+                      templateName: Inspector-RemoveElementEditor
 

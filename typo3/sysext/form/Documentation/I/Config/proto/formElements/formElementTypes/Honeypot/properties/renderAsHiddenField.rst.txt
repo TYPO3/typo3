@@ -1,40 +1,40 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 properties.renderAsHiddenField
 ------------------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.formElementsDefinition.Honeypot.properties.renderAsHiddenField
+    prototypes.<prototypeIdentifier>.formElementsDefinition.Honeypot.properties.renderAsHiddenField
 
 :aspect:`Data type`
-      bool
+    bool
 
 :aspect:`Needed by`
-      Frontend/ Backend (form editor)
+    Frontend/ Backend (form editor)
 
 :aspect:`Overwritable within form definition`
-      Yes
+    Yes
 
 :aspect:`form editor can write this property into the form definition (for prototype 'standard')`
-      No
+    No
 
 :aspect:`Mandatory`
-      No
+    No
 
 :aspect:`Default value (for prototype 'standard')`
-      .. code-block:: yaml
-         :linenos:
-         :emphasize-lines: 6
+    ..  code-block:: yaml
+        :linenos:
+        :emphasize-lines: 6
 
-         Honeypot:
-           properties:
-             containerClassAttribute: input
-             elementClassAttribute: ''
-             elementErrorClassAttribute: error
-             renderAsHiddenField: false
-             styleAttribute: 'position:absolute; margin:0 0 0 -999em;'
+        Honeypot:
+          properties:
+            containerClassAttribute: input
+            elementClassAttribute: ''
+            elementErrorClassAttribute: error
+            renderAsHiddenField: false
+            styleAttribute: 'position:absolute; margin:0 0 0 -999em;'
 
-.. :aspect:`Good to know`
-      ToDo
+..  :aspect:`Good to know`
+    ToDo
 
 :aspect:`Description`
-      By default the honeypot will be rendered as a regular text form element (input type "text"). ``renderAsHiddenField`` renders the honeypot as a hidden form element (input type "hidden").
+    By default the honeypot will be rendered as a regular text form element (input type "text"). ``renderAsHiddenField`` renders the honeypot as a hidden form element (input type "hidden").

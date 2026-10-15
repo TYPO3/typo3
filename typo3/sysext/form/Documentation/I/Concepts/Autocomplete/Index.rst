@@ -1,6 +1,6 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
-.. _concepts-autocomplete:
+..  _concepts-autocomplete:
 
 ============
 Autocomplete
@@ -16,7 +16,7 @@ HTML standard allows arbitrary values.
 If you need to provide additional fields, you can reconfigure the autocomplete
 field with additional select options:
 
-.. _concepts-autocomplete-add-options:
+..  _concepts-autocomplete-add-options:
 
 Add Autocomplete options to the backend editor
 ==============================================

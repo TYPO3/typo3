@@ -6,26 +6,26 @@ TYPO3 Form
 ==========
 
 :Extension key:
-   form
+    form
 
 :Package name:
-   typo3/cms-form
+    typo3/cms-form
 
 :Version:
-   |release|
+    |release|
 
 :Language:
-   en
+    en
 
 :Author:
-   TRITUM GmbH & TYPO3 contributors
+    TRITUM GmbH & TYPO3 contributors
 
 :License:
-   This document is published under the
-   `Open Content License <https://www.openhub.net/licenses/opl>`__.
+    This document is published under the
+    `Open Content License <https://www.openhub.net/licenses/opl>`__.
 
 :Rendered:
-   |today|
+    |today|
 
 ----
 
@@ -36,21 +36,21 @@ integrators and developers alike to create all kinds of forms.
 
 **Table of Contents:**
 
-.. toctree::
-   :maxdepth: 2
-   :titlesonly:
+..  toctree::
+    :maxdepth: 2
+    :titlesonly:
 
-   Introduction/Index
-   Installation/Index
-   QuickStartForEditors/Index
-   QuickStartForIntegrators/Index
-   D/Index
-   I/Index
-   E/Index
+    Introduction/Index
+    Installation/Index
+    QuickStartForEditors/Index
+    QuickStartForIntegrators/Index
+    D/Index
+    I/Index
+    E/Index
 
-.. Meta Menu
+..  Meta Menu
 
-.. toctree::
-   :hidden:
+..  toctree::
+    :hidden:
 
-   Sitemap
+    Sitemap

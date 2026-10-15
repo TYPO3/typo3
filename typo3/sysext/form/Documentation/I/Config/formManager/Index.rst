@@ -1,412 +1,412 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
 
-.. _formmanager:
+..  _formmanager:
 
 =============
 [formManager]
 =============
 
 
-.. _formmanager-properties:
+..  _formmanager-properties:
 
 Properties
 ==========
 
 
-.. _formmanager.dynamicjavascriptmodules.app:
+..  _formmanager.dynamicjavascriptmodules.app:
 
 dynamicJavaScriptModules.app
 ----------------------------
 
 :aspect:`Option path`
-      formManager.dynamicJavaScriptModules.app
+    formManager.dynamicJavaScriptModules.app
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Backend (form manager)
+    Backend (form manager)
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
 :aspect:`Default value`
-      .. code-block:: yaml
-         :linenos:
-         :emphasize-lines: 2
+    ..  code-block:: yaml
+        :linenos:
+        :emphasize-lines: 2
 
-         dynamicJavaScriptModules:
-           app: TYPO3/CMS/Form/Backend/FormManager
-           viewModel: TYPO3/CMS/Form/Backend/FormManager/ViewModel
+        dynamicJavaScriptModules:
+          app: TYPO3/CMS/Form/Backend/FormManager
+          viewModel: TYPO3/CMS/Form/Backend/FormManager/ViewModel
 
 :aspect:`Description`
-      Internal setting. ES6 module specifier for the form manager JavaScript app.
+    Internal setting. ES6 module specifier for the form manager JavaScript app.
 
 
-.. _formmanager.dynamicjavascriptmodules.viewmodel:
+..  _formmanager.dynamicjavascriptmodules.viewmodel:
 
 dynamicJavaScriptModules.viewModel
 ----------------------------------
 
 :aspect:`Option path`
-      formManager.dynamicJavaScriptModules.viewModel
+    formManager.dynamicJavaScriptModules.viewModel
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Backend (form manager)
+    Backend (form manager)
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
 :aspect:`Default value`
-      .. code-block:: yaml
-         :linenos:
-         :emphasize-lines: 3
+    ..  code-block:: yaml
+        :linenos:
+        :emphasize-lines: 3
 
-         dynamicJavaScriptModules:
-           app: '@typo3/form/backend/form-manager.js'
-           viewModel: '@typo3/form/backend/form-manager/view-model.js'
+        dynamicJavaScriptModules:
+          app: '@typo3/form/backend/form-manager.js'
+          viewModel: '@typo3/form/backend/form-manager/view-model.js'
 
 :aspect:`Description`
-      Internal setting. ES6 module specifier for the form manager JavaScript view model.
+    Internal setting. ES6 module specifier for the form manager JavaScript view model.
 
 
-.. _formmanager.stylesheets:
+..  _formmanager.stylesheets:
 
 stylesheets
 -----------
 
 :aspect:`Option path`
-      formManager.stylesheets
+    formManager.stylesheets
 
 :aspect:`Data type`
-      array
+    array
 
 :aspect:`Needed by`
-      Backend (form manager)
+    Backend (form manager)
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
 :aspect:`Default value`
-      .. code-block:: yaml
-         :linenos:
+    ..  code-block:: yaml
+        :linenos:
 
-         stylesheets:
-           100: 'EXT:form/Resources/Public/Css/form.css'
+        stylesheets:
+          100: 'EXT:form/Resources/Public/Css/form.css'
 
 :aspect:`Description`
-      Internal setting. Path for the form manager CSS file.
+    Internal setting. Path for the form manager CSS file.
 
 
-.. _formmanager.translationfiles:
+..  _formmanager.translationfiles:
 
 translationFiles
 ----------------
 
 :aspect:`Option path`
-      formManager.translationFiles
+    formManager.translationFiles
 
 :aspect:`Data type`
-      string/ array
+    string/ array
 
 :aspect:`Needed by`
-      Backend (form manager)
+    Backend (form manager)
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
 :aspect:`Default value`
-      .. code-block:: yaml
-         :linenos:
+    ..  code-block:: yaml
+        :linenos:
 
-         translationFiles:
-           10: 'EXT:form/Resources/Private/Language/Database.xlf'
+        translationFiles:
+          10: 'EXT:form/Resources/Private/Language/Database.xlf'
 
 :aspect:`Good to know`
-      :ref:`Translate "Start template" options<concepts-formmanager-translation-starttemplate>`
+    :ref:`Translate "Start template" options<concepts-formmanager-translation-starttemplate>`
 
 :aspect:`Description`
-      The translation file(s) which should be used to translate parts of the form manager.
+    The translation file(s) which should be used to translate parts of the form manager.
 
 
-.. _formmanager.selectableprototypesconfiguration:
+..  _formmanager.selectableprototypesconfiguration:
 
 selectablePrototypesConfiguration
 ---------------------------------
 
 :aspect:`Option path`
-      formManager.selectablePrototypesConfiguration
+    formManager.selectablePrototypesConfiguration
 
 :aspect:`Data type`
-      array
+    array
 
 :aspect:`Needed by`
-      Backend (form manager)
+    Backend (form manager)
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
 :aspect:`Default value`
-      .. code-block:: yaml
-         :linenos:
+    ..  code-block:: yaml
+        :linenos:
 
-         selectablePrototypesConfiguration:
-           100:
-             identifier: standard
-             label: formManager.selectablePrototypesConfiguration.standard.label
-             newFormTemplates:
-               100:
-                 templatePath: 'EXT:form/Resources/Private/Backend/Templates/FormEditor/Yaml/NewForms/BlankForm.yaml'
-                 label: formManager.selectablePrototypesConfiguration.standard.newFormTemplates.blankForm.label
-               200:
-                 templatePath: 'EXT:form/Resources/Private/Backend/Templates/FormEditor/Yaml/NewForms/SimpleContactForm.yaml'
-                 label: formManager.selectablePrototypesConfiguration.standard.newFormTemplates.simpleContactForm.label
+        selectablePrototypesConfiguration:
+          100:
+            identifier: standard
+            label: formManager.selectablePrototypesConfiguration.standard.label
+            newFormTemplates:
+              100:
+                templatePath: 'EXT:form/Resources/Private/Backend/Templates/FormEditor/Yaml/NewForms/BlankForm.yaml'
+                label: formManager.selectablePrototypesConfiguration.standard.newFormTemplates.blankForm.label
+              200:
+                templatePath: 'EXT:form/Resources/Private/Backend/Templates/FormEditor/Yaml/NewForms/SimpleContactForm.yaml'
+                label: formManager.selectablePrototypesConfiguration.standard.newFormTemplates.simpleContactForm.label
 
 :aspect:`Good to know`
-      - :ref:`"Start templates"<concepts-formmanager-starttemplate>`
-      - :ref:`Translate "Start template" options<concepts-formmanager-translation-starttemplate>`
+    -   :ref:`"Start templates"<concepts-formmanager-starttemplate>`
+    -   :ref:`Translate "Start template" options<concepts-formmanager-translation-starttemplate>`
 
 :aspect:`Description`
-      Array with numerical Keys. Configure the ``Start template`` selection list within the ``form manager`` "Advanced settings" step.
+    Array with numerical Keys. Configure the ``Start template`` selection list within the ``form manager`` "Advanced settings" step.
 
 
-.. _formmanager.selectableprototypesconfiguration.*.identifier:
+..  _formmanager.selectableprototypesconfiguration.*.identifier:
 
 selectablePrototypesConfiguration.*.identifier
 ----------------------------------------------
 
 :aspect:`Option path`
-      formManager.selectablePrototypesConfiguration.*.identifier
+    formManager.selectablePrototypesConfiguration.*.identifier
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Backend (form manager)
+    Backend (form manager)
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
 :aspect:`Related options`
-      - :ref:`prototypes <prototypes>`
+    -   :ref:`prototypes <prototypes>`
 
 :aspect:`Good to know`
-      - :ref:`"Start templates"<concepts-formmanager-starttemplate>`
+    -   :ref:`"Start templates"<concepts-formmanager-starttemplate>`
 
 :aspect:`Description`
-      Reference to a ``prototype`` which should be used for the newly created form definition.
+    Reference to a ``prototype`` which should be used for the newly created form definition.
 
 
-.. _formmanager.selectableprototypesconfiguration.*.label:
+..  _formmanager.selectableprototypesconfiguration.*.label:
 
 selectablePrototypesConfiguration.*.label
 -----------------------------------------
 
 :aspect:`Option path`
-      formManager.selectablePrototypesConfiguration.*.label
+    formManager.selectablePrototypesConfiguration.*.label
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Backend (form manager)
+    Backend (form manager)
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
 :aspect:`Good to know`
-      - :ref:`"Start templates"<concepts-formmanager-starttemplate>`
-      - :ref:`Translate "Start template" options<concepts-formmanager-translation-starttemplate>`
+    -   :ref:`"Start templates"<concepts-formmanager-starttemplate>`
+    -   :ref:`Translate "Start template" options<concepts-formmanager-translation-starttemplate>`
 
 :aspect:`Description`
-      The ``Form prototype`` selectlist label for this ``prototype`` within the ``form manager`` "Advanced settings" step.
+    The ``Form prototype`` selectlist label for this ``prototype`` within the ``form manager`` "Advanced settings" step.
 
 
-.. _formmanager.selectableprototypesconfiguration.*.newformtemplates:
+..  _formmanager.selectableprototypesconfiguration.*.newformtemplates:
 
 selectablePrototypesConfiguration.*.newFormTemplates
 ----------------------------------------------------
 
 :aspect:`Option path`
-      formManager.selectablePrototypesConfiguration.*.newFormTemplates
+    formManager.selectablePrototypesConfiguration.*.newFormTemplates
 
 :aspect:`Data type`
-      array
+    array
 
 :aspect:`Needed by`
-      Backend (form manager)
+    Backend (form manager)
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
 :aspect:`Default value`
-      .. code-block:: yaml
-         :linenos:
-         :emphasize-lines: 5-
+    ..  code-block:: yaml
+        :linenos:
+        :emphasize-lines: 5-
 
-         selectablePrototypesConfiguration:
-           100:
-             identifier: standard
-             label: formManager.selectablePrototypesConfiguration.standard.label
-             newFormTemplates:
-               100:
-                 templatePath: 'EXT:form/Resources/Private/Backend/Templates/FormEditor/Yaml/NewForms/BlankForm.yaml'
-                 label: formManager.selectablePrototypesConfiguration.standard.newFormTemplates.blankForm.label
-               200:
-                 templatePath: 'EXT:form/Resources/Private/Backend/Templates/FormEditor/Yaml/NewForms/SimpleContactForm.yaml'
-                 label: formManager.selectablePrototypesConfiguration.standard.newFormTemplates.simpleContactForm.label
+        selectablePrototypesConfiguration:
+          100:
+            identifier: standard
+            label: formManager.selectablePrototypesConfiguration.standard.label
+            newFormTemplates:
+              100:
+                templatePath: 'EXT:form/Resources/Private/Backend/Templates/FormEditor/Yaml/NewForms/BlankForm.yaml'
+                label: formManager.selectablePrototypesConfiguration.standard.newFormTemplates.blankForm.label
+              200:
+                templatePath: 'EXT:form/Resources/Private/Backend/Templates/FormEditor/Yaml/NewForms/SimpleContactForm.yaml'
+                label: formManager.selectablePrototypesConfiguration.standard.newFormTemplates.simpleContactForm.label
 
 :aspect:`Good to know`
-      - :ref:`"Start templates"<concepts-formmanager-starttemplate>`
-      - :ref:`Translate "Start template" options<concepts-formmanager-translation-starttemplate>`
+    -   :ref:`"Start templates"<concepts-formmanager-starttemplate>`
+    -   :ref:`Translate "Start template" options<concepts-formmanager-translation-starttemplate>`
 
 :aspect:`Description`
-      Array with numerical Keys. Configure the ``Start templates`` selectlist for this ``prototype`` within the ``form manager`` "Advanced settings" step.
+    Array with numerical Keys. Configure the ``Start templates`` selectlist for this ``prototype`` within the ``form manager`` "Advanced settings" step.
 
-      The "Create new form" wizard offers this list in its ``Predefined`` mode. Its ``Blank`` mode picks no entry at all: it sends no start template and the blank form shipped by EXT:form is used, so the order of this list does not decide what a blank form contains. Use the ``BeforeFormIsCreatedEvent`` to change what a newly created form starts from.
+    The "Create new form" wizard offers this list in its ``Predefined`` mode. Its ``Blank`` mode picks no entry at all: it sends no start template and the blank form shipped by EXT:form is used, so the order of this list does not decide what a blank form contains. Use the ``BeforeFormIsCreatedEvent`` to change what a newly created form starts from.
 
 
-.. _formmanager.selectableprototypesconfiguration.*.newformtemplates.*.templatepath:
+..  _formmanager.selectableprototypesconfiguration.*.newformtemplates.*.templatepath:
 
 selectablePrototypesConfiguration.*.newFormTemplates.*.templatePath
 -------------------------------------------------------------------
 
 :aspect:`Option path`
-      formManager.selectablePrototypesConfiguration.*.newFormTemplates.*.templatePath
+    formManager.selectablePrototypesConfiguration.*.newFormTemplates.*.templatePath
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Backend (form manager)
+    Backend (form manager)
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
 :aspect:`Good to know`
-      - :ref:`"Start templates"<concepts-formmanager-starttemplate>`
-      - :ref:`Translate "Start template" options<concepts-formmanager-translation-starttemplate>`
+    -   :ref:`"Start templates"<concepts-formmanager-starttemplate>`
+    -   :ref:`Translate "Start template" options<concepts-formmanager-translation-starttemplate>`
 
 :aspect:`Description`
-      The filesystem path to the `Start template` YAML file.
+    The filesystem path to the `Start template` YAML file.
 
 
-.. _formmanager.selectableprototypesconfiguration.*.newformtemplates.*.label:
+..  _formmanager.selectableprototypesconfiguration.*.newformtemplates.*.label:
 
 selectablePrototypesConfiguration.*.newFormTemplates.*.label
 ------------------------------------------------------------
 
 :aspect:`Option path`
-      formManager.selectablePrototypesConfiguration.*.newFormTemplates.*.label
+    formManager.selectablePrototypesConfiguration.*.newFormTemplates.*.label
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Backend (form manager)
+    Backend (form manager)
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
 :aspect:`Good to know`
-      - :ref:`"Start templates"<concepts-formmanager-starttemplate>`
-      - :ref:`Translate "Start template" options<concepts-formmanager-translation-starttemplate>`
+    -   :ref:`"Start templates"<concepts-formmanager-starttemplate>`
+    -   :ref:`Translate "Start template" options<concepts-formmanager-translation-starttemplate>`
 
 :aspect:`Description`
-      The ``Start template`` selectlist label for this ``Start template`` within the ``form manager`` "Advanced settings" step.
+    The ``Start template`` selectlist label for this ``Start template`` within the ``form manager`` "Advanced settings" step.
 
 
-.. _formmanager.controller:
+..  _formmanager.controller:
 
 controller
 ----------
 
 :aspect:`Option path`
-      formManager.controller
+    formManager.controller
 
 :aspect:`Data type`
-      array
+    array
 
 :aspect:`Needed by`
-      Backend (form manager)
+    Backend (form manager)
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
 :aspect:`Default value`
-      .. code-block:: yaml
-         :linenos:
+    ..  code-block:: yaml
+        :linenos:
 
-         controller:
-           deleteAction:
-             errorTitle: formManagerController.deleteAction.error.title
-             errorMessage: formManagerController.deleteAction.error.body
+        controller:
+          deleteAction:
+            errorTitle: formManagerController.deleteAction.error.title
+            errorMessage: formManagerController.deleteAction.error.body
 
 :aspect:`Description`
-      Internal setting. Configure the ``form manager`` flash message texts.
+    Internal setting. Configure the ``form manager`` flash message texts.
 
 
-.. _formmanager.controller.deleteaction.errortitle:
+..  _formmanager.controller.deleteaction.errortitle:
 
 controller.deleteAction.errorTitle
 ----------------------------------
 
 :aspect:`Option path`
-      formManager.controller.deleteAction.errorTitle
+    formManager.controller.deleteAction.errorTitle
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Backend (form manager)
+    Backend (form manager)
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
 :aspect:`Default value`
-      .. code-block:: yaml
-         :linenos:
-         :emphasize-lines: 3
+    ..  code-block:: yaml
+        :linenos:
+        :emphasize-lines: 3
 
-         controller:
-           deleteAction:
-             errorTitle: formManagerController.deleteAction.error.title
-             errorMessage: formManagerController.deleteAction.error.body
+        controller:
+          deleteAction:
+            errorTitle: formManagerController.deleteAction.error.title
+            errorMessage: formManagerController.deleteAction.error.body
 
 :aspect:`Description`
-      Internal setting. Configure the ``form manager`` flash message texts.
+    Internal setting. Configure the ``form manager`` flash message texts.
 
 
-.. _formmanager.controller.deleteaction.errormessage:
+..  _formmanager.controller.deleteaction.errormessage:
 
 controller.deleteAction.errorMessage
 ------------------------------------
 
 :aspect:`Option path`
-      formManager.controller.deleteAction.errorMessage
+    formManager.controller.deleteAction.errorMessage
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Backend (form manager)
+    Backend (form manager)
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
 :aspect:`Default value`
-      .. code-block:: yaml
-         :linenos:
-         :emphasize-lines: 4
+    ..  code-block:: yaml
+        :linenos:
+        :emphasize-lines: 4
 
-         controller:
-           deleteAction:
-             errorTitle: formManagerController.deleteAction.error.title
-             errorMessage: formManagerController.deleteAction.error.body
+        controller:
+          deleteAction:
+            errorTitle: formManagerController.deleteAction.error.title
+            errorMessage: formManagerController.deleteAction.error.body
 
 :aspect:`Description`
-      Internal setting. Configure the ``form manager`` flash message texts.
+    Internal setting. Configure the ``form manager`` flash message texts.

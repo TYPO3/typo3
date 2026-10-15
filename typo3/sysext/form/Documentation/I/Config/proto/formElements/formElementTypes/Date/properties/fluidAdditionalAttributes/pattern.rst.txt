@@ -1,41 +1,41 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 properties.fluidAdditionalAttributes.pattern
 --------------------------------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.formElementsDefinition.Date.properties.fluidAdditionalAttributes.pattern
+    prototypes.<prototypeIdentifier>.formElementsDefinition.Date.properties.fluidAdditionalAttributes.pattern
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Frontend/ Backend (form editor)
+    Frontend/ Backend (form editor)
 
 :aspect:`Overwritable within form definition`
-      Yes
+    Yes
 
 :aspect:`form editor can write this property into the form definition (for prototype 'standard')`
-      No
+    No
 
 :aspect:`Mandatory`
-      No
+    No
 
 :aspect:`Default value (for prototype 'standard')`
-      .. code-block:: yaml
-         :linenos:
-         :emphasize-lines: 8
+    ..  code-block:: yaml
+        :linenos:
+        :emphasize-lines: 8
 
-         Date:
-           properties:
-             containerClassAttribute: input
-             elementClassAttribute:
-             elementErrorClassAttribute: error
-             displayFormat: d.m.Y
-             fluidAdditionalAttributes:
-               pattern: '([0-9]{4})-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])'
+        Date:
+          properties:
+            containerClassAttribute: input
+            elementClassAttribute:
+            elementErrorClassAttribute: error
+            displayFormat: d.m.Y
+            fluidAdditionalAttributes:
+              pattern: '([0-9]{4})-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])'
 
-.. :aspect:`Good to know`
-      ToDo
+..  :aspect:`Good to know`
+    ToDo
 
 :aspect:`Description`
-      Pattern to be matched by the form control's value.
+    Pattern to be matched by the form control's value.

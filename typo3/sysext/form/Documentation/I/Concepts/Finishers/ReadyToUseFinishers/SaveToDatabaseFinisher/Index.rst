@@ -210,7 +210,7 @@ Example: adding uploads to ext:news (fal_related_files and fal_media):
 ..  _apireference-finisheroptions-savetodatabasefinisher:
 
 Using a SaveToDatabase finisher in PHP code
-================================================
+===========================================
 
 Developers can use the finisher key `SaveToDatabase` to create
 flash message finishers in their own classes:

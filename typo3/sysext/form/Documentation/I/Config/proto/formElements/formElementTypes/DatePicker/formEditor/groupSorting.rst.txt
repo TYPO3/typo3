@@ -1,30 +1,30 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 formEditor.groupSorting
 -----------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.formElementsDefinition.DatePicker.formEditor.groupSorting
+    prototypes.<prototypeIdentifier>.formElementsDefinition.DatePicker.formEditor.groupSorting
 
 :aspect:`Data type`
-      int
+    int
 
 :aspect:`Needed by`
-      Backend (form editor)
+    Backend (form editor)
 
 :aspect:`Mandatory`
-      Recommended
+    Recommended
 
 :aspect:`Default value (for prototype 'standard')`
-      .. code-block:: yaml
-         :linenos:
-         :emphasize-lines: 3
+    ..  code-block:: yaml
+        :linenos:
+        :emphasize-lines: 3
 
-         DatePicker:
-           formEditor:
-             groupSorting: 200
+        DatePicker:
+          formEditor:
+            groupSorting: 200
 
-.. :aspect:`Good to know`
-      ToDo
+..  :aspect:`Good to know`
+    ToDo
 
 :aspect:`Description`
-      The position within the ``formEditor.group`` for this form element.
+    The position within the ``formEditor.group`` for this form element.

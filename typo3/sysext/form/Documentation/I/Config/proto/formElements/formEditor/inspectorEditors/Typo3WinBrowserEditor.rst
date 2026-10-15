@@ -1,14 +1,14 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
 
-.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.typo3winbrowsereditor:
+..  _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.typo3winbrowsereditor:
 
 =======================
 [Typo3WinBrowserEditor]
 =======================
 
 
-.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.typo3winbrowsereditor-introduction:
+..  _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.typo3winbrowsereditor-introduction:
 
 Introduction
 ============
@@ -16,208 +16,208 @@ Introduction
 Shows a popup window to select a record (e.g. pages or tt_content records) as you know it from within the form engine.
 
 
-.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.typo3winbrowsereditor-properties:
+..  _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.typo3winbrowsereditor-properties:
 
 Properties
 ==========
 
-.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.templatename-typo3winbrowsereditor:
+..  _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.templatename-typo3winbrowsereditor:
 
 templateName
 ------------
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Backend (form editor)
+    Backend (form editor)
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
 :aspect:`Related options`
-      - :ref:`prototypes.prototypeIdentifier.formEditor.formEditorPartials <prototypes.prototypeIdentifier.formeditor.formeditorpartials>`
+    -   :ref:`prototypes.prototypeIdentifier.formEditor.formEditorPartials <prototypes.prototypeIdentifier.formeditor.formeditorpartials>`
 
 :aspect:`value`
-      Inspector-Typo3WinBrowserEditor
+    Inspector-Typo3WinBrowserEditor
 
 :aspect:`Good to know`
-      - :ref:`"Inspector"<concepts-formeditor-inspector>`
+    -   :ref:`"Inspector"<concepts-formeditor-inspector>`
 
 :aspect:`Description`
-      .. include:: properties/TemplateName.rst.txt
+    ..  include:: properties/TemplateName.rst.txt
 
 
-.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.identifier-typo3winbrowsereditor:
-.. include:: properties/Identifier.rst.txt
+..  _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.identifier-typo3winbrowsereditor:
+..  include:: properties/Identifier.rst.txt
 
 
-.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.label-typo3winbrowsereditor:
-.. include:: properties/Label.rst.txt
+..  _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.label-typo3winbrowsereditor:
+..  include:: properties/Label.rst.txt
 
 
-.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.propertypath-typo3winbrowsereditor:
-.. include:: properties/PropertyPath.rst.txt
+..  _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.propertypath-typo3winbrowsereditor:
+..  include:: properties/PropertyPath.rst.txt
 
 
-.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.buttonlabel-typo3winbrowsereditor:
+..  _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.buttonlabel-typo3winbrowsereditor:
 
 buttonLabel
 -----------
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Backend (form editor)
+    Backend (form editor)
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
-.. :aspect:`Related options`
-      @ToDo
+..  :aspect:`Related options`
+    @ToDo
 
 :aspect:`Good to know`
-      - :ref:`"Inspector"<concepts-formeditor-inspector>`
-      - :ref:`"Translate form editor settings"<concepts-formeditor-translation-formeditor>`
+    -   :ref:`"Inspector"<concepts-formeditor-inspector>`
+    -   :ref:`"Translate form editor settings"<concepts-formeditor-translation-formeditor>`
 
 :aspect:`Description`
-      The label for the button which opens the popup window.
+    The label for the button which opens the popup window.
 
 
-.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.browsabletype-typo3winbrowsereditor:
+..  _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.browsabletype-typo3winbrowsereditor:
 
 browsableType
 -------------
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Backend (form editor)
+    Backend (form editor)
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
-.. :aspect:`Related options`
-      @ToDo
+..  :aspect:`Related options`
+    @ToDo
 
 :aspect:`Good to know`
-      - :ref:`"Inspector"<concepts-formeditor-inspector>`
+    -   :ref:`"Inspector"<concepts-formeditor-inspector>`
 
 :aspect:`Description`
-      The allowed selectable record types e.g 'pages' or 'tt_content'.
+    The allowed selectable record types e.g 'pages' or 'tt_content'.
 
 
-.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.iconidentifier-typo3winbrowsereditor:
+..  _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.iconidentifier-typo3winbrowsereditor:
 
 iconIdentifier
 --------------
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Backend (form editor)
+    Backend (form editor)
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
-.. :aspect:`Related options`
-      @ToDo
+..  :aspect:`Related options`
+    @ToDo
 
 :aspect:`Good to know`
-      - :ref:`"Inspector"<concepts-formeditor-inspector>`
+    -   :ref:`"Inspector"<concepts-formeditor-inspector>`
 
 :aspect:`Description`
-      The icon to use for the button which triggers the record browser.
+    The icon to use for the button which triggers the record browser.
 
 
-.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.propertyvalidators-typo3winbrowsereditor:
+..  _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.propertyvalidators-typo3winbrowsereditor:
 
 propertyValidators
 ------------------
 
 :aspect:`Data type`
-      array
+    array
 
 :aspect:`Needed by`
-      Backend (form editor)
+    Backend (form editor)
 
 :aspect:`Mandatory`
-      No
+    No
 
 :aspect:`Related options`
-      - :ref:`"formElementPropertyValidatorsDefinition"<prototypes.prototypeIdentifier.formeditor.formelementpropertyvalidatorsdefinition>`
+    -   :ref:`"formElementPropertyValidatorsDefinition"<prototypes.prototypeIdentifier.formeditor.formelementpropertyvalidatorsdefinition>`
 
 :aspect:`Good to know`
-      - :ref:`"Inspector"<concepts-formeditor-inspector>`
+    -   :ref:`"Inspector"<concepts-formeditor-inspector>`
 
 :aspect:`Description`
-      This ``inspector editors`` is able to validate it's value through JavaScript methods.
-      This JavaScript validators can be registered through ``getFormEditorApp().addPropertyValidationValidator()``.
-      The first method argument is the identifier for such a validator.
-      Every array value within ``propertyValidators`` must be equal to such an identifier.
+    This ``inspector editors`` is able to validate it's value through JavaScript methods.
+    This JavaScript validators can be registered through ``getFormEditorApp().addPropertyValidationValidator()``.
+    The first method argument is the identifier for such a validator.
+    Every array value within ``propertyValidators`` must be equal to such an identifier.
 
-      For example:
+    For example:
 
-     .. code-block:: yaml
+    ..  code-block:: yaml
 
-         propertyValidators:
-           10: 'Integer'
-           20: 'FormElementIdentifierWithinCurlyBracesExclusive'
+        propertyValidators:
+          10: 'Integer'
+          20: 'FormElementIdentifierWithinCurlyBracesExclusive'
 
 
-.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.propertyvalidatorsmode-typo3winbrowsereditor:
+..  _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.propertyvalidatorsmode-typo3winbrowsereditor:
 
 propertyValidatorsMode
 ----------------------
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Backend (form editor)
+    Backend (form editor)
 
 :aspect:`Mandatory`
-      No
+    No
 
-.. :aspect:`Related options`
-      @ToDo
+..  :aspect:`Related options`
+    @ToDo
 
 :aspect:`Default value`
-      AND
+    AND
 
 :aspect:`possible values`
-      OR/ AND
+    OR/ AND
 
 :aspect:`Good to know`
-      - :ref:`"Inspector"<concepts-formeditor-inspector>`
+    -   :ref:`"Inspector"<concepts-formeditor-inspector>`
 
 :aspect:`Description`
-      If set to 'OR' then at least one validator must be valid to accept the ``inspector editor`` value. If set to 'AND' then all validators must be valid.
+    If set to 'OR' then at least one validator must be valid to accept the ``inspector editor`` value. If set to 'AND' then all validators must be valid.
 
 
-.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.description-typo3winbrowsereditor:
+..  _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.description-typo3winbrowsereditor:
 
 description
---------------------
+-----------
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Backend (form editor)
+    Backend (form editor)
 
 :aspect:`Mandatory`
-      No
+    No
 
-.. :aspect:`Related options`
-      @ToDo
+..  :aspect:`Related options`
+    @ToDo
 
 :aspect:`Good to know`
-      - :ref:`"Inspector"<concepts-formeditor-inspector>`
-      - :ref:`"Translate form editor settings"<concepts-formeditor-translation-formeditor>`
+    -   :ref:`"Inspector"<concepts-formeditor-inspector>`
+    -   :ref:`"Translate form editor settings"<concepts-formeditor-translation-formeditor>`
 
 :aspect:`Description`
-      A text which is shown at the bottom of the ``inspector editor``.
+    A text which is shown at the bottom of the ``inspector editor``.

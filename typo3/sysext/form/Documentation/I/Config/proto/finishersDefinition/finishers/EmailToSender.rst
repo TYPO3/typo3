@@ -1,80 +1,80 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
 
-.. _prototypes.prototypeIdentifier.finishersdefinition.emailtosender:
+..  _prototypes.prototypeIdentifier.finishersdefinition.emailtosender:
 
-=================
+===============
 [EmailToSender]
-=================
+===============
 
-.. _prototypes.prototypeIdentifier.finishersdefinitionemailtosender-properties:
+..  _prototypes.prototypeIdentifier.finishersdefinitionemailtosender-properties:
 
 Properties
 ==========
 
 
-.. _prototypes.prototypeIdentifier.finishersdefinition.emailtosender.implementationclassname:
+..  _prototypes.prototypeIdentifier.finishersdefinition.emailtosender.implementationclassname:
 
 implementationClassName
 -----------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.finishersDefinition.EmailToSender.implementationClassName
+    prototypes.<prototypeIdentifier>.finishersDefinition.EmailToSender.implementationClassName
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Frontend
+    Frontend
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
 :aspect:`Default value`
-      .. code-block:: yaml
-         :linenos:
-         :emphasize-lines: 2
+    ..  code-block:: yaml
+        :linenos:
+        :emphasize-lines: 2
 
-         EmailToSender:
-           implementationClassName: TYPO3\CMS\Form\Domain\Finishers\EmailFinisher
+        EmailToSender:
+          implementationClassName: TYPO3\CMS\Form\Domain\Finishers\EmailFinisher
 
 :aspect:`Good to know`
-      - :ref:`"Custom finisher implementations"<concepts-finishers-customfinisherimplementations>`
+    -   :ref:`"Custom finisher implementations"<concepts-finishers-customfinisherimplementations>`
 
 :aspect:`Description`
-      .. include:: ../properties/implementationClassName.rst.txt
+    ..  include:: ../properties/implementationClassName.rst.txt
 
 
-.. _prototypes.prototypeIdentifier.finishersdefinition.emailtosender.options.subject:
+..  _prototypes.prototypeIdentifier.finishersdefinition.emailtosender.options.subject:
 
 options.subject
 ---------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.finishersDefinition.EmailToSender.options.subject
+    prototypes.<prototypeIdentifier>.finishersDefinition.EmailToSender.options.subject
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Frontend
+    Frontend
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
 :aspect:`Default value`
-      undefined
+    undefined
 
 :aspect:`Good to know`
-      - :ref:`"Email finisher"<apireference-finisheroptions-emailfinisher>`
-      - :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
-      - :ref:`"Translate finisher options"<concepts-frontendrendering-translation-finishers>`
+    -   :ref:`"Email finisher"<apireference-finisheroptions-emailfinisher>`
+    -   :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
+    -   :ref:`"Translate finisher options"<concepts-frontendrendering-translation-finishers>`
 
 :aspect:`Description`
-      Subject of the email.
+    Subject of the email.
 
 
-.. _prototypes.prototypeIdentifier.finishersdefinition.emailtosender.options.recipients:
+..  _prototypes.prototypeIdentifier.finishersdefinition.emailtosender.options.recipients:
 
 options.recipients
 ------------------
@@ -95,8 +95,8 @@ options.recipients
     undefined
 
 :aspect:`Good to know`
-    - :ref:`"Email finisher"<apireference-finisheroptions-emailfinisher>`
-    - :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
+    -   :ref:`"Email finisher"<apireference-finisheroptions-emailfinisher>`
+    -   :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
 
 :aspect:`Description`
     Email addresses and names of the recipients (To).
@@ -107,706 +107,706 @@ options.recipients
     This option must contain a YAML hash with email addresses as keys and
     recipient names as values:
 
-    .. code-block:: yaml
+    ..  code-block:: yaml
 
-       recipients:
-         first@example.org: First Recipient
-         second@example.org: Second Recipient
+        recipients:
+          first@example.org: First Recipient
+          second@example.org: Second Recipient
 
-.. _prototypes.prototypeIdentifier.finishersdefinition.emailtosender.options.senderaddress:
+..  _prototypes.prototypeIdentifier.finishersdefinition.emailtosender.options.senderaddress:
 
 options.senderAddress
 ---------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.finishersDefinition.EmailToSender.options.senderAddress
+    prototypes.<prototypeIdentifier>.finishersDefinition.EmailToSender.options.senderAddress
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Frontend
+    Frontend
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
 :aspect:`Default value`
-      undefined
+    undefined
 
 :aspect:`Good to know`
-      - :ref:`"Email finisher"<apireference-finisheroptions-emailfinisher>`
-      - :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
+    -   :ref:`"Email finisher"<apireference-finisheroptions-emailfinisher>`
+    -   :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
 
 :aspect:`Description`
-      Email address of the sender/ visitor (From).
+    Email address of the sender/ visitor (From).
 
 
-.. _prototypes.prototypeIdentifier.finishersdefinition.emailtosender.options.sendername:
+..  _prototypes.prototypeIdentifier.finishersdefinition.emailtosender.options.sendername:
 
 options.senderName
 ------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.finishersDefinition.EmailToSender.options.senderName
+    prototypes.<prototypeIdentifier>.finishersDefinition.EmailToSender.options.senderName
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Frontend
+    Frontend
 
 :aspect:`Mandatory`
-      No
+    No
 
 :aspect:`Default value`
-      empty string
+    empty string
 
 :aspect:`Good to know`
-      - :ref:`"Email finisher"<apireference-finisheroptions-emailfinisher>`
-      - :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
+    -   :ref:`"Email finisher"<apireference-finisheroptions-emailfinisher>`
+    -   :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
 
 :aspect:`Description`
-      Human-readable name of the sender.
+    Human-readable name of the sender.
 
 
-.. _prototypes.prototypeIdentifier.finishersdefinition.emailtosender.options.replytorecipients:
+..  _prototypes.prototypeIdentifier.finishersdefinition.emailtosender.options.replytorecipients:
 
 options.replyToRecipients
 -------------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.finishersDefinition.EmailToSender.options.replyToRecipients
+    prototypes.<prototypeIdentifier>.finishersDefinition.EmailToSender.options.replyToRecipients
 
 :aspect:`Data type`
-      array
+    array
 
 :aspect:`Needed by`
-      Frontend
+    Frontend
 
 :aspect:`Mandatory`
-      No
+    No
 
 :aspect:`Default value`
-      undefined
+    undefined
 
 :aspect:`Good to know`
-      - :ref:`"Email finisher"<apireference-finisheroptions-emailfinisher>`
-      - :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
+    -   :ref:`"Email finisher"<apireference-finisheroptions-emailfinisher>`
+    -   :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
 
 :aspect:`Description`
-      Email addresses of to be used as reply-to emails.
+    Email addresses of to be used as reply-to emails.
 
 
-.. _prototypes.prototypeIdentifier.finishersdefinition.emailtosender.options.carboncopyrecipients:
+..  _prototypes.prototypeIdentifier.finishersdefinition.emailtosender.options.carboncopyrecipients:
 
 options.carbonCopyRecipients
 ----------------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.finishersDefinition.EmailToSender.options.carbonCopyRecipients
+    prototypes.<prototypeIdentifier>.finishersDefinition.EmailToSender.options.carbonCopyRecipients
 
 :aspect:`Data type`
-      array
+    array
 
 :aspect:`Needed by`
-      Frontend
+    Frontend
 
 :aspect:`Mandatory`
-      No
+    No
 
 :aspect:`Default value`
-      undefined
+    undefined
 
 :aspect:`Good to know`
-      - :ref:`"Email finisher"<apireference-finisheroptions-emailfinisher>`
-      - :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
+    -   :ref:`"Email finisher"<apireference-finisheroptions-emailfinisher>`
+    -   :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
 
 :aspect:`Description`
-      Email addresses of the copy recipient.
+    Email addresses of the copy recipient.
 
 
-.. _prototypes.prototypeIdentifier.finishersdefinition.emailtosender.options.blindcarboncopyrecipients:
+..  _prototypes.prototypeIdentifier.finishersdefinition.emailtosender.options.blindcarboncopyrecipients:
 
 options.blindCarbonCopyRecipients
 ---------------------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.finishersDefinition.EmailToSender.options.blindCarbonCopyRecipients
+    prototypes.<prototypeIdentifier>.finishersDefinition.EmailToSender.options.blindCarbonCopyRecipients
 
 :aspect:`Data type`
-      array
+    array
 
 :aspect:`Needed by`
-      Frontend
+    Frontend
 
 :aspect:`Mandatory`
-      No
+    No
 
 :aspect:`Default value`
-      undefined
+    undefined
 
 :aspect:`Good to know`
-      - :ref:`"Email finisher"<apireference-finisheroptions-emailfinisher>`
-      - :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
+    -   :ref:`"Email finisher"<apireference-finisheroptions-emailfinisher>`
+    -   :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
 
 :aspect:`Description`
-      Email address of the blind copy recipient.
+    Email address of the blind copy recipient.
 
 
-.. _prototypes.prototypeIdentifier.finishersdefinition.emailtosender.options.addhtmlpart:
+..  _prototypes.prototypeIdentifier.finishersdefinition.emailtosender.options.addhtmlpart:
 
 options.addHtmlPart
 -------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.finishersDefinition.EmailToSender.options.addHtmlPart
+    prototypes.<prototypeIdentifier>.finishersDefinition.EmailToSender.options.addHtmlPart
 
 :aspect:`Data type`
-      bool
+    bool
 
 :aspect:`Needed by`
-      Frontend
+    Frontend
 
 :aspect:`Mandatory`
-      No
+    No
 
 :aspect:`Default value`
-      true
+    true
 
 :aspect:`Good to know`
-      - :ref:`"Email finisher"<apireference-finisheroptions-emailfinisher>`
-      - :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
+    -   :ref:`"Email finisher"<apireference-finisheroptions-emailfinisher>`
+    -   :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
 
 :aspect:`Description`
-      If set, mails will contain a plaintext and HTML part, otherwise only a
-      plaintext part. That way, it can be used to disable HTML and enforce
-      plaintext-only mails.
+    If set, mails will contain a plaintext and HTML part, otherwise only a
+    plaintext part. That way, it can be used to disable HTML and enforce
+    plaintext-only mails.
 
 
-.. _prototypes.prototypeIdentifier.finishersdefinition.emailtosender.options.attachuploads:
+..  _prototypes.prototypeIdentifier.finishersdefinition.emailtosender.options.attachuploads:
 
 options.attachUploads
 ---------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.finishersDefinition.EmailToSender.options.attachUploads
+    prototypes.<prototypeIdentifier>.finishersDefinition.EmailToSender.options.attachUploads
 
 :aspect:`Data type`
-      bool
+    bool
 
 :aspect:`Needed by`
-      Frontend
+    Frontend
 
 :aspect:`Mandatory`
-      No
+    No
 
 :aspect:`Default value`
-      true
+    true
 
 :aspect:`Good to know`
-      - :ref:`"Email finisher"<apireference-finisheroptions-emailfinisher>`
-      - :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
+    -   :ref:`"Email finisher"<apireference-finisheroptions-emailfinisher>`
+    -   :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
 
 :aspect:`Description`
-      If set, all uploaded items are attached to the email.
+    If set, all uploaded items are attached to the email.
 
 
-.. _prototypes.prototypeIdentifier.finishersdefinition.emailtosender.options.title:
+..  _prototypes.prototypeIdentifier.finishersdefinition.emailtosender.options.title:
 
 options.title
 -------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.finishersDefinition.EmailToSender.options.title
+    prototypes.<prototypeIdentifier>.finishersDefinition.EmailToSender.options.title
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Frontend
+    Frontend
 
 :aspect:`Mandatory`
-      No
+    No
 
 :aspect:`Default value`
-      undefined
+    undefined
 
 :aspect:`Good to know`
-      - :ref:`"Email finisher"<apireference-finisheroptions-emailfinisher>`
-      - :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
+    -   :ref:`"Email finisher"<apireference-finisheroptions-emailfinisher>`
+    -   :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
 
 :aspect:`Description`
-      The title, being shown in the email. The templates are based onFluidEmail.
-      The template renders the title field in the header section right above the
-      email body. Do not confuse this field with the subject of the email.
+    The title, being shown in the email. The templates are based onFluidEmail.
+    The template renders the title field in the header section right above the
+    email body. Do not confuse this field with the subject of the email.
 
 
-.. _prototypes.prototypeIdentifier.finishersdefinition.emailtosender.options.translation.language:
+..  _prototypes.prototypeIdentifier.finishersdefinition.emailtosender.options.translation.language:
 
 options.translation.language
 ----------------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.finishersDefinition.EmailToSender.options.translation.language
+    prototypes.<prototypeIdentifier>.finishersDefinition.EmailToSender.options.translation.language
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Frontend
+    Frontend
 
 :aspect:`Mandatory`
-      No
+    No
 
 :aspect:`Default value`
-      undefined
+    undefined
 
 :aspect:`Good to know`
-      - :ref:`"Email finisher"<apireference-finisheroptions-emailfinisher>`
-      - :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
-      - :ref:`"Translate finisher options"<concepts-frontendrendering-translation-finishers>`
+    -   :ref:`"Email finisher"<apireference-finisheroptions-emailfinisher>`
+    -   :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
+    -   :ref:`"Translate finisher options"<concepts-frontendrendering-translation-finishers>`
 
 :aspect:`Description`
-      If not set, the finisher options are translated depending on the current frontend language (if translations exists).
-      This option allows you to force translations for a given language isocode, e.g 'da' or 'de'.
-      Read :ref:`Translate finisher options<concepts-frontendrendering-translation-finishers>` for more informations.
+    If not set, the finisher options are translated depending on the current frontend language (if translations exists).
+    This option allows you to force translations for a given language isocode, e.g 'da' or 'de'.
+    Read :ref:`Translate finisher options<concepts-frontendrendering-translation-finishers>` for more informations.
 
 
-.. _prototypes.prototypeIdentifier.finishersdefinition.emailtosender.options.translation.propertiesExcludedFromTranslation:
+..  _prototypes.prototypeIdentifier.finishersdefinition.emailtosender.options.translation.propertiesExcludedFromTranslation:
 
 options.translation.propertiesExcludedFromTranslation
 -----------------------------------------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.finishersDefinition.EmailToSender.options.translation.propertiesExcludedFromTranslation
+    prototypes.<prototypeIdentifier>.finishersDefinition.EmailToSender.options.translation.propertiesExcludedFromTranslation
 
 :aspect:`Data type`
-      array
+    array
 
 :aspect:`Needed by`
-      Frontend
+    Frontend
 
 :aspect:`Mandatory`
-      No
+    No
 
 :aspect:`Default value`
-      undefined
+    undefined
 
 :aspect:`Good to know`
-      - :ref:`"Email finisher"<apireference-finisheroptions-emailfinisher>`
-      - :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
-      - :ref:`"Translate finisher options"<concepts-frontendrendering-translation-finishers>`
+    -   :ref:`"Email finisher"<apireference-finisheroptions-emailfinisher>`
+    -   :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
+    -   :ref:`"Translate finisher options"<concepts-frontendrendering-translation-finishers>`
 
 :aspect:`Description`
-      Localization from translation files will be skipped for all specified finisher options.
+    Localization from translation files will be skipped for all specified finisher options.
 
 
-.. _prototypes.prototypeIdentifier.finishersdefinition.emailtosender.options.translation.translationfiles:
+..  _prototypes.prototypeIdentifier.finishersdefinition.emailtosender.options.translation.translationfiles:
 
 options.translation.translationFiles
 ------------------------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.finishersDefinition.EmailToSender.options.translation.translationFiles
+    prototypes.<prototypeIdentifier>.finishersDefinition.EmailToSender.options.translation.translationFiles
 
 :aspect:`Data type`
-      array
+    array
 
 :aspect:`Needed by`
-      Frontend
+    Frontend
 
 :aspect:`Mandatory`
-      No
+    No
 
 :aspect:`Default value`
-      undefined
+    undefined
 
 :aspect:`Good to know`
-      - :ref:`"Email finisher"<apireference-finisheroptions-emailfinisher>`
-      - :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
-      - :ref:`"Translate finisher options"<concepts-frontendrendering-translation-finishers>`
+    -   :ref:`"Email finisher"<apireference-finisheroptions-emailfinisher>`
+    -   :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
+    -   :ref:`"Translate finisher options"<concepts-frontendrendering-translation-finishers>`
 
 :aspect:`Description`
-      If set, this translation file(s) will be used for finisher option translations.
-      If not set, the translation file(s) from the 'Form' element will be used.
-      Read :ref:`Translate finisher options<concepts-frontendrendering-translation-finishers>` for more informations.
+    If set, this translation file(s) will be used for finisher option translations.
+    If not set, the translation file(s) from the 'Form' element will be used.
+    Read :ref:`Translate finisher options<concepts-frontendrendering-translation-finishers>` for more informations.
 
 
-.. _prototypes.prototypeIdentifier.finishersdefinition.emailtosender.options.partialrootpaths:
+..  _prototypes.prototypeIdentifier.finishersdefinition.emailtosender.options.partialrootpaths:
 
 options.partialRootPaths
 ------------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.finishersDefinition.EmailToSender.options.partialRootPaths
+    prototypes.<prototypeIdentifier>.finishersDefinition.EmailToSender.options.partialRootPaths
 
 :aspect:`Data type`
-      array
+    array
 
 :aspect:`Needed by`
-      Frontend
+    Frontend
 
 :aspect:`Mandatory`
-      No
+    No
 
 :aspect:`Default value`
-      undefined
+    undefined
 
 :aspect:`Good to know`
-      - :ref:`"Email finisher"<apireference-finisheroptions-emailfinisher>`
+    -   :ref:`"Email finisher"<apireference-finisheroptions-emailfinisher>`
 
 :aspect:`Description`
-      Fluid layout paths.
+    Fluid layout paths.
 
 
-.. _prototypes.prototypeIdentifier.finishersdefinition.emailtosender.options.layoutrootpaths:
+..  _prototypes.prototypeIdentifier.finishersdefinition.emailtosender.options.layoutrootpaths:
 
 options.layoutRootPaths
 -----------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.finishersDefinition.EmailToSender.options.layoutRootPaths
+    prototypes.<prototypeIdentifier>.finishersDefinition.EmailToSender.options.layoutRootPaths
 
 :aspect:`Data type`
-      array
+    array
 
 :aspect:`Needed by`
-      Frontend
+    Frontend
 
 :aspect:`Mandatory`
-      No
+    No
 
 :aspect:`Default value`
-      undefined
+    undefined
 
 :aspect:`Good to know`
-      - :ref:`"Email finisher"<apireference-finisheroptions-emailfinisher>`
+    -   :ref:`"Email finisher"<apireference-finisheroptions-emailfinisher>`
 
 :aspect:`Description`
-      Fluid partial paths.
+    Fluid partial paths.
 
 
-.. _prototypes.prototypeIdentifier.finishersdefinition.emailtosender.options.variables:
+..  _prototypes.prototypeIdentifier.finishersdefinition.emailtosender.options.variables:
 
 options.variables
 -----------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.finishersDefinition.EmailToSender.options.variables
+    prototypes.<prototypeIdentifier>.finishersDefinition.EmailToSender.options.variables
 
 :aspect:`Data type`
-      array
+    array
 
 :aspect:`Needed by`
-      Frontend
+    Frontend
 
 :aspect:`Mandatory`
-      No
+    No
 
 :aspect:`Default value`
-      undefined
+    undefined
 
 :aspect:`Good to know`
-      - :ref:`"Email finisher"<apireference-finisheroptions-emailfinisher>`
+    -   :ref:`"Email finisher"<apireference-finisheroptions-emailfinisher>`
 
 :aspect:`Description`
-      Associative array of variables which are available inside the Fluid template.
+    Associative array of variables which are available inside the Fluid template.
 
 
-.. _prototypes.prototypeIdentifier.finishersdefinition.emailtosender.formeditor.iconidentifier:
+..  _prototypes.prototypeIdentifier.finishersdefinition.emailtosender.formeditor.iconidentifier:
 
 formeditor.iconIdentifier
 -------------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.finishersDefinition.EmailToSender.formEditor.iconIdentifier
+    prototypes.<prototypeIdentifier>.finishersDefinition.EmailToSender.formEditor.iconIdentifier
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Backend (form editor)
+    Backend (form editor)
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
 :aspect:`Default value`
-      .. code-block:: yaml
-         :linenos:
-         :emphasize-lines: 3
+    ..  code-block:: yaml
+        :linenos:
+        :emphasize-lines: 3
 
-         EmailToSender:
-           formEditor:
-             iconIdentifier: form-finisher
-             label: formEditor.elements.Form.finisher.EmailToSender.editor.header.label
+        EmailToSender:
+          formEditor:
+            iconIdentifier: form-finisher
+            label: formEditor.elements.Form.finisher.EmailToSender.editor.header.label
 
-.. :aspect:`Good to know`
-      ToDo
+..  :aspect:`Good to know`
+    ToDo
 
 :aspect:`Description`
-      .. include:: ../properties/iconIdentifier.rst.txt
+    ..  include:: ../properties/iconIdentifier.rst.txt
 
 
-.. _prototypes.prototypeIdentifier.finishersdefinition.emailtosender.formeditor.label:
+..  _prototypes.prototypeIdentifier.finishersdefinition.emailtosender.formeditor.label:
 
 formeditor.label
 ----------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.finishersDefinition.EmailToSender.formEditor.label
+    prototypes.<prototypeIdentifier>.finishersDefinition.EmailToSender.formEditor.label
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Backend (form editor)
+    Backend (form editor)
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
 :aspect:`Default value`
-      .. code-block:: yaml
-         :linenos:
-         :emphasize-lines: 4
+    ..  code-block:: yaml
+        :linenos:
+        :emphasize-lines: 4
 
-         EmailToSender:
-           formEditor:
-             iconIdentifier: form-finisher
-             label: formEditor.elements.Form.finisher.EmailToSender.editor.header.label
+        EmailToSender:
+          formEditor:
+            iconIdentifier: form-finisher
+            label: formEditor.elements.Form.finisher.EmailToSender.editor.header.label
 
 :aspect:`Good to know`
-      - :ref:`"Translate form editor settings"<concepts-formeditor-translation-formeditor>`
+    -   :ref:`"Translate form editor settings"<concepts-formeditor-translation-formeditor>`
 
 :aspect:`Description`
-      .. include:: ../properties/label.rst.txt
+    ..  include:: ../properties/label.rst.txt
 
 
-.. _prototypes.prototypeIdentifier.finishersdefinition.emailtosender.formeditor.predefineddefaults:
+..  _prototypes.prototypeIdentifier.finishersdefinition.emailtosender.formeditor.predefineddefaults:
 
 formeditor.predefinedDefaults
 -----------------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.finishersDefinition.EmailToSender.formEditor.predefinedDefaults
+    prototypes.<prototypeIdentifier>.finishersDefinition.EmailToSender.formEditor.predefinedDefaults
 
 :aspect:`Data type`
-      array
+    array
 
 :aspect:`Needed by`
-      Backend (form editor)
+    Backend (form editor)
 
 :aspect:`Mandatory`
-      No
+    No
 
 :aspect:`Default value`
-      .. code-block:: yaml
-         :linenos:
-         :emphasize-lines: 5-
+    ..  code-block:: yaml
+        :linenos:
+        :emphasize-lines: 5-
 
-         EmailToSender:
-           formEditor:
-             iconIdentifier: form-finisher
-             label: formEditor.elements.Form.finisher.EmailToSender.editor.header.label
-             predefinedDefaults:
-               options:
-                 subject: ''
-                 recipients: {  }
-                 senderAddress: ''
-                 senderName: ''
-                 replyToRecipients: {  }
-                 carbonCopyRecipients: {  }
-                 blindCarbonCopyRecipients: {  }
-                 addHtmlPart: true
-                 attachUploads: true
-                 translation:
-                   language: 'default'
-                 title: ''
+        EmailToSender:
+          formEditor:
+            iconIdentifier: form-finisher
+            label: formEditor.elements.Form.finisher.EmailToSender.editor.header.label
+            predefinedDefaults:
+              options:
+                subject: ''
+                recipients: {  }
+                senderAddress: ''
+                senderName: ''
+                replyToRecipients: {  }
+                carbonCopyRecipients: {  }
+                blindCarbonCopyRecipients: {  }
+                addHtmlPart: true
+                attachUploads: true
+                translation:
+                  language: 'default'
+                title: ''
 
-.. :aspect:`Good to know`
-      ToDo
+..  :aspect:`Good to know`
+    ToDo
 
 :aspect:`Description`
-      .. include:: ../properties/predefinedDefaults.rst.txt
+    ..  include:: ../properties/predefinedDefaults.rst.txt
 
 
-.. _prototypes.prototypeIdentifier.finishersdefinition.emailtosender.formengine.label:
+..  _prototypes.prototypeIdentifier.finishersdefinition.emailtosender.formengine.label:
 
 FormEngine.label
 ----------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.finishersDefinition.EmailToSender.FormEngine.label
+    prototypes.<prototypeIdentifier>.finishersDefinition.EmailToSender.FormEngine.label
 
 :aspect:`Data type`
-      array
+    array
 
 :aspect:`Needed by`
-      Backend (plugin)
+    Backend (plugin)
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
 :aspect:`Default value`
-      .. code-block:: yaml
-         :linenos:
-         :emphasize-lines: 3
+    ..  code-block:: yaml
+        :linenos:
+        :emphasize-lines: 3
 
-         EmailToSender:
-           FormEngine:
-             label: tt_content.finishersDefinition.EmailToSender.label
+        EmailToSender:
+          FormEngine:
+            label: tt_content.finishersDefinition.EmailToSender.label
 
 :aspect:`Good to know`
-      - :ref:`"Translate form plugin settings"<concepts-formplugin-translation-formengine>`
+    -   :ref:`"Translate form plugin settings"<concepts-formplugin-translation-formengine>`
 
 :aspect:`Description`
-      .. include:: ../properties/formEngine/label.rst.txt
+    ..  include:: ../properties/formEngine/label.rst.txt
 
 
-.. _prototypes.prototypeIdentifier.finishersdefinition.emailtosender.formengine.elements:
+..  _prototypes.prototypeIdentifier.finishersdefinition.emailtosender.formengine.elements:
 
 FormEngine.elements
 -------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.finishersDefinition.EmailToSender.FormEngine.elements
+    prototypes.<prototypeIdentifier>.finishersDefinition.EmailToSender.FormEngine.elements
 
 :aspect:`Data type`
-      array
+    array
 
 :aspect:`Needed by`
-      Backend (plugin)
+    Backend (plugin)
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
 :aspect:`Default value`
-      .. code-block:: yaml
-         :linenos:
-         :emphasize-lines: 4-
+    ..  code-block:: yaml
+        :linenos:
+        :emphasize-lines: 4-
 
-         EmailToSender:
-           FormEngine:
-             label: tt_content.finishersDefinition.EmailToSender.label
-             elements:
-               subject:
-                 label: tt_content.finishersDefinition.EmailToSender.subject.label
-                 config:
-                   type: input
-                   required: true
-               recipients:
-                 title: tt_content.finishersDefinition.EmailToSender.recipients.label
-                 type: array
-                 section: true
-                 sectionItemKey: email
-                 sectionItemValue: name
-                 el:
-                   _arrayContainer:
-                     type: array
-                     title: tt_content.finishersDefinition.EmailToSender.recipients.item.label
-                     el:
-                       email:
-                         label: tt_content.finishersDefinition.EmailToSender.recipients.email.label
-                         config:
-                           type: email
-                           required: true
-                       name:
-                         label: tt_content.finishersDefinition.EmailToSender.recipients.name.label
-                         config:
-                           type: input
-               senderAddress:
-                 label: tt_content.finishersDefinition.EmailToSender.senderAddress.label
-                 config:
-                   type: input
-                   required: true
-               senderName:
-                 label: tt_content.finishersDefinition.EmailToSender.senderName.label
-                 config:
-                   type: input
-               replyToRecipients:
-                 title: tt_content.finishersDefinition.EmailToSender.replyToRecipients.label
-                 type: array
-                 section: true
-                 sectionItemKey: email
-                 sectionItemValue: name
-                 el:
-                   _arrayContainer:
-                     type: array
-                     title: tt_content.finishersDefinition.EmailToSender.replyToRecipients.item.label
-                     el:
-                       email:
-                         label: tt_content.finishersDefinition.EmailToSender.recipients.email.label
-                         config:
-                           type: email
-                           required: true
-                       name:
-                         label: tt_content.finishersDefinition.EmailToSender.recipients.name.label
-                         config:
-                           type: input
-               carbonCopyRecipients:
-                 title: tt_content.finishersDefinition.EmailToSender.carbonCopyRecipients.label
-                 type: array
-                 section: true
-                 sectionItemKey: email
-                 sectionItemValue: name
-                 el:
-                   _arrayContainer:
-                     type: array
-                     title: tt_content.finishersDefinition.EmailToSender.carbonCopyRecipients.item.label
-                     el:
-                       email:
-                         label: tt_content.finishersDefinition.EmailToSender.recipients.email.label
-                         config:
-                           type: email
-                           required: true
-                       name:
-                         label: tt_content.finishersDefinition.EmailToSender.recipients.name.label
-                         config:
-                           type: input
-               blindCarbonCopyRecipients:
-                 title: tt_content.finishersDefinition.EmailToSender.blindCarbonCopyRecipients.label
-                 type: array
-                 section: true
-                 sectionItemKey: email
-                 sectionItemValue: name
-                 el:
-                   _arrayContainer:
-                     type: array
-                     title: tt_content.finishersDefinition.EmailToSender.blindCarbonCopyRecipients.item.label
-                     el:
-                       email:
-                         label: tt_content.finishersDefinition.EmailToSender.recipients.email.label
-                         config:
-                           type: email
-                           required: true
-                       name:
-                         label: tt_content.finishersDefinition.EmailToSender.recipients.name.label
-                         config:
-                           type: input
-               addHtmlPart:
-                 label: tt_content.finishersDefinition.EmailToSender.addHtmlPart.label
-                 config:
-                   type: check
-                   default: 1
-               translation:
-                 language:
-                   label: tt_content.finishersDefinition.EmailToSender.language.label
-                   config:
-                     type: select
-                     renderType: selectSingle
-                     minitems: 1
-                     maxitems: 1
-                     size: 1
-                     items:
-                       10:
-                         - tt_content.finishersDefinition.EmailToSender.language.1
-                         - default
-               title:
-                 label: tt_content.finishersDefinition.EmailToSender.title.label
-                 config:
-                   type: input
+        EmailToSender:
+          FormEngine:
+            label: tt_content.finishersDefinition.EmailToSender.label
+            elements:
+              subject:
+                label: tt_content.finishersDefinition.EmailToSender.subject.label
+                config:
+                  type: input
+                  required: true
+              recipients:
+                title: tt_content.finishersDefinition.EmailToSender.recipients.label
+                type: array
+                section: true
+                sectionItemKey: email
+                sectionItemValue: name
+                el:
+                  _arrayContainer:
+                    type: array
+                    title: tt_content.finishersDefinition.EmailToSender.recipients.item.label
+                    el:
+                      email:
+                        label: tt_content.finishersDefinition.EmailToSender.recipients.email.label
+                        config:
+                          type: email
+                          required: true
+                      name:
+                        label: tt_content.finishersDefinition.EmailToSender.recipients.name.label
+                        config:
+                          type: input
+              senderAddress:
+                label: tt_content.finishersDefinition.EmailToSender.senderAddress.label
+                config:
+                  type: input
+                  required: true
+              senderName:
+                label: tt_content.finishersDefinition.EmailToSender.senderName.label
+                config:
+                  type: input
+              replyToRecipients:
+                title: tt_content.finishersDefinition.EmailToSender.replyToRecipients.label
+                type: array
+                section: true
+                sectionItemKey: email
+                sectionItemValue: name
+                el:
+                  _arrayContainer:
+                    type: array
+                    title: tt_content.finishersDefinition.EmailToSender.replyToRecipients.item.label
+                    el:
+                      email:
+                        label: tt_content.finishersDefinition.EmailToSender.recipients.email.label
+                        config:
+                          type: email
+                          required: true
+                      name:
+                        label: tt_content.finishersDefinition.EmailToSender.recipients.name.label
+                        config:
+                          type: input
+              carbonCopyRecipients:
+                title: tt_content.finishersDefinition.EmailToSender.carbonCopyRecipients.label
+                type: array
+                section: true
+                sectionItemKey: email
+                sectionItemValue: name
+                el:
+                  _arrayContainer:
+                    type: array
+                    title: tt_content.finishersDefinition.EmailToSender.carbonCopyRecipients.item.label
+                    el:
+                      email:
+                        label: tt_content.finishersDefinition.EmailToSender.recipients.email.label
+                        config:
+                          type: email
+                          required: true
+                      name:
+                        label: tt_content.finishersDefinition.EmailToSender.recipients.name.label
+                        config:
+                          type: input
+              blindCarbonCopyRecipients:
+                title: tt_content.finishersDefinition.EmailToSender.blindCarbonCopyRecipients.label
+                type: array
+                section: true
+                sectionItemKey: email
+                sectionItemValue: name
+                el:
+                  _arrayContainer:
+                    type: array
+                    title: tt_content.finishersDefinition.EmailToSender.blindCarbonCopyRecipients.item.label
+                    el:
+                      email:
+                        label: tt_content.finishersDefinition.EmailToSender.recipients.email.label
+                        config:
+                          type: email
+                          required: true
+                      name:
+                        label: tt_content.finishersDefinition.EmailToSender.recipients.name.label
+                        config:
+                          type: input
+              addHtmlPart:
+                label: tt_content.finishersDefinition.EmailToSender.addHtmlPart.label
+                config:
+                  type: check
+                  default: 1
+              translation:
+                language:
+                  label: tt_content.finishersDefinition.EmailToSender.language.label
+                  config:
+                    type: select
+                    renderType: selectSingle
+                    minitems: 1
+                    maxitems: 1
+                    size: 1
+                    items:
+                      10:
+                        - tt_content.finishersDefinition.EmailToSender.language.1
+                        - default
+              title:
+                label: tt_content.finishersDefinition.EmailToSender.title.label
+                config:
+                  type: input
 
 :aspect:`Good to know`
-      - :ref:`"Translate form plugin settings"<concepts-formplugin-translation-formengine>`
+    -   :ref:`"Translate form plugin settings"<concepts-formplugin-translation-formengine>`
 
 :aspect:`Description`
-      .. include:: ../properties/formEngine/elements.rst.txt
+    ..  include:: ../properties/formEngine/elements.rst.txt

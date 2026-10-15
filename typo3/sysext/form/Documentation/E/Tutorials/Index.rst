@@ -1,13 +1,13 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
 
-.. _editorTutorials:
+..  _editorTutorials:
 
 =========
 Tutorials
 =========
 
-.. toctree::
+..  toctree::
 
-   BasicForm/Index
-   PhotoContest/Index
+    BasicForm/Index
+    PhotoContest/Index

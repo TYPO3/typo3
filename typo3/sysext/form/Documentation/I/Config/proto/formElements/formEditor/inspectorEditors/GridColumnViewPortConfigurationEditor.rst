@@ -1,13 +1,13 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
 
-.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.gridcolumnviewportconfigurationeditor:
+..  _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.gridcolumnviewportconfigurationeditor:
 
 =======================================
 [GridColumnViewPortConfigurationEditor]
 =======================================
 
-.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.gridcolumnviewportconfigurationeditor-introduction:
+..  _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.gridcolumnviewportconfigurationeditor-introduction:
 
 Introduction
 ============
@@ -15,161 +15,161 @@ Introduction
 Shows a viewport selector as buttons and an input field. With this editor, you can define how many columns per viewPort an form element should occupy.
 
 
-.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.gridcolumnviewportconfigurationeditor-properties:
+..  _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.gridcolumnviewportconfigurationeditor-properties:
 
 Properties
 ==========
 
-.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.templateName-gridcolumnviewportconfigurationeditor:
+..  _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.templateName-gridcolumnviewportconfigurationeditor:
 
 templateName
 ------------
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Backend (form editor)
+    Backend (form editor)
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
 :aspect:`Related options`
-      - :ref:`prototypes.\<prototypeIdentifier>.formEditor.formEditorPartials <prototypes.prototypeidentifier.formeditor.formeditorpartials>`
+    -   :ref:`prototypes.\<prototypeIdentifier>.formEditor.formEditorPartials <prototypes.prototypeidentifier.formeditor.formeditorpartials>`
 
 :aspect:`value`
-      Inspector-GridColumnViewPortConfigurationEditor
+    Inspector-GridColumnViewPortConfigurationEditor
 
 :aspect:`Good to know`
-      - :ref:`"Inspector"<concepts-formeditor-inspector>`
+    -   :ref:`"Inspector"<concepts-formeditor-inspector>`
 
 :aspect:`Description`
-      .. include:: properties/TemplateName.rst.txt
+    ..  include:: properties/TemplateName.rst.txt
 
 
-.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.identifier-gridcolumnviewportconfigurationeditor:
-.. include:: properties/Identifier.rst.txt
+..  _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.identifier-gridcolumnviewportconfigurationeditor:
+..  include:: properties/Identifier.rst.txt
 
 
-.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.label-gridcolumnviewportconfigurationeditor:
-.. include:: properties/Label.rst.txt
+..  _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.label-gridcolumnviewportconfigurationeditor:
+..  include:: properties/Label.rst.txt
 
 
-.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.configurationOptions.viewPorts.*.viewPortIdentifier-gridcolumnviewportconfigurationeditor:
+..  _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.configurationOptions.viewPorts.*.viewPortIdentifier-gridcolumnviewportconfigurationeditor:
 
 configurationOptions.viewPorts.[*].viewPortIdentifier
 -----------------------------------------------------
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Backend (form editor)
+    Backend (form editor)
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
 :aspect:`Related options`
-      - :ref:`"properties.gridColumnClassAutoConfiguration"<prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.properties.gridcolumnclassautoconfiguration>`
+    -   :ref:`"properties.gridColumnClassAutoConfiguration"<prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.properties.gridcolumnclassautoconfiguration>`
 
-.. :aspect:`Good to know`
-      ToDo
+..  :aspect:`Good to know`
+    ToDo
 
 :aspect:`Description`
-      Has to match with a ``prototypes.<prototypeIdentifier>.formElementsDefinition.<formElementTypeIdentifier>.properties.gridColumnClassAutoConfiguration.viewPorts`` configuration key.
+    Has to match with a ``prototypes.<prototypeIdentifier>.formElementsDefinition.<formElementTypeIdentifier>.properties.gridColumnClassAutoConfiguration.viewPorts`` configuration key.
 
 
-.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.configurationOptions.viewPorts.*.label-gridcolumnviewportconfigurationeditor:
+..  _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.configurationOptions.viewPorts.*.label-gridcolumnviewportconfigurationeditor:
 
 configurationOptions.viewPorts.[*].label
 ----------------------------------------
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Backend (form editor)
+    Backend (form editor)
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
-.. :aspect:`Related options`
-      @ToDo
+..  :aspect:`Related options`
+    @ToDo
 
-.. :aspect:`Good to know`
-      ToDo
+..  :aspect:`Good to know`
+    ToDo
 
 :aspect:`Description`
-      The label for the viewport button.
+    The label for the viewport button.
 
 
-.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.configurationOptions.numbersOfColumnsToUse.label-gridcolumnviewportconfigurationeditor:
+..  _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.configurationOptions.numbersOfColumnsToUse.label-gridcolumnviewportconfigurationeditor:
 
 configurationOptions.numbersOfColumnsToUse.label
 ------------------------------------------------
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Backend (form editor)
+    Backend (form editor)
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
-.. :aspect:`Related options`
-      @ToDo
+..  :aspect:`Related options`
+    @ToDo
 
-.. :aspect:`Good to know`
-      ToDo
+..  :aspect:`Good to know`
+    ToDo
 
 :aspect:`Description`
-      The label for the "Numbers of columns" input field.
+    The label for the "Numbers of columns" input field.
 
 
-.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.configurationOptions.numbersOfColumnsToUse.propertyPath-gridcolumnviewportconfigurationeditor:
+..  _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.configurationOptions.numbersOfColumnsToUse.propertyPath-gridcolumnviewportconfigurationeditor:
 
 configurationOptions.numbersOfColumnsToUse.propertyPath
 -------------------------------------------------------
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Backend (form editor)
+    Backend (form editor)
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
-.. :aspect:`Related options`
-      @ToDo
+..  :aspect:`Related options`
+    @ToDo
 
-.. :aspect:`Good to know`
-      ToDo
+..  :aspect:`Good to know`
+    ToDo
 
 :aspect:`Description`
-      The path to the property of the form element which should be written.
+    The path to the property of the form element which should be written.
 
 
-.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.configurationOptions.numbersOfColumnsToUse.description-gridcolumnviewportconfigurationeditor:
+..  _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.configurationOptions.numbersOfColumnsToUse.description-gridcolumnviewportconfigurationeditor:
 
 configurationOptions.numbersOfColumnsToUse.description
----------------------------------------------------------------
+------------------------------------------------------
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Backend (form editor)
+    Backend (form editor)
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
-.. :aspect:`Related options`
-      @ToDo
+..  :aspect:`Related options`
+    @ToDo
 
-.. :aspect:`Good to know`
-      ToDo
+..  :aspect:`Good to know`
+    ToDo
 
 :aspect:`Description`
-       A text which is shown at the bottom of the "Numbers of columns" input field.
+    A text which is shown at the bottom of the "Numbers of columns" input field.

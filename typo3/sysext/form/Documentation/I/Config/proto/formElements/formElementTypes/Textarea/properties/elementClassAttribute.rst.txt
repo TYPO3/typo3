@@ -1,38 +1,38 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 properties.elementClassAttribute
 --------------------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.formElementsDefinition.Textarea.properties.elementClassAttribute
+    prototypes.<prototypeIdentifier>.formElementsDefinition.Textarea.properties.elementClassAttribute
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Frontend/ Backend (form editor)
+    Frontend/ Backend (form editor)
 
 :aspect:`Overwritable within form definition`
-      Yes
+    Yes
 
 :aspect:`form editor can write this property into the form definition (for prototype 'standard')`
-      No
+    No
 
 :aspect:`Mandatory`
-      No
+    No
 
 :aspect:`Default value (for prototype 'standard')`
-      .. code-block:: yaml
-         :linenos:
-         :emphasize-lines: 4
+    ..  code-block:: yaml
+        :linenos:
+        :emphasize-lines: 4
 
-         Textarea:
-           properties:
-             containerClassAttribute: input
-             elementClassAttribute: xxlarge
-             elementErrorClassAttribute: error
+        Textarea:
+          properties:
+            containerClassAttribute: input
+            elementClassAttribute: xxlarge
+            elementErrorClassAttribute: error
 
-.. :aspect:`Good to know`
-      ToDo
+..  :aspect:`Good to know`
+    ToDo
 
 :aspect:`Description`
-      A CSS class written to the form element.
+    A CSS class written to the form element.

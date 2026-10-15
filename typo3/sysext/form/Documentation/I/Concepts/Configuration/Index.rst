@@ -1,16 +1,17 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
 
-.. _concepts-configuration:
+..  _concepts-configuration:
 
+=============
 Configuration
 =============
 
 
-.. _concepts-configuration-whysomuchconfiguration:
+..  _concepts-configuration-whysomuchconfiguration:
 
 A lot of configuration. Why?
-----------------------------
+============================
 
 Building forms in a declarative and programmatic way is complex. Dynamic forms need
 program code that is as generic as possible. But generic
@@ -26,10 +27,10 @@ defined in multiple places in order to avoid unpredictable behaviour. There is
 no magic in the form framework - it is all about configuration.
 
 
-.. _concepts-configuration-whyyaml:
+..  _concepts-configuration-whyyaml:
 
 Why YAML?
----------
+=========
 
 Previous versions of EXT:form used a subset of TypoScript to describe form definitions and
 form element behavior. This led to a lot of confusion among integrators because the
@@ -39,10 +40,10 @@ like TypoScript.
 Form and form element definitions had to be declarative, so YAML was chosen as it is
 a declarative language.
 
-.. _concepts-configuration-yamlregistration:
+..  _concepts-configuration-yamlregistration:
 
 YAML registration
------------------
+=================
 
 YAML configuration files are discovered automatically — no PHP or TypoScript
 registration is required.
@@ -51,27 +52,27 @@ Place your YAML files in :file:`EXT:my_extension/Configuration/Form/<SetName>/` 
 add a :file:`config.yaml` with a unique set name. TYPO3 scans all active
 extensions and loads the files automatically for both frontend and backend.
 
-.. tip::
+..  tip::
 
-   For debugging purposes or to get an overview of the configuration
-   use the :guilabel:`System > Configuration` module. Select
-   the :guilabel:`Form: YAML Configuration` item in the menu to display
-   parsed YAML form setup. Make sure you have the lowlevel
-   system extension installed.
+    For debugging purposes or to get an overview of the configuration
+    use the :guilabel:`System > Configuration` module. Select
+    the :guilabel:`Form: YAML Configuration` item in the menu to display
+    parsed YAML form setup. Make sure you have the lowlevel
+    system extension installed.
 
-.. tip::
+..  tip::
 
-   We recommend using a `site package <https://de.slideshare.net/benjaminkott/typo3-the-anatomy-of-sitepackages>`_.
-   This will make your life easier if you need to do a lot of customization of EXT:form.
+    We recommend using a `site package <https://de.slideshare.net/benjaminkott/typo3-the-anatomy-of-sitepackages>`_.
+    This will make your life easier if you need to do a lot of customization of EXT:form.
 
 
-.. _concepts-configuration-yaml-autodiscovery:
-.. _concepts-configuration-yamlregistration-frontend:
-.. _concepts-configuration-yamlregistration-backend:
-.. _concepts-configuration-yamlregistration-backend-addtyposcriptsetup:
+..  _concepts-configuration-yaml-autodiscovery:
+..  _concepts-configuration-yamlregistration-frontend:
+..  _concepts-configuration-yamlregistration-backend:
+..  _concepts-configuration-yamlregistration-backend-addtyposcriptsetup:
 
 Auto-discovery directory convention
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+-----------------------------------
 
 ..  code-block:: none
 
@@ -99,10 +100,10 @@ multiple sets in separate sub-directories.
         10: 'EXT:my_extension/Resources/Private/Forms/'
 
 
-.. _concepts-configuration-yamlloading:
+..  _concepts-configuration-yamlloading:
 
 YAML loading
-------------
+============
 
 TYPO3 uses a ':ref:`YAML loader<t3coreapi:yamlFileLoader>`' for handling
 YAML, based on the Symfony YAML package. This YAML loader is able to resolve
@@ -115,37 +116,37 @@ A form definition can be :ref:`stored<concepts-form-file-storages>`
 in the file system (FAL) or can be shipped with an extension. The type of YAML loader
 used depends on the setup.
 
-.. t3-field-list-table::
- :header-rows: 1
+..  t3-field-list-table::
+    :header-rows: 1
 
- -   :a: YAML file
-     :b: YAML loader
+    -   :a: YAML file
+        :b: YAML loader
 
- -   :a: YAML configuration
-     :b: TYPO3 Core
+    -   :a: YAML configuration
+        :b: TYPO3 Core
 
- -   :a: YAML definition stored in file system (default when using the ``form editor``)
-     :b: TYPO3 Form Framework
+    -   :a: YAML definition stored in file system (default when using the ``form editor``)
+        :b: TYPO3 Form Framework
 
- -   :a: YAML definition stored in an extension
-     :b: TYPO3 Core
+    -   :a: YAML definition stored in an extension
+        :b: TYPO3 Core
 
- -   :a: :ref:`Start template <concepts-formmanager-starttemplate>` used to
-         create a new form in the `form manager`
-     :b: TYPO3 Core
+    -   :a: :ref:`Start template <concepts-formmanager-starttemplate>` used to
+            create a new form in the `form manager`
+        :b: TYPO3 Core
 
 
-.. _concepts-configuration-configurationaspects:
+..  _concepts-configuration-configurationaspects:
 
 Configuration aspects
----------------------
+=====================
 
 Four things can be configured in EXT:form:
 
-- frontend rendering,
-- the ``form editor``,
-- the ``form manager``, and
-- the ``form plugin``.
+-   frontend rendering,
+-   the ``form editor``,
+-   the ``form manager``, and
+-   the ``form plugin``.
 
 All configuration is placed in a single :file:`config.yaml` per form set and
 is loaded for both frontend and backend. It is up to you whether you want to
@@ -153,69 +154,69 @@ keep all configuration in one set or spread it across multiple form sets with
 different priorities.
 
 
-.. _concepts-configuration-inheritances:
+..  _concepts-configuration-inheritances:
 
 Inheritance
------------
+===========
 
 The final YAML configuration does not produce one huge file. Instead, it is
 a sequential compilation process:
 
-- Registered configuration files are parsed as YAML and
-  are combined according to their order.
-- The ``__inheritances`` operator is applied. It is a unique
-  operator introduced by the form framework.
-- Finally, all configuration entries with a value of ``null`` are deleted.
+-   Registered configuration files are parsed as YAML and
+    are combined according to their order.
+-   The ``__inheritances`` operator is applied. It is a unique
+    operator introduced by the form framework.
+-   Finally, all configuration entries with a value of ``null`` are deleted.
 
 Instead of inheritance, you can also extend/override the frontend configuration
 using TypoScript:
 
-.. code-block:: typoscript
+..  code-block:: typoscript
 
-   plugin.tx_form {
-       settings {
-           yamlSettingsOverrides {
-               ...
-           }
-       }
-   }
+    plugin.tx_form {
+        settings {
+            yamlSettingsOverrides {
+                ...
+            }
+        }
+    }
 
-.. note::
+..  note::
 
-   TypoScript overrides like this are ignored by the backend ``form editor``.
+    TypoScript overrides like this are ignored by the backend ``form editor``.
 
-.. note::
+..  note::
 
-   This process makes life easier. If you are working
-   with your :ref:`own configuration files <concepts-configuration-yamlregistration>`,
-   you only have to define things that are different to what was in the previously
-   loaded configuration files.
+    This process makes life easier. If you are working
+    with your :ref:`own configuration files <concepts-configuration-yamlregistration>`,
+    you only have to define things that are different to what was in the previously
+    loaded configuration files.
 
 An example of overriding the EXT:form Fluid templates. Place the configuration
 in :file:`EXT:my_site_package/Configuration/Form/SitePackage/config.yaml`
 (auto-discovered, no PHP or TypoScript registration required):
 
-.. code-block:: yaml
+..  code-block:: yaml
 
-   prototypes:
-     standard:
-       formElementsDefinition:
-         Form:
-           renderingOptions:
-             templateRootPaths:
-               20: 'EXT:my_site_package/Resources/Private/Templates/Form/Frontend/'
-             partialRootPaths:
-               20: 'EXT:my_site_package/Resources/Private/Partials/Form/Frontend/'
-             layoutRootPaths:
-               20: 'EXT:my_site_package/Resources/Private/Layouts/Form/Frontend/'
+    prototypes:
+      standard:
+        formElementsDefinition:
+          Form:
+            renderingOptions:
+              templateRootPaths:
+                20: 'EXT:my_site_package/Resources/Private/Templates/Form/Frontend/'
+              partialRootPaths:
+                20: 'EXT:my_site_package/Resources/Private/Partials/Form/Frontend/'
+              layoutRootPaths:
+                20: 'EXT:my_site_package/Resources/Private/Layouts/Form/Frontend/'
 
 The values in your own configuration file will be merged on top of the EXT:form
 base set (:file:`EXT:form/Configuration/Form/Base/config.yaml`).
 
-.. _concepts-configuration-prevent-duplication:
+..  _concepts-configuration-prevent-duplication:
 
 Prevent duplication
-^^^^^^^^^^^^^^^^^^^
+-------------------
 
 You can avoid duplication in your YAML files by using anchors (&), aliases (*) and overrides (<<:).
 
@@ -243,10 +244,10 @@ You can avoid duplication in your YAML files by using anchors (&), aliases (*) a
                 <<: *customEditor
                 1761226184: *otherCustomEditor
 
-.. _concepts-configuration-inheritances-operator:
+..  _concepts-configuration-inheritances-operator:
 
 __inheritances operator
-^^^^^^^^^^^^^^^^^^^^^^^
+-----------------------
 
 ..  deprecated:: 14.0
     The ``__inheritances`` operator has been marked as deprecated.
@@ -257,58 +258,58 @@ That is, the definition of the source object is copied to the target object.
 The configuration can be inherited from several parent objects and can be overridden afterwards.
 The following example will show you the usage and behaviour of the ``__inheritances`` operator.
 
-.. code-block:: yaml
+..  code-block:: yaml
 
-   Form:
-     part01:
-       key01: value
-       key02:
-         key03: value
-     part02:
-       __inheritances:
-         10: Form.part01
+    Form:
+      part01:
+        key01: value
+        key02:
+          key03: value
+      part02:
+        __inheritances:
+          10: Form.part01
 
 The configuration above results in:
 
-.. code-block:: yaml
+..  code-block:: yaml
 
-   Form:
-     part01:
-       key01: value
-       key02:
-         key03: value
-     part02:
-       key01: value
-       key02:
-         key03: value
+    Form:
+      part01:
+        key01: value
+        key02:
+          key03: value
+      part02:
+        key01: value
+        key02:
+          key03: value
 
 As you can see, ``part02`` inherited all of ``part01``'s properties.
 
-.. code-block:: yaml
+..  code-block:: yaml
 
-   Form:
-     part01:
-       key: value
-     part02:
-       __inheritances:
-         10: Form.part01
-       key: 'value override'
+    Form:
+      part01:
+        key: value
+      part02:
+        __inheritances:
+          10: Form.part01
+        key: 'value override'
 
 The configuration above results in:
 
-.. code-block:: yaml
+..  code-block:: yaml
 
-   Form:
-     part01:
-       key: value
-     part02:
-       key: 'value override'
+    Form:
+      part01:
+        key: value
+      part02:
+        key: 'value override'
 
 
-.. _concepts-configuration-placeholders:
+..  _concepts-configuration-placeholders:
 
 Referencing values with placeholders
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+------------------------------------
 
 In addition to anchors and aliases, the TYPO3 YAML loader supports ``%...%``
 placeholders. Unlike anchors, they work *across* imported files, because they
@@ -345,12 +346,12 @@ element:
               label: '%prototypes.standard.formElementsDefinition.Text.formEditor.label%'
 
 
-.. _concepts-configuration-inherit-across-files:
+..  _concepts-configuration-inherit-across-files:
 
 Inheriting a complete element across files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+------------------------------------------
 
-Because a whole-value placeholder substitutes a complete subtree, it can be used 
+Because a whole-value placeholder substitutes a complete subtree, it can be used
 to base a new form element on the complete configuration of an existing (core) element and
 override only a few properties.
 
@@ -393,10 +394,10 @@ Importing file, overrides only single properties:
 element, while only the listed properties are overridden.
 
 
-.. _concepts-configuration-prototypes:
+..  _concepts-configuration-prototypes:
 
 Prototypes
-----------
+==========
 
 Most of the form framework configuration is defined
 in ``prototypes``. ``standard`` is the default prototype in EXT:form. Prototypes
@@ -406,41 +407,41 @@ a prototype *configuration*.
 
 This allows you to do a lot of clever stuff. For example:
 
-- depending on which prototype is referenced, the same form can load different
+-   depending on which prototype is referenced, the same form can load different
 
-  - ...templates
-  - ...``form editor`` configurations
-  - ...``form plugin`` finisher overrides
+    -   ...templates
+    -   ...``form editor`` configurations
+    -   ...``form plugin`` finisher overrides
 
-- in the ``form manager``, depending on the selected prototype
+-   in the ``form manager``, depending on the selected prototype
 
-  - ...different ``form editor`` configurations can be loaded
-  - ...different pre-configured form templates (boilerplates) can be chosen
+    -   ...different ``form editor`` configurations can be loaded
+    -   ...different pre-configured form templates (boilerplates) can be chosen
 
-- prototypes can define different/ extended form elements and
-  display them in the frontend/ ``form editor``
+-   prototypes can define different/ extended form elements and
+    display them in the frontend/ ``form editor``
 
 The following use case illustrates the prototype concept. Imagine that two
 prototypes are defined: "noob" and
 "poweruser".
 
-.. t3-field-list-table::
- :header-rows: 1
+..  t3-field-list-table::
+    :header-rows: 1
 
- - :a:
-   :b: Prototype "noob"
-   :c: Prototype "poweruser"
+    -   :a:
+        :b: Prototype "noob"
+        :c: Prototype "poweruser"
 
- - :a: **Form elements in the ``form editor``**
-   :b: Just Text, Textarea
-   :c: No changes. Default behaviour.
+    -   :a: **Form elements in the ``form editor``**
+        :b: Just Text, Textarea
+        :c: No changes. Default behaviour.
 
- - :a: **Finisher in the ``form editor``**
-   :b: Only the email finisher is available. It has a field for setting
-       the subject of the email. The rest of the fields are hidden and filled
-       with default values.
-   :c: No changes. Default behaviour.
+    -   :a: **Finisher in the ``form editor``**
+        :b: Only the email finisher is available. It has a field for setting
+            the subject of the email. The rest of the fields are hidden and filled
+            with default values.
+        :c: No changes. Default behaviour.
 
- - :a: **Finisher overrides in the ``form plugin``**
-   :b: It is not possible to override the finisher configuration.
-   :c: No changes. Default behaviour.
+    -   :a: **Finisher overrides in the ``form plugin``**
+        :b: It is not possible to override the finisher configuration.
+        :c: No changes. Default behaviour.

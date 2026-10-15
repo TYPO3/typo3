@@ -1,123 +1,123 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
 
-.. _prototypes.prototypeIdentifier.validatorsdefinition.text:
+..  _prototypes.prototypeIdentifier.validatorsdefinition.text:
 
 ======
 [Text]
 ======
 
 
-.. _prototypes.prototypeIdentifier.validatorsdefinition.text-validationerrorcodes:
+..  _prototypes.prototypeIdentifier.validatorsdefinition.text-validationerrorcodes:
 
 Validation error codes
 ======================
 
-- Error code: `1221565786`
-- Error message: `The given subject was not a valid text (e.g. contained XML tags).`
+-   Error code: `1221565786`
+-   Error message: `The given subject was not a valid text (e.g. contained XML tags).`
 
 
-.. _prototypes.prototypeIdentifier.validatorsdefinition.text-properties:
+..  _prototypes.prototypeIdentifier.validatorsdefinition.text-properties:
 
 Properties
 ==========
 
 
-.. _prototypes.prototypeIdentifier.validatorsdefinition.text.implementationClassName:
+..  _prototypes.prototypeIdentifier.validatorsdefinition.text.implementationClassName:
 
 implementationClassName
 -----------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.validatorsDefinition.Text.implementationClassName
+    prototypes.<prototypeIdentifier>.validatorsDefinition.Text.implementationClassName
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Frontend
+    Frontend
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
 :aspect:`Default value (for prototype 'standard')`
-      .. code-block:: yaml
-         :linenos:
-         :emphasize-lines: 2
+    ..  code-block:: yaml
+        :linenos:
+        :emphasize-lines: 2
 
-         Text:
-           implementationClassName: TYPO3\CMS\Extbase\Validation\Validator\TextValidator
+        Text:
+          implementationClassName: TYPO3\CMS\Extbase\Validation\Validator\TextValidator
 
 :aspect:`Good to know`
-      - :ref:`"Custom validator implementations"<concepts-validators-customvalidatorimplementations>`
+    -   :ref:`"Custom validator implementations"<concepts-validators-customvalidatorimplementations>`
 
 :aspect:`Description`
-      .. include:: ../properties/implementationClassName.rst.txt
+    ..  include:: ../properties/implementationClassName.rst.txt
 
 
-.. _prototypes.prototypeIdentifier.validatorsdefinition.text.formeditor.iconidentifier:
+..  _prototypes.prototypeIdentifier.validatorsdefinition.text.formeditor.iconidentifier:
 
 formEditor.iconIdentifier
 -------------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.validatorsDefinition.Text.formEditor.iconIdentifier
+    prototypes.<prototypeIdentifier>.validatorsDefinition.Text.formEditor.iconIdentifier
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Backend (form editor)
+    Backend (form editor)
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
 :aspect:`Default value (for prototype 'standard')`
-      .. code-block:: yaml
-         :linenos:
-         :emphasize-lines: 3
+    ..  code-block:: yaml
+        :linenos:
+        :emphasize-lines: 3
 
-         Text:
-           formEditor:
-             iconIdentifier: form-validator
-             label: formEditor.elements.TextMixin.editor.validators.Text.label
+        Text:
+          formEditor:
+            iconIdentifier: form-validator
+            label: formEditor.elements.TextMixin.editor.validators.Text.label
 
-.. :aspect:`Good to know`
-      ToDo
+..  :aspect:`Good to know`
+    ToDo
 
 :aspect:`Description`
-      .. include:: ../properties/iconIdentifier.rst.txt
+    ..  include:: ../properties/iconIdentifier.rst.txt
 
 
-.. _prototypes.prototypeIdentifier.validatorsdefinition.text.formeditor.label:
+..  _prototypes.prototypeIdentifier.validatorsdefinition.text.formeditor.label:
 
 formEditor.label
 ----------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.validatorsDefinition.Text.formEditor.label
+    prototypes.<prototypeIdentifier>.validatorsDefinition.Text.formEditor.label
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Backend (form editor)
+    Backend (form editor)
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
 :aspect:`Default value (for prototype 'standard')`
-      .. code-block:: yaml
-         :linenos:
-         :emphasize-lines: 4
+    ..  code-block:: yaml
+        :linenos:
+        :emphasize-lines: 4
 
-         Text:
-           formEditor:
-             iconIdentifier: form-validator
-             label: formEditor.elements.TextMixin.editor.validators.Text.label
+        Text:
+          formEditor:
+            iconIdentifier: form-validator
+            label: formEditor.elements.TextMixin.editor.validators.Text.label
 
 :aspect:`Good to know`
-      - :ref:`"Translate form editor settings"<concepts-formeditor-translation-formeditor>`
+    -   :ref:`"Translate form editor settings"<concepts-formeditor-translation-formeditor>`
 
 :aspect:`Description`
-      .. include:: ../properties/label.rst.txt
+    ..  include:: ../properties/label.rst.txt

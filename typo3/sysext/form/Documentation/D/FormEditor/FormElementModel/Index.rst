@@ -3,9 +3,9 @@
 ..  _apireference-formeditor-basicjavascriptconcepts-formelementmodel:
 ..  _apireference-formeditor-formelementmodel:
 
-==================
+=================
 FormElement model
-==================
+=================
 
 Every form element in the editor is represented by a **FormElement model**
 object. This model is the single source of truth for all element properties
@@ -27,18 +27,18 @@ Model structure
 A FormElement model carries all YAML properties of the element plus two
 internal bookkeeping properties:
 
-.. list-table::
-   :header-rows: 1
-   :widths: 30 70
+..  list-table::
+    :header-rows: 1
+    :widths: 30 70
 
-   *  -  Property
-      -  Description
-   *  -  :js:`__identifierPath`
-      -  Slash-separated path from the root element to this element
-         (e.g. :js:`'example-form/page-1/name'`). Used as a unique key
-         for API lookups.
-   *  -  :js:`__parentRenderable`
-      -  Reference to the parent FormElement model (filtered for display).
+    *   -   Property
+        -   Description
+    *   -   :js:`__identifierPath`
+        -   Slash-separated path from the root element to this element
+            (e.g. :js:`'example-form/page-1/name'`). Used as a unique key
+            for API lookups.
+    *   -   :js:`__parentRenderable`
+        -   Reference to the parent FormElement model (filtered for display).
 
 Example model in memory:
 
@@ -92,10 +92,10 @@ To modify property collection properties or add child renderables, use
 the dedicated API methods on :js:`formEditorApp` / :js:`getViewModel()`
 instead of setting array positions directly:
 
--  :js:`createAndAddFormElement()`
--  :js:`addFormElement()`
--  :js:`moveFormElement()`
--  :js:`removeFormElement()`
+-   :js:`createAndAddFormElement()`
+-   :js:`addFormElement()`
+-   :js:`moveFormElement()`
+-   :js:`removeFormElement()`
 
 
 ..  _apireference-formeditor-basicjavascriptconcepts-formelementmodel-method-unset:

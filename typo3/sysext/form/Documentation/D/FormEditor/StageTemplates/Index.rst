@@ -20,7 +20,7 @@ approach (deprecated).
 ..  _apireference-formeditor-stagetemplates-webcomponent:
 
 Built-in web component (recommended)
-=====================================
+====================================
 
 When no :yaml:`formEditorPartials` entry exists for a form element type,
 the Stage component automatically renders it using the built-in
@@ -35,36 +35,36 @@ allowed MIME types without requiring any custom JavaScript.
 
 Properties set on the web component from the :js:`FormElement` model:
 
-.. list-table::
-   :header-rows: 1
-   :widths: 30 70
+..  list-table::
+    :header-rows: 1
+    :widths: 30 70
 
-   *  -  Property
-      -  Source in FormElement model
-   *  -  :js:`elementType`
-      -  Form element definition :yaml:`label`
-   *  -  :js:`elementLabel`
-      -  :yaml:`label` (falls back to :yaml:`identifier`)
-   *  -  :js:`elementIconIdentifier`
-      -  Form element definition :yaml:`iconIdentifier`
-   *  -  :js:`validators`
-      -  :yaml:`validators` array (excludes ``NotEmpty``, shown via :js:`isRequired`)
-   *  -  :js:`isRequired`
-      -  ``true`` when a ``NotEmpty`` validator is present
-   *  -  :js:`options`
-      -  :yaml:`properties.options` (for select-like elements)
-   *  -  :js:`allowedMimeTypes`
-      -  :yaml:`properties.allowedMimeTypes`
-   *  -  :js:`content`
-      -  :yaml:`properties.text` or :yaml:`properties.contentElementUid`
-   *  -  :js:`isHidden`
-      -  ``true`` when :yaml:`renderingOptions.enabled` is ``false``
+    *   -   Property
+        -   Source in FormElement model
+    *   -   :js:`elementType`
+        -   Form element definition :yaml:`label`
+    *   -   :js:`elementLabel`
+        -   :yaml:`label` (falls back to :yaml:`identifier`)
+    *   -   :js:`elementIconIdentifier`
+        -   Form element definition :yaml:`iconIdentifier`
+    *   -   :js:`validators`
+        -   :yaml:`validators` array (excludes ``NotEmpty``, shown via :js:`isRequired`)
+    *   -   :js:`isRequired`
+        -   ``true`` when a ``NotEmpty`` validator is present
+    *   -   :js:`options`
+        -   :yaml:`properties.options` (for select-like elements)
+    *   -   :js:`allowedMimeTypes`
+        -   :yaml:`properties.allowedMimeTypes`
+    *   -   :js:`content`
+        -   :yaml:`properties.text` or :yaml:`properties.contentElementUid`
+    *   -   :js:`isHidden`
+        -   ``true`` when :yaml:`renderingOptions.enabled` is ``false``
 
 
 ..  _apireference-formeditor-stagetemplates-fluid:
 
 Custom Fluid partial (advanced)
-================================
+===============================
 
 If you need fully custom stage rendering – for example to display a
 proprietary summary of complex properties – you can still provide a Fluid
@@ -88,7 +88,7 @@ The core Fluid partials are located in
 ..  _apireference-formeditor-stagetemplates-fluid-simpletemplate:
 
 Stage/SimpleTemplate (deprecated)
-----------------------------------
+---------------------------------
 
 Displays the element :yaml:`label`. When the element has validators, a
 validator icon and their labels appear on hover/selection. Rendered via
@@ -105,7 +105,7 @@ the deprecated :js:`renderSimpleTemplateWithValidators()`.
 ..  _apireference-formeditor-stagetemplates-fluid-selecttemplate:
 
 Stage/SelectTemplate (deprecated)
-----------------------------------
+---------------------------------
 
 Extends ``Stage/SimpleTemplate`` by additionally listing the chosen option
 labels from :yaml:`properties.options.*`. Rendered via the deprecated

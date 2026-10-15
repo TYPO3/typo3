@@ -1,372 +1,372 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
 
-.. _prototypes.prototypeIdentifier.finishersdefinition.flashmessage:
+..  _prototypes.prototypeIdentifier.finishersdefinition.flashmessage:
 
 ==============
 [FlashMessage]
 ==============
 
-.. _prototypes.prototypeIdentifier.finishersdefinitionflashmessage-properties:
+..  _prototypes.prototypeIdentifier.finishersdefinitionflashmessage-properties:
 
 Properties
 ==========
 
 
-.. _prototypes.prototypeIdentifier.finishersdefinition.flashmessage.implementationclassname:
+..  _prototypes.prototypeIdentifier.finishersdefinition.flashmessage.implementationclassname:
 
 implementationClassName
 -----------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.finishersDefinition.FlashMessage.implementationClassName
+    prototypes.<prototypeIdentifier>.finishersDefinition.FlashMessage.implementationClassName
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Frontend
+    Frontend
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
 :aspect:`Default value`
-      .. code-block:: yaml
-         :linenos:
-         :emphasize-lines: 2
+    ..  code-block:: yaml
+        :linenos:
+        :emphasize-lines: 2
 
-         FlashMessage:
-           implementationClassName: TYPO3\CMS\Form\Domain\Finishers\FlashMessageFinisher
+        FlashMessage:
+          implementationClassName: TYPO3\CMS\Form\Domain\Finishers\FlashMessageFinisher
 
 :aspect:`Good to know`
-      - :ref:`"Custom finisher implementations"<concepts-finishers-customfinisherimplementations>`
+    -   :ref:`"Custom finisher implementations"<concepts-finishers-customfinisherimplementations>`
 
 :aspect:`Description`
-      .. include:: ../properties/implementationClassName.rst.txt
+    ..  include:: ../properties/implementationClassName.rst.txt
 
 
-.. _prototypes.prototypeIdentifier.finishersdefinition.flashmessage.options.messagebody:
+..  _prototypes.prototypeIdentifier.finishersdefinition.flashmessage.options.messagebody:
 
 options.messageBody
 -------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.finishersDefinition.FlashMessage.options.messageBody
+    prototypes.<prototypeIdentifier>.finishersDefinition.FlashMessage.options.messageBody
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Frontend
+    Frontend
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
 :aspect:`Default value`
-      null
+    null
 
 :aspect:`Good to know`
-      - :ref:`"FlashMessage finisher"<apireference-finisheroptions-flashmessagefinisher>`
-      - :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
-      - :ref:`"Translate finisher options"<concepts-frontendrendering-translation-finishers>`
+    -   :ref:`"FlashMessage finisher"<apireference-finisheroptions-flashmessagefinisher>`
+    -   :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
+    -   :ref:`"Translate finisher options"<concepts-frontendrendering-translation-finishers>`
 
 :aspect:`Description`
-      The flash message body TEXT.
+    The flash message body TEXT.
 
 
-.. _prototypes.prototypeIdentifier.finishersdefinition.flashmessage.options.messagetitle:
+..  _prototypes.prototypeIdentifier.finishersdefinition.flashmessage.options.messagetitle:
 
 options.messageTitle
 --------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.finishersDefinition.FlashMessage.options.messageTitle
+    prototypes.<prototypeIdentifier>.finishersDefinition.FlashMessage.options.messageTitle
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Frontend
+    Frontend
 
 :aspect:`Mandatory`
-      No
+    No
 
 :aspect:`Default value`
-      empty string
+    empty string
 
 :aspect:`Good to know`
-      - :ref:`"FlashMessage finisher"<apireference-finisheroptions-flashmessagefinisher>`
-      - :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
-      - :ref:`"Translate finisher options"<concepts-frontendrendering-translation-finishers>`
+    -   :ref:`"FlashMessage finisher"<apireference-finisheroptions-flashmessagefinisher>`
+    -   :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
+    -   :ref:`"Translate finisher options"<concepts-frontendrendering-translation-finishers>`
 
 :aspect:`Description`
-      The flash message title.
+    The flash message title.
 
 
-.. _prototypes.prototypeIdentifier.finishersdefinition.flashmessage.options.messagearguments:
+..  _prototypes.prototypeIdentifier.finishersdefinition.flashmessage.options.messagearguments:
 
 options.messageArguments
 ------------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.finishersDefinition.FlashMessage.options.messageArguments
+    prototypes.<prototypeIdentifier>.finishersDefinition.FlashMessage.options.messageArguments
 
 :aspect:`Data type`
-      array
+    array
 
 :aspect:`Needed by`
-      Frontend
+    Frontend
 
 :aspect:`Mandatory`
-      No
+    No
 
 :aspect:`Default value`
-      empty array
+    empty array
 
 :aspect:`Good to know`
-      - :ref:`"FlashMessage finisher"<apireference-finisheroptions-flashmessagefinisher>`
-      - :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
-      - :ref:`"Translate finisher options"<concepts-frontendrendering-translation-finishers>`
+    -   :ref:`"FlashMessage finisher"<apireference-finisheroptions-flashmessagefinisher>`
+    -   :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
+    -   :ref:`"Translate finisher options"<concepts-frontendrendering-translation-finishers>`
 
 :aspect:`Description`
-      The flash message arguments, if needed.
+    The flash message arguments, if needed.
 
 
-.. _prototypes.prototypeIdentifier.finishersdefinition.flashmessage.options.messagecode:
+..  _prototypes.prototypeIdentifier.finishersdefinition.flashmessage.options.messagecode:
 
 options.messageCode
 -------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.finishersDefinition.FlashMessage.options.messageCode
+    prototypes.<prototypeIdentifier>.finishersDefinition.FlashMessage.options.messageCode
 
 :aspect:`Data type`
-      int
+    int
 
 :aspect:`Needed by`
-      Frontend
+    Frontend
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
 :aspect:`Default value`
-      null
+    null
 
 :aspect:`Good to know`
-      - :ref:`"FlashMessage finisher"<apireference-finisheroptions-flashmessagefinisher>`
+    -   :ref:`"FlashMessage finisher"<apireference-finisheroptions-flashmessagefinisher>`
 
 :aspect:`Description`
-      The flash message code, if needed.
+    The flash message code, if needed.
 
 
-.. _prototypes.prototypeIdentifier.finishersdefinition.flashmessage.options.severity:
+..  _prototypes.prototypeIdentifier.finishersdefinition.flashmessage.options.severity:
 
 options.severity
 ----------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.finishersDefinition.FlashMessage.options.severity
+    prototypes.<prototypeIdentifier>.finishersDefinition.FlashMessage.options.severity
 
 :aspect:`Data type`
-      Enum<\TYPO3\CMS\Core\Type\ContextualFeedbackSeverity>|int
+    Enum<\TYPO3\CMS\Core\Type\ContextualFeedbackSeverity>|int
 
 :aspect:`Needed by`
-      Frontend
+    Frontend
 
 :aspect:`Mandatory`
-      No
+    No
 
 :aspect:`Default value`
-      :php:`\TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::OK` (0)
+    :php:`\TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::OK` (0)
 
 :aspect:`Good to know`
-      - :ref:`"FlashMessage finisher"<apireference-finisheroptions-flashmessagefinisher>`
+    -   :ref:`"FlashMessage finisher"<apireference-finisheroptions-flashmessagefinisher>`
 
 :aspect:`Description`
-      The flash message severity code.
-      See :t3src:`core/Classes/Type/ContextualFeedbackSeverity.php` cases for the codes.
+    The flash message severity code.
+    See :t3src:`core/Classes/Type/ContextualFeedbackSeverity.php` cases for the codes.
 
-      Important: in YAML-based form definitions, the PHP enums cannot be used.
+    Important: in YAML-based form definitions, the PHP enums cannot be used.
 
 
-.. _prototypes.prototypeIdentifier.finishersdefinition.flashmessage.options.translation.propertiesExcludedFromTranslation:
+..  _prototypes.prototypeIdentifier.finishersdefinition.flashmessage.options.translation.propertiesExcludedFromTranslation:
 
 options.translation.propertiesExcludedFromTranslation
 -----------------------------------------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.finishersDefinition.FlashMessage.options.translation.propertiesExcludedFromTranslation
+    prototypes.<prototypeIdentifier>.finishersDefinition.FlashMessage.options.translation.propertiesExcludedFromTranslation
 
 :aspect:`Data type`
-      array
+    array
 
 :aspect:`Needed by`
-      Frontend
+    Frontend
 
 :aspect:`Mandatory`
-      No
+    No
 
 :aspect:`Default value`
-      undefined
+    undefined
 
 :aspect:`Good to know`
-      - :ref:`"FlashMessage finisher"<apireference-finisheroptions-flashmessagefinisher>`
-      - :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
-      - :ref:`"Translate finisher options"<concepts-frontendrendering-translation-finishers>`
+    -   :ref:`"FlashMessage finisher"<apireference-finisheroptions-flashmessagefinisher>`
+    -   :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
+    -   :ref:`"Translate finisher options"<concepts-frontendrendering-translation-finishers>`
 
 :aspect:`Description`
-      Localization from translation files will be skipped for all specified finisher options.
+    Localization from translation files will be skipped for all specified finisher options.
 
 
-.. _prototypes.prototypeIdentifier.finishersdefinition.flashmessage.options.translation.translationfiles:
+..  _prototypes.prototypeIdentifier.finishersdefinition.flashmessage.options.translation.translationfiles:
 
 options.translation.translationFiles
 ------------------------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.finishersDefinition.FlashMessage.options.translation.translationFiles
+    prototypes.<prototypeIdentifier>.finishersDefinition.FlashMessage.options.translation.translationFiles
 
 :aspect:`Data type`
-      string/ array
+    string/ array
 
 :aspect:`Needed by`
-      Frontend
+    Frontend
 
 :aspect:`Mandatory`
-      No
+    No
 
 :aspect:`Default value`
-      undefined
+    undefined
 
 :aspect:`Good to know`
-      - :ref:`"FlashMessage finisher"<apireference-finisheroptions-flashmessagefinisher>`
-      - :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
-      - :ref:`"Translate finisher options"<concepts-frontendrendering-translation-finishers>`
+    -   :ref:`"FlashMessage finisher"<apireference-finisheroptions-flashmessagefinisher>`
+    -   :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
+    -   :ref:`"Translate finisher options"<concepts-frontendrendering-translation-finishers>`
 
 :aspect:`Description`
-      If set, this translation file(s) will be used for finisher option translations.
-      If not set, the translation file(s) from the 'Form' element will be used.
-      Read :ref:`Translate finisher options<concepts-frontendrendering-translation-finishers>` for more informations.
+    If set, this translation file(s) will be used for finisher option translations.
+    If not set, the translation file(s) from the 'Form' element will be used.
+    Read :ref:`Translate finisher options<concepts-frontendrendering-translation-finishers>` for more informations.
 
 
-.. _prototypes.prototypeIdentifier.finishersdefinition.flashmessage.formeditor.iconidentifier:
+..  _prototypes.prototypeIdentifier.finishersdefinition.flashmessage.formeditor.iconidentifier:
 
 formeditor.iconIdentifier
 -------------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.finishersDefinition.FlashMessage.formEditor.iconIdentifier
+    prototypes.<prototypeIdentifier>.finishersDefinition.FlashMessage.formEditor.iconIdentifier
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Backend (form editor)
+    Backend (form editor)
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
 :aspect:`Default value`
-      .. code-block:: yaml
-         :linenos:
-         :emphasize-lines: 3
+    ..  code-block:: yaml
+        :linenos:
+        :emphasize-lines: 3
 
-         FlashMessage:
-           formEditor:
-             iconIdentifier: form-finisher
-             label: formEditor.elements.Form.finisher.FlashMessage.editor.header.label
-             predefinedDefaults:
-               options:
-                 messageBody: ''
-                 messageTitle: ''
-                 messageArguments: ''
-                 messageCode: 0
-                 severity: 0
+        FlashMessage:
+          formEditor:
+            iconIdentifier: form-finisher
+            label: formEditor.elements.Form.finisher.FlashMessage.editor.header.label
+            predefinedDefaults:
+              options:
+                messageBody: ''
+                messageTitle: ''
+                messageArguments: ''
+                messageCode: 0
+                severity: 0
 
-.. :aspect:`Good to know`
-      ToDo
+..  :aspect:`Good to know`
+    ToDo
 
 :aspect:`Description`
-      .. include:: ../properties/iconIdentifier.rst.txt
+    ..  include:: ../properties/iconIdentifier.rst.txt
 
 
-.. _prototypes.prototypeIdentifier.finishersdefinition.flashmessage.formeditor.label:
+..  _prototypes.prototypeIdentifier.finishersdefinition.flashmessage.formeditor.label:
 
 formeditor.label
 ----------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.finishersDefinition.FlashMessage.formEditor.label
+    prototypes.<prototypeIdentifier>.finishersDefinition.FlashMessage.formEditor.label
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Backend (form editor)
+    Backend (form editor)
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
 :aspect:`Default value`
-      .. code-block:: yaml
-         :linenos:
-         :emphasize-lines: 4
+    ..  code-block:: yaml
+        :linenos:
+        :emphasize-lines: 4
 
-         FlashMessage:
-           formEditor:
-             iconIdentifier: form-finisher
-             label: formEditor.elements.Form.finisher.FlashMessage.editor.header.label
-             predefinedDefaults:
-               options:
-                 messageBody: ''
-                 messageTitle: ''
-                 messageArguments: ''
-                 messageCode: 0
-                 severity: 0
+        FlashMessage:
+          formEditor:
+            iconIdentifier: form-finisher
+            label: formEditor.elements.Form.finisher.FlashMessage.editor.header.label
+            predefinedDefaults:
+              options:
+                messageBody: ''
+                messageTitle: ''
+                messageArguments: ''
+                messageCode: 0
+                severity: 0
 
 :aspect:`Good to know`
-      - :ref:`"Translate form editor settings"<concepts-formeditor-translation-formeditor>`
+    -   :ref:`"Translate form editor settings"<concepts-formeditor-translation-formeditor>`
 
 :aspect:`Description`
-      .. include:: ../properties/label.rst.txt
+    ..  include:: ../properties/label.rst.txt
 
 
-.. _prototypes.prototypeIdentifier.finishersdefinition.flashmessage.formeditor.predefineddefaults:
+..  _prototypes.prototypeIdentifier.finishersdefinition.flashmessage.formeditor.predefineddefaults:
 
 formeditor.predefinedDefaults
 -----------------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.finishersDefinition.FlashMessage.formEditor.predefinedDefaults
+    prototypes.<prototypeIdentifier>.finishersDefinition.FlashMessage.formEditor.predefinedDefaults
 
 :aspect:`Data type`
-      array
+    array
 
 :aspect:`Needed by`
-      Backend (form editor)
+    Backend (form editor)
 
 :aspect:`Mandatory`
-      No
+    No
 
 :aspect:`Default value`
-      .. code-block:: yaml
-         :linenos:
-         :emphasize-lines: 5-
+    ..  code-block:: yaml
+        :linenos:
+        :emphasize-lines: 5-
 
-         FlashMessage:
-           formEditor:
-             iconIdentifier: form-finisher
-             label: formEditor.elements.Form.finisher.FlashMessage.editor.header.label
-             predefinedDefaults:
-               options:
-                 messageBody: ''
-                 messageTitle: ''
-                 messageArguments: ''
-                 messageCode: 0
-                 severity: 0
+        FlashMessage:
+          formEditor:
+            iconIdentifier: form-finisher
+            label: formEditor.elements.Form.finisher.FlashMessage.editor.header.label
+            predefinedDefaults:
+              options:
+                messageBody: ''
+                messageTitle: ''
+                messageArguments: ''
+                messageCode: 0
+                severity: 0
 
-.. :aspect:`Good to know`
-      ToDo
+..  :aspect:`Good to know`
+    ToDo
 
 :aspect:`Description`
-      .. include:: ../properties/predefinedDefaults.rst.txt
+    ..  include:: ../properties/predefinedDefaults.rst.txt

@@ -1,7 +1,7 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
 
-.. _configurationreference:
+..  _configurationreference:
 
 =======================
 Configuration Reference
@@ -10,8 +10,8 @@ Configuration Reference
 This chapter is a complete reference of the possible configuration settings.
 It addresses your concerns as and integrator and developer.
 
-.. toctree::
+..  toctree::
 
-   persistenceManager/Index
-   proto/Index
-   formManager/Index
+    persistenceManager/Index
+    proto/Index
+    formManager/Index

@@ -22,7 +22,7 @@ For the complete PHP API of every class mentioned here, see
 ..  _apireference-frontendrendering-fluidformrenderer:
 
 Template resolution (FluidFormRenderer)
-========================================
+=======================================
 
 The :php-short:`\TYPO3\CMS\Form\Domain\Renderer\FluidFormRenderer` resolves
 Fluid templates, layouts and partials through rendering options defined in the
@@ -245,7 +245,7 @@ for the full method reference.
 ..  _apireference-frontendrendering-programmatically-initializeformelement:
 
 Initializing elements at runtime
----------------------------------
+--------------------------------
 
 Override :php:`initializeFormElement()` in a custom form element class to
 populate data (e.g. from a database) when the element is added to the form.

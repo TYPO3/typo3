@@ -1,39 +1,39 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 renderingOptions.nextButtonLabel
 --------------------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.formElementsDefinition.SummaryPage.renderingOptions.nextButtonLabel
+    prototypes.<prototypeIdentifier>.formElementsDefinition.SummaryPage.renderingOptions.nextButtonLabel
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Frontend
+    Frontend
 
 :aspect:`Overwritable within form definition`
-      Yes
+    Yes
 
 :aspect:`form editor can write this property into the form definition (for prototype 'standard')`
-      Yes
+    Yes
 
 :aspect:`Mandatory`
-      No
+    No
 
 :aspect:`Default value (for prototype 'standard')`
-      .. code-block:: yaml
-         :linenos:
-         :emphasize-lines: 5
+    ..  code-block:: yaml
+        :linenos:
+        :emphasize-lines: 5
 
-         SummaryPage:
-           renderingOptions:
-             _isTopLevelFormElement: true
-             _isCompositeFormElement: false
-             nextButtonLabel: 'next Page'
-             previousButtonLabel: 'previous Page'
+        SummaryPage:
+          renderingOptions:
+            _isTopLevelFormElement: true
+            _isCompositeFormElement: false
+            nextButtonLabel: 'next Page'
+            previousButtonLabel: 'previous Page'
 
-.. :aspect:`Good to know`
-      ToDo
+..  :aspect:`Good to know`
+    ToDo
 
 :aspect:`Description`
-      The label for the "next page" Button.
+    The label for the "next page" Button.

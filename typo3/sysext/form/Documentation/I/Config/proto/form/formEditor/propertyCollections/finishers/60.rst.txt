@@ -1,37 +1,37 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
 formEditor.propertyCollections.finishers.60
 -------------------------------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.formElementsDefinition.Form.formEditor.propertyCollections.finishers.60
+    prototypes.<prototypeIdentifier>.formElementsDefinition.Form.formEditor.propertyCollections.finishers.60
 
 :aspect:`Data type`
-      array
+    array
 
 :aspect:`Needed by`
-      Backend (form editor)
+    Backend (form editor)
 
 :aspect:`Mandatory`
-      No
+    No
 
 :aspect:`Default value (for prototype 'standard')`
-      .. code-block:: yaml
-         :linenos:
-         :emphasize-lines: 5-
+    ..  code-block:: yaml
+        :linenos:
+        :emphasize-lines: 5-
 
-         Form:
-           formEditor:
-             propertyCollections:
-               finishers:
-                 60:
-                   identifier: Closure
-                   editors:
-                     100:
-                       identifier: header
-                       templateName: Inspector-CollectionElementHeaderEditor
-                       label: formEditor.elements.Form.finisher.Closure.editor.header.label
-                     9999:
-                       identifier: removeButton
-                       templateName: Inspector-RemoveElementEditor
+        Form:
+          formEditor:
+            propertyCollections:
+              finishers:
+                60:
+                  identifier: Closure
+                  editors:
+                    100:
+                      identifier: header
+                      templateName: Inspector-CollectionElementHeaderEditor
+                      label: formEditor.elements.Form.finisher.Closure.editor.header.label
+                    9999:
+                      identifier: removeButton
+                      templateName: Inspector-RemoveElementEditor
 

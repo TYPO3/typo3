@@ -48,25 +48,25 @@ templateName
 ------------
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Backend (form editor)
+    Backend (form editor)
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
 :aspect:`Related options`
-      -   :ref:`prototypes.prototypeIdentifier.formEditor.formEditorPartials <prototypes.prototypeIdentifier.formeditor.formeditorpartials>`
+    -   :ref:`prototypes.prototypeIdentifier.formEditor.formEditorPartials <prototypes.prototypeIdentifier.formeditor.formeditorpartials>`
 
 :aspect:`value`
-      Inspector-DateEditor
+    Inspector-DateEditor
 
 :aspect:`Good to know`
-      -   :ref:`Inspector <concepts-formeditor-inspector>`
+    -   :ref:`Inspector <concepts-formeditor-inspector>`
 
 :aspect:`Description`
-      ..  include:: properties/TemplateName.rst.txt
+    ..  include:: properties/TemplateName.rst.txt
 
 
 ..  _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.identifier-dateeditor:
@@ -87,32 +87,32 @@ propertyValidators
 ------------------
 
 :aspect:`Data type`
-      array
+    array
 
 :aspect:`Needed by`
-      Backend (form editor)
+    Backend (form editor)
 
 :aspect:`Mandatory`
-      No
+    No
 
 :aspect:`Related options`
-      -   :ref:`formElementPropertyValidatorsDefinition <prototypes.prototypeIdentifier.formeditor.formelementpropertyvalidatorsdefinition>`
+    -   :ref:`formElementPropertyValidatorsDefinition <prototypes.prototypeIdentifier.formeditor.formelementpropertyvalidatorsdefinition>`
 
 :aspect:`Good to know`
-      -   :ref:`Inspector <concepts-formeditor-inspector>`
+    -   :ref:`Inspector <concepts-formeditor-inspector>`
 
 :aspect:`Description`
-      Validates the value of the `inspector editor` with JavaScript
-      validators. The `standard` prototype uses the
-      `RFC3339FullDateOrEmpty` validator. It accepts an empty value, a date
-      in the format `Y-m-d`, or a relative date expression.
+    Validates the value of the `inspector editor` with JavaScript
+    validators. The `standard` prototype uses the
+    `RFC3339FullDateOrEmpty` validator. It accepts an empty value, a date
+    in the format `Y-m-d`, or a relative date expression.
 
-      For example:
+    For example:
 
-      ..  code-block:: yaml
+    ..  code-block:: yaml
 
-          propertyValidators:
-            10: RFC3339FullDateOrEmpty
+        propertyValidators:
+          10: RFC3339FullDateOrEmpty
 
 
 ..  _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.description-dateeditor:
@@ -121,20 +121,20 @@ description
 -----------
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Backend (form editor)
+    Backend (form editor)
 
 :aspect:`Mandatory`
-      No
+    No
 
 :aspect:`Good to know`
-      -   :ref:`Inspector <concepts-formeditor-inspector>`
-      -   :ref:`Translate form editor settings <concepts-formeditor-translation-formeditor>`
+    -   :ref:`Inspector <concepts-formeditor-inspector>`
+    -   :ref:`Translate form editor settings <concepts-formeditor-translation-formeditor>`
 
 :aspect:`Description`
-      A text which is shown at the bottom of the `inspector editor`.
+    A text which is shown at the bottom of the `inspector editor`.
 
 
 ..  _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.additionalelementpropertypaths-dateeditor:
@@ -143,28 +143,28 @@ additionalElementPropertyPaths
 ------------------------------
 
 :aspect:`Data type`
-      array
+    array
 
 :aspect:`Needed by`
-      Backend (form editor)
+    Backend (form editor)
 
 :aspect:`Mandatory`
-      No
+    No
 
 :aspect:`Good to know`
-      -   :ref:`Inspector <concepts-formeditor-inspector>`
+    -   :ref:`Inspector <concepts-formeditor-inspector>`
 
 :aspect:`Description`
-      An array which holds property paths which should be written in addition
-      to the `propertyPath` option. If the value is empty, these properties
-      are removed from the form element.
+    An array which holds property paths which should be written in addition
+    to the `propertyPath` option. If the value is empty, these properties
+    are removed from the form element.
 
-      For example:
+    For example:
 
-      ..  code-block:: yaml
+    ..  code-block:: yaml
 
-          additionalElementPropertyPaths:
-            10: 'properties.fluidAdditionalAttributes.min'
+        additionalElementPropertyPaths:
+          10: 'properties.fluidAdditionalAttributes.min'
 
 
 ..  _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.example-dateeditor:

@@ -4,30 +4,30 @@ formEditor.propertyCollections.validators.50.editors.100
 --------------------------------------------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.formElementsDefinition.AdvancedPassword.formEditor.propertyCollections.validators.50.editors.100
+    prototypes.<prototypeIdentifier>.formElementsDefinition.AdvancedPassword.formEditor.propertyCollections.validators.50.editors.100
 
 :aspect:`Data type`
-      array/ :ref:`[CollectionElementHeaderEditor] <prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.collectionelementheadereditor>`
+    array/ :ref:`[CollectionElementHeaderEditor] <prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.collectionelementheadereditor>`
 
 :aspect:`Needed by`
-      Backend (form editor)
+    Backend (form editor)
 
 :aspect:`Mandatory`
-      Recommended
+    Recommended
 
 :aspect:`Default value (for prototype 'standard')`
-      .. code-block:: yaml
-         :linenos:
-         :emphasize-lines: 8-
+    ..  code-block:: yaml
+        :linenos:
+        :emphasize-lines: 8-
 
-         AdvancedPassword:
-           formEditor:
-             propertyCollections:
-               validators:
-                 50:
-                   identifier: Integer
-                   editors:
-                     100:
-                       identifier: header
-                       templateName: Inspector-CollectionElementHeaderEditor
-                       label: formEditor.elements.TextMixin.validators.Integer.editor.header.label
+        AdvancedPassword:
+          formEditor:
+            propertyCollections:
+              validators:
+                50:
+                  identifier: Integer
+                  editors:
+                    100:
+                      identifier: header
+                      templateName: Inspector-CollectionElementHeaderEditor
+                      label: formEditor.elements.TextMixin.validators.Integer.editor.header.label

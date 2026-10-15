@@ -1,210 +1,210 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
 
-.. _prototypes.prototypeIdentifier.validatorsdefinition.numberrange:
+..  _prototypes.prototypeIdentifier.validatorsdefinition.numberrange:
 
 =============
 [NumberRange]
 =============
 
 
-.. _prototypes.prototypeIdentifier.validatorsdefinition.numberrange-validationerrorcodes:
+..  _prototypes.prototypeIdentifier.validatorsdefinition.numberrange-validationerrorcodes:
 
 Validation error codes
 ======================
 
-- Error code: `1221563685`
-- Error message: `The given subject was not a valid number.`
+-   Error code: `1221563685`
+-   Error message: `The given subject was not a valid number.`
 
-- Error code: `1221561046`
-- Error message: `The given subject was not in the valid range (%s - %s).`
+-   Error code: `1221561046`
+-   Error message: `The given subject was not in the valid range (%s - %s).`
 
 
-.. _prototypes.prototypeIdentifier.validatorsdefinition.numberrange-properties:
+..  _prototypes.prototypeIdentifier.validatorsdefinition.numberrange-properties:
 
 Properties
 ==========
 
 
-.. _prototypes.prototypeIdentifier.validatorsdefinition.numberrange.implementationClassName:
+..  _prototypes.prototypeIdentifier.validatorsdefinition.numberrange.implementationClassName:
 
 implementationClassName
 -----------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.validatorsDefinition.NumberRange.implementationClassName
+    prototypes.<prototypeIdentifier>.validatorsDefinition.NumberRange.implementationClassName
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Frontend
+    Frontend
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
 :aspect:`Default value (for prototype 'standard')`
-      .. code-block:: yaml
-         :linenos:
-         :emphasize-lines: 2
+    ..  code-block:: yaml
+        :linenos:
+        :emphasize-lines: 2
 
-         NumberRange:
-           implementationClassName: TYPO3\CMS\Extbase\Validation\Validator\NumberRangeValidator
+        NumberRange:
+          implementationClassName: TYPO3\CMS\Extbase\Validation\Validator\NumberRangeValidator
 
 :aspect:`Good to know`
-      - :ref:`"Custom validator implementations"<concepts-validators-customvalidatorimplementations>`
+    -   :ref:`"Custom validator implementations"<concepts-validators-customvalidatorimplementations>`
 
 :aspect:`Description`
-      .. include:: ../properties/implementationClassName.rst.txt
+    ..  include:: ../properties/implementationClassName.rst.txt
 
 
-.. _prototypes.prototypeIdentifier.validatorsdefinition.numberrange.options.minimum:
+..  _prototypes.prototypeIdentifier.validatorsdefinition.numberrange.options.minimum:
 
 options.minimum
 ---------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.validatorsDefinition.NumberRange.options.minimum
+    prototypes.<prototypeIdentifier>.validatorsDefinition.NumberRange.options.minimum
 
 :aspect:`Data type`
-      int
+    int
 
 :aspect:`Needed by`
-      Frontend
+    Frontend
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
 :aspect:`Default value (for prototype 'standard')`
-      undefined
+    undefined
 
 :aspect:`Description`
-      The minimum value to accept.
+    The minimum value to accept.
 
 
-.. _prototypes.prototypeIdentifier.validatorsdefinition.numberrange.options.maximum:
+..  _prototypes.prototypeIdentifier.validatorsdefinition.numberrange.options.maximum:
 
 options.maximum
 ---------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.validatorsDefinition.NumberRange.options.maximum
+    prototypes.<prototypeIdentifier>.validatorsDefinition.NumberRange.options.maximum
 
 :aspect:`Data type`
-      int
+    int
 
 :aspect:`Needed by`
-      Frontend
+    Frontend
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
 :aspect:`Default value (for prototype 'standard')`
-      undefined
+    undefined
 
 :aspect:`Description`
-      The maximum value to accept.
+    The maximum value to accept.
 
 
-.. _prototypes.prototypeIdentifier.validatorsdefinition.numberrange.formeditor.iconidentifier:
+..  _prototypes.prototypeIdentifier.validatorsdefinition.numberrange.formeditor.iconidentifier:
 
 formEditor.iconIdentifier
 -------------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.validatorsDefinition.NumberRange.formEditor.iconIdentifier
+    prototypes.<prototypeIdentifier>.validatorsDefinition.NumberRange.formEditor.iconIdentifier
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Backend (form editor)
+    Backend (form editor)
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
 :aspect:`Default value (for prototype 'standard')`
-      .. code-block:: yaml
-         :linenos:
-         :emphasize-lines: 3
+    ..  code-block:: yaml
+        :linenos:
+        :emphasize-lines: 3
 
-         NumberRange:
-           formEditor:
-             iconIdentifier: form-validator
-             label: formEditor.elements.TextMixin.editor.validators.NumberRange.label
+        NumberRange:
+          formEditor:
+            iconIdentifier: form-validator
+            label: formEditor.elements.TextMixin.editor.validators.NumberRange.label
 
-.. :aspect:`Good to know`
-      ToDo
+..  :aspect:`Good to know`
+    ToDo
 
 :aspect:`Description`
-      .. include:: ../properties/iconIdentifier.rst.txt
+    ..  include:: ../properties/iconIdentifier.rst.txt
 
 
-.. _prototypes.prototypeIdentifier.validatorsdefinition.numberrange.formeditor.label:
+..  _prototypes.prototypeIdentifier.validatorsdefinition.numberrange.formeditor.label:
 
 formEditor.label
 ----------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.validatorsDefinition.NumberRange.formEditor.label
+    prototypes.<prototypeIdentifier>.validatorsDefinition.NumberRange.formEditor.label
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Backend (form editor)
+    Backend (form editor)
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
 :aspect:`Default value (for prototype 'standard')`
-      .. code-block:: yaml
-         :linenos:
-         :emphasize-lines: 4
+    ..  code-block:: yaml
+        :linenos:
+        :emphasize-lines: 4
 
-         NumberRange:
-           formEditor:
-             iconIdentifier: form-validator
-             label: formEditor.elements.TextMixin.editor.validators.NumberRange.label
+        NumberRange:
+          formEditor:
+            iconIdentifier: form-validator
+            label: formEditor.elements.TextMixin.editor.validators.NumberRange.label
 
 :aspect:`Good to know`
-      - :ref:`"Translate form editor settings"<concepts-formeditor-translation-formeditor>`
+    -   :ref:`"Translate form editor settings"<concepts-formeditor-translation-formeditor>`
 
 :aspect:`Description`
-      .. include:: ../properties/label.rst.txt
+    ..  include:: ../properties/label.rst.txt
 
 
-.. _prototypes.prototypeIdentifier.validatorsdefinition.numberrange.formeditor.predefineddefaults:
+..  _prototypes.prototypeIdentifier.validatorsdefinition.numberrange.formeditor.predefineddefaults:
 
 formEditor.predefinedDefaults
 -----------------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.validatorsDefinition.NumberRange.formEditor.predefinedDefaults
+    prototypes.<prototypeIdentifier>.validatorsDefinition.NumberRange.formEditor.predefinedDefaults
 
 :aspect:`Data type`
-      array
+    array
 
 :aspect:`Needed by`
-      Backend (form editor)
+    Backend (form editor)
 
 :aspect:`Mandatory`
-      No
+    No
 
 :aspect:`Default value (for prototype 'standard')`
-      .. code-block:: yaml
-         :linenos:
-         :emphasize-lines: 3-
+    ..  code-block:: yaml
+        :linenos:
+        :emphasize-lines: 3-
 
-         NumberRange:
-           formEditor:
-             predefinedDefaults:
-               options:
-                 minimum: ''
-                 maximum: ''
+        NumberRange:
+          formEditor:
+            predefinedDefaults:
+              options:
+                minimum: ''
+                maximum: ''
 
-.. :aspect:`Good to know`
-      ToDo
+..  :aspect:`Good to know`
+    ToDo
 
 :aspect:`Description`
-      .. include:: ../properties/predefinedDefaults.rst.txt
+    ..  include:: ../properties/predefinedDefaults.rst.txt

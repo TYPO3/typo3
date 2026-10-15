@@ -1,16 +1,17 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
 
-.. _concepts-formplugin:
+..  _concepts-formplugin:
 
+===========
 Form plugin
 ===========
 
 
-.. _concepts-formplugin-general:
+..  _concepts-formplugin-general:
 
 What does it do?
-----------------
+================
 
 The ``form plugin`` allows you to assign a form to a page and view it in the
 frontend. The form can have been created via the ``form editor`` or shipped with
@@ -27,10 +28,10 @@ Read more about changing :ref:`general<prototypes.prototypeIdentifier.formengine
 and :ref:`specific form plugin configuration<prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier.formengine>`.
 
 
-.. _concepts-formplugin-exclude-override:
+..  _concepts-formplugin-exclude-override:
 
 Exclude options from overrides
-------------------------------
+==============================
 
 Sometimes it is useful to prevent options from being overridden by the
 form plugin. You can do this by unsetting the options in your
@@ -39,46 +40,46 @@ general forms configuration YAML. To unset options use the YAML NULL (:yaml:`~`)
 In this example, four ``EmailToReceiver`` finisher fields are unset. The
 options will be removed from the form plugin but not the form editor.
 
-.. code-block:: yaml
+..  code-block:: yaml
 
-   prototypes:
-     standard:
-       finishersDefinition:
-         EmailToReceiver:
-           FormEngine:
-             elements:
-               senderAddress: ~
-               senderName: ~
-               replyToRecipients: ~
-               translation: ~
+    prototypes:
+      standard:
+        finishersDefinition:
+          EmailToReceiver:
+            FormEngine:
+              elements:
+                senderAddress: ~
+                senderName: ~
+                replyToRecipients: ~
+                translation: ~
 
 
-.. _concepts-formplugin-translation-formengine:
+..  _concepts-formplugin-translation-formengine:
 
 Translation of form plugin
---------------------------
+==========================
 
 All option values under the following configuration keys can be
 translated:
 
-.. code-block:: yaml
+..  code-block:: yaml
 
-   prototypes:
-     standard:
-       finishersDefinition:
-         <finisherIdentifier>
-           formEngine:
+    prototypes:
+      standard:
+        finishersDefinition:
+          <finisherIdentifier>
+            formEngine:
 
 ``Form plugin`` translation files are loaded as follows:
 
-.. code-block:: yaml
+..  code-block:: yaml
 
-   prototypes:
-     standard:
-       formEngine:
-         translationFiles:
-           # custom translation file
-           20: 'EXT:my_site_package/Resources/Private/Language/Database.xlf'
+    prototypes:
+      standard:
+        formEngine:
+          translationFiles:
+            # custom translation file
+            20: 'EXT:my_site_package/Resources/Private/Language/Database.xlf'
 
 Each option value is searched for in the defined
 translation files. If a translation is found, the translated option value
@@ -86,11 +87,11 @@ will be used.
 
 Imagine that the following option value is defined:
 
-.. code-block:: yaml
+..  code-block:: yaml
 
-   ...
-   label: 'tt_content.finishersDefinition.EmailToReceiver.label'
-   ...
+    ...
+    label: 'tt_content.finishersDefinition.EmailToReceiver.label'
+    ...
 
 The translation key
 ``tt_content.finishersDefinition.EmailToReceiver.label`` is first searched for in the file
