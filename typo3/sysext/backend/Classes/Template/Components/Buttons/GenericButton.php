@@ -97,6 +97,7 @@ class GenericButton implements ButtonInterface
     protected ButtonSize $size = ButtonSize::SMALL;
     protected array $attributes = [];
     protected bool $showLabelText = false;
+    protected bool $disabled = false;
 
     public function setTag(string $tag): static
     {
@@ -204,6 +205,21 @@ class GenericButton implements ButtonInterface
         return $this;
     }
 
+    public function isDisabled(): bool
+    {
+        return $this->disabled;
+    }
+
+    /**
+     * Renders the attribute "disabled", for a tag other than <button> also the class "disabled"
+     * of the styles. The pseudo buttons of the backend behave as a disabled button then.
+     */
+    public function setDisabled(bool $disabled): static
+    {
+        $this->disabled = $disabled;
+        return $this;
+    }
+
     public function isValid(): bool
     {
         return trim($this->getLabel()) !== ''
@@ -228,6 +244,9 @@ class GenericButton implements ButtonInterface
         }
         if ($this->getTitle()) {
             $attributes['title'] = $this->getTitle();
+        }
+        if ($this->isDisabled()) {
+            $attributes['disabled'] = 'disabled';
         }
 
         return GeneralUtility::implodeAttributes($attributes, true);

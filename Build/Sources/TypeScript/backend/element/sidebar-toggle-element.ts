@@ -49,7 +49,6 @@ export class SidebarToggleElement extends PseudoButtonLitElement {
 
   @property({ type: String, attribute: 'label-collapse' }) labelCollapse: string = 'Collapse sidebar';
   @property({ type: String, attribute: 'label-expand' }) labelExpand: string = 'Expand sidebar';
-  @property({ type: Boolean, reflect: true }) disabled: boolean = false;
 
   @state() private expanded: boolean = false;
 
@@ -67,7 +66,6 @@ export class SidebarToggleElement extends PseudoButtonLitElement {
 
   protected override updated(): void {
     this.updateLabels();
-    this.updateDisabledState();
   }
 
   protected override render(): TemplateResult {
@@ -77,9 +75,7 @@ export class SidebarToggleElement extends PseudoButtonLitElement {
   }
 
   protected override buttonActivated(): void {
-    if (!this.disabled) {
-      ScaffoldState.toggleSidebar();
-    }
+    ScaffoldState.toggleSidebar();
   }
 
   private readonly handleSidebarToggle = (event: ScaffoldSidebarToggleEvent): void => {
@@ -90,16 +86,6 @@ export class SidebarToggleElement extends PseudoButtonLitElement {
     const label = this.expanded ? this.labelCollapse : this.labelExpand;
     this.title = label;
     this.setAttribute('aria-label', label);
-  }
-
-  private updateDisabledState(): void {
-    if (this.disabled) {
-      this.setAttribute('aria-disabled', 'true');
-      this.tabIndex = -1;
-    } else {
-      this.removeAttribute('aria-disabled');
-      this.tabIndex = 0;
-    }
   }
 }
 
