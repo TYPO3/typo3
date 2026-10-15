@@ -1,211 +1,211 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
 
-.. _prototypes.prototypeIdentifier.validatorsdefinition.filesize:
+..  _prototypes.prototypeIdentifier.validatorsdefinition.filesize:
 
 ==========
 [FileSize]
 ==========
 
 
-.. _prototypes.prototypeIdentifier.validatorsdefinition.filesize-validationerrorcodes:
+..  _prototypes.prototypeIdentifier.validatorsdefinition.filesize-validationerrorcodes:
 
 Validation error codes
 ======================
 
-- Error code: `1505303626`
-- Error message: `You must enter an instance of \TYPO3\CMS\Extbase\Domain\Model\FileReference
-  or \TYPO3\CMS\Core\Resource\File.`
+-   Error code: `1505303626`
+-   Error message: `You must enter an instance of \TYPO3\CMS\Extbase\Domain\Model\FileReference
+    or \TYPO3\CMS\Core\Resource\File.`
 
-- Error code: `1505305752`
-- Error message: `You must select a file that is larger than %s in size.`
+-   Error code: `1505305752`
+-   Error message: `You must select a file that is larger than %s in size.`
 
-- Error code: `1505305753`
-- Error message: `You must select a file that is no larger than %s.`
+-   Error code: `1505305753`
+-   Error message: `You must select a file that is no larger than %s.`
 
 
-.. _prototypes.prototypeIdentifier.validatorsdefinition.filesize-properties:
+..  _prototypes.prototypeIdentifier.validatorsdefinition.filesize-properties:
 
 Properties
 ==========
 
 
-.. _prototypes.prototypeIdentifier.validatorsdefinition.filesize.implementationClassName:
+..  _prototypes.prototypeIdentifier.validatorsdefinition.filesize.implementationClassName:
 
 implementationClassName
 -----------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.validatorsDefinition.FileSize.implementationClassName
+    prototypes.<prototypeIdentifier>.validatorsDefinition.FileSize.implementationClassName
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Frontend
+    Frontend
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
 :aspect:`Default value (for prototype 'standard')`
-      .. code-block:: yaml
-         :linenos:
-         :emphasize-lines: 2
+    ..  code-block:: yaml
+        :linenos:
+        :emphasize-lines: 2
 
-             FileSize:
-               implementationClassName: TYPO3\CMS\Form\Mvc\Validation\FileSizeValidator
+            FileSize:
+              implementationClassName: TYPO3\CMS\Form\Mvc\Validation\FileSizeValidator
 
 :aspect:`Good to know`
-      - :ref:`"Custom validator implementations"<concepts-validators-customvalidatorimplementations>`
+    -   :ref:`"Custom validator implementations"<concepts-validators-customvalidatorimplementations>`
 
 :aspect:`Description`
-      .. include:: ../properties/implementationClassName.rst.txt
+    ..  include:: ../properties/implementationClassName.rst.txt
 
 
-.. _prototypes.prototypeIdentifier.validatorsdefinition.filesize.options.minimum:
+..  _prototypes.prototypeIdentifier.validatorsdefinition.filesize.options.minimum:
 
 options.minimum
 ---------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.validatorsDefinition.FileSize.options.minimum
+    prototypes.<prototypeIdentifier>.validatorsDefinition.FileSize.options.minimum
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Frontend
+    Frontend
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
 :aspect:`Default value (for prototype 'standard')`
-      undefined
+    undefined
 
 :aspect:`Description`
-      The minimum filesize to accept. Use the format `<size>B|K|M|G`. For example: `10M` means 10 Megabytes.
+    The minimum filesize to accept. Use the format `<size>B|K|M|G`. For example: `10M` means 10 Megabytes.
 
 
-.. _prototypes.prototypeIdentifier.validatorsdefinition.filesize.options.maximum:
+..  _prototypes.prototypeIdentifier.validatorsdefinition.filesize.options.maximum:
 
 options.maximum
 ---------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.validatorsDefinition.FileSize.options.maximum
+    prototypes.<prototypeIdentifier>.validatorsDefinition.FileSize.options.maximum
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Frontend
+    Frontend
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
 :aspect:`Default value (for prototype 'standard')`
-      undefined
+    undefined
 
 :aspect:`Description`
-      The maximum filesize to accept. Use the format `<size>B|K|M|G`. For example: `10M` means 10 Megabytes.
+    The maximum filesize to accept. Use the format `<size>B|K|M|G`. For example: `10M` means 10 Megabytes.
 
 
-.. _prototypes.prototypeIdentifier.validatorsdefinition.filesize.formeditor.iconidentifier:
+..  _prototypes.prototypeIdentifier.validatorsdefinition.filesize.formeditor.iconidentifier:
 
 formEditor.iconIdentifier
 -------------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.validatorsDefinition.FileSize.formEditor.iconIdentifier
+    prototypes.<prototypeIdentifier>.validatorsDefinition.FileSize.formEditor.iconIdentifier
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Backend (form editor)
+    Backend (form editor)
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
 :aspect:`Default value (for prototype 'standard')`
-      .. code-block:: yaml
-         :linenos:
-         :emphasize-lines: 3
+    ..  code-block:: yaml
+        :linenos:
+        :emphasize-lines: 3
 
-             FileSize:
-               formEditor:
-                 iconIdentifier: form-validator
-                 label: formEditor.elements.FileUploadMixin.validators.FileSize.editor.header.label
+            FileSize:
+              formEditor:
+                iconIdentifier: form-validator
+                label: formEditor.elements.FileUploadMixin.validators.FileSize.editor.header.label
 
-.. :aspect:`Good to know`
-      ToDo
+..  :aspect:`Good to know`
+    ToDo
 
 :aspect:`Description`
-      .. include:: ../properties/iconIdentifier.rst.txt
+    ..  include:: ../properties/iconIdentifier.rst.txt
 
 
-.. _prototypes.prototypeIdentifier.validatorsdefinition.filesize.formeditor.label:
+..  _prototypes.prototypeIdentifier.validatorsdefinition.filesize.formeditor.label:
 
 formEditor.label
 ----------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.validatorsDefinition.FileSize.formEditor.label
+    prototypes.<prototypeIdentifier>.validatorsDefinition.FileSize.formEditor.label
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Backend (form editor)
+    Backend (form editor)
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
 :aspect:`Default value (for prototype 'standard')`
-      .. code-block:: yaml
-         :linenos:
-         :emphasize-lines: 4
+    ..  code-block:: yaml
+        :linenos:
+        :emphasize-lines: 4
 
-             FileSize:
-               formEditor:
-                 iconIdentifier: form-validator
-                 label: formEditor.elements.FileUploadMixin.validators.FileSize.editor.header.label
+            FileSize:
+              formEditor:
+                iconIdentifier: form-validator
+                label: formEditor.elements.FileUploadMixin.validators.FileSize.editor.header.label
 
 :aspect:`Good to know`
-      - :ref:`"Translate form editor settings"<concepts-formeditor-translation-formeditor>`
+    -   :ref:`"Translate form editor settings"<concepts-formeditor-translation-formeditor>`
 
 :aspect:`Description`
-      .. include:: ../properties/label.rst.txt
+    ..  include:: ../properties/label.rst.txt
 
 
-.. _prototypes.prototypeIdentifier.validatorsdefinition.filesize.formeditor.predefineddefaults:
+..  _prototypes.prototypeIdentifier.validatorsdefinition.filesize.formeditor.predefineddefaults:
 
 formEditor.predefinedDefaults
 -----------------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.validatorsDefinition.FileSize.formEditor.predefinedDefaults
+    prototypes.<prototypeIdentifier>.validatorsDefinition.FileSize.formEditor.predefinedDefaults
 
 :aspect:`Data type`
-      array
+    array
 
 :aspect:`Needed by`
-      Backend (form editor)
+    Backend (form editor)
 
 :aspect:`Mandatory`
-      No
+    No
 
 :aspect:`Default value (for prototype 'standard')`
-      .. code-block:: yaml
-         :linenos:
-         :emphasize-lines: 3-
+    ..  code-block:: yaml
+        :linenos:
+        :emphasize-lines: 3-
 
-             FileSize:
-               formEditor:
-                 predefinedDefaults:
-                   options:
-                     minimum: '0B'
-                     maximum: '10M'
+            FileSize:
+              formEditor:
+                predefinedDefaults:
+                  options:
+                    minimum: '0B'
+                    maximum: '10M'
 
 :aspect:`Description`
-      .. include:: ../properties/predefinedDefaults.rst.txt
+    ..  include:: ../properties/predefinedDefaults.rst.txt

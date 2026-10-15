@@ -1,34 +1,34 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 formEditor.propertyCollections.validators.10.identifier
 -------------------------------------------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.formElementsDefinition.ImageUpload.formEditor.propertyCollections.validators.10.identifier
+    prototypes.<prototypeIdentifier>.formElementsDefinition.ImageUpload.formEditor.propertyCollections.validators.10.identifier
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Backend (form editor)
+    Backend (form editor)
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
 :aspect:`Default value (for prototype 'standard')`
-      .. code-block:: yaml
-         :linenos:
-         :emphasize-lines: 6
+    ..  code-block:: yaml
+        :linenos:
+        :emphasize-lines: 6
 
-         ImageUpload:
-           formEditor:
-             propertyCollections:
-               validators:
-                 10:
-                   identifier: FileSize
+        ImageUpload:
+          formEditor:
+            propertyCollections:
+              validators:
+                10:
+                  identifier: FileSize
 
 :aspect:`Good to know`
-      - :ref:`"Inspector"<concepts-formeditor-inspector>`
-      - :ref:`"\<validatorIdentifier>"<prototypes.prototypeIdentifier.validatorsdefinition.validatoridentifier>`
+    -   :ref:`"Inspector"<concepts-formeditor-inspector>`
+    -   :ref:`"\<validatorIdentifier>"<prototypes.prototypeIdentifier.validatorsdefinition.validatoridentifier>`
 
 :aspect:`Description`
-      Identifies the validator which should be attached to the form element. Must be equal to an existing `<validatorIdentifier>`.
+    Identifies the validator which should be attached to the form element. Must be equal to an existing `<validatorIdentifier>`.

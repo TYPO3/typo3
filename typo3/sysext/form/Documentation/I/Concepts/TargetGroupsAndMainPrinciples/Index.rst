@@ -1,8 +1,9 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
 
-.. _concepts-introduction:
+..  _concepts-introduction:
 
+=================================
 Target groups and main principles
 =================================
 

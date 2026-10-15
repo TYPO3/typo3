@@ -16,7 +16,7 @@ renderingOptions.fluidAdditionalAttributes
     No
 
 :aspect:`Good to know`
-    - :ref:`"Translate form definition"<concepts-frontendrendering-translation-formdefinition>`
+    -   :ref:`"Translate form definition"<concepts-frontendrendering-translation-formdefinition>`
 
 :aspect:`Description`
     The values within this array are directly used within the form element ViewHelper's property ``additionalAttributes``.

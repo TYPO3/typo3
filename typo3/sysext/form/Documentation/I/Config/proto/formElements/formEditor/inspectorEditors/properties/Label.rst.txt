@@ -3,23 +3,23 @@ label
 -----
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.formElementsDefinition.<formElementTypeIdentifier>.formEditor.editors.*.label
+    prototypes.<prototypeIdentifier>.formElementsDefinition.<formElementTypeIdentifier>.formEditor.editors.*.label
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Backend (form editor)
+    Backend (form editor)
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete element configuration <prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier-concreteconfigurations>`)
+    Depends (see :ref:`concrete element configuration <prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier-concreteconfigurations>`)
 
 :aspect:`Good to know`
-      - :ref:`"Inspector"<concepts-formeditor-inspector>`
-      - :ref:`"Translate form editor settings"<concepts-formeditor-translation-formeditor>`
+    -   :ref:`"Inspector"<concepts-formeditor-inspector>`
+    -   :ref:`"Translate form editor settings"<concepts-formeditor-translation-formeditor>`
 
 :aspect:`Description`
-      The label for this ``inspector editor`` which is shown within the ``inspector component``.
+    The label for this ``inspector editor`` which is shown within the ``inspector component``.

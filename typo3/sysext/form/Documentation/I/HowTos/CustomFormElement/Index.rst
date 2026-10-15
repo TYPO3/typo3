@@ -1,6 +1,6 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
-.. _howtos-custom-form-element:
+..  _howtos-custom-form-element:
 
 ==============================
 Creating a custom form element
@@ -9,9 +9,9 @@ Creating a custom form element
 This tutorial shows you how to create a custom form element for the TYPO3 Form
 Framework. We'll create a "Gender Select" element as an example.
 
-.. contents:: Table of Contents
-   :depth: 2
-   :local:
+..  contents:: Table of Contents
+    :depth: 2
+    :local:
 
 ..  _howtos-custom-form-element-prerequisites:
 
@@ -20,8 +20,8 @@ Prerequisites
 
 Before you start, make sure you have:
 
-* Basic knowledge of YAML configuration
-* A sitepackage where you can add configuration files
+*   Basic knowledge of YAML configuration
+*   A sitepackage where you can add configuration files
 
 ..  _howtos-custom-form-element-step-1-create:
 
@@ -53,9 +53,9 @@ Configuration structure
 
 Here's the complete configuration for our Gender Select element:
 
-.. literalinclude:: _CustomFormSetup.yaml
-   :language: yaml
-   :caption: EXT:my_extension/Configuration/Form/CustomElement/config.yaml (after metadata)
+..  literalinclude:: _CustomFormSetup.yaml
+    :language: yaml
+    :caption: EXT:my_extension/Configuration/Form/CustomElement/config.yaml (after metadata)
 
 ..  _howtos-custom-form-element-step-1-create-configuration-structure-common:
 
@@ -122,7 +122,7 @@ for the finisher options that use display values.
 ..  _howtos-custom-form-element-step-2-register:
 
 Step 2: Register the configuration
-===================================
+==================================
 
 No PHP or TypoScript registration is needed. TYPO3 discovers YAML files
 automatically from any extension that follows the directory convention.
@@ -162,17 +162,17 @@ After adding the configuration, you must clear all TYPO3 caches.
 ..  _howtos-custom-form-element-step-4-custom:
 
 Step 4: Using your custom element
-==================================
+=================================
 
 Now you can use your custom element in the form editor:
 
-1. Open the Form Editor user interface (:guilabel:`Forms > [Your Form] > Edit`)
-2. Look for "Gender Select" in the form element browser.
-3. Add the element to the form.
-4. Configure the element using the inspector panel on the right.
-5. Save your form.
-6. Add a form content element to a page and select the form you just edited.
-7. Preview the page in the frontend.
+1.  Open the Form Editor user interface (:guilabel:`Forms > [Your Form] > Edit`)
+2.  Look for "Gender Select" in the form element browser.
+3.  Add the element to the form.
+4.  Configure the element using the inspector panel on the right.
+5.  Save your form.
+6.  Add a form content element to a page and select the form you just edited.
+7.  Preview the page in the frontend.
 
 The element will now be available in your forms and will render using the
 RadioButton template in the frontend.
@@ -180,7 +180,7 @@ RadioButton template in the frontend.
 ..  _howtos-custom-form-element-step-5-customizing:
 
 Step 5: Customizing frontend output (optional)
-===============================================
+==============================================
 
 If you want to use a custom template instead of reusing an existing one, follow
 these steps:
@@ -194,9 +194,9 @@ Create your own Fluid template:
 
 :file:`EXT:my_extension/Resources/Private/Partials/Form/GenderSelect.fluid.html`
 
-.. literalinclude:: _GenderSelect.fluid.html
-   :language: html
-   :caption: EXT:my_extension/Resources/Private/Partials/Form/GenderSelect.fluid.html
+..  literalinclude:: _GenderSelect.fluid.html
+    :language: html
+    :caption: EXT:my_extension/Resources/Private/Partials/Form/GenderSelect.fluid.html
 
 
 ..  _howtos-custom-form-element-step-5-customizing-update-configuration:
@@ -206,20 +206,20 @@ Update configuration
 
 Update your YAML configuration to use the custom partial template:
 
-.. code-block:: yaml
-   :caption: EXT:my_extension/Configuration/Form/CustomElement/config.yaml
-   :emphasize-lines: 3-7, 10
+..  code-block:: yaml
+    :caption: EXT:my_extension/Configuration/Form/CustomElement/config.yaml
+    :emphasize-lines: 3-7, 10
 
-   prototypes:
-     standard:
-       formElementsDefinition:
-         Form:
+    prototypes:
+      standard:
+        formElementsDefinition:
+          Form:
+             renderingOptions:
+                partialRootPaths:
+                   1732785721: 'EXT:my_extension/Resources/Private/Partials/Form/'
+          GenderSelect:
             renderingOptions:
-               partialRootPaths:
-                  1732785721: 'EXT:my_extension/Resources/Private/Partials/Form/'
-         GenderSelect:
-           renderingOptions:
-             templateName: 'GenderSelect'
+              templateName: 'GenderSelect'
 
 
 ..  _howtos-custom-form-element-further-reading:
@@ -227,5 +227,5 @@ Update your YAML configuration to use the custom partial template:
 Further reading
 ===============
 
-* :ref:`Form Configuration <concepts-configuration>`
-* :ref:`Register a custom stage template <apireference-formeditor-basicjavascriptconcepts-events-view-inspector-editor-insert-perform>`
+*   :ref:`Form Configuration <concepts-configuration>`
+*   :ref:`Register a custom stage template <apireference-formeditor-basicjavascriptconcepts-events-view-inspector-editor-insert-perform>`

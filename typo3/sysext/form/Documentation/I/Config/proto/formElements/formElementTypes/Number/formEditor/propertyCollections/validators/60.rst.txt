@@ -1,34 +1,34 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
 formEditor.propertyCollections.validators.60
 --------------------------------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.formElementsDefinition.Number.formEditor.propertyCollections.validators.60
+    prototypes.<prototypeIdentifier>.formElementsDefinition.Number.formEditor.propertyCollections.validators.60
 
 :aspect:`Data type`
-      array
+    array
 
 :aspect:`Needed by`
-      Backend (form editor)
+    Backend (form editor)
 
 :aspect:`Mandatory`
-      No
+    No
 
 :aspect:`Default value (for prototype 'standard')`
-      .. code-block:: yaml
-         :linenos:
-         :emphasize-lines: 5-
+    ..  code-block:: yaml
+        :linenos:
+        :emphasize-lines: 5-
 
-         Number:
-           formEditor:
-             propertyCollections:
-               validators:
-                 60:
-                   identifier: Number
-                   editors:
-                     100:
-                       identifier: header
-                       templateName: Inspector-CollectionElementHeaderEditor
-                       label: formEditor.elements.TextMixin.validators.Number.editor.header.label
+        Number:
+          formEditor:
+            propertyCollections:
+              validators:
+                60:
+                  identifier: Number
+                  editors:
+                    100:
+                      identifier: header
+                      templateName: Inspector-CollectionElementHeaderEditor
+                      label: formEditor.elements.TextMixin.validators.Number.editor.header.label
 

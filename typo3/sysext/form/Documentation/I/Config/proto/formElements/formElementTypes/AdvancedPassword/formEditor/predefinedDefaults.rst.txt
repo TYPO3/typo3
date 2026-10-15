@@ -3,30 +3,30 @@ formEditor.predefinedDefaults
 -----------------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.formElementsDefinition.AdvancedPassword.formEditor.predefinedDefaults
+    prototypes.<prototypeIdentifier>.formElementsDefinition.AdvancedPassword.formEditor.predefinedDefaults
 
 :aspect:`Data type`
-      array
+    array
 
 :aspect:`Needed by`
-      Backend (form editor)
+    Backend (form editor)
 
 :aspect:`Mandatory`
-      Recommended
+    Recommended
 
 :aspect:`Default value (for prototype 'standard')`
-      .. code-block:: yaml
-         :linenos:
-         :emphasize-lines: 3-
+    ..  code-block:: yaml
+        :linenos:
+        :emphasize-lines: 3-
 
-         AdvancedPassword:
-           formEditor:
-             predefinedDefaults:
-               properties:
-                 confirmationLabel: formEditor.element.AdvancedPassword.editor.confirmationLabel.predefinedDefaults
+        AdvancedPassword:
+          formEditor:
+            predefinedDefaults:
+              properties:
+                confirmationLabel: formEditor.element.AdvancedPassword.editor.confirmationLabel.predefinedDefaults
 
-.. :aspect:`Good to know`
-      ToDo
+..  :aspect:`Good to know`
+    ToDo
 
 :aspect:`Description`
-      Defines predefined defaults for form element properties which are prefilled, if the form element is added to a form.
+    Defines predefined defaults for form element properties which are prefilled, if the form element is added to a form.

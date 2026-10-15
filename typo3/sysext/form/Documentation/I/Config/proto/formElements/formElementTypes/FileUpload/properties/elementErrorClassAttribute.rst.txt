@@ -1,44 +1,44 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 properties.elementErrorClassAttribute
 -------------------------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.formElementsDefinition.FileUpload.properties.elementErrorClassAttribute
+    prototypes.<prototypeIdentifier>.formElementsDefinition.FileUpload.properties.elementErrorClassAttribute
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Frontend/ Backend (form editor)
+    Frontend/ Backend (form editor)
 
 :aspect:`Overwritable within form definition`
-      Yes
+    Yes
 
 :aspect:`form editor can write this property into the form definition (for prototype 'standard')`
-      No
+    No
 
 :aspect:`Mandatory`
-      No
+    No
 
 :aspect:`Default value (for prototype 'standard')`
-      .. code-block:: yaml
-         :linenos:
-         :emphasize-lines: 5
+    ..  code-block:: yaml
+        :linenos:
+        :emphasize-lines: 5
 
-         FileUpload:
-           properties:
-             containerClassAttribute: input
-             elementClassAttribute: ''
-             elementErrorClassAttribute: error
-             saveToFileMount: '1:/user_upload/'
-             allowedMimeTypes:
-               - application/msword
-               - application/vnd.openxmlformats-officedocument.wordprocessingml.document
-               - application/vnd.oasis.opendocument.text
-               - application/pdf
+        FileUpload:
+          properties:
+            containerClassAttribute: input
+            elementClassAttribute: ''
+            elementErrorClassAttribute: error
+            saveToFileMount: '1:/user_upload/'
+            allowedMimeTypes:
+              - application/msword
+              - application/vnd.openxmlformats-officedocument.wordprocessingml.document
+              - application/vnd.oasis.opendocument.text
+              - application/pdf
 
-.. :aspect:`Good to know`
-      ToDo
+..  :aspect:`Good to know`
+    ToDo
 
 :aspect:`Description`
-      A CSS class which is written to the form element if validation errors exists.
+    A CSS class which is written to the form element if validation errors exists.

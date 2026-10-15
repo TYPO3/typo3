@@ -1,8 +1,9 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
 
-.. _concepts-form-file-storages:
+..  _concepts-form-file-storages:
 
+============
 Form storage
 ============
 
@@ -22,7 +23,7 @@ select the storage in the
 ..  _concepts-form-storages-database:
 
 Database storage
-----------------
+================
 
 ..  versionadded:: 14.2
     :changelog: feature-108653-1767199420
@@ -49,15 +50,15 @@ shows the record history of a form.
 ..  _concepts-form-storages-extension:
 
 Extension storage
------------------
+=================
 
 Form definitions can also be stored in and shipped with your own
 extensions and backend users can then
 embed your forms. Furthermore, you can configure that your form
 definitions:
 
-- can be edited in the ``form editor``,
-- can be deleted with the ``form manager``.
+-   can be edited in the ``form editor``,
+-   can be deleted with the ``form manager``.
 
 By default, all these options are turned off because dynamic content inside an
 extension - possibly version-controlled - is not a good idea. There is also no
@@ -65,30 +66,30 @@ ACL system available.
 
 Add a folder of your extension for form definitions as follows:
 
-.. code-block:: yaml
+..  code-block:: yaml
 
-   persistenceManager:
-     allowedExtensionPaths:
-       10: EXT:my_site_package/Resources/Private/Forms/
+    persistenceManager:
+      allowedExtensionPaths:
+        10: EXT:my_site_package/Resources/Private/Forms/
 
 Allow backend users to **edit** forms stored in your extension as follows:
 
-.. code-block:: yaml
+..  code-block:: yaml
 
-   persistenceManager:
-     allowSaveToExtensionPaths: true
+    persistenceManager:
+      allowSaveToExtensionPaths: true
 
 Allow backend users to **delete** forms stored in your extension as follows:
 
-.. code-block:: yaml
+..  code-block:: yaml
 
-   persistenceManager:
-     allowDeleteFromExtensionPaths: true
+    persistenceManager:
+      allowDeleteFromExtensionPaths: true
 
 ..  _concepts-form-storages-transfer:
 
 Transfer forms between storages
--------------------------------
+===============================
 
 The console command `form:definition:transfer` copies form definitions
 from one storage to another. Use it, for example, to move the forms of an
@@ -126,7 +127,7 @@ The command updates the references in content elements of the table
 ..  _concepts-form-storages-uploads:
 
 File uploads
-------------
+============
 
 **File uploads** are saved in file mounts. They are handled
 as FAL objects. The file mounts for file uploads can be configured.
@@ -135,32 +136,32 @@ storage for the uploads.
 
 The following YAML shows the default file mount setup for file (and image) uploads.
 
-.. code-block:: yaml
+..  code-block:: yaml
 
-   prototypes:
-     standard:
-       formElementsDefinition:
-         FileUpload:
-           formEditor:
-             predefinedDefaults:
-               properties:
-                 saveToFileMount: '1:/user_upload/'
-             editors:
-               400:
-                 selectOptions:
-                   10:
-                     value: '1:/user_upload/'
-                     label: '1:/user_upload/'
-           properties:
-             saveToFileMount: '1:/user_upload/'
-         ImageUpload:
-           formEditor:
-             predefinedDefaults:
-               properties:
-                 saveToFileMount: '1:/user_upload/'
-             editors:
-               400:
-                 selectOptions:
-                   10:
-                     value: '1:/user_upload/'
-                     label: '1:/user_upload/'
+    prototypes:
+      standard:
+        formElementsDefinition:
+          FileUpload:
+            formEditor:
+              predefinedDefaults:
+                properties:
+                  saveToFileMount: '1:/user_upload/'
+              editors:
+                400:
+                  selectOptions:
+                    10:
+                      value: '1:/user_upload/'
+                      label: '1:/user_upload/'
+            properties:
+              saveToFileMount: '1:/user_upload/'
+          ImageUpload:
+            formEditor:
+              predefinedDefaults:
+                properties:
+                  saveToFileMount: '1:/user_upload/'
+              editors:
+                400:
+                  selectOptions:
+                    10:
+                      value: '1:/user_upload/'
+                      label: '1:/user_upload/'

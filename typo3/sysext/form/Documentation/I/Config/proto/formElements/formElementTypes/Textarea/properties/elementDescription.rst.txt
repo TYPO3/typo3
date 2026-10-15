@@ -1,32 +1,32 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 properties.elementDescription
 -----------------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.formElementsDefinition.Textarea.properties.elementDescription
+    prototypes.<prototypeIdentifier>.formElementsDefinition.Textarea.properties.elementDescription
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Frontend/ Backend (form editor)
+    Frontend/ Backend (form editor)
 
 :aspect:`Overwritable within form definition`
-      Yes
+    Yes
 
 :aspect:`Form editor can write this property into the form definition (for prototype 'standard')`
-      Yes
+    Yes
 
 :aspect:`Mandatory`
-      No
+    No
 
 :aspect:`Default value (for prototype 'standard')`
-      Undefined
+    Undefined
 
 :aspect:`Good to know`
-      - :ref:`"Custom form element implementations"<concepts-frontendrendering-codecomponents-customformelementimplementations>`
-      - :ref:`"Translate form definition"<concepts-frontendrendering-translation-formdefinition>`
+    -   :ref:`"Custom form element implementations"<concepts-frontendrendering-codecomponents-customformelementimplementations>`
+    -   :ref:`"Translate form definition"<concepts-frontendrendering-translation-formdefinition>`
 
 :aspect:`Description`
-      Set a description of the form element. By default, it is displayed
-      below the form element.
+    Set a description of the form element. By default, it is displayed
+    below the form element.

@@ -1,14 +1,14 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
 
-.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.removeelementeditor:
+..  _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.removeelementeditor:
 
 =====================
 [RemoveElementEditor]
 =====================
 
 
-.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.removeelementeditor-introduction:
+..  _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.removeelementeditor-introduction:
 
 Introduction
 ============
@@ -16,37 +16,37 @@ Introduction
 This editor show a button which allows you to remove the form element or the collection element (finishers/ validators).
 
 
-.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.removeelementeditor-properties:
+..  _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.removeelementeditor-properties:
 
 Properties
 ==========
 
-.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.templatename-removeelementeditor:
+..  _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.templatename-removeelementeditor:
 
 templateName
 ------------
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Backend (form editor)
+    Backend (form editor)
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
 :aspect:`Related options`
-      - :ref:`prototypes.prototypeIdentifier.formEditor.formEditorPartials <prototypes.prototypeIdentifier.formeditor.formeditorpartials>`
+    -   :ref:`prototypes.prototypeIdentifier.formEditor.formEditorPartials <prototypes.prototypeIdentifier.formeditor.formeditorpartials>`
 
 :aspect:`value`
-      Inspector-RemoveElementEditor
+    Inspector-RemoveElementEditor
 
 :aspect:`Good to know`
-      - :ref:`"Inspector"<concepts-formeditor-inspector>`
+    -   :ref:`"Inspector"<concepts-formeditor-inspector>`
 
 :aspect:`Description`
-      .. include:: properties/TemplateName.rst.txt
+    ..  include:: properties/TemplateName.rst.txt
 
 
-.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.identifier-removeelementeditor:
-.. include:: properties/Identifier.rst.txt
+..  _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.identifier-removeelementeditor:
+..  include:: properties/Identifier.rst.txt

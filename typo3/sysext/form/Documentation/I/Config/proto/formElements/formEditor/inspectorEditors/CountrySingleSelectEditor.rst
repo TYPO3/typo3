@@ -53,22 +53,22 @@ templateName
 ------------
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Backend (form editor)
+    Backend (form editor)
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
 :aspect:`value`
-      Inspector-CountrySingleSelectEditor
+    Inspector-CountrySingleSelectEditor
 
 :aspect:`Good to know`
-      -   :ref:`The inspector of the form editor <concepts-formeditor-inspector>`
+    -   :ref:`The inspector of the form editor <concepts-formeditor-inspector>`
 
 :aspect:`Description`
-      ..  include:: properties/TemplateName.rst.txt
+    ..  include:: properties/TemplateName.rst.txt
 
 
 ..  _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.identifier-countrysingleselecteditor:
@@ -89,22 +89,22 @@ description
 -----------
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Backend (form editor)
+    Backend (form editor)
 
 :aspect:`Mandatory`
-      No
+    No
 
 :aspect:`Good to know`
-      -   :ref:`The inspector of the form editor <concepts-formeditor-inspector>`
-      -   :ref:`Translating form editor settings <concepts-formeditor-translation-formeditor>`
+    -   :ref:`The inspector of the form editor <concepts-formeditor-inspector>`
+    -   :ref:`Translating form editor settings <concepts-formeditor-translation-formeditor>`
 
 :aspect:`Description`
-      A text that is shown below the select field in the inspector. The
-      `CountrySelect` element uses it to remind editors that the country
-      filters must not exclude the selected country.
+    A text that is shown below the select field in the inspector. The
+    `CountrySelect` element uses it to remind editors that the country
+    filters must not exclude the selected country.
 
 
 ..  _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.countrysingleselecteditor-example:

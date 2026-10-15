@@ -4,27 +4,27 @@ formEditor.editors.550
 ----------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.formElementsDefinition.ImageUpload.formEditor.editors.550
+    prototypes.<prototypeIdentifier>.formElementsDefinition.ImageUpload.formEditor.editors.550
 
 :aspect:`Data type`
-      array/ :ref:`[CheckboxEditor] <prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.checkboxeditor>`
+    array/ :ref:`[CheckboxEditor] <prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.checkboxeditor>`
 
 :aspect:`Needed by`
-      Backend (form editor)
+    Backend (form editor)
 
 :aspect:`Mandatory`
-      Recommended
+    Recommended
 
 :aspect:`Default value (for prototype 'standard')`
-      ..  code-block:: yaml
-          :linenos:
-          :emphasize-lines: 4-
+    ..  code-block:: yaml
+        :linenos:
+        :emphasize-lines: 4-
 
-          ImageUpload:
-            formEditor:
-              editors:
-                550:
-                  identifier: allowRemoval
-                  templateName: Inspector-CheckboxEditor
-                  label: formEditor.elements.FileUpload.editor.allowRemoval.label
-                  propertyPath: properties.allowRemoval
+        ImageUpload:
+          formEditor:
+            editors:
+              550:
+                identifier: allowRemoval
+                templateName: Inspector-CheckboxEditor
+                label: formEditor.elements.FileUpload.editor.allowRemoval.label
+                propertyPath: properties.allowRemoval

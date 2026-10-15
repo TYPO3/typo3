@@ -26,33 +26,33 @@ Architecture overview
 The form editor consists of four cooperating TypeScript modules, each
 responsible for one UI component:
 
-.. list-table::
-   :header-rows: 1
-   :widths: 30 35 35
+..  list-table::
+    :header-rows: 1
+    :widths: 30 35 35
 
-   *  -  Module (import path)
-      -  Component
-      -  Responsibility
-   *  -  :js:`@typo3/form/backend/form-editor/view-model`
-      -  —
-      -  Central view model; wires DOM events and publishes/subscribes
-         to all cross-component events.
-   *  -  :js:`@typo3/form/backend/form-editor/stage-component`
-      -  **Stage**
-      -  Renders the abstract and preview views of the current form page.
-   *  -  :js:`@typo3/form/backend/form-editor/inspector-component`
-      -  **Inspector**
-      -  Renders the property editors for the selected form element.
-   *  -  :js:`@typo3/form/backend/form-editor/tree-component-adapter`
-      -  **Structure tree**
-      -  Wraps the TYPO3 backend tree web component and bridges its
-         events to the publish/subscribe bus.
-   *  -  :js:`@typo3/form/backend/form-editor/mediator`
-      -  —
-      -  Wires all publish/subscribe events to view-model actions.
-         Loaded automatically; replace via
-         :yaml:`dynamicJavaScriptModules.mediator` only when you need to
-         completely swap the event-wiring logic.
+    *   -   Module (import path)
+        -   Component
+        -   Responsibility
+    *   -   :js:`@typo3/form/backend/form-editor/view-model`
+        -   —
+        -   Central view model; wires DOM events and publishes/subscribes
+            to all cross-component events.
+    *   -   :js:`@typo3/form/backend/form-editor/stage-component`
+        -   **Stage**
+        -   Renders the abstract and preview views of the current form page.
+    *   -   :js:`@typo3/form/backend/form-editor/inspector-component`
+        -   **Inspector**
+        -   Renders the property editors for the selected form element.
+    *   -   :js:`@typo3/form/backend/form-editor/tree-component-adapter`
+        -   **Structure tree**
+        -   Wraps the TYPO3 backend tree web component and bridges its
+            events to the publish/subscribe bus.
+    *   -   :js:`@typo3/form/backend/form-editor/mediator`
+        -   —
+        -   Wires all publish/subscribe events to view-model actions.
+            Loaded automatically; replace via
+            :yaml:`dynamicJavaScriptModules.mediator` only when you need to
+            completely swap the event-wiring logic.
 
 All modules communicate exclusively via a **publish/subscribe bus**
 (:js:`PublisherSubscriber`). Direct module-to-module calls are avoided
@@ -62,7 +62,7 @@ files.
 ..  _apireference-formeditor-custom-modules:
 
 Registering a custom JavaScript module
-=======================================
+======================================
 
 Custom modules must export a :js:`bootstrap` function. The form editor
 calls this function once all built-in modules have loaded, passing the

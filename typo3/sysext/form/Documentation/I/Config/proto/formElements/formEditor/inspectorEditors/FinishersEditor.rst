@@ -1,14 +1,14 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
 
-.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.finisherseditor:
+..  _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.finisherseditor:
 
 =================
 [FinishersEditor]
 =================
 
 
-.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.finisherseditor-introduction:
+..  _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.finisherseditor-introduction:
 
 Introduction
 ============
@@ -16,90 +16,90 @@ Introduction
 Shows a select list with finishers. If a finisher is already added to the form definition, then this finisher will be removed from the select list.
 
 
-.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.finisherseditor-properties:
+..  _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.finisherseditor-properties:
 
 Properties
 ==========
 
-.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.templatename-finisherseditor:
+..  _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.templatename-finisherseditor:
 
 templateName
 ------------
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Backend (form editor)
+    Backend (form editor)
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
 :aspect:`Related options`
-      - :ref:`prototypes.prototypeIdentifier.formEditor.formEditorPartials <prototypes.prototypeIdentifier.formeditor.formeditorpartials>`
+    -   :ref:`prototypes.prototypeIdentifier.formEditor.formEditorPartials <prototypes.prototypeIdentifier.formeditor.formeditorpartials>`
 
 :aspect:`value`
-      Inspector-FinishersEditor
+    Inspector-FinishersEditor
 
 :aspect:`Good to know`
-      - :ref:`"Inspector"<concepts-formeditor-inspector>`
+    -   :ref:`"Inspector"<concepts-formeditor-inspector>`
 
 :aspect:`Description`
-      .. include:: properties/TemplateName.rst.txt
+    ..  include:: properties/TemplateName.rst.txt
 
 
-.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.identifier-finisherseditor:
-.. include:: properties/Identifier.rst.txt
+..  _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.identifier-finisherseditor:
+..  include:: properties/Identifier.rst.txt
 
 
-.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.label-finisherseditor:
-.. include:: properties/Label.rst.txt
+..  _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.label-finisherseditor:
+..  include:: properties/Label.rst.txt
 
 
-.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.selectoptions.*.value-finisherseditor:
+..  _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.selectoptions.*.value-finisherseditor:
 
 selectOptions.[*].value
 -----------------------
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Backend (form editor)
+    Backend (form editor)
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
 :aspect:`Related options`
-      - :ref:`"[finishersDefinition]"<prototypes.prototypeidentifier.finishersdefinition.*>`
+    -   :ref:`"[finishersDefinition]"<prototypes.prototypeidentifier.finishersdefinition.*>`
 
 
-.. :aspect:`Good to know`
-      ToDo
+..  :aspect:`Good to know`
+    ToDo
 
 :aspect:`Description`
-      Has to match with a ``prototypes.<prototypeIdentifier>.finishersdefinition`` configuration key.
+    Has to match with a ``prototypes.<prototypeIdentifier>.finishersdefinition`` configuration key.
 
 
-.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.selectoptions.*.label-finisherseditor:
+..  _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.selectoptions.*.label-finisherseditor:
 
 selectOptions.[*].label
 -----------------------
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Backend (form editor)
+    Backend (form editor)
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
-.. :aspect:`Related options`
-      @ToDo
+..  :aspect:`Related options`
+    @ToDo
 
-.. :aspect:`Good to know`
-      ToDo
+..  :aspect:`Good to know`
+    ToDo
 
 :aspect:`Description`
-      The label which is shown within the select field.
+    The label which is shown within the select field.

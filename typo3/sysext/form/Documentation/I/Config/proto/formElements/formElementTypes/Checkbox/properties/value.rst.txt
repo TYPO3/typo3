@@ -1,39 +1,39 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 properties.value
 ----------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.formElementsDefinition.Checkbox.properties.value
+    prototypes.<prototypeIdentifier>.formElementsDefinition.Checkbox.properties.value
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Frontend/ Backend (form editor)
+    Frontend/ Backend (form editor)
 
 :aspect:`Overwritable within form definition`
-      Yes
+    Yes
 
 :aspect:`form editor can write this property into the form definition (for prototype 'standard')`
-      No
+    No
 
 :aspect:`Mandatory`
-      No
+    No
 
 :aspect:`Default value (for prototype 'standard')`
-      .. code-block:: yaml
-         :linenos:
-         :emphasize-lines: 6
+    ..  code-block:: yaml
+        :linenos:
+        :emphasize-lines: 6
 
-         Checkbox:
-           properties:
-             containerClassAttribute: 'input checkbox'
-             elementClassAttribute: add-on
-             elementErrorClassAttribute: error
-             value: 1
+        Checkbox:
+          properties:
+            containerClassAttribute: 'input checkbox'
+            elementClassAttribute: add-on
+            elementErrorClassAttribute: error
+            value: 1
 
-.. :aspect:`Good to know`
-      ToDo
+..  :aspect:`Good to know`
+    ToDo
 
 :aspect:`Description`
-      The value of the checkbox which should be sent to the server.
+    The value of the checkbox which should be sent to the server.

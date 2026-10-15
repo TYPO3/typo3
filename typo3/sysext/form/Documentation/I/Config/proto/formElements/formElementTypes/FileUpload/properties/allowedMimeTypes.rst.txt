@@ -1,44 +1,44 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 properties.allowedMimeTypes
 ---------------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.formElementsDefinition.FileUpload.properties.allowedMimeTypes
+    prototypes.<prototypeIdentifier>.formElementsDefinition.FileUpload.properties.allowedMimeTypes
 
 :aspect:`Data type`
-      array
+    array
 
 :aspect:`Needed by`
-      Frontend/ Backend (form editor)
+    Frontend/ Backend (form editor)
 
 :aspect:`Overwritable within form definition`
-      Yes
+    Yes
 
 :aspect:`form editor can write this property into the form definition (for prototype 'standard')`
-      Yes
+    Yes
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
 :aspect:`Default value (for prototype 'standard')`
-      .. code-block:: yaml
-         :linenos:
-         :emphasize-lines: 7-
+    ..  code-block:: yaml
+        :linenos:
+        :emphasize-lines: 7-
 
-         FileUpload:
-           properties:
-             containerClassAttribute: input
-             elementClassAttribute: ''
-             elementErrorClassAttribute: error
-             saveToFileMount: '1:/user_upload/'
-             allowedMimeTypes:
-               - application/msword
-               - application/vnd.openxmlformats-officedocument.wordprocessingml.document
-               - application/vnd.oasis.opendocument.text
-               - application/pdf
+        FileUpload:
+          properties:
+            containerClassAttribute: input
+            elementClassAttribute: ''
+            elementErrorClassAttribute: error
+            saveToFileMount: '1:/user_upload/'
+            allowedMimeTypes:
+              - application/msword
+              - application/vnd.openxmlformats-officedocument.wordprocessingml.document
+              - application/vnd.oasis.opendocument.text
+              - application/pdf
 
-.. :aspect:`Good to know`
-      ToDo
+..  :aspect:`Good to know`
+    ToDo
 
 :aspect:`Description`
-      The allowed mime types for the file uploads.
+    The allowed mime types for the file uploads.

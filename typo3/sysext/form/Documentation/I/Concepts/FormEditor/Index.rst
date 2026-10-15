@@ -1,16 +1,17 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
 
-.. _concepts-formeditor:
+..  _concepts-formeditor:
 
+===========
 Form editor
 ===========
 
 
-.. _concepts-formeditor-general:
+..  _concepts-formeditor-general:
 
 What does it do?
-----------------
+================
 
 The ``form editor`` is a powerful graphical user interface in the TYPO3 backend
 which allows editors to create ``form definitions`` without writing a single line
@@ -20,17 +21,17 @@ render beautiful forms.
 The ``form editor`` is a modular interface which consists of the following
 components:
 
-- Stage: main visual component of the backend ``form editor`` where displaying
-  form elements in an abstract view or a frontend preview (in the middle of the ``form editor``)
-- Tree: displays the structure of the form as a tree (on the left)
-- Inspector: context specific toolbar which displays
-  form element options and where options can be edited (on the right)
-- Core: core functionality of the ``form editor``
-- ViewModel: defines and controls the visual display
-- Mediator: delegates component events
-- Modals: processes modals
-- FormEditor: provides API functions
-- Helper: helper functions for the manipulation of DOM elements
+-   Stage: main visual component of the backend ``form editor`` where displaying
+    form elements in an abstract view or a frontend preview (in the middle of the ``form editor``)
+-   Tree: displays the structure of the form as a tree (on the left)
+-   Inspector: context specific toolbar which displays
+    form element options and where options can be edited (on the right)
+-   Core: core functionality of the ``form editor``
+-   ViewModel: defines and controls the visual display
+-   Mediator: delegates component events
+-   Modals: processes modals
+-   FormEditor: provides API functions
+-   Helper: helper functions for the manipulation of DOM elements
 
 The ``Modals``, ``Inspector``, and ``Stage`` components
 can be modified by configuration. The ``Inspector`` component
@@ -42,56 +43,56 @@ options.
 The diagram below shows Javascript module interaction between the form editor and the
 core, viewmodel and mediator.
 
-.. figure:: ../../Images/javascript_module_interaction.png
-   :alt: JavaScript module interaction
+..  figure:: ../../Images/javascript_module_interaction.png
+    :alt: JavaScript module interaction
 
-   JavaScript module interaction
+    JavaScript module interaction
 
 The ``form editor`` configuration is under the following configuration path:
 
-.. code-block:: yaml
+..  code-block:: yaml
 
-   prototypes:
-     standard:
-       formEditor:
+    prototypes:
+      standard:
+        formEditor:
 
 Here you can configure different aspects of the ``form editor`` under the following
 configuration paths:
 
-.. code-block:: yaml
+..  code-block:: yaml
 
-   prototypes:
-     standard:
-       formElementsDefinition:
-         <formElementTypeIdentifier>:
-           formEditor:
-       finishersDefinition:
-         <finisherIdentifier>
-           formEditor:
-       validatorsDefinition:
-         <validatorIdentifier>
-           formEditor:
+    prototypes:
+      standard:
+        formElementsDefinition:
+          <formElementTypeIdentifier>:
+            formEditor:
+        finishersDefinition:
+          <finisherIdentifier>
+            formEditor:
+        validatorsDefinition:
+          <validatorIdentifier>
+            formEditor:
 
 
-.. _concepts-formeditor-components-in-detail:
+..  _concepts-formeditor-components-in-detail:
 
 Form editor components in detail
---------------------------------
+================================
 
 
-.. _concepts-formeditor-stage:
+..  _concepts-formeditor-stage:
 
 Stage
-^^^^^
+-----
 
 The ``Stage`` is the central visual component of the form editor and it
 can display form elements in two different modes:
 
-- abstract view: all the form elements on a ``Page`` (a step) presented in an
-  abstract way,
-- frontend preview: renders the form as it will be displayed in
-  the frontend (to render the form exactly the same as in the frontend, make sure
-  your frontend CSS is loaded in the backend)
+-   abstract view: all the form elements on a ``Page`` (a step) presented in an
+    abstract way,
+-   frontend preview: renders the form as it will be displayed in
+    the frontend (to render the form exactly the same as in the frontend, make sure
+    your frontend CSS is loaded in the backend)
 
 By default, the frontend templates of :t3ext:`form` are based on `Bootstrap`_.
 Since the backend of TYPO3 CMS also depends on `Bootstrap`_,
@@ -112,13 +113,13 @@ to suit your needs.
 
 For more information, read the following chapter: ':ref:`Common abstract view form element templates<apireference-formeditor-stage-commonabstractformelementtemplates>`'.
 
-.. _Bootstrap: https://getbootstrap.com/
+..  _Bootstrap: https://getbootstrap.com/
 
 
-.. _concepts-formeditor-inspector:
+..  _concepts-formeditor-inspector:
 
 Inspector
-^^^^^^^^^
+---------
 
 The ``Inspector`` is on the right side of the ``form editor``. It is a modular,
 flexible, and context-specific toolbar
@@ -131,8 +132,8 @@ You can edit form element properties (like ``properties.placeholder``)
 as well as ``property collections``. They are defined at the form element level
 in the YAML configuration file. There are two types of ``property collections``:
 
-- validators
-- finishers
+-   validators
+-   finishers
 
 ``Property collections`` are also configured by ``inspector editors`` and this
 allows you to do some cool stuff. Imagine that you have a "Number range" validator with
@@ -141,38 +142,38 @@ spouse" and "Age infant". You could set the validator for both form elements,
 but make "Minimum" non-editable and pre-fill "Maximum" with a value for the "Age
 infant" form element only and not the "Age spouse" form element.
 
-.. _concepts-formeditor-translation-formeditor:
+..  _concepts-formeditor-translation-formeditor:
 
 Translation of the form editor
-------------------------------
+==============================
 
 All option values below the following configuration keys can be translated:
 
-.. code-block:: yaml
+..  code-block:: yaml
 
-   prototypes:
-     standard:
-       formEditor:
-       formElementsDefinition:
-         <formElementTypeIdentifier>:
-           formEditor:
-       finishersDefinition:
-         <finisherIdentifier>
-           formEditor:
-       validatorsDefinition:
-         <validatorIdentifier>
-           formEditor:
+    prototypes:
+      standard:
+        formEditor:
+        formElementsDefinition:
+          <formElementTypeIdentifier>:
+            formEditor:
+        finishersDefinition:
+          <finisherIdentifier>
+            formEditor:
+        validatorsDefinition:
+          <validatorIdentifier>
+            formEditor:
 
 The ``form editor`` translation files are loaded as follows:
 
-.. code-block:: yaml
+..  code-block:: yaml
 
-   prototypes:
-     standard:
-       formEditor:
-         translationFiles:
-           # custom translation file
-           20: 'EXT:my_site_package/Resources/Private/Language/Database.xlf'
+    prototypes:
+      standard:
+        formEditor:
+          translationFiles:
+            # custom translation file
+            20: 'EXT:my_site_package/Resources/Private/Language/Database.xlf'
 
 Option values are searched for in the defined
 translation files. If a translation is found, the translated option value
@@ -180,11 +181,11 @@ will be used.
 
 As an example, if the following option is defined:
 
-.. code-block:: yaml
+..  code-block:: yaml
 
-   ...
-   label: 'formEditor.elements.Form.editor.finishers.label'
-   ...
+    ...
+    label: 'formEditor.elements.Form.editor.finishers.label'
+    ...
 
 The translation key ``formEditor.elements.Form.editor.finishers.label``
 is first searched for in the file
@@ -194,10 +195,10 @@ and then in the file ``10: 'EXT:form/Resources/Private/Language/Database.xlf'``
 displayed unmodified.
 
 
-.. _concepts-formeditor-customization-formeditor:
+..  _concepts-formeditor-customization-formeditor:
 
 Customization of the form editor
---------------------------------
+================================
 
 The form editor can be customized by YAML
 configuration in the configuration. The configuration is not stored in one central configuration
@@ -215,14 +216,14 @@ In this example, the :yaml:`AdvancedPassword` form element is completely removed
 the form framework. Integrators and developers will no longer be able to use
 the :yaml:`AdvancedPassword` element in their YAML form definitions or via API.
 
-.. code-block:: yaml
-   :linenos:
-   :emphasize-lines: 4
+..  code-block:: yaml
+    :linenos:
+    :emphasize-lines: 4
 
-   prototypes:
-     standard:
-       formElementsDefinition:
-         AdvancedPassword: null
+    prototypes:
+      standard:
+        formElementsDefinition:
+          AdvancedPassword: null
 
 
 The correct way is to unset the :ref:`group property <prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.group>`.
@@ -230,22 +231,22 @@ This property defines which group in the ``form editor`` "new Element"
 modal the form element should belong in. Unsetting this property will remove the
 form element safely from the form editor:
 
-.. code-block:: yaml
-   :linenos:
-   :emphasize-lines: 6
+..  code-block:: yaml
+    :linenos:
+    :emphasize-lines: 6
 
-   prototypes:
-     standard:
-       formElementsDefinition:
-         AdvancedPassword:
-           formEditor:
-             group: null
+    prototypes:
+      standard:
+        formElementsDefinition:
+          AdvancedPassword:
+            formEditor:
+              group: null
 
 
 ..  _concepts-formeditor-richtext:
 
 Rich text editing
------------------
+=================
 
 ..  versionadded:: 14.2
     :changelog: feature-108966-1738963200
@@ -307,7 +308,7 @@ RTE preset. If it is not set, the preset `form-label` is used.
 ..  _concepts-formeditor-richtext-sanitizing:
 
 Sanitizing of rich text
-^^^^^^^^^^^^^^^^^^^^^^^
+-----------------------
 
 The form framework sanitizes rich text twice:
 
@@ -346,19 +347,19 @@ To change the sanitizing in the frontend, use one of the following options:
     template as well.
 
 
-.. _concepts-formeditor-extending:
+..  _concepts-formeditor-extending:
 
 Extending the form editor
--------------------------
+=========================
 
 Learn :ref:`here <concepts-finishers-customfinisherimplementations-extend-gui>`
 how to make finishers configurable in the backend form editor.
 
 
-.. _concepts-formeditor-basicjavascriptconcepts:
+..  _concepts-formeditor-basicjavascriptconcepts:
 
 Basic JavaScript concepts
--------------------------
+=========================
 
 The form framework was designed to be as extendable as possible. Sooner or
 later, you will want to customize ``form editor`` components using
@@ -369,161 +370,161 @@ the ``inspector editors`` and the ``abstract view`` as well as your own
 events.
 
 
-.. _concepts-formeditor-basicjavascriptconcepts-registercustomjavascriptmodules:
+..  _concepts-formeditor-basicjavascriptconcepts-registercustomjavascriptmodules:
 
 Register custom JavaScript modules
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+----------------------------------
 
 You can use the following configuration YAML to register your JavaScript module.
 
-.. code-block:: yaml
+..  code-block:: yaml
 
-   prototypes:
-     standard:
-       formEditor:
-         dynamicJavaScriptModules:
-           additionalViewModelModules:
-             10: '@my-vendor/my-site-package/backend/form-editor/view-model.js'
+    prototypes:
+      standard:
+        formEditor:
+          dynamicJavaScriptModules:
+            additionalViewModelModules:
+              10: '@my-vendor/my-site-package/backend/form-editor/view-model.js'
 
-.. code-block:: php
+..  code-block:: php
 
-   # Configuration/JavaScriptModules.php
-   <?php
+    # Configuration/JavaScriptModules.php
+    <?php
 
-   return [
-       'dependencies' => ['form'],
-       'imports' => [
-           '@myvendor/my-site-package/' => 'EXT:my_site_package/Resources/Public/JavaScript/',
-       ],
-   ];
+    return [
+        'dependencies' => ['form'],
+        'imports' => [
+            '@myvendor/my-site-package/' => 'EXT:my_site_package/Resources/Public/JavaScript/',
+        ],
+    ];
 
 In the configuration above, the JavaScript files have to be in the folder
 ``my_site_package/Resources/Public/JavaScript/backend/form-editor/view-model.js``.
 
 The following example module is a template you can use containing the recommended setup.
 
-.. code-block:: javascript
+..  code-block:: javascript
 
-   /**
-    * Module: @my-vendor/my-site-package/backend/form-editor/view-model.js
-    */
-   import * as Helper from '@typo3/form/backend/form-editor/helper.js'
+    /**
+     * Module: @my-vendor/my-site-package/backend/form-editor/view-model.js
+     */
+    import * as Helper from '@typo3/form/backend/form-editor/helper.js'
 
-   /**
-    * @private
-    *
-    * @var object
-    */
-   let _formEditorApp = null;
+    /**
+     * @private
+     *
+     * @var object
+     */
+    let _formEditorApp = null;
 
-   /**
-    * @private
-    *
-    * @return object
-    */
-   function getFormEditorApp() {
-       return _formEditorApp;
-   };
+    /**
+     * @private
+     *
+     * @return object
+     */
+    function getFormEditorApp() {
+        return _formEditorApp;
+    };
 
-   /**
-    * @private
-    *
-    * @return object
-    */
-   function getPublisherSubscriber() {
-       return getFormEditorApp().getPublisherSubscriber();
-   };
+    /**
+     * @private
+     *
+     * @return object
+     */
+    function getPublisherSubscriber() {
+        return getFormEditorApp().getPublisherSubscriber();
+    };
 
-   /**
-    * @private
-    *
-    * @return object
-    */
-   function getUtility() {
-       return getFormEditorApp().getUtility();
-   };
+    /**
+     * @private
+     *
+     * @return object
+     */
+    function getUtility() {
+        return getFormEditorApp().getUtility();
+    };
 
-   /**
-    * @private
-    *
-    * @param object
-    * @return object
-    */
-   function getHelper() {
-       return Helper;
-   };
+    /**
+     * @private
+     *
+     * @param object
+     * @return object
+     */
+    function getHelper() {
+        return Helper;
+    };
 
-   /**
-    * @private
-    *
-    * @return object
-    */
-   function getCurrentlySelectedFormElement() {
-       return getFormEditorApp().getCurrentlySelectedFormElement();
-   };
+    /**
+     * @private
+     *
+     * @return object
+     */
+    function getCurrentlySelectedFormElement() {
+        return getFormEditorApp().getCurrentlySelectedFormElement();
+    };
 
-   /**
-    * @private
-    *
-    * @param mixed test
-    * @param string message
-    * @param int messageCode
-    * @return void
-    */
-   function assert(test, message, messageCode) {
-       return getFormEditorApp().assert(test, message, messageCode);
-   };
+    /**
+     * @private
+     *
+     * @param mixed test
+     * @param string message
+     * @param int messageCode
+     * @return void
+     */
+    function assert(test, message, messageCode) {
+        return getFormEditorApp().assert(test, message, messageCode);
+    };
 
-   /**
-    * @private
-    *
-    * @return void
-    * @throws 1491643380
-    */
-   function _helperSetup() {
-       assert('function' === typeof Helper.bootstrap,
-           'The view model helper does not implement the method "bootstrap"',
-           1491643380
-       );
-       Helper.bootstrap(getFormEditorApp());
-   };
+    /**
+     * @private
+     *
+     * @return void
+     * @throws 1491643380
+     */
+    function _helperSetup() {
+        assert('function' === typeof Helper.bootstrap,
+            'The view model helper does not implement the method "bootstrap"',
+            1491643380
+        );
+        Helper.bootstrap(getFormEditorApp());
+    };
 
-   /**
-    * @private
-    *
-    * @return void
-    */
-   function _subscribeEvents() {
-       getPublisherSubscriber().subscribe('some/eventName/you/want/to/handle', function(topic, args) {
-           myCustomCode();
-       });
-   };
+    /**
+     * @private
+     *
+     * @return void
+     */
+    function _subscribeEvents() {
+        getPublisherSubscriber().subscribe('some/eventName/you/want/to/handle', function(topic, args) {
+            myCustomCode();
+        });
+    };
 
-   /**
-    * @private
-    *
-    * @return void
-    */
-   function myCustomCode() {
-   };
+    /**
+     * @private
+     *
+     * @return void
+     */
+    function myCustomCode() {
+    };
 
-   /**
-    * @public
-    *
-    * @param object formEditorApp
-    * @return void
-    */
-   export function bootstrap(formEditorApp) {
-       _formEditorApp = formEditorApp;
-       _helperSetup();
-       _subscribeEvents();
-   };
+    /**
+     * @public
+     *
+     * @param object formEditorApp
+     * @return void
+     */
+    export function bootstrap(formEditorApp) {
+        _formEditorApp = formEditorApp;
+        _helperSetup();
+        _subscribeEvents();
+    };
 
 
-.. _concepts-formeditor-basicjavascriptconcepts-events:
+..  _concepts-formeditor-basicjavascriptconcepts-events:
 
 Events
-^^^^^^
+------
 
 Event handling in :t3ext:`form` is based on the ``Publish/Subscribe Pattern``.
 To learn more about this terrific pattern, see: https://addyosmani.com/resources/essentialjsdesignpatterns/book/.
@@ -535,128 +536,128 @@ For more information, head to the API reference and read the section about
 ':ref:`Events<concepts-formeditor-basicjavascriptconcepts-events>`'.
 
 
-.. _concepts-formeditor-basicjavascriptconcepts-formelementmodel:
+..  _concepts-formeditor-basicjavascriptconcepts-formelementmodel:
 
 FormElement model
-^^^^^^^^^^^^^^^^^
+-----------------
 
 In the JavaScript code, each form element is represented by a
 ``FormElement model``. This model can be seen as a copy of the ``form definition``
 enriched with some additional data. The following example shows
 you a ``form definition`` and, below it, the debug output of ``FormElement model``.
 
-.. code-block:: yaml
+..  code-block:: yaml
 
-   identifier: javascript-form-element-model
-   label: 'JavaScript FormElement model'
-   type: Form
-   finishers:
-     -
-       identifier: EmailToReceiver
-       options:
-         subject: 'Your message: {subject}'
-         recipients:
-           your.company@example.com: 'Your Company name'
-           ceo@example.com: 'CEO'
-         senderAddress: '{email}'
-         senderName: '{name}'
-         replyToRecipients:
-           replyTo.company@example.com: 'Your Company name'
-         carbonCopyRecipients:
-           cc.company@example.com: 'Your Company name'
-         blindCarbonCopyRecipients:
-           bcc.company@example.com: 'Your Company name'
-         addHtmlPart: true
-         attachUploads: 'true'
-         translation:
-           language: ''
-         title: ''
-   renderables:
-     -
-       identifier: page-1
-       label: 'Contact Form'
-       type: Page
-       renderables:
-         -
-           identifier: name
-           label: Name
-           type: Text
-           properties:
-             fluidAdditionalAttributes:
-               placeholder: Name
-           defaultValue: ''
-           validators:
-             -
-               identifier: NotEmpty
+    identifier: javascript-form-element-model
+    label: 'JavaScript FormElement model'
+    type: Form
+    finishers:
+      -
+        identifier: EmailToReceiver
+        options:
+          subject: 'Your message: {subject}'
+          recipients:
+            your.company@example.com: 'Your Company name'
+            ceo@example.com: 'CEO'
+          senderAddress: '{email}'
+          senderName: '{name}'
+          replyToRecipients:
+            replyTo.company@example.com: 'Your Company name'
+          carbonCopyRecipients:
+            cc.company@example.com: 'Your Company name'
+          blindCarbonCopyRecipients:
+            bcc.company@example.com: 'Your Company name'
+          addHtmlPart: true
+          attachUploads: 'true'
+          translation:
+            language: ''
+          title: ''
+    renderables:
+      -
+        identifier: page-1
+        label: 'Contact Form'
+        type: Page
+        renderables:
+          -
+            identifier: name
+            label: Name
+            type: Text
+            properties:
+              fluidAdditionalAttributes:
+                placeholder: Name
+            defaultValue: ''
+            validators:
+              -
+                identifier: NotEmpty
 
-.. code-block:: javascript
+..  code-block:: javascript
 
-   {
-     "identifier": "javascript-form-element-model",
-     "label": "JavaScript FormElement model",
-     "type": "Form",
-     "prototypeName": "standard",
-     "__parentRenderable": null,
-     "__identifierPath": "example-form",
-     "finishers": [
-       {
-         "identifier": "EmailToReceiver",
-         "options": {
-           "subject": "Your message: {subject}",
-           "recipients": {
-             "your.company@example.com": "Your Company name",
-             "ceo@example.com": "CEO"
-           },
-           "senderAddress": "{email}",
-           "senderName": "{name}",
-           "replyToRecipients": {
-             "replyTo.company@example.com": "Your Company name"
-           },
-           "carbonCopyRecipients": {
-             "cc.company@example.com": "Your Company name"
-           },
-           "blindCarbonCopyRecipients": {
-             "bcc.company@example.com": "Your Company name"
-           },
-           "addHtmlPart": true,
-           "attachUploads": true,
-           "translation": {
-             "language": ""
-           },
-           "title": ""
-         }
-       }
-     ],
-     "renderables": [
-       {
-         "identifier": "page-1",
-         "label": "Contact Form",
-         "type": "Page",
-         "__parentRenderable": "example-form (filtered)",
-         "__identifierPath": "example-form/page-1",
-         "renderables": [
-           {
-             "identifier": "name",
-             "defaultValue": "",
-             "label": "Name",
-             "type": "Text",
-             "properties": {
-               "fluidAdditionalAttributes": {
-                 "placeholder": "Name"
-               }
-             },
-             "__parentRenderable": "example-form/page-1 (filtered)",
-             "__identifierPath": "example-form/page-1/name",
-             "validators": [
-               {
-                 "identifier": "NotEmpty"
-               }
-             ]
-           }
-         ]
-       }
-     ]
-   }
+    {
+      "identifier": "javascript-form-element-model",
+      "label": "JavaScript FormElement model",
+      "type": "Form",
+      "prototypeName": "standard",
+      "__parentRenderable": null,
+      "__identifierPath": "example-form",
+      "finishers": [
+        {
+          "identifier": "EmailToReceiver",
+          "options": {
+            "subject": "Your message: {subject}",
+            "recipients": {
+              "your.company@example.com": "Your Company name",
+              "ceo@example.com": "CEO"
+            },
+            "senderAddress": "{email}",
+            "senderName": "{name}",
+            "replyToRecipients": {
+              "replyTo.company@example.com": "Your Company name"
+            },
+            "carbonCopyRecipients": {
+              "cc.company@example.com": "Your Company name"
+            },
+            "blindCarbonCopyRecipients": {
+              "bcc.company@example.com": "Your Company name"
+            },
+            "addHtmlPart": true,
+            "attachUploads": true,
+            "translation": {
+              "language": ""
+            },
+            "title": ""
+          }
+        }
+      ],
+      "renderables": [
+        {
+          "identifier": "page-1",
+          "label": "Contact Form",
+          "type": "Page",
+          "__parentRenderable": "example-form (filtered)",
+          "__identifierPath": "example-form/page-1",
+          "renderables": [
+            {
+              "identifier": "name",
+              "defaultValue": "",
+              "label": "Name",
+              "type": "Text",
+              "properties": {
+                "fluidAdditionalAttributes": {
+                  "placeholder": "Name"
+                }
+              },
+              "__parentRenderable": "example-form/page-1 (filtered)",
+              "__identifierPath": "example-form/page-1/name",
+              "validators": [
+                {
+                  "identifier": "NotEmpty"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
 
 For each form element which has child elements, there is a property
 called ``renderables``. ``renderables`` are arrays of ``FormElement models``
@@ -665,19 +666,19 @@ of child elements.
 The ``FormElement model`` is therefore a combination of the
 of ``form definition`` data and some additional information:
 
-- __parentRenderable
-- __identifierPath
+-   __parentRenderable
+-   __identifierPath
 
 The following methods can be used to access ``FormElement model`` data:
 
-- get()
-- set()
-- unset()
-- on()
-- off()
-- getObjectData()
-- toString()
-- clone()
+-   get()
+-   set()
+-   unset()
+-   on()
+-   off()
+-   getObjectData()
+-   toString()
+-   clone()
 
 Head to the API reference to read more about
 the :ref:`FormElement model<apireference-formeditor-basicjavascriptconcepts-formelementmodel>`.

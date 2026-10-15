@@ -1,37 +1,37 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 renderingOptions._isGridRowFormElement
 --------------------------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.formElementsDefinition.GridRow.renderingOptions._isGridRowFormElement
+    prototypes.<prototypeIdentifier>.formElementsDefinition.GridRow.renderingOptions._isGridRowFormElement
 
 :aspect:`Data type`
-      bool
+    bool
 
 :aspect:`Needed by`
-      Frontend
+    Frontend
 
 :aspect:`Overwritable within form definition`
-      Yes
+    Yes
 
 :aspect:`form editor can write this property into the form definition (for prototype 'standard')`
-      No
+    No
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
 :aspect:`Default value (for prototype 'standard')`
-      .. code-block:: yaml
-         :linenos:
-         :emphasize-lines: 4
+    ..  code-block:: yaml
+        :linenos:
+        :emphasize-lines: 4
 
-         GridRow:
-           renderingOptions:
-             _isCompositeFormElement: true
-             _isGridRowFormElement: true
+        GridRow:
+          renderingOptions:
+            _isCompositeFormElement: true
+            _isGridRowFormElement: true
 
-.. :aspect:`Good to know`
-      ToDo
+..  :aspect:`Good to know`
+    ToDo
 
 :aspect:`Description`
-      Internal control setting.
+    Internal control setting.

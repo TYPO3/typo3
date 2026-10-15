@@ -1,14 +1,14 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
 
-.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.formelementheadereditor:
+..  _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.formelementheadereditor:
 
 =========================
 [FormElementHeaderEditor]
 =========================
 
 
-.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.formelementheadereditor-introduction:
+..  _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.formelementheadereditor-introduction:
 
 Introduction
 ============
@@ -17,37 +17,37 @@ This is not really an editor because this editor don't write values into the for
 This editor show the header area for the form element with it's icon and label.
 
 
-.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.formelementheadereditor-properties:
+..  _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.formelementheadereditor-properties:
 
 Properties
 ==========
 
-.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.templatename-formelementheadereditor:
+..  _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.templatename-formelementheadereditor:
 
 templateName
 ------------
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Backend (form editor)
+    Backend (form editor)
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
 :aspect:`Related options`
-      - :ref:`prototypes.\<prototypeIdentifier>.formEditor.formEditorPartials <prototypes.prototypeidentifier.formeditor.formeditorpartials>`
+    -   :ref:`prototypes.\<prototypeIdentifier>.formEditor.formEditorPartials <prototypes.prototypeidentifier.formeditor.formeditorpartials>`
 
 :aspect:`value`
-      Inspector-FormElementHeaderEditor
+    Inspector-FormElementHeaderEditor
 
 :aspect:`Good to know`
-      - :ref:`"Inspector"<concepts-formeditor-inspector>`
+    -   :ref:`"Inspector"<concepts-formeditor-inspector>`
 
 :aspect:`Description`
-      .. include:: properties/TemplateName.rst.txt
+    ..  include:: properties/TemplateName.rst.txt
 
 
-.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.identifier-formelementheadereditor:
-.. include:: properties/Identifier.rst.txt
+..  _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.identifier-formelementheadereditor:
+..  include:: properties/Identifier.rst.txt

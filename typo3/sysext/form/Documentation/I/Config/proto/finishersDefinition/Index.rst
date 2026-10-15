@@ -1,389 +1,389 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
 
-.. _prototypes.prototypeIdentifier.finishersdefinition:
+..  _prototypes.prototypeIdentifier.finishersdefinition:
 
 =====================
 [finishersDefinition]
 =====================
 
 
-.. _prototypes.prototypeIdentifier.finishersdefinition-properties:
+..  _prototypes.prototypeIdentifier.finishersdefinition-properties:
 
 Properties
 ==========
 
 
-.. _prototypes.prototypeIdentifier.finishersdefinition-properties-finishersdefinition:
+..  _prototypes.prototypeIdentifier.finishersdefinition-properties-finishersdefinition:
 
 [finishersDefinition]
 ---------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.finishersDefinition
+    prototypes.<prototypeIdentifier>.finishersDefinition
 
 :aspect:`Data type`
-      array
+    array
 
 :aspect:`Needed by`
-      Frontend/ Backend (form editor)
+    Frontend/ Backend (form editor)
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
 :aspect:`Default value`
-      .. code-block:: yaml
-         :linenos:
+    ..  code-block:: yaml
+        :linenos:
 
-         prototypes:
-           <prototypeIdentifier>:
-             finishersDefinition:
-               [...]
+        prototypes:
+          <prototypeIdentifier>:
+            finishersDefinition:
+              [...]
 
 :aspect:`Good to know`
-      - :ref:`"Custom finisher implementations"<concepts-finishers-customfinisherimplementations>`
+    -   :ref:`"Custom finisher implementations"<concepts-finishers-customfinisherimplementations>`
 
 :aspect:`Description`
-      Array which defines the available finishers. Every key within this array is called the ``<finisherIdentifier>``.
+    Array which defines the available finishers. Every key within this array is called the ``<finisherIdentifier>``.
 
 
-.. _prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier:
+..  _prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier:
 
 <finisherIdentifier>
 --------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.finishersdefinition.<finisherIdentifier>
+    prototypes.<prototypeIdentifier>.finishersdefinition.<finisherIdentifier>
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Frontend/ Backend (form editor)
+    Frontend/ Backend (form editor)
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
-.. :aspect:`Related options`
-      @ToDo
+..  :aspect:`Related options`
+    @ToDo
 
 :aspect:`Default value (for prototype 'standard')`
-      .. code-block:: yaml
-         :linenos:
+    ..  code-block:: yaml
+        :linenos:
 
-         prototypes:
-           standard:
-             Closure:
-               [...]
-             Confirmation:
-               [...]
-             EmailToSender:
-               [...]
-             EmailToReceiver:
-               [...]
-             DeleteUploads:
-               [...]
-             FlashMessage:
-               [...]
-             Redirect:
-               [...]
-             SaveToDatabase:
-               [...]
+        prototypes:
+          standard:
+            Closure:
+              [...]
+            Confirmation:
+              [...]
+            EmailToSender:
+              [...]
+            EmailToReceiver:
+              [...]
+            DeleteUploads:
+              [...]
+            FlashMessage:
+              [...]
+            Redirect:
+              [...]
+            SaveToDatabase:
+              [...]
 
 :aspect:`Related options`
-      - :ref:`"prototypes.prototypeIdentifier.formElementsDefinition.formelementtypeidentifier.formEditor.propertyCollections.finishers.[*].identifier"<prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.propertycollections.finishers.*.identifier>`
-      - :ref:`"[FinishersEditor] selectOptions.[*].value"<prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.selectoptions.*.value-finisherseditor>`
+    -   :ref:`"prototypes.prototypeIdentifier.formElementsDefinition.formelementtypeidentifier.formEditor.propertyCollections.finishers.[*].identifier"<prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.propertycollections.finishers.*.identifier>`
+    -   :ref:`"[FinishersEditor] selectOptions.[*].value"<prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.selectoptions.*.value-finisherseditor>`
 
 :aspect:`Good to know`
-      - :ref:`"Custom finisher implementations"<concepts-finishers-customfinisherimplementations>`
+    -   :ref:`"Custom finisher implementations"<concepts-finishers-customfinisherimplementations>`
 
 :aspect:`Description`
-      This array key identifies a finisher. This identifier could be used to attach a finisher to a form.
+    This array key identifies a finisher. This identifier could be used to attach a finisher to a form.
 
 
-.. _prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier-commonproperties:
+..  _prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier-commonproperties:
 
 Common <finisherIdentifier> properties
-=============================================
+======================================
 
 
-.. _prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier.implementationClassName:
+..  _prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier.implementationClassName:
 
 implementationClassName
 -----------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.finishersDefinition.<finisherIdentifier>.implementationClassName
+    prototypes.<prototypeIdentifier>.finishersDefinition.<finisherIdentifier>.implementationClassName
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Frontend
+    Frontend
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete finishers configuration <prototypes.prototypeidentifier.finishersdefinition.finisheridentifier-concreteconfigurations>`)
+    Depends (see :ref:`concrete finishers configuration <prototypes.prototypeidentifier.finishersdefinition.finisheridentifier-concreteconfigurations>`)
 
 :aspect:`Good to know`
-      - :ref:`"Custom finisher implementations"<concepts-finishers-customfinisherimplementations>`
+    -   :ref:`"Custom finisher implementations"<concepts-finishers-customfinisherimplementations>`
 
 :aspect:`Description`
-      .. include:: properties/implementationClassName.rst.txt
+    ..  include:: properties/implementationClassName.rst.txt
 
 
-.. _prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier.options:
+..  _prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier.options:
 
 options
 -------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.finishersDefinition.<finisherIdentifier>.options
+    prototypes.<prototypeIdentifier>.finishersDefinition.<finisherIdentifier>.options
 
 :aspect:`Data type`
-      array
+    array
 
 :aspect:`Needed by`
-      Frontend
+    Frontend
 
 :aspect:`Mandatory`
-      Depends (see :ref:`concrete finishers configuration <prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier-concreteconfigurations>`)
+    Depends (see :ref:`concrete finishers configuration <prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier-concreteconfigurations>`)
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete finishers configuration <prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier-concreteconfigurations>`)
+    Depends (see :ref:`concrete finishers configuration <prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier-concreteconfigurations>`)
 
 :aspect:`Good to know`
-      - :ref:`"Custom finisher implementations"<concepts-finishers-customfinisherimplementations>`
+    -   :ref:`"Custom finisher implementations"<concepts-finishers-customfinisherimplementations>`
 
 :aspect:`Description`
-      Array with finisher options.
+    Array with finisher options.
 
 
-.. _prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier.translation.translationFiles:
+..  _prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier.translation.translationFiles:
 
 translation.translationFiles
 ----------------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.finishersDefinition.<finisherIdentifier>.translation.translationFiles
+    prototypes.<prototypeIdentifier>.finishersDefinition.<finisherIdentifier>.translation.translationFiles
 
 :aspect:`Data type`
-      string/ array
+    string/ array
 
 :aspect:`Needed by`
-      Frontend
+    Frontend
 
 :aspect:`Mandatory`
-      No
+    No
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete element configuration <prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier-concreteconfigurations>`)
+    Depends (see :ref:`concrete element configuration <prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier-concreteconfigurations>`)
 
 :aspect:`Good to know`
-      - :ref:`"Translate finisher options"<concepts-frontendrendering-translation-finishers>`
+    -   :ref:`"Translate finisher options"<concepts-frontendrendering-translation-finishers>`
 
 :aspect:`Description`
-      Filesystem path(s) to translation files which should be searched for finisher translations.
-      If the property is undefined, - :ref:`"prototypes.prototypeIdentifier.formElementsDefinition.Form.renderingOptions.translation.translationFiles"<prototypes.prototypeIdentifier.formelementsdefinition.form.renderingoptions.translation.translationfiles>` will be used.
+    Filesystem path(s) to translation files which should be searched for finisher translations.
+    If the property is undefined, - :ref:`"prototypes.prototypeIdentifier.formElementsDefinition.Form.renderingOptions.translation.translationFiles"<prototypes.prototypeIdentifier.formelementsdefinition.form.renderingoptions.translation.translationfiles>` will be used.
 
 
-.. _prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier.formeditor:
+..  _prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier.formeditor:
 
 formEditor
 ----------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.finishersDefinition.<finisherIdentifier>.formEditor
+    prototypes.<prototypeIdentifier>.finishersDefinition.<finisherIdentifier>.formEditor
 
 :aspect:`Data type`
-      array
+    array
 
 :aspect:`Needed by`
-      Backend (form editor)
+    Backend (form editor)
 
 :aspect:`Mandatory`
-      Recommended
+    Recommended
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete finishers configuration <prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier-concreteconfigurations>`)
+    Depends (see :ref:`concrete finishers configuration <prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier-concreteconfigurations>`)
 
-.. :aspect:`Good to know`
-      ToDo
+..  :aspect:`Good to know`
+    ToDo
 
 :aspect:`Description`
-      Array with configurations for the ``form editor``
+    Array with configurations for the ``form editor``
 
 
-.. _prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier.formeditor.iconidentifier:
+..  _prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier.formeditor.iconidentifier:
 
 formeditor.iconIdentifier
 -------------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.finishersDefinition.<finisherIdentifier>.formEditor.iconIdentifier
+    prototypes.<prototypeIdentifier>.finishersDefinition.<finisherIdentifier>.formEditor.iconIdentifier
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Backend (form editor)
+    Backend (form editor)
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete finishers configuration <prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier-concreteconfigurations>`)
+    Depends (see :ref:`concrete finishers configuration <prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier-concreteconfigurations>`)
 
-.. :aspect:`Good to know`
-      ToDo
+..  :aspect:`Good to know`
+    ToDo
 
 :aspect:`Description`
-       .. include:: properties/iconIdentifier.rst.txt
+    ..  include:: properties/iconIdentifier.rst.txt
 
 
-.. _prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier.formeditor.label:
+..  _prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier.formeditor.label:
 
 formeditor.label
 ----------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.finishersDefinition.<finisherIdentifier>.formEditor.label
+    prototypes.<prototypeIdentifier>.finishersDefinition.<finisherIdentifier>.formEditor.label
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Backend (form editor)
+    Backend (form editor)
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete finishers configuration <prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier-concreteconfigurations>`)
+    Depends (see :ref:`concrete finishers configuration <prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier-concreteconfigurations>`)
 
 :aspect:`Good to know`
-      - :ref:`"Translate form editor settings"<concepts-formeditor-translation-formeditor>`
+    -   :ref:`"Translate form editor settings"<concepts-formeditor-translation-formeditor>`
 
 :aspect:`Description`
-      .. include:: properties/label.rst.txt
+    ..  include:: properties/label.rst.txt
 
 
-.. _prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier.formeditor.predefineddefaults:
+..  _prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier.formeditor.predefineddefaults:
 
 formeditor.predefinedDefaults
 -----------------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.finishersDefinition.<finisherIdentifier>.formEditor.predefinedDefaults
+    prototypes.<prototypeIdentifier>.finishersDefinition.<finisherIdentifier>.formEditor.predefinedDefaults
 
 :aspect:`Data type`
-      array
+    array
 
 :aspect:`Needed by`
-      Backend (form editor)
+    Backend (form editor)
 
 :aspect:`Mandatory`
-      No
+    No
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete finishers configuration <prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier-concreteconfigurations>`)
+    Depends (see :ref:`concrete finishers configuration <prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier-concreteconfigurations>`)
 
-.. :aspect:`Good to know`
-      ToDo
+..  :aspect:`Good to know`
+    ToDo
 
 :aspect:`Description`
-      .. include:: properties/predefinedDefaults.rst.txt
+    ..  include:: properties/predefinedDefaults.rst.txt
 
 
-.. _prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier.formengine:
+..  _prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier.formengine:
 
 FormEngine
 ----------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.finishersDefinition.<finisherIdentifier>.FormEngine
+    prototypes.<prototypeIdentifier>.finishersDefinition.<finisherIdentifier>.FormEngine
 
 :aspect:`Data type`
-      array
+    array
 
 :aspect:`Needed by`
-      Backend (plugin)
+    Backend (plugin)
 
 :aspect:`Mandatory`
-      No
+    No
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete finishers configuration <prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier-concreteconfigurations>`)
+    Depends (see :ref:`concrete finishers configuration <prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier-concreteconfigurations>`)
 
-.. :aspect:`Good to know`
-      ToDo
+..  :aspect:`Good to know`
+    ToDo
 
 :aspect:`Description`
-      Array with configurations for the ``form plugin``
+    Array with configurations for the ``form plugin``
 
 
-.. _prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier.FormEngine.label:
+..  _prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier.FormEngine.label:
 
 FormEngine.label
 ----------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.finishersDefinition.<finisherIdentifier>.FormEngine.label
+    prototypes.<prototypeIdentifier>.finishersDefinition.<finisherIdentifier>.FormEngine.label
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Backend (plugin)
+    Backend (plugin)
 
 :aspect:`Mandatory`
-      No
+    No
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete finishers configuration <prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier-concreteconfigurations>`)
+    Depends (see :ref:`concrete finishers configuration <prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier-concreteconfigurations>`)
 
 :aspect:`Good to know`
-      - :ref:`"Translate form plugin settings"<concepts-formplugin-translation-formengine>`
+    -   :ref:`"Translate form plugin settings"<concepts-formplugin-translation-formengine>`
 
 :aspect:`Description`
-      .. include:: properties/formEngine/label.rst.txt
+    ..  include:: properties/formEngine/label.rst.txt
 
 
-.. _prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier.FormEngine.elements:
+..  _prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier.FormEngine.elements:
 
 FormEngine.elements
 -------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.finishersDefinition.<finisherIdentifier>.FormEngine.elements
+    prototypes.<prototypeIdentifier>.finishersDefinition.<finisherIdentifier>.FormEngine.elements
 
 :aspect:`Data type`
-      array
+    array
 
 :aspect:`Needed by`
-      Backend (plugin)
+    Backend (plugin)
 
 :aspect:`Mandatory`
-      No
+    No
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete finishers configuration <prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier-concreteconfigurations>`)
+    Depends (see :ref:`concrete finishers configuration <prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier-concreteconfigurations>`)
 
 :aspect:`Good to know`
-      - :ref:`"Translate form plugin settings"<concepts-formplugin-translation-formengine>`
+    -   :ref:`"Translate form plugin settings"<concepts-formplugin-translation-formengine>`
 
 :aspect:`Description`
-      .. include:: properties/formEngine/elements.rst.txt
+    ..  include:: properties/formEngine/elements.rst.txt
 
 
-.. _prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier-concreteconfigurations:
+..  _prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier-concreteconfigurations:
 
 Concrete configurations
 =======================
 
-.. toctree::
+..  toctree::
 
     finishers/Closure
     finishers/Confirmation

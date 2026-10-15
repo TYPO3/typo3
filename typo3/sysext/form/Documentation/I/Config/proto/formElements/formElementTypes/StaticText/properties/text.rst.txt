@@ -1,36 +1,36 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 properties.text
 ---------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.formElementsDefinition.StaticText.properties.text
+    prototypes.<prototypeIdentifier>.formElementsDefinition.StaticText.properties.text
 
 :aspect:`Data type`
-      string
+    string
 
 :aspect:`Needed by`
-      Frontend/ Backend (form editor)
+    Frontend/ Backend (form editor)
 
 :aspect:`Overwritable within form definition`
-      Yes
+    Yes
 
 :aspect:`form editor can write this property into the form definition (for prototype 'standard')`
-      Yes
+    Yes
 
 :aspect:`Mandatory`
-      No
+    No
 
 :aspect:`Default value (for prototype 'standard')`
-      .. code-block:: yaml
-         :linenos:
-         :emphasize-lines: 3
+    ..  code-block:: yaml
+        :linenos:
+        :emphasize-lines: 3
 
-         StaticText:
-           properties:
-             text: ''
+        StaticText:
+          properties:
+            text: ''
 
-.. :aspect:`Good to know`
-      ToDo
+..  :aspect:`Good to know`
+    ToDo
 
 :aspect:`Description`
-      The text to display.
+    The text to display.

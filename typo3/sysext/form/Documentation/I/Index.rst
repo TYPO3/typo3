@@ -1,16 +1,16 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
 
-.. _forIntegrators:
+..  _forIntegrators:
 
 ===============
 For Integrators
 ===============
 
-.. toctree::
-   :maxdepth: 1
+..  toctree::
+    :maxdepth: 1
 
-   Concepts/Index
-   Config/Index
-   HowTos/Index
-   FAQ/Index
+    Concepts/Index
+    Config/Index
+    HowTos/Index
+    FAQ/Index

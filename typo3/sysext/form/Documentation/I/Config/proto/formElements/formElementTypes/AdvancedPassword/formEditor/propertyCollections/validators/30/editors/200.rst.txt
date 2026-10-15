@@ -4,35 +4,35 @@ formEditor.propertyCollections.validators.30.editors.200
 --------------------------------------------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.formElementsDefinition.AdvancedPassword.formEditor.propertyCollections.validators.30.editors.200
+    prototypes.<prototypeIdentifier>.formElementsDefinition.AdvancedPassword.formEditor.propertyCollections.validators.30.editors.200
 
 :aspect:`Data type`
-      array/ :ref:`[TextEditor] <prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.texteditor>`
+    array/ :ref:`[TextEditor] <prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.texteditor>`
 
 :aspect:`Needed by`
-      Backend (form editor)
+    Backend (form editor)
 
 :aspect:`Mandatory`
-      Recommended
+    Recommended
 
 :aspect:`Default value (for prototype 'standard')`
-      .. code-block:: yaml
-         :linenos:
-         :emphasize-lines: 8-
+    ..  code-block:: yaml
+        :linenos:
+        :emphasize-lines: 8-
 
-         AdvancedPassword:
-           formEditor:
-             propertyCollections:
-               validators:
-                 30:
-                   identifier: StringLength
-                   editors:
-                     200:
-                       identifier: minimum
-                       templateName: Inspector-TextEditor
-                       label: formEditor.elements.MinimumMaximumEditorsMixin.editor.minimum.label
-                       propertyPath: options.minimum
-                       propertyValidators:
-                         10: Integer
-                       additionalElementPropertyPaths:
-                         10: properties.fluidAdditionalAttributes.minlength
+        AdvancedPassword:
+          formEditor:
+            propertyCollections:
+              validators:
+                30:
+                  identifier: StringLength
+                  editors:
+                    200:
+                      identifier: minimum
+                      templateName: Inspector-TextEditor
+                      label: formEditor.elements.MinimumMaximumEditorsMixin.editor.minimum.label
+                      propertyPath: options.minimum
+                      propertyValidators:
+                        10: Integer
+                      additionalElementPropertyPaths:
+                        10: properties.fluidAdditionalAttributes.minlength

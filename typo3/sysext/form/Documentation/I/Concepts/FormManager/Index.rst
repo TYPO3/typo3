@@ -1,16 +1,17 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
 
-.. _concepts-formmanager:
+..  _concepts-formmanager:
 
+============
 Form manager
 ============
 
 
-.. _concepts-formmanager-general:
+..  _concepts-formmanager-general:
 
 What does it do?
-----------------
+================
 
 You will find the ``form manager`` in the backend :guilabel:`Web > Forms` backend
 module. Editors can use the ``form manager`` to administer forms in the
@@ -33,16 +34,16 @@ The wizard guides the editor through form creation and offers a
 variety of settings, such as the storage, the prototype, and start
 templates.
 
-.. figure:: ../../Images/form_manager.png
-   :alt: The form manager
+..  figure:: ../../Images/form_manager.png
+    :alt: The form manager
 
-   TYPO3 Backend with opened module 'Forms' displaying the form manager.
+    TYPO3 Backend with opened module 'Forms' displaying the form manager.
 
 
 ..  _concepts-formmanager-storage:
 
 Storage
--------
+=======
 
 ..  versionadded:: 14.2
     :changelog: feature-108653-1767199420
@@ -65,10 +66,10 @@ If only one storage is available, the wizard skips this step. See
 that each storage needs.
 
 
-.. _concepts-formmanager-starttemplate:
+..  _concepts-formmanager-starttemplate:
 
 Start templates
----------------
+===============
 
 Editors can select a ``Start template`` when they are creating a new form. A
 ``Start template`` is a ``form definition`` which hasn't been assigned a
@@ -78,10 +79,10 @@ foundation of a new form).
 An integrator can create as many ``Start templates`` as they wish for a particular
 ``prototype``. After the ``Start templates`` have been defined the integrator can then:
 
-- open :guilabel:`Web > Forms`
-- create a new form by clicking on the appropriate button
-- enter the 'Form name' and click the 'Advanced settings' checkbox
-- select a ``Start template`` during the next steps
+-   open :guilabel:`Web > Forms`
+-   create a new form by clicking on the appropriate button
+-   enter the 'Form name' and click the 'Advanced settings' checkbox
+-   select a ``Start template`` during the next steps
 
 Integrators have to define ``Start templates`` so that they can be selected
 by editors. Also, the same ``Start template``
@@ -104,16 +105,16 @@ The following example shows a ``Start template``. A
 ('Form') and a 'Page'.
 
 
-.. code-block:: yaml
+..  code-block:: yaml
 
-   type: 'Form'
-   identifier: 'blankForm'
-   label: '[Blank Form]'
-   renderables:
-     -
-       type: 'Page'
-       identifier: 'page-1'
-       label: 'Page'
+    type: 'Form'
+    identifier: 'blankForm'
+    label: '[Blank Form]'
+    renderables:
+      -
+        type: 'Page'
+        identifier: 'page-1'
+        label: 'Page'
 
 The ``form manager`` form wizard displays
 a list of all :ref:`pre-configured<formmanager.selectableprototypesconfiguration.*.newformtemplates>`
@@ -164,26 +165,26 @@ form is created. The new form definition contains the resolved values.
         label: 'Contact data'
 
 
-.. _concepts-formmanager-translation-starttemplate:
+..  _concepts-formmanager-translation-starttemplate:
 
 Translation of the form manager
--------------------------------
+===============================
 
 All option values below the ``form editor`` key in the form configuration can be
 translated:
 
-.. code-block:: yaml
+..  code-block:: yaml
 
-   formManager:
+    formManager:
 
 The ``form manager`` translation files are loaded as follows:
 
-.. code-block:: yaml
+..  code-block:: yaml
 
-   formManager:
-     translationFiles:
-       # custom translation file
-       20: 'EXT:my_site_package/Resources/Private/Language/Form/Database.xlf'
+    formManager:
+      translationFiles:
+        # custom translation file
+        20: 'EXT:my_site_package/Resources/Private/Language/Form/Database.xlf'
 
 The process searches for each option value within all of the defined
 translation files. If a translation is found, the translated option value
@@ -191,11 +192,11 @@ will be used in preference.
 
 For the following option value:
 
-.. code-block:: yaml
+..  code-block:: yaml
 
-   ...
-   label: 'formManager.selectablePrototypesConfiguration.standard.label'
-   ...
+    ...
+    label: 'formManager.selectablePrototypesConfiguration.standard.label'
+    ...
 
 the process searches for the translation key ``formManager.selectablePrototypesConfiguration.standard.label``
 in the file under key 20  ``20: 'EXT:my_site_package/Resources/Private/Language/Form/Database.xlf'``
