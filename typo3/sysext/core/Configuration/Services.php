@@ -17,6 +17,7 @@ use TYPO3\CMS\Core\Attribute\AsAllowedCallable;
 use TYPO3\CMS\Core\Attribute\AsAuthenticator;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Attribute\AsFileRenderer;
+use TYPO3\CMS\Core\Attribute\AsFileStorageDriver;
 use TYPO3\CMS\Core\Attribute\AsMetaTagManager;
 use TYPO3\CMS\Core\Attribute\AsModuleAccessGate;
 use TYPO3\CMS\Core\Attribute\AsRowUpdater;
@@ -151,6 +152,13 @@ return static function (ContainerConfigurator $container, ContainerBuilder $cont
     );
 
     $containerBuilder->registerAttributeForAutoconfiguration(
+        AsFileStorageDriver::class,
+        static function (ChildDefinition $definition, AsFileStorageDriver $attribute): void {
+            $definition->addTag(AsFileStorageDriver::TAG_NAME, ['identifier' => $attribute->identifier]);
+        },
+    );
+
+    $containerBuilder->registerAttributeForAutoconfiguration(
         AsTextExtractor::class,
         static function (ChildDefinition $definition, AsTextExtractor $attribute): void {
             $definition->addTag(AsTextExtractor::TAG_NAME, ['priority' => $attribute->priority]);
@@ -205,6 +213,7 @@ return static function (ContainerConfigurator $container, ContainerBuilder $cont
     $containerBuilder->addCompilerPass(new DependencyInjection\MfaProviderPass('mfa.provider'));
     $containerBuilder->addCompilerPass(new DependencyInjection\FileRendererPass(AsFileRenderer::TAG_NAME));
     $containerBuilder->addCompilerPass(new DependencyInjection\TextExtractorPass(AsTextExtractor::TAG_NAME));
+    $containerBuilder->addCompilerPass(new DependencyInjection\FileStorageDriverPass(AsFileStorageDriver::TAG_NAME));
     $containerBuilder->addCompilerPass(new DependencyInjection\AuthenticatorPass(AsAuthenticator::TAG_NAME));
     $containerBuilder->addCompilerPass(new DependencyInjection\MetaTagManagerPass(AsMetaTagManager::TAG_NAME));
     $containerBuilder->addCompilerPass(new DependencyInjection\SoftReferenceParserPass('softreference.parser'));

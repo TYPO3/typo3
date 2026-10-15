@@ -1,0 +1,9 @@
+storages:
+  1:
+    name: flysystem
+    driver: LocalFlysystem
+    default: true
+    configuration:
+      directory: flysystem-storage
+      baseUri: https://cdn.example.com/
+      caseSensitive: true

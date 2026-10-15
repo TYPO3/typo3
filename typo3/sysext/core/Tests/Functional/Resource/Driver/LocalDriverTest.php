@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Resource\Driver;
 
+use League\Flysystem\FileAttributes;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
@@ -609,6 +610,20 @@ final class LocalDriverTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function createFileThrowsAndKeepsContentIfFileExists(): void
+    {
+        file_put_contents($this->baseDirectory . '/file.txt', 'content');
+        $subject = $this->getDefaultInitializedSubject();
+        try {
+            $subject->createFile('file.txt', '/');
+            self::fail('Expected exception was not thrown');
+        } catch (ExistingTargetFileNameException $e) {
+            self::assertSame(1792154301, $e->getCode());
+        }
+        self::assertStringEqualsFile($this->baseDirectory . '/file.txt', 'content');
+    }
+
+    #[Test]
     public function newFilesCanBeCreated(): void
     {
         $subject = $this->getDefaultInitializedSubject();
@@ -679,8 +694,8 @@ final class LocalDriverTest extends FunctionalTestCase
         yield 'descending case-insensitive ties' => [['item10', 'Item2', 'item2', 'item1'], 'name', true, ['item10', 'Item2', 'item2', 'item1']];
         yield 'ascending numeric keys' => [['10', '2', '1'], 'name', false, ['1', '2', '10']];
         yield 'descending numeric keys' => [['10', '2', '1'], 'name', true, ['10', '2', '1']];
-        yield 'ascending duplicate extensions' => [['b.txt', 'a.txt', 'image.JPG', 'other.jpg', 'z.zip'], 'fileext', false, ['image.JPG', 'other.jpg', 'b.txt', 'a.txt', 'z.zip']];
-        yield 'descending duplicate extensions' => [['b.txt', 'a.txt', 'image.JPG', 'other.jpg', 'z.zip'], 'fileext', true, ['z.zip', 'a.txt', 'b.txt', 'image.JPG', 'other.jpg']];
+        yield 'ascending duplicate extensions' => [['b.txt', 'a.txt', 'image.JPG', 'other.jpg', 'z.zip'], 'fileext', false, ['image.JPG', 'other.jpg', 'a.txt', 'b.txt', 'z.zip']];
+        yield 'descending duplicate extensions' => [['b.txt', 'a.txt', 'image.JPG', 'other.jpg', 'z.zip'], 'fileext', true, ['z.zip', 'b.txt', 'a.txt', 'other.jpg', 'image.JPG']];
     }
 
     #[DataProvider('directoryEntriesKeepNaturalSortOrderDataProvider')]
@@ -689,13 +704,13 @@ final class LocalDriverTest extends FunctionalTestCase
     {
         $entries = [];
         foreach ($names as $name) {
-            $entries[$name] = ['identifier' => '/' . $name, 'name' => $name, 'type' => 'file'];
+            $entries['/' . $name] = new FileAttributes($name);
         }
         $subject = $this->getAccessibleMock(LocalDriver::class, null);
         $result = $subject->_call('sortDirectoryEntries', $entries, $sort, $reverse);
         $expectedEntries = [];
         foreach ($expectedNames as $name) {
-            $expectedEntries[] = $entries[$name];
+            $expectedEntries[] = $entries['/' . $name];
         }
         self::assertSame($expectedEntries, array_values($result));
     }
@@ -1253,5 +1268,28 @@ final class LocalDriverTest extends FunctionalTestCase
         $subject = $this->getAccessibleMock(LocalDriver::class, null, [$driverConfiguration]);
         $subject->processConfiguration();
         $subject->_call('applyFilterMethodsToDirectoryItem', $filterMethods, '', '', '');
+    }
+
+    #[Test]
+    public function filesWithInvisibleCharactersInTheirNameAreAccessible(): void
+    {
+        // Zero-width joiner, as in emoji sequences of file names created on a desktop
+        $fileName = "family-\u{1F468}\u{200D}\u{1F469}.txt";
+        file_put_contents($this->baseDirectory . '/' . $fileName, 'content');
+        $subject = $this->getDefaultInitializedSubject();
+
+        self::assertTrue($subject->fileExists('/' . $fileName));
+        self::assertSame('content', $subject->getFileContents('/' . $fileName));
+        self::assertSame(sha1('content'), $subject->hash('/' . $fileName, 'sha1'));
+        self::assertSame(7, $subject->setFileContents('/' . $fileName, 'changed'));
+        $copyIdentifier = $subject->copyFileWithinStorage('/' . $fileName, '/', 'copy-' . $fileName);
+        self::assertStringEqualsFile($this->baseDirectory . $copyIdentifier, 'changed');
+        self::assertTrue($subject->deleteFile('/' . $fileName));
+        self::assertFileDoesNotExist($this->baseDirectory . '/' . $fileName);
+
+        $folderName = "zero\u{200B}width";
+        self::assertSame('/' . $folderName . '/', $subject->createFolder($folderName));
+        self::assertTrue($subject->folderExists('/' . $folderName . '/'));
+        self::assertTrue($subject->deleteFolder('/' . $folderName . '/'));
     }
 }

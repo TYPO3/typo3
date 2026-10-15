@@ -313,13 +313,7 @@ return [
         'ipAnonymization' => 1,
         'Objects' => [],
         'fal' => [
-            'registeredDrivers' => [
-                'Local' => [
-                    'class' => \TYPO3\CMS\Core\Resource\Driver\LocalDriver::class,
-                    'shortName' => 'Local',
-                    'label' => 'Local filesystem',
-                ],
-            ],
+            'registeredDrivers' => [],
             'defaultFilterCallbacks' => [
                 [
                     \TYPO3\CMS\Core\Resource\Filter\FileNameFilter::class,

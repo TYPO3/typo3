@@ -453,10 +453,7 @@ class StorageRepository
      */
     protected function getDriverObject(string $driverIdentificationString, array $driverConfiguration): DriverInterface
     {
-        $driverClass = $this->driverRegistry->getDriverClass($driverIdentificationString);
-        /** @var DriverInterface $driverObject */
-        $driverObject = GeneralUtility::makeInstance($driverClass, $driverConfiguration);
-        return $driverObject;
+        return $this->driverRegistry->createDriver($driverIdentificationString, $driverConfiguration);
     }
 
     /**

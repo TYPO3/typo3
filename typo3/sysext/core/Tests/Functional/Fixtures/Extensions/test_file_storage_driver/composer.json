@@ -1,0 +1,23 @@
+{
+	"name": "typo3tests/test-file-storage-driver",
+	"type": "typo3-cms-extension",
+	"description": "This extension contains file storage driver DI fixtures.",
+	"version": "1.0.0",
+	"license": "GPL-2.0-or-later",
+	"require": {
+		"typo3/cms-core": "15.0.*@dev"
+	},
+	"extra": {
+		"typo3/cms": {
+			"extension-key": "test_file_storage_driver",
+			"Package": {
+				"providesPackages": []
+			}
+		}
+	},
+	"autoload": {
+		"psr-4": {
+			"TYPO3Tests\\TestFileStorageDriver\\": "Classes/"
+		}
+	}
+}

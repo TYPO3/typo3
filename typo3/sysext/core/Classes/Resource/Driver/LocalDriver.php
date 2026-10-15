@@ -17,18 +17,24 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Resource\Driver;
 
+use League\Flysystem\Config;
+use League\Flysystem\DirectoryAttributes;
+use League\Flysystem\FileAttributes;
+use League\Flysystem\FilesystemAdapter;
+use League\Flysystem\FilesystemException;
+use League\Flysystem\Local\LocalFilesystemAdapter;
+use League\Flysystem\UnixVisibility\PortableVisibilityConverter;
+use League\Flysystem\Visibility;
 use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Core\Attribute\AsFileStorageDriver;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\SelfEmittableLazyOpenStream;
 use TYPO3\CMS\Core\Resource\Capabilities;
-use TYPO3\CMS\Core\Resource\Exception\ExistingTargetFileNameException;
 use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Exception\FileOperationErrorException;
 use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Exception\InvalidConfigurationException;
-use TYPO3\CMS\Core\Resource\Exception\InvalidFileNameException;
-use TYPO3\CMS\Core\Resource\Exception\InvalidPathException;
 use TYPO3\CMS\Core\Resource\Exception\ResourcePermissionsUnavailableException;
 use TYPO3\CMS\Core\Resource\FolderInterface;
 use TYPO3\CMS\Core\Type\File\FileInfo;
@@ -36,58 +42,29 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
- * A concrete implementation for a File Driver for the local file system.
+ * A concrete implementation for a File Driver for the local file system,
+ * based on the local Flysystem adapter.
+ *
+ * Listings follow symbolic links, files and folders are created with the
+ * permissions and group configured in $GLOBALS['TYPO3_CONF_VARS']['SYS'],
+ * folders are moved at once and files are processed and streamed in place.
  */
-class LocalDriver extends AbstractHierarchicalFilesystemDriver implements StreamableDriverInterface
+#[AsFileStorageDriver(identifier: 'Local')]
+class LocalDriver extends AbstractFlysystemDriver
 {
-    /**
-     * @var string
-     */
-    public const UNSAFE_FILENAME_CHARACTER_EXPRESSION = '\\x00-\\x2C\\/\\x3A-\\x3F\\x5B-\\x60\\x7B-\\xBF';
-
     /**
      * The absolute base path. It always contains a trailing slash.
      */
     protected string $absoluteBasePath = '/';
 
-    /**
-     * The base URL that points to this driver's storage. As long is this
-     * is not set, it is assumed that this folder is not publicly available
-     */
-    protected ?string $baseUri = null;
-
     protected ?bool $caseSensitiveFileSystem = null;
 
     /**
-     * @var array<non-empty-string, FolderInterface::ROLE_*>
+     * Copies get the configured permissions by fixPermissions() instead
+     *
+     * @var array<string, mixed>
      */
-    protected array $mappingFolderNameToRole = [
-        '_recycler_' => FolderInterface::ROLE_RECYCLER,
-        '_temp_' => FolderInterface::ROLE_TEMPORARY,
-        'user_upload' => FolderInterface::ROLE_USERUPLOAD,
-    ];
-
-    public function __construct(array $configuration = [])
-    {
-        parent::__construct($configuration);
-        // The capabilities default of this driver. See Capabilities::CAPABILITY_* constants for possible values
-        $this->capabilities = new Capabilities(
-            Capabilities::CAPABILITY_BROWSABLE
-            | Capabilities::CAPABILITY_PUBLIC
-            | Capabilities::CAPABILITY_WRITABLE
-            | Capabilities::CAPABILITY_HIERARCHICAL_IDENTIFIERS
-        );
-    }
-
-    /**
-     * Merges the capabilities from the user of the storage configuration into the actual
-     * capabilities of the driver and returns the result.
-     */
-    public function mergeConfigurationCapabilities(Capabilities $capabilities): Capabilities
-    {
-        $this->capabilities->and($capabilities);
-        return $this->capabilities;
-    }
+    protected array $copyOptions = [Config::OPTION_RETAIN_VISIBILITY => false];
 
     public function processConfiguration(): void
     {
@@ -98,18 +75,29 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
             $this->absoluteBasePath = '/';
             throw $e;
         }
-        $this->determineBaseUrl();
-        if ($this->baseUri === null) {
-            // remove public flag
-            $this->capabilities->removeCapability(Capabilities::CAPABILITY_PUBLIC);
-        }
+        parent::processConfiguration();
+    }
+
+    protected function createFilesystemAdapter(): FilesystemAdapter
+    {
+        $fileCreateMask = (int)octdec((string)($GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask'] ?? '0664'));
+        $folderCreateMask = (int)octdec((string)($GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'] ?? '2775'));
+        return new LocalFilesystemAdapter(
+            $this->absoluteBasePath,
+            new PortableVisibilityConverter($fileCreateMask, $fileCreateMask, $folderCreateMask, $folderCreateMask, Visibility::PUBLIC),
+            LOCK_EX,
+            LocalFilesystemAdapter::SKIP_LINKS
+        );
     }
 
     /**
-     * Initializes this object. This is called by the storage after the driver
-     * has been attached.
+     * Without a configured base URI, a storage below the public path is published by its path
      */
-    public function initialize(): void {}
+    protected function determineBaseUri(): ?string
+    {
+        $this->determineBaseUrl();
+        return $this->baseUri;
+    }
 
     /**
      * Uses the configured value, and detects the behaviour of the file system
@@ -227,31 +215,6 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
     }
 
     /**
-     * Returns the identifier of the root level folder of the storage.
-     *
-     * @return non-empty-string
-     */
-    public function getRootLevelFolder(): string
-    {
-        return '/';
-    }
-
-    /**
-     * Returns the identifier of the default folder where new files should be put into.
-     *
-     * @return non-empty-string
-     */
-    public function getDefaultFolder(): string
-    {
-        $identifier = '/user_upload/';
-        $createFolder = !$this->folderExists($identifier);
-        if ($createFolder === true) {
-            $identifier = $this->createFolder('user_upload');
-        }
-        return $identifier;
-    }
-
-    /**
      * Creates a folder, within a given parent folder.
      * If no parent folder is given, a folder on the root-level will be created
      *
@@ -275,6 +238,43 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
             );
             GeneralUtility::mkdir_deep($this->getAbsolutePath($newIdentifier));
         }
+        return $newIdentifier;
+    }
+
+    /**
+     * @param non-empty-string $fileName
+     * @param non-empty-string $parentFolderIdentifier
+     * @return non-empty-string
+     */
+    public function createFile(string $fileName, string $parentFolderIdentifier): string
+    {
+        $fileIdentifier = parent::createFile($fileName, $parentFolderIdentifier);
+        GeneralUtility::fixPermissions($this->getAbsolutePath($fileIdentifier));
+        return $fileIdentifier;
+    }
+
+    /**
+     * @param non-empty-string $fileIdentifier
+     * @return int<0, max> The number of bytes written to the file
+     */
+    public function setFileContents(string $fileIdentifier, string $contents): int
+    {
+        $result = parent::setFileContents($fileIdentifier, $contents);
+        // Make sure later calls to filesize() etc. return correct values.
+        clearstatcache(true, $this->getAbsolutePath($fileIdentifier));
+        return $result;
+    }
+
+    /**
+     * @param non-empty-string $fileIdentifier
+     * @param non-empty-string $targetFolderIdentifier
+     * @param non-empty-string $fileName
+     * @return non-empty-string the identifier of the new file
+     */
+    public function copyFileWithinStorage(string $fileIdentifier, string $targetFolderIdentifier, string $fileName): string
+    {
+        $newIdentifier = parent::copyFileWithinStorage($fileIdentifier, $targetFolderIdentifier, $fileName);
+        GeneralUtility::fixPermissions($this->getAbsolutePath($newIdentifier));
         return $newIdentifier;
     }
 
@@ -331,332 +331,13 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
         ];
     }
 
-    /**
-     * Returns a string where any character not matching [.a-zA-Z0-9_-] is
-     * substituted by '_'
-     * Trailing dots are removed and characters are lowercased if using
-     * a case insensitive file system.
-     *
-     * Previously in \TYPO3\CMS\Core\Utility\File\BasicFileUtility::cleanFileName()
-     *
-     * @param string $fileName Input string, typically the body of a fileName
-     * @return non-empty-string Output string with any characters not matching [.a-zA-Z0-9_-] is substituted by '_' and trailing dots removed
-     */
-    public function sanitizeFileName(string $fileName): string
+    protected function getFileInformationProperty(string $fileIdentifier, string $property): bool|int|string|null
     {
-        $fileName = \Normalizer::normalize($fileName) ?: $fileName;
-        // Allow ".", "-", 0-9, a-z, A-Z and everything beyond U+C0 (latin capital letter a with grave)
-        $cleanFileName = (string)preg_replace('/[' . self::UNSAFE_FILENAME_CHARACTER_EXPRESSION . ']/u', '_', trim($fileName));
-        if (!$this->isCaseSensitiveFileSystem()) {
-            $cleanFileName = mb_strtolower($cleanFileName, 'utf-8');
-        }
-        // Strip trailing dots and return
-        $cleanFileName = rtrim($cleanFileName, '.');
-        if ($cleanFileName === '') {
-            throw new InvalidFileNameException('File name ' . $fileName . ' is invalid.', 1320288991);
-        }
-        return $cleanFileName;
-    }
-
-    /**
-     * Generic wrapper for extracting a list of items from a path.
-     *
-     * @param int $start The position to start the listing; if not set, start from the beginning
-     * @param int $numberOfItems The number of items to list; if set to zero, all items are returned
-     * @param array $filterMethods The filter methods used to filter the directory items
-     * @param string $sort Property name used to sort the items.
-     *                     Among them may be: '' (empty, no sorting), name,
-     *                     fileext, size, tstamp and rw.
-     *                     If a driver does not support the given property, it
-     *                     should fall back to "name".
-     * @param bool $sortRev TRUE to indicate reverse sorting (last to first)
-     * @return array<string|int, string> folder identifiers (where key and value are identical, but int-like identifiers
-     *         will get converted to int array keys)
-     */
-    protected function getDirectoryItemList(string $folderIdentifier, int $start, int $numberOfItems, array $filterMethods, bool $includeFiles = true, bool $includeDirs = true, bool $recursive = false, string $sort = '', bool $sortRev = false): array
-    {
-        $folderIdentifier = $this->canonicalizeAndCheckFolderIdentifier($folderIdentifier);
-        $realPath = $this->getAbsolutePath($folderIdentifier);
-        if (!is_dir($realPath)) {
-            throw new \InvalidArgumentException(
-                'Cannot list items in directory ' . $folderIdentifier . ' - does not exist or is no directory',
-                1314349666
-            );
-        }
-
-        $items = $this->retrieveFileAndFoldersInPath($realPath, $recursive, $includeFiles, $includeDirs, $sort, $sortRev);
-        $iterator = new \ArrayIterator($items);
-        if ($iterator->count() === 0) {
-            return [];
-        }
-
-        // $c is the counter for how many items we still have to fetch (-1 is unlimited)
-        $c = $numberOfItems > 0 ? $numberOfItems : -1;
-        $items = [];
-        while ($iterator->valid() && ($numberOfItems === 0 || $c > 0)) {
-            // $iteratorItem is the file or folder name
-            $iteratorItem = $iterator->current();
-            // go on to the next iterator item now as we might skip this one early
-            $iterator->next();
-
-            try {
-                if (
-                    !$this->applyFilterMethodsToDirectoryItem(
-                        $filterMethods,
-                        $iteratorItem['name'],
-                        $iteratorItem['identifier'],
-                        $this->getParentFolderIdentifierOfIdentifier($iteratorItem['identifier'])
-                    )
-                ) {
-                    continue;
-                }
-                if ($start > 0) {
-                    $start--;
-                } else {
-                    // The identifier can also be an int-like string, resulting in int array keys.
-                    $items[$iteratorItem['identifier']] = $iteratorItem['identifier'];
-                    // Decrement item counter to make sure we only return $numberOfItems
-                    // we cannot do this earlier in the method (unlike moving the iterator forward) because we only add the
-                    // item here
-                    --$c;
-                }
-            } catch (InvalidPathException) {
-            }
-        }
-        return $items;
-    }
-
-    /**
-     * Applies a set of filter methods to a file name to find out if it should be used or not.
-     * This is used by directory listings.
-     *
-     * @param array $filterMethods The filter methods to use
-     */
-    protected function applyFilterMethodsToDirectoryItem(array $filterMethods, string $itemName, string $itemIdentifier, string $parentIdentifier): bool
-    {
-        foreach ($filterMethods as $filter) {
-            if (is_callable($filter)) {
-                $result = $filter($itemName, $itemIdentifier, $parentIdentifier, [], $this);
-                // We use -1 as the "don't include“ return value, for historic reasons,
-                // as call_user_func() used to return FALSE if calling the method failed.
-                if ($result === -1) {
-                    return false;
-                }
-                if ($result === false) {
-                    throw new \RuntimeException(
-                        'Could not apply file/folder name filter ' . $filter[0] . '::' . $filter[1],
-                        1476046425
-                    );
-                }
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Returns a file inside the specified path.
-     *
-     * @param non-empty-string $fileName
-     * @param non-empty-string $folderIdentifier
-     * @return non-empty-string File Identifier
-     */
-    public function getFileInFolder(string $fileName, string $folderIdentifier): string
-    {
-        return $this->canonicalizeAndCheckFileIdentifier($folderIdentifier . '/' . $fileName);
-    }
-
-    /**
-     * Returns a list of files inside the specified path.
-     *
-     * @param string $folderIdentifier
-     * @param int $start
-     * @param int $numberOfItems
-     * @param bool $recursive
-     * @param array $filenameFilterCallbacks The method callbacks to use for filtering the items
-     * @param string $sort Property name used to sort the items.
-     *                     Among them may be: '' (empty, no sorting), name,
-     *                     fileext, size, tstamp and rw.
-     *                     If a driver does not support the given property, it
-     *                     should fall back to "name".
-     * @param bool $sortRev TRUE to indicate reverse sorting (last to first)
-     * @return string[] of FileIdentifiers
-     */
-    public function getFilesInFolder(string $folderIdentifier, int $start = 0, int $numberOfItems = 0, bool $recursive = false, array $filenameFilterCallbacks = [], string $sort = '', bool $sortRev = false): array
-    {
-        return $this->getDirectoryItemList($folderIdentifier, $start, $numberOfItems, $filenameFilterCallbacks, true, false, $recursive, $sort, $sortRev);
-    }
-
-    /**
-     * Returns the number of files inside the specified path.
-     *
-     * @param non-empty-string $folderIdentifier
-     * @param list<callable> $filenameFilterCallbacks callbacks for filtering the items
-     * @return int<0, max> Number of files in folder
-     */
-    public function countFilesInFolder(string $folderIdentifier, bool $recursive = false, array $filenameFilterCallbacks = []): int
-    {
-        return count($this->getFilesInFolder($folderIdentifier, 0, 0, $recursive, $filenameFilterCallbacks));
-    }
-
-    /**
-     * Returns a list of folders inside the specified path.
-     *
-     * @param string $folderIdentifier
-     * @param int $start
-     * @param int $numberOfItems
-     * @param bool $recursive
-     * @param array $folderNameFilterCallbacks The method callbacks to use for filtering the items
-     * @param string $sort Property name used to sort the items.
-     *                     Among them may be: '' (empty, no sorting), name,
-     *                     fileext, size, tstamp and rw.
-     *                     If a driver does not support the given property, it
-     *                     should fall back to "name".
-     * @param bool $sortRev TRUE to indicate reverse sorting (last to first)
-     * @return array<string|int, string> folder identifiers (where key and value are identical, but int-like identifiers
-     *         will get converted to int array keys)
-     */
-    public function getFoldersInFolder(string $folderIdentifier, int $start = 0, int $numberOfItems = 0, bool $recursive = false, array $folderNameFilterCallbacks = [], string $sort = '', bool $sortRev = false): array
-    {
-        return $this->getDirectoryItemList($folderIdentifier, $start, $numberOfItems, $folderNameFilterCallbacks, false, true, $recursive, $sort, $sortRev);
-    }
-
-    /**
-     * Returns the number of folders inside the specified path.
-     *
-     * @param non-empty-string $folderIdentifier
-     * @param list<callable> $folderNameFilterCallbacks callbacks for filtering the items
-     * @return int<0, max> Number of folders in folder
-     */
-    public function countFoldersInFolder(string $folderIdentifier, bool $recursive = false, array $folderNameFilterCallbacks = []): int
-    {
-        return count($this->getFoldersInFolder($folderIdentifier, 0, 0, $recursive, $folderNameFilterCallbacks));
-    }
-
-    /**
-     * Returns a list with the names of all files and folders in a path, optionally recursive.
-     *
-     * @param string $path The absolute path
-     * @param bool $recursive If TRUE, recursively fetches files and folders
-     * @param string $sort Property name used to sort the items.
-     *                     Among them may be: '' (empty, no sorting), name,
-     *                     fileext, size, tstamp and rw.
-     *                     If a driver does not support the given property, it
-     *                     should fall back to "name".
-     * @param bool $sortRev TRUE to indicate reverse sorting (last to first)
-     */
-    protected function retrieveFileAndFoldersInPath(string $path, bool $recursive = false, bool $includeFiles = true, bool $includeDirs = true, string $sort = '', bool $sortRev = false): array
-    {
-        $pathLength = strlen($this->getAbsoluteBasePath());
-        $iteratorMode = \FilesystemIterator::UNIX_PATHS | \FilesystemIterator::SKIP_DOTS | \FilesystemIterator::CURRENT_AS_FILEINFO | \FilesystemIterator::FOLLOW_SYMLINKS;
-        if ($recursive) {
-            $iterator = new \RecursiveIteratorIterator(
-                new \RecursiveDirectoryIterator($path, $iteratorMode),
-                \RecursiveIteratorIterator::SELF_FIRST,
-                \RecursiveIteratorIterator::CATCH_GET_CHILD
-            );
-        } else {
-            $iterator = new \RecursiveDirectoryIterator($path, $iteratorMode);
-        }
-
-        $directoryEntries = [];
-        while ($iterator->valid()) {
-            /** @var \SplFileInfo $entry */
-            $entry = $iterator->current();
-            $isFile = $entry->isFile();
-            $isDirectory = !$isFile && $entry->isDir();
-            if (
-                (!$isFile && !$isDirectory) // skip non-files/non-folders
-                || ($isFile && !$includeFiles) // skip files if they are excluded
-                || ($isDirectory && !$includeDirs) // skip directories if they are excluded
-                || $entry->getFilename() === '' // skip empty entries
-                || !$entry->isReadable() // skip unreadable entries
-            ) {
-                $iterator->next();
-                continue;
-            }
-            $entryIdentifier = '/' . substr($entry->getPathname(), $pathLength);
-            $entryName = basename($entryIdentifier);
-            if ($isDirectory) {
-                $entryIdentifier .= '/';
-            }
-            $entryArray = [
-                'identifier' => $entryIdentifier,
-                'name' => $entryName,
-                'type' => $isDirectory ? 'dir' : 'file',
-            ];
-            $directoryEntries[$entryIdentifier] = $entryArray;
-            $iterator->next();
-        }
-        return $this->sortDirectoryEntries($directoryEntries, $sort, $sortRev);
-    }
-
-    /**
-     * Sort the directory entries by a certain key.
-     *
-     * @param array $directoryEntries Array of directory entry arrays from retrieveFileAndFoldersInPath()
-     * @param string $sort Property name used to sort the items.
-     *                     Among them may be: '' (empty, no sorting), name,
-     *                     fileext, size, tstamp and rw.
-     *                     If a driver does not support the given property, it
-     *                     should fall back to "name".
-     * @param bool $sortRev TRUE to indicate reverse sorting (last to first)
-     * @return array Sorted entries. Content of the keys is undefined.
-     */
-    protected function sortDirectoryEntries(array $directoryEntries, string $sort = '', bool $sortRev = false): array
-    {
-        if (count($directoryEntries) < 2) {
-            return $directoryEntries;
-        }
-        $entriesToSort = [];
-        foreach ($directoryEntries as $entryArray) {
-            $dir      = pathinfo($entryArray['name'], PATHINFO_DIRNAME) . '/';
-            $fullPath = $this->getAbsoluteBasePath() . $entryArray['identifier'];
-            switch ($sort) {
-                case 'size':
-                    $sortingKey = '0';
-                    if ($entryArray['type'] === 'file') {
-                        $sortingKey = $this->getSpecificFileInformation($fullPath, $dir, 'size');
-                    }
-                    // Add a character for a natural order sorting
-                    $sortingKey .= 's';
-                    break;
-                case 'rw':
-                    $perms = $this->getPermissions($entryArray['identifier']);
-                    $sortingKey = ($perms['r'] ? 'R' : '')
-                        . ($perms['w'] ? 'W' : '');
-                    break;
-                case 'fileext':
-                    $sortingKey = pathinfo($entryArray['name'], PATHINFO_EXTENSION);
-                    break;
-                case 'tstamp':
-                    $sortingKey = $this->getSpecificFileInformation($fullPath, $dir, 'mtime');
-                    // Add a character for a natural order sorting
-                    $sortingKey .= 't';
-                    break;
-                case 'crdate':
-                    $sortingKey = $this->getSpecificFileInformation($fullPath, $dir, 'ctime');
-                    // Add a character for a natural order sorting
-                    $sortingKey .= 'c';
-                    break;
-                case 'name':
-                case 'file':
-                default:
-                    $sortingKey = $entryArray['name'];
-            }
-            $i = 0;
-            while (isset($entriesToSort[$sortingKey . $i])) {
-                $i++;
-            }
-            $entriesToSort[$sortingKey . $i] = $entryArray;
-        }
-
-        if ($sortRev) {
-            krsort($entriesToSort, SORT_NATURAL | SORT_FLAG_CASE);
-        } else {
-            ksort($entriesToSort, SORT_NATURAL | SORT_FLAG_CASE);
-        }
-
-        return $entriesToSort;
+        return $this->getSpecificFileInformation(
+            $this->getAbsolutePath($fileIdentifier),
+            $this->getParentFolderIdentifierOfIdentifier($fileIdentifier),
+            $property
+        );
     }
 
     /**
@@ -709,6 +390,112 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
     }
 
     /**
+     * @param non-empty-string $folderIdentifier
+     * @return bool TRUE if there are no files and folders within $folder
+     */
+    public function isFolderEmpty(string $folderIdentifier): bool
+    {
+        $path = $this->getAbsolutePath($folderIdentifier);
+        $dirHandle = opendir($path);
+        if ($dirHandle === false) {
+            return true;
+        }
+        while ($entry = readdir($dirHandle)) {
+            if ($entry !== '.' && $entry !== '..') {
+                closedir($dirHandle);
+                return false;
+            }
+        }
+        closedir($dirHandle);
+        return true;
+    }
+
+    /**
+     * Lists the directory itself instead of using the adapter, as the adapter
+     * does not follow symbolic links, which are common in local storages.
+     *
+     * @return \Generator<string, FileAttributes|DirectoryAttributes> identifier => attributes
+     */
+    protected function listDirectoryEntries(string $folderIdentifier, bool $includeFiles, bool $includeDirs, bool $recursive): \Generator
+    {
+        $folderIdentifier = $this->canonicalizeAndCheckFolderIdentifier($folderIdentifier);
+        $realPath = $this->getAbsolutePath($folderIdentifier);
+        if (!is_dir($realPath)) {
+            throw new \InvalidArgumentException(
+                'Cannot list items in directory ' . $folderIdentifier . ' - does not exist or is no directory',
+                1314349666
+            );
+        }
+        $pathLength = strlen($this->getAbsoluteBasePath());
+        $iteratorMode = \FilesystemIterator::UNIX_PATHS | \FilesystemIterator::SKIP_DOTS | \FilesystemIterator::CURRENT_AS_FILEINFO | \FilesystemIterator::FOLLOW_SYMLINKS;
+        $iterator = new \RecursiveDirectoryIterator($realPath, $iteratorMode);
+        if ($recursive) {
+            $iterator = new \RecursiveIteratorIterator($iterator, \RecursiveIteratorIterator::SELF_FIRST, \RecursiveIteratorIterator::CATCH_GET_CHILD);
+        }
+        /** @var \SplFileInfo $entry */
+        foreach ($iterator as $entry) {
+            $isFile = $entry->isFile();
+            $isDirectory = !$isFile && $entry->isDir();
+            if (
+                (!$isFile && !$isDirectory)
+                || ($isFile && !$includeFiles)
+                || ($isDirectory && !$includeDirs)
+                || $entry->getFilename() === ''
+                || !$entry->isReadable()
+            ) {
+                continue;
+            }
+            $path = substr($entry->getPathname(), $pathLength);
+            if ($isDirectory) {
+                yield '/' . $path . '/' => new DirectoryAttributes($path, null, $entry->getMTime());
+            } else {
+                yield '/' . $path => new FileAttributes($path, $entry->getSize(), null, $entry->getMTime());
+            }
+        }
+    }
+
+    /**
+     * Copies folders through the adapter, but moves and renames them at once,
+     * so symbolic links within are kept.
+     *
+     * @return array<non-empty-string, non-empty-string> map of old to new identifiers
+     */
+    protected function transferFolder(string $sourceFolderIdentifier, string $targetFolderIdentifier, bool $move): array
+    {
+        if (!$move) {
+            $identifierMap = parent::transferFolder($sourceFolderIdentifier, $targetFolderIdentifier, false);
+            GeneralUtility::fixPermissions($this->getAbsolutePath($targetFolderIdentifier), true);
+            return $identifierMap;
+        }
+        $sourcePath = $this->getAbsolutePath($sourceFolderIdentifier);
+        $targetPath = $this->getAbsolutePath($targetFolderIdentifier);
+        // get all files and folders we are going to move, to have a map for updating later.
+        $filesAndFolders = [];
+        foreach ($this->listDirectoryEntries($sourceFolderIdentifier, true, true, true) as $identifier => $attributes) {
+            $filesAndFolders[] = ['identifier' => $identifier, 'type' => $attributes->isDir() ? 'dir' : 'file'];
+        }
+        try {
+            $this->getFilesystem()->move($this->getPath($sourceFolderIdentifier), $this->getPath($targetFolderIdentifier));
+        } catch (FilesystemException $e) {
+            throw new \RuntimeException('Moving folder ' . $sourcePath . ' to ' . $targetPath . ' failed.', 1320711817, $e);
+        }
+        try {
+            return $this->createIdentifierMap($filesAndFolders, $sourceFolderIdentifier, $targetFolderIdentifier);
+        } catch (\Exception $e) {
+            @rename($targetPath, $sourcePath);
+            throw new \RuntimeException(
+                sprintf(
+                    'Creating filename mapping after moving "%1$s" to "%2$s" failed. Reverted move operation.\\n\\nOriginal error: %3$s"',
+                    $sourcePath,
+                    $targetPath,
+                    $e->getMessage()
+                ),
+                1334160746
+            );
+        }
+    }
+
+    /**
      * Returns the absolute path of the folder this driver operates on.
      */
     protected function getAbsoluteBasePath(): string
@@ -723,18 +510,6 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
     {
         $relativeFilePath = ltrim($this->canonicalizeAndCheckFileIdentifier($fileIdentifier), '/');
         return $this->absoluteBasePath . $relativeFilePath;
-    }
-
-    /**
-     * Creates a (cryptographic) hash for a file.
-     *
-     * @param string $hashAlgorithm The hash algorithm to use
-     */
-    public function hash(string $fileIdentifier, string $hashAlgorithm): string
-    {
-        $hashContext = hash_init($hashAlgorithm);
-        hash_update_file($hashContext, $this->getAbsolutePath($fileIdentifier));
-        return hash_final($hashContext);
     }
 
     /**
@@ -781,66 +556,6 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
     }
 
     /**
-     * Checks if a file exists on the file system.
-     *
-     * @param non-empty-string $fileIdentifier
-     */
-    public function fileExists(string $fileIdentifier): bool
-    {
-        $absoluteFilePath = $this->getAbsolutePath($fileIdentifier);
-        return is_file($absoluteFilePath);
-    }
-
-    /**
-     * Checks if a file inside a folder exists.
-     *
-     * @param non-empty-string $fileName
-     * @param non-empty-string $folderIdentifier
-     */
-    public function fileExistsInFolder(string $fileName, string $folderIdentifier): bool
-    {
-        $identifier = $folderIdentifier . '/' . $fileName;
-        $identifier = $this->canonicalizeAndCheckFileIdentifier($identifier);
-        return $this->fileExists($identifier);
-    }
-
-    /**
-     * Checks if a folder exists.
-     *
-     * @param non-empty-string $folderIdentifier
-     */
-    public function folderExists(string $folderIdentifier): bool
-    {
-        $absoluteFilePath = $this->getAbsolutePath($folderIdentifier);
-        return is_dir($absoluteFilePath);
-    }
-
-    /**
-     * Checks if a folder inside a folder exists.
-     *
-     * @param non-empty-string $folderName
-     * @param non-empty-string $folderIdentifier
-     */
-    public function folderExistsInFolder(string $folderName, string $folderIdentifier): bool
-    {
-        $identifier = $folderIdentifier . '/' . $folderName;
-        $identifier = $this->canonicalizeAndCheckFolderIdentifier($identifier);
-        return $this->folderExists($identifier);
-    }
-
-    /**
-     * Returns the identifier for a folder within a given folder.
-     *
-     * @param non-empty-string $folderName The name of the target folder
-     * @param non-empty-string $folderIdentifier
-     * @return non-empty-string
-     */
-    public function getFolderInFolder(string $folderName, string $folderIdentifier): string
-    {
-        return $this->canonicalizeAndCheckFolderIdentifier($folderIdentifier . '/' . $folderName);
-    }
-
-    /**
      * Replaces the contents (and file-specific metadata) of a file with another file from the server's hard disk.
      *
      * @param non-empty-string $fileIdentifier
@@ -859,50 +574,6 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
             throw new \RuntimeException('Replacing file ' . $fileIdentifier . ' with ' . $localFilePath . ' failed.', 1315314711);
         }
         return true;
-    }
-
-    /**
-     * Copies a file *within* the current storage.
-     * The responsibility of this method in the Driver is only about an intra-storage copy action,
-     * where a file is just copied to another folder in the same storage.
-     *
-     * @param non-empty-string $fileIdentifier
-     * @param non-empty-string $targetFolderIdentifier
-     * @param non-empty-string $fileName
-     * @return non-empty-string the identifier of the new file
-     */
-    public function copyFileWithinStorage(string $fileIdentifier, string $targetFolderIdentifier, string $fileName): string
-    {
-        $sourcePath = $this->getAbsolutePath($fileIdentifier);
-        $newIdentifier = $targetFolderIdentifier . '/' . $fileName;
-        $newIdentifier = $this->canonicalizeAndCheckFileIdentifier($newIdentifier);
-
-        $absoluteFilePath = $this->getAbsolutePath($newIdentifier);
-        @copy($sourcePath, $absoluteFilePath);
-        GeneralUtility::fixPermissions($absoluteFilePath);
-        return $newIdentifier;
-    }
-
-    /**
-     * Moves a file *within* the current storage.
-     * The responsibility of this method in the Driver is only about an intra-storage move action,
-     * where a file is just moved to another folder in the same storage.
-     *
-     * @param non-empty-string $fileIdentifier
-     * @param non-empty-string $targetFolderIdentifier
-     * @param non-empty-string $newFileName
-     * @return non-empty-string
-     */
-    public function moveFileWithinStorage(string $fileIdentifier, string $targetFolderIdentifier, string $newFileName): string
-    {
-        $sourcePath = $this->getAbsolutePath($fileIdentifier);
-        $targetIdentifier = $targetFolderIdentifier . '/' . $newFileName;
-        $targetIdentifier = $this->canonicalizeAndCheckFileIdentifier($targetIdentifier);
-        $result = @rename($sourcePath, $this->getAbsolutePath($targetIdentifier));
-        if ($result === false) {
-            throw new \RuntimeException('Moving file ' . $sourcePath . ' to ' . $targetIdentifier . ' failed.', 1315314712);
-        }
-        return $targetIdentifier;
     }
 
     /**
@@ -975,209 +646,6 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
     }
 
     /**
-     * Folder equivalent to moveFileWithinStorage().
-     *
-     * @param non-empty-string $sourceFolderIdentifier
-     * @param non-empty-string $targetFolderIdentifier
-     * @param non-empty-string $newFolderName
-     * @return array<non-empty-string, non-empty-string> A map of old to new file identifiers
-     */
-    public function moveFolderWithinStorage(string $sourceFolderIdentifier, string $targetFolderIdentifier, string $newFolderName): array
-    {
-        $sourcePath = $this->getAbsolutePath($sourceFolderIdentifier);
-        $relativeTargetPath = $this->canonicalizeAndCheckFolderIdentifier($targetFolderIdentifier . '/' . $newFolderName);
-        $targetPath = $this->getAbsolutePath($relativeTargetPath);
-        // get all files and folders we are going to move, to have a map for updating later.
-        $filesAndFolders = $this->retrieveFileAndFoldersInPath($sourcePath, true);
-        $result = @rename($sourcePath, $targetPath);
-        if ($result === false) {
-            throw new \RuntimeException('Moving folder ' . $sourcePath . ' to ' . $targetPath . ' failed.', 1320711817);
-        }
-        // Create a mapping from old to new identifiers
-        return $this->createIdentifierMap($filesAndFolders, $sourceFolderIdentifier, $relativeTargetPath);
-    }
-
-    /**
-     * Folder equivalent to copyFileWithinStorage().
-     *
-     * @param non-empty-string $sourceFolderIdentifier
-     * @param non-empty-string $targetFolderIdentifier
-     * @param non-empty-string $newFolderName
-     * @return true
-     */
-    public function copyFolderWithinStorage(string $sourceFolderIdentifier, string $targetFolderIdentifier, string $newFolderName): bool
-    {
-        // This target folder path already includes the topmost level, i.e. the folder this method knows as $folderToCopy.
-        // We can thus rely on this folder being present and just create the subfolder we want to copy to.
-        $newFolderIdentifier = $this->canonicalizeAndCheckFolderIdentifier($targetFolderIdentifier . '/' . $newFolderName);
-        $sourceFolderPath = $this->getAbsolutePath($sourceFolderIdentifier);
-        $targetFolderPath = $this->getAbsolutePath($newFolderIdentifier);
-
-        GeneralUtility::mkdir($targetFolderPath);
-        $iterator = new \RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator($sourceFolderPath),
-            \RecursiveIteratorIterator::SELF_FIRST,
-            \RecursiveIteratorIterator::CATCH_GET_CHILD
-        );
-        // Rewind the iterator as this is important for some systems e.g. Windows
-        $iterator->rewind();
-        while ($iterator->valid()) {
-            /** @var \RecursiveDirectoryIterator $current */
-            $current = $iterator->current();
-            $fileName = $current->getFilename();
-            $itemSubPath = GeneralUtility::fixWindowsFilePath((string)$iterator->getSubPathname());
-            if ($current->isDir() && !($fileName === '..' || $fileName === '.')) {
-                GeneralUtility::mkdir($targetFolderPath . '/' . $itemSubPath);
-            } elseif ($current->isFile()) {
-                $copySourcePath = $sourceFolderPath . '/' . $itemSubPath;
-                $copyTargetPath = $targetFolderPath . '/' . $itemSubPath;
-                $result = @copy($copySourcePath, $copyTargetPath);
-                if ($result === false) {
-                    // rollback
-                    GeneralUtility::rmdir($targetFolderIdentifier, true);
-                    throw new FileOperationErrorException(
-                        'Copying resource "' . $copySourcePath . '" to "' . $copyTargetPath . '" failed.',
-                        1330119452
-                    );
-                }
-            }
-            $iterator->next();
-        }
-        GeneralUtility::fixPermissions($targetFolderPath, true);
-        return true;
-    }
-
-    /**
-     * Renames a file in this storage.
-     *
-     * @param non-empty-string $fileIdentifier
-     * @param non-empty-string $newName The target path (including the file name!)
-     * @return non-empty-string The identifier of the file after renaming
-     */
-    public function renameFile(string $fileIdentifier, string $newName): string
-    {
-        // Makes sure the Path given as parameter is valid
-        $newName = $this->sanitizeFileName($newName);
-        $newIdentifier = rtrim(GeneralUtility::fixWindowsFilePath(dirname($fileIdentifier)), '/') . '/' . $newName;
-        $newIdentifier = $this->canonicalizeAndCheckFileIdentifier($newIdentifier);
-        // The target should not exist already
-        if ($this->fileExists($newIdentifier)) {
-            throw new ExistingTargetFileNameException(
-                'The target file "' . $newIdentifier . '" already exists.',
-                1320291063
-            );
-        }
-        $sourcePath = $this->getAbsolutePath($fileIdentifier);
-        $targetPath = $this->getAbsolutePath($newIdentifier);
-        $result = @rename($sourcePath, $targetPath);
-        if ($result === false) {
-            throw new \RuntimeException('Renaming file ' . $sourcePath . ' to ' . $targetPath . ' failed.', 1320375115);
-        }
-        return $newIdentifier;
-    }
-
-    /**
-     * Renames a folder in this storage.
-     *
-     * @param non-empty-string $folderIdentifier
-     * @param non-empty-string $newName
-     * @return array<string, string> A map of old to new file identifiers of all affected files and folders
-     * @throws \RuntimeException if renaming the folder failed
-     */
-    public function renameFolder(string $folderIdentifier, string $newName): array
-    {
-        $folderIdentifier = $this->canonicalizeAndCheckFolderIdentifier($folderIdentifier);
-        $newName = $this->sanitizeFileName($newName);
-
-        $newIdentifier = dirname($folderIdentifier) . '/' . $newName;
-        $newIdentifier = $this->canonicalizeAndCheckFolderIdentifier($newIdentifier);
-
-        $sourcePath = $this->getAbsolutePath($folderIdentifier);
-        $targetPath = $this->getAbsolutePath($newIdentifier);
-        // get all files and folders we are going to move, to have a map for updating later.
-        $filesAndFolders = $this->retrieveFileAndFoldersInPath($sourcePath, true);
-        $result = @rename($sourcePath, $targetPath);
-        if ($result === false) {
-            throw new \RuntimeException(sprintf('Renaming folder "%1$s" to "%2$s" failed."', $sourcePath, $targetPath), 1320375116);
-        }
-        try {
-            // Create a mapping from old to new identifiers
-            $identifierMap = $this->createIdentifierMap($filesAndFolders, $folderIdentifier, $newIdentifier);
-        } catch (\Exception $e) {
-            @rename($targetPath, $sourcePath);
-            throw new \RuntimeException(
-                sprintf(
-                    'Creating filename mapping after renaming "%1$s" to "%2$s" failed. Reverted rename operation.\\n\\nOriginal error: %3$s"',
-                    $sourcePath,
-                    $targetPath,
-                    $e->getMessage()
-                ),
-                1334160746
-            );
-        }
-        return $identifierMap;
-    }
-
-    /**
-     * Removes a file from the filesystem. This does not check if the file is
-     * still used or if it is a bad idea to delete it for some other reason
-     * this has to be taken care of in the upper layers (e.g. the ResourceStorage).
-     *
-     * @param non-empty-string $fileIdentifier
-     */
-    public function deleteFile(string $fileIdentifier): bool
-    {
-        $filePath = $this->getAbsolutePath($fileIdentifier);
-        $result = @unlink($filePath);
-
-        if ($result === false) {
-            throw new \RuntimeException('Deletion of file ' . $fileIdentifier . ' failed.', 1320855304);
-        }
-        return true;
-    }
-
-    /**
-     * Removes a folder from the hard drive.
-     *
-     * @param non-empty-string $folderIdentifier
-     */
-    public function deleteFolder(string $folderIdentifier, bool $deleteRecursively = false): bool
-    {
-        $folderPath = $this->getAbsolutePath($folderIdentifier);
-        $result = GeneralUtility::rmdir($folderPath, $deleteRecursively);
-        if ($result === false) {
-            throw new FileOperationErrorException(
-                'Deleting folder "' . $folderIdentifier . '" failed.',
-                1330119451
-            );
-        }
-        return $result;
-    }
-
-    /**
-     * Checks if a folder contains files and (if supported) other folders.
-     *
-     * @param non-empty-string $folderIdentifier
-     * @return bool TRUE if there are no files and folders within $folder
-     */
-    public function isFolderEmpty(string $folderIdentifier): bool
-    {
-        $path = $this->getAbsolutePath($folderIdentifier);
-        $dirHandle = opendir($path);
-        if ($dirHandle === false) {
-            return true;
-        }
-        while ($entry = readdir($dirHandle)) {
-            if ($entry !== '.' && $entry !== '..') {
-                closedir($dirHandle);
-                return false;
-            }
-        }
-        closedir($dirHandle);
-        return true;
-    }
-
-    /**
      * Returns (a local copy of) a file for further processing. This makes a copy
      * first when in writable mode, so if you change the file, you have to update it yourself afterward.
      *
@@ -1214,98 +682,9 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
         ];
     }
 
-    /**
-     * Checks if a given identifier is within a container, e.g. if
-     * a file or folder is within another folder. It will also return
-     * TRUE if both canonical identifiers are equal.
-     *
-     * @param non-empty-string $folderIdentifier
-     * @param non-empty-string $identifier identifier to be checked against $folderIdentifier
-     * @return bool TRUE if $content is within or matches $folderIdentifier
-     */
-    public function isWithin(string $folderIdentifier, string $identifier): bool
+    protected function getPermissionsOfListedEntry(string $identifier): array
     {
-        $folderIdentifier = $this->canonicalizeAndCheckFileIdentifier($folderIdentifier);
-        $entryIdentifier = $this->canonicalizeAndCheckFileIdentifier($identifier);
-        if ($folderIdentifier === $entryIdentifier) {
-            return true;
-        }
-        // File identifier canonicalization will not modify a single slash so
-        // we must not append another slash in that case.
-        if ($folderIdentifier !== '/') {
-            $folderIdentifier .= '/';
-        }
-        return str_starts_with($entryIdentifier, $folderIdentifier);
-    }
-
-    /**
-     * Creates a new (empty) file and returns the identifier.
-     *
-     * @param non-empty-string $fileName
-     * @param non-empty-string $parentFolderIdentifier
-     * @return non-empty-string
-     */
-    public function createFile(string $fileName, string $parentFolderIdentifier): string
-    {
-        $fileName = $this->sanitizeFileName(ltrim($fileName, '/'));
-        $parentFolderIdentifier = $this->canonicalizeAndCheckFolderIdentifier($parentFolderIdentifier);
-        $fileIdentifier = $this->canonicalizeAndCheckFileIdentifier(
-            $parentFolderIdentifier . $fileName
-        );
-        $absoluteFilePath = $this->getAbsolutePath($fileIdentifier);
-        $result = @touch($absoluteFilePath);
-        if ($result !== true) {
-            throw new \RuntimeException('Creating file ' . $fileIdentifier . ' failed.', 1320569854);
-        }
-        GeneralUtility::fixPermissions($absoluteFilePath);
-        clearstatcache();
-        return $fileIdentifier;
-    }
-
-    /**
-     * Returns the contents of a file. Beware that this requires to load the
-     * complete file into memory and also may require fetching the file from an
-     * external location. So this might be an expensive operation (both in terms of
-     * processing resources and money) for large files.
-     *
-     * @param non-empty-string $fileIdentifier
-     * @return string The file contents if file exists, otherwise an empty string
-     */
-    public function getFileContents(string $fileIdentifier): string
-    {
-        $filePath = $this->getAbsolutePath($fileIdentifier);
-        return is_readable($filePath) ? (string)file_get_contents($filePath) : '';
-    }
-
-    /**
-     * Sets the contents of a file to the specified value.
-     *
-     * @param non-empty-string $fileIdentifier
-     * @return int<0, max> The number of bytes written to the file
-     * @throws \RuntimeException if the operation failed
-     */
-    public function setFileContents(string $fileIdentifier, string $contents): int
-    {
-        $filePath = $this->getAbsolutePath($fileIdentifier);
-        $result = file_put_contents($filePath, $contents);
-
-        // Make sure later calls to filesize() etc. return correct values.
-        clearstatcache(true, $filePath);
-
-        if ($result === false) {
-            throw new \RuntimeException('Setting contents of file "' . $fileIdentifier . '" failed.', 1325419305);
-        }
-        return $result;
-    }
-
-    /**
-     * Returns the role of an item. This is currently only implemented for folder,
-     * but could be extended to files as well.
-     */
-    public function getRole(string $folderIdentifier): string
-    {
-        $name = basename($folderIdentifier);
-        return $this->mappingFolderNameToRole[$name] ?? FolderInterface::ROLE_DEFAULT;
+        return $this->getPermissions($identifier);
     }
 
     /**

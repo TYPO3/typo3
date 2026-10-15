@@ -20,8 +20,14 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\Driver;
 use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\ServiceLocator;
 use TYPO3\CMS\Core\Resource\Driver\DriverInterface;
 use TYPO3\CMS\Core\Resource\Driver\DriverRegistry;
+use TYPO3\CMS\Core\Resource\Driver\FileStorageDriverFactoryInterface;
+use TYPO3\CMS\Core\Resource\Driver\FilesystemAdapterFactoryInterface;
+use TYPO3\CMS\Core\Resource\Driver\FlysystemDriver;
+use TYPO3\CMS\Core\Resource\Driver\LocalDriver;
 use TYPO3\CMS\Core\Tests\Unit\Resource\Driver\Fixtures\TestingDriver;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -130,5 +136,91 @@ final class DriverRegistryTest extends UnitTestCase
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['registeredDrivers'] = [];
         $subject = new DriverRegistry();
         self::assertFalse($subject->driverExists(StringUtility::getUniqueId('class_')));
+    }
+
+    #[Test]
+    public function driverClassesRegisteredWithAttributeAreRegistered(): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['registeredDrivers'] = [];
+        $subject = new DriverRegistry(['Testing' => TestingDriver::class]);
+        self::assertTrue($subject->driverExists('Testing'));
+        self::assertSame(TestingDriver::class, $subject->getDriverClass('Testing'));
+        self::assertInstanceOf(TestingDriver::class, $subject->createDriver('Testing', []));
+    }
+
+    #[Test]
+    public function driverRegisteredWithAttributeTakesPrecedenceOverDriverRegisteredInConfiguration(): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['registeredDrivers'] = [
+            'Testing' => ['class' => LocalDriver::class],
+            'Factory' => ['class' => LocalDriver::class],
+        ];
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger->expects($this->exactly(2))->method('warning');
+        $driverFactory = self::createStub(FileStorageDriverFactoryInterface::class);
+        $subject = new DriverRegistry(
+            ['Testing' => TestingDriver::class],
+            new ServiceLocator(['Factory' => static fn(): FileStorageDriverFactoryInterface => $driverFactory]),
+            $logger
+        );
+        self::assertSame(TestingDriver::class, $subject->getDriverClass('Testing'));
+        self::assertTrue($subject->driverExists('Factory'));
+    }
+
+    #[Test]
+    public function driverRegisteredWithAttributeAndInConfigurationWithSameClassIsNotReported(): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['registeredDrivers'] = [
+            'Testing' => ['class' => TestingDriver::class],
+        ];
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger->expects($this->never())->method('warning');
+        $subject = new DriverRegistry(['Testing' => TestingDriver::class], null, $logger);
+        self::assertSame(TestingDriver::class, $subject->getDriverClass('Testing'));
+    }
+
+    #[Test]
+    public function driverFactoryCreatesTheDriver(): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['registeredDrivers'] = [];
+        $driver = new TestingDriver();
+        $driverFactory = self::createMock(FileStorageDriverFactoryInterface::class);
+        $driverFactory->expects($this->once())->method('createDriver')->with(['option' => 'value'])->willReturn($driver);
+        $subject = new DriverRegistry([], new ServiceLocator(['Factory' => static fn(): FileStorageDriverFactoryInterface => $driverFactory]));
+        self::assertTrue($subject->driverExists('Factory'));
+        self::assertSame($driver, $subject->createDriver('Factory', ['option' => 'value']));
+    }
+
+    #[Test]
+    public function getDriverClassThrowsForDriverCreatedByFactory(): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['registeredDrivers'] = [];
+        $driverFactory = self::createStub(FileStorageDriverFactoryInterface::class);
+        $subject = new DriverRegistry([], new ServiceLocator(['Factory' => static fn(): FileStorageDriverFactoryInterface => $driverFactory]));
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1792161904);
+        $subject->getDriverClass('Factory');
+    }
+
+    #[Test]
+    public function adapterFactoriesProvideFlysystemDrivers(): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['registeredDrivers'] = [];
+        $adapterFactory = self::createStub(FilesystemAdapterFactoryInterface::class);
+        $subject = new DriverRegistry([], new ServiceLocator(['S3' => static fn(): FilesystemAdapterFactoryInterface => $adapterFactory]));
+        self::assertTrue($subject->driverExists('S3'));
+        self::assertSame(FlysystemDriver::class, $subject->getDriverClass('S3'));
+        self::assertInstanceOf(FlysystemDriver::class, $subject->createDriver('S3', []));
+    }
+
+    #[Test]
+    public function registeringDriverClassWithIdentifierOfFactoryThrows(): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['registeredDrivers'] = [];
+        $adapterFactory = self::createStub(FilesystemAdapterFactoryInterface::class);
+        $subject = new DriverRegistry([], new ServiceLocator(['S3' => static fn(): FilesystemAdapterFactoryInterface => $adapterFactory]));
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1794408871);
+        $subject->registerDriverClass(TestingDriver::class, 'S3');
     }
 }

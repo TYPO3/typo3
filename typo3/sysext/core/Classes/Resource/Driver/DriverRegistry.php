@@ -15,7 +15,11 @@
 
 namespace TYPO3\CMS\Core\Resource\Driver;
 
+use Psr\Container\ContainerInterface;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Registry for driver classes.
@@ -34,11 +38,22 @@ class DriverRegistry
     protected $driverConfigurations = [];
 
     /**
-     * Creates this object by detecting all available drivers registered in $TYPO3_CONF_VARS.
+     * Creates this object with the drivers registered with #[AsFileStorageDriver]
+     * and in $TYPO3_CONF_VARS. A driver registered with the attribute takes
+     * precedence over one registered in $TYPO3_CONF_VARS with the same identifier.
+     *
+     * @param array<string, class-string<DriverInterface>> $driverClasses driver classes registered with #[AsFileStorageDriver]
+     * @param ContainerInterface|null $driverFactories driver and adapter factories registered with #[AsFileStorageDriver]
      */
-    public function __construct()
-    {
-        $driverConfigurations = $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['registeredDrivers'];
+    public function __construct(
+        array $driverClasses = [],
+        protected readonly ?ContainerInterface $driverFactories = null,
+        protected readonly LoggerInterface $logger = new NullLogger(),
+    ) {
+        foreach ($driverClasses as $identifier => $className) {
+            $this->registerDriverClass($className, (string)$identifier);
+        }
+        $driverConfigurations = $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['registeredDrivers'] ?? [];
         foreach ($driverConfigurations as $shortName => $driverConfig) {
             $shortName = $shortName ?: $driverConfig['shortName'] ?? '';
             if (!empty($driverConfig['flexFormDS'])) {
@@ -47,8 +62,40 @@ class DriverRegistry
                     E_USER_DEPRECATED
                 );
             }
+            if ($this->isRegisteredWithAttribute((string)$shortName, $driverClasses)) {
+                if (($driverClasses[$shortName] ?? null) !== ($driverConfig['class'] ?? '')) {
+                    $this->logger->warning('The file storage driver "{identifier}" registered in $GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'fal\'][\'registeredDrivers\'] is ignored, as a driver with this identifier is registered with #[AsFileStorageDriver].', ['identifier' => $shortName]);
+                }
+                continue;
+            }
             $this->registerDriverClass($driverConfig['class'] ?? '', $shortName, $driverConfig['label'] ?? '', $driverConfig['flexFormDS'] ?? '');
         }
+    }
+
+    /**
+     * Creates the driver of a file storage from its configuration
+     *
+     * @param array<string, mixed> $configuration The "configuration" of the storage
+     * @throws \InvalidArgumentException if the driver is not registered
+     */
+    public function createDriver(string $identifier, array $configuration): DriverInterface
+    {
+        if ($this->driverFactories?->has($identifier)) {
+            $factory = $this->driverFactories->get($identifier);
+            if ($factory instanceof FilesystemAdapterFactoryInterface) {
+                return GeneralUtility::makeInstance(FlysystemDriver::class, $configuration, $factory);
+            }
+            return $factory->createDriver($configuration);
+        }
+        return GeneralUtility::makeInstance($this->getDriverClass($identifier), $configuration);
+    }
+
+    /**
+     * @param array<string, class-string<DriverInterface>> $driverClasses
+     */
+    protected function isRegisteredWithAttribute(string $identifier, array $driverClasses): bool
+    {
+        return isset($driverClasses[$identifier]) || $this->driverFactories?->has($identifier);
     }
 
     /**
@@ -77,6 +124,9 @@ class DriverRegistry
         if ($shortName === '') {
             $shortName = $className;
         }
+        if ($this->driverFactories?->has($shortName)) {
+            throw new \InvalidArgumentException('Driver ' . $shortName . ' is already registered by a factory with #[AsFileStorageDriver].', 1794408871);
+        }
         if (array_key_exists($shortName, $this->drivers)) {
             // Return immediately without changing configuration
             if ($this->drivers[$shortName] === $className) {
@@ -96,6 +146,7 @@ class DriverRegistry
 
     /**
      * Returns a class name for a given class name or short name.
+     * Drivers created by a FileStorageDriverFactoryInterface have no class known in advance.
      *
      * @param string $shortName
      * @return string The class name
@@ -105,6 +156,15 @@ class DriverRegistry
     {
         if (in_array($shortName, $this->drivers) && class_exists($shortName)) {
             return $shortName;
+        }
+        if ($this->driverFactories?->has($shortName)) {
+            if ($this->driverFactories->get($shortName) instanceof FilesystemAdapterFactoryInterface) {
+                return FlysystemDriver::class;
+            }
+            throw new \InvalidArgumentException(
+                'The driver of storage "' . $shortName . '" is created by a factory, its class is not known in advance.',
+                1792161904
+            );
         }
         if (!array_key_exists($shortName, $this->drivers)) {
             throw new \InvalidArgumentException(
@@ -123,6 +183,6 @@ class DriverRegistry
      */
     public function driverExists($shortName)
     {
-        return array_key_exists($shortName, $this->drivers);
+        return array_key_exists($shortName, $this->drivers) || $this->driverFactories?->has($shortName) === true;
     }
 }
