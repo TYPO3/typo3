@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3RecordDocument>
+	<header type="array">
+		<XMLversion>1.0</XMLversion>
+		<charset>utf-8</charset>
+		<meta type="array">
+			<packager_username>admin</packager_username>
+			<TYPO3_version>99.99.99</TYPO3_version>
+			<created>Tue 1. January 2030</created>
+		</meta>
+		<pagetree type="array">
+			<node index="5" type="array">
+				<uid>5</uid>
+			</node>
+			<node index="8" type="array">
+				<uid>8</uid>
+			</node>
+		</pagetree>
+		<records type="array">
+			<table index="pages" type="array">
+				<rec index="5" type="array">
+					<uid>5</uid>
+					<pid>1</pid>
+					<title>Imported page 5</title>
+				</rec>
+				<rec index="8" type="array">
+					<uid>8</uid>
+					<pid>1</pid>
+					<title>Imported page 8</title>
+				</rec>
+			</table>
+		</records>
+		<pid_lookup type="array">
+			<page_contents index="1" type="array">
+				<table index="pages" type="array">
+					<item index="5">1</item>
+					<item index="8">1</item>
+				</table>
+			</page_contents>
+		</pid_lookup>
+	</header>
+	<records type="array">
+		<tablerow index="pages:5" type="array">
+			<fieldlist index="data" type="array">
+				<field index="uid" type="integer">5</field>
+				<field index="pid" type="integer">1</field>
+				<field index="hidden" type="integer">0</field>
+				<field index="sorting" type="integer">5</field>
+				<field index="sys_language_uid" type="integer">0</field>
+				<field index="l10n_parent" type="integer">0</field>
+				<field index="l10n_source" type="integer">0</field>
+				<field index="perms_everybody" type="integer">15</field>
+				<field index="doktype" type="integer">1</field>
+				<field index="title">Imported page 5</field>
+			</fieldlist>
+		</tablerow>
+		<tablerow index="pages:8" type="array">
+			<fieldlist index="data" type="array">
+				<field index="uid" type="integer">8</field>
+				<field index="pid" type="integer">1</field>
+				<field index="hidden" type="integer">0</field>
+				<field index="sorting" type="integer">8</field>
+				<field index="sys_language_uid" type="integer">0</field>
+				<field index="l10n_parent" type="integer">0</field>
+				<field index="l10n_source" type="integer">0</field>
+				<field index="perms_everybody" type="integer">15</field>
+				<field index="doktype" type="integer">1</field>
+				<field index="title">Imported page 8</field>
+			</fieldlist>
+		</tablerow>
+	</records>
+</T3RecordDocument>

@@ -394,6 +394,10 @@ class DataMapProcessor
                 // use suggested item, if it was submitted in data-map
                 $suggestedDependentItem = $this->allItems[$dependentItem->getTableName() . ':' . $dependentItem->getId()] ?? null;
                 if ($suggestedDependentItem !== null) {
+                    // the data-map may detach the record from this item, e.g. turn it into a default language record
+                    if (!$this->dependsOnItemInScope($suggestedDependentItem, $item, $scope)) {
+                        continue;
+                    }
                     $dependentItem = $suggestedDependentItem;
                 }
                 foreach ([$scope, DataMapItem::SCOPE_EXCLUDE] as $dependentScope) {
@@ -409,6 +413,15 @@ class DataMapProcessor
                 }
             }
         }
+    }
+
+    protected function dependsOnItemInScope(DataMapItem $dependentItem, DataMapItem $item, string $scope): bool
+    {
+        if ($dependentItem->isParentType()) {
+            return false;
+        }
+        $pointer = $scope === DataMapItem::SCOPE_SOURCE ? $dependentItem->getSource() : $dependentItem->getParent();
+        return in_array((string)$pointer, [(string)$item->getId(), (string)$item->getLiveId()], true);
     }
 
     /**

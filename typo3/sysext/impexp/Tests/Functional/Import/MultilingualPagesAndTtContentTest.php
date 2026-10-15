@@ -56,4 +56,20 @@ final class MultilingualPagesAndTtContentTest extends AbstractImportExportTestCa
 
         $this->assertCSVDataSet(__DIR__ . '/../Fixtures/DatabaseAssertions/importMultilingualTtContentWithImageInExcludedField.csv');
     }
+
+    #[Test]
+    public function updateTurnsExistingPageTranslationIntoDefaultLanguagePageWithTheSameUid(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/pages-multilingual.csv');
+
+        $subject = $this->get(Import::class);
+        $subject->setPid(1);
+        $subject->setUpdate(true);
+        $subject->setForceAllUids(true);
+        $subject->loadFile('EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-default-language-with-uid-of-existing-translation.xml');
+        $subject->importData();
+
+        self::assertSame([], $subject->getErrorLog());
+        $this->assertCSVDataSet(__DIR__ . '/../Fixtures/DatabaseAssertions/updatePagesTurnsExistingTranslationIntoDefaultLanguagePage.csv');
+    }
 }
