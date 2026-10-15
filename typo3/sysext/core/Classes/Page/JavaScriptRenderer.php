@@ -164,7 +164,7 @@ class JavaScriptRenderer
 
     public function renderImportMap(string $uriPrefix, string|ConsumableNonce|null $nonce = null): string
     {
-        if (!$this->isEmpty() && ($this->instructionsWithItems > 0 || $this->items->getGlobalAssignments() !== [])) {
+        if (!$this->isEmpty() && $this->instructionsWithItems > 0) {
             $this->importMap->includeImportsFor('@typo3/core/java-script-item-handler.js');
         }
         return $this->importMap->render($uriPrefix, $nonce);
