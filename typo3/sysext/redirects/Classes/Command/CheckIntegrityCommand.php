@@ -108,6 +108,21 @@ class CheckIntegrityCommand extends Command
             $this->integrityService->setIntegrityStatus($conflict['redirect']);
         }
 
+        foreach ($this->integrityService->findShadowedRedirects() as $conflict) {
+            $conflictingRedirects[] = [
+                $conflict['redirect']['uid'],
+                $conflict['redirect']['source_host'],
+                $conflict['redirect']['source_path'],
+                $conflict['redirect']['target'],
+                LocalizationUtility::translate(
+                    self::LANGUAGE_FILE_PATH . $integrityStatusLabel . $conflict['redirect']['integrity_status']
+                ),
+            ];
+            $list[] = $conflict;
+            $conflictingUids[] = $conflict['redirect']['uid'];
+            $this->integrityService->setIntegrityStatus($conflict['redirect']);
+        }
+
         foreach ($this->integrityService->checkRedirectIntegrity() as $conflict) {
             if ($conflict['redirect']['integrity_status'] !== RedirectConflict::NO_CONFLICT) {
                 // Report only redirects with conflict status checked as conflicting redirects.

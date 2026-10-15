@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Redirects\Tests\Functional\Service;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -312,6 +313,57 @@ final class IntegrityServiceTest extends FunctionalTestCase
             self::assertArrayHasKey('source_host', $conflict['redirect']);
             self::assertArrayHasKey('source_path', $conflict['redirect']);
         }
+    }
+
+    #[Test]
+    public function shadowedRedirectsAreFound(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/IntegrityServiceTest_shadowedRedirects.csv');
+        $subject = $this->get(IntegrityService::class);
+        $shadowedBy = [];
+        foreach ($subject->findShadowedRedirects() as $conflict) {
+            self::assertSame(RedirectConflict::SHADOWED, $conflict['redirect']['integrity_status']);
+            self::assertSame('/target-' . $conflict['redirect']['uid'], $conflict['redirect']['target']);
+            $shadowedBy[$conflict['redirect']['uid']] = $conflict['redirect']['shadowed_by'];
+        }
+        ksort($shadowedBy);
+        self::assertSame(
+            [
+                2 => 1,
+                4 => 3,
+                10 => 9,
+                18 => 17,
+                24 => 23,
+                25 => 26,
+                28 => 27,
+                34 => 33,
+                35 => 33,
+            ],
+            $shadowedBy
+        );
+    }
+
+    public static function shadowingRedirectIsMatchedDataProvider(): \Generator
+    {
+        yield 'duplicate' => ['/duplicate', '', 1];
+        yield 'trailing slash' => ['/trailing-slash', '', 3];
+        yield 'empty and any host' => ['/empty-host', '', 9];
+        yield 'query with and without slash' => ['/query-slash/', 'a=1', 23];
+        yield 'query without slash is checked first' => ['/query-slash-first/', 'a=1', 26];
+        yield 'identical regexp' => ['/regexp', '', 27];
+        yield 'triple' => ['/triple', '', 33];
+    }
+
+    /**
+     * Ensures that the shadowing redirect reported by findShadowedRedirects() is the one actually matched.
+     */
+    #[DataProvider('shadowingRedirectIsMatchedDataProvider')]
+    #[Test]
+    public function shadowingRedirectIsMatched(string $path, string $query, int $expectedUid): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/IntegrityServiceTest_shadowedRedirects.csv');
+        $matchedRedirect = $this->get(RedirectService::class)->matchRedirect('example.com', $path, $query);
+        self::assertSame($expectedUid, (int)($matchedRedirect['uid'] ?? 0));
     }
 
     private function assertExpectedPathsFromGenerator(array $expectedConflicts, \Generator $generator): void

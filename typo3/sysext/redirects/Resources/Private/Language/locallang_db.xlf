@@ -129,6 +129,9 @@
       <trans-unit id="sys_redirect.integrity_status.invalid_target">
         <source>Invalid target</source>
       </trans-unit>
+      <trans-unit id="sys_redirect.integrity_status.shadowed">
+        <source>Shadowed by another redirect</source>
+      </trans-unit>
       <trans-unit id="sys_redirect.uid">
         <source>UID</source>
       </trans-unit>
