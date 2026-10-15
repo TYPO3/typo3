@@ -278,6 +278,19 @@ final class RecordListControllerTest extends FunctionalTestCase
         self::assertNotContains(3, $storedLanguages); // L=3 doesn't exist on this page
     }
 
+    #[Test]
+    public function offersTheViewButtonWithoutQrCodeButton(): void
+    {
+        // A standard page, the scenario's pages have no type
+        $this->getConnectionPool()->getConnectionForTable('pages')->update('pages', ['doktype' => 1], ['uid' => 1200]);
+        $site = $this->get(SiteFinder::class)->getSiteByIdentifier('test-site');
+
+        $body = (string)$this->get(RecordListController::class)->mainAction($this->createRequest(1200, $site, new ModuleData('records', [], [])))->getBody();
+
+        self::assertMatchesRegularExpression('/<a [^>]*data-dispatch-action="TYPO3.WindowManager.localOpen"[^>]*>(?:(?!<\/a>).)*View webpage<\/a>/s', $body);
+        self::assertStringNotContainsString('<typo3-qrcode-modal-button', $body);
+    }
+
     private function createRequest(int $pageId, object $site, ModuleData $moduleData, array $additionalParams = []): ServerRequest
     {
         $queryParams = array_merge(['id' => $pageId], $additionalParams);

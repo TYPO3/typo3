@@ -463,23 +463,6 @@ class RecordListController
                     ButtonBar::BUTTON_POSITION_LEFT,
                     15
                 );
-
-                // QR Code button
-                $fallbackUri = $uriBuilder
-                    ->withRootLine($this->pageContext->rootLine)
-                    ->buildUri();
-                $previewUri = $this->componentFactory->getPreviewUrlForQrCode(
-                    $this->pageContext->pageId,
-                    $this->pageContext->getPrimaryLanguageId(),
-                    $fallbackUri
-                );
-                if ($previewUri !== null) {
-                    $view->addButtonToButtonBar(
-                        $this->componentFactory->createQrCodeButton($previewUri),
-                        ButtonBar::BUTTON_POSITION_LEFT,
-                        15
-                    );
-                }
             }
             // If edit permissions are set, see BackendUserAuthentication
             if ($this->isPageEditable()) {
