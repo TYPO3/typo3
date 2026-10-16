@@ -520,6 +520,28 @@ final class RequestHandlingTest extends FunctionalTestCase
         self::assertNotEquals($honeypotIdFromRevisit, $honeypotId, 'honeypot differs from historical honeypot');
     }
 
+    #[DataProvider('theHoneypotElementChangesWithEveryCallOfTheFirstFormStepDataProvider')]
+    #[Test]
+    public function theHoneypotElementIsRenderedAfterAllElementsOfTheFormStep(string $formIdentifier): void
+    {
+        $uri = static::ROOT_PAGE_BASE_URI . '/form';
+        $subject = new FormDataFactory();
+
+        for ($rendering = 1; $rendering <= 10; $rendering++) {
+            $internalRequest = new InternalRequest($uri)->withAttribute('currentContentObject', $this->get(ContentObjectRenderer::class));
+            $pageMarkup = (string)$this->executeFrontendSubRequest($internalRequest, null, true)->getBody();
+            $elementData = $subject->fromHtmlMarkupAndXpath($pageMarkup, '//form[@id="' . $formIdentifier . '"]')->toArray()['elementData'];
+
+            $positions = array_flip(array_keys($elementData));
+            $honeypotName = array_key_first(array_filter($elementData, static fn(array $element): bool => $element['__isHoneypot']));
+            $textElementName = array_key_first(array_filter($elementData, static fn(string $name): bool => str_ends_with($name, '[text-1]'), ARRAY_FILTER_USE_KEY));
+
+            self::assertNotNull($honeypotName, 'honeypot element exists');
+            self::assertNotNull($textElementName, 'text element exists');
+            self::assertGreaterThan($positions[$textElementName], $positions[$honeypotName], 'honeypot is rendered after "text-1" in rendering ' . $rendering);
+        }
+    }
+
     #[DataProvider('theCachingBehavesTheSameForAllFormIntegrationVariantsDataProvider')]
     #[Test]
     public function theFormIsShownAgainIfTheHoneypotIsFilledWithoutFrontendSession(string $formIdentifier, string $formNamePrefix): void
