@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Functional\Middleware;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
@@ -126,6 +127,71 @@ final class PrepareTypoScriptFrontendRenderingTest extends FunctionalTestCase
         $response = $this->executeFrontendSubRequest(
             new InternalRequest('https://acme.com/login-restricted-group-one/'),
             (new InternalRequestContext())->withFrontendUserId(1)
+        );
+        self::assertEquals(200, $response->getStatusCode());
+        self::assertStringContainsString('testing-typoScriptFrontendInitialization', (string)$response->getBody());
+    }
+
+    public static function subpageOfLoginRestrictedPageExtendingToSubpagesDataProvider(): array
+    {
+        return [
+            'subpage of page which is not protected itself' => ['/protected/intermediate-one/page-a'],
+            'subpage of page which extends the protection' => ['/protected/intermediate-two/page-b'],
+        ];
+    }
+
+    #[Test]
+    #[DataProvider('subpageOfLoginRestrictedPageExtendingToSubpagesDataProvider')]
+    public function notAccessibleFromSubpageOfLoginRestrictedPageExtendingToSubpages(string $path): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/typoScriptFrontendInitializationExtendToSubpagesCases.csv');
+        $response = $this->executeFrontendSubRequest(
+            new InternalRequest('https://acme.com' . $path)
+        );
+        self::assertEquals(403, $response->getStatusCode());
+        self::assertStringContainsString('Subsection was found and not accessible', (string)$response->getBody());
+    }
+
+    #[Test]
+    #[DataProvider('subpageOfLoginRestrictedPageExtendingToSubpagesDataProvider')]
+    public function okFromSubpageOfLoginRestrictedPageExtendingToSubpagesWithFrontendUser(string $path): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/typoScriptFrontendInitializationExtendToSubpagesCases.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/typoScriptFrontendInitializationSysTemplate.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/typoScriptFrontendInitializationFeGroupsFeUsers.csv');
+        $response = $this->executeFrontendSubRequest(
+            new InternalRequest('https://acme.com' . $path),
+            (new InternalRequestContext())->withFrontendUserId(1)
+        );
+        self::assertEquals(200, $response->getStatusCode());
+        self::assertStringContainsString('testing-typoScriptFrontendInitialization', (string)$response->getBody());
+    }
+
+    #[Test]
+    #[DataProvider('subpageOfLoginRestrictedPageExtendingToSubpagesDataProvider')]
+    public function notAccessibleFromSubpageOfLoginRestrictedPageExtendingToSubpagesWithBackendUserWithoutPageAccess(string $path): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/typoScriptFrontendInitializationExtendToSubpagesCases.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/typoScriptFrontendInitializationBeUsers.csv');
+        $response = $this->executeFrontendSubRequest(
+            new InternalRequest('https://acme.com' . $path),
+            (new InternalRequestContext())->withBackendUserId(2)
+        );
+        self::assertEquals(403, $response->getStatusCode());
+        self::assertStringContainsString('Subsection was found and not accessible', (string)$response->getBody());
+    }
+
+    #[Test]
+    #[DataProvider('subpageOfLoginRestrictedPageExtendingToSubpagesDataProvider')]
+    public function okFromSubpageOfLoginRestrictedPageExtendingToSubpagesWithFrontendUserAndBackendUserWithoutPageAccess(string $path): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/typoScriptFrontendInitializationExtendToSubpagesCases.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/typoScriptFrontendInitializationSysTemplate.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/typoScriptFrontendInitializationFeGroupsFeUsers.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/typoScriptFrontendInitializationBeUsers.csv');
+        $response = $this->executeFrontendSubRequest(
+            new InternalRequest('https://acme.com' . $path),
+            (new InternalRequestContext())->withFrontendUserId(1)->withBackendUserId(2)
         );
         self::assertEquals(200, $response->getStatusCode());
         self::assertStringContainsString('testing-typoScriptFrontendInitialization', (string)$response->getBody());

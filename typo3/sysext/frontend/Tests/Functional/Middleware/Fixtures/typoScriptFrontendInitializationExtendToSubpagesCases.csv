@@ -1,0 +1,8 @@
+"pages"
+,"uid","pid","sorting","deleted","hidden","fe_group","extendToSubpages","doktype","perms_everybody","title","slug"
+,1,0,256,0,0,,0,1,0,"Root","/"
+,2,1,256,0,0,1,1,1,0,"Protected","/protected"
+,3,2,256,0,0,,0,1,0,"Intermediate I","/protected/intermediate-one"
+,4,3,256,0,0,,0,1,0,"Page A","/protected/intermediate-one/page-a"
+,5,2,512,0,0,,1,1,0,"Intermediate II","/protected/intermediate-two"
+,6,5,256,0,0,,0,1,0,"Page B","/protected/intermediate-two/page-b"
