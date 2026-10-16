@@ -22,7 +22,8 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Exception\Page\RootLineException;
 use TYPO3\CMS\Core\Html\HtmlParser;
-use TYPO3\CMS\Core\Pagination\SimplePagination;
+use TYPO3\CMS\Core\Pagination\PaginationInterface;
+use TYPO3\CMS\Core\Pagination\SlidingWindowPagination;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -260,14 +261,7 @@ class SearchController extends ActionController
                 }
             }
 
-            $pointer = (int)($searchData['pointer'] ?? 0);
-            $paginator = new SlicePaginator(
-                $result['rows'],
-                $pointer + 1,
-                $resultData['count'],
-                $searchData['numberOfResults'],
-            );
-            $result['pagination'] = new SimplePagination($paginator);
+            $result['pagination'] = $this->buildPagination($searchData, $result['rows'], $resultData['count']);
         }
         // Print a message telling which words in which sections we searched for
         if (str_starts_with($searchData['sections'], 'rl')) {
@@ -1140,6 +1134,25 @@ class SearchController extends ActionController
             60
         );
         $this->settings['results.']['hrefInSummaryCropSignifier'] = $typoScriptFrontendController->cObj->stdWrapValue('hrefInSummaryCropSignifier', $typoScriptArray ?? []);
+    }
+
+    /**
+     * @param array<string, mixed> $searchData Search input and resolved search configuration
+     * @param array<int, array<string, mixed>> $rows Search result rows for the current page
+     */
+    protected function buildPagination(array $searchData, array $rows, int $count): PaginationInterface
+    {
+        $pointer = (int)($searchData['pointer'] ?? 0);
+        $paginator = new SlicePaginator(
+            $rows,
+            $pointer + 1,
+            $count,
+            $searchData['numberOfResults'],
+        );
+        return new SlidingWindowPagination(
+            $paginator,
+            MathUtility::forceIntegerInRange((int)($this->settings['page_links'] ?? 10), 1, 1000, 10)
+        );
     }
 
     /**
