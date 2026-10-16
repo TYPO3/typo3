@@ -1,6 +1,3 @@
-"sys_file_storage"
-"","uid","name","driver","configuration","is_online","is_public","is_browsable","is_writable"
-"","1","Local","Local","","1","1","1","1"
 "sys_file"
 "","uid","storage","identifier","name"
 "","1","0","/test.jpg","test.jpg"
