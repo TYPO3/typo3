@@ -2177,8 +2177,8 @@ typo3-backend-formengine-item-count{display:block;margin-top:calc(var(--typo3-sp
 .form-control-clearable-wrapper{border:0;flex-grow:1;padding:0;position:relative}
 .form-control-clearable-wrapper input[type=search]::-webkit-search-cancel-button{display:none}
 .form-control-clearable-wrapper .form-control{-webkit-padding-end:2.3em;padding-inline-end:2.3em}
-.form-control-clearable-wrapper .close{align-items:center;background-color:transparent;border:none;color:var(--typo3-input-color);display:flex;height:16px;inset-inline-end:.75em;opacity:.3;padding:0;position:absolute;top:50%;transform:translateY(-50%);z-index:3}
-.form-control-clearable-wrapper .close:hover{opacity:.5}
+.form-control-clearable-wrapper .close{align-items:center;background-color:transparent;border:none;color:var(--typo3-input-color);display:flex;height:16px;inset-inline-end:.75em;opacity:.6;padding:0;position:absolute;top:50%;transform:translateY(-50%);z-index:3}
+.form-control-clearable-wrapper .close:hover{opacity:1}
 .form-control-clearable-wrapper .close .icon{vertical-align:0}
 .form-control-clearable-wrapper:focus{border-color:inherit;box-shadow:none}
 .form-control-clearable-wrapper:focus-within{z-index:3}
