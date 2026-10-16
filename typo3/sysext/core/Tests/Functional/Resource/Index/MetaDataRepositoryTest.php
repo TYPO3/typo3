@@ -46,4 +46,68 @@ final class MetaDataRepositoryTest extends FunctionalTestCase
         ]);
         self::assertSame('Something New', $result['copyright']);
     }
+
+    #[Test]
+    public function updateCropsValueToMaximumLengthOfField(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/FileWithMetaData.csv');
+        $subject = $this->get(MetaDataRepository::class);
+        $result = $subject->update(1, [
+            'title' => str_repeat('a', 300),
+        ]);
+        self::assertSame(str_repeat('a', 255), $result['title']);
+        self::assertSame(str_repeat('a', 255), $subject->findByFileUid(1)['title']);
+    }
+
+    #[Test]
+    public function updateCropsMultibyteValueByCharacters(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/FileWithMetaData.csv');
+        $subject = $this->get(MetaDataRepository::class);
+        $result = $subject->update(1, [
+            'title' => str_repeat('联', 300),
+        ]);
+        self::assertSame(str_repeat('联', 255), $result['title']);
+    }
+
+    #[Test]
+    public function updateKeepsValueWithinMaximumLengthOfField(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/FileWithMetaData.csv');
+        $subject = $this->get(MetaDataRepository::class);
+        $result = $subject->update(1, [
+            'title' => str_repeat('联', 255),
+        ]);
+        self::assertSame(str_repeat('联', 255), $result['title']);
+    }
+
+    /**
+     * "alternative" is a TEXT column limited to 65535 bytes on MySQL and MariaDB,
+     * which is cropped by bytes without splitting a multibyte character.
+     * Other platforms have no length limit for TEXT columns and keep the value.
+     */
+    #[Test]
+    public function updateCropsMultibyteValueOfTextFieldWithoutSplittingCharacters(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/FileWithMetaData.csv');
+        $subject = $this->get(MetaDataRepository::class);
+        $value = str_repeat('联', 30000);
+        $subject->update(1, [
+            'alternative' => $value,
+        ]);
+        $storedValue = $subject->findByFileUid(1)['alternative'];
+        self::assertTrue(mb_check_encoding($storedValue, 'UTF-8'));
+        self::assertStringStartsWith($storedValue, $value);
+    }
+
+    #[Test]
+    public function createMetaDataRecordCropsValueToMaximumLengthOfField(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/FileWithMetaData.csv');
+        $subject = $this->get(MetaDataRepository::class);
+        $result = $subject->createMetaDataRecord(2, [
+            'title' => str_repeat('a', 300),
+        ]);
+        self::assertSame(str_repeat('a', 255), $result['title']);
+    }
 }

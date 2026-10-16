@@ -160,8 +160,7 @@ readonly class MetaDataRepository
             'tstamp' => $GLOBALS['EXEC_TIME'],
             'l10n_diffsource' => '',
         ];
-        $additionalFields = array_intersect_key($additionalFields, $this->getTableFields());
-        $emptyRecord = array_merge($emptyRecord, $additionalFields);
+        $emptyRecord = array_merge($emptyRecord, $this->filterAndCropToTableColumns($additionalFields));
 
         $connection = $this->connectionPool->getConnectionForTable('sys_file_metadata');
         $connection->insert(
@@ -190,7 +189,7 @@ readonly class MetaDataRepository
         // backwards compatibility layer
         $metaDataFromDatabase ??= $this->findByFileUid($fileUid);
 
-        $updateRow = array_intersect_key($updateData, $this->getTableFields());
+        $updateRow = $this->filterAndCropToTableColumns($updateData);
         if ($updateRow === []) {
             // No valid keys to update - return current database row
             return $metaDataFromDatabase;
@@ -232,6 +231,29 @@ readonly class MetaDataRepository
             ]
         );
         $this->eventDispatcher->dispatch(new AfterFileMetaDataDeletedEvent($fileUid));
+    }
+
+    /**
+     * Removes values without a database column and crops string values to the
+     * length of their column, so that overlong values, e.g. extracted from a
+     * file, do not break the query.
+     */
+    private function filterAndCropToTableColumns(array $data): array
+    {
+        $tableFields = $this->getTableFields();
+        $row = array_intersect_key($data, $tableFields);
+        foreach ($row as $fieldName => $value) {
+            $length = $tableFields[$fieldName]->length ?? null;
+            if (!is_string($value) || $length === null) {
+                continue;
+            }
+            $row[$fieldName] = match ($tableFields[$fieldName]->typeName) {
+                'string' => mb_substr($value, 0, $length),
+                'text' => mb_strcut($value, 0, $length),
+                default => $value,
+            };
+        }
+        return $row;
     }
 
     /**
