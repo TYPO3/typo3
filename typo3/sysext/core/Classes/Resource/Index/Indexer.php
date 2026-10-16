@@ -81,10 +81,16 @@ class Indexer implements LoggerAwareInterface
 
     /**
      * Update index entry
+     *
+     * With $preserveCreationDate the stored creation date is kept, as the file system
+     * changes its ctime when a file is moved or renamed without changing its content.
      */
-    public function updateIndexEntry(File $fileObject): File
+    public function updateIndexEntry(File $fileObject, bool $preserveCreationDate = false): File
     {
         $updatedInformation = $this->gatherFileInformationArray($fileObject->getIdentifier());
+        if ($preserveCreationDate && $fileObject->getCreationTime() > 0) {
+            unset($updatedInformation['creation_date']);
+        }
         $fileObject->updateProperties($updatedInformation);
 
         $fileIndexRepository = $this->getFileIndexRepository();

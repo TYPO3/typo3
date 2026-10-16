@@ -2095,7 +2095,7 @@ class ResourceStorage implements ResourceStorageInterface
                 }
             }
             if ($file instanceof File) {
-                $this->getIndexer()->updateIndexEntry($file);
+                $this->getIndexer()->updateIndexEntry($file, true);
             }
         } catch (\TYPO3\CMS\Core\Exception $e) {
             echo $e->getMessage();
@@ -2143,7 +2143,7 @@ class ResourceStorage implements ResourceStorageInterface
             $newIdentifier = $this->driver->renameFile($file->getIdentifier(), $targetFileName);
             if ($file instanceof File) {
                 $file->updateProperties(['identifier' => $newIdentifier]);
-                $this->getIndexer()->updateIndexEntry($file);
+                $this->getIndexer()->updateIndexEntry($file, true);
             }
         } catch (ExistingTargetFileNameException $exception) {
             if ($conflictMode === DuplicationBehavior::RENAME) {
