@@ -60,6 +60,7 @@ use TYPO3\CMS\Form\Domain\Runtime\Exception\PropertyMappingException;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime\FormSession;
 use TYPO3\CMS\Form\Event\AfterCurrentPageIsResolvedEvent;
 use TYPO3\CMS\Form\Event\AfterFormStateInitializedEvent;
+use TYPO3\CMS\Form\Event\BeforeFinishersAreExecutedEvent;
 use TYPO3\CMS\Form\Event\BeforeRenderableIsValidatedEvent;
 use TYPO3\CMS\Form\Exception as FormException;
 use TYPO3\CMS\Form\Mvc\Validation\EmptyValidator;
@@ -624,12 +625,15 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
             $this,
             $this->request
         );
+        $finishers = $this->eventDispatcher->dispatch(
+            new BeforeFinishersAreExecutedEvent($this->formDefinition->getFinishers(), $this, $finisherContext)
+        )->finishers;
 
         $output = '';
         $this->response->getBody()->rewind();
         $originalContent = $this->response->getBody()->getContents();
         $this->response->getBody()->write('');
-        foreach ($this->formDefinition->getFinishers() as $finisher) {
+        foreach ($finishers as $finisher) {
             $this->currentFinisher = $finisher;
             $this->processVariants();
 

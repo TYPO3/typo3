@@ -138,6 +138,11 @@ These events are dispatched during form rendering in the frontend.
         -   Modify :php:`$event->data` (e.g. :php:`processedValue`) just before the
             value of a single form element is handed over to Fluid, e.g. on a
             summary page or in a mail template.
+    *   -   `BeforeFinishersAreExecutedEvent
+            <https://docs.typo3.org/permalink/t3coreapi:eventlist-form>`_
+        -   Dispatched once a form has been submitted successfully, before its
+            finishers run. Modify :php:`$event->finishers` for this submission
+            or pass data to the finishers through the finisher context.
     *   -   `BeforeEmailFinisherInitializedEvent
             <https://docs.typo3.org/permalink/t3coreapi:beforeemailfinisherinitializedevent>`_
         -   Modify the options used by the :php:`EmailFinisher` (e.g. recipients,

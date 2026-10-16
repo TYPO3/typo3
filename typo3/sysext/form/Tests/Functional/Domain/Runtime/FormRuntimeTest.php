@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Form\Tests\Functional\Domain\Runtime;
 
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\MockObject\MockObject;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
@@ -35,16 +36,20 @@ use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
 use TYPO3\CMS\Form\Domain\Exception\RenderingException;
 use TYPO3\CMS\Form\Domain\Factory\ArrayFormFactory;
+use TYPO3\CMS\Form\Domain\Finishers\ClosureFinisher;
+use TYPO3\CMS\Form\Domain\Finishers\FinisherContext;
 use TYPO3\CMS\Form\Domain\Model\FormDefinition;
 use TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement;
 use TYPO3\CMS\Form\Domain\Model\FormElements\Page;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 use TYPO3\CMS\Form\Event\AfterCurrentPageIsResolvedEvent;
 use TYPO3\CMS\Form\Event\AfterFormStateInitializedEvent;
+use TYPO3\CMS\Form\Event\BeforeFinishersAreExecutedEvent;
 use TYPO3\CMS\Form\Event\BeforeRenderableIsValidatedEvent;
 use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface as ExtFormConfigurationManagerInterface;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 #[AllowMockObjectsWithoutExpectations]
@@ -53,6 +58,7 @@ final class FormRuntimeTest extends FunctionalTestCase
     public const string AFTER_CURRENT_PAGE_IS_RESOLVED_LISTENER_KEY = 'after-current-page-is-resolved-listener';
     public const string AFTER_FORM_STATE_INITIALIZED_LISTENER_KEY = 'after-form-state-initialized-listener';
     public const string BEFORE_RENDERABLE_IS_VALIDATED_LISTENER_KEY = 'before-renderable-is-validated-listener';
+    public const string BEFORE_FINISHERS_ARE_EXECUTED_LISTENER_KEY = 'before-finishers-are-executed-listener';
     protected bool $initializeDatabase = false;
 
     protected array $coreExtensionsToLoad = [
@@ -295,6 +301,81 @@ final class FormRuntimeTest extends FunctionalTestCase
 
         self::assertInstanceOf(BeforeRenderableIsValidatedEvent::class, $state[self::BEFORE_RENDERABLE_IS_VALIDATED_LISTENER_KEY]);
         self::assertEquals($expectedValue, $subject->getElementValue('text-1'));
+    }
+
+    #[Test]
+    public function beforeFinishersAreExecutedEventProvidesFinishersAndSharesFinisherContext(): void
+    {
+        $executed = [];
+        $formDefinition = $this->buildFormDefinition();
+        $formDefinition->addFinisher($this->buildClosureFinisher(static function (FinisherContext $finisherContext) use (&$executed): void {
+            $executed[] = $finisherContext->getFinisherVariableProvider()->get('listener', 'value');
+        }));
+        $state = [];
+        $this->registerBeforeFinishersAreExecutedListener(static function (BeforeFinishersAreExecutedEvent $event) use (&$state): void {
+            $state['finishers'] = $event->finishers;
+            $state['formRuntime'] = $event->formRuntime;
+            $event->finisherContext->getFinisherVariableProvider()->add('listener', 'value', 'from-listener');
+        });
+        $subject = $this->buildFormRuntimeForFinisherInvocation($formDefinition);
+
+        $subject->_call('invokeFinishers');
+
+        self::assertSame($formDefinition->getFinishers(), $state['finishers']);
+        self::assertSame($subject, $state['formRuntime']);
+        self::assertSame(['from-listener'], $executed);
+    }
+
+    #[Test]
+    public function beforeFinishersAreExecutedEventAllowsReplacingFinishers(): void
+    {
+        $executed = [];
+        $formDefinition = $this->buildFormDefinition();
+        $formDefinition->addFinisher($this->buildClosureFinisher(static function () use (&$executed): void {
+            $executed[] = 'configured';
+        }));
+        $additionalFinisher = $this->buildClosureFinisher(static function () use (&$executed): void {
+            $executed[] = 'added';
+        });
+        $this->registerBeforeFinishersAreExecutedListener(static function (BeforeFinishersAreExecutedEvent $event) use ($additionalFinisher): void {
+            $event->finishers = [$additionalFinisher];
+        });
+        $subject = $this->buildFormRuntimeForFinisherInvocation($formDefinition);
+
+        $subject->_call('invokeFinishers');
+
+        self::assertSame(['added'], $executed);
+        self::assertCount(1, $formDefinition->getFinishers());
+    }
+
+    private function registerBeforeFinishersAreExecutedListener(\Closure $listener): void
+    {
+        $container = $this->get('service_container');
+        $container->set(self::BEFORE_FINISHERS_ARE_EXECUTED_LISTENER_KEY, $listener);
+        $container->get(ListenerProvider::class)->addListener(BeforeFinishersAreExecutedEvent::class, self::BEFORE_FINISHERS_ARE_EXECUTED_LISTENER_KEY);
+    }
+
+    private function buildClosureFinisher(\Closure $closure): ClosureFinisher
+    {
+        $finisher = new ClosureFinisher();
+        $finisher->setOptions(['closure' => $closure]);
+        return $finisher;
+    }
+
+    private function buildFormRuntimeForFinisherInvocation(FormDefinition $formDefinition): FormRuntime&MockObject&AccessibleObjectInterface
+    {
+        $subject = $this->getAccessibleMock(FormRuntime::class, null, [
+            $this->get('service_container'),
+            self::createStub(ExtbaseConfigurationManagerInterface::class),
+            new HashService(),
+            self::createStub(ValidatorResolver::class),
+            self::createStub(Context::class),
+            $this->get(EventDispatcherInterface::class),
+        ]);
+        $subject->setFormDefinition($formDefinition);
+        $subject->setRequest($this->request);
+        $subject->_call('initializeFormStateFromRequest');
+        return $subject;
     }
 
     private function buildExtbaseRequest(): Request
