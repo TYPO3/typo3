@@ -25,6 +25,7 @@ import { renderNodes } from '@typo3/core/lit-helper';
 import { topLevelModuleImport } from '@typo3/backend/utility/top-level-module-import';
 import { topDocument } from '@typo3/core/utility/top-window';
 import { Offset } from '@typo3/backend/offset';
+import { AspectRatioUtility } from '@typo3/backend/utility/aspect-ratio-utility';
 import type { DraggableResizableEvent, PointerEventNames, DraggableResizableElement } from '@typo3/backend/element/draggable-resizable-element';
 import type { EventInterface } from '@typo3/core/event/event-interface';
 import BrowserSession from '@typo3/backend/storage/browser-session';
@@ -528,7 +529,12 @@ class ImageManipulation {
     this.updateCropVariantData(this.currentCropVariant);
     const naturalWidth: number = Math.round(this.currentCropVariant.cropArea.width * this.imageOriginalSizeFactor);
     const naturalHeight: number = Math.round(this.currentCropVariant.cropArea.height * this.imageOriginalSizeFactor);
-    this.cropInfo.innerText = `${naturalWidth}×${naturalHeight} px`;
+    const selectedRatio: Ratio | undefined = this.currentCropVariant.allowedAspectRatios[this.currentCropVariant.selectedRatio];
+    // The free ratio has no usable value (0 by default, NaN/null in custom configuration)
+    const isFreeRatio = selectedRatio !== undefined && !(selectedRatio.value > 0);
+    const aspectRatio = isFreeRatio ? AspectRatioUtility.find(naturalWidth, naturalHeight) : null;
+    const aspectRatioLabel = aspectRatio === null ? '' : ` (${aspectRatio.exact ? '' : '~'}${aspectRatio.label})`;
+    this.cropInfo.innerText = `${naturalWidth}×${naturalHeight} px${aspectRatioLabel}`;
   };
 
   private handleAspectRatioChange(ratioId: string): void {
