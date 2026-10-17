@@ -341,7 +341,11 @@ readonly class RequestHandler implements RequestHandlerInterface
                 // Custom template is not set if createResource() throws
             }
         }
-        $headerComment = trim($typoScriptConfigArray['headerComment'] ?? '');
+        $contentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+        $contentObjectRenderer->setRequest($request);
+        $contentObjectRenderer->start($request->getAttribute('frontend.page.information')->getPageRecord(), 'pages');
+        // Prevent dynamic values from closing the HTML comment and injecting markup.
+        $headerComment = trim(str_replace(['-->', '--!>'], ['--&gt;', '--!&gt;'], (string)$contentObjectRenderer->stdWrapValue('headerComment', $typoScriptConfigArray)));
         if ($headerComment) {
             $this->pageRenderer->addInlineComment("\t" . str_replace(LF, LF . "\t", $headerComment) . LF);
         }

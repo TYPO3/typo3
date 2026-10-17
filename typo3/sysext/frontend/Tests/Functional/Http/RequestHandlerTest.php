@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\Http;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -95,6 +96,63 @@ final class RequestHandlerTest extends FunctionalTestCase
     public function generateHtmlTagUsingTypoScript(array $typoScriptSetup, string $expectedResult): void
     {
         $this->setUpFrontendRootPage(1, [], ['config' => implode("\n", $typoScriptSetup)]);
+        $response = $this->executeFrontendSubRequest(new InternalRequest('https://website.local/')->withPageId(1));
+        self::assertStringContainsString($expectedResult, (string)$response->getBody());
+    }
+
+    public static function headerCommentIsRenderedDataProvider(): array
+    {
+        $pageTitle = '--><script>alert("XSS")</script><!--';
+        $escapedPageTitle = '--&gt;<script>alert("XSS")</script><!--';
+        $specialCharacters = '<b>A > B & "C" \'D\'</b>';
+        return [
+            'static value' => [
+                'typoScriptSetup' => ['config.headerComment = Static comment'],
+                'expectedResult' => "\tStatic comment\n",
+            ],
+            'multiline value is indented' => [
+                'typoScriptSetup' => ['config.headerComment (', 'Line 1', 'Line 2', ')'],
+                'expectedResult' => "\tLine 1\n\tLine 2\n",
+            ],
+            'stdWrap wrap' => [
+                'typoScriptSetup' => [
+                    'config.headerComment = Wrapped',
+                    'config.headerComment.wrap = [|]',
+                ],
+                'expectedResult' => "\t[Wrapped]\n",
+            ],
+            'insertData' => [
+                'typoScriptSetup' => [
+                    'config.headerComment = (c) {date:Y}',
+                    'config.headerComment.insertData = 1',
+                ],
+                'expectedResult' => "\t(c) " . date('Y') . "\n",
+            ],
+            'page field special characters are preserved' => [
+                'typoScriptSetup' => ['config.headerComment.field = title'],
+                'expectedResult' => "\t" . $specialCharacters . "\n",
+                'pageTitle' => $specialCharacters,
+            ],
+            'alternative comment terminator is escaped' => [
+                'typoScriptSetup' => ['config.headerComment = --!><script>alert("XSS")</script>'],
+                'expectedResult' => "\t" . '--!&gt;<script>alert("XSS")</script>' . "\n",
+            ],
+            'page field is escaped' => [
+                'typoScriptSetup' => ['config.headerComment.field = title'],
+                'expectedResult' => "\t" . $escapedPageTitle . "\n",
+                'pageTitle' => $pageTitle,
+            ],
+        ];
+    }
+
+    #[DataProvider('headerCommentIsRenderedDataProvider')]
+    #[Test]
+    public function headerCommentIsRendered(array $typoScriptSetup, string $expectedResult, ?string $pageTitle = null): void
+    {
+        $this->setUpFrontendRootPage(1, [], ['config' => implode("\n", ['page = PAGE', ...$typoScriptSetup])]);
+        if ($pageTitle !== null) {
+            $this->get(ConnectionPool::class)->getConnectionForTable('pages')->update('pages', ['title' => $pageTitle], ['uid' => 1]);
+        }
         $response = $this->executeFrontendSubRequest(new InternalRequest('https://website.local/')->withPageId(1));
         self::assertStringContainsString($expectedResult, (string)$response->getBody());
     }
