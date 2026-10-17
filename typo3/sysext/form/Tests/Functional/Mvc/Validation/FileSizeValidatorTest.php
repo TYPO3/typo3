@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Functional\Mvc\Validation;
 
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -85,6 +86,29 @@ final class FileSizeValidatorTest extends FunctionalTestCase
         $storageStub = self::createStub(ResourceStorage::class);
         $file = new File(['identifier' => '/foo', 'name' => 'bar.txt', 'size' => '1048577'], $storageStub);
         self::assertTrue($validator->validate($file)->hasErrors());
+    }
+
+    #[Test]
+    public function fileSizeValidatorHasNoErrorsWithDefaultOptions(): void
+    {
+        $validator = new FileSizeValidator();
+        $validator->setOptions([]);
+        $storageStub = self::createStub(ResourceStorage::class);
+        $file = new File(['identifier' => '/foo', 'name' => 'bar.txt', 'size' => '1048577'], $storageStub);
+        self::assertFalse($validator->validate($file)->hasErrors());
+    }
+
+    #[Test]
+    #[IgnoreDeprecations]
+    public function fileSizeValidatorHasNoErrorsIfFileResourceSizeIsWithinDecimalMaximum(): void
+    {
+        $this->expectUserDeprecationMessageMatches('/Using decimal values like "1.5K" for the option "maximum"/');
+        $options = ['minimum' => '0B', 'maximum' => '1.5K'];
+        $validator = new FileSizeValidator();
+        $validator->setOptions($options);
+        $storageStub = self::createStub(ResourceStorage::class);
+        $file = new File(['identifier' => '/foo', 'name' => 'bar.txt', 'size' => '1100'], $storageStub);
+        self::assertFalse($validator->validate($file)->hasErrors());
     }
 
     #[Test]

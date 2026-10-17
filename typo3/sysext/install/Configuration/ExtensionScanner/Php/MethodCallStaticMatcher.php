@@ -1891,4 +1891,11 @@ return [
             'Deprecation-110966-PathUtilityBasenameDirnameAndPathinfo.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Utility\GeneralUtility::getBytesFromSizeMeasurement' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-111114-GeneralUtilityGetBytesFromSizeMeasurement.rst',
+        ],
+    ],
 ];

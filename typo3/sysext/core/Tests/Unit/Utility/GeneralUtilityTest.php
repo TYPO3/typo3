@@ -1075,6 +1075,7 @@ final class GeneralUtilityTest extends UnitTestCase
 
     #[DataProvider('getBytesFromSizeMeasurementDataProvider')]
     #[Test]
+    #[IgnoreDeprecations]
     public function getBytesFromSizeMeasurementCalculatesCorrectByteValue($expected, $byteString): void
     {
         self::assertEquals($expected, GeneralUtility::getBytesFromSizeMeasurement($byteString));

@@ -181,8 +181,8 @@ class Check implements CheckInterface
      */
     protected function checkPostUploadSizeIsHigherOrEqualMaximumFileUploadSize()
     {
-        $maximumUploadFilesize = $this->getBytesFromSizeMeasurement((string)ini_get('upload_max_filesize'));
-        $maximumPostSize = $this->getBytesFromSizeMeasurement((string)ini_get('post_max_size'));
+        $maximumUploadFilesize = ini_parse_quantity((string)ini_get('upload_max_filesize'));
+        $maximumPostSize = ini_parse_quantity((string)ini_get('post_max_size'));
         if ($maximumPostSize > 0 && $maximumPostSize < $maximumUploadFilesize) {
             $this->messageQueue->enqueue(new FlashMessage(
                 'upload_max_filesize=' . ini_get('upload_max_filesize') . LF
@@ -213,7 +213,7 @@ class Check implements CheckInterface
     {
         $minimumMemoryLimit = 256;
         $recommendedMemoryLimit = 512;
-        $memoryLimit = $this->getBytesFromSizeMeasurement((string)ini_get('memory_limit'));
+        $memoryLimit = ini_parse_quantity((string)ini_get('memory_limit'));
         if ($memoryLimit <= 0) {
             if (Environment::isCli()) {
                 // "0" memory limit for CLI is usually "just fine". Do not cause a report for this in CLI mode (but in web mode)
@@ -851,25 +851,6 @@ class Check implements CheckInterface
             $windowsOs = true;
         }
         return $windowsOs;
-    }
-
-    /**
-     * Helper method to get the bytes value from a measurement string like "100k".
-     *
-     * @param string $measurement The measurement (e.g. "100k")
-     * @return int The bytes value (e.g. 102400)
-     */
-    protected function getBytesFromSizeMeasurement($measurement)
-    {
-        $bytes = (float)$measurement;
-        if (stripos($measurement, 'G')) {
-            $bytes *= 1024 * 1024 * 1024;
-        } elseif (stripos($measurement, 'M')) {
-            $bytes *= 1024 * 1024;
-        } elseif (stripos($measurement, 'K')) {
-            $bytes *= 1024;
-        }
-        return (int)$bytes;
     }
 
     private function checkImageResource($imageResource): bool

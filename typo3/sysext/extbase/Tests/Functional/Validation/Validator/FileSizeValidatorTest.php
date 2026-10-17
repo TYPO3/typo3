@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Validation\Validator;
 
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Http\UploadedFile;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
@@ -75,6 +76,31 @@ final class FileSizeValidatorTest extends AbstractUploadedFileTestCase
         $testFilename = $this->createTestFile('too_large_testfile.txt', 'TYPO3 - Inspiring People To Share');
         $uploadedFile = new UploadedFile($testFilename, 100, UPLOAD_ERR_OK, 'testfile.txt');
         self::assertTrue($validator->validate($uploadedFile)->hasErrors());
+    }
+
+    #[Test]
+    public function validatorHasNoErrorsWithDefaultOptions(): void
+    {
+        $validator = new FileSizeValidator();
+        $validator->setOptions([]);
+
+        $testFilename = $this->createTestFile('default_options_testfile.txt', 'TYPO3 - Inspiring People To Share');
+        $uploadedFile = new UploadedFile($testFilename, 100, UPLOAD_ERR_OK, 'testfile.txt');
+        self::assertFalse($validator->validate($uploadedFile)->hasErrors());
+    }
+
+    #[Test]
+    #[IgnoreDeprecations]
+    public function validatorHasNoErrorsIfUploadedFileSizeIsWithinDecimalMaximum(): void
+    {
+        $this->expectUserDeprecationMessageMatches('/Using decimal values like "1.5K" for the option "maximum"/');
+        $options = ['minimum' => '0B', 'maximum' => '1.5K'];
+        $validator = new FileSizeValidator();
+        $validator->setOptions($options);
+
+        $testFilename = $this->createTestFile('decimal_maximum_testfile.txt', str_repeat('a', 1100));
+        $uploadedFile = new UploadedFile($testFilename, 100, UPLOAD_ERR_OK, 'testfile.txt');
+        self::assertFalse($validator->validate($uploadedFile)->hasErrors());
     }
 
     #[Test]

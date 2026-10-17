@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Adminpanel\Utility;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-
 /**
  * Helper class to keep track of memory consumption in loggers to reduce risk of running out of memory
  *
@@ -36,8 +34,7 @@ class MemoryUtility
      */
     public static function isMemoryConsumptionTooHigh(): bool
     {
-        $iniLimit = (string)ini_get('memory_limit');
-        $memoryLimit = $iniLimit === '-1' ? -1 : GeneralUtility::getBytesFromSizeMeasurement($iniLimit);
+        $memoryLimit = ini_parse_quantity((string)ini_get('memory_limit'));
         $freeMemory = $memoryLimit - memory_get_usage(true);
 
         return $memoryLimit > 0 && $freeMemory < (self::MINIMAL_PERCENT_OF_FREE_MEMORY * $memoryLimit);

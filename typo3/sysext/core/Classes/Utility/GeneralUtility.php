@@ -1977,12 +1977,10 @@ class GeneralUtility
      */
     public static function getMaxUploadFileSize(): int
     {
-        $uploadMaxFilesize = (string)ini_get('upload_max_filesize');
-        $postMaxSize = (string)ini_get('post_max_size');
         // Check for PHP restrictions of the maximum size of one of the $_FILES
-        $phpUploadLimit = self::getBytesFromSizeMeasurement($uploadMaxFilesize);
+        $phpUploadLimit = ini_parse_quantity((string)ini_get('upload_max_filesize'));
         // Check for PHP restrictions of the maximum $_POST size
-        $phpPostLimit = self::getBytesFromSizeMeasurement($postMaxSize);
+        $phpPostLimit = ini_parse_quantity((string)ini_get('post_max_size'));
         // If the total amount of post data is smaller (!) than the upload_max_filesize directive,
         // then this is the real limit in PHP
         $phpUploadLimit = $phpPostLimit > 0 && $phpPostLimit < $phpUploadLimit ? $phpPostLimit : $phpUploadLimit;
@@ -1994,9 +1992,14 @@ class GeneralUtility
      *
      * @param string $measurement The measurement (e.g. "100k")
      * @return int The bytes value (e.g. 102400)
+     * @deprecated since TYPO3 v15.0, will be removed in TYPO3 v16.0. Use PHP's native ini_parse_quantity() instead.
      */
     public static function getBytesFromSizeMeasurement(string $measurement): int
     {
+        trigger_error(
+            'GeneralUtility::getBytesFromSizeMeasurement() is deprecated since TYPO3 v15 and will be removed in TYPO3 v16. Use PHP\'s native ini_parse_quantity() instead.',
+            E_USER_DEPRECATED
+        );
         $bytes = (float)$measurement;
         if (stripos($measurement, 'G')) {
             $bytes *= 1024 * 1024 * 1024;

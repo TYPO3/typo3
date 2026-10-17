@@ -63,12 +63,8 @@ final class FileSizeValidator extends AbstractValidator
     {
         $fileSize = $this->getFileInfo($uploadedFile->getTemporaryFileName())->getSize();
 
-        $minFileSize = GeneralUtility::getBytesFromSizeMeasurement($this->options['minimum']);
-        if ($this->options['maximum'] !== PHP_INT_MAX . 'B') {
-            $maxFileSize = GeneralUtility::getBytesFromSizeMeasurement($this->options['maximum']);
-        } else {
-            $maxFileSize = PHP_INT_MAX;
-        }
+        $minFileSize = $this->getBytesFromOption('minimum');
+        $maxFileSize = $this->getBytesFromOption('maximum');
 
         $labels = htmlspecialchars($this->options['byteSizeUnits']);
         if ($fileSize < $minFileSize) {
@@ -110,5 +106,26 @@ final class FileSizeValidator extends AbstractValidator
         if (!preg_match('/^(\d*\.?\d+)(B|K|M|G)$/i', $this->options['maximum'])) {
             throw new InvalidValidationOptionsException('The option "maximum" has an invalid format. Valid formats are something like this: "10B|K|M|G".', 1708595606);
         }
+    }
+
+    private function getBytesFromOption(string $optionName): int
+    {
+        $size = rtrim(strtoupper($this->options[$optionName]), 'B');
+        if (!str_contains($size, '.')) {
+            return ini_parse_quantity($size);
+        }
+        trigger_error(
+            'Using decimal values like "' . $this->options[$optionName] . '" for the option "' . $optionName . '" of '
+            . self::class . ' is deprecated since TYPO3 v15 and will stop working in TYPO3 v16.'
+            . ' Use a whole number with a smaller unit instead, for example "1536K" instead of "1.5M".',
+            E_USER_DEPRECATED
+        );
+        $bytes = (float)$size * match (substr($size, -1)) {
+            'G' => 1024 ** 3,
+            'M' => 1024 ** 2,
+            'K' => 1024,
+            default => 1,
+        };
+        return $bytes >= PHP_INT_MAX ? PHP_INT_MAX : (int)$bytes;
     }
 }
