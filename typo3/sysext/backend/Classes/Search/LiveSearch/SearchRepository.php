@@ -128,7 +128,7 @@ final readonly class SearchRepository
             $paginatorItems = array_merge(
                 array_fill(0, $searchDemand->getOffset(), null),
                 $flattenedSearchResults,
-                array_fill(0, $totalCount - $searchDemand->getOffset() - $resultCount, null)
+                array_fill(0, max(0, $totalCount - $searchDemand->getOffset() - $resultCount), null)
             );
         } else {
             $paginatorItems = [];
