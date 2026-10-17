@@ -1,0 +1,16 @@
+"pages"
+,"uid","pid","title","deleted"
+,1,0,"Root",0
+"fe_users"
+,"uid","pid","username","deleted","usergroup","disable","tx_extbase_type"
+,1,0,"Blog Admin",0,0,0,"TYPO3Tests\BlogExample\Domain\Model\Administrator"
+,2,0,"",0,0,0,"TYPO3Tests\BlogExample\Domain\Model\Administrator"
+"tx_blogexample_domain_model_blog"
+,"uid","pid","title","deleted","hidden","administrator","featured_post"
+,10,1,"Blog with invalid featured post",0,0,1,1
+,11,1,"Blog with valid featured post",0,0,1,1
+,12,1,"Blog with administrator without username",0,0,2,0
+"tx_blogexample_domain_model_post"
+,"uid","pid","title","deleted","hidden","featured_blog"
+,42,1,"ab",0,0,10
+,43,1,"Valid title",0,0,11
