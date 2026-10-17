@@ -73,7 +73,7 @@ final class FileExtensionValidator extends AbstractValidator
         $allowedFileExtensions = array_map(mb_strtolower(...), $allowedFileExtensions);
         $fileExtension = pathinfo($uploadedFile->getClientFilename(), PATHINFO_EXTENSION);
 
-        if (!in_array($fileExtension, $allowedFileExtensions, true)) {
+        if (!in_array(mb_strtolower($fileExtension), $allowedFileExtensions, true)) {
             $message = $this->translateErrorMessage(
                 $this->notAllowedMessage,
                 '',
