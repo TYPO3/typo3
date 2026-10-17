@@ -40,28 +40,21 @@ final class DatetimeLegacyTest extends FunctionalTestCase
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_datahandler_datetime_legacy',
     ];
 
-    protected array $configurationToUseInTestInstance = [
-        'DB' => [
-            'Connections' => [
-                'Default' => [
-                    // Same sql_mode the testing framework sets up for MySQL/MariaDB, except that
-                    // `NO_ZERO_DATE` is left out to allow "0000-00-00" values for DATE and DATETIME
-                    // fields with legacy non-nullable config.
-                    'initCommands' => 'SET SESSION sql_mode = \''
-                        . 'STRICT_ALL_TABLES'
-                        . ',ERROR_FOR_DIVISION_BY_ZERO'
-                        . ',NO_AUTO_VALUE_ON_ZERO'
-                        . ',NO_ENGINE_SUBSTITUTION'
-                        . ',NO_ZERO_IN_DATE'
-                        . ',ONLY_FULL_GROUP_BY'
-                        . '\';',
-                ],
-            ],
-        ],
-    ];
-
     protected function setUp(): void
     {
+        // Same sql_mode the testing framework sets up for MySQL/MariaDB, except that `NO_ZERO_DATE`
+        // is left out to allow "0000-00-00" values for DATE and DATETIME fields with legacy
+        // non-nullable config. SQLite holds them as text anyway.
+        if (in_array(getenv('typo3DatabaseDriver') ?: 'mysqli', ['mysqli', 'pdo_mysql'], true)) {
+            $this->configurationToUseInTestInstance['DB']['Connections']['Default']['initCommands'] = 'SET SESSION sql_mode = \''
+                . 'STRICT_ALL_TABLES'
+                . ',ERROR_FOR_DIVISION_BY_ZERO'
+                . ',NO_AUTO_VALUE_ON_ZERO'
+                . ',NO_ENGINE_SUBSTITUTION'
+                . ',NO_ZERO_IN_DATE'
+                . ',ONLY_FULL_GROUP_BY'
+                . '\';';
+        }
         parent::setUp();
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/be_users_admin.csv');
         $this->writeSiteConfiguration(
@@ -77,7 +70,6 @@ final class DatetimeLegacyTest extends FunctionalTestCase
     }
 
     #[Group('not-postgres')]
-    #[Group('not-sqlite')]
     #[DataProviderExternal(DatetimeTest::class, 'getDatetimeSets')]
     #[Test]
     public function createLegacyDatetimeRecords(
