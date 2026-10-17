@@ -49,5 +49,6 @@ services:
     tags:
       - name: 'lowlevel.configuration.module.provider'
         identifier: 'fluidNamespaces'
+        group: 'frameworks'
         label: 'fluid.messages:fluidNamespaces'
         after: 'translationDomainList'

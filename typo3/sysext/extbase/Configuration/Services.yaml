@@ -158,4 +158,5 @@ services:
     tags:
       - name: 'lowlevel.configuration.module.provider'
         identifier: 'extbaseClassConfiguration'
+        group: 'frameworks'
         label: 'extbase.messages:class_configuration'

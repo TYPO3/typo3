@@ -6,20 +6,44 @@
       <trans-unit id="moduleMenu.dropdown.label">
         <source>Configuration to show</source>
       </trans-unit>
+      <trans-unit id="group.core">
+        <source>System &amp; Infrastructure</source>
+      </trans-unit>
+      <trans-unit id="group.data">
+        <source>Data &amp; Content</source>
+      </trans-unit>
+      <trans-unit id="group.backend">
+        <source>Backend &amp; Users</source>
+      </trans-unit>
+      <trans-unit id="group.sites">
+        <source>Sites</source>
+      </trans-unit>
+      <trans-unit id="group.requestHandling">
+        <source>HTTP &amp; Security</source>
+      </trans-unit>
+      <trans-unit id="group.events">
+        <source>Events &amp; Integrations</source>
+      </trans-unit>
+      <trans-unit id="group.frameworks">
+        <source>Rendering &amp; Frameworks</source>
+      </trans-unit>
+      <trans-unit id="group.extensions">
+        <source>Extensions</source>
+      </trans-unit>
       <trans-unit id="configuration.headline">
         <source>Configuration of "%1s"</source>
       </trans-unit>
       <trans-unit id="typo3ConfVars">
-        <source>$GLOBALS['TYPO3_CONF_VARS'] (Global Configuration)</source>
+        <source>TYPO3_CONF_VARS (Global Configuration)</source>
       </trans-unit>
       <trans-unit id="tca">
-        <source>$GLOBALS['TCA'] (Table configuration array)</source>
+        <source>TCA (Table Configuration Array)</source>
       </trans-unit>
       <trans-unit id="beUserTsConfig">
-        <source>$GLOBALS['BE_USER']-&gt;getTSConfig() (User TSconfig)</source>
+        <source>User TSconfig (BE_USER-&gt;getTSConfig())</source>
       </trans-unit>
       <trans-unit id="beUser">
-        <source>$GLOBALS['BE_USER']-&gt;uc (User Settings)</source>
+        <source>User Settings (BE_USER-&gt;uc)</source>
       </trans-unit>
       <trans-unit id="usersettings" x-unused-since="15.0">
         <source>$GLOBALS['TYPO3_USER_SETTINGS'] (User Settings Configuration)</source>
@@ -34,16 +58,16 @@
         <source>Content Security Policy Mutations</source>
       </trans-unit>
       <trans-unit id="sitesTcaConfiguration">
-        <source>Sites: TCA configuration</source>
+        <source>Sites: TCA Configuration</source>
       </trans-unit>
       <trans-unit id="sitesYamlConfiguration">
-        <source>Sites: YAML configuration</source>
+        <source>Sites: YAML Configuration</source>
       </trans-unit>
       <trans-unit id="eventListeners">
         <source>Event Listeners (PSR-14)</source>
       </trans-unit>
       <trans-unit id="mfaProviders">
-        <source>MFA providers</source>
+        <source>MFA Providers</source>
       </trans-unit>
       <trans-unit id="softReferenceParsers">
         <source>Soft Reference Parsers</source>
@@ -64,7 +88,7 @@
         <source>Form: YAML Configuration</source>
       </trans-unit>
       <trans-unit id="t3services">
-        <source>$GLOBALS['T3_SERVICES'] (Registered Services)</source>
+        <source>T3_SERVICES (Registered Services)</source>
       </trans-unit>
       <trans-unit id="backendModules">
         <source>Backend Modules</source>

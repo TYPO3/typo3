@@ -21,6 +21,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
@@ -59,7 +60,7 @@ final readonly class ConfigurationController
 
         $view = $this->moduleTemplateFactory->create($request);
         $view->setTitle($languageService->translate('title', 'lowlevel.modules.config'), $selectedProviderLabel);
-        $this->addProviderDropDownToDocHeader($view, $providers, $selectedProvider);
+        $this->addProviderDropDownToDocHeader($view, $this->configurationProviderRegistry->getGroupedProviders(), $selectedProvider);
         $view->getDocHeaderComponent()->setShortcutContext(
             'system_config',
             $selectedProvider->getLabel(),
@@ -147,25 +148,30 @@ final readonly class ConfigurationController
     }
 
     /**
-     * @param ProviderInterface[] $providers
+     * @param array<string, ProviderInterface[]> $groupedProviders
      */
-    private function addProviderDropDownToDocHeader(ModuleTemplate $view, array $providers, ProviderInterface $selectedProvider): void
+    private function addProviderDropDownToDocHeader(ModuleTemplate $view, array $groupedProviders, ProviderInterface $selectedProvider): void
     {
-        $menu = $this->componentFactory->createMenu();
-        $menu->setIdentifier('tree');
-        $menu->setLabel(
-            $this->getLanguageService()->translate('moduleMenu.dropdown.label', 'lowlevel.messages')
-        );
-        foreach ($providers as $provider) {
-            $menuItem = $this->componentFactory->createMenuItem()
-                ->setHref((string)$this->uriBuilder->buildUriFromRoute('system_config', ['tree' => $provider->getIdentifier()]))
-                ->setTitle($provider->getLabel());
-            if ($provider === $selectedProvider) {
-                $menuItem->setActive(true);
+        $languageService = $this->getLanguageService();
+        $dropDown = $this->componentFactory->createDropDownButton()
+            ->setLabel($languageService->translate('moduleMenu.dropdown.label', 'lowlevel.messages'))
+            ->setShowLabelText(true)
+            ->setShowActiveLabelText(true);
+        foreach ($groupedProviders as $group => $providers) {
+            $dropDown->addItem(
+                $this->componentFactory->createDropDownHeader()
+                    ->setLabel($this->configurationProviderRegistry->getGroupLabel((string)$group, $languageService))
+            );
+            foreach ($providers as $provider) {
+                $dropDown->addItem(
+                    $this->componentFactory->createDropDownRadio()
+                        ->setHref((string)$this->uriBuilder->buildUriFromRoute('system_config', ['tree' => $provider->getIdentifier()]))
+                        ->setLabel($provider->getLabel())
+                        ->setActive($provider === $selectedProvider)
+                );
             }
-            $menu->addMenuItem($menuItem);
         }
-        $view->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
+        $view->getDocHeaderComponent()->getButtonBar()->addButton($dropDown, ButtonBar::BUTTON_POSITION_LEFT, 0);
     }
 
     private function getLanguageService(): LanguageService

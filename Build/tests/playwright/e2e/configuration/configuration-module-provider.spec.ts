@@ -9,11 +9,11 @@ test.describe('Configuration Module Provider', () => {
     const contentFrame = backend.contentFrame;
 
     // Explicitly select the default provider (TYPO3_CONF_VARS) to ensure clean state
-    await backend.docHeader.selectInDropDown('Configuration to show', '$GLOBALS[\'TYPO3_CONF_VARS\'] (Global Configuration)');
+    await backend.docHeader.selectInDropDown('Configuration to show', 'TYPO3_CONF_VARS (Global Configuration)');
 
     // Module can be accessed
     // Sorting is applied and TYPO3_CONF_VARS is the default provider to display
-    await expect(contentFrame.locator('h1')).toContainText('Configuration of "$GLOBALS[\'TYPO3_CONF_VARS\'] (Global Configuration)"');
+    await expect(contentFrame.locator('h1')).toContainText('Configuration of "TYPO3_CONF_VARS (Global Configuration)"');
     await expect(contentFrame.locator('#ConfigurationView')).toBeVisible();
 
     // Middleware provider can be loaded
@@ -29,19 +29,19 @@ test.describe('Configuration Module Provider', () => {
     const contentFrame = backend.contentFrame;
 
     const itemList = [
-      '$GLOBALS[\'TYPO3_CONF_VARS\'] (Global Configuration)',
-      '$GLOBALS[\'TCA\'] (Table configuration array)',
-      '$GLOBALS[\'T3_SERVICES\'] (Registered Services)',
+      'TYPO3_CONF_VARS (Global Configuration)',
+      'TCA (Table Configuration Array)',
+      'T3_SERVICES (Registered Services)',
       'Table permissions per page type',
-      '$GLOBALS[\'BE_USER\']->uc (User Settings)',
-      '$GLOBALS[\'BE_USER\']->getTSConfig() (User TSconfig)',
+      'User Settings (BE_USER->uc)',
+      'User TSconfig (BE_USER->getTSConfig())',
       'Backend Routes',
       'Backend Modules',
       'HTTP Middlewares (PSR-15)',
-      'Sites: TCA configuration',
-      'Sites: YAML configuration',
+      'Sites: TCA Configuration',
+      'Sites: YAML Configuration',
       'Event Listeners (PSR-14)',
-      'MFA providers',
+      'MFA Providers',
     ];
 
     for (const item of itemList) {

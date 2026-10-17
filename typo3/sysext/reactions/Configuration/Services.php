@@ -25,8 +25,9 @@ return static function (ContainerConfigurator $container, ContainerBuilder $cont
                 'lowlevel.configuration.module.provider',
                 [
                     'identifier' => 'reactions',
+                    'group' => 'events',
                     'label' => 'LLL:EXT:reactions/Resources/Private/Language/locallang_db.xlf:reactions',
-                    'after' => 'mfaproviders',
+                    'after' => 'mfaProviders',
                 ]
             );
     }

@@ -113,8 +113,48 @@ provider class to be used. Further, the new service must be tagged with the
 can be added to this tag. However, some are reserved and required for internal
 processing. For example, the `identifier` attribute is mandatory and must be
 unique. Using the `before` and `after` attributes, it is possible to specify
-the exact position on which the configuration will be displayed in the module
-menu.
+the position on which the configuration will be displayed in the module
+menu, relative to other providers within the same group.
+
+..  _module-configuration-extending-group:
+
+Grouping a provider
+-------------------
+
+..  versionadded:: 15.0
+    :changelog: feature-108927-1792218592
+
+    The module menu is divided into groups.
+
+The optional `group` attribute of the tag assigns the provider to a group:
+
+..  code-block:: yaml
+    :caption: EXT:my_extension/Configuration/Services.yaml
+
+    myextension.configuration.module.provider.myconfiguration:
+        class: 'Vendor\Extension\ConfigurationModuleProvider\MyProvider'
+        tags:
+            - name: 'lowlevel.configuration.module.provider'
+              identifier: 'myProvider'
+              group: 'backend'
+
+The following groups are available, in this order:
+
+*   `core`: :guilabel:`System & Infrastructure`
+*   `data`: :guilabel:`Data & Content`
+*   `backend`: :guilabel:`Backend & Users`
+*   `sites`: :guilabel:`Sites`
+*   `requestHandling`: :guilabel:`HTTP & Security`
+*   `events`: :guilabel:`Events & Integrations`
+*   `frameworks`: :guilabel:`Rendering & Frameworks`
+*   `extensions`: :guilabel:`Extensions`
+
+Any other value is used as label of a custom group, either as plain text or
+as a :ref:`localized label <t3coreapi:localization>`. Custom groups are
+displayed after the functional groups and before :guilabel:`Extensions`.
+Providers without a `group` attribute, with an empty value or with the
+explicit value `extensions` are displayed in :guilabel:`Extensions`, which
+is always the last group. Empty groups are not displayed.
 
 The provider class has to implement the methods as required by the interface.
 A full implementation would look like this:

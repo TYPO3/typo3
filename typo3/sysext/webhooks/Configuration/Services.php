@@ -31,6 +31,7 @@ return static function (ContainerConfigurator $container, ContainerBuilder $cont
                 'lowlevel.configuration.module.provider',
                 [
                     'identifier' => 'webhooks',
+                    'group' => 'events',
                     'label' => 'LLL:EXT:webhooks/Resources/Private/Language/locallang_db.xlf:webhooks',
                     'after' => 'reactions',
                 ]

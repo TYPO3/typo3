@@ -23,6 +23,7 @@ return static function (ContainerConfigurator $container, ContainerBuilder $cont
                 'lowlevel.configuration.module.provider',
                 [
                     'identifier' => 'formYamlConfiguration',
+                    'group' => 'frameworks',
                     'after' => 'eventListeners',
                 ]
             );
