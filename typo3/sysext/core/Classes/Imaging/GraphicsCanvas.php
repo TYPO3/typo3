@@ -42,6 +42,13 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 final class GraphicsCanvas
 {
+    /**
+     * The Laplacian factor each step of sharpen() adds. Step n sharpens like
+     * `-unsharp 1x2+(n*0.25)+0` in ImageMagick and GraphicsMagick, fitted
+     * against their output on scaled-down photos; step 1 is GFX/sharpen.
+     */
+    private const SHARPEN_FACTOR_PER_STEP = 0.0625;
+
     private function __construct(private \GdImage $image) {}
 
     /**
@@ -710,13 +717,19 @@ final class GraphicsCanvas
     }
 
     /**
-     * Accentuate edges to make the image look crisper. $amount is 0–100.
+     * Accentuate edges to make the image look crisper. $amount is 1–100, in
+     * ten even steps of 10 that match ImageMagick and GraphicsMagick; 0 or
+     * less sharpens nothing.
      */
     public function sharpen(int $amount): self
     {
-        $v = max(1, (int)($amount / 10));
-        $matrix = [[-1, -1, -1], [-1, 8 + $v, -1], [-1, -1, -1]];
-        imageconvolution($this->image, $matrix, array_sum(array_map('array_sum', $matrix)) ?: 1, 0);
+        if ($amount <= 0) {
+            return $this;
+        }
+        $step = MathUtility::forceIntegerInRange((int)ceil($amount / 10), 1, 10);
+        $factor = $step * self::SHARPEN_FACTOR_PER_STEP;
+        $matrix = [[0, -$factor, 0], [-$factor, 1 + 4 * $factor, -$factor], [0, -$factor, 0]];
+        imageconvolution($this->image, $matrix, 1, 0);
         return $this;
     }
 

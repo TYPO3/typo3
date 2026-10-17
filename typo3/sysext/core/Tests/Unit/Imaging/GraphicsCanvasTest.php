@@ -398,4 +398,77 @@ final class GraphicsCanvasTest extends UnitTestCase
         self::assertSame([0, 0, 255], self::rgb($canvas, 0, 3));
         self::assertSame([255, 255, 255], self::rgb($canvas, 3, 3));
     }
+
+    /**
+     * A strength steps up in ten even steps of 10: step n sharpens n times as
+     * much as step 1, like `-unsharp 1x2+(n*0.25)+0` in ImageMagick.
+     */
+    #[Test]
+    public function sharpenGrowsEvenlyWithItsStrength(): void
+    {
+        $changes = [];
+        foreach ([10, 40, 100] as $strength) {
+            $original = self::hardEdge();
+            $sharpened = self::hardEdge()->sharpen($strength);
+            $change = 0;
+            for ($x = 1; $x < 19; $x++) {
+                $change += abs(self::rgb($sharpened, $x, 10)[0] - self::rgb($original, $x, 10)[0]);
+            }
+            $changes[$strength] = $change;
+        }
+
+        self::assertGreaterThan(0, $changes[10]);
+        self::assertEqualsWithDelta(4, $changes[40] / $changes[10], 0.5);
+        self::assertEqualsWithDelta(10, $changes[100] / $changes[10], 1);
+    }
+
+    #[Test]
+    public function sharpenTreatsAStrengthWithinAStepAlike(): void
+    {
+        $weakest = self::softEdge()->sharpen(1);
+        $endOfStep = self::softEdge()->sharpen(10);
+
+        for ($x = 0; $x < 20; $x++) {
+            self::assertSame(self::rgb($weakest, $x, 10), self::rgb($endOfStep, $x, 10));
+        }
+    }
+
+    /**
+     * A strength of 0 or less sharpens nothing.
+     */
+    #[Test]
+    public function sharpenWithoutStrengthLeavesTheImageAlone(): void
+    {
+        $original = self::softEdge();
+        $sharpened = self::softEdge()->sharpen(0);
+
+        for ($x = 0; $x < 20; $x++) {
+            self::assertSame(self::rgb($original, $x, 10), self::rgb($sharpened, $x, 10));
+        }
+    }
+
+    /**
+     * 20x20, grey 80 on the left half and 176 on the right: an edge whose
+     * sharpening stays clear of 0 and 255 at every step.
+     */
+    private static function hardEdge(): GraphicsCanvas
+    {
+        $canvas = GraphicsCanvas::create(20, 20);
+        $canvas->fillRect(0, 0, 10, 20, $canvas->allocateColor(80, 80, 80));
+        $canvas->fillRect(10, 0, 10, 20, $canvas->allocateColor(176, 176, 176));
+        return $canvas;
+    }
+
+    /**
+     * 20x20, grey rising from left to right, so sharpening has an edge to work on.
+     */
+    private static function softEdge(): GraphicsCanvas
+    {
+        $canvas = GraphicsCanvas::create(20, 20);
+        for ($x = 0; $x < 20; $x++) {
+            $grey = (int)round(40 + 176 / (1 + exp(-($x - 10) / 2)));
+            $canvas->fillRect($x, 0, 1, 20, $canvas->allocateColor($grey, $grey, $grey));
+        }
+        return $canvas;
+    }
 }
