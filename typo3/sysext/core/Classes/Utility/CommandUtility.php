@@ -498,13 +498,13 @@ class CommandUtility
             if ($quoteActive > -1) {
                 $paramsArr[$quoteActive] .= ' ' . $v;
                 unset($paramsArr[$k]);
-                if (substr($v, -1) === $paramsArr[$quoteActive][0]) {
+                if (str_ends_with($v, $paramsArr[$quoteActive][0])) {
                     $quoteActive = -1;
                 }
             } elseif (!trim($v)) {
                 // Remove empty elements
                 unset($paramsArr[$k]);
-            } elseif (preg_match('/^(["\'])/', $v) && substr($v, -1) !== $v[0]) {
+            } elseif (preg_match('/^(["\'])/', $v) && !str_ends_with($v, $v[0])) {
                 $quoteActive = $k;
             }
         }

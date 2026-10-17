@@ -1104,7 +1104,7 @@ class QueryBuilder extends ConcreteQueryBuilder
             // or preceded by a tablename (tablename.*) check if the last character of a select
             // expression is the * and quote only prepended table name. In all other cases the
             // full expression is being quoted.
-            if (substr($fieldName, -2) === '.*') {
+            if (str_ends_with($fieldName, '.*')) {
                 $select = $this->quoteIdentifier(substr($fieldName, 0, -2)) . '.*';
             } elseif ($fieldName !== '*') {
                 $select = $this->quoteIdentifier($fieldName);

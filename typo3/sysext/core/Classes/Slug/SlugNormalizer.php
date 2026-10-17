@@ -66,7 +66,7 @@ final readonly class SlugNormalizer
         $extractedSlug = trim($value, $fallbackCharacter . '/');
 
         // Remove trailing and beginning slashes, except if the trailing slash was added, then we'll re-add it
-        $appendTrailingSlash = $extractedSlug !== '' && substr($value, -1) === '/';
+        $appendTrailingSlash = $extractedSlug !== '' && str_ends_with($value, '/');
         $value = $extractedSlug . ($appendTrailingSlash ? '/' : '');
 
         return $value;

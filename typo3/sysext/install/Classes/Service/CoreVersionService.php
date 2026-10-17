@@ -46,7 +46,7 @@ class CoreVersionService
     public function isInstalledVersionAReleasedVersion(): bool
     {
         $version = $this->getInstalledVersion();
-        return substr($version, -4) !== '-dev';
+        return !str_ends_with($version, '-dev');
     }
 
     /**

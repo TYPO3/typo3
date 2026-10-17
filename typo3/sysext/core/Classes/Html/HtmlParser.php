@@ -731,7 +731,7 @@ class HtmlParser
             if ($k % 2) {
                 $params = $this->get_tag_attributes($v);
                 // Detect tag-ending so that it is re-applied correctly.
-                $tagEnd = substr($v, -2) === '/>' ? ' />' : '>';
+                $tagEnd = str_ends_with($v, '/>') ? ' />' : '>';
                 // The 'name' of the first tag
                 $firstTagName = $this->getFirstTagName($v);
                 $prefixedRelPath = false;

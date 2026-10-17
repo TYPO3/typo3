@@ -95,7 +95,7 @@ readonly class CodeCompletionController
         foreach ($treeBranch as $key => $value) {
             $key = is_int($key) ? (string)$key : $key;
             //type definition or value-assignment
-            if (substr($key, -1) !== '.') {
+            if (!str_ends_with($key, '.')) {
                 if ($value != '') {
                     if (mb_strlen($value) > 20) {
                         $value = mb_substr($value, 0, 20);
@@ -109,9 +109,7 @@ readonly class CodeCompletionController
                 // subtree (definition of properties)
                 $subBranch = $this->treeWalkCleanup($value);
                 if ($subBranch) {
-                    if (substr($key, -1) === '.') {
-                        $key = rtrim($key, '.');
-                    }
+                    $key = rtrim($key, '.');
                     if (!isset($cleanedTreeBranch[$key])) {
                         $cleanedTreeBranch[$key] = [];
                     }

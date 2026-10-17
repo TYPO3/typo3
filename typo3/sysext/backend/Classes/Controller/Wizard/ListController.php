@@ -47,7 +47,7 @@ class ListController
         $origRow = BackendUtility::getRecord($table, $parameters['uid']);
         $tsConfig = FormEngineUtility::getTCEFORM_TSconfig($table, $origRow ?? ['pid' => $parameters['pid'] ?? 0]);
 
-        if (str_starts_with($parameters['params']['pid'], '###') && substr($parameters['params']['pid'], -3) === '###') {
+        if (str_starts_with($parameters['params']['pid'], '###') && str_ends_with($parameters['params']['pid'], '###')) {
             $keyword = substr($parameters['params']['pid'], 3, -3);
             if (str_starts_with($keyword, 'PAGE_TSCONFIG_')) {
                 $pid = (int)$tsConfig[$parameters['field']][$keyword];
