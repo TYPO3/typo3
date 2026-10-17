@@ -149,7 +149,7 @@ class FileSearchQuery
         }
 
         $query->queryBuilder->getConcreteQueryBuilder()->select(
-            'COUNT(DISTINCT ' . $query->queryBuilder->quoteIdentifier(self::FILES_TABLE . '.identifier') . ')'
+            'COUNT(DISTINCT ' . $query->queryBuilder->quoteIdentifier(self::FILES_TABLE . '.uid') . ')'
         );
 
         return $query;
