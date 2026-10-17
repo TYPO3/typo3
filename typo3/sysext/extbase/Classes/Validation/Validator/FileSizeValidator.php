@@ -48,25 +48,29 @@ final class FileSizeValidator extends AbstractValidator
         $this->ensureFileUploadTypes($value);
         $this->validateOptions();
 
+        if ($value instanceof ObjectStorage && $value->count() === 0) {
+            return;
+        }
+
+        $minFileSize = $this->getBytesFromOption('minimum');
+        $maxFileSize = $this->getBytesFromOption('maximum');
+        $labels = htmlspecialchars($this->options['byteSizeUnits']);
+
         if ($value instanceof UploadedFile) {
-            $this->validateUploadedFile($value);
-        } elseif ($value instanceof ObjectStorage && $value->count() > 0) {
+            $this->validateUploadedFile($value, $minFileSize, $maxFileSize, $labels);
+        } elseif ($value instanceof ObjectStorage) {
             $index = 0;
             foreach ($value as $uploadedFile) {
-                $this->validateUploadedFile($uploadedFile, $index);
+                $this->validateUploadedFile($uploadedFile, $minFileSize, $maxFileSize, $labels, $index);
                 $index++;
             }
         }
     }
 
-    private function validateUploadedFile(UploadedFile $uploadedFile, ?int $index = null): void
+    private function validateUploadedFile(UploadedFile $uploadedFile, int $minFileSize, int $maxFileSize, string $labels, ?int $index = null): void
     {
         $fileSize = $this->getFileInfo($uploadedFile->getTemporaryFileName())->getSize();
 
-        $minFileSize = $this->getBytesFromOption('minimum');
-        $maxFileSize = $this->getBytesFromOption('maximum');
-
-        $labels = htmlspecialchars($this->options['byteSizeUnits']);
         if ($fileSize < $minFileSize) {
             $message = $this->translateErrorMessage(
                 $this->lessMessage,

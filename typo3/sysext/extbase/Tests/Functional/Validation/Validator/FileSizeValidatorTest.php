@@ -206,4 +206,82 @@ final class FileSizeValidatorTest extends AbstractUploadedFileTestCase
         $validationError = $validator->validate($uploadedFile)->getFirstError()->getMessage();
         self::assertEquals('The file must be larger than 10 b in size.', $validationError);
     }
+
+    public static function batchSizeErrorsDataProvider(): array
+    {
+        return [
+            'below minimum' => ['10B', '20B', 'TYPO3', 1708595754, 'The file must be larger than 10 b&amp; in size.'],
+            'above maximum' => ['0B', '5B', 'TYPO3 CMS', 1708595755, 'The file must be smaller than 5 b&amp; in size.'],
+        ];
+    }
+
+    #[DataProvider('batchSizeErrorsDataProvider')]
+    #[Test]
+    public function validatorPreservesBatchErrorIndexesAndMessages(string $minimum, string $maximum, string $content, int $code, string $message): void
+    {
+        $validator = new FileSizeValidator();
+        $validator->setOptions([
+            'minimum' => $minimum,
+            'maximum' => $maximum,
+            'byteSizeUnits' => ' b&| kb| mb| gb',
+        ]);
+        $filename = $this->createTestFile('batch.txt', $content);
+        $files = new ObjectStorage();
+        $files->attach(new UploadedFile($filename, strlen($content), UPLOAD_ERR_OK, 'first.txt'));
+        $files->attach(new UploadedFile($filename, strlen($content), UPLOAD_ERR_OK, 'second.txt'));
+
+        $result = $validator->validate($files);
+
+        self::assertSame([], $result->getErrors());
+        foreach (['0', '1'] as $index) {
+            $errors = $result->forProperty($index)->getErrors();
+            self::assertCount(1, $errors);
+            self::assertSame($code, $errors[0]->getCode());
+            self::assertSame($message, $errors[0]->getMessage());
+        }
+    }
+
+    #[Test]
+    public function validatorUsesUpdatedOptionsOnTheNextCall(): void
+    {
+        $validator = new FileSizeValidator();
+        $filename = $this->createTestFile('reused.txt', 'TYPO3');
+        $file = new UploadedFile($filename, 5, UPLOAD_ERR_OK, 'reused.txt');
+        $validator->setOptions(['minimum' => '10B', 'lessMessage' => 'Too small']);
+        $result = $validator->validate($file);
+        self::assertTrue($result->hasErrors());
+        self::assertSame('Too small', $result->getFirstError()->getMessage());
+
+        $validator->setOptions(['minimum' => '1B']);
+        self::assertFalse($validator->validate($file)->hasErrors());
+    }
+
+    #[Test]
+    public function decimalOptionsEmitOneDeprecationEachPerNonEmptyValidationCall(): void
+    {
+        $validator = new FileSizeValidator();
+        $validator->setOptions(['minimum' => '0.5K', 'maximum' => '1.5K']);
+        $filename = $this->createTestFile('decimal_batch.txt', str_repeat('a', 1100));
+        $files = new ObjectStorage();
+        $files->attach(new UploadedFile($filename, 1100, UPLOAD_ERR_OK, 'first.txt'));
+        $files->attach(new UploadedFile($filename, 1100, UPLOAD_ERR_OK, 'second.txt'));
+
+        $deprecations = [];
+        set_error_handler(static function (int $severity, string $message) use (&$deprecations): bool {
+            $deprecations[] = $message;
+            return true;
+        }, E_USER_DEPRECATED);
+        try {
+            $validator->isValid(new ObjectStorage());
+            self::assertSame([], $deprecations);
+            self::assertFalse($validator->validate($files)->hasErrors());
+            self::assertCount(2, $deprecations);
+            self::assertStringContainsString('option "minimum"', $deprecations[0]);
+            self::assertStringContainsString('option "maximum"', $deprecations[1]);
+            self::assertFalse($validator->validate($files)->hasErrors());
+            self::assertCount(4, $deprecations);
+        } finally {
+            restore_error_handler();
+        }
+    }
 }

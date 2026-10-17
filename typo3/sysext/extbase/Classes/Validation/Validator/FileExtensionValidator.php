@@ -44,19 +44,10 @@ final class FileExtensionValidator extends AbstractValidator
         $this->ensureFileUploadTypes($value);
         $this->validateOptions();
 
-        if ($value instanceof UploadedFile) {
-            $this->validateUploadedFile($value);
-        } elseif ($value instanceof ObjectStorage && $value->count() > 0) {
-            $index = 0;
-            foreach ($value as $uploadedFile) {
-                $this->validateUploadedFile($uploadedFile, $index);
-                $index++;
-            }
+        if ($value instanceof ObjectStorage && $value->count() === 0) {
+            return;
         }
-    }
 
-    private function validateUploadedFile(UploadedFile $uploadedFile, ?int $index = null): void
-    {
         $allowedFileExtensions = [];
         if (!empty($this->options['useStorageDefaults'])) {
             $allowedFileExtensions = GeneralUtility::trimExplode(
@@ -71,6 +62,23 @@ final class FileExtensionValidator extends AbstractValidator
             $allowedFileExtensions = array_merge($allowedFileExtensions, $this->options['allowedFileExtensions']);
         }
         $allowedFileExtensions = array_map(mb_strtolower(...), $allowedFileExtensions);
+
+        if ($value instanceof UploadedFile) {
+            $this->validateUploadedFile($value, $allowedFileExtensions);
+        } elseif ($value instanceof ObjectStorage) {
+            $index = 0;
+            foreach ($value as $uploadedFile) {
+                $this->validateUploadedFile($uploadedFile, $allowedFileExtensions, $index);
+                $index++;
+            }
+        }
+    }
+
+    /**
+     * @param string[] $allowedFileExtensions
+     */
+    private function validateUploadedFile(UploadedFile $uploadedFile, array $allowedFileExtensions, ?int $index = null): void
+    {
         $fileExtension = pathinfo($uploadedFile->getClientFilename(), PATHINFO_EXTENSION);
 
         if (!in_array(mb_strtolower($fileExtension), $allowedFileExtensions, true)) {
