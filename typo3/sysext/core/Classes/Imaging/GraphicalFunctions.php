@@ -131,6 +131,11 @@ class GraphicalFunctions
     protected bool $mayScaleUp = true;
 
     /**
+     * Whether a scaled-down JPEG, WebP or AVIF image is sharpened slightly (GFX/sharpen)
+     */
+    protected bool $sharpen = false;
+
+    /**
      * Filename prefix for images scaled in imageMagickConvert()
      *
      * @var string
@@ -227,16 +232,7 @@ class GraphicalFunctions
         $this->addFrameSelection = (bool)$gfxConf['processor_allowFrameSelection'];
         $this->imageFileExt = GeneralUtility::trimExplode(',', $gfxConf['imagefile_ext']);
 
-        // Processor Effects. This is necessary if using ImageMagick 5+.
-        // Effects in Imagemagick 5+ tends to render very slowly!
-        // Therefore, must be disabled in order not to perform sharpen, blurring and such.
-        // but if 'processor_effects' is set, enable effects
-        if ($gfxConf['processor_effects']) {
-            $this->cmds['jpg'] = $this->v5_sharpen(10);
-            $this->cmds['jpeg'] = $this->v5_sharpen(10);
-            $this->cmds['webp'] = $this->v5_sharpen(10);
-            $this->cmds['avif'] = $this->v5_sharpen(10);
-        }
+        $this->sharpen = (bool)($gfxConf['sharpen'] ?? false);
         // Secures that images are not scaled up.
         $this->mayScaleUp = (bool)$gfxConf['processor_allowUpscaling'];
 
@@ -461,6 +457,15 @@ class GraphicalFunctions
         // Add params
         $additionalParameters = $this->modifyImageMagickStripProfileParameters($additionalParameters, $options);
         $command .= ($additionalParameters ? ' ' . $additionalParameters : $this->cmds[$targetFileExtension] ?? '');
+        if (!$additionalParameters && $this->sharpen && in_array($targetFileExtension, ['jpg', 'jpeg', 'webp', 'avif'], true)) {
+            $sourceWidth = $processingInstructions->cropArea ? (int)round($processingInstructions->cropArea->getWidth()) : $info->getWidth();
+            $sourceHeight = $processingInstructions->cropArea ? (int)round($processingInstructions->cropArea->getHeight()) : $info->getHeight();
+            $scaledDown = $processingInstructions->width <= $sourceWidth && $processingInstructions->height <= $sourceHeight
+                && ($processingInstructions->width < $sourceWidth || $processingInstructions->height < $sourceHeight);
+            if ($scaledDown) {
+                $command .= ' -unsharp 1x2+0.25+0';
+            }
+        }
 
         // Add quality parameter for jpg, jpeg or webp if not already set
         if (!str_contains($command, '-quality') && ($targetFileExtension === 'jpg' || $targetFileExtension === 'jpeg')) {

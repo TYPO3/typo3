@@ -152,4 +152,84 @@ final class GraphicalFunctionsResizeTest extends FunctionalTestCase
         self::assertNotNull($result);
         self::assertSame(realpath($sourceFile), realpath($result->getRealPath()));
     }
+
+    /**
+     * @return array<string, array{sharpen: bool, targetFileExtension: string, width: int, additionalParameters: string, expectSharpening: bool}>
+     */
+    public static function resizeSharpensOnlyScaledDownLossyImagesDataProvider(): array
+    {
+        return [
+            'scaled down to jpg' => [
+                'sharpen' => true,
+                'targetFileExtension' => 'jpg',
+                'width' => 320,
+                'additionalParameters' => '',
+                'expectSharpening' => true,
+            ],
+            'scaled down to webp' => [
+                'sharpen' => true,
+                'targetFileExtension' => 'webp',
+                'width' => 320,
+                'additionalParameters' => '',
+                'expectSharpening' => true,
+            ],
+            'scaled up to jpg' => [
+                'sharpen' => true,
+                'targetFileExtension' => 'jpg',
+                'width' => 1280,
+                'additionalParameters' => '',
+                'expectSharpening' => false,
+            ],
+            'scaled down to png' => [
+                'sharpen' => true,
+                'targetFileExtension' => 'png',
+                'width' => 320,
+                'additionalParameters' => '',
+                'expectSharpening' => false,
+            ],
+            'scaled down to jpg with own parameters' => [
+                'sharpen' => true,
+                'targetFileExtension' => 'jpg',
+                'width' => 320,
+                'additionalParameters' => '-quality 70',
+                'expectSharpening' => false,
+            ],
+            'scaled down to jpg with sharpen disabled' => [
+                'sharpen' => false,
+                'targetFileExtension' => 'jpg',
+                'width' => 320,
+                'additionalParameters' => '',
+                'expectSharpening' => false,
+            ],
+        ];
+    }
+
+    #[DataProvider('resizeSharpensOnlyScaledDownLossyImagesDataProvider')]
+    #[Test]
+    public function resizeSharpensOnlyScaledDownLossyImages(
+        bool $sharpen,
+        string $targetFileExtension,
+        int $width,
+        string $additionalParameters,
+        bool $expectSharpening
+    ): void {
+        $GLOBALS['TYPO3_CONF_VARS']['GFX']['sharpen'] = $sharpen;
+        $graphicalFunctions = new GraphicalFunctions();
+        if (!$graphicalFunctions->isProcessingEnabled()) {
+            self::markTestSkipped('Image processor (ImageMagick/GraphicsMagick) is not enabled.');
+        }
+
+        $sourceFile = Environment::getPublicPath() . '/fileadmin/user_upload/GraphicalFunctionsResize.png';
+        $result = $graphicalFunctions->resize($sourceFile, $targetFileExtension, (string)$width, '', $additionalParameters, [], true);
+
+        self::assertNotNull($result);
+        self::assertSame($width, $result->getWidth());
+        $command = end($graphicalFunctions->IM_commands)[1];
+        if ($expectSharpening) {
+            self::assertStringContainsString(' -unsharp 1x2+0.25+0 ', $command);
+        } else {
+            self::assertStringNotContainsString(' -unsharp ', $command);
+            self::assertStringNotContainsString(' -sharpen ', $command);
+        }
+    }
 }

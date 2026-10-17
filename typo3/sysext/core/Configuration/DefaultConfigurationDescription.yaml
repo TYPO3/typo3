@@ -24,9 +24,9 @@ GFX:
               'ImageMagick': 'Choose ImageMagick for processing images'
               'GraphicsMagick': 'Choose GraphicsMagick for processing images'
             description: 'Select which external software on the server should process images - see also the Preset functionality to see what is available.'
-        processor_effects:
+        sharpen:
             type: bool
-            description: 'If enabled, apply blur and sharpening in ImageMagick/GraphicMagick functions'
+            description: 'If enabled, ImageMagick and GraphicsMagick sharpen JPEG, WebP and AVIF images slightly when they scale them down.'
         processor_allowUpscaling:
             type: bool
             description: 'If set, images can be scaled up if told so (in <code>\TYPO3\CMS\Core\Imaging\GraphicalFunctions</code>)'

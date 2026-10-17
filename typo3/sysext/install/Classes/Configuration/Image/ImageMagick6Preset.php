@@ -42,7 +42,7 @@ class ImageMagick6Preset extends AbstractImagePreset
         // processor_path is determined and set by path lookup methods
         'GFX/processor_path' => '',
         'GFX/processor' => 'ImageMagick',
-        'GFX/processor_effects' => true,
+        'GFX/sharpen' => true,
     ];
 
     /**

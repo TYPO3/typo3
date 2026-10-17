@@ -317,16 +317,10 @@ final class SilentConfigurationUpgradeServiceTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function doNotSetImageMagickDetailSettings(): void
+    public function sharpenSettingIsLeftAsItIs(): void
     {
-        $testConfig = [
-            'GFX' => [
-                'processor' => '',
-                'processor_effects' => 0,
-            ],
-        ];
         $configurationManager = $this->get(ConfigurationManager::class);
-        $configurationManager->updateLocalConfiguration($testConfig);
+        $configurationManager->updateLocalConfiguration(['GFX' => ['processor' => '', 'sharpen' => false]]);
 
         $subject = $this->get(SilentConfigurationUpgradeService::class);
         $exceptionCaught = false;
@@ -339,59 +333,28 @@ final class SilentConfigurationUpgradeServiceTest extends FunctionalTestCase
         }
     }
 
-    public static function migratesGraphicsProcessorEffectsDataProvider(): array
+    public static function formerEffectsSettingDataProvider(): iterable
     {
-        return [
-            'integer 1' => [
-                1,
-                true,
-            ],
-            'integer 0' => [
-                0,
-                false,
-            ],
-            'integer -1' => [
-                -1,
-                false,
-            ],
-            'string "1"' => [
-                '1',
-                true,
-            ],
-            'string "0"' => [
-                '0',
-                false,
-            ],
-            'string "-1"' => [
-                '-1',
-                false,
-            ],
-        ];
+        yield 'enabled' => [true];
+        yield 'disabled' => [false];
     }
 
-    #[DataProvider('migratesGraphicsProcessorEffectsDataProvider')]
+    /**
+     * GFX/processor_effects only ever sharpened the scaled output, so it
+     * is named after what it does.
+     */
+    #[DataProvider('formerEffectsSettingDataProvider')]
     #[Test]
-    public function migratesGraphicsProcessorEffects(string|int $currentValue, bool $expectedMigratedValue): void
+    public function formerEffectsSettingBecomesSharpen(bool $value): void
     {
-        $testConfig = [
-            'GFX' => [
-                'processor' => 'GraphicsMagick',
-                'processor_effects' => $currentValue,
-            ],
-        ];
         $configurationManager = $this->get(ConfigurationManager::class);
-        $configurationManager->updateLocalConfiguration($testConfig);
+        $configurationManager->updateLocalConfiguration(['GFX' => ['processor_effects' => $value]]);
 
-        $subject = $this->get(SilentConfigurationUpgradeService::class);
-        $exceptionCaught = false;
-        try {
-            $subject->execute();
-        } catch (ConfigurationChangedException) {
-            $exceptionCaught = true;
-        } finally {
-            self::assertTrue($exceptionCaught);
-            self::assertSame($expectedMigratedValue, $configurationManager->getLocalConfigurationValueByPath('GFX/processor_effects'));
-        }
+        $this->executeUntilConfigurationIsStable();
+
+        $graphicsConfiguration = $configurationManager->getLocalConfiguration()['GFX'];
+        self::assertArrayNotHasKey('processor_effects', $graphicsConfiguration);
+        self::assertSame($value, $graphicsConfiguration['sharpen']);
     }
 
     public static function removesDefaultColorspaceSettingsDataProvider(): array
@@ -783,5 +746,22 @@ final class SilentConfigurationUpgradeServiceTest extends FunctionalTestCase
             self::assertTrue($exceptionCaught);
             self::assertArrayNotHasKey('thumbnails', $configurationManager->getLocalConfiguration()['GFX']);
         }
+    }
+
+    /**
+     * Each migration step throws once it changed something, so an upgrade
+     * runs as many requests as it takes until nothing changes anymore.
+     */
+    private function executeUntilConfigurationIsStable(): void
+    {
+        $subject = $this->get(SilentConfigurationUpgradeService::class);
+        for ($run = 0; $run < 20; $run++) {
+            try {
+                $subject->execute();
+                return;
+            } catch (ConfigurationChangedException) {
+            }
+        }
+        self::fail('Configuration did not settle after 20 runs of the upgrade.');
     }
 }

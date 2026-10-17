@@ -1383,4 +1383,9 @@ return [
             'Breaking-111108-ThumbnailsSettingRemoved.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'GFX\'][\'processor_effects\']' => [
+        'restFiles' => [
+            'Breaking-111109-GFXSettingProcessorEffectsRenamedToSharpen.rst',
+        ],
+    ],
 ];

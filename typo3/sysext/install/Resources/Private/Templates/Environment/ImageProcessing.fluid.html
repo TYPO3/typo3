@@ -185,8 +185,8 @@
                         <td>{imageProcessingVersion}</td>
                     </tr>
                     <tr>
-                        <td>{imageProcessingProcessor} effects enabled:</td>
-                        <td>{imageProcessingEffects} <span>(Blurring/Sharpening with {imageProcessingProcessor})</span></td>
+                        <td>Sharpen scaled images:</td>
+                        <td>{f:if(condition:imageProcessingSharpen, then:'Yes', else:'No')}</td>
                     </tr>
                     <tr>
                         <td>GDLib enabled:</td>

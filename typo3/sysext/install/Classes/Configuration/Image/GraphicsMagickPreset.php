@@ -42,7 +42,7 @@ class GraphicsMagickPreset extends AbstractImagePreset
         // processor_path is determined and set by path lookup methods
         'GFX/processor_path' => '',
         'GFX/processor' => 'GraphicsMagick',
-        'GFX/processor_effects' => false,
+        'GFX/sharpen' => true,
     ];
 
     /**

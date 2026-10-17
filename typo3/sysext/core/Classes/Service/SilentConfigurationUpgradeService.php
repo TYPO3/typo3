@@ -241,7 +241,7 @@ class SilentConfigurationUpgradeService
         $this->migrateImageProcessorSetting();
         $this->transferHttpSettings();
         $this->disableImageMagickDetailSettingsIfImageMagickIsDisabled();
-        $this->setImageMagickDetailSettings();
+        $this->migrateSharpenSetting();
         $this->removeDefaultColorspaceSettings();
         $this->migrateLockSslSetting();
         $this->migrateDatabaseConnectionSettings();
@@ -557,39 +557,21 @@ class SilentConfigurationUpgradeService
     }
 
     /**
-     * Detail configuration of Image Magick and Graphics Magick settings
-     * depending on main values.
-     *
-     * "Configuration presets" in install tool is not type safe, so value
-     * comparisons here are not type safe too, to not trigger changes to
-     * LocalConfiguration again.
+     * GFX/processor_effects only ever sharpened the scaled JPEG, WebP and
+     * AVIF output, so it is renamed to GFX/sharpen.
      *
      * @throws ConfigurationChangedException
      */
-    protected function setImageMagickDetailSettings(): void
+    protected function migrateSharpenSetting(): void
     {
-        $changedValues = [];
         try {
-            $currentProcessorValue = $this->configurationManager->getLocalConfigurationValueByPath('GFX/processor');
+            $sharpen = (bool)$this->configurationManager->getLocalConfigurationValueByPath('GFX/processor_effects');
         } catch (MissingArrayPathException) {
-            $currentProcessorValue = $this->configurationManager->getDefaultConfigurationValueByPath('GFX/processor');
+            return;
         }
-
-        try {
-            $currentProcessorEffectsValue = $this->configurationManager->getLocalConfigurationValueByPath('GFX/processor_effects');
-        } catch (MissingArrayPathException) {
-            $currentProcessorEffectsValue = $this->configurationManager->getDefaultConfigurationValueByPath('GFX/processor_effects');
-        }
-
-        if ((string)$currentProcessorValue !== '') {
-            if (!is_bool($currentProcessorEffectsValue)) {
-                $changedValues['GFX/processor_effects'] = (int)$currentProcessorEffectsValue > 0;
-            }
-        }
-        if (!empty($changedValues)) {
-            $this->configurationManager->setLocalConfigurationValuesByPathValuePairs($changedValues);
-            $this->throwConfigurationChangedException();
-        }
+        $this->configurationManager->setLocalConfigurationValueByPath('GFX/sharpen', $sharpen);
+        $this->configurationManager->removeLocalConfigurationKeysByPath(['GFX/processor_effects']);
+        $this->throwConfigurationChangedException();
     }
 
     /**
@@ -604,7 +586,6 @@ class SilentConfigurationUpgradeService
         $settingsToRename = [
             'GFX/im' => 'GFX/processor_enabled',
             'GFX/im_version_5' => 'GFX/processor',
-            'GFX/im_v5effects' => 'GFX/processor_effects',
             'GFX/im_path' => 'GFX/processor_path',
             'GFX/im_path_lzw' => 'GFX/processor_path_lzw',
             'GFX/im_mask_temp_ext_gif' => 'GFX/processor_allowTemporaryMasksAsPng',

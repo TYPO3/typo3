@@ -31,7 +31,7 @@ class CustomPreset extends AbstractCustomPreset implements CustomPresetInterface
         'GFX/processor_enabled' => false,
         'GFX/processor_path' => '',
         'GFX/processor' => '',
-        'GFX/processor_effects' => false,
+        'GFX/sharpen' => false,
         'GFX/processor_colorspace' => '',
     ];
 

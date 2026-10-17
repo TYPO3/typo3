@@ -55,7 +55,7 @@ return [
         'processor_enabled' => true,
         'processor_path' => '/usr/bin/',
         'processor' => 'ImageMagick',
-        'processor_effects' => false,
+        'sharpen' => true,
         'processor_allowUpscaling' => true,
         'processor_allowFrameSelection' => true,
         'processor_stripColorProfileByDefault' => true,
