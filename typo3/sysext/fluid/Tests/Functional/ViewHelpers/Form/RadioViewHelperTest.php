@@ -26,6 +26,8 @@ use TYPO3\CMS\Extbase\Error\Result;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
+use TYPO3\CMS\Fluid\Tests\Functional\Fixtures\ViewHelpers\UserRoleBackedEnum;
+use TYPO3\CMS\Fluid\Tests\Functional\Fixtures\ViewHelpers\UserRoleEnum;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Fluid\Fluid\View\TemplateView;
 
@@ -111,6 +113,62 @@ final class RadioViewHelperTest extends FunctionalTestCase
         $view = new TemplateView($context);
         $view->assign('formObject', $formObject);
         self::assertStringContainsString('<input type="radio" name="myFieldPrefix[myObjectName][someProperty]" value="foo" />', $view->render());
+    }
+
+    #[Test]
+    public function renderSetsCheckedAttributeIfBoundPropertyIsBackedEnum(): void
+    {
+        $formObject = new \stdClass();
+        $formObject->someProperty = UserRoleBackedEnum::ADMIN;
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters())
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
+        $context->getTemplatePaths()->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.radio value="1" property="someProperty" /></f:form>');
+        $view = new TemplateView($context);
+        $view->assign('formObject', $formObject);
+        self::assertStringContainsString('<input type="radio" name="myFieldPrefix[myObjectName][someProperty]" value="1" checked="checked" />', $view->render());
+    }
+
+    #[Test]
+    public function renderSetsCheckedAttributeIfBoundPropertyIsUnitEnum(): void
+    {
+        $formObject = new \stdClass();
+        $formObject->someProperty = UserRoleEnum::ADMIN;
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters())
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
+        $context->getTemplatePaths()->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.radio value="ADMIN" property="someProperty" /></f:form>');
+        $view = new TemplateView($context);
+        $view->assign('formObject', $formObject);
+        self::assertStringContainsString('<input type="radio" name="myFieldPrefix[myObjectName][someProperty]" value="ADMIN" checked="checked" />', $view->render());
+    }
+
+    #[Test]
+    public function renderDoesNotSetCheckedAttributeIfBoundPropertyIsDifferentBackedEnum(): void
+    {
+        $formObject = new \stdClass();
+        $formObject->someProperty = UserRoleBackedEnum::ADMIN;
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters())
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
+        $context->getTemplatePaths()->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.radio value="2" property="someProperty" /></f:form>');
+        $view = new TemplateView($context);
+        $view->assign('formObject', $formObject);
+        self::assertStringContainsString('<input type="radio" name="myFieldPrefix[myObjectName][someProperty]" value="2" />', $view->render());
+    }
+
+    #[Test]
+    public function renderDoesNotSetCheckedAttributeIfBoundPropertyIsDifferentUnitEnum(): void
+    {
+        $formObject = new \stdClass();
+        $formObject->someProperty = UserRoleEnum::ADMIN;
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters())
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
+        $context->getTemplatePaths()->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.radio value="EDITOR" property="someProperty" /></f:form>');
+        $view = new TemplateView($context);
+        $view->assign('formObject', $formObject);
+        self::assertStringContainsString('<input type="radio" name="myFieldPrefix[myObjectName][someProperty]" value="EDITOR" />', $view->render());
     }
 
     #[Test]

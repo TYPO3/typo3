@@ -26,6 +26,8 @@ use TYPO3\CMS\Extbase\Error\Result;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
+use TYPO3\CMS\Fluid\Tests\Functional\Fixtures\ViewHelpers\UserRoleBackedEnum;
+use TYPO3\CMS\Fluid\Tests\Functional\Fixtures\ViewHelpers\UserRoleEnum;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Fluid\Fluid\View\TemplateView;
 
@@ -124,6 +126,48 @@ final class CheckboxViewHelperTest extends FunctionalTestCase
         $view = new TemplateView($context);
         $view->assign('formObject', $formObject);
         self::assertStringContainsString('<input type="hidden" name="myFieldPrefix[myObjectName][someProperty]" value="" /><input type="checkbox" name="myFieldPrefix[myObjectName][someProperty]" value="bar" checked="checked" />', $view->render());
+    }
+
+    public static function renderSetsCheckedAttributeIfCheckboxIsBoundToAPropertyOfTypeArrayWithEnumsDataProvider(): array
+    {
+        return [
+            'backed enum in array' => [
+                [UserRoleBackedEnum::ADMIN, UserRoleBackedEnum::GUEST],
+                '3',
+                true,
+            ],
+            'backed enum not in array' => [
+                [UserRoleBackedEnum::ADMIN, UserRoleBackedEnum::GUEST],
+                '2',
+                false,
+            ],
+            'unit enum in array' => [
+                [UserRoleEnum::ADMIN, UserRoleEnum::GUEST],
+                'GUEST',
+                true,
+            ],
+            'unit enum not in array' => [
+                [UserRoleEnum::ADMIN, UserRoleEnum::GUEST],
+                'EDITOR',
+                false,
+            ],
+        ];
+    }
+
+    #[DataProvider('renderSetsCheckedAttributeIfCheckboxIsBoundToAPropertyOfTypeArrayWithEnumsDataProvider')]
+    #[Test]
+    public function renderSetsCheckedAttributeIfCheckboxIsBoundToAPropertyOfTypeArrayWithEnums(array $propertyValue, string $value, bool $expectChecked): void
+    {
+        $formObject = new \stdClass();
+        $formObject->someProperty = $propertyValue;
+        $serverRequest = new ServerRequest()->withAttribute('extbase', new ExtbaseRequestParameters())
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
+        $context->getTemplatePaths()->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.checkbox value="' . $value . '" property="someProperty" /></f:form>');
+        $view = new TemplateView($context);
+        $view->assign('formObject', $formObject);
+        $expected = '<input type="checkbox" name="myFieldPrefix[myObjectName][someProperty][]" value="' . $value . '"' . ($expectChecked ? ' checked="checked"' : '') . ' />';
+        self::assertStringContainsString($expected, $view->render());
     }
 
     #[Test]

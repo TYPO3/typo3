@@ -253,6 +253,21 @@ final class SelectViewHelper extends AbstractFormFieldViewHelper
     }
 
     /**
+     * Keeps enums untouched if "optionValueField" is set, so the selected value
+     * is resolved through the same field as the option values.
+     *
+     * @param mixed $value The value to convert
+     * @return mixed
+     */
+    protected function convertToPlainValue($value)
+    {
+        if ($value instanceof \UnitEnum && $this->hasArgument('optionValueField')) {
+            return $value;
+        }
+        return parent::convertToPlainValue($value);
+    }
+
+    /**
      * Get the option value for an object
      *
      * @param mixed $valueElement

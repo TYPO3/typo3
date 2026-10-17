@@ -194,6 +194,12 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper
     protected function convertToPlainValue($value)
     {
         if (is_object($value)) {
+            if ($value instanceof \BackedEnum) {
+                return $value->value;
+            }
+            if ($value instanceof \UnitEnum) {
+                return $value->name;
+            }
             if ($value instanceof DomainObjectInterface && $value->getUid() !== null) {
                 // We prefer to use the `getUid()` method because this returns the properly overlaid identifier (defaultLanguageRecordUid).
                 // Otherwise, an identifier would contain '[defaultLanguageRecordUid]_[localizedRecordUid]'. This in turn
