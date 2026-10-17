@@ -222,6 +222,8 @@ class SilentConfigurationUpgradeService
         // #110966
         'SYS/UTF8filesystem',
         'SYS/systemLocale',
+        // #111108
+        'GFX/thumbnails',
     ];
 
     public function __construct(private readonly ConfigurationManager $configurationManager) {}
@@ -540,21 +542,12 @@ class SilentConfigurationUpgradeService
             $currentImageFileExtValue = $this->configurationManager->getDefaultConfigurationValueByPath('GFX/imagefile_ext');
         }
 
-        try {
-            $currentThumbnailsValue = $this->configurationManager->getLocalConfigurationValueByPath('GFX/thumbnails');
-        } catch (MissingArrayPathException) {
-            $currentThumbnailsValue = $this->configurationManager->getDefaultConfigurationValueByPath('GFX/thumbnails');
-        }
-
         if (!$currentEnabledValue) {
             if ($currentPathValue != '') {
                 $changedValues['GFX/processor_path'] = '';
             }
             if ($currentImageFileExtValue !== 'gif,jpg,jpeg,png') {
                 $changedValues['GFX/imagefile_ext'] = 'gif,jpg,jpeg,png';
-            }
-            if ($currentThumbnailsValue != 0) {
-                $changedValues['GFX/thumbnails'] = 0;
             }
         }
         if (!empty($changedValues)) {

@@ -309,7 +309,7 @@ class FileListController
         // Create the file list
         $this->filelist = GeneralUtility::makeInstance(FileList::class, $request);
         $this->filelist->viewMode = ViewMode::tryFrom($this->moduleData->get('viewMode')) ?? ViewMode::TILES;
-        $this->filelist->thumbs = ($GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'] ?? false) && $this->moduleData->get('displayThumbs');
+        $this->filelist->thumbs = (bool)$this->moduleData->get('displayThumbs');
 
         // Create clipboard object and initialize it
         $CB = array_replace_recursive($request->getQueryParams()['CB'] ?? [], $request->getParsedBody()['CB'] ?? []);
@@ -507,7 +507,7 @@ class FileListController
             ->setLabel($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view.list'))
             ->setIcon($this->iconFactory->getIcon('actions-viewmode-list'));
         $viewModeItems[] = $this->componentFactory->createDropDownDivider();
-        if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'] && ($this->getBackendUser()->getTSConfig()['options.']['file_list.']['enableDisplayThumbnails'] ?? '') === 'selectable') {
+        if (($this->getBackendUser()->getTSConfig()['options.']['file_list.']['enableDisplayThumbnails'] ?? '') === 'selectable') {
             $viewModeItems[] = $this->componentFactory->createDropDownToggle()
                 ->setActive((bool)$this->moduleData->get('displayThumbs'))
                 ->setHref($this->filelist->createModuleUri(['displayThumbs' => $this->moduleData->get('displayThumbs') ? 0 : 1]))

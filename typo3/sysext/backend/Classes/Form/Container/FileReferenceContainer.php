@@ -215,50 +215,48 @@ class FileReferenceContainer extends AbstractContainer
         $headerBadge = '';
         $isMissing = false;
         $fileObject = null;
-        if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'] ?? false) {
-            $fileUid = $databaseRow[self::FOREIGN_SELECTOR][0]['uid'] ?? null;
-            if (!empty($fileUid)) {
-                try {
-                    $fileObject = $this->resourceFactory->getFileObject($fileUid);
-                    if ($fileObject->isMissing()) {
-                        $isMissing = true;
-                        $recordTitle = htmlspecialchars($fileObject->getName());
-                        $headerImage = '
-                            <div class="panel-icon" id="' . $objectId . '_iconcontainer">
-                                ' . $this->iconFactory->getIcon('default-not-found', IconSize::SMALL)->render() . '
-                            </div>';
-                        $headerBadge = '
-                            <div class="panel-badge">
-                                <span class="badge badge-danger">'
-                            . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.file_missing')) . '
-                                </span>
-                            </div>';
-                    } elseif ($fileObject->isImage() || $fileObject->isMediaFile()) {
-                        $imageSetup = $this->data['inlineParentConfig']['appearance']['headerThumbnail'] ?? [];
-                        $cropVariantCollection = CropVariantCollection::create($databaseRow['crop'] ?? '');
-                        if (!$cropVariantCollection->getCropArea()->isEmpty()) {
-                            $imageSetup['crop'] = $cropVariantCollection->getCropArea()->makeAbsoluteBasedOnFile($fileObject);
-                        }
-                        $processedImage = $fileObject->process(
-                            ProcessedFile::CONTEXT_IMAGECROPSCALEMASK,
-                            array_merge(['maxWidth' => 60, 'maxHeight' => 45], $imageSetup)
-                        );
-                        // Only use a thumbnail if the processing process was successful by checking if image width is set
-                        if ($processedImage->getProperty('width')) {
-                            $imageUrl = $processedImage->getPublicUrl() ?? '';
-                            $headerImage = '
-                                <div class="panel-thumbnail" id="' . $objectId . '_thumbnailcontainer">
-                                    <img src="' . htmlspecialchars($imageUrl) . '" '
-                                        . 'width="' . $processedImage->getProperty('width') . '" '
-                                        . 'height="' . $processedImage->getProperty('height') . '" '
-                                        . 'alt="" '
-                                        . 'title="' . htmlspecialchars($altText) . '" '
-                                        . 'loading="lazy">
-                                </div>';
-                        }
+        $fileUid = $databaseRow[self::FOREIGN_SELECTOR][0]['uid'] ?? null;
+        if (!empty($fileUid)) {
+            try {
+                $fileObject = $this->resourceFactory->getFileObject($fileUid);
+                if ($fileObject->isMissing()) {
+                    $isMissing = true;
+                    $recordTitle = htmlspecialchars($fileObject->getName());
+                    $headerImage = '
+                        <div class="panel-icon" id="' . $objectId . '_iconcontainer">
+                            ' . $this->iconFactory->getIcon('default-not-found', IconSize::SMALL)->render() . '
+                        </div>';
+                    $headerBadge = '
+                        <div class="panel-badge">
+                            <span class="badge badge-danger">'
+                        . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.file_missing')) . '
+                            </span>
+                        </div>';
+                } elseif ($fileObject->isImage() || $fileObject->isMediaFile()) {
+                    $imageSetup = $this->data['inlineParentConfig']['appearance']['headerThumbnail'] ?? [];
+                    $cropVariantCollection = CropVariantCollection::create($databaseRow['crop'] ?? '');
+                    if (!$cropVariantCollection->getCropArea()->isEmpty()) {
+                        $imageSetup['crop'] = $cropVariantCollection->getCropArea()->makeAbsoluteBasedOnFile($fileObject);
                     }
-                } catch (\InvalidArgumentException $e) {
+                    $processedImage = $fileObject->process(
+                        ProcessedFile::CONTEXT_IMAGECROPSCALEMASK,
+                        array_merge(['maxWidth' => 60, 'maxHeight' => 45], $imageSetup)
+                    );
+                    // Only use a thumbnail if the processing process was successful by checking if image width is set
+                    if ($processedImage->getProperty('width')) {
+                        $imageUrl = $processedImage->getPublicUrl() ?? '';
+                        $headerImage = '
+                            <div class="panel-thumbnail" id="' . $objectId . '_thumbnailcontainer">
+                                <img src="' . htmlspecialchars($imageUrl) . '" '
+                                    . 'width="' . $processedImage->getProperty('width') . '" '
+                                    . 'height="' . $processedImage->getProperty('height') . '" '
+                                    . 'alt="" '
+                                    . 'title="' . htmlspecialchars($altText) . '" '
+                                    . 'loading="lazy">
+                            </div>';
+                    }
                 }
+            } catch (\InvalidArgumentException $e) {
             }
         }
 

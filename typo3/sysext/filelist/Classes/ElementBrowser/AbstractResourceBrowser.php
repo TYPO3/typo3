@@ -123,7 +123,7 @@ abstract class AbstractResourceBrowser extends AbstractElementBrowser implements
 
         $this->filelist = GeneralUtility::makeInstance(FileList::class, $this->getRequest());
         $this->filelist->viewMode = $this->viewMode;
-        $this->filelist->thumbs = ($GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'] ?? false) && $this->displayThumbs;
+        $this->filelist->thumbs = $this->displayThumbs;
     }
 
     /**

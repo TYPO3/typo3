@@ -1378,4 +1378,9 @@ return [
             'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'GFX\'][\'thumbnails\']' => [
+        'restFiles' => [
+            'Breaking-111108-ThumbnailsSettingRemoved.rst',
+        ],
+    ],
 ];

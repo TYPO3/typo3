@@ -3,9 +3,6 @@ GFX:
     type: container
     description: 'Image Processing'
     items:
-        thumbnails:
-            type: bool
-            description: 'Enables the use of thumbnails in the backend interface.'
         imagefile_ext:
             type: list
             description: 'Commalist of file extensions perceived as images by TYPO3. List should be set to "gif,png,jpeg,jpg" if ImageMagick is not available. Lowercase and no spaces between! To configure default conversion formats, please manually configure the extra array "imageFileConversionFormats" in settings.php.'

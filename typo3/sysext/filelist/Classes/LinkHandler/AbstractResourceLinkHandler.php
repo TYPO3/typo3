@@ -197,7 +197,7 @@ abstract class AbstractResourceLinkHandler implements LinkHandlerInterface, Link
 
         $this->filelist = GeneralUtility::makeInstance(FileList::class, $request);
         $this->filelist->viewMode = $this->viewMode;
-        $this->filelist->thumbs = ($GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'] ?? false) && $this->displayThumbs;
+        $this->filelist->thumbs = $this->displayThumbs;
     }
 
     public function modifyLinkAttributes(array $fieldDefinitions): array

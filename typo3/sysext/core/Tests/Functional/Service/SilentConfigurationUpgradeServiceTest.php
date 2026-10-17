@@ -274,7 +274,6 @@ final class SilentConfigurationUpgradeServiceTest extends FunctionalTestCase
             'GFX' => [
                 'processor_enabled' => false,
                 'imagefile_ext' => 'gif,jpg,png',
-                'thumbnails' => 0,
             ],
         ];
         $configurationManager = $this->get(ConfigurationManager::class);
@@ -765,6 +764,24 @@ final class SilentConfigurationUpgradeServiceTest extends FunctionalTestCase
             self::assertTrue($exceptionCaught);
             $settings = $configurationManager->getLocalConfiguration();
             self::assertArrayNotHasKey('parser', $settings['SYS']['lang']);
+        }
+    }
+
+    #[Test]
+    public function obsoleteThumbnailsSettingIsRemoved(): void
+    {
+        $configurationManager = $this->get(ConfigurationManager::class);
+        $configurationManager->updateLocalConfiguration(['GFX' => ['thumbnails' => 0]]);
+
+        $subject = $this->get(SilentConfigurationUpgradeService::class);
+        $exceptionCaught = false;
+        try {
+            $subject->execute();
+        } catch (ConfigurationChangedException) {
+            $exceptionCaught = true;
+        } finally {
+            self::assertTrue($exceptionCaught);
+            self::assertArrayNotHasKey('thumbnails', $configurationManager->getLocalConfiguration()['GFX']);
         }
     }
 }

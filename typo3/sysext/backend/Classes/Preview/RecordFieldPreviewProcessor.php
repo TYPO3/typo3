@@ -162,9 +162,7 @@ final readonly class RecordFieldPreviewProcessor
             }
 
             // Preview web image or media elements
-            if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails']
-                && ($fileReferenceObject->getOriginalFile()->isImage() || $fileReferenceObject->getOriginalFile()->isMediaFile())
-            ) {
+            if ($fileReferenceObject->getOriginalFile()->isImage() || $fileReferenceObject->getOriginalFile()->isMediaFile()) {
                 $cropVariantCollection = CropVariantCollection::create((string)$fileReferenceObject->getProperty('crop'));
                 $cropArea = $cropVariantCollection->getCropArea();
                 $processingConfiguration = [
