@@ -1898,4 +1898,11 @@ return [
             'Deprecation-111114-GeneralUtilityGetBytesFromSizeMeasurement.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData' => [
+        'numberOfMandatoryArguments' => 3,
+        'maximumNumberOfArguments' => 6,
+        'restFiles' => [
+            'Deprecation-111116-BackendUtilityGetModuleData.rst',
+        ],
+    ],
 ];

@@ -25,7 +25,6 @@ use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
@@ -46,7 +45,6 @@ use TYPO3\CMS\Core\Utility\HttpUtility;
 #[AsController]
 class RawSearchController
 {
-    protected array $MOD_MENU = [];
     protected array $MOD_SETTINGS = [];
 
     public function __construct(
@@ -60,12 +58,15 @@ class RawSearchController
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
-        $this->MOD_MENU = [
-            'sword' => '',
-        ];
         $parsedBody = $request->getParsedBody();
         $queryParams = $request->getQueryParams();
-        $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, $parsedBody['SET'] ?? $queryParams['SET'] ?? [], 'system_database_raw', 'ses');
+        $searchWord = ($parsedBody['SET'] ?? $queryParams['SET'] ?? [])['sword'] ?? null;
+        $moduleData = $request->getAttribute('moduleData');
+        if (is_scalar($searchWord) && (string)$moduleData->get('sword', '') !== (string)$searchWord) {
+            $moduleData->set('sword', $searchWord);
+            $this->getBackendUserAuthentication()->pushModuleData($moduleData->getModuleIdentifier(), $moduleData->toArray());
+        }
+        $this->MOD_SETTINGS = $moduleData->toArray();
 
         $moduleTemplate = $this->moduleTemplateFactory->create($request);
         $moduleTemplate->makeDocHeaderModuleMenu();

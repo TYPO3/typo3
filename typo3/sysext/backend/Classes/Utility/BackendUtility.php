@@ -1811,6 +1811,7 @@ class BackendUtility
      * @param string $setDefaultList List of default values from $MOD_MENU to set in the output array (only if the values from MOD_MENU are not arrays)
      * @throws \RuntimeException
      * @return array The array $settings, which holds a key for each MOD_MENU key and the values of each key will be within the range of values for each menuitem
+     * @deprecated since v15, will be removed in v16. Use the "moduleData" request attribute of a backend module instead.
      */
     public static function getModuleData(
         array $MOD_MENU,
@@ -1820,6 +1821,10 @@ class BackendUtility
         $dontValidateList = '',
         $setDefaultList = ''
     ) {
+        trigger_error(
+            'BackendUtility::getModuleData() is deprecated and will be removed in TYPO3 v16.0. Use the "moduleData" request attribute of a backend module instead.',
+            E_USER_DEPRECATED
+        );
         if ($modName !== '') {
             // Getting stored user-data from this module:
             $beUser = static::getBackendUserAuthentication();

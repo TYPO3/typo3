@@ -24,6 +24,7 @@ use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
+use TYPO3\CMS\Backend\Module\ModuleData;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -318,11 +319,12 @@ class QuerySearchController
         }
 
         // CLEAN SETTINGS
-        $OLD_MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, [], $this->moduleName, 'ses');
-        $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, $parsedBody['SET'] ?? $queryParams['SET'] ?? [], $this->moduleName, 'ses');
+        $moduleData = $request->getAttribute('moduleData');
+        $OLD_MOD_SETTINGS = $this->updateModuleData($moduleData, []);
+        $this->MOD_SETTINGS = $this->updateModuleData($moduleData, $parsedBody['SET'] ?? $queryParams['SET'] ?? []);
         $queryConfig = $parsedBody['queryConfig'] ?? $queryParams['queryConfig'] ?? false;
         if ($queryConfig) {
-            $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, ['queryConfig' => serialize($queryConfig)], $this->moduleName, 'ses');
+            $this->MOD_SETTINGS = $this->updateModuleData($moduleData, ['queryConfig' => serialize($queryConfig)]);
         }
         $setLimitToStart = false;
         foreach ($OLD_MOD_SETTINGS as $key => $val) {
@@ -344,8 +346,32 @@ class QuerySearchController
             } else {
                 $this->MOD_SETTINGS['queryLimit'] = '0';
             }
-            $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, $this->MOD_SETTINGS, $this->moduleName, 'ses');
+            $this->MOD_SETTINGS = $this->updateModuleData($moduleData, $this->MOD_SETTINGS);
         }
+    }
+
+    /**
+     * Applies the changed settings defined in MOD_MENU to the module data, ensures
+     * that menu settings hold an allowed value and persists the module data on change.
+     */
+    protected function updateModuleData(ModuleData $moduleData, array $changedSettings): array
+    {
+        $changed = false;
+        foreach ($this->MOD_MENU as $key => $menuItems) {
+            $value = $changedSettings[$key] ?? null;
+            if (is_scalar($value) && (string)$moduleData->get($key, '') !== (string)$value) {
+                $moduleData->set($key, $value);
+                $changed = true;
+            }
+            if (is_array($menuItems) && !$moduleData->has($key)) {
+                $moduleData->set($key, (string)array_key_first($menuItems));
+                $changed = true;
+            }
+        }
+        if ($moduleData->cleanUp($this->MOD_MENU) || $changed) {
+            $this->getBackendUserAuthentication()->pushModuleData($moduleData->getModuleIdentifier(), $moduleData->toArray());
+        }
+        return $moduleData->toArray();
     }
 
     protected function queryMaker(ServerRequestInterface $request): array
@@ -1905,12 +1931,7 @@ class QuerySearchController
             $writeArray['storeArray'] = serialize($storeArray);
             $writeArray['storeQueryConfigs']
                 = serialize($this->cleanStoreQueryConfigs($storeQueryConfigs, $storeArray));
-            $this->MOD_SETTINGS = BackendUtility::getModuleData(
-                $this->MOD_MENU,
-                $writeArray,
-                $this->moduleName,
-                'ses'
-            );
+            $this->MOD_SETTINGS = $this->updateModuleData($request->getAttribute('moduleData'), $writeArray);
         }
 
         return $flashMessage;

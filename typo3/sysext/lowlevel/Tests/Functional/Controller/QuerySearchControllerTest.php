@@ -21,6 +21,7 @@ use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\ResponseFactoryInterface;
+use TYPO3\CMS\Backend\Module\ModuleData;
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
@@ -553,6 +554,108 @@ final class QuerySearchControllerTest extends FunctionalTestCase
         if ($type === 'csv') {
             self::assertSame(1, $xpath->query('//button[@name="download_file"]')->length);
         }
+    }
+
+    #[Test]
+    public function menuConfigInitializesAndPersistsDefaultSettings(): void
+    {
+        $subject = $this->getAccessibleMock(QuerySearchController::class, null, $this->getConstructorArguments());
+        $subject->_call('menuConfig', $this->createModuleRequest());
+        self::assertSame('all', $subject->_get('MOD_SETTINGS')['search_query_makeQuery']);
+        self::assertSame('all', $GLOBALS['BE_USER']->getModuleData('system_database_query')['search_query_makeQuery']);
+    }
+
+    #[Test]
+    public function menuConfigReplacesInvalidQueryTypeWithDefault(): void
+    {
+        $subject = $this->getAccessibleMock(QuerySearchController::class, null, $this->getConstructorArguments());
+        $subject->_call('menuConfig', $this->createModuleRequest(['search_query_makeQuery' => 'invalid']));
+        self::assertSame('all', $subject->_get('MOD_SETTINGS')['search_query_makeQuery']);
+    }
+
+    #[Test]
+    public function menuConfigPersistsSubmittedSettingsDefinedInMenuOnly(): void
+    {
+        $subject = $this->getAccessibleMock(QuerySearchController::class, null, $this->getConstructorArguments());
+        $subject->_call('menuConfig', $this->createModuleRequest([
+            'search_query_makeQuery' => 'count',
+            'show_deleted' => '1',
+            'unknownSetting' => 'foo',
+        ]));
+        $settings = $subject->_get('MOD_SETTINGS');
+        self::assertSame('count', $settings['search_query_makeQuery']);
+        self::assertSame('1', $settings['show_deleted']);
+        self::assertArrayNotHasKey('unknownSetting', $settings);
+        $persistedSettings = $GLOBALS['BE_USER']->getModuleData('system_database_query');
+        self::assertSame('count', $persistedSettings['search_query_makeQuery']);
+        self::assertSame('1', $persistedSettings['show_deleted']);
+        self::assertArrayNotHasKey('unknownSetting', $persistedSettings);
+    }
+
+    #[Test]
+    public function menuConfigResetsFieldsQueryAndLimitWhenTableChanges(): void
+    {
+        $persistedSettings = [
+            'search_query_makeQuery' => 'all',
+            'queryTable' => 'pages',
+            'queryFields' => 'uid,title',
+            'queryConfig' => serialize([['type' => 'FIELD_title', 'comparison' => 0, 'inputValue' => 'foo']]),
+            'queryLimit' => '20,10',
+        ];
+        $subject = $this->getAccessibleMock(QuerySearchController::class, null, $this->getConstructorArguments());
+        $subject->_call('menuConfig', $this->createModuleRequest(['queryTable' => 'tt_content'], $persistedSettings));
+        $settings = $subject->_get('MOD_SETTINGS');
+        self::assertSame('tt_content', $settings['queryTable']);
+        self::assertSame('', $settings['queryFields']);
+        self::assertSame('', $settings['queryConfig']);
+        self::assertSame('0,10', $settings['queryLimit']);
+        $persistedSettings = $GLOBALS['BE_USER']->getModuleData('system_database_query');
+        self::assertSame('tt_content', $persistedSettings['queryTable']);
+        self::assertSame('', $persistedSettings['queryFields']);
+        self::assertSame('0,10', $persistedSettings['queryLimit']);
+    }
+
+    #[Test]
+    public function menuConfigStoresSubmittedQueryConfigSerialized(): void
+    {
+        $queryConfig = [['type' => 'FIELD_header', 'comparison' => 0, 'inputValue' => 'foo']];
+        $subject = $this->getAccessibleMock(QuerySearchController::class, null, $this->getConstructorArguments());
+        $subject->_call('menuConfig', $this->createModuleRequest([], [], ['queryConfig' => $queryConfig]));
+        self::assertSame(serialize($queryConfig), $subject->_get('MOD_SETTINGS')['queryConfig']);
+        self::assertSame(serialize($queryConfig), $GLOBALS['BE_USER']->getModuleData('system_database_query')['queryConfig']);
+    }
+
+    #[Test]
+    public function procesStoreControlPersistsSavedQuery(): void
+    {
+        $persistedSettings = [
+            'search_query_makeQuery' => 'count',
+            'queryTable' => 'tt_content',
+        ];
+        $request = $this->createModuleRequest([], $persistedSettings, ['storeControl' => ['SAVE' => '1', 'title' => 'My query']]);
+        $subject = $this->getAccessibleMock(QuerySearchController::class, null, $this->getConstructorArguments());
+        $subject->_call('menuConfig', $request);
+        $subject->_call('procesStoreControl', $request);
+        $expectedStoreArray = serialize([1 => 'My query']);
+        self::assertSame($expectedStoreArray, $subject->_get('MOD_SETTINGS')['storeArray']);
+        $persistedSettings = $GLOBALS['BE_USER']->getModuleData('system_database_query');
+        self::assertSame($expectedStoreArray, $persistedSettings['storeArray']);
+        $storedQueries = unserialize($persistedSettings['storeQueryConfigs'], ['allowed_classes' => false]);
+        self::assertSame('tt_content', $storedQueries[1]['queryTable']);
+        self::assertSame('count', $storedQueries[1]['search_query_makeQuery']);
+    }
+
+    private function createModuleRequest(array $changedSettings = [], array $persistedSettings = [], array $parsedBody = []): ServerRequest
+    {
+        if ($persistedSettings !== []) {
+            $GLOBALS['BE_USER']->pushModuleData('system_database_query', $persistedSettings);
+        }
+        if ($changedSettings !== []) {
+            $parsedBody['SET'] = $changedSettings;
+        }
+        return new ServerRequest('https://example.com/typo3/module/system/database/query', 'POST')
+            ->withParsedBody($parsedBody)
+            ->withAttribute('moduleData', new ModuleData('system_database_query', $persistedSettings));
     }
 
     private function renderQuerySection(string $section, array $variables): string
