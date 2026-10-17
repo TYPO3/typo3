@@ -1,0 +1,8 @@
+"pages"
+,"uid","pid","title","slug","doktype","is_siteroot","sys_language_uid"
+,1000,0,"Root","/",1,1,0
+"tt_content"
+,"uid","pid","sys_language_uid","l18n_parent","header","CType"
+,10,1000,0,0,"default-slug","text"
+,11,1000,1,10,"fr-slug","text"
+,20,1000,1,0,"fr-only-slug","text"
