@@ -21,6 +21,7 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\Query;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Tests\BlogExample\Domain\Repository\PersonRepository;
 use TYPO3Tests\BlogExample\Domain\Repository\PostRepository;
@@ -168,5 +169,36 @@ final class CountTest extends FunctionalTestCase
             )
         );
         self::assertSame(4, $query->count());
+    }
+
+    /**
+     * A query with a custom SQL statement that joins the blog table and filters
+     * by the blog title returns only a subset of the post table. Counting it
+     * before iterating must reflect the JOIN and WHERE, not the table total.
+     */
+    #[Test]
+    public function countOfQueryWithJoinAndWhereStatementMatchesReturnedObjects(): void
+    {
+        // Given: a query with a custom SQL statement selecting the posts of Blog3 only
+        $query = $this->get(PostRepository::class)->createQuery();
+        self::assertInstanceOf(Query::class, $query);
+        $query->statement(
+            'SELECT post.* FROM tx_blogexample_domain_model_post post'
+            . ' LEFT JOIN tx_blogexample_domain_model_blog blog ON blog.uid = post.blog'
+            . ' WHERE blog.title = \'Blog3\' AND post.deleted = 0 AND post.hidden = 0'
+            . ' ORDER BY post.uid'
+        );
+
+        // When: count() is called before the result is iterated
+        $count = $query->count();
+
+        // Then: the count is the number of posts the statement returns, not the table total
+        self::assertSame(3, $count);
+        self::assertNotSame($this->numberOfRecordsInFixture, $count);
+        $titles = [];
+        foreach ($query->execute() as $post) {
+            $titles[] = $post->getTitle();
+        }
+        self::assertSame(['post with tag', 'post with tagged author', 'post with tag and tagged author'], $titles);
     }
 }
