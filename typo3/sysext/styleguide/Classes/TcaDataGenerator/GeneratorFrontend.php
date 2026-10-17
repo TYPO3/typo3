@@ -233,7 +233,7 @@ final class GeneratorFrontend extends AbstractGenerator
             ];
 
             // Set keyword for menu_related_pages to show up
-            if (substr($type, 0, 5) === 'menu_') {
+            if (str_starts_with($type, 'menu_')) {
                 $data['pages'][$newIdOfPage]['keywords'] = 'Bacon';
             }
 

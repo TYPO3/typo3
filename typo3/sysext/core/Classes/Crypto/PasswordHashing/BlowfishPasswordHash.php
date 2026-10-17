@@ -124,7 +124,7 @@ class BlowfishPasswordHash implements PasswordHashInterface
      */
     public function isValidSaltedPW(string $saltedPW): bool
     {
-        $isValid = !strncmp(self::PREFIX, $saltedPW, strlen(self::PREFIX));
+        $isValid = str_starts_with($saltedPW, self::PREFIX);
         if ($isValid) {
             $isValid = $this->isValidSalt($saltedPW);
         }
@@ -205,8 +205,8 @@ class BlowfishPasswordHash implements PasswordHashInterface
         $reqLenBase64 = $this->getLengthBase64FromBytes(16);
         if (strlen($salt) >= $reqLenBase64) {
             // Salt with prefixed setting
-            if (!strncmp('$', $salt, 1)) {
-                if (!strncmp(self::PREFIX, $salt, strlen(self::PREFIX))) {
+            if (str_starts_with($salt, '$')) {
+                if (str_starts_with($salt, self::PREFIX)) {
                     $isValid = true;
                     $salt = substr($salt, (int)strrpos($salt, '$') + 1);
                 } else {

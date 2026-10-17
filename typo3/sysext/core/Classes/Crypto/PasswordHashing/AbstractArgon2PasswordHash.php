@@ -152,6 +152,6 @@ abstract class AbstractArgon2PasswordHash implements PasswordHashInterface, Argo
         return
             isset($passwordInfo['algo'])
             && $passwordInfo['algo'] === $this->getPasswordAlgorithm()
-            && strncmp($saltedPW, $this->getPasswordHashPrefix(), strlen($this->getPasswordHashPrefix())) === 0;
+            && str_starts_with($saltedPW, $this->getPasswordHashPrefix());
     }
 }

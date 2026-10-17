@@ -214,7 +214,7 @@ abstract class AbstractNode
             $path = $this->getAbsolutePath();
         }
         $projectPath = Environment::getProjectPath();
-        if (strpos($path, $projectPath, 0) !== 0) {
+        if (!str_starts_with($path, $projectPath)) {
             throw new InvalidArgumentException(
                 'Public path is not first part of given path',
                 1366398198

@@ -94,7 +94,7 @@ class Md5PasswordHash implements PasswordHashInterface
      */
     public function isValidSaltedPW(string $saltedPW): bool
     {
-        $isValid = !strncmp(self::PREFIX, $saltedPW, strlen(self::PREFIX));
+        $isValid = str_starts_with($saltedPW, self::PREFIX);
         if ($isValid) {
             $isValid = $this->isValidSalt($saltedPW);
         }
@@ -157,8 +157,8 @@ class Md5PasswordHash implements PasswordHashInterface
         $reqLenBase64 = $this->getLengthBase64FromBytes(6);
         if (strlen($salt) >= $reqLenBase64) {
             // Salt with prefixed setting
-            if (!strncmp('$', $salt, 1)) {
-                if (!strncmp(self::PREFIX, $salt, strlen(self::PREFIX))) {
+            if (str_starts_with($salt, '$')) {
+                if (str_starts_with($salt, self::PREFIX)) {
                     $isValid = true;
                     $salt = substr($salt, strlen(self::PREFIX));
                 } else {

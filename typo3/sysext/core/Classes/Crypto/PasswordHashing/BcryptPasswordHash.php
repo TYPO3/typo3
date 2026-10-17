@@ -109,7 +109,7 @@ class BcryptPasswordHash implements PasswordHashInterface
         $cost = (int)substr($saltedPW, 4, 2);
         if (isset($passwordInfo['algo'])
             && $passwordInfo['algo'] === PASSWORD_BCRYPT
-            && strncmp($saltedPW, static::PREFIX, strlen(static::PREFIX)) === 0
+            && str_starts_with($saltedPW, static::PREFIX)
             && $this->isValidBcryptCost($cost)
         ) {
             $result = true;
