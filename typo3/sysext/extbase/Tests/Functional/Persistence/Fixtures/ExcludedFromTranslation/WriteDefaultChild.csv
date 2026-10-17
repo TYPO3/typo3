@@ -1,0 +1,16 @@
+"be_users"
+,"uid","pid","tstamp","username","password","admin","disable","starttime","endtime","options","crdate","workspace_perms","deleted","lastlogin","workspace_id"
+,1,0,1366642540,"admin","$1$tCrlLajZ$C0sikFQQ3SWaFAZ1Me0Z/1",1,0,0,0,0,1366642540,1,0,1371033743,0
+"pages"
+,"uid","pid","title","doktype","sorting","perms_everybody"
+,1,0,"Site",1,128,15
+,2,1,"Blog storage",254,128,15
+"tx_blogexample_domain_model_person"
+,"uid","pid","firstname","lastname","email"
+,1,2,"Anna","Schmidt","anna@example.com"
+"tx_blogexample_domain_model_post"
+,"uid","pid","sys_language_uid","l18n_parent","title","date","author","reviewer","tags","comments","additional_info","sorting"
+,1,2,0,0,"Hello world",1768478400,1,1,0,0,1,1
+"tx_blogexample_domain_model_info"
+,"uid","pid","post","name","sys_language_uid","l18n_parent","sorting"
+,1,2,1,"Extra details",0,0,1

@@ -1,0 +1,5 @@
+"tx_blogexample_domain_model_info"
+,"uid","pid","post","name","sys_language_uid","l18n_parent","deleted","t3ver_wsid","t3ver_oid","t3ver_state"
+,1,2,1,"Extra details",0,0,0,0,0,0
+,2,2,2,"Extra details",1,1,0,0,0,0
+,3,2,1,"Changed details",0,0,0,1,1,0

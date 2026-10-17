@@ -1,0 +1,8 @@
+"tx_blogexample_domain_model_post"
+,"uid","pid","sys_language_uid","l18n_parent","title","additional_info"
+,1,2,0,0,"Hello world",1
+,2,2,1,1,"Hello world",1
+"tx_blogexample_domain_model_info"
+,"uid","pid","post","name","sys_language_uid","l18n_parent","deleted"
+,1,2,1,"Changed details",0,0,0
+,2,2,2,"Changed details",1,1,0

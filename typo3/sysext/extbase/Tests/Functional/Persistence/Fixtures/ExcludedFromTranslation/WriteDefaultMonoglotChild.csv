@@ -1,0 +1,7 @@
+"tx_blogexample_domain_model_post"
+,"uid","pid","sys_language_uid","l18n_parent","title","date","author","reviewer","tags","comments","additional_info","sorting"
+,7,2,0,0,"Third post",1769342400,1,1,0,2,0,7
+"tx_blogexample_domain_model_comment"
+,"uid","pid","post","author","email","content","date","t3_origuid"
+,1,2,7,"Max","max@example.com","Nice read","2026-01-26 10:00:00",0
+,2,2,7,"Max","max@example.com","Well written","2026-01-26 11:00:00",0

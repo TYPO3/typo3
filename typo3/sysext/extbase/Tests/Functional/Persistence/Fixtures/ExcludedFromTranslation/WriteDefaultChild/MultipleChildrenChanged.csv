@@ -1,0 +1,8 @@
+"tx_blogexample_domain_model_info"
+,"uid","pid","post","name","sys_language_uid","l18n_parent","deleted"
+,1,2,1,"Changed details",0,0,0
+,2,2,1,"Second details",0,0,0
+,3,2,2,"Extra details",1,1,0
+,4,2,2,"Second details",1,2,0
+,5,2,3,"Extra details",2,1,0
+,6,2,3,"Second details",2,2,0
