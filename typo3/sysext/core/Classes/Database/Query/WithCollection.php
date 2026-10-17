@@ -79,11 +79,7 @@ final class WithCollection implements \Stringable
      */
     private function getSortedParts(): array
     {
-        $parts = [];
-        foreach ($this->prepareParts() as $part) {
-            $parts[] = $part['instance'];
-        }
-        return $parts;
+        return array_column($this->prepareParts(), 'instance');
     }
 
     /**

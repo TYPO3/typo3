@@ -310,11 +310,7 @@ class TcaRecordTitle implements FormDataProviderInterface
      */
     protected function getRecordTitleForGroupType($value)
     {
-        $labelParts = [];
-        foreach ($value as $singleValue) {
-            $labelParts[] = $singleValue['title'];
-        }
-        return implode(', ', $labelParts);
+        return implode(', ', array_column($value, 'title'));
     }
 
     /**
@@ -324,11 +320,7 @@ class TcaRecordTitle implements FormDataProviderInterface
      */
     protected function getRecordTitleForFolderType(array $value): string
     {
-        $labelParts = [];
-        foreach ($value as $singleValue) {
-            $labelParts[] = $singleValue['folder'];
-        }
-        return implode(', ', $labelParts);
+        return implode(', ', array_column($value, 'folder'));
     }
 
     /**

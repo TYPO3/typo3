@@ -290,12 +290,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
      */
     public function toArray(): array
     {
-        $array = [];
-        $storage = array_values($this->storage);
-        foreach ($storage as $item) {
-            $array[] = $item['obj'];
-        }
-        return $array;
+        return array_column($this->storage, 'obj');
     }
 
     /**

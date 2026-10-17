@@ -200,7 +200,6 @@ readonly class TcaInputPlaceholders implements FormDataProviderInterface
      */
     protected function getRelatedGroupFieldUids(array $fieldConfig, $value): array
     {
-        $relatedUids = [];
         $allowedTable = $this->getAllowedTableForGroupField($fieldConfig);
 
         // Skip if it's not a resolvable foreign table
@@ -209,11 +208,7 @@ readonly class TcaInputPlaceholders implements FormDataProviderInterface
         }
 
         // Related group values have been prepared by TcaGroup data provider, an array is expected here
-        foreach ($value as $singleValue) {
-            $relatedUids[] = $singleValue['uid'];
-        }
-
-        return $relatedUids;
+        return array_column($value, 'uid');
     }
 
     /**

@@ -1061,10 +1061,7 @@ class UpgradeController extends AbstractController
             )
             ->executeQuery()
             ->fetchAllAssociative();
-        $hashesMarkedAsRead = [];
-        foreach ($filesMarkedAsRead as $file) {
-            $hashesMarkedAsRead[] = $file['entry_key'];
-        }
+        $hashesMarkedAsRead = array_column($filesMarkedAsRead, 'entry_key');
 
         $fileMarkedAsNotAffected = $queryBuilder
             ->select('*')
@@ -1077,10 +1074,7 @@ class UpgradeController extends AbstractController
             )
             ->executeQuery()
             ->fetchAllAssociative();
-        $hashesMarkedAsNotAffected = [];
-        foreach ($fileMarkedAsNotAffected as $file) {
-            $hashesMarkedAsNotAffected[] = $file['entry_key'];
-        }
+        $hashesMarkedAsNotAffected = array_column($fileMarkedAsNotAffected, 'entry_key');
 
         $readFiles = [];
         $notAffectedFiles = [];
