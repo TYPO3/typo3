@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Backend\Tests\Functional\Controller;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Controller\EditDocumentController;
 use TYPO3\CMS\Backend\Routing\Route;
+use TYPO3\CMS\Backend\Tests\Functional\Controller\Fixtures\RejectNewRecordsHook;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\NormalizedParams;
@@ -107,6 +108,66 @@ final class EditDocumentControllerTest extends FunctionalTestCase
         );
         // Redirect to GET is applied after processing
         self::assertEquals(302, $response->getStatusCode());
+    }
+
+    #[Test]
+    public function redirectAfterPersistingNewRecordDropsDefaultValues(): void
+    {
+        $request = new ServerRequest('https://www.example.com/', 'POST')
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            ->withAttribute('normalizedParams', $this->normalizedParams)
+            ->withAttribute('route', new Route('path', ['packageName' => 'typo3/cms-backend']))
+            ->withQueryParams($this->getQueryParamsWithDefaults(['CType' => 'bullets']))
+            ->withParsedBody($this->getParsedBody());
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $response = $this->subject->mainAction($request);
+
+        self::assertEquals(302, $response->getStatusCode());
+        parse_str((string)parse_url($response->getHeaderLine('Location'), PHP_URL_QUERY), $redirectQueryParams);
+        self::assertSame(['tt_content' => ['2' => 'edit']], $redirectQueryParams['edit']);
+        self::assertArrayNotHasKey('defVals', $redirectQueryParams);
+    }
+
+    #[Test]
+    public function redirectAfterRejectedNewRecordKeepsDefaultValues(): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass']['rejectNewRecords'] = RejectNewRecordsHook::class;
+        $request = new ServerRequest('https://www.example.com/', 'POST')
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            ->withAttribute('normalizedParams', $this->normalizedParams)
+            ->withAttribute('route', new Route('path', ['packageName' => 'typo3/cms-backend']))
+            ->withQueryParams($this->getQueryParamsWithDefaults(['CType' => 'bullets']))
+            ->withParsedBody($this->getParsedBody());
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $response = $this->subject->mainAction($request);
+
+        self::assertNull(BackendUtility::getRecord('tt_content', 2));
+        self::assertEquals(302, $response->getStatusCode());
+        parse_str((string)parse_url($response->getHeaderLine('Location'), PHP_URL_QUERY), $redirectQueryParams);
+        self::assertSame(['tt_content' => ['-1' => 'new']], $redirectQueryParams['edit']);
+        self::assertSame(['tt_content' => ['CType' => 'bullets']], $redirectQueryParams['defVals'] ?? null);
+    }
+
+    #[Test]
+    public function redirectAfterSaveAndNewKeepsDefaultValues(): void
+    {
+        $parsedBody = $this->getParsedBody();
+        unset($parsedBody['_savedok']);
+        $parsedBody['_savedoknew'] = '1';
+        $request = new ServerRequest('https://www.example.com/', 'POST')
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            ->withAttribute('normalizedParams', $this->normalizedParams)
+            ->withAttribute('route', new Route('path', ['packageName' => 'typo3/cms-backend']))
+            ->withQueryParams($this->getQueryParamsWithDefaults(['CType' => 'bullets']))
+            ->withParsedBody($parsedBody);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $response = $this->subject->mainAction($request);
+
+        self::assertNotNull(BackendUtility::getRecord('tt_content', 2));
+        self::assertEquals(302, $response->getStatusCode());
+        parse_str((string)parse_url($response->getHeaderLine('Location'), PHP_URL_QUERY), $redirectQueryParams);
+        self::assertSame(['tt_content' => ['-2' => 'new']], $redirectQueryParams['edit']);
+        self::assertSame(['tt_content' => ['CType' => 'bullets']], $redirectQueryParams['defVals'] ?? null);
     }
 
     #[Test]

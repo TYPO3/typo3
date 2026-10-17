@@ -278,17 +278,16 @@ class EditDocumentController
         $queryParamsForGeneratingCurrentUrl['edit'] = $this->editconf;
         $queryParamsForGeneratingCurrentUrl['returnUrl'] = $this->retUrl;
         if ($requestAction->shouldProcessData()) {
-            // Unset default values since we don't need them anymore. But only if all
-            // records have been persisted. If a DataHandler hook rejected a new record,
-            // editconf still contains the NEW* key and defVals must be preserved so
-            // the form reloads with the correct default values, such as the record type.
+            // Unset default values since we don't need them anymore. But only if no
+            // "new" command is left in editconf: If a DataHandler hook rejected a new
+            // record, defVals must be preserved so the form reloads with the correct
+            // default values, such as the record type. The same applies to "Save & New",
+            // where the next new record starts with the same default values.
             $hasUnresolvedNewRecords = false;
             foreach ($this->editconf as $tableCmds) {
-                foreach (array_keys($tableCmds) as $uid) {
-                    if (str_contains((string)$uid, 'NEW')) {
-                        $hasUnresolvedNewRecords = true;
-                        break 2;
-                    }
+                if (in_array('new', $tableCmds, true)) {
+                    $hasUnresolvedNewRecords = true;
+                    break;
                 }
             }
             if (!$hasUnresolvedNewRecords) {
