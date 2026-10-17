@@ -119,6 +119,25 @@ final class BackendConfigurationManagerTest extends FunctionalTestCase
         self::assertEquals(0, $actualResult);
     }
 
+    /**
+     * Filelist-like backend modules send "storage-uid:path" as id. Such an id must
+     * not be read as page uid, so without a usable page the storage pid falls back
+     * to 0 instead of failing on a missing page.
+     */
+    #[Test]
+    public function getConfigurationIgnoresStoragePathIdAndUsesPageZeroAsStoragePid(): void
+    {
+        // Given: A backend module like the filelist sends "storage-uid:path" as id, and no page with uid 1 exists.
+        $subject = $this->get(BackendConfigurationManager::class);
+        $request = new ServerRequest()->withQueryParams(['id' => '1:/user_upload/']);
+
+        // When: The Extbase configuration is built for that request.
+        $configuration = $subject->getConfiguration($request, [], 'CurrentExtensionName');
+
+        // Then: The id is not interpreted as page uid, so the storage pid falls back to 0 instead of failing.
+        self::assertSame(0, $configuration['persistence']['storagePid']);
+    }
+
     #[Test]
     public function getRecursiveStoragePidsReturnsListOfPages(): void
     {
