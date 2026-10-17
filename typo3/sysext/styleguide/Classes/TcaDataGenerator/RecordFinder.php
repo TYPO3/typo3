@@ -157,7 +157,7 @@ final readonly class RecordFinder
     {
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('be_groups');
         $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-        $rows = $queryBuilder->select('uid')
+        return $queryBuilder->select('uid')
             ->from('be_groups')
             ->where(
                 $queryBuilder->expr()->eq(
@@ -166,12 +166,7 @@ final readonly class RecordFinder
                 )
             )
             ->executeQuery()
-            ->fetchAllAssociative();
-        $result = [];
-        foreach ($rows as $row) {
-            $result[] = $row['uid'];
-        }
-        return $result;
+            ->fetchFirstColumn();
     }
 
     /**
@@ -183,7 +178,7 @@ final readonly class RecordFinder
     {
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('be_users');
         $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-        $rows = $queryBuilder->select('uid')
+        return $queryBuilder->select('uid')
             ->from('be_users')
             ->where(
                 $queryBuilder->expr()->eq(
@@ -192,12 +187,7 @@ final readonly class RecordFinder
                 )
             )
             ->executeQuery()
-            ->fetchAllAssociative();
-        $result = [];
-        foreach ($rows as $row) {
-            $result[] = $row['uid'];
-        }
-        return $result;
+            ->fetchFirstColumn();
     }
 
     /**
@@ -210,7 +200,7 @@ final readonly class RecordFinder
         $pageUid = $this->findPidOfMainTableRecord('tx_styleguide_staticdata');
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tx_styleguide_staticdata');
         $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-        $rows = $queryBuilder->select('uid')
+        return $queryBuilder->select('uid')
             ->from('tx_styleguide_staticdata')
             ->where(
                 $queryBuilder->expr()->eq(
@@ -219,12 +209,7 @@ final readonly class RecordFinder
                 )
             )
             ->executeQuery()
-            ->fetchAllAssociative();
-        $result = [];
-        foreach ($rows as $row) {
-            $result[] = $row['uid'];
-        }
-        return $result;
+            ->fetchFirstColumn();
     }
 
     /**
