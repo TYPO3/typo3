@@ -26,6 +26,8 @@ use TYPO3\CMS\Extbase\Error\Result;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
+use TYPO3\CMS\Fluid\Tests\Functional\Fixtures\ViewHelpers\UserRoleBackedEnum;
+use TYPO3\CMS\Fluid\Tests\Functional\Fixtures\ViewHelpers\UserRoleEnum;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Fluid\Fluid\View\TemplateView;
 
@@ -180,5 +182,28 @@ final class TextareaViewHelperTest extends FunctionalTestCase
         $view->assign('formObject', $formObject);
         // The point is that 'class="myError"' is added since the form had mapping errors for this property.
         self::assertStringContainsString('<textarea name="myFieldPrefix[myObjectName][someProperty]" class="myError"></textarea>', $view->render());
+    }
+
+    public static function renderSetsContentOfBoundEnumPropertyDataProvider(): array
+    {
+        return [
+            'backed enum' => [UserRoleBackedEnum::EDITOR, '2'],
+            'unit enum' => [UserRoleEnum::EDITOR, 'EDITOR'],
+        ];
+    }
+
+    #[DataProvider('renderSetsContentOfBoundEnumPropertyDataProvider')]
+    #[Test]
+    public function renderSetsContentOfBoundEnumProperty(\UnitEnum $propertyValue, string $expectedValue): void
+    {
+        $formObject = new \stdClass();
+        $formObject->someProperty = $propertyValue;
+        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters())
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
+        $context->getTemplatePaths()->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.textarea property="someProperty" /></f:form>');
+        $view = new TemplateView($context);
+        $view->assign('formObject', $formObject);
+        self::assertStringContainsString('<textarea name="myFieldPrefix[myObjectName][someProperty]">' . $expectedValue . '</textarea>', $view->render());
     }
 }

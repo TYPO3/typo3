@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Form;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -650,6 +651,74 @@ EOT;
         $result = $view->render();
         self::assertStringContainsString('<select name="myFieldPrefix[user][roleBacked]">', $result);
         self::assertStringContainsString('<option value="3" selected="selected">Guest</option>', $result);
+    }
+
+    public static function selectAppliesSelectedValueFromEnumWithOptionValueFieldDataProvider(): array
+    {
+        return [
+            'backed enum with optionValueField "value"' => [
+                UserRoleBackedEnum::cases(),
+                UserRoleBackedEnum::EDITOR,
+                'value',
+                false,
+                ['<option value="2" selected="selected">EDITOR</option>'],
+            ],
+            'backed enum with optionValueField "name"' => [
+                UserRoleBackedEnum::cases(),
+                UserRoleBackedEnum::EDITOR,
+                'name',
+                false,
+                ['<option value="EDITOR" selected="selected">EDITOR</option>'],
+            ],
+            'unit enum with optionValueField "name"' => [
+                UserRoleEnum::cases(),
+                UserRoleEnum::EDITOR,
+                'name',
+                false,
+                ['<option value="EDITOR" selected="selected">EDITOR</option>'],
+            ],
+            'multiple backed enums with optionValueField "name"' => [
+                UserRoleBackedEnum::cases(),
+                [UserRoleBackedEnum::ADMIN, UserRoleBackedEnum::GUEST],
+                'name',
+                true,
+                [
+                    '<option value="ADMIN" selected="selected">ADMIN</option>',
+                    '<option value="GUEST" selected="selected">GUEST</option>',
+                ],
+            ],
+            'multiple unit enums with optionValueField "name"' => [
+                UserRoleEnum::cases(),
+                [UserRoleEnum::ADMIN, UserRoleEnum::GUEST],
+                'name',
+                true,
+                [
+                    '<option value="ADMIN" selected="selected">ADMIN</option>',
+                    '<option value="GUEST" selected="selected">GUEST</option>',
+                ],
+            ],
+        ];
+    }
+
+    #[DataProvider('selectAppliesSelectedValueFromEnumWithOptionValueFieldDataProvider')]
+    #[Test]
+    public function selectAppliesSelectedValueFromEnumWithOptionValueField(array $options, \UnitEnum|array $propertyValue, string $optionValueField, bool $multiple, array $expectedSelectedOptions): void
+    {
+        $formObject = new \stdClass();
+        $formObject->someProperty = $propertyValue;
+        $serverRequest = (new ServerRequest())
+            ->withAttribute('extbase', new ExtbaseRequestParameters())
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
+        $context->getTemplatePaths()->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.select options="{options}" optionValueField="' . $optionValueField . '" optionLabelField="name" multiple="' . ($multiple ? '1' : '0') . '" property="someProperty" /></f:form>');
+        $view = new TemplateView($context);
+        $view->assign('formObject', $formObject);
+        $view->assign('options', $options);
+        $result = $view->render();
+        foreach ($expectedSelectedOptions as $expectedSelectedOption) {
+            self::assertStringContainsString($expectedSelectedOption, $result);
+        }
+        self::assertSame(count($expectedSelectedOptions), substr_count($result, 'selected="selected"'));
     }
 
     #[Test]
