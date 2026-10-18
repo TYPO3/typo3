@@ -26,9 +26,13 @@ use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\DataHandling\SlugHelper;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Schema\SearchableSchemaFieldsCollector;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\Generator;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordFinder;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -36,6 +40,30 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 final class GeneratorTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = ['styleguide'];
+
+    #[Test]
+    public function generatedSlugWithPostModifierCanBeSaved(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $backendUser = $this->setUpBackendUser(1);
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
+        $this->get(Generator::class)->create();
+
+        $table = 'tx_styleguide_elements_slugs';
+        $connection = $this->get(ConnectionPool::class)->getConnectionForTable($table);
+        $row = $connection->select(['*'], $table, ['sys_language_uid' => 0])->fetchAssociative();
+        self::assertIsArray($row);
+        $configuration = $this->get(TcaSchemaFactory::class)->get($table)->getField('slug_8')->getConfiguration();
+        $slug = GeneralUtility::makeInstance(SlugHelper::class, $table, 'slug_8', $configuration)
+            ->generate($row, (int)$row['pid']);
+        self::assertSame('/jobs/some-job-in-city1-city2', $slug);
+
+        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+        $dataHandler->start([$table => [$row['uid'] => ['slug_8' => $slug]]], []);
+        $dataHandler->process_datamap();
+        self::assertSame([], $dataHandler->errorLog);
+        self::assertSame($slug, $connection->select(['slug_8'], $table, ['uid' => $row['uid']])->fetchOne());
+    }
 
     #[Test]
     public function createGeneratesOptionalFieldControlsWithDefaultComparisons(): void

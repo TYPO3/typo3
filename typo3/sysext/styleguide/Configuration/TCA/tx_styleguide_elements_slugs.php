@@ -174,13 +174,36 @@ return [
             ],
         ],
 
+        'slug_8' => [
+            'label' => 'slug_8 postModifiers',
+            'description' => 'Prepends /jobs/ to the generated and stored slug. Compare the display-only appearance.prefix on slug_1.',
+            'config' => [
+                'type' => 'slug',
+                'generatorOptions' => [
+                    'fields' => ['input_3'],
+                    'replacements' => [
+                        '/' => '-',
+                    ],
+                    'regexReplacements' => [
+                        '/\(.*\)/' => '',
+                    ],
+                    'postModifiers' => [
+                        \TYPO3\CMS\Styleguide\UserFunctions\FormEngine\SlugPostModifier::class . '->prependJobsPath',
+                    ],
+                ],
+                'fallbackCharacter' => '-',
+                'prependSlash' => true,
+                'eval' => 'uniqueInPid',
+            ],
+        ],
+
     ],
 
     'types' => [
         '0' => [
             'showitem' => '
                 --div--;slug,
-                    input_1, input_2, slug_1, slug_2, slug_4, slug_5, input_3, slug_3, slug_6, slug_7,
+                    input_1, input_2, slug_1, slug_2, slug_4, slug_5, input_3, slug_3, slug_6, slug_7, slug_8,
                 --div--;meta,
                     disable, sys_language_uid, l10n_parent, l10n_source,
             ',
