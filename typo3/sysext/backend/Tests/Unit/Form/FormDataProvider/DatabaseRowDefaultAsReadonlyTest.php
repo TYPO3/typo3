@@ -56,6 +56,7 @@ final class DatabaseRowDefaultAsReadonlyTest extends UnitTestCase
 
         $expected = $input;
         $expected['databaseRow']['aField'] = $expected['defaultLanguageRow']['aField'];
+        $expected['processedTca']['columns']['aField']['config']['readOnly'] = true;
 
         self::assertEquals($expected, (new DatabaseRowDefaultAsReadonly())->addData($input));
     }

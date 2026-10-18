@@ -1,0 +1,11 @@
+"pages"
+,"uid","pid","title"
+,1,0,"Root"
+"tx_testinlinedefaultasreadonly_parent"
+,"uid","pid","sys_language_uid","l10n_parent","name","children"
+,1,1,0,0,"Parent",1
+,2,1,1,1,"Parent translated",1
+"tx_testinlinedefaultasreadonly_child"
+,"uid","pid","sys_language_uid","l10n_parent","parent","value"
+,1,1,0,0,1,"Child"
+,2,1,1,1,2,"Child translated"
