@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Http\Uri;
@@ -640,6 +641,77 @@ final class TreeControllerTest extends FunctionalTestCase
                         'title' => 'Europe',
                         '_children' => [
                         ],
+                    ],
+                ],
+            ],
+        ];
+        self::assertEquals($expected, $result);
+    }
+
+    public static function mountPointMovedInWorkspaceIsKeptDataProvider(): array
+    {
+        return [
+            'live' => [0],
+            'workspace' => [1],
+        ];
+    }
+
+    #[Test]
+    #[DataProvider('mountPointMovedInWorkspaceIsKeptDataProvider')]
+    public function mountPointMovedInWorkspaceIsKept(int $workspaceId): void
+    {
+        $this->backendUser->setWebmounts([811000]);
+        $this->backendUser->workspace = $workspaceId;
+        $this->get(Context::class)->setAspect('workspace', new WorkspaceAspect($workspaceId));
+        $subject = $this->get(TreeController::class);
+        $method = new \ReflectionMethod($subject, 'getAllEntryPointPageTrees');
+        $result = $method->invoke($subject);
+        $result = $this->normalizeTreeArray($result, array_flip(['uid', 'title', '_children']));
+
+        $expected = [
+            [
+                'uid' => 0,
+                'title' => 'New TYPO3 site',
+                '_children' => [
+                    [
+                        'uid' => 811000,
+                        'title' => 'France',
+                        '_children' => [],
+                    ],
+                ],
+            ],
+        ];
+        self::assertEquals($expected, $result);
+    }
+
+    #[Test]
+    public function mountPointSortedInWorkspaceIsKept(): void
+    {
+        $adminUser = $this->setUpBackendUser(1);
+        $adminUser->workspace = 1;
+        $dataHandler = $this->get(DataHandler::class);
+        $dataHandler->start([], ['pages' => [7110 => ['move' => -7130]]], $adminUser);
+        $dataHandler->process_cmdmap();
+        self::assertEmpty($dataHandler->errorLog);
+
+        $this->backendUser = $this->setUpBackendUser(9);
+        $this->backendUser->setWebmounts([7110]);
+        $this->backendUser->workspace = 1;
+        $this->get(Context::class)->setAspect('workspace', new WorkspaceAspect(1));
+        $subject = $this->get(TreeController::class);
+        $method = new \ReflectionMethod($subject, 'getAllEntryPointPageTrees');
+        $result = $method->invoke($subject);
+        $result = $this->normalizeTreeArray($result, array_flip(['uid', 'title', '_children']));
+
+        $expected = [
+            [
+                'uid' => 0,
+                'title' => 'New TYPO3 site',
+                '_children' => [
+                    [
+                        'uid' => 7110,
+                        'title' => 'Markets',
+                        '_children' => [],
                     ],
                 ],
             ],

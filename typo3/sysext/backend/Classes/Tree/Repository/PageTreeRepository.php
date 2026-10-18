@@ -277,9 +277,23 @@ class PageTreeRepository
         }
 
         if (count($pageIds) > 0) {
-            $queryBuilder->andWhere(
-                $queryBuilder->expr()->in('uid', $queryBuilder->createNamedParameter($pageIds, Connection::PARAM_INT_ARRAY))
-            );
+            $pageIdsParameter = $queryBuilder->createNamedParameter($pageIds, Connection::PARAM_INT_ARRAY);
+            if ($this->currentWorkspace !== 0) {
+                // Include move pointers, otherwise moved pages would be purged when resolving the workspace versions
+                $queryBuilder->andWhere(
+                    $queryBuilder->expr()->or(
+                        $queryBuilder->expr()->in('uid', $pageIdsParameter),
+                        $queryBuilder->expr()->and(
+                            $queryBuilder->expr()->in('t3ver_oid', $pageIdsParameter),
+                            $queryBuilder->expr()->eq('t3ver_state', $queryBuilder->createNamedParameter(VersionState::MOVE_POINTER->value, Connection::PARAM_INT))
+                        )
+                    )
+                );
+            } else {
+                $queryBuilder->andWhere(
+                    $queryBuilder->expr()->in('uid', $pageIdsParameter)
+                );
+            }
         }
 
         if (count($parentPageIds) > 0) {
