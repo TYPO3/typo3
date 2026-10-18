@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Core\Tests\Functional\Authentication;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaRequiredException;
-use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class BackendUserAuthenticationTest extends FunctionalTestCase
@@ -46,9 +45,15 @@ final class BackendUserAuthenticationTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function getFileMountRecordsAreResolvedPerBackendUser(): void
+    {
+        self::assertCount(3, $this->setUpBackendUser(3)->getFileMountRecords());
+        self::assertSame([], $this->setUpBackendUser(2)->getFileMountRecords());
+    }
+
+    #[Test]
     public function readOnlyMountPointWithStorageIsAddedToFileMountRecords(): void
     {
-        $this->get(CacheManager::class)->getCache('runtime')->remove('backendUserAuthenticationFileMountRecords');
         $backendUser = $this->setUpBackendUser(3);
         $backendUser->user['TSconfig'] = 'options.folderTree.altElementBrowserMountPoints = 1:/read-only/';
         $backendUser->fetchGroupData();
@@ -64,7 +69,6 @@ final class BackendUserAuthenticationTest extends FunctionalTestCase
     #[Test]
     public function readOnlyMountPointWithoutStorageUsesDefaultStorage(): void
     {
-        $this->get(CacheManager::class)->getCache('runtime')->remove('backendUserAuthenticationFileMountRecords');
         $backendUser = $this->setUpBackendUser(3);
         $backendUser->user['TSconfig'] = 'options.folderTree.altElementBrowserMountPoints = /read-only/';
         $backendUser->fetchGroupData();
