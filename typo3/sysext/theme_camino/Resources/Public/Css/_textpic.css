@@ -13,6 +13,8 @@
 }
 
 .textpic__media {
+    display: grid;
+    gap: var(--spacing-m);
     order: var(--textpic-media-order);
 }
 

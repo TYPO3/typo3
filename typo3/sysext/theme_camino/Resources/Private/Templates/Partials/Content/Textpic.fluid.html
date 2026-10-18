@@ -39,63 +39,65 @@
     <f:comment><!-- do not render image if text-only --></f:comment>
     <f:if condition="{files.0}">
         <div class="textpic__media">
-            <f:switch expression="{files.0.properties.type}">
-                <f:case value="4">
-                    <f:render partial="Components/Figure" arguments="{
-                        video: files.0,
-                        type: files.0.properties.type,
-                        description: files.0.description,
-                        copyright: files.0.copyright,
-                    }"/>
-                </f:case>
-                <f:defaultCase>
-                    <f:switch expression="{imageSize}">
-                        <f:case value="full">
-                            <f:render partial="Components/Figure" arguments="{
-                                image: files.0,
-                                width: 450,
-                                sources: {
-                                    md: {width: 1244},
-                                    sm: {width: 968},
-                                    xs: {width: 738},
-                                },
-                                description: files.0.description,
-                                copyright: files.0.copyright,
-                            }"/>
-                        </f:case>
+            <f:for each="{files}" as="file">
+                <f:switch expression="{file.properties.type}">
+                    <f:case value="4">
+                        <f:render partial="Components/Figure" arguments="{
+                            video: file,
+                            type: file.properties.type,
+                            description: file.description,
+                            copyright: file.copyright,
+                        }"/>
+                    </f:case>
+                    <f:defaultCase>
+                        <f:switch expression="{imageSize}">
+                            <f:case value="full">
+                                <f:render partial="Components/Figure" arguments="{
+                                    image: file,
+                                    width: 450,
+                                    sources: {
+                                        md: {width: 1244},
+                                        sm: {width: 968},
+                                        xs: {width: 738},
+                                    },
+                                    description: file.description,
+                                    copyright: file.copyright,
+                                }"/>
+                            </f:case>
 
-                        <f:case value="half">
-                            <f:render partial="Components/Figure" arguments="{
-                                image: files.0,
-                                width: 450,
-                                sources: {
-                                    lg: {width: 600},
-                                    md: {width: 464},
-                                    sm: {width: 472},
-                                    xs: {width: 738},
-                                },
-                                description: files.0.description,
-                                copyright: files.0.copyright,
-                            }"/>
-                        </f:case>
+                            <f:case value="half">
+                                <f:render partial="Components/Figure" arguments="{
+                                    image: file,
+                                    width: 450,
+                                    sources: {
+                                        lg: {width: 600},
+                                        md: {width: 464},
+                                        sm: {width: 472},
+                                        xs: {width: 738},
+                                    },
+                                    description: file.description,
+                                    copyright: file.copyright,
+                                }"/>
+                            </f:case>
 
-                        <f:defaultCase>
-                            <f:render partial="Components/Figure" arguments="{
-                                image: files.0,
-                                width: 450,
-                                sources: {
-                                    lg: {width: 288},
-                                    md: {width: 464},
-                                    sm: {width: 472},
-                                    xs: {width: 738},
-                                },
-                                description: files.0.description,
-                                copyright: files.0.copyright,
-                            }"/>
-                        </f:defaultCase>
-                    </f:switch>
-                </f:defaultCase>
-            </f:switch>
+                            <f:defaultCase>
+                                <f:render partial="Components/Figure" arguments="{
+                                    image: file,
+                                    width: 450,
+                                    sources: {
+                                        lg: {width: 288},
+                                        md: {width: 464},
+                                        sm: {width: 472},
+                                        xs: {width: 738},
+                                    },
+                                    description: file.description,
+                                    copyright: file.copyright,
+                                }"/>
+                            </f:defaultCase>
+                        </f:switch>
+                    </f:defaultCase>
+                </f:switch>
+            </f:for>
         </div>
     </f:if>
 
