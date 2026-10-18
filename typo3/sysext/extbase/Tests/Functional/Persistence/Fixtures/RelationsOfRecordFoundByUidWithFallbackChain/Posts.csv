@@ -1,0 +1,24 @@
+"pages"
+,"uid","pid","title","doktype","sorting","perms_everybody"
+,1,0,"Site",1,128,15
+,2,1,"Blog storage",254,128,15
+"tx_blogexample_domain_model_tag"
+,"uid","pid","sys_language_uid","l18n_parent","name"
+,1,2,0,0,"First tag"
+,2,2,0,0,"Second tag"
+,3,2,0,0,"Third tag"
+,4,2,1,1,"Erstes Tag"
+,5,2,2,1,"Premier tag"
+,6,2,1,2,"Zweites Tag"
+"tx_blogexample_domain_model_post"
+,"uid","pid","sys_language_uid","l18n_parent","title","tags","sorting"
+,1,2,0,0,"First post",3,1
+,2,2,1,1,"Erster Beitrag",3,2
+"tx_blogexample_domain_model_tag_mm"
+,"uid_local","uid_foreign","tablenames","fieldname","sorting","sorting_foreign"
+,1,1,"tx_blogexample_domain_model_post","tags",1,1
+,2,1,"tx_blogexample_domain_model_post","tags",1,2
+,3,1,"tx_blogexample_domain_model_post","tags",1,3
+,1,2,"tx_blogexample_domain_model_post","tags",1,1
+,2,2,"tx_blogexample_domain_model_post","tags",1,2
+,3,2,"tx_blogexample_domain_model_post","tags",1,3
