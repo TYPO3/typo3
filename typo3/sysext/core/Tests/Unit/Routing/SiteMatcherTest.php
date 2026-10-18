@@ -147,6 +147,32 @@ final class SiteMatcherTest extends UnitTestCase
         self::assertNull($result->getLanguage());
     }
 
+    #[Test]
+    public function uriWithoutHostDoesNotMatchSiteWithAbsoluteBase(): void
+    {
+        $site = new Site('main', 1, [
+            'base' => 'https://example.com/',
+            'languages' => [
+                0 => [
+                    'languageId' => 0,
+                    'base' => 'https://example.com/',
+                    'locale' => 'en-US',
+                ],
+            ],
+        ]);
+        $subject = new SiteMatcher(
+            $this->createFeaturesMock(),
+            $this->createSiteFinder($site),
+            new RequestContextFactory(new BackendEntryPointResolver())
+        );
+
+        $result = $subject->matchRequest(new ServerRequest('/'));
+
+        self::assertInstanceOf(SiteRouteResult::class, $result);
+        self::assertInstanceOf(NullSite::class, $result->getSite());
+        self::assertNull($result->getLanguage());
+    }
+
     /**
      * Contains a FQDN as base for the site
      */

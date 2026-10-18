@@ -52,7 +52,7 @@ readonly class RequestContextFactory
         return new RequestContext(
             '',
             $method,
-            (string)idn_to_ascii($uri->getHost()),
+            $uri->getHost() ? (string)idn_to_ascii($uri->getHost()) : '',
             $uri->getScheme(),
             // Ports are only necessary for URL generation in Symfony which is not used by TYPO3
             80,
