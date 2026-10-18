@@ -1,0 +1,8 @@
+"pages"
+,"uid","pid","sorting","deleted","title","TSconfig"
+,1,0,128,0,"Root",""
+,2,1,512,0,"Bottom page with TSconfig","foo = bar"
+,3,1,256,0,"Middle page with TSconfig","foo = bar"
+,4,1,128,0,"Top page without TSconfig",""
+,5,4,256,0,"Second subpage with TSconfig","foo = bar"
+,6,4,128,0,"First subpage with TSconfig","foo = bar"
