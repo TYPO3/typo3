@@ -671,6 +671,35 @@ final class LocalDriverTest extends FunctionalTestCase
         self::assertEmpty($fileList);
     }
 
+    public static function directoryEntriesKeepNaturalSortOrderDataProvider(): iterable
+    {
+        yield 'ascending names' => [['file10', 'file2', 'file1'], 'name', false, ['file1', 'file2', 'file10']];
+        yield 'descending names' => [['file10', 'file2', 'file1'], 'name', true, ['file10', 'file2', 'file1']];
+        yield 'ascending case-insensitive ties' => [['item10', 'Item2', 'item2', 'item1'], 'name', false, ['item1', 'Item2', 'item2', 'item10']];
+        yield 'descending case-insensitive ties' => [['item10', 'Item2', 'item2', 'item1'], 'name', true, ['item10', 'Item2', 'item2', 'item1']];
+        yield 'ascending numeric keys' => [['10', '2', '1'], 'name', false, ['1', '2', '10']];
+        yield 'descending numeric keys' => [['10', '2', '1'], 'name', true, ['10', '2', '1']];
+        yield 'ascending duplicate extensions' => [['b.txt', 'a.txt', 'image.JPG', 'other.jpg', 'z.zip'], 'fileext', false, ['image.JPG', 'other.jpg', 'b.txt', 'a.txt', 'z.zip']];
+        yield 'descending duplicate extensions' => [['b.txt', 'a.txt', 'image.JPG', 'other.jpg', 'z.zip'], 'fileext', true, ['z.zip', 'a.txt', 'b.txt', 'image.JPG', 'other.jpg']];
+    }
+
+    #[DataProvider('directoryEntriesKeepNaturalSortOrderDataProvider')]
+    #[Test]
+    public function directoryEntriesKeepNaturalSortOrder(array $names, string $sort, bool $reverse, array $expectedNames): void
+    {
+        $entries = [];
+        foreach ($names as $name) {
+            $entries[$name] = ['identifier' => '/' . $name, 'name' => $name, 'type' => 'file'];
+        }
+        $subject = $this->getAccessibleMock(LocalDriver::class, null);
+        $result = $subject->_call('sortDirectoryEntries', $entries, $sort, $reverse);
+        $expectedEntries = [];
+        foreach ($expectedNames as $name) {
+            $expectedEntries[] = $entries[$name];
+        }
+        self::assertSame($expectedEntries, array_values($result));
+    }
+
     #[Test]
     public function getFileListReturnsAllFilesInDirectory(): void
     {

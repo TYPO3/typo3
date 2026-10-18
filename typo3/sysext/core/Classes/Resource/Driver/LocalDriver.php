@@ -650,10 +650,11 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
             $entriesToSort[$sortingKey . $i] = $entryArray;
         }
 
-        $sortMultiplier = $sortRev ? -1 : 1;
-        uksort($entriesToSort, static function (string $entryA, string $entryB) use ($sortMultiplier): int {
-            return strnatcasecmp($entryA, $entryB) * $sortMultiplier;
-        });
+        if ($sortRev) {
+            krsort($entriesToSort, SORT_NATURAL | SORT_FLAG_CASE);
+        } else {
+            ksort($entriesToSort, SORT_NATURAL | SORT_FLAG_CASE);
+        }
 
         return $entriesToSort;
     }
