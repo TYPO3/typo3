@@ -38,7 +38,7 @@ class Indexer implements LoggerAwareInterface
     protected array $filesToUpdate = [];
 
     /**
-     * @var int[]
+     * @var array<int, int>
      */
     protected array $identifiedFileUids = [];
     protected ResourceStorage $storage;
@@ -151,22 +151,17 @@ class Indexer implements LoggerAwareInterface
      */
     protected function detectMissingFiles(): void
     {
-        $allCurrentFiles = $this->getFileIndexRepository()->findInStorageAndNotInUidList(
-            $this->storage,
-            []
-        );
-
-        foreach ($allCurrentFiles as $record) {
+        foreach ($this->getFileIndexRepository()->iterateUidsAndIdentifiersInStorage($this->storage) as $record) {
             // Check if the record retrieved from the database was associated
             // with an existing file.
             // If yes: All is good, file is in index and in database.
             // If no: Database record may need to be marked as removed (extra check!)
-            if (in_array($record['uid'], $this->identifiedFileUids, true)) {
+            if (isset($this->identifiedFileUids[(int)$record['uid']])) {
                 continue;
             }
 
             if (!$this->storage->hasFile($record['identifier'])) {
-                $this->getFileIndexRepository()->markFileAsMissing($record['uid']);
+                $this->getFileIndexRepository()->markFileAsMissing((int)$record['uid']);
             }
         }
     }
@@ -200,7 +195,7 @@ class Indexer implements LoggerAwareInterface
             $indexRecord = $this->getFileIndexRepository()->findOneByStorageAndIdentifier($this->storage, $fileIdentifier);
 
             if ($indexRecord !== false) {
-                $this->identifiedFileUids[] = $indexRecord['uid'];
+                $this->identifiedFileUids[(int)$indexRecord['uid']] = (int)$indexRecord['uid'];
 
                 if ((int)$indexRecord['modification_date'] !== $modificationTime['mtime'] || $indexRecord['missing']) {
                     $this->filesToUpdate[$fileIdentifier] = $indexRecord;
@@ -238,7 +233,7 @@ class Indexer implements LoggerAwareInterface
                                     ]
                                 );
                                 $this->updateIndexEntry($fileObject);
-                                $this->identifiedFileUids[] = $fileObject->getUid();
+                                $this->identifiedFileUids[$fileObject->getUid()] = $fileObject->getUid();
                                 break;
                             }
                         }
@@ -246,7 +241,7 @@ class Indexer implements LoggerAwareInterface
                     // create new index when no missing file with same content hash is found
                     if ($fileObject === null) {
                         $fileObject = $this->createIndexEntry($identifier);
-                        $this->identifiedFileUids[] = $fileObject->getUid();
+                        $this->identifiedFileUids[$fileObject->getUid()] = $fileObject->getUid();
                     }
                 } else {
                     // update existing file

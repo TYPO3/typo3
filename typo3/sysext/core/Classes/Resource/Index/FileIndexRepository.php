@@ -350,6 +350,25 @@ readonly class FileIndexRepository
     }
 
     /**
+     * Helper function for the Indexer to detect missing files without
+     * holding all records of a storage in memory
+     *
+     * @return \Generator<array{uid: int, identifier: string}>
+     */
+    public function iterateUidsAndIdentifiersInStorage(ResourceStorage $storage): \Generator
+    {
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_file');
+        yield from $queryBuilder
+            ->select('uid', 'identifier')
+            ->from('sys_file')
+            ->where(
+                $queryBuilder->expr()->eq('storage', $queryBuilder->createNamedParameter($storage->getUid(), Connection::PARAM_INT))
+            )
+            ->executeQuery()
+            ->iterateAssociative();
+    }
+
+    /**
      * Updates the timestamp when the file indexer extracted metadata
      */
     public function updateIndexingTime(int $fileUid): void
