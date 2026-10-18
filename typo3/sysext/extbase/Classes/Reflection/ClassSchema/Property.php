@@ -205,6 +205,11 @@ class Property
         return $this->characteristics->get(PropertyCharacteristics::ANNOTATED_TRANSIENT);
     }
 
+    public function ignoreValidation(): bool
+    {
+        return $this->characteristics->get(PropertyCharacteristics::ANNOTATED_IGNORE_VALIDATION);
+    }
+
     public function isNullable(): bool
     {
         $primaryType = $this->getPrimaryType();

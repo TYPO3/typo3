@@ -17,5 +17,5 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Attribute;
 
-#[\Attribute(\Attribute::TARGET_PARAMETER)]
+#[\Attribute(\Attribute::TARGET_PARAMETER | \Attribute::TARGET_PROPERTY)]
 class IgnoreValidation {}

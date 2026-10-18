@@ -124,6 +124,10 @@ class ValidatorResolver
         /** @var GenericObjectValidator $objectValidator */
         $objectValidator = $this->createValidator(GenericObjectValidator::class);
         foreach ($classSchema->getProperties() as $property) {
+            if ($property->ignoreValidation()) {
+                continue;
+            }
+
             $primaryType = $property->getPrimaryType();
             if (!$primaryType instanceof TypeAdapter) {
                 // @todo: The type is only necessary here for further analyzing whether it's a simple type or
@@ -137,23 +141,25 @@ class ValidatorResolver
 
             $propertyTargetClassName = $primaryType->getClassName() ?? $primaryType->getBuiltinType();
 
-            // Skip transient properties for auto-generated validators (model-typed properties).
-            // Transient properties are not persisted and may not have public accessors.
-            if (!TypeHandlingUtility::isSimpleType($propertyTargetClassName) && !$property->isTransient()) {
+            if (!TypeHandlingUtility::isSimpleType($propertyTargetClassName)) {
                 // The outer simpleType check reduces lookups to the class loader
                 // @todo: Whether the property holds a simple type or not and whether it holds a collection is known in
                 //        in the ClassSchema. The information could be made available and not evaluated here again.
                 $primaryCollectionValueType = $property->getPrimaryCollectionValueType();
                 if ($primaryType->isCollection() && $primaryCollectionValueType instanceof TypeAdapter) {
-                    /** @var CollectionValidator $collectionValidator */
-                    $collectionValidator = $this->createValidator(
-                        CollectionValidator::class,
-                        [
-                            'elementType' => $primaryCollectionValueType->getClassName() ?? $primaryCollectionValueType->getBuiltinType(),
-                        ],
-                        $request
-                    );
-                    $objectValidator->addPropertyValidator($property->getName(), $collectionValidator);
+                    if ($property->isTransient()) {
+                        $this->triggerTransientValidationDeprecation($targetClassName, $property->getName());
+                    } else {
+                        /** @var CollectionValidator $collectionValidator */
+                        $collectionValidator = $this->createValidator(
+                            CollectionValidator::class,
+                            [
+                                'elementType' => $primaryCollectionValueType->getClassName() ?? $primaryCollectionValueType->getBuiltinType(),
+                            ],
+                            $request
+                        );
+                        $objectValidator->addPropertyValidator($property->getName(), $collectionValidator);
+                    }
                 } elseif (class_exists($propertyTargetClassName)
                     && !TypeHandlingUtility::isCoreType($propertyTargetClassName)
                     && !in_array(SingletonInterface::class, class_implements($propertyTargetClassName) ?: [], true)
@@ -173,9 +179,13 @@ class ValidatorResolver
                     // relations in models. Still, the question remains why it excludes core types and singletons.
                     // It makes sense on a theoretical level, but I don't see a technical issue allowing these as
                     // well.
-                    $validatorForProperty = $this->getBaseValidatorConjunction($propertyTargetClassName, $request);
-                    if ($validatorForProperty->count() > 0) {
-                        $objectValidator->addPropertyValidator($property->getName(), $validatorForProperty);
+                    if ($property->isTransient()) {
+                        $this->triggerTransientValidationDeprecation($targetClassName, $property->getName());
+                    } else {
+                        $validatorForProperty = $this->getBaseValidatorConjunction($propertyTargetClassName, $request);
+                        if ($validatorForProperty->count() > 0) {
+                            $objectValidator->addPropertyValidator($property->getName(), $validatorForProperty);
+                        }
                     }
                 }
             }
@@ -209,5 +219,19 @@ class ValidatorResolver
         if (!empty($objectValidator->getPropertyValidators())) {
             $conjunctionValidator->addValidator($objectValidator);
         }
+    }
+
+    /**
+     * @deprecated since v15, will be removed in v16: skipping validation via #[Transient].
+     *             Properties with #[IgnoreValidation] never reach this method.
+     */
+    private function triggerTransientValidationDeprecation(string $className, string $propertyName): void
+    {
+        trigger_error(
+            'Property ' . $className . '::$' . $propertyName . ' uses #[Transient] to skip validation.'
+            . ' This is deprecated since TYPO3 v15.0 and will be removed in TYPO3 v16.0.'
+            . ' Add #[IgnoreValidation] to the property instead.',
+            E_USER_DEPRECATED
+        );
     }
 }

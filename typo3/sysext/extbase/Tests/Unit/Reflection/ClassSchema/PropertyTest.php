@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema;
 use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithAllTypesOfProperties;
+use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithIgnoreValidationOnProperty;
 use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithLazyAttribute;
 use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyModel;
 use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
@@ -73,6 +74,36 @@ final class PropertyTest extends UnitTestCase
             ->getProperty('propertyWithTransientAttribute');
 
         self::assertTrue($property->isTransient());
+    }
+
+    /**
+     * A property marked with #[IgnoreValidation] is reported as excluded from validation.
+     */
+    #[Test]
+    public function classSchemaDetectsIgnoreValidationPropertyFromAttribute(): void
+    {
+        // Given: a class with a property carrying the #[IgnoreValidation] attribute
+        // When: the class schema of that class is built
+        $property = new ClassSchema(DummyClassWithIgnoreValidationOnProperty::class)
+            ->getProperty('propertyWithIgnoreValidationAttribute');
+
+        // Then: the property reports that its validation is ignored
+        self::assertTrue($property->ignoreValidation());
+    }
+
+    /**
+     * A property without #[IgnoreValidation] is not excluded from validation.
+     */
+    #[Test]
+    public function classSchemaDoesNotIgnoreValidationOfPropertyWithoutAttribute(): void
+    {
+        // Given: a class with a property that carries no #[IgnoreValidation] attribute
+        // When: the class schema of that class is built
+        $property = new ClassSchema(DummyClassWithIgnoreValidationOnProperty::class)
+            ->getProperty('propertyWithoutAttribute');
+
+        // Then: the property does not report that its validation is ignored
+        self::assertFalse($property->ignoreValidation());
     }
 
     #[Test]

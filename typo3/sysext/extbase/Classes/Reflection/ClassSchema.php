@@ -119,6 +119,7 @@ class ClassSchema
                     Attribute\FileUpload::class => $fileUploadAttributes[] = $attribute,
                     Attribute\ORM\Lazy::class => $propertyCharacteristicsBit += PropertyCharacteristics::ANNOTATED_LAZY,
                     Attribute\ORM\Transient::class => $propertyCharacteristicsBit += PropertyCharacteristics::ANNOTATED_TRANSIENT,
+                    Attribute\IgnoreValidation::class => $propertyCharacteristicsBit += PropertyCharacteristics::ANNOTATED_IGNORE_VALIDATION,
                     Attribute\ORM\Cascade::class => $this->properties[$propertyName]['c'] = $attribute->newInstance()->value,
                     default => '' // non-extbase attributes
                 };
