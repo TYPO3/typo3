@@ -1,6 +1,6 @@
 import { test, expect } from '../../fixtures/setup-fixtures';
 
-const indexedSearchUrl = '/styleguide-demo-242/indexedsearch-pi2';
+const indexedSearchUrl = '/styleguide-demo-246/indexedsearch-pi2';
 
 const advancedSelectors = [
   '#tx-indexedsearch-selectbox-searchtype',

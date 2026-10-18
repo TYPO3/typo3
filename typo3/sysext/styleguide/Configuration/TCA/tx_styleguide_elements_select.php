@@ -816,6 +816,139 @@ return [
             ],
         ],
 
+        'select_tree_static' => [
+            'label' => 'select_tree_static',
+            'description' => 'Numeric starting point from generated Page TSconfig selects branch A',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectTree',
+                'foreign_table' => 'pages',
+                'default' => '',
+                'size' => 10,
+                'treeConfig' => [
+                    'parentField' => 'pid',
+                    'startingPoints' => '0',
+                    'appearance' => [
+                        'showHeader' => true,
+                    ],
+                ],
+            ],
+        ],
+
+        'select_tree_pid' => [
+            'label' => 'select_tree_pid',
+            'description' => 'Current page and its descendants: both generated branches',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectTree',
+                'foreign_table' => 'pages',
+                'default' => '',
+                'size' => 10,
+                'treeConfig' => [
+                    'parentField' => 'pid',
+                    'startingPoints' => '###CURRENT_PID###',
+                    'appearance' => [
+                        'showHeader' => true,
+                    ],
+                ],
+            ],
+        ],
+
+        'select_tree_siteroot' => [
+            'label' => 'select_tree_siteroot',
+            'description' => 'Site root and its descendants: the complete TCA demo tree',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectTree',
+                'foreign_table' => 'pages',
+                'default' => '',
+                'size' => 10,
+                'treeConfig' => [
+                    'parentField' => 'pid',
+                    'startingPoints' => '###SITEROOT###',
+                    'appearance' => [
+                        'showHeader' => true,
+                    ],
+                ],
+            ],
+        ],
+
+        'select_tree_tsconfig' => [
+            'label' => 'select_tree_tsconfig',
+            'description' => 'PAGE_TSCONFIG_ID selects generated branch A',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectTree',
+                'foreign_table' => 'pages',
+                'default' => '',
+                'size' => 10,
+                'treeConfig' => [
+                    'parentField' => 'pid',
+                    'startingPoints' => '###PAGE_TSCONFIG_ID###',
+                    'appearance' => [
+                        'showHeader' => true,
+                    ],
+                ],
+            ],
+        ],
+
+        'select_tree_tsconfig_list' => [
+            'label' => 'select_tree_tsconfig_list',
+            'description' => 'PAGE_TSCONFIG_IDLIST selects generated branches A and B',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectTree',
+                'foreign_table' => 'pages',
+                'default' => '',
+                'size' => 10,
+                'treeConfig' => [
+                    'parentField' => 'pid',
+                    'startingPoints' => '###PAGE_TSCONFIG_IDLIST###',
+                    'appearance' => [
+                        'showHeader' => true,
+                    ],
+                ],
+            ],
+        ],
+
+        'category_tree_tsconfig' => [
+            'label' => 'category_tree_tsconfig',
+            'description' => 'PAGE_TSCONFIG_ID selects generated category A and its child',
+            'exclude' => false,
+            'config' => [
+                'type' => 'category',
+                'relationship' => 'oneToMany',
+                'default' => '',
+                'size' => 10,
+                'treeConfig' => [
+                    'parentField' => 'parent',
+                    'startingPoints' => '###PAGE_TSCONFIG_ID###',
+                    'appearance' => [
+                        'showHeader' => true,
+                    ],
+                ],
+            ],
+        ],
+
+        'category_tree_tsconfig_list' => [
+            'label' => 'category_tree_tsconfig_list',
+            'description' => 'PAGE_TSCONFIG_IDLIST selects generated categories A and B with their children',
+            'exclude' => false,
+            'config' => [
+                'type' => 'category',
+                'relationship' => 'oneToMany',
+                'default' => '',
+                'size' => 10,
+                'treeConfig' => [
+                    'parentField' => 'parent',
+                    'startingPoints' => '###PAGE_TSCONFIG_IDLIST###',
+                    'appearance' => [
+                        'showHeader' => true,
+                    ],
+                ],
+            ],
+        ],
+
         'category_11' => [
             'label' => 'category_11',
             'config' => [
@@ -1325,6 +1458,10 @@ return [
                     shared_mm_primary, shared_mm_secondary,
                 --div--;renderType=selectTree,
                     select_tree_1, select_tree_2, select_tree_3, select_tree_4, select_tree_5, select_tree_6, select_tree_7,
+                --div--;Tree starting points,
+                    select_tree_static, select_tree_pid, select_tree_siteroot,
+                    select_tree_tsconfig, select_tree_tsconfig_list,
+                    category_tree_tsconfig, category_tree_tsconfig_list,
                 --div--;type=category,
                     category_11, category_1n, category_mm,
                 --div--;in flex,

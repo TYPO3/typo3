@@ -1,6 +1,6 @@
 import { test, expect } from '../../fixtures/setup-fixtures';
 
-const feLoginUrl = '/styleguide-demo-242/felogin-login';
+const feLoginUrl = '/styleguide-demo-246/felogin-login';
 
 test.describe('Frontend login plugin (felogin)', () => {
   test('shows a login failure on wrong credentials', async ({ page }) => {

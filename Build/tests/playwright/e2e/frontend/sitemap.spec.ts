@@ -1,6 +1,6 @@
 import { test, expect } from '../../fixtures/setup-fixtures';
 
-const sitemapIndexUrl = '/styleguide-demo-242/sitemap.xml';
+const sitemapIndexUrl = '/styleguide-demo-246/sitemap.xml';
 
 const slugs = [
   '/bullets', '/div', '/header', '/text', '/textpic', '/textmedia',

@@ -120,6 +120,7 @@ final class Generator extends AbstractGenerator
         $topPageUid = $topPageUidList[0];
 
         $this->createSiteConfiguration($topPageUid);
+        $this->createTreeStartingPointsExamples();
 
         // Create data for each main table
         foreach ($mainTables as $mainTable) {
@@ -146,6 +147,54 @@ final class Generator extends AbstractGenerator
         }
 
         $this->clearAllCachesOnCli();
+    }
+
+    private function createTreeStartingPointsExamples(): void
+    {
+        $pid = $this->recordFinder->findPidOfMainTableRecord('tx_styleguide_elements_select');
+        $data = [];
+        foreach (['A', 'B'] as $branch) {
+            $pageId = StringUtility::getUniqueId('NEW');
+            $data['pages'][$pageId] = [
+                'pid' => $pid,
+                'title' => 'Tree branch ' . $branch,
+                'hidden' => 0,
+            ];
+            $data['pages'][StringUtility::getUniqueId('NEW')] = [
+                'pid' => $pageId,
+                'title' => 'Tree leaf ' . $branch,
+                'hidden' => 0,
+            ];
+            $categoryId = StringUtility::getUniqueId('NEW');
+            $data['sys_category'][$categoryId] = [
+                'pid' => $pid,
+                'title' => 'Tree category ' . $branch,
+            ];
+            $data['sys_category'][StringUtility::getUniqueId('NEW')] = [
+                'pid' => $pid,
+                'parent' => $categoryId,
+                'title' => 'Tree category leaf ' . $branch,
+            ];
+        }
+        $this->executeDataHandler($data);
+
+        $pageUids = $this->connectionPool->getConnectionForTable('pages')
+            ->select(['uid'], 'pages', ['pid' => $pid, 'sys_language_uid' => 0, 'deleted' => 0], [], ['title' => 'ASC'])
+            ->fetchFirstColumn();
+        $categoryUids = $this->connectionPool->getConnectionForTable('sys_category')
+            ->select(['uid'], 'sys_category', ['pid' => $pid, 'parent' => 0, 'deleted' => 0], [], ['title' => 'ASC'])
+            ->fetchFirstColumn();
+
+        $pageTsConfig = [
+            'TCEFORM.tx_styleguide_elements_select {',
+            '  select_tree_static.config.treeConfig.startingPoints = ' . $pageUids[0],
+            '  select_tree_tsconfig.PAGE_TSCONFIG_ID = ' . $pageUids[0],
+            '  select_tree_tsconfig_list.PAGE_TSCONFIG_IDLIST = ' . implode(',', $pageUids),
+            '  category_tree_tsconfig.PAGE_TSCONFIG_ID = ' . $categoryUids[0],
+            '  category_tree_tsconfig_list.PAGE_TSCONFIG_IDLIST = ' . implode(',', $categoryUids),
+            '}',
+        ];
+        $this->executeDataHandler(['pages' => [$pid => ['TSconfig' => implode("\n", $pageTsConfig)]]]);
     }
 
     /**

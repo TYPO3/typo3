@@ -31,7 +31,7 @@ test.describe('Frontend content elements', () => {
   test('renders every styleguide content element', async ({ page }) => {
     for (const { slug, seeElement, see } of contentElements) {
       await test.step(`page ${slug}`, async () => {
-        await page.goto(`/styleguide-demo-242${slug}`);
+        await page.goto(`/styleguide-demo-246${slug}`);
         for (const selector of seeElement) {
           await expect(page.locator(selector).first()).toBeVisible();
         }

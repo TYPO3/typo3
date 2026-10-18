@@ -18,7 +18,11 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Styleguide\Tests\Functional\TcaDataGenerator;
 
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Backend\Form\FormDataCompiler;
+use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
+use TYPO3\CMS\Backend\Form\FormDataGroup\TcaSelectTreeAjaxFieldData;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\Generator;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -26,6 +30,70 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 final class GeneratorTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = ['styleguide'];
+
+    #[Test]
+    public function createGeneratesTreeStartingPointsWithMatchingSubtrees(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $backendUser = $this->setUpBackendUser(1);
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
+
+        $this->get(Generator::class)->create();
+
+        $row = $this->get(ConnectionPool::class)->getConnectionForTable('tx_styleguide_elements_select')
+            ->select(['uid', 'pid'], 'tx_styleguide_elements_select', ['sys_language_uid' => 0])
+            ->fetchAssociative();
+        self::assertIsArray($row);
+
+        $expectedTrees = [
+            'select_tree_static' => ['Tree branch A', 'Tree leaf A'],
+            'select_tree_pid' => ['elements select', 'Tree branch A', 'Tree leaf A', 'Tree branch B', 'Tree leaf B'],
+            'select_tree_tsconfig' => ['Tree branch A', 'Tree leaf A'],
+            'select_tree_tsconfig_list' => ['Tree branch A', 'Tree leaf A', 'Tree branch B', 'Tree leaf B'],
+            'category_tree_tsconfig' => ['Tree category A', 'Tree category leaf A'],
+            'category_tree_tsconfig_list' => ['Tree category A', 'Tree category leaf A', 'Tree category B', 'Tree category leaf B'],
+        ];
+        $initialData = [
+            'vanillaUid' => (int)$row['uid'],
+            'request' => new ServerRequest(),
+            'command' => 'edit',
+            'tableName' => 'tx_styleguide_elements_select',
+        ];
+        $formData = $this->get(FormDataCompiler::class)->compile($initialData, $this->get(TcaDatabaseRecord::class));
+        $fieldNames = [...array_keys($expectedTrees), 'select_tree_siteroot'];
+        foreach ($fieldNames as $fieldName) {
+            self::assertArrayHasKey($fieldName, $formData['processedTca']['columns']);
+        }
+
+        $treeTca = $formData['fullTca']['tx_styleguide_elements_select'];
+        $treeTca['columns'] = array_intersect_key($treeTca['columns'], array_flip($fieldNames));
+        $formData = $this->get(FormDataCompiler::class)->compile(
+            $initialData + [
+                'processedTca' => $treeTca,
+                'recordTypeValue' => '0',
+                'selectTreeCompileItems' => true,
+            ],
+            $this->get(TcaSelectTreeAjaxFieldData::class),
+        );
+
+        foreach ($expectedTrees as $fieldName => $expectedNames) {
+            $items = $formData['processedTca']['columns'][$fieldName]['config']['items'];
+            $names = array_column(array_filter($items, static fn(array $item): bool => (int)$item['identifier'] > 0), 'name');
+            sort($expectedNames);
+            sort($names);
+            self::assertSame($expectedNames, $names, $fieldName);
+        }
+
+        $siteTree = $formData['processedTca']['columns']['select_tree_siteroot']['config'];
+        self::assertSame((string)$formData['site']->getRootPageId(), $siteTree['treeConfig']['startingPoints']);
+        self::assertContains('Tree leaf A', array_column($siteTree['items'], 'name'));
+        self::assertContains('elements basic', array_column($siteTree['items'], 'name'));
+
+        $this->get(Generator::class)->delete();
+        $connectionPool = $this->get(ConnectionPool::class);
+        self::assertSame(0, $connectionPool->getConnectionForTable('pages')->count('*', 'pages', ['pid' => (int)$row['pid'], 'deleted' => 0]));
+        self::assertSame(0, $connectionPool->getConnectionForTable('sys_category')->count('*', 'sys_category', ['pid' => (int)$row['pid'], 'deleted' => 0]));
+    }
 
     #[Test]
     public function createGeneratesDemoDataForStyleguideTables(): void

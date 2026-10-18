@@ -1,6 +1,6 @@
 import { test, expect } from '../../fixtures/setup-fixtures';
 
-const formUrl = '/styleguide-demo-242/form-formframework';
+const formUrl = '/styleguide-demo-246/form-formframework';
 
 test.describe('Frontend form framework (ext:form)', () => {
   test.beforeEach(async ({ page }) => {
