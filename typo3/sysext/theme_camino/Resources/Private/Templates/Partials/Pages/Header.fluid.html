@@ -29,7 +29,7 @@
                     </ul>
                 </f:if>
 
-                <f:if condition="{languageNavigation}">
+                <f:if condition="{languageNavigation -> f:count()} > 1">
                     <f:render partial="Pages/LanguageNavigation" arguments="{languageNavigation: languageNavigation}"/>
                 </f:if>
             </nav>
