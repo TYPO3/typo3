@@ -17,10 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\DomainObject;
 
-use TYPO3\CMS\Extbase\Persistence\Generic\Exception\TooDirtyException;
-use TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy;
-use TYPO3\CMS\Extbase\Persistence\ObjectMonitoringInterface;
-
 /**
  * A generic Domain Object.
  *
@@ -70,20 +66,6 @@ abstract class AbstractDomainObject implements DomainObjectInterface
      * @var int<0, max>|null The id of the page the record is "stored".
      */
     protected ?int $pid = null;
-
-    /**
-     * TRUE if the object is a clone
-     *
-     * @internal
-     */
-    private bool $_isClone = false;
-
-    /**
-     * @var array<non-empty-string, mixed>
-     *
-     * @internal
-     */
-    private array $_cleanProperties = [];
 
     /**
      * @return int<1, max>|null
@@ -174,181 +156,6 @@ abstract class AbstractDomainObject implements DomainObjectInterface
     }
 
     /**
-     * Register an object's clean state, e.g. after it has been reconstituted
-     * from the database.
-     *
-     * @param non-empty-string|null $propertyName The name of the property to be memorized. If omitted all persistable properties are memorized.
-     */
-    public function _memorizeCleanState(?string $propertyName = null): void
-    {
-        if ($propertyName !== null) {
-            $this->_memorizePropertyCleanState($propertyName);
-        } else {
-            $this->_cleanProperties = [];
-            foreach ($this->_getProperties() as $propertyName => $propertyValue) {
-                $this->_memorizePropertyCleanState($propertyName);
-            }
-        }
-    }
-
-    /**
-     * Register a property's clean state, e.g. after it has been reconstituted
-     * from the database.
-     *
-     * @param non-empty-string $propertyName The name of the property to be memorized. If omitted all persistable properties are memorized.
-     */
-    public function _memorizePropertyCleanState(string $propertyName): void
-    {
-        $propertyValue = $this->_getProperty($propertyName);
-        if (is_object($propertyValue) && new \ReflectionClass($propertyValue)->isUninitializedLazyObject($propertyValue)) {
-            // Cloning an uninitialized lazy object would trigger its initialization, so it cannot
-            // be memorized as clone. A lazy entity proxy is memorized as-is: Its uid is available
-            // without initialization, which is all the dirty state comparison needs. A lazy
-            // ObjectStorage is not memorized at all, its clean state is memorized once it gets
-            // initialized. Keeping a reference to the storage here would corrupt serialize(),
-            // which initializes the storage mid-traversal and thereby replaces this very entry.
-            if ($propertyValue instanceof DomainObjectInterface) {
-                $this->_cleanProperties[$propertyName] = $propertyValue;
-            } else {
-                unset($this->_cleanProperties[$propertyName]);
-            }
-        } elseif (is_object($propertyValue) && !($propertyValue instanceof \UnitEnum)) {
-            $propertyValueClone = clone $propertyValue;
-            // We need to make sure the clone and the original object
-            // are identical when compared with == (see _isDirty()).
-            // After the cloning, the Domain Object will have the property
-            // "isClone" set to TRUE, so we manually have to set it to FALSE
-            // again. Possible fix: Somehow get rid of the "isClone" property,
-            // which is currently needed in Fluid.
-            if ($propertyValueClone instanceof AbstractDomainObject) {
-                $propertyValueClone->_setClone(false);
-            }
-
-            $this->_cleanProperties[$propertyName] = $propertyValueClone;
-        } else {
-            $this->_cleanProperties[$propertyName] = $propertyValue;
-        }
-    }
-
-    /**
-     * Returns a hash map of clean properties and $values.
-     *
-     * @return array<non-empty-string, mixed>
-     */
-    public function _getCleanProperties(): array
-    {
-        return $this->_cleanProperties;
-    }
-
-    /**
-     * Returns the clean value of the given property. The returned value will be NULL if the clean state was not memorized before, or
-     * if the clean value is NULL.
-     *
-     * @param non-empty-string $propertyName The name of the property to be memorized.
-     *
-     * @internal
-     */
-    public function _getCleanProperty(string $propertyName): mixed
-    {
-        return $this->_cleanProperties[$propertyName] ?? null;
-    }
-
-    /**
-     * Returns TRUE if the properties were modified after reconstitution
-     *
-     * @param non-empty-string|null $propertyName An optional name of a property to be checked if its value is dirty
-     *
-     * @throws TooDirtyException
-     */
-    public function _isDirty(?string $propertyName = null): bool
-    {
-        if ($this->uid !== null && $this->_getCleanProperty(self::PROPERTY_UID) !== null && $this->uid != $this->_getCleanProperty(self::PROPERTY_UID)) {
-            throw new TooDirtyException('The ' . self::PROPERTY_UID . ' "' . $this->uid . '" has been modified, that is simply too much.', 1222871239);
-        }
-
-        if ($propertyName === null) {
-            foreach ($this->_getCleanProperties() as $propertyName => $cleanPropertyValue) {
-                if ($this->isPropertyDirty($cleanPropertyValue, $this->_getProperty($propertyName)) === true) {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        if ($this->isPropertyDirty($this->_getCleanProperty($propertyName), $this->_getProperty($propertyName)) === true) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Checks the $value against the $cleanState.
-     */
-    protected function isPropertyDirty(mixed $previousValue, mixed $currentValue): bool
-    {
-        // In case it is an object and it implements the ObjectMonitoringInterface, we call _isDirty() instead of a simple comparison of objects.
-        // We do this, because if the object itself contains a lazy loaded property, the comparison of the objects might fail even if the object didn't change
-        if (is_object($currentValue)) {
-            $currentTypeString = null;
-            if ($currentValue instanceof LazyLoadingProxy) {
-                $currentTypeString = $currentValue->_getTypeAndUidString();
-            } elseif ($currentValue instanceof DomainObjectInterface) {
-                // Note: For an uninitialized native lazy proxy, getUid() reads the eagerly set
-                // uid of the related record without triggering its initialization.
-                $currentTypeString = $currentValue::class . ':' . $currentValue->getUid();
-            }
-
-            if ($currentTypeString !== null) {
-                $previousTypeString = null;
-                if ($previousValue instanceof LazyLoadingProxy) {
-                    $previousTypeString = $previousValue->_getTypeAndUidString();
-                } elseif ($previousValue instanceof DomainObjectInterface) {
-                    $previousTypeString = $previousValue::class . ':' . $previousValue->getUid();
-                }
-
-                $result = $currentTypeString !== $previousTypeString;
-            } elseif (new \ReflectionClass($currentValue)->isUninitializedLazyObject($currentValue)) {
-                // An uninitialized lazy ObjectStorage cannot have been modified since its creation,
-                // as any modifying access would have initialized it. Calling _isDirty() on it or
-                // comparing it with == would trigger the initialization, so short-circuit here.
-                $result = false;
-            } elseif ($currentValue instanceof ObjectMonitoringInterface) {
-                $result = !is_object($previousValue) || $currentValue->_isDirty() || $previousValue::class !== $currentValue::class;
-            } else {
-                // For all other objects we do only a simple comparison (!=) as we want cloned objects to return the same values.
-                $result = $previousValue != $currentValue;
-            }
-        } else {
-            $result = $previousValue !== $currentValue;
-        }
-        return $result;
-    }
-
-    public function _isClone(): bool
-    {
-        return $this->_isClone;
-    }
-
-    /**
-     * Setter whether this Domain Object is a clone of another one.
-     * NEVER SET THIS PROPERTY DIRECTLY. We currently need it to make the
-     * _isDirty check inside AbstractEntity work, but it is just a work-
-     * around right now.
-     *
-     * @internal
-     */
-    public function _setClone(bool $clone)
-    {
-        $this->_isClone = $clone;
-    }
-
-    public function __clone(): void
-    {
-        $this->_isClone = true;
-    }
-
-    /**
      * @return non-empty-string
      */
     public function __toString(): string
@@ -378,6 +185,11 @@ abstract class AbstractDomainObject implements DomainObjectInterface
                 $nulPosition = strrpos($key, "\0");
                 $scope = substr($key, 1, $nulPosition - 1);
                 $name = substr($key, $nulPosition + 1);
+                $isFormerCleanStateProperty = $scope === self::class && in_array($name, ['_cleanProperties', '_isClone'], true);
+                if ($isFormerCleanStateProperty) {
+                    // Payload serialized before the clean state moved into the CleanStateTracker
+                    continue;
+                }
                 if ($scope === '*' || $scope === self::class) {
                     $this->{$name} = $value;
                 } elseif (property_exists($scope, $name)) {

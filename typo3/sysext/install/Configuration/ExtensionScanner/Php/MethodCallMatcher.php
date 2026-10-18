@@ -29,6 +29,62 @@ return [
             'Breaking-110762-FileStoragesAreConfiguredInAFileInsteadOfTheDatabase.rst',
         ],
     ],
+    'TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject->_memorizeCleanState' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Breaking-111136-ExtbaseEntityDirtyTrackingMethodsRemoved.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject->_memorizePropertyCleanState' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Breaking-111136-ExtbaseEntityDirtyTrackingMethodsRemoved.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject->_getCleanProperties' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Breaking-111136-ExtbaseEntityDirtyTrackingMethodsRemoved.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject->_getCleanProperty' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Breaking-111136-ExtbaseEntityDirtyTrackingMethodsRemoved.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject->_isDirty' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Breaking-111136-ExtbaseEntityDirtyTrackingMethodsRemoved.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject->_isClone' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Breaking-111136-ExtbaseEntityDirtyTrackingMethodsRemoved.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject->_setClone' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Breaking-111136-ExtbaseEntityDirtyTrackingMethodsRemoved.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject->isPropertyDirty' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Breaking-111136-ExtbaseEntityDirtyTrackingMethodsRemoved.rst',
+        ],
+    ],
     // Removed methods
     'TYPO3\CMS\Backend\Clipboard\Clipboard->confirmMsg' => [
         'numberOfMandatoryArguments' => 4,

@@ -1,0 +1,12 @@
+"pages"
+,"uid","pid","sorting","title","deleted","perms_everybody"
+,1,0,128,"Root",0,15
+tx_blogexample_domain_model_blog
+,uid,pid,title,description,logo,l18n_diffsource,deleted,posts,administrator,categories,t3ver_oid,t3ver_state,t3ver_wsid,hidden
+,1,0,"Blog1","Blog1 description",0,,0,2,0,0,0,0,0,0
+,2,0,"Blog2","Blog2 description",0,,0,1,0,0,0,0,0,0
+tx_blogexample_domain_model_post
+,uid,pid,tstamp,blog,author,reviewer,tags,date,categories,title,content,l18n_diffsource,sorting,deleted,hidden,related_posts,t3ver_oid,t3ver_state,t3ver_wsid
+,1,0,0,1,0,0,0,1502275450,0,"Post1","Content1",,1,0,0,0,0,0,0
+,2,0,0,1,0,0,0,1502275450,0,"Post2","Content2",,2,0,0,0,0,0,0
+,3,0,0,2,0,0,0,1502275450,0,"Post3","Content3",,3,0,0,0,0,0,0

@@ -1,0 +1,4 @@
+tx_blogexample_domain_model_blog
+,uid,title,description
+,1,"Changed title","Description changed in database"
+,2,"Blog2","Blog2 description"

@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Country\CountryProvider;
 use TYPO3\CMS\Core\DataHandling\TableColumnType;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Extbase\Persistence\ClassesConfiguration;
+use TYPO3\CMS\Extbase\Persistence\Generic\CleanStateTracker;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMapFactory;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory;
@@ -64,6 +65,7 @@ final class DataMapperTest extends UnitTestCase
             self::createStub(InstantiatorInterface::class),
             self::createStub(TcaSchemaFactory::class),
             self::createStub(CountryProvider::class),
+            new CleanStateTracker(),
         );
     }
 

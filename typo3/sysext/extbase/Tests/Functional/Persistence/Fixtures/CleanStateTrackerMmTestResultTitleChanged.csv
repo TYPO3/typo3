@@ -1,0 +1,8 @@
+tx_blogexample_domain_model_post
+,uid,title,tags
+,1,"Changed title",3
+tx_blogexample_domain_model_tag_mm
+,uid_local,uid_foreign,tablenames,fieldname,sorting,sorting_foreign
+,1,1,tx_blogexample_domain_model_post,tags,1,1
+,2,1,tx_blogexample_domain_model_post,tags,1,2
+,3,1,tx_blogexample_domain_model_post,tags,1,3

@@ -2906,4 +2906,9 @@ return [
             'Deprecation-111236-ModuleAccessGates.rst',
         ],
     ],
+    'TYPO3\CMS\Extbase\Persistence\ObjectMonitoringInterface' => [
+        'restFiles' => [
+            'Breaking-111136-ExtbaseEntityDirtyTrackingMethodsRemoved.rst',
+        ],
+    ],
 ];

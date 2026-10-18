@@ -22,6 +22,7 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\CleanStateTracker;
 use TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
@@ -90,7 +91,7 @@ final class LazyLoadingProxyTest extends FunctionalTestCase
         $administrator = $blog->getAdministrator();
         self::assertInstanceOf(Administrator::class, $administrator);
         self::assertFalse(new \ReflectionClass(Administrator::class)->isUninitializedLazyObject($administrator));
-        self::assertFalse($blog->_isDirty());
+        self::assertFalse($this->get(CleanStateTracker::class)->isEntityDirty($blog));
     }
 
     #[Test]

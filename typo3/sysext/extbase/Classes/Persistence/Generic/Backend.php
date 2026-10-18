@@ -44,6 +44,7 @@ use TYPO3\CMS\Extbase\Event\Persistence\ModifyQueryBeforeFetchingObjectDataEvent
 use TYPO3\CMS\Extbase\Event\Persistence\ModifyResultAfterFetchingObjectCountEvent;
 use TYPO3\CMS\Extbase\Event\Persistence\ModifyResultAfterFetchingObjectDataEvent;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalRelationTypeException;
+use TYPO3\CMS\Extbase\Persistence\Exception\UnmanagedObjectException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap\Relation;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory;
@@ -85,6 +86,7 @@ class Backend implements BackendInterface
         protected readonly TcaSchemaFactory $tcaSchemaFactory,
         protected readonly PersistenceCorrelationScope $correlationScope,
         protected readonly CacheFlusher $cacheFlusher,
+        protected readonly CleanStateTracker $cleanStateTracker,
     ) {
         $this->aggregateRootObjects = new ObjectStorage();
         $this->deletedEntities = new ObjectStorage();
@@ -272,6 +274,13 @@ class Backend implements BackendInterface
      */
     protected function persistObjects(): void
     {
+        $checkedObjects = new ObjectStorage();
+        foreach ($this->aggregateRootObjects as $object) {
+            $this->assertObjectGraphIsManaged($object, $checkedObjects);
+        }
+        foreach ($this->changedEntities as $object) {
+            $this->assertObjectGraphIsManaged($object, $checkedObjects);
+        }
         $this->visitedDuringPersistence = new ObjectStorage();
         foreach ($this->aggregateRootObjects as $object) {
             /** @var DomainObjectInterface $object */
@@ -282,6 +291,41 @@ class Backend implements BackendInterface
         }
         foreach ($this->changedEntities as $object) {
             $this->persistObject($object);
+        }
+    }
+
+    /**
+     * Makes sure that no object with a uid that the persistence layer does not manage is reachable from the given
+     * object, before anything is written. Such an object, for example an unserialized or cloned entity, would be
+     * written without knowing what has changed and would add its relations a second time.
+     *
+     * @throws UnmanagedObjectException
+     */
+    protected function assertObjectGraphIsManaged(DomainObjectInterface $object, ObjectStorage $checkedObjects): void
+    {
+        if ($checkedObjects->contains($object)) {
+            return;
+        }
+        $checkedObjects->attach($object);
+        $isUnmanaged = $object instanceof AbstractDomainObject && !$object->_isNew() && !$this->cleanStateTracker->contains($object);
+        if ($isUnmanaged) {
+            throw new UnmanagedObjectException(
+                sprintf('The object of type "%s" with uid %d is not managed by the persistence layer, for example because it was unserialized or cloned. Fetch it from the repository (or let the property mapper convert its identity) and apply the changes before adding or updating it.', $object::class, $object->getUid()),
+                1792353237
+            );
+        }
+        $dataMap = $this->dataMapFactory->buildDataMap($object::class);
+        foreach ($this->reflectionService->getClassSchema($object::class)->getDomainObjectProperties() as $property) {
+            $propertyName = $property->getName();
+            $propertyValue = $dataMap->isPersistableProperty($propertyName) ? $object->_getProperty($propertyName) : null;
+            if ($propertyValue === null || $this->propertyValueIsLazyLoaded($propertyValue)) {
+                continue;
+            }
+            foreach ($propertyValue instanceof ObjectStorage ? $propertyValue : [$propertyValue] as $relatedObject) {
+                if ($relatedObject instanceof DomainObjectInterface && !$this->propertyValueIsLazyLoaded($relatedObject)) {
+                    $this->assertObjectGraphIsManaged($relatedObject, $checkedObjects);
+                }
+            }
         }
     }
 
@@ -304,18 +348,18 @@ class Backend implements BackendInterface
                 continue;
             }
             $propertyValue = $object->_getProperty($propertyName);
-            if ($this->propertyValueIsLazyLoaded($propertyValue) && !$object->_isDirty($propertyName)) {
+            if ($this->propertyValueIsLazyLoaded($propertyValue) && !$this->cleanStateTracker->isEntityPropertyDirty($object, $propertyName)) {
                 continue;
             }
             $columnMap = $dataMap->getColumnMap($propertyName);
             if ($propertyValue instanceof ObjectStorage) {
-                $cleanProperty = $object->_getCleanProperty($propertyName);
+                $cleanProperty = $this->cleanStateTracker->getOriginalEntityData($object)[$propertyName] ?? null;
                 // objectstorage needs to be persisted if the object is new, the objectstorage is dirty, meaning it has
                 // been changed after initial build, or an empty objectstorage is present and the cleanstate objectstorage
                 // has childelements, meaning all elements should been removed from the objectstorage
-                if ($object->_isNew() || $propertyValue->_isDirty() || ($propertyValue->count() === 0 && $cleanProperty && $cleanProperty->count() > 0)) {
+                if ($object->_isNew() || $this->cleanStateTracker->isEntityDirty($propertyValue) || ($propertyValue->count() === 0 && $cleanProperty && $cleanProperty->count() > 0)) {
                     $this->persistObjectStorage($propertyValue, $object, $propertyName, $row);
-                    $propertyValue->_memorizeCleanState();
+                    $this->cleanStateTracker->setOriginalEntityData($propertyValue);
                 }
                 foreach ($propertyValue as $containedObject) {
                     if ($containedObject instanceof DomainObjectInterface) {
@@ -323,20 +367,25 @@ class Backend implements BackendInterface
                     }
                 }
             } elseif ($propertyValue instanceof DomainObjectInterface) {
-                if ($object->_isDirty($propertyName)) {
+                if ($this->cleanStateTracker->isEntityPropertyDirty($object, $propertyName)) {
                     if ($propertyValue->_isNew()) {
                         $this->insertObject($propertyValue, $object, $propertyName);
                     }
                     $row[$columnMap->columnName] = $this->getPlainValue($propertyValue, null, $property);
                 }
                 $queue[] = $propertyValue;
-            } elseif ($object->_isNew() || $object->_isDirty($propertyName)) {
+            } elseif ($object->_isNew() || $this->cleanStateTracker->isEntityPropertyDirty($object, $propertyName)) {
                 $row[$columnMap->columnName] = $this->getPlainValue($propertyValue, $columnMap, $property);
             }
         }
-        if (!empty($row)) {
+        $isRowWritten = !empty($row);
+        if ($isRowWritten) {
             $this->updateObject($object, $row);
-            $object->_memorizeCleanState();
+        }
+        // An object that was inserted by this persistence run becomes managed, even if it had nothing left to write
+        $isInsertedObject = !$this->cleanStateTracker->contains($object);
+        if ($isRowWritten || $isInsertedObject) {
+            $this->cleanStateTracker->setOriginalEntityData($object);
         }
         $this->visitedDuringPersistence[$object] = $object->getUid();
         foreach ($queue as $queuedObject) {
@@ -402,7 +451,7 @@ class Backend implements BackendInterface
             } else {
                 $sortingPosition++;
             }
-            $cleanProperty = $parentObject->_getCleanProperty($propertyName);
+            $cleanProperty = $this->cleanStateTracker->getOriginalEntityData($parentObject)[$propertyName] ?? null;
             if ($object->_isNew()) {
                 $this->insertObject($object, $parentObject);
                 $this->attachObjectToParentObject($object, $parentObject, $propertyName, $sortingPosition);
@@ -440,7 +489,7 @@ class Backend implements BackendInterface
     protected function getRemovedChildObjects(DomainObjectInterface $object, string $propertyName): array
     {
         $removedObjects = [];
-        $cleanPropertyValue = $object->_getCleanProperty($propertyName);
+        $cleanPropertyValue = $this->cleanStateTracker->getOriginalEntityData($object)[$propertyName] ?? null;
         if (is_array($cleanPropertyValue) || $cleanPropertyValue instanceof \Iterator) {
             $propertyValue = $object->_getProperty($propertyName);
             foreach ($cleanPropertyValue as $containedObject) {
@@ -780,7 +829,7 @@ class Backend implements BackendInterface
         }
         $this->storageBackend->updateRow($dataMap->tableName, $row);
         $this->cacheFlushDemand = $this->cacheFlushDemand->withRecord($dataMap->tableName, (int)$row['uid']);
-        $previousPageId = $object->_getCleanProperty(AbstractDomainObject::PROPERTY_PID);
+        $previousPageId = $this->cleanStateTracker->getOriginalEntityData($object)[AbstractDomainObject::PROPERTY_PID] ?? null;
         if (isset($row['pid']) && $previousPageId !== null && (int)$previousPageId !== (int)$row['pid']) {
             // Page TSconfig of both pages applies, and both pages get flushed
             $this->cacheFlushDemand = $this->cacheFlushDemand

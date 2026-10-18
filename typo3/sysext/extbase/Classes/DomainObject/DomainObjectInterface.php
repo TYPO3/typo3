@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\DomainObject;
 
-use TYPO3\CMS\Extbase\Persistence\ObjectMonitoringInterface;
-
 /**
  * A Domain Object Interface. All domain objects which should be persisted need to implement this interface.
  *
@@ -28,7 +26,7 @@ use TYPO3\CMS\Extbase\Persistence\ObjectMonitoringInterface;
  * @see \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
  * @see \TYPO3\CMS\Extbase\DomainObject\AbstractValueObject
  */
-interface DomainObjectInterface extends ObjectMonitoringInterface
+interface DomainObjectInterface
 {
     public function getUid(): ?int;
 
@@ -70,15 +68,4 @@ interface DomainObjectInterface extends ObjectMonitoringInterface
      * @internal
      */
     public function _getProperties(): array;
-
-    /**
-     * Returns the clean value of the given property. The returned value will be NULL if the clean state was not memorized before, or
-     * if the clean value is NULL.
-     *
-     * @param non-empty-string $propertyName
-     * @return mixed The clean property value or NULL
-     *
-     * @internal
-     */
-    public function _getCleanProperty(string $propertyName): mixed;
 }

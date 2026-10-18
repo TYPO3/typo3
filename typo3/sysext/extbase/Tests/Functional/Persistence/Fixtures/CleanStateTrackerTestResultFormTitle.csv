@@ -1,0 +1,9 @@
+tx_blogexample_domain_model_blog
+,uid,title,description,posts
+,1,"Title from form","Blog1 description",2
+,2,"Blog2","Blog2 description",1
+tx_blogexample_domain_model_post
+,uid,blog,title
+,1,1,"Post1"
+,2,1,"Post2"
+,3,2,"Post3"

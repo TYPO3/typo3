@@ -21,6 +21,7 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\CleanStateTracker;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Tests\BlogExample\Domain\Model\Administrator;
 use TYPO3Tests\BlogExample\Domain\Repository\AdministratorRepository;
@@ -43,54 +44,59 @@ final class IsDirtyTest extends FunctionalTestCase
     #[Test]
     public function objectFetchedFromDbIsNotDirty(): void
     {
+        $cleanStateTracker = $this->get(CleanStateTracker::class);
         $blog = $this->get(BlogRepository::class)->findByUid(3);
-        self::assertFalse($blog->_isDirty());
+        self::assertFalse($cleanStateTracker->isEntityDirty($blog));
     }
 
     #[Test]
     public function lazyLoadingProxyReplacedByRealInstanceIsNotDirty(): void
     {
+        $cleanStateTracker = $this->get(CleanStateTracker::class);
         $blog = $this->get(BlogRepository::class)->findByUid(3);
         self::assertTrue(new \ReflectionClass(Administrator::class)->isUninitializedLazyObject($blog->getAdministrator())); // precondition
         $admin = $this->get(AdministratorRepository::class)->findByUid(3);
         self::assertInstanceOf(Administrator::class, $admin); // precondition
         $blog->setAdministrator($admin);
-        self::assertFalse($blog->_isDirty());
+        self::assertFalse($cleanStateTracker->isEntityDirty($blog));
     }
 
     #[Test]
     public function lazyLoadingProxyReplacedByWrongInstanceIsDirty(): void
     {
+        $cleanStateTracker = $this->get(CleanStateTracker::class);
         $blog = $this->get(BlogRepository::class)->findByUid(3);
         self::assertTrue(new \ReflectionClass(Administrator::class)->isUninitializedLazyObject($blog->getAdministrator())); //precondition
         $blog->setAdministrator(new Administrator());
-        self::assertTrue($blog->_isDirty());
+        self::assertTrue($cleanStateTracker->isEntityDirty($blog));
     }
 
     #[Test]
     public function realInstanceReplacedByLazyLoadingProxyIsNotDirty(): void
     {
+        $cleanStateTracker = $this->get(CleanStateTracker::class);
         $blog = $this->get(BlogRepository::class)->findByUid(3);
         $lazyLoadingProxy = $blog->getAdministrator();
         self::assertTrue(new \ReflectionClass(Administrator::class)->isUninitializedLazyObject($lazyLoadingProxy)); //precondition
         $admin = $this->get(AdministratorRepository::class)->findByUid(3);
         self::assertInstanceOf(Administrator::class, $admin); // precondition
         $blog->setAdministrator($admin);
-        $blog->_memorizeCleanState();
+        $cleanStateTracker->setOriginalEntityData($blog);
         $blog->_setProperty('administrator', $lazyLoadingProxy);
-        self::assertFalse($blog->_isDirty());
+        self::assertFalse($cleanStateTracker->isEntityDirty($blog));
     }
 
     #[Test]
     public function lazyLoadingProxyByWrongLazyLoadingProxyIsDirtyAndUpdated(): void
     {
+        $cleanStateTracker = $this->get(CleanStateTracker::class);
         $blogRepository = $this->get(BlogRepository::class);
         $blogOne = $blogRepository->findByUid(3);
         self::assertTrue(new \ReflectionClass(Administrator::class)->isUninitializedLazyObject($blogOne->getAdministrator())); //precondition
         $blogTwo = $blogRepository->findByUid(2);
         self::assertTrue(new \ReflectionClass(Administrator::class)->isUninitializedLazyObject($blogTwo->getAdministrator())); //precondition
         $blogOne->_setProperty('administrator', $blogTwo->getAdministrator());
-        self::assertTrue($blogOne->_isDirty());
+        self::assertTrue($cleanStateTracker->isEntityDirty($blogOne));
         $blogRepository->update($blogOne);
         $updatedBlogOne = $blogRepository->findByUid(3);
         self::assertSame($updatedBlogOne->getAdministrator()->getUid(), $blogTwo->getAdministrator()->getUid());

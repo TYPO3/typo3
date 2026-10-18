@@ -18,7 +18,9 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Persistence\Generic;
 
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
+use TYPO3\CMS\Extbase\Persistence\Exception\UnmanagedObjectException;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
@@ -43,7 +45,8 @@ class PersistenceManager implements PersistenceManagerInterface
     public function __construct(
         QueryFactoryInterface $queryFactory,
         BackendInterface $backend,
-        Session $persistenceSession
+        Session $persistenceSession,
+        protected readonly CleanStateTracker $cleanStateTracker
     ) {
         $this->queryFactory = $queryFactory;
         $this->backend = $backend;
@@ -141,9 +144,12 @@ class PersistenceManager implements PersistenceManagerInterface
 
     /**
      * Adds an object to the persistence.
+     *
+     * @throws UnmanagedObjectException
      */
     public function add(object $object): void
     {
+        $this->assertObjectIsNotUnmanaged($object);
         $this->addedObjects->attach($object);
         $this->removedObjects->detach($object);
     }
@@ -164,13 +170,30 @@ class PersistenceManager implements PersistenceManagerInterface
      * Update an object in the persistence.
      *
      * @throws UnknownObjectException
+     * @throws UnmanagedObjectException
      */
     public function update(object $object): void
     {
+        $this->assertObjectIsNotUnmanaged($object);
         if ($this->isNewObject($object)) {
             throw new UnknownObjectException('The object of type "' . get_class($object) . '" given to update must be persisted already, but is new.', 1249479819);
         }
         $this->changedObjects->attach($object);
+    }
+
+    /**
+     * An object with a uid that was neither loaded nor inserted by the persistence layer, for example an
+     * unserialized or cloned entity, would be written without knowing what has changed.
+     */
+    private function assertObjectIsNotUnmanaged(object $object): void
+    {
+        $isUnmanaged = $object instanceof AbstractDomainObject && !$object->_isNew() && !$this->cleanStateTracker->contains($object);
+        if ($isUnmanaged) {
+            throw new UnmanagedObjectException(
+                sprintf('The object of type "%s" with uid %d is not managed by the persistence layer, for example because it was unserialized or cloned. Fetch it from the repository (or let the property mapper convert its identity) and apply the changes before adding or updating it.', $object::class, $object->getUid()),
+                1792353210
+            );
+        }
     }
 
     /**

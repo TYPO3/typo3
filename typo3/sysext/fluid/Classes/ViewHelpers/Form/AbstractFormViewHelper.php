@@ -81,15 +81,12 @@ abstract class AbstractFormViewHelper extends AbstractTagBasedViewHelper
         }
         if (!is_object($object)
             || !($object instanceof AbstractDomainObject)
-            || ($object->_isNew() && !$object->_isClone())) {
+            || $object->_isNew()) {
             return '';
         }
         // Intentionally NOT using PersistenceManager::getIdentifierByObject here.
         // Using that one breaks re-submission of data in forms in case of an error.
         $identifier = $object->getUid();
-        if ($identifier === null) {
-            return LF . '<!-- Object of type ' . get_class($object) . ' is without identity -->' . LF;
-        }
         $name = $this->prefixFieldName($name ?? '') . '[__identity]';
         $this->registerFieldNameForFormTokenGeneration($name);
 

@@ -18,6 +18,9 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Tests\Unit\Utility;
 
 use PHPUnit\Framework\Attributes\Test;
+use Symfony\Component\DependencyInjection\Container;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Persistence\Generic\CleanStateTracker;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Tests\Unit\Utility\Fixtures\DebuggerUtilityAccessibleProxy;
 use TYPO3\CMS\Extbase\Tests\Unit\Utility\Fixtures\DummyClass;
@@ -29,6 +32,9 @@ final class DebuggerUtilityTest extends UnitTestCase
     #[Test]
     public function debuggerRewindsInstancesOfIterator(): void
     {
+        $container = new Container();
+        $container->set(CleanStateTracker::class, new CleanStateTracker());
+        GeneralUtility::setContainer($container);
         $objectStorage = new ObjectStorage();
         for ($i = 0; $i < 5; $i++) {
             $obj = new \stdClass();

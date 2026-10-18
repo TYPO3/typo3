@@ -36,6 +36,7 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Event\Persistence\AfterObjectThawedEvent;
 use TYPO3\CMS\Extbase\Persistence;
+use TYPO3\CMS\Extbase\Persistence\Generic\CleanStateTracker;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\InvalidClassException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnexpectedTypeException;
@@ -82,6 +83,7 @@ class DataMapper
         private readonly InstantiatorInterface $instantiator,
         private readonly TcaSchemaFactory $tcaSchemaFactory,
         private readonly CountryProvider $countryProvider,
+        private readonly CleanStateTracker $cleanStateTracker,
     ) {}
 
     public function setQuery(QueryInterface $query): void
@@ -148,7 +150,7 @@ class DataMapper
             $this->thawProperties($object, $row);
             $event = new AfterObjectThawedEvent($object, $row);
             $this->eventDispatcher->dispatch($event);
-            $object->_memorizeCleanState();
+            $this->cleanStateTracker->setOriginalEntityData($object);
             $this->persistenceSession->registerReconstitutedEntity($object);
         }
         return $object;
@@ -423,8 +425,8 @@ class DataMapper
                 foreach ($this->fetchRelated($parentObject, $propertyName, $fieldValue, false) as $object) {
                     $objectStorage->attach($object);
                 }
-                $objectStorage->_memorizeCleanState();
-                $parentObject->_memorizeCleanState($propertyName);
+                $this->cleanStateTracker->setOriginalEntityData($objectStorage);
+                $this->cleanStateTracker->setOriginalEntityProperty($parentObject, $propertyName);
             }
         );
     }
@@ -451,7 +453,7 @@ class DataMapper
                 }
                 if ($parentObject->_getProperty($propertyName) === $proxy) {
                     $parentObject->_setProperty($propertyName, $realInstance instanceof DomainObjectInterface && $realInstance->getUid() !== null ? $realInstance : null);
-                    $parentObject->_memorizeCleanState($propertyName);
+                    $this->cleanStateTracker->setOriginalEntityProperty($parentObject, $propertyName);
                 }
                 return $realInstance;
             }
@@ -848,7 +850,7 @@ class DataMapper
                     foreach ($objects as $object) {
                         $propertyValue->attach($object);
                     }
-                    $propertyValue->_memorizeCleanState();
+                    $this->cleanStateTracker->setOriginalEntityData($propertyValue);
                 } else {
                     $propertyValue = $objects;
                 }

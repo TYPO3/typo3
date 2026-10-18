@@ -90,7 +90,7 @@ class LazyLoadingProxy implements \Iterator, LoadingStrategyInterface
             $objects = $this->dataMapper->fetchRelated($this->parentObject, $this->propertyName, $this->fieldValue, false);
             $propertyValue = $this->dataMapper->mapResultToPropertyValue($this->parentObject, $this->propertyName, $objects);
             $this->parentObject->_setProperty($this->propertyName, $propertyValue);
-            $this->parentObject->_memorizeCleanState($this->propertyName);
+            GeneralUtility::makeInstance(CleanStateTracker::class)->setOriginalEntityProperty($this->parentObject, $this->propertyName);
             return $propertyValue;
         }
         return $this->parentObject->_getProperty($this->propertyName);

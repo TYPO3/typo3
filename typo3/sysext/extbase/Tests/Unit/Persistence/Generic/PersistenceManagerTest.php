@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\Generic\Backend;
 use TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\CleanStateTracker;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\QueryFactoryInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Session;
@@ -48,7 +49,8 @@ final class PersistenceManagerTest extends UnitTestCase
         $manager = new PersistenceManager(
             self::createStub(QueryFactoryInterface::class),
             $mockBackend,
-            self::createStub(Session::class)
+            self::createStub(Session::class),
+            new CleanStateTracker()
         );
         $manager->add($entity2);
 
@@ -67,7 +69,8 @@ final class PersistenceManagerTest extends UnitTestCase
         $manager = new PersistenceManager(
             self::createStub(QueryFactoryInterface::class),
             $mockBackend,
-            self::createStub(Session::class)
+            self::createStub(Session::class),
+            new CleanStateTracker()
         );
         $manager->remove($entity2);
 
@@ -86,7 +89,8 @@ final class PersistenceManagerTest extends UnitTestCase
         $manager = new PersistenceManager(
             self::createStub(QueryFactoryInterface::class),
             $mockBackend,
-            self::createStub(Session::class)
+            self::createStub(Session::class),
+            new CleanStateTracker()
         );
 
         self::assertEquals($manager->getIdentifierByObject($object), $fakeUuid);
@@ -107,7 +111,8 @@ final class PersistenceManagerTest extends UnitTestCase
         $manager = new PersistenceManager(
             self::createStub(QueryFactoryInterface::class),
             $mockBackend,
-            self::createStub(Session::class)
+            self::createStub(Session::class),
+            new CleanStateTracker()
         );
 
         self::assertSame($object, $manager->getObjectByIdentifier($fakeUuid, $object::class));
@@ -128,7 +133,8 @@ final class PersistenceManagerTest extends UnitTestCase
         $manager = new PersistenceManager(
             self::createStub(QueryFactoryInterface::class),
             $mockBackend,
-            self::createStub(Session::class)
+            self::createStub(Session::class),
+            new CleanStateTracker()
         );
 
         self::assertNull($manager->getObjectByIdentifier($fakeUuid, $fakeEntityType));
@@ -142,7 +148,8 @@ final class PersistenceManagerTest extends UnitTestCase
         $persistenceManager = new PersistenceManager(
             self::createStub(QueryFactoryInterface::class),
             $backend,
-            self::createStub(Session::class)
+            self::createStub(Session::class),
+            new CleanStateTracker()
         );
         $persistenceManager->add($someObject);
 
@@ -169,7 +176,8 @@ final class PersistenceManagerTest extends UnitTestCase
         $persistenceManager = new PersistenceManager(
             self::createStub(QueryFactoryInterface::class),
             $backend,
-            self::createStub(Session::class)
+            self::createStub(Session::class),
+            new CleanStateTracker()
         );
         $persistenceManager->add($object1);
         $persistenceManager->add($object2);
@@ -204,7 +212,8 @@ final class PersistenceManagerTest extends UnitTestCase
         $persistenceManager = new PersistenceManager(
             self::createStub(QueryFactoryInterface::class),
             $backend,
-            self::createStub(Session::class)
+            self::createStub(Session::class),
+            new CleanStateTracker()
         );
         $persistenceManager->add($object1);
         $persistenceManager->add($object2);
@@ -243,7 +252,8 @@ final class PersistenceManagerTest extends UnitTestCase
         $persistenceManager = new PersistenceManager(
             self::createStub(QueryFactoryInterface::class),
             $backend,
-            self::createStub(Session::class)
+            self::createStub(Session::class),
+            new CleanStateTracker()
         );
         $persistenceManager->remove($object);
 
@@ -297,14 +307,17 @@ final class PersistenceManagerTest extends UnitTestCase
             ->method('setChangedEntities')
             ->with(self::equalTo($changedEntities));
 
+        $cleanStateTracker = new CleanStateTracker();
         $persistenceManager = new PersistenceManager(
             self::createStub(QueryFactoryInterface::class),
             $mockBackend,
-            $session
+            $session,
+            $cleanStateTracker
         );
 
         $repository->_set('persistenceManager', $persistenceManager);
         $session->registerObject($entity1, '42');
+        $cleanStateTracker->setOriginalEntityData($entity1);
         $changedEntities->attach($entity1);
         $repository->update($entity1);
         $persistenceManager->persistAll();
@@ -318,7 +331,8 @@ final class PersistenceManagerTest extends UnitTestCase
         $persistenceManager = new PersistenceManager(
             self::createStub(QueryFactoryInterface::class),
             $mockBackend,
-            self::createStub(Session::class)
+            self::createStub(Session::class),
+            new CleanStateTracker()
         );
         $persistenceManager->tearDown();
     }
@@ -351,7 +365,8 @@ final class PersistenceManagerTest extends UnitTestCase
         $persistenceManager = new PersistenceManager(
             self::createStub(QueryFactoryInterface::class),
             $mockBackend,
-            self::createStub(Session::class)
+            self::createStub(Session::class),
+            new CleanStateTracker()
         );
 
         $persistenceManager->add($entity1);

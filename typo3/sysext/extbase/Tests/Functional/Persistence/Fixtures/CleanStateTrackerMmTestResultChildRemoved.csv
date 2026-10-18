@@ -1,0 +1,7 @@
+tx_blogexample_domain_model_post
+,uid,tags
+,1,2
+tx_blogexample_domain_model_tag_mm
+,uid_local,uid_foreign,tablenames,fieldname,sorting,sorting_foreign
+,1,1,tx_blogexample_domain_model_post,tags,1,1
+,2,1,tx_blogexample_domain_model_post,tags,1,2

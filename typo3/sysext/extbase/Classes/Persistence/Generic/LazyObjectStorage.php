@@ -106,15 +106,15 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
         foreach ($objects as $object) {
             parent::attach($object);
         }
-        $this->_memorizeCleanState();
+        GeneralUtility::makeInstance(CleanStateTracker::class)->setOriginalEntityData($this);
         if (!$this->isStorageAlreadyMemorizedInParentCleanState()) {
-            $this->parentObject->_memorizeCleanState($this->propertyName);
+            GeneralUtility::makeInstance(CleanStateTracker::class)->setOriginalEntityProperty($this->parentObject, $this->propertyName);
         }
     }
 
     protected function isStorageAlreadyMemorizedInParentCleanState(): bool
     {
-        return $this->parentObject->_getCleanProperty($this->propertyName) === $this;
+        return (GeneralUtility::makeInstance(CleanStateTracker::class)->getOriginalEntityData($this->parentObject)[$this->propertyName] ?? null) === $this;
     }
 
     // Delegation to the ObjectStorage methods below

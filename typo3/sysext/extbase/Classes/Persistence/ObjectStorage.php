@@ -30,7 +30,7 @@ use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
  * @implements \ArrayAccess<string, TEntity>
  * @implements \Iterator<string, TEntity>
  */
-class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonitoringInterface
+class ObjectStorage implements \Countable, \Iterator, \ArrayAccess
 {
     /**
      * This field is only needed to make debugging easier:
@@ -304,26 +304,6 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
     public function getArray(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Register the storage's clean state, e.g., after it has been reconstituted from the database.
-     *
-     * @param non-empty-string|null $propertyName
-     */
-    public function _memorizeCleanState(?string $propertyName = null): void
-    {
-        $this->isModified = false;
-    }
-
-    /**
-     * Returns `true` if the storage was modified after reconstitution.
-     *
-     * @param non-empty-string|null $propertyName
-     */
-    public function _isDirty(?string $propertyName = null): bool
-    {
-        return $this->isModified;
     }
 
     /**

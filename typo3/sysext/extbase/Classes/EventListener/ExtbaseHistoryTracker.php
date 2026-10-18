@@ -31,6 +31,7 @@ use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Event\Persistence\EntityAddedToPersistenceEvent;
 use TYPO3\CMS\Extbase\Event\Persistence\EntityRemovedFromPersistenceEvent;
 use TYPO3\CMS\Extbase\Event\Persistence\EntityUpdatedInPersistenceEvent;
+use TYPO3\CMS\Extbase\Persistence\Generic\CleanStateTracker;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceCorrelationScope;
@@ -47,6 +48,7 @@ final readonly class ExtbaseHistoryTracker
         private TcaSchemaFactory $tcaSchemaFactory,
         private Features $features,
         private PersistenceCorrelationScope $correlationScope,
+        private CleanStateTracker $cleanStateTracker,
     ) {}
 
     #[AsEventListener('extbase-history-tracker-persisted')]
@@ -172,7 +174,7 @@ final readonly class ExtbaseHistoryTracker
     {
         $data = [];
         if ($fetchPropertiesBeforePersistence && $object instanceof AbstractDomainObject) {
-            $properties = $object->_getCleanProperties();
+            $properties = $this->cleanStateTracker->getOriginalEntityData($object);
         } else {
             $properties = $object->_getProperties();
         }

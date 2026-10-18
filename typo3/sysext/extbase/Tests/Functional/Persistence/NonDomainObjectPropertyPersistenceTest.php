@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\CleanStateTracker;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Tests\BlogExample\Domain\Model\Enum\AgeGroup;
@@ -171,7 +172,7 @@ final class NonDomainObjectPropertyPersistenceTest extends FunctionalTestCase
         self::assertSame(['foo' => 'bar'], $reconstituted->getTypedJsonField()->toArray());
         self::assertInstanceOf(JsonValue::class, $reconstituted->getNullableTypedJsonField());
         self::assertSame(['nullable' => true], $reconstituted->getNullableTypedJsonField()->toArray());
-        self::assertFalse($reconstituted->_isDirty());
+        self::assertFalse($this->get(CleanStateTracker::class)->isEntityDirty($reconstituted));
     }
 
     #[Test]

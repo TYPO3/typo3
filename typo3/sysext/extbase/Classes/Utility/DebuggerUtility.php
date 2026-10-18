@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\DomainObject\AbstractValueObject;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\CleanStateTracker;
 use TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
@@ -279,7 +280,7 @@ class DebuggerUtility
             }
             $dump[] = self::styled($scope, 'scope', $plainText, $ansiColors, 1);
             if ($object instanceof DomainObjectInterface) {
-                if ($object->_isDirty()) {
+                if (GeneralUtility::makeInstance(CleanStateTracker::class)->isEntityDirty($object)) {
                     $persistenceType = 'modified';
                 } elseif ($object->_isNew()) {
                     $persistenceType = 'transient';
@@ -287,7 +288,7 @@ class DebuggerUtility
                     $persistenceType = 'persistent';
                 }
             }
-            if ($object instanceof ObjectStorage && $object->_isDirty()) {
+            if ($object instanceof ObjectStorage && GeneralUtility::makeInstance(CleanStateTracker::class)->isEntityDirty($object)) {
                 $persistenceType = 'modified';
             }
             if ($object instanceof AbstractEntity) {
@@ -414,7 +415,7 @@ class DebuggerUtility
                         }
                         continue;
                     }
-                    if ($object instanceof DomainObjectInterface && !$object->_isNew() && $object->_isDirty($property->getName())) {
+                    if ($object instanceof DomainObjectInterface && !$object->_isNew() && GeneralUtility::makeInstance(CleanStateTracker::class)->isEntityPropertyDirty($object, $property->getName())) {
                         $header[] = self::styled('modified', 'dirty', $plainText, $ansiColors, 1);
                     }
                     $dump[] = self::renderDump($property->getValue($object), $level, $plainText, $ansiColors, $header);

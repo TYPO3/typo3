@@ -20,9 +20,12 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
+use Symfony\Component\DependencyInjection\Container;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Error\Error;
 use TYPO3\CMS\Extbase\Error\Result;
+use TYPO3\CMS\Extbase\Persistence\Generic\CleanStateTracker;
 use TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
@@ -322,6 +325,9 @@ final class GenericObjectValidatorTest extends UnitTestCase
         $parentObject = new class extends AbstractEntity {
             protected AbstractEntity|LazyLoadingProxy|null $relation = null;
         };
+        $container = new Container();
+        $container->set(CleanStateTracker::class, new CleanStateTracker());
+        GeneralUtility::setContainer($container);
         $dataMapper = self::createStub(DataMapper::class);
         $dataMapper->method('mapResultToPropertyValue')->willReturn($lazilyLoadedObject);
         $proxy = new LazyLoadingProxy($parentObject, 'relation', 1, $dataMapper);

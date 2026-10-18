@@ -1,0 +1,4 @@
+tx_blogexample_domain_model_blog
+,uid,title,description
+,1,"Blog1","Blog1 description"
+,2,"Blog2","Blog2 description"

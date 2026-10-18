@@ -1,0 +1,16 @@
+tx_blogexample_domain_model_blog
+,uid,title,description,posts
+,1,"Blog1","Blog1 description",1
+tx_blogexample_domain_model_post
+,uid,title,blog,tags
+,1,"Post1",1,3
+tx_blogexample_domain_model_tag
+,uid,name
+,1,"Tag1"
+,2,"Tag2"
+,3,"Tag3"
+tx_blogexample_domain_model_tag_mm
+,uid_local,uid_foreign,tablenames,fieldname,sorting,sorting_foreign
+,1,1,tx_blogexample_domain_model_post,tags,1,1
+,2,1,tx_blogexample_domain_model_post,tags,1,2
+,3,1,tx_blogexample_domain_model_post,tags,1,3
