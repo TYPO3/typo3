@@ -60,6 +60,8 @@ class DatabaseRowDefaultAsReadonly implements FormDataProviderInterface
 
             // Override the current database field with the one from the default language
             $result['databaseRow'][$fieldName] = $result['defaultLanguageRow'][$fieldName];
+            // Set readOnly early, so providers compiling child records (e.g. inline) inherit it
+            $result['processedTca']['columns'][$fieldName]['config']['readOnly'] = true;
         }
 
         return $result;

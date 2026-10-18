@@ -1,0 +1,18 @@
+{
+	"name": "typo3tests/inline-default-as-readonly",
+	"type": "typo3-cms-extension",
+	"description": "Inline field with l10n_display defaultAsReadonly",
+	"version": "1.0.0",
+	"license": "GPL-2.0-or-later",
+	"require": {
+		"typo3/cms-core": "15.0.*@dev"
+	},
+	"extra": {
+		"typo3/cms": {
+			"extension-key": "test_inline_default_as_readonly",
+			"Package": {
+				"providesPackages": []
+			}
+		}
+	}
+}
