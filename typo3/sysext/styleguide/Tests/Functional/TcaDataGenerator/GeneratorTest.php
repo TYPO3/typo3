@@ -128,6 +128,9 @@ final class GeneratorTest extends FunctionalTestCase
             (string)$basicRow['uuid_1']
         );
 
+        self::assertIsArray(json_decode($basicRow['json_3'], true, 512, JSON_THROW_ON_ERROR));
+        self::assertIsArray(json_decode($basicRow['json_4'], true, 512, JSON_THROW_ON_ERROR));
+
         // The "use combination" inline scenarios created four child rows, two of them
         // connected via mm. Translation handling copies some of these rows in addition,
         // with a non-deterministic amount, so only the lower bounds are asserted.

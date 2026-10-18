@@ -1196,6 +1196,24 @@ backend_layout {
                 'readOnly' => true,
             ],
         ],
+        'json_3' => [
+            'label' => 'json_3',
+            'description' => 'enableCodeEditor=false',
+            'config' => [
+                'type' => 'json',
+                'enableCodeEditor' => false,
+            ],
+        ],
+        'json_4' => [
+            'label' => 'json_4',
+            'description' => 'enableCodeEditor=false readOnly=true',
+            'config' => [
+                'type' => 'json',
+                'enableCodeEditor' => false,
+                'readOnly' => true,
+            ],
+        ],
+
         'uuid_1' => [
             'label' => 'uuid_1',
             'description' => 'uuid',
@@ -2220,7 +2238,7 @@ backend_layout {
                     text_11, text_12, text_13, text_18, text_14, text_15, text_16, text_17, text_19,
                     text_20,
                 --div--;json,
-                    json_1, json_2,
+                    json_1, json_2, json_3, json_4,
                 --div--;uuid,
                     uuid_1, uuid_2, uuid_3,
                 --div--;check,
