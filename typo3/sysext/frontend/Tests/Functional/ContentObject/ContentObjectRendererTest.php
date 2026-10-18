@@ -2446,6 +2446,14 @@ content="benni">',
     {
         return [
             'empty' => ['', ''],
+            'plain unicode' => ['Ä 😀', 'Ä 😀'],
+            'opening delimiter at end' => ['Ä 😀', 'Ä 😀{'],
+            'incomplete placeholder' => ['Ä 😀', 'Ä 😀{field:missing'],
+            'placeholder at end' => ['Ä 😀', 'Ä 😀{field:missing}'],
+            'adjacent placeholders' => ['', '{field:missing}{field:missing}'],
+            'incomplete quoted identifier' => ['Ä 😀{#uid', 'Ä 😀{#uid'],
+            'quoted identifier at end' => ['Ä 😀{#uid}', 'Ä 😀{#uid}'],
+            'binary content' => ["\0\0", "\0{field:missing}\0"],
             'notFoundData' => ['any=1', 'any{$string}=1'],
             'queryParameter' => ['any{#string}=1', 'any{#string}=1'],
         ];
@@ -4366,6 +4374,32 @@ content="benni">',
         $mailto_makelinksReflectionMethod = new \ReflectionClass($subject)->getMethod('mailto_makelinks');
         $result = $mailto_makelinksReflectionMethod->invoke($subject, 'mailto:', []);
         self::assertSame('mailto:', $result);
+    }
+
+    public static function htmlScanningDataProvider(): array
+    {
+        return [
+            'empty' => ['', ''],
+            'plain unicode' => ['ä 😀', 'Ä 😀'],
+            'complete tags' => ['<p>ä 😀</p>', '<p>Ä 😀</p>'],
+            'adjacent tags' => ['<p></p><p>ä</p>', '<p></p><p>Ä</p>'],
+            'opening delimiter at end' => ['ä<', 'Ä<'],
+            'incomplete opening tag' => ['ä<p', 'Ä<p'],
+            'incomplete closing tag' => ['<p>ä</p', '<p>Ä</p'],
+            'invalid tag starts' => ['ä<1<2<p>ä</p>', 'Ä<1<2<p>Ä</p>'],
+            'binary content' => ["\0<p>ä</p>\0", "\0<p>Ä</p>\0"],
+        ];
+    }
+
+    #[DataProvider('htmlScanningDataProvider')]
+    #[Test]
+    public function htmlScanningPreservesTags(string $content, string $expected): void
+    {
+        self::assertSame($expected, $this->get(ContentObjectRenderer::class)->HTMLcaseshift($content, 'upper'));
+        self::assertSame($content, $this->get(ContentObjectRenderer::class)->parseFunc($content, [
+            'allowTags' => '*',
+            'htmlSanitize' => false,
+        ]));
     }
 
     public static function caseshiftDataProvider(): array

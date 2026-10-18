@@ -2546,17 +2546,17 @@ class ContentObjectRenderer
         $totalLen = strlen($str);
         do {
             if (!$inside) {
-                $len = strcspn(substr($str, $pointer), '{');
+                $len = strcspn($str, '{', $pointer);
                 $newVal .= substr($str, $pointer, $len);
                 $inside = true;
                 if (substr($str, $pointer + $len + 1, 1) === '#') {
-                    $len2 = strcspn(substr($str, $pointer + $len), '}');
+                    $len2 = strcspn($str, '}', $pointer + $len);
                     $newVal .= substr($str, $pointer + $len, $len2);
                     $len += $len2;
                     $inside = false;
                 }
             } else {
-                $len = strcspn(substr($str, $pointer), '}') + 1;
+                $len = strcspn($str, '}', $pointer) + 1;
                 $newVal .= $this->getData(substr($str, $pointer + 1, $len - 2), $this->data);
                 $inside = false;
             }
@@ -2946,7 +2946,7 @@ class ContentObjectRenderer
                     $len_p = 0;
                     $c = 100;
                     do {
-                        $len = strcspn(substr($theValue, $pointer + $len_p), '<');
+                        $len = strcspn($theValue, '<', $pointer + $len_p);
                         $len_p += $len + 1;
                         $ordValue = strtolower(substr($theValue, $pointer + $len_p, 1));
                         $endChar = empty($ordValue) ? 0 : ord($ordValue);
@@ -3011,7 +3011,7 @@ class ContentObjectRenderer
                 $inside = true;
             } else {
                 // tags
-                $len = strcspn(substr($theValue, $pointer), '>') + 1;
+                $len = strcspn($theValue, '>', $pointer) + 1;
                 $data = substr($theValue, $pointer, $len);
                 if (str_ends_with($data, '/>') && !str_starts_with($data, '<link ')) {
                     $tagContent = substr($data, 1, -2);
@@ -4332,11 +4332,11 @@ class ContentObjectRenderer
         $totalLen = strlen($theValue);
         do {
             if (!$inside) {
-                $len = strcspn(substr($theValue, $pointer), '<');
+                $len = strcspn($theValue, '<', $pointer);
                 $newVal .= $this->caseshift(substr($theValue, $pointer, $len), $case);
                 $inside = 1;
             } else {
-                $len = strcspn(substr($theValue, $pointer), '>') + 1;
+                $len = strcspn($theValue, '>', $pointer) + 1;
                 $newVal .= substr($theValue, $pointer, $len);
                 $inside = 0;
             }

@@ -63,6 +63,11 @@ final class HtmlParserTest extends UnitTestCase
     public static function splitIntoBlockDataProvider(): array
     {
         return [
+            'empty content' => ['p', '', false, ['']],
+            'no matching tag' => ['p', 'Ä 😀 <p', false, ['Ä 😀 <p']],
+            'tag at end of input' => ['p', 'Ä 😀 <p>', false, ['Ä 😀 ', '<p>']],
+            'closing tag at end of input' => ['p', '<p>Ä 😀</p>', false, ['', '<p>Ä 😀</p>', '']],
+            'incomplete closing tag' => ['p', '<p>Ä 😀</p', false, ['', '<p>Ä 😀</p']],
             'splitBlock' => [
                 'h1,span',
                 '<body><h1>Title</h1><span>Note</span></body>',
@@ -135,6 +140,25 @@ final class HtmlParserTest extends UnitTestCase
     public function splitIntoBlock(string $tag, string $content, bool $eliminateExtraEndTags, array $expected): void
     {
         self::assertSame($expected, $this->subject->splitIntoBlock($tag, $content, $eliminateExtraEndTags));
+    }
+
+    public static function splitTagsDataProvider(): array
+    {
+        return [
+            'empty content' => ['', ['']],
+            'no complete tag' => ['Ä 😀 <p', ['Ä 😀 <p']],
+            'tag at end of input' => ['Ä 😀 <p>', ['Ä 😀 ', '<p>', '']],
+            'adjacent tags' => ['<p><p>', ['', '<p>', '', '<p>', '']],
+            'incomplete trailing tag' => ['<p>Ä 😀<p', ['', '<p>', 'Ä 😀<p']],
+            'binary content' => ["\0<p>\0", ["\0", '<p>', "\0"]],
+        ];
+    }
+
+    #[DataProvider('splitTagsDataProvider')]
+    #[Test]
+    public function splitTags(string $content, array $expected): void
+    {
+        self::assertSame($expected, $this->subject->splitTags('p', $content));
     }
 
     #[DataProvider('cDataWillRemainUnmodifiedDataProvider')]
