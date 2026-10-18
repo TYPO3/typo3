@@ -7031,14 +7031,27 @@ class DataHandler
         $dbAnalysis = $this->createRelationHandlerInstance();
         $dbAnalysis->registerNonTableValues = $conf['type'] === 'select' && ($conf['allowNonIdValues'] ?? false);
         $dbAnalysis->start($value, $allowedTables, $conf['MM'] ?? '', $MM_localUid, $table, $conf);
+        $existingItems = [];
+        foreach ($dbAnalysis->itemArray as $v) {
+            $existingItems[$v['table'] . ':' . $v['id']] = true;
+        }
+        $staleItemsRemoved = false;
         // Traverse those references and map IDs:
         foreach ($dbAnalysis->itemArray as $k => $v) {
             $mapID = $this->copyMappingArray_merged[$v['table']][$v['id']] ?? 0;
             if ($mapID && !in_array($v['table'], $dontRemapTables, true)) {
-                $dbAnalysis->itemArray[$k]['id'] = $mapID;
+                if (!empty($conf['MM']) && !($conf['multiple'] ?? false) && isset($existingItems[$v['table'] . ':' . $mapID])) {
+                    // Both sides of a bidirectional MM relation were copied: the relation to the
+                    // copy already exists, the one to the original is stale and must not be duplicated.
+                    unset($dbAnalysis->itemArray[$k]);
+                    $staleItemsRemoved = true;
+                } else {
+                    $dbAnalysis->itemArray[$k]['id'] = $mapID;
+                }
                 $set = true;
             }
         }
+        $dbAnalysis->itemArray = array_values($dbAnalysis->itemArray);
         if (!empty($conf['MM'])) {
             // Purge invalid items (live/version)
             $dbAnalysis->purgeItemArray();
@@ -7066,6 +7079,9 @@ class DataHandler
         if ($set) {
             if ($conf['MM'] ?? false) {
                 $dbAnalysis->writeMM($conf['MM'], $MM_localUid, $prependName);
+                if ($staleItemsRemoved) {
+                    return $dbAnalysis->countItems();
+                }
             } else {
                 return $dbAnalysis->getValueArray($prependName);
             }

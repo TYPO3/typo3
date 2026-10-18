@@ -1,0 +1,22 @@
+"pages"
+,"uid","pid","deleted","title"
+,1,0,0,"Root"
+,89,1,0,"Relations"
+,90,1,0,"Target"
+,91,90,0,"Relations"
+"tx_test_mm"
+,"uid","pid","deleted","title","group_mm_1_local","select_mm_1_local"
+,28,89,0,"Surf A",1,1
+,29,91,0,"Surf A",1,1
+"tt_content"
+,"uid","pid","deleted","header","group_mm_1_foreign","select_mm_1_foreign"
+,297,89,0,"Regular Element #1",1,1
+,298,91,0,"Regular Element #1",1,1
+"group_mm_1_relations_mm"
+,"uid_local","uid_foreign","tablenames","sorting","sorting_foreign","fieldname"
+,28,297,"tt_content",1,1,"group_mm_1_foreign"
+,29,298,"tt_content",1,1,"group_mm_1_foreign"
+"select_mm_1_relations_mm"
+,"uid_local","uid_foreign","sorting","sorting_foreign"
+,28,297,1,1
+,29,298,1,1
