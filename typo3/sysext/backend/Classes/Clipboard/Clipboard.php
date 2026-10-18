@@ -248,7 +248,7 @@ class Clipboard
                 'info' => $this->getTabInfo('normal', $table),
                 'title' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.normal'),
                 'description' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.normal-description'),
-                'items' => $this->current === 'normal' ? $this->getTabItems('normal', $table) : [],
+                'items' => $this->current === 'normal' ? $this->getTabItems('normal') : [],
             ],
         ];
         // Add numeric tabs
@@ -258,7 +258,7 @@ class Clipboard
                 'info' => $this->getTabInfo('tab_' . $a, $table),
                 'title' => sprintf($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.cliptabs-name'), (string)$a),
                 'description' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.cliptabs-description'),
-                'items' => $this->current === 'tab_' . $a ? $this->getTabItems('tab_' . $a, $table) : [],
+                'items' => $this->current === 'tab_' . $a ? $this->getTabItems('tab_' . $a) : [],
             ];
         }
         // Add tabs to clipboard Data
@@ -273,7 +273,7 @@ class Clipboard
      * @param string $padIdentifier Pad reference
      * @return array The tab items
      */
-    protected function getTabItems(string $padIdentifier, string $currentTable): array
+    protected function getTabItems(string $padIdentifier): array
     {
         if (!is_array($this->clipData[$padIdentifier]['el'] ?? false)) {
             return [];
@@ -309,14 +309,13 @@ class Clipboard
                     }
                     $linkItemText = BackendUtility::cropToTitleLength($fileObject->getName());
                     $combinedIdentifier = $fileObject->getParentFolder()->getCombinedIdentifier();
-                    $filesRequested = $currentTable === '_FILE';
                     $records[] = [
                         'identifier' => '_FILE|' . md5($value),
                         'icon' => $this->iconFactory
                             ->getIconForResource($fileObject, IconSize::SMALL)
                             ->setTitle($fileObject->getName() . ' ' . $size)
                             ->render(),
-                        'title' => $this->linkItemText(htmlspecialchars($linkItemText), $combinedIdentifier, $filesRequested),
+                        'title' => $this->linkItemText(htmlspecialchars($linkItemText), $combinedIdentifier),
                         'thumb' => $thumb,
                         'infoDataDispatch' => [
                             'action' => 'TYPO3.InfoWindow.showItem',
@@ -332,21 +331,20 @@ class Clipboard
                 // Rendering records:
                 $record = BackendUtility::getRecordWSOL($table, (int)$uid);
                 if (is_array($record)) {
-                    $isRequestedTable = $currentTable !== '_FILE';
                     $records[] = [
                         'identifier' => $table . '|' . $uid,
                         'icon' => $this->iconFactory->getIconForRecord($table, $record, IconSize::SMALL)->render(),
                         'title' => $this->linkItemText(htmlspecialchars(BackendUtility::cropToTitleLength(BackendUtility::getRecordTitle(
                             $table,
                             $record
-                        ))), $record, $isRequestedTable),
+                        ))), $record),
                         'infoDataDispatch' => [
                             'action' => 'TYPO3.InfoWindow.showItem',
                             'args' => GeneralUtility::jsonEncodeForHtmlAttribute([$table, (int)$uid], false),
                         ],
                     ];
 
-                    $localizationData = $this->getLocalizations($table, $record, $isRequestedTable);
+                    $localizationData = $this->getLocalizations($table, $record);
                     if (!empty($localizationData)) {
                         $records = array_merge($records, $localizationData);
                     }
@@ -378,10 +376,9 @@ class Clipboard
      *
      * @param string $table The table
      * @param array $parentRecord The parent record
-     * @param bool $isRequestedTable Whether the element is from the requested table
      * @return array HTML table rows
      */
-    protected function getLocalizations(string $table, array $parentRecord, bool $isRequestedTable): array
+    protected function getLocalizations(string $table, array $parentRecord): array
     {
         if (!$this->tcaSchemaFactory->has($table)) {
             return [];
@@ -416,14 +413,9 @@ class Clipboard
             ->orderBy($languageCapability->getLanguageField()->getName());
 
         foreach ($queryBuilder->executeQuery()->fetchAllAssociative() as $record) {
-            $title = htmlspecialchars(BackendUtility::cropToTitleLength(BackendUtility::getRecordTitle($table, $record)));
-            if (!$isRequestedTable) {
-                // In case the current table is not the requested table, e.g. "_FILE", wrap title in "muted" style
-                $title = '<span class="text-variant">' . $title . '</span>';
-            }
             $records[] = [
                 'icon' => $this->iconFactory->getIconForRecord($table, $record, IconSize::SMALL)->render(),
-                'title' => $title,
+                'title' => htmlspecialchars(BackendUtility::cropToTitleLength(BackendUtility::getRecordTitle($table, $record))),
                 'infoDataDispatch' => [
                     'action' => 'TYPO3.InfoWindow.showItem',
                     'args' => GeneralUtility::jsonEncodeForHtmlAttribute([$table, (int)$record['uid']], false),
@@ -455,28 +447,16 @@ class Clipboard
 
     /**
      * Wraps the title of the element in a link to the page/folder where they originate from.
-     * Will be wrapped into "muted" style in case the element is not from the currently requested table.
      *
      * @param string $itemText Title of element - must be htmlspecialchar'ed on beforehand.
      * @param array|string $reference If array, a record is expected. If string, its the folders' combined identifier
-     * @param bool $isRequestedTable Whether the element is from the requested table
      */
-    protected function linkItemText(string $itemText, $reference, bool $isRequestedTable): string
+    protected function linkItemText(string $itemText, $reference): string
     {
         if (is_array($reference)) {
-            if ($isRequestedTable) {
-                // Wrap in link to corresponding page in recordlist in case current requested table matches
-                $itemText = '<a href="' . htmlspecialchars((string)$this->uriBuilder->buildUriFromRoute('records', ['id' => $reference['pid']])) . '">' . $itemText . '</a>';
-            } else {
-                $itemText = '<span class="text-variant">' . $itemText . '</span>';
-            }
-        } elseif (is_string($reference)) {
-            if ($isRequestedTable && ExtensionManagementUtility::isLoaded('filelist')) {
-                // Wrap in link to the files folder in case current requested table matches and filelist is loaded
-                $itemText = '<a href="' . htmlspecialchars((string)$this->uriBuilder->buildUriFromRoute('media_management', ['id' => $reference])) . '">' . $itemText . '</a>';
-            } else {
-                $itemText = '<span class="text-variant">' . $itemText . '</span>';
-            }
+            $itemText = '<a href="' . htmlspecialchars((string)$this->uriBuilder->buildUriFromRoute('records', ['id' => $reference['pid']])) . '">' . $itemText . '</a>';
+        } elseif (is_string($reference) && ExtensionManagementUtility::isLoaded('filelist')) {
+            $itemText = '<a href="' . htmlspecialchars((string)$this->uriBuilder->buildUriFromRoute('media_management', ['id' => $reference])) . '">' . $itemText . '</a>';
         }
         return $itemText;
     }

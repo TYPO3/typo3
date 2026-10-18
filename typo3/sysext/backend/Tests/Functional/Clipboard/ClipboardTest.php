@@ -38,7 +38,11 @@ final class ClipboardTest extends FunctionalTestCase
         'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
     ];
 
-    protected array $coreExtensionsToLoad = ['workspaces'];
+    protected array $coreExtensionsToLoad = ['filelist', 'workspaces'];
+
+    protected array $pathsToProvideInTestInstance = [
+        'typo3/sysext/filelist/Tests/Functional/Fixtures/textfile.txt' => 'fileadmin/textfile.txt',
+    ];
 
     private BackendUserAuthentication $backendUser;
 
@@ -126,7 +130,7 @@ final class ClipboardTest extends FunctionalTestCase
                 1,
                 '_FILE',
                 [
-                    '<span class="text-variant">FR: Interne</span>',
+                    'FR: Interne',
                 ],
             ],
         ];
@@ -152,5 +156,39 @@ final class ClipboardTest extends FunctionalTestCase
         }
 
         self::assertEqualsCanonicalizing($expectation, $actualTitles);
+    }
+
+    public static function itemsAreLinkedRegardlessOfRequestedTableDataProvider(): array
+    {
+        return [
+            'record list' => [''],
+            'file list' => ['_FILE'],
+        ];
+    }
+
+    #[DataProvider('itemsAreLinkedRegardlessOfRequestedTableDataProvider')]
+    #[Test]
+    public function recordsAreLinkedRegardlessOfRequestedTable(string $table): void
+    {
+        $subject = $this->get(Clipboard::class);
+        $subject->clipData['normal']['el'] = ['pages|1100' => 'some value'];
+        $subject->current = 'normal';
+        $title = $subject->getClipboardData($table)['tabs'][0]['items'][0]['title'];
+
+        self::assertStringStartsWith('<a href="typo3/module/content/records?', $title);
+        self::assertStringContainsString('id=1000', $title);
+    }
+
+    #[DataProvider('itemsAreLinkedRegardlessOfRequestedTableDataProvider')]
+    #[Test]
+    public function filesAreLinkedRegardlessOfRequestedTable(string $table): void
+    {
+        $subject = $this->get(Clipboard::class);
+        $subject->clipData['normal']['el'] = ['_FILE|' . md5('1:/textfile.txt') => '1:/textfile.txt'];
+        $subject->current = 'normal';
+        $title = $subject->getClipboardData($table)['tabs'][0]['items'][0]['title'];
+
+        self::assertStringStartsWith('<a href="typo3/module/file/list?', $title);
+        self::assertStringContainsString('>textfile.txt</a>', $title);
     }
 }
