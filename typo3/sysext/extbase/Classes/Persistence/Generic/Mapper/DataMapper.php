@@ -522,12 +522,14 @@ class DataMapper
             $languageAspect = $this->query->getQuerySettings()->getLanguageAspect();
             $languageUid = $languageAspect->getContentId();
             if ($dataMap->languageIdColumnName !== null && !$this->query->getQuerySettings()->getRespectSysLanguage()) {
-                //pass language of parent record to child objects, so they can be overlaid correctly in case
-                //e.g. findByUid is used.
-                //the languageUid is used for getRecordOverlay later on, despite RespectSysLanguage being false
+                // A parent loaded by the uid of a translation outside the requested language and its fallback
+                // chain passes its own language on to its children; otherwise the requested language is kept.
                 $parentLanguageUid = (int)$parentObject->_getProperty(AbstractDomainObject::PROPERTY_LANGUAGE_UID);
-                // do not override the language when the parent language uid is set to all languages (-1)
-                if ($parentLanguageUid !== LanguageMarker::ALL_LANGUAGES) {
+                $fallbackChainLanguageUids = array_map(intval(...), array_filter($languageAspect->getFallbackChain(), is_numeric(...)));
+                $parentIsForAllLanguages = $parentLanguageUid === LanguageMarker::ALL_LANGUAGES;
+                $parentIsInRequestedLanguage = $parentLanguageUid === $languageUid;
+                $parentIsInFallbackChain = in_array($parentLanguageUid, $fallbackChainLanguageUids, true);
+                if (!$parentIsForAllLanguages && !$parentIsInRequestedLanguage && !$parentIsInFallbackChain) {
                     $languageUid = $parentLanguageUid;
                 }
             }
