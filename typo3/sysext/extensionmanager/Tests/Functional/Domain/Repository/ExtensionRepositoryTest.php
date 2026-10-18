@@ -168,6 +168,26 @@ final class ExtensionRepositoryTest extends FunctionalTestCase
         self::assertSame('friendsoftypo3/content-blocks', $extensions[0]->composerName);
     }
 
+    /**
+     * "Outdated" is a recommendation, not a block: TER still serves its download.
+     * Only "insecure" must be hidden, so a user whose only available update is an
+     * outdated version can still see and install it. See #92217.
+     */
+    #[Test]
+    public function findByExtensionKeyOrderedByVersionExcludesInsecureButKeepsOutdated(): void
+    {
+        $this->createRemoteExtensionRecord('news', '1.0.0', ['review_state' => -1, 'current_version' => 0]);
+        $this->createRemoteExtensionRecord('news', '2.0.0', ['review_state' => -2, 'current_version' => 0]);
+        $this->createRemoteExtensionRecord('news', '3.0.0', ['review_state' => 0]);
+
+        $extensions = $this->get(ExtensionRepository::class)->findByExtensionKeyOrderedByVersion('news');
+
+        self::assertSame(
+            ['3.0.0', '2.0.0'],
+            array_map(static fn(Extension $extension): string => $extension->version, $extensions)
+        );
+    }
+
     #[Test]
     public function findByVersionRangeAndExtensionKeyOrderedByVersionResolvesComposerName(): void
     {

@@ -189,6 +189,53 @@ final class TerExtensionCatalogueTest extends UnitTestCase
         self::assertSame(['14.1.1', '14.0.0'], array_map(static fn($e) => $e->version, $versions));
     }
 
+    /**
+     * "Outdated" is a recommendation, not a block: TER still serves its
+     * download. Only "insecure" must be hidden, mirroring #92217's fix to
+     * the local-fallback catalogue.
+     */
+    #[Test]
+    public function outdatedVersionsAreStillOffered(): void
+    {
+        $client = $this->createMock(TerApiClient::class);
+        $client->method('getExtension')->willReturn($this->remoteExtension('news', 'georg', 'plugin', 'stable'));
+        $client->method('getVersions')->willReturn([
+            TerExtensionVersion::fromArray(['number' => '14.1.1', 'review_state' => 0]),
+            TerExtensionVersion::fromArray(['number' => '14.1.0', 'review_state' => -2]),
+            TerExtensionVersion::fromArray(['number' => '14.0.0', 'review_state' => -1]),
+        ]);
+
+        $versions = $this->createSubject($client)->findByExtensionKeyOrderedByVersion('news');
+
+        self::assertSame(['14.1.1', '14.1.0'], array_map(static fn($e) => $e->version, $versions));
+    }
+
+    #[Test]
+    public function anOutdatedCurrentVersionIsStillOffered(): void
+    {
+        $client = $this->createMock(TerApiClient::class);
+        $client->method('getExtension')->willReturn(TerExtension::fromArray([
+            'key' => 'news',
+            'current_version' => ['number' => '14.1.1', 'review_state' => -2],
+        ]));
+
+        self::assertNotNull($this->createSubject($client)->findOneByCurrentVersionByExtensionKey('news'));
+    }
+
+    #[Test]
+    public function anExtensionWhoseCurrentVersionIsOutdatedIsStillListed(): void
+    {
+        $outdated = TerExtension::fromArray([
+            'key' => 'outdated_ext',
+            'current_version' => ['number' => '1.0.0', 'category' => 'distribution', 'review_state' => -2],
+        ]);
+        $client = $this->createClient(new TerExtensionListResult(1, [$outdated]));
+
+        $keys = array_map(static fn($e) => $e->extensionKey, $this->createSubject($client)->findAll(0, 10));
+
+        self::assertSame(['outdated_ext'], $keys);
+    }
+
     #[Test]
     public function anInsecureCurrentVersionIsNotOffered(): void
     {
