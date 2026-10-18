@@ -21,6 +21,7 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\ActionService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -173,5 +174,19 @@ final class WorkspaceServiceTest extends FunctionalTestCase
 
         $result = $subject->selectVersionsInWorkspace(91, -99, 2, 0, 'tables_select', 1);
         self::assertArrayNotHasKey('backend_layout', $result);
+    }
+
+    #[Test]
+    public function availableWorkspacesAreResolvedPerBackendUser(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/WorkspaceServiceTestUsers.csv');
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('default');
+        $subject = $this->get(WorkspaceService::class);
+        self::assertSame([0, 9, 90, 91, 92], array_keys($subject->getAvailableWorkspaces()));
+        self::assertSame([0, 9, 90, 91, 92], array_keys($subject->getAvailableWorkspaces(true)));
+
+        $this->setUpBackendUser(2);
+        self::assertSame([0], array_keys($subject->getAvailableWorkspaces()));
+        self::assertSame([0], array_keys($subject->getAvailableWorkspaces(true)));
     }
 }
