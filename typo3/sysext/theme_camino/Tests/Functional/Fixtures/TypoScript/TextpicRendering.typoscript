@@ -1,0 +1,7 @@
+lib.fluidPage.paths.100 = EXT:theme_camino/Tests/Functional/Fixtures/TextpicRendering/
+
+lib.textpicRenderingContent = CONTENT
+lib.textpicRenderingContent {
+  table = tt_content
+  select.orderBy = sorting
+}

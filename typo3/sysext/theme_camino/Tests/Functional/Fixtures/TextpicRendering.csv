@@ -1,0 +1,11 @@
+tt_content,,,,,,,,,,,,,
+,uid,pid,CType,header,image,imageorient,colPos,sorting,,,,,
+,1,1,textpic,Textpic with two images,2,0,0,256,,,,,
+sys_file,,,,,,,,,,,,,
+,uid,pid,storage,type,identifier,identifier_hash,folder_hash,extension,mime_type,name,sha1,size,creation_date,modification_date
+,1,0,1,2,/user_upload/FALImageViewHelperTest1.svg,cd3af075d80618729520920802d0fd25b535b74c,19669f1e02c2f16705ec7587044c66443be70725,svg,image/svg+xml,FALImageViewHelperTest1.svg,b6bcefe7804cb2f0de8d5d2834c7c546c3766dd7,64735,1389878273,1389878273
+,2,0,1,2,/user_upload/FALImageViewHelperTest2.svg,a5d36e35adfe231b5c01778462ebabbf12defd0f,19669f1e02c2f16705ec7587044c66443be70725,svg,image/svg+xml,FALImageViewHelperTest2.svg,575d40f604e1b46792dd6566bf6ff52ffae5d6a8,1211,1389878273,1389878273
+sys_file_reference,,,,,,,,,,,,,
+,uid,pid,uid_local,uid_foreign,tablenames,fieldname,sorting_foreign,,,,,,
+,1,1,1,1,tt_content,image,1,,,,,,
+,2,1,2,1,tt_content,image,2,,,,,,
