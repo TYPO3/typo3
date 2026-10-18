@@ -48,6 +48,17 @@ return [
             ],
         ],
 
+        'folder_4' => [
+            'label' => 'folder_4 browser entry point via Page TSconfig',
+            'description' => 'Opens the generated styleguide folder. The generator sets PAGE_TSCONFIG_ID on this page; other folders remain selectable.',
+            'config' => [
+                'type' => 'folder',
+                'elementBrowserEntryPoints' => [
+                    '_default' => '###PAGE_TSCONFIG_ID###',
+                ],
+            ],
+        ],
+
         'flex_1' => [
             'label' => 'flex_1',
             'config' => [
@@ -84,7 +95,7 @@ return [
         '0' => [
             'showitem' => '
                 --div--;type=folder,
-                    folder_1, folder_2, folder_3,
+                    folder_1, folder_2, folder_3, folder_4,
                 --div--;in flex,
                     flex_1,
                 --div--;meta,

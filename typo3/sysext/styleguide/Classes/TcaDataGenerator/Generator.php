@@ -121,6 +121,7 @@ final class Generator extends AbstractGenerator
 
         $this->createSiteConfiguration($topPageUid);
         $this->createTreeStartingPointsExamples();
+        $this->createElementBrowserEntryPointExamples();
 
         // Create data for each main table
         foreach ($mainTables as $mainTable) {
@@ -195,6 +196,15 @@ final class Generator extends AbstractGenerator
             '}',
         ];
         $this->executeDataHandler(['pages' => [$pid => ['TSconfig' => implode("\n", $pageTsConfig)]]]);
+    }
+
+    private function createElementBrowserEntryPointExamples(): void
+    {
+        $folderPageUid = $this->recordFinder->findPidOfMainTableRecord('tx_styleguide_elements_folder');
+        $this->executeDataHandler(['pages' => [$folderPageUid => [
+            'TSconfig' => 'TCEFORM.tx_styleguide_elements_folder.folder_4.PAGE_TSCONFIG_ID = '
+                . $this->recordFinder->findDemoFolderObject()->getCombinedIdentifier(),
+        ]]]);
     }
 
     /**

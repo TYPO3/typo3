@@ -29,11 +29,48 @@ use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Schema\SearchableSchemaFieldsCollector;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\Generator;
+use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordFinder;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class GeneratorTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = ['styleguide'];
+
+    #[Test]
+    public function createGeneratesResolvableBrowserEntryPoints(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $backendUser = $this->setUpBackendUser(1);
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
+        $this->get(Generator::class)->create();
+
+        $recordFinder = $this->get(RecordFinder::class);
+        $expectedEntryPoints = [
+            ['tx_styleguide_elements_group', 'group_db_14', (string)$recordFinder->findPidOfMainTableRecord('tx_styleguide_elements_group')],
+            ['tx_styleguide_elements_group', 'group_db_15', (string)$recordFinder->findUidsOfStyleguideEntryPages()[0]],
+            ['tx_styleguide_elements_folder', 'folder_4', $recordFinder->findDemoFolderObject()->getCombinedIdentifier()],
+        ];
+        foreach ($expectedEntryPoints as [$table, $field, $expectedEntryPoint]) {
+            $uid = $this->get(ConnectionPool::class)->getConnectionForTable($table)
+                ->select(['uid'], $table, ['sys_language_uid' => 0])->fetchOne();
+            $formData = $this->get(FormDataCompiler::class)->compile([
+                'request' => new ServerRequest(),
+                'tableName' => $table,
+                'vanillaUid' => (int)$uid,
+                'command' => 'edit',
+            ], $this->get(TcaDatabaseRecord::class));
+            $result = $this->get(NodeFactory::class)->create(array_replace($formData, [
+                'renderType' => 'elementBrowser',
+                'fieldName' => $field,
+                'renderData' => ['fieldControlOptions' => []],
+                'parameterArray' => [
+                    'itemFormElName' => 'data[' . $table . '][' . $uid . '][' . $field . ']',
+                    'fieldConf' => $formData['processedTca']['columns'][$field],
+                ],
+            ]))->render();
+            self::assertSame($expectedEntryPoint, $result['linkAttributes']['data-entry-point'], $field);
+        }
+    }
 
     #[Test]
     public function createGeneratesFileExamplesWithConfiguredControls(): void
