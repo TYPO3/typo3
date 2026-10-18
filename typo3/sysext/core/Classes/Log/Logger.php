@@ -66,8 +66,9 @@ final class Logger implements LoggerInterface
     /**
      * Re-initialize instance with creating a new instance with up to date information
      */
-    public function __wakeup()
+    public function __unserialize(array $data): void
     {
+        $this->name = (string)($data['name'] ?? '');
         $newLogger = GeneralUtility::makeInstance(LogManager::class)->getLogger($this->name);
         $this->minimumLogLevel = $newLogger->minimumLogLevel;
         $this->writers = $newLogger->writers;
@@ -75,11 +76,11 @@ final class Logger implements LoggerInterface
     }
 
     /**
-     * Remove everything except the name, to be able to restore it on wakeup
+     * Remove everything except the name, to be able to restore it on unserialization
      */
-    public function __sleep(): array
+    public function __serialize(): array
     {
-        return ['name'];
+        return ['name' => $this->name];
     }
 
     /**

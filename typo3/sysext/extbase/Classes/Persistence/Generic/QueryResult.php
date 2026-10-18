@@ -232,8 +232,9 @@ class QueryResult implements QueryResultInterface
      * from the cache
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    public function __wakeup(): void
+    public function __unserialize(array $data): void
     {
+        $this->query = $data['query'];
         $this->persistenceManager = GeneralUtility::makeInstance(PersistenceManagerInterface::class);
         $this->dataMapper = GeneralUtility::makeInstance(DataMapper::class);
         if ($this->query !== null) {
@@ -244,11 +245,11 @@ class QueryResult implements QueryResultInterface
     }
 
     /**
-     * @return array{0: non-empty-string}
+     * @return array{query: QueryInterface|null}
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    public function __sleep(): array
+    public function __serialize(): array
     {
-        return ['query'];
+        return ['query' => $this->query];
     }
 }

@@ -504,18 +504,19 @@ class FileReference implements FileInterface, ProcessableFileInterface
     /**
      * Avoids exporting original file object which contains
      * singleton dependencies that must not be serialized.
-     *
-     * @return string[]
      */
-    public function __sleep(): array
+    public function __serialize(): array
     {
-        $keys = get_object_vars($this);
-        unset($keys['originalFile'], $keys['mergedProperties'], $keys['mergedPropertiesContext']);
-        return array_keys($keys);
+        $properties = get_object_vars($this);
+        unset($properties['originalFile'], $properties['mergedProperties'], $properties['mergedPropertiesContext']);
+        return $properties;
     }
 
-    public function __wakeup(): void
+    public function __unserialize(array $data): void
     {
+        foreach ($data as $property => $value) {
+            $this->{$property} = $value;
+        }
         $factory = GeneralUtility::makeInstance(ResourceFactory::class);
         $this->originalFile = $this->getFileObject(
             (int)$this->propertiesOfFileReference['uid_local'],

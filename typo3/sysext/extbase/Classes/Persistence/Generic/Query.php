@@ -637,8 +637,16 @@ class Query implements QueryInterface
     /**
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    public function __wakeup()
+    public function __unserialize(array $data): void
     {
+        $this->type = $data['type'];
+        $this->source = $data['source'];
+        $this->constraint = $data['constraint'];
+        $this->statement = $data['statement'];
+        $this->orderings = $data['orderings'];
+        $this->limit = $data['limit'];
+        $this->offset = $data['offset'];
+        $this->querySettings = $data['querySettings'];
         $this->container = GeneralUtility::getContainer();
         $this->persistenceManager = $this->container->get(PersistenceManagerInterface::class);
         $this->dataMapFactory = $this->container->get(DataMapFactory::class);
@@ -646,12 +654,20 @@ class Query implements QueryInterface
     }
 
     /**
-     * @return array
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    public function __sleep()
+    public function __serialize(): array
     {
-        return ['type', 'source', 'constraint', 'statement', 'orderings', 'limit', 'offset', 'querySettings'];
+        return [
+            'type' => $this->type,
+            'source' => $this->source,
+            'constraint' => $this->constraint,
+            'statement' => $this->statement,
+            'orderings' => $this->orderings,
+            'limit' => $this->limit,
+            'offset' => $this->offset,
+            'querySettings' => $this->querySettings,
+        ];
     }
 
     /**

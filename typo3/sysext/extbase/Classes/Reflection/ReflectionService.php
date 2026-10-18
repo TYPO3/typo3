@@ -108,7 +108,7 @@ class ReflectionService implements SingletonInterface
     /**
      * @internal
      */
-    public function __sleep(): array
+    public function __serialize(): array
     {
         return [];
     }
@@ -116,7 +116,7 @@ class ReflectionService implements SingletonInterface
     /**
      * @internal
      */
-    public function __wakeup(): void
+    public function __unserialize(array $data): void
     {
         $this->dataCache = new NullFrontend('extbase');
         $this->dataCacheNeedsUpdate = false;

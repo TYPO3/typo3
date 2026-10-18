@@ -26,8 +26,8 @@ use TYPO3\CMS\Core\Serializer\Exception\DeserializerException;
 
 /**
  * Deserializes a PHP-serialized payload while refusing any class that carries
- * a user-defined __destruct() or an exploitable __wakeup() (one not provided
- * solely by BlockSerializationTrait).
+ * a user-defined __destruct() or __wakeup(), or an exploitable __unserialize()
+ * (one not provided solely by BlockSerializationTrait).
  *
  * The per-class deny/allow decision is made lazily via ReflectionClass at the
  * first encounter of each class name, then cached in cache:core so that
@@ -45,7 +45,7 @@ final readonly class DenyListDeserializer
      * @var list<string>
      */
     private array $allowedClassNames;
-    private \ReflectionMethod $blockSerializationWakeup;
+    private \ReflectionMethod $blockSerializationUnserialize;
 
     public function __construct(
         #[Autowire(service: 'cache.core')]
@@ -55,7 +55,7 @@ final readonly class DenyListDeserializer
     ) {
         $allowedClassNames = $GLOBALS['TYPO3_CONF_VARS']['SYS']['deserialization']['allowedClassNames'] ?? null;
         $this->allowedClassNames = is_array($allowedClassNames) ? $allowedClassNames : [];
-        $this->blockSerializationWakeup = new \ReflectionClass(BlockSerializationTrait::class)->getMethod('__wakeup');
+        $this->blockSerializationUnserialize = new \ReflectionClass(BlockSerializationTrait::class)->getMethod('__unserialize');
     }
 
     /**
@@ -125,7 +125,8 @@ final readonly class DenyListDeserializer
             return false;
         }
         return $this->getUserDefinedMethod($rc, '__destruct') !== null
-            || $this->hasDeniableWakeupMethod($rc);
+            || $this->getUserDefinedMethod($rc, '__wakeup') !== null
+            || $this->hasDeniableUnserializeMethod($rc);
     }
 
     /**
@@ -146,22 +147,22 @@ final readonly class DenyListDeserializer
     }
 
     /**
-     * Returns true when the class has a user-defined __wakeup() that is NOT
-     * BlockSerializationTrait::__wakeup(). Classes whose only __wakeup comes
+     * Returns true when the class has a user-defined __unserialize() that is NOT
+     * BlockSerializationTrait::__unserialize(). Classes whose only __unserialize comes
      * from BlockSerializationTrait are already protected against deserialization
      * (the trait throws unconditionally) and must not be treated as gadgets.
      *
      * Note: for trait methods getDeclaringClass() returns the using class, not the
      * trait — so the origin is identified by comparing the method's source file and line
-     * against the trait's own __wakeup declaration.
+     * against the trait's own __unserialize declaration.
      */
-    private function hasDeniableWakeupMethod(\ReflectionClass $rc): bool
+    private function hasDeniableUnserializeMethod(\ReflectionClass $rc): bool
     {
-        $method = $this->getUserDefinedMethod($rc, '__wakeup');
+        $method = $this->getUserDefinedMethod($rc, '__unserialize');
         if ($method === null) {
             return false;
         }
-        return $method->getFileName() !== $this->blockSerializationWakeup->getFileName()
-            || $method->getStartLine() !== $this->blockSerializationWakeup->getStartLine();
+        return $method->getFileName() !== $this->blockSerializationUnserialize->getFileName()
+            || $method->getStartLine() !== $this->blockSerializationUnserialize->getStartLine();
     }
 }

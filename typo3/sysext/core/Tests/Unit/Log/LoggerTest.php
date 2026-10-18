@@ -21,14 +21,18 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\Log\LogLevel;
 use TYPO3\CMS\Core\Log\Logger;
+use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Log\LogRecord;
 use TYPO3\CMS\Core\Log\Processor\NullProcessor;
 use TYPO3\CMS\Core\Log\Writer\NullWriter;
 use TYPO3\CMS\Core\Tests\Unit\Log\Fixtures\WriterFixture;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class LoggerTest extends UnitTestCase
 {
+    protected bool $resetSingletonInstances = true;
+
     #[Test]
     public function getNameGetsLoggerName(): void
     {
@@ -141,5 +145,35 @@ final class LoggerTest extends UnitTestCase
         $logger->addWriter(LogLevel::NOTICE, $writer);
         $writers = $logger->getWriters();
         self::assertContains($writer, $writers[LogLevel::EMERGENCY]);
+    }
+
+    #[Test]
+    public function serializationOnlyExposesTheLoggerName(): void
+    {
+        $logger = new Logger('test.core.log');
+        $logger->addWriter(LogLevel::NOTICE, new NullWriter());
+        $logger->addProcessor(LogLevel::NOTICE, new NullProcessor());
+
+        self::assertSame(
+            'O:' . strlen(Logger::class) . ':"' . Logger::class . '":1:{s:4:"name";s:13:"test.core.log";}',
+            serialize($logger)
+        );
+    }
+
+    #[Test]
+    public function unserializationRestoresTheConfigurationOfTheLogManager(): void
+    {
+        $writer = new WriterFixture();
+        $logManager = new LogManager();
+        $configuredLogger = $logManager->getLogger('test.core.log');
+        $configuredLogger->addWriter(LogLevel::NOTICE, $writer);
+        GeneralUtility::setSingletonInstance(LogManager::class, $logManager);
+
+        $restored = unserialize(serialize(new Logger('test.core.log')), ['allowed_classes' => [Logger::class]]);
+
+        self::assertInstanceOf(Logger::class, $restored);
+        self::assertSame('test.core.log', $restored->getName());
+        self::assertSame($configuredLogger->getWriters(), $restored->getWriters());
+        self::assertContains($writer, $restored->getWriters()[LogLevel::NOTICE]);
     }
 }

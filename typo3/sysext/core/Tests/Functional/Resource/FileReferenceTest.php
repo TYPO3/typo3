@@ -39,6 +39,31 @@ final class FileReferenceTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function serializationDoesNotExposeTheOriginalFile(): void
+    {
+        $fileReference = new FileReference(['uid' => 1, 'uid_local' => 1, 'title' => 'reference title']);
+        $fileReference->getProperties();
+
+        self::assertSame(
+            'O:' . strlen(FileReference::class) . ':"' . FileReference::class . '":1:{s:25:"propertiesOfFileReference";a:3:{s:3:"uid";i:1;s:9:"uid_local";i:1;s:5:"title";s:15:"reference title";}}',
+            serialize($fileReference)
+        );
+    }
+
+    #[Test]
+    public function unserializationRestoresTheOriginalFile(): void
+    {
+        $fileReference = new FileReference(['uid' => 1, 'uid_local' => 1, 'title' => 'reference title']);
+
+        $restored = unserialize(serialize($fileReference), ['allowed_classes' => [FileReference::class]]);
+
+        self::assertInstanceOf(FileReference::class, $restored);
+        self::assertSame('reference title', $restored->getTitle());
+        self::assertSame(1, $restored->getOriginalFile()->getUid());
+        self::assertSame('/ProcessedFileTest.jpg', $restored->getIdentifier());
+    }
+
+    #[Test]
     public function fileReferenceCanBeSoftDeleted(): void
     {
         $fileReference = new FileReference(['uid' => 1, 'uid_local' => 1, 'tablenames' => 'tt_content', 'uid_foreign' => 1]);

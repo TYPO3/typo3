@@ -89,11 +89,21 @@ final class DenyListDeserializerTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function classWithUnserializeIsBlocked(): void
+    {
+        $className = Fixtures\ClassWithUnserialize::class;
+        $serialized = 'O:' . strlen($className) . ':"' . $className . '":0:{}';
+        $this->expectException(DeserializerException::class);
+        $this->expectExceptionCode(1778594101);
+        $this->subject->deserialize($serialized);
+    }
+
+    #[Test]
     public function classWithOnlyBlockSerializationTraitIsAllowed(): void
     {
-        // BackendFormProtection inherits BlockSerializationTrait's __wakeup (throws on deserialization)
+        // BackendFormProtection inherits BlockSerializationTrait's __unserialize (throws on deserialization)
         // but carries no other gadget methods — it must NOT be blocked by the deny-list.
-        // The exception must come from BlockSerializationTrait::__wakeup (code 1588784142),
+        // The exception must come from BlockSerializationTrait::__unserialize (code 1588784142),
         // not from the deserializer deny-list (code 1778594101).
         $className = BackendFormProtection::class;
         $serialized = 'O:' . strlen($className) . ':"' . $className . '":0:{}';

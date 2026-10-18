@@ -112,12 +112,15 @@ final class FinisherVariableProvider implements \ArrayAccess, \IteratorAggregate
 
     /**
      * Clean up for serializing.
-     *
-     * @return array
      */
-    public function __sleep()
+    public function __serialize(): array
     {
-        return ['objects'];
+        return ['objects' => $this->objects];
+    }
+
+    public function __unserialize(array $data): void
+    {
+        $this->objects = $data['objects'];
     }
 
     /**

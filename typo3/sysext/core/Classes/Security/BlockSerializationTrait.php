@@ -29,7 +29,7 @@ trait BlockSerializationTrait
     /**
      * Deny object deserialization.
      */
-    public function __wakeup()
+    public function __unserialize(array $data): void
     {
         throw new \BadMethodCallException('Cannot unserialize ' . __CLASS__, 1588784142);
     }

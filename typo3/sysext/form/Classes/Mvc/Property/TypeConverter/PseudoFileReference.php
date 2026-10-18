@@ -34,43 +34,30 @@ use TYPO3\CMS\Extbase\Domain\Model\FileReference;
  */
 class PseudoFileReference extends FileReference
 {
-    /**
-     * @var int|null
-     */
-    private $_uid;
-
-    /**
-     * @var int|null
-     */
-    private $_uidLocal;
-
-    public function __sleep(): array
+    public function __serialize(): array
     {
         // in case this is a persisted file reference, use it directly as reference
         // as a consequence, in-memory changes are lost and have to be persisted first
         // (it seems that in ext:form a `FileReference` was never persisted)
         if ($this->uid > 0) {
-            $this->_uid = (int)$this->uid;
-            return ['_uid'];
+            return ['_uid' => (int)$this->uid];
         }
         if ($this->getOriginalResource()->getUid() > 0) {
-            $this->_uid = $this->getOriginalResource()->getUid();
-            return ['_uid'];
+            return ['_uid' => $this->getOriginalResource()->getUid()];
         }
         // in case this is a transient file reference, just expose the associated `sys_file.uid`
         // (based on previous comments, this is the most probably case in ext:form)
-        $this->_uidLocal = $this->getOriginalResource()->getOriginalFile()->getUid();
-        return ['_uidLocal'];
+        return ['_uidLocal' => $this->getOriginalResource()->getOriginalFile()->getUid()];
     }
 
-    public function __wakeup(): void
+    public function __unserialize(array $data): void
     {
         $factory = GeneralUtility::makeInstance(ResourceFactory::class);
-        if ($this->_uid > 0) {
-            $this->originalResource = $factory->getFileReferenceObject($this->_uid);
-        } elseif ($this->_uidLocal > 0) {
+        if (($data['_uid'] ?? 0) > 0) {
+            $this->originalResource = $factory->getFileReferenceObject((int)$data['_uid']);
+        } elseif (($data['_uidLocal'] ?? 0) > 0) {
             $this->originalResource = $factory->createFileReferenceObject([
-                'uid_local' => $this->_uidLocal,
+                'uid_local' => (int)$data['_uidLocal'],
                 'uid_foreign' => 0,
                 'uid' => 0,
                 'crop' => null,
@@ -81,6 +68,5 @@ class PseudoFileReference extends FileReference
                 1613216548
             );
         }
-        unset($this->_uid, $this->_uidLocal);
     }
 }

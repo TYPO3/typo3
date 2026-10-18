@@ -245,26 +245,33 @@ class Typo3QuerySettings implements QuerySettingsInterface
      *
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    public function __sleep(): array
+    public function __serialize(): array
     {
         return [
-            'respectStoragePage',
-            'storagePageIds',
-            'ignoreEnableFields',
-            'enableFieldsToBeIgnored',
-            'includeDeleted',
-            'respectSysLanguage',
-            'languageAspect',
+            'respectStoragePage' => $this->respectStoragePage,
+            'storagePageIds' => $this->storagePageIds,
+            'ignoreEnableFields' => $this->ignoreEnableFields,
+            'enableFieldsToBeIgnored' => $this->enableFieldsToBeIgnored,
+            'includeDeleted' => $this->includeDeleted,
+            'respectSysLanguage' => $this->respectSysLanguage,
+            'languageAspect' => $this->languageAspect,
         ];
     }
 
     /**
-     * Restores the runtime dependencies stripped by __sleep().
+     * Restores the settings and the runtime dependencies stripped by __serialize().
      *
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    public function __wakeup(): void
+    public function __unserialize(array $data): void
     {
+        $this->respectStoragePage = $data['respectStoragePage'];
+        $this->storagePageIds = $data['storagePageIds'];
+        $this->ignoreEnableFields = $data['ignoreEnableFields'];
+        $this->enableFieldsToBeIgnored = $data['enableFieldsToBeIgnored'];
+        $this->includeDeleted = $data['includeDeleted'];
+        $this->respectSysLanguage = $data['respectSysLanguage'];
+        $this->languageAspect = $data['languageAspect'];
         // QuerySettings should always keep its own Context, see __construct()
         $this->context = clone GeneralUtility::makeInstance(Context::class);
         $this->configurationManager = GeneralUtility::makeInstance(ConfigurationManagerInterface::class);
