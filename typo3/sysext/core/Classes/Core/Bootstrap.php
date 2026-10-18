@@ -20,6 +20,7 @@ use Composer\InstalledVersions;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\Backend\BackendInterface;
 use TYPO3\CMS\Core\Cache\Backend\NullBackend;
@@ -103,7 +104,8 @@ readonly class Bootstrap
         $packageCache = static::createPackageCache($coreCache);
         $packageManager = static::createPackageManager(
             $failsafe ? FailsafePackageManager::class : PackageManager::class,
-            $packageCache
+            $packageCache,
+            $logManager->getLogger(PackageManager::class)
         );
 
         static::setDefaultTimezone();
@@ -270,12 +272,15 @@ readonly class Bootstrap
      * @param string $packageManagerClassName Define an alternative package manager implementation (usually for the installer)
      * @internal This is not a public API method, do not use in own extensions
      */
-    public static function createPackageManager($packageManagerClassName, PackageCacheInterface $packageCache): PackageManager
+    public static function createPackageManager($packageManagerClassName, PackageCacheInterface $packageCache, ?LoggerInterface $logger = null): PackageManager
     {
         $dependencyOrderingService = GeneralUtility::makeInstance(DependencyOrderingService::class);
         /** @var PackageManager $packageManager */
         $packageManager = new $packageManagerClassName($dependencyOrderingService);
         $packageManager->setPackageCache($packageCache);
+        if ($logger !== null) {
+            $packageManager->setLogger($logger);
+        }
         $packageManager->initialize();
 
         return $packageManager;
