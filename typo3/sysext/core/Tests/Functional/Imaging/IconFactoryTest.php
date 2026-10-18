@@ -441,6 +441,63 @@ final class IconFactoryTest extends FunctionalTestCase
         self::assertStringContainsString('<span class="icon-overlay icon-overlay-hidden">', $result);
     }
 
+    public static function getIconForRecordWithEmptyTimeFieldsReturnsNoOverlayDataProvider(): iterable
+    {
+        yield 'string zero' => ['0'];
+        yield 'empty string' => [''];
+        yield 'integer zero' => [0];
+        yield 'null' => [null];
+    }
+
+    #[DataProvider('getIconForRecordWithEmptyTimeFieldsReturnsNoOverlayDataProvider')]
+    #[Test]
+    public function getIconForRecordWithEmptyTimeFieldsReturnsNoOverlay(string|int|null $value): void
+    {
+        $GLOBALS['TCA'] = [
+            'tt_content' => [
+                'ctrl' => [
+                    'enablecolumns' => [
+                        'starttime' => 'starttime',
+                        'endtime' => 'endtime',
+                    ],
+                    'typeicon_column' => 'CType',
+                    'typeicon_classes' => [
+                        'default' => '',
+                        'text' => 'mimetypes-x-content-text',
+                    ],
+                ],
+            ],
+        ];
+        $mockRecord = $this->mockRecord;
+        $mockRecord['starttime'] = $value;
+        $mockRecord['endtime'] = $value;
+        $result = $this->subject->getIconForRecord('tt_content', $mockRecord)->render();
+        self::assertStringNotContainsString('icon-overlay', $result);
+    }
+
+    #[Test]
+    public function getIconForRecordWithPastEndtimeReturnsEndtimeOverlay(): void
+    {
+        $GLOBALS['TCA'] = [
+            'tt_content' => [
+                'ctrl' => [
+                    'enablecolumns' => [
+                        'endtime' => 'endtime',
+                    ],
+                    'typeicon_column' => 'CType',
+                    'typeicon_classes' => [
+                        'default' => '',
+                        'text' => 'mimetypes-x-content-text',
+                    ],
+                ],
+            ],
+        ];
+        $mockRecord = $this->mockRecord;
+        $mockRecord['endtime'] = (string)($GLOBALS['EXEC_TIME'] - 3600);
+        $result = $this->subject->getIconForRecord('tt_content', $mockRecord)->render();
+        self::assertStringContainsString('<span class="icon-overlay icon-overlay-endtime">', $result);
+    }
+
     /**
      * Overlays are calculated from the enable columns, which a resolved record keeps in its
      * system properties instead of its regular properties. Only the raw record carries them.

@@ -279,23 +279,15 @@ readonly class IconFactory
                 $status['hidden'] = true;
             }
             if (isset($enableColumns['starttime'])) {
-                $starttime = $row[$enableColumns['starttime']] ?? null;
-                if ($starttime !== null) {
-                    if ($starttime instanceof \DateTimeInterface) {
-                        $starttime = $starttime->getTimestamp();
-                    }
-                    // If a "starttime" is set and higher than current time
-                    if ($starttime > $GLOBALS['EXEC_TIME']) {
-                        $status['starttime'] = true;
-                    }
+                $starttime = $this->getTimestampFromRecordValue($row[$enableColumns['starttime']] ?? null);
+                // If a "starttime" is set and higher than current time
+                if ($starttime !== null && $starttime > $GLOBALS['EXEC_TIME']) {
+                    $status['starttime'] = true;
                 }
             }
             if (isset($enableColumns['endtime'])) {
-                $endtime = $row[$enableColumns['endtime']] ?? null;
+                $endtime = $this->getTimestampFromRecordValue($row[$enableColumns['endtime']] ?? null);
                 if ($endtime !== null && $endtime !== 0) {
-                    if ($endtime instanceof \DateTimeInterface) {
-                        $endtime = $endtime->getTimestamp();
-                    }
                     if ($endtime < $GLOBALS['EXEC_TIME']) {
                         // End-timing applies at this point.
                         $status['endtime'] = true;
@@ -337,6 +329,21 @@ readonly class IconFactory
         return $this->eventDispatcher->dispatch(
             new ModifyRecordOverlayIconIdentifierEvent($iconName, $table, $row, $status)
         )->getOverlayIconIdentifier();
+    }
+
+    /**
+     * Records rendered by FormEngine carry DateTime objects, database rows carry integers,
+     * and new records may carry raw default values such as "0" or "".
+     */
+    private function getTimestampFromRecordValue(mixed $value): ?int
+    {
+        if ($value instanceof \DateTimeInterface) {
+            return $value->getTimestamp();
+        }
+        if ($value === null || $value === '') {
+            return null;
+        }
+        return (int)$value;
     }
 
     /**
