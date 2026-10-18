@@ -21,6 +21,9 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
 use TYPO3\CMS\Backend\Form\FormDataGroup\TcaSelectTreeAjaxFieldData;
+use TYPO3\CMS\Backend\Form\NodeFactory;
+use TYPO3\CMS\Backend\Routing\Route;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
@@ -31,6 +34,42 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 final class GeneratorTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = ['styleguide'];
+
+    #[Test]
+    public function createGeneratesFileExamplesWithConfiguredControls(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $backendUser = $this->setUpBackendUser(1);
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
+        $this->get(Generator::class)->create();
+
+        $uid = $this->get(ConnectionPool::class)->getConnectionForTable('tx_styleguide_file')
+            ->select(['uid'], 'tx_styleguide_file', ['sys_language_uid' => 0])->fetchOne();
+        $formData = $this->get(FormDataCompiler::class)->compile([
+            'request' => new ServerRequest()
+                ->withAttribute('route', new Route('', []))
+                ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE),
+            'tableName' => 'tx_styleguide_file',
+            'vanillaUid' => (int)$uid,
+            'command' => 'edit',
+        ], $this->get(TcaDatabaseRecord::class));
+
+        foreach ([['file_3', true, true], ['file_7', true, false], ['file_8', false, true], ['file_9', true, false]] as [$field, $upload, $byUrl]) {
+            $result = $this->get(NodeFactory::class)->create(array_replace($formData, [
+                'renderType' => 'file',
+                'fieldName' => $field,
+                'parameterArray' => [
+                    'itemFormElName' => 'data[tx_styleguide_file][' . $uid . '][' . $field . ']',
+                    'fieldConf' => $formData['processedTca']['columns'][$field],
+                ],
+            ]))->render();
+            self::assertSame($upload, str_contains($result['html'], 't3js-drag-uploader'), $field);
+            self::assertSame($byUrl, str_contains($result['html'], 't3js-online-media-add-btn'), $field);
+            if ($field === 'file_7') {
+                self::assertStringContainsString('data-disallowed-types="png"', $result['html']);
+            }
+        }
+    }
 
     #[Test]
     public function createGeneratesTreeStartingPointsWithMatchingSubtrees(): void

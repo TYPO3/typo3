@@ -104,6 +104,38 @@ return [
             ],
         ],
 
+        'file_7' => [
+            'label' => 'file_7 disallowed overrides allowed',
+            'description' => 'allowed=jpg,png and disallowed=png: JPEG files are accepted, PNG files are excluded.',
+            'config' => [
+                'type' => 'file',
+                'allowed' => ['jpg', 'png'],
+                'disallowed' => ['png'],
+            ],
+        ],
+        'file_8' => [
+            'label' => 'file_8 upload button disabled',
+            'description' => 'appearance.fileUploadAllowed=false: selecting existing files and adding online media remain available.',
+            'config' => [
+                'type' => 'file',
+                'allowed' => 'common-media-types',
+                'appearance' => [
+                    'fileUploadAllowed' => false,
+                ],
+            ],
+        ],
+        'file_9' => [
+            'label' => 'file_9 online media button disabled',
+            'description' => 'appearance.fileByUrlAllowed=false: uploading and selecting existing files remain available.',
+            'config' => [
+                'type' => 'file',
+                'allowed' => 'common-media-types',
+                'appearance' => [
+                    'fileByUrlAllowed' => false,
+                ],
+            ],
+        ],
+
         'file_flex_1' => [
             'label' => 'flex_1',
             'config' => [
@@ -181,6 +213,8 @@ return [
                     file_1, file_2,
                 --div--;media,
                     file_3, file_4, file_5, file_6,
+                --div--;Restrictions and controls,
+                    file_7, file_8, file_9,
                 --div--;in flex,
                     file_flex_1,
             ',
