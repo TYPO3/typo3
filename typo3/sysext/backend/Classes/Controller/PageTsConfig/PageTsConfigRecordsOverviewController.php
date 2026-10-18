@@ -34,7 +34,6 @@ use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Page TSconfig > Page TSconfig Configuration
@@ -128,31 +127,33 @@ final readonly class PageTsConfigRecordsOverviewController
         $pageArray = [];
 
         while ($row = $res->fetchAssociative()) {
-            $this->setInPageArray($pageArray, BackendUtility::BEgetRootLine($row['uid'], 'AND 1=1'), $row);
+            $pageArray = $this->setInPageArray($pageArray, BackendUtility::BEgetRootLine($row['uid'], 'AND 1=1', false, ['sorting']), $row);
         }
         return $this->getList($currentModule, $pageArray);
     }
 
     /**
-     * Builds a multidimensional array that reflects the page hierarchy.
+     * Builds a multidimensional array that reflects the page hierarchy, sorted like the page tree.
      */
-    private function setInPageArray(array &$hierarchicArray, array $rootlineArray, array $row): void
+    private function setInPageArray(array $pages, array $rootlineArray, array $row): array
     {
         ksort($rootlineArray);
         if (!($rootlineArray[0]['uid'] ?? false)) {
             array_shift($rootlineArray);
         }
         $currentElement = current($rootlineArray);
-        $hierarchicArray[$currentElement['uid']] = htmlspecialchars($currentElement['title']);
+        $pages[$currentElement['uid']] ??= [
+            'title' => htmlspecialchars($currentElement['title']),
+            'sorting' => (int)$currentElement['sorting'],
+        ];
         array_shift($rootlineArray);
         if (!empty($rootlineArray)) {
-            if (!is_array($hierarchicArray[$currentElement['uid'] . '.'] ?? null)) {
-                $hierarchicArray[$currentElement['uid'] . '.'] = [];
-            }
-            $this->setInPageArray($hierarchicArray[$currentElement['uid'] . '.'], $rootlineArray, $row);
+            $pages[$currentElement['uid']]['_nodes'] = $this->setInPageArray($pages[$currentElement['uid']]['_nodes'] ?? [], $rootlineArray, $row);
         } else {
-            $hierarchicArray[$currentElement['uid'] . '_'] = $this->extractLinesFromTSConfig($row);
+            $pages[$currentElement['uid']]['_tsconfig'] = $this->extractLinesFromTSConfig($row);
         }
+        uasort($pages, static fn(array $a, array $b): int => $a['sorting'] <=> $b['sorting']);
+        return $pages;
     }
 
     /**
@@ -176,26 +177,23 @@ final readonly class PageTsConfigRecordsOverviewController
             return $lines;
         }
 
-        foreach ($pageArray as $identifier => $title) {
-            if (!MathUtility::canBeInterpretedAsInteger($identifier)) {
-                continue;
-            }
+        foreach ($pageArray as $identifier => $page) {
             $line = [];
             $line['padding'] = ($pageDepth * 20);
             $line['title'] = $identifier;
-            if (isset($pageArray[$identifier . '_'])) {
+            if (isset($page['_tsconfig'])) {
                 $line['link'] = $this->uriBuilder->buildUriFromRoute($currentModule->getIdentifier(), ['id' => $identifier]);
                 $line['icon'] = $this->iconFactory->getIconForRecord('pages', BackendUtility::getRecordWSOL('pages', $identifier), IconSize::SMALL)->render();
-                $line['pageTitle'] = GeneralUtility::fixed_lgd_cs($title, 30);
-                $line['lines'] = ($pageArray[$identifier . '_']['writtenLines'] === 0 ? '' : $pageArray[$identifier . '_']['writtenLines']);
+                $line['pageTitle'] = GeneralUtility::fixed_lgd_cs($page['title'], 30);
+                $line['lines'] = ($page['_tsconfig']['writtenLines'] === 0 ? '' : $page['_tsconfig']['writtenLines']);
             } else {
                 $line['link'] = '';
                 $line['icon'] = $this->iconFactory->getIconForRecord('pages', BackendUtility::getRecordWSOL('pages', $identifier), IconSize::SMALL)->render();
-                $line['pageTitle'] = GeneralUtility::fixed_lgd_cs($title, 30);
+                $line['pageTitle'] = GeneralUtility::fixed_lgd_cs($page['title'], 30);
                 $line['lines'] = '';
             }
             $lines[] = $line;
-            $lines = $this->getList($currentModule, $pageArray[$identifier . '.'] ?? [], $lines, $pageDepth + 1);
+            $lines = $this->getList($currentModule, $page['_nodes'] ?? [], $lines, $pageDepth + 1);
         }
         return $lines;
     }
