@@ -48,9 +48,15 @@ final class BackendUserAuthenticationTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function getFileMountRecordsAreResolvedPerBackendUser(): void
+    {
+        self::assertCount(3, $this->setUpBackendUser(3)->getFileMountRecords());
+        self::assertSame([], $this->setUpBackendUser(2)->getFileMountRecords());
+    }
+
+    #[Test]
     public function readOnlyMountPointWithStorageIsAddedToFileMountRecords(): void
     {
-        $this->get(CacheManager::class)->getCache('runtime')->remove('backendUserAuthenticationFileMountRecords');
         $backendUser = $this->setUpBackendUser(3);
         $backendUser->user['TSconfig'] = 'options.folderTree.altElementBrowserMountPoints = 1:/read-only/';
         $backendUser->fetchGroupData();
@@ -66,7 +72,6 @@ final class BackendUserAuthenticationTest extends FunctionalTestCase
     #[Test]
     public function readOnlyMountPointWithoutStorageUsesDefaultStorage(): void
     {
-        $this->get(CacheManager::class)->getCache('runtime')->remove('backendUserAuthenticationFileMountRecords');
         $this->getConnectionPool()->getConnectionForTable('sys_file_storage')
             ->update('sys_file_storage', ['is_default' => 1], ['uid' => 1]);
         $this->get(StorageRepository::class)->flush();
