@@ -16,6 +16,8 @@
 namespace TYPO3\CMS\Core\Package;
 
 use Composer\InstalledVersions;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use TYPO3\CMS\Core\Cache\Event\CacheWarmupEvent;
@@ -51,8 +53,10 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  * @phpstan-type StateConfiguration array{packagePath?: non-empty-string}
  * @phpstan-type StatesConfiguration array{packages?: array<PackageKey, StateConfiguration>, version?: int}
  */
-class PackageManager implements SingletonInterface
+class PackageManager implements SingletonInterface, LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     /**
      * @var DependencyOrderingService
      */
@@ -422,7 +426,12 @@ class PackageManager implements SingletonInterface
             foreach ($finder as $fileInfo) {
                 try {
                     $composerManifest = json_decode($fileInfo->getContents(), false, 512, JSON_THROW_ON_ERROR);
-                } catch (\JsonException) {
+                } catch (\JsonException $exception) {
+                    $this->logger?->warning('Skipping package with invalid composer.json "{file}": {reason}', [
+                        'file' => $fileInfo->getPathname(),
+                        'reason' => $exception->getMessage(),
+                        'exception' => $exception,
+                    ]);
                     continue;
                 }
                 $packageType = $composerManifest->type ?? '';
@@ -470,6 +479,11 @@ class PackageManager implements SingletonInterface
                 $packagePath = PathUtility::sanitizeTrailingSeparator($this->packagesBasePath . $stateConfiguration['packagePath']);
                 $package = new Package($this, $packageKey, $packagePath);
             } catch (InvalidPackagePathException|InvalidPackageKeyException|InvalidPackageManifestException $exception) {
+                $this->logger?->warning('Package "{packageKey}" could not be registered and has been removed from the list of packages: {reason}', [
+                    'packageKey' => $packageKey,
+                    'reason' => $exception->getMessage(),
+                    'exception' => $exception,
+                ]);
                 $this->unregisterPackageByPackageKey($packageKey);
                 $packageStatesHasChanged = true;
                 continue;

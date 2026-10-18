@@ -21,10 +21,12 @@ use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
+use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Package\Cache\PackageStatesPackageCache;
+use TYPO3\CMS\Core\Package\Exception\InvalidPackagePathException;
 use TYPO3\CMS\Core\Package\Exception\ProtectedPackageKeyException;
 use TYPO3\CMS\Core\Package\Exception\UnknownPackageException;
 use TYPO3\CMS\Core\Package\Exception\UnknownPackagePathException;
@@ -165,6 +167,44 @@ final class PackageManagerTest extends UnitTestCase
         $this->expectExceptionCode(1166546734);
 
         $this->packageManager->getPackage('PrettyUnlikelyThatThisPackageExists');
+    }
+
+    #[Test]
+    public function registerPackagesFromConfigurationLogsPackagesThatCannotBeRegistered(): void
+    {
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger->expects($this->once())->method('warning')->with(
+            self::anything(),
+            self::callback(static fn(array $context): bool => $context['packageKey'] === 'TYPO3.MissingPackage'
+                && $context['exception'] instanceof InvalidPackagePathException)
+        );
+        $this->packageManager->setLogger($logger);
+
+        $this->packageManager->_call(
+            'registerPackagesFromConfiguration',
+            ['TYPO3.MissingPackage' => ['packagePath' => 'Application/TYPO3.MissingPackage/']]
+        );
+
+        self::assertFalse($this->packageManager->isPackageAvailable('TYPO3.MissingPackage'));
+    }
+
+    #[Test]
+    public function scanPackagePathsForExtensionsLogsInvalidComposerManifests(): void
+    {
+        $packagePath = $this->testRoot . 'Packages/Application/broken_manifest/';
+        mkdir($packagePath, 0770, true);
+        file_put_contents($packagePath . 'composer.json', '{"name": "acme/broken-manifest",');
+
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger->expects($this->once())->method('warning')->with(
+            self::anything(),
+            self::callback(static fn(array $context): bool => $context['file'] === $packagePath . 'composer.json'
+                && $context['exception'] instanceof \JsonException)
+        );
+        $this->packageManager->setLogger($logger);
+        $this->packageManager->_set('packagesBasePaths', ['local' => $this->testRoot . 'Packages/Application/*/']);
+
+        $this->packageManager->_call('scanPackagePathsForExtensions');
     }
 
     #[Test]
