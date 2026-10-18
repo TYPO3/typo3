@@ -24,6 +24,7 @@ use TYPO3\CMS\Backend\Form\FormDataGroup\TcaSelectTreeAjaxFieldData;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Schema\SearchableSchemaFieldsCollector;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\Generator;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -130,6 +131,14 @@ final class GeneratorTest extends FunctionalTestCase
 
         self::assertIsArray(json_decode($basicRow['json_3'], true, 512, JSON_THROW_ON_ERROR));
         self::assertIsArray(json_decode($basicRow['json_4'], true, 512, JSON_THROW_ON_ERROR));
+
+        $searchableFields = $this->get(SearchableSchemaFieldsCollector::class)->getFieldNames('tx_styleguide_elements_basic');
+        foreach (['input', 'text'] as $type) {
+            self::assertSame('sgsearchincluded' . $type, $basicRow[$type . '_search_included']);
+            self::assertSame('sgsearchexcluded' . $type, $basicRow[$type . '_search_excluded']);
+            self::assertContains($type . '_search_included', $searchableFields);
+            self::assertNotContains($type . '_search_excluded', $searchableFields);
+        }
 
         // The "use combination" inline scenarios created four child rows, two of them
         // connected via mm. Translation handling copies some of these rows in addition,

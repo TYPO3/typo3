@@ -1181,6 +1181,44 @@ backend_layout {
             ],
         ],
 
+        'input_search_included' => [
+            'label' => 'input_search_included',
+            'description' => 'Search for sgsearchincludedinput in the Records module: finds this record (default searchable)',
+            'config' => [
+                'type' => 'input',
+                'default' => 'sgsearchincludedinput',
+            ],
+        ],
+
+        'input_search_excluded' => [
+            'label' => 'input_search_excluded',
+            'description' => 'Search for sgsearchexcludedinput in the Records module: does not find this record (searchable=false)',
+            'config' => [
+                'type' => 'input',
+                'default' => 'sgsearchexcludedinput',
+                'searchable' => false,
+            ],
+        ],
+
+        'text_search_included' => [
+            'label' => 'text_search_included',
+            'description' => 'Search for sgsearchincludedtext in the Records module: finds this record (default searchable)',
+            'config' => [
+                'type' => 'text',
+                'default' => 'sgsearchincludedtext',
+            ],
+        ],
+
+        'text_search_excluded' => [
+            'label' => 'text_search_excluded',
+            'description' => 'Search for sgsearchexcludedtext in the Records module: does not find this record (searchable=false)',
+            'config' => [
+                'type' => 'text',
+                'default' => 'sgsearchexcludedtext',
+                'searchable' => false,
+            ],
+        ],
+
         'json_1' => [
             'label' => 'json_1',
             'description' => 'json',
@@ -2237,6 +2275,8 @@ backend_layout {
                     text_1, text_2, text_3, text_4, text_5, text_6, text_7, text_9, text_10,
                     text_11, text_12, text_13, text_18, text_14, text_15, text_16, text_17, text_19,
                     text_20,
+                --div--;Searchable fields,
+                    input_search_included, input_search_excluded, text_search_included, text_search_excluded,
                 --div--;json,
                     json_1, json_2, json_3, json_4,
                 --div--;uuid,
