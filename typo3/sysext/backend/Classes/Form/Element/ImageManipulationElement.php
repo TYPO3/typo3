@@ -217,6 +217,7 @@ class ImageManipulationElement extends AbstractFormElement
     protected function populateConfiguration(array $baseConfiguration)
     {
         $defaultConfig = self::$defaultConfig;
+        $defaultCropVariants = $defaultConfig['cropVariants'];
 
         // If ratios are set do not add default options
         if (isset($baseConfiguration['cropVariants'])) {
@@ -231,6 +232,11 @@ class ImageManipulationElement extends AbstractFormElement
 
         $cropVariants = [];
         foreach ($config['cropVariants'] as $id => $cropVariant) {
+            // A partially configured built-in crop variant falls back to its default options
+            if (is_array($cropVariant) && isset($defaultCropVariants[$id])) {
+                $cropVariant += $defaultCropVariants[$id];
+            }
+
             // Filter allowed aspect ratios
             $cropVariant['allowedAspectRatios'] = array_filter($cropVariant['allowedAspectRatios'] ?? [], static function (array $aspectRatio): bool {
                 return !(bool)($aspectRatio['disabled'] ?? false);

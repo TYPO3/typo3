@@ -317,4 +317,71 @@ final class ImageManipulationElementTest extends UnitTestCase
             $result
         );
     }
+
+    #[Test]
+    public function populateConfigurationCompletesPartiallyConfiguredDefaultCropVariant(): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'] = 'jpg,png';
+        $subject = $this->getAccessibleMock(ImageManipulationElement::class, null, [], '', false);
+
+        $result = $subject->_call('populateConfiguration', [
+            'cropVariants' => [
+                'default' => [
+                    'selectedRatio' => '16:9',
+                ],
+            ],
+        ]);
+
+        $defaultCropVariant = $result['cropVariants']['default'];
+        self::assertSame('16:9', $defaultCropVariant['selectedRatio']);
+        self::assertSame(['16:9', '3:2', '4:3', '1:1', 'NaN'], array_keys($defaultCropVariant['allowedAspectRatios']));
+        self::assertSame('LLL:EXT:core/Resources/Private/Language/locallang_wizards.xlf:imwizard.crop_variant.default', $defaultCropVariant['title']);
+        self::assertSame(['x' => 0.0, 'y' => 0.0, 'width' => 1.0, 'height' => 1.0], $defaultCropVariant['cropArea']);
+    }
+
+    #[Test]
+    public function populateConfigurationKeepsCustomAspectRatiosOfDefaultCropVariant(): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'] = 'jpg,png';
+        $subject = $this->getAccessibleMock(ImageManipulationElement::class, null, [], '', false);
+
+        $result = $subject->_call('populateConfiguration', [
+            'cropVariants' => [
+                'default' => [
+                    'allowedAspectRatios' => [
+                        '2:1' => [
+                            'title' => '2:1',
+                            'value' => 2.0,
+                        ],
+                    ],
+                    'selectedRatio' => '2:1',
+                ],
+            ],
+        ]);
+
+        self::assertSame(['2:1'], array_keys($result['cropVariants']['default']['allowedAspectRatios']));
+    }
+
+    #[Test]
+    public function populateConfigurationDoesNotAddDefaultCropVariantToCustomCropVariants(): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'] = 'jpg,png';
+        $subject = $this->getAccessibleMock(ImageManipulationElement::class, null, [], '', false);
+
+        $result = $subject->_call('populateConfiguration', [
+            'cropVariants' => [
+                'mobile' => [
+                    'title' => 'Mobile',
+                    'allowedAspectRatios' => [
+                        '1:1' => [
+                            'title' => '1:1',
+                            'value' => 1.0,
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+
+        self::assertSame(['mobile'], array_keys($result['cropVariants']));
+    }
 }
