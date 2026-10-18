@@ -106,13 +106,13 @@ readonly class WorkspaceService
      */
     public function getAvailableWorkspaces(bool $includeWorkspaceData = false): array
     {
-        $cacheId = 'workspace-service-available-workspaces' . ($includeWorkspaceData ? '-detailed' : '');
+        $backendUser = $this->getBackendUser();
+        $cacheId = 'workspace-service-available-workspaces-' . (int)$backendUser->getUserId() . ($includeWorkspaceData ? '-detailed' : '');
         $cached = $this->runtimeCache->get($cacheId);
         if ($cached !== false) {
             return $cached;
         }
 
-        $backendUser = $this->getBackendUser();
         $availableWorkspaces = [];
         // add default workspaces
         if ($backendUser->checkWorkspace(self::LIVE_WORKSPACE_ID)) {

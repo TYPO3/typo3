@@ -111,7 +111,7 @@ final readonly class WorkspaceProvider implements SearchProviderInterface
 
     private function getAvailableWorkspaces(): array
     {
-        $cacheId = 'available-workspaces-' . hash('xxh3', $this->getBackendUser()->name);
+        $cacheId = 'available-workspaces-' . (int)$this->getBackendUser()->getUserId();
         $availableWorkspaces = $this->runtimeCache->get($cacheId);
         if ($availableWorkspaces === false) {
             $availableWorkspaces = $this->workspaceService->getAvailableWorkspaces();
