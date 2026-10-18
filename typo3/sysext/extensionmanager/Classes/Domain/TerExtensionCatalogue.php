@@ -80,7 +80,9 @@ readonly class TerExtensionCatalogue implements ExtensionCatalogueInterface
         }
         $extensions = [];
         foreach ($this->client->getVersions($extensionKey) as $version) {
-            if ($version->reviewState < 0) {
+            // "Outdated" (-2) is a recommendation, not a block - TER still
+            // serves its download - so only "insecure" (-1) is excluded here.
+            if ($version->reviewState === -1) {
                 continue;
             }
             $extensions[] = $this->mapper->map($remoteExtension, $version, $this->remoteIdentifier);
@@ -91,7 +93,7 @@ readonly class TerExtensionCatalogue implements ExtensionCatalogueInterface
     public function findOneByCurrentVersionByExtensionKey(string $extensionKey): ?Extension
     {
         $remoteExtension = $this->client->getExtension($extensionKey);
-        if ($remoteExtension === null || $remoteExtension->currentVersion === null || $remoteExtension->currentVersion->reviewState < 0) {
+        if ($remoteExtension === null || $remoteExtension->currentVersion === null || $remoteExtension->currentVersion->reviewState === -1) {
             return null;
         }
         return $this->mapper->map($remoteExtension, null, $this->remoteIdentifier);
@@ -160,7 +162,7 @@ readonly class TerExtensionCatalogue implements ExtensionCatalogueInterface
     {
         $extensions = [];
         foreach ($remoteExtensions as $remoteExtension) {
-            if ($remoteExtension->currentVersion === null || $remoteExtension->currentVersion->reviewState < 0) {
+            if ($remoteExtension->currentVersion === null || $remoteExtension->currentVersion->reviewState === -1) {
                 continue;
             }
             $extensions[] = $this->mapper->map($remoteExtension, null, $this->remoteIdentifier);

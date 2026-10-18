@@ -97,7 +97,9 @@ readonly class ExtensionRepository implements ExtensionCatalogueInterface
                     $queryBuilder->expr()->eq('extension_key', $queryBuilder->createNamedParameter($extensionKey, Connection::PARAM_STR)),
                     $queryBuilder->expr()->eq('composer_name', $queryBuilder->createNamedParameter($extensionKey, Connection::PARAM_STR)),
                 ),
-                $queryBuilder->expr()->gte('review_state', 0),
+                // "Outdated" (-2) is a recommendation, not a block - TER still
+                // serves its download - so only "insecure" (-1) is excluded here.
+                $queryBuilder->expr()->neq('review_state', -1),
             )
             ->orderBy('integer_version', 'DESC')
             ->executeQuery()
