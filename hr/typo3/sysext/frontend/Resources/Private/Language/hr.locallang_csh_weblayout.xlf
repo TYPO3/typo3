@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_csh_weblayout.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="hr">
+    <header/>
+    <body>
+      <trans-unit id=".alttitle" resname=".alttitle" approved="yes">
+        <source>Web &gt; Page Module</source>
+        <target state="final">Web &gt; Modul stranica</target>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>The page module is activated from the backend menu and is the primary module for all basic CMS operations you need to perform when maintaining website content.</source>
+        <target state="final">Modul stranica se aktivira iz izbornika pozadinskog sučelja te služi kao primarni modul za sve osnovne CMS radnje koje su nužne za održavanje sadržaja web lokacije.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" xml:space="preserve" approved="yes">
+				<source>Selecting the module will display the page tree.  Click the title of the page you wish to edit content on, and in the right frame you will see the content of the page displayed by the Page module.
+
+The page module has various modes of display of content;
+
+&lt;b&gt;Columns&lt;/b&gt;
+The columns view will show Content Elements listed in the columns and in the order that they will appear on the website. A panel of buttons will allow you to hide/unhide, move and edit the elements easily.
+
+&lt;b&gt;QuickEdit&lt;/b&gt;
+In QuickEdit the first element on the page will be loaded into a form right away. It will depend on the implementation of your website as well as your general preferences if you like this mode more than the columns view.
+
+&lt;b&gt;Languages&lt;/b&gt;
+If your site supports multiple languages and uses the "one-tree-fits-all" concept for localization you will need this mode to control the translations of the content elements on a page.
+
+&lt;b&gt;Page information&lt;/b&gt;
+The page information view shows some statistical data about a page. This includes hit statistics if available.
+
+
+&lt;b&gt;General options&lt;/b&gt;
+In the top of the Page module you will find a row of icons that will bring you right to various features such as History/Undo (1), Create new content element (2), Move page (3), Create new page (4) and Edit page properties (5). See image below.
+
+&lt;b&gt;Defining number of displayed columns [Admin]&lt;/b&gt;
+Administrators can configure the Page module to display only the content columns that the website uses. This is done by Page TSconfig (so it can be configured per branch in the page tree!) and this particular option has the object path "mod.web_layout.tt_content.colPos_list".
+For instance "mod.web_layout.tt_content.colPos_list = 0,3" will set the display of the "Normal" and "Border" columns only.
+There are many other options for customization of the Page module in the object path "mod.web_layout" and Administrators should refer to the "TSconfig" reference linked to below.</source>
+			<target state="final">Odabirom modula prikazat će se stablo stranica. Kliknite na naslov stranice na kojoj želite uređivati sadržaj, nakon toga će se u desnom okviru u modulu stranice prikazati sadržaj.
+
+Modul stranice može prikazivati sadržaj na različite načine;
+
+&lt;b&gt;Stupci&lt;/b&gt;
+Prikaz sadržaja u stupcima prikazat će elemente sadržaja u stupcima i poretku kako su prikazani na web lokaciji. Kontrolna ploča sa gumbima omogućit će Vam da lako sakrijete/otkrijete, premjestite i uređujete elemente.
+
+&lt;b&gt;BrzoUređivanje&lt;/b&gt;
+U načinu BrzoUređivanje prvi element na stranici bit će odmah učitan za uređivanje. Hoće li Vam se ovaj način sviđati više od prikaza u stupcima ovisit će o implementaciji Vaše web loakcije i Vašim generalnim preferencama.
+
+&lt;b&gt;Jezici&lt;/b&gt;
+Ukoliko Vaša web lokacija podržava više jezika a koristi koncept lokalizacije zvan "jedno-stablo-za-sve" tada će Vam trebati ovaj način prikaza za kontrolu prijevoda elemenata sadržaja na stranici.
+
+&lt;b&gt;Informacije o stranici&lt;/b&gt;
+Ovaj prikaz prikazuje neke statističke podatke o stranici. Primjerice statistiku posjećenosti ukoliko je ista dostupna.
+
+
+&lt;b&gt;Opće postavke&lt;/b&gt;
+Na vrhu modula Stranica pronaći ćete redak ikona koje Vam nude različite funkcionalnosti poput Povijest/Poništavanje (1), Stvaranje novih elemenata sadržaja (2), Premještanje stranica (3), Stavaranje novih stranica (4) i Uređivanje svojstava stranice (5). Pogledajte niže navedenu sliku.
+
+&lt;b&gt;Postavljanje broja prikazanih stupaca [Administrator]&lt;/b&gt;
+Administratori mogu podesiti modul Stranica da prikazuje samo stupce koje web lokacija korisiti. Ova postavka može se mijenjati pomoću TSconfiga stranice (tako da ju je moguće podesiti po pojedinačnoj grani stabla stranica) a ova specifična opcija ima objektnu putanju "mod.web_layout.tt_content.colPos_list".
+Primjerice, "mod.web_layout.tt_content.colPos_list = 0,3" će omogućiti samo prikaz "Normal" i "Border" stupaca.
+Postoje još mnoge opcije za ugađanje modula Stranica na objektnoj putanji "mod.web_layout". Administratori mogu koristiti "TSconfig" referencu na niže navedenoj poveznici.</target></trans-unit>
+      <trans-unit id="_.seeAlso" resname="_.seeAlso" xml:space="preserve" approved="yes">
+				<source>Configuring the Page module [Technical] | https://docs.typo3.org/typo3cms/TSconfigReference/PageTsconfig/TSFE/,
+xMOD_csh_corebe:history_log,
+xMOD_csh_corebe:new_ce,
+xMOD_csh_corebe:move_el_pages,
+xMOD_csh_corebe:new_pages,
+xMOD_csh_corebe:TCEforms,
+About the page module | http://typo3.org/documentation/tips-tricks/the-new-page-editing-concept/
+Editing a page | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/EditPageContent/
+The Page Module (Animation) | Using the page tree (Animation) | FILE:EXT:welcome/modsub/ani_05.gif</source>
+			<target state="final">Podešavanje modula stranica [Tehnički] | https://docs.typo3.org/typo3cms/TSconfigReference/PageTsconfig/TSFE/,
+xMOD_csh_corebe:history_log,
+xMOD_csh_corebe:new_ce,
+xMOD_csh_corebe:move_el_pages,
+xMOD_csh_corebe:new_pages,
+xMOD_csh_corebe:TCEforms,
+O modulu stranica | http://typo3.org/documentation/tips-tricks/the-new-page-editing-concept/
+Uređivanje stranice | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/EditPageContent/
+Modul stranice (Animacija) | Uporaba stabla stranica (Animacija) | FILE:EXT:welcome/modsub/ani_05.gif</target></trans-unit>
+      <trans-unit id="_.image" resname="_.image" xml:space="preserve" approved="yes">
+				<source>EXT:frontend/Resources/Public/Images/cshimages/pagemodule_13.png,
+EXT:frontend/Resources/Public/Images/cshimages/pagemodule_14.png,
+EXT:frontend/Resources/Public/Images/cshimages/pagemodule_15.png</source>
+				
+			<target state="final">EXT:frontend/Resources/Public/Images/cshimages/pagemodule_13.png,
+EXT:frontend/Resources/Public/Images/cshimages/pagemodule_14.png,
+EXT:frontend/Resources/Public/Images/cshimages/pagemodule_15.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" xml:space="preserve" approved="yes">
+				<source>Click the Page module, then the title of a page in the page tree.
+The page module is now activated in the right frame, showing the content of the page you clicked in the page tree.
+These buttons are direct links to the History/Undo function (1), Create new content element wizard (2), Move page wizard (3), Create new page wizard (4) and Edit page properties form (5). See the links for more details.</source>
+			<target state="final">Kliknite na module Stranica a zatim na naslov stranice u stablu stranica.
+Modul Stranica sada je učitan u desnom okviru te prikazuje sadržaj stranice na koju ste kliknuli u stablu stranica.
+Ovi gumbi su direktne poveznice na funkcije Povijest/Poništi (1), Čarobnjaka za stvaranje novog sadržaja (2), Čarobnjaka za premještanje stranica (3), Čarobnjaka za stvaranje novih stranica (4) te Obrazac za uređivanje svojstava stranice (5). Na navedenim poveznicama možete saznati više.</target></trans-unit>
+      <trans-unit id="quickEdit.alttitle" resname="quickEdit.alttitle" approved="yes">
+        <source>Quick Edit</source>
+        <target state="final">Brzo uređivanje</target>
+      </trans-unit>
+      <trans-unit id="quickEdit.description" resname="quickEdit.description" approved="yes">
+        <source>The Quick Editor gives you direct access to the form fields of the page content.</source>
+        <target state="final">Urednik za brzo uređivanje omogućuje Vam brzi pristup poljima obrasca za uređivanje sadržaja stranice.</target>
+      </trans-unit>
+      <trans-unit id="quickEdit.details" resname="quickEdit.details" approved="yes">
+        <source>The Quick Editor is designed to cut down the number of clicks involved in getting to edit the page content. Simply by clicking the page title in the page tree you've got the first content element in the normal column loaded in the list frame. In the toolbar in the top you can select the other content elements on the page in the selector box.</source>
+        <target state="final">Urednik za brzo uređivanje dizajniran je kako bi smanjio broj klikova koji su potrebni za uređivanje sadržaja stranice. Jednostavnim klikom na naslov stranice u stablu stranica prvi element sadržaja učitat će se u okviru popisa. U alatnoj traci na vrhu možete odabrati ostale elemente na stranice u okviru za odabir.</target>
+      </trans-unit>
+      <trans-unit id="_quickEdit.seeAlso" resname="_quickEdit.seeAlso" approved="yes">
+        <source>_MOD_web_layout:quickEdit_selElement</source>
+        <target state="final">_MOD_web_layout:quickEdit_selElement</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_quickEdit.image" resname="_quickEdit.image" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/pagemodule_5.png</source>
+        <target state="final">EXT:frontend/Resources/Public/Images/cshimages/pagemodule_5.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="quickEdit.image_descr" resname="quickEdit.image_descr" approved="yes">
+        <source>The QuickEdit view cuts of one extra click by bringing the user directly to the editing form after clicking a page title in the page tree. The record shown is always the first content element from the Normal column.</source>
+        <target state="final">Pregled Brzo uređivanje otklanja jedan klik viška otvarajući obrazac za uređivanje odmah nakon klika na naslov stranice u stablu stranica. Prikazani element sadržaja je uvijek prvi element iz stupca Normal.</target>
+      </trans-unit>
+      <trans-unit id="quickEdit_selElement.alttitle" resname="quickEdit_selElement.alttitle" approved="yes">
+        <source>Content Elements</source>
+        <target state="final">Elementi sadržaja</target>
+      </trans-unit>
+      <trans-unit id="quickEdit_selElement.description" resname="quickEdit_selElement.description" approved="yes">
+        <source>This is an overview of the content elements on this page in QuickEdit mode. Select another element to edit or click a "New" icon to create a new content element.</source>
+        <target state="final">Ovo je pregled elemenata sadržaja na ovoj stranici u načinu Brzo uređivanje. Odaberite drugi element za uređivanje ili kliknite na ikonu "Novo" kako bi stvorili novi element sadržaja.</target>
+      </trans-unit>
+      <trans-unit id="_quickEdit_selElement.seeAlso" resname="_quickEdit_selElement.seeAlso" xml:space="preserve" approved="yes">
+				<source>_MOD_web_layout:quickEdit,
+xMOD_csh_corebe:move_el_cs,
+xMOD_csh_corebe:new_ce</source>
+				
+			<target state="final">_MOD_web_layout:quickEdit,
+xMOD_csh_corebe:move_el_cs,
+xMOD_csh_corebe:new_ce</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_quickEdit_selElement.image" resname="_quickEdit_selElement.image" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/pagemodule_4.png</source>
+        <target state="final">EXT:frontend/Resources/Public/Images/cshimages/pagemodule_4.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="quickEdit_selElement.image_descr" resname="quickEdit_selElement.image_descr" approved="yes">
+        <source>Overview of page content elements in the QuickEdit view. In the bottom there are links to two wizards: The "Move Content Element Wizard" and the "Create new Content Element Wizard". See the links below.</source>
+        <target state="final">Pregled elemenata sadržaja na stranici u pregledu BrzoUređivanje (QuickEdit). Na dnu se nalaze poveznice na dva čarobanjaka: "Čarobnjak za premještanje elemenata sadržaja" i "Čarobnjak za stvaranje novih elemenata sadržaja". Pogledajte niže navedene poveznice.</target>
+      </trans-unit>
+      <trans-unit id="_columns_1.seeAlso" resname="_columns_1.seeAlso" approved="yes">
+        <source>_MOD_web_layout:columns_single</source>
+        <target state="final">_MOD_web_layout:columns_single</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_columns_1.image" resname="_columns_1.image" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/pagemodule_12.png</source>
+        <target state="final">EXT:frontend/Resources/Public/Images/cshimages/pagemodule_12.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="columns_2.alttitle" resname="columns_2.alttitle" approved="yes">
+        <source>Listing by Language</source>
+        <target state="final">Popis po jezicima</target>
+      </trans-unit>
+      <trans-unit id="columns_3.alttitle" resname="columns_3.alttitle" approved="yes">
+        <source>Page Information</source>
+        <target state="final">Informacije o stranici</target>
+      </trans-unit>
+      <trans-unit id="columns_3.description" resname="columns_3.description" approved="yes">
+        <source>In the "Page Information" view you can see various statistics about a page.</source>
+        <target state="final">U pregledu "Informacije o stranici" možete vidjeti različite statistike o stranici.</target>
+      </trans-unit>
+      <trans-unit id="columns_3.details" resname="columns_3.details" xml:space="preserve" approved="yes">
+				<source>The page information reveals information such as the date of creation and last modification of the page and its content.
+You can also see the subtitle, keywords and descriptions. This information is often used on websites for meta data or searching.</source>
+			<target state="final">Stranica s informacijama o stranica prikazuje informacije poput datuma stvaranja, posljednje izmjene stranice i njenog sadržaja.
+Također možete vidjeti podnaslov, ključne riječi i opise. Ovi podaci često se koriste na web lokacijama za meta informacije ili pretraživanje.</target></trans-unit>
+      <trans-unit id="_columns_3.image" resname="_columns_3.image" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/pagemodule_9.png</source>
+        <target state="final">EXT:frontend/Resources/Public/Images/cshimages/pagemodule_9.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="columns_single.alttitle" resname="columns_single.alttitle" approved="yes">
+        <source>Page content elements in a single column</source>
+        <target state="final">Elementi sadržaja stranice u jednom stupcu</target>
+      </trans-unit>
+      <trans-unit id="columns_single.description" resname="columns_single.description" approved="yes">
+        <source>The single column view will show the page content elements that define the content on this page of your website. Click an edit icon or element text to edit an element.</source>
+        <target state="final">Pregled u jednom stupcu prikazat će elemente sadržaja stranice koji definiraju sadržaj na ovoj stranici Vaše web lokacije. Kliknite na ikonu za uređivanje ili na tekst elementa kako bi uredili element.</target>
+      </trans-unit>
+      <trans-unit id="columns_single.details" resname="columns_single.details" xml:space="preserve" approved="yes">
+				<source>You can also hide, delete and move elements by using the control panels.
+Clicking the "New content element" icon you will be able to create new content elements in between the existing elements on the page.
+Click the icon of a content element if you wish to access the context menu of the element.</source>
+			<target state="final">Također Vam je omogućeno sakriti, izbrisati i premještati elemente uporabom kontrolne ploče.
+Klikom na ikonu "Novi element sadržaja" možete stvoriti nove elemente sadržaja između postojećih elemenata sadržaja.
+Kliknite na ikonu elementa sadržaja ukoliko želite pristupiti kontekstualnom izborniku elementa.</target></trans-unit>
+      <trans-unit id="_columns_single.seeAlso" resname="_columns_single.seeAlso" approved="yes">
+        <source>_MOD_web_layout:columns_multi</source>
+        <target state="final">_MOD_web_layout:columns_multi</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_columns_single.image" resname="_columns_single.image" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/pagemodule_1.png</source>
+        <target state="final">EXT:frontend/Resources/Public/Images/cshimages/pagemodule_1.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="columns_single.image_descr" resname="columns_single.image_descr" approved="yes">
+        <source>Content Elements on a page are arranged in a specific order - the order they appear on the website. This order is also shown in the page module. The control panel allows you to move elements up and down as well as edit, hide and delete them. You can also just click the preview text shown here to access the editing form of the element.</source>
+        <target state="final">Elementi sadržaja na stranici su raspoređeni u određenom poretku - redoslijedu u kojem se pojavljuju na samoj web lokaciji. Ovaj isti redoslijed prikazan je i u modulu Stranica. Kontrolna ploča omogućuje Vam premještanje elemenata prema dolje i prema gore te uređivanje, skrivanje i brisanje elemenata. Također možete jednostavno kliknuti na prikazani tekst pregleda kako bi pristupili obrascu za uređivanje elementa.</target>
+      </trans-unit>
+      <trans-unit id="button_panel.alttitle" resname="button_panel.alttitle" approved="yes">
+        <source>The "Big Buttons"</source>
+        <target state="final">"Veliki gumbi"</target>
+      </trans-unit>
+      <trans-unit id="button_panel.description" resname="button_panel.description" approved="yes">
+        <source>These buttons will bring you to four most used functions in relation to building pages. From here you can edit the page properties (eg. the page title), you can move the current page to another position in the page tree, create a new page somewhere in the page tree or create new content elements on this page.</source>
+        <target state="final">Ovi gumbi vode Vas do četiri najčešće korištene funkcionalnosti povezane sa izrado stranica. Odavde možete uređivati svojstva stranice (primjerice naslov stranice), možete stranicu premjestiti na novu poziciju u stablu stranica, stvoriti novu stranicu negdje u stablu stranica ili stvoriti novi element sadržaja na ovoj stranici.</target>
+      </trans-unit>
+      <trans-unit id="_button_panel.seeAlso" resname="_button_panel.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:TCEforms,
+xMOD_csh_corebe:move_el_pages,
+xMOD_csh_corebe:new_pages,
+xMOD_csh_corebe:new_ce,</source>
+				
+			<target state="final">xMOD_csh_corebe:TCEforms,
+xMOD_csh_corebe:move_el_pages,
+xMOD_csh_corebe:new_pages,
+xMOD_csh_corebe:new_ce,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_button_panel.image" resname="_button_panel.image" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/pagemodule_2.png</source>
+        <target state="final">EXT:frontend/Resources/Public/Images/cshimages/pagemodule_2.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
