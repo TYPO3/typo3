@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_be_users.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>This is the table of backend administration users. Backend users can login in the backend of TYPO3 and are typically producers of content on a website.</source>
+        <target state="final">Backend-Benutzer können sich im TYPO3-Backend-Bereich anmelden und dort Inhaltselemente anlegen oder bearbeiten.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" xml:space="preserve" approved="yes">
+				<source>The main settings for a backend user is a username, password and group memberships. The username and password authenticates the user to the system. The group memberships enables the user to perform actions in TYPO3 since groups are the main source of permission settings for a backend user.
+Backend usergroups can also be understood as "roles". A usergroup can contain a configuration of permissions which allows the user to play a certain role in the system.
+
+&lt;b&gt;The "Admin" user&lt;/b&gt;
+There is a special kind of user, the "Admin" user. This user has access to everything in TYPO3. There are no limits for Admin-users at all. You should normally have only a single or two admin-users in your system.
+Admin-users are the only users who can create other backend users. Alternatively you can create an "Action" which enables other normal users to do it as well (with certain restrictions of course).
+
+&lt;b&gt;Location&lt;/b&gt;
+Backend users are always created in the root of the page tree (like Backend groups are).
+
+&lt;b&gt;Comparing Users&lt;/b&gt;
+To manage and compare users, getting an overview of their access credentials etc. you can use the Tools &gt; User Admin module (extension: beuser). It allows you to group users by various categories of permissions. You can also switch to another users account by a single click of a button.</source>
+			<target state="final">Die Haupteinstellungen für einen Backend-Benutzer bestehen aus einem eindeutigen Benutzernamen, einem Passwort und einer oder mehreren Gruppenmitgliedschaften. Mit seinem Benutzernamen und dem Passwort authentifiziert sich ein Benutzer gegenüber dem System und durch Gruppenmitgliedschaften werden dem Benutzer bestimmte Rechte innerhalb des TYPO3-Systems eingeräumt. Benutzergruppen stellen die Hauptquelle für Benutzerberechtigungen dar. Man kann Backend-Benutzergruppen auch als "Benutzerrollen" verstehen: mit einer Benutzergruppe können die Rechte definiert werden, die ein Benutzer benötigt, um eine bestimmte Aufgabe oder Rolle innerhalb des Systems wahrzunehmen, z.B. als Textredakteur, Designer oder Systemadministrator. &lt;b&gt;Der "Admin"-Benutzer&lt;/b&gt; Es gibt einen besonderen Benutzertyp, den "Admin"-Benutzer. Dieser Benutzer hat auf alle Bereiche von TYPO3 Zugriff, d.h. für ihn existieren keinerlei Beschränkungen. Normalerweise sollten in einem System nur ein oder zwei Admin-Benutzer angelegt werden. Admin-Benutzer sind die einzigen, die andere Benutzer anlegen können. Sie können jedoch auch eine Aktion definieren, durch die ein normaler Benutzer dazu in die Lage versetzt wird (mit bestimmten Einschränkungen). &lt;b&gt;Speicherort für Backend-Benutzer und Gruppen&lt;/b&gt; Backend-Benutzer (und Benutzergruppen) werden immer in der Wurzel des Seitenbaumes angelegt. &lt;b&gt;Benutzer vergleichen&lt;/b&gt; Um Benutzer verwalten, vergleichen und sich einen Überblick über Benutzerrechte verschaffen zu können, kann das Werkzeug "Verwaltung" verwendet werden (Adminwerkzeuge &gt; Verwaltung). Damit lassen sich u.a. Benutzer nach verschiedenen Kategorien sortieren und vergleichen. Hier können Sie auch mit einem einzigen Mausklick die Identität eines anderen Benutzers annehmen, um dessen Benutzerrechte direkt zu überprüfen.</target></trans-unit>
+      <trans-unit id="_.seeAlso" resname="_.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_groups,
+About backend users | https://docs.typo3.org/typo3cms/GettingStartedTutorial/UserManagement/BackendUsers/
+Setting up a new user and group | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/AccessControl/SettingUpANewUser/
+Users and Groups [Technical] | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/AccessControl/UsersAndGroups/</source>
+			<target state="final">be_groups,
+Über Backend-Benutzer | https://docs.typo3.org/typo3cms/GettingStartedTutorial/UserManagement/BackendUsers/
+Einrichtung neuer Benutzer und Gruppen | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/AccessControl/SettingUpANewUser/
+Bentzer und Gruppen [Technisch] | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/AccessControl/UsersAndGroups/</target></trans-unit>
+      <trans-unit id="_.image" resname="_.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/beuser_2.png,
+EXT:core/Resources/Public/Images/cshimages/beuser_1.png,
+EXT:core/Resources/Public/Images/cshimages/beuser_3.png</source>
+				
+			<target state="final">EXT:core/Resources/Public/Images/cshimages/beuser_2.png,
+EXT:core/Resources/Public/Images/cshimages/beuser_1.png,
+EXT:core/Resources/Public/Images/cshimages/beuser_3.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" xml:space="preserve" approved="yes">
+				<source>Backend users are found in the root of the page tree. "Admin" backend users can always be recognized on their icon being red while normal users have a blue icon.
+The editing form of a backend users record.
+The "Tools &gt; User Admin" module where you can get an overview of the users on the system and what permissions they have. Click the "SU" button to switch to a users account.</source>
+			<target state="final">Backend-Benutzer und Backend-Benutzergruppen werden in der Wurzel des Seitenbaumes angelegt. Im Bild sind "Admin"-Benutzer daran zu erkennen, dass sie ein rotes Benutzersymbol haben (normale Benutzer werden in blau dargestellt). In neueren Versionen von TYPO3 hat ein Admin-Benutzer ein blaues und ein normaler Benutzer ein grünes Symbol. Die Eingabemaske zum Anlegen oder Bearbeiten von Backend-Benutzern. Die Eingabemaske des Werkzeugs "Verwaltung", mit dem man sich einen Überblick über alle Backend-Benutzer verschaffen kann. Mit der Schaltfläche "SU" ("Switch User") können Sie als Administrator die Identität des entsprechenden Benutzers annehmen, um dessen Rechte zu überprüfen.</target></trans-unit>
+      <trans-unit id="username.description" resname="username.description" approved="yes">
+        <source>Enter the login name of the backend user.</source>
+        <target state="final">Geben Sie den Benutzernamen des Backend-Benutzers an.</target>
+      </trans-unit>
+      <trans-unit id="username.details" resname="username.details" approved="yes">
+        <source>A username is required and must be in lowercase without spaces in it. Furthermore the username must be unique. If it is not unique a number will be appended automatically.</source>
+        <target state="final">Das Feld für den Benutzernamen ist - ebenso wie das für das Passwort - ein Pflichtfeld und muss ausgefüllt werden. Der Benutzername muss eindeutig sein und darf nur aus Kleinbuchstaben bestehen. Leerzeichen sind nicht erlaubt! Sollte der Benutzername nicht eindeutig sein, fügt TYPO3 automatisch eine Zahl an.</target>
+      </trans-unit>
+      <trans-unit id="_username.seeAlso" resname="_username.seeAlso" approved="yes">
+        <source>be_users:password</source>
+        <target state="final">be_users:password</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="password.description" resname="password.description" approved="yes">
+        <source>Enter the password for the backend username above (Notice the value you enter &lt;i&gt;will&lt;/i&gt; be readable in the field!).</source>
+        <target state="final">Geben Sie das Passwort für diesen Benutzer an. Das Passwort wird während der Eingabe im Klartext angezeigt.</target>
+      </trans-unit>
+      <trans-unit id="password.details" resname="password.details" xml:space="preserve" approved="yes">
+				<source>The password is required. Before the password is sent to the server it's md5-hashed, so the password value itself is not transferred over the Internet. This is true both when editing the password and when the user logs in.
+While this principle does not reveal the raw password it is &lt;i&gt;not&lt;/i&gt; the same as real encryption. If you need the highest degree of security you should install the TYPO3 backend on a secure server.
+The password is stored in the database as an md5-hash and thus it's not possible to extract the original password from the database either. This means that 'lost passwords' must be substituted with a new password for the user.
+
+&lt;b&gt;Notice&lt;/b&gt;
+When you enter the password in the password field it is initially visible in clear text! First when the password field focus is lost will the password become a "list of dots".
+
+&lt;b&gt;User changing password&lt;/b&gt;
+Users can change their password from the User &gt; Setup module</source>
+			<target state="final">Das Feld für das Passwort ist - ebenso wie das für den Benutzernamen - ein Pflichtfeld und muss ausgefüllt werden. Passwörter werden verschlüsselt (als MD5-Hash), sobald Sie dieses Eingabefeld verlassen. Damit wird sicher gestellt, dass keinerlei Klartextpasswörter über das Internet gesendet werden. Dieser Vorgang findet auch bei der Anmeldung am System statt. Auch wenn mit dieser Methode prinzipiell sichergestellt wird, dass keine Passwörter im Klartext übertragen werden, entspricht dies &lt;i&gt;nicht&lt;/i&gt; einer verschlüsselten Kommunikation! Die größtmögliche Sicherheit für Ihr System erreichen Sie, wenn Sie TYPO3 auf einem sicheren Server (mit SSL und HTTPS) installieren. Das Passwort wird in der Datenbank als sogenannter MD5-Hash-Wert gespeichert und kann deshalb nicht rückübersetzt werden. Aus diesem Grund müssen verloren gegangene oder vergessene Benutzerpasswörter durch neue ersetzt werden. &lt;b&gt;Hinweis&lt;/b&gt; Bei der Eingabe erscheint im Eingabefeld das Passwort zunächst im Klartext (unverschlüsselt). Beim Verlassen des Feldes erscheinen dann die gewohnten "Passwortpunkte". &lt;b&gt;Passwortänderung durch Benutzer&lt;/b&gt; Benutzer können ihr Passwort innerhalb ihres Benutzerprofils auch selbst ändern.</target></trans-unit>
+      <trans-unit id="_password.seeAlso" resname="_password.seeAlso" approved="yes">
+        <source>_MOD_user_setup:option_newPassword</source>
+        <target state="final">_MOD_user_setup:option_newPassword</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="usergroup.description" resname="usergroup.description" approved="yes">
+        <source>Assign backend user groups to the user.</source>
+        <target state="final">Weisen Sie den Benutzer einer oder mehreren Benutzergruppen zu.</target>
+      </trans-unit>
+      <trans-unit id="usergroup.details" resname="usergroup.details" xml:space="preserve" approved="yes">
+				<source>The backend user groups defines the permissions which the backend user will inherit. So unless the backend user is an 'Admin' user, he needs to be a member of one or more user groups in order to have practically any permissions assigned. The properties set in the user groups are mostly added together.
+The first (top) group in the list is the group which will, by default, be the owner of pages the user creates.</source>
+			<target state="final">Erst durch das Zuweisen von Backend-Benutzergruppen können Sie festlegen, welche Rechte ein Benutzer erhält. Ein Benutzer verfügt über praktisch keine Rechte, solange er noch keiner Benutzergruppe zugewiesen wurde (diese Einschränkung gilt nicht für Admin-Benutzer). Die Rechte verschiedener Gruppen werden dabei größtenteils zusammengefasst. Die erste (oberste) Gruppe in der Liste legt fest, welcher Gruppe neu erstellte Seiten des Benutzers gehören (Standardgruppe).</target></trans-unit>
+      <trans-unit id="_usergroup.seeAlso" resname="_usergroup.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_users:TSconfig,
+be_groups</source>
+				
+			<target state="final">be_users:TSconfig, be_groups</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="db_mountpoints.description" resname="db_mountpoints.description" approved="yes">
+        <source>Assign startpoints for the users page tree.</source>
+        <target state="final">Definieren Sie den Seitenbaum des Benutzers.</target>
+      </trans-unit>
+      <trans-unit id="db_mountpoints.details" resname="db_mountpoints.details" xml:space="preserve" approved="yes">
+				<source>The page tree used my all Web-submodules to navigate must have some points-of-entry defined. Here you should insert one or more references to a page which will represent a new root page for the page tree. This is called a 'Database mount'.
+
+&lt;strong&gt;Notice&lt;/strong&gt; that backend user groups also has DB mounts which can be inherited by the user. So if you want a group of users to share a page tree, you should probably mount the page tree in the backend user group which they share instead.</source>
+			<target state="final">Um normalen Backend-Benutzern (Nicht-Administratoren) überhaupt einen Seitenbaum darstellen zu können, ist es zunächst notwendig festzulegen, auf welche Bereiche der Website die Benutzer Zugriff erhalten sollen. Dazu weist man ihnen hier eine oder mehrere Seiten des Seitenbaumes zu. Aus diesen Startseiten (inklusive aller Unterseiten) wird dann der benutzereigene Seitenbaum gebildet. Da der Begriff "Startseite" eigentlich lediglich eine Referenz zu einem Datenbankeintrag darstellt, wird solch eine Startseite auch als "Datenbankfreigabe" ("database mount" oder "DB mount") bezeichnet. &lt;strong&gt;Hinweis&lt;/strong&gt; Backend-Benutzergruppen können ebenfalls Datenbankfreigaben erteilt werden. Diese Freigaben werden an alle Gruppenmitglieder vererbt. Der resultierende Seitenbaum setzt sich somit aus den persönlichen und den Gruppenfreigaben zusammen! Es wird empfohlen, Datenbankfreigaben auf Gruppenebene zu erstellen. &lt;strong&gt;Achtung&lt;/strong&gt; Damit die Benutzer die angezeigten Seiten auch bearbeiten können, müssen Sie dem Benutzer auch entsprechende Bearbeitungsrechte einräumen (im Modul "Web &gt; Zugriff").</target></trans-unit>
+      <trans-unit id="_db_mountpoints.seeAlso" resname="_db_mountpoints.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_groups:db_mountpoints,
+be_users:file_mountpoints,
+be_users:options,
+xMOD_csh_corebe:perm_module,
+xMOD_csh_corebe:pagetree</source>
+				
+			<target state="final">be_groups:db_mountpoints, be_users:file_mountpoints, be_users:options, xMOD_csh_corebe:perm_module, xMOD_csh_corebe:pagetree</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_db_mountpoints.image" resname="_db_mountpoints.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/be_groups_3.png,
+EXT:core/Resources/Public/Images/cshimages/be_groups_4.png</source>
+				
+			<target state="final">EXT:core/Resources/Public/Images/cshimages/be_groups_3.png,
+EXT:core/Resources/Public/Images/cshimages/be_groups_4.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="db_mountpoints.image_descr" resname="db_mountpoints.image_descr" xml:space="preserve" approved="yes">
+				<source>A DB mount is assigned to the user. Users can only operate on pages and records which are inside their DB mounts!
+When a page is mounted for a user it will become the root of their page tree. The user must have access to the page through the regular page permissions set in the Web &gt; Access module.</source>
+			<target state="final">Dem Benutzer wurde eine Datenbankfreigabe zugewiesen. Benutzer können lediglich Seiten und Datensätze bearbeiten, die ihnen hier auch zugewiesen wurden. Zugewiesene Datenbankfreigaben bilden die Wurzel des Seitenbaums. Sie müssen dem Benutzer auch entsprechende Bearbeitungsrechte einräumen (im Modul "Web &gt; Zugriff").</target></trans-unit>
+      <trans-unit id="file_mountpoints.description" resname="file_mountpoints.description" approved="yes">
+        <source>Assign startpoints for the file folder tree.</source>
+        <target state="final">Legen Sie den Ordnerbaum fest, der dem Benutzer zu Verfügung stehen soll.</target>
+      </trans-unit>
+      <trans-unit id="file_mountpoints.details" resname="file_mountpoints.details" xml:space="preserve" approved="yes">
+				<source>The file folder tree is used by all File-submodules to navigate between the file folders on the webserver.
+Notice as with 'DB mounts' the file folder mounts may be inherited from the member groups of the user.
+See Backend Groups for details</source>
+			<target state="final">Der Dateibaum wird von allen TYPO3-Dateimodulen benutzt, um zwischen den verschiedenen Ordnern auf dem Webserver navigieren zu können. Genau wie bei den Datenbankfreigaben werden auch hier Gruppenrechte vererbt. Lesen Sie dazu bitte die Beschreibung für "Backend-Benutzergruppen".</target></trans-unit>
+      <trans-unit id="_file_mountpoints.seeAlso" resname="_file_mountpoints.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_groups:file_mountpoints,
+be_users:db_mountpoints,
+be_users:options,
+xMOD_csh_corebe:filetree,
+sys_filemounts</source>
+				
+			<target state="final">be_groups:file_mountpoints, be_users:db_mountpoints, be_users:options, xMOD_csh_corebe:filetree, sys_filemounts</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="email.description" resname="email.description" approved="yes">
+        <source>Enter the email address of the user.</source>
+        <target state="final">Geben Sie die E-Mail-Adresse des Benutzers an.</target>
+      </trans-unit>
+      <trans-unit id="email.details" resname="email.details" xml:space="preserve" approved="yes">
+				<source>This address is rather important to enter because this is where messages from the system is sent.
+&lt;strong&gt;Notice&lt;/strong&gt; the user is able to change this value by himself from within the User&gt;Setup module.</source>
+			<target state="final">Diese Adresse ist sehr wichtig, denn hierhin werden TYPO3-Systemmeldungen versendet. &lt;strong&gt;Hinweis&lt;/strong&gt; Benutzer können diesen Wert innerhalb ihres Benutzerprofils auch selbst ändern (im Modul Benutzer &gt; Einstellungen).</target></trans-unit>
+      <trans-unit id="_email.seeAlso" resname="_email.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_users:realName,
+_MOD_user_setup:option_newPassword</source>
+				
+			<target state="final">be_users:realName, _MOD_user_setup:option_newPassword</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="realName.description" resname="realName.description" approved="yes">
+        <source>Enter the ordinary name of the user, eg. John Doe.</source>
+        <target state="final">Geben Sie den vollständigen Namen des Benutzers an (z.B. Petra Mustermann).</target>
+      </trans-unit>
+      <trans-unit id="realName.details" resname="realName.details" approved="yes">
+        <source>&lt;strong&gt;Notice&lt;/strong&gt; the user is able to change this value by himself from within the User&gt;Setup module.</source>
+        <target state="final">&lt;strong&gt;Hinweis&lt;/strong&gt; Benutzer können diesen Wert innerhalb ihres Benutzerprofils auch selbst ändern (im Modul Benutzer&gt;Einstellungen).</target>
+      </trans-unit>
+      <trans-unit id="_realName.seeAlso" resname="_realName.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_users:email,
+_MOD_user_setup:option_newPassword</source>
+				
+			<target state="final">be_users:email, _MOD_user_setup:option_newPassword</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="disable.description" resname="disable.description" approved="yes">
+        <source>Unchecking this option will temporarily disable the user from logging in.</source>
+        <target state="final">Deaktivieren dieser Option deaktiviert vorübergehend die Anmeldung des Benutzers.</target>
+      </trans-unit>
+      <trans-unit id="_disable.seeAlso" resname="_disable.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_users:starttime,
+be_users:endtime</source>
+				
+			<target state="final">be_users:starttime, be_users:endtime</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="admin.description" resname="admin.description" approved="yes">
+        <source>'Admin' users have TOTAL access to the system!</source>
+        <target state="final">"Admin"-Benutzer haben VOLLSTÄNDIGEN Zugang zum System!</target>
+      </trans-unit>
+      <trans-unit id="admin.details" resname="admin.details" xml:space="preserve" approved="yes">
+				<source>'Admin' can do anything TYPO3 allows and this kind of user should be used only for administrative purposes. All daily handling should be done with regular users.
+'Admin' users don't need to be members of any backend user groups. However you should be aware that any page created by an admin user without a group will not have any owner-group assigned and thus it will probably be invisible for other users. If this becomes a problem you can easily solve it by assigning a user group to the 'Admin' user anyway. This does of course not affect the permissions since they are unlimited, but the first group listed is by default the owner group of newly created pages.
+'Admin' users are easily recognized as they appear with a red icon instead of the ordinary blue user-icon.
+
+You should probably not assign any other users than yourself as an 'Admin' user.</source>
+			<target state="final">"Admin"-Benutzer können alle Funktionen nutzen, die TYPO3 bietet. Deshalb sollten solche Benutzer nur für administrative Aufgaben verwendet werden. Alle täglich anfallenden Aufgaben können auch mit normalen oder speziell angepassten Benutzern und Benutzergruppen durchgeführt werden. Admin-Benutzer müssen nicht Mitglied einer Benutzergruppe sein. Man sollte sich aber darüber im Klaren sein, dass Aufgrund dieser Tatsache neu von solchen Admins angelegte Seiten deshalb auch keine Besitzergruppe haben und somit für andere Benutzer unter Umständen unsichtbar sind. Wenn das ein Problem darstellt, so kann man Admin-Benutzer einer Benutzergruppe zuweisen. Natürlich werden die Bearbeitungs- und Zugriffsrechte dadurch nicht berührt, denn Admin-Benutzer haben nach wie vor uneingeschränkte Rechte. Neue Seiten werden dadurch jedoch mit den entsprechenden Gruppenrechten angelegt. Admin-Benutzer sind an dem blauen Benutzersymbol zu erkennen, normale Benutzer werden mit einem grünen Symbol dargestellt. Außer sich selbst sollten Sie keinem anderen Benutzer Admin-Rechte einräumen.</target></trans-unit>
+      <trans-unit id="_admin.image" resname="_admin.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/beuser_4.png</source>
+        <target state="final">EXT:core/Resources/Public/Images/cshimages/beuser_4.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="options.description" resname="options.description" approved="yes">
+        <source>Select if the user should inherit page tree or folder tree mountpoints from member groups.</source>
+        <target state="final">Mit dieser Option wird festgelegt, ob dem Benutzer die Seiten- und Verzeichnisfreigaben der ihm zugeordneten Benutzergruppen zugewiesen (vererbt) werden sollen.</target>
+      </trans-unit>
+      <trans-unit id="options.details" resname="options.details" xml:space="preserve" approved="yes">
+				<source>It's a great advantage to let users inherit mountpoints from membergroups because it makes administration of the same mountpoints for many users extremely easy.
+If you don't check these options, you must make sure the mount points for the page tree and file folder tree is set specifically for the user.</source>
+			<target state="final">Das Vererben von Datenbank- und Verzeichnisfreigaben durch die Zugehörigkeit zu einer Benutzergruppen macht es Administratoren sehr einfach, eine Freigabe für viele Benutzer zu erstellen und zu verwalten. Wählt man diese Option nicht, müssen für solche Benutzer entsprechende Freigaben für den Seitebaum und Verzeichnisse separat eingerichtet werden.</target></trans-unit>
+      <trans-unit id="_options.seeAlso" resname="_options.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_users:db_mountpoints,
+be_users:file_mountpoints</source>
+				
+			<target state="final">be_users:db_mountpoints, be_users:file_mountpoints</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="file_permissions.description" resname="file_permissions.description" approved="yes">
+        <source>Select file operation permissions for the user.</source>
+        <target state="final">Legen Sie die Dateibearbeitungsrechte des Benutzers fest.</target>
+      </trans-unit>
+      <trans-unit id="file_permissions.details" resname="file_permissions.details" xml:space="preserve" approved="yes">
+				<source>These settings relate to the functions found in the File&gt;List module as well as general upload of files.
+
+&lt;strong&gt;Notice&lt;/strong&gt; that backend user groups also have file operation permissions which automatically apply to the user if he's member of an accordant group. So if you want a group of users share identical file operation permissions, you should probably define them in a backend user group instead.</source>
+			<target state="final">Diese Einstellungen beziehen sich auf die Funktionen des Moduls "Datei &gt; Dateiliste" sowie auf das Hochladen von Dateien allgemein.
+
+&lt;strong&gt;Beachten Sie,&lt;/strong&gt; dass auch Backend-Benutzergruppen Berechtigungen für Dateioperationen haben, die automatisch für den Benutzer gelten, wenn er Mitglied der entsprechenden Gruppe ist. Wenn also eine Gruppe von Benutzern identische Berechtigungen für Dateioperationen erhalten soll, sollten Sie diese besser in einer Backend-Benutzergruppe festlegen.</target></trans-unit>
+      <trans-unit id="file_permissions.seeAlso" resname="file_permissions.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_users:file_mountpoints,
+be_group:file_permissions</source>
+				
+			<target state="final">be_users:file_mountpoints,
+be_group:file_permissions</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="fileoper_perms.description" resname="fileoper_perms.description" approved="yes">
+        <source>Select file operation permissions for the user.</source>
+        <target state="final">Legen Sie die Dateibearbeitungsrechte des Benutzers fest.</target>
+      </trans-unit>
+      <trans-unit id="fileoper_perms.details" resname="fileoper_perms.details" xml:space="preserve" approved="yes">
+				<source>These settings relate to the functions found in the File&gt;List module as well as general upload of files.
+
+&lt;strong&gt;Notice&lt;/strong&gt; that backend user groups also have file operation permissions which automatically apply to the user if he's member of an accordant group. So if you want a group of users share identical file operation permissions, you should probably define them in a backend user group instead.</source>
+			<target state="final">Diese Einstellungen beziehen sich auf die Funktionen des Moduls "Datei &gt; Dateiliste" sowie auf das Hochladen von Dateien allgemein.
+
+&lt;strong&gt;Beachten Sie,&lt;/strong&gt; dass auch Backend-Benutzergruppen Berechtigungen für Dateioperationen haben, die automatisch für den Benutzer gelten, wenn er Mitglied der entsprechenden Gruppe ist. Wenn also eine Gruppe von Benutzern identische Berechtigungen für Dateioperationen erhalten soll, sollten Sie diese besser in einer Backend-Benutzergruppe festlegen.</target></trans-unit>
+      <trans-unit id="_fileoper_perms.seeAlso" resname="_fileoper_perms.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_users:file_mountpoints,
+be_group:file_permissions</source>
+				
+			<target state="final">be_users:file_mountpoints,
+be_group:file_permissions</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="starttime.description" resname="starttime.description" approved="yes">
+        <source>Enter the date from which the account is active.</source>
+        <target state="final">Geben Sie das Datum an, ab dem der Benutzername gültig sein soll.</target>
+      </trans-unit>
+      <trans-unit id="_starttime.seeAlso" resname="_starttime.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_users:disable,
+be_users:endtime,
+pages:starttime</source>
+				
+			<target state="final">be_users:disable, be_users:endtime, pages:starttime</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="endtime.description" resname="endtime.description" approved="yes">
+        <source>Enter the date from which the account is disabled.</source>
+        <target state="final">Geben Sie das Datum an, ab dem der Benutzername ungültig sein soll.</target>
+      </trans-unit>
+      <trans-unit id="_endtime.seeAlso" resname="_endtime.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_users:disable,
+be_users:starttime,
+pages:starttime</source>
+				
+			<target state="final">be_users:disable, be_users:starttime, pages:starttime</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="lastlogin.description" resname="lastlogin.description" approved="yes">
+        <source>This field shows the user's last log in date.</source>
+        <target state="final">Zeigt an, wann sich der Benutzer zuletzt angemeldet hat.</target>
+      </trans-unit>
+      <trans-unit id="lang.description" resname="lang.description" approved="yes">
+        <source>Select the &lt;i&gt;default&lt;/i&gt; language.</source>
+        <target state="final">Wählen Sie die &lt;i&gt;Standardsprache&lt;/i&gt;.</target>
+      </trans-unit>
+      <trans-unit id="lang.details" resname="lang.details" xml:space="preserve" approved="yes">
+				<source>This determines the language of the backend interface for the user. All mainstream parts available for regular users are available in the system language selected.
+'Admin'-users however will experience that the 'Admin'-only parts of TYPO3 is in english. This includes all submodules in "Tools" and the Web&gt;Template module.
+
+&lt;b&gt;Notice&lt;/b&gt; this is only setting the default language. As soon as the user has logged in the language must be changed through the User&gt;Setup module. Also you will have to install the corresponding language pack which can be found as an extension on TYPO3.org with the prefix "csh_XX" where XX is the TYPO3 language key.</source>
+			<target state="final">Hier legen Sie die Sprache für das Backend fest. Alle Hauptmenüpunkte normaler Benutzer wurden in die hier gewählte Sprache übersetzt. Admin-Benutzer werden jedoch feststellen, dass die speziellen Admin-Menüs lediglich in Englisch verfügbar sind. Das betrifft zum Beispiel alle Module innerhalb von "Werkzeuge" und im Modul "Web &gt; Template". &lt;b&gt;Hinweis:&lt;/b&gt; Die hier gewählte Sprache legt lediglich den Standardwert fest. Nach erfolgreicher Anmeldung kann jeder Benutzer seine persönlichen (Sprach-)Einstellungen im Modul "Benutzerwerkzeuge &gt; Einstellungen" vornehmen. Für jede gewünschte Systemsprache muss der Administrator aber zunächst das entsprechende Sprachpaket installieren. Diese Sprachpakete können im Menü "Admin &gt; Erw-Manager" unter "Übersetzungen" von TYPO3.org heruntergeladen werden.</target></trans-unit>
+      <trans-unit id="_lang.seeAlso" resname="_lang.seeAlso" approved="yes">
+        <source>_MOD_user_setup:language</source>
+        <target state="final">_MOD_user_setup:language</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="userMods.description" resname="userMods.description" approved="yes">
+        <source>Select available backend modules for the user.</source>
+        <target state="final">Weist dem Benutzer bestimmte Backend-Module zu.</target>
+      </trans-unit>
+      <trans-unit id="userMods.details" resname="userMods.details" xml:space="preserve" approved="yes">
+				<source>This determines which 'menu items' are available for the user in the backend.
+
+Notice that the same list of modules may be configured for the backend user groups and that these will be inherited by the user in addition to the modules you select here. It's highly likely that you should not set any modules for the user himself but rather select the modules in the backend groups he's a member of. However this list provides a great way to add a single module for specific users.</source>
+			<target state="final">Mit dieser Option wird das Aussehen und der Funktionsumfang des Benutzermenüs festgelegt. Bitte beachten Sie, dass die gleichen Module evtl. schon innerhalb einer Benutzergruppe festgelegt wurden und diese an den Benutzer vererbt werden. Es empfiehlt sich, alle allgemeinen Module innerhalb der Benutzergruppe zu definieren und dem Benutzer hier lediglich einzelne, ganz spezielle Module zuzuweisen.</target></trans-unit>
+      <trans-unit id="_userMods.seeAlso" resname="_userMods.seeAlso" approved="yes">
+        <source>be_groups:groupMods</source>
+        <target state="final">be_groups:groupMods</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="TSconfig.description" resname="TSconfig.description" approved="yes">
+        <source>Enter additional TSconfig for the user (advanced).</source>
+        <target state="final">Definiert zusätzliche, benutzerspezifische TSconfig-Einstellungen (fortgeschrittene Konfiguration)</target>
+      </trans-unit>
+      <trans-unit id="TSconfig.details" resname="TSconfig.details" approved="yes">
+        <source>This field allows you to extend the configuration of the user in severe details. A brief summary of the options include a more detailed configuration of the backend modules, setting of user specific default table field values, setting of Rich Text Editor options etc.</source>
+        <target state="final">Mit dieser Einstellung lassen sich dem Benutzer ganz spezielle Konfigurationen (etwa für den RTE oder Optionen einzelner Module etc.) zuweisen. Mit dem Eintrag "mod.SHARED.colPos_list = 1,0,2,3" könnte man z.B. festlegen, dass der Benutzer in allen Spalten Inhalte anlegen darf.</target>
+      </trans-unit>
+      <trans-unit id="_TSconfig.seeAlso" resname="_TSconfig.seeAlso" xml:space="preserve" approved="yes">
+				<source>pages:TSconfig,
+fe_users:TSconfig,
+be_groups:TSconfig,
+User TSconfig | https://docs.typo3.org/typo3cms/TSconfigReference/UserTsconfig/</source>
+				
+			<target state="final">pages:TSconfig,
+fe_users:TSconfig,
+be_groups:TSconfig,
+Benutzer-TSconfig | https://docs.typo3.org/typo3cms/TSconfigReference/UserTsconfig/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="allowed_languages.description" resname="allowed_languages.description" approved="yes">
+        <source>Select which record languages the group members are limited to edit.</source>
+        <target state="final">Legt fest, in welchen Sprachen der Benutzer Inhaltselemente bearbeiten darf.</target>
+      </trans-unit>
+      <trans-unit id="allowed_languages.details" resname="allowed_languages.details" approved="yes">
+        <source>You can also limit users to specific languages with user group settings. Please see the same field for backend user groups for more details.</source>
+        <target state="final">Diese Einstellung kann auch für Benutzergruppen vorgenommen werden. Details dazu entnehmen Sie bitte der Beschreibung des gleichnamigen Feldes im Bereich "Benutzergruppen".</target>
+      </trans-unit>
+      <trans-unit id="_allowed_languages.seeAlso" resname="_allowed_languages.seeAlso" approved="yes">
+        <source>be_groups:allowed_languages</source>
+        <target state="final">be_groups:allowed_languages</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_allowed_languages.image" resname="_allowed_languages.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/be_groups_18.png</source>
+        <target state="final">EXT:core/Resources/Public/Images/cshimages/be_groups_18.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
