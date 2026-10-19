@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:indexed_search/Resources/Private/Language/locallang_pi.xlf" date="2011-10-17T20:22:33Z" product-name="indexed_search" target-language="bs">
+    <header/>
+    <body>
+      <trans-unit id="default_search_word_entry" resname="default_search_word_entry" approved="yes">
+        <source>Search for</source>
+        <target state="final">Traži:</target>
+      </trans-unit>
+      <trans-unit id="submit_button_label" resname="submit_button_label" approved="yes">
+        <source>Search</source>
+        <target state="final">Traži</target>
+      </trans-unit>
+      <trans-unit id="opt_type_0" resname="opt_type_0" approved="yes">
+        <source>Distinct word</source>
+        <target state="final">Čitava riječ</target>
+      </trans-unit>
+      <trans-unit id="opt_type_1" resname="opt_type_1" approved="yes">
+        <source>Part of word</source>
+        <target state="final">Dio riječi</target>
+      </trans-unit>
+      <trans-unit id="opt_type_2" resname="opt_type_2" approved="yes">
+        <source>First part of word</source>
+        <target state="final">Prvi dio riječi</target>
+      </trans-unit>
+      <trans-unit id="opt_type_3" resname="opt_type_3" approved="yes">
+        <source>Last part of word</source>
+        <target state="final">Zadnji dio riječi</target>
+      </trans-unit>
+      <trans-unit id="opt_type_10" resname="opt_type_10" approved="yes">
+        <source>Sounds like</source>
+        <target state="final">Zvuči kao</target>
+      </trans-unit>
+      <trans-unit id="opt_type_20" resname="opt_type_20" approved="yes">
+        <source>Sentence</source>
+        <target state="final">Rečenica</target>
+      </trans-unit>
+      <trans-unit id="opt_defOp_0" resname="opt_defOp_0" approved="yes">
+        <source>All words (AND)</source>
+        <target state="final">Sve riječi (AND)</target>
+      </trans-unit>
+      <trans-unit id="opt_defOp_1" resname="opt_defOp_1" approved="yes">
+        <source>Any words (OR)</source>
+        <target state="final">Bilo koja riječ (OR)</target>
+      </trans-unit>
+      <trans-unit id="opt_sections_0" resname="opt_sections_0" approved="yes">
+        <source>Whole site</source>
+        <target state="final">Čitava stranica</target>
+      </trans-unit>
+      <trans-unit id="opt_sections_-1" resname="opt_sections_-1" approved="yes">
+        <source>Only this page</source>
+        <target state="final">Samo ova stranica</target>
+      </trans-unit>
+      <trans-unit id="opt_sections_-2" resname="opt_sections_-2" approved="yes">
+        <source>Top + level 1</source>
+        <target state="final">Vrh + 1 nivo</target>
+      </trans-unit>
+      <trans-unit id="opt_sections_-3" resname="opt_sections_-3" approved="yes">
+        <source>Level 2 and out</source>
+        <target state="final">Nivo 2 i ostalo</target>
+      </trans-unit>
+      <trans-unit id="opt_media_-1" resname="opt_media_-1" approved="yes">
+        <source>All media</source>
+        <target state="final">Svi mediji</target>
+      </trans-unit>
+      <trans-unit id="opt_media_0" resname="opt_media_0" approved="yes">
+        <source>Internal pages</source>
+        <target state="final">Interne stranice</target>
+      </trans-unit>
+      <trans-unit id="opt_media_-2" resname="opt_media_-2" approved="yes">
+        <source>All External</source>
+        <target state="final">Sve eksterne</target>
+      </trans-unit>
+      <trans-unit id="opt_order_rank_flag" resname="opt_order_rank_flag" approved="yes">
+        <source>Weight/Frequency</source>
+        <target state="final">Težina/Učestalost</target>
+      </trans-unit>
+      <trans-unit id="opt_order_rank_freq" resname="opt_order_rank_freq" approved="yes">
+        <source>Frequency</source>
+        <target state="final">Učestalost</target>
+      </trans-unit>
+      <trans-unit id="opt_order_rank_first" resname="opt_order_rank_first" approved="yes">
+        <source>Close to top</source>
+        <target state="final">Blizu vrha</target>
+      </trans-unit>
+      <trans-unit id="opt_order_rank_count" resname="opt_order_rank_count" approved="yes">
+        <source>Number of words</source>
+        <target state="final">Broj riječi</target>
+      </trans-unit>
+      <trans-unit id="opt_order_mtime" resname="opt_order_mtime" approved="yes">
+        <source>Date Modified</source>
+        <target state="final">Datum promjene</target>
+      </trans-unit>
+      <trans-unit id="opt_order_title" resname="opt_order_title" approved="yes">
+        <source>Document title</source>
+        <target state="final">Naslov dokumenta</target>
+      </trans-unit>
+      <trans-unit id="opt_order_crdate" resname="opt_order_crdate" approved="yes">
+        <source>Creation date</source>
+        <target state="final">Datum kreiranja</target>
+      </trans-unit>
+      <trans-unit id="opt_group_sections" resname="opt_group_sections" approved="yes">
+        <source>Section hierarchy</source>
+        <target state="final">Hijerarhija sekcije</target>
+      </trans-unit>
+      <trans-unit id="opt_group_flat" resname="opt_group_flat" approved="yes">
+        <source>Flat list</source>
+        <target state="final">Ravna lista</target>
+      </trans-unit>
+      <trans-unit id="opt_lang_-1" resname="opt_lang_-1" approved="yes">
+        <source>All languages</source>
+        <target state="final">Svi jezici</target>
+      </trans-unit>
+      <trans-unit id="opt_lang_0" resname="opt_lang_0" approved="yes">
+        <source>Default</source>
+        <target state="final">Standardno</target>
+      </trans-unit>
+      <trans-unit id="opt_desc_0" resname="opt_desc_0" approved="yes">
+        <source>Highest first</source>
+        <target state="final">Prvo najviši</target>
+      </trans-unit>
+      <trans-unit id="opt_desc_1" resname="opt_desc_1" approved="yes">
+        <source>Lowest first</source>
+        <target state="final">Prvo najniži</target>
+      </trans-unit>
+      <trans-unit id="opt_RL1ALL" resname="opt_RL1ALL" approved="yes">
+        <source>All pages on level 1</source>
+        <target state="final">Sve stranice na nivou 1</target>
+      </trans-unit>
+      <trans-unit id="opt_RL2ALL" resname="opt_RL2ALL" approved="yes">
+        <source>- All pages on level 2</source>
+        <target state="final">- Sve stranice na nivou 2</target>
+      </trans-unit>
+      <trans-unit id="form_searchFor" resname="form_searchFor" approved="yes">
+        <source>Search for</source>
+        <target state="final">Traži:</target>
+      </trans-unit>
+      <trans-unit id="form_extResume" resname="form_extResume" approved="yes">
+        <source>Extended resume</source>
+        <target state="final">Prošireni rezultati</target>
+      </trans-unit>
+      <trans-unit id="form_atATime" resname="form_atATime" approved="yes">
+        <source>at a time</source>
+        <target state="final">po stranici</target>
+      </trans-unit>
+      <trans-unit id="rules_text" resname="rules_text" xml:space="preserve" approved="yes">
+				<source>Only words with 2 or more characters are accepted
+Max 200 chars total
+Space is used to split words, "" can be used to search for a whole string (not indexed search then)
+AND, OR and NOT are prefix words, overruling the default operator
++/|/- equals AND, OR and NOT as operators.
+All search words are converted to lowercase.</source>
+			<target state="final">Samo riječi sa 2 ili više karaktera se prihvataju. Maksimalno 200 karaktera ukupno. Prazan prostor se korisit za odmicanje riječi, navodnici se mogu koristiti za traženje čitave riječi. AND, OR i NOT kao prefiksi su iznad standardnih operatora +/|/- AND, OR i NOT. Sve riječi se prabacuju u mala slova.</target></trans-unit>
+      <trans-unit id="searchFor" resname="searchFor" approved="yes">
+        <source>Search for</source>
+        <target state="final">Traži:</target>
+      </trans-unit>
+      <trans-unit id="searchFor_or" resname="searchFor_or" approved="yes">
+        <source>or</source>
+        <target state="final">ili</target>
+      </trans-unit>
+      <trans-unit id="searchFor_and" resname="searchFor_and" approved="yes">
+        <source>and</source>
+        <target state="final">i</target>
+      </trans-unit>
+      <trans-unit id="searchFor_butNot" resname="searchFor_butNot" approved="yes">
+        <source>but not</source>
+        <target state="final">ali ne</target>
+      </trans-unit>
+      <trans-unit id="noResults" resname="noResults" approved="yes">
+        <source>NO results found.</source>
+        <target state="final">Nema rezultata.</target>
+      </trans-unit>
+      <trans-unit id="inSection" resname="inSection" approved="yes">
+        <source>in the section</source>
+        <target state="final">u sekciji</target>
+      </trans-unit>
+      <trans-unit id="word_page" resname="word_page" approved="yes">
+        <source>page</source>
+        <target state="final">stranica</target>
+      </trans-unit>
+      <trans-unit id="word_pages" resname="word_pages" approved="yes">
+        <source>pages</source>
+        <target state="final">stranice</target>
+      </trans-unit>
+      <trans-unit id="unnamedSection" resname="unnamedSection" approved="yes">
+        <source>Other</source>
+        <target state="final">Drugo</target>
+      </trans-unit>
+      <trans-unit id="link_regularSearch" resname="link_regularSearch" approved="yes">
+        <source>Regular search</source>
+        <target state="final">Normalno pretraživanje</target>
+      </trans-unit>
+      <trans-unit id="link_advancedSearch" resname="link_advancedSearch" approved="yes">
+        <source>Advanced search</source>
+        <target state="final">Napradno pretraživanje</target>
+      </trans-unit>
+      <trans-unit id="res_noResume" resname="res_noResume" approved="yes">
+        <source>Note: This search hit may not accurately match the content on this page. The page resume cannot be shown.</source>
+        <target state="final">Pažnja: Rezultat pretrage možda ne prikazuje tačne rezultate na stranici. Nije moguće prikazati rezime stranice.</target>
+      </trans-unit>
+      <trans-unit id="res_otherPageAsWell" resname="res_otherPageAsWell" approved="yes">
+        <source>INFO: There was another page indexed as well... Probably indexed with another or no usergroup.</source>
+        <target state="final">INFO: Još jedna stranica je indeksirana... Vjerovatno sa drugom ili bez grupe korisnika.</target>
+      </trans-unit>
+      <trans-unit id="res_memberGroups" resname="res_memberGroups" approved="yes">
+        <source>Require membership of group numbers %s</source>
+        <target state="final">Potrebno biti član grupe broj %s</target>
+      </trans-unit>
+      <trans-unit id="pi_list_browseresults_prev" resname="pi_list_browseresults_prev" approved="yes">
+        <source>&lt; Previous</source>
+        <target state="final">&lt; Prethodna</target>
+      </trans-unit>
+      <trans-unit id="pi_list_browseresults_page" resname="pi_list_browseresults_page" approved="yes">
+        <source>Page</source>
+        <target state="final">Stranica</target>
+      </trans-unit>
+      <trans-unit id="pi_list_browseresults_next" resname="pi_list_browseresults_next" approved="yes">
+        <source>Next &gt;</source>
+        <target state="final">Slijedeća &gt;</target>
+      </trans-unit>
+      <trans-unit id="local_operator_AND" resname="local_operator_AND" approved="yes">
+        <source>AND</source>
+        <target state="final">AND</target>
+      </trans-unit>
+      <trans-unit id="local_operator_OR" resname="local_operator_OR" approved="yes">
+        <source>OR</source>
+        <target state="final">OR</target>
+      </trans-unit>
+      <trans-unit id="local_operator_NOT" resname="local_operator_NOT" approved="yes">
+        <source>NOT</source>
+        <target state="final">NOT</target>
+      </trans-unit>
+      <trans-unit id="makerating_addToCurrentSearch" resname="makerating_addToCurrentSearch" approved="yes">
+        <source>Add to current search words</source>
+        <target state="final">Dodaj u trenutne riječi pretrage</target>
+      </trans-unit>
+      <trans-unit id="maketitle_matches" resname="maketitle_matches" approved="yes">
+        <source>matches</source>
+        <target state="final">odgovara</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
