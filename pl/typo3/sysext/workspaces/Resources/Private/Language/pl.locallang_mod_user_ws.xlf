@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:workspaces/Resources/Private/Language/locallang_mod_user_ws.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="pl">
+    <header/>
+    <body>
+      <trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel" approved="yes">
+        <source>Workspace overview</source>
+        <target state="final">Przegląd obszaru roboczego</target>
+      </trans-unit>
+      <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab" approved="yes">
+        <source>Workspace</source>
+        <target state="final">Obszar roboczy</target>
+      </trans-unit>
+      <trans-unit id="title" resname="title" approved="yes">
+        <source>Workspace Manager</source>
+        <target state="final">Menedżer obszaru roboczego</target>
+      </trans-unit>
+      <trans-unit id="menuitem_workspaces" resname="menuitem_workspaces" approved="yes">
+        <source>Workspace List</source>
+        <target state="final">Lista przestrzeni roboczych</target>
+      </trans-unit>
+      <trans-unit id="filter_drafts" resname="filter_drafts" approved="yes">
+        <source>Drafts</source>
+        <target state="final">Szkice</target>
+      </trans-unit>
+      <trans-unit id="filter_all" resname="filter_all" approved="yes">
+        <source>All</source>
+        <target state="final">Wszystkie</target>
+      </trans-unit>
+      <trans-unit id="diff_no_diff" resname="diff_no_diff" approved="yes">
+        <source>Do not show differences</source>
+        <target state="final">Nie pokazuj różnic</target>
+      </trans-unit>
+      <trans-unit id="diff_show_inline" resname="diff_show_inline" approved="yes">
+        <source>Show differences inline</source>
+        <target state="final">Pokaż różnice w linii</target>
+      </trans-unit>
+      <trans-unit id="label_errors" resname="label_errors" approved="yes">
+        <source>Errors</source>
+        <target state="final">Błędy</target>
+      </trans-unit>
+      <trans-unit id="label_workspace" resname="label_workspace" approved="yes">
+        <source>Workspace</source>
+        <target state="final">Obszar roboczy</target>
+      </trans-unit>
+      <trans-unit id="label_description" resname="label_description" approved="yes">
+        <source>Description</source>
+        <target state="final">Opis</target>
+      </trans-unit>
+      <trans-unit id="label_options" resname="label_options" approved="yes">
+        <source>Options</source>
+        <target state="final">Opcje</target>
+      </trans-unit>
+      <trans-unit id="label_status" resname="label_status" approved="yes">
+        <source>Status</source>
+        <target state="final">Status</target>
+      </trans-unit>
+      <trans-unit id="label_draft_versions" resname="label_draft_versions" approved="yes">
+        <source>Workspace Versions</source>
+        <target state="final">Wersja przestrzeni robocznej</target>
+      </trans-unit>
+      <trans-unit id="label_stage" resname="label_stage" approved="yes">
+        <source>Stage</source>
+        <target state="final">Etap</target>
+      </trans-unit>
+      <trans-unit id="remove_from_ws_confirmation" resname="remove_from_ws_confirmation" approved="yes">
+        <source>Remove from workspace?</source>
+        <target state="final">Usunąć z przestrzeni roboczej?</target>
+      </trans-unit>
+      <trans-unit id="img_title_remove_from_ws" resname="img_title_remove_from_ws" approved="yes">
+        <source>Remove from workspace?</source>
+        <target state="final">Usunąć z przestrzeni roboczej?</target>
+      </trans-unit>
+      <trans-unit id="img_title_edit_page" resname="img_title_edit_page" approved="yes">
+        <source>Edit page</source>
+        <target state="final">Edytuj stronę</target>
+      </trans-unit>
+      <trans-unit id="img_title_edit_element" resname="img_title_edit_element" approved="yes">
+        <source>Edit element</source>
+        <target state="final">Edytuj element</target>
+      </trans-unit>
+      <trans-unit id="img_title_show_log" resname="img_title_show_log" approved="yes">
+        <source>Show Log</source>
+        <target state="final">Pokaż Dziennik</target>
+      </trans-unit>
+      <trans-unit id="diffview_label_field_name" resname="diffview_label_field_name" approved="yes">
+        <source>Fieldname</source>
+        <target state="final">Nazwa pola</target>
+      </trans-unit>
+      <trans-unit id="diffview_label_colored_diff_view" resname="diffview_label_colored_diff_view" approved="yes">
+        <source>Colored diff-view</source>
+        <target state="final">Kolorowy widok różnicy</target>
+      </trans-unit>
+      <trans-unit id="img_title_show_more" resname="img_title_show_more" approved="yes">
+        <source>Show more</source>
+        <target state="final">Pokaż więcej</target>
+      </trans-unit>
+      <trans-unit id="img_title_current_workspace" resname="img_title_current_workspace" approved="yes">
+        <source>This is a current workspace!</source>
+        <target state="final">To jest bieżący obszar roboczy!</target>
+      </trans-unit>
+      <trans-unit id="img_title_create_new_workspace" resname="img_title_create_new_workspace" approved="yes">
+        <source>Create new workspace</source>
+        <target state="final">Utwórz nowy obszar roboczy</target>
+      </trans-unit>
+      <trans-unit id="link_text_create_new_workspace" resname="link_text_create_new_workspace" approved="yes">
+        <source>Create new workspace</source>
+        <target state="final">Utwórz nowy obszar roboczy</target>
+      </trans-unit>
+      <trans-unit id="edit_workspace_go_back" resname="edit_workspace_go_back" approved="yes">
+        <source>Go back</source>
+        <target state="final">Wróć</target>
+      </trans-unit>
+      <trans-unit id="edit_workspace_title_edit" resname="edit_workspace_title_edit" approved="yes">
+        <source>Edit workspace</source>
+        <target state="final">Edytuj obszar roboczy</target>
+      </trans-unit>
+      <trans-unit id="edit_workspace_title_new" resname="edit_workspace_title_new" approved="yes">
+        <source>Create new workspace</source>
+        <target state="final">Utwórz nowy obszar roboczy</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_label_workspace_title" resname="workspace_list_label_workspace_title" approved="yes">
+        <source>Title</source>
+        <target state="final">Tytuł</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_label_workspace_description" resname="workspace_list_label_workspace_description" approved="yes">
+        <source>Description</source>
+        <target state="final">Opis</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_label_owners" resname="workspace_list_label_owners" approved="yes">
+        <source>Owners</source>
+        <target state="final">Właściciele</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_label_members" resname="workspace_list_label_members" approved="yes">
+        <source>Members</source>
+        <target state="final">Członkowie</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_access_admins_only" resname="workspace_list_access_admins_only" approved="yes">
+        <source>Admins only</source>
+        <target state="final">Tylko administratorzy</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_access_anyone" resname="workspace_list_access_anyone" approved="yes">
+        <source>no restrictions</source>
+        <target state="final">brak ograniczeń</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_label_file_mountpoints" resname="workspace_list_label_file_mountpoints" approved="yes">
+        <source>File mountpoints</source>
+        <target state="final">Punkty montowania pliku</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_label_db_mountpoints" resname="workspace_list_label_db_mountpoints" approved="yes">
+        <source>Database mountpoints</source>
+        <target state="final">Punkty montowania bazy danych</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_label_publish_date" resname="workspace_list_label_publish_date" approved="yes">
+        <source>Publish date</source>
+        <target state="final">Data publikacji</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_label_your_access" resname="workspace_list_label_your_access" approved="yes">
+        <source>Your access</source>
+        <target state="final">Twój dostęp</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_label_workspace_users" resname="workspace_list_label_workspace_users" approved="yes">
+        <source>Workspace users</source>
+        <target state="final">Użytkownicy obszaru roboczego</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_label_frozen_yes" resname="workspace_list_label_frozen_yes" approved="yes">
+        <source>Yes</source>
+        <target state="final">Tak</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_label_frozen_no" resname="workspace_list_label_frozen_no" approved="yes">
+        <source>No</source>
+        <target state="final">Nie</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_icon_title_edit_workspace" resname="workspace_list_icon_title_edit_workspace" approved="yes">
+        <source>Edit workspace</source>
+        <target state="final">Edytuj obszar roboczy</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_icon_title_switch_workspace" resname="workspace_list_icon_title_switch_workspace" approved="yes">
+        <source>Switch workspace</source>
+        <target state="final">Przełącz obszar roboczy</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_access_admin" resname="workspace_list_access_admin" approved="yes">
+        <source>Admin</source>
+        <target state="final">Administrator</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_access_owner" resname="workspace_list_access_owner" approved="yes">
+        <source>Owner</source>
+        <target state="final">Właściciel</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_access_member" resname="workspace_list_access_member" approved="yes">
+        <source>Member</source>
+        <target state="final">Członek</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_publishing_count_draft" resname="workspace_list_publishing_count_draft" approved="yes">
+        <source>Draft</source>
+        <target state="final">Szkic</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_publishing_count" resname="workspace_list_publishing_count" approved="yes">
+        <source>Published %d times</source>
+        <target state="final">Opublikowane %d razy</target>
+      </trans-unit>
+      <trans-unit id="stage_label_user_comment" resname="stage_label_user_comment" approved="yes">
+        <source>User Comment</source>
+        <target state="final">Komentarz użytkownika</target>
+      </trans-unit>
+      <trans-unit id="swap_title" resname="swap_title" approved="yes">
+        <source>Swap workspace</source>
+        <target state="final">Zmień przestrzeń roboczą</target>
+      </trans-unit>
+      <trans-unit id="please_wait" resname="please_wait" approved="yes">
+        <source>Please, wait...</source>
+        <target state="final">Proszę czekać...</target>
+      </trans-unit>
+      <trans-unit id="return_to_index" resname="return_to_index" approved="yes">
+        <source>Return to Workspace module</source>
+        <target state="final">Wróć do modułu Przestrzenie robocze</target>
+      </trans-unit>
+      <trans-unit id="label_reject" resname="label_reject" approved="yes">
+        <source>Reject</source>
+        <target state="final">Odrzuć</target>
+      </trans-unit>
+      <trans-unit id="label_approveforpublishing" resname="label_approveforpublishing" approved="yes">
+        <source>Approve for publishing</source>
+        <target state="final">Zatwierdź do publikacji</target>
+      </trans-unit>
+      <trans-unit id="stage_editing" resname="stage_editing" approved="yes">
+        <source>Editing</source>
+        <target state="final">Edycja</target>
+      </trans-unit>
+      <trans-unit id="stage_review" resname="stage_review" approved="yes">
+        <source>Review</source>
+        <target state="final">Recenzja</target>
+      </trans-unit>
+      <trans-unit id="label_subelements" resname="label_subelements" approved="yes">
+        <source>Sub elements</source>
+        <target state="final">Elementy podrzędne</target>
+      </trans-unit>
+      <trans-unit id="label_subelementsdetails" resname="label_subelementsdetails" approved="yes">
+        <source>Sub elements, click for details</source>
+        <target state="final">Elementy podrzędne, kliknij po szczegóły</target>
+      </trans-unit>
+      <trans-unit id="label_element" resname="label_element" approved="yes">
+        <source>Element</source>
+        <target state="final">Element</target>
+      </trans-unit>
+      <trans-unit id="label_page" resname="label_page" approved="yes">
+        <source>Page</source>
+        <target state="final">Strona</target>
+      </trans-unit>
+      <trans-unit id="label_branch" resname="label_branch" approved="yes">
+        <source>Branch</source>
+        <target state="final">Gałąź</target>
+      </trans-unit>
+      <trans-unit id="label_newrecord" resname="label_newrecord" approved="yes">
+        <source>New element</source>
+        <target state="final">Nowy element</target>
+      </trans-unit>
+      <trans-unit id="label_nestedversions" resname="label_nestedversions" approved="yes">
+        <source>Version inside version!</source>
+        <target state="final">Wersja wewnątrz wersji!</target>
+      </trans-unit>
+      <trans-unit id="label_showsubelements" resname="label_showsubelements" approved="yes">
+        <source>Show sub elements</source>
+        <target state="final">Pokaż podelementy</target>
+      </trans-unit>
+      <trans-unit id="label_onlymychanges" resname="label_onlymychanges" approved="yes">
+        <source>Show only my changes</source>
+        <target state="final">Pokaż tylko moje zmiany</target>
+      </trans-unit>
+      <trans-unit id="label_allWSes" resname="label_allWSes" approved="yes">
+        <source>All workspaces</source>
+        <target state="final">Wszystkie przestrzenie robocze</target>
+      </trans-unit>
+      <trans-unit id="label_doaction_release" resname="label_doaction_release" approved="yes">
+        <source>Remove this version</source>
+        <target state="final">Usuń tę wersję</target>
+      </trans-unit>
+      <trans-unit id="label_doaction_stage_reject" resname="label_doaction_stage_reject" approved="yes">
+        <source>Reject changes</source>
+        <target state="final">Odrzuć zmiany</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
