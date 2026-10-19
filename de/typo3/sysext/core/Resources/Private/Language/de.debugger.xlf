@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/debugger.xlf" date="2015-04-04T17:30:25Z" product-name="core" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="debuggerconsole.autoscroll" resname="debuggerconsole.autoscroll" xml:space="preserve" approved="yes">
+				<source>Scroll down automatically</source>
+			<target state="final">Automatisch nach unten scrollen</target></trans-unit>
+      <trans-unit id="debuggerconsole.toggle.expand" resname="debuggerconsole.toggle.expand" xml:space="preserve" approved="yes">
+				<source>Expand</source>
+			<target state="final">Ausklappen</target></trans-unit>
+      <trans-unit id="debuggerconsole.toggle.collapse" resname="debuggerconsole.toggle.collapse" xml:space="preserve" approved="yes">
+				<source>Collapse</source>
+			<target state="final">Einklappen</target></trans-unit>
+      <trans-unit id="debuggerconsole.clear" resname="debuggerconsole.clear" xml:space="preserve" approved="yes">
+				<source>Clear</source>
+			<target state="final">Leeren</target></trans-unit>
+      <trans-unit id="debuggerconsole.close" resname="debuggerconsole.close" xml:space="preserve" approved="yes">
+				<source>Close</source>
+			<target state="final">Schließen</target></trans-unit>
+    </body>
+  </file>
+</xliff>
