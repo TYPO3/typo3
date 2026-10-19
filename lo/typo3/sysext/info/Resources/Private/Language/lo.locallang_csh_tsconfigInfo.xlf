@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:info/Resources/Private/Language/locallang_csh_tsconfigInfo.xlf" date="2011-10-17T20:22:33Z" product-name="info_pagetsconfig" target-language="lo">
+    <header/>
+    <body>
+      <trans-unit id="tsconfig_hierarchy.alttitle" resname="tsconfig_hierarchy.alttitle" approved="yes">
+        <source>Page TSconfig hierarchy viewer</source>
+        <target state="final">ເຄື່ອງມືເບິ່ງລຳດັບຊັ້ນ Page TSconfig</target>
+      </trans-unit>
+      <trans-unit id="tsconfig_hierarchy.description" resname="tsconfig_hierarchy.description" approved="yes">
+        <source>Allows the user to view the compiled Page TSconfig structure for a branch of the pagetree.</source>
+        <target state="final">ອະນຸຍາດໃຫ້ຜູ້ໃຊ້ເບິ່ງໂຄງສ້າງ Page TSconfig ທີ່ຖືກປະມວນຜົນແລ້ວ ສຳລັບສາຂາໃດໜຶ່ງຂອງຜັງໜ້າເວັບ.</target>
+      </trans-unit>
+      <trans-unit id="tsconfig_hierarchy.details" resname="tsconfig_hierarchy.details" xml:space="preserve" approved="yes">
+				<source>This viewer is indispensable for getting an overview of Page TSconfig settings as they apply to various branches in the page tree. You can see the configuration structure of any page where all inherited Page TSconfig is parsed and the result shown. This helps you to evaluate that the settings you have applied are actually found at the correct position in the configuration tree.
+You can also see the Page TSconfig TypoScript code for each page in the root line with the viewer.
+
+See the links for more information about what Page TSconfig is.</source>
+			<target state="final">ເຄື່ອງມືເບິ່ງນີ້ແມ່ນມີຄວາມຈຳເປັນຫຼາຍໃນການເບິ່ງພາບລວມຂອງການຕັ້ງຄ່າ Page TSconfig ທີ່ນຳໃຊ້ກັບພາກສ່ວນຕ່າງໆໃນຜັງໜ້າເວັບ. ທ່ານສາມາດເບິ່ງໂຄງສ້າງການຕັ້ງຄ່າຂອງໜ້າໃດໜຶ່ງ ບ່ອນທີ່ Page TSconfig ທັງໝົດທີ່ສືບທອດມາຖືກວິເຄາະ ແລະ ສະແດງຜົນອອກມາ. ສິ່ງນີ້ຊ່ວຍໃຫ້ທ່ານສາມາດກວດສອບໄດ້ວ່າ ການຕັ້ງຄ່າທີ່ທ່ານນຳໃຊ້ນັ້ນຢູ່ໃນຕຳແໜ່ງທີ່ຖືກຕ້ອງໃນໂຄງສ້າງການຕັ້ງຄ່າແທ້ຫຼືບໍ່. ທ່ານຍັງສາມາດເບິ່ງລະຫັດ TypoScript ຂອງ Page TSconfig ສຳລັບແຕ່ລະໜ້າໃນສາຍຮາກ (root line) ຜ່ານເຄື່ອງມືເບິ່ງນີ້ໄດ້ອີກດ້ວຍ.
+
+ເບິ່ງລິ້ງຕ່າງໆເພື່ອສຶກສາຂໍ້ມູນເພີ່ມເຕີມກ່ຽວກັບ Page TSconfig ແມ່ນຫຍັງ.</target></trans-unit>
+      <trans-unit id="_tsconfig_hierarchy.seeAlso" resname="_tsconfig_hierarchy.seeAlso" xml:space="preserve" approved="yes">
+				<source>_MOD_web_info:tsconfig_edit,
+pages:TSconfig,
+Page TSconfig objects | https://docs.typo3.org/typo3cms/TSconfigReference/PageTsconfig/Index.html</source>
+				
+			<target state="final">_MOD_web_info:tsconfig_edit,
+pages:TSconfig,
+Page TSconfig objects | https://docs.typo3.org/typo3cms/TSconfigReference/PageTsconfig/Index.html</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_tsconfig_hierarchy.image" resname="_tsconfig_hierarchy.image" xml:space="preserve" approved="yes">
+				<source>EXT:info_pagetsconfig/Resources/Public/Images/cshimages/img_1.png,
+EXT:info_pagetsconfig/Resources/Public/Images/cshimages/img_2.png,</source>
+				
+			<target state="final">EXT:info_pagetsconfig/Resources/Public/Images/cshimages/img_1.png,
+EXT:info_pagetsconfig/Resources/Public/Images/cshimages/img_2.png,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="tsconfig_hierarchy.image_descr" resname="tsconfig_hierarchy.image_descr" xml:space="preserve" approved="yes">
+				<source>This is how the parsed Page TSconfig tree can look. It contains the "sum" of all the configuration code from the root line and any default settings. This shows the whole tree but you can also select other top level objects (TLO) in the selector box in the top if you want to limit the view to a single branch
+One of the branches in Page TSconfig has the special property that it is overridden with any User TSconfig in the same object path given for the current backend user. When you view only the "mod" TLO any user settings for the current backend user are applied as well. Here it is evident that some additional settings must apply for the user since only "mod.SHARED.colPos_list" was actually found in Page TSconfig (according to the "All" view in the first image).</source>
+			<target state="final">ນີ້ແມ່ນລັກສະນະຂອງຜັງ Page TSconfig ທີ່ຖືກວິເຄາະແລ້ວ. ມັນປະກອບດ້ວຍ "ຜົນລວມ" ຂອງລະຫັດການຕັ້ງຄ່າທັງໝົດຈາກສາຍຮາກ (root line) ແລະ ການຕັ້ງຄ່າເລີ່ມຕົ້ນຕ່າງໆ. ສິ່ງນີ້ຈະສະແດງຜັງທັງໝົດ ແຕ່ທ່ານຍັງສາມາດເລືອກວັດຖຸລະດັບສູງສຸດ (TLO) ອື່ນໆໃນຊ່ອງເລືອກດ້ານເທິງ ຫາກທ່ານຕ້ອງການຈຳກັດການເບິ່ງໃຫ້ເຫຼືອພຽງສາຂາດຽວ.
+ໜຶ່ງໃນສາຂາຂອງ Page TSconfig ມີຄຸນສົມບັດພິເສດຄື ມັນຈະຖືກຂຽນທັບດ້ວຍ User TSconfig ໃດໜຶ່ງໃນເສັ້ນທາງວັດຖຸດຽວກັນທີ່ກຳນົດໃຫ້ຜູ້ໃຊ້ backend ປັດຈຸບັນ. ເມື່ອທ່ານເບິ່ງສະເພາະ TLO "mod", ການຕັ້ງຄ່າຜູ້ໃຊ້ຕ່າງໆສຳລັບຜູ້ໃຊ້ backend ປັດຈຸບັນກໍຈະຖືກນຳໃຊ້ນຳເຊັ່ນກັນ. ໃນທີ່ນີ້ເຫັນໄດ້ຊັດເຈນວ່າ ຕ້ອງມີການຕັ້ງຄ່າເພີ່ມເຕີມບາງຢ່າງສຳລັບຜູ້ໃຊ້ ເນື່ອງຈາກມີພຽງ "mod.SHARED.colPos_list" ເທົັ້ນນັ້ນທີ່ຖືກພົບໃນ Page TSconfig (ຕາມການເບິ່ງແບບ "ທັງໝົດ" ໃນຮູບທຳອິດ).</target></trans-unit>
+      <trans-unit id="tsconfig_edit.alttitle" resname="tsconfig_edit.alttitle" approved="yes">
+        <source>Page TSconfig content viewer</source>
+        <target state="final">ເຄື່ອງມືເບິ່ງເນື້ອຫາ Page TSconfig</target>
+      </trans-unit>
+      <trans-unit id="tsconfig_edit.description" resname="tsconfig_edit.description" approved="yes">
+        <source>Displays the raw TSconfig code of all pages in the current root line including any default code.</source>
+        <target state="final">ສະແດງລະຫັດ TSconfig ແບບດິບຂອງທຸກໜ້າໃນສາຍຮາກ (root line) ປັດຈຸບັນ ລວມທັງລະຫັດເລີ່ມຕົ້ນຕ່າງໆ.</target>
+      </trans-unit>
+      <trans-unit id="tsconfig_edit.details" resname="tsconfig_edit.details" xml:space="preserve" approved="yes">
+				<source>The parsed Page TSconfig tree you see in the default view is actually compiled from this TSconfig code in the order it appears here. This view lets you see how the parsed version came to be.
+You can also click the edit-icons of the various pages to go directly to the TSconfig fields of the pages.</source>
+			<target state="final">ຜັງ Page TSconfig ທີ່ຖືກວິເຄາະແລ້ວທີ່ທ່ານເຫັນໃນມຸມເບິ່ງເລີ່ມຕົ້ນນັ້ນ ແມ່ນຖືກປະມວນຜົນມາຈາກລະຫັດ TSconfig ນີ້ຕາມລຳດັບທີ່ປາກົດຢູ່ນີ້. ມຸມເບິ່ງນີ້ຊ່ວຍໃຫ້ທ່ານເຫັນວ່າສະບັບທີ່ຖືກວິເຄາະນັ້ນມີທີ່ມາແນວໃດ.
+ທ່ານຍັງສາມາດຄລິກໄອຄອນແກ້ໄຂຂອງໜ້າຕ່າງໆ ເພື່ອໄປຫາຊ່ອງຂໍ້ມູນ TSconfig ຂອງໜ້ານັ້ນໆໂດຍກົງ.</target></trans-unit>
+      <trans-unit id="_tsconfig_edit.seeAlso" resname="_tsconfig_edit.seeAlso" approved="yes">
+        <source>_MOD_web_info:tsconfig_hierarchy</source>
+        <target state="final">_MOD_web_info:tsconfig_hierarchy</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_tsconfig_edit.image" resname="_tsconfig_edit.image" xml:space="preserve" approved="yes">
+				<source>EXT:info_pagetsconfig/Resources/Public/Images/cshimages/img_3.png,
+EXT:info_pagetsconfig/Resources/Public/Images/cshimages/img_4.png,
+EXT:info_pagetsconfig/Resources/Public/Images/cshimages/img_5.png</source>
+				
+			<target state="final">EXT:info_pagetsconfig/Resources/Public/Images/cshimages/img_3.png,
+EXT:info_pagetsconfig/Resources/Public/Images/cshimages/img_4.png,
+EXT:info_pagetsconfig/Resources/Public/Images/cshimages/img_5.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="tsconfig_edit.image_descr" resname="tsconfig_edit.image_descr" xml:space="preserve" approved="yes">
+				<source>Shows the raw Page TSconfig code. First you see the default content from TYPO3_CONF_VARS (probably added by extensions), then the content from the "TSconfig" field of the first page in the root line ("Intro") and then for each root line page up to the current page (not shown in screenshot).
+In the bottom of the page you will see a link which will open editing forms for all of the TSconfig fields shown in the list!
+Here you see specifically the TSconfig fields of the first and second page in the rootline being edited. Notice the "TS" icon next to the first field - this will bring up a wizard that helps you to select among available Page TSconfig properties.</source>
+			<target state="final">ສະແດງລະຫັດ Page TSconfig ແບບດິບ. ທຳອິດທ່ານຈະເຫັນເນື້ອຫາເລີ່ມຕົ້ນຈາກ TYPO3_CONF_VARS (ເຊິ່ງອາດຈະຖືກເພີ່ມໂດຍສ່ວນເສີມ), ຈາກນັ້ນແມ່ນເນື້ອຫາຈາກຊ່ອງ "TSconfig" ຂອງໜ້າທຳອິດໃນສາຍຮາກ ("Intro") ແລະ ຈາກນັ້ນກໍແມ່ນຂອງແຕ່ລະໜ້າໃນສາຍຮາກຈົນເຖິງໜ້າປັດຈຸບັນ (ບໍ່ໄດ້ສະແດງໃນຮູບ).
+ຢູ່ທາງລຸ່ມຂອງໜ້າ ທ່ານຈະເຫັນລິ້ງທີ່ຈະເປີດຟອມແກ້ໄຂສຳລັບທຸກຊ່ອງຂໍ້ມູນ TSconfig ທີ່ສະແດງໃນລາຍການ!
+ໃນທີ່ນີ້ທ່ານຈະເຫັນສະເພາະຊ່ອງຂໍ້ມູນ TSconfig ຂອງໜ້າທຳອິດ ແລະ ໜ້າທີສອງໃນສາຍຮາກທີ່ກຳລັງຖືກແກ້ໄຂ. ສັງເກດໄອຄອນ "TS" ຖັດຈາກຊ່ອງຂໍ້ມູນທຳອິດ - ສິ່ງນີ້ຈະເປີດຕົວຊ່ວຍ (wizard) ທີ່ຊ່ວຍໃຫ້ທ່ານເລືອກຄຸນສົມບັດຂອງ Page TSconfig ທີ່ມີຢູ່.</target></trans-unit>
+    </body>
+  </file>
+</xliff>
