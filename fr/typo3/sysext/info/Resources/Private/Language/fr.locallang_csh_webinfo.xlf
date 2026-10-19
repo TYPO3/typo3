@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:info/Resources/Private/Language/locallang_csh_webinfo.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="fr">
+    <header/>
+    <body>
+      <trans-unit id="func_0.alttitle" resname="func_0.alttitle" approved="yes">
+        <source>Basic Settings</source>
+        <target state="final">Réglages de base</target>
+      </trans-unit>
+      <trans-unit id="func_0.description" resname="func_0.description" approved="yes">
+        <source>Displays a selection of fields from page records which are regarded as foundational settings for pages. That includes aliases, start- and stop times, access restriction information etc.</source>
+        <target state="final">Affiche les champs considérés comme des paramètres fondamentaux des enregistrements de type page. Cela inclus les alias d'url, les dates de début et de fin, les droits d'accès, etc.</target>
+      </trans-unit>
+      <trans-unit id="func_0.details" resname="func_0.details" xml:space="preserve" approved="yes">
+				<source>The Basic Settings view resembles the Cache and Age view quite a lot. They are different only by the selection of fields they show.
+
+&lt;b&gt;Batch editing page fields&lt;/b&gt;
+You will find multiple edit-icons around the interface. All edit icons in head lines will bring you to an editing dialog where you can change exactly that field for all listed tables! Very useful for batch-editing of say all "Start" times.
+If you click the edit icon at the ID numbers of pages you will get straight to the regular editing of a whole page record.</source>
+			<target state="final">La vue "Réglages de base" ressemble beaucoup à la vue "Cache et âge". Ils diffèrent uniquement au niveau des champs affichés.
+
+&lt;b&gt;Edition groupé des champs de page&lt;/b&gt;
+Vous trouverez plusieurs icônes d'édition dans l'interface. Chaque icône d'édition dans la ligne d'en-tête vous amenera à une fenêtre d'édition où vous pourrez modifier ce champ pour tous les enregistrements listés! Très utile pour l'édition groupé des dates de début d'affichage.
+Si vous cliquez sur l'icône d'édition au niveau de l'ID de la page, vous arriverez directement à la fenêtre normal d'édition, avec l'ensemble des champs d'une page.</target></trans-unit>
+      <trans-unit id="_func_0.seeAlso" resname="_func_0.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:list_module,
+_MOD_web_info:func_2,
+_MOD_web_info:pagetree_overview</source>
+				
+			<target state="final">xMOD_csh_corebe:list_module,
+_MOD_web_info:func_2,
+_MOD_web_info:pagetree_overview</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_func_0.image" resname="_func_0.image" xml:space="preserve" approved="yes">
+				<source>EXT:frontend/Resources/Public/Images/cshimages/pagetree_overview_4.png,
+EXT:frontend/Resources/Public/Images/cshimages/pagetree_overview_8.png,
+EXT:frontend/Resources/Public/Images/cshimages/pagetree_overview_9.png</source>
+				
+			<target state="final">EXT:frontend/Resources/Public/Images/cshimages/pagetree_overview_4.png,
+EXT:frontend/Resources/Public/Images/cshimages/pagetree_overview_8.png,
+EXT:frontend/Resources/Public/Images/cshimages/pagetree_overview_9.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="func_0.image_descr" resname="func_0.image_descr" xml:space="preserve" approved="yes">
+				<source>The Basic Settings view offers a very convenient overview of page urls, start times and access restriction settings in the tree branch.
+If you click an edit-icon in the header you will be able to edit that field for all listed pages.</source>
+			<target state="final">La vue "Réglages de base" propose une vue d'ensemble très pratique des alias d'url, des dates de début et des droits d'accès pour les pages dans la branche choisie de l'arborescence.
+Si vous cliquez sur un icône d'édition dans l'en-tête, vous pourrez éditer ce champ pour toutes les pages affichées.</target></trans-unit>
+      <trans-unit id="func_1.alttitle" resname="func_1.alttitle" approved="yes">
+        <source>Record Overview</source>
+        <target state="final">Aperçu des enregistrements</target>
+      </trans-unit>
+      <trans-unit id="func_1.description" resname="func_1.description" approved="yes">
+        <source>Record overview gives you an indispensable overview of the distribution of records in the page tree. Each database table in the system is represented with a column and for each page you can see the number of records from that table located on the page.</source>
+        <target state="final">L'aperçu des enregistrements fournit une indispensable vue d'ensemble des enregistrements dans l'arborescence. Chaque table de la base de données est représentée par une colonne et pour chaque page est affiché le nombre d'enregistrements de cette table se trouvant sur la page.</target>
+      </trans-unit>
+      <trans-unit id="func_1.details" resname="func_1.details" xml:space="preserve" approved="yes">
+				<source>&lt;b&gt;Notice:&lt;/b&gt; Be careful with the level-setting. A high level-setting may cause the module to respond very slowly if there are many pages and many records in the database as well!
+
+&lt;b&gt;Tree stop?&lt;/b&gt;
+Notice the red "+" next to a page in the page tree? This is due to a setting for that page record which means that the page tree will not expand for this page. Typically this is set for protection when there are a large amount of subpages underneath (hundreds of pages typically). If you click the icon/title the overview will jump to make this page the new root of the overview.</source>
+			<target state="final">&lt;b&gt;Attention :&lt;/b&gt; Soyez prudent avec le réglage de niveau. Un réglage de niveau élevé peut faire en sorte que le module réponde très lentement s'il y a beaucoup de pages et d'enregistrements dans la base de données !
+
+&lt;b&gt;Masquer les sous-pages dans l'arborescence ?&lt;/b&gt;
+Remarquez le "+" rouge à côté d'une page dans l'arborescence des pages ? Cela est activé grâce à un paramètre pour cette page, ce qui signifie que l'arborescence des sous-pages ne sera pas affichée pour cette page. Généralement, cela est une protection quand il y a un grand nombre de sous-pages en dessous (des centaines de pages). Si vous cliquez sur l'icône/titre, la vue changera pour faire de cette page la nouvelle racine de l'aperçu.</target></trans-unit>
+      <trans-unit id="_func_1.seeAlso" resname="_func_1.seeAlso" xml:space="preserve" approved="yes">
+				<source>_MOD_web_info:pagetree_overview,
+pages:php_tree_stop</source>
+				
+			<target state="final">_MOD_web_info:pagetree_overview,
+pages:php_tree_stop</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_func_1.image" resname="_func_1.image" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/pagetree_overview_6.png</source>
+        <target state="final">EXT:frontend/Ressources/Public/Images/cshimages/pagetree_overview_6.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="func_1.image_descr" resname="func_1.image_descr" approved="yes">
+        <source>You can easily see the distribution of Content Elements on a page. You can also see where Template Records - and basically any record! - are located in the page tree!</source>
+        <target state="final">Vous pouvez facilement voir la distribution des éléments de contenu sur une page. Vous pouvez également voir où se trouvent les enregistrements de gabarits - et en fait tous les enregistrements ! - dans l'arborescence des pages !</target>
+      </trans-unit>
+      <trans-unit id="func_2.alttitle" resname="func_2.alttitle" approved="yes">
+        <source>Cache and Age</source>
+        <target state="final">Cache et âge</target>
+      </trans-unit>
+      <trans-unit id="func_2.description" resname="func_2.description" approved="yes">
+        <source>Displays a selection of fields from page records related to page caching and time settings.</source>
+        <target state="final">Affiche une sélection de champs à partir des enregistrements de page liés à la mise en cache de la page et aux paramètres d'heure.</target>
+      </trans-unit>
+      <trans-unit id="_func_2.seeAlso" resname="_func_2.seeAlso" xml:space="preserve" approved="yes">
+				<source>_MOD_web_info:func_0,
+_MOD_web_info:pagetree_overview,
+pages:TSconfig</source>
+				
+			<target state="final">_MOD_web_info:func_0,
+_MOD_web_info:pagetree_overview,
+pages:TSconfig</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_func_2.image" resname="_func_2.image" xml:space="preserve" approved="yes">
+				<source>EXT:frontend/Resources/Public/Images/cshimages/pagetree_overview_5.png,
+EXT:frontend/Resources/Public/Images/cshimages/pagetree_overview_7.png</source>
+				
+			<target state="final">EXT:frontend/Resources/Public/Images/cshimages/pagetree_overview_5.png,
+EXT:frontend/Resources/Public/Images/cshimages/pagetree_overview_7.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="func_2.image_descr" resname="func_2.image_descr" xml:space="preserve" approved="yes">
+				<source>The "Cache and Age" view.
+Here you see the "TSconfig" column. The overview exposes that these two pages include some Page TSconfig code!</source>
+			<target state="final">La vue "Cache et Age".
+Ici vous voyez la colonne "TSconfig". L'aperçu montre que ces deux pages incluent du code Page TSconfig !</target></trans-unit>
+      <trans-unit id="lang.details" resname="lang.details" xml:space="preserve" approved="yes">
+				<source>The overview uses colors to signal the availability and fall back situation for a given page. Here is a description for each color code:
+&lt;b&gt;Green background:&lt;/b&gt; Page is translated and viewable in this language. For translations it means that an active page overlay record is present.
+&lt;b&gt;Red background:&lt;/b&gt; Page &lt;em&gt;cannot&lt;/em&gt; be viewed in this language and you will see an error message if you try. Menus should automatically filter out links to pages with this translation.
+&lt;b&gt;Gray background (not available for default language):&lt;/b&gt; Page will fall back to the specified fallback mode for content. Depends on configuration. (sys_language_mode = content_fallback is recommended for most flexible fallback, sys_language_mode = strict will prevent this and issue an error instead!)
+
+&lt;b&gt;The pages "Localization settings:"&lt;/b&gt;
+It is the "Localization settings" of the page record that determines the modes above. In the column of the default language each of these settings are represented by a "N" (Hide page if no translation for current language exists) or a "D" (Hide default language of page).
+As you can see the page "Startpage" has the N flag set and therefore any access to the german version of that page will be blocked with an error message because there is no translation in german. By default "german access" to a non-translated page will just show the english content.
+There is also a page with the D flag ("[Dummy]"). The D flag means that the page is only available in one of the translations, in this case Danish. So any attempt to access the page in the default language or german will show an error message.
+
+So, when the "Localization settings" checkboxes for a page are used, you will get an error message when you try to request a page which has been blocked. This is a feature. The trick is not to create links to those pages.
+
+Menus generated from HMENU objects will always take "sys_language" into account and display only pages which can be accessed for that language. But combined with the "localization settings" of pages which may block page access this becomes a problem with pages which are &lt;em&gt;not&lt;/em&gt; translated (has gray background); You might get menu items which links to non-accessible pages.
+The problem basically is that "&amp;L=xx" is different from internal "sys_language". You would like to avoid that and to do so you should configure "sys_language_mode" to "content_fallback". If you do that sys_language will &lt;em&gt;always&lt;/em&gt; follow what "&amp;L=" instructs it to and your menus will be right. At the same time you will get the default content displayed if no translation exists (because content selection falls back).
+
+Finally, the number found in each column tells you how many content elements are found in the specified language.</source>
+			<target state="final">L'aperçu utilise des couleurs pour identifier la disponibilité et l'état du repli pour une page donnée. Voici la description de chaque couleur :
+&lt;b&gt;Fond vert :&lt;/b&gt; la page est traduite et visible dans cette langue. Pour les traductions, cela veut dire qu'une traduction de page active existe.
+&lt;b&gt;Fond rouge :&lt;/b&gt; la page &lt;em&gt;ne peut pas&lt;/em&gt; être vue dans cette langue et qu'un message d'erreur sera affiché si vous essayez. Les menus ne contiendront pas de liens vers les pages avec cette traduction.
+&lt;b&gt;Fond gris (indisponible dans la langue par défaut) :&lt;/b&gt; la page sera affichée en se repliant vers le mode de repli spécifié pour le contenu. Cela dépend de la configuration. (sys_language_mode = content_fallback étant recommandé pour une meilleure flexibilité, sys_language_mode = strict empêchera ce cas mais provoquera une erreur à l'affichage !)
+
+&lt;b&gt;Les "Paramètres de traduction:" des pages&lt;/b&gt;
+Ce sont les "Paramètres de traduction" de la page qui déterminent le comportement décrit ci-dessus. Dans la colonne de la langue par défaut, chacun de ces paramètres est représenté par un "N" (masquer la page si aucune traduction pour la langue courante n'existe) ou un "D" (masquer la page dans la langue par défaut).
+Comme vous pouvez le voir la page "Startpage" a un "N", ce qui fait que tout accès à cette page dans la version allemande sera bloqué avec un message d'erreur, parce qu'il n'y a pas de traduction allemande. Par défaut un accès "allemand" à une page non traduite affichera seulement le contenu anglais.
+Il y a aussi une page avec un "D" ("[Dummy]"). Le "D" signifie que la page est seulement disponible dans une des traductions, ici en danois. Donc tout accès à cette page dans la langue par défaut ou en allemand affichera un message d'erreur.
+
+Donc, quand les "Paramètres de traduction" sont utilisés pour une page, vous verrez un message d'erreur si vous tentez d'afficher une page qui a été bloquée. C'est le comportement souhaité. La solution consiste donc à ne pas faire de lien vers cette page.
+
+Les menus générés avec HMENU prendront toujours en compte le "sys_language" et n'afficheront que les pages qui peuvent être visibles pour cette langue. Mais associé avec les "paramètres de traduction" des pages, qui peuvent bloquer l'accès, cela devient un problème pour les pages qui sont &lt;em&gt;non&lt;/em&gt; traduites (avec un fond gris) ; vous pourrez alors avoir des liens de menus vers des pages non accessibles.
+Le problème est simplement que "&amp;L=xx" est différent du "sys_language" interne. Vous pouvez vouloir éviter ce cas et devez donc configurer "sys_language_mode" sur "content_fallback". En faisant ça sys_language suivra &lt;em&gt;toujours&lt;/em&gt; ce que dicte "&amp;L=" et vos menus seront corrects. Dans le même temps vous verrez s'afficher le contenu de la langue par défaut si aucune traduction n'existe (conformément au mode "content_fallback").
+
+Enfin, le nombre indiqué sur chaque colonne vous indique combien d'éléments de contenu sont trouvés dans la langue spécifiée.</target></trans-unit>
+      <trans-unit id="_lang.image" resname="_lang.image" xml:space="preserve" approved="yes">
+				<source>EXT:frontend/Resources/Public/Images/cshimages/localizationoverview.png,
+EXT:frontend/Resources/Public/Images/cshimages/localizationoverview1.png</source>
+				
+			<target state="final">EXT:frontend/Resources/Public/Images/cshimages/localizationoverview.png,
+EXT:frontend/Resources/Public/Images/cshimages/localizationoverview1.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="lang.image_descr" resname="lang.image_descr" xml:space="preserve" approved="yes">
+				<source>Localization overview in the Web&gt;Info module. Use the buttons to edit, view and create new page translation headers. Use the regular page module to put localized content on the pages.
+The "Localization settings" that affect availability of pages in the various languages.</source>
+			<target state="final">Aperçu de la localisation dans le module Web&gt;Info. Utilisez les boutons pour éditer, afficher et créer de nouvelles traduction de page. Utilisez le module de page habituel pour créer du contenu localisé sur les pages.
+Les "Paramètres de localisation" qui affectent la disponibilité des pages dans les différentes langues.</target></trans-unit>
+      <trans-unit id="lang.alttitle" resname="lang.alttitle" approved="yes">
+        <source>Localization overview</source>
+        <target state="final">Aperçu de la localisation</target>
+      </trans-unit>
+      <trans-unit id="lang.description" resname="lang.description" approved="yes">
+        <source>Gives an overview of which pages in the page tree are translated to the system languages installed.</source>
+        <target state="final">Donne un aperçu des pages dans l'arborescence des pages qui sont traduites dans les langues système installées.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
