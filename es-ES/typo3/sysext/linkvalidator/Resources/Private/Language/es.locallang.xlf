@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:linkvalidator/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:34Z" product-name="linkvalidator" target-language="es-ES">
+    <header/>
+    <body>
+      <trans-unit id="tasks.notice.useDefaultTemplate" resname="tasks.notice.useDefaultTemplate" approved="yes">
+        <source>
+					The templateName was automatically set to the default because either the field in the task
+					configuration is empty or no file is found for the given name. Please note that both a .html and
+					.txt file must exist under the configured templatePath.
+				</source>
+        <target state="final">
+El templateName se estableció automáticamente en el valor predeterminado porque o bien el campo en la configuración de la tarea está vacío o no se encuentra ningún archivo para el nombre dado. Tenga en cuenta que tanto el archivo .html como el archivo .txt deben existir en la ruta de la plantilla configurada.</target>
+      </trans-unit>
+      <trans-unit id="tasks.error.invalidTSconfig" resname="tasks.error.invalidTSconfig" approved="yes">
+        <source>Invalid TSconfig in the task configuration!</source>
+        <target state="final">¡TSconfig no válido en la configuración de la tarea!</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
