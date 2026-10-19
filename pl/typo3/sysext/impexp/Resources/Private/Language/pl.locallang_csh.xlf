@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:impexp/Resources/Private/Language/locallang_csh.xlf" date="2011-10-17T20:22:33Z" product-name="impexp" target-language="pl">
+    <header/>
+    <body>
+      <trans-unit id="export.alttitle" resname="export.alttitle" approved="yes">
+        <source>Exporting records from TYPO3</source>
+        <target state="final">Eksportowanie rekordów z TYPO3</target>
+      </trans-unit>
+      <trans-unit id="_export.seeAlso" resname="_export.seeAlso" approved="yes">
+        <source>xMOD_tx_impexp:import</source>
+        <target state="final">xMOD_tx_impexp:import</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="pageTreeCfg.alttitle" resname="pageTreeCfg.alttitle" approved="yes">
+        <source>Configuration of page tree export</source>
+        <target state="final">Konfiguracja eksportu drzewa stron</target>
+      </trans-unit>
+      <trans-unit id="pageTreeCfg.description" resname="pageTreeCfg.description" xml:space="preserve" approved="yes">
+				<source>Here you configure how a page or a branch of the page tree should be exported. Using the selector box you can set the number of levels of subpages to include in the export.
+By default all records belonging to a page is included when a page is exported.</source>
+			<target state="final">Tutaj możesz skonfigurować jak strona lub gałąź drzewa stron powinna być wyeksportowana. Używając selektora możesz określić liczbę poziomów podstron jakie mają być wyeksportowane. Domyślnie wszystkie rekordy należące do strony są dołączanie w trakcie eksportu.</target></trans-unit>
+      <trans-unit id="pageTreeDisplay.alttitle" resname="pageTreeDisplay.alttitle" approved="yes">
+        <source>Page Tree</source>
+        <target state="final">Drzewo stron</target>
+      </trans-unit>
+      <trans-unit id="pageTreeDisplay.description" resname="pageTreeDisplay.description" approved="yes">
+        <source>Based on the levels selected for page tree export this will show the structure that is about to be exported. If any pages are specifically excluded by the exclude option they are not shown either.</source>
+        <target state="final">Wyświetla strukturę jaka zostanie wyeksportowana (na podstawie wybranej liczbie poziomów podstron). Strony wyłaczone z eksportu za pomocą opcji wyłaczenia nie są w tym drzewie widoczne.</target>
+      </trans-unit>
+      <trans-unit id="pageTreeMode.alttitle" resname="pageTreeMode.alttitle" approved="yes">
+        <source>Levels</source>
+        <target state="final">Poziomy</target>
+      </trans-unit>
+      <trans-unit id="pageTreeMode.description" resname="pageTreeMode.description" approved="yes">
+        <source>Here you select how deeply in the page tree from the current starting point to go for this export.</source>
+        <target state="final">Wybierz jak głęboko w drzewie stron licząc od bieżącej pozycji ma być skuteczna funkcja eksportu.</target>
+      </trans-unit>
+      <trans-unit id="pageTreeRecordLimit.alttitle" resname="pageTreeRecordLimit.alttitle" approved="yes">
+        <source>Include tables</source>
+        <target state="final">Dołącz tabele</target>
+      </trans-unit>
+      <trans-unit id="pageTreeRecordLimit.description" resname="pageTreeRecordLimit.description" approved="yes">
+        <source>When you export a page all records on the page is included by default. By this selector you can pick which tables to include exclusively if there are certain records you are not interested in seeing included.</source>
+        <target state="final">W trakcie eksportu strony wszystkie rekordy na stronie są domyślnie dołączane. Za pomocą tego selektora możesz wskazać, które tabele chcesz rzeczywiście dołączyć, a którymi nie jesteś zainteresowany.</target>
+      </trans-unit>
+      <trans-unit id="singleRecord.alttitle" resname="singleRecord.alttitle" approved="yes">
+        <source>Export single record</source>
+        <target state="final">Ekportuj pojedynczy rekord</target>
+      </trans-unit>
+      <trans-unit id="singleRecord.description" resname="singleRecord.description" approved="yes">
+        <source>This overview tells you which independent records has been independently selected for export.</source>
+        <target state="final">Ten przegląd pokazuje, które niezależne rekordy zostały wybrane do eksportu.</target>
+      </trans-unit>
+      <trans-unit id="tableList.alttitle" resname="tableList.alttitle" approved="yes">
+        <source>Table export</source>
+        <target state="final">Eksport tabeli</target>
+      </trans-unit>
+      <trans-unit id="tableList.description" resname="tableList.description" approved="yes">
+        <source>Export of all records on a page from a specific table. This is configured from the Web&gt;List module where you will have to select table-only view and click a button in the top of the page.</source>
+        <target state="final">Eksport wszystkich rekordów na stronie ze wskazanej tabeli. Jest to konfigurowane z modułu Web&gt;Lista, gdzie bedziesz musiał wybrać widok rekordów i kliknąć przyciks w górnej części strony.</target>
+      </trans-unit>
+      <trans-unit id="inclRelations.alttitle" resname="inclRelations.alttitle" approved="yes">
+        <source>Include relations</source>
+        <target state="final">Dołącz relacje</target>
+      </trans-unit>
+      <trans-unit id="inclRelations.description" resname="inclRelations.description" approved="yes">
+        <source>Configure the tables from which you want to include records that are found as relations in the main export configuration.</source>
+        <target state="final">Konfiguruje tabele, z których chcesz dołączyć rekordy będące w relacji z głównymi ustawieniami eksportu.</target>
+      </trans-unit>
+      <trans-unit id="staticRelations.alttitle" resname="staticRelations.alttitle" approved="yes">
+        <source>Set static tables</source>
+        <target state="final">Ustaw statyczne tabele</target>
+      </trans-unit>
+      <trans-unit id="staticRelations.description" resname="staticRelations.description" approved="yes">
+        <source>Select which tables in addition to the static TYPO3 tables to keep relations untouched for. Takes precedence over "Include relations" configured tables.</source>
+        <target state="final">Wybiera, dla których tabel poza tabelami statycznymi TYPO3 będą utrzymane relacje w niezmienionej formie. Opcja ta ma wyższy priorytet od "Dołącz realcje".</target>
+      </trans-unit>
+      <trans-unit id="excludedElements.alttitle" resname="excludedElements.alttitle" approved="yes">
+        <source>Excluded elements</source>
+        <target state="final">Elementy wykluczone</target>
+      </trans-unit>
+      <trans-unit id="excludedElements.description" resname="excludedElements.description" approved="yes">
+        <source>By the "Exclude" checkbox you can exclude specific records from the preview display of the export. Which records has been picked for specific exclusion is listed here. You can also clear the exclusion configuration.</source>
+        <target state="final">Przez opcję "Wyklucz" możesz wykluczyć wybrane rekordy z podglądu eksportu. Rekordy, które zostały wybrane do wyłaczenia są przedstawione w liście. Możesz również skasować konfigurację wykluczania.</target>
+      </trans-unit>
+      <trans-unit id="htmlCssResources.alttitle" resname="htmlCssResources.alttitle" approved="yes">
+        <source>Exclude resources from HTML and CSS files</source>
+        <target state="final">Wyklucz zasoby z plików HTML i CSS</target>
+      </trans-unit>
+      <trans-unit id="htmlCssResources.description" resname="htmlCssResources.description" approved="yes">
+        <source>When an HTML or CSS file is found as a soft reference the files are parsed for references to external media (such as images) and if any are found they are also exported. If you don't want this behaviour, click this option.</source>
+        <target state="final">Kiedy pliki HTML lub CSS zostaną wykryte jako luźne powiązania wówczas są one parsowane w celu wyszukania referencji do zewnątrznych plików multimedialnych (np. obrazków). Wszystkie te pliki są wówczas eksportowane. Zaznaczenie tej opcji wyklucza te pliki.</target>
+      </trans-unit>
+      <trans-unit id="extensionDependencies.alttitle" resname="extensionDependencies.alttitle" approved="yes">
+        <source>Extension Dependencies</source>
+        <target state="final">Zależności rozszerzeń</target>
+      </trans-unit>
+      <trans-unit id="presets.alttitle" resname="presets.alttitle" approved="yes">
+        <source>Configuration presets</source>
+        <target state="final">Ustawienia konfiguracji</target>
+      </trans-unit>
+      <trans-unit id="presets.description" resname="presets.description" approved="yes">
+        <source>Enables you to save an export configuration for later re-use. Useful if you need to export the same configuration with regular intervals.</source>
+        <target state="final">Pozwala na zapisanie ustawień konfiguracyjnych eksportu do późniejszego zastosowania. Jest to użyteczne, kiedy potrzebujesz wielokrotnie użyć tych samych ustawień.</target>
+      </trans-unit>
+      <trans-unit id="metadata.alttitle" resname="metadata.alttitle" approved="yes">
+        <source>Meta data setting</source>
+        <target state="final">Ustawienia danych meta</target>
+      </trans-unit>
+      <trans-unit id="metadata.description" resname="metadata.description" approved="yes">
+        <source>Set meta data for the export. This is highly encouraged if your exported content goes into eg. a template collection of sorts.</source>
+        <target state="final">Ustawia dane meta do eksportu. Jest to bardzo pomocna opcja jeżeli zawartość jest eksportowana jako szablon (przykład).</target>
+      </trans-unit>
+      <trans-unit id="fileFormat.alttitle" resname="fileFormat.alttitle" approved="yes">
+        <source>File format options</source>
+        <target state="final">Opcje formatu pliku</target>
+      </trans-unit>
+      <trans-unit id="import.alttitle" resname="import.alttitle" approved="yes">
+        <source>Importing TYPO3 records</source>
+        <target state="final">Importowanie rekordów TYPO3</target>
+      </trans-unit>
+      <trans-unit id="importFile.alttitle" resname="importFile.alttitle" approved="yes">
+        <source>Select file to import</source>
+        <target state="final">Wybierz plik do zaimportowania</target>
+      </trans-unit>
+      <trans-unit id="importFile.description" resname="importFile.description" approved="yes">
+        <source>The files displayed are those with an extension T3D or XML from fileadmin/, fileadmin/export/ and your "TEMP" folder (if any).</source>
+        <target state="final">Pliki jakie możesz wybrać to pliki z rozszerzeniem T3D lub XML z katalogu fileadmin/, fileadmin/export i twojego katalogu "TEMP" (jeżeli taki posiadasz).</target>
+      </trans-unit>
+      <trans-unit id="update.alttitle" resname="update.alttitle" approved="yes">
+        <source>Update instead of Insert</source>
+        <target state="final">Aktualizuj zamiast Wstawiaj</target>
+      </trans-unit>
+      <trans-unit id="update.description" resname="update.description" approved="yes">
+        <source>By default the import operation inserts new records in the system. Using this option will update existing records.</source>
+        <target state="final">Domyślnie operacja importu wstawia nowe rekordy do systemu. Użycie tej opcji zaktualizuje istniejące rekordy.</target>
+      </trans-unit>
+      <trans-unit id="options.alttitle" resname="options.alttitle" approved="yes">
+        <source>Import options</source>
+        <target state="final">Opcje importu</target>
+      </trans-unit>
+      <trans-unit id="options.description" resname="options.description" approved="yes">
+        <source>Various options for import.</source>
+        <target state="final">Różne opcje stosowane w trakcie importowania rekordów.</target>
+      </trans-unit>
+      <trans-unit id="action.alttitle" resname="action.alttitle" approved="yes">
+        <source>Import Action</source>
+        <target state="final">Akcja importu</target>
+      </trans-unit>
+      <trans-unit id="action.description" resname="action.description" xml:space="preserve" approved="yes">
+				<source>Press "Preview" to see the content of the import file or update the preview display according to changed configurations.
+Press "Import"/"Update" if you want to perform the actual import.
+
+Before importing make sure you change any editable soft references that are shown in the preview data.</source>
+			<target state="final">Naciśniej "Podgląd" aby zobaczyć zawartość importowanego pliku lub zaktualizuj widok podglądu po zmianie konfiguracji. Naciśnij "Importuj/Aktualizuj" jeżeli chcesz rozpocząc akcję.</target></trans-unit>
+      <trans-unit id="enableLogging.alttitle" resname="enableLogging.alttitle" approved="yes">
+        <source>Enable System Logging</source>
+        <target state="final">Włacz logowanie systemowe</target>
+      </trans-unit>
+      <trans-unit id="enableLogging.description" resname="enableLogging.description" approved="yes">
+        <source>If you set this the system backend log will be filled with entries for all the actions that the import actually performs. By default this is left out for the sake of clarity.</source>
+        <target state="final">Jeżeli ta opcja jest ustawiona plik logu systemu bedzie uzupełniany o wpisy wszystkich działań wykonanych w trakcie importu.</target>
+      </trans-unit>
+      <trans-unit id="upload.alttitle" resname="upload.alttitle" approved="yes">
+        <source>Upload import file</source>
+        <target state="final">Załaduj plik importu</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
