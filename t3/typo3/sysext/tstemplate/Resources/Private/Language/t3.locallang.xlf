@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="tstemplate" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="moduleTitle" resname="moduleTitle">
+        <source>Template tools</source>
+        <target>crwdns108458:0crwdne108458:0</target>
+      </trans-unit>
+      <trans-unit id="templateAnalyzer" resname="templateAnalyzer">
+        <source>Template Analyzer</source>
+        <target>crwdns108460:0crwdne108460:0</target>
+      </trans-unit>
+      <trans-unit id="constantEditor" resname="constantEditor">
+        <source>Constant Editor</source>
+        <target>crwdns108462:0crwdne108462:0</target>
+      </trans-unit>
+      <trans-unit id="infoModify" resname="infoModify">
+        <source>Info/Modify</source>
+        <target>crwdns108464:0crwdne108464:0</target>
+      </trans-unit>
+      <trans-unit id="objectBrowser" resname="objectBrowser">
+        <source>TypoScript Object Browser</source>
+        <target>crwdns108466:0crwdne108466:0</target>
+      </trans-unit>
+      <trans-unit id="viewTemplates" resname="viewTemplates">
+        <source>Viewing templates of</source>
+        <target>crwdns108468:0crwdne108468:0</target>
+      </trans-unit>
+      <trans-unit id="pageName" resname="pageName">
+        <source>Page name</source>
+        <target>crwdns108470:0crwdne108470:0</target>
+      </trans-unit>
+      <trans-unit id="templates" resname="templates">
+        <source>Templates</source>
+        <target>crwdns108472:0crwdne108472:0</target>
+      </trans-unit>
+      <trans-unit id="isRoot" resname="isRoot">
+        <source>Is Root?</source>
+        <target>crwdns108474:0crwdne108474:0</target>
+      </trans-unit>
+      <trans-unit id="isExt" resname="isExt">
+        <source>Is Ext?</source>
+        <target>crwdns108476:0crwdne108476:0</target>
+      </trans-unit>
+      <trans-unit id="overview" resname="overview">
+        <source>This is an overview of the pages in the database containing one or more template records. Click a page title to go to the page.</source>
+        <target>crwdns108478:0crwdne108478:0</target>
+      </trans-unit>
+      <trans-unit id="areYouSure" resname="areYouSure">
+        <source>Are you sure you want to do this?</source>
+        <target>crwdns108480:0crwdne108480:0</target>
+      </trans-unit>
+      <trans-unit id="noTemplate" resname="noTemplate">
+        <source>No template</source>
+        <target>crwdns108482:0crwdne108482:0</target>
+      </trans-unit>
+      <trans-unit id="noTemplateDescription" resname="noTemplateDescription">
+        <source>There was no template on this page!</source>
+        <target>crwdns108484:0crwdne108484:0</target>
+      </trans-unit>
+      <trans-unit id="createTemplate" resname="createTemplate">
+        <source>Create a template record first in order to edit constants!</source>
+        <target>crwdns108486:0crwdne108486:0</target>
+      </trans-unit>
+      <trans-unit id="createTemplateToEditConfiguration" resname="createTemplateToEditConfiguration">
+        <source>You need to create a template record below in order to edit your configuration.</source>
+        <target>crwdns108488:0crwdne108488:0</target>
+      </trans-unit>
+      <trans-unit id="newWebsite" resname="newWebsite">
+        <source>Create new website</source>
+        <target>crwdns108490:0crwdne108490:0</target>
+      </trans-unit>
+      <trans-unit id="newWebsiteDescription" resname="newWebsiteDescription">
+        <source>If you want this page to be the root of a new website, optionally based on one of the standard templates, then press the button below</source>
+        <target>crwdns108492:0crwdne108492:0</target>
+      </trans-unit>
+      <trans-unit id="newWebsiteAction" resname="newWebsiteAction">
+        <source>Create template for a new site</source>
+        <target>crwdns108494:0crwdne108494:0</target>
+      </trans-unit>
+      <trans-unit id="extTemplate" resname="extTemplate">
+        <source>Create extension template</source>
+        <target>crwdns108496:0crwdne108496:0</target>
+      </trans-unit>
+      <trans-unit id="extTemplateDescription" resname="extTemplateDescription">
+        <source>An extension template allows you to enter TypoScript values that will affect only this page and subpages.</source>
+        <target>crwdns108498:0crwdne108498:0</target>
+      </trans-unit>
+      <trans-unit id="extTemplateAction" resname="extTemplateAction">
+        <source>Click here to create an extension template.</source>
+        <target>crwdns108500:0crwdne108500:0</target>
+      </trans-unit>
+      <trans-unit id="goToClosest" resname="goToClosest">
+        <source>Go to closest page with template</source>
+        <target>crwdns108502:0crwdne108502:0</target>
+      </trans-unit>
+      <trans-unit id="goToClosestDescription" resname="goToClosestDescription">
+        <source>Closest template is on page '%s' (uid %s).</source>
+        <target>crwdns108504:0%scrwdnd108504:0%scrwdne108504:0</target>
+      </trans-unit>
+      <trans-unit id="goToClosestAction" resname="goToClosestAction">
+        <source>Click here to go.</source>
+        <target>crwdns108506:0crwdne108506:0</target>
+      </trans-unit>
+      <trans-unit id="titleNewSiteStandard" resname="titleNewSiteStandard">
+        <source>NEW SITE, based on standard</source>
+        <target>crwdns108508:0crwdne108508:0</target>
+      </trans-unit>
+      <trans-unit id="titleNewSite" resname="titleNewSite">
+        <source>NEW SITE</source>
+        <target>crwdns108510:0crwdne108510:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
