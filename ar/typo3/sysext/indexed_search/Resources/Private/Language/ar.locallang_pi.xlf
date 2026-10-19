@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:indexed_search/Resources/Private/Language/locallang_pi.xlf" date="2011-10-17T20:22:33Z" product-name="indexed_search" target-language="ar">
+    <header/>
+    <body>
+      <trans-unit id="default_search_word_entry" resname="default_search_word_entry" approved="yes">
+        <source>Search for</source>
+        <target state="final">البحث عن</target>
+      </trans-unit>
+      <trans-unit id="submit_button_label" resname="submit_button_label" approved="yes">
+        <source>Search</source>
+        <target state="final">بحث</target>
+      </trans-unit>
+      <trans-unit id="opt_type_0" resname="opt_type_0" approved="yes">
+        <source>Distinct word</source>
+        <target state="final">كلمة محددة</target>
+      </trans-unit>
+      <trans-unit id="opt_type_1" resname="opt_type_1" approved="yes">
+        <source>Part of word</source>
+        <target state="final">جزء من الكلمة</target>
+      </trans-unit>
+      <trans-unit id="opt_type_2" resname="opt_type_2" approved="yes">
+        <source>First part of word</source>
+        <target state="final">المقطع الأول للكلمة</target>
+      </trans-unit>
+      <trans-unit id="opt_type_3" resname="opt_type_3" approved="yes">
+        <source>Last part of word</source>
+        <target state="final">المقطع الثاني للكلمة</target>
+      </trans-unit>
+      <trans-unit id="opt_type_10" resname="opt_type_10" approved="yes">
+        <source>Sounds like</source>
+        <target state="final">يبدو كما لو كان</target>
+      </trans-unit>
+      <trans-unit id="opt_type_20" resname="opt_type_20" approved="yes">
+        <source>Sentence</source>
+        <target state="final">جملة</target>
+      </trans-unit>
+      <trans-unit id="opt_defOp_0" resname="opt_defOp_0" approved="yes">
+        <source>All words (AND)</source>
+        <target state="final">جميع الكلمات(AND)</target>
+      </trans-unit>
+      <trans-unit id="opt_defOp_1" resname="opt_defOp_1" approved="yes">
+        <source>Any words (OR)</source>
+        <target state="final">أي كلمة(OR)</target>
+      </trans-unit>
+      <trans-unit id="opt_sections_0" resname="opt_sections_0" approved="yes">
+        <source>Whole site</source>
+        <target state="final">الموقع بأكلمه</target>
+      </trans-unit>
+      <trans-unit id="opt_sections_-1" resname="opt_sections_-1" approved="yes">
+        <source>Only this page</source>
+        <target state="final">هذه الصفحة فقط</target>
+      </trans-unit>
+      <trans-unit id="opt_sections_-2" resname="opt_sections_-2" approved="yes">
+        <source>Top + level 1</source>
+        <target state="final">أعلى+مستوى1</target>
+      </trans-unit>
+      <trans-unit id="opt_sections_-3" resname="opt_sections_-3" approved="yes">
+        <source>Level 2 and out</source>
+        <target state="final">مستوى 2 و خروج</target>
+      </trans-unit>
+      <trans-unit id="opt_freeIndexUid_-1" resname="opt_freeIndexUid_-1" approved="yes">
+        <source>All, mixed</source>
+        <target state="final">ممتزجة شكل تام</target>
+      </trans-unit>
+      <trans-unit id="opt_freeIndexUid_-2" resname="opt_freeIndexUid_-2" approved="yes">
+        <source>All, categorized</source>
+        <target state="final">مصنفة بشكل كامل</target>
+      </trans-unit>
+      <trans-unit id="opt_freeIndexUid_0" resname="opt_freeIndexUid_0" approved="yes">
+        <source>Pages</source>
+        <target state="final">الصفحات</target>
+      </trans-unit>
+      <trans-unit id="opt_freeIndexUid_header_-1" resname="opt_freeIndexUid_header_-1" approved="yes">
+        <source>Mixed categories</source>
+        <target state="final">الفئات الممتزجة</target>
+      </trans-unit>
+      <trans-unit id="opt_freeIndexUid_header_0" resname="opt_freeIndexUid_header_0" approved="yes">
+        <source>Website Pages</source>
+        <target state="final">صفحات موقع الوب</target>
+      </trans-unit>
+      <trans-unit id="opt_media_-1" resname="opt_media_-1" approved="yes">
+        <source>All media</source>
+        <target state="final">كل الوسائط</target>
+      </trans-unit>
+      <trans-unit id="opt_media_0" resname="opt_media_0" approved="yes">
+        <source>Internal pages</source>
+        <target state="final">صفحات الإنترنت</target>
+      </trans-unit>
+      <trans-unit id="opt_media_-2" resname="opt_media_-2" approved="yes">
+        <source>All External</source>
+        <target state="final">جميع الأجزاء الخارجية</target>
+      </trans-unit>
+      <trans-unit id="opt_order_rank_flag" resname="opt_order_rank_flag" approved="yes">
+        <source>Weight/Frequency</source>
+        <target state="final">الوزن/التردد</target>
+      </trans-unit>
+      <trans-unit id="opt_order_rank_freq" resname="opt_order_rank_freq" approved="yes">
+        <source>Frequency</source>
+        <target state="final">التردد</target>
+      </trans-unit>
+      <trans-unit id="opt_order_rank_first" resname="opt_order_rank_first" approved="yes">
+        <source>Close to top</source>
+        <target state="final">إغلق لأعلى</target>
+      </trans-unit>
+      <trans-unit id="opt_order_rank_count" resname="opt_order_rank_count" approved="yes">
+        <source>Number of words</source>
+        <target state="final">عدد الكلمات</target>
+      </trans-unit>
+      <trans-unit id="opt_order_mtime" resname="opt_order_mtime" approved="yes">
+        <source>Date Modified</source>
+        <target state="final">تاريخ أخر تعديل</target>
+      </trans-unit>
+      <trans-unit id="opt_order_title" resname="opt_order_title" approved="yes">
+        <source>Document title</source>
+        <target state="final">عنوان الوثيقة</target>
+      </trans-unit>
+      <trans-unit id="opt_order_crdate" resname="opt_order_crdate" approved="yes">
+        <source>Creation date</source>
+        <target state="final">إنشاء التاريخ</target>
+      </trans-unit>
+      <trans-unit id="opt_group_sections" resname="opt_group_sections" approved="yes">
+        <source>Section hierarchy</source>
+        <target state="final">قطاع هرمي</target>
+      </trans-unit>
+      <trans-unit id="opt_group_flat" resname="opt_group_flat" approved="yes">
+        <source>Flat list</source>
+        <target state="final">اللآئحة الثابتة</target>
+      </trans-unit>
+      <trans-unit id="opt_lang_-1" resname="opt_lang_-1" approved="yes">
+        <source>All languages</source>
+        <target state="final">كل اللغات</target>
+      </trans-unit>
+      <trans-unit id="opt_lang_0" resname="opt_lang_0" approved="yes">
+        <source>Default</source>
+        <target state="final">إفتراضي</target>
+      </trans-unit>
+      <trans-unit id="opt_desc_0" resname="opt_desc_0" approved="yes">
+        <source>Highest first</source>
+        <target state="final">الأعلى أولا</target>
+      </trans-unit>
+      <trans-unit id="opt_desc_1" resname="opt_desc_1" approved="yes">
+        <source>Lowest first</source>
+        <target state="final">الأقل أولا</target>
+      </trans-unit>
+      <trans-unit id="opt_RL1" resname="opt_RL1" approved="yes">
+        <source>Level 1</source>
+        <target state="final">المستوى 1</target>
+      </trans-unit>
+      <trans-unit id="opt_RL1ALL" resname="opt_RL1ALL" approved="yes">
+        <source>All pages on level 1</source>
+        <target state="final">جميع الصفحات المدرجة في المستوى1</target>
+      </trans-unit>
+      <trans-unit id="opt_RL2" resname="opt_RL2" approved="yes">
+        <source>- Level 2</source>
+        <target state="final">- المستوى 2</target>
+      </trans-unit>
+      <trans-unit id="opt_RL2ALL" resname="opt_RL2ALL" approved="yes">
+        <source>- All pages on level 2</source>
+        <target state="final">-جميع الصفحات المدرجة في المستوى2</target>
+      </trans-unit>
+      <trans-unit id="form_legend" resname="form_legend" approved="yes">
+        <source>Search form</source>
+        <target state="final">نموذج البحث</target>
+      </trans-unit>
+      <trans-unit id="form_searchFor" resname="form_searchFor" approved="yes">
+        <source>Search for</source>
+        <target state="final">البحث عن</target>
+      </trans-unit>
+      <trans-unit id="form_extResume" resname="form_extResume" approved="yes">
+        <source>Extended resume</source>
+        <target state="final">تكملة ممتدة</target>
+      </trans-unit>
+      <trans-unit id="form_atATime" resname="form_atATime" approved="yes">
+        <source>at a time</source>
+        <target state="final">في الوقت</target>
+      </trans-unit>
+      <trans-unit id="form_orderBy" resname="form_orderBy" approved="yes">
+        <source>Order by</source>
+        <target state="final">الترتيب حسب</target>
+      </trans-unit>
+      <trans-unit id="form_fromSection" resname="form_fromSection" approved="yes">
+        <source>From section</source>
+        <target state="final">من القسم</target>
+      </trans-unit>
+      <trans-unit id="form_freeIndexUid" resname="form_freeIndexUid" approved="yes">
+        <source>Category</source>
+        <target state="final">الفئة</target>
+      </trans-unit>
+      <trans-unit id="form_searchIn" resname="form_searchIn" approved="yes">
+        <source>Search in</source>
+        <target state="final">البحث في</target>
+      </trans-unit>
+      <trans-unit id="form_match" resname="form_match" approved="yes">
+        <source>Match</source>
+        <target state="final">تطابق</target>
+      </trans-unit>
+      <trans-unit id="form_style" resname="form_style" approved="yes">
+        <source>Style</source>
+        <target state="final">المظهر</target>
+      </trans-unit>
+      <trans-unit id="rules_header" resname="rules_header" approved="yes">
+        <source>Rules</source>
+        <target state="final">القواعد</target>
+      </trans-unit>
+      <trans-unit id="rules_text" resname="rules_text" xml:space="preserve" approved="yes">
+				<source>Only words with 2 or more characters are accepted
+Max 200 chars total
+Space is used to split words, "" can be used to search for a whole string (not indexed search then)
+AND, OR and NOT are prefix words, overruling the default operator
++/|/- equals AND, OR and NOT as operators.
+All search words are converted to lowercase.</source>
+			<target state="final">يتم قبول الكلمات فقط الكلمات المكونة من حرفين او أكثر الحد الأقصي لعدد الحروف 200 تستخدم المسافة للفصل بين الكلمات، ويمكن أن تستخدم "" للبحث عن السلسلة كاملة (والبحث عندئذن يكون غير مفهرس) وتعد ANDو OR وNOT بادئات للكلمات، التي تتحكم في المشغل الإفتراضي +/|/- و المساوي AND, OR and NOT إذا ما كانت تعمل كمشغلات. يمكن تغير جميع كلمات البحث إلى أحرف صغيرة.</target></trans-unit>
+      <trans-unit id="searchFor" resname="searchFor" approved="yes">
+        <source>Search for</source>
+        <target state="final">البحث عن</target>
+      </trans-unit>
+      <trans-unit id="searchFor_or" resname="searchFor_or" approved="yes">
+        <source>or</source>
+        <target state="final">or</target>
+      </trans-unit>
+      <trans-unit id="searchFor_and" resname="searchFor_and" approved="yes">
+        <source>and</source>
+        <target state="final">and</target>
+      </trans-unit>
+      <trans-unit id="searchFor_butNot" resname="searchFor_butNot" approved="yes">
+        <source>but not</source>
+        <target state="final">ولكن not</target>
+      </trans-unit>
+      <trans-unit id="noResults" resname="noResults" approved="yes">
+        <source>NO results found.</source>
+        <target state="final">لم يتم العثور على أي نتائج</target>
+      </trans-unit>
+      <trans-unit id="inSection" resname="inSection" approved="yes">
+        <source>in the section</source>
+        <target state="final">داخل المقطع</target>
+      </trans-unit>
+      <trans-unit id="inNsection" resname="inNsection" approved="yes">
+        <source>in %s section</source>
+        <target state="final">في قسم %s</target>
+      </trans-unit>
+      <trans-unit id="inNsections" resname="inNsections" approved="yes">
+        <source>in %s sections</source>
+        <target state="final">في %s أقسام</target>
+      </trans-unit>
+      <trans-unit id="word_page" resname="word_page" approved="yes">
+        <source>page</source>
+        <target state="final">صفحة</target>
+      </trans-unit>
+      <trans-unit id="word_pages" resname="word_pages" approved="yes">
+        <source>pages</source>
+        <target state="final">صفحات</target>
+      </trans-unit>
+      <trans-unit id="unnamedSection" resname="unnamedSection" approved="yes">
+        <source>Other</source>
+        <target state="final">أخر</target>
+      </trans-unit>
+      <trans-unit id="link_regularSearch" resname="link_regularSearch" approved="yes">
+        <source>Regular search</source>
+        <target state="final">البحث المعتاد</target>
+      </trans-unit>
+      <trans-unit id="link_advancedSearch" resname="link_advancedSearch" approved="yes">
+        <source>Advanced search</source>
+        <target state="final">البحث المتقدم</target>
+      </trans-unit>
+      <trans-unit id="res_path" resname="res_path" approved="yes">
+        <source>Path</source>
+        <target state="final">مسار</target>
+      </trans-unit>
+      <trans-unit id="res_modified" resname="res_modified" approved="yes">
+        <source>Modified</source>
+        <target state="final">تم تعديله</target>
+      </trans-unit>
+      <trans-unit id="res_created" resname="res_created" approved="yes">
+        <source>Created</source>
+        <target state="final">تم الإنشاء</target>
+      </trans-unit>
+      <trans-unit id="res_size" resname="res_size" approved="yes">
+        <source>Size</source>
+        <target state="final">الحجم</target>
+      </trans-unit>
+      <trans-unit id="res_noResume" resname="res_noResume" approved="yes">
+        <source>Note: This search hit may not accurately match the content on this page. The page resume cannot be shown.</source>
+        <target state="final">ملاحظة: لا تتوافق نتائج البحث هذه بدقة مع محتوى هذه الصفحة. لا تزال الصفحة لا يمكن عرضها.</target>
+      </trans-unit>
+      <trans-unit id="res_otherMatching" resname="res_otherMatching" approved="yes">
+        <source>Other matching pages in the same document</source>
+        <target state="final">صفحات مطابقة أخرى في نفس المستند</target>
+      </trans-unit>
+      <trans-unit id="res_otherPageAsWell" resname="res_otherPageAsWell" approved="yes">
+        <source>INFO: There was another page indexed as well... Probably indexed with another or no usergroup.</source>
+        <target state="final">معلومة: وقد كان هناك أيضا صفحة أخرى مفهرسة ...ومن الجائز أنها كانت مفهرسة داخل مجموعة مستخدم أخرى أو كانت مفردة دون أن تدرج داخل أي مجموعة مستخدم.</target>
+      </trans-unit>
+      <trans-unit id="res_memberGroups" resname="res_memberGroups" approved="yes">
+        <source>Require membership of group numbers %s</source>
+        <target state="final">يتطلب عضوية ارقام المجموعة%s</target>
+      </trans-unit>
+      <trans-unit id="pi_list_browseresults_prev" resname="pi_list_browseresults_prev" approved="yes">
+        <source>&lt; Previous</source>
+        <target state="final">&gt;السابق</target>
+      </trans-unit>
+      <trans-unit id="pi_list_browseresults_page" resname="pi_list_browseresults_page" approved="yes">
+        <source>Page</source>
+        <target state="final">الصفحة</target>
+      </trans-unit>
+      <trans-unit id="pi_list_browseresults_next" resname="pi_list_browseresults_next" approved="yes">
+        <source>Next &gt;</source>
+        <target state="final">&lt;التالي</target>
+      </trans-unit>
+      <trans-unit id="pi_list_browseresults_display" resname="pi_list_browseresults_display" approved="yes">
+        <source>Displaying results ###TAG_BEGIN###%1$s to %2$s###TAG_END### out of ###TAG_BEGIN###%3$s###TAG_END###</source>
+        <target state="final">عرض النتائج ##TAG_BEGIN###%1$s إلى %2$s##TAG_END## من ##TAG_BEGIN###%3$s##TAG_END### # TAG_END##</target>
+      </trans-unit>
+      <trans-unit id="local_operator_AND" resname="local_operator_AND" approved="yes">
+        <source>AND</source>
+        <target state="final">AND</target>
+      </trans-unit>
+      <trans-unit id="local_operator_OR" resname="local_operator_OR" approved="yes">
+        <source>OR</source>
+        <target state="final">OR</target>
+      </trans-unit>
+      <trans-unit id="local_operator_NOT" resname="local_operator_NOT" approved="yes">
+        <source>NOT</source>
+        <target state="final">NOT</target>
+      </trans-unit>
+      <trans-unit id="makerating_addToCurrentSearch" resname="makerating_addToCurrentSearch" approved="yes">
+        <source>Add to current search words</source>
+        <target state="final">أضف لكلمات البحث الحالية</target>
+      </trans-unit>
+      <trans-unit id="maketitle_matches" resname="maketitle_matches" approved="yes">
+        <source>matches</source>
+        <target state="final">المتطابقات</target>
+      </trans-unit>
+      <trans-unit id="pi_wizard_title" resname="pi_wizard_title" approved="yes">
+        <source>Indexed Search</source>
+        <target state="final">البحث المُفهرس</target>
+      </trans-unit>
+      <trans-unit id="pi_wizard_description" resname="pi_wizard_description" approved="yes">
+        <source>Search based on a database stored index.</source>
+        <target state="final">البحث على أساس فهرس قاعدة البيانات المخزنة.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
