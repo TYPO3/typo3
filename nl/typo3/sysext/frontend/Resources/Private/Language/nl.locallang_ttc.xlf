@@ -1,0 +1,1092 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_ttc.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="nl">
+    <header/>
+    <body>
+      <trans-unit id="CType_formlabel" resname="CType_formlabel" approved="yes">
+        <source>Type</source>
+        <target state="final">Type</target>
+      </trans-unit>
+      <trans-unit id="CType.I.0" resname="CType.I.0" approved="yes">
+        <source>Header</source>
+        <target state="final">Kop</target>
+      </trans-unit>
+      <trans-unit id="CType.I.1" resname="CType.I.1" approved="yes">
+        <source>Text</source>
+        <target state="final">Tekst</target>
+      </trans-unit>
+      <trans-unit id="CType.I.2" resname="CType.I.2" approved="yes">
+        <source>Text &amp; Images</source>
+        <target state="final">Tekst &amp; afbeeldingen</target>
+      </trans-unit>
+      <trans-unit id="CType.I.3" resname="CType.I.3" approved="yes">
+        <source>Images</source>
+        <target state="final">Afbeeldingen</target>
+      </trans-unit>
+      <trans-unit id="CType.I.4" resname="CType.I.4" approved="yes">
+        <source>Bullet List</source>
+        <target state="final">Lijst van opsommingstekens</target>
+      </trans-unit>
+      <trans-unit id="CType.I.5" resname="CType.I.5" approved="yes">
+        <source>Table</source>
+        <target state="final">Tabel</target>
+      </trans-unit>
+      <trans-unit id="CType.I.6" resname="CType.I.6" approved="yes">
+        <source>File Links</source>
+        <target state="final">Bestandskoppelingen</target>
+      </trans-unit>
+      <trans-unit id="CType.I.8" resname="CType.I.8" approved="yes">
+        <source>Form</source>
+        <target state="final">Formulier</target>
+      </trans-unit>
+      <trans-unit id="CType.I.9" resname="CType.I.9" approved="yes">
+        <source>Search</source>
+        <target state="final">Zoeken</target>
+      </trans-unit>
+      <trans-unit id="CType.I.10" resname="CType.I.10" approved="yes">
+        <source>Login</source>
+        <target state="final">Aanmelden</target>
+      </trans-unit>
+      <trans-unit id="CType.I.11" resname="CType.I.11" approved="yes">
+        <source>Textbox</source>
+        <target state="final">Tekstvak</target>
+      </trans-unit>
+      <trans-unit id="CType.I.12" resname="CType.I.12" approved="yes">
+        <source>Special Menus</source>
+        <target state="final">Speciale Menu's</target>
+      </trans-unit>
+      <trans-unit id="CType.I.13" resname="CType.I.13" approved="yes">
+        <source>Insert Records</source>
+        <target state="final">Records invoegen</target>
+      </trans-unit>
+      <trans-unit id="CType.I.14" resname="CType.I.14" approved="yes">
+        <source>Insert Plugin</source>
+        <target state="final">Plug-in invoegen</target>
+      </trans-unit>
+      <trans-unit id="CType.I.15" resname="CType.I.15" approved="yes">
+        <source>Script</source>
+        <target state="final">Script</target>
+      </trans-unit>
+      <trans-unit id="CType.I.16" resname="CType.I.16" approved="yes">
+        <source>Divider</source>
+        <target state="final">Scheiding</target>
+      </trans-unit>
+      <trans-unit id="CType.I.17" resname="CType.I.17" approved="yes">
+        <source>HTML</source>
+        <target state="final">HTML</target>
+      </trans-unit>
+      <trans-unit id="CType.textmedia" resname="CType.textmedia" approved="yes">
+        <source>Text &amp; Media</source>
+        <target state="final">Tekst &amp; media</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_abstract" resname="CType.menu_abstract" approved="yes">
+        <source>Abstracts</source>
+        <target state="final">Samenvattingen</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_categorized_pages" resname="CType.menu_categorized_pages" approved="yes">
+        <source>Categorized pages</source>
+        <target state="final">Gecategoriseerde pagina's</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_categorized_content" resname="CType.menu_categorized_content" approved="yes">
+        <source>Categorized content</source>
+        <target state="final">Gecategoriseerde inhoud</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_pages" resname="CType.menu_pages" approved="yes">
+        <source>Pages</source>
+        <target state="final">Pagina's</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_subpages" resname="CType.menu_subpages" approved="yes">
+        <source>Subpages</source>
+        <target state="final">Subpagina's</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_recently_updated" resname="CType.menu_recently_updated" approved="yes">
+        <source>Recently updated pages</source>
+        <target state="final">Recentelijk bijgewerkte pagina's</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_related_pages" resname="CType.menu_related_pages" approved="yes">
+        <source>Related pages</source>
+        <target state="final">Gerelateerde pagina's</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_section" resname="CType.menu_section" approved="yes">
+        <source>Section index</source>
+        <target state="final">Sectie-index</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_section_pages" resname="CType.menu_section_pages" approved="yes">
+        <source>Section index of subpages from selected pages</source>
+        <target state="final">Sectie-index van subpagina's van geselecteerde pagina's</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_sitemap" resname="CType.menu_sitemap" approved="yes">
+        <source>Sitemap</source>
+        <target state="final">Sitemap</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_sitemap_pages" resname="CType.menu_sitemap_pages" approved="yes">
+        <source>Sitemaps of selected pages</source>
+        <target state="final">Sitemap of geselecteerde pagina's</target>
+      </trans-unit>
+      <trans-unit id="CType.div.standard" resname="CType.div.standard" approved="yes">
+        <source>Standard</source>
+        <target state="final">Standaard</target>
+      </trans-unit>
+      <trans-unit id="CType.div.lists" resname="CType.div.lists" approved="yes">
+        <source>Lists</source>
+        <target state="final">Lijsten</target>
+      </trans-unit>
+      <trans-unit id="CType.div.menu" resname="CType.div.menu" approved="yes">
+        <source>Menu</source>
+        <target state="final">Menu</target>
+      </trans-unit>
+      <trans-unit id="CType.div.forms" resname="CType.div.forms" approved="yes">
+        <source>Forms</source>
+        <target state="final">Formulieren</target>
+      </trans-unit>
+      <trans-unit id="CType.div.special" resname="CType.div.special" approved="yes">
+        <source>Special</source>
+        <target state="final">Speciaal</target>
+      </trans-unit>
+      <trans-unit id="layout.I.1" resname="layout.I.1" approved="yes">
+        <source>Layout 1</source>
+        <target state="final">Lay-out 1</target>
+      </trans-unit>
+      <trans-unit id="layout.I.2" resname="layout.I.2" approved="yes">
+        <source>Layout 2</source>
+        <target state="final">Lay-out 2</target>
+      </trans-unit>
+      <trans-unit id="layout.I.3" resname="layout.I.3" approved="yes">
+        <source>Layout 3</source>
+        <target state="final">Lay-out 3</target>
+      </trans-unit>
+      <trans-unit id="colPos" resname="colPos" approved="yes">
+        <source>Columns</source>
+        <target state="final">Kolommen</target>
+      </trans-unit>
+      <trans-unit id="colPos_formlabel" resname="colPos_formlabel" approved="yes">
+        <source>Column</source>
+        <target state="final">Kolom</target>
+      </trans-unit>
+      <trans-unit id="colPos.I.0" resname="colPos.I.0" approved="yes">
+        <source>Left</source>
+        <target state="final">Links</target>
+      </trans-unit>
+      <trans-unit id="colPos.I.1" resname="colPos.I.1" approved="yes">
+        <source>Normal</source>
+        <target state="final">Normaal</target>
+      </trans-unit>
+      <trans-unit id="colPos.I.2" resname="colPos.I.2" approved="yes">
+        <source>Right</source>
+        <target state="final">Rechts</target>
+      </trans-unit>
+      <trans-unit id="colPos.I.3" resname="colPos.I.3" approved="yes">
+        <source>Border</source>
+        <target state="final">Rand</target>
+      </trans-unit>
+      <trans-unit id="colPos.I.unused" resname="colPos.I.unused" approved="yes">
+        <source>Unused</source>
+        <target state="final">Ongebruikt</target>
+      </trans-unit>
+      <trans-unit id="date" resname="date" approved="yes">
+        <source>Date</source>
+        <target state="final">Datum</target>
+      </trans-unit>
+      <trans-unit id="date_formlabel" resname="date_formlabel" approved="yes">
+        <source>Date</source>
+        <target state="final">Datum</target>
+      </trans-unit>
+      <trans-unit id="header" resname="header" approved="yes">
+        <source>Header</source>
+        <target state="final">Kop</target>
+      </trans-unit>
+      <trans-unit id="header_formlabel" resname="header_formlabel" approved="yes">
+        <source>Header</source>
+        <target state="final">Kop</target>
+      </trans-unit>
+      <trans-unit id="header.ALT.shortcut_formlabel" resname="header.ALT.shortcut_formlabel" approved="yes">
+        <source>Name (not visible in frontend)</source>
+        <target state="final">Naam (niet zichtbaar in de frontend)</target>
+      </trans-unit>
+      <trans-unit id="header.ALT.script_formlabel" resname="header.ALT.script_formlabel" approved="yes">
+        <source>Name (not visible in frontend)</source>
+        <target state="final">Naam (niet zichtbaar in de frontend)</target>
+      </trans-unit>
+      <trans-unit id="header.ALT.div_formlabel" resname="header.ALT.div_formlabel" approved="yes">
+        <source>Name (not visible in frontend)</source>
+        <target state="final">Naam (niet zichtbaar in de frontend)</target>
+      </trans-unit>
+      <trans-unit id="header.ALT.html_formlabel" resname="header.ALT.html_formlabel" approved="yes">
+        <source>Name (not visible in frontend)</source>
+        <target state="final">Naam (niet zichtbaar in de frontend)</target>
+      </trans-unit>
+      <trans-unit id="header_position" resname="header_position" approved="yes">
+        <source>Align</source>
+        <target state="final">Uitlijnen</target>
+      </trans-unit>
+      <trans-unit id="header_position_formlabel" resname="header_position_formlabel" approved="yes">
+        <source>Alignment</source>
+        <target state="final">Uitlijning</target>
+      </trans-unit>
+      <trans-unit id="header_position.I.1" resname="header_position.I.1" approved="yes">
+        <source>Center</source>
+        <target state="final">Midden</target>
+      </trans-unit>
+      <trans-unit id="header_position.I.2" resname="header_position.I.2" approved="yes">
+        <source>Right</source>
+        <target state="final">Rechts</target>
+      </trans-unit>
+      <trans-unit id="header_position.I.3" resname="header_position.I.3" approved="yes">
+        <source>Left</source>
+        <target state="final">Links</target>
+      </trans-unit>
+      <trans-unit id="header_link" resname="header_link" approved="yes">
+        <source>Link</source>
+        <target state="final">Link</target>
+      </trans-unit>
+      <trans-unit id="header_link_formlabel" resname="header_link_formlabel" approved="yes">
+        <source>Link</source>
+        <target state="final">Link</target>
+      </trans-unit>
+      <trans-unit id="header_layout_formlabel" resname="header_layout_formlabel" approved="yes">
+        <source>Type</source>
+        <target state="final">Type</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.1" resname="header_layout.I.1" approved="yes">
+        <source>Layout 1</source>
+        <target state="final">Lay-out 1</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.2" resname="header_layout.I.2" approved="yes">
+        <source>Layout 2</source>
+        <target state="final">Lay-out 2</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.3" resname="header_layout.I.3" approved="yes">
+        <source>Layout 3</source>
+        <target state="final">Lay-out 3</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.4" resname="header_layout.I.4" approved="yes">
+        <source>Layout 4</source>
+        <target state="final">Layout 4</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.5" resname="header_layout.I.5" approved="yes">
+        <source>Layout 5</source>
+        <target state="final">Layout 5</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.6" resname="header_layout.I.6" approved="yes">
+        <source>Hidden</source>
+        <target state="final">Verborgen</target>
+      </trans-unit>
+      <trans-unit id="bullets_type" resname="bullets_type" approved="yes">
+        <source>Type of bullets</source>
+        <target state="final">Type opsommingstekens</target>
+      </trans-unit>
+      <trans-unit id="bullets_type.0" resname="bullets_type.0" approved="yes">
+        <source>Unordered list (bullets)</source>
+        <target state="final">Ongeordende lijst (bullets)</target>
+      </trans-unit>
+      <trans-unit id="bullets_type.1" resname="bullets_type.1" approved="yes">
+        <source>Ordered list (numbers)</source>
+        <target state="final">Geordende lijst (nummers)</target>
+      </trans-unit>
+      <trans-unit id="bullets_type.2" resname="bullets_type.2" approved="yes">
+        <source>Definition list</source>
+        <target state="final">Definitielijst</target>
+      </trans-unit>
+      <trans-unit id="bodytext.W.forms" resname="bodytext.W.forms" approved="yes">
+        <source>Forms wizard</source>
+        <target state="final">Formulierassistent</target>
+      </trans-unit>
+      <trans-unit id="imagewidth" resname="imagewidth" approved="yes">
+        <source>Width (pixels)</source>
+        <target state="final">Breedte (pixels)</target>
+      </trans-unit>
+      <trans-unit id="imagewidth_formlabel" resname="imagewidth_formlabel" approved="yes">
+        <source>Width (px)</source>
+        <target state="final">Breedte (px):</target>
+      </trans-unit>
+      <trans-unit id="imageheight" resname="imageheight" approved="yes">
+        <source>Height (pixels)</source>
+        <target state="final">Hoogte (pixels)</target>
+      </trans-unit>
+      <trans-unit id="imageheight_formlabel" resname="imageheight_formlabel" approved="yes">
+        <source>Height (px)</source>
+        <target state="final">Hoogte (px):</target>
+      </trans-unit>
+      <trans-unit id="imageorient" resname="imageorient" approved="yes">
+        <source>Position</source>
+        <target state="final">Positie</target>
+      </trans-unit>
+      <trans-unit id="imageorient_formlabel" resname="imageorient_formlabel" approved="yes">
+        <source>Position and Alignment</source>
+        <target state="final">Positie en uitlijning</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.0" resname="imageorient.I.0" approved="yes">
+        <source>Above, center</source>
+        <target state="final">Middenboven</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.1" resname="imageorient.I.1" approved="yes">
+        <source>Above, right</source>
+        <target state="final">Rechtsboven</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.2" resname="imageorient.I.2" approved="yes">
+        <source>Above, left</source>
+        <target state="final">Linksboven</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.3" resname="imageorient.I.3" approved="yes">
+        <source>Below, center</source>
+        <target state="final">Middenonder</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.4" resname="imageorient.I.4" approved="yes">
+        <source>Below, right</source>
+        <target state="final">Rechtsonder</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.5" resname="imageorient.I.5" approved="yes">
+        <source>Below, left</source>
+        <target state="final">Linksonder</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.6" resname="imageorient.I.6" approved="yes">
+        <source>In text, right</source>
+        <target state="final">In tekst, rechts</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.7" resname="imageorient.I.7" approved="yes">
+        <source>In text, left</source>
+        <target state="final">In tekst, links</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.8" resname="imageorient.I.8" approved="yes">
+        <source>__No wrap:__</source>
+        <target state="final">__Geen terugloop:__</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.9" resname="imageorient.I.9" approved="yes">
+        <source>Beside Text, Right</source>
+        <target state="final">Naast tekst, rechts</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.10" resname="imageorient.I.10" approved="yes">
+        <source>Beside Text, Left</source>
+        <target state="final">Naast tekst, links</target>
+      </trans-unit>
+      <trans-unit id="imageborder" resname="imageborder" approved="yes">
+        <source>Border</source>
+        <target state="final">Rand</target>
+      </trans-unit>
+      <trans-unit id="imageborder_formlabel" resname="imageborder_formlabel" approved="yes">
+        <source>Border</source>
+        <target state="final">Rand</target>
+      </trans-unit>
+      <trans-unit id="image_link" resname="image_link" approved="yes">
+        <source>Link</source>
+        <target state="final">Link</target>
+      </trans-unit>
+      <trans-unit id="image_link_formlabel" resname="image_link_formlabel" approved="yes">
+        <source>Links (one per line, one link per image)</source>
+        <target state="final">Links (een per regel, een link per afbeelding)</target>
+      </trans-unit>
+      <trans-unit id="image_zoom" resname="image_zoom" approved="yes">
+        <source>Click-enlarge</source>
+        <target state="final">Klik om te vergroten</target>
+      </trans-unit>
+      <trans-unit id="image_zoom_formlabel" resname="image_zoom_formlabel" approved="yes">
+        <source>Enlarge on Click</source>
+        <target state="final">Vergroten bij klik</target>
+      </trans-unit>
+      <trans-unit id="image_frames" resname="image_frames" approved="yes">
+        <source>Frames</source>
+        <target state="final">Frames</target>
+      </trans-unit>
+      <trans-unit id="image_frames_formlabel" resname="image_frames_formlabel" approved="yes">
+        <source>Graphical Frames</source>
+        <target state="final">Grafische frames</target>
+      </trans-unit>
+      <trans-unit id="image_frames.I.0" resname="image_frames.I.0" approved="yes">
+        <source>(None)</source>
+        <target state="final">(Geen)</target>
+      </trans-unit>
+      <trans-unit id="image_frames.I.1" resname="image_frames.I.1" approved="yes">
+        <source>Frame 1</source>
+        <target state="final">Frame 1</target>
+      </trans-unit>
+      <trans-unit id="image_frames.I.2" resname="image_frames.I.2" approved="yes">
+        <source>Frame 2</source>
+        <target state="final">Frame 2</target>
+      </trans-unit>
+      <trans-unit id="image_frames.I.3" resname="image_frames.I.3" approved="yes">
+        <source>Frame 3</source>
+        <target state="final">Frame 3</target>
+      </trans-unit>
+      <trans-unit id="image_frames.I.4" resname="image_frames.I.4" approved="yes">
+        <source>Frame 4</source>
+        <target state="final">Frame 4</target>
+      </trans-unit>
+      <trans-unit id="image_frames.I.5" resname="image_frames.I.5" approved="yes">
+        <source>Frame 5</source>
+        <target state="final">Frame 5</target>
+      </trans-unit>
+      <trans-unit id="image_frames.I.6" resname="image_frames.I.6" approved="yes">
+        <source>Frame 6</source>
+        <target state="final">Frame 6</target>
+      </trans-unit>
+      <trans-unit id="image_frames.I.7" resname="image_frames.I.7" approved="yes">
+        <source>Frame 7</source>
+        <target state="final">Frame 7</target>
+      </trans-unit>
+      <trans-unit id="image_frames.I.8" resname="image_frames.I.8" approved="yes">
+        <source>Frame 8</source>
+        <target state="final">Frame 8</target>
+      </trans-unit>
+      <trans-unit id="imagecols" resname="imagecols" approved="yes">
+        <source>Columns</source>
+        <target state="final">Kolommen</target>
+      </trans-unit>
+      <trans-unit id="imagecols_formlabel" resname="imagecols_formlabel" approved="yes">
+        <source>Number of Columns</source>
+        <target state="final">Aantal kolommen</target>
+      </trans-unit>
+      <trans-unit id="image_altText" resname="image_altText" approved="yes">
+        <source>Alternative Text</source>
+        <target state="final">Alternatieve tekst</target>
+      </trans-unit>
+      <trans-unit id="altText_formlabel" resname="altText_formlabel" approved="yes">
+        <source>Alternative Labels (one per line)</source>
+        <target state="final">Alternatieve labels (een per regel)</target>
+      </trans-unit>
+      <trans-unit id="image_titleText" resname="image_titleText" approved="yes">
+        <source>Title Text</source>
+        <target state="final">Titeltekst</target>
+      </trans-unit>
+      <trans-unit id="titleText_formlabel" resname="titleText_formlabel" approved="yes">
+        <source>Titles (one per line)</source>
+        <target state="final">Titels (een per regel)</target>
+      </trans-unit>
+      <trans-unit id="image_longdescURL" resname="image_longdescURL" approved="yes">
+        <source>Long Description URL</source>
+        <target state="final">Lange omschrijving URL</target>
+      </trans-unit>
+      <trans-unit id="images.addFileReference" resname="images.addFileReference" approved="yes">
+        <source>Add image</source>
+        <target state="final">Afbeelding toevoegen</target>
+      </trans-unit>
+      <trans-unit id="longdescURL_formlabel" resname="longdescURL_formlabel" approved="yes">
+        <source>Long Description URLs (one per line)</source>
+        <target state="final">Lange omschrijving URLs (een per regel)</target>
+      </trans-unit>
+      <trans-unit id="cols" resname="cols" approved="yes">
+        <source>Columns</source>
+        <target state="final">Kolommen</target>
+      </trans-unit>
+      <trans-unit id="cols.I.0" resname="cols.I.0" approved="yes">
+        <source>Auto</source>
+        <target state="final">Auto</target>
+      </trans-unit>
+      <trans-unit id="recursive.I.0" resname="recursive.I.0" approved="yes">
+        <source>0 levels (only selected page)</source>
+        <target state="final">0 niveaus (alleen geselecteerde pagina)</target>
+      </trans-unit>
+      <trans-unit id="recursive.I.1" resname="recursive.I.1" approved="yes">
+        <source>1 level</source>
+        <target state="final">1 niveau</target>
+      </trans-unit>
+      <trans-unit id="recursive.I.2" resname="recursive.I.2" approved="yes">
+        <source>2 levels</source>
+        <target state="final">2 niveaus</target>
+      </trans-unit>
+      <trans-unit id="recursive.I.3" resname="recursive.I.3" approved="yes">
+        <source>3 levels</source>
+        <target state="final">3 niveaus</target>
+      </trans-unit>
+      <trans-unit id="recursive.I.4" resname="recursive.I.4" approved="yes">
+        <source>4 levels</source>
+        <target state="final">4 niveaus</target>
+      </trans-unit>
+      <trans-unit id="recursive.I.5" resname="recursive.I.5" approved="yes">
+        <source>Infinite</source>
+        <target state="final">Oneindig</target>
+      </trans-unit>
+      <trans-unit id="list_type" resname="list_type" approved="yes">
+        <source>Plugin</source>
+        <target state="final">Plug-in</target>
+      </trans-unit>
+      <trans-unit id="list_type_formlabel" resname="list_type_formlabel" approved="yes">
+        <source>Selected Plugin</source>
+        <target state="final">Geselecteerde plug-in</target>
+      </trans-unit>
+      <trans-unit id="media" resname="media" approved="yes">
+        <source>Files</source>
+        <target state="final">Bestanden</target>
+      </trans-unit>
+      <trans-unit id="media.dataAttributes" resname="media.dataAttributes" approved="yes">
+        <source>Additional data-* Attributes for HTML5 video tag</source>
+        <target state="final">Additionele data-* Attributen voor HTML5 video tag</target>
+      </trans-unit>
+      <trans-unit id="media.dataAttributes.attributeName" resname="media.dataAttributes.attributeName" approved="yes">
+        <source>Name of attribute (without data-)</source>
+        <target state="final">Naam van attribuut (zonder data-)</target>
+      </trans-unit>
+      <trans-unit id="media.dataAttributes.content" resname="media.dataAttributes.content" approved="yes">
+        <source>Content</source>
+        <target state="final">Inhoud</target>
+      </trans-unit>
+      <trans-unit id="media.ALT.uploads_formlabel" resname="media.ALT.uploads_formlabel" approved="yes">
+        <source>Select single files</source>
+        <target state="final">Selecteer enkele bestanden</target>
+      </trans-unit>
+      <trans-unit id="media.addFileReference" resname="media.addFileReference" approved="yes">
+        <source>Add file</source>
+        <target state="final">Bestand toevoegen</target>
+      </trans-unit>
+      <trans-unit id="multimedia" resname="multimedia" approved="yes">
+        <source>File</source>
+        <target state="final">Bestand</target>
+      </trans-unit>
+      <trans-unit id="multimedia_formlabel" resname="multimedia_formlabel" approved="yes">
+        <source>Selected Media File</source>
+        <target state="final">Geselecteerd mediabestand</target>
+      </trans-unit>
+      <trans-unit id="file_collections" resname="file_collections" approved="yes">
+        <source>File collections</source>
+        <target state="final">Bestandsverzamelingen</target>
+      </trans-unit>
+      <trans-unit id="file_collections.ALT.uploads_formlabel" resname="file_collections.ALT.uploads_formlabel" approved="yes">
+        <source>Select file collections</source>
+        <target state="final">Selecteer bestandscollecties</target>
+      </trans-unit>
+      <trans-unit id="filelink_size" resname="filelink_size" approved="yes">
+        <source>Show File Size</source>
+        <target state="final">Bestandsgrootte weergeven</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting" resname="filelink_sorting" approved="yes">
+        <source>Sort file list</source>
+        <target state="final">Lijst met bestanden sorteren</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.none" resname="filelink_sorting.none" approved="yes">
+        <source>no sorting</source>
+        <target state="final">geen sortering</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.extension" resname="filelink_sorting.extension" approved="yes">
+        <source>by file extension</source>
+        <target state="final">op bestandsextensie</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.name" resname="filelink_sorting.name" approved="yes">
+        <source>by filename</source>
+        <target state="final">op bestandsnaam</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.type" resname="filelink_sorting.type" approved="yes">
+        <source>by file type</source>
+        <target state="final">op bestandstype</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.size" resname="filelink_sorting.size" approved="yes">
+        <source>by file size</source>
+        <target state="final">op bestandsgrootte</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.creation_date" resname="filelink_sorting.creation_date" approved="yes">
+        <source>by file creation date</source>
+        <target state="final">op aanmaakdatum bestand</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.modification_date" resname="filelink_sorting.modification_date" approved="yes">
+        <source>by file modification date</source>
+        <target state="final">op datum wijziging bestand</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.title" resname="filelink_sorting.title" approved="yes">
+        <source>by file metadata title</source>
+        <target state="final">op metadata-titel van bestand</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting_direction" resname="filelink_sorting_direction" approved="yes">
+        <source>Sorting direction</source>
+        <target state="final">Sorteervolgorde</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting_direction.ascending" resname="filelink_sorting_direction.ascending" approved="yes">
+        <source>Ascending (default)</source>
+        <target state="final">Oplopend (standaard)</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting_direction.descending" resname="filelink_sorting_direction.descending" approved="yes">
+        <source>Descending</source>
+        <target state="final">Aflopend</target>
+      </trans-unit>
+      <trans-unit id="filelink_size_formlabel" resname="filelink_size_formlabel" approved="yes">
+        <source>Display File Size Information</source>
+        <target state="final">Toon informatie bestandsgrootte</target>
+      </trans-unit>
+      <trans-unit id="target" resname="target" approved="yes">
+        <source>Target</source>
+        <target state="final">Doel</target>
+      </trans-unit>
+      <trans-unit id="target.I.1" resname="target.I.1" approved="yes">
+        <source>New window</source>
+        <target state="final">Nieuw venster</target>
+      </trans-unit>
+      <trans-unit id="records" resname="records" approved="yes">
+        <source>Items</source>
+        <target state="final">Items</target>
+      </trans-unit>
+      <trans-unit id="records_formlabel" resname="records_formlabel" approved="yes">
+        <source>Records</source>
+        <target state="final">Records</target>
+      </trans-unit>
+      <trans-unit id="space_before_class" resname="space_before_class" approved="yes">
+        <source>Space Before</source>
+        <target state="final">Ruimte voor</target>
+      </trans-unit>
+      <trans-unit id="space_before_class_formlabel" resname="space_before_class_formlabel" approved="yes">
+        <source>Space Before</source>
+        <target state="final">Ruimte voor</target>
+      </trans-unit>
+      <trans-unit id="space_after_class" resname="space_after_class" approved="yes">
+        <source>Space After</source>
+        <target state="final">Ruimte achter</target>
+      </trans-unit>
+      <trans-unit id="space_after_class_formlabel" resname="space_after_class_formlabel" approved="yes">
+        <source>Space After</source>
+        <target state="final">Ruimte achter</target>
+      </trans-unit>
+      <trans-unit id="space_class_none" resname="space_class_none" approved="yes">
+        <source>None</source>
+        <target state="final">Geen</target>
+      </trans-unit>
+      <trans-unit id="space_class_extra_small" resname="space_class_extra_small" approved="yes">
+        <source>Extra Small</source>
+        <target state="final">Extra klein</target>
+      </trans-unit>
+      <trans-unit id="space_class_small" resname="space_class_small" approved="yes">
+        <source>Small</source>
+        <target state="final">Klein</target>
+      </trans-unit>
+      <trans-unit id="space_class_medium" resname="space_class_medium" approved="yes">
+        <source>Medium</source>
+        <target state="final">Gemiddeld</target>
+      </trans-unit>
+      <trans-unit id="space_class_large" resname="space_class_large" approved="yes">
+        <source>Large</source>
+        <target state="final">Groot</target>
+      </trans-unit>
+      <trans-unit id="space_class_extra_large" resname="space_class_extra_large" approved="yes">
+        <source>Extra Large</source>
+        <target state="final">Extra groot</target>
+      </trans-unit>
+      <trans-unit id="frame_class" resname="frame_class" approved="yes">
+        <source>Frame</source>
+        <target state="final">Frame</target>
+      </trans-unit>
+      <trans-unit id="frame_class_formlabel" resname="frame_class_formlabel" approved="yes">
+        <source>Frame</source>
+        <target state="final">Frame</target>
+      </trans-unit>
+      <trans-unit id="frame_class.default" resname="frame_class.default" approved="yes">
+        <source>Default</source>
+        <target state="final">Standaard</target>
+      </trans-unit>
+      <trans-unit id="frame_class.ruler_before" resname="frame_class.ruler_before" approved="yes">
+        <source>Ruler Before</source>
+        <target state="final">Meetlint voor</target>
+      </trans-unit>
+      <trans-unit id="frame_class.ruler_after" resname="frame_class.ruler_after" approved="yes">
+        <source>Ruler After</source>
+        <target state="final">Meetlint na</target>
+      </trans-unit>
+      <trans-unit id="frame_class.indent" resname="frame_class.indent" approved="yes">
+        <source>Indent</source>
+        <target state="final">Inspringen</target>
+      </trans-unit>
+      <trans-unit id="frame_class.indent_left" resname="frame_class.indent_left" approved="yes">
+        <source>Indent, 33/66%</source>
+        <target state="final">Inspringen 33/66%</target>
+      </trans-unit>
+      <trans-unit id="frame_class.indent_right" resname="frame_class.indent_right" approved="yes">
+        <source>Indent, 66/33%</source>
+        <target state="final">Inspringen, 66/33%</target>
+      </trans-unit>
+      <trans-unit id="frame_class.none" resname="frame_class.none" approved="yes">
+        <source>No Frame</source>
+        <target state="final">Geen kader</target>
+      </trans-unit>
+      <trans-unit id="splash_layout" resname="splash_layout" approved="yes">
+        <source>Textbox Type</source>
+        <target state="final">Type tekstveld</target>
+      </trans-unit>
+      <trans-unit id="splash_layout_formlabel" resname="splash_layout_formlabel" approved="yes">
+        <source>Type</source>
+        <target state="final">Type</target>
+      </trans-unit>
+      <trans-unit id="splash_layout.I.1" resname="splash_layout.I.1" approved="yes">
+        <source>Image Shadow</source>
+        <target state="final">Afbeeldingsschaduw</target>
+      </trans-unit>
+      <trans-unit id="splash_layout.I.2" resname="splash_layout.I.2" approved="yes">
+        <source>Image Frame 1</source>
+        <target state="final">Afbeeldingskader 1</target>
+      </trans-unit>
+      <trans-unit id="splash_layout.I.3" resname="splash_layout.I.3" approved="yes">
+        <source>Image Frame 2</source>
+        <target state="final">Afbeeldingskader 2</target>
+      </trans-unit>
+      <trans-unit id="splash_layout.I.4" resname="splash_layout.I.4" approved="yes">
+        <source>__Graphical:__</source>
+        <target state="final">__Grafisch:__</target>
+      </trans-unit>
+      <trans-unit id="splash_layout.I.5" resname="splash_layout.I.5" approved="yes">
+        <source>Postit 1</source>
+        <target state="final">Post-it 1</target>
+      </trans-unit>
+      <trans-unit id="sectionIndex" resname="sectionIndex" approved="yes">
+        <source>Index</source>
+        <target state="final">Index</target>
+      </trans-unit>
+      <trans-unit id="sectionIndex_formlabel" resname="sectionIndex_formlabel" approved="yes">
+        <source>Show in Section Menus</source>
+        <target state="final">Toon in sectiemenu's</target>
+      </trans-unit>
+      <trans-unit id="linkToTop" resname="linkToTop" approved="yes">
+        <source>To top</source>
+        <target state="final">Naar boven</target>
+      </trans-unit>
+      <trans-unit id="linkToTop_formlabel" resname="linkToTop_formlabel" approved="yes">
+        <source>Append with Link to Top of Page</source>
+        <target state="final">Toevoegen met link aan de bovenkant van de pagina</target>
+      </trans-unit>
+      <trans-unit id="rte_enabled" resname="rte_enabled" approved="yes">
+        <source>Disable Rich Text Editor</source>
+        <target state="final">Rich Text Editor uitschakelen</target>
+      </trans-unit>
+      <trans-unit id="rte_enabled_formlabel" resname="rte_enabled_formlabel" approved="yes">
+        <source>Rich Text Editor</source>
+        <target state="final">Rich-text-editor</target>
+      </trans-unit>
+      <trans-unit id="rte_enabled.I.0" resname="rte_enabled.I.0" approved="yes">
+        <source>Disable</source>
+        <target state="final">Uitschakelen</target>
+      </trans-unit>
+      <trans-unit id="pi_flexform" resname="pi_flexform" approved="yes">
+        <source>Plugin Options</source>
+        <target state="final">Plug-inopties</target>
+      </trans-unit>
+      <trans-unit id="accessibility_title" resname="accessibility_title" approved="yes">
+        <source>Block title</source>
+        <target state="final">Bloktitel</target>
+      </trans-unit>
+      <trans-unit id="accessibility_bypass" resname="accessibility_bypass" approved="yes">
+        <source>Add link to bypass block</source>
+        <target state="final">Voeg link toe om blok te omzeilen</target>
+      </trans-unit>
+      <trans-unit id="accessibility_bypass_text" resname="accessibility_bypass_text" approved="yes">
+        <source>Link text to bypass block</source>
+        <target state="final">Link tekst om blok te omzeilen</target>
+      </trans-unit>
+      <trans-unit id="selected_categories" resname="selected_categories" approved="yes">
+        <source>Selected categories</source>
+        <target state="final">Geselecteerde categoriën</target>
+      </trans-unit>
+      <trans-unit id="category_field" resname="category_field" approved="yes">
+        <source>Category field</source>
+        <target state="final">Categorieveld</target>
+      </trans-unit>
+      <trans-unit id="ALT.imgOptions" resname="ALT.imgOptions" approved="yes">
+        <source>Image Options</source>
+        <target state="final">Afbeeldingsopties</target>
+      </trans-unit>
+      <trans-unit id="ALT.imgLinks" resname="ALT.imgLinks" approved="yes">
+        <source>Image Links</source>
+        <target state="final">Koppelingen naar afbeeldingen</target>
+      </trans-unit>
+      <trans-unit id="ALT.imgDimensions" resname="ALT.imgDimensions" approved="yes">
+        <source>Image Dimensions</source>
+        <target state="final">Afbeelingsafmetingen</target>
+      </trans-unit>
+      <trans-unit id="select_key_formlabel" resname="select_key_formlabel" approved="yes">
+        <source>Plugin Mode</source>
+        <target state="final">Plug-in modus</target>
+      </trans-unit>
+      <trans-unit id="select_key.ALT.uploads" resname="select_key.ALT.uploads" approved="yes">
+        <source>Read from Path</source>
+        <target state="final">Lezen uit pad</target>
+      </trans-unit>
+      <trans-unit id="select_key.ALT.uploads_formlabel" resname="select_key.ALT.uploads_formlabel" approved="yes">
+        <source>Path</source>
+        <target state="final">Pad</target>
+      </trans-unit>
+      <trans-unit id="select_key.ALT.script_formlabel" resname="select_key.ALT.script_formlabel" approved="yes">
+        <source>PHP Code</source>
+        <target state="final">PHP Code</target>
+      </trans-unit>
+      <trans-unit id="imagecaption.ALT.uploads" resname="imagecaption.ALT.uploads" approved="yes">
+        <source>Descriptions</source>
+        <target state="final">Beschrijvingen</target>
+      </trans-unit>
+      <trans-unit id="imagecaption.ALT.uploads_formlabel" resname="imagecaption.ALT.uploads_formlabel" approved="yes">
+        <source>File Descriptions (one per line)</source>
+        <target state="final">Bestandsbeschrijvingen (een per regel)</target>
+      </trans-unit>
+      <trans-unit id="imagecaption.ALT.script" resname="imagecaption.ALT.script" approved="yes">
+        <source>Comments</source>
+        <target state="final">Commentaren</target>
+      </trans-unit>
+      <trans-unit id="bodytext.ALT.mailform" resname="bodytext.ALT.mailform" approved="yes">
+        <source>Configuration</source>
+        <target state="final">Configuratie</target>
+      </trans-unit>
+      <trans-unit id="bodytext.ALT.mailform_formlabel" resname="bodytext.ALT.mailform_formlabel" approved="yes">
+        <source>Form Structure</source>
+        <target state="final">Formulierstructuur</target>
+      </trans-unit>
+      <trans-unit id="pages.ALT.mailform" resname="pages.ALT.mailform" approved="yes">
+        <source>Target Page</source>
+        <target state="final">Doelpagina</target>
+      </trans-unit>
+      <trans-unit id="pages.ALT.searchform" resname="pages.ALT.searchform" approved="yes">
+        <source>Target page</source>
+        <target state="final">Doelpagina</target>
+      </trans-unit>
+      <trans-unit id="pages.ALT.loginform" resname="pages.ALT.loginform" approved="yes">
+        <source>Selected pages: Target (1st), Frontend user container (2nd)</source>
+        <target state="final">Geselecteerde pagina's: Doel (1e), Frontendgebruiker container (2e)</target>
+      </trans-unit>
+      <trans-unit id="pages.ALT.search" resname="pages.ALT.search" approved="yes">
+        <source>Send to Page</source>
+        <target state="final">Doorsturen naar pagina</target>
+      </trans-unit>
+      <trans-unit id="pages.ALT.login" resname="pages.ALT.login" approved="yes">
+        <source>Send to Page</source>
+        <target state="final">Doorsturen naar pagina</target>
+      </trans-unit>
+      <trans-unit id="pages.ALT.menu_formlabel" resname="pages.ALT.menu_formlabel" approved="yes">
+        <source>Selected Pages</source>
+        <target state="final">Geselecteerde pagina's</target>
+      </trans-unit>
+      <trans-unit id="pages.ALT.list_formlabel" resname="pages.ALT.list_formlabel" approved="yes">
+        <source>Record Storage Page</source>
+        <target state="final">Record opslagpad</target>
+      </trans-unit>
+      <trans-unit id="pages.ALT.script_formlabel" resname="pages.ALT.script_formlabel" approved="yes">
+        <source>Starting Point for This Script</source>
+        <target state="final">Beginpunt voor dit script</target>
+      </trans-unit>
+      <trans-unit id="subheader.ALT.mailform" resname="subheader.ALT.mailform" approved="yes">
+        <source>Recipient Email</source>
+        <target state="final">E-mailadres van ontvanger</target>
+      </trans-unit>
+      <trans-unit id="subheader.ALT.mailform_formlabel" resname="subheader.ALT.mailform_formlabel" approved="yes">
+        <source>Recipient Email</source>
+        <target state="final">E-mailadres van ontvanger</target>
+      </trans-unit>
+      <trans-unit id="bodytext.ALT.html" resname="bodytext.ALT.html" approved="yes">
+        <source>HTML</source>
+        <target state="final">HTML</target>
+      </trans-unit>
+      <trans-unit id="menu.ALT.accessibility_title_formlabel" resname="menu.ALT.accessibility_title_formlabel" approved="yes">
+        <source>Menu block title</source>
+        <target state="final">Menubloktitel</target>
+      </trans-unit>
+      <trans-unit id="menu.ALT.accessibility_bypass_formlabel" resname="menu.ALT.accessibility_bypass_formlabel" approved="yes">
+        <source>Add link to bypass navigation block</source>
+        <target state="final">Voeg link toe om navigatieblok te omzeilen</target>
+      </trans-unit>
+      <trans-unit id="menu.ALT.accessibility_bypass_text_formlabel" resname="menu.ALT.accessibility_bypass_text_formlabel" approved="yes">
+        <source>Link text to bypass navigation block</source>
+        <target state="final">Link tekst om navigatieblok te omzeilen</target>
+      </trans-unit>
+      <trans-unit id="tabs.text" resname="tabs.text" approved="yes">
+        <source>Text</source>
+        <target state="final">Tekst</target>
+      </trans-unit>
+      <trans-unit id="tabs.media" resname="tabs.media" approved="yes">
+        <source>Media</source>
+        <target state="final">Media</target>
+      </trans-unit>
+      <trans-unit id="tabs.plugin" resname="tabs.plugin" approved="yes">
+        <source>Plugin</source>
+        <target state="final">Plug-in</target>
+      </trans-unit>
+      <trans-unit id="sys_language_uid_formlabel" resname="sys_language_uid_formlabel" approved="yes">
+        <source>Language</source>
+        <target state="final">Taal</target>
+      </trans-unit>
+      <trans-unit id="subheader_formlabel" resname="subheader_formlabel" approved="yes">
+        <source>Subheader</source>
+        <target state="final">Subkop</target>
+      </trans-unit>
+      <trans-unit id="hidden_formlabel" resname="hidden_formlabel" approved="yes">
+        <source>Content Element</source>
+        <target state="final">Inhoudselement</target>
+      </trans-unit>
+      <trans-unit id="hidden.I.0" resname="hidden.I.0" approved="yes">
+        <source>Disable</source>
+        <target state="final">Uitschakelen</target>
+      </trans-unit>
+      <trans-unit id="starttime_formlabel" resname="starttime_formlabel" approved="yes">
+        <source>Publish Date</source>
+        <target state="final">Publicatiedatum</target>
+      </trans-unit>
+      <trans-unit id="endtime_formlabel" resname="endtime_formlabel" approved="yes">
+        <source>Expiration Date</source>
+        <target state="final">Verloopdatum</target>
+      </trans-unit>
+      <trans-unit id="fe_group_formlabel" resname="fe_group_formlabel" approved="yes">
+        <source>Usergroup Access Rights</source>
+        <target state="final">Gebruikersgroep toegangsrechten</target>
+      </trans-unit>
+      <trans-unit id="layout_formlabel" resname="layout_formlabel" approved="yes">
+        <source>Layout</source>
+        <target state="final">Lay-out</target>
+      </trans-unit>
+      <trans-unit id="bodytext_formlabel" resname="bodytext_formlabel" approved="yes">
+        <source>Text</source>
+        <target state="final">Tekst</target>
+      </trans-unit>
+      <trans-unit id="bodytext.ALT.bulletlist_formlabel" resname="bodytext.ALT.bulletlist_formlabel" approved="yes">
+        <source>Bullet List</source>
+        <target state="final">Lijst van opsommingstekens</target>
+      </trans-unit>
+      <trans-unit id="bodytext.ALT.table_formlabel" resname="bodytext.ALT.table_formlabel" approved="yes">
+        <source>Table Structure</source>
+        <target state="final">Tabelstructuur</target>
+      </trans-unit>
+      <trans-unit id="bodytext.ALT.media_formlabel" resname="bodytext.ALT.media_formlabel" approved="yes">
+        <source>Alternative Content</source>
+        <target state="final">Alternatieve inhoud</target>
+      </trans-unit>
+      <trans-unit id="bodytext.ALT.textbox_formlabel" resname="bodytext.ALT.textbox_formlabel" approved="yes">
+        <source>Text</source>
+        <target state="final">Tekst</target>
+      </trans-unit>
+      <trans-unit id="bodytext.ALT.script_formlabel" resname="bodytext.ALT.script_formlabel" approved="yes">
+        <source>Parameters to pass to the script</source>
+        <target state="final">Parameters om aan het script door te geven</target>
+      </trans-unit>
+      <trans-unit id="bodytext.ALT.html_formlabel" resname="bodytext.ALT.html_formlabel" approved="yes">
+        <source>HTML Code</source>
+        <target state="final">HTML code</target>
+      </trans-unit>
+      <trans-unit id="image_formlabel" resname="image_formlabel" approved="yes">
+        <source>Images</source>
+        <target state="final">Afbeeldingen</target>
+      </trans-unit>
+      <trans-unit id="image.ALT.textbox_formlabel" resname="image.ALT.textbox_formlabel" approved="yes">
+        <source>Image Files</source>
+        <target state="final">Afbeeldingsbestanden</target>
+      </trans-unit>
+      <trans-unit id="imagecaption_formlabel" resname="imagecaption_formlabel" approved="yes">
+        <source>Captions (one per line)</source>
+        <target state="final">Onderschrift (een per regel)</target>
+      </trans-unit>
+      <trans-unit id="imagecaption.ALT.script_formlabel" resname="imagecaption.ALT.script_formlabel" approved="yes">
+        <source>Comments</source>
+        <target state="final">Commentaren</target>
+      </trans-unit>
+      <trans-unit id="field.default.hidden" resname="field.default.hidden" approved="yes">
+        <source>Visibility of content element</source>
+        <target state="final">Zichtbaarheid van inhoudselementen</target>
+      </trans-unit>
+      <trans-unit id="field.table.bodytext" resname="field.table.bodytext" approved="yes">
+        <source>Table content</source>
+        <target state="final">Tabelinhoud</target>
+      </trans-unit>
+      <trans-unit id="palette.general" resname="palette.general" approved="yes">
+        <source>Content Element</source>
+        <target state="final">Inhoudselement</target>
+      </trans-unit>
+      <trans-unit id="palette.headers" resname="palette.headers" approved="yes">
+        <source>Headlines</source>
+        <target state="final">Koppen</target>
+      </trans-unit>
+      <trans-unit id="palette.header" resname="palette.header" approved="yes">
+        <source>Header</source>
+        <target state="final">Kop</target>
+      </trans-unit>
+      <trans-unit id="palette.visibility" resname="palette.visibility" approved="yes">
+        <source>Visibility</source>
+        <target state="final">Zichtbaarheid</target>
+      </trans-unit>
+      <trans-unit id="palette.access" resname="palette.access" approved="yes">
+        <source>Publish Dates and Access Rights</source>
+        <target state="final">Publiceerdata en toegangsrechten</target>
+      </trans-unit>
+      <trans-unit id="palette.frames" resname="palette.frames" approved="yes">
+        <source>Content Element Layout</source>
+        <target state="final">Inhoudselement lay-out</target>
+      </trans-unit>
+      <trans-unit id="palette.textlayout" resname="palette.textlayout" approved="yes">
+        <source>Text Layout</source>
+        <target state="final">Tekstopmaak</target>
+      </trans-unit>
+      <trans-unit id="palette.imagefiles" resname="palette.imagefiles" approved="yes">
+        <source>Images and Captions</source>
+        <target state="final">Afbeeldingen en onderschriften</target>
+      </trans-unit>
+      <trans-unit id="palette.imagelinks" resname="palette.imagelinks" approved="yes">
+        <source>Behavior</source>
+        <target state="final">Gedrag</target>
+      </trans-unit>
+      <trans-unit id="palette.image_accessibility" resname="palette.image_accessibility" approved="yes">
+        <source>Accessibility</source>
+        <target state="final">Toegankelijkheid</target>
+      </trans-unit>
+      <trans-unit id="palette.image_settings" resname="palette.image_settings" approved="yes">
+        <source>Image Adjustments</source>
+        <target state="final">Aanpassingen afbeelding</target>
+      </trans-unit>
+      <trans-unit id="palette.imageblock" resname="palette.imageblock" approved="yes">
+        <source>Image Alignment</source>
+        <target state="final">Uitlijning afbeelding</target>
+      </trans-unit>
+      <trans-unit id="palette.mailform" resname="palette.mailform" approved="yes">
+        <source>Target and Recipient</source>
+        <target state="final">Doel en ontvanger</target>
+      </trans-unit>
+      <trans-unit id="palette.searchform" resname="palette.searchform" approved="yes">
+        <source>Search Results</source>
+        <target state="final">Zoekresultaten</target>
+      </trans-unit>
+      <trans-unit id="palette.loginform" resname="palette.loginform" approved="yes">
+        <source>Redirect Target and Frontend User Container</source>
+        <target state="final">Herleid doel en frontend-gebruikerscontainer</target>
+      </trans-unit>
+      <trans-unit id="palette.multimediafiles" resname="palette.multimediafiles" approved="yes">
+        <source>Media Files and Parameters</source>
+        <target state="final">Mediabestanden en parameters</target>
+      </trans-unit>
+      <trans-unit id="palette.textbox" resname="palette.textbox" approved="yes">
+        <source>Render Text into Images</source>
+        <target state="final">Laad tekst in afbeeldingen</target>
+      </trans-unit>
+      <trans-unit id="palette.menu" resname="palette.menu" approved="yes">
+        <source>Menu and Sitemap</source>
+        <target state="final">Menu and Sitemap</target>
+      </trans-unit>
+      <trans-unit id="palette.menu_accessibility" resname="palette.menu_accessibility" approved="yes">
+        <source>Accessibility</source>
+        <target state="final">Toegankelijkheid</target>
+      </trans-unit>
+      <trans-unit id="palette.uploads_layout" resname="palette.uploads_layout" approved="yes">
+        <source>Filelinks Layout</source>
+        <target state="final">Bestandslinks lay-out</target>
+      </trans-unit>
+      <trans-unit id="palette.table_layout" resname="palette.table_layout" approved="yes">
+        <source>Table Layout</source>
+        <target state="final">Tabelindeling</target>
+      </trans-unit>
+      <trans-unit id="palette.appearanceLinks" resname="palette.appearanceLinks" approved="yes">
+        <source>Links</source>
+        <target state="final">Links</target>
+      </trans-unit>
+      <trans-unit id="tabs.access" resname="tabs.access" approved="yes">
+        <source>Access</source>
+        <target state="final">Toegang</target>
+      </trans-unit>
+      <trans-unit id="tabs.appearance" resname="tabs.appearance" approved="yes">
+        <source>Appearance</source>
+        <target state="final">Weergave</target>
+      </trans-unit>
+      <trans-unit id="tabs.behaviour" resname="tabs.behaviour" approved="yes">
+        <source>Behaviour</source>
+        <target state="final">Gedrag</target>
+      </trans-unit>
+      <trans-unit id="tabs.script" resname="tabs.script" approved="yes">
+        <source>Script</source>
+        <target state="final">Script</target>
+      </trans-unit>
+      <trans-unit id="tabs.images" resname="tabs.images" approved="yes">
+        <source>Images</source>
+        <target state="final">Afbeeldingen</target>
+      </trans-unit>
+      <trans-unit id="tabs.extended" resname="tabs.extended" approved="yes">
+        <source>Extended</source>
+        <target state="final">Uitgebreid</target>
+      </trans-unit>
+      <trans-unit id="tabs.accessibility" resname="tabs.accessibility" approved="yes">
+        <source>Accessibility</source>
+        <target state="final">Toegankelijkheid</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
