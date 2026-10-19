@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:info/Resources/Private/Language/locallang_csh_web_info.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id=".alttitle" resname=".alttitle" approved="yes">
+        <source>Web &gt; Info module</source>
+        <target state="final">वेब&gt; इन्फो मॉड्यूल</target>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>The idea of the Web&gt;Info module is to be a host module for backend applications that wish to present information / analysis of pages or branches of the page tree. This could be website statistics, caching status information etc.</source>
+        <target state="final">वेब&gt;इन्फो मॉड्यूल का उद्देश्य उन बैकएंड अनुप्रयोगों के लिए एक होस्ट मॉड्यूल बनना है जो पृष्ठों या पेज ट्री की शाखाओं की जानकारी/विश्लेषण प्रस्तुत करना चाहते हैं। यह वेबसाइट आँकड़े, कैशिंग स्थिति की जानकारी आदि हो सकती है।</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" approved="yes">
+        <source>The Web&gt;Info module shows information rather than offering functionality. It is up to extension programmers to decide in which of these two modules they want to insert functionality.</source>
+        <target state="final">वेब&gt;सूचना मॉड्यूल कार्यक्षमता प्रदान करने के बजाय जानकारी प्रदर्शित करता है। यह एक्सटेंशन प्रोग्रामर पर निर्भर करता है कि वे इन दोनों मॉड्यूल में से किसमें कार्यक्षमता सम्मिलित करना चाहते हैं।</target>
+      </trans-unit>
+      <trans-unit id="_.image" resname="_.image" approved="yes">
+        <source>EXT:info/Resources/Public/Images/cshimages/pagetree_overview_10.png</source>
+        <target state="final">EXT:info/Resources/Public/Images/cshimages/pagetree_overview_10.png</target>
+      </trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" approved="yes">
+        <source>The Web&gt;Info module as provided by the core is an empty shell. It provides an API that extensions can use to attach function menu items to the Info module. Here you see the "Page TSconfig" overview from the extension "info_pagetsconfig".</source>
+        <target state="final">कोर द्वारा प्रदान किया गया वेब&gt;सूचना मॉड्यूल एक खाली शेल है। यह एक API प्रदान करता है जिसका उपयोग एक्सटेंशन, फ़ंक्शन मेनू आइटम को सूचना मॉड्यूल से जोड़ने के लिए कर सकते हैं। यहाँ आप "info_pagetsconfig" एक्सटेंशन से "पृष्ठ TSconfig" का अवलोकन देख सकते हैं।</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
