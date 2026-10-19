@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:indexed_search/Resources/Private/Language/locallang_em.xlf" date="2011-10-17T20:22:32Z" product-name="indexed_search" target-language="nl">
+    <header/>
+    <body>
+      <trans-unit id="indexedsearch.config.pdftools" resname="indexedsearch.config.pdftools" approved="yes">
+        <source>Path to PDF parsers: The indexer uses the applications 'pdftotext' and 'pdfinfo' for extracting content from PDF files. These applications must be installed in this path. Otherwise leave the field empty.</source>
+        <target state="final">Pad naar PDF-parsers: De indexeerder gebruikt de applicaties 'pdftotext' en 'pdfinfo' om inhoud uit PDF-bestanden te halen. Deze applicaties moeten zijn geïnstalleerd op dit pad. Laat anders het veld leeg.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.pdf_mode" resname="indexedsearch.config.pdf_mode" approved="yes">
+        <source>PDF parsing mode: Zero=whole file is indexed in one. Positive value indicates number of pages at a time, eg. "5" would mean 1-5,6-10,.... Negative integer would indicate (abs value) number of groups. Eg "3" groups of 10 pages would be 1-4,5-8,9-10. Range is -100 to 100.</source>
+        <target state="final">PDF-parse-modus: 0 = heel bestand in een keer geïndexeerd. Positieve waarden geven het aantal pagina's per keer aan, bijv. "5" betekent 1-5,6-10,... Negatieve getallen geven het aantal groepen weer. Bijv. "3" groepen uit 10 pagina's betekent 1-4,5-8,9-10. Bereik is -100 tot 100.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.unzip" resname="indexedsearch.config.unzip" approved="yes">
+        <source>Path to unzip: The indexer uses "unzip" to extract the contents from OpenOffice.org/Oasis OpenDocument files. The application must be installed in this path. Otherwise leave the field empty.</source>
+        <target state="final">Pad naar unzip: De indexeerder gebruikt "unzip" om de inhoud van OpenOffice.org/Oasis OpenDocument bestanden te extraheren. Deze applicatie moet in het pad aanwezig zijn. Laat anders het veld leeg.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.catdoc" resname="indexedsearch.config.catdoc" approved="yes">
+        <source>Path to WORD parser: The indexer uses the application 'catdoc' for extracting content from WORD files. The application must be installed in this path. Otherwise leave the field empty.</source>
+        <target state="final">Pad naar WORD-parser: De indexeerder gebruikte de applicatie 'catdoc' om de inhoud van Word-bestanden te extraheren. Deze applicatie moet in dit pad aanwezig zijn. Laat anders het veld leeg.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.xlhtml" resname="indexedsearch.config.xlhtml" approved="yes">
+        <source>Path to EXCEL parser: The indexer uses the application 'xlhtml' for extracting content from EXCEL files. The application must be installed in this path. Otherwise leave the field empty.</source>
+        <target state="final">Pad naar Excel-parser: De indexeerder gebruikte de applicatie 'xlhtml' om de inhoud van Excel-bestanden te extraheren. Deze applicatie moet in dit pad aanwezig zijn; laat ander het veld leeg.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.ppthtml" resname="indexedsearch.config.ppthtml" approved="yes">
+        <source>Path to POWERPOINT parser: The indexer uses the application 'ppthtml' for extracting content from POWERPOINT files. The application must be installed in this path. Otherwise leave the field empty.</source>
+        <target state="final">Pad naar Powerpoint-parser: De indexeerder gebruikt de applicatie 'ppthtml' om de inhoud van Powerpoint-bestanden te extraheren. De applicatie moet in dit pad aanwezig zijn. Laat het veld anders leeg.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.unrtf" resname="indexedsearch.config.unrtf" approved="yes">
+        <source>Path to RTF parser: The indexer uses the application 'unrtf' for extracting content from RTF files. The application must be installed in this path. Otherwise leave the field empty.</source>
+        <target state="final">Pad naar RTF-parser: De Indexeerder gebruikt de applicatie 'unrtf' om de inhoud van RTF-bestanden te extraheren. De applicatie moet in dit pad aanwezig zijn. Laat anders het veld leeg.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.debugMode" resname="indexedsearch.config.debugMode" approved="yes">
+        <source>Debug mode: If set, debugging information is collected during indexing and can be shown in the backend. Only for debugging since it slows down the system and fills the database with crap.</source>
+        <target state="final">Debug-modus: Indien actief wordt debug-informatie verzameld tijdens het indexeren en kan in de backend getoond worden. Alleen voor het debuggen omdat het het systeem vertraagt en de database vult met afval.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.fullTextDataLength" resname="indexedsearch.config.fullTextDataLength" approved="yes">
+        <source>Full Text Data Length: If set, the full text data stored will be limited to this byte length. It means you can save some database space but to the degree you cut the length down you also limit possibilities to search for sentences and the search result resume will be limited.</source>
+        <target state="final">Lengte van volledige-tekst-data: indien ingesteld wordt de volledige-tekst-data die opgeslagen wordt beperkt tot dit aantal bytes. Het betekent dat er wat databaseruimte bespaard wordt maar dit gaat ten koste van de zoekmogelijkheden naar zinnen en de samenvatting in de resultaten zal beperkt zijn.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.disableFrontendIndexing" resname="indexedsearch.config.disableFrontendIndexing" approved="yes">
+        <source>Disable Indexing in Frontend: By default pages are indexed during viewing of pages in the frontend. You can disable this features so indexing of pages is only initiated through the backend page crawler.</source>
+        <target state="final">Indexatie in de frontend uitschakelen: standaard worden pagina's geïndexeerd tijdens het bekijken van pagina's in de frontend. Dit kan uitgeschakeld worden waardoor initialiseren van indexatie van pagina's alleen gebeurd door de backend pagina crawler.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.enableMetaphoneSearch" resname="indexedsearch.config.enableMetaphoneSearch" approved="yes">
+        <source>Enable metaphone search (sounds like): 0=disabled, 1=use internal metaphone parser, 2=use advanced doubleMetaphone parser.</source>
+        <target state="final">Zoeken op metafoon (zoeken naar klank) inschakelen: 0=uitgeschakeld, 1=interne parser voor metafoonzoeken gebruiken, 2=geavanceerde dubbele metafoon parser.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.minAge" resname="indexedsearch.config.minAge" approved="yes">
+        <source>Min TTL (hours) for indexed page: The time in hours that must pass before an indexed page can be indexed again regardless of changes on the page.</source>
+        <target state="final">Minimale wachttijd (uren) voor geïndexeerde pagina's: Tijd in uren die moet verstrijken voordat een geïndexeerde pagina opnieuw geïndexeerd kan worden, onafhankelijk van wijzigingen op de pagina.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.maxAge" resname="indexedsearch.config.maxAge" approved="yes">
+        <source>Deprecated! Max TTL (hours) for indexed page: The time in hours that is the maximum age of an indexed page before it will get indexed again. Usually the index is kept consistent, therefore you won't need this feature.</source>
+        <target state="final">Verouderd! Maximale geldigheid van een geïndexeerde pagina: De tijd in uren is de maximale leeftijd van een geïndexeerde pagina voordat het weer zal worden geïndexeerd. Normaliter wordt de index consitent gehouden en daarom is deze functie niet nodig.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.maxExternalFiles" resname="indexedsearch.config.maxExternalFiles" approved="yes">
+        <source>Max external files to index: When external files are found on a page this number indicates how many may be indexed at that point. This prevents pages with links to many external documents to take the server down - but it may also prevent documents from being indexed.</source>
+        <target state="final">Maximal aantal bestanden om te indexeren: als externe bestanden worden gevonden op een pagina geeft dit aantal aan hoeveel er geïndexeerd worden op dat punt. Dit voorkomt dat pagina's met links naar veel externe documenten de server kunnen down brengen - het kan ook verhinderen dat bestanden geïndexeerd worden.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.useCrawlerForExternalFiles" resname="indexedsearch.config.useCrawlerForExternalFiles" approved="yes">
+        <source>Use "crawler" extension to index external files: When external files are found on a page they are added to the "crawler" extensions queue and indexed via the cronscript running the crawler. This eliminates problems with for example many PDF files on a page. Requires a proper configuration of the "crawler" extension.</source>
+        <target state="final">De "crawler"-extensie voor het indexeren van externe bestanden gebruiken: Als externe bestanden op een pagina aangetroffen worden dan worden ze toegevoegd aan de wachtrij van de "crawler"-extensie en geïndexeerd via het cronscript dat de crawler aanstuurt. Dit elimineert problemen met bijvoorbeeld veel PDF-bestanden op een pagina. Vereist een correcte configuratie van de "crawler"-extensie.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.flagBitMask" resname="indexedsearch.config.flagBitMask" approved="yes">
+        <source>Bitmask for Flags (Advanced): By this value (0-255) you can filter the importance of &lt;title&gt; (128), &lt;keywords&gt; (64) and &lt;description&gt; (32) content from HTML documents. By setting this to 0, none of these fields will have any importance over the other. The default value 192 means that title-tag content and meta-keywords will be flagged (and rated higher in search results)</source>
+        <target state="final">Bitmasker voor opties (geavanceerd): met deze waarde (0-255) kan het gewicht van &lt;title&gt; (128), &lt;keywords&gt; (64) en &lt;beschrijving&gt; (32) van HTML-documenten gefilterd worden. Door dit op 0 te zetten heeft geen van deze velden een groter gewicht dan de andere. De standaardwaarde 192 betekent dat de inhoud van de title-tag en meta-keywords gemarkeerd worden (en een groter gewicht krijgen bij de zoekresultaten)</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.ignoreExtensions" resname="indexedsearch.config.ignoreExtensions" approved="yes">
+        <source>Ignore Extensions: List of file extensions that the external parser will ignore (despite having support for them). Comma list.</source>
+        <target state="final">Extensies negeren: lijst van bestandsextensies die de externe parser zal negeren (ondanks dat er ondersteuning voor is). Komma-gescheiden lijst.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.indexExternalURLs" resname="indexedsearch.config.indexExternalURLs" approved="yes">
+        <source>Index External HTML URLs: If set, links to external URLs will be indexed if they are of type "text/html".</source>
+        <target state="final">URLs van externe HTML-documenten indexeren: indien actief worden links naar externe URL's geïndexeerd als ze van het type "text/html" zijn.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.useMysqlFulltext" resname="indexedsearch.config.useMysqlFulltext" approved="yes">
+        <source>Use MySQL specific fulltext search - Update database schema in install tool after toggling this flag</source>
+        <target state="final">Zoeken in volledige tekst van MySQL gebruiken - het database schema moet in de Install Tool bijgewerkt worden na het omzetten van deze optie</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.trackIpInStatistic" resname="indexedsearch.config.trackIpInStatistic" approved="yes">
+        <source>Define the privacy level of the logged IP: 0 for no mask which means no privacy, 1 for masking the host and 2 for masking host and subnet (full privacy)</source>
+        <target state="final">Leg het privacy-niveau van het gelogde IP-adres vast: 0 voor geen privacy, 1 voor het verbergen van de host en 2 voor het verbergen van de host en het subnet (volledige privacy)</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
