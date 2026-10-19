@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_csh_weblayout.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="cy">
+    <header/>
+    <body>
+      <trans-unit id=".alttitle" resname=".alttitle" approved="yes">
+        <source>Web &gt; Page Module</source>
+        <target state="final">Modiwl Gwe &gt;</target>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>The page module is activated from the backend menu and is the primary module for all basic CMS operations you need to perform when maintaining website content.</source>
+        <target state="final">Mae'r modiwl tudalen yn cael ei actifadu o'r ddewislen backend a dyma'r prif fodiwl ar gyfer yr holl weithrediadau CMS sylfaenol y mae angen i chi eu perfformio wrth gynnal cynnwys gwefan.</target>
+      </trans-unit>
+      <trans-unit id="_.seeAlso" resname="_.seeAlso" xml:space="preserve" approved="yes">
+				<source>Configuring the Page module [Technical] | https://docs.typo3.org/typo3cms/TSconfigReference/PageTsconfig/TSFE/,
+xMOD_csh_corebe:history_log,
+xMOD_csh_corebe:new_ce,
+xMOD_csh_corebe:move_el_pages,
+xMOD_csh_corebe:new_pages,
+xMOD_csh_corebe:TCEforms,
+About the page module | http://typo3.org/documentation/tips-tricks/the-new-page-editing-concept/
+Editing a page | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/EditPageContent/
+The Page Module (Animation) | Using the page tree (Animation) | FILE:EXT:welcome/modsub/ani_05.gif</source>
+			<target state="final">Ffurfweddu'r modiwl Tudalen [Technical] | https://docs.typo3.org/typo3cms/TSconfigReference/PageTsconfig/TSFE/,
+xMOD_csh_corebe: history_log,
+xMOD_csh_corebe: new_ce,
+xMOD_csh_corebe: move_el_pages,
+xMOD_csh_corebe: new_pages,
+xMOD_csh_corebe: TCEforms,
+Am y modiwl dudalen | http://typo3.org/documentation/tips-tricks/the-new-page-editing-concept/
+Golygu tudalen | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/EditPageContent/
+Y Modiwl Tudalen (Animeiddio) | Defnyddio'r goeden dudalen (Animeiddio) | FILE: EXT: croeso / modsub / ani_05.gif</target></trans-unit>
+      <trans-unit id="_.image" resname="_.image" xml:space="preserve" approved="yes">
+				<source>EXT:frontend/Resources/Public/Images/cshimages/pagemodule_13.png,
+EXT:frontend/Resources/Public/Images/cshimages/pagemodule_14.png,
+EXT:frontend/Resources/Public/Images/cshimages/pagemodule_15.png</source>
+				
+			<target state="final">EXT: frontend / Resources / Public / Images / cshimages / pagemodule_13.png,
+EXT: frontend / Resources / Public / Images / cshimages / pagemodule_14.png,
+EXT: frontend / Resources / Public / Images / cshimages / pagemodule_15.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" xml:space="preserve" approved="yes">
+				<source>Click the Page module, then the title of a page in the page tree.
+The page module is now activated in the right frame, showing the content of the page you clicked in the page tree.
+These buttons are direct links to the History/Undo function (1), Create new content element wizard (2), Move page wizard (3), Create new page wizard (4) and Edit page properties form (5). See the links for more details.</source>
+			<target state="final">Cliciwch y modiwl Tudalen, yna teitl tudalen yn y goeden dudalen.
+Mae'r modiwl tudalen bellach wedi'i actifadu yn y ffrâm gywir, gan ddangos cynnwys y dudalen y gwnaethoch chi ei chlicio yn y goeden dudalen.
+Mae'r botymau hyn yn ddolenni uniongyrchol i'r swyddogaeth Hanes / Dadwneud (1), Creu dewin elfen cynnwys newydd (2), Dewin tudalen symud (3), Creu dewin tudalen newydd (4) a Golygu ffurflen priodweddau tudalen (5). Gweler y dolenni am ragor o fanylion.</target></trans-unit>
+      <trans-unit id="quickEdit.alttitle" resname="quickEdit.alttitle" approved="yes">
+        <source>Quick Edit</source>
+        <target state="final">Golygu Cyflym</target>
+      </trans-unit>
+      <trans-unit id="quickEdit.description" resname="quickEdit.description" approved="yes">
+        <source>The Quick Editor gives you direct access to the form fields of the page content.</source>
+        <target state="final">Mae'r Golygydd Cyflym yn rhoi mynediad uniongyrchol i chi i feysydd ffurf cynnwys y dudalen.</target>
+      </trans-unit>
+      <trans-unit id="quickEdit.details" resname="quickEdit.details" approved="yes">
+        <source>The Quick Editor is designed to cut down the number of clicks involved in getting to edit the page content. Simply by clicking the page title in the page tree you've got the first content element in the normal column loaded in the list frame. In the toolbar in the top you can select the other content elements on the page in the selector box.</source>
+        <target state="final">Dyluniwyd y Golygydd Cyflym i leihau nifer y cliciau sy'n gysylltiedig â golygu cynnwys y dudalen. Yn syml, trwy glicio teitl y dudalen yn y goeden dudalen mae gennych yr elfen gynnwys gyntaf yn y golofn arferol wedi'i llwytho yn y ffrâm rhestr. Yn y bar offer yn y brig gallwch ddewis yr elfennau cynnwys eraill ar y dudalen yn y blwch dewisydd.</target>
+      </trans-unit>
+      <trans-unit id="_quickEdit.seeAlso" resname="_quickEdit.seeAlso" approved="yes">
+        <source>_MOD_web_layout:quickEdit_selElement</source>
+        <target state="final">_MOD_web_layout: quickEdit_selElement</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_quickEdit.image" resname="_quickEdit.image" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/pagemodule_5.png</source>
+        <target state="final">ESTYN: frontend / Resources / Public / Images / cshimages / pagemodule_5.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="quickEdit.image_descr" resname="quickEdit.image_descr" approved="yes">
+        <source>The QuickEdit view cuts of one extra click by bringing the user directly to the editing form after clicking a page title in the page tree. The record shown is always the first content element from the Normal column.</source>
+        <target state="final">Mae golwg QuickEdit yn torri un clic ychwanegol trwy ddod â'r defnyddiwr yn uniongyrchol i'r ffurflen olygu ar ôl clicio teitl tudalen yn y goeden dudalen. Y cofnod a ddangosir yw'r elfen gynnwys gyntaf o'r golofn Arferol bob amser.</target>
+      </trans-unit>
+      <trans-unit id="quickEdit_selElement.alttitle" resname="quickEdit_selElement.alttitle" approved="yes">
+        <source>Content Elements</source>
+        <target state="final">Elfennau Cynnwys</target>
+      </trans-unit>
+      <trans-unit id="quickEdit_selElement.description" resname="quickEdit_selElement.description" approved="yes">
+        <source>This is an overview of the content elements on this page in QuickEdit mode. Select another element to edit or click a "New" icon to create a new content element.</source>
+        <target state="final">Dyma drosolwg o'r elfennau cynnwys ar y dudalen hon yn y modd QuickEdit. Dewiswch elfen arall i olygu neu glicio eicon "Newydd" i greu elfen gynnwys newydd.</target>
+      </trans-unit>
+      <trans-unit id="_quickEdit_selElement.seeAlso" resname="_quickEdit_selElement.seeAlso" xml:space="preserve" approved="yes">
+				<source>_MOD_web_layout:quickEdit,
+xMOD_csh_corebe:move_el_cs,
+xMOD_csh_corebe:new_ce</source>
+				
+			<target state="final">_MOD_web_layout: quickEdit,
+xMOD_csh_corebe: move_el_cs,
+xMOD_csh_corebe: new_ce</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_quickEdit_selElement.image" resname="_quickEdit_selElement.image" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/pagemodule_4.png</source>
+        <target state="final">ESTYN: frontend / Resources / Public / Images / cshimages / pagemodule_4.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="quickEdit_selElement.image_descr" resname="quickEdit_selElement.image_descr" approved="yes">
+        <source>Overview of page content elements in the QuickEdit view. In the bottom there are links to two wizards: The "Move Content Element Wizard" and the "Create new Content Element Wizard". See the links below.</source>
+        <target state="final">Trosolwg o elfennau cynnwys tudalen yng ngolwg QuickEdit. Yn y gwaelod mae dolenni i ddau ddewin: Y "Dewin Elfen Cynnwys Cynnwys" a'r "Creu Dewin Elfen Cynnwys newydd". Gweler y dolenni isod.</target>
+      </trans-unit>
+      <trans-unit id="columns_1.alttitle" resname="columns_1.alttitle" approved="yes">
+        <source>Listing by Columns</source>
+        <target state="final">Rhestru yn ôl Colofnau</target>
+      </trans-unit>
+      <trans-unit id="columns_1.description" resname="columns_1.description" approved="yes">
+        <source>In the "Columns" view you can manage the content of a web page. If your web page supports multiple columns, you will be able to arrange your content elements in columns.</source>
+        <target state="final">Yn yr olygfa "Colofnau" gallwch reoli cynnwys tudalen we. Os yw'ch tudalen we yn cefnogi sawl colofn, byddwch yn gallu trefnu eich elfennau cynnwys mewn colofnau.</target>
+      </trans-unit>
+      <trans-unit id="_columns_1.seeAlso" resname="_columns_1.seeAlso" approved="yes">
+        <source>_MOD_web_layout:columns_single</source>
+        <target state="final">_MOD_web_layout: colofnau_single</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_columns_1.image" resname="_columns_1.image" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/pagemodule_12.png</source>
+        <target state="final">ESTYN: frontend / Resources / Public / Images / cshimages / pagemodule_12.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="columns_1.image_descr" resname="columns_1.image_descr" approved="yes">
+        <source>When your website supports multiple content element zones in the template you will be able to use another column than the "Normal" column. Here the "Left" column is enabled. TYPO3 offers four columns by default, "Normal", "Right", "Left" and "Border". Their significance depends on individual implementations in the frontend templates.</source>
+        <target state="final">Pan fydd eich gwefan yn cefnogi parthau elfen cynnwys lluosog yn y templed byddwch yn gallu defnyddio colofn arall na'r golofn "Normal". Yma mae'r golofn "Chwith" wedi'i galluogi. Mae TYPO3 yn cynnig pedair colofn yn ddiofyn, "Normal", "Right", "Left" a "Border". Mae eu harwyddocâd yn dibynnu ar weithrediadau unigol yn y templedi frontend.</target>
+      </trans-unit>
+      <trans-unit id="columns_2.alttitle" resname="columns_2.alttitle" approved="yes">
+        <source>Listing by Language</source>
+        <target state="final">Rhestru yn ôl Iaith</target>
+      </trans-unit>
+      <trans-unit id="columns_2.description" resname="columns_2.description" approved="yes">
+        <source>In the "Languages" view you can control the content of the web page as it is divided into languages and columns. It enables users to create a new translation of a page.</source>
+        <target state="final">Yn yr olygfa "Ieithoedd" gallwch reoli cynnwys y dudalen we gan ei bod wedi'i rhannu'n ieithoedd a cholofnau. Mae'n galluogi defnyddwyr i greu cyfieithiad newydd o dudalen.</target>
+      </trans-unit>
+      <trans-unit id="_columns_2.image" resname="_columns_2.image" xml:space="preserve" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/pagemodule_6.png,
+        EXT:frontend/Resources/Public/Images/cshimages/pagemodule_7.png,
+        EXT:frontend/Resources/Public/Images/cshimages/pagemodule_11.png,
+        EXT:frontend/Resources/Public/Images/cshimages/pagemodule_10.png,</source>
+        
+      <target state="final">EXT: frontend / Resources / Public / Images / cshimages / pagemodule_6.png,
+        EXT: frontend / Resources / Public / Images / cshimages / pagemodule_7.png,
+        EXT: frontend / Resources / Public / Images / cshimages / pagemodule_11.png,
+        ESTYN: frontend / Adnoddau / Cyhoeddus / Delweddau / cshimages / pagemodule_10.png,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="columns_2.image_descr" resname="columns_2.image_descr" xml:space="preserve" approved="yes">
+        <source>In the Language view you can select to create a new translation of the page if one does not exist already. The available languages must be defined first by language records created in the root of the page tree.
+        This example shows how page content for three languages is shown side-by-side in the Page module.
+        In the top of the Page module you can also select between the available translations...
+        ... and if you select any of the additional languages (here "Danish" and "German") you will see the default language displayed side-by-side with the selected language</source>
+      <target state="final">Yn yr olygfa Iaith gallwch ddewis creu cyfieithiad newydd o'r dudalen os nad oes un yn bodoli eisoes. Rhaid diffinio'r ieithoedd sydd ar gael yn gyntaf gan gofnodion iaith a grëwyd yng ngwraidd y goeden dudalen.
+        Mae'r enghraifft hon yn dangos sut mae cynnwys tudalen ar gyfer tair iaith yn cael ei ddangos ochr yn ochr yn y modiwl Tudalen.
+        Ar frig y modiwl Tudalen gallwch hefyd ddewis rhwng y cyfieithiadau sydd ar gael ...
+        ... ac os dewiswch unrhyw un o'r ieithoedd ychwanegol (yma "Daneg" ac "Almaeneg") fe welwch yr iaith ddiofyn yn cael ei harddangos ochr ochr yn ochr â'r iaith a ddewiswyd</target></trans-unit>
+      <trans-unit id="columns_3.alttitle" resname="columns_3.alttitle" approved="yes">
+        <source>Page Information</source>
+        <target state="final">Gwybodaeth Tudalen</target>
+      </trans-unit>
+      <trans-unit id="columns_3.description" resname="columns_3.description" approved="yes">
+        <source>In the "Page Information" view you can see various statistics about a page.</source>
+        <target state="final">Yn yr olygfa "Gwybodaeth Tudalen" gallwch weld amrywiol ystadegau am dudalen.</target>
+      </trans-unit>
+      <trans-unit id="columns_3.details" resname="columns_3.details" xml:space="preserve" approved="yes">
+				<source>The page information reveals information such as the date of creation and last modification of the page and its content.
+You can also see the subtitle, keywords and descriptions. This information is often used on websites for meta data or searching.</source>
+			<target state="final">Mae gwybodaeth y dudalen yn datgelu gwybodaeth fel dyddiad ei chreu ac addasiad diwethaf y dudalen a'i chynnwys.
+Gallwch hefyd weld yr is-deitl, yr allweddeiriau a'r disgrifiadau. Defnyddir y wybodaeth hon yn aml ar wefannau ar gyfer meta data neu chwilio.</target></trans-unit>
+      <trans-unit id="_columns_3.image" resname="_columns_3.image" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/pagemodule_9.png</source>
+        <target state="final">ESTYN: frontend / Resources / Public / Images / cshimages / pagemodule_9.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="columns_single.alttitle" resname="columns_single.alttitle" approved="yes">
+        <source>Page content elements in a single column</source>
+        <target state="final">Tudalen elfennau cynnwys mewn un golofn</target>
+      </trans-unit>
+      <trans-unit id="columns_single.description" resname="columns_single.description" approved="yes">
+        <source>The single column view will show the page content elements that define the content on this page of your website. Click an edit icon or element text to edit an element.</source>
+        <target state="final">Bydd yr olygfa golofn sengl yn dangos yr elfennau cynnwys tudalen sy'n diffinio'r cynnwys ar y dudalen hon o'ch gwefan. Cliciwch eicon golygu neu destun elfen i olygu elfen.</target>
+      </trans-unit>
+      <trans-unit id="columns_single.details" resname="columns_single.details" xml:space="preserve" approved="yes">
+				<source>You can also hide, delete and move elements by using the control panels.
+Clicking the "New content element" icon you will be able to create new content elements in between the existing elements on the page.
+Click the icon of a content element if you wish to access the context menu of the element.</source>
+			<target state="final">Gallwch hefyd guddio, dileu a symud elfennau trwy ddefnyddio'r paneli rheoli.
+glicio ar yr eicon "Elfen cynnwys newydd" byddwch yn gallu creu elfennau cynnwys newydd rhwng yr elfennau presennol ar y dudalen.
+Cliciwch eicon elfen gynnwys os ydych am gyrchu dewislen cyd-destun yr elfen.</target></trans-unit>
+      <trans-unit id="_columns_single.seeAlso" resname="_columns_single.seeAlso" approved="yes">
+        <source>_MOD_web_layout:columns_multi</source>
+        <target state="final">_MOD_web_layout: colofnau_multi</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_columns_single.image" resname="_columns_single.image" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/pagemodule_1.png</source>
+        <target state="final">ESTYN: frontend / Resources / Public / Images / cshimages / pagemodule_1.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="columns_single.image_descr" resname="columns_single.image_descr" approved="yes">
+        <source>Content Elements on a page are arranged in a specific order - the order they appear on the website. This order is also shown in the page module. The control panel allows you to move elements up and down as well as edit, hide and delete them. You can also just click the preview text shown here to access the editing form of the element.</source>
+        <target state="final">Trefnir Elfennau Cynnwys ar dudalen mewn trefn benodol - y drefn y maent yn ymddangos ar y wefan. Dangosir y drefn hon hefyd yn y modiwl tudalen. Mae'r panel rheoli yn caniatáu ichi symud elfennau i fyny ac i lawr yn ogystal â'u golygu, eu cuddio a'u dileu. Gallwch hefyd glicio ar y testun rhagolwg a ddangosir yma i gael mynediad at ffurf golygu'r elfen.</target>
+      </trans-unit>
+      <trans-unit id="button_panel.alttitle" resname="button_panel.alttitle" approved="yes">
+        <source>The "Big Buttons"</source>
+        <target state="final">Y "Botymau Mawr"</target>
+      </trans-unit>
+      <trans-unit id="button_panel.description" resname="button_panel.description" approved="yes">
+        <source>These buttons will bring you to four most used functions in relation to building pages. From here you can edit the page properties (eg. the page title), you can move the current page to another position in the page tree, create a new page somewhere in the page tree or create new content elements on this page.</source>
+        <target state="final">Bydd y botymau hyn yn dod â chi at bedair swyddogaeth a ddefnyddir fwyaf mewn perthynas â thudalennau adeiladu. O'r fan hon, gallwch olygu priodweddau'r dudalen (ee teitl y dudalen), gallwch symud y dudalen gyfredol i safle arall yn y goeden dudalen, creu tudalen newydd yn rhywle yn y goeden dudalen neu greu elfennau cynnwys newydd ar y dudalen hon.</target>
+      </trans-unit>
+      <trans-unit id="_button_panel.seeAlso" resname="_button_panel.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:TCEforms,
+xMOD_csh_corebe:move_el_pages,
+xMOD_csh_corebe:new_pages,
+xMOD_csh_corebe:new_ce,</source>
+				
+			<target state="final">xMOD_csh_corebe: TCEforms,
+xMOD_csh_corebe: move_el_pages,
+xMOD_csh_corebe: new_pages,
+xMOD_csh_corebe: new_ce,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_button_panel.image" resname="_button_panel.image" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/pagemodule_2.png</source>
+        <target state="final">ESTYN: frontend / Resources / Public / Images / cshimages / pagemodule_2.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
