@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_sysfilestorage.xlf" date="2011-10-17T20:22:32Z" product-name="context_help" target-language="ar">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>File storage, which acts as an entry root point to a file-based structure. See it like a drive or a hard drive volume in your local machine.</source>
+        <target state="final">مكان تخزين الملفات، الذي يعمل كنقطة دخول جذور للهيكل القائم على المِلَفّ. يمكن تشبيهه كمحرك أقراص أو محرك أقراص صلبة في حاسوبك المنزلي.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details">
+        <source/>
+      </trans-unit>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>Unchecking this option results in removing of the storage from any listings in the backend. Existing file relations will still exist.</source>
+        <target state="final">سيؤدي تعطيل وحدة التخزين إلى إزالتها من أي قوائم في الواجهة الخلفية. ستظل علاقات الملفات الموجودة متاحة.</target>
+      </trans-unit>
+      <trans-unit id="hidden.details" resname="hidden.details" approved="yes">
+        <source>If you set up a file storage, it will show up on any folder lists, thus allowing to basically browse through the files in this file repository. If you set this checkbox, this storage will be excluded from any listings in the backend. Any existing file references will still exist further.</source>
+        <target state="final">إذا قمت بإعداد تخزين مِلَفّ، فإنه سيظهر في أي قوائم المجلدات، ومن ثم السماح بالتصفح بواسطة الملفات الموجودة في مستودع الملفات هذا. إذا قمت بتعيين مربع الاختيار هذا، سيتم استبعاد هذا التخزين من أي قوائم في الواجهة الخلفية. أي مراجع للملفات الحالية ستظل موجودة أكثر.</target>
+      </trans-unit>
+      <trans-unit id="name.description" resname="name.description" approved="yes">
+        <source>The visible identifier for this file storage.</source>
+        <target state="final">المُعرّف المرئي لتخزين هذا المِلَفّ.</target>
+      </trans-unit>
+      <trans-unit id="name.details" resname="name.details" approved="yes">
+        <source>The label entered here will be shown as the name for the entry point in the TYPO3 Backend. Be sure to make it descriptive and logical for your editors.</source>
+        <target state="final">سيتم عرض التسمية التي تم إدخالها هنا كاسم لنقطة الدخول في الواجهة الخلفية لـ TYPO3. تأكّد من جعلها وصفية ومنطقية للمحررين الخاص بك.</target>
+      </trans-unit>
+      <trans-unit id="description.description" resname="description.description" approved="yes">
+        <source>A description of this storage.</source>
+        <target state="final">وصف لهذا التخزين.</target>
+      </trans-unit>
+      <trans-unit id="description.details" resname="description.details" approved="yes">
+        <source>This description field is used to explain e.g. the location of the storage, also what this storage is meant for or what it contains.</source>
+        <target state="final">يُستخدم حقل الوصف هذا لِشرح موقع التخزين على سبيل المثال، أيضاً يشرح ما المقصود بهذا التخزين أو ما يحتوي عليه.</target>
+      </trans-unit>
+      <trans-unit id="driver.description" resname="driver.description" approved="yes">
+        <source>Choose the driver as the technical backbone of the storage. Once you've chosen a driver, and saved it, additional configuration will show up.</source>
+        <target state="final">اختر قرص التخزين كقاعدة أساسية تقنية للتخزين. بمجرد اختيار القرص المناسب، وحفظه، ستظهر إعدادات إضافية.</target>
+      </trans-unit>
+      <trans-unit id="driver.details" resname="driver.details" approved="yes">
+        <source>The driver is the technical background of a storage, and thus also defines whether the location of the storage is local (= on the same machine as this TYPO3 installation) or remote like a WebDAV server connection. Search for extensions in the TYPO3 Extension Repository that extend this driver list.</source>
+        <target state="final">قرص التخزين هو الخلفية التقنية للتخزين، وإنه يحدد أيضاً ما إذا كان موقع التخزين محلياً (= على نفس الجهاز الذي يعمل بها هذا التثبيت TYPO3) أو بعيد مثل اتصال خادم WebDAV. البحث عن إضافات في مستودع إضافة TYPO3 الذي يوسع قائمة المُشغل هذه.</target>
+      </trans-unit>
+      <trans-unit id="processingfolder.description" resname="processingfolder.description" approved="yes">
+        <source>Defines the directory on this storage to be used to save temporary files like resized images.</source>
+        <target state="final">حدد الدليل في مكان التخزين هذا لاستخدامه لحفظ الملفات المؤقتة مثل الصور التي تم تغيير حجمها.</target>
+      </trans-unit>
+      <trans-unit id="is_browsable.description" resname="is_browsable.description" approved="yes">
+        <source>If set, backend users can browse through this storage. Otherwise it will show up as a unselectable item in the list.</source>
+        <target state="final">إذا تم تعيينه، يمكن للمستخدمين في الواجهة الخلفية التصفح من خلال هذا التخزين. وإلا فإنه سيظهر كعنصر غير قابل للتحديد في القائمة.</target>
+      </trans-unit>
+      <trans-unit id="is_public.description" resname="is_public.description" approved="yes">
+        <source>If set, then the files in this storage can be linked directly from the outside world. If this is not set, make sure to provide additional possibilities to access the files in this storage.</source>
+        <target state="final">في حالة الضبط، يمكن ربط الملفات الموجودة في هذا التخزين مباشرةً من العالم الخارجي. إذا لم يتم تعيين هذا، تأكد من توفير إمكانيات إضافية للوصول إلى الملفات في هذا التخزين.</target>
+      </trans-unit>
+      <trans-unit id="is_writable.description" resname="is_writable.description" approved="yes">
+        <source>If set, then users are allowed to modify, add, delete files/folders on this storage.</source>
+        <target state="final">إذا تم تعيينه، فسيسمح للمستخدمين بتعديل وإضافة وحذف الملفات/المجلدات على هذه التخزين.</target>
+      </trans-unit>
+      <trans-unit id="is_online.description" resname="is_online.description" approved="yes">
+        <source>This flag is usually set. If TYPO3 cannot connect to this storage (because it maybe temporary down), then the flag will be checked, and the storage will behave like it is non-browsable in the TYPO3 backend. The admin needs to manually activate it again if it was offline.</source>
+        <target state="final">عادة ما يتم تعيين هذا العلم. إذا تعذّر على TYPO3 الاتصال بوحدة التخزين هذه (لأنه ربما مُتوقف مؤقتاً)، سيتم التحقق من العلم، وسوف تتصرف وحدة التخزين كأنها غير قابلة للتصفح في الواجهة الخلفية لـ TYPO3. يحتاج المشرف إلى تفعيله يدوياً مرة أخرى إذا كان غير متصل.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
