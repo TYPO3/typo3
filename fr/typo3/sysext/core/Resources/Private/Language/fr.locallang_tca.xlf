@@ -1,0 +1,860 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_tca.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="fr">
+    <header/>
+    <body>
+      <trans-unit id="file_mountpoints" resname="file_mountpoints" approved="yes">
+        <source>File Mounts</source>
+        <target state="final">Montages de fichiers</target>
+      </trans-unit>
+      <trans-unit id="file_mountpoints_edit_title" resname="file_mountpoints_edit_title" approved="yes">
+        <source>Edit filemount</source>
+        <target state="final">Editer le montage de fichiers :</target>
+      </trans-unit>
+      <trans-unit id="file_mountpoints_add_title" resname="file_mountpoints_add_title" approved="yes">
+        <source>Create new filemount</source>
+        <target state="final">Créer un montage de fichier</target>
+      </trans-unit>
+      <trans-unit id="file_mountpoints_list_title" resname="file_mountpoints_list_title" approved="yes">
+        <source>List filemounts</source>
+        <target state="final">Liste des montages de fichiers</target>
+      </trans-unit>
+      <trans-unit id="db_mountpoints" resname="db_mountpoints" approved="yes">
+        <source>DB Mounts</source>
+        <target state="final">Montages BDD</target>
+      </trans-unit>
+      <trans-unit id="userMods" resname="userMods" approved="yes">
+        <source>Modules</source>
+        <target state="final">Modules</target>
+      </trans-unit>
+      <trans-unit id="availableWidgets" resname="userMods" approved="yes">
+        <source>Dashboard widgets</source>
+        <target state="final">Widgets du tableau de bord</target>
+      </trans-unit>
+      <trans-unit id="mfa_providers" resname="mfa_providers" approved="yes">
+        <source>Allowed multi-factor authentication providers</source>
+        <target state="final">Fournisseurs d'authentification multi-facteurs autorisés</target>
+      </trans-unit>
+      <trans-unit id="allowed_languages" resname="allowed_languages" approved="yes">
+        <source>Limit to languages</source>
+        <target state="final">Limiter aux langues</target>
+      </trans-unit>
+      <trans-unit id="category_perms" resname="category_perms" approved="yes">
+        <source>Category Mounts</source>
+        <target state="final">Montages de catégorie</target>
+      </trans-unit>
+      <trans-unit id="workspace_perms" resname="workspace_perms" approved="yes">
+        <source>Workspace permissions</source>
+        <target state="final">Autorisations de l'espace de travail</target>
+      </trans-unit>
+      <trans-unit id="workspace_perms_live" resname="workspace_perms_live" approved="yes">
+        <source>Edit Live (Online)</source>
+        <target state="final">Editer en Live (en ligne)</target>
+      </trans-unit>
+      <trans-unit id="workspace_perms_draft" resname="workspace_perms_draft" approved="yes">
+        <source>Edit Draft (Offline)</source>
+        <target state="final">Editer en brouillon (hors ligne)</target>
+      </trans-unit>
+      <trans-unit id="workspace_perms_custom" resname="workspace_perms_custom" approved="yes">
+        <source>Create new workspace projects</source>
+        <target state="final">Créer de nouveaux Espaces de travail</target>
+      </trans-unit>
+      <trans-unit id="TSconfig" resname="TSconfig" approved="yes">
+        <source>TSconfig</source>
+        <target state="final">TSconfig</target>
+      </trans-unit>
+      <trans-unit id="TSconfig_title" resname="TSconfig_title" approved="yes">
+        <source>TSconfig QuickReference</source>
+        <target state="final">Référence TSConfig</target>
+      </trans-unit>
+      <trans-unit id="be_users.username" resname="be_users.username" approved="yes">
+        <source>Username</source>
+        <target state="final">Nom d'utilisateur</target>
+      </trans-unit>
+      <trans-unit id="be_users.password" resname="be_users.password" approved="yes">
+        <source>Password</source>
+        <target state="final">Mot de passe</target>
+      </trans-unit>
+      <trans-unit id="be_users.mfa" resname="be_users.mfa" approved="yes">
+        <source>Multi-factor authentication</source>
+        <target state="final">Authentification multi-facteurs</target>
+      </trans-unit>
+      <trans-unit id="be_users.avatar" resname="be_users.avatar" approved="yes">
+        <source>Avatar</source>
+        <target state="final">Avatar</target>
+      </trans-unit>
+      <trans-unit id="be_users.usergroup" resname="be_users.usergroup" approved="yes">
+        <source>Group</source>
+        <target state="final">Groupe</target>
+      </trans-unit>
+      <trans-unit id="be_users.usergroup_edit_title" resname="be_users.usergroup_edit_title" approved="yes">
+        <source>Edit usergroup</source>
+        <target state="final">Editer le groupe d'utilisateur</target>
+      </trans-unit>
+      <trans-unit id="be_users.usergroup_add_title" resname="be_users.usergroup_add_title" approved="yes">
+        <source>Create new group</source>
+        <target state="final">Créer un nouveau groupe</target>
+      </trans-unit>
+      <trans-unit id="be_users.usergroup_list_title" resname="be_users.usergroup_list_title" approved="yes">
+        <source>List groups</source>
+        <target state="final">Liste des groupes</target>
+      </trans-unit>
+      <trans-unit id="be_users.admin" resname="be_users.admin" approved="yes">
+        <source>Admin (!)</source>
+        <target state="final">Administrateur (!)</target>
+      </trans-unit>
+      <trans-unit id="be_users.options" resname="be_users.options" approved="yes">
+        <source>Mount from groups</source>
+        <target state="final">Montage à partir de groupes</target>
+      </trans-unit>
+      <trans-unit id="be_users.options_db_mounts" resname="be_users.options_db_mounts" approved="yes">
+        <source>DB Mounts</source>
+        <target state="final">Montages BDD</target>
+      </trans-unit>
+      <trans-unit id="be_users.options_file_mounts" resname="be_users.options_file_mounts" approved="yes">
+        <source>File Mounts</source>
+        <target state="final">Montages de fichiers</target>
+      </trans-unit>
+      <trans-unit id="be_users.fileoper_perms" resname="be_users.fileoper_perms" approved="yes">
+        <source>Fileoperation permissions</source>
+        <target state="final">Permissions sur les fichiers</target>
+      </trans-unit>
+      <trans-unit id="be_users.file_permissions.files" resname="be_users.file_permissions.files" approved="yes">
+        <source>Files</source>
+        <target state="final">Fichiers</target>
+      </trans-unit>
+      <trans-unit id="be_users.file_permissions.files_read" resname="be_users.file_permissions.files_read" approved="yes">
+        <source>Files: Read</source>
+        <target state="final">Fichiers : Lire</target>
+      </trans-unit>
+      <trans-unit id="be_users.file_permissions.files_write" resname="be_users.file_permissions.files_write" approved="yes">
+        <source>Files: Write</source>
+        <target state="final">Fichiers : Ecrire</target>
+      </trans-unit>
+      <trans-unit id="be_users.file_permissions.files_add" resname="be_users.file_permissions.files_add" approved="yes">
+        <source>Files: Add</source>
+        <target state="final">Fichiers: Ajouter</target>
+      </trans-unit>
+      <trans-unit id="be_users.file_permissions.files_rename" resname="be_users.file_permissions.files_rename" approved="yes">
+        <source>Files: Rename</source>
+        <target state="final">Fichiers : Renommer</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.files_replace" resname="be_groups.file_permissions.files_replace" approved="yes">
+        <source>Files: Replace</source>
+        <target state="final">Fichiers : Remplacer</target>
+      </trans-unit>
+      <trans-unit id="be_users.file_permissions.files_move" resname="be_users.file_permissions.files_move" approved="yes">
+        <source>Files: Move</source>
+        <target state="final">Fichiers : Déplacer</target>
+      </trans-unit>
+      <trans-unit id="be_users.file_permissions.files_copy" resname="be_users.file_permissions.files_copy" approved="yes">
+        <source>Files: Copy</source>
+        <target state="final">Fichiers : Copier</target>
+      </trans-unit>
+      <trans-unit id="be_users.fileoper_perms_unzip" resname="be_users.fileoper_perms_unzip" approved="yes">
+        <source>Files: Unzip</source>
+        <target state="final">Fichiers : Dézipper</target>
+      </trans-unit>
+      <trans-unit id="be_users.file_permissions.file_delete" resname="be_users.file_permissions.file_delete" approved="yes">
+        <source>Files: Delete</source>
+        <target state="final">Fichiers : Supprimer</target>
+      </trans-unit>
+      <trans-unit id="be_users.fileoper_perms_general" resname="be_users.fileoper_perms_general" approved="yes">
+        <source>Files: Upload,Copy,Move,Delete,Rename,New,Edit</source>
+        <target state="final">Fichiers : Transférer,Copier,Déplacer,Supprimer,Renommer,Créer,Editer</target>
+      </trans-unit>
+      <trans-unit id="be_users.fileoper_perms_diroper_perms" resname="be_users.fileoper_perms_diroper_perms" approved="yes">
+        <source>Directory: Move,Delete,Rename,New</source>
+        <target state="final">Répertoire : Déplacer,Supprimer,Renommer,Créer</target>
+      </trans-unit>
+      <trans-unit id="be_users.fileoper_perms_diroper_perms_copy" resname="be_users.fileoper_perms_diroper_perms_copy" approved="yes">
+        <source>Directory: Copy</source>
+        <target state="final">Dossier : Copier</target>
+      </trans-unit>
+      <trans-unit id="be_users.fileoper_perms_diroper_perms_delete" resname="be_users.fileoper_perms_diroper_perms_delete" approved="yes">
+        <source>Directory: Delete recursively (rm -Rf)</source>
+        <target state="final">Répertoire : Supprimer récursivement (rm -Rf)</target>
+      </trans-unit>
+      <trans-unit id="be_users.lang" resname="be_users.lang" approved="yes">
+        <source>User Interface Language</source>
+        <target state="final">Langue de l'interface utilisateur</target>
+      </trans-unit>
+      <trans-unit id="be_users.languageItemGroups.default" resname="be_users.languageItemGroups.default" approved="yes">
+        <source>Default</source>
+        <target state="final">Par défaut</target>
+      </trans-unit>
+      <trans-unit id="be_users.languageItemGroups.installed" resname="be_users.languageItemGroups.installed" approved="yes">
+        <source>Installed Languages</source>
+        <target state="final">Langues installées</target>
+      </trans-unit>
+      <trans-unit id="be_users.languageItemGroups.unavailable" resname="be_users.languageItemGroups.unavailable" approved="yes">
+        <source>Unavailable Languages</source>
+        <target state="final">Langues indisponibles</target>
+      </trans-unit>
+      <trans-unit id="be_users.tabs.rights" resname="be_users.tabs.rights" approved="yes">
+        <source>Access Rights</source>
+        <target state="final">Droits d'accès</target>
+      </trans-unit>
+      <trans-unit id="be_users.tabs.mounts_and_workspaces" resname="be_users.tabs.mounts_and_workspaces" approved="yes">
+        <source>Mounts and Workspaces</source>
+        <target state="final">Montages et Espaces de travail</target>
+      </trans-unit>
+      <trans-unit id="be_users.tabs.options" resname="be_users.tabs.options" approved="yes">
+        <source>Options</source>
+        <target state="final">Options</target>
+      </trans-unit>
+      <trans-unit id="be_users.tabs.extended" resname="be_users.tabs.extended" approved="yes">
+        <source>Extended</source>
+        <target state="final">Avancées</target>
+      </trans-unit>
+      <trans-unit id="be_users.tabs.access" resname="be_users.tabs.access" approved="yes">
+        <source>Access</source>
+        <target state="final">Accès</target>
+      </trans-unit>
+      <trans-unit id="be_groups.title" resname="be_groups.title" approved="yes">
+        <source>Grouptitle</source>
+        <target state="final">Nom du groupe</target>
+      </trans-unit>
+      <trans-unit id="be_groups.pagetypes_select" resname="be_groups.pagetypes_select" approved="yes">
+        <source>Page types</source>
+        <target state="final">Type de page</target>
+      </trans-unit>
+      <trans-unit id="be_groups.tables_modify" resname="be_groups.tables_modify" approved="yes">
+        <source>Tables (modify)</source>
+        <target state="final">Tables (modifier)</target>
+      </trans-unit>
+      <trans-unit id="be_groups.tables_select" resname="be_groups.tables_select" approved="yes">
+        <source>Tables (listing)</source>
+        <target state="final">Tables (lister)</target>
+      </trans-unit>
+      <trans-unit id="be_groups.non_exclude_fields" resname="be_groups.non_exclude_fields" approved="yes">
+        <source>Allowed excludefields</source>
+        <target state="final">Champs exclus autorisés</target>
+      </trans-unit>
+      <trans-unit id="be_groups.explicit_allowdeny" resname="be_groups.explicit_allowdeny" approved="yes">
+        <source>Explicitly allow/deny field values</source>
+        <target state="final">Autoriser/refuser explicitement les valeurs du champ</target>
+      </trans-unit>
+      <trans-unit id="be_groups.custom_options" resname="be_groups.custom_options" approved="yes">
+        <source>Custom module options</source>
+        <target state="final">Options du module Liste</target>
+      </trans-unit>
+      <trans-unit id="be_groups.inc_access_lists" resname="be_groups.inc_access_lists" approved="yes">
+        <source>Include Access Lists</source>
+        <target state="final">Inclure les listes d'accès</target>
+      </trans-unit>
+      <trans-unit id="be_groups.subgroup" resname="be_groups.subgroup" approved="yes">
+        <source>Inherit settings from groups</source>
+        <target state="final">Hériter les paramètres des groupes</target>
+      </trans-unit>
+      <trans-unit id="be_groups.tabs.base_rights" resname="be_groups.tabs.base_rights" approved="yes">
+        <source>Access Lists</source>
+        <target state="final">Listes d'accès</target>
+      </trans-unit>
+      <trans-unit id="be_groups.tabs.mounts_and_workspaces" resname="be_groups.tabs.mounts_and_workspaces" approved="yes">
+        <source>Mounts and Workspaces</source>
+        <target state="final">Montages et Espaces de travail</target>
+      </trans-unit>
+      <trans-unit id="be_groups.fileoper_perms" resname="be_groups.fileoper_perms" approved="yes">
+        <source>Fileoperation permissions</source>
+        <target state="final">Permissions sur les fichiers</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.folder" resname="be_groups.file_permissions.folder" approved="yes">
+        <source>Directory</source>
+        <target state="final">Dossiers</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.folder_read" resname="be_groups.file_permissions.folder_read" approved="yes">
+        <source>Directory: Read</source>
+        <target state="final">Répertoire : Lire</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.folder_write" resname="be_groups.file_permissions.folder_write" approved="yes">
+        <source>Directory: Write</source>
+        <target state="final">Répertoire : Ecrire</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.folder_add" resname="be_groups.file_permissions.folder_add" approved="yes">
+        <source>Directory: Add</source>
+        <target state="final">Répertoire : Ajouter</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.folder_rename" resname="be_groups.file_permissions.folder_rename" approved="yes">
+        <source>Directory: Rename</source>
+        <target state="final">Répertoire : Renommer</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.folder_move" resname="be_groups.file_permissions.folder_move" approved="yes">
+        <source>Directory: Move</source>
+        <target state="final">Répertoire : Déplacer</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.folder_copy" resname="be_groups.file_permissions.folder_copy" approved="yes">
+        <source>Directory: Copy</source>
+        <target state="final">Dossier : Copier</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.folder_delete" resname="be_groups.file_permissions.folder_delete" approved="yes">
+        <source>Directory: Delete</source>
+        <target state="final">Répertoire : Supprimer</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.folder_recursivedelete" resname="be_groups.file_permissions.folder_recursivedelete" approved="yes">
+        <source>Directory: Delete recursively</source>
+        <target state="final">Répertoire : Supprimer récursivement</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.files" resname="be_groups.file_permissions.files" approved="yes">
+        <source>Files</source>
+        <target state="final">Fichiers</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.files_read" resname="be_groups.file_permissions.files_read" approved="yes">
+        <source>Files: Read</source>
+        <target state="final">Fichiers : Lire</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.files_write" resname="be_groups.file_permissions.files_write" approved="yes">
+        <source>Files: Write</source>
+        <target state="final">Fichiers : Ecrire</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.files_edit" resname="be_groups.file_permissions.files_edit" approved="yes">
+        <source>Files: Edit</source>
+        <target state="final">Fichiers : Editer</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.files_add" resname="be_groups.file_permissions.files_add" approved="yes">
+        <source>Files: Add</source>
+        <target state="final">Fichiers: Ajouter</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.files_rename" resname="be_groups.file_permissions.files_rename" approved="yes">
+        <source>Files: Rename</source>
+        <target state="final">Fichiers : Renommer</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.files_move" resname="be_groups.file_permissions.files_move" approved="yes">
+        <source>Files: Move</source>
+        <target state="final">Fichiers : Déplacer</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.files_copy" resname="be_groups.file_permissions.files_copy" approved="yes">
+        <source>Files: Copy</source>
+        <target state="final">Fichiers : Copier</target>
+      </trans-unit>
+      <trans-unit id="be_groups.fileoper_perms_unzip" resname="be_groups.fileoper_perms_unzip" approved="yes">
+        <source>Files: Unzip</source>
+        <target state="final">Fichiers : Dézipper</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.files_delete" resname="be_groups.file_permissions.files_delete" approved="yes">
+        <source>Files: Delete</source>
+        <target state="final">Fichiers : Supprimer</target>
+      </trans-unit>
+      <trans-unit id="be_groups.fileoper_perms_general" resname="be_groups.fileoper_perms_general" approved="yes">
+        <source>Files: Upload,Copy,Move,Delete,Rename,New,Edit</source>
+        <target state="final">Fichiers : Transférer,Copier,Déplacer,Supprimer,Renommer,Créer,Editer</target>
+      </trans-unit>
+      <trans-unit id="be_groups.fileoper_perms_diroper_perms" resname="be_groups.fileoper_perms_diroper_perms" approved="yes">
+        <source>Directory: Move,Delete,Rename,New</source>
+        <target state="final">Répertoire : Déplacer,Supprimer,Renommer,Créer</target>
+      </trans-unit>
+      <trans-unit id="be_groups.fileoper_perms_diroper_perms_copy" resname="be_groups.fileoper_perms_diroper_perms_copy" approved="yes">
+        <source>Directory: Copy</source>
+        <target state="final">Dossier : Copier</target>
+      </trans-unit>
+      <trans-unit id="be_groups.fileoper_perms_diroper_perms_delete" resname="be_groups.fileoper_perms_diroper_perms_delete" approved="yes">
+        <source>Directory: Delete recursively (rm -Rf)</source>
+        <target state="final">Répertoire : Supprimer récursivement (rm -Rf)</target>
+      </trans-unit>
+      <trans-unit id="be_groups.tabs.options" resname="be_groups.tabs.options" approved="yes">
+        <source>Options</source>
+        <target state="final">Options</target>
+      </trans-unit>
+      <trans-unit id="be_groups.tabs.extended" resname="be_groups.tabs.extended" approved="yes">
+        <source>Extended</source>
+        <target state="final">Avancées</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts.tabs.users" resname="sys_filemounts.tabs.users" approved="yes">
+        <source>Users</source>
+        <target state="final">Utilisateurs</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts.tabs.mountpoints" resname="sys_filemounts.tabs.mountpoints" approved="yes">
+        <source>Mountpoints</source>
+        <target state="final">Points de montage</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts.tabs.publishing" resname="sys_filemounts.tabs.publishing" approved="yes">
+        <source>Publishing</source>
+        <target state="final">Publication</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts.tabs.other" resname="sys_filemounts.tabs.other" approved="yes">
+        <source>Other</source>
+        <target state="final">Autre</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts.title" resname="sys_filemounts.title" approved="yes">
+        <source>Label</source>
+        <target state="final">Nom</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts.path" resname="sys_filemounts.path" approved="yes">
+        <source>Path</source>
+        <target state="final">Chemin</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts.base" resname="sys_filemounts.base" approved="yes">
+        <source>Base</source>
+        <target state="final">Base</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts.read_only" resname="sys_filemounts.read_only" approved="yes">
+        <source>Read-only</source>
+        <target state="final">Lecture seule</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts.base_absolute" resname="sys_filemounts.base_absolute" approved="yes">
+        <source>absolute (root) / </source>
+        <target state="final">absolu (racine) / </target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts.base_relative" resname="sys_filemounts.base_relative" approved="yes">
+        <source>relative ../fileadmin/</source>
+        <target state="final">relatif ../fileadmin/</target>
+      </trans-unit>
+      <trans-unit id="sys_history" resname="sys_history" approved="yes">
+        <source>System History</source>
+        <target state="final">Historique du système</target>
+      </trans-unit>
+      <trans-unit id="sys_log" resname="sys_log" approved="yes">
+        <source>System Log</source>
+        <target state="final">Journal du système</target>
+      </trans-unit>
+      <trans-unit id="sys_news" resname="sys_news" approved="yes">
+        <source>System News</source>
+        <target state="final">Actualités système</target>
+      </trans-unit>
+      <trans-unit id="sys_news.tabs.access" resname="sys_news.tabs.access" approved="yes">
+        <source>Access</source>
+        <target state="final">Accès</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.adminusers" resname="sys_workspace.adminusers" approved="yes">
+        <source>Owners</source>
+        <target state="final">Propriétaires</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.members" resname="sys_workspace.members" approved="yes">
+        <source>Members</source>
+        <target state="final">Membres</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.publish_time" resname="sys_workspace.publish_time" approved="yes">
+        <source>Publish</source>
+        <target state="final">Publier</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.freeze" resname="sys_workspace.freeze" approved="yes">
+        <source>Freeze Editing</source>
+        <target state="final">Bloquer l'édition</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.live_edit" resname="sys_workspace.live_edit" approved="yes">
+        <source>Allow "live" editing of records from tables without versioning</source>
+        <target state="final">Autoriser l'édition en "live" pour les enregistrements des tables sans versionning</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.review_stage_edit" resname="sys_workspace.review_stage_edit" approved="yes">
+        <source>Allow members to edit records in "Review" stage</source>
+        <target state="final">Autoriser les membres à éditer les enregistrements lorsqu'ils sont dans l'étape "validation"</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.disable_autocreate" resname="sys_workspace.disable_autocreate" approved="yes">
+        <source>Disable auto-versioning when editing</source>
+        <target state="final">Désactiver l'auto-versionning pendant l'édition</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.publish_access" resname="sys_workspace.publish_access" approved="yes">
+        <source>Publish access</source>
+        <target state="final">Permissions de publication</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.stagechg_notification" resname="sys_workspace.stagechg_notification" approved="yes">
+        <source>Stage change notification by email</source>
+        <target state="final">Notification de changement d'étape par e-mail</target>
+      </trans-unit>
+      <trans-unit id="pages" resname="pages" approved="yes">
+        <source>Page</source>
+        <target state="final">Page</target>
+      </trans-unit>
+      <trans-unit id="pages.hidden_toggle" resname="pages.hidden_toggle" approved="yes">
+        <source>Page visible</source>
+        <target state="final">Page visible</target>
+      </trans-unit>
+      <trans-unit id="pages.hidden_toggle_formlabel" resname="pages.hidden_toggle_formlabel" approved="yes">
+        <source>Page visible</source>
+        <target state="final">Page visible</target>
+      </trans-unit>
+      <trans-unit id="pages.nav_hide" resname="pages.nav_hide" approved="yes">
+        <source>Page not enabled in menus</source>
+        <target state="final">Page non autorisée dans les menus</target>
+      </trans-unit>
+      <trans-unit id="pages.nav_hide_toggle" resname="pages.nav_hide_toggle" approved="yes">
+        <source>Page enabled in menus</source>
+        <target state="final">Page activée dans les menus</target>
+      </trans-unit>
+      <trans-unit id="pages.nav_hide_toggle_formlabel" resname="pages.nav_hide_toggle_formlabel" approved="yes">
+        <source>Page enabled in menus</source>
+        <target state="final">Page activée dans les menus</target>
+      </trans-unit>
+      <trans-unit id="doktype.I.0" resname="doktype.I.0" approved="yes">
+        <source>Standard</source>
+        <target state="final">Standard</target>
+      </trans-unit>
+      <trans-unit id="doktype.I.1" resname="doktype.I.1" approved="yes">
+        <source>SysFolder</source>
+        <target state="final">Dossier Système</target>
+      </trans-unit>
+      <trans-unit id="doktype.I.folder" resname="doktype.I.folder" approved="yes">
+        <source>Folder</source>
+        <target state="final">Dossier</target>
+      </trans-unit>
+      <trans-unit id="doktype.I.2" resname="doktype.I.2" approved="yes">
+        <source>Recycler</source>
+        <target state="final">Corbeille</target>
+      </trans-unit>
+      <trans-unit id="title" resname="title" approved="yes">
+        <source>Pagetitle</source>
+        <target state="final">Titre de page</target>
+      </trans-unit>
+      <trans-unit id="php_tree_stop" resname="php_tree_stop" approved="yes">
+        <source>Hide child pages in page tree</source>
+        <target state="final">Masquer les sous-pages dans l'arborescence</target>
+      </trans-unit>
+      <trans-unit id="is_siteroot" resname="is_siteroot" approved="yes">
+        <source>Is root of website</source>
+        <target state="final">Est la racine du site web</target>
+      </trans-unit>
+      <trans-unit id="pages.slug" resname="pages.slug" approved="yes">
+        <source>URL Segment</source>
+        <target state="final">Segment d'URL</target>
+      </trans-unit>
+      <trans-unit id="be_users" resname="be_users" approved="yes">
+        <source>Backend user</source>
+        <target state="final">Utilisateur backend</target>
+      </trans-unit>
+      <trans-unit id="be_groups" resname="be_groups" approved="yes">
+        <source>Backend usergroup</source>
+        <target state="final">Groupe d'utilisateurs backend</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts" resname="sys_filemounts" approved="yes">
+        <source>Filemount</source>
+        <target state="final">Point de montage</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage" resname="sys_file_storage" approved="yes">
+        <source>File Storage</source>
+        <target state="final">Dossier de stockage de fichiers</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.type" resname="sys_file_storage.type" approved="yes">
+        <source>Entry point</source>
+        <target state="final">Point d'entrée</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.name" resname="sys_file_storage.name" approved="yes">
+        <source>Name</source>
+        <target state="final">Nom</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.description" resname="sys_file_storage.description" approved="yes">
+        <source>Description</source>
+        <target state="final">Description</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.hidden" resname="sys_file_storage.hidden" approved="yes">
+        <source>Hide from listings</source>
+        <target state="final">Cacher dans les listes</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.is_online" resname="sys_file_storage.is_online" approved="yes">
+        <source>Is online?</source>
+        <target state="final">Est en ligne ?</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.is_default" resname="sys_file_storage.is_default" approved="yes">
+        <source>Is default storage?</source>
+        <target state="final">Est le dossier de stockage par défaut ?</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.is_browsable" resname="sys_file_storage.is_browsable" approved="yes">
+        <source>Is browsable?</source>
+        <target state="final">Est consultable ?</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.is_public" resname="sys_file_storage.is_public" approved="yes">
+        <source>Is publicly available?</source>
+        <target state="final">Est accessible publiquement ?</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.is_writable" resname="sys_file_storage.is_writable" approved="yes">
+        <source>Is writable?</source>
+        <target state="final">Est modifiable en écriture ?</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.auto_extract_metadata" resname="sys_file_storage.auto_extract_metadata" approved="yes">
+        <source>Automatically extract metadata after upload</source>
+        <target state="final">Extraire automatiquement les meta-données après le téléchargement</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.capabilities" resname="sys_file_storage.capabilities" approved="yes">
+        <source>Capabilities</source>
+        <target state="final">Possibilités</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.processingfolder" resname="sys_file_storage.processingfolder" approved="yes">
+        <source>Folder for manipulated and temporary images etc.</source>
+        <target state="final">Dossier de stockage pour les images modifiées ou temporaires, ...</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.processingfolder.placeholder" resname="sys_file_storage.processingfolder.placeholder" approved="yes">
+        <source>_processed_ or 1:/processed_files_storage_x</source>
+        <target state="final">_processed_ ou 1:/processed_files_storage_x</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.driver" resname="sys_file_storage.driver" approved="yes">
+        <source>Driver</source>
+        <target state="final">Pilote</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.driver.local" resname="sys_file_storage.driver.local" approved="yes">
+        <source>Local Filesystem</source>
+        <target state="final">Système de fichiers local</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.configuration" resname="sys_file_storage.configuration" approved="yes">
+        <source>Driver Configuration</source>
+        <target state="final">Configuration du "driver"</target>
+      </trans-unit>
+      <trans-unit id="sys_file" resname="sys_file" approved="yes">
+        <source>File</source>
+        <target state="final">Fichier</target>
+      </trans-unit>
+      <trans-unit id="sys_file.storage" resname="sys_file.storage" approved="yes">
+        <source>Storage</source>
+        <target state="final">Stockage</target>
+      </trans-unit>
+      <trans-unit id="sys_file.identifier" resname="sys_file.identifier" approved="yes">
+        <source>Identifier</source>
+        <target state="final">Identifiant</target>
+      </trans-unit>
+      <trans-unit id="sys_file.name" resname="sys_file.name" approved="yes">
+        <source>Filename</source>
+        <target state="final">Nom de fichier</target>
+      </trans-unit>
+      <trans-unit id="sys_file.title" resname="sys_file.title" approved="yes">
+        <source>Title</source>
+        <target state="final">Titre</target>
+      </trans-unit>
+      <trans-unit id="sys_file.type" resname="sys_file.type" approved="yes">
+        <source>File Type</source>
+        <target state="final">Type de fichier</target>
+      </trans-unit>
+      <trans-unit id="sys_file.type.unknown" resname="sys_file.type.unknown" approved="yes">
+        <source>Unknown</source>
+        <target state="final">Inconnu</target>
+      </trans-unit>
+      <trans-unit id="sys_file.type.text" resname="sys_file.type.text" approved="yes">
+        <source>Text</source>
+        <target state="final">Texte</target>
+      </trans-unit>
+      <trans-unit id="sys_file.type.image" resname="sys_file.type.image" approved="yes">
+        <source>Image</source>
+        <target state="final">Image</target>
+      </trans-unit>
+      <trans-unit id="sys_file.type.audio" resname="sys_file.type.audio" approved="yes">
+        <source>Audio</source>
+        <target state="final">Audio</target>
+      </trans-unit>
+      <trans-unit id="sys_file.type.video" resname="sys_file.type.video" approved="yes">
+        <source>Video</source>
+        <target state="final">Vidéo</target>
+      </trans-unit>
+      <trans-unit id="sys_file.type.software" resname="sys_file.type.software" approved="yes">
+        <source>Software</source>
+        <target state="final">Logiciel</target>
+      </trans-unit>
+      <trans-unit id="sys_file.mime_type" resname="sys_file.mime_type" approved="yes">
+        <source>Mime Type</source>
+        <target state="final">Type MIME</target>
+      </trans-unit>
+      <trans-unit id="sys_file.sha1" resname="sys_file.sha1" approved="yes">
+        <source>SHA1</source>
+        <target state="final">SHA1</target>
+      </trans-unit>
+      <trans-unit id="sys_file.size" resname="sys_file.size" approved="yes">
+        <source>Size</source>
+        <target state="final">Taille</target>
+      </trans-unit>
+      <trans-unit id="sys_file.usage_count" resname="sys_file.usage_count" approved="yes">
+        <source>Usage Count</source>
+        <target state="final">Nombre d'utilisation</target>
+      </trans-unit>
+      <trans-unit id="sys_file.description" resname="sys_file.description" approved="yes">
+        <source>Description</source>
+        <target state="final">Description</target>
+      </trans-unit>
+      <trans-unit id="sys_file.alternative" resname="sys_file.alternative" approved="yes">
+        <source>Alternative Text</source>
+        <target state="final">Texte alternatif</target>
+      </trans-unit>
+      <trans-unit id="sys_file.alternative.description" resname="sys_file.alternative.description" approved="yes">
+        <source>Images must have text alternatives that describe the information or function represented by them. This should only be empty for purely decorative images.</source>
+        <target state="final">Les images doivent avoir des alternatives textuelles qui décrivent l'information ou la fonction qu'elles représentent. Cela ne devrait être vide que pour les images purement décoratives.</target>
+      </trans-unit>
+      <trans-unit id="sys_file.missing" resname="sys_file.missing" approved="yes">
+        <source>Marked as missing</source>
+        <target state="final">Marqué comme manquant</target>
+      </trans-unit>
+      <trans-unit id="sys_file.metadata" resname="sys_file.metadata" approved="yes">
+        <source>Metadata records</source>
+        <target state="final">Métadonnées des enregistrements</target>
+      </trans-unit>
+      <trans-unit id="file.width" resname="file.width" approved="yes">
+        <source>Width</source>
+        <target state="final">Largeur</target>
+      </trans-unit>
+      <trans-unit id="file.height" resname="file.height" approved="yes">
+        <source>Height</source>
+        <target state="final">Hauteur</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata" resname="sys_file_metadata" approved="yes">
+        <source>File Metadata</source>
+        <target state="final">Métadonnées du fichier</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference" resname="sys_file_reference" approved="yes">
+        <source>File Reference</source>
+        <target state="final">Référence du fichier</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.uid_local" resname="sys_file_reference.uid_local" approved="yes">
+        <source>File</source>
+        <target state="final">Fichier</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.uid_foreign" resname="sys_file_reference.uid_foreign" approved="yes">
+        <source>Used by content elements</source>
+        <target state="final">Utilisé par des éléments de contenu</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.tablenames" resname="sys_file_reference.tablenames" approved="yes">
+        <source>Table name</source>
+        <target state="final">Nom de la table</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.fieldname" resname="sys_file_reference.fieldname" approved="yes">
+        <source>Foreign Field</source>
+        <target state="final">Champ étranger</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.sorting_foreign" resname="sys_file_reference.sorting_foreign" approved="yes">
+        <source>Sorting foreign</source>
+        <target state="final">Tri étranger</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.table_local" resname="sys_file_reference.table_local" approved="yes">
+        <source>Local table</source>
+        <target state="final">Table locale</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.basicoverlayPalette" resname="sys_file_reference.basicoverlayPalette" approved="yes">
+        <source>File Metadata</source>
+        <target state="final">Métadonnées du fichier</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.imageoverlayPalette" resname="sys_file_reference.imageoverlayPalette" approved="yes">
+        <source>Image Metadata</source>
+        <target state="final">Métadonnées de l'image</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.audioOverlayPalette" resname="sys_file_reference.audioOverlayPalette" approved="yes">
+        <source>Audio Metadata</source>
+        <target state="final">Métadonnées audio</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.videoOverlayPalette" resname="sys_file_reference.videoOverlayPalette" approved="yes">
+        <source>Video Metadata</source>
+        <target state="final">Métadonnées vidéo</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.title" resname="sys_file_reference.title" approved="yes">
+        <source>Title</source>
+        <target state="final">Titre</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.description" resname="sys_file_reference.description" approved="yes">
+        <source>Description (Caption)</source>
+        <target state="final">Description (Légende)</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.downloadname" resname="sys_file_reference.downloadname" approved="yes">
+        <source>Download Name</source>
+        <target state="final">Intitulé pour le téléchargement</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.alternative" resname="sys_file_reference.alternative" approved="yes">
+        <source>Alternative Text</source>
+        <target state="final">Texte alternatif</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.link" resname="sys_file_reference.link" approved="yes">
+        <source>Link</source>
+        <target state="final">Lien</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.crop" resname="sys_file_reference.crop" approved="yes">
+        <source>Image manipulation</source>
+        <target state="final">Manipulation des images</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.autoplay" resname="sys_file_reference.autoplay" approved="yes">
+        <source>Autoplay</source>
+        <target state="final">Lecture automatique</target>
+      </trans-unit>
+      <trans-unit id="sys_file_collection" resname="sys_file_collection" approved="yes">
+        <source>File collection</source>
+        <target state="final">Collection de fichiers</target>
+      </trans-unit>
+      <trans-unit id="sys_file_collection.files" resname="sys_file_collection.files" approved="yes">
+        <source>Files</source>
+        <target state="final">Fichiers</target>
+      </trans-unit>
+      <trans-unit id="sys_file_collection.title" resname="sys_file_collection.title" approved="yes">
+        <source>Title</source>
+        <target state="final">Titre</target>
+      </trans-unit>
+      <trans-unit id="sys_file_collection.type" resname="sys_file_collection.type" approved="yes">
+        <source>Type</source>
+        <target state="final">Type</target>
+      </trans-unit>
+      <trans-unit id="sys_file_collection.type.0" resname="sys_file_collection.type.0" approved="yes">
+        <source>Static selection of files</source>
+        <target state="final">Sélection manuelle de fichiers</target>
+      </trans-unit>
+      <trans-unit id="sys_file_collection.type.1" resname="sys_file_collection.type.1" approved="yes">
+        <source>Folder from Storage</source>
+        <target state="final">Dossier sélectionné depuis le dossier de stockage</target>
+      </trans-unit>
+      <trans-unit id="sys_file_collection.type.2" resname="sys_file_collection.type.2" approved="yes">
+        <source>Select by category</source>
+        <target state="final">Sélectionner par catégorie</target>
+      </trans-unit>
+      <trans-unit id="sys_file_collection.storage" resname="sys_file_collection.storage" approved="yes">
+        <source>File Storage</source>
+        <target state="final">Dossier de stockage de fichiers</target>
+      </trans-unit>
+      <trans-unit id="sys_file_collection.folder" resname="sys_file_collection.folder" approved="yes">
+        <source>Folder</source>
+        <target state="final">Dossier</target>
+      </trans-unit>
+      <trans-unit id="sys_file_collection.recursive" resname="sys_file_collection.recursive" approved="yes">
+        <source>Recursive</source>
+        <target state="final">Récursif</target>
+      </trans-unit>
+      <trans-unit id="sys_file_collection.category" resname="sys_file_collection.category" approved="yes">
+        <source>Category</source>
+        <target state="final">Catégorie</target>
+      </trans-unit>
+      <trans-unit id="sys_language" resname="sys_language" approved="yes">
+        <source>Website Language</source>
+        <target state="final">Langue du site web</target>
+      </trans-unit>
+      <trans-unit id="sys_language.isocode" resname="sys_language.isocode" approved="yes">
+        <source>Select Official Language (ISO code)</source>
+        <target state="final">Sélectionnez la langue officielle (code ISO)</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode" resname="sys_language.language_isocode" approved="yes">
+        <source>Select language</source>
+        <target state="final">Sélectionner la langue</target>
+      </trans-unit>
+      <trans-unit id="sys_language.flag" resname="sys_language.flag" approved="yes">
+        <source>Select flag icon</source>
+        <target state="final">Sélectionnez l'icône du drapeau</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace" resname="sys_workspace" approved="yes">
+        <source>Workspace</source>
+        <target state="final">Espace de travail</target>
+      </trans-unit>
+      <trans-unit id="editlock" resname="editlock" approved="yes">
+        <source>Restrict editing by non-Admins</source>
+        <target state="final">Limiter l'édition aux admins</target>
+      </trans-unit>
+      <trans-unit id="sys_category" resname="sys_category" approved="yes">
+        <source>Category</source>
+        <target state="final">Catégorie</target>
+      </trans-unit>
+      <trans-unit id="sys_category.title" resname="sys_category.title" approved="yes">
+        <source>Title</source>
+        <target state="final">Titre</target>
+      </trans-unit>
+      <trans-unit id="sys_category.description" resname="sys_category.description" approved="yes">
+        <source>Description</source>
+        <target state="final">Description</target>
+      </trans-unit>
+      <trans-unit id="sys_category.parent" resname="sys_category.parent" approved="yes">
+        <source>Parent</source>
+        <target state="final">Catégorie parente</target>
+      </trans-unit>
+      <trans-unit id="sys_category.items" resname="sys_category.items" approved="yes">
+        <source>Items</source>
+        <target state="final">Éléments</target>
+      </trans-unit>
+      <trans-unit id="sys_category.categories" resname="sys_category.categories" approved="yes">
+        <source>Categories</source>
+        <target state="final">Catégories</target>
+      </trans-unit>
+      <trans-unit id="sys_category.tabs.category" resname="sys_category.tabs.category" approved="yes">
+        <source>Categories</source>
+        <target state="final">Catégories</target>
+      </trans-unit>
+      <trans-unit id="sys_category.tabs.items" resname="sys_category.tabs.items" approved="yes">
+        <source>Items</source>
+        <target state="final">Éléments</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
