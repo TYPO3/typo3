@@ -1,0 +1,897 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:extensionmanager/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="workspaces" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="extensionManager" resname="extensionManager" approved="yes">
+        <source>Extension Manager</source>
+        <target state="final">Erweiterungsmanager</target>
+      </trans-unit>
+      <trans-unit id="manageExtensions" resname="manageExtensions" approved="yes">
+        <source>Manage Extensions</source>
+        <target state="final">Erweiterungen verwalten</target>
+      </trans-unit>
+      <trans-unit id="installExtension" resname="installExtension" approved="yes">
+        <source>Install Extension</source>
+        <target state="final">Erweiterung installieren</target>
+      </trans-unit>
+      <trans-unit id="composerMode.title" resname="composerMode.title" approved="yes">
+        <source>Composer mode</source>
+        <target state="final">Composer-Modus</target>
+      </trans-unit>
+      <trans-unit id="composerStrictMode.message" resname="composerMode.message" approved="yes">
+        <source>The system is set to composer mode. Please notice that it is this list is for informational purpose only. To modify which extensions are part of the system, use Composer. To set extensions up, use the TYPO3 cli (extension:setup)</source>
+        <target state="final">Das System ist auf den Composer-Modus eingestellt. Bitte beachten Sie, dass diese Liste nur zu Informationszwecken dient. Um zu ändern, welche Erweiterungen Teil des Systems sind, verwenden Sie Composer. Um Erweiterungen einzurichten, verwenden Sie den TYPO3-Cli (extension:setup)</target>
+      </trans-unit>
+      <trans-unit id="installedExtensions" resname="installedExtensions" approved="yes">
+        <source>Installed Extensions</source>
+        <target state="final">Installierte Erweiterungen</target>
+      </trans-unit>
+      <trans-unit id="extensionComposerStatus" resname="extensionComposerStatus" approved="yes">
+        <source>Composer Support of Extensions</source>
+        <target state="final">Composer-Unterstützung von Erweiterungen</target>
+      </trans-unit>
+      <trans-unit id="getExtensions" resname="getExtensions" approved="yes">
+        <source>Get Extensions</source>
+        <target state="final">Erweiterungen hinzufügen</target>
+      </trans-unit>
+      <trans-unit id="showAllVersions" resname="showAllVersions" approved="yes">
+        <source>Show all versions of</source>
+        <target state="final">Zeige alle Versionen von</target>
+      </trans-unit>
+      <trans-unit id="extConfTemplate.backToList" resname="extConfTemplate.backToList" approved="yes">
+        <source>Back to list</source>
+        <target state="final">Zurück zur Liste</target>
+      </trans-unit>
+      <trans-unit id="button.cancel" resname="button.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Abbrechen</target>
+      </trans-unit>
+      <trans-unit id="button.details" resname="button.details" approved="yes">
+        <source>Show Details</source>
+        <target state="final">Details anzeigen</target>
+      </trans-unit>
+      <trans-unit id="button.remove" resname="button.remove" approved="yes">
+        <source>Remove extension</source>
+        <target state="final">Erweiterung entfernen</target>
+      </trans-unit>
+      <trans-unit id="button.updateExtension" resname="button.updateExtension" approved="yes">
+        <source>Update extension</source>
+        <target state="final">Erweiterung aktualisieren</target>
+      </trans-unit>
+      <trans-unit id="button.resolveDependencies" resname="button.resolveDependencies" approved="yes">
+        <source>Resolve dependencies</source>
+        <target state="final">Abhängigkeiten auflösen</target>
+      </trans-unit>
+      <trans-unit id="label.resolveDependenciesEnableButton" resname="label.resolveDependenciesEnableButton" approved="yes">
+        <source>I understand what this means and I'm able to investigate on possibly occurring issues by myself.</source>
+        <target state="final">Ich verstehe, was das bedeutet und ich bin in der Lage, möglicherweise auftretende Probleme selbst zu untersuchen.</target>
+      </trans-unit>
+      <trans-unit id="button.resolveDependenciesIgnore" resname="button.resolveDependenciesIgnore" approved="yes">
+        <source>I know what I'm doing, continue anyway</source>
+        <target state="final">Ich weiß was ich tue; trotzdem weitermachen</target>
+      </trans-unit>
+      <trans-unit id="extensionList.downloadsql" resname="extensionList.downloadsql" approved="yes">
+        <source>Download SQL Dump</source>
+        <target state="final">SQL-Dump herunterladen</target>
+      </trans-unit>
+      <trans-unit id="extensionList.remove" resname="extensionList.remove" approved="yes">
+        <source>Remove</source>
+        <target state="final">Entfernen</target>
+      </trans-unit>
+      <trans-unit id="extensionList.update" resname="extensionList.update" approved="yes">
+        <source>Update</source>
+        <target state="final">Aktualisieren</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateToVersion" resname="extensionList.updateToVersion" approved="yes">
+        <source>Update to version %s</source>
+        <target state="final">Aktualisieren auf Version %s</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateDisabled" resname="extensionList.updateDisabled" approved="yes">
+        <source>An update is available but this operation is currently disabled</source>
+        <target state="final">Eine Aktualisierung ist verfügbar, aber das Aktualisieren ist im Moment deaktiviert</target>
+      </trans-unit>
+      <trans-unit id="extensionList.deactivate" resname="extensionList.deactivate" approved="yes">
+        <source>Deactivate</source>
+        <target state="final">Deaktivieren</target>
+      </trans-unit>
+      <trans-unit id="extensionList.activate" resname="extensionList.activate" approved="yes">
+        <source>Activate</source>
+        <target state="final">Aktivieren</target>
+      </trans-unit>
+      <trans-unit id="extensionList.downloadzip" resname="extensionList.downloadzip" approved="yes">
+        <source>Download as zip</source>
+        <target state="final">Als ZIP herunterladen</target>
+      </trans-unit>
+      <trans-unit id="extensionList.uploadExtension" resname="extensionList.uploadExtension" approved="yes">
+        <source>Upload Extension</source>
+        <target state="final">Erweiterung hochladen</target>
+      </trans-unit>
+      <trans-unit id="extensionList.overwriteExtension" resname="extensionList.overwriteExtension" approved="yes">
+        <source>Overwrite</source>
+        <target state="final">Überschreiben</target>
+      </trans-unit>
+      <trans-unit id="extensionList.composerStatus.information" resname="extensionList.composerStatus.information" approved="yes">
+        <source>
+					Future TYPO3 versions will require all extensions in your TYPO3 installation to contain a
+					composer.json file in their extension directory. This is needed to properly detect the
+					composer-based package name, the relevant extension key and the dependencies to other packages /
+					extensions. Below is a list of extensions in your TYPO3 installation, which currently do not meet
+					those requirements and therefore need adaptations to their composer.json file.
+				</source>
+        <target state="final">Zukünftige TYPO3-Versionen werden voraussetzen, dass alle Erweiterungen in Ihrer TYPO3-Installation eine composer.json-Datei in Ihrem Erweiterungsverzeichnis enthalten. Diese wird benötigt, um den Composer-basierten Paketnamen, den relevanten Extension-Key und die Abhängigkeiten zu anderen Paketen / Erweiterungen zu erkennen. Nachfolgend finden Sie eine Liste von Extensions in Ihrer TYPO3-Installation, die derzeit die Anforderungen nicht erfüllen und daher Anpassungen in deren composer.json-Datei benötigen.</target>
+      </trans-unit>
+      <trans-unit id="extensionList.composerStatus.thirdParty" resname="extensionList.composerStatus.thirdParty" approved="yes">
+        <source>
+					For third-party extensions that were fetched from TER, it is helpful to update to their latest
+					version from TER which probably already contains a valid composer.json file.
+				</source>
+        <target state="final">Für Erweiterungen von Drittanbietern, die aus dem TER geladen wurden, ist es hilfreich, auf die neueste Version aus dem TER zu aktualisieren da diese möglicherweise bereits eine gültige composer.json-Datei enthält.</target>
+      </trans-unit>
+      <trans-unit id="extensionList.composerStatus.missingManifest" resname="extensionList.composerStatus.missingManifest" approved="yes">
+        <source>Missing composer.json file</source>
+        <target state="final">Fehlende composer.json-Datei</target>
+      </trans-unit>
+      <trans-unit id="extensionList.composerStatus.terRequest" resname="extensionList.composerStatus.terRequest" approved="yes">
+        <source>
+					To support you creating a valid composer.json file for your extensions, TYPO3 will send your
+					ext_emconf.php contents to TYPO3.org (TER). TYPO3.org will then resolve your dependencies and
+					return a valid composer.json proposal which can be copied to the corresponding extension directory.
+					This is especially helpful in case your TYPO3 installation contains custom extensions.
+				</source>
+        <target state="final">
+Um Sie beim Erstellen einer validen composer.json Datei für Ihre Extension zu unterstützen, sendet TYPO3 den Inhalt der ext_emconf.php Datei an TYPO3.org (TER). TYPO3.org löst dann darin gefundene Abhängigkeiten auf und gibt einen gültigen composer.json-Vorschlag zurück, der in das entsprechende Extension-Verzeichnis kopiert werden kann. Dies ist besonders hilfreich, falls Ihre TYPO3-Installation projektspezifische/benutzerdefinierte Extensions enthält.</target>
+      </trans-unit>
+      <trans-unit id="extensionList.composerStatus.additionalInformation" resname="extensionList.composerStatus.additionalInformation" approved="yes">
+        <source>For more information regarding the migration and the upcoming changes, please have a look at</source>
+        <target state="final">Weitere Informationen über die Migration und die bevorstehenden Änderungen finden Sie unter</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showComposerProposal" resname="extensionList.showComposerProposal" approved="yes">
+        <source>Show composer.json proposal</source>
+        <target state="final">composer.json-Vorschlag anzeigen</target>
+      </trans-unit>
+      <trans-unit id="extensionList.fetchComposerProposal" resname="extensionList.fetchComposerProposal" approved="yes">
+        <source>Check TYPO3.org for composer.json proposal</source>
+        <target state="final">Prüfen Sie TYPO3.org für einen composer.json Vorschlag</target>
+      </trans-unit>
+      <trans-unit id="extensionList.fetchComposerProposal.details" resname="extensionList.fetchComposerProposal.details" approved="yes">
+        <source>Send this extensions' ext_emconf.php contents to TYPO3.org for a valid and resolved composer.json proposal</source>
+        <target state="final">Senden Sie den Inhalt der ext_emconf.php dieser Erweiterung an TYPO3.org für einen gültigen composer.json-Vorschlag mit aufgelösten Abhängigkeiten</target>
+      </trans-unit>
+      <trans-unit id="extensionList.overwritingDisabled" resname="extensionList.overwritingDisabled" approved="yes">
+        <source>Extension is already available and overwriting was not enabled</source>
+        <target state="final">Die Erweiterung steht bereits zur Verfügung und Überschreiben war nicht aktiviert</target>
+      </trans-unit>
+      <trans-unit id="extensionList.loading" resname="extensionList.loading" approved="yes">
+        <source>Loading form...</source>
+        <target state="final">Lade Formular...</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.update" resname="extensionList.header.update" approved="yes">
+        <source>Upd.</source>
+        <target state="final">Akt.</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.title.update" resname="extensionList.header.title.update" approved="yes">
+        <source>Update</source>
+        <target state="final">Aktualisieren</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.activate" resname="extensionList.header.activate" approved="yes">
+        <source>A/D</source>
+        <target state="final">A/D</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.title.activate" resname="extensionList.header.title.activate" approved="yes">
+        <source>Activate / Deactivate</source>
+        <target state="final">Aktivieren / Deaktivieren</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.extensionName" resname="extensionList.header.extensionName" approved="yes">
+        <source>Extension</source>
+        <target state="final">Erweiterung</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.version" resname="extensionList.header.version" approved="yes">
+        <source>Version</source>
+        <target state="final">Version</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.extensionKey" resname="extensionList.header.extensionKey" approved="yes">
+        <source>Key</source>
+        <target state="final">Schlüssel</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.extensionVersion" resname="extensionList.header.extensionVersion" approved="yes">
+        <source>Version</source>
+        <target state="final">Version</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.extensionActions" resname="extensionList.header.extensionActions" approved="yes">
+        <source>Actions</source>
+        <target state="final">Aktionen</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.extensionState" resname="extensionList.header.extensionState" approved="yes">
+        <source>State</source>
+        <target state="final">Status</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.extensionDeficit" resname="extensionList.header.extensionDeficit" approved="yes">
+        <source>Deficit</source>
+        <target state="final">Defizit</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.extensionType" resname="extensionList.header.extensionType" approved="yes">
+        <source>Type</source>
+        <target state="final">Typ</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.uploadComment" resname="extensionList.header.uploadComment" approved="yes">
+        <source>Upload Comment</source>
+        <target state="final">Hochladekommentar</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.lastUpdate" resname="extensionList.header.lastUpdate" approved="yes">
+        <source>Last Updated</source>
+        <target state="final">Letzte Aktualisierung</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.description" resname="extensionList.header.description" approved="yes">
+        <source>Description</source>
+        <target state="final">Beschreibung</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.author" resname="extensionList.header.author" approved="yes">
+        <source>Author</source>
+        <target state="final">Autor</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.manual" resname="extensionList.header.manual" approved="yes">
+        <source>Manual</source>
+        <target state="final">Dokumentation</target>
+      </trans-unit>
+      <trans-unit id="searchTemplate.searchExtensions" resname="searchTemplate.searchExtensions" approved="yes">
+        <source>Search extensions</source>
+        <target state="final">Erweiterungen suchen</target>
+      </trans-unit>
+      <trans-unit id="extensionList.search" resname="extensionList.search" approved="yes">
+        <source>Search</source>
+        <target state="final">Suche:</target>
+      </trans-unit>
+      <trans-unit id="extensionList.filter.showAll" resname="extensionList.filter.showAll" approved="yes">
+        <source>All</source>
+        <target state="final">Alle</target>
+      </trans-unit>
+      <trans-unit id="extensionList.filter.showSystemExtensions" resname="extensionList.filter.showSystemExtensions" approved="yes">
+        <source>System</source>
+        <target state="final">System</target>
+      </trans-unit>
+      <trans-unit id="extensionList.filter.showLocalExtensions" resname="extensionList.filter.showLocalExtensions" approved="yes">
+        <source>Local</source>
+        <target state="final">Lokal</target>
+      </trans-unit>
+      <trans-unit id="searchTemplate.submitButton" resname="searchTemplate.submitButton" approved="yes">
+        <source>Go</source>
+        <target state="final">Absenden</target>
+      </trans-unit>
+      <trans-unit id="searchTemplate.resetSearchButton" resname="searchTemplate.resetSearchButton" approved="yes">
+        <source>Reset Search</source>
+        <target state="final">Suche zurücksetzen</target>
+      </trans-unit>
+      <trans-unit id="searchTemplate.yourSearch" resname="searchTemplate.yourSearch" approved="yes">
+        <source>Your search</source>
+        <target state="final">Ihre Suche</target>
+      </trans-unit>
+      <trans-unit id="searchTemplate.searchAgain" resname="searchTemplate.searchAgain" approved="yes">
+        <source>Search again</source>
+        <target state="final">Erneut suchen</target>
+      </trans-unit>
+      <trans-unit id="uploadTemplate.uploadButton" resname="uploadTemplate.uploadButton" approved="yes">
+        <source>Upload!</source>
+        <target state="final">Hochladen!</target>
+      </trans-unit>
+      <trans-unit id="uploadTemplate.extensionLabel" resname="uploadTemplate.extensionLabel" approved="yes">
+        <source>Extension</source>
+        <target state="final">Erweiterung</target>
+      </trans-unit>
+      <trans-unit id="extensionList.removalConfirmation.title" resname="extensionList.removalConfirmation.title" approved="yes">
+        <source>Extension Removal</source>
+        <target state="final">Erweiterung entfernen</target>
+      </trans-unit>
+      <trans-unit id="extensionList.removalConfirmation.message" resname="extensionList.removalConfirmation.message" approved="yes">
+        <source>The extension is currently installed. Uninstall extension?</source>
+        <target state="final">Die Erweiterung ist aktuell installiert. Deinstallieren?</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateConfirmation.title" resname="extensionList.updateConfirmation.title" approved="yes">
+        <source>Update?</source>
+        <target state="final">Aktualisieren?</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateConfirmation.message" resname="extensionList.updateConfirmation.message" approved="yes">
+        <source>Update Comments</source>
+        <target state="final">Aktualisierungskommentare:</target>
+      </trans-unit>
+      <trans-unit id="extensionList.databaseImport" resname="extensionList.databaseImport" approved="yes">
+        <source>The static database data has changed. You should re-import the data.</source>
+        <target state="final">Die statischen Datenbankdaten haben sich geändert. Sie sollten diese Daten erneut importieren.</target>
+      </trans-unit>
+      <trans-unit id="extensionList.databaseReload" resname="extensionList.databaseReload" approved="yes">
+        <source>Nothing has changed since last import. You might want to reload static database data.</source>
+        <target state="final">Seit dem letzten Import gibt es keine Änderungen. Sie können die statischen Datenbankdaten neuladen.</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateConfirmation.questionVersionComments" resname="extensionList.updateConfirmation.questionVersionComments" approved="yes">
+        <source>Version Comments</source>
+        <target state="final">Versionskommentare</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFlashMessage.title" resname="extensionList.updateFlashMessage.title" approved="yes">
+        <source>Extension Update</source>
+        <target state="final">Erweiterungsaktualisierung</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFlashMessage.body" resname="extensionList.updateFlashMessage.body" approved="yes">
+        <source>%s was updated!</source>
+        <target state="final">%s hochgeladen!</target>
+      </trans-unit>
+      <trans-unit id="extensionList.removalConfirmation.question" resname="extensionList.removalConfirmation.question" approved="yes">
+        <source>Are you sure you want to remove the extension?</source>
+        <target state="final">Sind Sie sicher, dass Sie die Erweiterung entfernen möchten?</target>
+      </trans-unit>
+      <trans-unit id="dependencyCheck.unresolvedDependencies.title" resname="dependencyCheck.unresolvedDependencies.title" approved="yes">
+        <source>Please read this carefully</source>
+        <target state="final">Bitte sorgfältig lesen</target>
+      </trans-unit>
+      <trans-unit id="dependencyCheck.unresolvedDependencies.message" resname="dependencyCheck.unresolvedDependencies.message" approved="yes">
+        <source><![CDATA[
+					If you continue installing the extension, all dependency checks will be turned off.
+					<ul>
+						<li>Required extensions are tried to be fetched from TER (if they do not yet exist in the system)</li>
+						<li>Version dependency checks are skipped</li>
+					</ul>
+					<strong>
+						Be aware that an installation without dependency checks may turn your installation unusable.<br />
+						In such a case manual intervention is required.
+					</strong>
+				]]></source>
+        <target state="final"><![CDATA[
+					Wenn Sie mit der Installation dieser Erweiterung fortfahren, werden alle Abhängigkeitsprüfungen deaktiviert
+					<ul>
+						<li>Es wird versucht, benötigte Erweiterungen vom TER zu installieren (falls sie noch nicht installiert sind)</li>
+						<li>Überprüfungen zur Versionsabhängigkeiten werden übersprungen</li>
+					</ul>
+					<strong>
+						Beachten Sie, dass eine Installation ohne Abhängigkeitsprüfung Ihre TYPO3-Installation unbenutzbar machen kann.
+					</strong>
+				]]></target>
+      </trans-unit>
+      <trans-unit id="dependencyCheck.unresolvedDependencies.question" resname="dependencyCheck.unresolvedDependencies.question" approved="yes">
+        <source>Are you sure you want to proceed?</source>
+        <target state="final">Tatsächlich fortfahren?</target>
+      </trans-unit>
+      <trans-unit id="dependencyCheck.unresolvedDependencies.proceed" resname="dependencyCheck.unresolvedDependencies.proceed" approved="yes">
+        <source>I know what I'm doing, install the extension!</source>
+        <target state="final">Ich weiß was ich tue, die Erweiterung dennoch installieren!</target>
+      </trans-unit>
+      <trans-unit id="dependencyCheck.headline" resname="dependencyCheck.headline" approved="yes">
+        <source>The following errors were found while trying to install "%s"</source>
+        <target state="final">Die folgenden Fehler wurden gefunden als versucht wurde, "%s" zu installieren</target>
+      </trans-unit>
+      <trans-unit id="dependencyCheck.requiredExtension" resname="dependencyCheck.requiredExtension" approved="yes">
+        <source>Required extension "%s"</source>
+        <target state="final">Benötigte Erweiterung "%s":</target>
+      </trans-unit>
+      <trans-unit id="downloadExtension.dependencies.headline" resname="downloadExtension.dependencies.headline" approved="yes">
+        <source>The following dependencies have to be resolved before installation:
+
+
+				</source>
+        <target state="final">Die nachfolgenden Abhängigkeiten müssen vor der Installation gelöst werden:</target>
+      </trans-unit>
+      <trans-unit id="downloadExtension.dependencies.extensionWithVersion" resname="downloadExtension.dependencies.extensionWithVersion" approved="yes">
+        <source>%1$s (new version %2$s)</source>
+        <target state="final">%1$s (neue Version %2$s)</target>
+      </trans-unit>
+      <trans-unit id="downloadExtension.dependencies.typeHeadline" resname="downloadExtension.dependencies.typeHeadline" xml:space="preserve" approved="yes">
+				<source>&lt;h3&gt;Extensions marked for %s:&lt;/h3&gt;
+%s
+
+
+				</source>
+			<target state="final">&lt;h3&gt;Erweiterungen markiert für %s:&lt;/h3&gt;
+%s
+
+
+				</target></trans-unit>
+      <trans-unit id="downloadExtension.dependencies.resolveAutomatically" resname="downloadExtension.dependencies.resolveAutomatically" approved="yes">
+        <source>Shall these dependencies be resolved automatically?</source>
+        <target state="final">Sollen diese Abhängigkeiten automatisch aufgelöst werden?</target>
+      </trans-unit>
+      <trans-unit id="downloadExtension.dependencies.errorTitle" resname="downloadExtension.dependencies.errorTitle" approved="yes">
+        <source>Dependencies could not be resolved</source>
+        <target state="final">Abhängigkeiten konnten nicht aufgelöst werden</target>
+      </trans-unit>
+      <trans-unit id="downloadExtension.dependencies.errorMessage" resname="downloadExtension.dependencies.errorMessage" approved="yes">
+        <source>The dependencies of the following Extensions could not be resolved</source>
+        <target state="final">Die Abhängigkeiten der folgenden Erweiterungen konnten nicht aufgelöst werden:</target>
+      </trans-unit>
+      <trans-unit id="downloadExtension.dependencyType.download" resname="downloadExtension.dependencyType.download" approved="yes">
+        <source>download</source>
+        <target state="final">herunterladen</target>
+      </trans-unit>
+      <trans-unit id="downloadExtension.dependencyType.install" resname="downloadExtension.dependencyType.install" approved="yes">
+        <source>install</source>
+        <target state="final">installieren</target>
+      </trans-unit>
+      <trans-unit id="downloadExtension.dependencyType.update" resname="downloadExtension.dependencyType.update" approved="yes">
+        <source>update</source>
+        <target state="final">aktualisieren</target>
+      </trans-unit>
+      <trans-unit id="downloadExtension.updateExtension.error" resname="downloadExtension.updateExtension.error" approved="yes">
+        <source>Error while updating extension</source>
+        <target state="final">Fehler während der Aktualisierung der Erweiterung</target>
+      </trans-unit>
+      <trans-unit id="extensionList.dependenciesResolveDownloadError.title" resname="extensionList.dependenciesResolveDownloadError.title" approved="yes">
+        <source>Download Error</source>
+        <target state="final">Fehler beim Herunterladen</target>
+      </trans-unit>
+      <trans-unit id="extensionList.dependenciesResolveDownloadSuccess.message" resname="extensionList.dependenciesResolveDownloadSuccess.message" approved="yes">
+        <source>Your installation of {0} was successful.</source>
+        <target state="final">Die Installation von {0} war erfolgreich.</target>
+      </trans-unit>
+      <trans-unit id="extensionList.dependenciesResolveDownloadSuccess.message.downloadOnly" resname="extensionList.dependenciesResolveDownloadSuccess.message.downloadOnly" approved="yes">
+        <source>Your download of {0} was successful.</source>
+        <target state="final">Herunterladen von {0} war erfolgreich.</target>
+      </trans-unit>
+      <trans-unit id="extensionList.dependenciesResolveDownloadSuccess.header" resname="extensionList.dependenciesResolveDownloadSuccess.header" approved="yes">
+        <source>Log</source>
+        <target state="final">Log</target>
+      </trans-unit>
+      <trans-unit id="extensionList.dependenciesResolveDownloadSuccess.item" resname="extensionList.dependenciesResolveDownloadSuccess.item" approved="yes">
+        <source>Extensions</source>
+        <target state="final">Erweiterungen</target>
+      </trans-unit>
+      <trans-unit id="extensionList.dependenciesResolveFlashMessage.title" resname="extensionList.dependenciesResolveFlashMessage.title" approved="yes">
+        <source>{0} installed.</source>
+        <target state="final">{0} installiert.</target>
+      </trans-unit>
+      <trans-unit id="extensionList.dependenciesResolveFlashMessage.title.downloadOnly" resname="extensionList.dependenciesResolveFlashMessage.title.downloadOnly" approved="yes">
+        <source>{0} downloaded.</source>
+        <target state="final">{0} heruntergeladen.</target>
+      </trans-unit>
+      <trans-unit id="extensionList.uploadFlashMessage.title" resname="extensionList.uploadFlashMessage.title" approved="yes">
+        <source>Extension Upload</source>
+        <target state="final">Erweiterung hochladen</target>
+      </trans-unit>
+      <trans-unit id="extensionList.uploadFlashMessage.message" resname="extensionList.uploadFlashMessage.message" approved="yes">
+        <source>%s was uploaded!</source>
+        <target state="final">{0} hochgeladen!</target>
+      </trans-unit>
+      <trans-unit id="extensionList.installedFlashMessage.message" resname="extensionList.installedFlashMessage.message" approved="yes">
+        <source>%s was installed!</source>
+        <target state="final">%s wurde installiert!</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFromTerFlashMessage.title" resname="extensionList.updateFromTerFlashMessage.title" approved="yes">
+        <source>Update Extension List</source>
+        <target state="final">Aktualisieren der Erweiterungsliste</target>
+      </trans-unit>
+      <trans-unit id="extensionList.downloadViewHelper.submit" resname="extensionList.downloadViewHelper.submit" approved="yes">
+        <source>Import and Install</source>
+        <target state="final">Importieren und installieren</target>
+      </trans-unit>
+      <trans-unit id="extensionList.downloadViewHelper.submit.downloadOnly" resname="extensionList.downloadViewHelper.submit.downloadOnly" approved="yes">
+        <source>Import</source>
+        <target state="final">Importieren</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.label" resname="extensionList.showAllVersions.label" approved="yes">
+        <source>Show all versions</source>
+        <target state="final">Zeige alle Versionen</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.extensionKey" resname="extensionList.showAllVersions.extensionKey" approved="yes">
+        <source>Extension key</source>
+        <target state="final">Erweiterungsschlüssel</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.version" resname="extensionList.showAllVersions.version" approved="yes">
+        <source>Version</source>
+        <target state="final">Version</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.lastUploaded" resname="extensionList.showAllVersions.lastUploaded" approved="yes">
+        <source>Last uploaded</source>
+        <target state="final">Zuletzt hochgeladen</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.downloads" resname="extensionList.showAllVersions.downloads" approved="yes">
+        <source>Downloads</source>
+        <target state="final">Downloads</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.category" resname="extensionList.showAllVersions.category" approved="yes">
+        <source>Category</source>
+        <target state="final">Kategorie</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.manual" resname="extensionList.showAllVersions.manual" approved="yes">
+        <source>Manual</source>
+        <target state="final">Handbuch</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.author" resname="extensionList.showAllVersions.author" approved="yes">
+        <source>Author</source>
+        <target state="final">Autor</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.readOnline" resname="extensionList.showAllVersions.readOnline" approved="yes">
+        <source>Read online</source>
+        <target state="final">Online lesen</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.depends" resname="extensionList.showAllVersions.depends" approved="yes">
+        <source>Depends</source>
+        <target state="final">Abhängig von</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.conflicts" resname="extensionList.showAllVersions.conflicts" approved="yes">
+        <source>Conflicts</source>
+        <target state="final">Konflikte</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.suggests" resname="extensionList.showAllVersions.suggests" approved="yes">
+        <source>Suggests</source>
+        <target state="final">Vorschläge</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.notCompatibleVersion" resname="extensionList.showAllVersions.notCompatibleVersion" approved="yes">
+        <source>Not compatible with your version</source>
+        <target state="final">Nicht kompatibel mit Ihrer Version</target>
+      </trans-unit>
+      <trans-unit id="extensionList.remove.message" resname="extensionList.remove.message" approved="yes">
+        <source>Extension "%s" was removed successfully!</source>
+        <target state="final">Erweiterung "%s" wurde erfolgreich entfernt!</target>
+      </trans-unit>
+      <trans-unit id="extensionList.distribution.key" resname="extensionList.distribution.key" approved="yes">
+        <source>Key</source>
+        <target state="final">Schlüssel</target>
+      </trans-unit>
+      <trans-unit id="extensionList.distribution.author" resname="extensionList.distribution.author" approved="yes">
+        <source>Author</source>
+        <target state="final">Autor</target>
+      </trans-unit>
+      <trans-unit id="extensionList.distribution.title" resname="extensionList.distribution.title" approved="yes">
+        <source>Title</source>
+        <target state="final">Titel:</target>
+      </trans-unit>
+      <trans-unit id="extensionList.distribution.version" resname="extensionList.distribution.version" approved="yes">
+        <source>Version</source>
+        <target state="final">Version</target>
+      </trans-unit>
+      <trans-unit id="extensionList.distribution.downloads" resname="extensionList.distribution.downloads" approved="yes">
+        <source>Downloads</source>
+        <target state="final">Downloads</target>
+      </trans-unit>
+      <trans-unit id="extensionList.distribution.lastUpdated" resname="extensionList.distribution.lastUpdated" approved="yes">
+        <source>Last Update</source>
+        <target state="final">Letzte Aktualisierung:</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showUnsuitableDistributions" resname="extensionList.showUnsuitableDistributions" approved="yes">
+        <source>Show also distributions that are not suitable for this TYPO3 version</source>
+        <target state="final">Auch Distributionen anzeigen, die für diese TYPO3-Version nicht geeignet sind</target>
+      </trans-unit>
+      <trans-unit id="extensionList.officialDistribution" resname="extensionList.officialDistribution" approved="yes">
+        <source>Official distribution</source>
+        <target state="final">Offizielle Distribution</target>
+      </trans-unit>
+      <trans-unit id="distributions" resname="distributions" approved="yes">
+        <source>Get preconfigured distribution</source>
+        <target state="final">Vorkonfigurierte Distribution erhalten</target>
+      </trans-unit>
+      <trans-unit id="extensionList.installDistribution" resname="extensionList.installDistribution" approved="yes">
+        <source>Install</source>
+        <target state="final">Distribution installieren</target>
+      </trans-unit>
+      <trans-unit id="extensionList.installImpexp" resname="extensionList.installImpexp" approved="yes">
+        <source>Please install the Import/Export (impexp) extension to enable distribution support.</source>
+        <target state="final">Bitte installieren Sie die Import/Export-Erweiterung (impexp), um Distributionen benutzen zu können.</target>
+      </trans-unit>
+      <trans-unit id="distribution.installImpexp" resname="distribution.installImpexp" approved="yes">
+        <source>Install impexp</source>
+        <target state="final">impexp installieren</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFromTer.label" resname="extensionList.updateFromTer.label" approved="yes">
+        <source>Retrieving extension list from TYPO3 Extension Repository (TER)...</source>
+        <target state="final">Empfangen der Erweiterungsliste aus dem TYPO3-Erweiterungs-Repository (TER)...</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFromTer.buttonLabel" resname="extensionList.updateFromTer.buttonLabel" approved="yes">
+        <source>Update now</source>
+        <target state="final">Jetzt aktualisieren</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFromTer.lastUpdate.label" resname="extensionList.updateFromTer.lastUpdate.label" approved="yes">
+        <source>Last update</source>
+        <target state="final">Letzte Aktualisierung:</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFromTer.lastUpdate.timeSinceLastUpdateLabel" resname="extensionList.updateFromTer.lastUpdate.timeSinceLastUpdateLabel" approved="yes">
+        <source>Time since last update</source>
+        <target state="final">Zeit seit letzter Aktualisierung:</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFromTer.lastUpdate.noInfo" resname="extensionList.updateFromTer.lastUpdate.noInfo" approved="yes">
+        <source>unknown</source>
+        <target state="final">unbekannt</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFromTer.lastUpdate.fullTimeFormat" resname="extensionList.updateFromTer.lastUpdate.fullTimeFormat" approved="yes">
+        <source>Y-m-d H:i:s</source>
+        <target state="final">H:i:s am d.m.Y</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFromTer.lastUpdate.timeOfLastUpdate" resname="extensionList.updateFromTer.lastUpdate.timeOfLastUpdate" approved="yes">
+        <source>Time of last update: </source>
+        <target state="final">Datum des letzten Updates: </target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFromTer.lastUpdate.noTimeOfLastUpdate" resname="extensionList.updateFromTer.lastUpdate.noTimeOfLastUpdate" approved="yes">
+        <source>No last update time known.</source>
+        <target state="final">Zeit der letzten Aktualisierung unbekannt.</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFromTer.never" resname="extensionList.updateFromTer.never" approved="yes">
+        <source>Never</source>
+        <target state="final">Nie</target>
+      </trans-unit>
+      <trans-unit id="extensionList.uninstall.dependencyError" resname="extensionList.uninstall.dependencyError" approved="yes">
+        <source>Cannot deactivate extension '%s' - The extension(s) '%s' depend on it.</source>
+        <target state="final">Erweiterung '%s' kann nicht deaktiviert weil, weil die Erweiterung(en) '%s' auf ihr basieren.</target>
+      </trans-unit>
+      <trans-unit id="distribution.error.headline" resname="distribution.error.headline" approved="yes">
+        <source>Could not install distribution '%s'</source>
+        <target state="final">Distribution '%s' konnte nicht installiert werden</target>
+      </trans-unit>
+      <trans-unit id="distribution.welcome.headline" resname="distribution.welcome.headline" approved="yes">
+        <source>Congratulations...</source>
+        <target state="final">Herzlichen Glückwunsch...</target>
+      </trans-unit>
+      <trans-unit id="distribution.welcome.message" resname="distribution.welcome.message" approved="yes">
+        <source>You successfully installed the distribution '%s'</source>
+        <target state="final">Distribution wurde erfolgreich installiert:</target>
+      </trans-unit>
+      <trans-unit id="distribution.welcome.nextSteps" resname="distribution.welcome.nextSteps" approved="yes">
+        <source>Now you can</source>
+        <target state="final">Sie können jetzt:</target>
+      </trans-unit>
+      <trans-unit id="distribution.welcome.openViewModule" resname="distribution.welcome.openViewModule" approved="yes">
+        <source>View your website</source>
+        <target state="final">Ihre Website anzeigen</target>
+      </trans-unit>
+      <trans-unit id="distribution.welcome.openPageModule" resname="distribution.welcome.openPageModule" approved="yes">
+        <source>Start editing your website</source>
+        <target state="final">Beginnen, Ihre Website zu bearbeiten</target>
+      </trans-unit>
+      <trans-unit id="distribution.dependency.headline" resname="distribution.dependency.headline" approved="yes">
+        <source>Dependencies, conflicts and suggestions</source>
+        <target state="final">Abhängigkeiten, Konflikte und Vorschläge</target>
+      </trans-unit>
+      <trans-unit id="distribution.dependency.identifier" resname="distribution.dependency.identifier" approved="yes">
+        <source>Identifier</source>
+        <target state="final">Bezeichner</target>
+      </trans-unit>
+      <trans-unit id="distribution.dependency.type" resname="distribution.dependency.type" approved="yes">
+        <source>Type</source>
+        <target state="final">Typ</target>
+      </trans-unit>
+      <trans-unit id="distribution.dependency.version" resname="distribution.dependency.version" approved="yes">
+        <source>Version</source>
+        <target state="final">Version</target>
+      </trans-unit>
+      <trans-unit id="task.updateExtensionListTask.name" resname="task.updateExtensionListTask.name" approved="yes">
+        <source>Update extension list</source>
+        <target state="final">Erweiterungsliste aktualisieren</target>
+      </trans-unit>
+      <trans-unit id="task.updateExtensionListTask.description" resname="task.updateExtensionListTask.description" approved="yes">
+        <source>Update TER extension list on a regular basis. Once a day is a good interval.</source>
+        <target state="final">Aktualisieren der TER-Erweiterungsliste in regelmäßigem Interval. Einmal pro Tag ist ein gutes Interval.</target>
+      </trans-unit>
+      <trans-unit id="report.status.mainRepository.title" resname="report.status.mainRepository.title" approved="yes">
+        <source>Update status of typo3.org main repository extension list</source>
+        <target state="final">Aktualisierungsstatus der typo3.org Haupt-Repository Erweiterungsliste</target>
+      </trans-unit>
+      <trans-unit id="report.status.mainRepository.notFound.value" resname="report.status.mainRepository.notFound.value" approved="yes">
+        <source>Error</source>
+        <target state="final">Fehler</target>
+      </trans-unit>
+      <trans-unit id="report.status.mainRepository.notFound.message" resname="report.status.mainRepository.notFound.message" approved="yes">
+        <source>The typo3.org extension repository was not found. Please import the main typo3.org extension repository in the install tool wizard.</source>
+        <target state="final">Das typo3.org Erweiterungsrepository wurde nicht gefunden. Bitte importieren sie das Haupt-typo3.org-Erweiterungsrepository über den Assistenten im Install Tool</target>
+      </trans-unit>
+      <trans-unit id="report.status.mainRepository.notUpToDate.value" resname="report.status.mainRepository.notUpToDate.value" approved="yes">
+        <source>Extension list is not up to date!</source>
+        <target state="final">Erweiterungsliste ist nicht aktuell!</target>
+      </trans-unit>
+      <trans-unit id="report.status.mainRepository.notUpToDate.message" resname="report.status.mainRepository.notUpToDate.message" approved="yes">
+        <source>The Main Repository extension list is older than 7 days. Please update it in the Extension manager or Scheduler.</source>
+        <target state="final">Die Erweiterungsliste des Haupt-Repository ist älter als 7 Tage. Bitte aktualisieren sie es über den Erweiterungsmanager oder den Planer</target>
+      </trans-unit>
+      <trans-unit id="report.status.mainRepository.upToDate.value" resname="report.status.mainRepository.upToDate.value" approved="yes">
+        <source>OK</source>
+        <target state="final">OK</target>
+      </trans-unit>
+      <trans-unit id="report.status.loadedExtensions.title" resname="report.status.loadedExtensions.title" approved="yes">
+        <source>Security status of loaded extensions</source>
+        <target state="final">Sicherheitsstatus der geladenen Erweiterungen</target>
+      </trans-unit>
+      <trans-unit id="report.status.loadedExtensions.noInsecureExtensionLoaded.value" resname="report.status.loadedExtensions.noInsecureExtensionLoaded.value" approved="yes">
+        <source>OK</source>
+        <target state="final">OK</target>
+      </trans-unit>
+      <trans-unit id="report.status.loadedExtensions.insecureExtensionLoaded.value" resname="report.status.loadedExtensions.insecureExtensionLoaded.value" approved="yes">
+        <source>%s insecure extension(s) found</source>
+        <target state="final">%s unsichere Erweiterung(en) gefunden</target>
+      </trans-unit>
+      <trans-unit id="report.status.loadedExtensions.insecureExtensionLoaded.message" resname="report.status.loadedExtensions.insecureExtensionLoaded.message" approved="yes">
+        <source>The following extensions are insecure and usage might damage your system. Please update these extensions as soon as possible or remove them from your system:&lt;br&gt;&lt;br&gt;%s</source>
+        <target state="final">Die folgenden Erweiterungen sind unsicher und die Verwendung könnte Ihr System gefährden. Bitte aktualisieren Sie diese Erweiterungen so bald wie möglich oder entfernen Sie diese Ihrem System:&lt;br&gt;&lt;br&gt;%s</target>
+      </trans-unit>
+      <trans-unit id="report.status.loadedExtensions.insecureExtensionLoaded.message.extension" resname="report.status.loadedExtensions.insecureExtensionLoaded.message.extension" approved="yes">
+        <source>&lt;strong&gt;%1$s&lt;/strong&gt; (version %2$s)&lt;br&gt;</source>
+        <target state="final">&lt;strong&gt;%1$s&lt;/strong&gt; (Version %2$s)&lt;br&gt;</target>
+      </trans-unit>
+      <trans-unit id="report.status.existingExtensions.title" resname="report.status.existingExtensions.title" approved="yes">
+        <source>Security status of existing, but not loaded extensions</source>
+        <target state="final">Sicherheitsstatus von existierenden, aber nicht geladenen Erweiterungen</target>
+      </trans-unit>
+      <trans-unit id="report.status.existingExtensions.noInsecureExtensionExists.value" resname="report.status.existingExtensions.noInsecureExtensionExists.value" approved="yes">
+        <source>OK</source>
+        <target state="final">OK</target>
+      </trans-unit>
+      <trans-unit id="report.status.existingExtensions.insecureExtensionExists.value" resname="report.status.existingExtensions.insecureExtensionExists.value" approved="yes">
+        <source>%s insecure extension(s) found</source>
+        <target state="final">%s unsichere Erweiterung(en) gefunden</target>
+      </trans-unit>
+      <trans-unit id="report.status.existingExtensions.insecureExtensionExists.message" resname="report.status.existingExtensions.insecureExtensionExists.message" approved="yes">
+        <source>The following extensions were found on your system, but are currently not installed. Please delete the extensions using the extension manager:&lt;br&gt;&lt;br&gt;%s</source>
+        <target state="final">Die folgenden Erweiterungen wurden auf Ihrem System gefunden, aber sind aktuell nicht installiert. Bitte löschen Sie die Erweiterungen über den Erweiterungsmanager:&lt;br&gt;&lt;br&gt;%s</target>
+      </trans-unit>
+      <trans-unit id="report.status.existingExtensions.insecureExtensionExists.message.extension" resname="report.status.existingExtensions.insecureExtensionExists.message.extension" approved="yes">
+        <source>&lt;strong&gt;%1$s&lt;/strong&gt; (version %2$s)&lt;br&gt;</source>
+        <target state="final">&lt;strong&gt;%1$s&lt;/strong&gt; (Version %2$s)&lt;br&gt;</target>
+      </trans-unit>
+      <trans-unit id="report.status.loadedOutdatedExtensions.title" resname="report.status.loadedOutdatedExtensions.title" approved="yes">
+        <source>Outdated status of loaded extensions</source>
+        <target state="final">Veraltete Erweiterungen, die geladen sind</target>
+      </trans-unit>
+      <trans-unit id="report.status.loadedOutdatedExtensions.noOutdatedExtensionLoaded.value" resname="report.status.loadedOutdatedExtensions.noOutdatedExtensionLoaded.value" approved="yes">
+        <source>OK</source>
+        <target state="final">OK</target>
+      </trans-unit>
+      <trans-unit id="report.status.loadedOutdatedExtensions.outdatedExtensionLoaded.value" resname="report.status.loadedOutdatedExtensions.outdatedExtensionLoaded.value" approved="yes">
+        <source>%s outdated extension(s) found</source>
+        <target state="final">%s veraltete Erweiterung(en) gefunden</target>
+      </trans-unit>
+      <trans-unit id="report.status.loadedOutdatedExtensions.outdatedExtensionLoaded.message" resname="report.status.loadedOutdatedExtensions.outdatedExtensionLoaded.message" approved="yes">
+        <source>The following extensions are outdated and may not be compatible with your installation. Please make sure these extensions are compatible and ask the extension author to publish updates:&lt;br&gt;&lt;br&gt;%s</source>
+        <target state="final">Die folgenden Erweiterungen sind veraltet und mit Ihrer Installation möglicherweise nicht kompatibel. Bitte stellen Sie sicher, dass diese Erweiterungen kompatibel sind und bitten Sie den Autor um eine Aktualisierung:&lt;br&gt;&lt;br&gt;%s</target>
+      </trans-unit>
+      <trans-unit id="report.status.loadedOutdatedExtensions.outdatedExtensionLoaded.message.extension" resname="report.status.loadedOutdatedExtensions.outdatedExtensionLoaded.message.extension" approved="yes">
+        <source>&lt;strong&gt;%1$s&lt;/strong&gt; (version %2$s)&lt;br&gt;</source>
+        <target state="final">&lt;strong&gt;%1$s&lt;/strong&gt; (Version %2$s)&lt;br&gt;</target>
+      </trans-unit>
+      <trans-unit id="report.status.existingOutdatedExtensions.title" resname="report.status.existingOutdatedExtensions.title" approved="yes">
+        <source>Outdated status of existing, but not loaded extensions</source>
+        <target state="final">Veraltete Erweiterungen, die nicht geladen sind</target>
+      </trans-unit>
+      <trans-unit id="report.status.existingOutdatedExtensions.noOutdatedExtensionExists.value" resname="report.status.existingOutdatedExtensions.noOutdatedExtensionExists.value" approved="yes">
+        <source>OK</source>
+        <target state="final">OK</target>
+      </trans-unit>
+      <trans-unit id="report.status.existingOutdatedExtensions.outdatedExtensionExists.value" resname="report.status.existingOutdatedExtensions.outdatedExtensionExists.value" approved="yes">
+        <source>%s outdated extension(s) found</source>
+        <target state="final">%s veraltete Erweiterung(en) gefunden</target>
+      </trans-unit>
+      <trans-unit id="report.status.existingOutdatedExtensions.outdatedExtensionExists.message" resname="report.status.existingOutdatedExtensions.outdatedExtensionExists.message" approved="yes">
+        <source>The following extensions were found on your system, but are currently not installed. Please make sure they are compatible with your system before installing them:&lt;br&gt;&lt;br&gt;%s</source>
+        <target state="final">Die folgenden Erweiterungen wurden auf Ihrem System gefunden, sind aber momentan nicht installiert. Bitte stellen Sie sicher, dass sie mit Ihrem System kompatibel sind bevor Sie sie installieren:&lt;br&gt;&lt;br&gt;%s</target>
+      </trans-unit>
+      <trans-unit id="report.status.existingOutdatedExtensions.outdatedExtensionExists.message.extension" resname="report.status.existingOutdatedExtensions.outdatedExtensionExists.message.extension" approved="yes">
+        <source>&lt;strong&gt;%1$s&lt;/strong&gt; (version %2$s)&lt;br&gt;</source>
+        <target state="final">&lt;strong&gt;%1$s&lt;/strong&gt; (Version %2$s)&lt;br&gt;</target>
+      </trans-unit>
+      <trans-unit id="report.status.composerManifest.extensionKeyMissing" resname="report.status.composerManifest.extensionKeyMissing" approved="yes">
+        <source>Extensions missing extension-key in composer.json</source>
+        <target state="final">Erweiterungen mit fehlendem extension-key in composer.json</target>
+      </trans-unit>
+      <trans-unit id="report.status.composerManifest.composerJsonMissing" resname="report.status.composerManifest.composerJsonMissing" approved="yes">
+        <source>Extensions missing composer.json</source>
+        <target state="final">Erweiterungen mit fehlender composer.json</target>
+      </trans-unit>
+      <trans-unit id="report.status.composerManifest.extensionKeyMissing.message" resname="report.status.composerManifest.extensionKeyMissing.message" approved="yes">
+        <source>%d extension(s) do not have an extension-key set in their composer.json file.</source>
+        <target state="final">%d Erweiterung(en) hat (haben) keinen Erweiterungsschlüssel in ihrer composer.json-Datei gesetzt.</target>
+      </trans-unit>
+      <trans-unit id="report.status.composerManifest.composerJsonMissing.message" resname="report.status.composerManifest.composerJsonMissing.message" approved="yes">
+        <source>%d extension(s) do not provide a composer.json file.</source>
+        <target state="final">%d Erweiterung(en) stellt(en) keine composer.json-Datei zur Verfügung.</target>
+      </trans-unit>
+      <trans-unit id="report.status.composerManifest.update" resname="report.status.composerManifest.update" approved="yes">
+        <source>Update extensions</source>
+        <target state="final">Erweiterungen aktualisieren</target>
+      </trans-unit>
+      <trans-unit id="fileHandling.couldNotRemoveDirectory" resname="fileHandling.couldNotRemoveDirectory" approved="yes">
+        <source>ERROR: Could not remove extension directory "%s". Reasons</source>
+        <target state="final">FEHLER: Erweiterungsverzeichnis "%s" konnte nicht entfernt werden. Gründe:</target>
+      </trans-unit>
+      <trans-unit id="fileHandling.couldNotCreateDirectory" resname="fileHandling.couldNotCreateDirectory" approved="yes">
+        <source>ERROR: Could not create extension directory "%s"!</source>
+        <target state="final">FEHLER: Erweiterungsverzeichnis "%s" konnte nicht erstellt werden!</target>
+      </trans-unit>
+      <trans-unit id="fileHandling.installPathWasNoDirectory" resname="fileHandling.installPathWasNoDirectory" approved="yes">
+        <source>ERROR: The extension install path "%s" was no directory!</source>
+        <target state="final">FEHLER: Der Erweiterungsinstallationspfad "%s" war kein Verzeichnis!</target>
+      </trans-unit>
+      <trans-unit id="config.automaticInstallation" resname="config.automaticInstallation" approved="yes">
+        <source>Install extensions automatically after download from TER or file upload</source>
+        <target state="final">Erweiterungen nach dem Herunterladen aus dem TER oder dem Hochladen der Datei automatisch installieren</target>
+      </trans-unit>
+      <trans-unit id="config.offlineMode" resname="config.offlineMode" approved="yes">
+        <source>Disable TER connection and hide menu items</source>
+        <target state="final">Verbindung zum TER deaktivieren und Menüeinträge verbergen</target>
+      </trans-unit>
+      <trans-unit id="pagination.previous" resname="pagination.previous" approved="yes">
+        <source>previous</source>
+        <target state="final">vorherige</target>
+      </trans-unit>
+      <trans-unit id="pagination.next" resname="pagination.next" approved="yes">
+        <source>next</source>
+        <target state="final">nächste</target>
+      </trans-unit>
+      <trans-unit id="pagination.first" resname="pagination.first" approved="yes">
+        <source>first</source>
+        <target state="final">erste</target>
+      </trans-unit>
+      <trans-unit id="pagination.last" resname="pagination.last" approved="yes">
+        <source>last</source>
+        <target state="final">letzte</target>
+      </trans-unit>
+      <trans-unit id="pagination.records" resname="pagination.records" approved="yes">
+        <source>Extensions</source>
+        <target state="final">Erweiterungen</target>
+      </trans-unit>
+      <trans-unit id="pagination.page" resname="pagination.page" approved="yes">
+        <source>Page</source>
+        <target state="final">Seite</target>
+      </trans-unit>
+      <trans-unit id="pagination.refresh" resname="pagination.refresh" approved="yes">
+        <source>Refresh</source>
+        <target state="final">Aktualisieren</target>
+      </trans-unit>
+      <trans-unit id="extensionComposerStatus.nothingToUpdate.title" resname="extensionComposerStatus.nothingToUpdate.title" approved="yes">
+        <source>Good job!</source>
+        <target state="final">Gute Arbeit!</target>
+      </trans-unit>
+      <trans-unit id="extensionComposerStatus.nothingToUpdate.message.single" resname="extensionComposerStatus.nothingToUpdate.message.single" approved="yes">
+        <source>Extension %s does not need to be updated.</source>
+        <target state="final">Erweiterung %s muss nicht aktualisiert werden.</target>
+      </trans-unit>
+      <trans-unit id="extensionComposerStatus.nothingToUpdate.message.multiple" resname="extensionComposerStatus.nothingToUpdate.message.multiple" approved="yes">
+        <source>There are no extensions which need to be updated.</source>
+        <target state="final">Es gibt keine Erweiterungen, die aktualisiert werden müssen.</target>
+      </trans-unit>
+      <trans-unit id="extensionComposerStatus.title" resname="extensionComposerStatus.title" approved="yes">
+        <source>Update composer.json of %s</source>
+        <target state="final">composer.json von %s aktualisieren</target>
+      </trans-unit>
+      <trans-unit id="extensionComposerStatus.deficit.1" resname="extensionComposerStatus.deficit.1" approved="yes">
+        <source>%s does not contain a composer.json</source>
+        <target state="final">%s enthält keine composer.json</target>
+      </trans-unit>
+      <trans-unit id="extensionComposerStatus.deficit.1.short" resname="extensionComposerStatus.deficit.1.short" approved="yes">
+        <source>composer.json missing</source>
+        <target state="final">composer.json fehlt</target>
+      </trans-unit>
+      <trans-unit id="extensionComposerStatus.deficit.2" resname="extensionComposerStatus.deficit.2" approved="yes">
+        <source>%s is missing the extension-key property in the composer.json</source>
+        <target state="final">%s fehlt die Eigenschaft extension-key in der composer.json</target>
+      </trans-unit>
+      <trans-unit id="extensionComposerStatus.deficit.2.short" resname="extensionComposerStatus.deficit.2.short" approved="yes">
+        <source>Extension Key missing</source>
+        <target state="final">Extension Key fehlt</target>
+      </trans-unit>
+      <trans-unit id="extensionComposerStatus.deficit.information" resname="extensionComposerStatus.deficit.information.single" approved="yes">
+        <source>
+					In future versions of TYPO3, it will be mandatory for extensions to provide a composer.json file. This will be
+					needed to identify an extension and works as a replacement for the ext_emconf.php. Therefore,
+					the composer.json file must also include the extension key under "extra &gt; typo3/cms &gt; extension-key".
+					Please add a composer.json, including the extension-key property, in the corresponding extension
+					folder. You can use the auto-generated proposal below and update the composer.json file extension.
+				</source>
+        <target state="final">In zukünftigen Versionen von TYPO3 wird es für Extensions obligatorisch sein, eine composer.json-Datei bereitzustellen. Diese wird benötigt, um eine Extension zu identifizieren und dient als Ersatz für die ext_emconf.php. Deshalb muss die composer.json-Datei auch den Schlüssel der Erweiterung unter "extra &gt; typo3/cms &gt; extension-key" enthalten. Bitte fügen Sie eine composer.json, die die Eigenschaft extension-key enthält, in den entsprechenden Extension-Ordner ein. Sie können den unten stehenden automatisch generierten Vorschlag verwenden und die composer.json-Datei aktualisieren.</target>
+      </trans-unit>
+      <trans-unit id="extensionComposerStatus.manifest.title" resname="extensionComposerStatus.manifest.title" approved="yes">
+        <source>Auto-generated composer.json</source>
+        <target state="final">Automatisch erzeugte composer.json</target>
+      </trans-unit>
+      <trans-unit id="extensionComposerStatus.manifest.description" resname="extensionComposerStatus.manifest.description" approved="yes">
+        <source>
+					Please verify its contents, adjust it to your needs and and put it into typo3conf/ext/%s/composer.json.
+				</source>
+        <target state="final">Bitte überprüfen Sie den Inhalt, passen Sie ihn an Ihre Bedürfnisse an und fügen Sie ihn in typo3conf/ext/%s/composer.json ein.</target>
+      </trans-unit>
+      <trans-unit id="extensionComposerStatus.manifest.error" resname="extensionComposerStatus.manifest.error" approved="yes">
+        <source>Auto-generation of a composer.json proposal failed</source>
+        <target state="final">Automatische Erzeugung eines composer.json-Vorschlags fehlgeschlagen</target>
+      </trans-unit>
+      <trans-unit id="extensionComposerStatus.manifest.error.message" resname="extensionComposerStatus.manifest.error.message" approved="yes">
+        <source>
+					TYPO3 could not create a composer.json proposal. This could be due to an invalid composer.json
+					or network problems while requesting the TER API. Please check for an already existing invalid
+					composer.json or try again later.
+				</source>
+        <target state="final">
+TYPO3 konnte keinen composer.json-Vorschlag erstellen. Dies könnte auf eine ungültige composer.json zurückzuführen sein oder auf Netzwerkprobleme bei der Anfrage an die TER API. Bitte prüfen Sie, ob bereits eine ungültige composer.json existiert oder versuchen Sie es später erneut.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
