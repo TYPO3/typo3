@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_column_selector.xlf" date="2021-08-25T02:11:02Z" product-name="backend" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="showColumns" resname="showColumns">
+        <source>Show Columns</source>
+        <target>crwdns211972:0crwdne211972:0</target>
+      </trans-unit>
+      <trans-unit id="showColumnsSelection" resname="showColumnsSelection">
+        <source>Show columns for %s</source>
+        <target>crwdns211974:0%scrwdne211974:0</target>
+      </trans-unit>
+      <trans-unit id="updateColumnView" resname="updateColumnView">
+        <source>Update</source>
+        <target>crwdns211976:0crwdne211976:0</target>
+      </trans-unit>
+      <trans-unit id="updateColumnView.nothingUpdated" resname="updateColumnView.nothingUpdated">
+        <source>No columns were updated</source>
+        <target>crwdns211978:0crwdne211978:0</target>
+      </trans-unit>
+      <trans-unit id="updateColumnView.error" resname="updateColumnView.error">
+        <source>Could not update columns</source>
+        <target>crwdns211980:0crwdne211980:0</target>
+      </trans-unit>
+      <trans-unit id="columnsFilter" resname="columnsFilter">
+        <source>Filter by:</source>
+        <target>crwdns211982:0crwdne211982:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
