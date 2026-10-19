@@ -2627,23 +2627,13 @@ class GeneralUtility
                 return '';
             }
 
-            $parsedUrl = parse_url($decodedUrl);
-            $testAbsoluteUrl = self::resolveBackPath($decodedUrl);
-            $testRelativeUrl = self::resolveBackPath(self::dirname(self::getIndpEnv('SCRIPT_NAME')) . '/' . $decodedUrl);
-            // Pass if URL is on the current host:
-            if (self::isValidUrl($decodedUrl)) {
-                if (self::isOnCurrentHost($decodedUrl) && str_starts_with($decodedUrl, self::getIndpEnv('TYPO3_SITE_URL'))) {
-                    $sanitizedUrl = $url;
-                }
-            } elseif (PathUtility::isAbsolutePath($decodedUrl) && self::isAllowedAbsPath($decodedUrl)) {
-                $sanitizedUrl = $url;
-            } elseif (str_starts_with($testAbsoluteUrl, self::getIndpEnv('TYPO3_SITE_PATH')) && $decodedUrl[0] === '/'
-                && substr($decodedUrl, 0, 2) !== '//'
-            ) {
-                $sanitizedUrl = $url;
-            } elseif (empty($parsedUrl['scheme']) && str_starts_with($testRelativeUrl, self::getIndpEnv('TYPO3_SITE_PATH'))
-                && $decodedUrl[0] !== '/' && strpbrk($decodedUrl, '*:|"<>') === false && !str_contains($decodedUrl, '\\\\')
-            ) {
+            $siteUrl = self::getIndpEnv('TYPO3_SITE_URL');
+            $sitePath = self::getIndpEnv('TYPO3_SITE_PATH');
+            $scriptName = self::getIndpEnv('SCRIPT_NAME');
+            // Browsers use the URL as given, consumers might decode it. Both interpretations
+            // need to be local, as decoding can change the URL structure, e.g. moving the host
+            // boundary in "https://example.com%2f@evil.com".
+            if (self::isLocalUrl($decodedUrl, $siteUrl, $sitePath, $scriptName) && self::isLocalUrl($url, $siteUrl, $sitePath, $scriptName)) {
                 $sanitizedUrl = $url;
             }
         }
@@ -2651,6 +2641,41 @@ class GeneralUtility
             static::getLogger()->notice('The URL "{url}" is not considered to be local and was denied.', ['url' => $url]);
         }
         return $sanitizedUrl;
+    }
+
+    private static function isLocalUrl(string $url, string $siteUrl, string $sitePath, string $scriptName): bool
+    {
+        $parsedUrl = parse_url($url);
+        if ($parsedUrl === false) {
+            return false;
+        }
+        if (self::isValidUrl($url)) {
+            $parsedSiteUrl = parse_url($siteUrl);
+            // URLs carrying userinfo are denied, they are never needed for a redirect on the same origin
+            return isset($parsedSiteUrl['scheme'], $parsedSiteUrl['host'], $parsedUrl['host'])
+                && !isset($parsedUrl['user'])
+                && !isset($parsedUrl['pass'])
+                && strcasecmp($parsedUrl['scheme'], $parsedSiteUrl['scheme']) === 0
+                && strcasecmp($parsedUrl['host'], $parsedSiteUrl['host']) === 0
+                && ($parsedUrl['port'] ?? null) === ($parsedSiteUrl['port'] ?? null)
+                && str_starts_with($parsedUrl['path'] ?? '', $sitePath);
+        }
+        // Browsers ignore leading C0 controls and spaces, drop tabs and newlines anywhere and treat
+        // a backslash like a slash, so "/\evil.com" or "/<TAB>/evil.com" reference another host
+        $browserUrl = str_replace(["\t", "\n", "\r"], '', ltrim($url, "\x00..\x20"));
+        if (strspn($browserUrl, '/\\') > 1) {
+            return false;
+        }
+        if (PathUtility::isAbsolutePath($url) && self::isAllowedAbsPath($url)) {
+            return true;
+        }
+        if ($url[0] === '/') {
+            return str_starts_with(self::resolveBackPath($url), $sitePath);
+        }
+        return empty($parsedUrl['scheme'])
+            && strpbrk($url, '*:|"<>') === false
+            && !str_contains($url, '\\\\')
+            && str_starts_with(self::resolveBackPath(self::dirname($scriptName) . '/' . $url), $sitePath);
     }
 
     /**
