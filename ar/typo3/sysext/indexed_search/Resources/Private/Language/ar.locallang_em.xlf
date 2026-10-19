@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:indexed_search/Resources/Private/Language/locallang_em.xlf" date="2011-10-17T20:22:32Z" product-name="indexed_search" target-language="ar">
+    <header/>
+    <body>
+      <trans-unit id="indexedsearch.config.pdftools" resname="indexedsearch.config.pdftools" approved="yes">
+        <source>Path to PDF parsers: The indexer uses the applications 'pdftotext' and 'pdfinfo' for extracting content from PDF files. These applications must be installed in this path. Otherwise leave the field empty.</source>
+        <target state="final">المسار إلى منصات PDF: يستخدم المُفهرِس التطبيقات 'pdftotext' و 'pdfinfo' لاستخراج المحتوى من ملفات PDF. يجب تثبيت هذه التطبيقات في هذا المسار. وإلا اترك الحقل فارغاً.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.pdf_mode" resname="indexedsearch.config.pdf_mode" approved="yes">
+        <source>PDF parsing mode: Zero=whole file is indexed in one. Positive value indicates number of pages at a time, eg. "5" would mean 1-5,6-10,.... Negative integer would indicate (abs value) number of groups. Eg "3" groups of 10 pages would be 1-4,5-8,9-10. Range is -100 to 100.</source>
+        <target state="final">وضع تحليل PDF: مِلَفّ 0=الكل مُفهرَس في مِلَفّ واحد. القيمة الموجبة تشير إلى عدد الصفحات في كل مرة، على سبيل المثال. "5" يعني 1-5,6-10،... يشير العدد الصحيح السلبي إلى عدد (القيمة المطلقة). على سبيل المثال المجموعات "3" المكونة من 10 صفحات من 1-4، 5-8-9-10. النطاق هو -100 إلى 100.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.unzip" resname="indexedsearch.config.unzip" approved="yes">
+        <source>Path to unzip: The indexer uses "unzip" to extract the contents from OpenOffice.org/Oasis OpenDocument files. The application must be installed in this path. Otherwise leave the field empty.</source>
+        <target state="final">مسار لِفك الضغط: يستخدم المُفهرس "unzip" لاستخراج المحتويات من ملفات OpenOffice.org/Oasis OpenDocument files. يجب تثبيت التطبيق في هذا المسار. وإلا اترك الحقل فارغاً.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.catdoc" resname="indexedsearch.config.catdoc" approved="yes">
+        <source>Path to WORD parser: The indexer uses the application 'catdoc' for extracting content from WORD files. The application must be installed in this path. Otherwise leave the field empty.</source>
+        <target state="final">المسار إلى منصات WORD: يستخدم المُفهرِس التطبيقات 'catdoc' لاستخراج المحتوى من ملفات WORD. يجب تثبيت هذه التطبيقات في هذا المسار. وإلا اترك الحقل فارغاً.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.xlhtml" resname="indexedsearch.config.xlhtml" approved="yes">
+        <source>Path to EXCEL parser: The indexer uses the application 'xlhtml' for extracting content from EXCEL files. The application must be installed in this path. Otherwise leave the field empty.</source>
+        <target state="final">المسار إلى منصات EXCEL: يستخدم المُفهرِس التطبيقات 'catdoc' لاستخراج المحتوى من ملفات EXCEL. يجب تثبيت هذه التطبيقات في هذا المسار. وإلا اترك الحقل فارغاً.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.ppthtml" resname="indexedsearch.config.ppthtml" approved="yes">
+        <source>Path to POWERPOINT parser: The indexer uses the application 'ppthtml' for extracting content from POWERPOINT files. The application must be installed in this path. Otherwise leave the field empty.</source>
+        <target state="final">المسار إلى منصات POWERPOINT: يستخدم المُفهرِس التطبيقات 'ppthtml' لاستخراج المحتوى من ملفات POWERPOINT. يجب تثبيت هذه التطبيقات في هذا المسار. وإلا اترك الحقل فارغاً.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.unrtf" resname="indexedsearch.config.unrtf" approved="yes">
+        <source>Path to RTF parser: The indexer uses the application 'unrtf' for extracting content from RTF files. The application must be installed in this path. Otherwise leave the field empty.</source>
+        <target state="final">المسار إلى منصات RTF: يستخدم المُفهرِس التطبيقات 'unrtf' لاستخراج المحتوى من ملفات RTF. يجب تثبيت هذه التطبيقات في هذا المسار. وإلا اترك الحقل فارغاً.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.debugMode" resname="indexedsearch.config.debugMode" approved="yes">
+        <source>Debug mode: If set, debugging information is collected during indexing and can be shown in the backend. Only for debugging since it slows down the system and fills the database with crap.</source>
+        <target state="final">وضع التنقيح: إذا تم ضبطها، يتم جمع معلومات التنقيح أثناء الفهرسة ويمكن عرضها في الواجهة الخلفية. فقط لتصحيح الأخطاء لأنه يبطئ النظام ويملأ قاعدة البيانات بالحشو.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.fullTextDataLength" resname="indexedsearch.config.fullTextDataLength" approved="yes">
+        <source>Full Text Data Length: If set, the full text data stored will be limited to this byte length. It means you can save some database space but to the degree you cut the length down you also limit possibilities to search for sentences and the search result resume will be limited.</source>
+        <target state="final">طول بيانات النص الكامل: إذا تم ضبطه، فإن بيانات النص الكاملة المخزنة ستقتصر على طول البايت هذا. هذا يعني أنه يمكنك حفظ بعض مساحة قاعدة البيانات ولكن بدرجة تقلص الطول ستحد أيضاً من إمكانيات البحث عن الجمل وسوف تكون نتيجة البحث محدودة.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.disableFrontendIndexing" resname="indexedsearch.config.disableFrontendIndexing" approved="yes">
+        <source>Disable Indexing in Frontend: By default pages are indexed during viewing of pages in the frontend. You can disable this features so indexing of pages is only initiated through the backend page crawler.</source>
+        <target state="final">تعطيل الفهرسة في الواجهة الأمامية: بشكل افتراضي يتم فهرسة الصفحات في أثناء عرض الصفحات في الواجهة الأمامية. يمكنك تعطيل هذه الميزات حتى يتم بَدْء فهرسة الصفحات فقط بواسطة مزلاق الصفحة في الواجهة الخلفية.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.enableMetaphoneSearch" resname="indexedsearch.config.enableMetaphoneSearch" approved="yes">
+        <source>Enable metaphone search (sounds like): 0=disabled, 1=use internal metaphone parser, 2=use advanced doubleMetaphone parser.</source>
+        <target state="final">تفعيل البحث عن "Metaphone" (يبدو مثل): 0=disabled, 1=use معضلات "metaphone" الداخلية، 2=use معضلة doubleMetaphone متقدمة.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.minAge" resname="indexedsearch.config.minAge" approved="yes">
+        <source>Min TTL (hours) for indexed page: The time in hours that must pass before an indexed page can be indexed again regardless of changes on the page.</source>
+        <target state="final">الحد الأدنى من TTL (ساعات) للصفحة المُفهرسة: الوقت بالساعات التي يجب أن تمر قبل صفحة مُفهرسة يمكن فهرستها مرة أخرى بغضّ النظر عن التغييرات على الصفحة.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.maxAge" resname="indexedsearch.config.maxAge" approved="yes">
+        <source>Deprecated! Max TTL (hours) for indexed page: The time in hours that is the maximum age of an indexed page before it will get indexed again. Usually the index is kept consistent, therefore you won't need this feature.</source>
+        <target state="final">مُهمل! الحدُ الأقصى لـ TTL (ساعات) للصفحة المُفهرسة: الوقت بالساعات هو الحد الأقصى لِعُمر الصفحة المُفهرسة قبل أن يتم فَهرَسِتها مرة أخرى. عادةً ما يبقى الفِهْرِس مُتسقاً، لذلك لن تحتاج إلى هذه المِيزة.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.maxExternalFiles" resname="indexedsearch.config.maxExternalFiles" approved="yes">
+        <source>Max external files to index: When external files are found on a page this number indicates how many may be indexed at that point. This prevents pages with links to many external documents to take the server down - but it may also prevent documents from being indexed.</source>
+        <target state="final">الحد الأقصى للملفات الخارجية للفَهرسة: عندما يتم العثور على ملفات خارجية في الصفحة، هذا الرَّقَم يشير إلى عدد الملفات التي يُمكن فهرَستها في تلك المرحلة. وهذا يمنع الصفحات التي لها روابط بالعديد من الوثائق الخارجية من تعطيل الخادم - ولكنه قد يمنع أيضاً من فَهرَسة الوثائق.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.useCrawlerForExternalFiles" resname="indexedsearch.config.useCrawlerForExternalFiles" approved="yes">
+        <source>Use "crawler" extension to index external files: When external files are found on a page they are added to the "crawler" extensions queue and indexed via the cronscript running the crawler. This eliminates problems with for example many PDF files on a page. Requires a proper configuration of the "crawler" extension.</source>
+        <target state="final">استخدم إضافة "crawler" لفهرسة الملفات الخارجية: عندما يتم العثور على ملفات خارجية على صفحة يتم إضافتها إلى إضافات قائمة الانتظار "crawler" ويتم فهرستها عن طريق البرنامَج النصي "cronscript" المشغل لـ crawler. هذا يزيل المشاكل مع على سبيل المثال العديد من ملفات PDF على الصفحة. يتطلب تكوين مناسب لامتداد "crawler".</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.flagBitMask" resname="indexedsearch.config.flagBitMask" approved="yes">
+        <source>Bitmask for Flags (Advanced): By this value (0-255) you can filter the importance of &lt;title&gt; (128), &lt;keywords&gt; (64) and &lt;description&gt; (32) content from HTML documents. By setting this to 0, none of these fields will have any importance over the other. The default value 192 means that title-tag content and meta-keywords will be flagged (and rated higher in search results)</source>
+        <target state="final">Bitmask للأعلام (المتقدم): بهذه القيمة (0-255) يمكنك تصفية &lt;title&gt; (128), المهمّة &lt;keywords&gt; (64) و &lt;description&gt; (32) محتوى من وثائق HTML. من خلال تعيين هذا إلى 0، لن يكون لأي من هذه المجالات أي أهمية على المجالات الأخرى. القيمة الافتراضية 192 تعني أن محتوى وسم العنوان والكلمات المفتاحية سيتم التأشير عليها (وتصنف أعلى في نتائج البحث)</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.ignoreExtensions" resname="indexedsearch.config.ignoreExtensions" approved="yes">
+        <source>Ignore Extensions: List of file extensions that the external parser will ignore (despite having support for them). Comma list.</source>
+        <target state="final">تجاهل الإضافات: قائمة بملفات الإضافات التي سيتجاهلها المُعرّب الخارجي (بالرغم من وجود دعم لهم). قائمة الفواصل.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.indexExternalURLs" resname="indexedsearch.config.indexExternalURLs" approved="yes">
+        <source>Index External HTML URLs: If set, links to external URLs will be indexed if they are of type "text/html".</source>
+        <target state="final">فهرس عناوين HTML الخارجية: إذا تم تعيينه، سيتم فهرسة الروابط إلى عناوين URL الخارجية إذا كانت من نوع "text/html".</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.useMysqlFulltext" resname="indexedsearch.config.useMysqlFulltext" approved="yes">
+        <source>Use MySQL specific fulltext search - Update database schema in install tool after toggling this flag</source>
+        <target state="final">استخدام MySQL المُحدد للبحث عن النص الكامل - تحديث مخطط قاعدة البيانات في أداة التثبيت بعد تبديل هذا العلم</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.trackIpInStatistic" resname="indexedsearch.config.trackIpInStatistic" approved="yes">
+        <source>Define the privacy level of the logged IP: 0 for no mask which means no privacy, 1 for masking the host and 2 for masking host and subnet (full privacy)</source>
+        <target state="final">حدد مستوى الخصوصية لIP المسجل: 0 لعدم وجود قناع يعني عدم الخصوصية، 1 لإخفاء المضيف و 2 لإقناع المضيف والشبكة الفرعية (الخصوصية)</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
