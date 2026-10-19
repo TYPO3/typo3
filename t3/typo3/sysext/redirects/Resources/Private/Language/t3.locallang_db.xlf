@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:redirects/Resources/Private/Language/locallang_db.xlf" date="2017-12-29T20:22:14Z" product-name="redirects" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="sys_redirect" resname="sys_redirect">
+        <source>Redirect</source>
+        <target>crwdns107106:0crwdne107106:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.source_host" resname="sys_redirect.source_host">
+        <source>Source Domain</source>
+        <target>crwdns107108:0crwdne107108:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.source_path" resname="sys_redirect.source_path">
+        <source>Source Path</source>
+        <target>crwdns107110:0crwdne107110:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.force_https" resname="sys_redirect.force_https">
+        <source>SSL Redirect</source>
+        <target>crwdns107112:0crwdne107112:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.force_https.0" resname="sys_redirect.force_https.0">
+        <source>Force SSL Redirect</source>
+        <target>crwdns107114:0crwdne107114:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.keep_query_parameters" resname="sys_redirect.keep_query_parameters">
+        <source>GET Parameters</source>
+        <target>crwdns107116:0crwdne107116:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.keep_query_parameters.0" resname="sys_redirect.keep_query_parameters.0">
+        <source>Keep GET Parameters</source>
+        <target>crwdns107118:0crwdne107118:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.respect_query_parameters" resname="sys_redirect.respect_query_parameters">
+        <source>GET Parameters (source)</source>
+        <target>crwdns107120:0crwdne107120:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.respect_query_parameters.0" resname="sys_redirect.respect_query_parameters.0">
+        <source>Respect GET Parameters</source>
+        <target>crwdns107122:0crwdne107122:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.target" resname="sys_redirect.target">
+        <source>Target</source>
+        <target>crwdns107124:0crwdne107124:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.target_statuscode" resname="sys_redirect.target_statuscode">
+        <source>Status Code HTTP Header</source>
+        <target>crwdns107126:0crwdne107126:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.target_statuscode.301" resname="sys_redirect.target_statuscode.301">
+        <source>301 Moved Permanently</source>
+        <target>crwdns107128:0crwdne107128:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.target_statuscode.302" resname="sys_redirect.target_statuscode.302">
+        <source>302 Found</source>
+        <target>crwdns107130:0crwdne107130:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.target_statuscode.303" resname="sys_redirect.target_statuscode.303">
+        <source>303 See Other</source>
+        <target>crwdns107132:0crwdne107132:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.target_statuscode.307" resname="sys_redirect.target_statuscode.307">
+        <source>307 Temporary Redirect</source>
+        <target>crwdns107134:0crwdne107134:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.target_statuscode.308" resname="sys_redirect.target_statuscode.308">
+        <source>308 Permanent Redirect</source>
+        <target>crwdns211582:0crwdne211582:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.target_statuscode.keep" resname="sys_redirect.target_statuscode.keep">
+        <source>Keep HTTP method</source>
+        <target>crwdns211584:0crwdne211584:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.target_statuscode.change" resname="sys_redirect.target_statuscode.change">
+        <source>Change HTTP method to GET</source>
+        <target>crwdns211586:0crwdne211586:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.hitcount" resname="sys_redirect.hitcount">
+        <source>Count</source>
+        <target>crwdns107136:0crwdne107136:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.lasthiton" resname="sys_redirect.lasthiton">
+        <source>Last Hit On</source>
+        <target>crwdns107138:0crwdne107138:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.hitcountState" resname="sys_redirect.hitcountState">
+        <source>Hit Counter</source>
+        <target>crwdns107140:0crwdne107140:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.disable_hitcount" resname="sys_redirect.disable_hitcount">
+        <source>Disable Hit Counter</source>
+        <target>crwdns107142:0crwdne107142:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.disable_hitcount.0" resname="sys_redirect.disable_hitcount.0">
+        <source>Disable</source>
+        <target>crwdns107144:0crwdne107144:0</target>
+      </trans-unit>
+      <trans-unit id="tabs.redirectCount" resname="tabs.redirectCount">
+        <source>Statistics</source>
+        <target>crwdns107146:0crwdne107146:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.is_regexp" resname="sys_redirect.is_regexp">
+        <source>Is regular expression?</source>
+        <target>crwdns107148:0crwdne107148:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.is_regexp.0" resname="sys_redirect.is_regexp.0">
+        <source>Yes</source>
+        <target>crwdns107150:0crwdne107150:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.disabled" resname="sys_redirect.disabled">
+        <source>Disable</source>
+        <target>crwdns107152:0crwdne107152:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.disabled.0" resname="sys_redirect.disabled.0">
+        <source>Deactivate redirect</source>
+        <target>crwdns107154:0crwdne107154:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
