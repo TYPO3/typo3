@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf" date="2011-10-17T20:22:34Z" product-name="linkvalidator" target-language="cs">
+    <header/>
+    <body>
+      <trans-unit id="linkvalidator" resname="linkvalidator" approved="yes">
+        <source>Link validator</source>
+        <target state="final">Link validátor</target>
+      </trans-unit>
+      <trans-unit id="menu.introduction" resname="menu.introduction" approved="yes">
+        <source>Introduction</source>
+        <target state="final">Úvod</target>
+      </trans-unit>
+      <trans-unit id="menu.checkLinks" resname="menu.checkLinks" approved="yes">
+        <source>Check Links for validity</source>
+        <target state="final">Zkontrolovat platnost odkazů</target>
+      </trans-unit>
+      <trans-unit id="menu.overview" resname="menu.overview" approved="yes">
+        <source>Overview of links on website</source>
+        <target state="final">Přehled odkazů na stránkách</target>
+      </trans-unit>
+      <trans-unit id="overview.header" resname="overview.header" approved="yes">
+        <source>Overview - choose options to check the links</source>
+        <target state="final">Přehled - vyberte možnosti pro kontrolu odkazů</target>
+      </trans-unit>
+      <trans-unit id="overview.all.header" resname="overview.all.header" approved="yes">
+        <source>Total amounts in tt_content</source>
+        <target state="final">Celkový počet v tt_content</target>
+      </trans-unit>
+      <trans-unit id="overview.all.records" resname="overview.all.records" approved="yes">
+        <source>Records with ext. links</source>
+        <target state="final">Záznamy s ext. odkazy</target>
+      </trans-unit>
+      <trans-unit id="overview.all.links" resname="overview.all.links" approved="yes">
+        <source>External links</source>
+        <target state="final">Externí odkazy</target>
+      </trans-unit>
+      <trans-unit id="overview.branch.header" resname="overview.branch.header" approved="yes">
+        <source>Amounts from actual branch in tt_content</source>
+        <target state="final">Počet z akutální větve v tt_content</target>
+      </trans-unit>
+      <trans-unit id="overview.branch.records" resname="overview.branch.records" approved="yes">
+        <source>Records with ext. links</source>
+        <target state="final">Záznamy s ext. odkazy</target>
+      </trans-unit>
+      <trans-unit id="overview.branch.links" resname="overview.branch.links" approved="yes">
+        <source>External links</source>
+        <target state="final">Externí odkazy</target>
+      </trans-unit>
+      <trans-unit id="overview.attention.header" resname="overview.attention.header" approved="yes">
+        <source>Attention</source>
+        <target state="final">Pozor</target>
+      </trans-unit>
+      <trans-unit id="overview.attention.text" resname="overview.attention.text" approved="yes">
+        <source>Checking links may take up to several minutes. Checking ONE link can last up to 3 seconds.</source>
+        <target state="final">Kontrola odkazů může trvat až několik minut. Kontrola JEDNOHO odkazu může trvat až 3 sekundy.</target>
+      </trans-unit>
+      <trans-unit id="Report" resname="Report" approved="yes">
+        <source>Report</source>
+        <target state="final">Report</target>
+      </trans-unit>
+      <trans-unit id="CheckLink" resname="CheckLink" approved="yes">
+        <source>Check Links</source>
+        <target state="final">Zkontrolovat odkazy</target>
+      </trans-unit>
+      <trans-unit id="report.statistics.header" resname="report.statistics.header" approved="yes">
+        <source>Show these types of broken links</source>
+        <target state="final">Zobrazit tyto typy poškozených odkazů</target>
+      </trans-unit>
+      <trans-unit id="checklinks.statistics.header" resname="checklinks.statistics.header" approved="yes">
+        <source>Check these types of broken links</source>
+        <target state="final">Zkontrolovat tyto typy poškozených odkazů</target>
+      </trans-unit>
+      <trans-unit id="report.func.title" resname="report.func.title" approved="yes">
+        <source>Show this level</source>
+        <target state="final">Zobrazit tuto úroveň</target>
+      </trans-unit>
+      <trans-unit id="checklinks.func.title" resname="checklinks.func.title" approved="yes">
+        <source>Check this level</source>
+        <target state="final">Zkontrolovat tuto úroveň</target>
+      </trans-unit>
+      <trans-unit id="overviews.nbtotal" resname="overviews.nbtotal" approved="yes">
+        <source>Broken links total</source>
+        <target state="final">Celkový počet poškozených odkazů</target>
+      </trans-unit>
+      <trans-unit id="hooks.db" resname="hooks.db" approved="yes">
+        <source>Internal Links</source>
+        <target state="final">Interní odkazy</target>
+      </trans-unit>
+      <trans-unit id="hooks.file" resname="hooks.file" approved="yes">
+        <source>File Links</source>
+        <target state="final">Odkazy na soubory</target>
+      </trans-unit>
+      <trans-unit id="hooks.external" resname="hooks.external" approved="yes">
+        <source>External Links</source>
+        <target state="final">Externí odkazy</target>
+      </trans-unit>
+      <trans-unit id="hooks.linkhandler" resname="hooks.linkhandler" approved="yes">
+        <source>Linkhandler Links</source>
+        <target state="final">Linkhandler odkazy</target>
+      </trans-unit>
+      <trans-unit id="label_refresh" resname="label_refresh" approved="yes">
+        <source>Refresh display</source>
+        <target state="final">Obnovit zobrazení</target>
+      </trans-unit>
+      <trans-unit id="label_update" resname="label_update" approved="yes">
+        <source>Check links</source>
+        <target state="final">Kontrola odkazů</target>
+      </trans-unit>
+      <trans-unit id="list.header" resname="list.header" approved="yes">
+        <source>Listing of broken links</source>
+        <target state="final">Seznam neúspěšných odkazů</target>
+      </trans-unit>
+      <trans-unit id="list.tableHead.path" resname="list.tableHead.path" approved="yes">
+        <source>Path</source>
+        <target state="final">Cesta</target>
+      </trans-unit>
+      <trans-unit id="list.tableHead.element" resname="list.tableHead.element" approved="yes">
+        <source>Element</source>
+        <target state="final">Element</target>
+      </trans-unit>
+      <trans-unit id="list.tableHead.headlink" resname="list.tableHead.headlink" approved="yes">
+        <source>Link</source>
+        <target state="final">Odkaz</target>
+      </trans-unit>
+      <trans-unit id="list.tableHead.linktarget" resname="list.tableHead.linktarget" approved="yes">
+        <source>URL / Link Target</source>
+        <target state="final">URL / Link Target</target>
+      </trans-unit>
+      <trans-unit id="list.tableHead.linkmessage" resname="list.tableHead.linkmessage" approved="yes">
+        <source>Error message</source>
+        <target state="final">Chybová zpráva</target>
+      </trans-unit>
+      <trans-unit id="list.tableHead.lastCheck" resname="list.tableHead.lastCheck" approved="yes">
+        <source>Last check</source>
+        <target state="final">Poslední kontrola</target>
+      </trans-unit>
+      <trans-unit id="list.edit" resname="list.edit" approved="yes">
+        <source>Edit element containing this broken link</source>
+        <target state="final">Upravit záznam obsahující tento poškozený odkaz</target>
+      </trans-unit>
+      <trans-unit id="list.field" resname="list.field" approved="yes">
+        <source>(Field: %s)</source>
+        <target state="final">(Pole: %s)</target>
+      </trans-unit>
+      <trans-unit id="list.no.headline" resname="list.no.headline" approved="yes">
+        <source>no headline</source>
+        <target state="final">žádný nadpis</target>
+      </trans-unit>
+      <trans-unit id="list.report.pagedeleted" resname="list.report.pagedeleted" approved="yes">
+        <source>Page '###title###' (###uid###) is deleted.</source>
+        <target state="final">Stránka '###title###' (###uid###) byla odstraněna.</target>
+      </trans-unit>
+      <trans-unit id="list.report.pagenotvisible" resname="list.report.pagenotvisible" approved="yes">
+        <source>Page '###title###' (###uid###) is not visible.</source>
+        <target state="final">Stránka '###title###' (###uid###) není viditelná.</target>
+      </trans-unit>
+      <trans-unit id="list.report.pagenotexisting" resname="list.report.pagenotexisting" approved="yes">
+        <source>Page (###uid###) does not exist.</source>
+        <target state="final">Stránka (###uid###) neexistuje.</target>
+      </trans-unit>
+      <trans-unit id="list.report.contentmoved" resname="list.report.contentmoved" approved="yes">
+        <source>Element '###title###' (###uid###) is not located on page ###wrongpage###, but on page ###rightpage###.</source>
+        <target state="final">Element '###title###' (###uid###) se nenachází na straně ###wrongpage###, ale na straně ###rightpage###.</target>
+      </trans-unit>
+      <trans-unit id="list.report.contentdeleted" resname="list.report.contentdeleted" approved="yes">
+        <source>Element '###title###' (###uid###) is deleted.</source>
+        <target state="final">Element '###title###' (###uid###) byl odstraněn.</target>
+      </trans-unit>
+      <trans-unit id="list.report.contentnotvisible" resname="list.report.contentnotvisible" approved="yes">
+        <source>Element '###title###' (###uid###) is not visible.</source>
+        <target state="final">Element '###title###' (###uid###) není viditelný.</target>
+      </trans-unit>
+      <trans-unit id="list.report.contentnotexisting" resname="list.report.contentnotexisting" approved="yes">
+        <source>Element (###uid###) does not exist.</source>
+        <target state="final">Element (###uid###) neexistuje.</target>
+      </trans-unit>
+      <trans-unit id="list.report.rownotvisible" resname="list.report.rownotvisible" approved="yes">
+        <source>###title### row (###uid###) is not visible.</source>
+        <target state="final">###title### řádek (###uid###) není viditelný.</target>
+      </trans-unit>
+      <trans-unit id="list.report.rowdeleted" resname="list.report.rowdeleted" approved="yes">
+        <source>###title### row (###uid###) is deleted.</source>
+        <target state="final">###title### řádek (###uid###) byl odstraněn.</target>
+      </trans-unit>
+      <trans-unit id="list.report.rowdeleted.default.title" resname="list.report.rowdeleted.default.title" approved="yes">
+        <source>Linked</source>
+        <target state="final">Propojeno</target>
+      </trans-unit>
+      <trans-unit id="list.report.rownotexisting" resname="list.report.rownotexisting" approved="yes">
+        <source>Row (###uid###) does not exist.</source>
+        <target state="final">Řádek (###uid###) neexistuje.</target>
+      </trans-unit>
+      <trans-unit id="list.report.noinformation" resname="list.report.noinformation" approved="yes">
+        <source>No information about the error is available.</source>
+        <target state="final">Nejsou k dispozici žádné informace o chybě.</target>
+      </trans-unit>
+      <trans-unit id="list.report.noresponse" resname="list.report.noresponse" approved="yes">
+        <source>External Link not reachable.</source>
+        <target state="final">Externí odkaz není dostupný.</target>
+      </trans-unit>
+      <trans-unit id="list.report.redirectloop" resname="list.report.redirectloop" approved="yes">
+        <source>A redirect loop occurred. (%s: %s)</source>
+        <target state="final">Došlo ke smyčce přesměrování. (%s: %s)</target>
+      </trans-unit>
+      <trans-unit id="list.report.pageforbidden403" resname="list.report.pageforbidden403" approved="yes">
+        <source>Accessing this address is not allowed (403).</source>
+        <target state="final">Přístup k této adrese není povolen (403).</target>
+      </trans-unit>
+      <trans-unit id="list.report.pagenotfound404" resname="list.report.pagenotfound404" approved="yes">
+        <source>The requested url was not found (404).</source>
+        <target state="final">Požadovaná adresa URL nebyla nalezena (404).</target>
+      </trans-unit>
+      <trans-unit id="list.report.externalerror" resname="list.report.externalerror" approved="yes">
+        <source>External Link returned HTTP error code (%s).</source>
+        <target state="final">Externí odkaz vrátil chybový kód HTTP (%s).</target>
+      </trans-unit>
+      <trans-unit id="list.report.filenotexisting" resname="list.report.filenotexisting" approved="yes">
+        <source>File doesn't exist.</source>
+        <target state="final">Soubor neexistuje.</target>
+      </trans-unit>
+      <trans-unit id="list.report.timeout" resname="list.report.timeout" approved="yes">
+        <source>Operation timeout. The specified time-out period was reached according to the conditions.</source>
+        <target state="final">Časový limit operace. Podle podmínek bylo dosaženo zadané doby time-outu.</target>
+      </trans-unit>
+      <trans-unit id="list.report.internalerror500" resname="list.report.internalerror500" approved="yes">
+        <source>Internal Server Error (500)</source>
+        <target state="final">Vnitřní chyba serveru (500)</target>
+      </trans-unit>
+      <trans-unit id="list.report.couldnotresolvehost" resname="list.report.couldnotresolvehost" approved="yes">
+        <source>Could not resolve host. The given remote host was not resolved.</source>
+        <target state="final">Nelze vyřešit hostitele. Daný vzdálený hostitel nebyl vyřešen.</target>
+      </trans-unit>
+      <trans-unit id="list.report.errornetworkdata" resname="list.report.errornetworkdata" approved="yes">
+        <source>Failure with receiving network data.</source>
+        <target state="final">Selhání při přijímání síťových dat.</target>
+      </trans-unit>
+      <trans-unit id="list.report.otherhttpcode" resname="list.report.otherhttpcode" approved="yes">
+        <source>An error occurred (%s): "%s".</source>
+        <target state="final">Došlo k chybě (%s): "%s".</target>
+      </trans-unit>
+      <trans-unit id="list.report.httpexception" resname="list.report.httpexception" approved="yes">
+        <source>Exception: %s</source>
+        <target state="final">Výjimka: %s</target>
+      </trans-unit>
+      <trans-unit id="list.report.networkexception" resname="list.report.networkexception" approved="yes">
+        <source>Network error / invalid domain</source>
+        <target state="final">Chyba sítě / neplatná doména</target>
+      </trans-unit>
+      <trans-unit id="list.msg.ok" resname="list.msg.ok" approved="yes">
+        <source>Ok</source>
+        <target state="final">Ok</target>
+      </trans-unit>
+      <trans-unit id="list.msg.lastRun" resname="list.msg.lastRun" approved="yes">
+        <source>%1$s %2$s</source>
+        <target state="final">%1$s %2$s</target>
+      </trans-unit>
+      <trans-unit id="list.no.broken.links.title" resname="list.no.broken.links.title" approved="yes">
+        <source>No broken links to show!</source>
+        <target state="final">Nebyly nalezeny žádné poškozené odkazy!</target>
+      </trans-unit>
+      <trans-unit id="list.no.broken.links" resname="list.no.broken.links" approved="yes">
+        <source>There are no broken links to be displayed.</source>
+        <target state="final">Neexistují žádné poškozené odkazy, které mají být zobrazeny.</target>
+      </trans-unit>
+      <trans-unit id="no.access.title" resname="no.access.title" approved="yes">
+        <source>No access!</source>
+        <target state="final">Bez přístupu!</target>
+      </trans-unit>
+      <trans-unit id="no.access" resname="no.access" approved="yes">
+        <source>You do not have access to these listings.</source>
+        <target state="final">Nemáte přístup k těmto seznamům.</target>
+      </trans-unit>
+      <trans-unit id="label_update-link-list" resname="label_update-link-list" approved="yes">
+        <source>Checking links, please stand by.</source>
+        <target state="final">Kontroluji odkazy, zůstaňte prosím.</target>
+      </trans-unit>
+      <trans-unit id="label_refresh-link-list" resname="label_refresh-link-list" approved="yes">
+        <source>Refreshing link list, please stand by.</source>
+        <target state="final">Aktualizuji seznam odkazů, prosím zůstaňte tu.</target>
+      </trans-unit>
+      <trans-unit id="needs-recheck" resname="needs-recheck" approved="yes">
+        <source>Needs recheck</source>
+        <target state="final">Vyžaduje překontrolovat</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
