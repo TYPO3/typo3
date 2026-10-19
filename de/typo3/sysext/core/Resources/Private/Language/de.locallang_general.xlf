@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_general.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="LGL.endtime" resname="LGL.endtime" approved="yes">
+        <source>Stop</source>
+        <target state="final">Stopp</target>
+      </trans-unit>
+      <trans-unit id="LGL.hidden" resname="LGL.hidden" approved="yes">
+        <source>Hide</source>
+        <target state="final">Verbergen</target>
+      </trans-unit>
+      <trans-unit id="LGL.timestamp" resname="LGL.timestamp" approved="yes">
+        <source>Last Modified</source>
+        <target state="final">Letzte Änderung</target>
+      </trans-unit>
+      <trans-unit id="LGL.creationDate" resname="LGL.creationDate" approved="yes">
+        <source>Created At</source>
+        <target state="final">Erstellt am</target>
+      </trans-unit>
+      <trans-unit id="LGL.creationUserId" resname="LGL.creationUserId" approved="yes">
+        <source>Created By</source>
+        <target state="final">Erstellt von</target>
+      </trans-unit>
+      <trans-unit id="LGL.starttime" resname="LGL.starttime" approved="yes">
+        <source>Start</source>
+        <target state="final">Start</target>
+      </trans-unit>
+      <trans-unit id="LGL.fe_group" resname="LGL.fe_group" approved="yes">
+        <source>Access</source>
+        <target state="final">Zugriff</target>
+      </trans-unit>
+      <trans-unit id="LGL.hide_at_login" resname="LGL.hide_at_login" approved="yes">
+        <source>Hide at login</source>
+        <target state="final">Nach Anmeldung verbergen</target>
+      </trans-unit>
+      <trans-unit id="LGL.any_login" resname="LGL.any_login" approved="yes">
+        <source>Show at any login</source>
+        <target state="final">Anzeigen, wenn angemeldet</target>
+      </trans-unit>
+      <trans-unit id="LGL.usergroups" resname="LGL.usergroups" approved="yes">
+        <source>__Usergroups:__</source>
+        <target state="final">__Benutzergruppen:__</target>
+      </trans-unit>
+      <trans-unit id="LGL.type" resname="LGL.type" approved="yes">
+        <source>Type</source>
+        <target state="final">Typ</target>
+      </trans-unit>
+      <trans-unit id="LGL.description" resname="LGL.description" approved="yes">
+        <source>Description</source>
+        <target state="final">Beschreibung</target>
+      </trans-unit>
+      <trans-unit id="LGL.prependAtCopy" resname="LGL.prependAtCopy" approved="yes">
+        <source>(copy %s)</source>
+        <target state="final">(Kopie %s)</target>
+      </trans-unit>
+      <trans-unit id="LGL.layout" resname="LGL.layout" approved="yes">
+        <source>Frontend Layout</source>
+        <target state="final">Frontend-Layout</target>
+      </trans-unit>
+      <trans-unit id="LGL.default_value" resname="LGL.default_value" approved="yes">
+        <source>Default</source>
+        <target state="final">Standard</target>
+      </trans-unit>
+      <trans-unit id="LGL.normal" resname="LGL.normal" approved="yes">
+        <source>Normal</source>
+        <target state="final">Normal</target>
+      </trans-unit>
+      <trans-unit id="LGL.images" resname="LGL.images" approved="yes">
+        <source>Images</source>
+        <target state="final">Bilder</target>
+      </trans-unit>
+      <trans-unit id="LGL.image" resname="LGL.image" approved="yes">
+        <source>Image</source>
+        <target state="final">Bild</target>
+      </trans-unit>
+      <trans-unit id="LGL.width" resname="LGL.width" approved="yes">
+        <source>Width</source>
+        <target state="final">Breite</target>
+      </trans-unit>
+      <trans-unit id="LGL.height" resname="LGL.height" approved="yes">
+        <source>Height</source>
+        <target state="final">Höhe</target>
+      </trans-unit>
+      <trans-unit id="LGL.caption" resname="LGL.caption" approved="yes">
+        <source>Caption</source>
+        <target state="final">Bildbeschriftung</target>
+      </trans-unit>
+      <trans-unit id="LGL.subheader" resname="LGL.subheader" approved="yes">
+        <source>Subheader</source>
+        <target state="final">Untertitel</target>
+      </trans-unit>
+      <trans-unit id="LGL.text" resname="LGL.text" approved="yes">
+        <source>Text</source>
+        <target state="final">Text</target>
+      </trans-unit>
+      <trans-unit id="LGL.name" resname="LGL.name" approved="yes">
+        <source>Name</source>
+        <target state="final">Name</target>
+      </trans-unit>
+      <trans-unit id="LGL.first_name" resname="LGL.first_name" approved="yes">
+        <source>First name</source>
+        <target state="final">Vorname</target>
+      </trans-unit>
+      <trans-unit id="LGL.middle_name" resname="LGL.middle_name" approved="yes">
+        <source>Middle name</source>
+        <target state="final">Mittlerer Name</target>
+      </trans-unit>
+      <trans-unit id="LGL.last_name" resname="LGL.last_name" approved="yes">
+        <source>Last name</source>
+        <target state="final">Nachname</target>
+      </trans-unit>
+      <trans-unit id="LGL.title" resname="LGL.title" approved="yes">
+        <source>Title</source>
+        <target state="final">Titel</target>
+      </trans-unit>
+      <trans-unit id="LGL.title_person" resname="LGL.title_person" approved="yes">
+        <source>Title</source>
+        <target state="final">Titel</target>
+      </trans-unit>
+      <trans-unit id="LGL.address" resname="LGL.address" approved="yes">
+        <source>Address</source>
+        <target state="final">Adresse</target>
+      </trans-unit>
+      <trans-unit id="LGL.phone" resname="LGL.phone" approved="yes">
+        <source>Phone</source>
+        <target state="final">Telefon</target>
+      </trans-unit>
+      <trans-unit id="LGL.fax" resname="LGL.fax" approved="yes">
+        <source>Fax</source>
+        <target state="final">Fax</target>
+      </trans-unit>
+      <trans-unit id="LGL.author" resname="LGL.author" approved="yes">
+        <source>Author</source>
+        <target state="final">Autor</target>
+      </trans-unit>
+      <trans-unit id="LGL.email" resname="LGL.email" approved="yes">
+        <source>Email</source>
+        <target state="final">E-Mail</target>
+      </trans-unit>
+      <trans-unit id="LGL.company" resname="LGL.company" approved="yes">
+        <source>Company</source>
+        <target state="final">Firma</target>
+      </trans-unit>
+      <trans-unit id="LGL.city" resname="LGL.city" approved="yes">
+        <source>City</source>
+        <target state="final">Stadt</target>
+      </trans-unit>
+      <trans-unit id="LGL.zip" resname="LGL.zip" approved="yes">
+        <source>Zipcode</source>
+        <target state="final">PLZ</target>
+      </trans-unit>
+      <trans-unit id="LGL.country" resname="LGL.country" approved="yes">
+        <source>Country</source>
+        <target state="final">Land</target>
+      </trans-unit>
+      <trans-unit id="LGL.www" resname="LGL.www" approved="yes">
+        <source>www</source>
+        <target state="final">WWW</target>
+      </trans-unit>
+      <trans-unit id="LGL.lastlogin" resname="LGL.lastlogin" approved="yes">
+        <source>Last login</source>
+        <target state="final">Letzte Anmeldung</target>
+      </trans-unit>
+      <trans-unit id="LGL.note" resname="LGL.note" approved="yes">
+        <source>Note</source>
+        <target state="final">Bemerkung</target>
+      </trans-unit>
+      <trans-unit id="LGL.parameters" resname="LGL.parameters" approved="yes">
+        <source>Parameters</source>
+        <target state="final">Parameter</target>
+      </trans-unit>
+      <trans-unit id="LGL.code" resname="LGL.code" approved="yes">
+        <source>CODE</source>
+        <target state="final">CODE</target>
+      </trans-unit>
+      <trans-unit id="LGL.links" resname="LGL.links" approved="yes">
+        <source>Links</source>
+        <target state="final">Links</target>
+      </trans-unit>
+      <trans-unit id="LGL.language" resname="LGL.language" approved="yes">
+        <source>Language</source>
+        <target state="final">Sprache</target>
+      </trans-unit>
+      <trans-unit id="LGL.category" resname="LGL.category" approved="yes">
+        <source>Category</source>
+        <target state="final">Kategorie</target>
+      </trans-unit>
+      <trans-unit id="LGL.shortcut_page" resname="LGL.shortcut_page" approved="yes">
+        <source>Shortcut to page</source>
+        <target state="final">Verweis auf Seite</target>
+      </trans-unit>
+      <trans-unit id="LGL.keywords" resname="LGL.keywords" approved="yes">
+        <source>Keywords (,)</source>
+        <target state="final">Stichworte (kommagetrennt)</target>
+      </trans-unit>
+      <trans-unit id="LGL.disable" resname="LGL.disable" approved="yes">
+        <source>Disable</source>
+        <target state="final">Deaktivieren</target>
+      </trans-unit>
+      <trans-unit id="LGL.baseStorage" resname="LGL.baseStorage" approved="yes">
+        <source>Storage</source>
+        <target state="final">Speicher</target>
+      </trans-unit>
+      <trans-unit id="LGL.folder" resname="LGL.folder" approved="yes">
+        <source>Folder</source>
+        <target state="final">Ordner</target>
+      </trans-unit>
+      <trans-unit id="LGL.startingpoint" resname="LGL.startingpoint" approved="yes">
+        <source>Startingpoint</source>
+        <target state="final">Ausgangspunkt</target>
+      </trans-unit>
+      <trans-unit id="LGL.disableRTE" resname="LGL.disableRTE" approved="yes">
+        <source>Disable Rich Text Editor</source>
+        <target state="final">Rich-Text-Editor deaktivieren</target>
+      </trans-unit>
+      <trans-unit id="LGL.external" resname="LGL.external" approved="yes">
+        <source>External URL</source>
+        <target state="final">Externe URL</target>
+      </trans-unit>
+      <trans-unit id="LGL.recursive" resname="LGL.recursive" approved="yes">
+        <source>Recursive</source>
+        <target state="final">Rekursiv</target>
+      </trans-unit>
+      <trans-unit id="LGL.l18n_parent" resname="LGL.l18n_parent" approved="yes">
+        <source>Transl.Orig</source>
+        <target state="final">Ursprungstext</target>
+      </trans-unit>
+      <trans-unit id="LGL.siteLanguages" resname="LGL.siteLanguages" approved="yes">
+        <source>Site languages</source>
+        <target state="final">Sprachen der Site</target>
+      </trans-unit>
+      <trans-unit id="LGL.specialLanguages" resname="LGL.specialLanguages" approved="yes">
+        <source>Special languages</source>
+        <target state="final">Sondersprachen</target>
+      </trans-unit>
+      <trans-unit id="LGL.allLanguages" resname="LGL.allLanguages" approved="yes">
+        <source>[All]</source>
+        <target state="final">[Alle]</target>
+      </trans-unit>
+      <trans-unit id="LGL.error" resname="LGL.error" approved="yes">
+        <source>Error!</source>
+        <target state="final">Fehler!</target>
+      </trans-unit>
+      <trans-unit id="LGL.visible" resname="LGL.visible" approved="yes">
+        <source>Visible</source>
+        <target state="final">Sichtbar</target>
+      </trans-unit>
+      <trans-unit id="LGL.enabled" resname="LGL.enabled" approved="yes">
+        <source>Enabled</source>
+        <target state="final">Aktiviert</target>
+      </trans-unit>
+      <trans-unit id="LGL.disabled" resname="LGL.disabled" approved="yes">
+        <source>Disabled</source>
+        <target state="final">Deaktiviert</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
