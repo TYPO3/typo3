@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:scheduler/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="scheduler" target-language="pt-BR">
+    <header/>
+    <body>
+      <trans-unit id="action.add" resname="action.add" approved="yes">
+        <source>Add task</source>
+        <target state="final">Adicionar tarefa</target>
+      </trans-unit>
+      <trans-unit id="action.edit" resname="action.edit" approved="yes">
+        <source>Edit task</source>
+        <target state="final">Editar tarefa</target>
+      </trans-unit>
+      <trans-unit id="button.cancel" resname="button.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Cancelar</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
