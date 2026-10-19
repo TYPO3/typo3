@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:linkvalidator/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:34Z" product-name="linkvalidator" target-language="ar">
+    <header/>
+    <body>
+      <trans-unit id="mod_linkvalidator" resname="mod_linkvalidator" approved="yes">
+        <source>LinkValidator</source>
+        <target state="final">مُدقق الروابط</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.name" resname="tasks.validate.name" approved="yes">
+        <source>LinkValidator</source>
+        <target state="final">مُدقق الروابط</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.description" resname="tasks.validate.description" approved="yes">
+        <source>Search for broken links and store the result into the temporary table tx_linkvalidator_link in order to ease up the backend module.</source>
+        <target state="final">البحث عن الروابط الناقصة وتخزين النتيجة في الجدول المؤقت tx_linkvalidator_link من أجل تخفيف وحدة نهاية الواجهة الخلفية.</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.page" resname="tasks.validate.page" approved="yes">
+        <source>Start page (uid)</source>
+        <target state="final">صفحة البداية (uid)</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.depth" resname="tasks.validate.depth" approved="yes">
+        <source>Depth</source>
+        <target state="final">العمق</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.languages" resname="tasks.validate.languages" approved="yes">
+        <source>Languages to search for broken links (Leave empty for all languages).</source>
+        <target state="final">لُغات للبحث عن روابط ناقصة (اتركها فارغة لجميع اللغات).</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.conf" resname="tasks.validate.conf" approved="yes">
+        <source>Overwrite TSconfig</source>
+        <target state="final">الكتابة فوق TSconfig</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.email" resname="tasks.validate.email" approved="yes">
+        <source>Send email report to</source>
+        <target state="final">إرسال تقرير بالبريد الإلكتروني إلى</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.emailOnBrokenLinkOnly" resname="tasks.validate.emailOnBrokenLinkOnly" approved="yes">
+        <source>Send email on new broken links only</source>
+        <target state="final">إرسال بريد إلكتروني على الروابط الناقصة الجديدة فقط</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.emailTemplateName" resname="tasks.validate.emailTemplateName" approved="yes">
+        <source>Email template name (without the extension)</source>
+        <target state="final">اسم قالب البريد الإلكتروني (دون الإضافة)</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.invalidEmail" resname="tasks.validate.invalidEmail" approved="yes">
+        <source>Invalid email format!</source>
+        <target state="final">تنسيق بريد إلكتروني غير صالح!</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.invalidPage" resname="tasks.validate.invalidPage" approved="yes">
+        <source>Invalid page uid, please enter a valid page uid!</source>
+        <target state="final">Uid صفحة غير صالحة، الرجاء إدخال uid صفحة صالحة!</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.invalidDepth" resname="tasks.validate.invalidDepth" approved="yes">
+        <source>There is no depth set, please set it to one of the offered values!</source>
+        <target state="final">لا يوجد عُمق مُحدد، يرجى ضبطها حسب إحدى القيم المعروضة!</target>
+      </trans-unit>
+      <trans-unit id="tasks.notice.useDefaultTemplate" resname="tasks.notice.useDefaultTemplate" approved="yes">
+        <source>
+					The templateName was automatically set to the default because either the field in the task
+					configuration is empty or no file is found for the given name. Please note that both a .html and
+					.txt file must exist under the configured templatePath.
+				</source>
+        <target state="final">
+					&lt;unk&gt; &lt;unk&gt; &lt;unk&gt; &lt;unk&gt; تم تعيين اسم القالب تلقائياً إلى الافتراضي لأنه إما الحقل في المهمة
+					&lt;unk&gt; &lt;unk&gt; &lt;unk&gt; &lt;unk&gt; &lt;unk&gt; تكوين فارغ أو أنه لم يتم العثور على ملف للاسم المحدد. يرجى ملاحظة أن ملف .html و
+					&lt;unk&gt; &lt;unk&gt; &lt;unk&gt; &lt;unk&gt; &lt;unk&gt; .txt يجب أن يكون موجوداً تحت تكوين القالب.
+				&lt;unk&gt; &lt;unk&gt; &lt;unk&gt;				</target>
+      </trans-unit>
+      <trans-unit id="tasks.error.emptyToEmail" resname="tasks.error.emptyToEmail" approved="yes">
+        <source>There must be at least one recipient defined!</source>
+        <target state="final">الرجاء تحديد مُستلم واحد على الأقل!</target>
+      </trans-unit>
+      <trans-unit id="tasks.error.invalidToEmail" resname="tasks.error.invalidToEmail" approved="yes">
+        <source>Invalid format of one or more of the recipient email addresses!</source>
+        <target state="final">تنسيق غير صالح لواحد أو أكثر من عناوين البريد الإلكتروني للمستلم!</target>
+      </trans-unit>
+      <trans-unit id="tasks.error.invalidFromEmail" resname="tasks.error.invalidFromEmail" approved="yes">
+        <source>Invalid format of the email address in the from header</source>
+        <target state="final">تنسيق غير صالح لعنوان البريد الإلكتروني في الترويسة</target>
+      </trans-unit>
+      <trans-unit id="tasks.error.invalidTSconfig" resname="tasks.error.invalidTSconfig" approved="yes">
+        <source>Invalid TSconfig in the task configuration!</source>
+        <target state="final">TSconfig غير صالح في تكوين المهمة!</target>
+      </trans-unit>
+      <trans-unit id="tasks.error.invalidPageUid" resname="tasks.error.invalidPageUid" approved="yes">
+        <source>The given page id %d is invalid!</source>
+        <target state="final">معرف الصفحة المعينة id %d غير صالح!</target>
+      </trans-unit>
+      <trans-unit id="tasks.email.title" resname="tasks.email.title" approved="yes">
+        <source>TYPO3 LinkValidator report</source>
+        <target state="final">تقرير TYPO3 LinkValidator</target>
+      </trans-unit>
+      <trans-unit id="tasks.email.overview" resname="tasks.email.overview" approved="yes">
+        <source>Overview of broken links</source>
+        <target state="final">نَظْرَة عامة على الروابط الناقصة</target>
+      </trans-unit>
+      <trans-unit id="tasks.email.overview.all" resname="tasks.email.overview.all" approved="yes">
+        <source>Total broken links: %s (last report: %s)</source>
+        <target state="final">مجموع الروابط الناقصة: %s (التقرير الأخير: %s)</target>
+      </trans-unit>
+      <trans-unit id="tasks.email.overview.internal" resname="tasks.email.overview.internal" approved="yes">
+        <source>Internal links: %s (last report: %s)</source>
+        <target state="final">الروابط الداخلية: %s (التقرير الأخير: %s)</target>
+      </trans-unit>
+      <trans-unit id="tasks.email.overview.external" resname="tasks.email.overview.external" approved="yes">
+        <source>External links: %s (last report: %s)</source>
+        <target state="final">الروابط الخارجية: %s (التقرير الأخير: %s)</target>
+      </trans-unit>
+      <trans-unit id="tasks.email.overview.file" resname="tasks.email.overview.file" approved="yes">
+        <source>File / Media links: %s (last report: %s)</source>
+        <target state="final">روابط الملف / الوسائط: %s (التقرير الأخير: %s)</target>
+      </trans-unit>
+      <trans-unit id="tasks.email.listing" resname="tasks.email.lisiting" approved="yes">
+        <source>Listing of broken links</source>
+        <target state="final">قائمة بالروابط الناقصة</target>
+      </trans-unit>
+      <trans-unit id="tasks.email.listing.pageExplanation" resname="tasks.email.lisiting" approved="yes">
+        <source>If record type is "Page", the page id is the parent page.</source>
+        <target state="final">إذا كان نوع السجل هو "الصفحة"، id الصفحة هو الصفحة الأصلية.</target>
+      </trans-unit>
+      <trans-unit id="tasks.email.listing.hoverExpalantion" resname="tasks.email.lisiting" approved="yes">
+        <source>Hover over an element to see more information e.g. the record title.</source>
+        <target state="final">قم بالتمرير فوق العنصر لمشاهدة المزيد من المعلومات، على سبيل المثال عنوان السجل.</target>
+      </trans-unit>
+      <trans-unit id="tasks.email.listing.explanation" resname="tasks.email.explanation" approved="yes">
+        <source>Explanation: Record | Language | Page | Record type | Target | Link type</source>
+        <target state="final">توضيح: السجل | اللغة | الصفحة | نوع السجل | الهدف | نوع الرابط</target>
+      </trans-unit>
+      <trans-unit id="task.email.brokenLinks.record" resname="tasks.email.brokenLinks.record" approved="yes">
+        <source>Record</source>
+        <target state="final">السجل</target>
+      </trans-unit>
+      <trans-unit id="task.email.brokenLinks.language" resname="tasks.email.brokenLinks.language" approved="yes">
+        <source>Language</source>
+        <target state="final">اللغة</target>
+      </trans-unit>
+      <trans-unit id="task.email.brokenLinks.page" resname="tasks.email.brokenLinks.page" approved="yes">
+        <source>Page</source>
+        <target state="final">الصفحة</target>
+      </trans-unit>
+      <trans-unit id="task.email.brokenLinks.recordType" resname="tasks.email.brokenLinks.recordType" approved="yes">
+        <source>Record type</source>
+        <target state="final">نوع السجل</target>
+      </trans-unit>
+      <trans-unit id="task.email.brokenLinks.target" resname="tasks.email.brokenLinks.target" approved="yes">
+        <source>Target</source>
+        <target state="final">الهدف</target>
+      </trans-unit>
+      <trans-unit id="task.email.brokenLinks.type" resname="tasks.email.brokenLinks.type" approved="yes">
+        <source>Type</source>
+        <target state="final">النوع</target>
+      </trans-unit>
+      <trans-unit id="task.email.brokenLinks.type.db" resname="tasks.email.brokenLinks.db" approved="yes">
+        <source>Internal</source>
+        <target state="final">داخلي</target>
+      </trans-unit>
+      <trans-unit id="task.email.brokenLinks.type.external" resname="tasks.email.brokenLinks.external" approved="yes">
+        <source>External</source>
+        <target state="final">خارجي</target>
+      </trans-unit>
+      <trans-unit id="task.email.brokenLinks.type.file" resname="tasks.email.brokenLinks.file" approved="yes">
+        <source>File / Media</source>
+        <target state="final">ملف / وسائط</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
