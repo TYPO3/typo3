@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_pages_new.xlf" date="2011-10-17T20:22:37Z" product-name="backend" target-language="fr-CA">
+    <header/>
+    <body>
+      <trans-unit id="title" resname="title" approved="yes">
+        <source>Create multiple pages</source>
+        <target state="final">Création de plusieurs pages</target>
+      </trans-unit>
+      <trans-unit id="canNotCreateNew.title" resname="canNotCreateNew.title" approved="yes">
+        <source>Insufficient permissions</source>
+        <target state="final">Permissions insuffisantes</target>
+      </trans-unit>
+      <trans-unit id="canNotCreateNew.message" resname="canNotCreateNew.message" approved="yes">
+        <source>Sorry, you are not allowed to create new subpages to this page due to access restrictions.</source>
+        <target state="final">Nous sommes désolées, vous n'êtes pas autorisé à créer des nouvelles sous-pages à partir de cette page pour des raisons d'autorisation d'accès.</target>
+      </trans-unit>
+      <trans-unit id="newPage" resname="newPage" approved="yes">
+        <source>Page</source>
+        <target state="final">Page</target>
+      </trans-unit>
+      <trans-unit id="addMoreLines" resname="addMoreLines" approved="yes">
+        <source>Add more lines</source>
+        <target state="final">Ajouter plus de lignes</target>
+      </trans-unit>
+      <trans-unit id="listEnd" resname="listEnd" approved="yes">
+        <source>Place new pages after the existing subpages</source>
+        <target state="final">Placer les nouvelles pages à la suite des sous-pages existantes</target>
+      </trans-unit>
+      <trans-unit id="hidePages" resname="hidePages" approved="yes">
+        <source>Hide new pages</source>
+        <target state="final">Cacher les nouvelles pages</target>
+      </trans-unit>
+      <trans-unit id="hidePagesInMenus" resname="hidePagesInMenus" approved="yes">
+        <source>Hide new pages in menus</source>
+        <target state="final">Masquer les nouvelles pages dans les menus</target>
+      </trans-unit>
+      <trans-unit id="create" resname="create" approved="yes">
+        <source>Create pages</source>
+        <target state="final">Créer les pages</target>
+      </trans-unit>
+      <trans-unit id="reset" resname="reset" approved="yes">
+        <source>Clear fields</source>
+        <target state="final">Vider les champs</target>
+      </trans-unit>
+      <trans-unit id="newSubPages" resname="newSubPages" approved="yes">
+        <source>New page structure</source>
+        <target state="final">Nouvelle structure de page</target>
+      </trans-unit>
+      <trans-unit id="noPagesCreated.title" resname="noPagesCreated.title" approved="yes">
+        <source>No pages added</source>
+        <target state="final">Aucune page ajoutée</target>
+      </trans-unit>
+      <trans-unit id="noPagesCreated.message" resname="noPagesCreated.message" approved="yes">
+        <source>No pages were created.</source>
+        <target state="final">Aucune page n'a été créée.</target>
+      </trans-unit>
+      <trans-unit id="pagesCreated.title" resname="pagesCreated.title" approved="yes">
+        <source>Pages added</source>
+        <target state="final">Pages ajoutées</target>
+      </trans-unit>
+      <trans-unit id="pagesCreated.message" resname="pagesCreated.message" approved="yes">
+        <source>The pages were created successfully.</source>
+        <target state="final">Les pages ont été créées avec succès.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
