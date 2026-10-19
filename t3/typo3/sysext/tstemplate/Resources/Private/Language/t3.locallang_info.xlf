@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/locallang_info.xlf" date="2011-10-17T20:22:37Z" product-name="tstemplate" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="delete" resname="delete">
+        <source>Delete</source>
+        <target>crwdns108556:0crwdne108556:0</target>
+      </trans-unit>
+      <trans-unit id="toTop" resname="toTop">
+        <source>To top</source>
+        <target>crwdns108558:0crwdne108558:0</target>
+      </trans-unit>
+      <trans-unit id="fileChanged" resname="fileChanged">
+        <source>File changed</source>
+        <target>crwdns108560:0crwdne108560:0</target>
+      </trans-unit>
+      <trans-unit id="resourceUpdated" resname="resourceUpdated">
+        <source>Resource '%s' has been updated.</source>
+        <target>crwdns108562:0%scrwdne108562:0</target>
+      </trans-unit>
+      <trans-unit id="templateInformation" resname="templateInformation">
+        <source>Template information</source>
+        <target>crwdns108564:0crwdne108564:0</target>
+      </trans-unit>
+      <trans-unit id="title" resname="title">
+        <source>Title</source>
+        <target>crwdns108566:0crwdne108566:0</target>
+      </trans-unit>
+      <trans-unit id="sitetitle" resname="sitetitle">
+        <source>Sitetitle</source>
+        <target>crwdns108568:0crwdne108568:0</target>
+      </trans-unit>
+      <trans-unit id="description" resname="description">
+        <source>Description</source>
+        <target>crwdns108570:0crwdne108570:0</target>
+      </trans-unit>
+      <trans-unit id="allowedExtensions" resname="allowedExtensions">
+        <source>Allowed extensions</source>
+        <target>crwdns108572:0crwdne108572:0</target>
+      </trans-unit>
+      <trans-unit id="maxFilesize" resname="maxFilesize">
+        <source>Max filesize</source>
+        <target>crwdns108574:0crwdne108574:0</target>
+      </trans-unit>
+      <trans-unit id="uploadResource" resname="uploadResource">
+        <source>Upload resource</source>
+        <target>crwdns108576:0crwdne108576:0</target>
+      </trans-unit>
+      <trans-unit id="newTextResource" resname="newTextResource">
+        <source>New text resource (enter name)</source>
+        <target>crwdns108578:0crwdne108578:0</target>
+      </trans-unit>
+      <trans-unit id="copyResource" resname="copyResource">
+        <source>Make a copy of resource</source>
+        <target>crwdns108580:0crwdne108580:0</target>
+      </trans-unit>
+      <trans-unit id="updateResourceList" resname="updateResourceList">
+        <source>Update resource list</source>
+        <target>crwdns108582:0crwdne108582:0</target>
+      </trans-unit>
+      <trans-unit id="constants" resname="constants">
+        <source>Constants</source>
+        <target>crwdns108584:0crwdne108584:0</target>
+      </trans-unit>
+      <trans-unit id="file" resname="file">
+        <source>File</source>
+        <target>crwdns108586:0crwdne108586:0</target>
+      </trans-unit>
+      <trans-unit id="editResource" resname="editResource">
+        <source>Edit Resource</source>
+        <target>crwdns108588:0crwdne108588:0</target>
+      </trans-unit>
+      <trans-unit id="filesizeExceeded" resname="filesizeExceeded">
+        <source>Filesize exceeded %s KBytes</source>
+        <target>crwdns108590:0%scrwdne108590:0</target>
+      </trans-unit>
+      <trans-unit id="notAllowed" resname="notAllowed">
+        <source>Files larger than %s KBytes are not allowed to be edited.</source>
+        <target>crwdns108592:0%scrwdne108592:0</target>
+      </trans-unit>
+      <trans-unit id="setup" resname="setup">
+        <source>Setup</source>
+        <target>crwdns108594:0crwdne108594:0</target>
+      </trans-unit>
+      <trans-unit id="resources" resname="resources">
+        <source>Resources</source>
+        <target>crwdns108596:0crwdne108596:0</target>
+      </trans-unit>
+      <trans-unit id="editToView" resname="editToView">
+        <source>(edit to view, %s lines)</source>
+        <target>crwdns108598:0%scrwdne108598:0</target>
+      </trans-unit>
+      <trans-unit id="editTemplateRecord" resname="editTemplateRecord">
+        <source>Edit the whole template record</source>
+        <target>crwdns108600:0crwdne108600:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
