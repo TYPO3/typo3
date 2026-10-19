@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang.xlf" date="2015-01-02T11:16:11Z" product-name="backend" target-language="tr">
+    <header/>
+    <body>
+      <trans-unit id="config.loginLogo" resname="config.loginLogo" approved="yes">
+        <source>Logo: If set, this logo will be used instead of the TYPO3 logo above the login credential fields (e.g. fileadmin/images/login-logo.png or EXT:my_theme/Resources/Public/Images/login-logo.png or //domain.tld/login-logo.png)</source>
+        <target state="final">Logo: Ayarlanırsa, oturum açma kimlik bilgisi alanlarının üzerindeki TYPO3 logosu yerine bu logo kullanılacaktır (örn. fileadmin/images/login-logo.png veya EXT:my_theme/Resources/Public/Images/login-logo.png veya //domain.tld/login-logo.png)</target>
+      </trans-unit>
+      <trans-unit id="config.loginBackgroundImage" resname="config.loginBackgroundImage" approved="yes">
+        <source>Background Image: If set, this image will be used as background image for the login screen (e.g. fileadmin/images/my-background.jpg or EXT:my_theme/Resources/Public/Images/my-background.jpg or //domain.tld/my-background.png)</source>
+        <target state="final">Arka Plan Resmi: Ayarlanırsa, bu resim giriş ekranı için arka plan resmi olarak kullanılır (örn. fileadmin/images/my-background.jpg veya EXT:my_theme/Resources/Public/Images/my-background.jpg veya //domain.tld/my-background.png)</target>
+      </trans-unit>
+      <trans-unit id="config.loginFootnote" resname="config.loginFootnote" approved="yes">
+        <source>Footnote: If set, this text will be displayed on the login screen to provide copyright information for the background image (e.g. © 2017 by Foo Bar) or a descriptive text</source>
+        <target state="final">Dipnot: Ayarlanırsa, bu metin, arka plan resmi için telif hakkı bilgisi (örn. © 2017 by Foo Bar) veya açıklayıcı bir metin sağlamak için login ekranında görüntülenecektir</target>
+      </trans-unit>
+      <trans-unit id="config.backendLogo" resname="config.backendLogo" approved="yes">
+        <source>Logo: If set, this logo will be used instead of the TYPO3 logo in the TYPO3 Backend in the left top corner (e.g. fileadmin/images/backend-logo.png or EXT:my_theme/Resources/Public/Images/backend-logo.png)</source>
+        <target state="final">Logo: Ayarlanırsa, TYPO3 Arka Ucu'nda sol üst köşedeki TYPO3 logosu yerine bu logo kullanılacaktır (örn. fileadmin/images/backend-logo.png veya EXT:my_theme/Resources/Public/Images/backend-logo.png)</target>
+      </trans-unit>
+      <trans-unit id="config.backendFavicon" resname="config.backendFavicon" approved="yes">
+        <source>Favicon: If set, this favicon will be used instead of the TYPO3 logo (e.g. EXT:my_theme/Resources/Public/Images/favicon.ico)</source>
+        <target state="final">Favicon: Ayarlanırsa, TYPO3 logosu yerine bu favicon kullanılacaktır (ör. EXT:my_theme/Resources/Public/Images/favicon.ico)</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
