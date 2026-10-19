@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:fluid/Resources/Private/Language/locallang.xlf" date="2012-03-30T23:43:57Z" product-name="fluid" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="widget.pagination.previous" resname="widget.pagination.previous" approved="yes">
+        <source>previous</source>
+        <target state="final">vorherige</target>
+      </trans-unit>
+      <trans-unit id="widget.pagination.next" resname="widget.pagination.next" approved="yes">
+        <source>next</source>
+        <target state="final">nächste</target>
+      </trans-unit>
+      <trans-unit id="widget.pagination.first" resname="widget.pagination.first" approved="yes">
+        <source>first</source>
+        <target state="final">erste</target>
+      </trans-unit>
+      <trans-unit id="widget.pagination.last" resname="widget.pagination.last" approved="yes">
+        <source>last</source>
+        <target state="final">letzte</target>
+      </trans-unit>
+      <trans-unit id="widget.pagination.records" resname="widget.pagination.records" approved="yes">
+        <source>Records</source>
+        <target state="final">Datensätze</target>
+      </trans-unit>
+      <trans-unit id="widget.pagination.page" resname="widget.pagination.page" approved="yes">
+        <source>Page</source>
+        <target state="final">Seite</target>
+      </trans-unit>
+      <trans-unit id="widget.pagination.refresh" resname="widget.pagination.refresh" approved="yes">
+        <source>Refresh</source>
+        <target state="final">Aktualisieren</target>
+      </trans-unit>
+      <trans-unit id="viewhelper.format.bytes.units" resname="viewhelper.format.bytes.units" approved="yes">
+        <source>B,KB,MB,GB,TB,PB,EB,ZB,YB</source>
+        <target state="final">B,KB,MB,GB,TB,PB,EB,ZB,YB</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
