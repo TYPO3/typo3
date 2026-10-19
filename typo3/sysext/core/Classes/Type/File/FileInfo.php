@@ -88,7 +88,7 @@ class FileInfo extends \SplFileInfo implements TypeInterface
                 $mimeExtensions = array_keys($fileExtensionToMimeTypeMapping, $mimeType, true);
             } elseif (function_exists('finfo_file')) {
                 $fileInfo = new \finfo();
-                $mimeExtensions = array_filter(
+                $mimeExtensions = array_values(array_filter(
                     GeneralUtility::trimExplode(
                         '/',
                         (string)$fileInfo->file($this->getPathname(), FILEINFO_EXTENSION)
@@ -97,7 +97,7 @@ class FileInfo extends \SplFileInfo implements TypeInterface
                         // filter invalid items ('???' is used if not found in magic.mime database)
                         return $item !== '' && $item !== '???';
                     }
-                );
+                ));
             }
         }
         return $mimeExtensions;
