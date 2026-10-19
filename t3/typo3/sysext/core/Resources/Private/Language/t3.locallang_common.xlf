@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_common.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="about" resname="about">
+        <source>About</source>
+        <target>crwdns98408:0crwdne98408:0</target>
+      </trans-unit>
+      <trans-unit id="and" resname="and">
+        <source>and</source>
+        <target>crwdns98410:0crwdne98410:0</target>
+      </trans-unit>
+      <trans-unit id="ascending" resname="ascending">
+        <source>Ascending</source>
+        <target>crwdns98412:0crwdne98412:0</target>
+      </trans-unit>
+      <trans-unit id="back" resname="back">
+        <source>Back</source>
+        <target>crwdns98414:0crwdne98414:0</target>
+      </trans-unit>
+      <trans-unit id="byteSizeUnits" resname="byteSizeUnits">
+        <source> B| KB| MB| GB</source>
+        <target>crwdns98416:0crwdne98416:0</target>
+      </trans-unit>
+      <trans-unit id="cancel" resname="cancel">
+        <source>Cancel</source>
+        <target>crwdns98418:0crwdne98418:0</target>
+      </trans-unit>
+      <trans-unit id="category" resname="category">
+        <source>Category</source>
+        <target>crwdns98420:0crwdne98420:0</target>
+      </trans-unit>
+      <trans-unit id="close" resname="close">
+        <source>Close</source>
+        <target>crwdns98422:0crwdne98422:0</target>
+      </trans-unit>
+      <trans-unit id="delete" resname="delete">
+        <source>Delete</source>
+        <target>crwdns98424:0crwdne98424:0</target>
+      </trans-unit>
+      <trans-unit id="descending" resname="descending">
+        <source>Descending</source>
+        <target>crwdns98426:0crwdne98426:0</target>
+      </trans-unit>
+      <trans-unit id="details" resname="details">
+        <source>Details</source>
+        <target>crwdns98428:0crwdne98428:0</target>
+      </trans-unit>
+      <trans-unit id="disable" resname="disable">
+        <source>Disable</source>
+        <target>crwdns98430:0crwdne98430:0</target>
+      </trans-unit>
+      <trans-unit id="disabled" resname="disabled">
+        <source>Disabled</source>
+        <target>crwdns98432:0crwdne98432:0</target>
+      </trans-unit>
+      <trans-unit id="down" resname="down">
+        <source>Down</source>
+        <target>crwdns98434:0crwdne98434:0</target>
+      </trans-unit>
+      <trans-unit id="download" resname="download">
+        <source>Download</source>
+        <target>crwdns98436:0crwdne98436:0</target>
+      </trans-unit>
+      <trans-unit id="edit" resname="edit">
+        <source>Edit</source>
+        <target>crwdns98438:0crwdne98438:0</target>
+      </trans-unit>
+      <trans-unit id="editField" resname="editField">
+        <source>Edit field</source>
+        <target>crwdns98440:0crwdne98440:0</target>
+      </trans-unit>
+      <trans-unit id="editFile" resname="editFile">
+        <source>Edit file</source>
+        <target>crwdns98442:0crwdne98442:0</target>
+      </trans-unit>
+      <trans-unit id="enable" resname="enable">
+        <source>Enable</source>
+        <target>crwdns98444:0crwdne98444:0</target>
+      </trans-unit>
+      <trans-unit id="enabled" resname="enabled">
+        <source>Enabled</source>
+        <target>crwdns98446:0crwdne98446:0</target>
+      </trans-unit>
+      <trans-unit id="file" resname="file">
+        <source>File</source>
+        <target>crwdns98448:0crwdne98448:0</target>
+      </trans-unit>
+      <trans-unit id="files" resname="files">
+        <source>Files</source>
+        <target>crwdns98450:0crwdne98450:0</target>
+      </trans-unit>
+      <trans-unit id="folder" resname="folder">
+        <source>Folder</source>
+        <target>crwdns98452:0crwdne98452:0</target>
+      </trans-unit>
+      <trans-unit id="first" resname="first">
+        <source>First</source>
+        <target>crwdns98454:0crwdne98454:0</target>
+      </trans-unit>
+      <trans-unit id="from" resname="from">
+        <source>From</source>
+        <target>crwdns98456:0crwdne98456:0</target>
+      </trans-unit>
+      <trans-unit id="go" resname="go">
+        <source>Go</source>
+        <target>crwdns98458:0crwdne98458:0</target>
+      </trans-unit>
+      <trans-unit id="goTo" resname="goTo">
+        <source>Go to</source>
+        <target>crwdns98460:0crwdne98460:0</target>
+      </trans-unit>
+      <trans-unit id="help" resname="help">
+        <source>Help</source>
+        <target>crwdns98462:0crwdne98462:0</target>
+      </trans-unit>
+      <trans-unit id="item" resname="item">
+        <source>Item</source>
+        <target>crwdns98464:0crwdne98464:0</target>
+      </trans-unit>
+      <trans-unit id="items" resname="items">
+        <source>Items</source>
+        <target>crwdns98466:0crwdne98466:0</target>
+      </trans-unit>
+      <trans-unit id="last" resname="last">
+        <source>Last</source>
+        <target>crwdns98468:0crwdne98468:0</target>
+      </trans-unit>
+      <trans-unit id="left" resname="left">
+        <source>Left</source>
+        <target>crwdns98470:0crwdne98470:0</target>
+      </trans-unit>
+      <trans-unit id="login" resname="login">
+        <source>Login</source>
+        <target>crwdns98472:0crwdne98472:0</target>
+      </trans-unit>
+      <trans-unit id="logout" resname="logout">
+        <source>Logout</source>
+        <target>crwdns98474:0crwdne98474:0</target>
+      </trans-unit>
+      <trans-unit id="more" resname="more">
+        <source>More</source>
+        <target>crwdns98476:0crwdne98476:0</target>
+      </trans-unit>
+      <trans-unit id="move" resname="move">
+        <source>Move</source>
+        <target>crwdns98478:0crwdne98478:0</target>
+      </trans-unit>
+      <trans-unit id="new" resname="new">
+        <source>New</source>
+        <target>crwdns98480:0crwdne98480:0</target>
+      </trans-unit>
+      <trans-unit id="next" resname="next">
+        <source>Next</source>
+        <target>crwdns98482:0crwdne98482:0</target>
+      </trans-unit>
+      <trans-unit id="no" resname="no">
+        <source>No</source>
+        <target>crwdns98484:0crwdne98484:0</target>
+      </trans-unit>
+      <trans-unit id="ok" resname="ok">
+        <source>OK</source>
+        <target>crwdns98486:0crwdne98486:0</target>
+      </trans-unit>
+      <trans-unit id="open" resname="open">
+        <source>Open</source>
+        <target>crwdns98488:0crwdne98488:0</target>
+      </trans-unit>
+      <trans-unit id="page" resname="page">
+        <source>Page</source>
+        <target>crwdns98490:0crwdne98490:0</target>
+      </trans-unit>
+      <trans-unit id="pages" resname="pages">
+        <source>Pages</source>
+        <target>crwdns98492:0crwdne98492:0</target>
+      </trans-unit>
+      <trans-unit id="previous" resname="previous">
+        <source>Previous</source>
+        <target>crwdns98494:0crwdne98494:0</target>
+      </trans-unit>
+      <trans-unit id="print" resname="print">
+        <source>Print</source>
+        <target>crwdns98496:0crwdne98496:0</target>
+      </trans-unit>
+      <trans-unit id="reload" resname="reload">
+        <source>Reload</source>
+        <target>crwdns98498:0crwdne98498:0</target>
+      </trans-unit>
+      <trans-unit id="right" resname="right">
+        <source>Right</source>
+        <target>crwdns98500:0crwdne98500:0</target>
+      </trans-unit>
+      <trans-unit id="save" resname="save">
+        <source>Save</source>
+        <target>crwdns98502:0crwdne98502:0</target>
+      </trans-unit>
+      <trans-unit id="saveAndClose" resname="saveAndClose">
+        <source>Save and close</source>
+        <target>crwdns98504:0crwdne98504:0</target>
+      </trans-unit>
+      <trans-unit id="saveAndCloseDoc" resname="saveAndCloseDoc">
+        <source>Save and close document</source>
+        <target>crwdns98506:0crwdne98506:0</target>
+      </trans-unit>
+      <trans-unit id="saveAndCreateNewDoc" resname="saveAndCreateNewDoc">
+        <source>Save and create new document</source>
+        <target>crwdns98508:0crwdne98508:0</target>
+      </trans-unit>
+      <trans-unit id="saveAndViewPage" resname="saveAndViewPage">
+        <source>Save and view page</source>
+        <target>crwdns98510:0crwdne98510:0</target>
+      </trans-unit>
+      <trans-unit id="search" resname="search">
+        <source>Search</source>
+        <target>crwdns98512:0crwdne98512:0</target>
+      </trans-unit>
+      <trans-unit id="send" resname="send">
+        <source>Send</source>
+        <target>crwdns98514:0crwdne98514:0</target>
+      </trans-unit>
+      <trans-unit id="start" resname="start">
+        <source>Start</source>
+        <target>crwdns98516:0crwdne98516:0</target>
+      </trans-unit>
+      <trans-unit id="stop" resname="stop">
+        <source>Stop</source>
+        <target>crwdns98518:0crwdne98518:0</target>
+      </trans-unit>
+      <trans-unit id="submit" resname="submit">
+        <source>Submit</source>
+        <target>crwdns98520:0crwdne98520:0</target>
+      </trans-unit>
+      <trans-unit id="to" resname="to">
+        <source>To</source>
+        <target>crwdns98522:0crwdne98522:0</target>
+      </trans-unit>
+      <trans-unit id="tsRef" resname="tsRef">
+        <source>TSref reference</source>
+        <target>crwdns98524:0crwdne98524:0</target>
+      </trans-unit>
+      <trans-unit id="undefined" resname="undefined">
+        <source>Undefined</source>
+        <target>crwdns98526:0crwdne98526:0</target>
+      </trans-unit>
+      <trans-unit id="up" resname="up">
+        <source>Up</source>
+        <target>crwdns98528:0crwdne98528:0</target>
+      </trans-unit>
+      <trans-unit id="upload" resname="upload">
+        <source>Upload</source>
+        <target>crwdns98530:0crwdne98530:0</target>
+      </trans-unit>
+      <trans-unit id="user" resname="user">
+        <source>User</source>
+        <target>crwdns98532:0crwdne98532:0</target>
+      </trans-unit>
+      <trans-unit id="users" resname="users">
+        <source>Users</source>
+        <target>crwdns98534:0crwdne98534:0</target>
+      </trans-unit>
+      <trans-unit id="view" resname="view">
+        <source>View</source>
+        <target>crwdns98536:0crwdne98536:0</target>
+      </trans-unit>
+      <trans-unit id="yes" resname="yes">
+        <source>Yes</source>
+        <target>crwdns98538:0crwdne98538:0</target>
+      </trans-unit>
+      <trans-unit id="notAvailableAbbreviation" resname="notAvailableAbbreviation">
+        <source>N/A</source>
+        <target>crwdns98540:0crwdne98540:0</target>
+      </trans-unit>
+      <trans-unit id="pleaseConfirm" resname="pleaseConfirm">
+        <source>Please confirm</source>
+        <target>crwdns98542:0crwdne98542:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
