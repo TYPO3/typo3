@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:reports/Resources/Private/Language/locallang_reports.xlf" date="2011-10-17T20:22:35Z" product-name="reports" target-language="th">
+    <header/>
+    <body>
+      <trans-unit id="status_report_title" resname="status_report_title" approved="yes">
+        <source>Status Report</source>
+        <target state="final">รายงานสถานะ</target>
+      </trans-unit>
+      <trans-unit id="status_report_description" resname="status_report_description" approved="yes">
+        <source>Get a status report about your site's operation and any detected problems.</source>
+        <target state="final">ได้รับรายงานสถานะการดำเนินการเกี่ยวกับเว็บไซต์ของคุณและพบปัญหาใดๆ</target>
+      </trans-unit>
+      <trans-unit id="status_report_explanation" resname="status_report_explanation" approved="yes">
+        <source>Here you can find a short overview of your site's parameters as well as any problems detected with your installation. It may be useful to copy and paste this information into support requests filed on TYPO3's support mailinglists and project issue trackers.</source>
+        <target state="final">นี่คุณจะพบภาพรวมสั้นของพารามิเตอร์ของเว็บไซต์ของคุณเป็นปัญหาในการตรวจพบมีการติดตั้ง อาจมีประโยชน์คัดลอกและวางข้อมูลในหน้าการยื่น on TYPO3 ของ mailinglists สนับสนุนและเครื่องมือติดตามปัญหาโครงการนี้</target>
+      </trans-unit>
+      <trans-unit id="status_ok" resname="status_ok" approved="yes">
+        <source>OK</source>
+        <target state="final">OK</target>
+      </trans-unit>
+      <trans-unit id="status_insecure" resname="status_insecure" approved="yes">
+        <source>Insecure</source>
+        <target state="final">ไม่ปลอดภัย</target>
+      </trans-unit>
+      <trans-unit id="status_disabled" resname="status_disabled" approved="yes">
+        <source>Disabled</source>
+        <target state="final">พิการ</target>
+      </trans-unit>
+      <trans-unit id="status_enabled" resname="status_enabled" approved="yes">
+        <source>Enabled</source>
+        <target state="final">เปิดการใช้งาน</target>
+      </trans-unit>
+      <trans-unit id="status_enabledPermanently" resname="status_enabledPermanently" approved="yes">
+        <source>Enabled permanently</source>
+        <target state="final">เปิดการใช้งานอย่างถาวร</target>
+      </trans-unit>
+      <trans-unit id="status_enabledTemporarily" resname="status_enabledTemporarily" approved="yes">
+        <source>Enabled temporarily</source>
+        <target state="final">เปิดการใช้งานชั่วคราว</target>
+      </trans-unit>
+      <trans-unit id="status_empty" resname="status_empty" approved="yes">
+        <source>Empty</source>
+        <target state="final">ว่างเปล่า</target>
+      </trans-unit>
+      <trans-unit id="status_connectionFailed" resname="status_connectionFailed" approved="yes">
+        <source>Connection Failed</source>
+        <target state="final">การเชื่อมต่อล้มเหลว</target>
+      </trans-unit>
+      <trans-unit id="status_updateComplete" resname="status_updateComplete" approved="yes">
+        <source>Update Complete</source>
+        <target state="final">ปรับปรุงเสร็จสมบูรณ์</target>
+      </trans-unit>
+      <trans-unit id="status_updateIncomplete" resname="status_updateIncomplete" approved="yes">
+        <source>Update Incomplete</source>
+        <target state="final">Update ไม่สมบูรณ์</target>
+      </trans-unit>
+      <trans-unit id="status_typo3" resname="status_typo3" approved="yes">
+        <source>TYPO3 System</source>
+        <target state="final">ระบบTYPO3</target>
+      </trans-unit>
+      <trans-unit id="status_system" resname="status_system" approved="yes">
+        <source>System</source>
+        <target state="final">ระบบ</target>
+      </trans-unit>
+      <trans-unit id="status_security" resname="status_security" approved="yes">
+        <source>Security</source>
+        <target state="final">ความปลอดภัย</target>
+      </trans-unit>
+      <trans-unit id="status_configuration" resname="status_configuration" approved="yes">
+        <source>Configuration</source>
+        <target state="final">การตั้งค่า</target>
+      </trans-unit>
+      <trans-unit id="status_referenceIndex" resname="status_referenceIndex" approved="yes">
+        <source>Reference Index</source>
+        <target state="final">ดัชนีอ้างอิง</target>
+      </trans-unit>
+      <trans-unit id="status_memcachedConfiguration" resname="status_memcachedConfiguration" approved="yes">
+        <source>Memcached Configuration</source>
+        <target state="final">Configuration Memcached</target>
+      </trans-unit>
+      <trans-unit id="status_PhpSafeMode" resname="status_PhpSafeMode" approved="yes">
+        <source>PHP safe_mode</source>
+        <target state="final">PHP safe_mode</target>
+      </trans-unit>
+      <trans-unit id="status_adminUserAccount" resname="status_adminUserAccount" approved="yes">
+        <source>Admin User Account</source>
+        <target state="final">บัญชีผู้ใช้ผู้ดูแลระบบ</target>
+      </trans-unit>
+      <trans-unit id="status_encryptionKey" resname="status_encryptionKey" approved="yes">
+        <source>Encryption Key</source>
+        <target state="final">Key Encryption</target>
+      </trans-unit>
+      <trans-unit id="status_fileDenyPattern" resname="status_fileDenyPattern" approved="yes">
+        <source>File Deny Pattern</source>
+        <target state="final">ไฟล์ปฏิเสธแบบ</target>
+      </trans-unit>
+      <trans-unit id="status_htaccessUploadProtection" resname="status_htaccessUploadProtection" approved="yes">
+        <source>.htaccess Upload Protection</source>
+        <target state="final">. htaccess ป้องกัน Upload</target>
+      </trans-unit>
+      <trans-unit id="status_installToolPassword" resname="status_installToolPassword" approved="yes">
+        <source>Install Tool Password</source>
+        <target state="final">เครื่องมือติดตั้งรหัสผ่าน</target>
+      </trans-unit>
+      <trans-unit id="status_installTool" resname="status_installTool" approved="yes">
+        <source>Install Tool</source>
+        <target state="final">เครื่องมือติดตั้ง</target>
+      </trans-unit>
+      <trans-unit id="status_phpVersion" resname="status_phpVersion" approved="yes">
+        <source>PHP Version</source>
+        <target state="final">รุ่น PHP</target>
+      </trans-unit>
+      <trans-unit id="status_phpTooOld" resname="status_phpTooOld" approved="yes">
+        <source>Your PHP installation is too old.</source>
+        <target state="final">PHP การติดตั้งของคุณอายุเกิน</target>
+      </trans-unit>
+      <trans-unit id="status_phpMemory" resname="status_phpMemory" approved="yes">
+        <source>PHP Memory Limit</source>
+        <target state="final">จำกัด Memory PHP</target>
+      </trans-unit>
+      <trans-unit id="status_phpMemoryEditLimit" resname="status_phpMemoryEditLimit" approved="yes">
+        <source>Increase the memory limit by editing the memory_limit parameter in the file %s and then restart your web server (or contact your system administrator or hosting provider for assistance).</source>
+        <target state="final">เพิ่มวงเงินหน่วยความจำโดยแก้ไขพารามิเตอร์ memory_limit ใน% s แฟ้มแล้วรีสตาร์ทเว็บเซิร์ฟเวอร์ของคุณ (หรือติดต่อผู้ดูแลระบบหรือผู้ให้บริการพื้นที่สำหรับความช่วยเหลือ)</target>
+      </trans-unit>
+      <trans-unit id="status_phpMemoryContactAdmin" resname="status_phpMemoryContactAdmin" approved="yes">
+        <source>Contact your system administrator or hosting provider for assistance with increasing your PHP memory limit.</source>
+        <target state="final">ติดต่อผู้ดูแลระบบหรือผู้ให้บริการพื้นที่สำหรับความร่วมมือกับหน่วยความจำของคุณเพิ่มวงเงิน PHP</target>
+      </trans-unit>
+      <trans-unit id="status_phpRegisterGlobals" resname="status_phpRegisterGlobals" approved="yes">
+        <source>PHP Register Globals</source>
+        <target state="final">PHP Register Globals</target>
+      </trans-unit>
+      <trans-unit id="status_phpRegisterGlobalsEnabled" resname="status_phpRegisterGlobalsEnabled" approved="yes">
+        <source>%s is enabled. TYPO3 requires this configuration directive to be disabled.</source>
+        <target state="final">s% มีการใช้งาน TYPO3 ต้องสั่งการกำหนดค่านี้จะปิดการใช้งาน</target>
+      </trans-unit>
+      <trans-unit id="status_phpRegisterGlobalsSecurity" resname="status_phpRegisterGlobalsSecurity" approved="yes">
+        <source>Your site may not be secure when %s is enabled.</source>
+        <target state="final">เว็บไซต์ของคุณอาจจะไม่ปลอดภัยเมื่อ s% มีการใช้งาน</target>
+      </trans-unit>
+      <trans-unit id="status_phpRegisterGlobalsHowToChange" resname="status_phpRegisterGlobalsHowToChange" approved="yes">
+        <source>how to change configuration settings</source>
+        <target state="final">วิธีเปลี่ยนการตั้งค่า</target>
+      </trans-unit>
+      <trans-unit id="status_phpRegisterGlobalsPHPManual" resname="status_phpRegisterGlobalsPHPManual" approved="yes">
+        <source>The PHP manual has instructions for %s.</source>
+        <target state="final">คู่มือ PHP มีคำแนะนำสำหรับ% s</target>
+      </trans-unit>
+      <trans-unit id="status_webServer" resname="status_webServer" approved="yes">
+        <source>Web Server</source>
+        <target state="final">Web Server</target>
+      </trans-unit>
+      <trans-unit id="status_installEnabledTemporarily" resname="status_installEnabledTemporarily" approved="yes">
+        <source>The Install Tool is temporarily enabled. Delete the file "%s" when you have finished setting up TYPO3. If not used the Install Tool will be disabled automatically in %s minutes.</source>
+        <target state="final">ติดตั้งเครื่องมือเปิดใช้งานชั่วคราว ลบแฟ้ม"% s"เมื่อคุณเสร็จสิ้นการตั้งค่า TYPO3 ถ้าไม่ใช้ติดตั้งเครื่องมือจะปิดโดยอัตโนมัติในนาที s%</target>
+      </trans-unit>
+      <trans-unit id="status_configuration_PhpSafeModeEnabled" resname="status_configuration_PhpSafeModeEnabled" approved="yes">
+        <source>PHP INI setting safe_mode "On" is deprecated since PHP 5.3 and is not supported by TYPO3 anymore.</source>
+        <target state="final">PHP INI การตั้งค่า safe_mode"On"เลิกใช้แล้วตั้งแต่ PHP 5.3 และไม่ได้รับการสนับสนุนจาก TYPO3 อีกต่อไป</target>
+      </trans-unit>
+      <trans-unit id="status_updateTaskTitle" resname="status_updateTaskTitle" approved="yes">
+        <source>System Status Update</source>
+        <target state="final">อัปเดตสถานะของระบบ</target>
+      </trans-unit>
+      <trans-unit id="status_updateTaskDescription" resname="status_updateTaskDescription" approved="yes">
+        <source>Runs a system status check and sends notifications if problems have been found.</source>
+        <target state="final">รันตรวจสอบสถานะของระบบและจะส่งการแจ้งเตือนหากปัญหาได้รับการพบ</target>
+      </trans-unit>
+      <trans-unit id="status_updateTaskField_notificationEmail" resname="status_updateTaskField_notificationEmail" approved="yes">
+        <source>Notification Email Address</source>
+        <target state="final">แจ้งที่อยู่อีเมล์</target>
+      </trans-unit>
+      <trans-unit id="status_updateTaskField_notificationEmail_invalid" resname="status_updateTaskField_notificationEmail_invalid" approved="yes">
+        <source>Empty or invalid notification email address.</source>
+        <target state="final">ประกาศที่อยู่อีเมลของท่านยังว่างถูกต้องหรือไม่</target>
+      </trans-unit>
+      <trans-unit id="status_updateTask_email_subject" resname="status_updateTask_email_subject" approved="yes">
+        <source>System Status Notification for site %s</source>
+        <target state="final">แจ้งสถานะของระบบสำหรับเว็บไซต์ %s</target>
+      </trans-unit>
+      <trans-unit id="status_updateTask_email_site" resname="status_updateTask_email_site" approved="yes">
+        <source>Site</source>
+        <target state="final">เว็บไซต์</target>
+      </trans-unit>
+      <trans-unit id="status_updateTask_email_issues" resname="status_updateTask_email_issues" approved="yes">
+        <source>Issues</source>
+        <target state="final">ทรัพย์สินทางปัญญา</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
