@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:fluid_styled_content/Resources/Private/Language/FrontendEditing.xlf" date="2014-02-07T20:22:32Z" product-name="fluid_styled_content" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="editIcon.bullets" resname="editIcon.bullets" approved="yes">
+        <source>Edit bullet list</source>
+        <target state="final">Aufzählungsliste bearbeiten</target>
+      </trans-unit>
+      <trans-unit id="editIcon.header" resname="editIcon.header" approved="yes">
+        <source>Edit header</source>
+        <target state="final">Überschrift bearbeiten</target>
+      </trans-unit>
+      <trans-unit id="editIcon.html" resname="editIcon.html" approved="yes">
+        <source>Edit pure HTML content</source>
+        <target state="final">HTML-Inhalt bearbeiten</target>
+      </trans-unit>
+      <trans-unit id="editIcon.list" resname="editIcon.list" approved="yes">
+        <source>Change/configure plugin</source>
+        <target state="final">Plug-In ändern/konfigurieren</target>
+      </trans-unit>
+      <trans-unit id="editIcon.menu" resname="editIcon.menu" approved="yes">
+        <source>Edit menu/sitemap</source>
+        <target state="final">Menü/Sitemap bearbeiten</target>
+      </trans-unit>
+      <trans-unit id="editIcon.shortcut" resname="editIcon.shortcut" approved="yes">
+        <source>Edit record list</source>
+        <target state="final">Datensatzliste bearbeiten</target>
+      </trans-unit>
+      <trans-unit id="editIcon.table" resname="editIcon.table" approved="yes">
+        <source>Edit table</source>
+        <target state="final">Tabelle bearbeiten</target>
+      </trans-unit>
+      <trans-unit id="editIcon.image" resname="editIcon.image" approved="yes">
+        <source>Edit image</source>
+        <target state="final">Bild bearbeiten</target>
+      </trans-unit>
+      <trans-unit id="editIcon.textmedia" resname="editIcon.textmedia" approved="yes">
+        <source>Edit text &amp; media</source>
+        <target state="final">Text &amp; Medien bearbeiten</target>
+      </trans-unit>
+      <trans-unit id="editIcon.textpic" resname="editIcon.textpic" approved="yes">
+        <source>Edit text &amp; images</source>
+        <target state="final">Text &amp; Bilder bearbeiten</target>
+      </trans-unit>
+      <trans-unit id="editIcon.uploads" resname="editIcon.uploads" approved="yes">
+        <source>Edit file list</source>
+        <target state="final">Dateiliste bearbeiten</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
