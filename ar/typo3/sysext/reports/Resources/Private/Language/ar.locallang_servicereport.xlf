@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:reports/Resources/Private/Language/locallang_servicereport.xlf" date="2011-10-17T20:22:37Z" product-name="sv" target-language="ar">
+    <header/>
+    <body>
+      <trans-unit id="report_title" resname="report_title" approved="yes">
+        <source>Installed Services</source>
+        <target state="final">الخِدْمَات المُثبّتة</target>
+      </trans-unit>
+      <trans-unit id="report_description" resname="report_description" approved="yes">
+        <source>List of all installed services with information and status for each of them.</source>
+        <target state="final">قائمة بجميع الخِدْمَات المُثبّتة التي تتضمن معلومات وحالة لكل منها.</target>
+      </trans-unit>
+      <trans-unit id="report_explanation" resname="report_explanation" approved="yes">
+        <source>This report displays a list of installed services, with detailed information about each of them. The services are ordered by type, priority and quality. Unavailable services are highlighted with an error status.</source>
+        <target state="final">يعرض هذا التقرير قائمة بالخِدْمَات المُثبّتة، مع معلومات مُفصّلة عن كل منها. تم ترتيب الخِدْمَات حسب النوع والأولوية والجودة. يتم تسليط الضوء على الخِدْمَات غير المُتاحة مع حالة خطأ.</target>
+      </trans-unit>
+      <trans-unit id="externals_explanation" resname="externals_explanation" approved="yes">
+        <source>The "Externals" column shows which external programs a given service relies on. If such program is missing or not executable, the service will be unavailable. Search paths for executables are listed at the bottom of this report.</source>
+        <target state="final">يُظهر العمود "الخارجي" البرامج الخارجية التي تعتمد عليها خدمة معينة. إذا كان هذا البرنامَج مفقودًا أو غير قابل للتنفيذ، فلن تكون الخدمة مُتاحة. تم سرد مسارات البحث عن الملفات التنفيذية في الجزء السفلي من هذا التقرير.</target>
+      </trans-unit>
+      <trans-unit id="service_type" resname="service_type" approved="yes">
+        <source>Service type: %s</source>
+        <target state="final">نوع الخدمة: %s</target>
+      </trans-unit>
+      <trans-unit id="service" resname="service" approved="yes">
+        <source>Service</source>
+        <target state="final">الخدمة</target>
+      </trans-unit>
+      <trans-unit id="description" resname="description" approved="yes">
+        <source>Description</source>
+        <target state="final">الوَصف</target>
+      </trans-unit>
+      <trans-unit id="priority" resname="priority" approved="yes">
+        <source>Priority</source>
+        <target state="final">الأولوية</target>
+      </trans-unit>
+      <trans-unit id="quality" resname="quality" approved="yes">
+        <source>Quality</source>
+        <target state="final">الجودة</target>
+      </trans-unit>
+      <trans-unit id="subtypes" resname="subtypes" approved="yes">
+        <source>Subtypes</source>
+        <target state="final">الأنواع الفرعية</target>
+      </trans-unit>
+      <trans-unit id="os" resname="os" approved="yes">
+        <source>OS</source>
+        <target state="final">نظام التشغيل</target>
+      </trans-unit>
+      <trans-unit id="externals" resname="externals" approved="yes">
+        <source>Externals</source>
+        <target state="final">الخارجية</target>
+      </trans-unit>
+      <trans-unit id="available" resname="available" approved="yes">
+        <source>Available</source>
+        <target state="final">مُتَوفّر</target>
+      </trans-unit>
+      <trans-unit id="any" resname="any" approved="yes">
+        <source>Any</source>
+        <target state="final">أيّما</target>
+      </trans-unit>
+      <trans-unit id="search_paths" resname="search_paths" approved="yes">
+        <source>Configured search paths for external programs</source>
+        <target state="final">مسارات البحث المُعدّة للبرامج الخارجية</target>
+      </trans-unit>
+      <trans-unit id="path" resname="path" approved="yes">
+        <source>Path</source>
+        <target state="final">المسار</target>
+      </trans-unit>
+      <trans-unit id="valid" resname="valid" approved="yes">
+        <source>Valid</source>
+        <target state="final">صالح</target>
+      </trans-unit>
+      <trans-unit id="no_search_paths" resname="no_search_paths" approved="yes">
+        <source>No search paths configured.</source>
+        <target state="final">لم يتم تكوين مسارات البحث.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
