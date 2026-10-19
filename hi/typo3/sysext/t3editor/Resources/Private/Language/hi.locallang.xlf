@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:t3editor/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="t3editor" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="deactivate" resname="deactivate" approved="yes">
+        <source>Deactivate t3editor</source>
+        <target state="final">t3एडिटर निष्क्रिय</target>
+      </trans-unit>
+      <trans-unit id="template" resname="template" approved="yes">
+        <source>Template</source>
+        <target state="final">टेम्पलेट</target>
+      </trans-unit>
+      <trans-unit id="file" resname="file" approved="yes">
+        <source>File</source>
+        <target state="final">फाइल</target>
+      </trans-unit>
+      <trans-unit id="delimiter" resname="delimiter">
+        <source/>
+      </trans-unit>
+      <trans-unit id="constants" resname="constants" approved="yes">
+        <source>Constants</source>
+        <target state="final">स्थिरांक, कोन्स्टंट्स</target>
+      </trans-unit>
+      <trans-unit id="setup" resname="setup" approved="yes">
+        <source>Setup</source>
+        <target state="final">सेटअप</target>
+      </trans-unit>
+      <trans-unit id="pageIDInteger" resname="pageIDInteger" approved="yes">
+        <source>Syntax error: Parameter pageID must be a valid integer.</source>
+        <target state="final">सिंटेक्स एरर: पैरामीटर पेजID एक मान्य पूर्णांक होना चाहिए।</target>
+      </trans-unit>
+      <trans-unit id="noPermission" resname="noPermission" approved="yes">
+        <source>Access denied: No permission to template records.</source>
+        <target state="final">एक्सेस अस्वीकृत: टेम्पलेट रिकॉर्ड के लिए अनुमति नहीं है।</target>
+      </trans-unit>
+      <trans-unit id="typeIDMissing" resname="typeIDMissing" approved="yes">
+        <source>Syntax error: At least parameter typeID has to be supplied.</source>
+        <target state="final">सिंटेक्स एरर: कम से कम पैरामीटर टाइपID उपलब्ध की जानी चाहिए है।</target>
+      </trans-unit>
+      <trans-unit id="js.label_lines" resname="js.label_lines" approved="yes">
+        <source>lines</source>
+        <target state="final">लाइन्स</target>
+      </trans-unit>
+      <trans-unit id="js.label_documentModified" resname="js.label_documentModified" approved="yes">
+        <source>document has been modified</source>
+        <target state="final">दस्तावेज़ परिवर्तित किया गया है</target>
+      </trans-unit>
+      <trans-unit id="js.label_errorWhileSaving" resname="js.label_errorWhileSaving" approved="yes">
+        <source>An error occurred while saving the data.</source>
+        <target state="final">डेटा को सेव करते समय एरर उत्पन हुई।</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
