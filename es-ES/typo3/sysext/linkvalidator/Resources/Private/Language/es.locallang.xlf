@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:linkvalidator/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:34Z" product-name="linkvalidator" target-language="es-ES">
+    <header/>
+    <body>
+      <trans-unit id="mod_linkvalidator" resname="mod_linkvalidator" approved="yes">
+        <source>Linkvalidator</source>
+        <target state="final">Validador de enlaces</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.name" resname="tasks.validate.name" approved="yes">
+        <source>Linkvalidator</source>
+        <target state="final">Validador de enlaces</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.emailTemplateFile" resname="tasks.validate.emailTemplateFile" approved="yes">
+        <source>Email template file</source>
+        <target state="final">Archivo de plantilla de email</target>
+      </trans-unit>
+      <trans-unit id="tasks.error.noSubject" resname="tasks.error.noSubject" approved="yes">
+        <source>No subject for the notification email</source>
+        <target state="final">No hay asunto para el correo de notificación</target>
+      </trans-unit>
+      <trans-unit id="tasks.error.invalidTSconfig" resname="tasks.error.invalidTSconfig" approved="yes">
+        <source>Invalid TSconfig in the task configuration!</source>
+        <target state="final">¡TSconfig no válido en la configuración de la tarea!</target>
+      </trans-unit>
+      <trans-unit id="tasks.error.invalidEmailTemplateFile" resname="tasks.error.invalidEmailTemplateFile" approved="yes">
+        <source>The email template file is not existing!</source>
+        <target state="final">¡El archivo de plantilla de correo electrónico no existe!</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
