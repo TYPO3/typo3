@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_pages_sort_csh.xlf" date="2011-10-17T20:22:37Z" product-name="backend" target-language="cy">
+    <header/>
+    <body>
+      <trans-unit id="pages_sort.alttitle" resname="pages_sort.alttitle" approved="yes">
+        <source>Sort Pages</source>
+        <target state="final">Trefnu Tudalennau</target>
+      </trans-unit>
+      <trans-unit id="pages_sort.description" resname="pages_sort.description" approved="yes">
+        <source>Enables you to sort pages alphabetically by title, sub-title or by creation time etc. You can also reverse the order of pages in the page tree.</source>
+        <target state="final">Yn eich galluogi i ddidoli tudalennau yn nhrefn yr wyddor yn ôl teitl, is-deitl neu amser creu ac ati. Gallwch hefyd wyrdroi trefn tudalennau yn y goeden dudalen.</target>
+      </trans-unit>
+      <trans-unit id="pages_sort.details" resname="pages_sort.details" xml:space="preserve" approved="yes">
+				<source>Pages in the page tree are always ordered manually. It is possible to move pages up and down etc. But this wizard gives you a quick way to change the manual order of sub-pages.
+
+Simply click one of the links in the bottom of the wizard screen:
+
+&lt;b&gt;Page title&lt;/b&gt;
+Will sort pages by their page title.
+
+&lt;b&gt;Subtitle&lt;/b&gt;
+Will sort page by their Subtitle field.
+
+&lt;b&gt;Change-time&lt;/b&gt;
+Will sort pages by the date they were last changed.
+
+&lt;b&gt;Create-time&lt;/b&gt;
+Will sort pages by their creation date.
+
+&lt;b&gt;Reverse current order&lt;/b&gt;
+Click this to reverse the current order. For example, if you want to sort pages alphabetically but in descending order you simply sort by title first and then reverse the order by clicking this.</source>
+			<target state="final">Mae tudalennau yn y goeden dudalen bob amser yn cael eu harchebu â llaw. Mae'n bosib symud tudalennau i fyny ac i lawr ac ati. Ond mae'r dewin hwn yn rhoi ffordd gyflym i chi newid trefn â llaw is-dudalennau.
+
+Cliciwch ar un o'r dolenni yng ngwaelod sgrin y dewin:
+
+&lt;b&gt;Teitl y dudalen&lt;/b&gt;
+didoli tudalennau yn ôl teitl eu tudalen.
+
+&lt;b&gt;Is-deitl&lt;/b&gt;
+didoli tudalen yn ôl eu maes Is-deitl.
+
+&lt;b&gt;Amser newid&lt;/b&gt;
+didoli tudalennau erbyn y dyddiad y cawsant eu newid ddiwethaf.
+
+&lt;b&gt;Creu-amser&lt;/b&gt;
+didoli tudalennau yn ôl eu dyddiad creu.
+
+&lt;b&gt;Gwrthdroi'r drefn gyfredol&lt;/b&gt;
+Cliciwch hwn i wyrdroi'r gorchymyn cyfredol. Er enghraifft, os ydych chi eisiau didoli tudalennau yn nhrefn yr wyddor ond mewn trefn ddisgynnol, dim ond didoli yn ôl teitl yn gyntaf ac yna gwrthdroi'r archeb trwy glicio ar hwn.</target></trans-unit>
+      <trans-unit id="_pages_sort.image" resname="_pages_sort.image" approved="yes">
+        <source>EXT:backend/Resources/Public/Images/Csh/PagesSort.png</source>
+        <target state="final">ESTYN: backend / Adnoddau / Cyhoeddus / Delweddau / Csh / PagesSort.png</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
