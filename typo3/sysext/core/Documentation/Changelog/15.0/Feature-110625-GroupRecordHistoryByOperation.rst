@@ -28,24 +28,6 @@ rolls back every record of that operation in one go, instead of one record at a
 time. It restores field values, deletes what the operation created, restores
 what it deleted and moves records back to where they were.
 
-The lookup behind it is available to extensions as well:
-
-..  code-block:: php
-
-    $scope = $recordHistory->getScopeOfEvent($historyEntry);
-    $events = $recordHistory->findEventsForScope($scope);
-
-:php-short:`\TYPO3\CMS\Backend\History\RecordHistory->findEventsForScope()` returns every history entry written
-during one operation, no matter which table or record it belongs to. It only
-returns entries the current backend user is allowed to see, and it respects the
-workspace the user is working in. :php-short:`\TYPO3\CMS\Backend\History\RecordHistory->getScopeOfEvent()`
-resolves the scope of a single entry, and returns :php:`null` for entries
-written without a correlation id.
-
-:php-short:`\TYPO3\CMS\Core\DataHandling\Model\CorrelationId::scopePrefix()` exposes the serialized prefix all
-correlation ids of one scope share, which is what makes such a lookup possible
-in the first place.
-
 Impact
 ======
 
@@ -58,7 +40,4 @@ Undoing an operation restores the records to the state they had before it, so
 changes made to those records afterwards are overwritten. The confirmation
 dialog of the button points this out.
 
-Extensions can resolve all changes belonging to one operation, which is the
-basis for reverting a whole operation instead of one record at a time.
-
-..  index:: Backend, PHP-API, ext:backend
+..  index:: Backend, ext:backend
