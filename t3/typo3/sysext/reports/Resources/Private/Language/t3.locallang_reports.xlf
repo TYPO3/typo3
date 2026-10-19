@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:reports/Resources/Private/Language/locallang_reports.xlf" date="2011-10-17T20:22:35Z" product-name="reports" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="status_report_title" resname="status_report_title">
+        <source>Status Report</source>
+        <target>crwdns223382:0crwdne223382:0</target>
+      </trans-unit>
+      <trans-unit id="status_report_description" resname="status_report_description">
+        <source>Get a status report about your site's operation and any detected problems.</source>
+        <target>crwdns223384:0crwdne223384:0</target>
+      </trans-unit>
+      <trans-unit id="status_report_explanation" resname="status_report_explanation">
+        <source>Here you can find a short overview of your site's parameters as well as any problems detected with your installation. It may be useful to copy and paste this information into support requests filed on TYPO3's support mailinglists and project issue trackers.</source>
+        <target>crwdns223386:0crwdne223386:0</target>
+      </trans-unit>
+      <trans-unit id="status_ok" resname="status_ok">
+        <source>OK</source>
+        <target>crwdns223388:0crwdne223388:0</target>
+      </trans-unit>
+      <trans-unit id="status_wrongValue" resname="status_wrongValue">
+        <source>Wrong value detected</source>
+        <target>crwdns223390:0crwdne223390:0</target>
+      </trans-unit>
+      <trans-unit id="status_info" resname="status_info">
+        <source>Information</source>
+        <target>crwdns223392:0crwdne223392:0</target>
+      </trans-unit>
+      <trans-unit id="status_insecure" resname="status_insecure">
+        <source>Insecure</source>
+        <target>crwdns223394:0crwdne223394:0</target>
+      </trans-unit>
+      <trans-unit id="status_disabled" resname="status_disabled">
+        <source>Disabled</source>
+        <target>crwdns223396:0crwdne223396:0</target>
+      </trans-unit>
+      <trans-unit id="status_enabled" resname="status_enabled">
+        <source>Enabled</source>
+        <target>crwdns223398:0crwdne223398:0</target>
+      </trans-unit>
+      <trans-unit id="status_enabledPermanently" resname="status_enabledPermanently">
+        <source>Enabled permanently</source>
+        <target>crwdns223400:0crwdne223400:0</target>
+      </trans-unit>
+      <trans-unit id="status_enabledTemporarily" resname="status_enabledTemporarily">
+        <source>Enabled temporarily</source>
+        <target>crwdns223402:0crwdne223402:0</target>
+      </trans-unit>
+      <trans-unit id="status_empty" resname="status_empty">
+        <source>Empty</source>
+        <target>crwdns223404:0crwdne223404:0</target>
+      </trans-unit>
+      <trans-unit id="status_none" resname="status_none">
+        <source>None</source>
+        <target>crwdns223406:0crwdne223406:0</target>
+      </trans-unit>
+      <trans-unit id="status_connectionFailed" resname="status_connectionFailed">
+        <source>Connection Failed</source>
+        <target>crwdns223408:0crwdne223408:0</target>
+      </trans-unit>
+      <trans-unit id="status_checkFailed" resname="status_checkFailed">
+        <source>Check Failed</source>
+        <target>crwdns223410:0crwdne223410:0</target>
+      </trans-unit>
+      <trans-unit id="status_updateComplete" resname="status_updateComplete">
+        <source>Update Complete</source>
+        <target>crwdns223412:0crwdne223412:0</target>
+      </trans-unit>
+      <trans-unit id="status_updateIncomplete" resname="status_updateIncomplete">
+        <source>Update Incomplete</source>
+        <target>crwdns223414:0crwdne223414:0</target>
+      </trans-unit>
+      <trans-unit id="status_problemNotification" resname="status_problemNotification">
+        <source>One or more problems were detected with your TYPO3 installation. Please check the %sstatus report%s for more information.</source>
+        <target>crwdns223416:0%scrwdnd223416:0%scrwdne223416:0</target>
+      </trans-unit>
+      <trans-unit id="status_allNotification" resname="status_allNotification">
+        <source>This report contains all System Status Notifications from your TYPO3 installation. Please check the %sstatus report%s for more information.</source>
+        <target>crwdns223418:0%scrwdnd223418:0%scrwdne223418:0</target>
+      </trans-unit>
+      <trans-unit id="status_typo3" resname="status_typo3">
+        <source>TYPO3 System</source>
+        <target>crwdns223420:0crwdne223420:0</target>
+      </trans-unit>
+      <trans-unit id="status_system" resname="status_system">
+        <source>System</source>
+        <target>crwdns223422:0crwdne223422:0</target>
+      </trans-unit>
+      <trans-unit id="status_security" resname="status_security">
+        <source>Security</source>
+        <target>crwdns223424:0crwdne223424:0</target>
+      </trans-unit>
+      <trans-unit id="status_configuration" resname="status_configuration">
+        <source>Configuration</source>
+        <target>crwdns223426:0crwdne223426:0</target>
+      </trans-unit>
+      <trans-unit id="status_referenceIndex" resname="status_referenceIndex">
+        <source>Reference Index</source>
+        <target>crwdns223428:0crwdne223428:0</target>
+      </trans-unit>
+      <trans-unit id="status_fal" resname="status_fal">
+        <source>File Abstraction Layer</source>
+        <target>crwdns223430:0crwdne223430:0</target>
+      </trans-unit>
+      <trans-unit id="status_missingFiles" resname="status_missingFiles">
+        <source>Files flagged as missing</source>
+        <target>crwdns223432:0crwdne223432:0</target>
+      </trans-unit>
+      <trans-unit id="status_missingFilesCount" resname="status_missingFilesCount">
+        <source>%1$s files</source>
+        <target>crwdns223434:0%1$scrwdne223434:0</target>
+      </trans-unit>
+      <trans-unit id="status_missingFilesMessage" resname="status_missingFilesMessage">
+        <source>These files are flagged as missing. Restore the files and run the indexer to reset the missing flag.</source>
+        <target>crwdns223436:0crwdne223436:0</target>
+      </trans-unit>
+      <trans-unit id="status_memcachedConfiguration" resname="status_memcachedConfiguration">
+        <source>Memcached Configuration</source>
+        <target>crwdns223438:0crwdne223438:0</target>
+      </trans-unit>
+      <trans-unit id="status_PhpSafeMode" resname="status_PhpSafeMode">
+        <source>PHP safe_mode</source>
+        <target>crwdns223440:0crwdne223440:0</target>
+      </trans-unit>
+      <trans-unit id="status_PhpMagicQuotesGpc" resname="status_PhpMagicQuotesGpc">
+        <source>PHP magic_quotes_gpc</source>
+        <target>crwdns223442:0crwdne223442:0</target>
+      </trans-unit>
+      <trans-unit id="status_CreatedFilePermissions" resname="status_CreatedFilePermissions">
+        <source>Permissions of created files</source>
+        <target>crwdns223444:0crwdne223444:0</target>
+      </trans-unit>
+      <trans-unit id="status_CreatedFilePermissions.writable" resname="status_CreatedFilePermissions.writable">
+        <source>Files created by TYPO3 are configured to be world writable. Depending on your server configuration, this can be a security risk. It is usually better to configure the create mask to not allow writing to files by "others". A sane default is often '0660' for $GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask']. This can be set in the install tool.</source>
+        <target>crwdns223446:0$GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask']crwdne223446:0</target>
+      </trans-unit>
+      <trans-unit id="status_CreatedDirectoryPermissions" resname="status_CreatedDirectoryPermissions">
+        <source>Permissions of created directories</source>
+        <target>crwdns223448:0crwdne223448:0</target>
+      </trans-unit>
+      <trans-unit id="status_CreatedDirectoryPermissions.writable" resname="status_CreatedDirectoryPermissions.writable">
+        <source>Directories created by TYPO3 are configured to be world writable. Depending on your server configuration, this can be a security risk. It is usually better to configure the create mask to not allow writing to directories by "others". A sane default is often '2770' for $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask']. This can be set in the install tool.</source>
+        <target>crwdns223450:0$GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask']crwdne223450:0</target>
+      </trans-unit>
+      <trans-unit id="status_MysqlDatabaseCharacterSet" resname="status_MysqlDatabaseCharacterSet">
+        <source>MySQL Database Character Set</source>
+        <target>crwdns223452:0crwdne223452:0</target>
+      </trans-unit>
+      <trans-unit id="status_MysqlDatabaseCharacterSet_CheckFailed" resname="status_MysqlDatabaseCharacterSet_CheckFailed">
+        <source>Checking database character set failed, got key "%1$s" instead of "character_set_database"</source>
+        <target>crwdns223454:0%1$scrwdne223454:0</target>
+      </trans-unit>
+      <trans-unit id="status_MysqlDatabaseCharacterSet_Unsupported" resname="status_MysqlDatabaseCharacterSet_Unsupported">
+        <source>Your default database uses character set "%1$s", but only "utf8", "utf8mb3" or "utf8mb4" is supported with TYPO3.</source>
+        <target>crwdns343128:0%1$scrwdne343128:0</target>
+      </trans-unit>
+      <trans-unit id="status_MysqlDatabaseCharacterSet_Ok" resname="status_MysqlDatabaseCharacterSet_Ok">
+        <source>Your default database uses utf-8. All good.</source>
+        <target>crwdns223458:0crwdne223458:0</target>
+      </trans-unit>
+      <trans-unit id="status_MysqlDatabaseCharacterSet_Info" resname="status_MysqlDatabaseCharacterSet_Info">
+        <source>Your default database uses a different charset, but all tables uses utf-8. All good. But consider fixing your database collation and check the table creation settings.</source>
+        <target>crwdns223460:0crwdne223460:0</target>
+      </trans-unit>
+      <trans-unit id="status_MysqlDatabaseCharacterSet_MixedCollations" resname="status_MysqlDatabaseCharacterSet_MixedCollations">
+        <source>Your default database is set to create tables with character set "%1$s", but contains tables or columns with different collations. Please fix these tables to avoid "illegal mix of collations" errors.</source>
+        <target>crwdns223462:0%1$scrwdne223462:0</target>
+      </trans-unit>
+      <trans-unit id="status_encryptedConnectionStatus" resname="status_encryptedConnectionStatus">
+        <source>Encrypted backend connection (HTTPS)</source>
+        <target>crwdns223464:0crwdne223464:0</target>
+      </trans-unit>
+      <trans-unit id="status_encryptedConnectionStatus_insecure" resname="status_encryptedConnectionStatus_insecure">
+        <source>Your backend access is not secured using HTTPS but relies on HTTP which sends all your data (including login passwords) over an insecure connection. All modern web sites should rely on HTTPS and only sites secured differently, for instance some intranet installations may use HTTP only.</source>
+        <target>crwdns223466:0crwdne223466:0</target>
+      </trans-unit>
+      <trans-unit id="status_lockSslStatus" resname="status_lockSslStatus">
+        <source>Backend only accessible through HTTPS</source>
+        <target>crwdns223468:0crwdne223468:0</target>
+      </trans-unit>
+      <trans-unit id="status_lockSslStatus_insecure" resname="status_lockSslStatus_insecure">
+        <source><![CDATA[It is highly recommended to activate the option (<code>$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL']</code>).]]></source>
+        <target><![CDATA[crwdns223470:0$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL']crwdne223470:0]]></target>
+      </trans-unit>
+      <trans-unit id="status_trustedHostsPattern" resname="status_trustedHostsPattern">
+        <source>Trusted Hosts Pattern</source>
+        <target>crwdns223472:0crwdne223472:0</target>
+      </trans-unit>
+      <trans-unit id="status_adminUserAccount" resname="status_adminUserAccount">
+        <source>Admin User Account</source>
+        <target>crwdns223474:0crwdne223474:0</target>
+      </trans-unit>
+      <trans-unit id="status_encryptionKey" resname="status_encryptionKey">
+        <source>Encryption Key</source>
+        <target>crwdns223476:0crwdne223476:0</target>
+      </trans-unit>
+      <trans-unit id="status_fileDenyPattern" resname="status_fileDenyPattern">
+        <source>File Deny Pattern</source>
+        <target>crwdns223478:0crwdne223478:0</target>
+      </trans-unit>
+      <trans-unit id="status_htaccessUploadProtection" resname="status_htaccessUploadProtection">
+        <source>.htaccess Upload Protection</source>
+        <target>crwdns223480:0crwdne223480:0</target>
+      </trans-unit>
+      <trans-unit id="status_exceptionHandler" resname="status_exceptionHandler">
+        <source>Exception Handler / Error Reporting</source>
+        <target>crwdns223482:0crwdne223482:0</target>
+      </trans-unit>
+      <trans-unit id="status_exportedFiles" resname="status_exportedFiles">
+        <source>XML/T3D export files</source>
+        <target>crwdns223484:0crwdne223484:0</target>
+      </trans-unit>
+      <trans-unit id="status_exceptionHandler_warningMessage" resname="status_exceptionHandler_warningMessage">
+        <source>Display Errors is set to 1 - errors will be displayed with the DebugExceptionHandler including stack traces.</source>
+        <target>crwdns223486:0crwdne223486:0</target>
+      </trans-unit>
+      <trans-unit id="status_exceptionHandler_errorMessage" resname="status_exceptionHandler_errorMessage">
+        <source>Debug Exception Handler enabled in Production Context - will show full error messages including stack traces.</source>
+        <target>crwdns223488:0crwdne223488:0</target>
+      </trans-unit>
+      <trans-unit id="status_exportedFiles_warningMessage" resname="status_exportedFiles_warningMessage">
+        <source>The following exported files were found:</source>
+        <target>crwdns226094:0crwdne226094:0</target>
+      </trans-unit>
+      <trans-unit id="status_exportedFiles_warningRecommendation" resname="status_exportedFiles_warningRecommendation">
+        <source>It is recommended to delete exported files to avoid possible disclosure of exported data to backend users with lower/different access rights than user(s) who originally created the export(s).</source>
+        <target>crwdns223492:0crwdne223492:0</target>
+      </trans-unit>
+      <trans-unit id="status_installToolPassword" resname="status_installToolPassword">
+        <source>Install Tool Password</source>
+        <target>crwdns223494:0crwdne223494:0</target>
+      </trans-unit>
+      <trans-unit id="status_installTool" resname="status_installTool">
+        <source>Install Tool</source>
+        <target>crwdns223496:0crwdne223496:0</target>
+      </trans-unit>
+      <trans-unit id="status_phpVersion" resname="status_phpVersion">
+        <source>PHP Version</source>
+        <target>crwdns223498:0crwdne223498:0</target>
+      </trans-unit>
+      <trans-unit id="status_phpTooOld" resname="status_phpTooOld">
+        <source>Your PHP installation is too old.</source>
+        <target>crwdns223500:0crwdne223500:0</target>
+      </trans-unit>
+      <trans-unit id="status_phpMemory" resname="status_phpMemory">
+        <source>PHP Memory Limit</source>
+        <target>crwdns223502:0crwdne223502:0</target>
+      </trans-unit>
+      <trans-unit id="status_phpMemoryRecommendation" resname="status_phpMemoryRecommendation">
+        <source>Depending on your configuration, TYPO3 can run with a %1$s PHP memory limit. However, a %2$s PHP memory limit or above is recommended, especially if your site uses additional extensions.</source>
+        <target>crwdns223504:0%1$scrwdnd223504:0%2$scrwdne223504:0</target>
+      </trans-unit>
+      <trans-unit id="status_phpMemoryRequirement" resname="status_phpMemoryRequirement">
+        <source>Depending on your configuration, TYPO3 can run with a %1$s PHP memory limit. However, a %2$s PHP memory limit or above is required especially if your site uses additional extensions.</source>
+        <target>crwdns223506:0%1$scrwdnd223506:0%2$scrwdne223506:0</target>
+      </trans-unit>
+      <trans-unit id="status_phpMemoryEditLimit" resname="status_phpMemoryEditLimit">
+        <source>Increase the memory limit by editing the memory_limit parameter in the file %s and then restart your web server (or contact your system administrator or hosting provider for assistance).</source>
+        <target>crwdns223508:0%scrwdne223508:0</target>
+      </trans-unit>
+      <trans-unit id="status_phpMemoryContactAdmin" resname="status_phpMemoryContactAdmin">
+        <source>Contact your system administrator or hosting provider for assistance with increasing your PHP memory limit.</source>
+        <target>crwdns223510:0crwdne223510:0</target>
+      </trans-unit>
+      <trans-unit id="status_phpMemoryUnlimited" resname="status_phpMemoryUnlimited">
+        <source>unlimited</source>
+        <target>crwdns223512:0crwdne223512:0</target>
+      </trans-unit>
+      <trans-unit id="status_phpPeakMemory" resname="status_phpPeakMemory">
+        <source>PHP peak memory usage</source>
+        <target>crwdns223514:0crwdne223514:0</target>
+      </trans-unit>
+      <trans-unit id="status_phpPeakMemoryTooHigh" resname="status_phpPeakMemoryTooHigh">
+        <source>During a request %2$s of the memory limit was used. On %4$s a request to %5$s used %1$s of %3$s.</source>
+        <target>crwdns223516:0%2$scrwdnd223516:0%4$scrwdnd223516:0%5$scrwdnd223516:0%1$scrwdnd223516:0%3$scrwdne223516:0</target>
+      </trans-unit>
+      <trans-unit id="status_phpPeakMemoryClearFlag" resname="status_phpPeakMemoryClearFlag">
+        <source>Clear this flag</source>
+        <target>crwdns223518:0crwdne223518:0</target>
+      </trans-unit>
+      <trans-unit id="status_phpRegisterGlobals" resname="status_phpRegisterGlobals">
+        <source>PHP Register Globals</source>
+        <target>crwdns223520:0crwdne223520:0</target>
+      </trans-unit>
+      <trans-unit id="status_phpRegisterGlobalsEnabled" resname="status_phpRegisterGlobalsEnabled">
+        <source>%s is enabled. TYPO3 requires this configuration directive to be disabled.</source>
+        <target>crwdns223522:0%scrwdne223522:0</target>
+      </trans-unit>
+      <trans-unit id="status_phpRegisterGlobalsSecurity" resname="status_phpRegisterGlobalsSecurity">
+        <source>Your site may not be secure when %s is enabled.</source>
+        <target>crwdns223524:0%scrwdne223524:0</target>
+      </trans-unit>
+      <trans-unit id="status_phpRegisterGlobalsHowToChange" resname="status_phpRegisterGlobalsHowToChange">
+        <source>how to change configuration settings</source>
+        <target>crwdns223526:0crwdne223526:0</target>
+      </trans-unit>
+      <trans-unit id="status_phpRegisterGlobalsPHPManual" resname="status_phpRegisterGlobalsPHPManual">
+        <source>The PHP manual has instructions for %s.</source>
+        <target>crwdns223528:0%scrwdne223528:0</target>
+      </trans-unit>
+      <trans-unit id="status_webServer" resname="status_webServer">
+        <source>Web Server</source>
+        <target>crwdns223530:0crwdne223530:0</target>
+      </trans-unit>
+      <trans-unit id="status_webServer_infoText" resname="status_webServer_infoText">
+        <source>For your Web Server some notifications have been found</source>
+        <target>crwdns223532:0crwdne223532:0</target>
+      </trans-unit>
+      <trans-unit id="status_webServer_threadStackSize" resname="status_webServer_threadStackSize" xml:space="preserve">
+				<source><![CDATA[Fluid uses complex regular expressions which require a lot of stack space during the first processing.
+On Windows the default stack size for Apache is a lot smaller than on unix.
+You can increase the size to 8MB (default on unix) by adding to the httpd.conf:
+<br />&lt;IfModule mpm_winnt_module&gt;
+<br />ThreadStackSize 8388608
+<br />&lt;/IfModule&gt;
+<br />Restart Apache after this change.]]></source>
+			<target><![CDATA[crwdns223534:0crwdne223534:0]]></target></trans-unit>
+      <trans-unit id="status_phpModules" resname="status_phpModules">
+        <source>PHP Modules</source>
+        <target>crwdns223536:0crwdne223536:0</target>
+      </trans-unit>
+      <trans-unit id="status_phpModulesMissing" resname="status_phpModulesMissing">
+        <source>One or more modules are missing.</source>
+        <target>crwdns223538:0crwdne223538:0</target>
+      </trans-unit>
+      <trans-unit id="status_phpModulesList" resname="status_phpModulesList">
+        <source>The following PHP module(s) is/are missing: %s.</source>
+        <target>crwdns223540:0%scrwdne223540:0</target>
+      </trans-unit>
+      <trans-unit id="status_phpModulesInfo" resname="status_phpModulesInfo">
+        <source>You need to install and enable these modules to let TYPO3 function correctly.</source>
+        <target>crwdns223542:0crwdne223542:0</target>
+      </trans-unit>
+      <trans-unit id="status_phpModulesGroup" resname="status_phpModulesGroup">
+        <source>one of: %s</source>
+        <target>crwdns223544:0%scrwdne223544:0</target>
+      </trans-unit>
+      <trans-unit id="status_phpModulesPresent" resname="status_phpModulesPresent">
+        <source>All required modules are installed.</source>
+        <target>crwdns223546:0crwdne223546:0</target>
+      </trans-unit>
+      <trans-unit id="status_installEnabledTemporarily" resname="status_installEnabledTemporarily">
+        <source>The Install Tool is temporarily enabled. Delete the file "%s" when you have finished setting up TYPO3. If not used the Install Tool will be disabled automatically in %s minutes.</source>
+        <target>crwdns223548:0%scrwdnd223548:0%scrwdne223548:0</target>
+      </trans-unit>
+      <trans-unit id="status_configuration_PhpSafeModeEnabled" resname="status_configuration_PhpSafeModeEnabled">
+        <source>PHP INI setting safe_mode "On" is deprecated since PHP 5.3 and is not supported by TYPO3 anymore.</source>
+        <target>crwdns223550:0crwdne223550:0</target>
+      </trans-unit>
+      <trans-unit id="status_configuration_PhpMagicQuotesGpcEnabled" resname="status_configuration_PhpMagicQuotesGpcEnabled">
+        <source>PHP INI setting magic_quotes_gpc "On" is deprecated since PHP 5.3. You are advised to set it to "Off" until it gets completely removed.</source>
+        <target>crwdns223552:0crwdne223552:0</target>
+      </trans-unit>
+      <trans-unit id="status_updateTaskTitle" resname="status_updateTaskTitle">
+        <source>System Status Update</source>
+        <target>crwdns223554:0crwdne223554:0</target>
+      </trans-unit>
+      <trans-unit id="status_updateTaskDescription" resname="status_updateTaskDescription">
+        <source>Runs a system status check and sends notifications if problems have been found.</source>
+        <target>crwdns223556:0crwdne223556:0</target>
+      </trans-unit>
+      <trans-unit id="status_updateTaskField_notificationEmail" resname="status_updateTaskField_notificationEmail">
+        <source>Notification Email Address</source>
+        <target>crwdns223558:0crwdne223558:0</target>
+      </trans-unit>
+      <trans-unit id="status_updateTaskField_notificationEmails" resname="status_updateTaskField_notificationEmails">
+        <source>Notification Email Addresses (one per line)</source>
+        <target>crwdns223560:0crwdne223560:0</target>
+      </trans-unit>
+      <trans-unit id="status_updateTaskField_notificationEmail_invalid" resname="status_updateTaskField_notificationEmail_invalid">
+        <source>Empty or invalid notification email address.</source>
+        <target>crwdns223562:0crwdne223562:0</target>
+      </trans-unit>
+      <trans-unit id="status_updateTaskField_notificationEmails_invalid" resname="status_updateTaskField_notificationEmails_invalid">
+        <source>Empty or invalid notification email addresses.</source>
+        <target>crwdns223564:0crwdne223564:0</target>
+      </trans-unit>
+      <trans-unit id="status_updateTaskField_notificationAll" resname="status_updateTaskField_notificationAll">
+        <source>Always send notification mail (not only on errors or warnings)</source>
+        <target>crwdns223566:0crwdne223566:0</target>
+      </trans-unit>
+      <trans-unit id="status_updateTask_email_subject" resname="status_updateTask_email_subject">
+        <source>System Status Notification for site %s</source>
+        <target>crwdns223568:0%scrwdne223568:0</target>
+      </trans-unit>
+      <trans-unit id="status_updateTask_email_site" resname="status_updateTask_email_site">
+        <source>Site</source>
+        <target>crwdns223570:0crwdne223570:0</target>
+      </trans-unit>
+      <trans-unit id="status_updateTask_email_issues" resname="status_updateTask_email_issues">
+        <source>Issues</source>
+        <target>crwdns223572:0crwdne223572:0</target>
+      </trans-unit>
+      <trans-unit id="status_xclassUsage" resname="status_xclassUsage">
+        <source>XCLASS used</source>
+        <target>crwdns223574:0crwdne223574:0</target>
+      </trans-unit>
+      <trans-unit id="status_xclassUsageFound" resname="status_xclassUsageFound">
+        <source>Your system registers XCLASS</source>
+        <target>crwdns223576:0crwdne223576:0</target>
+      </trans-unit>
+      <trans-unit id="status_xclassUsageFound_message" resname="status_xclassUsageFound_message">
+        <source>XCLASS can overwrite methods or classes of the core or other extensions. This is not necessarily a bad thing, but those XCLASS might break during extension or core upgrades. You should keep an eye on extension compatibility and make sure the intended functionality is still given after updates.</source>
+        <target>crwdns223578:0crwdne223578:0</target>
+      </trans-unit>
+      <trans-unit id="status_xclassUsageFound_message_detail" resname="status_xclassUsageFound_message_detail">
+        <source>%2$s registers an XCLASS of %1$s</source>
+        <target>crwdns223580:0%2$scrwdnd223580:0%1$scrwdne223580:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
