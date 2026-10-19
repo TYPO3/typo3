@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:info/Resources/Private/Language/locallang_csh_webinfo.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="uk">
+    <header/>
+    <body>
+      <trans-unit id="func_0.alttitle" resname="func_0.alttitle" approved="yes">
+        <source>Basic Settings</source>
+        <target state="final">Основні налаштування</target>
+      </trans-unit>
+      <trans-unit id="func_0.description" resname="func_0.description" approved="yes">
+        <source>Displays a selection of fields from page records which are regarded as foundational settings for pages. That includes aliases, start- and stop times, access restriction information etc.</source>
+        <target state="final">Відображає вибірку полів із записів сторінки, які вважаються основними налаштуваннями для сторінок. Це включає псевдоніми, час початку та завершення, інформацію про обмеження доступу тощо.</target>
+      </trans-unit>
+      <trans-unit id="func_0.details" resname="func_0.details" xml:space="preserve" approved="yes">
+				<source>The Basic Settings view resembles the Cache and Age view quite a lot. They are different only by the selection of fields they show.
+
+&lt;b&gt;Batch editing page fields&lt;/b&gt;
+You will find multiple edit-icons around the interface. All edit icons in head lines will bring you to an editing dialog where you can change exactly that field for all listed tables! Very useful for batch-editing of say all "Start" times.
+If you click the edit icon at the ID numbers of pages you will get straight to the regular editing of a whole page record.</source>
+			<target state="final">Перегляд «Основні параметри» дуже схожий на перегляд «Кеш і вік». Вони відрізняються лише вибором полів, які вони показують.
+
+&lt;b&gt;Пакетне редагування полів сторінки&lt;/b&gt;
+Навколо інтерфейсу ви знайдете кілька значків редагування. Усі піктограми редагування в рядках заголовка приведуть вас до діалогового вікна редагування, де ви зможете змінити саме це поле для всіх перелічених таблиць! Дуже корисно для пакетного редагування, наприклад, усіх часів «Початку».
+Якщо ви клацнете значок редагування біля ідентифікаційних номерів сторінок, ви перейдете прямо до звичайного редагування запису всієї сторінки.</target></trans-unit>
+      <trans-unit id="_func_0.seeAlso" resname="_func_0.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:list_module,
+_MOD_web_info:func_2,
+_MOD_web_info:pagetree_overview</source>
+				
+			<target state="final">xMOD_csh_corebe:list_module,
+_MOD_web_info:func_2,
+_MOD_web_info:pagetree_overview</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_func_0.image" resname="_func_0.image" xml:space="preserve" approved="yes">
+				<source>EXT:frontend/Resources/Public/Images/cshimages/pagetree_overview_4.png,
+EXT:frontend/Resources/Public/Images/cshimages/pagetree_overview_8.png,
+EXT:frontend/Resources/Public/Images/cshimages/pagetree_overview_9.png</source>
+				
+			<target state="final">EXT:frontend/Resources/Public/Images/cshimages/pagetree_overview_4.png,
+EXT:frontend/Resources/Public/Images/cshimages/pagetree_overview_8.png,
+EXT:frontend/Resources/Public/Images/cshimages/pagetree_overview_9.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="func_0.image_descr" resname="func_0.image_descr" xml:space="preserve" approved="yes">
+				<source>The Basic Settings view offers a very convenient overview of page urls, start times and access restriction settings in the tree branch.
+If you click an edit-icon in the header you will be able to edit that field for all listed pages.</source>
+			<target state="final">Перегляд основних налаштувань пропонує дуже зручний огляд Url-адрес сторінок, часу початку та налаштувань обмеження доступу в гілці дерева.
+Якщо ви клацнете значок редагування в заголовку, ви зможете редагувати це поле для всіх сторінок у списку.</target></trans-unit>
+      <trans-unit id="func_1.alttitle" resname="func_1.alttitle" approved="yes">
+        <source>Record Overview</source>
+        <target state="final">Огляд запису</target>
+      </trans-unit>
+      <trans-unit id="func_1.description" resname="func_1.description" approved="yes">
+        <source>Record overview gives you an indispensable overview of the distribution of records in the page tree. Each database table in the system is represented with a column and for each page you can see the number of records from that table located on the page.</source>
+        <target state="final">Огляд записів дає вам незамінний огляд розподілу записів у дереві сторінок. Кожна таблиця бази даних у системі представлена стовпцем, і для кожної сторінки ви можете побачити кількість записів із цієї таблиці, розташованих на сторінці.</target>
+      </trans-unit>
+      <trans-unit id="func_1.details" resname="func_1.details" xml:space="preserve" approved="yes">
+				<source>&lt;b&gt;Notice:&lt;/b&gt; Be careful with the level-setting. A high level-setting may cause the module to respond very slowly if there are many pages and many records in the database as well!
+
+&lt;b&gt;Tree stop?&lt;/b&gt;
+Notice the red "+" next to a page in the page tree? This is due to a setting for that page record which means that the page tree will not expand for this page. Typically this is set for protection when there are a large amount of subpages underneath (hundreds of pages typically). If you click the icon/title the overview will jump to make this page the new root of the overview.</source>
+			<target state="final">&lt;b&gt;Примітка:&lt;/b&gt; Будьте обережні з налаштуванням рівня. Налаштування високого рівня може спричинити дуже повільну реакцію модуля, якщо в базі даних багато сторінок і багато записів!
+
+&lt;b&gt;Зупинка дерева?&lt;/b&gt;
+Помітили червоний «+» біля сторінки в дереві сторінок? Це пов’язано з налаштуванням для цього запису сторінки, яке означає, що дерево сторінок не буде розгортатися для цієї сторінки. Зазвичай це встановлюється для захисту, коли внизу є велика кількість підсторінок (зазвичай сотні сторінок). Якщо клацнути піктограму/заголовок, огляд перейде, щоб зробити цю сторінку новим коренем огляду.</target></trans-unit>
+      <trans-unit id="_func_1.seeAlso" resname="_func_1.seeAlso" xml:space="preserve" approved="yes">
+				<source>_MOD_web_info:pagetree_overview,
+pages:php_tree_stop</source>
+				
+			<target state="final">_MOD_web_info:pagetree_overview,
+pages:php_tree_stop</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_func_1.image" resname="_func_1.image" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/pagetree_overview_6.png</source>
+        <target state="final">EXT:frontend/Resources/Public/Images/cshimages/pagetree_overview_6.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="func_1.image_descr" resname="func_1.image_descr" approved="yes">
+        <source>You can easily see the distribution of Content Elements on a page. You can also see where Template Records - and basically any record! - are located in the page tree!</source>
+        <target state="final">Ви можете легко побачити розподіл елементів вмісту на сторінці. Ви також можете побачити, де знаходяться Шаблонні записи - і в основному будь-який запис! - знаходяться в дереві сторінок!</target>
+      </trans-unit>
+      <trans-unit id="func_2.alttitle" resname="func_2.alttitle" approved="yes">
+        <source>Cache and Age</source>
+        <target state="final">Кеш та Вік</target>
+      </trans-unit>
+      <trans-unit id="func_2.description" resname="func_2.description" approved="yes">
+        <source>Displays a selection of fields from page records related to page caching and time settings.</source>
+        <target state="final">Відображає вибірку полів із записів сторінки, пов’язаних із кешуванням сторінки та параметрами часу.</target>
+      </trans-unit>
+      <trans-unit id="_func_2.seeAlso" resname="_func_2.seeAlso" xml:space="preserve" approved="yes">
+				<source>_MOD_web_info:func_0,
+_MOD_web_info:pagetree_overview,
+pages:TSconfig</source>
+				
+			<target state="final">_MOD_web_info:func_0,
+_MOD_web_info:pagetree_overview,
+pages:TSconfig</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_func_2.image" resname="_func_2.image" xml:space="preserve" approved="yes">
+				<source>EXT:frontend/Resources/Public/Images/cshimages/pagetree_overview_5.png,
+EXT:frontend/Resources/Public/Images/cshimages/pagetree_overview_7.png</source>
+				
+			<target state="final">EXT:frontend/Resources/Public/Images/cshimages/pagetree_overview_5.png,
+EXT:frontend/Resources/Public/Images/cshimages/pagetree_overview_7.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="func_2.image_descr" resname="func_2.image_descr" xml:space="preserve" approved="yes">
+				<source>The "Cache and Age" view.
+Here you see the "TSconfig" column. The overview exposes that these two pages include some Page TSconfig code!</source>
+			<target state="final">Перегляд «Кеш і Вік».
+Тут ви бачите стовпець "TSconfig". Огляд показує, що ці дві сторінки містять деякий код TSconfig сторінки!</target></trans-unit>
+      <trans-unit id="lang.details" resname="lang.details" xml:space="preserve" approved="yes">
+				<source>The overview uses colors to signal the availability and fall back situation for a given page. Here is a description for each color code:
+&lt;b&gt;Green background:&lt;/b&gt; Page is translated and viewable in this language. For translations it means that an active page overlay record is present.
+&lt;b&gt;Red background:&lt;/b&gt; Page &lt;em&gt;cannot&lt;/em&gt; be viewed in this language and you will see an error message if you try. Menus should automatically filter out links to pages with this translation.
+&lt;b&gt;Gray background (not available for default language):&lt;/b&gt; Page will fall back to the specified fallback mode for content. Depends on configuration. (sys_language_mode = content_fallback is recommended for most flexible fallback, sys_language_mode = strict will prevent this and issue an error instead!)
+
+&lt;b&gt;The pages "Localization settings:"&lt;/b&gt;
+It is the "Localization settings" of the page record that determines the modes above. In the column of the default language each of these settings are represented by a "N" (Hide page if no translation for current language exists) or a "D" (Hide default language of page).
+As you can see the page "Startpage" has the N flag set and therefore any access to the german version of that page will be blocked with an error message because there is no translation in german. By default "german access" to a non-translated page will just show the english content.
+There is also a page with the D flag ("[Dummy]"). The D flag means that the page is only available in one of the translations, in this case Danish. So any attempt to access the page in the default language or german will show an error message.
+
+So, when the "Localization settings" checkboxes for a page are used, you will get an error message when you try to request a page which has been blocked. This is a feature. The trick is not to create links to those pages.
+
+Menus generated from HMENU objects will always take "sys_language" into account and display only pages which can be accessed for that language. But combined with the "localization settings" of pages which may block page access this becomes a problem with pages which are &lt;em&gt;not&lt;/em&gt; translated (has gray background); You might get menu items which links to non-accessible pages.
+The problem basically is that "&amp;L=xx" is different from internal "sys_language". You would like to avoid that and to do so you should configure "sys_language_mode" to "content_fallback". If you do that sys_language will &lt;em&gt;always&lt;/em&gt; follow what "&amp;L=" instructs it to and your menus will be right. At the same time you will get the default content displayed if no translation exists (because content selection falls back).
+
+Finally, the number found in each column tells you how many content elements are found in the specified language.</source>
+			<target state="final">Огляд використовує кольори, щоб повідомити про доступність і резервну ситуацію для певної сторінки. Ось опис кожного коду кольору:
+&lt;b&gt;Зелений фон:&lt;/b&gt; Сторінка перекладена та доступна для перегляду цією мовою. Для перекладів це означає наявність активного запису накладання сторінки.
+&lt;b&gt;Червоний фон:&lt;/b&gt; Сторінка &lt;em&gt;не може&lt;/em&gt; переглядати цією мовою, і ви побачите повідомлення про помилку, якщо спробуєте. Меню повинне автоматично фільтрувати посилання на сторінки з цим перекладом.
+&lt;b&gt;Сірий фон (недоступний для мови за замовчуванням):&lt;/b&gt; Сторінка повернеться до вказаного резервного режиму для вмісту. Залежить від конфігурації. (sys_language_mode = content_fallback рекомендовано для найбільш гнучкого резервного варіанту, sys_language_mode = strict запобіжить цьому та натомість видасть помилку!)
+
+&lt;b&gt;Сторінки "Налаштування локалізації:"&lt;/b&gt;
+Наведені вище режими визначають «Параметри локалізації» запису сторінки. У стовпці мови за замовчуванням кожне з цих налаштувань позначається літерою «N» (Сховати сторінку, якщо немає перекладу для поточної мови) або «D» (Сховати мову сторінки за замовчуванням).
+Як ви бачите, сторінка «Початкова сторінка» має встановлений прапор N, тому будь-який доступ до німецької версії цієї сторінки буде заблоковано з повідомленням про помилку, оскільки немає перекладу німецькою мовою. За замовчуванням «німецький доступ» до неперекладеної сторінки відображатиме лише вміст англійською мовою.
+Існує також сторінка з прапором D ("[Dummy]"). Прапор D означає, що сторінка доступна лише в одному з перекладів, у даному випадку датською. Таким чином, будь-яка спроба отримати доступ до сторінки мовою за замовчуванням або німецькою покаже повідомлення про помилку.
+
+Таким чином, коли використовуються прапорці «Налаштування локалізації» для сторінки, ви отримаєте повідомлення про помилку, коли спробуєте запитати сторінку, яка була заблокована. Це особливість. Хитрість полягає не в створенні посилань на ці сторінки.
+
+Меню, створене з об’єктів HMENU, завжди враховуватиме «sys_language» і відображатиме лише сторінки, до яких можна отримати доступ цією мовою. Але в поєднанні з «параметрами локалізації» сторінок, які можуть блокувати доступ до сторінки, це стає проблемою для сторінок, які &lt;em&gt;не&lt;/em&gt; перекладені (мають сірий фон); Ви можете отримати пункти меню, які посилаються на недоступні сторінки.
+Основна проблема полягає в тому, що "&amp;L=xx" відрізняється від внутрішньої "sys_language". Ви хотіли б уникнути цього, і для цього вам слід налаштувати "sys_language_mode" на "content_fallback". Якщо ви зробите sys_language, &lt;em&gt;завжди&lt;/em&gt; дотримуйтеся вказівок "&amp;L=", і ваші меню будуть правильними. У той же час ви отримаєте вміст за замовчуванням, якщо переклад не існує (оскільки вибір вмісту повертається назад).
+
+Нарешті, число, знайдене в кожному стовпці, говорить вам, скільки елементів вмісту знайдено вказаною мовою.</target></trans-unit>
+      <trans-unit id="_lang.image" resname="_lang.image" xml:space="preserve" approved="yes">
+				<source>EXT:frontend/Resources/Public/Images/cshimages/localizationoverview.png,
+EXT:frontend/Resources/Public/Images/cshimages/localizationoverview1.png</source>
+				
+			<target state="final">EXT:frontend/Resources/Public/Images/cshimages/localizationoverview.png,
+EXT:frontend/Resources/Public/Images/cshimages/localizationoverview1.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="lang.image_descr" resname="lang.image_descr" xml:space="preserve" approved="yes">
+				<source>Localization overview in the Web&gt;Info module. Use the buttons to edit, view and create new page translation headers. Use the regular page module to put localized content on the pages.
+The "Localization settings" that affect availability of pages in the various languages.</source>
+			<target state="final">Огляд локалізації в модулі Веб&gt;Інформація. Використовуйте кнопки для редагування, перегляду та створення нових заголовків перекладу сторінок. Використовуйте звичайний модуль сторінки, щоб розмістити локалізований вміст на сторінках.
+«Параметри локалізації», які впливають на доступність сторінок різними мовами.</target></trans-unit>
+      <trans-unit id="lang.alttitle" resname="lang.alttitle" approved="yes">
+        <source>Localization overview</source>
+        <target state="final">Огляд локалізації</target>
+      </trans-unit>
+      <trans-unit id="lang.description" resname="lang.description" approved="yes">
+        <source>Gives an overview of which pages in the page tree are translated to the system languages installed.</source>
+        <target state="final">Дає огляд того, які сторінки в дереві сторінок перекладено на встановлені системні мови.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
