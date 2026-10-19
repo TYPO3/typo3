@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/locallang_info.xlf" date="2011-10-17T20:22:37Z" product-name="tstemplate" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="delete" resname="delete" approved="yes">
+        <source>Delete</source>
+        <target state="final">Löschen:</target>
+      </trans-unit>
+      <trans-unit id="toTop" resname="toTop" approved="yes">
+        <source>To top</source>
+        <target state="final">Nach oben:</target>
+      </trans-unit>
+      <trans-unit id="fileChanged" resname="fileChanged" approved="yes">
+        <source>File changed</source>
+        <target state="final">Datei geändert</target>
+      </trans-unit>
+      <trans-unit id="resourceUpdated" resname="resourceUpdated" approved="yes">
+        <source>Resource '%s' has been updated.</source>
+        <target state="final">Ressource '%s' wurde aktualisiert.</target>
+      </trans-unit>
+      <trans-unit id="templateInformation" resname="templateInformation" approved="yes">
+        <source>Template information</source>
+        <target state="final">Template-Informationen</target>
+      </trans-unit>
+      <trans-unit id="title" resname="title" approved="yes">
+        <source>Title</source>
+        <target state="final">Titel</target>
+      </trans-unit>
+      <trans-unit id="description" resname="description" approved="yes">
+        <source>Description</source>
+        <target state="final">Beschreibung</target>
+      </trans-unit>
+      <trans-unit id="allowedExtensions" resname="allowedExtensions" approved="yes">
+        <source>Allowed extensions</source>
+        <target state="final">Erlaubte Erweiterungen:</target>
+      </trans-unit>
+      <trans-unit id="maxFilesize" resname="maxFilesize" approved="yes">
+        <source>Max filesize</source>
+        <target state="final">Maximale Dateigröße:</target>
+      </trans-unit>
+      <trans-unit id="uploadResource" resname="uploadResource" approved="yes">
+        <source>Upload resource</source>
+        <target state="final">Ressource hochladen</target>
+      </trans-unit>
+      <trans-unit id="newTextResource" resname="newTextResource" approved="yes">
+        <source>New text resource (enter name)</source>
+        <target state="final">Neue Textressource (geben Sie einen Namen an)</target>
+      </trans-unit>
+      <trans-unit id="copyResource" resname="copyResource" approved="yes">
+        <source>Make a copy of resource</source>
+        <target state="final">Kopie der Ressource erstellen:</target>
+      </trans-unit>
+      <trans-unit id="updateResourceList" resname="updateResourceList" approved="yes">
+        <source>Update resource list</source>
+        <target state="final">Ressourcenliste aktualisieren</target>
+      </trans-unit>
+      <trans-unit id="constants" resname="constants" approved="yes">
+        <source>Constants</source>
+        <target state="final">Konstanten</target>
+      </trans-unit>
+      <trans-unit id="file" resname="file" approved="yes">
+        <source>File</source>
+        <target state="final">Datei:</target>
+      </trans-unit>
+      <trans-unit id="editResource" resname="editResource" approved="yes">
+        <source>Edit Resource</source>
+        <target state="final">Ressource bearbeiten:</target>
+      </trans-unit>
+      <trans-unit id="filesizeExceeded" resname="filesizeExceeded" approved="yes">
+        <source>Filesize exceeded %s KBytes</source>
+        <target state="final">Dateigröße überschreitet %s KB</target>
+      </trans-unit>
+      <trans-unit id="notAllowed" resname="notAllowed" approved="yes">
+        <source>Files larger than %s KBytes are not allowed to be edited.</source>
+        <target state="final">Dateien größer als %s KB können nicht bearbeitet werden.</target>
+      </trans-unit>
+      <trans-unit id="setup" resname="setup" approved="yes">
+        <source>Setup</source>
+        <target state="final">Setup</target>
+      </trans-unit>
+      <trans-unit id="resources" resname="resources" approved="yes">
+        <source>Resources</source>
+        <target state="final">Ressourcen</target>
+      </trans-unit>
+      <trans-unit id="editToView" resname="editToView" approved="yes">
+        <source>(edit to view, %s lines)</source>
+        <target state="final">(bearbeiten um anzuzeigen, %s Zeilen)</target>
+      </trans-unit>
+      <trans-unit id="editTemplateRecord" resname="editTemplateRecord" approved="yes">
+        <source>Edit the whole template record</source>
+        <target state="final">Vollständigen Template-Datensatz bearbeiten</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
