@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_pages_new_csh.xlf" date="2011-10-17T20:22:37Z" product-name="backend" target-language="ru">
+    <header/>
+    <body>
+      <trans-unit id="pages_new.alttitle" resname="pages_new.alttitle" approved="yes">
+        <source>Create multiple pages</source>
+        <target state="final">Создать несколько страниц</target>
+      </trans-unit>
+      <trans-unit id="pages_new.description" resname="pages_new.description" xml:space="preserve" approved="yes">
+				<source>Enables you to create a batch of new, empty pages for quickly building up a new page tree.
+Just enter the titles for the pages you need. Only filled in fields will be created as pages.</source>
+			<target state="final">Возможность создания набора новых пустых страниц для быстрого построения нового дерева страниц.
+Просто введите заголовки необходимых страниц. Страницы будут созданы только для заполненных полей.</target></trans-unit>
+      <trans-unit id="pages_new.details" resname="pages_new.details" xml:space="preserve" approved="yes">
+				<source>The new pages will always be created as subpages to the currently active page from the page tree. This page is shown in the top of the page. In the example image below it is "/Intro/Startpage/".
+
+&lt;b&gt;"Place new pages after the existing subpages"&lt;/b&gt;
+If you select this option the pages will be create &lt;em&gt;after&lt;/em&gt; any existing subpages.
+
+&lt;b&gt;"Hide new pages"&lt;/b&gt;
+Select this if the new pages should be hidden by default. This option may be forced upon you if you do not have credentials to create new, online pages.</source>
+			<target state="final">Новые страницы всегда создаются как подстраницы к текущей активной странице из дерева страниц. Эта страница отображается в верхней части. В приведенном ниже примере это "/Intro/Startpage/".
+
+&lt;b&gt;"Поместить новые страницы после существующих подстраниц"&lt;/b&gt;
+При включении этого параметра, страницы будут созданы и помещены &lt;em&gt;после&lt;/em&gt; всех существующих подстраниц.
+
+&lt;b&gt;"Скрыть новые страницы"&lt;/b&gt;
+Включите, если нужно, чтобы новые страницы были скрыты. Этот параметр может быть принудительно назначен, если у вас нет разрешений для создания новых страниц сайта.</target></trans-unit>
+      <trans-unit id="_pages_new.image" resname="_pages_new.image" xml:space="preserve" approved="yes">
+				<source>EXT:backend/Resources/Public/Images/Csh/PagesNew_1.png,
+EXT:backend/Resources/Public/Images/Csh/PagesNew_2.png</source>
+			<target state="final">EXT:backend/Resources/Public/Images/Csh/PagesNew_1.png,
+EXT:backend/Resources/Public/Images/Csh/PagesNew_2.png</target></trans-unit>
+      <trans-unit id="pages_new.image_descr" resname="pages_new.image_descr" xml:space="preserve" approved="yes">
+				<source>You simply enter the new page titles in the fields. Only fields you fill in will be created as pages.
+After pressing the "Create pages" button the page tree to the left will update instantly, showing you the position of the new pages!</source>
+			<target state="final">Просто введите заголовки необходимых страниц. Страницы будут созданы только для заполненных полей.
+По нажатию кнопки "Создать страницы", дерево страниц слева обновится, показывая положение новых страниц!</target></trans-unit>
+    </body>
+  </file>
+</xliff>
