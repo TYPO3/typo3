@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf" date="2011-10-17T20:22:37Z" product-name="tstemplate" target-language="pl">
+    <header/>
+    <body>
+      <trans-unit id="constants" resname="constants" approved="yes">
+        <source>Constants</source>
+        <target state="final">Stałe</target>
+      </trans-unit>
+      <trans-unit id="setup" resname="setup" approved="yes">
+        <source>Setup</source>
+        <target state="final">Ustawienia</target>
+      </trans-unit>
+      <trans-unit id="all" resname="all" approved="yes">
+        <source>All</source>
+        <target state="final">Wszystkie</target>
+      </trans-unit>
+      <trans-unit id="plainSubstitution" resname="plainSubstitution" approved="yes">
+        <source>Plain substitution (default)</source>
+        <target state="final">Zwykłe podstawianie (domyślnie)</target>
+      </trans-unit>
+      <trans-unit id="substitutedGreen" resname="substitutedGreen" approved="yes">
+        <source>Substituted constants in green</source>
+        <target state="final">Podstawione stałe na zielono</target>
+      </trans-unit>
+      <trans-unit id="unsubstitutedGreen" resname="unsubstitutedGreen" approved="yes">
+        <source>UN-substituted constants in green</source>
+        <target state="final">Niepodstawione stałe na zielono</target>
+      </trans-unit>
+      <trans-unit id="currentTemplate" resname="currentTemplate" approved="yes">
+        <source>Current template</source>
+        <target state="final">Aktualny szablon</target>
+      </trans-unit>
+      <trans-unit id="badProperty" resname="badProperty" approved="yes">
+        <source>Bad property!</source>
+        <target state="final">Zła właściwość!</target>
+      </trans-unit>
+      <trans-unit id="noSpaces" resname="noSpaces" approved="yes">
+        <source>You must enter a property with characters a-z, A-Z and 0-9, no spaces!</source>
+        <target state="final">Musisz wpisać właściwości ze znakami a-z, A-Z oraz 0-9, bez spacji!</target>
+      </trans-unit>
+      <trans-unit id="nothingUpdated" resname="nothingUpdated" approved="yes">
+        <source>Nothing was updated!</source>
+        <target state="final">Nic nie zostało zaktualizowane!</target>
+      </trans-unit>
+      <trans-unit id="propertyAdded" resname="propertyAdded" approved="yes">
+        <source>Property added</source>
+        <target state="final">Dodano właściwość</target>
+      </trans-unit>
+      <trans-unit id="valueUpdated" resname="valueUpdated" approved="yes">
+        <source>Value updated</source>
+        <target state="final">Wartość zaktualizowana</target>
+      </trans-unit>
+      <trans-unit id="objectCleared" resname="objectCleared" approved="yes">
+        <source>Object cleared</source>
+        <target state="final">Obiekt wyczyszczony</target>
+      </trans-unit>
+      <trans-unit id="editProperty" resname="editProperty" approved="yes">
+        <source>Edit object/property value</source>
+        <target state="final">Edytuj wartość obiektu/właściwości</target>
+      </trans-unit>
+      <trans-unit id="addProperty" resname="addProperty" approved="yes">
+        <source>Add object property</source>
+        <target state="final">Dodaj właściwość obiektu</target>
+      </trans-unit>
+      <trans-unit id="clear" resname="clear" approved="yes">
+        <source>Clear?</source>
+        <target state="final">Wyczyścić?</target>
+      </trans-unit>
+      <trans-unit id="clearButton" resname="clearButton" approved="yes">
+        <source>Clear</source>
+        <target state="final">Wyczyść</target>
+      </trans-unit>
+      <trans-unit id="clearObject" resname="clearObject" approved="yes">
+        <source>Clear object</source>
+        <target state="final">Wyczyść obiekt</target>
+      </trans-unit>
+      <trans-unit id="edit" resname="edit" approved="yes">
+        <source>Edit</source>
+        <target state="final">Edytuj</target>
+      </trans-unit>
+      <trans-unit id="noCurrentTemplate" resname="noCurrentTemplate" approved="yes">
+        <source>You cannot edit properties and values, if there's no current template.</source>
+        <target state="final">Nie możesz edytować właściwości i wartości, jeśli nie ma szablonu.</target>
+      </trans-unit>
+      <trans-unit id="addKey" resname="addKey" approved="yes">
+        <source>Add key &quot;%s&quot; to Object List</source>
+        <target state="final">Dodaj klucz "%s" do Listy Obiektów</target>
+      </trans-unit>
+      <trans-unit id="back" resname="back" approved="yes">
+        <source>Back</source>
+        <target state="final">Wróć</target>
+      </trans-unit>
+      <trans-unit id="browse" resname="browse" approved="yes">
+        <source>Browse</source>
+        <target state="final">Przeglądaj</target>
+      </trans-unit>
+      <trans-unit id="objectList" resname="objectList" approved="yes">
+        <source>Object List</source>
+        <target state="final">Lista Obiektów</target>
+      </trans-unit>
+      <trans-unit id="search" resname="search" approved="yes">
+        <source>Search</source>
+        <target state="final">Szukaj</target>
+      </trans-unit>
+      <trans-unit id="regExp" resname="regExp" approved="yes">
+        <source>Regular expressions</source>
+        <target state="final">Wyrażenia regularne</target>
+      </trans-unit>
+      <trans-unit id="errorsWarnings" resname="errorsWarnings" approved="yes">
+        <source>Errors and warnings</source>
+        <target state="final">Błędy i ostrzeżenia</target>
+      </trans-unit>
+      <trans-unit id="errorShowDetails" resname="errorShowDetails" approved="yes">
+        <source>Show details</source>
+        <target state="final">Pokaż szczegóły</target>
+      </trans-unit>
+      <trans-unit id="removeKey" resname="removeKey" approved="yes">
+        <source>Remove key from OL</source>
+        <target state="final">Usuń klucz z OL</target>
+      </trans-unit>
+      <trans-unit id="setupRoot" resname="setupRoot" approved="yes">
+        <source>setup root</source>
+        <target state="final">ustawienia korzenia</target>
+      </trans-unit>
+      <trans-unit id="constantRoot" resname="constantRoot" approved="yes">
+        <source>constants root</source>
+        <target state="final">stałe korzenia</target>
+      </trans-unit>
+      <trans-unit id="sortAlphabetically" resname="sortAlphabetically" approved="yes">
+        <source>Sort alphabetically</source>
+        <target state="final">Sortuj alfabetycznie</target>
+      </trans-unit>
+      <trans-unit id="cropLines" resname="cropLines" approved="yes">
+        <source>Crop lines</source>
+        <target state="final">Przycinaj linie</target>
+      </trans-unit>
+      <trans-unit id="displayConstants" resname="displayConstants" approved="yes">
+        <source>Display constants</source>
+        <target state="final">Wyświetl stałe</target>
+      </trans-unit>
+      <trans-unit id="displayOptions" resname="displayOptions" approved="yes">
+        <source>Display options</source>
+        <target state="final">Wyświetl opcje</target>
+      </trans-unit>
+      <trans-unit id="conditions" resname="conditions" approved="yes">
+        <source>Conditions</source>
+        <target state="final">Warunki</target>
+      </trans-unit>
+      <trans-unit id="setConditions" resname="setConditions" approved="yes">
+        <source>Set conditions</source>
+        <target state="final">Ustaw warunki</target>
+      </trans-unit>
+      <trans-unit id="severity.1" resname="severity.1" approved="yes">
+        <source>Info</source>
+        <target state="final">Informacja</target>
+      </trans-unit>
+      <trans-unit id="severity.2" resname="severity.2" approved="yes">
+        <source>Warning</source>
+        <target state="final">Ostrzeżenie</target>
+      </trans-unit>
+      <trans-unit id="severity.3" resname="severity.3" approved="yes">
+        <source>Error</source>
+        <target state="final">Błąd</target>
+      </trans-unit>
+      <trans-unit id="severity.info" resname="severity.info" approved="yes">
+        <source>Info</source>
+        <target state="final">Informacja</target>
+      </trans-unit>
+      <trans-unit id="severity.warning" resname="severity.warning" approved="yes">
+        <source>Warning</source>
+        <target state="final">Ostrzeżenie</target>
+      </trans-unit>
+      <trans-unit id="severity.error" resname="severity.error" approved="yes">
+        <source>Error</source>
+        <target state="final">Błąd</target>
+      </trans-unit>
+      <trans-unit id="error.1446559458" resname="error.1446559458" approved="yes">
+        <source>Error evaluating regular expression "%s".</source>
+        <target state="final">Błąd przetwarzania wyrażenia regularnego "%s".</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
