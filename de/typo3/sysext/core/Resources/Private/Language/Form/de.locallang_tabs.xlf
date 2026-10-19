@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf" date="2016-10-23T20:22:33Z" product-name="tabs" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="general" resname="general" approved="yes">
+        <source>General</source>
+        <target state="final">Allgemein</target>
+      </trans-unit>
+      <trans-unit id="access" resname="access" approved="yes">
+        <source>Access</source>
+        <target state="final">Zugriff</target>
+      </trans-unit>
+      <trans-unit id="accesscapabilities" resname="accesscapabilities" approved="yes">
+        <source>Access capabilities</source>
+        <target state="final">Zugriffsrechte</target>
+      </trans-unit>
+      <trans-unit id="categories" resname="categories" approved="yes">
+        <source>Categories</source>
+        <target state="final">Kategorien</target>
+      </trans-unit>
+      <trans-unit id="notes" resname="notes" approved="yes">
+        <source>Notes</source>
+        <target state="final">Hinweise</target>
+      </trans-unit>
+      <trans-unit id="language" resname="language" approved="yes">
+        <source>Language</source>
+        <target state="final">Sprache</target>
+      </trans-unit>
+      <trans-unit id="extended" resname="extended" approved="yes">
+        <source>Extended</source>
+        <target state="final">Erweitert</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
