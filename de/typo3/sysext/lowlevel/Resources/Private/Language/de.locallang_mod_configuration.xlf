@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:lowlevel/Resources/Private/Language/locallang_mod_configuration.xlf" date="2011-10-17T20:22:34Z" product-name="lowlevel" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel" approved="yes">
+        <source>View configuration from localconf.php and tables.php</source>
+        <target state="final">Konfiguration von localconf.php und tables.php anzeigen</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr" approved="yes">
+        <source>Allows you to browse the values of the $TCA array (table configuration) and $TYPO3_CONF_VARS. You cannot set any values, only browse them.&lt;br /&gt;&lt;em&gt;Access for 'admin' users only!&lt;/em&gt;</source>
+        <target state="final">Hier können Sie durch die Werte der Felder $GLOBALS['TCA'] (Tabellenkonfiguration) und $GLOBALS['TYPO3_CONF_VARS'] navigieren. Sie haben allerdings nur einen lesenden Zugriff auf die einzelnen Werte.&lt;br /&gt;&lt;em&gt;Zugriff nur für Administratoren!&lt;/em&gt;</target>
+      </trans-unit>
+      <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab" approved="yes">
+        <source>Configuration</source>
+        <target state="final">Konfiguration</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
