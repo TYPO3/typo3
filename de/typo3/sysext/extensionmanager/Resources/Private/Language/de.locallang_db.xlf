@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:extensionmanager/Resources/Private/Language/locallang_db.xlf" date="2015-06-30T15:55:11Z" product-name="" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="tx_extensionmanager_domain_model_extension" resname="tx_extensionmanager_domain_model_extension" approved="yes">
+        <source>Extension</source>
+        <target state="final">Erweiterung</target>
+      </trans-unit>
+      <trans-unit id="tx_extensionmanager_domain_model_extension.extensionkey" resname="tx_extensionmanager_domain_model_extension.extensionkey" approved="yes">
+        <source>Extension Key</source>
+        <target state="final">Erweiterungsschlüssel</target>
+      </trans-unit>
+      <trans-unit id="tx_extensionmanager_domain_model_extension.version" resname="tx_extensionmanager_domain_model_extension.version" approved="yes">
+        <source>Version</source>
+        <target state="final">Version</target>
+      </trans-unit>
+      <trans-unit id="tx_extensionmanager_domain_model_extension.title" resname="tx_extensionmanager_domain_model_extension.title" approved="yes">
+        <source>Title</source>
+        <target state="final">Titel</target>
+      </trans-unit>
+      <trans-unit id="tx_extensionmanager_domain_model_extension.description" resname="tx_extensionmanager_domain_model_extension.description" approved="yes">
+        <source>Description</source>
+        <target state="final">Beschreibung</target>
+      </trans-unit>
+      <trans-unit id="tx_extensionmanager_domain_model_extension.state" resname="tx_extensionmanager_domain_model_extension.state" approved="yes">
+        <source>State</source>
+        <target state="final">Status</target>
+      </trans-unit>
+      <trans-unit id="tx_extensionmanager_domain_model_extension.category" resname="tx_extensionmanager_domain_model_extension.category" approved="yes">
+        <source>Category</source>
+        <target state="final">Kategorie</target>
+      </trans-unit>
+      <trans-unit id="tx_extensionmanager_domain_model_extension.lastupdated" resname="tx_extensionmanager_domain_model_extension.lastupdated" approved="yes">
+        <source>Last Updated</source>
+        <target state="final">letzte Aktualisierung</target>
+      </trans-unit>
+      <trans-unit id="tx_extensionmanager_domain_model_extension.updatecomment" resname="tx_extensionmanager_domain_model_extension.updatecomment" approved="yes">
+        <source>Update Comment</source>
+        <target state="final">Aktualisierungskommentar</target>
+      </trans-unit>
+      <trans-unit id="tx_extensionmanager_domain_model_extension.authorname" resname="tx_extensionmanager_domain_model_extension.authorname" approved="yes">
+        <source>Author Name</source>
+        <target state="final">Name des Autors</target>
+      </trans-unit>
+      <trans-unit id="tx_extensionmanager_domain_model_extension.authoremail" resname="tx_extensionmanager_domain_model_extension.authoremail" approved="yes">
+        <source>Author Email</source>
+        <target state="final">E-Mailadresse des Autors</target>
+      </trans-unit>
+      <trans-unit id="tx_extensionmanager_domain_model_extension.md5hash" resname="tx_extensionmanager_domain_model_extension.md5hash" approved="yes">
+        <source>Md5 hash</source>
+        <target state="final">MD5-Hash</target>
+      </trans-unit>
+      <trans-unit id="tx_extensionmanager_domain_model_extension.reviewstate" resname="tx_extensionmanager_domain_model_extension.reviewstate" approved="yes">
+        <source>Review State</source>
+        <target state="final">Überprüfungsstatus</target>
+      </trans-unit>
+      <trans-unit id="tx_extensionmanager_domain_model_extension.integerversion" resname="tx_extensionmanager_domain_model_extension.integerversion" approved="yes">
+        <source>Integer Version</source>
+        <target state="final">Ganzzahlige Version</target>
+      </trans-unit>
+      <trans-unit id="tx_extensionmanager_domain_model_extension.currentversion" resname="tx_extensionmanager_domain_model_extension.currentversion" approved="yes">
+        <source>Current Version</source>
+        <target state="final">Aktuelle Version</target>
+      </trans-unit>
+      <trans-unit id="tx_extensionmanager_domain_model_extension.serializedDependencies" resname="tx_extensionmanager_domain_model_extension.serializedDependencies" approved="yes">
+        <source>Serialized dependencies</source>
+        <target state="final">Serialisierte Abhängigkeiten</target>
+      </trans-unit>
+      <trans-unit id="tx_extensionmanager_domain_model_extension.distribution_image" resname="tx_extensionmanager_domain_model_extension.distribution_image" approved="yes">
+        <source>Distribution image URL</source>
+        <target state="final">Bild URL der Distribution</target>
+      </trans-unit>
+      <trans-unit id="tx_extensionmanager_domain_model_extension.distribution_welcome_image" resname="tx_extensionmanager_domain_model_extension.distribution_welcome_image" approved="yes">
+        <source>Distribution welcome image URL</source>
+        <target state="final">URL des Willkommensbild für die Distribution</target>
+      </trans-unit>
+      <trans-unit id="tx_extensionmanager_domain_model_extension.remote" resname="tx_extensionmanager_domain_model_extension.remote" approved="yes">
+        <source>Remote</source>
+        <target state="final">Remote</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
