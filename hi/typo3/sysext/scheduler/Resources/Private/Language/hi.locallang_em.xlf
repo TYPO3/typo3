@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:scheduler/Resources/Private/Language/locallang_em.xlf" date="2011-10-17T20:22:32Z" product-name="scheduler" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="scheduler.config.maxLifetime" resname="scheduler.config.maxLifetime" approved="yes">
+        <source>Maximum lifetime: Enter the maximum lifetime (in minutes) of a scheduler task. If a task is still running after that time, it will be dropped from the execution list (but not stopped).</source>
+        <target state="final">अधिकतम जीवनकाल: एक स्केज़्यूलर टास्क का अधिकतम जीवनकाल (मिनटों में) दर्ज करें। यदि उस समय के बाद भी टास्क चल रहा है, तो इसे क्रियान्वयन सूची से हटा दिया जाएगा (लेकिन रोक नहीं किया जाएगा)।</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
