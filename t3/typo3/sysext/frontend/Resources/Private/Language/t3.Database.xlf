@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/Database.xlf" date="2014-02-07T20:22:32Z" product-name="frontend" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="tt_content.asset_references" resname="tt_content.asset_references">
+        <source>Media elements</source>
+        <target>crwdns219606:0crwdne219606:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.asset_references.addFileReference" resname="tt_content.asset_references.addFileReference">
+        <source>Add media file</source>
+        <target>crwdns219608:0crwdne219608:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.palette.gallerySettings" resname="tt_content.palette.gallerySettings">
+        <source>Gallery Settings</source>
+        <target>crwdns219610:0crwdne219610:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.palette.mediaAdjustments" resname="tt_content.palette.mediaAdjustments">
+        <source>Media Adjustments</source>
+        <target>crwdns219612:0crwdne219612:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.palette.mediaAdjustments.imagewidth" resname="tt_content.palette.mediaAdjustments.imagewidth">
+        <source>Width of each element (px)</source>
+        <target>crwdns219614:0crwdne219614:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.palette.mediaAdjustments.imageheight" resname="tt_content.palette.mediaAdjustments.imageheight">
+        <source>Height of each element (px)</source>
+        <target>crwdns219616:0crwdne219616:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.palette.mediaAdjustments.imageborder" resname="tt_content.palette.mediaAdjustments.imageborder">
+        <source>Border around each element</source>
+        <target>crwdns219618:0crwdne219618:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.uploads_description" resname="tt_content.uploads_description">
+        <source>Display description</source>
+        <target>crwdns219620:0crwdne219620:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.uploads_type" resname="tt_content.uploads_type">
+        <source>Display file/icon/thumbnail</source>
+        <target>crwdns219622:0crwdne219622:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.uploads_type.0" resname="tt_content.uploads_type.0">
+        <source>Only file name</source>
+        <target>crwdns219624:0crwdne219624:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.uploads_type.1" resname="tt_content.uploads_type.1">
+        <source>File name and file extension icon</source>
+        <target>crwdns219626:0crwdne219626:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.uploads_type.2" resname="tt_content.uploads_type.2">
+        <source>File name and thumbnail (if possible)</source>
+        <target>crwdns219628:0crwdne219628:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.table_class" resname="tt_content.table_class">
+        <source>Table style</source>
+        <target>crwdns219630:0crwdne219630:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.table_class.default" resname="tt_content.table_class.default">
+        <source>Default</source>
+        <target>crwdns219632:0crwdne219632:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.table_class.striped" resname="tt_content.table_class.striped">
+        <source>Striped</source>
+        <target>crwdns219634:0crwdne219634:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.table_class.bordered" resname="tt_content.table_class.bordered">
+        <source>Bordered</source>
+        <target>crwdns219636:0crwdne219636:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.table_caption" resname="tt_content.table_caption">
+        <source>Table caption</source>
+        <target>crwdns219638:0crwdne219638:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.table_delimiter" resname="tt_content.table_delimiter">
+        <source>Field Delimiter</source>
+        <target>crwdns219640:0crwdne219640:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.table_delimiter.124" resname="tt_content.table_delimiter.124">
+        <source>| (Pipe)</source>
+        <target>crwdns219642:0crwdne219642:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.table_delimiter.59" resname="tt_content.table_delimiter.59">
+        <source>; (Semicolon)</source>
+        <target>crwdns219644:0crwdne219644:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.table_delimiter.58" resname="tt_content.table_delimiter.58">
+        <source>: (Colon)</source>
+        <target>crwdns219646:0crwdne219646:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.table_delimiter.44" resname="tt_content.table_delimiter.44">
+        <source>, (Comma)</source>
+        <target>crwdns219648:0crwdne219648:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.table_delimiter.9" resname="tt_content.table_delimiter.9">
+        <source>⇥ (Tab)</source>
+        <target>crwdns219650:0crwdne219650:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.table_enclosure" resname="tt_content.table_enclosure">
+        <source>Text enclosure</source>
+        <target>crwdns219652:0crwdne219652:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.table_enclosure.0" resname="tt_content.table_enclosure.0">
+        <source>None</source>
+        <target>crwdns219654:0crwdne219654:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.table_enclosure.39" resname="tt_content.table_enclosure.39">
+        <source>' (Single quotes)</source>
+        <target>crwdns219656:0crwdne219656:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.table_enclosure.34" resname="tt_content.table_enclosure.34">
+        <source>" (Double quotes)</source>
+        <target>crwdns219658:0crwdne219658:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.table_header_position" resname="tt_content.table_header_position">
+        <source>Table header position</source>
+        <target>crwdns219660:0crwdne219660:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.table_header_position.0" resname="tt_content.table_header_position.0">
+        <source>No header</source>
+        <target>crwdns219662:0crwdne219662:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.table_header_position.1" resname="tt_content.table_header_position.1">
+        <source>Top</source>
+        <target>crwdns219664:0crwdne219664:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.table_header_position.2" resname="tt_content.table_header_position.2">
+        <source>Left</source>
+        <target>crwdns219666:0crwdne219666:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.table_tfoot" resname="tt_content.table_tfoot">
+        <source>Use table footer (wrap last row with &lt;tfoot&gt; tags)</source>
+        <target>crwdns219668:0crwdne219668:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
