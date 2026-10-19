@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:impexp/Resources/Private/Language/locallang_tca.xlf" date="2020-09-19T08:53:36Z" product-name="impexp" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="tx_impexp_presets" resname="tx_impexp_presets" xml:space="preserve" approved="yes">
+				<source>Export Configuration</source>
+			<target state="final">Export-Konfiguration</target></trans-unit>
+      <trans-unit id="title" resname="title" xml:space="preserve" approved="yes">
+				<source>Title</source>
+			<target state="final">Titel</target></trans-unit>
+      <trans-unit id="public" resname="public" xml:space="preserve" approved="yes">
+				<source>Public</source>
+			<target state="final">Öffentlich</target></trans-unit>
+      <trans-unit id="user_uid" resname="user_uid" xml:space="preserve" approved="yes">
+				<source>Owner</source>
+			<target state="final">Besitzer</target></trans-unit>
+      <trans-unit id="item_uid" resname="item_uid" xml:space="preserve" approved="yes">
+				<source>Page Root</source>
+			<target state="final">Root-Seite</target></trans-unit>
+      <trans-unit id="preset_data" resname="preset_data" xml:space="preserve" approved="yes">
+				<source>Configuration</source>
+			<target state="final">Konfiguration</target></trans-unit>
+    </body>
+  </file>
+</xliff>
