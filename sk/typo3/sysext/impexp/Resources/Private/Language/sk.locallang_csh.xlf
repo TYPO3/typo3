@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:impexp/Resources/Private/Language/locallang_csh.xlf" date="2011-10-17T20:22:33Z" product-name="impexp" target-language="sk">
+    <header/>
+    <body>
+      <trans-unit id=".image_descr" resname=".image_descr" approved="yes">
+        <source>Example of the preview display during export configuration of a page. Notice how records on the page are include plus how references inside the record is found and included as well (bottom of screen).</source>
+        <target state="final">Príklad zobrazujúci obrazovku počas konfigurácie exportu stránky. Opisuje ako sa záznami stránky zahŕňajú do exportu a ako sa nájdu referencie vnútri záznamov (spodok obrazovky).</target>
+      </trans-unit>
+      <trans-unit id="export.alttitle" resname="export.alttitle" approved="yes">
+        <source>Exporting records from TYPO3</source>
+        <target state="final">Exportujem záznamy z TYPO3</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
