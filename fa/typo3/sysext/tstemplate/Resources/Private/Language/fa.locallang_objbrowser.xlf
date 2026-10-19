@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf" date="2011-10-17T20:22:37Z" product-name="tstemplate" target-language="fa">
+    <header/>
+    <body>
+      <trans-unit id="constants" resname="constants" approved="yes">
+        <source>Constants</source>
+        <target state="final">مقادیر ثابت</target>
+      </trans-unit>
+      <trans-unit id="setup" resname="setup" approved="yes">
+        <source>Setup</source>
+        <target state="final">برپاسازی</target>
+      </trans-unit>
+      <trans-unit id="all" resname="all" approved="yes">
+        <source>All</source>
+        <target state="final">همه</target>
+      </trans-unit>
+      <trans-unit id="plainSubstitution" resname="plainSubstitution" approved="yes">
+        <source>Plain substitution (default)</source>
+        <target state="final">جایگزینی ساده (پیش‌فرض)</target>
+      </trans-unit>
+      <trans-unit id="substitutedGreen" resname="substitutedGreen" approved="yes">
+        <source>Substituted constants in green</source>
+        <target state="final">مقادیر ثابت جایگزین شده با رنگ سبز</target>
+      </trans-unit>
+      <trans-unit id="unsubstitutedGreen" resname="unsubstitutedGreen" approved="yes">
+        <source>UN-substituted constants in green</source>
+        <target state="final">مقادیر ثابت جایگزین -نشده- با رنگ سبز</target>
+      </trans-unit>
+      <trans-unit id="currentTemplate" resname="currentTemplate" approved="yes">
+        <source>Current template</source>
+        <target state="final">قالب فعلی</target>
+      </trans-unit>
+      <trans-unit id="badProperty" resname="badProperty" approved="yes">
+        <source>Bad property!</source>
+        <target state="final">ویژگی اشتباه!</target>
+      </trans-unit>
+      <trans-unit id="noSpaces" resname="noSpaces" approved="yes">
+        <source>You must enter a property with characters a-z, A-Z and 0-9, no spaces!</source>
+        <target state="final">شما باید یک ویژگی با استفاده از حروف الفبای (در انگلیسی کوچک و بزرگ) به همراه اعداد و بدون فاصله تعیین نمائید!</target>
+      </trans-unit>
+      <trans-unit id="nothingUpdated" resname="nothingUpdated" approved="yes">
+        <source>Nothing was updated!</source>
+        <target state="final">چیزی به‌روزرسانی نشد!</target>
+      </trans-unit>
+      <trans-unit id="propertyAdded" resname="propertyAdded" approved="yes">
+        <source>Property added</source>
+        <target state="final">ویژگی اضافه شد</target>
+      </trans-unit>
+      <trans-unit id="valueUpdated" resname="valueUpdated" approved="yes">
+        <source>Value updated</source>
+        <target state="final">مقدار روزآمد شد</target>
+      </trans-unit>
+      <trans-unit id="objectCleared" resname="objectCleared" approved="yes">
+        <source>Object cleared</source>
+        <target state="final">شیء پاک شد</target>
+      </trans-unit>
+      <trans-unit id="clear" resname="clear" approved="yes">
+        <source>Clear?</source>
+        <target state="final">پاک کردن؟</target>
+      </trans-unit>
+      <trans-unit id="clearButton" resname="clearButton" approved="yes">
+        <source>Clear</source>
+        <target state="final">پاک کردن</target>
+      </trans-unit>
+      <trans-unit id="noCurrentTemplate" resname="noCurrentTemplate" approved="yes">
+        <source>You cannot edit properties and values, if there's no current template.</source>
+        <target state="final">شما امکان ویرایش ویژگی‌ها و مقادیر را در صورت عدم وجود قالب فعلی ندارید.</target>
+      </trans-unit>
+      <trans-unit id="addKey" resname="addKey" approved="yes">
+        <source>Add key &quot;%s&quot; to Object List</source>
+        <target state="final">اضافه کردن کلید "%s" به فهرست اشیاء</target>
+      </trans-unit>
+      <trans-unit id="back" resname="back" approved="yes">
+        <source>Back</source>
+        <target state="final">بازگشت</target>
+      </trans-unit>
+      <trans-unit id="regExp" resname="regExp" approved="yes">
+        <source>Regular expressions</source>
+        <target state="final">عبارات باقاعده</target>
+      </trans-unit>
+      <trans-unit id="errorsWarnings" resname="errorsWarnings" approved="yes">
+        <source>Errors and warnings</source>
+        <target state="final">خطاها و هشدارها</target>
+      </trans-unit>
+      <trans-unit id="errorShowDetails" resname="errorShowDetails" approved="yes">
+        <source>Show details</source>
+        <target state="final">نمایش جزئیات</target>
+      </trans-unit>
+      <trans-unit id="removeKey" resname="removeKey" approved="yes">
+        <source>Remove key from OL</source>
+        <target state="final">حذف کلید از OL</target>
+      </trans-unit>
+      <trans-unit id="setupRoot" resname="setupRoot" approved="yes">
+        <source>setup root</source>
+        <target state="final">ریشۀ برپاسازی</target>
+      </trans-unit>
+      <trans-unit id="constantRoot" resname="constantRoot" approved="yes">
+        <source>constants root</source>
+        <target state="final">ریشۀ مقادیر ثابت</target>
+      </trans-unit>
+      <trans-unit id="sortAlphabetically" resname="sortAlphabetically" approved="yes">
+        <source>Sort alphabetically</source>
+        <target state="final">مرتب کردن بر حسب حروف الفبا</target>
+      </trans-unit>
+      <trans-unit id="cropLines" resname="cropLines" approved="yes">
+        <source>Crop lines</source>
+        <target state="final">برش سطور</target>
+      </trans-unit>
+      <trans-unit id="displayOptions" resname="displayOptions" approved="yes">
+        <source>Display options</source>
+        <target state="final">گزینه‌های نمایش</target>
+      </trans-unit>
+      <trans-unit id="conditions" resname="conditions" approved="yes">
+        <source>Conditions</source>
+        <target state="final">شرایط</target>
+      </trans-unit>
+      <trans-unit id="setConditions" resname="setConditions" approved="yes">
+        <source>Set conditions</source>
+        <target state="final">تعیین شرایط</target>
+      </trans-unit>
+      <trans-unit id="severity.1" resname="severity.1" approved="yes">
+        <source>Info</source>
+        <target state="final">اطلاعات</target>
+      </trans-unit>
+      <trans-unit id="severity.2" resname="severity.2" approved="yes">
+        <source>Warning</source>
+        <target state="final">هشدار</target>
+      </trans-unit>
+      <trans-unit id="severity.3" resname="severity.3" approved="yes">
+        <source>Error</source>
+        <target state="final">خطا</target>
+      </trans-unit>
+      <trans-unit id="error.1446559458" resname="error.1446559458" approved="yes">
+        <source>Error evaluating regular expression "%s".</source>
+        <target state="final">خطا در اعتباردهی عبارت باقاعدۀ "%s".</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
