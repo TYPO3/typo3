@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:sys_note/Resources/Private/Language/locallang_csh_sysnote.xlf" date="2011-10-17T20:22:37Z" product-name="sys_note" target-language="sk">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>Internal reminder note attached to a page.</source>
+        <target state="final">Interná poznámka k stránke.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" approved="yes">
+        <source>This provides a simple way to attach informative notes to a page regarding backend-related issues. Use it as you like for reminders, instructions, etc.</source>
+        <target state="final">Umožňuje jednoduchú funkciu ako pridať informačné poznámky k stránke týkajúce sa backendových problémov. Môžete ich použiť ako potrebujete na pripomienky, inštrukcie a pod.</target>
+      </trans-unit>
+      <trans-unit id="_.seeAlso" resname="_.seeAlso" approved="yes">
+        <source>pages</source>
+        <target state="final">stránky</target>
+      </trans-unit>
+      <trans-unit id="category.description" resname="category.description" approved="yes">
+        <source>Select a category which describes the character of the note.</source>
+        <target state="final">Vyberte kategóriu, ktorá popisuje vastnosti poznámky.</target>
+      </trans-unit>
+      <trans-unit id="subject.description" resname="subject.description" approved="yes">
+        <source>Enter a title for the note.</source>
+        <target state="final">Zadajte nadpis poznámky.</target>
+      </trans-unit>
+      <trans-unit id="message.description" resname="message.description" approved="yes">
+        <source>This is the note itself.</source>
+        <target state="final">Toto je samotné poznámka.</target>
+      </trans-unit>
+      <trans-unit id="author.description" resname="author.description" approved="yes">
+        <source>Enter your name.</source>
+        <target state="final">Zadajte svoje meno.</target>
+      </trans-unit>
+      <trans-unit id="email.description" resname="email.description" approved="yes">
+        <source>Enter your email address.</source>
+        <target state="final">Zadajte vašu emailovú adresu.</target>
+      </trans-unit>
+      <trans-unit id="personal.description" resname="personal.description" approved="yes">
+        <source>Check this if you don't want other users to see this note.</source>
+        <target state="final">Zašktnite toto, ak nechcete aby ostatní užívatelia videli túto poznámku.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
