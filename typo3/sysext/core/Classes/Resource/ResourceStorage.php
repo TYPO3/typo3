@@ -2241,6 +2241,16 @@ class ResourceStorage implements ResourceStorageInterface
     public function copyFolder(FolderInterface $folderToCopy, FolderInterface $targetParentFolder, ?string $newFolderName = null, DuplicationBehavior $conflictMode = DuplicationBehavior::RENAME): Folder
     {
         $this->assureFolderCopyPermissions($folderToCopy, $targetParentFolder);
+        if ($folderToCopy instanceof Folder && $folderToCopy->getStorage() === $this && $this->isWithinFolder($folderToCopy, $targetParentFolder)) {
+            throw new InvalidTargetFolderException(
+                sprintf(
+                    'Cannot copy folder "%s" into target folder "%s", because the target folder is the folder itself or within it!',
+                    $folderToCopy->getIdentifier(),
+                    $targetParentFolder->getIdentifier()
+                ),
+                1792390364
+            );
+        }
         $returnObject = null;
         $sanitizedNewFolderName = $this->driver->sanitizeFileName($newFolderName ?: $folderToCopy->getName());
         if ($folderToCopy instanceof Folder && $targetParentFolder instanceof Folder) {

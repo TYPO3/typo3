@@ -6,6 +6,9 @@
       <trans-unit id="FileUtility.CannotCopyFolderIntoTargetFolderBecauseTheTargetFolderIsAlreadyWithinTheFolderToBeCopied">
         <source>Folder "%s" cannot be copied because the destination already contains a folder or file named "%s".</source>
       </trans-unit>
+      <trans-unit id="FileUtility.CannotCopyFolderIntoItsOwnSubfolder">
+        <source>Folder "%s" cannot be copied to "%s", which is the folder itself or one of its subfolders.</source>
+      </trans-unit>
       <trans-unit id="FileUtility.CannotMoveFolderIntoTargetFolderBecauseTheTargetFolderIsAlreadyWithinTheFolderToBeMoved">
         <source>Folder "%s" cannot be moved to "%s" because source and destination are identical.</source>
       </trans-unit>

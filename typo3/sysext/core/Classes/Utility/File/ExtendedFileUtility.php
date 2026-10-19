@@ -631,6 +631,11 @@ class ExtendedFileUtility extends BasicFileUtility
         } else {
             // Else means this is a Folder
             $sourceFolderObject = $sourceFileObject;
+            if ($sourceFolderObject->getStorage()->isWithinFolder($sourceFolderObject, $targetFolderObject)) {
+                $this->writeLog(SystemLogFileAction::COPY, SystemLogErrorClassification::USER_ERROR, 'Copy failed: destination "{destination}" is the directory "{identifier}" to be copied or within it', ['identifier' => $sourceFolderObject->getIdentifier(), 'destination' => $targetFolderObject->getIdentifier()]);
+                $this->addMessageToFlashMessageQueue('FileUtility.CannotCopyFolderIntoItsOwnSubfolder', [$sourceFolderObject->getIdentifier(), $targetFolderObject->getIdentifier()]);
+                return false;
+            }
             try {
                 $resultObject = $sourceFolderObject->copyTo($targetFolderObject, null, $conflictMode);
             } catch (InsufficientUserPermissionsException $e) {

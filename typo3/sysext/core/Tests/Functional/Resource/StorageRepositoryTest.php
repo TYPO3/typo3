@@ -545,6 +545,34 @@ final class StorageRepositoryTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function copyFolderThrowsErrorWhenTargetFolderIsWithinFolderToCopy(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->setUpBackendUser(1);
+        $subject = $this->get(StorageRepository::class)->findByUid(1);
+        mkdir(Environment::getPublicPath() . '/fileadmin/foo/sub', 0777, true);
+        $folderToCopy = $this->get(ResourceFactory::class)->getFolderObjectFromCombinedIdentifier('1:/foo');
+        $targetParentFolder = $this->get(ResourceFactory::class)->getFolderObjectFromCombinedIdentifier('1:/foo/sub');
+        $this->expectException(InvalidTargetFolderException::class);
+        $this->expectExceptionCode(1792390364);
+        $subject->copyFolder($folderToCopy, $targetParentFolder);
+    }
+
+    #[Test]
+    public function copyFolderReportsTargetWithinFolderToCopyBeforeNameConflict(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->setUpBackendUser(1);
+        $subject = $this->get(StorageRepository::class)->findByUid(1);
+        mkdir(Environment::getPublicPath() . '/fileadmin/foo/sub/foo', 0777, true);
+        $folderToCopy = $this->get(ResourceFactory::class)->getFolderObjectFromCombinedIdentifier('1:/foo');
+        $targetParentFolder = $this->get(ResourceFactory::class)->getFolderObjectFromCombinedIdentifier('1:/foo/sub');
+        $this->expectException(InvalidTargetFolderException::class);
+        $this->expectExceptionCode(1792390364);
+        $subject->copyFolder($folderToCopy, $targetParentFolder, null, DuplicationBehavior::CANCEL);
+    }
+
+    #[Test]
     public function copyFileThrowsErrorWhenFileWithSameNameAlreadyExistsInTargetFolderAndConflictModeIsCancel(): void
     {
         $conflictMode = DuplicationBehavior::CANCEL;
