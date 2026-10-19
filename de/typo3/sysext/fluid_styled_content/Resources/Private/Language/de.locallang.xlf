@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:fluid_styled_content/Resources/Private/Language/locallang.xlf" date="2014-02-07T20:22:32Z" product-name="fluid_styled_content" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="toTop" resname="toTop" approved="yes">
+        <source>To top</source>
+        <target state="final">Nach oben</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
