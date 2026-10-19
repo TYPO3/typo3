@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf" date="2017-12-29T20:23:34Z" product-name="redirects" target-language="sv-SE">
+    <header/>
+    <body>
+      <trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel" approved="yes">
+        <source>Redirect Administration</source>
+        <target state="final">Omdirigeringsadministration</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr" approved="yes">
+        <source>This is the administration area for Web Redirects.</source>
+        <target state="final">Detta är administrationssektionen för Webbomdirigeringar</target>
+      </trans-unit>
+      <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab" approved="yes">
+        <source>Redirects</source>
+        <target state="final">Omdirigeringar</target>
+      </trans-unit>
+      <trans-unit id="source_host_global_text" resname="source_host_global_text" approved="yes">
+        <source>Global redirect (any domain)</source>
+        <target state="final">Global omdirigering (oavsett domän)</target>
+      </trans-unit>
+      <trans-unit id="heading_text" resname="heading_text" approved="yes">
+        <source>Redirect Management</source>
+        <target state="final">Omdirigeringshantering</target>
+      </trans-unit>
+      <trans-unit id="redirect_add_text" resname="redirect_add_text" approved="yes">
+        <source>Add redirect</source>
+        <target state="final">Lägg till omdirigering</target>
+      </trans-unit>
+      <trans-unit id="redirect_not_found.title" resname="redirect_not_found.title" approved="yes">
+        <source>No redirects found!</source>
+        <target state="final">Inga omdirigeringar hittades!</target>
+      </trans-unit>
+      <trans-unit id="redirect_not_found.message" resname="redirect_not_found.message" approved="yes">
+        <source>There are currently no redirect records found in the database.</source>
+        <target state="final">Inga omdirigeringsposter för närvarande i databasen.</target>
+      </trans-unit>
+      <trans-unit id="redirect_create" resname="redirect_create" approved="yes">
+        <source>Create new redirect</source>
+        <target state="final">Skapa ny omdirigering</target>
+      </trans-unit>
+      <trans-unit id="redirect_not_found_with_filter.title" resname="redirect_not_found_with_filter.title" approved="yes">
+        <source>No redirects found!</source>
+        <target state="final">Inga omdirigeringar hittades!</target>
+      </trans-unit>
+      <trans-unit id="filter.targetStatusCode" resname="filter.targetStatusCode" approved="yes">
+        <source>Status Code</source>
+        <target state="final">Statuskod</target>
+      </trans-unit>
+      <trans-unit id="record_disabled" resname="record_disabled" approved="yes">
+        <source>Redirect is not activated!</source>
+        <target state="final">Omdirigering är ej aktiverat</target>
+      </trans-unit>
+      <trans-unit id="source_host" resname="source_host" approved="yes">
+        <source>Source Host</source>
+        <target state="final">Källvärd</target>
+      </trans-unit>
+      <trans-unit id="source_path" resname="source_path" approved="yes">
+        <source>Source Path</source>
+        <target state="final">Källsökväg</target>
+      </trans-unit>
+      <trans-unit id="destination" resname="destination" approved="yes">
+        <source>Destination</source>
+        <target state="final">Destination</target>
+      </trans-unit>
+      <trans-unit id="destination_status_code" resname="destination_status_code" approved="yes">
+        <source>Status Code</source>
+        <target state="final">Statuskod</target>
+      </trans-unit>
+      <trans-unit id="hits" resname="hits" approved="yes">
+        <source>Hits</source>
+        <target state="final">Träffar</target>
+      </trans-unit>
+      <trans-unit id="hit_text" resname="hit_text" approved="yes">
+        <source>%s hit</source>
+        <target state="final">%s träff</target>
+      </trans-unit>
+      <trans-unit id="hits_text" resname="hits_text" approved="yes">
+        <source>%s hits</source>
+        <target state="final">%s träffar</target>
+      </trans-unit>
+      <trans-unit id="hit_reset" resname="hit_reset" approved="yes">
+        <source>Reset Hit Counter (!)</source>
+        <target state="final">Nollställ Träffräknaren (!)</target>
+      </trans-unit>
+      <trans-unit id="hit_reset.confirm.title" resname="hit_reset.confirm.title" approved="yes">
+        <source>Reset the hitcounter of this record?</source>
+        <target state="final">Nollställ träffräknaren för denna post?</target>
+      </trans-unit>
+      <trans-unit id="hit_reset.confirm.content" resname="hit_reset.confirm.content" approved="yes">
+        <source>Are you sure you want to reset the hitcounter of this record?</source>
+        <target state="final">Är du säker på att du vill nollställa träffräknaren för denna post?</target>
+      </trans-unit>
+      <trans-unit id="hit_last" resname="hit_last" approved="yes">
+        <source>Last Hit on</source>
+        <target state="final">Senaste träffen den</target>
+      </trans-unit>
+      <trans-unit id="hit_last_never" resname="hit_last_never" approved="yes">
+        <source>Never</source>
+        <target state="final">Aldrig</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
