@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:indexed_search/Resources/Private/Language/locallang_db.xlf" date="2011-10-17T20:22:33Z" product-name="indexed_search" target-language="sk">
+    <header/>
+    <body>
+      <trans-unit id="index_config" resname="index_config" approved="yes">
+        <source>Indexing Configuration</source>
+        <target state="final">Konfigurácia indexovania:</target>
+      </trans-unit>
+      <trans-unit id="index_config.type.I.1" resname="index_config.type.I.1" approved="yes">
+        <source>Database Records</source>
+        <target state="final">Záznamy databázy</target>
+      </trans-unit>
+      <trans-unit id="index_config.type.I.2" resname="index_config.type.I.2" approved="yes">
+        <source>Filepath on server</source>
+        <target state="final">Cesta k súborom na servri</target>
+      </trans-unit>
+      <trans-unit id="index_config.type.I.3" resname="index_config.type.I.3" approved="yes">
+        <source>External URL</source>
+        <target state="final">Externá URL</target>
+      </trans-unit>
+      <trans-unit id="index_config.type.I.4" resname="index_config.type.I.4" approved="yes">
+        <source>Page tree</source>
+        <target state="final">Strom stránok</target>
+      </trans-unit>
+      <trans-unit id="index_config.type.I.5" resname="index_config.type.I.5" approved="yes">
+        <source>Meta configuration</source>
+        <target state="final">Meta konfigurácia</target>
+      </trans-unit>
+      <trans-unit id="index_config.url_deny" resname="index_config.url_deny" approved="yes">
+        <source>Enter sub-URLs in which not to decend</source>
+        <target state="final">Vložte pod-URL, které chcete zakázať:</target>
+      </trans-unit>
+      <trans-unit id="index_config.timer_next_indexing" resname="index_config.timer_next_indexing" approved="yes">
+        <source>Next indexing is scheduled (if empty, then immediately)</source>
+        <target state="final">Nasledujúce indexovanie je naplánované (pokiaľ nie je vyplnené, tak okamžite):</target>
+      </trans-unit>
+      <trans-unit id="index_config.timer_frequency.I.0" resname="index_config.timer_frequency.I.0" approved="yes">
+        <source>Every hour</source>
+        <target state="final">Každú hodinu</target>
+      </trans-unit>
+      <trans-unit id="index_config.timer_frequency.I.1" resname="index_config.timer_frequency.I.1" approved="yes">
+        <source>Every day (24 hours)</source>
+        <target state="final">Každý deň (24 hodín)</target>
+      </trans-unit>
+      <trans-unit id="index_config.timer_frequency.I.2" resname="index_config.timer_frequency.I.2" approved="yes">
+        <source>Every week</source>
+        <target state="final">Každý týždeň</target>
+      </trans-unit>
+      <trans-unit id="index_config.set_id" resname="index_config.set_id" approved="yes">
+        <source>Session ID (if &gt; zero, then indexing job is running)</source>
+        <target state="final">Session ID (pokiaľ &gt; nula, tak beží indexovanie):</target>
+      </trans-unit>
+      <trans-unit id="index_config.parameterCfgs" resname="index_config.parameterCfgs" approved="yes">
+        <source>Parameter combination configuration ([tablename]:&amp;[param]=###UID###)</source>
+        <target state="final">Kombinácia parametrov konfigurácie ([tablename]:&amp;[param]=###UID###):</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
