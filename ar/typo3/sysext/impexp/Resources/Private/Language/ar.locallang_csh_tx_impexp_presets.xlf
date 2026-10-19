@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:impexp/Resources/Private/Language/locallang_csh_tx_impexp_presets.xlf" date="2020-09-19T09:17:55Z" product-name="impexp" target-language="ar">
+    <header/>
+    <body>
+      <trans-unit id="title.description" resname="title.description" xml:space="preserve" approved="yes">
+				<source>This title should describe in short what this TYPO3 export configuration is about.</source>
+			<target state="final">ينبغي أن يصف هذا العنوان باختصار ما هو موضوع تكوين تصدير TYPO3.</target></trans-unit>
+      <trans-unit id="public.description" resname="public.description" xml:space="preserve" approved="yes">
+				<source>If this export configuration has public access granted, all backend users can use it. If not public, only the owner can select it.</source>
+			<target state="final">إذا كان هذا التكوين للتصدير ممنوحاً للوصول العام، يمكن لجميع مستخدمي الواجهة الخلفية استخدامه. إذا لم يكن عاماً، يمكن للمالك فقط اختياره.</target></trans-unit>
+      <trans-unit id="user_uid.description" resname="user_uid.description" xml:space="preserve" approved="yes">
+				<source>The user ID of the configuration owner.</source>
+			<target state="final">ID المستخدم لمالك الإعدادات.</target></trans-unit>
+      <trans-unit id="item_uid.description" resname="item_uid.description" xml:space="preserve" approved="yes">
+				<source>The root page ID of the page tree that will be exported. Please edit only if you know what you are doing.</source>
+			<target state="final">ID الصفحة الجذر من شجرة الصفحة التي سيتم تصديرها. الرجاء التعديل فقط إذا كنت تعرف ما تقوم به.</target></trans-unit>
+      <trans-unit id="preset_data.description" resname="preset_data.description" xml:space="preserve" approved="yes">
+				<source>Technical insights of the export configuration. Please edit only if you know what you are doing.</source>
+			<target state="final">الرؤى الفنية لتكوين التصدير. يرجى التعديل فقط إذا كنت تعرف ما تقوم به.</target></trans-unit>
+    </body>
+  </file>
+</xliff>
