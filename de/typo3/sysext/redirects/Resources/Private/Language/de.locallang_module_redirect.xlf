@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf" date="2017-12-29T20:23:34Z" product-name="redirects" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel" approved="yes">
+        <source>Redirect Administration</source>
+        <target state="final">Weiterleitungsverwaltung</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr" approved="yes">
+        <source>This is the administration area for Web Redirects.</source>
+        <target state="final">Das ist der Verwaltungsbereich für Weiterleitungen.</target>
+      </trans-unit>
+      <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab" approved="yes">
+        <source>Redirects</source>
+        <target state="final">Weiterleitungen</target>
+      </trans-unit>
+      <trans-unit id="source_host_global_text" resname="source_host_global_text" approved="yes">
+        <source>Global redirect (any domain)</source>
+        <target state="final">Globale Weiterleitungen (beliebige Domain)</target>
+      </trans-unit>
+      <trans-unit id="heading_text" resname="heading_text" approved="yes">
+        <source>Redirect Management</source>
+        <target state="final">Weiterleitungsverwaltung</target>
+      </trans-unit>
+      <trans-unit id="redirect_add_text" resname="redirect_add_text" approved="yes">
+        <source>Add redirect</source>
+        <target state="final">Weiterleitung hinzufügen</target>
+      </trans-unit>
+      <trans-unit id="redirect_not_found.title" resname="redirect_not_found.title" approved="yes">
+        <source>No redirects found!</source>
+        <target state="final">Keine Weiterleitungen gefunden!</target>
+      </trans-unit>
+      <trans-unit id="redirect_not_found.message" resname="redirect_not_found.message" approved="yes">
+        <source>There are currently no redirect records found in the database.</source>
+        <target state="final">Momentan existieren keine Weiterleitungsdatensätze in der Datenbank.</target>
+      </trans-unit>
+      <trans-unit id="redirect_create" resname="redirect_create" approved="yes">
+        <source>Create new redirect</source>
+        <target state="final">Neue Weiterleitung erstellen</target>
+      </trans-unit>
+      <trans-unit id="redirect_not_found_with_filter.title" resname="redirect_not_found_with_filter.title" approved="yes">
+        <source>No redirects found!</source>
+        <target state="final">Keine Weiterleitungen gefunden!</target>
+      </trans-unit>
+      <trans-unit id="redirect_not_found_with_filter.message" resname="redirect_not_found_with_filter.message" approved="yes">
+        <source>With the current set of filters applied, no redirect could be found.</source>
+        <target state="final">Mit dem aktuell angewandten Filtern konnten keine Weiterleitungen gefunden werden.</target>
+      </trans-unit>
+      <trans-unit id="redirect_no_filter" resname="redirect_no_filter" approved="yes">
+        <source>Remove all filter</source>
+        <target state="final">Alle Filter entfernen</target>
+      </trans-unit>
+      <trans-unit id="filter.source_host.showAll" resname="filter.source_host.showAll" approved="yes">
+        <source>Show All</source>
+        <target state="final">Alle anzeigen</target>
+      </trans-unit>
+      <trans-unit id="filter.destination" resname="filter.destination" approved="yes">
+        <source>Destination (Path or Page ID)</source>
+        <target state="final">Ziel (Pfad oder Seiten-ID)</target>
+      </trans-unit>
+      <trans-unit id="filter.targetStatusCode" resname="filter.targetStatusCode" approved="yes">
+        <source>Status Code</source>
+        <target state="final">Statuscode</target>
+      </trans-unit>
+      <trans-unit id="filter.neverHit" resname="filter.neverHit" approved="yes">
+        <source>Never hit</source>
+        <target state="final">Niemals aufgerufen</target>
+      </trans-unit>
+      <trans-unit id="filter.sendButton" resname="filter.sendButton" approved="yes">
+        <source>Filter</source>
+        <target state="final">Filter</target>
+      </trans-unit>
+      <trans-unit id="filter.resetButton" resname="filter.resetButton" approved="yes">
+        <source>Reset</source>
+        <target state="final">Zurücksetzen</target>
+      </trans-unit>
+      <trans-unit id="record_disabled" resname="record_disabled" approved="yes">
+        <source>Redirect is not activated!</source>
+        <target state="final">Die Weiterleitung ist nicht aktiviert!</target>
+      </trans-unit>
+      <trans-unit id="source_host" resname="source_host" approved="yes">
+        <source>Source Host</source>
+        <target state="final">Quellrechner</target>
+      </trans-unit>
+      <trans-unit id="source_path" resname="source_path" approved="yes">
+        <source>Source Path</source>
+        <target state="final">Quellpfad</target>
+      </trans-unit>
+      <trans-unit id="source_path.placeholder" resname="source_path.placeholder" approved="yes">
+        <source>/my-path/ or #^/my-path/$# (when regex enabled)</source>
+        <target state="final">/mein-pfad/ oder #^/mein-pfad/$# (wenn Regex aktiviert)</target>
+      </trans-unit>
+      <trans-unit id="destination" resname="destination" approved="yes">
+        <source>Destination</source>
+        <target state="final">Ziel</target>
+      </trans-unit>
+      <trans-unit id="pageID" resname="pageID" approved="yes">
+        <source>Page ID</source>
+        <target state="final">Seiten-ID</target>
+      </trans-unit>
+      <trans-unit id="destination_status_code" resname="destination_status_code" approved="yes">
+        <source>Status Code</source>
+        <target state="final">Statuscode</target>
+      </trans-unit>
+      <trans-unit id="hits" resname="hits" approved="yes">
+        <source># Hits</source>
+        <target state="final"># Treffer</target>
+      </trans-unit>
+      <trans-unit id="hit_text" resname="hit_text" approved="yes">
+        <source>%s hit</source>
+        <target state="final">%s Treffer</target>
+      </trans-unit>
+      <trans-unit id="hits_text" resname="hits_text" approved="yes">
+        <source>%s hits</source>
+        <target state="final">%s Treffer</target>
+      </trans-unit>
+      <trans-unit id="hit_reset" resname="hit_reset" approved="yes">
+        <source>Reset Hit Counter (!)</source>
+        <target state="final">Trefferzähler zurücksetzen(!)</target>
+      </trans-unit>
+      <trans-unit id="hit_reset.confirm.title" resname="hit_reset.confirm.title" approved="yes">
+        <source>Reset the hitcounter of this record?</source>
+        <target state="final">Trefferzähler für diesen Datensatz zurücksetzen?</target>
+      </trans-unit>
+      <trans-unit id="hit_reset.confirm.content" resname="hit_reset.confirm.content" approved="yes">
+        <source>Are you sure you want to reset the hitcounter of this record?</source>
+        <target state="final">Trefferzähler für diesen Datensatz tatsächlich zurücksetzen?</target>
+      </trans-unit>
+      <trans-unit id="hit_last" resname="hit_last" approved="yes">
+        <source>Last Hit on</source>
+        <target state="final">Letzter Treffer am</target>
+      </trans-unit>
+      <trans-unit id="hit_last_never" resname="hit_last_never" approved="yes">
+        <source>Never</source>
+        <target state="final">Nie</target>
+      </trans-unit>
+      <trans-unit id="visit_destination" resname="visit_destination" approved="yes">
+        <source>Go to</source>
+        <target state="final">Gehe zu</target>
+      </trans-unit>
+      <trans-unit id="view_redirect" resname="view_redirect" approved="yes">
+        <source>View redirect</source>
+        <target state="final">Weiterleitung anzeigen</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
