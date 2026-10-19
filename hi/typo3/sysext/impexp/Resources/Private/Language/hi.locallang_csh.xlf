@@ -1,0 +1,472 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:impexp/Resources/Private/Language/locallang_csh.xlf" date="2011-10-17T20:22:33Z" product-name="impexp" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="_.image" resname="_.image" approved="yes">
+        <source>EXT:impexp/Resources/Public/Images/cshimages/impexp.png</source>
+        <target state="final">EXT:impexp/Resources/Public/Images/cshimages/impexp.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" approved="yes">
+        <source>Example of the preview display during export configuration of a page. Notice how records on the page are include plus how references inside the record is found and included as well (bottom of screen).</source>
+        <target state="final">किसी पेज के एक्सपोर्ट कॉन्फ़िगरेशन के दौरान प्रीव्यू डिस्प्ले का एक उदाहरण। ध्यान दें कि पेज पर मौजूद रिकॉर्ड्स को कैसे शामिल किया गया है, और साथ ही, रिकॉर्ड के अंदर मौजूद रेफ़रेंस को भी कैसे ढूँढ़कर शामिल किया गया है (स्क्रीन के निचले हिस्से में)।</target>
+      </trans-unit>
+      <trans-unit id="export.alttitle" resname="export.alttitle" approved="yes">
+        <source>Exporting records from TYPO3</source>
+        <target state="final">TYPO3 से रिकॉर्ड एक्सपोर्ट करना</target>
+      </trans-unit>
+      <trans-unit id="export.description" resname="export.description" approved="yes">
+        <source>To export TYPO3 T3D/XML files you click any record icon or page in the page tree (including the root page!), select "More options" and then "Export". This will bring up the export interface where you can configure options for your export session.</source>
+        <target state="final">TYPO3 T3D/XML फ़ाइलों को एक्सपोर्ट करने के लिए, आप पेज ट्री में किसी भी रिकॉर्ड आइकन या पेज (रूट पेज सहित!) पर क्लिक करें, "More options" चुनें और फिर "Export" चुनें। ऐसा करने पर एक्सपोर्ट इंटरफ़ेस खुल जाएगा, जहाँ आप अपने एक्सपोर्ट सेशन के लिए विकल्प कॉन्फ़िगर कर सकते हैं।</target>
+      </trans-unit>
+      <trans-unit id="export.details" resname="export.details" xml:space="preserve" approved="yes">
+				<source>There are a number of methods by which you can export data from TYPO3:
+- Export a single page or branch of the page tree (use page icon context menu)
+- Export a single record from any page (use record icon context menu)
+- Export all records from a specific table on a specific page (using the Web&gt;List module)
+- Export an arbitrary selection of records from the clipboard (using the Web&gt;List module)
+
+The export format observes all TYPO3s methods for relations between the records in the export file. But you will have to configure how these relations are maintained, at least to some degree. Sometimes you would want to include records referred to, at other times you surely want to keep the original mapping. That depends on your objectives with the export.
+
+Regardless of your configuration for export you will always see a complete reflection of all chosen records and their internal relations in the preview display found in the bottom of the export module page.
+
+&lt;b&gt;Error messages:&lt;/b&gt; Remember to consult the Message-tab before exporting if there are any error messages there!</source>
+			<target state="final">TYPO3 से डेटा एक्सपोर्ट करने के कई तरीके हैं:
+- किसी एक पेज या पेज ट्री की किसी ब्रांच को एक्सपोर्ट करें (पेज आइकन कॉन्टेक्स्ट मेनू का इस्तेमाल करें)
+- किसी भी पेज से किसी एक रिकॉर्ड को एक्सपोर्ट करें (रिकॉर्ड आइकन कॉन्टेक्स्ट मेनू का इस्तेमाल करें)
+- किसी खास पेज पर किसी खास टेबल से सभी रिकॉर्ड एक्सपोर्ट करें (Web&gt;List मॉड्यूल का इस्तेमाल करके)
+- क्लिपबोर्ड से रिकॉर्ड का कोई भी चुना हुआ हिस्सा एक्सपोर्ट करें (Web&gt;List मॉड्यूल का इस्तेमाल करके)
+
+एक्सपोर्ट फ़ॉर्मेट, एक्सपोर्ट फ़ाइल में रिकॉर्ड्स के बीच संबंधों के लिए TYPO3 के सभी तरीकों का पालन करता है। लेकिन आपको यह कॉन्फ़िगर करना होगा कि ये संबंध कैसे बनाए रखे जाएं—कम से कम कुछ हद तक। कभी-कभी आप उन रिकॉर्ड्स को शामिल करना चाहेंगे जिनका ज़िक्र किया गया है, तो कभी आप निश्चित रूप से मूल मैपिंग को ही बनाए रखना चाहेंगे। यह इस बात पर निर्भर करता है कि एक्सपोर्ट को लेकर आपके क्या उद्देश्य हैं।
+
+आपकी एक्सपोर्ट कॉन्फ़िगरेशन चाहे जो भी हो, एक्सपोर्ट मॉड्यूल पेज के निचले हिस्से में मौजूद प्रीव्यू डिस्प्ले में आपको हमेशा चुने गए सभी रिकॉर्ड्स और उनके आपसी संबंधों का पूरा प्रतिबिंब दिखाई देगा।
+
+&lt;b&gt;Error messages:&lt;/b&gt; एक्सपोर्ट करने से पहले, Message-tab को देखना न भूलें—खासकर तब, जब वहाँ कोई त्रुटि संदेश मौजूद हो!</target></trans-unit>
+      <trans-unit id="_export.seeAlso" resname="_export.seeAlso" approved="yes">
+        <source>xMOD_tx_impexp:import</source>
+        <target state="final">xMOD_tx_impexp:import</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_export.image" resname="_export.image" xml:space="preserve" approved="yes">
+				<source>EXT:impexp/Resources/Public/Images/cshimages/export.png,
+EXT:impexp/Resources/Public/Images/cshimages/export1.png,
+EXT:impexp/Resources/Public/Images/cshimages/export2.png</source>
+				
+			<target state="final">EXT:impexp/Resources/Public/Images/cshimages/export.png,
+EXT:impexp/Resources/Public/Images/cshimages/export1.png,
+EXT:impexp/Resources/Public/Images/cshimages/export2.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="export.image_descr" resname="export.image_descr" xml:space="preserve" approved="yes">
+				<source>To export a page or record, simply click the icon and select "Export" from the context menu.
+With the Web&gt;List module you can also export all records from a table by first clicking the table title to see only this table, then next to the CSV export you will find the export button for a T3D export of the table.
+You can export the contents of the clipboard as well by simply selecting "Export" in the menu.</source>
+			<target state="final">किसी पेज या रिकॉर्ड को एक्सपोर्ट करने के लिए, बस आइकन पर क्लिक करें और कॉन्टेक्स्ट मेनू से "Export" चुनें।
+Web&gt;List मॉड्यूल की मदद से, आप किसी टेबल के सभी रिकॉर्ड्स को भी एक्सपोर्ट कर सकते हैं; इसके लिए सबसे पहले टेबल के टाइटल पर क्लिक करके सिर्फ़ उस टेबल को देखें, फिर CSV एक्सपोर्ट के बगल में आपको उस टेबल के T3D एक्सपोर्ट के लिए एक्सपोर्ट बटन मिल जाएगा।
+आप मेनू में "Export" चुनकर क्लिपबोर्ड के कंटेंट्स को भी एक्सपोर्ट कर सकते हैं।</target></trans-unit>
+      <trans-unit id="pageTreeCfg.alttitle" resname="pageTreeCfg.alttitle" approved="yes">
+        <source>Configuration of page tree export</source>
+        <target state="final">पेज ट्री एक्सपोर्ट का कॉन्फ़िगरेशन</target>
+      </trans-unit>
+      <trans-unit id="pageTreeCfg.description" resname="pageTreeCfg.description" xml:space="preserve" approved="yes">
+				<source>Here you configure how a page or a branch of the page tree should be exported. Using the selector box you can set the number of levels of subpages to include in the export.
+By default all records belonging to a page is included when a page is exported.</source>
+			<target state="final">यहाँ आप यह कॉन्फ़िगर करते हैं कि किसी पेज या पेज ट्री की किसी ब्रांच को कैसे एक्सपोर्ट किया जाना चाहिए। सेलेक्टर बॉक्स का उपयोग करके, आप यह सेट कर सकते हैं कि एक्सपोर्ट में सब-पेजों के कितने लेवल शामिल किए जाएँ।
+डिफ़ॉल्ट रूप से, जब कोई पेज एक्सपोर्ट किया जाता है, तो उस पेज से संबंधित सभी रिकॉर्ड शामिल किए जाते हैं।</target></trans-unit>
+      <trans-unit id="_pageTreeCfg.image" resname="_pageTreeCfg.image" approved="yes">
+        <source>EXT:impexp/Resources/Public/Images/cshimages/pagetreecfg.png</source>
+        <target state="final">EXT:impexp/Resources/Public/Images/cshimages/pagetreecfg.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="pageTreeDisplay.alttitle" resname="pageTreeDisplay.alttitle" approved="yes">
+        <source>Page Tree</source>
+        <target state="final">पेज ट्री</target>
+      </trans-unit>
+      <trans-unit id="pageTreeDisplay.description" resname="pageTreeDisplay.description" approved="yes">
+        <source>Based on the levels selected for page tree export this will show the structure that is about to be exported. If any pages are specifically excluded by the exclude option they are not shown either.</source>
+        <target state="final">पेज ट्री एक्सपोर्ट के लिए चुने गए लेवल के आधार पर, यह उस संरचना को दिखाएगा जिसे एक्सपोर्ट किया जाने वाला है। यदि एक्सक्लूड विकल्प के ज़रिए किसी पेज को विशेष रूप से बाहर रखा गया है, तो उन्हें भी नहीं दिखाया जाएगा।</target>
+      </trans-unit>
+      <trans-unit id="pageTreeMode.alttitle" resname="pageTreeMode.alttitle" approved="yes">
+        <source>Levels</source>
+        <target state="final">लेवल्स</target>
+      </trans-unit>
+      <trans-unit id="pageTreeMode.description" resname="pageTreeMode.description" approved="yes">
+        <source>Here you select how deeply in the page tree from the current starting point to go for this export.</source>
+        <target state="final">यहाँ आप चुनते हैं कि इस एक्सपोर्ट के लिए, मौजूदा शुरुआती पॉइंट से पेज ट्री में कितनी गहराई तक जाना है।</target>
+      </trans-unit>
+      <trans-unit id="pageTreeMode.details" resname="pageTreeMode.details" approved="yes">
+        <source>If you select "Expanded tree" it will base the export on the currently expanded levels of the page tree. Another special option is "Tables on this page" which will not include the page record itself but only include records from tables on the page, depending on the table configuration of course.</source>
+        <target state="final">यदि आप "Expanded tree" चुनते हैं, तो यह एक्सपोर्ट को पेज ट्री के वर्तमान में विस्तारित स्तरों पर आधारित करेगा। एक और विशेष विकल्प है "Tables on this page", जिसमें पेज का रिकॉर्ड स्वयं शामिल नहीं होगा, बल्कि केवल पेज पर मौजूद टेबल्स के रिकॉर्ड शामिल होंगे—बेशक, यह टेबल कॉन्फ़िगरेशन पर निर्भर करेगा।</target>
+      </trans-unit>
+      <trans-unit id="_pageTreeMode.image" resname="_pageTreeMode.image" approved="yes">
+        <source>EXT:impexp/Resources/Public/Images/cshimages/impexp_misc.png</source>
+        <target state="final">EXT:impexp/Resources/Public/Images/cshimages/impexp_misc.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="pageTreeRecordLimit.alttitle" resname="pageTreeRecordLimit.alttitle" approved="yes">
+        <source>Include tables</source>
+        <target state="final">टेबल शामिल करें</target>
+      </trans-unit>
+      <trans-unit id="pageTreeRecordLimit.description" resname="pageTreeRecordLimit.description" approved="yes">
+        <source>When you export a page all records on the page is included by default. By this selector you can pick which tables to include exclusively if there are certain records you are not interested in seeing included.</source>
+        <target state="final">जब आप किसी पेज को एक्सपोर्ट करते हैं, तो डिफ़ॉल्ट रूप से उस पेज के सभी रिकॉर्ड शामिल हो जाते हैं। इस सेलेक्टर की मदद से आप चुन सकते हैं कि कौन सी टेबल को विशेष रूप से शामिल करना है—खासकर तब, जब आप कुछ रिकॉर्ड्स को शामिल होते हुए नहीं देखना चाहते।</target>
+      </trans-unit>
+      <trans-unit id="pageTreeRecordLimit.details" resname="pageTreeRecordLimit.details" approved="yes">
+        <source>In the box "Max number of records" you can set a limit to how many records are selected from a single table. This is a runaway brake in case you have an unusual large amount of records from a table.</source>
+        <target state="final">"Max number of records" बॉक्स में, आप यह सीमा निर्धारित कर सकते हैं कि किसी एक टेबल से कितने रिकॉर्ड चुने जाएँ। यह एक सुरक्षा उपाय है, ताकि यदि किसी टेबल में रिकॉर्ड की संख्या असामान्य रूप से बहुत अधिक हो, तो उसे नियंत्रित किया जा सके।</target>
+      </trans-unit>
+      <trans-unit id="singleRecord.alttitle" resname="singleRecord.alttitle" approved="yes">
+        <source>Export single record</source>
+        <target state="final">एक रिकॉर्ड एक्सपोर्ट करें</target>
+      </trans-unit>
+      <trans-unit id="singleRecord.description" resname="singleRecord.description" approved="yes">
+        <source>This overview tells you which independent records has been independently selected for export.</source>
+        <target state="final">यह अवलोकन आपको बताता है कि निर्यात के लिए कौन से स्वतंत्र रिकॉर्ड स्वतंत्र रूप से चुने गए हैं।</target>
+      </trans-unit>
+      <trans-unit id="_singleRecord.image" resname="_singleRecord.image" xml:space="preserve" approved="yes">
+				<source>EXT:impexp/Resources/Public/Images/cshimages/singlerecord.png,
+EXT:impexp/Resources/Public/Images/cshimages/export2.png</source>
+				
+			<target state="final">EXT:impexp/Resources/Public/Images/cshimages/singlerecord.png,
+EXT:impexp/Resources/Public/Images/cshimages/export2.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="singleRecord.image_descr" resname="singleRecord.image_descr" approved="yes">
+        <source>The way to export multiple records like this is using the clipboard like shown below.</source>
+        <target state="final">इस तरह से कई रिकॉर्ड्स को एक्सपोर्ट करने का तरीका क्लिपबोर्ड का इस्तेमाल करना है, जैसा कि नीचे दिखाया गया है।</target>
+      </trans-unit>
+      <trans-unit id="tableList.alttitle" resname="tableList.alttitle" approved="yes">
+        <source>Table export</source>
+        <target state="final">टेबल एक्सपोर्ट</target>
+      </trans-unit>
+      <trans-unit id="tableList.description" resname="tableList.description" approved="yes">
+        <source>Export of all records on a page from a specific table. This is configured from the Web&gt;List module where you will have to select table-only view and click a button in the top of the page.</source>
+        <target state="final">किसी विशिष्ट टेबल से एक पेज पर मौजूद सभी रिकॉर्ड्स का एक्सपोर्ट। इसे Web&gt;List मॉड्यूल से कॉन्फ़िगर किया जाता है, जहाँ आपको table-only view चुनना होगा और पेज के ऊपरी हिस्से में मौजूद एक बटन पर क्लिक करना होगा।</target>
+      </trans-unit>
+      <trans-unit id="tableList.details" resname="tableList.details" approved="yes">
+        <source>Tip: You can select multiple table lists by simply saving each selecting as a preset and finally load/merge the selections together.</source>
+        <target state="final">टिप: आप एक से ज़्यादा टेबल लिस्ट चुन सकते हैं—बस हर सिलेक्शन को एक प्रीसेट के तौर पर सेव करें, और आखिर में उन सभी सिलेक्शन्स को एक साथ लोड या मर्ज कर लें।</target>
+      </trans-unit>
+      <trans-unit id="_tableList.image" resname="_tableList.image" xml:space="preserve" approved="yes">
+				<source>EXT:impexp/Resources/Public/Images/cshimages/tablelist.png,
+EXT:impexp/Resources/Public/Images/cshimages/export1.png</source>
+				
+			<target state="final">EXT:impexp/Resources/Public/Images/cshimages/tablelist.png,
+EXT:impexp/Resources/Public/Images/cshimages/export1.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="tableList.image_descr" resname="tableList.image_descr" xml:space="preserve" approved="yes">
+				<source>Here two tables from different pages are selected. This is done by first selecting the one, saving it as a preset, then select the other and merge with the saved preset.
+Here you see how to use the Web&gt;List module to export all records from a table on a page.</source>
+			<target state="final">यहाँ अलग-अलग पृष्ठों से दो तालिकाएँ चुनी जाती हैं। ऐसा करने के लिए, पहले एक तालिका का चयन करें, उसे प्रीसेट के रूप में सेव करें, फिर दूसरी तालिका का चयन करें और सेव किए गए प्रीसेट के साथ मर्ज करें।
+यहाँ आप देखेंगे कि किसी पृष्ठ पर किसी तालिका से सभी रिकॉर्ड एक्सपोर्ट करने के लिए वेब&gt;सूची मॉड्यूल का उपयोग कैसे करें।</target></trans-unit>
+      <trans-unit id="inclRelations.alttitle" resname="inclRelations.alttitle" approved="yes">
+        <source>Include relations</source>
+        <target state="final">संबंध शामिल करें</target>
+      </trans-unit>
+      <trans-unit id="inclRelations.description" resname="inclRelations.description" approved="yes">
+        <source>Configure the tables from which you want to include records that are found as relations in the main export configuration.</source>
+        <target state="final">उन तालिकाओं को कॉन्फ़िगर करें जिनसे आप उन रिकॉर्ड्स को शामिल करना चाहते हैं जो मुख्य निर्यात कॉन्फ़िगरेशन में संबंधों के रूप में पाए जाते हैं.</target>
+      </trans-unit>
+      <trans-unit id="inclRelations.details" resname="inclRelations.details" xml:space="preserve" approved="yes">
+				<source>Background: When you export a record in TYPO3 it might contain relations to other records in the system. You have to tell the export interface what to do with these relations. Basically there are three scenarios:
+- If relations are found between records that are all in the export configuration, there is no problem: The relations are automatically mapped to the new id's of those records when imported.
+- If the records related to are not included the relation will be lost (indicated with an error message in the preview) unless you a) either select that table in this selector box in which case all relations to that table will be included or b) if you set the table as a static table (in which case the relation is untouched and imported as-is - but which will of course break if no record with that UID is found in the import system).
+
+&lt;b&gt;Soft References:&lt;/b&gt; Soft references are when a record contains pointers to external files or records but in fields where there are no formal relation configured. Examples of this is when a content element contains a "&amp;lt;link 123&amp;gt;" tag that represents a link to the page 123. This is not picked up formally as a reference, but is found anyhow as a "soft reference". The same goes for &amp;lt;img&amp;gt; tags with images from eg. "fileadmin/".
+By default soft references pointing to records or files will act as normal references; either including the referenced item or showing an error. However you can also choose to exclude the handling of individual soft references or maybe set the value as "editable" upon import. This is done with a selector box in the export preview.</source>
+			<target state="final">पृष्ठभूमि: जब आप TYPO3 में किसी रिकॉर्ड को निर्यात करते हैं, तो उसमें सिस्टम के अन्य रिकॉर्ड्स के साथ संबंध हो सकते हैं। आपको निर्यात इंटरफ़ेस को यह बताना होगा कि इन संबंधों के साथ क्या करना है। मूलतः तीन परिदृश्य हैं:
+- यदि निर्यात कॉन्फ़िगरेशन में मौजूद सभी रिकॉर्ड्स के बीच संबंध पाए जाते हैं, तो कोई समस्या नहीं है: आयात करते समय संबंध स्वचालित रूप से उन रिकॉर्ड्स की नई आईडी से मैप हो जाते हैं।
+- यदि संबंधित रिकॉर्ड्स शामिल नहीं हैं, तो संबंध खो जाएगा (पूर्वावलोकन में एक त्रुटि संदेश के साथ दर्शाया गया है) जब तक कि आप a) या तो इस चयनकर्ता बॉक्स में उस तालिका का चयन न करें, जिस स्थिति में उस तालिका के सभी संबंध शामिल हो जाएँगे, या b) यदि आप तालिका को एक स्थिर तालिका के रूप में सेट करते हैं (जिस स्थिति में संबंध अपरिवर्तित रहता है और जैसा है वैसा ही आयात किया जाता है - लेकिन यदि आयात प्रणाली में उस UID वाला कोई रिकॉर्ड नहीं मिलता है, तो यह निश्चित रूप से टूट जाएगा)।
+
+&lt;b&gt;सॉफ्ट संदर्भ:&lt;/b&gt; सॉफ्ट संदर्भ तब होते हैं जब किसी रिकॉर्ड में बाहरी फ़ाइलों या रिकॉर्ड्स के पॉइंटर्स होते हैं, लेकिन उन फ़ील्ड में जहाँ कोई औपचारिक संबंध कॉन्फ़िगर नहीं किया गया है। इसका एक उदाहरण तब होता है जब किसी सामग्री तत्व में "&amp;lt;link 123&amp;gt;" टैग होता है जो पृष्ठ 123 के लिंक को दर्शाता है। इसे औपचारिक रूप से संदर्भ के रूप में नहीं लिया जाता है, लेकिन फिर भी इसे "सॉफ्ट रेफरेंस" के रूप में पाया जाता है। यही बात "fileadmin/" जैसे चित्रों वाले &amp;lt;img&amp;gt; टैग के लिए भी लागू होती है।
+डिफ़ॉल्ट रूप से, रिकॉर्ड या फ़ाइलों की ओर इशारा करने वाले सॉफ्ट रेफरेंस सामान्य रेफरेंस की तरह काम करेंगे; या तो संदर्भित आइटम को शामिल करेंगे या कोई त्रुटि दिखाएंगे। हालाँकि, आप अलग-अलग सॉफ्ट रेफरेंस को संभालने से रोक सकते हैं या आयात करते समय मान को "संपादन योग्य" के रूप में सेट कर सकते हैं। यह निर्यात पूर्वावलोकन में एक चयनकर्ता बॉक्स के साथ किया जाता है।</target></trans-unit>
+      <trans-unit id="_inclRelations.image" resname="_inclRelations.image" xml:space="preserve" approved="yes">
+				<source>EXT:impexp/Resources/Public/Images/cshimages/references.png,
+EXT:impexp/Resources/Public/Images/cshimages/references1.png,
+EXT:impexp/Resources/Public/Images/cshimages/references2.png</source>
+				
+			<target state="final">EXT:impexp/Resources/Public/Images/cshimages/references.png,
+EXT:impexp/Resources/Public/Images/cshimages/references1.png,
+EXT:impexp/Resources/Public/Images/cshimages/references2.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="inclRelations.image_descr" resname="inclRelations.image_descr" xml:space="preserve" approved="yes">
+				<source>This example shows tree examples of references; a) an image attached to a content element, b) a relation to a frontend usergroup UID, and c) a soft reference found in the bodytext field of a record, here it is the link-tag pointing to the page with UID 1.
+Notice in the previous image how the relation to the frontend user group was lost. This has been corrected in this screenshot where the fe_group table has been selected in the list of table for which to include relations. The result is that the frontend usergroup is included as a record outside the exported pagetree. If you wanted to keep the relation but not include the usergroup you have to set "fe_groups" as a static table instead. See below.
+This example shows a TypoScript Template Record where multiple soft references has been found. The first one is an email address. Here it is configured to be editable. This means that upon import the user will have a chance to edit the value before the import is actually done. This is very useful when exported files are used as templates. Another example includes a PHP script which we don't want to include in the export and therefore we have selected the exclude option for the soft reference.</source>
+			<target state="final">यह उदाहरण संदर्भों के वृक्ष उदाहरण दिखाता है; a) किसी कॉन्टेंट तत्व से जुड़ी एक छवि, b) किसी फ़्रंटएंड उपयोगकर्ता समूह UID से संबंध, और c) किसी रिकॉर्ड के बॉडीटेक्स्ट फ़ील्ड में पाया गया एक सॉफ़्ट संदर्भ, यहाँ यह UID 1 वाले पृष्ठ की ओर इशारा करने वाला लिंक-टैग है।
+पिछली छवि में ध्यान दें कि फ़्रंटएंड उपयोगकर्ता समूह से संबंध कैसे खो गया था। इस स्क्रीनशॉट में इसे ठीक कर दिया गया है जहाँ fe_group तालिका को उन तालिकाओं की सूची में चुना गया है जिनमें संबंध शामिल करने हैं। परिणामस्वरूप, फ़्रंटएंड उपयोगकर्ता समूह निर्यातित पेज ट्री के बाहर एक रिकॉर्ड के रूप में शामिल हो जाता है। यदि आप संबंध रखना चाहते हैं लेकिन उपयोगकर्ता समूह को शामिल नहीं करना चाहते हैं, तो आपको "fe_groups" को एक स्थिर तालिका के रूप में सेट करना होगा। नीचे देखें।
+यह उदाहरण एक टाइपोस्क्रिप्ट टेम्पलेट रिकॉर्ड दिखाता है जहाँ कई सॉफ़्ट संदर्भ पाए गए हैं। पहला एक ईमेल पता है। यहाँ इसे संपादन योग्य बनाया गया है। इसका अर्थ है कि आयात करने पर उपयोगकर्ता के पास आयात पूरा होने से पहले मान को संपादित करने का अवसर होगा। यह तब बहुत उपयोगी होता है जब निर्यात की गई फ़ाइलों का उपयोग टेम्पलेट के रूप में किया जाता है। एक अन्य उदाहरण में एक PHP स्क्रिप्ट शामिल है जिसे हम निर्यात में शामिल नहीं करना चाहते हैं और इसलिए हमने सॉफ्ट संदर्भ के लिए बहिष्कृत विकल्प का चयन किया है।</target></trans-unit>
+      <trans-unit id="staticRelations.alttitle" resname="staticRelations.alttitle" approved="yes">
+        <source>Set static tables</source>
+        <target state="final">स्टैटिक टेबल्स सेट करें</target>
+      </trans-unit>
+      <trans-unit id="staticRelations.description" resname="staticRelations.description" approved="yes">
+        <source>Select which tables in addition to the static TYPO3 tables to keep relations untouched for. Takes precedence over "Include relations" configured tables.</source>
+        <target state="final">स्टैटिक TYPO3 टेबल्स के अतिरिक्त, किन टेबल्स के लिए संबंधों को अपरिवर्तित रखना है, इसका चयन करें। "संबंध शामिल करें" कॉन्फ़िगर की गई तालिकाओं पर इसे प्राथमिकता दी जाती है।</target>
+      </trans-unit>
+      <trans-unit id="staticRelations.details" resname="staticRelations.details" approved="yes">
+        <source>By default all relations to static tables in TYPO3 are kept untouched. Of course those static tables should be present in the import system in order for this to work correctly. However there might be circumstances where you move information between two systems where theoretically non-static tables should just keep relations untouched. Examples could be "sys_languages" or TemplaVoila data structures / template objects where two systems might contain the same set of records in those tables while you are importing pages and content elements freely.</source>
+        <target state="final">डिफ़ॉल्ट रूप से, TYPO3 में स्टैटिक टेबल्स से सभी संबंध अपरिवर्तित रहते हैं। बेशक, इसके सही ढंग से काम करने के लिए, इम्पोर्ट सिस्टम में उन स्टैटिक टेबल्स का मौजूद होना ज़रूरी है। हालाँकि, ऐसी परिस्थितियाँ भी हो सकती हैं जहाँ आप दो सिस्टम के बीच जानकारी स्थानांतरित करते हैं, जहाँ सैद्धांतिक रूप से गैर-स्थिर तालिकाओं को संबंधों को अपरिवर्तित रखना चाहिए। उदाहरण के लिए, "sys_languages" या TemplaVoila डेटा संरचनाएँ/टेम्पलेट ऑब्जेक्ट, जहाँ दो सिस्टम में उन टेबल्स में रिकॉर्ड का एक ही सेट हो सकता है, जबकि आप पृष्ठों और सामग्री तत्वों को स्वतंत्र रूप से इम्पोर्टिंग कर रहे हों।</target>
+      </trans-unit>
+      <trans-unit id="_staticRelations.image" resname="_staticRelations.image" xml:space="preserve" approved="yes">
+				<source>EXT:impexp/Resources/Public/Images/cshimages/static.png,
+EXT:impexp/Resources/Public/Images/cshimages/static1.png</source>
+				
+			<target state="final">EXT:impexp/Resources/Public/Images/cshimages/static.png,
+EXT:impexp/Resources/Public/Images/cshimages/static1.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="staticRelations.image_descr" resname="staticRelations.image_descr" xml:space="preserve" approved="yes">
+				<source>In this example you see how a number of records are pointing to a System Language record which will become lost relations when imported because the record is not included in the export. However; in the target system the System Languages are exactly the same and therefore you just want a static mapping of the relations.
+The static mapping is obtained by selecting the "sys_language" table as a static template meaning that the relations are kept at their current values assuming that they will be exactly the same in the target system when imported.</source>
+			<target state="final">इस उदाहरण में, आप देख सकते हैं कि कैसे कई रिकॉर्ड एक सिस्टम भाषा रिकॉर्ड की ओर इशारा कर रहे हैं, जो आयात करने पर लुप्त संबंध बन जाएगा क्योंकि रिकॉर्ड निर्यात में शामिल नहीं है। हालाँकि, लक्ष्य सिस्टम में सिस्टम भाषाएँ बिल्कुल समान हैं और इसलिए आपको संबंधों की केवल एक स्थिर मैपिंग चाहिए।
+स्थिर मैपिंग "sys_language" तालिका को एक स्थिर टेम्पलेट के रूप में चुनकर प्राप्त की जाती है, जिसका अर्थ है कि संबंधों को उनके वर्तमान मानों पर रखा जाता है, यह मानते हुए कि आयात करने पर वे लक्ष्य सिस्टम में बिल्कुल समान होंगे।</target></trans-unit>
+      <trans-unit id="excludedElements.alttitle" resname="excludedElements.alttitle" approved="yes">
+        <source>Excluded elements</source>
+        <target state="final">बहिष्कृत एलिमेंट्स</target>
+      </trans-unit>
+      <trans-unit id="excludedElements.description" resname="excludedElements.description" approved="yes">
+        <source>By the "Exclude" checkbox you can exclude specific records from the preview display of the export. Which records has been picked for specific exclusion is listed here. You can also clear the exclusion configuration.</source>
+        <target state="final">"Exclude" चेकबॉक्स का उपयोग करके, आप निर्यात के प्रीव्यू प्रदर्शन से विशिष्ट रिकॉर्ड बहिष्कृत कर सकते हैं। विशिष्ट बहिष्करण के लिए कौन से रिकॉर्ड चुने गए हैं, यह यहाँ सूचीबद्ध है। आप बहिष्करण कॉन्फ़िगरेशन को भी साफ़ कर सकते हैं।</target>
+      </trans-unit>
+      <trans-unit id="_excludedElements.image" resname="_excludedElements.image" approved="yes">
+        <source>EXT:impexp/Resources/Public/Images/cshimages/excludebox.png</source>
+        <target state="final">EXT:impexp/Resources/Public/Images/cshimages/excludebox.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="htmlCssResources.alttitle" resname="htmlCssResources.alttitle" approved="yes">
+        <source>Exclude resources from HTML and CSS files</source>
+        <target state="final">HTML और CSS फ़ाइलों से संसाधनों को बाहर निकालें</target>
+      </trans-unit>
+      <trans-unit id="htmlCssResources.description" resname="htmlCssResources.description" approved="yes">
+        <source>When an HTML or CSS file is found as a soft reference the files are parsed for references to external media (such as images) and if any are found they are also exported. If you don't want this behaviour, click this option.</source>
+        <target state="final">जब कोई HTML या CSS फ़ाइल सॉफ्ट रेफरेंस के रूप में मिलती है, तो फ़ाइलों को बाहरी मीडिया (जैसे इमेज) के संदर्भों के लिए पार्स किया जाता है और यदि कोई मिलता है, तो उसे एक्सपोर्ट भी किया जाता है। अगर आप यह व्यवहार नहीं चाहते हैं, तो इस विकल्प पर क्लिक करें।</target>
+      </trans-unit>
+      <trans-unit id="htmlCssResources.details" resname="htmlCssResources.details" approved="yes">
+        <source>Notice: Resources found inside an HTML or CSS file are not analyzed further. For instance it means that any CSS files referred to from within an HTML will not be traversed - but CSS files referred to inside the Setup or Constant field of a TypoScript template record will be!</source>
+        <target state="final">सूचना: HTML या CSS फ़ाइल के अंदर पाए गए संसाधनों का आगे विश्लेषण नहीं किया जाता है। उदाहरण के लिए, इसका मतलब है कि HTML के अंदर से संदर्भित किसी भी CSS फ़ाइल को पार नहीं किया जाएगा - लेकिन TypoScript टेम्पलेट रिकॉर्ड के सेटअप या Constant फ़ील्ड के अंदर संदर्भित CSS फ़ाइलों को पार किया जाएगा!</target>
+      </trans-unit>
+      <trans-unit id="_htmlCssResources.image" resname="_htmlCssResources.image" approved="yes">
+        <source>EXT:impexp/Resources/Public/Images/cshimages/htmlcss.png</source>
+        <target state="final">EXT:impexp/Resources/Public/Images/cshimages/htmlcss.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="htmlCssResources.image_descr" resname="htmlCssResources.image_descr" approved="yes">
+        <source>In this example you can see that a soft reference has been found pointing to an HTML file inside fileadmin/ Since it was an HTML file it was parsed and further a number of files were found referenced inside it and now included with the export. This feature is specifically created to support export of template configurations where external HTML files play a role.</source>
+        <target state="final">इस उदाहरण में, आप देख सकते हैं कि fileadmin/ के अंदर एक HTML फ़ाइल की ओर इशारा करते हुए एक सॉफ्ट रेफरेंस मिला है। चूँकि यह एक HTML फ़ाइल थी, इसलिए इसे पार्स किया गया और इसके अंदर संदर्भित कई फ़ाइलें पाई गईं, जिन्हें अब निर्यात के साथ शामिल कर लिया गया है। यह सुविधा विशेष रूप से उन टेम्प्लेट कॉन्फ़िगरेशन के निर्यात का समर्थन करने के लिए बनाई गई है जहाँ बाहरी HTML फ़ाइलें महत्वपूर्ण भूमिका निभाती हैं।</target>
+      </trans-unit>
+      <trans-unit id="extensionDependencies.alttitle" resname="extensionDependencies.alttitle" approved="yes">
+        <source>Extension Dependencies</source>
+        <target state="final">एक्सटेंशन निर्भरताएँ</target>
+      </trans-unit>
+      <trans-unit id="extensionDependencies.description" resname="extensionDependencies.description" approved="yes">
+        <source>Select which extensions should be installed in the import system in order for your exported content to work correctly. Examples could be "templavoila" for templating, "fluid_styled_content" for the template, "tt_news" for a news archive etc.</source>
+        <target state="final">चुनें कि इंपोर्ट सिस्टम में कौन से एक्सटेंशन इंस्टॉल किए जाने चाहिए, ताकि आपका एक्सपोर्ट किया गया कंटेंट सही ढंग से काम कर सके। उदाहरण के लिए, टेम्प्लेटिंग के लिए "templavoila", टेम्प्लेट के लिए "fluid_styled_content", न्यूज़ आर्काइव के लिए "tt_news" आदि हो सकते हैं।</target>
+      </trans-unit>
+      <trans-unit id="extensionDependencies.details" resname="extensionDependencies.details" approved="yes">
+        <source>During import warnings will appear for all selected extensions from this list which were not installed.</source>
+        <target state="final">इम्पोर्ट के दौरान, इस सूची से चुने गए उन सभी एक्सटेंशन के लिए चेतावनियाँ दिखाई देंगी जो इंस्टॉल नहीं थे।</target>
+      </trans-unit>
+      <trans-unit id="_extensionDependencies.image" resname="_extensionDependencies.image" approved="yes">
+        <source>EXT:impexp/Resources/Public/Images/cshimages/extdep.png</source>
+        <target state="final">EXT:impexp/Resources/Public/Images/cshimages/extdep.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="presets.alttitle" resname="presets.alttitle" approved="yes">
+        <source>Configuration presets</source>
+        <target state="final">कॉन्फ़िगरेशन प्रीसेट</target>
+      </trans-unit>
+      <trans-unit id="presets.description" resname="presets.description" approved="yes">
+        <source>Enables you to save an export configuration for later re-use. Useful if you need to export the same configuration with regular intervals.</source>
+        <target state="final">आपको एक्सपोर्ट कॉन्फ़िगरेशन को बाद में पुनः उपयोग के लिए सहेजने में सक्षम बनाता है। यदि आपको नियमित अंतराल पर समान कॉन्फ़िगरेशन निर्यात करने की आवश्यकता हो तो यह उपयोगी है।</target>
+      </trans-unit>
+      <trans-unit id="_presets.image" resname="_presets.image" xml:space="preserve" approved="yes">
+				<source>EXT:impexp/Resources/Public/Images/cshimages/impexp_misc1.png,
+EXT:impexp/Resources/Public/Images/cshimages/impexp_misc2.png</source>
+				
+			<target state="final">EXT:impexp/Resources/Public/Images/cshimages/impexp_misc1.png,
+EXT:impexp/Resources/Public/Images/cshimages/impexp_misc2.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="presets.image_descr" resname="presets.image_descr" xml:space="preserve" approved="yes">
+				<source>The preset selector in the export interface.</source>
+			<target state="final">एक्सपोर्ट इंटरफ़ेस में पूर्व निर्धारित चयनकर्ता।</target></trans-unit>
+      <trans-unit id="metadata.alttitle" resname="metadata.alttitle" approved="yes">
+        <source>Meta data setting</source>
+        <target state="final">मेटा डेटा सेटिंग</target>
+      </trans-unit>
+      <trans-unit id="metadata.description" resname="metadata.description" approved="yes">
+        <source>Set meta data for the export. This is highly encouraged if your exported content goes into eg. a template collection of sorts.</source>
+        <target state="final">एक्सपोर्ट के लिए मेटा डेटा सेट करें। यदि आपकी निर्यातित सामग्री, उदाहरण के लिए, किसी टेम्पलेट संग्रह में जाती है, तो यह अत्यधिक अनुशंसित है।</target>
+      </trans-unit>
+      <trans-unit id="metadata.details" resname="metadata.details" xml:space="preserve" approved="yes">
+				<source>The meta data will help users of your exported files to know what they can expect to be inside and what things they should be aware of and take into account during import.
+The "Title" and "Description" should contain the basic information about the export.
+The "Notes" field can be used for additional details, especially remarks about intentions or requirements that apply.</source>
+			<target state="final">मेटा डेटा आपकी एक्सपोर्टेड फ़ाइलों के उपयोगकर्ताओं को यह जानने में मदद करेगा कि उन्हें अंदर क्या-क्या मिलेगा और आयात करते समय उन्हें किन बातों का ध्यान रखना चाहिए।
+"Title" और "Description" में निर्यात के बारे में बुनियादी जानकारी होनी चाहिए।
+"नोट्स" फ़ील्ड का उपयोग अतिरिक्त विवरण, विशेष रूप से लागू उद्देश्यों या आवश्यकताओं के बारे में टिप्पणियों के लिए किया जा सकता है।</target></trans-unit>
+      <trans-unit id="_metadata.image" resname="_metadata.image" approved="yes">
+        <source>EXT:impexp/Resources/Public/Images/cshimages/metadata.png</source>
+        <target state="final">EXT:impexp/Resources/Public/Images/cshimages/metadata.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="fileFormat.alttitle" resname="fileFormat.alttitle" approved="yes">
+        <source>File format options</source>
+        <target state="final">फ़ाइल प्रारूप विकल्प</target>
+      </trans-unit>
+      <trans-unit id="fileFormat.description" resname="fileFormat.description" approved="yes">
+        <source>You can export your records to a generic XML format which potentially can be imported by other applications. However, the schema of the XML is TYPO3 specific. Alternatively, you can select a TYPO3 specific binary format called "T3D".</source>
+        <target state="final">आप अपने रिकॉर्ड्स को एक सामान्य XML फ़ॉर्मेट में एक्सपोर्टेड कर सकते हैं जिसे संभवतः अन्य एप्लिकेशन द्वारा आयात किया जा सकता है। हालाँकि, XML की स्कीमा TYPO3 विशिष्ट है। वैकल्पिक रूप से, आप "T3D" नामक एक TYPO3 विशिष्ट बाइनरी फ़ॉर्मेट चुन सकते हैं।</target>
+      </trans-unit>
+      <trans-unit id="fileFormat.details" resname="fileFormat.details" xml:space="preserve" approved="yes">
+				<source>Generally you should use the XML format. The T3D compressed format is usually smaller, but much harder to read and process.
+
+Entering a file name to save makes it possible to write your export directly to a file (pressing "Save to filename") instead of downloading it (pressing "Download export"). The correct file extensions depending on file format is automatically applied. Files are saved in a proper file mount in "fileadmin/". This is shown to you upon saving. Existing files are overwritten.</source>
+			<target state="final">आमतौर पर आपको XML फ़ॉर्मेट का इस्तेमाल करना चाहिए। T3D कंप्रेस्ड फ़ॉर्मेट आमतौर पर छोटा होता है, लेकिन पढ़ने और प्रोसेस करने में काफ़ी मुश्किल होता है।
+
+सेव करने के लिए फ़ाइल का नाम डालने से आप अपने एक्सपोर्ट को डाउनलोड करने ("एक्सपोर्ट डाउनलोड करें" दबाने) के बजाय सीधे फ़ाइल में लिख सकते हैं ("फ़ाइल नाम में सेव करें" दबाकर)। फ़ाइल फ़ॉर्मेट के अनुसार सही फ़ाइल एक्सटेंशन अपने आप लागू हो जाते हैं। फ़ाइलें "fileadmin/" में एक उचित फ़ाइल माउंट में सेव हो जाती हैं। सेव करने पर यह आपको दिखाई देता है। मौजूदा फ़ाइलें ओवरराइट हो जाती हैं।</target></trans-unit>
+      <trans-unit id="_fileFormat.image" resname="_fileFormat.image" approved="yes">
+        <source>EXT:impexp/Resources/Public/Images/cshimages/fileformat.png</source>
+        <target state="final">EXT:impexp/Resources/Public/Images/cshimages/fileformat.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="import.alttitle" resname="import.alttitle" approved="yes">
+        <source>Importing TYPO3 records</source>
+        <target state="final">TYPO3 रिकॉर्ड्स इम्पोर्ट करना</target>
+      </trans-unit>
+      <trans-unit id="import.description" resname="import.description" approved="yes">
+        <source>To import TYPO3 T3D/XML files into the page tree you click any page in the page tree (including the root page!), select "More options" and then "Import". This will bring up the import interface where you can select a file to import or upload a new one.</source>
+        <target state="final">TYPO3 T3D/XML फ़ाइलों को पेज ट्री में इंपोर्ट करने के लिए, आप पेज ट्री में किसी भी पेज पर क्लिक करें (रूट पेज सहित!), "More options" चुनें और फिर "Import" चुनें। ऐसा करने पर इंपोर्ट इंटरफ़ेस खुल जाएगा, जहाँ आप इंपोर्ट करने के लिए कोई फ़ाइल चुन सकते हैं या कोई नई फ़ाइल अपलोड कर सकते हैं।</target>
+      </trans-unit>
+      <trans-unit id="import.details" resname="import.details" xml:space="preserve" approved="yes">
+				<source>&lt;b&gt;Tip: Import into a Folder&lt;/b&gt;
+To make sure that no records are lost during the import, you can make yourself safe by importing into a Folder you create first. After the import you can move all records to the final destinations. An example of such a scenario is if you configured the export to include relations; In that case a number of records may follow the export outside the page tree structure you are exporting. To make sure that all of these external records are written to the database, importing into a Folder is a good idea.
+
+&lt;b&gt;Error messages:&lt;/b&gt; Remember to consult the Message-tab before/after importing to see if there are any error messages there!</source>
+			<target state="final">&lt;b&gt;टिप: किसी फ़ोल्डर में इंपोर्ट करें&lt;/b&gt;
+यह पक्का करने के लिए कि इंपोर्ट के दौरान कोई भी रिकॉर्ड खो न जाए, आप पहले से बनाया गया कोई फ़ोल्डर चुनकर उसमें इंपोर्ट करके खुद को सुरक्षित रख सकते हैं। इंपोर्ट के बाद, आप सभी रिकॉर्ड को उनकी असली जगह पर भेज सकते हैं। ऐसी स्थिति का एक उदाहरण तब होता है, जब आपने एक्सपोर्ट को इस तरह से सेट किया हो कि उसमें संबंधित रिकॉर्ड भी शामिल हों; ऐसी स्थिति में, आप जिस पेज ट्री स्ट्रक्चर को एक्सपोर्ट कर रहे हैं, उससे बाहर के भी कई रिकॉर्ड एक्सपोर्ट में शामिल हो सकते हैं। यह पक्का करने के लिए कि ये सभी बाहरी रिकॉर्ड डेटाबेस में सही-सही सेव हो जाएं, उन्हें किसी फ़ोल्डर में इंपोर्ट करना एक अच्छा विचार है।
+
+&lt;b&gt;त्रुटि संदेश:&lt;/b&gt; इंपोर्ट करने से पहले या बाद में 'Message-tab' को देखना न भूलें, ताकि यह पता चल सके कि वहाँ कोई त्रुटि संदेश तो नहीं है!</target></trans-unit>
+      <trans-unit id="_import.seeAlso" resname="_import.seeAlso" approved="yes">
+        <source>xMOD_tx_impexp:export</source>
+        <target state="final">xMOD_tx_impexp:export</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_import.image" resname="_import.image" approved="yes">
+        <source>EXT:impexp/Resources/Public/Images/cshimages/import.png</source>
+        <target state="final">EXT:impexp/Resources/Public/Images/cshimages/import.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="importFile.alttitle" resname="importFile.alttitle" approved="yes">
+        <source>Select file to import</source>
+        <target state="final">इंपोर्ट करने के लिए फ़ाइल चुनें</target>
+      </trans-unit>
+      <trans-unit id="importFile.description" resname="importFile.description" approved="yes">
+        <source>The files displayed are those with an extension T3D or XML from fileadmin/, fileadmin/export/ and your "TEMP" folder (if any).</source>
+        <target state="final">दिखाई गई फ़ाइलें वे हैं जिनका एक्सटेंशन T3D या XML है, और जो fileadmin/, fileadmin/export/ तथा आपके "TEMP" फ़ोल्डर (यदि कोई हो) में मौजूद हैं।</target>
+      </trans-unit>
+      <trans-unit id="_importFile.seeAlso" resname="_importFile.seeAlso" approved="yes">
+        <source>xMOD_tx_impexp:fileFormat</source>
+        <target state="final">xMOD_tx_impexp:fileFormat</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_importFile.image" resname="_importFile.image" approved="yes">
+        <source>EXT:impexp/Resources/Public/Images/cshimages/import_selectfile.png</source>
+        <target state="final">EXT:impexp/Resources/Public/Images/cshimages/import_selectfile.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="update.alttitle" resname="update.alttitle" approved="yes">
+        <source>Update instead of Insert</source>
+        <target state="final">Insert के बजाय Update करें</target>
+      </trans-unit>
+      <trans-unit id="update.description" resname="update.description" approved="yes">
+        <source>By default the import operation inserts new records in the system. Using this option will update existing records.</source>
+        <target state="final">डिफ़ॉल्ट रूप से, इंपोर्ट ऑपरेशन सिस्टम में नए रिकॉर्ड डालता है। इस विकल्प का उपयोग करने से मौजूदा रिकॉर्ड अपडेट हो जाएँगे।</target>
+      </trans-unit>
+      <trans-unit id="update.details" resname="update.details" xml:space="preserve" approved="yes">
+				<source>There are certain requirements you have to meet if you want the "Update" process to work. The main thing is that the records updated are those with the SAME uid as the uid in the export file. Thus an update operation only makes real sense if the export and import systems are somehow related and the same UIDs can be expected in both ends. Otherwise it will be a mess!
+
+When you update page structures the import operation will automatically try to rearrange records so they also appear in the same hierarchy and order as in the export file. This can be disabled by checking the option "Ignore PID differences globally". In any case you can set individual records to Ignore/Respect the PID with a selectorbox in the preview.
+
+In the preview display you can also select if individual records should be flatly ignored during import or if you want them created as new records instead of being updates.
+As a help for managing updates the preview display will inform you about the path where the existing element with that UID is found. Use this to verify that you get what you expect!
+
+&lt;b&gt;Forcing the UID:&lt;/b&gt;
+If you intend to update a system and some elements from the import are not mappable to a UID already (ei. does not exist) you can choose in the preview display to force the UID during creation. This is an unorthodox thing to do since UIDs are normally created automatically by the database. The option makes most sense if you are trying to "synchronize" a copy of another system. The option may mess up certain database internals and the feature is therefore only available for admins.</source>
+			<target state="final">यदि आप चाहते हैं कि "Update" प्रक्रिया ठीक से काम करे, तो आपको कुछ शर्तों को पूरा करना होगा। सबसे ज़रूरी बात यह है कि केवल उन्हीं रिकॉर्ड्स को अपडेट किया जाता है, जिनका uid एक्सपोर्ट फ़ाइल में दिए गए uid के बिल्कुल समान हो। इसलिए, अपडेट ऑपरेशन का असली मतलब तभी निकलता है, जब एक्सपोर्ट और इंपोर्ट सिस्टम किसी न किसी तरह से आपस में जुड़े हों और दोनों ही तरफ़ एक जैसे UIDs मिलने की उम्मीद हो। वरना, सब कुछ गड़बड़ हो जाएगा!
+
+जब आप पेज के स्ट्रक्चर को अपडेट करते हैं, तो इंपोर्ट ऑपरेशन अपने-आप रिकॉर्ड्स को इस तरह से रीअरेंज करने की कोशिश करेगा कि वे भी एक्सपोर्ट फ़ाइल की तरह ही उसी हायरार्की और क्रम में दिखाई दें। इसे "Ignore PID differences globally" ऑप्शन को चेक करके डिसेबल किया जा सकता है। किसी भी स्थिति में, आप प्रीव्यू में एक सेलेक्टर बॉक्स का इस्तेमाल करके अलग-अलग रिकॉर्ड्स के लिए PID को Ignore/Respect करने के लिए सेट कर सकते हैं।
+
+प्रीव्यू डिस्प्ले में, आप यह भी चुन सकते हैं कि इंपोर्ट के दौरान अलग-अलग रिकॉर्ड्स को पूरी तरह से नज़रअंदाज़ किया जाए, या फिर उन्हें अपडेट करने के बजाय नए रिकॉर्ड्स के तौर पर बनाया जाए।
+अपडेट्स को मैनेज करने में मदद के लिए, प्रीव्यू डिस्प्ले आपको उस पाथ के बारे में बताएगा जहाँ उस UID वाला मौजूदा एलिमेंट मौजूद है। इसका इस्तेमाल यह वेरिफ़ाई करने के लिए करें कि आपको वही मिल रहा है जिसकी आप उम्मीद कर रहे हैं!
+
+&lt;b&gt;UID को ज़बरदस्ती लागू करना:&lt;/b&gt;
+अगर आप किसी सिस्टम को अपडेट करना चाहते हैं और इंपोर्ट किए गए कुछ एलिमेंट पहले से मौजूद किसी UID से मैप नहीं हो पा रहे हैं (यानी, वे मौजूद नहीं हैं), तो आप प्रीव्यू डिस्प्ले में UID को बनाते समय उसे ज़बरदस्ती लागू करने का विकल्प चुन सकते हैं। यह एक असामान्य तरीका है, क्योंकि आम तौर पर UID डेटाबेस द्वारा अपने आप बनाए जाते हैं। यह विकल्प तब सबसे ज़्यादा काम आता है, जब आप किसी दूसरे सिस्टम की कॉपी को "सिंक्रोनाइज़" करने की कोशिश कर रहे हों। यह विकल्प डेटाबेस के कुछ अंदरूनी हिस्सों को गड़बड़ कर सकता है, इसलिए यह सुविधा केवल एडमिन के लिए उपलब्ध है।</target></trans-unit>
+      <trans-unit id="_update.image" resname="_update.image" xml:space="preserve" approved="yes">
+				<source>EXT:impexp/Resources/Public/Images/cshimages/impexp_misc4.png,
+EXT:impexp/Resources/Public/Images/cshimages/update.png</source>
+				
+			<target state="final">EXT:impexp/Resources/Public/Images/cshimages/impexp_misc4.png,
+EXT:impexp/Resources/Public/Images/cshimages/update.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="update.image_descr" resname="update.image_descr" approved="yes">
+        <source>In Update mode you can select various settings for each record. You will also be able to see a diff-view where the differences between the existing record and the one from the import is shown.</source>
+        <target state="final">Update mode में, आप हर रिकॉर्ड के लिए अलग-अलग सेटिंग्स चुन सकते हैं। आप एक diff-view भी देख पाएँगे, जिसमें मौजूदा रिकॉर्ड और import किए गए रिकॉर्ड के बीच के अंतर दिखाए जाते हैं।</target>
+      </trans-unit>
+      <trans-unit id="options.alttitle" resname="options.alttitle" approved="yes">
+        <source>Import options</source>
+        <target state="final">इम्पोर्ट विकल्प</target>
+      </trans-unit>
+      <trans-unit id="options.description" resname="options.description" approved="yes">
+        <source>Various options for import.</source>
+        <target state="final">इम्पोर्ट के लिए विभिन्न विकल्प।</target>
+      </trans-unit>
+      <trans-unit id="options.details" resname="options.details" xml:space="preserve" approved="yes">
+				<source>&lt;b&gt;Do not show differences in records&lt;/b&gt;
+When a structure has been imported you will see a difference view of all records which tells you whether the written content matched the import data or if not, what changed. In many cases content &lt;i&gt;should&lt;/i&gt; change (eg. relations and file references) so it is not an error if you see red and green values. Basically the difference view is a feature you can use for visual validation of the import success. It brings piece-of-mind to those who is enlightened to understand what it tells... :-)
+Green strings represent the actual written data while red represents the original value from the import file and black represents data that is the same.</source>
+			<target state="final">&lt;b&gt;रिकॉर्ड्स में अंतर न दिखाएँ&lt;/b&gt;
+जब कोई स्ट्रक्चर इंपोर्ट हो जाता है, तो आपको सभी रिकॉर्ड्स का एक अंतर-दृश्य दिखाई देगा। यह आपको बताता है कि लिखा हुआ कंटेंट इंपोर्ट डेटा से मेल खाता है या नहीं; और अगर नहीं, तो क्या बदला है। कई मामलों में, कंटेंट &lt;i&gt;बदलना ही चाहिए&lt;/i&gt; (जैसे कि संबंध और फ़ाइल संदर्भ), इसलिए अगर आपको लाल और हरे रंग के मान दिखाई देते हैं, तो यह कोई त्रुटि नहीं है। मूल रूप से, यह अंतर-दृश्य एक ऐसा फ़ीचर है जिसका उपयोग आप इंपोर्ट की सफलता को देखने के लिए कर सकते हैं। यह उन लोगों को मानसिक शांति देता है जो यह समझने में सक्षम हैं कि यह क्या दर्शाता है... :-)
+हरे रंग की स्ट्रिंग्स वास्तविक लिखे हुए डेटा को दर्शाती हैं, जबकि लाल रंग इंपोर्ट फ़ाइल के मूल मान को और काला रंग उस डेटा को दर्शाता है जो बिल्कुल वैसा ही है।</target></trans-unit>
+      <trans-unit id="_options.image" resname="_options.image" xml:space="preserve" approved="yes">
+				<source>EXT:impexp/Resources/Public/Images/cshimages/impexp_misc3.png,
+EXT:impexp/Resources/Public/Images/cshimages/phpext.png</source>
+				
+			<target state="final">EXT:impexp/Resources/Public/Images/cshimages/impexp_misc3.png,
+EXT:impexp/Resources/Public/Images/cshimages/phpext.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="action.alttitle" resname="action.alttitle" approved="yes">
+        <source>Import Action</source>
+        <target state="final">इम्पोर्ट एक्शन</target>
+      </trans-unit>
+      <trans-unit id="action.description" resname="action.description" xml:space="preserve" approved="yes">
+				<source>Press "Preview" to see the content of the import file or update the preview display according to changed configurations.
+Press "Import"/"Update" if you want to perform the actual import.
+
+Before importing make sure you change any editable soft references that are shown in the preview data.</source>
+			<target state="final">इंपोर्ट फ़ाइल का कंटेंट देखने के लिए या बदली हुई सेटिंग्स के अनुसार प्रीव्यू डिस्प्ले को अपडेट करने के लिए "Preview" दबाएँ।
+अगर आप असल में इंपोर्ट करना चाहते हैं, तो "Import"/"Update" दबाएँ।
+
+इंपोर्ट करने से पहले, यह पक्का कर लें कि आप प्रीव्यू डेटा में दिखाए गए किसी भी एडिट किए जा सकने वाले सॉफ्ट रेफरेंस को बदल दें।</target></trans-unit>
+      <trans-unit id="_action.image" resname="_action.image" approved="yes">
+        <source>EXT:impexp/Resources/Public/Images/cshimages/diffview.png</source>
+        <target state="final">EXT:impexp/Resources/Public/Images/cshimages/diffview.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="action.image_descr" resname="action.image_descr" approved="yes">
+        <source>Example of the result view after importing. As you can see the RTE attached images (soft references) has been written to new file names and the difference view tells you that the names changed in the bodytext content.</source>
+        <target state="final">इंपोर्ट करने के बाद परिणाम दृश्य का उदाहरण। जैसा कि आप देख सकते हैं, RTE से जुड़ी छवियों (सॉफ्ट रेफरेंस) को नए फ़ाइल नामों के साथ लिखा गया है, और अंतर दृश्य आपको बताता है कि मुख्य टेक्स्ट कंटेंट में नाम बदल गए हैं।</target>
+      </trans-unit>
+      <trans-unit id="enableLogging.alttitle" resname="enableLogging.alttitle" approved="yes">
+        <source>Enable System Logging</source>
+        <target state="final">सिस्टम लॉगिंग चालू करें</target>
+      </trans-unit>
+      <trans-unit id="enableLogging.description" resname="enableLogging.description" approved="yes">
+        <source>If you set this the system backend log will be filled with entries for all the actions that the import actually performs. By default this is left out for the sake of clarity.</source>
+        <target state="final">यदि आप इसे सेट करते हैं, तो सिस्टम बैकएंड लॉग उन सभी कार्यों की एंट्रीज़ से भर जाएगा, जिन्हें इंपोर्ट असल में करता है। डिफ़ॉल्ट रूप से, स्पष्टता के लिए इसे छोड़ दिया जाता है।</target>
+      </trans-unit>
+      <trans-unit id="upload.alttitle" resname="upload.alttitle" approved="yes">
+        <source>Upload import file</source>
+        <target state="final">इम्पोर्ट फ़ाइल अपलोड करें</target>
+      </trans-unit>
+      <trans-unit id="upload.description" resname="upload.description" approved="yes">
+        <source>Select a file to import from your local computer and upload it here. If the upload completes successfully you can immediately see its content displayed in the preview display.</source>
+        <target state="final">अपने लोकल कंप्यूटर से इंपोर्ट करने के लिए एक फ़ाइल चुनें और उसे यहाँ अपलोड करें। अगर अपलोड सफलतापूर्वक पूरा हो जाता है, तो आप तुरंत उसकी सामग्री को प्रीव्यू डिस्प्ले में देख सकते हैं।</target>
+      </trans-unit>
+      <trans-unit id="upload.details" resname="upload.details" approved="yes">
+        <source>Notice that there are usually limits set by the server (PHP) to the size of uploaded files. If hit, upload fails and an error message is shown.</source>
+        <target state="final">ध्यान दें कि आमतौर पर सर्वर (PHP) द्वारा अपलोड की जाने वाली फ़ाइलों के आकार पर कुछ सीमाएँ निर्धारित होती हैं। यदि यह सीमा पार हो जाती है, तो अपलोड विफल हो जाता है और एक त्रुटि संदेश प्रदर्शित होता है।</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
