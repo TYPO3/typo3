@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_sysfilem.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="it">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>Filemounts describe a filepath on the server, relative or absolute.</source>
+        <target state="final">Il Filemount rappresenta un nodo nell'Albero dell Cartelle oppure, detto in altro modo, è un riferimento a una cartella di uno Storage. I Filemount sono utilizzati per concedere l'accesso, a utenti di backend, a nodi specifici dell'Albero delle Cartelle.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" xml:space="preserve" approved="yes">
+				<source>By creating a file mount record and placing a reference to it in a Backend usergroup you can allow a user access to the file mount in the File&gt;List module.
+Filemounts may also configure access to a path on the server to which the user has FTP-access. Just remember to set file-permissions on the server correctly so the webserver user (which PHP is running as) has at least read access to the FTP-dir.
+You can only mount absolute paths if they are within the base path set in $TYPO3_CONF_VARS[BE][lockRootPath]</source>
+			<target state="final">Creando un record Filemount e includendolo in un gruppo di utenti Backend (File Mounts) è possibile consentire l'accesso a cartelle specifiche, dell'Albero delle Cartelle, utilizzando il modulo File&gt;Lista File.
+Un Filemount può anche configurare l'accesso a un percorso sul server web a cui l'utente ha accesso via FTP. In questo caso è necessario impostare i permessi di accesso a cartelle e file, sul server, in modo corretto affinché l'utente, del server web, abbia almeno l'accesso in lettura alla cartella FTP.
+Puoi montare percorsi assoluti ed esterni alla webroot solo se sono all'interno del percorso impostato in $TYPO3_CONF_VARS[BE][lockRootPath]</target></trans-unit>
+      <trans-unit id="_.seeAlso" resname="_.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_groups:file_mountpoints,
+be_users:file_mountpoints,
+More about File mounts | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/AccessControl/MoreAboutFileMounts/</source>
+				
+			<target state="final">be_groups:file_mountpoints,
+be_users:file_mountpoints,
+Altro su File mounts | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/AccessControl/MoreAboutFileMounts/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_.image" resname="_.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/filemount_1.png</source>
+        <target state="final">EXT:core/Resources/Public/Images/cshimages/filemount_1.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Enter a title for the filemount. The title will appear as the name of the file mount when it is applied to users and groups.</source>
+        <target state="final">Inserisci una etichetta per il Filemount: apparirà come identificativo, del nodo dell'Albero delle Cartelle, quando sarà da assegnare, a Utenti o Gruppi di backend, nel campo "File Mounts - Nodi Albero delle Cartelle".</target>
+      </trans-unit>
+      <trans-unit id="_title.image" resname="_title.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/be_groups_5.png</source>
+        <target state="final">EXT:core/Resources/Public/Images/cshimages/be_groups_5.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="path.description" resname="path.description" approved="yes">
+        <source>Enter the path of the filemount, relative or absolute depending on the settings of BASE.</source>
+        <target state="final">Seleziona la cartella nello Storage da assegnare al Filemount.</target>
+      </trans-unit>
+      <trans-unit id="path.details" resname="path.details" xml:space="preserve" approved="yes">
+				<source>If BASE is set to relative, the path mounted is found in the subfolder "fileadmin/" of the website. Then you should enter the subfolder in "fileadmin/" as path. For instance if you want to mount access to "fileadmin/user_uploads/all/" then enter the value "user_uploads/all" as the value of PATH.
+If BASE is absolute you should enter the absolute path on the server, eg. "/home/ftp_upload" or "C:/home/ftp_upload". Further you must make sure the configuration variable $TYPO3_CONF_VARS[BE][lockRootPath] contains the first part of the path you want to mount.
+
+&lt;strong&gt;Notice:&lt;/strong&gt; In any case, make sure the webserver user which PHP is running as has &lt;em&gt;at least&lt;/em&gt; read-access to the path. If not, the mount will simply not appear without any warnings.
+If you have problems - especially with absolute mounts - try to mount something "simple" like a relative path in fileadmin. If that is working well, try the absolute path.
+
+Your PHP-configuration may also impose other restrictions on you if open_basedir is enabled. Then use relative paths.</source>
+			<target state="final">&lt;b&gt;Riguardo la configurazione dello Storage&lt;/b&gt;: se 'Tipo Percorso' è impostato su relativo, il percorso montato si trova nella sottocartella "fileadmin/" del sito web. Quindi dovresti inserire una sottocartella di "fileadmin/" come percorso. Per esempio, se desideri montare "fileadmin/user_uploads/all/", devi inserire "user_uploads/all" come valore di 'Percorso Base'.
+Se 'Tipo Percorso' è assoluto, dovresti inserire il percorso assoluto sul server, ad esempio "/home/ftp_upload" o "C:/home/ftp_upload". Inoltre devi assicurarti che la variabile di configurazione $TYPO3_CONF_VARS[BE][lockRootPath] contenga la cartella padre del percorso che vuoi montare, ad esempio "/home/", "C:/home/".
+
+&lt;strong&gt;Nota:&lt;/strong&gt; in ogni caso, assicurati che l'utente del server web, che sta eseguendo PHP, abbia &lt;em&gt;almeno&lt;/em&gt; accesso in lettura al percorso. In caso contrario, lo specifico Albero delle Cartelle non apparirà, senza alcun avvertimento.
+Se hai problemi, soprattutto con i percorsi assoluti, prova a montare qualcosa di "semplice" come un percorso relativo a fileadmin. Se questo funziona bene, prova il percorso assoluto.
+
+La tua configurazione PHP potrebbe anche imporre altre restrizioni se open_basedir (direttiva PHP) è impostato. Quindi usa i percorsi relativi.</target></trans-unit>
+      <trans-unit id="_path.seeAlso" resname="_path.seeAlso" xml:space="preserve" approved="yes">
+				<source>sys_filemounts:base,
+be_groups:file_mountpoints,
+sys_filemounts</source>
+				
+			<target state="final">sys_filemounts:base,
+be_groups:file_mountpoints,
+sys_filemounts</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_path.image" resname="_path.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/be_groups_6.png,
+EXT:core/Resources/Public/Images/cshimages/be_groups_7.png</source>
+				
+			<target state="final">EXT:core/Resources/Public/Images/cshimages/be_groups_6.png,
+EXT:core/Resources/Public/Images/cshimages/be_groups_7.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="path.image_descr" resname="path.image_descr" xml:space="preserve" approved="yes">
+				<source>This is a filemount relative to "fileadmin/". The mounted folder is "fileadmin/user_upload/" since "user_upload" is the value of the "Path" field.
+The directory structure of "fileadmin/" where you can see the "user_upload" folder in the bottom of the list.</source>
+			<target state="final">Questo è un filemount relativo a "fileadmin/". La cartella montata è "fileadmin/user_upload/" poiché "user_upload" è il valore del campo "Cartella".
+La struttura della directory di "fileadmin/" dove puoi vedere la cartella "user_upload" in fondo alla lista.</target></trans-unit>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>Unchecking this option temporarily disables the filemount.</source>
+        <target state="final">Deselezionare quest'opzione per disabilitare temporaneamente il filemount.</target>
+      </trans-unit>
+      <trans-unit id="hidden.details" resname="hidden.details" approved="yes">
+        <source>All backend users using the mount will not have access anymore. This includes 'Admin'-users.</source>
+        <target state="final">Tutti gli utenti del backend che usano l'Albero delle Cartelle non avranno più accesso. Questo include utenti admin.</target>
+      </trans-unit>
+      <trans-unit id="base.description" resname="base.description" approved="yes">
+        <source>Determines whether the value of the PATH field is to be recognized as an absolute path on the server or a path relative to the fileadmin/ subfolder to the website.</source>
+        <target state="final">Seleziona da quale Storage scegliere la cartella da assegnare al Filemount.</target>
+      </trans-unit>
+      <trans-unit id="_base.seeAlso" resname="_base.seeAlso" approved="yes">
+        <source>sys_filemounts:path</source>
+        <target state="final">sys_filemounts:path</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="read_only.description" resname="read_only.description" approved="yes">
+        <source>Display this file mount as read-only.</source>
+        <target state="final">Imposta questo Albero delle Cartelle in sola lettura.</target>
+      </trans-unit>
+      <trans-unit id="read_only.details" resname="read_only.details" approved="yes">
+        <source>Read-only file mounts are displayed in the Filelist and the Element Browser. They allow displaying of files and folders which are neither writable nor editable for the user.</source>
+        <target state="final">Gli Alberi delle Cartelle in sola lettura sono visualizzati sia nel riquadro di navigazione che nel Navigatore Elementi. Consentono la visualizzazione di file e cartelle che non sono né scrivibili né modificabili per l'utente.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
