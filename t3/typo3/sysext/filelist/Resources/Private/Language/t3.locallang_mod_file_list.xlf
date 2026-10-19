@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="clipBoard" resname="clipBoard">
+        <source>Show clipboard</source>
+        <target>crwdns218512:0crwdne218512:0</target>
+      </trans-unit>
+      <trans-unit id="clip_paste" resname="clip_paste">
+        <source>Paste in clipboard content</source>
+        <target>crwdns218514:0crwdne218514:0</target>
+      </trans-unit>
+      <trans-unit id="clip_pasteInto" resname="clip_pasteInto">
+        <source>Paste into: Clipboard content is inserted into this folder</source>
+        <target>crwdns218516:0crwdne218516:0</target>
+      </trans-unit>
+      <trans-unit id="editMarked" resname="editMarked">
+        <source>Edit Metadata</source>
+        <target>crwdns218518:0crwdne218518:0</target>
+      </trans-unit>
+      <trans-unit id="clip_selectMarked" resname="clip_selectMarked">
+        <source>Transfer to clipboard</source>
+        <target>crwdns218520:0crwdne218520:0</target>
+      </trans-unit>
+      <trans-unit id="clip_deleteMarked" resname="clip_deleteMarked">
+        <source>Remove from clipboard</source>
+        <target>crwdns218522:0crwdne218522:0</target>
+      </trans-unit>
+      <trans-unit id="clip_deleteMarkedWarning" resname="clip_deleteMarkedWarning">
+        <source>Are you sure you want to delete all marked files from this folder?</source>
+        <target>crwdns218524:0crwdne218524:0</target>
+      </trans-unit>
+      <trans-unit id="displayThumbs" resname="displayThumbs">
+        <source>Display thumbnails</source>
+        <target>crwdns218526:0crwdne218526:0</target>
+      </trans-unit>
+      <trans-unit id="c_name" resname="c_name">
+        <source>Name</source>
+        <target>crwdns218528:0crwdne218528:0</target>
+      </trans-unit>
+      <trans-unit id="c_size" resname="c_size">
+        <source>Size</source>
+        <target>crwdns218530:0crwdne218530:0</target>
+      </trans-unit>
+      <trans-unit id="c_record_type" resname="c_record_type">
+        <source>Type</source>
+        <target>crwdns218532:0crwdne218532:0</target>
+      </trans-unit>
+      <trans-unit id="c_rw" resname="c_rw">
+        <source>RW</source>
+        <target>crwdns218534:0crwdne218534:0</target>
+      </trans-unit>
+      <trans-unit id="files" resname="files">
+        <source>files</source>
+        <target>crwdns218536:0crwdne218536:0</target>
+      </trans-unit>
+      <trans-unit id="temp" resname="temp">
+        <source>Temporary files</source>
+        <target>crwdns218538:0crwdne218538:0</target>
+      </trans-unit>
+      <trans-unit id="read" resname="read">
+        <source>R</source>
+        <target>crwdns218540:0crwdne218540:0</target>
+      </trans-unit>
+      <trans-unit id="recycler" resname="recycler">
+        <source>Recycler</source>
+        <target>crwdns218542:0crwdne218542:0</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel">
+        <source>Listing of files in the directory</source>
+        <target>crwdns218544:0crwdne218544:0</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr">
+        <source>This is the file administration system in TYPO3. It allows you to access the file mounts of your login. Through this module you can upload, copy, move an delete files on the server.</source>
+        <target>crwdns218546:0crwdne218546:0</target>
+      </trans-unit>
+      <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab">
+        <source>Filelist</source>
+        <target>crwdns218548:0crwdne218548:0</target>
+      </trans-unit>
+      <trans-unit id="write" resname="write">
+        <source>W</source>
+        <target>crwdns218550:0crwdne218550:0</target>
+      </trans-unit>
+      <trans-unit id="storageNotBrowsableTitle" resname="storageNotBrowsableTitle">
+        <source>Access denied.</source>
+        <target>crwdns218552:0crwdne218552:0</target>
+      </trans-unit>
+      <trans-unit id="storageNotBrowsableMessage" resname="storageNotBrowsableMessage">
+        <source>You are trying to access a folder in a storage that is not browsable.</source>
+        <target>crwdns218554:0crwdne218554:0</target>
+      </trans-unit>
+      <trans-unit id="missingFolderPermissionsTitle" resname="missingFolderPermissionsTitle">
+        <source>Missing folder permissions</source>
+        <target>crwdns218556:0crwdne218556:0</target>
+      </trans-unit>
+      <trans-unit id="missingFolderPermissionsMessage" resname="missingFolderPermissionsMessage">
+        <source>You have no access to the folder "%s".</source>
+        <target>crwdns218558:0%scrwdne218558:0</target>
+      </trans-unit>
+      <trans-unit id="localStorageOfflineTitle" resname="localStorageOfflineTitle">
+        <source>Base folder for local storage missing or not allowed</source>
+        <target>crwdns343124:0crwdne343124:0</target>
+      </trans-unit>
+      <trans-unit id="localStorageOfflineMessage" resname="localStorageOfflineMessage">
+        <source>Verify that the base folder for the storage "%s" exists and is allowed to be accessed.</source>
+        <target>crwdns343126:0%scrwdne343126:0</target>
+      </trans-unit>
+      <trans-unit id="folderNotFoundTitle" resname="folderNotFoundTitle">
+        <source>Folder not found.</source>
+        <target>crwdns218560:0crwdne218560:0</target>
+      </trans-unit>
+      <trans-unit id="folderNotFoundMessage" resname="folderNotFoundMessage">
+        <source>The folder "%s" cannot be accessed. Trying to use parent folder(s).</source>
+        <target>crwdns218562:0%scrwdne218562:0</target>
+      </trans-unit>
+      <trans-unit id="translateMetadata" resname="translateMetadata">
+        <source>Translate metadata</source>
+        <target>crwdns218564:0crwdne218564:0</target>
+      </trans-unit>
+      <trans-unit id="createMetadataForLanguage" resname="createMetadataForLanguage">
+        <source>Create metadata of this file for %s</source>
+        <target>crwdns218566:0%scrwdne218566:0</target>
+      </trans-unit>
+      <trans-unit id="editMetadataForLanguage" resname="editMetadataForLanguage">
+        <source>Edit metadata of this file for %s</source>
+        <target>crwdns218568:0%scrwdne218568:0</target>
+      </trans-unit>
+      <trans-unit id="paramError" resname="paramError">
+        <source>Parameter Error</source>
+        <target>crwdns218570:0crwdne218570:0</target>
+      </trans-unit>
+      <trans-unit id="targetNoDir" resname="targetNoDir">
+        <source>Target was not a directory!</source>
+        <target>crwdns218572:0crwdne218572:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
