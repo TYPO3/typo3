@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:viewpage/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="viewpage" target-language="hr">
+    <header/>
+    <body>
+      <trans-unit id="width" resname="width" approved="yes">
+        <source>Width</source>
+        <target state="final">Širina</target>
+      </trans-unit>
+      <trans-unit id="tablet" resname="tablet" approved="yes">
+        <source>Tablet</source>
+        <target state="final">Tablet</target>
+      </trans-unit>
+      <trans-unit id="mobile" resname="mobile" approved="yes">
+        <source>Mobile</source>
+        <target state="final">Mobitel</target>
+      </trans-unit>
+      <trans-unit id="computer" resname="computer" approved="yes">
+        <source>Computer</source>
+        <target state="final">Računalo</target>
+      </trans-unit>
+      <trans-unit id="customWidth" resname="customWidth" approved="yes">
+        <source>Custom Size</source>
+        <target state="final">Prilagođena veličina</target>
+      </trans-unit>
+      <trans-unit id="autoSize" resname="autoSize" approved="yes">
+        <source>Auto Size</source>
+        <target state="final">Automatska veličina</target>
+      </trans-unit>
+      <trans-unit id="refreshPage" resname="refreshPage" approved="yes">
+        <source>Refresh page</source>
+        <target state="final">Osvježi stranicu</target>
+      </trans-unit>
+      <trans-unit id="language" resname="language" approved="yes">
+        <source>Language</source>
+        <target state="final">Jezik</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
