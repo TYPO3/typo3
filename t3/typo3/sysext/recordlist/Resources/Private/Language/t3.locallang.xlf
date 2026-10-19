@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:recordlist/Resources/Private/Language/locallang.xlf" date="2017-02-03T21:13:02Z" product-name="recordlist" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="error.linkHandlerTitleMissing" resname="error.linkHandlerTitleMissing">
+        <source>[title missing]</source>
+        <target>crwdns106892:0crwdne106892:0</target>
+      </trans-unit>
+      <trans-unit id="clearcache.title" resname="clearcache.title">
+        <source>Page cache</source>
+        <target>crwdns106894:0crwdne106894:0</target>
+      </trans-unit>
+      <trans-unit id="clearcache.message.success" resname="clearcache.message.success">
+        <source>Successfully cleared page cache</source>
+        <target>crwdns106896:0crwdne106896:0</target>
+      </trans-unit>
+      <trans-unit id="clearcache.message.error" resname="clearcache.message.error">
+        <source>Page cache could not be cleared</source>
+        <target>crwdns106898:0crwdne106898:0</target>
+      </trans-unit>
+      <trans-unit id="create_folder.title" resname="create_folder.title">
+        <source>Create new folder</source>
+        <target>crwdns106900:0crwdne106900:0</target>
+      </trans-unit>
+      <trans-unit id="create_folder.submit" resname="create_folder.submit">
+        <source>Create folder</source>
+        <target>crwdns106902:0crwdne106902:0</target>
+      </trans-unit>
+      <trans-unit id="row.deletePlaceholder.title" resname="row.deletePlaceholder.title">
+        <source>The live pendant of this record will be deleted when this workspace record is published.</source>
+        <target>crwdns110584:0crwdne110584:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
