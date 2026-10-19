@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:indexed_search/Resources/Private/Language/locallang_csh_indexcfg.xlf" date="2011-10-17T20:22:33Z" product-name="indexed_search" target-language="fa">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>The Indexed Search configuration allows you to set up indexing of resources which are external to the TYPO3 page tree. This could be a library of records (like news), a directory structure of files (like PDFs) or an external URL to be crawled to some depth - or third-party content provided from other extensions via hooks.</source>
+        <target state="final">پیکربندی جستجوی فهرست‌محور به شما امکان فهرست بندی منابع خارج از ساختار درختی TYPO3 را می‌دهد. این شامل مجموعه‌ای از ردیف‌ها (مثل اخبار)، یک ساختار از پوشه‌های دربردارندۀ فایل (مثل PDF) یا یک نشانی خارجی است که امکان پویش آن تا عمق معین هست. محتوای طرف ثالث نیز بواسطۀ hookها قابل افزودن هست.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" approved="yes">
+        <source>The Indexing Configuration records are used to set up how the indexing occurs, at which time and related to which part of the page tree. An important requirement to keep in mind is that the "crawler" extension must be installed since the indexing engine uses the "crawler" extensions queue as a timing device - and using the "crawler" extension means using a cron-job to activate it from the shell.</source>
+        <target state="final">ردیف‌های متشکل از فهرست‌های پیکربندی شده برای تعیین چگونگی فهرست بندی و زمان آن و محل آن در ساختار درختی استفاده می‌شوند. موضوع مهم این است که بخاطر داشته باشید لازم است افزونۀ "Crawler" باید نصب شود، زیرا موتور فهرست بندی از افزونه‌های پوینده یا "Crawler" بعنوان ابزار پویش استفاده می‌شوند و استفاده از یک افزونۀ پویش‌گر به معنای استفاده از یک وظیفۀ زمان‌بندی‌شده و فعال کردن آن از خط فرمان است.</target>
+      </trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Provide a title for the configuration.</source>
+        <target state="final">عنوانی برای پیکربندی وارد کنید</target>
+      </trans-unit>
+      <trans-unit id="description.description" resname="description.description" approved="yes">
+        <source>If needed, give it a description or put other important notes in this field.</source>
+        <target state="final">در صورت نیاز توضیحاتی در خصوص عنوان وارد شده برای یادداشت در این بخش وارد کنید.</target>
+      </trans-unit>
+      <trans-unit id="hidden.details" resname="hidden.details" approved="yes">
+        <source>Notice; Disabling the indexing process will not hide already indexed content in search results!</source>
+        <target state="final">یادداشت: غیرفعال کردن روند فهرست‌بندی محتوای محتوای قبلا فهرست شده را از نتایج پنهان نمی‌کند!</target>
+      </trans-unit>
+      <trans-unit id="_hidden.seeAlso" resname="_hidden.seeAlso" approved="yes">
+        <source>index_config:starttime</source>
+        <target state="final">index_config:starttime</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="starttime.description" resname="starttime.description" approved="yes">
+        <source>Set a start time for the configuration. If set, the configuration will be bypassed by the crawlers cron job until this time is reached.</source>
+        <target state="final">یک زمان شروع برای پیکربندی تعریف کنید. در صورت تنظیم تا زمان فرارسیدن این تاریخ وظایف زمان‌بندی شده این تنظیمات را نادیده خواهند گرفت.</target>
+      </trans-unit>
+      <trans-unit id="_starttime.seeAlso" resname="_starttime.seeAlso" approved="yes">
+        <source>index_config:hidden</source>
+        <target state="final">index_config:hidden</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="timer_frequency.description" resname="timer_frequency.description" approved="yes">
+        <source>Use this setting to adjust how often you would like a re-indexing process to run for the configuration.</source>
+        <target state="final">جهت تعیین زمان تکرار تولید مجدد فهرست با پیکربندی فعلی از این تنظیم استفاده نمائید.</target>
+      </trans-unit>
+      <trans-unit id="_timer_frequency.seeAlso" resname="_timer_frequency.seeAlso" xml:space="preserve" approved="yes">
+				<source>index_config:timer_next_indexing,
+index_config:timer_offset</source>
+				
+			<target state="final">index_config:timer_next_indexing,
+index_config:timer_offset</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="timer_offset.description" resname="timer_offset.description" approved="yes">
+        <source>The offset adjusts at what time of day you want the indexing process to run.</source>
+        <target state="final">این جابه‌جائی امکان تعیین تاریخ روند فهرست‌بندی را به حسب زمان، در اختیار شما قرار می‌دهد.</target>
+      </trans-unit>
+      <trans-unit id="_timer_offset.seeAlso" resname="_timer_offset.seeAlso" approved="yes">
+        <source>index_config:timer_frequency</source>
+        <target state="final">index_config:timer_frequency</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="timer_next_indexing.description" resname="timer_next_indexing.description" approved="yes">
+        <source>This field contains the date and time of the next occurring indexing session. If left blank the next indexing will occur as soon as the cron-script is run again (typically within the next minute) and afterwards set to the next time according to frequency and offset.</source>
+        <target state="final">این بخش دربردارندۀ تاریخ و زمان نشست بعدی فهرست بندی است. اگر خالی بماند، در هنگام اجرای وظیفۀ زمان بندی شدۀ بعدی اجرا خواهد شد (معمولا یک دقیقه دیگر) و پس از آن با توجه به مقدار تکرار و جابجائی، برای اجرای بعدی تنظیم خواهد شد.</target>
+      </trans-unit>
+      <trans-unit id="_timer_next_indexing.seeAlso" resname="_timer_next_indexing.seeAlso" xml:space="preserve" approved="yes">
+				<source>index_config:timer_offset,
+index_config:timer_frequency</source>
+				
+			<target state="final">index_config:timer_offset,
+index_config:timer_frequency</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="type.description" resname="type.description" approved="yes">
+        <source>Select the type of Indexing Configuration here.</source>
+        <target state="final">نوع پیکربندی فهرست‌سازی را انتخاب کنید.</target>
+      </trans-unit>
+      <trans-unit id="type.details" resname="type.details" xml:space="preserve" approved="yes">
+				<source>&lt;b&gt;Records&lt;/b&gt; - You will be able to index records on a specified page from a specified database table. You can determine which fields from that record you want to index and how additional GET parameters should look like when linking to the search result.
+&lt;b&gt;Files&lt;/b&gt; - Allows you to index a whole directory of files from the fileadmin/ folder. You can optionally specify how many levels of recursion you want.
+&lt;b&gt;External URL&lt;/b&gt; - Allows you to index an external site and search it from your TYPO3 installation! You can specify how deep the crawler should go on that external URL.
+&lt;b&gt;Page tree&lt;/b&gt; - Allows you to index the page tree using the cron script. This type will not be useful as a category for searching like the other types.
+&lt;b&gt;Meta configuration&lt;/b&gt; - Points to a collection of other indexing configurations in which the search will be done. Cannot be used for cron-job based indexing.
+&lt;b&gt;Custom&lt;/b&gt; - Other extensions might register custom types of configurations.</source>
+			<target state="final">&lt;b&gt;ردیف‌ها&lt;/b&gt; - شما قادر خواهید بود ردیف‌های موجود از صفحۀ مورد نظر خود از جدول مورد نظر در بانک‌داده فهرست‌بندی کنید. امکان تعیین بخش‌های مختلف ردیف که نیاز به فهرست بندی دارید وجود دارد مضاف بر این که چگونگی ظاهر شدن مؤلفه‌های GET در هنگام نمایش نتایج جستجو قابل تعریف است.
+&lt;b&gt;فایل‌ها&lt;/b&gt; - به شما امکان فهرست‌بندی همۀ یک پوشه متشکل از فایلها در ذیل پوشۀ fileadin/ را داراست. همچنین امکان تعریف عمق مورد نظر برای پویش وجود دارد.
+&lt;b&gt;نشانی بیرونی&lt;/b&gt; - امکان فهرست‌بندی یک سایت بیرونی و جستجوی آن از سامانۀ TYPO3 شما را می‌دهد! همچنین امکان تعریف عمق مورد نظر در آن پیوند بیرونی، برای پویش برای شما مهیاست.
+ &lt;b&gt;ساختار درختی صفحات&lt;/b&gt; - امکان فهرست بندی ساختاری درختی صفحه با استفاده از کدنوشتۀ زمان‌بندی شده داراست. این حالت مثل حالتهای جستجوی دیگر بعنوان یک گروه و دسته مفید نیست.
+&lt;b&gt;پیکربندی فراداده&lt;/b&gt; - به مجموعه‌ای از دیگر پیکربندی‌‌ها برای فهرست‌سازی اشاره می کند که جستجو در آن انجام می‌شود. امکان استفاده بعنوان فهرست‌بندی زمان‌بندی شده وجود ندارد.
+&lt;b&gt;دلخواه&lt;/b&gt; - سایر افزونه‌ها امکان ثبت انواع پیکربندی‌های مخلتف دیگر را دارند.</target></trans-unit>
+      <trans-unit id="table2index.description" resname="table2index.description" approved="yes">
+        <source>Specify the database table to index records from.</source>
+        <target state="final">جدول بانک داده‌ای را که لازم است ردیف‌های آن فهرست‌بندی شوند وارد نمائید.</target>
+      </trans-unit>
+      <trans-unit id="alternative_source_pid.description" resname="alternative_source_pid.description" approved="yes">
+        <source>By default the indexer will select records from the page id where the Indexing Configuration is stored. If you want an alternative page as the source of your records you can enter it here.</source>
+        <target state="final">به‌طور پیش‌فرض فهرست‌بند ردیف‌هائی از شناسۀ صفحه را انتخاب خواهد کرد که پیکربندی فهرست‌بندی ذخیره شده باشد. اگر مایلید ردیف‌های جایگزینی از صفحۀ جایگزین انتخاب شود، در این مکان قابل انتخاب است.</target>
+      </trans-unit>
+      <trans-unit id="_alternative_source_pid.seeAlso" resname="_alternative_source_pid.seeAlso" approved="yes">
+        <source>index_config:table2index</source>
+        <target state="final">index_config:table2index</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="get_params.description" resname="get_params.description" approved="yes">
+        <source>Enter the GET parameters necessary to display the search results. You can use ###UID### as a marker in the parameter template.</source>
+        <target state="final">مؤلفه‌های GET را که برای نمایش نتیجه ضروری هستند وارد نمائید. شما می‌توانید ###UID### را بعنوان نشانگر در قالب مؤلفه وارد نمایید.</target>
+      </trans-unit>
+      <trans-unit id="get_params.details" resname="get_params.details" xml:space="preserve" approved="yes">
+				<source>Notice: The GET parameters are appended to the URL of the page where the Indexing Configuration is stored (which must be the page where a plugin exists that can display the records with the given parameters!).
+Example value: "&amp;showUid=###UID###"</source>
+			<target state="final">یادداشت: مؤلفه‌های GET به نشانی صفحه‌ای  الحاق می‌گردند که تنظیمات فهرست‌بندی در آن ذخیره شده (که باید آن صفحه‌آی باشد که افزونۀ مربوطه در آن وجود داشته باشد تا مؤلفه‌های ارائه شده را نمایش دهد!).
+مقدار نمونه: "&amp;showUid=###UID###"</target></trans-unit>
+      <trans-unit id="_get_params.seeAlso" resname="_get_params.seeAlso" approved="yes">
+        <source>index_config:table2index</source>
+        <target state="final">index_config:table2index</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="fieldlist.description" resname="fieldlist.description" approved="yes">
+        <source>Enter a comma-list of fields to be indexed. The first field name will be used for the search result title.</source>
+        <target state="final">مقادیر جداشده توسط ویرگول(انگلیسی) را که لازم به فهرست بندی هستند وارد نمائید. نام اولین بخش بعنوان عنوان نتایج جستجو استفاده خواهد شد.</target>
+      </trans-unit>
+      <trans-unit id="fieldlist.details" resname="fieldlist.details" approved="yes">
+        <source>&lt;b&gt;Example:&lt;/b&gt; "header,bodytext,image_caption" would index the Header, Bodytext and Image Caption fields from "tt_content". Notice that you must use the real database field names, don't spell them wrong!</source>
+        <target state="final">&lt;b&gt;مثال:&lt;/b&gt; "header,bodytext,image_caption" عنوان، متن و عنوان تصاویر را از "tt_content"، فهرست خواهد کرد. توجه کنید که شما لازم است از اسامی واقعی نام بخش‌ها(ستون‌ها) در بانک‌داده استفاده کرده و در هجای آن اشتباه نکنید!</target>
+      </trans-unit>
+      <trans-unit id="_fieldlist.seeAlso" resname="_fieldlist.seeAlso" approved="yes">
+        <source>index_config:table2index</source>
+        <target state="final">index_config:table2index</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="recordsbatch.description" resname="recordsbatch.description" approved="yes">
+        <source>Enter how many records to index for each instance of the indexing process (how many per minute). Default is 100 records.</source>
+        <target state="final">تعداد ردیف‌هائی را که در هر پروسۀ فهرست‌بندی پویش می‌شوند وارد کنید (تعداد در دقیقه). پیش‌فرض 100 ردیف است.</target>
+      </trans-unit>
+      <trans-unit id="_recordsbatch.seeAlso" resname="_recordsbatch.seeAlso" approved="yes">
+        <source>index_config:table2index</source>
+        <target state="final">index_config:table2index</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_records_indexonchange.seeAlso" resname="_records_indexonchange.seeAlso" approved="yes">
+        <source>index_config:table2index</source>
+        <target state="final">index_config:table2index</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="externalUrl.description" resname="externalUrl.description" approved="yes">
+        <source>Enter the URL of the external website you want to index.</source>
+        <target state="final">نشانی سایت بیرونی که مایل به فهرست‌بندی آن هستید وارد کنید.</target>
+      </trans-unit>
+      <trans-unit id="url_deny.description" resname="url_deny.description" approved="yes">
+        <source>Enter a URL on each line inside of which the crawler should not decend.</source>
+        <target state="final">یک نشانی در هر سطر وارد کنید که پویش‌گر نباید بدان مراجعه کند.</target>
+      </trans-unit>
+      <trans-unit id="_url_deny.seeAlso" resname="_url_deny.seeAlso" approved="yes">
+        <source>index_config:externalUrl</source>
+        <target state="final">index_config:externalUrl</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="filepath.description" resname="filepath.description" approved="yes">
+        <source>Enter a filepath inside fileadmin/ where you want the files to be indexed.</source>
+        <target state="final">یک نشانی داخل fileadmin/ را انتخاب نمائید که فایلهای فهرست‌بندی شده در آ« قرار گیرند.</target>
+      </trans-unit>
+      <trans-unit id="filepath.details" resname="filepath.details" approved="yes">
+        <source>Example: "fileadmin/newsletters/"</source>
+        <target state="final">مثال: "fileadmin/newsletters/"</target>
+      </trans-unit>
+      <trans-unit id="extensions.description" resname="extensions.description" approved="yes">
+        <source>If you want to index only specific files in the directory, enter a list of file extensions here. For example: "html,pdf,doc"</source>
+        <target state="final">اگر شما مایل به فهرست‌بندی فایل‌های مشخص در یک پوشه هستید، پسوند فایل‌ها را اینجا قرار دهید. برای مثال: "html,pdf,doc"</target>
+      </trans-unit>
+      <trans-unit id="_extensions.seeAlso" resname="_extensions.seeAlso" approved="yes">
+        <source>index_config:filepath</source>
+        <target state="final">index_config:filepath</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="depth.description" resname="depth.description" approved="yes">
+        <source>Levels of recursion.</source>
+        <target state="final">عمق گردش</target>
+      </trans-unit>
+      <trans-unit id="depth.details" resname="depth.details" approved="yes">
+        <source>For file indexing it is the level of directories to decend. For External URLs it's the depth to which the crawler will go with links.</source>
+        <target state="final">جهت فهرست‌بندی فایل‌ها، عمق سطوح دایرکتوری مورد گردش واقع خواهد شد. برای نشانی‌های بیرونی، عمقی که پویش‌گر به همراه پیوندها می‌پیماید.</target>
+      </trans-unit>
+      <trans-unit id="_depth.seeAlso" resname="_depth.seeAlso" xml:space="preserve" approved="yes">
+				<source>index_config:externalUrl,
+index_config:filepath</source>
+				
+			<target state="final">index_config:externalUrl,
+index_config:filepath</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="indexcfgs.description" resname="indexcfgs.description" approved="yes">
+        <source>When a search is conducted in this indexing configuration the actual search will take place in the indexed content from the configurations listed here. You can also enter pages and if you do so the search will take place in indexing configurations found on those pages.</source>
+        <target state="final">در هنگام عمل آوردن جستجو در پیکربندی این فهرست‌سازی، جستجوی حقیقی در محتوای فهرست‌شده مبنی بر تنظیمات پیکربندی قید شده در این بخش انجام خواهد شد. همچنین این امکان را را دارید که در این بخش صفحاتی را وارد کنید که طبق تنظیمات فهرست‌سازی که در آن صفحات پیدا می‌شود عمل گردد.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
