@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:impexp/Resources/Private/Language/locallang_csh.xlf" date="2011-10-17T20:22:33Z" product-name="impexp" target-language="sk">
+    <header/>
+    <body>
+      <trans-unit id=".alttitle" resname=".alttitle" approved="yes">
+        <source>Import/Export</source>
+        <target state="final">Importovať/Exportovať</target>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>Native Import/Export module for TYPO3 data. Can export single records, content of tables, single pages or whole branches of the page tree. Includes attached media like image and preserves relations between records. Exports only to TYPO3 specific format, either a binary format (.T3D) or XML. The format is meant for exchange between TYPO3 systems.</source>
+        <target state="final">Modul určený na exportovanie a importovanie údajov systému TYPO3. Môže exportovať jednotlivé záznamy, obsahy databázových tabuliek, jednotlivé stránky alebo celé vetvy stránok zo stromu stránok. Do exportu sa dajú zahrnúť aj médiá, ako napr. obrázky s tým, že sa uchovajú vzťahy medzi záznamami. Export je možný len v špefiickom formáte TYPO3, binárnom formáte (.T3D) alebo v XML. Tento formát umožňuje výmenu dát medzi systémami TYPO3.</target>
+      </trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" approved="yes">
+        <source>Example of the preview display during export configuration of a page. Notice how records on the page are include plus how references inside the record is found and included as well (bottom of screen).</source>
+        <target state="final">Príklad zobrazujúci obrazovku počas konfigurácie exportu stránky. Opisuje ako sa záznami stránky zahŕňajú do exportu a ako sa nájdu referencie vnútri záznamov (spodok obrazovky).</target>
+      </trans-unit>
+      <trans-unit id="export.alttitle" resname="export.alttitle" approved="yes">
+        <source>Exporting records from TYPO3</source>
+        <target state="final">Exportujem záznamy z TYPO3</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
