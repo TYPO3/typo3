@@ -1,0 +1,735 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_csh_ttcontent.xlf" date="2011-10-17T20:22:32Z" product-name="context_help" target-language="lo">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>All visible content on webpages is typically made by "Page Content" records, often referred to as "Content Elements". Content Elements are managed by the "Page" Module which organizes Content Elements in multiple columns and languages.</source>
+        <target state="final">ເນື້ອຫາທັງໝົດທີ່ເຫັນໄດ້ໃນໜ້າເວັບໂດຍປົກກະຕິແມ່ນສ້າງຂຶ້ນຈາກຂໍ້ມູນ "ເນື້ອຫາໜ້າ" (Page Content), ເຊິ່ງມັກຈະຖືກເອີ້ນວ່າ "ອົງປະກອບເນື້ອຫາ" (Content Elements). ອົງປະກອບເນື້ອຫາແມ່ນຖືກຈັດການໂດຍໂມດູນ "ໜ້າ" (Page) ເຊິ່ງຈະຈັດລະບຽບອົງປະກອບເນື້ອຫາໃນຮູບແບບຫຼາຍຄໍລຳ ແລະ ຫຼາຍພາສາ.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" approved="yes">
+        <source>"Page Content" records are sortable and can be rearranged. The "Language" and "Column" selectors of the "Page Content" records determines when and where they appear. If you do not change the value of the "Language" and "Column" selectors the Content Element will appear in the default configuration.</source>
+        <target state="final">ຂໍ້ມູນ "ເນື້ອຫາໜ້າ" ສາມາດຈັດລຽງລຳດັບ ແລະ ຈັດວາງໃໝ່ໄດ້. ຕົວເລືອກ "ພາສາ" ແລະ "ຄໍລຳ" ຂອງຂໍ້ມູນເນື້ອຫາໜ້າຈະເປັນຕົວ ກຳນົດວ່າເນື້ອຫາຈະສະແດງຜົນເມື່ອໃດ ແລະ ຢູ່ໃສ. ຫາກທ່ານບໍ່ປ່ຽນຄ່າໃນຕົວເລືອກ "ພາສາ" ແລະ "ຄໍລຳ", ອົງປະກອບເນື້ອຫາຈະສະແດງຜົນຕາມການຕັ້ງຄ່າເລີ່ມຕົ້ນ.</target>
+      </trans-unit>
+      <trans-unit id="_.seeAlso" resname="_.seeAlso" xml:space="preserve" approved="yes">
+				<source>Page Content Principles | https://docs.typo3.org/typo3cms/GettingStartedTutorial/GeneralPrinciples/PageContent/,
+_MOD_web_layout</source>
+			<target state="final">ຫຼັກການເນື້ອຫາໜ້າ | https://docs.typo3.org/typo3cms/GettingStartedTutorial/GeneralPrinciples/PageContent/,
+_MOD_web_layout</target></trans-unit>
+      <trans-unit id="_.image" resname="_.image" xml:space="preserve" approved="yes">
+				<source>EXT:frontend/Resources/Public/Images/cshimages/ttcontent_1.png,
+EXT:frontend/Resources/Public/Images/cshimages/ttcontent_2.png,
+EXT:frontend/Resources/Public/Images/cshimages/ttcontent_3.png</source>
+				
+			<target state="final">EXT:frontend/Resources/Public/Images/cshimages/ttcontent_1.png,
+EXT:frontend/Resources/Public/Images/cshimages/ttcontent_2.png,
+EXT:frontend/Resources/Public/Images/cshimages/ttcontent_3.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" xml:space="preserve" approved="yes">
+				<source>The Page Module is used to manage Content Elements arranged in columns and languages.
+A Content Element has an editing form with many options. The "Type" determines which options are visible.
+In the Frontend, a Content Element like the above could look like this.</source>
+			<target state="final">ໂມດູນໜ້າ (Page Module) ຖືກໃຊ້ເພື່ອຈັດການອົງປະກອບເນື້ອຫາທີ່ຈັດລຽງຕາມຄໍລຳ ແລະ ພາສາ.
+ອົງປະກອບເນື້ອຫາຈະມີແບບຟອມການແກ້ໄຂທີ່ມີຫຼາຍຕົວເລືອກ. "ປະເພດ" (Type) ຈະເປັນຕົວກຳນົດວ່າຕົວເລືອກໃດແດ່ທີ່ຈະສະແດງໃຫ້ເຫັນ.
+ໃນສ່ວນສະແດງຜົນ (Frontend), ອົງປະກອບເນື້ອຫາຄືຂ້າງເທິງນັ້ນອາດຈະມີລັກສະນະຄືແບບນີ້.</target></trans-unit>
+      <trans-unit id="CType.description" resname="CType.description" approved="yes">
+        <source>Select the kind of Page Content this element represents. New options will appear when you save the record.</source>
+        <target state="final">ເລືອກປະເພດຂອງເນື້ອຫາໜ້າທີ່ອົງປະກອບນີ້ສະແດງ. ຕົວເລືອກໃໝ່ຈະປະກົດຂຶ້ນເມື່ອທ່ານບັນທຶກຂໍ້ມູນ.</target>
+      </trans-unit>
+      <trans-unit id="CType.details" resname="CType.details" xml:space="preserve" approved="yes">
+				<source>The 'Type' of content you select determines which options are available in the editing form so be sure to save the record before making other changes.
+
+This is a description of the various types:
+
+&lt;strong&gt;Header&lt;/strong&gt;
+This type allows you to insert a standard Content Element header and nothing more.
+Almost all the other types described below also include the Header and its options. The Header type provides a way to insert a header without any other content.
+
+&lt;strong&gt;Text&lt;/strong&gt;
+The Text type allows you to insert regular page content. It is generally used for text only content.
+
+&lt;strong&gt;Text &amp; Images&lt;/strong&gt;
+This is the same as the Text type (regular page content) but with the option of attaching images.
+
+&lt;strong&gt;Image&lt;/strong&gt;
+The Image type allows you to insert image only page content.
+
+&lt;strong&gt;Bullet List&lt;/strong&gt;
+Lets you create a bullet list. Each line in the text field will appear as a single bullet.
+
+&lt;strong&gt;Table&lt;/strong&gt;
+Lets you create &lt;em&gt;simple&lt;/em&gt; tables. Each line represents a row in the table and vertical bars ('|') separate each column. A popup wizard is also available.
+
+&lt;strong&gt;File Links&lt;/strong&gt;
+Allows you to present a list of files for download. Thumbnails can be attached to the list and you can also display the file size.
+
+&lt;strong&gt;Form&lt;/strong&gt;
+Lets you create mail forms using a special syntax or a popup wizard.
+
+&lt;strong&gt;Search&lt;/strong&gt;
+This inserts a search box and also shows the search results when a search is performed on the page.
+
+&lt;strong&gt;Login&lt;/strong&gt;
+Displays a login box for website users. This is only useful if you have already created website users and usergroups.
+
+&lt;strong&gt;Menu/Sitemap&lt;/strong&gt;
+Offers a selection of menus and a sitemap you can insert on a page.
+
+&lt;strong&gt;Insert records&lt;/strong&gt;
+This acts as placeholder for other records. With this content element, you can reuse multiple content elements from other pages.
+
+&lt;strong&gt;Insert plugin&lt;/strong&gt;
+This will allows you to insert news, forums, guestbooks, lists of addresses, and other functionality. Plugins are typically provided by TYPO3 extensions. The available fields and required configuration depend on the extension.
+
+&lt;strong&gt;Divider&lt;/strong&gt;
+This inserts a simple horizontal rule on a page.
+
+&lt;strong&gt;HTML&lt;/strong&gt;
+This is plain HTML content. Anything added in the HTML Code of this Content Element will be displayed directly on the page without any preprocessing.</source>
+			<target state="final">'ປະເພດ' (Type) ຂອງເນື້ອຫາທີ່ທ່ານເລືອກຈະເປັນຕົວກຳນົດວ່າຕົວເລືອກໃດແດ່ທີ່ມີໃຫ້ໃຊ້ໃນແບບຟອມການແກ້ໄຂ, ດັ່ງນັ້ນ ຄວນແນ່ໃຈວ່າໄດ້ບັນທຶກຂໍ້ມູນກ່ອນທີ່ຈະເຮັດການປ່ຽນແປງອື່ນໆ.
+
+ນີ້ແມ່ນລາຍລະອຽດຂອງປະເພດຕ່າງໆ:
+
+&lt;strong&gt;Header (ຫົວຂໍ້)&lt;/strong&gt;
+ປະເພດນີ້ອະນຸຍາດໃຫ້ທ່ານໃສ່ຫົວຂໍ້ອົງປະກອບເນື້ອຫາແບບມາດຕະຖານເທົ່ານັ້ນ.
+ເກືອບທຸກປະເພດອື່ນໆທີ່ອະທິບາຍໄວ້ຂ້າງລຸ່ມນີ້ກໍລວມມີຫົວຂໍ້ ແລະ ຕົວເລືອກຂອງມັນນຳ. ປະເພດ Header ນີ້ແມ່ນວິທີການໃສ່ຫົວຂໍ້ໂດຍບໍ່ມີເນື້ອຫາອື່ນໆ.
+
+&lt;strong&gt;Text (ຂໍ້ຄວາມ)&lt;/strong&gt;
+ປະເພດຂໍ້ຄວາມອະນຸຍາດໃຫ້ທ່ານໃສ່ເນື້ອຫາໜ້າເວັບແບບທົ່ວໄປ. ໂດຍປົກກະຕິແລ້ວແມ່ນໃຊ້ສຳລັບເນື້ອຫາທີ່ມີແຕ່ຂໍ້ຄວາມເທົ່ານັ້ນ.
+
+&lt;strong&gt;Text &amp; Images (ຂໍ້ຄວາມ ແລະ ຮູບພາບ)&lt;/strong&gt;
+ຄືກັນກັບປະເພດຂໍ້ຄວາມ (ເນື້ອຫາໜ້າເວັບທົ່ວໄປ) ແຕ່ມີຕົວເລືອກໃນການແນບຮູບພາບນຳ.
+
+&lt;strong&gt;Image (ຮູບພາບ)&lt;/strong&gt;
+ປະເພດຮູບພາບອະນຸຍາດໃຫ້ທ່ານໃສ່ເນື້ອຫາໜ້າເວັບທີ່ມີແຕ່ຮູບພາບເທົ່ານັ້ນ.
+
+&lt;strong&gt;Bullet List (ລາຍການແບບຈຸດ)&lt;/strong&gt;
+ຊ່ວຍໃຫ້ທ່ານສ້າງລາຍການແບບມີຫົວຂໍ້ຈຸດ. ແຕ່ລະແຖວໃນຫ້ອງຂໍ້ຄວາມຈະປະກົດເປັນໜຶ່ງລາຍການ.
+
+&lt;strong&gt;Table (ຕາຕະລາງ)&lt;/strong&gt;
+ຊ່ວຍໃຫ້ທ່ານສ້າງຕາຕະລາງ &lt;em&gt;ແບບງ່າຍດາຍ&lt;/em&gt;. ແຕ່ລະແຖວສະແດງເຖິງແຖວນອນໃນຕາຕະລາງ ແລະ ເຄື່ອງໝາຍແຖວຕັ້ງ ('|') ໃຊ້ແຍກແຕ່ລະຄໍລຳ. ນອກນັ້ນຍັງມີເຄື່ອງມືຊ່ວຍສ້າງ (wizard) ແບບປັອບອັບໃຫ້ໃຊ້ງານນຳ.
+
+&lt;strong&gt;File Links (ລິ້ງໄຟລ໌)&lt;/strong&gt;
+ອະນຸຍາດໃຫ້ທ່ານສະແດງລາຍຊື່ໄຟລ໌ເພື່ອດາວໂຫຼດ. ສາມາດແນບຮູບຕົວຢ່າງ (Thumbnails) ເຂົ້າໃນລາຍການ ແລະ ສາມາດສະແດງຂະໜາດຂອງໄຟລ໌ໄດ້ນຳ.
+
+&lt;strong&gt;Form (ແບບຟອມ)&lt;/strong&gt;
+ຊ່ວຍໃຫ້ທ່ານສ້າງແບບຟອມສົ່ງເມວໂດຍໃຊ້ຮູບແບບຄຳສັ່ງພິເສດ ຫຼື ເຄື່ອງມືຊ່ວຍສ້າງແບບປັອບອັບ.
+
+&lt;strong&gt;Search (ຄົ້ນຫາ)&lt;/strong&gt;
+ນີ້ຈະໃສ່ຫ້ອງຄົ້ນຫາ ແລະ ສະແດງຜົນການຄົ້ນຫາເມື່ອມີການຄົ້ນຫາເກີດຂຶ້ນໃນໜ້າເວັບ.
+
+&lt;strong&gt;Login (ເຂົ້າສູ່ລະບົບ)&lt;/strong&gt;
+ສະແດງຫ້ອງເຂົ້າສູ່ລະບົບສຳລັບຜູ້ໃຊ້ເວັບໄຊ. ນີ້ຈະມີປະໂຫຍດກໍຕໍ່ເມື່ອທ່ານໄດ້ສ້າງຜູ້ໃຊ້ເວັບໄຊ ແລະ ກຸ່ມຜູ້ໃຊ້ໄວ້ແລ້ວ.
+
+&lt;strong&gt;Menu/Sitemap (ເມນູ/ແຜນຜັງເວັບໄຊ)&lt;/strong&gt;
+ມີຕົວເລືອກເມນູຕ່າງໆ ແລະ ແຜນຜັງເວັບໄຊທີ່ທ່ານສາມາດໃສ່ລົງໃນໜ້າເວັບໄດ້.
+
+&lt;strong&gt;Insert records (ແຊກຂໍ້ມູນ)&lt;/strong&gt;
+ເຮັດໜ້າທີ່ເປັນບ່ອນຈອງໄວ້ສຳລັບຂໍ້ມູນອື່ນໆ. ດ້ວຍອົງປະກອບເນື້ອຫານີ້, ທ່ານສາມາດນຳໃຊ້ອົງປະກອບເນື້ອຫາຫຼາຍອັນຈາກໜ້າອື່ນໆມາໃຊ້ຄືນໄດ້.
+
+&lt;strong&gt;Insert plugin (ແຊກປລັກອິນ)&lt;/strong&gt;
+ນີ້ຈະຊ່ວຍໃຫ້ທ່ານໃສ່ຂ່າວສານ, ເວທີສົນທະນາ, ປຶ້ມຢ້ຽມຢາມ, ລາຍຊື່ທີ່ຢູ່ ແລະ ຟັງຊັນອື່ນໆ. ໂດຍປົກກະຕິແລ້ວ ປລັກອິນແມ່ນມາຈາກສ່ວນເສີມ (extensions) ຂອງ TYPO3. ຫ້ອງຂໍ້ມູນທີ່ມີໃຫ້ ແລະ ການຕັ້ງຄ່າທີ່ຈຳເປັນແມ່ນຂຶ້ນກັບສ່ວນເສີມນັ້ນໆ.
+
+&lt;strong&gt;Divider (ເສັ້ນຂັ້ນ)&lt;/strong&gt;
+ນີ້ຈະໃສ່ເສັ້ນຂັ້ນແນວນອນແບບງ່າຍດາຍລົງໃນໜ້າເວັບ.
+
+&lt;strong&gt;HTML&lt;/strong&gt;
+ນີ້ແມ່ນເນື້ອຫາ HTML ບໍລິສຸດ. ທຸກຢ່າງທີ່ເພີ່ມລົງໃນລະຫັດ HTML ຂອງອົງປະກອບເນື້ອຫານີ້ຈະຖືກສະແດງໂດຍກົງໃນໜ້າເວັບໂດຍບໍ່ມີການປະມວນຜົນໃດໆກ່ອນ.</target></trans-unit>
+      <trans-unit id="_CType.seeAlso" resname="_CType.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:colPos,
+tt_content:sys_language_uid,
+About Content Elements | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/EditPageContent/</source>
+				
+			<target state="final">tt_content:colPos,
+tt_content:sys_language_uid,
+ກ່ຽວກັບອົງປະກອບເນື້ອຫາ | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/EditPageContent/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_CType.image" resname="_CType.image" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/ttcontent_4.png</source>
+        <target state="final">EXT:frontend/Resources/Public/Images/cshimages/ttcontent_4.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>Uncheck this box if you wish to disable the Content Element and keep it from being displayed on the website.</source>
+        <target state="final">ຍົກເລີກການເລືອກຫ້ອງນີ້ ຫາກທ່ານຕ້ອງການປິດການໃຊ້ງານອົງປະກອບເນື້ອຫາ ແລະ ບໍ່ໃຫ້ມັນສະແດງຜົນໃນເວັບໄຊ.</target>
+      </trans-unit>
+      <trans-unit id="_hidden.seeAlso" resname="_hidden.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:starttime,
+tt_content:endtime,
+tt_content:fe_group,
+tt_content:colPos,
+tt_content:sys_language_uid</source>
+				
+			<target state="final">tt_content:starttime,
+tt_content:endtime,
+tt_content:fe_group,
+tt_content:colPos,
+tt_content:sys_language_uid</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="starttime.description" resname="starttime.description" approved="yes">
+        <source>Enter the date when the Content Element should be published and displayed on the website.</source>
+        <target state="final">ປ້ອນວັນທີທີ່ຕ້ອງການໃຫ້ອົງປະກອບເນື້ອຫາຖືກເຜີຍແຜ່ ແລະ ສະແດງຜົນໃນເວັບໄຊ.</target>
+      </trans-unit>
+      <trans-unit id="_starttime.seeAlso" resname="_starttime.seeAlso" xml:space="preserve" approved="yes">
+				<source>pages:starttime,
+tt_content:endtime,
+tt_content:hidden,
+tt_content:fe_group</source>
+				
+			<target state="final">pages:starttime,
+tt_content:endtime,
+tt_content:hidden,
+tt_content:fe_group</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="endtime.description" resname="endtime.description" approved="yes">
+        <source>Enter the date when the Content Element should expire and disappear from the website.</source>
+        <target state="final">ປ້ອນວັນທີທີ່ຕ້ອງການໃຫ້ອົງປະກອບເນື້ອຫາໝົດອາຍຸ ແລະ ຫາຍໄປຈາກເວັບໄຊ.</target>
+      </trans-unit>
+      <trans-unit id="_endtime.seeAlso" resname="_endtime.seeAlso" xml:space="preserve" approved="yes">
+				<source>pages:endtime,
+tt_content:starttime,
+tt_content:hidden,
+tt_content:fe_group</source>
+				
+			<target state="final">pages:endtime,
+tt_content:starttime,
+tt_content:hidden,
+tt_content:fe_group</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="fe_group.description" resname="fe_group.description" approved="yes">
+        <source>If Usergroup Access Rights are set to a usergroup name, only website users who are logged in and members of the selected usergroup will be able to view the Content Element. The special option 'Hide at Login' means the Content Element will &lt;em&gt;not&lt;/em&gt; be visible for any website users that are logged in. Likewise "Show at Any Login" will make the Content Element visible for any logged in website user.</source>
+        <target state="final">ຫາກສິດການເຂົ້າເຖິງຂອງກຸ່ມຜູ້ໃຊ້ຖືກຕັ້ງເປັນຊື່ກຸ່ມຜູ້ໃຊ້ໃດໜຶ່ງ, ສະເພາະຜູ້ໃຊ້ເວັບໄຊທີ່ເຂົ້າສູ່ລະບົບ ແລະ ເປັນສະມາຊິກຂອງກຸ່ມຜູ້ໃຊ້ທີ່ເລືອກເທົ່ານັ້ນທີ່ຈະສາມາດເຫັນອົງປະກອບເນື້ອຫານີ້ໄດ້. ຕົວເລືອກພິເສດ 'Hide at Login' (ເຊື່ອງເມື່ອເຂົ້າສູ່ລະບົບ) ໝາຍຄວາມວ່າອົງປະກອບເນື້ອຫາຈະ &lt;em&gt;ບໍ່&lt;/em&gt; ສະແດງໃຫ້ຜູ້ໃຊ້ທີ່ເຂົ້າສູ່ລະບົບເຫັນ. ໃນທາງກັບກັນ "Show at Any Login" (ສະແດງເມື່ອມີການເຂົ້າສູ່ລະບົບໃດໆ) ຈະເຮັດໃຫ້ອົງປະກອບເນື້ອຫາສະແດງໃຫ້ທຸກຜູ້ໃຊ້ທີ່ເຂົ້າສູ່ລະບົບເຫັນ.</target>
+      </trans-unit>
+      <trans-unit id="fe_group.details" resname="fe_group.details" approved="yes">
+        <source>The 'Hide at Login' option is is useful if you want to present information like "How to Login" that becomes irrelevant when a website user is actually logged in.</source>
+        <target state="final">ຕົວເລືອກ 'Hide at Login' ມີປະໂຫຍດຫາກທ່ານຕ້ອງການສະແດງຂໍ້ມູນເຊັ່ນ "ວິທີການເຂົ້າສູ່ລະບົບ" ເຊິ່ງຈະບໍ່ຈຳເປັນອີກຕໍ່ໄປເມື່ອຜູ້ໃຊ້ໄດ້ເຂົ້າສູ່ລະບົບແລ້ວ.</target>
+      </trans-unit>
+      <trans-unit id="_fe_group.seeAlso" resname="_fe_group.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:hidden,
+tt_content:starttime,
+tt_content:endtime,
+pages:fe_group,
+fe_users,
+fe_groups</source>
+				
+			<target state="final">tt_content:hidden,
+tt_content:starttime,
+tt_content:endtime,
+pages:fe_group,
+fe_users,
+fe_groups</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="sys_language_uid.description" resname="sys_language_uid.description" approved="yes">
+        <source>Select the system language of this Content Element. &lt;strong&gt;Notice:&lt;/strong&gt; This will affect the Content Element visibility by limiting it to a certain language.</source>
+        <target state="final">ເລືອກພາສາລະບົບຂອງອົງປະກອບເນື້ອຫານີ້. &lt;strong&gt;ໝາຍເຫດ:&lt;/strong&gt; ນີ້ຈະສົ່ງຜົນຕໍ່ການສະແດງຜົນຂອງອົງປະກອບເນື້ອຫາ ໂດຍການຈຳກັດໃຫ້ສະແດງສະເພາະບາງພາສາ.</target>
+      </trans-unit>
+      <trans-unit id="sys_language_uid.details" resname="sys_language_uid.details" xml:space="preserve" approved="yes">
+				<source>This allows you to assign a specific language to the Content Element. If you select anything but the default value, the element will &lt;em&gt;not&lt;/em&gt; be visible unless the language assigned is also configured by the TypoScript template.
+The available system languages are created by the administrator.</source>
+			<target state="final">ນີ້ຊ່ວຍໃຫ້ທ່ານກຳນົດພາສາສະເພາະໃຫ້ກັບອົງປະກອບເນື້ອຫາ. ຫາກທ່ານເລືອກຄ່າອື່ນນອກຈາກຄ່າເລີ່ມຕົ້ນ, ອົງປະກອບນີ້ຈະ &lt;em&gt;ບໍ່&lt;/em&gt; ສະແດງຜົນ ເວັ້ນເສຍແຕ່ວ່າພາສາທີ່ກຳນົດນັ້ນໄດ້ຖືກຕັ້ງຄ່າໄວ້ໃນເທັມເພລດ TypoScript ນຳ. ພາສາລະບົບທີ່ມີໃຫ້ແມ່ນຖືກສ້າງຂຶ້ນໂດຍຜູ້ດູແລລະບົບ.</target></trans-unit>
+      <trans-unit id="_sys_language_uid.seeAlso" resname="_sys_language_uid.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:colPos,
+sys_language,
+Localization concepts [Technical] | http://typo3.org/documentation/tips-tricks/multi-language-sites-in-typo3/,
+_MOD_web_layout:language_list</source>
+				
+			<target state="final">tt_content:colPos,
+sys_language,
+ແນວຄວາມຄິດການເຮັດທ້ອງຖິ່ນ [Technical] | http://typo3.org/documentation/tips-tricks/multi-language-sites-in-typo3/,
+_MOD_web_layout:language_list</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="layout.description" resname="layout.description" approved="yes">
+        <source>Select a Layout.</source>
+        <target state="final">ເລືອກຮູບແບບການຈັດວາງ (Layout).</target>
+      </trans-unit>
+      <trans-unit id="layout.details" resname="layout.details" xml:space="preserve" approved="yes">
+				<source>This option does not work by default for all Content Elements but your website may display Content Elements differently depending on the layout.
+
+The File Links Content Element does make use of the Layout field by default:
+"Normal" will provide a list of file links with no thumbnail.
+"Layout 1" adds a file icon to the left of the link
+"Layout 2" adds a thumbnail for image files and an icon for other files. A black border is wrapped around the icon.
+"Layout 3" is similar to Layout 2, but without the black border.</source>
+			<target state="final">ຕົວເລືອກນີ້ບໍ່ໄດ້ເຮັດວຽກໂດຍຄ່າເລີ່ມຕົ້ນສຳລັບທຸກອົງປະກອບເນື້ອຫາ ແຕ່ເວັບໄຊຂອງທ່ານອາດຈະສະແດງອົງປະກອບເນື້ອຫາແຕກຕ່າງກັນໄປຕາມຮູບແບບທີ່ເລືອກ.
+
+ອົງປະກອບເນື້ອຫາ "ລິ້ງໄຟລ໌" (File Links) ມີການນຳໃຊ້ຫ້ອງ Layout ໂດຍຄ່າເລີ່ມຕົ້ນດັ່ງນີ້:
+"Normal" (ປົກກະຕິ) ຈະສະແດງລາຍຊື່ລິ້ງໄຟລ໌ໂດຍບໍ່ມີຮູບຕົວຢ່າງ.
+"Layout 1" ຈະເພີ່ມໄອຄອນໄຟລ໌ໄວ້ທາງດ້ານຊ້າຍຂອງລິ້ງ.
+"Layout 2" ຈະເພີ່ມຮູບຕົວຢ່າງສຳລັບໄຟລ໌ຮູບພາບ ແລະ ໄອຄອນສຳລັບໄຟລ໌ອື່ນໆ ໂດຍມີເສັ້ນຂອບສີດຳອ້ອມຮອບໄອຄອນ.
+"Layout 3" ຄືກັນກັບ Layout 2 ແຕ່ບໍ່ມີເສັ້ນຂອບສີດຳ.</target></trans-unit>
+      <trans-unit id="colPos.description" resname="colPos.description" approved="yes">
+        <source>Select the column position of this element. &lt;strong&gt;Notice:&lt;/strong&gt; This may affect whether the Content Element is visible depending on your website template.</source>
+        <target state="final">ເລືອກຕຳແໜ່ງຄໍລຳຂອງອົງປະກອບນີ້. &lt;strong&gt;ໝາຍເຫດ:&lt;/strong&gt; ນີ້ອາດຈະສົ່ງຜົນຕໍ່ການສະແດງຜົນຂອງອົງປະກອບເນື້ອຫາ ຂຶ້ນກັບເທັມເພລດເວັບໄຊຂອງທ່ານ.</target>
+      </trans-unit>
+      <trans-unit id="colPos.details" resname="colPos.details" xml:space="preserve" approved="yes">
+				<source>Many websites only use one column of content. Some templates, however, let you put content in multiple columns using the Column option.
+
+&lt;strong&gt;Notice:&lt;/strong&gt; Selecting a column other than "Normal" may cause the Content Element to disappear if the website template does not use that column. If your Content Element mysteriously disappears make sure the Column and Language selectors are set correctly.</source>
+			<target state="final">ຫຼາຍເວັບໄຊໃຊ້ພຽງແຕ່ຄໍລຳດຽວສຳລັບເນື້ອຫາ. ແນວໃດກໍຕາມ, ບາງເທັມເພລດອະນຸຍາດໃຫ້ທ່ານໃສ່ເນື້ອຫາໃນຫຼາຍຄໍລຳໂດຍໃຊ້ຕົວເລືອກ Column.
+
+&lt;strong&gt;ໝາຍເຫດ:&lt;/strong&gt; ການເລືອກຄໍລຳອື່ນນອກຈາກ "Normal" ອາດຈະເຮັດໃຫ້ອົງປະກອບເນື້ອຫາຫາຍໄປ ຫາກເທັມເພລດເວັບໄຊບໍ່ໄດ້ນຳໃຊ້ຄໍລຳນັ້ນ. ຫາກອົງປະກອບເນື້ອຫາຂອງທ່ານຫາຍໄປໂດຍບໍ່ຮູ້ສາເຫດ, ໃຫ້ກວດເບິ່ງວ່າຕົວເລືອກຄໍລຳ ແລະ ພາສາໄດ້ຖືກຕັ້ງຄ່າຢ່າງຖືກຕ້ອງແລ້ວຫຼືບໍ່.</target></trans-unit>
+      <trans-unit id="_colPos.seeAlso" resname="_colPos.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:sys_language_uid,
+_MOD_web_layout:columns_multi,
+_MOD_web_layout:columns_single</source>
+				
+			<target state="final">tt_content:sys_language_uid,
+_MOD_web_layout:columns_multi,
+_MOD_web_layout:columns_single</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="date.description" resname="date.description" approved="yes">
+        <source>Enter a date to be displayed above the header.</source>
+        <target state="final">ປ້ອນວັນທີທີ່ຈະໃຫ້ສະແດງໄວ້ເທິງຫົວຂໍ້.</target>
+      </trans-unit>
+      <trans-unit id="header.description" resname="header.description" approved="yes">
+        <source>Enter header text for the Content Element.</source>
+        <target state="final">ປ້ອນຂໍ້ຄວາມຫົວຂໍ້ສຳລັບອົງປະກອບເນື້ອຫາ.</target>
+      </trans-unit>
+      <trans-unit id="header.details" resname="header.details" xml:space="preserve" approved="yes">
+				<source>Almost all Content Elements will display this header above the content. If you don't want the header displayed, set the header Layout to "Hidden". You can also choose not to enter any content in this field.
+
+Some content element types do not display the header by default. In those cases the Header field is typically labeled "Name" instead. One example is the HTML Content Element.</source>
+			<target state="final">ເກືອບທຸກອົງປະກອບເນື້ອຫາ ຈະສະແດງຫົວຂໍ້ນີ້ຢູ່ເທິງເນື້ອຫາ. ຫາກທ່ານບໍ່ຕ້ອງການໃຫ້ສະແດງຫົວຂໍ້, ໃຫ້ຕັ້ງຄ່າ ຮູບແບບການຈັດວາງຫົວຂໍ້ ເປັນ "Hidden" (ຊ່ອນ). ທ່ານຍັງສາມາດເລືອກທີ່ຈະບໍ່ໃສ່ເນື້ອຫາໃດໆ ໃນຫ້ອງນີ້ກໍໄດ້.
+ອົງປະກອບເນື້ອຫາບາງປະເພດ ຈະບໍ່ສະແດງຫົວຂໍ້ໂດຍຄ່າເລີ່ມຕົ້ນ. ໃນກໍລະນີເຫຼົ່ານັ້ນ, ໂດຍປົກກະຕິແລ້ວ ຫ້ອງຫົວຂໍ້ຈະຖືກປ່ຽນຊື່ເປັນ "ຊື່" ແທນ. ຕົວຢ່າງໜຶ່ງແມ່ນ ອົງປະກອບເນື້ອຫາ HTML.
+</target></trans-unit>
+      <trans-unit id="_header.seeAlso" resname="_header.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:header_position,
+tt_content:header_link,
+tt_content:header_layout,
+tt_content:date,</source>
+				
+			<target state="final">tt_content:header_position,
+tt_content:header_link,
+tt_content:header_layout,
+tt_content:date,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_header.image" resname="_header.image" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/ttcontent_6.png</source>
+        <target state="final">EXT:frontend/Resources/Public/Images/cshimages/ttcontent_6.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="header_position.description" resname="header_position.description" approved="yes">
+        <source>Aligns the header to the left, center, or right.</source>
+        <target state="final">ຈັດວາງຕຳແໜ່ງຫົວຂໍ້ໄວ້ທາງຊ້າຍ, ກາງ ຫຼື ຂວາ.</target>
+      </trans-unit>
+      <trans-unit id="_header_position.seeAlso" resname="_header_position.seeAlso" approved="yes">
+        <source>tt_content:header</source>
+        <target state="final">tt_content:header</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="header_link.description" resname="header_link.description" approved="yes">
+        <source>Creates a link from the header to a Page ID, email address, or URL.</source>
+        <target state="final">ສ້າງລິ້ງຈາກຫົວຂໍ້ໄປຫາ ID ຂອງໜ້າ, ທີ່ຢູ່ອີເມວ ຫຼື URL.</target>
+      </trans-unit>
+      <trans-unit id="header_link.syntax" resname="header_link.syntax" xml:space="preserve" approved="yes">
+				<source>If you insert a Page ID (ex. 51), the link will point to the page with id=51 &lt;em&gt;inside&lt;/em&gt; TYPO3.
+If you insert an email address (ex. name@my-domain.test), the link will point to that email address.
+If you insert an URL or domain, (ex. www.typo3.org or http://www.my-domain.org), the link will point to that website.</source>
+			<target state="final">ຫາກທ່ານໃສ່ ID ຂອງໜ້າ (ຕົວຢ່າງ: 51), ລິ້ງຈະຊີ້ໄປຫາໜ້າທີ່ມີ id=51 &lt;em&gt;ພາຍໃນ&lt;/em&gt; TYPO3.
+ຫາກທ່ານໃສ່ທີ່ຢູ່ອີເມວ (ຕົວຢ່າງ: name@my-domain.test), ລິ້ງຈະຊີ້ໄປຫາທີ່ຢູ່ອີເມວນັ້ນ.
+ຫາກທ່ານໃສ່ URL ຫຼື ໂດເມນ (ຕົວຢ່າງ: www.typo3.org ຫຼື http://www.my-domain.org), ລິ້ງຈະຊີ້ໄປຫາເວັບໄຊນັ້ນ.</target></trans-unit>
+      <trans-unit id="_header_link.seeAlso" resname="_header_link.seeAlso" approved="yes">
+        <source>tt_content:header</source>
+        <target state="final">tt_content:header</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="header_layout.description" resname="header_layout.description" approved="yes">
+        <source>Select a visual design for the header.</source>
+        <target state="final">ເລືອກຮູບແບບການສະແດງຜົນສຳລັບຫົວຂໍ້.</target>
+      </trans-unit>
+      <trans-unit id="header_layout.details" resname="header_layout.details" xml:space="preserve" approved="yes">
+				<source>If you select "Default" the standard design (which is one of the layouts 1-5) will be used.
+Alternatively you can select from Layout 1 through 5 which are configured in the website template with individual visual designs.
+If you select "Hidden" the header will simply not appear. This is useful when you don't need a header to display on the website but still want to identify the Content Element in the Backend.</source>
+			<target state="final">ຫາກທ່ານເລືອກ "Default" (ເລີ່ມຕົ້ນ) ຮູບແບບມາດຕະຖານ (ເຊິ່ງແມ່ນໜຶ່ງໃນ Layout 1-5) ຈະຖືກນຳໃຊ້.
+ຫຼືທ່ານສາມາດເລືອກຈາກ Layout 1 ເຖິງ 5 ເຊິ່ງຖືກຕັ້ງຄ່າໄວ້ໃນເທັມເພລດເວັບໄຊດ້ວຍຮູບແບບທີ່ແຕກຕ່າງກັນ.
+ຫາກທ່ານເລືອກ "Hidden" (ເຊື່ອງ) ຫົວຂໍ້ຈະບໍ່ປະກົດໃຫ້ເຫັນ. ນີ້ມີປະໂຫຍດເມື່ອທ່ານບໍ່ຕ້ອງການສະແດງຫົວຂໍ້ໃນເວັບໄຊ ແຕ່ຍັງຕ້ອງການລະບຸຊື່ອົງປະກອບເນື້ອຫາໃນສ່ວນຈັດການ (Backend).</target></trans-unit>
+      <trans-unit id="_header_layout.seeAlso" resname="_header_layout.seeAlso" approved="yes">
+        <source>tt_content:header</source>
+        <target state="final">tt_content:header</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="subheader.description" resname="subheader.description" approved="yes">
+        <source>Enter a subheader to be displayed below the main header. If the Content Element is a "Form" this field is instead used as the Recipient Email.</source>
+        <target state="final">ປ້ອນຫົວຂໍ້ຍ່ອຍທີ່ຈະໃຫ້ສະແດງໄວ້ກ້ອງຫົວຂໍ້ຫຼັກ. ຫາກອົງປະກອບເນື້ອຫາແມ່ນ "ແບບຟອມ" (Form) ຫ້ອງນີ້ຈະຖືກໃຊ້ເປັນອີເມວຜູ້ຮັບແທນ.</target>
+      </trans-unit>
+      <trans-unit id="subheader.details" resname="subheader.details" approved="yes">
+        <source>A subheader is displayed only with "Header" Content Elements and with "Form" Content Elements (as the Recipient Email).</source>
+        <target state="final">ຫົວຂໍ້ຍ່ອຍຈະສະແດງສະເພາະກັບອົງປະກອບເນື້ອຫາປະເພດ "Header" ແລະ "Form" (ເປັນອີເມວຜູ້ຮັບ) ເທົ່ານັ້ນ.</target>
+      </trans-unit>
+      <trans-unit id="_subheader.seeAlso" resname="_subheader.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:header
+tt_content:bodytext</source>
+				
+			<target state="final">tt_content:header
+tt_content:bodytext</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="bodytext.description" resname="bodytext.description" approved="yes">
+        <source>Enter the main text.</source>
+        <target state="final">ປ້ອນຂໍ້ຄວາມຫຼັກ.</target>
+      </trans-unit>
+      <trans-unit id="bodytext.details" resname="bodytext.details" xml:space="preserve" approved="yes">
+				<source>The main text of the Content Element is entered here and can be formatted with HTML or a Rich Text Editor.
+The field is reused in other Content Element types so changing the type will cause any text to be reused in that new Content Element type.
+
+When you're using this field with the "Text" and "Text &amp; Images" types, the content is normal body text. Each linebreak signifies a new paragraph, you can use the special TYPO3 tag, &amp;lt;LINK&amp;gt;, for making links. You can use many HTML tags but there are limitations depending on your website configuration.
+A Rich Text Editor is commonly used to add a visual editing interface for 'Text' and 'Text &amp; Images' Content Elements.
+
+&lt;b&gt;Bullet Lists:&lt;/b&gt;
+If the type is "Bullet List" each line in this field is a bullet item.
+
+&lt;b&gt;Tables:&lt;/b&gt;
+If the type is "Table" each line represents a table row. Within each line, columns are divided by a vertical bar ('|'). A table row with 3 columns could look like "This is column 1 | Column 2 here | Third column!". The table wizard can also be used for creating tables and is much easier than hand coding them.</source>
+			<target state="final">ຂໍ້ຄວາມຫຼັກຂອງອົງປະກອບເນື້ອຫາແມ່ນຖືກປ້ອນໃສ່ນີ້ ແລະ ສາມາດຈັດຮູບແບບດ້ວຍ HTML ຫຼື ເຄື່ອງມືປັບແຕ່ງຂໍ້ຄວາມ (Rich Text Editor).
+ຫ້ອງນີ້ຖືກນຳໃຊ້ຄືນໃນອົງປະກອບເນື້ອຫາປະເພດອື່ນໆ ດັ່ງນັ້ນການປ່ຽນປະເພດຈະເຮັດໃຫ້ຂໍ້ຄວາມຖືກນຳໄປໃຊ້ໃນປະເພດໃໝ່ນັ້ນນຳ.
+
+ເມື່ອທ່ານໃຊ້ຫ້ອງນີ້ກັບປະເພດ "Text" ແລະ "Text &amp; Images", ເນື້ອຫາຈະເປັນຂໍ້ຄວາມທົ່ວໄປ. ການຍໍ້ໜ້າແຕ່ລະຄັ້ງໝາຍເຖິງວັກໃໝ່, ທ່ານສາມາດໃຊ້ແທັກພິເສດຂອງ TYPO3 ຄື &amp;lt;LINK&amp;gt; ເພື່ອສ້າງລິ້ງ. ທ່ານສາມາດໃຊ້ແທັກ HTML ໄດ້ຫຼາຍຢ່າງແຕ່ກໍມີຂໍ້ຈຳກັດຂຶ້ນກັບການຕັ້ງຄ່າເວັບໄຊຂອງທ່ານ.
+ໂດຍທົ່ວໄປແລ້ວ Rich Text Editor ແມ່ນຖືກໃຊ້ເພື່ອເພີ່ມສ່ວນຕິດຕໍ່ການແກ້ໄຂທີ່ເຫັນພາບໄດ້ສຳລັບອົງປະກອບ "Text" ແລະ "Text &amp; Images".
+
+&lt;b&gt;Bullet Lists (ລາຍການແບບຈຸດ):&lt;/b&gt;
+ຫາກປະເພດແມ່ນ "Bullet List" ແຕ່ລະແຖວໃນຫ້ອງນີ້ຈະເປັນໜຶ່ງລາຍການຈຸດ.
+
+&lt;b&gt;Tables (ຕາຕະລາງ):&lt;/b&gt;
+ຫາກປະເພດແມ່ນ "Table" ແຕ່ລະແຖວສະແດງເຖິງແຖວນອນໃນຕາຕະລາງ. ພາຍໃນແຕ່ລະແຖວ, ຄໍລຳຈະຖືກແຍກດ້ວຍເຄື່ອງໝາຍແຖວຕັ້ງ ('|'). ຕົວຢ່າງແຖວທີ່ມີ 3 ຄໍລຳ: "ຄໍລຳທີ 1 | ຄໍລຳທີ 2 | ຄໍລຳທີ 3!". ທ່ານຍັງສາມາດໃຊ້ເຄື່ອງມືຊ່ວຍສ້າງຕາຕະລາງ (table wizard) ເຊິ່ງຈະງ່າຍກວ່າການຂຽນລະຫັດເອງ.</target></trans-unit>
+      <trans-unit id="_bodytext.seeAlso" resname="_bodytext.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:CType,
+tt_content:subheader,
+xMOD_csh_corebe:wizard_table_wiz</source>
+				
+			<target state="final">tt_content:CType,
+tt_content:subheader,
+xMOD_csh_corebe:wizard_table_wiz</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="image.description" resname="image.description" approved="yes">
+        <source>Insert one or more images.</source>
+        <target state="final">ແຊກຮູບພາບໜຶ່ງຮູບ ຫຼື ຫຼາຍຮູບ.</target>
+      </trans-unit>
+      <trans-unit id="image.details" resname="image.details" xml:space="preserve" approved="yes">
+				<source>You can attach multiple images to the Content Element.
+Depending on the configuration of TYPO3, you can attach images in many formats without worrying about size and compression. TYPO3's graphics processing handles these details for you.
+
+When you use the "Text &amp; Images" type, it's important to select a proper position for images. For this purpose, use the Position and Alignment selector. See link to "Page Content / Position" below.
+You can also display images in multiple columns and even enable an option that opens full size images when thumbnails are clicked.</source>
+			<target state="final">ທ່ານສາມາດແນບຮູບພາບຫຼາຍຮູບເຂົ້າໃນອົງປະກອບເນື້ອຫາ.
+ຂຶ້ນກັບການຕັ້ງຄ່າຂອງ TYPO3, ທ່ານສາມາດແນບຮູບພາບໄດ້ໃນຫຼາຍຮູບແບບໂດຍບໍ່ຕ້ອງກັງວົນເລື່ອງຂະໜາດ ແລະ ການບີບອັດ. ລະບົບປະມວນຜົນກຣາບຟິກຂອງ TYPO3 ຈະຈັດການລາຍລະອຽດເຫຼົ່ານີ້ໃຫ້ທ່ານເອງ.
+
+ເມື່ອທ່ານໃຊ້ປະເພດ "Text &amp; Images", ມັນສຳຄັນຫຼາຍທີ່ຈະເລືອກຕຳແໜ່ງທີ່ເໝາະສົມສຳລັບຮູບພາບ. ເພື່ອການນີ້, ໃຫ້ໃຊ້ຕົວເລືອກຕຳແໜ່ງ ແລະ ການຈັດວາງ (Position and Alignment). ເບິ່ງລິ້ງ "Page Content / Position" ທາງດ້ານລຸ່ມ.
+ທ່ານຍັງສາມາດສະແດງຮູບພາບໃນຮູບແບບຫຼາຍຄໍລຳ ແລະ ສາມາດເປີດໃຊ້ຕົວເລືອກເພື່ອສະແດງຮູບຂະໜາດເຕັມເມື່ອຄລິກທີ່ຮູບຕົວຢ່າງໄດ້.</target></trans-unit>
+      <trans-unit id="_image.seeAlso" resname="_image.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:imagewidth,
+tt_content:imageheight,
+tt_content:imageorient,
+tt_content:imageborder,
+tt_content:image_link,
+tt_content:image_zoom,
+tt_content:imagecols,
+tt_content:imagecaption,
+tt_content:image_frames,
+Using images ("Getting Started") | https://docs.typo3.org/typo3cms/GettingStartedTutorial/TheFileModuleOrImageArchives/ManagingFilesInTypo3/
+Using images (Animation) | FILE:EXT:welcome/modsub/ani_10.gif</source>
+				
+			<target state="final">tt_content:imagewidth,
+tt_content:imageheight,
+tt_content:imageorient,
+tt_content:imageborder,
+tt_content:image_link,
+tt_content:image_zoom,
+tt_content:imagecols,
+tt_content:imagecaption,
+tt_content:image_frames,
+ການນຳໃຊ້ຮູບພາບ ("ເລີ່ມຕົ້ນໃຊ້ງານ") | https://docs.typo3.org/typo3cms/GettingStartedTutorial/TheFileModuleOrImageArchives/ManagingFilesInTypo3/
+ການນຳໃຊ້ຮູບພາບ (ແອນິເມຊັນ) | FILE:EXT:welcome/modsub/ani_10.gif</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_image.image" resname="_image.image" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/ttcontent_5.png</source>
+        <target state="final">EXT:frontend/Resources/Public/Images/cshimages/ttcontent_5.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="image.image_descr" resname="image.image_descr" approved="yes">
+        <source>This shows all the options related to inserting images in Content Elements. Depending on user permissions, you may not be able to use all of them.</source>
+        <target state="final">ນີ້ສະແດງຕົວເລືອກທັງໝົດທີ່ກ່ຽວຂ້ອງກັບການແຊກຮູບພາບໃນອົງປະກອບເນື້ອຫາ. ຂຶ້ນກັບສິດຂອງຜູ້ໃຊ້, ທ່ານອາດຈະບໍ່ສາມາດໃຊ້ໄດ້ທຸກຕົວເລືອກ.</target>
+      </trans-unit>
+      <trans-unit id="imagewidth.description" resname="imagewidth.description" approved="yes">
+        <source>Enter the width (in pixels) for displaying the image in the Frontend of your website.</source>
+        <target state="final">ປ້ອນຄວາມກວ້າງ (ເປັນພິກເຊວ) ສຳລັບການສະແດງຮູບພາບໃນສ່ວນສະແດງຜົນຂອງເວັບໄຊ.</target>
+      </trans-unit>
+      <trans-unit id="imagewidth.details" resname="imagewidth.details" approved="yes">
+        <source>The TypoScript template is normally configured with maximum image width so you shouldn't need to specify a width. In unique cases, this provides additional flexibility though.</source>
+        <target state="final">ໂດຍປົກກະຕິແລ້ວ ເທັມເພລດ TypoScript ຈະຖືກຕັ້ງຄ່າຄວາມກວ້າງສູງສຸດຂອງຮູບພາບໄວ້ແລ້ວ ດັ່ງນັ້ນທ່ານບໍ່ຈຳເປັນຕ້ອງລະບຸຄວາມກວ້າງເອງ. ແນວໃດກໍຕາມ, ໃນກໍລະນີພິເສດ ນີ້ຈະຊ່ວຍໃຫ້ມີຄວາມຍືດຫຍຸ່ນຫຼາຍຂຶ້ນ.</target>
+      </trans-unit>
+      <trans-unit id="_imagewidth.seeAlso" resname="_imagewidth.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:imageheight,
+tt_content:image</source>
+				
+			<target state="final">tt_content:imageheight,
+tt_content:image</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="imageheight.description" resname="imageheight.description" approved="yes">
+        <source>Enter the height (in pixels) for displaying the images in the Frontend of your website.</source>
+        <target state="final">ປ້ອນຄວາມສູງ (ເປັນພິກເຊວ) ສຳລັບການສະແດງຮູບພາບໃນສ່ວນສະແດງຜົນຂອງເວັບໄຊ.</target>
+      </trans-unit>
+      <trans-unit id="_imageheight.seeAlso" resname="_imageheight.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:imagewidth,
+tt_content:image</source>
+				
+			<target state="final">tt_content:imagewidth,
+tt_content:image</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="imageorient.description" resname="imageorient.description" approved="yes">
+        <source>Select the position and alignment of the images relative to the body text.</source>
+        <target state="final">ເລືອກຕຳແໜ່ງ ແລະ ການຈັດວາງຂອງຮູບພາບທຽບກັບຂໍ້ຄວາມເນື້ອຫາ.</target>
+      </trans-unit>
+      <trans-unit id="imageorient.details" resname="imageorient.details" xml:space="preserve" approved="yes">
+				<source>The positions above and below the body text are pretty straight forward.
+The options for "In text" mean that images are displayed with text wrapped around them. When you select this option the template will probably force the images into smaller dimensions to accommodate the width of the template and the width of the text. The bodytext will float &lt;em&gt;under&lt;/em&gt; the image block when it reaches the end of the image block. In other words, the body text &lt;em&gt;wraps around&lt;/em&gt; the image block. If you select "In text" below the "No wrap" divider, the body text will not float under the image block, but simply continue in its column.
+Apart from the visual difference there is a technical aspect as well. If you choose to allow the content to wrap the image block you will experience a strange phenomenon when you do not have enough bodytext to make it float around the image: subsequent content elements on the page will appear to be layered on top of the image block. However it's easily solved by changing the "In text" position to the equal value but below the "No wrap" divider.</source>
+			<target state="final">ຕຳແໜ່ງເທິງ ແລະ ລຸ່ມຂໍ້ຄວາມແມ່ນເຂົ້າໃຈໄດ້ງ່າຍ.
+ຕົວເລືອກ "In text" (ໃນຂໍ້ຄວາມ) ໝາຍຄວາມວ່າຮູບພາບຈະຖືກສະແດງໂດຍມີຂໍ້ຄວາມລ້ອມຮອບ. ເມື່ອທ່ານເລືອກຕົວເລືອກນີ້ ເທັມເພລດອາດຈະບັງຄັບໃຫ້ຮູບພາບມີຂະໜາດນ້ອຍລົງເພື່ອໃຫ້ພໍດີກັບຄວາມກວ້າງຂອງເທັມເພລດ ແລະ ຂໍ້ຄວາມ. ຂໍ້ຄວາມຈະໄຫຼໄປ &lt;em&gt;ກ້ອງ&lt;/em&gt; ບລັອກຮູບພາບເມື່ອມັນໄປເຖິງຕອນທ້າຍຂອງບລັອກຮູບພາບ. ເວົ້າອີກຢ່າງໜຶ່ງຄື ຂໍ້ຄວາມຈະ &lt;em&gt;ລ້ອມຮອບ&lt;/em&gt; ບລັອກຮູບພາບ. ຫາກທ່ານເລືອກ "In text" ທີ່ຢູ່ກ້ອງເສັ້ນຂັ້ນ "No wrap" (ບໍ່ລ້ອມຮອບ), ຂໍ້ຄວາມຈະບໍ່ໄຫຼໄປກ້ອງບລັອກຮູບພາບ ແຕ່ຈະສືບຕໍ່ໃນຄໍລຳຂອງມັນເອງ.
+ນອກຈາກຄວາມແຕກຕ່າງດ້ານສາຍຕາແລ້ວ ຍັງມີດ້ານເຕັກນິກນຳ. ຫາກທ່ານເລືອກໃຫ້ເນື້ອຫາລ້ອມຮອບບລັອກຮູບພາບ ທ່ານອາດຈະພົບປະກົດການແປກໆ ເມື່ອຂໍ້ຄວາມມີບໍ່ຫຼາຍພໍທີ່ຈະລ້ອມຮອບຮູບ: ອົງປະກອບເນື້ອຫາຖັດໄປໃນໜ້າເວັບຈະປະກົດຂຶ້ນມາຊ້ອນເທິງບລັອກຮູບພາບ. ແນວໃດກໍຕາມ, ບັນຫານີ້ແກ້ໄຂໄດ້ງ່າຍໆ ໂດຍການປ່ຽນຕຳແໜ່ງ "In text" ໃຫ້ເປັນຄ່າດຽວກັນແຕ່ເລືອກອັນທີ່ຢູ່ກ້ອງເສັ້ນຂັ້ນ "No wrap".</target></trans-unit>
+      <trans-unit id="imageborder.description" resname="imageborder.description" approved="yes">
+        <source>Displays a colored border around the images.</source>
+        <target state="final">ສະແດງເສັ້ນຂອບສີອ້ອມຮອບຮູບພາບ.</target>
+      </trans-unit>
+      <trans-unit id="_imageborder.seeAlso" resname="_imageborder.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:imagecols,
+tt_content:image</source>
+				
+			<target state="final">tt_content:imagecols,
+tt_content:image</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="image_link.description" resname="image_link.description" approved="yes">
+        <source>Enter a link for the image. For multiple images, separate the links with commas.</source>
+        <target state="final">ປ້ອນລິ້ງສຳລັບຮູບພາບ. ສຳລັບຮູບພາບຫຼາຍຮູບ, ໃຫ້ແຍກລິ້ງດ້ວຍເຄື່ອງໝາຍຈຸດ.</target>
+      </trans-unit>
+      <trans-unit id="image_link.details" resname="image_link.details" xml:space="preserve" approved="yes">
+				<source>By default all images share the same link. Your TypoScript template may be configured to allow a separate link for each image. If this is the case, you simply separate the links with a comma.
+
+See Page Content&gt;Link below for details on syntax.</source>
+			<target state="final">ໂດຍຄ່າເລີ່ມຕົ້ນ ຮູບພາບທັງໝົດຈະໃຊ້ລິ້ງດຽວກັນ. ເທັມເພລດ TypoScript ຂອງທ່ານອາດຈະຖືກຕັ້ງຄ່າໃຫ້ສາມາດໃຊ້ລິ້ງແຍກກັນສຳລັບແຕ່ລະຮູບໄດ້. ໃນກໍລະນີນັ້ນ, ທ່ານພຽງແຕ່ແຍກລິ້ງດ້ວຍເຄື່ອງໝາຍຈຸດ.
+
+ເບິ່ງລາຍລະອຽດກ່ຽວກັບຮູບແບບຄຳສັ່ງໄດ້ທີ່ Page Content&gt;Link ທາງດ້ານລຸ່ມ.</target></trans-unit>
+      <trans-unit id="_image_link.seeAlso" resname="_image_link.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:header_link,
+tt_content:image_zoom,
+tt_content:image</source>
+				
+			<target state="final">tt_content:header_link,
+tt_content:image_zoom,
+tt_content:image</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="image_zoom.description" resname="image_zoom.description" approved="yes">
+        <source>When enabled, clicking an image will open a larger version in a popup window.</source>
+        <target state="final">ເມື່ອເປີດໃຊ້ງານ, ການຄລິກທີ່ຮູບພາບຈະເປັນການເປີດຮູບຂະໜາດໃຫຍ່ຂຶ້ນໃນໜ້າຕ່າງປັອບອັບ.</target>
+      </trans-unit>
+      <trans-unit id="image_zoom.details" resname="image_zoom.details" approved="yes">
+        <source>This option overrides the value in the Links field.</source>
+        <target state="final">ຕົວເລືອກນີ້ຈະຂຽນທັບຄ່າໃນຫ້ອງລິ້ງ (Links).</target>
+      </trans-unit>
+      <trans-unit id="_image_zoom.seeAlso" resname="_image_zoom.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:image_link,
+tt_content:image</source>
+				
+			<target state="final">tt_content:image_link,
+tt_content:image</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="image_frames.description" resname="image_frames.description" approved="yes">
+        <source>Select special image framing options.</source>
+        <target state="final">ເລືອກຕົວເລືອກການໃສ່ຂອບຮູບພາບແບບພິເສດ.</target>
+      </trans-unit>
+      <trans-unit id="_image_frames.seeAlso" resname="_image_frames.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:image</source>
+				
+			<target state="final">tt_content:image</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="imagecols.description" resname="imagecols.description" approved="yes">
+        <source>Set the number of columns when the images are displayed in the Frontend of the website.</source>
+        <target state="final">ຕັ້ງຄ່າຈຳນວນຄໍລຳເມື່ອຮູບພາບຖືກສະແດງໃນສ່ວນສະແດງຜົນຂອງເວັບໄຊ.</target>
+      </trans-unit>
+      <trans-unit id="_imagecols.seeAlso" resname="_imagecols.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:image</source>
+				
+			<target state="final">tt_content:image</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="imagecaption.description" resname="imagecaption.description" approved="yes">
+        <source>Enter captions for the images. For multiple images, enter one caption per line.</source>
+        <target state="final">ປ້ອນຄຳບັນຍາຍສຳລັບຮູບພາບ. ສຳລັບຮູບພາບຫຼາຍຮູບ, ໃຫ້ປ້ອນໜຶ່ງຄຳບັນຍາຍຕໍ່ໜຶ່ງແຖວ.</target>
+      </trans-unit>
+      <trans-unit id="imagecaption.details" resname="imagecaption.details" xml:space="preserve" approved="yes">
+				<source>By default, the caption is positioned below the images. However, your TypoScript template may be configured to allow individual image captions by setting "styles.content.imgtext.captionSplit=1" in your template constants.
+In this case, each line in this field will be the image caption of the corresponding image in the list.
+
+The caption text field is also used by the Content Element type "File Links" where each line represents a description of a file in the list.</source>
+			<target state="final">ໂດຍຄ່າເລີ່ມຕົ້ນ ຄຳບັນຍາຍຈະຢູ່ກ້ອງຮູບພາບ. ແນວໃດກໍຕາມ, ເທັມເພລດ TypoScript ຂອງທ່ານອາດຈະຖືກຕັ້ງຄ່າໃຫ້ສາມາດແຍກຄຳບັນຍາຍແຕ່ລະຮູບໄດ້ ໂດຍການຕັ້ງຄ່າ "styles.content.imgtext.captionSplit=1" ໃນຄ່າຄົງທີ່ຂອງເທັມເພລດ.
+ໃນກໍລະນີນີ້, ແຕ່ລະແຖວໃນຫ້ອງນີ້ຈະເປັນຄຳບັນຍາຍຂອງຮູບພາບທີ່ກົງກັນໃນລາຍການ.
+
+ຫ້ອງຂໍ້ຄວາມຄຳບັນຍາຍນີ້ຍັງຖືກໃຊ້ໂດຍອົງປະກອບເນື້ອຫາປະເພດ "File Links" (ລິ້ງໄຟລ໌) ເຊິ່ງແຕ່ລະແຖວຈະໝາຍເຖິງຄຳອະທິບາຍຂອງໄຟລ໌ໃນລາຍການ.</target></trans-unit>
+      <trans-unit id="cols.description" resname="cols.description" approved="yes">
+        <source>Select a fixed number of table columns</source>
+        <target state="final">ເລືອກຈຳນວນຄໍລຳຕາຕະລາງທີ່ແນ່ນອນ</target>
+      </trans-unit>
+      <trans-unit id="pages.description" resname="pages.description" approved="yes">
+        <source>Select a target page or multiple target pages.</source>
+        <target state="final">ເລືອກໜ້າເປົ້າໝາຍ ຫຼື ຫຼາຍໜ້າເປົ້າໝາຍ.</target>
+      </trans-unit>
+      <trans-unit id="pages.details" resname="pages.details" xml:space="preserve" approved="yes">
+				<source>This field is used by many of the Content Element types to create a relation to either a single target page or multiple target pages. If no target page is specified, the current page will generally be used.
+
+Using the "Search" Content Element, the target page is where search results will appear. You must make sure that this page has a similar "Search" Content Element to display the results.
+
+The "Login" Content Element (not to be confused with the Login plugin available when the felogin extension is installed) also uses this field to redirect the login to a certain page. That page does not need to contain a "Login" Content Element in order to perform the authentication since any TYPO3 page can handle a login request.
+If you specify a second page in this list, the ID will be passed to the login system as the page inside TYPO3 where website users are found. You should use this only if your template is not already configured to pass this value on.
+In order for the login procedure to work you must make sure that you have created website users and website usergroups, have specified where these website users can be found (typically a SysFolder), a page ID in the page list, and ensured that cookies are enabled for the site.
+
+The "Menu/Sitemap" Content Elements also use this field. In this case the page will determine the starting point for the menu or the actual pages shown in the menu. This behavior depends on the menu type you have selected.
+
+Finally the "Form" element uses this field as the target page to which the form is submitted. A common use is the "Thank you" page after the form is completed.</source>
+			<target state="final">ຫ້ອງນີ້ຖືກໃຊ້ໂດຍອົງປະກອບເນື້ອຫາຫຼາຍປະເພດເພື່ອສ້າງຄວາມສຳພັນກັບໜ້າເປົ້າໝາຍດຽວ ຫຼື ຫຼາຍໜ້າ. ຫາກບໍ່ມີການລະບຸໜ້າເປົ້າໝາຍ, ໂດຍທົ່ວໄປແລ້ວຈະຖືເອົາໜ້າປັດຈຸບັນເປັນຫຼັກ.
+
+ສຳລັບອົງປະກອບ "Search" (ຄົ້ນຫາ), ໜ້າເປົ້າໝາຍຄືບ່ອນທີ່ຜົນການຄົ້ນຫາຈະປະກົດຂຶ້ນ. ທ່ານຕ້ອງແນ່ໃຈວ່າໜ້ານັ້ນມີອົງປະກອບເນື້ອຫາ "Search" ທີ່ຄ້າຍຄືກັນເພື່ອສະແດງຜົນ.
+
+ອົງປະກອບ "Login" (ຢ່າສັບສົນກັບປລັກອິນ Login ທີ່ມາຈາກສ່ວນເສີມ felogin) ກໍໃຊ້ຫ້ອງນີ້ເພື່ອປ່ຽນເສັ້ນທາງການເຂົ້າສູ່ລະບົບໄປຫາບາງໜ້າ. ໜ້ານັ້ນບໍ່ຈຳເປັນຕ້ອງມີອົງປະກອບ "Login" ກໍໄດ້ ເພາະທຸກໜ້າຂອງ TYPO3 ສາມາດຈັດການການຮ້ອງຂໍເຂົ້າສູ່ລະບົບໄດ້.
+ຫາກທ່ານລະບຸໜ້າທີສອງໃນລາຍການນີ້, ID ຈະຖືກສົ່ງໄປຫາລະບົບເຂົ້າສູ່ລະບົບເພື່ອບອກວ່າຜູ້ໃຊ້ເວັບໄຊຖືກເກັບໄວ້ຢູ່ໜ້າໃດພາຍໃນ TYPO3. ທ່ານຄວນໃຊ້ຕົວເລືອກນີ້ກໍຕໍ່ເມື່ອເທັມເພລດຂອງທ່ານບໍ່ໄດ້ຖືກຕັ້ງຄ່າໃຫ້ສົ່ງຄ່ານີ້ໄວ້ກ່ອນແລ້ວ.
+ເພື່ອໃຫ້ຂັ້ນຕອນການເຂົ້າສູ່ລະບົບເຮັດວຽກ ທ່ານຕ້ອງແນ່ໃຈວ່າໄດ້ສ້າງຜູ້ໃຊ້ ແລະ ກຸ່ມຜູ້ໃຊ້ເວັບໄຊໄວ້ແລ້ວ, ລະບຸບ່ອນເກັບຂໍ້ມູນຜູ້ໃຊ້ (ໂດຍປົກກະຕິແມ່ນ SysFolder), ມີ ID ຂອງໜ້າໃນລາຍການ ແລະ ແນ່ໃຈວ່າໄດ້ເປີດໃຊ້ງານຄຸກກີ້ (cookies) ສຳລັບເວັບໄຊແລ້ວ.
+
+ອົງປະກອບ "Menu/Sitemap" (ເມນູ/ແຜນຜັງເວັບໄຊ) ກໍໃຊ້ຫ້ອງນີ້ເຊັ່ນກັນ. ໃນກໍລະນີນັ້ນ ໜ້າທີ່ເລືອກຈະເປັນຕົວກຳນົດຈຸດເລີ່ມຕົ້ນຂອງເມນູ ຫຼື ໜ້າທີ່ຈະສະແດງໃນເມນູ. ເຊິ່ງຈະຂຶ້ນກັບປະເພດເມນູທີ່ທ່ານເລືອກ.
+
+ສຸດທ້າຍ ອົງປະກອບ "Form" (ແບບຟອມ) ໃຊ້ຫ້ອງນີ້ເປັນໜ້າເປົ້າໝາຍທີ່ແບບຟອມຈະຖືກສົ່ງໄປ. ສ່ວນໃຫຍ່ແມ່ນໃຊ້ເປັນໜ້າ "ຂອບໃຈ" ຫຼັງຈາກຕື່ມແບບຟອມສຳເລັດແລ້ວ.</target></trans-unit>
+      <trans-unit id="_pages.seeAlso" resname="_pages.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:CType,
+tt_content:recursive</source>
+				
+			<target state="final">tt_content:CType,
+tt_content:recursive</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="recursive.description" resname="recursive.description" approved="yes">
+        <source>The number of subpage levels that should also be included for each page in the list.</source>
+        <target state="final">ຈຳນວນລະດັບຂອງໜ້າຍ່ອຍທີ່ຄວນລວມເຂົ້າສຳລັບແຕ່ລະໜ້າໃນລາຍການ.</target>
+      </trans-unit>
+      <trans-unit id="recursive.details" resname="recursive.details" xml:space="preserve" approved="yes">
+				<source>This feature depends on the TypoScript template configuration and Content Element type. If enabled, each page listed in the "Pages" field will also have its subpages included to the specified depth.
+
+&lt;strong&gt;Warning:&lt;/strong&gt; If there are many subpages, be aware that this option may return a large number of results</source>
+			<target state="final">ຟີເຈີນີ້ຂຶ້ນກັບການຕັ້ງຄ່າເທັມເພລດ TypoScript ແລະ ປະເພດອົງປະກອບເນື້ອຫາ. ຫາກເປີດໃຊ້ງານ, ແຕ່ລະໜ້າທີ່ລະບຸໃນຫ້ອງ "Pages" ຈະລວມເອົາໜ້າຍ່ອຍຂອງມັນເຂົ້າໄປນຳຕາມຄວາມເລິກທີ່ກຳນົດ.
+
+&lt;strong&gt;ຄຳເຕືອນ:&lt;/strong&gt; ຫາກມີໜ້າຍ່ອຍເປັນຈຳນວນຫຼາຍ, ຕົວເລືອກນີ້ອາດຈະສົ່ງຄືນຜົນການຄົ້ນຫາເປັນຈຳນວນມະຫາສານ.</target></trans-unit>
+      <trans-unit id="_recursive.seeAlso" resname="_recursive.seeAlso" approved="yes">
+        <source>tt_content:pages</source>
+        <target state="final">tt_content:pages</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="menu_type.description" resname="menu_type.description" approved="yes">
+        <source>Select the type of menu you wish to create.</source>
+        <target state="final">ເລືອກປະເພດຂອງເມນູທີ່ທ່ານຕ້ອງການສ້າງ.</target>
+      </trans-unit>
+      <trans-unit id="menu_type.details" resname="menu_type.details" xml:space="preserve" approved="yes">
+				<source>This is a short description of each type:
+
+&lt;strong&gt;Menu of selected pages&lt;/strong&gt;
+This will create a menu with links to the pages in the Selected Pages list.
+
+&lt;strong&gt;Menu of subpages of selected pages&lt;/strong&gt;
+This will create in a menu with links to the subpages of the pages in the Selected Pages list. If you do not specify any pages, the subpages to the current page will be used.
+
+&lt;strong&gt;Menu of subpages of selected pages (with abstract)&lt;/strong&gt;
+Like the previous option, but also displays the content of the Abstract field (or the Description field) for each page in the menu. The Abstract field is given priority over the Description field if both are complete.
+
+&lt;strong&gt;Menu of subpages of selected pages + sections&lt;/strong&gt;
+Like the previous option, but includes links to all Content Elements on the page that are marked to Show In Section Menus.
+
+&lt;strong&gt;Sitemap&lt;/strong&gt;
+Generates a classic tree sitemap. Notice that the sitemap will begin from the current page unless you select another page instead.
+
+&lt;strong&gt;Section index (page content marked for section menus)&lt;/strong&gt;
+This makes a menu of Content Elements on the selected pages for all Content Elements marked to Show In Section Menu. This is a great way to make an index at the top of the page.
+If you don't want certain Content Elements to appear in the list, just uncheck the Show in Section Menus checkbox for those elements.
+
+&lt;strong&gt;Recently updated pages&lt;/strong&gt;
+This displays the 10 most recently updated pages.
+&lt;strong&gt;Notice:&lt;/strong&gt; If you update a page and the updated page is not included in this list, clearing the Page Cache will resolve the issue.
+
+&lt;strong&gt;Related pages (based on keywords)&lt;/strong&gt;
+Displays other related pages based on the keywords of the selected pages matched against the keywords of other pages.</source>
+			<target state="final">ນີ້ແມ່ນຄຳອະທິບາຍໂດຍຫຍໍ້ຂອງແຕ່ລະປະເພດ:
+
+&lt;strong&gt;Menu of selected pages (ເມນູຂອງໜ້າທີ່ເລືອກ)&lt;/strong&gt;
+ຈະສ້າງເມນູທີ່ມີລິ້ງໄປຫາໜ້າຕ່າງໆໃນລາຍການໜ້າທີ່ເລືອກ.
+
+&lt;strong&gt;Menu of subpages of selected pages (ເມນູຂອງໜ້າຍ່ອຍຈາກໜ້າທີ່ເລືອກ)&lt;/strong&gt;
+ຈະສ້າງເມນູທີ່ມີລິ້ງໄປຫາໜ້າຍ່ອຍຂອງໜ້າທີ່ເລືອກໃນລາຍການ. ຫາກທ່ານບໍ່ລະບຸໜ້າໃດໆ, ຈະໃຊ້ໜ້າຍ່ອຍຂອງໜ້າປັດຈຸບັນ.
+
+&lt;strong&gt;Menu of subpages of selected pages (with abstract) (ເມນູຂອງໜ້າຍ່ອຍທີ່ມີບົດຄັດຫຍໍ້)&lt;/strong&gt;
+ຄືກັບຕົວເລືອກກ່ອນໜ້ານີ້ ແຕ່ຈະສະແດງເນື້ອຫາຈາກຫ້ອງ Abstract (ຫຼືຫ້ອງ Description) ຂອງແຕ່ລະໜ້າໃນເມນູນຳ. ຫ້ອງ Abstract ຈະຖືກໃຫ້ຄວາມສຳຄັນກ່ອນຫ້ອງ Description ຫາກມີຂໍ້ມູນທັງສອງ.
+
+&lt;strong&gt;Menu of subpages of selected pages + sections (ເມນູຂອງໜ້າຍ່ອຍ + ສ່ວນຍ່ອຍ)&lt;/strong&gt;
+ຄືກັບຕົວເລືອກກ່ອນໜ້ານີ້ ແຕ່ຈະລວມເອົາລິ້ງໄປຫາທຸກອົງປະກອບເນື້ອຫາໃນໜ້າທີ່ຖືກໝາຍໃຫ້ສະແດງໃນເມນູສ່ວນຍ່ອຍ (Section Menus).
+
+&lt;strong&gt;Sitemap (ແຜນຜັງເວັບໄຊ)&lt;/strong&gt;
+ສ້າງແຜນຜັງເວັບໄຊແບບລຳດັບຂັ້ນແບບດັ້ງເດີມ. ໝາຍເຫດວ່າແຜນຜັງຈະເລີ່ມຈາກໜ້າປັດຈຸບັນ ເວັ້ນເສຍແຕ່ວ່າທ່ານຈະເລືອກໜ້າອື່ນແທນ.
+
+&lt;strong&gt;Section index (ດັດຊະນີສ່ວນຍ່ອຍ)&lt;/strong&gt;
+ສ້າງເມນູຂອງອົງປະກອບເນື້ອຫາໃນໜ້າທີ່ເລືອກ ສຳລັບທຸກອົງປະກອບທີ່ຖືກໝາຍໃຫ້ສະແດງໃນເມນູສ່ວນຍ່ອຍ. ນີ້ແມ່ນວິທີທີ່ດີໃນການສ້າງດັດຊະນີໄວ້ເທິງສຸດຂອງໜ້າເວັບ.
+ຫາກທ່ານບໍ່ຕ້ອງການໃຫ້ບາງອົງປະກອບປະກົດໃນລາຍການ, ພຽງແຕ່ຍົກເລີກການເລືອກ "Show in Section Menus" ໃນອົງປະກອບນັ້ນ.
+
+&lt;strong&gt;Recently updated pages (ໜ້າທີ່ຫາກໍ່ອັບເດດ)&lt;/strong&gt;
+ສະແດງ 10 ໜ້າທີ່ຫາກໍ່ຖືກອັບເດດຫຼ້າສຸດ.
+&lt;strong&gt;ໝາຍເຫດ:&lt;/strong&gt; ຫາກທ່ານອັບເດດໜ້າເວັບແລ້ວແຕ່ມັນບໍ່ປະກົດໃນລາຍການນີ້, ການລຶບແຄຊ໌ຂອງໜ້າ (Page Cache) ຈະຊ່ວຍແກ້ໄຂບັນຫາໄດ້.
+
+&lt;strong&gt;Related pages (ໜ້າທີ່ກ່ຽວຂ້ອງ)&lt;/strong&gt;
+ສະແດງໜ້າອື່ນໆທີ່ກ່ຽວຂ້ອງໂດຍອີງຕາມຄຳສຳຄັນ (keywords) ຂອງໜ້າທີ່ເລືອກ ເຊິ່ງກົງກັບຄຳສຳຄັນຂອງໜ້າອື່ນໆ.</target></trans-unit>
+      <trans-unit id="_menu_type.seeAlso" resname="_menu_type.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:pages,
+tt_content:sectionIndex</source>
+				
+			<target state="final">tt_content:pages,
+tt_content:sectionIndex</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="list_type.description" resname="list_type.description" approved="yes">
+        <source>Select a plugin to insert.</source>
+        <target state="final">ເລືອກປລັກອິນທີ່ຈະແຊກ.</target>
+      </trans-unit>
+      <trans-unit id="list_type.details" resname="list_type.details" approved="yes">
+        <source>The list of plugins you can insert on a page. The available plugins depend on which extensions are installed.</source>
+        <target state="final">ລາຍຊື່ປລັກອິນທີ່ທ່ານສາມາດແຊກລົງໃນໜ້າເວັບ. ປລັກອິນທີ່ມີໃຫ້ແມ່ນຂຶ້ນກັບວ່າສ່ວນເສີມ (extensions) ໃດແດ່ທີ່ໄດ້ຖືກຕິດຕັ້ງໄວ້.</target>
+      </trans-unit>
+      <trans-unit id="_list_type.seeAlso" resname="_list_type.seeAlso" approved="yes">
+        <source>_MOD_tools_em</source>
+        <target state="final">_MOD_tools_em</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_list_type.image" resname="_list_type.image" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/ttcontent_7.png</source>
+        <target state="final">EXT:frontend/Resources/Public/Images/cshimages/ttcontent_7.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="media.description" resname="media.description" approved="yes">
+        <source>Files can be added to the list here.</source>
+        <target state="final">ສາມາດເພີ່ມໄຟລ໌ລົງໃນລາຍການໄດ້ທີ່ນີ້.</target>
+      </trans-unit>
+      <trans-unit id="multimedia.description" resname="multimedia.description" approved="yes">
+        <source>Insert a multimedia element here (ex. Flash movie)</source>
+        <target state="final">ແຊກອົງປະກອບມັລຕິມີເດຍທີ່ນີ້ (ຕົວຢ່າງ: ໄຟລ໌ Flash)</target>
+      </trans-unit>
+      <trans-unit id="filelink_size.description" resname="filelink_size.description" approved="yes">
+        <source>Enable the display of file sizes.</source>
+        <target state="final">ເປີດໃຊ້ການສະແດງຂະໜາດຂອງໄຟລ໌.</target>
+      </trans-unit>
+      <trans-unit id="records.description" resname="records.description" approved="yes">
+        <source>Insert records to be displayed on this page.</source>
+        <target state="final">ແຊກຂໍ້ມູນ (records) ທີ່ຈະໃຫ້ສະແດງໃນໜ້ານີ້.</target>
+      </trans-unit>
+      <trans-unit id="sectionIndex.description" resname="sectionIndex.description" approved="yes">
+        <source>If set, the Content Element will appear in Section Menus.</source>
+        <target state="final">ຫາກຕັ້ງຄ່າໄວ້, ອົງປະກອບເນື້ອຫາຈະປະກົດໃນເມນູສ່ວນຍ່ອຍ (Section Menus).</target>
+      </trans-unit>
+      <trans-unit id="sectionIndex.details" resname="sectionIndex.details" approved="yes">
+        <source>See more details about Section Menus by clicking below.</source>
+        <target state="final">ເບິ່ງລາຍລະອຽດເພີ່ມເຕີມກ່ຽວກັບເມນູສ່ວນຍ່ອຍໂດຍການຄລິກທາງດ້ານລຸ່ມ.</target>
+      </trans-unit>
+      <trans-unit id="linkToTop.description" resname="linkToTop.description" approved="yes">
+        <source>If checked, a small  "To Top" link will be added after the Content Element, linking back to the top of the page.</source>
+        <target state="final">ຫາກເລືອກໄວ້, ລິ້ງ "ໄປທາງເທິງ" (To Top) ຂະໜາດນ້ອຍຈະຖືກເພີ່ມເຂົ້າຫຼັງອົງປະກອບເນື້ອຫາ ເພື່ອລິ້ງກັບໄປຫາສ່ວນເທິງສຸດຂອງໜ້າ.</target>
+      </trans-unit>
+      <trans-unit id="rte_enabled.description" resname="rte_enabled.description" approved="yes">
+        <source>If checked, the Rich Text Editor will be disabled for the "Text" and "Text &amp; Image" types (&lt;em&gt;in this Content Element only&lt;/em&gt;).</source>
+        <target state="final">ຫາກເລືອກໄວ້, Rich Text Editor ຈະຖືກປິດການໃຊ້ງານສຳລັບປະເພດ "Text" ແລະ "Text &amp; Image" (&lt;em&gt;ສະເພາະໃນອົງປະກອບເນື້ອຫານີ້ເທົ່ານັ້ນ&lt;/em&gt;).</target>
+      </trans-unit>
+      <trans-unit id="_rte_enabled.seeAlso" resname="_rte_enabled.seeAlso" approved="yes">
+        <source>tt_content:bodytext</source>
+        <target state="final">tt_content:bodytext</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="pi_flexform.description" resname="pi_flexform.description" approved="yes">
+        <source>Plugin Configuration</source>
+        <target state="final">ການຕັ້ງຄ່າປລັກອິນ</target>
+      </trans-unit>
+      <trans-unit id="pi_flexform.details" resname="pi_flexform.details" approved="yes">
+        <source>Some plugins may provide configuration options, but the actual options vary based on the plugin. Behind the scenes, these are based on FlexForms and stored as XML.</source>
+        <target state="final">ບາງປລັກອິນອາດມີຕົວເລືອກການຕັ້ງຄ່າໃຫ້, ແຕ່ຕົວເລືອກຕົວຈິງຈະແຕກຕ່າງກັນໄປຕາມແຕ່ລະປລັກອິນ. ເບື້ອງຫຼັງການເຮັດວຽກແມ່ນອີງຕາມ FlexForms ແລະ ຖືກເກັບໄວ້ໃນຮູບແບບ XML.</target>
+      </trans-unit>
+      <trans-unit id="_pi_flexform.seeAlso" resname="_pi_flexform.seeAlso" approved="yes">
+        <source>tt_content:list_type</source>
+        <target state="final">tt_content:list_type</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
