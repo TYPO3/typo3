@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:form/Resources/Private/Language/locallang_formEditor_failSafeErrorHandling_javascript.xlf" date="2019-04-27T03:38:32Z" product-name="form" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="formEditor.error.headline" resname="formEditor.error.headline" xml:space="preserve">
+                <source>Oops! Something went wrong.</source>
+            <target>crwdns103480:0crwdne103480:0</target></trans-unit>
+      <trans-unit id="formEditor.error.message" resname="formEditor.error.message" xml:space="preserve">
+                <source>Please contact your administrator.</source>
+            <target>crwdns103482:0crwdne103482:0</target></trans-unit>
+      <trans-unit id="formEditor.error.technicalReason" resname="formEditor.error.technicalReason" xml:space="preserve">
+                <source>Technical Reason:</source>
+            <target>crwdns103484:0crwdne103484:0</target></trans-unit>
+    </body>
+  </file>
+</xliff>
