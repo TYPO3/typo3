@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:recordlist/Resources/Private/Language/locallang_browse_links.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="el">
+    <header/>
+    <body>
+      <trans-unit id="removeLink" resname="removeLink" approved="yes">
+        <source>Remove link</source>
+        <target state="final">Αφαίρεση συνδέσμου</target>
+      </trans-unit>
+      <trans-unit id="uploadImage" resname="uploadImage" approved="yes">
+        <source>Upload Image</source>
+        <target state="final">Μεταφόρτωση Εικόνας</target>
+      </trans-unit>
+      <trans-unit id="update" resname="update" approved="yes">
+        <source>Update</source>
+        <target state="final">Ενημέρωση</target>
+      </trans-unit>
+      <trans-unit id="path" resname="path" approved="yes">
+        <source>Path</source>
+        <target state="final">Διαδρομή</target>
+      </trans-unit>
+      <trans-unit id="page" resname="page" approved="yes">
+        <source>Page</source>
+        <target state="final">Σελίδα</target>
+      </trans-unit>
+      <trans-unit id="file" resname="file" approved="yes">
+        <source>File</source>
+        <target state="final">Αρχείο</target>
+      </trans-unit>
+      <trans-unit id="folder" resname="folder" approved="yes">
+        <source>Folder</source>
+        <target state="final">Φάκελος</target>
+      </trans-unit>
+      <trans-unit id="extUrl" resname="extUrl" approved="yes">
+        <source>External URL</source>
+        <target state="final">Εξωτερική διεύθυνση URL</target>
+      </trans-unit>
+      <trans-unit id="email" resname="email" approved="yes">
+        <source>Email</source>
+        <target state="final">Hλεκτρονικό Tαχυδρομείο (email)</target>
+      </trans-unit>
+      <trans-unit id="special" resname="special" approved="yes">
+        <source>Special</source>
+        <target state="final">Ειδικό</target>
+      </trans-unit>
+      <trans-unit id="folderTree" resname="folderTree" approved="yes">
+        <source>Folder Tree</source>
+        <target state="final">Δένδρο Φακέλων</target>
+      </trans-unit>
+      <trans-unit id="files" resname="files" approved="yes">
+        <source>Files</source>
+        <target state="final">Αρχεία</target>
+      </trans-unit>
+      <trans-unit id="target" resname="target" approved="yes">
+        <source>Target</source>
+        <target state="final">Προορισμός</target>
+      </trans-unit>
+      <trans-unit id="class" resname="class" approved="yes">
+        <source>CSS-Class</source>
+        <target state="final">Κλάση CSS</target>
+      </trans-unit>
+      <trans-unit id="title" resname="title" approved="yes">
+        <source>Title</source>
+        <target state="final">Τίτλος</target>
+      </trans-unit>
+      <trans-unit id="newWindow" resname="newWindow" approved="yes">
+        <source>New window</source>
+        <target state="final">Νέο παράθυρο</target>
+      </trans-unit>
+      <trans-unit id="top" resname="top" approved="yes">
+        <source>Top</source>
+        <target state="final">Κορυφή</target>
+      </trans-unit>
+      <trans-unit id="none" resname="none" approved="yes">
+        <source>None - new link!</source>
+        <target state="final">Κανένα - νέος σύνδεσμος!</target>
+      </trans-unit>
+      <trans-unit id="pageTree" resname="pageTree" approved="yes">
+        <source>Page tree</source>
+        <target state="final">Δένδο σελίδων</target>
+      </trans-unit>
+      <trans-unit id="contentElements" resname="contentElements" approved="yes">
+        <source>Content elements</source>
+        <target state="final">Στοιχεία περιεχομένου</target>
+      </trans-unit>
+      <trans-unit id="selectRecords" resname="selectRecords" approved="yes">
+        <source>Select Records</source>
+        <target state="final">Επιλογή εγγραφών</target>
+      </trans-unit>
+      <trans-unit id="addToList" resname="addToList" approved="yes">
+        <source>Add to list...</source>
+        <target state="final">Προσθήκη στη λίστα...</target>
+      </trans-unit>
+      <trans-unit id="info" resname="info" approved="yes">
+        <source>Info</source>
+        <target state="final">Πληροφορίες</target>
+      </trans-unit>
+      <trans-unit id="emailAddress" resname="emailAddress" approved="yes">
+        <source>Email address</source>
+        <target state="final">Διεύθυνση ηλεκτρονικού ταχυδρομείου (email)</target>
+      </trans-unit>
+      <trans-unit id="setLink" resname="setLink" approved="yes">
+        <source>Set Link</source>
+        <target state="final">Ορισμός Δεσμού</target>
+      </trans-unit>
+      <trans-unit id="clickToRedrawFullSize" resname="clickToRedrawFullSize" approved="yes">
+        <source>Image is larger than shown here! Click to redraw page with full sized images.</source>
+        <target state="final">Η εικόνα είναι μεγαλύτερη από αυτή που φαίνεται εδώ! Πατήστε για να ενημερωθεί η προβολή της σελίδας με την εικόνα σε πλήρες μέγεθος.</target>
+      </trans-unit>
+      <trans-unit id="findDragDrop" resname="findDragDrop" approved="yes">
+        <source>Find and click on your image then drag it into the editor in the main window!</source>
+        <target state="final">Βρείτε και πατήστε στην εικόνα σας, έπειτα σύρετε την στον επεξεργαστή στο κεντρικό παράθυρο!</target>
+      </trans-unit>
+      <trans-unit id="noWebFolder" resname="noWebFolder" approved="yes">
+        <source>You cannot drag images from this folder (yellow) because it is internal on the server.</source>
+        <target state="final">Δεν μπορείτε να σύρετε εικόνες από αυτόν το φάκελο (κίτρινος) γιατί είναι εσωτερικός φάκελος του εξυπηρετητή.</target>
+      </trans-unit>
+      <trans-unit id="currentLink" resname="currentLink" approved="yes">
+        <source>Current Link</source>
+        <target state="final">Τρέχον σύνδεσμος</target>
+      </trans-unit>
+      <trans-unit id="invalidChar" resname="invalidChar" approved="yes">
+        <source>ERROR: Invalid character found in file path (%s). Cannot add the file!</source>
+        <target state="final">ΣΦΑΛΜΑ: Ένας μη έγκυρος χαρακτήρας βρέθηκε στην διαδρομή του αρχείου (%s). Το αρχείο δεν μπορεί να προστεθεί.</target>
+      </trans-unit>
+      <trans-unit id="toggleSelection" resname="toggleSelection" approved="yes">
+        <source>Toggle selection</source>
+        <target state="final">Εναλλαγή επιλογής</target>
+      </trans-unit>
+      <trans-unit id="importSelection" resname="importSelection" approved="yes">
+        <source>Import selection</source>
+        <target state="final">Εισαγωγή επιλογής</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
