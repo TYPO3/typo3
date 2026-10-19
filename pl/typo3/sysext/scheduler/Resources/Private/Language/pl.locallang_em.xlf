@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:scheduler/Resources/Private/Language/locallang_em.xlf" date="2011-10-17T20:22:32Z" product-name="scheduler" target-language="pl">
+    <header/>
+    <body>
+      <trans-unit id="scheduler.config.maxLifetime" resname="scheduler.config.maxLifetime" approved="yes">
+        <source>Maximum lifetime: Enter the maximum lifetime (in minutes) of a scheduler task. If a task is still running after that time, it will be dropped from the execution list (but not stopped).</source>
+        <target state="final">Maksymalny czas trwania: Podaj maksymalny czas trwania (w minutach) zadania harmonogramu. Jeżeli zadanie jest wciąż wykonywane po upływie tego czasu, zostanie ono usunięte z listy wykonywania (ale nie zostanie zatrzymane).</target>
+      </trans-unit>
+      <trans-unit id="scheduler.config.showSampleTasks" resname="scheduler.config.showSampleTasks" approved="yes">
+        <source>Enable sample tasks: When turned on, you can use the sample, test tasks provided by the scheduler. Before turning this off, make sure you don't have any of those sample tasks currently scheduled. You will also need to clear the configuration cache.</source>
+        <target state="final">Włącz przykładowe zadania: Gdy włączone, możesz używać przykładowe, testowe zadania dostarczone przez harmonogram. Przed wyłączeniem tej opcji upewnij się, że nie masz żadnego z tych zadań obecnie zaplanowanego do wykonania. Konieczne będzie również wyczyszczenie cache-u konfiguracji.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
