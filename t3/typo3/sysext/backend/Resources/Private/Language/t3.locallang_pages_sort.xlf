@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_pages_sort.xlf" date="2011-10-17T20:22:37Z" product-name="backend" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="title" resname="title">
+        <source>Sort sub pages</source>
+        <target>crwdns212602:0crwdne212602:0</target>
+      </trans-unit>
+      <trans-unit id="currentPageOrder" resname="currentPageOrder">
+        <source>Current page order</source>
+        <target>crwdns212604:0crwdne212604:0</target>
+      </trans-unit>
+      <trans-unit id="changeOrder" resname="changeOrder">
+        <source>Sort these pages by</source>
+        <target>crwdns212606:0crwdne212606:0</target>
+      </trans-unit>
+      <trans-unit id="changeOrderConfirm" resname="changeOrderConfirm">
+        <source>You're about to change the order of the above pages. Are you sure you want to continue?</source>
+        <target>crwdns212608:0crwdne212608:0</target>
+      </trans-unit>
+      <trans-unit id="fieldTitle" resname="fieldTitle">
+        <source>Page title</source>
+        <target>crwdns212610:0crwdne212610:0</target>
+      </trans-unit>
+      <trans-unit id="fieldSubtitle" resname="fieldSubtitle">
+        <source>Subtitle</source>
+        <target>crwdns212612:0crwdne212612:0</target>
+      </trans-unit>
+      <trans-unit id="fieldNavitle" resname="fieldNavitle">
+        <source>Navigation title</source>
+        <target>crwdns212614:0crwdne212614:0</target>
+      </trans-unit>
+      <trans-unit id="fieldCrdate" resname="fieldCrdate">
+        <source>Create-time</source>
+        <target>crwdns212616:0crwdne212616:0</target>
+      </trans-unit>
+      <trans-unit id="fieldTstamp" resname="fieldTstamp">
+        <source>Change-time</source>
+        <target>crwdns212618:0crwdne212618:0</target>
+      </trans-unit>
+      <trans-unit id="changeOrderByTitle" resname="changeOrderByTitle">
+        <source>Page title</source>
+        <target>crwdns212620:0crwdne212620:0</target>
+      </trans-unit>
+      <trans-unit id="changeOrderBySubtitle" resname="changeOrderBySubtitle">
+        <source>Subtitle</source>
+        <target>crwdns212622:0crwdne212622:0</target>
+      </trans-unit>
+      <trans-unit id="changeOrderByNavtitle" resname="changeOrderByNavtitle">
+        <source>Navigation title</source>
+        <target>crwdns212624:0crwdne212624:0</target>
+      </trans-unit>
+      <trans-unit id="changeOrderByTstamp" resname="changeOrderByTstamp">
+        <source>Change-time</source>
+        <target>crwdns212626:0crwdne212626:0</target>
+      </trans-unit>
+      <trans-unit id="changeOrderByCreate" resname="changeOrderByCreate">
+        <source>Create-time</source>
+        <target>crwdns212628:0crwdne212628:0</target>
+      </trans-unit>
+      <trans-unit id="changeOrderReverse" resname="changeOrderReverse">
+        <source>Reverse current order</source>
+        <target>crwdns212630:0crwdne212630:0</target>
+      </trans-unit>
+      <trans-unit id="hasInvisiblePage.title" resname="hasInvisiblePage.title">
+        <source>Invisible subpages</source>
+        <target>crwdns212632:0crwdne212632:0</target>
+      </trans-unit>
+      <trans-unit id="hasInvisiblePage.message" resname="hasInvisiblePage.message">
+        <source>The page has invisible subpages which are not shown due to access restrictions. Those will not be sorted among others.</source>
+        <target>crwdns212634:0crwdne212634:0</target>
+      </trans-unit>
+      <trans-unit id="noSubpages.title" resname="noSubpages.title">
+        <source>No subpages</source>
+        <target>crwdns212636:0crwdne212636:0</target>
+      </trans-unit>
+      <trans-unit id="noSubpages.message" resname="noSubpages.message">
+        <source>Please select a page with subpages.</source>
+        <target>crwdns212638:0crwdne212638:0</target>
+      </trans-unit>
+      <trans-unit id="notAvailableInWorkspace.title" resname="notAvailableInWorkspace.title">
+        <source>Not implemented</source>
+        <target>crwdns212640:0crwdne212640:0</target>
+      </trans-unit>
+      <trans-unit id="notAvailableInWorkspace.message" resname="notAvailableInWorkspace.message">
+        <source>Sorry, this function is not available in the current draft workspace!</source>
+        <target>crwdns212642:0crwdne212642:0</target>
+      </trans-unit>
+      <trans-unit id="noEditPermissions" resname="noEditPermissions">
+        <source>No edit permissions on this sub page. This page can not be re-sorted among others.</source>
+        <target>crwdns212644:0crwdne212644:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
