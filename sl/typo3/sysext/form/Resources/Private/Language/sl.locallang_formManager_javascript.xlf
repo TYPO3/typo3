@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:form/Resources/Private/Language/locallang_formManager_javascript.xlf" date="2016-10-09T03:38:32Z" product-name="form" target-language="sl">
+    <header/>
+    <body>
+      <trans-unit id="formManager.cancel" resname="formManager.cancel" xml:space="preserve" approved="yes">
+                <source>Cancel</source>
+            <target state="final">Prekliči</target></trans-unit>
+      <trans-unit id="formManager.newFormWizard.step2.title" resname="formManager.newFormWizard.step2.title" xml:space="preserve" approved="yes">
+                <source>Settings</source>
+            <target state="final">Nastavitve</target></trans-unit>
+      <trans-unit id="formManager.newFormWizard.step4.errorTitle" resname="formManager.newFormWizard.step4.errorTitle" xml:space="preserve" approved="yes">
+                <source>Create</source>
+            <target state="final">Ustvari</target></trans-unit>
+      <trans-unit id="formManager.page" resname="formManager.page" xml:space="preserve" approved="yes">
+                <source>Page</source>
+            <target state="final">Stran</target></trans-unit>
+    </body>
+  </file>
+</xliff>
