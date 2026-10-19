@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:linkvalidator/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:34Z" product-name="linkvalidator" target-language="pl">
+    <header/>
+    <body>
+      <trans-unit id="tasks.validate.description" resname="tasks.validate.description" approved="yes">
+        <source>Search for broken links and store the result into the temporary table tx_linkvalidator_link in order to ease up the backend module.</source>
+        <target state="final">Wyszukaj niedziałające linki i zapisz wynik w tabeli tymczasowej tx_linkvalidator_link w celu ułatwienia dla modułu zaplecza.</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.page" resname="tasks.validate.page" approved="yes">
+        <source>Start page (uid)</source>
+        <target state="final">Strona startowa (uid)</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.depth" resname="tasks.validate.depth" approved="yes">
+        <source>Depth</source>
+        <target state="final">Głębokość</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.conf" resname="tasks.validate.conf" approved="yes">
+        <source>Overwrite TSconfig</source>
+        <target state="final">Nadpisz TSconfig</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.email" resname="tasks.validate.email" approved="yes">
+        <source>Send email report to</source>
+        <target state="final">Wyślij raport email do</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.emailOnBrokenLinkOnly" resname="tasks.validate.emailOnBrokenLinkOnly" approved="yes">
+        <source>Send email on new broken links only</source>
+        <target state="final">Wyślij e-mail tylko o nowych niedziałających linkach</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.invalidEmail" resname="tasks.validate.invalidEmail" approved="yes">
+        <source>Invalid email format!</source>
+        <target state="final">Nieprawidłowy format e-mail!</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.invalidPage" resname="tasks.validate.invalidPage" approved="yes">
+        <source>Invalid page uid, please enter a valid page uid!</source>
+        <target state="final">Nieprawidłowe uid strony, podał właściwą wartość!</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.invalidDepth" resname="tasks.validate.invalidDepth" approved="yes">
+        <source>There is no depth set, please set it to one of the offered values!</source>
+        <target state="final">Nie ma ustalonej głębokości, proszę ustaw jedną z podanych wartości!</target>
+      </trans-unit>
+      <trans-unit id="tasks.error.invalidToEmail" resname="tasks.error.invalidToEmail" approved="yes">
+        <source>Invalid format of one or more of the recipient email addresses!</source>
+        <target state="final">Nieprawidłowy format adresu e-mail dla jednego lub kilku adresatów!</target>
+      </trans-unit>
+      <trans-unit id="tasks.error.invalidFromEmail" resname="tasks.error.invalidFromEmail" approved="yes">
+        <source>Invalid format of the email address in the from header</source>
+        <target state="final">Nieprawidłowy format adresu e-mail w polu Od kogo</target>
+      </trans-unit>
+      <trans-unit id="tasks.error.invalidTSconfig" resname="tasks.error.invalidTSconfig" approved="yes">
+        <source>Invalid TSconfig in the task configuration!</source>
+        <target state="final">Nieprawidłowe TSconfig w konfiguracji zadania!</target>
+      </trans-unit>
+      <trans-unit id="tasks.error.invalidPageUid" resname="tasks.error.invalidPageUid" approved="yes">
+        <source>The given page id %d is invalid!</source>
+        <target state="final">Podany identyfikator strony %d jest nieprawidłowy!</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
