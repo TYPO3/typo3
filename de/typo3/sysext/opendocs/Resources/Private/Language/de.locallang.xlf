@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:opendocs/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:34Z" product-name="opendocs" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="toolbaritem" resname="toolbaritem" approved="yes">
+        <source>Open and Recently Used Documents</source>
+        <target state="final">Geöffnete und kürzlich verwendete Dokumente</target>
+      </trans-unit>
+      <trans-unit id="open_docs" resname="open_docs" approved="yes">
+        <source>Open Documents</source>
+        <target state="final">Geöffnete Dokumente</target>
+      </trans-unit>
+      <trans-unit id="recent_docs" resname="recent_docs" approved="yes">
+        <source>Recently Used Documents</source>
+        <target state="final">Kürzlich verwendete Dokumente</target>
+      </trans-unit>
+      <trans-unit id="no_docs" resname="no_docs" approved="yes">
+        <source>There are no open documents at this time.</source>
+        <target state="final">Derzeit sind keine Dokumente geöffnet.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
