@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:workspaces/Resources/Private/Language/locallang_mod.xlf" date="2011-10-17T20:22:38Z" product-name="workspaces" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab">
+        <source>Workspaces</source>
+        <target>crwdns109062:0crwdne109062:0</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr">
+        <source>This module contains the overview of all elements within the current workspace and it enables to continue the review and publishing workflow for them.</source>
+        <target>crwdns109064:0crwdne109064:0</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel">
+        <source>Create and handle versioning workflows</source>
+        <target>crwdns109066:0crwdne109066:0</target>
+      </trans-unit>
+      <trans-unit id="stage_ready_to_publish" resname="stage_ready_to_publish">
+        <source>Ready to publish</source>
+        <target>crwdns109068:0crwdne109068:0</target>
+      </trans-unit>
+      <trans-unit id="previewText" resname="previewText">
+        <source>Preview of workspace %s (%s)</source>
+        <target>crwdns109070:0%scrwdnd109070:0%scrwdne109070:0</target>
+      </trans-unit>
+      <trans-unit id="stopPreview" resname="stopPreview">
+        <source>Stop preview</source>
+        <target>crwdns109072:0crwdne109072:0</target>
+      </trans-unit>
+      <trans-unit id="previewLogoutSuccess" resname="previewLogoutSuccess">
+        <source>You logged out from Workspace preview mode. Click this link to %1$s go back to the website%2$s</source>
+        <target>crwdns109074:0%1$scrwdnd109074:0%2$scrwdne109074:0</target>
+      </trans-unit>
+      <trans-unit id="previewLogoutError" resname="previewLogoutError">
+        <source>%1$sERROR!%2$sTemplate File "%3$s" configured with $TYPO3_CONF_VARS["FE"]["workspacePreviewLogoutTemplate"] not found. Please contact webmaster about this problem.</source>
+        <target>crwdns109076:0%1$scrwdnd109076:0%2$scrwdnd109076:0%3$scrwdnd109076:0$TYPO3_CONF_VARS["FE"]["workspacePreviewLogoutTemplate"]crwdne109076:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
