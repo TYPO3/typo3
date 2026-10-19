@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:recordlist/Resources/Private/Language/locallang_browse_links.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="it">
+    <header/>
+    <body>
+      <trans-unit id="removeLink" resname="removeLink" approved="yes">
+        <source>Remove link</source>
+        <target state="final">Elimina collegamento</target>
+      </trans-unit>
+      <trans-unit id="uploadImage" resname="uploadImage" approved="yes">
+        <source>Upload Image</source>
+        <target state="final">Carica Immagine</target>
+      </trans-unit>
+      <trans-unit id="update" resname="update" approved="yes">
+        <source>Update</source>
+        <target state="final">Aggiorna</target>
+      </trans-unit>
+      <trans-unit id="path" resname="path" approved="yes">
+        <source>Path</source>
+        <target state="final">Percorso</target>
+      </trans-unit>
+      <trans-unit id="page" resname="page" approved="yes">
+        <source>Page</source>
+        <target state="final">Pagina</target>
+      </trans-unit>
+      <trans-unit id="file" resname="file" approved="yes">
+        <source>File</source>
+        <target state="final">File</target>
+      </trans-unit>
+      <trans-unit id="folder" resname="folder" approved="yes">
+        <source>Folder</source>
+        <target state="final">Cartella</target>
+      </trans-unit>
+      <trans-unit id="extUrl" resname="extUrl" approved="yes">
+        <source>External URL</source>
+        <target state="final">URL esterno</target>
+      </trans-unit>
+      <trans-unit id="email" resname="email" approved="yes">
+        <source>Email</source>
+        <target state="final">Email</target>
+      </trans-unit>
+      <trans-unit id="telephone" resname="telephone" approved="yes">
+        <source>Telephone</source>
+        <target state="final">Telefono</target>
+      </trans-unit>
+      <trans-unit id="special" resname="special" approved="yes">
+        <source>Special</source>
+        <target state="final">Speciale</target>
+      </trans-unit>
+      <trans-unit id="folderTree" resname="folderTree" approved="yes">
+        <source>Folder Tree</source>
+        <target state="final">Albero delle Cartelle</target>
+      </trans-unit>
+      <trans-unit id="files" resname="files" approved="yes">
+        <source>Files</source>
+        <target state="final">File</target>
+      </trans-unit>
+      <trans-unit id="folders" resname="folders" approved="yes">
+        <source>Folders</source>
+        <target state="final">Cartelle</target>
+      </trans-unit>
+      <trans-unit id="target" resname="target" approved="yes">
+        <source>Target</source>
+        <target state="final">Target</target>
+      </trans-unit>
+      <trans-unit id="linkRelationship" resname="linkRelationship" approved="yes">
+        <source>Relationship</source>
+        <target state="final">Relazione</target>
+      </trans-unit>
+      <trans-unit id="class" resname="class" approved="yes">
+        <source>CSS-Class</source>
+        <target state="final">Classe CSS</target>
+      </trans-unit>
+      <trans-unit id="title" resname="title" approved="yes">
+        <source>Title</source>
+        <target state="final">Titolo</target>
+      </trans-unit>
+      <trans-unit id="params" resname="params" approved="yes">
+        <source>Additional link parameters</source>
+        <target state="final">Parametri aggiuntivi del collegamento</target>
+      </trans-unit>
+      <trans-unit id="newWindow" resname="newWindow" approved="yes">
+        <source>New window</source>
+        <target state="final">Nuova finestra</target>
+      </trans-unit>
+      <trans-unit id="top" resname="top" approved="yes">
+        <source>Top</source>
+        <target state="final">In alto</target>
+      </trans-unit>
+      <trans-unit id="none" resname="none" approved="yes">
+        <source>None - new link!</source>
+        <target state="final">Nessuno - nuovo collegamento!</target>
+      </trans-unit>
+      <trans-unit id="pageTree" resname="pageTree" approved="yes">
+        <source>Page tree</source>
+        <target state="final">Albero delle Pagine</target>
+      </trans-unit>
+      <trans-unit id="contentElements" resname="contentElements" approved="yes">
+        <source>Content elements</source>
+        <target state="final">Elementi di contenuto</target>
+      </trans-unit>
+      <trans-unit id="selectRecords" resname="selectRecords" approved="yes">
+        <source>Select Records</source>
+        <target state="final">Seleziona Record</target>
+      </trans-unit>
+      <trans-unit id="addToList" resname="addToList" approved="yes">
+        <source>Add to list...</source>
+        <target state="final">Aggiungi alla lista...</target>
+      </trans-unit>
+      <trans-unit id="info" resname="info" approved="yes">
+        <source>Info</source>
+        <target state="final">Info</target>
+      </trans-unit>
+      <trans-unit id="emailAddress" resname="emailAddress" approved="yes">
+        <source>Email address</source>
+        <target state="final">Indirizzo email</target>
+      </trans-unit>
+      <trans-unit id="telephoneNumber" resname="telephoneNumber" approved="yes">
+        <source>Telephone number</source>
+        <target state="final">Numero di telefono</target>
+      </trans-unit>
+      <trans-unit id="setLink" resname="setLink" approved="yes">
+        <source>Set Link</source>
+        <target state="final">Imposta Collegamento</target>
+      </trans-unit>
+      <trans-unit id="urlPlaceholder" resname="urlPlaceholder" translate="no" approved="yes">
+        <source>https://...</source>
+        <target state="final">https://...</target>
+      </trans-unit>
+      <trans-unit id="clickToRedrawFullSize" resname="clickToRedrawFullSize" approved="yes">
+        <source>Image is larger than shown here! Click to redraw page with full sized images.</source>
+        <target state="final">L'immagine è più grande di quella mostrata qui! Clicca per rivedere la pagina con le immagini a dimensioni naturali..</target>
+      </trans-unit>
+      <trans-unit id="findDragDrop" resname="findDragDrop" approved="yes">
+        <source>Find and click on your image then drag it into the editor in the main window!</source>
+        <target state="final">Trova l'immagine, cliccaci sopra e trascinala nell'editor della finestra principale!</target>
+      </trans-unit>
+      <trans-unit id="noWebFolder" resname="noWebFolder" approved="yes">
+        <source>You cannot drag images from this folder (yellow) because it is internal on the server.</source>
+        <target state="final">Non puoi trascinare le immagini di questa cartella (gialla) perché è una cartella riservata del server.</target>
+      </trans-unit>
+      <trans-unit id="currentLink" resname="currentLink" approved="yes">
+        <source>Current Link</source>
+        <target state="final">Collegamento Corrente</target>
+      </trans-unit>
+      <trans-unit id="invalidChar" resname="invalidChar" approved="yes">
+        <source>ERROR: Invalid character found in file path (%s). Cannot add the file!</source>
+        <target state="final">ERRORE: caratteri non validi nel percorso del file (%s). Non è stato possibile caricare il file!</target>
+      </trans-unit>
+      <trans-unit id="toggleSelection" resname="toggleSelection" approved="yes">
+        <source>Toggle selection</source>
+        <target state="final">Inverti selezione</target>
+      </trans-unit>
+      <trans-unit id="importSelection" resname="importSelection" approved="yes">
+        <source>Import selection</source>
+        <target state="final">Importa selezione</target>
+      </trans-unit>
+      <trans-unit id="recordSelector" resname="recordSelector" approved="yes">
+        <source>Record selector</source>
+        <target state="final">Selettore record</target>
+      </trans-unit>
+      <trans-unit id="fileSelector" resname="fileSelector" approved="yes">
+        <source>File selector</source>
+        <target state="final">Selettore file</target>
+      </trans-unit>
+      <trans-unit id="folderSelector" resname="folderSelector" approved="yes">
+        <source>Folder selector</source>
+        <target state="final">Selettore cartelle</target>
+      </trans-unit>
+      <trans-unit id="page_id" resname="page_id" approved="yes">
+        <source>Page ID</source>
+        <target state="final">ID di pagina</target>
+      </trans-unit>
+      <trans-unit id="displayThumbs" resname="displayThumbs" approved="yes">
+        <source>Display thumbnails</source>
+        <target state="final">Visualizza miniature</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
