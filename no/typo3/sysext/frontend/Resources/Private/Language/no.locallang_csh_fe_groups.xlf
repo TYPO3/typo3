@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_csh_fe_groups.xlf" date="2011-10-17T20:22:32Z" product-name="context_help" target-language="no">
+    <header/>
+    <body>
+      <trans-unit id="hidden.details" resname="hidden.details" xml:space="preserve" approved="yes">
+				<source>If you disable a user group all users which are members of the group will in effect not inherit any properties this group may have given them.
+For instance if a page or content element was assigned access only by this group and you disable the group, no one would gain access to that page or content element.</source>
+			<target state="final">Hvis du deaktiverer en brukergruppe vil medlemmene av gruppen miste de rettighetene og innstillingene denne gruppen kunne gitt dem. F.eks.: Hvis adgangen til en side eller et innholdselement er satt til kun denne gruppen vil ingen kunne se den siden eller innholdselementet.</target></trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Name of the group.</source>
+        <target state="final">Gruppens navn.</target>
+      </trans-unit>
+      <trans-unit id="title.details" resname="title.details" approved="yes">
+        <source>This title will appear as the group name in the 'Access'-list in other records.</source>
+        <target state="final">Dette navnet vil vises som gruppens navn i 'Adgang'-listen.</target>
+      </trans-unit>
+      <trans-unit id="lockToDomain.details" resname="lockToDomain.details" xml:space="preserve" approved="yes">
+				<source>This options may be important if you have multiple websites in the same TYPO3 database but still only one main storage page for all Website users. Thus the users may log in on any of the website URLs. This may be considered a feature (having a global login as a user) or a problem (in which case you should have multiple user storages anyway). However you may wish to limit the use of a Website usergroup to a specific website and thus you don't want the group to be enabled for the user when he logs in at another URL (still from the same database of course). By entering the host name of the website here, you restrict the group to be used only from within this domain.
+
+&lt;b&gt;Notice:&lt;/b&gt; The use for this option is not critical if you have multiple Website user storages, namely one for each site.</source>
+			<target state="final">Dette valget kan være viktig dersom du har flere websteder i samme TYPO3-database, men kun én felles side for lagring av websted-brukere. På den måten vil samme bruker kunne logge seg inn til alle webstedene. Dette kan være en fordel (global login for flere websteder) eller et problem (som du uansett kunne ha unngått ved å bruke flere lagringssteder for brukere). Denne funksjonen kan begrense en websted-brukergruppe til ett enkelt websted, slik at gruppen ikke virker når samme bruker logger seg inn på et annet websted i samme database. Ved å skrive inn vertsnavnet til webstedet her begrenser du gruppen til kun å fungere på det webstedet. &lt;b&gt;Merk:&lt;/b&gt; Bruken av denne funksjonen er ikke kritisk hvis du bruker flere lagringsområder for websted-brukere, dvs. ett for hvert websted.</target></trans-unit>
+      <trans-unit id="subgroup.description" resname="subgroup.description" approved="yes">
+        <source>Member of other groups.</source>
+        <target state="final">Medlem av andre grupper.</target>
+      </trans-unit>
+      <trans-unit id="subgroup.details" resname="subgroup.details" approved="yes">
+        <source>List of other groups that this group is a member of.</source>
+        <target state="final">Liste over andre grupper som denne gruppen er medlem av.</target>
+      </trans-unit>
+      <trans-unit id="description.description" resname="description.description" approved="yes">
+        <source>Enter a description of the group.</source>
+        <target state="final">Skriv inn en beskrivelse for gruppen.</target>
+      </trans-unit>
+      <trans-unit id="description.details" resname="description.details" xml:space="preserve" approved="yes">
+				<source>This is for internal use and is just a way to put a note on what the group is for, why you created it and who should be members.
+Use it as you like.</source>
+			<target state="final">Dette er kun for intern bruk, og er ment som en kommentar for hva gruppen skal brukes til og hvem som burde være medlem. Bruk det som du vil.</target></trans-unit>
+      <trans-unit id="TSconfig.description" resname="TSconfig.description" approved="yes">
+        <source>TSconfig for the group (advanced).</source>
+        <target state="final">TSconfig for gruppen (avansert).</target>
+      </trans-unit>
+      <trans-unit id="TSconfig.details" resname="TSconfig.details" xml:space="preserve" approved="yes">
+				<source>This is the user TSconfig for the group. The values are inherited by any Website user who is a member of this group.
+The configuration is subject to being overridden in other groups and by the TSconfig of the user himself.</source>
+			<target state="final">Dette er TSconfig-koden for gruppen. Verdiene arves av alle webstedbrukere som er medlem av gruppen. Denne koden kan bli overstyrt av andre grupper og av TSconfig-koden til brukeren selv.</target></trans-unit>
+      <trans-unit id="TSconfig.syntax" resname="TSconfig.syntax" approved="yes">
+        <source>TypoScript syntax, without conditions and constants.</source>
+        <target state="final">TypoScript-syntaks, uten konstanter og kriterier (conditions).</target>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>Usergroups for Website users.</source>
+        <target state="final">Brukergrupper for webstedbrukere.</target>
+      </trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" xml:space="preserve" approved="yes">
+				<source>The form for editing frontend users groups.
+Pages, Content Elements and other records for frontend display often have a selector box where you can define access restriction by selecting access for a certain group only.</source>
+			<target state="final">Skjemaet for å redigere brukergrupper for frontsiden. Frontsidens sider, innholdselementer og andre databaseposter har gjerne et valg som lar deg definere adgang kun for én gruppe.</target></trans-unit>
+    </body>
+  </file>
+</xliff>
