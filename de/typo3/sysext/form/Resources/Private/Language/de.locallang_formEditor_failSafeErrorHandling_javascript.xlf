@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:form/Resources/Private/Language/locallang_formEditor_failSafeErrorHandling_javascript.xlf" date="2019-04-27T03:38:32Z" product-name="form" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="formEditor.error.headline" resname="formEditor.error.headline" xml:space="preserve" approved="yes">
+                <source>Oops! Something went wrong.</source>
+            <target state="final">Ups! Etwas ist schief gegangen.</target></trans-unit>
+      <trans-unit id="formEditor.error.message" resname="formEditor.error.message" xml:space="preserve" approved="yes">
+                <source>Please contact your administrator.</source>
+            <target state="final">Bitte nehmen Sie Kontakt zu Ihrem Administrator auf.</target></trans-unit>
+      <trans-unit id="formEditor.error.technicalReason" resname="formEditor.error.technicalReason" xml:space="preserve" approved="yes">
+                <source>Technical Reason:</source>
+            <target state="final">Technische Ursache:</target></trans-unit>
+    </body>
+  </file>
+</xliff>
