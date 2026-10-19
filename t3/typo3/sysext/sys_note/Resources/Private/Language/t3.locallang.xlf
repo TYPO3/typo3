@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:sys_note/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="sys_note" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="internal_note" resname="internal_note">
+        <source>Internal notes</source>
+        <target>crwdns108374:0crwdne108374:0</target>
+      </trans-unit>
+      <trans-unit id="author" resname="author">
+        <source>Author</source>
+        <target>crwdns108376:0crwdne108376:0</target>
+      </trans-unit>
+      <trans-unit id="date" resname="date">
+        <source>Date</source>
+        <target>crwdns108378:0crwdne108378:0</target>
+      </trans-unit>
+      <trans-unit id="personal" resname="personal">
+        <source>Personal</source>
+        <target>crwdns108380:0crwdne108380:0</target>
+      </trans-unit>
+      <trans-unit id="category.1" resname="category.1">
+        <source>Instructions</source>
+        <target>crwdns108382:0crwdne108382:0</target>
+      </trans-unit>
+      <trans-unit id="category.2" resname="category.2">
+        <source>Template</source>
+        <target>crwdns108384:0crwdne108384:0</target>
+      </trans-unit>
+      <trans-unit id="category.3" resname="category.3">
+        <source>Notes</source>
+        <target>crwdns108386:0crwdne108386:0</target>
+      </trans-unit>
+      <trans-unit id="category.4" resname="category.4">
+        <source>To-do</source>
+        <target>crwdns108388:0crwdne108388:0</target>
+      </trans-unit>
+      <trans-unit id="yes" resname="yes">
+        <source>Yes</source>
+        <target>crwdns108390:0crwdne108390:0</target>
+      </trans-unit>
+      <trans-unit id="author_deleted" resname="author_deleted">
+        <source>Unknown author</source>
+        <target>crwdns108392:0crwdne108392:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
