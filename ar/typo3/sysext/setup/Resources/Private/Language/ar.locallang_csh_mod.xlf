@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:setup/Resources/Private/Language/locallang_csh_mod.xlf" date="2011-10-17T20:22:37Z" product-name="setup" target-language="ar">
+    <header/>
+    <body>
+      <trans-unit id=".alttitle" resname=".alttitle" approved="yes">
+        <source>User &gt; Setup module</source>
+        <target state="final">مستخدم&lt;وحدة الإعداد.</target>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>The Setup module allows the backend user to customize TYPO3 for his own login sessions. This includes the backend language and various other interface features.</source>
+        <target state="final">تساعد وحدة الإعداد مستخدم الوجهة الخلفية لإعداد تيبو3 لإستقبال جلسات الدخول الخاص بالمستخدم. ويتضمن ذلك إختيار لغة الوجهة الخلفية و العديد من خصائص الأخرى الخاصة بالوجهة الأمامية.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" approved="yes">
+        <source>&lt;b&gt;Notice [For Admins]:&lt;/b&gt; These settings can all be overridden or have their default values changed by "User TSconfig". To read more about this concept, see the link below!</source>
+        <target state="final">&lt;b&gt;لاحظ [خاص بالمرشدين]:&lt;/b&gt;يمكن التجاوز عن كل عمليات الضبط هذه كما ويمكن "User TSconfig"تغير القيم الأساسية لها. لقراءة المزيد عن هذا الموضوع برجاء النظر إلى الرابط بالأسفل.</target>
+      </trans-unit>
+      <trans-unit id="_.seeAlso" resname="_.seeAlso" approved="yes">
+        <source>User TSconfig SETUP | https://docs.typo3.org/typo3cms/TSconfigReference/UserTsconfig/Setup/Index.html</source>
+        <target state="final">User TSconfig SETUP | https://docs.typo3.org/typo3cms/TSconfigReference/UserTsconfig/Setup/Index.html</target>
+      </trans-unit>
+      <trans-unit id="_.image" resname="_.image" xml:space="preserve" approved="yes">
+				<source>EXT:setup/Resources/Public/Images/cshimages/setup8.png,
+EXT:setup/Resources/Public/Images/cshimages/setup7.png</source>
+				
+			<target state="final">EXT:setup/Resources/Public/Images/cshimages/setup8.png,
+EXT:setup/Resources/Public/Images/cshimages/setup7.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" xml:space="preserve" approved="yes">
+				<source>The Setup module is selected in the left menu.
+This is how the Setup module interface looks like - a list of options to configure.</source>
+			<target state="final">يتم إختيار وحدة الإعدادمن القائمة المدرجة على اليسار.هكذا يكون شكل وحدة الإعداد المدرجة على الوجهة الأمامسة-تدرج قائمة بالخصائص للضبط.</target></trans-unit>
+      <trans-unit id="language.alttitle" resname="language.alttitle" approved="yes">
+        <source>Backend Language selection</source>
+        <target state="final">إختيار لغة الجبهة الخلفية</target>
+      </trans-unit>
+      <trans-unit id="language.description" resname="language.description" approved="yes">
+        <source>Select the backend language you prefer. Most parts of TYPO3s backend (for regular users) are translated into other languages.</source>
+        <target state="final">أختر اللغة التي تفضلها في الجبهة الخلفية.يتم ترجمة معظم اللغات المستخدمة في الجبهة الخلفية(للمستخدمين العادين) إلى لغات أخرى.</target>
+      </trans-unit>
+      <trans-unit id="language.details" resname="language.details" xml:space="preserve" approved="yes">
+				<source>&lt;b&gt;Warning [technical]:&lt;/b&gt; If TYPO3 is not configured to use a single character set (through $TYPO3_CONF_VARS[BE][forceCharset]) then all data entered in the backend is submitted in the character set of the selected backend language. This leads to inconsistent data storage if some users are using the backend in Russian and others in English which uses different character sets.
+The solution clearly is to set the configuration option mentioned above to a value like "utf-8". This must be done by the developers responsible for the whole system configuration.</source>
+			<target state="final">&lt;b&gt;تحذير [technical]:&lt;/b&gt; إذا لم يتم تكوين TYPO3 لاستخدام مجموعة أحرف واحدة (من خلال $$TYPO3_CONF_VARS[BE][forceCharset])، سيتم إرسال جميع البيانات التي تم إدخالها في الواجهة الخلفية في مجموعة الأحرف للغة الواجهة الخلفية المُحددة. يؤدي هذا إلى تخزين بيانات غير مُتَسِقة إذا كان بعض المستخدمين يستخدمون الواجهة الخلفية باللغة الروسية والبعض الآخر باللغة الإنجليزية التي تستخدم مجموعات أحرف مختلفة.
+من الواضح أن الحل هو ضبط خِيار التكوين المذكور أعلاه على قيمة مثل "utf-8". يجب أن يتم ذلك من قبل المطورين المسؤولين عن تكوين النظام بالكامل.</target></trans-unit>
+      <trans-unit id="_language.image" resname="_language.image" approved="yes">
+        <source>EXT:setup/Resources/Public/Images/cshimages/lang.png</source>
+        <target state="final">EXT:setup/Resources/Public/Images/cshimages/lang.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="language.image_descr" resname="language.image_descr" approved="yes">
+        <source>TYPO3 is translated into around 40 languages. English is the default language and all labels must be available in English first and foremost. This screenshot shows translations for Hebrew, Arabic, Russian and Chinese.</source>
+        <target state="final">تم ترجمة تيبو3 إلى أكثر من 40 لغة.و اللغة الإنجليزية هي اللغة الأساسية ويجب أن تصدر جميع العناوين أولا وبصفة أساسة باللغة الإنجليزية.وتعرض لقطة الشاشة هذه العديد من التراجمات إلى العبرية، الهربية،الروسية،و كذلك الصينية.</target>
+      </trans-unit>
+      <trans-unit id="option_startModule.alttitle" resname="option_startModule.alttitle" approved="yes">
+        <source>Start module</source>
+        <target state="final">بَدْء الوحدة</target>
+      </trans-unit>
+      <trans-unit id="option_startModule.description" resname="option_startModule.description" xml:space="preserve" approved="yes">
+				<source>Let you select the module that is called when you login in the Backend
+The default module is "About Modules".</source>
+			<target state="final">يُتاح لك تحديد الوحدة التي يتم استدعاؤها عند تسجيل الدخول في الواجهة الخلفية.
+الوحدة الافتراضية هي "حول الوِحدات".</target></trans-unit>
+      <trans-unit id="option_helpText.alttitle" resname="option_helpText.alttitle" approved="yes">
+        <source>Show help text when applicable</source>
+        <target state="final">عرض نص المساعد إن أمكن تطبيقة</target>
+      </trans-unit>
+      <trans-unit id="option_helpText.description" resname="option_helpText.description" approved="yes">
+        <source>If set, some help texts will appear by default. Applies to the "Legend" text in the Web&gt;Access module for instance.</source>
+        <target state="final">عند ضبط هذا الخيار ستظهر بعض نصوص المساعدة بصورة أساسية.وهذه الخيارات تنطبق مثلا على وحدة وب&gt;دخول.</target>
+      </trans-unit>
+      <trans-unit id="option_maxTitleLen.alttitle" resname="option_maxTitleLen.alttitle" approved="yes">
+        <source>Maximum title length</source>
+        <target state="final">الحد الأقصى لطول العنوان.</target>
+      </trans-unit>
+      <trans-unit id="option_maxTitleLen.description" resname="option_maxTitleLen.description" approved="yes">
+        <source>TYPO3 will often crop long titles of records etc. so only the first X characters are shown. Often the number of shown characters depends on this variable. For instance the length of page titles in the page tree is determined by this value.</source>
+        <target state="final">وغالبا ما يقوم تيبو3 بقص اسماء العناوين الطويلة للسجلات إلخ.وعليه فإنه يتم عرض أول أحرف (س)فقط .وغالبا ما يعتمد عدد الأحرف المعروضة على هذا التنوع.فعلى سبيل المثال تستخدم هذه القيمة في تحديد طول عنوان الصفحة داخل صفحة الشجرة.</target>
+      </trans-unit>
+      <trans-unit id="_option_maxTitleLen.image" resname="_option_maxTitleLen.image" approved="yes">
+        <source>EXT:setup/Resources/Public/Images/cshimages/setup6.png</source>
+        <target state="final">EXT:setup/Resources/Public/Images/cshimages/setup6.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="option_maxTitleLen.image_descr" resname="option_maxTitleLen.image_descr" approved="yes">
+        <source>In this case the Maximum Title length is set to 10 - and the result is that titles in the page tree - as well as other places in the backend - will be cropped after 10 characters, then suffixed by "...". The default value is "30".</source>
+        <target state="final">وفي هذه الحالة فإنه يتم تحديد أقصى طول للعنوان بعشرة أحرف-وتكون النتيجة أنه سيتم قطع العناوين التي يزيد عدد احرفها عن عشرة أحرف سواء كانت هذه العناوين داخل صفحة الشجرة أو في أي مكان آخر-ثم يلحق بها الداخلة "...".مع العلم بأن القيمة الأساسية لطول العنوان هي"30" حرف.</target>
+      </trans-unit>
+      <trans-unit id="option_copyLevels.alttitle" resname="option_copyLevels.alttitle" approved="yes">
+        <source>Recursive Copy</source>
+        <target state="final">النسخ التكراري</target>
+      </trans-unit>
+      <trans-unit id="option_copyLevels.description" resname="option_copyLevels.description" approved="yes">
+        <source>When you copy a page, subpages can also be copied along if you set this option. The number you set here defines the number of levels under a page to include in a copy operation.</source>
+        <target state="final">عند نسخ صفحة ما فإن الصفحات الفرعية تنسخ بالتبعية فقط عند ضبطك لهذه الخاصية.فإن الرقم الذي تقوم بتحديده يعرف عدد المستويات المدرجة أسفل الصفة المقرر نسخها.</target>
+      </trans-unit>
+      <trans-unit id="option_edit_RTE.alttitle" resname="option_edit_RTE.alttitle" approved="yes">
+        <source>Enable Rich Text Editor</source>
+        <target state="final">إتاحة محرر النص الغني.</target>
+      </trans-unit>
+      <trans-unit id="option_edit_RTE.description" resname="option_edit_RTE.description" approved="yes">
+        <source>If set, the Rich Text Editor in TYPO3 will be enabled for you. Normally you wouldn't want to disable this option.</source>
+        <target state="final">عند ضبط هذا الخيار،سيكون محرر النصوص الغني الخاص بتيو3 متاحا لك. و الطبع فإنك لست بحاجه لإلغاء هذه الخاصية.</target>
+      </trans-unit>
+      <trans-unit id="option_edit_RTE.details" resname="option_edit_RTE.details" approved="yes">
+        <source>A Rich Text Editor (RTE) means that a text editing field has buttons for making selected text bold, italic etc. Whether a RTE is available also depends on factors like the browser you are using and which extensions are installed. Finally RTEs are applied to only a few record fields. The most well known example would be the Text field of a Content Element.</source>
+        <target state="final">يعني مُعالج النُصوص (RTE) أن حقل تعديل النص يحتوي على أزرار لجعل النص المُحدد غامقًا ومائلًا وما إلى ذلك. ويعتمد ما إذا كان RTE مُتاحًا أيضًا على عوامل مثل المُتصفح الذي تستخدمه والإضافات المثبتة. أخيرًا، يتم تطبيق RTEs على عدد قليل من حقول التسجيل. المثال الأكثر شهرة هو حقل النص الخاص بعنصر المحتوى.</target>
+      </trans-unit>
+      <trans-unit id="_option_edit_RTE.image" resname="_option_edit_RTE.image" approved="yes">
+        <source>EXT:setup/Resources/Public/Images/cshimages/rte.png</source>
+        <target state="final">EXT:setup/Resources/Public/Images/cshimages/rte.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="option_edit_docModuleUpload.alttitle" resname="option_edit_docModuleUpload.alttitle" approved="yes">
+        <source>Enable File Uploads in editing forms</source>
+        <target state="final">تفعيل خاصية تحديث الملف فى نماذج التحرير.</target>
+      </trans-unit>
+      <trans-unit id="option_edit_docModuleUpload.description" resname="option_edit_docModuleUpload.description" approved="yes">
+        <source>This option will enable an "Upload" box for each field in TYPO3 records where you can attach a file or image. Most likely you don't want to disable this since it is usually just a nice thing to have.</source>
+        <target state="final">تمكنك هذه الخاصية من إتاحة صندوق "التحديث"لكل ملف من سجلات تيبو3حيث يمكنك إرفاق صورة أو ملف.غالبا فإنك لا ترغب إبطال هذه الخاصية حيث أنها عادة من الخواص الجيد الحصول عليها.</target>
+      </trans-unit>
+      <trans-unit id="option_edit_docModuleUpload.details" resname="option_edit_docModuleUpload.details" approved="yes">
+        <source>If you disable the Upload box there is still the TYPO3 Element Browser left for attaching files and images.</source>
+        <target state="final">حتى إذا ما قمت بإبطال هذه الخاصية فإنك بذلك لا تلغي صندوق التحديث المجود في مستعرض العنصر في تيبو3و المتروك من أجل إلحاق صورة أو ملف.</target>
+      </trans-unit>
+      <trans-unit id="_option_edit_docModuleUpload.image" resname="_option_edit_docModuleUpload.image" approved="yes">
+        <source>EXT:setup/Resources/Public/Images/cshimages/setup12.png</source>
+        <target state="final">EXT:setup/Resources/Public/Images/cshimages/setup12.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="option_flexibleTextareas_MaxHeight.alttitle" resname="option_flexibleTextareas_MaxHeight.alttitle" approved="yes">
+        <source>Maximum height of text areas</source>
+        <target state="final">أفصى ارتفاع لمناطق النص</target>
+      </trans-unit>
+      <trans-unit id="option_flexibleTextareas_MaxHeight.description" resname="option_flexibleTextareas_MaxHeight.description" approved="yes">
+        <source>Define the maximum height of text areas in pixels.</source>
+        <target state="final">تحديد أقصى ارتفاع لمناطق النص بالبكسل.</target>
+      </trans-unit>
+      <trans-unit id="option_showHiddenFilesAndFolders.description" resname="option_showHiddenFilesAndFolders.description" approved="yes">
+        <source>Defines whether you want to list all the hidden files and folders (beginning with a .) in the filelist and element browser.</source>
+        <target state="final">يُحدد ما إذا كنت تريد إدراج جميع الملفات والمجلدات المَخفية (بدءًا من a.) في قائمة الملفات ومستعرض العناصر.</target>
+      </trans-unit>
+      <trans-unit id="option_showHiddenFilesAndFolders.details" resname="option_showHiddenFilesAndFolders.details" approved="yes">
+        <source>By default all hidden files are not displayed in filelists and element browsers and link pickers. This option enables to additionally show the hidden files.</source>
+        <target state="final">افتراضيًا، لا يتم عرض جميع الملفات المخفية في قوائم الملفات ومتصفحات العناصر ومُنتقي الروابط. يتيح هذا الخيار عرض الملفات المخفية بالإضافة إلى ذلك.</target>
+      </trans-unit>
+      <trans-unit id="option_beUser_realName.alttitle" resname="option_beUser_realName.alttitle" approved="yes">
+        <source>Your real name</source>
+        <target state="final">اسمك الحقيقي</target>
+      </trans-unit>
+      <trans-unit id="option_beUser_realName.description" resname="option_beUser_realName.description" approved="yes">
+        <source>Enter your real name here.</source>
+        <target state="final">إدخل اسمك الحقيقي هنا.</target>
+      </trans-unit>
+      <trans-unit id="option_beUser_email.alttitle" resname="option_beUser_email.alttitle" approved="yes">
+        <source>Your email address</source>
+        <target state="final">إدخل بريدك الإلكتروني.</target>
+      </trans-unit>
+      <trans-unit id="option_beUser_email.description" resname="option_beUser_email.description" approved="yes">
+        <source>Make sure this is a valid email address for you. This is the contact address that the backend administrator will use if he needs to contact you. Also, the TYPO3 system might need to send you messages at various times and this will be the recipient address.</source>
+        <target state="final">تأكد من أن هذا هو بريدك الإلكتروني المستخدم.وسيكون هو عنوان الإتصال الذي يستخدمه مشرف الواجهة الخلفية للإتصال بك.وقد يكون نظام تيبو3 في حاجة إلى مراسلتك في أوقات متعددة وسيكون هذا العنوان هو المستقبل لجميع رسائلك.</target>
+      </trans-unit>
+      <trans-unit id="option_emailMeAtLogin.alttitle" resname="option_emailMeAtLogin.alttitle" approved="yes">
+        <source>Notify by login</source>
+        <target state="final">الإعلام بالدخول.</target>
+      </trans-unit>
+      <trans-unit id="option_emailMeAtLogin.description" resname="option_emailMeAtLogin.description" approved="yes">
+        <source>If you set this option you will receive an email from TYPO3 each time you (or "someone") logs in using your username. You might like to receive such a "warning" as a security measure so you will know if someone else picks up your password and uses your account.</source>
+        <target state="final">عند ضبط هذا الخيار سيصل لك بريدا إلكترونيا من تيبو3 في كل مرة تقوم أنت( أو أي شخص أخر )بالدخول مستخدما اسم المرور الخاص بك.وقد تكون قي حاجة إلي عملية " التحذير" كوسيلة لإختبار الأمان وعليه فستعرف ما إن تعرف على كلمة السر الخاصة بك ويستخدمها للدخول إلى حسابك الخاص.</target>
+      </trans-unit>
+      <trans-unit id="option_avatar.alttitle" resname="option_avatar.alttitle" approved="yes">
+        <source>Avatar</source>
+        <target state="final">الصورة الرمزية</target>
+      </trans-unit>
+      <trans-unit id="option_avatar.description" resname="option_avatar.description" approved="yes">
+        <source>You can personalize your TYPO3 user profile by adding an avatar. It will be shown at multiple places in the backend, e.g. in the topbar, next to your username.</source>
+        <target state="final">يمكنك تخصيص ملف تعريف مُستخدم TYPO3 الخاص بك عن طريق إضافة صورة رمزية. سيتم عرضه في أماكن متعددة في الواجهة الخلفية، على سبيل المثال في الشريط العلوي بجوار اسم المستخدم الخاص بك.</target>
+      </trans-unit>
+      <trans-unit id="option_newPassword.alttitle" resname="option_newPassword.alttitle" approved="yes">
+        <source>Change password</source>
+        <target state="final">تغير كلمة السر</target>
+      </trans-unit>
+      <trans-unit id="option_newPassword.description" resname="option_newPassword.description" approved="yes">
+        <source>Enter a new password for your backend account</source>
+        <target state="final">أدخل كلمة مرور جديدة لحسابك في الواجهة الخلفية</target>
+      </trans-unit>
+      <trans-unit id="option_newPassword.details" resname="option_newPassword.details" approved="yes">
+        <source>The passwords are encrypted to an MD5 hash when you leave the field so no plain text password is sent over the wire.</source>
+        <target state="final">عند ترك هذا الحقل يتم تشفير كلمات السر بالإمتداد MD5 hash وعليه فلا يرسل نص خالي لكلمة السر عبر اتلأسلاك.</target>
+      </trans-unit>
+      <trans-unit id="option_newPasswordAgain.alttitle" resname="option_newPasswordAgain.alttitle" approved="yes">
+        <source>Change password, confirm</source>
+        <target state="final">تأكيد تغير كلمة السر</target>
+      </trans-unit>
+      <trans-unit id="option_newPasswordAgain.description" resname="option_newPasswordAgain.description" approved="yes">
+        <source>Confirm the new password by entering it again, exactly like above. If the two new passwords do not match, the password will not be changed.</source>
+        <target state="final">قم بتأكيد كلمة السر الخاصة بك و ذلك بإدخالها مرة أخرى، مطابقة لما كتبتبه تماما. وإذا لم تتطابق كلمتى السر، فإن كلمة السر يتم تغيرها مباشرة.</target>
+      </trans-unit>
+      <trans-unit id="option_mfaProviders.alttitle" resname="option_mfaProviders.alttitle" approved="yes">
+        <source>Multi-factor authentication</source>
+        <target state="final">المصادقة مُتعدِدة العوامل</target>
+      </trans-unit>
+      <trans-unit id="option_mfaProviders.description" resname="option_mfaProviders.description" approved="yes">
+        <source>Manage your multi-factor authentication settings. This can be used to secure your account by providing another factor next to your password.</source>
+        <target state="final">إدارة إعدادات المصادقة مُتعددة العوامل. يمكن استخدام هذا لتأمين حسابك من خلال توفير عامل آخر بجانب كلمة المرور الخاصة بك.</target>
+      </trans-unit>
+      <trans-unit id="option_backendTitleFormat.alttitle" resname="option_backendTitleFormat.alttitle" approved="yes">
+        <source>Format of window title in backend</source>
+        <target state="final">تنسيق عنوان النافذة في الواجهة الخلفية</target>
+      </trans-unit>
+      <trans-unit id="option_backendTitleFormat.description" resname="option_backendTitleFormat.description" approved="yes">
+        <source>Define the order within the TYPO3 backend window title, which is usually displayed in the browser tab. Either the site name followed by the current module name or vice versa.</source>
+        <target state="final">تحديد الترتيب داخل عنوان نافذة الواجهة الخلفية لـ TYPO3، والذي يتم عرضه عادة في علامة التبويب المتصفح. إما أن يتبع اسم الموقع اسم الوحدة الحالية أو العكس.</target>
+      </trans-unit>
+      <trans-unit id="reset.alttitle" resname="reset.alttitle" approved="yes">
+        <source>Reset all Values to default</source>
+        <target state="final">إعادة ضبط جميع القيم كقيم إفتراضية.</target>
+      </trans-unit>
+      <trans-unit id="reset.description" resname="reset.description" approved="yes">
+        <source>If you select this option all settings in this module will be reset to the default settings of the system.</source>
+        <target state="final">عند إختيار هذه الخاصية فإنه سيتم عادة ضبط جميع ضوابط هذه الوحدة كضوابطا إفتراضية للنظام.</target>
+      </trans-unit>
+      <trans-unit id="reset.details" resname="reset.details" approved="yes">
+        <source>This does not apply to user name, email and password settings of course.</source>
+        <target state="final">وهذه الخاصية غير مطبقة بالطبع على تضبيط اسم المستخدم،بريده الإلكتروني و كلمة المرور الخاصة به.</target>
+      </trans-unit>
+      <trans-unit id="simuser.alttitle" resname="simuser.alttitle" approved="yes">
+        <source>Simulate backend user</source>
+        <target state="final">يقوم هذا الملف بمحاكاة مستخدم الواجهة الخلفية.</target>
+      </trans-unit>
+      <trans-unit id="simuser.description" resname="simuser.description" approved="yes">
+        <source>This option allows "admin"-users to change settings for another backend user in the system.</source>
+        <target state="final">يمكن هذا الخيار المستخدمين "المرشدين"من تغير الضوابط لتناسب مستخدم آخر من مستخدمي الواجهة الخلفية للنظام.</target>
+      </trans-unit>
+      <trans-unit id="option_enableInstallTool.alttitle" resname="option_enableInstallTool.alttitle" approved="yes">
+        <source>Admin control for re-enabling Install Tool access</source>
+        <target state="final">أداة تحكّم المشرف لإعادة تمكين الوصول إلى أداة التثبيت</target>
+      </trans-unit>
+      <trans-unit id="option_enableInstallTool.description" resname="option_enableInstallTool.description" approved="yes">
+        <source>By clicking this button, a file typo3conf/ENABLE_INSTALL_TOOL is created (or removed if it already exists). It unlocks the access to the Install Tool (password is still needed!) and will be removed automatically after 1 hour.</source>
+        <target state="final">بالنقر فوق هذا الزر، يتم إنشاء مِلَفّ typo3conf / ENABLE_INSTALL_TOOL (أو إزالته إذا كان موجودًا بالفعل). يفتح الوصول إلى أداة التثبيت (لا تزال هناك حاجة إلى كلمة المرور!) وستتم إزالتها تلقائيًا بعد ساعة واحدة.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
