@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_csh_fe_users.xlf" date="2011-10-17T20:22:32Z" product-name="context_help" target-language="fr">
+    <header/>
+    <body>
+      <trans-unit id="username.description" resname="username.description" approved="yes">
+        <source>Enter the username of the website user. This is needed to login.</source>
+        <target state="final">Saisir le nom d'utilisateur de l'utilisateur du site. Ceci est requis pour se connecter.</target>
+      </trans-unit>
+      <trans-unit id="username.syntax" resname="username.syntax" approved="yes">
+        <source>A username is required and must be in lowercase without spaces in it. The username must be unique among other usernames in the page where it's saved. If it is not unique a number will be prepended automatically.</source>
+        <target state="final">Un nom d'utilisateur est nécessaire. Il doit être écrit en minuscules sans espace. Le nom d'utilisateur doit être unique dans la page où il est enregistré. S'il n'est pas unique, un numéro lui sera ajouté automatiquement.</target>
+      </trans-unit>
+      <trans-unit id="_username.seeAlso" resname="_username.seeAlso" approved="yes">
+        <source>Creating Frontend Users and Groups | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/CreateUsersGroups/</source>
+        <target state="final">Création d'utilisateurs Frontend et groupes | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/CreateUsersGroups/</target>
+      </trans-unit>
+      <trans-unit id="password.description" resname="password.description" approved="yes">
+        <source>Enter the password for the username above. This is needed to login.</source>
+        <target state="final">Saisir le mot de passe pour l'utilisateur ci-dessus. Ceci est requis pour se connecter.</target>
+      </trans-unit>
+      <trans-unit id="password.syntax" resname="password.syntax" approved="yes">
+        <source>A password is required and must be in lowercase without spaces in it.</source>
+        <target state="final">Un mot de passe en caractères minuscules et sans espace est requis.</target>
+      </trans-unit>
+      <trans-unit id="usergroup.description" resname="usergroup.description" approved="yes">
+        <source>Select a user group for the username.</source>
+        <target state="final">Sélectionner un groupe pour cet utilisateur.</target>
+      </trans-unit>
+      <trans-unit id="usergroup.details" resname="usergroup.details" approved="yes">
+        <source>When a user logs in he is able to view all content which is access restricted to the user &lt;em&gt;group(s)&lt;/em&gt; the user is a member of. Therefore the user login primarily makes sense with regard to the member groups.</source>
+        <target state="final">En se connectant, un utilisateur peut voir l'ensemble des contenus accessibles au(x) &lt;em&gt;groupe(s)&lt;/em&gt; d'utilisateurs dont il est membre.Par conséquent l'identification d'un utilisateur prend un sens au regard des groupes auxquels il appartient.</target>
+      </trans-unit>
+      <trans-unit id="name.description" resname="name.description" approved="yes">
+        <source>Enter the regular name of the user, both first- and surname.</source>
+        <target state="final">Entrer le nom complet de l'utilisateur, prénom et nom.</target>
+      </trans-unit>
+      <trans-unit id="address.description" resname="address.description" approved="yes">
+        <source>Enter the street address of the user.</source>
+        <target state="final">Entrer l'adresse postale de l'utilisateur.</target>
+      </trans-unit>
+      <trans-unit id="www.description" resname="www.description" approved="yes">
+        <source>Enter the homepage URL</source>
+        <target state="final">Entrer l'URL de la page d'accueil.</target>
+      </trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Enter the job title, eg. 'Director' or 'Accountant'.</source>
+        <target state="final">Entrer le titre, par exemple "directeur" ou "comptable".</target>
+      </trans-unit>
+      <trans-unit id="company.description" resname="company.description" approved="yes">
+        <source>Enter the name of the company in which the user is employed.</source>
+        <target state="final">Entrer le nom de la société qui emploie l'utilisateur.</target>
+      </trans-unit>
+      <trans-unit id="image.description" resname="image.description" approved="yes">
+        <source>Insert a photo of the user.</source>
+        <target state="final">Insérer une photo de l'utilisateur.</target>
+      </trans-unit>
+      <trans-unit id="disable.description" resname="disable.description" approved="yes">
+        <source>Unchecking this option will temporarily disable the user from logging in.</source>
+        <target state="final">Décocher cette option empêchera temporairement l'utilisateur de se connecter.</target>
+      </trans-unit>
+      <trans-unit id="_disable.seeAlso" resname="_disable.seeAlso" approved="yes">
+        <source>fe_users:starttime,fe_users:endtime</source>
+        <target state="final">fe_users:starttime,fe_users:endtime</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="starttime.description" resname="starttime.description" approved="yes">
+        <source>Enter the date from which the account is active.</source>
+        <target state="final">Entrer la date à partir de laquelle le compte est actif.</target>
+      </trans-unit>
+      <trans-unit id="starttime.syntax" resname="starttime.syntax" xml:space="preserve" approved="yes">
+				<source>The syntax is dd-mm-yy, but you can just enter a "d" in the field to insert todays date. Or "d+10" to insert the date 10 days from now etc.
+The field will re-format any input to fit the format it understands so you can just experiment and you will be able to clearly see how dates should be entered.</source>
+			<target state="final">La syntaxe est dd-mm-yy, mais vous pouvez entrer seulement un "d" dans le champ pour insérer la date d'aujourd'hui. Ou "d+10" pour insérer la date du dixième jour à partir d'aujourd'hui, etc. Le champ reformatera n'importe quelle entrée pour l'ajuster au format qu'il connait. Vous pouvez donc seulement expérimenter et vous pourrez voir clairement comment les dates devraient être entrées.</target></trans-unit>
+      <trans-unit id="_starttime.seeAlso" resname="_starttime.seeAlso" approved="yes">
+        <source>fe_users:disable,fe_users:endtime</source>
+        <target state="final">fe_users:disable,fe_users:endtime</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="endtime.description" resname="endtime.description" approved="yes">
+        <source>Enter the date from which the account is disabled.</source>
+        <target state="final">Entrer la date à partir de laquelle le compte est désactivé.</target>
+      </trans-unit>
+      <trans-unit id="endtime.syntax" resname="endtime.syntax" approved="yes">
+        <source>See "Start"</source>
+        <target state="final">Voir "Démarrer"</target>
+      </trans-unit>
+      <trans-unit id="_endtime.seeAlso" resname="_endtime.seeAlso" approved="yes">
+        <source>fe_users:disable,fe_users:starttime</source>
+        <target state="final">fe_users:disable,fe_users:starttime</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="lastlogin.description" resname="lastlogin.description" approved="yes">
+        <source>This field shows the user's last log in date.</source>
+        <target state="final">Ce champ indique la dernière connexion en date de l'utilisateur.</target>
+      </trans-unit>
+      <trans-unit id="TSconfig.description" resname="TSconfig.description" approved="yes">
+        <source>Enter additional TSconfig for the user (advanced).</source>
+        <target state="final">Entrer les paramètres de TSconfig additionnels pour l'utilisateur (avancé).</target>
+      </trans-unit>
+      <trans-unit id="TSconfig.details" resname="TSconfig.details" xml:space="preserve" approved="yes">
+				<source>This field allows you to enter TypoScript style configuration values for the user. Currently there are no system defined keys. If there ever will be, they will be described in detail in the administrative documentation.
+
+The primary use of this field (as well as the 'sister'-field in the Website usergroup table) is for custom purposes. In this case, you should use the root-key "user" for your customly defined values. Thus you don't risk any future system keys to interfere with your configuration.
+
+You access the values of the configuration from your frontend plugins by calling the function &lt;em&gt;$GLOBALS["TSFE"]-&gt;fe_user-&gt;getUserTSconf()&lt;/em&gt; which will return an array with the valuetree in it.
+
+&lt;b&gt;Warning:&lt;/b&gt; You should use Website user/group TSconfig in your PHP-scripts ONLY if your resulting content is NOT being cached! So call it from TypoScript USER_INT cObjects or disable caching from your PHP-code by calling &lt;em&gt;$GLOBALS["TSFE"]-&gt;set_no_cache();&lt;/em&gt;
+
+&lt;b&gt;TSconfig from Website usergroups:&lt;/b&gt;
+Notice that the configuration from the field TSconfig in the member groups of the user is accumulated and prepended to the TSconfig of the user before it's parsed. This means for instance that a key defined in the TSconfig of the user (this field) will override the same key defined in the last (bottom) usergroup in the list which will again override the same key defined in the first (top) usergroup in the list.
+
+&lt;b&gt;Example:&lt;/b&gt;
+Let's imagine you want to define for a user that his name is printed in the bottom of the webpages when he is logged in. First of all you must write a PHP-function and insert the result from it as a USER_INT cObject in the bottom of the page. But your function needs to know, whether or not this user is configured to have his name printed. So you decide to use a custom TSconfig key, 'user.printUserName':
+
+&lt;em&gt;In the TSconfig field of the user or usergroup:&lt;/em&gt;
+
+user.printUserName = 1
+
+
+&lt;em&gt;In your PHP-function:&lt;/em&gt;
+
+$userTSConfig = $GLOBALS["TSFE"]-&gt;fe_user-&gt;getUserTSconf();
+if ($userTSConfig["user."]["printUserName"]) {
+return $GLOBALS["TSFE"]-&gt;fe_user-&gt;user["name"];
+}</source>
+			<target state="final">Ce champ vous permet d'entrer des valeurs de configuration de style TypoScript pour l'utilisateur. Actuellement, il n'y a pas de clés définies par le système. Le cas échéant, ils seront décrits en détail dans la documentation administrative.
+
+L'utilisation principale de ce champ (ainsi que le champ 'soeur' dans la table du groupe d'utilisateurs du site) est à des fins personnalisées. Dans ce cas, vous devriez utiliser la clé racine "utilisateur" pour vos valeurs définies de façon personnalisée. Ainsi, vous ne risquez aucune clé système future pour interférer avec votre configuration.
+
+Vous accédez aux valeurs de la configuration à partir de vos plugins en frontend en appelant la fonction &lt;em&gt;$GLOBALS["TSFE"]-&gt;fe_user-&gt;getUserTSconf()&lt;/em&gt; qui retournera un tableau avec l'arborescence de valeurs dedans.
+
+&lt;b&gt;AVERTISSEMENT :&lt;/b&gt; Vous devez utiliser le site Web user/group TSconfig dans vos scripts PHP SEULEMENT si votre contenu résultant n'est PAS mis en cache ! appelez-le donc de TypoScript USER_INT cObjects ou désactivez la mise en cache de votre code PHP en appelant &lt;em&gt;$GLOBALS["TSFE"]-&gt;set_no_cache();&lt;/em&gt;
+
+&lt;b&gt;TSconfig des groupes d'utilisateurs du site Web:&lt;/b&gt;
+Notez que la configuration du champ TSconfig dans les groupes membres de l'utilisateur est accumulée et précédée de la TSconfig de l'utilisateur avant d'être analysée. Cela signifie par exemple qu'une clé définie dans la TSconfig de l'utilisateur (ce champ) remplacera la même clé définie dans le dernier (bas) groupe d'utilisateurs de la liste qui remplacera à nouveau la même clé définie dans le premier (haut) groupe d'utilisateurs de la liste.
+
+&lt;b&gt;Exemple:&lt;/b&gt;
+Imaginons que vous vouliez définir pour un utilisateur que son nom est imprimé en bas des pages web quand il est connecté. Tout d'abord, vous devez écrire une fonction PHP et insérer le résultat en tant que USER_INT cObject en bas de la page. Mais votre fonction doit savoir si cet utilisateur est configuré ou non pour avoir son nom imprimé. Vous décidez donc d'utiliser une clé TSconfig personnalisée, 'utilisateur'. rintUserName':
+
+&lt;em&gt;Dans le champ TSconfig de l'utilisateur ou du groupe d'utilisateurs:&lt;/em&gt;
+
+utilisateur. rintUserName = 1
+
+
+&lt;em&gt;Dans votre fonction PHP:&lt;/em&gt;
+
+$userTSConfig = $GLOBALS["TSFE"]-&gt;fe_user-&gt;getUserTSconf();
+if ($userTSConfig["user."]["printUserName"]) {
+return $GLOBALS["TSFE"]-&gt;fe_user-&gt;user["name"];
+}</target></trans-unit>
+      <trans-unit id="TSconfig.syntax" resname="TSconfig.syntax" approved="yes">
+        <source>TypoScript syntax, without conditions and constants.</source>
+        <target state="final">Syntaxe TypoScript, sans conditions et constantes.</target>
+      </trans-unit>
+      <trans-unit id="_TSconfig.seeAlso" resname="_TSconfig.seeAlso" xml:space="preserve" approved="yes">
+				<source>TSconfig for TSFE | https://docs.typo3.org/typo3cms/TSconfigReference/PageTsconfig/TCEmain/
+pages:TSconfig,
+fe_groups:TSconfig,
+be_users:TSconfig,
+be_groups:TSconfig</source>
+			<target state="final">TSconfig pour TSFE | https://docs.typo3.org/typo3cms/TSconfigReference/PageTsconfig/TCEmain/
+pages:TSconfig,
+fe_groups:TSconfig,
+be_users:TSconfig,
+be_groups:TSconfig</target></trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>A website login user.</source>
+        <target state="final">Un utilisateur authentifié du site Web.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" approved="yes">
+        <source>These are users with a username and password who are allowed specific access to otherwise restricted areas on your website.</source>
+        <target state="final">Ce sont les utilisateurs avec nom d'utilisateur et mot de passe à qui il est donné un accès spécifiques à des zones de votre site web restreintes différemment.</target>
+      </trans-unit>
+      <trans-unit id="_.seeAlso" resname="_.seeAlso" xml:space="preserve" approved="yes">
+				<source>fe_groups
+be_users</source>
+			<target state="final">fe_groups
+be_users</target></trans-unit>
+      <trans-unit id="_.image" resname="_.image" xml:space="preserve" approved="yes">
+				<source>EXT:frontend/Resources/Public/Images/cshimages/feusers_1.png,
+EXT:frontend/Resources/Public/Images/cshimages/feusers_2.png,</source>
+				
+			<target state="final">EXT:frontend/Resources/Public/Images/cshimages/feusers_1.png,
+EXT:frontend/Resources/Public/Images/cshimages/feusers_2.png,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" xml:space="preserve" approved="yes">
+				<source>Part of the form for editing a frontend user.
+A typical login box (standard) on the website where frontend users can login.</source>
+			<target state="final">La partie du formulaire pour éditer un utilisateur Frontend. Une boîte de connexion standard sur le site web où les utilisateurs Frontend peuvent se connecter.</target></trans-unit>
+    </body>
+  </file>
+</xliff>
