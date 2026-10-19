@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:install/Resources/Private/Language/Report/locallang.xlf" date="2011-10-17T20:22:33Z" product-name="install" target-language="hr">
+    <header/>
+    <body>
+      <trans-unit id="environment.status.title" resname="environment.status.title" approved="yes">
+        <source>System environment check</source>
+        <target state="final">Provjere okružja sustava</target>
+      </trans-unit>
+      <trans-unit id="environment.status.value" resname="environment.status.value" approved="yes">
+        <source>%1$s Test(s)</source>
+        <target state="final">%1$s Test(ova)</target>
+      </trans-unit>
+      <trans-unit id="environment.status.message.error" resname="environment.status.message.error" approved="yes">
+        <source>The system environment check returned errors. Those errors will affect the functionality and stability of your TYPO3 CMS instance. Please check the install tool "System environment" for all details.</source>
+        <target state="final">Provjera okružja sustava otkrila je pogreške. Te pogreške će utjecati na funkcionalnost i stabilnost Vašeg TYPO3 CMS sustava. Molimo Vas da provjerite "Okružje sustava" u Alatu za instalaciju za dodatne detalje.</target>
+      </trans-unit>
+      <trans-unit id="environment.status.message.warning" resname="environment.status.message.warning" approved="yes">
+        <source>The system environment check returned warnings. Those warnings might have a negative effect on the functionality and stability of your TYPO3 CMS instance. Please check the install tool "System environment" for all details.</source>
+        <target state="final">Provjera okružja sustava otkrila je pogreške. Te pogreške mogu negativno utjecati na funkcionalnost i stabilnost Vašeg TYPO3 CMS sustava. Molimo Vas da provjerite "Okružje sustava" u Alatu za instalaciju za dodatne detalje.</target>
+      </trans-unit>
+      <trans-unit id="environment.status.message.notice" resname="environment.status.message.notice" approved="yes">
+        <source>The system environment check returned notices. Those should not affect the functionality and stability of your TYPO3 CMS instance. Please check the install tool "System environment" for all details.</source>
+        <target state="final">Provjera okružja sustava otkrila je pogreške. Te pogreške ne bi trebale negativno utjecati na funkcionalnost i stabilnost Vašeg TYPO3 CMS sustava. Molimo Vas da provjerite "Okružje sustava" u Alatu za instalaciju za dodatne detalje.</target>
+      </trans-unit>
+      <trans-unit id="environment.status.message.ok" resname="environment.status.message.ok" xml:space="preserve">
+				<source/>
+			</trans-unit>
+      <trans-unit id="environment.status.message.info" resname="environment.status.message.info" xml:space="preserve">
+				<source/>
+			</trans-unit>
+      <trans-unit id="status_fileSystem" resname="status_fileSystem" approved="yes">
+        <source>File System</source>
+        <target state="final">Datotečni sustav</target>
+      </trans-unit>
+      <trans-unit id="status_writable" resname="status_writable" approved="yes">
+        <source>Writable</source>
+        <target state="final">Dopuštenje za pisanje prisutno</target>
+      </trans-unit>
+      <trans-unit id="status_missingDirectory" resname="status_missingDirectory" approved="yes">
+        <source>Required directory missing</source>
+        <target state="final">Zahtjevana mapa nedostaje</target>
+      </trans-unit>
+      <trans-unit id="status_nonExistingDirectory" resname="status_nonExistingDirectory" approved="yes">
+        <source>Directory not existing</source>
+        <target state="final">Mapa ne postoji</target>
+      </trans-unit>
+      <trans-unit id="status_recommendedWritableDirectory" resname="status_recommendedWritableDirectory" approved="yes">
+        <source>Directory should be writable</source>
+        <target state="final">Mapa treba imati dopuštenje za pisanje</target>
+      </trans-unit>
+      <trans-unit id="status_requiredWritableDirectory" resname="status_requiredWritableDirectory" approved="yes">
+        <source>Directory not writable</source>
+        <target state="final">Mapa nema dopuštenje za pisanje</target>
+      </trans-unit>
+      <trans-unit id="status_directoryDoesNotExist" resname="status_directoryDoesNotExist" approved="yes">
+        <source>%s does not exist.</source>
+        <target state="final">%s ne postoji.</target>
+      </trans-unit>
+      <trans-unit id="status_directoryDoesNotExistCouldNotCreate" resname="status_directoryDoesNotExistCouldNotCreate" approved="yes">
+        <source>%s does not exist and could not be created.</source>
+        <target state="final">%s ne postoji i ne može se stvoriti.</target>
+      </trans-unit>
+      <trans-unit id="status_directoryShouldAlsoBeWritable" resname="status_directoryShouldAlsoBeWritable" approved="yes">
+        <source>Also note that it should be writable, if it did exist.</source>
+        <target state="final">Također primjetite da bi trebao imati dopuštenje za pisanje kada bi postojao.</target>
+      </trans-unit>
+      <trans-unit id="status_directoryShouldBeWritable" resname="status_directoryShouldBeWritable" approved="yes">
+        <source>%s should be writable.</source>
+        <target state="final">%s bi trebao imati dopuštenje za pisanje.</target>
+      </trans-unit>
+      <trans-unit id="status_directoryMustBeWritable" resname="status_directoryMustBeWritable" approved="yes">
+        <source>%s must be writable.</source>
+        <target state="final">%s mora imati dopuštenje za pisanje.</target>
+      </trans-unit>
+      <trans-unit id="status_remainingUpdates" resname="status_remainingUpdates" approved="yes">
+        <source>Remaining updates</source>
+        <target state="final">Preostale nadogradnje</target>
+      </trans-unit>
+      <trans-unit id="status_remoteFetchException" resname="status_remoteFetchException" approved="yes">
+        <source>Could not fetch version matrix of TYPO3. Maybe this instance is blocked by a firewall?</source>
+        <target state="final">Nije uspjelo dohvaćanje matrice verzija TYPO3 sustava. Možda je ova instanca blokirana od strane vatrozida?</target>
+      </trans-unit>
+      <trans-unit id="status_isDevelopmentVersion" resname="status_isDevelopmentVersion" approved="yes">
+        <source>This version of TYPO3 seems to be a development version. Thus no update information exists.</source>
+        <target state="final">Čini se da je ovo razvojna verzija TYPO3 sustava, stoga nije dostupna informacija o nadogradnjama.</target>
+      </trans-unit>
+      <trans-unit id="status_patchLevelNotFoundInReleaseMatrix" resname="status_patchLevelNotFoundInReleaseMatrix" approved="yes">
+        <source>It seems that this TYPO3 version has never been released. Thus no update information exists.</source>
+        <target state="final">Čini se da ova verzija TYPO3 sustava nikada nije objavljena te stoga nije dostupna informacija o nadogradnjama.</target>
+      </trans-unit>
+      <trans-unit id="status_versionOutdated" resname="status_versionOutdated" approved="yes">
+        <source>The TYPO3 version you're using is not supported anymore. You should update to a supported version.</source>
+        <target state="final">Verzija TYPO3 sustava koju koristite više nije podržana. Trebali biste nadograditi sustav na podržanu verziju.</target>
+      </trans-unit>
+      <trans-unit id="status_installToolPassword" resname="status_installToolPassword" approved="yes">
+        <source>Install Tool Password</source>
+        <target state="final">Lozinka instalacijskog alata</target>
+      </trans-unit>
+      <trans-unit id="status_installTool" resname="status_installTool" approved="yes">
+        <source>Install Tool</source>
+        <target state="final">Instalacijski alat</target>
+      </trans-unit>
+      <trans-unit id="status_enabledPermanently" resname="status_enabledPermanently" approved="yes">
+        <source>Enabled permanently</source>
+        <target state="final">Trajno omogućeno</target>
+      </trans-unit>
+      <trans-unit id="status_enabledTemporarily" resname="status_enabledTemporarily" approved="yes">
+        <source>Enabled temporarily</source>
+        <target state="final">Privremeno omogućeno</target>
+      </trans-unit>
+      <trans-unit id="status_installEnabledTemporarily" resname="status_installEnabledTemporarily" approved="yes">
+        <source>The Install Tool is temporarily enabled. Delete the file "%s" when you have finished setting up TYPO3. If not used the Install Tool will be disabled automatically in %s minutes.</source>
+        <target state="final">Instalacijski alat je privremeno omogućen. Kada završite sa postavljanjem TYPO3 sustava obrišite datoteku "%s". Instalacijski alat će biti onemogućen nakon %s minuta neaktivnosti.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
