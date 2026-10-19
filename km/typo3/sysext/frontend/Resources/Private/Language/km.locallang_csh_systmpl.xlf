@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_csh_systmpl.xlf" date="2011-10-17T20:22:32Z" product-name="context_help" target-language="km">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>TypoScript template record.</source>
+        <target state="final">ទិន្នន័យ template TypoScript</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" xml:space="preserve" approved="yes">
+				<source>The 'Template' records are the vital components used to set the design of the webpages. No matter how (almost) you would like to build your website, it must be initiated by a 'Template' record placed in the root of the page tree of the site.
+Basically, create a 'Template' record, enter a title and make sure to check of Clear constants, setup and Rootline. Then enter some TypoScript configuration in the Setup field and you're set.
+It's very important to read how to do all this in the documents listed below! Also make sure you use the Web&gt;Template module to do all the working with templates. It's a specialized tool to help you with this.</source>
+			<target state="final">ទិន្នន័យ 'Template' ជា​សមាសភាគ​សំខាន់​ណាស់ ប្រើ​សម្រាប់​កំណត់​ការរចនា​របស់​វែបសាយ ។ ទោះ​ជា​អ្នក​ចង់​បង្កើត​វែបសាយ​របស់​អ្នក​របៀប​ណា​ក៏​ដោយ វា​ត្រូវ​បាន​​​បង្កើត​ដោយ​ទិន្នន័យ 'Template' ដែល​នៅ​ក្នុង​គោល​នៃ​ឋានានុក្រម​វែបសាយ ។ ជា​មូលដ្ឋាន, បង្កើត​ទិន្នន័យ 'Template' បំពេញ​ចំណងជើង និង ពិនិត្យ​លើ​កុងស្ដង់, ដំឡើង និង បន្ទាត់​គោល ។ រួច​បញ្ចូល​ការកំណត់​ដោយ TypoScript ក្នុង​ប្រអប់​ដំឡើង ។ វា​សំខាន់​ណាស់​ចំពោះ​ការអាន​អំពី​របៀប​ធ្វើ​ទាំង​អស់​នេះ​ក្នុង​ឯកសារ​ដែល​មាន​នៅ​ខាង​ក្រោម! ហើយ​ត្រូវ​ប្រើ​ម៉ូឌុល វែប&gt;Template ដើម្បី​ធ្វើ​កិច្ចការ​ទាំងនេះ​ជាមួយ template ។ វា​ជា​ឧបករណ៍​ពិសេស​ដើម្បី​ជួយ​អ្នក​ក្នុងការងារ​នេះ ។</target></trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" xml:space="preserve" approved="yes">
+				<source>A Template Record with constants and setup code.
+The Web&gt;Template module contains tools which will help you to edit and validate TypoScript structures.</source>
+			<target state="final">ទិន្នន័យ Template ជាមួយ​កុងស្ដង់ និង កូដ​ដំឡើង ។ ម៉ូឌុល វែប &gt; Template មាន​ឧបករណ៍​ដែល​នឹង​ជួយ​អ្នក​ដើម្បី​កែង និង ផ្ទៀងផ្ទាត់​​​រចនាសម្ព័ន្ធ TypoScript ។</target></trans-unit>
+      <trans-unit id="hidden.details" resname="hidden.details" approved="yes">
+        <source>If the Template Record was the first record on a page hiding it will expose the second record on the page instead.</source>
+        <target state="final">ប្រសិន​បើ​ទិន្នន័យ template ជា​ទិន្នន័យ​ទីមួយ​លើ​ទំព័រ លាក់​វា​នឹង​បង្ហាញ​ទិន្នន័យ​ទី​ពីរ​នៅ​លើ​ទំព័រ​ជំនួស​វិញ ។</target>
+      </trans-unit>
+      <trans-unit id="starttime.description" resname="starttime.description" approved="yes">
+        <source>Start time. Use this to enable a template on a certain date.</source>
+        <target state="final">ពេល​វេលា​ចាប់ផ្ដើម ។ ប្រើ​ជម្រើស​នេះ​ដើម្បី​ដំណើរការ template នៅ​ក្នុង​ពេល​ជាលាក់ ។</target>
+      </trans-unit>
+      <trans-unit id="endtime.description" resname="endtime.description" approved="yes">
+        <source>End time. Use this to disable a template on a certain date.</source>
+        <target state="final">ពេល​បញ្ឈប់ ។ ប្រើ​ជម្រើស​នេះ​ដើម្បី​បិទ​ដំណើរការ template នៅ​ក្នុង​ពេល​វេលា​ជាក់លាក់ ។</target>
+      </trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>The title of the template record is only an internal label and does not have any effect on the output in the frontend.</source>
+        <target state="final">ចំណងជើង​ទិន្នន័យ template គ្រាន់តែ​ជា​ពាក្យ​សម្គាល់​ខាង​ក្នុង និង មិន​មាន​ផល​ប៉ះពាល់​ចំពោះ​ការបង្ហាញ​ទៅ​លើ frontend ទេ ។</target>
+      </trans-unit>
+      <trans-unit id="sitetitle.description" resname="sitetitle.description" approved="yes">
+        <source>Website title. Typically this will automatically be prefixed all page titles in the &lt;title&gt; tag of the frontend pages.</source>
+        <target state="final">ចំណងជើង​វែបសាយ ។ ជា​ទូទៅ​ជម្រើស​នេះ​នឹង​​ជា​បុព្វបទ​របស់​ចំណងជើង​ទំព័រ​ក្នុង​ថាក &lt;title&gt; ដោយ​ស្វ័យប្រវត្តិ​នៃ​ទំព័រ​លើ frontend ។</target>
+      </trans-unit>
+      <trans-unit id="constants.description" resname="constants.description" approved="yes">
+        <source>TypoScript Constants.</source>
+        <target state="final">កុងស្ដង់ TypoScript ។</target>
+      </trans-unit>
+      <trans-unit id="_constants.seeAlso" resname="_constants.seeAlso" approved="yes">
+        <source>static_template:constants</source>
+        <target state="final">static_template:constants</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="config.description" resname="config.description" approved="yes">
+        <source>TypoScript Setup code</source>
+        <target state="final">កូដ​ដំឡើង TypoScript</target>
+      </trans-unit>
+      <trans-unit id="config.details" resname="config.details" approved="yes">
+        <source>Read more about TypoScript Templates in TSref, TypoScript by Example and Getting Started.</source>
+        <target state="final">អាន​បន្ថែម​អំពី Template TypoScript ក្នុង TSref, TypoScript ដោយ​មាន​ឧទាហរណ៍ និង ការចាប់ផ្ដើម​ដំបូង ។</target>
+      </trans-unit>
+      <trans-unit id="resources.description" resname="resources.description" approved="yes">
+        <source>Resource files for the template. For example a logo, a TTF-font etc.</source>
+        <target state="final">ឯកសារ​ធនធាន​សម្រាប់ template ។ ឧទាហរណ៍​ស្លាកសញ្ញា, ពុម្អក្សរ TTF ។ល។</target>
+      </trans-unit>
+      <trans-unit id="resources.details" resname="resources.details" approved="yes">
+        <source>Resource files can be referenced in TypoScript Template code by [filename]*.[ext] and has the advantage that the reference from TypoScript is not broken if you copy or export a Template Record where the resources ends up with new names.</source>
+        <target state="final">ឯកសារ​ធនធាន​អាច​ជា​ឯកសារ​យោង​ក្នុង​ការសរសេរ​កូដ Template TypoScript គឺ [filename]*.[ext] និង​មាន​គុណសម្បត្តិ​ដែល​ឯកសារ​​យោង​ពី TypoSCript មិន​បាន​ខូចខាត ប្រសិន​បើ​អ្នក​ចម្លង ឬ ទាញយក​​ទិន្នន័យ Template ចូល ដែល​ធនធាន​ត្រូវ​បាន​កំណត់​ឈ្មោះ​ថ្មី ។</target>
+      </trans-unit>
+      <trans-unit id="clear.description" resname="clear.description" approved="yes">
+        <source>Flags that will clear the inheritance of TypoScript code from former templates in the root line. There is a flag for Constants and one for Setup code.</source>
+        <target state="final">ទង់​ដែល​នឹង​សម្អាត​លើ​ការទទួល​មរត៌ក​កុដ TypoScript ពី template ចាស់​ក្នុង​បន្ទាប់​គោល ។ មាន​ទង់​សម្រាប់​កុងស្ដង់ និង មួយ​សម្រាប់​កូដ​ដំឡើង ។</target>
+      </trans-unit>
+      <trans-unit id="_clear.seeAlso" resname="_clear.seeAlso" approved="yes">
+        <source>sys_template:root</source>
+        <target state="final">sys_template:root</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="root.description" resname="root.description" approved="yes">
+        <source>Defines that the template represents a root of a website.</source>
+        <target state="final">កំណត់​ថា template បង្ហាញ​​គោល​របស់​វែបសាយ ។</target>
+      </trans-unit>
+      <trans-unit id="_root.seeAlso" resname="_root.seeAlso" approved="yes">
+        <source>sys_template:clear</source>
+        <target state="final">sys_template:clear</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="includeStaticAfterBasedOn.description" resname="includeStaticAfterBasedOn.description" approved="yes">
+        <source>If set, static templates will be included after "based-on" templates. It basically swaps the order of inclusion of these external TypoScript sources.</source>
+        <target state="final">ប្រសិន​បើ​យក​កំណត់ template ស្តាទិក​នឹង​ត្រូវ​បាន​បញ្ចូល​បន្ទាប់​ពី "ផ្អែក​លើ" template ។ វា​ផ្លាស់ប្ដូរ​លំដាប់​នៃ​ការបន្ថែម​កូដ TypoScript ពី​ក្រៅ​ទាំងនេះ ។</target>
+      </trans-unit>
+      <trans-unit id="include_static.description" resname="include_static.description" approved="yes">
+        <source>Static Template records to include.</source>
+        <target state="final">ទិន្នន័យ template ស្ដាទិក​ត្រូវ​បញ្ចូល ។</target>
+      </trans-unit>
+      <trans-unit id="_include_static.seeAlso" resname="_include_static.seeAlso" approved="yes">
+        <source>static_template</source>
+        <target state="final">static_template</target>
+      </trans-unit>
+      <trans-unit id="include_static_file.description" resname="include_static_file.description" approved="yes">
+        <source>Static Template files to include.</source>
+        <target state="final">ឯកសារ template ស្ដាទិក​ត្រូវ​បញ្ចូល ។</target>
+      </trans-unit>
+      <trans-unit id="include_static_file.details" resname="include_static_file.details" approved="yes">
+        <source>Static template files are registered by extensions contrary to Static Template records which come from the static database table, "static_template".</source>
+        <target state="final">ឯកសារ​ template ស្ដាទិក​ត្រូវ​បាន​ចុះឈ្មោះ​ដោយ​សមាសភាគ​ ទៅ​ទិន្នន័យ Template ស្ដាទិក​ដែល​បាន​ពី​តារាង​ទិន្នន័យ​ស្ដាទិក, "static_template" ។</target>
+      </trans-unit>
+      <trans-unit id="_include_static_file.seeAlso" resname="_include_static_file.seeAlso" approved="yes">
+        <source>sys_template:include_static</source>
+        <target state="final">sys_template:include_static</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="basedOn.description" resname="basedOn.description" approved="yes">
+        <source>Other Template Records that are included like "static templates".</source>
+        <target state="final">ទិន្នន័យ template ផ្សេង​ទៀត​ដែល​ត្រូវ​បាន​បញ្ចូល​ដូច​ជា "template ស្ដាទិក" ។</target>
+      </trans-unit>
+      <trans-unit id="static_file_mode.description" resname="static_file_mode.description" approved="yes">
+        <source>Define the mode of inclusion of static template files.</source>
+        <target state="final">កំណត់​ម៉ូដ​នៃ​ការបន្ថែម​របស់​ឯកសារ template ស្តាទិក ។</target>
+      </trans-unit>
+      <trans-unit id="nextLevel.description" resname="nextLevel.description" approved="yes">
+        <source>Defines a template record to make active one level out in the page tree of this branch. This can be used to define another template record for the general website while having a special template for the frontpage.</source>
+        <target state="final">កំណត់​ទិន្នន័យ template ដើម្បី​ធ្វើ​ឲ្យ​ដំណើរការ​ចេញ​មក​ក្រៅ​មួយ​លំដាប់​ក្នុង​ឋានានុក្រម​ទំព័រ​នៃ​ឋានានុក្រម​នេះ ។ ជម្រើស​នេះ​អាច​ត្រូវ​បាន​ប្រើ​ដើម្បី​កំណត់​ទិន្នន័យ template ផ្សេង​ទៀត​សម្រាប់​វែបសាយ​ទូទៅ​ពេល​មាន​ template ពិសេស​សម្រាប់​ទំព័រ​មុខ ។</target>
+      </trans-unit>
+      <trans-unit id="description.description" resname="description.description" approved="yes">
+        <source>Enter a description of the template if you like.</source>
+        <target state="final">បំពេញ​សេចក្ដី​ពណនា​លើ template ប្រសិន​បើ​អ្នក​ចូលចិត្ត ។</target>
+      </trans-unit>
+      <trans-unit id="editorcfg.description" resname="editorcfg.description" approved="yes">
+        <source>Editor Configuration for the stylesheet editor extension.</source>
+        <target state="final">ការកំណត់​លើ​សមាសភាគ​សម្រាប់​កែ stylesheet ។</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
