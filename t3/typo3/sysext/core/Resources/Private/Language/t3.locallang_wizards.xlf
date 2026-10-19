@@ -1,0 +1,460 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_wizards.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="rte_undoLastChange" resname="rte_undoLastChange">
+        <source>Undo/Redo last change (%s ago)</source>
+        <target>crwdns101424:0%scrwdne101424:0</target>
+      </trans-unit>
+      <trans-unit id="tsprop" resname="tsprop">
+        <source>TypoScript property lookup</source>
+        <target>crwdns101426:0crwdne101426:0</target>
+      </trans-unit>
+      <trans-unit id="tsprop_TSref" resname="tsprop_TSref">
+        <source>TSref online</source>
+        <target>crwdns101428:0crwdne101428:0</target>
+      </trans-unit>
+      <trans-unit id="tsprop_tsconfig" resname="tsprop_tsconfig">
+        <source>TSconfig online</source>
+        <target>crwdns101430:0crwdne101430:0</target>
+      </trans-unit>
+      <trans-unit id="tsprop_title" resname="tsprop_title">
+        <source>Object title</source>
+        <target>crwdns101432:0crwdne101432:0</target>
+      </trans-unit>
+      <trans-unit id="tsprop_prefix" resname="tsprop_prefix">
+        <source>Object prefix</source>
+        <target>crwdns101434:0crwdne101434:0</target>
+      </trans-unit>
+      <trans-unit id="tsprop_mixer_indent" resname="tsprop_mixer_indent">
+        <source>Indent +2</source>
+        <target>crwdns101436:0crwdne101436:0</target>
+      </trans-unit>
+      <trans-unit id="tsprop_mixer_outdent" resname="tsprop_mixer_outdent">
+        <source>Outdent -2</source>
+        <target>crwdns101438:0crwdne101438:0</target>
+      </trans-unit>
+      <trans-unit id="tsprop_mixer_wrap" resname="tsprop_mixer_wrap">
+        <source>Wrap</source>
+        <target>crwdns101440:0crwdne101440:0</target>
+      </trans-unit>
+      <trans-unit id="tsprop_mixer_transfer" resname="tsprop_mixer_transfer">
+        <source>Transfer &amp; Close</source>
+        <target>crwdns101442:0crwdne101442:0</target>
+      </trans-unit>
+      <trans-unit id="tsprop_addToList" resname="tsprop_addToList">
+        <source>Add to list...</source>
+        <target>crwdns101444:0crwdne101444:0</target>
+      </trans-unit>
+      <trans-unit id="table_title" resname="table_title">
+        <source>Table wizard</source>
+        <target>crwdns101446:0crwdne101446:0</target>
+      </trans-unit>
+      <trans-unit id="table_smallFields" resname="table_smallFields">
+        <source>Small fields</source>
+        <target>crwdns101448:0crwdne101448:0</target>
+      </trans-unit>
+      <trans-unit id="table_addColumn" resname="table_addColumn">
+        <source>Add column to the right</source>
+        <target>crwdns101450:0crwdne101450:0</target>
+      </trans-unit>
+      <trans-unit id="table_removeColumn" resname="table_removeColumn">
+        <source>Remove column</source>
+        <target>crwdns101452:0crwdne101452:0</target>
+      </trans-unit>
+      <trans-unit id="table_addRow" resname="table_addRow">
+        <source>Add row below</source>
+        <target>crwdns101454:0crwdne101454:0</target>
+      </trans-unit>
+      <trans-unit id="table_removeRow" resname="table_removeRow">
+        <source>Remove row</source>
+        <target>crwdns101456:0crwdne101456:0</target>
+      </trans-unit>
+      <trans-unit id="table_left" resname="table_left">
+        <source>Move left</source>
+        <target>crwdns101458:0crwdne101458:0</target>
+      </trans-unit>
+      <trans-unit id="table_right" resname="table_right">
+        <source>Move right</source>
+        <target>crwdns101460:0crwdne101460:0</target>
+      </trans-unit>
+      <trans-unit id="table_up" resname="table_up">
+        <source>Move up</source>
+        <target>crwdns101462:0crwdne101462:0</target>
+      </trans-unit>
+      <trans-unit id="table_down" resname="table_down">
+        <source>Move down</source>
+        <target>crwdns101464:0crwdne101464:0</target>
+      </trans-unit>
+      <trans-unit id="table_top" resname="table_top">
+        <source>Move to top</source>
+        <target>crwdns101466:0crwdne101466:0</target>
+      </trans-unit>
+      <trans-unit id="table_bottom" resname="table_bottom">
+        <source>Move to bottom</source>
+        <target>crwdns101468:0crwdne101468:0</target>
+      </trans-unit>
+      <trans-unit id="table_start" resname="table_start">
+        <source>Move to first column</source>
+        <target>crwdns101470:0crwdne101470:0</target>
+      </trans-unit>
+      <trans-unit id="table_end" resname="table_end">
+        <source>Move to last column</source>
+        <target>crwdns101472:0crwdne101472:0</target>
+      </trans-unit>
+      <trans-unit id="table_noData" resname="table_noData">
+        <source>No table,field or uid given</source>
+        <target>crwdns101474:0crwdne101474:0</target>
+      </trans-unit>
+      <trans-unit id="forms_title" resname="forms_title">
+        <source>Forms wizard</source>
+        <target>crwdns101476:0crwdne101476:0</target>
+      </trans-unit>
+      <trans-unit id="forms_refresh" resname="forms_refresh">
+        <source>Refresh without saving</source>
+        <target>crwdns101478:0crwdne101478:0</target>
+      </trans-unit>
+      <trans-unit id="forms_label" resname="forms_label">
+        <source>Label</source>
+        <target>crwdns101480:0crwdne101480:0</target>
+      </trans-unit>
+      <trans-unit id="forms_type" resname="forms_type">
+        <source>Type</source>
+        <target>crwdns101482:0crwdne101482:0</target>
+      </trans-unit>
+      <trans-unit id="forms_type_textarea" resname="forms_type_textarea">
+        <source>Text area</source>
+        <target>crwdns101484:0crwdne101484:0</target>
+      </trans-unit>
+      <trans-unit id="forms_type_input" resname="forms_type_input">
+        <source>Input field</source>
+        <target>crwdns101486:0crwdne101486:0</target>
+      </trans-unit>
+      <trans-unit id="forms_type_password" resname="forms_type_password">
+        <source>Password field</source>
+        <target>crwdns101488:0crwdne101488:0</target>
+      </trans-unit>
+      <trans-unit id="forms_type_file" resname="forms_type_file">
+        <source>File upload</source>
+        <target>crwdns101490:0crwdne101490:0</target>
+      </trans-unit>
+      <trans-unit id="forms_type_check" resname="forms_type_check">
+        <source>Check box</source>
+        <target>crwdns101492:0crwdne101492:0</target>
+      </trans-unit>
+      <trans-unit id="forms_type_select" resname="forms_type_select">
+        <source>Selector box</source>
+        <target>crwdns101494:0crwdne101494:0</target>
+      </trans-unit>
+      <trans-unit id="forms_type_radio" resname="forms_type_radio">
+        <source>Radio buttons</source>
+        <target>crwdns101496:0crwdne101496:0</target>
+      </trans-unit>
+      <trans-unit id="forms_type_hidden" resname="forms_type_hidden">
+        <source>Hidden value</source>
+        <target>crwdns101498:0crwdne101498:0</target>
+      </trans-unit>
+      <trans-unit id="forms_type_submit" resname="forms_type_submit">
+        <source>Submit Button</source>
+        <target>crwdns101500:0crwdne101500:0</target>
+      </trans-unit>
+      <trans-unit id="forms_type_property" resname="forms_type_property">
+        <source>Property</source>
+        <target>crwdns101502:0crwdne101502:0</target>
+      </trans-unit>
+      <trans-unit id="forms_type_label" resname="forms_type_label">
+        <source>Label</source>
+        <target>crwdns101504:0crwdne101504:0</target>
+      </trans-unit>
+      <trans-unit id="forms_required" resname="forms_required">
+        <source>Required</source>
+        <target>crwdns101506:0crwdne101506:0</target>
+      </trans-unit>
+      <trans-unit id="forms_fieldName" resname="forms_fieldName">
+        <source>Field</source>
+        <target>crwdns101508:0crwdne101508:0</target>
+      </trans-unit>
+      <trans-unit id="forms_cols" resname="forms_cols">
+        <source>Columns</source>
+        <target>crwdns101510:0crwdne101510:0</target>
+      </trans-unit>
+      <trans-unit id="forms_rows" resname="forms_rows">
+        <source>Rows</source>
+        <target>crwdns101512:0crwdne101512:0</target>
+      </trans-unit>
+      <trans-unit id="forms_size" resname="forms_size">
+        <source>Size</source>
+        <target>crwdns101514:0crwdne101514:0</target>
+      </trans-unit>
+      <trans-unit id="forms_max" resname="forms_max">
+        <source>Max</source>
+        <target>crwdns101516:0crwdne101516:0</target>
+      </trans-unit>
+      <trans-unit id="forms_autosize" resname="forms_autosize">
+        <source>Auto size</source>
+        <target>crwdns101518:0crwdne101518:0</target>
+      </trans-unit>
+      <trans-unit id="forms_extra" resname="forms_extra">
+        <source>No Wrap</source>
+        <target>crwdns101520:0crwdne101520:0</target>
+      </trans-unit>
+      <trans-unit id="forms_default" resname="forms_default">
+        <source>Value</source>
+        <target>crwdns101522:0crwdne101522:0</target>
+      </trans-unit>
+      <trans-unit id="forms_multiple" resname="forms_multiple">
+        <source>Multiple</source>
+        <target>crwdns101524:0crwdne101524:0</target>
+      </trans-unit>
+      <trans-unit id="forms_options" resname="forms_options">
+        <source>List options</source>
+        <target>crwdns101526:0crwdne101526:0</target>
+      </trans-unit>
+      <trans-unit id="forms_checked" resname="forms_checked">
+        <source>Checked</source>
+        <target>crwdns101528:0crwdne101528:0</target>
+      </trans-unit>
+      <trans-unit id="forms_preview" resname="forms_preview">
+        <source>Preview of element</source>
+        <target>crwdns101530:0crwdne101530:0</target>
+      </trans-unit>
+      <trans-unit id="forms_element" resname="forms_element">
+        <source>Element type</source>
+        <target>crwdns101532:0crwdne101532:0</target>
+      </trans-unit>
+      <trans-unit id="forms_config" resname="forms_config">
+        <source>Detailed configuration</source>
+        <target>crwdns101534:0crwdne101534:0</target>
+      </trans-unit>
+      <trans-unit id="forms_eform_subject" resname="forms_eform_subject">
+        <source>Subject</source>
+        <target>crwdns101536:0crwdne101536:0</target>
+      </trans-unit>
+      <trans-unit id="forms_eform_recipient" resname="forms_eform_recipient">
+        <source>Recipient email</source>
+        <target>crwdns101538:0crwdne101538:0</target>
+      </trans-unit>
+      <trans-unit id="forms_eform_html_enabled" resname="forms_eform_html_enabled">
+        <source>HTML mode enabled</source>
+        <target>crwdns101540:0crwdne101540:0</target>
+      </trans-unit>
+      <trans-unit id="forms_eform_formtype_mail" resname="forms_eform_formtype_mail">
+        <source>Send button label</source>
+        <target>crwdns101542:0crwdne101542:0</target>
+      </trans-unit>
+      <trans-unit id="forms_special_eform" resname="forms_special_eform">
+        <source>Special configuration for mail forms</source>
+        <target>crwdns101544:0crwdne101544:0</target>
+      </trans-unit>
+      <trans-unit id="colorpicker_title" resname="colorpicker_title">
+        <source>Color Picker</source>
+        <target>crwdns101546:0crwdne101546:0</target>
+      </trans-unit>
+      <trans-unit id="colorpicker_setClose" resname="colorpicker_setClose">
+        <source>Save and Close</source>
+        <target>crwdns101548:0crwdne101548:0</target>
+      </trans-unit>
+      <trans-unit id="colorpicker_colorValue" resname="colorpicker_colorValue">
+        <source>Selected Color</source>
+        <target>crwdns101550:0crwdne101550:0</target>
+      </trans-unit>
+      <trans-unit id="colorpicker_fromImage" resname="colorpicker_fromImage">
+        <source>Capture color from image (click on image)</source>
+        <target>crwdns101552:0crwdne101552:0</target>
+      </trans-unit>
+      <trans-unit id="colorpicker_fromMatrix" resname="colorpicker_fromMatrix">
+        <source>Select color from matrix (websafe colors)</source>
+        <target>crwdns101554:0crwdne101554:0</target>
+      </trans-unit>
+      <trans-unit id="colorpicker_fromList" resname="colorpicker_fromList">
+        <source>Select HTML color name</source>
+        <target>crwdns101556:0crwdne101556:0</target>
+      </trans-unit>
+      <trans-unit id="colorpicker_black" resname="colorpicker_black">
+        <source>BLACK</source>
+        <target>crwdns101558:0crwdne101558:0</target>
+      </trans-unit>
+      <trans-unit id="colorpicker_white" resname="colorpicker_white">
+        <source>WHITE</source>
+        <target>crwdns101560:0crwdne101560:0</target>
+      </trans-unit>
+      <trans-unit id="grid_windowTitle" resname="grid_windowTitle">
+        <source>Set cell name and column number</source>
+        <target>crwdns101562:0crwdne101562:0</target>
+      </trans-unit>
+      <trans-unit id="grid_labelName" resname="grid_labelName">
+        <source>Name</source>
+        <target>crwdns101564:0crwdne101564:0</target>
+      </trans-unit>
+      <trans-unit id="grid_labelColumn" resname="grid_labelColumn">
+        <source>Column Number</source>
+        <target>crwdns101566:0crwdne101566:0</target>
+      </trans-unit>
+      <trans-unit id="grid_labelSave" resname="grid_labelSave">
+        <source>Save to cell</source>
+        <target>crwdns101568:0crwdne101568:0</target>
+      </trans-unit>
+      <trans-unit id="grid_addColumn" resname="grid_addColumn">
+        <source>Add column</source>
+        <target>crwdns101570:0crwdne101570:0</target>
+      </trans-unit>
+      <trans-unit id="grid_removeColumn" resname="grid_removeColumn">
+        <source>Remove column</source>
+        <target>crwdns101572:0crwdne101572:0</target>
+      </trans-unit>
+      <trans-unit id="grid_addRow" resname="grid_addRow">
+        <source>Add row</source>
+        <target>crwdns101574:0crwdne101574:0</target>
+      </trans-unit>
+      <trans-unit id="grid_removeRow" resname="grid_removeRow">
+        <source>Remove row</source>
+        <target>crwdns101576:0crwdne101576:0</target>
+      </trans-unit>
+      <trans-unit id="grid_editCell" resname="grid_editCell">
+        <source>Edit cell</source>
+        <target>crwdns101578:0crwdne101578:0</target>
+      </trans-unit>
+      <trans-unit id="grid_mergeCell" resname="grid_mergeCell">
+        <source>Combine with next cell</source>
+        <target>crwdns101580:0crwdne101580:0</target>
+      </trans-unit>
+      <trans-unit id="grid_splitCell" resname="grid_splitCell">
+        <source>Split cell</source>
+        <target>crwdns101582:0crwdne101582:0</target>
+      </trans-unit>
+      <trans-unit id="grid_name" resname="grid_name">
+        <source>Name</source>
+        <target>crwdns101584:0crwdne101584:0</target>
+      </trans-unit>
+      <trans-unit id="grid_column" resname="grid_column">
+        <source>Column number</source>
+        <target>crwdns101586:0crwdne101586:0</target>
+      </trans-unit>
+      <trans-unit id="grid_notSet" resname="grid_notSet">
+        <source>not set</source>
+        <target>crwdns101588:0crwdne101588:0</target>
+      </trans-unit>
+      <trans-unit id="grid_nameHelp" resname="grid_nameHelp">
+        <source>Enter a name for the cell.</source>
+        <target>crwdns101590:0crwdne101590:0</target>
+      </trans-unit>
+      <trans-unit id="grid_columnHelp" resname="grid_columnHelp">
+        <source>The column position defines in which area the content is rendered in the frontend.</source>
+        <target>crwdns101592:0crwdne101592:0</target>
+      </trans-unit>
+      <trans-unit id="imwizard.open-editor" resname="imwizard.open-editor">
+        <source>Open Editor</source>
+        <target>crwdns101594:0crwdne101594:0</target>
+      </trans-unit>
+      <trans-unit id="imwizard.supported-types-message" resname="imwizard.supported-types-message">
+        <source>Image manipulation is only available for supported types</source>
+        <target>crwdns101596:0crwdne101596:0</target>
+      </trans-unit>
+      <trans-unit id="imwizard.no-image-dimensions" resname="imwizard.no-image-dimensions">
+        <source>No image dimensions could be determined.</source>
+        <target>crwdns101598:0crwdne101598:0</target>
+      </trans-unit>
+      <trans-unit id="imwizard.no-image-dimensions-message" resname="imwizard.no-image-dimensions-message">
+        <source>Unable to provide image manipulation, because original dimensions of the image are unknown.</source>
+        <target>crwdns101600:0crwdne101600:0</target>
+      </trans-unit>
+      <trans-unit id="imwizard.image-manipulation" resname="imwizard.image-manipulation">
+        <source>Image manipulation</source>
+        <target>crwdns101602:0crwdne101602:0</target>
+      </trans-unit>
+      <trans-unit id="imwizard.image-title" resname="imwizard.image-title">
+        <source>Title</source>
+        <target>crwdns101604:0crwdne101604:0</target>
+      </trans-unit>
+      <trans-unit id="imwizard.original-dimensions" resname="imwizard.original-dimensions">
+        <source>Original dimensions</source>
+        <target>crwdns101606:0crwdne101606:0</target>
+      </trans-unit>
+      <trans-unit id="imwizard.reset" resname="imwizard.reset">
+        <source>Reset</source>
+        <target>crwdns101608:0crwdne101608:0</target>
+      </trans-unit>
+      <trans-unit id="imwizard.accept" resname="imwizard.accept">
+        <source>Accept</source>
+        <target>crwdns101610:0crwdne101610:0</target>
+      </trans-unit>
+      <trans-unit id="imwizard.cancel" resname="imwizard.cancel">
+        <source>Cancel</source>
+        <target>crwdns101612:0crwdne101612:0</target>
+      </trans-unit>
+      <trans-unit id="imwizard.preview" resname="imwizard.preview">
+        <source>Preview</source>
+        <target>crwdns101614:0crwdne101614:0</target>
+      </trans-unit>
+      <trans-unit id="imwizard.aspect-ratio" resname="imwizard.aspect-ratio">
+        <source>Aspect ratio</source>
+        <target>crwdns101616:0crwdne101616:0</target>
+      </trans-unit>
+      <trans-unit id="imwizard.set-aspect-ratio" resname="imwizard.set-aspect-ratio">
+        <source>Set Aspect Ratio</source>
+        <target>crwdns101618:0crwdne101618:0</target>
+      </trans-unit>
+      <trans-unit id="imwizard.ratio.16_9" resname="imwizard.ratio.16_9" translate="no">
+        <source>16:9</source>
+        <target>crwdns101620:0crwdne101620:0</target>
+      </trans-unit>
+      <trans-unit id="imwizard.ratio.3_2" resname="imwizard.ratio.3_2" translate="no">
+        <source>3:2</source>
+        <target>crwdns101622:0crwdne101622:0</target>
+      </trans-unit>
+      <trans-unit id="imwizard.ratio.4_3" resname="imwizard.ratio.4_3" translate="no">
+        <source>4:3</source>
+        <target>crwdns101624:0crwdne101624:0</target>
+      </trans-unit>
+      <trans-unit id="imwizard.ratio.1_1" resname="imwizard.ratio.1_1" translate="no">
+        <source>1:1</source>
+        <target>crwdns101626:0crwdne101626:0</target>
+      </trans-unit>
+      <trans-unit id="imwizard.ratio.191_1" resname="imwizard.ratio.191_1" translate="no">
+        <source>1.91:1</source>
+        <target>crwdns101628:0crwdne101628:0</target>
+      </trans-unit>
+      <trans-unit id="imwizard.ratio.free" resname="imwizard.ratio.free">
+        <source>Free</source>
+        <target>crwdns101630:0crwdne101630:0</target>
+      </trans-unit>
+      <trans-unit id="imwizard.crop_variant.default" resname="imwizard.crop_variant.default">
+        <source>Default</source>
+        <target>crwdns101632:0crwdne101632:0</target>
+      </trans-unit>
+      <trans-unit id="imwizard.crop_variant.social" resname="imwizard.crop_variant.social">
+        <source>Social media</source>
+        <target>crwdns101634:0crwdne101634:0</target>
+      </trans-unit>
+      <trans-unit id="imwizard.selection" resname="imwizard.selection">
+        <source>Selected Size</source>
+        <target>crwdns101636:0crwdne101636:0</target>
+      </trans-unit>
+      <trans-unit id="imwizard.crop-width" resname="imwizard.crop-width">
+        <source>width</source>
+        <target>crwdns101638:0crwdne101638:0</target>
+      </trans-unit>
+      <trans-unit id="imwizard.crop-height" resname="imwizard.crop-height">
+        <source>height</source>
+        <target>crwdns101640:0crwdne101640:0</target>
+      </trans-unit>
+      <trans-unit id="localizationStateSelector.header" resname="localizationStateSelector.header">
+        <source>Translation behavior</source>
+        <target>crwdns101642:0crwdne101642:0</target>
+      </trans-unit>
+      <trans-unit id="localizationStateSelector.customValue" resname="localizationStateSelector.customValue">
+        <source>Custom value</source>
+        <target>crwdns101644:0crwdne101644:0</target>
+      </trans-unit>
+      <trans-unit id="localizationStateSelector.defaultLanguageValue" resname="localizationStateSelector.defaultLanguageValue">
+        <source>Value of default language</source>
+        <target>crwdns101646:0crwdne101646:0</target>
+      </trans-unit>
+      <trans-unit id="localizationStateSelector.sourceLanguageValue" resname="localizationStateSelector.sourceLanguageValue">
+        <source>Value of %1s language</source>
+        <target>crwdns101648:0%1scrwdne101648:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
