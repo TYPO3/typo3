@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:impexp/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:33Z" product-name="impexp" target-language="th">
+    <header/>
+    <body>
+      <trans-unit id="title" resname="title" approved="yes">
+        <source>Import / Export</source>
+        <target state="final">นำเข้า / ส่งออก</target>
+      </trans-unit>
+      <trans-unit id="tableselec_configuration" resname="tableselec_configuration" approved="yes">
+        <source>Configuration</source>
+        <target state="final">การตั้งค่า</target>
+      </trans-unit>
+      <trans-unit id="exportdata_savedFile" resname="exportdata_savedFile" approved="yes">
+        <source>SAVED FILE</source>
+        <target state="final">บันทึกภาพ</target>
+      </trans-unit>
+      <trans-unit id="exportdata_savedInSBytes" resname="exportdata_savedInSBytes" approved="yes">
+        <source>Saved in "%s", bytes %s</source>
+        <target state="final">บันทึกใน"% s",% s bytes</target>
+      </trans-unit>
+      <trans-unit id="exportdata_problemsSavingFile" resname="exportdata_problemsSavingFile" approved="yes">
+        <source>Problems saving file</source>
+        <target state="final">ปัญหาการบันทึกไฟล์</target>
+      </trans-unit>
+      <trans-unit id="exportdata_badPathS" resname="exportdata_badPathS" approved="yes">
+        <source>Bad path: "%s"</source>
+        <target state="final">เส้นทาง Bad :"% s"</target>
+      </trans-unit>
+      <trans-unit id="exportdata_filePreset" resname="exportdata_filePreset" approved="yes">
+        <source>File &amp; Preset</source>
+        <target state="final">แฟ้มและ Preset</target>
+      </trans-unit>
+      <trans-unit id="exportdata_advancedOptions" resname="exportdata_advancedOptions" approved="yes">
+        <source>Advanced Options</source>
+        <target state="final">ตัวเลือกขั้นสูง</target>
+      </trans-unit>
+      <trans-unit id="exportdata_messages" resname="exportdata_messages" approved="yes">
+        <source>Messages</source>
+        <target state="final">ข้อความ</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_noTreeExportedOnly" resname="makeconfig_noTreeExportedOnly" approved="yes">
+        <source>No tree exported - only tables on the page.</source>
+        <target state="final">ต้นไม้ไม่ส่งออก -- ตารางเฉพาะในหน้า</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_tablesOnThisPage" resname="makeconfig_tablesOnThisPage" approved="yes">
+        <source>Tables on this page</source>
+        <target state="final">ตารางในหน้านี้</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_expandedTree" resname="makeconfig_expandedTree" approved="yes">
+        <source>Expanded tree</source>
+        <target state="final">ต้นไม้ขยาย</target>
+      </trans-unit>
+      <trans-unit id="makeadvanc_update" resname="makeadvanc_update" approved="yes">
+        <source>Update</source>
+        <target state="final">ปรับปรุง</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_update" resname="makesavefo_update" approved="yes">
+        <source>Update</source>
+        <target state="final">ปรับปรุง</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_load" resname="makesavefo_load" approved="yes">
+        <source>Load</source>
+        <target state="final">ภาระ</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_save" resname="makesavefo_save" approved="yes">
+        <source>Save</source>
+        <target state="final">ประหยัด</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_areYouSure" resname="makesavefo_areYouSure" approved="yes">
+        <source>Are you sure?</source>
+        <target state="final">คุณแน่ใจหรือไม่</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_delete" resname="makesavefo_delete" approved="yes">
+        <source>Delete</source>
+        <target state="final">ลบ</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_merge" resname="makesavefo_merge" approved="yes">
+        <source>Merge</source>
+        <target state="final">ผสาน</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_t3dFileCompressed" resname="makesavefo_t3dFileCompressed" approved="yes">
+        <source>T3D file / compressed</source>
+        <target state="final">T3D ไฟล์บีบอัด /</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_t3dFile" resname="makesavefo_t3dFile" approved="yes">
+        <source>T3D file</source>
+        <target state="final">T3D file</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_xml" resname="makesavefo_xml" approved="yes">
+        <source>XML</source>
+        <target state="final">XML</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_downloadExport" resname="makesavefo_downloadExport" approved="yes">
+        <source>Download export</source>
+        <target state="final">ส่งออกดาวน์โหลด</target>
+      </trans-unit>
+      <trans-unit id="importdata_saveToFilename" resname="importdata_saveToFilename" approved="yes">
+        <source>Save to filename</source>
+        <target state="final">บันทึกชื่อไฟล์</target>
+      </trans-unit>
+      <trans-unit id="importdata_fromPathS" resname="importdata_fromPathS" approved="yes">
+        <source>(From path: %s)</source>
+        <target state="final">(จากเส้นทาง :% s)</target>
+      </trans-unit>
+      <trans-unit id="importdata_noteNoDecompressorAvailable" resname="importdata_noteNoDecompressorAvailable" approved="yes">
+        <source>NOTE: No decompressor available for compressed files!</source>
+        <target state="final">หมายเหตุ : decompressor สามารถบีบอัดไฟล์ No!</target>
+      </trans-unit>
+      <trans-unit id="importdata_update" resname="importdata_update" approved="yes">
+        <source>Update</source>
+        <target state="final">ปรับปรุง</target>
+      </trans-unit>
+      <trans-unit id="importdata_updateRecords" resname="importdata_updateRecords" approved="yes">
+        <source>Update records</source>
+        <target state="final">ระเบียน Update</target>
+      </trans-unit>
+      <trans-unit id="importdata_thisOptionRequiresThat" resname="importdata_thisOptionRequiresThat" approved="yes">
+        <source>This option requires that the structure you import already exists on this server and only needs to be updated with new content!</source>
+        <target state="final">ตัวเลือกนี้กำหนดว่าโครงสร้างที่นำเข้าอยู่แล้วบนเซิร์ฟเวอร์นี้เท่านั้นที่ต้องปรับปรุงด้วยเนื้อหาใหม่</target>
+      </trans-unit>
+      <trans-unit id="importdata_ignorePidDifferencesGlobally" resname="importdata_ignorePidDifferencesGlobally" approved="yes">
+        <source>Ignore PID differences globally</source>
+        <target state="final">ที่ไม่แตกต่าง PID ทั่วโลก</target>
+      </trans-unit>
+      <trans-unit id="importdata_ifYouSetThis" resname="importdata_ifYouSetThis" approved="yes">
+        <source>If you set this option, the position of updated elements will not be updated to match the structure of the input file.</source>
+        <target state="final">ถ้าคุณกำหนดตัวเลือกนี้ตำแหน่งขององค์ประกอบปรับปรุงจะไม่ได้รับการปรับปรุงเพื่อให้สอดคล้องกับโครงสร้างของนำเข้าแฟ้ม</target>
+      </trans-unit>
+      <trans-unit id="importdata_force_all_UIDS" resname="importdata_force_all_UIDS" approved="yes">
+        <source>Force ALL UIDs values</source>
+        <target state="final">กำลัง ALL UIDs ค่า</target>
+      </trans-unit>
+      <trans-unit id="importdata_force_all_UIDS_descr" resname="importdata_force_all_UIDS_descr" approved="yes">
+        <source>With this option the original UID value of all imported records are forced to be the same. BE VERY CAREFUL WITH THIS! (Admin Only).</source>
+        <target state="final">กับตัวเลือกมูลค่า UID เดิมระเบียนนำเข้าทั้งหมดนี้ถูกบังคับให้เป็นเดียวกัน ระมัดระวังพร้อมนี้ Admin (Only)</target>
+      </trans-unit>
+      <trans-unit id="importdata_doNotShowDifferences" resname="importdata_doNotShowDifferences" approved="yes">
+        <source>Do not show differences in records</source>
+        <target state="final">ไม่แสดงความแตกต่างในบันทึก</target>
+      </trans-unit>
+      <trans-unit id="importdata_greenValuesAreFrom" resname="importdata_greenValuesAreFrom" approved="yes">
+        <source>Green values are from the import file, red values from the current database record and black values are similar in both versions.</source>
+        <target state="final">ค่ากรีนมาจากไฟล์นำเข้า, สีแดงค่าจากบันทึกฐานข้อมูลปัจจุบันและสีดำค่าใกล้เคียงกันในทั้งสองรุ่น</target>
+      </trans-unit>
+      <trans-unit id="importdata_allowToWriteBanned" resname="importdata_allowToWriteBanned" approved="yes">
+        <source>Allow to write banned file extensions (eg. PHP scripts), if any</source>
+        <target state="final">ให้เขียนห้ามนามสกุลไฟล์ (เช่น PHP สคริปต์) ถ้ามี</target>
+      </trans-unit>
+      <trans-unit id="importdata_preview" resname="importdata_preview" approved="yes">
+        <source>Preview</source>
+        <target state="final">ก่อนหน้า</target>
+      </trans-unit>
+      <trans-unit id="importdata_update_299e" resname="importdata_update_299e" approved="yes">
+        <source>Update</source>
+        <target state="final">ปรับปรุง</target>
+      </trans-unit>
+      <trans-unit id="importdata_areYouSure" resname="importdata_areYouSure" approved="yes">
+        <source>Are you sure?</source>
+        <target state="final">คุณแน่ใจหรือไม่</target>
+      </trans-unit>
+      <trans-unit id="importdata_newImport" resname="importdata_newImport" approved="yes">
+        <source>New import</source>
+        <target state="final">นำเข้าใหม่</target>
+      </trans-unit>
+      <trans-unit id="importdata_writeIndividualDbActions" resname="importdata_writeIndividualDbActions" approved="yes">
+        <source>Write individual DB actions during import to the log</source>
+        <target state="final">การดำเนินการเขียน DB บุคคลระหว่างนำเข้าสู่ระบบ</target>
+      </trans-unit>
+      <trans-unit id="importdata_thisIsDisabledBy" resname="importdata_thisIsDisabledBy" approved="yes">
+        <source>This is disabled by default since there may be hundred of entries generated.</source>
+        <target state="final">นี้ปิดใช้งานตามค่าเริ่มต้นตั้งแต่อาจมีหลายร้อยรายการที่สร้างขึ้น</target>
+      </trans-unit>
+      <trans-unit id="importdata_failureNoFileUploaded" resname="importdata_failureNoFileUploaded" approved="yes">
+        <source>Failure: No file uploaded - was it too big? Check system log.</source>
+        <target state="final">ความล้มเหลว : ไฟล์ที่อัพโหลดไม่ -- ได้มันใหญ่เกินไป? ตรวจสอบบันทึกของระบบ</target>
+      </trans-unit>
+      <trans-unit id="importdata_upload" resname="importdata_upload" approved="yes">
+        <source>Upload</source>
+        <target state="final">Upload</target>
+      </trans-unit>
+      <trans-unit id="importdata_messages" resname="importdata_messages" approved="yes">
+        <source>Messages</source>
+        <target state="final">ข้อความ</target>
+      </trans-unit>
+      <trans-unit id="ALL_tables" resname="ALL_tables" approved="yes">
+        <source>ALL tables</source>
+        <target state="final">ตาราง ALL</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_update" resname="impexpcore_singlereco_update" approved="yes">
+        <source>Update</source>
+        <target state="final">ปรับปรุง</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_insert" resname="impexpcore_singlereco_insert" approved="yes">
+        <source>Insert</source>
+        <target state="final">แทรก</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_importAsNew" resname="impexpcore_singlereco_importAsNew" approved="yes">
+        <source>Import as new</source>
+        <target state="final">นำเข้าเป็นใหม่</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_ignorePid" resname="impexpcore_singlereco_ignorePid" approved="yes">
+        <source>Ignore PID</source>
+        <target state="final">Ignore PID</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_respectPid" resname="impexpcore_singlereco_respectPid" approved="yes">
+        <source>Respect PID</source>
+        <target state="final">เคารพ PID</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_forceUidSAdmin" resname="impexpcore_singlereco_forceUidSAdmin" approved="yes">
+        <source>Force UID [%s] (Admin)</source>
+        <target state="final">กำลัง UID [%] (ผู้ดูแล s)</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_exclude" resname="impexpcore_singlereco_exclude" approved="yes">
+        <source>Exclude</source>
+        <target state="final">ยังไม่รวม</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_softrefsel_editable" resname="impexpcore_softrefsel_editable" approved="yes">
+        <source>Editable</source>
+        <target state="final">สามารถแก้ไขได้</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_softrefsel_exclude" resname="impexpcore_softrefsel_exclude" approved="yes">
+        <source>Exclude</source>
+        <target state="final">ยังไม่รวม</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
