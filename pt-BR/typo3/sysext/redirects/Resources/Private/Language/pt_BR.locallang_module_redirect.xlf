@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf" date="2017-12-29T20:23:34Z" product-name="redirects" target-language="pt-BR">
+    <header/>
+    <body>
+      <trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel" approved="yes">
+        <source>Redirect Administration</source>
+        <target state="final">Administração de redirecionamento</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr" approved="yes">
+        <source>This is the administration area for Web Redirects.</source>
+        <target state="final">Esta é a área de administração para Redirecionamentos web.</target>
+      </trans-unit>
+      <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab" approved="yes">
+        <source>Redirects</source>
+        <target state="final">Redirecionamentos</target>
+      </trans-unit>
+      <trans-unit id="source_host_global_text" resname="source_host_global_text" approved="yes">
+        <source>Global redirect (any domain)</source>
+        <target state="final">Redirecionamento global (qualquer domínio)</target>
+      </trans-unit>
+      <trans-unit id="heading_text" resname="heading_text" approved="yes">
+        <source>Redirect Management</source>
+        <target state="final">Gerenciamento de Redirecionamento</target>
+      </trans-unit>
+      <trans-unit id="redirect_add_text" resname="redirect_add_text" approved="yes">
+        <source>Add redirect</source>
+        <target state="final">Adicionar redirecionamento</target>
+      </trans-unit>
+      <trans-unit id="redirect_not_found.title" resname="redirect_not_found.title" approved="yes">
+        <source>No redirects found!</source>
+        <target state="final">Nenhum redirecionamento encontrado!</target>
+      </trans-unit>
+      <trans-unit id="redirect_not_found.message" resname="redirect_not_found.message" approved="yes">
+        <source>There are currently no redirect records found in the database.</source>
+        <target state="final">Não há nenhum registro de redirecionamento encontrado no banco de dados.</target>
+      </trans-unit>
+      <trans-unit id="redirect_create" resname="redirect_create" approved="yes">
+        <source>Create new redirect</source>
+        <target state="final">Criar novo redirecionamento</target>
+      </trans-unit>
+      <trans-unit id="redirect_not_found_with_filter.title" resname="redirect_not_found_with_filter.title" approved="yes">
+        <source>No redirects found!</source>
+        <target state="final">Nenhum redirecionamento encontrado!</target>
+      </trans-unit>
+      <trans-unit id="redirect_not_found_with_filter.message" resname="redirect_not_found_with_filter.message" approved="yes">
+        <source>With the current set of filters applied, no redirect could be found.</source>
+        <target state="final">Com o conjunto atual de filtros aplicados, nenhum redirecionamento foi encontrado.</target>
+      </trans-unit>
+      <trans-unit id="redirect_no_filter" resname="redirect_no_filter" approved="yes">
+        <source>Remove all filter</source>
+        <target state="final">Remover todos os filtros</target>
+      </trans-unit>
+      <trans-unit id="filter.source_host.showAll" resname="filter.source_host.showAll" approved="yes">
+        <source>Show All</source>
+        <target state="final">Mostrar tudo</target>
+      </trans-unit>
+      <trans-unit id="filter.destination" resname="filter.destination" approved="yes">
+        <source>Destination (Path or Page ID)</source>
+        <target state="final">Destino (Path ou Page ID)</target>
+      </trans-unit>
+      <trans-unit id="filter.targetStatusCode" resname="filter.targetStatusCode" approved="yes">
+        <source>Status Code</source>
+        <target state="final">Código do status</target>
+      </trans-unit>
+      <trans-unit id="filter.neverHit" resname="filter.neverHit" approved="yes">
+        <source>Never hit</source>
+        <target state="final">Nunca acertar</target>
+      </trans-unit>
+      <trans-unit id="record_disabled" resname="record_disabled" approved="yes">
+        <source>Redirect is not activated!</source>
+        <target state="final">O redirecionamento não está ativado!</target>
+      </trans-unit>
+      <trans-unit id="source_host" resname="source_host" approved="yes">
+        <source>Source Host</source>
+        <target state="final">Host de origem</target>
+      </trans-unit>
+      <trans-unit id="source_path" resname="source_path" approved="yes">
+        <source>Source Path</source>
+        <target state="final">Caminho de origem</target>
+      </trans-unit>
+      <trans-unit id="hits" resname="hits" approved="yes">
+        <source># Hits</source>
+        <target state="final"># Acessos</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
