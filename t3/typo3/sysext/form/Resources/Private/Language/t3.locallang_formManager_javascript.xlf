@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:form/Resources/Private/Language/locallang_formManager_javascript.xlf" date="2016-10-09T03:38:32Z" product-name="form" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="formManager.form_name" resname="formManager.form_name" xml:space="preserve">
+                <source>Form name</source>
+            <target>crwdns103486:0crwdne103486:0</target></trans-unit>
+      <trans-unit id="formManager.new_form_name" resname="formManager.new_form_name" xml:space="preserve">
+                <source>New form name</source>
+            <target>crwdns103488:0crwdne103488:0</target></trans-unit>
+      <trans-unit id="formManager.form_save_path" resname="formManager.form_save_path" xml:space="preserve">
+                <source>Form storage</source>
+            <target>crwdns103490:0crwdne103490:0</target></trans-unit>
+      <trans-unit id="formManager.form_prototype" resname="formManager.form_prototype" xml:space="preserve">
+                <source>Form prototype</source>
+            <target>crwdns103492:0crwdne103492:0</target></trans-unit>
+      <trans-unit id="formManager.form_template" resname="formManager.form_template" xml:space="preserve">
+                <source>Start template</source>
+            <target>crwdns103494:0crwdne103494:0</target></trans-unit>
+      <trans-unit id="formManager.form_copied" xml:space="preserve">
+                <source>Copied form</source>
+            <target>crwdns103496:0crwdne103496:0</target></trans-unit>
+      <trans-unit id="formManager.cancel" resname="formManager.cancel" xml:space="preserve">
+                <source>Cancel</source>
+            <target>crwdns103498:0crwdne103498:0</target></trans-unit>
+      <trans-unit id="formManager.remove_form" resname="formManager.remove_form" xml:space="preserve">
+                <source>Remove</source>
+            <target>crwdns103500:0crwdne103500:0</target></trans-unit>
+      <trans-unit id="formManager.remove_form_title" resname="formManager.remove_form_title" xml:space="preserve">
+                <source>Remove form</source>
+            <target>crwdns103502:0crwdne103502:0</target></trans-unit>
+      <trans-unit id="formManager.remove_form_message" resname="formManager.remove_form_message" xml:space="preserve">
+                <source>Are you sure that you want to remove this form?</source>
+            <target>crwdns103504:0crwdne103504:0</target></trans-unit>
+      <trans-unit id="formManager.newFormWizard.step1.title" resname="formManager.newFormWizard.step1.title" xml:space="preserve">
+                <source>Create new form</source>
+            <target>crwdns103506:0crwdne103506:0</target></trans-unit>
+      <trans-unit id="formManager.newFormWizard.step1.noStorages" resname="formManager.newFormWizard.step1.noStorages" xml:space="preserve">
+                <source>No accessible form storage folders</source>
+            <target>crwdns103508:0crwdne103508:0</target></trans-unit>
+      <trans-unit id="formManager.newFormWizard.step2.title" resname="formManager.newFormWizard.step2.title" xml:space="preserve">
+                <source>Settings</source>
+            <target>crwdns103510:0crwdne103510:0</target></trans-unit>
+      <trans-unit id="formManager.newFormWizard.step3.title" resname="formManager.newFormWizard.step3.title" xml:space="preserve">
+                <source>Ready</source>
+            <target>crwdns103512:0crwdne103512:0</target></trans-unit>
+      <trans-unit id="formManager.newFormWizard.step3.message" resname="formManager.newFormWizard.step3.message" xml:space="preserve">
+                <source>Now you are ready to create your new form.</source>
+            <target>crwdns103514:0crwdne103514:0</target></trans-unit>
+      <trans-unit id="formManager.newFormWizard.step3.check" xml:space="preserve">
+                <source>Please check and confirm your entered settings</source>
+            <target>crwdns103516:0crwdne103516:0</target></trans-unit>
+      <trans-unit id="formManager.newFormWizard.step4.errorTitle" resname="formManager.newFormWizard.step4.errorTitle" xml:space="preserve">
+                <source>Create</source>
+            <target>crwdns103518:0crwdne103518:0</target></trans-unit>
+      <trans-unit id="formManager.newFormWizard.step4.errorMessage" resname="formManager.newFormWizard.step4.errorMessage" xml:space="preserve">
+                <source>The form could not be saved</source>
+            <target>crwdns103520:0crwdne103520:0</target></trans-unit>
+      <trans-unit id="formManager.duplicateFormWizard.step1.title" resname="formManager.duplicateFormWizard.step1.title" xml:space="preserve">
+                <source>Duplicate form "{0}"</source>
+            <target>crwdns103522:0{0}crwdne103522:0</target></trans-unit>
+      <trans-unit id="formManager.duplicateFormWizard.step2.errorTitle" resname="formManager.duplicateFormWizard.step2.errorTitle" xml:space="preserve">
+                <source>Duplicate</source>
+            <target>crwdns103524:0crwdne103524:0</target></trans-unit>
+      <trans-unit id="formManager.duplicateFormWizard.step2.errorMessage" resname="formManager.duplicateFormWizard.step2.errorMessage" xml:space="preserve">
+                <source>The form could not be saved</source>
+            <target>crwdns103526:0crwdne103526:0</target></trans-unit>
+      <trans-unit id="formManager.no_references" resname="formManager.no_references" xml:space="preserve">
+                <source>There are no references yet</source>
+            <target>crwdns103528:0crwdne103528:0</target></trans-unit>
+      <trans-unit id="formManager.page" resname="formManager.page" xml:space="preserve">
+                <source>Page</source>
+            <target>crwdns103530:0crwdne103530:0</target></trans-unit>
+      <trans-unit id="formManager.record" resname="formManager.record" xml:space="preserve">
+                <source>Record</source>
+            <target>crwdns103532:0crwdne103532:0</target></trans-unit>
+      <trans-unit id="formManager.references.title" resname="formManager.references.title" xml:space="preserve">
+                <source>References</source>
+            <target>crwdns103534:0crwdne103534:0</target></trans-unit>
+      <trans-unit id="formManager.references.headline" resname="formManager.references.headline" xml:space="preserve">
+                <source>References for "{0}"</source>
+            <target>crwdns103536:0{0}crwdne103536:0</target></trans-unit>
+      <trans-unit id="formManager.blankForm.label" xml:space="preserve">
+                <source>Blank form</source>
+            <target>crwdns103538:0crwdne103538:0</target></trans-unit>
+      <trans-unit id="formManager.predefinedForm.label" xml:space="preserve">
+                <source>Predefined form</source>
+            <target>crwdns103540:0crwdne103540:0</target></trans-unit>
+    </body>
+  </file>
+</xliff>
