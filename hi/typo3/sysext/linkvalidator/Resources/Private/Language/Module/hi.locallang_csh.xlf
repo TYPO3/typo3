@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:linkvalidator/Resources/Private/Language/Module/locallang_csh.xlf" date="2011-10-17T20:22:34Z" product-name="linkvalidator" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="checkboxes.description" resname="checkboxes.description" approved="yes">
+        <source>Click the following checkboxes to consider or to ignore the corresponding broken links.</source>
+        <target state="final">अनुरूप टूटी लिंक्स को लेने के लिए या नजर-अंदाज करने के लिए नीचे दिए गए चेक-बॉक्सेस पर क्लिक करे।</target>
+      </trans-unit>
+      <trans-unit id="tablehead_path.description" resname="tablehead_path.description" approved="yes">
+        <source>Path to the content element, which contains the broken link.</source>
+        <target state="final">जो टूटी हुई लिंक को शामिल करते हे, ऐसे कंटेंट एलिमेंट का तक पाथ।</target>
+      </trans-unit>
+      <trans-unit id="tablehead_element.description" resname="tablehead_element.description" approved="yes">
+        <source>Type of the element containing the broken link, its headline and the field in which the broken link is located.</source>
+        <target state="final">टूटी हुई लिंक युक्त एलिमेंट के प्रकार, यह हाईलाइट किया गया है और जो फील्ड में टूटी हुई लिंक हे वो दिखाई गई है।</target>
+      </trans-unit>
+      <trans-unit id="tablehead_headlink.description" resname="tablehead_headlink.description" approved="yes">
+        <source>The linking text.</source>
+        <target state="final">जोड़ने वाल टेक्स्ट।</target>
+      </trans-unit>
+      <trans-unit id="tablehead_linktarget.description" resname="tablehead_linktarget.description" approved="yes">
+        <source>URL to which the broken link is pointing.</source>
+        <target state="final">URL जिस पर टूटी हुई लिंक पॉइंट कर रही है।</target>
+      </trans-unit>
+      <trans-unit id="tablehead_linkmessage.description" resname="tablehead_linkmessage.description" approved="yes">
+        <source>Status of that link.</source>
+        <target state="final">उस की लिंक की स्थिति।</target>
+      </trans-unit>
+      <trans-unit id="tablehead_lastcheck.description" resname="tablehead_lastcheck.description" approved="yes">
+        <source>Date and time of the last update of the information in each table row.</source>
+        <target state="final">टेबल की हर एक रॉ में जानकारी के आखरी अपडेट की तारीख और समय।</target>
+      </trans-unit>
+      <trans-unit id="task_page.alttitle" resname="task_page.alttitle" approved="yes">
+        <source>Start page of the task</source>
+        <target state="final">कार्य का स्टार्ट पेज</target>
+      </trans-unit>
+      <trans-unit id="task_page.description" resname="task_page.description" approved="yes">
+        <source>UID of the start page for this task.</source>
+        <target state="final">इस कार्य के लिए स्टार्ट पेज का UID।</target>
+      </trans-unit>
+      <trans-unit id="task_depth.alttitle" resname="task_depth.alttitle" approved="yes">
+        <source>Depth of the task</source>
+        <target state="final">टास्क(कार्य) की गहराई</target>
+      </trans-unit>
+      <trans-unit id="task_depth.description" resname="task_depth.description" approved="yes">
+        <source>Level of pages the task should check.</source>
+        <target state="final">कार्य द्वारा जांचे जाने वाले पृष्ठों का स्तर।</target>
+      </trans-unit>
+      <trans-unit id="task_configuration.alttitle" resname="task_configuration.alttitle" approved="yes">
+        <source>Special TSconfig code</source>
+        <target state="final">विशेष TSconfig कोड</target>
+      </trans-unit>
+      <trans-unit id="task_configuration.description" resname="task_configuration.description" approved="yes">
+        <source>TSconfig Code which defines settings for linkvalidator to be used for this task.</source>
+        <target state="final">TSconfig कोड जो कार्य के लिए इस्तेमाल किये जाने वाले लिंक-वेलिडेटर के सेटिंग को व्याख्याहित करता है।</target>
+      </trans-unit>
+      <trans-unit id="task_email.alttitle" resname="task_email.alttitle" approved="yes">
+        <source>Email address</source>
+        <target state="final">ई-मेल एड्रेस</target>
+      </trans-unit>
+      <trans-unit id="task_email.description" resname="task_email.description" approved="yes">
+        <source>Email address to which an email report is sent.</source>
+        <target state="final">जहा ईमेल रिपोर्ट भेजी है वो ईमेल एड्रेस।</target>
+      </trans-unit>
+      <trans-unit id="task_emailOnBrokenLinkOnly.alttitle" resname="task_emailOnBrokenLinkOnly.alttitle" approved="yes">
+        <source>Mailing option</source>
+        <target state="final">मेल करने के विकल्प</target>
+      </trans-unit>
+      <trans-unit id="task_emailOnBrokenLinkOnly.description" resname="task_emailOnBrokenLinkOnly.description" approved="yes">
+        <source>Only send an email, if new broken links were found.</source>
+        <target state="final">जो अगर नई टूटी कड़ियों पाई गई हो, केवल तभी ईमेल भेजे।</target>
+      </trans-unit>
+      <trans-unit id="task_emailTemplateFile.alttitle" resname="task_emailTemplateFile.alttitle" approved="yes">
+        <source>Email template file</source>
+        <target state="final">ईमेल टेम्पलेट फ़ाइल</target>
+      </trans-unit>
+      <trans-unit id="task_emailTemplateFile.description" resname="task_emailTemplateFile.description" approved="yes">
+        <source>Define a template to be used for the email.</source>
+        <target state="final">ईमेल के लिए इस्तेमाल किया गया टेम्पलेट व्याख्याहित करे।</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
