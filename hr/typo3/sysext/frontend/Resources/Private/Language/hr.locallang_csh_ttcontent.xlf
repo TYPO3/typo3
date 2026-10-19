@@ -1,0 +1,531 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_csh_ttcontent.xlf" date="2011-10-17T20:22:32Z" product-name="context_help" target-language="hr">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>All visible content on webpages is typically made by "Page Content" records, often referred to as "Content Elements". Content Elements are managed by the "Page" Module which organizes Content Elements in multiple columns and languages.</source>
+        <target state="final">Sav vidljivi sadržaj na stranici tipično se sastoji od zapisa tipa "Sadržaj stranice", koji se često zovu "Elementi sadržaja". Elementima sadržaja upravlja modul "Stranica" koji organizira elemente sadržaja u višestruke stupce i jezike.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" approved="yes">
+        <source>"Page Content" records are sortable and can be rearranged. The "Language" and "Column" selectors of the "Page Content" records determines when and where they appear. If you do not change the value of the "Language" and "Column" selectors the Content Element will appear in the default configuration.</source>
+        <target state="final">Zapise tipa "Sadržaj stranice" moguće je poredati i presložiti. Selektori "Jezika" i "Stupca" određuju gdje i kada će "Sadržaj stranice" biti prikazan. Ukoliko selektori "Jezika" i "Stupca" ostanu nepromjenjeni, elementi sadržaja će se prikazati u zadanim lokacijama.</target>
+      </trans-unit>
+      <trans-unit id="_.seeAlso" resname="_.seeAlso" xml:space="preserve" approved="yes">
+				<source>Page Content Principles | https://docs.typo3.org/typo3cms/GettingStartedTutorial/GeneralPrinciples/PageContent/,
+_MOD_web_layout</source>
+			<target state="final">Pincipi sadržaja stranice | https://docs.typo3.org/typo3cms/GettingStartedTutorial/GeneralPrinciples/PageContent/,
+_MOD_web_layout</target></trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" xml:space="preserve" approved="yes">
+				<source>The Page Module is used to manage Content Elements arranged in columns and languages.
+A Content Element has an editing form with many options. The "Type" determines which options are visible.
+In the Frontend, a Content Element like the above could look like this.</source>
+			<target state="final">Modula Stranica koristi se za upravljanje elementima sadržaja po stupcima i jezicima.
+Element sadržaja uređuje se putem obrasca koji ima mnogo opcija. Polje Tip određuje koje opcije su vidljive.
+U prednjem sučelju, element sadržaja poput ovog iznad mogao bi izgledati ovako.</target></trans-unit>
+      <trans-unit id="CType.description" resname="CType.description" approved="yes">
+        <source>Select the kind of Page Content this element represents. New options will appear when you save the record.</source>
+        <target state="final">Odaberite koji tip sadržaja stranice predstavlja ovaj element. Kada snimite zapis, pojavit će se nove opcije.</target>
+      </trans-unit>
+      <trans-unit id="_CType.seeAlso" resname="_CType.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:colPos,
+tt_content:sys_language_uid,
+About Content Elements | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/EditPageContent/</source>
+				
+			<target state="final">tt_content:colPos,
+tt_content:sys_language_uid,
+O elementima sadržaja | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/EditPageContent/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_hidden.seeAlso" resname="_hidden.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:starttime,
+tt_content:endtime,
+tt_content:fe_group,
+tt_content:colPos,
+tt_content:sys_language_uid</source>
+				
+			<target state="final">tt_content:starttime,
+tt_content:endtime,
+tt_content:fe_group,
+tt_content:colPos,
+tt_content:sys_language_uid</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="starttime.description" resname="starttime.description" approved="yes">
+        <source>Enter the date when the Content Element should be published and displayed on the website.</source>
+        <target state="final">Unesite datum kada element sadržaja treba biti objavljen i prikazan na web stranici.</target>
+      </trans-unit>
+      <trans-unit id="_starttime.seeAlso" resname="_starttime.seeAlso" xml:space="preserve" approved="yes">
+				<source>pages:starttime,
+tt_content:endtime,
+tt_content:hidden,
+tt_content:fe_group</source>
+				
+			<target state="final">pages:starttime,
+tt_content:endtime,
+tt_content:hidden,
+tt_content:fe_group</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="endtime.description" resname="endtime.description" approved="yes">
+        <source>Enter the date when the Content Element should expire and disappear from the website.</source>
+        <target state="final">Unesite datum kada elementu sadržaja treba isteći rok trajanja te i kada će biti uklonjen sa stranice.</target>
+      </trans-unit>
+      <trans-unit id="_endtime.seeAlso" resname="_endtime.seeAlso" xml:space="preserve" approved="yes">
+				<source>pages:endtime,
+tt_content:starttime,
+tt_content:hidden,
+tt_content:fe_group</source>
+				
+			<target state="final">pages:endtime,
+tt_content:starttime,
+tt_content:hidden,
+tt_content:fe_group</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="fe_group.description" resname="fe_group.description" approved="yes">
+        <source>If Usergroup Access Rights are set to a usergroup name, only website users who are logged in and members of the selected usergroup will be able to view the Content Element. The special option 'Hide at Login' means the Content Element will &lt;em&gt;not&lt;/em&gt; be visible for any website users that are logged in. Likewise "Show at Any Login" will make the Content Element visible for any logged in website user.</source>
+        <target state="final">Ukoliko su prava pristupa korisničke grupe postavljene na ime korisničke grupe tada će jedino korisnici koji su prijavljeni i članovi odabrane grupe moći vidjeti navedeni element sadržaja. Posebna opcija 'Sakrij kod prijave' znači da element sadržaja &lt;em&gt;neće&lt;/em&gt; biti vidljiv korisnicima koji su prijavljeni. Slično tome, opcija 'Prikaži kod bilo koje prijave' učinit će element vidljiv bilo kojem prijavljenom korisniku.</target>
+      </trans-unit>
+      <trans-unit id="fe_group.details" resname="fe_group.details" approved="yes">
+        <source>The 'Hide at Login' option is is useful if you want to present information like "How to Login" that becomes irrelevant when a website user is actually logged in.</source>
+        <target state="final">Opcija 'Sakrij nakon prijave' je korisna kada želite prezentirati informacije tipa 'Kako se prijaviti?' koje postaju nebitne jednom kada je korisnik prijavljen.</target>
+      </trans-unit>
+      <trans-unit id="_fe_group.seeAlso" resname="_fe_group.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:hidden,
+tt_content:starttime,
+tt_content:endtime,
+pages:fe_group,
+fe_users,
+fe_groups</source>
+				
+			<target state="final">tt_content:hidden,
+tt_content:starttime,
+tt_content:endtime,
+pages:fe_group,
+fe_users,
+fe_groups</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="sys_language_uid.description" resname="sys_language_uid.description" approved="yes">
+        <source>Select the system language of this Content Element. &lt;strong&gt;Notice:&lt;/strong&gt; This will affect the Content Element visibility by limiting it to a certain language.</source>
+        <target state="final">Odaberite jezik sustava za ovaj element sadržaja. &lt;strong&gt;Napomena:&lt;/strong&gt; ovo će ograničiti vidljivost elementa sadržaja na odabrani jezik.</target>
+      </trans-unit>
+      <trans-unit id="sys_language_uid.details" resname="sys_language_uid.details" xml:space="preserve" approved="yes">
+				<source>This allows you to assign a specific language to the Content Element. If you select anything but the default value, the element will &lt;em&gt;not&lt;/em&gt; be visible unless the language assigned is also configured by the TypoScript template.
+The available system languages are created by the administrator.</source>
+			<target state="final">Ovo Vam omogućuje da elementu sadržaja pridružite određeni jezik. Ukoliko odaberete bilo što osim zadane vrijednosti, element &lt;em&gt;neće&lt;/em&gt; biti vidljiv osim ako je pridruženi jezik podešen u TypoScript predlošku.
+Dostupne jezike sustava stvaraju administratori.</target></trans-unit>
+      <trans-unit id="_sys_language_uid.seeAlso" resname="_sys_language_uid.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:colPos,
+sys_language,
+Localization concepts [Technical] | http://typo3.org/documentation/tips-tricks/multi-language-sites-in-typo3/,
+_MOD_web_layout:language_list</source>
+				
+			<target state="final">tt_content:colPos,
+sys_language,
+Lokalizacijski koncepti [Tehnički] | http://typo3.org/documentation/tips-tricks/multi-language-sites-in-typo3/,
+_MOD_web_layout:language_list</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="layout.description" resname="layout.description" approved="yes">
+        <source>Select a Layout.</source>
+        <target state="final">Odaberite raspored.</target>
+      </trans-unit>
+      <trans-unit id="layout.details" resname="layout.details" xml:space="preserve" approved="yes">
+				<source>This option does not work by default for all Content Elements but your website may display Content Elements differently depending on the layout.
+
+The File Links Content Element does make use of the Layout field by default:
+"Normal" will provide a list of file links with no thumbnail.
+"Layout 1" adds a file icon to the left of the link
+"Layout 2" adds a thumbnail for image files and an icon for other files. A black border is wrapped around the icon.
+"Layout 3" is similar to Layout 2, but without the black border.</source>
+			<target state="final">Ova opcija ne radi za sve elemente sadržaja prema zadanim postavkama ali Vaša web stranica može drugačije prikazivati elemente sadržaja ovisno o rasporedu.
+
+Element sadržaja "Datotečne poveznice" koristi polje Raspored prema zadanim postavkama:
+"Normal" će prikazati popis datotečnih poveznica bez ikone.
+"Raspored 1" dodaje datotečnu ikonu s lijeve strane poveznice
+"Raspored 2" dodaje ikonu za slike i ikonu za ostale datoteke. Oko ikone će biti dodan crni rub.
+"Raspored 3" sličan je Rasporedu 2, no bez crnog ruba.</target></trans-unit>
+      <trans-unit id="colPos.description" resname="colPos.description" approved="yes">
+        <source>Select the column position of this element. &lt;strong&gt;Notice:&lt;/strong&gt; This may affect whether the Content Element is visible depending on your website template.</source>
+        <target state="final">Odaberite stupac za ovaj element. &lt;strong&gt;Napomena:&lt;/strong&gt; ovo može utjecati na vidljivost elementa sadržaja ovisno o predlošku Vaše internet stranice.</target>
+      </trans-unit>
+      <trans-unit id="colPos.details" resname="colPos.details" xml:space="preserve" approved="yes">
+				<source>Many websites only use one column of content. Some templates, however, let you put content in multiple columns using the Column option.
+
+&lt;strong&gt;Notice:&lt;/strong&gt; Selecting a column other than "Normal" may cause the Content Element to disappear if the website template does not use that column. If your Content Element mysteriously disappears make sure the Column and Language selectors are set correctly.</source>
+			<target state="final">Dobar dio internet stranica koristi samo jedan stupac sadržaja. Neki pak predlošci omogućuju postavljanje sadržaja u više stupaca koristeći opciju Stupac.
+
+&lt;strong&gt;Napomena:&lt;/strong&gt; Odabirom stupca osim stupca "Normalno" može doći do nestanka elemenata sadržaja ukoliko predložak stranice ne koristi odabrani stupac. Ukoliko Vaši elementi sadržaja misteriozno nestanu, provjerite jeste li ispravno odabrali stupac i jezik.</target></trans-unit>
+      <trans-unit id="_colPos.seeAlso" resname="_colPos.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:sys_language_uid,
+_MOD_web_layout:columns_multi,
+_MOD_web_layout:columns_single</source>
+				
+			<target state="final">tt_content:sys_language_uid,
+_MOD_web_layout:columns_multi,
+_MOD_web_layout:columns_single</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="date.description" resname="date.description" approved="yes">
+        <source>Enter a date to be displayed above the header.</source>
+        <target state="final">Unesite datum koji će biti prikazan iznad zaglavlja.</target>
+      </trans-unit>
+      <trans-unit id="header.description" resname="header.description" approved="yes">
+        <source>Enter header text for the Content Element.</source>
+        <target state="final">Unesite naslovni tekst za element sadržaja.</target>
+      </trans-unit>
+      <trans-unit id="header.details" resname="header.details" xml:space="preserve" approved="yes">
+				<source>Almost all Content Elements will display this header above the content. If you don't want the header displayed, set the header Layout to "Hidden". You can also choose not to enter any content in this field.
+
+Some content element types do not display the header by default. In those cases the Header field is typically labeled "Name" instead. One example is the HTML Content Element.</source>
+			<target state="final">Gotovo svi elementi sadržaja će prikazati ovo zaglavlje iznad sadržaja. Ukoliko ne želite prikaz zaglavalja, postavite raspored zaglavalja na "Skriveno". Također možete ostaviti ovo polje prazno, no to odmaže radu u pozadinskom sučelju jer otežava identifikaciju pojedinih elemenata sadržaja.
+
+Neki tipovi sadržaja ne prikazuju zaglavlje prema zadanim postavkama. U tim slučajevima, polje Zaglavlje je najčešće označeno sa "Naziv". Jedan takav tip sadržaja je HTML element sadržaja.</target></trans-unit>
+      <trans-unit id="_header.seeAlso" resname="_header.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:header_position,
+tt_content:header_link,
+tt_content:header_layout,
+tt_content:date,</source>
+				
+			<target state="final">tt_content:header_position,
+tt_content:header_link,
+tt_content:header_layout,
+tt_content:date,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="header_position.description" resname="header_position.description" approved="yes">
+        <source>Aligns the header to the left, center, or right.</source>
+        <target state="final">Poravnava zaglavlje lijevo, centralno ili desno.</target>
+      </trans-unit>
+      <trans-unit id="_header_position.seeAlso" resname="_header_position.seeAlso" approved="yes">
+        <source>tt_content:header</source>
+        <target state="final">tt_content:header</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="header_link.description" resname="header_link.description" approved="yes">
+        <source>Creates a link from the header to a Page ID, email address, or URL.</source>
+        <target state="final">Stvara poveznicu između zaglavlja i jedinstvenog ID broja stranice, e-mail adrese ili URL-a.</target>
+      </trans-unit>
+      <trans-unit id="header_link.syntax" resname="header_link.syntax" xml:space="preserve" approved="yes">
+				<source>If you insert a Page ID (ex. 51), the link will point to the page with id=51 &lt;em&gt;inside&lt;/em&gt; TYPO3.
+If you insert an email address (ex. name@my-domain.test), the link will point to that email address.
+If you insert an URL or domain, (ex. www.typo3.org or http://www.my-domain.org), the link will point to that website.</source>
+			<target state="final">Ukoliko postavite ID stranice (primjerice 51), poveznica će pokazivati na stranicu sa identifikacijskim broje id=51 &lt;em&gt;unutar&lt;/em&gt; TYPO3 sustava.
+Ukoliko postavite e-mail adresu (primjerice ime@domena.hr), poveznica će pokazivati na postavljenu e-mail adresu.
+Ukoliko postavite URL ili domenu (primjerice www.typo3.org ili http://www.moja-domena.hr), poveznica će pokazivati na postavljeni URL ili domenu.</target></trans-unit>
+      <trans-unit id="_header_link.seeAlso" resname="_header_link.seeAlso" approved="yes">
+        <source>tt_content:header</source>
+        <target state="final">tt_content:header</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="header_layout.description" resname="header_layout.description" approved="yes">
+        <source>Select a visual design for the header.</source>
+        <target state="final">Odaberite vizualni dizajn zaglavlja.</target>
+      </trans-unit>
+      <trans-unit id="header_layout.details" resname="header_layout.details" xml:space="preserve" approved="yes">
+				<source>If you select "Default" the standard design (which is one of the layouts 1-5) will be used.
+Alternatively you can select from Layout 1 through 5 which are configured in the website template with individual visual designs.
+If you select "Hidden" the header will simply not appear. This is useful when you don't need a header to display on the website but still want to identify the Content Element in the Backend.</source>
+			<target state="final">Ukoliko odaberete izgled "Zadano" primjenit će se zadani izgled.
+Osim "Zadano" možete odabrati "Izgled 1" do "Izgled 5" koji su podešeni u predlošku sa prilagođenim vizualnim prikazom.
+Ukoliko odaberete "Skriveno", zaglavlje se jednostavno neće prikazati. Ova opcija korisna je kada ne želite prikazati zaglavlje na prednjem sučelju no želite zaglavlje na stražnjem sučelju radi identifikacije elementa.</target></trans-unit>
+      <trans-unit id="_header_layout.seeAlso" resname="_header_layout.seeAlso" approved="yes">
+        <source>tt_content:header</source>
+        <target state="final">tt_content:header</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="subheader.description" resname="subheader.description" approved="yes">
+        <source>Enter a subheader to be displayed below the main header. If the Content Element is a "Form" this field is instead used as the Recipient Email.</source>
+        <target state="final">Odaberite podzaglavlje koje će se prikazivati ispod glavnog zaglavlja. Ukoliko je element sadržaja "Forma" ovo polje se koristi kao e-mail adresa primatelja.</target>
+      </trans-unit>
+      <trans-unit id="subheader.details" resname="subheader.details" approved="yes">
+        <source>A subheader is displayed only with "Header" Content Elements and with "Form" Content Elements (as the Recipient Email).</source>
+        <target state="final">Podzaglavlje se prikazuje jedino sa elementima sadržaja tipa "Zaglavlje" i "Forma" (kao e-mail adresa primatelja u slučaju forme).</target>
+      </trans-unit>
+      <trans-unit id="_subheader.seeAlso" resname="_subheader.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:header
+tt_content:bodytext</source>
+				
+			<target state="final">tt_content:header
+tt_content:bodytext</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="bodytext.description" resname="bodytext.description" approved="yes">
+        <source>Enter the main text.</source>
+        <target state="final">Unesite glavni tekst.</target>
+      </trans-unit>
+      <trans-unit id="image.description" resname="image.description" approved="yes">
+        <source>Insert one or more images.</source>
+        <target state="final">Umetnite jednu ili više slika.</target>
+      </trans-unit>
+      <trans-unit id="image.image_descr" resname="image.image_descr" approved="yes">
+        <source>This shows all the options related to inserting images in Content Elements. Depending on user permissions, you may not be able to use all of them.</source>
+        <target state="final">Ovdje su prikazane sve opcije dostupne pri umetanju slika u elemente sadržaja. Ovisno o korisničkim dopuštenjima, možda nećete moći koristiti sve dostupne opcije.</target>
+      </trans-unit>
+      <trans-unit id="imagewidth.description" resname="imagewidth.description" approved="yes">
+        <source>Enter the width (in pixels) for displaying the image in the Frontend of your website.</source>
+        <target state="final">Unesite širinu (u pikselima) za prikaz slike na prednjem sučelju Vaše internet stranice.</target>
+      </trans-unit>
+      <trans-unit id="imagewidth.details" resname="imagewidth.details" approved="yes">
+        <source>The TypoScript template is normally configured with maximum image width so you shouldn't need to specify a width. In unique cases, this provides additional flexibility though.</source>
+        <target state="final">TypoScript predložak najčešće je podešen za najveću moguću širinu slike tako da nije potrebno da unosite širinu. No u pojedinim slučajevima, navođenjem širine možete imati dodatnu fleksibilnost.</target>
+      </trans-unit>
+      <trans-unit id="_imagewidth.seeAlso" resname="_imagewidth.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:imageheight,
+tt_content:image</source>
+				
+			<target state="final">tt_content:imageheight,
+tt_content:image</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="imageheight.description" resname="imageheight.description" approved="yes">
+        <source>Enter the height (in pixels) for displaying the images in the Frontend of your website.</source>
+        <target state="final">Unesite visinu (u pikeslima) za prikaz slika na prednjem sučelju Vaše internet stranice.</target>
+      </trans-unit>
+      <trans-unit id="_imageheight.seeAlso" resname="_imageheight.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:imagewidth,
+tt_content:image</source>
+				
+			<target state="final">tt_content:imagewidth,
+tt_content:image</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="imageorient.description" resname="imageorient.description" approved="yes">
+        <source>Select the position and alignment of the images relative to the body text.</source>
+        <target state="final">Odaberite položaj i poravnanje slika u odnosu na tijelo teksta.</target>
+      </trans-unit>
+      <trans-unit id="imageorient.details" resname="imageorient.details" xml:space="preserve" approved="yes">
+				<source>The positions above and below the body text are pretty straight forward.
+The options for "In text" mean that images are displayed with text wrapped around them. When you select this option the template will probably force the images into smaller dimensions to accommodate the width of the template and the width of the text. The bodytext will float &lt;em&gt;under&lt;/em&gt; the image block when it reaches the end of the image block. In other words, the body text &lt;em&gt;wraps around&lt;/em&gt; the image block. If you select "In text" below the "No wrap" divider, the body text will not float under the image block, but simply continue in its column.
+Apart from the visual difference there is a technical aspect as well. If you choose to allow the content to wrap the image block you will experience a strange phenomenon when you do not have enough bodytext to make it float around the image: subsequent content elements on the page will appear to be layered on top of the image block. However it's easily solved by changing the "In text" position to the equal value but below the "No wrap" divider.</source>
+			<target state="final">Pozicija iznad i ispod tijela teksta su prilično očite.
+Opcija "U tekstu" znači da su slike prikazane sa tekstom koji teče oko njih. Kada odaberete ovu opciju, predložak će vjerojatno prikazati slike u manjim dimenzijama kako bi se prilagodile širini predloška i teksta. Tijelo teksta će plutati &lt;em&gt;ispod&lt;/em&gt; bloka slika kada dosegne kraj bloka slika. Drugim riječima, tijelo teksta se &lt;em&gt;omata&lt;/em&gt; oko bloka slika. Ukoliko odaberete "U tekstu" ispod razdjelnika "Bez omatanja", tijelo teksta neće plutati ispod bloka slika već će nastaviti u vlastitom stupcu.
+Osim vizualne razlike postoji i tehnički dio priče. Ukoliko odaberete dopustiti sadržaju da se omata oko bloka slika iskusit ćete čudan fenomen kada nema dovoljno teksta da se omota oko slika: elementi sadržaja u nastavku djelovat će kao da su pozicionirani preko bloka slika. Ovo je lako riješiti promjenom na opciju "U tekstu" no ispod razdjelnika "Bez omatanja".</target></trans-unit>
+      <trans-unit id="imageborder.description" resname="imageborder.description" approved="yes">
+        <source>Displays a colored border around the images.</source>
+        <target state="final">Prikaži rub u boji oko slika.</target>
+      </trans-unit>
+      <trans-unit id="_imageborder.seeAlso" resname="_imageborder.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:imagecols,
+tt_content:image</source>
+				
+			<target state="final">tt_content:imagecols,
+tt_content:image</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="image_link.description" resname="image_link.description" approved="yes">
+        <source>Enter a link for the image. For multiple images, separate the links with commas.</source>
+        <target state="final">Unesite poveznicu za sliku. Za višestruke slike, razdvojite poveznice zarezima.</target>
+      </trans-unit>
+      <trans-unit id="image_link.details" resname="image_link.details" xml:space="preserve" approved="yes">
+				<source>By default all images share the same link. Your TypoScript template may be configured to allow a separate link for each image. If this is the case, you simply separate the links with a comma.
+
+See Page Content&gt;Link below for details on syntax.</source>
+			<target state="final">Prema zadanim postavkama sve slike dijele istu poveznicu. No Vaš TypoScript predložak može biti podešen tako da dopušta posebnu poveznicu za svaku sliku. U tom slučaju jednostavno odvojite poveznice zarezima.
+
+Pogledajte sadržaj stranice&gt;Poveznica ispod za detalje o sintaksi.</target></trans-unit>
+      <trans-unit id="_image_link.seeAlso" resname="_image_link.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:header_link,
+tt_content:image_zoom,
+tt_content:image</source>
+				
+			<target state="final">tt_content:header_link,
+tt_content:image_zoom,
+tt_content:image</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="image_zoom.description" resname="image_zoom.description" approved="yes">
+        <source>When enabled, clicking an image will open a larger version in a popup window.</source>
+        <target state="final">Kada je ta funkcija omogućena, klik na sliku će otvoriti veću verziju slike u skočnom prozoru.</target>
+      </trans-unit>
+      <trans-unit id="image_zoom.details" resname="image_zoom.details" approved="yes">
+        <source>This option overrides the value in the Links field.</source>
+        <target state="final">Ova opcija ima prednost nad unosom u polju Poveznice.</target>
+      </trans-unit>
+      <trans-unit id="_image_zoom.seeAlso" resname="_image_zoom.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:image_link,
+tt_content:image</source>
+				
+			<target state="final">tt_content:image_link,
+tt_content:image</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="image_frames.description" resname="image_frames.description" approved="yes">
+        <source>Select special image framing options.</source>
+        <target state="final">Odaberite posebne opcije uokvirivanja slike.</target>
+      </trans-unit>
+      <trans-unit id="imagecols.description" resname="imagecols.description" approved="yes">
+        <source>Set the number of columns when the images are displayed in the Frontend of the website.</source>
+        <target state="final">Odaberite broj stupaca za prikaz slika na prednjem sučelju internet stranice.</target>
+      </trans-unit>
+      <trans-unit id="imagecaption.description" resname="imagecaption.description" approved="yes">
+        <source>Enter captions for the images. For multiple images, enter one caption per line.</source>
+        <target state="final">Unesite naslove za slike. Za više slika, unesite jedan naslov po retku.</target>
+      </trans-unit>
+      <trans-unit id="imagecaption.details" resname="imagecaption.details" xml:space="preserve" approved="yes">
+				<source>By default, the caption is positioned below the images. However, your TypoScript template may be configured to allow individual image captions by setting "styles.content.imgtext.captionSplit=1" in your template constants.
+In this case, each line in this field will be the image caption of the corresponding image in the list.
+
+The caption text field is also used by the Content Element type "File Links" where each line represents a description of a file in the list.</source>
+			<target state="final">Prema početnim postavkama, naslov se nalazi ispod slika. No Vaš TypoScript predložak može biti podešen da dopušta pojedinačne naslove slika postavkom "styles.content.imgtext.captionSplit=1" u konstantama predloška.
+U tom slučaju, svaki redak u ovom polju bit će naslov pripadajuće slike u popisu.
+
+Polje s naslovima također koriste i elementi tipa "Poveznice datoteka" gdje svaki redak predstavlja opis datoteke s popisa.</target></trans-unit>
+      <trans-unit id="cols.description" resname="cols.description" approved="yes">
+        <source>Select a fixed number of table columns</source>
+        <target state="final">Odaberite fiksan broj stupaca za tablicu</target>
+      </trans-unit>
+      <trans-unit id="pages.description" resname="pages.description" approved="yes">
+        <source>Select a target page or multiple target pages.</source>
+        <target state="final">Odaberite ciljnu stranicu ili više ciljnih stranica.</target>
+      </trans-unit>
+      <trans-unit id="pages.details" resname="pages.details" xml:space="preserve" approved="yes">
+				<source>This field is used by many of the Content Element types to create a relation to either a single target page or multiple target pages. If no target page is specified, the current page will generally be used.
+
+Using the "Search" Content Element, the target page is where search results will appear. You must make sure that this page has a similar "Search" Content Element to display the results.
+
+The "Login" Content Element (not to be confused with the Login plugin available when the felogin extension is installed) also uses this field to redirect the login to a certain page. That page does not need to contain a "Login" Content Element in order to perform the authentication since any TYPO3 page can handle a login request.
+If you specify a second page in this list, the ID will be passed to the login system as the page inside TYPO3 where website users are found. You should use this only if your template is not already configured to pass this value on.
+In order for the login procedure to work you must make sure that you have created website users and website usergroups, have specified where these website users can be found (typically a SysFolder), a page ID in the page list, and ensured that cookies are enabled for the site.
+
+The "Menu/Sitemap" Content Elements also use this field. In this case the page will determine the starting point for the menu or the actual pages shown in the menu. This behavior depends on the menu type you have selected.
+
+Finally the "Form" element uses this field as the target page to which the form is submitted. A common use is the "Thank you" page after the form is completed.</source>
+			<target state="final">Ova polje koriste mnogi tipovi elemenata sadržaja za stvaranje poveznica sa jednom ili više ciljnih stranica. Ukoliko nije odabrana ciljna stranica, koristit će se trenutačna stranica.
+
+Kada koristite element sadržaja tipa "Traži", rezultati pretraživanja prikazat će se na ciljnoj stranici. Na Vama je da osigurate da ciljna stranica sadrži sličan element sadržaja tipa "Traži" koji će prikazati rezultate pretrage.
+
+Element sadržaja tipa "Prijava" (koji ne treba miješati sa pluginom Prijava koji je dostupan kada se instalira proširenje felogin) također koristi ovo polje za preusmjeravanje prijave na određenu stranicu. Ta stranica ne mora sadržavati element sadržaja tipa "Prijava" kako bi se obavila prijava korisnika jer svaka TYPO3 stranice može odraditi zahtjev za prijavu.
+Ukoliko navedete drugu stranicu u ovom popisu, ta stranica bit će korištena kao spremnik korisnika internet stranice. Ovu opciju koristite jedino ukoliko Vaš predložak nema postavku stranice sa korisnicima.
+Kako bi prijava ispravno radila potrebno je stvoriti korisnike i grupe korisnika, podesiti gdje se korisnici nalaze (tipično u mapi), podesiti ID stranice u popisu stranica te osigurati da su za internet stranicu omogućeni kolačići (cookies).
+
+Element sadržaja tipa "Izbornik/Mapa stranica" također koristi ovo polje. U slučaju ovog tipa elementa sadržaja stranica određuje početnu točku izbornika ili stranice koje se nalaze u izborniku. Točno ponašanje ovisit će o vrsti izbornika koja je odabrana.
+
+I konačno, element tipa "Obrazac" koristi ovo polje kao ciljnu stranicu na koju dolazi zahtjev nakon podnošenja (submit) obrasca. Uobičajena uporaba je "Zahvaljujemo Vam" stranica nakon popunjavanja obrasca.</target></trans-unit>
+      <trans-unit id="_pages.seeAlso" resname="_pages.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:CType,
+tt_content:recursive</source>
+				
+			<target state="final">tt_content:CType,
+tt_content:recursive</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="recursive.description" resname="recursive.description" approved="yes">
+        <source>The number of subpage levels that should also be included for each page in the list.</source>
+        <target state="final">Broj razina podstranica koje također treba uključiti za svaku stranicu s popisa.</target>
+      </trans-unit>
+      <trans-unit id="recursive.details" resname="recursive.details" xml:space="preserve" approved="yes">
+				<source>This feature depends on the TypoScript template configuration and Content Element type. If enabled, each page listed in the "Pages" field will also have its subpages included to the specified depth.
+
+&lt;strong&gt;Warning:&lt;/strong&gt; If there are many subpages, be aware that this option may return a large number of results</source>
+			<target state="final">Ova osobina ovisi o postavkama TypoScript predloška i vrsti elementa sadržaja. Ukoliko je osobina omogućena, uz svaku stranicu na popisu bit će prikazane i podstranice do zadane dubine.
+
+&lt;strong&gt;Upozorenje:&lt;/strong&gt; Ukoliko postoji puno podstranica ova opcija može prikazati veliki broj rezultata</target></trans-unit>
+      <trans-unit id="_recursive.seeAlso" resname="_recursive.seeAlso" approved="yes">
+        <source>tt_content:pages</source>
+        <target state="final">tt_content:pages</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="menu_type.description" resname="menu_type.description" approved="yes">
+        <source>Select the type of menu you wish to create.</source>
+        <target state="final">Odaberite tip izbornika koji želite stvoriti.</target>
+      </trans-unit>
+      <trans-unit id="menu_type.details" resname="menu_type.details" xml:space="preserve" approved="yes">
+				<source>This is a short description of each type:
+
+&lt;strong&gt;Menu of selected pages&lt;/strong&gt;
+This will create a menu with links to the pages in the Selected Pages list.
+
+&lt;strong&gt;Menu of subpages of selected pages&lt;/strong&gt;
+This will create in a menu with links to the subpages of the pages in the Selected Pages list. If you do not specify any pages, the subpages to the current page will be used.
+
+&lt;strong&gt;Menu of subpages of selected pages (with abstract)&lt;/strong&gt;
+Like the previous option, but also displays the content of the Abstract field (or the Description field) for each page in the menu. The Abstract field is given priority over the Description field if both are complete.
+
+&lt;strong&gt;Menu of subpages of selected pages + sections&lt;/strong&gt;
+Like the previous option, but includes links to all Content Elements on the page that are marked to Show In Section Menus.
+
+&lt;strong&gt;Sitemap&lt;/strong&gt;
+Generates a classic tree sitemap. Notice that the sitemap will begin from the current page unless you select another page instead.
+
+&lt;strong&gt;Section index (page content marked for section menus)&lt;/strong&gt;
+This makes a menu of Content Elements on the selected pages for all Content Elements marked to Show In Section Menu. This is a great way to make an index at the top of the page.
+If you don't want certain Content Elements to appear in the list, just uncheck the Show in Section Menus checkbox for those elements.
+
+&lt;strong&gt;Recently updated pages&lt;/strong&gt;
+This displays the 10 most recently updated pages.
+&lt;strong&gt;Notice:&lt;/strong&gt; If you update a page and the updated page is not included in this list, clearing the Page Cache will resolve the issue.
+
+&lt;strong&gt;Related pages (based on keywords)&lt;/strong&gt;
+Displays other related pages based on the keywords of the selected pages matched against the keywords of other pages.</source>
+			<target state="final">Ovo je kratki opis svakog tipa:
+
+&lt;strong&gt;Izbornik odabranih stranica&lt;/strong&gt;
+Ovo će stvoriti izbornik sa poveznicama na stranice odabrane u Popisu odabranih stranica.
+
+&lt;strong&gt;Izbornik podstranica odabranih stranica&lt;/strong&gt;
+Ovo će stvoriti izbornik sa poveznicama na podstranice stranica odabranih u Popisu odabranih stranica. Ukoliko ne odaberete niti jednu stranicu, koristit će se podstranice trenutne stranice.
+
+&lt;strong&gt;Izbornik podstranica odabranih stranice (sa apstraktnim sažetkom).&lt;/strong&gt;
+Kao i prethodna opcija, no prikazat će se i polje Apstraktni sažetak (ili polje Opis) za svaku stranicu u izborniku. Ukoliko su popunjeni i polje Apstraktni sažetak i polje Opis koristit će se polje Apstrakti sažetak.
+
+&lt;strong&gt;Izbornik podstranica odabranih stranica + sekcije&lt;/strong&gt;
+Kao i prethodna opcija, no uključuje poveznice na sve elemente sadržaja na stranici koji su označeni kao Prikaži u izbornicima sekcija.
+
+&lt;strong&gt;Mapa stranice&lt;/strong&gt;
+Stvara klasičnu mapu stranice. Ukoliko ne odaberete stranice, mapa će početi od trenutne stranice.
+
+&lt;strong&gt;Indeks sekcija (sadržaj stranica označen za izbornike sekcija)&lt;/strong&gt;
+Izbornik elemenata sadržaja odabranih stranica za sve elemente sadržaja koji su označeni kao Prikaži u izborniku sekcija. Ovo je odlična opcija za indeks na vrhu stranice.
+Ukoliko ne želite da se neki elementi prikazuju na popisu, jednostavno odznačite opciju Prikaži u izborniku sekcija.
+
+&lt;strong&gt;Nedavno ažurirane stranice&lt;/strong&gt;
+Prikazuje 10 posljednje ažuriranih stranica.
+&lt;strong&gt;Napomena:&lt;/strong&gt;Ukoliko ažurirate stranicu a ista se ne pojavi na popisu problem se rješava čišćenjem međuspremnika.
+
+&lt;strong&gt;Povezane stranice (na osnovu ključnih riječi)&lt;/strong&gt;
+Prikazuje stranice povezane putem ključnih riječi sa odabranim stranicama.</target></trans-unit>
+      <trans-unit id="_menu_type.seeAlso" resname="_menu_type.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:pages,
+tt_content:sectionIndex</source>
+				
+			<target state="final">tt_content:pages,
+tt_content:sectionIndex</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="list_type.description" resname="list_type.description" approved="yes">
+        <source>Select a plugin to insert.</source>
+        <target state="final">Odaberite umetak koji želite dodati.</target>
+      </trans-unit>
+      <trans-unit id="list_type.details" resname="list_type.details" approved="yes">
+        <source>The list of plugins you can insert on a page. The available plugins depend on which extensions are installed.</source>
+        <target state="final">Popis umetaka koje možete dodati na stranicu. Dostupni umeci ovise od instaliranim proširenjima.</target>
+      </trans-unit>
+      <trans-unit id="_list_type.seeAlso" resname="_list_type.seeAlso" approved="yes">
+        <source>_MOD_tools_em</source>
+        <target state="final">_MOD_tools_em</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="media.description" resname="media.description" approved="yes">
+        <source>Files can be added to the list here.</source>
+        <target state="final">Ovdje možete dodati datoteke na popis.</target>
+      </trans-unit>
+      <trans-unit id="multimedia.description" resname="multimedia.description" approved="yes">
+        <source>Insert a multimedia element here (ex. Flash movie)</source>
+        <target state="final">Umetnite multimedijski element (primjerice Flash video)</target>
+      </trans-unit>
+      <trans-unit id="filelink_size.description" resname="filelink_size.description" approved="yes">
+        <source>Enable the display of file sizes.</source>
+        <target state="final">Omogući prikaz veličine datoteka.</target>
+      </trans-unit>
+      <trans-unit id="records.description" resname="records.description" approved="yes">
+        <source>Insert records to be displayed on this page.</source>
+        <target state="final">Umetnite zapise za prikaz na ovoj stranici.</target>
+      </trans-unit>
+      <trans-unit id="sectionIndex.description" resname="sectionIndex.description" approved="yes">
+        <source>If set, the Content Element will appear in Section Menus.</source>
+        <target state="final">Ukoliko je označeno, element sadržaja pojavljivat će se u izbornicima sekcija.</target>
+      </trans-unit>
+      <trans-unit id="sectionIndex.details" resname="sectionIndex.details" approved="yes">
+        <source>See more details about Section Menus by clicking below.</source>
+        <target state="final">Saznajte više detalja o izbornicima sekcija klikom ispod.</target>
+      </trans-unit>
+      <trans-unit id="linkToTop.description" resname="linkToTop.description" approved="yes">
+        <source>If checked, a small  "To Top" link will be added after the Content Element, linking back to the top of the page.</source>
+        <target state="final">Ukoliko je odabrano, mala poveznica "Na vrh" bit će dodana nakon elementa sadržaja koja će povezivati nazad na vrh stranice.</target>
+      </trans-unit>
+      <trans-unit id="rte_enabled.description" resname="rte_enabled.description" approved="yes">
+        <source>If checked, the Rich Text Editor will be disabled for the "Text" and "Text &amp; Image" types (&lt;em&gt;in this Content Element only&lt;/em&gt;).</source>
+        <target state="final">Ukoliko je ova opcija aktivna, urednik bogatog teksta bit će onemogućen za tipove sadržaja "Tekst" i "Tekst sa slikama" (&lt;em&gt;jedino za ovaj tip sadržaja&lt;/em&gt;).</target>
+      </trans-unit>
+      <trans-unit id="_rte_enabled.seeAlso" resname="_rte_enabled.seeAlso" approved="yes">
+        <source>tt_content:bodytext</source>
+        <target state="final">tt_content:bodytext</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="pi_flexform.description" resname="pi_flexform.description" approved="yes">
+        <source>Plugin Configuration</source>
+        <target state="final">Postavke umetka</target>
+      </trans-unit>
+      <trans-unit id="pi_flexform.details" resname="pi_flexform.details" approved="yes">
+        <source>Some plugins may provide configuration options, but the actual options vary based on the plugin. Behind the scenes, these are based on FlexForms and stored as XML.</source>
+        <target state="final">Neki umeci imaju opcije za konfiguraciju, no stvarne opcije variraju u ovisnosti o umetku. Iza kulisa, ove opcije su zasnovane na FlexFormama te se spremaju kao XML.</target>
+      </trans-unit>
+      <trans-unit id="_pi_flexform.seeAlso" resname="_pi_flexform.seeAlso" approved="yes">
+        <source>tt_content:list_type</source>
+        <target state="final">tt_content:list_type</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
