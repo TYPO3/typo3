@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_syslang.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="gl">
+    <header/>
+    <body>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Enter the name of this additional system language.</source>
+        <target state="final">Introduza o nome para desta lingua adicional do sistema.</target>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>Defines which languages are alternatively available on each webpage.</source>
+        <target state="final">Define que idiomas están dispoñibles alternativamente en cada páxina web.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
