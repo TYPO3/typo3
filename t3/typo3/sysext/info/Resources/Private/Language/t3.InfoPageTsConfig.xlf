@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:info/Resources/Private/Language/InfoPageTsConfig.xlf" date="2011-10-17T20:22:33Z" product-name="info_pagetsconfig" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="tsconf_title" resname="tsconf_title">
+        <source>Page TSconfig</source>
+        <target>crwdns106178:0crwdne106178:0</target>
+      </trans-unit>
+      <trans-unit id="tsconf_parts_0" resname="tsconf_parts_0">
+        <source>All</source>
+        <target>crwdns106180:0crwdne106180:0</target>
+      </trans-unit>
+      <trans-unit id="tsconf_parts_1" resname="tsconf_parts_1">
+        <source>Module</source>
+        <target>crwdns211570:0crwdne211570:0</target>
+      </trans-unit>
+      <trans-unit id="tsconf_parts_1a" resname="tsconf_parts_1a">
+        <source>Module: Web&gt;Page</source>
+        <target>crwdns106184:0crwdne106184:0</target>
+      </trans-unit>
+      <trans-unit id="tsconf_parts_1b" resname="tsconf_parts_1b">
+        <source>Module: Web&gt;View</source>
+        <target>crwdns106186:0crwdne106186:0</target>
+      </trans-unit>
+      <trans-unit id="tsconf_parts_1c" resname="tsconf_parts_1c">
+        <source>Module: Web&gt;Modules</source>
+        <target>crwdns106188:0crwdne106188:0</target>
+      </trans-unit>
+      <trans-unit id="tsconf_parts_1d" resname="tsconf_parts_1d">
+        <source>Module: Web&gt;List</source>
+        <target>crwdns106190:0crwdne106190:0</target>
+      </trans-unit>
+      <trans-unit id="tsconf_parts_1e" resname="tsconf_parts_1e">
+        <source>Module: Web&gt;Info</source>
+        <target>crwdns106192:0crwdne106192:0</target>
+      </trans-unit>
+      <trans-unit id="tsconf_parts_1g" resname="tsconf_parts_1g">
+        <source>Module: Web&gt;Template</source>
+        <target>crwdns106194:0crwdne106194:0</target>
+      </trans-unit>
+      <trans-unit id="tsconf_configFields" resname="tsconf_configFields">
+        <source>View TSconfig fields content</source>
+        <target>crwdns106196:0crwdne106196:0</target>
+      </trans-unit>
+      <trans-unit id="editTSconfig" resname="editTSconfig">
+        <source>Edit TSconfig for this page</source>
+        <target>crwdns106198:0crwdne106198:0</target>
+      </trans-unit>
+      <trans-unit id="editTSconfig_all" resname="editTSconfig_all">
+        <source>Edit TSconfig for all shown pages</source>
+        <target>crwdns106200:0crwdne106200:0</target>
+      </trans-unit>
+      <trans-unit id="editTSconfig_default" resname="editTSconfig_default">
+        <source>Default Configuration from TYPO3_CONF_VARS</source>
+        <target>crwdns106202:0crwdne106202:0</target>
+      </trans-unit>
+      <trans-unit id="mod_pagetsconfig" resname="mod_pagetsconfig">
+        <source>Page TSconfig</source>
+        <target>crwdns106204:0crwdne106204:0</target>
+      </trans-unit>
+      <trans-unit id="sort_alphabetic" resname="sort_alphabetic">
+        <source>Sort alphabetically</source>
+        <target>crwdns106206:0crwdne106206:0</target>
+      </trans-unit>
+      <trans-unit id="pagetitle" resname="pagetitle">
+        <source>Pagetitle:</source>
+        <target>crwdns106208:0crwdne106208:0</target>
+      </trans-unit>
+      <trans-unit id="included_tsconfig_files" resname="included_tsconfig_files">
+        <source>Included Files:</source>
+        <target>crwdns106210:0crwdne106210:0</target>
+      </trans-unit>
+      <trans-unit id="written_tsconfig_lines" resname="written_tsconfig_lines">
+        <source>Lines:</source>
+        <target>crwdns106212:0crwdne106212:0</target>
+      </trans-unit>
+      <trans-unit id="tsconf_noPageTSconfig" resname="tsconf_noPageTSconfig">
+        <source>There are no pages containing custom Page TSconfig settings in the page configuration.</source>
+        <target>crwdns106214:0crwdne106214:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
