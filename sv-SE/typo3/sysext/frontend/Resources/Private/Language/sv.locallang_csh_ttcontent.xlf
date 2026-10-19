@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_csh_ttcontent.xlf" date="2011-10-17T20:22:32Z" product-name="context_help" target-language="sv-SE">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>All visible content on webpages is typically made by "Page Content" records, often referred to as "Content Elements". Content Elements are managed by the "Page" Module which organizes Content Elements in multiple columns and languages.</source>
+        <target state="final">Allt synligt innehåll på webbsidor är oftast gjorda av "Sidinnehålls"-objekt, som ofta kallas "Innehållselement". Innehållelement hanteras av "Sida"-modulen som organiserar innehållselement i flera kolumner och språk.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" approved="yes">
+        <source>"Page Content" records are sortable and can be rearranged. The "Language" and "Column" selectors of the "Page Content" records determines when and where they appear. If you do not change the value of the "Language" and "Column" selectors the Content Element will appear in the default configuration.</source>
+        <target state="final">"Sidinnehåll" är sorterbara och kan ordnas. "Språk" och "Kolumn" alternativ i innehållselementen avgör när och var de förekommer. Om du inte ändrar värdet för "Språk" och "Kolumn" i innehållselementet visas standardkonfigurationen.</target>
+      </trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" xml:space="preserve" approved="yes">
+				<source>The Page Module is used to manage Content Elements arranged in columns and languages.
+A Content Element has an editing form with many options. The "Type" determines which options are visible.
+In the Frontend, a Content Element like the above could look like this.</source>
+			<target state="final">"Sida"-modulen används för att hantera innehållselement ordnade i kolumner och språk.
+Ett innehållselement har ett redigeringsformulär med många alternativ. "Typ" avgör vilka alternativ som är synliga.
+I Frontend, kan en innehållselement som ovan se ut så här.</target></trans-unit>
+      <trans-unit id="CType.description" resname="CType.description" approved="yes">
+        <source>Select the kind of Page Content this element represents. New options will appear when you save the record.</source>
+        <target state="final">Välj vilken typ av sidinnehåll detta element representerar. Nya alternativ visas när du sparar posten.</target>
+      </trans-unit>
+      <trans-unit id="_hidden.seeAlso" resname="_hidden.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:starttime,
+tt_content:endtime,
+tt_content:fe_group,
+tt_content:colPos,
+tt_content:sys_language_uid</source>
+				
+			<target state="final">tt_content:starttime,
+tt_content:endtime,
+tt_content:fe_group,
+tt_content:colPos,
+tt_content:sys_language_uid</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="starttime.description" resname="starttime.description" approved="yes">
+        <source>Enter the date when the Content Element should be published and displayed on the website.</source>
+        <target state="final">Ange det datum då innehållselementet skall publiceras och visas på webbplatsen.</target>
+      </trans-unit>
+      <trans-unit id="_starttime.seeAlso" resname="_starttime.seeAlso" xml:space="preserve" approved="yes">
+				<source>pages:starttime,
+tt_content:endtime,
+tt_content:hidden,
+tt_content:fe_group</source>
+				
+			<target state="final">pages:starttime,
+tt_content:endtime,
+tt_content:hidden,
+tt_content:fe_group</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="endtime.description" resname="endtime.description" approved="yes">
+        <source>Enter the date when the Content Element should expire and disappear from the website.</source>
+        <target state="final">Ange det datum då innehållselementet skall avpubliceras och försvinna från webbplatsen.</target>
+      </trans-unit>
+      <trans-unit id="_endtime.seeAlso" resname="_endtime.seeAlso" xml:space="preserve" approved="yes">
+				<source>pages:endtime,
+tt_content:starttime,
+tt_content:hidden,
+tt_content:fe_group</source>
+				
+			<target state="final">pages:endtime,
+tt_content:starttime,
+tt_content:hidden,
+tt_content:fe_group</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="fe_group.description" resname="fe_group.description" approved="yes">
+        <source>If Usergroup Access Rights are set to a usergroup name, only website users who are logged in and members of the selected usergroup will be able to view the Content Element. The special option 'Hide at Login' means the Content Element will &lt;em&gt;not&lt;/em&gt; be visible for any website users that are logged in. Likewise "Show at Any Login" will make the Content Element visible for any logged in website user.</source>
+        <target state="final">Om Gruppbehörighet är satt till en användargrupps namn, kommer endast webbplatsens användare som är inloggade och medlemmar i den valda användargruppen att kunna se innehålleselementet. Det speciella alternativet 'Dölj vid inloggning' innebär att innehållselementet &lt;em&gt;inte&lt;/em&gt; kommer att vara synligt för webbplatsens användare som är inloggade. Likaså kommer 'Visa för alla inloggade' att göra innehållselementet synligt för alla inloggade användare.</target>
+      </trans-unit>
+      <trans-unit id="fe_group.details" resname="fe_group.details" approved="yes">
+        <source>The 'Hide at Login' option is is useful if you want to present information like "How to Login" that becomes irrelevant when a website user is actually logged in.</source>
+        <target state="final">'Dölj vid inloggning' är användbart om du vill presentera information som 'Hur du loggar in', som blir irrelevant när en webbplatsanvändare är inloggad.</target>
+      </trans-unit>
+      <trans-unit id="_fe_group.seeAlso" resname="_fe_group.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:hidden,
+tt_content:starttime,
+tt_content:endtime,
+pages:fe_group,
+fe_users,
+fe_groups</source>
+				
+			<target state="final">tt_content:hidden,
+tt_content:starttime,
+tt_content:endtime,
+pages:fe_group,
+fe_users,
+fe_groups</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="sys_language_uid.description" resname="sys_language_uid.description" approved="yes">
+        <source>Select the system language of this Content Element. &lt;strong&gt;Notice:&lt;/strong&gt; This will affect the Content Element visibility by limiting it to a certain language.</source>
+        <target state="final">Välj systemspråk för detta innehållselement. &lt;strong&gt;Meddelande:&lt;/strong&gt; Det här kommer att påverka innehållselementets synbarhet genom att begränsa den till ett visst språk.</target>
+      </trans-unit>
+      <trans-unit id="sys_language_uid.details" resname="sys_language_uid.details" xml:space="preserve" approved="yes">
+				<source>This allows you to assign a specific language to the Content Element. If you select anything but the default value, the element will &lt;em&gt;not&lt;/em&gt; be visible unless the language assigned is also configured by the TypoScript template.
+The available system languages are created by the administrator.</source>
+			<target state="final">Detta gör att du kan tilldela ett visst språk för innehållselementet. Om du väljer något annat än standardvärdet, kommer elementet &lt;em&gt;inte&lt;/em&gt; att synas om inte det språk som tilldelats är också konfigureras i TypoScript mallen.
+De tillgängliga systemspråken skapas av administratören.</target></trans-unit>
+      <trans-unit id="_sys_language_uid.seeAlso" resname="_sys_language_uid.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:colPos,
+sys_language,
+Localization concepts [Technical] | http://typo3.org/documentation/tips-tricks/multi-language-sites-in-typo3/,
+_MOD_web_layout:language_list</source>
+				
+			<target state="final">tt_content:colPos,
+sys_language,
+Localization concepts [Technical] | http://typo3.org/documentation/tips-tricks/multi-language-sites-in-typo3/,
+_MOD_web_layout:language_list</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="layout.description" resname="layout.description" approved="yes">
+        <source>Select a Layout.</source>
+        <target state="final">Välj en layout</target>
+      </trans-unit>
+      <trans-unit id="layout.details" resname="layout.details" xml:space="preserve" approved="yes">
+				<source>This option does not work by default for all Content Elements but your website may display Content Elements differently depending on the layout.
+
+The File Links Content Element does make use of the Layout field by default:
+"Normal" will provide a list of file links with no thumbnail.
+"Layout 1" adds a file icon to the left of the link
+"Layout 2" adds a thumbnail for image files and an icon for other files. A black border is wrapped around the icon.
+"Layout 3" is similar to Layout 2, but without the black border.</source>
+			<target state="final">Det här alternativet fungerar inte som standard för alla innehållselement, men din webbplats kan visa innehållselement olika beroende på layouten.
+
+Fillänkelementet utnyttjar layoutfältet som standard:
+"Normal" kommer att ge en lista på fillänkar utan miniatyrbild.
+"Layout 1" lägger till en filikon till vänster om länken
+"Layout 2" lägger till en miniatyrbild för bildfiler och en ikon för andra filer. En svart ram placeras runt ikonen.
+"Layout 3" liknar Layout 2, men utan den svarta ramen.</target></trans-unit>
+      <trans-unit id="colPos.description" resname="colPos.description" approved="yes">
+        <source>Select the column position of this element. &lt;strong&gt;Notice:&lt;/strong&gt; This may affect whether the Content Element is visible depending on your website template.</source>
+        <target state="final">Välj kolumnposition för detta element. &lt;strong&gt;Notera:&lt;/strong&gt; Det här kan påverka innehållselementets synbarhet beroende på din webbplats mall.</target>
+      </trans-unit>
+      <trans-unit id="colPos.details" resname="colPos.details" xml:space="preserve" approved="yes">
+				<source>Many websites only use one column of content. Some templates, however, let you put content in multiple columns using the Column option.
+
+&lt;strong&gt;Notice:&lt;/strong&gt; Selecting a column other than "Normal" may cause the Content Element to disappear if the website template does not use that column. If your Content Element mysteriously disappears make sure the Column and Language selectors are set correctly.</source>
+			<target state="final">Många webbplatser använder bara en kolumn med innehåll. I vissa mallar, dock, kan du sätta innehåll i flera kolumner med hjälp av kolumn alternativet.
+
+&lt;strong&gt;Notera:&lt;/strong&gt; Om du väljer en annan kolumn än "Normal", kan detta orsaka att innehållaelementet försvinner, om webbplatsen mallen inte använder den kolumnen. Om ditt innehållselement mystiskt försvinner, se till att kolumn-och språkväljare är rätt inställda.</target></trans-unit>
+      <trans-unit id="_colPos.seeAlso" resname="_colPos.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:sys_language_uid,
+_MOD_web_layout:columns_multi,
+_MOD_web_layout:columns_single</source>
+				
+			<target state="final">tt_content:sys_language_uid,
+_MOD_web_layout:columns_multi,
+_MOD_web_layout:columns_single</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="date.description" resname="date.description" approved="yes">
+        <source>Enter a date to be displayed above the header.</source>
+        <target state="final">Ange ett datum som ska visas ovanför rubriken.</target>
+      </trans-unit>
+      <trans-unit id="header.description" resname="header.description" approved="yes">
+        <source>Enter header text for the Content Element.</source>
+        <target state="final">Ange rubriken för innehållselementet.</target>
+      </trans-unit>
+      <trans-unit id="header.details" resname="header.details" xml:space="preserve" approved="yes">
+				<source>Almost all Content Elements will display this header above the content. If you don't want the header displayed, set the header Layout to "Hidden". You can also choose not to enter any content in this field.
+
+Some content element types do not display the header by default. In those cases the Header field is typically labeled "Name" instead. One example is the HTML Content Element.</source>
+			<target state="final">Nästan alla innehållselement visar denna rubrik ovanför innehållet. Om du inte vill att rubriken ska visas, sätter du rubriklayout till "Dold". Du kan också välja att inte skriva något i detta fält.
+
+I vissa typer av innehållselement, visas inte rubriken som standard. I de fall är rubrikfältet vanligtvis märkt "Namn" i stället. Ett exempel är Ren HTML-elementet.</target></trans-unit>
+      <trans-unit id="_header.seeAlso" resname="_header.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:header_position,
+tt_content:header_link,
+tt_content:header_layout,
+tt_content:date,</source>
+				
+			<target state="final">tt_content:header_position,
+tt_content:header_link,
+tt_content:header_layout,
+tt_content:date,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="header_position.description" resname="header_position.description" approved="yes">
+        <source>Aligns the header to the left, center, or right.</source>
+        <target state="final">Justerar rubrik till vänster, mitten eller höger.</target>
+      </trans-unit>
+      <trans-unit id="_header_position.seeAlso" resname="_header_position.seeAlso" approved="yes">
+        <source>tt_content:header</source>
+        <target state="final">tt_content:header</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="header_link.description" resname="header_link.description" approved="yes">
+        <source>Creates a link from the header to a Page ID, email address, or URL.</source>
+        <target state="final">Skapar en länk av rubriken till en intern sida, e-postadress eller extern webbadress.</target>
+      </trans-unit>
+      <trans-unit id="_header_link.seeAlso" resname="_header_link.seeAlso" approved="yes">
+        <source>tt_content:header</source>
+        <target state="final">tt_content:header</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="header_layout.description" resname="header_layout.description" approved="yes">
+        <source>Select a visual design for the header.</source>
+        <target state="final">Välj en visuell design för rubriken.</target>
+      </trans-unit>
+      <trans-unit id="header_layout.details" resname="header_layout.details" xml:space="preserve" approved="yes">
+				<source>If you select "Default" the standard design (which is one of the layouts 1-5) will be used.
+Alternatively you can select from Layout 1 through 5 which are configured in the website template with individual visual designs.
+If you select "Hidden" the header will simply not appear. This is useful when you don't need a header to display on the website but still want to identify the Content Element in the Backend.</source>
+			<target state="final">Om du väljer "Standard" kommer standarddesignen (som är en av layouterna 1-5) att användas.
+Alternativt kan du välja från Layout 1 till 5, som är konfigurerade i webbplatsens mall med individuella designer.
+Om du väljer "Dölj" kommer rubriken helt enkelt inte att visas. Detta är användbart när du inte behöver en rubrik som ska visas på hemsidan, men ändå vill identifiera innehålleselementet i backend.</target></trans-unit>
+      <trans-unit id="_header_layout.seeAlso" resname="_header_layout.seeAlso" approved="yes">
+        <source>tt_content:header</source>
+        <target state="final">tt_content:header</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="subheader.description" resname="subheader.description" approved="yes">
+        <source>Enter a subheader to be displayed below the main header. If the Content Element is a "Form" this field is instead used as the Recipient Email.</source>
+        <target state="final">Ange en underrubrik som ska visas under huvudrubriken. Om innehållselementet är ett "Formulär" används detta fält istället som Mottagarens e-postadress.</target>
+      </trans-unit>
+      <trans-unit id="subheader.details" resname="subheader.details" approved="yes">
+        <source>A subheader is displayed only with "Header" Content Elements and with "Form" Content Elements (as the Recipient Email).</source>
+        <target state="final">En underrubrik visas endast med "Rubrik"-innehållselement och med "Formulär"-innehållselement (som Mottagarens e-postadress).</target>
+      </trans-unit>
+      <trans-unit id="_subheader.seeAlso" resname="_subheader.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:header
+tt_content:bodytext</source>
+				
+			<target state="final">tt_content:header
+tt_content:bodytext</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="bodytext.description" resname="bodytext.description" approved="yes">
+        <source>Enter the main text.</source>
+        <target state="final">Skriv in huvudtexten.</target>
+      </trans-unit>
+      <trans-unit id="image.description" resname="image.description" approved="yes">
+        <source>Insert one or more images.</source>
+        <target state="final">Lägg till en eller flera bilder.</target>
+      </trans-unit>
+      <trans-unit id="image.image_descr" resname="image.image_descr" approved="yes">
+        <source>This shows all the options related to inserting images in Content Elements. Depending on user permissions, you may not be able to use all of them.</source>
+        <target state="final">Detta visar alla alternativ i samband med att infoga bilder i innehållselement. Beroende på användarbehörigheter, kan du inte använda dem alla.</target>
+      </trans-unit>
+      <trans-unit id="imagewidth.description" resname="imagewidth.description" approved="yes">
+        <source>Enter the width (in pixels) for displaying the image in the Frontend of your website.</source>
+        <target state="final">Ange bredden (i pixlar) för att visa bilden i frontend på din webbplats.</target>
+      </trans-unit>
+      <trans-unit id="imagewidth.details" resname="imagewidth.details" approved="yes">
+        <source>The TypoScript template is normally configured with maximum image width so you shouldn't need to specify a width. In unique cases, this provides additional flexibility though.</source>
+        <target state="final">TypoScript mallen är normalt konfigurerad med en maximal bildbredd så att du inte ska behöva ange en bredd. I unika fall, ger detta ytterligare flexibilitet ändå.</target>
+      </trans-unit>
+      <trans-unit id="_imagewidth.seeAlso" resname="_imagewidth.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:imageheight,
+tt_content:image</source>
+				
+			<target state="final">tt_content:imageheight,
+tt_content:image</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="imageheight.description" resname="imageheight.description" approved="yes">
+        <source>Enter the height (in pixels) for displaying the images in the Frontend of your website.</source>
+        <target state="final">Ange höjden (i pixlar) för att visa bilderna i frontend på din webbplats.</target>
+      </trans-unit>
+      <trans-unit id="_imageheight.seeAlso" resname="_imageheight.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:imagewidth,
+tt_content:image</source>
+				
+			<target state="final">tt_content:imagewidth,
+tt_content:image</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="imageorient.description" resname="imageorient.description" approved="yes">
+        <source>Select the position and alignment of the images relative to the body text.</source>
+        <target state="final">Välj placering och justering av bilderna i förhållande till brödtexten.</target>
+      </trans-unit>
+      <trans-unit id="imageborder.description" resname="imageborder.description" approved="yes">
+        <source>Displays a colored border around the images.</source>
+        <target state="final">Visar en färgad ram runt bilderna.</target>
+      </trans-unit>
+      <trans-unit id="_imageborder.seeAlso" resname="_imageborder.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:imagecols,
+tt_content:image</source>
+				
+			<target state="final">tt_content:imagecols,
+tt_content:image</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="image_link.description" resname="image_link.description" approved="yes">
+        <source>Enter a link for the image. For multiple images, separate the links with commas.</source>
+        <target state="final">Ange en länk till bilden. För flera bilder, separera länkadresserna med kommatecken.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
