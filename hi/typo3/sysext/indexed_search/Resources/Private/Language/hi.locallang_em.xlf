@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:indexed_search/Resources/Private/Language/locallang_em.xlf" date="2011-10-17T20:22:32Z" product-name="indexed_search" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="indexedsearch.config.pdftools" resname="indexedsearch.config.pdftools" approved="yes">
+        <source>Path to PDF parsers: The indexer uses the applications 'pdftotext' and 'pdfinfo' for extracting content from PDF files. These applications must be installed in this path. Otherwise leave the field empty.</source>
+        <target state="final">पीडीएफ पर्सर के लिए पथ: इंडक्सर पीडीएफ फाइलों से कंटेंट निकालने के लिए 'pdftotext' और 'pdfinfo' एप्लीकेशन का उपयोग करता है। इन एप्लीकेशन को इस पथ में इनस्टॉल किया जाना चाहिए। अन्यथा फील्ड को खाली छोड़ दें।</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.pdf_mode" resname="indexedsearch.config.pdf_mode" approved="yes">
+        <source>PDF parsing mode: Zero=whole file is indexed in one. Positive value indicates number of pages at a time, eg. "5" would mean 1-5,6-10,.... Negative integer would indicate (abs value) number of groups. Eg "3" groups of 10 pages would be 1-4,5-8,9-10. Range is -100 to 100.</source>
+        <target state="final">पीडीएफ पार्सिंग मोड: शून्य = पूरी फाइल एक में ही इंडेक्स्ड है। पॉजिटिव मूल्य एक समय पर पन्नों की संख्या को दिखाता है, उदाहरण के लिए "5" का मतलब 1-5, 6-10 .... होगा, नेगेटिव पूर्णांक समूह की संख्या (एबीएस मूल्य) दिखता है। उदाहरण के लिए 10 पन्नों में "3" के समूह 1-4,5-8,9-10 होगे। रेंज -100 से 100 तक है।</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.unzip" resname="indexedsearch.config.unzip" approved="yes">
+        <source>Path to unzip: The indexer uses "unzip" to extract the contents from OpenOffice.org/Oasis OpenDocument files. The application must be installed in this path. Otherwise leave the field empty.</source>
+        <target state="final">अन-ज़िप के लिए पथ: ओपन ऑफिस से कंटेंट निकलने के लिए इंडक्सर "unzip" का उपयोग करता है। org/Oasis ओपन-डॉक्युमेंट फ़ाइलें। एप्लीकेशन इस पथ में इनस्टॉल कि जानी चाहिए। अन्यथा फील्ड को खाली छोड़ दें।</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.catdoc" resname="indexedsearch.config.catdoc" approved="yes">
+        <source>Path to WORD parser: The indexer uses the application 'catdoc' for extracting content from WORD files. The application must be installed in this path. Otherwise leave the field empty.</source>
+        <target state="final">WORD पार्सर के लिए पथ: WORD फाइल से कंटेंट निकालने के लिए इंडक्सर 'catdoc' एप्लीकेशन का उपयोग करता है। एप्लीकेशन इस पथ में इनस्टॉल कि जानी चाहिए। अन्यथा फील्ड को खाली छोड़ दें।</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.xlhtml" resname="indexedsearch.config.xlhtml" approved="yes">
+        <source>Path to EXCEL parser: The indexer uses the application 'xlhtml' for extracting content from EXCEL files. The application must be installed in this path. Otherwise leave the field empty.</source>
+        <target state="final">EXCEL पार्सर के लिए पथ: EXCEL फाइल से कंटेंट निकालने के लिए इंडक्सर 'xlhtml' एप्लीकेशन का उपयोग करता है। एप्लीकेशन इस पथ में इनस्टॉल कि जानी चाहिए। अन्यथा फील्ड को खाली छोड़ दें।</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.ppthtml" resname="indexedsearch.config.ppthtml" approved="yes">
+        <source>Path to POWERPOINT parser: The indexer uses the application 'ppthtml' for extracting content from POWERPOINT files. The application must be installed in this path. Otherwise leave the field empty.</source>
+        <target state="final">POWERPOINT पार्सर के लिए पथ: POWERPOINT फाइल से कंटेंट निकालने के लिए इंडक्सर 'ppthtml' एप्लीकेशन का उपयोग करता है। एप्लीकेशन इस पथ में इनस्टॉल कि जानी चाहिए। अन्यथा फील्ड को खाली छोड़ दें।</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.unrtf" resname="indexedsearch.config.unrtf" approved="yes">
+        <source>Path to RTF parser: The indexer uses the application 'unrtf' for extracting content from RTF files. The application must be installed in this path. Otherwise leave the field empty.</source>
+        <target state="final">RTF पार्सर के लिए पथ: RTF फाइल से कंटेंट निकालने के लिए इंडक्सर 'unrtf' एप्लीकेशन का उपयोग करता है। एप्लीकेशन इस पथ में इनस्टॉल कि जानी चाहिए। अन्यथा फील्ड को खाली छोड़ दें।</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.debugMode" resname="indexedsearch.config.debugMode" approved="yes">
+        <source>Debug mode: If set, debugging information is collected during indexing and can be shown in the backend. Only for debugging since it slows down the system and fills the database with crap.</source>
+        <target state="final">डिबग मोड: अगर सेट हो तो, इंडेक्सिंग के दौरान डिबगिंग जानकारी इकट्ठा होगी, और बैक-एन्ड में दिखाई जा सकती है। सिर्फ डिबगिंग के बाद से यह सिस्टम धीमा और बकवास रूप से डेटाबेस भरता है।</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.fullTextDataLength" resname="indexedsearch.config.fullTextDataLength" approved="yes">
+        <source>Full Text Data Length: If set, the full text data stored will be limited to this byte length. It means you can save some database space but to the degree you cut the length down you also limit possibilities to search for sentences and the search result resume will be limited.</source>
+        <target state="final">पूरा टेक्स्ट डेटा की लम्बाई : अगर सेट हो तो, पूरा टेक्स्ट डेटा इस बाइट लम्बाई तक ही स्टोरेज के लिए सीमित रहेगा। इसका मतलब आप डेटाबेस की कुछ जगह बचा सकते हैं लेकिन आप जिस डिग्री में लंबाई की कटौती करते ही आपको वाक्य को सर्च करने की सम्भावना में भी लिमिट दी जाएगी, और सर्च परिणाम resume भी लिमिटिड हो जायेगा।</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.disableFrontendIndexing" resname="indexedsearch.config.disableFrontendIndexing" approved="yes">
+        <source>Disable Indexing in Frontend: By default pages are indexed during viewing of pages in the frontend. You can disable this features so indexing of pages is only initiated through the backend page crawler.</source>
+        <target state="final">फ्रंट-एन्ड में इंडेक्सिंग अक्षम करे: फ्रंट-एन्ड में पन्नों को देखने के दौरान पन्ने डिफ़ॉल्ट रूप से इंडेक्स्ड जाते है। आप इस सुविधा को निष्क्रिय कर सकते हैं जिस से पन्नों का इंडेक्सिंग केवल बैकेंड पेज क्रॉलर से शुरू हो।</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.enableMetaphoneSearch" resname="indexedsearch.config.enableMetaphoneSearch" approved="yes">
+        <source>Enable metaphone search (sounds like): 0=disabled, 1=use internal metaphone parser, 2=use advanced doubleMetaphone parser.</source>
+        <target state="final">मेटा- फोन सर्च सक्षम करें (जैसी की): 0=अक्षम, 1=आतंरिक मेटा -फोन पार्सर का उपयोग, 2=एडवांस दोहरा मेटा-फोन पार्सर का उपयोग करें।</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.minAge" resname="indexedsearch.config.minAge" approved="yes">
+        <source>Min TTL (hours) for indexed page: The time in hours that must pass before an indexed page can be indexed again regardless of changes on the page.</source>
+        <target state="final">इंडेक्स्ड पेज के लिए मीन TTL (घंटे): पेज पर भले ही परिवर्तन हो लेकिन इंडेक्स्ड पेज के फिरसे इंडेक्स्ड होने से पहले जाने वाला समय घंटों में।</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.maxAge" resname="indexedsearch.config.maxAge" approved="yes">
+        <source>Deprecated! Max TTL (hours) for indexed page: The time in hours that is the maximum age of an indexed page before it will get indexed again. Usually the index is kept consistent, therefore you won't need this feature.</source>
+        <target state="final">डिप्रेकटेड! इंडेक्स्ड पेज के लिए मैक्स TTL (घंटे): इंडेक्स्ड पेज को फिर से इंडेक्स्ड होने से पहले पेज की आयु को महत्तम करे ऐसा समय घंटे में। आमतौर पर इंडेक्स लगातार मौजूद जाता है, इसलिए आप इस सुविधा की जरूरत नहीं होगी।</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.maxExternalFiles" resname="indexedsearch.config.maxExternalFiles" approved="yes">
+        <source>Max external files to index: When external files are found on a page this number indicates how many may be indexed at that point. This prevents pages with links to many external documents to take the server down - but it may also prevent documents from being indexed.</source>
+        <target state="final">इंडेक्स के लिए महत्तम बाहरी फाइलें: जब बाहरी फाइल को किसी पेज पर पाया जाता है तो यह आंकड़े बताते है के उस पॉइंट पर कितने इंडेक्स्ड होगे। यह सर्वर डाउन करने के लिए कई पेज को बाहरी लिंक के साथ रोकता है, लेकिन ये पेज को इंडेक्स्ड होने से भी रोकते है।</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.useCrawlerForExternalFiles" resname="indexedsearch.config.useCrawlerForExternalFiles" approved="yes">
+        <source>Use "crawler" extension to index external files: When external files are found on a page they are added to the "crawler" extensions queue and indexed via the cronscript running the crawler. This eliminates problems with for example many PDF files on a page. Requires a proper configuration of the "crawler" extension.</source>
+        <target state="final">बाहरी फाइल को इंडेक्स्ड करने के लिए "crawler" एक्सटेंशन का उपयोग करे: जब एक्सटेंशन फाइल पेज पर पाई जाती है तो उसे "crawler" कतार में जोड़ा जाता है और crawler पर चल रही क्रॉन-स्क्रिप्ट के द्वारा इंडेक्स्ड किया जाता है। यह कही समस्याओं को समाप्त करदेगी उदाहर के लिए एक पेज पर कई पीडीएफ फाइल। "crawler" एक्सटेंशन का उचित कॉन्फ़िगरेशन आवश्यक है।</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.flagBitMask" resname="indexedsearch.config.flagBitMask" approved="yes">
+        <source>Bitmask for Flags (Advanced): By this value (0-255) you can filter the importance of &lt;title&gt; (128), &lt;keywords&gt; (64) and &lt;description&gt; (32) content from HTML documents. By setting this to 0, none of these fields will have any importance over the other. The default value 192 means that title-tag content and meta-keywords will be flagged (and rated higher in search results)</source>
+        <target state="final">फ्लैग के लिए बिट-मास्क (एडवांस ): इस मूल्य (0-255) के साथ आप &lt;टाइटल&gt; (128), &lt;कीवर्ड&gt; (64) और &lt;डिस्क्रिप्शन&gt; (32) को HTML डॉक्यूमेंट में से फिल्टर कर सकते है। इसे 0 से सेट करने के बाद, कोइ भी फील्ड का कोइ दूसरे फील्ड पर महत्व नहीं होगा। डिफ़ॉल्ट मूल्य 192 का मतलब है कि शीर्षक टैग कंटेंट और मेटा कीवर्ड फ्लेगेड होगे (और सर्च रिजल्ट में उच्च मूल्य पर होंगे)</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.ignoreExtensions" resname="indexedsearch.config.ignoreExtensions" approved="yes">
+        <source>Ignore Extensions: List of file extensions that the external parser will ignore (despite having support for them). Comma list.</source>
+        <target state="final">एक्सटेंशन पर ध्यान न दें: बाहरी पार्सर अनदेखा करेंगे उस एक्सटेंशन्स की सूची(के बावजूद उनके लिए समर्थन देंगे)। कॉमा सूची।</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.indexExternalURLs" resname="indexedsearch.config.indexExternalURLs" approved="yes">
+        <source>Index External HTML URLs: If set, links to external URLs will be indexed if they are of type "text/html".</source>
+        <target state="final">इंडेक्स बाहरी HTML URLs: यदि सेट है तो, तो बाहरी urls की लिंक यदि "text/HTML" प्रकार की होगी तो इंडेक्स्ड होगी।</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
