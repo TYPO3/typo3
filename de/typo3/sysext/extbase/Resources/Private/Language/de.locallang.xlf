@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:extbase/Resources/Private/Language/locallang.xlf" date="2012-10-17T19:30:32Z" product-name="extbase" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="property.error" resname="property.error" approved="yes">
+        <source>Validation errors for property "%s"</source>
+        <target state="final">Validierungsfehler für die Eigenschaft "%s"</target>
+      </trans-unit>
+      <trans-unit id="validator.emailaddress.notvalid" resname="validator.emailaddress.notvalid" approved="yes">
+        <source>The given subject was not a valid email address.</source>
+        <target state="final">Der eingegebene Wert ist keine gültige E-Mail-Adresse</target>
+      </trans-unit>
+      <trans-unit id="validator.stringlength.between" resname="validator.stringlength.between" approved="yes">
+        <source>The length of the given string was not between %s and %s characters.</source>
+        <target state="final">Die Länge der angegebenen Zeichenkette liegt nicht zwischen %s und %s Zeichen.</target>
+      </trans-unit>
+      <trans-unit id="validator.stringlength.less" resname="validator.stringlength.less" approved="yes">
+        <source>The length of the given string is less than %s characters.</source>
+        <target state="final">Die Länge der angegebenen Zeichenkette ist kürzer als %s Zeichen.</target>
+      </trans-unit>
+      <trans-unit id="validator.string.notvalid" resname="validator.string.notvalid" approved="yes">
+        <source>A valid string is expected.</source>
+        <target state="final">Es wird eine gültige Zeichenkette erwartet.</target>
+      </trans-unit>
+      <trans-unit id="validator.stringlength.exceed" resname="validator.stringlength.exceed" approved="yes">
+        <source>The length of the given string exceeded %s characters.</source>
+        <target state="final">Die Länge der angegebenen Zeichenkette übersteigt %s Zeichen.</target>
+      </trans-unit>
+      <trans-unit id="validator.alphanumeric.notvalid" resname="validator.alphanumeric.notvalid" approved="yes">
+        <source>The given subject was not a valid alphanumeric string.</source>
+        <target state="final">Der angegebene Wert ist keine gültige alphanumerische Zeichenkette.</target>
+      </trans-unit>
+      <trans-unit id="validator.datetime.notvalid" resname="validator.datetime.notvalid" approved="yes">
+        <source>The given subject was not a valid DateTime. Got: '%s'</source>
+        <target state="final">Der angegebene Wert ist kein gültiges DateTime - Objekt: '%s'</target>
+      </trans-unit>
+      <trans-unit id="validator.genericobject.noobject" resname="validator.genericobject.noobject" approved="yes">
+        <source>Value is no object.</source>
+        <target state="final">Der Wert ist kein Objekt.</target>
+      </trans-unit>
+      <trans-unit id="validator.float.notvalid" resname="validator.float.notvalid" approved="yes">
+        <source>The given subject was not a valid float.</source>
+        <target state="final">Der angegebene Wert ist keine gültige Gleitkommazahl.</target>
+      </trans-unit>
+      <trans-unit id="validator.text.notvalid" resname="validator.text.notvalid" approved="yes">
+        <source>The given subject was not a valid text (e.g. contained XML tags).</source>
+        <target state="final">Der angegebene Wert ist kein gültiges Text-Objekt (enthält z.B. XML-Tags).</target>
+      </trans-unit>
+      <trans-unit id="validator.regularexpression.empty" resname="validator.regularexpression.empty" approved="yes">
+        <source>The regular expression was empty.</source>
+        <target state="final">Der reguläre Ausdruck ist leer.</target>
+      </trans-unit>
+      <trans-unit id="validator.regularexpression.nomatch" resname="validator.regularexpression.nomatch" approved="yes">
+        <source>The given subject did not match the pattern.</source>
+        <target state="final">Der angegebene Wert stimmt nicht mit dem Muster überein.</target>
+      </trans-unit>
+      <trans-unit id="validator.regularexpression.error" resname="validator.regularexpression.error" approved="yes">
+        <source>The regular expression '%s' contained an error.</source>
+        <target state="final">Der reguläre Ausdruck '%s' enthält einen Fehler.</target>
+      </trans-unit>
+      <trans-unit id="validator.numberrange.notvalid" resname="validator.numberrange.notvalid" approved="yes">
+        <source>The given subject was not a valid number.</source>
+        <target state="final">Der angegebene Wert ist keine gültige Zahl.</target>
+      </trans-unit>
+      <trans-unit id="validator.numberrange.range" resname="validator.numberrange.range" approved="yes">
+        <source>The given subject was not in the valid range (%s - %s).</source>
+        <target state="final">Der angegebene Wert ist nicht im Bereich von %s bis %s.</target>
+      </trans-unit>
+      <trans-unit id="validator.notempty.null" resname="validator.notempty.null" approved="yes">
+        <source>The given subject was NULL.</source>
+        <target state="final">Der angegebene Wert ist NULL.</target>
+      </trans-unit>
+      <trans-unit id="validator.notempty.empty" resname="validator.notempty.empty" approved="yes">
+        <source>The given subject was empty.</source>
+        <target state="final">Der angegebene Wert ist leer.</target>
+      </trans-unit>
+      <trans-unit id="validator.number.notvalid" resname="validator.number.notvalid" approved="yes">
+        <source>The given subject was not a valid number.</source>
+        <target state="final">Der angegebene Wert ist keine gültige Zahl.</target>
+      </trans-unit>
+      <trans-unit id="validator.integer.notvalid" resname="validator.integer.notvalid" approved="yes">
+        <source>The given subject was not a valid integer.</source>
+        <target state="final">Der angegebene Wert ist kein gültiger Integer.</target>
+      </trans-unit>
+      <trans-unit id="validator.boolean.nottrue" resname="validator.boolean.nottrue" approved="yes">
+        <source>The given subject was not true.</source>
+        <target state="final">Der angegebene Wert ist nicht TRUE.</target>
+      </trans-unit>
+      <trans-unit id="validator.boolean.notfalse" resname="validator.boolean.notfalse" approved="yes">
+        <source>The given subject was not false.</source>
+        <target state="final">Der angegebene Wert ist nicht FALSE.</target>
+      </trans-unit>
+      <trans-unit id="validator.url.notvalid" resname="validator.url.notvalid" approved="yes">
+        <source>The given subject is no valid URL.</source>
+        <target state="final">Der angegebene Wert ist keine gültige URL.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
