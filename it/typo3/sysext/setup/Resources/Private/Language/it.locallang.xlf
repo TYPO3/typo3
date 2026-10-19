@@ -1,0 +1,516 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:setup/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="setup" target-language="it">
+    <header/>
+    <body>
+      <trans-unit id="UserSettings" resname="UserSettings" approved="yes">
+        <source>User Settings</source>
+        <target state="final">Impostazioni Utente</target>
+      </trans-unit>
+      <trans-unit id="language" resname="language" approved="yes">
+        <source>Language</source>
+        <target state="final">Lingua</target>
+      </trans-unit>
+      <trans-unit id="languageUnavailable" resname="languageUnavailable" approved="yes">
+        <source>The selected language "%s" is not available before the language files are installed.</source>
+        <target state="final">La lingua selezionata "%s" non è disponibile prima che i file di lingua siano installati.</target>
+      </trans-unit>
+      <trans-unit id="languageUnavailable.admin" resname="languageUnavailable.admin" approved="yes">
+        <source>You can use "Manage Language Packs" in the Maintenance module to easily download new language files.</source>
+        <target state="final">È possibile utilizzare "Manage Language Packs" nel modulo "Strumenti Admin&gt;Manutenzione" per installare nuove lingue e aggiornare quelle già installate.</target>
+      </trans-unit>
+      <trans-unit id="languageUnavailable.user" resname="languageUnavailable.user" approved="yes">
+        <source>Please ask your system administrator to do this.</source>
+        <target state="final">Chiedi all'amministratore di sistema di farlo.</target>
+      </trans-unit>
+      <trans-unit id="lang_default" resname="lang_default" approved="yes">
+        <source>English</source>
+        <target state="final">Inglese</target>
+      </trans-unit>
+      <trans-unit id="lang_af" resname="lang_af" approved="yes">
+        <source>Afrikaans</source>
+        <target state="final">Africano</target>
+      </trans-unit>
+      <trans-unit id="lang_ar" resname="lang_ar" approved="yes">
+        <source>Arabic</source>
+        <target state="final">Arabo</target>
+      </trans-unit>
+      <trans-unit id="lang_ba" resname="lang_ba" approved="yes">
+        <source>Bosnian</source>
+        <target state="final">Bosniaco</target>
+      </trans-unit>
+      <trans-unit id="lang_bs" resname="lang_bs" approved="yes">
+        <source>Bosnian</source>
+        <target state="final">Bosniaco</target>
+      </trans-unit>
+      <trans-unit id="lang_bg" resname="lang_bg" approved="yes">
+        <source>Bulgarian</source>
+        <target state="final">Bulgaro</target>
+      </trans-unit>
+      <trans-unit id="lang_ca" resname="lang_ca" approved="yes">
+        <source>Catalan</source>
+        <target state="final">Catalano</target>
+      </trans-unit>
+      <trans-unit id="lang_ch" resname="lang_ch" approved="yes">
+        <source>Chinese (Simple)</source>
+        <target state="final">Cinese</target>
+      </trans-unit>
+      <trans-unit id="lang_cs" resname="lang_cs" approved="yes">
+        <source>Czech</source>
+        <target state="final">Ceco</target>
+      </trans-unit>
+      <trans-unit id="lang_cz" resname="lang_cz" approved="yes">
+        <source>Czech</source>
+        <target state="final">Ceco</target>
+      </trans-unit>
+      <trans-unit id="lang_da" resname="lang_da" approved="yes">
+        <source>Danish</source>
+        <target state="final">Danese</target>
+      </trans-unit>
+      <trans-unit id="lang_dk" resname="lang_dk" approved="yes">
+        <source>Danish</source>
+        <target state="final">Danese</target>
+      </trans-unit>
+      <trans-unit id="lang_de" resname="lang_de" approved="yes">
+        <source>German</source>
+        <target state="final">Tedesco</target>
+      </trans-unit>
+      <trans-unit id="lang_el" resname="lang_el" approved="yes">
+        <source>Greek</source>
+        <target state="final">Greco</target>
+      </trans-unit>
+      <trans-unit id="lang_gr" resname="lang_gr" approved="yes">
+        <source>Greek</source>
+        <target state="final">Greco</target>
+      </trans-unit>
+      <trans-unit id="lang_eo" resname="lang_eo" approved="yes">
+        <source>Esperanto</source>
+        <target state="final">Esperanto</target>
+      </trans-unit>
+      <trans-unit id="lang_es" resname="lang_es" approved="yes">
+        <source>Spanish</source>
+        <target state="final">Spagnolo</target>
+      </trans-unit>
+      <trans-unit id="lang_et" resname="lang_et" approved="yes">
+        <source>Estonian</source>
+        <target state="final">Estone</target>
+      </trans-unit>
+      <trans-unit id="lang_eu" resname="lang_eu" approved="yes">
+        <source>Basque</source>
+        <target state="final">Basco</target>
+      </trans-unit>
+      <trans-unit id="lang_fa" resname="lang_fa" approved="yes">
+        <source>Persian</source>
+        <target state="final">Persiano</target>
+      </trans-unit>
+      <trans-unit id="lang_fi" resname="lang_fi" approved="yes">
+        <source>Finnish</source>
+        <target state="final">Finlandese</target>
+      </trans-unit>
+      <trans-unit id="lang_fo" resname="lang_fo" approved="yes">
+        <source>Faroese</source>
+        <target state="final">Faroese</target>
+      </trans-unit>
+      <trans-unit id="lang_fr" resname="lang_fr" approved="yes">
+        <source>French</source>
+        <target state="final">Francese</target>
+      </trans-unit>
+      <trans-unit id="lang_fr_CA" resname="lang_fr_CA" approved="yes">
+        <source>French (Canada)</source>
+        <target state="final">Francese (Canada)</target>
+      </trans-unit>
+      <trans-unit id="lang_qc" resname="lang_qc" approved="yes">
+        <source>French (Canada)</source>
+        <target state="final">Francese (Canada)</target>
+      </trans-unit>
+      <trans-unit id="lang_ga" resname="lang_ga" approved="yes">
+        <source>Galician</source>
+        <target state="final">Galiziano</target>
+      </trans-unit>
+      <trans-unit id="lang_gl" resname="lang_gl" approved="yes">
+        <source>Galician</source>
+        <target state="final">Galiziano</target>
+      </trans-unit>
+      <trans-unit id="lang_he" resname="lang_he" approved="yes">
+        <source>Hebrew</source>
+        <target state="final">Ebraico</target>
+      </trans-unit>
+      <trans-unit id="lang_hi" resname="lang_hi" approved="yes">
+        <source>Hindi</source>
+        <target state="final">Hindi</target>
+      </trans-unit>
+      <trans-unit id="lang_hr" resname="lang_hr" approved="yes">
+        <source>Croatian</source>
+        <target state="final">Croato</target>
+      </trans-unit>
+      <trans-unit id="lang_hu" resname="lang_hu" approved="yes">
+        <source>Hungarian</source>
+        <target state="final">Ungherese</target>
+      </trans-unit>
+      <trans-unit id="lang_is" resname="lang_is" approved="yes">
+        <source>Icelandic</source>
+        <target state="final">Islandese</target>
+      </trans-unit>
+      <trans-unit id="lang_it" resname="lang_it" approved="yes">
+        <source>Italian</source>
+        <target state="final">Italiano</target>
+      </trans-unit>
+      <trans-unit id="lang_ja" resname="lang_ja" approved="yes">
+        <source>Japanese</source>
+        <target state="final">Giapponese</target>
+      </trans-unit>
+      <trans-unit id="lang_jp" resname="lang_jp" approved="yes">
+        <source>Japanese</source>
+        <target state="final">Giapponese</target>
+      </trans-unit>
+      <trans-unit id="lang_ge" resname="lang_ge" approved="yes">
+        <source>Georgian</source>
+        <target state="final">Georgiano</target>
+      </trans-unit>
+      <trans-unit id="lang_ka" resname="lang_ka" approved="yes">
+        <source>Georgian</source>
+        <target state="final">Georgiano</target>
+      </trans-unit>
+      <trans-unit id="lang_kl" resname="lang_kl" approved="yes">
+        <source>Greenlandic</source>
+        <target state="final">Groenlandese</target>
+      </trans-unit>
+      <trans-unit id="lang_km" resname="lang_km" approved="yes">
+        <source>Khmer</source>
+        <target state="final">Khmer</target>
+      </trans-unit>
+      <trans-unit id="lang_ko" resname="lang_ko" approved="yes">
+        <source>Korean</source>
+        <target state="final">Coreano</target>
+      </trans-unit>
+      <trans-unit id="lang_kr" resname="lang_kr" approved="yes">
+        <source>Korean</source>
+        <target state="final">Coreano</target>
+      </trans-unit>
+      <trans-unit id="lang_lt" resname="lang_lt" approved="yes">
+        <source>Lithuanian</source>
+        <target state="final">Lituano</target>
+      </trans-unit>
+      <trans-unit id="lang_lv" resname="lang_lv" approved="yes">
+        <source>Latvian</source>
+        <target state="final">Lituano</target>
+      </trans-unit>
+      <trans-unit id="lang_ms" resname="lang_ms" approved="yes">
+        <source>Bahasa Malaysia</source>
+        <target state="final">Bahasa Malaysia</target>
+      </trans-unit>
+      <trans-unit id="lang_my" resname="lang_my" approved="yes">
+        <source>Bahasa Malaysia</source>
+        <target state="final">Bahasa Malaysia</target>
+      </trans-unit>
+      <trans-unit id="lang_nl" resname="lang_nl" approved="yes">
+        <source>Dutch</source>
+        <target state="final">Olandese</target>
+      </trans-unit>
+      <trans-unit id="lang_no" resname="lang_no" approved="yes">
+        <source>Norwegian</source>
+        <target state="final">Norvegese</target>
+      </trans-unit>
+      <trans-unit id="lang_pl" resname="lang_pl" approved="yes">
+        <source>Polish</source>
+        <target state="final">Polacco</target>
+      </trans-unit>
+      <trans-unit id="lang_pt" resname="lang_pt" approved="yes">
+        <source>Portuguese</source>
+        <target state="final">Portoghese</target>
+      </trans-unit>
+      <trans-unit id="lang_br" resname="lang_br" approved="yes">
+        <source>Brazilian Portuguese</source>
+        <target state="final">Portoghese (Brasile)</target>
+      </trans-unit>
+      <trans-unit id="lang_pt_BR" resname="lang_pt_BR" approved="yes">
+        <source>Brazilian Portuguese</source>
+        <target state="final">Portoghese (Brasile)</target>
+      </trans-unit>
+      <trans-unit id="lang_ro" resname="lang_ro" approved="yes">
+        <source>Romanian</source>
+        <target state="final">Rumeno</target>
+      </trans-unit>
+      <trans-unit id="lang_ru" resname="lang_ru" approved="yes">
+        <source>Russian</source>
+        <target state="final">Russo</target>
+      </trans-unit>
+      <trans-unit id="lang_rw" resname="lang_rw" approved="yes">
+        <source>Kinyarwanda</source>
+        <target state="final">Kinyarwanda</target>
+      </trans-unit>
+      <trans-unit id="lang_sk" resname="lang_sk" approved="yes">
+        <source>Slovak</source>
+        <target state="final">Slovacco</target>
+      </trans-unit>
+      <trans-unit id="lang_si" resname="lang_si" approved="yes">
+        <source>Slovenian</source>
+        <target state="final">Sloveno</target>
+      </trans-unit>
+      <trans-unit id="lang_sl" resname="lang_sl" approved="yes">
+        <source>Slovenian</source>
+        <target state="final">Sloveno</target>
+      </trans-unit>
+      <trans-unit id="lang_sq" resname="lang_sq" approved="yes">
+        <source>Albanian</source>
+        <target state="final">Albanese</target>
+      </trans-unit>
+      <trans-unit id="lang_sr" resname="lang_sr" approved="yes">
+        <source>Serbian</source>
+        <target state="final">Serbo</target>
+      </trans-unit>
+      <trans-unit id="lang_se" resname="lang_se" approved="yes">
+        <source>Swedish</source>
+        <target state="final">Svedese</target>
+      </trans-unit>
+      <trans-unit id="lang_sv" resname="lang_sv" approved="yes">
+        <source>Swedish</source>
+        <target state="final">Svedese</target>
+      </trans-unit>
+      <trans-unit id="lang_th" resname="lang_th" approved="yes">
+        <source>Thai</source>
+        <target state="final">Tailandese</target>
+      </trans-unit>
+      <trans-unit id="lang_tr" resname="lang_tr" approved="yes">
+        <source>Turkish</source>
+        <target state="final">Turco</target>
+      </trans-unit>
+      <trans-unit id="lang_ua" resname="lang_ua" approved="yes">
+        <source>Ukrainian</source>
+        <target state="final">Ucraino</target>
+      </trans-unit>
+      <trans-unit id="lang_uk" resname="lang_uk" approved="yes">
+        <source>Ukrainian</source>
+        <target state="final">Ucraino</target>
+      </trans-unit>
+      <trans-unit id="lang_vi" resname="lang_vi" approved="yes">
+        <source>Vietnamese</source>
+        <target state="final">Vietnamita</target>
+      </trans-unit>
+      <trans-unit id="lang_vn" resname="lang_vn" approved="yes">
+        <source>Vietnamese</source>
+        <target state="final">Vietnamita</target>
+      </trans-unit>
+      <trans-unit id="lang_hk" resname="lang_hk" approved="yes">
+        <source>Chinese (Trad)</source>
+        <target state="final">Cinese</target>
+      </trans-unit>
+      <trans-unit id="lang_zh" resname="lang_zh" approved="yes">
+        <source>Chinese (Trad)</source>
+        <target state="final">Cinese</target>
+      </trans-unit>
+      <trans-unit id="default" resname="default" approved="yes">
+        <source>Default</source>
+        <target state="final">Predefinito</target>
+      </trans-unit>
+      <trans-unit id="simulate" resname="simulate" approved="yes">
+        <source>Simulate backend user</source>
+        <target state="final">Simula un utente di backend</target>
+      </trans-unit>
+      <trans-unit id="opening" resname="opening" approved="yes">
+        <source>Startup</source>
+        <target state="final">Avvio</target>
+      </trans-unit>
+      <trans-unit id="personal_data" resname="personal_data" approved="yes">
+        <source>Personal data</source>
+        <target state="final">Dati personali</target>
+      </trans-unit>
+      <trans-unit id="showThumbs" resname="showThumbs" approved="yes">
+        <source>Show Thumbnails by default</source>
+        <target state="final">Mostra miniature</target>
+      </trans-unit>
+      <trans-unit id="startModule" resname="startModule" approved="yes">
+        <source>Start up in the following module</source>
+        <target state="final">Avvia con il seguente modulo</target>
+      </trans-unit>
+      <trans-unit id="emailMeAtLogin" resname="emailMeAtLogin" approved="yes">
+        <source>Notify me by email when somebody logs in from my account</source>
+        <target state="final">Avvisami via email quando qualcuno accede dal mio account</target>
+      </trans-unit>
+      <trans-unit id="helpText" resname="helpText" approved="yes">
+        <source>Show help text when applicable</source>
+        <target state="final">Mostra testo di aiuto (se disponibile)</target>
+      </trans-unit>
+      <trans-unit id="maxTitleLen" resname="maxTitleLen" approved="yes">
+        <source>Max. Title Length</source>
+        <target state="final">Lunghezza Massima Titolo</target>
+      </trans-unit>
+      <trans-unit id="edit_RTE" resname="edit_RTE" approved="yes">
+        <source>Enable Rich Text Editor (if available)</source>
+        <target state="final">Abilita Rich Text Editor (se disponibile)</target>
+      </trans-unit>
+      <trans-unit id="edit_docModuleUpload" resname="edit_docModuleUpload" approved="yes">
+        <source>File upload directly in Doc-module</source>
+        <target state="final">Caricamento file direttamente dai moduli dell'area 'Web'</target>
+      </trans-unit>
+      <trans-unit id="showHiddenFilesAndFolders" resname="showHiddenFilesAndFolders" approved="yes">
+        <source>Show hidden files and folders in the filelist</source>
+        <target state="final">Mostra i file e le cartelle nascoste in Lista File</target>
+      </trans-unit>
+      <trans-unit id="resizeTextareas" resname="resizeTextareas" approved="yes">
+        <source>Make Textareas resizable</source>
+        <target state="final">Rendi aree testo ridimensionabili</target>
+      </trans-unit>
+      <trans-unit id="resizeTextareas_MaxHeight" resname="resizeTextareas_MaxHeight" approved="yes">
+        <source>Maximal Height of resizable Textarea in Pixel</source>
+        <target state="final">Altezza massima di un'area di testo ridimensionabile (pixel)</target>
+      </trans-unit>
+      <trans-unit id="flexibleTextareas_MaxHeight" resname="flexibleTextareas_MaxHeight" approved="yes">
+        <source>Maximal Height of flexible Textareas in Pixel</source>
+        <target state="final">Altezza massima delle aree di testo flessibili in Pixel</target>
+      </trans-unit>
+      <trans-unit id="resizeTextareas_Flexible" resname="resizeTextareas_Flexible" approved="yes">
+        <source>Make Textareas flexible</source>
+        <target state="final">Rendi aree di testo flessibili</target>
+      </trans-unit>
+      <trans-unit id="editFunctionsTab" resname="editFunctionsTab" approved="yes">
+        <source>Edit and Advanced functions</source>
+        <target state="final">Opzioni di Modifica e Avanzate</target>
+      </trans-unit>
+      <trans-unit id="edit_functions" resname="edit_functions" approved="yes">
+        <source>Edit</source>
+        <target state="final">Modifica</target>
+      </trans-unit>
+      <trans-unit id="setToStandard" resname="setToStandard" approved="yes">
+        <source>Reset all Values to default</source>
+        <target state="final">Reimposta tutti i valori predefiniti</target>
+      </trans-unit>
+      <trans-unit id="resetSectionHeader" resname="resetSectionHeader" approved="yes">
+        <source>Reset Settings</source>
+        <target state="final">Reimposta Impostazioni</target>
+      </trans-unit>
+      <trans-unit id="resetConfiguration" resname="resetConfiguration" approved="yes">
+        <source>Reset Configuration and Clear Temporary Data</source>
+        <target state="final">Reimposta la configurazione e Cancella i Dati Temporanei</target>
+      </trans-unit>
+      <trans-unit id="resetConfigurationButton" resname="resetConfigurationButton" approved="yes">
+        <source>Reset user settings to default state</source>
+        <target state="final">Reimposta le impostazioni utente ai valori predefiniti</target>
+      </trans-unit>
+      <trans-unit id="setToStandardQuestion" resname="setToStandardQuestion" approved="yes">
+        <source>Are you sure you want to reset all values to default?</source>
+        <target state="final">Sei sicuro di voler reimpostare tutti i valori predefiniti?</target>
+      </trans-unit>
+      <trans-unit id="functions" resname="functions" approved="yes">
+        <source>Advanced functions</source>
+        <target state="final">Funzioni avanzate</target>
+      </trans-unit>
+      <trans-unit id="copyLevels" resname="copyLevels" approved="yes">
+        <source>Recursive Copy: Enter the number of page sublevels to include, when a page is copied</source>
+        <target state="final">Copia Ricorsiva: inserisci il numero di sottolivelli di pagina da includere, quando una pagina viene copiata</target>
+      </trans-unit>
+      <trans-unit id="recursiveDelete" resname="recursiveDelete" approved="yes">
+        <source>Recursive Delete(!): Allow ALL subpages to be deleted when deleting a page</source>
+        <target state="final">Eliminazione ricorsiva(!): permette eliminare TUTTE le sottopagine quando si elimina una pagina</target>
+      </trans-unit>
+      <trans-unit id="activateChanges" resname="activateChanges" approved="yes">
+        <source>Notice! In order to activate most of these changes, please reload the backend (eg. logout and login again).</source>
+        <target state="final">Avviso! Per attivare la maggior parte di queste modifiche, ricarica il backend (es. disconnettiti e accedi di nuovo).</target>
+      </trans-unit>
+      <trans-unit id="levels" resname="levels" approved="yes">
+        <source>levels</source>
+        <target state="final">livelli</target>
+      </trans-unit>
+      <trans-unit id="beUser_realName" resname="beUser_realName" approved="yes">
+        <source>Your name</source>
+        <target state="final">Il tuo nome</target>
+      </trans-unit>
+      <trans-unit id="beUser_avatar" resname="beUser_avatar" approved="yes">
+        <source>Avatar</source>
+        <target state="final">Avatar</target>
+      </trans-unit>
+      <trans-unit id="beUser_email" resname="beUser_email" approved="yes">
+        <source>Your email address</source>
+        <target state="final">Il tuo indirizzo email</target>
+      </trans-unit>
+      <trans-unit id="save" resname="save" approved="yes">
+        <source>Save Configuration</source>
+        <target state="final">Salva Configurazione</target>
+      </trans-unit>
+      <trans-unit id="newPassword" resname="newPassword" approved="yes">
+        <source>New password</source>
+        <target state="final">Nuova password</target>
+      </trans-unit>
+      <trans-unit id="newPasswordAgain" resname="newPasswordAgain" approved="yes">
+        <source>New password, again</source>
+        <target state="final">Ripeti password</target>
+      </trans-unit>
+      <trans-unit id="newPassword_ok" resname="newPassword_ok" approved="yes">
+        <source>Password was updated.</source>
+        <target state="final">Password aggiornata.</target>
+      </trans-unit>
+      <trans-unit id="passwordCurrent" resname="passwordCurrent" approved="yes">
+        <source>Current password</source>
+        <target state="final">Password attuale</target>
+      </trans-unit>
+      <trans-unit id="passwordHeader" resname="passwordHeader" approved="yes">
+        <source>Password</source>
+        <target state="final">Password</target>
+      </trans-unit>
+      <trans-unit id="setupWasUpdated" resname="setupWasUpdated" approved="yes">
+        <source>User settings were updated.</source>
+        <target state="final">Le impostazioni utente sono state aggiornate.</target>
+      </trans-unit>
+      <trans-unit id="newPassword_failed" resname="newPassword_failed" approved="yes">
+        <source>Password was NOT updated because you didn't enter the same password twice.</source>
+        <target state="final">La password NON è stata aggiornata perché non hai inserito la stessa password due volte.</target>
+      </trans-unit>
+      <trans-unit id="oldPassword_failed" resname="oldPassword_failed" approved="yes">
+        <source>Password was NOT updated because you didn't enter the correct current password.</source>
+        <target state="final">La password NON è stata aggiornata perché non hai inserito la password corrente corretta.</target>
+      </trans-unit>
+      <trans-unit id="enableInstallTool.label" resname="enableInstallTool.label" approved="yes">
+        <source>Install Tool Access</source>
+        <target state="final">Accesso all'Install Tool</target>
+      </trans-unit>
+      <trans-unit id="enableInstallTool.createFile" resname="enableInstallTool.createFile" approved="yes">
+        <source>Create Install Tool Enable File</source>
+        <target state="final">Crea il file di abilitazione dell'Install Tool</target>
+      </trans-unit>
+      <trans-unit id="enableInstallTool.file" resname="enableInstallTool.file" approved="yes">
+        <source>Install Tool Enable file</source>
+        <target state="final">File di abilitazione dell'Install Tool</target>
+      </trans-unit>
+      <trans-unit id="enableInstallTool.fileCreate_ok" resname="enableInstallTool.fileCreate_ok" approved="yes">
+        <source>The Install Tool Enable file has been created.</source>
+        <target state="final">Il file di abilitazione dell'Install Tool è stato creato.</target>
+      </trans-unit>
+      <trans-unit id="enableInstallTool.fileCreate_failed" resname="enableInstallTool.fileCreate_failed" approved="yes">
+        <source>The Install Tool Enable file could not be created.</source>
+        <target state="final">Non è stato possibile creare il file di abilitazione dell'Install Tool.</target>
+      </trans-unit>
+      <trans-unit id="enableInstallTool.deleteFile" resname="enableInstallTool.deleteFile" approved="yes">
+        <source>Delete Install Tool Enable File</source>
+        <target state="final">Elimina il file di abilitazione dell'Install Tool</target>
+      </trans-unit>
+      <trans-unit id="enableInstallTool.fileDelete_ok" resname="enableInstallTool.fileDelete_ok" approved="yes">
+        <source>The Install Tool Enable file has been deleted.</source>
+        <target state="final">Il file di abilitazione dell'Install Tool è stato eliminato.</target>
+      </trans-unit>
+      <trans-unit id="enableInstallTool.fileDelete_failed" resname="enableInstallTool.fileDelete_failed" approved="yes">
+        <source>The Install Tool Enable file could not be deleted!</source>
+        <target state="final">Non è stato possibile eliminare il file di abilitazione dell'Install Tool!</target>
+      </trans-unit>
+      <trans-unit id="enableInstallTool.fileHasKeep" resname="enableInstallTool.fileHasKeep" approved="yes">
+        <source>The Install Tool file has the content "KEEP_FILE" and can not be deleted!</source>
+        <target state="final">Il file di abilitazione dell'Install Tool ha come contenuto "KEEP_FILE" e non può essere eliminato!</target>
+      </trans-unit>
+      <trans-unit id="settingsAreReset" resname="settingsAreReset" approved="yes">
+        <source>The user settings have been reset to default values and temporary data has been cleared.</source>
+        <target state="final">Le impostazioni utente sono state reimpostate ai valori predefiniti e i dati temporanei sono stati cancellati.</target>
+      </trans-unit>
+      <trans-unit id="startModule.firstInMenu" resname="startModule.firstInMenu" approved="yes">
+        <source>- First module in menu -</source>
+        <target state="final">- Primo modulo nel menù -</target>
+      </trans-unit>
+      <trans-unit id="avatar.clear" resname="avatar.clear" approved="yes">
+        <source>Remove selected avatar image</source>
+        <target state="final">Rimuovi l'immagine avatar selezionata</target>
+      </trans-unit>
+      <trans-unit id="avatar.openFileBrowser" resname="avatar.openFileBrowser" approved="yes">
+        <source>Open file browser to select avatar image</source>
+        <target state="final">Sfoglia e seleziona l'immagine dell'avatar</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
