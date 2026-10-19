@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:redirects/Resources/Private/Language/locallang_db.xlf" date="2017-12-29T20:22:14Z" product-name="redirects" target-language="ja">
+    <header/>
+    <body>
+      <trans-unit id="sys_redirect" resname="sys_redirect" approved="yes">
+        <source>Redirect</source>
+        <target state="final">リダイレクト</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.source_host" resname="sys_redirect.source_host" approved="yes">
+        <source>Source Domain</source>
+        <target state="final">ドメイン元</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.source_path" resname="sys_redirect.source_path" approved="yes">
+        <source>Source Path</source>
+        <target state="final">ソース元</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.target" resname="sys_redirect.target" approved="yes">
+        <source>Target</source>
+        <target state="final">対象</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.hitcount" resname="sys_redirect.hitcount" approved="yes">
+        <source>Count</source>
+        <target state="final">カウント</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
