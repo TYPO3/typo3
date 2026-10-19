@@ -1,0 +1,1092 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_ttc.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="CType_formlabel" resname="CType_formlabel">
+        <source>Type</source>
+        <target>crwdns104450:0crwdne104450:0</target>
+      </trans-unit>
+      <trans-unit id="CType.I.0" resname="CType.I.0">
+        <source>Header</source>
+        <target>crwdns104452:0crwdne104452:0</target>
+      </trans-unit>
+      <trans-unit id="CType.I.1" resname="CType.I.1">
+        <source>Text</source>
+        <target>crwdns104454:0crwdne104454:0</target>
+      </trans-unit>
+      <trans-unit id="CType.I.2" resname="CType.I.2">
+        <source>Text &amp; Images</source>
+        <target>crwdns104456:0crwdne104456:0</target>
+      </trans-unit>
+      <trans-unit id="CType.I.3" resname="CType.I.3">
+        <source>Images</source>
+        <target>crwdns104458:0crwdne104458:0</target>
+      </trans-unit>
+      <trans-unit id="CType.I.4" resname="CType.I.4">
+        <source>Bullet List</source>
+        <target>crwdns104460:0crwdne104460:0</target>
+      </trans-unit>
+      <trans-unit id="CType.I.5" resname="CType.I.5">
+        <source>Table</source>
+        <target>crwdns104462:0crwdne104462:0</target>
+      </trans-unit>
+      <trans-unit id="CType.I.6" resname="CType.I.6">
+        <source>File Links</source>
+        <target>crwdns104464:0crwdne104464:0</target>
+      </trans-unit>
+      <trans-unit id="CType.I.8" resname="CType.I.8">
+        <source>Form</source>
+        <target>crwdns104466:0crwdne104466:0</target>
+      </trans-unit>
+      <trans-unit id="CType.I.9" resname="CType.I.9">
+        <source>Search</source>
+        <target>crwdns104468:0crwdne104468:0</target>
+      </trans-unit>
+      <trans-unit id="CType.I.10" resname="CType.I.10">
+        <source>Login</source>
+        <target>crwdns104470:0crwdne104470:0</target>
+      </trans-unit>
+      <trans-unit id="CType.I.11" resname="CType.I.11">
+        <source>Textbox</source>
+        <target>crwdns104472:0crwdne104472:0</target>
+      </trans-unit>
+      <trans-unit id="CType.I.12" resname="CType.I.12">
+        <source>Special Menus</source>
+        <target>crwdns104474:0crwdne104474:0</target>
+      </trans-unit>
+      <trans-unit id="CType.I.13" resname="CType.I.13">
+        <source>Insert Records</source>
+        <target>crwdns104476:0crwdne104476:0</target>
+      </trans-unit>
+      <trans-unit id="CType.I.14" resname="CType.I.14">
+        <source>Insert Plugin</source>
+        <target>crwdns104478:0crwdne104478:0</target>
+      </trans-unit>
+      <trans-unit id="CType.I.15" resname="CType.I.15">
+        <source>Script</source>
+        <target>crwdns104480:0crwdne104480:0</target>
+      </trans-unit>
+      <trans-unit id="CType.I.16" resname="CType.I.16">
+        <source>Divider</source>
+        <target>crwdns104482:0crwdne104482:0</target>
+      </trans-unit>
+      <trans-unit id="CType.I.17" resname="CType.I.17">
+        <source>HTML</source>
+        <target>crwdns104484:0crwdne104484:0</target>
+      </trans-unit>
+      <trans-unit id="CType.textmedia" resname="CType.textmedia">
+        <source>Text &amp; Media</source>
+        <target>crwdns104486:0crwdne104486:0</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_abstract" resname="CType.menu_abstract">
+        <source>Abstracts</source>
+        <target>crwdns104488:0crwdne104488:0</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_categorized_pages" resname="CType.menu_categorized_pages">
+        <source>Categorized pages</source>
+        <target>crwdns104490:0crwdne104490:0</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_categorized_content" resname="CType.menu_categorized_content">
+        <source>Categorized content</source>
+        <target>crwdns104492:0crwdne104492:0</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_pages" resname="CType.menu_pages">
+        <source>Pages</source>
+        <target>crwdns104494:0crwdne104494:0</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_subpages" resname="CType.menu_subpages">
+        <source>Subpages</source>
+        <target>crwdns104496:0crwdne104496:0</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_recently_updated" resname="CType.menu_recently_updated">
+        <source>Recently updated pages</source>
+        <target>crwdns104498:0crwdne104498:0</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_related_pages" resname="CType.menu_related_pages">
+        <source>Related pages</source>
+        <target>crwdns104500:0crwdne104500:0</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_section" resname="CType.menu_section">
+        <source>Section index</source>
+        <target>crwdns104502:0crwdne104502:0</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_section_pages" resname="CType.menu_section_pages">
+        <source>Section index of subpages from selected pages</source>
+        <target>crwdns104504:0crwdne104504:0</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_sitemap" resname="CType.menu_sitemap">
+        <source>Sitemap</source>
+        <target>crwdns104506:0crwdne104506:0</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_sitemap_pages" resname="CType.menu_sitemap_pages">
+        <source>Sitemaps of selected pages</source>
+        <target>crwdns104508:0crwdne104508:0</target>
+      </trans-unit>
+      <trans-unit id="CType.div.standard" resname="CType.div.standard">
+        <source>Standard</source>
+        <target>crwdns104510:0crwdne104510:0</target>
+      </trans-unit>
+      <trans-unit id="CType.div.lists" resname="CType.div.lists">
+        <source>Lists</source>
+        <target>crwdns104512:0crwdne104512:0</target>
+      </trans-unit>
+      <trans-unit id="CType.div.menu" resname="CType.div.menu">
+        <source>Menu</source>
+        <target>crwdns104514:0crwdne104514:0</target>
+      </trans-unit>
+      <trans-unit id="CType.div.forms" resname="CType.div.forms">
+        <source>Forms</source>
+        <target>crwdns104516:0crwdne104516:0</target>
+      </trans-unit>
+      <trans-unit id="CType.div.special" resname="CType.div.special">
+        <source>Special</source>
+        <target>crwdns104518:0crwdne104518:0</target>
+      </trans-unit>
+      <trans-unit id="layout.I.1" resname="layout.I.1">
+        <source>Layout 1</source>
+        <target>crwdns104520:0crwdne104520:0</target>
+      </trans-unit>
+      <trans-unit id="layout.I.2" resname="layout.I.2">
+        <source>Layout 2</source>
+        <target>crwdns104522:0crwdne104522:0</target>
+      </trans-unit>
+      <trans-unit id="layout.I.3" resname="layout.I.3">
+        <source>Layout 3</source>
+        <target>crwdns104524:0crwdne104524:0</target>
+      </trans-unit>
+      <trans-unit id="colPos" resname="colPos">
+        <source>Columns</source>
+        <target>crwdns104526:0crwdne104526:0</target>
+      </trans-unit>
+      <trans-unit id="colPos_formlabel" resname="colPos_formlabel">
+        <source>Column</source>
+        <target>crwdns104528:0crwdne104528:0</target>
+      </trans-unit>
+      <trans-unit id="colPos.I.0" resname="colPos.I.0">
+        <source>Left</source>
+        <target>crwdns104530:0crwdne104530:0</target>
+      </trans-unit>
+      <trans-unit id="colPos.I.1" resname="colPos.I.1">
+        <source>Normal</source>
+        <target>crwdns104532:0crwdne104532:0</target>
+      </trans-unit>
+      <trans-unit id="colPos.I.2" resname="colPos.I.2">
+        <source>Right</source>
+        <target>crwdns104534:0crwdne104534:0</target>
+      </trans-unit>
+      <trans-unit id="colPos.I.3" resname="colPos.I.3">
+        <source>Border</source>
+        <target>crwdns104536:0crwdne104536:0</target>
+      </trans-unit>
+      <trans-unit id="colPos.I.unused" resname="colPos.I.unused">
+        <source>Unused</source>
+        <target>crwdns104538:0crwdne104538:0</target>
+      </trans-unit>
+      <trans-unit id="date" resname="date">
+        <source>Date</source>
+        <target>crwdns104540:0crwdne104540:0</target>
+      </trans-unit>
+      <trans-unit id="date_formlabel" resname="date_formlabel">
+        <source>Date</source>
+        <target>crwdns104542:0crwdne104542:0</target>
+      </trans-unit>
+      <trans-unit id="header" resname="header">
+        <source>Header</source>
+        <target>crwdns104544:0crwdne104544:0</target>
+      </trans-unit>
+      <trans-unit id="header_formlabel" resname="header_formlabel">
+        <source>Header</source>
+        <target>crwdns104546:0crwdne104546:0</target>
+      </trans-unit>
+      <trans-unit id="header.ALT.shortcut_formlabel" resname="header.ALT.shortcut_formlabel">
+        <source>Name (not visible in frontend)</source>
+        <target>crwdns104548:0crwdne104548:0</target>
+      </trans-unit>
+      <trans-unit id="header.ALT.script_formlabel" resname="header.ALT.script_formlabel">
+        <source>Name (not visible in frontend)</source>
+        <target>crwdns104550:0crwdne104550:0</target>
+      </trans-unit>
+      <trans-unit id="header.ALT.div_formlabel" resname="header.ALT.div_formlabel">
+        <source>Name (not visible in frontend)</source>
+        <target>crwdns104552:0crwdne104552:0</target>
+      </trans-unit>
+      <trans-unit id="header.ALT.html_formlabel" resname="header.ALT.html_formlabel">
+        <source>Name (not visible in frontend)</source>
+        <target>crwdns104554:0crwdne104554:0</target>
+      </trans-unit>
+      <trans-unit id="header_position" resname="header_position">
+        <source>Align</source>
+        <target>crwdns104556:0crwdne104556:0</target>
+      </trans-unit>
+      <trans-unit id="header_position_formlabel" resname="header_position_formlabel">
+        <source>Alignment</source>
+        <target>crwdns104558:0crwdne104558:0</target>
+      </trans-unit>
+      <trans-unit id="header_position.I.1" resname="header_position.I.1">
+        <source>Center</source>
+        <target>crwdns104560:0crwdne104560:0</target>
+      </trans-unit>
+      <trans-unit id="header_position.I.2" resname="header_position.I.2">
+        <source>Right</source>
+        <target>crwdns104562:0crwdne104562:0</target>
+      </trans-unit>
+      <trans-unit id="header_position.I.3" resname="header_position.I.3">
+        <source>Left</source>
+        <target>crwdns104564:0crwdne104564:0</target>
+      </trans-unit>
+      <trans-unit id="header_link" resname="header_link">
+        <source>Link</source>
+        <target>crwdns104566:0crwdne104566:0</target>
+      </trans-unit>
+      <trans-unit id="header_link_formlabel" resname="header_link_formlabel">
+        <source>Link</source>
+        <target>crwdns104568:0crwdne104568:0</target>
+      </trans-unit>
+      <trans-unit id="header_layout_formlabel" resname="header_layout_formlabel">
+        <source>Type</source>
+        <target>crwdns104570:0crwdne104570:0</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.1" resname="header_layout.I.1">
+        <source>Layout 1</source>
+        <target>crwdns104572:0crwdne104572:0</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.2" resname="header_layout.I.2">
+        <source>Layout 2</source>
+        <target>crwdns104574:0crwdne104574:0</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.3" resname="header_layout.I.3">
+        <source>Layout 3</source>
+        <target>crwdns104576:0crwdne104576:0</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.4" resname="header_layout.I.4">
+        <source>Layout 4</source>
+        <target>crwdns104578:0crwdne104578:0</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.5" resname="header_layout.I.5">
+        <source>Layout 5</source>
+        <target>crwdns104580:0crwdne104580:0</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.6" resname="header_layout.I.6">
+        <source>Hidden</source>
+        <target>crwdns104582:0crwdne104582:0</target>
+      </trans-unit>
+      <trans-unit id="bullets_type" resname="bullets_type">
+        <source>Type of bullets</source>
+        <target>crwdns104584:0crwdne104584:0</target>
+      </trans-unit>
+      <trans-unit id="bullets_type.0" resname="bullets_type.0">
+        <source>Unordered list (bullets)</source>
+        <target>crwdns104586:0crwdne104586:0</target>
+      </trans-unit>
+      <trans-unit id="bullets_type.1" resname="bullets_type.1">
+        <source>Ordered list (numbers)</source>
+        <target>crwdns104588:0crwdne104588:0</target>
+      </trans-unit>
+      <trans-unit id="bullets_type.2" resname="bullets_type.2">
+        <source>Definition list</source>
+        <target>crwdns104590:0crwdne104590:0</target>
+      </trans-unit>
+      <trans-unit id="bodytext.W.forms" resname="bodytext.W.forms">
+        <source>Forms wizard</source>
+        <target>crwdns104592:0crwdne104592:0</target>
+      </trans-unit>
+      <trans-unit id="imagewidth" resname="imagewidth">
+        <source>Width (pixels)</source>
+        <target>crwdns104594:0crwdne104594:0</target>
+      </trans-unit>
+      <trans-unit id="imagewidth_formlabel" resname="imagewidth_formlabel">
+        <source>Width (px)</source>
+        <target>crwdns104596:0crwdne104596:0</target>
+      </trans-unit>
+      <trans-unit id="imageheight" resname="imageheight">
+        <source>Height (pixels)</source>
+        <target>crwdns104598:0crwdne104598:0</target>
+      </trans-unit>
+      <trans-unit id="imageheight_formlabel" resname="imageheight_formlabel">
+        <source>Height (px)</source>
+        <target>crwdns104600:0crwdne104600:0</target>
+      </trans-unit>
+      <trans-unit id="imageorient" resname="imageorient">
+        <source>Position</source>
+        <target>crwdns104602:0crwdne104602:0</target>
+      </trans-unit>
+      <trans-unit id="imageorient_formlabel" resname="imageorient_formlabel">
+        <source>Position and Alignment</source>
+        <target>crwdns104604:0crwdne104604:0</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.0" resname="imageorient.I.0">
+        <source>Above, center</source>
+        <target>crwdns104606:0crwdne104606:0</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.1" resname="imageorient.I.1">
+        <source>Above, right</source>
+        <target>crwdns104608:0crwdne104608:0</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.2" resname="imageorient.I.2">
+        <source>Above, left</source>
+        <target>crwdns104610:0crwdne104610:0</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.3" resname="imageorient.I.3">
+        <source>Below, center</source>
+        <target>crwdns104612:0crwdne104612:0</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.4" resname="imageorient.I.4">
+        <source>Below, right</source>
+        <target>crwdns104614:0crwdne104614:0</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.5" resname="imageorient.I.5">
+        <source>Below, left</source>
+        <target>crwdns104616:0crwdne104616:0</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.6" resname="imageorient.I.6">
+        <source>In text, right</source>
+        <target>crwdns104618:0crwdne104618:0</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.7" resname="imageorient.I.7">
+        <source>In text, left</source>
+        <target>crwdns104620:0crwdne104620:0</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.8" resname="imageorient.I.8">
+        <source>__No wrap:__</source>
+        <target>crwdns104622:0crwdne104622:0</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.9" resname="imageorient.I.9">
+        <source>Beside Text, Right</source>
+        <target>crwdns104624:0crwdne104624:0</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.10" resname="imageorient.I.10">
+        <source>Beside Text, Left</source>
+        <target>crwdns104626:0crwdne104626:0</target>
+      </trans-unit>
+      <trans-unit id="imageborder" resname="imageborder">
+        <source>Border</source>
+        <target>crwdns104628:0crwdne104628:0</target>
+      </trans-unit>
+      <trans-unit id="imageborder_formlabel" resname="imageborder_formlabel">
+        <source>Border</source>
+        <target>crwdns104630:0crwdne104630:0</target>
+      </trans-unit>
+      <trans-unit id="image_link" resname="image_link">
+        <source>Link</source>
+        <target>crwdns104632:0crwdne104632:0</target>
+      </trans-unit>
+      <trans-unit id="image_link_formlabel" resname="image_link_formlabel">
+        <source>Links (one per line, one link per image)</source>
+        <target>crwdns104634:0crwdne104634:0</target>
+      </trans-unit>
+      <trans-unit id="image_zoom" resname="image_zoom">
+        <source>Click-enlarge</source>
+        <target>crwdns104636:0crwdne104636:0</target>
+      </trans-unit>
+      <trans-unit id="image_zoom_formlabel" resname="image_zoom_formlabel">
+        <source>Enlarge on Click</source>
+        <target>crwdns104638:0crwdne104638:0</target>
+      </trans-unit>
+      <trans-unit id="image_frames" resname="image_frames">
+        <source>Frames</source>
+        <target>crwdns104640:0crwdne104640:0</target>
+      </trans-unit>
+      <trans-unit id="image_frames_formlabel" resname="image_frames_formlabel">
+        <source>Graphical Frames</source>
+        <target>crwdns104642:0crwdne104642:0</target>
+      </trans-unit>
+      <trans-unit id="image_frames.I.0" resname="image_frames.I.0">
+        <source>(None)</source>
+        <target>crwdns104644:0crwdne104644:0</target>
+      </trans-unit>
+      <trans-unit id="image_frames.I.1" resname="image_frames.I.1">
+        <source>Frame 1</source>
+        <target>crwdns104646:0crwdne104646:0</target>
+      </trans-unit>
+      <trans-unit id="image_frames.I.2" resname="image_frames.I.2">
+        <source>Frame 2</source>
+        <target>crwdns104648:0crwdne104648:0</target>
+      </trans-unit>
+      <trans-unit id="image_frames.I.3" resname="image_frames.I.3">
+        <source>Frame 3</source>
+        <target>crwdns104650:0crwdne104650:0</target>
+      </trans-unit>
+      <trans-unit id="image_frames.I.4" resname="image_frames.I.4">
+        <source>Frame 4</source>
+        <target>crwdns104652:0crwdne104652:0</target>
+      </trans-unit>
+      <trans-unit id="image_frames.I.5" resname="image_frames.I.5">
+        <source>Frame 5</source>
+        <target>crwdns104654:0crwdne104654:0</target>
+      </trans-unit>
+      <trans-unit id="image_frames.I.6" resname="image_frames.I.6">
+        <source>Frame 6</source>
+        <target>crwdns104656:0crwdne104656:0</target>
+      </trans-unit>
+      <trans-unit id="image_frames.I.7" resname="image_frames.I.7">
+        <source>Frame 7</source>
+        <target>crwdns104658:0crwdne104658:0</target>
+      </trans-unit>
+      <trans-unit id="image_frames.I.8" resname="image_frames.I.8">
+        <source>Frame 8</source>
+        <target>crwdns104660:0crwdne104660:0</target>
+      </trans-unit>
+      <trans-unit id="imagecols" resname="imagecols">
+        <source>Columns</source>
+        <target>crwdns104662:0crwdne104662:0</target>
+      </trans-unit>
+      <trans-unit id="imagecols_formlabel" resname="imagecols_formlabel">
+        <source>Number of Columns</source>
+        <target>crwdns104664:0crwdne104664:0</target>
+      </trans-unit>
+      <trans-unit id="image_altText" resname="image_altText">
+        <source>Alternative Text</source>
+        <target>crwdns104666:0crwdne104666:0</target>
+      </trans-unit>
+      <trans-unit id="altText_formlabel" resname="altText_formlabel">
+        <source>Alternative Labels (one per line)</source>
+        <target>crwdns104668:0crwdne104668:0</target>
+      </trans-unit>
+      <trans-unit id="image_titleText" resname="image_titleText">
+        <source>Title Text</source>
+        <target>crwdns104670:0crwdne104670:0</target>
+      </trans-unit>
+      <trans-unit id="titleText_formlabel" resname="titleText_formlabel">
+        <source>Titles (one per line)</source>
+        <target>crwdns104672:0crwdne104672:0</target>
+      </trans-unit>
+      <trans-unit id="image_longdescURL" resname="image_longdescURL">
+        <source>Long Description URL</source>
+        <target>crwdns104674:0crwdne104674:0</target>
+      </trans-unit>
+      <trans-unit id="images.addFileReference" resname="images.addFileReference">
+        <source>Add image</source>
+        <target>crwdns104676:0crwdne104676:0</target>
+      </trans-unit>
+      <trans-unit id="longdescURL_formlabel" resname="longdescURL_formlabel">
+        <source>Long Description URLs (one per line)</source>
+        <target>crwdns104678:0crwdne104678:0</target>
+      </trans-unit>
+      <trans-unit id="cols" resname="cols">
+        <source>Columns</source>
+        <target>crwdns104680:0crwdne104680:0</target>
+      </trans-unit>
+      <trans-unit id="cols.I.0" resname="cols.I.0">
+        <source>Auto</source>
+        <target>crwdns104682:0crwdne104682:0</target>
+      </trans-unit>
+      <trans-unit id="recursive.I.0" resname="recursive.I.0">
+        <source>0 levels (only selected page)</source>
+        <target>crwdns104684:0crwdne104684:0</target>
+      </trans-unit>
+      <trans-unit id="recursive.I.1" resname="recursive.I.1">
+        <source>1 level</source>
+        <target>crwdns104686:0crwdne104686:0</target>
+      </trans-unit>
+      <trans-unit id="recursive.I.2" resname="recursive.I.2">
+        <source>2 levels</source>
+        <target>crwdns104688:0crwdne104688:0</target>
+      </trans-unit>
+      <trans-unit id="recursive.I.3" resname="recursive.I.3">
+        <source>3 levels</source>
+        <target>crwdns104690:0crwdne104690:0</target>
+      </trans-unit>
+      <trans-unit id="recursive.I.4" resname="recursive.I.4">
+        <source>4 levels</source>
+        <target>crwdns104692:0crwdne104692:0</target>
+      </trans-unit>
+      <trans-unit id="recursive.I.5" resname="recursive.I.5">
+        <source>Infinite</source>
+        <target>crwdns104694:0crwdne104694:0</target>
+      </trans-unit>
+      <trans-unit id="list_type" resname="list_type">
+        <source>Plugin</source>
+        <target>crwdns104696:0crwdne104696:0</target>
+      </trans-unit>
+      <trans-unit id="list_type_formlabel" resname="list_type_formlabel">
+        <source>Selected Plugin</source>
+        <target>crwdns104698:0crwdne104698:0</target>
+      </trans-unit>
+      <trans-unit id="media" resname="media">
+        <source>Files</source>
+        <target>crwdns104700:0crwdne104700:0</target>
+      </trans-unit>
+      <trans-unit id="media.dataAttributes" resname="media.dataAttributes">
+        <source>Additional data-* Attributes for HTML5 video tag</source>
+        <target>crwdns104702:0crwdne104702:0</target>
+      </trans-unit>
+      <trans-unit id="media.dataAttributes.attributeName" resname="media.dataAttributes.attributeName">
+        <source>Name of attribute (without data-)</source>
+        <target>crwdns104704:0crwdne104704:0</target>
+      </trans-unit>
+      <trans-unit id="media.dataAttributes.content" resname="media.dataAttributes.content">
+        <source>Content</source>
+        <target>crwdns104706:0crwdne104706:0</target>
+      </trans-unit>
+      <trans-unit id="media.ALT.uploads_formlabel" resname="media.ALT.uploads_formlabel">
+        <source>Select single files</source>
+        <target>crwdns104708:0crwdne104708:0</target>
+      </trans-unit>
+      <trans-unit id="media.addFileReference" resname="media.addFileReference">
+        <source>Add file</source>
+        <target>crwdns104710:0crwdne104710:0</target>
+      </trans-unit>
+      <trans-unit id="multimedia" resname="multimedia">
+        <source>File</source>
+        <target>crwdns104712:0crwdne104712:0</target>
+      </trans-unit>
+      <trans-unit id="multimedia_formlabel" resname="multimedia_formlabel">
+        <source>Selected Media File</source>
+        <target>crwdns104714:0crwdne104714:0</target>
+      </trans-unit>
+      <trans-unit id="file_collections" resname="file_collections">
+        <source>File collections</source>
+        <target>crwdns104716:0crwdne104716:0</target>
+      </trans-unit>
+      <trans-unit id="file_collections.ALT.uploads_formlabel" resname="file_collections.ALT.uploads_formlabel">
+        <source>Select file collections</source>
+        <target>crwdns104718:0crwdne104718:0</target>
+      </trans-unit>
+      <trans-unit id="filelink_size" resname="filelink_size">
+        <source>Show File Size</source>
+        <target>crwdns104720:0crwdne104720:0</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting" resname="filelink_sorting">
+        <source>Sort file list</source>
+        <target>crwdns104722:0crwdne104722:0</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.none" resname="filelink_sorting.none">
+        <source>no sorting</source>
+        <target>crwdns104724:0crwdne104724:0</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.extension" resname="filelink_sorting.extension">
+        <source>by file extension</source>
+        <target>crwdns104726:0crwdne104726:0</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.name" resname="filelink_sorting.name">
+        <source>by filename</source>
+        <target>crwdns104728:0crwdne104728:0</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.type" resname="filelink_sorting.type">
+        <source>by file type</source>
+        <target>crwdns104730:0crwdne104730:0</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.size" resname="filelink_sorting.size">
+        <source>by file size</source>
+        <target>crwdns104732:0crwdne104732:0</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.creation_date" resname="filelink_sorting.creation_date">
+        <source>by file creation date</source>
+        <target>crwdns104734:0crwdne104734:0</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.modification_date" resname="filelink_sorting.modification_date">
+        <source>by file modification date</source>
+        <target>crwdns104736:0crwdne104736:0</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.title" resname="filelink_sorting.title">
+        <source>by file metadata title</source>
+        <target>crwdns104738:0crwdne104738:0</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting_direction" resname="filelink_sorting_direction">
+        <source>Sorting direction</source>
+        <target>crwdns104740:0crwdne104740:0</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting_direction.ascending" resname="filelink_sorting_direction.ascending">
+        <source>Ascending (default)</source>
+        <target>crwdns104742:0crwdne104742:0</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting_direction.descending" resname="filelink_sorting_direction.descending">
+        <source>Descending</source>
+        <target>crwdns104744:0crwdne104744:0</target>
+      </trans-unit>
+      <trans-unit id="filelink_size_formlabel" resname="filelink_size_formlabel">
+        <source>Display File Size Information</source>
+        <target>crwdns104746:0crwdne104746:0</target>
+      </trans-unit>
+      <trans-unit id="target" resname="target">
+        <source>Target</source>
+        <target>crwdns104748:0crwdne104748:0</target>
+      </trans-unit>
+      <trans-unit id="target.I.1" resname="target.I.1">
+        <source>New window</source>
+        <target>crwdns104750:0crwdne104750:0</target>
+      </trans-unit>
+      <trans-unit id="records" resname="records">
+        <source>Items</source>
+        <target>crwdns104752:0crwdne104752:0</target>
+      </trans-unit>
+      <trans-unit id="records_formlabel" resname="records_formlabel">
+        <source>Records</source>
+        <target>crwdns104754:0crwdne104754:0</target>
+      </trans-unit>
+      <trans-unit id="space_before_class" resname="space_before_class">
+        <source>Space Before</source>
+        <target>crwdns104756:0crwdne104756:0</target>
+      </trans-unit>
+      <trans-unit id="space_before_class_formlabel" resname="space_before_class_formlabel">
+        <source>Space Before</source>
+        <target>crwdns104758:0crwdne104758:0</target>
+      </trans-unit>
+      <trans-unit id="space_after_class" resname="space_after_class">
+        <source>Space After</source>
+        <target>crwdns104760:0crwdne104760:0</target>
+      </trans-unit>
+      <trans-unit id="space_after_class_formlabel" resname="space_after_class_formlabel">
+        <source>Space After</source>
+        <target>crwdns104762:0crwdne104762:0</target>
+      </trans-unit>
+      <trans-unit id="space_class_none" resname="space_class_none">
+        <source>None</source>
+        <target>crwdns104764:0crwdne104764:0</target>
+      </trans-unit>
+      <trans-unit id="space_class_extra_small" resname="space_class_extra_small">
+        <source>Extra Small</source>
+        <target>crwdns104766:0crwdne104766:0</target>
+      </trans-unit>
+      <trans-unit id="space_class_small" resname="space_class_small">
+        <source>Small</source>
+        <target>crwdns104768:0crwdne104768:0</target>
+      </trans-unit>
+      <trans-unit id="space_class_medium" resname="space_class_medium">
+        <source>Medium</source>
+        <target>crwdns104770:0crwdne104770:0</target>
+      </trans-unit>
+      <trans-unit id="space_class_large" resname="space_class_large">
+        <source>Large</source>
+        <target>crwdns104772:0crwdne104772:0</target>
+      </trans-unit>
+      <trans-unit id="space_class_extra_large" resname="space_class_extra_large">
+        <source>Extra Large</source>
+        <target>crwdns104774:0crwdne104774:0</target>
+      </trans-unit>
+      <trans-unit id="frame_class" resname="frame_class">
+        <source>Frame</source>
+        <target>crwdns104776:0crwdne104776:0</target>
+      </trans-unit>
+      <trans-unit id="frame_class_formlabel" resname="frame_class_formlabel">
+        <source>Frame</source>
+        <target>crwdns104778:0crwdne104778:0</target>
+      </trans-unit>
+      <trans-unit id="frame_class.default" resname="frame_class.default">
+        <source>Default</source>
+        <target>crwdns104780:0crwdne104780:0</target>
+      </trans-unit>
+      <trans-unit id="frame_class.ruler_before" resname="frame_class.ruler_before">
+        <source>Ruler Before</source>
+        <target>crwdns104782:0crwdne104782:0</target>
+      </trans-unit>
+      <trans-unit id="frame_class.ruler_after" resname="frame_class.ruler_after">
+        <source>Ruler After</source>
+        <target>crwdns104784:0crwdne104784:0</target>
+      </trans-unit>
+      <trans-unit id="frame_class.indent" resname="frame_class.indent">
+        <source>Indent</source>
+        <target>crwdns104786:0crwdne104786:0</target>
+      </trans-unit>
+      <trans-unit id="frame_class.indent_left" resname="frame_class.indent_left">
+        <source>Indent, 33/66%</source>
+        <target>crwdns104788:0crwdne104788:0</target>
+      </trans-unit>
+      <trans-unit id="frame_class.indent_right" resname="frame_class.indent_right">
+        <source>Indent, 66/33%</source>
+        <target>crwdns104790:0crwdne104790:0</target>
+      </trans-unit>
+      <trans-unit id="frame_class.none" resname="frame_class.none">
+        <source>No Frame</source>
+        <target>crwdns104792:0crwdne104792:0</target>
+      </trans-unit>
+      <trans-unit id="splash_layout" resname="splash_layout">
+        <source>Textbox Type</source>
+        <target>crwdns104794:0crwdne104794:0</target>
+      </trans-unit>
+      <trans-unit id="splash_layout_formlabel" resname="splash_layout_formlabel">
+        <source>Type</source>
+        <target>crwdns104796:0crwdne104796:0</target>
+      </trans-unit>
+      <trans-unit id="splash_layout.I.1" resname="splash_layout.I.1">
+        <source>Image Shadow</source>
+        <target>crwdns104798:0crwdne104798:0</target>
+      </trans-unit>
+      <trans-unit id="splash_layout.I.2" resname="splash_layout.I.2">
+        <source>Image Frame 1</source>
+        <target>crwdns104800:0crwdne104800:0</target>
+      </trans-unit>
+      <trans-unit id="splash_layout.I.3" resname="splash_layout.I.3">
+        <source>Image Frame 2</source>
+        <target>crwdns104802:0crwdne104802:0</target>
+      </trans-unit>
+      <trans-unit id="splash_layout.I.4" resname="splash_layout.I.4">
+        <source>__Graphical:__</source>
+        <target>crwdns104804:0crwdne104804:0</target>
+      </trans-unit>
+      <trans-unit id="splash_layout.I.5" resname="splash_layout.I.5">
+        <source>Postit 1</source>
+        <target>crwdns104806:0crwdne104806:0</target>
+      </trans-unit>
+      <trans-unit id="sectionIndex" resname="sectionIndex">
+        <source>Index</source>
+        <target>crwdns104808:0crwdne104808:0</target>
+      </trans-unit>
+      <trans-unit id="sectionIndex_formlabel" resname="sectionIndex_formlabel">
+        <source>Show in Section Menus</source>
+        <target>crwdns104810:0crwdne104810:0</target>
+      </trans-unit>
+      <trans-unit id="linkToTop" resname="linkToTop">
+        <source>To top</source>
+        <target>crwdns104812:0crwdne104812:0</target>
+      </trans-unit>
+      <trans-unit id="linkToTop_formlabel" resname="linkToTop_formlabel">
+        <source>Append with Link to Top of Page</source>
+        <target>crwdns104814:0crwdne104814:0</target>
+      </trans-unit>
+      <trans-unit id="rte_enabled" resname="rte_enabled">
+        <source>Disable Rich Text Editor</source>
+        <target>crwdns104816:0crwdne104816:0</target>
+      </trans-unit>
+      <trans-unit id="rte_enabled_formlabel" resname="rte_enabled_formlabel">
+        <source>Rich Text Editor</source>
+        <target>crwdns104818:0crwdne104818:0</target>
+      </trans-unit>
+      <trans-unit id="rte_enabled.I.0" resname="rte_enabled.I.0">
+        <source>Disable</source>
+        <target>crwdns104820:0crwdne104820:0</target>
+      </trans-unit>
+      <trans-unit id="pi_flexform" resname="pi_flexform">
+        <source>Plugin Options</source>
+        <target>crwdns104822:0crwdne104822:0</target>
+      </trans-unit>
+      <trans-unit id="accessibility_title" resname="accessibility_title">
+        <source>Block title</source>
+        <target>crwdns104824:0crwdne104824:0</target>
+      </trans-unit>
+      <trans-unit id="accessibility_bypass" resname="accessibility_bypass">
+        <source>Add link to bypass block</source>
+        <target>crwdns104826:0crwdne104826:0</target>
+      </trans-unit>
+      <trans-unit id="accessibility_bypass_text" resname="accessibility_bypass_text">
+        <source>Link text to bypass block</source>
+        <target>crwdns104828:0crwdne104828:0</target>
+      </trans-unit>
+      <trans-unit id="selected_categories" resname="selected_categories">
+        <source>Selected categories</source>
+        <target>crwdns104830:0crwdne104830:0</target>
+      </trans-unit>
+      <trans-unit id="category_field" resname="category_field">
+        <source>Category field</source>
+        <target>crwdns104832:0crwdne104832:0</target>
+      </trans-unit>
+      <trans-unit id="ALT.imgOptions" resname="ALT.imgOptions">
+        <source>Image Options</source>
+        <target>crwdns104834:0crwdne104834:0</target>
+      </trans-unit>
+      <trans-unit id="ALT.imgLinks" resname="ALT.imgLinks">
+        <source>Image Links</source>
+        <target>crwdns104836:0crwdne104836:0</target>
+      </trans-unit>
+      <trans-unit id="ALT.imgDimensions" resname="ALT.imgDimensions">
+        <source>Image Dimensions</source>
+        <target>crwdns104838:0crwdne104838:0</target>
+      </trans-unit>
+      <trans-unit id="select_key_formlabel" resname="select_key_formlabel">
+        <source>Plugin Mode</source>
+        <target>crwdns104840:0crwdne104840:0</target>
+      </trans-unit>
+      <trans-unit id="select_key.ALT.uploads" resname="select_key.ALT.uploads">
+        <source>Read from Path</source>
+        <target>crwdns104842:0crwdne104842:0</target>
+      </trans-unit>
+      <trans-unit id="select_key.ALT.uploads_formlabel" resname="select_key.ALT.uploads_formlabel">
+        <source>Path</source>
+        <target>crwdns104844:0crwdne104844:0</target>
+      </trans-unit>
+      <trans-unit id="select_key.ALT.script_formlabel" resname="select_key.ALT.script_formlabel">
+        <source>PHP Code</source>
+        <target>crwdns104846:0crwdne104846:0</target>
+      </trans-unit>
+      <trans-unit id="imagecaption.ALT.uploads" resname="imagecaption.ALT.uploads">
+        <source>Descriptions</source>
+        <target>crwdns104848:0crwdne104848:0</target>
+      </trans-unit>
+      <trans-unit id="imagecaption.ALT.uploads_formlabel" resname="imagecaption.ALT.uploads_formlabel">
+        <source>File Descriptions (one per line)</source>
+        <target>crwdns104850:0crwdne104850:0</target>
+      </trans-unit>
+      <trans-unit id="imagecaption.ALT.script" resname="imagecaption.ALT.script">
+        <source>Comments</source>
+        <target>crwdns104852:0crwdne104852:0</target>
+      </trans-unit>
+      <trans-unit id="bodytext.ALT.mailform" resname="bodytext.ALT.mailform">
+        <source>Configuration</source>
+        <target>crwdns104854:0crwdne104854:0</target>
+      </trans-unit>
+      <trans-unit id="bodytext.ALT.mailform_formlabel" resname="bodytext.ALT.mailform_formlabel">
+        <source>Form Structure</source>
+        <target>crwdns104856:0crwdne104856:0</target>
+      </trans-unit>
+      <trans-unit id="pages.ALT.mailform" resname="pages.ALT.mailform">
+        <source>Target Page</source>
+        <target>crwdns104858:0crwdne104858:0</target>
+      </trans-unit>
+      <trans-unit id="pages.ALT.searchform" resname="pages.ALT.searchform">
+        <source>Target page</source>
+        <target>crwdns104860:0crwdne104860:0</target>
+      </trans-unit>
+      <trans-unit id="pages.ALT.loginform" resname="pages.ALT.loginform">
+        <source>Selected pages: Target (1st), Frontend user container (2nd)</source>
+        <target>crwdns104862:0crwdne104862:0</target>
+      </trans-unit>
+      <trans-unit id="pages.ALT.search" resname="pages.ALT.search">
+        <source>Send to Page</source>
+        <target>crwdns104864:0crwdne104864:0</target>
+      </trans-unit>
+      <trans-unit id="pages.ALT.login" resname="pages.ALT.login">
+        <source>Send to Page</source>
+        <target>crwdns104866:0crwdne104866:0</target>
+      </trans-unit>
+      <trans-unit id="pages.ALT.menu_formlabel" resname="pages.ALT.menu_formlabel">
+        <source>Selected Pages</source>
+        <target>crwdns104868:0crwdne104868:0</target>
+      </trans-unit>
+      <trans-unit id="pages.ALT.list_formlabel" resname="pages.ALT.list_formlabel">
+        <source>Record Storage Page</source>
+        <target>crwdns104870:0crwdne104870:0</target>
+      </trans-unit>
+      <trans-unit id="pages.ALT.script_formlabel" resname="pages.ALT.script_formlabel">
+        <source>Starting Point for This Script</source>
+        <target>crwdns104872:0crwdne104872:0</target>
+      </trans-unit>
+      <trans-unit id="subheader.ALT.mailform" resname="subheader.ALT.mailform">
+        <source>Recipient Email</source>
+        <target>crwdns104874:0crwdne104874:0</target>
+      </trans-unit>
+      <trans-unit id="subheader.ALT.mailform_formlabel" resname="subheader.ALT.mailform_formlabel">
+        <source>Recipient Email</source>
+        <target>crwdns104876:0crwdne104876:0</target>
+      </trans-unit>
+      <trans-unit id="bodytext.ALT.html" resname="bodytext.ALT.html">
+        <source>HTML</source>
+        <target>crwdns104878:0crwdne104878:0</target>
+      </trans-unit>
+      <trans-unit id="menu.ALT.accessibility_title_formlabel" resname="menu.ALT.accessibility_title_formlabel">
+        <source>Menu block title</source>
+        <target>crwdns104880:0crwdne104880:0</target>
+      </trans-unit>
+      <trans-unit id="menu.ALT.accessibility_bypass_formlabel" resname="menu.ALT.accessibility_bypass_formlabel">
+        <source>Add link to bypass navigation block</source>
+        <target>crwdns104882:0crwdne104882:0</target>
+      </trans-unit>
+      <trans-unit id="menu.ALT.accessibility_bypass_text_formlabel" resname="menu.ALT.accessibility_bypass_text_formlabel">
+        <source>Link text to bypass navigation block</source>
+        <target>crwdns104884:0crwdne104884:0</target>
+      </trans-unit>
+      <trans-unit id="tabs.text" resname="tabs.text">
+        <source>Text</source>
+        <target>crwdns104886:0crwdne104886:0</target>
+      </trans-unit>
+      <trans-unit id="tabs.media" resname="tabs.media">
+        <source>Media</source>
+        <target>crwdns104888:0crwdne104888:0</target>
+      </trans-unit>
+      <trans-unit id="tabs.plugin" resname="tabs.plugin">
+        <source>Plugin</source>
+        <target>crwdns104890:0crwdne104890:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language_uid_formlabel" resname="sys_language_uid_formlabel">
+        <source>Language</source>
+        <target>crwdns104892:0crwdne104892:0</target>
+      </trans-unit>
+      <trans-unit id="subheader_formlabel" resname="subheader_formlabel">
+        <source>Subheader</source>
+        <target>crwdns104894:0crwdne104894:0</target>
+      </trans-unit>
+      <trans-unit id="hidden_formlabel" resname="hidden_formlabel">
+        <source>Content Element</source>
+        <target>crwdns104896:0crwdne104896:0</target>
+      </trans-unit>
+      <trans-unit id="hidden.I.0" resname="hidden.I.0">
+        <source>Disable</source>
+        <target>crwdns104898:0crwdne104898:0</target>
+      </trans-unit>
+      <trans-unit id="starttime_formlabel" resname="starttime_formlabel">
+        <source>Publish Date</source>
+        <target>crwdns104900:0crwdne104900:0</target>
+      </trans-unit>
+      <trans-unit id="endtime_formlabel" resname="endtime_formlabel">
+        <source>Expiration Date</source>
+        <target>crwdns104902:0crwdne104902:0</target>
+      </trans-unit>
+      <trans-unit id="fe_group_formlabel" resname="fe_group_formlabel">
+        <source>Usergroup Access Rights</source>
+        <target>crwdns104904:0crwdne104904:0</target>
+      </trans-unit>
+      <trans-unit id="layout_formlabel" resname="layout_formlabel">
+        <source>Layout</source>
+        <target>crwdns104906:0crwdne104906:0</target>
+      </trans-unit>
+      <trans-unit id="bodytext_formlabel" resname="bodytext_formlabel">
+        <source>Text</source>
+        <target>crwdns104908:0crwdne104908:0</target>
+      </trans-unit>
+      <trans-unit id="bodytext.ALT.bulletlist_formlabel" resname="bodytext.ALT.bulletlist_formlabel">
+        <source>Bullet List</source>
+        <target>crwdns104910:0crwdne104910:0</target>
+      </trans-unit>
+      <trans-unit id="bodytext.ALT.table_formlabel" resname="bodytext.ALT.table_formlabel">
+        <source>Table Structure</source>
+        <target>crwdns104912:0crwdne104912:0</target>
+      </trans-unit>
+      <trans-unit id="bodytext.ALT.media_formlabel" resname="bodytext.ALT.media_formlabel">
+        <source>Alternative Content</source>
+        <target>crwdns104914:0crwdne104914:0</target>
+      </trans-unit>
+      <trans-unit id="bodytext.ALT.textbox_formlabel" resname="bodytext.ALT.textbox_formlabel">
+        <source>Text</source>
+        <target>crwdns104916:0crwdne104916:0</target>
+      </trans-unit>
+      <trans-unit id="bodytext.ALT.script_formlabel" resname="bodytext.ALT.script_formlabel">
+        <source>Parameters to pass to the script</source>
+        <target>crwdns104918:0crwdne104918:0</target>
+      </trans-unit>
+      <trans-unit id="bodytext.ALT.html_formlabel" resname="bodytext.ALT.html_formlabel">
+        <source>HTML Code</source>
+        <target>crwdns104920:0crwdne104920:0</target>
+      </trans-unit>
+      <trans-unit id="image_formlabel" resname="image_formlabel">
+        <source>Images</source>
+        <target>crwdns104922:0crwdne104922:0</target>
+      </trans-unit>
+      <trans-unit id="image.ALT.textbox_formlabel" resname="image.ALT.textbox_formlabel">
+        <source>Image Files</source>
+        <target>crwdns104924:0crwdne104924:0</target>
+      </trans-unit>
+      <trans-unit id="imagecaption_formlabel" resname="imagecaption_formlabel">
+        <source>Captions (one per line)</source>
+        <target>crwdns104926:0crwdne104926:0</target>
+      </trans-unit>
+      <trans-unit id="imagecaption.ALT.script_formlabel" resname="imagecaption.ALT.script_formlabel">
+        <source>Comments</source>
+        <target>crwdns104928:0crwdne104928:0</target>
+      </trans-unit>
+      <trans-unit id="field.default.hidden" resname="field.default.hidden">
+        <source>Visibility of content element</source>
+        <target>crwdns104930:0crwdne104930:0</target>
+      </trans-unit>
+      <trans-unit id="field.table.bodytext" resname="field.table.bodytext">
+        <source>Table content</source>
+        <target>crwdns104932:0crwdne104932:0</target>
+      </trans-unit>
+      <trans-unit id="palette.general" resname="palette.general">
+        <source>Content Element</source>
+        <target>crwdns104934:0crwdne104934:0</target>
+      </trans-unit>
+      <trans-unit id="palette.headers" resname="palette.headers">
+        <source>Headlines</source>
+        <target>crwdns104936:0crwdne104936:0</target>
+      </trans-unit>
+      <trans-unit id="palette.header" resname="palette.header">
+        <source>Header</source>
+        <target>crwdns104938:0crwdne104938:0</target>
+      </trans-unit>
+      <trans-unit id="palette.visibility" resname="palette.visibility">
+        <source>Visibility</source>
+        <target>crwdns104940:0crwdne104940:0</target>
+      </trans-unit>
+      <trans-unit id="palette.access" resname="palette.access">
+        <source>Publish Dates and Access Rights</source>
+        <target>crwdns104942:0crwdne104942:0</target>
+      </trans-unit>
+      <trans-unit id="palette.frames" resname="palette.frames">
+        <source>Content Element Layout</source>
+        <target>crwdns104944:0crwdne104944:0</target>
+      </trans-unit>
+      <trans-unit id="palette.textlayout" resname="palette.textlayout">
+        <source>Text Layout</source>
+        <target>crwdns104946:0crwdne104946:0</target>
+      </trans-unit>
+      <trans-unit id="palette.imagefiles" resname="palette.imagefiles">
+        <source>Images and Captions</source>
+        <target>crwdns104948:0crwdne104948:0</target>
+      </trans-unit>
+      <trans-unit id="palette.imagelinks" resname="palette.imagelinks">
+        <source>Behavior</source>
+        <target>crwdns104950:0crwdne104950:0</target>
+      </trans-unit>
+      <trans-unit id="palette.image_accessibility" resname="palette.image_accessibility">
+        <source>Accessibility</source>
+        <target>crwdns104952:0crwdne104952:0</target>
+      </trans-unit>
+      <trans-unit id="palette.image_settings" resname="palette.image_settings">
+        <source>Image Adjustments</source>
+        <target>crwdns104954:0crwdne104954:0</target>
+      </trans-unit>
+      <trans-unit id="palette.imageblock" resname="palette.imageblock">
+        <source>Image Alignment</source>
+        <target>crwdns104956:0crwdne104956:0</target>
+      </trans-unit>
+      <trans-unit id="palette.mailform" resname="palette.mailform">
+        <source>Target and Recipient</source>
+        <target>crwdns104958:0crwdne104958:0</target>
+      </trans-unit>
+      <trans-unit id="palette.searchform" resname="palette.searchform">
+        <source>Search Results</source>
+        <target>crwdns104960:0crwdne104960:0</target>
+      </trans-unit>
+      <trans-unit id="palette.loginform" resname="palette.loginform">
+        <source>Redirect Target and Frontend User Container</source>
+        <target>crwdns104962:0crwdne104962:0</target>
+      </trans-unit>
+      <trans-unit id="palette.multimediafiles" resname="palette.multimediafiles">
+        <source>Media Files and Parameters</source>
+        <target>crwdns104964:0crwdne104964:0</target>
+      </trans-unit>
+      <trans-unit id="palette.textbox" resname="palette.textbox">
+        <source>Render Text into Images</source>
+        <target>crwdns104966:0crwdne104966:0</target>
+      </trans-unit>
+      <trans-unit id="palette.menu" resname="palette.menu">
+        <source>Menu and Sitemap</source>
+        <target>crwdns104968:0crwdne104968:0</target>
+      </trans-unit>
+      <trans-unit id="palette.menu_accessibility" resname="palette.menu_accessibility">
+        <source>Accessibility</source>
+        <target>crwdns104970:0crwdne104970:0</target>
+      </trans-unit>
+      <trans-unit id="palette.uploads_layout" resname="palette.uploads_layout">
+        <source>Filelinks Layout</source>
+        <target>crwdns104972:0crwdne104972:0</target>
+      </trans-unit>
+      <trans-unit id="palette.table_layout" resname="palette.table_layout">
+        <source>Table Layout</source>
+        <target>crwdns104974:0crwdne104974:0</target>
+      </trans-unit>
+      <trans-unit id="palette.appearanceLinks" resname="palette.appearanceLinks">
+        <source>Links</source>
+        <target>crwdns104976:0crwdne104976:0</target>
+      </trans-unit>
+      <trans-unit id="tabs.access" resname="tabs.access">
+        <source>Access</source>
+        <target>crwdns104978:0crwdne104978:0</target>
+      </trans-unit>
+      <trans-unit id="tabs.appearance" resname="tabs.appearance">
+        <source>Appearance</source>
+        <target>crwdns104980:0crwdne104980:0</target>
+      </trans-unit>
+      <trans-unit id="tabs.behaviour" resname="tabs.behaviour">
+        <source>Behaviour</source>
+        <target>crwdns104982:0crwdne104982:0</target>
+      </trans-unit>
+      <trans-unit id="tabs.script" resname="tabs.script">
+        <source>Script</source>
+        <target>crwdns104984:0crwdne104984:0</target>
+      </trans-unit>
+      <trans-unit id="tabs.images" resname="tabs.images">
+        <source>Images</source>
+        <target>crwdns104986:0crwdne104986:0</target>
+      </trans-unit>
+      <trans-unit id="tabs.extended" resname="tabs.extended">
+        <source>Extended</source>
+        <target>crwdns104988:0crwdne104988:0</target>
+      </trans-unit>
+      <trans-unit id="tabs.accessibility" resname="tabs.accessibility">
+        <source>Accessibility</source>
+        <target>crwdns104990:0crwdne104990:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
