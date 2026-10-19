@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:linkvalidator/Resources/Private/Language/Module/locallang_csh.xlf" date="2011-10-17T20:22:34Z" product-name="linkvalidator" target-language="no">
+    <header/>
+    <body>
+      <trans-unit id="task_email.alttitle" resname="task_email.alttitle" approved="yes">
+        <source>Email address</source>
+        <target state="final">Epost-adresse</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
