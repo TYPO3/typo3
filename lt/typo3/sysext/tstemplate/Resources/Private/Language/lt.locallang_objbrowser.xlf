@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf" date="2011-10-17T20:22:37Z" product-name="tstemplate" target-language="lt">
+    <header/>
+    <body>
+      <trans-unit id="updateButton" resname="updateButton" approved="yes">
+        <source>Update</source>
+        <target state="final">Atnaujinti</target>
+      </trans-unit>
+      <trans-unit id="addButton" resname="addButton" approved="yes">
+        <source>Add</source>
+        <target state="final">Pridėti</target>
+      </trans-unit>
+      <trans-unit id="displayComments" resname="displayComments" approved="yes">
+        <source>Display comments</source>
+        <target state="final">Rodyti komentarus</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
