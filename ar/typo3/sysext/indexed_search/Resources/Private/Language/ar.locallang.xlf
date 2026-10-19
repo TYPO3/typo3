@@ -1,0 +1,619 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:indexed_search/Resources/Private/Language/locallang.xlf" date="2011-12-18T10:19:20Z" product-name="indexed_search" target-language="ar">
+    <header/>
+    <body>
+      <trans-unit id="localizedOperandAnd" resname="localizedOperandAnd" approved="yes">
+        <source>AND</source>
+        <target state="final">AND</target>
+      </trans-unit>
+      <trans-unit id="localizedOperandOr" resname="localizedOperandOr" approved="yes">
+        <source>OR</source>
+        <target state="final">OR</target>
+      </trans-unit>
+      <trans-unit id="localizedOperandNot" resname="localizedOperandNot" approved="yes">
+        <source>NOT</source>
+        <target state="final">NOT</target>
+      </trans-unit>
+      <trans-unit id="rules.headline" resname="rules.headline" approved="yes">
+        <source>Rules</source>
+        <target state="final">القواعد</target>
+      </trans-unit>
+      <trans-unit id="rules.text" resname="rules.text" xml:space="preserve" approved="yes">
+				<source><![CDATA[Only words with 2 or more characters are accepted<br />
+Max 200 chars total<br />
+Space is used to split words, "" can be used to search for a whole string (not indexed search then)<br />
+AND, OR and NOT are prefix words, overruling the default operator<br />
++/|/- equals AND, OR and NOT as operators.<br />
+All search words are converted to lowercase.
+]]></source>
+			<target state="final"><![CDATA[يتم قبول فقط الكلمات ذات حرفين أو أكثر<br />
+مجموع 200 حرف كحد أقصى<br />
+يتم استخدام الفضاء لتقسيم الكلمات. "" يمكن استخدامه للبحث عن سلسلة كاملة (البحث غير المفهرس بعدئذٍ)<br />
+AND, OR و NOT هي كلمات البادئة، إلغاء المشغل الافتراضي<br />
++/|/- يساوي  AND, OR and NOT كمشغلين.<br />
+يتم تحويل جميع كلمات البحث إلى حروف صغيرة.
+]]></target></trans-unit>
+      <trans-unit id="form.legend" resname="form.legend" approved="yes">
+        <source>Search form</source>
+        <target state="final">نموذج البحث</target>
+      </trans-unit>
+      <trans-unit id="form.searchFor" resname="form.searchFor" approved="yes">
+        <source>Search for</source>
+        <target state="final">البحث عن</target>
+      </trans-unit>
+      <trans-unit id="form.extResume" resname="form.extResume" approved="yes">
+        <source>Extended resume</source>
+        <target state="final">استئناف مُمتدْ</target>
+      </trans-unit>
+      <trans-unit id="form.atATime" resname="form.atATime" approved="yes">
+        <source>at a time</source>
+        <target state="final">في الوقت</target>
+      </trans-unit>
+      <trans-unit id="form.orderBy" resname="form.orderBy" approved="yes">
+        <source>Order by</source>
+        <target state="final">الترتيب حسب</target>
+      </trans-unit>
+      <trans-unit id="form.fromSection" resname="form.fromSection" approved="yes">
+        <source>From section</source>
+        <target state="final">من القسم</target>
+      </trans-unit>
+      <trans-unit id="form.freeIndexUid" resname="form.freeIndexUid" approved="yes">
+        <source>Category</source>
+        <target state="final">الفئة</target>
+      </trans-unit>
+      <trans-unit id="form.searchIn" resname="form.searchIn" approved="yes">
+        <source>Search in</source>
+        <target state="final">البحث في</target>
+      </trans-unit>
+      <trans-unit id="form.match" resname="form.match" approved="yes">
+        <source>Match</source>
+        <target state="final">التطابق</target>
+      </trans-unit>
+      <trans-unit id="form.style" resname="form.style" approved="yes">
+        <source>Style</source>
+        <target state="final">المظهر</target>
+      </trans-unit>
+      <trans-unit id="form.submit" resname="form.submit" approved="yes">
+        <source>Search</source>
+        <target state="final">البحث</target>
+      </trans-unit>
+      <trans-unit id="form.addToSearch" resname="form.addToSearch" approved="yes">
+        <source>Add to current search words</source>
+        <target state="final">إضافة إلى كلمات البحث الحالية</target>
+      </trans-unit>
+      <trans-unit id="form.linkToRegularSearch" resname="form.linkToRegularSearch" approved="yes">
+        <source>Regular search</source>
+        <target state="final">البحث المُعتاد</target>
+      </trans-unit>
+      <trans-unit id="form.linkToAdvancedSearch" resname="form.linkToAdvancedSearch" approved="yes">
+        <source>Advanced search</source>
+        <target state="final">البحث المُتقدم</target>
+      </trans-unit>
+      <trans-unit id="searchTypes.0" resname="searchTypes.0" approved="yes">
+        <source>Distinct word</source>
+        <target state="final">كلمة مُميزة</target>
+      </trans-unit>
+      <trans-unit id="searchTypes.1" resname="searchTypes.1" approved="yes">
+        <source>Part of word</source>
+        <target state="final">جزء من كلمة</target>
+      </trans-unit>
+      <trans-unit id="searchTypes.2" resname="searchTypes.2" approved="yes">
+        <source>First part of word</source>
+        <target state="final">الجزء الأول من كلمة</target>
+      </trans-unit>
+      <trans-unit id="searchTypes.3" resname="searchTypes.3" approved="yes">
+        <source>Last part of word</source>
+        <target state="final">الجزء الأخير من كلمة</target>
+      </trans-unit>
+      <trans-unit id="searchTypes.10" resname="searchTypes.10" approved="yes">
+        <source>Sounds like</source>
+        <target state="final">يبدو مثل</target>
+      </trans-unit>
+      <trans-unit id="searchTypes.20" resname="searchTypes.20" approved="yes">
+        <source>Sentence</source>
+        <target state="final">جملة</target>
+      </trans-unit>
+      <trans-unit id="defaultOperands.0" resname="defaultOperands.0" approved="yes">
+        <source>All words (AND)</source>
+        <target state="final">جميع الكلمات (AND)</target>
+      </trans-unit>
+      <trans-unit id="defaultOperands.1" resname="defaultOperands.1" approved="yes">
+        <source>Any words (OR)</source>
+        <target state="final">أي كلمات (OR)</target>
+      </trans-unit>
+      <trans-unit id="languageUids.-1" resname="languageUids.-1" approved="yes">
+        <source>All languages</source>
+        <target state="final">كل اللغات</target>
+      </trans-unit>
+      <trans-unit id="languageUids.0" resname="languageUids.0" approved="yes">
+        <source>Default</source>
+        <target state="final">افتراضي</target>
+      </trans-unit>
+      <trans-unit id="sections.0" resname="sections.0" approved="yes">
+        <source>Whole site</source>
+        <target state="final">الموقع بأكمله</target>
+      </trans-unit>
+      <trans-unit id="sections.-1" resname="sections.-1" approved="yes">
+        <source>Only this page</source>
+        <target state="final">فقط هذه الصفحة</target>
+      </trans-unit>
+      <trans-unit id="sections.-2" resname="sections.-2" approved="yes">
+        <source>Top + level 1</source>
+        <target state="final">أعلى + المستوى 1</target>
+      </trans-unit>
+      <trans-unit id="sections.-3" resname="sections.-3" approved="yes">
+        <source>Level 2 and out</source>
+        <target state="final">المستوى 2 وما بعدها</target>
+      </trans-unit>
+      <trans-unit id="sections.rootLevel1" resname="sections.rootLevel1" approved="yes">
+        <source>Level 1</source>
+        <target state="final">المستوى 1</target>
+      </trans-unit>
+      <trans-unit id="sections.rootLevel1All" resname="sections.rootLevel1All" approved="yes">
+        <source>All pages on level 1</source>
+        <target state="final">كل الصفحات في المستوى 1</target>
+      </trans-unit>
+      <trans-unit id="sections.rootLevel2" resname="sections.rootLevel2" approved="yes">
+        <source>- Level 2</source>
+        <target state="final">- المستوى 2</target>
+      </trans-unit>
+      <trans-unit id="sections.rootLevel2All" resname="sections.rootLevel2All" approved="yes">
+        <source>- All pages on level 2</source>
+        <target state="final">- كل الصفحات في المستوى 2</target>
+      </trans-unit>
+      <trans-unit id="mediaTypes.0" resname="mediaTypes.0" approved="yes">
+        <source>Internal pages</source>
+        <target state="final">الصفحات الداخلية</target>
+      </trans-unit>
+      <trans-unit id="mediaTypes.-1" resname="mediaTypes.-1" approved="yes">
+        <source>All media</source>
+        <target state="final">كل الوسائط</target>
+      </trans-unit>
+      <trans-unit id="mediaTypes.-2" resname="mediaTypes.-2" approved="yes">
+        <source>All External</source>
+        <target state="final">كل الخارجي</target>
+      </trans-unit>
+      <trans-unit id="indexingConfigurations.-1" resname="indexingConfigurations.-1" approved="yes">
+        <source>All, mixed</source>
+        <target state="final">الكل, مُختَلط</target>
+      </trans-unit>
+      <trans-unit id="indexingConfigurations.-2" resname="indexingConfigurations.-2" approved="yes">
+        <source>All, categorized</source>
+        <target state="final">الكل, مُصنّف</target>
+      </trans-unit>
+      <trans-unit id="indexingConfigurations.0" resname="indexingConfigurations.0" approved="yes">
+        <source>Pages</source>
+        <target state="final">الصفحات</target>
+      </trans-unit>
+      <trans-unit id="indexingConfigurationHeader.-1" resname="indexingConfigurationHeader.-1" approved="yes">
+        <source>Mixed categories</source>
+        <target state="final">فئات مُختلطة</target>
+      </trans-unit>
+      <trans-unit id="indexingConfigurationHeader.0" resname="indexingConfigurationHeader.0" approved="yes">
+        <source>Website Pages</source>
+        <target state="final">صفحات موقع الويب</target>
+      </trans-unit>
+      <trans-unit id="sortOrders.rank_flag" resname="sortOrders.rank_flag" approved="yes">
+        <source>Weight/Frequency</source>
+        <target state="final">الوزن/التردد</target>
+      </trans-unit>
+      <trans-unit id="sortOrders.rank_freq" resname="sortOrders.rank_freq" approved="yes">
+        <source>Frequency</source>
+        <target state="final">التردّد</target>
+      </trans-unit>
+      <trans-unit id="sortOrders.rank_first" resname="sortOrders.rank_first" approved="yes">
+        <source>Close to top</source>
+        <target state="final">قريب من الأعلى</target>
+      </trans-unit>
+      <trans-unit id="sortOrders.rank_count" resname="sortOrders.rank_count" approved="yes">
+        <source>Number of words</source>
+        <target state="final">عدد الكلمات</target>
+      </trans-unit>
+      <trans-unit id="sortOrders.mtime" resname="sortOrders.mtime" approved="yes">
+        <source>Date Modified</source>
+        <target state="final">تاريخ أخر تعديل</target>
+      </trans-unit>
+      <trans-unit id="sortOrders.title" resname="sortOrders.title" approved="yes">
+        <source>Document title</source>
+        <target state="final">عنوان المستند</target>
+      </trans-unit>
+      <trans-unit id="sortOrders.crdate" resname="sortOrders.crdate" approved="yes">
+        <source>Creation date</source>
+        <target state="final">تاريخ الإنشاء</target>
+      </trans-unit>
+      <trans-unit id="sortOrders.descending" resname="sortOrders.descending" approved="yes">
+        <source>Highest first</source>
+        <target state="final">الأعلى أولاً</target>
+      </trans-unit>
+      <trans-unit id="sortOrders.ascending" resname="sortOrders.ascending" approved="yes">
+        <source>Lowest first</source>
+        <target state="final">الأقل أولاً</target>
+      </trans-unit>
+      <trans-unit id="groupBy.sections" resname="groupBy.sections" approved="yes">
+        <source>Section hierarchy</source>
+        <target state="final">التسلسل الهرمي للقسم</target>
+      </trans-unit>
+      <trans-unit id="groupBy.flat" resname="groupBy.flat" approved="yes">
+        <source>Flat list</source>
+        <target state="final">قائمة مسطحة</target>
+      </trans-unit>
+      <trans-unit id="result.page" resname="result.page" approved="yes">
+        <source>page</source>
+        <target state="final">صفحة</target>
+      </trans-unit>
+      <trans-unit id="result.pages" resname="result.pages" approved="yes">
+        <source>pages</source>
+        <target state="final">صفحات</target>
+      </trans-unit>
+      <trans-unit id="result.unnamedSection" resname="result.unnamedSection" approved="yes">
+        <source>Other</source>
+        <target state="final">آخر</target>
+      </trans-unit>
+      <trans-unit id="result.otherMatching" resname="result.otherMatching" approved="yes">
+        <source>Other matching pages in the same document</source>
+        <target state="final">صفحات مطابقة أخرى في نفس المستند</target>
+      </trans-unit>
+      <trans-unit id="result.otherPageAsWell" resname="result.otherPageAsWell" approved="yes">
+        <source>INFO: There was another page indexed as well. Probably indexed with another or no usergroup.</source>
+        <target state="final">معلومة: كان هناك صفحة أخرى مُفهرسة أيضاً. يمكن فهرستها مع مجموعة مستخدمين أخرى أو دون مجموعة.</target>
+      </trans-unit>
+      <trans-unit id="result.path" resname="result.path" approved="yes">
+        <source>Path</source>
+        <target state="final">مسار</target>
+      </trans-unit>
+      <trans-unit id="result.modified" resname="result.modified" approved="yes">
+        <source>Modified</source>
+        <target state="final">تم تعديله</target>
+      </trans-unit>
+      <trans-unit id="result.created" resname="result.created" approved="yes">
+        <source>Created</source>
+        <target state="final">تم الإنشاء</target>
+      </trans-unit>
+      <trans-unit id="result.size" resname="result.size" approved="yes">
+        <source>Size</source>
+        <target state="final">الحجم</target>
+      </trans-unit>
+      <trans-unit id="result.noResume" resname="result.noResume" approved="yes">
+        <source>Note: This search hit may not accurately match the content on this page. The page resume cannot be shown.</source>
+        <target state="final">ملاحظة: قد لا تطابق عملية البحث هذه بدقة المحتوى في هذه الصفحة. لا يمكن عرض استئناف الصفحة.</target>
+      </trans-unit>
+      <trans-unit id="result.memberGroups" resname="result.memberGroups" approved="yes">
+        <source>Require membership of group numbers %s</source>
+        <target state="final">يتطلب العضوية في أرقام المجموعة %s</target>
+      </trans-unit>
+      <trans-unit id="result.ratingMatches" resname="result.ratingMatches" approved="yes">
+        <source>matches</source>
+        <target state="final">المتطابقات</target>
+      </trans-unit>
+      <trans-unit id="result.noResult" resname="result.noResult" approved="yes">
+        <source>No results found.</source>
+        <target state="final">لم يتم العثور على أي نتائج.</target>
+      </trans-unit>
+      <trans-unit id="result.inSection" resname="result.inSection" approved="yes">
+        <source>in the section</source>
+        <target state="final">في القسم</target>
+      </trans-unit>
+      <trans-unit id="result.inNsection" resname="result.inNsection" approved="yes">
+        <source>in %s section</source>
+        <target state="final">في قسم %s</target>
+      </trans-unit>
+      <trans-unit id="result.inNsections" resname="result.inNsections" approved="yes">
+        <source>in %s sections</source>
+        <target state="final">في %s أقسام</target>
+      </trans-unit>
+      <trans-unit id="searchFor" resname="searchFor" approved="yes">
+        <source>Search for</source>
+        <target state="final">البحث عن</target>
+      </trans-unit>
+      <trans-unit id="searchFor.or" resname="searchFor.or" approved="yes">
+        <source>or</source>
+        <target state="final">أو</target>
+      </trans-unit>
+      <trans-unit id="searchFor.and" resname="searchFor.and" approved="yes">
+        <source>and</source>
+        <target state="final">و</target>
+      </trans-unit>
+      <trans-unit id="searchFor.andnot" resname="searchFor.andnot" approved="yes">
+        <source>but not</source>
+        <target state="final">ولكن ليس</target>
+      </trans-unit>
+      <trans-unit id="displayResults.previous" resname="displayResults.previous" approved="yes">
+        <source>&lt; Previous</source>
+        <target state="final">&lt; السابق</target>
+      </trans-unit>
+      <trans-unit id="displayResults.page" resname="displayResults.page" approved="yes">
+        <source>Page</source>
+        <target state="final">الصفحة</target>
+      </trans-unit>
+      <trans-unit id="displayResults.next" resname="displayResults.next" approved="yes">
+        <source>Next &gt;</source>
+        <target state="final">التالي &gt;</target>
+      </trans-unit>
+      <trans-unit id="displayResults" resname="displayResults" approved="yes">
+        <source><![CDATA[Displaying results <strong>%1$s to %2$s</strong> out of <strong>%3$s</strong>]]></source>
+        <target state="final"><![CDATA[عرض النتائج <strong>%1$s إلى %2$s</strong> من <strong>%3$s</strong>]]></target>
+      </trans-unit>
+      <trans-unit id="administration.menu.general" resname="administration.menu.general" approved="yes">
+        <source>General statistics</source>
+        <target state="final">الإحصاءات العامة</target>
+      </trans-unit>
+      <trans-unit id="administration.menu.pages" resname="administration.menu.pages" approved="yes">
+        <source>List: Pages</source>
+        <target state="final">قائمة: صفحات</target>
+      </trans-unit>
+      <trans-unit id="administration.menu.externalDocuments" resname="administration.menu.externalDocuments" approved="yes">
+        <source>List: External documents</source>
+        <target state="final">القائمة: الوثائق الخارجية</target>
+      </trans-unit>
+      <trans-unit id="administration.menu.searchStatistic" resname="administration.menu.searchStatistic" approved="yes">
+        <source>Search statistics</source>
+        <target state="final">احصائيات البحث</target>
+      </trans-unit>
+      <trans-unit id="administration.menu.statistic" resname="administration.menu.statistic" approved="yes">
+        <source>Detailed statistics</source>
+        <target state="final">إحصائيات مُفصّلة</target>
+      </trans-unit>
+      <trans-unit id="administration.index.description" resname="administration.index.description" approved="yes">
+        <source>General statistics</source>
+        <target state="final">الإحصاءات العامة</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics" resname="administration.statistics" approved="yes">
+        <source>Indexing Engine Statistics</source>
+        <target state="final">إحصائيات محرك الفهرسة</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.header" resname="administration.statistics.header" approved="yes">
+        <source>Row count by database table</source>
+        <target state="final">عدد الصف حسب جدول قاعدة البيانات</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.name" resname="administration.statistics.name" approved="yes">
+        <source>Name</source>
+        <target state="final">الاسم</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.count" resname="administration.statistics.count" approved="yes">
+        <source>Count</source>
+        <target state="final">العدّ</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.headerTypes" resname="administration.statistics.headerTypes" approved="yes">
+        <source>Hash Header Types</source>
+        <target state="final">أنواع رأس التجزئة</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.headerTypes.count" resname="administration.statistics.headerTypes.count" approved="yes">
+        <source>Count / Unique count</source>
+        <target state="final">العد / العد الفريد</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.word" resname="administration.statistics.word" approved="yes">
+        <source>Word</source>
+        <target state="final">كلمة</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.mostSearched.title" resname="administration.statistics.mostSearched.title" approved="yes">
+        <source>List of most searched words</source>
+        <target state="final">قائمة بأغلب الكلمات التي تم البحث عنها</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.mostSearched.description" resname="administration.statistics.mostSearched.description" approved="yes">
+        <source>Statistics for all pages. Select a page with indexed search form to see several statistics.</source>
+        <target state="final">إحصائيات لجميع الصفحات. حدد صفحة مع نموذج البحث المُفهرس لرؤية عدة إحصاءات.</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.mostSearched.all" resname="administration.statistics.mostSearched.all" approved="yes">
+        <source>All</source>
+        <target state="final">الكل</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.mostSearched.last30days" resname="administration.statistics.mostSearched.last30days" approved="yes">
+        <source>Last 30 days</source>
+        <target state="final">آخر 30 يوم</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.mostSearched.last24hours" resname="administration.statistics.mostSearched.last24hours" approved="yes">
+        <source>Last 24 hours</source>
+        <target state="final">آخر 24 ساعة</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.noResult" resname="administration.statistics.noResult" approved="yes">
+        <source>No result found</source>
+        <target state="final">لم يتم العثور على نتائج</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.noResultForPage" resname="administration.statistics.noResultForPage" approved="yes">
+        <source>No result for the selected page found.</source>
+        <target state="final">لم يتم العثور على أي نتيجة للصفحة المحددة.</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.selectPage" resname="administration.statistics.selectPage" approved="yes">
+        <source>Please select a page in the page tree.</source>
+        <target state="final">الرجاء تحديد صفحة في شجرة الصفحة.</target>
+      </trans-unit>
+      <trans-unit id="administration.external.title" resname="administration.external.title" approved="yes">
+        <source>External documents</source>
+        <target state="final">المستندات الخارجية</target>
+      </trans-unit>
+      <trans-unit id="field.fileName" resname="field.fileName" approved="yes">
+        <source>Filename</source>
+        <target state="final">اسم الملف</target>
+      </trans-unit>
+      <trans-unit id="field.fileSize" resname="field.fileSize" approved="yes">
+        <source>Filesize</source>
+        <target state="final">حجم الملف</target>
+      </trans-unit>
+      <trans-unit id="field.wordCount" resname="field.wordCount" approved="yes">
+        <source>Word count</source>
+        <target state="final">عدد الكلمات</target>
+      </trans-unit>
+      <trans-unit id="field.words" resname="field.words" approved="yes">
+        <source>Words</source>
+        <target state="final">الكلمات</target>
+      </trans-unit>
+      <trans-unit id="field.mtime" resname="field.mtime" approved="yes">
+        <source>Modification time</source>
+        <target state="final">وقت التعديل</target>
+      </trans-unit>
+      <trans-unit id="field.indexed" resname="field.indexed" approved="yes">
+        <source>Indexed</source>
+        <target state="final">مُفهرس</target>
+      </trans-unit>
+      <trans-unit id="field.updated" resname="field.updated" approved="yes">
+        <source>Updated</source>
+        <target state="final">مُحدّث</target>
+      </trans-unit>
+      <trans-unit id="field.parseTime" resname="field.parseTime" approved="yes">
+        <source>Parsetime [ms]</source>
+        <target state="final">مدة المعالجة [ms]</target>
+      </trans-unit>
+      <trans-unit id="field.groups" resname="field.groups" approved="yes">
+        <source>#sec/gr/full</source>
+        <target state="final">#sec/gr/full</target>
+      </trans-unit>
+      <trans-unit id="field.sub" resname="field.sub" approved="yes">
+        <source>Sub</source>
+        <target state="final">فرعي</target>
+      </trans-unit>
+      <trans-unit id="field.staticPageArguments" resname="field.staticPageArguments" approved="yes">
+        <source>Static Page Arguments</source>
+        <target state="final">مُعامِلات الصفحة الثابتة</target>
+      </trans-unit>
+      <trans-unit id="field.count" resname="field.count" approved="yes">
+        <source>Count</source>
+        <target state="final">العدّ</target>
+      </trans-unit>
+      <trans-unit id="field.first" resname="field.first" approved="yes">
+        <source>First</source>
+        <target state="final">الأوّل</target>
+      </trans-unit>
+      <trans-unit id="field.pHash" resname="field.pHash" approved="yes">
+        <source>PageHash</source>
+        <target state="final">PageHash</target>
+      </trans-unit>
+      <trans-unit id="field.path" resname="field.path" approved="yes">
+        <source>Path</source>
+        <target state="final">المسار</target>
+      </trans-unit>
+      <trans-unit id="field.id" resname="field.id" approved="yes">
+        <source>Page Id</source>
+        <target state="final">Id الصفحة</target>
+      </trans-unit>
+      <trans-unit id="field.uniqueId" resname="field.uniqueId" approved="yes">
+        <source>Unique Id</source>
+        <target state="final">Id فريد</target>
+      </trans-unit>
+      <trans-unit id="field.type" resname="field.type" approved="yes">
+        <source>Type</source>
+        <target state="final">النوع</target>
+      </trans-unit>
+      <trans-unit id="field.title" resname="field.title" approved="yes">
+        <source>Title</source>
+        <target state="final">العنوان</target>
+      </trans-unit>
+      <trans-unit id="field.language" resname="field.language" approved="yes">
+        <source>Language</source>
+        <target state="final">اللغة</target>
+      </trans-unit>
+      <trans-unit id="field.frequency" resname="field.frequency" approved="yes">
+        <source>Frequency</source>
+        <target state="final">التردّد</target>
+      </trans-unit>
+      <trans-unit id="field.flag" resname="field.flag" approved="yes">
+        <source>Flag</source>
+        <target state="final">العلم</target>
+      </trans-unit>
+      <trans-unit id="field.metaphone" resname="field.metaphone" approved="yes">
+        <source>Metaphone</source>
+        <target state="final">الميتافون (الفهرسة الصوتية)</target>
+      </trans-unit>
+      <trans-unit id="field.content" resname="field.content" approved="yes">
+        <source>Content</source>
+        <target state="final">مُحتوى</target>
+      </trans-unit>
+      <trans-unit id="administration.notIndexed" resname="administration.notIndexed" approved="yes">
+        <source>Not indexed?</source>
+        <target state="final">غير مُفَهرس؟</target>
+      </trans-unit>
+      <trans-unit id="administration.document.description" resname="administration.document.description" approved="yes">
+        <source>Details for a single result row</source>
+        <target state="final">تفاصيل لِصف نتيجة واحدة</target>
+      </trans-unit>
+      <trans-unit id="administration.document.words" resname="administration.document.words" approved="yes">
+        <source>All words found on page</source>
+        <target state="final">جميع الكلمات الموجودة في الصفحة</target>
+      </trans-unit>
+      <trans-unit id="administration.document.topCount" resname="administration.document.topCount" approved="yes">
+        <source>Words by top count</source>
+        <target state="final">الكلمات حسب أعلى عدد</target>
+      </trans-unit>
+      <trans-unit id="administration.document.topFrequency" resname="administration.document.topFrequency" approved="yes">
+        <source>Words by frequency</source>
+        <target state="final">الكلمات حسب التردد</target>
+      </trans-unit>
+      <trans-unit id="administration.stopWords" resname="administration.stopWords" approved="yes">
+        <source>Stopwords</source>
+        <target state="final">كلمات التوقف</target>
+      </trans-unit>
+      <trans-unit id="administration.stopWords.save" resname="administration.stopWords.save" approved="yes">
+        <source>Save stopwords</source>
+        <target state="final">حفظ كلمات التوقف</target>
+      </trans-unit>
+      <trans-unit id="administration.keywords" resname="administration.keywords" approved="yes">
+        <source>Page keywords</source>
+        <target state="final">الكلمات المِفتاحيّة للصفحة</target>
+      </trans-unit>
+      <trans-unit id="administration.keywords.current" resname="administration.keywords.current" approved="yes">
+        <source>Current page keywords</source>
+        <target state="final">الكلمات المِفتاحية الحالية للصفحة</target>
+      </trans-unit>
+      <trans-unit id="administration.stopWordsKeywords.save" resname="administration.stopWordsKeywords.save" approved="yes">
+        <source>Save keywords and stop words</source>
+        <target state="final">حفظ الكلمات المفتاحية وإيقاف الكلمات</target>
+      </trans-unit>
+      <trans-unit id="administration.word.description" resname="administration.word.description" approved="yes">
+        <source>Detail view of a single word</source>
+        <target state="final">عرض مُفصّل لكلمة واحدة</target>
+      </trans-unit>
+      <trans-unit id="administration.linkBack" resname="administration.linkBack" approved="yes">
+        <source>Back</source>
+        <target state="final">عودة</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.sectionRecords" resname="administration.statistics.sectionRecords" approved="yes">
+        <source>Section records for this phash</source>
+        <target state="final">قسم السجلات لهذ الـ phash</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.debug" resname="administration.statistics.debug" approved="yes">
+        <source>Debug</source>
+        <target state="final">تنقيح</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.lexer" resname="administration.statistics.lexer" approved="yes">
+        <source>Lexer</source>
+        <target state="final">Lexer</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.metaphone" resname="administration.statistics.metaphone" approved="yes">
+        <source>Metaphone</source>
+        <target state="final">الميتافون (الفهرسة الصوتية)</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.view.overview" resname="administration.statistics.view.overview" approved="yes">
+        <source>Overview</source>
+        <target state="final">نظرة عامّة</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.view.content" resname="administration.statistics.view.content" approved="yes">
+        <source>Words and content</source>
+        <target state="final">الكلمات والمحتوى</target>
+      </trans-unit>
+      <trans-unit id="administration.phash.tableHeader" resname="administration.phash.tableHeader" approved="yes">
+        <source>Phash row content</source>
+        <target state="final">مُحتوى صف Phash</target>
+      </trans-unit>
+      <trans-unit id="administration.removeEntry" resname="administration.removeEntry" approved="yes">
+        <source>Remove entry</source>
+        <target state="final">إزالة الإدخال</target>
+      </trans-unit>
+      <trans-unit id="administration.removeAllEntries" resname="administration.removeAllEntries" approved="yes">
+        <source>Remove all listed entries</source>
+        <target state="final">إزالة جميع الإدخالات المُدرجة</target>
+      </trans-unit>
+      <trans-unit id="administration.back" resname="administration.back" approved="yes">
+        <source>Back</source>
+        <target state="final">عودة</target>
+      </trans-unit>
+      <trans-unit id="administration.noPageSelected" resname="administration.noPageSelected" approved="yes">
+        <source>Please select a page from the page tree.</source>
+        <target state="final">الرجاء تحديد صفحة من شجرة الصفحة.</target>
+      </trans-unit>
+      <trans-unit id="error.noTypoScript" resname="error.noTypoScript" approved="yes">
+        <source>Error: Please check that TypoScript for the Indexed Search plugin is included.</source>
+        <target state="final">خطأ: الرجاء التحقق من أن TypoScript لإضافة البحث المُفهرس مشمول.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
