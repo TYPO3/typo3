@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:redirects/Resources/Private/Language/locallang.xlf" date="2017-12-29T20:22:14Z" product-name="redirects" target-language="ja">
+    <header/>
+    <body>
+      <trans-unit id="redirects" resname="redirects" approved="yes">
+        <source>Redirect Settings</source>
+        <target state="final">リダイレクトの設定</target>
+      </trans-unit>
+      <trans-unit id="redirects.autoCreateRedirects" resname="redirects.autoCreateRedirects" approved="yes">
+        <source>Create redirects for pages with a new slug automatically</source>
+        <target state="final">新しいスラグを持つページのリダイレクトを自動的に作成</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
