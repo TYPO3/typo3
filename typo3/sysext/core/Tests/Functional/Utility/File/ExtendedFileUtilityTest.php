@@ -19,8 +19,12 @@ namespace TYPO3\CMS\Core\Tests\Functional\Utility\File;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Http\UploadedFile;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\File\ExtendedFileUtility;
@@ -255,6 +259,28 @@ final class ExtendedFileUtilityTest extends FunctionalTestCase
         $result = $extendedFileUtility->processData();
 
         self::assertSame($expectedResult, $this->normalizeProcessedDataResult($result));
+    }
+
+    #[Test]
+    public function copyFolderIntoItsOwnSubfolderIsRejectedWithMatchingMessage(): void
+    {
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://example.com/typo3/'))
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        GeneralUtility::mkdir(Environment::getPublicPath() . '/fileadmin/file-commands/sub');
+
+        $extendedFileUtility = new ExtendedFileUtility();
+        $extendedFileUtility->start([
+            'copy' => [
+                1 => ['data' => '1:/file-commands/', 'target' => '1:/file-commands/sub/'],
+            ],
+        ], []);
+        $result = $extendedFileUtility->processData();
+
+        self::assertSame(['copy' => [false]], $result);
+        self::assertDirectoryDoesNotExist(Environment::getPublicPath() . '/fileadmin/file-commands/sub/file-commands');
+        $messages = $this->get(FlashMessageService::class)->getMessageQueueByIdentifier()->getAllMessages();
+        self::assertCount(1, $messages);
+        self::assertSame('Folder "/file-commands/" cannot be copied to "/file-commands/sub/", which is the folder itself or one of its subfolders.', $messages[0]->getMessage());
     }
 
     private function normalizeProcessedDataResult(array $result): array
