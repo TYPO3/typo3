@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_csh_systmpl.xlf" date="2011-10-17T20:22:32Z" product-name="context_help" target-language="es-ES">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>TypoScript template record.</source>
+        <target state="final">Registro de plantilla de TypoScript.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" xml:space="preserve" approved="yes">
+				<source>The 'Template' records are the vital components used to set the design of the webpages. No matter how (almost) you would like to build your website, it must be initiated by a 'Template' record placed in the root of the page tree of the site.
+Basically, create a 'Template' record, enter a title and make sure to check of Clear constants, setup and Rootline. Then enter some TypoScript configuration in the Setup field and you're set.
+It's very important to read how to do all this in the documents listed below! Also make sure you use the Web&gt;Template module to do all the working with templates. It's a specialized tool to help you with this.</source>
+			<target state="final">Los registros de 'Template' son los componentes vitales utilizados para establecer el diseño de las páginas web. No importa cómo (casi) le gustaría construir su sitio web, debe ser iniciado por un registro 'Template' colocado en la raíz del árbol de páginas del sitio.
+Básicamente, cree un registro de 'Template', introduzca un título y asegúrese de comprobar las constantes de Limpiar, la configuración y la línea raíz. A continuación, introduzca alguna configuración de TypoScript en el campo Setup y ya está.
+Es muy importante leer cómo hacer todo esto en los documentos que se enumeran a continuación! También asegúrese de usar el módulo Web&gt;Template para hacer todo el trabajo con las plantillas. Es una herramienta especializada para ayudarle con esto.</target></trans-unit>
+      <trans-unit id="_.seeAlso" resname="_.seeAlso" xml:space="preserve" approved="yes">
+				<source>static_template
+TSref | https://docs.typo3.org/typo3cms/TyposcriptReference/
+TypoScript in 45 min| https://docs.typo3.org/typo3cms/TyposcriptIn45MinutesTutorial/</source>
+			<target state="final">static_template
+TSref | https://docs.typo3.org/typo3cms/TyposcriptReference/
+TypoScript in 45 min| https://docs.typo3.org/typo3cms/TyposcriptIn45MinutesTutorial/</target></trans-unit>
+      <trans-unit id="_.image" resname="_.image" xml:space="preserve" approved="yes">
+				<source>EXT:frontend/Resources/Public/Images/cshimages/systemplate.png,
+EXT:frontend/Resources/Public/Images/cshimages/systemplate1.png</source>
+				
+			<target state="final">EXT:frontend/Resources/Public/Images/cshimages/systemplate.png,
+EXT:frontend/Resources/Public/Images/cshimages/systemplate1.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" xml:space="preserve" approved="yes">
+				<source>A Template Record with constants and setup code.
+The Web&gt;Template module contains tools which will help you to edit and validate TypoScript structures.</source>
+			<target state="final">Una plantilla de registro con constantes y código de configuración.
+El módulo Web&gt;Template contiene herramientas que le ayudarán a editar y validar las estructuras TypoScript.</target></trans-unit>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>Unchecking this option will deactivate the template record.</source>
+        <target state="final">Desmarcar esta opción desactivará el registro de plantilla.</target>
+      </trans-unit>
+      <trans-unit id="hidden.details" resname="hidden.details" approved="yes">
+        <source>If the Template Record was the first record on a page hiding it will expose the second record on the page instead.</source>
+        <target state="final">Si el Registro de plantilla fue el primer registro en una página que ocultaba, expondrá el segundo registro en la página en su lugar.</target>
+      </trans-unit>
+      <trans-unit id="starttime.description" resname="starttime.description" approved="yes">
+        <source>Start time. Use this to enable a template on a certain date.</source>
+        <target state="final">Hora de inicio. Utilice esta opción para habilitar una plantilla en una fecha determinada.</target>
+      </trans-unit>
+      <trans-unit id="endtime.description" resname="endtime.description" approved="yes">
+        <source>End time. Use this to disable a template on a certain date.</source>
+        <target state="final">Hora final. Utilice esta opción para desactivar una plantilla en una fecha determinada.</target>
+      </trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>The title of the template record is only an internal label and does not have any effect on the output in the frontend.</source>
+        <target state="final">El título de la plantilla de registro es sólo una etiqueta interna y no tiene ningún efecto en la salida en el frontend.</target>
+      </trans-unit>
+      <trans-unit id="sitetitle.description" resname="sitetitle.description" approved="yes">
+        <source>Website title. Typically this will automatically be prefixed all page titles in the &lt;title&gt; tag of the frontend pages.</source>
+        <target state="final">Título del sitio web. Típicamente esto será automáticamente prefijado a todos los títulos de página en la etiqueta &lt;title&gt; de las páginas frontend.</target>
+      </trans-unit>
+      <trans-unit id="constants.description" resname="constants.description" approved="yes">
+        <source>TypoScript Constants.</source>
+        <target state="final">Constantes de TypoScript.</target>
+      </trans-unit>
+      <trans-unit id="_constants.seeAlso" resname="_constants.seeAlso" approved="yes">
+        <source>static_template:constants</source>
+        <target state="final">static_template:constants</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="config.description" resname="config.description" approved="yes">
+        <source>TypoScript Setup code</source>
+        <target state="final">Código de configuración de TypoScript</target>
+      </trans-unit>
+      <trans-unit id="config.details" resname="config.details" approved="yes">
+        <source>Read more about TypoScript Templates in TSref, TypoScript by Example and Getting Started.</source>
+        <target state="final">Lea más sobre Plantillas TypoScript en TSref, TypoScript por ejemplo y Getting Started.</target>
+      </trans-unit>
+      <trans-unit id="_config.seeAlso" resname="_config.seeAlso" xml:space="preserve" approved="yes">
+				<source>static_template:config,
+TSref | https://docs.typo3.org/typo3cms/TyposcriptReference/
+Getting Started | https://docs.typo3.org/typo3cms/GettingStartedTutorial/
+TypoScript in 45 min| https://docs.typo3.org/typo3cms/TyposcriptIn45MinutesTutorial/
+TypoScript Syntax | https://docs.typo3.org/typo3cms/TyposcriptSyntaxReference/</source>
+				
+			<target state="final">static_template:config,
+TSref | https://docs.typo3.org/typo3cms/TyposcriptReference/
+Getting Started | https://docs.typo3.org/typo3cms/GettingStartedTutorial/
+TypoScript in 45 min| https://docs.typo3.org/typo3cms/TyposcriptIn45MinutesTutorial/
+TypoScript Syntax | https://docs.typo3.org/typo3cms/TyposcriptSyntaxReference/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="resources.description" resname="resources.description" approved="yes">
+        <source>Resource files for the template. For example a logo, a TTF-font etc.</source>
+        <target state="final">Archivos de recursos para la plantilla. Por ejemplo, un logotipo, una fuente TTF, etc.</target>
+      </trans-unit>
+      <trans-unit id="resources.details" resname="resources.details" approved="yes">
+        <source>Resource files can be referenced in TypoScript Template code by [filename]*.[ext] and has the advantage that the reference from TypoScript is not broken if you copy or export a Template Record where the resources ends up with new names.</source>
+        <target state="final">Los archivos de recursos se pueden referenciar en el código de plantilla de TypoScript mediante[nombre de archivo]*.[ext] y tiene la ventaja de que la referencia de TypoScript no se rompe si copia o exporta un registro de plantilla donde los recursos terminan con nuevos nombres.</target>
+      </trans-unit>
+      <trans-unit id="clear.description" resname="clear.description" approved="yes">
+        <source>Flags that will clear the inheritance of TypoScript code from former templates in the root line. There is a flag for Constants and one for Setup code.</source>
+        <target state="final">Marcas que borrarán la herencia de código TypoScript de las plantillas anteriores en la línea raíz. Hay un indicador para constantes y otro para el código de configuración.</target>
+      </trans-unit>
+      <trans-unit id="clear.details" resname="clear.details" approved="yes">
+        <source>In the Web &gt; Template / Template Analyzer module you can see how far back in the template tree that constants and setup code is inherited.</source>
+        <target state="final">En el módulo Web &gt; Template / Template Analyzer puede ver qué tan atrás en el árbol de plantillas se hereda la constante y el código de configuración.</target>
+      </trans-unit>
+      <trans-unit id="_clear.seeAlso" resname="_clear.seeAlso" approved="yes">
+        <source>sys_template:root</source>
+        <target state="final">sys_template:root</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_clear.image" resname="_clear.image" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/systemplate2.png</source>
+        <target state="final">EXT:frontend/Resources/Public/Images/cshimages/systemplate2.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="root.description" resname="root.description" approved="yes">
+        <source>Defines that the template represents a root of a website.</source>
+        <target state="final">Define que la plantilla representa una raíz de un sitio web.</target>
+      </trans-unit>
+      <trans-unit id="_root.seeAlso" resname="_root.seeAlso" approved="yes">
+        <source>sys_template:clear</source>
+        <target state="final">sys_template:clear</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="includeStaticAfterBasedOn.description" resname="includeStaticAfterBasedOn.description" approved="yes">
+        <source>If set, static templates will be included after "based-on" templates. It basically swaps the order of inclusion of these external TypoScript sources.</source>
+        <target state="final">Si está configurado, las plantillas estáticas se incluirán después de las plantillas "basadas en". Básicamente, cambia el orden de inclusión de estas fuentes TypoScript externas.</target>
+      </trans-unit>
+      <trans-unit id="includeStaticAfterBasedOn.details" resname="includeStaticAfterBasedOn.details" approved="yes">
+        <source>The Web &gt; Template / Template Analyzer module allows you to view the order of inclusion of all TypoScript sources your template uses.</source>
+        <target state="final">El módulo Web &gt; Template / Template Analyzer le permite ver el orden de inclusión de todas las fuentes de TypoScript que utiliza su plantilla.</target>
+      </trans-unit>
+      <trans-unit id="include_static.description" resname="include_static.description" approved="yes">
+        <source>Static Template records to include.</source>
+        <target state="final">Registros de plantillas estáticas para incluir.</target>
+      </trans-unit>
+      <trans-unit id="_include_static.seeAlso" resname="_include_static.seeAlso" approved="yes">
+        <source>static_template</source>
+        <target state="final">static_template</target>
+      </trans-unit>
+      <trans-unit id="include_static_file.description" resname="include_static_file.description" approved="yes">
+        <source>Static Template files to include.</source>
+        <target state="final">Archivos de plantillas estáticas a incluir.</target>
+      </trans-unit>
+      <trans-unit id="include_static_file.details" resname="include_static_file.details" approved="yes">
+        <source>Static template files are registered by extensions contrary to Static Template records which come from the static database table, "static_template".</source>
+        <target state="final">Los archivos de plantilla estática se registran mediante extensiones contrarias a los registros de plantilla estática que provienen de la tabla de base de datos estática "static_template".</target>
+      </trans-unit>
+      <trans-unit id="_include_static_file.seeAlso" resname="_include_static_file.seeAlso" approved="yes">
+        <source>sys_template:include_static</source>
+        <target state="final">sys_template:include_static</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="basedOn.description" resname="basedOn.description" approved="yes">
+        <source>Other Template Records that are included like "static templates".</source>
+        <target state="final">Otros registros de plantillas que se incluyen como "plantillas estáticas".</target>
+      </trans-unit>
+      <trans-unit id="static_file_mode.description" resname="static_file_mode.description" approved="yes">
+        <source>Define the mode of inclusion of static template files.</source>
+        <target state="final">Definir el modo de inclusión de archivos de plantilla estática.</target>
+      </trans-unit>
+      <trans-unit id="static_file_mode.details" resname="static_file_mode.details" approved="yes">
+        <source>If you are in doubt about the inclusion order, make sure to use the Web &gt; Template / Template Analyzer to view the order.</source>
+        <target state="final">Si tiene dudas sobre el orden de inclusión, asegúrese de usar el módulo Web &gt; Template / Template Analyzer para ver el orden.</target>
+      </trans-unit>
+      <trans-unit id="nextLevel.description" resname="nextLevel.description" approved="yes">
+        <source>Defines a template record to make active one level out in the page tree of this branch. This can be used to define another template record for the general website while having a special template for the frontpage.</source>
+        <target state="final">Define un registro de plantilla para activar un nivel en el árbol de páginas de esta rama. Esto se puede utilizar para definir otro registro de plantilla para el sitio web general, mientras que tiene una plantilla especial para la página principal.</target>
+      </trans-unit>
+      <trans-unit id="description.description" resname="description.description" approved="yes">
+        <source>Enter a description of the template if you like.</source>
+        <target state="final">Introduzca una descripción del modelo si lo desea.</target>
+      </trans-unit>
+      <trans-unit id="editorcfg.description" resname="editorcfg.description" approved="yes">
+        <source>Editor Configuration for the stylesheet editor extension.</source>
+        <target state="final">Configuración del editor para la extensión del editor de hojas de estilo.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
