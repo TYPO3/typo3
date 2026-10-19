@@ -154,6 +154,10 @@ readonly class OnlineMediaController
             } catch (\Exception $e) {
                 $targetFolder = null;
             }
+            // Media must not be added outside the configured file storages
+            if ($targetFolder?->getStorage()->isFallbackStorage()) {
+                $targetFolder = null;
+            }
         }
         if ($targetFolder === null) {
             $targetFolder = $this->uploadFolderResolver->resolve($this->getBackendUser());
