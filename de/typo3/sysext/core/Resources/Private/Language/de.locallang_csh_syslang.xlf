@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_syslang.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Enter the name of this additional system language.</source>
+        <target state="final">Geben Sie den den Namen dieser zusätzlichen systemweiten Spracherweiterung an.</target>
+      </trans-unit>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>Unchecking this option will hide the system language from being available in the backend.</source>
+        <target state="final">Deaktivieren Sie diese Option, um die Systemsprache im Backend zu deaktivieren.</target>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>Defines which languages are alternatively available on each webpage.</source>
+        <target state="final">Definiert, welche alternativen Sprachen auf den einzelnen Web-Seiten verfügbar sind.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" xml:space="preserve" approved="yes">
+				<source>The Web&gt;Page module has a feature which allows users to edit page content divided into not only columns but also languages. The languages available for translation are determined by the number of Website Language record created.</source>
+			<target state="final">Das Modul "Web &gt; Seite" bietet Backend-Benutzern die Möglichkeit, Seiteninhalte nicht nur spaltenweise, sondern auch nach Sprachen getrennt zu bearbeiten. Die verfügbaren Sprachen werden durch die zuvor angelegten alternativen Seitensprachen definiert.</target></trans-unit>
+    </body>
+  </file>
+</xliff>
