@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:impexp/Resources/Private/Language/locallang_csh_tx_impexp_presets.xlf" date="2020-09-19T09:17:55Z" product-name="impexp" target-language="it">
+    <header/>
+    <body>
+      <trans-unit id="title.description" resname="title.description" xml:space="preserve" approved="yes">
+				<source>This title should describe in short what this TYPO3 export configuration is about.</source>
+			<target state="final">Questo titolo dovrebbe descrivere, in breve, che cosa contiene questa configurazione di esportazione TYPO3.</target></trans-unit>
+      <trans-unit id="public.description" resname="public.description" xml:space="preserve" approved="yes">
+				<source>If this export configuration has public access granted, all backend users can use it. If not public, only the owner can select it.</source>
+			<target state="final">Se questa configurazione di esportazione ha accesso pubblico, tutti gli utenti del backend possono usarla. Se non è pubblico, solo il proprietario può selezionarla.</target></trans-unit>
+      <trans-unit id="user_uid.description" resname="user_uid.description" xml:space="preserve" approved="yes">
+				<source>The user ID of the configuration owner.</source>
+			<target state="final">L'ID utente del proprietario della configurazione.</target></trans-unit>
+      <trans-unit id="item_uid.description" resname="item_uid.description" xml:space="preserve" approved="yes">
+				<source>The root page ID of the page tree that will be exported. Please edit only if you know what you are doing.</source>
+			<target state="final">L'ID della pagina root dell'Albero delle Pagine che verrà esportato. Modifica solo se sai cosa stai facendo.</target></trans-unit>
+      <trans-unit id="preset_data.description" resname="preset_data.description" xml:space="preserve" approved="yes">
+				<source>Technical insights of the export configuration. Please edit only if you know what you are doing.</source>
+			<target state="final">Approfondimenti tecnici della configurazione di esportazione. Modifica solo se sai cosa stai facendo.</target></trans-unit>
+    </body>
+  </file>
+</xliff>
