@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:linkvalidator/Resources/Private/Language/Module/locallang_csh.xlf" date="2011-10-17T20:22:34Z" product-name="linkvalidator" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="checkboxes.description" resname="checkboxes.description" approved="yes">
+        <source>Click the following checkboxes to consider or to ignore the corresponding broken links.</source>
+        <target state="final">Wählen Sie aus den folgenden Optionen, um die entsprechenden defekten Links zu berücksichtigen oder zu ignorieren.</target>
+      </trans-unit>
+      <trans-unit id="tablehead_path.description" resname="tablehead_path.description" approved="yes">
+        <source>Path to the content element, which contains the broken link.</source>
+        <target state="final">Pfad zum Inhaltselement mit dem defekten Link.</target>
+      </trans-unit>
+      <trans-unit id="tablehead_element.description" resname="tablehead_element.description" approved="yes">
+        <source>Type of the element containing the broken link, its headline and the field in which the broken link is located.</source>
+        <target state="final">Typ des Elements, das den defekten Link enthält, seine Überschrift und das Feld, in dem sich der defekte Link befindet.</target>
+      </trans-unit>
+      <trans-unit id="tablehead_headlink.description" resname="tablehead_headlink.description" approved="yes">
+        <source>The linking text.</source>
+        <target state="final">Der verlinkende Text.</target>
+      </trans-unit>
+      <trans-unit id="tablehead_linktarget.description" resname="tablehead_linktarget.description" approved="yes">
+        <source>URL to which the broken link is pointing.</source>
+        <target state="final">URL, auf die der defekte Link zeigt.</target>
+      </trans-unit>
+      <trans-unit id="tablehead_linkmessage.description" resname="tablehead_linkmessage.description" approved="yes">
+        <source>Status of that link.</source>
+        <target state="final">Status des Links.</target>
+      </trans-unit>
+      <trans-unit id="tablehead_lastcheck.description" resname="tablehead_lastcheck.description" approved="yes">
+        <source>Date and time of the last update of the information in each table row.</source>
+        <target state="final">Datum und Uhrzeit der letzten Aktualisierung der Informationen in jeder Tabellenzeile.</target>
+      </trans-unit>
+      <trans-unit id="task_page.alttitle" resname="task_page.alttitle" approved="yes">
+        <source>Start page of the task</source>
+        <target state="final">Startseite des Tasks</target>
+      </trans-unit>
+      <trans-unit id="task_page.description" resname="task_page.description" approved="yes">
+        <source>UID of the start page for this task.</source>
+        <target state="final">UID der Startseite für diesen Task.</target>
+      </trans-unit>
+      <trans-unit id="task_depth.alttitle" resname="task_depth.alttitle" approved="yes">
+        <source>Depth of the task</source>
+        <target state="final">Tiefe des Tasks</target>
+      </trans-unit>
+      <trans-unit id="task_depth.description" resname="task_depth.description" approved="yes">
+        <source>Level of pages the task should check.</source>
+        <target state="final">Anzahl der Seitenebenen, die dieser Task überprüfen soll.</target>
+      </trans-unit>
+      <trans-unit id="task_configuration.alttitle" resname="task_configuration.alttitle" approved="yes">
+        <source>Special TSconfig code</source>
+        <target state="final">Besondere TSconfig-Werte</target>
+      </trans-unit>
+      <trans-unit id="task_configuration.description" resname="task_configuration.description" approved="yes">
+        <source>TSconfig code, which defines settings for the LinkValidator to be used for this task.</source>
+        <target state="final">TSconfig-Code, der Einstellungen definiert, die der LinkValidator für diesen Task nutzen soll.</target>
+      </trans-unit>
+      <trans-unit id="task_email.alttitle" resname="task_email.alttitle" approved="yes">
+        <source>Email address</source>
+        <target state="final">E-Mail-Adresse</target>
+      </trans-unit>
+      <trans-unit id="task_email.description" resname="task_email.description" approved="yes">
+        <source>Email address to which an email report is sent.</source>
+        <target state="final">E-Mail-Adresse, zu der der E-Mail-Bericht geschickt wird.</target>
+      </trans-unit>
+      <trans-unit id="task_emailonbrokenlinkonly.alttitle" resname="task_emailonbrokenlinkonly.alttitle" approved="yes">
+        <source>Mailing option</source>
+        <target state="final">Mail-Optionen</target>
+      </trans-unit>
+      <trans-unit id="task_emailonbrokenlinkonly.description" resname="task_emailonbrokenlinkonly.description" approved="yes">
+        <source>Only send an email, if new broken links were found.</source>
+        <target state="final">Nur eine Mail versenden, wenn neue defekte Links gefunden wurden.</target>
+      </trans-unit>
+      <trans-unit id="task_emailfile.alttitle" resname="task_emailfile.alttitle" approved="yes">
+        <source>Email template file</source>
+        <target state="final">Datei für E-Mail-Vorlage</target>
+      </trans-unit>
+      <trans-unit id="task_emailfile.description" resname="task_emailfile.description" approved="yes">
+        <source>Define a template to be used for the email.</source>
+        <target state="final">Legt eine Vorlagendatei fest, die zum Versenden der E-Mail benutzt wird.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
