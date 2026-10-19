@@ -62,6 +62,7 @@ class Session
      */
     public function unregisterReconstitutedEntity(object $entity): void
     {
+        $entity = $this->resolveLazyProxy($entity);
         if ($this->reconstitutedEntities->contains($entity)) {
             $this->reconstitutedEntities->detach($entity);
         }
@@ -80,6 +81,7 @@ class Session
      */
     public function hasObject(object $object): bool
     {
+        $object = $this->resolveLazyProxy($object);
         return $this->objectMap->contains($object);
     }
 
@@ -113,6 +115,7 @@ class Session
      */
     public function getIdentifierByObject(object $object): ?string
     {
+        $object = $this->resolveLazyProxy($object);
         if ($this->hasObject($object)) {
             return $this->objectMap[$object];
         }
@@ -135,6 +138,7 @@ class Session
      */
     public function unregisterObject(object $object): void
     {
+        $object = $this->resolveLazyProxy($object);
         unset($this->identifierMap[$this->getClassIdentifier(get_class($object))][$this->objectMap[$object]]);
         $this->objectMap->detach($object);
     }
@@ -148,6 +152,15 @@ class Session
         $this->identifierMap = [];
         $this->objectMap = new ObjectStorage();
         $this->reconstitutedEntities = new ObjectStorage();
+    }
+
+    /**
+     * Only the real instance a native lazy proxy stands for is registered, so the
+     * proxy is resolved to it. Objects that are not lazy are returned as they are.
+     */
+    protected function resolveLazyProxy(object $object): object
+    {
+        return new \ReflectionClass($object)->initializeLazyObject($object);
     }
 
     /**

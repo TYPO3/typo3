@@ -136,13 +136,6 @@ class Backend implements BackendInterface
     {
         if ($object instanceof LazyLoadingProxy) {
             $object = $object->_loadRealInstance();
-        } elseif ($object instanceof DomainObjectInterface) {
-            $reflection = new \ReflectionClass($object);
-            if ($reflection->isUninitializedLazyObject($object)) {
-                // Resolve a native lazy proxy to its real instance, as only the real
-                // instance is registered in the persistence session identity map.
-                $object = $reflection->initializeLazyObject($object);
-            }
         }
 
         if (!is_object($object)) {
