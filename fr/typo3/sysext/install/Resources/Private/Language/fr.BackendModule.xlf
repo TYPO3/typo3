@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:install/Resources/Private/Language/BackendModule.xlf" date="2011-10-17T20:22:33Z" product-name="install" target-language="fr">
+    <header/>
+    <body>
+      <trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel" approved="yes">
+        <source>Install Tool</source>
+        <target state="final">Outil d'installation</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr" approved="yes">
+        <source>Provides a simple link to the Install Tool. Notice the Install Tool (in typo3/install/) must be enabled.&lt;br /&gt;&lt;em&gt;Access for 'admin' users only!&lt;/em&gt;</source>
+        <target state="final">Fournit un simple lien vers l'Install Tool. Veuillez faire attention au fait que l'Install Tool (dans typo3/install/) doit être activé.&lt;br /&gt;&lt;em&gt;Accès pour les administrateurs uniquement !&lt;/em&gt;</target>
+      </trans-unit>
+      <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab" approved="yes">
+        <source>Install</source>
+        <target state="final">Installation</target>
+      </trans-unit>
+      <trans-unit id="confirmUnlockInstallToolTitle" resname="confirmUnlockInstallToolTitle" approved="yes">
+        <source>The Install Tool is locked</source>
+        <target state="final">L'outil d'installation est verrouillé</target>
+      </trans-unit>
+      <trans-unit id="confirmUnlockInstallToolMessage" resname="confirmUnlockInstallToolMessage" xml:space="preserve" approved="yes">
+				<source>&lt;p&gt;For security reasons the Install Tool is locked by default.&lt;/p&gt;
+&lt;p&gt;To enable the Install Tool, the file &lt;strong&gt;ENABLE_INSTALL_TOOL&lt;/strong&gt; must be created in the directory &lt;strong&gt;typo3conf/&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;Just click the button below, the file will be created for you and the Install Tool will be unlocked.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Security note: &lt;/strong&gt;When you are finished with your work, please log out of the Install Tool. Otherwise TYPO3 will automatically lock the Install Tool after one hour.&lt;/p&gt;
+				</source>
+			<target state="final">&lt;p&gt;Pour des raisons de sécurité, l'outil d'installation est verrouillé par défaut.&lt;/p&gt;
+&lt;p&gt;Pour activer l'outil d'installation, le fichier &lt;strong&gt;ENABLE_INSTALL_TOOL&lt;/strong&gt; doit être créé dans le dossier &lt;strong&gt;typo3conf/&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;En cliquant sur le bouton ci-dessous, le fichier sera créé pour vous et l'outil d'installation sera déverrouillé.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Note de sécurité :&lt;/strong&gt; lorsque vous avez terminé votre travail, veuillez svp vous déconnecter de l'outil d'installation. En cas d'oubli, TYPO3 verrouillera automatiquement l'outil d'installation après une heure.&lt;/p&gt;</target></trans-unit>
+      <trans-unit id="confirmUnlockInstallToolButton" resname="confirmUnlockInstallToolButton" approved="yes">
+        <source>Unlock the Install&amp;#160;Tool</source>
+        <target state="final">Déverrouiller l'outil d'installation</target>
+      </trans-unit>
+      <trans-unit id="confirm" resname="confirm" approved="yes">
+        <source>Confirm</source>
+        <target state="final">Confirmer</target>
+      </trans-unit>
+      <trans-unit id="sudoUserPasswordConfirm" resname="sudoUserPasswordConfirm" approved="yes">
+        <source>Confirm with user password</source>
+        <target state="final">Confirmer avec votre mot de passe utilisateur</target>
+      </trans-unit>
+      <trans-unit id="sudoInstallToolPasswordConfirm" resname="sudoInstallToolPasswordConfirm" approved="yes">
+        <source>Confirm with Install Tool password</source>
+        <target state="final">Confirmer avec le mot de passe de l'outil d'installation</target>
+      </trans-unit>
+      <trans-unit id="sudoPasswordInvalid" resname="sudoPasswordConfirm" approved="yes">
+        <source>Invalid password</source>
+        <target state="final">Mot de passe invalide</target>
+      </trans-unit>
+      <trans-unit id="sudoUserPasswordMode" resname="sudoUserPasswordMode" approved="yes">
+        <source>Use user password instead</source>
+        <target state="final">Utilisez plutôt votre mot de passe utilisateur</target>
+      </trans-unit>
+      <trans-unit id="sudoInstallToolPasswordMode" resname="sudoInstallToolPasswordMode" approved="yes">
+        <source>Use Install Tool password instead</source>
+        <target state="final">Utilisez plutôt le mot de passe de l'outil d'installation</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
