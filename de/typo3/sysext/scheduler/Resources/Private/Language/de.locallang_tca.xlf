@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:scheduler/Resources/Private/Language/locallang_tca.xlf" date="2011-10-17T20:22:37Z" product-name="scheduler" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="tx_scheduler_task_group" resname="tx_scheduler_task_group" approved="yes">
+        <source>Scheduler task group</source>
+        <target state="final">Planertaskgruppe</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task_group.groupName" resname="tx_scheduler_task_group.groupName" approved="yes">
+        <source>Group name</source>
+        <target state="final">Gruppenname</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task_group.description" resname="tx_scheduler_task_group.description" approved="yes">
+        <source>Description</source>
+        <target state="final">Beschreibung</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
