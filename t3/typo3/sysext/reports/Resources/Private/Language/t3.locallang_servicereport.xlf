@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:reports/Resources/Private/Language/locallang_servicereport.xlf" date="2011-10-17T20:22:37Z" product-name="sv" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="report_title" resname="report_title">
+        <source>Installed Services</source>
+        <target>crwdns107462:0crwdne107462:0</target>
+      </trans-unit>
+      <trans-unit id="report_description" resname="report_description">
+        <source>List of all installed services with information and status for each of them.</source>
+        <target>crwdns107464:0crwdne107464:0</target>
+      </trans-unit>
+      <trans-unit id="report_explanation" resname="report_explanation">
+        <source>This report displays a list of installed services, with detailed information about each of them. The services are ordered by type, priority and quality. Unavailable services are highlighted with an error status.</source>
+        <target>crwdns107466:0crwdne107466:0</target>
+      </trans-unit>
+      <trans-unit id="externals_explanation" resname="externals_explanation">
+        <source>The "Externals" column shows which external programs a given service relies on. If such program is missing or not executable, the service will be unavailable. Search paths for executables are listed at the bottom of this report.</source>
+        <target>crwdns107468:0crwdne107468:0</target>
+      </trans-unit>
+      <trans-unit id="service_type" resname="service_type">
+        <source>Service type: %s</source>
+        <target>crwdns107470:0%scrwdne107470:0</target>
+      </trans-unit>
+      <trans-unit id="service" resname="service">
+        <source>Service</source>
+        <target>crwdns107472:0crwdne107472:0</target>
+      </trans-unit>
+      <trans-unit id="description" resname="description">
+        <source>Description</source>
+        <target>crwdns107474:0crwdne107474:0</target>
+      </trans-unit>
+      <trans-unit id="priority" resname="priority">
+        <source>Priority</source>
+        <target>crwdns107476:0crwdne107476:0</target>
+      </trans-unit>
+      <trans-unit id="quality" resname="quality">
+        <source>Quality</source>
+        <target>crwdns107478:0crwdne107478:0</target>
+      </trans-unit>
+      <trans-unit id="subtypes" resname="subtypes">
+        <source>Subtypes</source>
+        <target>crwdns107480:0crwdne107480:0</target>
+      </trans-unit>
+      <trans-unit id="os" resname="os">
+        <source>OS</source>
+        <target>crwdns107482:0crwdne107482:0</target>
+      </trans-unit>
+      <trans-unit id="externals" resname="externals">
+        <source>Externals</source>
+        <target>crwdns107484:0crwdne107484:0</target>
+      </trans-unit>
+      <trans-unit id="available" resname="available">
+        <source>Available</source>
+        <target>crwdns107486:0crwdne107486:0</target>
+      </trans-unit>
+      <trans-unit id="any" resname="any">
+        <source>Any</source>
+        <target>crwdns107488:0crwdne107488:0</target>
+      </trans-unit>
+      <trans-unit id="search_paths" resname="search_paths">
+        <source>Configured search paths for external programs</source>
+        <target>crwdns107490:0crwdne107490:0</target>
+      </trans-unit>
+      <trans-unit id="path" resname="path">
+        <source>Path</source>
+        <target>crwdns107492:0crwdne107492:0</target>
+      </trans-unit>
+      <trans-unit id="valid" resname="valid">
+        <source>Valid</source>
+        <target>crwdns107494:0crwdne107494:0</target>
+      </trans-unit>
+      <trans-unit id="no_search_paths" resname="no_search_paths">
+        <source>No search paths configured.</source>
+        <target>crwdns107496:0crwdne107496:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
