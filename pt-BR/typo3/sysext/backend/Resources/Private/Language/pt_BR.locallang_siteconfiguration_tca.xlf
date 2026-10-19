@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf" date="2018-02-27T22:22:32Z" product-name="backend" target-language="pt-BR">
+    <header/>
+    <body>
+      <trans-unit id="site_language.palette.locales" resname="site_language.palette.locales" approved="yes">
+        <source>Locales</source>
+        <target state="final">Localidades</target>
+      </trans-unit>
+      <trans-unit id="site_language.iso-639-1" resname="site_language.iso-639-1" approved="yes">
+        <source>Two Letter ISO Code</source>
+        <target state="final">Código ISO de duas letras ISO</target>
+      </trans-unit>
+      <trans-unit id="site_language.hreflang" resname="site_language.hreflang" approved="yes">
+        <source>Language Tag defined by RFC 1766 / 3066</source>
+        <target state="final">Tag de idioma definida pelo padrão RFC 1766/3066</target>
+      </trans-unit>
+      <trans-unit id="site_language.direction" resname="site_language.direction" approved="yes">
+        <source>Direction</source>
+        <target state="final">Direção</target>
+      </trans-unit>
+      <trans-unit id="site_language.typo3Language" resname="site_language.typo3Language" approved="yes">
+        <source>Language Key for XLF Files</source>
+        <target state="final">Chave de idioma para arquivos XLF</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
