@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:lowlevel/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:34Z" product-name="lowlevel" target-language="no">
+    <header/>
+    <body>
+      <trans-unit id="configuration" resname="configuration" approved="yes">
+        <source>Configuration</source>
+        <target state="final">Konfigurasjon</target>
+      </trans-unit>
+      <trans-unit id="variable" resname="variable" approved="yes">
+        <source>Variable</source>
+        <target state="final">Variabel</target>
+      </trans-unit>
+      <trans-unit id="search" resname="search" approved="yes">
+        <source>Search</source>
+        <target state="final">Søk</target>
+      </trans-unit>
+      <trans-unit id="menuTitle" resname="menuTitle" approved="yes">
+        <source>Overview</source>
+        <target state="final">Oversikt</target>
+      </trans-unit>
+      <trans-unit id="result" resname="result" approved="yes">
+        <source>Result</source>
+        <target state="final">Resultat</target>
+      </trans-unit>
+      <trans-unit id="tables" resname="tables" approved="yes">
+        <source>Tables</source>
+        <target state="final">Tabeller</target>
+      </trans-unit>
+      <trans-unit id="searchButton" resname="searchButton" approved="yes">
+        <source>Search</source>
+        <target state="final">Søk</target>
+      </trans-unit>
+      <trans-unit id="pattern" resname="pattern" approved="yes">
+        <source>Pattern</source>
+        <target state="final">Mønster</target>
+      </trans-unit>
+      <trans-unit id="files" resname="files" approved="yes">
+        <source>Files</source>
+        <target state="final">Filer</target>
+      </trans-unit>
+      <trans-unit id="pages" resname="pages" approved="yes">
+        <source>Pages</source>
+        <target state="final">Sider</target>
+      </trans-unit>
+      <trans-unit id="count" resname="count" approved="yes">
+        <source>Count</source>
+        <target state="final">Antall</target>
+      </trans-unit>
+      <trans-unit id="label" resname="label" approved="yes">
+        <source>Label</source>
+        <target state="final">Betegnelse</target>
+      </trans-unit>
+      <trans-unit id="tablename" resname="tablename" approved="yes">
+        <source>Table name</source>
+        <target state="final">Navn på tabell</target>
+      </trans-unit>
+      <trans-unit id="title" resname="title" approved="yes">
+        <source>Database integrity check</source>
+        <target state="final">Undersøk integriteten i databasen</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
