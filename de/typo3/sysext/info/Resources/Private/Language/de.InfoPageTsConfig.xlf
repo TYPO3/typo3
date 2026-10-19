@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:info/Resources/Private/Language/InfoPageTsConfig.xlf" date="2011-10-17T20:22:33Z" product-name="info_pagetsconfig" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="tsconf_title" resname="tsconf_title" approved="yes">
+        <source>Page TSconfig</source>
+        <target state="final">Seiten-TSconfig</target>
+      </trans-unit>
+      <trans-unit id="tsconf_parts_0" resname="tsconf_parts_0" approved="yes">
+        <source>All</source>
+        <target state="final">Alle</target>
+      </trans-unit>
+      <trans-unit id="tsconf_parts_1" resname="tsconf_parts_1" approved="yes">
+        <source>Module</source>
+        <target state="final">Modul</target>
+      </trans-unit>
+      <trans-unit id="tsconf_parts_1a" resname="tsconf_parts_1a" approved="yes">
+        <source>Module: Web&gt;Page</source>
+        <target state="final">Modul: Web &gt; Seite</target>
+      </trans-unit>
+      <trans-unit id="tsconf_parts_1b" resname="tsconf_parts_1b" approved="yes">
+        <source>Module: Web&gt;View</source>
+        <target state="final">Modul: Web &gt; Anzeigen</target>
+      </trans-unit>
+      <trans-unit id="tsconf_parts_1d" resname="tsconf_parts_1d" approved="yes">
+        <source>Module: Web&gt;List</source>
+        <target state="final">Modul: Web &gt; Liste</target>
+      </trans-unit>
+      <trans-unit id="tsconf_parts_1e" resname="tsconf_parts_1e" approved="yes">
+        <source>Module: Web&gt;Info</source>
+        <target state="final">Modul: Web &gt; Info</target>
+      </trans-unit>
+      <trans-unit id="tsconf_parts_1g" resname="tsconf_parts_1g" approved="yes">
+        <source>Module: Web&gt;Template</source>
+        <target state="final">Modul: Web &gt; Template</target>
+      </trans-unit>
+      <trans-unit id="tsconf_configFields" resname="tsconf_configFields" approved="yes">
+        <source>View TSconfig fields content</source>
+        <target state="final">Inhalt des TSconfig-Felds anzeigen</target>
+      </trans-unit>
+      <trans-unit id="editTSconfig" resname="editTSconfig" approved="yes">
+        <source>Edit TSconfig for this page</source>
+        <target state="final">Inhalt des TSconfig-Felds dieser Seite bearbeiten</target>
+      </trans-unit>
+      <trans-unit id="editTSconfig_all" resname="editTSconfig_all" approved="yes">
+        <source>Edit TSconfig for all shown pages</source>
+        <target state="final">Inhalt des TSconfig-Felds aller angezeigter Seiten bearbeiten</target>
+      </trans-unit>
+      <trans-unit id="editTSconfig_default" resname="editTSconfig_default" approved="yes">
+        <source>Default Configuration from TYPO3_CONF_VARS</source>
+        <target state="final">Standardkonfiguration aus TYPO3_CONF_VARS</target>
+      </trans-unit>
+      <trans-unit id="mod_pagetsconfig" resname="mod_pagetsconfig" approved="yes">
+        <source>Page TSconfig</source>
+        <target state="final">Seiten-TSconfig</target>
+      </trans-unit>
+      <trans-unit id="display_mode" resname="display_mode" approved="yes">
+        <source>Mode</source>
+        <target state="final">Modus</target>
+      </trans-unit>
+      <trans-unit id="sort_alphabetic" resname="sort_alphabetic" approved="yes">
+        <source>Sort alphabetically</source>
+        <target state="final">Alphabetisch sortieren</target>
+      </trans-unit>
+      <trans-unit id="pagetitle" resname="pagetitle" approved="yes">
+        <source>Pagetitle:</source>
+        <target state="final">Seitentitel:</target>
+      </trans-unit>
+      <trans-unit id="included_tsconfig_files" resname="included_tsconfig_files" approved="yes">
+        <source>Included Files:</source>
+        <target state="final">Eingebundene Dateien:</target>
+      </trans-unit>
+      <trans-unit id="written_tsconfig_lines" resname="written_tsconfig_lines" approved="yes">
+        <source>Lines:</source>
+        <target state="final">Zeilen:</target>
+      </trans-unit>
+      <trans-unit id="tsconf_noPageTSconfig" resname="tsconf_noPageTSconfig" approved="yes">
+        <source>There are no pages containing custom Page TSconfig settings in the page configuration.</source>
+        <target state="final">Es gibt keine Seiten mit eigenen Seiten-TSconfig-Einstellungen in der Seitenkonfiguration.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
