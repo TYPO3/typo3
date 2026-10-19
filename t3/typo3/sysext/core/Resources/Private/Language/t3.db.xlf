@@ -1,0 +1,744 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/db.xlf" date="2014-12-04T09:12:34Z" product-name="core" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="sys_language.language_isocode.ab" resname="sys_language.language_isocode.ab">
+        <source>Abkhaz</source>
+        <target>crwdns97880:0crwdne97880:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.aa" resname="sys_language.language_isocode.aa">
+        <source>Afar</source>
+        <target>crwdns97882:0crwdne97882:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.af" resname="sys_language.language_isocode.af">
+        <source>Afrikaans</source>
+        <target>crwdns97884:0crwdne97884:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.ak" resname="sys_language.language_isocode.ak">
+        <source>Akan</source>
+        <target>crwdns97886:0crwdne97886:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.sq" resname="sys_language.language_isocode.sq">
+        <source>Albanian</source>
+        <target>crwdns97888:0crwdne97888:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.am" resname="sys_language.language_isocode.am">
+        <source>Amharic</source>
+        <target>crwdns97890:0crwdne97890:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.ar" resname="sys_language.language_isocode.ar">
+        <source>Arabic</source>
+        <target>crwdns97892:0crwdne97892:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.an" resname="sys_language.language_isocode.an">
+        <source>Aragonese</source>
+        <target>crwdns97894:0crwdne97894:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.hy" resname="sys_language.language_isocode.hy">
+        <source>Armenian</source>
+        <target>crwdns97896:0crwdne97896:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.as" resname="sys_language.language_isocode.as">
+        <source>Assamese</source>
+        <target>crwdns97898:0crwdne97898:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.av" resname="sys_language.language_isocode.av">
+        <source>Avaric</source>
+        <target>crwdns97900:0crwdne97900:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.ae" resname="sys_language.language_isocode.ae">
+        <source>Avestan</source>
+        <target>crwdns97902:0crwdne97902:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.ay" resname="sys_language.language_isocode.ay">
+        <source>Aymara</source>
+        <target>crwdns97904:0crwdne97904:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.az" resname="sys_language.language_isocode.az">
+        <source>Azerbaijani</source>
+        <target>crwdns97906:0crwdne97906:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.bm" resname="sys_language.language_isocode.bm">
+        <source>Bambara</source>
+        <target>crwdns97908:0crwdne97908:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.ba" resname="sys_language.language_isocode.ba">
+        <source>Bashkir</source>
+        <target>crwdns97910:0crwdne97910:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.eu" resname="sys_language.language_isocode.eu">
+        <source>Basque</source>
+        <target>crwdns97912:0crwdne97912:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.be" resname="sys_language.language_isocode.be">
+        <source>Belarusian</source>
+        <target>crwdns97914:0crwdne97914:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.bn" resname="sys_language.language_isocode.bn">
+        <source>Bengali, Bangla</source>
+        <target>crwdns97916:0crwdne97916:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.bh" resname="sys_language.language_isocode.bh">
+        <source>Bihari</source>
+        <target>crwdns97918:0crwdne97918:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.bi" resname="sys_language.language_isocode.bi">
+        <source>Bislama</source>
+        <target>crwdns97920:0crwdne97920:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.bs" resname="sys_language.language_isocode.bs">
+        <source>Bosnian</source>
+        <target>crwdns97922:0crwdne97922:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.br" resname="sys_language.language_isocode.br">
+        <source>Breton</source>
+        <target>crwdns97924:0crwdne97924:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.bg" resname="sys_language.language_isocode.bg">
+        <source>Bulgarian</source>
+        <target>crwdns97926:0crwdne97926:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.my" resname="sys_language.language_isocode.my">
+        <source>Burmese</source>
+        <target>crwdns97928:0crwdne97928:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.ca" resname="sys_language.language_isocode.ca">
+        <source>Catalan, Valencian</source>
+        <target>crwdns97930:0crwdne97930:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.ch" resname="sys_language.language_isocode.ch">
+        <source>Chamorro</source>
+        <target>crwdns97932:0crwdne97932:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.ce" resname="sys_language.language_isocode.ce">
+        <source>Chechen</source>
+        <target>crwdns97934:0crwdne97934:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.ny" resname="sys_language.language_isocode.ny">
+        <source>Chichewa, Chewa, Nyanja</source>
+        <target>crwdns97936:0crwdne97936:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.zh" resname="sys_language.language_isocode.zh">
+        <source>Chinese</source>
+        <target>crwdns97938:0crwdne97938:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.cv" resname="sys_language.language_isocode.cv">
+        <source>Chuvash</source>
+        <target>crwdns97940:0crwdne97940:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.kw" resname="sys_language.language_isocode.kw">
+        <source>Cornish</source>
+        <target>crwdns97942:0crwdne97942:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.co" resname="sys_language.language_isocode.co">
+        <source>Corsican</source>
+        <target>crwdns97944:0crwdne97944:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.cr" resname="sys_language.language_isocode.cr">
+        <source>Cree</source>
+        <target>crwdns97946:0crwdne97946:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.hr" resname="sys_language.language_isocode.hr">
+        <source>Croatian</source>
+        <target>crwdns97948:0crwdne97948:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.cs" resname="sys_language.language_isocode.cs">
+        <source>Czech</source>
+        <target>crwdns97950:0crwdne97950:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.da" resname="sys_language.language_isocode.da">
+        <source>Danish</source>
+        <target>crwdns97952:0crwdne97952:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.dv" resname="sys_language.language_isocode.dv">
+        <source>Divehi, Dhivehi, Maldivian</source>
+        <target>crwdns97954:0crwdne97954:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.nl" resname="sys_language.language_isocode.nl">
+        <source>Dutch</source>
+        <target>crwdns97956:0crwdne97956:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.dz" resname="sys_language.language_isocode.dz">
+        <source>Dzongkha</source>
+        <target>crwdns97958:0crwdne97958:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.en" resname="sys_language.language_isocode.en">
+        <source>English</source>
+        <target>crwdns97960:0crwdne97960:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.eo" resname="sys_language.language_isocode.eo">
+        <source>Esperanto</source>
+        <target>crwdns97962:0crwdne97962:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.et" resname="sys_language.language_isocode.et">
+        <source>Estonian</source>
+        <target>crwdns97964:0crwdne97964:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.ee" resname="sys_language.language_isocode.ee">
+        <source>Ewe</source>
+        <target>crwdns97966:0crwdne97966:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.fo" resname="sys_language.language_isocode.fo">
+        <source>Faroese</source>
+        <target>crwdns97968:0crwdne97968:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.fj" resname="sys_language.language_isocode.fj">
+        <source>Fijian</source>
+        <target>crwdns97970:0crwdne97970:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.fi" resname="sys_language.language_isocode.fi">
+        <source>Finnish</source>
+        <target>crwdns97972:0crwdne97972:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.fr" resname="sys_language.language_isocode.fr">
+        <source>French</source>
+        <target>crwdns97974:0crwdne97974:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.ff" resname="sys_language.language_isocode.ff">
+        <source>Fula, Fulah, Pulaar, Pular</source>
+        <target>crwdns97976:0crwdne97976:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.gl" resname="sys_language.language_isocode.gl">
+        <source>Galician</source>
+        <target>crwdns97978:0crwdne97978:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.ka" resname="sys_language.language_isocode.ka">
+        <source>Georgian</source>
+        <target>crwdns97980:0crwdne97980:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.de" resname="sys_language.language_isocode.de">
+        <source>German</source>
+        <target>crwdns97982:0crwdne97982:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.el" resname="sys_language.language_isocode.el">
+        <source>Greek (modern)</source>
+        <target>crwdns97984:0crwdne97984:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.gn" resname="sys_language.language_isocode.gn">
+        <source>Guaraní</source>
+        <target>crwdns97986:0crwdne97986:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.gu" resname="sys_language.language_isocode.gu">
+        <source>Gujarati</source>
+        <target>crwdns97988:0crwdne97988:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.ht" resname="sys_language.language_isocode.ht">
+        <source>Haitian, Haitian Creole</source>
+        <target>crwdns97990:0crwdne97990:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.ha" resname="sys_language.language_isocode.ha">
+        <source>Hausa</source>
+        <target>crwdns97992:0crwdne97992:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.he" resname="sys_language.language_isocode.he">
+        <source>Hebrew (modern)</source>
+        <target>crwdns97994:0crwdne97994:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.hz" resname="sys_language.language_isocode.hz">
+        <source>Herero</source>
+        <target>crwdns97996:0crwdne97996:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.hi" resname="sys_language.language_isocode.hi">
+        <source>Hindi</source>
+        <target>crwdns97998:0crwdne97998:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.ho" resname="sys_language.language_isocode.ho">
+        <source>Hiri Motu</source>
+        <target>crwdns98000:0crwdne98000:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.hu" resname="sys_language.language_isocode.hu">
+        <source>Hungarian</source>
+        <target>crwdns98002:0crwdne98002:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.ia" resname="sys_language.language_isocode.ia">
+        <source>Interlingua</source>
+        <target>crwdns98004:0crwdne98004:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.id" resname="sys_language.language_isocode.id">
+        <source>Indonesian</source>
+        <target>crwdns98006:0crwdne98006:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.ie" resname="sys_language.language_isocode.ie">
+        <source>Interlingue</source>
+        <target>crwdns98008:0crwdne98008:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.ga" resname="sys_language.language_isocode.ga">
+        <source>Irish</source>
+        <target>crwdns98010:0crwdne98010:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.ig" resname="sys_language.language_isocode.ig">
+        <source>Igbo</source>
+        <target>crwdns98012:0crwdne98012:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.ik" resname="sys_language.language_isocode.ik">
+        <source>Inupiaq</source>
+        <target>crwdns98014:0crwdne98014:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.io" resname="sys_language.language_isocode.io">
+        <source>Ido</source>
+        <target>crwdns98016:0crwdne98016:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.is" resname="sys_language.language_isocode.is">
+        <source>Icelandic</source>
+        <target>crwdns98018:0crwdne98018:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.it" resname="sys_language.language_isocode.it">
+        <source>Italian</source>
+        <target>crwdns98020:0crwdne98020:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.iu" resname="sys_language.language_isocode.iu">
+        <source>Inuktitut</source>
+        <target>crwdns98022:0crwdne98022:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.ja" resname="sys_language.language_isocode.ja">
+        <source>Japanese</source>
+        <target>crwdns98024:0crwdne98024:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.jv" resname="sys_language.language_isocode.jv">
+        <source>Javanese</source>
+        <target>crwdns98026:0crwdne98026:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.kl" resname="sys_language.language_isocode.kl">
+        <source>Kalaallisut, Greenlandic</source>
+        <target>crwdns98028:0crwdne98028:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.kn" resname="sys_language.language_isocode.kn">
+        <source>Kannada</source>
+        <target>crwdns98030:0crwdne98030:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.kr" resname="sys_language.language_isocode.kr">
+        <source>Kanuri</source>
+        <target>crwdns98032:0crwdne98032:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.ks" resname="sys_language.language_isocode.ks">
+        <source>Kashmiri</source>
+        <target>crwdns98034:0crwdne98034:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.kk" resname="sys_language.language_isocode.kk">
+        <source>Kazakh</source>
+        <target>crwdns98036:0crwdne98036:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.km" resname="sys_language.language_isocode.km">
+        <source>Khmer</source>
+        <target>crwdns98038:0crwdne98038:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.ki" resname="sys_language.language_isocode.ki">
+        <source>Kikuyu, Gikuyu</source>
+        <target>crwdns98040:0crwdne98040:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.rw" resname="sys_language.language_isocode.rw">
+        <source>Kinyarwanda</source>
+        <target>crwdns98042:0crwdne98042:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.ky" resname="sys_language.language_isocode.ky">
+        <source>Kyrgyz</source>
+        <target>crwdns98044:0crwdne98044:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.kv" resname="sys_language.language_isocode.kv">
+        <source>Komi</source>
+        <target>crwdns98046:0crwdne98046:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.kg" resname="sys_language.language_isocode.kg">
+        <source>Kongo</source>
+        <target>crwdns98048:0crwdne98048:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.ko" resname="sys_language.language_isocode.ko">
+        <source>Korean</source>
+        <target>crwdns98050:0crwdne98050:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.ku" resname="sys_language.language_isocode.ku">
+        <source>Kurdish</source>
+        <target>crwdns98052:0crwdne98052:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.kj" resname="sys_language.language_isocode.kj">
+        <source>Kwanyama, Kuanyama</source>
+        <target>crwdns98054:0crwdne98054:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.la" resname="sys_language.language_isocode.la">
+        <source>Latin</source>
+        <target>crwdns98056:0crwdne98056:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.lb" resname="sys_language.language_isocode.lb">
+        <source>Luxembourgish, Letzeburgesch</source>
+        <target>crwdns98058:0crwdne98058:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.lg" resname="sys_language.language_isocode.lg">
+        <source>Ganda</source>
+        <target>crwdns98060:0crwdne98060:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.li" resname="sys_language.language_isocode.li">
+        <source>Limburgish, Limburgan, Limburger</source>
+        <target>crwdns98062:0crwdne98062:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.ln" resname="sys_language.language_isocode.ln">
+        <source>Lingala</source>
+        <target>crwdns98064:0crwdne98064:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.lo" resname="sys_language.language_isocode.lo">
+        <source>Lao</source>
+        <target>crwdns98066:0crwdne98066:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.lt" resname="sys_language.language_isocode.lt">
+        <source>Lithuanian</source>
+        <target>crwdns98068:0crwdne98068:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.lu" resname="sys_language.language_isocode.lu">
+        <source>Luba-Katanga</source>
+        <target>crwdns98070:0crwdne98070:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.lv" resname="sys_language.language_isocode.lv">
+        <source>Latvian</source>
+        <target>crwdns98072:0crwdne98072:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.gv" resname="sys_language.language_isocode.gv">
+        <source>Manx</source>
+        <target>crwdns98074:0crwdne98074:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.mk" resname="sys_language.language_isocode.mk">
+        <source>Macedonian</source>
+        <target>crwdns98076:0crwdne98076:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.mg" resname="sys_language.language_isocode.mg">
+        <source>Malagasy</source>
+        <target>crwdns98078:0crwdne98078:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.ms" resname="sys_language.language_isocode.ms">
+        <source>Malay</source>
+        <target>crwdns98080:0crwdne98080:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.ml" resname="sys_language.language_isocode.ml">
+        <source>Malayalam</source>
+        <target>crwdns98082:0crwdne98082:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.mt" resname="sys_language.language_isocode.mt">
+        <source>Maltese</source>
+        <target>crwdns98084:0crwdne98084:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.mi" resname="sys_language.language_isocode.mi">
+        <source>Maori (Te Reo Māori)</source>
+        <target>crwdns98086:0crwdne98086:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.mr" resname="sys_language.language_isocode.mr">
+        <source>Marathi (Marāṭhī)</source>
+        <target>crwdns98088:0crwdne98088:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.mh" resname="sys_language.language_isocode.mh">
+        <source>Marshallese</source>
+        <target>crwdns98090:0crwdne98090:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.mn" resname="sys_language.language_isocode.mn">
+        <source>Mongolian</source>
+        <target>crwdns98092:0crwdne98092:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.na" resname="sys_language.language_isocode.na">
+        <source>Nauru</source>
+        <target>crwdns98094:0crwdne98094:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.nv" resname="sys_language.language_isocode.nv">
+        <source>Navajo, Navaho</source>
+        <target>crwdns98096:0crwdne98096:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.nd" resname="sys_language.language_isocode.nd">
+        <source>Northern Ndebele</source>
+        <target>crwdns98098:0crwdne98098:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.ne" resname="sys_language.language_isocode.ne">
+        <source>Nepali</source>
+        <target>crwdns98100:0crwdne98100:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.ng" resname="sys_language.language_isocode.ng">
+        <source>Ndonga</source>
+        <target>crwdns98102:0crwdne98102:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.nb" resname="sys_language.language_isocode.nb">
+        <source>Norwegian Bokmål</source>
+        <target>crwdns98104:0crwdne98104:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.nn" resname="sys_language.language_isocode.nn">
+        <source>Norwegian Nynorsk</source>
+        <target>crwdns98106:0crwdne98106:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.no" resname="sys_language.language_isocode.no">
+        <source>Norwegian</source>
+        <target>crwdns98108:0crwdne98108:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.ii" resname="sys_language.language_isocode.ii">
+        <source>Nuosu</source>
+        <target>crwdns98110:0crwdne98110:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.nr" resname="sys_language.language_isocode.nr">
+        <source>Southern Ndebele</source>
+        <target>crwdns98112:0crwdne98112:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.oc" resname="sys_language.language_isocode.oc">
+        <source>Occitan</source>
+        <target>crwdns98114:0crwdne98114:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.oj" resname="sys_language.language_isocode.oj">
+        <source>Ojibwe, Ojibwa</source>
+        <target>crwdns98116:0crwdne98116:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.cu" resname="sys_language.language_isocode.cu">
+        <source>Old Church Slavonic, Church Slavonic, Old Bulgarian</source>
+        <target>crwdns98118:0crwdne98118:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.om" resname="sys_language.language_isocode.om">
+        <source>Oromo</source>
+        <target>crwdns98120:0crwdne98120:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.or" resname="sys_language.language_isocode.or">
+        <source>Oriya</source>
+        <target>crwdns98122:0crwdne98122:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.os" resname="sys_language.language_isocode.os">
+        <source>Ossetian, Ossetic</source>
+        <target>crwdns98124:0crwdne98124:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.pa" resname="sys_language.language_isocode.pa">
+        <source>Panjabi, Punjabi</source>
+        <target>crwdns98126:0crwdne98126:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.pi" resname="sys_language.language_isocode.pi">
+        <source>Pāli</source>
+        <target>crwdns98128:0crwdne98128:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.fa" resname="sys_language.language_isocode.fa">
+        <source>Persian (Farsi)</source>
+        <target>crwdns98130:0crwdne98130:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.pl" resname="sys_language.language_isocode.pl">
+        <source>Polish</source>
+        <target>crwdns98132:0crwdne98132:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.ps" resname="sys_language.language_isocode.ps">
+        <source>Pashto, Pushto</source>
+        <target>crwdns98134:0crwdne98134:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.pt" resname="sys_language.language_isocode.pt">
+        <source>Portuguese</source>
+        <target>crwdns98136:0crwdne98136:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.qu" resname="sys_language.language_isocode.qu">
+        <source>Quechua</source>
+        <target>crwdns98138:0crwdne98138:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.rm" resname="sys_language.language_isocode.rm">
+        <source>Romansh</source>
+        <target>crwdns98140:0crwdne98140:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.rn" resname="sys_language.language_isocode.rn">
+        <source>Kirundi</source>
+        <target>crwdns98142:0crwdne98142:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.ro" resname="sys_language.language_isocode.ro">
+        <source>Romanian</source>
+        <target>crwdns98144:0crwdne98144:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.ru" resname="sys_language.language_isocode.ru">
+        <source>Russian</source>
+        <target>crwdns98146:0crwdne98146:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.sa" resname="sys_language.language_isocode.sa">
+        <source>Sanskrit (Saṁskṛta)</source>
+        <target>crwdns98148:0crwdne98148:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.sc" resname="sys_language.language_isocode.sc">
+        <source>Sardinian</source>
+        <target>crwdns98150:0crwdne98150:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.sd" resname="sys_language.language_isocode.sd">
+        <source>Sindhi</source>
+        <target>crwdns98152:0crwdne98152:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.se" resname="sys_language.language_isocode.se">
+        <source>Northern Sami</source>
+        <target>crwdns98154:0crwdne98154:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.sm" resname="sys_language.language_isocode.sm">
+        <source>Samoan</source>
+        <target>crwdns98156:0crwdne98156:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.sg" resname="sys_language.language_isocode.sg">
+        <source>Sango</source>
+        <target>crwdns98158:0crwdne98158:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.sr" resname="sys_language.language_isocode.sr">
+        <source>Serbian</source>
+        <target>crwdns98160:0crwdne98160:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.gd" resname="sys_language.language_isocode.gd">
+        <source>Scottish Gaelic, Gaelic</source>
+        <target>crwdns98162:0crwdne98162:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.sn" resname="sys_language.language_isocode.sn">
+        <source>Shona</source>
+        <target>crwdns98164:0crwdne98164:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.si" resname="sys_language.language_isocode.si">
+        <source>Sinhala, Sinhalese</source>
+        <target>crwdns98166:0crwdne98166:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.sk" resname="sys_language.language_isocode.sk">
+        <source>Slovak</source>
+        <target>crwdns98168:0crwdne98168:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.sl" resname="sys_language.language_isocode.sl">
+        <source>Slovene</source>
+        <target>crwdns98170:0crwdne98170:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.so" resname="sys_language.language_isocode.so">
+        <source>Somali</source>
+        <target>crwdns98172:0crwdne98172:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.st" resname="sys_language.language_isocode.st">
+        <source>Southern Sotho</source>
+        <target>crwdns98174:0crwdne98174:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.es" resname="sys_language.language_isocode.es">
+        <source>Spanish, Castilian</source>
+        <target>crwdns98176:0crwdne98176:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.su" resname="sys_language.language_isocode.su">
+        <source>Sundanese</source>
+        <target>crwdns98178:0crwdne98178:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.sw" resname="sys_language.language_isocode.sw">
+        <source>Swahili</source>
+        <target>crwdns98180:0crwdne98180:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.ss" resname="sys_language.language_isocode.ss">
+        <source>Swati</source>
+        <target>crwdns98182:0crwdne98182:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.sv" resname="sys_language.language_isocode.sv">
+        <source>Swedish</source>
+        <target>crwdns98184:0crwdne98184:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.ta" resname="sys_language.language_isocode.ta">
+        <source>Tamil</source>
+        <target>crwdns98186:0crwdne98186:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.te" resname="sys_language.language_isocode.te">
+        <source>Telugu</source>
+        <target>crwdns98188:0crwdne98188:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.tg" resname="sys_language.language_isocode.tg">
+        <source>Tajik</source>
+        <target>crwdns98190:0crwdne98190:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.th" resname="sys_language.language_isocode.th">
+        <source>Thai</source>
+        <target>crwdns98192:0crwdne98192:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.ti" resname="sys_language.language_isocode.ti">
+        <source>Tigrinya</source>
+        <target>crwdns98194:0crwdne98194:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.bo" resname="sys_language.language_isocode.bo">
+        <source>Tibetan Standard, Tibetan, Central</source>
+        <target>crwdns98196:0crwdne98196:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.tk" resname="sys_language.language_isocode.tk">
+        <source>Turkmen</source>
+        <target>crwdns98198:0crwdne98198:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.tl" resname="sys_language.language_isocode.tl">
+        <source>Tagalog</source>
+        <target>crwdns98200:0crwdne98200:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.tn" resname="sys_language.language_isocode.tn">
+        <source>Tswana</source>
+        <target>crwdns98202:0crwdne98202:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.to" resname="sys_language.language_isocode.to">
+        <source>Tonga (Tonga Islands)</source>
+        <target>crwdns98204:0crwdne98204:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.tr" resname="sys_language.language_isocode.tr">
+        <source>Turkish</source>
+        <target>crwdns98206:0crwdne98206:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.ts" resname="sys_language.language_isocode.ts">
+        <source>Tsonga</source>
+        <target>crwdns98208:0crwdne98208:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.tt" resname="sys_language.language_isocode.tt">
+        <source>Tatar</source>
+        <target>crwdns98210:0crwdne98210:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.tw" resname="sys_language.language_isocode.tw">
+        <source>Twi</source>
+        <target>crwdns98212:0crwdne98212:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.ty" resname="sys_language.language_isocode.ty">
+        <source>Tahitian</source>
+        <target>crwdns98214:0crwdne98214:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.ug" resname="sys_language.language_isocode.ug">
+        <source>Uyghur, Uighur</source>
+        <target>crwdns98216:0crwdne98216:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.uk" resname="sys_language.language_isocode.uk">
+        <source>Ukrainian</source>
+        <target>crwdns98218:0crwdne98218:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.ur" resname="sys_language.language_isocode.ur">
+        <source>Urdu</source>
+        <target>crwdns98220:0crwdne98220:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.uz" resname="sys_language.language_isocode.uz">
+        <source>Uzbek</source>
+        <target>crwdns98222:0crwdne98222:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.ve" resname="sys_language.language_isocode.ve">
+        <source>Venda</source>
+        <target>crwdns98224:0crwdne98224:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.vi" resname="sys_language.language_isocode.vi">
+        <source>Vietnamese</source>
+        <target>crwdns98226:0crwdne98226:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.vo" resname="sys_language.language_isocode.vo">
+        <source>Volapük</source>
+        <target>crwdns98228:0crwdne98228:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.wa" resname="sys_language.language_isocode.wa">
+        <source>Walloon</source>
+        <target>crwdns98230:0crwdne98230:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.cy" resname="sys_language.language_isocode.cy">
+        <source>Welsh</source>
+        <target>crwdns98232:0crwdne98232:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.wo" resname="sys_language.language_isocode.wo">
+        <source>Wolof</source>
+        <target>crwdns98234:0crwdne98234:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.fy" resname="sys_language.language_isocode.fy">
+        <source>Western Frisian</source>
+        <target>crwdns98236:0crwdne98236:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.xh" resname="sys_language.language_isocode.xh">
+        <source>Xhosa</source>
+        <target>crwdns98238:0crwdne98238:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.yi" resname="sys_language.language_isocode.yi">
+        <source>Yiddish</source>
+        <target>crwdns98240:0crwdne98240:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.yo" resname="sys_language.language_isocode.yo">
+        <source>Yoruba</source>
+        <target>crwdns98242:0crwdne98242:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.za" resname="sys_language.language_isocode.za">
+        <source>Zhuang, Chuang</source>
+        <target>crwdns98244:0crwdne98244:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode.zu" resname="sys_language.language_isocode.zu">
+        <source>Zulu</source>
+        <target>crwdns98246:0crwdne98246:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
