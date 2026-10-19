@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:scheduler/Resources/Private/Language/locallang_em.xlf" date="2011-10-17T20:22:32Z" product-name="scheduler" target-language="es-ES">
+    <header/>
+    <body>
+      <trans-unit id="scheduler.config.showSampleTasks" resname="scheduler.config.showSampleTasks" approved="yes">
+        <source>Enable sample tasks: When turned on, you can use the sample, test tasks provided by the scheduler. Before turning this off, make sure you don't have any of those sample tasks currently scheduled. You will also need to clear the configuration cache.</source>
+        <target state="final">Habilitar tareas de ejemplo: cuando están activadas, puedes utilizar el ejemplo, las tareas de ejemplos proporcionadas por el planificador. Antes de desactivar esto, asegúrate de que no tienes ninguna de las tareas de ejemplo actualmente programadas. También necesitarás limpiar la caché de configuración.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
