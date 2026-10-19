@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:info/Resources/Private/Language/locallang_csh_web_info.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id=".alttitle" resname=".alttitle" approved="yes">
+        <source>Web &gt; Info module</source>
+        <target state="final">Web &gt; Info</target>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>The idea of the Web&gt;Info module is to be a host module for backend applications that wish to present information / analysis of pages or branches of the page tree. This could be website statistics, caching status information etc.</source>
+        <target state="final">Das Modul "Web &gt; Info" dient als "Container" für all diejenigen Backend-Erweiterungen, welche Informationen oder Analysen zu einzelnen Seiten oder dem gesamten Seitenbaum liefern. Darunter fallen z.B. Zugriffstatistiken, Cache-Informationen, Änderungsverläufe, Protokolldateien etc.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" approved="yes">
+        <source>The Web&gt;Info module shows information rather than offering functionality. It is up to extension programmers to decide in which of these two modules they want to insert functionality.</source>
+        <target state="final">Das Modul "Web &gt; Info" unterscheidet sich vom Modul "Web &gt; Funktionen" dadurch, dass es primär Informationen statt Änderungsmöglichkeiten bietet. Es liegt am Programmierer zu entscheiden, in welchem dieser Module seine Backend-Erweiterung erscheinen soll.</target>
+      </trans-unit>
+      <trans-unit id="_.image" resname="_.image" approved="yes">
+        <source>EXT:info/Resources/Public/Images/cshimages/pagetree_overview_10.png</source>
+        <target state="final">EXT:info/Resources/Public/Images/cshimages/pagetree_overview_10.png</target>
+      </trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" approved="yes">
+        <source>The Web&gt;Info module as provided by the core is an empty shell. It provides an API that extensions can use to attach function menu items to the Info module. Here you see the "Page TSconfig" overview from the extension "info_pagetsconfig".</source>
+        <target state="final">Der TYPO3-Kern liefert mit dem Modul "Web &gt; Info" lediglich einen leeren Container. Durch eine Programmierschnittstelle (API) können Backend-Erweiterungen Menüeinträge innerhalb des Moduls "Web &gt; Info" zur Verfügung stellen. Hier sehen Sie die "Seiten-TSconfig"-Übersicht der Erweiterung "info_pagetsconfig".</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
