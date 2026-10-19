@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:seo/Resources/Private/Language/locallang_tca.xlf" date="2018-08-09T16:22:32Z" product-name="seo" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="pages.tabs.seo" resname="pages.tabs.seo">
+        <source>SEO</source>
+        <target>crwdns107922:0crwdne107922:0</target>
+      </trans-unit>
+      <trans-unit id="pages.palettes.seo" resname="pages.palettes.seo">
+        <source>General SEO settings</source>
+        <target>crwdns107924:0crwdne107924:0</target>
+      </trans-unit>
+      <trans-unit id="pages.seo_title" resname="pages.seo_title">
+        <source>Title for search engines</source>
+        <target>crwdns107926:0crwdne107926:0</target>
+      </trans-unit>
+      <trans-unit id="pages.palettes.robots" resname="pages.palettes.robots">
+        <source>Robot instructions</source>
+        <target>crwdns107928:0crwdne107928:0</target>
+      </trans-unit>
+      <trans-unit id="pages.no_index" resname="pages.no_index">
+        <source>No index</source>
+        <target>crwdns107930:0crwdne107930:0</target>
+      </trans-unit>
+      <trans-unit id="pages.no_index_formlabel" resname="pages.no_index_formlabel">
+        <source>Index this page</source>
+        <target>crwdns107932:0crwdne107932:0</target>
+      </trans-unit>
+      <trans-unit id="pages.no_follow" resname="pages.no_follow">
+        <source>No follow</source>
+        <target>crwdns107934:0crwdne107934:0</target>
+      </trans-unit>
+      <trans-unit id="pages.no_follow_formlabel" resname="pages.no_follow_formlabel">
+        <source>Follow this page</source>
+        <target>crwdns107936:0crwdne107936:0</target>
+      </trans-unit>
+      <trans-unit id="pages.palettes.opengraph" resname="pages.palettes.opengraph">
+        <source>Open Graph (Facebook)</source>
+        <target>crwdns107938:0crwdne107938:0</target>
+      </trans-unit>
+      <trans-unit id="pages.og_title" resname="pages.og_title">
+        <source>Title</source>
+        <target>crwdns107940:0crwdne107940:0</target>
+      </trans-unit>
+      <trans-unit id="pages.og_description" resname="pages.og_description">
+        <source>Description</source>
+        <target>crwdns107942:0crwdne107942:0</target>
+      </trans-unit>
+      <trans-unit id="pages.og_image" resname="pages.og_image">
+        <source>Image</source>
+        <target>crwdns107944:0crwdne107944:0</target>
+      </trans-unit>
+      <trans-unit id="pages.palettes.twittercards" resname="pages.palettes.twittercards">
+        <source>Twitter Cards</source>
+        <target>crwdns107946:0crwdne107946:0</target>
+      </trans-unit>
+      <trans-unit id="pages.twitter_title" resname="pages.twitter_title">
+        <source>Twitter Title</source>
+        <target>crwdns107948:0crwdne107948:0</target>
+      </trans-unit>
+      <trans-unit id="pages.twitter_description" resname="pages.twitter_description">
+        <source>Twitter Description</source>
+        <target>crwdns107950:0crwdne107950:0</target>
+      </trans-unit>
+      <trans-unit id="pages.twitter_image" resname="pages.twitter_image">
+        <source>Twitter Image</source>
+        <target>crwdns107952:0crwdne107952:0</target>
+      </trans-unit>
+      <trans-unit id="pages.twitter_card" resname="pages.twitter_card">
+        <source>Type of card to show</source>
+        <target>crwdns107954:0crwdne107954:0</target>
+      </trans-unit>
+      <trans-unit id="pages.twitter_card.summary" resname="pages.twitter_card.summary">
+        <source>Summary Card</source>
+        <target>crwdns107956:0crwdne107956:0</target>
+      </trans-unit>
+      <trans-unit id="pages.twitter_card.summary_large_image" resname="pages.twitter_card.summary_large_image">
+        <source>Summary Card with a large image</source>
+        <target>crwdns107958:0crwdne107958:0</target>
+      </trans-unit>
+      <trans-unit id="pages.palettes.canonical" resname="pages.palettes.canonical">
+        <source>Canonical</source>
+        <target>crwdns107960:0crwdne107960:0</target>
+      </trans-unit>
+      <trans-unit id="pages.canonical_link" resname="pages.canonical_link">
+        <source>Canonical link</source>
+        <target>crwdns107962:0crwdne107962:0</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.socialmedia" resname="pages.tabs.socialmedia">
+        <source>Social media</source>
+        <target>crwdns107964:0crwdne107964:0</target>
+      </trans-unit>
+      <trans-unit id="pages.palettes.sitemap" resname="pages.palettes.sitemap">
+        <source>Sitemap</source>
+        <target>crwdns107966:0crwdne107966:0</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq" resname="pages.sitemap_changefreq">
+        <source>Change frequency</source>
+        <target>crwdns107968:0crwdne107968:0</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq.none" resname="pages.sitemap_changefreq.none">
+        <source>None</source>
+        <target>crwdns107970:0crwdne107970:0</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq.always" resname="pages.sitemap_changefreq.always">
+        <source>Always</source>
+        <target>crwdns107972:0crwdne107972:0</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq.hourly" resname="pages.sitemap_changefreq.hourly">
+        <source>Hourly</source>
+        <target>crwdns107974:0crwdne107974:0</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq.daily" resname="pages.sitemap_changefreq.daily">
+        <source>Daily</source>
+        <target>crwdns107976:0crwdne107976:0</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq.weekly" resname="pages.sitemap_changefreq.weekly">
+        <source>Weekly</source>
+        <target>crwdns107978:0crwdne107978:0</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq.monthly" resname="pages.sitemap_changefreq.monthly">
+        <source>Monthly</source>
+        <target>crwdns107980:0crwdne107980:0</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq.yearly" resname="pages.sitemap_changefreq.yearly">
+        <source>Yearly</source>
+        <target>crwdns107982:0crwdne107982:0</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq.never" resname="pages.sitemap_changefreq.never">
+        <source>Never</source>
+        <target>crwdns107984:0crwdne107984:0</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_priority" resname="pages.sitemap_priority">
+        <source>Priority</source>
+        <target>crwdns107986:0crwdne107986:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
