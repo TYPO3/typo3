@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:redirects/Resources/Private/Language/locallang.xlf" date="2017-12-29T20:22:14Z" product-name="redirects" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="redirects" resname="redirects">
+        <source>Redirect Settings</source>
+        <target>crwdns107096:0crwdne107096:0</target>
+      </trans-unit>
+      <trans-unit id="redirects.autoUpdateSlugs" resname="redirects.autoUpdateSlugs">
+        <source>Update the slugs of all sub pages automatically</source>
+        <target>crwdns107098:0crwdne107098:0</target>
+      </trans-unit>
+      <trans-unit id="redirects.autoCreateRedirects" resname="redirects.autoCreateRedirects">
+        <source>Create redirects for pages with a new slug automatically</source>
+        <target>crwdns107100:0crwdne107100:0</target>
+      </trans-unit>
+      <trans-unit id="redirects.redirectTTL" resname="redirects.redirectTTL">
+        <source>Time To Live of redirect records in days</source>
+        <target>crwdns107102:0crwdne107102:0</target>
+      </trans-unit>
+      <trans-unit id="redirects.httpStatusCode" resname="redirects.httpStatusCode">
+        <source>HTTP Status Code for the redirect, 301 is the default</source>
+        <target>crwdns107104:0crwdne107104:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
