@@ -82,3 +82,59 @@ test('an invalid file is reported in a notification and the valid files are uplo
   await expect(field.locator('.panel-title', { hasText: validFileName })).toBeVisible({ timeout: 12000 });
   await expect(backend.contentFrame.locator('.upload-queue-item', { hasText: invalidFileName })).toHaveCount(0);
 });
+
+test('FAL relations can be sorted with Alt+ArrowUp/Down and moved to the ends with Alt+Shift+ArrowUp/Down', async ({ backend, page }) => {
+  const field = backend.contentFrame.locator('fieldset:has(> legend:has-text("file_1 "))');
+  const titles = field.locator('.panel-title');
+  const focusTarget = (fileName: string) =>
+    field.locator('.form-irre-object').filter({ hasText: fileName }).locator('.sortableHandle');
+
+  const fileNames = ['sorted-a', 'sorted-b', 'sorted-c'].map((name) => name + Date.now() + '.png');
+  const fileChooserPromise = page.waitForEvent('filechooser');
+  await field.getByRole('button', { name: 'Select & upload files' }).click();
+  const fileChooser = await fileChooserPromise;
+  await fileChooser.setFiles(fileNames.map((name) => ({ name, mimeType: 'image/png', buffer: Buffer.from(pngBase64, 'base64') })));
+  for (const fileName of fileNames) {
+    await expect(titles.filter({ hasText: fileName })).toBeVisible({ timeout: 12000 });
+  }
+  const hiddenField = field.locator('input[type="hidden"][name$="[file_1]"]');
+  const domOrder = () => field.locator('.form-irre-object').evaluateAll((records: HTMLElement[]) => records.map((record) => record.dataset.objectUid));
+
+  const orderBefore = (await titles.allTextContents()).map((title) => title.trim().split(/\s+/)[0]);
+  const index = orderBefore.indexOf(fileNames[0]);
+
+  await field.locator('.form-irre-object').filter({ hasText: fileNames[0] }).locator('.panel-heading button:has(.panel-title)').focus();
+  await page.keyboard.press('Alt+ArrowDown');
+  expect((await titles.allTextContents()).map((title) => title.trim().split(/\s+/)[0])).toEqual(orderBefore);
+
+  await focusTarget(fileNames[0]).focus();
+  await page.keyboard.press('Alt+ArrowDown');
+
+  await expect(titles.nth(index + 1)).toContainText(fileNames[0]);
+  await expect(focusTarget(fileNames[0])).toBeFocused();
+  await expect(field.locator('typo3-formengine-container-inline > [role="status"]')).toHaveText(`Moved to position ${index + 2} of ${orderBefore.length}`);
+
+  expect((await hiddenField.inputValue()).split(',')).toEqual(await domOrder());
+
+  await focusTarget(fileNames[0]).focus();
+  await page.keyboard.press('Alt+ArrowUp');
+
+  await expect(titles.nth(index)).toContainText(fileNames[0]);
+  await expect(focusTarget(fileNames[0])).toBeFocused();
+  await expect(field.locator('typo3-formengine-container-inline > [role="status"]')).toHaveText(`Moved to position ${index + 1} of ${orderBefore.length}`);
+  expect((await hiddenField.inputValue()).split(',')).toEqual(await domOrder());
+
+  await page.keyboard.press('Alt+Shift+ArrowUp');
+
+  await expect(titles.first()).toContainText(fileNames[0]);
+  await expect(focusTarget(fileNames[0])).toBeFocused();
+  await expect(field.locator('typo3-formengine-container-inline > [role="status"]')).toHaveText(`Moved to position 1 of ${orderBefore.length}`);
+  expect((await hiddenField.inputValue()).split(',')).toEqual(await domOrder());
+
+  await page.keyboard.press('Alt+Shift+ArrowDown');
+
+  await expect(titles.last()).toContainText(fileNames[0]);
+  await expect(focusTarget(fileNames[0])).toBeFocused();
+  await expect(field.locator('typo3-formengine-container-inline > [role="status"]')).toHaveText(`Moved to position ${orderBefore.length} of ${orderBefore.length}`);
+  expect((await hiddenField.inputValue()).split(',')).toEqual(await domOrder());
+});

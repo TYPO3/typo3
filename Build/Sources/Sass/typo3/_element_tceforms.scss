@@ -67,6 +67,10 @@ div.t3-form-field-container:first-child .t3-form-field-label-flex {
     }
 }
 
+.form-irre-object:has(.sortableHandle:focus-visible) {
+    outline: var(--typo3-outline-width) var(--typo3-outline-style) color-mix(in srgb, var(--typo3-panel-border-color), transparent 25%);
+}
+
 //
 // TCEforms Sections
 //

@@ -56,7 +56,9 @@ enum Separators {
 }
 
 enum SortDirections {
+  BOTTOM = 'bottom',
   DOWN = 'down',
+  TOP = 'top',
   UP = 'up',
 }
 
@@ -98,6 +100,7 @@ interface InlineEndpoints {
 class InlineControlContainer extends HTMLElement {
   private ajaxDispatcher: AjaxDispatcher | null = null;
   private recordsContainer: HTMLDivElement | null = null;
+  private liveRegion: HTMLElement | null = null;
   private requestQueue: RequestQueue = {};
   private progressQueue: ProgressQueue = {};
   private readonly noTitleString: string = (coreCoreLabels.get('labels.no_title'));
@@ -255,6 +258,8 @@ class InlineControlContainer extends HTMLElement {
     await DocumentService.ready();
     this.registerInfoButton();
     this.registerSort();
+    this.registerSortByKeyboard();
+    this.registerLiveRegion();
     this.registerCreateRecordButton();
     this.registerEnableDisableButton();
     this.registerDeleteButton();
@@ -329,6 +334,27 @@ class InlineControlContainer extends HTMLElement {
         <SortDirections>targetElement.dataset.direction,
       );
     }).delegateTo(this, Selectors.controlSectionSelector + ' [data-action="sort"]');
+  }
+
+  private registerSortByKeyboard(): void {
+    new RegularEvent('keydown', (e: KeyboardEvent, targetElement: HTMLElement): void => {
+      if (!e.altKey || e.ctrlKey || e.metaKey || (e.key !== 'ArrowUp' && e.key !== 'ArrowDown')) {
+        return;
+      }
+
+      const recordContainer = targetElement.closest<HTMLElement>('[data-object-id]');
+      if (recordContainer === null || recordContainer.parentElement !== this.recordsContainer) {
+        return;
+      }
+
+      e.preventDefault();
+      this.changeSortingByButton(
+        recordContainer.dataset.objectId!,
+        e.key === 'ArrowUp'
+          ? (e.shiftKey ? SortDirections.TOP : SortDirections.UP)
+          : (e.shiftKey ? SortDirections.BOTTOM : SortDirections.DOWN),
+      );
+    }).delegateTo(this, '.sortableHandle');
   }
 
   private registerCreateRecordButton(): void {
@@ -763,32 +789,46 @@ class InlineControlContainer extends HTMLElement {
    */
   private changeSortingByButton(objectId: string, direction: SortDirections): void {
     const currentRecordContainer = this.getRecordContainer(objectId);
-    const recordUid = currentRecordContainer.dataset.objectUid;
     const recordListContainer = this.recordsContainer;
-    const records = Array.from(recordListContainer!.children as HTMLCollectionOf<HTMLElement>).map((child) => child.dataset.objectUid);
-    const position = records.indexOf(recordUid);
-    let isChanged = false;
+    const recordContainers = Array.from(recordListContainer!.children as HTMLCollectionOf<HTMLElement>);
+    const position = recordContainers.indexOf(currentRecordContainer);
+    const focusedElement = document.activeElement;
 
-    if (direction === SortDirections.UP && position > 0) {
-      records[position] = records[position - 1];
-      records[position - 1] = recordUid;
-      isChanged = true;
-    } else if (direction === SortDirections.DOWN && position < records.length - 1) {
-      records[position] = records[position + 1];
-      records[position + 1] = recordUid;
-      isChanged = true;
+    const newPositions: Record<SortDirections, number> = {
+      [SortDirections.UP]: position - 1,
+      [SortDirections.DOWN]: position + 1,
+      [SortDirections.TOP]: 0,
+      [SortDirections.BOTTOM]: recordContainers.length - 1,
+    };
+    const newPosition = newPositions[direction];
+
+    if (newPosition === position || newPosition < 0 || newPosition >= recordContainers.length) {
+      return;
     }
 
-    if (isChanged) {
-      const objectIdPrefix = this.objectGroup + Separators.structureSeparator;
-      const adjustment = direction === SortDirections.UP ? 1 : 0;
-      currentRecordContainer.parentElement!.insertBefore(
-        this.getRecordContainer(objectIdPrefix + records[position - adjustment]),
-        this.getRecordContainer(objectIdPrefix + records[position + 1 - adjustment]),
-      );
+    recordListContainer!.insertBefore(
+      currentRecordContainer,
+      newPosition < position ? recordContainers[newPosition] : recordContainers[newPosition].nextElementSibling,
+    );
 
-      this.updateSorting();
+    this.updateSorting();
+
+    if (focusedElement instanceof HTMLElement && document.activeElement !== focusedElement) {
+      focusedElement.focus();
     }
+    this.announce(backendAltDocLabels.get('label.sorting.moved', [String(newPosition + 1), String(recordContainers.length)]));
+  }
+
+  private registerLiveRegion(): void {
+    this.liveRegion = document.createElement('div');
+    this.liveRegion.classList.add('visually-hidden');
+    this.liveRegion.setAttribute('role', 'status');
+    this.liveRegion.setAttribute('aria-live', 'polite');
+    this.append(this.liveRegion);
+  }
+
+  private announce(message: string): void {
+    this.liveRegion!.textContent = message;
   }
 
   private updateSorting(): void {

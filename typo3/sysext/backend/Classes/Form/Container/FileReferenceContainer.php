@@ -443,7 +443,7 @@ class FileReferenceContainer extends AbstractContainer
             }
             if (($parentConfig['appearance']['useSortable'] ?? false) && $event->isControlEnabled('dragdrop')) {
                 $controls['dragdrop'] = '
-                    <span class="btn btn-default sortableHandle" data-id="' . (int)$databaseRow['uid'] . '" title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.move')) . '">
+                    <span class="btn btn-default sortableHandle" role="button" tabindex="0" aria-keyshortcuts="Alt+ArrowUp Alt+ArrowDown Alt+Shift+ArrowUp Alt+Shift+ArrowDown" data-id="' . (int)$databaseRow['uid'] . '" title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.move')) . '">
                         ' . $this->iconFactory->getIcon('actions-move-move', IconSize::SMALL)->render() . '
                     </span>';
             }
