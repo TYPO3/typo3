@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:impexp/Resources/Private/Language/locallang_tca.xlf" date="2020-09-19T08:53:36Z" product-name="impexp" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="tx_impexp_presets" resname="tx_impexp_presets" xml:space="preserve">
+				<source>Export Configuration</source>
+			<target>crwdns221494:0crwdne221494:0</target></trans-unit>
+      <trans-unit id="title" resname="title" xml:space="preserve">
+				<source>Title</source>
+			<target>crwdns221496:0crwdne221496:0</target></trans-unit>
+      <trans-unit id="public" resname="public" xml:space="preserve">
+				<source>Public</source>
+			<target>crwdns221498:0crwdne221498:0</target></trans-unit>
+      <trans-unit id="user_uid" resname="user_uid" xml:space="preserve">
+				<source>Owner</source>
+			<target>crwdns221500:0crwdne221500:0</target></trans-unit>
+      <trans-unit id="item_uid" resname="item_uid" xml:space="preserve">
+				<source>Page Root</source>
+			<target>crwdns221502:0crwdne221502:0</target></trans-unit>
+      <trans-unit id="preset_data" resname="preset_data" xml:space="preserve">
+				<source>Configuration</source>
+			<target>crwdns221504:0crwdne221504:0</target></trans-unit>
+    </body>
+  </file>
+</xliff>
