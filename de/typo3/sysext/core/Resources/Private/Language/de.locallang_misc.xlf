@@ -1,0 +1,624 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_misc.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="shortcutDescription" resname="shortcutDescription" approved="yes">
+        <source>This is the shortcuts menu. You do not have any shortcuts added yet, you can do so by clicking the shortcut icon %icon%, which you can find on each page in the backend.</source>
+        <target state="final">Dieses Menü zeigt von Ihnen angelegte Verweise an. Sie haben noch keine Verweise hinzugefügt, können das aber mit einem Mausklick auf das Verweissymbol %icon% tun, das auf jeder Seite des Backends vorhanden ist.</target>
+      </trans-unit>
+      <trans-unit id="shortcut_edit" resname="shortcut_edit" approved="yes">
+        <source>Edit</source>
+        <target state="final">Bearbeiten</target>
+      </trans-unit>
+      <trans-unit id="shortcut_create" resname="shortcut_create" approved="yes">
+        <source>Create</source>
+        <target state="final">Erstellen</target>
+      </trans-unit>
+      <trans-unit id="shortcut_editID" resname="shortcut_editID" approved="yes">
+        <source>Edit/Search</source>
+        <target state="final">Bearbeiten/Suchen</target>
+      </trans-unit>
+      <trans-unit id="shortcut_save" resname="shortcut_save" approved="yes">
+        <source>Update shortcut title</source>
+        <target state="final">Verweistitel aktualisieren</target>
+      </trans-unit>
+      <trans-unit id="shortcut_saveClose" resname="shortcut_saveClose" approved="yes">
+        <source>Update and close editor</source>
+        <target state="final">Aktualisieren und Editor schließen</target>
+      </trans-unit>
+      <trans-unit id="shortcut_close" resname="shortcut_close" approved="yes">
+        <source>Close shortcut editor</source>
+        <target state="final">Verweiseditor schließen</target>
+      </trans-unit>
+      <trans-unit id="shortcut_delete" resname="shortcut_delete" approved="yes">
+        <source>Remove shortcut</source>
+        <target state="final">Verweis entfernen</target>
+      </trans-unit>
+      <trans-unit id="shortcut_loadEdit" resname="shortcut_loadEdit" approved="yes">
+        <source>Loading page</source>
+        <target state="final">Seite wird geladen</target>
+      </trans-unit>
+      <trans-unit id="shortcut_searchFor" resname="shortcut_searchFor" approved="yes">
+        <source>Search for</source>
+        <target state="final">Suchen nach</target>
+      </trans-unit>
+      <trans-unit id="shortcut_notEditable" resname="shortcut_notEditable" approved="yes">
+        <source>No editable page found!</source>
+        <target state="final">Keine Seite zur Bearbeitung gefunden!</target>
+      </trans-unit>
+      <trans-unit id="shortcut_group" resname="shortcut_group" approved="yes">
+        <source>Group</source>
+        <target state="final">Gruppe</target>
+      </trans-unit>
+      <trans-unit id="shortcut_group_1" resname="shortcut_group_1" approved="yes">
+        <source>Pages</source>
+        <target state="final">Seiten</target>
+      </trans-unit>
+      <trans-unit id="shortcut_group_2" resname="shortcut_group_2" approved="yes">
+        <source>Records</source>
+        <target state="final">Datensätze</target>
+      </trans-unit>
+      <trans-unit id="shortcut_group_3" resname="shortcut_group_3" approved="yes">
+        <source>Files</source>
+        <target state="final">Dateien</target>
+      </trans-unit>
+      <trans-unit id="shortcut_group_4" resname="shortcut_group_4" approved="yes">
+        <source>Tools</source>
+        <target state="final">Werkzeuge</target>
+      </trans-unit>
+      <trans-unit id="shortcut_group_5" resname="shortcut_group_5" approved="yes">
+        <source>Miscellaneous</source>
+        <target state="final">Verschiedenes</target>
+      </trans-unit>
+      <trans-unit id="shortcut_global" resname="shortcut_global" approved="yes">
+        <source>Global</source>
+        <target state="final">Global</target>
+      </trans-unit>
+      <trans-unit id="shortcut_all" resname="shortcut_all" approved="yes">
+        <source>All</source>
+        <target state="final">Alle</target>
+      </trans-unit>
+      <trans-unit id="shortcut_onlyAdmin" resname="shortcut_onlyAdmin" approved="yes">
+        <source>You cannot edit a shared shortcut!</source>
+        <target state="final">Sie können keine gemeinsamen Verweise bearbeiten!</target>
+      </trans-unit>
+      <trans-unit id="shortcut_selSC" resname="shortcut_selSC" approved="yes">
+        <source>Select shortcut</source>
+        <target state="final">Verweis auswählen</target>
+      </trans-unit>
+      <trans-unit id="shortcut_delAllInCat" resname="shortcut_delAllInCat" approved="yes">
+        <source>Delete all shortcuts in this group?</source>
+        <target state="final">Alle Verweise in dieser Gruppe löschen?</target>
+      </trans-unit>
+      <trans-unit id="shortcut_onlineWS" resname="shortcut_onlineWS" approved="yes">
+        <source>LIVE workspace</source>
+        <target state="final">LIVE-Arbeitsumgebung</target>
+      </trans-unit>
+      <trans-unit id="shortcut_active" resname="shortcut_active" approved="yes">
+        <source>active</source>
+        <target state="final">aktiv</target>
+      </trans-unit>
+      <trans-unit id="shortcut_inactive" resname="shortcut_inactive" approved="yes">
+        <source>inactive</source>
+        <target state="final">inaktiv</target>
+      </trans-unit>
+      <trans-unit id="shortcut_noWSfound" resname="shortcut_noWSfound" approved="yes">
+        <source>ERROR: No workspaces found!</source>
+        <target state="final">FEHLER: Keine Arbeitsumgebungen gefunden!</target>
+      </trans-unit>
+      <trans-unit id="shortcut_FEPreview" resname="shortcut_FEPreview" approved="yes">
+        <source>Enable Frontend Preview</source>
+        <target state="final">Vorschau im Frontend aktivieren</target>
+      </trans-unit>
+      <trans-unit id="shortcut_workspace" resname="shortcut_workspace" approved="yes">
+        <source>Go to Workspace Module</source>
+        <target state="final">Modul Arbeitsumgebungen aufrufen</target>
+      </trans-unit>
+      <trans-unit id="bookmark_description" resname="bookmark_description" approved="yes">
+        <source>This is the bookmarks menu. You do not have any bookmarks added yet, you can do so by clicking the bookmark icon %s, which you can find on each page in the backend.</source>
+        <target state="final">Dieses Menü zeigt von Ihnen angelegte Lesezeichen an. Sie haben noch keine Lesezeichen hinzugefügt, können das aber mit einem Mausklick auf das Lesezeichensymbol %s tun, das auf jeder Seite des Backends vorhanden ist.</target>
+      </trans-unit>
+      <trans-unit id="bookmark_edit" resname="bookmark_edit" approved="yes">
+        <source>Edit</source>
+        <target state="final">Bearbeiten</target>
+      </trans-unit>
+      <trans-unit id="bookmark_create" resname="bookmark_create" approved="yes">
+        <source>Create</source>
+        <target state="final">Erstellen</target>
+      </trans-unit>
+      <trans-unit id="bookmark_editID" resname="bookmark_editID" approved="yes">
+        <source>Edit/Search</source>
+        <target state="final">Bearbeiten/Suchen</target>
+      </trans-unit>
+      <trans-unit id="bookmark_save" resname="bookmark_save" approved="yes">
+        <source>Update bookmark title</source>
+        <target state="final">Lesezeichentitel aktualisieren</target>
+      </trans-unit>
+      <trans-unit id="bookmark_saveClose" resname="bookmark_saveClose" approved="yes">
+        <source>Update and close editor</source>
+        <target state="final">Aktualisieren und Editor schließen</target>
+      </trans-unit>
+      <trans-unit id="bookmark_close" resname="bookmark_close" approved="yes">
+        <source>Close bookmark editor</source>
+        <target state="final">Lesezeicheneditor schließen</target>
+      </trans-unit>
+      <trans-unit id="bookmark_delete" resname="bookmark_delete" approved="yes">
+        <source>Remove bookmark</source>
+        <target state="final">Lesezeichen entfernen</target>
+      </trans-unit>
+      <trans-unit id="bookmark_loadEdit" resname="bookmark_loadEdit" approved="yes">
+        <source>Loading page</source>
+        <target state="final">Seite wird geladen</target>
+      </trans-unit>
+      <trans-unit id="bookmark_searchFor" resname="bookmark_searchFor" approved="yes">
+        <source>Search for</source>
+        <target state="final">Suchen nach</target>
+      </trans-unit>
+      <trans-unit id="bookmark_notEditable" resname="bookmark_notEditable" approved="yes">
+        <source>No editable page found!</source>
+        <target state="final">Keine Seite zur Bearbeitung gefunden!</target>
+      </trans-unit>
+      <trans-unit id="bookmark_group" resname="bookmark_group" approved="yes">
+        <source>Group</source>
+        <target state="final">Gruppe</target>
+      </trans-unit>
+      <trans-unit id="bookmark_group_1" resname="bookmark_group_1" approved="yes">
+        <source>Pages</source>
+        <target state="final">Seiten</target>
+      </trans-unit>
+      <trans-unit id="bookmark_group_2" resname="bookmark_group_2" approved="yes">
+        <source>Records</source>
+        <target state="final">Datensätze</target>
+      </trans-unit>
+      <trans-unit id="bookmark_group_3" resname="bookmark_group_3" approved="yes">
+        <source>Files</source>
+        <target state="final">Dateien</target>
+      </trans-unit>
+      <trans-unit id="bookmark_group_4" resname="bookmark_group_4" approved="yes">
+        <source>Tools</source>
+        <target state="final">Werkzeuge</target>
+      </trans-unit>
+      <trans-unit id="bookmark_group_5" resname="bookmark_group_5" approved="yes">
+        <source>Miscellaneous</source>
+        <target state="final">Verschiedenes</target>
+      </trans-unit>
+      <trans-unit id="bookmark_global" resname="bookmark_global" approved="yes">
+        <source>Global</source>
+        <target state="final">Global</target>
+      </trans-unit>
+      <trans-unit id="bookmark_all" resname="bookmark_all" approved="yes">
+        <source>All</source>
+        <target state="final">Alle</target>
+      </trans-unit>
+      <trans-unit id="bookmark_onlyAdmin" resname="bookmark_onlyAdmin" approved="yes">
+        <source>You cannot edit a shared bookmark!</source>
+        <target state="final">Sie können keine gemeinsamen Lesezeichen bearbeiten!</target>
+      </trans-unit>
+      <trans-unit id="bookmark_selSC" resname="bookmark_selSC" approved="yes">
+        <source>Select bookmark</source>
+        <target state="final">Lesezeichen auswählen</target>
+      </trans-unit>
+      <trans-unit id="bookmark_delAllInCat" resname="bookmark_delAllInCat" approved="yes">
+        <source>Delete all bookmarks in this group</source>
+        <target state="final">Alle Lesezeichen in dieser Gruppe löschen</target>
+      </trans-unit>
+      <trans-unit id="bookmark_onlineWS" resname="bookmark_onlineWS" approved="yes">
+        <source>LIVE workspace</source>
+        <target state="final">LIVE-Arbeitsumgebung</target>
+      </trans-unit>
+      <trans-unit id="bookmark_active" resname="bookmark_active" approved="yes">
+        <source>active</source>
+        <target state="final">aktiv</target>
+      </trans-unit>
+      <trans-unit id="bookmark_inactive" resname="bookmark_inactive" approved="yes">
+        <source>inactive</source>
+        <target state="final">inaktiv</target>
+      </trans-unit>
+      <trans-unit id="bookmark_noWSfound" resname="bookmark_noWSfound" approved="yes">
+        <source>ERROR: No workspaces found!</source>
+        <target state="final">FEHLER: Keine Arbeitsumgebungen gefunden!</target>
+      </trans-unit>
+      <trans-unit id="bookmark_FEPreview" resname="bookmark_FEPreview" approved="yes">
+        <source>Enable Frontend Preview</source>
+        <target state="final">Vorschau im Frontend aktivieren</target>
+      </trans-unit>
+      <trans-unit id="bookmark_workspaceComparisonView" resname="bookmark_workspaceComparisonView" approved="yes">
+        <source>Enable comparison view</source>
+        <target state="final">Vergleichsansicht aktivieren</target>
+      </trans-unit>
+      <trans-unit id="bookmark_workspace" resname="bookmark_workspace" approved="yes">
+        <source>Go to Workspace Module</source>
+        <target state="final">Modul Arbeitsumgebungen aufrufen</target>
+      </trans-unit>
+      <trans-unit id="overwriteExistingFiles" resname="overwriteExistingFiles" approved="yes">
+        <source>Overwrite existing files</source>
+        <target state="final">Vorhandene Dateien überschreiben</target>
+      </trans-unit>
+      <trans-unit id="uploadMultipleFilesInfo" resname="uploadMultipleFilesInfo" approved="yes">
+        <source>Upload multiple files by holding the Shift or CTRL-file pressed while selecting your files (works on modern browsers only).</source>
+        <target state="final">Um mehrere Dateien hochzuladen kann die Hochstell- oder Strg-Taste gedrückt gehalten werden, während die Dateien ausgesucht werden (funktioniert nur in aktuellen Browsern).</target>
+      </trans-unit>
+      <trans-unit id="fileMetaDataLocation" resname="fileMetaDataLocation" approved="yes">
+        <source>Location</source>
+        <target state="final">Ort</target>
+      </trans-unit>
+      <trans-unit id="fileMetaErrorInvalidRecord" resname="fileMetaErrorInvalidRecord" approved="yes">
+        <source>File meta data not found</source>
+        <target state="final">Meta-Daten der Datei nicht gefunden</target>
+      </trans-unit>
+      <trans-unit id="selectPosition" resname="selectPosition" approved="yes">
+        <source>Select a position for the new page</source>
+        <target state="final">Position für neue Seite auswählen</target>
+      </trans-unit>
+      <trans-unit id="pageSelectPosition" resname="pageSelectPosition" approved="yes">
+        <source>Page (select position)</source>
+        <target state="final">Seite (Position auswählen)</target>
+      </trans-unit>
+      <trans-unit id="goBack" resname="goBack" approved="yes">
+        <source>Go back</source>
+        <target state="final">Zurück</target>
+      </trans-unit>
+      <trans-unit id="createNewPage" resname="createNewPage" approved="yes">
+        <source>Create a new page</source>
+        <target state="final">Neue Seite erstellen</target>
+      </trans-unit>
+      <trans-unit id="createNewContent" resname="createNewContent" approved="yes">
+        <source>Create a new content element</source>
+        <target state="final">Neues Inhaltselement erstellen</target>
+      </trans-unit>
+      <trans-unit id="clickForWizard" resname="clickForWizard" approved="yes">
+        <source>Click here for wizard!</source>
+        <target state="final">Zum Aufrufen des Assistenten hier klicken!</target>
+      </trans-unit>
+      <trans-unit id="insertNewPageHere" resname="insertNewPageHere" approved="yes">
+        <source>Insert the new page here</source>
+        <target state="final">Neue Seite hier einfügen</target>
+      </trans-unit>
+      <trans-unit id="insertNewRecordHere" resname="insertNewRecordHere" approved="yes">
+        <source>Insert new record here</source>
+        <target state="final">Neuen Datensatz hier einfügen</target>
+      </trans-unit>
+      <trans-unit id="movePageToHere" resname="movePageToHere" approved="yes">
+        <source>Move page to this position</source>
+        <target state="final">Seite an diese Position verschieben</target>
+      </trans-unit>
+      <trans-unit id="moveElement" resname="moveElement" approved="yes">
+        <source>Move element</source>
+        <target state="final">Element verschieben</target>
+      </trans-unit>
+      <trans-unit id="moveElements" resname="moveElements" approved="yes">
+        <source>Move elements</source>
+        <target state="final">Elemente verschieben</target>
+      </trans-unit>
+      <trans-unit id="copyElements" resname="copyElements" approved="yes">
+        <source>Copy elements</source>
+        <target state="final">Elemente kopieren</target>
+      </trans-unit>
+      <trans-unit id="selectPositionOfElement" resname="selectPositionOfElement" approved="yes">
+        <source>Select position of the element</source>
+        <target state="final">Position für das Element auswählen</target>
+      </trans-unit>
+      <trans-unit id="movingElement" resname="movingElement" approved="yes">
+        <source>Move element</source>
+        <target state="final">Element verschieben</target>
+      </trans-unit>
+      <trans-unit id="makeCopy" resname="makeCopy" approved="yes">
+        <source>Make copy instead of moving element</source>
+        <target state="final">Kopieren statt Verschieben</target>
+      </trans-unit>
+      <trans-unit id="newContentElement" resname="newContentElement" approved="yes">
+        <source>New content element</source>
+        <target state="final">Neues Inhaltselement</target>
+      </trans-unit>
+      <trans-unit id="newContentElement.filter.label" resname="newContentElement.filter.label" approved="yes">
+        <source>Filter by:</source>
+        <target state="final">Filtern nach:</target>
+      </trans-unit>
+      <trans-unit id="newContentElement.filter.placeholder" resname="newContentElement.filter.placeholder" approved="yes">
+        <source>Search for any content type</source>
+        <target state="final">Suche nach einem beliebigen Inhaltstyp</target>
+      </trans-unit>
+      <trans-unit id="newContentElement.filter.noResults" resname="newContentElement.filter.noResults" approved="yes">
+        <source>Unfortunately no content type matches your query, please try a different one.</source>
+        <target state="final">Leider stimmt kein Inhaltstyp mit Ihrer Anfrage überein, bitte versuchen Sie einen anderen.</target>
+      </trans-unit>
+      <trans-unit id="system_records" resname="system_records" approved="yes">
+        <source>System Records</source>
+        <target state="final">Systemdatensätze</target>
+      </trans-unit>
+      <trans-unit id="recordgroup.content" resname="recordgroup.content" approved="yes">
+        <source>Content</source>
+        <target state="final">Inhalt</target>
+      </trans-unit>
+      <trans-unit id="recordgroup.backendaccess" resname="recordgroup.backendaccess" approved="yes">
+        <source>Backend Access</source>
+        <target state="final">Backend-Zugang</target>
+      </trans-unit>
+      <trans-unit id="recordgroup.frontendaccess" resname="recordgroup.frontendaccess" approved="yes">
+        <source>Frontend Access</source>
+        <target state="final">Frontend-Zugang</target>
+      </trans-unit>
+      <trans-unit id="1_selectType" resname="1_selectType" approved="yes">
+        <source>First select the type of the new content element</source>
+        <target state="final">1: Typ des Inhaltselements auswählen</target>
+      </trans-unit>
+      <trans-unit id="2_selectPosition" resname="2_selectPosition" approved="yes">
+        <source>Now click on the position of the new content element</source>
+        <target state="final">2: Position auswählen</target>
+      </trans-unit>
+      <trans-unit id="CM_history" resname="CM_history" approved="yes">
+        <source>History/Undo</source>
+        <target state="final">Verlauf/Rückgängig</target>
+      </trans-unit>
+      <trans-unit id="CM_hideInMenus" resname="CM_hideInMenus" approved="yes">
+        <source>Hide in menu</source>
+        <target state="final">In Menüs verbergen</target>
+      </trans-unit>
+      <trans-unit id="CM_showInMenus" resname="CM_showInMenus" approved="yes">
+        <source>Show in menu</source>
+        <target state="final">Im Menü anzeigen</target>
+      </trans-unit>
+      <trans-unit id="CM_perms" resname="CM_perms" approved="yes">
+        <source>Access</source>
+        <target state="final">Zugriff</target>
+      </trans-unit>
+      <trans-unit id="CM_moveWizard" resname="CM_moveWizard" approved="yes">
+        <source>Move element</source>
+        <target state="final">Element verschieben</target>
+      </trans-unit>
+      <trans-unit id="CM_moveWizard_page" resname="CM_moveWizard_page" approved="yes">
+        <source>Move page</source>
+        <target state="final">Seite verschieben</target>
+      </trans-unit>
+      <trans-unit id="CM_newWizard" resname="CM_newWizard" approved="yes">
+        <source>'Create New' wizard</source>
+        <target state="final">"Neu erstellen"-Assistent</target>
+      </trans-unit>
+      <trans-unit id="CM_editPageProperties" resname="CM_editPageProperties" approved="yes">
+        <source>Edit page properties</source>
+        <target state="final">Seiteneigenschaften bearbeiten</target>
+      </trans-unit>
+      <trans-unit id="CM_db_list" resname="CM_db_list" approved="yes">
+        <source>Web&gt;List module</source>
+        <target state="final">Web &gt; Liste</target>
+      </trans-unit>
+      <trans-unit id="noEditPage" resname="noEditPage" approved="yes">
+        <source>You asked to edit page "%s" but you cannot edit this page. Now loading backend as usual.</source>
+        <target state="final">Sie möchten die Seite "%s" bearbeiten, dies ist jedoch nicht möglich. Das Backend wird wie gewöhnlich geladen.</target>
+      </trans-unit>
+      <trans-unit id="localize" resname="localize" approved="yes">
+        <source>Localize</source>
+        <target state="final">Lokalisieren</target>
+      </trans-unit>
+      <trans-unit id="localize.isLocalizable" resname="localize.isLocalizable" approved="yes">
+        <source>Record can be localized</source>
+        <target state="final">Datensatz kann lokalisiert werden</target>
+      </trans-unit>
+      <trans-unit id="localize.wasRemovedInOriginal" resname="localize.wasRemovedInOriginal" approved="yes">
+        <source>Record was removed in original language</source>
+        <target state="final">Datensatz der Ursprungssprache wurde entfernt</target>
+      </trans-unit>
+      <trans-unit id="localizeAllRecords" resname="localizeAllRecords" approved="yes">
+        <source>Localize all records</source>
+        <target state="final">Alle Datensätze lokalisieren</target>
+      </trans-unit>
+      <trans-unit id="synchronizeWithOriginalLanguage" resname="synchronizeWithOriginalLanguage" approved="yes">
+        <source>Synchronize with original language</source>
+        <target state="final">Mit Ursprungssprache synchronisieren</target>
+      </trans-unit>
+      <trans-unit id="pageTree_filter" resname="pageTree_filter" approved="yes">
+        <source>Filter</source>
+        <target state="final">Filter</target>
+      </trans-unit>
+      <trans-unit id="switchtouser" resname="switchtouser" approved="yes">
+        <source>Switch to User</source>
+        <target state="final">Umschalten zu Benutzer</target>
+      </trans-unit>
+      <trans-unit id="switchtousershort" resname="switchtousershort" approved="yes">
+        <source>SU</source>
+        <target state="final">BW</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_windowTitle" resname="fileUpload_windowTitle" approved="yes">
+        <source>File Upload Progress</source>
+        <target state="final">Hochladen von Dateien</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_buttonSelectFiles" resname="fileUpload_buttonSelectFiles" approved="yes">
+        <source>Select Files</source>
+        <target state="final">Dateien auswählen</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_buttonCancelAll" resname="fileUpload_buttonCancelAll" approved="yes">
+        <source>Cancel All Uploads</source>
+        <target state="final">Alle Übertragungen abbrechen</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_infoComponentMaxFileSize" resname="fileUpload_infoComponentMaxFileSize" approved="yes">
+        <source>You can upload files with a maximum size of {0}.</source>
+        <target state="final">Es können Dateien bis zu einer Größe von {0} hochgeladen werden.</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_infoComponentFileUploadLimit" resname="fileUpload_infoComponentFileUploadLimit" approved="yes">
+        <source>You can upload a total of {0}.</source>
+        <target state="final">Es können insgesamt {0} hochgeladen werden.</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_infoComponentFileTypeLimit" resname="fileUpload_infoComponentFileTypeLimit" approved="yes">
+        <source>You can upload the following file types {0}.</source>
+        <target state="final">Es können folgende Dateitypen hochgeladen werden {0},</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_infoComponentOverrideFiles" resname="fileUpload_infoComponentOverrideFiles" approved="yes">
+        <source>Overwrite existing files</source>
+        <target state="final">Vorhandene Dateien überschreiben</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_processRunning" resname="fileUpload_processRunning" approved="yes">
+        <source>Another process is already uploading</source>
+        <target state="final">Es läuft bereits ein anderer Hochladevorgang</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_uploadWait" resname="fileUpload_uploadWait" approved="yes">
+        <source>Waiting to start upload of {0}</source>
+        <target state="final">Warten auf Hochladen von {0}</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_uploadStarting" resname="fileUpload_uploadStarting" approved="yes">
+        <source>Starting upload of {0}</source>
+        <target state="final">Starten des Hochladens von {0}</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_uploadProgress" resname="fileUpload_uploadProgress" approved="yes">
+        <source>{0}% of {1} uploaded</source>
+        <target state="final">{0}% von {1} hochgeladen</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_uploadSuccess" resname="fileUpload_uploadSuccess" approved="yes">
+        <source>{0} was successfully uploaded!</source>
+        <target state="final">{0} erfolgreich hochgeladen!</target>
+      </trans-unit>
+      <trans-unit id="pagetree_networkErrorTitle" resname="pagetree_networkErrorTitle" approved="yes">
+        <source>Page tree error</source>
+        <target state="final">Seitenbaumfehler</target>
+      </trans-unit>
+      <trans-unit id="pagetree_networkErrorDesc" resname="pagetree_networkErrorDesc" approved="yes">
+        <source>Got unexpected response from the server. Please check logs for details.</source>
+        <target state="final">Unerwartete Antwort vom Server erhalten. Bitte überprüfen Sie die Protokolle für mehr Details.</target>
+      </trans-unit>
+      <trans-unit id="tree_networkError" resname="tree_networkError" approved="yes">
+        <source>Navigation loading error</source>
+        <target state="final">Fehler beim Laden der Navigation</target>
+      </trans-unit>
+      <trans-unit id="tree_networkErrorDescription" resname="tree_networkErrorDescription" approved="yes">
+        <source>Got unexpected response from the server. Please check logs for details.</source>
+        <target state="final">Unerwartete Antwort vom Server erhalten. Bitte überprüfen Sie die Protokolle für mehr Details.</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorQueueLimitExceeded" resname="fileUpload_errorQueueLimitExceeded" approved="yes">
+        <source>Too many files selected</source>
+        <target state="final">Zu viele Dateien ausgewählt</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorQueueFileSizeLimit" resname="fileUpload_errorQueueFileSizeLimit" approved="yes">
+        <source>{0} is too big</source>
+        <target state="final">{0} ist zu groß</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorQueueZeroByteFile" resname="fileUpload_errorQueueZeroByteFile" approved="yes">
+        <source>{0} is empty</source>
+        <target state="final">{0} ist leer</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorQueueInvalidFiletype" resname="fileUpload_errorQueueInvalidFiletype" approved="yes">
+        <source>Filetype not allowed for {0}</source>
+        <target state="final">Dateityp nicht erlaubt bei {0}</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorUploadHttp" resname="fileUpload_errorUploadHttp" approved="yes">
+        <source>Too many files selected</source>
+        <target state="final">Zu viele Dateien ausgewählt</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorUploadHttpError" resname="fileUpload_errorUploadHttpError" approved="yes">
+        <source>A HTTP error occurred: {0}</source>
+        <target state="final">HTTP-Fehler aufgetreten: {0}</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorUploadMissingUrl" resname="fileUpload_errorUploadMissingUrl" approved="yes">
+        <source>Internal error: No Upload URL set</source>
+        <target state="final">Interner Fehler: Keine Hochlade-URL festgelegt</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorUploadIO" resname="fileUpload_errorUploadIO" approved="yes">
+        <source>Internal error: Problems while reading/writing the file</source>
+        <target state="final">Interner Fehler: Fehler beim Lesen/Schreiben der Datei</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorUploadSecurityError" resname="fileUpload_errorUploadSecurityError" approved="yes">
+        <source>Internal error: {0}</source>
+        <target state="final">Interner Fehler: {0}</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorUploadLimit" resname="fileUpload_errorUploadLimit" approved="yes">
+        <source>Upload limit exceeded</source>
+        <target state="final">Höchstwert für Hochladen überschritten</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorUploadFailed" resname="fileUpload_errorUploadFailed" approved="yes">
+        <source>Upload failed</source>
+        <target state="final">Hochladen fehlgeschlagen</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorUploadFileIDNotFound" resname="fileUpload_errorUploadFileIDNotFound" approved="yes">
+        <source>Internal error: File ID not found</source>
+        <target state="final">Interner Fehler: Datei-ID nicht gefunden</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorUploadFileValidation" resname="fileUpload_errorUploadFileValidation" approved="yes">
+        <source>Internal error while validating the file</source>
+        <target state="final">Interner Fehler beim Validieren der Datei</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorUploadFileCancelled" resname="fileUpload_errorUploadFileCancelled" approved="yes">
+        <source>Upload of {0} canceled</source>
+        <target state="final">Hochladen von {0} abgebrochen</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorUploadStopped" resname="fileUpload_errorUploadStopped" approved="yes">
+        <source>Upload of {0} stopped</source>
+        <target state="final">Hochladen von {0} angehalten</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_allErrorMessageTitle" resname="fileUpload_allErrorMessageTitle" approved="yes">
+        <source>All uploads failed</source>
+        <target state="final">Hochladen aller Dateien fehlgeschlagen</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_allErrorMessageText" resname="fileUpload_allErrorMessageText" approved="yes">
+        <source>All of your uploads failed.&lt;br /&gt;&lt;br /&gt;If this problem persists, please try another browser, contact your administrator or disable this "Flash Uploader" in your User Settings.&lt;br /&gt;&lt;br /&gt;Detailed problem description:&lt;br /&gt;</source>
+        <target state="final">Keiner der Hochladevorgänge konnte abgeschlossen werden.&lt;br /&gt;&lt;br /&gt;Falls dieses Problem weiterhin besteht, benutzen Sie bitte einen anderen Browser, kontaktieren Ihren Administrator oder deaktivieren die Option "Flash-Schnittstelle zum Hochladen" in den Benutzereinstellungen.&lt;br /&gt;&lt;br /&gt;Problembeschreibung:&lt;br /&gt;</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_allError401" resname="fileUpload_allError401" approved="yes">
+        <source>The server returned the status code 401, which is related to a .htaccess file used for password protection on your server. Unfortunately this can not be handled by your browser's Flash plugin.</source>
+        <target state="final">Der Server lieferte Statuscode 401 zurück. Dies ist häufig auf einen .htaccess Passwortschutz zurückzuführen. Leider wird dies von dem von Ihnen verwendeten Flash-Plugin nicht unterstützt.</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_allError2038" resname="fileUpload_allError2038" approved="yes">
+        <source>An input/output error occurred (Error #2038). This i.e. happens with servers using a self-signed SSL certificate, which is a limitation of your browser's Flash plugin.</source>
+        <target state="final">Ein Lese-/Schreibfehler ist aufgetreten (Fehler #2038). Dies ist häufig auf ein selbstsigniertes SSL-Zertifikat zurückzuführen. Leider wird dies von dem von Ihnen verwendeten Flash-Plug-In nicht unterstützt.</target>
+      </trans-unit>
+      <trans-unit id="synchronizeFolderRelations.afterFolderRenamed" resname="synchronizeRelations.afterFolderRenamed" approved="yes">
+        <source>%d %s records referencing the renamed directory were updated.</source>
+        <target state="final">%d %s Datensätze, die das umbenannte Verzeichnis referenzieren, wurden aktualisiert.</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_title" resname="liveSearch_title" approved="yes">
+        <source>Short result list</source>
+        <target state="final">Kurze Liste der Ergebnisse</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_emptyText" resname="liveSearch_emptyText" approved="yes">
+        <source>Enter search term</source>
+        <target state="final">Suchbegriff eingeben</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_loadingText" resname="liveSearch_loadingText" approved="yes">
+        <source>Searching...</source>
+        <target state="final">Suche läuft...</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_listEmptyText" resname="liveSearch_listEmptyText" approved="yes">
+        <source>No results found.</source>
+        <target state="final">Keine Ergebnisse gefunden.</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_showAllResults" resname="liveSearch_showAllResults" approved="yes">
+        <source>Show All</source>
+        <target state="final">Alle anzeigen</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_helpTitle" resname="liveSearch_helpTitle" approved="yes">
+        <source>How to use advanced search tags</source>
+        <target state="final">Zur Benutzung von Suchpräfixen</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_helpDescription" resname="liveSearch_helpDescription" approved="yes">
+        <source>Search in certain tables</source>
+        <target state="final">In ausgewählten Tabellen suchen</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_helpDescriptionPages" resname="liveSearch_helpDescriptionPages" approved="yes">
+        <source>#page:Home will search for all pages with the title "Home"</source>
+        <target state="final">#page:Home sucht nach allen Seiten mit dem Titel "Home".</target>
+      </trans-unit>
+      <trans-unit id="viewPort_tooltipModuleMenuSplit" resname="viewPort_tooltipModuleMenuSplit" approved="yes">
+        <source>Drag to resize the Modules Menu</source>
+        <target state="final">Ziehen Sie hier, um die Größe des Modulmenüs zu ändern</target>
+      </trans-unit>
+      <trans-unit id="viewPort_tooltipNavigationContainerSplitDrag" resname="viewPort_tooltipNavigationContainerSplitDrag" approved="yes">
+        <source>Drag to resize or double click to collapse the page tree area</source>
+        <target state="final">Ziehen Sie hier, um die Größe zu ändern oder doppelklicken Sie, um den Seitenbaum einzuklappen</target>
+      </trans-unit>
+      <trans-unit id="viewPort_tooltipNavigationContainerSplitClick" resname="viewPort_tooltipNavigationContainerSplitClick" approved="yes">
+        <source>Click to toggle the page tree area</source>
+        <target state="final">Klicken Sie hier, um den Seitenbaum umzuschalten</target>
+      </trans-unit>
+      <trans-unit id="viewPort_tooltipDebugPanelSplitDrag" resname="viewPort_tooltipDebugPanelSplitDrag" approved="yes">
+        <source>Drag to resize or click to collapse the Debug Panel.</source>
+        <target state="final">Ziehen Sie hier, um die Größe zu ändern oder klicken Sie, um das Debug-Panel zuzuklappen</target>
+      </trans-unit>
+      <trans-unit id="viewport_navigation_show" resname="viewport_navigation_show" approved="yes">
+        <source>Show Navigation</source>
+        <target state="final">Navigation anzeigen</target>
+      </trans-unit>
+      <trans-unit id="viewport_navigation_hide" resname="viewport_navigation_hide" approved="yes">
+        <source>Hide Navigation</source>
+        <target state="final">Navigation verbergen</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
