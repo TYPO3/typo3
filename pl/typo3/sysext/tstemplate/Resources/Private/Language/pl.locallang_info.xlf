@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/locallang_info.xlf" date="2011-10-17T20:22:37Z" product-name="tstemplate" target-language="pl">
+    <header/>
+    <body>
+      <trans-unit id="delete" resname="delete" approved="yes">
+        <source>Delete</source>
+        <target state="final">Usuń</target>
+      </trans-unit>
+      <trans-unit id="toTop" resname="toTop" approved="yes">
+        <source>To top</source>
+        <target state="final">Do góry</target>
+      </trans-unit>
+      <trans-unit id="fileChanged" resname="fileChanged" approved="yes">
+        <source>File changed</source>
+        <target state="final">Plik zmieniony</target>
+      </trans-unit>
+      <trans-unit id="resourceUpdated" resname="resourceUpdated" approved="yes">
+        <source>Resource '%s' has been updated.</source>
+        <target state="final">Zasób '%s' został zaktualizowany.</target>
+      </trans-unit>
+      <trans-unit id="templateInformation" resname="templateInformation" approved="yes">
+        <source>Template information</source>
+        <target state="final">Informacje o szablonie</target>
+      </trans-unit>
+      <trans-unit id="allowedExtensions" resname="allowedExtensions" approved="yes">
+        <source>Allowed extensions</source>
+        <target state="final">Dozwolone rozszerzenia</target>
+      </trans-unit>
+      <trans-unit id="maxFilesize" resname="maxFilesize" approved="yes">
+        <source>Max filesize</source>
+        <target state="final">Maksymalny rozmiar pliku</target>
+      </trans-unit>
+      <trans-unit id="uploadResource" resname="uploadResource" approved="yes">
+        <source>Upload resource</source>
+        <target state="final">Prześlij zasób</target>
+      </trans-unit>
+      <trans-unit id="newTextResource" resname="newTextResource" approved="yes">
+        <source>New text resource (enter name)</source>
+        <target state="final">Nowy zasób tekstowy (podaj nazwę)</target>
+      </trans-unit>
+      <trans-unit id="copyResource" resname="copyResource" approved="yes">
+        <source>Make a copy of resource</source>
+        <target state="final">Utwórz kopię zasobu</target>
+      </trans-unit>
+      <trans-unit id="updateResourceList" resname="updateResourceList" approved="yes">
+        <source>Update resource list</source>
+        <target state="final">Aktualizuj listę zasobów</target>
+      </trans-unit>
+      <trans-unit id="file" resname="file" approved="yes">
+        <source>File</source>
+        <target state="final">Plik</target>
+      </trans-unit>
+      <trans-unit id="editResource" resname="editResource" approved="yes">
+        <source>Edit Resource</source>
+        <target state="final">Edytuj zasób</target>
+      </trans-unit>
+      <trans-unit id="filesizeExceeded" resname="filesizeExceeded" approved="yes">
+        <source>Filesize exceeded %s KBytes</source>
+        <target state="final">Rozmiar pliku przekroczył %s KBajtów</target>
+      </trans-unit>
+      <trans-unit id="notAllowed" resname="notAllowed" approved="yes">
+        <source>Files larger than %s KBytes are not allowed to be edited.</source>
+        <target state="final">Pliki większe niż %s KBajty nie mogą być edytowane.</target>
+      </trans-unit>
+      <trans-unit id="resources" resname="resources" approved="yes">
+        <source>Resources</source>
+        <target state="final">Zasoby</target>
+      </trans-unit>
+      <trans-unit id="editToView" resname="editToView" approved="yes">
+        <source>(edit to view, %s lines)</source>
+        <target state="final">(edytuj by zobaczyć, %s linie)</target>
+      </trans-unit>
+      <trans-unit id="editTemplateRecord" resname="editTemplateRecord" approved="yes">
+        <source>Edit the whole template record</source>
+        <target state="final">Edytuj cały rekord szablonu</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
