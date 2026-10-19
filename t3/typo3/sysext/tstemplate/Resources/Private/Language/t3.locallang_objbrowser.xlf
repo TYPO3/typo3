@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf" date="2011-10-17T20:22:37Z" product-name="tstemplate" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="constants" resname="constants">
+        <source>Constants</source>
+        <target>crwdns108608:0crwdne108608:0</target>
+      </trans-unit>
+      <trans-unit id="setup" resname="setup">
+        <source>Setup</source>
+        <target>crwdns108610:0crwdne108610:0</target>
+      </trans-unit>
+      <trans-unit id="all" resname="all">
+        <source>All</source>
+        <target>crwdns108612:0crwdne108612:0</target>
+      </trans-unit>
+      <trans-unit id="plainSubstitution" resname="plainSubstitution">
+        <source>Plain substitution (default)</source>
+        <target>crwdns108614:0crwdne108614:0</target>
+      </trans-unit>
+      <trans-unit id="substitutedGreen" resname="substitutedGreen">
+        <source>Substituted constants in green</source>
+        <target>crwdns108616:0crwdne108616:0</target>
+      </trans-unit>
+      <trans-unit id="unsubstitutedGreen" resname="unsubstitutedGreen">
+        <source>UN-substituted constants in green</source>
+        <target>crwdns108618:0crwdne108618:0</target>
+      </trans-unit>
+      <trans-unit id="currentTemplate" resname="currentTemplate">
+        <source>Current template</source>
+        <target>crwdns108620:0crwdne108620:0</target>
+      </trans-unit>
+      <trans-unit id="badProperty" resname="badProperty">
+        <source>Bad property!</source>
+        <target>crwdns108622:0crwdne108622:0</target>
+      </trans-unit>
+      <trans-unit id="noSpaces" resname="noSpaces">
+        <source>You must enter a property with characters a-z, A-Z and 0-9, no spaces!</source>
+        <target>crwdns108624:0crwdne108624:0</target>
+      </trans-unit>
+      <trans-unit id="nothingUpdated" resname="nothingUpdated">
+        <source>Nothing was updated!</source>
+        <target>crwdns108626:0crwdne108626:0</target>
+      </trans-unit>
+      <trans-unit id="propertyAdded" resname="propertyAdded">
+        <source>Property added</source>
+        <target>crwdns108628:0crwdne108628:0</target>
+      </trans-unit>
+      <trans-unit id="valueUpdated" resname="valueUpdated">
+        <source>Value updated</source>
+        <target>crwdns108630:0crwdne108630:0</target>
+      </trans-unit>
+      <trans-unit id="objectCleared" resname="objectCleared">
+        <source>Object cleared</source>
+        <target>crwdns108632:0crwdne108632:0</target>
+      </trans-unit>
+      <trans-unit id="updateButton" resname="updateButton">
+        <source>Update</source>
+        <target>crwdns108634:0crwdne108634:0</target>
+      </trans-unit>
+      <trans-unit id="editProperty" resname="editProperty">
+        <source>Edit object/property value</source>
+        <target>crwdns108636:0crwdne108636:0</target>
+      </trans-unit>
+      <trans-unit id="addButton" resname="addButton">
+        <source>Add</source>
+        <target>crwdns108638:0crwdne108638:0</target>
+      </trans-unit>
+      <trans-unit id="addProperty" resname="addProperty">
+        <source>Add object property</source>
+        <target>crwdns108640:0crwdne108640:0</target>
+      </trans-unit>
+      <trans-unit id="clear" resname="clear">
+        <source>Clear?</source>
+        <target>crwdns108642:0crwdne108642:0</target>
+      </trans-unit>
+      <trans-unit id="clearButton" resname="clearButton">
+        <source>Clear</source>
+        <target>crwdns108644:0crwdne108644:0</target>
+      </trans-unit>
+      <trans-unit id="clearObject" resname="clearObject">
+        <source>Clear object</source>
+        <target>crwdns108646:0crwdne108646:0</target>
+      </trans-unit>
+      <trans-unit id="edit" resname="edit">
+        <source>Edit</source>
+        <target>crwdns108648:0crwdne108648:0</target>
+      </trans-unit>
+      <trans-unit id="noCurrentTemplate" resname="noCurrentTemplate">
+        <source>You cannot edit properties and values, if there's no current template.</source>
+        <target>crwdns108650:0crwdne108650:0</target>
+      </trans-unit>
+      <trans-unit id="addKey" resname="addKey">
+        <source>Add key &quot;%s&quot; to Object List</source>
+        <target>crwdns108652:0%scrwdne108652:0</target>
+      </trans-unit>
+      <trans-unit id="back" resname="back">
+        <source>Back</source>
+        <target>crwdns108654:0crwdne108654:0</target>
+      </trans-unit>
+      <trans-unit id="browse" resname="browse">
+        <source>Browse</source>
+        <target>crwdns108656:0crwdne108656:0</target>
+      </trans-unit>
+      <trans-unit id="objectList" resname="objectList">
+        <source>Object List</source>
+        <target>crwdns108658:0crwdne108658:0</target>
+      </trans-unit>
+      <trans-unit id="search" resname="search">
+        <source>Search</source>
+        <target>crwdns108660:0crwdne108660:0</target>
+      </trans-unit>
+      <trans-unit id="regExp" resname="regExp">
+        <source>Regular expressions</source>
+        <target>crwdns108662:0crwdne108662:0</target>
+      </trans-unit>
+      <trans-unit id="errorsWarnings" resname="errorsWarnings">
+        <source>Errors and warnings</source>
+        <target>crwdns108664:0crwdne108664:0</target>
+      </trans-unit>
+      <trans-unit id="errorShowDetails" resname="errorShowDetails">
+        <source>Show details</source>
+        <target>crwdns108666:0crwdne108666:0</target>
+      </trans-unit>
+      <trans-unit id="removeKey" resname="removeKey">
+        <source>Remove key from OL</source>
+        <target>crwdns108668:0crwdne108668:0</target>
+      </trans-unit>
+      <trans-unit id="setupRoot" resname="setupRoot">
+        <source>setup root</source>
+        <target>crwdns108670:0crwdne108670:0</target>
+      </trans-unit>
+      <trans-unit id="constantRoot" resname="constantRoot">
+        <source>constants root</source>
+        <target>crwdns108672:0crwdne108672:0</target>
+      </trans-unit>
+      <trans-unit id="displayComments" resname="displayComments">
+        <source>Display comments</source>
+        <target>crwdns108674:0crwdne108674:0</target>
+      </trans-unit>
+      <trans-unit id="sortAlphabetically" resname="sortAlphabetically">
+        <source>Sort alphabetically</source>
+        <target>crwdns108676:0crwdne108676:0</target>
+      </trans-unit>
+      <trans-unit id="cropLines" resname="cropLines">
+        <source>Crop lines</source>
+        <target>crwdns108678:0crwdne108678:0</target>
+      </trans-unit>
+      <trans-unit id="displayConstants" resname="displayConstants">
+        <source>Display constants</source>
+        <target>crwdns108680:0crwdne108680:0</target>
+      </trans-unit>
+      <trans-unit id="displayOptions" resname="displayOptions">
+        <source>Display options</source>
+        <target>crwdns108682:0crwdne108682:0</target>
+      </trans-unit>
+      <trans-unit id="conditions" resname="conditions">
+        <source>Conditions</source>
+        <target>crwdns108684:0crwdne108684:0</target>
+      </trans-unit>
+      <trans-unit id="setConditions" resname="setConditions">
+        <source>Set conditions</source>
+        <target>crwdns108686:0crwdne108686:0</target>
+      </trans-unit>
+      <trans-unit id="severity.1" resname="severity.1">
+        <source>Info</source>
+        <target>crwdns108688:0crwdne108688:0</target>
+      </trans-unit>
+      <trans-unit id="severity.2" resname="severity.2">
+        <source>Warning</source>
+        <target>crwdns108690:0crwdne108690:0</target>
+      </trans-unit>
+      <trans-unit id="severity.3" resname="severity.3">
+        <source>Error</source>
+        <target>crwdns108692:0crwdne108692:0</target>
+      </trans-unit>
+      <trans-unit id="error.1446559458" resname="error.1446559458">
+        <source>Error evaluating regular expression "%s".</source>
+        <target>crwdns108694:0%scrwdne108694:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
