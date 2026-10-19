@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:form/Resources/Private/Language/locallang.xlf" date="2016-10-09T03:38:32Z" product-name="form" target-language="sv-SE">
+    <header/>
+    <body>
+      <trans-unit id="element.DatePicker.properties.timeSelectorHourLabel" resname="element.DatePicker.properties.timeSelectorHourLabel" xml:space="preserve" approved="yes">
+                <source>Hour</source>
+            <target state="final">Timme</target></trans-unit>
+      <trans-unit id="element.DatePicker.properties.timeSelectorMinuteLabel" resname="element.DatePicker.properties.timeSelectorMinuteLabel" xml:space="preserve" approved="yes">
+                <source>Minute</source>
+            <target state="final">Minut</target></trans-unit>
+      <trans-unit id="validation.error.1505305752" resname="validation.error.1505305752" xml:space="preserve" approved="yes">
+                <source>You must select a file that is larger than %s in size.</source>
+            <target state="final">Vänligen välj en fil som är större än %s .</target></trans-unit>
+      <trans-unit id="validation.error.1505305753" resname="validation.error.1505305753" xml:space="preserve" approved="yes">
+                <source>You must select a file that is no larger than %s.</source>
+            <target state="final">Vänligen välj en fil som ej överstiger %s i storlek.</target></trans-unit>
+      <trans-unit id="validation.error.1521293686" resname="validation.error.1521293686" xml:space="preserve" approved="yes">
+                <source>You must select a date before %s.</source>
+            <target state="final">Vänligen välj ett datum före %s.</target></trans-unit>
+      <trans-unit id="validation.error.1521293687" resname="validation.error.1521293687" xml:space="preserve" approved="yes">
+                <source>You must select a date after %s.</source>
+            <target state="final">Vänligen ange ett datum efter %s.</target></trans-unit>
+      <trans-unit id="form_new_wizard_title" resname="form_new_wizard_title" xml:space="preserve" approved="yes">
+                <source>Form</source>
+            <target state="final">Formulär</target></trans-unit>
+      <trans-unit id="upload.error.150530345" resname="upload.error.150530345" xml:space="preserve" approved="yes">
+                <source>Maximum file size exceeded.</source>
+            <target state="final">Maximum filstorlek har överskridits.</target></trans-unit>
+      <trans-unit id="upload.error.150530346" resname="upload.error.150530346" xml:space="preserve" approved="yes">
+                <source>Upload failed. The file was only partially uploaded, please try again.</source>
+            <target state="final">Uppladdningen misslyckades. Filen laddades endast delvis upp, vänligen försök igen.</target></trans-unit>
+      <trans-unit id="upload.error.150530347" resname="upload.error.150530347" xml:space="preserve" approved="yes">
+                <source>No file was uploaded.</source>
+            <target state="final">Ingen fil laddades upp.</target></trans-unit>
+      <trans-unit id="upload.error.150530348" resname="upload.error.150530348" xml:space="preserve" approved="yes">
+                <source>Upload failed.</source>
+            <target state="final">Uppladdningen misslyckades.</target></trans-unit>
+    </body>
+  </file>
+</xliff>
