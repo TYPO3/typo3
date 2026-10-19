@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_login.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="fa">
+    <header/>
+    <body>
+      <trans-unit id="labels.submitLogout" resname="labels.submitLogout" approved="yes">
+        <source>Log Out</source>
+        <target state="final">خروج</target>
+      </trans-unit>
+      <trans-unit id="labels.whatIsOpenId" resname="labels.whatIsOpenId" approved="yes">
+        <source>What is OpenId?</source>
+        <target state="final">OpenId چیست؟</target>
+      </trans-unit>
+      <trans-unit id="availableInterfaces" resname="availableInterfaces" approved="yes">
+        <source>Backend,Front End,Traditional Backend</source>
+        <target state="final">صفحۀمدیریت، صفحۀ خروجی، صفحۀ مدیریت سنّتی</target>
+      </trans-unit>
+      <trans-unit id="interface.backend" resname="interface.backend" approved="yes">
+        <source>Backend</source>
+        <target state="final">صفحۀ مدیریت</target>
+      </trans-unit>
+      <trans-unit id="interface.frontend" resname="interface.frontend" approved="yes">
+        <source>Frontend</source>
+        <target state="final">صفحۀ خروجی</target>
+      </trans-unit>
+      <trans-unit id="interface.backend_old" resname="interface.backend_old" approved="yes">
+        <source>Traditional Backend</source>
+        <target state="final">صفحۀ مدیریت سنتی</target>
+      </trans-unit>
+      <trans-unit id="headline" resname="headline" approved="yes">
+        <source>Login to the TYPO3 CMS Backend on ###SITENAME###</source>
+        <target state="final">ورود به صفحۀ مدیریت سامانۀ کنترل محتوای TYPO3 در ###SITENAME###</target>
+      </trans-unit>
+      <trans-unit id="info.about" resname="info.about" approved="yes">
+        <source>This is the backend login of TYPO3. You need username and password to access this administration interface. If you are a visitor of ###SITENAME###, please visit the public website: ###SITELINK###</source>
+        <target state="final">از این جا ورود به صفحۀ مدیریت ٌTYPO3 ممکن خواهد بود. برای دسترسی به صفحۀ مدیریت لازم است شما نام‌کاربری و گذرواژه‌ در اختیار داشته باشید. اگر شما تنها یک مراجعه کننده ###SITENAME### هستید لطفا به نسخۀ عمومی سایت در ###SITELINK### مراجعه فرمایید</target>
+      </trans-unit>
+      <trans-unit id="info.reset" resname="info.reset" approved="yes">
+        <source>Reset this form</source>
+        <target state="final">نوسازی برگه</target>
+      </trans-unit>
+      <trans-unit id="info.cookies_and_js" resname="info.cookies_and_js" approved="yes">
+        <source>(Note: Cookies and JavaScript must be enabled!)</source>
+        <target state="final">(توجه: کوکی‌ها و جاوااسکریپت باید فعال باشند!)</target>
+      </trans-unit>
+      <trans-unit id="clear" resname="clear" approved="yes">
+        <source>Clear this field!</source>
+        <target state="final">پاک کردن این بخش!</target>
+      </trans-unit>
+      <trans-unit id="warning.incompatibleBrowserHeadline" resname="warning.incompatibleBrowserHeadline" approved="yes">
+        <source>Unsupported Browser</source>
+        <target state="final">مرورگر پشتیبانی نشده</target>
+      </trans-unit>
+      <trans-unit id="warning.incompatibleBrowser" resname="warning.incompatibleBrowser" approved="yes">
+        <source>You are using an unsupported browser version.</source>
+        <target state="final">شما از نسخه‌ای از یک مرورگر استفاده می‌کنید که پشتیبانی نمی‌شود.</target>
+      </trans-unit>
+      <trans-unit id="newsheadline" resname="newsheadline" approved="yes">
+        <source>Important Messages</source>
+        <target state="final">پیام‌های مهم</target>
+      </trans-unit>
+      <trans-unit id="error.login" resname="error.login" approved="yes">
+        <source>Your login attempt did not succeed. Make sure to spell your username and password correctly, including upper/lowercase characters.</source>
+        <target state="final">ورود شما موفقیت‌آمیز نبود. اطمینان حاصل کنید که نام‌کاربری و گذرواژۀ خود را به درستی وارد کرده‌اید. توجه کنید کوچکی و بزرگی حروف زبان انگلیسی به حساب می‌آید.</target>
+      </trans-unit>
+      <trans-unit id="error.cookies_ignore" resname="error.cookies_ignore" approved="yes">
+        <source>Ignore!</source>
+        <target state="final">نادیده گرفتن!</target>
+      </trans-unit>
+      <trans-unit id="error.furtherInformation" resname="error.furtherInformation" approved="yes">
+        <source>For more information or further help click here</source>
+        <target state="final">برای اطلاعات بیشتر و دریافت کمک این‌جا کلیک نمائید</target>
+      </trans-unit>
+      <trans-unit id="typo3.cms" resname="typo3.cms" approved="yes">
+        <source>TYPO3 CMS</source>
+        <target state="final">سامانۀ مدیریت محتوای TYPO3</target>
+      </trans-unit>
+      <trans-unit id="version.short" resname="version.short" approved="yes">
+        <source>ver.</source>
+        <target state="final">نسخه</target>
+      </trans-unit>
+      <trans-unit id="copyright" resname="copyright" approved="yes">
+        <source>Copyright</source>
+        <target state="final">حق‌نشر</target>
+      </trans-unit>
+      <trans-unit id="extension.copyright" resname="extension.copyright" approved="yes">
+        <source>Extensions are copyright of their respective owners.</source>
+        <target state="final">حق نشر افزونه‌ها در اختیار مالکان محترم آنهاست.</target>
+      </trans-unit>
+      <trans-unit id="details.link" resname="details.link" approved="yes">
+        <source>Go to %s for details.</source>
+        <target state="final">برای جزئیات به %s مراجعه نمائید.</target>
+      </trans-unit>
+      <trans-unit id="keep.notice" resname="keep.notice" approved="yes">
+        <source>Obstructing the appearance of this notice is prohibited by law.</source>
+        <target state="final">مانع شدن از نمایش این توضیحات از سوی قانون ممنوع است.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
