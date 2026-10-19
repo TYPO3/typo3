@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:scheduler/Resources/Private/Language/locallang_csh_scheduler.xlf" date="2011-10-17T20:22:37Z" product-name="scheduler" target-language="ja">
+    <header/>
+    <body>
+      <trans-unit id=".alttitle" resname=".alttitle" approved="yes">
+        <source>Scheduler</source>
+        <target state="final">スケジューラ</target>
+      </trans-unit>
+      <trans-unit id="task_group.alttitle" resname="task_group.alttitle" approved="yes">
+        <source>Task group</source>
+        <target state="final">タスクグループ</target>
+      </trans-unit>
+      <trans-unit id="task_sleepTime.alttitle" resname="task_sleepTime.alttitle" approved="yes">
+        <source>Sleep time</source>
+        <target state="final">スリープ時間</target>
+      </trans-unit>
+      <trans-unit id="task_cachingFrameworkGarbageCollection_selectedBackends.alttitle" resname="task_cachingFrameworkGarbageCollection_selectedBackends.alttitle" approved="yes">
+        <source>Select backends</source>
+        <target state="final">バックエンドを選択</target>
+      </trans-unit>
+      <trans-unit id="task_cachingFrameworkGarbageCollection_selectedBackends.description" resname="task_cachingFrameworkGarbageCollection_selectedBackends.description" approved="yes">
+        <source>If a cache uses one of the selected backends, the garbage collection will be called for this cache.</source>
+        <target state="final">キャッシュが選択したバックエンドのいずれかを使用している場合、このキャッシュに対してガベージコレクションが呼び出されます。</target>
+      </trans-unit>
+      <trans-unit id="task_tableGarbageCollection_numberOfDays.alttitle" resname="task_tableGarbageCollection_numberOfDays.alttitle" approved="yes">
+        <source>Number of days</source>
+        <target state="final">日数</target>
+      </trans-unit>
+      <trans-unit id="task_tableGarbageCollection_numberOfDays.description" resname="task_tableGarbageCollection_numberOfDays.description" approved="yes">
+        <source>Delete rows from selected table that are older than given number of days.</source>
+        <target state="final">指定された日数よりも古い選択されたテーブルから行を削除します。</target>
+      </trans-unit>
+      <trans-unit id="task_tableGarbageCollection_table.alttitle" resname="task_tableGarbageCollection_table.alttitle" approved="yes">
+        <source>Select table</source>
+        <target state="final">テーブルを選択</target>
+      </trans-unit>
+      <trans-unit id="task_tableGarbageCollection_table.description" resname="task_tableGarbageCollection_table.description" approved="yes">
+        <source>Select one of the registered tables to be cleaned up with this task.</source>
+        <target state="final">このタスクでクリーンアップする登録済みテーブルのいずれかを選択します。</target>
+      </trans-unit>
+      <trans-unit id="task_tableGarbageCollection_allTables.alttitle" resname="task_tableGarbageCollection_allTables.alttitle" approved="yes">
+        <source>Clean up all tables</source>
+        <target state="final">すべてのテーブルをクリーンアップする</target>
+      </trans-unit>
+      <trans-unit id="task_tableGarbageCollection_allTables.description" resname="task_tableGarbageCollection_allTables.description" approved="yes">
+        <source>If selected, all configured tables are cleaned. The selection below is ignored.</source>
+        <target state="final">選択されている場合、すべての構成テーブルがクリーンアップされます。以下の選択は無視されます。</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
