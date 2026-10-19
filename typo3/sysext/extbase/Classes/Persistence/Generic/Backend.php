@@ -269,7 +269,7 @@ class Backend implements BackendInterface
                 continue;
             }
             $propertyValue = $object->_getProperty($propertyName);
-            if ($this->propertyValueIsLazyLoaded($propertyValue)) {
+            if ($this->propertyValueIsLazyLoaded($propertyValue) && !$object->_isDirty($propertyName)) {
                 continue;
             }
             $columnMap = $dataMap->getColumnMap($propertyName);
