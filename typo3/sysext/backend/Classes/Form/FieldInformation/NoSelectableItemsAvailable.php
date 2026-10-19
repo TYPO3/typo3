@@ -32,7 +32,7 @@ class NoSelectableItemsAvailable extends AbstractNode
         $text = htmlspecialchars($this->getLanguageService()->sL(
             'core.core:labels.noSelectableItemsAvailable'
         ));
-        $resultArray['html'] = '<div class="mb-2"><span class="badge badge-info">' . $text . '</span></div>';
+        $resultArray['html'] = '<div class="mb-2"><span class="badge badge-info text-wrap text-start lh-sm">' . $text . '</span></div>';
         return $resultArray;
     }
 
