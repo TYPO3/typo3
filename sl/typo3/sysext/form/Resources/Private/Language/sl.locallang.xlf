@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:form/Resources/Private/Language/locallang.xlf" date="2016-10-09T03:38:32Z" product-name="form" target-language="sl">
+    <header/>
+    <body>
+      <trans-unit id="element.DatePicker.properties.timeSelectorHourLabel" resname="element.DatePicker.properties.timeSelectorHourLabel" xml:space="preserve" approved="yes">
+                <source>Hour</source>
+            <target state="final">Ura</target></trans-unit>
+      <trans-unit id="upload.error.150530345" resname="upload.error.150530345" xml:space="preserve" approved="yes">
+                <source>Maximum file size exceeded.</source>
+            <target state="final">Največja dovoljena velikost datoteke je presežena.</target></trans-unit>
+      <trans-unit id="upload.error.150530347" resname="upload.error.150530347" xml:space="preserve" approved="yes">
+                <source>No file was uploaded.</source>
+            <target state="final">Nobena datoteka ni bila naložena.</target></trans-unit>
+    </body>
+  </file>
+</xliff>
