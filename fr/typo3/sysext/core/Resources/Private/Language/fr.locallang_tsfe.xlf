@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_tsfe.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="fr">
+    <header/>
+    <body>
+      <trans-unit id="adminOptions" resname="adminOptions" approved="yes">
+        <source>ADMIN PANEL</source>
+        <target state="final">PANNEAU D'ADMINISTRATION</target>
+      </trans-unit>
+      <trans-unit id="adminPanelTitle" resname="adminPanelTitle" approved="yes">
+        <source>TYPO3 ADMIN PANEL</source>
+        <target state="final">PANNEAU D'ADMINISTRATION TYPO3</target>
+      </trans-unit>
+      <trans-unit id="preview" resname="preview" approved="yes">
+        <source>Preview</source>
+        <target state="final">Prévisualiser</target>
+      </trans-unit>
+      <trans-unit id="publish" resname="publish" approved="yes">
+        <source>Publish</source>
+        <target state="final">Publier</target>
+      </trans-unit>
+      <trans-unit id="publish_levels" resname="publish_levels" approved="yes">
+        <source>Publish levels</source>
+        <target state="final">Publier sur</target>
+      </trans-unit>
+      <trans-unit id="publish_tree" resname="publish_tree" approved="yes">
+        <source>Publish pages</source>
+        <target state="final">Publier les pages</target>
+      </trans-unit>
+      <trans-unit id="publish_doit" resname="publish_doit" approved="yes">
+        <source>Publish now!</source>
+        <target state="final">Publier maintenant !</target>
+      </trans-unit>
+      <trans-unit id="tsdebug" resname="tsdebug" approved="yes">
+        <source>TypoScript</source>
+        <target state="final">TypoScript</target>
+      </trans-unit>
+      <trans-unit id="tsdebug_tree" resname="tsdebug_tree" approved="yes">
+        <source>Tree display</source>
+        <target state="final">Afficher l'arborescence</target>
+      </trans-unit>
+      <trans-unit id="tsdebug_LR" resname="tsdebug_LR" approved="yes">
+        <source>Track content rendering</source>
+        <target state="final">Suivre la génération du rendu</target>
+      </trans-unit>
+      <trans-unit id="tsdebug_forceTemplateParsing" resname="tsdebug_forceTemplateParsing" approved="yes">
+        <source>Force TS Rendering</source>
+        <target state="final">Forcer le rendu TS</target>
+      </trans-unit>
+      <trans-unit id="tsdebug_displayTimes" resname="tsdebug_displayTimes" approved="yes">
+        <source>Display all times</source>
+        <target state="final">Afficher toutes les dates</target>
+      </trans-unit>
+      <trans-unit id="tsdebug_displayMessages" resname="tsdebug_displayMessages" approved="yes">
+        <source>Display messages</source>
+        <target state="final">Afficher les messages</target>
+      </trans-unit>
+      <trans-unit id="tsdebug_displayContent" resname="tsdebug_displayContent" approved="yes">
+        <source>Display content</source>
+        <target state="final">Afficher le contenu</target>
+      </trans-unit>
+      <trans-unit id="update" resname="update" approved="yes">
+        <source>Update</source>
+        <target state="final">Mettre à jour</target>
+      </trans-unit>
+      <trans-unit id="p_editRecord" resname="p_editRecord" approved="yes">
+        <source>Edit record</source>
+        <target state="final">Editer l'enregistrement</target>
+      </trans-unit>
+      <trans-unit id="p_moveUp" resname="p_moveUp" approved="yes">
+        <source>Move up</source>
+        <target state="final">Monter</target>
+      </trans-unit>
+      <trans-unit id="p_moveDown" resname="p_moveDown" approved="yes">
+        <source>Move down</source>
+        <target state="final">Descendre</target>
+      </trans-unit>
+      <trans-unit id="p_unhide" resname="p_unhide" approved="yes">
+        <source>Un-Hide</source>
+        <target state="final">Montrer</target>
+      </trans-unit>
+      <trans-unit id="p_hide" resname="p_hide" approved="yes">
+        <source>Hide</source>
+        <target state="final">Cacher</target>
+      </trans-unit>
+      <trans-unit id="p_newSubpage" resname="p_newSubpage" approved="yes">
+        <source>New subpage</source>
+        <target state="final">Nouvelle sous-page</target>
+      </trans-unit>
+      <trans-unit id="p_newRecordAfter" resname="p_newRecordAfter" approved="yes">
+        <source>New record after</source>
+        <target state="final">Nouvel enregistrement après</target>
+      </trans-unit>
+      <trans-unit id="p_delete" resname="p_delete" approved="yes">
+        <source>Delete</source>
+        <target state="final">Supprimer</target>
+      </trans-unit>
+      <trans-unit id="p_deleteConfirm" resname="p_deleteConfirm" approved="yes">
+        <source>Are you sure you want to delete this record?</source>
+        <target state="final">Etes-vous sûr de vouloir supprimer cet enregistrement?</target>
+      </trans-unit>
+      <trans-unit id="p_hideConfirm" resname="p_hideConfirm" xml:space="preserve" approved="yes">
+				<source>Hiding a record will make it invisible on the webpage.  To edit the hidden record enter the backend or enable the frontend preview.
+Continue?</source>
+			<target state="final">Cacher un enregistrement va le rendre invisible sur la page. Pour éditer l'enregistrement masqué, entrez dans le backend ou activez la prévisualisation frontend. Poursuivre ?</target></trans-unit>
+    </body>
+  </file>
+</xliff>
