@@ -1,0 +1,536 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:setup/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="setup" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="UserSettings" resname="UserSettings">
+        <source>User Settings</source>
+        <target>crwdns224114:0crwdne224114:0</target>
+      </trans-unit>
+      <trans-unit id="language" resname="language">
+        <source>Language</source>
+        <target>crwdns224116:0crwdne224116:0</target>
+      </trans-unit>
+      <trans-unit id="languageUnavailable" resname="languageUnavailable">
+        <source>The selected language "%s" is not available before the language files are installed.</source>
+        <target>crwdns224118:0%scrwdne224118:0</target>
+      </trans-unit>
+      <trans-unit id="languageUnavailable.admin" resname="languageUnavailable.admin">
+        <source>You can use "Manage Language Packs" in the Maintenance module to easily download new language files.</source>
+        <target>crwdns224120:0crwdne224120:0</target>
+      </trans-unit>
+      <trans-unit id="languageUnavailable.user" resname="languageUnavailable.user">
+        <source>Please ask your system administrator to do this.</source>
+        <target>crwdns224122:0crwdne224122:0</target>
+      </trans-unit>
+      <trans-unit id="lang_default" resname="lang_default">
+        <source>English</source>
+        <target>crwdns224124:0crwdne224124:0</target>
+      </trans-unit>
+      <trans-unit id="lang_af" resname="lang_af">
+        <source>Afrikaans</source>
+        <target>crwdns224126:0crwdne224126:0</target>
+      </trans-unit>
+      <trans-unit id="lang_ar" resname="lang_ar">
+        <source>Arabic</source>
+        <target>crwdns224128:0crwdne224128:0</target>
+      </trans-unit>
+      <trans-unit id="lang_ba" resname="lang_ba">
+        <source>Bosnian</source>
+        <target>crwdns224130:0crwdne224130:0</target>
+      </trans-unit>
+      <trans-unit id="lang_bs" resname="lang_bs">
+        <source>Bosnian</source>
+        <target>crwdns224132:0crwdne224132:0</target>
+      </trans-unit>
+      <trans-unit id="lang_bg" resname="lang_bg">
+        <source>Bulgarian</source>
+        <target>crwdns224134:0crwdne224134:0</target>
+      </trans-unit>
+      <trans-unit id="lang_ca" resname="lang_ca">
+        <source>Catalan</source>
+        <target>crwdns224136:0crwdne224136:0</target>
+      </trans-unit>
+      <trans-unit id="lang_ch" resname="lang_ch">
+        <source>Chinese (Simple)</source>
+        <target>crwdns224138:0crwdne224138:0</target>
+      </trans-unit>
+      <trans-unit id="lang_cs" resname="lang_cs">
+        <source>Czech</source>
+        <target>crwdns224140:0crwdne224140:0</target>
+      </trans-unit>
+      <trans-unit id="lang_cz" resname="lang_cz">
+        <source>Czech</source>
+        <target>crwdns224142:0crwdne224142:0</target>
+      </trans-unit>
+      <trans-unit id="lang_da" resname="lang_da">
+        <source>Danish</source>
+        <target>crwdns224144:0crwdne224144:0</target>
+      </trans-unit>
+      <trans-unit id="lang_dk" resname="lang_dk">
+        <source>Danish</source>
+        <target>crwdns224146:0crwdne224146:0</target>
+      </trans-unit>
+      <trans-unit id="lang_de" resname="lang_de">
+        <source>German</source>
+        <target>crwdns224148:0crwdne224148:0</target>
+      </trans-unit>
+      <trans-unit id="lang_el" resname="lang_el">
+        <source>Greek</source>
+        <target>crwdns224150:0crwdne224150:0</target>
+      </trans-unit>
+      <trans-unit id="lang_gr" resname="lang_gr">
+        <source>Greek</source>
+        <target>crwdns224152:0crwdne224152:0</target>
+      </trans-unit>
+      <trans-unit id="lang_eo" resname="lang_eo">
+        <source>Esperanto</source>
+        <target>crwdns224154:0crwdne224154:0</target>
+      </trans-unit>
+      <trans-unit id="lang_es" resname="lang_es">
+        <source>Spanish</source>
+        <target>crwdns224156:0crwdne224156:0</target>
+      </trans-unit>
+      <trans-unit id="lang_et" resname="lang_et">
+        <source>Estonian</source>
+        <target>crwdns224158:0crwdne224158:0</target>
+      </trans-unit>
+      <trans-unit id="lang_eu" resname="lang_eu">
+        <source>Basque</source>
+        <target>crwdns224160:0crwdne224160:0</target>
+      </trans-unit>
+      <trans-unit id="lang_fa" resname="lang_fa">
+        <source>Persian</source>
+        <target>crwdns224162:0crwdne224162:0</target>
+      </trans-unit>
+      <trans-unit id="lang_fi" resname="lang_fi">
+        <source>Finnish</source>
+        <target>crwdns224164:0crwdne224164:0</target>
+      </trans-unit>
+      <trans-unit id="lang_fo" resname="lang_fo">
+        <source>Faroese</source>
+        <target>crwdns224166:0crwdne224166:0</target>
+      </trans-unit>
+      <trans-unit id="lang_fr" resname="lang_fr">
+        <source>French</source>
+        <target>crwdns224168:0crwdne224168:0</target>
+      </trans-unit>
+      <trans-unit id="lang_fr_CA" resname="lang_fr_CA">
+        <source>French (Canada)</source>
+        <target>crwdns224170:0crwdne224170:0</target>
+      </trans-unit>
+      <trans-unit id="lang_qc" resname="lang_qc">
+        <source>French (Canada)</source>
+        <target>crwdns224172:0crwdne224172:0</target>
+      </trans-unit>
+      <trans-unit id="lang_ga" resname="lang_ga">
+        <source>Galician</source>
+        <target>crwdns224174:0crwdne224174:0</target>
+      </trans-unit>
+      <trans-unit id="lang_gl" resname="lang_gl">
+        <source>Galician</source>
+        <target>crwdns224176:0crwdne224176:0</target>
+      </trans-unit>
+      <trans-unit id="lang_he" resname="lang_he">
+        <source>Hebrew</source>
+        <target>crwdns224178:0crwdne224178:0</target>
+      </trans-unit>
+      <trans-unit id="lang_hi" resname="lang_hi">
+        <source>Hindi</source>
+        <target>crwdns224180:0crwdne224180:0</target>
+      </trans-unit>
+      <trans-unit id="lang_hr" resname="lang_hr">
+        <source>Croatian</source>
+        <target>crwdns224182:0crwdne224182:0</target>
+      </trans-unit>
+      <trans-unit id="lang_hu" resname="lang_hu">
+        <source>Hungarian</source>
+        <target>crwdns224184:0crwdne224184:0</target>
+      </trans-unit>
+      <trans-unit id="lang_is" resname="lang_is">
+        <source>Icelandic</source>
+        <target>crwdns224186:0crwdne224186:0</target>
+      </trans-unit>
+      <trans-unit id="lang_it" resname="lang_it">
+        <source>Italian</source>
+        <target>crwdns224188:0crwdne224188:0</target>
+      </trans-unit>
+      <trans-unit id="lang_ja" resname="lang_ja">
+        <source>Japanese</source>
+        <target>crwdns224190:0crwdne224190:0</target>
+      </trans-unit>
+      <trans-unit id="lang_jp" resname="lang_jp">
+        <source>Japanese</source>
+        <target>crwdns224192:0crwdne224192:0</target>
+      </trans-unit>
+      <trans-unit id="lang_ge" resname="lang_ge">
+        <source>Georgian</source>
+        <target>crwdns224194:0crwdne224194:0</target>
+      </trans-unit>
+      <trans-unit id="lang_ka" resname="lang_ka">
+        <source>Georgian</source>
+        <target>crwdns224196:0crwdne224196:0</target>
+      </trans-unit>
+      <trans-unit id="lang_kl" resname="lang_kl">
+        <source>Greenlandic</source>
+        <target>crwdns224198:0crwdne224198:0</target>
+      </trans-unit>
+      <trans-unit id="lang_km" resname="lang_km">
+        <source>Khmer</source>
+        <target>crwdns224200:0crwdne224200:0</target>
+      </trans-unit>
+      <trans-unit id="lang_ko" resname="lang_ko">
+        <source>Korean</source>
+        <target>crwdns224202:0crwdne224202:0</target>
+      </trans-unit>
+      <trans-unit id="lang_kr" resname="lang_kr">
+        <source>Korean</source>
+        <target>crwdns224204:0crwdne224204:0</target>
+      </trans-unit>
+      <trans-unit id="lang_lt" resname="lang_lt">
+        <source>Lithuanian</source>
+        <target>crwdns224206:0crwdne224206:0</target>
+      </trans-unit>
+      <trans-unit id="lang_lv" resname="lang_lv">
+        <source>Latvian</source>
+        <target>crwdns224208:0crwdne224208:0</target>
+      </trans-unit>
+      <trans-unit id="lang_ms" resname="lang_ms">
+        <source>Bahasa Malaysia</source>
+        <target>crwdns224210:0crwdne224210:0</target>
+      </trans-unit>
+      <trans-unit id="lang_my" resname="lang_my">
+        <source>Bahasa Malaysia</source>
+        <target>crwdns224212:0crwdne224212:0</target>
+      </trans-unit>
+      <trans-unit id="lang_nl" resname="lang_nl">
+        <source>Dutch</source>
+        <target>crwdns224214:0crwdne224214:0</target>
+      </trans-unit>
+      <trans-unit id="lang_no" resname="lang_no">
+        <source>Norwegian</source>
+        <target>crwdns224216:0crwdne224216:0</target>
+      </trans-unit>
+      <trans-unit id="lang_pl" resname="lang_pl">
+        <source>Polish</source>
+        <target>crwdns224218:0crwdne224218:0</target>
+      </trans-unit>
+      <trans-unit id="lang_pt" resname="lang_pt">
+        <source>Portuguese</source>
+        <target>crwdns224220:0crwdne224220:0</target>
+      </trans-unit>
+      <trans-unit id="lang_br" resname="lang_br">
+        <source>Brazilian Portuguese</source>
+        <target>crwdns224222:0crwdne224222:0</target>
+      </trans-unit>
+      <trans-unit id="lang_pt_BR" resname="lang_pt_BR">
+        <source>Brazilian Portuguese</source>
+        <target>crwdns224224:0crwdne224224:0</target>
+      </trans-unit>
+      <trans-unit id="lang_ro" resname="lang_ro">
+        <source>Romanian</source>
+        <target>crwdns224226:0crwdne224226:0</target>
+      </trans-unit>
+      <trans-unit id="lang_ru" resname="lang_ru">
+        <source>Russian</source>
+        <target>crwdns224228:0crwdne224228:0</target>
+      </trans-unit>
+      <trans-unit id="lang_rw" resname="lang_rw">
+        <source>Kinyarwanda</source>
+        <target>crwdns224230:0crwdne224230:0</target>
+      </trans-unit>
+      <trans-unit id="lang_sk" resname="lang_sk">
+        <source>Slovak</source>
+        <target>crwdns224232:0crwdne224232:0</target>
+      </trans-unit>
+      <trans-unit id="lang_si" resname="lang_si">
+        <source>Slovenian</source>
+        <target>crwdns224234:0crwdne224234:0</target>
+      </trans-unit>
+      <trans-unit id="lang_sl" resname="lang_sl">
+        <source>Slovenian</source>
+        <target>crwdns224236:0crwdne224236:0</target>
+      </trans-unit>
+      <trans-unit id="lang_sq" resname="lang_sq">
+        <source>Albanian</source>
+        <target>crwdns224238:0crwdne224238:0</target>
+      </trans-unit>
+      <trans-unit id="lang_sr" resname="lang_sr">
+        <source>Serbian</source>
+        <target>crwdns224240:0crwdne224240:0</target>
+      </trans-unit>
+      <trans-unit id="lang_se" resname="lang_se">
+        <source>Swedish</source>
+        <target>crwdns224242:0crwdne224242:0</target>
+      </trans-unit>
+      <trans-unit id="lang_sv" resname="lang_sv">
+        <source>Swedish</source>
+        <target>crwdns224244:0crwdne224244:0</target>
+      </trans-unit>
+      <trans-unit id="lang_th" resname="lang_th">
+        <source>Thai</source>
+        <target>crwdns224246:0crwdne224246:0</target>
+      </trans-unit>
+      <trans-unit id="lang_tr" resname="lang_tr">
+        <source>Turkish</source>
+        <target>crwdns224248:0crwdne224248:0</target>
+      </trans-unit>
+      <trans-unit id="lang_ua" resname="lang_ua">
+        <source>Ukrainian</source>
+        <target>crwdns224250:0crwdne224250:0</target>
+      </trans-unit>
+      <trans-unit id="lang_uk" resname="lang_uk">
+        <source>Ukrainian</source>
+        <target>crwdns224252:0crwdne224252:0</target>
+      </trans-unit>
+      <trans-unit id="lang_vi" resname="lang_vi">
+        <source>Vietnamese</source>
+        <target>crwdns224254:0crwdne224254:0</target>
+      </trans-unit>
+      <trans-unit id="lang_vn" resname="lang_vn">
+        <source>Vietnamese</source>
+        <target>crwdns224256:0crwdne224256:0</target>
+      </trans-unit>
+      <trans-unit id="lang_hk" resname="lang_hk">
+        <source>Chinese (Trad)</source>
+        <target>crwdns224258:0crwdne224258:0</target>
+      </trans-unit>
+      <trans-unit id="lang_zh" resname="lang_zh">
+        <source>Chinese (Trad)</source>
+        <target>crwdns224260:0crwdne224260:0</target>
+      </trans-unit>
+      <trans-unit id="default" resname="default">
+        <source>Default</source>
+        <target>crwdns224262:0crwdne224262:0</target>
+      </trans-unit>
+      <trans-unit id="simulate" resname="simulate">
+        <source>Simulate backend user</source>
+        <target>crwdns224264:0crwdne224264:0</target>
+      </trans-unit>
+      <trans-unit id="opening" resname="opening">
+        <source>Startup</source>
+        <target>crwdns224266:0crwdne224266:0</target>
+      </trans-unit>
+      <trans-unit id="personal_data" resname="personal_data">
+        <source>Personal data</source>
+        <target>crwdns224268:0crwdne224268:0</target>
+      </trans-unit>
+      <trans-unit id="startModule" resname="startModule">
+        <source>Start up in the following module</source>
+        <target>crwdns224270:0crwdne224270:0</target>
+      </trans-unit>
+      <trans-unit id="emailMeAtLogin" resname="emailMeAtLogin">
+        <source>Notify me by email when somebody logs in from my account</source>
+        <target>crwdns224272:0crwdne224272:0</target>
+      </trans-unit>
+      <trans-unit id="helpText" resname="helpText">
+        <source>Show help text when applicable</source>
+        <target>crwdns224274:0crwdne224274:0</target>
+      </trans-unit>
+      <trans-unit id="maxTitleLen" resname="maxTitleLen">
+        <source>Max. Title Length</source>
+        <target>crwdns224276:0crwdne224276:0</target>
+      </trans-unit>
+      <trans-unit id="edit_RTE" resname="edit_RTE">
+        <source>Enable Rich Text Editor (if available)</source>
+        <target>crwdns224278:0crwdne224278:0</target>
+      </trans-unit>
+      <trans-unit id="edit_docModuleUpload" resname="edit_docModuleUpload">
+        <source>File upload directly in Doc-module</source>
+        <target>crwdns224280:0crwdne224280:0</target>
+      </trans-unit>
+      <trans-unit id="showHiddenFilesAndFolders" resname="showHiddenFilesAndFolders">
+        <source>Show hidden files and folders in the filelist</source>
+        <target>crwdns224282:0crwdne224282:0</target>
+      </trans-unit>
+      <trans-unit id="flexibleTextareas_MaxHeight" resname="flexibleTextareas_MaxHeight">
+        <source>Maximum height of text areas in pixels</source>
+        <target>crwdns224284:0crwdne224284:0</target>
+      </trans-unit>
+      <trans-unit id="editFunctionsTab" resname="editFunctionsTab">
+        <source>Edit and Advanced functions</source>
+        <target>crwdns224286:0crwdne224286:0</target>
+      </trans-unit>
+      <trans-unit id="edit_functions" resname="edit_functions">
+        <source>Edit</source>
+        <target>crwdns224288:0crwdne224288:0</target>
+      </trans-unit>
+      <trans-unit id="setToStandard" resname="setToStandard">
+        <source>Reset all Values to default</source>
+        <target>crwdns224290:0crwdne224290:0</target>
+      </trans-unit>
+      <trans-unit id="resetSectionHeader" resname="resetSectionHeader">
+        <source>Reset Settings</source>
+        <target>crwdns224292:0crwdne224292:0</target>
+      </trans-unit>
+      <trans-unit id="resetConfiguration" resname="resetConfiguration">
+        <source>Reset Configuration and Clear Temporary Data</source>
+        <target>crwdns224294:0crwdne224294:0</target>
+      </trans-unit>
+      <trans-unit id="resetConfigurationButton" resname="resetConfigurationButton">
+        <source>Reset user settings to default state</source>
+        <target>crwdns224296:0crwdne224296:0</target>
+      </trans-unit>
+      <trans-unit id="setToStandardQuestion" resname="setToStandardQuestion">
+        <source>Are you sure you want to reset all values to default?</source>
+        <target>crwdns224298:0crwdne224298:0</target>
+      </trans-unit>
+      <trans-unit id="functions" resname="functions">
+        <source>Advanced functions</source>
+        <target>crwdns224300:0crwdne224300:0</target>
+      </trans-unit>
+      <trans-unit id="copyLevels" resname="copyLevels">
+        <source>Recursive Copy: Enter the number of page sublevels to include, when a page is copied</source>
+        <target>crwdns224302:0crwdne224302:0</target>
+      </trans-unit>
+      <trans-unit id="activateChanges" resname="activateChanges">
+        <source>Notice! In order to activate most of these changes, please reload the backend (eg. logout and login again).</source>
+        <target>crwdns224304:0crwdne224304:0</target>
+      </trans-unit>
+      <trans-unit id="levels" resname="levels">
+        <source>levels</source>
+        <target>crwdns224306:0crwdne224306:0</target>
+      </trans-unit>
+      <trans-unit id="beUser_realName" resname="beUser_realName">
+        <source>Your name</source>
+        <target>crwdns224308:0crwdne224308:0</target>
+      </trans-unit>
+      <trans-unit id="beUser_avatar" resname="beUser_avatar">
+        <source>Avatar</source>
+        <target>crwdns224310:0crwdne224310:0</target>
+      </trans-unit>
+      <trans-unit id="beUser_email" resname="beUser_email">
+        <source>Your email address</source>
+        <target>crwdns224312:0crwdne224312:0</target>
+      </trans-unit>
+      <trans-unit id="save" resname="save">
+        <source>Save Configuration</source>
+        <target>crwdns224314:0crwdne224314:0</target>
+      </trans-unit>
+      <trans-unit id="newPassword" resname="newPassword">
+        <source>New password</source>
+        <target>crwdns224316:0crwdne224316:0</target>
+      </trans-unit>
+      <trans-unit id="newPasswordAgain" resname="newPasswordAgain">
+        <source>New password, again</source>
+        <target>crwdns224318:0crwdne224318:0</target>
+      </trans-unit>
+      <trans-unit id="newPassword_ok" resname="newPassword_ok">
+        <source>Password was updated.</source>
+        <target>crwdns224320:0crwdne224320:0</target>
+      </trans-unit>
+      <trans-unit id="passwordCurrent" resname="passwordCurrent">
+        <source>Current password</source>
+        <target>crwdns224322:0crwdne224322:0</target>
+      </trans-unit>
+      <trans-unit id="accountSecurity" resname="accountSecurity">
+        <source>Account security</source>
+        <target>crwdns224324:0crwdne224324:0</target>
+      </trans-unit>
+      <trans-unit id="mfaProviders" resname="mfaProviders">
+        <source>Multi-factor authentication</source>
+        <target>crwdns224326:0crwdne224326:0</target>
+      </trans-unit>
+      <trans-unit id="mfaProviders.notAvailable" resname="mfaProviders.notAvailable">
+        <source>Multi-factor authentication is currently not available.</source>
+        <target>crwdns224328:0crwdne224328:0</target>
+      </trans-unit>
+      <trans-unit id="mfaProviders.description" resname="mfaProviders.description">
+        <source>Use multi-factor authentication to secure your account by providing another factor next to your password.</source>
+        <target>crwdns224330:0crwdne224330:0</target>
+      </trans-unit>
+      <trans-unit id="mfaProviders.lockedMfaProviders" resname="mfaProviders.lockedMfaProviders">
+        <source>Some providers are currently locked!</source>
+        <target>crwdns224332:0crwdne224332:0</target>
+      </trans-unit>
+      <trans-unit id="mfaProviders.enabled" resname="mfaProviders.enabled">
+        <source>Enabled</source>
+        <target>crwdns224334:0crwdne224334:0</target>
+      </trans-unit>
+      <trans-unit id="mfaProviders.setupLinkTitle" resname="mfaProviders.setupLinkTitle">
+        <source>Setup multi-factor authentication</source>
+        <target>crwdns224336:0crwdne224336:0</target>
+      </trans-unit>
+      <trans-unit id="mfaProviders.manageLinkTitle" resname="mfaProviders.manageLinkTitle">
+        <source>Manage multi-factor authentication</source>
+        <target>crwdns224338:0crwdne224338:0</target>
+      </trans-unit>
+      <trans-unit id="setupWasUpdated" resname="setupWasUpdated">
+        <source>User settings were updated.</source>
+        <target>crwdns224340:0crwdne224340:0</target>
+      </trans-unit>
+      <trans-unit id="newPassword_failed" resname="newPassword_failed">
+        <source>Password was NOT updated because you didn't enter the same password twice.</source>
+        <target>crwdns224342:0crwdne224342:0</target>
+      </trans-unit>
+      <trans-unit id="oldPassword_failed" resname="oldPassword_failed">
+        <source>Password was NOT updated because you didn't enter the correct current password.</source>
+        <target>crwdns224344:0crwdne224344:0</target>
+      </trans-unit>
+      <trans-unit id="enableInstallTool.label" resname="enableInstallTool.label">
+        <source>Install Tool Access</source>
+        <target>crwdns224346:0crwdne224346:0</target>
+      </trans-unit>
+      <trans-unit id="enableInstallTool.createFile" resname="enableInstallTool.createFile">
+        <source>Create Install Tool Enable File</source>
+        <target>crwdns224348:0crwdne224348:0</target>
+      </trans-unit>
+      <trans-unit id="enableInstallTool.file" resname="enableInstallTool.file">
+        <source>Install Tool Enable file</source>
+        <target>crwdns224350:0crwdne224350:0</target>
+      </trans-unit>
+      <trans-unit id="enableInstallTool.fileCreate_ok" resname="enableInstallTool.fileCreate_ok">
+        <source>The Install Tool Enable file has been created.</source>
+        <target>crwdns224352:0crwdne224352:0</target>
+      </trans-unit>
+      <trans-unit id="enableInstallTool.fileCreate_failed" resname="enableInstallTool.fileCreate_failed">
+        <source>The Install Tool Enable file could not be created.</source>
+        <target>crwdns224354:0crwdne224354:0</target>
+      </trans-unit>
+      <trans-unit id="enableInstallTool.deleteFile" resname="enableInstallTool.deleteFile">
+        <source>Delete Install Tool Enable File</source>
+        <target>crwdns224356:0crwdne224356:0</target>
+      </trans-unit>
+      <trans-unit id="enableInstallTool.fileDelete_ok" resname="enableInstallTool.fileDelete_ok">
+        <source>The Install Tool Enable file has been deleted.</source>
+        <target>crwdns224358:0crwdne224358:0</target>
+      </trans-unit>
+      <trans-unit id="enableInstallTool.fileDelete_failed" resname="enableInstallTool.fileDelete_failed">
+        <source>The Install Tool Enable file could not be deleted!</source>
+        <target>crwdns224360:0crwdne224360:0</target>
+      </trans-unit>
+      <trans-unit id="enableInstallTool.fileHasKeep" resname="enableInstallTool.fileHasKeep">
+        <source>The Install Tool file has the content "KEEP_FILE" and can not be deleted!</source>
+        <target>crwdns224362:0crwdne224362:0</target>
+      </trans-unit>
+      <trans-unit id="settingsAreReset" resname="settingsAreReset">
+        <source>The user settings have been reset to default values and temporary data has been cleared.</source>
+        <target>crwdns224364:0crwdne224364:0</target>
+      </trans-unit>
+      <trans-unit id="startModule.firstInMenu" resname="startModule.firstInMenu">
+        <source>- First module in menu -</source>
+        <target>crwdns224366:0crwdne224366:0</target>
+      </trans-unit>
+      <trans-unit id="avatar.clear" resname="avatar.clear">
+        <source>Remove selected avatar image</source>
+        <target>crwdns224368:0crwdne224368:0</target>
+      </trans-unit>
+      <trans-unit id="avatar.openFileBrowser" resname="avatar.openFileBrowser">
+        <source>Open file browser to select avatar image</source>
+        <target>crwdns224370:0crwdne224370:0</target>
+      </trans-unit>
+      <trans-unit id="backendTitleFormat" resname="backendTitleFormat">
+        <source>Format of window title in backend</source>
+        <target>crwdns224372:0crwdne224372:0</target>
+      </trans-unit>
+      <trans-unit id="backendTitleFormat.sitenameFirst" resname="backendTitleFormat.sitenameFirst">
+        <source>[sitename] · [title]</source>
+        <target>crwdns224374:0crwdne224374:0</target>
+      </trans-unit>
+      <trans-unit id="backendTitleFormat.titleFirst" resname="backendTitleFormat.titleFirst">
+        <source>[title] · [sitename]</source>
+        <target>crwdns224376:0crwdne224376:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
