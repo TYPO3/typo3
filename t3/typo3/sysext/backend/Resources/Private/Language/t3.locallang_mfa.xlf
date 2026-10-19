@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_mfa.xlf" date="2021-01-26T11:58:45Z" product-name="cms" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="overview.title" resname="overview.title">
+        <source>Multi-factor Authentication Overview</source>
+        <target>crwdns212422:0crwdne212422:0</target>
+      </trans-unit>
+      <trans-unit id="overview.badge.active" resname="overview.badge.active">
+        <source>Active</source>
+        <target>crwdns212424:0crwdne212424:0</target>
+      </trans-unit>
+      <trans-unit id="overview.badge.locked" resname="overview.badge.locked">
+        <source>Locked</source>
+        <target>crwdns212426:0crwdne212426:0</target>
+      </trans-unit>
+      <trans-unit id="overview.defaultProvider" resname="overview.defaultProvider">
+        <source>Default provider</source>
+        <target>crwdns212428:0crwdne212428:0</target>
+      </trans-unit>
+      <trans-unit id="overview.unlockLinkTitle" resname="overview.unlockLinkTitle">
+        <source>Unlock %s</source>
+        <target>crwdns212430:0%scrwdne212430:0</target>
+      </trans-unit>
+      <trans-unit id="overview.unlockLinkLabel" resname="overview.unlockLinkLabel">
+        <source>Unlock</source>
+        <target>crwdns212432:0crwdne212432:0</target>
+      </trans-unit>
+      <trans-unit id="overview.editLinkTitle" resname="overview.editLinkTitle">
+        <source>Edit %s</source>
+        <target>crwdns212434:0%scrwdne212434:0</target>
+      </trans-unit>
+      <trans-unit id="overview.editLinkLabel" resname="overview.editLinkLabel">
+        <source>Edit / Change</source>
+        <target>crwdns212436:0crwdne212436:0</target>
+      </trans-unit>
+      <trans-unit id="overview.deactivateLinkTitle" resname="overview.deactivateLinkTitle">
+        <source>Deactivate %s</source>
+        <target>crwdns212438:0%scrwdne212438:0</target>
+      </trans-unit>
+      <trans-unit id="overview.deactivateLinkLabel" resname="overview.deactivateLinkLabel">
+        <source>Deactivate</source>
+        <target>crwdns212440:0crwdne212440:0</target>
+      </trans-unit>
+      <trans-unit id="overview.setupLinkTitle" resname="overview.setupLinkTitle">
+        <source>Setup %s</source>
+        <target>crwdns212442:0%scrwdne212442:0</target>
+      </trans-unit>
+      <trans-unit id="overview.setupLinkLabel" resname="overview.setupLinkLabel">
+        <source>Setup</source>
+        <target>crwdns212444:0crwdne212444:0</target>
+      </trans-unit>
+      <trans-unit id="overview.setupRequired.title" resname="overview.setupRequired.title">
+        <source>Multi-factor authentication required</source>
+        <target>crwdns212446:0crwdne212446:0</target>
+      </trans-unit>
+      <trans-unit id="overview.setupRequired.message" resname="overview.setupRequired.message">
+        <source>
+					Your installation requires MFA. Therefore please setup one of the following providers to be
+					able to continue to use the backend.
+				</source>
+        <target>crwdns212448:0crwdne212448:0</target>
+      </trans-unit>
+      <trans-unit id="overview.noProviders.title" resname="overview.noProviders.title">
+        <source>No multi-factor authentication providers</source>
+        <target>crwdns212450:0crwdne212450:0</target>
+      </trans-unit>
+      <trans-unit id="overview.noProviders.message" resname="overview.noProviders.message">
+        <source>There are currently no multi-factor authentication providers available.</source>
+        <target>crwdns212452:0crwdne212452:0</target>
+      </trans-unit>
+      <trans-unit id="overview.noProviders.errorMessage" resname="overview.noProviders.errorMessage">
+        <source>
+					You are required to setup MFA but there are no providers to activate available. You should contact
+					your administrator to solve this.
+				</source>
+        <target>crwdns212454:0crwdne212454:0</target>
+      </trans-unit>
+      <trans-unit id="providerNotFound" resname="providerNotFound">
+        <source>Selected MFA provider was not found!</source>
+        <target>crwdns212456:0crwdne212456:0</target>
+      </trans-unit>
+      <trans-unit id="providerNotActive" resname="providerNotActive">
+        <source>Selected MFA provider has to be active to perform this action!</source>
+        <target>crwdns212458:0crwdne212458:0</target>
+      </trans-unit>
+      <trans-unit id="providerActive" resname="providerActive">
+        <source>Selected MFA provider has to be inactive to perform this action!</source>
+        <target>crwdns212460:0crwdne212460:0</target>
+      </trans-unit>
+      <trans-unit id="providerIsLocked" resname="providerNotFound">
+        <source>Selected MFA provider has to be unlocked to perform this action!</source>
+        <target>crwdns212462:0crwdne212462:0</target>
+      </trans-unit>
+      <trans-unit id="setup.instructions" resname="setup.instructions">
+        <source>Setup instructions</source>
+        <target>crwdns212464:0crwdne212464:0</target>
+      </trans-unit>
+      <trans-unit id="setup.instructions.close" resname="setup.instructions.close">
+        <source>Close setup instructions</source>
+        <target>crwdns212466:0crwdne212466:0</target>
+      </trans-unit>
+      <trans-unit id="setup.title" resname="setup.title">
+        <source>Set up %s</source>
+        <target>crwdns212468:0%scrwdne212468:0</target>
+      </trans-unit>
+      <trans-unit id="edit.title" resname="edit.title">
+        <source>Edit %s</source>
+        <target>crwdns212470:0%scrwdne212470:0</target>
+      </trans-unit>
+      <trans-unit id="edit.defaultProvider" resname="edit.defaultProvider">
+        <source>Default provider</source>
+        <target>crwdns212472:0crwdne212472:0</target>
+      </trans-unit>
+      <trans-unit id="edit.defaultProvider.description" resname="edit.defaultProvider.description">
+        <source>Select this as your default provider for login into the TYPO3 backend.</source>
+        <target>crwdns212474:0crwdne212474:0</target>
+      </trans-unit>
+      <trans-unit id="edit.defaultProvider.inputLabel" resname="edit.defaultProvider.inputLabel">
+        <source>Use as default provider</source>
+        <target>crwdns212476:0crwdne212476:0</target>
+      </trans-unit>
+      <trans-unit id="edit.deactivateProvider" resname="edit.deactivateProvider">
+        <source>Deactivate provider</source>
+        <target>crwdns212478:0crwdne212478:0</target>
+      </trans-unit>
+      <trans-unit id="edit.deactivateProvider.description" resname="edit.deactivateProvider.description">
+        <source>If you don't want to use this provider anymore, you can deactivate it here.</source>
+        <target>crwdns212480:0crwdne212480:0</target>
+      </trans-unit>
+      <trans-unit id="edit.deactivateProvider.linkTitle" resname="edit.deactivateProvider.linkTitle">
+        <source>Deactivate %s</source>
+        <target>crwdns212482:0%scrwdne212482:0</target>
+      </trans-unit>
+      <trans-unit id="edit.deactivateProvider.linkText" resname="edit.deactivateProvider.linkText">
+        <source>Deactivate this provider</source>
+        <target>crwdns212484:0crwdne212484:0</target>
+      </trans-unit>
+      <trans-unit id="activate.failure" resname="activate.failure">
+        <source>Could not activate MFA provider %s. Please try again.</source>
+        <target>crwdns212486:0%scrwdne212486:0</target>
+      </trans-unit>
+      <trans-unit id="activate.success" resname="activate.success">
+        <source>Successfully activated MFA provider %s.</source>
+        <target>crwdns212488:0%scrwdne212488:0</target>
+      </trans-unit>
+      <trans-unit id="deactivate.failure" resname="deactivate.failure">
+        <source>Could not deactivate MFA provider %s. Please try again.</source>
+        <target>crwdns212490:0%scrwdne212490:0</target>
+      </trans-unit>
+      <trans-unit id="deactivate.success" resname="deactivate.success">
+        <source>Successfully deactivated MFA provider %s.</source>
+        <target>crwdns212492:0%scrwdne212492:0</target>
+      </trans-unit>
+      <trans-unit id="unlock.failure" resname="unlock.failure">
+        <source>Could not unlock MFA provider %s. Please try again.</source>
+        <target>crwdns212494:0%scrwdne212494:0</target>
+      </trans-unit>
+      <trans-unit id="unlock.success" resname="unlock.success">
+        <source>Successfully unlocked MFA provider %s.</source>
+        <target>crwdns212496:0%scrwdne212496:0</target>
+      </trans-unit>
+      <trans-unit id="save.failure" resname="save.failure">
+        <source>Could not update MFA provider %s. Please try again.</source>
+        <target>crwdns212498:0%scrwdne212498:0</target>
+      </trans-unit>
+      <trans-unit id="save.success" resname="save.success">
+        <source>Successfully updated MFA provider %s.</source>
+        <target>crwdns212500:0%scrwdne212500:0</target>
+      </trans-unit>
+      <trans-unit id="auth.authError" resname="auth.authError">
+        <source>Authentication was not successful.</source>
+        <target>crwdns212502:0crwdne212502:0</target>
+      </trans-unit>
+      <trans-unit id="auth.submit" resname="auth.submit">
+        <source>Verify</source>
+        <target>crwdns212504:0crwdne212504:0</target>
+      </trans-unit>
+      <trans-unit id="auth.cancel" resname="auth.cancel">
+        <source>Go back</source>
+        <target>crwdns212506:0crwdne212506:0</target>
+      </trans-unit>
+      <trans-unit id="auth.locked" resname="auth.locked">
+        <source>This provider is temporarily locked!</source>
+        <target>crwdns212508:0crwdne212508:0</target>
+      </trans-unit>
+      <trans-unit id="auth.alternativeProviders" resname="auth.alternativeProviders">
+        <source>Alternative providers</source>
+        <target>crwdns212510:0crwdne212510:0</target>
+      </trans-unit>
+      <trans-unit id="auth.alternativeProviders.use" resname="auth.alternativeProviders.use">
+        <source>Use %s</source>
+        <target>crwdns212512:0%scrwdne212512:0</target>
+      </trans-unit>
+      <trans-unit id="standalone.setupProvider" resname="standalone.setupProvider">
+        <source>Set up %s</source>
+        <target>crwdns212514:0%scrwdne212514:0</target>
+      </trans-unit>
+      <trans-unit id="standalone.selection.title" resname="standalone.selection.title">
+        <source>Set up MFA</source>
+        <target>crwdns212516:0crwdne212516:0</target>
+      </trans-unit>
+      <trans-unit id="standalone.selection.message" resname="standalone.selection.message">
+        <source>
+					%s requires you setting up MFA to secure your account. Please select one of the
+					available providers below.
+				</source>
+        <target>crwdns212518:0%scrwdne212518:0</target>
+      </trans-unit>
+      <trans-unit id="standalone.selection.noAvailableProviders" resname="standalone.selection.noAvailableProviders">
+        <source>
+					You are required to set up MFA. However, there are no MFA providers available for you to use.
+					This might be a misconfiguration. Please get in touch with your administrator to find a solution.
+				</source>
+        <target>crwdns212520:0crwdne212520:0</target>
+      </trans-unit>
+      <trans-unit id="standalone.selection.goBack" resname="standalone.selection.goBack">
+        <source>Go back</source>
+        <target>crwdns212522:0crwdne212522:0</target>
+      </trans-unit>
+      <trans-unit id="standalone.setup" resname="standalone.setup">
+        <source>Setup</source>
+        <target>crwdns212524:0crwdne212524:0</target>
+      </trans-unit>
+      <trans-unit id="standalone.setup.cancel" resname="setup.standalone.cancel">
+        <source>Cancel</source>
+        <target>crwdns212526:0crwdne212526:0</target>
+      </trans-unit>
+      <trans-unit id="standalone.setup.success.title" resname="activate.success">
+        <source>MFA setup successful</source>
+        <target>crwdns212528:0crwdne212528:0</target>
+      </trans-unit>
+      <trans-unit id="standalone.setup.success.message" resname="activate.success">
+        <source>
+					You have successfully activated MFA provider %s. This provider was also automatically set as your
+					default provider. You can change this at any time in your user settings.
+				</source>
+        <target>crwdns212530:0%scrwdne212530:0</target>
+      </trans-unit>
+      <trans-unit id="ajax.success">
+        <source>Success</source>
+        <target>crwdns212532:0crwdne212532:0</target>
+      </trans-unit>
+      <trans-unit id="ajax.error">
+        <source>An error occurred</source>
+        <target>crwdns212534:0crwdne212534:0</target>
+      </trans-unit>
+      <trans-unit id="ajax.invalidRequest">
+        <source>Invalid request could not be processed</source>
+        <target>crwdns212536:0crwdne212536:0</target>
+      </trans-unit>
+      <trans-unit id="ajax.insufficientPermissions">
+        <source>Your are not allowed to perform this action</source>
+        <target>crwdns212538:0crwdne212538:0</target>
+      </trans-unit>
+      <trans-unit id="ajax.deactivate.providersNotDeactivated">
+        <source>No provider has been deactivated</source>
+        <target>crwdns212540:0crwdne212540:0</target>
+      </trans-unit>
+      <trans-unit id="ajax.deactivate.providersDeactivated">
+        <source>Successfully deactivated all active providers for user %s</source>
+        <target>crwdns212542:0%scrwdne212542:0</target>
+      </trans-unit>
+      <trans-unit id="ajax.deactivate.providerNotFound">
+        <source>Provider %s could not be found</source>
+        <target>crwdns212544:0%scrwdne212544:0</target>
+      </trans-unit>
+      <trans-unit id="ajax.deactivate.providerNotDeactivated">
+        <source>Could not deactivate provider %s</source>
+        <target>crwdns212546:0%scrwdne212546:0</target>
+      </trans-unit>
+      <trans-unit id="ajax.deactivate.providerDeactivated">
+        <source>Successfully deactivated provider %s for user %s</source>
+        <target>crwdns212548:0%scrwdnd212548:0%scrwdne212548:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
