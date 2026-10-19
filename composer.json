@@ -52,6 +52,7 @@
 		"php": "^8.5",
 		"ext-PDO": "*",
 		"ext-dom": "*",
+		"ext-fileinfo": "*",
 		"ext-gd": "*",
 		"ext-intl": "*",
 		"ext-json": "*",
@@ -134,7 +135,6 @@
 	"suggest": {
 		"ext-apcu": "Needed when non-default APCU based cache backends are used",
 		"ext-exif": "Used to extract exif metadata (orientation) of uploaded images",
-		"ext-fileinfo": "Used for proper file type detection in the file abstraction layer",
 		"ext-mysqli": "",
 		"ext-openssl": "OpenSSL is required for sending SMTP mails over an encrypted channel endpoint",
 		"ext-zip": "",

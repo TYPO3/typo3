@@ -53,6 +53,7 @@ class Check implements CheckInterface
      * @var array List of required PHP extensions
      */
     protected $requiredPhpExtensions = [
+        'fileinfo',
         'filter',
         'gd',
         'intl',
@@ -74,7 +75,6 @@ class Check implements CheckInterface
      */
     protected $suggestedPhpExtensions = [
         'exif' => 'This extension is used to detect the orientation of uploaded images.',
-        'fileinfo' => 'This extension is used for proper file type detection in the File Abstraction Layer.',
         'openssl' => 'This extension is used for sending SMTP mails over an encrypted channel endpoint.',
     ];
 
