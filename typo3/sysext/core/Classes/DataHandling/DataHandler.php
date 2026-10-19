@@ -791,7 +791,7 @@ class DataHandler
                         }
                     }
                     $incomingFieldArray = $this->addDefaultPermittedLanguageIfNotSet($table, $incomingFieldArray, $theRealPid);
-                    $accessResult = $this->BE_USER->checkRecordEditAccess($table, $incomingFieldArray, true);
+                    $accessResult = $this->BE_USER->checkRecordEditAccess($table, $this->addDefaultLanguageForAccessCheck($table, $theRealPid, $fieldArray, $incomingFieldArray), true);
                     if (!$accessResult->isAllowed) {
                         $this->log($table, 0, SystemLogDatabaseAction::INSERT, null, SystemLogErrorClassification::USER_ERROR, 'checkRecordEditAccess() check failed [{reason}]', null, ['reason' => $accessResult->errorMessage]);
                         continue;
@@ -8360,6 +8360,29 @@ class DataHandler
         } catch (SiteNotFoundException) {
             // No site found, do not set a default language if nothing was set explicitly
         }
+        return $incomingFieldArray;
+    }
+
+    /**
+     * Without a site to take a permitted language from, a new record without a language field gets its language
+     * only when the defaults are applied, after the access check. The access check gets the language the record
+     * will be stored with instead. The record itself is not changed.
+     */
+    protected function addDefaultLanguageForAccessCheck(string $table, int $pageId, array $prepopulatedFieldArray, array $incomingFieldArray): array
+    {
+        $schema = $this->tcaSchemaFactory->get($table);
+        if (!$schema->isLanguageAware()) {
+            return $incomingFieldArray;
+        }
+        /** @var LanguageAwareSchemaCapability $languageCapability */
+        $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
+        $languageFieldName = $languageCapability->getLanguageField()->getName();
+        if (isset($incomingFieldArray[$languageFieldName])) {
+            return $incomingFieldArray;
+        }
+        // Without a configured default, the database default of the language field applies, which is 0
+        $defaults = $this->applyDefaultsForFieldArray($table, $pageId, $prepopulatedFieldArray, $incomingFieldArray);
+        $incomingFieldArray[$languageFieldName] = $defaults[$languageFieldName] ?? 0;
         return $incomingFieldArray;
     }
 
