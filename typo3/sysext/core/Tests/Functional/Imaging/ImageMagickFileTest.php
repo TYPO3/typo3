@@ -94,6 +94,7 @@ final class ImageMagickFileTest extends FunctionalTestCase
             'file.webp.jpg' => ['file.webp.jpg', '\'webp:{directory}/file.webp.jpg\''],
             'file.pdf'      => ['file.pdf', '\'pdf:{directory}/file.pdf\''],
             'file.pdf.jpg'  => ['file.pdf.jpg', '\'pdf:{directory}/file.pdf.jpg\''],
+            'file.miff'     => ['file.miff', '\'miff:{directory}/file.miff\''],
             // accepted, since postscript files are converted using 'jpg:' format
             'file.ps.jpg'   => ['file.ps.jpg', '\'jpg:{directory}/file.ps.jpg\''],
             'file.eps.jpg'  => ['file.eps.jpg', '\'jpg:{directory}/file.eps.jpg\''],
@@ -195,6 +196,52 @@ final class ImageMagickFileTest extends FunctionalTestCase
         ImageMagickFile::fromFilePath($filePath);
     }
 
+    public static function fileStatementIsDeniedForUntrustedMimeExtensionDataProvider(): array
+    {
+        return [
+            'file.mvg as image/x-mvg' => ['file.mvg', 'image/x-mvg', ['mvg']],
+            'file.fax as image/x-mvg' => ['file.fax', 'image/x-mvg', ['mvg']],
+            'file.mvg as image/x-text' => ['file.mvg', 'image/x-text', ['text']],
+            'file.fax as image/wmf' => ['file.fax', 'image/wmf', ['wmf']],
+        ];
+    }
+
+    #[DataProvider('fileStatementIsDeniedForUntrustedMimeExtensionDataProvider')]
+    #[Test]
+    public function fileStatementIsDeniedForUntrustedMimeExtension(string $fileName, string $mimeType, array $mimeExtensions): void
+    {
+        $this->expectException(Exception::class);
+        $this->expectExceptionCode(1550060977);
+
+        $this->simulateNextFileInfoInvocation($mimeType, $mimeExtensions);
+
+        $filePath = sprintf('%s/%s', __DIR__ . '/Fixtures', $fileName);
+        ImageMagickFile::fromFilePath($filePath);
+    }
+
+    public static function fileStatementIsResolvedForUntrustedMimeExtensionDataProvider(): array
+    {
+        return [
+            'file.png as image/x-mvg' => ['file.png', '\'png:{directory}/file.png\'', 'image/x-mvg', ['mvg']],
+            'file.jpg as image/x-mvg' => ['file.jpg', '\'jpg:{directory}/file.jpg\'', 'image/x-mvg', ['mvg']],
+            'file.png as image/wmf' => ['file.png', '\'png:{directory}/file.png\'', 'image/wmf', ['wmf']],
+            'file.miff as image/x-mvg' => ['file.miff', '\'miff:{directory}/file.miff\'', 'image/x-mvg', ['mvg']],
+            'file.miff as image/x-miff' => ['file.miff', '\'miff:{directory}/file.miff\'', 'image/x-miff', ['miff']],
+            'file.png as image/x-tga' => ['file.png', '\'tga:{directory}/file.png\'', 'image/x-tga', ['tga']],
+        ];
+    }
+
+    #[DataProvider('fileStatementIsResolvedForUntrustedMimeExtensionDataProvider')]
+    #[Test]
+    public function fileStatementIsResolvedForUntrustedMimeExtension(string $fileName, string $expectation, string $mimeType, array $mimeExtensions): void
+    {
+        $this->simulateNextFileInfoInvocation($mimeType, $mimeExtensions);
+        $expectation = $this->substituteVariables($expectation);
+        $filePath = sprintf('%s/%s', __DIR__ . '/Fixtures', $fileName);
+        $file = ImageMagickFile::fromFilePath($filePath);
+        self::assertSame($expectation, (string)$file);
+    }
+
     public static function fileStatementIsDeniedForConfiguredMimeTypeDataProvider(): array
     {
         return [
@@ -226,14 +273,14 @@ final class ImageMagickFileTest extends FunctionalTestCase
         );
     }
 
-    private function simulateNextFileInfoInvocation(string $mimeType): void
+    private function simulateNextFileInfoInvocation(string $mimeType, array $mimeExtensions = []): void
     {
         $fileInfo = $this->getMockBuilder(FileInfo::class)
             ->onlyMethods(['getMimeType', 'getMimeExtensions'])
             ->disableOriginalConstructor()
             ->getMock();
         $fileInfo->expects($this->atLeastOnce())->method('getMimeType')->willReturn($mimeType);
-        $fileInfo->expects($this->atLeastOnce())->method('getMimeExtensions')->willReturn([]);
+        $fileInfo->expects($this->atLeastOnce())->method('getMimeExtensions')->willReturn($mimeExtensions);
         GeneralUtility::addInstance(FileInfo::class, $fileInfo);
     }
 }

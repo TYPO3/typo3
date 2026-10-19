@@ -86,7 +86,7 @@ class ImageMagickFile
      *
      * @var string[]
      */
-    protected $allowedExtensions = ['png', 'jpg', 'jpeg', 'gif', 'webp', 'tif', 'tiff', 'bmp', 'pcx', 'tga', 'ico', 'avif'];
+    protected $allowedExtensions = ['png', 'jpg', 'jpeg', 'gif', 'webp', 'tif', 'tiff', 'bmp', 'pcx', 'tga', 'ico', 'avif', 'miff'];
 
     /**
      * File extensions that never shall be used.
@@ -159,8 +159,9 @@ class ImageMagickFile
     /**
      * Resolves according ImageMagic/GraphicsMagic format (e.g. 'png:', 'jpg:', ...).
      * + in case mime-type could be resolved and is configured, it takes precedence
-     * + otherwise resolved mime-type extension of mime.magick database is used if available
-     *   (includes custom settings with $GLOBALS['TYPO3_CONF_VARS']['SYS']['FileInfo']['fileExtensionToMimeType'])
+     * + otherwise resolved mime-type extension is used, in case it is either an allowed extension or
+     *   explicitly configured in $GLOBALS['TYPO3_CONF_VARS']['SYS']['FileInfo']['fileExtensionToMimeType']
+     *   (extensions guessed by the mime.magic database are controlled by the file contents and not trusted)
      * + otherwise "safe" and allowed file extension is used (jpg, png, gif, webp, tif, ...)
      * + potentially malicious script formats (eps, ps, ...) are not allowed
      *
@@ -172,7 +173,10 @@ class ImageMagickFile
         $fileExtension = strtolower($this->fileExtension);
         if ($this->mimeType !== null && !empty($this->mimeTypeExtensionMap[$this->mimeType])) {
             $prefixExtension = $this->mimeTypeExtensionMap[$this->mimeType];
-        } elseif (!empty($this->mimeExtensions) && str_starts_with((string)$this->mimeType, 'image/')) {
+        } elseif (!empty($this->mimeExtensions)
+            && str_starts_with((string)$this->mimeType, 'image/')
+            && $this->isTrustedMimeExtension(strtolower($this->mimeExtensions[0]))
+        ) {
             $prefixExtension = $this->mimeExtensions[0];
         } elseif ($this->isInAllowedExtensions($fileExtension)) {
             $prefixExtension = $fileExtension;
@@ -198,6 +202,13 @@ class ImageMagickFile
     protected function isInAllowedExtensions(string $extension): bool
     {
         return in_array($extension, $this->allowedExtensions, true);
+    }
+
+    protected function isTrustedMimeExtension(string $extension): bool
+    {
+        $fileExtensionToMimeTypeMapping = $GLOBALS['TYPO3_CONF_VARS']['SYS']['FileInfo']['fileExtensionToMimeType'] ?? [];
+        return $this->isInAllowedExtensions($extension)
+            || in_array($this->mimeType, $fileExtensionToMimeTypeMapping, true);
     }
 
     protected function getFileInfo(string $filePath): FileInfo
