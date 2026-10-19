@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:indexed_search/Resources/Private/Language/locallang_db.xlf" date="2011-10-17T20:22:33Z" product-name="indexed_search" target-language="ar">
+    <header/>
+    <body>
+      <trans-unit id="index_config" resname="index_config" approved="yes">
+        <source>Indexing Configuration</source>
+        <target state="final">توصيف عملية الفهرسة</target>
+      </trans-unit>
+      <trans-unit id="index_config.title" resname="index_config.title" approved="yes">
+        <source>Title</source>
+        <target state="final">العنوان</target>
+      </trans-unit>
+      <trans-unit id="index_config.description" resname="index_config.description" approved="yes">
+        <source>Description</source>
+        <target state="final">الوَصف</target>
+      </trans-unit>
+      <trans-unit id="index_config.type.I.1" resname="index_config.type.I.1" approved="yes">
+        <source>Database Records</source>
+        <target state="final">سجلات قاعدة البيانات</target>
+      </trans-unit>
+      <trans-unit id="index_config.type.I.2" resname="index_config.type.I.2" approved="yes">
+        <source>Filepath on server</source>
+        <target state="final">مسار المِلَفّ على الخادم</target>
+      </trans-unit>
+      <trans-unit id="index_config.type.I.3" resname="index_config.type.I.3" approved="yes">
+        <source>External URL</source>
+        <target state="final">الرابط الخارجى</target>
+      </trans-unit>
+      <trans-unit id="index_config.type.I.4" resname="index_config.type.I.4" approved="yes">
+        <source>Page tree</source>
+        <target state="final">شجرة الصفحة</target>
+      </trans-unit>
+      <trans-unit id="index_config.type.I.5" resname="index_config.type.I.5" approved="yes">
+        <source>Meta configuration</source>
+        <target state="final">تكوين Meta</target>
+      </trans-unit>
+      <trans-unit id="index_config.type" resname="index_config.type" approved="yes">
+        <source>Type</source>
+        <target state="final">النوع</target>
+      </trans-unit>
+      <trans-unit id="index_config.depth" resname="index_config.depth" approved="yes">
+        <source>Depth</source>
+        <target state="final">العمق</target>
+      </trans-unit>
+      <trans-unit id="index_config.table2index" resname="index_config.table2index" approved="yes">
+        <source>Table to index</source>
+        <target state="final">جدول للفهرس</target>
+      </trans-unit>
+      <trans-unit id="index_config.alternative_source_pid" resname="index_config.alternative_source_pid" approved="yes">
+        <source>Alternative Source Page</source>
+        <target state="final">صفحة المصدر البديلة</target>
+      </trans-unit>
+      <trans-unit id="index_config.get_params" resname="index_config.get_params" approved="yes">
+        <source>GET parameter string (with ###UID### substitution)</source>
+        <target state="final">سلسلة مُعلّمة GET (مع الاستبدال ###UID######)</target>
+      </trans-unit>
+      <trans-unit id="index_config.fields" resname="index_config.fields" approved="yes">
+        <source>Fields (first is title)</source>
+        <target state="final">الحقول (الأول هو العنوان)</target>
+      </trans-unit>
+      <trans-unit id="index_config.externalUrl" resname="index_config.externalUrl" approved="yes">
+        <source>External URL (eg. "http://www.domain.org/")</source>
+        <target state="final">الخارجي URL (eg. "http://www.domain.org/")</target>
+      </trans-unit>
+      <trans-unit id="index_config.filepath" resname="index_config.filepath" approved="yes">
+        <source>Filepath</source>
+        <target state="final">مسار الملف</target>
+      </trans-unit>
+      <trans-unit id="index_config.extensions" resname="index_config.extensions" approved="yes">
+        <source>Limit to extensions (commalist)</source>
+        <target state="final">الحد من الإضافات (commalist)</target>
+      </trans-unit>
+      <trans-unit id="index_config.url_deny" resname="index_config.url_deny" approved="yes">
+        <source>Enter sub-URLs in which not to decend</source>
+        <target state="final">لا تتعمق أكثر في عناوين URL الفرعية هذه</target>
+      </trans-unit>
+      <trans-unit id="index_config.records_indexonchange" resname="index_config.records_indexonchange" approved="yes">
+        <source>Index Records immediately when saved?</source>
+        <target state="final">فهرسة السجلات فوراً عند حفظها؟</target>
+      </trans-unit>
+      <trans-unit id="index_config.timer_next_indexing" resname="index_config.timer_next_indexing" approved="yes">
+        <source>Next indexing is scheduled (if empty, then immediately)</source>
+        <target state="final">الفهرسة التالية مُجدوَلة (إذا كانت فارغة، ثم على الفور)</target>
+      </trans-unit>
+      <trans-unit id="index_config.timer_offset" resname="index_config.timer_offset" approved="yes">
+        <source>Timing offset from midnight</source>
+        <target state="final">موازنة التوقيت من منتصف الليل</target>
+      </trans-unit>
+      <trans-unit id="index_config.timer_frequency" resname="index_config.timer_frequency" approved="yes">
+        <source>How often would you like a re-index?</source>
+        <target state="final">كم مرة تريد إعادة الفهرسة؟</target>
+      </trans-unit>
+      <trans-unit id="index_config.timer_frequency.I.0" resname="index_config.timer_frequency.I.0" approved="yes">
+        <source>Every hour</source>
+        <target state="final">كل ساعة</target>
+      </trans-unit>
+      <trans-unit id="index_config.timer_frequency.I.1" resname="index_config.timer_frequency.I.1" approved="yes">
+        <source>Every day (24 hours)</source>
+        <target state="final">كل يوم (كل 24 ساعة)</target>
+      </trans-unit>
+      <trans-unit id="index_config.timer_frequency.I.2" resname="index_config.timer_frequency.I.2" approved="yes">
+        <source>Every week</source>
+        <target state="final">كل أسبوع</target>
+      </trans-unit>
+      <trans-unit id="index_config.recordsbatch" resname="index_config.recordsbatch" approved="yes">
+        <source>How many records to index a minute (default is 100)</source>
+        <target state="final">ما عدد السجلات المُراد فهرستها خلال دقيقة (الافتراضي هو 100)</target>
+      </trans-unit>
+      <trans-unit id="index_config.set_id" resname="index_config.set_id" approved="yes">
+        <source>Session ID (if &gt; zero, then indexing job is running)</source>
+        <target state="final">ID الجِلسة (إذا &gt; صفر، ثم الفهرسة يتم تشغيلها)</target>
+      </trans-unit>
+      <trans-unit id="index_config.indexcfgs" resname="index_config.indexcfgs" approved="yes">
+        <source>Indexing configurations</source>
+        <target state="final">إعدادات الفهرسة</target>
+      </trans-unit>
+      <trans-unit id="index_config.parameterCfgs" resname="index_config.parameterCfgs" approved="yes">
+        <source>Parameter combination configuration ([tablename]:&amp;[param]=###UID###)</source>
+        <target state="final">تكوين تركيب المُعلّمة ([tablename]:&amp;[param]=###UID###)</target>
+      </trans-unit>
+      <trans-unit id="index_config.rootpage" resname="index_config.rootpage" approved="yes">
+        <source>Root page</source>
+        <target state="final">الصفحة الجذر</target>
+      </trans-unit>
+      <trans-unit id="plugin_title" resname="plugin_title" approved="yes">
+        <source>Indexed Search</source>
+        <target state="final">البحث المُفهرس</target>
+      </trans-unit>
+      <trans-unit id="plugin_description" resname="plugin_description" approved="yes">
+        <source>Search based on a database stored index.</source>
+        <target state="final">البحث على أساس فهرس قاعدة البيانات المخزنة.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
