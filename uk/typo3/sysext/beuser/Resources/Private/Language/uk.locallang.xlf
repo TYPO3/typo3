@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:beuser/Resources/Private/Language/locallang.xlf" date="2012-07-16T10:11:32Z" product-name="beuser" target-language="uk">
+    <header/>
+    <body>
+      <trans-unit id="activeSessions" resname="activeSessions" approved="yes">
+        <source>Active Sessions</source>
+        <target state="final">Активні Сесії</target>
+      </trans-unit>
+      <trans-unit id="userName" resname="userName" approved="yes">
+        <source>Username</source>
+        <target state="final">Імʼя користувача</target>
+      </trans-unit>
+      <trans-unit id="realName" resname="realName" approved="yes">
+        <source>Real Name</source>
+        <target state="final">Справжнє ім'я</target>
+      </trans-unit>
+      <trans-unit id="backendUserListing" resname="backendUserListing" approved="yes">
+        <source>Backend User Listing</source>
+        <target state="final">Список серверних користувачів</target>
+      </trans-unit>
+      <trans-unit id="subGroups" resname="subGroups" approved="yes">
+        <source>Sub Groups</source>
+        <target state="final">Підгрупи</target>
+      </trans-unit>
+      <trans-unit id="email" resname="email" approved="yes">
+        <source>Email</source>
+        <target state="final">Електронна адреса</target>
+      </trans-unit>
+      <trans-unit id="admin" resname="admin" approved="yes">
+        <source>Admin</source>
+        <target state="final">Адміністратор</target>
+      </trans-unit>
+      <trans-unit id="users" resname="users" approved="yes">
+        <source>Users</source>
+        <target state="final">Користувачі</target>
+      </trans-unit>
+      <trans-unit id="yes" resname="yes" approved="yes">
+        <source>Yes</source>
+        <target state="final">Так</target>
+      </trans-unit>
+      <trans-unit id="no" resname="no" approved="yes">
+        <source>No</source>
+        <target state="final">Ні</target>
+      </trans-unit>
+      <trans-unit id="never" resname="never" approved="yes">
+        <source>Never</source>
+        <target state="final">Ніколи</target>
+      </trans-unit>
+      <trans-unit id="delete" resname="delete" approved="yes">
+        <source>Delete backend user (!)</source>
+        <target state="final">Видалити бекенд-користувача (!)</target>
+      </trans-unit>
+      <trans-unit id="info" resname="info" approved="yes">
+        <source>Display information</source>
+        <target state="final">Показати інформацію</target>
+      </trans-unit>
+      <trans-unit id="disable_compare" resname="disable_compare" approved="yes">
+        <source>Is active?</source>
+        <target state="final">Активний?</target>
+      </trans-unit>
+      <trans-unit id="startDateAndTime" resname="startDateAndTime" approved="yes">
+        <source>Start</source>
+        <target state="final">Почати</target>
+      </trans-unit>
+      <trans-unit id="endDateAndTime" resname="endDateAndTime" approved="yes">
+        <source>Stop</source>
+        <target state="final">Зупинити</target>
+      </trans-unit>
+      <trans-unit id="lastLogin" resname="lastLogin" approved="yes">
+        <source>Last login</source>
+        <target state="final">Остання авторизація</target>
+      </trans-unit>
+      <trans-unit id="allowedLanguages" resname="allowedLanguages" approved="yes">
+        <source>Limit to languages</source>
+        <target state="final">Обмеження мов</target>
+      </trans-unit>
+      <trans-unit id="dbMountPoints" resname="dbMountPoints" approved="yes">
+        <source>DB mountpoints</source>
+        <target state="final">Точки монтування БД</target>
+      </trans-unit>
+      <trans-unit id="fileMounts" resname="fileMounts" approved="yes">
+        <source>File mountpoints</source>
+        <target state="final">Точки монтування файлів</target>
+      </trans-unit>
+      <trans-unit id="disableIpLock" resname="disableIpLock" approved="yes">
+        <source>Disable IP lock</source>
+        <target state="final">Вимкнути блокування IP</target>
+      </trans-unit>
+      <trans-unit id="compareBackendUsers" resname="compareBackendUsers" approved="yes">
+        <source>Compare backend users</source>
+        <target state="final">Порівняти внутрішніх користувачів</target>
+      </trans-unit>
+      <trans-unit id="compareUserList" resname="compareUserList" approved="yes">
+        <source>Compare user list</source>
+        <target state="final">Порівняти список користувачів</target>
+      </trans-unit>
+      <trans-unit id="compareBackendUsersGroups" resname="compareBackendUsersGroups" approved="yes">
+        <source>Compare backend usergroups</source>
+        <target state="final">Порівняти групи внутрішніх користувачів</target>
+      </trans-unit>
+      <trans-unit id="both" resname="both" approved="yes">
+        <source>Both</source>
+        <target state="final">Обидва</target>
+      </trans-unit>
+      <trans-unit id="any" resname="any" approved="yes">
+        <source>Any</source>
+        <target state="final">Всі</target>
+      </trans-unit>
+      <trans-unit id="adminOnly" resname="adminOnly" approved="yes">
+        <source>Admin only</source>
+        <target state="final">Тільки адмін</target>
+      </trans-unit>
+      <trans-unit id="normalUserOnly" resname="normalUserOnly" approved="yes">
+        <source>Normal users only</source>
+        <target state="final">Тільки звичайні користувачі</target>
+      </trans-unit>
+      <trans-unit id="activeOnly" resname="activeOnly" approved="yes">
+        <source>Active only</source>
+        <target state="final">Тільки активні</target>
+      </trans-unit>
+      <trans-unit id="inactiveOnly" resname="inactiveOnly" approved="yes">
+        <source>Inactive only</source>
+        <target state="final">Тільки неактивні</target>
+      </trans-unit>
+      <trans-unit id="filter" resname="filter" approved="yes">
+        <source>Filter</source>
+        <target state="final">Фільтр</target>
+      </trans-unit>
+      <trans-unit id="backendUsers" resname="backendUsers" approved="yes">
+        <source>Backend users</source>
+        <target state="final">Внутрішні користувачі</target>
+      </trans-unit>
+      <trans-unit id="compareUsers" resname="compareUsers" approved="yes">
+        <source>Compare backend users</source>
+        <target state="final">Порівняти внутрішніх користувачів</target>
+      </trans-unit>
+      <trans-unit id="backendUserGroupsMenu" resname="backendUserGroupsMenu" approved="yes">
+        <source>Backend user groups</source>
+        <target state="final">Групи користувачів бекенд</target>
+      </trans-unit>
+      <trans-unit id="onlineUsers" resname="onlineUsers" approved="yes">
+        <source>Online users</source>
+        <target state="final">Користувачі онлайн</target>
+      </trans-unit>
+      <trans-unit id="backendUserAdministration" resname="backendUserAdministration" approved="yes">
+        <source>Backend User Administration</source>
+        <target state="final">Адміністрування бекенд-користувача</target>
+      </trans-unit>
+      <trans-unit id="backendUserGroup" resname="backendUserGroup" approved="yes">
+        <source>User group</source>
+        <target state="final">Групи користувачів</target>
+      </trans-unit>
+      <trans-unit id="backendUserGroups" resname="backendUserGroups" approved="yes">
+        <source>Member of groups</source>
+        <target state="final">Учасник груп</target>
+      </trans-unit>
+      <trans-unit id="changeToMode" resname="changeToMode" approved="yes">
+        <source>[change-to mode]</source>
+        <target state="final">[перехідний режим]</target>
+      </trans-unit>
+      <trans-unit id="switchBackMode" resname="switchBackMode" approved="yes">
+        <source>Switch to user</source>
+        <target state="final">Перейти на користувача</target>
+      </trans-unit>
+      <trans-unit id="confirm" resname="confirm" approved="yes">
+        <source>Are you sure you want to delete this backend user %s?</source>
+        <target state="final">Ви впевнені, що хочете видалити цього серверного користувача %s?</target>
+      </trans-unit>
+      <trans-unit id="section.allUserGroups" resname="section.allUserGroups" approved="yes">
+        <source>All User Groups</source>
+        <target state="final">Всі групи користувачів</target>
+      </trans-unit>
+      <trans-unit id="remove" resname="remove" approved="yes">
+        <source>Remove</source>
+        <target state="final">Видалити</target>
+      </trans-unit>
+      <trans-unit id="backendUserGroupListing" resname="backendUserGroupListing" approved="yes">
+        <source>Backend User Group Listing</source>
+        <target state="final">Список груп бекенд-користувачів</target>
+      </trans-unit>
+      <trans-unit id="visibility.hide" resname="visibility.hide" approved="yes">
+        <source>Hide</source>
+        <target state="final">Приховати</target>
+      </trans-unit>
+      <trans-unit id="visibility.unhide" resname="visibility.unhide" approved="yes">
+        <source>Un-hide</source>
+        <target state="final">Показати</target>
+      </trans-unit>
+      <trans-unit id="information.defaultLanguage" resname="information.defaultLanguage" approved="yes">
+        <source>Default</source>
+        <target state="final">За замовчуванням</target>
+      </trans-unit>
+      <trans-unit id="groups" resname="groups" approved="yes">
+        <source>Groups</source>
+        <target state="final">Групи</target>
+      </trans-unit>
+      <trans-unit id="information.groups.direct" resname="information.groups.direct" approved="yes">
+        <source>Directly assigned</source>
+        <target state="final">Безпосереднє призначення</target>
+      </trans-unit>
+      <trans-unit id="information.groups.inheritance" resname="information.groups.inheritance" approved="yes">
+        <source>Assigned through inheritance</source>
+        <target state="final">Призначено за допомогою успадкування</target>
+      </trans-unit>
+      <trans-unit id="languages" resname="languages" approved="yes">
+        <source>Languages</source>
+        <target state="final">Мови</target>
+      </trans-unit>
+      <trans-unit id="dbMounts" resname="dbMounts" approved="yes">
+        <source>DB Mounts</source>
+        <target state="final">Монтування БД</target>
+      </trans-unit>
+      <trans-unit id="fileMounts" resname="fileMounts" approved="yes">
+        <source>File Mounts</source>
+        <target state="final">Точки монтування файлів</target>
+      </trans-unit>
+      <trans-unit id="categories" resname="categories" approved="yes">
+        <source>Categories</source>
+        <target state="final">Категорії</target>
+      </trans-unit>
+      <trans-unit id="permissions" resname="permissions" approved="yes">
+        <source>Permissions</source>
+        <target state="final">Доступи</target>
+      </trans-unit>
+      <trans-unit id="modules" resname="modules" approved="yes">
+        <source>Modules</source>
+        <target state="final">Модулі</target>
+      </trans-unit>
+      <trans-unit id="tableModes" resname="tableModes" approved="yes">
+        <source>Table select/modify</source>
+        <target state="final">Вибір/зміна таблиці</target>
+      </trans-unit>
+      <trans-unit id="tableModes.select" resname="tableModes.select" approved="yes">
+        <source>Select</source>
+        <target state="final">Вибрати</target>
+      </trans-unit>
+      <trans-unit id="tableModes.modify" resname="tableModes.modify" approved="yes">
+        <source>Modify</source>
+        <target state="final">Змінити</target>
+      </trans-unit>
+      <trans-unit id="information.defaultWorkspace" resname="information.defaultWorkspace" approved="yes">
+        <source>Default workspace</source>
+        <target state="final">Робоче середовище за замовчуванням</target>
+      </trans-unit>
+      <trans-unit id="backendUser" resname="backendUser" approved="yes">
+        <source>Backend User</source>
+        <target state="final">Бекенд-користувач</target>
+      </trans-unit>
+      <trans-unit id="flashMessage.resetPassword.error.title" resname="flashMessage.resetPassword.error.title" approved="yes">
+        <source>Password reset not triggered</source>
+        <target state="final">Скидання пароля не було викликано</target>
+      </trans-unit>
+      <trans-unit id="flashMessage.resetPassword.error.text" resname="flashMessage.resetPassword.error.text" approved="yes">
+        <source>Sorry, the password of this user cannot be reset.</source>
+        <target state="final">Вибачте, пароль цього користувача не може бути скинутий.</target>
+      </trans-unit>
+      <trans-unit id="flashMessage.resetPassword.success.title" resname="flashMessage.resetPassword.success.title" approved="yes">
+        <source>Password reset triggered</source>
+        <target state="final">Скидання пароля активоване</target>
+      </trans-unit>
+      <trans-unit id="flashMessage.resetPassword.success.text" resname="flashMessage.resetPassword.success.text" approved="yes">
+        <source>Password reset for email address %s initiated.</source>
+        <target state="final">Пароль скинуто для адреси електронної пошти %s.</target>
+      </trans-unit>
+      <trans-unit id="resetPassword.label" resname="resetPassword.label" approved="yes">
+        <source>Reset Password</source>
+        <target state="final">Відновити пароль</target>
+      </trans-unit>
+      <trans-unit id="resetPassword.confirmation.header" resname="resetPassword.confirmation.header" approved="yes">
+        <source>Reset Password</source>
+        <target state="final">Відновити Пароль</target>
+      </trans-unit>
+      <trans-unit id="resetPassword.confirmation.text" resname="resetPassword.confirmation.text" approved="yes">
+        <source>Are you sure you want to reset the password for %s?</source>
+        <target state="final">Ви дійсно бажаєте скинути пароль для %s?</target>
+      </trans-unit>
+      <trans-unit id="compare.tables" resname="compare.tables" approved="yes">
+        <source>Table permissions</source>
+        <target state="final">Дозволи таблиці</target>
+      </trans-unit>
+      <trans-unit id="compare.direct.inherit" resname="compare.direct.inherit" approved="yes">
+        <source>Inherit</source>
+        <target state="final">Успадкувати</target>
+      </trans-unit>
+      <trans-unit id="compare.direct.direct" resname="compare.direct.direct" approved="yes">
+        <source>Direct</source>
+        <target state="final">Прямий</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
