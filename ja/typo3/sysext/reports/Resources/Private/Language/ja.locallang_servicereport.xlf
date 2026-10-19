@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:reports/Resources/Private/Language/locallang_servicereport.xlf" date="2011-10-17T20:22:37Z" product-name="sv" target-language="ja">
+    <header/>
+    <body>
+      <trans-unit id="report_title" resname="report_title" approved="yes">
+        <source>Installed Services</source>
+        <target state="final">インストール済みサービス</target>
+      </trans-unit>
+      <trans-unit id="service" resname="service" approved="yes">
+        <source>Service</source>
+        <target state="final">サービス</target>
+      </trans-unit>
+      <trans-unit id="description" resname="description" approved="yes">
+        <source>Description</source>
+        <target state="final">説明</target>
+      </trans-unit>
+      <trans-unit id="priority" resname="priority" approved="yes">
+        <source>Priority</source>
+        <target state="final">優先度</target>
+      </trans-unit>
+      <trans-unit id="quality" resname="quality" approved="yes">
+        <source>Quality</source>
+        <target state="final">品質</target>
+      </trans-unit>
+      <trans-unit id="path" resname="path" approved="yes">
+        <source>Path</source>
+        <target state="final">パス</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
