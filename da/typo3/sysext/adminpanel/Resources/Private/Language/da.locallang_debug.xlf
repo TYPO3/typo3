@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf" date="2018-03-21T11:47:00Z" product-name="adminpanel" target-language="da">
+    <header/>
+    <body>
+      <trans-unit id="module.label" resname="module.label" approved="yes">
+        <source>Debug</source>
+        <target state="final">Debug</target>
+      </trans-unit>
+      <trans-unit id="module.shortinfo" resname="module.shortinfo" approved="yes">
+        <source>(%s Errors/Warnings)</source>
+        <target state="final">(%s fejl/advarsler)</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.label" resname="submodule.log.label" approved="yes">
+        <source>Log</source>
+        <target state="final">Log</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.message" resname="submodule.log.message" approved="yes">
+        <source>Log Message</source>
+        <target state="final">Logmeddelse</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.component" resname="submodule.log.component" approved="yes">
+        <source>Component</source>
+        <target state="final">Komponent</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.level" resname="submodule.log.level" approved="yes">
+        <source>Level</source>
+        <target state="final">Niveau</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.groupByComponent" resname="submodule.log.groupByComponent" approved="yes">
+        <source>Group by Component</source>
+        <target state="final">Grupperet ved komponent</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.groupByLevel" resname="submodule.log.groupByLevel" approved="yes">
+        <source>Group by Level</source>
+        <target state="final">Grupperet ved niveau</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.startLevel" resname="submodule.log.startLevel" approved="yes">
+        <source>Display only levels equal or higher to</source>
+        <target state="final">Vis kun niveauer lig med eller højere end</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.noEntries" resname="submodule.log.noEntries" approved="yes">
+        <source>No log entries.</source>
+        <target state="final">Ingen loglinjer.</target>
+      </trans-unit>
+      <trans-unit id="submodule.events.label" resname="submodule.events.label" approved="yes">
+        <source>Events</source>
+        <target state="final">Begivenheder</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.label" resname="submodule.queryInformation.label" approved="yes">
+        <source>Query Information</source>
+        <target state="final">Udtryksinformation</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.query" resname="submodule.queryInformation.query" approved="yes">
+        <source>Query</source>
+        <target state="final">Udtryk</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.queries" resname="submodule.queryInformation.queries" approved="yes">
+        <source>Queries</source>
+        <target state="final">Udtryk</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.backtrace" resname="submodule.queryInformation.backtrace" approved="yes">
+        <source>Backtrace</source>
+        <target state="final">Backtrace</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.doctrineDebug" resname="submodule.queryInformation.doctrineDebug" approved="yes">
+        <source>SQL Debug</source>
+        <target state="final">SQL debug</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.sqlQuery" resname="submodule.queryInformation.sqlQuery" approved="yes">
+        <source>SQL Query</source>
+        <target state="final">SQU udtryk</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.queryCount" resname="submodule.queryInformation.queryCount" approved="yes">
+        <source>Count</source>
+        <target state="final">Tæller</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.queryTime" resname="submodule.queryInformation.queryTime" approved="yes">
+        <source>Total Time [ms]</source>
+        <target state="final">Tid i alt [ms]</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.label" approved="yes">
+        <source>Page title</source>
+        <target state="final">Sidetitel</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.usedProvider" approved="yes">
+        <source>Used provider</source>
+        <target state="final">Udbyder i brug</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.title" approved="yes">
+        <source>Title</source>
+        <target state="final">Titel</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.provider" approved="yes">
+        <source>Provider</source>
+        <target state="final">Udbyder</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.skippedProviders" approved="yes">
+        <source>Skipped providers (provided no title)</source>
+        <target state="final">Droppede udbydere (uden titel)</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.name" approved="yes">
+        <source>Name</source>
+        <target state="final">Navn</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.allProviders" approved="yes">
+        <source>All providers checked in order</source>
+        <target state="final">Alle udbydere tjekket i rækkefølge</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.cacheEnabled" approved="yes">
+        <source>It's not possible to retrieve the page title (providers) information when the page is cached.</source>
+        <target state="final">Det er ikke muligt at hente sidens titel (udbydere) information, når siden er cachet.</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.cacheEnabled.extraInfo" approved="yes">
+        <source>Visit this page uncached, or disable the cache through this admin panel.</source>
+        <target state="final">Besøg denne side uden cache, eller deaktivér cachen gennem admin-panelet.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
