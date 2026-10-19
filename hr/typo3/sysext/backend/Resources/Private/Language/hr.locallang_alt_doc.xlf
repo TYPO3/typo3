@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="hr">
+    <header/>
+    <body>
+      <trans-unit id="deleteItem" resname="deleteItem" approved="yes">
+        <source>Delete</source>
+        <target state="final">Brisanje</target>
+      </trans-unit>
+      <trans-unit id="deleteWarning" resname="deleteWarning" approved="yes">
+        <source>Are you sure you want to delete this record?</source>
+        <target state="final">Jeste li sigurni da želite pobrisati ovaj zapis?</target>
+      </trans-unit>
+      <trans-unit id="undoLastChange" resname="undoLastChange" approved="yes">
+        <source>Undo/Redo last change (%s ago)</source>
+        <target state="final">Undo/Redo zadnjih promjena (%s prije)</target>
+      </trans-unit>
+      <trans-unit id="recordHistory" resname="recordHistory" approved="yes">
+        <source>View record change history</source>
+        <target state="final">Pogledaj povijest izmjene zapisa</target>
+      </trans-unit>
+      <trans-unit id="editWholeRecord" resname="editWholeRecord" approved="yes">
+        <source>Edit whole record</source>
+        <target state="final">Uređuj cijeli zapis</target>
+      </trans-unit>
+      <trans-unit id="openDocs" resname="openDocs" approved="yes">
+        <source>OPEN DOCUMENTS</source>
+        <target state="final">OTVORENI DOKUMENTI</target>
+      </trans-unit>
+      <trans-unit id="noDocuments" resname="noDocuments" approved="yes">
+        <source>No open documents</source>
+        <target state="final">Nema otvorenih dokumenata</target>
+      </trans-unit>
+      <trans-unit id="noDocuments_msg" resname="noDocuments_msg" approved="yes">
+        <source>There are no open documents available to edit.</source>
+        <target state="final">Nema otvorenih dokumenata raspoloživih za uređivanje.</target>
+      </trans-unit>
+      <trans-unit id="noDocuments_msg2" resname="noDocuments_msg2" approved="yes">
+        <source>You can go to %s to find the page or the record you wish to edit.</source>
+        <target state="final">Možete otići na %s da pronađete stranicu koju želite uređivati.</target>
+      </trans-unit>
+      <trans-unit id="noDocuments_pagemodule" resname="noDocuments_pagemodule" approved="yes">
+        <source>the Web&gt;Page module</source>
+        <target state="final">Web&gt;Stranica modul</target>
+      </trans-unit>
+      <trans-unit id="noDocuments_OR" resname="noDocuments_OR" approved="yes">
+        <source>or</source>
+        <target state="final">ili</target>
+      </trans-unit>
+      <trans-unit id="noDocuments_listmodule" resname="noDocuments_listmodule" approved="yes">
+        <source>the Web&gt;List module</source>
+        <target state="final">Web&gt;Popis (List) modul</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.duplicate_record_changed.cancel" resname="buttons.confirm.duplicate_record_changed.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Odustani</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.close_without_save.yes" resname="buttons.confirm.close_without_save.yes" approved="yes">
+        <source>Yes, discard my changes</source>
+        <target state="final">Da, odbaci moje izmjene</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.close_without_save.no" resname="buttons.confirm.close_without_save.no" approved="yes">
+        <source>No, I will continue editing</source>
+        <target state="final">Ne, nastavit ću s uređivanjem</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.new_record_changed.cancel" resname="buttons.confirm.new_record_changed.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Odustani</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.view_record_changed.cancel" resname="buttons.confirm.view_record_changed.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Odustani</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.delete_file.no" resname="buttons.confirm.delete_file.no" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Odustani</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.delete_file.yes" resname="buttons.confirm.delete_file.yes" approved="yes">
+        <source>Yes, delete this file</source>
+        <target state="final">Da, izbriši ovu datoteku</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.delete_folder.yes" resname="buttons.confirm.delete_folder.yes" approved="yes">
+        <source>Yes, delete this folder</source>
+        <target state="final">Da, izbriši ovu mapu</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.delete_record.no" resname="buttons.confirm.delete_record.no" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Odustani</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.delete_record.yes" resname="buttons.confirm.delete_record.yes" approved="yes">
+        <source>Yes, delete this record</source>
+        <target state="final">Da, izbriši ovaj zapis</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.delete_record.title" resname="label.confirm.delete_record.title" approved="yes">
+        <source>Delete this record?</source>
+        <target state="final">Izbrisati ovaj zapis?</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.delete_record.content" resname="label.confirm.delete_record.content" approved="yes">
+        <source>Are you sure you want to delete this record?</source>
+        <target state="final">Jeste li sigurni da želite pobrisati ovaj zapis?</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.delete_elements.no" resname="buttons.confirm.delete_elements.no" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Odustani</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.delete_elements.yes" resname="buttons.confirm.delete_elements.yes" approved="yes">
+        <source>Yes, delete these elements</source>
+        <target state="final">Da, izbriši ove elemente</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
