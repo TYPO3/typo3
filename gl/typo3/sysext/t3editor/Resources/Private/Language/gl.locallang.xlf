@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:t3editor/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="t3editor" target-language="gl">
+    <header/>
+    <body>
+      <trans-unit id="delimiter" resname="delimiter">
+        <source/>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
