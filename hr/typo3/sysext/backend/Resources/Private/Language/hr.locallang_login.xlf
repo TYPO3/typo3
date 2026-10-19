@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_login.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="hr">
+    <header/>
+    <body>
+      <trans-unit id="labels.submitLogout" resname="labels.submitLogout" approved="yes">
+        <source>Log Out</source>
+        <target state="final">Odjava</target>
+      </trans-unit>
+      <trans-unit id="labels.whatIsOpenId" resname="labels.whatIsOpenId" approved="yes">
+        <source>What is OpenId?</source>
+        <target state="final">Što je OpenId?</target>
+      </trans-unit>
+      <trans-unit id="availableInterfaces" resname="availableInterfaces" approved="yes">
+        <source>Backend,Front End,Traditional Backend</source>
+        <target state="final">Pozadinsko sučelje, prednje sučelje, tradicionalno pozadinsko sučelje</target>
+      </trans-unit>
+      <trans-unit id="interface.backend" resname="interface.backend" approved="yes">
+        <source>Backend</source>
+        <target state="final">Podazinsko sučelje</target>
+      </trans-unit>
+      <trans-unit id="interface.frontend" resname="interface.frontend" approved="yes">
+        <source>Frontend</source>
+        <target state="final">Prednje sučelje</target>
+      </trans-unit>
+      <trans-unit id="interface.backend_old" resname="interface.backend_old" approved="yes">
+        <source>Traditional Backend</source>
+        <target state="final">Tradicionalno pozadinsko sučelje</target>
+      </trans-unit>
+      <trans-unit id="headline" resname="headline" approved="yes">
+        <source>Login to the TYPO3 CMS Backend on ###SITENAME###</source>
+        <target state="final">Prijava u TYPO3 CMS pozadinsko sučelje na ###SITENAME###</target>
+      </trans-unit>
+      <trans-unit id="info.about" resname="info.about" approved="yes">
+        <source>This is the backend login of TYPO3. You need username and password to access this administration interface. If you are a visitor of ###SITENAME###, please visit the public website: ###SITELINK###</source>
+        <target state="final">Ovo je prijava pozadinskog sučelja TYPO3 sustava. Trebate korisničko ime i lozinku za pristup administracijskom sučelju. Ako ste posjetitelj stranice ###SITENAME###, molimo Vas da posjetite javnu web stranicu: ###SITELINK###</target>
+      </trans-unit>
+      <trans-unit id="info.reset" resname="info.reset" approved="yes">
+        <source>Reset this form</source>
+        <target state="final">Resetiraj ovaj obrazac</target>
+      </trans-unit>
+      <trans-unit id="info.cookies_and_js" resname="info.cookies_and_js" approved="yes">
+        <source>(Note: Cookies and JavaScript must be enabled!)</source>
+        <target state="final">(Napomena: kolačići i javascript moraju biti omogućeni!)</target>
+      </trans-unit>
+      <trans-unit id="clear" resname="clear" approved="yes">
+        <source>Clear this field!</source>
+        <target state="final">Očisti ovo polje!</target>
+      </trans-unit>
+      <trans-unit id="warning.incompatibleBrowserHeadline" resname="warning.incompatibleBrowserHeadline" approved="yes">
+        <source>Unsupported Browser</source>
+        <target state="final">Preglednik nije podržan</target>
+      </trans-unit>
+      <trans-unit id="warning.incompatibleBrowser" resname="warning.incompatibleBrowser" approved="yes">
+        <source>You are using an unsupported browser version.</source>
+        <target state="final">Koristite inačicu preglednika koja nije podržana.</target>
+      </trans-unit>
+      <trans-unit id="error.login" resname="error.login" approved="yes">
+        <source>Your login attempt did not succeed. Make sure to spell your username and password correctly, including upper/lowercase characters.</source>
+        <target state="final">Vaš pokušaj prijave nije uspio. Unesite svoje korisničko ime i lozinku ispravno, uključujući male/velike znakove.</target>
+      </trans-unit>
+      <trans-unit id="error.cookies_ignore" resname="error.cookies_ignore" approved="yes">
+        <source>Ignore!</source>
+        <target state="final">Zanemari!</target>
+      </trans-unit>
+      <trans-unit id="error.furtherInformation" resname="error.furtherInformation" approved="yes">
+        <source>For more information or further help click here</source>
+        <target state="final">Za više informacija ili za dodatnu pomoć, kliknite ovdje</target>
+      </trans-unit>
+      <trans-unit id="typo3.cms" resname="typo3.cms" approved="yes">
+        <source>TYPO3 CMS</source>
+        <target state="final">TYPO3 CMS</target>
+      </trans-unit>
+      <trans-unit id="version.short" resname="version.short" approved="yes">
+        <source>ver.</source>
+        <target state="final">ver.</target>
+      </trans-unit>
+      <trans-unit id="copyright" resname="copyright" approved="yes">
+        <source>Copyright</source>
+        <target state="final">Autorska prava</target>
+      </trans-unit>
+      <trans-unit id="extension.copyright" resname="extension.copyright" approved="yes">
+        <source>Extensions are copyright of their respective owners.</source>
+        <target state="final">Proširenja su pod autorsim pravima svojih vlasnika.</target>
+      </trans-unit>
+      <trans-unit id="details.link" resname="details.link" approved="yes">
+        <source>Go to %s for details.</source>
+        <target state="final">Idite na %s za detalje.</target>
+      </trans-unit>
+      <trans-unit id="keep.notice" resname="keep.notice" approved="yes">
+        <source>Obstructing the appearance of this notice is prohibited by law.</source>
+        <target state="final">Ometanje pojave ove napomene je zabranjeno zakonom.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
