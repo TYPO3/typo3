@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_csh_weblayout.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="no">
+    <header/>
+    <body>
+      <trans-unit id=".alttitle" resname=".alttitle" approved="yes">
+        <source>Web &gt; Page Module</source>
+        <target state="final">Web &gt; Sidemodul</target>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>The page module is activated from the backend menu and is the primary module for all basic CMS operations you need to perform when maintaining website content.</source>
+        <target state="final">Sidenmodulen aktiveres fra backend-menyen, og er den primære modul for alle grunnleggende CMS operasjoner du trenger å utføre for å vedlikeholde nettstedet ditt sitt innhold.</target>
+      </trans-unit>
+      <trans-unit id="quickEdit.alttitle" resname="quickEdit.alttitle" approved="yes">
+        <source>Quick Edit</source>
+        <target state="final">Hurtigredigering</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
