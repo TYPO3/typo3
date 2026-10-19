@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_csh_systmpl.xlf" date="2011-10-17T20:22:32Z" product-name="context_help" target-language="ar">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>TypoScript template record.</source>
+        <target state="final">سجل نموذج منظومة تيبو الخاصة.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" xml:space="preserve" approved="yes">
+				<source>The 'Template' records are the vital components used to set the design of the webpages. No matter how (almost) you would like to build your website, it must be initiated by a 'Template' record placed in the root of the page tree of the site.
+Basically, create a 'Template' record, enter a title and make sure to check of Clear constants, setup and Rootline. Then enter some TypoScript configuration in the Setup field and you're set.
+It's very important to read how to do all this in the documents listed below! Also make sure you use the Web&gt;Template module to do all the working with templates. It's a specialized tool to help you with this.</source>
+			<target state="final">تعد سجلات ‘النموذج‘ من المكونات الحيويةالمستخدمة في ضبط تصميم صفحات الوب.ليست القضية (تقريبا)هي كيف تحب أن تنشئ صفحة الوب الخاصة بك ‘ولكن لابد و أن تكون هذه الصفحة مبتدئة بسجل ’النموذج’ الموضوع في جذر شجرة الصفحة الخاصة بالموقع.وبصفة أساسية لإنشاء سجل‘نموذج‘إدخل عنوان وتأكدمن مراجعة الثوابت الواضحة ،التنظيم و خط الجذر.ثم قم بعملة الضبط لمخطوطة تيبو الخاصة في كل من الخانة المعدة و التي قمنت أنت بإنشاءها. وانه من الأهمية قراءة كيف يمكنك عمل كل ذلك من خلال الوثائق المدرجة بالأسفل!كما عليك بأن تتأكد من إستخدام الوب&gt;الخاص بوحدة النوذج لأداء كل العمليات الخاصة بالنماذج.فهي وسائل خاصة تساعدك لعى عمل ذلك.</target></trans-unit>
+      <trans-unit id="_.seeAlso" resname="_.seeAlso" xml:space="preserve" approved="yes">
+				<source>static_template
+TSref | https://docs.typo3.org/typo3cms/TyposcriptReference/
+TypoScript in 45 min| https://docs.typo3.org/typo3cms/TyposcriptIn45MinutesTutorial/</source>
+			<target state="final">static_template
+TSref | https://docs.typo3.org/typo3cms/TyposcriptReference/
+TypoScript in 45 min| https://docs.typo3.org/typo3cms/TyposcriptIn45MinutesTutorial/</target></trans-unit>
+      <trans-unit id="_.image" resname="_.image" xml:space="preserve" approved="yes">
+				<source>EXT:frontend/Resources/Public/Images/cshimages/systemplate.png,
+EXT:frontend/Resources/Public/Images/cshimages/systemplate1.png</source>
+				
+			<target state="final">EXT:frontend/Resources/Public/Images/cshimages/systemplate.png,
+EXT:frontend/Resources/Public/Images/cshimages/systemplate1.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" xml:space="preserve" approved="yes">
+				<source>A Template Record with constants and setup code.
+The Web&gt;Template module contains tools which will help you to edit and validate TypoScript structures.</source>
+			<target state="final">سجلات النموذج المحتويه على ثوابت و إعداد الكود.تحتوي وحدة Web&gt;Template على الأدوات التى تساعدك على تحرير و تصحيح أبنية مخطوطة تيبو الخاصة.</target></trans-unit>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>Unchecking this option will deactivate the template record.</source>
+        <target state="final">إلغاء تحديد هذا الخِيار سيؤدي إلى تعطيل سجل القالب.</target>
+      </trans-unit>
+      <trans-unit id="hidden.details" resname="hidden.details" approved="yes">
+        <source>If the Template Record was the first record on a page hiding it will expose the second record on the page instead.</source>
+        <target state="final">وإذا ما كان سجل النموذج هو أول سجل مخفى في الصفحة فسيظهر الصفحة السجل الثاني عوضا عنه.</target>
+      </trans-unit>
+      <trans-unit id="starttime.description" resname="starttime.description" approved="yes">
+        <source>Start time. Use this to enable a template on a certain date.</source>
+        <target state="final">استخدم و قت البداية لتظهر النموذج على صفحة ما.</target>
+      </trans-unit>
+      <trans-unit id="endtime.description" resname="endtime.description" approved="yes">
+        <source>End time. Use this to disable a template on a certain date.</source>
+        <target state="final">استخدم وقت النهاية لإلغاء لانموذج من صفحة ما.</target>
+      </trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>The title of the template record is only an internal label and does not have any effect on the output in the frontend.</source>
+        <target state="final">ييعتبر عنوان نموذج السجل شارة داخلية فقط لا ـاثير لها على خرج الجهة الأمامية.</target>
+      </trans-unit>
+      <trans-unit id="constants.description" resname="constants.description" approved="yes">
+        <source>TypoScript Constants.</source>
+        <target state="final">ثوابت مخطوطة تيبو الخاصة.</target>
+      </trans-unit>
+      <trans-unit id="_constants.seeAlso" resname="_constants.seeAlso" approved="yes">
+        <source>static_template:constants</source>
+        <target state="final">static_template:constants</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="config.description" resname="config.description" approved="yes">
+        <source>TypoScript Setup code</source>
+        <target state="final">كود تنظيم مخطوطة تيبو الخاصة.</target>
+      </trans-unit>
+      <trans-unit id="config.details" resname="config.details" approved="yes">
+        <source>Read more about TypoScript Templates in TSref, TypoScript by Example and Getting Started.</source>
+        <target state="final">إقرا مزيد عن نماذج تيبو الخاصة والموجودة في TSref, مخطوطة تيبو الخاصة و إستعد للبدء.</target>
+      </trans-unit>
+      <trans-unit id="_config.seeAlso" resname="_config.seeAlso" xml:space="preserve" approved="yes">
+				<source>static_template:config,
+TSref | https://docs.typo3.org/typo3cms/TyposcriptReference/
+Getting Started | https://docs.typo3.org/typo3cms/GettingStartedTutorial/
+TypoScript in 45 min| https://docs.typo3.org/typo3cms/TyposcriptIn45MinutesTutorial/
+TypoScript Syntax | https://docs.typo3.org/typo3cms/TyposcriptSyntaxReference/</source>
+				
+			<target state="final">static_template:config,
+TSref | https://docs.typo3.org/typo3cms/TyposcriptReference/
+Getting Started | https://docs.typo3.org/typo3cms/GettingStartedTutorial/
+TypoScript in 45 min| https://docs.typo3.org/typo3cms/TyposcriptIn45MinutesTutorial/
+TypoScript Syntax | https://docs.typo3.org/typo3cms/TyposcriptSyntaxReference/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="resources.description" resname="resources.description" approved="yes">
+        <source>Resource files for the template. For example a logo, a TTF-font etc.</source>
+        <target state="final">ملفات المصدر الخاصة بالنموذج. على سبيل المثال a logo, a TTF-font etc.</target>
+      </trans-unit>
+      <trans-unit id="resources.details" resname="resources.details" approved="yes">
+        <source>Resource files can be referenced in TypoScript Template code by [filename]*.[ext] and has the advantage that the reference from TypoScript is not broken if you copy or export a Template Record where the resources ends up with new names.</source>
+        <target state="final">يمكن الرجوع إلى ملفات المصدر داخل كود نموذج تيبو بواسطة [filename]*.[ext]والذي يتميز بأن المرجع داخل مخطوطة تيبو لا يتجزء إذا ما قمت بنسخ أو بإرسال إحدى سجلات النموذج المحتوي على مصادر منتهية بأسماء اخرى جديدة.</target>
+      </trans-unit>
+      <trans-unit id="clear.description" resname="clear.description" approved="yes">
+        <source>Flags that will clear the inheritance of TypoScript code from former templates in the root line. There is a flag for Constants and one for Setup code.</source>
+        <target state="final">تمسح مؤشرات الراية موروث كود مخطوطة تيبو من النماذج السابقة والموجودة في خط الجذر. حيث يوجد راية للثوابت و راية لكود الأعداد.</target>
+      </trans-unit>
+      <trans-unit id="clear.details" resname="clear.details" approved="yes">
+        <source>In the Web &gt; Template / Template Analyzer module you can see how far back in the template tree that constants and setup code is inherited.</source>
+        <target state="final">في الويب &gt; قالب/وحدة القوالب النمطية يمكنك أن ترى إلى أي مدى يعود في شجرة القالب التي ترث الثوابت ورمز الإعداد.</target>
+      </trans-unit>
+      <trans-unit id="_clear.seeAlso" resname="_clear.seeAlso" approved="yes">
+        <source>sys_template:root</source>
+        <target state="final">sys_template:root</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_clear.image" resname="_clear.image" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/systemplate2.png</source>
+        <target state="final">EXT:frontend/resourcesces/Public/Images/cshimages/systemplate2.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="root.description" resname="root.description" approved="yes">
+        <source>Defines that the template represents a root of a website.</source>
+        <target state="final">التعريفات التي تبين أن النموذج يعرض جذرا لصفحة الوب.</target>
+      </trans-unit>
+      <trans-unit id="_root.seeAlso" resname="_root.seeAlso" approved="yes">
+        <source>sys_template:clear</source>
+        <target state="final">sys_template:مسح</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="includeStaticAfterBasedOn.description" resname="includeStaticAfterBasedOn.description" approved="yes">
+        <source>If set, static templates will be included after "based-on" templates. It basically swaps the order of inclusion of these external TypoScript sources.</source>
+        <target state="final">إذا ما تمت عملية الضبط،ستتم إضافة النماذج الإستاتيكة عقب نماذج "based-on".حيث تقوم بتبديل أمر التضمينلهذهالمصادر الخارجية لمخطوطة تيبو الخاصة.</target>
+      </trans-unit>
+      <trans-unit id="includeStaticAfterBasedOn.details" resname="includeStaticAfterBasedOn.details" approved="yes">
+        <source>The Web &gt; Template / Template Analyzer module allows you to view the order of inclusion of all TypoScript sources your template uses.</source>
+        <target state="final">الويب &gt; قالب/وحدة القوالب عرض ترتيب إدراج جميع مصادر TypoScript التي تستخدمها في القالب.</target>
+      </trans-unit>
+      <trans-unit id="include_static.description" resname="include_static.description" approved="yes">
+        <source>Static Template records to include.</source>
+        <target state="final">سجلات النموذج الإستاتيكي المقرر إدراجعا</target>
+      </trans-unit>
+      <trans-unit id="_include_static.seeAlso" resname="_include_static.seeAlso" approved="yes">
+        <source>static_template</source>
+        <target state="final">static_template</target>
+      </trans-unit>
+      <trans-unit id="include_static_file.description" resname="include_static_file.description" approved="yes">
+        <source>Static Template files to include.</source>
+        <target state="final">ملفات النموذج الإستاتيكي المقرر إدراجعا</target>
+      </trans-unit>
+      <trans-unit id="include_static_file.details" resname="include_static_file.details" approved="yes">
+        <source>Static template files are registered by extensions contrary to Static Template records which come from the static database table, "static_template".</source>
+        <target state="final">تم تسجيل ملفات النموذج الإستاتيكي بإمتدادات مخالفة لسجلات النموذج الإستاتيكي القادمة من جدول قاعدة المبيانات الإستاتيكية تحت اسم،"static_template".</target>
+      </trans-unit>
+      <trans-unit id="_include_static_file.seeAlso" resname="_include_static_file.seeAlso" approved="yes">
+        <source>sys_template:include_static</source>
+        <target state="final">sys_template:include_static</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="basedOn.description" resname="basedOn.description" approved="yes">
+        <source>Other Template Records that are included like "static templates".</source>
+        <target state="final">سجلات نموذج أخرى مدرجة مثل "static_template".</target>
+      </trans-unit>
+      <trans-unit id="static_file_mode.description" resname="static_file_mode.description" approved="yes">
+        <source>Define the mode of inclusion of static template files.</source>
+        <target state="final">تعريف نمط التضمين الخاص بملفات النموذج الإستاتيكية.</target>
+      </trans-unit>
+      <trans-unit id="static_file_mode.details" resname="static_file_mode.details" approved="yes">
+        <source>If you are in doubt about the inclusion order, make sure to use the Web &gt; Template / Template Analyzer to view the order.</source>
+        <target state="final">إذا كنت تشك في إدراج الطلب، تأكد من استخدام الويب &gt; قالب/وحدة القوالب لعرض الطلب.</target>
+      </trans-unit>
+      <trans-unit id="nextLevel.description" resname="nextLevel.description" approved="yes">
+        <source>Defines a template record to make active one level out in the page tree of this branch. This can be used to define another template record for the general website while having a special template for the frontpage.</source>
+        <target state="final">تعريفات سجل النموذج لتفعيل مستوى واحد لهذا الفرع خارج شجرة الصفحة. و يمكن أن تستخدم ايضاً سجل نموذج آخر للصفحات العامة للوب عندما تحتوي على نماذج خاصة للصفحة الأمامية.</target>
+      </trans-unit>
+      <trans-unit id="description.description" resname="description.description" approved="yes">
+        <source>Enter a description of the template if you like.</source>
+        <target state="final">إدخل توصيفا للنموذج إن احببت.</target>
+      </trans-unit>
+      <trans-unit id="editorcfg.description" resname="editorcfg.description" approved="yes">
+        <source>Editor Configuration for the stylesheet editor extension.</source>
+        <target state="final">محرر التوصيف لإمتداد محرر ورقة الإسلوب.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
