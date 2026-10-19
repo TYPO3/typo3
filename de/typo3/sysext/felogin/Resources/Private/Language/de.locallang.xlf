@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:felogin/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:32Z" product-name="felogin" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="login_user_info" resname="login_user_info" approved="yes">
+        <source>You are now logged in as '%s'</source>
+        <target state="final">Sie sind nun als '%s' angemeldet</target>
+      </trans-unit>
+      <trans-unit id="welcome_header" resname="welcome_header" approved="yes">
+        <source>User login</source>
+        <target state="final">Benutzeranmeldung</target>
+      </trans-unit>
+      <trans-unit id="welcome_message" resname="welcome_message" approved="yes">
+        <source>Enter your username and password here in order to log in on the website</source>
+        <target state="final">Bitte geben Sie Ihren Benutzernamen und Ihr Passwort ein, um sich an der Website anzumelden.</target>
+      </trans-unit>
+      <trans-unit id="logout_header" resname="logout_header" approved="yes">
+        <source>You have logged out.</source>
+        <target state="final">Sie haben sich abgemeldet.</target>
+      </trans-unit>
+      <trans-unit id="logout_message" resname="logout_message" approved="yes">
+        <source>You just logged out from your user session on this website. You can login again or as another user by the form below.</source>
+        <target state="final">Sie haben sich gerade von dieser Website abgemeldet. Sie können sich mit dem Anmeldeformular erneut anmelden.</target>
+      </trans-unit>
+      <trans-unit id="error_header" resname="error_header" approved="yes">
+        <source>Login failure</source>
+        <target state="final">Anmeldefehler</target>
+      </trans-unit>
+      <trans-unit id="error_message" resname="error_message" xml:space="preserve" approved="yes">
+				<source>An error occurred during login. Most likely you didn't enter the username or password correctly.
+Be certain that you enter them precisely as they are, including upper/lower case.
+Another possibility is that cookies might be disabled in your web browser.</source>
+			<target state="final">Bei der Anmeldung ist ein Fehler aufgetreten. Wahrscheinlich haben Sie den Benutzernamen oder das Passwort nicht richtig eingegeben.
+Vergewissern Sie sich, dass Sie sie genau so eingeben, wie sie sind, einschließlich Groß- und Kleinschreibung.
+Eine andere Möglichkeit ist, dass die Cookies in Ihrem Webbrowser deaktiviert sind.</target></trans-unit>
+      <trans-unit id="success_header" resname="success_header" approved="yes">
+        <source>Login successful</source>
+        <target state="final">Anmeldung erfolgreich</target>
+      </trans-unit>
+      <trans-unit id="success_message" resname="success_message" approved="yes">
+        <source>You are now logged in as '###USER###'</source>
+        <target state="final">Sie sind nun angemeldet als '###USER###'</target>
+      </trans-unit>
+      <trans-unit id="status_header" resname="status_header" approved="yes">
+        <source>Current status</source>
+        <target state="final">Aktueller Status</target>
+      </trans-unit>
+      <trans-unit id="status_message" resname="status_message" approved="yes">
+        <source>This is your current status</source>
+        <target state="final">Das ist Ihr aktueller Status</target>
+      </trans-unit>
+      <trans-unit id="cookie_warning" resname="cookie_warning" approved="yes">
+        <source>Warning: There is a possibility that cookies are not enabled in your web browser! If your login disappears on your next click that is the case and you should enable cookies (or accept cookies from this website) immediately!</source>
+        <target state="final">Warnung: Es besteht die Möglichkeit, dass in Ihrem Browser Cookies deaktiviert sind! Sollte trotz erfolgreicher Anmeldung beim nächsten Klick wieder die Anmeldeseite erscheinen, so sind Cookies deaktiviert. Sie sollten daher umgehend Cookies akzeptieren, entweder generell für alle Websites oder nur für diese spezielle.</target>
+      </trans-unit>
+      <trans-unit id="username" resname="username" approved="yes">
+        <source>Username</source>
+        <target state="final">Benutzername:</target>
+      </trans-unit>
+      <trans-unit id="password" resname="password" approved="yes">
+        <source>Password</source>
+        <target state="final">Passwort:</target>
+      </trans-unit>
+      <trans-unit id="login" resname="login" approved="yes">
+        <source>Login</source>
+        <target state="final">Anmelden</target>
+      </trans-unit>
+      <trans-unit id="permalogin" resname="permalogin" approved="yes">
+        <source>Stay logged in</source>
+        <target state="final">Angemeldet bleiben:</target>
+      </trans-unit>
+      <trans-unit id="logout" resname="logout" approved="yes">
+        <source>Logout</source>
+        <target state="final">Abmelden</target>
+      </trans-unit>
+      <trans-unit id="send_password" resname="send_password" approved="yes">
+        <source>Send password</source>
+        <target state="final">Passwort senden</target>
+      </trans-unit>
+      <trans-unit id="reset_password" resname="reset_password" approved="yes">
+        <source>Reset Password</source>
+        <target state="final">Passwort zurücksetzen</target>
+      </trans-unit>
+      <trans-unit id="change_password_header" resname="change_password_header" approved="yes">
+        <source>Change your password</source>
+        <target state="final">Passwort ändern</target>
+      </trans-unit>
+      <trans-unit id="change_password_message" resname="change_password_message" approved="yes">
+        <source>Please enter your new password twice. Password needs a minimum length of %s chars.</source>
+        <target state="final">Bitte geben Sie Ihr neues Passwort zweimal ein. Das Passwort muss mindestens %s Zeichen lang sein.</target>
+      </trans-unit>
+      <trans-unit id="change_password_nolinkprefix_message" resname="change_password_nolinkprefix_message" approved="yes">
+        <source>Error: there is no prefix for the link. Please set one of the following in your typoscript template: plugin.tx_felogin_pi1.feloginBaseURL = http://yourdomain/, config.baseURL = http://yourdomain/, config.absRefPrefix = /</source>
+        <target state="final">FEHLER: Für diesen Link ist kein Prafix definiert. Bitte setzen Sie eine der folgenden Variablen in Ihrem TypoScript-Template: plugin.tx_felogin_pi1.feloginBaseURL = http://ihredomain/, config.baseURL = http://ihredomain/, config.absRefPrefix = /</target>
+      </trans-unit>
+      <trans-unit id="change_password_notvalid_message" resname="change_password_notvalid_message" approved="yes">
+        <source>The link you clicked is not valid. Please repeat the forgot password procedure.</source>
+        <target state="final">Der Link, den Sie angeklickt haben, ist nicht gültig. Bitte wiederholen Sie den Passwort-Wiederherstellen-Prozess.</target>
+      </trans-unit>
+      <trans-unit id="change_password_notequal_message" resname="change_password_notequal_message" approved="yes">
+        <source>The passwords are not equal, please enter your new password twice. Password needs a minimum length of %s chars.</source>
+        <target state="final">Die eingegebenen Passwörter stimmen nicht überein, bitte geben Sie Ihr neues Passwort zweimal ein. Das Passwort muss mindestens %s Zeichen lang sein.</target>
+      </trans-unit>
+      <trans-unit id="change_password_tooshort_message" resname="change_password_tooshort_message" approved="yes">
+        <source>The password length is too short. Please enter your new password twice. Password needs a minimum length of %s chars.</source>
+        <target state="final">Das Passwort ist zu kurz. Bitte geben Sie Ihr neues Passwort zweimal ein. Das Passwort muss mindestens %s Zeichen lang sein.</target>
+      </trans-unit>
+      <trans-unit id="change_password_done_message" resname="change_password_done_message" approved="yes">
+        <source>Your password has been saved. You can now login with your new password.</source>
+        <target state="final">Ihr Passwort wurde gespeichert. Sie können sich nun mit Ihrem neuen Passwort anmelden.</target>
+      </trans-unit>
+      <trans-unit id="change_password" resname="change_password" approved="yes">
+        <source>Change your password</source>
+        <target state="final">Passwort ändern</target>
+      </trans-unit>
+      <trans-unit id="newpassword_label1" resname="newpassword_label1" approved="yes">
+        <source>Enter new password</source>
+        <target state="final">Neues Passwort eingeben</target>
+      </trans-unit>
+      <trans-unit id="newpassword_label2" resname="newpassword_label2" approved="yes">
+        <source>Repeat new password</source>
+        <target state="final">Neues Passwort wiederholen</target>
+      </trans-unit>
+      <trans-unit id="your_email" resname="your_email" approved="yes">
+        <source>Your email</source>
+        <target state="final">Ihre E-Mail-Adresse:</target>
+      </trans-unit>
+      <trans-unit id="forgot_header" resname="forgot_header" approved="yes">
+        <source>Forgot your password?</source>
+        <target state="final">Passwort vergessen?</target>
+      </trans-unit>
+      <trans-unit id="forgot_email_password" resname="forgot_email_password" xml:space="preserve" approved="yes">
+				<source>Your password
+Hi %s
+
+Your username is "%s"
+Your password is "%s"</source>
+			<target state="final">Ihr Passwort
+Hallo %s,
+
+Ihr Benutzername lautet "%s".
+Ihr Passwort ist "%s".</target></trans-unit>
+      <trans-unit id="forgot_email_nopassword" resname="forgot_email_nopassword" xml:space="preserve" approved="yes">
+				<source>Your password
+Hi %s
+
+We couldn't find a username for this email address and so cannot send the password to you. Probably you misspelled the email address (upper/lower case makes a difference) or maybe you even didn't register yet?</source>
+			<target state="final">Ihr Passwort
+Hallo %s,
+
+wir konnten keinen Benutzernamen mit dieser E-Mail-Adresse finden und Ihnen daher kein Passwort schicken. Eventuell haben Sie die E-Mail-Adresse nicht korrekt geschrieben (bitte Groß- und Kleinschreibung beachten) oder sich gar noch nicht registriert?</target></trans-unit>
+      <trans-unit id="forgot_validate_reset_password" resname="forgot_validate_reset_password" xml:space="preserve" approved="yes">
+				<source>Your new password
+Dear %s,
+
+This email was sent in response to your request to reset your password. Please click on the link below.
+%s
+
+For security reasons, this link is only active until %s. If you do not visit the link before then, you will need to repeat the password reset steps.</source>
+			<target state="final">Ihr neues Passwort
+Hallo %s,
+
+diese E-Mail ist Teil des Passwort-Wiederherstellen-Prozesses. Bitte klicken Sie den untenstehenden Link.
+
+%s
+
+Aus Sicherheitsgründen ist dieser Link nur gültig bis %s. Wenn Sie den Link nicht bis dahin geöffnet haben, müssen Sie die Passwort-Wiederherstellung erneut anstoßen.</target></trans-unit>
+      <trans-unit id="forgot_message" resname="forgot_message" approved="yes">
+        <source>Please enter the email address by which you registered your user account. Then press "Send password" and your password will immediately be emailed to you. Make sure to spell your email address correctly.</source>
+        <target state="final">Bitte geben Sie die E-Mail-Adresse ein, die Sie bei der Erstellung Ihres Kontos genutzt haben. Dann klicken Sie auf "Passwort verschicken" und Ihr Passwort wird Ihnen umgehend zugemailt. Bitte stellen Sie sicher, dass Sie die E-Mail-Adresse korrekt schreiben.</target>
+      </trans-unit>
+      <trans-unit id="forgot_message_emailSent" resname="forgot_message_emailSent" approved="yes">
+        <source>Your password has now been sent to the email address %s</source>
+        <target state="final">Ihr Passwort wurde an die E-Mail-Adresse %s versandt.</target>
+      </trans-unit>
+      <trans-unit id="forgot_reset_message" resname="forgot_reset_message" approved="yes">
+        <source>Please enter your username or email address. Instructions for resetting the password will be immediately emailed to you.</source>
+        <target state="final">Bitte geben Sie Ihren Benutzernamen oder Ihre E-Mail-Adresse ein. Anweisungen zum Zurücksetzen Ihres Passworts werden Ihnen umgehend per E-Mail zugesandt.</target>
+      </trans-unit>
+      <trans-unit id="forgot_reset_message_emailSent" resname="forgot_reset_message_emailSent" approved="yes">
+        <source>An email has been sent to the address stored in your account and contains a link to reset your password. If you do not receive an email, your account or email address was not found.</source>
+        <target state="final">Eine E-Mail mit einem Passwort-Zurücksetzen-Link wurde an die E-Mail-Adresse Ihres Kontos gesendet. Wenn Sie keine E-Mail erhalten, wurde Ihr Konto oder Ihre E-Mail-Adresse nicht gefunden.</target>
+      </trans-unit>
+      <trans-unit id="forgot_reset_message_error" resname="forgot_reset_message_error" approved="yes">
+        <source>Your account or email address does not exist.</source>
+        <target state="final">Ihr Konto oder Ihre E-Mail-Adresse existiert nicht.</target>
+      </trans-unit>
+      <trans-unit id="forgot_header_backToLogin" resname="forgot_header_backToLogin" approved="yes">
+        <source>Return to login form</source>
+        <target state="final">Zurück zum Anmeldeformular</target>
+      </trans-unit>
+      <trans-unit id="enter_your_data" resname="enter_your_data" approved="yes">
+        <source>Username or email address</source>
+        <target state="final">Benutzername oder E-Mail-Adresse</target>
+      </trans-unit>
+      <trans-unit id="password_recovery_mail_header" resname="password_recovery_mail_header" approved="yes">
+        <source>Your new password</source>
+        <target state="final">Ihr neues Passwort</target>
+      </trans-unit>
+      <trans-unit id="password_recovery_link" resname="password_recovery_link" approved="yes">
+        <source>Password recovery link</source>
+        <target state="final">Passwort-Wiederherstellungslink</target>
+      </trans-unit>
+      <trans-unit id="password_recovery_link_expired" resname="password_recovery_link_expired" approved="yes">
+        <source>Your password recovery link is expired.</source>
+        <target state="final">Ihr Link zum Passwort zurücksetzen ist abgelaufen.</target>
+      </trans-unit>
+      <trans-unit id="empty_password_and_password_repeat" resname="empty_password_and_password_repeat" approved="yes">
+        <source>New password and new password repeat cannot be empty</source>
+        <target state="final">Neues Passwort und neue Passwort-Wiederholung dürfen nicht leer sein</target>
+      </trans-unit>
+      <trans-unit id="password_must_match_repeated" resname="password_must_match_repeated" approved="yes">
+        <source>New Password must match repeated password.</source>
+        <target state="final">Neues Passwort muss mit wiederholtem Passwort übereinstimmen.</target>
+      </trans-unit>
+      <trans-unit id="forgot_validate_reset_password_html" resname="forgot_validate_reset_password_html" xml:space="preserve" approved="yes">
+				<source>&lt;p&gt;Dear %s,&lt;/p&gt;
+&lt;p&gt;This email was sent in response to your request to reset your password. Please click on the link below.&lt;/p&gt;
+&lt;p&gt;%s&lt;/p&gt;
+&lt;p&gt;For security reasons, this link is only active until %s. If you do not visit the link before then, you will need to repeat the password reset steps.&lt;/p&gt;
+				</source>
+			<target state="final">&lt;p&gt;Hallo %s,&lt;/p&gt;
+&lt;p&gt;Diese E-Mail wurde als Antwort auf Ihre Anfrage gesendet, Ihr Passwort zurückzusetzen. Bitte klicken Sie auf den Link unten.&lt;/p&gt;
+&lt;p&gt;%s&lt;/p&gt;
+&lt;p&gt;Aus Sicherheitsgründen ist dieser Link nur bis %s aktiv. Wenn Sie den Link vorher nicht aufrufen, müssen Sie die Schritte zum Zurücksetzen des Passworts wiederholen.&lt;/p&gt;</target></trans-unit>
+      <trans-unit id="forgot_validate_reset_password_plaintext" resname="forgot_validate_reset_password" xml:space="preserve" approved="yes">
+				<source>Dear %s,
+
+This email was sent in response to your request to reset your password. Please click on the link below.
+%s
+
+For security reasons, this link is only active until %s. If you do not visit the link before then, you will need to repeat the password reset steps.</source>
+			<target state="final">Hallo %s,
+
+Diese E-Mail wurde als Antwort auf Ihre Anfrage gesendet, Ihr Passwort zurückzusetzen. Bitte klicken Sie auf den Link unten.
+%s
+
+Aus Sicherheitsgründen ist dieser Link nur bis %s aktiv. Wenn Sie den Link vorher nicht besuchen, müssen Sie die Schritte zum Zurücksetzen des Passworts wiederholen.</target></trans-unit>
+    </body>
+  </file>
+</xliff>
