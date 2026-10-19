@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_csh_fe_groups.xlf" date="2011-10-17T20:22:32Z" product-name="context_help" target-language="bg">
+    <header/>
+    <body>
+      <trans-unit id="hidden.details" resname="hidden.details" xml:space="preserve" approved="yes">
+				<source>If you disable a user group all users which are members of the group will in effect not inherit any properties this group may have given them.
+For instance if a page or content element was assigned access only by this group and you disable the group, no one would gain access to that page or content element.</source>
+			<target state="final">Ако вие скриете една потребителска група всички потребители, които са нейни членове не ще наследят някакви свойства, които би има дала тази група. Например ако една страница или елемент със съдържание е имал достъп само от тази група и вие скриете тази група, никой не би могъл да получи достъп до тази страница или елемент със съдържание.</target></trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Name of the group.</source>
+        <target state="final">Име на групата.</target>
+      </trans-unit>
+      <trans-unit id="title.details" resname="title.details" approved="yes">
+        <source>This title will appear as the group name in the 'Access'-list in other records.</source>
+        <target state="final">Името ще се появи като групово име в "Достъп" листа в други записи.</target>
+      </trans-unit>
+      <trans-unit id="lockToDomain.details" resname="lockToDomain.details" xml:space="preserve" approved="yes">
+				<source>This options may be important if you have multiple websites in the same TYPO3 database but still only one main storage page for all Website users. Thus the users may log in on any of the website URLs. This may be considered a feature (having a global login as a user) or a problem (in which case you should have multiple user storages anyway). However you may wish to limit the use of a Website usergroup to a specific website and thus you don't want the group to be enabled for the user when he logs in at another URL (still from the same database of course). By entering the host name of the website here, you restrict the group to be used only from within this domain.
+
+&lt;b&gt;Notice:&lt;/b&gt; The use for this option is not critical if you have multiple Website user storages, namely one for each site.</source>
+			<target state="final">Тези опции могат да бъдат важни ако вие имате множество уеб сайтове в същата TYPO3 база от данни, но само една основна складираща страница за всички потребители на уеб сайта. По този начин потребителите могат да се регистрират във всеки от тези уеб сайтове. Това може да бъде разглеждано като свойство (имайки глобална регистрация като потребител) или като проблем (в който случай вие ще имате множество потребителски складирания). Въпреки това можете да искате органичаване използването от една уеб сайт потребителска група за специфичен уеб сайт и така вие не искате групата да бъде показана за потребителя, когато той влиза в системата от друг URL (все още от същата база от данни разбира се). Чрез въвеждане на име на хост на уеб сайт тук, вие ограничавате използването на групата единствно от този домейн. &lt;b&gt;Забележка:&lt;/b&gt; Използването на тази опция не е критично, ако имате множество складирания на уеб сайт потребител, а именно един за всеки сайт.</target></trans-unit>
+      <trans-unit id="subgroup.description" resname="subgroup.description" approved="yes">
+        <source>Member of other groups.</source>
+        <target state="final">Член на други групи.</target>
+      </trans-unit>
+      <trans-unit id="subgroup.details" resname="subgroup.details" approved="yes">
+        <source>List of other groups that this group is a member of.</source>
+        <target state="final">Списък от други групи, на които тазу група е член.</target>
+      </trans-unit>
+      <trans-unit id="description.description" resname="description.description" approved="yes">
+        <source>Enter a description of the group.</source>
+        <target state="final">Въведете описание на групата.</target>
+      </trans-unit>
+      <trans-unit id="description.details" resname="description.details" xml:space="preserve" approved="yes">
+				<source>This is for internal use and is just a way to put a note on what the group is for, why you created it and who should be members.
+Use it as you like.</source>
+			<target state="final">Използва се за вътрешна нужда и е начин за отбелязване за какво е групата, защо я създавате и кой би бил неин член. Използвайте я, както искате.</target></trans-unit>
+      <trans-unit id="TSconfig.description" resname="TSconfig.description" approved="yes">
+        <source>TSconfig for the group (advanced).</source>
+        <target state="final">TSconfig за групата (разширен).</target>
+      </trans-unit>
+      <trans-unit id="TSconfig.details" resname="TSconfig.details" xml:space="preserve" approved="yes">
+				<source>This is the user TSconfig for the group. The values are inherited by any Website user who is a member of this group.
+The configuration is subject to being overridden in other groups and by the TSconfig of the user himself.</source>
+			<target state="final">Това е потребителски TSconfig за групата. Стойностите се наследяват от всеки уеб сайт потребител, който е член на тази група. Конфигурацията е субект на отмяна в други групи и от TSconfig на самия потребител.</target></trans-unit>
+      <trans-unit id="TSconfig.syntax" resname="TSconfig.syntax" approved="yes">
+        <source>TypoScript syntax, without conditions and constants.</source>
+        <target state="final">TypoScript синтаксис, без условия у константи.</target>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>Usergroups for Website users.</source>
+        <target state="final">Потребителски групи за потребителите на уеб сайта.</target>
+      </trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" xml:space="preserve" approved="yes">
+				<source>The form for editing frontend users groups.
+Pages, Content Elements and other records for frontend display often have a selector box where you can define access restriction by selecting access for a certain group only.</source>
+			<target state="final">Формата за редактиране на фронт енд потребителски групи. Страници, Елементи със съдържание и други записи за фронт енд показване често имат селектор бокс, където можете да дефинирате ограничение на достъпа чрез избиране на достъп единствено за определена група.</target></trans-unit>
+    </body>
+  </file>
+</xliff>
