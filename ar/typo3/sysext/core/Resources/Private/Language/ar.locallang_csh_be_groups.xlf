@@ -1,0 +1,444 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_be_groups.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="ar">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>This is the Backend administration user groups available for the Backend users. These determine the access credentials for the Backend users.</source>
+        <target state="final">هذه هي مجموعات مشرفي الواجهة الخلفية المتاحة لمستخدمي الواجهة الخلفية "Backend". تحدد هذه المجموعات بيانات الدخول للمستخدمين في الواجهة الخلفية.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" xml:space="preserve" approved="yes">
+				<source>Groups contain the main permission settings you can set for a backend user. Many users can be members of the same group and thus share permissions.
+When a user is a member of many groups (including sub-groups) then the permission settings are added together so that the more groups a user is a member of, the more access is granted to him.</source>
+			<target state="final">تحتوي المجموعات على إعدادات الأُذُونات الرئيسية التي يمكنك تعيينُها لمستخدم الواجهة الخلفية. يمكن أن يكون العديد من المستخدمين أعضاء في نفس المجموعة وبالتالي مشاركة نفس الأُذُونات.
+عندما يكون المستخدم عضواً في عدة مجموعات (بما في ذلك المجموعات الفرعية) ، تتم إضافة إعدادات الأُذُونات معاً، بحيث كُلما زاد عدد المجموعات التي ينتمي إليها المستخدم، زادت عدد الأُذُونات المُعطاة له.</target></trans-unit>
+      <trans-unit id="_.seeAlso" resname="_.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_users,
+"Inside TYPO3" about users / groups | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/AccessControl/UsersAndGroups/,
+How to set up a backend user | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/AccessControl/SettingUpANewUser/,
+Setting up groups (from "Getting Started") | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/CreateUsersGroups/</source>
+			<target state="final">be_users,
+"داخل TYPO3" حول المستخدمين / المجموعات | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/AccessControl/UsersAndGroups/,
+كيفية إعداد مستخدم الواجهة الخلفية | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/AccessControl/SettingUpANewUser/,
+إعداد المجموعات (من "البداية") | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/CreateUsersGroups/</target></trans-unit>
+      <trans-unit id="_.image" resname="_.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/be_groups_2.png,
+EXT:core/Resources/Public/Images/cshimages/be_groups_1.png</source>
+				
+			<target state="final">EXT:core/Resources/Public/Images/cshimages/be_groups_2.png,
+EXT:core/Resources/Public/Images/cshimages/be_groups_1.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" xml:space="preserve" approved="yes">
+				<source>Backend Usergroups are found in the root of the page tree where only "admin" users can edit them. The usergroups with red icons in this image are the ones with Access Lists enabled. The blue are just plain usergroups.
+This usergroup has Access Lists enabled. In the Access Lists you specify which modules, tables, database fields etc. the group members can access in TYPO3.</source>
+			<target state="final">توجد مجموعات مُستخدمي الواجهة الخلفية في أصل قائمة الصفحات، ويمكن فقط للمشرفين التعديل عليهم.
+مجموعات المستخدمين ذات الرموز الحمراء في هذه الصورة هي المجموعات التي تم تمكين قوائم الوصول إليها. أما المجموعات ذات الرموز الزرقاء هي فقط مجموعات مستخدمين عادية.
+تم تمكين "قوائم الوصول" لمجموعة المستخدمين هذه. في قوائم الوصول، يمكنك تحديد حقول الوحدات والجداول وقاعدة البيانات والخ. التي يمكن لأعضاء المجموعة الوصول إليها في TYPO3.</target></trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Name of the Backend usergroup. The name should be descriptive and can always be changed later.</source>
+        <target state="final">اسم مجموعة مستخدم الواجهة الخلفية. يجب أن يكون الاسم وَصفيْ وذا معنى، يمكنك تعديل الاسم بأي وقت لاحقاً.</target>
+      </trans-unit>
+      <trans-unit id="title.details" resname="title.details" approved="yes">
+        <source>Backend Usergroups are identified by their "uid" field value (integer) and therefore the title can always be changed. The "uid" can never be changed for a user group.</source>
+        <target state="final">يتم تحديد مجموعات مُستخدمي الواجهة الخلفية من خلال قيمة الحقل "uid" (عدد صحيح)، وبالتالي يمكن تغيير العنوان دائماً. لا يمكن أبداً تغيير "uid" لمجموعة ما من المستخدمين.</target>
+      </trans-unit>
+      <trans-unit id="_title.image" resname="_title.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/be_groups_2.png</source>
+        <target state="final">EXT:core/Resources/Public/Images/cshimages/be_groups_2.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="title.image_descr" resname="title.image_descr" approved="yes">
+        <source>The usergroup title is shown in the record lists.</source>
+        <target state="final">يَظهر عنوان مجموعة المستخدمين في قوائم السجلات.</target>
+      </trans-unit>
+      <trans-unit id="db_mountpoints.description" resname="db_mountpoints.description" approved="yes">
+        <source>Define page tree root points for the group members.</source>
+        <target state="final">تحديد نقاط جذر شجرة الصفحة لأعضاء المجموعة.</target>
+      </trans-unit>
+      <trans-unit id="db_mountpoints.details" resname="db_mountpoints.details" xml:space="preserve" approved="yes">
+				<source>The page tree in TYPO3 must have some points-of-entry defined. Here you should insert one or more references to a page which will represent a new root page for the page tree. This is called a "Database mount" or "DB mount".
+DB mounts &lt;i&gt;may&lt;/i&gt; be inherited by the users which are members of this group. This depends on whether the user is configured to include the mounts set in the member groups.
+However it's recommended to use backend user groups like this to configure mounts. Especially if they need to be shared among many users.</source>
+			<target state="final">يجب أن تحتوي شجرة الصفحة في TYPO3 على بعض نقاط الدخول. هنا يجب عليك إدخال مرجع واحد أو أكثر إلى الصفحة التي تمثل صفحة جذر جديدة لشجرة الصفحة "root page". هذا يُسمّى "Database Mount" أو "Mount DB".
+Mount DB &lt;i&gt;قد&lt;/i&gt; يرثها المستخدمون الذين هم أعضاء في هذه المجموعة. هذا يعتمد على ما إذا كان المستخدم قد تم إعداده بحيث يشمل الأعداد المُحددة في مجموعات الأعضاء.
+ومع ذلك، من الأفضل استخدام مجموعات مستخدمي الواجهة الخلفية مثل هذا لتكوين هذا البناء. خاصةً إذا كان من الضروري مشاركتها بين العديد من المستخدمين.</target></trans-unit>
+      <trans-unit id="_db_mountpoints.seeAlso" resname="_db_mountpoints.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_groups:file_mountpoints,
+be_users:db_mountpoints,
+be_users:options,
+xMOD_csh_corebe:list_module</source>
+				
+			<target state="final">be_groups:file_mountpoints,
+be_users:db_mountpoint
+be_users:options,
+xMOD_csh_corebe:list_module</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_db_mountpoints.image" resname="_db_mountpoints.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/be_groups_3.png,
+EXT:core/Resources/Public/Images/cshimages/be_groups_4.png</source>
+				
+			<target state="final">EXT:core/Resources/Public/Images/cshimages/be_groups_2.png,
+EXT:core/Resources/Public/Images/cshimages/be_groups_1.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="db_mountpoints.image_descr" resname="db_mountpoints.image_descr" xml:space="preserve" approved="yes">
+				<source>Here a page is added as a "DB mount"...
+... and in the page tree of member users this will become the starting point for the page tree.</source>
+			<target state="final">هنا تمت إضافة صفحة كـ "DB mount"...
+... وفي صفحة شجرة الأعضاء المستخدمين ستصبح هذه نقطة البداية لشجرة الصفحة "Page tree".</target></trans-unit>
+      <trans-unit id="file_mountpoints.description" resname="file_mountpoints.description" approved="yes">
+        <source>Define startpoints for the file folder tree.</source>
+        <target state="final">تحديد نقاط البدء لشجرة مجلد الملف.</target>
+      </trans-unit>
+      <trans-unit id="file_mountpoints.details" resname="file_mountpoints.details" xml:space="preserve" approved="yes">
+				<source>The file folder tree is used by all File-submodules to navigate the file folders on the webserver. If you want users to access the servers file system through TYPO3 they need at least one File Mount (and access to eg. File &gt; Filelist module).
+You can mount a path in "fileadmin/" relative to the TYPO3 installation or you can mount an absolute path somewhere else on the server (outside webroot!). The last requires that $TYPO3_CONF_VARS[BE][lockRootPath] is defined. The path you mount is defined by the Filemount record you refer to by this field. So a File Mount just points to another record inside of which the details are configured. See screenshots below.
+"admin" users always have the "fileadmin/" folder mounted by default.
+Notice; as with 'DB mounts' the file folder mounts may be inherited by the users which are members of this group.</source>
+			<target state="final">يتم استخدام شجرة مجلد الملف من قبل جميع وحدات الملفات الفرعية للتنقل في مجلدات الملفات على خادم الويب. إذا كنت تريد للمستخدمين الوصول إلى ملفات النظام والخادم "Server" من خلال TYPO3 فإنهم بحاجة إلى ملف واحد على الأقل (والوصول إلى ملف &gt; وحدة قائمة الملفات).
+يمكنك تحميل مسار في "fileadmin/" فيما يتعلق بتثبيت TYPO3 أو يمكنك تحميل مسار مطلق في مكان آخر على الخادم (خارج Webroot!). يتطلب الأخير أن يكون $TYPO3_CONF_VARS[BE][lockRootPath] مُعرّف. المسار الذي تقوم بتحميله يتم تعريفه بواسطة سجل "Filemount" الذي تشير إليه بهذا الحقل. يشير "Filemount" فقط إلى سجل آخر يتم فيه تكوين التفاصيل. انظر لقطات الشاشة أدناه.
+المُشرفين الـ "admin" لديهم دائماً مجلد "fileadmin/" المحمول بشكل افتراضي.
+إشعارات، كما هو الحال مع 'DB mounts' قد يكون مجلد الملفات موروث من قبل المستخدمين الذين هم أعضاء في هذه المجموعة.</target></trans-unit>
+      <trans-unit id="_file_mountpoints.seeAlso" resname="_file_mountpoints.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_groups:db_mountpoints,
+be_users:file_mountpoints,
+be_users:options,
+be_users,
+sys_filemounts,
+xMOD_csh_corebe:filelist_module,
+More about File Mounts | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/AccessControl/MoreAboutFileMounts/</source>
+				
+			<target state="final">be_groups:db_mountpoints,
+be_users:file_mountpoints,
+be_users:options,
+be_users,
+sys_filemounts,
+xMOD_csh_corebe:filelist_module,
+المزيد عن File Mounts &lt;unk&gt; https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/AccessControl/MoreAboutFileMounts/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_file_mountpoints.image" resname="_file_mountpoints.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/be_groups_5.png,
+EXT:core/Resources/Public/Images/cshimages/be_groups_6.png,
+EXT:core/Resources/Public/Images/cshimages/be_groups_7.png,
+EXT:core/Resources/Public/Images/cshimages/be_groups_8.png</source>
+				
+			<target state="final">EXT:core/Resources/Public/Images/cshimages/be_groups_5.png,
+EXT:core/Resources/Public/Images/cshimages/be_groups_6.png,
+EXT:core/Resources/Public/Images/cshimages/be_groups_7.png,
+EXT:core/Resources/Public/Images/cshimages/be_groups_8.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="file_mountpoints.image_descr" resname="file_mountpoints.image_descr" xml:space="preserve" approved="yes">
+				<source>The File Mounts are references to records from the "Filemounts" table.
+In the Filemount record you define whether the path should be absolute (must be within $TYPO3_CONF_VARS[BE][lockRootPath]) or relative to "fileadmin/". In this case the Filemount points to "fileadmin/user_upload/"
+This is the page tree of the "admin" user. Notice the folder "user_upload" which is the folder referred to by the File Mount record.
+This shows the mounted folder as seen by a user who was member of the group.
+Filemount records are also created in the page tree root.</source>
+			<target state="final">تركيب الملف هي مراجع للسجلات من جدول "Filemounts".
+في سجل Filemount ، تحدد ما إذا كان يجب أن يكون المسار مطلقاً (يجب أن يكون داخل $TYPO3_CONF_VARS[BE][lockRootPath]) أو بالنسبة إلى "fileadmin/". في هذه الحالة يشير الملف إلى "fileadmin/user_upload/"
+هذه هي صفحة شجرة المُشرف "admin". لاحظ المجلد "user_upload" الذي هو المجلد المشار إليه في سجل File Mount.
+هذا يظهر المجلد المثبت كما يراه مستخدم كان عضواً في المجموعة.
+يتم إنشاء سجلات Filemounts أيضا في جذر صفحة الشجرة.</target></trans-unit>
+      <trans-unit id="file_permissions.description" resname="file_permissions.description" approved="yes">
+        <source>Select file operation permissions for the group members.</source>
+        <target state="final">حدد أذونات عملية الملف لأعضاء المجموعة.</target>
+      </trans-unit>
+      <trans-unit id="file_permissions.details" resname="file_permissions.details" xml:space="preserve" approved="yes">
+				<source>These settings relate to the functions found in the File&gt;Filelist module as well as general upload of files.
+
+&lt;strong&gt;Notice&lt;/strong&gt; that these settings apply to all members of this group and extend the users permissions accordingly.</source>
+			<target state="final">هذه الإعدادات تتعلق بالوظائف الموجودة في ملف &gt; وحدة قائمة الملفات، بالإضافة إلى تحميل الملفات بشكل عام.
+
+&lt;strong&gt;لاحظ&lt;/strong&gt; أن هذه الإعدادات تنطبق على جميع أعضاء هذه المجموعة وتمديد أذونات المستخدمين وفقا لذلك.</target></trans-unit>
+      <trans-unit id="file_permissions.seeAlso" resname="file_permissions.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_groups:file_mountpoints,
+be_users:file_mountpoints,
+be_users:file_permissions</source>
+				
+			<target state="final">be_groups:file_mountpoints,
+be_users:file_mountpoints,
+be_users:file_permissions</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="fileoper_perms.description" resname="fileoper_perms.description" approved="yes">
+        <source>Select file operation permissions for the group members.</source>
+        <target state="final">حدد أُذُونات عملية الملف لأعضاء المجموعة.</target>
+      </trans-unit>
+      <trans-unit id="fileoper_perms.details" resname="fileoper_perms.details" xml:space="preserve" approved="yes">
+				<source>These settings relate to the functions found in the File&gt;Filelist module as well as general upload of files.
+
+&lt;strong&gt;Notice&lt;/strong&gt; that these settings apply to all members of this group and extend the users permissions accordingly.</source>
+			<target state="final">هذه الإعدادات تتعلق بالوظائف الموجودة في ملف &gt; وحدة قائمة الملفات، بالإضافة إلى تحميل الملفات بشكل عام.
+
+&lt;strong&gt;لاحظ&lt;/strong&gt; أن هذه الإعدادات تنطبق على جميع أعضاء هذه المجموعة وتمديد أُذُونات المستخدمين وُفقاً لذلك.</target></trans-unit>
+      <trans-unit id="_fileoper_perms.seeAlso" resname="_fileoper_perms.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_groups:file_mountpoints,
+be_users:file_mountpoints,
+be_users:file_permissions</source>
+				
+			<target state="final">be_groups:file_mountpoints,
+be_users:file_mountpoints,
+be_users:file_permissions</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="pagetypes_select.description" resname="pagetypes_select.description" approved="yes">
+        <source>Select which 'Types' of Pages the members may set.</source>
+        <target state="final">حدد أنواع الصفحات التي يمكن للأعضاء تعينها.</target>
+      </trans-unit>
+      <trans-unit id="pagetypes_select.details" resname="pagetypes_select.details" xml:space="preserve" approved="yes">
+				<source>This option limits the number of valid choices for the user when he is about to select a page type.
+Choice of Page types (doktype) for a page is associated with a) a special icon for the page, b) permitted tables on the page (see $PAGES_TYPES global variable) and c) if the page is a web page or "system folder" type.</source>
+			<target state="final">يحد هذا الخيار من عدد الخيارات الصحيحة للمستخدم عندما يكون على وشك تحديد نوع الصفحة.
+اختيار نوع الصفحة (doktype) لصفحة ما يرتبط بـ (أ- أيقونة خاصة للصفحة، (ب- الجداول المسموح بها على الصفحة (انظر المتغير العالمي $PAGES_TYPES ) و (ج- إذا كانت الصفحة صفحة ويب أو نوع "مجلد النظام".</target></trans-unit>
+      <trans-unit id="_pagetypes_select.seeAlso" resname="_pagetypes_select.seeAlso" xml:space="preserve" approved="yes">
+				<source>pages:doktype,
+be_groups:inc_access_lists</source>
+				
+			<target state="final">pages:doktype,
+be_groups:inc_access_lists</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_pagetypes_select.image" resname="_pagetypes_select.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/be_groups_9.png</source>
+        <target state="final">EXT:core/Resources/Public/Images/cshimages/be_groups_9.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="pagetypes_select.image_descr" resname="pagetypes_select.image_descr" approved="yes">
+        <source>The list of typical page types available in a CMS context. Selecting Page types for a usergroup defines which of these options can be selected by member users.</source>
+        <target state="final">قائمة بأنواع الصفحات النموذجيّة المُتاحة في سياق CMS. تحديد أنواع الصفحات لمجموعة المستخدم يحدد أي من هذه الخيارات يمكن اختيارها من قبل المستخدمين الأعضاء.</target>
+      </trans-unit>
+      <trans-unit id="tables_modify.description" resname="tables_modify.description" approved="yes">
+        <source>Select which tables the members may modify.</source>
+        <target state="final">حدد الجداول التي يمكن للأعضاء تعديلها.</target>
+      </trans-unit>
+      <trans-unit id="tables_modify.details" resname="tables_modify.details" xml:space="preserve" approved="yes">
+				<source>An important part of setting permissions is to define which database tables a user is allowed to modify.
+Tables allowed for modification is automatically also allowed for selection and thus you don't need to set tables entered here in the "Tables (listing)" box.
+
+&lt;strong&gt;Notice&lt;/strong&gt; that this list adds to the fields selected in other member groups of a user.</source>
+			<target state="final">جزء هام من أُذُونات الإعداد هو تحديد جداول قاعدة البيانات التي يُسمح للمستخدم بتعديلها.
+الجداول المسموح بتعديلها مسموح بها أيضاً للتحديد تلقائياً، وبالتالي لا تحتاج إلى تعيين الجداول المُدخلة هنا في مربع "الجداول (listing)".
+
+&lt;strong&gt;لاحظ&lt;/strong&gt; أن هذه القائمة تضاف إلى الحقول المُحددة في مجموعات الأعضاء.</target></trans-unit>
+      <trans-unit id="_tables_modify.seeAlso" resname="_tables_modify.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_groups:tables_select,
+be_groups:inc_access_lists,
+xMOD_csh_corebe:new_ce</source>
+				
+			<target state="final">be_groups:tables_select,
+be_groups:inc_access_lists,
+xMOD_csh_corebe:new_ce</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_tables_modify.image" resname="_tables_modify.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/be_groups_10.png,
+EXT:core/Resources/Public/Images/cshimages/be_groups_15.png,
+EXT:core/Resources/Public/Images/cshimages/be_groups_11.png</source>
+				
+			<target state="final">EXT:core/Resources/Public/Images/cshimages/be_groups_10.png,
+EXT:core/Resources/Public/Images/cshimages/be_groups_15.png,
+EXT:core/Resources/Public/Images/cshimages/be_groups_11.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="tables_modify.image_descr" resname="tables_modify.image_descr" xml:space="preserve" approved="yes">
+				<source>The screenshot above shows how the "Create new record" dialog looks for a user limited to editing only "Page" and "Page content" elements.
+The two tables are simply added to the list of "Tables (modify)" in the group Access Lists.
+This is (an example of) the full amount of elements that can be created on the page by the "admin" user for whom there are no restrictions.</source>
+			<target state="final">توضح لقطة الشاشة أعلاه كيف يبحث مربع الحوار "إنشاء سجل جديد" عن مستخدم مُقيّد بتعديل عُنصُرَي "الصفحة" و "محتوى الصفحة" فقط.
+يتم ببساطة إضافة الجدولين إلى قائمة "الجداول (تعديل)" في قوائم الوصول للمجموعة. 
+هذا (مثال على) الكمية الكاملة للعناصر التي يمكن إنشاؤها على الصفحة بواسطة مستخدم "المسؤول" الذي لا توجد قيود عليه.</target></trans-unit>
+      <trans-unit id="tables_select.description" resname="tables_select.description" approved="yes">
+        <source>Select which tables the members may see in record lists ('modify' tables does not need to be re-entered here!).</source>
+        <target state="final">حدد الجداول التي قد يراها الأعضاء في قوائم السجلات (الجداول 'المُعدلة' لا تحتاج إلى إعادة إدخالها هنا!).</target>
+      </trans-unit>
+      <trans-unit id="tables_select.details" resname="tables_select.details" xml:space="preserve" approved="yes">
+				<source>This determines which tables - in addition to those selected in the "Tables (modify)" box - may be viewed and listed for the member users. He is not able to &lt;em&gt;edit&lt;/em&gt; the table - only select the records and view the content.
+This list is not very important. It's a pretty rare situation that a user may select tables but not modify them.</source>
+			<target state="final">هذا يُحدد الجداول -بالإضافة إلى الجداول المُختارة في مُربع "الجداول (المعدلة)"- التي يمكن الاطلاع عليها وإدراجها للمستخدمين الأعضاء. إنه غير قادر على &lt;em&gt;تعديل&lt;/em&gt; الجدول - فقط تحديد السجلات وعرض المحتوى.
+هذه القائمة ليست مهمة جدا. إنها حالة نادرة جدا يمكن للمستخدم اختيار الجداول ولكن لا تعديلها.</target></trans-unit>
+      <trans-unit id="_tables_select.seeAlso" resname="_tables_select.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_groups:tables_modify,
+be_groups:inc_access_lists</source>
+				
+			<target state="final">be_groups:tables_modify,
+be_groups:inc_access_lists</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="non_exclude_fields.description" resname="non_exclude_fields.description" approved="yes">
+        <source>Certain table fields are not available by default. Those fields can be explicitly enabled for the group members here.</source>
+        <target state="final">بعض حقول الجدول غير متوفرة بشكل افتراضي. يمكن تمكين هذه الحقول بشكل صريح لأعضاء المجموعة هنا.</target>
+      </trans-unit>
+      <trans-unit id="non_exclude_fields.details" resname="non_exclude_fields.details" xml:space="preserve" approved="yes">
+				<source>"Allowed excludefields" allows you to detail the permissions granted to tables. By default all these fields are not available to users but must be specifically enabled by being selected here.
+One application of this is that pages are usually hidden by default and that the hidden field is not available for a user unless he has been granted access by this list of "Allowed excludefields". So the user may create a new page, but cannot un-hide the page - unless of course he has been assigned the "Page: Hide page" exclude field through one of his member groups.
+Of course it does not make any sense to add fields from tables which are not included in the list of tables allowed to be modified.</source>
+			<target state="final">تسمح لك "الحقول المستبعدة المسموح بها" بتفصيل الأُذُونات الممنوحة للجداول. بشكل افتراضي جميع هذه الحقول غير متوفرة للمستخدمين ولكن يجب تفعيلها على وجه التحديد عن طريق اختيارها هنا.
+أحد التطبيقات العملية على هذا هو أن الصفحات عادة ما تكون مخفية بشكل افتراضي وأن الحقل المخفي غير متوفر للمستخدم ما لم يكن قد مُنح حق الوصول إلى هذه القائمة من "الحقول المُستبعدة المسموح بها". لذلك يمكن للمستخدم إنشاء صفحة جديدة، ولكن لا يمكن إلغاء إخفاء الصفحة - ما لم يتم بالطبع تعيين "الصفحة: إخفاء الصفحة" يستبعد الحقل من خلال إحدى مجموعات أعضائه.
+وبطبيعة الحال، ليس من المعقول إضافة حقول من الجداول غير المدرجة في قائمة الجداول المسموح بتعديلها.</target></trans-unit>
+      <trans-unit id="_non_exclude_fields.seeAlso" resname="_non_exclude_fields.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_groups:inc_access_lists,
+Examples from "Getting Started" | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/CreateUsersGroups/</source>
+				
+			<target state="final">be_groups:inc_access_lists,
+أمثلة عن "Getting Started" | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/CreateUsersGroups/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_non_exclude_fields.image" resname="_non_exclude_fields.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/be_groups_14.png</source>
+        <target state="final">EXT:core/Resources/Public/Images/cshimages/be_groups_14.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>Enables a user group.</source>
+        <target state="final">تفعيل مجموعة مستخدمين.</target>
+      </trans-unit>
+      <trans-unit id="hidden.details" resname="hidden.details" approved="yes">
+        <source>If you disable a user group all users which are members of the group will in effect not inherit any properties this group may have given them.</source>
+        <target state="final">إذا قمت بتعطيل مجموعة المستخدمين، فإن جميع أعضاء المجموعة لن يرثوا أي خصائص مُعطاة لهم في هذه المجموعة.</target>
+      </trans-unit>
+      <trans-unit id="groupMods.description" resname="groupMods.description" approved="yes">
+        <source>Select available backend modules for the group members.</source>
+        <target state="final">حدد أدوات الواجهة الخلفية المُتاحة لأعضاء المجموعة.</target>
+      </trans-unit>
+      <trans-unit id="groupMods.details" resname="groupMods.details" xml:space="preserve" approved="yes">
+				<source>This determines which 'menu items' are available for the group members.
+This list of modules is added to any modules selected in other member groups of a user as well as the corresponding field of the user himself.</source>
+			<target state="final">يحدد هذا 'عناصر القائمة' المُتاحة لأعضاء المجموعة.
+هذه القائمة تُضاف إلى أي وحدات تم اختيارها في مجموعات أعضاء أخرى للمستخدم وكذلك الحقل المقابل للمستخدم نفسه.</target></trans-unit>
+      <trans-unit id="_groupMods.seeAlso" resname="_groupMods.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_users:userMods,
+be_groups:inc_access_lists,
+Backend Interface | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/Backend/</source>
+				
+			<target state="final">be_users:userMods,
+be_groups:inc_access_lists,
+Backend Interface &lt;unk&gt; https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/Backend/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_groupMods.image" resname="_groupMods.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/be_groups_12.png,
+EXT:core/Resources/Public/Images/cshimages/be_groups_13.png</source>
+				
+			<target state="final">EXT:core/Resources/Public/Images/cshimages/be_groups_12.png,
+EXT:core/Resources/Public/Images/cshimages/be_groups_13.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="groupMods.image_descr" resname="groupMods.image_descr" xml:space="preserve" approved="yes">
+				<source>The Backend Modules available for a user is reflected in the menu items of the backend. For most regular users only modules in the Web and File main modules are enabled. Typically "Web &gt; Page" is used for editing of page content.
+This is the assignment of Backend Modules to the user from the screenshot above. All four Web sub-modules and the two User sub-modules are configured here. However the File &gt; Filelist module must have been configured for another member group of this user (or inside the user profile itself which is also possible). The Help modules are all accessible by default and does not require explicit access.</source>
+			<target state="final">تنعكس وحدات الواجهة الخلفية المتاحة للمستخدم في عناصر القائمة الخاصة بالواجهة الخلفية. بالنسبة لمعظم المستخدمين العاديين ، يتم تمكين الوحدات النمطية الرئيسية في الويب والوحدات النمطية للملف فقط. عادةً ما يتم استخدام "Web &gt; Page" لتحرير محتوى الصفحة.
+هذا هو أمر وحدات الواجهة الخلفية للمستخدم من لقطة الشاشة أعلاه. يتم هنا تكوين جميع الوحدات الفرعية للويب الأربعة والوحدتين الفرعيتين للمستخدم. لكن الملف &gt; يجب تكوين وحدة قائمة الملفات لمجموعة أعضاء أخرى لهذا المستخدم (أو داخل ملف تعريف المستخدم نفسه وهو أمر ممكن أيضاً). يمكن الوصول إلى جميع وحدات التعليمات بشكل افتراضي ولا تتطلب وصولاً صريحاً.</target></trans-unit>
+      <trans-unit id="inc_access_lists.description" resname="inc_access_lists.description" approved="yes">
+        <source>Select whether the Access Lists for Page type, Tables, Module and Allowed excludefield are enabled for this group.</source>
+        <target state="final">حدد ما إذا كانت قوائم الوصول لنوع الصفحة والجداول والوحدة النمطية والاستبعاد المسموح بها مُفعّلة لهذه المجموعة.</target>
+      </trans-unit>
+      <trans-unit id="inc_access_lists.details" resname="inc_access_lists.details" xml:space="preserve" approved="yes">
+				<source>If this option is disabled the Access Lists cannot be configured for the group.
+When Access Lists are disabled the icon for the group is blue while it is red when Access Lists are enabled.</source>
+			<target state="final">إذا تم تعطيل هذا الخيار، فلا يمكن تكوين قوائم الصلاحيات للمجموعة.
+عندما يتم تعطيل قوائم الصلاحيات، يكون رمز المجموعة باللون الأزرق بينما يكون أحمر اللون عند تمكين قوائم الصلاحيات.</target></trans-unit>
+      <trans-unit id="_inc_access_lists.seeAlso" resname="_inc_access_lists.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_groups:pagetypes_select,
+be_groups:tables_modify,
+be_groups:tables_select,
+be_groups:groupMods,
+be_groups:non_exclude_fields</source>
+				
+			<target state="final">be_groups:pagetypes_select,
+be_groups:tables_modify,
+be_groups:tables_select,
+be_groups:groupMods,
+be_groups:non_exclude_fields</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="description.description" resname="description.description" approved="yes">
+        <source>Enter a short description of the user group, what it is for and who should be members. This is for internal use only.</source>
+        <target state="final">أدخل وصفاً مُوجزاً لمجموعة المستخدمين، ما هي؟ ولماذا أُنشأت؟ ومن يجب أن يكونوا أعضاؤها؟. هذا الوصف للاستخدام الداخلي فقط.</target>
+      </trans-unit>
+      <trans-unit id="_description.seeAlso" resname="_description.seeAlso" approved="yes">
+        <source>fe_groups:description</source>
+        <target state="final">fe_groups:description</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="TSconfig.description" resname="TSconfig.description" approved="yes">
+        <source>User TSconfig: Additional configuration through TypoScript style values (Advanced).</source>
+        <target state="final">مستخدم الـ TSconfig: تكوين إضافي من خلال قيم نمط TypoScript (مُتقدم).</target>
+      </trans-unit>
+      <trans-unit id="TSconfig.details" resname="TSconfig.details" approved="yes">
+        <source>User TSconfig can be set for each backend user and group. Configuration set for backend groups is inherited by the user who is a member of those groups. The available options typically cover user settings like those found in the User&gt;Setup module (in fact options from that module can be forcibly overridden from User TSconfig!), configuration of the "Admin Panel" (frontend), various backend tweaks (lock user to IP, may user clear all cache?, width of the navigation frame etc.) and backend module configuration (overriding any configuration set for backend modules in Page TSconfig).</source>
+        <target state="final">يمكن ضبط مستخدم الـ TSconfig لكل مستخدم ومجموعة خلفية. يورث المستخدم الذي هو عضو في تلك المجموعات مجموعة التكوين لمجموعات الواجهة الخلفية.
+عادةً ما تغطي الخيارات المُتاحة إعدادات المستخدم مثل تلك الموجودة في مستخدم &gt; وحدة الإعداد. (في الواقع يمكن تجاوز الخيارات من تلك الوحدة بالقوة من User TSconfig!)، تكوين "Admin Panel" (الواجهة الأمامية) ، تعديلات بالواجهة الخلفية مختلفة (قفل المستخدم لعنوان IP ، هل يمكن للمستخدم مسح كل ذاكرة التخزين المؤقت؟، عرض التنقل إطار وما إلى ذلك) وتكوين وحدة الواجهة الخلفية (تجاوز أي مجموعة تكوين لوحدات الواجهة الخلفية في Page TSconfig).</target>
+      </trans-unit>
+      <trans-unit id="TSconfig.syntax" resname="TSconfig.syntax" approved="yes">
+        <source>TypoScript syntax without conditions and constants.</source>
+        <target state="final">بناء صيغة TypoScript بدون شروط وثوابت.</target>
+      </trans-unit>
+      <trans-unit id="_TSconfig.seeAlso" resname="_TSconfig.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_users:TSconfig
+fe_users:TSconfig
+fe_groups:TSconfig
+pages:TSconfig,
+TSconfig Reference| https://docs.typo3.org/typo3cms/TSconfigReference/UserTsconfig/,
+TypoScript Syntax | https://docs.typo3.org/typo3cms/TyposcriptSyntaxReference/</source>
+				
+			<target state="final">be_users:TSconfig
+fe_users:TSconfig
+fe_groups:TSconfig
+pages:TSconfig,
+TSconfig Reference| https://docs.typo3.org/typo3cms/TSconfigReference/UserTsconfig/,
+TypoScript Syntax | https://docs.typo3.org/typo3cms/TyposcriptSyntaxReference/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_TSconfig.image" resname="_TSconfig.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/be_groups_16.png,
+EXT:core/Resources/Public/Images/cshimages/be_groups_17.png</source>
+				
+			<target state="final">EXT:core/Resources/Public/Images/cshimages/be_groups_16.png,
+EXT:core/Resources/Public/Images/cshimages/be_groups_17.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="TSconfig.image_descr" resname="TSconfig.image_descr" xml:space="preserve" approved="yes">
+				<source>In the TSconfig field help is right at hand - just click the TS wizard icon, then a window will pop up.
+In the pop-up window you will see a tree of possible configuration values. These are extracted from the TSconfig manual. You can click around to find the options you need to set through this wizard.</source>
+			<target state="final">في حقل TSconfig، تكون المساعدة في متناول اليد -فقط انقر فوق رمز معالج TS، فتظهر نافذة منبثقة-.
+في هذه النافذة سترى شجرة قيم التكوين المُمكِنة. يتم استخلاصها من دليل TSconfig. يمكنك النقر حولها للعثور على الخيارات التي تحتاجها لتعيينها من خلال هذا المعالج.</target></trans-unit>
+      <trans-unit id="subgroup.description" resname="subgroup.description" approved="yes">
+        <source>All settings from the selected groups will be merged with the properties from this group, for example DB mounts, permissions, TSconfig, etc.</source>
+        <target state="final">سيتم دمج جميع الإعدادات من المجموعات المُحددة مع الخصائص من هذه المجموعة، على سبيل المثال قاعدة البيانات والأُذُونات و TSconfig وما إلى ذلك.</target>
+      </trans-unit>
+      <trans-unit id="subgroup.details" resname="subgroup.details" xml:space="preserve" approved="yes">
+				<source>The properties of subgroups are added to the properties of this group and basically they will simply be added to the list of member groups of any user which is a member of this group.
+This feature provides a great way to create 'Supervisor' user groups.</source>
+			<target state="final">تمت إضافة خصائص المجموعات الفرعية إلى خصائص هذه المجموعة، وسيتم إضافتها بشكل أساسي إلى قائمة مجموعات الأعضاء لأي مستخدم عضو في هذه المجموعة.
+توفر هذه الميزة طريقة رائعة لإنشاء مجموعات مستخدمين "Supervisor".</target></trans-unit>
+      <trans-unit id="explicit_allowdeny.description" resname="explicit_allowdeny.description" approved="yes">
+        <source>Select field values to explicitly deny or allow for user group members.</source>
+        <target state="final">حدد قِيَم الحقل للرفض أو للسماح لأعضاء مجموعة المستخدمين.</target>
+      </trans-unit>
+      <trans-unit id="explicit_allowdeny.details" resname="explicit_allowdeny.details" xml:space="preserve" approved="yes">
+				<source>Selector box fields can be configured for access control on value level. This list represents all values that are configured for access control.
+Each value can be configured to require either explicit access (Allow) or explicit denial (Deny). If a value has the prefix "Allow" (green icon) it means that by default users &lt;em&gt;cannot&lt;/em&gt; set this value unless they are member of a user group which explicitly allows it (by setting this checkbox).
+If a value has the prefix "Deny" (red icon) it means that by default users can set this value unless they are member of a user group which explicitly denies it (by setting this checkbox).
+The list is organized so values from the same selector box is listed together. If values from a selectorbox is not present in the allow/deny list it simply means they are not evaluated and hence they can be set by anyone having access to the field in general.</source>
+			<target state="final">يمكن تكوين حقول صندوق المحدد للتحكم في الوصول إلى مستوى القيمة. تمثل هذه القائمة جميع القيم التي تم تكوينها للتحكم في الوصول.
+يمكن تكوين كل قيمة لطلب إما وصول صريح (سماح) أو رفض صريح (رفض). إذا كانت هناك قيمة بالبادئة "سماح" (رمز أخضر) فهذا يعني أنه افتراضياً للمستخدمين &lt;em&gt; لا يمكن &lt;/em&gt; قم بتعيين هذه القيمة ما لم يكونوا أعضاء في مجموعة مستخدمين تسمح بذلك صراحة (عن طريق تعيين مربع الاختيار هذا).
+إذا كان للقيمة البادئة "Deny" (الرمز الأحمر) ، فهذا يعني أنه يمكن للمستخدمين افتراضياً تعيين هذه القيمة ما لم يكونوا أعضاء في مجموعة مستخدمين ترفضها صراحة (عن طريق تعيين مربع الاختيار هذا).
+تم تنظيم القائمة بحيث يتم سرد القيم من نفس مربع المحدد معاً.
+إذا كانت القيم من مربع التحديد غير موجودة في قائمة السماح / الرفض ، فهذا يعني ببساطة أنه لم يتم تقييمها وبالتالي يمكن تعيينها من قبل أي شخص لديه حق الوصول إلى الحقل بشكل عام.</target></trans-unit>
+      <trans-unit id="_explicit_allowdeny.image" resname="_explicit_allowdeny.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/be_groups_19.png</source>
+        <target state="final">EXT:core/Resources/Public/Images/cshimages/be_groups_19.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="allowed_languages.description" resname="allowed_languages.description" approved="yes">
+        <source>Select which record languages the group members are limited to edit.</source>
+        <target state="final">حدد لغات التسجيل التي يقتصر تعديلها على أعضاء المجموعة.</target>
+      </trans-unit>
+      <trans-unit id="allowed_languages.details" resname="allowed_languages.details" xml:space="preserve" approved="yes">
+				<source>Records in TYPO3 can be configured to carry information about their language. If that is the case access to these elements will also be evaluated based on whether the user has the language in question included from this list.
+If a user has no languages listed all together it simply means that he can edit &lt;em&gt;all&lt;/em&gt; languages!</source>
+			<target state="final">يمكن تكوين السجلات في TYPO3 لنقل المعلومات عن لغتهم. وإذا كان الأمر كذلك، فإن الوصول إلى هذه العناصر سيتم أيضا تقييمه استناداً إلى ما إذا كان لدى المستخدم اللغة المعنية المُدرجة في هذه القائمة.
+إذا لم يكن لدى المستخدم لغات مدرجة جميعها معاً، فذلك يعني ببساطة أنه يستطيع تحرير &lt;em&gt; جميع &lt;/em&gt; اللغات!</target></trans-unit>
+      <trans-unit id="_allowed_languages.seeAlso" resname="_allowed_languages.seeAlso" approved="yes">
+        <source>be_users:allowed_languages</source>
+        <target state="final">be_users:allowed_languages</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_allowed_languages.image" resname="_allowed_languages.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/be_groups_18.png</source>
+        <target state="final">EXT:core/Resources/Public/Images/cshimages/be_groups_18.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="allowed_languages.image_descr" resname="allowed_languages.image_descr" approved="yes">
+        <source>This example shows a situation where two languages, Danish and German, are created in addition to the default language.</source>
+        <target state="final">يُوضّح هذا المثال موقفاً يتم فيه إنشاء لُغتين، الدنماركية والألمانية، بالإضافة إلى اللغة الإفتراضية.</target>
+      </trans-unit>
+      <trans-unit id="custom_options.description" resname="custom_options.description" approved="yes">
+        <source>Select custom permission options.</source>
+        <target state="final">حدد خيارات الإذن المخصصة.</target>
+      </trans-unit>
+      <trans-unit id="custom_options.details" resname="custom_options.details" approved="yes">
+        <source>This list represents custom permissions introduced by various backend modules (from extensions). The significance of each option depends on the backend module that evaluates it.</source>
+        <target state="final">تمثل هذه القائمة أُذونات مخصصة مقدمة من وحدات الواجهة الخلفية المختلفة (من الإضافات). تعتمد أهمية كل خيار على وحدة الواجهة الخلفية التي تقيمه.</target>
+      </trans-unit>
+      <trans-unit id="_custom_options.image" resname="_custom_options.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/be_groups_20.png</source>
+        <target state="final">EXT:core/Resources/Public/Images/cshimages/be_groups_20.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="custom_options.image_descr" resname="custom_options.image_descr" approved="yes">
+        <source>This is just an example from an internal test application. It shows how checkboxes are added by a custom module under its own header. You can also show a description text with each checkbox to explain its function.</source>
+        <target state="final">هذا مجرد مثال من تطبيق اختبار داخلي. يوضح كيفية إضافة مربعات الاختيار بواسطة وحدة مخصصة تحت عنوانها الخاص. يمكنك أيضاً إظهار نص وصفي مع كل خانة اختيار لشرح وظيفتها.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
