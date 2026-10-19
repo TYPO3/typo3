@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="messages" date="2018-11-27T22:26:21Z" product-name="dashboard" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="be_dashboard" xml:space="preserve">
+				<source>Dashboard</source>
+			<target>crwdns101802:0crwdne101802:0</target></trans-unit>
+      <trans-unit id="identifier" xml:space="preserve">
+				<source>Identifier</source>
+			<target>crwdns101804:0crwdne101804:0</target></trans-unit>
+      <trans-unit id="title" xml:space="preserve">
+				<source>Title</source>
+			<target>crwdns101806:0crwdne101806:0</target></trans-unit>
+    </body>
+  </file>
+</xliff>
