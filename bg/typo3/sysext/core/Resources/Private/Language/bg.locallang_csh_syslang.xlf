@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_syslang.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="bg">
+    <header/>
+    <body>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Enter the name of this additional system language.</source>
+        <target state="final">Въведете името на този допълнителен сустемен език.</target>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>Defines which languages are alternatively available on each webpage.</source>
+        <target state="final">Определя кои езици са възможно налични на всяка уеб страница.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
