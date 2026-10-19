@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf" date="2018-02-27T22:22:32Z" product-name="backend" target-language="ja">
+    <header/>
+    <body>
+      <trans-unit id="site.ctrl.title" resname="site.ctrl.title" approved="yes">
+        <source>Site Configuration</source>
+        <target state="final">サイト設定</target>
+      </trans-unit>
+      <trans-unit id="site.websiteTitle" resname="site.websiteTitle" approved="yes">
+        <source>Website title</source>
+        <target state="final">ウェブサイトのタイトル</target>
+      </trans-unit>
+      <trans-unit id="site_language.ctrl.title" resname="site_language.ctrl.title" approved="yes">
+        <source>Language Configuration for a Site</source>
+        <target state="final">サイトの言語設定</target>
+      </trans-unit>
+      <trans-unit id="site_language.title" resname="site_language.title" approved="yes">
+        <source>Title</source>
+        <target state="final">タイトル</target>
+      </trans-unit>
+      <trans-unit id="site_language.websiteTitle" resname="site_language.websiteTitle" approved="yes">
+        <source>Website title</source>
+        <target state="final">ウェブサイトのタイトル</target>
+      </trans-unit>
+      <trans-unit id="site_language.navigationTitle" resname="site_language.navigationTitle" approved="yes">
+        <source>Navigation Title</source>
+        <target state="final">ナビゲーションタイトル</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.ctrl.title" resname="site_errorhandling.ctrl.title" approved="yes">
+        <source>Error Handling</source>
+        <target state="final">エラー処理</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
