@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_csh_fe_groups.xlf" date="2011-10-17T20:22:32Z" product-name="context_help" target-language="hr">
+    <header/>
+    <body>
+      <trans-unit id="hidden.details" resname="hidden.details" xml:space="preserve" approved="yes">
+				<source>If you disable a user group all users which are members of the group will in effect not inherit any properties this group may have given them.
+For instance if a page or content element was assigned access only by this group and you disable the group, no one would gain access to that page or content element.</source>
+			<target state="final">Onemogućite li grupe korisnika svi korisnici koji su članovi grupe neće naslijediti niti jedno svojstvo ove grupe. Na primjer ako je stranici ili dijelu njezina sadržaja pridružene dozvole pristupa samo ovoj grupi i ukoliko onemogućite grupe korisnika nitko neće moći pristupati stranici ili dijelu njezina sadržaja.</target></trans-unit>
+      <trans-unit id="_hidden.seeAlso" resname="_hidden.seeAlso" approved="yes">
+        <source>fe_users:disable</source>
+        <target state="final">fe_users:disable</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Name of the group.</source>
+        <target state="final">Ime grupe.</target>
+      </trans-unit>
+      <trans-unit id="title.details" resname="title.details" approved="yes">
+        <source>This title will appear as the group name in the 'Access'-list in other records.</source>
+        <target state="final">Ovaj naslov će se pojavljivati kao ime grupe u listi dozvola drugih zapisa.</target>
+      </trans-unit>
+      <trans-unit id="lockToDomain.details" resname="lockToDomain.details" xml:space="preserve" approved="yes">
+				<source>This options may be important if you have multiple websites in the same TYPO3 database but still only one main storage page for all Website users. Thus the users may log in on any of the website URLs. This may be considered a feature (having a global login as a user) or a problem (in which case you should have multiple user storages anyway). However you may wish to limit the use of a Website usergroup to a specific website and thus you don't want the group to be enabled for the user when he logs in at another URL (still from the same database of course). By entering the host name of the website here, you restrict the group to be used only from within this domain.
+
+&lt;b&gt;Notice:&lt;/b&gt; The use for this option is not critical if you have multiple Website user storages, namely one for each site.</source>
+			<target state="final">Ova opcija je značajna ukoliko imate više web sjedišta u jednoj TYPO3 bazi podataka i samo jedan repozitorij (stranicu) korisnika za sva web sjedišta. Na taj način korisnici se mogu prijaviti putem URLa bilo kojeg web sjedišta. Ovo može biti željeno svojstvo (globalna prijava za korisnike) ili problem (u tom slučaju možete koristiti više repozitorija korisnika). Također možete ograničiti korištenje određenog web sjedišta grupama tako da onemogućite korisniku članstvo u grupi web sjedišta ukoliko se prijavio putem drugog URLa (korisnici su i dalje u istoj bazi). Unošenjem naziva računala web sjedišta ograničavate korištenje grupe samo na određenu domenu. &lt;b&gt;Napomena:&lt;/b&gt; Korištenje ove opcije nije kritično ukoliko imate posebne repozitorije korisnika za svako web sjedište.</target></trans-unit>
+      <trans-unit id="_lockToDomain.seeAlso" resname="_lockToDomain.seeAlso" approved="yes">
+        <source>fe_users:lockToDomain</source>
+        <target state="final">fe_users:lockToDomain</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="subgroup.description" resname="subgroup.description" approved="yes">
+        <source>Member of other groups.</source>
+        <target state="final">Članovi drugih grupa.</target>
+      </trans-unit>
+      <trans-unit id="subgroup.details" resname="subgroup.details" approved="yes">
+        <source>List of other groups that this group is a member of.</source>
+        <target state="final">Popis grupa u kojima je ova grupa član.</target>
+      </trans-unit>
+      <trans-unit id="description.description" resname="description.description" approved="yes">
+        <source>Enter a description of the group.</source>
+        <target state="final">Unesite opis grupe.</target>
+      </trans-unit>
+      <trans-unit id="description.details" resname="description.details" xml:space="preserve" approved="yes">
+				<source>This is for internal use and is just a way to put a note on what the group is for, why you created it and who should be members.
+Use it as you like.</source>
+			<target state="final">Ovo je samo za intenu upotrebu tako da možete unjeti podatke kao što su: namjena grupe, tko je je kreirao i tko može biti njezin član. Koristite prema svojim potrebama.</target></trans-unit>
+      <trans-unit id="TSconfig.description" resname="TSconfig.description" approved="yes">
+        <source>TSconfig for the group (advanced).</source>
+        <target state="final">TSconfig za grupe (napredna opcija).</target>
+      </trans-unit>
+      <trans-unit id="TSconfig.details" resname="TSconfig.details" xml:space="preserve" approved="yes">
+				<source>This is the user TSconfig for the group. The values are inherited by any Website user who is a member of this group.
+The configuration is subject to being overridden in other groups and by the TSconfig of the user himself.</source>
+			<target state="final">Ovdje se mogu postaviti konfiguracijske postavke grupe. Vrijednosti će naslijediti bilo koji korisnik web sjedišta koji je član grupe. Konfiguracija može biti nadjačana postavkama drugih grupa ili TSconfig postavkama samog korisnika.</target></trans-unit>
+      <trans-unit id="TSconfig.syntax" resname="TSconfig.syntax" approved="yes">
+        <source>TypoScript syntax, without conditions and constants.</source>
+        <target state="final">TypoScript sintaksa, bez uvjeta i konstanti.</target>
+      </trans-unit>
+      <trans-unit id="_TSconfig.seeAlso" resname="_TSconfig.seeAlso" approved="yes">
+        <source>fe_users:TSconfig</source>
+        <target state="final">fe_users:TSconfig</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>Usergroups for Website users.</source>
+        <target state="final">Grupe korisnika weba.</target>
+      </trans-unit>
+      <trans-unit id="_.seeAlso" resname="_.seeAlso" xml:space="preserve" approved="yes">
+				<source>fe_users,
+About access restricting pages | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/PasswordProtectedPages/</source>
+			<target state="final">fe_users,
+O ograničavanju pristupa stranicama | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/PasswordProtectedPages/</target></trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" xml:space="preserve" approved="yes">
+				<source>The form for editing frontend users groups.
+Pages, Content Elements and other records for frontend display often have a selector box where you can define access restriction by selecting access for a certain group only.</source>
+			<target state="final">Obrazac za uređivanje frontend korisničkih grupa. Stranice, sadržajni elementi i ostali zapisi frontend prikaza često imaju izbornik gdje je moguće odrediti restrikciju pristupa tako da se dozvoli pristup samo određenoj korisničkoj grupi.</target></trans-unit>
+    </body>
+  </file>
+</xliff>
