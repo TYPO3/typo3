@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf" date="2011-10-17T20:22:34Z" product-name="linkvalidator" target-language="sl">
+    <header/>
+    <body>
+      <trans-unit id="hooks.file" resname="hooks.file" approved="yes">
+        <source>File Links</source>
+        <target state="final">Povezave do datotek</target>
+      </trans-unit>
+      <trans-unit id="list.tableHead.headlink" resname="list.tableHead.headlink" approved="yes">
+        <source>Link</source>
+        <target state="final">Povezava</target>
+      </trans-unit>
+      <trans-unit id="list.msg.ok" resname="list.msg.ok" approved="yes">
+        <source>Ok</source>
+        <target state="final">V redu</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
