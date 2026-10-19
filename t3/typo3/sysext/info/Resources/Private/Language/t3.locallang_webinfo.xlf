@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:info/Resources/Private/Language/locallang_webinfo.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="page_title" resname="page_title">
+        <source>Pagetree overview</source>
+        <target>crwdns106302:0crwdne106302:0</target>
+      </trans-unit>
+      <trans-unit id="page_sysnote" resname="page_sysnote">
+        <source>Internal notes</source>
+        <target>crwdns106304:0crwdne106304:0</target>
+      </trans-unit>
+      <trans-unit id="pageInformation" resname="pageInformation">
+        <source>Page information</source>
+        <target>crwdns106306:0crwdne106306:0</target>
+      </trans-unit>
+      <trans-unit id="pages_0" resname="pages_0">
+        <source>Basic settings</source>
+        <target>crwdns106308:0crwdne106308:0</target>
+      </trans-unit>
+      <trans-unit id="pages_2" resname="pages_2">
+        <source>Cache and Age</source>
+        <target>crwdns106310:0crwdne106310:0</target>
+      </trans-unit>
+      <trans-unit id="pages_1" resname="pages_1">
+        <source>Record overview</source>
+        <target>crwdns106312:0crwdne106312:0</target>
+      </trans-unit>
+      <trans-unit id="stat_type_0" resname="stat_type_0">
+        <source>Page hits</source>
+        <target>crwdns106314:0crwdne106314:0</target>
+      </trans-unit>
+      <trans-unit id="stat_type_1" resname="stat_type_1">
+        <source>Total hits</source>
+        <target>crwdns106316:0crwdne106316:0</target>
+      </trans-unit>
+      <trans-unit id="stat_type_2" resname="stat_type_2">
+        <source>Hits in main sections</source>
+        <target>crwdns106318:0crwdne106318:0</target>
+      </trans-unit>
+      <trans-unit id="stat_period" resname="stat_period">
+        <source>Statistics in the period %s back to %s</source>
+        <target>crwdns106320:0%scrwdnd106320:0%scrwdne106320:0</target>
+      </trans-unit>
+      <trans-unit id="pI_crUser" resname="pI_crUser">
+        <source>Created by</source>
+        <target>crwdns106322:0crwdne106322:0</target>
+      </trans-unit>
+      <trans-unit id="pI_crDate" resname="pI_crDate">
+        <source>Created date</source>
+        <target>crwdns106324:0crwdne106324:0</target>
+      </trans-unit>
+      <trans-unit id="pI_lastChange" resname="pI_lastChange">
+        <source>Last change</source>
+        <target>crwdns106326:0crwdne106326:0</target>
+      </trans-unit>
+      <trans-unit id="pI_lastChangeContent" resname="pI_lastChangeContent">
+        <source>Last change, content</source>
+        <target>crwdns106328:0crwdne106328:0</target>
+      </trans-unit>
+      <trans-unit id="hits_title" resname="hits_title">
+        <source>Hit Statistics</source>
+        <target>crwdns106330:0crwdne106330:0</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_viewPage" resname="lang_renderl10n_viewPage">
+        <source>View page</source>
+        <target>crwdns106332:0crwdne106332:0</target>
+      </trans-unit>
+      <trans-unit id="lang_title" resname="lang_title">
+        <source>Localization overview</source>
+        <target>crwdns106334:0crwdne106334:0</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_editDefaultLanguagePage" resname="lang_renderl10n_editDefaultLanguagePage">
+        <source>Edit default language page properties</source>
+        <target>crwdns106336:0crwdne106336:0</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_editLangOverlays" resname="lang_renderl10n_editLangOverlays">
+        <source>Edit all language overlay records</source>
+        <target>crwdns106338:0crwdne106338:0</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_editPageProperties" resname="lang_renderl10n_editPageProperties">
+        <source>Edit all page properties</source>
+        <target>crwdns106340:0crwdne106340:0</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_editPage" resname="lang_renderl10n_editPage">
+        <source>Edit page</source>
+        <target>crwdns106342:0crwdne106342:0</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_editPageLang" resname="lang_renderl10n_editPageLang">
+        <source>Edit page translation</source>
+        <target>crwdns106344:0crwdne106344:0</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_badThingThereAre" resname="lang_renderl10n_badThingThereAre">
+        <source>ERROR: there are two or more page overlay records for this language! Only one is allowed!</source>
+        <target>crwdns106346:0crwdne106346:0</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_editLanguageOverlayRecord" resname="lang_renderl10n_editLanguageOverlayRecord">
+        <source>Edit language overlay record</source>
+        <target>crwdns106348:0crwdne106348:0</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_page" resname="lang_renderl10n_page">
+        <source>Page</source>
+        <target>crwdns106350:0crwdne106350:0</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_default" resname="lang_renderl10n_default">
+        <source>Default</source>
+        <target>crwdns106352:0crwdne106352:0</target>
+      </trans-unit>
+      <trans-unit id="lang_getlangsta_createNewTranslationHeaders" resname="lang_getlangsta_createNewTranslationHeaders">
+        <source>Create new translation headers</source>
+        <target>crwdns106354:0crwdne106354:0</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_CEcount" resname="lang_renderl10n_CEcount">
+        <source>Content Element Count</source>
+        <target>crwdns106356:0crwdne106356:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
