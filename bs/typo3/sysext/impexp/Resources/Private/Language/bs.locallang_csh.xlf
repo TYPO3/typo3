@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:impexp/Resources/Private/Language/locallang_csh.xlf" date="2011-10-17T20:22:33Z" product-name="impexp" target-language="bs">
+    <header/>
+    <body>
+      <trans-unit id=".alttitle" resname=".alttitle" approved="yes">
+        <source>Import/Export</source>
+        <target state="final">Import/Eksport</target>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>Native Import/Export module for TYPO3 data. Can export single records, content of tables, single pages or whole branches of the page tree. Includes attached media like image and preserves relations between records. Exports only to TYPO3 specific format, either a binary format (.T3D) or XML. The format is meant for exchange between TYPO3 systems.</source>
+        <target state="final">Nativni import/eksport modula za TYPO3 podatke. Mže eksportovati pojedinačne zapise, tabele sadržaja, jednu stranicu ili čitavu granu stabla stranica. Sadrži pridružene medije kao što su slike i čuva relacije među zapisima. Eksportuj samo u TYPO3 specificiran format, bilo u binarni (.T3D) ili XML. Format je namijenjen isključivo TYPO3 sistemima.</target>
+      </trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" approved="yes">
+        <source>Example of the preview display during export configuration of a page. Notice how records on the page are include plus how references inside the record is found and included as well (bottom of screen).</source>
+        <target state="final">Primjeri preview prikaza tokom eksport konfiguracije stranice. Obratite pažnju kako se dodaju zapisi na stranicu plus kako su reference unutar zapisa pronađene i uključene (na dnu ekrana)</target>
+      </trans-unit>
+      <trans-unit id="export.alttitle" resname="export.alttitle" approved="yes">
+        <source>Exporting records from TYPO3</source>
+        <target state="final">Eksport zapisa iz TYPO3</target>
+      </trans-unit>
+      <trans-unit id="export.details" resname="export.details" xml:space="preserve" approved="yes">
+				<source>There are a number of methods by which you can export data from TYPO3:
+- Export a single page or branch of the page tree (use page icon context menu)
+- Export a single record from any page (use record icon context menu)
+- Export all records from a specific table on a specific page (using the Web&gt;List module)
+- Export an arbitrary selection of records from the clipboard (using the Web&gt;List module)
+
+The export format observes all TYPO3s methods for relations between the records in the export file. But you will have to configure how these relations are maintained, at least to some degree. Sometimes you would want to include records referred to, at other times you surely want to keep the original mapping. That depends on your objectives with the export.
+
+Regardless of your configuration for export you will always see a complete reflection of all chosen records and their internal relations in the preview display found in the bottom of the export module page.
+
+&lt;b&gt;Error messages:&lt;/b&gt; Remember to consult the Message-tab before exporting if there are any error messages there!</source>
+			<target state="final">Postoji nekoliko metoda za eksport podataka iz TYPO3: - Eksport jedne stranice ili grane stabla stranica (koristeći konekstualni meni ikonice) - Eksport jednog zapisa sa bilo koje stranice (koristeći konekstualni meni ikonice) - Eksport svih zapisa iz određene tabele (koristeći Web&gt;Popis modul) - Eksport selekcije zapisa iz clipboarda (koristeći Web&gt;Popis modul) Eksport format prati sve TYPO3 metode za relacije između zapisa unutar eksport datoteke. Ali, mora se konfigurisat održavanje relacija, barem na određenom nivou. Nekada je potrebno uključiti referencirane zapise, dok s druge strane u većini slučajeva se želi zadržati originalno mapiranje. To zavisi od cilja eksporta. Bez obzira na konfiguraciju eksporta uvijek se dobije potpuno refleksija svih odabranih zapisa i njihovih internih relacija u preview prikazi koji se nalazi na dnu stranice eksport modula. &lt;b&gt;Poruke o greškama&lt;/b&gt; Obratite pažnju na tab sa porukama prije eksportovanja da bi bili sigurni da nema grešaka!</target></trans-unit>
+      <trans-unit id="export.image_descr" resname="export.image_descr" xml:space="preserve" approved="yes">
+				<source>To export a page or record, simply click the icon and select "Export" from the context menu.
+With the Web&gt;List module you can also export all records from a table by first clicking the table title to see only this table, then next to the CSV export you will find the export button for a T3D export of the table.
+You can export the contents of the clipboard as well by simply selecting "Export" in the menu.</source>
+			<target state="final">Za eksport stranice ili zapisa, potrebno je kliknu na ikonicu i odabrati Eksport iz konekstualnog menija. Sa Web&gt;Popis modulom je moguće eksportovati sve zapise iz tabele klikajući na ime tabele za prikaz samo te tabele te zatim pored CSV eksport na eksport dugme za T3D eksport tabele. Moguće je takođe eksportovati sadržaj clipboarda jednostavno izabirući eksport iz menija.</target></trans-unit>
+      <trans-unit id="pageTreeCfg.alttitle" resname="pageTreeCfg.alttitle" approved="yes">
+        <source>Configuration of page tree export</source>
+        <target state="final">Konfiguracija eksporta stabla stranica.</target>
+      </trans-unit>
+      <trans-unit id="pageTreeCfg.description" resname="pageTreeCfg.description" xml:space="preserve" approved="yes">
+				<source>Here you configure how a page or a branch of the page tree should be exported. Using the selector box you can set the number of levels of subpages to include in the export.
+By default all records belonging to a page is included when a page is exported.</source>
+			<target state="final">Ovdje je moguće konfigurisati način na koji se stranica ili grana stabla stranica treba eksportovati. Koristeći selektor box moguće je odabrati broj nivoa podstranica koje treba eksportovati. Standardno su svi zapisi koji pripadaju stranicama uključeni u eksport.</target></trans-unit>
+      <trans-unit id="pageTreeDisplay.alttitle" resname="pageTreeDisplay.alttitle" approved="yes">
+        <source>Page Tree</source>
+        <target state="final">Stablo stranica.</target>
+      </trans-unit>
+      <trans-unit id="pageTreeDisplay.description" resname="pageTreeDisplay.description" approved="yes">
+        <source>Based on the levels selected for page tree export this will show the structure that is about to be exported. If any pages are specifically excluded by the exclude option they are not shown either.</source>
+        <target state="final">Zavisno od broja odabranih nivoa ovdje će biti prikazana struktura koja će biti eksportovana. Ako se neki stranice isključene pomoću opcije usključenja one neće biti prikazane.</target>
+      </trans-unit>
+      <trans-unit id="pageTreeMode.alttitle" resname="pageTreeMode.alttitle" approved="yes">
+        <source>Levels</source>
+        <target state="final">Nivoi</target>
+      </trans-unit>
+      <trans-unit id="pageTreeMode.description" resname="pageTreeMode.description" approved="yes">
+        <source>Here you select how deeply in the page tree from the current starting point to go for this export.</source>
+        <target state="final">Ovdje je moguće odabrati koliko duboko u stablo stranica se ide za eksport.</target>
+      </trans-unit>
+      <trans-unit id="pageTreeMode.details" resname="pageTreeMode.details" approved="yes">
+        <source>If you select "Expanded tree" it will base the export on the currently expanded levels of the page tree. Another special option is "Tables on this page" which will not include the page record itself but only include records from tables on the page, depending on the table configuration of course.</source>
+        <target state="final">Ako se odabere "Rašireno stablo" eksport će biti baziran na trenutno raširenim nivoima stabla stranica. Još jedna specijalna opcija je "Tabele na ovoj stranici" koja neće ukljućiti samo zapis stranice nego samo zapise iz tablee na stranici, naravno zavisno od konfiguracije same tabele.</target>
+      </trans-unit>
+      <trans-unit id="pageTreeRecordLimit.alttitle" resname="pageTreeRecordLimit.alttitle" approved="yes">
+        <source>Include tables</source>
+        <target state="final">Uključi tabele</target>
+      </trans-unit>
+      <trans-unit id="pageTreeRecordLimit.description" resname="pageTreeRecordLimit.description" approved="yes">
+        <source>When you export a page all records on the page is included by default. By this selector you can pick which tables to include exclusively if there are certain records you are not interested in seeing included.</source>
+        <target state="final">Kada se eksportuje stranica svi zapisi su standardno uključeni. Sa ovim izbornikom je moguće odabrati koje tabele treba eksluzivno uključiti ako posotoje zapisi koji nisu interesantni za eksport.</target>
+      </trans-unit>
+      <trans-unit id="pageTreeRecordLimit.details" resname="pageTreeRecordLimit.details" approved="yes">
+        <source>In the box "Max number of records" you can set a limit to how many records are selected from a single table. This is a runaway brake in case you have an unusual large amount of records from a table.</source>
+        <target state="final">U boxu "Max broj zapisa" moguće je podesiti limit na broj zapisa odabranih iz jedne tabele. Ovo je sigurnosni mehanizam u slučaju da se nalazi ekstremno veliki broj zapisa u tabeli.</target>
+      </trans-unit>
+      <trans-unit id="singleRecord.alttitle" resname="singleRecord.alttitle" approved="yes">
+        <source>Export single record</source>
+        <target state="final">Eksport jednog zapisa</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
