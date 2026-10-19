@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf" date="2011-10-17T20:22:37Z" product-name="tstemplate" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="currentTemplate" resname="currentTemplate" approved="yes">
+        <source>Current template</source>
+        <target state="final">Aktuelles Template</target>
+      </trans-unit>
+      <trans-unit id="title" resname="title" approved="yes">
+        <source>Title</source>
+        <target state="final">Titel</target>
+      </trans-unit>
+      <trans-unit id="rootlevel" resname="rootlevel" approved="yes">
+        <source>Rootlevel</source>
+        <target state="final">Wurzelebene</target>
+      </trans-unit>
+      <trans-unit id="clearSetup" resname="clearSetup" approved="yes">
+        <source>Clear Setup</source>
+        <target state="final">Setup löschen</target>
+      </trans-unit>
+      <trans-unit id="clearConstants" resname="clearConstants" approved="yes">
+        <source>Clear Constants</source>
+        <target state="final">Konstanten löschen</target>
+      </trans-unit>
+      <trans-unit id="pid" resname="pid" approved="yes">
+        <source>PID</source>
+        <target state="final">PID</target>
+      </trans-unit>
+      <trans-unit id="rootline" resname="rootline" approved="yes">
+        <source>Rootline</source>
+        <target state="final">Rootline</target>
+      </trans-unit>
+      <trans-unit id="templateHierarchy" resname="templateHierarchy" approved="yes">
+        <source>Template hierarchy</source>
+        <target state="final">Template-Hierarchie</target>
+      </trans-unit>
+      <trans-unit id="constants" resname="constants" approved="yes">
+        <source>Constants</source>
+        <target state="final">Konstanten</target>
+      </trans-unit>
+      <trans-unit id="setup" resname="setup" approved="yes">
+        <source>Setup</source>
+        <target state="final">Setup</target>
+      </trans-unit>
+      <trans-unit id="viewCompleteTS" resname="viewCompleteTS" approved="yes">
+        <source>View the complete TS Listing</source>
+        <target state="final">Vollständige TS-Auflistung anzeigen</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
