@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:redirects/Resources/Private/Language/locallang_reports.xlf" date="2019-09-05T15:20:15Z" product-name="redirects" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="statusProvider" resname="statusProvider" approved="yes">
+        <source>Redirects</source>
+        <target state="final">Weiterleitungen</target>
+      </trans-unit>
+      <trans-unit id="status.conflictingRedirects" resname="status.conflictingRedirects" approved="yes">
+        <source>Conflicting Redirects</source>
+        <target state="final">Widersprüchliche Weiterleitungen</target>
+      </trans-unit>
+      <trans-unit id="status.conflictingRedirects.none" resname="status.conflictingRedirects.none" approved="yes">
+        <source>None</source>
+        <target state="final">Keine</target>
+      </trans-unit>
+      <trans-unit id="status.conflictingRedirects.count" resname="status.conflictingRedirects.count" approved="yes">
+        <source>%1$s conflicting redirects</source>
+        <target state="final">%1$s widersprüchliche Weiterleitungen</target>
+      </trans-unit>
+      <trans-unit id="status.conflictingRedirects.message" resname="status.conflictingRedirects.message" approved="yes">
+        <source>These redirects cause a conflict as there are pages that are still accessible with the same URL.</source>
+        <target state="final">Diese Weiterleitungen verursachen einen Konflikt, da es Seiten gibt, die noch mit der gleichen URL erreichbar sind.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
