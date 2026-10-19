@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:beuser/Resources/Private/Language/locallang.xlf" date="2012-07-16T10:11:32Z" product-name="beuser" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="activeSessions" resname="activeSessions">
+        <source>Active Sessions</source>
+        <target>crwdns97600:0crwdne97600:0</target>
+      </trans-unit>
+      <trans-unit id="userName" resname="userName">
+        <source>Username</source>
+        <target>crwdns97602:0crwdne97602:0</target>
+      </trans-unit>
+      <trans-unit id="realName" resname="realName">
+        <source>Real Name</source>
+        <target>crwdns97604:0crwdne97604:0</target>
+      </trans-unit>
+      <trans-unit id="lastAccess" resname="lastAccess">
+        <source>Last access</source>
+        <target>crwdns97606:0crwdne97606:0</target>
+      </trans-unit>
+      <trans-unit id="ipAddress" resname="ipAddress">
+        <source>IP address</source>
+        <target>crwdns97608:0crwdne97608:0</target>
+      </trans-unit>
+      <trans-unit id="backendUserListing" resname="backendUserListing">
+        <source>Backend User Listing</source>
+        <target>crwdns97610:0crwdne97610:0</target>
+      </trans-unit>
+      <trans-unit id="subGroups" resname="subGroups">
+        <source>Sub Groups</source>
+        <target>crwdns97612:0crwdne97612:0</target>
+      </trans-unit>
+      <trans-unit id="email" resname="email">
+        <source>Email</source>
+        <target>crwdns97614:0crwdne97614:0</target>
+      </trans-unit>
+      <trans-unit id="admin" resname="admin">
+        <source>Admin</source>
+        <target>crwdns97616:0crwdne97616:0</target>
+      </trans-unit>
+      <trans-unit id="users" resname="users">
+        <source>Users</source>
+        <target>crwdns97618:0crwdne97618:0</target>
+      </trans-unit>
+      <trans-unit id="yes" resname="yes">
+        <source>Yes</source>
+        <target>crwdns97620:0crwdne97620:0</target>
+      </trans-unit>
+      <trans-unit id="no" resname="no">
+        <source>No</source>
+        <target>crwdns97622:0crwdne97622:0</target>
+      </trans-unit>
+      <trans-unit id="never" resname="never">
+        <source>Never</source>
+        <target>crwdns97624:0crwdne97624:0</target>
+      </trans-unit>
+      <trans-unit id="edit" resname="edit">
+        <source>Edit</source>
+        <target>crwdns97626:0crwdne97626:0</target>
+      </trans-unit>
+      <trans-unit id="delete" resname="delete">
+        <source>Delete backend user (!)</source>
+        <target>crwdns97628:0crwdne97628:0</target>
+      </trans-unit>
+      <trans-unit id="details" resname="details">
+        <source>Show details</source>
+        <target>crwdns97630:0crwdne97630:0</target>
+      </trans-unit>
+      <trans-unit id="info" resname="info">
+        <source>Display information</source>
+        <target>crwdns97632:0crwdne97632:0</target>
+      </trans-unit>
+      <trans-unit id="disable" resname="disable">
+        <source>Disable</source>
+        <target>crwdns97634:0crwdne97634:0</target>
+      </trans-unit>
+      <trans-unit id="disable_compare" resname="disable_compare">
+        <source>Is active?</source>
+        <target>crwdns97636:0crwdne97636:0</target>
+      </trans-unit>
+      <trans-unit id="startDateAndTime" resname="startDateAndTime">
+        <source>Start</source>
+        <target>crwdns97638:0crwdne97638:0</target>
+      </trans-unit>
+      <trans-unit id="endDateAndTime" resname="endDateAndTime">
+        <source>Stop</source>
+        <target>crwdns97640:0crwdne97640:0</target>
+      </trans-unit>
+      <trans-unit id="lastLogin" resname="lastLogin">
+        <source>Last login</source>
+        <target>crwdns97642:0crwdne97642:0</target>
+      </trans-unit>
+      <trans-unit id="allowedLanguages" resname="allowedLanguages">
+        <source>Limit to languages</source>
+        <target>crwdns97644:0crwdne97644:0</target>
+      </trans-unit>
+      <trans-unit id="dbMountPoints" resname="dbMountPoints">
+        <source>DB mountpoints</source>
+        <target>crwdns97646:0crwdne97646:0</target>
+      </trans-unit>
+      <trans-unit id="fileMounts" resname="fileMounts">
+        <source>File mountpoints</source>
+        <target>crwdns97648:0crwdne97648:0</target>
+      </trans-unit>
+      <trans-unit id="disableIpLock" resname="disableIpLock">
+        <source>Disable IP lock</source>
+        <target>crwdns97650:0crwdne97650:0</target>
+      </trans-unit>
+      <trans-unit id="compareBackendUsers" resname="compareBackendUsers">
+        <source>Compare backend users</source>
+        <target>crwdns97652:0crwdne97652:0</target>
+      </trans-unit>
+      <trans-unit id="compareUserList" resname="compareUserList">
+        <source>Compare user list</source>
+        <target>crwdns97654:0crwdne97654:0</target>
+      </trans-unit>
+      <trans-unit id="compareBackendUsersGroups" resname="compareBackendUsersGroups">
+        <source>Compare backend usergroups</source>
+        <target>crwdns97656:0crwdne97656:0</target>
+      </trans-unit>
+      <trans-unit id="clearCompareList" resname="clearCompareList">
+        <source>Clear compare list</source>
+        <target>crwdns97658:0crwdne97658:0</target>
+      </trans-unit>
+      <trans-unit id="status" resname="status">
+        <source>Status</source>
+        <target>crwdns97660:0crwdne97660:0</target>
+      </trans-unit>
+      <trans-unit id="both" resname="both">
+        <source>Both</source>
+        <target>crwdns97662:0crwdne97662:0</target>
+      </trans-unit>
+      <trans-unit id="any" resname="any">
+        <source>Any</source>
+        <target>crwdns97664:0crwdne97664:0</target>
+      </trans-unit>
+      <trans-unit id="adminOnly" resname="adminOnly">
+        <source>Admin only</source>
+        <target>crwdns97666:0crwdne97666:0</target>
+      </trans-unit>
+      <trans-unit id="normalUserOnly" resname="normalUserOnly">
+        <source>Normal users only</source>
+        <target>crwdns97668:0crwdne97668:0</target>
+      </trans-unit>
+      <trans-unit id="activeOnly" resname="activeOnly">
+        <source>Active only</source>
+        <target>crwdns97670:0crwdne97670:0</target>
+      </trans-unit>
+      <trans-unit id="inactiveOnly" resname="inactiveOnly">
+        <source>Inactive only</source>
+        <target>crwdns97672:0crwdne97672:0</target>
+      </trans-unit>
+      <trans-unit id="loginBefore" resname="loginBefore">
+        <source>Logged in before</source>
+        <target>crwdns97674:0crwdne97674:0</target>
+      </trans-unit>
+      <trans-unit id="neverLoggedIn" resname="neverLoggedIn">
+        <source>Never logged in</source>
+        <target>crwdns97676:0crwdne97676:0</target>
+      </trans-unit>
+      <trans-unit id="filter" resname="filter">
+        <source>Filter</source>
+        <target>crwdns97678:0crwdne97678:0</target>
+      </trans-unit>
+      <trans-unit id="reallyLogout" resname="reallyLogout">
+        <source>Really logout</source>
+        <target>crwdns97680:0crwdne97680:0</target>
+      </trans-unit>
+      <trans-unit id="endSession" resname="endSession">
+        <source>End session</source>
+        <target>crwdns97682:0crwdne97682:0</target>
+      </trans-unit>
+      <trans-unit id="backendUsers" resname="backendUsers">
+        <source>Backend users</source>
+        <target>crwdns97684:0crwdne97684:0</target>
+      </trans-unit>
+      <trans-unit id="compareUsers" resname="compareUsers">
+        <source>Compare backend users</source>
+        <target>crwdns97686:0crwdne97686:0</target>
+      </trans-unit>
+      <trans-unit id="backendUserGroupsMenu" resname="backendUserGroupsMenu">
+        <source>Backend user groups</source>
+        <target>crwdns97688:0crwdne97688:0</target>
+      </trans-unit>
+      <trans-unit id="onlineUsers" resname="onlineUsers">
+        <source>Online users</source>
+        <target>crwdns97690:0crwdne97690:0</target>
+      </trans-unit>
+      <trans-unit id="backendUserAdministration" resname="backendUserAdministration">
+        <source>Backend User Administration</source>
+        <target>crwdns97692:0crwdne97692:0</target>
+      </trans-unit>
+      <trans-unit id="backendUserGroup" resname="backendUserGroup">
+        <source>User group</source>
+        <target>crwdns97694:0crwdne97694:0</target>
+      </trans-unit>
+      <trans-unit id="backendUserGroups" resname="backendUserGroups">
+        <source>Member of groups</source>
+        <target>crwdns97696:0crwdne97696:0</target>
+      </trans-unit>
+      <trans-unit id="changeToMode" resname="changeToMode">
+        <source>[change-to mode]</source>
+        <target>crwdns97698:0crwdne97698:0</target>
+      </trans-unit>
+      <trans-unit id="switchBackMode" resname="switchBackMode">
+        <source>Switch to user</source>
+        <target>crwdns97700:0crwdne97700:0</target>
+      </trans-unit>
+      <trans-unit id="confirm" resname="confirm">
+        <source>Are you sure you want to delete this backend user %s?</source>
+        <target>crwdns97702:0%scrwdne97702:0</target>
+      </trans-unit>
+      <trans-unit id="section.compare" resname="section.compare">
+        <source>Compare</source>
+        <target>crwdns97704:0crwdne97704:0</target>
+      </trans-unit>
+      <trans-unit id="section.allUserGroups" resname="section.allUserGroups">
+        <source>All User Groups</source>
+        <target>crwdns97706:0crwdne97706:0</target>
+      </trans-unit>
+      <trans-unit id="compare" resname="compare">
+        <source>Compare</source>
+        <target>crwdns97708:0crwdne97708:0</target>
+      </trans-unit>
+      <trans-unit id="remove" resname="remove">
+        <source>Remove</source>
+        <target>crwdns97710:0crwdne97710:0</target>
+      </trans-unit>
+      <trans-unit id="terminateSessionSuccess" resname="terminateSessionSuccess">
+        <source>Session successfully terminated.</source>
+        <target>crwdns97712:0crwdne97712:0</target>
+      </trans-unit>
+      <trans-unit id="backendUserGroupListing" resname="backendUserGroupListing">
+        <source>Backend User Group Listing</source>
+        <target>crwdns97714:0crwdne97714:0</target>
+      </trans-unit>
+      <trans-unit id="online" resname="online">
+        <source>online</source>
+        <target>crwdns97716:0crwdne97716:0</target>
+      </trans-unit>
+      <trans-unit id="visibility.hide" resname="visibility.hide">
+        <source>Hide</source>
+        <target>crwdns97718:0crwdne97718:0</target>
+      </trans-unit>
+      <trans-unit id="visibility.unhide" resname="visibility.unhide">
+        <source>Un-hide</source>
+        <target>crwdns97720:0crwdne97720:0</target>
+      </trans-unit>
+      <trans-unit id="information.defaultLanguage" resname="information.defaultLanguage">
+        <source>Default</source>
+        <target>crwdns97722:0crwdne97722:0</target>
+      </trans-unit>
+      <trans-unit id="groups" resname="groups">
+        <source>Groups</source>
+        <target>crwdns97724:0crwdne97724:0</target>
+      </trans-unit>
+      <trans-unit id="information.groups.direct" resname="information.groups.direct">
+        <source>Directly assigned</source>
+        <target>crwdns97726:0crwdne97726:0</target>
+      </trans-unit>
+      <trans-unit id="information.groups.inheritance" resname="information.groups.inheritance">
+        <source>Assigned through inheritance</source>
+        <target>crwdns97728:0crwdne97728:0</target>
+      </trans-unit>
+      <trans-unit id="languages" resname="languages">
+        <source>Languages</source>
+        <target>crwdns97730:0crwdne97730:0</target>
+      </trans-unit>
+      <trans-unit id="dbMounts" resname="dbMounts">
+        <source>DB Mounts</source>
+        <target>crwdns97732:0crwdne97732:0</target>
+      </trans-unit>
+      <trans-unit id="fileMounts" resname="fileMounts">
+        <source>File Mounts</source>
+        <target>crwdns97648:0crwdne97648:0</target>
+      </trans-unit>
+      <trans-unit id="categories" resname="categories">
+        <source>Categories</source>
+        <target>crwdns97736:0crwdne97736:0</target>
+      </trans-unit>
+      <trans-unit id="permissions" resname="permissions">
+        <source>Permissions</source>
+        <target>crwdns97738:0crwdne97738:0</target>
+      </trans-unit>
+      <trans-unit id="modules" resname="modules">
+        <source>Modules</source>
+        <target>crwdns97740:0crwdne97740:0</target>
+      </trans-unit>
+      <trans-unit id="tableModes" resname="tableModes">
+        <source>Table select/modify</source>
+        <target>crwdns97742:0crwdne97742:0</target>
+      </trans-unit>
+      <trans-unit id="tableModes.select" resname="tableModes.select">
+        <source>Select</source>
+        <target>crwdns97744:0crwdne97744:0</target>
+      </trans-unit>
+      <trans-unit id="tableModes.modify" resname="tableModes.modify">
+        <source>Modify</source>
+        <target>crwdns97746:0crwdne97746:0</target>
+      </trans-unit>
+      <trans-unit id="information.defaultWorkspace" resname="information.defaultWorkspace">
+        <source>Default workspace</source>
+        <target>crwdns97748:0crwdne97748:0</target>
+      </trans-unit>
+      <trans-unit id="backendUser" resname="backendUser">
+        <source>Backend User</source>
+        <target>crwdns97750:0crwdne97750:0</target>
+      </trans-unit>
+      <trans-unit id="flashMessage.resetPassword.error.title" resname="flashMessage.resetPassword.error.title">
+        <source>Password reset not triggered</source>
+        <target>crwdns97752:0crwdne97752:0</target>
+      </trans-unit>
+      <trans-unit id="flashMessage.resetPassword.error.text" resname="flashMessage.resetPassword.error.text">
+        <source>Sorry, the password of this user cannot be reset.</source>
+        <target>crwdns97754:0crwdne97754:0</target>
+      </trans-unit>
+      <trans-unit id="flashMessage.resetPassword.success.title" resname="flashMessage.resetPassword.success.title">
+        <source>Password reset triggered</source>
+        <target>crwdns97756:0crwdne97756:0</target>
+      </trans-unit>
+      <trans-unit id="flashMessage.resetPassword.success.text" resname="flashMessage.resetPassword.success.text">
+        <source>Password reset for email address %s initiated.</source>
+        <target>crwdns97758:0%scrwdne97758:0</target>
+      </trans-unit>
+      <trans-unit id="resetPassword.label" resname="resetPassword.label">
+        <source>Reset Password</source>
+        <target>crwdns97760:0crwdne97760:0</target>
+      </trans-unit>
+      <trans-unit id="resetPassword.confirmation.header" resname="resetPassword.confirmation.header">
+        <source>Reset Password</source>
+        <target>crwdns97762:0crwdne97762:0</target>
+      </trans-unit>
+      <trans-unit id="resetPassword.confirmation.text" resname="resetPassword.confirmation.text">
+        <source>Are you sure you want to reset the password for %s?</source>
+        <target>crwdns97764:0%scrwdne97764:0</target>
+      </trans-unit>
+      <trans-unit id="compare.tables" resname="compare.tables">
+        <source>Table permissions</source>
+        <target>crwdns97766:0crwdne97766:0</target>
+      </trans-unit>
+      <trans-unit id="compare.direct.inherit" resname="compare.direct.inherit">
+        <source>Inherit</source>
+        <target>crwdns97768:0crwdne97768:0</target>
+      </trans-unit>
+      <trans-unit id="compare.direct.direct" resname="compare.direct.direct">
+        <source>Direct</source>
+        <target>crwdns97770:0crwdne97770:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
