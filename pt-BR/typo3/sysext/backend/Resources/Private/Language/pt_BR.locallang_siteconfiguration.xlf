@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf" date="2018-02-27T22:22:32Z" product-name="backend" target-language="pt-BR">
+    <header/>
+    <body>
+      <trans-unit id="overview.title" resname="overview.title" approved="yes">
+        <source>Site Configuration</source>
+        <target state="final">Configuração do site</target>
+      </trans-unit>
+      <trans-unit id="overview.configuration" resname="overview.configuration" approved="yes">
+        <source>Configuration Folder</source>
+        <target state="final">Pasta de configuração</target>
+      </trans-unit>
+      <trans-unit id="overview.noPages.title" resname="overview.noPages.title" approved="yes">
+        <source>No pages found!</source>
+        <target state="final">Nenhuma página encontrada!</target>
+      </trans-unit>
+      <trans-unit id="overview.noPages.message" resname="overview.noPages.message" approved="yes">
+        <source>Please add at least one page through the Page module.</source>
+        <target state="final">Por favor, adicione pelo menos uma página através do módulo Página.</target>
+      </trans-unit>
+      <trans-unit id="overview.noSiteConfiguration" resname="overview.noSiteConfiguration" approved="yes">
+        <source>This site does not have a configuration, yet.</source>
+        <target state="final">Este site ainda não tem uma configuração.</target>
+      </trans-unit>
+      <trans-unit id="overview.fullUrlPrefix" resname="overview.fullUrlPrefix" approved="yes">
+        <source>Full URL prefix</source>
+        <target state="final">Prefixo de URL completo</target>
+      </trans-unit>
+      <trans-unit id="overview.baseUrl" resname="overview.baseUrl" approved="yes">
+        <source>Base URLs</source>
+        <target state="final">URLs de base</target>
+      </trans-unit>
+      <trans-unit id="overview.unassignedSites.description" resname="overview.unassignedSites.description" approved="yes">
+        <source>The following sites don't belong to any page anymore and can be removed.</source>
+        <target state="final">Os seguintes sites não pertencem mais a nenhuma página e podem ser removidos.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
