@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:form/Resources/Private/Language/locallang_formManager_javascript.xlf" date="2016-10-09T03:38:32Z" product-name="form" target-language="fr">
+    <header/>
+    <body>
+      <trans-unit id="formManager.form_name" resname="formManager.form_name" xml:space="preserve" approved="yes">
+                <source>Name</source>
+            <target state="final">Nom</target></trans-unit>
+      <trans-unit id="formManager.form_name_description" resname="formManager.form_name_description" xml:space="preserve" approved="yes">
+                <source>Enter a meaningful and descriptive name for the form. The name is displayed only in the TYPO3 backend.</source>
+            <target state="final">Entrez un nom significatif et descriptif pour le formulaire. Ce nom est affiché uniquement dans le backend TYPO3.</target></trans-unit>
+      <trans-unit id="formManager.new_form_name" resname="formManager.new_form_name" xml:space="preserve" approved="yes">
+                <source>New form name</source>
+            <target state="final">Nouveau nom de formulaire</target></trans-unit>
+      <trans-unit id="formManager.form_save_path" resname="formManager.form_save_path" xml:space="preserve" approved="yes">
+                <source>Storage</source>
+            <target state="final">Stockage</target></trans-unit>
+      <trans-unit id="formManager.form_save_path_description" resname="formManager.form_save_path_description" xml:space="preserve" approved="yes">
+                <source>Select the storage where you want to save your form definition.</source>
+            <target state="final">Sélectionnez le dossier de stockage où vous souhaitez enregistrer la définition de votre formulaire.</target></trans-unit>
+      <trans-unit id="formManager.form_prototype" resname="formManager.form_prototype" xml:space="preserve" approved="yes">
+                <source>Form prototype</source>
+            <target state="final">Prototype de formulaire</target></trans-unit>
+      <trans-unit id="formManager.form_template" resname="formManager.form_template" xml:space="preserve" approved="yes">
+                <source>Template</source>
+            <target state="final">Modèle</target></trans-unit>
+      <trans-unit id="formManager.form_template_description" resname="formManager.form_template_description" xml:space="preserve" approved="yes">
+                <source>Select a template on which you want to build your new form.</source>
+            <target state="final">Sélectionnez un modèle qui servira d'ébauche pour votre nouveau formulaire.</target></trans-unit>
+      <trans-unit id="formManager.form_headline_general" resname="formManager.form_headline_general" xml:space="preserve" approved="yes">
+                <source>General</source>
+            <target state="final">Généralités</target></trans-unit>
+      <trans-unit id="formManager.form_copied" xml:space="preserve" approved="yes">
+                <source>Copied form</source>
+            <target state="final">Formulaire copié</target></trans-unit>
+      <trans-unit id="formManager.cancel" resname="formManager.cancel" xml:space="preserve" approved="yes">
+                <source>Cancel</source>
+            <target state="final">Annuler</target></trans-unit>
+      <trans-unit id="formManager.remove_form" resname="formManager.remove_form" xml:space="preserve" approved="yes">
+                <source>Remove</source>
+            <target state="final">Supprimer</target></trans-unit>
+      <trans-unit id="formManager.remove_form_title" resname="formManager.remove_form_title" xml:space="preserve" approved="yes">
+                <source>Remove form</source>
+            <target state="final">Supprimer le formulaire</target></trans-unit>
+      <trans-unit id="formManager.remove_form_message" resname="formManager.remove_form_message" xml:space="preserve" approved="yes">
+                <source>Are you sure that you want to remove this form?</source>
+            <target state="final">Etes-vous sûr de vouloir supprimer ce formulaire ?</target></trans-unit>
+      <trans-unit id="formManager.newFormWizard.step1.title" resname="formManager.newFormWizard.step1.title" xml:space="preserve" approved="yes">
+                <source>Create new form</source>
+            <target state="final">Créer un nouveau formulaire</target></trans-unit>
+      <trans-unit id="formManager.newFormWizard.step1.progressLabel" resname="formManager.newFormWizard.step1.progressLabel" xml:space="preserve" approved="yes">
+                <source>Choose</source>
+            <target state="final">Sélectionner</target></trans-unit>
+      <trans-unit id="formManager.newFormWizard.step1.noStorages" resname="formManager.newFormWizard.step1.noStorages" xml:space="preserve" approved="yes">
+                <source>No accessible form storage folders</source>
+            <target state="final">Aucun dossier de stockage de formulaire accessible</target></trans-unit>
+      <trans-unit id="formManager.newFormWizard.step2.title" resname="formManager.newFormWizard.step2.title" xml:space="preserve" approved="yes">
+                <source>Settings</source>
+            <target state="final">Paramètres</target></trans-unit>
+      <trans-unit id="formManager.newFormWizard.step3.title" resname="formManager.newFormWizard.step3.title" xml:space="preserve" approved="yes">
+                <source>Ready?</source>
+            <target state="final">Prêt ?</target></trans-unit>
+      <trans-unit id="formManager.newFormWizard.step3.progressLabel" resname="formManager.newFormWizard.step3.progressLabel" xml:space="preserve" approved="yes">
+                <source>Check</source>
+            <target state="final">Vérifier</target></trans-unit>
+      <trans-unit id="formManager.newFormWizard.step3.message" resname="formManager.newFormWizard.step3.message" xml:space="preserve" approved="yes">
+                <source>Just check and confirm the settings you have entered. Done? Then you are ready to go.</source>
+            <target state="final">Vérifiez et confirmez les paramètres que vous avez saisis. C'est fait ? Alors, vous êtes prêt à poursuivre.</target></trans-unit>
+      <trans-unit id="formManager.newFormWizard.step3.check" xml:space="preserve" approved="yes">
+                <source>Check and confirm</source>
+            <target state="final">Vérifier et confirmer</target></trans-unit>
+      <trans-unit id="formManager.newFormWizard.step4.errorTitle" resname="formManager.newFormWizard.step4.errorTitle" xml:space="preserve" approved="yes">
+                <source>Create</source>
+            <target state="final">Créer</target></trans-unit>
+      <trans-unit id="formManager.newFormWizard.step4.errorMessage" resname="formManager.newFormWizard.step4.errorMessage" xml:space="preserve" approved="yes">
+                <source>The form could not be saved</source>
+            <target state="final">Le formulaire n'a pas pu être sauvegardé</target></trans-unit>
+      <trans-unit id="formManager.duplicateFormWizard.step1.title" resname="formManager.duplicateFormWizard.step1.title" xml:space="preserve" approved="yes">
+                <source>Duplicate form "{0}"</source>
+            <target state="final">Dupliquer le formulaire "{0}"</target></trans-unit>
+      <trans-unit id="formManager.duplicateFormWizard.step2.title" resname="formManager.duplicateFormWizard.step2.title" xml:space="preserve" approved="yes">
+                <source>Ready?</source>
+            <target state="final">Prêt ?</target></trans-unit>
+      <trans-unit id="formManager.duplicateFormWizard.step2.progressLabel" resname="formManager.duplicateFormWizard.step2.progressLabel" xml:space="preserve" approved="yes">
+                <source>Check</source>
+            <target state="final">Vérifier</target></trans-unit>
+      <trans-unit id="formManager.duplicateFormWizard.step2.check" resname="formManager.duplicateFormWizard.step2.check" xml:space="preserve" approved="yes">
+                <source>Check and confirm</source>
+            <target state="final">Vérifier et confirmer</target></trans-unit>
+      <trans-unit id="formManager.duplicateFormWizard.step2.message" resname="formManager.duplicateFormWizard.step2.message" xml:space="preserve" approved="yes">
+                <source>Just check and confirm the settings you have entered. Done? Then you are ready to go.</source>
+            <target state="final">Vérifiez et confirmez les paramètres que vous avez saisis. C'est fait ? Alors, vous êtes prêt à poursuivre.</target></trans-unit>
+      <trans-unit id="formManager.duplicateFormWizard.step3.errorTitle" resname="formManager.duplicateFormWizard.step3.errorTitle" xml:space="preserve" approved="yes">
+                <source>Duplicate</source>
+            <target state="final">Dupliquer</target></trans-unit>
+      <trans-unit id="formManager.duplicateFormWizard.step3.errorMessage" resname="formManager.duplicateFormWizard.step3.errorMessage" xml:space="preserve" approved="yes">
+                <source>The form could not be saved</source>
+            <target state="final">Le formulaire n'a pas pu être sauvegardé</target></trans-unit>
+      <trans-unit id="formManager.no_references" resname="formManager.no_references" xml:space="preserve" approved="yes">
+                <source>There are no references yet</source>
+            <target state="final">Il n'y a pas encore de référence</target></trans-unit>
+      <trans-unit id="formManager.page" resname="formManager.page" xml:space="preserve" approved="yes">
+                <source>Page</source>
+            <target state="final">Page</target></trans-unit>
+      <trans-unit id="formManager.record" resname="formManager.record" xml:space="preserve" approved="yes">
+                <source>Record</source>
+            <target state="final">Enregistrement</target></trans-unit>
+      <trans-unit id="formManager.references.title" resname="formManager.references.title" xml:space="preserve" approved="yes">
+                <source>References</source>
+            <target state="final">Références</target></trans-unit>
+      <trans-unit id="formManager.references.headline" resname="formManager.references.headline" xml:space="preserve" approved="yes">
+                <source>References for "{0}"</source>
+            <target state="final">Références pour "{0}"</target></trans-unit>
+      <trans-unit id="formManager.blankForm.label" resname="formManager.blankForm.label" xml:space="preserve" approved="yes">
+                <source>Blank form</source>
+            <target state="final">Formulaire vide</target></trans-unit>
+      <trans-unit id="formManager.blankForm.subtitle" resname="formManager.blankForm.subtitle" xml:space="preserve" approved="yes">
+                <source>Start fresh</source>
+            <target state="final">Démarrer de zéro</target></trans-unit>
+      <trans-unit id="formManager.blankForm.description" resname="formManager.blankForm.description" xml:space="preserve" approved="yes">
+                <source>Create a new form from scratch.</source>
+            <target state="final">Créer un nouveau formulaire à partir de zéro.</target></trans-unit>
+      <trans-unit id="formManager.predefinedForm.label" resname="formManager.predefinedForm.label" xml:space="preserve" approved="yes">
+                <source>Predefined form</source>
+            <target state="final">Formulaire prédéfini</target></trans-unit>
+      <trans-unit id="formManager.predefinedForm.subtitle" resname="formManager.predefinedForm.subtitle" xml:space="preserve" approved="yes">
+                <source>Use a form template</source>
+            <target state="final">Utiliser un modèle de formulaire</target></trans-unit>
+      <trans-unit id="formManager.predefinedForm.description" resname="formManager.predefinedForm.description" xml:space="preserve" approved="yes">
+                <source>Create a new form and use an existing form template for it.</source>
+            <target state="final">Créez un nouveau formulaire en utilisant un modèle de formulaire existant.</target></trans-unit>
+    </body>
+  </file>
+</xliff>
