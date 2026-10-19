@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="km">
+    <header/>
+    <body>
+      <trans-unit id="time" resname="time" approved="yes">
+        <source>Time</source>
+        <target state="final">ពេល</target>
+      </trans-unit>
+      <trans-unit id="age" resname="age" approved="yes">
+        <source>Age</source>
+        <target state="final">អាយុ</target>
+      </trans-unit>
+      <trans-unit id="user" resname="user" approved="yes">
+        <source>User</source>
+        <target state="final">អ្នក​ប្រើ</target>
+      </trans-unit>
+      <trans-unit id="differences" resname="differences" approved="yes">
+        <source>Differences</source>
+        <target state="final">ភាព​ខុស​គ្នា</target>
+      </trans-unit>
+      <trans-unit id="changes" resname="changes" approved="yes">
+        <source>Changelog</source>
+        <target state="final">កំណត់​ហេតុ​នៃ​ការផ្លាស់ប្ដូរ</target>
+      </trans-unit>
+      <trans-unit id="return" resname="return" approved="yes">
+        <source>Return</source>
+        <target state="final">ត្រឡប់</target>
+      </trans-unit>
+      <trans-unit id="returnLink" resname="returnLink" approved="yes">
+        <source>Click here to go back</source>
+        <target state="final">ចុច​ទីនេះ​ដើម្បី​ត្រឡប់​ទៅ​វិញ</target>
+      </trans-unit>
+      <trans-unit id="revertAll" resname="revertAll" approved="yes">
+        <source>Rollback all changes shown</source>
+        <target state="final">ត្រឡប់​ទៅ​ក្រោយ​វិញ​រាល់​ការផ្លាស់ប្ដូរ​ដែល​បង្ហាញ</target>
+      </trans-unit>
+      <trans-unit id="revertRecord" resname="revertRecord" approved="yes">
+        <source>Rollback single record</source>
+        <target state="final">ត្រឡប់ទៅ​ក្រោយ​​នូវ​ទិន្នន័យ​មួយ</target>
+      </trans-unit>
+      <trans-unit id="revertField" resname="revertField" approved="yes">
+        <source>Rollback single field</source>
+        <target state="final">ត្រឡប់​​ក្រោយ​តែ​ប្រឡោះ​មួយ</target>
+      </trans-unit>
+      <trans-unit id="externalChange" resname="externalChange" approved="yes">
+        <source>Intermediate external change!</source>
+        <target state="final">ធ្វើ​អន្តរការ​នៃ​ការផ្លាស់ប្ដូរ​ខាង​ក្រៅ!</target>
+      </trans-unit>
+      <trans-unit id="sumUpChanges" resname="sumUpChanges" approved="yes">
+        <source>Rollback (Preview)</source>
+        <target state="final">ត្រឡប់​ទៅ​ក្រោយ​​វិញ (មើល​ជា​មុន)</target>
+      </trans-unit>
+      <trans-unit id="markState" resname="markState" approved="yes">
+        <source>mark this change</source>
+        <target state="final">សម្គាល់​ការផ្លាស់ប្ដូរ​នេះ</target>
+      </trans-unit>
+      <trans-unit id="unmarkState" resname="unmarkState" approved="yes">
+        <source>unMark this change</source>
+        <target state="final">មិន​សម្គាល់​ការផ្លាស់ប្ដូរ​នេះ</target>
+      </trans-unit>
+      <trans-unit id="linkRecordHistory" resname="linkRecordHistory" approved="yes">
+        <source>Limit history to this record</source>
+        <target state="final">ដាក់​កម្រិត​ប្រវត្តិ​ចំពោះ​ទិន្នន័យ​នេះ</target>
+      </trans-unit>
+      <trans-unit id="differenceMsg" resname="differenceMsg" approved="yes">
+        <source>In the Difference column you can see the changes at every modification of records. New changes are displayed in &lt;span class="diff-g"&gt;green colored text&lt;/span&gt; and the &lt;span class="diff-r"&gt;red colored text&lt;/span&gt; are the old values which were removed.</source>
+        <target state="final">នៅ​ក្នុង​ក្រឡោន​ខុស​គ្នា អ្នក​អាច​ឃើញ​ការផ្លាស់ប្ដូរ​រាល់​ពេល​កែប្រែ​លើ​ទិន្នន័យ ។ ការផ្លាស់ប្ដូរ​ថ្មី​ត្រូវ​បង្ហាញ​ជា &lt;span class="diff-g"&gt;អក្សរ​ពណ៌​បៃតង&lt;/span&gt; និង​&lt;span class="diff-r"&gt;អក្សរ​ពណ៌​ក្រហម&lt;/span&gt; គឺ​ជា​តម្លៃ​ចាស់​ដែល​បាន​លុប​​រួច ។</target>
+      </trans-unit>
+      <trans-unit id="fullView" resname="fullView" approved="yes">
+        <source>Return to full view</source>
+        <target state="final">ត្រឡប់​ទៅ​មើល​ពេញ​ទំហំ</target>
+      </trans-unit>
+      <trans-unit id="insert" resname="insert" approved="yes">
+        <source>insert</source>
+        <target state="final">បញ្ចូល</target>
+      </trans-unit>
+      <trans-unit id="delete" resname="delete" approved="yes">
+        <source>delete</source>
+        <target state="final">លុប</target>
+      </trans-unit>
+      <trans-unit id="mergedDifferences" resname="mergedDifferences" approved="yes">
+        <source>Preview for Rollback</source>
+        <target state="final">មើល​​មុន​ការ​ធ្វើ​ឱ្យ​ត្រឡប់​ទៅ​ក្រោយ​វិញ</target>
+      </trans-unit>
+      <trans-unit id="settings" resname="settings" approved="yes">
+        <source>Settings</source>
+        <target state="final">ការកំណត់</target>
+      </trans-unit>
+      <trans-unit id="maxSteps_all" resname="maxSteps_all" approved="yes">
+        <source>ALL</source>
+        <target state="final">ទាំងអស់</target>
+      </trans-unit>
+      <trans-unit id="maxSteps_marked" resname="maxSteps_marked" approved="yes">
+        <source>marked</source>
+        <target state="final">បាន​ដាក់​សម្គាល់</target>
+      </trans-unit>
+      <trans-unit id="showDiff_no" resname="showDiff_no" approved="yes">
+        <source>No</source>
+        <target state="final">ទេ</target>
+      </trans-unit>
+      <trans-unit id="showDiff_inline" resname="showDiff_inline" approved="yes">
+        <source>Inline</source>
+        <target state="final">ក្នុង​បន្ទាត់​តែមួយ</target>
+      </trans-unit>
+      <trans-unit id="no" resname="no" approved="yes">
+        <source>No</source>
+        <target state="final">ទេ</target>
+      </trans-unit>
+      <trans-unit id="yes" resname="yes" approved="yes">
+        <source>Yes</source>
+        <target state="final">បាទ/ចាស</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
