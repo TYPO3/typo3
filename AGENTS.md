@@ -185,6 +185,16 @@ beuser, form, indexed_search, …) are Extbase-based backend modules.
 - Labels live in `Resources/Private/Language/*.xlf`. Only the English source files are
   edited here — translations are maintained by the translation teams on Crowdin and are
   not part of this repository.
+- Reference labels with the translation domain syntax
+  `<extkey>[.<subdir>].<resource>:<identifier>` instead of
+  `LLL:EXT:<ext>/Resources/Private/Language/locallang_<x>.xlf:<identifier>`. The
+  resource is the file name without `locallang_` and `.xlf`, `locallang.xlf` becomes
+  `messages`, a subdirectory adds a segment: `backend.toolbar:save`,
+  `core.form.tabs:…`. This holds wherever a label is resolved — `sL()`, TCA,
+  `Modules.php` (`'labels' => 'backend.modules.list'`) and Fluid
+  (`<f:translate key="core.bookmarks:title" />`). Converting existing references is a
+  cleanup of its own, not part of an unrelated patch. The syntax exists since v14.0,
+  so a backport to 13.4 needs the `LLL:EXT:` form.
 - Do not silence new static-analysis findings in `Build/phpstan/phpstan-baseline.neon`;
   the baseline is meant to shrink. Regenerate it (`-s phpstanGenerateBaseline`) only
   after a PHPStan update.
