@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf" date="2011-10-17T20:22:37Z" product-name="tstemplate" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="constants" resname="constants" approved="yes">
+        <source>Constants</source>
+        <target state="final">स्थिरांक, कोन्स्टंट्स</target>
+      </trans-unit>
+      <trans-unit id="setup" resname="setup" approved="yes">
+        <source>Setup</source>
+        <target state="final">सेटअप</target>
+      </trans-unit>
+      <trans-unit id="all" resname="all" approved="yes">
+        <source>All</source>
+        <target state="final">सब</target>
+      </trans-unit>
+      <trans-unit id="plainSubstitution" resname="plainSubstitution" approved="yes">
+        <source>Plain substitution (default)</source>
+        <target state="final">सरल प्रति-स्थापन (डिफ़ॉल्ट)</target>
+      </trans-unit>
+      <trans-unit id="substitutedGreen" resname="substitutedGreen" approved="yes">
+        <source>Substituted constants in green</source>
+        <target state="final">हरे रंग में प्रति-स्थापित कोन्स्टंट्स</target>
+      </trans-unit>
+      <trans-unit id="unsubstitutedGreen" resname="unsubstitutedGreen" approved="yes">
+        <source>UN-substituted constants in green</source>
+        <target state="final">हरे रंग में अनप्रति-स्थापित कोन्स्टंट्स</target>
+      </trans-unit>
+      <trans-unit id="currentTemplate" resname="currentTemplate" approved="yes">
+        <source>Current template</source>
+        <target state="final">मौजूदा टेम्पलेट</target>
+      </trans-unit>
+      <trans-unit id="badProperty" resname="badProperty" approved="yes">
+        <source>Bad property!</source>
+        <target state="final">खराब गुणवत्ता!</target>
+      </trans-unit>
+      <trans-unit id="noSpaces" resname="noSpaces" approved="yes">
+        <source>You must enter a property with characters a-z, A-Z and 0-9, no spaces!</source>
+        <target state="final">आपको स्पेस के बिना, केरेक्टर a-z, A-Z, और 0-9 के साथ प्रॉपर्टी दाखिल करनी होगी!</target>
+      </trans-unit>
+      <trans-unit id="nothingUpdated" resname="nothingUpdated" approved="yes">
+        <source>Nothing was updated!</source>
+        <target state="final">कुछ भी अपडेट नहीं किया गया था !</target>
+      </trans-unit>
+      <trans-unit id="propertyAdded" resname="propertyAdded" approved="yes">
+        <source>Property added</source>
+        <target state="final">प्रॉपर्टी जोड़ी गई</target>
+      </trans-unit>
+      <trans-unit id="valueUpdated" resname="valueUpdated" approved="yes">
+        <source>Value updated</source>
+        <target state="final">वैल्यू अपडेट की गई</target>
+      </trans-unit>
+      <trans-unit id="objectCleared" resname="objectCleared" approved="yes">
+        <source>Object cleared</source>
+        <target state="final">ऑब्जेक्ट clear किये गए</target>
+      </trans-unit>
+      <trans-unit id="updateButton" resname="updateButton" approved="yes">
+        <source>Update</source>
+        <target state="final">अद्यतन</target>
+      </trans-unit>
+      <trans-unit id="addButton" resname="addButton" approved="yes">
+        <source>Add</source>
+        <target state="final">जोड़ना</target>
+      </trans-unit>
+      <trans-unit id="clear" resname="clear" approved="yes">
+        <source>Clear?</source>
+        <target state="final">Clear?</target>
+      </trans-unit>
+      <trans-unit id="clearButton" resname="clearButton" approved="yes">
+        <source>Clear</source>
+        <target state="final">खाली करें, clear</target>
+      </trans-unit>
+      <trans-unit id="noCurrentTemplate" resname="noCurrentTemplate" approved="yes">
+        <source>You cannot edit properties and values, if there's no current template.</source>
+        <target state="final">अगर वहाँ मौजूदा टेम्पलेट ना हो, तो आप प्रॉपर्टीज और वैल्यू एडिट नहीं कर सकते।</target>
+      </trans-unit>
+      <trans-unit id="back" resname="back" approved="yes">
+        <source>Back</source>
+        <target state="final">पीछे, वापस</target>
+      </trans-unit>
+      <trans-unit id="regExp" resname="regExp" approved="yes">
+        <source>Regular expressions</source>
+        <target state="final">नियमित अभिव्यक्ति</target>
+      </trans-unit>
+      <trans-unit id="errorsWarnings" resname="errorsWarnings" approved="yes">
+        <source>Errors and warnings</source>
+        <target state="final">एरर और चेतावनी</target>
+      </trans-unit>
+      <trans-unit id="errorShowDetails" resname="errorShowDetails" approved="yes">
+        <source>Show details</source>
+        <target state="final">वर्णन दिखाए</target>
+      </trans-unit>
+      <trans-unit id="removeKey" resname="removeKey" approved="yes">
+        <source>Remove key from OL</source>
+        <target state="final">OL से की निकाले</target>
+      </trans-unit>
+      <trans-unit id="setupRoot" resname="setupRoot" approved="yes">
+        <source>setup root</source>
+        <target state="final">सेटअप रुट</target>
+      </trans-unit>
+      <trans-unit id="constantRoot" resname="constantRoot" approved="yes">
+        <source>constants root</source>
+        <target state="final">कोन्स्टंट्स रुट</target>
+      </trans-unit>
+      <trans-unit id="displayComments" resname="displayComments" approved="yes">
+        <source>Display comments</source>
+        <target state="final">टिप्पणियाँ प्रदर्शित करें</target>
+      </trans-unit>
+      <trans-unit id="sortAlphabetically" resname="sortAlphabetically" approved="yes">
+        <source>Sort alphabetically</source>
+        <target state="final">अल्फाबेटिकली सॉर्ट करे</target>
+      </trans-unit>
+      <trans-unit id="cropLines" resname="cropLines" approved="yes">
+        <source>Crop lines</source>
+        <target state="final">क्रॉप लाइन्स</target>
+      </trans-unit>
+      <trans-unit id="displayOptions" resname="displayOptions" approved="yes">
+        <source>Display options</source>
+        <target state="final">विकल्प डिस्प्ले करे</target>
+      </trans-unit>
+      <trans-unit id="conditions" resname="conditions" approved="yes">
+        <source>Conditions</source>
+        <target state="final">सर्तें, कंडीशन्स</target>
+      </trans-unit>
+      <trans-unit id="setConditions" resname="setConditions" approved="yes">
+        <source>Set conditions</source>
+        <target state="final">कंडीशन्स सेट करे</target>
+      </trans-unit>
+      <trans-unit id="severity.1" resname="severity.1" approved="yes">
+        <source>Info</source>
+        <target state="final">जानकारी</target>
+      </trans-unit>
+      <trans-unit id="severity.2" resname="severity.2" approved="yes">
+        <source>Warning</source>
+        <target state="final">चेतावनी</target>
+      </trans-unit>
+      <trans-unit id="severity.3" resname="severity.3" approved="yes">
+        <source>Error</source>
+        <target state="final">एरर</target>
+      </trans-unit>
+      <trans-unit id="error.1446559458" resname="error.1446559458" approved="yes">
+        <source>Error evaluating regular expression "%s".</source>
+        <target state="final">एरर नियमित रूप से अभिव्यक्ति "%s" का मूल्यांकन करती है।</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
