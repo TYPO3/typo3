@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:felogin/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:32Z" product-name="felogin" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="login_user_info" resname="login_user_info">
+        <source>You are now logged in as '%s'</source>
+        <target>crwdns218338:0%scrwdne218338:0</target>
+      </trans-unit>
+      <trans-unit id="welcome_header" resname="welcome_header">
+        <source>User login</source>
+        <target>crwdns218340:0crwdne218340:0</target>
+      </trans-unit>
+      <trans-unit id="welcome_message" resname="welcome_message">
+        <source>Enter your username and password here in order to log in on the website</source>
+        <target>crwdns218342:0crwdne218342:0</target>
+      </trans-unit>
+      <trans-unit id="logout_header" resname="logout_header">
+        <source>You have logged out.</source>
+        <target>crwdns218344:0crwdne218344:0</target>
+      </trans-unit>
+      <trans-unit id="logout_message" resname="logout_message">
+        <source>You just logged out from your user session on this website. You can login again or as another user by the form below.</source>
+        <target>crwdns218346:0crwdne218346:0</target>
+      </trans-unit>
+      <trans-unit id="error_header" resname="error_header">
+        <source>Login failure</source>
+        <target>crwdns218348:0crwdne218348:0</target>
+      </trans-unit>
+      <trans-unit id="error_message" resname="error_message" xml:space="preserve">
+				<source>An error occurred during login. Most likely you didn't enter the username or password correctly.
+Be certain that you enter them precisely as they are, including upper/lower case.
+Another possibility is that cookies might be disabled in your web browser.</source>
+			<target>crwdns218350:0crwdne218350:0</target></trans-unit>
+      <trans-unit id="success_header" resname="success_header">
+        <source>Login successful</source>
+        <target>crwdns218352:0crwdne218352:0</target>
+      </trans-unit>
+      <trans-unit id="success_message" resname="success_message">
+        <source>You are now logged in as '###USER###'</source>
+        <target>crwdns218354:0crwdne218354:0</target>
+      </trans-unit>
+      <trans-unit id="status_header" resname="status_header">
+        <source>Current status</source>
+        <target>crwdns218356:0crwdne218356:0</target>
+      </trans-unit>
+      <trans-unit id="status_message" resname="status_message">
+        <source>This is your current status</source>
+        <target>crwdns218358:0crwdne218358:0</target>
+      </trans-unit>
+      <trans-unit id="cookie_warning" resname="cookie_warning">
+        <source>Warning: There is a possibility that cookies are not enabled in your web browser! If your login disappears on your next click that is the case and you should enable cookies (or accept cookies from this website) immediately!</source>
+        <target>crwdns218360:0crwdne218360:0</target>
+      </trans-unit>
+      <trans-unit id="username" resname="username">
+        <source>Username</source>
+        <target>crwdns218362:0crwdne218362:0</target>
+      </trans-unit>
+      <trans-unit id="password" resname="password">
+        <source>Password</source>
+        <target>crwdns218364:0crwdne218364:0</target>
+      </trans-unit>
+      <trans-unit id="login" resname="login">
+        <source>Login</source>
+        <target>crwdns218366:0crwdne218366:0</target>
+      </trans-unit>
+      <trans-unit id="permalogin" resname="permalogin">
+        <source>Stay logged in</source>
+        <target>crwdns218368:0crwdne218368:0</target>
+      </trans-unit>
+      <trans-unit id="logout" resname="logout">
+        <source>Logout</source>
+        <target>crwdns218370:0crwdne218370:0</target>
+      </trans-unit>
+      <trans-unit id="send_password" resname="send_password">
+        <source>Send password</source>
+        <target>crwdns218372:0crwdne218372:0</target>
+      </trans-unit>
+      <trans-unit id="reset_password" resname="reset_password">
+        <source>Reset Password</source>
+        <target>crwdns218374:0crwdne218374:0</target>
+      </trans-unit>
+      <trans-unit id="change_password_header" resname="change_password_header">
+        <source>Change your password</source>
+        <target>crwdns218376:0crwdne218376:0</target>
+      </trans-unit>
+      <trans-unit id="change_password_message" resname="change_password_message">
+        <source>Please enter your new password twice. Password needs a minimum length of %s chars.</source>
+        <target>crwdns218378:0%scrwdne218378:0</target>
+      </trans-unit>
+      <trans-unit id="change_password_nolinkprefix_message" resname="change_password_nolinkprefix_message">
+        <source>Error: there is no prefix for the link. Please set one of the following in your typoscript template: plugin.tx_felogin_pi1.feloginBaseURL = http://yourdomain/, config.baseURL = http://yourdomain/, config.absRefPrefix = /</source>
+        <target>crwdns218380:0crwdne218380:0</target>
+      </trans-unit>
+      <trans-unit id="change_password_notvalid_message" resname="change_password_notvalid_message">
+        <source>The link you clicked is not valid. Please repeat the forgot password procedure.</source>
+        <target>crwdns218382:0crwdne218382:0</target>
+      </trans-unit>
+      <trans-unit id="change_password_notequal_message" resname="change_password_notequal_message">
+        <source>The passwords are not equal, please enter your new password twice. Password needs a minimum length of %s chars.</source>
+        <target>crwdns218384:0%scrwdne218384:0</target>
+      </trans-unit>
+      <trans-unit id="change_password_tooshort_message" resname="change_password_tooshort_message">
+        <source>The password length is too short. Please enter your new password twice. Password needs a minimum length of %s chars.</source>
+        <target>crwdns218386:0%scrwdne218386:0</target>
+      </trans-unit>
+      <trans-unit id="change_password_done_message" resname="change_password_done_message">
+        <source>Your password has been saved. You can now login with your new password.</source>
+        <target>crwdns218388:0crwdne218388:0</target>
+      </trans-unit>
+      <trans-unit id="change_password" resname="change_password">
+        <source>Change your password</source>
+        <target>crwdns218390:0crwdne218390:0</target>
+      </trans-unit>
+      <trans-unit id="newpassword_label1" resname="newpassword_label1">
+        <source>Enter new password</source>
+        <target>crwdns218392:0crwdne218392:0</target>
+      </trans-unit>
+      <trans-unit id="newpassword_label2" resname="newpassword_label2">
+        <source>Repeat new password</source>
+        <target>crwdns218394:0crwdne218394:0</target>
+      </trans-unit>
+      <trans-unit id="your_email" resname="your_email">
+        <source>Your email</source>
+        <target>crwdns218396:0crwdne218396:0</target>
+      </trans-unit>
+      <trans-unit id="forgot_header" resname="forgot_header">
+        <source>Forgot your password?</source>
+        <target>crwdns218398:0crwdne218398:0</target>
+      </trans-unit>
+      <trans-unit id="forgot_email_password" resname="forgot_email_password" xml:space="preserve">
+				<source>Your password
+Hi %s
+
+Your username is "%s"
+Your password is "%s"</source>
+			<target>crwdns218400:0%scrwdnd218400:0%scrwdnd218400:0%scrwdne218400:0</target></trans-unit>
+      <trans-unit id="forgot_email_nopassword" resname="forgot_email_nopassword" xml:space="preserve">
+				<source>Your password
+Hi %s
+
+We couldn't find a username for this email address and so cannot send the password to you. Probably you misspelled the email address (upper/lower case makes a difference) or maybe you even didn't register yet?</source>
+			<target>crwdns218402:0%scrwdne218402:0</target></trans-unit>
+      <trans-unit id="forgot_validate_reset_password" resname="forgot_validate_reset_password" xml:space="preserve">
+				<source>Your new password
+Dear %s,
+
+This email was sent in response to your request to reset your password. Please click on the link below.
+%s
+
+For security reasons, this link is only active until %s. If you do not visit the link before then, you will need to repeat the password reset steps.</source>
+			<target>crwdns218404:0%scrwdnd218404:0%scrwdnd218404:0%scrwdne218404:0</target></trans-unit>
+      <trans-unit id="forgot_message" resname="forgot_message">
+        <source>Please enter the email address by which you registered your user account. Then press "Send password" and your password will immediately be emailed to you. Make sure to spell your email address correctly.</source>
+        <target>crwdns218406:0crwdne218406:0</target>
+      </trans-unit>
+      <trans-unit id="forgot_message_emailSent" resname="forgot_message_emailSent">
+        <source>Your password has now been sent to the email address %s</source>
+        <target>crwdns218408:0%scrwdne218408:0</target>
+      </trans-unit>
+      <trans-unit id="forgot_reset_message" resname="forgot_reset_message">
+        <source>Please enter your username or email address. Instructions for resetting the password will be immediately emailed to you.</source>
+        <target>crwdns218410:0crwdne218410:0</target>
+      </trans-unit>
+      <trans-unit id="forgot_reset_message_emailSent" resname="forgot_reset_message_emailSent">
+        <source>An email has been sent to the address stored in your account and contains a link to reset your password. If you do not receive an email, your account or email address was not found.</source>
+        <target>crwdns218412:0crwdne218412:0</target>
+      </trans-unit>
+      <trans-unit id="forgot_reset_message_error" resname="forgot_reset_message_error">
+        <source>Your account or email address does not exist.</source>
+        <target>crwdns218414:0crwdne218414:0</target>
+      </trans-unit>
+      <trans-unit id="forgot_header_backToLogin" resname="forgot_header_backToLogin">
+        <source>Return to login form</source>
+        <target>crwdns218416:0crwdne218416:0</target>
+      </trans-unit>
+      <trans-unit id="enter_your_data" resname="enter_your_data">
+        <source>Username or email address</source>
+        <target>crwdns218418:0crwdne218418:0</target>
+      </trans-unit>
+      <trans-unit id="password_recovery_mail_header" resname="password_recovery_mail_header">
+        <source>Your new password</source>
+        <target>crwdns218420:0crwdne218420:0</target>
+      </trans-unit>
+      <trans-unit id="password_recovery_link" resname="password_recovery_link">
+        <source>Password recovery link</source>
+        <target>crwdns218422:0crwdne218422:0</target>
+      </trans-unit>
+      <trans-unit id="password_recovery_link_expired" resname="password_recovery_link_expired">
+        <source>Your password recovery link is expired.</source>
+        <target>crwdns218424:0crwdne218424:0</target>
+      </trans-unit>
+      <trans-unit id="empty_password_and_password_repeat" resname="empty_password_and_password_repeat">
+        <source>New password and new password repeat cannot be empty</source>
+        <target>crwdns218426:0crwdne218426:0</target>
+      </trans-unit>
+      <trans-unit id="password_must_match_repeated" resname="password_must_match_repeated">
+        <source>New Password must match repeated password.</source>
+        <target>crwdns218428:0crwdne218428:0</target>
+      </trans-unit>
+      <trans-unit id="forgot_validate_reset_password_html" resname="forgot_validate_reset_password_html" xml:space="preserve">
+				<source>&lt;p&gt;Dear %s,&lt;/p&gt;
+&lt;p&gt;This email was sent in response to your request to reset your password. Please click on the link below.&lt;/p&gt;
+&lt;p&gt;%s&lt;/p&gt;
+&lt;p&gt;For security reasons, this link is only active until %s. If you do not visit the link before then, you will need to repeat the password reset steps.&lt;/p&gt;
+				</source>
+			<target>crwdns218430:0%scrwdnd218430:0%scrwdnd218430:0%scrwdne218430:0</target></trans-unit>
+      <trans-unit id="forgot_validate_reset_password_plaintext" resname="forgot_validate_reset_password" xml:space="preserve">
+				<source>Dear %s,
+
+This email was sent in response to your request to reset your password. Please click on the link below.
+%s
+
+For security reasons, this link is only active until %s. If you do not visit the link before then, you will need to repeat the password reset steps.</source>
+			<target>crwdns218432:0%scrwdnd218432:0%scrwdnd218432:0%scrwdne218432:0</target></trans-unit>
+    </body>
+  </file>
+</xliff>
