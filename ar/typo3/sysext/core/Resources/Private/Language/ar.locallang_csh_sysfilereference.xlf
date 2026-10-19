@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_sysfilereference.xlf" date="2011-10-17T20:22:32Z" product-name="context_help" target-language="ar">
+    <header/>
+    <body>
+      <trans-unit id="alternative.description" resname="alternative.description" approved="yes">
+        <source>Sets the alternative text of this asset.</source>
+        <target state="final">قم بتعيين النص البديل لهذا الأصل.</target>
+      </trans-unit>
+      <trans-unit id="alternative.details" resname="alternative.details" approved="yes">
+        <source>When using the img element, specify a short text alternative with the alt attribute. Note. The value of this attribute is referred to as "alt text".
+When an image contains words that are important to understanding the content, the alt text should include those words. This will allow the alt text to play the same function on the page as the image. Note that it does not necessarily describe the visual characteristics of the image itself but must convey the same meaning as the image.</source>
+        <target state="final">عند استخدام عنصر img ، حدد نص بديل قصير مع خاصيّة alt. ملاحظة: يُشار إلى قيمة هذه السمة باسم "alt text".
+عندما تحتوي الصورة على كلمات مهمة لِفهم المُحتوى، يجب أن يتضمن النص البديل تلك الكلمات. هذا سيسمح للنص البديل بتشغيل نفس الوظيفة في الصفحة كالصورة. ويلاحظ أنه لا يصف بالضرورة الخصائص البصرية للصورة نفسها بل يجب أن ينقل نفس المعنى الذي تعبر عنه الصورة.</target>
+      </trans-unit>
+      <trans-unit id="link.description" resname="link.description" approved="yes">
+        <source>Sets a link on this asset.</source>
+        <target state="final">قم بتعيين رابط على هذا الأصل.</target>
+      </trans-unit>
+      <trans-unit id="link.details" resname="link.details" approved="yes">
+        <source>Use the wizard next to the field to specify a link that a user can follow by clicking the image.</source>
+        <target state="final">استخدم المُعالج بجانب الحقل لتحديد الرابط الذي يُمكن للمستخدم أن يتبعه بالنقر على الصورة.</target>
+      </trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Sets the title text of this asset.</source>
+        <target state="final">قم بتعيين عنوان هذا الأصل.</target>
+      </trans-unit>
+      <trans-unit id="title.details" resname="title.details" approved="yes">
+        <source>The title attribute is used to provide additional information to help clarify or further describe the purpose of a link.
+If the supplementary information provided through the title attribute is something the user should know before following the link, such as a warning, then it should be provided in the link text rather than in the title attribute.</source>
+        <target state="final">تستخدم خاصيّة العنوان لتوفير معلومات إضافية للمساعدة في توضيح الغرض من الرابط أو زيادة وَصفِه.
+إذا كانت المعلومات التكميلية المُقدمة من خلال خاصيّة العنوان هي شيء يجب أن يعرفُه المُستخدم قبل اتباع الرابط، مثل التحذير، ثم يجب أن يتم توفيره في نص الرابط وليس في خاصيّة العنوان.</target>
+      </trans-unit>
+      <trans-unit id="description.description" resname="description.description" approved="yes">
+        <source>Sets the image-caption-text of this asset.</source>
+        <target state="final">قم بتعيين النص التوضيحي للصورة لهذا الأصل.</target>
+      </trans-unit>
+      <trans-unit id="description.details" resname="description.details" approved="yes">
+        <source>This text will be displayed underneath your asset and can be used to supply additional context to the image.
+Depending on local laws you might have to use this to supply proper copyright information on your assets.</source>
+        <target state="final">سيتم عرض هذا النص أدنى الأصل الخاص بك ويمكن استخدامه لتوفير سياق إضافي للصورة.
+اعتماداً على القوانين المحلية قد تضطر إلى استخدام هذا لتوفير معلومات حقوق التأليف والنشر الصحيحة على أصولك.</target>
+      </trans-unit>
+      <trans-unit id="crop.description" resname="crop.description" approved="yes">
+        <source>Click "Open Editor" to start up the image editor.</source>
+        <target state="final">انقر فوق "فتح التعديل" لبدء محرر الصورة.</target>
+      </trans-unit>
+      <trans-unit id="autoplay.description" resname="autoplay.description" approved="yes">
+        <source>Check to let embedded media play once loaded.</source>
+        <target state="final">تحقق للسماح لتشغيل الوسائط المضمنة بمجرد تحميلها.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
