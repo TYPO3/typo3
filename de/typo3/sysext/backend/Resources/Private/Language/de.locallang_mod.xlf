@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_mod.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel" approved="yes">
+        <source>Page content</source>
+        <target state="final">Seiteninhalt</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr" approved="yes">
+        <source>This module allows you to create and edit webpages, view page hit statistics, manage different languages and columns of content per page and access special page contents like guestbooks and shopping items.</source>
+        <target state="final">Mit diesem Modul können neue Web-Seiten angelegt und bearbeitet werden. Es bietet einen Quickeditor für schnellen Zugriff auf den Hauptseiteninhalt. Zusätzlich können Sie verschiedene Sprachen und Inhaltsspalten Ihrer Seite verwalten. Darüber hinaus lassen sich spezielle Seiteninhalte wie Gästebücher-, Forums- und Shop-Einträge verwalten. Das Modul zeigt auch Seitenzugriffstatistiken für die einzelnen Seiten an.</target>
+      </trans-unit>
+      <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab" approved="yes">
+        <source>Page</source>
+        <target state="final">Seite</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
