@@ -1,0 +1,860 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_tca.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="file_mountpoints" resname="file_mountpoints">
+        <source>File Mounts</source>
+        <target>crwdns216838:0crwdne216838:0</target>
+      </trans-unit>
+      <trans-unit id="file_mountpoints_edit_title" resname="file_mountpoints_edit_title">
+        <source>Edit filemount</source>
+        <target>crwdns216840:0crwdne216840:0</target>
+      </trans-unit>
+      <trans-unit id="file_mountpoints_add_title" resname="file_mountpoints_add_title">
+        <source>Create new filemount</source>
+        <target>crwdns216842:0crwdne216842:0</target>
+      </trans-unit>
+      <trans-unit id="file_mountpoints_list_title" resname="file_mountpoints_list_title">
+        <source>List filemounts</source>
+        <target>crwdns216844:0crwdne216844:0</target>
+      </trans-unit>
+      <trans-unit id="db_mountpoints" resname="db_mountpoints">
+        <source>DB Mounts</source>
+        <target>crwdns216846:0crwdne216846:0</target>
+      </trans-unit>
+      <trans-unit id="userMods" resname="userMods">
+        <source>Modules</source>
+        <target>crwdns216848:0crwdne216848:0</target>
+      </trans-unit>
+      <trans-unit id="availableWidgets" resname="userMods">
+        <source>Dashboard widgets</source>
+        <target>crwdns216850:0crwdne216850:0</target>
+      </trans-unit>
+      <trans-unit id="mfa_providers" resname="mfa_providers">
+        <source>Allowed multi-factor authentication providers</source>
+        <target>crwdns216852:0crwdne216852:0</target>
+      </trans-unit>
+      <trans-unit id="allowed_languages" resname="allowed_languages">
+        <source>Limit to languages</source>
+        <target>crwdns216854:0crwdne216854:0</target>
+      </trans-unit>
+      <trans-unit id="category_perms" resname="category_perms">
+        <source>Category Mounts</source>
+        <target>crwdns216856:0crwdne216856:0</target>
+      </trans-unit>
+      <trans-unit id="workspace_perms" resname="workspace_perms">
+        <source>Workspace permissions</source>
+        <target>crwdns216858:0crwdne216858:0</target>
+      </trans-unit>
+      <trans-unit id="workspace_perms_live" resname="workspace_perms_live">
+        <source>Edit Live (Online)</source>
+        <target>crwdns216860:0crwdne216860:0</target>
+      </trans-unit>
+      <trans-unit id="workspace_perms_draft" resname="workspace_perms_draft">
+        <source>Edit Draft (Offline)</source>
+        <target>crwdns216862:0crwdne216862:0</target>
+      </trans-unit>
+      <trans-unit id="workspace_perms_custom" resname="workspace_perms_custom">
+        <source>Create new workspace projects</source>
+        <target>crwdns216864:0crwdne216864:0</target>
+      </trans-unit>
+      <trans-unit id="TSconfig" resname="TSconfig">
+        <source>TSconfig</source>
+        <target>crwdns216866:0crwdne216866:0</target>
+      </trans-unit>
+      <trans-unit id="TSconfig_title" resname="TSconfig_title">
+        <source>TSconfig QuickReference</source>
+        <target>crwdns216868:0crwdne216868:0</target>
+      </trans-unit>
+      <trans-unit id="be_users.username" resname="be_users.username">
+        <source>Username</source>
+        <target>crwdns216870:0crwdne216870:0</target>
+      </trans-unit>
+      <trans-unit id="be_users.password" resname="be_users.password">
+        <source>Password</source>
+        <target>crwdns216872:0crwdne216872:0</target>
+      </trans-unit>
+      <trans-unit id="be_users.mfa" resname="be_users.mfa">
+        <source>Multi-factor authentication</source>
+        <target>crwdns216874:0crwdne216874:0</target>
+      </trans-unit>
+      <trans-unit id="be_users.avatar" resname="be_users.avatar">
+        <source>Avatar</source>
+        <target>crwdns216876:0crwdne216876:0</target>
+      </trans-unit>
+      <trans-unit id="be_users.usergroup" resname="be_users.usergroup">
+        <source>Group</source>
+        <target>crwdns216878:0crwdne216878:0</target>
+      </trans-unit>
+      <trans-unit id="be_users.usergroup_edit_title" resname="be_users.usergroup_edit_title">
+        <source>Edit usergroup</source>
+        <target>crwdns216880:0crwdne216880:0</target>
+      </trans-unit>
+      <trans-unit id="be_users.usergroup_add_title" resname="be_users.usergroup_add_title">
+        <source>Create new group</source>
+        <target>crwdns216882:0crwdne216882:0</target>
+      </trans-unit>
+      <trans-unit id="be_users.usergroup_list_title" resname="be_users.usergroup_list_title">
+        <source>List groups</source>
+        <target>crwdns216884:0crwdne216884:0</target>
+      </trans-unit>
+      <trans-unit id="be_users.admin" resname="be_users.admin">
+        <source>Admin (!)</source>
+        <target>crwdns216886:0crwdne216886:0</target>
+      </trans-unit>
+      <trans-unit id="be_users.options" resname="be_users.options">
+        <source>Mount from groups</source>
+        <target>crwdns216888:0crwdne216888:0</target>
+      </trans-unit>
+      <trans-unit id="be_users.options_db_mounts" resname="be_users.options_db_mounts">
+        <source>DB Mounts</source>
+        <target>crwdns216890:0crwdne216890:0</target>
+      </trans-unit>
+      <trans-unit id="be_users.options_file_mounts" resname="be_users.options_file_mounts">
+        <source>File Mounts</source>
+        <target>crwdns216892:0crwdne216892:0</target>
+      </trans-unit>
+      <trans-unit id="be_users.fileoper_perms" resname="be_users.fileoper_perms">
+        <source>Fileoperation permissions</source>
+        <target>crwdns216894:0crwdne216894:0</target>
+      </trans-unit>
+      <trans-unit id="be_users.file_permissions.files" resname="be_users.file_permissions.files">
+        <source>Files</source>
+        <target>crwdns216896:0crwdne216896:0</target>
+      </trans-unit>
+      <trans-unit id="be_users.file_permissions.files_read" resname="be_users.file_permissions.files_read">
+        <source>Files: Read</source>
+        <target>crwdns216898:0crwdne216898:0</target>
+      </trans-unit>
+      <trans-unit id="be_users.file_permissions.files_write" resname="be_users.file_permissions.files_write">
+        <source>Files: Write</source>
+        <target>crwdns216900:0crwdne216900:0</target>
+      </trans-unit>
+      <trans-unit id="be_users.file_permissions.files_add" resname="be_users.file_permissions.files_add">
+        <source>Files: Add</source>
+        <target>crwdns216902:0crwdne216902:0</target>
+      </trans-unit>
+      <trans-unit id="be_users.file_permissions.files_rename" resname="be_users.file_permissions.files_rename">
+        <source>Files: Rename</source>
+        <target>crwdns216904:0crwdne216904:0</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.files_replace" resname="be_groups.file_permissions.files_replace">
+        <source>Files: Replace</source>
+        <target>crwdns216906:0crwdne216906:0</target>
+      </trans-unit>
+      <trans-unit id="be_users.file_permissions.files_move" resname="be_users.file_permissions.files_move">
+        <source>Files: Move</source>
+        <target>crwdns216908:0crwdne216908:0</target>
+      </trans-unit>
+      <trans-unit id="be_users.file_permissions.files_copy" resname="be_users.file_permissions.files_copy">
+        <source>Files: Copy</source>
+        <target>crwdns216910:0crwdne216910:0</target>
+      </trans-unit>
+      <trans-unit id="be_users.fileoper_perms_unzip" resname="be_users.fileoper_perms_unzip">
+        <source>Files: Unzip</source>
+        <target>crwdns216912:0crwdne216912:0</target>
+      </trans-unit>
+      <trans-unit id="be_users.file_permissions.file_delete" resname="be_users.file_permissions.file_delete">
+        <source>Files: Delete</source>
+        <target>crwdns216914:0crwdne216914:0</target>
+      </trans-unit>
+      <trans-unit id="be_users.fileoper_perms_general" resname="be_users.fileoper_perms_general">
+        <source>Files: Upload,Copy,Move,Delete,Rename,New,Edit</source>
+        <target>crwdns216916:0crwdne216916:0</target>
+      </trans-unit>
+      <trans-unit id="be_users.fileoper_perms_diroper_perms" resname="be_users.fileoper_perms_diroper_perms">
+        <source>Directory: Move,Delete,Rename,New</source>
+        <target>crwdns216918:0crwdne216918:0</target>
+      </trans-unit>
+      <trans-unit id="be_users.fileoper_perms_diroper_perms_copy" resname="be_users.fileoper_perms_diroper_perms_copy">
+        <source>Directory: Copy</source>
+        <target>crwdns216920:0crwdne216920:0</target>
+      </trans-unit>
+      <trans-unit id="be_users.fileoper_perms_diroper_perms_delete" resname="be_users.fileoper_perms_diroper_perms_delete">
+        <source>Directory: Delete recursively (rm -Rf)</source>
+        <target>crwdns216922:0crwdne216922:0</target>
+      </trans-unit>
+      <trans-unit id="be_users.lang" resname="be_users.lang">
+        <source>User Interface Language</source>
+        <target>crwdns216924:0crwdne216924:0</target>
+      </trans-unit>
+      <trans-unit id="be_users.languageItemGroups.default" resname="be_users.languageItemGroups.default">
+        <source>Default</source>
+        <target>crwdns216926:0crwdne216926:0</target>
+      </trans-unit>
+      <trans-unit id="be_users.languageItemGroups.installed" resname="be_users.languageItemGroups.installed">
+        <source>Installed Languages</source>
+        <target>crwdns216928:0crwdne216928:0</target>
+      </trans-unit>
+      <trans-unit id="be_users.languageItemGroups.unavailable" resname="be_users.languageItemGroups.unavailable">
+        <source>Unavailable Languages</source>
+        <target>crwdns216930:0crwdne216930:0</target>
+      </trans-unit>
+      <trans-unit id="be_users.tabs.rights" resname="be_users.tabs.rights">
+        <source>Access Rights</source>
+        <target>crwdns216932:0crwdne216932:0</target>
+      </trans-unit>
+      <trans-unit id="be_users.tabs.mounts_and_workspaces" resname="be_users.tabs.mounts_and_workspaces">
+        <source>Mounts and Workspaces</source>
+        <target>crwdns216934:0crwdne216934:0</target>
+      </trans-unit>
+      <trans-unit id="be_users.tabs.options" resname="be_users.tabs.options">
+        <source>Options</source>
+        <target>crwdns216936:0crwdne216936:0</target>
+      </trans-unit>
+      <trans-unit id="be_users.tabs.extended" resname="be_users.tabs.extended">
+        <source>Extended</source>
+        <target>crwdns216938:0crwdne216938:0</target>
+      </trans-unit>
+      <trans-unit id="be_users.tabs.access" resname="be_users.tabs.access">
+        <source>Access</source>
+        <target>crwdns216940:0crwdne216940:0</target>
+      </trans-unit>
+      <trans-unit id="be_groups.title" resname="be_groups.title">
+        <source>Grouptitle</source>
+        <target>crwdns216942:0crwdne216942:0</target>
+      </trans-unit>
+      <trans-unit id="be_groups.pagetypes_select" resname="be_groups.pagetypes_select">
+        <source>Page types</source>
+        <target>crwdns216944:0crwdne216944:0</target>
+      </trans-unit>
+      <trans-unit id="be_groups.tables_modify" resname="be_groups.tables_modify">
+        <source>Tables (modify)</source>
+        <target>crwdns216946:0crwdne216946:0</target>
+      </trans-unit>
+      <trans-unit id="be_groups.tables_select" resname="be_groups.tables_select">
+        <source>Tables (listing)</source>
+        <target>crwdns216948:0crwdne216948:0</target>
+      </trans-unit>
+      <trans-unit id="be_groups.non_exclude_fields" resname="be_groups.non_exclude_fields">
+        <source>Allowed excludefields</source>
+        <target>crwdns216950:0crwdne216950:0</target>
+      </trans-unit>
+      <trans-unit id="be_groups.explicit_allowdeny" resname="be_groups.explicit_allowdeny">
+        <source>Explicitly allow/deny field values</source>
+        <target>crwdns216952:0crwdne216952:0</target>
+      </trans-unit>
+      <trans-unit id="be_groups.custom_options" resname="be_groups.custom_options">
+        <source>Custom module options</source>
+        <target>crwdns216954:0crwdne216954:0</target>
+      </trans-unit>
+      <trans-unit id="be_groups.inc_access_lists" resname="be_groups.inc_access_lists">
+        <source>Include Access Lists</source>
+        <target>crwdns216956:0crwdne216956:0</target>
+      </trans-unit>
+      <trans-unit id="be_groups.subgroup" resname="be_groups.subgroup">
+        <source>Inherit settings from groups</source>
+        <target>crwdns216958:0crwdne216958:0</target>
+      </trans-unit>
+      <trans-unit id="be_groups.tabs.base_rights" resname="be_groups.tabs.base_rights">
+        <source>Access Lists</source>
+        <target>crwdns216960:0crwdne216960:0</target>
+      </trans-unit>
+      <trans-unit id="be_groups.tabs.mounts_and_workspaces" resname="be_groups.tabs.mounts_and_workspaces">
+        <source>Mounts and Workspaces</source>
+        <target>crwdns216962:0crwdne216962:0</target>
+      </trans-unit>
+      <trans-unit id="be_groups.fileoper_perms" resname="be_groups.fileoper_perms">
+        <source>Fileoperation permissions</source>
+        <target>crwdns216964:0crwdne216964:0</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.folder" resname="be_groups.file_permissions.folder">
+        <source>Directory</source>
+        <target>crwdns216966:0crwdne216966:0</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.folder_read" resname="be_groups.file_permissions.folder_read">
+        <source>Directory: Read</source>
+        <target>crwdns216968:0crwdne216968:0</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.folder_write" resname="be_groups.file_permissions.folder_write">
+        <source>Directory: Write</source>
+        <target>crwdns216970:0crwdne216970:0</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.folder_add" resname="be_groups.file_permissions.folder_add">
+        <source>Directory: Add</source>
+        <target>crwdns216972:0crwdne216972:0</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.folder_rename" resname="be_groups.file_permissions.folder_rename">
+        <source>Directory: Rename</source>
+        <target>crwdns216974:0crwdne216974:0</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.folder_move" resname="be_groups.file_permissions.folder_move">
+        <source>Directory: Move</source>
+        <target>crwdns216976:0crwdne216976:0</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.folder_copy" resname="be_groups.file_permissions.folder_copy">
+        <source>Directory: Copy</source>
+        <target>crwdns216978:0crwdne216978:0</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.folder_delete" resname="be_groups.file_permissions.folder_delete">
+        <source>Directory: Delete</source>
+        <target>crwdns216980:0crwdne216980:0</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.folder_recursivedelete" resname="be_groups.file_permissions.folder_recursivedelete">
+        <source>Directory: Delete recursively</source>
+        <target>crwdns216982:0crwdne216982:0</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.files" resname="be_groups.file_permissions.files">
+        <source>Files</source>
+        <target>crwdns216984:0crwdne216984:0</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.files_read" resname="be_groups.file_permissions.files_read">
+        <source>Files: Read</source>
+        <target>crwdns216986:0crwdne216986:0</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.files_write" resname="be_groups.file_permissions.files_write">
+        <source>Files: Write</source>
+        <target>crwdns216988:0crwdne216988:0</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.files_edit" resname="be_groups.file_permissions.files_edit">
+        <source>Files: Edit</source>
+        <target>crwdns216990:0crwdne216990:0</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.files_add" resname="be_groups.file_permissions.files_add">
+        <source>Files: Add</source>
+        <target>crwdns216992:0crwdne216992:0</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.files_rename" resname="be_groups.file_permissions.files_rename">
+        <source>Files: Rename</source>
+        <target>crwdns216994:0crwdne216994:0</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.files_move" resname="be_groups.file_permissions.files_move">
+        <source>Files: Move</source>
+        <target>crwdns216996:0crwdne216996:0</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.files_copy" resname="be_groups.file_permissions.files_copy">
+        <source>Files: Copy</source>
+        <target>crwdns216998:0crwdne216998:0</target>
+      </trans-unit>
+      <trans-unit id="be_groups.fileoper_perms_unzip" resname="be_groups.fileoper_perms_unzip">
+        <source>Files: Unzip</source>
+        <target>crwdns217000:0crwdne217000:0</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.files_delete" resname="be_groups.file_permissions.files_delete">
+        <source>Files: Delete</source>
+        <target>crwdns217002:0crwdne217002:0</target>
+      </trans-unit>
+      <trans-unit id="be_groups.fileoper_perms_general" resname="be_groups.fileoper_perms_general">
+        <source>Files: Upload,Copy,Move,Delete,Rename,New,Edit</source>
+        <target>crwdns217004:0crwdne217004:0</target>
+      </trans-unit>
+      <trans-unit id="be_groups.fileoper_perms_diroper_perms" resname="be_groups.fileoper_perms_diroper_perms">
+        <source>Directory: Move,Delete,Rename,New</source>
+        <target>crwdns217006:0crwdne217006:0</target>
+      </trans-unit>
+      <trans-unit id="be_groups.fileoper_perms_diroper_perms_copy" resname="be_groups.fileoper_perms_diroper_perms_copy">
+        <source>Directory: Copy</source>
+        <target>crwdns217008:0crwdne217008:0</target>
+      </trans-unit>
+      <trans-unit id="be_groups.fileoper_perms_diroper_perms_delete" resname="be_groups.fileoper_perms_diroper_perms_delete">
+        <source>Directory: Delete recursively (rm -Rf)</source>
+        <target>crwdns217010:0crwdne217010:0</target>
+      </trans-unit>
+      <trans-unit id="be_groups.tabs.options" resname="be_groups.tabs.options">
+        <source>Options</source>
+        <target>crwdns217012:0crwdne217012:0</target>
+      </trans-unit>
+      <trans-unit id="be_groups.tabs.extended" resname="be_groups.tabs.extended">
+        <source>Extended</source>
+        <target>crwdns217014:0crwdne217014:0</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts.tabs.users" resname="sys_filemounts.tabs.users">
+        <source>Users</source>
+        <target>crwdns217016:0crwdne217016:0</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts.tabs.mountpoints" resname="sys_filemounts.tabs.mountpoints">
+        <source>Mountpoints</source>
+        <target>crwdns217018:0crwdne217018:0</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts.tabs.publishing" resname="sys_filemounts.tabs.publishing">
+        <source>Publishing</source>
+        <target>crwdns217020:0crwdne217020:0</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts.tabs.other" resname="sys_filemounts.tabs.other">
+        <source>Other</source>
+        <target>crwdns217022:0crwdne217022:0</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts.title" resname="sys_filemounts.title">
+        <source>Label</source>
+        <target>crwdns217024:0crwdne217024:0</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts.path" resname="sys_filemounts.path">
+        <source>Path</source>
+        <target>crwdns217026:0crwdne217026:0</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts.base" resname="sys_filemounts.base">
+        <source>Base</source>
+        <target>crwdns217028:0crwdne217028:0</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts.read_only" resname="sys_filemounts.read_only">
+        <source>Read-only</source>
+        <target>crwdns217030:0crwdne217030:0</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts.base_absolute" resname="sys_filemounts.base_absolute">
+        <source>absolute (root) / </source>
+        <target>crwdns217032:0crwdne217032:0</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts.base_relative" resname="sys_filemounts.base_relative">
+        <source>relative ../fileadmin/</source>
+        <target>crwdns217034:0crwdne217034:0</target>
+      </trans-unit>
+      <trans-unit id="sys_history" resname="sys_history">
+        <source>System History</source>
+        <target>crwdns217036:0crwdne217036:0</target>
+      </trans-unit>
+      <trans-unit id="sys_log" resname="sys_log">
+        <source>System Log</source>
+        <target>crwdns217038:0crwdne217038:0</target>
+      </trans-unit>
+      <trans-unit id="sys_news" resname="sys_news">
+        <source>System News</source>
+        <target>crwdns217040:0crwdne217040:0</target>
+      </trans-unit>
+      <trans-unit id="sys_news.tabs.access" resname="sys_news.tabs.access">
+        <source>Access</source>
+        <target>crwdns217042:0crwdne217042:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.adminusers" resname="sys_workspace.adminusers">
+        <source>Owners</source>
+        <target>crwdns217044:0crwdne217044:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.members" resname="sys_workspace.members">
+        <source>Members</source>
+        <target>crwdns217046:0crwdne217046:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.publish_time" resname="sys_workspace.publish_time">
+        <source>Publish</source>
+        <target>crwdns217048:0crwdne217048:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.freeze" resname="sys_workspace.freeze">
+        <source>Freeze Editing</source>
+        <target>crwdns217050:0crwdne217050:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.live_edit" resname="sys_workspace.live_edit">
+        <source>Allow "live" editing of records from tables without versioning</source>
+        <target>crwdns217052:0crwdne217052:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.review_stage_edit" resname="sys_workspace.review_stage_edit">
+        <source>Allow members to edit records in "Review" stage</source>
+        <target>crwdns217054:0crwdne217054:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.disable_autocreate" resname="sys_workspace.disable_autocreate">
+        <source>Disable auto-versioning when editing</source>
+        <target>crwdns217056:0crwdne217056:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.publish_access" resname="sys_workspace.publish_access">
+        <source>Publish access</source>
+        <target>crwdns217058:0crwdne217058:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.stagechg_notification" resname="sys_workspace.stagechg_notification">
+        <source>Stage change notification by email</source>
+        <target>crwdns217060:0crwdne217060:0</target>
+      </trans-unit>
+      <trans-unit id="pages" resname="pages">
+        <source>Page</source>
+        <target>crwdns217062:0crwdne217062:0</target>
+      </trans-unit>
+      <trans-unit id="pages.hidden_toggle" resname="pages.hidden_toggle">
+        <source>Page visible</source>
+        <target>crwdns217064:0crwdne217064:0</target>
+      </trans-unit>
+      <trans-unit id="pages.hidden_toggle_formlabel" resname="pages.hidden_toggle_formlabel">
+        <source>Page visible</source>
+        <target>crwdns217066:0crwdne217066:0</target>
+      </trans-unit>
+      <trans-unit id="pages.nav_hide" resname="pages.nav_hide">
+        <source>Page not enabled in menus</source>
+        <target>crwdns217068:0crwdne217068:0</target>
+      </trans-unit>
+      <trans-unit id="pages.nav_hide_toggle" resname="pages.nav_hide_toggle">
+        <source>Page enabled in menus</source>
+        <target>crwdns217070:0crwdne217070:0</target>
+      </trans-unit>
+      <trans-unit id="pages.nav_hide_toggle_formlabel" resname="pages.nav_hide_toggle_formlabel">
+        <source>Page enabled in menus</source>
+        <target>crwdns217072:0crwdne217072:0</target>
+      </trans-unit>
+      <trans-unit id="doktype.I.0" resname="doktype.I.0">
+        <source>Standard</source>
+        <target>crwdns217074:0crwdne217074:0</target>
+      </trans-unit>
+      <trans-unit id="doktype.I.1" resname="doktype.I.1">
+        <source>SysFolder</source>
+        <target>crwdns217076:0crwdne217076:0</target>
+      </trans-unit>
+      <trans-unit id="doktype.I.folder" resname="doktype.I.folder">
+        <source>Folder</source>
+        <target>crwdns217078:0crwdne217078:0</target>
+      </trans-unit>
+      <trans-unit id="doktype.I.2" resname="doktype.I.2">
+        <source>Recycler</source>
+        <target>crwdns217080:0crwdne217080:0</target>
+      </trans-unit>
+      <trans-unit id="title" resname="title">
+        <source>Pagetitle</source>
+        <target>crwdns217082:0crwdne217082:0</target>
+      </trans-unit>
+      <trans-unit id="php_tree_stop" resname="php_tree_stop">
+        <source>Hide child pages in page tree</source>
+        <target>crwdns217084:0crwdne217084:0</target>
+      </trans-unit>
+      <trans-unit id="is_siteroot" resname="is_siteroot">
+        <source>Is root of website</source>
+        <target>crwdns217086:0crwdne217086:0</target>
+      </trans-unit>
+      <trans-unit id="pages.slug" resname="pages.slug">
+        <source>URL Segment</source>
+        <target>crwdns217088:0crwdne217088:0</target>
+      </trans-unit>
+      <trans-unit id="be_users" resname="be_users">
+        <source>Backend user</source>
+        <target>crwdns217090:0crwdne217090:0</target>
+      </trans-unit>
+      <trans-unit id="be_groups" resname="be_groups">
+        <source>Backend usergroup</source>
+        <target>crwdns217092:0crwdne217092:0</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts" resname="sys_filemounts">
+        <source>Filemount</source>
+        <target>crwdns217094:0crwdne217094:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage" resname="sys_file_storage">
+        <source>File Storage</source>
+        <target>crwdns217096:0crwdne217096:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.type" resname="sys_file_storage.type">
+        <source>Entry point</source>
+        <target>crwdns217098:0crwdne217098:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.name" resname="sys_file_storage.name">
+        <source>Name</source>
+        <target>crwdns217100:0crwdne217100:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.description" resname="sys_file_storage.description">
+        <source>Description</source>
+        <target>crwdns217102:0crwdne217102:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.hidden" resname="sys_file_storage.hidden">
+        <source>Hide from listings</source>
+        <target>crwdns217104:0crwdne217104:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.is_online" resname="sys_file_storage.is_online">
+        <source>Is online?</source>
+        <target>crwdns217106:0crwdne217106:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.is_default" resname="sys_file_storage.is_default">
+        <source>Is default storage?</source>
+        <target>crwdns217108:0crwdne217108:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.is_browsable" resname="sys_file_storage.is_browsable">
+        <source>Is browsable?</source>
+        <target>crwdns217110:0crwdne217110:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.is_public" resname="sys_file_storage.is_public">
+        <source>Is publicly available?</source>
+        <target>crwdns217112:0crwdne217112:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.is_writable" resname="sys_file_storage.is_writable">
+        <source>Is writable?</source>
+        <target>crwdns217114:0crwdne217114:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.auto_extract_metadata" resname="sys_file_storage.auto_extract_metadata">
+        <source>Automatically extract metadata after upload</source>
+        <target>crwdns217116:0crwdne217116:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.capabilities" resname="sys_file_storage.capabilities">
+        <source>Capabilities</source>
+        <target>crwdns217118:0crwdne217118:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.processingfolder" resname="sys_file_storage.processingfolder">
+        <source>Folder for manipulated and temporary images etc.</source>
+        <target>crwdns217120:0crwdne217120:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.processingfolder.placeholder" resname="sys_file_storage.processingfolder.placeholder">
+        <source>_processed_ or 1:/processed_files_storage_x</source>
+        <target>crwdns217122:0crwdne217122:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.driver" resname="sys_file_storage.driver">
+        <source>Driver</source>
+        <target>crwdns217124:0crwdne217124:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.driver.local" resname="sys_file_storage.driver.local">
+        <source>Local Filesystem</source>
+        <target>crwdns217126:0crwdne217126:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.configuration" resname="sys_file_storage.configuration">
+        <source>Driver Configuration</source>
+        <target>crwdns217128:0crwdne217128:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file" resname="sys_file">
+        <source>File</source>
+        <target>crwdns217130:0crwdne217130:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file.storage" resname="sys_file.storage">
+        <source>Storage</source>
+        <target>crwdns217132:0crwdne217132:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file.identifier" resname="sys_file.identifier">
+        <source>Identifier</source>
+        <target>crwdns217134:0crwdne217134:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file.name" resname="sys_file.name">
+        <source>Filename</source>
+        <target>crwdns217136:0crwdne217136:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file.title" resname="sys_file.title">
+        <source>Title</source>
+        <target>crwdns217138:0crwdne217138:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file.type" resname="sys_file.type">
+        <source>File Type</source>
+        <target>crwdns217140:0crwdne217140:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file.type.unknown" resname="sys_file.type.unknown">
+        <source>Unknown</source>
+        <target>crwdns217142:0crwdne217142:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file.type.text" resname="sys_file.type.text">
+        <source>Text</source>
+        <target>crwdns217144:0crwdne217144:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file.type.image" resname="sys_file.type.image">
+        <source>Image</source>
+        <target>crwdns217146:0crwdne217146:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file.type.audio" resname="sys_file.type.audio">
+        <source>Audio</source>
+        <target>crwdns217148:0crwdne217148:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file.type.video" resname="sys_file.type.video">
+        <source>Video</source>
+        <target>crwdns217150:0crwdne217150:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file.type.software" resname="sys_file.type.software">
+        <source>Software</source>
+        <target>crwdns217152:0crwdne217152:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file.mime_type" resname="sys_file.mime_type">
+        <source>Mime Type</source>
+        <target>crwdns217154:0crwdne217154:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file.sha1" resname="sys_file.sha1">
+        <source>SHA1</source>
+        <target>crwdns217156:0crwdne217156:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file.size" resname="sys_file.size">
+        <source>Size</source>
+        <target>crwdns217158:0crwdne217158:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file.usage_count" resname="sys_file.usage_count">
+        <source>Usage Count</source>
+        <target>crwdns217160:0crwdne217160:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file.description" resname="sys_file.description">
+        <source>Description</source>
+        <target>crwdns217162:0crwdne217162:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file.alternative" resname="sys_file.alternative">
+        <source>Alternative Text</source>
+        <target>crwdns217164:0crwdne217164:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file.alternative.description" resname="sys_file.alternative.description">
+        <source>Images must have text alternatives that describe the information or function represented by them. This should only be empty for purely decorative images.</source>
+        <target>crwdns217166:0crwdne217166:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file.missing" resname="sys_file.missing">
+        <source>Marked as missing</source>
+        <target>crwdns217168:0crwdne217168:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file.metadata" resname="sys_file.metadata">
+        <source>Metadata records</source>
+        <target>crwdns217170:0crwdne217170:0</target>
+      </trans-unit>
+      <trans-unit id="file.width" resname="file.width">
+        <source>Width</source>
+        <target>crwdns217172:0crwdne217172:0</target>
+      </trans-unit>
+      <trans-unit id="file.height" resname="file.height">
+        <source>Height</source>
+        <target>crwdns217174:0crwdne217174:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata" resname="sys_file_metadata">
+        <source>File Metadata</source>
+        <target>crwdns217176:0crwdne217176:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference" resname="sys_file_reference">
+        <source>File Reference</source>
+        <target>crwdns217178:0crwdne217178:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.uid_local" resname="sys_file_reference.uid_local">
+        <source>File</source>
+        <target>crwdns217180:0crwdne217180:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.uid_foreign" resname="sys_file_reference.uid_foreign">
+        <source>Used by content elements</source>
+        <target>crwdns217182:0crwdne217182:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.tablenames" resname="sys_file_reference.tablenames">
+        <source>Table name</source>
+        <target>crwdns217184:0crwdne217184:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.fieldname" resname="sys_file_reference.fieldname">
+        <source>Foreign Field</source>
+        <target>crwdns217186:0crwdne217186:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.sorting_foreign" resname="sys_file_reference.sorting_foreign">
+        <source>Sorting foreign</source>
+        <target>crwdns217188:0crwdne217188:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.table_local" resname="sys_file_reference.table_local">
+        <source>Local table</source>
+        <target>crwdns217190:0crwdne217190:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.basicoverlayPalette" resname="sys_file_reference.basicoverlayPalette">
+        <source>File Metadata</source>
+        <target>crwdns217192:0crwdne217192:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.imageoverlayPalette" resname="sys_file_reference.imageoverlayPalette">
+        <source>Image Metadata</source>
+        <target>crwdns217194:0crwdne217194:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.audioOverlayPalette" resname="sys_file_reference.audioOverlayPalette">
+        <source>Audio Metadata</source>
+        <target>crwdns217196:0crwdne217196:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.videoOverlayPalette" resname="sys_file_reference.videoOverlayPalette">
+        <source>Video Metadata</source>
+        <target>crwdns217198:0crwdne217198:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.title" resname="sys_file_reference.title">
+        <source>Title</source>
+        <target>crwdns217200:0crwdne217200:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.description" resname="sys_file_reference.description">
+        <source>Description (Caption)</source>
+        <target>crwdns217202:0crwdne217202:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.downloadname" resname="sys_file_reference.downloadname">
+        <source>Download Name</source>
+        <target>crwdns217204:0crwdne217204:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.alternative" resname="sys_file_reference.alternative">
+        <source>Alternative Text</source>
+        <target>crwdns217206:0crwdne217206:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.link" resname="sys_file_reference.link">
+        <source>Link</source>
+        <target>crwdns217208:0crwdne217208:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.crop" resname="sys_file_reference.crop">
+        <source>Image manipulation</source>
+        <target>crwdns217210:0crwdne217210:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.autoplay" resname="sys_file_reference.autoplay">
+        <source>Autoplay</source>
+        <target>crwdns217212:0crwdne217212:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_collection" resname="sys_file_collection">
+        <source>File collection</source>
+        <target>crwdns217214:0crwdne217214:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_collection.files" resname="sys_file_collection.files">
+        <source>Files</source>
+        <target>crwdns217216:0crwdne217216:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_collection.title" resname="sys_file_collection.title">
+        <source>Title</source>
+        <target>crwdns217218:0crwdne217218:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_collection.type" resname="sys_file_collection.type">
+        <source>Type</source>
+        <target>crwdns217220:0crwdne217220:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_collection.type.0" resname="sys_file_collection.type.0">
+        <source>Static selection of files</source>
+        <target>crwdns217222:0crwdne217222:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_collection.type.1" resname="sys_file_collection.type.1">
+        <source>Folder from Storage</source>
+        <target>crwdns217224:0crwdne217224:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_collection.type.2" resname="sys_file_collection.type.2">
+        <source>Select by category</source>
+        <target>crwdns217226:0crwdne217226:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_collection.storage" resname="sys_file_collection.storage">
+        <source>File Storage</source>
+        <target>crwdns217228:0crwdne217228:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_collection.folder" resname="sys_file_collection.folder">
+        <source>Folder</source>
+        <target>crwdns217230:0crwdne217230:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_collection.recursive" resname="sys_file_collection.recursive">
+        <source>Recursive</source>
+        <target>crwdns217232:0crwdne217232:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_collection.category" resname="sys_file_collection.category">
+        <source>Category</source>
+        <target>crwdns217234:0crwdne217234:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language" resname="sys_language">
+        <source>Website Language</source>
+        <target>crwdns217236:0crwdne217236:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.isocode" resname="sys_language.isocode">
+        <source>Select Official Language (ISO code)</source>
+        <target>crwdns217238:0crwdne217238:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode" resname="sys_language.language_isocode">
+        <source>Select language</source>
+        <target>crwdns217240:0crwdne217240:0</target>
+      </trans-unit>
+      <trans-unit id="sys_language.flag" resname="sys_language.flag">
+        <source>Select flag icon</source>
+        <target>crwdns217242:0crwdne217242:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace" resname="sys_workspace">
+        <source>Workspace</source>
+        <target>crwdns217244:0crwdne217244:0</target>
+      </trans-unit>
+      <trans-unit id="editlock" resname="editlock">
+        <source>Restrict editing by non-Admins</source>
+        <target>crwdns217246:0crwdne217246:0</target>
+      </trans-unit>
+      <trans-unit id="sys_category" resname="sys_category">
+        <source>Category</source>
+        <target>crwdns217248:0crwdne217248:0</target>
+      </trans-unit>
+      <trans-unit id="sys_category.title" resname="sys_category.title">
+        <source>Title</source>
+        <target>crwdns217250:0crwdne217250:0</target>
+      </trans-unit>
+      <trans-unit id="sys_category.description" resname="sys_category.description">
+        <source>Description</source>
+        <target>crwdns217252:0crwdne217252:0</target>
+      </trans-unit>
+      <trans-unit id="sys_category.parent" resname="sys_category.parent">
+        <source>Parent</source>
+        <target>crwdns217254:0crwdne217254:0</target>
+      </trans-unit>
+      <trans-unit id="sys_category.items" resname="sys_category.items">
+        <source>Items</source>
+        <target>crwdns217256:0crwdne217256:0</target>
+      </trans-unit>
+      <trans-unit id="sys_category.categories" resname="sys_category.categories">
+        <source>Categories</source>
+        <target>crwdns217258:0crwdne217258:0</target>
+      </trans-unit>
+      <trans-unit id="sys_category.tabs.category" resname="sys_category.tabs.category">
+        <source>Categories</source>
+        <target>crwdns217260:0crwdne217260:0</target>
+      </trans-unit>
+      <trans-unit id="sys_category.tabs.items" resname="sys_category.tabs.items">
+        <source>Items</source>
+        <target>crwdns217262:0crwdne217262:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
