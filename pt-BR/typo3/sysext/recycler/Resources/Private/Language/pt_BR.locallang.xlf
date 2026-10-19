@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:recycler/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:35Z" product-name="recycler" target-language="pt-BR">
+    <header/>
+    <body>
+      <trans-unit id="title" resname="title" approved="yes">
+        <source>Recycler</source>
+        <target state="final">Lixeira</target>
+      </trans-unit>
+      <trans-unit id="description" resname="description" approved="yes">
+        <source>The recycler allows you to select any deleted data and undelete it. You can undelete recursive if the parent of the element is deleted too.</source>
+        <target state="final">A lixeira permite selecionar qualquer dado excluído e recuperá-la. Você pode recuperar recursivamente se o "pai" do elemento foi excluído também.</target>
+      </trans-unit>
+      <trans-unit id="button.delete" resname="button.delete" approved="yes">
+        <source>Delete</source>
+        <target state="final">Excluir</target>
+      </trans-unit>
+      <trans-unit id="button.undo" resname="button.undo" approved="yes">
+        <source>Recover</source>
+        <target state="final">Recuperar</target>
+      </trans-unit>
+      <trans-unit id="button.undoselected" resname="button.undoselected" approved="yes">
+        <source>Recover {0} records</source>
+        <target state="final">Recuperar {0} registros</target>
+      </trans-unit>
+      <trans-unit id="modal.undo.header" resname="modal.undo.header" approved="yes">
+        <source>Recover records</source>
+        <target state="final">Recuperar registros</target>
+      </trans-unit>
+      <trans-unit id="modal.undo.recursive" resname="modal.undo.recursive" approved="yes">
+        <source>Recover content and subpages recursively</source>
+        <target state="final">Recuperar conteúdo e subpáginas recursivamente</target>
+      </trans-unit>
+      <trans-unit id="modal.deletecontent.text" resname="modal.deletecontent.text" approved="yes">
+        <source>Do you really want to delete the record "{0}" {1} permanently? You cannot revert this action!</source>
+        <target state="final">Você realmente deseja excluir o registro "{0}" {1} permanentemente? Você não pode reverter esta ação!</target>
+      </trans-unit>
+      <trans-unit id="modal.massdelete.text" resname="modal.massdelete.text" approved="yes">
+        <source>Do you really want to delete all selected records and potential subpages? You cannot revert this action!</source>
+        <target state="final">Você realmente deseja excluir todos os registros selecionados e subpáginas em potencial? Você não pode reverter esta ação!</target>
+      </trans-unit>
+      <trans-unit id="modal.deletepage.text" resname="modal.deletepage.text" approved="yes">
+        <source>Do you really want to delete the page "{0}" {1} and all of its contents (records and pages) permanently? You cannot revert this action!</source>
+        <target state="final">Você realmente deseja excluir a página "{0}" {1} e todo seu conteúdo (registros e páginas) permanentemente? Você não pode reverter esta ação!</target>
+      </trans-unit>
+      <trans-unit id="modal.undocontent.text" resname="modal.undocontent.text" approved="yes">
+        <source>Do you really want to recover the record "{0}" {1}?</source>
+        <target state="final">Você realmente deseja recuperar o registro "{0}" {1}?</target>
+      </trans-unit>
+      <trans-unit id="modal.undopage.text" resname="modal.undopage.text" approved="yes">
+        <source>Do you really want to recover the page "{0}" {1}, its contents and optionally all of its subpages?</source>
+        <target state="final">Você realmente deseja recuperar a página "{0}", {1}, seu conteúdo e, opcionalmente, todas as suas subpáginas?</target>
+      </trans-unit>
+      <trans-unit id="modal.undo.parentpages" resname="modal.undo.parentpages" approved="yes">
+        <source>All parent pages have been restored to ensure a valid rootline!</source>
+        <target state="final">Todas as páginas pais foram restauradas para garantir uma raiz válida!</target>
+      </trans-unit>
+      <trans-unit id="modal.massundo.text" resname="modal.massundo.text" approved="yes">
+        <source>Do you really want to recover all selected records and optionally potential subpages?</source>
+        <target state="final">Iocê realmente deseja recuperar todos os registros selecionados e opcionalmente subpáginas em potencial?</target>
+      </trans-unit>
+      <trans-unit id="flashmessage.undo.norecordsselected" resname="flashmessage.undo.norecordsselected" approved="yes">
+        <source>No records set to recover.</source>
+        <target state="final">Nenhum registro definido para recuperar.</target>
+      </trans-unit>
+      <trans-unit id="flashmessage.undo.success.singular" resname="flashmessage.undo.success.singular" approved="yes">
+        <source>One record was recovered.</source>
+        <target state="final">Um registro foi recuperado.</target>
+      </trans-unit>
+      <trans-unit id="flashmessage.undo.success.plural" resname="flashmessage.undo.success.plural" approved="yes">
+        <source>%d records were recovered.</source>
+        <target state="final">%d registros foram recuperados.</target>
+      </trans-unit>
+      <trans-unit id="flashmessage.undo.failure.singular" resname="flashmessage.undo.failure.singular" approved="yes">
+        <source>Could not recover one record.</source>
+        <target state="final">Não foi possível recuperar um registro.</target>
+      </trans-unit>
+      <trans-unit id="flashmessage.undo.failure.plural" resname="flashmessage.undo.failure.plural" approved="yes">
+        <source>Could not recover %d records.</source>
+        <target state="final">Não foi possível recuperar %d registros.</target>
+      </trans-unit>
+      <trans-unit id="table.header.pid" resname="table.header.pid" approved="yes">
+        <source>PID</source>
+        <target state="final">PID</target>
+      </trans-unit>
+      <trans-unit id="table.header.actions" resname="table.header.actions" approved="yes">
+        <source>Actions</source>
+        <target state="final">Ações</target>
+      </trans-unit>
+      <trans-unit id="table.header.recordtype" resname="table.header.recordtype" approved="yes">
+        <source>Record Type</source>
+        <target state="final">Tipo de Registro</target>
+      </trans-unit>
+      <trans-unit id="table.header.tstamp" resname="table.header.tstamp" approved="yes">
+        <source>Last edit</source>
+        <target state="final">Última edição</target>
+      </trans-unit>
+      <trans-unit id="table.header.crdate" resname="table.header.crdate" approved="yes">
+        <source>Created on</source>
+        <target state="final">Criado em</target>
+      </trans-unit>
+      <trans-unit id="table.header.owner" resname="table.header.owner" approved="yes">
+        <source>Owner</source>
+        <target state="final">Dono</target>
+      </trans-unit>
+      <trans-unit id="record.deleted" resname="record.deleted" approved="yes">
+        <source>deleted</source>
+        <target state="final">excluído</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
