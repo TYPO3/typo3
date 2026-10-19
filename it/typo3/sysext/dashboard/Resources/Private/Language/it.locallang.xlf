@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="messages" date="2018-11-27T22:26:21Z" product-name="dashboard" target-language="it">
+    <header/>
+    <body>
+      <trans-unit id="close" xml:space="preserve" approved="yes">
+				<source>Close</source>
+			<target state="final">Chiudi</target></trans-unit>
+      <trans-unit id="title" xml:space="preserve" approved="yes">
+				<source>Dashboard</source>
+			<target state="final">Cruscotto</target></trans-unit>
+      <trans-unit id="widget.add" xml:space="preserve" approved="yes">
+				<source>Add widget</source>
+			<target state="final">Aggiungi widget</target></trans-unit>
+      <trans-unit id="widget.add.button.close" xml:space="preserve" approved="yes">
+				<source>Close</source>
+			<target state="final">Chiudi</target></trans-unit>
+      <trans-unit id="widget.add.button.ok" xml:space="preserve" approved="yes">
+				<source>Add widget</source>
+			<target state="final">Aggiungi widget</target></trans-unit>
+      <trans-unit id="widget.remove.button.close" xml:space="preserve" approved="yes">
+				<source>Close</source>
+			<target state="final">Chiudi</target></trans-unit>
+      <trans-unit id="widget.remove.button.ok" xml:space="preserve" approved="yes">
+				<source>Remove</source>
+			<target state="final">Rimuovi</target></trans-unit>
+      <trans-unit id="widget.remove.confirm.title" xml:space="preserve" approved="yes">
+				<source>Remove widget</source>
+			<target state="final">Rimuovi widget</target></trans-unit>
+      <trans-unit id="widget.remove.confirm.message" xml:space="preserve" approved="yes">
+				<source>Are you sure you want to remove this widget?</source>
+			<target state="final">Sei sicuro di voler rimuovere questo widget?</target></trans-unit>
+      <trans-unit id="widget.error" xml:space="preserve" approved="yes">
+				<source>An error occurred while retrieving information for this widget. Please try again, and if the problem persists, contact your administrator.</source>
+			<target state="final">Si è verificato un errore durante il recupero delle informazioni per questo widget. Si prega di riprovare e, se il problema persiste, contattare l'amministratore.</target></trans-unit>
+      <trans-unit id="dashboard.default" xml:space="preserve" approved="yes">
+				<source>My dashboard</source>
+			<target state="final">Il mio cruscotto</target></trans-unit>
+      <trans-unit id="dashboard.default.description" xml:space="preserve" approved="yes">
+				<source>Create a new dashboard with some general TYPO3 widgets on it</source>
+			<target state="final">Crea un nuovo cruscotto con alcuni widget TYPO3</target></trans-unit>
+      <trans-unit id="dashboard.empty" xml:space="preserve" approved="yes">
+				<source>Empty dashboard</source>
+			<target state="final">Cruscotto vuoto</target></trans-unit>
+      <trans-unit id="dashboard.empty.description" xml:space="preserve" approved="yes">
+				<source>Your dashboard will be created without any widget on it.</source>
+			<target state="final">Il tuo cruscotto verrà creato senza alcun widget.</target></trans-unit>
+      <trans-unit id="dashboard.add" xml:space="preserve" approved="yes">
+				<source>Add dashboard</source>
+			<target state="final">Aggiungi cruscotto</target></trans-unit>
+      <trans-unit id="dashboard.add.button.close" xml:space="preserve" approved="yes">
+				<source>Close</source>
+			<target state="final">Chiudi</target></trans-unit>
+      <trans-unit id="dashboard.add.button.ok" xml:space="preserve" approved="yes">
+				<source>Add Dashboard</source>
+			<target state="final">Aggiungi Cruscotto</target></trans-unit>
+      <trans-unit id="dashboard.configure" xml:space="preserve" approved="yes">
+				<source>Configure dashboard</source>
+			<target state="final">Configura cruscotto</target></trans-unit>
+      <trans-unit id="dashboard.configure.button.close" xml:space="preserve" approved="yes">
+				<source>Close</source>
+			<target state="final">Chiudi</target></trans-unit>
+      <trans-unit id="dashboard.configure.button.ok" xml:space="preserve" approved="yes">
+				<source>Save Dashboard</source>
+			<target state="final">Salva Cruscotto</target></trans-unit>
+      <trans-unit id="dashboard.delete" xml:space="preserve" approved="yes">
+				<source>Delete dashboard</source>
+			<target state="final">Elimina cruscotto</target></trans-unit>
+      <trans-unit id="dashboard.delete.sure" xml:space="preserve" approved="yes">
+				<source>Are you sure you want to delete this dashboard?</source>
+			<target state="final">Sei sicuro di voler eliminare questo cruscotto?</target></trans-unit>
+      <trans-unit id="dashboard.delete.ok" xml:space="preserve" approved="yes">
+				<source>Yes, delete it</source>
+			<target state="final">Sì, elimina</target></trans-unit>
+      <trans-unit id="dashboard.delete.cancel" xml:space="preserve" approved="yes">
+				<source>Cancel</source>
+			<target state="final">Annulla</target></trans-unit>
+      <trans-unit id="dashboard.title" xml:space="preserve" approved="yes">
+				<source>Title of dashboard</source>
+			<target state="final">Titolo del cruscotto</target></trans-unit>
+      <trans-unit id="widgets.documentation.gettingStarted.title" xml:space="preserve" approved="yes">
+				<source>Getting Started with TYPO3</source>
+ 			<target state="final">Primi Passi con TYPO3</target></trans-unit>
+      <trans-unit id="widgets.documentation.gettingStarted.description" xml:space="preserve" approved="yes">
+				<source>Add a shortcut to the TYPO3 Getting Started Tutorial.</source>
+ 			<target state="final">Aggiunge una scorciatoia a "Getting Started Tutorial" di TYPO3.</target></trans-unit>
+      <trans-unit id="widgets.documentation.gettingStarted.text" xml:space="preserve" approved="yes">
+				<source>New to TYPO3? In our Getting Started Tutorial you will learn the basics how to use TYPO3.</source>
+ 			<target state="final">Sei nuovo a TYPO3? Nel nostro "Getting Started Tutorial" imparerai le basi su come usare TYPO3.</target></trans-unit>
+      <trans-unit id="widgets.documentation.gettingStarted.content.label" xml:space="preserve" approved="yes">
+				<source>Getting Started Tutorial</source>
+ 			<target state="final">Guida Introduttiva</target></trans-unit>
+      <trans-unit id="widgets.documentation.typoscriptReference.title" xml:space="preserve" approved="yes">
+				<source>TypoScript Template Reference</source>
+ 			<target state="final">Guida di riferimento TypoScript - TSref</target></trans-unit>
+      <trans-unit id="widgets.documentation.typoscriptReference.description" xml:space="preserve" approved="yes">
+				<source>Add a shortcut to the TYPO3 TypoScript Template Reference.</source>
+ 			<target state="final">Aggiunge una scorciatoia a "TypoScript Template Reference" di TYPO3 (TSref).</target></trans-unit>
+      <trans-unit id="widgets.documentation.typoscriptReference.text" xml:space="preserve" approved="yes">
+				<source>This document is a reference, used to lookup TypoScript templating.</source>
+ 			<target state="final">La guida di riferimento per cercare le istruzioni TypoScript per la creazione di Template.</target></trans-unit>
+      <trans-unit id="widgets.documentation.typoscriptReference.content.label" xml:space="preserve" approved="yes">
+				<source>TypoScript Template Reference</source>
+ 			<target state="final">TypoScript Template Reference</target></trans-unit>
+      <trans-unit id="widgets.documentation.TSconfigReference.title" xml:space="preserve" approved="yes">
+				<source>TSconfig Reference</source>
+ 			<target state="final">Guida di riferimento di TSconfig</target></trans-unit>
+      <trans-unit id="widgets.documentation.TSconfigReference.description" xml:space="preserve" approved="yes">
+				<source>Add a shortcut to the TYPO3 TSconfig Reference.</source>
+ 			<target state="final">Aggiunge una scorciatoia a "TSconfig Reference" di TYPO3.</target></trans-unit>
+      <trans-unit id="widgets.documentation.TSconfigReference.text" xml:space="preserve" approved="yes">
+				<source>This document describes TSconfig and its options.</source>
+ 			<target state="final">Questo documento descrive TSconfig e tutte le sue opzioni.</target></trans-unit>
+      <trans-unit id="widgets.documentation.TSconfigReference.content.label" xml:space="preserve" approved="yes">
+				<source>TSconfig Reference</source>
+ 			<target state="final">TSconfig Reference</target></trans-unit>
+      <trans-unit id="widgets.t3news.title" xml:space="preserve" approved="yes">
+				<source>TYPO3 news</source>
+			<target state="final">Novità TYPO3</target></trans-unit>
+      <trans-unit id="widgets.t3news.description" xml:space="preserve" approved="yes">
+				<source>Add a list of news items from the TYPO3 project</source>
+			<target state="final">Aggiunge una lista di notizie dal progetto TYPO3</target></trans-unit>
+      <trans-unit id="widgets.t3news.moreItems" xml:space="preserve" approved="yes">
+				<source>More TYPO3 news</source>
+			<target state="final">Ulteriori novità TYPO3</target></trans-unit>
+      <trans-unit id="widgets.t3information.title" xml:space="preserve" approved="yes">
+				<source>About TYPO3</source>
+			<target state="final">Informazioni su TYPO3</target></trans-unit>
+      <trans-unit id="widgets.t3information.description" xml:space="preserve" approved="yes">
+				<source>Some general information about TYPO3 and the version used</source>
+			<target state="final">Alcune informazioni generali su TYPO3 e la versione utilizzata</target></trans-unit>
+      <trans-unit id="widgets.t3information.text" resname="widgets.t3information.text" approved="yes">
+        <source><![CDATA[TYPO3 CMS is an enterprise-class, Open Source Content Management System, used internationally to build and manage websites of all types, from small sites for non-profits to multilingual enterprise solutions for large corporations.<br /><br />For further information visit <a href="https://typo3.org/typo3-cms/" target="_blank" rel="noreferrer">typo3.org</a>.<br /><br />TYPO3 CMS is <b>freely available</b> under the <a href="https://typo3.org/project/licenses/" target="_blank" rel="noreferrer">TYPO3-license (GNU/GPL)</a>.<br /><br />You are using version %s - Copyright %s %s]]></source>
+        <target state="final"><![CDATA[TYPO3 CMS è un Content Management System Open Source di classe enterprise, per la gestione dei contenuti, utilizzato a livello internazionale per costruire e gestire siti web di ogni tipo: da piccoli siti non-profit a soluzioni aziendali multilingue per grandi aziende.<br /><br />Per ulteriori informazioni visita <a href="https://typo3.org/typo3-cms/" target="_blank" rel="noreferrer">typo3.org</a>.<br /><br />TYPO3 CMS è <b>disponibile gratuitamente</b> sotto la <a href="https://typo3.org/project/licenses/" target="_blank" rel="noreferrer">TYPO3-license (GNU/GPL)</a>.<br /><br />Stai usando la versione %s - Copyright %s %s]]></target>
+      </trans-unit>
+      <trans-unit id="widgets.t3information.logo" resname="widgets.t3information.logo" approved="yes">
+        <source>TYPO3 CMS logo</source>
+        <target state="final">Logo di TYPO3 CMS</target>
+      </trans-unit>
+      <trans-unit id="widgets.sysLogErrors.title" xml:space="preserve" approved="yes">
+				<source>Number of errors in system log</source>
+			<target state="final">Numero di errori nel log di sistema</target></trans-unit>
+      <trans-unit id="widgets.sysLogErrors.description" xml:space="preserve" approved="yes">
+				<source>Shows the number of errors in the sys log of the last month, grouped by date</source>
+			<target state="final">Mostra il numero di errori nel log di sistema dell'ultimo mese, raggruppati per data</target></trans-unit>
+      <trans-unit id="widgets.sysLogErrors.buttonText" xml:space="preserve" approved="yes">
+				<source>Show all errors in log</source>
+			<target state="final">Mostra tutti gli errori nel log di sistema</target></trans-unit>
+      <trans-unit id="widgets.sysLogErrors.chart.dataSet.0" xml:space="preserve" approved="yes">
+				<source>Number of errors</source>
+			<target state="final">Numero di errori</target></trans-unit>
+      <trans-unit id="widgets.typeOfUsers.title" xml:space="preserve" approved="yes">
+				<source>Type of backend users</source>
+			<target state="final">Tipi di Utenti di Backend</target></trans-unit>
+      <trans-unit id="widgets.typeOfUsers.description" xml:space="preserve" approved="yes">
+				<source>Shows the amount of normal- and admin-users</source>
+			<target state="final">Mostra la quantità di utenti ordinari e amministratori</target></trans-unit>
+      <trans-unit id="widgets.typeOfUsers.normalUsers" xml:space="preserve" approved="yes">
+				<source>Normal users</source>
+			<target state="final">Utenti ordinari</target></trans-unit>
+      <trans-unit id="widgets.typeOfUsers.adminUsers" xml:space="preserve" approved="yes">
+				<source>Admin users</source>
+			<target state="final">Utenti admin</target></trans-unit>
+      <trans-unit id="widgets.failedLogins.title" xml:space="preserve" approved="yes">
+				<source>Failed backend logins</source>
+			<target state="final">Autenticazioni al backend fallite</target></trans-unit>
+      <trans-unit id="widgets.failedLogins.subtitle" xml:space="preserve" approved="yes">
+				<source>In last 24 hours</source>
+			<target state="final">Nelle ultime 24 ore</target></trans-unit>
+      <trans-unit id="widgets.failedLogins.description" xml:space="preserve" approved="yes">
+				<source>Information about the number of failed logins during the last 24 hours.</source>
+			<target state="final">Informazioni riguardo il numero di autenticazioni fallite nelle ultime 24 ore.</target></trans-unit>
+      <trans-unit id="widgets.t3securityAdvisories.title" xml:space="preserve" approved="yes">
+				<source>TYPO3 security advisories</source>
+			<target state="final">Avvisi di sicurezza di TYPO3</target></trans-unit>
+      <trans-unit id="widgets.t3securityAdvisories.description" xml:space="preserve" approved="yes">
+				<source>Add a list of security advisories from the TYPO3 project</source>
+			<target state="final">Aggiunge una lista di avvisi di sicurezza dal progetto TYPO3</target></trans-unit>
+      <trans-unit id="widgets.t3securityAdvisories.moreItems" xml:space="preserve" approved="yes">
+				<source>More TYPO3 security advisories</source>
+			<target state="final">Ulteriori avvisi di sicurezza TYPO3</target></trans-unit>
+      <trans-unit id="widget_group.general" xml:space="preserve" approved="yes">
+				<source>General</source>
+ 			<target state="final">Generale</target></trans-unit>
+      <trans-unit id="widget_group.typo3" xml:space="preserve" approved="yes">
+				<source>TYPO3 community</source>
+ 			<target state="final">Comunità di TYPO3</target></trans-unit>
+      <trans-unit id="widget_group.news" xml:space="preserve" approved="yes">
+				<source>News</source>
+ 			<target state="final">Notizie</target></trans-unit>
+      <trans-unit id="widget_group.documentation" xml:space="preserve" approved="yes">
+				<source>Documentation</source>
+ 			<target state="final">Documentazione</target></trans-unit>
+      <trans-unit id="widget_group.system" xml:space="preserve" approved="yes">
+				<source>System Information</source>
+ 			<target state="final">Informazioni di Sistema</target></trans-unit>
+      <trans-unit id="dashboard.empty.content.title" xml:space="preserve" approved="yes">
+				<source>No widgets</source>
+ 			<target state="final">Nessun widget</target></trans-unit>
+      <trans-unit id="dashboard.empty.content.description" xml:space="preserve" approved="yes">
+				<source>There are no widgets on this dashboard yet. You can add widgets now by clicking on the button below.</source>
+ 			<target state="final">Non ci sono ancora widget su questo cruscotto. Puoi aggiungere widget facendo clic sul pulsante qui sotto.</target></trans-unit>
+      <trans-unit id="dashboard.empty.content.button" xml:space="preserve" approved="yes">
+				<source>Add a widget</source>
+ 			<target state="final">Aggiungi un widget</target></trans-unit>
+    </body>
+  </file>
+</xliff>
