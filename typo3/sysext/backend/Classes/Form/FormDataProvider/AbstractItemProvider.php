@@ -327,45 +327,16 @@ abstract class AbstractItemProvider
         $languageService = $this->getLanguageService();
 
         $foreignTable = $result['processedTca']['columns'][$fieldName]['config']['foreign_table'];
-        if (!$result['tcaSchemata']->has($foreignTable)) {
-            throw new \UnexpectedValueException(
-                'Field ' . $fieldName . ' of table ' . $result['tableName'] . ' reference to foreign table '
-                . $foreignTable . ', but this table is not defined in TCA',
-                1439569743
-            );
-        }
-
-        $queryBuilder = $this->buildForeignTableQueryBuilder($result, $fieldName);
-        try {
-            $queryResult = $queryBuilder->executeQuery();
-        } catch (DBALException $e) {
-            // Early return on error with flash message
-            $msg = $e->getMessage() . '. ' . $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:error.database_schema_mismatch');
-            $msgTitle = $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:error.database_schema_mismatch_title');
-            $flashMessage = new FlashMessage($msg, $msgTitle, ContextualFeedbackSeverity::ERROR, true);
-            $defaultFlashMessageQueue = $this->flashMessageService->getMessageQueueByIdentifier();
-            $defaultFlashMessageQueue->enqueue($flashMessage);
-            return $items;
-        }
-
         $labelPrefix = '';
         if (!empty($result['processedTca']['columns'][$fieldName]['config']['foreign_table_prefix'])) {
             $labelPrefix = $result['processedTca']['columns'][$fieldName]['config']['foreign_table_prefix'];
             $labelPrefix = $languageService->sL($labelPrefix);
         }
 
-        $allForeignRows = $queryResult->fetchAllAssociative();
-        // Find all possible versioned records of the current IDs, so we do not need to overlay each record
-        // This way, workspaceOL() does not need to be called for each record.
-        $workspaceId = $this->getBackendUser()->workspace;
-        $doOverlaysForRecords = BackendUtility::getPossibleWorkspaceVersionIdsOfLiveRecordIds($foreignTable, array_column($allForeignRows, 'uid'), $workspaceId);
+        $allForeignRows = $this->fetchForeignTableRows($result, $fieldName);
         $itemGroupField = $result['processedTca']['columns'][$fieldName]['config']['foreign_table_item_group'] ?? '';
 
         foreach ($allForeignRows as $foreignRow) {
-            // Only do workspace overlays when a versioned record exists.
-            if (isset($foreignRow['uid']) && isset($doOverlaysForRecords[(int)$foreignRow['uid']])) {
-                BackendUtility::workspaceOL($foreignTable, $foreignRow, $workspaceId);
-            }
             // Only proceed in case the row was not unset and we don't deal with a delete placeholder
             if (is_array($foreignRow)
                 && VersionState::tryFrom($foreignRow['t3ver_state'] ?? 0) !== VersionState::DELETE_PLACEHOLDER
@@ -405,6 +376,129 @@ abstract class AbstractItemProvider
         }
 
         return $items;
+    }
+
+    /**
+     * Check tree-field visibility without changing its raw TCA items or building
+     * labels, icons and full item rows. Shared by selectTree and category fields.
+     */
+    protected function hasSelectableTreeItems(array $result, string $fieldName): bool
+    {
+        $fieldConfig = $result['processedTca']['columns'][$fieldName]['config'];
+        if ($fieldConfig['showIfEmpty'] ?? false) {
+            return true;
+        }
+        $items = $this->sanitizeItemArray($fieldConfig['items'] ?? [], $result['tableName'], $fieldName);
+        $items = $this->removeItemsByKeepItemsPageTsConfig($result, $fieldName, $items);
+        $items = $this->addItemsFromPageTsConfig($result, $fieldName, $items);
+        $items = $this->removeItemsByRemoveItemsPageTsConfig($result, $fieldName, $items);
+        $items = $this->removeItemsByUserLanguageFieldRestriction($result, $fieldName, $items);
+        $items = $this->removeItemsByUserAuthMode($result, $fieldName, $items);
+        $items = $this->removeItemsByDoktypeUserRestriction($result, $fieldName, $items);
+        foreach ($items as $item) {
+            $value = (string)$item['value'];
+            if ($value !== '' && $value !== '--div--' && (empty($fieldConfig['foreign_table']) || (int)$value > 0)) {
+                return true;
+            }
+        }
+
+        // UID filters run in SQL. Workspace overlays and user checks can still
+        // discard rows afterwards, so keep batching for those cases.
+        $batchSize = $this->getBackendUser()->workspace !== 0
+            || isset($fieldConfig['authMode'])
+            || ($result['processedTca']['ctrl']['languageField'] ?? null) === $fieldName
+            || ($result['tableName'] === 'pages' && $fieldName === 'doktype') ? 100 : 1;
+        $offset = 0;
+        do {
+            $rows = $this->fetchForeignTableRows($result, $fieldName, $batchSize, $offset, true);
+            foreach ($rows as $row) {
+                if (!is_array($row) || (int)$row['uid'] <= 0
+                    || VersionState::tryFrom($row['t3ver_state'] ?? 0) === VersionState::DELETE_PLACEHOLDER
+                ) {
+                    continue;
+                }
+                $items = [['value' => $row['uid']]];
+                $items = $this->removeItemsByUserLanguageFieldRestriction($result, $fieldName, $items);
+                $items = $this->removeItemsByUserAuthMode($result, $fieldName, $items);
+                $items = $this->removeItemsByDoktypeUserRestriction($result, $fieldName, $items);
+                if ($items !== []) {
+                    return true;
+                }
+            }
+            $offset += $batchSize;
+        } while (count($rows) === $batchSize);
+        return false;
+    }
+
+    /**
+     * Fetch one batch with workspace overlays. Leave delete placeholders in the
+     * result so callers can use the row count to decide whether to fetch more.
+     *
+     * @return array<array|false>
+     */
+    protected function fetchForeignTableRows(array $result, string $fieldName, ?int $limit = null, int $offset = 0, bool $applyPageTsConfig = false): array
+    {
+        $foreignTable = $result['processedTca']['columns'][$fieldName]['config']['foreign_table'] ?? null;
+        if (!is_string($foreignTable) || $foreignTable === '') {
+            return [];
+        }
+        if (!$result['tcaSchemata']->has($foreignTable)) {
+            throw new \UnexpectedValueException(
+                'Field ' . $fieldName . ' of table ' . $result['tableName'] . ' reference to foreign table '
+                . $foreignTable . ', but this table is not defined in TCA',
+                1439569743
+            );
+        }
+
+        $queryBuilder = $this->buildForeignTableQueryBuilder($result, $fieldName);
+        if ($applyPageTsConfig) {
+            $fieldTsConfig = $result['pageTsConfig']['TCEFORM.'][$result['tableName'] . '.'][$fieldName . '.'] ?? [];
+            foreach (['keepItems' => 'in', 'removeItems' => 'notIn'] as $key => $operator) {
+                if (!isset($fieldTsConfig[$key]) || !is_string($fieldTsConfig[$key])) {
+                    continue;
+                }
+                // Match PHP's item-key comparisons: "01" must not become UID 1.
+                $uids = array_filter(GeneralUtility::trimExplode(',', $fieldTsConfig[$key]), static fn(string $uid): bool => (int)$uid > 0 && (string)(int)$uid === $uid);
+                if ($uids === []) {
+                    if ($key === 'keepItems') {
+                        return [];
+                    }
+                    continue;
+                }
+                // Apply filters after the inner query's configured SQL limit.
+                $queryBuilder->andWhere($queryBuilder->expr()->$operator(
+                    'joined_table.uid',
+                    $queryBuilder->quoteArrayBasedValueListToIntegerList($uids)
+                ));
+            }
+        }
+        if ($limit !== null) {
+            // A unique tie breaker keeps pagination stable for equal sort values.
+            $queryBuilder->setMaxResults($limit)->setFirstResult($offset)->addOrderBy('joined_table.uid');
+        }
+        try {
+            $queryResult = $queryBuilder->executeQuery();
+        } catch (DBALException $e) {
+            $languageService = $this->getLanguageService();
+            $msg = $e->getMessage() . '. ' . $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:error.database_schema_mismatch');
+            $msgTitle = $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:error.database_schema_mismatch_title');
+            $flashMessage = new FlashMessage($msg, $msgTitle, ContextualFeedbackSeverity::ERROR, true);
+            $defaultFlashMessageQueue = $this->flashMessageService->getMessageQueueByIdentifier();
+            $defaultFlashMessageQueue->enqueue($flashMessage);
+            return [];
+        }
+
+        $rows = $queryResult->fetchAllAssociative();
+        $queryResult->free();
+        $workspaceId = $this->getBackendUser()->workspace;
+        $doOverlaysForRecords = BackendUtility::getPossibleWorkspaceVersionIdsOfLiveRecordIds($foreignTable, array_column($rows, 'uid'), $workspaceId);
+        foreach ($rows as $index => $row) {
+            if (isset($row['uid']) && isset($doOverlaysForRecords[(int)$row['uid']])) {
+                BackendUtility::workspaceOL($foreignTable, $row, $workspaceId);
+                $rows[$index] = $row;
+            }
+        }
+        return $rows;
     }
 
     /**
@@ -564,7 +658,7 @@ abstract class AbstractItemProvider
 
     /**
      * Build wrapped QueryBuilder to fetch full foreign records. Helper method of
-     * {@see self::addItemsFromForeignTable()}, do not call otherwise.
+     * {@see self::fetchForeignTableRows()}, do not call otherwise.
      *
      * @param array $result Result array
      * @param string $localFieldName Current handle field name

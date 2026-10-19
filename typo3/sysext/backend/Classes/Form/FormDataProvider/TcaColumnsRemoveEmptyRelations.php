@@ -34,6 +34,9 @@ use TYPO3\CMS\Core\Schema\LanguageMarker;
  * Existing database values are not affected: fields not rendered in the form
  * are simply not submitted, so DataHandler preserves their stored values.
  *
+ * Tree providers supply an internal _hasSelectableItems flag so the initial
+ * visibility check does not require a fully resolved item list.
+ *
  * Fields can opt out via TCA config 'showIfEmpty' => true.
  */
 readonly class TcaColumnsRemoveEmptyRelations implements FormDataProviderInterface
@@ -55,7 +58,7 @@ readonly class TcaColumnsRemoveEmptyRelations implements FormDataProviderInterfa
                 if ($this->hasMultipleLanguageChoices($fieldConfig)) {
                     continue;
                 }
-            } elseif ($this->hasMeaningfulItems($fieldConfig) || $this->hasItemsFromTreeDataProvider($fieldConfig)) {
+            } elseif (($fieldConfig['_hasSelectableItems'] ?? $this->hasMeaningfulItems($fieldConfig)) || $this->hasItemsFromTreeDataProvider($fieldConfig)) {
                 continue;
             }
 

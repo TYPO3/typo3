@@ -39,6 +39,33 @@ final class TcaCategoryTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function initialFormAvoidsPerformanceRegressionByNotCompilingCategoryItems(): void
+    {
+        $input = [
+            'command' => 'edit',
+            'tableName' => 'tt_content',
+            'effectivePid' => 89,
+            'databaseRow' => ['uid' => 298, 'categories' => '2'],
+            'processedTca' => ['columns' => ['categories' => ['config' => $this->getFieldConfiguration(['type' => 'category'])]]],
+            'rootline' => [],
+            'site' => null,
+            'selectTreeCompileItems' => false,
+        ];
+        // Compiling all labels, icons and _row data before the AJAX load caused
+        // the same memory regression for category fields as for selectTree.
+        $subject = $this->getMockBuilder(TcaCategory::class)
+            ->onlyMethods(['addItemsFromForeignTable'])
+            ->getMock();
+        $subject->expects($this->never())->method('addItemsFromForeignTable');
+        $subject->injectConnectionPool($this->get(ConnectionPool::class));
+
+        $result = $subject->addData($this->addTcaSchemata($input));
+
+        self::assertTrue($result['processedTca']['columns']['categories']['_hasSelectableItems']);
+        self::assertEmpty($result['processedTca']['columns']['categories']['config']['items'] ?? []);
+    }
+
+    #[Test]
     public function addDataOnlyWorksForTypeCategory(): void
     {
         $input = [
@@ -122,11 +149,9 @@ final class TcaCategoryTest extends FunctionalTestCase
 
         $result = $this->createSubject()->addData($input);
 
-        // Verify items are populated (flat item list from foreign table)
-        self::assertNotEmpty($result['processedTca']['columns']['categories']['config']['items']);
-
-        // Compare structural result without items (tested separately in AJAX tests)
-        unset($result['processedTca']['columns']['categories']['config']['items']);
+        self::assertTrue($result['processedTca']['columns']['categories']['_hasSelectableItems']);
+        self::assertEmpty($result['processedTca']['columns']['categories']['config']['items'] ?? []);
+        unset($result['processedTca']['columns']['categories']['_hasSelectableItems']);
         $expected = $input;
         $expected['databaseRow']['categories'] = ['2'];
         $expected['processedTca']['columns']['categories']['config']['treeConfig'] = [
@@ -182,8 +207,9 @@ final class TcaCategoryTest extends FunctionalTestCase
         $input = $this->addTcaSchemata($input);
 
         $result = $this->createSubject()->addData($input);
-        self::assertNotEmpty($result['processedTca']['columns']['categories']['config']['items']);
-        unset($result['processedTca']['columns']['categories']['config']['items']);
+        self::assertTrue($result['processedTca']['columns']['categories']['_hasSelectableItems']);
+        self::assertEmpty($result['processedTca']['columns']['categories']['config']['items'] ?? []);
+        unset($result['processedTca']['columns']['categories']['_hasSelectableItems']);
 
         $expected = $input;
         $expected['databaseRow']['categories'] = ['2'];
@@ -266,8 +292,9 @@ final class TcaCategoryTest extends FunctionalTestCase
         $input = $this->addTcaSchemata($input);
 
         $result = $this->createSubject()->addData($input);
-        self::assertNotEmpty($result['processedTca']['columns']['categories']['config']['items']);
-        unset($result['processedTca']['columns']['categories']['config']['items']);
+        self::assertTrue($result['processedTca']['columns']['categories']['_hasSelectableItems']);
+        self::assertEmpty($result['processedTca']['columns']['categories']['config']['items'] ?? []);
+        unset($result['processedTca']['columns']['categories']['_hasSelectableItems']);
 
         $expected = $input;
         $expected['databaseRow']['categories'] = ['2'];
@@ -435,8 +462,9 @@ final class TcaCategoryTest extends FunctionalTestCase
         $input = $this->addTcaSchemata($input);
 
         $result = $this->createSubject()->addData($input);
-        self::assertNotEmpty($result['processedTca']['columns']['categories']['config']['items']);
-        unset($result['processedTca']['columns']['categories']['config']['items']);
+        self::assertTrue($result['processedTca']['columns']['categories']['_hasSelectableItems']);
+        self::assertEmpty($result['processedTca']['columns']['categories']['config']['items'] ?? []);
+        unset($result['processedTca']['columns']['categories']['_hasSelectableItems']);
 
         $expected = $input;
         $expected['databaseRow']['categories'] = [

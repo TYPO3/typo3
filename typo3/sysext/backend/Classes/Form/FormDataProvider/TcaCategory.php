@@ -33,7 +33,8 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  * Used in combination with FormSelectTreeAjaxController to fetch the final tree list, this
  * is triggered if $result['selectTreeCompileItems'] is set to true. This way the tree item
  * calculation is only triggered if needed in this ajax context. Writes the prepared item
- * array to ['config']['items'] in this case.
+ * array to ['config']['items'] in this case. Initial forms keep the raw items
+ * and supply _hasSelectableItems for the empty-relation check.
  */
 class TcaCategory extends AbstractItemProvider implements FormDataProviderInterface
 {
@@ -80,19 +81,11 @@ class TcaCategory extends AbstractItemProvider implements FormDataProviderInterf
                 );
             }
 
-            // Always resolve the flat item list from foreign_table with TSconfig filtering applied.
-            // This is needed by TcaColumnsRemoveEmptyRelations to determine if the field has any
-            // selectable items, and is reused below for tree building in the AJAX context.
-            $dynamicItems = $this->addItemsFromForeignTable($result, $fieldName);
-            $dynamicItems = $this->removeItemsByKeepItemsPageTsConfig($result, $fieldName, $dynamicItems);
-            $dynamicItems = $this->removeItemsByRemoveItemsPageTsConfig($result, $fieldName, $dynamicItems);
-
-            // Store flat items for downstream providers (will be overwritten with tree structure during AJAX)
-            $result['processedTca']['columns'][$fieldName]['config']['items'] = $dynamicItems;
-
             // This is usually only executed in an ajax request
             if ($result['selectTreeCompileItems'] ?? false) {
-                // Reuse the already-fetched dynamic items for tree building
+                $dynamicItems = $this->addItemsFromForeignTable($result, $fieldName);
+                $dynamicItems = $this->removeItemsByKeepItemsPageTsConfig($result, $fieldName, $dynamicItems);
+                $dynamicItems = $this->removeItemsByRemoveItemsPageTsConfig($result, $fieldName, $dynamicItems);
                 // @todo: Simplify the construct:
                 //        The entire $treeDataProvider / $treeRenderer / $tree construct should probably
                 //        vanish and the tree processing could happen here in the data provider? Watch
@@ -129,6 +122,8 @@ class TcaCategory extends AbstractItemProvider implements FormDataProviderInterf
 
                 // Add the calculated tree nodes
                 $result['processedTca']['columns'][$fieldName]['config']['items'] = $tree->render();
+            } else {
+                $result['processedTca']['columns'][$fieldName]['_hasSelectableItems'] = $this->hasSelectableTreeItems($result, $fieldName);
             }
         }
 
