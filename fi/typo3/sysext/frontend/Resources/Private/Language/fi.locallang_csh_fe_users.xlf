@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_csh_fe_users.xlf" date="2011-10-17T20:22:32Z" product-name="context_help" target-language="fi">
+    <header/>
+    <body>
+      <trans-unit id="username.description" resname="username.description" approved="yes">
+        <source>Enter the username of the website user. This is needed to login.</source>
+        <target state="final">Anna websivuston käyttäjän käyttäjänimi. Tätä tarvitaan sisäänkirjoittautumiseen (login).</target>
+      </trans-unit>
+      <trans-unit id="username.syntax" resname="username.syntax" approved="yes">
+        <source>A username is required and must be in lowercase without spaces in it. The username must be unique among other usernames in the page where it's saved. If it is not unique a number will be prepended automatically.</source>
+        <target state="final">Käyttäjänimi on pakollinen.Sen tulee koostua pienistä kirjaimista ilman välilyöntejä. Käyttäjänimen tulee olla yksilöllinen, ainakin sillä sivulle, jonne se talletetaan. Jos se ei ole yksilöllinen lisätään järjestysnumero automaattisesti.</target>
+      </trans-unit>
+      <trans-unit id="password.description" resname="password.description" approved="yes">
+        <source>Enter the password for the username above. This is needed to login.</source>
+        <target state="final">Anna salasana ylläolevalle käyttäjänimelle. Tätä tarvitaan sisäänkirjoittautumiseen (login).</target>
+      </trans-unit>
+      <trans-unit id="password.syntax" resname="password.syntax" approved="yes">
+        <source>A password is required and must be in lowercase without spaces in it.</source>
+        <target state="final">Salasana on pakollinen.Sen tulee koostua pienistä kirjaimista ilman välilyöntejä.</target>
+      </trans-unit>
+      <trans-unit id="usergroup.description" resname="usergroup.description" approved="yes">
+        <source>Select a user group for the username.</source>
+        <target state="final">Valitse käyttäjäryhmä käyttäjälle.</target>
+      </trans-unit>
+      <trans-unit id="usergroup.details" resname="usergroup.details" approved="yes">
+        <source>When a user logs in he is able to view all content which is access restricted to the user &lt;em&gt;group(s)&lt;/em&gt; the user is a member of. Therefore the user login primarily makes sense with regard to the member groups.</source>
+        <target state="final">Kun käyttäjä kirjoittautuu sisään on hänellä mahdollisuus nähdä kaikki sisältö johon pääsy on rajoitettu vain sille/niille käytäjä&lt;em&gt;ryhmälle/ryhmille&lt;/em&gt; joiden jäsen hän on. Näin ollen sissänkirjoittautumisessa on järkeä vain käyttäjäryhmiä käytettäessä.</target>
+      </trans-unit>
+      <trans-unit id="lockToDomain.details" resname="lockToDomain.details" approved="yes">
+        <source>A TYPO3 system may have multiple domains pointing to it. Therefore this option secures that users can login only from a certain host name.</source>
+        <target state="final">TYPO3 järjestelmässä voi olla monta domainia. Siksi tämä vaihtoehto varmistaa käyttäjän pääsyn vain tiettyihin (sallittuihin) domaineihin.</target>
+      </trans-unit>
+      <trans-unit id="lockToDomain.syntax" resname="lockToDomain.syntax" approved="yes">
+        <source>Either a domain name, "www.typo3.org" or an IP address, "10.34.222.83"</source>
+        <target state="final">Anna domain nimi, esimerkiksi "www.typo3.com" tai IP osoite "10.34.444.83"</target>
+      </trans-unit>
+      <trans-unit id="name.description" resname="name.description" approved="yes">
+        <source>Enter the regular name of the user, both first- and surname.</source>
+        <target state="final">Anna käyttäjän oikea nimi, sekä etu- että sukunimi.</target>
+      </trans-unit>
+      <trans-unit id="address.description" resname="address.description" approved="yes">
+        <source>Enter the street address of the user.</source>
+        <target state="final">Anna käyttäjän soite.</target>
+      </trans-unit>
+      <trans-unit id="www.description" resname="www.description" approved="yes">
+        <source>Enter the homepage URL</source>
+        <target state="final">Anna käyttäjän kotisivun URL.</target>
+      </trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Enter the job title, eg. 'Director' or 'Accountant'.</source>
+        <target state="final">Anna käyttäjän ammatti/arvo, esim. 'Tj" tai "suunnittelija".</target>
+      </trans-unit>
+      <trans-unit id="company.description" resname="company.description" approved="yes">
+        <source>Enter the name of the company in which the user is employed.</source>
+        <target state="final">Anna yrityksen nimi jossa käyttäjä työskentelee.</target>
+      </trans-unit>
+      <trans-unit id="image.description" resname="image.description" approved="yes">
+        <source>Insert a photo of the user.</source>
+        <target state="final">Anna käyttäjän kuva.</target>
+      </trans-unit>
+      <trans-unit id="starttime.description" resname="starttime.description" approved="yes">
+        <source>Enter the date from which the account is active.</source>
+        <target state="final">Anna päiväys josta alkaen käyttäjän tili on aktiivinen.</target>
+      </trans-unit>
+      <trans-unit id="starttime.syntax" resname="starttime.syntax" xml:space="preserve" approved="yes">
+				<source>The syntax is dd-mm-yy, but you can just enter a "d" in the field to insert todays date. Or "d+10" to insert the date 10 days from now etc.
+The field will re-format any input to fit the format it understands so you can just experiment and you will be able to clearly see how dates should be entered.</source>
+			<target state="final">[SHARED:dateTime]</target></trans-unit>
+      <trans-unit id="endtime.description" resname="endtime.description" approved="yes">
+        <source>Enter the date from which the account is disabled.</source>
+        <target state="final">Anna päiväys josta alkaen käyttäjän tili on kielletty sisäänkirjoitukselta.</target>
+      </trans-unit>
+      <trans-unit id="endtime.syntax" resname="endtime.syntax" approved="yes">
+        <source>See "Start"</source>
+        <target state="final">[SHARED:dateTime]</target>
+      </trans-unit>
+      <trans-unit id="TSconfig.description" resname="TSconfig.description" approved="yes">
+        <source>Enter additional TSconfig for the user (advanced).</source>
+        <target state="final">Anna TSconfig lisämääritteet käyttäjälle (laajennettu).</target>
+      </trans-unit>
+      <trans-unit id="TSconfig.syntax" resname="TSconfig.syntax" approved="yes">
+        <source>TypoScript syntax, without conditions and constants.</source>
+        <target state="final">TypoScript syntaksin mukaisesti, ilman ehtoja ja vakioita.</target>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>A website login user.</source>
+        <target state="final">Websivuston login (sisäänkirjoitus) käyttäjä.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" approved="yes">
+        <source>These are users with a username and password who are allowed specific access to otherwise restricted areas on your website.</source>
+        <target state="final">Tässä ovat käyttäjät käyttäjänimineen ja salasanoineen joilla on oikeudet päästä muuten rajoitetuille alueille websivustollasi.</target>
+      </trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" xml:space="preserve" approved="yes">
+				<source>Part of the form for editing a frontend user.
+A typical login box (standard) on the website where frontend users can login.</source>
+			<target state="final">Osa lomakkeesta jolla muokataan edustakäyttäjän tietoja. Tyypillinen sisäänkirjoitus (login) laatikko websivustolla, jossa käyttäjä voi sisäänkirjoittautua (tehdä loginin).</target></trans-unit>
+    </body>
+  </file>
+</xliff>
