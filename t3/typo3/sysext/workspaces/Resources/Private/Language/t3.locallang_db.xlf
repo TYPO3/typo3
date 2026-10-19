@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:workspaces/Resources/Private/Language/locallang_db.xlf" date="2011-10-17T20:22:37Z" product-name="workspaces" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="sys_workspace" resname="sys_workspace">
+        <source>Workspace</source>
+        <target>crwdns108972:0crwdne108972:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.custom_stages" resname="sys_workspace.custom_stages">
+        <source>Custom stages</source>
+        <target>crwdns108974:0crwdne108974:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace_stage.responsible_persons" resname="sys_workspace_stage.responsible_persons">
+        <source>Responsible persons</source>
+        <target>crwdns108976:0crwdne108976:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace_stage.default_mailcomment" resname="sys_workspace_stage.default_mailcomment">
+        <source>Default mail comment</source>
+        <target>crwdns108978:0crwdne108978:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace_stage.parentid" resname="sys_workspace_stage.parentid">
+        <source>UID of parent record</source>
+        <target>crwdns108980:0crwdne108980:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace_stage.parenttable" resname="sys_workspace_stage.parenttable">
+        <source>Parent table</source>
+        <target>crwdns108982:0crwdne108982:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace_stage" resname="sys_workspace_stage">
+        <source>Workspace Stage</source>
+        <target>crwdns108984:0crwdne108984:0</target>
+      </trans-unit>
+      <trans-unit id="tabs.notification_settings" resname="tabs.notification_settings">
+        <source>Notification settings</source>
+        <target>crwdns108986:0crwdne108986:0</target>
+      </trans-unit>
+      <trans-unit id="tabs.general" resname="tabs.general">
+        <source>General</source>
+        <target>crwdns108988:0crwdne108988:0</target>
+      </trans-unit>
+      <trans-unit id="tabs.internal_stages" resname="tabs.internal_stages">
+        <source>Internal Stages</source>
+        <target>crwdns108990:0crwdne108990:0</target>
+      </trans-unit>
+      <trans-unit id="tabs.custom_stages" resname="tabs.custom_stages">
+        <source>Custom Stages</source>
+        <target>crwdns108992:0crwdne108992:0</target>
+      </trans-unit>
+      <trans-unit id="tabs.publish_access" resname="tabs.publish_access">
+        <source>Publishing / Access</source>
+        <target>crwdns108994:0crwdne108994:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace_stage.notification_defaults" resname="sys_workspace_stage.notification_defaults">
+        <source>Default notification recipients</source>
+        <target>crwdns108996:0crwdne108996:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace_stage.allow_notificaton_settings" resname="sys_workspace_stage.allow_notificaton_settings">
+        <source>Allow notification settings during stage change</source>
+        <target>crwdns108998:0crwdne108998:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.palette.stage.edit" resname="sys_workspace.palette.stage.edit">
+        <source>Stage "editing"</source>
+        <target>crwdns109000:0crwdne109000:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.palette.stage.publish" resname="sys_workspace.palette.stage.publish">
+        <source>Stage "ready to publish"</source>
+        <target>crwdns109002:0crwdne109002:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.palette.stage.execute" resname="sys_workspace.palette.stage.execute">
+        <source>Stage "publishing execute"</source>
+        <target>crwdns109004:0crwdne109004:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.settingsDialog" resname="sys_workspace.settingsDialog">
+        <source>Notification dialog settings</source>
+        <target>crwdns109006:0crwdne109006:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.settingsDialog.showDialog" resname="sys_workspace.settingsDialog.showDialog">
+        <source>Show Dialog</source>
+        <target>crwdns109008:0crwdne109008:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.settingsDialog.changeablePreselection" resname="sys_workspace.settingsDialog.changeablePreselection">
+        <source>Allow to change pre-selection of recipients</source>
+        <target>crwdns109010:0crwdne109010:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.preselection" resname="sys_workspace.preselection">
+        <source>Pre-select recipients</source>
+        <target>crwdns109012:0crwdne109012:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.preselection.owners" resname="sys_workspace.preselection.owners">
+        <source>Owners</source>
+        <target>crwdns109014:0crwdne109014:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.preselection.members" resname="sys_workspace.preselection.members">
+        <source>Members</source>
+        <target>crwdns109016:0crwdne109016:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.preselection.editors" resname="sys_workspace.preselection.editors">
+        <source>Editors</source>
+        <target>crwdns109018:0crwdne109018:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.preselection.responsiblePersons" resname="sys_workspace.preselection.responsiblePersons">
+        <source>Responsible Persons</source>
+        <target>crwdns109020:0crwdne109020:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.adminusers" resname="sys_workspace.adminusers">
+        <source>Owners</source>
+        <target>crwdns109022:0crwdne109022:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.members" resname="sys_workspace.members">
+        <source>Members</source>
+        <target>crwdns109024:0crwdne109024:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.publish_time" resname="sys_workspace.publish_time">
+        <source>Auto-publish changes on (requires scheduler task)</source>
+        <target>crwdns109026:0crwdne109026:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.unpublish_time" resname="sys_workspace.unpublish_time">
+        <source>Un-Publish changes on (requires scheduler task)</source>
+        <target>crwdns109028:0crwdne109028:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.freeze" resname="sys_workspace.freeze">
+        <source>Freeze Editing</source>
+        <target>crwdns109030:0crwdne109030:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.live_edit" resname="sys_workspace.live_edit">
+        <source>Allow "live" editing of records from tables without versioning</source>
+        <target>crwdns109032:0crwdne109032:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.swap_modes" resname="sys_workspace.swap_modes">
+        <source>Swap modes</source>
+        <target>crwdns109034:0crwdne109034:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.swap_modes.0" resname="sys_workspace.swap_modes.0">
+        <source>Enable Swap-Into-Workspace</source>
+        <target>crwdns109036:0crwdne109036:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.swap_modes.1" resname="sys_workspace.swap_modes.1">
+        <source>Swap-Into-Workspace on Auto-publish</source>
+        <target>crwdns109038:0crwdne109038:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.swap_modes.2" resname="sys_workspace.swap_modes.2">
+        <source>Disable Swap-Into-Workspace</source>
+        <target>crwdns109040:0crwdne109040:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.publish_access" resname="sys_workspace.publish_access">
+        <source>Publish access</source>
+        <target>crwdns109042:0crwdne109042:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.publish_access.1" resname="sys_workspace.publish_access.1">
+        <source>Publish only content in publish stage</source>
+        <target>crwdns109044:0crwdne109044:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.publish_access.2" resname="sys_workspace.publish_access.2">
+        <source>Restrict publishing to workspace owners</source>
+        <target>crwdns109046:0crwdne109046:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.stagechg_notification" resname="sys_workspace.stagechg_notification">
+        <source>Notification settings during state change</source>
+        <target>crwdns109048:0crwdne109048:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.previewlink_lifetime" resname="sys_workspace.previewlink_lifetime">
+        <source>Lifetime in hours on how long a preview link will be valid</source>
+        <target>crwdns109050:0crwdne109050:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.stagechg_notification.0" resname="sys_workspace.stagechg_notification.0">
+        <source>Disable notifications</source>
+        <target>crwdns109052:0crwdne109052:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.stagechg_notification.1" resname="sys_workspace.stagechg_notification.1">
+        <source>Notify users of next stage only</source>
+        <target>crwdns109054:0crwdne109054:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.stagechg_notification.10" resname="sys_workspace.stagechg_notification.10">
+        <source>Notify all users on any change</source>
+        <target>crwdns109056:0crwdne109056:0</target>
+      </trans-unit>
+      <trans-unit id="tabs.users" resname="tabs.users">
+        <source>Users</source>
+        <target>crwdns109058:0crwdne109058:0</target>
+      </trans-unit>
+      <trans-unit id="tabs.mountpoints" resname="tabs.mountpoints">
+        <source>Mountpoints</source>
+        <target>crwdns109060:0crwdne109060:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
