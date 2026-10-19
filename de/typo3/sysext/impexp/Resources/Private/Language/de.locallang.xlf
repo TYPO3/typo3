@@ -1,0 +1,544 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:impexp/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:33Z" product-name="impexp" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="import" resname="import" approved="yes">
+        <source>Import</source>
+        <target state="final">Importieren von .t3d</target>
+      </trans-unit>
+      <trans-unit id="export" resname="export" approved="yes">
+        <source>Export</source>
+        <target state="final">Exportieren nach .t3d</target>
+      </trans-unit>
+      <trans-unit id="title" resname="title" approved="yes">
+        <source>Import / Export</source>
+        <target state="final">Import/Export</target>
+      </trans-unit>
+      <trans-unit id="title_import" resname="title_import" approved="yes">
+        <source>Import</source>
+        <target state="final">Importieren von .t3d</target>
+      </trans-unit>
+      <trans-unit id="title_export" resname="title_export" approved="yes">
+        <source>Export</source>
+        <target state="final">Exportieren nach .t3d</target>
+      </trans-unit>
+      <trans-unit id="tableselec_configuration" resname="tableselec_configuration" approved="yes">
+        <source>Configuration</source>
+        <target state="final">Konfiguration</target>
+      </trans-unit>
+      <trans-unit id="exportdata_savedFile" resname="exportdata_savedFile" approved="yes">
+        <source>SAVED FILE</source>
+        <target state="final">DATEI GESPEICHERT</target>
+      </trans-unit>
+      <trans-unit id="exportdata_savedInSBytes" resname="exportdata_savedInSBytes" approved="yes">
+        <source>Saved in "%s", bytes %s</source>
+        <target state="final">Gespeichert in "%s" (%s Bytes)</target>
+      </trans-unit>
+      <trans-unit id="exportdata_problemsSavingFile" resname="exportdata_problemsSavingFile" approved="yes">
+        <source>Problems saving file</source>
+        <target state="final">Fehler beim Speichern</target>
+      </trans-unit>
+      <trans-unit id="exportdata_badPathS" resname="exportdata_badPathS" approved="yes">
+        <source>Bad path: "%s"</source>
+        <target state="final">Fehlerhafter Pfad: "%s"</target>
+      </trans-unit>
+      <trans-unit id="exportdata_filePreset" resname="exportdata_filePreset" approved="yes">
+        <source>File &amp; Preset</source>
+        <target state="final">Datei &amp; Voreinstellungen</target>
+      </trans-unit>
+      <trans-unit id="exportdata_advancedOptions" resname="exportdata_advancedOptions" approved="yes">
+        <source>Advanced Options</source>
+        <target state="final">Erweiterte Einstellungen</target>
+      </trans-unit>
+      <trans-unit id="exportdata_messages" resname="exportdata_messages" approved="yes">
+        <source>Messages</source>
+        <target state="final">Meldungen</target>
+      </trans-unit>
+      <trans-unit id="execlistqu_structureToBeExported" resname="execlistqu_structureToBeExported" approved="yes">
+        <source>Structure to be exported</source>
+        <target state="final">Zu exportierende Struktur:</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_toggle_all_disabled_records" resname="impexpcore_toggle_all_disabled_records" approved="yes">
+        <source>Toggle disabled records</source>
+        <target state="final">Deaktivierte Datensätze umschalten</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_exportPagetreeConfiguration" resname="makeconfig_exportPagetreeConfiguration" approved="yes">
+        <source>Export pagetree configuration</source>
+        <target state="final">Exporteinstellungen für Seitenbaum:</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_pageId" resname="makeconfig_pageId" approved="yes">
+        <source>Page ID</source>
+        <target state="final">Seiten-ID:</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_tree" resname="makeconfig_tree" approved="yes">
+        <source>Tree</source>
+        <target state="final">Baum:</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_noTreeExportedOnly" resname="makeconfig_noTreeExportedOnly" approved="yes">
+        <source>No tree exported - only tables on the page.</source>
+        <target state="final">Kein Baum exportiert - nur Tabellen auf dieser Seite.</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_tablesOnThisPage" resname="makeconfig_tablesOnThisPage" approved="yes">
+        <source>Tables on this page</source>
+        <target state="final">Tabellen auf dieser Seite</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_expandedTree" resname="makeconfig_expandedTree" approved="yes">
+        <source>Expanded tree</source>
+        <target state="final">Erweiterter Baum</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_levels" resname="makeconfig_levels" approved="yes">
+        <source>Levels</source>
+        <target state="final">Ebenen:</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_includeTables" resname="makeconfig_includeTables" approved="yes">
+        <source>Include tables</source>
+        <target state="final">Einzuschließende Tabellen:</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_exportSingleRecord" resname="makeconfig_exportSingleRecord" approved="yes">
+        <source>Export single record</source>
+        <target state="final">Einzelnen Datensatz exportieren:</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_record" resname="makeconfig_record" approved="yes">
+        <source>Record</source>
+        <target state="final">Datensatz:</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_exportTablesFromPages" resname="makeconfig_exportTablesFromPages" approved="yes">
+        <source>Export tables from pages</source>
+        <target state="final">Tabellen von Seiten exportieren:</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_tablePids" resname="makeconfig_tablePids" approved="yes">
+        <source>Table/Pids</source>
+        <target state="final">Tabellen/PIDs:</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_tableListEntry" resname="makeconfig_tableListEntry" approved="yes">
+        <source>Table "%s" from %s</source>
+        <target state="final">Tabelle "%s" von %s</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_relationsAndExclusions" resname="makeconfig_relationsAndExclusions" approved="yes">
+        <source>Relations and Exclusions</source>
+        <target state="final">Relationen und Ausschlüsse:</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_includeRelationsToTables" resname="makeconfig_includeRelationsToTables" approved="yes">
+        <source>Include relations to tables</source>
+        <target state="final">Relationen zu Tabellen einschließen:</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_useStaticRelationsFor" resname="makeconfig_useStaticRelationsFor" approved="yes">
+        <source>Use static relations for tables</source>
+        <target state="final">Statische Relationen von Tabellen verwenden:</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_showStaticRelations" resname="makeconfig_showStaticRelations" approved="yes">
+        <source>Show static relations</source>
+        <target state="final">Statische Relationen anzeigen:</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_excludeElements" resname="makeconfig_excludeElements" approved="yes">
+        <source>Exclude elements</source>
+        <target state="final">Elemente ausschließen:</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_clearAllManualExclusions" resname="makeconfig_clearAllManualExclusions" approved="yes">
+        <source>Clear all manual exclusions</source>
+        <target state="final">Alle manuellen Ausschlüsse zurücksetzen:</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_noManuallyExcludedElementsYet" resname="makeconfig_noManuallyExcludedElementsYet" approved="yes">
+        <source>No manually excluded elements yet. Exclude by setting checkboxes below in the element display.</source>
+        <target state="final">Es existieren noch keine manuell ausgeschlossenen Elemente. Schließen Sie Element aus, indem Sie die Checkboxen in der Anzeige der Elemente verwenden.</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_excludeDisabledElements" resname="makeconfig_excludeDisabledElements" approved="yes">
+        <source>Exclude disabled elements</source>
+        <target state="final">Deaktivierte Elemente ausschließen</target>
+      </trans-unit>
+      <trans-unit id="makeadvanc_update" resname="makeadvanc_update" approved="yes">
+        <source>Update</source>
+        <target state="final">Aktualisieren</target>
+      </trans-unit>
+      <trans-unit id="makeadvanc_softReferences" resname="makeadvanc_softReferences" approved="yes">
+        <source>Soft References</source>
+        <target state="final">Soft-References:</target>
+      </trans-unit>
+      <trans-unit id="makeadvanc_excludeHtmlCssFile" resname="makeadvanc_excludeHtmlCssFile" approved="yes">
+        <source>Exclude HTML/CSS file resources</source>
+        <target state="final">HTML/CSS-Dateien ausschließen:</target>
+      </trans-unit>
+      <trans-unit id="makeadvanc_files" resname="makeadvanc_files" approved="yes">
+        <source>Files</source>
+        <target state="final">Dateien</target>
+      </trans-unit>
+      <trans-unit id="makeadvanc_saveFilesOutsideExportFile" resname="makeadvanc_saveFilesOutsideExportFile" approved="yes">
+        <source>Save files in extra folder beside the export file</source>
+        <target state="final">Dateien in gesondertem Ordner neben der Exportdatei speichern:</target>
+      </trans-unit>
+      <trans-unit id="makeadvanc_saveFilesOutsideExportFile_limit" resname="makeadvanc_saveFilesOutsideExportFile_limit" approved="yes">
+        <source>(supported for "Save to filename" only)</source>
+        <target state="final">(nur unterstützt für "Datei speichern unter")</target>
+      </trans-unit>
+      <trans-unit id="makeadvanc_extensionDependencies" resname="makeadvanc_extensionDependencies" approved="yes">
+        <source>Extension dependencies</source>
+        <target state="final">Abhängigkeiten von Erweiterungen:</target>
+      </trans-unit>
+      <trans-unit id="makeadvanc_selectExtensionsThatThe" resname="makeadvanc_selectExtensionsThatThe" approved="yes">
+        <source>Select extensions that the exported content depends on</source>
+        <target state="final">Erweiterungen auswählen, von denen der exportierte Inhalt abhängig ist:</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_update" resname="makesavefo_update" approved="yes">
+        <source>Update</source>
+        <target state="final">Aktualisieren</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_presets" resname="makesavefo_presets" approved="yes">
+        <source>Presets</source>
+        <target state="final">Voreinstellungen:</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_selectPreset" resname="makesavefo_selectPreset" approved="yes">
+        <source>Select preset</source>
+        <target state="final">Voreinstellung laden:</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_load" resname="makesavefo_load" approved="yes">
+        <source>Load</source>
+        <target state="final">Laden</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_save" resname="makesavefo_save" approved="yes">
+        <source>Save</source>
+        <target state="final">Speichern</target>
+      </trans-unit>
+      <trans-unit id="pleaseConfirm" resname="pleaseConfirm" approved="yes">
+        <source>Please confirm</source>
+        <target state="final">Bitte bestätigen</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_areYouSure" resname="makesavefo_areYouSure" approved="yes">
+        <source>Are you sure?</source>
+        <target state="final">Vorgang tatsächlich fortführen?</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_delete" resname="makesavefo_delete" approved="yes">
+        <source>Delete</source>
+        <target state="final">Löschen</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_merge" resname="makesavefo_merge" approved="yes">
+        <source>Merge</source>
+        <target state="final">Zusammenführen</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_titleOfNewPreset" resname="makesavefo_titleOfNewPreset" approved="yes">
+        <source>Title of new preset</source>
+        <target state="final">Name der neuen Voreinstellung:</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_public" resname="makesavefo_public" approved="yes">
+        <source>Public</source>
+        <target state="final">Öffentlich:</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_outputOptions" resname="makesavefo_outputOptions" approved="yes">
+        <source>Output options</source>
+        <target state="final">Ausgabeoptionen:</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_metaData" resname="makesavefo_metaData" approved="yes">
+        <source>Meta data</source>
+        <target state="final">Metadaten:</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_title" resname="makesavefo_title" approved="yes">
+        <source>Title</source>
+        <target state="final">Titel:</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_description" resname="makesavefo_description" approved="yes">
+        <source>Description</source>
+        <target state="final">Beschreibung:</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_notes" resname="makesavefo_notes" approved="yes">
+        <source>Notes</source>
+        <target state="final">Anmerkungen:</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_t3d_compressed" resname="makesavefo_t3d_compressed" approved="yes">
+        <source>T3D file / compressed</source>
+        <target state="final">T3D-Datei/komprimiert</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_t3d" resname="makesavefo_t3d" approved="yes">
+        <source>T3D file</source>
+        <target state="final">T3D-Datei</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_xml" resname="makesavefo_xml" approved="yes">
+        <source>XML</source>
+        <target state="final">XML</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_fileFormat" resname="makesavefo_fileFormat" approved="yes">
+        <source>File format</source>
+        <target state="final">Dateiformat:</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_filenameSavedInS" resname="makesavefo_filenameSavedInS" approved="yes">
+        <source>Filename (saved in "%s")</source>
+        <target state="final">Dateiname (gespeichert in "%s"):</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_downloadExport" resname="makesavefo_downloadExport" approved="yes">
+        <source>Download export</source>
+        <target state="final">Exportdatei herunterladen</target>
+      </trans-unit>
+      <trans-unit id="importdata_saveToFilename" resname="importdata_saveToFilename" approved="yes">
+        <source>Save to filename</source>
+        <target state="final">Speichern unter</target>
+      </trans-unit>
+      <trans-unit id="importdata_selectFileToImport" resname="importdata_selectFileToImport" approved="yes">
+        <source>Select file to import</source>
+        <target state="final">Importdatei auswählen:</target>
+      </trans-unit>
+      <trans-unit id="importdata_file" resname="importdata_file" approved="yes">
+        <source>File</source>
+        <target state="final">Datei:</target>
+      </trans-unit>
+      <trans-unit id="importdata_fromPathS" resname="importdata_fromPathS" approved="yes">
+        <source>(From path: %s)</source>
+        <target state="final">(Aus Pfad: %s)</target>
+      </trans-unit>
+      <trans-unit id="importdata_noteNoDecompressorAvailable" resname="importdata_noteNoDecompressorAvailable" approved="yes">
+        <source>NOTE: No decompressor available for compressed files!</source>
+        <target state="final">ACHTUNG: Kein Entpackprogramm für komprimierte Dateien vorhanden!</target>
+      </trans-unit>
+      <trans-unit id="importdata_importOptions" resname="importdata_importOptions" approved="yes">
+        <source>Import Options</source>
+        <target state="final">Importeinstellungen:</target>
+      </trans-unit>
+      <trans-unit id="importdata_update" resname="importdata_update" approved="yes">
+        <source>Update</source>
+        <target state="final">Aktualisieren</target>
+      </trans-unit>
+      <trans-unit id="importdata_updateRecords" resname="importdata_updateRecords" approved="yes">
+        <source>Update records</source>
+        <target state="final">Datensätze aktualisieren</target>
+      </trans-unit>
+      <trans-unit id="importdata_thisOptionRequiresThat" resname="importdata_thisOptionRequiresThat" approved="yes">
+        <source>This option requires that the structure you import already exists on this server and only needs to be updated with new content!</source>
+        <target state="final">Diese Option verlangt, dass die zu importierende Struktur bereits auf dem Server existiert und nur mit dem neuen Inhalt aktualisiert werden soll!</target>
+      </trans-unit>
+      <trans-unit id="importdata_ignorePidDifferencesGlobally" resname="importdata_ignorePidDifferencesGlobally" approved="yes">
+        <source>Ignore PID differences globally</source>
+        <target state="final">PID-Unterschiede generell ignorieren</target>
+      </trans-unit>
+      <trans-unit id="importdata_ifYouSetThis" resname="importdata_ifYouSetThis" approved="yes">
+        <source>If you set this option, the position of updated elements will not be updated to match the structure of the input file.</source>
+        <target state="final">Mit dieser Option wird die Position aktualisierter Inhalte nicht mit der Struktur aus der Importdatei überschrieben.</target>
+      </trans-unit>
+      <trans-unit id="importdata_force_all_UIDS" resname="importdata_force_all_UIDS" approved="yes">
+        <source>Force ALL UIDs values</source>
+        <target state="final">ALLE UID-Werte erzwingen</target>
+      </trans-unit>
+      <trans-unit id="importdata_force_all_UIDS_descr" resname="importdata_force_all_UIDS_descr" approved="yes">
+        <source>With this option the original UID value of all imported records are forced to be the same. BE VERY CAREFUL WITH THIS! (Admin Only).</source>
+        <target state="final">Mit dieser Option werden alle ursprünglichen UID-Werte der importierten Datensätze beim Import erzwungen. VERWENDEN SIE DIESE OPTION MIT VORSICHT! (Nur für Administratoren.)</target>
+      </trans-unit>
+      <trans-unit id="importdata_options" resname="importdata_options" approved="yes">
+        <source>Options</source>
+        <target state="final">Optionen:</target>
+      </trans-unit>
+      <trans-unit id="importdata_doNotShowDifferences" resname="importdata_doNotShowDifferences" approved="yes">
+        <source>Do not show differences in records</source>
+        <target state="final">Unterschiede in Datensätzen nicht anzeigen</target>
+      </trans-unit>
+      <trans-unit id="importdata_greenValuesAreFrom" resname="importdata_greenValuesAreFrom" approved="yes">
+        <source>Green values are from the import file, red values from the current database record and black values are similar in both versions.</source>
+        <target state="final">Grüne Werte stammen aus der Importdatei, rote Werte aus dem aktuellen Datensatz und schwarze Werte sind in beiden gleich.</target>
+      </trans-unit>
+      <trans-unit id="importdata_action" resname="importdata_action" approved="yes">
+        <source>Action</source>
+        <target state="final">Aktion:</target>
+      </trans-unit>
+      <trans-unit id="importdata_preview" resname="importdata_preview" approved="yes">
+        <source>Preview</source>
+        <target state="final">Vorschau</target>
+      </trans-unit>
+      <trans-unit id="importdata_update_299e" resname="importdata_update_299e" approved="yes">
+        <source>Update</source>
+        <target state="final">Aktualisieren</target>
+      </trans-unit>
+      <trans-unit id="importdata_import" resname="importdata_import" approved="yes">
+        <source>Import</source>
+        <target state="final">Importieren von .t3d</target>
+      </trans-unit>
+      <trans-unit id="importdata_newImport" resname="importdata_newImport" approved="yes">
+        <source>New import</source>
+        <target state="final">Neuer Import</target>
+      </trans-unit>
+      <trans-unit id="importdata_enableLogging" resname="importdata_enableLogging" approved="yes">
+        <source>Enable logging</source>
+        <target state="final">Protokollierung einschalten:</target>
+      </trans-unit>
+      <trans-unit id="importdata_writeIndividualDbActions" resname="importdata_writeIndividualDbActions" approved="yes">
+        <source>Write individual database actions during import to the log</source>
+        <target state="final">Während des Imports einzelne Datenbankaktionen in das Protokoll schreiben</target>
+      </trans-unit>
+      <trans-unit id="importdata_thisIsDisabledBy" resname="importdata_thisIsDisabledBy" approved="yes">
+        <source>This is disabled by default since there may be hundred of entries generated.</source>
+        <target state="final">Diese Option ist standardmäßig deaktiviert, weil unter Umständen hunderte Einträge erzeugt werden.</target>
+      </trans-unit>
+      <trans-unit id="importdata_uploadFileFromLocal" resname="importdata_uploadFileFromLocal" approved="yes">
+        <source>Upload file from local computer</source>
+        <target state="final">Datei vom lokalen Computer hochladen:</target>
+      </trans-unit>
+      <trans-unit id="importdata_browse" resname="importdata_browse" approved="yes">
+        <source>Browse</source>
+        <target state="final">Durchsuchen:</target>
+      </trans-unit>
+      <trans-unit id="importdata_uploadStatus" resname="importdata_uploadStatus" approved="yes">
+        <source>Upload status</source>
+        <target state="final">Status des Hochladens:</target>
+      </trans-unit>
+      <trans-unit id="importdata_success" resname="importdata_success" approved="yes">
+        <source>Success</source>
+        <target state="final">Erfolg:</target>
+      </trans-unit>
+      <trans-unit id="importdata_failureNoFileUploaded" resname="importdata_failureNoFileUploaded" approved="yes">
+        <source>Failure: No file uploaded - was it too big? Check system log.</source>
+        <target state="final">Fehler: Es wurde keine Datei übertragen! (Datei zu groß?) Weitere Angaben in Systemprotokoll.</target>
+      </trans-unit>
+      <trans-unit id="importdata_upload" resname="importdata_upload" approved="yes">
+        <source>Upload</source>
+        <target state="final">Hochladen</target>
+      </trans-unit>
+      <trans-unit id="importdata_upload_error" resname="importdata_upload_error" approved="yes">
+        <source>Upload error</source>
+        <target state="final">Hochladefehler</target>
+      </trans-unit>
+      <trans-unit id="importdata_upload_nodata" resname="importdata_upload_nodata" approved="yes">
+        <source>The import module hasn't received any data. This may occur due to a file upload with a large file. Please check the file size of your uploaded file with the server's post_max_size and upload_max_filesize configuration.</source>
+        <target state="final">Das Import-Modul hat keine Daten erhalten. Grund dafür kann das Hochladen einer Datei mit einer großen Dateigröße sein. Bitte überprüfen Sie die Dateigröße Ihrer hochgeladenen Datei sowie die Einstellungen post_max_size und upload_max_filesize in der Konfiguration Ihres Servers.</target>
+      </trans-unit>
+      <trans-unit id="importdata_metaData" resname="importdata_metaData" approved="yes">
+        <source>Meta data</source>
+        <target state="final">Metadaten:</target>
+      </trans-unit>
+      <trans-unit id="importdata_title" resname="importdata_title" approved="yes">
+        <source>Title</source>
+        <target state="final">Titel:</target>
+      </trans-unit>
+      <trans-unit id="importdata_description" resname="importdata_description" approved="yes">
+        <source>Description</source>
+        <target state="final">Beschreibung:</target>
+      </trans-unit>
+      <trans-unit id="importdata_notes" resname="importdata_notes" approved="yes">
+        <source>Notes</source>
+        <target state="final">Anmerkungen:</target>
+      </trans-unit>
+      <trans-unit id="importdata_packager" resname="importdata_packager" approved="yes">
+        <source>Packager</source>
+        <target state="final">Packprogramm:</target>
+      </trans-unit>
+      <trans-unit id="importdata_email" resname="importdata_email" approved="yes">
+        <source>Email</source>
+        <target state="final">E-Mail:</target>
+      </trans-unit>
+      <trans-unit id="importdata_metaData_1387" resname="importdata_metaData_1387" approved="yes">
+        <source>Meta data</source>
+        <target state="final">Metadaten:</target>
+      </trans-unit>
+      <trans-unit id="importdata_messages" resname="importdata_messages" approved="yes">
+        <source>Messages</source>
+        <target state="final">Meldungen</target>
+      </trans-unit>
+      <trans-unit id="importdata_structureHasBeenImported" resname="importdata_structureHasBeenImported" approved="yes">
+        <source>Structure has been imported, here is the result</source>
+        <target state="final">Folgende Struktur wurde importiert, hier ist das Ergebnis:</target>
+      </trans-unit>
+      <trans-unit id="importdata_no_default_upload_folder" resname="importdata_no_default_upload_folder" approved="yes">
+        <source>No default upload folder</source>
+        <target state="final">Kein Standardhochladeordner</target>
+      </trans-unit>
+      <trans-unit id="filterpage_structureToBeImported" resname="filterpage_structureToBeImported" approved="yes">
+        <source>Structure to be imported</source>
+        <target state="final">Zu importierende Struktur:</target>
+      </trans-unit>
+      <trans-unit id="ALL_tables" resname="ALL_tables" approved="yes">
+        <source>ALL tables</source>
+        <target state="final">ALLE Tabellen</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_displaycon_controls" resname="impexpcore_displaycon_controls" approved="yes">
+        <source>Controls</source>
+        <target state="final">Steuerung:</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_displaycon_title" resname="impexpcore_displaycon_title" approved="yes">
+        <source>Title</source>
+        <target state="final">Titel:</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_displaycon_message" resname="impexpcore_displaycon_message" approved="yes">
+        <source>Message</source>
+        <target state="final">Meldung:</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_displaycon_updateMode" resname="impexpcore_displaycon_updateMode" approved="yes">
+        <source>Update Mode</source>
+        <target state="final">Aktualisierungsmodus:</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_displaycon_currentPath" resname="impexpcore_displaycon_currentPath" approved="yes">
+        <source>Current Path</source>
+        <target state="final">Derzeitiger Pfad:</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_displaycon_result" resname="impexpcore_displaycon_result" approved="yes">
+        <source>Result</source>
+        <target state="final">Ergebnis</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_displaycon_insidePagetree" resname="impexpcore_displaycon_insidePagetree" approved="yes">
+        <source>Inside pagetree</source>
+        <target state="final">Innerhalb des Seitenbaumes:</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_outsidePagetree" resname="impexpcore_singlereco_outsidePagetree" approved="yes">
+        <source>Outside pagetree</source>
+        <target state="final">Außerhalb des Seitenbaumes:</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_softReferencesFiles" resname="impexpcore_singlereco_softReferencesFiles" approved="yes">
+        <source>Soft References Files</source>
+        <target state="final">Soft-References - Dateien:</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_update" resname="impexpcore_singlereco_update" approved="yes">
+        <source>Update</source>
+        <target state="final">Aktualisieren</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_insert" resname="impexpcore_singlereco_insert" approved="yes">
+        <source>Insert</source>
+        <target state="final">Einfügen</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_importAsNew" resname="impexpcore_singlereco_importAsNew" approved="yes">
+        <source>Import as new</source>
+        <target state="final">Als neu importieren</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_ignorePid" resname="impexpcore_singlereco_ignorePid" approved="yes">
+        <source>Ignore PID</source>
+        <target state="final">PID ignorieren</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_respectPid" resname="impexpcore_singlereco_respectPid" approved="yes">
+        <source>Respect PID</source>
+        <target state="final">PID beachten</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_forceUidSAdmin" resname="impexpcore_singlereco_forceUidSAdmin" approved="yes">
+        <source>Force UID [%s] (Admin)</source>
+        <target state="final">UID [%s] erzwingen (Admin)</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_exclude" resname="impexpcore_singlereco_exclude" approved="yes">
+        <source>Exclude</source>
+        <target state="final">Ausschließen</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_title" resname="impexpcore_singlereco_title" approved="yes">
+        <source>Title</source>
+        <target state="final">Titel:</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_descr" resname="impexpcore_singlereco_descr" approved="yes">
+        <source>Descr</source>
+        <target state="final">Beschreibung:</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_filename" resname="impexpcore_singlereco_filename" approved="yes">
+        <source>Filename</source>
+        <target state="final">Dateiname:</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_value" resname="impexpcore_singlereco_value" approved="yes">
+        <source>Value</source>
+        <target state="final">Wert:</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_softrefsel_record" resname="impexpcore_softrefsel_record" approved="yes">
+        <source>Record</source>
+        <target state="final">Datensatz:</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_softrefsel_editable" resname="impexpcore_softrefsel_editable" approved="yes">
+        <source>Editable</source>
+        <target state="final">Editierbar</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_softrefsel_exclude" resname="impexpcore_softrefsel_exclude" approved="yes">
+        <source>Exclude</source>
+        <target state="final">Ausschließen</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_printerror_description" resname="impexpcore_printerror_description" approved="yes">
+        <source>Description</source>
+        <target state="final">Beschreibung:</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
