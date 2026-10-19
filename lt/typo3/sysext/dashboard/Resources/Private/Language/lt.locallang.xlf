@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="messages" date="2018-11-27T22:26:21Z" product-name="dashboard" target-language="lt">
+    <header/>
+    <body>
+      <trans-unit id="close" xml:space="preserve" approved="yes">
+				<source>Close</source>
+			<target state="final">Uždaryti</target></trans-unit>
+      <trans-unit id="title" xml:space="preserve" approved="yes">
+				<source>Dashboard</source>
+			<target state="final">Valdymo skydas</target></trans-unit>
+      <trans-unit id="widget.add" xml:space="preserve" approved="yes">
+				<source>Add widget</source>
+			<target state="final">Pridėti valdiklį</target></trans-unit>
+      <trans-unit id="widget.add.button.close" xml:space="preserve" approved="yes">
+				<source>Close</source>
+			<target state="final">Uždaryti</target></trans-unit>
+      <trans-unit id="widget.add.button.ok" xml:space="preserve" approved="yes">
+				<source>Add widget</source>
+			<target state="final">Pridėti valdiklį</target></trans-unit>
+      <trans-unit id="widget.remove.button.close" xml:space="preserve" approved="yes">
+				<source>Close</source>
+			<target state="final">Uždaryti</target></trans-unit>
+      <trans-unit id="widget.remove.button.ok" xml:space="preserve" approved="yes">
+				<source>Remove</source>
+			<target state="final">Pašalinti</target></trans-unit>
+      <trans-unit id="widget.remove.confirm.title" xml:space="preserve" approved="yes">
+				<source>Remove widget</source>
+			<target state="final">Pašalinti valdiklį</target></trans-unit>
+      <trans-unit id="widget.remove.confirm.message" xml:space="preserve" approved="yes">
+				<source>Are you sure you want to remove this widget?</source>
+			<target state="final">Ar tikrai norite pašalinti šį valdiklį?</target></trans-unit>
+      <trans-unit id="widget.error" xml:space="preserve" approved="yes">
+				<source>An error occurred while retrieving information for this widget. Please try again, and if the problem persists, contact your administrator.</source>
+			<target state="final">Įvyko klaida gaunant šio valdiklio informaciją. Bandykite dar kartą, o jei problema kartojasi, susisiekite su administratoriumi.</target></trans-unit>
+      <trans-unit id="dashboard.default" xml:space="preserve" approved="yes">
+				<source>My dashboard</source>
+			<target state="final">Mano valdymo skydas</target></trans-unit>
+      <trans-unit id="dashboard.default.description" xml:space="preserve" approved="yes">
+				<source>Create a new dashboard with some general TYPO3 widgets on it</source>
+			<target state="final">Sukurti naują valdymo skydą su keliais bendrais TYPO3 valdikliais</target></trans-unit>
+      <trans-unit id="dashboard.empty" xml:space="preserve" approved="yes">
+				<source>Empty dashboard</source>
+			<target state="final">Tuščias valdymo skydas</target></trans-unit>
+      <trans-unit id="dashboard.empty.description" xml:space="preserve" approved="yes">
+				<source>Your dashboard will be created without any widget on it.</source>
+			<target state="final">Jūsų valdymo skydas bus sukurtas be jokių valdiklių.</target></trans-unit>
+      <trans-unit id="dashboard.add" xml:space="preserve" approved="yes">
+				<source>Add dashboard</source>
+			<target state="final">Pridėti valdymo skydą</target></trans-unit>
+      <trans-unit id="dashboard.add.button.close" xml:space="preserve" approved="yes">
+				<source>Close</source>
+			<target state="final">Uždaryti</target></trans-unit>
+      <trans-unit id="dashboard.add.button.ok" xml:space="preserve" approved="yes">
+				<source>Add Dashboard</source>
+			<target state="final">Pridėti valdymo skydą</target></trans-unit>
+      <trans-unit id="dashboard.configure" xml:space="preserve" approved="yes">
+				<source>Configure dashboard</source>
+			<target state="final">Konfigūruoti valdymo skydą</target></trans-unit>
+      <trans-unit id="dashboard.configure.button.close" xml:space="preserve" approved="yes">
+				<source>Close</source>
+			<target state="final">Uždaryti</target></trans-unit>
+      <trans-unit id="dashboard.configure.button.ok" xml:space="preserve" approved="yes">
+				<source>Save Dashboard</source>
+			<target state="final">Išsaugoti valdymo skydą</target></trans-unit>
+      <trans-unit id="dashboard.delete" xml:space="preserve" approved="yes">
+				<source>Delete dashboard</source>
+			<target state="final">Ištrinti valdymo skydą</target></trans-unit>
+      <trans-unit id="dashboard.delete.sure" xml:space="preserve" approved="yes">
+				<source>Are you sure you want to delete this dashboard?</source>
+			<target state="final">Ar tikrai norite ištrinti šį valdymo skydą?</target></trans-unit>
+      <trans-unit id="dashboard.delete.ok" xml:space="preserve" approved="yes">
+				<source>Yes, delete it</source>
+			<target state="final">Taip, ištrinti</target></trans-unit>
+      <trans-unit id="dashboard.delete.cancel" xml:space="preserve" approved="yes">
+				<source>Cancel</source>
+			<target state="final">Atšaukti</target></trans-unit>
+      <trans-unit id="dashboard.title" xml:space="preserve" approved="yes">
+				<source>Title of dashboard</source>
+			<target state="final">Valdymo skydo pavadinimas</target></trans-unit>
+      <trans-unit id="widgets.documentation.gettingStarted.title" xml:space="preserve" approved="yes">
+				<source>Getting Started with TYPO3</source>
+ 			<target state="final">Darbo su TYPO3 pradžia</target></trans-unit>
+      <trans-unit id="widgets.documentation.gettingStarted.description" xml:space="preserve" approved="yes">
+				<source>Add a shortcut to the TYPO3 Getting Started Tutorial.</source>
+ 			<target state="final">Pridėti nuorodą į TYPO3 pradžios vadovą.</target></trans-unit>
+      <trans-unit id="widgets.documentation.gettingStarted.text" xml:space="preserve" approved="yes">
+				<source>New to TYPO3? In our Getting Started Tutorial you will learn the basics how to use TYPO3.</source>
+ 			<target state="final">Esate naujokas TYPO3 sistemoje? Pradžios vadove sužinosite pagrindus, kaip naudotis TYPO3.</target></trans-unit>
+      <trans-unit id="widgets.documentation.gettingStarted.content.label" xml:space="preserve" approved="yes">
+				<source>Getting Started Tutorial</source>
+ 			<target state="final">Pradžios vadovas</target></trans-unit>
+      <trans-unit id="widgets.documentation.typoscriptReference.title" xml:space="preserve" approved="yes">
+				<source>TypoScript Template Reference</source>
+ 			<target state="final">TypoScript šablonų nuorodų vadovas</target></trans-unit>
+      <trans-unit id="widgets.documentation.typoscriptReference.description" xml:space="preserve" approved="yes">
+				<source>Add a shortcut to the TYPO3 TypoScript Template Reference.</source>
+ 			<target state="final">Pridėti nuorodą į TYPO3 TypoScript šablonų nuorodų vadovą.</target></trans-unit>
+      <trans-unit id="widgets.documentation.typoscriptReference.text" xml:space="preserve" approved="yes">
+				<source>This document is a reference, used to lookup TypoScript templating.</source>
+ 			<target state="final">Šis dokumentas yra nuorodų vadovas, skirtas TypoScript šablonams peržiūrėti.</target></trans-unit>
+      <trans-unit id="widgets.documentation.typoscriptReference.content.label" xml:space="preserve" approved="yes">
+				<source>TypoScript Template Reference</source>
+ 			<target state="final">TypoScript šablonų nuorodų vadovas</target></trans-unit>
+      <trans-unit id="widgets.documentation.TSconfigReference.title" xml:space="preserve" approved="yes">
+				<source>TSconfig Reference</source>
+ 			<target state="final">TSconfig nuorodų vadovas</target></trans-unit>
+      <trans-unit id="widgets.documentation.TSconfigReference.description" xml:space="preserve" approved="yes">
+				<source>Add a shortcut to the TYPO3 TSconfig Reference.</source>
+ 			<target state="final">Pridėti nuorodą į TYPO3 TSconfig nuorodų vadovą.</target></trans-unit>
+      <trans-unit id="widgets.documentation.TSconfigReference.text" xml:space="preserve" approved="yes">
+				<source>This document describes TSconfig and its options.</source>
+ 			<target state="final">Šiame dokumente aprašomas TSconfig ir jo parinktys.</target></trans-unit>
+      <trans-unit id="widgets.documentation.TSconfigReference.content.label" xml:space="preserve" approved="yes">
+				<source>TSconfig Reference</source>
+ 			<target state="final">TSconfig nuorodų vadovas</target></trans-unit>
+      <trans-unit id="widgets.t3news.title" xml:space="preserve" approved="yes">
+				<source>TYPO3 news</source>
+			<target state="final">TYPO3 naujienos</target></trans-unit>
+      <trans-unit id="widgets.t3news.description" xml:space="preserve" approved="yes">
+				<source>Add a list of news items from the TYPO3 project</source>
+			<target state="final">Pridėti TYPO3 projekto naujienų sąrašą</target></trans-unit>
+      <trans-unit id="widgets.t3news.moreItems" xml:space="preserve" approved="yes">
+				<source>More TYPO3 news</source>
+			<target state="final">Daugiau TYPO3 naujienų</target></trans-unit>
+      <trans-unit id="widgets.t3information.title" xml:space="preserve" approved="yes">
+				<source>About TYPO3</source>
+			<target state="final">Apie TYPO3</target></trans-unit>
+      <trans-unit id="widgets.t3information.description" xml:space="preserve" approved="yes">
+				<source>Some general information about TYPO3 and the version used</source>
+			<target state="final">Bendra informacija apie TYPO3 ir naudojamą versiją</target></trans-unit>
+      <trans-unit id="widgets.t3information.text" resname="widgets.t3information.text" approved="yes">
+        <source><![CDATA[TYPO3 CMS is an enterprise-class, Open Source Content Management System, used internationally to build and manage websites of all types, from small sites for non-profits to multilingual enterprise solutions for large corporations.<br /><br />For further information visit <a href="https://typo3.org/typo3-cms/" target="_blank" rel="noreferrer">typo3.org</a>.<br /><br />TYPO3 CMS is <b>freely available</b> under the <a href="https://typo3.org/project/licenses/" target="_blank" rel="noreferrer">TYPO3-license (GNU/GPL)</a>.<br /><br />You are using version %s - Copyright %s %s]]></source>
+        <target state="final"><![CDATA[TYPO3 CMS yra verslo klasės atvirojo kodo turinio valdymo sistema, naudojama visame pasaulyje kuriant ir valdant įvairių tipų svetaines – nuo mažų ne pelno organizacijų svetainių iki daugiakalbių įmonių sprendimų didelėms korporacijoms. <br /><br />Daugiau informacijos rasite <a href="https://typo3.org/typo3-cms/" target="_blank" rel="noreferrer">typo3.org</a>. <br /><br />TYPO3 CMS yra <b>laisvai prieinama</b> pagal <a href="https://typo3.org/project/licenses/" target="_blank" rel="noreferrer">TYPO3 licenciją (GNU/GPL)</a>. <br /><br />Naudojate versiją %s – Autorių teisės %s %s]]></target>
+      </trans-unit>
+      <trans-unit id="widgets.t3information.logo" resname="widgets.t3information.logo" approved="yes">
+        <source>TYPO3 CMS logo</source>
+        <target state="final">TYPO3 CMS logotipas</target>
+      </trans-unit>
+      <trans-unit id="widgets.sysLogErrors.title" xml:space="preserve" approved="yes">
+				<source>Number of errors in system log</source>
+			<target state="final">Klaidų skaičius sistemos žurnale</target></trans-unit>
+      <trans-unit id="widgets.sysLogErrors.description" xml:space="preserve" approved="yes">
+				<source>Shows the number of errors in the sys log of the last month, grouped by date</source>
+			<target state="final">Rodo paskutinio mėnesio sistemos žurnalo klaidų skaičių, sugrupuotą pagal datą</target></trans-unit>
+      <trans-unit id="widgets.sysLogErrors.buttonText" xml:space="preserve" approved="yes">
+				<source>Show all errors in log</source>
+			<target state="final">Rodyti visas klaidas žurnale</target></trans-unit>
+      <trans-unit id="widgets.sysLogErrors.chart.dataSet.0" xml:space="preserve" approved="yes">
+				<source>Number of errors</source>
+			<target state="final">Klaidų skaičius</target></trans-unit>
+      <trans-unit id="widgets.typeOfUsers.title" xml:space="preserve" approved="yes">
+				<source>Type of backend users</source>
+			<target state="final">Backend naudotojų tipai</target></trans-unit>
+      <trans-unit id="widgets.typeOfUsers.description" xml:space="preserve" approved="yes">
+				<source>Shows the amount of normal- and admin-users</source>
+			<target state="final">Rodo paprastų naudotojų ir administratorių skaičių</target></trans-unit>
+      <trans-unit id="widgets.typeOfUsers.normalUsers" xml:space="preserve" approved="yes">
+				<source>Normal users</source>
+			<target state="final">Paprasti naudotojai</target></trans-unit>
+      <trans-unit id="widgets.typeOfUsers.adminUsers" xml:space="preserve" approved="yes">
+				<source>Admin users</source>
+			<target state="final">Administratoriai</target></trans-unit>
+      <trans-unit id="widgets.failedLogins.title" xml:space="preserve" approved="yes">
+				<source>Failed backend logins</source>
+			<target state="final">Nesėkmingi prisijungimai prie administravimo aplinkos</target></trans-unit>
+      <trans-unit id="widgets.failedLogins.subtitle" xml:space="preserve" approved="yes">
+				<source>In last 24 hours</source>
+			<target state="final">Per paskutines 24 valandas</target></trans-unit>
+      <trans-unit id="widgets.failedLogins.description" xml:space="preserve" approved="yes">
+				<source>Information about the number of failed logins during the last 24 hours.</source>
+			<target state="final">Informacija apie nesėkmingų prisijungimų skaičių per paskutines 24 valandas.</target></trans-unit>
+      <trans-unit id="widgets.t3securityAdvisories.title" xml:space="preserve" approved="yes">
+				<source>TYPO3 security advisories</source>
+			<target state="final">TYPO3 saugumo pranešimai</target></trans-unit>
+      <trans-unit id="widgets.t3securityAdvisories.description" xml:space="preserve" approved="yes">
+				<source>Add a list of security advisories from the TYPO3 project</source>
+			<target state="final">Pridėti TYPO3 projekto saugumo pranešimų sąrašą</target></trans-unit>
+      <trans-unit id="widgets.t3securityAdvisories.moreItems" xml:space="preserve" approved="yes">
+				<source>More TYPO3 security advisories</source>
+			<target state="final">Daugiau TYPO3 saugumo pranešimų</target></trans-unit>
+      <trans-unit id="widget_group.general" xml:space="preserve" approved="yes">
+				<source>General</source>
+ 			<target state="final">Bendrieji</target></trans-unit>
+      <trans-unit id="widget_group.typo3" xml:space="preserve" approved="yes">
+				<source>TYPO3 community</source>
+ 			<target state="final">TYPO3 bendruomenė</target></trans-unit>
+      <trans-unit id="widget_group.news" xml:space="preserve" approved="yes">
+				<source>News</source>
+ 			<target state="final">Naujienos</target></trans-unit>
+      <trans-unit id="widget_group.documentation" xml:space="preserve" approved="yes">
+				<source>Documentation</source>
+ 			<target state="final">Dokumentacija</target></trans-unit>
+      <trans-unit id="widget_group.system" xml:space="preserve" approved="yes">
+				<source>System Information</source>
+ 			<target state="final">Sistemos informacija</target></trans-unit>
+      <trans-unit id="dashboard.empty.content.title" xml:space="preserve" approved="yes">
+				<source>No widgets</source>
+ 			<target state="final">Valdiklių nėra</target></trans-unit>
+      <trans-unit id="dashboard.empty.content.description" xml:space="preserve" approved="yes">
+				<source>There are no widgets on this dashboard yet. You can add widgets now by clicking on the button below.</source>
+ 			<target state="final">Šiame valdymo skyde dar nėra valdiklių. Galite juos pridėti paspaudę žemiau esantį mygtuką.</target></trans-unit>
+      <trans-unit id="dashboard.empty.content.button" xml:space="preserve" approved="yes">
+				<source>Add a widget</source>
+ 			<target state="final">Pridėti valdiklį</target></trans-unit>
+    </body>
+  </file>
+</xliff>
