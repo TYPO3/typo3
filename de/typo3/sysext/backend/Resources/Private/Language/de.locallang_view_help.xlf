@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_view_help.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="details" resname="details" approved="yes">
+        <source>Details</source>
+        <target state="final">Details</target>
+      </trans-unit>
+      <trans-unit id="syntax" resname="syntax" approved="yes">
+        <source>Syntax</source>
+        <target state="final">Syntax</target>
+      </trans-unit>
+      <trans-unit id="seeAlso" resname="seeAlso" approved="yes">
+        <source>See also</source>
+        <target state="final">Siehe auch</target>
+      </trans-unit>
+      <trans-unit id="goBack" resname="goBack" approved="yes">
+        <source>Go back</source>
+        <target state="final">Zurück</target>
+      </trans-unit>
+      <trans-unit id="fullDescription" resname="fullDescription" approved="yes">
+        <source>See full description of table</source>
+        <target state="final">Komplette Beschreibung der Tabelle ansehen</target>
+      </trans-unit>
+      <trans-unit id="fullDescription_module" resname="fullDescription_module" approved="yes">
+        <source>See full description of module</source>
+        <target state="final">Komplette Beschreibung des Moduls ansehen</target>
+      </trans-unit>
+      <trans-unit id="goToToc" resname="goToToc" approved="yes">
+        <source>&lt;&lt; go to Manual Index</source>
+        <target state="final">&lt;&lt; Zum Inhaltsverzeichnis</target>
+      </trans-unit>
+      <trans-unit id="to_top" resname="to_top" approved="yes">
+        <source>To top</source>
+        <target state="final">Nach oben</target>
+      </trans-unit>
+      <trans-unit id="TOC" resname="TOC" approved="yes">
+        <source>Table Of Contents</source>
+        <target state="final">Inhaltsverzeichnis</target>
+      </trans-unit>
+      <trans-unit id="TOC_core" resname="TOC_core" approved="yes">
+        <source>TYPO3 Core Features</source>
+        <target state="final">TYPO3-Kernfunktionen</target>
+      </trans-unit>
+      <trans-unit id="TOC_modules" resname="TOC_modules" approved="yes">
+        <source>Backend Modules</source>
+        <target state="final">Backend-Module</target>
+      </trans-unit>
+      <trans-unit id="TOC_tables" resname="TOC_tables" approved="yes">
+        <source>Database Tables</source>
+        <target state="final">Datenbanktabellen</target>
+      </trans-unit>
+      <trans-unit id="TOC_extensions" resname="TOC_extensions" approved="yes">
+        <source>Extensions</source>
+        <target state="final">Erweiterungen</target>
+      </trans-unit>
+      <trans-unit id="TOC_glossary" resname="TOC_glossary" approved="yes">
+        <source>Glossary</source>
+        <target state="final">Glossar</target>
+      </trans-unit>
+      <trans-unit id="TOC_other" resname="TOC_other" approved="yes">
+        <source>Other</source>
+        <target state="final">Sonstiges</target>
+      </trans-unit>
+      <trans-unit id="close" resname="close" approved="yes">
+        <source>Close</source>
+        <target state="final">Schließen</target>
+      </trans-unit>
+      <trans-unit id="title" resname="title" approved="yes">
+        <source>TYPO3 Inline Help</source>
+        <target state="final">Lokale TYPO3-Hilfe</target>
+      </trans-unit>
+      <trans-unit id="manual_title" resname="manual_title" approved="yes">
+        <source>TYPO3 Inline User Manual</source>
+        <target state="final">Lokales TYPO3-Handbuch</target>
+      </trans-unit>
+      <trans-unit id="introduction" resname="introduction" approved="yes">
+        <source>Introduction</source>
+        <target state="final">Einleitung</target>
+      </trans-unit>
+      <trans-unit id="description" resname="description" approved="yes">
+        <source>The TYPO3 Inline User Manual is composed from the available help in this TYPO3 Installation (Context Sensitive Help). Here you will find a general description of the TYPO3 Core modules, installation specific Backend Modules and Database Tables that are available based on your login credentials.</source>
+        <target state="final">Das lokale TYPO3-Handbuch wird dynamisch aus den Hilfetexten dieser TYPO3-Installation erzeugt (kontextabhängige Hilfe). Es enthält eine allgemeine Beschreibung der Kernmodule von TYPO3, Beschreibungen zur Installation bestimmter Backend-Module und Datenbanktabellen, die abhängig von Ihren Zugriffsrechten zur Verfügung stehen.</target>
+      </trans-unit>
+      <trans-unit id="full_manual" resname="full_manual" approved="yes">
+        <source>Full Manual (in one page)</source>
+        <target state="final">Vollständiges Handbuch (auf einer Seite)</target>
+      </trans-unit>
+      <trans-unit id="full_manual_chapters" resname="full_manual_chapters" approved="yes">
+        <source>Manual Chapters</source>
+        <target state="final">Kapitel des Handbuchs</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
