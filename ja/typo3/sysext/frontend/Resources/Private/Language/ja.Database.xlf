@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/Database.xlf" date="2014-02-07T20:22:32Z" product-name="frontend" target-language="ja">
+    <header/>
+    <body>
+      <trans-unit id="tt_content.asset_references" resname="tt_content.asset_references" approved="yes">
+        <source>Media elements</source>
+        <target state="final">メディアエレメント</target>
+      </trans-unit>
+      <trans-unit id="tt_content.asset_references.addFileReference" resname="tt_content.asset_references.addFileReference" approved="yes">
+        <source>Add media file</source>
+        <target state="final">メディアファイルを追加</target>
+      </trans-unit>
+      <trans-unit id="tt_content.palette.mediaAdjustments" resname="tt_content.palette.mediaAdjustments" approved="yes">
+        <source>Media Adjustments</source>
+        <target state="final">メディアの調整</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
