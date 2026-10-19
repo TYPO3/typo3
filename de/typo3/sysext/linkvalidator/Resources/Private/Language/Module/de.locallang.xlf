@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf" date="2011-10-17T20:22:34Z" product-name="linkvalidator" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="linkvalidator" resname="linkvalidator" approved="yes">
+        <source>LinkValidator</source>
+        <target state="final">LinkValidator</target>
+      </trans-unit>
+      <trans-unit id="menu.introduction" resname="menu.introduction" approved="yes">
+        <source>Introduction</source>
+        <target state="final">Einleitung</target>
+      </trans-unit>
+      <trans-unit id="menu.checkLinks" resname="menu.checkLinks" approved="yes">
+        <source>Check links for validity</source>
+        <target state="final">Links auf Gültigkeit überprüfen</target>
+      </trans-unit>
+      <trans-unit id="menu.overview" resname="menu.overview" approved="yes">
+        <source>Overview of links on website</source>
+        <target state="final">Überblick der Links auf der Website</target>
+      </trans-unit>
+      <trans-unit id="overview.header" resname="overview.header" approved="yes">
+        <source>Overview - choose options to check the links</source>
+        <target state="final">Überblick - Wählen Sie aus den folgenden Optionen, um die Links zu prüfen</target>
+      </trans-unit>
+      <trans-unit id="overview.all.header" resname="overview.all.header" approved="yes">
+        <source>Total amounts in tt_content</source>
+        <target state="final">Anzahl in tt_content</target>
+      </trans-unit>
+      <trans-unit id="overview.all.records" resname="overview.all.records" approved="yes">
+        <source>Records with ext. links</source>
+        <target state="final">Datensätze mit ext. Links:</target>
+      </trans-unit>
+      <trans-unit id="overview.all.links" resname="overview.all.links" approved="yes">
+        <source>External links</source>
+        <target state="final">Externe Links:</target>
+      </trans-unit>
+      <trans-unit id="overview.branch.header" resname="overview.branch.header" approved="yes">
+        <source>Amounts from actual branch in tt_content</source>
+        <target state="final">Anzahl aus aktuellem Teilbereich in tt_content</target>
+      </trans-unit>
+      <trans-unit id="overview.branch.records" resname="overview.branch.records" approved="yes">
+        <source>Records with ext. links</source>
+        <target state="final">Datensätze mit ext. Links:</target>
+      </trans-unit>
+      <trans-unit id="overview.branch.links" resname="overview.branch.links" approved="yes">
+        <source>External links</source>
+        <target state="final">Externe Links:</target>
+      </trans-unit>
+      <trans-unit id="overview.attention.header" resname="overview.attention.header" approved="yes">
+        <source>Attention</source>
+        <target state="final">Achtung:</target>
+      </trans-unit>
+      <trans-unit id="overview.attention.text" resname="overview.attention.text" approved="yes">
+        <source>Checking links may take up to several minutes. Checking ONE link can last up to 3 seconds.</source>
+        <target state="final">Die Überprüfung kann mehrere Minuten dauern. Die Überprüfung eines einzelnen Links kann bis zu 3 Sekunden benötigen.</target>
+      </trans-unit>
+      <trans-unit id="Report" resname="Report" approved="yes">
+        <source>Report</source>
+        <target state="final">Bericht</target>
+      </trans-unit>
+      <trans-unit id="CheckLink" resname="CheckLink" approved="yes">
+        <source>Check Links</source>
+        <target state="final">Links überprüfen</target>
+      </trans-unit>
+      <trans-unit id="report.statistics.header" resname="report.statistics.header" approved="yes">
+        <source>Show these types of broken links</source>
+        <target state="final">Diese Typen defekter Links zeigen</target>
+      </trans-unit>
+      <trans-unit id="checklinks.statistics.header" resname="checklinks.statistics.header" approved="yes">
+        <source>Check these types of broken links</source>
+        <target state="final">Diese Typen defekter Links prüfen</target>
+      </trans-unit>
+      <trans-unit id="report.func.title" resname="report.func.title" approved="yes">
+        <source>Show this level</source>
+        <target state="final">Diese Ebenen zeigen</target>
+      </trans-unit>
+      <trans-unit id="checklinks.func.title" resname="checklinks.func.title" approved="yes">
+        <source>Check this level</source>
+        <target state="final">Diese Ebenen prüfen</target>
+      </trans-unit>
+      <trans-unit id="overviews.nbtotal" resname="overviews.nbtotal" approved="yes">
+        <source>Broken links total</source>
+        <target state="final">Defekte Links insgesamt:</target>
+      </trans-unit>
+      <trans-unit id="hooks.db" resname="hooks.db" approved="yes">
+        <source>Internal Links</source>
+        <target state="final">Interne Links:</target>
+      </trans-unit>
+      <trans-unit id="hooks.file" resname="hooks.file" approved="yes">
+        <source>File Links</source>
+        <target state="final">Dateilinks:</target>
+      </trans-unit>
+      <trans-unit id="hooks.external" resname="hooks.external" approved="yes">
+        <source>External Links</source>
+        <target state="final">Externe Links:</target>
+      </trans-unit>
+      <trans-unit id="label_refresh" resname="label_refresh" approved="yes">
+        <source>Refresh display</source>
+        <target state="final">Ansicht aktualisieren</target>
+      </trans-unit>
+      <trans-unit id="label_update" resname="label_update" approved="yes">
+        <source>Check links</source>
+        <target state="final">Links überprüfen</target>
+      </trans-unit>
+      <trans-unit id="list.header" resname="list.header" approved="yes">
+        <source>Listing of broken links</source>
+        <target state="final">Auflistung defekter Links</target>
+      </trans-unit>
+      <trans-unit id="list.tableHead.path" resname="list.tableHead.path" approved="yes">
+        <source>Path</source>
+        <target state="final">Pfad</target>
+      </trans-unit>
+      <trans-unit id="list.tableHead.element" resname="list.tableHead.element" approved="yes">
+        <source>Element</source>
+        <target state="final">Element</target>
+      </trans-unit>
+      <trans-unit id="list.tableHead.headlink" resname="list.tableHead.headlink" approved="yes">
+        <source>Link</source>
+        <target state="final">Link</target>
+      </trans-unit>
+      <trans-unit id="list.tableHead.linktarget" resname="list.tableHead.linktarget" approved="yes">
+        <source>URL / Link Target</source>
+        <target state="final">URL/Linkziel</target>
+      </trans-unit>
+      <trans-unit id="list.tableHead.linkmessage" resname="list.tableHead.linkmessage" approved="yes">
+        <source>Error message</source>
+        <target state="final">Fehlermeldung</target>
+      </trans-unit>
+      <trans-unit id="list.tableHead.lastCheck" resname="list.tableHead.lastCheck" approved="yes">
+        <source>Last check</source>
+        <target state="final">Letzte Überprüfung</target>
+      </trans-unit>
+      <trans-unit id="list.edit" resname="list.edit" approved="yes">
+        <source>Edit element containing this broken link</source>
+        <target state="final">Das Element, das diesen defekten Link enthält, bearbeiten</target>
+      </trans-unit>
+      <trans-unit id="list.field" resname="list.field" approved="yes">
+        <source>(Field: %s)</source>
+        <target state="final">(Feld: %s)</target>
+      </trans-unit>
+      <trans-unit id="list.no.headline" resname="list.no.headline" approved="yes">
+        <source>no headline</source>
+        <target state="final">keine Überschrift</target>
+      </trans-unit>
+      <trans-unit id="list.report.pagedeleted" resname="list.report.pagedeleted" approved="yes">
+        <source>Page '###title###' (###uid###) is deleted.</source>
+        <target state="final">Seite '###title###' (###uid###) ist gelöscht.</target>
+      </trans-unit>
+      <trans-unit id="list.report.pagenotvisible" resname="list.report.pagenotvisible" approved="yes">
+        <source>Page '###title###' (###uid###) is not visible.</source>
+        <target state="final">Seite '###title###' (###uid###) ist nicht sichtbar.</target>
+      </trans-unit>
+      <trans-unit id="list.report.pagenotexisting" resname="list.report.pagenotexisting" approved="yes">
+        <source>Page (###uid###) does not exist.</source>
+        <target state="final">Seite (###uid###) existiert nicht.</target>
+      </trans-unit>
+      <trans-unit id="list.report.contentmoved" resname="list.report.contentmoved" approved="yes">
+        <source>Element '###title###' (###uid###) is not located on page ###wrongpage###, but on page ###rightpage###.</source>
+        <target state="final">Element '###title###' (###uid###) befindet sich nicht auf Seite ###wrongpage###, sondern auf Seite ###rightpage###.</target>
+      </trans-unit>
+      <trans-unit id="list.report.contentdeleted" resname="list.report.contentdeleted" approved="yes">
+        <source>Element '###title###' (###uid###) is deleted.</source>
+        <target state="final">Element '###title###' (###uid###) ist gelöscht.</target>
+      </trans-unit>
+      <trans-unit id="list.report.contentnotvisible" resname="list.report.contentnotvisible" approved="yes">
+        <source>Element '###title###' (###uid###) is not visible.</source>
+        <target state="final">Element '###title###' (###uid###) ist nicht sichtbar.</target>
+      </trans-unit>
+      <trans-unit id="list.report.contentnotexisting" resname="list.report.contentnotexisting" approved="yes">
+        <source>Element (###uid###) does not exist.</source>
+        <target state="final">Element (###uid###) existiert nicht.</target>
+      </trans-unit>
+      <trans-unit id="list.report.rownotvisible" resname="list.report.rownotvisible" approved="yes">
+        <source>###title### row (###uid###) is not visible.</source>
+        <target state="final">Zeile '###title###' (###uid###) ist nicht sichtbar.</target>
+      </trans-unit>
+      <trans-unit id="list.report.rowdeleted" resname="list.report.rowdeleted" approved="yes">
+        <source>###title### row (###uid###) is deleted.</source>
+        <target state="final">Zeile ###title### (###uid###) ist gelöscht.</target>
+      </trans-unit>
+      <trans-unit id="list.report.rowdeleted.default.title" resname="list.report.rowdeleted.default.title" approved="yes">
+        <source>Linked</source>
+        <target state="final">&lt;!-- hier keinen Text einfügen --&gt;</target>
+      </trans-unit>
+      <trans-unit id="list.report.rownotexisting" resname="list.report.rownotexisting" approved="yes">
+        <source>Row (###uid###) does not exist.</source>
+        <target state="final">Zeile (###uid###) existiert nicht.</target>
+      </trans-unit>
+      <trans-unit id="list.report.noinformation" resname="list.report.noinformation" approved="yes">
+        <source>No information about the error is available.</source>
+        <target state="final">Zu diesem Fehler gibt es keine Information.</target>
+      </trans-unit>
+      <trans-unit id="list.report.noresponse" resname="list.report.noresponse" approved="yes">
+        <source>External Link not reachable.</source>
+        <target state="final">Das Ziel des externen Links ist nicht erreichbar.</target>
+      </trans-unit>
+      <trans-unit id="list.report.redirectloop" resname="list.report.redirectloop" approved="yes">
+        <source>A redirect loop occurred. (%s: %s)</source>
+        <target state="final">Es ist eine Weiterleitungsschleife aufgetreten. (%s: %s)</target>
+      </trans-unit>
+      <trans-unit id="list.report.tooManyRedirects" resname="list.report.tooManyRedirects" approved="yes">
+        <source>Too many redirects.</source>
+        <target state="final">Zu viele Umleitungen.</target>
+      </trans-unit>
+      <trans-unit id="list.report.filenotexisting" resname="list.report.filenotexisting" approved="yes">
+        <source>File doesn't exist.</source>
+        <target state="final">Datei existiert nicht.</target>
+      </trans-unit>
+      <trans-unit id="list.report.timeout" resname="list.report.timeout" approved="yes">
+        <source>Operation timeout. The specified time-out period was reached according to the conditions.</source>
+        <target state="final">Timeout. Das angegebene Zeitfenster für die Anfrage wurde überschritten.</target>
+      </trans-unit>
+      <trans-unit id="list.report.couldnotresolvehost" resname="list.report.couldnotresolvehost" approved="yes">
+        <source>Could not resolve host. The given remote host was not resolved.</source>
+        <target state="final">Host konnte nicht aufgelöst werden. Der angegebene Host wurde nicht aufgelöst.</target>
+      </trans-unit>
+      <trans-unit id="list.report.errornetworkdata" resname="list.report.errornetworkdata" approved="yes">
+        <source>Failure with receiving network data.</source>
+        <target state="final">Fehler beim Empfangen der Netzwerkdaten.</target>
+      </trans-unit>
+      <trans-unit id="list.report.otherhttpcode" resname="list.report.otherhttpcode" approved="yes">
+        <source>An error occurred (%s): "%s".</source>
+        <target state="final">Es ist ein Fehler aufgetreten (%s): "%s".</target>
+      </trans-unit>
+      <trans-unit id="list.report.httpexception" resname="list.report.httpexception" approved="yes">
+        <source>Exception: %s</source>
+        <target state="final">Ausnahme: %s</target>
+      </trans-unit>
+      <trans-unit id="list.report.networkexception" resname="list.report.networkexception" approved="yes">
+        <source>Network error / invalid domain</source>
+        <target state="final">Netzwerkfehler/Domain ungültig</target>
+      </trans-unit>
+      <!-- HTTP status code error messages -->
+      <trans-unit id="list.report.error.httpstatuscode.300" resname="list.report.pageforbidden403" approved="yes">
+        <source>Multiple Choices (300).</source>
+        <target state="final">Mehrere Auswahlmöglichkeiten (300).</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.httpstatuscode.300" resname="list.report.pageforbidden403" approved="yes">
+        <source>Use proxy (305).</source>
+        <target state="final">Mehrere Auswahlmöglichkeiten (300).</target>
+      </trans-unit>
+      <trans-unit id="list.report.pageforbidden403" resname="list.report.pageforbidden403" approved="yes">
+        <source>Accessing this address is not allowed (403).</source>
+        <target state="final">Der Zugriff auf diese URL ist nicht erlaubt (403).</target>
+      </trans-unit>
+      <trans-unit id="list.report.pagenotfound404" resname="list.report.pagenotfound404" approved="yes">
+        <source>The requested url was not found (404).</source>
+        <target state="final">Die angeforderte URL wurde nicht gefunden (404).</target>
+      </trans-unit>
+      <trans-unit id="list.report.internalerror500" resname="list.report.internalerror500" approved="yes">
+        <source>Internal Server Error (500)</source>
+        <target state="final">Interner Serverfehler (500)</target>
+      </trans-unit>
+      <trans-unit id="list.report.externalerror" resname="list.report.externalerror" approved="yes">
+        <source>External Link returned HTTP error code (%s).</source>
+        <target state="final">Der externe Link gab einen Fehlercode zurück (%s).</target>
+      </trans-unit>
+      <!-- libcurl error messages from https://curl.haxx.se/libcurl/c/libcurl-errors.html -->
+      <!-- ignoring various FTP errors here: 10 - 15, 17, 19  and other error that are unlikely -->
+      <trans-unit id="list.report.error.libcurl.1" resname="list.report.networkexception" approved="yes">
+        <source>Unsupported protocol.</source>
+        <target state="final">Nicht unterstütztes Protokoll.</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.2" resname="list.report.networkexception" approved="yes">
+        <source>Initialization failed.</source>
+        <target state="final">Initialisierung fehlgeschlagen.</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.3" resname="list.report.networkexception" approved="yes">
+        <source>The URL was not properly formatted.</source>
+        <target state="final">Die URL ist nicht korrekt formatiert.</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.4" resname="list.report.networkexception" approved="yes">
+        <source>Feature not supported.</source>
+        <target state="final">Funktion wird nicht unterstützt.</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.5" resname="list.report.networkexception" approved="yes">
+        <source>Couldn't resolve proxy.</source>
+        <target state="final">Proxy konnte nicht aufgelöst werden.</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.6" resname="list.report.networkexception" approved="yes">
+        <source>Couldn't resolve host.</source>
+        <target state="final">Konnte Hostnamen nicht auflösen.</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.7" resname="list.report.networkexception" approved="yes">
+        <source>Failed to connect to host or proxy.</source>
+        <target state="final">Konnte nicht auf externen Host oder Proxy zugreifen.</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.8" resname="list.report.networkexception" approved="yes">
+        <source>The remote server sent data that could not be parsed.</source>
+        <target state="final">Der entfernte Server hat Daten gesendet, die nicht analysiert werden konnten.</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.9" resname="list.report.networkexception" approved="yes">
+        <source>Access denied.</source>
+        <target state="final">Zugriff verweigert.</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.16" resname="list.report.networkexception" approved="yes">
+        <source>Generic HTTP/2 error.</source>
+        <target state="final">Allgemeiner HTTP/2 Fehler.</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.18" resname="list.report.networkexception" approved="yes">
+        <source>A file transfer was shorter or larger than expected.</source>
+        <target state="final">Eine Dateiübertragung war kürzer oder größer als erwartet.</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.28" resname="list.report.networkexception" approved="yes">
+        <source>Timeout: The remote server possibly took too long to answer.</source>
+        <target state="final">Zeitüberschreitung: Der entfernte Server hat möglicherweise zu lange gebraucht, um zu antworten.</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.35" resname="list.report.networkexception" approved="yes">
+        <source>Problem with SSl / TLS handshake.</source>
+        <target state="final">Problem mit Verschlüsselung (SSL / TLS).</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.47" resname="list.report.networkexception" approved="yes">
+        <source>Too many redirects.</source>
+        <target state="final">Zu viele Weiterleitungen.</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.55" resname="list.report.networkexception" approved="yes">
+        <source>General network error. Send failed.</source>
+        <target state="final">Netzwerkfehler: Fehler beim Senden.</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.56" resname="list.report.networkexception" approved="yes">
+        <source>General network error. Receive failed.</source>
+        <target state="final">Allgemeiner Netzwerkfehler. Fehler beim Empfangen.</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.60" resname="list.report.networkexception" approved="yes">
+        <source>The remote server's SSL certificate was deemed not OK.</source>
+        <target state="final">Das SSL-Zertifikat des Remote-Servers wurde als nicht OK eingestuft.</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.63" resname="list.report.networkexception" approved="yes">
+        <source>Maximum file size exceeded.</source>
+        <target state="final">Maximale Dateigröße überschritten.</target>
+      </trans-unit>
+      <trans-unit id="list.msg.ok" resname="list.msg.ok" approved="yes">
+        <source>Ok</source>
+        <target state="final">Ok</target>
+      </trans-unit>
+      <trans-unit id="list.msg.lastRun" resname="list.msg.lastRun" approved="yes">
+        <source>%1$s %2$s</source>
+        <target state="final">%1$s %2$s</target>
+      </trans-unit>
+      <trans-unit id="list.no.broken.links.title" resname="list.no.broken.links.title" approved="yes">
+        <source>No broken links to show!</source>
+        <target state="final">Keine defekten Links anzuzeigen!</target>
+      </trans-unit>
+      <trans-unit id="list.no.broken.links" resname="list.no.broken.links" approved="yes">
+        <source>There are no broken links to be displayed.</source>
+        <target state="final">Es gibt keine defekten Links, die hier anzuzeigen wären.</target>
+      </trans-unit>
+      <trans-unit id="no.access.title" resname="no.access.title" approved="yes">
+        <source>No access!</source>
+        <target state="final">Kein Zugriff!</target>
+      </trans-unit>
+      <trans-unit id="no.access" resname="no.access" approved="yes">
+        <source>You do not have access to these listings.</source>
+        <target state="final">Sie haben keinen Zugriff auf diese Auflistungen.</target>
+      </trans-unit>
+      <trans-unit id="label_update-link-list" resname="label_update-link-list" approved="yes">
+        <source>Checking links, please stand by.</source>
+        <target state="final">Links werden überprüft, bitte warten.</target>
+      </trans-unit>
+      <trans-unit id="label_refresh-link-list" resname="label_refresh-link-list" approved="yes">
+        <source>Refreshing link list, please stand by.</source>
+        <target state="final">Linkliste wird aktualisiert, bitte warten.</target>
+      </trans-unit>
+      <trans-unit id="needs-recheck" resname="needs-recheck" approved="yes">
+        <source>Needs recheck</source>
+        <target state="final">Benötigt erneute Überprüfung</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
