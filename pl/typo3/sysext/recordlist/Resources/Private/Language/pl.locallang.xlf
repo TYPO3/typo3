@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:recordlist/Resources/Private/Language/locallang.xlf" date="2017-02-03T21:13:02Z" product-name="recordlist" target-language="pl">
+    <header/>
+    <body>
+      <trans-unit id="error.linkHandlerTitleMissing" resname="error.linkHandlerTitleMissing" approved="yes">
+        <source>[title missing]</source>
+        <target state="final">[brak tytułu]</target>
+      </trans-unit>
+      <trans-unit id="clearcache.title" resname="clearcache.title" approved="yes">
+        <source>Page cache</source>
+        <target state="final">Pamięć podręczna strony</target>
+      </trans-unit>
+      <trans-unit id="clearcache.message.success" resname="clearcache.message.success" approved="yes">
+        <source>Successfully cleared page cache</source>
+        <target state="final">Pomyślnie wyczyszczono pamięć podręczną strony</target>
+      </trans-unit>
+      <trans-unit id="clearcache.message.error" resname="clearcache.message.error" approved="yes">
+        <source>Page cache could not be cleared</source>
+        <target state="final">Pamięć podręczna strony nie mogła być wyczyszczona</target>
+      </trans-unit>
+      <trans-unit id="create_folder.title" resname="create_folder.title" approved="yes">
+        <source>Create new folder</source>
+        <target state="final">Utwórz nowy folder</target>
+      </trans-unit>
+      <trans-unit id="create_folder.placeholder" resname="create_folder.placeholder" approved="yes">
+        <source>Your new folder name</source>
+        <target state="final">Nazwa Twojego nowego folderu</target>
+      </trans-unit>
+      <trans-unit id="create_folder.submit" resname="create_folder.submit" approved="yes">
+        <source>Create folder</source>
+        <target state="final">Utwórz folder</target>
+      </trans-unit>
+      <trans-unit id="shortcut.title" resname="shortcut.title" approved="yes">
+        <source>%s%s on page "%s" [%d]</source>
+        <target state="final">%s%s na stronie "%s" [%d]</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
