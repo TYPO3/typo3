@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf" date="2018-03-21T11:47:00Z" product-name="adminpanel" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="module.label" resname="module.label">
+        <source>Debug</source>
+        <target>crwdns211608:0crwdne211608:0</target>
+      </trans-unit>
+      <trans-unit id="module.shortinfo" resname="module.shortinfo">
+        <source>(%s Errors/Warnings)</source>
+        <target>crwdns211610:0%scrwdne211610:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.label" resname="submodule.log.label">
+        <source>Log</source>
+        <target>crwdns211612:0crwdne211612:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.message" resname="submodule.log.message">
+        <source>Log Message</source>
+        <target>crwdns211614:0crwdne211614:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.component" resname="submodule.log.component">
+        <source>Component</source>
+        <target>crwdns211616:0crwdne211616:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.level" resname="submodule.log.level">
+        <source>Level</source>
+        <target>crwdns211618:0crwdne211618:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.groupByComponent" resname="submodule.log.groupByComponent">
+        <source>Group by Component</source>
+        <target>crwdns211620:0crwdne211620:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.groupByLevel" resname="submodule.log.groupByLevel">
+        <source>Group by Level</source>
+        <target>crwdns211622:0crwdne211622:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.startLevel" resname="submodule.log.startLevel">
+        <source>Display only levels equal or higher to</source>
+        <target>crwdns211624:0crwdne211624:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.noEntries" resname="submodule.log.noEntries">
+        <source>No log entries.</source>
+        <target>crwdns211626:0crwdne211626:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.events.label" resname="submodule.events.label">
+        <source>Events</source>
+        <target>crwdns211628:0crwdne211628:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.label" resname="submodule.queryInformation.label">
+        <source>Query Information</source>
+        <target>crwdns211630:0crwdne211630:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.query" resname="submodule.queryInformation.query">
+        <source>Query</source>
+        <target>crwdns211632:0crwdne211632:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.queries" resname="submodule.queryInformation.queries">
+        <source>Queries</source>
+        <target>crwdns211634:0crwdne211634:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.backtrace" resname="submodule.queryInformation.backtrace">
+        <source>Backtrace</source>
+        <target>crwdns211636:0crwdne211636:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.doctrineDebug" resname="submodule.queryInformation.doctrineDebug">
+        <source>SQL Debug</source>
+        <target>crwdns211638:0crwdne211638:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.sqlQuery" resname="submodule.queryInformation.sqlQuery">
+        <source>SQL Query</source>
+        <target>crwdns211640:0crwdne211640:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.queryCount" resname="submodule.queryInformation.queryCount">
+        <source>Count</source>
+        <target>crwdns211642:0crwdne211642:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.queryTime" resname="submodule.queryInformation.queryTime">
+        <source>Total Time [ms]</source>
+        <target>crwdns211644:0crwdne211644:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.total" resname="submodule.queryInformation.total">
+        <source>Total</source>
+        <target>crwdns211646:0crwdne211646:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.label">
+        <source>Page title</source>
+        <target>crwdns211648:0crwdne211648:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.usedProvider">
+        <source>Used provider</source>
+        <target>crwdns211650:0crwdne211650:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.title">
+        <source>Title</source>
+        <target>crwdns211652:0crwdne211652:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.provider">
+        <source>Provider</source>
+        <target>crwdns211654:0crwdne211654:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.skippedProviders">
+        <source>Skipped providers (provided no title)</source>
+        <target>crwdns211656:0crwdne211656:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.name">
+        <source>Name</source>
+        <target>crwdns211658:0crwdne211658:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.allProviders">
+        <source>All providers checked in order</source>
+        <target>crwdns211660:0crwdne211660:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.cacheEnabled">
+        <source>It's not possible to retrieve the page title (providers) information when the page is cached.</source>
+        <target>crwdns211662:0crwdne211662:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.cacheEnabled.extraInfo">
+        <source>Visit this page uncached, or disable the cache through this admin panel.</source>
+        <target>crwdns211664:0crwdne211664:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
