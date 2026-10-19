@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang.xlf" date="2015-01-02T11:16:11Z" product-name="backend" target-language="km">
+    <header/>
+    <body>
+      <trans-unit id="no_modules_registered" resname="no_modules_registered" approved="yes">
+        <source>No modules have been registered. Please contact your system administrator.</source>
+        <target state="final">មិនមាន​ម៉ូឌុល​បានចុះបញ្ជី។ សូមទាក់ទងអ្នកគ្រប់គ្រង​ប្រព័ន្ធ​របស់អ្នក។</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
