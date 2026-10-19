@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf" date="2011-10-17T20:22:37Z" product-name="tstemplate" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="currentTemplate" resname="currentTemplate">
+        <source>Current template</source>
+        <target>crwdns224638:0crwdne224638:0</target>
+      </trans-unit>
+      <trans-unit id="title" resname="title">
+        <source>Title</source>
+        <target>crwdns224640:0crwdne224640:0</target>
+      </trans-unit>
+      <trans-unit id="rootlevel" resname="rootlevel">
+        <source>Rootlevel</source>
+        <target>crwdns224642:0crwdne224642:0</target>
+      </trans-unit>
+      <trans-unit id="clearSetup" resname="clearSetup">
+        <source>Clear Setup</source>
+        <target>crwdns224644:0crwdne224644:0</target>
+      </trans-unit>
+      <trans-unit id="clearConstants" resname="clearConstants">
+        <source>Clear Constants</source>
+        <target>crwdns224646:0crwdne224646:0</target>
+      </trans-unit>
+      <trans-unit id="pid" resname="pid">
+        <source>PID</source>
+        <target>crwdns224648:0crwdne224648:0</target>
+      </trans-unit>
+      <trans-unit id="rootline" resname="rootline">
+        <source>Rootline</source>
+        <target>crwdns224650:0crwdne224650:0</target>
+      </trans-unit>
+      <trans-unit id="templateHierarchy" resname="templateHierarchy">
+        <source>Template hierarchy</source>
+        <target>crwdns224652:0crwdne224652:0</target>
+      </trans-unit>
+      <trans-unit id="constants" resname="constants">
+        <source>Constants</source>
+        <target>crwdns224654:0crwdne224654:0</target>
+      </trans-unit>
+      <trans-unit id="setup" resname="setup">
+        <source>Setup</source>
+        <target>crwdns224656:0crwdne224656:0</target>
+      </trans-unit>
+      <trans-unit id="viewCompleteTS" resname="viewCompleteTS">
+        <source>View the complete TS Listing</source>
+        <target>crwdns224658:0crwdne224658:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
