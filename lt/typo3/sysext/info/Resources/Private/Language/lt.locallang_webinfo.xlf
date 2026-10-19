@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:info/Resources/Private/Language/locallang_webinfo.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="lt">
+    <header/>
+    <body>
+      <trans-unit id="page_title" resname="page_title" approved="yes">
+        <source>Pagetree overview</source>
+        <target state="final">Puslapių medžio apžvalga</target>
+      </trans-unit>
+      <trans-unit id="pages_0" resname="pages_0" approved="yes">
+        <source>Basic settings</source>
+        <target state="final">Pagrindiniai nustatymai</target>
+      </trans-unit>
+      <trans-unit id="pages_2" resname="pages_2" approved="yes">
+        <source>Cache and Age</source>
+        <target state="final">Spartinimas ir amžius</target>
+      </trans-unit>
+      <trans-unit id="pages_1" resname="pages_1" approved="yes">
+        <source>Record overview</source>
+        <target state="final">Įrašų apžvalga</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_viewPage" resname="lang_renderl10n_viewPage" approved="yes">
+        <source>View page</source>
+        <target state="final">Peržiūrėti puslapį</target>
+      </trans-unit>
+      <trans-unit id="lang_title" resname="lang_title" approved="yes">
+        <source>Localization overview</source>
+        <target state="final">Lokalizacijos apžvalga</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_editPageProperties" resname="lang_renderl10n_editPageProperties" approved="yes">
+        <source>Edit all page properties</source>
+        <target state="final">Redaguoti visas puslapio savybes</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_page" resname="lang_renderl10n_page" approved="yes">
+        <source>Page</source>
+        <target state="final">Puslapis</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_default" resname="lang_renderl10n_default" approved="yes">
+        <source>Default</source>
+        <target state="final">Numatytasis</target>
+      </trans-unit>
+      <trans-unit id="lang_getlangsta_createNewTranslationHeaders" resname="lang_getlangsta_createNewTranslationHeaders" approved="yes">
+        <source>Create new translation headers</source>
+        <target state="final">Sukurti naujus vertimo antraščių įrašus</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_CEcount" resname="lang_renderl10n_CEcount" approved="yes">
+        <source>Content Element Count</source>
+        <target state="final">Turinio elementų skaičius</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
