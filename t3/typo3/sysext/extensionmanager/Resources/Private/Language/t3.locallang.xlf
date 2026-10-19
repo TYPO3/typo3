@@ -1,0 +1,882 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:extensionmanager/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="workspaces" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="extensionManager" resname="extensionManager">
+        <source>Extension Manager</source>
+        <target>crwdns217772:0crwdne217772:0</target>
+      </trans-unit>
+      <trans-unit id="manageExtensions" resname="manageExtensions">
+        <source>Manage Extensions</source>
+        <target>crwdns217774:0crwdne217774:0</target>
+      </trans-unit>
+      <trans-unit id="installExtension" resname="installExtension">
+        <source>Install Extension</source>
+        <target>crwdns217776:0crwdne217776:0</target>
+      </trans-unit>
+      <trans-unit id="composerMode.title" resname="composerMode.title">
+        <source>Composer mode</source>
+        <target>crwdns217778:0crwdne217778:0</target>
+      </trans-unit>
+      <trans-unit id="composerStrictMode.message" resname="composerMode.message">
+        <source>The system is set to composer mode. Please notice that it is this list is for informational purpose only. To modify which extensions are part of the system, use Composer. To set extensions up, use the TYPO3 cli (extension:setup)</source>
+        <target>crwdns217780:0crwdne217780:0</target>
+      </trans-unit>
+      <trans-unit id="installedExtensions" resname="installedExtensions">
+        <source>Installed Extensions</source>
+        <target>crwdns217782:0crwdne217782:0</target>
+      </trans-unit>
+      <trans-unit id="extensionComposerStatus" resname="extensionComposerStatus">
+        <source>Composer Support of Extensions</source>
+        <target>crwdns217784:0crwdne217784:0</target>
+      </trans-unit>
+      <trans-unit id="getExtensions" resname="getExtensions">
+        <source>Get Extensions</source>
+        <target>crwdns217786:0crwdne217786:0</target>
+      </trans-unit>
+      <trans-unit id="showAllVersions" resname="showAllVersions">
+        <source>Show all versions of</source>
+        <target>crwdns217788:0crwdne217788:0</target>
+      </trans-unit>
+      <trans-unit id="extConfTemplate.backToList" resname="extConfTemplate.backToList">
+        <source>Back to list</source>
+        <target>crwdns217790:0crwdne217790:0</target>
+      </trans-unit>
+      <trans-unit id="button.cancel" resname="button.cancel">
+        <source>Cancel</source>
+        <target>crwdns217792:0crwdne217792:0</target>
+      </trans-unit>
+      <trans-unit id="button.details" resname="button.details">
+        <source>Show Details</source>
+        <target>crwdns217794:0crwdne217794:0</target>
+      </trans-unit>
+      <trans-unit id="button.remove" resname="button.remove">
+        <source>Remove extension</source>
+        <target>crwdns217796:0crwdne217796:0</target>
+      </trans-unit>
+      <trans-unit id="button.updateExtension" resname="button.updateExtension">
+        <source>Update extension</source>
+        <target>crwdns217798:0crwdne217798:0</target>
+      </trans-unit>
+      <trans-unit id="button.resolveDependencies" resname="button.resolveDependencies">
+        <source>Resolve dependencies</source>
+        <target>crwdns217800:0crwdne217800:0</target>
+      </trans-unit>
+      <trans-unit id="label.resolveDependenciesEnableButton" resname="label.resolveDependenciesEnableButton">
+        <source>I understand what this means and I'm able to investigate on possibly occurring issues by myself.</source>
+        <target>crwdns217802:0crwdne217802:0</target>
+      </trans-unit>
+      <trans-unit id="button.resolveDependenciesIgnore" resname="button.resolveDependenciesIgnore">
+        <source>I know what I'm doing, continue anyway</source>
+        <target>crwdns217804:0crwdne217804:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.downloadsql" resname="extensionList.downloadsql">
+        <source>Download SQL Dump</source>
+        <target>crwdns217806:0crwdne217806:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.remove" resname="extensionList.remove">
+        <source>Remove</source>
+        <target>crwdns217808:0crwdne217808:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.update" resname="extensionList.update">
+        <source>Update</source>
+        <target>crwdns217810:0crwdne217810:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateToVersion" resname="extensionList.updateToVersion">
+        <source>Update to version %s</source>
+        <target>crwdns217812:0%scrwdne217812:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateDisabled" resname="extensionList.updateDisabled">
+        <source>An update is available but this operation is currently disabled</source>
+        <target>crwdns217814:0crwdne217814:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.deactivate" resname="extensionList.deactivate">
+        <source>Deactivate</source>
+        <target>crwdns217816:0crwdne217816:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.activate" resname="extensionList.activate">
+        <source>Activate</source>
+        <target>crwdns217818:0crwdne217818:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.downloadzip" resname="extensionList.downloadzip">
+        <source>Download as zip</source>
+        <target>crwdns217820:0crwdne217820:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.uploadExtension" resname="extensionList.uploadExtension">
+        <source>Upload Extension</source>
+        <target>crwdns226086:0crwdne226086:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.overwriteExtension" resname="extensionList.overwriteExtension">
+        <source>Overwrite</source>
+        <target>crwdns217824:0crwdne217824:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.composerStatus.information" resname="extensionList.composerStatus.information">
+        <source>
+					Future TYPO3 versions will require all extensions in your TYPO3 installation to contain a
+					composer.json file in their extension directory. This is needed to properly detect the
+					composer-based package name, the relevant extension key and the dependencies to other packages /
+					extensions. Below is a list of extensions in your TYPO3 installation, which currently do not meet
+					those requirements and therefore need adaptations to their composer.json file.
+				</source>
+        <target>crwdns217826:0crwdne217826:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.composerStatus.thirdParty" resname="extensionList.composerStatus.thirdParty">
+        <source>
+					For third-party extensions that were fetched from TER, it is helpful to update to their latest
+					version from TER which probably already contains a valid composer.json file.
+				</source>
+        <target>crwdns217828:0crwdne217828:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.composerStatus.missingManifest" resname="extensionList.composerStatus.missingManifest">
+        <source>Missing composer.json file</source>
+        <target>crwdns217830:0crwdne217830:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.composerStatus.terRequest" resname="extensionList.composerStatus.terRequest">
+        <source>
+					To support you creating a valid composer.json file for your extensions, TYPO3 will send your
+					ext_emconf.php contents to TYPO3.org (TER). TYPO3.org will then resolve your dependencies and
+					return a valid composer.json proposal which can be copied to the corresponding extension directory.
+					This is especially helpful in case your TYPO3 installation contains custom extensions.
+				</source>
+        <target>crwdns217832:0crwdne217832:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.composerStatus.additionalInformation" resname="extensionList.composerStatus.additionalInformation">
+        <source>For more information regarding the migration and the upcoming changes, please have a look at</source>
+        <target>crwdns217834:0crwdne217834:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showComposerProposal" resname="extensionList.showComposerProposal">
+        <source>Show composer.json proposal</source>
+        <target>crwdns217836:0crwdne217836:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.fetchComposerProposal" resname="extensionList.fetchComposerProposal">
+        <source>Check TYPO3.org for composer.json proposal</source>
+        <target>crwdns217838:0crwdne217838:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.fetchComposerProposal.details" resname="extensionList.fetchComposerProposal.details">
+        <source>Send this extensions' ext_emconf.php contents to TYPO3.org for a valid and resolved composer.json proposal</source>
+        <target>crwdns217840:0crwdne217840:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.overwritingDisabled" resname="extensionList.overwritingDisabled">
+        <source>Extension is already available and overwriting was not enabled</source>
+        <target>crwdns217842:0crwdne217842:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.loading" resname="extensionList.loading">
+        <source>Loading form...</source>
+        <target>crwdns217844:0crwdne217844:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.update" resname="extensionList.header.update">
+        <source>Upd.</source>
+        <target>crwdns217846:0crwdne217846:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.title.update" resname="extensionList.header.title.update">
+        <source>Update</source>
+        <target>crwdns217848:0crwdne217848:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.activate" resname="extensionList.header.activate">
+        <source>A/D</source>
+        <target>crwdns217850:0crwdne217850:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.title.activate" resname="extensionList.header.title.activate">
+        <source>Activate / Deactivate</source>
+        <target>crwdns217852:0crwdne217852:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.extensionName" resname="extensionList.header.extensionName">
+        <source>Extension</source>
+        <target>crwdns217854:0crwdne217854:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.version" resname="extensionList.header.version">
+        <source>Version</source>
+        <target>crwdns217856:0crwdne217856:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.extensionKey" resname="extensionList.header.extensionKey">
+        <source>Key</source>
+        <target>crwdns217858:0crwdne217858:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.extensionVersion" resname="extensionList.header.extensionVersion">
+        <source>Version</source>
+        <target>crwdns217860:0crwdne217860:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.extensionActions" resname="extensionList.header.extensionActions">
+        <source>Actions</source>
+        <target>crwdns217862:0crwdne217862:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.extensionState" resname="extensionList.header.extensionState">
+        <source>State</source>
+        <target>crwdns217864:0crwdne217864:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.extensionDeficit" resname="extensionList.header.extensionDeficit">
+        <source>Deficit</source>
+        <target>crwdns217866:0crwdne217866:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.extensionType" resname="extensionList.header.extensionType">
+        <source>Type</source>
+        <target>crwdns217868:0crwdne217868:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.uploadComment" resname="extensionList.header.uploadComment">
+        <source>Upload Comment</source>
+        <target>crwdns217870:0crwdne217870:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.lastUpdate" resname="extensionList.header.lastUpdate">
+        <source>Last Updated</source>
+        <target>crwdns217872:0crwdne217872:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.description" resname="extensionList.header.description">
+        <source>Description</source>
+        <target>crwdns217874:0crwdne217874:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.author" resname="extensionList.header.author">
+        <source>Author</source>
+        <target>crwdns217876:0crwdne217876:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.manual" resname="extensionList.header.manual">
+        <source>Manual</source>
+        <target>crwdns217878:0crwdne217878:0</target>
+      </trans-unit>
+      <trans-unit id="searchTemplate.searchExtensions" resname="searchTemplate.searchExtensions">
+        <source>Search extensions</source>
+        <target>crwdns217880:0crwdne217880:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.search" resname="extensionList.search">
+        <source>Search</source>
+        <target>crwdns217882:0crwdne217882:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.filter.showAll" resname="extensionList.filter.showAll">
+        <source>All</source>
+        <target>crwdns217884:0crwdne217884:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.filter.showSystemExtensions" resname="extensionList.filter.showSystemExtensions">
+        <source>System</source>
+        <target>crwdns217886:0crwdne217886:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.filter.showLocalExtensions" resname="extensionList.filter.showLocalExtensions">
+        <source>Local</source>
+        <target>crwdns217888:0crwdne217888:0</target>
+      </trans-unit>
+      <trans-unit id="searchTemplate.submitButton" resname="searchTemplate.submitButton">
+        <source>Go</source>
+        <target>crwdns217890:0crwdne217890:0</target>
+      </trans-unit>
+      <trans-unit id="searchTemplate.resetSearchButton" resname="searchTemplate.resetSearchButton">
+        <source>Reset Search</source>
+        <target>crwdns217892:0crwdne217892:0</target>
+      </trans-unit>
+      <trans-unit id="searchTemplate.yourSearch" resname="searchTemplate.yourSearch">
+        <source>Your search</source>
+        <target>crwdns217894:0crwdne217894:0</target>
+      </trans-unit>
+      <trans-unit id="searchTemplate.searchAgain" resname="searchTemplate.searchAgain">
+        <source>Search again</source>
+        <target>crwdns217896:0crwdne217896:0</target>
+      </trans-unit>
+      <trans-unit id="uploadTemplate.uploadButton" resname="uploadTemplate.uploadButton">
+        <source>Upload!</source>
+        <target>crwdns217898:0crwdne217898:0</target>
+      </trans-unit>
+      <trans-unit id="uploadTemplate.extensionLabel" resname="uploadTemplate.extensionLabel">
+        <source>Extension</source>
+        <target>crwdns217900:0crwdne217900:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.removalConfirmation.title" resname="extensionList.removalConfirmation.title">
+        <source>Extension Removal</source>
+        <target>crwdns217902:0crwdne217902:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.removalConfirmation.message" resname="extensionList.removalConfirmation.message">
+        <source>The extension is currently installed. Uninstall extension?</source>
+        <target>crwdns217904:0crwdne217904:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateConfirmation.title" resname="extensionList.updateConfirmation.title">
+        <source>Update?</source>
+        <target>crwdns217906:0crwdne217906:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateConfirmation.message" resname="extensionList.updateConfirmation.message">
+        <source>Update Comments</source>
+        <target>crwdns217908:0crwdne217908:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.databaseImport" resname="extensionList.databaseImport">
+        <source>The static database data has changed. You should re-import the data.</source>
+        <target>crwdns217910:0crwdne217910:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.databaseReload" resname="extensionList.databaseReload">
+        <source>Nothing has changed since last import. You might want to reload static database data.</source>
+        <target>crwdns217912:0crwdne217912:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateConfirmation.questionVersionComments" resname="extensionList.updateConfirmation.questionVersionComments">
+        <source>Version Comments</source>
+        <target>crwdns217914:0crwdne217914:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFlashMessage.title" resname="extensionList.updateFlashMessage.title">
+        <source>Extension Update</source>
+        <target>crwdns217916:0crwdne217916:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFlashMessage.body" resname="extensionList.updateFlashMessage.body">
+        <source>%s was updated!</source>
+        <target>crwdns217918:0%scrwdne217918:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.removalConfirmation.question" resname="extensionList.removalConfirmation.question">
+        <source>Are you sure you want to remove the extension?</source>
+        <target>crwdns217920:0crwdne217920:0</target>
+      </trans-unit>
+      <trans-unit id="dependencyCheck.unresolvedDependencies.title" resname="dependencyCheck.unresolvedDependencies.title">
+        <source>Please read this carefully</source>
+        <target>crwdns217922:0crwdne217922:0</target>
+      </trans-unit>
+      <trans-unit id="dependencyCheck.unresolvedDependencies.message" resname="dependencyCheck.unresolvedDependencies.message">
+        <source><![CDATA[
+					If you continue installing the extension, all dependency checks will be turned off.
+					<ul>
+						<li>Required extensions are tried to be fetched from TER (if they do not yet exist in the system)</li>
+						<li>Version dependency checks are skipped</li>
+					</ul>
+					<strong>
+						Be aware that an installation without dependency checks may turn your installation unusable.<br />
+						In such a case manual intervention is required.
+					</strong>
+				]]></source>
+        <target><![CDATA[crwdns217924:0crwdne217924:0]]></target>
+      </trans-unit>
+      <trans-unit id="dependencyCheck.unresolvedDependencies.question" resname="dependencyCheck.unresolvedDependencies.question">
+        <source>Are you sure you want to proceed?</source>
+        <target>crwdns217926:0crwdne217926:0</target>
+      </trans-unit>
+      <trans-unit id="dependencyCheck.unresolvedDependencies.proceed" resname="dependencyCheck.unresolvedDependencies.proceed">
+        <source>I know what I'm doing, install the extension!</source>
+        <target>crwdns217928:0crwdne217928:0</target>
+      </trans-unit>
+      <trans-unit id="dependencyCheck.headline" resname="dependencyCheck.headline">
+        <source>The following errors were found while trying to install "%s"</source>
+        <target>crwdns217930:0%scrwdne217930:0</target>
+      </trans-unit>
+      <trans-unit id="dependencyCheck.requiredExtension" resname="dependencyCheck.requiredExtension">
+        <source>Required extension "%s"</source>
+        <target>crwdns217932:0%scrwdne217932:0</target>
+      </trans-unit>
+      <trans-unit id="downloadExtension.dependencies.headline" resname="downloadExtension.dependencies.headline">
+        <source>The following dependencies have to be resolved before installation:
+
+
+				</source>
+        <target>crwdns217934:0crwdne217934:0</target>
+      </trans-unit>
+      <trans-unit id="downloadExtension.dependencies.extensionWithVersion" resname="downloadExtension.dependencies.extensionWithVersion">
+        <source>%1$s (new version %2$s)</source>
+        <target>crwdns217936:0%1$scrwdnd217936:0%2$scrwdne217936:0</target>
+      </trans-unit>
+      <trans-unit id="downloadExtension.dependencies.typeHeadline" resname="downloadExtension.dependencies.typeHeadline" xml:space="preserve">
+				<source>&lt;h3&gt;Extensions marked for %s:&lt;/h3&gt;
+%s
+
+
+				</source>
+			<target>crwdns217938:0%scrwdnd217938:0%scrwdne217938:0</target></trans-unit>
+      <trans-unit id="downloadExtension.dependencies.resolveAutomatically" resname="downloadExtension.dependencies.resolveAutomatically">
+        <source>Shall these dependencies be resolved automatically?</source>
+        <target>crwdns217940:0crwdne217940:0</target>
+      </trans-unit>
+      <trans-unit id="downloadExtension.dependencies.errorTitle" resname="downloadExtension.dependencies.errorTitle">
+        <source>Dependencies could not be resolved</source>
+        <target>crwdns217942:0crwdne217942:0</target>
+      </trans-unit>
+      <trans-unit id="downloadExtension.dependencies.errorMessage" resname="downloadExtension.dependencies.errorMessage">
+        <source>The dependencies of the following Extensions could not be resolved</source>
+        <target>crwdns217944:0crwdne217944:0</target>
+      </trans-unit>
+      <trans-unit id="downloadExtension.dependencyType.download" resname="downloadExtension.dependencyType.download">
+        <source>download</source>
+        <target>crwdns217946:0crwdne217946:0</target>
+      </trans-unit>
+      <trans-unit id="downloadExtension.dependencyType.install" resname="downloadExtension.dependencyType.install">
+        <source>install</source>
+        <target>crwdns217948:0crwdne217948:0</target>
+      </trans-unit>
+      <trans-unit id="downloadExtension.dependencyType.update" resname="downloadExtension.dependencyType.update">
+        <source>update</source>
+        <target>crwdns217950:0crwdne217950:0</target>
+      </trans-unit>
+      <trans-unit id="downloadExtension.updateExtension.error" resname="downloadExtension.updateExtension.error">
+        <source>Error while updating extension</source>
+        <target>crwdns217952:0crwdne217952:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.dependenciesResolveDownloadError.title" resname="extensionList.dependenciesResolveDownloadError.title">
+        <source>Download Error</source>
+        <target>crwdns217954:0crwdne217954:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.dependenciesResolveDownloadSuccess.message" resname="extensionList.dependenciesResolveDownloadSuccess.message">
+        <source>Your installation of {0} was successful.</source>
+        <target>crwdns217956:0{0}crwdne217956:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.dependenciesResolveDownloadSuccess.message.downloadOnly" resname="extensionList.dependenciesResolveDownloadSuccess.message.downloadOnly">
+        <source>Your download of {0} was successful.</source>
+        <target>crwdns217958:0{0}crwdne217958:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.dependenciesResolveDownloadSuccess.header" resname="extensionList.dependenciesResolveDownloadSuccess.header">
+        <source>Log</source>
+        <target>crwdns217960:0crwdne217960:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.dependenciesResolveDownloadSuccess.item" resname="extensionList.dependenciesResolveDownloadSuccess.item">
+        <source>Extensions</source>
+        <target>crwdns217962:0crwdne217962:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.dependenciesResolveFlashMessage.title" resname="extensionList.dependenciesResolveFlashMessage.title">
+        <source>{0} installed.</source>
+        <target>crwdns217964:0{0}crwdne217964:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.dependenciesResolveFlashMessage.title.downloadOnly" resname="extensionList.dependenciesResolveFlashMessage.title.downloadOnly">
+        <source>{0} downloaded.</source>
+        <target>crwdns217966:0{0}crwdne217966:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.uploadFlashMessage.title" resname="extensionList.uploadFlashMessage.title">
+        <source>Extension Upload</source>
+        <target>crwdns217968:0crwdne217968:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.uploadFlashMessage.message" resname="extensionList.uploadFlashMessage.message">
+        <source>%s was uploaded!</source>
+        <target>crwdns217970:0%scrwdne217970:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.installedFlashMessage.message" resname="extensionList.installedFlashMessage.message">
+        <source>%s was installed!</source>
+        <target>crwdns217972:0%scrwdne217972:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFromTerFlashMessage.title" resname="extensionList.updateFromTerFlashMessage.title">
+        <source>Update Extension List</source>
+        <target>crwdns217974:0crwdne217974:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.downloadViewHelper.submit" resname="extensionList.downloadViewHelper.submit">
+        <source>Import and Install</source>
+        <target>crwdns217976:0crwdne217976:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.downloadViewHelper.submit.downloadOnly" resname="extensionList.downloadViewHelper.submit.downloadOnly">
+        <source>Import</source>
+        <target>crwdns217978:0crwdne217978:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.label" resname="extensionList.showAllVersions.label">
+        <source>Show all versions</source>
+        <target>crwdns217980:0crwdne217980:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.extensionKey" resname="extensionList.showAllVersions.extensionKey">
+        <source>Extension key</source>
+        <target>crwdns217982:0crwdne217982:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.version" resname="extensionList.showAllVersions.version">
+        <source>Version</source>
+        <target>crwdns217984:0crwdne217984:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.lastUploaded" resname="extensionList.showAllVersions.lastUploaded">
+        <source>Last uploaded</source>
+        <target>crwdns217986:0crwdne217986:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.downloads" resname="extensionList.showAllVersions.downloads">
+        <source>Downloads</source>
+        <target>crwdns217988:0crwdne217988:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.category" resname="extensionList.showAllVersions.category">
+        <source>Category</source>
+        <target>crwdns217990:0crwdne217990:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.manual" resname="extensionList.showAllVersions.manual">
+        <source>Manual</source>
+        <target>crwdns217992:0crwdne217992:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.author" resname="extensionList.showAllVersions.author">
+        <source>Author</source>
+        <target>crwdns217994:0crwdne217994:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.readOnline" resname="extensionList.showAllVersions.readOnline">
+        <source>Read online</source>
+        <target>crwdns217996:0crwdne217996:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.depends" resname="extensionList.showAllVersions.depends">
+        <source>Depends</source>
+        <target>crwdns217998:0crwdne217998:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.conflicts" resname="extensionList.showAllVersions.conflicts">
+        <source>Conflicts</source>
+        <target>crwdns218000:0crwdne218000:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.suggests" resname="extensionList.showAllVersions.suggests">
+        <source>Suggests</source>
+        <target>crwdns218002:0crwdne218002:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.notCompatibleVersion" resname="extensionList.showAllVersions.notCompatibleVersion">
+        <source>Not compatible with your version</source>
+        <target>crwdns218004:0crwdne218004:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.remove.message" resname="extensionList.remove.message">
+        <source>Extension "%s" was removed successfully!</source>
+        <target>crwdns218006:0%scrwdne218006:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.distribution.key" resname="extensionList.distribution.key">
+        <source>Key</source>
+        <target>crwdns218008:0crwdne218008:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.distribution.author" resname="extensionList.distribution.author">
+        <source>Author</source>
+        <target>crwdns218010:0crwdne218010:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.distribution.title" resname="extensionList.distribution.title">
+        <source>Title</source>
+        <target>crwdns218012:0crwdne218012:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.distribution.version" resname="extensionList.distribution.version">
+        <source>Version</source>
+        <target>crwdns218014:0crwdne218014:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.distribution.downloads" resname="extensionList.distribution.downloads">
+        <source>Downloads</source>
+        <target>crwdns218016:0crwdne218016:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.distribution.lastUpdated" resname="extensionList.distribution.lastUpdated">
+        <source>Last Update</source>
+        <target>crwdns218018:0crwdne218018:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showUnsuitableDistributions" resname="extensionList.showUnsuitableDistributions">
+        <source>Show also distributions that are not suitable for this TYPO3 version</source>
+        <target>crwdns218020:0crwdne218020:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.officialDistribution" resname="extensionList.officialDistribution">
+        <source>Official distribution</source>
+        <target>crwdns218022:0crwdne218022:0</target>
+      </trans-unit>
+      <trans-unit id="distributions" resname="distributions">
+        <source>Get preconfigured distribution</source>
+        <target>crwdns218024:0crwdne218024:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.installDistribution" resname="extensionList.installDistribution">
+        <source>Install</source>
+        <target>crwdns218026:0crwdne218026:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.installImpexp" resname="extensionList.installImpexp">
+        <source>Please install the Import/Export (impexp) extension to enable distribution support.</source>
+        <target>crwdns218028:0crwdne218028:0</target>
+      </trans-unit>
+      <trans-unit id="distribution.installImpexp" resname="distribution.installImpexp">
+        <source>Install impexp</source>
+        <target>crwdns218030:0crwdne218030:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFromTer.label" resname="extensionList.updateFromTer.label">
+        <source>Retrieving extension list from TYPO3 Extension Repository (TER)...</source>
+        <target>crwdns218032:0crwdne218032:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFromTer.buttonLabel" resname="extensionList.updateFromTer.buttonLabel">
+        <source>Update now</source>
+        <target>crwdns218034:0crwdne218034:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFromTer.lastUpdate.label" resname="extensionList.updateFromTer.lastUpdate.label">
+        <source>Last update</source>
+        <target>crwdns218036:0crwdne218036:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFromTer.lastUpdate.timeSinceLastUpdateLabel" resname="extensionList.updateFromTer.lastUpdate.timeSinceLastUpdateLabel">
+        <source>Time since last update</source>
+        <target>crwdns218038:0crwdne218038:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFromTer.lastUpdate.noInfo" resname="extensionList.updateFromTer.lastUpdate.noInfo">
+        <source>unknown</source>
+        <target>crwdns218040:0crwdne218040:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFromTer.lastUpdate.fullTimeFormat" resname="extensionList.updateFromTer.lastUpdate.fullTimeFormat">
+        <source>Y-m-d H:i:s</source>
+        <target>crwdns218042:0crwdne218042:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFromTer.lastUpdate.timeOfLastUpdate" resname="extensionList.updateFromTer.lastUpdate.timeOfLastUpdate">
+        <source>Time of last update: </source>
+        <target>crwdns218044:0crwdne218044:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFromTer.lastUpdate.noTimeOfLastUpdate" resname="extensionList.updateFromTer.lastUpdate.noTimeOfLastUpdate">
+        <source>No last update time known.</source>
+        <target>crwdns218046:0crwdne218046:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFromTer.never" resname="extensionList.updateFromTer.never">
+        <source>Never</source>
+        <target>crwdns218048:0crwdne218048:0</target>
+      </trans-unit>
+      <trans-unit id="extensionList.uninstall.dependencyError" resname="extensionList.uninstall.dependencyError">
+        <source>Cannot deactivate extension '%s' - The extension(s) '%s' depend on it.</source>
+        <target>crwdns218050:0%scrwdnd218050:0%scrwdne218050:0</target>
+      </trans-unit>
+      <trans-unit id="distribution.error.headline" resname="distribution.error.headline">
+        <source>Could not install distribution '%s'</source>
+        <target>crwdns218052:0%scrwdne218052:0</target>
+      </trans-unit>
+      <trans-unit id="distribution.welcome.headline" resname="distribution.welcome.headline">
+        <source>Congratulations...</source>
+        <target>crwdns218054:0crwdne218054:0</target>
+      </trans-unit>
+      <trans-unit id="distribution.welcome.message" resname="distribution.welcome.message">
+        <source>You successfully installed the distribution '%s'</source>
+        <target>crwdns218056:0%scrwdne218056:0</target>
+      </trans-unit>
+      <trans-unit id="distribution.welcome.nextSteps" resname="distribution.welcome.nextSteps">
+        <source>Now you can</source>
+        <target>crwdns218058:0crwdne218058:0</target>
+      </trans-unit>
+      <trans-unit id="distribution.welcome.openViewModule" resname="distribution.welcome.openViewModule">
+        <source>View your website</source>
+        <target>crwdns218060:0crwdne218060:0</target>
+      </trans-unit>
+      <trans-unit id="distribution.welcome.openPageModule" resname="distribution.welcome.openPageModule">
+        <source>Start editing your website</source>
+        <target>crwdns218062:0crwdne218062:0</target>
+      </trans-unit>
+      <trans-unit id="distribution.dependency.headline" resname="distribution.dependency.headline">
+        <source>Dependencies, conflicts and suggestions</source>
+        <target>crwdns218064:0crwdne218064:0</target>
+      </trans-unit>
+      <trans-unit id="distribution.dependency.identifier" resname="distribution.dependency.identifier">
+        <source>Identifier</source>
+        <target>crwdns218066:0crwdne218066:0</target>
+      </trans-unit>
+      <trans-unit id="distribution.dependency.type" resname="distribution.dependency.type">
+        <source>Type</source>
+        <target>crwdns218068:0crwdne218068:0</target>
+      </trans-unit>
+      <trans-unit id="distribution.dependency.version" resname="distribution.dependency.version">
+        <source>Version</source>
+        <target>crwdns218070:0crwdne218070:0</target>
+      </trans-unit>
+      <trans-unit id="task.updateExtensionListTask.name" resname="task.updateExtensionListTask.name">
+        <source>Update extension list</source>
+        <target>crwdns218072:0crwdne218072:0</target>
+      </trans-unit>
+      <trans-unit id="task.updateExtensionListTask.description" resname="task.updateExtensionListTask.description">
+        <source>Update TER extension list on a regular basis. Once a day is a good interval.</source>
+        <target>crwdns218074:0crwdne218074:0</target>
+      </trans-unit>
+      <trans-unit id="report.status.mainRepository.title" resname="report.status.mainRepository.title">
+        <source>Update status of typo3.org main repository extension list</source>
+        <target>crwdns218076:0crwdne218076:0</target>
+      </trans-unit>
+      <trans-unit id="report.status.mainRepository.notFound.value" resname="report.status.mainRepository.notFound.value">
+        <source>Error</source>
+        <target>crwdns218078:0crwdne218078:0</target>
+      </trans-unit>
+      <trans-unit id="report.status.mainRepository.notFound.message" resname="report.status.mainRepository.notFound.message">
+        <source>The typo3.org extension repository was not found. Please import the main typo3.org extension repository in the install tool wizard.</source>
+        <target>crwdns218080:0crwdne218080:0</target>
+      </trans-unit>
+      <trans-unit id="report.status.mainRepository.notUpToDate.value" resname="report.status.mainRepository.notUpToDate.value">
+        <source>Extension list is not up to date!</source>
+        <target>crwdns218082:0crwdne218082:0</target>
+      </trans-unit>
+      <trans-unit id="report.status.mainRepository.notUpToDate.message" resname="report.status.mainRepository.notUpToDate.message">
+        <source>The Main Repository extension list is older than 7 days. Please update it in the Extension manager or Scheduler.</source>
+        <target>crwdns218084:0crwdne218084:0</target>
+      </trans-unit>
+      <trans-unit id="report.status.mainRepository.upToDate.value" resname="report.status.mainRepository.upToDate.value">
+        <source>OK</source>
+        <target>crwdns218086:0crwdne218086:0</target>
+      </trans-unit>
+      <trans-unit id="report.status.loadedExtensions.title" resname="report.status.loadedExtensions.title">
+        <source>Security status of loaded extensions</source>
+        <target>crwdns218088:0crwdne218088:0</target>
+      </trans-unit>
+      <trans-unit id="report.status.loadedExtensions.noInsecureExtensionLoaded.value" resname="report.status.loadedExtensions.noInsecureExtensionLoaded.value">
+        <source>OK</source>
+        <target>crwdns218090:0crwdne218090:0</target>
+      </trans-unit>
+      <trans-unit id="report.status.loadedExtensions.insecureExtensionLoaded.value" resname="report.status.loadedExtensions.insecureExtensionLoaded.value">
+        <source>%s insecure extension(s) found</source>
+        <target>crwdns218092:0%scrwdne218092:0</target>
+      </trans-unit>
+      <trans-unit id="report.status.loadedExtensions.insecureExtensionLoaded.message" resname="report.status.loadedExtensions.insecureExtensionLoaded.message">
+        <source>The following extensions are insecure and usage might damage your system. Please update these extensions as soon as possible or remove them from your system:&lt;br&gt;&lt;br&gt;%s</source>
+        <target>crwdns218094:0%scrwdne218094:0</target>
+      </trans-unit>
+      <trans-unit id="report.status.loadedExtensions.insecureExtensionLoaded.message.extension" resname="report.status.loadedExtensions.insecureExtensionLoaded.message.extension">
+        <source>&lt;strong&gt;%1$s&lt;/strong&gt; (version %2$s)&lt;br&gt;</source>
+        <target>crwdns218096:0%1$scrwdnd218096:0%2$scrwdne218096:0</target>
+      </trans-unit>
+      <trans-unit id="report.status.existingExtensions.title" resname="report.status.existingExtensions.title">
+        <source>Security status of existing, but not loaded extensions</source>
+        <target>crwdns218098:0crwdne218098:0</target>
+      </trans-unit>
+      <trans-unit id="report.status.existingExtensions.noInsecureExtensionExists.value" resname="report.status.existingExtensions.noInsecureExtensionExists.value">
+        <source>OK</source>
+        <target>crwdns218100:0crwdne218100:0</target>
+      </trans-unit>
+      <trans-unit id="report.status.existingExtensions.insecureExtensionExists.value" resname="report.status.existingExtensions.insecureExtensionExists.value">
+        <source>%s insecure extension(s) found</source>
+        <target>crwdns218102:0%scrwdne218102:0</target>
+      </trans-unit>
+      <trans-unit id="report.status.existingExtensions.insecureExtensionExists.message" resname="report.status.existingExtensions.insecureExtensionExists.message">
+        <source>The following extensions were found on your system, but are currently not installed. Please delete the extensions using the extension manager:&lt;br&gt;&lt;br&gt;%s</source>
+        <target>crwdns218104:0%scrwdne218104:0</target>
+      </trans-unit>
+      <trans-unit id="report.status.existingExtensions.insecureExtensionExists.message.extension" resname="report.status.existingExtensions.insecureExtensionExists.message.extension">
+        <source>&lt;strong&gt;%1$s&lt;/strong&gt; (version %2$s)&lt;br&gt;</source>
+        <target>crwdns218106:0%1$scrwdnd218106:0%2$scrwdne218106:0</target>
+      </trans-unit>
+      <trans-unit id="report.status.loadedOutdatedExtensions.title" resname="report.status.loadedOutdatedExtensions.title">
+        <source>Outdated status of loaded extensions</source>
+        <target>crwdns218108:0crwdne218108:0</target>
+      </trans-unit>
+      <trans-unit id="report.status.loadedOutdatedExtensions.noOutdatedExtensionLoaded.value" resname="report.status.loadedOutdatedExtensions.noOutdatedExtensionLoaded.value">
+        <source>OK</source>
+        <target>crwdns218110:0crwdne218110:0</target>
+      </trans-unit>
+      <trans-unit id="report.status.loadedOutdatedExtensions.outdatedExtensionLoaded.value" resname="report.status.loadedOutdatedExtensions.outdatedExtensionLoaded.value">
+        <source>%s outdated extension(s) found</source>
+        <target>crwdns218112:0%scrwdne218112:0</target>
+      </trans-unit>
+      <trans-unit id="report.status.loadedOutdatedExtensions.outdatedExtensionLoaded.message" resname="report.status.loadedOutdatedExtensions.outdatedExtensionLoaded.message">
+        <source>The following extensions are outdated and may not be compatible with your installation. Please make sure these extensions are compatible and ask the extension author to publish updates:&lt;br&gt;&lt;br&gt;%s</source>
+        <target>crwdns218114:0%scrwdne218114:0</target>
+      </trans-unit>
+      <trans-unit id="report.status.loadedOutdatedExtensions.outdatedExtensionLoaded.message.extension" resname="report.status.loadedOutdatedExtensions.outdatedExtensionLoaded.message.extension">
+        <source>&lt;strong&gt;%1$s&lt;/strong&gt; (version %2$s)&lt;br&gt;</source>
+        <target>crwdns218116:0%1$scrwdnd218116:0%2$scrwdne218116:0</target>
+      </trans-unit>
+      <trans-unit id="report.status.existingOutdatedExtensions.title" resname="report.status.existingOutdatedExtensions.title">
+        <source>Outdated status of existing, but not loaded extensions</source>
+        <target>crwdns218118:0crwdne218118:0</target>
+      </trans-unit>
+      <trans-unit id="report.status.existingOutdatedExtensions.noOutdatedExtensionExists.value" resname="report.status.existingOutdatedExtensions.noOutdatedExtensionExists.value">
+        <source>OK</source>
+        <target>crwdns218120:0crwdne218120:0</target>
+      </trans-unit>
+      <trans-unit id="report.status.existingOutdatedExtensions.outdatedExtensionExists.value" resname="report.status.existingOutdatedExtensions.outdatedExtensionExists.value">
+        <source>%s outdated extension(s) found</source>
+        <target>crwdns218122:0%scrwdne218122:0</target>
+      </trans-unit>
+      <trans-unit id="report.status.existingOutdatedExtensions.outdatedExtensionExists.message" resname="report.status.existingOutdatedExtensions.outdatedExtensionExists.message">
+        <source>The following extensions were found on your system, but are currently not installed. Please make sure they are compatible with your system before installing them:&lt;br&gt;&lt;br&gt;%s</source>
+        <target>crwdns218124:0%scrwdne218124:0</target>
+      </trans-unit>
+      <trans-unit id="report.status.existingOutdatedExtensions.outdatedExtensionExists.message.extension" resname="report.status.existingOutdatedExtensions.outdatedExtensionExists.message.extension">
+        <source>&lt;strong&gt;%1$s&lt;/strong&gt; (version %2$s)&lt;br&gt;</source>
+        <target>crwdns218126:0%1$scrwdnd218126:0%2$scrwdne218126:0</target>
+      </trans-unit>
+      <trans-unit id="report.status.composerManifest.extensionKeyMissing" resname="report.status.composerManifest.extensionKeyMissing">
+        <source>Extensions missing extension-key in composer.json</source>
+        <target>crwdns218128:0crwdne218128:0</target>
+      </trans-unit>
+      <trans-unit id="report.status.composerManifest.composerJsonMissing" resname="report.status.composerManifest.composerJsonMissing">
+        <source>Extensions missing composer.json</source>
+        <target>crwdns218130:0crwdne218130:0</target>
+      </trans-unit>
+      <trans-unit id="report.status.composerManifest.extensionKeyMissing.message" resname="report.status.composerManifest.extensionKeyMissing.message">
+        <source>%d extension(s) do not have an extension-key set in their composer.json file.</source>
+        <target>crwdns218132:0%dcrwdne218132:0</target>
+      </trans-unit>
+      <trans-unit id="report.status.composerManifest.composerJsonMissing.message" resname="report.status.composerManifest.composerJsonMissing.message">
+        <source>%d extension(s) do not provide a composer.json file.</source>
+        <target>crwdns218134:0%dcrwdne218134:0</target>
+      </trans-unit>
+      <trans-unit id="report.status.composerManifest.update" resname="report.status.composerManifest.update">
+        <source>Update extensions</source>
+        <target>crwdns218136:0crwdne218136:0</target>
+      </trans-unit>
+      <trans-unit id="fileHandling.couldNotRemoveDirectory" resname="fileHandling.couldNotRemoveDirectory">
+        <source>ERROR: Could not remove extension directory "%s". Reasons</source>
+        <target>crwdns218138:0%scrwdne218138:0</target>
+      </trans-unit>
+      <trans-unit id="fileHandling.couldNotCreateDirectory" resname="fileHandling.couldNotCreateDirectory">
+        <source>ERROR: Could not create extension directory "%s"!</source>
+        <target>crwdns218140:0%scrwdne218140:0</target>
+      </trans-unit>
+      <trans-unit id="fileHandling.installPathWasNoDirectory" resname="fileHandling.installPathWasNoDirectory">
+        <source>ERROR: The extension install path "%s" was no directory!</source>
+        <target>crwdns218142:0%scrwdne218142:0</target>
+      </trans-unit>
+      <trans-unit id="config.automaticInstallation" resname="config.automaticInstallation">
+        <source>Install extensions automatically after download from TER or file upload</source>
+        <target>crwdns218144:0crwdne218144:0</target>
+      </trans-unit>
+      <trans-unit id="config.offlineMode" resname="config.offlineMode">
+        <source>Disable TER connection and hide menu items</source>
+        <target>crwdns218146:0crwdne218146:0</target>
+      </trans-unit>
+      <trans-unit id="pagination.previous" resname="pagination.previous">
+        <source>previous</source>
+        <target>crwdns218148:0crwdne218148:0</target>
+      </trans-unit>
+      <trans-unit id="pagination.next" resname="pagination.next">
+        <source>next</source>
+        <target>crwdns218150:0crwdne218150:0</target>
+      </trans-unit>
+      <trans-unit id="pagination.first" resname="pagination.first">
+        <source>first</source>
+        <target>crwdns218152:0crwdne218152:0</target>
+      </trans-unit>
+      <trans-unit id="pagination.last" resname="pagination.last">
+        <source>last</source>
+        <target>crwdns218154:0crwdne218154:0</target>
+      </trans-unit>
+      <trans-unit id="pagination.records" resname="pagination.records">
+        <source>Extensions</source>
+        <target>crwdns218156:0crwdne218156:0</target>
+      </trans-unit>
+      <trans-unit id="pagination.page" resname="pagination.page">
+        <source>Page</source>
+        <target>crwdns218158:0crwdne218158:0</target>
+      </trans-unit>
+      <trans-unit id="pagination.refresh" resname="pagination.refresh">
+        <source>Refresh</source>
+        <target>crwdns218160:0crwdne218160:0</target>
+      </trans-unit>
+      <trans-unit id="extensionComposerStatus.nothingToUpdate.title" resname="extensionComposerStatus.nothingToUpdate.title">
+        <source>Good job!</source>
+        <target>crwdns218162:0crwdne218162:0</target>
+      </trans-unit>
+      <trans-unit id="extensionComposerStatus.nothingToUpdate.message.single" resname="extensionComposerStatus.nothingToUpdate.message.single">
+        <source>Extension %s does not need to be updated.</source>
+        <target>crwdns218164:0%scrwdne218164:0</target>
+      </trans-unit>
+      <trans-unit id="extensionComposerStatus.nothingToUpdate.message.multiple" resname="extensionComposerStatus.nothingToUpdate.message.multiple">
+        <source>There are no extensions which need to be updated.</source>
+        <target>crwdns218166:0crwdne218166:0</target>
+      </trans-unit>
+      <trans-unit id="extensionComposerStatus.title" resname="extensionComposerStatus.title">
+        <source>Update composer.json of %s</source>
+        <target>crwdns218168:0%scrwdne218168:0</target>
+      </trans-unit>
+      <trans-unit id="extensionComposerStatus.deficit.1" resname="extensionComposerStatus.deficit.1">
+        <source>%s does not contain a composer.json</source>
+        <target>crwdns218170:0%scrwdne218170:0</target>
+      </trans-unit>
+      <trans-unit id="extensionComposerStatus.deficit.1.short" resname="extensionComposerStatus.deficit.1.short">
+        <source>composer.json missing</source>
+        <target>crwdns218172:0crwdne218172:0</target>
+      </trans-unit>
+      <trans-unit id="extensionComposerStatus.deficit.2" resname="extensionComposerStatus.deficit.2">
+        <source>%s is missing the extension-key property in the composer.json</source>
+        <target>crwdns218174:0%scrwdne218174:0</target>
+      </trans-unit>
+      <trans-unit id="extensionComposerStatus.deficit.2.short" resname="extensionComposerStatus.deficit.2.short">
+        <source>Extension Key missing</source>
+        <target>crwdns218176:0crwdne218176:0</target>
+      </trans-unit>
+      <trans-unit id="extensionComposerStatus.deficit.information" resname="extensionComposerStatus.deficit.information.single">
+        <source>
+					In future versions of TYPO3, it will be mandatory for extensions to provide a composer.json file. This will be
+					needed to identify an extension and works as a replacement for the ext_emconf.php. Therefore,
+					the composer.json file must also include the extension key under "extra &gt; typo3/cms &gt; extension-key".
+					Please add a composer.json, including the extension-key property, in the corresponding extension
+					folder. You can use the auto-generated proposal below and update the composer.json file extension.
+				</source>
+        <target>crwdns218178:0crwdne218178:0</target>
+      </trans-unit>
+      <trans-unit id="extensionComposerStatus.manifest.title" resname="extensionComposerStatus.manifest.title">
+        <source>Auto-generated composer.json</source>
+        <target>crwdns218180:0crwdne218180:0</target>
+      </trans-unit>
+      <trans-unit id="extensionComposerStatus.manifest.description" resname="extensionComposerStatus.manifest.description">
+        <source>
+					Please verify its contents, adjust it to your needs and and put it into typo3conf/ext/%s/composer.json.
+				</source>
+        <target>crwdns218182:0%scrwdne218182:0</target>
+      </trans-unit>
+      <trans-unit id="extensionComposerStatus.manifest.error" resname="extensionComposerStatus.manifest.error">
+        <source>Auto-generation of a composer.json proposal failed</source>
+        <target>crwdns218184:0crwdne218184:0</target>
+      </trans-unit>
+      <trans-unit id="extensionComposerStatus.manifest.error.message" resname="extensionComposerStatus.manifest.error.message">
+        <source>
+					TYPO3 could not create a composer.json proposal. This could be due to an invalid composer.json
+					or network problems while requesting the TER API. Please check for an already existing invalid
+					composer.json or try again later.
+				</source>
+        <target>crwdns226088:0crwdne226088:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
