@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:t3editor/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="t3editor" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="deactivate" resname="deactivate" approved="yes">
+        <source>Deactivate t3editor</source>
+        <target state="final">T3Editor deaktivieren</target>
+      </trans-unit>
+      <trans-unit id="template" resname="template" approved="yes">
+        <source>Template</source>
+        <target state="final">Template</target>
+      </trans-unit>
+      <trans-unit id="file" resname="file" approved="yes">
+        <source>File</source>
+        <target state="final">Datei</target>
+      </trans-unit>
+      <trans-unit id="delimiter" resname="delimiter">
+        <source/>
+      </trans-unit>
+      <trans-unit id="constants" resname="constants" approved="yes">
+        <source>Constants</source>
+        <target state="final">Konstanten</target>
+      </trans-unit>
+      <trans-unit id="setup" resname="setup" approved="yes">
+        <source>Setup</source>
+        <target state="final">Setup</target>
+      </trans-unit>
+      <trans-unit id="unknownContentType" resname="unknownContentType" approved="yes">
+        <source>Unknown content type</source>
+        <target state="final">Unbekannter Inhaltstyp:</target>
+      </trans-unit>
+      <trans-unit id="pageIDInteger" resname="pageIDInteger" approved="yes">
+        <source>Syntax error: Parameter pageID must be a valid integer.</source>
+        <target state="final">Syntaxfehler: Der Parameter pageID muss vom Typ Integer sein.</target>
+      </trans-unit>
+      <trans-unit id="noPermission" resname="noPermission" approved="yes">
+        <source>Access denied: No permission to template records.</source>
+        <target state="final">Zugriff verweigert: Keine Zugriffsrechte auf Template-Datensätze vorhanden.</target>
+      </trans-unit>
+      <trans-unit id="typeIDMissing" resname="typeIDMissing" approved="yes">
+        <source>Syntax error: At least parameter typeID has to be supplied.</source>
+        <target state="final">Syntaxfehler: Es muss mindestens der Parameter typeID angegeben werden.</target>
+      </trans-unit>
+      <trans-unit id="js.label_lines" resname="js.label_lines" approved="yes">
+        <source>lines</source>
+        <target state="final">Zeilen</target>
+      </trans-unit>
+      <trans-unit id="js.label_documentModified" resname="js.label_documentModified" approved="yes">
+        <source>document has been modified</source>
+        <target state="final">Das Dokument wurde verändert.</target>
+      </trans-unit>
+      <trans-unit id="js.label_errorWhileSaving" resname="js.label_errorWhileSaving" approved="yes">
+        <source>An error occurred while saving the data.</source>
+        <target state="final">Während des Speicherns der Daten ist ein Fehler aufgetreten.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
