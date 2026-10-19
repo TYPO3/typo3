@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:form/Resources/Private/Language/locallang_formManager_javascript.xlf" date="2016-10-09T03:38:32Z" product-name="form" target-language="it">
+    <header/>
+    <body>
+      <trans-unit id="formManager.form_name" resname="formManager.form_name" xml:space="preserve" approved="yes">
+                <source>Form name</source>
+            <target state="final">Nome form</target></trans-unit>
+      <trans-unit id="formManager.new_form_name" resname="formManager.new_form_name" xml:space="preserve" approved="yes">
+                <source>New form name</source>
+            <target state="final">Nuovo nome form</target></trans-unit>
+      <trans-unit id="formManager.form_save_path" resname="formManager.form_save_path" xml:space="preserve" approved="yes">
+                <source>Form storage</source>
+            <target state="final">Archivio form</target></trans-unit>
+      <trans-unit id="formManager.form_prototype" resname="formManager.form_prototype" xml:space="preserve" approved="yes">
+                <source>Form prototype</source>
+            <target state="final">Prototipo di form</target></trans-unit>
+      <trans-unit id="formManager.form_template" resname="formManager.form_template" xml:space="preserve" approved="yes">
+                <source>Start template</source>
+            <target state="final">Modello iniziale</target></trans-unit>
+      <trans-unit id="formManager.form_copied" xml:space="preserve" approved="yes">
+                <source>Copied form</source>
+            <target state="final">Form copiata</target></trans-unit>
+      <trans-unit id="formManager.cancel" resname="formManager.cancel" xml:space="preserve" approved="yes">
+                <source>Cancel</source>
+            <target state="final">Annulla</target></trans-unit>
+      <trans-unit id="formManager.remove_form" resname="formManager.remove_form" xml:space="preserve" approved="yes">
+                <source>Remove</source>
+            <target state="final">Elimina</target></trans-unit>
+      <trans-unit id="formManager.remove_form_title" resname="formManager.remove_form_title" xml:space="preserve" approved="yes">
+                <source>Remove form</source>
+            <target state="final">Elimina form</target></trans-unit>
+      <trans-unit id="formManager.remove_form_message" resname="formManager.remove_form_message" xml:space="preserve" approved="yes">
+                <source>Are you sure that you want to remove this form?</source>
+            <target state="final">Sei sicuro di voler eliminare questa form?</target></trans-unit>
+      <trans-unit id="formManager.newFormWizard.step1.title" resname="formManager.newFormWizard.step1.title" xml:space="preserve" approved="yes">
+                <source>Create new form</source>
+            <target state="final">Crea una nuova form</target></trans-unit>
+      <trans-unit id="formManager.newFormWizard.step1.noStorages" resname="formManager.newFormWizard.step1.noStorages" xml:space="preserve" approved="yes">
+                <source>No accessible form storage folders</source>
+            <target state="final">Cartella di archivio del modulo non accessibile</target></trans-unit>
+      <trans-unit id="formManager.newFormWizard.step2.title" resname="formManager.newFormWizard.step2.title" xml:space="preserve" approved="yes">
+                <source>Settings</source>
+            <target state="final">Impostazioni</target></trans-unit>
+      <trans-unit id="formManager.newFormWizard.step3.title" resname="formManager.newFormWizard.step3.title" xml:space="preserve" approved="yes">
+                <source>Ready</source>
+            <target state="final">Pronto</target></trans-unit>
+      <trans-unit id="formManager.newFormWizard.step3.message" resname="formManager.newFormWizard.step3.message" xml:space="preserve" approved="yes">
+                <source>Now you are ready to create your new form.</source>
+            <target state="final">Ora sei pronto per creare la tua nuova form.</target></trans-unit>
+      <trans-unit id="formManager.newFormWizard.step3.check" xml:space="preserve" approved="yes">
+                <source>Please check and confirm your entered settings</source>
+            <target state="final">Si prega di controllare e confermare le impostazioni inserite</target></trans-unit>
+      <trans-unit id="formManager.newFormWizard.step4.errorTitle" resname="formManager.newFormWizard.step4.errorTitle" xml:space="preserve" approved="yes">
+                <source>Create</source>
+            <target state="final">Crea</target></trans-unit>
+      <trans-unit id="formManager.newFormWizard.step4.errorMessage" resname="formManager.newFormWizard.step4.errorMessage" xml:space="preserve" approved="yes">
+                <source>The form could not be saved</source>
+            <target state="final">Non è stato possibile salvare la form</target></trans-unit>
+      <trans-unit id="formManager.duplicateFormWizard.step1.title" resname="formManager.duplicateFormWizard.step1.title" xml:space="preserve" approved="yes">
+                <source>Duplicate form "{0}"</source>
+            <target state="final">Duplica la form "{0}"</target></trans-unit>
+      <trans-unit id="formManager.duplicateFormWizard.step2.errorTitle" resname="formManager.duplicateFormWizard.step2.errorTitle" xml:space="preserve" approved="yes">
+                <source>Duplicate</source>
+            <target state="final">Duplica</target></trans-unit>
+      <trans-unit id="formManager.duplicateFormWizard.step2.errorMessage" resname="formManager.duplicateFormWizard.step2.errorMessage" xml:space="preserve" approved="yes">
+                <source>The form could not be saved</source>
+            <target state="final">Non è stato possibile salvare la form</target></trans-unit>
+      <trans-unit id="formManager.no_references" resname="formManager.no_references" xml:space="preserve" approved="yes">
+                <source>There are no references yet</source>
+            <target state="final">Non ci sono ancora riferimenti</target></trans-unit>
+      <trans-unit id="formManager.page" resname="formManager.page" xml:space="preserve" approved="yes">
+                <source>Page</source>
+            <target state="final">Pagina</target></trans-unit>
+      <trans-unit id="formManager.record" resname="formManager.record" xml:space="preserve" approved="yes">
+                <source>Record</source>
+            <target state="final">Record</target></trans-unit>
+      <trans-unit id="formManager.references.title" resname="formManager.references.title" xml:space="preserve" approved="yes">
+                <source>References</source>
+            <target state="final">Riferimenti</target></trans-unit>
+      <trans-unit id="formManager.references.headline" resname="formManager.references.headline" xml:space="preserve" approved="yes">
+                <source>References for "{0}"</source>
+            <target state="final">Riferimenti per "{0}"</target></trans-unit>
+      <trans-unit id="formManager.blankForm.label" xml:space="preserve" approved="yes">
+                <source>Blank form</source>
+            <target state="final">Form vuota</target></trans-unit>
+      <trans-unit id="formManager.predefinedForm.label" xml:space="preserve" approved="yes">
+                <source>Predefined form</source>
+            <target state="final">Form predefinita</target></trans-unit>
+    </body>
+  </file>
+</xliff>
