@@ -1,0 +1,484 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_pages.xlf" date="2011-10-17T20:22:32Z" product-name="context_help" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="layout.description" resname="layout.description" approved="yes">
+        <source>The Frontend Layout can change the way a page design appears.</source>
+        <target state="final">Das Frontend-Layout kann das Aussehen einer Seite verändern.</target>
+      </trans-unit>
+      <trans-unit id="layout.details" resname="layout.details" approved="yes">
+        <source>This option may not have any impact on the Frontend page design since it depends on whether the Frontend template uses it. Most templates do not use it.</source>
+        <target state="final">Diese Option hat nur dann Einfluss auf das Seitendesign im Frontend, wenn das Frontend-Template sie benutzt. Die meisten Templates tun dies nicht.</target>
+      </trans-unit>
+      <trans-unit id="doktype.description" resname="doktype.description" approved="yes">
+        <source>Page Type determines whether the page is normal webpage, a shortcut to another webpage, or used in other internal ways.</source>
+        <target state="final">Der Seitentyp bestimmt, ob die Seite eine normale Webseite ist, ein Verweis auf eine andere Webseite ist oder in einer anderen internen Weise verwendet wird.</target>
+      </trans-unit>
+      <trans-unit id="doktype.details" resname="doktype.details" xml:space="preserve" approved="yes">
+				<source>'Standard' is the most common Page Type and is used for normal webpages.
+'Backend User Section' is an option which creates pages that are only visible in the Frontend for Backend users who are logged in.
+
+&lt;b&gt;Link&lt;/b&gt;
+'Shortcut' pages jump to another page in the Pagetree.
+'Mount Point' pages bring content from another branch of the Pagetree into the current branch.
+'Link to External URL' is similar to 'Shortcut' but points to external URLs instead of TYPO3 pages.
+
+&lt;b&gt;Special&lt;/b&gt;
+'Folder' is a page type which is not shown as a webpage but is instead stores records of your choice.
+'Recycler' is a garbage can. Pages and records in the Recycler are not visible in the Frontend.
+'Menu Separator' is only useful if your Frontend menus are programmed to use it. It does not represent a page with content but is intended to be an unclickable placeholder in the menu.
+
+&lt;b&gt;Notice&lt;/b&gt; Each Page Type is represented by a unique icon. The available page types can be restricted for users so all of the options described above may not be visible. Finally, particular record types may only be allowed on certain page types, but any record can be placed in a 'Folder.'</source>
+			<target state="final">'Standard' ist der gebräuchlichste Seitentyp und wird für normale Webseiten verwendet.
+'Backend-Benutzerbereich' ist eine Option, die Seiten erstellt, die auf der Website nur für angemeldete Backend-Benutzer sichtbar sind.
+
+&lt;b&gt;Link&lt;/b&gt;
+'Verweis'-Seiten wechseln zu einer anderen Seite im Seitenbaum.
+'Einstiegspunkt'-Seiten bringen Inhalte aus einem anderen Bereich des Seitenbaums in den aktuellen Bereich.
+'Link zu externer URL' ist ähnlich wie 'Verweis', zeigt aber auf externe URLs statt auf TYPO3-Seiten.
+
+&lt;b&gt;Spezial&lt;/b&gt;
+'Ordner ist ein Seitentyp, der nicht als Webseite angezeigt wird, sondern Datensätze Ihrer Wahl speichert.
+'Papierkorb' ist ein Mülleimer. Seiten und Datensätze im Papierkorb sind auf der Website nicht sichtbar.
+Das 'Trennzeichen für Menü' ist nur dann nützlich, wenn Ihre Website-Menüs so programmiert sind, dass es verwendet wird. Es stellt keine Seite mit Inhalt dar, sondern soll ein nicht anklickbarer Platzhalter im Menü sein.
+
+&lt;b&gt;Anmerkung&lt;/b&gt; Jeder Seitentyp wird durch ein einzigartiges Symbol dargestellt. Die verfügbaren Seitentypen können für Benutzer eingeschränkt werden, so dass möglicherweise nicht alle oben beschriebenen Optionen sichtbar sind. Schließlich können bestimmte Datensatztypen nur auf bestimmten Seitentypen erlaubt sein, aber jeder Datensatz kann in einem "Ordner" platziert werden.</target></trans-unit>
+      <trans-unit id="_doktype.seeAlso" resname="_doktype.seeAlso" xml:space="preserve" approved="yes">
+				<source>pages:shortcut,
+pages:url</source>
+				
+			<target state="final">pages:shortcut,
+pages:url</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>If this is checked, the page will be visible on the website.</source>
+        <target state="final">Wenn diese Option aktiviert ist, wird die Seite auf der Webseite angezeigt.</target>
+      </trans-unit>
+      <trans-unit id="hidden.details" resname="hidden.details" xml:space="preserve" approved="yes">
+				<source>The 'Disable,' 'Start,' 'Stop,' and 'Access' options are all about limiting access to pages and are thus related in functionality. When a page is not visible due to one of these options, the page will not show up in the site navigation.
+Notice, these options are related &lt;em&gt;only&lt;/em&gt; to the page for which they are set. If you want their effect to cover the subpages as well, you must enable the 'Extend to Subpages' option.
+When you're logged in as a Backend user you can preview disabled pages if you have read access to them.</source>
+			<target state="final">Die Einstellungen zu Sichtbarkeit, Veröffentlichungsdaten und Zugriffsrechten dienen alle zur Beschränkung des Zugriffs auf Seiten und sind miteinander verwandt. Wenn eine Seite wegen einer dieser Einstellungen nicht angezeigt wird, erscheint die Seite auch nicht in Menüs. 
+Achtung: Diese Einstellungen beziehen sich &lt;em&gt;nur&lt;/em&gt; auf die Seite, bei der sie gesetzt wurden. Wenn sie auch deren Unterseiten beeinflussen sollen, muß 'Auf Unterseiten ausdehnen' aktiviert werden. 
+Angemeldete Backend-Benutzer können sich ausgeblendete Seiten anzeigen lassen, solange sie Leserechte zu ihnen haben.</target></trans-unit>
+      <trans-unit id="_hidden.seeAlso" resname="_hidden.seeAlso" approved="yes">
+        <source>pages:starttime,pages:endtime,pages:fe_group,pages:extendToSubpages</source>
+        <target state="final">pages:starttime,pages:endtime,pages:fe_group,pages:extendToSubpages</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_hidden.image" resname="_hidden.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/hidden_page.gif,
+EXT:core/Resources/Public/Images/cshimages/pages_1.png</source>
+				
+			<target state="final">EXT:core/Resources/Public/Images/cshimages/hidden_page.gif,
+EXT:core/Resources/Public/Images/cshimages/pages_1.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="hidden.image_descr" resname="hidden.image_descr" xml:space="preserve" approved="yes">
+				<source>The page icon of a disabled page is dimmed and a red X is added.
+If you view a page that is hidden and you are logged in into the Backend you will still be able to see the page. The red "Preview" box will tell you that this page is visible to you because of this special circumstance.</source>
+			<target state="final">Das Seiten-Symbol einer deaktivierten Seite wird durch ein rotes Minus gekennzeichnet. Wenn Sie eine deaktivierte Seite betrachten, während Sie im Backend angemeldet sind, können Sie die Seite dennoch sehen. Die rote "Preview"-Box weist in solch einem Fall auf diesen gesonderten Umstand hin.</target></trans-unit>
+      <trans-unit id="starttime.description" resname="starttime.description" approved="yes">
+        <source>The Publish Date determines when the page will be visible online. If the Publish Date is not set, the page will be available immediately.</source>
+        <target state="final">Das Veröffentlichungsdatum bestimmt wann die Seite online sichtbar wird. Falls kein Veröffentlichungsdatum angegeben ist, ist die Seite sofort verfügbar.</target>
+      </trans-unit>
+      <trans-unit id="starttime.syntax" resname="starttime.syntax" xml:space="preserve" approved="yes">
+				<source>The Publish Date Format is either DD-MM-YYYY or MM-DD-YYYY depending on how TYPO3 is configured. There are also several shortcuts you can use when entering the date.
+If you insert a 'd' the current date will be inserted. You can also append any value in the field with a number such as '+10' which will add 10 days to the current value. For example, entering 'd+10' would result in a date 10 days from now.</source>
+			<target state="final">Das Format des Veröffentlichungsdatums ist entweder DD-MM-YYYY order MM-DD-YYYY, abhängig von der TYPO3-Konfiguration. Es stehen verschiedene Kürzel zur Verfügung, die man zur Eingabe des Datums verwenden können.
+Setzt man ein 'd' ein, wird das aktuelle Datum eingefügt. Man kann außerdem jeden beliebigen Wert in dem Feld um eine Zahl ergänzen. So addiert '+10' 10 Tage zum aktuellen Wert. Zum Beispiel würde die Eingabe von 'd+10' in einem Datum in 10 Tagen ab heute resultieren.</target></trans-unit>
+      <trans-unit id="_starttime.seeAlso" resname="_starttime.seeAlso" approved="yes">
+        <source>pages:endtime,pages:hidden</source>
+        <target state="final">pages:endtime,pages:hidden</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_.seeAlso" resname="_.seeAlso" approved="yes">
+        <source>tt_content</source>
+        <target state="final">tt_content</target>
+      </trans-unit>
+      <trans-unit id="endtime.description" resname="endtime.description" approved="yes">
+        <source>The Expiration Date specifies when the page will no longer be visible online.</source>
+        <target state="final">Das Ablaufdatum bestimmt, ab wann die Seite nicht mehr online sichtbar sein wird.</target>
+      </trans-unit>
+      <trans-unit id="endtime.syntax" resname="endtime.syntax" approved="yes">
+        <source>See Page / Publication Date (click below)</source>
+        <target state="final">Siehe Seite / Veröffentlichungsdatum (unten anklicken)</target>
+      </trans-unit>
+      <trans-unit id="_endtime.seeAlso" resname="_endtime.seeAlso" approved="yes">
+        <source>pages:starttime</source>
+        <target state="final">pages:starttime</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="fe_group.description" resname="fe_group.description" approved="yes">
+        <source>If Usergroup Access Rights is set to a usergroup name, only website users who are members of the selected usergroup will be able to view the page. The special option 'Hide at Login' means the page will &lt;em&gt;not&lt;/em&gt; be visible for any website users that are logged in. Likewise "Show at Any Login" will make the page visible for any logged in Frontend user.</source>
+        <target state="final">Wenn für 'Zugriffsrechte für Benutzergruppen' der Name einer Benutzergruppe ausgewählt wurde, können nur Benutzer, die Mitglied dieser Gruppe sind, die Seite ansehen. Mit der Option 'Nach Anmeldung verbergen' ist die Seite für alle angemeldeten Benutzer &lt;em&gt;nicht&lt;/em&gt; sichtbar. Entsprechend macht 'Anzeigen, wenn angemeldet' die Seite für alle angemeldeten Frontend-Benutzer sichtbar.</target>
+      </trans-unit>
+      <trans-unit id="_fe_group.seeAlso" resname="_fe_group.seeAlso" approved="yes">
+        <source>fe_groups</source>
+        <target state="final">fe_groups</target>
+      </trans-unit>
+      <trans-unit id="_fe_group.image" resname="_fe_group.image" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/fegroups_4.png</source>
+        <target state="final">EXT:frontend/Resources/Public/Images/cshimages/fegroups_4.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="extendToSubpages.description" resname="extendToSubpages.description" approved="yes">
+        <source>By default the Publication Date, Expiration Date, Usergroup Access Rights, and Page Visibility options &lt;em&gt;only&lt;/em&gt; affect the page where they are set. If the option 'Extend to Subpages' is checked for the page, then all subpages are affected as well.</source>
+        <target state="final">Standardmäßig beeinflussen Veröffentlichungsdatum, Ablaufdatum, Zugriffsrechte für Benutzergruppen und Seiten-Sichtbarkeitseinstellungen &lt;em&gt;nur&lt;/em&gt; die Seiten, in denen sie gesetzt sind. Wenn die Option 'Auf Unterseiten ausdehnen" für die Seite gesetzt ist, dann gilt das auch für alle Unterseiten.</target>
+      </trans-unit>
+      <trans-unit id="extendToSubpages.details" resname="extendToSubpages.details" xml:space="preserve" approved="yes">
+				<source>Consider a scenario where you want to create a section of subpages that are only visible for logged in users. Setting the Usergroup Access Rights for the top page in the section would remove the page from menus if no user was logged in.
+However, the subpage could still be accessed by guessing the ID number of the page and entering it manually in the URL. Setting the 'Extend to Subpages' option would extend the Usergroup Access Rights from the top page through all subpages as well.</source>
+			<target state="final">Wir betrachten ein Szenario, in dem wir einen Abschnitt von Unterseiten erstellen, die nur für angemeldete Benutzer sichtbar sind. Legt man Benutzergruppenrechte für die Elternseite fest, würde die Seite aus den Menüs entfernt werden, wenn kein Benutzer angemeldet ist.
+Auf die Unterseite könnte jedoch immer noch zugegriffen werden, wenn man die Seiten-ID errät und diese manuell in der URL einträgt. Wird die Option "Auf Unterseiten ausdehnen" aktiviert, gelten die Zugriffrechte auch für alle Unterseiten.</target></trans-unit>
+      <trans-unit id="_extendToSubpages.seeAlso" resname="_extendToSubpages.seeAlso" xml:space="preserve" approved="yes">
+				<source>pages:hidden,
+pages:starttime,
+pages:endtime,
+pages:fe_group</source>
+				
+			<target state="final">pages:hidden,
+pages:starttime,
+pages:endtime,
+pages:fe_group</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_extendToSubpages.image" resname="_extendToSubpages.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/pages_2.png</source>
+        <target state="final">EXT:core/Resources/Public/Images/cshimages/pages_2.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="extendToSubpages.image_descr" resname="extendToSubpages.image_descr" approved="yes">
+        <source>This page has access restricted to a certain group and has "Extend to Subpages" set as well. This is reflected in the way the page icon has changed.</source>
+        <target state="final">Für diese Seite ist der Zugriff auf eine bestimmte Gruppe beschränkt und die Option 'Auf Unterseiten ausdehnen' ist zusätzlich gesetzt. Dies wird durch das geänderte Seitensymbol verdeutlicht.</target>
+      </trans-unit>
+      <trans-unit id="target.description" resname="target.description" approved="yes">
+        <source>This sets the default Link Target for menu items linking to this page. Can also used to open the page as a popup window.</source>
+        <target state="final">Dies setzt das standardmäßige Linkziel für die auf diese Seite verweisende Menüelemente. Es kann auch dazu verwendet werden um die Seite als Popup-Fenster zu öffnen.</target>
+      </trans-unit>
+      <trans-unit id="target.details" resname="target.details" xml:space="preserve" approved="yes">
+				<source>The Link Target overrides the default Link Target behavior, which should already be configured correctly for most pages in the website TypoScript template.
+There are additional options available by using the Link Target field
+
+Setting an integer value at the beginning of the field sets it as the default type for the page.
+For example, if an RSS feed is configured in TypoScript as typeNum=100, setting the Link Target to 100 could be used to add an RSS link in the menu.
+
+The following syntax is used to open the page in a popup window:
+400x200 - Opens the page in a 400x200 popup window.
+230x450:resizable=0,location=1 - Opens the page in a 230x450 popup window that is not resizable and has an address bar.
+
+Combined:
+100 600x350 - Opens the page in a 600x350 popup with type=100
+2 _blank - Opens the page with target "_blank" and type=2</source>
+			<target state="final">Das Linkziel überschreibt das standardmäßige Linkziel-Verhalten, das bereits für die meisten Seiten im TypoScript-Template richtig konfiguriert sein sollte.
+Für das Linkziel-Feld sind zusätzliche Optionen verfügbar.
+
+Wenn sie einen Zahlenwert am Anfang des Feldes eintragen, wird dieser als Standard-Typ für die Seite gesetzt.
+Wenn zum Beispiel ein RSS-Feed im TypoScript als typenum=100 konfiguriert ist, dann kann der Eintrag 100 bei Linkziel benutzt werden, um einen RSS-Link im Menü hinzuzufügen.
+
+Der folgende Syntax verwendet, um eine Seite in einem Popup-Fenster zu öffnen:
+400x200 - Öffnet die Seite in einem 400x200 Pixel großen Popup-Fenster.
+230x450:resizable=0,location=1 - Öffnet die Seite in einem 230x450 Pixel großen Popup-Fenster, dessen Größe nicht verändert werden kann und das eine Adressleiste hat.
+
+Kombinationen:
+100 600x350 - Öffnet die Seite in einem 600x350 Pixel großen Popup-Fenster mit type=100.
+2 _blank - Öffnet die Seite mit dem Ziel "_blank" und type=2.</target></trans-unit>
+      <trans-unit id="cache_timeout.description" resname="cache_timeout.description" approved="yes">
+        <source>Sets the Cache Lifetime for the page.</source>
+        <target state="final">Setzt die Lebensdauer des Zwischenspeichers der Seite.</target>
+      </trans-unit>
+      <trans-unit id="cache_timeout.details" resname="cache_timeout.details" xml:space="preserve" approved="yes">
+				<source>By default, pages are cached for 24 hours. After 24 hours, the page is constructed again and rewritten to the cache. Depending on your configuration, the cache may be cleared at midnight.
+When specific pages need a longer or shorter cache lifetime than the default, this option can be used.</source>
+			<target state="final">Standardmäßig werden Seiten für 24 Stunden zwischengespeichert. Nach 24 Stunden wird die Seite neu erzeugt und neu in den Zwischenspeicher geschrieben. Abhängig von der Konfiguration wird der Zwischenspeicher möglicherweise um Mitternacht gelöscht. Wenn bestimmte Seiten eine längere oder kürzere Lebensdauer im Zwischenspeicher benötigen, kann diese Option vewendet werden.</target></trans-unit>
+      <trans-unit id="no_search.description" resname="no_search.description" approved="yes">
+        <source>If enabled, this option includes the page in searching operations on the website.</source>
+        <target state="final">Wenn aktiviert, enthält diese Option die Seite bei der Suche auf der Website.</target>
+      </trans-unit>
+      <trans-unit id="php_tree_stop.description" resname="php_tree_stop.description" approved="yes">
+        <source>If enabled, this option excludes the subtree from rendering in the backend.</source>
+        <target state="final">Wenn aktiviert, wird der Teilbaum im Backend nicht mehr angezeigt.</target>
+      </trans-unit>
+      <trans-unit id="author.description" resname="author.description" approved="yes">
+        <source>Enter the page author's name.</source>
+        <target state="final">Geben Sie den Namen des Seitenautors ein.</target>
+      </trans-unit>
+      <trans-unit id="author.details" resname="author.details" xml:space="preserve" approved="yes">
+				<source>Whether the author name is used or not depends on the setup of your TypoScript template.
+
+- You may use it in a meta-tag.
+- If you're using TYPO3 pages as 'articles' then you could use this field to display the name of the page (article) author.</source>
+			<target state="final">Ob der Name des Autors verwendet wird oder nicht, hängt von den Einstellungen iim TypoScript-Template ab.
+
+- Sie können es als Meta-Tag verwenden.
+- Wenn sie TYPO3-Seiten als 'Artikel' verwenden, können Sie das Feld dazu nutzen, um den Namen des Seiten-/Artikel-Autors anzuzeigen.</target></trans-unit>
+      <trans-unit id="_author.seeAlso" resname="_author.seeAlso" approved="yes">
+        <source>pages:author_email</source>
+        <target state="final">pages:author_email</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="author_email.description" resname="author_email.description" approved="yes">
+        <source>Enter the page author's email address.</source>
+        <target state="final">Geben Sie die E-Mail-Adresse des Autors ein.</target>
+      </trans-unit>
+      <trans-unit id="_author_email.seeAlso" resname="_author_email.seeAlso" approved="yes">
+        <source>pages:author</source>
+        <target state="final">pages:author</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="module.description" resname="module.description" approved="yes">
+        <source>Define the page as containing a Frontend plugin.</source>
+        <target state="final">Seite als Container für eine Erweiterung definieren.</target>
+      </trans-unit>
+      <trans-unit id="module.details" resname="module.details" xml:space="preserve" approved="yes">
+				<source>Setting this option lets the Backend knows this page contains specific content or has a specific purpose, such as containing a forum or acting as the root page of a shop section on the website. Based on this setting the Backend is able to display a shortcut list as well as relevant functionality in the 'Web&gt;Modules' module. The Frontend display is largely not affected.
+Marking a page as containing a 'Shop' plugin simply means it'll show up in the shortcut list of modules in the backend.
+
+For additional details on this option, refer to the administration documentation.
+
+It's recommended that only admin-users have access to this field!</source>
+			<target state="final">Das setzen diese Option zeigt im Backend an, ob diese Seite einen speziellen Inhalt oder Zweck hat; beispielsweise, dass sie eine Forum enthält oder die Ursprungsseite eines Shop-Bereiches der Webseite ist. Auf Basis dieser Einstellung kann das Backend eine Verweisliste und relenvante Funktionen im 'Web&gt;Module' Modul anzeigen. Die Frontend-Anzeige ist davon größtenteils unbeeinflusst.
+Die Seite als Inhaltsseite für ein 'Shop' Plug-in zu markieren bedeutet ganz einfach, dass sie in der Verweisliste der Module im Backend erscheinen wird.
+
+Bezüglich weiterer Details zu dieser Option verwenden sie bitte die Administrationsdokumentation.
+
+Es wird empfohlen, dass nur Admin-Benutzer Zugriff auf dieses Feld haben!</target></trans-unit>
+      <trans-unit id="media.description" resname="media.description" approved="yes">
+        <source>Attach media files related to the page.</source>
+        <target state="final">Medien-Dateien mit Bezug zu dieser Seite hinzufügen.</target>
+      </trans-unit>
+      <trans-unit id="media.details" resname="media.details" xml:space="preserve" approved="yes">
+				<source>This field allows you to attach various files to the page, but how these files are used depends on your template.
+As an example the template could be use this field to allow a logo to be attached to the page or it might expect the first file to be an image used as a link in the navigation menu. Remember, this totally depends on how the template is programmed.</source>
+			<target state="final">Mit diesem Feld können Sie der Seite verschiedenste Dateien anfügen. Wie diese Dateien verwendet werden, hängt von Ihrer Vorlage (Template) ab.
+Beispielsweise könnte das Template dieses Feld benutzen, um der Seite ein Logo hinzuzufügen oder es könnte ebenso die erste Datei in Form eines Bildes nutzen, einen Link im Navigationsmenü darzustellen. Zur Erinnerung: Es hängt gänzlich davon ab, wie Ihr Template programmiert ist.</target></trans-unit>
+      <trans-unit id="subtitle.description" resname="subtitle.description" approved="yes">
+        <source>Enter a subtitle if needed.</source>
+        <target state="final">Geben Sie, falls notwendig, einen Untertitel ein.</target>
+      </trans-unit>
+      <trans-unit id="subtitle.details" resname="subtitle.details" approved="yes">
+        <source>Whether this field is used or not depends on the template. In most cases it's not used.</source>
+        <target state="final">Ob diese Feld benutzt wird oder nicht, hängt von ihrem Template ab. In den meisten Fällen wird es nicht benutzt.</target>
+      </trans-unit>
+      <trans-unit id="url.description" resname="url.description" approved="yes">
+        <source>Enter the URL this page redirects to.</source>
+        <target state="final">Geben sie die URL ein, auf die diese Seite weiterleitet.</target>
+      </trans-unit>
+      <trans-unit id="url.details" resname="url.details" xml:space="preserve" approved="yes">
+				<source>For example, 'http://www.typo3.org'.
+
+This option is used only if the page 'Type' is set to 'Link to External URL.'</source>
+			<target state="final">Zum Beispiel: 'http://www.typo3.org'.
+
+Diese Option wird nur benutzt, wenn die Seite vom Typ 'Link zu externer URL' ist.</target></trans-unit>
+      <trans-unit id="shortcut.description" resname="shortcut.description" approved="yes">
+        <source>Select a page to act as the Shortcut Target. When the current page is requested in the Frontend, it will be redirected to the Shortcut Target.</source>
+        <target state="final">Wähle eine Seite als Verweisziel. Wird die aktuelle Seite im Frontend angefordert, erfolgt eine Weiterleitung zum Verweisziel.</target>
+      </trans-unit>
+      <trans-unit id="shortcut.details" resname="shortcut.details" xml:space="preserve" approved="yes">
+				<source>Click the 'Browse for Records' icon and a new window will appear in which you can easily select a page to act as the Shortcut Target.
+
+This option is used only if the page 'Type' is set to 'Shortcut.'</source>
+			<target state="final">Klicken Sie das 'Datensätze durchblättern'-Symbol. Es erscheint ein neues Fenster, in dem sie einfach eine Seite aussuchen können, die als Verweis-Ziel verwendet werden soll.
+
+Diese Option wird nur benutzt, wenn in der Seite der Typ 'Verweis' ausgewählt ist.</target></trans-unit>
+      <trans-unit id="_shortcut.seeAlso" resname="_shortcut.seeAlso" xml:space="preserve" approved="yes">
+				<source>pages:doktype,
+pages:shortcut_mode</source>
+				
+			<target state="final">pages:doktype,
+pages:shortcut_mode</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_shortcut.image" resname="_shortcut.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/page_shortcut.gif</source>
+        <target state="final">EXT:core/Resources/Public/Images/cshimages/page_shortcut.gif</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="shortcut.image_descr" resname="shortcut.image_descr" approved="yes">
+        <source>Select a Shortcut Target page with the Element Browser.</source>
+        <target state="final">Wählen Sie ein Verweisziel in der Elementauswahl.</target>
+      </trans-unit>
+      <trans-unit id="keywords.description" resname="keywords.description" approved="yes">
+        <source>Enter keywords for the page separated by commas. You may also use short phrases.</source>
+        <target state="final">Geben sie Stichworte, getrennt durch Kommata, für die Seite ein. Sie können auch kurze Sätze verwenden.</target>
+      </trans-unit>
+      <trans-unit id="keywords.details" resname="keywords.details" xml:space="preserve" approved="yes">
+				<source>Most TYPO3 websites use these keywords in a meta-tag on the page, but you may have to setup the appropriate TypoScript template yourself.
+
+To optimize your page for search engines like Google you should not use more than 3 to 6 keywords. You should also make sure that the keywords are found in the content of the page.
+
+Note that search engine extensions for TYPO3 such as Indexed Search can also be configured to make use of the keywords.
+
+The keywords can also be used to create a menu of related pages. Create a Content Element of type 'Sitemap' and then choose the menu type &lt;i&gt;Related pages (based on keywords)&lt;/i&gt;.</source>
+			<target state="final">Die meisten TYPO3 Websites verwende diese Schlüsselworte in einem Meta-Tag auf der Seite, aber man muss das entsprechende TypoScript-Template selbst erstellen
+
+Um eine Seite für Suchmaschinen wie Google zu optimieren sollte man nicht mehr als 3 bis 6 Schlüsselworte benutzen. Man sollte auch sicher stellen, dass diese Schlüsselworte im Inhalt der Seite vorhanden sind.
+
+Beachte dass Such-Erweiterungen für TYPO3 wie "Indexed Search" so konfiguriert werden, dass sie diese Schlüsselworte zu verwenden.
+
+Die Schlüsselworte können ebenfalls dazu benutzt werden um ein Menü von verwandten Seiten zu erzeugen. Lege ein Inhaltselement vom Typ 'Sitemap' an und wähle den Menütyp &lt;i&gt;Verwandte Seiten (basierend auf Schlüsselworten)&lt;/i&gt;</target></trans-unit>
+      <trans-unit id="_keywords.seeAlso" resname="_keywords.seeAlso" approved="yes">
+        <source>pages:description</source>
+        <target state="final">pages:description</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="description.description" resname="description.description" approved="yes">
+        <source>Enter a short description of the page. It will be displayed in the result lists of most search engines.</source>
+        <target state="final">Geben Sie eine kurze Beschreibung der Seite ein. Sie wird in den Ergebnislisten der meisten Suchmaschinen angezeigt.</target>
+      </trans-unit>
+      <trans-unit id="description.details" resname="description.details" xml:space="preserve" approved="yes">
+				<source>Most websites insert this description in a meta-tag on the page, but you may have to configure this yourself in your TypoScript template.
+
+Most search engines will display the description in their result list. Thus, the text should be short (about 160 characters maximum), and its wording should make sense when it shows up in the result list.
+
+In addition, the description will be displayed if you create a Content Element of type 'Sitemap' and then choose the menu type &lt;i&gt;Menu of subpages to these pages (with abstract)&lt;/i&gt;. If an abstract exists for the page, it will be used instead of the description.
+
+&lt;b&gt;Note:&lt;/b&gt; Some search engines only use the description if the text is not found elsewhere in the content. So do not just repeat yourself.</source>
+			<target state="final">Die meisten Websites fügen die Beschreibung in einem meta-Tag auf einer Seite ein, aber es kann sein dass man dies im TypoScript-Template selber konfigurieren muss.
+
+Die meisten Suchmaschinen werden diese Beschreibung in ihrer Ergebnisliste anzeigen. Daher sollte diser Text kurz sein (ungefähr maximal 160 Zeichen) und die Formulierung sollte sinnvoll in der Ergebnisliste sein.
+
+Zusätzlich wird die beschreibung angezeigt, wenn man ein Content Element vom Typ 'Sitemap' anlegt und den Menü-Typ &lt;i&gt;Menü von Unterseiten (mit Inhaltsangabe)&lt;/i&gt; wählt. Wenn eine Inhaltsangabe für eien Seite existiert wird dise statt der Beschreibung benutzt.
+
+&lt;b&gt;Beachte:&lt;/b&gt; Einige Suchmaschinen benutzen die Beschreibung nur wenn der text nicht irgendwo anders auf der Seite erscheint. Also nicht einfach nur wiederholen.</target></trans-unit>
+      <trans-unit id="_description.seeAlso" resname="_description.seeAlso" xml:space="preserve" approved="yes">
+				<source>pages:keywords
+pages:abstract</source>
+			<target state="final">pages:keywords
+pages:abstract</target></trans-unit>
+      <trans-unit id="abstract.description" resname="abstract.description" approved="yes">
+        <source>Enter an abstract of the contents. It may be displayed in an overview of articles.</source>
+        <target state="final">Geben Sie eine Zusammenfassung des Inhalts ein. Sie kann in einer Übersicht von Artikeln angezeigt werden.</target>
+      </trans-unit>
+      <trans-unit id="abstract.details" resname="abstract.details" xml:space="preserve" approved="yes">
+				<source>An abstract is a short description of the page content that might be a little longer than the one in the &lt;i&gt;Description&lt;/i&gt; field.
+
+Unlike the description, the abstract is not meant for display in search engine result lists, but is instead intended for you own use.
+
+If you create a Content Element of type &lt;i&gt;Sitemap&lt;/i&gt; and then choose &lt;i&gt;Menu of subpages to these pages (with abstract)&lt;/i&gt; an overview of pages will be created. If an abstract is available for a page it will be used instead of the description.
+
+&lt;b&gt;Note:&lt;/b&gt; You do not have to enter the text of the description into the &lt;i&gt;Abstract field&lt;/i&gt; again.
+
+Admins can also make custom use of this field via their TypoScript templates.</source>
+			<target state="final">Eine Zusammanfassung ist eine kurze Beschreibung des Seiteninhaltes, der etwas länger sein kann als im Feld &lt;i&gt;Beschreibung&lt;/i&gt;.
+
+Anders als die Beschreibung, ist die Zusammanfassung nicht dafür gedacht in den Ergebnissen von Suchmaschinen angezeigt zu werden, sondern für eigene Bedürfnisse genutzt zu werden.
+
+Wenn Sie ein Inhaltselement des Typs &lt;i&gt;Sitemap&lt;/i&gt; erstellen und dann &lt;i&gt;Menü der Unterseiten dieser Seite (mit Zusammenfassung)&lt;/i&gt; auswählen, wird eine Übersicht von Seiten erstellt. Falls eine Zusammenfassung für eine Seite existiert, wird diese anstelle der Beschreibung angezeigt.
+
+&lt;b&gt;Beachte:&lt;/b&gt; man sollte nicht den Text der Beschreibung im &lt;i&gt;Feld Zusammenfassung&lt;/i&gt; weiderholen.
+
+Administratoren können das Feld durch ihre TypoScript Templates benutzen.</target></trans-unit>
+      <trans-unit id="_abstract.seeAlso" resname="_abstract.seeAlso" approved="yes">
+        <source>pages:description</source>
+        <target state="final">pages:description</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="newUntil.description" resname="newUntil.description" approved="yes">
+        <source>Enter the date at which this page is no longer considered new.</source>
+        <target state="final">Geben Sie ein Datum ein ab dem diese Seite nicht mehr als "neu" gilt.</target>
+      </trans-unit>
+      <trans-unit id="newUntil.details" resname="newUntil.details" xml:space="preserve" approved="yes">
+				<source>The 'New Until' date of the page has no effect on the display of the webpage. This value is instead for internal use as a reminder of the date when the content of this page should be revised. If the content of the page will become outdated on a certain day, you could set this value to that approximate date.
+To get an overview of when pages will be outdated, use the 'Pagetree overview' in the 'Web&gt;Info' Module.</source>
+			<target state="final">Das Datum 'Neu bis' hat keine Auswirkungen auf die Anzeige der Seite. Der Wert ist für den internen Gebrauch gedacht, als Erinnerung für das Datum, zu dem die Seite überarbeitet werden soll. Falls der Inhalt der Seite an einem bestimmten Tag überholt sein wird, können Sie diesen Wert auf das ungefähre Datum setzen. 
+Um einen Überblick über Seiten und deren Datum, ab dem sie überholt sein werden, zu bekommen, nutzen Sie die 'Seitenbaumübersicht' im Modul 'Web &gt; Info'</target></trans-unit>
+      <trans-unit id="newUntil.syntax" resname="newUntil.syntax" approved="yes">
+        <source>See Page / Publication Date (click below)</source>
+        <target state="final">Siehe Seite / Veröffentlichungsdatum (unten anklicken)</target>
+      </trans-unit>
+      <trans-unit id="_newUntil.seeAlso" resname="_newUntil.seeAlso" approved="yes">
+        <source>pages:starttime</source>
+        <target state="final">pages:starttime</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="lastUpdated.description" resname="lastUpdated.description" approved="yes">
+        <source>Enter the date and time of the most recent update to this page.</source>
+        <target state="final">Geben Sie Datum und Zeit der letzten Änderung an dieser Seite ein.</target>
+      </trans-unit>
+      <trans-unit id="lastUpdated.details" resname="lastUpdated.details" xml:space="preserve" approved="yes">
+				<source>How the value of this field is used is determined by the TypoScript template of the website. 'Last Update' content needs to be inserted on the pages and the TypoScript template must be configured to use this value.
+The most common use is to display the date from the automatically updated 'tstamp' field &lt;em&gt;unless&lt;/em&gt; the 'Last Update' field is set. In this case, the date in 'Last Update' is used.</source>
+			<target state="final">Wie der Wert dieses Feldes verwendet wird, wird durch das TypoScript Template der Seite bestimmt. Sollen Inhalte mit der Eigenschaft 'Zuletzt aktualisiert' angezeigt werden, müssen diese auf den Seiten eingefügt werden und das TypoScript Template so konfiguriert werden, dass es diesen Wert verwendet.
+Die häufigste Anwendung ist die Anzeige des Datums aus dem automatisch aktualisieten Feld 'tstamp', es sei denn das Feld 'zuletzt aktualisiert' ist gesetzt. In diesem Fall wird das Feld 'zuletzt aktualisiert' verwendet.</target></trans-unit>
+      <trans-unit id="lastUpdated.syntax" resname="lastUpdated.syntax" xml:space="preserve" approved="yes">
+				<source>The format is HH:MM DD-MM-YYYY or HH:MM MM-DD-YYYY depending on your TYPO3 configuration.
+If you insert a 'd' the current time and date is inserted. You can also append any value in the field with a number lie '+10' which will add 10 days to the current value.</source>
+			<target state="final">Abhängig von Ihrer TYPO3 Konfiguration ist das Format HH:MM DD-MM-YYYY oder HH:MM MM-DD-YYYY. 
+Wenn Sie ein 'd' einfügen, werden die aktuelle Zeit und Datum eingesetzt. Sie können auch jedem Wert in dem Feld ein Zahl wie '+10' hinzufügen, was 10 Tage zu dem aktuellen Wert hinzu addiert.</target></trans-unit>
+      <trans-unit id="nav_hide.description" resname="nav_hide.description" approved="yes">
+        <source>With this option the page will appear in menus in the Frontend. If unchecked, the page can still be viewed if linked by going directly to its URL.</source>
+        <target state="final">Mit dieser Option wird die Seite in den Menüs im Frontend angezeigt. Wenn diese Option nicht aktiviert ist, kann die Seite immer noch angesehen werden, wenn sie direkt mit der URL verlinkt wird.</target>
+      </trans-unit>
+      <trans-unit id="_nav_hide.seeAlso" resname="_nav_hide.seeAlso" approved="yes">
+        <source>pages:nav_title</source>
+        <target state="final">pages:nav_title</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="nav_title.description" resname="nav_title.description" approved="yes">
+        <source>Alternative Navigation Title for menu items in the Frontend. When set, this value is used instead of the Page Title.</source>
+        <target state="final">Alternativer Navigationstitel für Menüelemente im Frontend. Falls dieser gesetzt ist, wird er statt des Seitentitels verwendet.</target>
+      </trans-unit>
+      <trans-unit id="content_from_pid.description" resname="content_from_pid.description" xml:space="preserve" approved="yes">
+				<source>If set, this is an alternative page to select Content Elements from.
+Whether this field is used depends on the website's TypoScript template.</source>
+			<target state="final">Falls gesetzt, wird eine andere Seite verwendet, von welcher die Inhaltselemente angezeigt werden.
+Ob dieses Feld verwendet wird, hängt von dem TypoScript template der Webseite ab.</target></trans-unit>
+      <trans-unit id="shortcut_mode.description" resname="shortcut_mode.description" approved="yes">
+        <source>Select a Shortcut Mode. By default the shortcut page must have a Shortcut Target to jump to. Other options are to go to the first subpage, to a random subpage, or back up to the parent page.</source>
+        <target state="final">Wählen Sie einen Verweismodus. Standardmässig muss die Verweisseite ein Verweisziel haben. Andere Optionen sind zur ersten Unterseite, zu einer zufälligen Unterseite oder zurück zur Elternseite zu gehen.</target>
+      </trans-unit>
+      <trans-unit id="mount_pid.description" resname="mount_pid.description" approved="yes">
+        <source>Mount this page. If set, subpages of this page come from the Mounted Page instead.</source>
+        <target state="final">Verwenden Sie diese Seite als Objektträger. Falls gesetzt kommen Unterseiten dieser Seite dann von der angegebenen Seite.</target>
+      </trans-unit>
+      <trans-unit id="mount_pid.details" resname="mount_pid.details" approved="yes">
+        <source>In the Frontend this is done by adding a new variable, &amp;MP, to the URL. This links the mounted branch to the main branch by pairing page ids.</source>
+        <target state="final">Im Frontend wird das durch das Hinzufügen der neuen Variable &amp;MP zur URL erreicht. Dies verknüpft den "gemounteten" Ast mit dem Hauptast anhand der Seiten-Ids.</target>
+      </trans-unit>
+      <trans-unit id="_mount_pid.seeAlso" resname="_mount_pid.seeAlso" approved="yes">
+        <source>pages:mount_pid_ol</source>
+        <target state="final">pages:mount_pid_ol</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="mount_pid_ol.description" resname="mount_pid_ol.description" approved="yes">
+        <source>Show content for the current page or replace it completely with the Mounted Page.</source>
+        <target state="final">Zeigt den Inhalt der aktuellen Seite oder ersetzt ihn vollständig durch die gemountete Seite.</target>
+      </trans-unit>
+      <trans-unit id="_mount_pid_ol.seeAlso" resname="_mount_pid_ol.seeAlso" approved="yes">
+        <source>pages:mount_pid</source>
+        <target state="final">pages:mount_pid</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="title.description.+" resname="title.description.+" approved="yes">
+        <source>This is normally shown in the website navigation.</source>
+        <target state="final">Dies wird üblicherweise in der Navigation der Website angezeigt.</target>
+      </trans-unit>
+      <trans-unit id="TSconfig.details.+" resname="TSconfig.details.+" xml:space="preserve" approved="yes">
+				<source>&lt;strong&gt;Example:&lt;/strong&gt;
+The 'Web&gt;Page' module lets you create content in four columns, Left, Normal, Right, Border if the template has been configured to use this option. (However, most websites use only one or two columns so some of these content columns are just taking up space and confusing users.)
+If you enter this string in the 'TSConfig' field, the 'Web&gt;Page' Module will only show the 'Normal' and 'Border' column!
+
+&lt;em&gt;mod.web_layout.tt_content.colPos_list = 0,3&lt;/em&gt;
+
+(Must be entered in a single line!)</source>
+			<target state="final">&lt;strong&gt;Beispiel:&lt;/strong&gt;
+Im Modul 'Web&gt;Seite' kann man Inhalte in vier Spalten erzeugen, links, normal, rechts, Rand, wenn das Template für die Nutzung der Spalten konfiguriert ist. (Wie auch immer, die meisten Websites nutzen nur eine oder zwei Spalten, so dass einige dieser Inhaltsspalten Platz verbrauchen und Anwender verwirren) 
+Wenn man diese Zeichenkette im Feld 'TSConfig' eingibt, dann zeigt das Modul 'Web&gt;Seite'  nur die Spalten 'Normal' und 'Rand' an!
+
+&lt;em&gt;mod.web_layout.tt_content.colPos_list = 0,3&lt;/em&gt;
+
+(Muss auf einer Zeile angegeben werden!)</target></trans-unit>
+      <trans-unit id="l18n_cfg.description" resname="l18n_cfg.description" approved="yes">
+        <source>Affect availability of pages in the various languages.</source>
+        <target state="final">Wirkt sich auf die Verfügbarkeit in den verschiedenen Sprachen aus.</target>
+      </trans-unit>
+      <trans-unit id="l18n_cfg.details" resname="l18n_cfg.details" xml:space="preserve" approved="yes">
+				<source>&lt;b&gt;Hide default language of page&lt;/b&gt;
+If set, the page is only available in translated versions and not in the default language. Any attempt to access the page in the default language will result in an error message.
+
+&lt;b&gt;Hide page if no translation for current language exists&lt;/b&gt;
+If set, any attempt to access the page in a translation that does not exist will result in an error message. By default, accessing an untranslated page will just show the default language instead.</source>
+			<target state="final">&lt;b&gt;Standardsprache der Seite ausblenden&lt;/b&gt;
+Wenn diese Option aktiviert ist, ist die Seite nur in übersetzten Versionen und nicht in der Standardsprache verfügbar. Jeder Versuch, auf die Seite in der Standardsprache zuzugreifen, führt zu einer Fehlermeldung.
+
+&lt;b&gt;Seite verbergen, wenn keine Übersetzung für die aktuelle Sprache vorhanden ist&lt;/b&gt;
+Falls aktiviert, führt jeder Versuch, die Seite in einer nicht vorhandenen Übersetzung aufzurufen, zu einer Fehlermeldung. Standardmäßig wird beim Zugriff auf eine nicht übersetzte Seite stattdessen nur die Standardsprache angezeigt.</target></trans-unit>
+    </body>
+  </file>
+</xliff>
