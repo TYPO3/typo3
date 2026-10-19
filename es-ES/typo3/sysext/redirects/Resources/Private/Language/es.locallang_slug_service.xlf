@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:redirects/Resources/Private/Language/locallang_slug_service.xlf" date="2017-12-29T20:23:34Z" product-name="redirects" target-language="es-ES">
+    <header/>
+    <body>
+      <trans-unit id="revert_update_success_message" resname="revert_update_success_message" approved="yes">
+        <source>All changes have been reverted.</source>
+        <target state="final">Todos los cambios han sido revertidos.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
