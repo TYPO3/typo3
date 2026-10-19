@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:install/Resources/Private/Language/Report/locallang.xlf" date="2011-10-17T20:22:33Z" product-name="install" target-language="zh-TW">
+    <header/>
+    <body>
+      <trans-unit id="environment.status.message.ok" resname="environment.status.message.ok" xml:space="preserve">
+				<source/>
+			</trans-unit>
+      <trans-unit id="environment.status.message.info" resname="environment.status.message.info" xml:space="preserve">
+				<source/>
+			</trans-unit>
+    </body>
+  </file>
+</xliff>
