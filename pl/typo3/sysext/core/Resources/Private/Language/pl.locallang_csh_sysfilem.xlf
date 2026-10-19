@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_sysfilem.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="pl">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>Filemounts describe a filepath on the server, relative or absolute.</source>
+        <target state="final">Punkt montowania plików określa ścieżki (realtywne lub absolutne) na serwerze .</target>
+      </trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Enter a title for the filemount. The title will appear as the name of the file mount when it is applied to users and groups.</source>
+        <target state="final">Wprowadź nazwę montowania. Nazwa ta będzie wyświetlana jako nazwa punktu montowania pliku przy operacjach na użytkownikach lub grupach.</target>
+      </trans-unit>
+      <trans-unit id="path.description" resname="path.description" approved="yes">
+        <source>Enter the path of the filemount, relative or absolute depending on the settings of BASE.</source>
+        <target state="final">Wprowadź ścieżkę punktu montowania, relatywną lub absolutną zależnie od ustawień BASE.</target>
+      </trans-unit>
+      <trans-unit id="base.description" resname="base.description" approved="yes">
+        <source>Determines whether the value of the PATH field is to be recognized as an absolute path on the server or a path relative to the fileadmin/ subfolder to the website.</source>
+        <target state="final">Określa czy wartość ścieżki ma być rozpoznawana jako absolutna na serwerze czy relatywna w stosunku do podkatalogu fileadmin/.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
