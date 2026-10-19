@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:reports/Resources/Private/Language/locallang_servicereport.xlf" date="2011-10-17T20:22:37Z" product-name="sv" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="report_title" resname="report_title" approved="yes">
+        <source>Installed Services</source>
+        <target state="final">Installierte Dienste</target>
+      </trans-unit>
+      <trans-unit id="report_description" resname="report_description" approved="yes">
+        <source>List of all installed services with information and status for each of them.</source>
+        <target state="final">Liste aller installierten Dienste mit Angaben zum Status und weiteren Informationen.</target>
+      </trans-unit>
+      <trans-unit id="report_explanation" resname="report_explanation" approved="yes">
+        <source>This report displays a list of installed services, with detailed information about each of them. The services are ordered by type, priority and quality. Unavailable services are highlighted with an error status.</source>
+        <target state="final">Dieser Bericht zeigt eine Liste der installierten Dienste mit detaillierten Informationen zu jedem Dienst. Die Dienste sind nach Typ, Priorität und Qualität sortiert. Dienste, die nicht verfügbar sind, sind mit einem Statusfehler hervorgehoben.</target>
+      </trans-unit>
+      <trans-unit id="externals_explanation" resname="externals_explanation" approved="yes">
+        <source>The "Externals" column shows which external programs a given service relies on. If such program is missing or not executable, the service will be unavailable. Search paths for executables are listed at the bottom of this report.</source>
+        <target state="final">Die Spalte "Extern" zeigt an, welche externen Programme ein Dienst benötigt. Wenn ein benötigtes Programm fehlt oder nicht ausführbar ist, ist der Dienst nicht verfügbar. Die Suchpfade für ausführbare Programme sind unten aufgelistet.</target>
+      </trans-unit>
+      <trans-unit id="service_type" resname="service_type" approved="yes">
+        <source>Service type: %s</source>
+        <target state="final">Diensttyp: %s</target>
+      </trans-unit>
+      <trans-unit id="service" resname="service" approved="yes">
+        <source>Service</source>
+        <target state="final">Dienst</target>
+      </trans-unit>
+      <trans-unit id="description" resname="description" approved="yes">
+        <source>Description</source>
+        <target state="final">Beschreibung</target>
+      </trans-unit>
+      <trans-unit id="priority" resname="priority" approved="yes">
+        <source>Priority</source>
+        <target state="final">Priorität</target>
+      </trans-unit>
+      <trans-unit id="quality" resname="quality" approved="yes">
+        <source>Quality</source>
+        <target state="final">Qualität</target>
+      </trans-unit>
+      <trans-unit id="subtypes" resname="subtypes" approved="yes">
+        <source>Subtypes</source>
+        <target state="final">Untertypen</target>
+      </trans-unit>
+      <trans-unit id="os" resname="os" approved="yes">
+        <source>OS</source>
+        <target state="final">OS</target>
+      </trans-unit>
+      <trans-unit id="externals" resname="externals" approved="yes">
+        <source>Externals</source>
+        <target state="final">Extern</target>
+      </trans-unit>
+      <trans-unit id="available" resname="available" approved="yes">
+        <source>Available</source>
+        <target state="final">Verfügbar</target>
+      </trans-unit>
+      <trans-unit id="any" resname="any" approved="yes">
+        <source>Any</source>
+        <target state="final">Alle</target>
+      </trans-unit>
+      <trans-unit id="search_paths" resname="search_paths" approved="yes">
+        <source>Configured search paths for external programs</source>
+        <target state="final">Festgelegte Suchpfade für externe Programme</target>
+      </trans-unit>
+      <trans-unit id="path" resname="path" approved="yes">
+        <source>Path</source>
+        <target state="final">Pfad</target>
+      </trans-unit>
+      <trans-unit id="valid" resname="valid" approved="yes">
+        <source>Valid</source>
+        <target state="final">Gültig</target>
+      </trans-unit>
+      <trans-unit id="no_search_paths" resname="no_search_paths" approved="yes">
+        <source>No search paths configured.</source>
+        <target state="final">Keine Suchpfade festgelegt.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
