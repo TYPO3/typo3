@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf" date="2018-02-27T22:22:32Z" product-name="backend" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="site.ctrl.title" resname="site.ctrl.title">
+        <source>Site Configuration</source>
+        <target>crwdns212824:0crwdne212824:0</target>
+      </trans-unit>
+      <trans-unit id="site.identifier" resname="site.identifier">
+        <source>Site Identifier</source>
+        <target>crwdns212826:0crwdne212826:0</target>
+      </trans-unit>
+      <trans-unit id="site.rootPageId" resname="site.rootPageId">
+        <source>Root Page ID</source>
+        <target>crwdns212828:0crwdne212828:0</target>
+      </trans-unit>
+      <trans-unit id="site.base" resname="site.base">
+        <source>Entry Point</source>
+        <target>crwdns212830:0crwdne212830:0</target>
+      </trans-unit>
+      <trans-unit id="site.websiteTitle" resname="site.websiteTitle">
+        <source>Website title</source>
+        <target>crwdns212832:0crwdne212832:0</target>
+      </trans-unit>
+      <trans-unit id="site.baseVariants" resname="site.baseVariants">
+        <source>Variants for the Entry Point</source>
+        <target>crwdns212834:0crwdne212834:0</target>
+      </trans-unit>
+      <trans-unit id="site.languages" resname="site.languages">
+        <source>Available Languages for this Site</source>
+        <target>crwdns212836:0crwdne212836:0</target>
+      </trans-unit>
+      <trans-unit id="site.languages.description" resname="site.languages.description">
+        <source>Select an already existing language from another site or create a new one.</source>
+        <target>crwdns212838:0crwdne212838:0</target>
+      </trans-unit>
+      <trans-unit id="site.languages.new" resname="site.languages.new">
+        <source>New language</source>
+        <target>crwdns212840:0crwdne212840:0</target>
+      </trans-unit>
+      <trans-unit id="site.languages.createNew" resname="site.languages.createNew">
+        <source>Create new language</source>
+        <target>crwdns212842:0crwdne212842:0</target>
+      </trans-unit>
+      <trans-unit id="site.errorHandling" resname="site.errorHandling">
+        <source>Error Handling</source>
+        <target>crwdns212844:0crwdne212844:0</target>
+      </trans-unit>
+      <trans-unit id="site.routes" resname="site.routes">
+        <source>Routes</source>
+        <target>crwdns212846:0crwdne212846:0</target>
+      </trans-unit>
+      <trans-unit id="site.routes.irreHeader.redirectsTo" resname="site.routes.irreHeader.redirectsTo">
+        <source>redirects to</source>
+        <target>crwdns212848:0crwdne212848:0</target>
+      </trans-unit>
+      <trans-unit id="site.tab.languages" resname="site.tab.languages">
+        <source>Languages</source>
+        <target>crwdns212850:0crwdne212850:0</target>
+      </trans-unit>
+      <trans-unit id="site.tab.errorHandling" resname="site.tab.errorHandling">
+        <source>Error Handling</source>
+        <target>crwdns212852:0crwdne212852:0</target>
+      </trans-unit>
+      <trans-unit id="site.tab.routes" resname="site.tab.routes">
+        <source>Static Routes</source>
+        <target>crwdns212854:0crwdne212854:0</target>
+      </trans-unit>
+      <trans-unit id="site_language.palette.locales" resname="site_language.palette.locales">
+        <source>Locales</source>
+        <target>crwdns212856:0crwdne212856:0</target>
+      </trans-unit>
+      <trans-unit id="site_language.palette.frontend" resname="site_language.palette.frontend">
+        <source>Frontend related</source>
+        <target>crwdns212858:0crwdne212858:0</target>
+      </trans-unit>
+      <trans-unit id="site_language.ctrl.title" resname="site_language.ctrl.title">
+        <source>Language Configuration for a Site</source>
+        <target>crwdns212860:0crwdne212860:0</target>
+      </trans-unit>
+      <trans-unit id="site_language.language" resname="site_language.language">
+        <source>Language</source>
+        <target>crwdns212862:0crwdne212862:0</target>
+      </trans-unit>
+      <trans-unit id="site_language.languageId" resname="site_language.languageId">
+        <source>Language ID</source>
+        <target>crwdns212864:0crwdne212864:0</target>
+      </trans-unit>
+      <trans-unit id="site_language.title" resname="site_language.title">
+        <source>Title</source>
+        <target>crwdns212866:0crwdne212866:0</target>
+      </trans-unit>
+      <trans-unit id="site_language.websiteTitle" resname="site_language.websiteTitle">
+        <source>Website title</source>
+        <target>crwdns212868:0crwdne212868:0</target>
+      </trans-unit>
+      <trans-unit id="site_language.navigationTitle" resname="site_language.navigationTitle">
+        <source>Navigation Title</source>
+        <target>crwdns212870:0crwdne212870:0</target>
+      </trans-unit>
+      <trans-unit id="site_language.base" resname="site_language.base">
+        <source>Entry Point</source>
+        <target>crwdns212872:0crwdne212872:0</target>
+      </trans-unit>
+      <trans-unit id="site_language.locale" resname="site_language.locale">
+        <source>Locale</source>
+        <target>crwdns212874:0crwdne212874:0</target>
+      </trans-unit>
+      <trans-unit id="site_language.iso-639-1" resname="site_language.iso-639-1">
+        <source>Two Letter ISO Code</source>
+        <target>crwdns212876:0crwdne212876:0</target>
+      </trans-unit>
+      <trans-unit id="site_language.hreflang" resname="site_language.hreflang">
+        <source>Language Tag defined by RFC 1766 / 3066</source>
+        <target>crwdns212878:0crwdne212878:0</target>
+      </trans-unit>
+      <trans-unit id="site_language.enabled" resname="site_language.enabled">
+        <source>Visible in Frontend</source>
+        <target>crwdns212880:0crwdne212880:0</target>
+      </trans-unit>
+      <trans-unit id="site_language.direction" resname="site_language.direction">
+        <source>Direction</source>
+        <target>crwdns212882:0crwdne212882:0</target>
+      </trans-unit>
+      <trans-unit id="site_language.direction.none" resname="site_language.direction.none">
+        <source>None</source>
+        <target>crwdns226068:0crwdne226068:0</target>
+      </trans-unit>
+      <trans-unit id="site_language.direction.leftToRight" resname="site_language.direction.leftToRight">
+        <source>Left to Right</source>
+        <target>crwdns226070:0crwdne226070:0</target>
+      </trans-unit>
+      <trans-unit id="site_language.direction.rightToLeft" resname="site_language.direction.rightToLeft">
+        <source>Right to Left</source>
+        <target>crwdns226072:0crwdne226072:0</target>
+      </trans-unit>
+      <trans-unit id="site_language.typo3Language" resname="site_language.typo3Language">
+        <source>Language Key for XLF Files</source>
+        <target>crwdns212884:0crwdne212884:0</target>
+      </trans-unit>
+      <trans-unit id="site_language.flag" resname="site_language.flag">
+        <source>Flag icon</source>
+        <target>crwdns212886:0crwdne212886:0</target>
+      </trans-unit>
+      <trans-unit id="site_language.fallbackType" resname="site_language.fallbackType">
+        <source>Fallback Type</source>
+        <target>crwdns212888:0crwdne212888:0</target>
+      </trans-unit>
+      <trans-unit id="site_language.fallbackType.strict" resname="site_language.fallbackType.strict">
+        <source>Strict: Show only translated content, based on overlays</source>
+        <target>crwdns226074:0crwdne226074:0</target>
+      </trans-unit>
+      <trans-unit id="site_language.fallbackType.fallback" resname="site_language.fallbackType.fallback">
+        <source>Fallback: Show default language if no translation exists</source>
+        <target>crwdns226076:0crwdne226076:0</target>
+      </trans-unit>
+      <trans-unit id="site_language.fallbackType.free" resname="site_language.fallbackType.free">
+        <source>Free mode: Ignore translation and overlay concept, only show data from selected language</source>
+        <target>crwdns226078:0crwdne226078:0</target>
+      </trans-unit>
+      <trans-unit id="site_language.fallbacks" resname="site_language.fallbacks">
+        <source>Fallback to other Language(s) - order is important!</source>
+        <target>crwdns212890:0crwdne212890:0</target>
+      </trans-unit>
+      <trans-unit id="site_base_variant.ctrl.title" resname="site_base_variant.ctrl.title">
+        <source>Base</source>
+        <target>crwdns212892:0crwdne212892:0</target>
+      </trans-unit>
+      <trans-unit id="site_base_variant.base" resname="site_base_variant.base">
+        <source>Base</source>
+        <target>crwdns212894:0crwdne212894:0</target>
+      </trans-unit>
+      <trans-unit id="site_base_variant.base.placeholder" resname="site_base_variant.base.placeholder">
+        <source>www.domain.local</source>
+        <target>crwdns212896:0crwdne212896:0</target>
+      </trans-unit>
+      <trans-unit id="site_base_variant.condition" resname="site_base_variant.condition">
+        <source>Condition</source>
+        <target>crwdns212898:0crwdne212898:0</target>
+      </trans-unit>
+      <trans-unit id="site_base_variant.condition.placeholder" resname="site_base_variant.condition.placeholder">
+        <source>applicationContext == "Production"</source>
+        <target>crwdns212900:0crwdne212900:0</target>
+      </trans-unit>
+      <trans-unit id="site_base_variant.condition.applicationContext" resname="site_base_variant.condition.applicationContext">
+        <source>Application Context</source>
+        <target>crwdns212902:0crwdne212902:0</target>
+      </trans-unit>
+      <trans-unit id="site_base_variant.condition.environmentVariable" resname="site_base_variant.condition.environmentVariable">
+        <source>Environment Variable</source>
+        <target>crwdns212904:0crwdne212904:0</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.ctrl.title" resname="site_errorhandling.ctrl.title">
+        <source>Error Handling</source>
+        <target>crwdns212906:0crwdne212906:0</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.tab.rootpaths" resname="site_errorhandling.tab.rootpaths">
+        <source>Root Paths (optional)</source>
+        <target>crwdns212908:0crwdne212908:0</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorCode" resname="site_errorhandling.errorCode">
+        <source>HTTP Error Status Code</source>
+        <target>crwdns212910:0crwdne212910:0</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorCode.404" resname="site_errorhandling.errorCode.404">
+        <source>404 (Page not found)</source>
+        <target>crwdns212912:0crwdne212912:0</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorCode.403" resname="site_errorhandling.errorCode.403">
+        <source>403 (Forbidden)</source>
+        <target>crwdns212914:0crwdne212914:0</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorCode.500" resname="site_errorhandling.errorCode.500">
+        <source>500 (Internal Server Error)</source>
+        <target>crwdns212916:0crwdne212916:0</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorCode.503" resname="site_errorhandling.errorCode.503">
+        <source>503 (Service Unavailable)</source>
+        <target>crwdns212918:0crwdne212918:0</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorCode.0" resname="site_errorhandling.errorCode.0">
+        <source>any error not defined otherwise</source>
+        <target>crwdns212920:0crwdne212920:0</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorHandler" resname="site_errorhandling.errorHandler">
+        <source>How to handle Errors</source>
+        <target>crwdns212922:0crwdne212922:0</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorHandler.fluid" resname="site_errorhandling.errorHandler.fluid">
+        <source>Fluid Template</source>
+        <target>crwdns212924:0crwdne212924:0</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorHandler.page" resname="site_errorhandling.errorHandler.page">
+        <source>Show Content from Page</source>
+        <target>crwdns212926:0crwdne212926:0</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorHandler.php" resname="site_errorhandling.errorHandler.php">
+        <source>PHP Class (must implement the PageErrorHandlerInterface)</source>
+        <target>crwdns212928:0crwdne212928:0</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorFluidTemplate" resname="site_errorhandling.errorFluidTemplate">
+        <source>Fluid Template File</source>
+        <target>crwdns212930:0crwdne212930:0</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorFluidTemplate.placeholder" resname="site_errorhandling.errorFluidTemplate.placeholder">
+        <source>EXT:my_sitepackage/Resources/Private/Templates/Sites/Error.html</source>
+        <target>crwdns212932:0crwdne212932:0</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorFluidTemplatesRootPath" resname="site_errorhandling.errorFluidTemplatesRootPath">
+        <source>Fluid Templates Root Path</source>
+        <target>crwdns212934:0crwdne212934:0</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorFluidLayoutsRootPath" resname="site_errorhandling.errorFluidLayoutsRootPath">
+        <source>Fluid Layouts Root Path</source>
+        <target>crwdns212936:0crwdne212936:0</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorFluidPartialsRootPath" resname="site_errorhandling.errorFluidPartialsRootPath">
+        <source>Fluid Partials Root Path</source>
+        <target>crwdns212938:0crwdne212938:0</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorContentSource" resname="site_errorhandling.errorContentSource">
+        <source>Show Content from Page</source>
+        <target>crwdns212940:0crwdne212940:0</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorPhpClassFQCN" resname="site_errorhandling.errorPhpClassFQCN">
+        <source>ErrorHandler Class Target (FQCN)</source>
+        <target>crwdns212942:0crwdne212942:0</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorPhpClassFQCN.placeholder" resname="site_errorhandling.errorPhpClassFQCN.placeholder">
+        <source>Vendor\ExtensionName\ErrorHandlers\GenericErrorhandler</source>
+        <target>crwdns212944:0crwdne212944:0</target>
+      </trans-unit>
+      <trans-unit id="site_route.ctrl.title" resname="site_route.ctrl.title">
+        <source>Routes</source>
+        <target>crwdns212946:0crwdne212946:0</target>
+      </trans-unit>
+      <trans-unit id="site_route.type" resname="site_route.type">
+        <source>Route Type</source>
+        <target>crwdns212948:0crwdne212948:0</target>
+      </trans-unit>
+      <trans-unit id="site_route.staticText" resname="site_route.staticText">
+        <source>Static Text</source>
+        <target>crwdns212950:0crwdne212950:0</target>
+      </trans-unit>
+      <trans-unit id="site_route.staticText.example1" resname="site_route.staticText.example1">
+        <source>robots.txt Example Content</source>
+        <target>crwdns212952:0crwdne212952:0</target>
+      </trans-unit>
+      <trans-unit id="site_route.source" resname="site_route.source">
+        <source>Page, File or URL</source>
+        <target>crwdns212954:0crwdne212954:0</target>
+      </trans-unit>
+      <trans-unit id="site_route.route" resname="site_route.route">
+        <source>Static Route Name</source>
+        <target>crwdns212956:0crwdne212956:0</target>
+      </trans-unit>
+      <trans-unit id="site_route.route.placeholder" resname="site_route.route.placeholder">
+        <source>my-custom_route</source>
+        <target>crwdns212958:0crwdne212958:0</target>
+      </trans-unit>
+      <trans-unit id="site_route.route.example1" resname="site_route.route.example1">
+        <source>robots.txt</source>
+        <target>crwdns212960:0crwdne212960:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
