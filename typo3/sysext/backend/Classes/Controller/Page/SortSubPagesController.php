@@ -188,6 +188,7 @@ readonly class SortSubPagesController
                 )
             )
             ->orderBy($orderBy)
+            ->addOrderBy('uid')
             ->executeQuery()
             ->fetchAllAssociative();
     }
