@@ -1,0 +1,484 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_wizards.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="pl">
+    <header/>
+    <body>
+      <trans-unit id="rte_undoLastChange" resname="rte_undoLastChange" approved="yes">
+        <source>Undo/Redo last change (%s ago)</source>
+        <target state="final">Cofnij/Przywróć ostatnią zmianę (%s temu)</target>
+      </trans-unit>
+      <trans-unit id="tsprop" resname="tsprop" approved="yes">
+        <source>TypoScript property lookup</source>
+        <target state="final">Podgląd właściwości TypoScript</target>
+      </trans-unit>
+      <trans-unit id="tsprop_TSref" resname="tsprop_TSref" approved="yes">
+        <source>TSref online</source>
+        <target state="final">TSref online</target>
+      </trans-unit>
+      <trans-unit id="tsprop_tsconfig" resname="tsprop_tsconfig" approved="yes">
+        <source>TSconfig online</source>
+        <target state="final">TSconfig online</target>
+      </trans-unit>
+      <trans-unit id="tsprop_title" resname="tsprop_title" approved="yes">
+        <source>Object title</source>
+        <target state="final">Tytuł obiektu</target>
+      </trans-unit>
+      <trans-unit id="tsprop_prefix" resname="tsprop_prefix" approved="yes">
+        <source>Object prefix</source>
+        <target state="final">Prefiks obiektu</target>
+      </trans-unit>
+      <trans-unit id="tsprop_mixer_indent" resname="tsprop_mixer_indent" approved="yes">
+        <source>Indent +2</source>
+        <target state="final">Zwiększ wcięcie +2</target>
+      </trans-unit>
+      <trans-unit id="tsprop_mixer_outdent" resname="tsprop_mixer_outdent" approved="yes">
+        <source>Outdent -2</source>
+        <target state="final">Zmniejsz wcięcie -2</target>
+      </trans-unit>
+      <trans-unit id="tsprop_mixer_wrap" resname="tsprop_mixer_wrap" approved="yes">
+        <source>Wrap</source>
+        <target state="final">Zawiń</target>
+      </trans-unit>
+      <trans-unit id="tsprop_mixer_transfer" resname="tsprop_mixer_transfer" approved="yes">
+        <source>Transfer &amp; Close</source>
+        <target state="final">Transferuj i zamknij</target>
+      </trans-unit>
+      <trans-unit id="tsprop_addToList" resname="tsprop_addToList" approved="yes">
+        <source>Add to list...</source>
+        <target state="final">Dodaj do listy...</target>
+      </trans-unit>
+      <trans-unit id="table_title" resname="table_title" approved="yes">
+        <source>Table wizard</source>
+        <target state="final">Kreator tabel</target>
+      </trans-unit>
+      <trans-unit id="table_smallFields" resname="table_smallFields" approved="yes">
+        <source>Small fields</source>
+        <target state="final">Małe pola</target>
+      </trans-unit>
+      <trans-unit id="table_addColumn" resname="table_addColumn" approved="yes">
+        <source>Add column to the right</source>
+        <target state="final">Dodaj kolumnę po prawej</target>
+      </trans-unit>
+      <trans-unit id="table_removeColumn" resname="table_removeColumn" approved="yes">
+        <source>Remove column</source>
+        <target state="final">Usuń kolumnę</target>
+      </trans-unit>
+      <trans-unit id="table_addRow" resname="table_addRow" approved="yes">
+        <source>Add row below</source>
+        <target state="final">Dodaj wiersz poniżej</target>
+      </trans-unit>
+      <trans-unit id="table_removeRow" resname="table_removeRow" approved="yes">
+        <source>Remove row</source>
+        <target state="final">Usuń wiersz</target>
+      </trans-unit>
+      <trans-unit id="table_left" resname="table_left" approved="yes">
+        <source>Move left</source>
+        <target state="final">Przesuń w lewo</target>
+      </trans-unit>
+      <trans-unit id="table_right" resname="table_right" approved="yes">
+        <source>Move right</source>
+        <target state="final">Przesuń w prawo</target>
+      </trans-unit>
+      <trans-unit id="table_up" resname="table_up" approved="yes">
+        <source>Move up</source>
+        <target state="final">Przesuń w górę</target>
+      </trans-unit>
+      <trans-unit id="table_down" resname="table_down" approved="yes">
+        <source>Move down</source>
+        <target state="final">Przesuń w dół</target>
+      </trans-unit>
+      <trans-unit id="table_top" resname="table_top" approved="yes">
+        <source>Move to top</source>
+        <target state="final">Przesuń na samą górę</target>
+      </trans-unit>
+      <trans-unit id="table_bottom" resname="table_bottom" approved="yes">
+        <source>Move to bottom</source>
+        <target state="final">Przesuń na sam dół</target>
+      </trans-unit>
+      <trans-unit id="table_start" resname="table_start" approved="yes">
+        <source>Move to first column</source>
+        <target state="final">Przesuń do pierwszej kolumny</target>
+      </trans-unit>
+      <trans-unit id="table_end" resname="table_end" approved="yes">
+        <source>Move to last column</source>
+        <target state="final">Przesuń do ostatniej kolumny</target>
+      </trans-unit>
+      <trans-unit id="table_noData" resname="table_noData" approved="yes">
+        <source>No table,field or uid given</source>
+        <target state="final">Brak tabeli, pola lub wartości uid</target>
+      </trans-unit>
+      <trans-unit id="table_setCount" resname="table_setCount" approved="yes">
+        <source>Set row and column count</source>
+        <target state="final">Ustaw liczbę wierszy i kolumn</target>
+      </trans-unit>
+      <trans-unit id="table_colCount" resname="table_colCount" approved="yes">
+        <source>Column count</source>
+        <target state="final">Liczba kolumn</target>
+      </trans-unit>
+      <trans-unit id="table_rowCount" resname="table_rowCount" approved="yes">
+        <source>Row count</source>
+        <target state="final">Ilość wierszy</target>
+      </trans-unit>
+      <trans-unit id="table_setCountHeadline" resname="table_setCountHeadline" approved="yes">
+        <source>Change table size</source>
+        <target state="final">Zmień rozmiar tabeli</target>
+      </trans-unit>
+      <trans-unit id="table_buttonApply" resname="table_buttonApply" approved="yes">
+        <source>Apply</source>
+        <target state="final">Zastosuj</target>
+      </trans-unit>
+      <trans-unit id="table_showCode" resname="table_buttonApply" approved="yes">
+        <source>Show table code</source>
+        <target state="final">Pokaż kod tabeli</target>
+      </trans-unit>
+      <trans-unit id="forms_title" resname="forms_title" approved="yes">
+        <source>Forms wizard</source>
+        <target state="final">Kreator formularzy</target>
+      </trans-unit>
+      <trans-unit id="forms_refresh" resname="forms_refresh" approved="yes">
+        <source>Refresh without saving</source>
+        <target state="final">Odśwież bez zapisywania</target>
+      </trans-unit>
+      <trans-unit id="forms_label" resname="forms_label" approved="yes">
+        <source>Label</source>
+        <target state="final">Etykieta</target>
+      </trans-unit>
+      <trans-unit id="forms_type" resname="forms_type" approved="yes">
+        <source>Type</source>
+        <target state="final">Typ</target>
+      </trans-unit>
+      <trans-unit id="forms_type_textarea" resname="forms_type_textarea" approved="yes">
+        <source>Text area</source>
+        <target state="final">Wielowierszowe pole tekstowe</target>
+      </trans-unit>
+      <trans-unit id="forms_type_input" resname="forms_type_input" approved="yes">
+        <source>Input field</source>
+        <target state="final">Pole tekstowe</target>
+      </trans-unit>
+      <trans-unit id="forms_type_password" resname="forms_type_password" approved="yes">
+        <source>Password field</source>
+        <target state="final">Pole hasła</target>
+      </trans-unit>
+      <trans-unit id="forms_type_file" resname="forms_type_file" approved="yes">
+        <source>File upload</source>
+        <target state="final">Pole pliku do załadowania</target>
+      </trans-unit>
+      <trans-unit id="forms_type_check" resname="forms_type_check" approved="yes">
+        <source>Check box</source>
+        <target state="final">Pole opcji</target>
+      </trans-unit>
+      <trans-unit id="forms_type_select" resname="forms_type_select" approved="yes">
+        <source>Selector box</source>
+        <target state="final">Pole listy</target>
+      </trans-unit>
+      <trans-unit id="forms_type_radio" resname="forms_type_radio" approved="yes">
+        <source>Radio buttons</source>
+        <target state="final">Przycisk radiowy</target>
+      </trans-unit>
+      <trans-unit id="forms_type_hidden" resname="forms_type_hidden" approved="yes">
+        <source>Hidden value</source>
+        <target state="final">Ukryta wartość</target>
+      </trans-unit>
+      <trans-unit id="forms_type_submit" resname="forms_type_submit" approved="yes">
+        <source>Submit Button</source>
+        <target state="final">Przycisk wysłania</target>
+      </trans-unit>
+      <trans-unit id="forms_type_property" resname="forms_type_property" approved="yes">
+        <source>Property</source>
+        <target state="final">Właściwości</target>
+      </trans-unit>
+      <trans-unit id="forms_type_label" resname="forms_type_label" approved="yes">
+        <source>Label</source>
+        <target state="final">Etykieta</target>
+      </trans-unit>
+      <trans-unit id="forms_required" resname="forms_required" approved="yes">
+        <source>Required</source>
+        <target state="final">Wymagane</target>
+      </trans-unit>
+      <trans-unit id="forms_fieldName" resname="forms_fieldName" approved="yes">
+        <source>Field</source>
+        <target state="final">Pole</target>
+      </trans-unit>
+      <trans-unit id="forms_cols" resname="forms_cols" approved="yes">
+        <source>Columns</source>
+        <target state="final">Kolumny</target>
+      </trans-unit>
+      <trans-unit id="forms_rows" resname="forms_rows" approved="yes">
+        <source>Rows</source>
+        <target state="final">Wiersze</target>
+      </trans-unit>
+      <trans-unit id="forms_size" resname="forms_size" approved="yes">
+        <source>Size</source>
+        <target state="final">Rozmiar</target>
+      </trans-unit>
+      <trans-unit id="forms_max" resname="forms_max" approved="yes">
+        <source>Max</source>
+        <target state="final">Maks.</target>
+      </trans-unit>
+      <trans-unit id="forms_autosize" resname="forms_autosize" approved="yes">
+        <source>Auto size</source>
+        <target state="final">Rozmiar auto</target>
+      </trans-unit>
+      <trans-unit id="forms_extra" resname="forms_extra" approved="yes">
+        <source>No Wrap</source>
+        <target state="final">Nie zawijaj</target>
+      </trans-unit>
+      <trans-unit id="forms_default" resname="forms_default" approved="yes">
+        <source>Value</source>
+        <target state="final">Wartość</target>
+      </trans-unit>
+      <trans-unit id="forms_multiple" resname="forms_multiple" approved="yes">
+        <source>Multiple</source>
+        <target state="final">Wielokrotne</target>
+      </trans-unit>
+      <trans-unit id="forms_options" resname="forms_options" approved="yes">
+        <source>List options</source>
+        <target state="final">Opcje listy</target>
+      </trans-unit>
+      <trans-unit id="forms_checked" resname="forms_checked" approved="yes">
+        <source>Checked</source>
+        <target state="final">Zaznaczone</target>
+      </trans-unit>
+      <trans-unit id="forms_preview" resname="forms_preview" approved="yes">
+        <source>Preview of element</source>
+        <target state="final">Podgląd elementu</target>
+      </trans-unit>
+      <trans-unit id="forms_element" resname="forms_element" approved="yes">
+        <source>Element type</source>
+        <target state="final">Typ elementu</target>
+      </trans-unit>
+      <trans-unit id="forms_config" resname="forms_config" approved="yes">
+        <source>Detailed configuration</source>
+        <target state="final">Szczegółowa konfiguracja</target>
+      </trans-unit>
+      <trans-unit id="forms_eform_subject" resname="forms_eform_subject" approved="yes">
+        <source>Subject</source>
+        <target state="final">Temat</target>
+      </trans-unit>
+      <trans-unit id="forms_eform_recipient" resname="forms_eform_recipient" approved="yes">
+        <source>Recipient email</source>
+        <target state="final">Email odbiorcy</target>
+      </trans-unit>
+      <trans-unit id="forms_eform_html_enabled" resname="forms_eform_html_enabled" approved="yes">
+        <source>HTML mode enabled</source>
+        <target state="final">Tryb HTML włączony</target>
+      </trans-unit>
+      <trans-unit id="forms_eform_formtype_mail" resname="forms_eform_formtype_mail" approved="yes">
+        <source>Send button label</source>
+        <target state="final">Etykieta przycisku wysłania</target>
+      </trans-unit>
+      <trans-unit id="forms_special_eform" resname="forms_special_eform" approved="yes">
+        <source>Special configuration for mail forms</source>
+        <target state="final">Konfiguracja specjalna formularzy pocztowych</target>
+      </trans-unit>
+      <trans-unit id="colorpicker_title" resname="colorpicker_title" approved="yes">
+        <source>Color Picker</source>
+        <target state="final">Próbnik koloru:</target>
+      </trans-unit>
+      <trans-unit id="colorpicker_setClose" resname="colorpicker_setClose" approved="yes">
+        <source>Save and Close</source>
+        <target state="final">Zapisz i zamknij</target>
+      </trans-unit>
+      <trans-unit id="colorpicker_colorValue" resname="colorpicker_colorValue" approved="yes">
+        <source>Selected Color</source>
+        <target state="final">Wybrany kolor</target>
+      </trans-unit>
+      <trans-unit id="colorpicker_fromImage" resname="colorpicker_fromImage" approved="yes">
+        <source>Capture color from image (click on image)</source>
+        <target state="final">Przechwyć kolor z obrazu (kliknij na obrazek)</target>
+      </trans-unit>
+      <trans-unit id="colorpicker_fromMatrix" resname="colorpicker_fromMatrix" approved="yes">
+        <source>Select color from matrix (websafe colors)</source>
+        <target state="final">Wybierz kolor z matrycy (kolory websafe)</target>
+      </trans-unit>
+      <trans-unit id="colorpicker_fromList" resname="colorpicker_fromList" approved="yes">
+        <source>Select HTML color name</source>
+        <target state="final">Wybierz nazwę koloru HTML</target>
+      </trans-unit>
+      <trans-unit id="colorpicker_black" resname="colorpicker_black" approved="yes">
+        <source>BLACK</source>
+        <target state="final">CZARNY</target>
+      </trans-unit>
+      <trans-unit id="colorpicker_white" resname="colorpicker_white" approved="yes">
+        <source>WHITE</source>
+        <target state="final">BIAŁY</target>
+      </trans-unit>
+      <trans-unit id="grid_windowTitle" resname="grid_windowTitle" approved="yes">
+        <source>Set cell name and column number</source>
+        <target state="final">Ustaw nazwę komórki oraz numer kolumny</target>
+      </trans-unit>
+      <trans-unit id="grid_labelName" resname="grid_labelName" approved="yes">
+        <source>Name</source>
+        <target state="final">Nazwa</target>
+      </trans-unit>
+      <trans-unit id="grid_labelColumn" resname="grid_labelColumn" approved="yes">
+        <source>Column Number</source>
+        <target state="final">Numer kolumny</target>
+      </trans-unit>
+      <trans-unit id="grid_labelSave" resname="grid_labelSave" approved="yes">
+        <source>Save to cell</source>
+        <target state="final">Zapisz komórkę</target>
+      </trans-unit>
+      <trans-unit id="grid_addColumn" resname="grid_addColumn" approved="yes">
+        <source>Add column</source>
+        <target state="final">Dodaj kolumnę</target>
+      </trans-unit>
+      <trans-unit id="grid_removeColumn" resname="grid_removeColumn" approved="yes">
+        <source>Remove column</source>
+        <target state="final">Usuń kolumnę</target>
+      </trans-unit>
+      <trans-unit id="grid_addRow" resname="grid_addRow" approved="yes">
+        <source>Add row</source>
+        <target state="final">Dodaj wiersz</target>
+      </trans-unit>
+      <trans-unit id="grid_removeRow" resname="grid_removeRow" approved="yes">
+        <source>Remove row</source>
+        <target state="final">Usuń wiersz</target>
+      </trans-unit>
+      <trans-unit id="grid_editCell" resname="grid_editCell" approved="yes">
+        <source>Edit cell</source>
+        <target state="final">Edytuj komórkę</target>
+      </trans-unit>
+      <trans-unit id="grid_mergeCell" resname="grid_mergeCell" approved="yes">
+        <source>Combine with next cell</source>
+        <target state="final">Połącz z następną komórką</target>
+      </trans-unit>
+      <trans-unit id="grid_splitCell" resname="grid_splitCell" approved="yes">
+        <source>Split cell</source>
+        <target state="final">Podziel komórkę</target>
+      </trans-unit>
+      <trans-unit id="grid_name" resname="grid_name" approved="yes">
+        <source>Name</source>
+        <target state="final">Nazwa</target>
+      </trans-unit>
+      <trans-unit id="grid_column" resname="grid_column" approved="yes">
+        <source>Column number</source>
+        <target state="final">Numer kolumny</target>
+      </trans-unit>
+      <trans-unit id="grid_notSet" resname="grid_notSet" approved="yes">
+        <source>not set</source>
+        <target state="final">nie ustawione</target>
+      </trans-unit>
+      <trans-unit id="grid_nameHelp" resname="grid_nameHelp" approved="yes">
+        <source>Enter a name for the cell.</source>
+        <target state="final">Wprowadź nazwę komórki.</target>
+      </trans-unit>
+      <trans-unit id="grid_columnHelp" resname="grid_columnHelp" approved="yes">
+        <source>The column position defines in which area the content is rendered in the frontend.</source>
+        <target state="final">Pozycja kolumny określa w jakim obszarze zawartość jest renderowana na stronie serwisu.</target>
+      </trans-unit>
+      <trans-unit id="imwizard.open-editor" resname="imwizard.open-editor" approved="yes">
+        <source>Open Editor</source>
+        <target state="final">Otwórz edytor</target>
+      </trans-unit>
+      <trans-unit id="imwizard.supported-types-message" resname="imwizard.supported-types-message" approved="yes">
+        <source>Image manipulation is only available for supported types</source>
+        <target state="final">Edycja obrazów jest dostępna tylko dla obsługiwanych typów</target>
+      </trans-unit>
+      <trans-unit id="imwizard.no-image-dimensions" resname="imwizard.no-image-dimensions" approved="yes">
+        <source>No image dimensions could be determined.</source>
+        <target state="final">Nie można określić wymiarów obrazu.</target>
+      </trans-unit>
+      <trans-unit id="imwizard.no-image-dimensions-message" resname="imwizard.no-image-dimensions-message" approved="yes">
+        <source>Unable to provide image manipulation, because original dimensions of the image are unknown.</source>
+        <target state="final">Nie można dostarczyć manipulacji obrazem, ponieważ oryginalne wymiary obrazu są nieznane.</target>
+      </trans-unit>
+      <trans-unit id="imwizard.image-manipulation" resname="imwizard.image-manipulation" approved="yes">
+        <source>Image manipulation</source>
+        <target state="final">Edycja obrazu</target>
+      </trans-unit>
+      <trans-unit id="imwizard.image-title" resname="imwizard.image-title" approved="yes">
+        <source>Title</source>
+        <target state="final">Tytuł</target>
+      </trans-unit>
+      <trans-unit id="imwizard.original-dimensions" resname="imwizard.original-dimensions" approved="yes">
+        <source>Original dimensions</source>
+        <target state="final">Oryginalne wymiary</target>
+      </trans-unit>
+      <trans-unit id="imwizard.reset" resname="imwizard.reset" approved="yes">
+        <source>Reset</source>
+        <target state="final">Wyczyść</target>
+      </trans-unit>
+      <trans-unit id="imwizard.accept" resname="imwizard.accept" approved="yes">
+        <source>Accept</source>
+        <target state="final">Akceptuj</target>
+      </trans-unit>
+      <trans-unit id="imwizard.cancel" resname="imwizard.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Anuluj</target>
+      </trans-unit>
+      <trans-unit id="imwizard.preview" resname="imwizard.preview" approved="yes">
+        <source>Preview</source>
+        <target state="final">Podgląd</target>
+      </trans-unit>
+      <trans-unit id="imwizard.aspect-ratio" resname="imwizard.aspect-ratio" approved="yes">
+        <source>Aspect ratio</source>
+        <target state="final">Proporcje</target>
+      </trans-unit>
+      <trans-unit id="imwizard.set-aspect-ratio" resname="imwizard.set-aspect-ratio" approved="yes">
+        <source>Set Aspect Ratio</source>
+        <target state="final">Wybierz proporcje</target>
+      </trans-unit>
+      <trans-unit id="imwizard.ratio.16_9" resname="imwizard.ratio.16_9" translate="no" approved="yes">
+        <source>16:9</source>
+        <target state="final">16:9</target>
+      </trans-unit>
+      <trans-unit id="imwizard.ratio.3_2" resname="imwizard.ratio.3_2" translate="no" approved="yes">
+        <source>3:2</source>
+        <target state="final">3:2</target>
+      </trans-unit>
+      <trans-unit id="imwizard.ratio.4_3" resname="imwizard.ratio.4_3" translate="no" approved="yes">
+        <source>4:3</source>
+        <target state="final">4:3</target>
+      </trans-unit>
+      <trans-unit id="imwizard.ratio.1_1" resname="imwizard.ratio.1_1" translate="no" approved="yes">
+        <source>1:1</source>
+        <target state="final">1:1</target>
+      </trans-unit>
+      <trans-unit id="imwizard.ratio.191_1" resname="imwizard.ratio.191_1" translate="no" approved="yes">
+        <source>1.91:1</source>
+        <target state="final">1.91:1</target>
+      </trans-unit>
+      <trans-unit id="imwizard.ratio.free" resname="imwizard.ratio.free" approved="yes">
+        <source>Free</source>
+        <target state="final">Dowolny</target>
+      </trans-unit>
+      <trans-unit id="imwizard.crop_variant.default" resname="imwizard.crop_variant.default" approved="yes">
+        <source>Default</source>
+        <target state="final">Domyślne</target>
+      </trans-unit>
+      <trans-unit id="imwizard.crop_variant.social" resname="imwizard.crop_variant.social" approved="yes">
+        <source>Social media</source>
+        <target state="final">Media społecznościowe</target>
+      </trans-unit>
+      <trans-unit id="imwizard.selection" resname="imwizard.selection" approved="yes">
+        <source>Selected Size</source>
+        <target state="final">Wybrany rozmiar</target>
+      </trans-unit>
+      <trans-unit id="imwizard.crop-width" resname="imwizard.crop-width" approved="yes">
+        <source>width</source>
+        <target state="final">szerokość</target>
+      </trans-unit>
+      <trans-unit id="imwizard.crop-height" resname="imwizard.crop-height" approved="yes">
+        <source>height</source>
+        <target state="final">wysokość</target>
+      </trans-unit>
+      <trans-unit id="localizationStateSelector.header" resname="localizationStateSelector.header" approved="yes">
+        <source>Translation behavior</source>
+        <target state="final">Zachowanie tłumaczenia</target>
+      </trans-unit>
+      <trans-unit id="localizationStateSelector.customValue" resname="localizationStateSelector.customValue" approved="yes">
+        <source>Custom value</source>
+        <target state="final">Wartość niestandardowa</target>
+      </trans-unit>
+      <trans-unit id="localizationStateSelector.defaultLanguageValue" resname="localizationStateSelector.defaultLanguageValue" approved="yes">
+        <source>Value of default language</source>
+        <target state="final">Wybierz domyślny język</target>
+      </trans-unit>
+      <trans-unit id="localizationStateSelector.sourceLanguageValue" resname="localizationStateSelector.sourceLanguageValue" approved="yes">
+        <source>Value of %1s language</source>
+        <target state="final">Wartość języka %1s</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
