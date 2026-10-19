@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:lowlevel/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:34Z" product-name="lowlevel" target-language="ja">
+    <header/>
+    <body>
+      <trans-unit id="configuration" resname="configuration" approved="yes">
+        <source>Configuration</source>
+        <target state="final">設定</target>
+      </trans-unit>
+      <trans-unit id="pages" resname="pages" approved="yes">
+        <source>Pages</source>
+        <target state="final">ページ</target>
+      </trans-unit>
+      <trans-unit id="count" resname="count" approved="yes">
+        <source>Count</source>
+        <target state="final">カウント</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
