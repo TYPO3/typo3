@@ -1,0 +1,442 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_csh_ttcontent.xlf" date="2011-10-17T20:22:32Z" product-name="context_help" target-language="km">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>All visible content on webpages is typically made by "Page Content" records, often referred to as "Content Elements". Content Elements are managed by the "Page" Module which organizes Content Elements in multiple columns and languages.</source>
+        <target state="final">មាតិកា​ដែល​មើល​ឃើញ​លើ​ទំព័រ បង្កើត​ដោយ​ទិន្នន័យ "មាតិកា​ទំព័រ" ជាទូទៅ​ជា "ធាតុ​មាតិកា" ។ ធាតុ​មាតិកា​ត្រូវ​បាន​រៀបចំ​ដោយ​ម៉ូឌុល "ទំព័រ" ក្នុង​ជួរ​ឈរ​​ច្រើន និង ភាសា​ច្រើន ។</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" approved="yes">
+        <source>"Page Content" records are sortable and can be rearranged. The "Language" and "Column" selectors of the "Page Content" records determines when and where they appear. If you do not change the value of the "Language" and "Column" selectors the Content Element will appear in the default configuration.</source>
+        <target state="final">ទិន្នន័យ "មាតិកា​ទំព័រ" អាច​តម្រៀប និង រៀបចំ​ឡើង​វិញ ។ ការជ្រើសរើស "ភាសា" និង "ជួរ" នៃ​ទិន្នន័យ "មាតិកា​ទំព័រ" បញ្ជាក់​ពេល និង កន្លែង​ដែល​វា​បង្ហាញ ។ ប្រសិន​បើ​អ្នក​មិន​ប្ដូរ​តម្លៃ​នៃ "ភាសា" និង "ជួរ" នៃ​ ធាតុ​មាតិកា​នឹង​បញ្ហាញ​តាម​ការកំណត់​ដើម ។</target>
+      </trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" xml:space="preserve" approved="yes">
+				<source>The Page Module is used to manage Content Elements arranged in columns and languages.
+A Content Element has an editing form with many options. The "Type" determines which options are visible.
+In the Frontend, a Content Element like the above could look like this.</source>
+			<target state="final">ម៉ូឌុល​ទំព័រ​ត្រូវ​បាន​ប្រើ​ដើម្បី​រៀបចំ​ធាតុ​មាតិកា​ក្នុង​គូឡោន និង ភាសា ។ ធាតុ​មាតិកា​មាន​ទម្រង់​កែប្រែ​ដែល​មាន​ជម្រើស​ច្រើន ។ "ប្រភេទ" បញ្ជាក់​អំពី​ជម្រើស​មួយ​ណា​នឹង​បង្ហាញ ។ ក្នុង Frontend ធាតុ​មាតិកា​ដូច​ខាង​លើ​អាច​មាន​លក្ខណៈ​ដូច្នេះ ។</target></trans-unit>
+      <trans-unit id="CType.description" resname="CType.description" approved="yes">
+        <source>Select the kind of Page Content this element represents. New options will appear when you save the record.</source>
+        <target state="final">រើស​ប្រភេទ​ធាតុ​មាតិកា​ដើម្បី​បង្ហាញ ។ ជម្រើស​ថ្មី​នឹង​បង្ហាញ​ពេល​អ្នក​រក្សាទុក​ទិន្នន័យ ។</target>
+      </trans-unit>
+      <trans-unit id="_hidden.seeAlso" resname="_hidden.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:starttime,
+tt_content:endtime,
+tt_content:fe_group,
+tt_content:colPos,
+tt_content:sys_language_uid</source>
+				
+			<target state="final">tt_content:starttime,
+tt_content:endtime,
+tt_content:fe_group,
+tt_content:colPos,
+tt_content:sys_language_uid</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="starttime.description" resname="starttime.description" approved="yes">
+        <source>Enter the date when the Content Element should be published and displayed on the website.</source>
+        <target state="final">បំពេញ​កាលបរិច្ឆេទ​ដែល​ធាតុ​នៃ​មាតិកា​គួរ​ត្រូវ​បាន​ផ្សាយ និង បង្ហាញ​នៅ​លើ​វែបសាយ ។</target>
+      </trans-unit>
+      <trans-unit id="_starttime.seeAlso" resname="_starttime.seeAlso" xml:space="preserve" approved="yes">
+				<source>pages:starttime,
+tt_content:endtime,
+tt_content:hidden,
+tt_content:fe_group</source>
+				
+			<target state="final">pages:starttime,
+tt_content:endtime,
+tt_content:hidden,
+tt_content:fe_group</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="endtime.description" resname="endtime.description" approved="yes">
+        <source>Enter the date when the Content Element should expire and disappear from the website.</source>
+        <target state="final">បំពេញ​កាលបរិច្ឆេទ​ពេល​ធាតុ​មាតិកា​ផុត​កំណត់ និង លាក់​ពី​វែបសាយ ។</target>
+      </trans-unit>
+      <trans-unit id="_endtime.seeAlso" resname="_endtime.seeAlso" xml:space="preserve" approved="yes">
+				<source>pages:endtime,
+tt_content:starttime,
+tt_content:hidden,
+tt_content:fe_group</source>
+				
+			<target state="final">pages:endtime,
+tt_content:starttime,
+tt_content:hidden,
+tt_content:fe_group</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="fe_group.description" resname="fe_group.description" approved="yes">
+        <source>If Usergroup Access Rights are set to a usergroup name, only website users who are logged in and members of the selected usergroup will be able to view the Content Element. The special option 'Hide at Login' means the Content Element will &lt;em&gt;not&lt;/em&gt; be visible for any website users that are logged in. Likewise "Show at Any Login" will make the Content Element visible for any logged in website user.</source>
+        <target state="final">ប្រសិន​បើ​សិទ្ធិ​របស់​ក្រុម​អ្នក​ប្រើ​កំណត់​ទៅ​ឈ្មោះ​ក្រុម មានតែ​អ្នក​ប្រើ​វែបសាយ​ដែល​ជា​សមាជិក​របស់​ក្រុម​នោះ​នឹង​អាច​មើល​ទំព័រ​បាន ។ ជម្រើស​ពិសេស 'លាក់​ពេល​កត់ត្រា​ចូល' មានន័យ​ថា ទំព័រ​នឹង​&lt;em&gt;​មិន&lt;/em&gt;​បង្ហាញ​ទៅ​អ្នក​ប្រើ​វែបសាយ​ដែល​កត់ត្រា​ចូល ។ ដូច​គ្នា​នេះ​ដែរ 'បង្ហាញ​ពេល​កត់ត្រាចូល' នឹង​បង្ហាញ​ទំព័រ​រាល់​ពេល​កត់ត្រា​ចូល​ក្នុង Frontend ។</target>
+      </trans-unit>
+      <trans-unit id="fe_group.details" resname="fe_group.details" approved="yes">
+        <source>The 'Hide at Login' option is is useful if you want to present information like "How to Login" that becomes irrelevant when a website user is actually logged in.</source>
+        <target state="final">ជម្រើស 'លាក់​ពេល​កត់ត្រា​ចូល' មាន​ប្រយោជន៍​ប្រសិន​បើ​អ្នក​បង្ហាញ​ព័ត៌មាន​ដូច​ជា "របៀប​កត់ត្រា​ចូល" ដែល​​​​នឹង​លាក់​ពេល​អ្នក​ប្រើ​កត់ត្រា​ចូល​រួច ។</target>
+      </trans-unit>
+      <trans-unit id="_fe_group.seeAlso" resname="_fe_group.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:hidden,
+tt_content:starttime,
+tt_content:endtime,
+pages:fe_group,
+fe_users,
+fe_groups</source>
+				
+			<target state="final">tt_content:hidden,
+tt_content:starttime,
+tt_content:endtime,
+pages:fe_group,
+fe_users,
+fe_groups</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="sys_language_uid.description" resname="sys_language_uid.description" approved="yes">
+        <source>Select the system language of this Content Element. &lt;strong&gt;Notice:&lt;/strong&gt; This will affect the Content Element visibility by limiting it to a certain language.</source>
+        <target state="final">រើស​ភាសា​ប្រព័ន្ធ​របស់​ធាតុ​មាតិកា ។ &lt;strong&gt;ចំណាំ៖&lt;/strong&gt; វា​នឹង​មាន​ផល​ប៉ះពាល់​ដល់​ការបង្ហាញ​ធាតុមាតិកា​ ដោយ​ការកំណត់​វា​ទៅ​ភាសា​ជាក់លាក់​មួយ ។</target>
+      </trans-unit>
+      <trans-unit id="sys_language_uid.details" resname="sys_language_uid.details" xml:space="preserve" approved="yes">
+				<source>This allows you to assign a specific language to the Content Element. If you select anything but the default value, the element will &lt;em&gt;not&lt;/em&gt; be visible unless the language assigned is also configured by the TypoScript template.
+The available system languages are created by the administrator.</source>
+			<target state="final">ជម្រើស​នេះ​អនុញ្ញាត​ឲ្យ​អ្នក​កំណត់​ភាសា​ជាក់លាក់​ទៅ​កាន់​ធាតុ​មាតិកា ។ បើ​អ្នក​រើស​យក​អ្វីៗ​ទាំងអស់​ប៉ុន្តែ​តម្លៃ​ដើម ធាតុ​នឹង​មិន​បង្ហាញ​លុះ​ត្រា​តែ​ភាសា​ដែល​កំណត់​ក៏​ត្រូវ​បាន​កំណត់​ដោយ template របស់ TypoScript ផង​ដែរ ។ ភាសា​ដែល​មាន​សម្រាប់​ប្រព័ន្ធ​ត្រូវ​បាន​បង្កើត​ដោយ​អ្នក​គ្រប់គ្រង ។</target></trans-unit>
+      <trans-unit id="_sys_language_uid.seeAlso" resname="_sys_language_uid.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:colPos,
+sys_language,
+Localization concepts [Technical] | http://typo3.org/documentation/tips-tricks/multi-language-sites-in-typo3/,
+_MOD_web_layout:language_list</source>
+				
+			<target state="final">tt_content:colPos,
+sys_language,
+Localization concepts [Technical] | http://typo3.org/documentation/tips-tricks/multi-language-sites-in-typo3/,
+_MOD_web_layout:language_list</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="layout.description" resname="layout.description" approved="yes">
+        <source>Select a Layout.</source>
+        <target state="final">រើស​គំរូ​ប្លង់</target>
+      </trans-unit>
+      <trans-unit id="layout.details" resname="layout.details" xml:space="preserve" approved="yes">
+				<source>This option does not work by default for all Content Elements but your website may display Content Elements differently depending on the layout.
+
+The File Links Content Element does make use of the Layout field by default:
+"Normal" will provide a list of file links with no thumbnail.
+"Layout 1" adds a file icon to the left of the link
+"Layout 2" adds a thumbnail for image files and an icon for other files. A black border is wrapped around the icon.
+"Layout 3" is similar to Layout 2, but without the black border.</source>
+			<target state="final">ជម្រើស​នេះ​មិន​ដំណើរការ​​សម្រាប់​ធាតុ​មាតិការ​ទេ​ក្នុង​តាម​លំនាំ​ដើម ប៉ុន្តែ​វែបសាយ​របស់​អ្នក​អាច​បង្ហាញ​ធាតុមាតិកា​ផ្សេងៗ​គ្នា​ផ្អែក​លើ​គំរូ​ប្លង់ ។ ធាតុ​មាតិកា​តំណ​ឯកសារ​ប្រើ​ប្រអប់​គំរូប្លង់​តាម​លំនាំ​ដើម៖ "ធម្មតា" នឹង​ផ្ដល់​បញ្ជី​ឯកសារ​តំណ​ដោយ​គ្មាន​រូប ។ "គំរូប្លង់ ១" ថែម​រូប​តំណាង​ឯកសារ​ទៅ​ខាង​ឆ្វេង​នៃ​តំណ "គំរូប្លង់ ២" ថែម​រូប​សម្រាប់​ឯកសារ​រូបភាព និង រូប​តំណាង​ឯកសារ​ផ្សេង​ទៀត ។ ស៊ុម​ពណ៌​ខ្មៅ​ហំ​ព័ទ្ធ​រូបតំណង ។ "គំរូប្លង់ ៣" ស្រដៀប​គ្នា​ទៅ​នឹង គំរូប្លង់ ២ ប៉ុន្តែ​មិន​មាន​ស៊ុម​ខ្មៅ​​រុំ​ព័ទ្ធ ។</target></trans-unit>
+      <trans-unit id="colPos.description" resname="colPos.description" approved="yes">
+        <source>Select the column position of this element. &lt;strong&gt;Notice:&lt;/strong&gt; This may affect whether the Content Element is visible depending on your website template.</source>
+        <target state="final">រើស​ទីតាំង​គូឡោន​នៃ​ធាតុ​នេះ ។ &lt;strong&gt;ចំណាំ៖&lt;/strong&gt; ជម្រើស​នេះ​អាច​មាន​ផល​ប៉ះពាល់​ទោះ​បី​ជា​ធាតុ​មាតិកា​​បើក​បង្ហាញ វា​អាស្រ័យ​លើ template របស់​វែបសាយ ។</target>
+      </trans-unit>
+      <trans-unit id="colPos.details" resname="colPos.details" xml:space="preserve" approved="yes">
+				<source>Many websites only use one column of content. Some templates, however, let you put content in multiple columns using the Column option.
+
+&lt;strong&gt;Notice:&lt;/strong&gt; Selecting a column other than "Normal" may cause the Content Element to disappear if the website template does not use that column. If your Content Element mysteriously disappears make sure the Column and Language selectors are set correctly.</source>
+			<target state="final">វែបសាយ​ជា​ច្រើន​មាន​តែ​គូឡោន​មាតិកា​មួយ ។ Template ខ្លះ អាច​ឲ្យ​អ្នក​ដាក់​មាតិកា​​ក្នុង​គូឡោន​ច្រើន​ដោយ​ប្រើ​ជម្រើស​របស់​គូឡោន ។ &lt;strong&gt;ចំណាំ៖&lt;/strong&gt; រើស​គូឡោន​ក្រៅ​ពី "ធម្មតា" អាច​ប៉ះពាល់​ដល់​ធាតុ​មាតិកា​ដែល​មិន​បង្ហាញ ប្រសិន​បើ​ template របស់​វែបសាយ​មិន​ប្រើ​​គូឡោន​នោះ ។ បើ​​ធាតុ​មាតិកា​របស់​អ្នក​មិន​បង្ហាញ សូម​មើល​ការជ្រើសរើស​គូឡោន និង ភាសា​ឲ្យ​បាន​ត្រឹមត្រូវ ។</target></trans-unit>
+      <trans-unit id="_colPos.seeAlso" resname="_colPos.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:sys_language_uid,
+_MOD_web_layout:columns_multi,
+_MOD_web_layout:columns_single</source>
+				
+			<target state="final">tt_content:sys_language_uid,
+_MOD_web_layout:columns_multi,
+_MOD_web_layout:columns_single</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="date.description" resname="date.description" approved="yes">
+        <source>Enter a date to be displayed above the header.</source>
+        <target state="final">បំពេញ​កាលបរិច្ឆេទ​ដើម្បី​បង្ហាញ​ក្បាល​ខាង​លើ ។</target>
+      </trans-unit>
+      <trans-unit id="header.description" resname="header.description" approved="yes">
+        <source>Enter header text for the Content Element.</source>
+        <target state="final">បំពេញ​អក្សរ​សម្រាប់​ធាតុ​មាតិកា ។</target>
+      </trans-unit>
+      <trans-unit id="header.details" resname="header.details" xml:space="preserve" approved="yes">
+				<source>Almost all Content Elements will display this header above the content. If you don't want the header displayed, set the header Layout to "Hidden". You can also choose not to enter any content in this field.
+
+Some content element types do not display the header by default. In those cases the Header field is typically labeled "Name" instead. One example is the HTML Content Element.</source>
+			<target state="final">ស្ទើរ​គ្រប់​ធាតុ​មាតិកា​នឹង​បង្ហាញ​ចំណងជើង​ខាង​លើ​មាតិកា ។ បើ​អ្នក​មិន​ចង់​ឲ្យ​បង្ហាញ​ចំណងជើង កំណត់​គំរូ​ចំណងជើង​ទៅ "លាក់" ។ អ្នក​ក៏​អាច​រើស​មិន​បំពេញ​មាតិកា​​ណា​មួយ​ក្នុង​ប្រអបប់​នេះ​ផង​ដែរ ។ ប្រភេទ​ធាតុ​មាតិកា​ខ្លះ​មិន​បង្ហាញ​ចំណងជើង​ទេ ។ ក្នុង​ករណី​នេះ​ប្រអប់​ចំណងជើង​ជាទូទៅ​ជា​ "ឈ្មោះ" ជំនួស​វិញ ។ ឧទាហរណ៍​មួយ​គឺ ធាតុ​មាតិកា HTML ។</target></trans-unit>
+      <trans-unit id="_header.seeAlso" resname="_header.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:header_position,
+tt_content:header_link,
+tt_content:header_layout,
+tt_content:date,</source>
+				
+			<target state="final">tt_content:header_position,
+tt_content:header_link,
+tt_content:header_layout,
+tt_content:date,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="header_position.description" resname="header_position.description" approved="yes">
+        <source>Aligns the header to the left, center, or right.</source>
+        <target state="final">តម្រឹម​ក្បាល​ទៅ​ឆ្វេង កណ្ដាល ឬ ស្ដាំ ។</target>
+      </trans-unit>
+      <trans-unit id="_header_position.seeAlso" resname="_header_position.seeAlso" approved="yes">
+        <source>tt_content:header</source>
+        <target state="final">tt_content:header</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="header_link.description" resname="header_link.description" approved="yes">
+        <source>Creates a link from the header to a Page ID, email address, or URL.</source>
+        <target state="final">បង្កើត​តំណ​ពី​ក្បាល ទៅ​កាន់​​លេខ​សម្គាល់​ទំព័រ, អាសយដ្ឋាន​អ៊‍ីមេល ឬ URL ។</target>
+      </trans-unit>
+      <trans-unit id="_header_link.seeAlso" resname="_header_link.seeAlso" approved="yes">
+        <source>tt_content:header</source>
+        <target state="final">tt_content:header</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="header_layout.description" resname="header_layout.description" approved="yes">
+        <source>Select a visual design for the header.</source>
+        <target state="final">រើស​យក​ការរចនា​សម្រាប់​ក្បាល ។</target>
+      </trans-unit>
+      <trans-unit id="header_layout.details" resname="header_layout.details" xml:space="preserve" approved="yes">
+				<source>If you select "Default" the standard design (which is one of the layouts 1-5) will be used.
+Alternatively you can select from Layout 1 through 5 which are configured in the website template with individual visual designs.
+If you select "Hidden" the header will simply not appear. This is useful when you don't need a header to display on the website but still want to identify the Content Element in the Backend.</source>
+			<target state="final">បើ​រើស​យក "លំនាំ​ដើម" ការរចនា​ស្ដង់ដារ (ដែល​ជា​គំរូ​ប្លង់ ១-៥) នឹង​ត្រូវ​បាន​ប្រើ ។ ជា​ជំនួស អ្នក​អាច​រើស​ពី​គំរូប្លង់ ១ ដល់ ៥ ដែល​ត្រូវ​បាន​កំណត់​ក្នុង template វែបសាយ ដែល​ជា​ការរចនា​ដោយឡែកៗ​ពី​គ្នា ។ បើ​អ្នក​រើស​យក "លាក់" ចំណង​ជើង​នឹង​មិន​បង្ហាញ ។ វា​មាន​ប្រយោជន៍​ពេល​អ្នក​មិន​ចង់​បង្ហាញ​ចំណង​ជើង​លើ​វែបសាយ ប៉ុន្តែ​នៅ​​ចង់​បង្ហាញ​ធាតុ​មាតិកា​លើ Backend ។</target></trans-unit>
+      <trans-unit id="_header_layout.seeAlso" resname="_header_layout.seeAlso" approved="yes">
+        <source>tt_content:header</source>
+        <target state="final">tt_content:header</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="subheader.description" resname="subheader.description" approved="yes">
+        <source>Enter a subheader to be displayed below the main header. If the Content Element is a "Form" this field is instead used as the Recipient Email.</source>
+        <target state="final">បំពេញ​ចំណងជើង​​រង​​ដែល​បង្ហាញ​ខាង​ក្រោម​ចំណងជើង​មេ ។ បើ​ធាតុ​មាតិកា​ជា "ទម្រង់" នឹង​ប្រើ​ប្រអប់​នេះ​ជំនួស​ជា​អ្នក​ទទួល​អ៊‍ីមេល ។</target>
+      </trans-unit>
+      <trans-unit id="subheader.details" resname="subheader.details" approved="yes">
+        <source>A subheader is displayed only with "Header" Content Elements and with "Form" Content Elements (as the Recipient Email).</source>
+        <target state="final">ចំណងចើង​​រង​បង្ហាញ​តែ​ជាមួយ​ធាតុមាតិកា "ចំណងជើង" និង​ជាមួយ​ធាតុមាតិកា​ "ទម្រង់" (ជា​អ្នក​ទទួល​អ៊‍ីមេល) ។</target>
+      </trans-unit>
+      <trans-unit id="_subheader.seeAlso" resname="_subheader.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:header
+tt_content:bodytext</source>
+				
+			<target state="final">tt_content:header
+tt_content:bodytext</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="bodytext.description" resname="bodytext.description" approved="yes">
+        <source>Enter the main text.</source>
+        <target state="final">បញ្ចូល​តួ​អត្ថបទ ។</target>
+      </trans-unit>
+      <trans-unit id="image.description" resname="image.description" approved="yes">
+        <source>Insert one or more images.</source>
+        <target state="final">បញ្ចូល​រូបភាព​មួយ​ឬ​ច្រើន ។</target>
+      </trans-unit>
+      <trans-unit id="image.image_descr" resname="image.image_descr" approved="yes">
+        <source>This shows all the options related to inserting images in Content Elements. Depending on user permissions, you may not be able to use all of them.</source>
+        <target state="final">បង្ហាញ​ជម្រើស​ទាំងអស់​ទាក់ទង​ទៅ​នឹង​ការបញ្ចូល​រូបភាព​ក្នុង​ធាតុ​មាតិកា ។ អាស្រ័យ​លើ​សិទ្ធិ​អ្នក​ប្រើ អ្នក​មិន​​អាច​​ប្រើ​ទាំង​អស់​ឡើយ ។</target>
+      </trans-unit>
+      <trans-unit id="imagewidth.description" resname="imagewidth.description" approved="yes">
+        <source>Enter the width (in pixels) for displaying the image in the Frontend of your website.</source>
+        <target state="final">បំពេញ​ប្រវែង (ជា​ភិចសែល) ដើម្បី​បង្ហាញ​រូបភាព​​លើ frontend របស់​វែបសាយ ។</target>
+      </trans-unit>
+      <trans-unit id="imagewidth.details" resname="imagewidth.details" approved="yes">
+        <source>The TypoScript template is normally configured with maximum image width so you shouldn't need to specify a width. In unique cases, this provides additional flexibility though.</source>
+        <target state="final">Template របស់ TypoScript ត្រូវ​បាន​កំណត់​ជាមួយ​​ប្រវែង​រូបភាព​អតិបរមា ដូច្នេះ​អ្នក​ត្រូវ​កំណត់​ប្រវែង​របស់​វា ។ ក្នុង​ករណី​មួយ​ចំនួន​ទៀត វា​ផ្ដល់​លក្ខណៈ​សម្បត្តិ​ផ្សេងៗ​ទៀត​ផង​ដែរ ។</target>
+      </trans-unit>
+      <trans-unit id="_imagewidth.seeAlso" resname="_imagewidth.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:imageheight,
+tt_content:image</source>
+				
+			<target state="final">tt_content:imageheight,
+tt_content:image</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="imageheight.description" resname="imageheight.description" approved="yes">
+        <source>Enter the height (in pixels) for displaying the images in the Frontend of your website.</source>
+        <target state="final">បំពេញ​កម្ពស់ (ជា​ភិចសែល) ដើម្បី​បង្ហាញ​រូបភាព​​លើ frontend របស់​វែបសាយ ។</target>
+      </trans-unit>
+      <trans-unit id="_imageheight.seeAlso" resname="_imageheight.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:imagewidth,
+tt_content:image</source>
+				
+			<target state="final">tt_content:imagewidth,
+tt_content:image</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="imageorient.description" resname="imageorient.description" approved="yes">
+        <source>Select the position and alignment of the images relative to the body text.</source>
+        <target state="final">រើស​ទីតាំង និង ការតម្រឹម​រូបភាព​ជាមួយ​តួ​អត្ថបទ ។</target>
+      </trans-unit>
+      <trans-unit id="imageborder.description" resname="imageborder.description" approved="yes">
+        <source>Displays a colored border around the images.</source>
+        <target state="final">បង្ហាញ​ស៊ុម​ពណ៌​ជុំវិញ​រូបភាព ។</target>
+      </trans-unit>
+      <trans-unit id="_imageborder.seeAlso" resname="_imageborder.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:imagecols,
+tt_content:image</source>
+				
+			<target state="final">tt_content:imagecols,
+tt_content:image</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="image_link.description" resname="image_link.description" approved="yes">
+        <source>Enter a link for the image. For multiple images, separate the links with commas.</source>
+        <target state="final">ដាក់​តំណ​ឲ្យ​រូបភាព ។ ចំពោះ​រូបភាព​ច្រើន​កាត់​តំណ​ដោយ​ប្រើ​ក្បៀស ។</target>
+      </trans-unit>
+      <trans-unit id="image_link.details" resname="image_link.details" xml:space="preserve" approved="yes">
+				<source>By default all images share the same link. Your TypoScript template may be configured to allow a separate link for each image. If this is the case, you simply separate the links with a comma.
+
+See Page Content&gt;Link below for details on syntax.</source>
+			<target state="final">តាម​ភាព​ដើម, រូបភាព​ទាំងអស់​ចែក​តំណ​ដូច​គ្នា ។ Template TypoScript អាច​ត្រូវ​បាន​កំណត់​ដើម្បី​អនុញ្ញាត​ឲ្យ​ផ្ដាច់​តំណ​សម្រាប់​រូប​នីមួយៗ ។ បើ​នេះ​ជា​ករណី​របស់​អ្នក, អ្នក​អាច​ផ្ដាច់​តំណ​ជាមួយ​សញ្ញា​ក្បៀស ។ មើល​មាតិកា​ទំព័រ&gt;តំណ​ខាង​ក្រោម សម្រាប់​សេចក្ដី​លម្អិត​លើ​រូបមន្ត ។</target></trans-unit>
+      <trans-unit id="_image_link.seeAlso" resname="_image_link.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:header_link,
+tt_content:image_zoom,
+tt_content:image</source>
+				
+			<target state="final">tt_content:header_link,
+tt_content:image_zoom,
+tt_content:image</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="image_zoom.description" resname="image_zoom.description" approved="yes">
+        <source>When enabled, clicking an image will open a larger version in a popup window.</source>
+        <target state="final">ពេល​ដំណើរការ​, ចុច​លើ​រូបភាព​នឹង​បើក​កំណែ​ធំ​ជាង​ក្នុង​ផ្ទាំង​លោត ។</target>
+      </trans-unit>
+      <trans-unit id="image_zoom.details" resname="image_zoom.details" approved="yes">
+        <source>This option overrides the value in the Links field.</source>
+        <target state="final">ជម្រើស​នេះ​បញ្ជាន់​លើ​តម្លៃ​ក្នុង​ប្រអប់​តំណ ។</target>
+      </trans-unit>
+      <trans-unit id="_image_zoom.seeAlso" resname="_image_zoom.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:image_link,
+tt_content:image</source>
+				
+			<target state="final">tt_content:image_link,
+tt_content:image</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="image_frames.description" resname="image_frames.description" approved="yes">
+        <source>Select special image framing options.</source>
+        <target state="final">រើស​ជម្រើស​ស៊ុម​រូបភាព​ពិសេស ។</target>
+      </trans-unit>
+      <trans-unit id="imagecols.description" resname="imagecols.description" approved="yes">
+        <source>Set the number of columns when the images are displayed in the Frontend of the website.</source>
+        <target state="final">កំណត់​ចំនួន​គូឡោន​ពេល​រូបផាព​​បង្ហាញ​​លើ Frontend របស់​វែបសាយ ។</target>
+      </trans-unit>
+      <trans-unit id="imagecaption.description" resname="imagecaption.description" approved="yes">
+        <source>Enter captions for the images. For multiple images, enter one caption per line.</source>
+        <target state="final">បំពេញ​ពាក្យ​ពន្យល់​រូបភាព ។ ចំពោះ​រូបភាព​ច្រើន បំពេញ​​​មួយ​បន្ទាត់​សម្រាប់​រូបភាប​មួយ ។</target>
+      </trans-unit>
+      <trans-unit id="imagecaption.details" resname="imagecaption.details" xml:space="preserve" approved="yes">
+				<source>By default, the caption is positioned below the images. However, your TypoScript template may be configured to allow individual image captions by setting "styles.content.imgtext.captionSplit=1" in your template constants.
+In this case, each line in this field will be the image caption of the corresponding image in the list.
+
+The caption text field is also used by the Content Element type "File Links" where each line represents a description of a file in the list.</source>
+			<target state="final">លំនាំ​ដើម ពាក្យ​ពន្យល់រូបភាព​ស្ថិត​នៅ​ក្រោម​រូបភាព ។ តែ Template TypoScript អាច​កំណត់​​ពាក្យ​ពន្យល់​រូបភាព​នីមួយ​ដោយ​ដាក់ "styles.content.imgtext.captionSplit=1" ក្នុង​កុងស្ដង់​របស់ template ។ ករណី​នេះ បន្ទាត់​នីមួយៗ​ក្នុង​ប្រអប់​នេះ​នឹង​ជា​ពាក្យ​ពន្យល់​របស់​រូបភាព​នោះ ។ ប្រអប់​ឃ្លា​ពន្យល់​រូបភាព​ក៏​ត្រូវ​បាន​ប្រើ​ក្នុង​ប្រភេទ​ធាតុ​មាតិកា "តំណ​ឯកសារ" ផង​ដែរ ដែល​បន្ទាត់​នីមួយៗ​បង្ហាញ​អំពី​សេចក្ដី​ពន្យល់​នៃ​ឯកសារ​នីមួយ​ក្នុង​បញ្ជី ។</target></trans-unit>
+      <trans-unit id="cols.description" resname="cols.description" approved="yes">
+        <source>Select a fixed number of table columns</source>
+        <target state="final">រើស​ចំនួន​ពិត​នៃ​គូឡោន​របស់​តារាង</target>
+      </trans-unit>
+      <trans-unit id="pages.description" resname="pages.description" approved="yes">
+        <source>Select a target page or multiple target pages.</source>
+        <target state="final">រើស​ទំព័រ​គោលដៅ​មួយ ឬ ​ច្រើន ។</target>
+      </trans-unit>
+      <trans-unit id="pages.details" resname="pages.details" xml:space="preserve" approved="yes">
+				<source>This field is used by many of the Content Element types to create a relation to either a single target page or multiple target pages. If no target page is specified, the current page will generally be used.
+
+Using the "Search" Content Element, the target page is where search results will appear. You must make sure that this page has a similar "Search" Content Element to display the results.
+
+The "Login" Content Element (not to be confused with the Login plugin available when the felogin extension is installed) also uses this field to redirect the login to a certain page. That page does not need to contain a "Login" Content Element in order to perform the authentication since any TYPO3 page can handle a login request.
+If you specify a second page in this list, the ID will be passed to the login system as the page inside TYPO3 where website users are found. You should use this only if your template is not already configured to pass this value on.
+In order for the login procedure to work you must make sure that you have created website users and website usergroups, have specified where these website users can be found (typically a SysFolder), a page ID in the page list, and ensured that cookies are enabled for the site.
+
+The "Menu/Sitemap" Content Elements also use this field. In this case the page will determine the starting point for the menu or the actual pages shown in the menu. This behavior depends on the menu type you have selected.
+
+Finally the "Form" element uses this field as the target page to which the form is submitted. A common use is the "Thank you" page after the form is completed.</source>
+			<target state="final">ប្រអប់​នេះ​ត្រូវ​បាន​ប្រើប្រាស់​ដោយ​ប្រភេទ​ធាតុ​មាតិកា​ជា​ច្រើន​ដើម្បី​បង្កើត​តំណភ្ជាប់​ទៅ​​ទំព័រ​គោលដៅ​មួយ ឬ ច្រើន ។ បើ​មិន​មាន​​ដាក់​ទំព័រ​គោលដៅ ទំព័រ​បច្ចុប្បន្ន​នឹង​ត្រូវ​ប្រើ​ជំនួស ។ ប្រើ​​ធាតុ​មាតិកា​ "ស្វែងរក" ទីតាំង​ទំព័រ​គឺ​កន្លែង​ដែល​បង្ហាញ​លទ្ធផល ។ អ្នក​ត្រូវ​ច្បាស់​ថា​ទំព័រ​នេះ​មាន​ធាតុ​ស្រដៀង​ធាតុមាតិកា "ស្វែងរក" ដើម្បី​បង្ហាញ​លទ្ធផល ។ ធាតុមាតិកា "កត់ត្រាចូល" (កុំ​ច្រឡំ​ជាមួយ​កម្មវិធី​បន្ថែម​កត់ត្រាចូល​ដែល​មាន​ពេល​​សមាសភាគ felogin ត្រូវ​បាន​ដំឡើង) ក៏​ប្រើ​​ប្រអប់​នេះ​ដើម្បី​បញ្ជូន​បន្ត​ការកត់ត្រា​ចូល​ទៅ​ទំព័រ​ជាក់លាក់​ដែរ ។ ទំព័រ​នោះ​មិន​ត្រូវការ​ធាតុមាតិកា "កត់ត្រា​ចូល" ជាក់លាក់​ដើម្បី​ផ្ទៀតផ្ទាត់​ តាំង​ពី​ទំព័រ TYPO3 ណា​មួយ​អាច​ស្នើ​ការកត់ត្រាចូល ។ បើ​អ្នក​កំណត់​ទំព័រ​ទី​ពីរ​ក្នុង​បញ្ជី​នេះ លេខ​សម្គាល់​នឹង​បញ្ជូន​ទៅ​ប្រព័ន្ធ​កត់ត្រា​ចូល​ជា​លក្ខណៈ​ទំព័រ​ខាង​ក្នុង TYPO3 ដែលអាច​​រក​ឃើញ​អ្នក​ប្រើ​វែបសាយ ។ អ្នក​គួរ​ប្រើ​វា​ ប្រសិន​បើ template របស់​អ្នក​មិន​ទាន់​បាន​កំណត់​ឲ្យ​បញ្ជូន​តម្លៃ​នេះ​ទៅ ។ ដើម្បី​​វា​ដំណើរការ អ្នក​ត្រូវ​ច្បាស់​ថា​អ្នក​បាន​បង្កើត​អ្នក​ប្រើ​វែបសាយ និង ក្រុម​អ្នក​ប្រើ​រួច ដោយ​កំណត់​កន្លែង​ដែល​អាច​រក​ឃើញ​អ្នក​ប្រើ (ជាទូទៅ​ក្នុង សឺមី) លេខ​សម្គាល់​ទំព័រ ​ក្នុង​បញ្ជី​ទំព័រ និង ប្រាកដ​ថា ឃុគឃី បាន​បើក​ដំណើរការ​សម្រាប់​វែបសាយ ។ ធាតុមាតិកា "មឺនុយ/ផែនទី​ប្លង់​វែបសាយ" ក៏​ប្រើ​ប្រអប់​នេះ​ដែរ ។ ក្នុង​ករណី​នេះ ទំព័រ​នឹង​ស្គាល់​ចំណុច​ចាប់ផ្ដើម​មឺនុយ ឬ ទំព័រ​បង្ហាញ​ក្នុង​មឺនុយ ។ លក្ខណៈ​នេះ​ផ្អែក​លើ​ប្រភេទ​មឺនុយ​ដែល​អ្ន​បាន​ជ្រើសរើស ។ ចុងក្រោយ ធាតុ "ទម្រង់" ដែល​ប្រើ​ប្រអប់​នេះ​ជា​ទំព័រ​ដែល​ទម្រង់​ត្រូវ​បាន​បញ្ជូន ។ ការប្រើ​ជា​ទូទៅ​គឺ​ទំព័រ "អរគុណ" បន្ទាប់​ពី​ទម្រង់​បែបបទ​ត្រូវ​បាន​បំពេញ​រួច ។</target></trans-unit>
+      <trans-unit id="_pages.seeAlso" resname="_pages.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:CType,
+tt_content:recursive</source>
+				
+			<target state="final">tt_content:CType,
+tt_content:recursive</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="recursive.description" resname="recursive.description" approved="yes">
+        <source>The number of subpage levels that should also be included for each page in the list.</source>
+        <target state="final">ចំនួន​នៃ​លំដាប់​ទំព័រ​រង​ដែល​គួរ​បញ្ចូល​សម្រាប់​ទំព័រ​នីមួយៗ​ក្នុង​បញ្ជី ។</target>
+      </trans-unit>
+      <trans-unit id="recursive.details" resname="recursive.details" xml:space="preserve" approved="yes">
+				<source>This feature depends on the TypoScript template configuration and Content Element type. If enabled, each page listed in the "Pages" field will also have its subpages included to the specified depth.
+
+&lt;strong&gt;Warning:&lt;/strong&gt; If there are many subpages, be aware that this option may return a large number of results</source>
+			<target state="final">លក្ខណៈ​នេះ​ផ្អែក​លើ​ការកំណត់ template TypoScript និង ប្រភេទ​ធាតុ​មាតិកា ។ បើ​បើក​ដំណើរការ បញ្ជី​ទំព័រ​នីមួយៗ​ក្នុង​ប្រអប់​ "ទំព័រ" នឹង​មាន​ទំព័រ​រង​របស់​វា មាន​លំដាប់​ជាក់លាក់ ។ &lt;strong&gt;ព្រមាន៖&lt;/strong&gt; បើ​មាន​ទំព័រ​រង​ច្រើន, សូម​ប្រយ័ត្ន​ ជម្រើស​នេះ​អាច​ទាញ​យក​លទ្ធផល​ច្រើន ។</target></trans-unit>
+      <trans-unit id="_recursive.seeAlso" resname="_recursive.seeAlso" approved="yes">
+        <source>tt_content:pages</source>
+        <target state="final">tt_content:pages</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="menu_type.description" resname="menu_type.description" approved="yes">
+        <source>Select the type of menu you wish to create.</source>
+        <target state="final">រើស​ប្រភេទ​មឺនុយ​ដែល​អ្នក​ចង់​បង្កើត ។</target>
+      </trans-unit>
+      <trans-unit id="menu_type.details" resname="menu_type.details" xml:space="preserve" approved="yes">
+				<source>This is a short description of each type:
+
+&lt;strong&gt;Menu of selected pages&lt;/strong&gt;
+This will create a menu with links to the pages in the Selected Pages list.
+
+&lt;strong&gt;Menu of subpages of selected pages&lt;/strong&gt;
+This will create in a menu with links to the subpages of the pages in the Selected Pages list. If you do not specify any pages, the subpages to the current page will be used.
+
+&lt;strong&gt;Menu of subpages of selected pages (with abstract)&lt;/strong&gt;
+Like the previous option, but also displays the content of the Abstract field (or the Description field) for each page in the menu. The Abstract field is given priority over the Description field if both are complete.
+
+&lt;strong&gt;Menu of subpages of selected pages + sections&lt;/strong&gt;
+Like the previous option, but includes links to all Content Elements on the page that are marked to Show In Section Menus.
+
+&lt;strong&gt;Sitemap&lt;/strong&gt;
+Generates a classic tree sitemap. Notice that the sitemap will begin from the current page unless you select another page instead.
+
+&lt;strong&gt;Section index (page content marked for section menus)&lt;/strong&gt;
+This makes a menu of Content Elements on the selected pages for all Content Elements marked to Show In Section Menu. This is a great way to make an index at the top of the page.
+If you don't want certain Content Elements to appear in the list, just uncheck the Show in Section Menus checkbox for those elements.
+
+&lt;strong&gt;Recently updated pages&lt;/strong&gt;
+This displays the 10 most recently updated pages.
+&lt;strong&gt;Notice:&lt;/strong&gt; If you update a page and the updated page is not included in this list, clearing the Page Cache will resolve the issue.
+
+&lt;strong&gt;Related pages (based on keywords)&lt;/strong&gt;
+Displays other related pages based on the keywords of the selected pages matched against the keywords of other pages.</source>
+			<target state="final">នេះ​ជា​សេចក្ដី​សង្ខេប​នៃ​ប្រភេទ​នីមួយៗ៖ &lt;strong&gt;បញ្ជី​ទំព័រ​ដែល​បាន​រើស&lt;/strong&gt; លក្ខណៈ​នេះ នឹង​បង្កើត​បញ្ជី​ជាមួយ​នឹង​តំណ​ភ្ជាប់​ទៅ​កាន់​ទំព័រ ដែល​ដែល​បាន​រើស​នៅ​ក្នុង​បញ្ជី​ទំព័រ។ &lt;strong&gt;បញ្ជី​ទំព័រ​រង នស​ទំព័រ​ដែល​បានរើស&lt;/strong&gt; លក្ខណៈ​នេះ នឹង​បង្កើត​នៅ​ក្នុង​បញ្ជីមួយ​ជាមួយ​នឹង​តំណ​ភ្ជាប់​ទៅ​កាន់ ទំព័រ​រង​នៃ​ទំព័រ​មេ ដែល​បាន​រើស នៅ​ក្នុង​បញ្ជី​ទំព័រ។ ប្រសិន​បើ​អ្នក​មិន​បញ្ជាក់​លម្អិត​តាម​ទំព័រ​និមួយៗ​ទេ នោះ​ទំព័រ​រង​ដែល​មាន​នៅ​ក្នុង​ទំព័រ​មេ នឹង​ត្រូវ​ដាក់​ប្រើ។ &lt;strong&gt;បញ្ជី​ទំព័រ​រង នៃ​ទំព័រ​ដែល​បាន​រើស (ជាមួយ​នឹង​ការ​បំព្រួញ)&lt;/strong&gt; លក្ខណៈ​នេះ​ដូច​ទៅ​នឹង​លក្ខណៈ​មុន​ដែរ ប៉ុន្តែ​លក្ខណៈ​មួយនេះ​មាន​ភ្ជាប់​មាន​ជាមួយ​ការ​បំព្រួញ​ទៅ​កាន់​ប្រឡោះ​មាតិកា (ឬ ប្រឡោះ​សេចក្ដី​អធិប្បាយ) សម្រាប់​រៀង​រាល់​ទំព័រ​និមួយ នៅ​ក្នុង​បញ្ជី។ ប្រឡោះ​បំព្រួញ​គឺ​ត្រូវ​បាន​ផ្ដល់​នូវ​អាទិភាព​ទៅ​លើ​ប្រឡោះ​សេចក្ដី​អធិប្បាយ ប្រសិន​បើ​ប្រឡោះ​ទាំង​ពីរ​មាន។ &lt;strong&gt;បញ្ជី​ទំព័រ​រង នៃ​ទំព័រ​ដែល​បាន​រើស + បញ្ជី&lt;/strong&gt; ដូច​ទៅ​នឹង​លក្ខណៈ​មុនៗ​ដែរ, ប៉ុន្តែ​លក្ខណៈ​នេះ មាន​បញ្ចូល​តំណ​ភ្ជាប់​ទៅ​កាន់​ធាតុមាតិកា នៅ​លើ​ទំព័រ​ដែល​បាន​កំណត់​ឲ្យ​បង្ហាញ​នៅ​ក្នុង​ផ្នែក​បញ្ជី។ &lt;strong&gt;ប្លង់​វែបសាយ៖&lt;/strong&gt; បង្កើត​ឋានានុក្រម​ប្លង់​វែបសាយ ។ ប្រហែល​ជា template TypoScript របស់​អ្នក​ត្រូវ​បាន​កំណត់​ទៅ​ការរចនា​ផ្សេង​ទៀត​នៃ​ប្លង់​វែបសាយ ប៉ុន្តែ​យ៉ាង​ណា​ក៏​អ្នក​នឹង​បាន​ប្លង់​វែបសាយ​​មក​ដែរ ។ សម្គាល់​ថា ប្លង់​វែបសាយ​នឹង​ចាប់ផ្ដើម​ពី​ទំព័រ​បច្ចុប្បន្ន លុះ​ត្រា​តែ​អ្នក​កំណត់​ទំព័រ "ចំណុច​ចាប់ផ្ដើម" ផ្សេង​ទៀត​ក្នុង​បញ្ជី ។ &lt;strong&gt;ផ្នែក​លិបិក្រម (មាតិកា​ទំព័រ w/លិបិក្រម​)&lt;/strong&gt; វា​នឹង​បង្កើត​មឺនុយ​ឲ្យ​ធាតុ​មាតិកា​លើ​ទំព័រ​នេះ (ឬ​ទំព័រ​ដែល​បាន​កំណត់​ចំណុច​ចាប់ផ្ដើម) ។ វិធី​ល្អ​ដើម្បី​បង្កើត​លិបិក្រម​មាន​នៅ​​ក្នុង​ទំព័រ​ខាង​លើ ។ ចំណាំ​ថា ធាតុ​មាតិកា​ទាំងអស់​នឹង​ធីក​រើស "លិបិក្រម" ស្រេច ។ ដូច្នេះ​បើ​អ្នក​មិន​ចង់​ឲ្យ​ធាតុ​មាតិកា​ណា​មួយ​បង្ហាញ​ក្នុង​បញ្ជី គ្រាន់តែ​ដក​ធីក​លើ​ប្រអប់​លិបិក្រម​សម្រាប់​ធាតុ​នោះ​ជា​ការស្រេច ។ &lt;strong&gt;ទំព័រ​ដែល​បាន​កែប្រែ​ថ្មីៗ&lt;/strong&gt; វា​បង្ហាញ​ទំព័រ​ដែល​បាន​កែប្រែ​ថ្មីៗ​ចំនួន ១០ ។ &lt;strong&gt;ចំណាំ៖&lt;/strong&gt; បើ​អ្នក​កែប្រែ​ទំព័រ​មួយ ហើយ​បញ្ជី​នេះ​មិន​បាន​កែប្រែ​ទេ គ្រាន់តែ​សម្អាត​ខែស្ហ​លើ​ទំព័រ​ បញ្ហា​នឹង​ត្រូវ​បាន​ដោះស្រាយ ។ &lt;strong&gt;ទំព័រ​ទាក់ទង (ផ្អែក​លើ​ពាក្យ​គន្លឹះ)&lt;/strong&gt; បង្ហាញ​ទំព័រ​ទាក់ទង​ផ្សេង​ទៀត​ផ្អែក​លើ​ពាក្យ​គន្លឹះ​របស់​ទំព័រ​នេះ ដែល​ត្រូវ​គ្នា​ជាមួយ​ពាក្យ​គន្លឹះ​ទំព័រ​ផ្សេង ។ &lt;b&gt;ចំណាំ៖&lt;/b&gt; ជាមួយ​ប្រភេទ​មឺនុយ​ជា​ច្រើន​ខាង​លើ ចំណុច​ចាប់ផ្ដើម​គោល​របស់​វា​គឺ​ទំព័រ​បច្ចុប្បន្ន ។ ប៉ុន្តែ​អ្នក​អាច​កំណត់​ចំណុច​ចាប់ផ្ដើម​ផ្សេង​ទៀត (ឬ​យក​ច្រើន​ជាង​មួយ!) ដោយ​ថែម​ទំព័រ​ទៅ​ក្នុង​បញ្ជី "ចំណុច​ចាប់ផ្ដើម" ។ មើល​តំណ​ខាង​ក្រោម ។</target></trans-unit>
+      <trans-unit id="_menu_type.seeAlso" resname="_menu_type.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:pages,
+tt_content:sectionIndex</source>
+				
+			<target state="final">tt_content:pages,
+tt_content:sectionIndex</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="list_type.description" resname="list_type.description" approved="yes">
+        <source>Select a plugin to insert.</source>
+        <target state="final">រើស​កម្មវិធី​បន្ថែម​ដើម្បី​បញ្ចូល ។</target>
+      </trans-unit>
+      <trans-unit id="list_type.details" resname="list_type.details" approved="yes">
+        <source>The list of plugins you can insert on a page. The available plugins depend on which extensions are installed.</source>
+        <target state="final">បញ្ជី​នៃ​កម្មវិធី​បន្ថែម​អ្នក​អាច​បញ្ចូល​ទៅ​លើ​ទំព័រ ។ កម្មវិធី​បន្ថែម​ដែល​អាច​ប្រើ​បាន​អាស្រ័យ​លើ​សមាសភាគ​​ណា​ដែល​បាន​ដំឡើង ។</target>
+      </trans-unit>
+      <trans-unit id="_list_type.seeAlso" resname="_list_type.seeAlso" approved="yes">
+        <source>_MOD_tools_em</source>
+        <target state="final">_MOD_tools_em</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="media.description" resname="media.description" approved="yes">
+        <source>Files can be added to the list here.</source>
+        <target state="final">ឯកសារ​អាច​បញ្ចូល​ទៅ​ក្នុង​បញ្ជី​នៅ​ទីនេះ ។</target>
+      </trans-unit>
+      <trans-unit id="multimedia.description" resname="multimedia.description" approved="yes">
+        <source>Insert a multimedia element here (ex. Flash movie)</source>
+        <target state="final">បញ្ចូល​ធាតុ​សោតទស្សន៍​សម្បូណ៌​នៅ​ទីនេះ (ឧ. វីដេអូ Flash)</target>
+      </trans-unit>
+      <trans-unit id="filelink_size.description" resname="filelink_size.description" approved="yes">
+        <source>Enable the display of file sizes.</source>
+        <target state="final">បើក​ការបង្ហាញ​ទំហំ​ឯកសារ ។</target>
+      </trans-unit>
+      <trans-unit id="records.description" resname="records.description" approved="yes">
+        <source>Insert records to be displayed on this page.</source>
+        <target state="final">បញ្ចូល​ទិន្នន័យ​ទៅ​ក្នុង​ការបង្ហាញ​លើ​ទំព័រ​នេះ ។</target>
+      </trans-unit>
+      <trans-unit id="sectionIndex.description" resname="sectionIndex.description" approved="yes">
+        <source>If set, the Content Element will appear in Section Menus.</source>
+        <target state="final">បើ​កំណត់, ធាតុ​មាតិកា​នឹង​បង្ហាញ​ក្នុង​ផ្នែក​មឺនុយ ។</target>
+      </trans-unit>
+      <trans-unit id="sectionIndex.details" resname="sectionIndex.details" approved="yes">
+        <source>See more details about Section Menus by clicking below.</source>
+        <target state="final">មើល​ព័ត៌មាន​លម្អិត​អំពី​ផ្នែក​មឺនុយ​ដោយ​ចុច​ខាង​ក្រោម ។</target>
+      </trans-unit>
+      <trans-unit id="rte_enabled.description" resname="rte_enabled.description" approved="yes">
+        <source>If checked, the Rich Text Editor will be disabled for the "Text" and "Text &amp; Image" types (&lt;em&gt;in this Content Element only&lt;/em&gt;).</source>
+        <target state="final">បើ​ធីក កម្មវិធី​កែប្រែ​អត្ថបទ​នឹង​បិទ​ដំណើរការ​សម្រាប់​ប្រភេទ "អក្សរ" និង "អក្សរ និង រូបភាព" (&lt;em&gt;ក្នុង​ធាតុ​មាតិកា​ប៉ុណ្ណោះ&lt;/em&gt;) ។</target>
+      </trans-unit>
+      <trans-unit id="_rte_enabled.seeAlso" resname="_rte_enabled.seeAlso" approved="yes">
+        <source>tt_content:bodytext</source>
+        <target state="final">tt_content:bodytext</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="pi_flexform.description" resname="pi_flexform.description" approved="yes">
+        <source>Plugin Configuration</source>
+        <target state="final">ការកំណត់​លើ​កម្មវិធី​បន្ថែម</target>
+      </trans-unit>
+      <trans-unit id="pi_flexform.details" resname="pi_flexform.details" approved="yes">
+        <source>Some plugins may provide configuration options, but the actual options vary based on the plugin. Behind the scenes, these are based on FlexForms and stored as XML.</source>
+        <target state="final">កម្មវិធី​បន្ថែម​មួយ​ចំនួន​ផ្ដល់​ជម្រើស​ដើម្បី​កំណត់ ប៉ុន្តែ​ជម្រើស​នីមួយៗ​អាស្រ័យ​លើ​កម្មវិធី​នោះ ។ នៅ​ពី​ក្រោយ​វា ផ្អែក​លើ FlexForm និង រក្សា​ទុក​ជា​លក្ខណៈ XML ។</target>
+      </trans-unit>
+      <trans-unit id="_pi_flexform.seeAlso" resname="_pi_flexform.seeAlso" approved="yes">
+        <source>tt_content:list_type</source>
+        <target state="final">tt_content:list_type</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
