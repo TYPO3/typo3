@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_sysfilestorage.xlf" date="2011-10-17T20:22:32Z" product-name="context_help" target-language="pl">
+    <header/>
+    <body>
+      <trans-unit id=".details" resname=".details">
+        <source/>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
