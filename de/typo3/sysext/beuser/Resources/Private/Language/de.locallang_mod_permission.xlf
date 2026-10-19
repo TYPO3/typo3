@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="permissions" resname="permissions" approved="yes">
+        <source>Permissions</source>
+        <target state="final">Berechtigungen</target>
+      </trans-unit>
+      <trans-unit id="ch_permissions" resname="ch_permissions" approved="yes">
+        <source>Change permissions</source>
+        <target state="final">Berechtigungen ändern</target>
+      </trans-unit>
+      <trans-unit id="Legend" resname="Legend" approved="yes">
+        <source>Legend</source>
+        <target state="final">Legende</target>
+      </trans-unit>
+      <trans-unit id="Owner" resname="Owner" approved="yes">
+        <source>Owner</source>
+        <target state="final">Besitzer</target>
+      </trans-unit>
+      <trans-unit id="Group" resname="Group" approved="yes">
+        <source>Group</source>
+        <target state="final">Gruppe</target>
+      </trans-unit>
+      <trans-unit id="Everybody" resname="Everybody" approved="yes">
+        <source>Everybody</source>
+        <target state="final">Jeder</target>
+      </trans-unit>
+      <trans-unit id="EditLock" resname="EditLock" approved="yes">
+        <source>Lock</source>
+        <target state="final">Sperre</target>
+      </trans-unit>
+      <trans-unit id="EditLock_descr" resname="EditLock_descr" approved="yes">
+        <source>Disable the »Admin-only« edit lock for this page. Currently this page and all content is locked for editing by all non-Admin users.</source>
+        <target state="final">Die Einstellung »Bearbeitbar nur für Administratoren« für diese Seite deaktivieren. Im Moment sind diese Seite und alle Inhaltselemente für die Bearbeitung durch Nicht-Administratoren gesperrt.</target>
+      </trans-unit>
+      <trans-unit id="EditLock_descr2" resname="EditLock_descr2" approved="yes">
+        <source>Enable the »Admin-only« edit lock for this page</source>
+        <target state="final">»Nur-Admin«-Bearbeitungsschutz für diese Seite aktivieren</target>
+      </trans-unit>
+      <trans-unit id="Save" resname="Save" approved="yes">
+        <source>Save</source>
+        <target state="final">Speichern</target>
+      </trans-unit>
+      <trans-unit id="Abort" resname="Abort" approved="yes">
+        <source>Abort</source>
+        <target state="final">Abbrechen</target>
+      </trans-unit>
+      <trans-unit id="Edit" resname="Edit" approved="yes">
+        <source>EDIT</source>
+        <target state="final">BEARBEITEN</target>
+      </trans-unit>
+      <trans-unit id="recursive" resname="recursive" approved="yes">
+        <source>Set recursively</source>
+        <target state="final">Rekursiv anwenden</target>
+      </trans-unit>
+      <trans-unit id="page_affected" resname="page_affected" approved="yes">
+        <source>page affected</source>
+        <target state="final">betroffene Seite</target>
+      </trans-unit>
+      <trans-unit id="pages_affected" resname="pages_affected" approved="yes">
+        <source>pages affected</source>
+        <target state="final">betroffene Seiten</target>
+      </trans-unit>
+      <trans-unit id="user_overview" resname="user_overview" approved="yes">
+        <source>User overview</source>
+        <target state="final">Benutzerübersicht</target>
+      </trans-unit>
+      <trans-unit id="Mode" resname="Mode" approved="yes">
+        <source>Mode</source>
+        <target state="final">Modus</target>
+      </trans-unit>
+      <trans-unit id="Depth" resname="Depth" approved="yes">
+        <source>Depth</source>
+        <target state="final">Tiefe</target>
+      </trans-unit>
+      <trans-unit id="level" resname="level" approved="yes">
+        <source>level</source>
+        <target state="final">Ebene</target>
+      </trans-unit>
+      <trans-unit id="levels" resname="levels" approved="yes">
+        <source>levels</source>
+        <target state="final">Ebenen</target>
+      </trans-unit>
+      <trans-unit id="User" resname="User" approved="yes">
+        <source>User</source>
+        <target state="final">Benutzer</target>
+      </trans-unit>
+      <trans-unit id="changeOwner" resname="changeOwner" approved="yes">
+        <source>Change owner</source>
+        <target state="final">Besitzer wechseln</target>
+      </trans-unit>
+      <trans-unit id="changeGroup" resname="changeGroup" approved="yes">
+        <source>Change group</source>
+        <target state="final">Gruppe wechseln</target>
+      </trans-unit>
+      <trans-unit id="def" resname="def" approved="yes">
+        <source>Definition: 'content' is records from all tables on a page - except from records from the table 'pages' (Pages).</source>
+        <target state="final">Definition: "Inhalt" sind alle Datensätze auf einer Seite - außer Datensätzen der Tabelle "pages" (Seiten).</target>
+      </trans-unit>
+      <trans-unit id="A_Granted" resname="A_Granted" approved="yes">
+        <source>Access Granted</source>
+        <target state="final">Zugriff erlaubt</target>
+      </trans-unit>
+      <trans-unit id="A_Denied" resname="A_Denied" approved="yes">
+        <source>Access Denied</source>
+        <target state="final">Zugriff verwehrt</target>
+      </trans-unit>
+      <trans-unit id="1" resname="1" approved="yes">
+        <source>Show page</source>
+        <target state="final">Seite anzeigen</target>
+      </trans-unit>
+      <trans-unit id="16" resname="16" approved="yes">
+        <source>Edit content</source>
+        <target state="final">Inhalt bearbeiten</target>
+      </trans-unit>
+      <trans-unit id="2" resname="2" approved="yes">
+        <source>Edit page</source>
+        <target state="final">Seite bearbeiten</target>
+      </trans-unit>
+      <trans-unit id="4" resname="4" approved="yes">
+        <source>Delete page</source>
+        <target state="final">Seite löschen</target>
+      </trans-unit>
+      <trans-unit id="8" resname="8" approved="yes">
+        <source>New pages</source>
+        <target state="final">Neue Seiten</target>
+      </trans-unit>
+      <trans-unit id="1_t" resname="1_t" approved="yes">
+        <source>Show/Copy page and content.</source>
+        <target state="final">Seite und Inhalt anzeigen/kopieren.</target>
+      </trans-unit>
+      <trans-unit id="16_t" resname="16_t" approved="yes">
+        <source>Change/Add/Delete/Move content.</source>
+        <target state="final">Inhalt ändern/erstellen/löschen/verschieben.</target>
+      </trans-unit>
+      <trans-unit id="2_t" resname="2_t" approved="yes">
+        <source>Change page eg. change pagetitle etc.</source>
+        <target state="final">Seite ändern, z.B. Seitentitel ändern usw.</target>
+      </trans-unit>
+      <trans-unit id="4_t" resname="4_t" approved="yes">
+        <source>Delete/Move page and content.</source>
+        <target state="final">Seite und Inhalt löschen/verschieben.</target>
+      </trans-unit>
+      <trans-unit id="8_t" resname="8_t" approved="yes">
+        <source>Create new pages under this page.</source>
+        <target state="final">Neue Seiten unter dieser Seite erstellen.</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel" approved="yes">
+        <source>Page editing permissions</source>
+        <target state="final">Seitenbearbeitungsrechte</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr" approved="yes">
+        <source>Setting of page permissions is vital for controlling backend user access to pages. You can assign a user and a group as owners of a page and set access permissions for each.</source>
+        <target state="final">Das Setzen der Seitenzugriffsrechte ist elementar, um den Zugriff der Backend-Benutzer auf die einzelnen Seiten zu steuern. Es können einzelne Benutzer und Benutzergruppen als Besitzer der Seite definiert und deren Zugriffsrechte festgelegt werden.</target>
+      </trans-unit>
+      <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab" approved="yes">
+        <source>Access</source>
+        <target state="final">Zugriff</target>
+      </trans-unit>
+      <trans-unit id="WorkspaceWarning" resname="WorkspaceWarning" approved="yes">
+        <source>Workspace Warning</source>
+        <target state="final">Arbeitsumgebungswarnung</target>
+      </trans-unit>
+      <trans-unit id="WorkspaceWarningText" resname="WorkspaceWarningText" approved="yes">
+        <source>Permissions you set in the workspace are effective on the elements only after they are published! If you need to set permissions which are effective right now, you must do so in the Live workspace. (Permissions are always evaluated on the Live workspace record/placeholder of a draft version)</source>
+        <target state="final">In einer Arbeitsumgebung gesetzte Berechtigungen werden erst nach der Veröffentlichung aktiv! Wenn Sie sofort gültige Berechtigungen benötigen, müssen Sie diese in der LIVE-Arbeitsumgebung setzen. (Berechtigungen werden stets anhand des Datensatzes/Platzhalters einer Entwurfsversion in der LIVE-Arbeitsumgebung ausgewertet.)</target>
+      </trans-unit>
+      <trans-unit id="notSet" resname="notSet" approved="yes">
+        <source>not set</source>
+        <target state="final">nicht gesetzt</target>
+      </trans-unit>
+      <trans-unit id="deleted" resname="deleted" approved="yes">
+        <source>deleted</source>
+        <target state="final">gelöscht</target>
+      </trans-unit>
+      <trans-unit id="noGroups" resname="noGroups" approved="yes">
+        <source>No user groups exist.</source>
+        <target state="final">Es existieren keine Benutzergruppen.</target>
+      </trans-unit>
+      <trans-unit id="selectNone" resname="selectNone" approved="yes">
+        <source>   - none -   </source>
+        <target state="final">   - keine -   </target>
+      </trans-unit>
+      <trans-unit id="selectUnchanged" resname="selectUnchanged" approved="yes">
+        <source>   - leave unchanged -   </source>
+        <target state="final">   - unverändert lassen -   </target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
