@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:adminpanel/Resources/Private/Language/locallang.xlf" date="2018-03-31T08:08:00Z" product-name="adminpanel" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="deprecatedModuleLabel" resname="deprecatedModuleLabel" approved="yes">
+        <source>General</source>
+        <target state="final">Allgemein</target>
+      </trans-unit>
+      <trans-unit id="settings.label" resname="settings.label" approved="yes">
+        <source>Settings</source>
+        <target state="final">Einstellungen</target>
+      </trans-unit>
+      <trans-unit id="settings.updateButtonLabel" resname="settings.updateButtonLabel" approved="yes">
+        <source>Update Settings</source>
+        <target state="final">Einstellungen aktualisieren</target>
+      </trans-unit>
+      <trans-unit id="button.close" resname="button.close" approved="yes">
+        <source>Close</source>
+        <target state="final">Schließen</target>
+      </trans-unit>
+      <trans-unit id="button.view" resname="button.view" approved="yes">
+        <source>View</source>
+        <target state="final">Anzeigen</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
