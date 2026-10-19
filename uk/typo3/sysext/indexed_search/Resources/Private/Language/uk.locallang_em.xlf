@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:indexed_search/Resources/Private/Language/locallang_em.xlf" date="2011-10-17T20:22:32Z" product-name="indexed_search" target-language="uk">
+    <header/>
+    <body>
+      <trans-unit id="indexedsearch.config.pdftools" resname="indexedsearch.config.pdftools" approved="yes">
+        <source>Path to PDF parsers: The indexer uses the applications 'pdftotext' and 'pdfinfo' for extracting content from PDF files. These applications must be installed in this path. Otherwise leave the field empty.</source>
+        <target state="final">Шлях до аналізаторів PDF: індексатор використовує програми «pdftotext» і «pdfinfo» для вилучення вмісту з файлів PDF. Ці програми мають бути встановлені на цьому шляху. В іншому випадку залиште поле порожнім.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.pdf_mode" resname="indexedsearch.config.pdf_mode" approved="yes">
+        <source>PDF parsing mode: Zero=whole file is indexed in one. Positive value indicates number of pages at a time, eg. "5" would mean 1-5,6-10,.... Negative integer would indicate (abs value) number of groups. Eg "3" groups of 10 pages would be 1-4,5-8,9-10. Range is -100 to 100.</source>
+        <target state="final">Режим аналізу PDF: Нуль=весь файл індексується в одному. Позитивне значення вказує на кількість сторінок за раз, наприклад. "5" означатиме 1-5,6-10,... Ціле від'ємне число вказуватиме (абс. значення) кількість груп. Наприклад, "3" групи по 10 сторінок будуть 1-4,5-8,9-10. Діапазон від -100 до 100.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.unzip" resname="indexedsearch.config.unzip" approved="yes">
+        <source>Path to unzip: The indexer uses "unzip" to extract the contents from OpenOffice.org/Oasis OpenDocument files. The application must be installed in this path. Otherwise leave the field empty.</source>
+        <target state="final">Шлях до розпакування: індексатор використовує «розпакувати», щоб витягти вміст із файлів OpenDocument OpenOffice.org/Oasis. Додаток має бути встановлено на цьому шляху. В іншому випадку залиште поле порожнім.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.catdoc" resname="indexedsearch.config.catdoc" approved="yes">
+        <source>Path to WORD parser: The indexer uses the application 'catdoc' for extracting content from WORD files. The application must be installed in this path. Otherwise leave the field empty.</source>
+        <target state="final">Шлях до синтаксичного аналізатора WORD: індексатор використовує програму catdoc для вилучення вмісту з файлів WORD. Додаток має бути встановлено на цьому шляху. В іншому випадку залиште поле порожнім.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.xlhtml" resname="indexedsearch.config.xlhtml" approved="yes">
+        <source>Path to EXCEL parser: The indexer uses the application 'xlhtml' for extracting content from EXCEL files. The application must be installed in this path. Otherwise leave the field empty.</source>
+        <target state="final">Шлях до синтаксичного аналізатора EXCEL: індексатор використовує програму «xlhtml» для вилучення вмісту з файлів EXCEL. Додаток має бути встановлено на цьому шляху. В іншому випадку залиште поле порожнім.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.ppthtml" resname="indexedsearch.config.ppthtml" approved="yes">
+        <source>Path to POWERPOINT parser: The indexer uses the application 'ppthtml' for extracting content from POWERPOINT files. The application must be installed in this path. Otherwise leave the field empty.</source>
+        <target state="final">Шлях до аналізатора POWERPOINT: індексатор використовує програму «ppthtml» для вилучення вмісту з файлів POWERPOINT. Додаток має бути встановлено на цьому шляху. В іншому випадку залиште поле порожнім.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.unrtf" resname="indexedsearch.config.unrtf" approved="yes">
+        <source>Path to RTF parser: The indexer uses the application 'unrtf' for extracting content from RTF files. The application must be installed in this path. Otherwise leave the field empty.</source>
+        <target state="final">Шлях до аналізатора RTF: індексатор використовує програму unrtf для видобування вмісту з файлів RTF. Додаток має бути встановлено на цьому шляху. В іншому випадку залиште поле порожнім.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.debugMode" resname="indexedsearch.config.debugMode" approved="yes">
+        <source>Debug mode: If set, debugging information is collected during indexing and can be shown in the backend. Only for debugging since it slows down the system and fills the database with crap.</source>
+        <target state="final">Режим налагодження: якщо встановлено, інформація про налагодження збирається під час індексування та може відображатися у серверній частині. Тільки для налагодження, оскільки це сповільнює роботу системи та заповнює базу даних лайном.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.fullTextDataLength" resname="indexedsearch.config.fullTextDataLength" approved="yes">
+        <source>Full Text Data Length: If set, the full text data stored will be limited to this byte length. It means you can save some database space but to the degree you cut the length down you also limit possibilities to search for sentences and the search result resume will be limited.</source>
+        <target state="final">Довжина повнотекстових даних: якщо встановлено, збережені повнотекстові дані обмежуватимуться цією довжиною в байтах. Це означає, що ви можете заощадити місце в базі даних, але в міру того, як ви скоротите довжину, ви також обмежите можливості для пошуку речень, і резюме результатів пошуку буде обмеженим.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.disableFrontendIndexing" resname="indexedsearch.config.disableFrontendIndexing" approved="yes">
+        <source>Disable Indexing in Frontend: By default pages are indexed during viewing of pages in the frontend. You can disable this features so indexing of pages is only initiated through the backend page crawler.</source>
+        <target state="final">Вимкнути індексування у інтерфейсі: за замовчуванням сторінки індексуються під час перегляду сторінок у інтерфейсі. Ви можете вимкнути ці функції, щоб індексація сторінок ініціювалася лише за допомогою веб-сканера сторінок.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.enableMetaphoneSearch" resname="indexedsearch.config.enableMetaphoneSearch" approved="yes">
+        <source>Enable metaphone search (sounds like): 0=disabled, 1=use internal metaphone parser, 2=use advanced doubleMetaphone parser.</source>
+        <target state="final">Увімкнути пошук метафону (звучить як): 0=вимкнено, 1=використовувати внутрішній аналізатор метафону, 2=використовувати розширений аналізатор doubleMetaphone.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.minAge" resname="indexedsearch.config.minAge" approved="yes">
+        <source>Min TTL (hours) for indexed page: The time in hours that must pass before an indexed page can be indexed again regardless of changes on the page.</source>
+        <target state="final">Мін. TTL (години) для проіндексованої сторінки: час у годинах, який має пройти, перш ніж проіндексовану сторінку можна буде знову проіндексувати незалежно від змін на сторінці.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.maxAge" resname="indexedsearch.config.maxAge" approved="yes">
+        <source>Deprecated! Max TTL (hours) for indexed page: The time in hours that is the maximum age of an indexed page before it will get indexed again. Usually the index is kept consistent, therefore you won't need this feature.</source>
+        <target state="final">Застаріло! Макс. TTL (години) для проіндексованої сторінки: час у годинах, який є максимальним віком проіндексованої сторінки до того, як її буде знову проіндексовано. Зазвичай індекс підтримується незмінним, тому ця функція вам не знадобиться.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.maxExternalFiles" resname="indexedsearch.config.maxExternalFiles" approved="yes">
+        <source>Max external files to index: When external files are found on a page this number indicates how many may be indexed at that point. This prevents pages with links to many external documents to take the server down - but it may also prevent documents from being indexed.</source>
+        <target state="final">Максимальна кількість зовнішніх файлів для індексування: якщо на сторінці знайдено зовнішні файли, це число вказує на те, скільки їх можна проіндексувати на цьому етапі. Це запобігає вимкненню сервера сторінками з посиланнями на багато зовнішніх документів, але також може перешкоджати індексуванню документів.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.useCrawlerForExternalFiles" resname="indexedsearch.config.useCrawlerForExternalFiles" approved="yes">
+        <source>Use "crawler" extension to index external files: When external files are found on a page they are added to the "crawler" extensions queue and indexed via the cronscript running the crawler. This eliminates problems with for example many PDF files on a page. Requires a proper configuration of the "crawler" extension.</source>
+        <target state="final">Використовуйте розширення «сканера» для індексування зовнішніх файлів: коли на сторінці знаходяться зовнішні файли, вони додаються до черги розширень «сканера» та індексуються за допомогою cronscript, який запускає сканер. Це усуває проблеми, наприклад, із великою кількістю PDF-файлів на сторінці. Потрібна правильна конфігурація розширення "сканера".</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.flagBitMask" resname="indexedsearch.config.flagBitMask" approved="yes">
+        <source>Bitmask for Flags (Advanced): By this value (0-255) you can filter the importance of &lt;title&gt; (128), &lt;keywords&gt; (64) and &lt;description&gt; (32) content from HTML documents. By setting this to 0, none of these fields will have any importance over the other. The default value 192 means that title-tag content and meta-keywords will be flagged (and rated higher in search results)</source>
+        <target state="final">Бітова маска для прапорів (розширений): за цим значенням (0-255) можна фільтрувати важливість від &lt;title&gt; (128), &lt;keywords&gt; (64) і &lt;description&gt; (32) вміст із документів HTML. Якщо встановити для цього значення 0, жодне з цих полів не матиме переваги над іншим. Значення за замовчуванням 192 означає, що вміст тегу заголовка та мета-ключові слова будуть позначені (і оцінені вище в результатах пошуку)</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.ignoreExtensions" resname="indexedsearch.config.ignoreExtensions" approved="yes">
+        <source>Ignore Extensions: List of file extensions that the external parser will ignore (despite having support for them). Comma list.</source>
+        <target state="final">Ігнорувати розширення: список розширень файлів, які зовнішній аналізатор ігноруватиме (незважаючи на їхню підтримку). Список ком.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.indexExternalURLs" resname="indexedsearch.config.indexExternalURLs" approved="yes">
+        <source>Index External HTML URLs: If set, links to external URLs will be indexed if they are of type "text/html".</source>
+        <target state="final">Індексувати зовнішні URL-адреси HTML: якщо встановлено, посилання на зовнішні URL-адреси буде індексовано, якщо вони мають тип "text/html".</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.useMysqlFulltext" resname="indexedsearch.config.useMysqlFulltext" approved="yes">
+        <source>Use MySQL specific fulltext search - Update database schema in install tool after toggling this flag</source>
+        <target state="final">Використовувати спеціальний повнотекстовий пошук MySQL — оновити схему бази даних у інструменті встановлення після перемикання цього прапорця</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.trackIpInStatistic" resname="indexedsearch.config.trackIpInStatistic" approved="yes">
+        <source>Define the privacy level of the logged IP: 0 for no mask which means no privacy, 1 for masking the host and 2 for masking host and subnet (full privacy)</source>
+        <target state="final">Визначте рівень конфіденційності зареєстрованої IP-адреси: 0 для відсутності маски, що означає відсутність конфіденційності, 1 для маскування хоста та 2 для маскування хоста та підмережі (повна конфіденційність)</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
