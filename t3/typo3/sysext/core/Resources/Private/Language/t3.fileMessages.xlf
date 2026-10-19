@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/fileMessages.xlf" date="2015-11-10T06:53:10Z" product-name="core" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="FileUtility.CannotCopyFolderIntoTargetFolderBecauseTheTargetFolderIsAlreadyWithinTheFolderToBeCopied" resname="FileUtility.CannotCopyFolderIntoTargetFolderBecauseTheTargetFolderIsAlreadyWithinTheFolderToBeCopied">
+        <source>Cannot copy folder "%s" into target folder "%s", because there is already a folder or file with that name in the target folder!</source>
+        <target>crwdns213966:0%scrwdnd213966:0%scrwdne213966:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.CannotMoveFolderIntoTargetFolderBecauseTheTargetFolderIsAlreadyWithinTheFolderToBeMoved" resname="FileUtility.CannotMoveFolderIntoTargetFolderBecauseTheTargetFolderIsAlreadyWithinTheFolderToBeMoved">
+        <source>Cannot move folder "%s" into target folder "%s", because the target folder is already within the folder to be moved!</source>
+        <target>crwdns213968:0%scrwdnd213968:0%scrwdne213968:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.CouldNotAccessAllNecessaryResources" resname="FileUtility.CouldNotAccessAllNecessaryResources">
+        <source>Could not access all necessary resources. Source file or destination maybe was not within your mountpoints? T="%s", D="%s"</source>
+        <target>crwdns213970:0%scrwdnd213970:0%scrwdne213970:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.CouldNotDeleteDirectory" resname="FileUtility.CouldNotDeleteDirectory">
+        <source>Could not delete directory! Is directory "%s" empty? (You are not allowed to delete directories recursively).</source>
+        <target>crwdns213972:0%scrwdne213972:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.CouldNotDeleteDirectory1" resname="FileUtility.CouldNotDeleteDirectory1">
+        <source>Could not delete directory "%s"! There might be a problem with write permissions.</source>
+        <target>crwdns213974:0%scrwdne213974:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.CouldNotDeleteFile" resname="FileUtility.CouldNotDeleteFile">
+        <source>Could not delete file "%s". There might be a problem with write permissions.</source>
+        <target>crwdns213976:0%scrwdne213976:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DestinationExistedAlready" resname="FileUtility.DestinationExistedAlready">
+        <source>Destination "%s" already exists!</source>
+        <target>crwdns213978:0%scrwdne213978:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DestinationPathWasNotWithinYourMountpoints" resname="FileUtility.DestinationPathWasNotWithinYourMountpoints">
+        <source>Destination path "%s" was not within your mountpoints!</source>
+        <target>crwdns213980:0%scrwdne213980:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DestinationWasNotADirectory" resname="FileUtility.DestinationWasNotADirectory">
+        <source>Destination "%s" was not a directory.</source>
+        <target>crwdns213982:0%scrwdne213982:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryCopiedTo" resname="FileUtility.DirectoryCopiedTo">
+        <source>Directory "%s" copied to "%s".</source>
+        <target>crwdns213984:0%scrwdnd213984:0%scrwdne213984:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryCreatedIn" resname="FileUtility.DirectoryCreatedIn">
+        <source>Directory "%s" created in "%s".</source>
+        <target>crwdns213986:0%scrwdnd213986:0%scrwdne213986:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryMovedTo" resname="FileUtility.DirectoryMovedTo">
+        <source>Directory "%s" moved to "%s".</source>
+        <target>crwdns213988:0%scrwdnd213988:0%scrwdne213988:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryNotCreated" resname="FileUtility.DirectoryNotCreated">
+        <source>Directory "%s" not created. There might be a problem with write permissions in "%s"?</source>
+        <target>crwdns213990:0%scrwdnd213990:0%scrwdne213990:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryRenamedFromTo" resname="FileUtility.DirectoryRenamedFromTo">
+        <source>Directory renamed from "%s" to "%s".</source>
+        <target>crwdns213992:0%scrwdnd213992:0%scrwdne213992:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryRenamedFromToCharReplaced" resname="FileUtility.DirectoryRenamedFromToCharReplaced">
+        <source>Directory renamed from "%s" to "%s". Characters in the new directory name have been replaced.</source>
+        <target>crwdns213994:0%scrwdnd213994:0%scrwdne213994:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryRenamedSameName" resname="FileUtility.DirectoryRenamedSameName">
+        <source>Directory "%s" was not renamed. (Same name as before)</source>
+        <target>crwdns213996:0%scrwdne213996:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryWasNotCopiedTo" resname="FileUtility.DirectoryWasNotCopiedTo">
+        <source>Directory "%s" WAS NOT copied to "%s"! There might be a problem with write permissions</source>
+        <target>crwdns213998:0%scrwdnd213998:0%scrwdne213998:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryWasNotMovedTo" resname="FileUtility.DirectoryWasNotMovedTo">
+        <source>Directory "%s" WAS NOT moved to "%s"! There might be a problem with write permissions</source>
+        <target>crwdns214000:0%scrwdnd214000:0%scrwdne214000:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryWasNotRenamed" resname="FileUtility.DirectoryWasNotRenamed">
+        <source>Directory "%s" was not renamed! There might be a problem with write permissions in "%s"?</source>
+        <target>crwdns214002:0%scrwdnd214002:0%scrwdne214002:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.ExtensionOfFileNameIsNotAllowedIn" resname="FileUtility.ExtensionOfFileNameIsNotAllowedIn">
+        <source>Extension of file name "%s" is not allowed in "%s"!</source>
+        <target>crwdns214004:0%scrwdnd214004:0%scrwdne214004:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.ExtensionOfFileNameOrWasNotAllowed" resname="FileUtility.ExtensionOfFileNameOrWasNotAllowed">
+        <source>Extension of file name "%s" or "%s" was not allowed!</source>
+        <target>crwdns214006:0%scrwdnd214006:0%scrwdne214006:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.ExtensionOfFileWasNotAllowed" resname="FileUtility.ExtensionOfFileWasNotAllowed">
+        <source>Extension of file "%s" was not allowed!</source>
+        <target>crwdns214008:0%scrwdne214008:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileAlreadyExistsInFolder" resname="FileUtility.FileAlreadyExistsInFolder">
+        <source>File "%s" already exists in folder "%s"!</source>
+        <target>crwdns214010:0%scrwdnd214010:0%scrwdne214010:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileCopiedTo" resname="FileUtility.FileCopiedTo">
+        <source>File "%s" copied to "%s".</source>
+        <target>crwdns214012:0%scrwdnd214012:0%scrwdne214012:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileCreated" resname="FileUtility.FileCreated">
+        <source>File created: "%s".</source>
+        <target>crwdns214014:0%scrwdne214014:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileNameSanitized" resname="FileUtility.FileNameSanitized">
+        <source>The file name "%s" is invalid, the file was automatically renamed to "%s".</source>
+        <target>crwdns214016:0%scrwdnd214016:0%scrwdne214016:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileExistedAlreadyIn" resname="FileUtility.FileExistedAlreadyIn">
+        <source>File existed already in "%s"!</source>
+        <target>crwdns214018:0%scrwdne214018:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileExtensionIsNotATextfileFormat" resname="FileUtility.FileExtensionIsNotATextfileFormat">
+        <source>File extension "%s" is not a textfile format! (%s).</source>
+        <target>crwdns214020:0%scrwdnd214020:0%scrwdne214020:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileExtensionIsNotzip" resname="FileUtility.FileExtensionIsNotzip">
+        <source>File extension is not "zip".</source>
+        <target>crwdns214022:0crwdne214022:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileMovedTo" resname="FileUtility.FileMovedTo">
+        <source>File "%s" moved to "%s".</source>
+        <target>crwdns214024:0%scrwdnd214024:0%scrwdne214024:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileNameWasNotAllowed" resname="FileUtility.FileNameWasNotAllowed">
+        <source>File name "%s" was not allowed!</source>
+        <target>crwdns214026:0%scrwdne214026:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileOrDestinationWasNotWithinYourMountpoints" resname="FileUtility.FileOrDestinationWasNotWithinYourMountpoints">
+        <source>File "%s" or destination "%s" was not within your mountpoints!</source>
+        <target>crwdns214028:0%scrwdnd214028:0%scrwdne214028:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileOrDirectoryExistedAlready" resname="FileUtility.FileOrDirectoryExistedAlready">
+        <source>File or directory "%s" already exists!</source>
+        <target>crwdns214030:0%scrwdne214030:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileRenamedFromTo" resname="FileUtility.FileRenamedFromTo">
+        <source>File renamed from "%s" to "%s".</source>
+        <target>crwdns214032:0%scrwdnd214032:0%scrwdne214032:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileRenamedSameName" resname="FileUtility.FileRenamedSameName">
+        <source>File "%s" was not renamed. (Same name as before)</source>
+        <target>crwdns214034:0%scrwdne214034:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileSavedToBytesMd5" resname="FileUtility.FileSavedToBytesMd5">
+        <source>File saved to "%s", bytes: %s, MD5: %s.</source>
+        <target>crwdns214036:0%scrwdnd214036:0%scrwdnd214036:0%scrwdne214036:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileWasNotCopiedTo" resname="FileUtility.FileWasNotCopiedTo">
+        <source>File "%s" WAS NOT copied to "%s"! There might be a problem with write permissions.</source>
+        <target>crwdns214038:0%scrwdnd214038:0%scrwdne214038:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileWasNotCreated" resname="FileUtility.FileWasNotCreated">
+        <source>File "%s" was not created! There might be a problem with write permissions in "%s"?</source>
+        <target>crwdns214040:0%scrwdnd214040:0%scrwdne214040:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileWasNotRenamed" resname="FileUtility.FileWasNotRenamed">
+        <source>File "%s" was not renamed! There might be a problem with write permissions in "%s"?</source>
+        <target>crwdns214042:0%scrwdnd214042:0%scrwdne214042:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileWasNotSaved" resname="FileUtility.FileWasNotSaved">
+        <source>File "%s" was not saved! There might be a problem with write permissions.</source>
+        <target>crwdns214044:0%scrwdne214044:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileWasNotSaved2" resname="FileUtility.FileWasNotSaved2">
+        <source>File "%s" was not saved! File extension rejected!</source>
+        <target>crwdns214046:0%scrwdne214046:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.NoFileWasUploaded" resname="FileUtility.NoFileWasUploaded">
+        <source>No file was uploaded!</source>
+        <target>crwdns214048:0crwdne214048:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.NoFileWasUploadedForReplacing" resname="FileUtility.NoFileWasUploadedForReplacing">
+        <source>No file was uploaded for replacing!</source>
+        <target>crwdns214050:0crwdne214050:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.NoNameForNewFolderGiven" resname="FileUtility.NoNameForNewFolderGiven">
+        <source>No name for new folder given!</source>
+        <target>crwdns214052:0crwdne214052:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.NoUniqueFilenameAvailableIn" resname="FileUtility.NoUniqueFilenameAvailableIn">
+        <source>No unique filename available in "%s"!</source>
+        <target>crwdns214054:0%scrwdne214054:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.ReplacingFileTo" resname="FileUtility.ReplacingFileTo">
+        <source>Replacing file "%s" to "%s".</source>
+        <target>crwdns214056:0%scrwdnd214056:0%scrwdne214056:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TargetAlreadyExists" resname="FileUtility.TargetAlreadyExists">
+        <source>Target "%s" already exists!</source>
+        <target>crwdns214058:0%scrwdne214058:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TargetWasNotAFile" resname="FileUtility.TargetWasNotAFile">
+        <source>Target "%s" was not a file!</source>
+        <target>crwdns214060:0%scrwdne214060:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TargetWasNotWithinYourMountpoints" resname="FileUtility.TargetWasNotWithinYourMountpoints">
+        <source>Target was not within your mountpoints! T="%s".</source>
+        <target>crwdns214062:0%scrwdne214062:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TheFileDidNotExist" resname="FileUtility.TheFileDidNotExist">
+        <source>The file "%s" did not exist!</source>
+        <target>crwdns214064:0%scrwdne214064:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TheFunctionToCopyAFileBetweenStoragesIsNotYetImplemented" resname="FileUtility.TheFunctionToCopyAFileBetweenStoragesIsNotYetImplemented">
+        <source>The function to copy a file between storages is not yet implemented.</source>
+        <target>crwdns214066:0crwdne214066:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TheFunctionToCopyAFolderBetweenStoragesIsNotYetImplemented" resname="FileUtility.TheFunctionToCopyAFolderBetweenStoragesIsNotYetImplemented">
+        <source>The function to copy a folder between storages is not yet implemented.</source>
+        <target>crwdns214068:0crwdne214068:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TheFunctionToMoveAFileBetweenStoragesIsNotYetImplemented" resname="FileUtility.TheFunctionToMoveAFileBetweenStoragesIsNotYetImplemented">
+        <source>The function to move a file between storages is not yet implemented.</source>
+        <target>crwdns214070:0crwdne214070:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TheFunctionToMoveAFolderBetweenStoragesIsNotYetImplemented" resname="FileUtility.TheFunctionToMoveAFolderBetweenStoragesIsNotYetImplemented">
+        <source>The function to move a folder between storages is not yet implemented.</source>
+        <target>crwdns214072:0crwdne214072:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TheUploadHasFailedNoUploadedFileFound" resname="FileUtility.TheUploadHasFailedNoUploadedFileFound">
+        <source>The upload has failed, no uploaded file found!</source>
+        <target>crwdns214074:0crwdne214074:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TheUploadedFileExceedsTheSize-limit" resname="FileUtility.TheUploadedFileExceedsTheSize-limit">
+        <source>The uploaded file "%s" exceeds the size-limit</source>
+        <target>crwdns214076:0%scrwdne214076:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.UnzippingFileIn" resname="FileUtility.UnzippingFileIn">
+        <source>Unzipping file "%s" in "%s".</source>
+        <target>crwdns214078:0%scrwdnd214078:0%scrwdne214078:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.UploadedFileCouldNotBeMoved" resname="FileUtility.UploadedFileCouldNotBeMoved">
+        <source>Uploaded file could not be moved! There might be a problem with write permissions in "%s"?</source>
+        <target>crwdns214080:0%scrwdne214080:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.UploadingFileTo" resname="FileUtility.UploadingFileTo">
+        <source>Uploading file "%s" to "%s".</source>
+        <target>crwdns214082:0%scrwdnd214082:0%scrwdne214082:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToAccessTheDirectory" resname="FileUtility.YouAreNotAllowedToAccessTheDirectory">
+        <source>You are not allowed to access the directory.</source>
+        <target>crwdns214084:0crwdne214084:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToAccessTheFile" resname="FileUtility.YouAreNotAllowedToAccessTheFile">
+        <source>You are not allowed to access the file.</source>
+        <target>crwdns214086:0crwdne214086:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToCopyDirectories" resname="FileUtility.YouAreNotAllowedToCopyDirectories">
+        <source>You are not allowed to copy directories.</source>
+        <target>crwdns214088:0crwdne214088:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToCopyFiles" resname="FileUtility.YouAreNotAllowedToCopyFiles">
+        <source>You are not allowed to copy files.</source>
+        <target>crwdns214090:0crwdne214090:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.InvalidFolderName" resname="FileUtility.InvalidFolderName">
+        <source>Invalid folder name "%s"!</source>
+        <target>crwdns214092:0%scrwdne214092:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToCreateDirectories" resname="FileUtility.YouAreNotAllowedToCreateDirectories">
+        <source>You are not allowed to create directories!</source>
+        <target>crwdns214094:0crwdne214094:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToCreateFiles" resname="FileUtility.YouAreNotAllowedToCreateFiles">
+        <source>You are not allowed to create files!</source>
+        <target>crwdns214096:0crwdne214096:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToEditFiles" resname="FileUtility.YouAreNotAllowedToEditFiles">
+        <source>You are not allowed to edit files!</source>
+        <target>crwdns214098:0crwdne214098:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToMoveDirectories" resname="FileUtility.YouAreNotAllowedToMoveDirectories">
+        <source>You are not allowed to move directories.</source>
+        <target>crwdns214100:0crwdne214100:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToMoveFiles" resname="FileUtility.YouAreNotAllowedToMoveFiles">
+        <source>You are not allowed to move files.</source>
+        <target>crwdns214102:0crwdne214102:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToOverride" resname="FileUtility.YouAreNotAllowedToOverride">
+        <source>You are not allowed to override "%s"!</source>
+        <target>crwdns214104:0%scrwdne214104:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToRenameDirectories" resname="FileUtility.YouAreNotAllowedToRenameDirectories">
+        <source>You are not allowed to rename directories!</source>
+        <target>crwdns214106:0crwdne214106:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToRenameFiles" resname="FileUtility.YouAreNotAllowedToRenameFiles">
+        <source>You are not allowed to rename files!</source>
+        <target>crwdns214108:0crwdne214108:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToUnzipFiles" resname="FileUtility.YouAreNotAllowedToUnzipFiles">
+        <source>You are not allowed to unzip files.</source>
+        <target>crwdns214110:0crwdne214110:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToUploadFiles" resname="FileUtility.YouAreNotAllowedToUploadFiles">
+        <source>You are not allowed to upload files!</source>
+        <target>crwdns214112:0crwdne214112:0</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouDontHaveFullAccessToTheDestinationDirectory" resname="FileUtility.YouDontHaveFullAccessToTheDestinationDirectory">
+        <source>You don't have full access to the destination directory "%s"!</source>
+        <target>crwdns214114:0%scrwdne214114:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
