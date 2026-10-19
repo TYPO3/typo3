@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:extbase/Resources/Private/Language/locallang.xlf" date="2012-10-17T19:30:32Z" product-name="extbase" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="property.error" resname="property.error">
+        <source>Validation errors for property "%s"</source>
+        <target>crwdns217714:0%scrwdne217714:0</target>
+      </trans-unit>
+      <trans-unit id="validator.emailaddress.notvalid" resname="validator.emailaddress.notvalid">
+        <source>The given subject was not a valid email address.</source>
+        <target>crwdns217716:0crwdne217716:0</target>
+      </trans-unit>
+      <trans-unit id="validator.stringlength.between" resname="validator.stringlength.between">
+        <source>The length of the given string was not between %s and %s characters.</source>
+        <target>crwdns217718:0%scrwdnd217718:0%scrwdne217718:0</target>
+      </trans-unit>
+      <trans-unit id="validator.stringlength.less" resname="validator.stringlength.less">
+        <source>The length of the given string is less than %s characters.</source>
+        <target>crwdns217720:0%scrwdne217720:0</target>
+      </trans-unit>
+      <trans-unit id="validator.string.notvalid" resname="validator.string.notvalid">
+        <source>A valid string is expected.</source>
+        <target>crwdns217722:0crwdne217722:0</target>
+      </trans-unit>
+      <trans-unit id="validator.stringlength.exceed" resname="validator.stringlength.exceed">
+        <source>The length of the given string exceeded %s characters.</source>
+        <target>crwdns217724:0%scrwdne217724:0</target>
+      </trans-unit>
+      <trans-unit id="validator.alphanumeric.notvalid" resname="validator.alphanumeric.notvalid">
+        <source>The given subject was not a valid alphanumeric string.</source>
+        <target>crwdns217726:0crwdne217726:0</target>
+      </trans-unit>
+      <trans-unit id="validator.datetime.notvalid" resname="validator.datetime.notvalid">
+        <source>The given subject was not a valid DateTime. Got: '%s'</source>
+        <target>crwdns217728:0%scrwdne217728:0</target>
+      </trans-unit>
+      <trans-unit id="validator.genericobject.noobject" resname="validator.genericobject.noobject">
+        <source>Value is no object.</source>
+        <target>crwdns217730:0crwdne217730:0</target>
+      </trans-unit>
+      <trans-unit id="validator.float.notvalid" resname="validator.float.notvalid">
+        <source>The given subject was not a valid float.</source>
+        <target>crwdns217732:0crwdne217732:0</target>
+      </trans-unit>
+      <trans-unit id="validator.text.notvalid" resname="validator.text.notvalid">
+        <source>The given subject was not a valid text (e.g. contained XML tags).</source>
+        <target>crwdns217734:0crwdne217734:0</target>
+      </trans-unit>
+      <trans-unit id="validator.regularexpression.empty" resname="validator.regularexpression.empty">
+        <source>The regular expression was empty.</source>
+        <target>crwdns217736:0crwdne217736:0</target>
+      </trans-unit>
+      <trans-unit id="validator.regularexpression.nomatch" resname="validator.regularexpression.nomatch">
+        <source>The given subject did not match the pattern.</source>
+        <target>crwdns217738:0crwdne217738:0</target>
+      </trans-unit>
+      <trans-unit id="validator.regularexpression.error" resname="validator.regularexpression.error">
+        <source>The regular expression '%s' contained an error.</source>
+        <target>crwdns217740:0%scrwdne217740:0</target>
+      </trans-unit>
+      <trans-unit id="validator.numberrange.notvalid" resname="validator.numberrange.notvalid">
+        <source>The given subject was not a valid number.</source>
+        <target>crwdns217742:0crwdne217742:0</target>
+      </trans-unit>
+      <trans-unit id="validator.numberrange.range" resname="validator.numberrange.range">
+        <source>The given subject was not in the valid range (%s - %s).</source>
+        <target>crwdns217744:0%scrwdnd217744:0%scrwdne217744:0</target>
+      </trans-unit>
+      <trans-unit id="validator.notempty.null" resname="validator.notempty.null">
+        <source>The given subject was NULL.</source>
+        <target>crwdns217746:0crwdne217746:0</target>
+      </trans-unit>
+      <trans-unit id="validator.notempty.empty" resname="validator.notempty.empty">
+        <source>The given subject was empty.</source>
+        <target>crwdns217748:0crwdne217748:0</target>
+      </trans-unit>
+      <trans-unit id="validator.number.notvalid" resname="validator.number.notvalid">
+        <source>The given subject was not a valid number.</source>
+        <target>crwdns217750:0crwdne217750:0</target>
+      </trans-unit>
+      <trans-unit id="validator.integer.notvalid" resname="validator.integer.notvalid">
+        <source>The given subject was not a valid integer.</source>
+        <target>crwdns217752:0crwdne217752:0</target>
+      </trans-unit>
+      <trans-unit id="validator.boolean.nottrue" resname="validator.boolean.nottrue">
+        <source>The given subject was not true.</source>
+        <target>crwdns217754:0crwdne217754:0</target>
+      </trans-unit>
+      <trans-unit id="validator.boolean.notfalse" resname="validator.boolean.notfalse">
+        <source>The given subject was not false.</source>
+        <target>crwdns217756:0crwdne217756:0</target>
+      </trans-unit>
+      <trans-unit id="validator.url.notvalid" resname="validator.url.notvalid">
+        <source>The given subject is no valid URL.</source>
+        <target>crwdns217758:0crwdne217758:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
