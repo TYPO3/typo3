@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:reports/Resources/Private/Language/locallang_reports.xlf" date="2011-10-17T20:22:35Z" product-name="reports" target-language="da">
+    <header/>
+    <body>
+      <trans-unit id="status_report_title" resname="status_report_title" approved="yes">
+        <source>Status Report</source>
+        <target state="final">Statusrapport</target>
+      </trans-unit>
+      <trans-unit id="status_report_description" resname="status_report_description" approved="yes">
+        <source>Get a status report about your site's operation and any detected problems.</source>
+        <target state="final">Få en statusrapport for dit websteds drift og eventuelt opståede problemer.</target>
+      </trans-unit>
+      <trans-unit id="status_report_explanation" resname="status_report_explanation" approved="yes">
+        <source>Here you can find a short overview of your site's parameters as well as any problems detected with your installation. It may be useful to copy and paste this information into support requests filed on TYPO3's support mailinglists and project issue trackers.</source>
+        <target state="final">Her kan du få et kort overblik over dit websteds parametre såvel som alle registrerede problemer for din installation. Det kan være nyttigt at kopiere og indsætte denne information i henvendelser på TYPO3's maillister eller support sager.</target>
+      </trans-unit>
+      <trans-unit id="status_ok" resname="status_ok" approved="yes">
+        <source>OK</source>
+        <target state="final">OK</target>
+      </trans-unit>
+      <trans-unit id="status_wrongValue" resname="status_wrongValue" approved="yes">
+        <source>Wrong value detected</source>
+        <target state="final">Forkert værdi fundet</target>
+      </trans-unit>
+      <trans-unit id="status_info" resname="status_info" approved="yes">
+        <source>Information</source>
+        <target state="final">Information</target>
+      </trans-unit>
+      <trans-unit id="status_insecure" resname="status_insecure" approved="yes">
+        <source>Insecure</source>
+        <target state="final">Usikker</target>
+      </trans-unit>
+      <trans-unit id="status_disabled" resname="status_disabled" approved="yes">
+        <source>Disabled</source>
+        <target state="final">Slået fra</target>
+      </trans-unit>
+      <trans-unit id="status_enabled" resname="status_enabled" approved="yes">
+        <source>Enabled</source>
+        <target state="final">Slået til</target>
+      </trans-unit>
+      <trans-unit id="status_enabledPermanently" resname="status_enabledPermanently" approved="yes">
+        <source>Enabled permanently</source>
+        <target state="final">Permanent slået til</target>
+      </trans-unit>
+      <trans-unit id="status_enabledTemporarily" resname="status_enabledTemporarily" approved="yes">
+        <source>Enabled temporarily</source>
+        <target state="final">Midlertidigt slået til</target>
+      </trans-unit>
+      <trans-unit id="status_empty" resname="status_empty" approved="yes">
+        <source>Empty</source>
+        <target state="final">Tom</target>
+      </trans-unit>
+      <trans-unit id="status_none" resname="status_none" approved="yes">
+        <source>None</source>
+        <target state="final">Ingen</target>
+      </trans-unit>
+      <trans-unit id="status_connectionFailed" resname="status_connectionFailed" approved="yes">
+        <source>Connection Failed</source>
+        <target state="final">Forbindelse fejlede</target>
+      </trans-unit>
+      <trans-unit id="status_checkFailed" resname="status_checkFailed" approved="yes">
+        <source>Check Failed</source>
+        <target state="final">Tjek mislykkedes</target>
+      </trans-unit>
+      <trans-unit id="status_updateComplete" resname="status_updateComplete" approved="yes">
+        <source>Update Complete</source>
+        <target state="final">Opdatering komplet</target>
+      </trans-unit>
+      <trans-unit id="status_updateIncomplete" resname="status_updateIncomplete" approved="yes">
+        <source>Update Incomplete</source>
+        <target state="final">Opdatering ikke komplet</target>
+      </trans-unit>
+      <trans-unit id="status_problemNotification" resname="status_problemNotification" approved="yes">
+        <source>One or more problems were detected with your TYPO3 installation. Please check the status report for more information.</source>
+        <target state="final">Et eller flere problemer blev registreret for din TYPO3-installation. Venligst tjek statusrapport for mere information.</target>
+      </trans-unit>
+      <trans-unit id="status_allNotification" resname="status_allNotification" approved="yes">
+        <source>This report contains all System Status Notifications from your TYPO3 installation. Please check the status report for more information.</source>
+        <target state="final">Denne rapport indeholder alle meddelelser om Systemstatus fra din TYPO3 installation. Venligst tjek statusrapport for mere information.</target>
+      </trans-unit>
+      <trans-unit id="status_typo3" resname="status_typo3" approved="yes">
+        <source>TYPO3 System</source>
+        <target state="final">TYPO3 System</target>
+      </trans-unit>
+      <trans-unit id="status_system" resname="status_system" approved="yes">
+        <source>System</source>
+        <target state="final">System</target>
+      </trans-unit>
+      <trans-unit id="status_security" resname="status_security" approved="yes">
+        <source>Security</source>
+        <target state="final">Sikkerhed</target>
+      </trans-unit>
+      <trans-unit id="status_configuration" resname="status_configuration" approved="yes">
+        <source>Configuration</source>
+        <target state="final">Konfiguration</target>
+      </trans-unit>
+      <trans-unit id="status_referenceIndex" resname="status_referenceIndex" approved="yes">
+        <source>Reference Index</source>
+        <target state="final">Reference-indeks</target>
+      </trans-unit>
+      <trans-unit id="status_fal" resname="status_fal" approved="yes">
+        <source>File Abstraction Layer</source>
+        <target state="final">File Abstraction Layer</target>
+      </trans-unit>
+      <trans-unit id="status_missingFiles" resname="status_missingFiles" approved="yes">
+        <source>Files flagged as missing</source>
+        <target state="final">Filer angivet som manglende</target>
+      </trans-unit>
+      <trans-unit id="status_missingFilesCount" resname="status_missingFilesCount" approved="yes">
+        <source>%1$s files</source>
+        <target state="final">%1$s filer</target>
+      </trans-unit>
+      <trans-unit id="status_missingFilesMessage" resname="status_missingFilesMessage" approved="yes">
+        <source>These files are flagged as missing. Restore the files and run the indexer to reset the missing flag.</source>
+        <target state="final">Disse filer er angivet som manglende. Genindlæs filerne og kør indeksering for at nulstille angivelsen.</target>
+      </trans-unit>
+      <trans-unit id="status_memcachedConfiguration" resname="status_memcachedConfiguration" approved="yes">
+        <source>Memcached Configuration</source>
+        <target state="final">Konfiguration for cached hukommelse</target>
+      </trans-unit>
+      <trans-unit id="status_PhpSafeMode" resname="status_PhpSafeMode" approved="yes">
+        <source>PHP safe_mode</source>
+        <target state="final">PHP safe_mode</target>
+      </trans-unit>
+      <trans-unit id="status_PhpMagicQuotesGpc" resname="status_PhpMagicQuotesGpc" approved="yes">
+        <source>PHP magic_quotes_gpc</source>
+        <target state="final">PHP magic_quotes_gpc</target>
+      </trans-unit>
+      <trans-unit id="status_CreatedFilePermissions" resname="status_CreatedFilePermissions" approved="yes">
+        <source>Permissions of created files</source>
+        <target state="final">Tilladelser til oprettede filer</target>
+      </trans-unit>
+      <trans-unit id="status_CreatedFilePermissions.writable" resname="status_CreatedFilePermissions.writable" approved="yes">
+        <source>Files created by TYPO3 are configured to be world writable. Depending on your server configuration, this can be a security risk. It is usually better to configure the create mask to not allow writing to files by "others". A sane default is often '0660' for $GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask']. This can be set in the install tool.</source>
+        <target state="final">Filer, oprettet af TYPO3, er konfigureret til at være skrivbare for alle. Afhængig af din servers konfiguration, kan dette udgøre en sikkerhedsrisiko. Det er normalt bedre at konfigurere masker, som udelukker skrivning i filer af "andre". En fornuftig standard er ofte '0660' for $GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask']. Dette kan angives i Install Tool.</target>
+      </trans-unit>
+      <trans-unit id="status_CreatedDirectoryPermissions" resname="status_CreatedDirectoryPermissions" approved="yes">
+        <source>Permissions of created directories</source>
+        <target state="final">Tilladelser til oprettede mapper</target>
+      </trans-unit>
+      <trans-unit id="status_CreatedDirectoryPermissions.writable" resname="status_CreatedDirectoryPermissions.writable" approved="yes">
+        <source>Directories created by TYPO3 are configured to be world writable. Depending on your server configuration, this can be a security risk. It is usually better to configure the create mask to not allow writing to directories by "others". A sane default is often '2770' for $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask']. This can be set in the install tool.</source>
+        <target state="final">Mapper, oprettet af TYPO3, er konfigureret til at være skrivbare for alle. Afhængig af din servers konfiguration, kan dette udgøre en sikkerhedsrisiko. Det er normalt bedre at konfigurere masker, som udelukker skrivning i mapper af "andre". En fornuftig standard er ofte '2770' for $GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask']. Dette kan angives i Install Tool.</target>
+      </trans-unit>
+      <trans-unit id="status_MysqlDatabaseCharacterSet" resname="status_MysqlDatabaseCharacterSet" approved="yes">
+        <source>MySQL Database Character Set</source>
+        <target state="final">MySQL database tegnsæt</target>
+      </trans-unit>
+      <trans-unit id="status_MysqlDatabaseCharacterSet_CheckFailed" resname="status_MysqlDatabaseCharacterSet_CheckFailed" approved="yes">
+        <source>Checking database character set failed, got key "%1$s" instead of "character_set_database"</source>
+        <target state="final">Tjek af databasens tegnsæt fejlede, fik nøglen "%1$s" i stedet for "character_set_database"</target>
+      </trans-unit>
+      <trans-unit id="status_MysqlDatabaseCharacterSet_Unsupported" resname="status_MysqlDatabaseCharacterSet_Unsupported" approved="yes">
+        <source>Your default database uses character set "%1$s", but only "utf8" or "utf8mb4" is supported with TYPO3.</source>
+        <target state="final">Din database bruger tegnsæt "%1$s", men kun "utf8" eller "utf8mb4" understøttes i TYPO3.</target>
+      </trans-unit>
+      <trans-unit id="status_MysqlDatabaseCharacterSet_Ok" resname="status_MysqlDatabaseCharacterSet_Ok" approved="yes">
+        <source>Your default database uses utf-8. All good.</source>
+        <target state="final">Din database bruger utf-8. Alt er godt.</target>
+      </trans-unit>
+      <trans-unit id="status_MysqlDatabaseCharacterSet_Info" resname="status_MysqlDatabaseCharacterSet_Info" approved="yes">
+        <source>Your default database uses a different charset, but all tables uses utf-8. All good. But consider fixing your database collation and check the table creation settings.</source>
+        <target state="final">Din standard database bruger et andet karaktersæt, men alle tabeller bruger utf-8. Alt er godt. Men overvej at ændre din database kollation og tjek indstillinger for tabel-oprettelse.</target>
+      </trans-unit>
+      <trans-unit id="status_MysqlDatabaseCharacterSet_MixedCollations" resname="status_MysqlDatabaseCharacterSet_MixedCollations" approved="yes">
+        <source>Your default database is set to create tables with character set "%1$s", but contains tables or columns with different collations. Please fix these tables to avoid "illegal mix of collations" errors.</source>
+        <target state="final">Din standard database er opsat til at oprette tabeller med karaktersæt "%1$s", men indeholder tabeller eller kolonner med anden kollation. Fiks venligst disse tabeller for at undgå "ulovlig blanding af kollationer" fejl.</target>
+      </trans-unit>
+      <trans-unit id="status_encryptedConnectionStatus" resname="status_encryptedConnectionStatus" approved="yes">
+        <source>Encrypted backend connection (HTTPS)</source>
+        <target state="final">Krypteret backendforbindelse (HTTPS)</target>
+      </trans-unit>
+      <trans-unit id="status_encryptedConnectionStatus_insecure" resname="status_encryptedConnectionStatus_insecure" approved="yes">
+        <source>Your backend access is not secured using HTTPS but relies on HTTP which sends all your data (including login passwords) over an insecure connection. All modern web sites should rely on HTTPS and only sites secured differently, for instance some intranet installations may use HTTP only.</source>
+        <target state="final">Din backendadgang er ikke sikret ved hjælp af HTTPS, men bruger HTTP som sender alle dine data (herunder adgangskoder) over en ikke sikret forbindelse. Alle moderne websider bør anvende HTTPS og kun sider, der sikres på anden måde, eksempelvis via intranetinstallationer, bør anvende HTTP.</target>
+      </trans-unit>
+      <trans-unit id="status_lockSslStatus" resname="status_lockSslStatus" approved="yes">
+        <source>Backend only accessible through HTTPS</source>
+        <target state="final">Backend kun tilgængelig via HTTPS</target>
+      </trans-unit>
+      <trans-unit id="status_lockSslStatus_insecure" resname="status_lockSslStatus_insecure" approved="yes">
+        <source><![CDATA[It is highly recommended to activate the option (<code>$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL']</code>).]]></source>
+        <target state="final"><![CDATA[Det anbefales kraftigt at aktivere denne mulighed (<code>$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL']</code>).]]></target>
+      </trans-unit>
+      <trans-unit id="status_trustedHostsPattern" resname="status_trustedHostsPattern" approved="yes">
+        <source>Trusted Hosts Pattern</source>
+        <target state="final">Tillidsfulde host mønstre</target>
+      </trans-unit>
+      <trans-unit id="status_adminUserAccount" resname="status_adminUserAccount" approved="yes">
+        <source>Admin User Account</source>
+        <target state="final">Admin-brugerkonto</target>
+      </trans-unit>
+      <trans-unit id="status_encryptionKey" resname="status_encryptionKey" approved="yes">
+        <source>Encryption Key</source>
+        <target state="final">Krypteringsnøgle</target>
+      </trans-unit>
+      <trans-unit id="status_fileDenyPattern" resname="status_fileDenyPattern" approved="yes">
+        <source>File Deny Pattern</source>
+        <target state="final">Mønster for fil-nægtelse</target>
+      </trans-unit>
+      <trans-unit id="status_htaccessUploadProtection" resname="status_htaccessUploadProtection" approved="yes">
+        <source>.htaccess Upload Protection</source>
+        <target state="final">.htaccess beskyttelse mod upload</target>
+      </trans-unit>
+      <trans-unit id="status_exceptionHandler" resname="status_exceptionHandler" approved="yes">
+        <source>Exception Handler / Error Reporting</source>
+        <target state="final">Afvigelseshåndtering / fejlrapportering</target>
+      </trans-unit>
+      <trans-unit id="status_exportedFiles" resname="status_exportedFiles" approved="yes">
+        <source>XML/T3D export files</source>
+        <target state="final">XML/T3D eksportfiler</target>
+      </trans-unit>
+      <trans-unit id="status_exceptionHandler_warningMessage" resname="status_exceptionHandler_warningMessage" approved="yes">
+        <source>Display Errors is set to 1 - errors will be displayed with the DebugExceptionHandler including stack traces.</source>
+        <target state="final">Vis fejl er angivet til 1 - fejl vil blive vist med DebugExceptionHandler inklusiv stack traces.</target>
+      </trans-unit>
+      <trans-unit id="status_exceptionHandler_errorMessage" resname="status_exceptionHandler_errorMessage" approved="yes">
+        <source>Debug Exception Handler enabled in Production Context - will show full error messages including stack traces.</source>
+        <target state="final">Fejl afvigelseshåndtering aktiveret i Produktions kontekst - vil vise hele fejlmeddelelsen, inklusiv stack traces.</target>
+      </trans-unit>
+      <trans-unit id="status_exportedFiles_warningMessage" resname="status_exportedFiles_warningMessage" approved="yes">
+        <source>The following exported files where found:</source>
+        <target state="final">Følgende eksporterede filer hvor fundet:</target>
+      </trans-unit>
+      <trans-unit id="status_exportedFiles_warningRecommendation" resname="status_exportedFiles_warningRecommendation" approved="yes">
+        <source>It is recommended to delete exported files to avoid possible disclosure of exported data to backend users with lower/different access rights than user(s) who originally created the export(s).</source>
+        <target state="final">Det anbefales at slette eksporterede filer for at undgå mulig videregivelse af eksporterede data til backend-brugere med lavere eller anderledes adgangsrettigheder end bruger(e), der oprindeligt oprettede eksporten.</target>
+      </trans-unit>
+      <trans-unit id="status_installToolPassword" resname="status_installToolPassword" approved="yes">
+        <source>Install Tool Password</source>
+        <target state="final">Adgangskode til Install Tool</target>
+      </trans-unit>
+      <trans-unit id="status_installTool" resname="status_installTool" approved="yes">
+        <source>Install Tool</source>
+        <target state="final">Install Tool</target>
+      </trans-unit>
+      <trans-unit id="status_phpVersion" resname="status_phpVersion" approved="yes">
+        <source>PHP Version</source>
+        <target state="final">PHP-version</target>
+      </trans-unit>
+      <trans-unit id="status_phpTooOld" resname="status_phpTooOld" approved="yes">
+        <source>Your PHP installation is too old.</source>
+        <target state="final">Din PHP-installation er for gammel.</target>
+      </trans-unit>
+      <trans-unit id="status_phpMemory" resname="status_phpMemory" approved="yes">
+        <source>PHP Memory Limit</source>
+        <target state="final">PHP-hukommelsesbegrænsning</target>
+      </trans-unit>
+      <trans-unit id="status_phpMemoryRecommendation" resname="status_phpMemoryRecommendation" approved="yes">
+        <source>Depending on your configuration, TYPO3 can run with a %1$s PHP memory limit. However, a %2$s PHP memory limit or above is recommended, especially if your site uses additional extensions.</source>
+        <target state="final">Afhængigt af din konfiguration vil TYPO3 køre med en PHP-hukommelsesbegrænsning på %1$s. Dog anbefales en hukommelsesbegrænsning på %2$s eller højere, særligt når dit websted anvender udvidelser.</target>
+      </trans-unit>
+      <trans-unit id="status_phpMemoryRequirement" resname="status_phpMemoryRequirement" approved="yes">
+        <source>Depending on your configuration, TYPO3 can run with a %1$s PHP memory limit. However, a %2$s PHP memory limit or above is required especially if your site uses additional extensions.</source>
+        <target state="final">Afhængigt af din konfiguration vil TYPO3 køre med en PHP-hukommelsesbegrænsning på %1$s. Dog anbefales en hukommelsesbegrænsning på %2$s eller højere, særligt når dit websted anvender yderligere udvidelser.</target>
+      </trans-unit>
+      <trans-unit id="status_phpMemoryEditLimit" resname="status_phpMemoryEditLimit" approved="yes">
+        <source>Increase the memory limit by editing the memory_limit parameter in the file %s and then restart your web server (or contact your system administrator or hosting provider for assistance).</source>
+        <target state="final">Forøg hukommelsesbegrænsning ved at redigere parameteren memory_limit i filen %s og genstart dernæst din webserver (eller kontakt din systemadministrator eller værtsudbyder for assistance).</target>
+      </trans-unit>
+      <trans-unit id="status_phpMemoryContactAdmin" resname="status_phpMemoryContactAdmin" approved="yes">
+        <source>Contact your system administrator or hosting provider for assistance with increasing your PHP memory limit.</source>
+        <target state="final">Kontakt din systemadministrator eller værtsudbyder for assistance med forøgelse af din PHP-hukommelsesbegrænsning.</target>
+      </trans-unit>
+      <trans-unit id="status_phpMemoryUnlimited" resname="status_phpMemoryUnlimited" approved="yes">
+        <source>unlimited</source>
+        <target state="final">ubegrænset</target>
+      </trans-unit>
+      <trans-unit id="status_phpPeakMemory" resname="status_phpPeakMemory" approved="yes">
+        <source>PHP peak memory usage</source>
+        <target state="final">PHP spidsbelastning af hukommelse</target>
+      </trans-unit>
+      <trans-unit id="status_phpPeakMemoryTooHigh" resname="status_phpPeakMemoryTooHigh" approved="yes">
+        <source>During a request %2$s of the memory limit was used. On %4$s a request to %5$s used %1$s of %3$s.</source>
+        <target state="final">Under en forespørgsel blev %2$s af hukommelsesgrænsen brugt. Ved %4$s gjorde en forespørgsel til %5$s brug %1$s af %3$s.</target>
+      </trans-unit>
+      <trans-unit id="status_phpPeakMemoryClearFlag" resname="status_phpPeakMemoryClearFlag" approved="yes">
+        <source>Clear this flag</source>
+        <target state="final">Ryd dette flag</target>
+      </trans-unit>
+      <trans-unit id="status_phpRegisterGlobals" resname="status_phpRegisterGlobals" approved="yes">
+        <source>PHP Register Globals</source>
+        <target state="final">Globale PHP-registre</target>
+      </trans-unit>
+      <trans-unit id="status_phpRegisterGlobalsEnabled" resname="status_phpRegisterGlobalsEnabled" approved="yes">
+        <source>%s is enabled. TYPO3 requires this configuration directive to be disabled.</source>
+        <target state="final">%s er slået til. TYPO3 kræver at denne konfigurationsinstilling er slået fra.</target>
+      </trans-unit>
+      <trans-unit id="status_phpRegisterGlobalsSecurity" resname="status_phpRegisterGlobalsSecurity" approved="yes">
+        <source>Your site may not be secure when %s is enabled.</source>
+        <target state="final">Dit websted er muligvis ikke sikkert når %s er slået til.</target>
+      </trans-unit>
+      <trans-unit id="status_phpRegisterGlobalsHowToChange" resname="status_phpRegisterGlobalsHowToChange" approved="yes">
+        <source>how to change configuration settings</source>
+        <target state="final">hvordan konfigurationsindstillinger ændres</target>
+      </trans-unit>
+      <trans-unit id="status_phpRegisterGlobalsPHPManual" resname="status_phpRegisterGlobalsPHPManual" approved="yes">
+        <source>The PHP manual has instructions for %s.</source>
+        <target state="final">Manualen til PHP har instrukser for %s.</target>
+      </trans-unit>
+      <trans-unit id="status_webServer" resname="status_webServer" approved="yes">
+        <source>Web Server</source>
+        <target state="final">Webserver</target>
+      </trans-unit>
+      <trans-unit id="status_webServer_infoText" resname="status_webServer_infoText" approved="yes">
+        <source>For your Web Server some notifications have been found</source>
+        <target state="final">Der blev fundet notifikationer for din webserver</target>
+      </trans-unit>
+      <trans-unit id="status_webServer_threadStackSize" resname="status_webServer_threadStackSize" xml:space="preserve" approved="yes">
+				<source><![CDATA[Fluid uses complex regular expressions which require a lot of stack space during the first processing.
+On Windows the default stack size for Apache is a lot smaller than on unix.
+You can increase the size to 8MB (default on unix) by adding to the httpd.conf:
+<br />&lt;IfModule mpm_winnt_module&gt;
+<br />ThreadStackSize 8388608
+<br />&lt;/IfModule&gt;
+<br />Restart Apache after this change.]]></source>
+			<target state="final"><![CDATA[Fluid bruger komplekse regular expressions, hvilket kræver en del stack-plads under den første processering.
+Under Windows er standard stack-størrelsen for Apache en hel del mindre end under Unix.
+Du kan udvide størrelsen til 8MB (standard på Unix), ved at tilføje dette til din httpd.conf:
+&lt;br /&gt;&amp;lt;IfModule mpm_winnt_module&amp;gt;
+&lt;br /&gt;ThreadStackSize 8388608
+&lt;br /&gt;&amp;lt;/IfModule&amp;gt;
+&lt;br /&gt;Genstart Apache efter ændringer.]]></target></trans-unit>
+      <trans-unit id="status_phpModules" resname="status_phpModules" approved="yes">
+        <source>PHP Modules</source>
+        <target state="final">PHP-moduler</target>
+      </trans-unit>
+      <trans-unit id="status_phpModulesMissing" resname="status_phpModulesMissing" approved="yes">
+        <source>One or more modules are missing.</source>
+        <target state="final">Et eller flere moduler mangler.</target>
+      </trans-unit>
+      <trans-unit id="status_phpModulesList" resname="status_phpModulesList" approved="yes">
+        <source>The following PHP module(s) is/are missing: %s.</source>
+        <target state="final">Følgende PHP-modul(er) mangler: %s.</target>
+      </trans-unit>
+      <trans-unit id="status_phpModulesInfo" resname="status_phpModulesInfo" approved="yes">
+        <source>You need to install and enable these modules to let TYPO3 function correctly.</source>
+        <target state="final">Du skal installere og aktivere disse moduler, for at TYPO3 kan fungere korrekt.</target>
+      </trans-unit>
+      <trans-unit id="status_phpModulesGroup" resname="status_phpModulesGroup" approved="yes">
+        <source>one of: %s</source>
+        <target state="final">en af: %s</target>
+      </trans-unit>
+      <trans-unit id="status_phpModulesPresent" resname="status_phpModulesPresent" approved="yes">
+        <source>All required modules are installed.</source>
+        <target state="final">Alle påkrævede moduler er installeret.</target>
+      </trans-unit>
+      <trans-unit id="status_installEnabledTemporarily" resname="status_installEnabledTemporarily" approved="yes">
+        <source>The Install Tool is temporarily enabled. Delete the file "%s" when you have finished setting up TYPO3. If not used the Install Tool will be disabled automatically in %s minutes.</source>
+        <target state="final">Install Tool'et er midlertidigt slået til. Slet filen "%s" når du er færdig med at opsætte TYPO3. Hvis det ikke anvendes vil Install Tool automatisk blive slået fra i løbet af %s minutter.</target>
+      </trans-unit>
+      <trans-unit id="status_configuration_PhpSafeModeEnabled" resname="status_configuration_PhpSafeModeEnabled" approved="yes">
+        <source>PHP INI setting safe_mode "On" is deprecated since PHP 5.3 and is not supported by TYPO3 anymore.</source>
+        <target state="final">PHP INI indstilling safe_mode "On" eksisterer ikke længere fra PHP 5.3 og er derfor ikke understøttet af TYPO3 længere.</target>
+      </trans-unit>
+      <trans-unit id="status_configuration_PhpMagicQuotesGpcEnabled" resname="status_configuration_PhpMagicQuotesGpcEnabled" approved="yes">
+        <source>PHP INI setting magic_quotes_gpc "On" is deprecated since PHP 5.3. You are advised to set it to "Off" until it gets completely removed.</source>
+        <target state="final">PHP INI indstilling magic_quotes_gpc "On" eksisterer ikke længere fra PHP 5.3. Det anbefales at sætte den til "Off" indtil den fjernes helt.</target>
+      </trans-unit>
+      <trans-unit id="status_updateTaskTitle" resname="status_updateTaskTitle" approved="yes">
+        <source>System Status Update</source>
+        <target state="final">Opdatering af systemstatus</target>
+      </trans-unit>
+      <trans-unit id="status_updateTaskDescription" resname="status_updateTaskDescription" approved="yes">
+        <source>Runs a system status check and sends notifications if problems have been found.</source>
+        <target state="final">Kører et tjek af systemstatus og sender notifikationer hvis der reigistreres problemer.</target>
+      </trans-unit>
+      <trans-unit id="status_updateTaskField_notificationEmail" resname="status_updateTaskField_notificationEmail" approved="yes">
+        <source>Notification Email Address</source>
+        <target state="final">E-mail adresse til notifikationer</target>
+      </trans-unit>
+      <trans-unit id="status_updateTaskField_notificationEmails" resname="status_updateTaskField_notificationEmails" approved="yes">
+        <source>Notification Email Addresses (one per line)</source>
+        <target state="final">Notificerings e-mailadresser (en pr. linje)</target>
+      </trans-unit>
+      <trans-unit id="status_updateTaskField_notificationEmail_invalid" resname="status_updateTaskField_notificationEmail_invalid" approved="yes">
+        <source>Empty or invalid notification email address.</source>
+        <target state="final">Tom eller ugyldig email adresse.</target>
+      </trans-unit>
+      <trans-unit id="status_updateTaskField_notificationEmails_invalid" resname="status_updateTaskField_notificationEmails_invalid" approved="yes">
+        <source>Empty or invalid notification email addresses.</source>
+        <target state="final">Tom eller ugyldig email adresse.</target>
+      </trans-unit>
+      <trans-unit id="status_updateTaskField_notificationAll" resname="status_updateTaskField_notificationAll" approved="yes">
+        <source>Always send notification mail (not only on errors or warnings)</source>
+        <target state="final">Send altid e-mail med meddelser (ikke kun fejl og advarsler)</target>
+      </trans-unit>
+      <trans-unit id="status_updateTask_email_subject" resname="status_updateTask_email_subject" approved="yes">
+        <source>System Status Notification for site %s</source>
+        <target state="final">System Status Information for webstedet %s</target>
+      </trans-unit>
+      <trans-unit id="status_updateTask_email_site" resname="status_updateTask_email_site" approved="yes">
+        <source>Site</source>
+        <target state="final">Websted</target>
+      </trans-unit>
+      <trans-unit id="status_updateTask_email_issues" resname="status_updateTask_email_issues" approved="yes">
+        <source>Issues</source>
+        <target state="final">Problemer</target>
+      </trans-unit>
+      <trans-unit id="status_xclassUsage" resname="status_xclassUsage" approved="yes">
+        <source>XCLASS used</source>
+        <target state="final">XCLASS brugt</target>
+      </trans-unit>
+      <trans-unit id="status_xclassUsageFound" resname="status_xclassUsageFound" approved="yes">
+        <source>Your system registers XCLASS</source>
+        <target state="final">Dit system registrerer XCLASS</target>
+      </trans-unit>
+      <trans-unit id="status_xclassUsageFound_message" resname="status_xclassUsageFound_message" approved="yes">
+        <source>XCLASS can overwrite methods or classes of the core or other extensions. This is not necessarily a bad thing, but those XCLASS might break during extension or core upgrades. You should keep an eye on extension compatibility and make sure the intended functionality is still given after updates.</source>
+        <target state="final">XCLASS kan overskrive metoder eller classes af kernen eller andre udvidelser. Det er ikke nødvendigvis en dårlig ting, men disse XCLASS kan afbrydes under udvidelses- eller kerne-opgraderinger. Du bør holde øje med udvidelses-kompatibilitet og sikre at den fornødne funktionalitet er på plads efter opdateringer.</target>
+      </trans-unit>
+      <trans-unit id="status_xclassUsageFound_message_detail" resname="status_xclassUsageFound_message_detail" approved="yes">
+        <source>%2$s registers an XCLASS of %1$s</source>
+        <target state="final">%2$s registrerer en XCLASS af %1$s</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
