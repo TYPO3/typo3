@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_t3lib_fullsearch.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="query_loaded" resname="query_loaded">
+        <source>Query "%s" loaded!</source>
+        <target>crwdns216824:0%scrwdne216824:0</target>
+      </trans-unit>
+      <trans-unit id="query_from_action_loaded" resname="query_from_action_loaded">
+        <source>Query from action "%s" loaded!</source>
+        <target>crwdns216826:0%scrwdne216826:0</target>
+      </trans-unit>
+      <trans-unit id="query_saved" resname="query_saved">
+        <source>Query saved!</source>
+        <target>crwdns216828:0crwdne216828:0</target>
+      </trans-unit>
+      <trans-unit id="query_notsaved" resname="query_notsaved">
+        <source>No query saved!</source>
+        <target>crwdns216830:0crwdne216830:0</target>
+      </trans-unit>
+      <trans-unit id="query_removed" resname="query_removed">
+        <source>"%s" query entry removed!</source>
+        <target>crwdns216832:0%scrwdne216832:0</target>
+      </trans-unit>
+      <trans-unit id="undelete_only" resname="undelete_only">
+        <source>undelete only</source>
+        <target>crwdns216834:0crwdne216834:0</target>
+      </trans-unit>
+      <trans-unit id="undelete_and_edit" resname="undelete_and_edit">
+        <source>undelete and edit</source>
+        <target>crwdns216836:0crwdne216836:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
