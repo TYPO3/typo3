@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:reports/Resources/Private/Language/locallang_servicereport.xlf" date="2011-10-17T20:22:37Z" product-name="sv" target-language="lo">
+    <header/>
+    <body>
+      <trans-unit id="report_title" resname="report_title" approved="yes">
+        <source>Installed Services</source>
+        <target state="final">ການບໍລິການທີ່ຕິດຕັ້ງແລ້ວ</target>
+      </trans-unit>
+      <trans-unit id="report_description" resname="report_description" approved="yes">
+        <source>List of all installed services with information and status for each of them.</source>
+        <target state="final">ລາຍຊື່ຂອງການບໍລິການທັງໝົດທີ່ຕິດຕັ້ງແລ້ວ ພ້ອມດ້ວຍຂໍ້ມູນ ແລະ ສະຖານະຂອງແຕ່ລະການບໍລິການ.</target>
+      </trans-unit>
+      <trans-unit id="report_explanation" resname="report_explanation" approved="yes">
+        <source>This report displays a list of installed services, with detailed information about each of them. The services are ordered by type, priority and quality. Unavailable services are highlighted with an error status.</source>
+        <target state="final">ລາຍງານນີ້ສະແດງລາຍຊື່ການບໍລິການທີ່ຕິດຕັ້ງແລ້ວ, ພ້ອມກັບຂໍ້ມູນລາຍລະອຽດຂອງແຕ່ລະອັນ. ການບໍລິການແມ່ນຖືກຈັດລຽງຕາມປະເພດ, ບຸລິມະສິດ ແລະ ຄຸນນະພາບ. ການບໍລິການທີ່ບໍ່ສາມາດໃຊ້ງານໄດ້ ຈະຖືກເນັ້ນດ້ວຍສະຖານະຂໍ້ຜິດພາດ.</target>
+      </trans-unit>
+      <trans-unit id="externals_explanation" resname="externals_explanation" approved="yes">
+        <source>The "Externals" column shows which external programs a given service relies on. If such program is missing or not executable, the service will be unavailable. Search paths for executables are listed at the bottom of this report.</source>
+        <target state="final">ຖັນ 'Externals' ສະແດງໃຫ້ເຫັນວ່າການບໍລິການໃດໜຶ່ງ ຂຶ້ນກັບໂປຣແກຣມພາຍນອກໃດແດ່. ຖ້າຫາກໂປຣແກຣມດັ່ງກ່າວຫາຍໄປ ຫຼື ບໍ່ສາມາດສັ່ງເຮັດວຽກໄດ້, ການບໍລິການນັ້ນຈະບໍ່ສາມາດໃຊ້ງານໄດ້. ເສັ້ນທາງການຄົ້ນຫາສຳລັບໄຟລ໌ທີ່ສັ່ງເຮັດວຽກໄດ້ ແມ່ນມີລາຍຊື່ຢູ່ທາງລຸ່ມຂອງລາຍງານນີ້.</target>
+      </trans-unit>
+      <trans-unit id="service_type" resname="service_type" approved="yes">
+        <source>Service type: %s</source>
+        <target state="final">ປະເພດການບໍລິການ: %s</target>
+      </trans-unit>
+      <trans-unit id="service" resname="service" approved="yes">
+        <source>Service</source>
+        <target state="final">ການບໍລິການ</target>
+      </trans-unit>
+      <trans-unit id="description" resname="description" approved="yes">
+        <source>Description</source>
+        <target state="final">ຄຳອະທິບາຍ</target>
+      </trans-unit>
+      <trans-unit id="priority" resname="priority" approved="yes">
+        <source>Priority</source>
+        <target state="final">ບຸລິມະສິດ</target>
+      </trans-unit>
+      <trans-unit id="quality" resname="quality" approved="yes">
+        <source>Quality</source>
+        <target state="final">ຄຸນນະພາບ</target>
+      </trans-unit>
+      <trans-unit id="subtypes" resname="subtypes" approved="yes">
+        <source>Subtypes</source>
+        <target state="final">ປະເພດຍ່ອຍ</target>
+      </trans-unit>
+      <trans-unit id="os" resname="os" approved="yes">
+        <source>OS</source>
+        <target state="final">ລະບົບປະຕິບັດການ</target>
+      </trans-unit>
+      <trans-unit id="externals" resname="externals" approved="yes">
+        <source>Externals</source>
+        <target state="final">ສ່ວນປະກອບພາຍນອກ</target>
+      </trans-unit>
+      <trans-unit id="available" resname="available" approved="yes">
+        <source>Available</source>
+        <target state="final">ສາມາດໃຊ້ງານໄດ້</target>
+      </trans-unit>
+      <trans-unit id="any" resname="any" approved="yes">
+        <source>Any</source>
+        <target state="final">ໃດກໍໄດ້</target>
+      </trans-unit>
+      <trans-unit id="search_paths" resname="search_paths" approved="yes">
+        <source>Configured search paths for external programs</source>
+        <target state="final">ເສັ້ນທາງການຄົ້ນຫາທີ່ຕັ້ງຄ່າໄວ້ສຳລັບໂປຣແກຣມພາຍນອກ</target>
+      </trans-unit>
+      <trans-unit id="path" resname="path" approved="yes">
+        <source>Path</source>
+        <target state="final">ເສັ້ນທາງ (Path)</target>
+      </trans-unit>
+      <trans-unit id="valid" resname="valid" approved="yes">
+        <source>Valid</source>
+        <target state="final">ຖືກຕ້ອງ</target>
+      </trans-unit>
+      <trans-unit id="no_search_paths" resname="no_search_paths" approved="yes">
+        <source>No search paths configured.</source>
+        <target state="final">ບໍ່ມີການຕັ້ງຄ່າເສັ້ນທາງການຄົ້ນຫາ.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
