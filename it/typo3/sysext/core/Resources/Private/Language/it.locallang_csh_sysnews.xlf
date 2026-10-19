@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_sysnews.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="it">
+    <header/>
+    <body>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>Unchecking this option will hide the news from showing up at the login screen.</source>
+        <target state="final">La deselezione, di quest'opzione, nasconderà le "News di Sistema" dall'essere mostrate in fase di login.</target>
+      </trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Enter the title of the news.</source>
+        <target state="final">Inserisci il titolo della "News di Sistema".</target>
+      </trans-unit>
+      <trans-unit id="content.description" resname="content.description" approved="yes">
+        <source>The news content to let editors know what's coming up. HTML is disabled, however, you can use line breaks.</source>
+        <target state="final">Il contenuto della News per far sapere agli editori quali siano le novità/notizie. L'HTML è disabilitato, tuttavia, è possibile utilizzare gli "a capo".</target>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>System news are shown at the TYPO3 login screen, allowing admins to inform editors about upcoming system maintenance and similar events.</source>
+        <target state="final">Le News di Sistema sono mostrate nella schermata di login di TYPO3, consentendo agli amministratori di informare gli editori sui prossimi interventi di manutenzione del sistema e su eventi simili.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
