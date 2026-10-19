@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:linkvalidator/Resources/Private/Language/Module/locallang_csh.xlf" date="2011-10-17T20:22:34Z" product-name="linkvalidator" target-language="hr">
+    <header/>
+    <body>
+      <trans-unit id="checkboxes.description" resname="checkboxes.description" approved="yes">
+        <source>Click the following checkboxes to consider or to ignore the corresponding broken links.</source>
+        <target state="final">Kliknite sljedeći potvrdni okvir kako bi razmotrili ili zanemarili odgovarajuće neispravne poveznice.</target>
+      </trans-unit>
+      <trans-unit id="tablehead_path.description" resname="tablehead_path.description" approved="yes">
+        <source>Path to the content element, which contains the broken link.</source>
+        <target state="final">Putanja do elementa sadržaja koji sadrži neispravnu poveznicu.</target>
+      </trans-unit>
+      <trans-unit id="tablehead_element.description" resname="tablehead_element.description" approved="yes">
+        <source>Type of the element containing the broken link, its headline and the field in which the broken link is located.</source>
+        <target state="final">Vrsta elementa koji sadrži neispravnu poveznicu, zaglavlje i polje u koje se nalazi neispravna poveznica.</target>
+      </trans-unit>
+      <trans-unit id="tablehead_headlink.description" resname="tablehead_headlink.description" approved="yes">
+        <source>The linking text.</source>
+        <target state="final">Tekst poveznice.</target>
+      </trans-unit>
+      <trans-unit id="tablehead_linktarget.description" resname="tablehead_linktarget.description" approved="yes">
+        <source>URL to which the broken link is pointing.</source>
+        <target state="final">URL neispravne poveznice.</target>
+      </trans-unit>
+      <trans-unit id="tablehead_linkmessage.description" resname="tablehead_linkmessage.description" approved="yes">
+        <source>Status of that link.</source>
+        <target state="final">Status poveznice.</target>
+      </trans-unit>
+      <trans-unit id="tablehead_lastcheck.description" resname="tablehead_lastcheck.description" approved="yes">
+        <source>Date and time of the last update of the information in each table row.</source>
+        <target state="final">Datum i vrijeme posljednje ažuriranja podataka u svakom retku tablice.</target>
+      </trans-unit>
+      <trans-unit id="task_page.alttitle" resname="task_page.alttitle" approved="yes">
+        <source>Start page of the task</source>
+        <target state="final">Početna stranica zadaće</target>
+      </trans-unit>
+      <trans-unit id="task_page.description" resname="task_page.description" approved="yes">
+        <source>UID of the start page for this task.</source>
+        <target state="final">UID početne stranice za ovu zadaću.</target>
+      </trans-unit>
+      <trans-unit id="task_depth.alttitle" resname="task_depth.alttitle" approved="yes">
+        <source>Depth of the task</source>
+        <target state="final">Dubina zadaće</target>
+      </trans-unit>
+      <trans-unit id="task_depth.description" resname="task_depth.description" approved="yes">
+        <source>Level of pages the task should check.</source>
+        <target state="final">Razine stranica koje zadaća treba provjeriti.</target>
+      </trans-unit>
+      <trans-unit id="task_configuration.alttitle" resname="task_configuration.alttitle" approved="yes">
+        <source>Special TSconfig code</source>
+        <target state="final">Poseban TSconfig kod</target>
+      </trans-unit>
+      <trans-unit id="task_configuration.description" resname="task_configuration.description" approved="yes">
+        <source>TSconfig Code which defines settings for linkvalidator to be used for this task.</source>
+        <target state="final">TSconfig kod koji definira postavke za linkvalidatora koji će se koristiti za ovu zadaću.</target>
+      </trans-unit>
+      <trans-unit id="task_email.alttitle" resname="task_email.alttitle" approved="yes">
+        <source>Email address</source>
+        <target state="final">E-mail adresa</target>
+      </trans-unit>
+      <trans-unit id="task_email.description" resname="task_email.description" approved="yes">
+        <source>Email address to which an email report is sent.</source>
+        <target state="final">E-mail adresa za slanje e-mail izvješća.</target>
+      </trans-unit>
+      <trans-unit id="task_emailOnBrokenLinkOnly.alttitle" resname="task_emailOnBrokenLinkOnly.alttitle" approved="yes">
+        <source>Mailing option</source>
+        <target state="final">Mogućnosti slanja e-mail poruke</target>
+      </trans-unit>
+      <trans-unit id="task_emailOnBrokenLinkOnly.description" resname="task_emailOnBrokenLinkOnly.description" approved="yes">
+        <source>Only send an email, if new broken links were found.</source>
+        <target state="final">Pošalji e-mail jedino ukoliko su pronađene nove neispravne poveznice.</target>
+      </trans-unit>
+      <trans-unit id="task_emailTemplateFile.alttitle" resname="task_emailTemplateFile.alttitle" approved="yes">
+        <source>Email template file</source>
+        <target state="final">Datoteka predloška e-mail poruke</target>
+      </trans-unit>
+      <trans-unit id="task_emailTemplateFile.description" resname="task_emailTemplateFile.description" approved="yes">
+        <source>Define a template to be used for the email.</source>
+        <target state="final">Definiraj predložak koji će se koristiti za e-mail.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
