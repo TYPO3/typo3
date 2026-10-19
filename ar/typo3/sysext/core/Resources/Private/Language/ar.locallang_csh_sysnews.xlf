@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_sysnews.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="ar">
+    <header/>
+    <body>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>Unchecking this option will hide the news from showing up at the login screen.</source>
+        <target state="final">سيؤدي إلغاء تحديد هذا الخيار إلى إخفاء الأخبار من الظهور على شاشة تسجيل الدخول.</target>
+      </trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Enter the title of the news.</source>
+        <target state="final">أدخل عنوان الخبر.</target>
+      </trans-unit>
+      <trans-unit id="content.description" resname="content.description" approved="yes">
+        <source>The news content to let editors know what's coming up. HTML is disabled, however, you can use line breaks.</source>
+        <target state="final">مُحتوى الأخبار للسماح للمُحررين بمعرفة ما سيحدث. HTML مُعطل. ومع ذلك، يمكنك استخدام فواصل الأسطر.</target>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>System news are shown at the TYPO3 login screen, allowing admins to inform editors about upcoming system maintenance and similar events.</source>
+        <target state="final">يتم عرض أخبار النظام على شاشة تسجيل الدخول TYPO3، مِما يسمح للمسؤولين بإبلاغ المُحررين عن موعد صيانة النظام القادم والأحداث المُشابهة.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
