@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:info/Resources/Private/Language/locallang_csh_webinfo.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="sl">
+    <header/>
+    <body>
+      <trans-unit id="func_0.alttitle" resname="func_0.alttitle" approved="yes">
+        <source>Basic Settings</source>
+        <target state="final">Osnovne nastavitve</target>
+      </trans-unit>
+      <trans-unit id="func_1.alttitle" resname="func_1.alttitle" approved="yes">
+        <source>Record Overview</source>
+        <target state="final">Pogled zapisov</target>
+      </trans-unit>
+      <trans-unit id="func_2.alttitle" resname="func_2.alttitle" approved="yes">
+        <source>Cache and Age</source>
+        <target state="final">Predpomnilnik in starost</target>
+      </trans-unit>
+      <trans-unit id="lang.alttitle" resname="lang.alttitle" approved="yes">
+        <source>Localization overview</source>
+        <target state="final">Pogled prevodov</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
