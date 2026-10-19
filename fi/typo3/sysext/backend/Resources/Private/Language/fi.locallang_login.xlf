@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_login.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="fi">
+    <header/>
+    <body>
+      <trans-unit id="labels.submitLogout" resname="labels.submitLogout" approved="yes">
+        <source>Log Out</source>
+        <target state="final">Kirjaudu ulos</target>
+      </trans-unit>
+      <trans-unit id="interface.backend_old" resname="interface.backend_old" approved="yes">
+        <source>Traditional Backend</source>
+        <target state="final">Backend, perinteinen hallinnointinäkymä</target>
+      </trans-unit>
+      <trans-unit id="headline" resname="headline" approved="yes">
+        <source>Login to the TYPO3 CMS Backend on ###SITENAME###</source>
+        <target state="final">Kirjaudu hallinnointiin ###SITENAME###</target>
+      </trans-unit>
+      <trans-unit id="info.about" resname="info.about" approved="yes">
+        <source>This is the backend login of TYPO3. You need username and password to access this administration interface. If you are a visitor of ###SITENAME###, please visit the public website: ###SITELINK###</source>
+        <target state="final">Tämä on TYPO3-backendiin kirjautuminen, johon tarvitaan käyttäjätunnus ja salasana. Jos olet sivuston ###SITENAME### vierailija, ole hyvä ja mene julkiselle sivustolle ###SITELINK###</target>
+      </trans-unit>
+      <trans-unit id="info.reset" resname="info.reset" approved="yes">
+        <source>Reset this form</source>
+        <target state="final">Tyhjennä tämä lomake</target>
+      </trans-unit>
+      <trans-unit id="info.cookies_and_js" resname="info.cookies_and_js" approved="yes">
+        <source>(Note: Cookies and JavaScript must be enabled!)</source>
+        <target state="final">(Huomaa: evästeet ja JavaScript tulevat olla sallittuja!)</target>
+      </trans-unit>
+      <trans-unit id="clear" resname="clear" approved="yes">
+        <source>Clear this field!</source>
+        <target state="final">Tyhjennä tämä kenttä!</target>
+      </trans-unit>
+      <trans-unit id="error.login" resname="error.login" approved="yes">
+        <source>Your login attempt did not succeed. Make sure to spell your username and password correctly, including upper/lowercase characters.</source>
+        <target state="final">Kirjautumisesi ei onnistunut. Varmista, että kirjoitit käyttäjätunnuksesi ja salasanasi oikein, muista isot ja pienet kirjaimet.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
