@@ -1,0 +1,742 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_csh_ttcontent.xlf" date="2011-10-17T20:22:32Z" product-name="context_help" target-language="ar">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>All visible content on webpages is typically made by "Page Content" records, often referred to as "Content Elements". Content Elements are managed by the "Page" Module which organizes Content Elements in multiple columns and languages.</source>
+        <target state="final">يتم عادةً إنشاء كل المحتوى المرئي على صفحات الويب بواسطة سجلات "محتوى الصفحة"، والتي تُسمّى عادةً باسم "عناصر المحتوى".
+
+تتم إدارة عناصر المحتوى بواسطة وحدة "الصفحة" التي تنظم عناصر المحتوى ضمن أعمدة ولغات متعددة.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" approved="yes">
+        <source>"Page Content" records are sortable and can be rearranged. The "Language" and "Column" selectors of the "Page Content" records determines when and where they appear. If you do not change the value of the "Language" and "Column" selectors the Content Element will appear in the default configuration.</source>
+        <target state="final">سجلات "محتوى الصفحة" قابلة للفرز ويمكن إعادة ترتيبها. تُحدد مُحددات "اللغة" و "العمود" لسجلات "محتوى الصفحة" متى وأين تظهر. إذا لم تغيير قيمة محددات "اللغة" و "العمود"، فسيظهر عنصر المحتوى في التكوين الافتراضي.</target>
+      </trans-unit>
+      <trans-unit id="_.seeAlso" resname="_.seeAlso" xml:space="preserve" approved="yes">
+				<source>Page Content Principles | https://docs.typo3.org/typo3cms/GettingStartedTutorial/GeneralPrinciples/PageContent/,
+_MOD_web_layout</source>
+			<target state="final">مبادئ محتوى الصفحة | https://docs.typo3.org/typo3cms/GettingStartedTutorial/GeneralPrinciples/PageContent/,
+_MOD_web_layout</target></trans-unit>
+      <trans-unit id="_.image" resname="_.image" xml:space="preserve" approved="yes">
+				<source>EXT:frontend/Resources/Public/Images/cshimages/ttcontent_1.png,
+EXT:frontend/Resources/Public/Images/cshimages/ttcontent_2.png,
+EXT:frontend/Resources/Public/Images/cshimages/ttcontent_3.png</source>
+				
+			<target state="final">EXT:frontend/Resources/Public/Images/cshimages/ttcontent_1.png,
+EXT:frontend/Resources/Public/Images/cshimages/ttcontent_2.png,
+EXT:frontend/Resources/Public/Images/cshimages/ttcontent_3.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" xml:space="preserve" approved="yes">
+				<source>The Page Module is used to manage Content Elements arranged in columns and languages.
+A Content Element has an editing form with many options. The "Type" determines which options are visible.
+In the Frontend, a Content Element like the above could look like this.</source>
+			<target state="final">تُستخدم وُحدة الصفحة لإدارة عناصر المحتوى المُرتّبة في الأعمدة وحسب اللغات.
+يحتوي عُنصر المحتوى على نموذج للتعديل عليه، وفيه العديد من الخيارات. يحدد "النوع" الخيارات المرئية.
+في الواجهة الأمامية، يمكن لعنصر المحتوى مثل ما سبق أن يبدو هكذا.</target></trans-unit>
+      <trans-unit id="CType.description" resname="CType.description" approved="yes">
+        <source>Select the kind of Page Content this element represents. New options will appear when you save the record.</source>
+        <target state="final">حدد نوع محتوى الصفحة الذي يُمثله هذا العنصر. ستظهر خيارات جديدة عند حفظ السجل.</target>
+      </trans-unit>
+      <trans-unit id="CType.details" resname="CType.details" xml:space="preserve" approved="yes">
+				<source>The 'Type' of content you select determines which options are available in the editing form so be sure to save the record before making other changes.
+
+This is a description of the various types:
+
+&lt;strong&gt;Header&lt;/strong&gt;
+This type allows you to insert a standard Content Element header and nothing more.
+Almost all the other types described below also include the Header and its options. The Header type provides a way to insert a header without any other content.
+
+&lt;strong&gt;Text&lt;/strong&gt;
+The Text type allows you to insert regular page content. It is generally used for text only content.
+
+&lt;strong&gt;Text &amp; Images&lt;/strong&gt;
+This is the same as the Text type (regular page content) but with the option of attaching images.
+
+&lt;strong&gt;Image&lt;/strong&gt;
+The Image type allows you to insert image only page content.
+
+&lt;strong&gt;Bullet List&lt;/strong&gt;
+Lets you create a bullet list. Each line in the text field will appear as a single bullet.
+
+&lt;strong&gt;Table&lt;/strong&gt;
+Lets you create &lt;em&gt;simple&lt;/em&gt; tables. Each line represents a row in the table and vertical bars ('|') separate each column. A popup wizard is also available.
+
+&lt;strong&gt;File Links&lt;/strong&gt;
+Allows you to present a list of files for download. Thumbnails can be attached to the list and you can also display the file size.
+
+&lt;strong&gt;Form&lt;/strong&gt;
+Lets you create mail forms using a special syntax or a popup wizard.
+
+&lt;strong&gt;Search&lt;/strong&gt;
+This inserts a search box and also shows the search results when a search is performed on the page.
+
+&lt;strong&gt;Login&lt;/strong&gt;
+Displays a login box for website users. This is only useful if you have already created website users and usergroups.
+
+&lt;strong&gt;Menu/Sitemap&lt;/strong&gt;
+Offers a selection of menus and a sitemap you can insert on a page.
+
+&lt;strong&gt;Insert records&lt;/strong&gt;
+This acts as placeholder for other records. With this content element, you can reuse multiple content elements from other pages.
+
+&lt;strong&gt;Insert plugin&lt;/strong&gt;
+This will allows you to insert news, forums, guestbooks, lists of addresses, and other functionality. Plugins are typically provided by TYPO3 extensions. The available fields and required configuration depend on the extension.
+
+&lt;strong&gt;Divider&lt;/strong&gt;
+This inserts a simple horizontal rule on a page.
+
+&lt;strong&gt;HTML&lt;/strong&gt;
+This is plain HTML content. Anything added in the HTML Code of this Content Element will be displayed directly on the page without any preprocessing.</source>
+			<target state="final">يحدد "نوع" عنصر المحتوى الذي تُحدِدُه الخيارات المُتاحة في نموذج التعديل، لذا تأكّد من حفظ السِجل قبل إجراء تغييرات أخرى.
+
+إليك شرح لأنواع عناصر المحتوى المُختلفة:
+
+&lt;strong&gt;عنوان رئيس&lt;/strong&gt;
+يسمح لك هذا النوع بإدراج عنوان عنصر محتوى عادي ولا شيء أكثر من ذلك.
+تشتمل جميع الأنواع الأخرى الموضحة أدناه تقريباً أيضاً على العنوان وخياراته. يوفر نوع العنوان طريقة لإدراج عنوان دون أي محتوى آخر.
+
+&lt;strong&gt;نص عادي&lt;/strong&gt;
+يسمح لك نوع النص بإدراج محتوى صفحة عادي. يُستخدم هذا العنصر عُموماً للمحتوى النصّي فقط.
+
+&lt;strong&gt;نص &amp; صورة&lt;/strong&gt;
+هذا نفس نوع عنصر النص (محتوى الصفحة العادية) ولكن مع خِيار إرفاق صورة أو أكثر.
+
+&lt;strong&gt;صورة&lt;/strong&gt;
+يسمح لك عنصر الصورة بإدراج صورة فقط في محتوى الصفحة.
+
+&lt;strong&gt;قائمة&lt;/strong&gt;
+يتيح لك إنشاء قائمة ذات تعداد نقطي. سيظهر كل سطر في حقل النص كرمز نقطي واحد.
+
+&lt;strong&gt;جدول&lt;/strong&gt;
+يتيح لك هذا العنصر إنشاء جداول &lt;em&gt;بسيطة&lt;/em&gt;. يُمثل كل سطر صفّاً في الجدول بينما تفصل الأشرطة الرأسية ("|") كل عمود. يتوفر أيضاً مُعالج منبثق.
+
+&lt;strong&gt;ملفات للتحميل&lt;/strong&gt;
+يسمح لك هذا العنصر تقديم قائمة بالملفات للتحميلها. يمكن إرفاق الصُور المصغّرة بالقائمة ويمكنك أيضاً عرض حجم المِلَفّ.
+
+&lt;strong&gt;نموذج&lt;/strong&gt;
+يتيح لك هذا العنصر بإدراج نموذج باستخدام صيغة خاصة أو معالج منبثق.
+
+&lt;strong&gt;بحث&lt;/strong&gt;
+يتيح لك هذا العنصر إدراج مربع بحث، ويعرض أيضاً نتائج البحث عند إجراء بحث على الصفحة.
+
+&lt;strong&gt;نموذج تسجيل الدخول&lt;/strong&gt;
+لإدراج مربع تسجيل الدخول لمُستخدميّ الموقع الإلكتروني. هذا مفيد فقط إذا كنت قد أنشأت بالفعل مُستخدمين للواجهة الأمامية لموقع الويب ومجموعات المستخدمين.
+
+&lt;strong&gt;قائمة / فهرس الموقع الإلكتروني&lt;/strong&gt;
+يقدم هذا العنصر مجموعة مختارة من القوائم وفهرس Sitemap الذي يمكنك إدراجه في الصفحة.
+
+&lt;strong&gt;إضافة سجلات&lt;/strong&gt;
+يعمل هذا كعنصر نائب للسجلات الأخرى. باستخدام عنصر المحتوى هذا، يمكنك إعادة استخدام عناصر محتوى مُتعددة من صفحات أخرى.
+
+&lt;strong&gt;إدراج إضافة&lt;/strong&gt;
+سيسمح لك ذلك بإدراج الأخبار والمنتديات ودفاتر الزوار وقوائم العناوين والوظائف الأخرى. يتم توفير الإضافات عادَةً بواسطة إضافات TYPO3. تعتمد الحُقول المُتاحة والتكوين المطلوب على الإضافة بحد ذاتها.
+
+&lt;strong&gt;خط فاصل&lt;/strong&gt;
+يتيح لك هذا العنصر إدراج خط فاصل أُفقي بسيط على الصفحة.
+
+&lt;strong&gt;HTML&lt;/strong&gt;
+هذا محتوى HTML عادي. سيتم عرض أي شيء مُضاف في كود HTML لعنصر المحتوى هذا مُباشرةً على الصفحة، دون أي مُعالجة مسبقة.</target></trans-unit>
+      <trans-unit id="_CType.seeAlso" resname="_CType.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:colPos,
+tt_content:sys_language_uid,
+About Content Elements | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/EditPageContent/</source>
+				
+			<target state="final">tt_content:colPos,
+tt_content:sys_language_uid,
+حول عناصر المُحتوى | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/EditPageContent/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_CType.image" resname="_CType.image" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/ttcontent_4.png</source>
+        <target state="final">EXT:frontend/Resources/Public/Images/cshimages/ttcontent_4.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>Uncheck this box if you wish to disable the Content Element and keep it from being displayed on the website.</source>
+        <target state="final">قم بإلغاء تحديد هذا المربع إذا كنت ترغب في تعطيل عنصر المحتوى ومنع عرضه على موقع الويب.</target>
+      </trans-unit>
+      <trans-unit id="_hidden.seeAlso" resname="_hidden.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:starttime,
+tt_content:endtime,
+tt_content:fe_group,
+tt_content:colPos,
+tt_content:sys_language_uid</source>
+				
+			<target state="final">tt_content:starttime,
+tt_content:endtime,
+tt_content:fe_group,
+tt_content:colPos,
+tt_content:sys_language_uid</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="starttime.description" resname="starttime.description" approved="yes">
+        <source>Enter the date when the Content Element should be published and displayed on the website.</source>
+        <target state="final">أدخل التاريخ الذي يجب أن يتم فيه نشر عنصر المحتوى وعرضه على الموقع الإلكتروني.</target>
+      </trans-unit>
+      <trans-unit id="_starttime.seeAlso" resname="_starttime.seeAlso" xml:space="preserve" approved="yes">
+				<source>pages:starttime,
+tt_content:endtime,
+tt_content:hidden,
+tt_content:fe_group</source>
+				
+			<target state="final">pages:starttime,
+tt_content:endtime,
+tt_content:hidden,
+tt_content:fe_group</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="endtime.description" resname="endtime.description" approved="yes">
+        <source>Enter the date when the Content Element should expire and disappear from the website.</source>
+        <target state="final">أدخل التاريخ الذي يجب أن ينتهي فيه عرض عنصر المحتوى على الموقع الإلكتروني ويختفي منه.</target>
+      </trans-unit>
+      <trans-unit id="_endtime.seeAlso" resname="_endtime.seeAlso" xml:space="preserve" approved="yes">
+				<source>pages:endtime,
+tt_content:starttime,
+tt_content:hidden,
+tt_content:fe_group</source>
+				
+			<target state="final">pages:endtime,
+tt_content:starttime,
+tt_content:hidden,
+tt_content:fe_group</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="fe_group.description" resname="fe_group.description" approved="yes">
+        <source>If Usergroup Access Rights are set to a usergroup name, only website users who are logged in and members of the selected usergroup will be able to view the Content Element. The special option 'Hide at Login' means the Content Element will &lt;em&gt;not&lt;/em&gt; be visible for any website users that are logged in. Likewise "Show at Any Login" will make the Content Element visible for any logged in website user.</source>
+        <target state="final">إذا تم تعيين حقوق الوصول مجموعة المستخدم إلى اسم مجموعة المستخدم، فقط مُستخدمي الموقع الإلكتروني الذين سجّلوا الدخول وأعضاء مجموعة المستخدم المُحدّدة سيكونون قادرين على عرض عنصر المحتوى.
+الخِيار الخاص "إخفاء عند تسجيل الدخول" يعني أن عنصر المحتوى &lt;em&gt;لن يكون&lt;/em&gt; مرئيّاً لأي من مُستخدمي الموقع الإلكتروني الذين تم سجلوا الدخول. وبالمثل، فإن خِيار "إظهار عند تسجيل دخول" سيجعل عنصر المحتوى مرئياً لأي مستخدم مسجل الدخول.</target>
+      </trans-unit>
+      <trans-unit id="fe_group.details" resname="fe_group.details" approved="yes">
+        <source>The 'Hide at Login' option is is useful if you want to present information like "How to Login" that becomes irrelevant when a website user is actually logged in.</source>
+        <target state="final">خِيار "الإخفاء عند تسجيل الدخول" مفيد إذا كنت ترغب في تقديم معلومات مثل "كيفية تسجيل الدخول" التي تصبح غير ذات قيمة بعد تسجيل دخول مُستخدم الموقع الإلكتروني.</target>
+      </trans-unit>
+      <trans-unit id="_fe_group.seeAlso" resname="_fe_group.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:hidden,
+tt_content:starttime,
+tt_content:endtime,
+pages:fe_group,
+fe_users,
+fe_groups</source>
+				
+			<target state="final">tt_content:hidden,
+tt_content:starttime,
+tt_content:endtime,
+pages:fe_group,
+fe_users,
+fe_groups</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="sys_language_uid.description" resname="sys_language_uid.description" approved="yes">
+        <source>Select the system language of this Content Element. &lt;strong&gt;Notice:&lt;/strong&gt; This will affect the Content Element visibility by limiting it to a certain language.</source>
+        <target state="final">حدد لغة النظام لعنصر المحتوى هذا. &lt;strong&gt;ملاحظة:&lt;/strong&gt; سيؤثر هذا على رؤية عنصر المحتوى من خلال اقتصاره على لغة معينة.</target>
+      </trans-unit>
+      <trans-unit id="sys_language_uid.details" resname="sys_language_uid.details" xml:space="preserve" approved="yes">
+				<source>This allows you to assign a specific language to the Content Element. If you select anything but the default value, the element will &lt;em&gt;not&lt;/em&gt; be visible unless the language assigned is also configured by the TypoScript template.
+The available system languages are created by the administrator.</source>
+			<target state="final">هذا يسمح لك بتعيين لغة مُحددة لعنصر المحتوى. إذا حددت أي شيء غير القيمة الافتراضية، &lt;em&gt;لن يكون&lt;/em&gt; العنصر مرئيّاً ما لم يتم تكوين اللغة المعينة أيضاً بواسطة قالب TypoScript.
+لغات النظام المتاحة يقوم المدير بإنشائها.</target></trans-unit>
+      <trans-unit id="_sys_language_uid.seeAlso" resname="_sys_language_uid.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:colPos,
+sys_language,
+Localization concepts [Technical] | http://typo3.org/documentation/tips-tricks/multi-language-sites-in-typo3/,
+_MOD_web_layout:language_list</source>
+				
+			<target state="final">tt_content:colPos,
+sys_language,
+مبادئ التوطين [Technical] | http://typo3.org/documentation/tips-tricks/multi-language-sites-in-typo3/,
+_MOD_web_layout:language_list</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="layout.description" resname="layout.description" approved="yes">
+        <source>Select a Layout.</source>
+        <target state="final">اختر تصميماً.</target>
+      </trans-unit>
+      <trans-unit id="layout.details" resname="layout.details" xml:space="preserve" approved="yes">
+				<source>This option does not work by default for all Content Elements but your website may display Content Elements differently depending on the layout.
+
+The File Links Content Element does make use of the Layout field by default:
+"Normal" will provide a list of file links with no thumbnail.
+"Layout 1" adds a file icon to the left of the link
+"Layout 2" adds a thumbnail for image files and an icon for other files. A black border is wrapped around the icon.
+"Layout 3" is similar to Layout 2, but without the black border.</source>
+			<target state="final">هذا الخِيار لا يعمل بشكل افتراضي لجميع عناصر المحتوى ولكن موقعك قد يعرض عناصر المحتوى بشكل مختلف اعتماداً على التخطيط.
+
+عنصر المحتوى "روابط الملفات" يستخدم حقل المظهر التالي بشكل افتراضي:
+"Normal" سيوفر قائمة من روابط الملفات دون صورة مصغرة.
+"التصميم 1" يضيف رمز مِلَفّ إلى يسار الرابط
+"التصميم 2" يضيف صورة مصغرة لملفات الصور ورمز لملفات أخرى. يتم تغليف الحدود السوداء حول الأيقونة.
+"التصميم 3" مماثل للتصميم 2، ولكن دون الحدود السوداء.</target></trans-unit>
+      <trans-unit id="colPos.description" resname="colPos.description" approved="yes">
+        <source>Select the column position of this element. &lt;strong&gt;Notice:&lt;/strong&gt; This may affect whether the Content Element is visible depending on your website template.</source>
+        <target state="final">حدد موضع العمود لهذا العنصر. &lt;strong&gt;ملاحظة:&lt;/strong&gt; قد يؤثر هذا على ما إذا كان عنصر المحتوى مرئياً تَبَعاً لمظهر موقعك.</target>
+      </trans-unit>
+      <trans-unit id="colPos.details" resname="colPos.details" xml:space="preserve" approved="yes">
+				<source>Many websites only use one column of content. Some templates, however, let you put content in multiple columns using the Column option.
+
+&lt;strong&gt;Notice:&lt;/strong&gt; Selecting a column other than "Normal" may cause the Content Element to disappear if the website template does not use that column. If your Content Element mysteriously disappears make sure the Column and Language selectors are set correctly.</source>
+			<target state="final">العديد من مواقع الويب تستخدم عموداً واحداً فقط من المحتوى. ولكن بعض القوالب تسمح لك بوضع المحتوى في أعمدة متعددة باستخدام خِيار العمود.
+
+&lt;strong&gt;ملاحظة:&lt;/strong&gt; اختيار عمود غير "الطبيعي" قد يتسبب في اختفاء عنصر المحتوى إذا كان قالب الموقع لا يستخدم هذا العمود. إذا اختفى عنصر المحتوى الخاص بك بشكل غامض تحقق من تعيين مُحددات العمود واللغة بشكل صحيح.</target></trans-unit>
+      <trans-unit id="_colPos.seeAlso" resname="_colPos.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:sys_language_uid,
+_MOD_web_layout:columns_multi,
+_MOD_web_layout:columns_single</source>
+				
+			<target state="final">tt_content:sys_language_uid,
+_MOD_web_layout:columns_multi,
+_MOD_web_layout:columns_single</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="date.description" resname="date.description" approved="yes">
+        <source>Enter a date to be displayed above the header.</source>
+        <target state="final">أدخل تاريخاً ليتم عرضه فوق الترويسة.</target>
+      </trans-unit>
+      <trans-unit id="header.description" resname="header.description" approved="yes">
+        <source>Enter header text for the Content Element.</source>
+        <target state="final">أدخل نص العنوان لعنصر المحتوى.</target>
+      </trans-unit>
+      <trans-unit id="header.details" resname="header.details" xml:space="preserve" approved="yes">
+				<source>Almost all Content Elements will display this header above the content. If you don't want the header displayed, set the header Layout to "Hidden". You can also choose not to enter any content in this field.
+
+Some content element types do not display the header by default. In those cases the Header field is typically labeled "Name" instead. One example is the HTML Content Element. The chosen name will then only be displayed in menus, e.g. the section index.</source>
+			<target state="final">كل عناصر المحتوى تقريباً سوف تعرض هذا الترويسة فوق المحتوى. إذا كنت لا تريد عرض الترويسة، قم بتبديل مظهر الترويسة إلى "مخفي". يمكنك أيضاً اختيار عدم إدخال أي محتوى في هذا الحقل.
+
+بعض أنواع عناصر المحتوى لا تعرض الترويسة بشكل افتراضي. في تلك الحالات يتم تسمية حقل الترويسة عادةً بـ "الاسم" بدلاً من ذلك. مثال واحد هو عنصر محتوى HTML. ثم سيتم عرض الاسم المختار فقط في القوائم، مثل فهرس الأقسام.</target></trans-unit>
+      <trans-unit id="_header.seeAlso" resname="_header.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:header_position,
+tt_content:header_link,
+tt_content:header_layout,
+tt_content:date,</source>
+				
+			<target state="final">tt_content:header_position,
+tt_content:header_link,
+tt_content:header_layout,
+tt_content:date,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_header.image" resname="_header.image" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/ttcontent_6.png</source>
+        <target state="final">EXT:frontend/Resources/Public/Images/cshimages/ttcontent_6.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="header_position.description" resname="header_position.description" approved="yes">
+        <source>Aligns the header to the left, center, or right.</source>
+        <target state="final">يحاذي الترويسة إلى اليسار أو الوَسَط أو اليمين.</target>
+      </trans-unit>
+      <trans-unit id="_header_position.seeAlso" resname="_header_position.seeAlso" approved="yes">
+        <source>tt_content:header</source>
+        <target state="final">tt_content:header</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="header_link.description" resname="header_link.description" approved="yes">
+        <source>Creates a link from the header to a Page ID, email address, or URL.</source>
+        <target state="final">إنشاء رابط من ترويسة الصفحة إلى رقم تعريف الصفحة، أو عنوان البريد الإلكتروني، أو عنوان URL.</target>
+      </trans-unit>
+      <trans-unit id="header_link.syntax" resname="header_link.syntax" xml:space="preserve" approved="yes">
+				<source>If you insert a Page ID (ex. 51), the link will point to the page with id=51 &lt;em&gt;inside&lt;/em&gt; TYPO3.
+If you insert an email address (ex. name@my-domain.test), the link will point to that email address.
+If you insert an URL or domain, (ex. www.typo3.org or http://www.my-domain.org), the link will point to that website.</source>
+			<target state="final">إذا قمت بإدراج مُعرّف الصفحة (مثلاً: 51)، فسيشير الرابط إلى الصفحة التي تحتوي على معرف = 51 &lt;em&gt;داخل&lt;/em&gt; TYPO3.
+إذا قمت بإدراج عنوان بريد إلكتروني (مثلاً: name@my-domain.test)، سيشير الرابط إلى عنوان البريد الإلكتروني هذا.
+إذا قمت بإدراج عنوان URL أو النطاق، (مثلا. () www.typo3.org أو http://www.my-domain.org)، ستشير الوصلة إلى ذلك الموقع الإلكتروني.</target></trans-unit>
+      <trans-unit id="_header_link.seeAlso" resname="_header_link.seeAlso" approved="yes">
+        <source>tt_content:header</source>
+        <target state="final">tt_content:header</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="header_layout.description" resname="header_layout.description" approved="yes">
+        <source>Select a visual design for the header.</source>
+        <target state="final">حدد تصميماً مرئياً للترويسة.</target>
+      </trans-unit>
+      <trans-unit id="header_layout.details" resname="header_layout.details" xml:space="preserve" approved="yes">
+				<source>If you select "Default" the standard design (which is one of the layouts 1-5) will be used.
+Alternatively you can select from Layout 1 through 5 which are configured in the website template with individual visual designs.
+If you select "Hidden" the header will simply not appear. This is useful when you don't need a header to display on the website but still want to identify the Content Element in the Backend.</source>
+			<target state="final">إذا اخترت "الافتراضي" سيتم استخدام التصميم الافتراضي (الذي هو أحد المخططات 1-5).
+بدلاً من ذلك، يمكنك الاختيار من تخطيط 1 إلى 5 التي تم تكوينها في قالب الموقع مع التصاميم البصرية الفردية.
+إذا اخترت "إخفاء" لن يظهر العنوان ببساطة. هذا مفيد عندما لا تحتاج إلى عنوان لعرضه على الموقع ولكن لا تزال تريد تحديد عنصر المحتوى في الواجهة الخلفية.</target></trans-unit>
+      <trans-unit id="_header_layout.seeAlso" resname="_header_layout.seeAlso" approved="yes">
+        <source>tt_content:header</source>
+        <target state="final">tt_content:header</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="subheader.description" resname="subheader.description" approved="yes">
+        <source>Enter a subheader to be displayed below the main header. If the Content Element is a "Form" this field is instead used as the Recipient Email.</source>
+        <target state="final">أدخل عنوان فرعي ليتم عرضه تحت العنوان الرئيس. إذا كان عنصر المحتوى هو "نموذج" هذا الحقل يستخدم بدلاً من ذلك كبريد إلكتروني للمستلم.</target>
+      </trans-unit>
+      <trans-unit id="subheader.details" resname="subheader.details" approved="yes">
+        <source>A subheader is displayed only with "Header" Content Elements and with "Form" Content Elements (as the Recipient Email).</source>
+        <target state="final">يتم عرض العنوان الفرعي فقط مع عناصر المحتوى "الترويسة" ومع عناصر المحتوى "النموذج" (بوصفه البريد الإلكتروني للمستلم).</target>
+      </trans-unit>
+      <trans-unit id="_subheader.seeAlso" resname="_subheader.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:header
+tt_content:bodytext</source>
+				
+			<target state="final">tt_content:header
+tt_content:bodytext</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="bodytext.description" resname="bodytext.description" approved="yes">
+        <source>Enter the main text.</source>
+        <target state="final">أدخل النص الرئيس.</target>
+      </trans-unit>
+      <trans-unit id="bodytext.details" resname="bodytext.details" xml:space="preserve" approved="yes">
+				<source>The main text of the Content Element is entered here and can be formatted with HTML or a Rich Text Editor.
+The field is reused in other Content Element types so changing the type will cause any text to be reused in that new Content Element type.
+
+When you're using this field with the "Text" and "Text &amp; Images" types, the content is normal body text. Each linebreak signifies a new paragraph, you can use the special TYPO3 tag, &amp;lt;LINK&amp;gt;, for making links. You can use many HTML tags but there are limitations depending on your website configuration.
+A Rich Text Editor is commonly used to add a visual editing interface for 'Text' and 'Text &amp; Images' Content Elements.
+
+&lt;b&gt;Bullet Lists:&lt;/b&gt;
+If the type is "Bullet List" each line in this field is a bullet item.
+
+&lt;b&gt;Tables:&lt;/b&gt;
+If the type is "Table" each line represents a table row. Within each line, columns are divided by a vertical bar ('|'). A table row with 3 columns could look like "This is column 1 | Column 2 here | Third column!". The table wizard can also be used for creating tables and is much easier than hand coding them.</source>
+			<target state="final">يتم إدخال النص الرئيس لعنصر المحتوى هنا ويمكن تنسيقه باستخدام HTML أو محرر نص المتن.
+يُعاد استخدام الحقل في أنواع عناصر المحتوى الأخرى، لذا فإن تغيير النوع سيؤدي إلى إعادة استخدام أي نص في نوع عنصر المحتوى الجديد هذا.
+
+عند استخدام هذا الحقل مع النوعين "نص" و "نص &amp; صورة"، يكون المحتوى نصاً أساسياً عادياً. كل سطر فاصل يشير إلى فِقْرة جديدة، يمكنك استخدام علامة TYPO3 الخاصة، &amp;lt;LINK&amp;gt;, لإنشاء الروابط. يمكنك استخدام العديد من علامات HTML ولكن هناك قيود مبنية على تكوين موقع الويب الخاص بك.
+يُستخدم محرر نص المتن بشكل شائع لإضافة واجهة تعديل مرئية لعناصر محتوى "النص" و "النص والصور".
+
+&lt;b&gt;قوائم متعددة:&lt;/b&gt;
+إذا كان النوع هو "قائمة متعددة"، فإن كل سطر في هذا الحقل يكون عنصر تعداد قائمة
+
+&lt;b&gt;الجداول:&lt;/b&gt;
+إذا كان النوع هو "جدول"، فإن كل سطر يمثل صف جدول. داخل كل سطر، يتم تقسيم الأعمدة بواسطة شريط عمودي ("|"). يمكن أن يبدو صف الجدول الذي يحتوي على 3 أعمدة مثل "هذا هو العمود 1 | العمود 2 هنا | العمود الثالث!". يمكن أيضاً استخدام معالج الجدول لإنشاء الجداول وهو أسهل بكثير من كتابته يدوياً.</target></trans-unit>
+      <trans-unit id="_bodytext.seeAlso" resname="_bodytext.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:CType,
+tt_content:subheader,
+xMOD_csh_corebe:wizard_table_wiz</source>
+				
+			<target state="final">tt_content:CType,
+tt_content:subheader,
+xMOD_csh_corebe:wizard_table_wiz</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="image.description" resname="image.description" approved="yes">
+        <source>Insert one or more images.</source>
+        <target state="final">إدراج صورة واحدة أو أكثر.</target>
+      </trans-unit>
+      <trans-unit id="image.details" resname="image.details" xml:space="preserve" approved="yes">
+				<source>You can attach multiple images to the Content Element.
+Depending on the configuration of TYPO3, you can attach images in many formats without worrying about size and compression. TYPO3's graphics processing handles these details for you.
+
+When you use the "Text &amp; Images" type, it's important to select a proper position for images. For this purpose, use the Position and Alignment selector. See link to "Page Content / Position" below.
+You can also display images in multiple columns and even enable an option that opens full size images when thumbnails are clicked.</source>
+			<target state="final">يمكنك إرفاق صور متعددة لعنصر المحتوى.
+اعتماداً على تكوين TYPO3، يمكنك إرفاق صور في العديد من الصيغ دون القلق بشأن الحجم والضغط. يقوم معالج رسوم TYPO3 بهذه التفاصيل نيابةً عنك.
+
+عند استخدام عنصر المحتوى "نص &amp; صور"، من المهم تحديد موضع مناسب للصور. ولهذا الغرض، استخدم أداة الموضع والمحاذاة. راجع الرابط إلى "Page Content / Position" أدناه.
+يمكنك أيضاً عرض الصور في أعمدة متعددة، وحتى يمكنك تفعيل خِيار يفتح صور الحجم الكامل عند النقر على الصور المصغرة.</target></trans-unit>
+      <trans-unit id="_image.seeAlso" resname="_image.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:imagewidth,
+tt_content:imageheight,
+tt_content:imageorient,
+tt_content:imageborder,
+tt_content:image_link,
+tt_content:image_zoom,
+tt_content:imagecols,
+tt_content:imagecaption,
+tt_content:image_frames,
+Using images ("Getting Started") | https://docs.typo3.org/typo3cms/GettingStartedTutorial/TheFileModuleOrImageArchives/ManagingFilesInTypo3/
+Using images (Animation) | FILE:EXT:welcome/modsub/ani_10.gif</source>
+				
+			<target state="final">tt_content:imagewidth,
+tt_content:imageheight,
+tt_content:imageorient,
+tt_content:imageborder,
+tt_content:image_link,
+tt_content:image_zoom,
+tt_content:imagecols,
+tt_content:imagecaption,
+tt_content:image_frames,
+Using images ("Getting Started") | https://docs.typo3.org/typo3cms/GettingStartedTutorial/TheFileModuleOrImageArchives/ManagingFilesInTypo3/
+Using images (Animation) | FILE:EXT:welcome/modsub/ani_10.gif</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_image.image" resname="_image.image" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/ttcontent_5.png</source>
+        <target state="final">EXT:frontend/Resources/Public/Images/cshimages/ttcontent_5.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="image.image_descr" resname="image.image_descr" approved="yes">
+        <source>This shows all the options related to inserting images in Content Elements. Depending on user permissions, you may not be able to use all of them.</source>
+        <target state="final">هذا يظهر جميع الخيارات المتعلقة بإدراج الصور في عناصر المحتوى. اعتماداً على أُذونات المستخدم، قد لا تكون قادراً على استخدامها.</target>
+      </trans-unit>
+      <trans-unit id="imagewidth.description" resname="imagewidth.description" approved="yes">
+        <source>Enter the width (in pixels) for displaying the image in the Frontend of your website.</source>
+        <target state="final">أدخل العرض (بالبكسل) لعرض الصورة في الواجهة الأمامية لموقع الويب الخاص بك.</target>
+      </trans-unit>
+      <trans-unit id="imagewidth.details" resname="imagewidth.details" approved="yes">
+        <source>The TypoScript template is normally configured with maximum image width so you shouldn't need to specify a width. In unique cases, this provides additional flexibility though.</source>
+        <target state="final">عادة ما يتم تكوين قالب TypoScript مع أقصى عرض للصورة حتى لا تحتاج إلى تحديد العرض. غير أن ذلك يوفر مرونة إضافية في الحالات الفريدة.</target>
+      </trans-unit>
+      <trans-unit id="_imagewidth.seeAlso" resname="_imagewidth.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:imageheight,
+tt_content:image</source>
+				
+			<target state="final">tt_content:imageheight,
+tt_content:image</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="imageheight.description" resname="imageheight.description" approved="yes">
+        <source>Enter the height (in pixels) for displaying the images in the Frontend of your website.</source>
+        <target state="final">أدخل الارتفاع (بالبكسل) لعرض الصور في واجهة موقعك.</target>
+      </trans-unit>
+      <trans-unit id="_imageheight.seeAlso" resname="_imageheight.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:imagewidth,
+tt_content:image</source>
+				
+			<target state="final">tt_content:imagewidth,
+tt_content:image</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="imageorient.description" resname="imageorient.description" approved="yes">
+        <source>Select the position and alignment of the images relative to the body text.</source>
+        <target state="final">حدد موضع الصور ومحاذاتها فيما يتعلق بنص المتن.</target>
+      </trans-unit>
+      <trans-unit id="imageorient.details" resname="imageorient.details" xml:space="preserve" approved="yes">
+				<source>The positions above and below the body text are pretty straight forward.
+The options for "In text" mean that images are displayed with text wrapped around them. When you select this option the template will probably force the images into smaller dimensions to accommodate the width of the template and the width of the text. The bodytext will float &lt;em&gt;under&lt;/em&gt; the image block when it reaches the end of the image block. In other words, the body text &lt;em&gt;wraps around&lt;/em&gt; the image block. If you select "In text" below the "No wrap" divider, the body text will not float under the image block, but simply continue in its column.
+Apart from the visual difference there is a technical aspect as well. If you choose to allow the content to wrap the image block you will experience a strange phenomenon when you do not have enough bodytext to make it float around the image: subsequent content elements on the page will appear to be layered on top of the image block. However it's easily solved by changing the "In text" position to the equal value but below the "No wrap" divider.</source>
+			<target state="final">المَوَاضْع الموجودة أعلى النص الأساسي وأسفله مستقيمة جداً للأمام.
+تعني الخيارات لـ "In Text" أنه يتم عرض الصور مع التفاف النص حولها. عند تحديد هذا الخِيار، من المحتمل أن يفرض القالب الصور إلى أبعاد أصغر لتلائم عرض القالب وعرض النص.
+سيطفو المَتن "bodytext" &lt;em&gt;تحت&lt;/em&gt; الصورة عندما تصل إلى نهاية الصورة.
+بعبارة أخرى، سيلتفّ المَتن &lt;em&gt;حول&lt;/em&gt; الصورة. إذا حددت خيار "In text" أسفل حاجز "عدم الالتفاف"، فلن يطفو النص الأساسي أسفل الصورة، ولكن ببساطة يستمر في العمود نفسه.
+بِغضّ النظر عن الاختلاف المرئي، هناك جانب تقني أيضاً. إذا اخترت السماح للمحتوى بالالتفاف حول الصورة، فستواجه ظاهرة غريبة عندما لا يكون لديك نص أساسي كافٍ لجعله يطفو حول الصورة: ستظهر عناصر المحتوى اللاحقة على الصفحة موضوعة في طبقات أعلى كتلة الصورة.
+ومع ذلك، يمكن حلها بسهولة عن طريق تغيير موضع "In text" إلى القيمة المتساوية ولكن أسفل حاجز "عدم الالتفاف".</target></trans-unit>
+      <trans-unit id="imageborder.description" resname="imageborder.description" approved="yes">
+        <source>Displays a colored border around the images.</source>
+        <target state="final">عرض الإطار المُلوّن حول الصورة.</target>
+      </trans-unit>
+      <trans-unit id="_imageborder.seeAlso" resname="_imageborder.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:imagecols,
+tt_content:image</source>
+				
+			<target state="final">tt_content:imagecols,
+tt_content:image</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="image_link.description" resname="image_link.description" approved="yes">
+        <source>Enter a link for the image. For multiple images, separate the links with commas.</source>
+        <target state="final">أدخل رابط للصورة. للحصول على صور متعددة، افصل الروابط بالفواصل.</target>
+      </trans-unit>
+      <trans-unit id="image_link.details" resname="image_link.details" xml:space="preserve" approved="yes">
+				<source>By default all images share the same link. Your TypoScript template may be configured to allow a separate link for each image. If this is the case, you simply separate the links with a comma.
+
+See Page Content&gt;Link below for details on syntax.</source>
+			<target state="final">بشكل افتراضي تتشارك جميع الصور نفس الرابط. قد يتم تكوين قالب TypoScript الخاص بك للسماح بربط منفصل لكل صورة. إذا كان هذا هو الحال، فعليك ببساطة أن تفصل الروابط بفاصلة.
+
+راجع محتوى Page Content&gt;Link أدناه للحصول على تفاصيل بناء الجملة.</target></trans-unit>
+      <trans-unit id="_image_link.seeAlso" resname="_image_link.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:header_link,
+tt_content:image_zoom,
+tt_content:image</source>
+				
+			<target state="final">tt_content:header_link,
+tt_content:image_zoom,
+tt_content:image</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="image_zoom.description" resname="image_zoom.description" approved="yes">
+        <source>When enabled, clicking an image will open a larger version in a popup window.</source>
+        <target state="final">عند التفعيل، سيتم فتح الصورة في نافذة منبثقة عند النقر فوقها.</target>
+      </trans-unit>
+      <trans-unit id="image_zoom.details" resname="image_zoom.details" approved="yes">
+        <source>This option overrides the value in the Links field.</source>
+        <target state="final">هذا الخِيار يتجاوز القيمة في حقل الروابط.</target>
+      </trans-unit>
+      <trans-unit id="_image_zoom.seeAlso" resname="_image_zoom.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:image_link,
+tt_content:image</source>
+				
+			<target state="final">tt_content:image_link,
+tt_content:image</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="image_frames.description" resname="image_frames.description" approved="yes">
+        <source>Select special image framing options.</source>
+        <target state="final">حدد خيارات إطار الصورة الخاصة.</target>
+      </trans-unit>
+      <trans-unit id="_image_frames.seeAlso" resname="_image_frames.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:image</source>
+				
+			<target state="final">tt_content:image</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="imagecols.description" resname="imagecols.description" approved="yes">
+        <source>Set the number of columns when the images are displayed in the Frontend of the website.</source>
+        <target state="final">قم بتعيين عدد الأعمدة عند عرض الصور في واجهة الموقع. (Automatic Translation).</target>
+      </trans-unit>
+      <trans-unit id="_imagecols.seeAlso" resname="_imagecols.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:image</source>
+				
+			<target state="final">tt_content:image</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="imagecaption.description" resname="imagecaption.description" approved="yes">
+        <source>Enter captions for the images. For multiple images, enter one caption per line.</source>
+        <target state="final">أدخل تسميات توضيحية للصور. بالنسبة للصُور المتعددة، أدخل تسميات توضيحية واحدة لكل سطر.</target>
+      </trans-unit>
+      <trans-unit id="imagecaption.details" resname="imagecaption.details" xml:space="preserve" approved="yes">
+				<source>By default, the caption is positioned below the images. However, your TypoScript template may be configured to allow individual image captions by setting "styles.content.imgtext.captionSplit=1" in your template constants.
+In this case, each line in this field will be the image caption of the corresponding image in the list.
+
+The caption text field is also used by the Content Element type "File Links" where each line represents a description of a file in the list.</source>
+			<target state="final">بشكل افتراضي، يتم وضع الوَصفْ أسفل الصور. ومع ذلك، يمكن تكوين قالب TypoScript الخاص بك للسماح بتسميات وصف الصور الفردية عن طريق إعداد "styles.content.imgtext.captionSplit=1" في ثوابت "constants" القالب الخاص بك.
+في هذه الحالة، كل سطر في هذا الحقل سيكون وصف للصورة المقابلة في القائمة.
+
+يتم استخدام حقل النص الوَصفيْ أيضاً من نوع عنصر المحتوى "File Links" حيث يمثل كل سطر وصفاً لملف في القائمة.</target></trans-unit>
+      <trans-unit id="cols.description" resname="cols.description" approved="yes">
+        <source>Select a fixed number of table columns</source>
+        <target state="final">حدد عدد ثابت من أعمدة الجدول</target>
+      </trans-unit>
+      <trans-unit id="pages.description" resname="pages.description" approved="yes">
+        <source>Select a target page or multiple target pages.</source>
+        <target state="final">حدد صفحة مُستهدفة أو عِدّة صفحات مُستهدفة.</target>
+      </trans-unit>
+      <trans-unit id="pages.details" resname="pages.details" xml:space="preserve" approved="yes">
+				<source>This field is used by many of the Content Element types to create a relation to either a single target page or multiple target pages. If no target page is specified, the current page will generally be used.
+
+Using the "Search" Content Element, the target page is where search results will appear. You must make sure that this page has a similar "Search" Content Element to display the results.
+
+The "Login" Content Element (not to be confused with the Login plugin available when the felogin extension is installed) also uses this field to redirect the login to a certain page. That page does not need to contain a "Login" Content Element in order to perform the authentication since any TYPO3 page can handle a login request.
+If you specify a second page in this list, the ID will be passed to the login system as the page inside TYPO3 where website users are found. You should use this only if your template is not already configured to pass this value on.
+In order for the login procedure to work you must make sure that you have created website users and website usergroups, have specified where these website users can be found (typically a SysFolder), a page ID in the page list, and ensured that cookies are enabled for the site.
+
+The "Menu/Sitemap" Content Elements also use this field. In this case the page will determine the starting point for the menu or the actual pages shown in the menu. This behavior depends on the menu type you have selected.
+
+Finally the "Form" element uses this field as the target page to which the form is submitted. A common use is the "Thank you" page after the form is completed.</source>
+			<target state="final">يتم استخدام هذا الحقل بواسطة العديد من أنواع عناصر المحتوى لإنشاء رابط إما بصفحة واحدة أو صفحات مُتعددة. إذا لم يتم تحديد صفحة المُستهدفة، فسيتم استخدام الصفحة الحالية بشكل عام.
+
+باستخدام عنصر محتوى "البحث"، تكون الصفحة المُستهدفة هي المكان الذي ستظهر فيه نتائج البحث. يجب أن تتأكد من أن هذه الصفحة لها عنصر محتوى "بحث" مشابه لعرض النتائج.
+
+يستخدم عنصر محتوى "تسجيل الدخول" (يجب عدم الخلط بينه وبين مكون تسجيل الدخول الإضافي المتاح عند تثبيت إضافة felogin) أيضاً هذا الحقل لإعادة توجيه تسجيل الدخول إلى صفحة معينة. لا تحتاج هذه الصفحة إلى احتواء عنصر محتوى "تسجيل الدخول" من أجل إجراء المصادقة لأن أي صفحة من صفحات TYPO3 يمكنها التعامل مع طلب تسجيل الدخول.
+إذا قمت بتحديد صفحة ثانية في هذه القائمة، فسيتم تمرير المُعرّف إلى نظام تسجيل الدخول كصفحة داخل TYPO3 حيث يتم العثور على مُستخدمي الموقع. يجب عليك استخدام هذا فقط إذا لم يتم تكوين القالب الخاص بك بالفعل لتمرير هذه القيمة.
+لكي يعمل إجراء تسجيل الدخول، يجب أن تتأكد من أنك أضفت مُستخدمين جدد للواجهة الأمامية في موقع الويب ومجموعات لمُستخدمي الواجهة الأمامية، وحدد مكان العثور على مُستخدمي موقع الويب هؤلاء (عادةً ما يكون SysFolder)، ومعرف الصفحة "ID" في قائمة الصفحات، وتأكّد من أن ملفات تعريف الارتباط تم تفعيلها للموقع.
+
+تستخدم عناصر محتوى "القائمة/فهرس الموقع" هذا الحقل أيضاً. في هذه الحالة ستحدد الصفحة نقطة البداية للقائمة أو الصفحات الفعلية المعروضة في القائمة. يعتمد هذا السلوك على نوع القائمة التي حددتها.
+
+أخيراً، يستخدم عنصر "النموذج" هذا الحقل كصفحة مًستهدفة، بحيث يتم إرسال النموذج إليها بعد أن ترسل الطلب. الاستخدام الشائع هو صفحة "شكراً لك" بعد استكمال النموذج.</target></trans-unit>
+      <trans-unit id="_pages.seeAlso" resname="_pages.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:CType,
+tt_content:recursive</source>
+				
+			<target state="final">tt_content:CType,
+tt_content:recursive</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="recursive.description" resname="recursive.description" approved="yes">
+        <source>The number of subpage levels that should also be included for each page in the list.</source>
+        <target state="final">عدد مستويات الصفحات الفرعية التي ينبغي إدراجها أيضاً لكل صفحة في القائمة.</target>
+      </trans-unit>
+      <trans-unit id="recursive.details" resname="recursive.details" xml:space="preserve" approved="yes">
+				<source>This feature depends on the TypoScript template configuration and Content Element type. If enabled, each page listed in the "Pages" field will also have its subpages included to the specified depth.
+
+&lt;strong&gt;Warning:&lt;/strong&gt; If there are many subpages, be aware that this option may return a large number of results</source>
+			<target state="final">تعتمد هذه المِيزة على تكوين قالب TypoScript ونوع عنصر المحتوى. في حالة التفعيل، كل صفحة مُدرجة في حقل "الصفحات" سوف تحتوي أيضاً على صفحاتها الفرعية حتى العمق المحدد.
+
+&lt;strong&gt;تحذير:&lt;/strong&gt; إذا كان هناك العديد من الصفحات الفرعية، كن على علم بأن هذا الخِيار قد سيظهر عدداً كبيراً من النتائج</target></trans-unit>
+      <trans-unit id="_recursive.seeAlso" resname="_recursive.seeAlso" approved="yes">
+        <source>tt_content:pages</source>
+        <target state="final">tt_content:pages</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="menu_type.description" resname="menu_type.description" approved="yes">
+        <source>Select the type of menu you wish to create.</source>
+        <target state="final">حدد نوع القائمة التي ترغب في إنشائها.</target>
+      </trans-unit>
+      <trans-unit id="menu_type.details" resname="menu_type.details" xml:space="preserve" approved="yes">
+				<source>This is a short description of each type:
+
+&lt;strong&gt;Menu of selected pages&lt;/strong&gt;
+This will create a menu with links to the pages in the Selected Pages list.
+
+&lt;strong&gt;Menu of subpages of selected pages&lt;/strong&gt;
+This will create in a menu with links to the subpages of the pages in the Selected Pages list. If you do not specify any pages, the subpages to the current page will be used.
+
+&lt;strong&gt;Menu of subpages of selected pages (with abstract)&lt;/strong&gt;
+Like the previous option, but also displays the content of the Abstract field (or the Description field) for each page in the menu. The Abstract field is given priority over the Description field if both are complete.
+
+&lt;strong&gt;Menu of subpages of selected pages + sections&lt;/strong&gt;
+Like the previous option, but includes links to all Content Elements on the page that are marked to Show In Section Menus.
+
+&lt;strong&gt;Sitemap&lt;/strong&gt;
+Generates a classic tree sitemap. Notice that the sitemap will begin from the current page unless you select another page instead.
+
+&lt;strong&gt;Section index (page content marked for section menus)&lt;/strong&gt;
+This makes a menu of Content Elements on the selected pages for all Content Elements marked to Show In Section Menu. This is a great way to make an index at the top of the page.
+If you don't want certain Content Elements to appear in the list, just uncheck the Show in Section Menus checkbox for those elements.
+
+&lt;strong&gt;Recently updated pages&lt;/strong&gt;
+This displays the 10 most recently updated pages.
+&lt;strong&gt;Notice:&lt;/strong&gt; If you update a page and the updated page is not included in this list, clearing the Page Cache will resolve the issue.
+
+&lt;strong&gt;Related pages (based on keywords)&lt;/strong&gt;
+Displays other related pages based on the keywords of the selected pages matched against the keywords of other pages.</source>
+			<target state="final">هذا وصف قصير لكل نوع:
+
+&lt;strong&gt;قائمة بالصفحات المُحددة&lt;/strong&gt;
+سيؤدي هذا إلى إنشاء قائمة مع روابط للصفحات في قائمة الصفحات المُحددة.
+
+&lt;strong&gt;قائمة للصفحات الفرعية للصفحات المُختارة&lt;/strong&gt;
+سيؤدي هذا إلى إنشاء قائمة مع روابط للصفحات الفرعية للصفحات في قائمة الصفحات المختارة. إذا لم تقم بتحديد أي صفحة، سيتم استخدام الصفحات الفرعية كالصفحة الحالية.
+
+&lt;strong&gt;قائمة للصفحات الفرعية للصفحات المُختارة (مع مُلخّص)&lt;/strong&gt;
+مثل الخِيار السابق، ولكنه يعرض أيضاً محتوى حقل الخلاصة (أو حقل الوصف) لكل صفحة في القائمة. يتم إعطاء أولوية حقل الخلاصة على حقل الوصف إذا كان كلاهما مُكتملاً.
+
+&lt;strong&gt;قائمة الصفحات الفرعية للصفحات المُختارة + الأقسام&lt;/strong&gt;
+مثل الخِيار السابق، ولكن يتضمن روابط لجميع عناصر المحتوى في الصفحة التي تم وضع علامة عليها لعرضها في قوائم القسم.
+
+&lt;strong&gt;فهرس الموقع&lt;/strong&gt;
+يُنتج فهرس موقع شجرة كلاسيكية. لاحظ أن فهرس الموقع سيبدأ من الصفحة الحالية، إلا إذا قمت بتحديد صفحة أخرى بدلاً عنها.
+
+&lt;strong&gt;فهرس القسم (وضع علامة على محتوى الصفحات لقوائم الأقسام)&lt;/strong&gt;
+وهذا يجعل قائمة عناصر المحتوى على الصفحات المُحددة لجميع عناصر المحتوى المؤشر عليها لعرضها في قائمة القسم. هذه طريقة رائعة لعمل فهرس في الجزء العلوي من الصفحة.
+إذا كنت لا تريد أن تظهر عناصر محتوى مُعينة في القائمة، فقط قم بإلغاء تحديد العرض في مربع الاختيار لقسم القوائم لتلك العناصر.
+
+&lt;strong&gt;الصفحات التي تم تحديثها مؤخراً&lt;/strong&gt;
+وهذا يعرض الصفحات العشر التي تم تحديثها مؤخراً.
+&lt;strong&gt;إشعار:&lt;/strong&gt; إذا قمت بتحديث صفحة ولم يتم تضمين الصفحة المُحدثة في هذه القائمة، قم بمسح ذاكرة التخزين المؤقت للصفحة وسوف تُحل المشكلة.
+
+&lt;strong&gt;الصفحات ذات الصلة (استناداً إلى الكلمات المفتاحيّة)&lt;/strong&gt;
+تعرض صفحات أخرى ذات صلة استناداً إلى الكلمات المفتاحيّة للصفحات المُختارة مطابقة للكلمات المفتاحيّة للصفحات الأخرى.</target></trans-unit>
+      <trans-unit id="_menu_type.seeAlso" resname="_menu_type.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:pages,
+tt_content:sectionIndex</source>
+				
+			<target state="final">tt_content:pages,
+tt_content:sectionIndex</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="list_type.description" resname="list_type.description" approved="yes">
+        <source>Select a plugin to insert.</source>
+        <target state="final">حدد إضافة لإدخالها.</target>
+      </trans-unit>
+      <trans-unit id="list_type.details" resname="list_type.details" approved="yes">
+        <source>The list of plugins you can insert on a page. The available plugins depend on which extensions are installed.</source>
+        <target state="final">قائمة الإضافات التي يمكنك إدراجها في الصفحة. تعتمد الإضافات المُتاحة على الإضافات التي تم تثبيتها.</target>
+      </trans-unit>
+      <trans-unit id="_list_type.seeAlso" resname="_list_type.seeAlso" approved="yes">
+        <source>_MOD_tools_em</source>
+        <target state="final">_MOD_tools_em</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_list_type.image" resname="_list_type.image" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/ttcontent_7.png</source>
+        <target state="final">EXT:frontend/Resources/Public/Images/cshimages/ttcontent_7.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="media.description" resname="media.description" approved="yes">
+        <source>Files can be added to the list here.</source>
+        <target state="final">يُمكن إضافة الملفات إلى القائمة هنا.</target>
+      </trans-unit>
+      <trans-unit id="multimedia.description" resname="multimedia.description" approved="yes">
+        <source>Insert a multimedia element here (ex. Flash movie)</source>
+        <target state="final">إدراج عنصر الوسائط المتعددة هنا (مثلاً: فيديو)</target>
+      </trans-unit>
+      <trans-unit id="filelink_size.description" resname="filelink_size.description" approved="yes">
+        <source>Enable the display of file sizes.</source>
+        <target state="final">تفعيل عرض أحجام الملفات.</target>
+      </trans-unit>
+      <trans-unit id="records.description" resname="records.description" approved="yes">
+        <source>Insert records to be displayed on this page.</source>
+        <target state="final">إدراج السجلات التي سيتم عرضها في هذه الصفحة.</target>
+      </trans-unit>
+      <trans-unit id="sectionIndex.description" resname="sectionIndex.description" approved="yes">
+        <source>If set, the Content Element will appear in Section Menus.</source>
+        <target state="final">في حالة الضبط، سيظهر عنصر المحتوى في قسم القوائم.</target>
+      </trans-unit>
+      <trans-unit id="sectionIndex.details" resname="sectionIndex.details" approved="yes">
+        <source>See more details about Section Menus by clicking below.</source>
+        <target state="final">لمراجعة المزيد من التفاصيل حول قوائم القسم، انقر أدناه.</target>
+      </trans-unit>
+      <trans-unit id="linkToTop.description" resname="linkToTop.description" approved="yes">
+        <source>If checked, a small  "To Top" link will be added after the Content Element, linking back to the top of the page.</source>
+        <target state="final">إذا تم تحديده، سيتم إضافة رابط صغير "إلى الأعلى" بعد عنصر المحتوى، يمكنك من العودة إلى أعلى الصفحة.</target>
+      </trans-unit>
+      <trans-unit id="rte_enabled.description" resname="rte_enabled.description" approved="yes">
+        <source>If checked, the Rich Text Editor will be disabled for the "Text" and "Text &amp; Image" types (&lt;em&gt;in this Content Element only&lt;/em&gt;).</source>
+        <target state="final">إذا تم تحديده، سيتم تعطيل مُعالج النصوص لأنواع "النص" و "النص &amp; الصورة" (&lt;em&gt;في عنصر المحتوى هذا&lt;/em&gt; فقط).</target>
+      </trans-unit>
+      <trans-unit id="_rte_enabled.seeAlso" resname="_rte_enabled.seeAlso" approved="yes">
+        <source>tt_content:bodytext</source>
+        <target state="final">tt_content:bodytext</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="pi_flexform.description" resname="pi_flexform.description" approved="yes">
+        <source>Plugin Configuration</source>
+        <target state="final">تكوين الإضافة</target>
+      </trans-unit>
+      <trans-unit id="pi_flexform.details" resname="pi_flexform.details" approved="yes">
+        <source>Some plugins may provide configuration options, but the actual options vary based on the plugin. Behind the scenes, these are based on FlexForms and stored as XML.</source>
+        <target state="final">قد توفر بعض الإضافات خيارات الإعداد، ولكن الخيارات الفعلية تختلف استناداً إلى الإضافة. خلف الكواليس، هذه تعتمد على FlexForms وتخزينها كـ XML.</target>
+      </trans-unit>
+      <trans-unit id="_pi_flexform.seeAlso" resname="_pi_flexform.seeAlso" approved="yes">
+        <source>tt_content:list_type</source>
+        <target state="final">tt_content:list_type</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
