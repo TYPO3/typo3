@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf" date="2012-10-17T17:55:17Z" product-name="local lang" target-language="t3">
+    <header/>
+    <body>
+      <!-- sys_file_metadata fields -->
+      <trans-unit id="sys_file_metadata.visible" resname="sys_file_metadata.visible">
+        <source>Visible</source>
+        <target>crwdns218574:0crwdne218574:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.status" resname="sys_file_metadata.status">
+        <source>Status</source>
+        <target>crwdns218576:0crwdne218576:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.status.1" resname="sys_file_metadata.status.1">
+        <source>Ok</source>
+        <target>crwdns218578:0crwdne218578:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.status.2" resname="sys_file_metadata.status.2">
+        <source>Pending</source>
+        <target>crwdns218580:0crwdne218580:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.status.3" resname="sys_file_metadata.status.3">
+        <source>Under review</source>
+        <target>crwdns218582:0crwdne218582:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.keywords" resname="sys_file_metadata.keywords">
+        <source>Keywords</source>
+        <target>crwdns218584:0crwdne218584:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.caption" resname="sys_file_metadata.caption">
+        <source>Caption</source>
+        <target>crwdns218586:0crwdne218586:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.creator_tool" resname="sys_file_metadata.creator_tool">
+        <source>Creator Tool</source>
+        <target>crwdns218588:0crwdne218588:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.download_name" resname="sys_file_metadata.download_name">
+        <source>Download Name</source>
+        <target>crwdns218590:0crwdne218590:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.creator" resname="sys_file_metadata.creator">
+        <source>Creator</source>
+        <target>crwdns218592:0crwdne218592:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.publisher" resname="sys_file_metadata.publisher">
+        <source>Publisher</source>
+        <target>crwdns218594:0crwdne218594:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.source" resname="sys_file_metadata.source">
+        <source>Source</source>
+        <target>crwdns218596:0crwdne218596:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.copyright" resname="sys_file_metadata.copyright">
+        <source>Copyright</source>
+        <target>crwdns218598:0crwdne218598:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.location_country" resname="sys_file_metadata.location_country">
+        <source>Country</source>
+        <target>crwdns218600:0crwdne218600:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.location_region" resname="sys_file_metadata.location_region">
+        <source>Region</source>
+        <target>crwdns218602:0crwdne218602:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.location_city" resname="sys_file_metadata.location_city">
+        <source>City</source>
+        <target>crwdns218604:0crwdne218604:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.latitude" resname="sys_file_metadata.latitude">
+        <source>Latitude</source>
+        <target>crwdns218606:0crwdne218606:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.longitude" resname="sys_file_metadata.longitude">
+        <source>Longitude</source>
+        <target>crwdns218608:0crwdne218608:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.ranking" resname="sys_file_metadata.ranking">
+        <source>Ranking</source>
+        <target>crwdns218610:0crwdne218610:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.content_creation_date" resname="sys_file_metadata.content_creation_date">
+        <source>Content Creation Date</source>
+        <target>crwdns218612:0crwdne218612:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.content_modification_date" resname="sys_file_metadata.content_modification_date">
+        <source>Content Modification Date</source>
+        <target>crwdns218614:0crwdne218614:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.note" resname="sys_file_metadata.note">
+        <source>Note</source>
+        <target>crwdns218616:0crwdne218616:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.unit" resname="sys_file_metadata.unit">
+        <source>Unit</source>
+        <target>crwdns218618:0crwdne218618:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.unit.px" resname="sys_file_metadata.unit.px">
+        <source>Pixels</source>
+        <target>crwdns218620:0crwdne218620:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.unit.cm" resname="sys_file_metadata.unit.cm">
+        <source>Centimeters</source>
+        <target>crwdns218622:0crwdne218622:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.unit.in" resname="sys_file_metadata.unit.in">
+        <source>Inches</source>
+        <target>crwdns218624:0crwdne218624:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.unit.mm" resname="sys_file_metadata.unit.mm">
+        <source>Millimeters</source>
+        <target>crwdns218626:0crwdne218626:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.unit.m" resname="sys_file_metadata.unit.m">
+        <source>Meters</source>
+        <target>crwdns218628:0crwdne218628:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.unit.p" resname="sys_file_metadata.unit.p">
+        <source>Picas</source>
+        <target>crwdns218630:0crwdne218630:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.unit.pt" resname="sys_file_metadata.unit.pt">
+        <source>Points</source>
+        <target>crwdns218632:0crwdne218632:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.duration" resname="sys_file_metadata.duration">
+        <source>Duration (in seconds)</source>
+        <target>crwdns218634:0crwdne218634:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.color_space" resname="sys_file_metadata.color_space">
+        <source>Color Space</source>
+        <target>crwdns218636:0crwdne218636:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.color_space.RGB" resname="sys_file_metadata.color_space.RGB">
+        <source>RGB</source>
+        <target>crwdns218638:0crwdne218638:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.color_space.sRGB" resname="sys_file_metadata.color_space.sRGB">
+        <source>sRGB</source>
+        <target>crwdns218640:0crwdne218640:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.color_space.CMYK" resname="sys_file_metadata.color_space.CMYK">
+        <source>CMYK</source>
+        <target>crwdns218642:0crwdne218642:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.color_space.CMY" resname="sys_file_metadata.color_space.CMY">
+        <source>CMY</source>
+        <target>crwdns218644:0crwdne218644:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.color_space.YUV" resname="sys_file_metadata.color_space.YUV">
+        <source>YUV</source>
+        <target>crwdns218646:0crwdne218646:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.color_space.grey" resname="sys_file_metadata.color_space.grey">
+        <source>Grey</source>
+        <target>crwdns218648:0crwdne218648:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.color_space.indx" resname="sys_file_metadata.color_space.indx">
+        <source>Indexed</source>
+        <target>crwdns218650:0crwdne218650:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.pages" resname="sys_file_metadata.pages">
+        <source>Number of Pages</source>
+        <target>crwdns218652:0crwdne218652:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.language" resname="sys_file_metadata.language">
+        <source>File Language</source>
+        <target>crwdns218654:0crwdne218654:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.fe_groups" resname="sys_file_metadata.fe_groups">
+        <source>Frontend Permission</source>
+        <target>crwdns218656:0crwdne218656:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.width" resname="sys_file_metadata.width">
+        <source>Width</source>
+        <target>crwdns218658:0crwdne218658:0</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.height" resname="sys_file_metadata.height">
+        <source>Height</source>
+        <target>crwdns218660:0crwdne218660:0</target>
+      </trans-unit>
+      <!-- sys_file_metadata tabs -->
+      <trans-unit id="tabs.metadata" resname="tabs.metadata">
+        <source>Metadata</source>
+        <target>crwdns218662:0crwdne218662:0</target>
+      </trans-unit>
+      <trans-unit id="tabs.camera" resname="tabs.camera">
+        <source>Camera Data</source>
+        <target>crwdns218664:0crwdne218664:0</target>
+      </trans-unit>
+      <trans-unit id="tabs.audio" resname="tabs.audio">
+        <source>Audio</source>
+        <target>crwdns218666:0crwdne218666:0</target>
+      </trans-unit>
+      <trans-unit id="tabs.video" resname="tabs.video">
+        <source>Video</source>
+        <target>crwdns218668:0crwdne218668:0</target>
+      </trans-unit>
+      <!-- sys_file_metadata placeholder -->
+      <trans-unit id="placeholder.keywords" resname="placeholder.keywords">
+        <source>Keyword #1, keyword #2, ...</source>
+        <target>crwdns218670:0crwdne218670:0</target>
+      </trans-unit>
+      <!-- sys_file_metadata palette -->
+      <trans-unit id="palette.metrics" resname="palette.metrics">
+        <source>Metrics</source>
+        <target>crwdns218672:0crwdne218672:0</target>
+      </trans-unit>
+      <trans-unit id="palette.geo_location" resname="palette.geo_location">
+        <source>Geo Location</source>
+        <target>crwdns218674:0crwdne218674:0</target>
+      </trans-unit>
+      <trans-unit id="palette.visibility" resname="palette.visibility">
+        <source>Visibility</source>
+        <target>crwdns218676:0crwdne218676:0</target>
+      </trans-unit>
+      <trans-unit id="palette.content_date" resname="palette.content_date">
+        <source>Content Date</source>
+        <target>crwdns218678:0crwdne218678:0</target>
+      </trans-unit>
+      <trans-unit id="palette.accessibility" resname="palette.accessibility">
+        <source>Accessibility</source>
+        <target>crwdns218680:0crwdne218680:0</target>
+      </trans-unit>
+      <trans-unit id="palette.gps" resname="palette.gps">
+        <source>GPS</source>
+        <target>crwdns218682:0crwdne218682:0</target>
+      </trans-unit>
+      <!-- fe_groups fields -->
+      <trans-unit id="fe_groups.files" resname="fe_groups.files">
+        <source>Allowed files</source>
+        <target>crwdns218684:0crwdne218684:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
