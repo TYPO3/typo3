@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:t3editor/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="t3editor" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="deactivate" resname="deactivate">
+        <source>Deactivate t3editor</source>
+        <target>crwdns108434:0crwdne108434:0</target>
+      </trans-unit>
+      <trans-unit id="template" resname="template">
+        <source>Template</source>
+        <target>crwdns108436:0crwdne108436:0</target>
+      </trans-unit>
+      <trans-unit id="file" resname="file">
+        <source>File</source>
+        <target>crwdns108438:0crwdne108438:0</target>
+      </trans-unit>
+      <trans-unit id="delimiter" resname="delimiter">
+        <source/>
+      </trans-unit>
+      <trans-unit id="constants" resname="constants">
+        <source>Constants</source>
+        <target>crwdns108440:0crwdne108440:0</target>
+      </trans-unit>
+      <trans-unit id="setup" resname="setup">
+        <source>Setup</source>
+        <target>crwdns108442:0crwdne108442:0</target>
+      </trans-unit>
+      <trans-unit id="unknownContentType" resname="unknownContentType">
+        <source>Unknown content type</source>
+        <target>crwdns108444:0crwdne108444:0</target>
+      </trans-unit>
+      <trans-unit id="pageIDInteger" resname="pageIDInteger">
+        <source>Syntax error: Parameter pageID must be a valid integer.</source>
+        <target>crwdns108446:0crwdne108446:0</target>
+      </trans-unit>
+      <trans-unit id="noPermission" resname="noPermission">
+        <source>Access denied: No permission to template records.</source>
+        <target>crwdns108448:0crwdne108448:0</target>
+      </trans-unit>
+      <trans-unit id="typeIDMissing" resname="typeIDMissing">
+        <source>Syntax error: At least parameter typeID has to be supplied.</source>
+        <target>crwdns108450:0crwdne108450:0</target>
+      </trans-unit>
+      <trans-unit id="js.label_lines" resname="js.label_lines">
+        <source>lines</source>
+        <target>crwdns108452:0crwdne108452:0</target>
+      </trans-unit>
+      <trans-unit id="js.label_documentModified" resname="js.label_documentModified">
+        <source>document has been modified</source>
+        <target>crwdns108454:0crwdne108454:0</target>
+      </trans-unit>
+      <trans-unit id="js.label_errorWhileSaving" resname="js.label_errorWhileSaving">
+        <source>An error occurred while saving the data.</source>
+        <target>crwdns108456:0crwdne108456:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
