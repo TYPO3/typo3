@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:reports/Resources/Private/Language/locallang_reports.xlf" date="2011-10-17T20:22:35Z" product-name="reports" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="status_report_title" resname="status_report_title" approved="yes">
+        <source>Status Report</source>
+        <target state="final">Statusbericht</target>
+      </trans-unit>
+      <trans-unit id="status_report_description" resname="status_report_description" approved="yes">
+        <source>Get a status report about your site's operation and any detected problems.</source>
+        <target state="final">Erhalten Sie einen Statusbericht über Ihre Website und erkannte Probleme.</target>
+      </trans-unit>
+      <trans-unit id="status_report_explanation" resname="status_report_explanation" approved="yes">
+        <source>Here you can find a short overview of your site's parameters as well as any problems detected with your installation. It may be useful to copy and paste this information into support requests filed on TYPO3's support mailinglists and project issue trackers.</source>
+        <target state="final">Hier finden Sie eine kurze Übersicht über die Parameter der Website sowie in der Installation festgestellte Probleme. Diese Informationen können für Support-Anfragen in den TYPO3-Mailinglisten und -Bugtrackern hilfreich sein.</target>
+      </trans-unit>
+      <trans-unit id="status_ok" resname="status_ok" approved="yes">
+        <source>OK</source>
+        <target state="final">OK</target>
+      </trans-unit>
+      <trans-unit id="status_wrongValue" resname="status_wrongValue" approved="yes">
+        <source>Wrong value detected</source>
+        <target state="final">Falscher Wert festgestellt</target>
+      </trans-unit>
+      <trans-unit id="status_info" resname="status_info" approved="yes">
+        <source>Information</source>
+        <target state="final">Information</target>
+      </trans-unit>
+      <trans-unit id="status_insecure" resname="status_insecure" approved="yes">
+        <source>Insecure</source>
+        <target state="final">Unsicher</target>
+      </trans-unit>
+      <trans-unit id="status_disabled" resname="status_disabled" approved="yes">
+        <source>Disabled</source>
+        <target state="final">Deaktiviert</target>
+      </trans-unit>
+      <trans-unit id="status_enabled" resname="status_enabled" approved="yes">
+        <source>Enabled</source>
+        <target state="final">Aktiviert</target>
+      </trans-unit>
+      <trans-unit id="status_enabledPermanently" resname="status_enabledPermanently" approved="yes">
+        <source>Enabled permanently</source>
+        <target state="final">Dauerhaft aktiviert</target>
+      </trans-unit>
+      <trans-unit id="status_enabledTemporarily" resname="status_enabledTemporarily" approved="yes">
+        <source>Enabled temporarily</source>
+        <target state="final">Temporär aktiviert</target>
+      </trans-unit>
+      <trans-unit id="status_empty" resname="status_empty" approved="yes">
+        <source>Empty</source>
+        <target state="final">Leer</target>
+      </trans-unit>
+      <trans-unit id="status_none" resname="status_none" approved="yes">
+        <source>None</source>
+        <target state="final">Keine</target>
+      </trans-unit>
+      <trans-unit id="status_connectionFailed" resname="status_connectionFailed" approved="yes">
+        <source>Connection Failed</source>
+        <target state="final">Verbindung fehlgeschlagen</target>
+      </trans-unit>
+      <trans-unit id="status_checkFailed" resname="status_checkFailed" approved="yes">
+        <source>Check Failed</source>
+        <target state="final">Überprüfung fehlgeschlagen</target>
+      </trans-unit>
+      <trans-unit id="status_updateComplete" resname="status_updateComplete" approved="yes">
+        <source>Update Complete</source>
+        <target state="final">Aktualisierung vollständig</target>
+      </trans-unit>
+      <trans-unit id="status_updateIncomplete" resname="status_updateIncomplete" approved="yes">
+        <source>Update Incomplete</source>
+        <target state="final">Aktualisierung nicht vollständig</target>
+      </trans-unit>
+      <trans-unit id="status_problemNotification" resname="status_problemNotification" approved="yes">
+        <source>One or more problems were detected with your TYPO3 installation. Please check the %sstatus report%s for more information.</source>
+        <target state="final">Ein oder mehrere Probleme wurden in Ihrer TYPO3-Installation festgestellt. Bitte prüfen Sie den %sStatusbericht%s für mehr Informationen.</target>
+      </trans-unit>
+      <trans-unit id="status_allNotification" resname="status_allNotification" approved="yes">
+        <source>This report contains all System Status Notifications from your TYPO3 installation. Please check the %sstatus report%s for more information.</source>
+        <target state="final">Dieser Bericht umfasst alle Systemstatusbenachrichtigungen Ihrer TYPO3-Installation. Bitte prüfen Sie den %sStatusbericht%s für mehr Informationen.</target>
+      </trans-unit>
+      <trans-unit id="status_typo3" resname="status_typo3" approved="yes">
+        <source>TYPO3 System</source>
+        <target state="final">TYPO3-System</target>
+      </trans-unit>
+      <trans-unit id="status_system" resname="status_system" approved="yes">
+        <source>System</source>
+        <target state="final">System</target>
+      </trans-unit>
+      <trans-unit id="status_security" resname="status_security" approved="yes">
+        <source>Security</source>
+        <target state="final">Sicherheit</target>
+      </trans-unit>
+      <trans-unit id="status_configuration" resname="status_configuration" approved="yes">
+        <source>Configuration</source>
+        <target state="final">Konfiguration</target>
+      </trans-unit>
+      <trans-unit id="status_referenceIndex" resname="status_referenceIndex" approved="yes">
+        <source>Reference Index</source>
+        <target state="final">Referenz-Index</target>
+      </trans-unit>
+      <trans-unit id="status_fal" resname="status_fal" approved="yes">
+        <source>File Abstraction Layer</source>
+        <target state="final">Dateiabstraktionsschicht</target>
+      </trans-unit>
+      <trans-unit id="status_missingFiles" resname="status_missingFiles" approved="yes">
+        <source>Files flagged as missing</source>
+        <target state="final">Als fehlend markierte Dateien</target>
+      </trans-unit>
+      <trans-unit id="status_missingFilesCount" resname="status_missingFilesCount" approved="yes">
+        <source>%1$s files</source>
+        <target state="final">%1$s Dateien</target>
+      </trans-unit>
+      <trans-unit id="status_missingFilesMessage" resname="status_missingFilesMessage" approved="yes">
+        <source>These files are flagged as missing. Restore the files and run the indexer to reset the missing flag.</source>
+        <target state="final">Diese Dateien sind als fehlend markiert. Stellen Sie die Dateien wieder her und führen Sie den Indexierer aus, um die Markierung zurückzusetzen.</target>
+      </trans-unit>
+      <trans-unit id="status_memcachedConfiguration" resname="status_memcachedConfiguration" approved="yes">
+        <source>Memcached Configuration</source>
+        <target state="final">Memcached-Konfiguration</target>
+      </trans-unit>
+      <trans-unit id="status_PhpSafeMode" resname="status_PhpSafeMode" approved="yes">
+        <source>PHP safe_mode</source>
+        <target state="final">PHP-Safe-Mode</target>
+      </trans-unit>
+      <trans-unit id="status_PhpMagicQuotesGpc" resname="status_PhpMagicQuotesGpc" approved="yes">
+        <source>PHP magic_quotes_gpc</source>
+        <target state="final">PHP: magic_quotes_gpc</target>
+      </trans-unit>
+      <trans-unit id="status_CreatedFilePermissions" resname="status_CreatedFilePermissions" approved="yes">
+        <source>Permissions of created files</source>
+        <target state="final">Berechtigungen für erstellte Dateien</target>
+      </trans-unit>
+      <trans-unit id="status_CreatedFilePermissions.writable" resname="status_CreatedFilePermissions.writable" approved="yes">
+        <source>Files created by TYPO3 are configured to be world writable. Depending on your server configuration, this can be a security risk. It is usually better to configure the create mask to not allow writing to files by "others". A sane default is often '0660' for $GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask']. This can be set in the install tool.</source>
+        <target state="final">Durch TYPO3 erstellte Dateien sind für jeden schreibbar konfiguriert. Abhängig von Ihrer Serverkonfiguration kann dies ein Sicherheitsrisiko darstellen. Es ist üblicherweise besser, das Schreiben von Dateien nicht für "jeden" zu erlauben. Eine sinnvolle Standardeinstellung ist oft '0660' für $GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask']. Dies kann im Install-Tool eingestellt werden.</target>
+      </trans-unit>
+      <trans-unit id="status_CreatedDirectoryPermissions" resname="status_CreatedDirectoryPermissions" approved="yes">
+        <source>Permissions of created directories</source>
+        <target state="final">Berechtigungen für erstellte Verzeichnisse</target>
+      </trans-unit>
+      <trans-unit id="status_CreatedDirectoryPermissions.writable" resname="status_CreatedDirectoryPermissions.writable" approved="yes">
+        <source>Directories created by TYPO3 are configured to be world writable. Depending on your server configuration, this can be a security risk. It is usually better to configure the create mask to not allow writing to directories by "others". A sane default is often '2770' for $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask']. This can be set in the install tool.</source>
+        <target state="final">Durch TYPO3 erstellte Verzeichnisse sind für jeden schreibbar konfiguriert. Abhängig von Ihrer Serverkonfiguration kann dies ein Sicherheitsrisiko darstellen. Es ist üblicherweise besser, das Schreiben in Verzeichnisse durch "jeden" nicht zu erlauben. Eine sinnvolle Standardeinstellung ist oft '2770' für $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask']. Dies kann im Install-Tool eingestellt werden.</target>
+      </trans-unit>
+      <trans-unit id="status_MysqlDatabaseCharacterSet" resname="status_MysqlDatabaseCharacterSet" approved="yes">
+        <source>MySQL Database Character Set</source>
+        <target state="final">Zeichensatz der MySQL-Datenbank</target>
+      </trans-unit>
+      <trans-unit id="status_MysqlDatabaseCharacterSet_CheckFailed" resname="status_MysqlDatabaseCharacterSet_CheckFailed" approved="yes">
+        <source>Checking database character set failed, got key "%1$s" instead of "character_set_database"</source>
+        <target state="final">Überprüfung des Zeichensatzes fehlgeschlagen, Ergebnis war "%1$s" anstelle von "character_set_database"</target>
+      </trans-unit>
+      <trans-unit id="status_MysqlDatabaseCharacterSet_Unsupported" resname="status_MysqlDatabaseCharacterSet_Unsupported" approved="yes">
+        <source>Your default database uses character set "%1$s", but only "utf8", "utf8mb3" or "utf8mb4" is supported with TYPO3.</source>
+        <target state="final">Ihre Standard-Datenbank verwendet den Zeichensatz "%1$s", aber TYPO3 unterstützt nur "utf8", "utf8mb3" oder "utf8mb4".</target>
+      </trans-unit>
+      <trans-unit id="status_MysqlDatabaseCharacterSet_Ok" resname="status_MysqlDatabaseCharacterSet_Ok" approved="yes">
+        <source>Your default database uses utf-8. All good.</source>
+        <target state="final">Ihre Standard-Datenbank verwendet utf-8. Das ist gut so.</target>
+      </trans-unit>
+      <trans-unit id="status_MysqlDatabaseCharacterSet_Info" resname="status_MysqlDatabaseCharacterSet_Info" approved="yes">
+        <source>Your default database uses a different charset, but all tables uses utf-8. All good. But consider fixing your database collation and check the table creation settings.</source>
+        <target state="final">Ihre Standarddatenbank verwendet einen anderen Zeichensatz, aber alle Tabellen nutzen utf8. Das ist soweit OK. Erwägen Sie aber, die Kollation der Datenbank zu korrigieren und die Einstellungen zum Erstellen neuer Tabellen zu überprüfen.</target>
+      </trans-unit>
+      <trans-unit id="status_MysqlDatabaseCharacterSet_MixedCollations" resname="status_MysqlDatabaseCharacterSet_MixedCollations" approved="yes">
+        <source>Your default database is set to create tables with character set "%1$s", but contains tables or columns with different collations. Please fix these tables to avoid "illegal mix of collations" errors.</source>
+        <target state="final">Ihre Standarddatenbank ist so eingestellt, dass sie Tabellen mit dem Zeichensatz "%1$s" erzeugt. Sie enthält aber Tabellen oder Spalten mit anderen Kollationen. Bitte korrigieren Sie diese Tabellen, um Fehler der Typs "illegal mix of collations" zu vermeiden.</target>
+      </trans-unit>
+      <trans-unit id="status_encryptedConnectionStatus" resname="status_encryptedConnectionStatus" approved="yes">
+        <source>Encrypted backend connection (HTTPS)</source>
+        <target state="final">Verschlüsselte Backendverbindung (HTTPS)</target>
+      </trans-unit>
+      <trans-unit id="status_encryptedConnectionStatus_insecure" resname="status_encryptedConnectionStatus_insecure" approved="yes">
+        <source>Your backend access is not secured using HTTPS but relies on HTTP which sends all your data (including login passwords) over an insecure connection. All modern web sites should rely on HTTPS and only sites secured differently, for instance some intranet installations may use HTTP only.</source>
+        <target state="final">Der Zugriff auf Ihr Backend ist nicht durch HTTPS abgesichert, sondern basiert auf HTTP, so dass Ihre Daten (inklusive Login-Passwörtern) über eine unsichere Verbindung gesendet werden. Alle modernen Websites sollten HTTPS verwenden; nur Seiten, die anderweitig abgesichert sind, z.B. einige Intranet-Installationen, sollten HTTP verwenden.</target>
+      </trans-unit>
+      <trans-unit id="status_lockSslStatus" resname="status_lockSslStatus" approved="yes">
+        <source>Backend only accessible through HTTPS</source>
+        <target state="final">Zugriff auf Backend nur durch HTTPS-Verschlüsselung</target>
+      </trans-unit>
+      <trans-unit id="status_lockSslStatus_insecure" resname="status_lockSslStatus_insecure" approved="yes">
+        <source><![CDATA[It is highly recommended to activate the option (<code>$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL']</code>).]]></source>
+        <target state="final"><![CDATA[Es wird in hohem Maße empfohlen, die Option (&lt;code&gt;$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL']&lt;/code&gt;) zu aktivieren.]]></target>
+      </trans-unit>
+      <trans-unit id="status_trustedHostsPattern" resname="status_trustedHostsPattern" approved="yes">
+        <source>Trusted Hosts Pattern</source>
+        <target state="final">Muster vertrauenswürdiger Domains</target>
+      </trans-unit>
+      <trans-unit id="status_adminUserAccount" resname="status_adminUserAccount" approved="yes">
+        <source>Admin User Account</source>
+        <target state="final">Admin-Benutzerkonten</target>
+      </trans-unit>
+      <trans-unit id="status_encryptionKey" resname="status_encryptionKey" approved="yes">
+        <source>Encryption Key</source>
+        <target state="final">Verschlüsselungsschlüssel</target>
+      </trans-unit>
+      <trans-unit id="status_fileDenyPattern" resname="status_fileDenyPattern" approved="yes">
+        <source>File Deny Pattern</source>
+        <target state="final">Dateiverweigerungsmuster</target>
+      </trans-unit>
+      <trans-unit id="status_htaccessUploadProtection" resname="status_htaccessUploadProtection" approved="yes">
+        <source>.htaccess Upload Protection</source>
+        <target state="final">.htaccess-Hochladeschutz</target>
+      </trans-unit>
+      <trans-unit id="status_exceptionHandler" resname="status_exceptionHandler" approved="yes">
+        <source>Exception Handler / Error Reporting</source>
+        <target state="final">Ausnahmebehandlung / Fehlerbericht</target>
+      </trans-unit>
+      <trans-unit id="status_exportedFiles" resname="status_exportedFiles" approved="yes">
+        <source>XML/T3D export files</source>
+        <target state="final">XML/T3D Exportdateien</target>
+      </trans-unit>
+      <trans-unit id="status_exceptionHandler_warningMessage" resname="status_exceptionHandler_warningMessage" approved="yes">
+        <source>Display Errors is set to 1 - errors will be displayed with the DebugExceptionHandler including stack traces.</source>
+        <target state="final">'Display Errors' ist auf 1 gesetzt - Fehler werden mit dem DebugExceptionHandler inklusive Stack-Traces angezeigt.</target>
+      </trans-unit>
+      <trans-unit id="status_exceptionHandler_errorMessage" resname="status_exceptionHandler_errorMessage" approved="yes">
+        <source>Debug Exception Handler enabled in Production Context - will show full error messages including stack traces.</source>
+        <target state="final">Debug Exception Handler aktiviert in Production-Kontext - zeigt volle Fehlermeldungen inklusive Stack-Tracks.</target>
+      </trans-unit>
+      <trans-unit id="status_exportedFiles_warningMessage" resname="status_exportedFiles_warningMessage" approved="yes">
+        <source>The following exported files were found:</source>
+        <target state="final">Die folgenden exportierten Dateien wurden gefunden:</target>
+      </trans-unit>
+      <trans-unit id="status_exportedFiles_warningRecommendation" resname="status_exportedFiles_warningRecommendation" approved="yes">
+        <source>It is recommended to delete exported files to avoid possible disclosure of exported data to backend users with lower/different access rights than user(s) who originally created the export(s).</source>
+        <target state="final">Es wird empfohlen, exportierte Dateien zu löschen, um zu verhindern, dass Backend-Benutzer mit niedrigeren/anderen Zugriffsrechten als die exportierenden Benutzer Zugriff darauf erhalten können.</target>
+      </trans-unit>
+      <trans-unit id="status_installToolPassword" resname="status_installToolPassword" approved="yes">
+        <source>Install Tool Password</source>
+        <target state="final">Passwort für das Installations-Tool</target>
+      </trans-unit>
+      <trans-unit id="status_installTool" resname="status_installTool" approved="yes">
+        <source>Install Tool</source>
+        <target state="final">Installations-Tool</target>
+      </trans-unit>
+      <trans-unit id="status_phpVersion" resname="status_phpVersion" approved="yes">
+        <source>PHP Version</source>
+        <target state="final">PHP-Version</target>
+      </trans-unit>
+      <trans-unit id="status_phpTooOld" resname="status_phpTooOld" approved="yes">
+        <source>Your PHP installation is too old.</source>
+        <target state="final">Ihre PHP-Version ist zu alt.</target>
+      </trans-unit>
+      <trans-unit id="status_phpMemory" resname="status_phpMemory" approved="yes">
+        <source>PHP Memory Limit</source>
+        <target state="final">PHP-Memory-Limit</target>
+      </trans-unit>
+      <trans-unit id="status_phpMemoryRecommendation" resname="status_phpMemoryRecommendation" approved="yes">
+        <source>Depending on your configuration, TYPO3 can run with a %1$s PHP memory limit. However, a %2$s PHP memory limit or above is recommended, especially if your site uses additional extensions.</source>
+        <target state="final">Je nachdem, wie Sie TYPO3 konfiguriert haben, kann TYPO3 mit einem PHP-Memory-Limit von %1$s laufen. Trotzdem wird ein Memory-Limit von mindestens %2$s empfohlen, besonders wenn Ihre Seite zahlreiche Erweiterungen benutzt.</target>
+      </trans-unit>
+      <trans-unit id="status_phpMemoryRequirement" resname="status_phpMemoryRequirement" approved="yes">
+        <source>Depending on your configuration, TYPO3 can run with a %1$s PHP memory limit. However, a %2$s PHP memory limit or above is required especially if your site uses additional extensions.</source>
+        <target state="final">Je nachdem, wie Sie TYPO3 konfiguriert haben, kann TYPO3 mit einem PHP-Memory-Limit von %1$s laufen. Trotzdem wird ein Memory-Limit von mindestens %2$s benötigt, besonders wenn Ihre Seite zahlreiche Erweiterungen benutzt.</target>
+      </trans-unit>
+      <trans-unit id="status_phpMemoryEditLimit" resname="status_phpMemoryEditLimit" approved="yes">
+        <source>Increase the memory limit by editing the memory_limit parameter in the file %s and then restart your web server (or contact your system administrator or hosting provider for assistance).</source>
+        <target state="final">Erhöhen Sie das Memory-Limit, indem Sie den Parameter "memory_limit" in der Datei %s bearbeiten und Ihren Webserver dann neustarten. Alternativ fragen Sie Ihren Systemadministrator oder Hosting-Provider um Hilfe.</target>
+      </trans-unit>
+      <trans-unit id="status_phpMemoryContactAdmin" resname="status_phpMemoryContactAdmin" approved="yes">
+        <source>Contact your system administrator or hosting provider for assistance with increasing your PHP memory limit.</source>
+        <target state="final">Fragen Sie Ihren Systemadministrator oder Hosting-Provider um Hilfe, um das Memory-Limit zu erhöhen.</target>
+      </trans-unit>
+      <trans-unit id="status_phpMemoryUnlimited" resname="status_phpMemoryUnlimited" approved="yes">
+        <source>unlimited</source>
+        <target state="final">unbegrenzt</target>
+      </trans-unit>
+      <trans-unit id="status_phpPeakMemory" resname="status_phpPeakMemory" approved="yes">
+        <source>PHP peak memory usage</source>
+        <target state="final">PHP: Höchste Speichernutzung</target>
+      </trans-unit>
+      <trans-unit id="status_phpPeakMemoryTooHigh" resname="status_phpPeakMemoryTooHigh" approved="yes">
+        <source>During a request %2$s of the memory limit was used. On %4$s a request to %5$s used %1$s of %3$s.</source>
+        <target state="final">Während einer Anfrage wurden %2$s des Memory-Limits genutzt. Am %4$s nutzte eine Anfrage an %5$s %1$s von %3$s.</target>
+      </trans-unit>
+      <trans-unit id="status_phpPeakMemoryClearFlag" resname="status_phpPeakMemoryClearFlag" approved="yes">
+        <source>Clear this flag</source>
+        <target state="final">Diese Option zurücksetzen</target>
+      </trans-unit>
+      <trans-unit id="status_phpRegisterGlobals" resname="status_phpRegisterGlobals" approved="yes">
+        <source>PHP Register Globals</source>
+        <target state="final">PHP: Register Globals</target>
+      </trans-unit>
+      <trans-unit id="status_phpRegisterGlobalsEnabled" resname="status_phpRegisterGlobalsEnabled" approved="yes">
+        <source>%s is enabled. TYPO3 requires this configuration directive to be disabled.</source>
+        <target state="final">%s ist aktiviert. Sie müssen diese Einstellung deaktivieren, damit TYPO3 ordnungsgemäß funktioniert.</target>
+      </trans-unit>
+      <trans-unit id="status_phpRegisterGlobalsSecurity" resname="status_phpRegisterGlobalsSecurity" approved="yes">
+        <source>Your site may not be secure when %s is enabled.</source>
+        <target state="final">Ihre Seite ist potenziell unsicher, wenn %s aktiviert ist.</target>
+      </trans-unit>
+      <trans-unit id="status_phpRegisterGlobalsHowToChange" resname="status_phpRegisterGlobalsHowToChange" approved="yes">
+        <source>how to change configuration settings</source>
+        <target state="final">Wie Sie diese Konfigurationseinstellungen ändern</target>
+      </trans-unit>
+      <trans-unit id="status_phpRegisterGlobalsPHPManual" resname="status_phpRegisterGlobalsPHPManual" approved="yes">
+        <source>The PHP manual has instructions for %s.</source>
+        <target state="final">Das PHP-Handbuch enthält weitere Anweisungen für %s.</target>
+      </trans-unit>
+      <trans-unit id="status_webServer" resname="status_webServer" approved="yes">
+        <source>Web Server</source>
+        <target state="final">Webserver</target>
+      </trans-unit>
+      <trans-unit id="status_webServer_infoText" resname="status_webServer_infoText" approved="yes">
+        <source>For your Web Server some notifications have been found</source>
+        <target state="final">Für Ihren Webserver wurden einige Benachrichtigungen gefunden:</target>
+      </trans-unit>
+      <trans-unit id="status_webServer_threadStackSize" resname="status_webServer_threadStackSize" xml:space="preserve" approved="yes">
+				<source><![CDATA[Fluid uses complex regular expressions which require a lot of stack space during the first processing.
+On Windows the default stack size for Apache is a lot smaller than on unix.
+You can increase the size to 8MB (default on unix) by adding to the httpd.conf:
+<br />&lt;IfModule mpm_winnt_module&gt;
+<br />ThreadStackSize 8388608
+<br />&lt;/IfModule&gt;
+<br />Restart Apache after this change.]]></source>
+			<target state="final"><![CDATA[Fluid nutzt komplexe Reguläre Ausdrücke, die bei der erstmaligen Verarbeitung viel Platz auf dem Stapel erfordern.
+Unter Windows ist die Standard-Größe des Stapels für Apache deutlich keliner als unter Unix.
+Sie können die Stapel-Größe auf 8MB (Standard unter Unix) erhöhen, indem Sie zur httpd.conf folgendes hinzufügen:
+&lt;br /&gt;&amp;lt;IfModule mpm_winnt_module&amp;gt;
+&lt;br /&gt;ThreadStackSize 8388608
+&lt;br /&gt;&amp;lt;/IfModule&amp;gt;
+&lt;br /&gt;Starten Sie Apache nach dieser Änderung neu.]]></target></trans-unit>
+      <trans-unit id="status_phpModules" resname="status_phpModules" approved="yes">
+        <source>PHP Modules</source>
+        <target state="final">PHP-Module</target>
+      </trans-unit>
+      <trans-unit id="status_phpModulesMissing" resname="status_phpModulesMissing" approved="yes">
+        <source>One or more modules are missing.</source>
+        <target state="final">Es fehlen ein oder mehrere Module</target>
+      </trans-unit>
+      <trans-unit id="status_phpModulesList" resname="status_phpModulesList" approved="yes">
+        <source>The following PHP module(s) is/are missing: %s.</source>
+        <target state="final">Es fehlen nachfolgende PHP Module: %s.</target>
+      </trans-unit>
+      <trans-unit id="status_phpModulesInfo" resname="status_phpModulesInfo" approved="yes">
+        <source>You need to install and enable these modules to let TYPO3 function correctly.</source>
+        <target state="final">Diese Module müssen installiert und aktiviert sein, damit TYPO3 korrekt funktioniert.</target>
+      </trans-unit>
+      <trans-unit id="status_phpModulesGroup" resname="status_phpModulesGroup" approved="yes">
+        <source>one of: %s</source>
+        <target state="final">eins von: %s</target>
+      </trans-unit>
+      <trans-unit id="status_phpModulesPresent" resname="status_phpModulesPresent" approved="yes">
+        <source>All required modules are installed.</source>
+        <target state="final">Alle benötigten Module sind installiert.</target>
+      </trans-unit>
+      <trans-unit id="status_installEnabledTemporarily" resname="status_installEnabledTemporarily" approved="yes">
+        <source>The Install Tool is temporarily enabled. Delete the file "%s" when you have finished setting up TYPO3. If not used the Install Tool will be disabled automatically in %s minutes.</source>
+        <target state="final">Das Installations-Tool ist temporär aktiviert. Löschen Sie die Datei "%s", wenn Sie die Installation von TYPO3 abgeschlossen haben. Wenn Sie das Installations-Tool nicht benutzen, wird es in %s Minuten automatisch deaktiviert.</target>
+      </trans-unit>
+      <trans-unit id="status_configuration_PhpSafeModeEnabled" resname="status_configuration_PhpSafeModeEnabled" approved="yes">
+        <source>PHP INI setting safe_mode "On" is deprecated since PHP 5.3 and is not supported by TYPO3 anymore.</source>
+        <target state="final">Die Einstellung safe_mode "On" wird seit PHP 5.3 nicht mehr empfohlen und wird von TYPO3 nicht mehr unterstützt.</target>
+      </trans-unit>
+      <trans-unit id="status_configuration_PhpMagicQuotesGpcEnabled" resname="status_configuration_PhpMagicQuotesGpcEnabled" approved="yes">
+        <source>PHP INI setting magic_quotes_gpc "On" is deprecated since PHP 5.3. You are advised to set it to "Off" until it gets completely removed.</source>
+        <target state="final">Die Einstellung magic_quotes_gpc "On" ist seit PHP 5.3 veraltet. Dieser Wert sollte auf "Off" gesetzt werden bis er endgültig entfernt wird.</target>
+      </trans-unit>
+      <trans-unit id="status_updateTaskTitle" resname="status_updateTaskTitle" approved="yes">
+        <source>System Status Update</source>
+        <target state="final">Aktualisierung des Systemstatus</target>
+      </trans-unit>
+      <trans-unit id="status_updateTaskDescription" resname="status_updateTaskDescription" approved="yes">
+        <source>Runs a system status check and sends notifications if problems have been found.</source>
+        <target state="final">Führt eine Überprüfung des Systemstatus durch und versendet eine Mitteilung wenn Probleme gefunden wurden.</target>
+      </trans-unit>
+      <trans-unit id="status_updateTaskField_notificationEmail" resname="status_updateTaskField_notificationEmail" approved="yes">
+        <source>Notification Email Address</source>
+        <target state="final">E-Mail-Adresse für Benachrichtigung</target>
+      </trans-unit>
+      <trans-unit id="status_updateTaskField_notificationEmails" resname="status_updateTaskField_notificationEmails" approved="yes">
+        <source>Notification Email Addresses (one per line)</source>
+        <target state="final">E-Mail-Adressen für Benachrichtigung (eine pro Zeile)</target>
+      </trans-unit>
+      <trans-unit id="status_updateTaskField_notificationEmail_invalid" resname="status_updateTaskField_notificationEmail_invalid" approved="yes">
+        <source>Empty or invalid notification email address.</source>
+        <target state="final">Leere oder ungültige E-Mail-Adresse für Benachrichtigungen.</target>
+      </trans-unit>
+      <trans-unit id="status_updateTaskField_notificationEmails_invalid" resname="status_updateTaskField_notificationEmails_invalid" approved="yes">
+        <source>Empty or invalid notification email addresses.</source>
+        <target state="final">Leere oder ungültige E-Mail-Adressen für Benachrichtigungen.</target>
+      </trans-unit>
+      <trans-unit id="status_updateTaskField_notificationAll" resname="status_updateTaskField_notificationAll" approved="yes">
+        <source>Always send notification mail (not only on errors or warnings)</source>
+        <target state="final">Immer Benachrichtigungsemails versenden (und nicht nur bei Fehlern und Warnungen)</target>
+      </trans-unit>
+      <trans-unit id="status_updateTask_email_subject" resname="status_updateTask_email_subject" approved="yes">
+        <source>System Status Notification for site %s</source>
+        <target state="final">Systemstatus-Bericht für Seite %s</target>
+      </trans-unit>
+      <trans-unit id="status_updateTask_email_site" resname="status_updateTask_email_site" approved="yes">
+        <source>Site</source>
+        <target state="final">Site</target>
+      </trans-unit>
+      <trans-unit id="status_updateTask_email_issues" resname="status_updateTask_email_issues" approved="yes">
+        <source>Issues</source>
+        <target state="final">Probleme</target>
+      </trans-unit>
+      <trans-unit id="status_xclassUsage" resname="status_xclassUsage" approved="yes">
+        <source>XCLASS used</source>
+        <target state="final">XCLASS benutzt</target>
+      </trans-unit>
+      <trans-unit id="status_xclassUsageFound" resname="status_xclassUsageFound" approved="yes">
+        <source>Your system registers XCLASS</source>
+        <target state="final">Ihr System registriert XCLASSes</target>
+      </trans-unit>
+      <trans-unit id="status_xclassUsageFound_message" resname="status_xclassUsageFound_message" approved="yes">
+        <source>XCLASS can overwrite methods or classes of the core or other extensions. This is not necessarily a bad thing, but those XCLASS might break during extension or core upgrades. You should keep an eye on extension compatibility and make sure the intended functionality is still given after updates.</source>
+        <target state="final">Mit einer XCLASS ist es möglich, Methoden oder Klassen des TYPO3-Kerns oder von Erweiterungen zu überschreiben. Dies ist nicht notwendigerweise ein schlechter Umstand; aber XCLASSes können kaputt gehen, wenn Sie den TYPO3-Kern oder eine Erweiterung aktualisieren. Sie sollten die Kompatibilität der Erweiterung im Auge behalten und sicherstellen, dass die gewünschte Funktionalität nach einem Update weiterhin gegeben ist.</target>
+      </trans-unit>
+      <trans-unit id="status_xclassUsageFound_message_detail" resname="status_xclassUsageFound_message_detail" approved="yes">
+        <source>%2$s registers an XCLASS of %1$s</source>
+        <target state="final">%2s registriert eine XCLASS von %1s</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
