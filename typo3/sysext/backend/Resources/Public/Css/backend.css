@@ -3548,6 +3548,7 @@ img.t3-tceforms-sysfile-imagepreview{float:var(--typo3-position-start);-webkit-m
 div.t3-form-field-container:first-child .t3-form-field-label-flex{border-top:0}
 .form-irre-object,.t3-flex-section{opacity:1;transition:opacity .5s}
 .form-irre-object--deleted,.t3-flex-section--deleted{opacity:0!important}
+.form-irre-object:has(.sortableHandle:focus-visible){outline:var(--typo3-outline-width) var(--typo3-outline-style) color-mix(in srgb,var(--typo3-panel-border-color),transparent 25%)}
 .t3-form-field-disable{display:none}
 .formengine-field-item.disabled .t3-form-field-disable{background:var(--typo3-form-section-bg);display:block;height:100%;left:0;opacity:.5;position:absolute;top:0;width:100%;z-index:10}
 .formengine-field-item.disabled .form-description,.formengine-field-item.disabled .t3-form-field-eval-null-checkbox{position:relative;z-index:20}

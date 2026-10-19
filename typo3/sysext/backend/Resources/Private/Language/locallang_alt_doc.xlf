@@ -3,6 +3,9 @@
   <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf" date="2011-10-17T20:22:33Z" product-name="lang">
     <header/>
     <body>
+      <trans-unit id="label.sorting.moved">
+        <source>Moved to position %s of %s</source>
+      </trans-unit>
       <trans-unit id="deleteItem">
         <source>Delete</source>
       </trans-unit>

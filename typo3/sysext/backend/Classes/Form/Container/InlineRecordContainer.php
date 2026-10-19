@@ -477,7 +477,7 @@ class InlineRecordContainer extends AbstractContainer
             // Drag&Drop Sorting: Sortable handle
             if ($event->isControlEnabled('dragdrop') && $permsEdit && $enableManualSorting && ($inlineConfig['appearance']['useSortable'] ?? false)) {
                 $cells['dragdrop'] = '
-                    <span class="btn btn-default sortableHandle" data-id="' . htmlspecialchars($rec['uid']) . '" title="' . htmlspecialchars($languageService->sL('core.core:labels.move')) . '">
+                    <span class="btn btn-default sortableHandle" role="button" tabindex="0" aria-keyshortcuts="Alt+ArrowUp Alt+ArrowDown Alt+Shift+ArrowUp Alt+Shift+ArrowDown" data-id="' . htmlspecialchars($rec['uid']) . '" title="' . htmlspecialchars($languageService->sL('core.core:labels.move')) . '">
                         ' . $this->iconFactory->getIcon('actions-move-move', IconSize::SMALL)->render() . '
                     </span>';
             }
