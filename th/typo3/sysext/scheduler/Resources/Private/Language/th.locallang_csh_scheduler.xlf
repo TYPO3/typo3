@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:scheduler/Resources/Private/Language/locallang_csh_scheduler.xlf" date="2011-10-17T20:22:37Z" product-name="scheduler" target-language="th">
+    <header/>
+    <body>
+      <trans-unit id=".alttitle" resname=".alttitle" approved="yes">
+        <source>Scheduler</source>
+        <target state="final">Scheduler</target>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>The Scheduler provides an interface to register and manage recurring or one-time tasks.</source>
+        <target state="final">Scheduler ให้ติดต่อลงทะเบียน และจัดการงานที่เกิดขึ้นหรืองานที่เกิดขึ้นครั้งเดียว</target>
+      </trans-unit>
+      <trans-unit id=".syntax" resname=".syntax" approved="yes">
+        <source>The Scheduler uses a single cron job to handle all registered tasks. It is thus very convenient as only one cron job needs to be set up and all task frequencies can be managed from the BE module.</source>
+        <target state="final">Scheduler ใช้งาน cron เดียวที่จัดการงานที่บันทึกไว้ทั้งหมด ทำให้สะดวกสบายเหมือนหน้าที่ cron เดียวต้องมีการตั้งค่าและความถี่่ของงานทั้งหมดจะสามารถจัดการได้จากโมดูล BE</target>
+      </trans-unit>
+      <trans-unit id="task_class.alttitle" resname="task_class.alttitle" approved="yes">
+        <source>Class of the task</source>
+        <target state="final">Class ของงาน</target>
+      </trans-unit>
+      <trans-unit id="task_class.description" resname="task_class.description" approved="yes">
+        <source>Choose a class from the list of available tasks</source>
+        <target state="final">เลือก class จากรายการงานที่สามารถใช้ได้</target>
+      </trans-unit>
+      <trans-unit id="task_class.details" resname="task_class.details" approved="yes">
+        <source>Some tasks are provided by the TYPO3 Core itself. Others come from extensions. See the manual to learn how to create your own tasks and register them with the Scheduler.</source>
+        <target state="final">งานมาจากหลายๆ extension ดูคู่มือเพื่อศึกษาการสร้างงานของคุณเองและบันทึกด้วย Scheduler</target>
+      </trans-unit>
+      <trans-unit id="task_disable.alttitle" resname="task_disable.alttitle" approved="yes">
+        <source>Disable task</source>
+        <target state="final">ปิดการใช้งานงาน</target>
+      </trans-unit>
+      <trans-unit id="task_disable.description" resname="task_disable.description" approved="yes">
+        <source>Check this box to disable the automatic, scheduled execution of this task. It can still be launched manually from the BE module.</source>
+        <target state="final">เลือกช่องนี้เพื่อปิดการใช้งานอัตโนมัติ การดำเนินการ scheduled ของงานนี้ แต่ยังสามารถทำงานด้วยตัวเองจากโมดูล BE ได้</target>
+      </trans-unit>
+      <trans-unit id="task_type.alttitle" resname="task_type.alttitle" approved="yes">
+        <source>Type of task</source>
+        <target state="final">ประเภทของงาน</target>
+      </trans-unit>
+      <trans-unit id="task_type.description" resname="task_type.description" approved="yes">
+        <source>Choose whether the task must happen a single time or will be repeated</source>
+        <target state="final">เลือกงานไม่ว่าจะเป็นงงานที่ต้องเกิดขึ้นครั้งเดียวหรือจะเกิดขึ้นหลายๆ ครั้ง</target>
+      </trans-unit>
+      <trans-unit id="task_start.alttitle" resname="task_start.alttitle" approved="yes">
+        <source>Start of task</source>
+        <target state="final">เริ่มงาน</target>
+      </trans-unit>
+      <trans-unit id="task_start.description" resname="task_start.description" approved="yes">
+        <source>Enter a start date and time for the task</source>
+        <target state="final">ป้อนวันที่เริ่มต้นและเวลาสำหรับงาน</target>
+      </trans-unit>
+      <trans-unit id="task_start.details" resname="task_start.details" xml:space="preserve" approved="yes">
+				<source>Date must be entered in a standard format like HH:mm dd-mm-YYYY or YYYY-mm-dd HH:mm. Natural keywords can also be used, like "now" or "tomorrow".
+Date and time must correspond to the server's time zone.</source>
+			<target state="final">ต้องป้อนวันที่เข้าไปใน format เช่น HH:mm dd-mm-YYYY หรือ YYYY-mm-dd HH:mm นำคีย์เวิร์ดปกติมาใช้ได้ เช่น ตอนนี้ หรือ พรุ่งนี้ วันที่และเวลาต้องสอดคล้องกับเวลาของเซิรฟ์เวอร์</target></trans-unit>
+      <trans-unit id="task_end.alttitle" resname="task_end.alttitle" approved="yes">
+        <source>End of task</source>
+        <target state="final">ขั้นสุดท้ายของงาน</target>
+      </trans-unit>
+      <trans-unit id="task_end.description" resname="task_end.description" approved="yes">
+        <source>Enter an end date and time for the task, can be blank</source>
+        <target state="final">ป้อนวันที่สิ้นสุดและเวลาสำหรับงาน สามารถปล่อยให้ว่างได้</target>
+      </trans-unit>
+      <trans-unit id="task_end.details" resname="task_end.details" xml:space="preserve" approved="yes">
+				<source>Date must be entered in a standard format like HH:mm dd-mm-YYYY or YYYY-mm-dd HH:mm. Natural keywords can also be used, like "now" or "tomorrow".
+Date and time must correspond to the server's time zone.
+
+Can be left blank, if task is not supposed to end at any point.</source>
+			<target state="final">วันที่จะต้องป้อนใน format มาตรฐานเช่น HH : mm dd - mm - YYYY หรือ YYYY - MM - DD HH : mm นำคีย์เวิร์ดปกติมาใช้ได้ เช่น"ตอนนี้" หรือ "พรุ่งนี้" วันที่และเวลาจะต้องสอดคล้องกับเวลาของเซิร์ฟเวอร์</target></trans-unit>
+      <trans-unit id="task_frequency.alttitle" resname="task_frequency.alttitle" approved="yes">
+        <source>Frequency of task</source>
+        <target state="final">ความถี่ของงาน</target>
+      </trans-unit>
+      <trans-unit id="task_frequency.description" resname="task_frequency.description" approved="yes">
+        <source>Enter a frequency, either in seconds or using a cron-like syntax (minutes, hours, day of month, months and day of week)</source>
+        <target state="final">ป้อนความถี่ เป็นวินาที หรือ ใช้ cron แบบ syntax</target>
+      </trans-unit>
+      <trans-unit id="task_frequency.details" resname="task_frequency.details" xml:space="preserve" approved="yes">
+				<source>The frequency of the task can be simply entered as a number of seconds.
+
+Alternatively it is possible to use the same syntax as for cron jobs. This is simply a list of five numbers or the wildcard "*", separated by blanks. The five numbers are (in order) minutes, hours, day of month, months and day of week. Examples:
+
+*/5 * * * * means every 5 minutes
+30 22 * * * means every day at 22:30
+
+The Scheduler supports the full cron syntax.</source>
+			<target state="final">ความถี่ของงานที่สามารถป้อนได้เพียงวินาที อีกวิธีหนึ่ง สามารถใช้ syntax เดียวกับงาน cron นี้เป็นเพียงสัญลักษณ์รายการห้าตัวเลขหรือ"*"โดยคั่นด้วยช่องว่าง ห้าตัวเลข (ใน) นาที ชั่วโมง วันของเดือน และวันในสัปดาห์ ตัวอย่าง : * / 5 * * * * หมายถึงทุกๆ 5 นาที 30 22 * * * หมายความว่าทุกวันที่เวลา 22:30</target></trans-unit>
+      <trans-unit id="task_frequency.seeAlso" resname="task_frequency.seeAlso" approved="yes">
+        <source>Wikipedia reference|http://en.wikipedia.org/wiki/Cron</source>
+        <target state="final">อ้างอิงวิกิพีเดีย | http://en.wikipedia.org/wiki/Cron</target>
+      </trans-unit>
+      <trans-unit id="task_multiple.alttitle" resname="task_multiple.alttitle" approved="yes">
+        <source>Multiple executions</source>
+        <target state="final">หลายการดำเนินการ</target>
+      </trans-unit>
+      <trans-unit id="task_multiple.description" resname="task_multiple.description" approved="yes">
+        <source>Choose whether a task can be running several times simultaneously or not</source>
+        <target state="final">เลือกงานไม่ว่างานจะสามารถทำงานได้หลายๆ ครั้งพร้อมกันหรือไม่</target>
+      </trans-unit>
+      <trans-unit id="task_email.alttitle" resname="task_email.alttitle" approved="yes">
+        <source>Email address</source>
+        <target state="final">ที่อยู่อีเมล</target>
+      </trans-unit>
+      <trans-unit id="task_email.description" resname="task_email.description" approved="yes">
+        <source>Enter a recipient for the mails sent by the test task</source>
+        <target state="final">ป้อนผู้รับสำหรับเมล์ที่จะส่งโดยงานทดสอบ</target>
+      </trans-unit>
+      <trans-unit id="task_sleepTime.alttitle" resname="task_sleepTime.alttitle" approved="yes">
+        <source>Sleep time</source>
+        <target state="final">เวลาพักงาน</target>
+      </trans-unit>
+      <trans-unit id="task_sleepTime.description" resname="task_sleepTime.description" approved="yes">
+        <source>Enter a number of seconds during which the task will just sleep.</source>
+        <target state="final">ป้อนจำนวนวินาทีในระหว่างที่งานเพิ่งพัก</target>
+      </trans-unit>
+      <trans-unit id="task_cachingFrameworkGarbageCollection_selectedBackends.alttitle" resname="task_cachingFrameworkGarbageCollection_selectedBackends.alttitle" approved="yes">
+        <source>Select backends</source>
+        <target state="final">เลือก backends</target>
+      </trans-unit>
+      <trans-unit id="task_cachingFrameworkGarbageCollection_selectedBackends.description" resname="task_cachingFrameworkGarbageCollection_selectedBackends.description" approved="yes">
+        <source>If a cache uses one of the selected backends, the garbage collection will be called for this cache.</source>
+        <target state="final">ถ้าแคชใช้ 1 ใน backends ที่เลือก ขยะที่เก็บไว้จะถูกเรียกใช้เพิือการนั้น</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
