@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_login.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="sv-SE">
+    <header/>
+    <body>
+      <trans-unit id="labels.submitLogout" resname="labels.submitLogout" approved="yes">
+        <source>Log Out</source>
+        <target state="final">Logga ut</target>
+      </trans-unit>
+      <trans-unit id="labels.whatIsOpenId" resname="labels.whatIsOpenId" approved="yes">
+        <source>What is OpenId?</source>
+        <target state="final">Vad är OpenID?</target>
+      </trans-unit>
+      <trans-unit id="info.reset" resname="info.reset" approved="yes">
+        <source>Reset this form</source>
+        <target state="final">Återställ detta formulär</target>
+      </trans-unit>
+      <trans-unit id="info.cookies_and_js" resname="info.cookies_and_js" approved="yes">
+        <source>(Note: Cookies and JavaScript must be enabled!)</source>
+        <target state="final">(OBS! Cookies och JavaScript måste vara aktiverat!)</target>
+      </trans-unit>
+      <trans-unit id="clear" resname="clear" approved="yes">
+        <source>Clear this field!</source>
+        <target state="final">Töm detta fält!</target>
+      </trans-unit>
+      <trans-unit id="warning.incompatibleBrowserHeadline" resname="warning.incompatibleBrowserHeadline" approved="yes">
+        <source>Unsupported Browser</source>
+        <target state="final">Ej understödd webbläsare</target>
+      </trans-unit>
+      <trans-unit id="warning.incompatibleBrowser" resname="warning.incompatibleBrowser" approved="yes">
+        <source>You are using an unsupported browser version.</source>
+        <target state="final">Du använder en webbläsarversion som inte stöds.</target>
+      </trans-unit>
+      <trans-unit id="error.login" resname="error.login" approved="yes">
+        <source>Your login attempt did not succeed. Make sure to spell your username and password correctly, including upper/lowercase characters.</source>
+        <target state="final">Du lyckades inte logga in. Kontrollera att du skrivit in ditt användarnamn och lösenord rätt, och med rätt skiftläge (små/stora bokstäver).</target>
+      </trans-unit>
+      <trans-unit id="error.furtherInformation" resname="error.furtherInformation" approved="yes">
+        <source>For more information or further help click here</source>
+        <target state="final">Klicka här för mer information och hjälp</target>
+      </trans-unit>
+      <trans-unit id="version.short" resname="version.short" approved="yes">
+        <source>ver.</source>
+        <target state="final">ver.</target>
+      </trans-unit>
+      <trans-unit id="copyright" resname="copyright" approved="yes">
+        <source>Copyright</source>
+        <target state="final">Copyright</target>
+      </trans-unit>
+      <trans-unit id="extension.copyright" resname="extension.copyright" approved="yes">
+        <source>Extensions are copyright of their respective owners.</source>
+        <target state="final">Copyright för tilläggsmoduler tillhör deras respektive ägare.</target>
+      </trans-unit>
+      <trans-unit id="details.link" resname="details.link" approved="yes">
+        <source>Go to %s for details.</source>
+        <target state="final">Gå till %s för mer detaljer.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
