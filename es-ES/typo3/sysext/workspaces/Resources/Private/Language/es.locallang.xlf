@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:workspaces/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="workspaces" target-language="es-ES">
+    <header/>
+    <body>
+      <trans-unit id="legend.label" resname="legend.label" approved="yes">
+        <source>Legend</source>
+        <target state="final">Leyenda</target>
+      </trans-unit>
+      <trans-unit id="legend.edited" resname="legend.edited" approved="yes">
+        <source>edited</source>
+        <target state="final">editado</target>
+      </trans-unit>
+      <trans-unit id="title" resname="title" approved="yes">
+        <source>Workspaces</source>
+        <target state="final">Áreas de trabajo</target>
+      </trans-unit>
+      <trans-unit id="ok" resname="ok" approved="yes">
+        <source>Ok</source>
+        <target state="final">Ok</target>
+      </trans-unit>
+      <trans-unit id="cancel" resname="cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Cancelar</target>
+      </trans-unit>
+      <trans-unit id="reviewandpublish" resname="reviewandpublish" approved="yes">
+        <source>review and publish</source>
+        <target state="final">Revisar y publicar</target>
+      </trans-unit>
+      <trans-unit id="editorInLive" resname="editorInLive" xml:space="preserve" approved="yes">
+				<source>You are in LIVE workspace. Please select a draft workspace from the top bar
+					menu before you can review and publish changes.
+				</source>
+			<target state="final">Estás en el espacio de trabajo EN VIVO. Por favor, elige el borrador de área de trabajo del menú superior para poder revisar y publicar cambios antes.</target></trans-unit>
+      <trans-unit id="admin.noWorkspaceSetup.message" resname="admin.noWorkspaceSetup.message" xml:space="preserve" approved="yes">
+				<source>There are currently no workspace records configured in the database. To use the workspace
+					functionality, at least one workspace must be set up on the root page.
+				</source>
+			<target state="final">Actualmente, no hay registros de espacio de trabajo configurados en la base de datos. Para utilizar la funcionalidad del espacio de trabajo, al menos un área de trabajo debe estar configurada en la página raíz.
+				</target></trans-unit>
+      <trans-unit id="admin.noWorkspaceSetup.buttonCreate" resname="admin.noWorkspaceSetup.buttonCreate" xml:space="preserve" approved="yes">
+				<source>Create a workspace</source>
+			<target state="final">Crear un área de trabajo</target></trans-unit>
+      <trans-unit id="close" resname="close" approved="yes">
+        <source>Close</source>
+        <target state="final">Cerrar</target>
+      </trans-unit>
+      <trans-unit id="runMassAction.done" resname="runMassAction.done" approved="yes">
+        <source>Done processing %d elements</source>
+        <target state="final">Terminado de procesar %d elementos</target>
+      </trans-unit>
+      <trans-unit id="runMassAction.init" resname="runMassAction.init" approved="yes">
+        <source>init</source>
+        <target state="final">Inicializar</target>
+      </trans-unit>
+      <trans-unit id="tooltip.publishAll" resname="tooltip.publishAll" approved="yes">
+        <source>Really publish entire workspace?</source>
+        <target state="final">¿Realmente desea publicar todo el espacio de trabajo?</target>
+      </trans-unit>
+      <trans-unit id="tooltip.swapAll" resname="tooltip.swapAll" approved="yes">
+        <source>Really swap entire workspace?</source>
+        <target state="final">¿Realmente deseas cambiar todo el espacio de trabajo?</target>
+      </trans-unit>
+      <trans-unit id="tooltip.discardAll" resname="tooltip.discardAll" approved="yes">
+        <source>Do you really want to discard changes from the whole workspace?</source>
+        <target state="final">¿Realmente desea descartar todos los cambios?</target>
+      </trans-unit>
+      <trans-unit id="tooltip.publishSelected" resname="tooltip.publishSelected" approved="yes">
+        <source>Really publish selected elements?</source>
+        <target state="final">¿Realmente desea publicar los elementos seleccionados?</target>
+      </trans-unit>
+      <trans-unit id="tooltip.swapSelected" resname="tooltip.swapSelected" approved="yes">
+        <source>Really swap selected elements?</source>
+        <target state="final">¿Realmente deseas cambiar los elementos seleccionados?</target>
+      </trans-unit>
+      <trans-unit id="tooltip.discardSelected" resname="tooltip.discardSelected" approved="yes">
+        <source>Really discard changes of the selected elements?</source>
+        <target state="final">¿Realmente desea descartar los cambios a los elementos seleccionados?</target>
+      </trans-unit>
+      <trans-unit id="tooltip.affectWholeWorkspace" resname="tooltip.affectWholeWorkspace" xml:space="preserve" approved="yes">
+				<source>Please note that this will affect all changes in the current workspace, which may be more than
+					you are currently seeing on your screen.
+				</source>
+			<target state="final">Ten en cuenta que esto afectará a todos los cambios en el espacio de trabajo actual, que puede ser más de lo que
+					que estás viendo actualmente en tu pantalla.
+				</target></trans-unit>
+      <trans-unit id="column.wsTitle" resname="column.wsTitle" approved="yes">
+        <source>Changed</source>
+        <target state="final">Cambiado</target>
+      </trans-unit>
+      <trans-unit id="column.liveTitle" resname="column.liveTitle" approved="yes">
+        <source>Live title</source>
+        <target state="final">Título en vivo</target>
+      </trans-unit>
+      <trans-unit id="column.wsSwapColumn" resname="column.wsSwapColumn" approved="yes">
+        <source>Swap workspace</source>
+        <target state="final">Cambiar espacio de trabajo</target>
+      </trans-unit>
+      <trans-unit id="tooltip.discardVersion" resname="tooltip.discardVersion" approved="yes">
+        <source>Discard workspace version of record.</source>
+        <target state="final">Descartar las versiones espacio de trabajo de registro.</target>
+      </trans-unit>
+      <trans-unit id="tooltip.swap" resname="tooltip.swap" approved="yes">
+        <source>Swap live and workspace versions of record</source>
+        <target state="final">Intercambiar las versiones de los registros del directo y del espacio de trabajo</target>
+      </trans-unit>
+      <trans-unit id="window.discard.title" resname="window.discard.title" approved="yes">
+        <source>Discard workspace version of record.</source>
+        <target state="final">Descartar la versión de espacio de trabajo de registro.</target>
+      </trans-unit>
+      <trans-unit id="window.swap.title" resname="window.swap.title" approved="yes">
+        <source>Swap version</source>
+        <target state="final">Versión de intercambio</target>
+      </trans-unit>
+      <trans-unit id="window.swap.message" resname="window.swap.message" approved="yes">
+        <source>Do you really want to swap this version?</source>
+        <target state="final">¿Quieres cambiar esta versión?</target>
+      </trans-unit>
+      <trans-unit id="error.stageId.invalid" resname="error.stageId.invalid" xml:space="preserve" approved="yes">
+				<source>The stage to be used seems to be invalid and cannot be used. Please consider to use the update
+					wizard in the install tool to fix this.
+				</source>
+			<target state="final">La etapa a usar parece no ser válida y no se puede utilizar. Por favor, considera utilizar el asistente de actualización
+					en la Instalación de herramienta para solucionar esto.
+				</target></trans-unit>
+      <trans-unit id="label_doaction_swap" resname="label_doaction_swap" approved="yes">
+        <source>Swap</source>
+        <target state="final">Cambiar</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
