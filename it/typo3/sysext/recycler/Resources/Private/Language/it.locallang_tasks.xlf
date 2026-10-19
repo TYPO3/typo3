@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:recycler/Resources/Private/Language/locallang_tasks.xlf" date="2011-10-17T20:22:35Z" product-name="recycler" target-language="it">
+    <header/>
+    <body>
+      <trans-unit id="cleanerTaskTitle" resname="cleanerTaskTitle" approved="yes">
+        <source>Remove deleted records</source>
+        <target state="final">Rimuovi in modo permanente i record cancellati</target>
+      </trans-unit>
+      <trans-unit id="cleanerTaskDescription" resname="cleanerTaskDescription" approved="yes">
+        <source>Deletes rows from the database which are flagged "deleted"</source>
+        <target state="final">Rimuovi le righe del database contrassegnate come eliminate</target>
+      </trans-unit>
+      <trans-unit id="cleanerTaskPeriod" resname="cleanerTaskPeriod" approved="yes">
+        <source>Delete entries older than (in days)</source>
+        <target state="final">Elimina gli elementi più vecchi di (in giorni)</target>
+      </trans-unit>
+      <trans-unit id="cleanerTaskTCA" resname="cleanerTaskTCA" approved="yes">
+        <source>Tables</source>
+        <target state="final">Tabelle</target>
+      </trans-unit>
+      <trans-unit id="cleanerTaskDescriptionTables" resname="cleanerTaskDescriptionTables" approved="yes">
+        <source>Tables: %s</source>
+        <target state="final">Tabelle: %s</target>
+      </trans-unit>
+      <trans-unit id="cleanerTaskDescriptionDays" resname="cleanerTaskDescriptionDays" approved="yes">
+        <source>Older than %d day(s)</source>
+        <target state="final">Più vecchi di %d giorno(i)</target>
+      </trans-unit>
+      <trans-unit id="cleanerTaskErrorPeriod" resname="cleanerTaskErrorPeriod" approved="yes">
+        <source>The period has to be an integer and greater than zero.</source>
+        <target state="final">Il periodo deve essere un numero intero maggiore di zero.</target>
+      </trans-unit>
+      <trans-unit id="cleanerTaskErrorTCAempty" resname="cleanerTaskErrorTCAempty" approved="yes">
+        <source>You have to select at least one table.</source>
+        <target state="final">Devi selezionare almeno una tabella.</target>
+      </trans-unit>
+      <trans-unit id="cleanerTaskErrorTCANotSet" resname="cleanerTaskErrorTCANotSet" approved="yes">
+        <source>The table "%s" is not in the TCA.</source>
+        <target state="final">La tabella "%s" non è nel TCA.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
