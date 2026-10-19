@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_csh_fe_groups.xlf" date="2011-10-17T20:22:32Z" product-name="context_help" target-language="cs">
+    <header/>
+    <body>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>This option enables the user group.</source>
+        <target state="final">Tato možnost povolí uživatelskou skupinu.</target>
+      </trans-unit>
+      <trans-unit id="hidden.details" resname="hidden.details" xml:space="preserve" approved="yes">
+				<source>If you disable a user group all users which are members of the group will in effect not inherit any properties this group may have given them.
+For instance if a page or content element was assigned access only by this group and you disable the group, no one would gain access to that page or content element.</source>
+			<target state="final">Pokud zakážete uživatelskou skupinu, nebudou mít všichni uživatelé, kteří jsou členy skupiny, zděděni žádné vlastnosti, které by tato skupina mohla zadat.
+Například, pokud byl stránka nebo prvek obsahu přiřazen pouze touto skupinou a zakázáte skupinu, nikdo by nezískal přístup k této stránce nebo prvku obsahu.</target></trans-unit>
+      <trans-unit id="_hidden.seeAlso" resname="_hidden.seeAlso" approved="yes">
+        <source>fe_users:disable</source>
+        <target state="final">fe_users:disable</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Name of the group.</source>
+        <target state="final">Název skupiny.</target>
+      </trans-unit>
+      <trans-unit id="title.details" resname="title.details" approved="yes">
+        <source>This title will appear as the group name in the 'Access'-list in other records.</source>
+        <target state="final">Tento titulek se zobrazí jako název skupiny v seznamu 'Přístupu' v jiných záznamech.</target>
+      </trans-unit>
+      <trans-unit id="lockToDomain.description" resname="lockToDomain.description" approved="yes">
+        <source>Enter the host name from which the group will be available only. NOTICE: this is not a security feature and can be circumvented by faking HTTP_HOST.</source>
+        <target state="final">Zadejte název hostitele, ze kterého bude skupina dostupná pouze. UPOZORNĚNÍ: toto není bezpečnostní funkce a lze ji obejít podvržením HTTP_HOST.</target>
+      </trans-unit>
+      <trans-unit id="lockToDomain.details" resname="lockToDomain.details" xml:space="preserve" approved="yes">
+				<source>This options may be important if you have multiple websites in the same TYPO3 database but still only one main storage page for all Website users. Thus the users may log in on any of the website URLs. This may be considered a feature (having a global login as a user) or a problem (in which case you should have multiple user storages anyway). However you may wish to limit the use of a Website usergroup to a specific website and thus you don't want the group to be enabled for the user when he logs in at another URL (still from the same database of course). By entering the host name of the website here, you restrict the group to be used only from within this domain.
+
+&lt;b&gt;Notice:&lt;/b&gt; The use for this option is not critical if you have multiple Website user storages, namely one for each site.</source>
+			<target state="final">Tato možnost může být důležitá, pokud máte v jedné databázi TYPO3 více webových stránek, ale stále jen jednu hlavní stránku úložiště pro všechny uživatele webových stránek. Uživatelé se tak mohou přihlásit na libovolné z adres URL webových stránek. To lze považovat za vlastnost (mít globální přihlášení jako uživatel) nebo za problém (v takovém případě byste stejně měli mít více uživatelských úložišť). Můžete však chtít omezit používání skupiny uživatelů Webové stránky na konkrétní webovou stránku, a tedy nechcete, aby byla skupina pro uživatele povolena, když se přihlásí na jiné URL (samozřejmě stále ze stejné databáze). Zadáním názvu hostitele webové stránky zde omezíte použití skupiny pouze z této domény.
+
+&lt;b&gt;Upozornění:&lt;/b&gt; Použití této volby není kritické, pokud máte více úložišť uživatelů webu, konkrétně jedno pro každý web.</target></trans-unit>
+      <trans-unit id="_lockToDomain.seeAlso" resname="_lockToDomain.seeAlso" approved="yes">
+        <source>fe_users:lockToDomain</source>
+        <target state="final">fe_users:lockToDomain</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="subgroup.description" resname="subgroup.description" approved="yes">
+        <source>Member of other groups.</source>
+        <target state="final">Člen jiných skupin.</target>
+      </trans-unit>
+      <trans-unit id="subgroup.details" resname="subgroup.details" approved="yes">
+        <source>List of other groups that this group is a member of.</source>
+        <target state="final">Seznam dalších skupin, které jsou členy této skupiny.</target>
+      </trans-unit>
+      <trans-unit id="description.description" resname="description.description" approved="yes">
+        <source>Enter a description of the group.</source>
+        <target state="final">Zadejte popis skupiny.</target>
+      </trans-unit>
+      <trans-unit id="description.details" resname="description.details" xml:space="preserve" approved="yes">
+				<source>This is for internal use and is just a way to put a note on what the group is for, why you created it and who should be members.
+Use it as you like.</source>
+			<target state="final">Je to pro interní použití a je to jen způsob, jak upozornit na to, k čemu skupina je. proč jste to vytvořili a kdo by měl být členem.
+Používejte to, jak se vám líbí.</target></trans-unit>
+      <trans-unit id="TSconfig.description" resname="TSconfig.description" approved="yes">
+        <source>TSconfig for the group (advanced).</source>
+        <target state="final">TSconfig pro skupinu (pokročilé).</target>
+      </trans-unit>
+      <trans-unit id="TSconfig.details" resname="TSconfig.details" xml:space="preserve" approved="yes">
+				<source>This is the user TSconfig for the group. The values are inherited by any Website user who is a member of this group.
+The configuration is subject to being overridden in other groups and by the TSconfig of the user himself.</source>
+			<target state="final">Toto je uživatel TSconfig pro skupinu. Hodnoty jsou zděděny jakýmkoliv uživatelem webové stránky, který je členem této skupiny.
+Konfigurace je podmíněna přepsáním v jiných skupinách a TSconfig samotného uživatele.</target></trans-unit>
+      <trans-unit id="TSconfig.syntax" resname="TSconfig.syntax" approved="yes">
+        <source>TypoScript syntax, without conditions and constants.</source>
+        <target state="final">TypoScript syntaxe, bez podmínek a konstant.</target>
+      </trans-unit>
+      <trans-unit id="_TSconfig.seeAlso" resname="_TSconfig.seeAlso" approved="yes">
+        <source>fe_users:TSconfig</source>
+        <target state="final">fe_users:TSconfig</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>Usergroups for Website users.</source>
+        <target state="final">Uživatelské skupiny pro FE-uživatele.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" approved="yes">
+        <source>The access restriction in TYPO3 is assigned to these usergroups. When a page or other element is access restricted to a group, only Website users which are members of that group will be able to view the element on the website.</source>
+        <target state="final">Omezení přístupu v TYPO3 je přiřazeno těmto uživatelským skupinám. Pokud je stránka nebo jiný prvek přístupný pouze skupině, pouze uživatelé webových stránek, kteří jsou členy této skupiny, budou moci zobrazit prvek na webových stránkách.</target>
+      </trans-unit>
+      <trans-unit id="_.seeAlso" resname="_.seeAlso" xml:space="preserve" approved="yes">
+				<source>fe_users,
+About access restricting pages | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/PasswordProtectedPages/</source>
+			<target state="final">fe_users,
+O omezení přístupu | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/PasswordProtectedPages/</target></trans-unit>
+      <trans-unit id="_.image" resname="_.image" xml:space="preserve" approved="yes">
+				<source>EXT:frontend/Resources/Public/Images/cshimages/fegroups_3.png,
+EXT:frontend/Resources/Public/Images/cshimages/fegroups_4.png</source>
+				
+			<target state="final">EXT:frontend/Resources/Public/Images/cshimages/fegroups_3.png,
+EXT:frontend/Resources/Public/Images/cshimages/fegroups_4.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" xml:space="preserve" approved="yes">
+				<source>The form for editing frontend users groups.
+Pages, Content Elements and other records for frontend display often have a selector box where you can define access restriction by selecting access for a certain group only.</source>
+			<target state="final">Formulář pro úpravu skupin uživatelů webu.
+Stránky Prvky obsahu a jiné záznamy pro zobrazení webu mají často výběrové políčko, kde můžete definovat omezení přístupu výběrem přístupu pouze pro určitou skupinu.</target></trans-unit>
+    </body>
+  </file>
+</xliff>
