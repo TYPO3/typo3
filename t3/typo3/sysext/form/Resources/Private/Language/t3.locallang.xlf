@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:form/Resources/Private/Language/locallang.xlf" date="2016-10-09T03:38:32Z" product-name="form" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="element.ImageUpload.properties.SummaryPage.altText" resname="element.ImageUpload.properties.SummaryPage.altText" xml:space="preserve">
+                <source>Uploaded image</source>
+            <target>crwdns103404:0crwdne103404:0</target></trans-unit>
+      <trans-unit id="element.DatePicker.properties.timeSelectorHourLabel" resname="element.DatePicker.properties.timeSelectorHourLabel" xml:space="preserve">
+                <source>Hour</source>
+            <target>crwdns103406:0crwdne103406:0</target></trans-unit>
+      <trans-unit id="element.DatePicker.properties.timeSelectorMinuteLabel" resname="element.DatePicker.properties.timeSelectorMinuteLabel" xml:space="preserve">
+                <source>Minute</source>
+            <target>crwdns103408:0crwdne103408:0</target></trans-unit>
+      <trans-unit id="validation.error.1221560910" resname="validation.error.1221560910" xml:space="preserve">
+                <source>This field is mandatory.</source>
+            <target>crwdns103410:0crwdne103410:0</target></trans-unit>
+      <trans-unit id="validation.error.1221560718" resname="validation.error.1221560718" xml:space="preserve">
+                <source>This field is mandatory.</source>
+            <target>crwdns103412:0crwdne103412:0</target></trans-unit>
+      <trans-unit id="validation.error.1347992400" resname="validation.error.1347992400" xml:space="preserve">
+                <source>This field is mandatory.</source>
+            <target>crwdns103414:0crwdne103414:0</target></trans-unit>
+      <trans-unit id="validation.error.1347992453" resname="validation.error.1347992453" xml:space="preserve">
+                <source>This field is mandatory.</source>
+            <target>crwdns103416:0crwdne103416:0</target></trans-unit>
+      <trans-unit id="validation.error.1238087674" resname="validation.error.1238087674" xml:space="preserve">
+                <source>You must enter a valid date.</source>
+            <target>crwdns103418:0crwdne103418:0</target></trans-unit>
+      <trans-unit id="validation.error.1221551320" resname="validation.error.1221551320" xml:space="preserve">
+                <source>You can only enter letters or digits.</source>
+            <target>crwdns103420:0crwdne103420:0</target></trans-unit>
+      <trans-unit id="validation.error.1221565786" resname="validation.error.1221565786" xml:space="preserve">
+                <source>You can only enter non formatted text without any markup (e.g without XML tags).</source>
+            <target>crwdns103422:0crwdne103422:0</target></trans-unit>
+      <trans-unit id="validation.error.1238110957" resname="validation.error.1238110957" xml:space="preserve">
+                <source>You can only enter non formatted text without any markup (e.g without XML tags).</source>
+            <target>crwdns103424:0crwdne103424:0</target></trans-unit>
+      <trans-unit id="validation.error.1269883975" resname="validation.error.1269883975" xml:space="preserve">
+                <source>You can only enter non formatted text without any markup (e.g without XML tags).</source>
+            <target>crwdns103426:0crwdne103426:0</target></trans-unit>
+      <trans-unit id="validation.error.1428504122" resname="validation.error.1428504122" xml:space="preserve">
+                <source>Your text must be a minimum of %s characters in length and no longer than %s.</source>
+            <target>crwdns103428:0%scrwdnd103428:0%scrwdne103428:0</target></trans-unit>
+      <trans-unit id="validation.error.1238108068" resname="validation.error.1238108068" xml:space="preserve">
+                <source>You must enter text which is longer than %s characters.</source>
+            <target>crwdns103430:0%scrwdne103430:0</target></trans-unit>
+      <trans-unit id="validation.error.1238108069" resname="validation.error.1238108069" xml:space="preserve">
+                <source>You must enter text which is no longer than %s characters.</source>
+            <target>crwdns103432:0%scrwdne103432:0</target></trans-unit>
+      <trans-unit id="validation.error.1221559976" resname="validation.error.1221559976" xml:space="preserve">
+                <source>You must enter a valid email address.</source>
+            <target>crwdns103434:0crwdne103434:0</target></trans-unit>
+      <trans-unit id="validation.error.1221560494" resname="validation.error.1221560494" xml:space="preserve">
+                <source>You must enter a valid number.</source>
+            <target>crwdns103436:0crwdne103436:0</target></trans-unit>
+      <trans-unit id="validation.error.1221560288" resname="validation.error.1221560288" xml:space="preserve">
+                <source>You must enter a valid floating point number.</source>
+            <target>crwdns103438:0crwdne103438:0</target></trans-unit>
+      <trans-unit id="validation.error.1221563685" resname="validation.error.1221563685" xml:space="preserve">
+                <source>You must enter a valid number.</source>
+            <target>crwdns103440:0crwdne103440:0</target></trans-unit>
+      <trans-unit id="validation.error.1221561046" resname="validation.error.1221561046" xml:space="preserve">
+                <source>You must enter a valid number between %s and %s.</source>
+            <target>crwdns103442:0%scrwdnd103442:0%scrwdne103442:0</target></trans-unit>
+      <trans-unit id="validation.error.1221565130" resname="validation.error.1221565130" xml:space="preserve">
+                <source>You must enter a valid value. Please refer to the description of this field.</source>
+            <target>crwdns103444:0crwdne103444:0</target></trans-unit>
+      <trans-unit id="validation.error.1475002976" resname="validation.error.1475002976" xml:space="preserve">
+                <source>You must enter a countable subject.</source>
+            <target>crwdns103446:0crwdne103446:0</target></trans-unit>
+      <trans-unit id="validation.error.1475002994" resname="validation.error.1475002994" xml:space="preserve">
+                <source>You must select between %s to %s elements.</source>
+            <target>crwdns103448:0%scrwdnd103448:0%scrwdne103448:0</target></trans-unit>
+      <trans-unit id="validation.error.1471708997" resname="validation.error.1471708997" xml:space="preserve">
+                <source>You must enter an instance of \TYPO3\CMS\Extbase\Domain\Model\FileReference or \TYPO3\CMS\Core\Resource\File.</source>
+            <target>crwdns103450:0crwdne103450:0</target></trans-unit>
+      <trans-unit id="validation.error.1471708998" resname="validation.error.1471708998" xml:space="preserve">
+                <source>You entered an incorrect media type, "%s" is not allowed for this file. Please refer to the description of this field.</source>
+            <target>crwdns103452:0%scrwdne103452:0</target></trans-unit>
+      <trans-unit id="validation.error.1613126216" resname="validation.error.1613126216" xml:space="preserve">
+                <source>The file extension provided "%s" does not match to expected media types. Please refer to the description of this field.</source>
+            <target>crwdns134310:0%scrwdne134310:0</target></trans-unit>
+      <trans-unit id="validation.error.1476396435" resname="validation.error.1476396435" xml:space="preserve">
+                <source>You must NOT fill this field.</source>
+            <target>crwdns103454:0crwdne103454:0</target></trans-unit>
+      <trans-unit id="validation.error.1505303626" resname="validation.error.1505303626" xml:space="preserve">
+                <source>You must enter an instance of \TYPO3\CMS\Extbase\Domain\Model\FileReference or \TYPO3\CMS\Core\Resource\File.</source>
+            <target>crwdns103456:0crwdne103456:0</target></trans-unit>
+      <trans-unit id="validation.error.1505305752" resname="validation.error.1505305752" xml:space="preserve">
+                <source>You must select a file that is larger than %s in size.</source>
+            <target>crwdns103458:0%scrwdne103458:0</target></trans-unit>
+      <trans-unit id="validation.error.1505305753" resname="validation.error.1505305753" xml:space="preserve">
+                <source>You must select a file that is no larger than %s.</source>
+            <target>crwdns103460:0%scrwdne103460:0</target></trans-unit>
+      <trans-unit id="validation.error.1521293686" resname="validation.error.1521293686" xml:space="preserve">
+                <source>You must select a date before %s.</source>
+            <target>crwdns103462:0%scrwdne103462:0</target></trans-unit>
+      <trans-unit id="validation.error.1521293687" resname="validation.error.1521293687" xml:space="preserve">
+                <source>You must select a date after %s.</source>
+            <target>crwdns103464:0%scrwdne103464:0</target></trans-unit>
+      <trans-unit id="validation.error.1556283177" resname="validation.error.1556283177" xml:space="preserve">
+                <source>Password does not match confirmation</source>
+            <target>crwdns103466:0crwdne103466:0</target></trans-unit>
+      <trans-unit id="form_new_wizard_title" resname="form_new_wizard_title" xml:space="preserve">
+                <source>Form</source>
+            <target>crwdns103468:0crwdne103468:0</target></trans-unit>
+      <trans-unit id="form_new_wizard_description" resname="form_new_wizard_description" xml:space="preserve">
+                <source>A form that allows website users to submit messages.</source>
+            <target>crwdns103470:0crwdne103470:0</target></trans-unit>
+      <trans-unit id="upload.error.150530345" resname="upload.error.150530345" xml:space="preserve">
+                <source>Maximum file size exceeded.</source>
+            <target>crwdns103472:0crwdne103472:0</target></trans-unit>
+      <trans-unit id="upload.error.150530346" resname="upload.error.150530346" xml:space="preserve">
+                <source>Upload failed. The file was only partially uploaded, please try again.</source>
+            <target>crwdns103474:0crwdne103474:0</target></trans-unit>
+      <trans-unit id="upload.error.150530347" resname="upload.error.150530347" xml:space="preserve">
+                <source>No file was uploaded.</source>
+            <target>crwdns103476:0crwdne103476:0</target></trans-unit>
+      <trans-unit id="upload.error.150530348" resname="upload.error.150530348" xml:space="preserve">
+                <source>Upload failed.</source>
+            <target>crwdns103478:0crwdne103478:0</target></trans-unit>
+    </body>
+  </file>
+</xliff>
