@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang.xlf" date="2015-01-02T11:16:11Z" product-name="backend" target-language="hu">
+    <header/>
+    <body>
+      <trans-unit id="no_modules_registered" resname="no_modules_registered" approved="yes">
+        <source>No modules have been registered. Please contact your system administrator.</source>
+        <target state="final">Nincs regisztrált modul. Lépjen kapcsolatba a rendszer adminisztrátorral.</target>
+      </trans-unit>
+      <trans-unit id="show_references" resname="show_references" approved="yes">
+        <source>Show references</source>
+        <target state="final">Hivatkozások megjelenítése</target>
+      </trans-unit>
+      <trans-unit id="systemmessage.header" resname="systemmessage.header" approved="yes">
+        <source>Application Information</source>
+        <target state="final">Alkalmazásinformációk</target>
+      </trans-unit>
+      <trans-unit id="systemmessage.allgood" resname="systemmessage.allgood" xml:space="preserve" approved="yes">
+				<source>Your system is fully operational.
+Have a nice day.</source>
+			<target state="final">A rendszer teljesen működőképes.
+Legyen szép napja.</target></trans-unit>
+      <trans-unit id="config.loginHighlightColor" resname="config.loginHighlightColor" approved="yes">
+        <source>Highlight Color: If set, this color will be used as highlight color in the login screen.</source>
+        <target state="final">Kiemelés színe: Ha meg van adva, akkor ezt a színt használja a rendszer a bejelentkezési képernyőnél a kiemeléshez.</target>
+      </trans-unit>
+      <trans-unit id="foldertreeview.noFolders.title" resname="foldertreeview.noFolders.title" approved="yes">
+        <source>No folders available</source>
+        <target state="final">Nincs elérhető mappa</target>
+      </trans-unit>
+      <trans-unit id="foldertreeview.noFolders.message" resname="foldertreeview.noFolders.message" approved="yes">
+        <source>You do not have access to any folder. Please ask your administrator to fix access permissions for your account.</source>
+        <target state="final">Nincs hozzáférési joga semelyik mappához. Forduljon a rendszer-adminisztrátorhoz a szükséges jogosultságok beállításához.</target>
+      </trans-unit>
+      <trans-unit id="login.link" resname="login.link" approved="yes">
+        <source>Login with username and password</source>
+        <target state="final">Bejelentkezés felhasználónévvel és jelszóval</target>
+      </trans-unit>
+      <trans-unit id="login.username" resname="login.username" approved="yes">
+        <source>Username</source>
+        <target state="final">Felhasználónév</target>
+      </trans-unit>
+      <trans-unit id="login.password" resname="login.password" approved="yes">
+        <source>Password</source>
+        <target state="final">Jelszó</target>
+      </trans-unit>
+      <trans-unit id="login.error.capslock" resname="login.error.capslock" approved="yes">
+        <source>Attention: Caps lock enabled!</source>
+        <target state="final">Figyelem: Caps lock aktív!</target>
+      </trans-unit>
+      <trans-unit id="login.interface" resname="login.interface" approved="yes">
+        <source>Interface</source>
+        <target state="final">Felhasználói felület</target>
+      </trans-unit>
+      <trans-unit id="login.news.previous" resname="login.news.previous" approved="yes">
+        <source>Previous</source>
+        <target state="final">Előző</target>
+      </trans-unit>
+      <trans-unit id="login.news.next" resname="login.news.next" approved="yes">
+        <source>Next</source>
+        <target state="final">Következő</target>
+      </trans-unit>
+      <trans-unit id="login.error.message" resname="login.error.message" approved="yes">
+        <source>Your login attempt did not succeed</source>
+        <target state="final">A bejelentkezési kísérlet sajnos nem volt sikeres</target>
+      </trans-unit>
+      <trans-unit id="login.error.description" resname="login.error.description" approved="yes">
+        <source>Make sure to spell your username and password correctly, including upper/lowercase characters.</source>
+        <target state="final">Ellenőrizze, hogy a megadott felhasználónév és jelszó helyes-e beleértve a kis- és nagybetűs karaktereket is.</target>
+      </trans-unit>
+      <trans-unit id="login.error.javascript" resname="login.error.javascript" approved="yes">
+        <source>Please activate JavaScript!</source>
+        <target state="final">Kérem engedélyezze a JavaScripteket!</target>
+      </trans-unit>
+      <trans-unit id="login.error.cookies" resname="login.error.cookies" approved="yes">
+        <source>Please activate Cookies!</source>
+        <target state="final">Kérem engedélyezze a sütiket (cookies)!</target>
+      </trans-unit>
+      <trans-unit id="login.process" resname="login.process" approved="yes">
+        <source>Verifying Login Data ...</source>
+        <target state="final">Bejelentkezési adatok ellenőrzése...</target>
+      </trans-unit>
+      <trans-unit id="login.submit" resname="login.submit" approved="yes">
+        <source>Login</source>
+        <target state="final">Bejelentkezés</target>
+      </trans-unit>
+      <trans-unit id="login.copyrightLink" resname="login.copyrightLink" approved="yes">
+        <source>More about TYPO3</source>
+        <target state="final">Továbbiak a TYPO3-ról</target>
+      </trans-unit>
+      <trans-unit id="login.typo3Logo" resname="login.typo3Logo" approved="yes">
+        <source>TYPO3 logo</source>
+        <target state="final">TYPO3 logó</target>
+      </trans-unit>
+      <trans-unit id="login.donate" resname="login.donate" approved="yes">
+        <source>Donate</source>
+        <target state="final">Adományozás</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
