@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:recycler/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:35Z" product-name="recycler" target-language="bg">
+    <header/>
+    <body>
+      <trans-unit id="title" resname="title" approved="yes">
+        <source>Recycler</source>
+        <target state="final">Кошче</target>
+      </trans-unit>
+      <trans-unit id="description" resname="description" approved="yes">
+        <source>The recycler allows you to select any deleted data and undelete it. You can undelete recursive if the parent of the element is deleted too.</source>
+        <target state="final">Кошчето ви позволява да изберете всеки изтрит запис и да го възстановите. Можете да възстановите рекурсивно, ако родителят на елемента е също изтрит.</target>
+      </trans-unit>
+      <trans-unit id="button.delete" resname="button.delete" approved="yes">
+        <source>Delete</source>
+        <target state="final">Изтриване</target>
+      </trans-unit>
+      <trans-unit id="table.header.tstamp" resname="table.header.tstamp" approved="yes">
+        <source>Last edit</source>
+        <target state="final">Последна промяна</target>
+      </trans-unit>
+      <trans-unit id="table.header.owner" resname="table.header.owner" approved="yes">
+        <source>Owner</source>
+        <target state="final">Собственик</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
