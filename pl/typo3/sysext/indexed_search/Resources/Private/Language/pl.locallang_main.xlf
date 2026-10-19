@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:indexed_search/Resources/Private/Language/locallang_main.xlf" date="2011-10-17T20:22:33Z" product-name="indexed_search" target-language="pl">
+    <header/>
+    <body>
+      <trans-unit id="mod_indexed_search" resname="mod_indexed_search" approved="yes">
+        <source>Indexed search</source>
+        <target state="final">Wyszukiwarka indeksująca</target>
+      </trans-unit>
+      <trans-unit id="mod2_indexed_search" resname="mod2_indexed_search" approved="yes">
+        <source>Indexed search statistics</source>
+        <target state="final">Statystyki wyszukiwarki indeksującej</target>
+      </trans-unit>
+      <trans-unit id="ignoreExtensions" resname="ignoreExtensions" approved="yes">
+        <source>Extension %s was set to be ignored.</source>
+        <target state="final">Rozszerzenie %s zostało oznaczone jako ignorowane.</target>
+      </trans-unit>
+      <trans-unit id="pdfToolsDisabled" resname="pdfToolsDisabled" approved="yes">
+        <source>PDF tools disabled</source>
+        <target state="final">Narzędzia PDF wyłączono</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
