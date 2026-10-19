@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:scheduler/Resources/Private/Language/locallang_csh_scheduler.xlf" date="2011-10-17T20:22:37Z" product-name="scheduler" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id=".alttitle" resname=".alttitle" approved="yes">
+        <source>Scheduler</source>
+        <target state="final">शेड्यूलर</target>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>The Scheduler provides an interface to register and manage recurring or one-time tasks.</source>
+        <target state="final">शेड्यूलर आवर्ती या एक-बार के कार्यों को पंजीकृत करने और प्रबंधित करने के लिए एक इंटरफ़ेस प्रदान करता है।</target>
+      </trans-unit>
+      <trans-unit id=".syntax" resname=".syntax" approved="yes">
+        <source>The Scheduler uses a single cron job to handle all registered tasks. It is thus very convenient as only one cron job needs to be set up and all task frequencies can be managed from the BE module.</source>
+        <target state="final">शेड्यूलर सभी पंजीकृत कार्यों को संभालने के लिए एक ही क्रॉन जॉब का उपयोग करता है। यह बहुत सुविधाजनक है क्योंकि केवल एक क्रॉन जॉब सेट अप करने की आवश्यकता होती है और सभी कार्य आवृत्तियों को BE Module से प्रबंधित किया जा सकता है।</target>
+      </trans-unit>
+      <trans-unit id="task_class.alttitle" resname="task_class.alttitle" approved="yes">
+        <source>Class of the task</source>
+        <target state="final">कार्य का वर्ग</target>
+      </trans-unit>
+      <trans-unit id="task_class.description" resname="task_class.description" approved="yes">
+        <source>Choose a class from the list of available tasks</source>
+        <target state="final">उपलब्ध कार्यों की सूची में से एक वर्ग चुनें</target>
+      </trans-unit>
+      <trans-unit id="task_class.details" resname="task_class.details" approved="yes">
+        <source>Some tasks are provided by the TYPO3 Core itself. Others come from extensions. See the manual to learn how to create your own tasks and register them with the Scheduler.</source>
+        <target state="final">कुछ कार्य TYPO3 Core द्वारा ही प्रदान किए जाते हैं। अन्य एक्सटेंशन से आते हैं। अपने स्वयं के कार्य बनाने और उन्हें शेड्यूलर में पंजीकृत करने का तरीका जानने के लिए मैनुअल देखें।</target>
+      </trans-unit>
+      <trans-unit id="task_disable.alttitle" resname="task_disable.alttitle" approved="yes">
+        <source>Disable task</source>
+        <target state="final">कार्य अक्षम करें</target>
+      </trans-unit>
+      <trans-unit id="task_disable.description" resname="task_disable.description" approved="yes">
+        <source>Check this box to disable the automatic, scheduled execution of this task. It can still be launched manually from the BE module.</source>
+        <target state="final">इस कार्य के स्वचालित, निर्धारित निष्पादन को अक्षम करने के लिए इस बॉक्स को चेक करें। इसे BE Module से मैन्युअल रूप से भी लॉन्च किया जा सकता है।</target>
+      </trans-unit>
+      <trans-unit id="task_type.alttitle" resname="task_type.alttitle" approved="yes">
+        <source>Type of task</source>
+        <target state="final">कार्य का प्रकार</target>
+      </trans-unit>
+      <trans-unit id="task_type.description" resname="task_type.description" approved="yes">
+        <source>Choose whether the task must happen a single time or will be repeated</source>
+        <target state="final">चुनें कि कार्य एक बार ही होना चाहिए या दोहराया जाएगा</target>
+      </trans-unit>
+      <trans-unit id="task_start.alttitle" resname="task_start.alttitle" approved="yes">
+        <source>Start of task</source>
+        <target state="final">कार्य का प्रारम्भ</target>
+      </trans-unit>
+      <trans-unit id="task_start.description" resname="task_start.description" approved="yes">
+        <source>Enter a start date and time for the task</source>
+        <target state="final">कार्य के लिए आरंभ तिथि और समय दर्ज करें</target>
+      </trans-unit>
+      <trans-unit id="task_start.details" resname="task_start.details" xml:space="preserve" approved="yes">
+				<source>Date must be entered in a standard format like HH:mm dd-mm-YYYY or YYYY-mm-dd HH:mm. Natural keywords can also be used, like "now" or "tomorrow".
+Date and time must correspond to the server's time zone.</source>
+			<target state="final">दिनांक को मानक प्रारूप में दर्ज किया जाना चाहिए, जैसे HH:mm , dd-mm-YYYY या YYYY-mm-dd HH:mm। "अभी" या "कल" ​​जैसे स्वाभाविक कीवर्ड भी इस्तेमाल किए जा सकते हैं।
+दिनांक और समय सर्वर के समय क्षेत्र के अनुरूप होने चाहिए।</target></trans-unit>
+      <trans-unit id="task_end.alttitle" resname="task_end.alttitle" approved="yes">
+        <source>End of task</source>
+        <target state="final">कार्य का अंत</target>
+      </trans-unit>
+      <trans-unit id="task_end.description" resname="task_end.description" approved="yes">
+        <source>Enter an end date and time for the task, can be blank</source>
+        <target state="final">कार्य के लिए समाप्ति तिथि और समय दर्ज करें, रिक्त हो सकता है</target>
+      </trans-unit>
+      <trans-unit id="task_end.details" resname="task_end.details" xml:space="preserve" approved="yes">
+				<source>Date must be entered in a standard format like HH:mm dd-mm-YYYY or YYYY-mm-dd HH:mm. Natural keywords can also be used, like "now" or "tomorrow".
+Date and time must correspond to the server's time zone.
+
+Can be left blank, if task is not supposed to end at any point.</source>
+			<target state="final">दिनांक को मानक प्रारूप में दर्ज किया जाना चाहिए, जैसे HH:mm dd-mm-YYYY या YYYY-mm-dd HH:mm। "अभी" या "कल" ​​जैसे स्वाभाविक कीवर्ड भी इस्तेमाल किए जा सकते हैं।
+दिनांक और समय सर्वर के समय क्षेत्र के अनुरूप होने चाहिए।
+
+यदि कार्य किसी भी बिंदु पर समाप्त नहीं होना है, तो इसे खाली छोड़ा जा सकता है।</target></trans-unit>
+      <trans-unit id="task_frequency.alttitle" resname="task_frequency.alttitle" approved="yes">
+        <source>Frequency of task</source>
+        <target state="final">कार्य की आवृत्ति</target>
+      </trans-unit>
+      <trans-unit id="task_frequency.description" resname="task_frequency.description" approved="yes">
+        <source>Enter a frequency, either in seconds or using a cron-like syntax (minutes, hours, day of month, months and day of week)</source>
+        <target state="final">आवृत्ति दर्ज करें, या तो सेकंड में या cron-like syntax का उपयोग करके (मिनट, घंटे, महीने का दिन, महीने और सप्ताह का दिन)</target>
+      </trans-unit>
+      <trans-unit id="task_frequency.details" resname="task_frequency.details" xml:space="preserve" approved="yes">
+				<source>The frequency of the task can be simply entered as a number of seconds.
+
+Alternatively it is possible to use the same syntax as for cron jobs. This is simply a list of five numbers or the wildcard "*", separated by blanks. The five numbers are (in order) minutes, hours, day of month, months and day of week. Examples:
+
+*/5 * * * * means every 5 minutes
+30 22 * * * means every day at 22:30
+
+The Scheduler supports the full cron syntax.</source>
+			<target state="final">कार्य की आवृत्ति को सरलतापूर्वक सेकण्ड की संख्या के रूप में दर्ज किया जा सकता है।
+
+वैकल्पिक रूप से,  cron jobs के समान syntax का उपयोग करना संभव है। यह केवल पाँच संख्याओं या wildcard "*" की एक सूची है, जो रिक्त स्थानों से अलग होती है। ये पाँच संख्याएँ (क्रम में) मिनट, घंटे, महीने का दिन, महीने और सप्ताह का दिन हैं। उदाहरण:
+
+*/5 * * * * का अर्थ है हर 5 मिनट में
+30 22 * ​​* * का अर्थ है हर दिन 22:30 बजे
+
+शेड्यूलर पूर्ण cron syntax का समर्थन करता है।</target></trans-unit>
+      <trans-unit id="task_frequency.seeAlso" resname="task_frequency.seeAlso" approved="yes">
+        <source>Wikipedia reference|http://en.wikipedia.org/wiki/Cron</source>
+        <target state="final">Wikipedia reference|http://en.wikipedia.org/wiki/Cron</target>
+      </trans-unit>
+      <trans-unit id="task_multiple.alttitle" resname="task_multiple.alttitle" approved="yes">
+        <source>Multiple executions</source>
+        <target state="final">एकाधिक निष्पादन</target>
+      </trans-unit>
+      <trans-unit id="task_multiple.description" resname="task_multiple.description" approved="yes">
+        <source>Choose whether a task can be running several times simultaneously or not</source>
+        <target state="final">चुनें कि कोई कार्य एक साथ कई बार चलाया जा सकता है या नहीं</target>
+      </trans-unit>
+      <trans-unit id="task_email.alttitle" resname="task_email.alttitle" approved="yes">
+        <source>Email address</source>
+        <target state="final">Email address</target>
+      </trans-unit>
+      <trans-unit id="task_email.description" resname="task_email.description" approved="yes">
+        <source>Enter a recipient for the mails sent by the test task</source>
+        <target state="final">परीक्षण कार्य द्वारा भेजे गए मेल के लिए प्राप्तकर्ता दर्ज करें</target>
+      </trans-unit>
+      <trans-unit id="task_description.alttitle" resname="task_description.alttitle" approved="yes">
+        <source>Task description</source>
+        <target state="final">कार्य विवरण</target>
+      </trans-unit>
+      <trans-unit id="task_description.description" resname="task_description.description" approved="yes">
+        <source>Enter a description for this task</source>
+        <target state="final">इस कार्य के लिए विवरण दर्ज करें</target>
+      </trans-unit>
+      <trans-unit id="task_group.alttitle" resname="task_group.alttitle" approved="yes">
+        <source>Task group</source>
+        <target state="final">कार्य समूह</target>
+      </trans-unit>
+      <trans-unit id="task_group.description" resname="task_group.description" approved="yes">
+        <source>In case of a high number of different tasks, it may be useful to visually group similar tasks.</source>
+        <target state="final">विभिन्न कार्यों की संख्या अधिक होने की स्थिति में, समान कार्यों को दृश्य रूप से समूहीकृत करना उपयोगी हो सकता है।</target>
+      </trans-unit>
+      <trans-unit id="task_sleepTime.alttitle" resname="task_sleepTime.alttitle" approved="yes">
+        <source>Sleep time</source>
+        <target state="final">सोने का समय</target>
+      </trans-unit>
+      <trans-unit id="task_sleepTime.description" resname="task_sleepTime.description" approved="yes">
+        <source>Enter a number of seconds during which the task will just sleep.</source>
+        <target state="final">वह सेकंड संख्या दर्ज करें जिसके दौरान कार्य निष्क्रिय रहेगा</target>
+      </trans-unit>
+      <trans-unit id="task_cachingFrameworkGarbageCollection_selectedBackends.alttitle" resname="task_cachingFrameworkGarbageCollection_selectedBackends.alttitle" approved="yes">
+        <source>Select backends</source>
+        <target state="final">बैकएंड चुनें</target>
+      </trans-unit>
+      <trans-unit id="task_cachingFrameworkGarbageCollection_selectedBackends.description" resname="task_cachingFrameworkGarbageCollection_selectedBackends.description" approved="yes">
+        <source>If a cache uses one of the selected backends, the garbage collection will be called for this cache.</source>
+        <target state="final">यदि कोई कैश चयनित बैकएंड में से किसी एक का उपयोग करता है, तो इस कैश के लिए कचरा संग्रहण को बुलाया जाएगा।</target>
+      </trans-unit>
+      <trans-unit id="task_tableGarbageCollection_numberOfDays.alttitle" resname="task_tableGarbageCollection_numberOfDays.alttitle" approved="yes">
+        <source>Number of days</source>
+        <target state="final">दिनों की संख्या</target>
+      </trans-unit>
+      <trans-unit id="task_tableGarbageCollection_numberOfDays.description" resname="task_tableGarbageCollection_numberOfDays.description" approved="yes">
+        <source>Delete rows from selected table that are older than given number of days.</source>
+        <target state="final">चयनित table से वे rows हटाएँ जो दी गई दिनों की संख्या से पुरानी हैं।</target>
+      </trans-unit>
+      <trans-unit id="task_tableGarbageCollection_table.alttitle" resname="task_tableGarbageCollection_table.alttitle" approved="yes">
+        <source>Select table</source>
+        <target state="final">एक टेबल चुन</target>
+      </trans-unit>
+      <trans-unit id="task_tableGarbageCollection_table.description" resname="task_tableGarbageCollection_table.description" approved="yes">
+        <source>Select one of the registered tables to be cleaned up with this task.</source>
+        <target state="final">इस कार्य के साथ साफ़ की जाने वाली पंजीकृत तालिकाओं में से एक का चयन करें।</target>
+      </trans-unit>
+      <trans-unit id="task_tableGarbageCollection_allTables.alttitle" resname="task_tableGarbageCollection_allTables.alttitle" approved="yes">
+        <source>Clean up all tables</source>
+        <target state="final">सभी टेबल साफ़ करें</target>
+      </trans-unit>
+      <trans-unit id="task_tableGarbageCollection_allTables.description" resname="task_tableGarbageCollection_allTables.description" approved="yes">
+        <source>If selected, all configured tables are cleaned. The selection below is ignored.</source>
+        <target state="final">यदि चयनित है, तो सभी कॉन्फ़िगर की गई तालिकाएँ साफ़ हो जाएँगी। नीचे दिए गए चयन को अनदेखा कर दिया जाएगा।</target>
+      </trans-unit>
+      <trans-unit id="task_recyclerGarbageCollection_numberOfDays.alttitle" resname="task_recyclerGarbageCollection_numberOfDays.alttitle" approved="yes">
+        <source>Number of days</source>
+        <target state="final">दिनों की संख्या</target>
+      </trans-unit>
+      <trans-unit id="task_recyclerGarbageCollection_numberOfDays.description" resname="task_recyclerGarbageCollection_numberOfDays.description" approved="yes">
+        <source>Delete files in _recycler_ folders that are older than the given number of days.</source>
+        <target state="final">_recycler_ फ़ोल्डरों में दी गई दिनों की संख्या से पुरानी फ़ाइलें हटाएँ</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
