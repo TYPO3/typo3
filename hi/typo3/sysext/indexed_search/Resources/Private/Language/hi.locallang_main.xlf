@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:indexed_search/Resources/Private/Language/locallang_main.xlf" date="2011-10-17T20:22:33Z" product-name="indexed_search" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="mod_indexed_search" resname="mod_indexed_search" approved="yes">
+        <source>Indexed search</source>
+        <target state="final">इंडेक्स्ड सर्च</target>
+      </trans-unit>
+      <trans-unit id="mod2_indexed_search" resname="mod2_indexed_search" approved="yes">
+        <source>Indexed search statistics</source>
+        <target state="final">इंडेक्स्ड सर्च स्टेटिस्टिक्स</target>
+      </trans-unit>
+      <trans-unit id="ignoreExtensions" resname="ignoreExtensions" approved="yes">
+        <source>Extension %s was set to be ignored.</source>
+        <target state="final">एक्सटेंशन%s नजर-अंदाज करने के लिए सेट किया गया था.</target>
+      </trans-unit>
+      <trans-unit id="pdfToolsNotFound" resname="pdfToolsNotFound" approved="yes">
+        <source>PDF tools was not found in paths '%1$spdftotext' and/or '%1$spdfinfo'"</source>
+        <target state="final">PDF टूल्स इस '%1$spdftotext' तथा/या '%1$spdfinfo' पाथ में नहीं मिला था</target>
+      </trans-unit>
+      <trans-unit id="pdfToolsDisabled" resname="pdfToolsDisabled" approved="yes">
+        <source>PDF tools disabled</source>
+        <target state="final">PDF टूल्स अक्षम</target>
+      </trans-unit>
+      <trans-unit id="pdfToolsFailed" resname="pdfToolsFailed" approved="yes">
+        <source>PDFtoText Failed on this document: '%s'. Maybe the PDF file is locked for printing or encrypted.</source>
+        <target state="final">PDF में से टेक्स्ट इस डाक्यूमेंट्स:'%s' में असफल हुआ है PDF फाइल प्रिंटिंग के लिए एन्क्रिप्ट और लॉक हो सकती है .</target>
+      </trans-unit>
+      <trans-unit id="catdocNotFound" resname="catdocNotFound" approved="yes">
+        <source>'catdoc' tool for reading Word-files was not found in path '%scatdoc'</source>
+        <target state="final">वर्ड फ़ाइलों को पढ़ने के लिए 'catdoc' टूल इस पाथ '%scatdoc' में नहीं था</target>
+      </trans-unit>
+      <trans-unit id="catdocDisabled" resname="catdocDisabled" approved="yes">
+        <source>catdoc tools (Word-files) disabled</source>
+        <target state="final">catdoc टूल (वर्ड फाइल) असक्षम</target>
+      </trans-unit>
+      <trans-unit id="ppthtmlNotFound" resname="ppthtmlNotFound" approved="yes">
+        <source>'ppthtml' tool for reading Powerpoint-files was not found in path '%sppthtml'</source>
+        <target state="final">पॉवरपॉइंट फ़ाइलों को पढ़ने के लिए 'ppthtml' टूल इस पाथ '%sppthtml' में मिला नहीं था</target>
+      </trans-unit>
+      <trans-unit id="ppthtmlDisabled" resname="ppthtmlDisabled" approved="yes">
+        <source>ppthtml tools (Powerpoint-files) disabled</source>
+        <target state="final">ppthtml टूल्स (पावरपोइंट-फ़ाइलें) असक्षम</target>
+      </trans-unit>
+      <trans-unit id="xlhtmlNotFound" resname="xlhtmlNotFound" approved="yes">
+        <source>'xlhtml' tool for reading Excel-files was not found in path '%sxlhtml'</source>
+        <target state="final">एक्सेल फाइल पढ़ने के लिए 'Xlhtml' टूल्स '%sxlhtml' पाथ में नहीं मिला था</target>
+      </trans-unit>
+      <trans-unit id="xlhtmlDisabled" resname="xlhtmlDisabled" approved="yes">
+        <source>xlhtml tools (Excel-files) disabled</source>
+        <target state="final">xlhtml टूल्स (एक्सेल फ़ाइलें) असक्षम</target>
+      </trans-unit>
+      <trans-unit id="unzipNotFound" resname="unzipNotFound" approved="yes">
+        <source>'unzip' tool for reading OpenOffice.org-files was not found in path '%sunzip'</source>
+        <target state="final">OpenOffice.org-फ़ाइलों को पढ़ने के लिए 'unzip' टूल्स '%sunzip' पाथ में नहीं मिला था</target>
+      </trans-unit>
+      <trans-unit id="unzipDisabled" resname="unzipDisabled" approved="yes">
+        <source>unzip tool (OpenOffice.org-files) disabled</source>
+        <target state="final">unzip टूल्स (OpenOffice.org फ़ाइलें) असक्षम</target>
+      </trans-unit>
+      <trans-unit id="unrtfNotFound" resname="unrtfNotFound" approved="yes">
+        <source>'unrtf' tool for reading RTF-files was not found in path '%sunrtf'</source>
+        <target state="final">RTF-फ़ाइलों को पढ़ने के लिए 'unrtf' टूल '%sunrtf' पाथ में नहीं मिला था</target>
+      </trans-unit>
+      <trans-unit id="unrtfDisabled" resname="unrtfDisabled" approved="yes">
+        <source>unrtf tool (RTF-files) disabled</source>
+        <target state="final">unrtf टूल (RTF- फ़ाइलें) असक्षम</target>
+      </trans-unit>
+      <trans-unit id="extension.PDF" resname="extension.PDF" approved="yes">
+        <source>PDF (*.%s)</source>
+        <target state="final">PDF (*.%s)</target>
+      </trans-unit>
+      <trans-unit id="extension.DOC" resname="extension.DOC" approved="yes">
+        <source>MS Word (*.%s)</source>
+        <target state="final">MS Word (*.%s)</target>
+      </trans-unit>
+      <trans-unit id="extension.PP" resname="extension.PP" approved="yes">
+        <source>MS Powerpoint (*.%s)</source>
+        <target state="final">MS Powerpoint (*.%s)</target>
+      </trans-unit>
+      <trans-unit id="extension.XLS" resname="extension.XLS" approved="yes">
+        <source>MS Excel (*.%s)</source>
+        <target state="final">MS Excel (*.%s)</target>
+      </trans-unit>
+      <trans-unit id="extension.SXC" resname="extension.SXC" approved="yes">
+        <source>OpenOffice.org Calc (*.%s)</source>
+        <target state="final">OpenOffice.org Calc (*.%s)</target>
+      </trans-unit>
+      <trans-unit id="extension.SXI" resname="extension.SXI" approved="yes">
+        <source>OpenOffice.org Impress (*.%s)</source>
+        <target state="final">OpenOffice.org Impress (*.%s)</target>
+      </trans-unit>
+      <trans-unit id="extension.SXW" resname="extension.SXW" approved="yes">
+        <source>OpenOffice.org Writer (*.%s)</source>
+        <target state="final">OpenOffice.org Writer (*.%s)</target>
+      </trans-unit>
+      <trans-unit id="extension.ODS" resname="extension.ODS" approved="yes">
+        <source>ODF Spreadsheet (*.%s)</source>
+        <target state="final">ODF Spreadsheet (*.%s)</target>
+      </trans-unit>
+      <trans-unit id="extension.ODP" resname="extension.ODP" approved="yes">
+        <source>ODF Presentation (*.%s)</source>
+        <target state="final">ODF Presentation (*.%s)</target>
+      </trans-unit>
+      <trans-unit id="extension.ODT" resname="extension.ODT" approved="yes">
+        <source>ODF Text (*.%s)</source>
+        <target state="final">ODF Text (*.%s)</target>
+      </trans-unit>
+      <trans-unit id="extension.RTF" resname="extension.RTF" approved="yes">
+        <source>Rich Text Format (*.%s)</source>
+        <target state="final">रिच टेक्स्ट फ़ॉर्मैट(*.%s)</target>
+      </trans-unit>
+      <trans-unit id="extension.images" resname="extension.images" approved="yes">
+        <source>Images (*.%s)</source>
+        <target state="final">इमेजिस(*.%s)</target>
+      </trans-unit>
+      <trans-unit id="extension.HTML" resname="extension.HTML" approved="yes">
+        <source>Webpages (*.%s)</source>
+        <target state="final">वेबपेजिस(*.%s)</target>
+      </trans-unit>
+      <trans-unit id="extension.TXT" resname="extension.TXT" approved="yes">
+        <source>Textfiles (*.%s)</source>
+        <target state="final">टेक्स्टफाइल्स(*.%s)</target>
+      </trans-unit>
+      <trans-unit id="extension.CSV" resname="extension.CSV" approved="yes">
+        <source>Comma-Separated Values (*.%s)</source>
+        <target state="final">कॉमा-सेपरेटेड वैल्यू(*.%s)</target>
+      </trans-unit>
+      <trans-unit id="extension.XML" resname="extension.XML" approved="yes">
+        <source>Extensible Markup Language (*.%s)</source>
+        <target state="final">एक्सटेंसिबल मार्कअप लैंग्वेज(*.%s)</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
