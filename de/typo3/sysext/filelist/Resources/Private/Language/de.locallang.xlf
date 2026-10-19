@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:filelist/Resources/Private/Language/locallang.xlf" date="2015-08-21T11:45:35Z" product-name="filelist" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="search" resname="search" approved="yes">
+        <source>Search "%s" in %s</source>
+        <target state="final">Suche "%s" in %s</target>
+      </trans-unit>
+      <trans-unit id="search.reset" resname="search.reset" approved="yes">
+        <source>Reset search</source>
+        <target state="final">Suche zurücksetzen</target>
+      </trans-unit>
+      <trans-unit id="flashmessage.no_results" resname="flashmessage.no_results" approved="yes">
+        <source>No results found</source>
+        <target state="final">Keine Ergebnisse gefunden</target>
+      </trans-unit>
+      <trans-unit id="flashmessage.no_results.message" resname="flashmessage.no_results.message" approved="yes">
+        <source>This folder does not contain any files for "%s"</source>
+        <target state="final">In diesem Ordner gibt es keine Datei "%s"</target>
+      </trans-unit>
+      <trans-unit id="flashmessage.no_items" resname="flashmessage.no_items" approved="yes">
+        <source>This folder is empty</source>
+        <target state="final">Dieser Ordner ist leer</target>
+      </trans-unit>
+      <trans-unit id="flashmessage.no_items.message" resname="flashmessage.no_items.message" approved="yes">
+        <source>Drag files here to upload them</source>
+        <target state="final">Dateien zum Hochladen hierhin ziehen</target>
+      </trans-unit>
+      <trans-unit id="file_upload.php.pagetitle" resname="file_upload.php.pagetitle" approved="yes">
+        <source>Upload files</source>
+        <target state="final">Dateien hochladen</target>
+      </trans-unit>
+      <trans-unit id="file_upload.php.submit" resname="file_upload.php.submit" approved="yes">
+        <source>Upload files</source>
+        <target state="final">Dateien hochladen</target>
+      </trans-unit>
+      <trans-unit id="file_upload.php.files" resname="file_upload.php.files" approved="yes">
+        <source>files</source>
+        <target state="final">Dateien</target>
+      </trans-unit>
+      <trans-unit id="file_rename.exists.title" resname="file_rename.exists.title" approved="yes">
+        <source>File exists already</source>
+        <target state="final">Datei existiert bereits</target>
+      </trans-unit>
+      <trans-unit id="file_rename.exists.description" resname="file_rename.exists.description" approved="yes">
+        <source>You want to rename the file "{0}" to "{1}", but the file "{1}" already exists. How do you want to proceed?</source>
+        <target state="final">Sie versuchen die Datei "{0}" umbenennen zu "{1}", aber die Datei "{1}" existiert bereits. Wie möchten Sie fortfahren?</target>
+      </trans-unit>
+      <trans-unit id="file_rename.actions.cancel" resname="file_rename.actions.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Abbrechen</target>
+      </trans-unit>
+      <trans-unit id="file_rename.actions.rename" resname="file_rename.actions.rename" approved="yes">
+        <source>Rename with unique name</source>
+        <target state="final">Mit eindeutigem Namen umbenennen</target>
+      </trans-unit>
+      <trans-unit id="file_rename.actions.override" resname="file_rename.actions.override" approved="yes">
+        <source>Overwrite</source>
+        <target state="final">Überschreiben</target>
+      </trans-unit>
+      <trans-unit id="file_rename.php.pagetitle" resname="file_rename.php.pagetitle" approved="yes">
+        <source>Rename</source>
+        <target state="final">Umbenennen</target>
+      </trans-unit>
+      <trans-unit id="file_rename.php.submit" resname="file_rename.php.submit" approved="yes">
+        <source>Rename</source>
+        <target state="final">Umbenennen</target>
+        <note>This label is not used since TYPO3 v9.</note>
+      </trans-unit>
+      <trans-unit id="file_rename.php.label.target.file" resname="file_rename.php.label.target.file" approved="yes">
+        <source>New file name</source>
+        <target state="final">Neuer Dateiname</target>
+      </trans-unit>
+      <trans-unit id="file_rename.php.label.target.folder" resname="file_rename.php.label.target.folder" approved="yes">
+        <source>New folder name</source>
+        <target state="final">Neuer Ordnername</target>
+      </trans-unit>
+      <trans-unit id="file_replace.php.pagetitle" resname="file_replace.php.pagetitle" approved="yes">
+        <source>Replace</source>
+        <target state="final">Ersetzen</target>
+      </trans-unit>
+      <trans-unit id="file_replace.php.selectfile" resname="file_replace.php.selectfile" approved="yes">
+        <source>Select new file</source>
+        <target state="final">Neue Datei auswählen</target>
+      </trans-unit>
+      <trans-unit id="file_replace.php.keepfiletitle" resname="file_replace.php.keepfiletitle" approved="yes">
+        <source>Keep the current filename?</source>
+        <target state="final">Aktuellen Dateinamen beibehalten?</target>
+      </trans-unit>
+      <trans-unit id="file_replace.php.browse" resname="file_replace.php.browse" approved="yes">
+        <source>Browse</source>
+        <target state="final">Durchsuchen</target>
+      </trans-unit>
+      <trans-unit id="file_replace.php.submit" resname="file_replace.php.submit" approved="yes">
+        <source>Replace</source>
+        <target state="final">Ersetzen</target>
+      </trans-unit>
+      <trans-unit id="file_edit.php.pagetitle" resname="file_edit.php.pagetitle" approved="yes">
+        <source>Edit</source>
+        <target state="final">Bearbeiten</target>
+      </trans-unit>
+      <trans-unit id="file_edit.php.submit" resname="file_edit.php.submit" approved="yes">
+        <source>Save</source>
+        <target state="final">Speichern</target>
+      </trans-unit>
+      <trans-unit id="file_edit.php.saveAndClose" resname="file_edit.php.saveAndClose" approved="yes">
+        <source>Save and Close</source>
+        <target state="final">Speichern und schließen</target>
+      </trans-unit>
+      <trans-unit id="file_edit.php.coundNot" resname="file_edit.php.coundNot" approved="yes">
+        <source>This filetype cannot be edited.&lt;br /&gt;The file must have an extension like:&lt;br /&gt;&lt;br
+					/&gt; &lt;b&gt;%s&lt;/b&gt;
+				</source>
+        <target state="final">Dieser Dateityp kann nicht bearbeitet werden.&lt;br /&gt;Die Datei muss eine Erweiterung haben wie:&lt;br /&gt;&lt;br /&gt; &lt;b&gt;%s&lt;/b&gt;</target>
+      </trans-unit>
+      <trans-unit id="file_newfolder.php.pagetitle" resname="file_newfolder.php.pagetitle" approved="yes">
+        <source>New file or folder</source>
+        <target state="final">Neue Datei oder Ordner</target>
+      </trans-unit>
+      <trans-unit id="file_newfolder.php.newfolders" resname="file_newfolder.php.newfolders" approved="yes">
+        <source>Create new folders</source>
+        <target state="final">Neue Ordner anlegen</target>
+      </trans-unit>
+      <trans-unit id="file_newfolder.php.label_newfolder" resname="file_newfolder.php.label_newfolder" approved="yes">
+        <source>Folder</source>
+        <target state="final">Ordner</target>
+      </trans-unit>
+      <trans-unit id="file_newfolder.php.submit" resname="file_newfolder.php.submit" approved="yes">
+        <source>Create folders</source>
+        <target state="final">Ordner anlegen</target>
+      </trans-unit>
+      <trans-unit id="create_folder.title" resname="create_folder.title" approved="yes">
+        <source>Create new folder</source>
+        <target state="final">Neuen Ordner erstellen</target>
+      </trans-unit>
+      <trans-unit id="create_folder.submit" resname="create_folder.submit" approved="yes">
+        <source>Create folder</source>
+        <target state="final">Ordner anlegen</target>
+      </trans-unit>
+      <trans-unit id="file_newfolder.php.folders" resname="file_newfolder.php.folders" approved="yes">
+        <source>folders</source>
+        <target state="final">Ordner</target>
+      </trans-unit>
+      <trans-unit id="file_newfolder.php.newfile_submit" resname="file_newfolder.php.newfile_submit" approved="yes">
+        <source>Create file</source>
+        <target state="final">Datei erstellen</target>
+      </trans-unit>
+      <trans-unit id="file_newfolder.php.newfile" resname="file_newfolder.php.newfile" approved="yes">
+        <source>Create new textfile</source>
+        <target state="final">Neue Textdatei erstellen</target>
+      </trans-unit>
+      <trans-unit id="file_newfolder.php.label_newfile" resname="file_newfolder.php.label_newfile" approved="yes">
+        <source>File name</source>
+        <target state="final">Dateiname</target>
+      </trans-unit>
+      <trans-unit id="file_newfolder.php.number_of_folders" resname="file_newfolder.php.number_of_folders" approved="yes">
+        <source>Number of folders</source>
+        <target state="final">Anzahl Ordner</target>
+      </trans-unit>
+      <trans-unit id="download" resname="download" approved="yes">
+        <source>Download</source>
+        <target state="final">Herunterladen</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
