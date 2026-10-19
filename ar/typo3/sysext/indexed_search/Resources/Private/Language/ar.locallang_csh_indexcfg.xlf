@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:indexed_search/Resources/Private/Language/locallang_csh_indexcfg.xlf" date="2011-10-17T20:22:33Z" product-name="indexed_search" target-language="ar">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>The Indexed Search configuration allows you to set up indexing of resources which are external to the TYPO3 page tree. This could be a library of records (like news), a directory structure of files (like PDFs) or an external URL to be crawled to some depth - or third-party content provided from other extensions via hooks.</source>
+        <target state="final">يتيح لك تكوين البحث المُفهرس إعداد فهرسة الموارد الخارجية لشجرة صفحات TYPO3. قد تكون هذه مكتبة من السجلات (مثل الأخبار)، أو بنية دليل للملفات (مثل ملفات PDF) أو عنوان URL خارجي ليتم الوصول إليه إلى حد ما - أو محتوى تابع لجهة خارجية يتم توفيره من امتدادات أخرى عبر الوصلات.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" approved="yes">
+        <source>The Indexing Configuration records are used to set up how the indexing occurs, at which time and related to which part of the page tree. An important requirement to keep in mind is that the "crawler" extension must be installed since the indexing engine uses the "crawler" extensions queue as a timing device - and using the "crawler" extension means using a cron-job to activate it from the shell.</source>
+        <target state="final">تستخدم سجلات تكوين الفهرسة لإعداد كيفية حدوث الفهرسة، وفي ذلك الوقت تتصل بأي جزء من شجرة الصفحة. ومن الشروط الهامّة التي ينبغي مراعاتها أن تكون هناك حاجة إلى تثبيت إضافة "crawler" لأن محرك الفهرسة يستخدم إضافات قائمة الانتظار "crawler" كجهاز توقيت - واستخدام إضافة "crawler" يعني استخدام cron-job لتفعيلها من shell.</target>
+      </trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Provide a title for the configuration.</source>
+        <target state="final">توفير عنوان للتكوين.</target>
+      </trans-unit>
+      <trans-unit id="description.description" resname="description.description" approved="yes">
+        <source>If needed, give it a description or put other important notes in this field.</source>
+        <target state="final">إذا لزم الأمر، ضع وَصفاً أو ضع ملاحظات هامة أخرى في هذا الحقل.</target>
+      </trans-unit>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>Disable the configuration by unchecking this option. If disabled, the configuration will be bypassed by the crawlers cron job.</source>
+        <target state="final">قم بتعطيل التكوين عن طريق عدم تحديد مربع الاختيار هذا. إذا تم تعطيله، سيتم تجاوز التكوين عن طريق crawlers cron job.</target>
+      </trans-unit>
+      <trans-unit id="hidden.details" resname="hidden.details" approved="yes">
+        <source>Notice; Disabling the indexing process will not hide already indexed content in search results!</source>
+        <target state="final">إشعار: إن تعطيل عملية الفَهرسة لن يخفي المحتوى المُفهرس مُسبقاً في نتائج البحث!</target>
+      </trans-unit>
+      <trans-unit id="_hidden.seeAlso" resname="_hidden.seeAlso" approved="yes">
+        <source>index_config:starttime</source>
+        <target state="final">index_config:starttime</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="starttime.description" resname="starttime.description" approved="yes">
+        <source>Set a start time for the configuration. If set, the configuration will be bypassed by the crawlers cron job until this time is reached.</source>
+        <target state="final">تعيين وقت لبَدْء التكوين. إذا تم ضبط ذلك، سيتم تجاوز التكوين بواسطة وظيفة crawlers cron حتى يتم الوصول إلى هذا الوقت.</target>
+      </trans-unit>
+      <trans-unit id="_starttime.seeAlso" resname="_starttime.seeAlso" approved="yes">
+        <source>index_config:hidden</source>
+        <target state="final">index_config:hidden</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="timer_frequency.description" resname="timer_frequency.description" approved="yes">
+        <source>Use this setting to adjust how often you would like a re-indexing process to run for the configuration.</source>
+        <target state="final">استخدم هذا الإعداد لضبط عدد المرات التي ترغب في إعادة الفَهرسة فيها لتشغيل الإعدادات.</target>
+      </trans-unit>
+      <trans-unit id="_timer_frequency.seeAlso" resname="_timer_frequency.seeAlso" xml:space="preserve" approved="yes">
+				<source>index_config:timer_next_indexing,
+index_config:timer_offset</source>
+				
+			<target state="final">index_config:timer_next_indexing,
+index_config:timer_offset</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="timer_offset.description" resname="timer_offset.description" approved="yes">
+        <source>The offset adjusts at what time of day you want the indexing process to run.</source>
+        <target state="final">يتم تعديل الإزاحة في أي وقت من اليوم تريد فيه تشغيل عملية الفَهرسة.</target>
+      </trans-unit>
+      <trans-unit id="_timer_offset.seeAlso" resname="_timer_offset.seeAlso" approved="yes">
+        <source>index_config:timer_frequency</source>
+        <target state="final">index_config:timer_frequency</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="timer_next_indexing.description" resname="timer_next_indexing.description" approved="yes">
+        <source>This field contains the date and time of the next occurring indexing session. If left blank the next indexing will occur as soon as the cron-script is run again (typically within the next minute) and afterwards set to the next time according to frequency and offset.</source>
+        <target state="final">يحتوي هذا الحقل على تاريخ ووقت دورة الفَهرسة التالية التي ستحدث. إذا تُركَ هذا الحقل فارغاً، فإن الفهرسة التالية ستحدث حالما يتم تشغيل cron-script مرة أخرى (عادة في غضون الدقيقة التالية) ثم يتم تعيينه بعد ذلك إلى المرة التالية وفقاً للفرق والإزاحة.</target>
+      </trans-unit>
+      <trans-unit id="_timer_next_indexing.seeAlso" resname="_timer_next_indexing.seeAlso" xml:space="preserve" approved="yes">
+				<source>index_config:timer_offset,
+index_config:timer_frequency</source>
+				
+			<target state="final">index_config:timer_offset ،
+index_config:timer_frequency</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="type.description" resname="type.description" approved="yes">
+        <source>Select the type of Indexing Configuration here.</source>
+        <target state="final">حدد نوع تكوين الفهرسة هنا.</target>
+      </trans-unit>
+      <trans-unit id="type.details" resname="type.details" xml:space="preserve" approved="yes">
+				<source>&lt;b&gt;Records&lt;/b&gt; - You will be able to index records on a specified page from a specified database table. You can determine which fields from that record you want to index and how additional GET parameters should look like when linking to the search result.
+&lt;b&gt;Files&lt;/b&gt; - Allows you to index a whole directory of files from the fileadmin/ folder. You can optionally specify how many levels of recursion you want.
+&lt;b&gt;External URL&lt;/b&gt; - Allows you to index an external site and search it from your TYPO3 installation! You can specify how deep the crawler should go on that external URL.
+&lt;b&gt;Page tree&lt;/b&gt; - Allows you to index the page tree using the cron script. This type will not be useful as a category for searching like the other types.
+&lt;b&gt;Meta configuration&lt;/b&gt; - Points to a collection of other indexing configurations in which the search will be done. Cannot be used for cron-job based indexing.
+&lt;b&gt;Custom&lt;/b&gt; - Other extensions might register custom types of configurations.</source>
+			<target state="final">&lt;b&gt;السجلات&lt;/b&gt; - ستتمكن من فهرسة السِجلات في صفحة مُحددة من جدول قاعدة بيانات مُحدد. يمكنك تحديد أيّة حقول من هذا السجل التي تريد فهرستها وكيف يجب أن تبدو معلمات GET الإضافية عند الربط مع نتيجة البحث.
+&lt;b&gt;الملفات&lt;/b&gt; - يسمح لك بفهرسة دليل كامل للملفات من fileadmin/ المجلد. يمكنك اختيارياً تحديد عدد مستويات التكرار التي تريدها.
+&lt;b&gt;الرابط الخارجي&lt;/b&gt; - يسمح لك بفهرسة موقع خارجي والبحث عنه من تثبيت TYPO3 الخاص بك! يمكنك تحديد مدى عمق الزحف على هذا الرابط الخارجي.
+&lt;b&gt;شجرة الصفحة&lt;/b&gt; - يسمح لك بفهرسة شجرة الصفحة باستخدام البرنامَج النصي cron. هذا النوع لن يكون مفيداً كفئة للبحث مثل الأنواع الأخرى.
+&lt;b&gt;تكوين Meta&lt;/b&gt; - نِقَاط لمجموعة من تكوينات الفهرسة الأخرى التي سيتم البحث فيها. لا يمكن استخدامها للفهرسة المُستندة إلى وظيفة cron-job.
+&lt;b&gt;مخصص&lt;/b&gt; - الإضافات الأخرى قد تسجل أنواع مخصصة من الإعدادات.</target></trans-unit>
+      <trans-unit id="table2index.description" resname="table2index.description" approved="yes">
+        <source>Specify the database table to index records from.</source>
+        <target state="final">حدد جدول قاعدة البيانات لفهرسة السجلات منه.</target>
+      </trans-unit>
+      <trans-unit id="alternative_source_pid.description" resname="alternative_source_pid.description" approved="yes">
+        <source>By default the indexer will select records from the page id where the Indexing Configuration is stored. If you want an alternative page as the source of your records you can enter it here.</source>
+        <target state="final">سيقوم المُفهرِس بشكل افتراضي بتحديد السجلات من مُعرّف الصفحة حيث يتم تخزين تكوين الفهرسة. إذا كنت تريد صفحة بديلة كمصدر للسجلات الخاصة بك يمكنك إدخالها هنا.</target>
+      </trans-unit>
+      <trans-unit id="_alternative_source_pid.seeAlso" resname="_alternative_source_pid.seeAlso" approved="yes">
+        <source>index_config:table2index</source>
+        <target state="final">index_config:table2index</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="get_params.description" resname="get_params.description" approved="yes">
+        <source>Enter the GET parameters necessary to display the search results. You can use ###UID### as a marker in the parameter template.</source>
+        <target state="final">أدخل مُعلمات GET اللازمة لعرض نتائج البحث. يمكنك استخدام ###UID### كعلامة في قالب المعلمات.</target>
+      </trans-unit>
+      <trans-unit id="get_params.details" resname="get_params.details" xml:space="preserve" approved="yes">
+				<source>Notice: The GET parameters are appended to the URL of the page where the Indexing Configuration is stored (which must be the page where a plugin exists that can display the records with the given parameters!).
+Example value: "&amp;showUid=###UID###"</source>
+			<target state="final">ملاحظة: يتم إرفاق معلمات GET إلى عنوان URL للصفحة حيث يتم تخزين تكوين الفهرسة (والذي يجب أن يكون الصفحة التي توجد فيها إضافة يمكن أن تعرض السجلات مع المعلمات المحددة!).
+قيمة مثالية: "&amp;showUid=###UID###"</target></trans-unit>
+      <trans-unit id="_get_params.seeAlso" resname="_get_params.seeAlso" approved="yes">
+        <source>index_config:table2index</source>
+        <target state="final">index_config:table2index</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="fieldlist.description" resname="fieldlist.description" approved="yes">
+        <source>Enter a comma-list of fields to be indexed. The first field name will be used for the search result title.</source>
+        <target state="final">أدخل قائمة فاصلة بالحقول التي سيتم فهرستها. سيتم استخدام اسم الحقل الأول لعنوان نتيجة البحث.</target>
+      </trans-unit>
+      <trans-unit id="fieldlist.details" resname="fieldlist.details" approved="yes">
+        <source>&lt;b&gt;Example:&lt;/b&gt; "header,bodytext,image_caption" would index the Header, Bodytext and Image Caption fields from "tt_content". Notice that you must use the real database field names, don't spell them wrong!</source>
+        <target state="final">&lt;b&gt;على سبيل المثال:&lt;/b&gt; "header,bodytext,image_caption" سوف تفهرس حقول (الوصف، الترويسة، المتن، الصور) من "tt_content". لاحظ أنه يجب عليك استخدام أسماء حقول قاعدة البيانات الحقيقية، لا تهجئها بشكل خاطئ!</target>
+      </trans-unit>
+      <trans-unit id="_fieldlist.seeAlso" resname="_fieldlist.seeAlso" approved="yes">
+        <source>index_config:table2index</source>
+        <target state="final">index_config:table2index</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="recordsbatch.description" resname="recordsbatch.description" approved="yes">
+        <source>Enter how many records to index for each instance of the indexing process (how many per minute). Default is 100 records.</source>
+        <target state="final">أدخل عدد السجلات المُراد فهرستها لكل حالة من حالات عملية الفهرسة (ما عدد السجلات في الدقيقة). الافتراضي هو 100 سجل.</target>
+      </trans-unit>
+      <trans-unit id="_recordsbatch.seeAlso" resname="_recordsbatch.seeAlso" approved="yes">
+        <source>index_config:table2index</source>
+        <target state="final">index_config:table2index</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="records_indexonchange.description" resname="records_indexonchange.description" approved="yes">
+        <source>If set, new and changed records from this table will be indexed through a hook in the core (Datahandler) meaning that they will be searchable immediately after addition to the system.</source>
+        <target state="final">إذا تم تعيينه، السجلات الجديدة والمُتغيرة من هذا الجدول سيتم فهرستها من خلال رابط في نواة (Datahandler) بمعنى أنه سيتم البحث فيها مباشرةً بعد الإضافة إلى النظام.</target>
+      </trans-unit>
+      <trans-unit id="_records_indexonchange.seeAlso" resname="_records_indexonchange.seeAlso" approved="yes">
+        <source>index_config:table2index</source>
+        <target state="final">index_config:table2index</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="externalUrl.description" resname="externalUrl.description" approved="yes">
+        <source>Enter the URL of the external website you want to index.</source>
+        <target state="final">أدخل عنوان URL للموقع الإلكتروني الخارجي الذي تريد فهرسته.</target>
+      </trans-unit>
+      <trans-unit id="url_deny.description" resname="url_deny.description" approved="yes">
+        <source>Enter a URL on each line inside of which the crawler should not decend.</source>
+        <target state="final">أدخل عنوان URL في كل سطر يجب ألا ينخفض فيه crawler.</target>
+      </trans-unit>
+      <trans-unit id="url_deny.details" resname="url_deny.details" xml:space="preserve" approved="yes">
+				<source>Example:
+If you wish to index "https://typo3.org/" but not "https://typo3.org/extensions/" and "https://typo3.org/downloads/" then you simply enter those two URLs into the box like this:
+
+https://typo3.org/downloads/
+https://typo3.org/extensions/</source>
+			<target state="final">مثال:
+إذا كنت ترغب في فهرسة "https://typo3.org/" ولكن ليس "https://typo3.org/extensions/" و "https://typo3. rg/downloads/" ثم تقوم ببساطة بإدخال هذين الرابطين في صندوق مثل هذا:
+
+https://typo3.org/downloads/
+https://typo3.org/extensions/</target></trans-unit>
+      <trans-unit id="_url_deny.seeAlso" resname="_url_deny.seeAlso" approved="yes">
+        <source>index_config:externalUrl</source>
+        <target state="final">index_config:externalUrl</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="filepath.description" resname="filepath.description" approved="yes">
+        <source>Enter a filepath inside fileadmin/ where you want the files to be indexed.</source>
+        <target state="final">أدخل ملف داخل fileadmin/ حيث تريد فهرسة الملفات.</target>
+      </trans-unit>
+      <trans-unit id="filepath.details" resname="filepath.details" approved="yes">
+        <source>Example: "fileadmin/newsletters/"</source>
+        <target state="final">مثال: "fileadmin/newsletters/"</target>
+      </trans-unit>
+      <trans-unit id="extensions.description" resname="extensions.description" approved="yes">
+        <source>If you want to index only specific files in the directory, enter a list of file extensions here. For example: "html,pdf,doc"</source>
+        <target state="final">إذا كنت ترغب في فهرسة ملفات مُحددة فقط في الدليل، أدخل قائمة إضافات الملفات هنا. على سبيل المثال: "html,pdf,doc"</target>
+      </trans-unit>
+      <trans-unit id="_extensions.seeAlso" resname="_extensions.seeAlso" approved="yes">
+        <source>index_config:filepath</source>
+        <target state="final">index_config:filepath</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="depth.description" resname="depth.description" approved="yes">
+        <source>Levels of recursion.</source>
+        <target state="final">مستويات التكرار.</target>
+      </trans-unit>
+      <trans-unit id="depth.details" resname="depth.details" approved="yes">
+        <source>For file indexing it is the level of directories to decend. For External URLs it's the depth to which the crawler will go with links.</source>
+        <target state="final">بالنسبة لفهرسة الملفات، يكون مستوى الدلائل يتناقص. بالنسبة لعناوين URL الخارجية،يكون العمق الذي سيذهب إليه crawler مع الروابط.</target>
+      </trans-unit>
+      <trans-unit id="_depth.seeAlso" resname="_depth.seeAlso" xml:space="preserve" approved="yes">
+				<source>index_config:externalUrl,
+index_config:filepath</source>
+				
+			<target state="final">index_config:externalUrl،
+index_config:filepath</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="indexcfgs.description" resname="indexcfgs.description" approved="yes">
+        <source>When a search is conducted in this indexing configuration the actual search will take place in the indexed content from the configurations listed here. You can also enter pages and if you do so the search will take place in indexing configurations found on those pages.</source>
+        <target state="final">عند إجراء بحث في تكوين الفهرسة هذه، سيتم البحث الفعلي في المحتوى المُفهرس من الإعدادات المُدرجة هنا. يمكنك أيضاً إدخال الصفحات، وإذا فعلت ذلك سيتم البحث في الفهرسة التكوينات الموجودة في تلك الصفحات.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
