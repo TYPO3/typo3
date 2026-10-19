@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:info/Resources/Private/Language/locallang_webinfo.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="page_title" resname="page_title" approved="yes">
+        <source>Pagetree overview</source>
+        <target state="final">पेजट्री अवलोकन</target>
+      </trans-unit>
+      <trans-unit id="pages_0" resname="pages_0" approved="yes">
+        <source>Basic settings</source>
+        <target state="final">बेसिक सेटिंग्स</target>
+      </trans-unit>
+      <trans-unit id="pages_2" resname="pages_2" approved="yes">
+        <source>Cache and Age</source>
+        <target state="final">कैश और उम्र</target>
+      </trans-unit>
+      <trans-unit id="pages_1" resname="pages_1" approved="yes">
+        <source>Record overview</source>
+        <target state="final">रिकॉर्ड अवलोकन</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_viewPage" resname="lang_renderl10n_viewPage" approved="yes">
+        <source>View page</source>
+        <target state="final">पेज देखें</target>
+      </trans-unit>
+      <trans-unit id="lang_title" resname="lang_title" approved="yes">
+        <source>Localization overview</source>
+        <target state="final">लोकलाइज़ेशन अवलोकन</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_editPageProperties" resname="lang_renderl10n_editPageProperties" approved="yes">
+        <source>Edit all page properties</source>
+        <target state="final">सभी पृष्ठ प्रॉपर्टीज़ संपादित करें</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_page" resname="lang_renderl10n_page" approved="yes">
+        <source>Page</source>
+        <target state="final">पृष्ठ</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_default" resname="lang_renderl10n_default" approved="yes">
+        <source>Default</source>
+        <target state="final">डिफॉल्ट</target>
+      </trans-unit>
+      <trans-unit id="lang_getlangsta_createNewTranslationHeaders" resname="lang_getlangsta_createNewTranslationHeaders" approved="yes">
+        <source>Create new translation headers</source>
+        <target state="final">नया अनुवाद शीर्षक बनाएं</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_CEcount" resname="lang_renderl10n_CEcount" approved="yes">
+        <source>Content Element Count</source>
+        <target state="final">कंटेंट एलिमेंट की संख्या</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
