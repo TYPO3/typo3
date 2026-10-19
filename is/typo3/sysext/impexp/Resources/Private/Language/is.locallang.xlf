@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:impexp/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:33Z" product-name="impexp" target-language="is">
+    <header/>
+    <body>
+      <trans-unit id="title" resname="title" approved="yes">
+        <source>Import / Export</source>
+        <target state="final">Flytja inn/út</target>
+      </trans-unit>
+      <trans-unit id="tableselec_configuration" resname="tableselec_configuration" approved="yes">
+        <source>Configuration</source>
+        <target state="final">Uppsetning</target>
+      </trans-unit>
+      <trans-unit id="exportdata_savedFile" resname="exportdata_savedFile" approved="yes">
+        <source>SAVED FILE</source>
+        <target state="final">VISTUÐ SKRÁ</target>
+      </trans-unit>
+      <trans-unit id="exportdata_savedInSBytes" resname="exportdata_savedInSBytes" approved="yes">
+        <source>Saved in "%s", bytes %s</source>
+        <target state="final">Vistað í "%s" (%s bæti)</target>
+      </trans-unit>
+      <trans-unit id="exportdata_problemsSavingFile" resname="exportdata_problemsSavingFile" approved="yes">
+        <source>Problems saving file</source>
+        <target state="final">Vandamál við vistun</target>
+      </trans-unit>
+      <trans-unit id="exportdata_badPathS" resname="exportdata_badPathS" approved="yes">
+        <source>Bad path: "%s"</source>
+        <target state="final">Ógild slóð: "%s"</target>
+      </trans-unit>
+      <trans-unit id="exportdata_filePreset" resname="exportdata_filePreset" approved="yes">
+        <source>File &amp; Preset</source>
+        <target state="final">Skrá og Forstilling</target>
+      </trans-unit>
+      <trans-unit id="exportdata_advancedOptions" resname="exportdata_advancedOptions" approved="yes">
+        <source>Advanced Options</source>
+        <target state="final">Ítarlegir valmöguleikar</target>
+      </trans-unit>
+      <trans-unit id="exportdata_messages" resname="exportdata_messages" approved="yes">
+        <source>Messages</source>
+        <target state="final">Skilaboð</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_noTreeExportedOnly" resname="makeconfig_noTreeExportedOnly" approved="yes">
+        <source>No tree exported - only tables on the page.</source>
+        <target state="final">Ekkert veftré var flutt út. Einungis töflur á síðu</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_tablesOnThisPage" resname="makeconfig_tablesOnThisPage" approved="yes">
+        <source>Tables on this page</source>
+        <target state="final">Töflur á þessari síðu</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_expandedTree" resname="makeconfig_expandedTree" approved="yes">
+        <source>Expanded tree</source>
+        <target state="final">Útþanið tré</target>
+      </trans-unit>
+      <trans-unit id="makeadvanc_update" resname="makeadvanc_update" approved="yes">
+        <source>Update</source>
+        <target state="final">Uppfæra</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_update" resname="makesavefo_update" approved="yes">
+        <source>Update</source>
+        <target state="final">Uppfæra</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_load" resname="makesavefo_load" approved="yes">
+        <source>Load</source>
+        <target state="final">Hlaða</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_save" resname="makesavefo_save" approved="yes">
+        <source>Save</source>
+        <target state="final">Vista</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_areYouSure" resname="makesavefo_areYouSure" approved="yes">
+        <source>Are you sure?</source>
+        <target state="final">Ertu viss?</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_delete" resname="makesavefo_delete" approved="yes">
+        <source>Delete</source>
+        <target state="final">Eyða</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_merge" resname="makesavefo_merge" approved="yes">
+        <source>Merge</source>
+        <target state="final">Slá saman</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_t3dFileCompressed" resname="makesavefo_t3dFileCompressed" approved="yes">
+        <source>T3D file / compressed</source>
+        <target state="final">T3D skrá / þjöppuð</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_t3dFile" resname="makesavefo_t3dFile" approved="yes">
+        <source>T3D file</source>
+        <target state="final">T3D skrá</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_xml" resname="makesavefo_xml" approved="yes">
+        <source>XML</source>
+        <target state="final">XML</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_downloadExport" resname="makesavefo_downloadExport" approved="yes">
+        <source>Download export</source>
+        <target state="final">--Hala niður skrá sem flutt var út --02--</target>
+      </trans-unit>
+      <trans-unit id="importdata_saveToFilename" resname="importdata_saveToFilename" approved="yes">
+        <source>Save to filename</source>
+        <target state="final">Vista sem</target>
+      </trans-unit>
+      <trans-unit id="importdata_fromPathS" resname="importdata_fromPathS" approved="yes">
+        <source>(From path: %s)</source>
+        <target state="final">(Frá slóð: %s)</target>
+      </trans-unit>
+      <trans-unit id="importdata_noteNoDecompressorAvailable" resname="importdata_noteNoDecompressorAvailable" approved="yes">
+        <source>NOTE: No decompressor available for compressed files!</source>
+        <target state="final">ATH: Afþjöppunartól vantar fyrir þjappaðar skrár!</target>
+      </trans-unit>
+      <trans-unit id="importdata_update" resname="importdata_update" approved="yes">
+        <source>Update</source>
+        <target state="final">Uppfæra</target>
+      </trans-unit>
+      <trans-unit id="importdata_updateRecords" resname="importdata_updateRecords" approved="yes">
+        <source>Update records</source>
+        <target state="final">Uppfæra færslur</target>
+      </trans-unit>
+      <trans-unit id="importdata_thisOptionRequiresThat" resname="importdata_thisOptionRequiresThat" approved="yes">
+        <source>This option requires that the structure you import already exists on this server and only needs to be updated with new content!</source>
+        <target state="final">Þessi stilling krefst þess að uppbyggingin sem þú flytur inn sé þegar til staðar á þjóninum og þurfi aðeins að vera uppfærð með nýju innihaldi.</target>
+      </trans-unit>
+      <trans-unit id="importdata_doNotShowDifferences" resname="importdata_doNotShowDifferences" approved="yes">
+        <source>Do not show differences in records</source>
+        <target state="final">Ekki sýna ágreining í færslum</target>
+      </trans-unit>
+      <trans-unit id="importdata_greenValuesAreFrom" resname="importdata_greenValuesAreFrom" approved="yes">
+        <source>Green values are from the import file, red values from the current database record and black values are similar in both versions.</source>
+        <target state="final">Græn gildi koma frá innfluttri skrá, rauð frá núverandi færslum í gagnagrunni og svört eru eins í skrá og gagnagrunni.</target>
+      </trans-unit>
+      <trans-unit id="importdata_allowToWriteBanned" resname="importdata_allowToWriteBanned" approved="yes">
+        <source>Allow to write banned file extensions (eg. PHP scripts), if any</source>
+        <target state="final">Leyfa að búnar séu til skrár með bönnuðum skáarendingum (T.d. PHP forskriftir)</target>
+      </trans-unit>
+      <trans-unit id="importdata_preview" resname="importdata_preview" approved="yes">
+        <source>Preview</source>
+        <target state="final">Forskoðun</target>
+      </trans-unit>
+      <trans-unit id="importdata_update_299e" resname="importdata_update_299e" approved="yes">
+        <source>Update</source>
+        <target state="final">Uppfæra</target>
+      </trans-unit>
+      <trans-unit id="importdata_areYouSure" resname="importdata_areYouSure" approved="yes">
+        <source>Are you sure?</source>
+        <target state="final">Ertu viss?</target>
+      </trans-unit>
+      <trans-unit id="importdata_newImport" resname="importdata_newImport" approved="yes">
+        <source>New import</source>
+        <target state="final">Nýr innflutningur</target>
+      </trans-unit>
+      <trans-unit id="importdata_writeIndividualDbActions" resname="importdata_writeIndividualDbActions" approved="yes">
+        <source>Write individual DB actions during import to the log</source>
+        <target state="final">Skrifa í atburðaskrá allar gagnagrunnsaðgerðir á meðan innflutningi stendur.</target>
+      </trans-unit>
+      <trans-unit id="importdata_thisIsDisabledBy" resname="importdata_thisIsDisabledBy" approved="yes">
+        <source>This is disabled by default since there may be hundred of entries generated.</source>
+        <target state="final">Þessi möguleiki er sjálfgefið óvirkur þar sem hann gæti orsakað fleiri hundruð færslur í skrána.</target>
+      </trans-unit>
+      <trans-unit id="importdata_failureNoFileUploaded" resname="importdata_failureNoFileUploaded" approved="yes">
+        <source>Failure: No file uploaded - was it too big? Check system log.</source>
+        <target state="final">Mistókst: Skránni var ekki hlaðið upp, hugsanlega vegna þess að hún var of stór? Vinsamlegast athugaðu atburðaskrá kerfisins.</target>
+      </trans-unit>
+      <trans-unit id="importdata_upload" resname="importdata_upload" approved="yes">
+        <source>Upload</source>
+        <target state="final">Hlaða upp</target>
+      </trans-unit>
+      <trans-unit id="importdata_messages" resname="importdata_messages" approved="yes">
+        <source>Messages</source>
+        <target state="final">Skilaboð</target>
+      </trans-unit>
+      <trans-unit id="ALL_tables" resname="ALL_tables" approved="yes">
+        <source>ALL tables</source>
+        <target state="final">Allar töflur</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_update" resname="impexpcore_singlereco_update" approved="yes">
+        <source>Update</source>
+        <target state="final">Uppfæra</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_insert" resname="impexpcore_singlereco_insert" approved="yes">
+        <source>Insert</source>
+        <target state="final">Setja inn</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_importAsNew" resname="impexpcore_singlereco_importAsNew" approved="yes">
+        <source>Import as new</source>
+        <target state="final">Setja inn sem nýtt</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_ignorePid" resname="impexpcore_singlereco_ignorePid" approved="yes">
+        <source>Ignore PID</source>
+        <target state="final">Hunsa kenninúmer síða (PID)</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_respectPid" resname="impexpcore_singlereco_respectPid" approved="yes">
+        <source>Respect PID</source>
+        <target state="final">Virða kenninúmer síða (PID)</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_forceUidSAdmin" resname="impexpcore_singlereco_forceUidSAdmin" approved="yes">
+        <source>Force UID [%s] (Admin)</source>
+        <target state="final">Þvinga kenninúmer (UID) [%s] (Kerfisstjóri)</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_exclude" resname="impexpcore_singlereco_exclude" approved="yes">
+        <source>Exclude</source>
+        <target state="final">Útiloka</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_softrefsel_editable" resname="impexpcore_softrefsel_editable" approved="yes">
+        <source>Editable</source>
+        <target state="final">Hægt að breyta</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_softrefsel_exclude" resname="impexpcore_softrefsel_exclude" approved="yes">
+        <source>Exclude</source>
+        <target state="final">Útiloka</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
