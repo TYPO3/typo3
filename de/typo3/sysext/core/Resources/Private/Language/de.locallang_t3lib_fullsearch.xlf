@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_t3lib_fullsearch.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="query_loaded" resname="query_loaded" approved="yes">
+        <source>Query "%s" loaded!</source>
+        <target state="final">Abfrage "%s" geladen!</target>
+      </trans-unit>
+      <trans-unit id="query_from_action_loaded" resname="query_from_action_loaded" approved="yes">
+        <source>Query from action "%s" loaded!</source>
+        <target state="final">Abfrage aus Aktion "%s" geladen!</target>
+      </trans-unit>
+      <trans-unit id="query_saved" resname="query_saved" approved="yes">
+        <source>Query saved!</source>
+        <target state="final">Abfrage gespeichert!</target>
+      </trans-unit>
+      <trans-unit id="query_notsaved" resname="query_notsaved" approved="yes">
+        <source>No query saved!</source>
+        <target state="final">Keine Abfrage gespeichert!</target>
+      </trans-unit>
+      <trans-unit id="query_removed" resname="query_removed" approved="yes">
+        <source>"%s" query entry removed!</source>
+        <target state="final">Abfrageeintrag "%s" entfernt!</target>
+      </trans-unit>
+      <trans-unit id="undelete_only" resname="undelete_only" approved="yes">
+        <source>undelete only</source>
+        <target state="final">nur wiederherstellen</target>
+      </trans-unit>
+      <trans-unit id="undelete_and_edit" resname="undelete_and_edit" approved="yes">
+        <source>undelete and edit</source>
+        <target state="final">wiederherstellen und bearbeiten</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
