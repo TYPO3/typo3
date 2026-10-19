@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:fluid_styled_content/Resources/Private/Language/FrontendEditing.xlf" date="2014-02-07T20:22:32Z" product-name="fluid_styled_content" target-language="sl">
+    <header/>
+    <body>
+      <trans-unit id="editIcon.bullets" resname="editIcon.bullets" approved="yes">
+        <source>Edit bullet list</source>
+        <target state="final">Uredi seznam</target>
+      </trans-unit>
+      <trans-unit id="editIcon.textmedia" resname="editIcon.textmedia" approved="yes">
+        <source>Edit text &amp; media</source>
+        <target state="final">Uredi besedilo s predstavnostno vsebino</target>
+      </trans-unit>
+      <trans-unit id="editIcon.textpic" resname="editIcon.textpic" approved="yes">
+        <source>Edit text &amp; images</source>
+        <target state="final">Uredi besedilo s sliko</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
