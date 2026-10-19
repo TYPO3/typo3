@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:viewpage/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="viewpage" target-language="lt">
+    <header/>
+    <body>
+      <trans-unit id="width" resname="width" approved="yes">
+        <source>Width</source>
+        <target state="final">Plotis</target>
+      </trans-unit>
+      <trans-unit id="tablet" resname="tablet" approved="yes">
+        <source>Tablet</source>
+        <target state="final">Planšetė</target>
+      </trans-unit>
+      <trans-unit id="mobile" resname="mobile" approved="yes">
+        <source>Mobile</source>
+        <target state="final">Mobilusis įrenginys</target>
+      </trans-unit>
+      <trans-unit id="desktop" resname="desktop" approved="yes">
+        <source>Desktop</source>
+        <target state="final">Darbastalis</target>
+      </trans-unit>
+      <trans-unit id="customWidth" resname="customWidth" approved="yes">
+        <source>Custom Size</source>
+        <target state="final">Pasirinktinis dydis</target>
+      </trans-unit>
+      <trans-unit id="autoSize" resname="autoSize" approved="yes">
+        <source>Auto Size</source>
+        <target state="final">Automatinis dydis</target>
+      </trans-unit>
+      <trans-unit id="refreshPage" resname="refreshPage" approved="yes">
+        <source>Refresh page</source>
+        <target state="final">Atnaujinti puslapį</target>
+      </trans-unit>
+      <trans-unit id="language" resname="language" approved="yes">
+        <source>Language</source>
+        <target state="final">Kalba</target>
+      </trans-unit>
+      <trans-unit id="automatic" resname="automatic" approved="yes">
+        <source>Automatic</source>
+        <target state="final">Automatinis</target>
+      </trans-unit>
+      <trans-unit id="maximized" resname="maximized" approved="yes">
+        <source>Maximized</source>
+        <target state="final">Maksimalus</target>
+      </trans-unit>
+      <trans-unit id="custom" resname="custom" approved="yes">
+        <source>Custom</source>
+        <target state="final">Pasirinktinis</target>
+      </trans-unit>
+      <trans-unit id="unidentified" resname="unidentified" approved="yes">
+        <source>Unidentified</source>
+        <target state="final">Neidentifikuota</target>
+      </trans-unit>
+      <trans-unit id="noSiteConfiguration" resname="noSiteConfiguration" approved="yes">
+        <source>The requested page is missing a valid site configuration.</source>
+        <target state="final">Pasirinktam puslapiui trūksta galiojančios svetainės konfigūracijos.</target>
+      </trans-unit>
+      <trans-unit id="iframe.title" resname="iframe.title" approved="yes">
+        <source>View selected page in different screen resolutions</source>
+        <target state="final">Peržiūrėti pasirinktą puslapį skirtingomis ekrano raiškomis</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
