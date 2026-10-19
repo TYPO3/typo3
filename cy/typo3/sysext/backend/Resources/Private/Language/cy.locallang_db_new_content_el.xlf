@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="cy">
+    <header/>
+    <body>
+      <trans-unit id="sel1" resname="sel1" approved="yes">
+        <source>Please select the type of page content you wish to create</source>
+        <target state="final">Dewiswch y math o gynnwys tudalen yr ydych am ei greu</target>
+      </trans-unit>
+      <trans-unit id="sel2" resname="sel2" approved="yes">
+        <source>Now, click the position where you wish to place the element on the page</source>
+        <target state="final">Nawr, cliciwch y safle lle rydych chi am roi'r elfen ar y dudalen</target>
+      </trans-unit>
+      <trans-unit id="common" resname="common" approved="yes">
+        <source>Typical page content</source>
+        <target state="final">Cynnwys tudalen nodweddiadol</target>
+      </trans-unit>
+      <trans-unit id="common_headerOnly_title" resname="common_headerOnly_title" approved="yes">
+        <source>Header Only</source>
+        <target state="final">Pennawd yn Unig</target>
+      </trans-unit>
+      <trans-unit id="common_headerOnly_description" resname="common_headerOnly_description" approved="yes">
+        <source>Adds a header only.</source>
+        <target state="final">Yn ychwanegu pennawd yn unig.</target>
+      </trans-unit>
+      <trans-unit id="common_regularText_title" resname="common_regularText_title" approved="yes">
+        <source>Regular Text Element</source>
+        <target state="final">Elfen Testun Rheolaidd</target>
+      </trans-unit>
+      <trans-unit id="common_regularText_description" resname="common_regularText_description" approved="yes">
+        <source>A regular text element with header and bodytext fields.</source>
+        <target state="final">Elfen destun reolaidd gyda meysydd pennawd a chyd-destun.</target>
+      </trans-unit>
+      <trans-unit id="common_textImage_title" resname="common_textImage_title" approved="yes">
+        <source>Text &amp; Images</source>
+        <target state="final">Testun &amp; Delweddau</target>
+      </trans-unit>
+      <trans-unit id="common_textImage_description" resname="common_textImage_description" approved="yes">
+        <source>Any number of images wrapped right around a regular text element.</source>
+        <target state="final">Unrhyw nifer o ddelweddau wedi'u lapio o amgylch elfen destun reolaidd.</target>
+      </trans-unit>
+      <trans-unit id="common_textMedia_title" resname="common_textMedia_title" approved="yes">
+        <source>Text &amp; Media</source>
+        <target state="final">Testun &amp; Cyfryngau</target>
+      </trans-unit>
+      <trans-unit id="common_textMedia_description" resname="common_textMedia_description" approved="yes">
+        <source>Any number of media wrapped right around a regular text element.</source>
+        <target state="final">Unrhyw nifer o gyfryngau wedi'u lapio o amgylch elfen destun reolaidd.</target>
+      </trans-unit>
+      <trans-unit id="common_imagesOnly_title" resname="common_imagesOnly_title" approved="yes">
+        <source>Images Only</source>
+        <target state="final">Delweddau yn Unig</target>
+      </trans-unit>
+      <trans-unit id="common_imagesOnly_description" resname="common_imagesOnly_description" approved="yes">
+        <source>Any number of images aligned in columns and rows with a caption.</source>
+        <target state="final">Unrhyw nifer o ddelweddau wedi'u halinio mewn colofnau a rhesi â chapsiwn.</target>
+      </trans-unit>
+      <trans-unit id="common_bulletList_title" resname="common_bulletList_title" approved="yes">
+        <source>Bullet List</source>
+        <target state="final">Rhestr Bwled</target>
+      </trans-unit>
+      <trans-unit id="common_bulletList_description" resname="common_bulletList_description" approved="yes">
+        <source>A single bullet list.</source>
+        <target state="final">Rhestr bwled sengl.</target>
+      </trans-unit>
+      <trans-unit id="common_table_title" resname="common_table_title" approved="yes">
+        <source>Table</source>
+        <target state="final">Bwrdd</target>
+      </trans-unit>
+      <trans-unit id="common_table_description" resname="common_table_description" approved="yes">
+        <source>A simple table.</source>
+        <target state="final">Tabl syml.</target>
+      </trans-unit>
+      <trans-unit id="menu" resname="menu" approved="yes">
+        <source>Menu</source>
+        <target state="final">Dewislen</target>
+      </trans-unit>
+      <trans-unit id="menu_abstract.title" resname="menu_abstract.title" approved="yes">
+        <source>Abstracts</source>
+        <target state="final">Crynodebau</target>
+      </trans-unit>
+      <trans-unit id="menu_abstract.description" resname="menu_abstract.description" approved="yes">
+        <source>Menu of subpages of selected pages including abstracts</source>
+        <target state="final">Dewislen is-dudalennau o dudalennau dethol gan gynnwys crynodebau</target>
+      </trans-unit>
+      <trans-unit id="menu_categorized_content.title" resname="menu_categorized_content.title" approved="yes">
+        <source>Categorized content</source>
+        <target state="final">Cynnwys wedi'i gategoreiddio</target>
+      </trans-unit>
+      <trans-unit id="menu_categorized_content.description" resname="menu_categorized_content.description" approved="yes">
+        <source>Content elements for selected categories</source>
+        <target state="final">Elfennau cynnwys ar gyfer categorïau dethol</target>
+      </trans-unit>
+      <trans-unit id="menu_categorized_pages.title" resname="menu_categorized_pages.title" approved="yes">
+        <source>Categorized pages</source>
+        <target state="final">Tudalennau wedi'u categoreiddio</target>
+      </trans-unit>
+      <trans-unit id="menu_pages.title" resname="menu_pages.title" approved="yes">
+        <source>Pages</source>
+        <target state="final">Tudalennau</target>
+      </trans-unit>
+      <trans-unit id="menu_pages.description" resname="menu_pages.description" approved="yes">
+        <source>Menu of selected pages</source>
+        <target state="final">Dewislen o dudalennau dethol</target>
+      </trans-unit>
+      <trans-unit id="menu_subpages.title" resname="menu_subpages.title" approved="yes">
+        <source>Subpages</source>
+        <target state="final">Is-dudalennau</target>
+      </trans-unit>
+      <trans-unit id="menu_subpages.description" resname="menu_subpages.description" approved="yes">
+        <source>Menu of subpages of selected pages</source>
+        <target state="final">Dewislen is-dudalennau o dudalennau dethol</target>
+      </trans-unit>
+      <trans-unit id="menu_categorized_pages.description" resname="menu_categorized_pages.description" approved="yes">
+        <source>Pages for selected categories</source>
+        <target state="final">Tudalennau ar gyfer categorïau dethol</target>
+      </trans-unit>
+      <trans-unit id="menu_recently_updated.title" resname="menu_recently_updated.title" approved="yes">
+        <source>Recently updated pages</source>
+        <target state="final">Tudalennau wedi'u diweddaru yn ddiweddar</target>
+      </trans-unit>
+      <trans-unit id="menu_recently_updated.description" resname="menu_recently_updated.description" approved="yes">
+        <source>Menu of recently updated pages</source>
+        <target state="final">Dewislen o dudalennau a ddiweddarwyd yn ddiweddar</target>
+      </trans-unit>
+      <trans-unit id="menu_related_pages.title" resname="menu_related_pages.title" approved="yes">
+        <source>Related pages</source>
+        <target state="final">Tudalennau cysylltiedig</target>
+      </trans-unit>
+      <trans-unit id="menu_related_pages.description" resname="menu_related_pages.description" approved="yes">
+        <source>Menu of related pages based on keywords</source>
+        <target state="final">Dewislen tudalennau cysylltiedig yn seiliedig ar eiriau allweddol</target>
+      </trans-unit>
+      <trans-unit id="menu_section.title" resname="menu_section.title" approved="yes">
+        <source>Section index</source>
+        <target state="final">Mynegai adrannau</target>
+      </trans-unit>
+      <trans-unit id="menu_section.description" resname="menu_section.description" approved="yes">
+        <source>Page content marked for section menus</source>
+        <target state="final">Cynnwys tudalen wedi'i farcio ar gyfer bwydlenni adran</target>
+      </trans-unit>
+      <trans-unit id="menu_section_pages.title" resname="menu_section_pages.title" approved="yes">
+        <source>Section index of subpages from selected pages</source>
+        <target state="final">Mynegai adran o is-dudalennau o dudalennau dethol</target>
+      </trans-unit>
+      <trans-unit id="menu_section_pages.description" resname="menu_section_pages.description" approved="yes">
+        <source>Menu of subpages of selected pages including sections</source>
+        <target state="final">Dewislen is-dudalennau o dudalennau dethol gan gynnwys adrannau</target>
+      </trans-unit>
+      <trans-unit id="menu_sitemap.title" resname="menu_sitemap.title" approved="yes">
+        <source>Sitemap</source>
+        <target state="final">Map o'r wefan</target>
+      </trans-unit>
+      <trans-unit id="menu_sitemap.description" resname="menu_sitemap.description" approved="yes">
+        <source>Expanded menu of all subpages of the current site</source>
+        <target state="final">Dewislen wedi'i hehangu o holl is-dudalennau'r wefan gyfredol</target>
+      </trans-unit>
+      <trans-unit id="menu_sitemap_pages.title" resname="menu_sitemap_pages.title" approved="yes">
+        <source>Sitemaps of selected pages</source>
+        <target state="final">Mapiau gwefan o dudalennau dethol</target>
+      </trans-unit>
+      <trans-unit id="menu_sitemap_pages.description" resname="menu_sitemap_pages.description" approved="yes">
+        <source>Expanded menu of all subpages for selected pages</source>
+        <target state="final">Dewislen estynedig o'r holl is-dudalennau ar gyfer tudalennau dethol</target>
+      </trans-unit>
+      <trans-unit id="special" resname="special" approved="yes">
+        <source>Special elements</source>
+        <target state="final">Elfennau arbennig</target>
+      </trans-unit>
+      <trans-unit id="special_filelinks_title" resname="special_filelinks_title" approved="yes">
+        <source>File Links</source>
+        <target state="final">Dolenni Ffeil</target>
+      </trans-unit>
+      <trans-unit id="special_filelinks_description" resname="special_filelinks_description" approved="yes">
+        <source>Makes a list of files for download.</source>
+        <target state="final">Yn gwneud rhestr o ffeiliau i'w lawrlwytho.</target>
+      </trans-unit>
+      <trans-unit id="special_sitemap_title" resname="special_sitemap_title" approved="yes">
+        <source>Sitemap</source>
+        <target state="final">Map o'r wefan</target>
+      </trans-unit>
+      <trans-unit id="special_menus_title" resname="special_menus_title" approved="yes">
+        <source>Special Menus</source>
+        <target state="final">Bwydlenni Arbennig</target>
+      </trans-unit>
+      <trans-unit id="special_menus_description" resname="special_menus_description" approved="yes">
+        <source>Creates a menu of pages, sitemap or other special menus.</source>
+        <target state="final">Yn creu bwydlen o dudalennau, map safle neu fwydlenni arbennig eraill.</target>
+      </trans-unit>
+      <trans-unit id="special_plainHTML_title" resname="special_plainHTML_title" approved="yes">
+        <source>Plain HTML</source>
+        <target state="final">HTML plaen</target>
+      </trans-unit>
+      <trans-unit id="special_plainHTML_description" resname="special_plainHTML_description" approved="yes">
+        <source>With this element you can insert raw HTML code on the page.</source>
+        <target state="final">Gyda'r elfen hon gallwch fewnosod cod HTML amrwd ar y dudalen.</target>
+      </trans-unit>
+      <trans-unit id="special_divider_description" resname="special_divider_description" approved="yes">
+        <source>This element inserts a visual divider, which is by default a horizontal line.</source>
+        <target state="final">Mae'r elfen hon yn mewnosod rhannwr gweledol, sydd yn ddiofyn yn llinell lorweddol.</target>
+      </trans-unit>
+      <trans-unit id="special_shortcut_title" resname="special_shortcut_title" approved="yes">
+        <source>Insert records</source>
+        <target state="final">Mewnosod cofnodion</target>
+      </trans-unit>
+      <trans-unit id="special_shortcut_description" resname="special_shortcut_description" approved="yes">
+        <source>With this element you can embed other content elements.</source>
+        <target state="final">Gyda'r elfen hon gallwch chi fewnosod elfennau cynnwys eraill.</target>
+      </trans-unit>
+      <trans-unit id="forms" resname="forms" approved="yes">
+        <source>Form elements</source>
+        <target state="final">Elfennau ffurf</target>
+      </trans-unit>
+      <trans-unit id="forms_mail_title" resname="forms_mail_title" approved="yes">
+        <source>Mail Form</source>
+        <target state="final">Ffurflen Post</target>
+      </trans-unit>
+      <trans-unit id="forms_mail_description" resname="forms_mail_description" approved="yes">
+        <source>A mail form allowing website users to submit responses.</source>
+        <target state="final">Ffurflen bost sy'n caniatáu i ddefnyddwyr gwefan gyflwyno ymatebion.</target>
+      </trans-unit>
+      <trans-unit id="forms_login_title" resname="forms_login_title" approved="yes">
+        <source>Login Form</source>
+        <target state="final">Ffurflen Mewngofnodi</target>
+      </trans-unit>
+      <trans-unit id="forms_login_description" resname="forms_login_description" approved="yes">
+        <source>Login/logout form used to password protect pages allowing only authorised website users and groups access.</source>
+        <target state="final">Ffurflen fewngofnodi / allgofnodi a ddefnyddir i amddiffyn tudalennau â chyfrinair sy'n caniatáu i ddefnyddwyr a grwpiau gwefannau awdurdodedig yn unig gael mynediad.</target>
+      </trans-unit>
+      <trans-unit id="plugins" resname="plugins" approved="yes">
+        <source>Plugins</source>
+        <target state="final">Ategion</target>
+      </trans-unit>
+      <trans-unit id="plugins_general_title" resname="plugins_general_title" approved="yes">
+        <source>General Plugin</source>
+        <target state="final">Ategyn Cyffredinol</target>
+      </trans-unit>
+      <trans-unit id="plugins_general_description" resname="plugins_general_description" approved="yes">
+        <source>Select this element type to insert a plugin which cannot be found amongst the options below.</source>
+        <target state="final">Dewiswch y math hwn o elfen i fewnosod ategyn na ellir ei ddarganfod ymhlith yr opsiynau isod.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
