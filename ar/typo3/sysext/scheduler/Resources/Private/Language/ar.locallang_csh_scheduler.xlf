@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:scheduler/Resources/Private/Language/locallang_csh_scheduler.xlf" date="2011-10-17T20:22:37Z" product-name="scheduler" target-language="ar">
+    <header/>
+    <body>
+      <trans-unit id=".alttitle" resname=".alttitle" approved="yes">
+        <source>Scheduler</source>
+        <target state="final">المُجدوَل</target>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>The Scheduler provides an interface to register and manage recurring or one-time tasks.</source>
+        <target state="final">مُجَدول المهام يوفر واجهة لتسجيل وإدارة المهام المتكررة أو لمرة واحدة.</target>
+      </trans-unit>
+      <trans-unit id=".syntax" resname=".syntax" approved="yes">
+        <source>The Scheduler uses a single cron job to handle all registered tasks. It is thus very convenient as only one cron job needs to be set up and all task frequencies can be managed from the BE module.</source>
+        <target state="final">الجدولة الزمنية يستخدم وظيفة cron واحدة للتعامل مع جميع المهام المسجلة. وبذلك، فإنه يوفر سهولة كبيرة حيث يكفي إعداد وظيفة cron واحدة فقط، ويمكن إدارة ترددات جميع المهام من وحدة التحكم في الواجهة الخلفية.</target>
+      </trans-unit>
+      <trans-unit id="task_class.alttitle" resname="task_class.alttitle" approved="yes">
+        <source>Class of the task</source>
+        <target state="final">فئة المهمة</target>
+      </trans-unit>
+      <trans-unit id="task_class.description" resname="task_class.description" approved="yes">
+        <source>Choose a class from the list of available tasks</source>
+        <target state="final">اختر فئة من قائمة المهام المُتاحة</target>
+      </trans-unit>
+      <trans-unit id="task_class.details" resname="task_class.details" approved="yes">
+        <source>Some tasks are provided by the TYPO3 Core itself. Others come from extensions. See the manual to learn how to create your own tasks and register them with the Scheduler.</source>
+        <target state="final">يتم توفير بعض المهام بواسطة TYPO3 Core نفسها. يأتي البعض الآخر من الإضافات. راجع الدليل لمعرفة كيفية إنشاء المَهام الخاصة بك وتسجيلها في المُجدول.</target>
+      </trans-unit>
+      <trans-unit id="task_disable.alttitle" resname="task_disable.alttitle" approved="yes">
+        <source>Disable task</source>
+        <target state="final">تعطيل المهمة</target>
+      </trans-unit>
+      <trans-unit id="task_disable.description" resname="task_disable.description" approved="yes">
+        <source>Check this box to disable the automatic, scheduled execution of this task. It can still be launched manually from the BE module.</source>
+        <target state="final">حدد هذا المربع لتعطيل التنفيذ التلقائي المُجَدوَل لهذه المهمة. لا يزال من الممكن إطلاقه يدويًا من وحدة BE.</target>
+      </trans-unit>
+      <trans-unit id="task_type.alttitle" resname="task_type.alttitle" approved="yes">
+        <source>Type of task</source>
+        <target state="final">نوع المهمة</target>
+      </trans-unit>
+      <trans-unit id="task_type.description" resname="task_type.description" approved="yes">
+        <source>Choose whether the task must happen a single time or will be repeated</source>
+        <target state="final">اختر ما إذا كان يجب أن تحدث المهمة مرة واحدة أو أنه سيتم تكرارها</target>
+      </trans-unit>
+      <trans-unit id="task_start.alttitle" resname="task_start.alttitle" approved="yes">
+        <source>Start of task</source>
+        <target state="final">بداية المهمة</target>
+      </trans-unit>
+      <trans-unit id="task_start.description" resname="task_start.description" approved="yes">
+        <source>Enter a start date and time for the task</source>
+        <target state="final">أدخل تاريخ ووقت بدء المهمة</target>
+      </trans-unit>
+      <trans-unit id="task_start.details" resname="task_start.details" xml:space="preserve" approved="yes">
+				<source>Date must be entered in a standard format like HH:mm dd-mm-YYYY or YYYY-mm-dd HH:mm. Natural keywords can also be used, like "now" or "tomorrow".
+Date and time must correspond to the server's time zone.</source>
+			<target state="final">يجب إدخال التاريخ بتنسيق قياسي مثل HH: mm dd-mm-YYYY أو YYYY-mm-dd HH: mm. يمكن أيضًا استخدام الكلمات الرئيسية العادية، مثل "الآن" أو "غدًا".
+يجب أن يتوافق التاريخ والوقت مع المنطقة الزمنية للخادم.</target></trans-unit>
+      <trans-unit id="task_end.alttitle" resname="task_end.alttitle" approved="yes">
+        <source>End of task</source>
+        <target state="final">نهاية المهمة</target>
+      </trans-unit>
+      <trans-unit id="task_end.description" resname="task_end.description" approved="yes">
+        <source>Enter an end date and time for the task, can be blank</source>
+        <target state="final">أدخل تاريخ ووقت انتهاء المهمة، يمكن أن يبقى فارغاً</target>
+      </trans-unit>
+      <trans-unit id="task_end.details" resname="task_end.details" xml:space="preserve" approved="yes">
+				<source>Date must be entered in a standard format like HH:mm dd-mm-YYYY or YYYY-mm-dd HH:mm. Natural keywords can also be used, like "now" or "tomorrow".
+Date and time must correspond to the server's time zone.
+
+Can be left blank, if task is not supposed to end at any point.</source>
+			<target state="final">يجب إدخال التاريخ بتنسيق قياسي مثل HH: mm dd-mm-YYYY أو YYYY-mm-dd HH: mm. يمكن أيضًا استخدام الكلمات الرئيسية العادية، مثل "الآن" أو "غدًا".
+يجب أن يتوافق التاريخ والوقت مع المنطقة الزمنية للخادم.
+
+يمكن تركه فارغًا، إذا لم يكن من المفترض أن تنتهي المهمة في أي وقت.</target></trans-unit>
+      <trans-unit id="task_frequency.alttitle" resname="task_frequency.alttitle" approved="yes">
+        <source>Frequency of task</source>
+        <target state="final">تكرار المهمة</target>
+      </trans-unit>
+      <trans-unit id="task_frequency.description" resname="task_frequency.description" approved="yes">
+        <source>Enter a frequency, either in seconds or using a cron-like syntax (minutes, hours, day of month, months and day of week)</source>
+        <target state="final">أدخل ترددًا، إما بالثواني أو باستخدام صيغة تشبه cron (دقائق، ساعات، يوم من الشهر، شهور، ويوم من الأسبوع)</target>
+      </trans-unit>
+      <trans-unit id="task_frequency.details" resname="task_frequency.details" xml:space="preserve" approved="yes">
+				<source>The frequency of the task can be simply entered as a number of seconds.
+
+Alternatively it is possible to use the same syntax as for cron jobs. This is simply a list of five numbers or the wildcard "*", separated by blanks. The five numbers are (in order) minutes, hours, day of month, months and day of week. Examples:
+
+*/5 * * * * means every 5 minutes
+30 22 * * * means every day at 22:30
+
+The Scheduler supports the full cron syntax.</source>
+			<target state="final">يمكن إدخال تكرار المهمة ببساطة على هيئة عدد من الثواني.
+
+بدلاً من ذلك، من الممكن استخدام نفس الصيغة المُستخدمة في وظائف cron. هذه قائمة من خمسة أرقام أو حرف البدل "*"، مفصولة بفراغات. الأرقام الخمسة (بالترتيب) هي الدقائق والساعات واليوم من الشهر والشهور واليوم من الأسبوع. أمثلة:
+
+* / 5 * * * * تعني كل 5 دقائق
+30 22 * * * يعني كل يوم الساعة 22:30
+
+يدعم المُجدْول بناء جملة cron الكامل.</target></trans-unit>
+      <trans-unit id="task_frequency.seeAlso" resname="task_frequency.seeAlso" approved="yes">
+        <source>Wikipedia reference|http://en.wikipedia.org/wiki/Cron</source>
+        <target state="final">Wikipedia reference|http://en.wikipedia.org/wiki/Cron</target>
+      </trans-unit>
+      <trans-unit id="task_multiple.alttitle" resname="task_multiple.alttitle" approved="yes">
+        <source>Multiple executions</source>
+        <target state="final">إجراءات مُتعددة</target>
+      </trans-unit>
+      <trans-unit id="task_multiple.description" resname="task_multiple.description" approved="yes">
+        <source>Choose whether a task can be running several times simultaneously or not</source>
+        <target state="final">اختر ما إذا كانت المهمة يمكن تشغيلها عدة مرات مُتزامنة أم لا</target>
+      </trans-unit>
+      <trans-unit id="task_email.alttitle" resname="task_email.alttitle" approved="yes">
+        <source>Email address</source>
+        <target state="final">عنوان البريد الإلكتروني</target>
+      </trans-unit>
+      <trans-unit id="task_email.description" resname="task_email.description" approved="yes">
+        <source>Enter a recipient for the mails sent by the test task</source>
+        <target state="final">أدخل مُستلماً لرسائل البريد المُرسلة عن طريق مهمة تجريبية</target>
+      </trans-unit>
+      <trans-unit id="task_description.alttitle" resname="task_description.alttitle" approved="yes">
+        <source>Task description</source>
+        <target state="final">وَصف المهمة</target>
+      </trans-unit>
+      <trans-unit id="task_description.description" resname="task_description.description" approved="yes">
+        <source>Enter a description for this task</source>
+        <target state="final">أدخل وصفاً لهذه المهمة</target>
+      </trans-unit>
+      <trans-unit id="task_group.alttitle" resname="task_group.alttitle" approved="yes">
+        <source>Task group</source>
+        <target state="final">مجموعة المهمة</target>
+      </trans-unit>
+      <trans-unit id="task_group.description" resname="task_group.description" approved="yes">
+        <source>In case of a high number of different tasks, it may be useful to visually group similar tasks.</source>
+        <target state="final">في حالة وجود عدد كبير من المهام المُختلفة، قد يكون من المفيد تجميع المهام المتشابهة بصريًا.</target>
+      </trans-unit>
+      <trans-unit id="task_sleepTime.alttitle" resname="task_sleepTime.alttitle" approved="yes">
+        <source>Sleep time</source>
+        <target state="final">وقت السُكون</target>
+      </trans-unit>
+      <trans-unit id="task_sleepTime.description" resname="task_sleepTime.description" approved="yes">
+        <source>Enter a number of seconds during which the task will just sleep.</source>
+        <target state="final">أدخل عدد الثواني التي ستدخل فيها المهمة في حالة السُكون.</target>
+      </trans-unit>
+      <trans-unit id="task_cachingFrameworkGarbageCollection_selectedBackends.alttitle" resname="task_cachingFrameworkGarbageCollection_selectedBackends.alttitle" approved="yes">
+        <source>Select backends</source>
+        <target state="final">حدد الواجهات الخلفية</target>
+      </trans-unit>
+      <trans-unit id="task_cachingFrameworkGarbageCollection_selectedBackends.description" resname="task_cachingFrameworkGarbageCollection_selectedBackends.description" approved="yes">
+        <source>If a cache uses one of the selected backends, the garbage collection will be called for this cache.</source>
+        <target state="final">إذا كانت ذاكرة التخزين المؤقت تستخدم إحدى الواجهات الخلفية المُحددة، فسيتم استدعاء المجموعة المهملة لذاكرة التخزين المؤقت هذه.</target>
+      </trans-unit>
+      <trans-unit id="task_tableGarbageCollection_numberOfDays.alttitle" resname="task_tableGarbageCollection_numberOfDays.alttitle" approved="yes">
+        <source>Number of days</source>
+        <target state="final">عدد الأيام</target>
+      </trans-unit>
+      <trans-unit id="task_tableGarbageCollection_numberOfDays.description" resname="task_tableGarbageCollection_numberOfDays.description" approved="yes">
+        <source>Delete rows from selected table that are older than given number of days.</source>
+        <target state="final">حذف الصفوف من الجدول المُحدد أقدم من عدد الأيام المُحددة.</target>
+      </trans-unit>
+      <trans-unit id="task_tableGarbageCollection_table.alttitle" resname="task_tableGarbageCollection_table.alttitle" approved="yes">
+        <source>Select table</source>
+        <target state="final">حدد الجدول</target>
+      </trans-unit>
+      <trans-unit id="task_tableGarbageCollection_table.description" resname="task_tableGarbageCollection_table.description" approved="yes">
+        <source>Select one of the registered tables to be cleaned up with this task.</source>
+        <target state="final">حدد إحدى الجداول المُسجلة لتنظيفها بواسطة هذه المهمة.</target>
+      </trans-unit>
+      <trans-unit id="task_tableGarbageCollection_allTables.alttitle" resname="task_tableGarbageCollection_allTables.alttitle" approved="yes">
+        <source>Clean up all tables</source>
+        <target state="final">تنظيف جميع الجداول</target>
+      </trans-unit>
+      <trans-unit id="task_tableGarbageCollection_allTables.description" resname="task_tableGarbageCollection_allTables.description" approved="yes">
+        <source>If selected, all configured tables are cleaned. The selection below is ignored.</source>
+        <target state="final">إذا تم تحديده، فسيتم تنظيف جميع الجداول التي تم تكوينها. تم تجاهل التحديد أدناه.</target>
+      </trans-unit>
+      <trans-unit id="task_recyclerGarbageCollection_numberOfDays.alttitle" resname="task_recyclerGarbageCollection_numberOfDays.alttitle" approved="yes">
+        <source>Number of days</source>
+        <target state="final">عدد الأيام</target>
+      </trans-unit>
+      <trans-unit id="task_recyclerGarbageCollection_numberOfDays.description" resname="task_recyclerGarbageCollection_numberOfDays.description" approved="yes">
+        <source>Delete files in _recycler_ folders that are older than the given number of days.</source>
+        <target state="final">احذف الملفات الموجودة في مجلدات _recycler_ الأقدم من عدد الأيام المحدد.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
