@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf" date="2017-12-29T20:23:34Z" product-name="redirects" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel" approved="yes">
+        <source>Redirect Administration</source>
+        <target state="final">पुनर्निर्देशन प्रबंधन</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr" approved="yes">
+        <source>This is the administration area for Web Redirects.</source>
+        <target state="final">यह वेब पुनर्निर्देशन के लिए प्रशासन क्षेत्र है।</target>
+      </trans-unit>
+      <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab" approved="yes">
+        <source>Redirects</source>
+        <target state="final">पुनर्निर्देशन</target>
+      </trans-unit>
+      <trans-unit id="source_host_global_text" resname="source_host_global_text" approved="yes">
+        <source>Global redirect (any domain)</source>
+        <target state="final">वैश्विक पुनर्निर्देशन (किसी भी डोमेन)</target>
+      </trans-unit>
+      <trans-unit id="heading_text" resname="heading_text" approved="yes">
+        <source>Redirect Management</source>
+        <target state="final">पुनर्निर्देशन प्रबंधन</target>
+      </trans-unit>
+      <trans-unit id="redirect_add_text" resname="redirect_add_text" approved="yes">
+        <source>Add redirect</source>
+        <target state="final">पुनर्निर्देशन जोड़ें</target>
+      </trans-unit>
+      <trans-unit id="redirect_not_found.title" resname="redirect_not_found.title" approved="yes">
+        <source>No redirects found!</source>
+        <target state="final">कोई पुनर्निर्देशन नहीं मिला!</target>
+      </trans-unit>
+      <trans-unit id="redirect_not_found.message" resname="redirect_not_found.message" approved="yes">
+        <source>There are currently no redirect records found in the database.</source>
+        <target state="final">वर्तमान में डेटाबेस में कोई पुनर्निर्देशन रिकॉर्ड नहीं मिला है।</target>
+      </trans-unit>
+      <trans-unit id="redirect_create" resname="redirect_create" approved="yes">
+        <source>Create new redirect</source>
+        <target state="final">नया पुनर्निर्देशन बनाएं</target>
+      </trans-unit>
+      <trans-unit id="redirect_not_found_with_filter.title" resname="redirect_not_found_with_filter.title" approved="yes">
+        <source>No redirects found!</source>
+        <target state="final">कोई पुनर्निर्देशन नहीं मिला!</target>
+      </trans-unit>
+      <trans-unit id="redirect_not_found_with_filter.message" resname="redirect_not_found_with_filter.message" approved="yes">
+        <source>With the current set of filters applied, no redirect could be found.</source>
+        <target state="final">वर्तमान सेट के फ़िल्टर के साथ, कोई पुनर्निर्देशन नहीं मिल सकता।</target>
+      </trans-unit>
+      <trans-unit id="redirect_no_filter" resname="redirect_no_filter" approved="yes">
+        <source>Remove all filter</source>
+        <target state="final">सभी फिल्टर हटाएं</target>
+      </trans-unit>
+      <trans-unit id="filter.source_host.showAll" resname="filter.source_host.showAll" approved="yes">
+        <source>Show All</source>
+        <target state="final">सभी दिखाएं</target>
+      </trans-unit>
+      <trans-unit id="filter.targetStatusCode" resname="filter.targetStatusCode" approved="yes">
+        <source>Status Code</source>
+        <target state="final">स्थिति कोड</target>
+      </trans-unit>
+      <trans-unit id="source_path.placeholder" resname="source_path.placeholder" approved="yes">
+        <source>/my-path/ or #^/my-path/$# (when regex enabled)</source>
+        <target state="final">/मेरा-पथ/ या #^/मेरा-पथ/$# (जब रेज़ेक्स सक्षम है)</target>
+      </trans-unit>
+      <trans-unit id="pageID" resname="pageID" approved="yes">
+        <source>Page ID</source>
+        <target state="final">पेज आईडी</target>
+      </trans-unit>
+      <trans-unit id="destination_status_code" resname="destination_status_code" approved="yes">
+        <source>Status Code</source>
+        <target state="final">स्थिति कोड</target>
+      </trans-unit>
+      <trans-unit id="hit_last_never" resname="hit_last_never" approved="yes">
+        <source>Never</source>
+        <target state="final">कभी नहीं</target>
+      </trans-unit>
+      <trans-unit id="visit_destination" resname="visit_destination" approved="yes">
+        <source>Go to</source>
+        <target state="final">जाएं करने के लिए</target>
+      </trans-unit>
+      <trans-unit id="view_redirect" resname="view_redirect" approved="yes">
+        <source>View redirect</source>
+        <target state="final">पुनर्निर्देशन देखें</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
