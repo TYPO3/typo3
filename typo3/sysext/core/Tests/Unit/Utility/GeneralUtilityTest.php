@@ -1342,6 +1342,10 @@ final class GeneralUtilityTest extends UnitTestCase
             '../typo3/alt_intro.php' => ['../typo3/alt_intro.php'],
             '../~userDirectory/index.php' => ['../~userDirectory/index.php'],
             '../typo3/index.php?var1=test-case&var2=~user' => ['../typo3/index.php?var1=test-case&var2=~user'],
+            'alt_intro.php?mail=foo@example.com' => ['alt_intro.php?mail=foo@example.com'],
+            'alt_intro.php#foo@bar' => ['alt_intro.php#foo@bar'],
+            '@foo/alt_intro.php' => ['@foo/alt_intro.php'],
+            '../typo3/@foo/alt_intro.php' => ['../typo3/@foo/alt_intro.php'],
             Environment::getPublicPath() . '/typo3/alt_intro.php' => [Environment::getPublicPath() . '/typo3/alt_intro.php'],
         ];
     }
@@ -1413,6 +1417,56 @@ final class GeneralUtilityTest extends UnitTestCase
                 'localhost',
                 '',
             ],
+            'http://localhost/typo3/foo@bar' => [
+                'http://localhost/typo3/foo@bar',
+                'localhost',
+                '',
+            ],
+            'http://localhost/typo3/alt_intro.php?mail=foo@example.com' => [
+                'http://localhost/typo3/alt_intro.php?mail=foo@example.com',
+                'localhost',
+                '',
+            ],
+            'http://localhost/typo3/alt_intro.php?mail=foo%40example.com' => [
+                'http://localhost/typo3/alt_intro.php?mail=foo%40example.com',
+                'localhost',
+                '',
+            ],
+            'http://localhost/typo3/alt_intro.php#foo@bar' => [
+                'http://localhost/typo3/alt_intro.php#foo@bar',
+                'localhost',
+                '',
+            ],
+            'http://localhost/typo3/alt_intro.php?url=http://localhost@example.com' => [
+                'http://localhost/typo3/alt_intro.php?url=http://localhost@example.com',
+                'localhost',
+                '',
+            ],
+            'http://localhost:8080/typo3/foo@bar' => [
+                'http://localhost:8080/typo3/foo@bar',
+                'localhost:8080',
+                '',
+            ],
+            'http://localhost/cms/@foo/alt_intro.php' => [
+                'http://localhost/cms/@foo/alt_intro.php',
+                'localhost',
+                '/cms/',
+            ],
+            '/cms/@foo/alt_intro.php' => [
+                '/cms/@foo/alt_intro.php',
+                'localhost',
+                '/cms/',
+            ],
+            '/cms/typo3/alt_intro.php?mail=foo@example.com' => [
+                '/cms/typo3/alt_intro.php?mail=foo@example.com',
+                'localhost',
+                '/cms/',
+            ],
+            '/cms/typo3/alt_intro.php#foo@bar' => [
+                '/cms/typo3/alt_intro.php#foo@bar',
+                'localhost',
+                '/cms/',
+            ],
             'http://localhost/cms/typo3/alt_intro.php' => [
                 'http://localhost/cms/typo3/alt_intro.php',
                 'localhost',
@@ -1420,6 +1474,16 @@ final class GeneralUtilityTest extends UnitTestCase
             ],
             '/cms/foo/%3Fbar?baz' => [
                 '/cms/foo/%3Fbar?baz',
+                'localhost',
+                '/cms/',
+            ],
+            '/cms/typo3/alt_intro.php?param=Vendor%5CExtension' => [
+                '/cms/typo3/alt_intro.php?param=Vendor%5CExtension',
+                'localhost',
+                '/cms/',
+            ],
+            '/cms/typo3/alt_intro.php?param=line%0Abreak' => [
+                '/cms/typo3/alt_intro.php?param=line%0Abreak',
                 'localhost',
                 '/cms/',
             ],
@@ -1509,7 +1573,18 @@ final class GeneralUtilityTest extends UnitTestCase
             'https domain with quad slash' => ['https:////www.google.de'],
             'https domain with newline' => ["htt\nps://www.google.de"],
             'domain without schema' => ['//www.google.de/'],
+            'domain without schema escape at start' => ['\\//www.google.de'],
+            'domain without schema escape in between' => ['/\\/www.google.de'],
+            'domain without schema escape after' => ['//\\www.google.de'],
+            'domain without schema escape instead of slash' => ['/\\www.google.de'],
+            'domain without schema with double backslash' => ['\\\\www.google.de'],
+            'domain without schema with double backslash and one slash' => ['\\/www.google.de'],
             'domain without schema with quad slash' => ['////www.google.de'],
+            'domain without schema with newline' => ["/\n/www.google.de"],
+            'domain without schema with EOT' => ["\x04//google.de"],
+            'domain without schema with bell' => ["\x07//google.de"],
+            'domain without schema with backspace' => ["\x08//google.de"],
+            'domain without schema with form feed' => ["\x0c//google.de"],
             'XSS attempt' => ['" onmouseover="alert(123)"'],
             'invalid URL, UNC path' => ['\\\\foo\\bar\\'],
             'invalid URL, HTML break out attempt' => ['" >blabuubb'],
@@ -1518,6 +1593,13 @@ final class GeneralUtilityTest extends UnitTestCase
             'relative URL with location header injection via leading horizontal tab' => ["\t" . '//evil.site/'],
             'relative URL with location header injection attempt (not known to work) via vertical white space' => ["\v" . '//evil.site/'],
             'null-byte break out attempt' => ["http\x00://www.google.de"],
+            'auth boundary moving attempt on current host' => ['http://localhost%2f@evil.com'],
+            'auth boundary moving attempt on current host with uppercase encoding' => ['http://localhost%2F@evil.com'],
+            'auth boundary moving attempt on current host with double slash' => ['http://localhost%2f%2f@evil.com/'],
+            'auth boundary moving attempt on current host with path' => ['http://localhost%2f@evil.com/typo3/'],
+            'auth boundary moving attempt on current host with encoded backslash' => ['http://localhost%5c@evil.com'],
+            'userinfo on current host' => ['http://user@localhost/'],
+            'userinfo with password on current host' => ['http://user:password@localhost/'],
         ];
     }
 
@@ -1527,17 +1609,13 @@ final class GeneralUtilityTest extends UnitTestCase
     public static function sanitizeLocalUrlInvalidOnlyWhenNotEncodedDataProvider(): array
     {
         return [
-            'domain without schema escape at start' => ['\\//www.google.de'],
-            'domain without schema escape in between' => ['/\\/www.google.de'],
-            'domain without schema escape after' => ['//\\www.google.de'],
-            'domain without schema escape instead of slash' => ['/\\www.google.de'],
-            'domain without schema with double backslash' => ['\\\\www.google.de'],
-            'domain without schema with double backslash and one slash' => ['\\/www.google.de'],
-            'domain without schema with newline' => ["/\n/www.google.de"],
-            'domain without schema with EOT' => ["\x04//google.de"],
-            'domain without schema with bell' => ["\x07//google.de"],
-            'domain without schema with backspace' => ["\x08//google.de"],
-            'domain without schema with form feed' => ["\x0c//google.de"],
+            'encoded backslash after slash' => ['/%5Cevil.com'],
+            'encoded backslash before slash' => ['%5C%2Fevil.com'],
+            'encoded tab between slashes' => ['/%09/evil.com'],
+            'encoded newline between slashes' => ['/%0A/evil.com'],
+            'encoded carriage return between slashes' => ['/%0D/evil.com'],
+            'encoded tab between slash and backslash' => ['/%09%5Cevil.com'],
+            'encoded leading control character' => ['%1F//evil.com'],
             'HTTP header smuggling attempt' => ["/\r\nX-Injected: evil"],
             'path invalid because it contains unencoded spaces' => ['/cms/typo3/alt_intro.php&param=oneparam with spaces'],
         ];
