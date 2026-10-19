@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:info/Resources/Private/Language/locallang_csh_webinfo.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="func_0.alttitle" resname="func_0.alttitle" approved="yes">
+        <source>Basic Settings</source>
+        <target state="final">मौलिक सेटिंग्स</target>
+      </trans-unit>
+      <trans-unit id="func_0.description" resname="func_0.description" approved="yes">
+        <source>Displays a selection of fields from page records which are regarded as foundational settings for pages. That includes aliases, start- and stop times, access restriction information etc.</source>
+        <target state="final">पेज रिकॉर्ड से कुछ फ़ील्ड प्रदर्शित करता है जिन्हें पेजों के लिए मूलभूत सेटिंग्स माना जाता है। इसमें उपनाम, प्रारंभ और समाप्ति समय, पहुँच प्रतिबंध जानकारी आदि शामिल हैं।</target>
+      </trans-unit>
+      <trans-unit id="func_0.details" resname="func_0.details" xml:space="preserve" approved="yes">
+				<source>The Basic Settings view resembles the Cache and Age view quite a lot. They are different only by the selection of fields they show.
+
+&lt;b&gt;Batch editing page fields&lt;/b&gt;
+You will find multiple edit-icons around the interface. All edit icons in head lines will bring you to an editing dialog where you can change exactly that field for all listed tables! Very useful for batch-editing of say all "Start" times.
+If you click the edit icon at the ID numbers of pages you will get straight to the regular editing of a whole page record.</source>
+			<target state="final">मूल सेटिंग्स दृश्य कैश और आयु दृश्य से काफी मिलता-जुलता है। ये केवल दिखाए जाने वाले फ़ील्ड के चयन में भिन्न हैं।
+
+&lt;b&gt;बैच संपादन पृष्ठ फ़ील्ड&lt;/b&gt;
+आपको इंटरफ़ेस पर कई संपादन चिह्न मिलेंगे। शीर्षक पंक्तियों में सभी संपादन चिह्न आपको एक संपादन संवाद बॉक्स में ले जाएँगे जहाँ आप सभी सूचीबद्ध तालिकाओं के लिए ठीक उसी फ़ील्ड को बदल सकते हैं! सभी "प्रारंभ" समयों के बैच-संपादन के लिए बहुत उपयोगी।
+यदि आप पृष्ठों की आईडी संख्याओं पर संपादन चिह्न पर क्लिक करते हैं, तो आप सीधे पूरे पृष्ठ रिकॉर्ड के नियमित संपादन पर पहुँच जाएँगे।</target></trans-unit>
+      <trans-unit id="_func_0.seeAlso" resname="_func_0.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:list_module,
+_MOD_web_info:func_2,
+_MOD_web_info:pagetree_overview</source>
+				
+			<target state="final">xMOD_csh_corebe:list_module,
+_MOD_web_info:func_2,
+_MOD_web_info:pagetree_overview</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_func_0.image" resname="_func_0.image" xml:space="preserve" approved="yes">
+				<source>EXT:frontend/Resources/Public/Images/cshimages/pagetree_overview_4.png,
+EXT:frontend/Resources/Public/Images/cshimages/pagetree_overview_8.png,
+EXT:frontend/Resources/Public/Images/cshimages/pagetree_overview_9.png</source>
+				
+			<target state="final">EXT:frontend/Resources/Public/Images/cshimages/pagetree_overview_4.png,
+EXT:frontend/Resources/Public/Images/cshimages/pagetree_overview_8.png,
+EXT:frontend/Resources/Public/Images/cshimages/pagetree_overview_9.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="func_0.image_descr" resname="func_0.image_descr" xml:space="preserve" approved="yes">
+				<source>The Basic Settings view offers a very convenient overview of page urls, start times and access restriction settings in the tree branch.
+If you click an edit-icon in the header you will be able to edit that field for all listed pages.</source>
+			<target state="final">मूल सेटिंग्स दृश्य, ट्री ब्रांच में पेज यूआरएल, प्रारंभ समय और पहुँच प्रतिबंध सेटिंग्स का एक बहुत ही सुविधाजनक अवलोकन प्रदान करता है।
+यदि आप हेडर में किसी edit-icon पर क्लिक करते हैं, तो आप सूचीबद्ध सभी पृष्ठों के लिए उस फ़ील्ड को संपादित कर पाएँगे।</target></trans-unit>
+      <trans-unit id="func_1.alttitle" resname="func_1.alttitle" approved="yes">
+        <source>Record Overview</source>
+        <target state="final">रिकॉर्ड अवलोकन</target>
+      </trans-unit>
+      <trans-unit id="func_1.description" resname="func_1.description" approved="yes">
+        <source>Record overview gives you an indispensable overview of the distribution of records in the page tree. Each database table in the system is represented with a column and for each page you can see the number of records from that table located on the page.</source>
+        <target state="final">रिकॉर्ड अवलोकन आपको पेज ट्री में रिकॉर्ड्स के वितरण का एक अनिवार्य अवलोकन प्रदान करता है। सिस्टम में प्रत्येक डेटाबेस तालिका को एक कॉलम द्वारा दर्शाया जाता है और प्रत्येक पृष्ठ के लिए आप उस तालिका में मौजूद रिकॉर्ड्स की संख्या देख सकते हैं।</target>
+      </trans-unit>
+      <trans-unit id="func_1.details" resname="func_1.details" xml:space="preserve" approved="yes">
+				<source>&lt;b&gt;Notice:&lt;/b&gt; Be careful with the level-setting. A high level-setting may cause the module to respond very slowly if there are many pages and many records in the database as well!
+
+&lt;b&gt;Tree stop?&lt;/b&gt;
+Notice the red "+" next to a page in the page tree? This is due to a setting for that page record which means that the page tree will not expand for this page. Typically this is set for protection when there are a large amount of subpages underneath (hundreds of pages typically). If you click the icon/title the overview will jump to make this page the new root of the overview.</source>
+			<target state="final">&lt;b&gt;सूचना:&lt;/b&gt; लेवल-सेटिंग के साथ सावधान रहें। यदि डेटाबेस में कई पृष्ठ और कई रिकॉर्ड हैं, तो उच्च लेवल-सेटिंग के कारण मॉड्यूल बहुत धीमी गति से प्रतिक्रिया दे सकता है!
+
+&lt;b&gt;ट्री स्टॉप?&lt;/b&gt;
+पेज ट्री में किसी पेज के आगे लाल "+" देखा? यह उस पेज रिकॉर्ड के लिए एक सेटिंग के कारण है, जिसका अर्थ है कि इस पेज के लिए पेज ट्री विस्तृत नहीं होगा। आमतौर पर यह सुरक्षा के लिए सेट किया जाता है जब नीचे बहुत सारे उपपृष्ठ (आमतौर पर सैकड़ों पेज) होते हैं। यदि आप आइकन/शीर्षक पर क्लिक करते हैं, तो ओवरव्यू जंप हो जाएगा और यह पेज ओवरव्यू का नया रूट बन जाएगा।</target></trans-unit>
+      <trans-unit id="_func_1.seeAlso" resname="_func_1.seeAlso" xml:space="preserve" approved="yes">
+				<source>_MOD_web_info:pagetree_overview,
+pages:php_tree_stop</source>
+				
+			<target state="final">_MOD_web_info:pagetree_overview,
+pages:php_tree_stop</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_func_1.image" resname="_func_1.image" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/pagetree_overview_6.png</source>
+        <target state="final">EXT:frontend/Resources/Public/Images/cshimages/pagetree_overview_6.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="func_1.image_descr" resname="func_1.image_descr" approved="yes">
+        <source>You can easily see the distribution of Content Elements on a page. You can also see where Template Records - and basically any record! - are located in the page tree!</source>
+        <target state="final">आप किसी पृष्ठ पर सामग्री तत्वों का वितरण आसानी से देख सकते हैं। आप यह भी देख सकते हैं कि टेम्पलेट रिकॉर्ड - और मूलतः कोई भी रिकॉर्ड! - पृष्ठ वृक्ष में कहाँ स्थित हैं!</target>
+      </trans-unit>
+      <trans-unit id="func_2.alttitle" resname="func_2.alttitle" approved="yes">
+        <source>Cache and Age</source>
+        <target state="final">कैश और उम्र</target>
+      </trans-unit>
+      <trans-unit id="func_2.description" resname="func_2.description" approved="yes">
+        <source>Displays a selection of fields from page records related to page caching and time settings.</source>
+        <target state="final">पृष्ठ कैशिंग और समय सेटिंग से संबंधित पृष्ठ रिकॉर्ड से फ़ील्ड का चयन प्रदर्शित करता है।</target>
+      </trans-unit>
+      <trans-unit id="_func_2.seeAlso" resname="_func_2.seeAlso" xml:space="preserve" approved="yes">
+				<source>_MOD_web_info:func_0,
+_MOD_web_info:pagetree_overview,
+pages:TSconfig</source>
+				
+			<target state="final">_MOD_web_info:func_0,
+_MOD_web_info:pagetree_overview,
+pages:TSconfig</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_func_2.image" resname="_func_2.image" xml:space="preserve" approved="yes">
+				<source>EXT:frontend/Resources/Public/Images/cshimages/pagetree_overview_5.png,
+EXT:frontend/Resources/Public/Images/cshimages/pagetree_overview_7.png</source>
+				
+			<target state="final">EXT:frontend/Resources/Public/Images/cshimages/pagetree_overview_5.png,
+EXT:frontend/Resources/Public/Images/cshimages/pagetree_overview_7.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="func_2.image_descr" resname="func_2.image_descr" xml:space="preserve" approved="yes">
+				<source>The "Cache and Age" view.
+Here you see the "TSconfig" column. The overview exposes that these two pages include some Page TSconfig code!</source>
+			<target state="final">"कैश और आयु" दृश्य।
+यहाँ आपको "TSconfig" कॉलम दिखाई देगा। अवलोकन से पता चलता है कि इन दोनों पृष्ठों में कुछ पेज TSconfig कोड शामिल हैं!</target></trans-unit>
+      <trans-unit id="lang.details" resname="lang.details" xml:space="preserve" approved="yes">
+				<source>The overview uses colors to signal the availability and fall back situation for a given page. Here is a description for each color code:
+&lt;b&gt;Green background:&lt;/b&gt; Page is translated and viewable in this language. For translations it means that an active page overlay record is present.
+&lt;b&gt;Red background:&lt;/b&gt; Page &lt;em&gt;cannot&lt;/em&gt; be viewed in this language and you will see an error message if you try. Menus should automatically filter out links to pages with this translation.
+&lt;b&gt;Gray background (not available for default language):&lt;/b&gt; Page will fall back to the specified fallback mode for content. Depends on configuration. (sys_language_mode = content_fallback is recommended for most flexible fallback, sys_language_mode = strict will prevent this and issue an error instead!)
+
+&lt;b&gt;The pages "Localization settings:"&lt;/b&gt;
+It is the "Localization settings" of the page record that determines the modes above. In the column of the default language each of these settings are represented by a "N" (Hide page if no translation for current language exists) or a "D" (Hide default language of page).
+As you can see the page "Startpage" has the N flag set and therefore any access to the german version of that page will be blocked with an error message because there is no translation in german. By default "german access" to a non-translated page will just show the english content.
+There is also a page with the D flag ("[Dummy]"). The D flag means that the page is only available in one of the translations, in this case Danish. So any attempt to access the page in the default language or german will show an error message.
+
+So, when the "Localization settings" checkboxes for a page are used, you will get an error message when you try to request a page which has been blocked. This is a feature. The trick is not to create links to those pages.
+
+Menus generated from HMENU objects will always take "sys_language" into account and display only pages which can be accessed for that language. But combined with the "localization settings" of pages which may block page access this becomes a problem with pages which are &lt;em&gt;not&lt;/em&gt; translated (has gray background); You might get menu items which links to non-accessible pages.
+The problem basically is that "&amp;L=xx" is different from internal "sys_language". You would like to avoid that and to do so you should configure "sys_language_mode" to "content_fallback". If you do that sys_language will &lt;em&gt;always&lt;/em&gt; follow what "&amp;L=" instructs it to and your menus will be right. At the same time you will get the default content displayed if no translation exists (because content selection falls back).
+
+Finally, the number found in each column tells you how many content elements are found in the specified language.</source>
+			<target state="final">अवलोकन किसी दिए गए पृष्ठ की उपलब्धता और वापसी की स्थिति को दर्शाने के लिए रंगों का उपयोग करता है। प्रत्येक रंग कोड का विवरण यहां दिया गया है:
+&lt;b&gt;हरी पृष्ठभूमि:&lt;/b&gt;पृष्ठ इस भाषा में अनुवादित और देखने योग्य है। अनुवादों के लिए, इसका अर्थ है कि एक सक्रिय पृष्ठ ओवरले रिकॉर्ड मौजूद है।
+&lt;b&gt;लाल पृष्ठभूमि:&lt;/b&gt;पृष्ठ इस भाषा में नहीं देखा जा सकता है और यदि आप प्रयास करते हैं, तो आपको एक त्रुटि संदेश दिखाई देगा। मेनू को इस अनुवाद वाले पृष्ठों के लिंक स्वचालित रूप से फ़िल्टर कर देने चाहिए।
+
+&lt;b&gt;ग्रे पृष्ठभूमि (डिफ़ॉल्ट भाषा के लिए उपलब्ध नहीं):&lt;/b&gt; पृष्ठ सामग्री के लिए निर्दिष्ट फ़ॉलबैक मोड पर वापस आ जाएगा। कॉन्फ़िगरेशन पर निर्भर करता है। (सबसे लचीले फ़ॉलबैक के लिए sys_language_mode = content_fallback की अनुशंसा की जाती है, sys_language_mode = strict इसे रोक देगा और इसके बजाय एक त्रुटि जारी करेगा!)
+
+
+&lt;b&gt;पृष्ठ "स्थानीयकरण सेटिंग्स:"&lt;/b&gt;
+पृष्ठ रिकॉर्ड की "स्थानीयकरण सेटिंग्स" ही उपरोक्त मोड निर्धारित करती हैं। डिफ़ॉल्ट भाषा के कॉलम में, इनमें से प्रत्येक सेटिंग को "N" (यदि वर्तमान भाषा का कोई अनुवाद उपलब्ध नहीं है तो पृष्ठ छिपाएँ) या "D" (पृष्ठ की डिफ़ॉल्ट भाषा छिपाएँ) द्वारा दर्शाया जाता है।
+
+जैसा कि आप देख सकते हैं, "प्रारंभ पृष्ठ" पर N ध्वज सेट है और इसलिए उस पृष्ठ के जर्मन संस्करण तक कोई भी पहुँच एक त्रुटि संदेश के साथ अवरुद्ध हो जाएगी क्योंकि जर्मन में कोई अनुवाद उपलब्ध नहीं है। डिफ़ॉल्ट रूप से, अनूदित पृष्ठ पर "जर्मन पहुँच" केवल अंग्रेज़ी सामग्री ही दिखाएगी।
+D ध्वज ("[डमी]") वाला एक पृष्ठ भी है। D ध्वज का अर्थ है कि पृष्ठ केवल एक अनुवाद में उपलब्ध है, इस मामले में डेनिश। इसलिए, डिफ़ॉल्ट भाषा या जर्मन में पृष्ठ तक पहुँचने का कोई भी प्रयास एक त्रुटि संदेश दिखाएगा।
+
+इसलिए, जब किसी पृष्ठ के लिए "स्थानीयकरण सेटिंग्स" चेकबॉक्स का उपयोग किया जाता है, तो आपको किसी अवरुद्ध पृष्ठ का अनुरोध करने का प्रयास करते समय एक त्रुटि संदेश मिलेगा। यह एक विशेषता है। इसका उद्देश्य उन पृष्ठों के लिंक बनाना नहीं है।
+
+HMENU ऑब्जेक्ट से उत्पन्न मेनू हमेशा "sys_language" को ध्यान में रखेंगे और केवल उन्हीं पृष्ठों को प्रदर्शित करेंगे जिन्हें उस भाषा के लिए एक्सेस किया जा सकता है। लेकिन पृष्ठों की "स्थानीयकरण सेटिंग्स" के साथ, जो पृष्ठ एक्सेस को अवरुद्ध कर सकती हैं, यह उन पृष्ठों के लिए एक समस्या बन जाती है जिनका अनुवाद &lt;em&gt;नहीं&lt;/em&gt; किया गया है (जिनकी पृष्ठभूमि धूसर है); आपको ऐसे मेनू आइटम मिल सकते हैं जो गैर-पहुंच योग्य पृष्ठों से लिंक करते हैं।
+मूल रूप से समस्या यह है कि "&amp;L=xx" आंतरिक "sys_language" से अलग है। आप इससे बचना चाहेंगे और ऐसा करने के लिए आपको "sys_language_mode" को "content_fallback" पर कॉन्फ़िगर करना होगा। यदि आप ऐसा करते हैं, तो sys_language हमेशा &lt;em&gt;/em&gt; "&amp;L=" के निर्देशों का पालन करें और आपके मेनू सही होंगे। साथ ही, अगर कोई अनुवाद उपलब्ध नहीं है, तो आपको डिफ़ॉल्ट सामग्री दिखाई देगी (क्योंकि सामग्री चयन पीछे छूट जाता है)।
+
+अंत में, प्रत्येक कॉलम में दी गई संख्या आपको बताती है कि निर्दिष्ट भाषा में कितने सामग्री तत्व मौजूद हैं।</target></trans-unit>
+      <trans-unit id="_lang.image" resname="_lang.image" xml:space="preserve" approved="yes">
+				<source>EXT:frontend/Resources/Public/Images/cshimages/localizationoverview.png,
+EXT:frontend/Resources/Public/Images/cshimages/localizationoverview1.png</source>
+				
+			<target state="final">EXT:frontend/Resources/Public/Images/cshimages/localizationoverview.png,
+EXT:frontend/Resources/Public/Images/cshimages/localizationoverview1.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="lang.image_descr" resname="lang.image_descr" xml:space="preserve" approved="yes">
+				<source>Localization overview in the Web&gt;Info module. Use the buttons to edit, view and create new page translation headers. Use the regular page module to put localized content on the pages.
+The "Localization settings" that affect availability of pages in the various languages.</source>
+			<target state="final">वेब&gt;सूचना मॉड्यूल में स्थानीयकरण अवलोकन। नए पृष्ठ अनुवाद शीर्षकों को संपादित करने, देखने और बनाने के लिए बटनों का उपयोग करें। पृष्ठों पर स्थानीयकृत सामग्री डालने के लिए नियमित पृष्ठ मॉड्यूल का उपयोग करें।
+"स्थानीयकरण सेटिंग्स" जो विभिन्न भाषाओं में पृष्ठों की उपलब्धता को प्रभावित करती हैं।</target></trans-unit>
+      <trans-unit id="lang.alttitle" resname="lang.alttitle" approved="yes">
+        <source>Localization overview</source>
+        <target state="final">स्थानीयकरण सिंहावलोकन</target>
+      </trans-unit>
+      <trans-unit id="lang.description" resname="lang.description" approved="yes">
+        <source>Gives an overview of which pages in the page tree are translated to the system languages installed.</source>
+        <target state="final">यह इस बात का अवलोकन देता है कि पृष्ठ वृक्ष में कौन से पृष्ठ स्थापित सिस्टम भाषाओं में अनुवादित हैं।</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
