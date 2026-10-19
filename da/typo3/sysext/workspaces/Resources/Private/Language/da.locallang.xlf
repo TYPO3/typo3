@@ -1,0 +1,486 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:workspaces/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="workspaces" target-language="da">
+    <header/>
+    <body>
+      <trans-unit id="legend.label" resname="legend.label" approved="yes">
+        <source>Legend</source>
+        <target state="final">Udtryk</target>
+      </trans-unit>
+      <trans-unit id="legend.edited" resname="legend.edited" approved="yes">
+        <source>edited</source>
+        <target state="final">rettet</target>
+      </trans-unit>
+      <trans-unit id="legend.unchanged" resname="legend.unchanged" approved="yes">
+        <source>unchanged</source>
+        <target state="final">uændret</target>
+      </trans-unit>
+      <trans-unit id="legend.moved" resname="legend.moved" approved="yes">
+        <source>moved</source>
+        <target state="final">flyttet</target>
+      </trans-unit>
+      <trans-unit id="legend.deleted" resname="legend.deleted" approved="yes">
+        <source>deleted</source>
+        <target state="final">slettet</target>
+      </trans-unit>
+      <trans-unit id="legend.new" resname="legend.new" approved="yes">
+        <source>created</source>
+        <target state="final">oprettet</target>
+      </trans-unit>
+      <trans-unit id="legend.hidden" resname="legend.hidden" approved="yes">
+        <source>hidden</source>
+        <target state="final">skjult</target>
+      </trans-unit>
+      <trans-unit id="title" resname="title" approved="yes">
+        <source>Workspaces</source>
+        <target state="final">Arbejdsrum</target>
+      </trans-unit>
+      <trans-unit id="ok" resname="ok" approved="yes">
+        <source>Ok</source>
+        <target state="final">Ok</target>
+      </trans-unit>
+      <trans-unit id="cancel" resname="cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Annullér</target>
+      </trans-unit>
+      <trans-unit id="chooseMassAction" resname="chooseMassAction" approved="yes">
+        <source>Choose mass action</source>
+        <target state="final">Vælg massehandling</target>
+      </trans-unit>
+      <trans-unit id="chooseSelectionAction" resname="chooseSelectionAction" approved="yes">
+        <source>Choose selection action</source>
+        <target state="final">Vælg en handling</target>
+      </trans-unit>
+      <trans-unit id="chooseAction" resname="chooseAction" approved="yes">
+        <source>Choose staging action</source>
+        <target state="final">Vælg scene handling</target>
+      </trans-unit>
+      <trans-unit id="item" resname="item" approved="yes">
+        <source>item</source>
+        <target state="final">emne</target>
+      </trans-unit>
+      <trans-unit id="items" resname="items" approved="yes">
+        <source>items</source>
+        <target state="final">emner</target>
+      </trans-unit>
+      <trans-unit id="recordsToDisplay" resname="recordsToDisplay" approved="yes">
+        <source>Records to display</source>
+        <target state="final">Poster at vise</target>
+      </trans-unit>
+      <trans-unit id="reviewandpublish" resname="reviewandpublish" approved="yes">
+        <source>review and publish</source>
+        <target state="final">gennemse og udgiv</target>
+      </trans-unit>
+      <trans-unit id="workspacelist" resname="workspacelist" approved="yes">
+        <source>Workspace List</source>
+        <target state="final">Arbejdsgruppeliste</target>
+      </trans-unit>
+      <trans-unit id="editorInLive" resname="editorInLive" xml:space="preserve" approved="yes">
+				<source>You are in LIVE workspace. Please select a draft workspace from the top bar
+					menu before you can review and publish changes.
+				</source>
+			<target state="final">Du befinder dig i LIVE arbejdsrum. Vælg venligst et kladde arbejdsrum fra top-
+					menuen inden du gennemgår og udgiver ændringer.</target></trans-unit>
+      <trans-unit id="admin.noWorkspaceSetup.title" resname="admin.noWorkspaceSetup.title" xml:space="preserve" approved="yes">
+				<source>No workspace set up!</source>
+			<target state="final">Ingen arbejdsrum er indstillet!</target></trans-unit>
+      <trans-unit id="admin.noWorkspaceSetup.message" resname="admin.noWorkspaceSetup.message" xml:space="preserve" approved="yes">
+				<source>There are currently no workspace records configured in the database. To use the workspace
+					functionality, at least one workspace must be set up on the root page.
+				</source>
+			<target state="final">Der er i øjeblikket ingen arbejdsrum elementer konfigureret i databasen. For at benytte arbejdsrum-
+					funktionalitet, skal mindst et arbejdsrum være oprettet på root siden.</target></trans-unit>
+      <trans-unit id="admin.noWorkspaceSetup.buttonCreate" resname="admin.noWorkspaceSetup.buttonCreate" xml:space="preserve" approved="yes">
+				<source>Create a workspace</source>
+			<target state="final">Opret et arbejdsrum</target></trans-unit>
+      <trans-unit id="actionSendToStage" resname="actionSendToStage" approved="yes">
+        <source>Send to stage</source>
+        <target state="final">Send til fase</target>
+      </trans-unit>
+      <trans-unit id="publish_execute_action_option" resname="publish_execute_action_option" approved="yes">
+        <source>Publish to LIVE</source>
+        <target state="final">Udgiv til LIVE</target>
+      </trans-unit>
+      <trans-unit id="close" resname="close" approved="yes">
+        <source>Close</source>
+        <target state="final">Luk</target>
+      </trans-unit>
+      <trans-unit id="runMassAction.done" resname="runMassAction.done" approved="yes">
+        <source>Done processing %d elements</source>
+        <target state="final">%d elementer bearbejdet</target>
+      </trans-unit>
+      <trans-unit id="runMassAction.init" resname="runMassAction.init" approved="yes">
+        <source>init</source>
+        <target state="final">init</target>
+      </trans-unit>
+      <trans-unit id="tooltip.publishAll" resname="tooltip.publishAll" approved="yes">
+        <source>Really publish entire workspace?</source>
+        <target state="final">Er du sikker på at du vil udgive arbejdsrummet?</target>
+      </trans-unit>
+      <trans-unit id="tooltip.swapAll" resname="tooltip.swapAll" approved="yes">
+        <source>Really swap entire workspace?</source>
+        <target state="final">Er du sikker på at du vil ombytte hele arbejdsrummet?</target>
+      </trans-unit>
+      <trans-unit id="tooltip.discardAll" resname="tooltip.discardAll" approved="yes">
+        <source>Do you really want to discard changes from the whole workspace?</source>
+        <target state="final">Er du sikker på at du vil slette ændringerne på hele arbejdsrummet?</target>
+      </trans-unit>
+      <trans-unit id="tooltip.publishSelected" resname="tooltip.publishSelected" approved="yes">
+        <source>Really publish selected elements?</source>
+        <target state="final">Er du sikker på at du vil udgive de valgte elementer?</target>
+      </trans-unit>
+      <trans-unit id="tooltip.swapSelected" resname="tooltip.swapSelected" approved="yes">
+        <source>Really swap selected elements?</source>
+        <target state="final">Er du sikker på at du vil bytte de valgte elementer?</target>
+      </trans-unit>
+      <trans-unit id="tooltip.discardSelected" resname="tooltip.discardSelected" approved="yes">
+        <source>Really discard changes of the selected elements?</source>
+        <target state="final">Er du sikker på at du vil forkaste ændringenre af de valgte elementer?</target>
+      </trans-unit>
+      <trans-unit id="tooltip.affectWholeWorkspace" resname="tooltip.affectWholeWorkspace" xml:space="preserve" approved="yes">
+				<source>Please note that this will affect all changes in the current workspace, which may be more than
+					you are currently seeing on your screen.
+				</source>
+			<target state="final">Bemærk venligst at dette vil have effekt på alle ændringerne i arbejdsrummet, hvilket kan være flere
+	 	 	 	 	 end du ser på skærmen lige nu.</target></trans-unit>
+      <trans-unit id="tooltip.generatePagePreview" resname="tooltip.generatePagePreview" approved="yes">
+        <source>Generate page preview links</source>
+        <target state="final">Generér side-forhåndsvisning af link</target>
+      </trans-unit>
+      <trans-unit id="tooltip.showChanges" resname="tooltip.showChanges" approved="yes">
+        <source>Show changes</source>
+        <target state="final">Vis ændringer</target>
+      </trans-unit>
+      <trans-unit id="previewLink" resname="previewLink" approved="yes">
+        <source>Preview Link</source>
+        <target state="final">Vis link</target>
+      </trans-unit>
+      <trans-unit id="error.noResponse" resname="error.noResponse" approved="yes">
+        <source>The server did not send any response whether the action was successful.</source>
+        <target state="final">Serveren svarede ikke på om handlingen lykkedes eller ej.</target>
+      </trans-unit>
+      <trans-unit id="rowDetails" resname="rowDetails" approved="yes">
+        <source>Row details...</source>
+        <target state="final">Rækkedetaljer...</target>
+      </trans-unit>
+      <trans-unit id="column.difference" resname="column.difference" approved="yes">
+        <source>Difference</source>
+        <target state="final">Forskel</target>
+      </trans-unit>
+      <trans-unit id="column.changeDate" resname="column.changeDate" approved="yes">
+        <source>Modification</source>
+        <target state="final">Ændring</target>
+      </trans-unit>
+      <trans-unit id="column.stage" resname="column.stage" approved="yes">
+        <source>Current Stage</source>
+        <target state="final">Nuværende fase</target>
+      </trans-unit>
+      <trans-unit id="column.actions" resname="column.actions" approved="yes">
+        <source>Actions</source>
+        <target state="final">Handlinger</target>
+      </trans-unit>
+      <trans-unit id="column.wsPath" resname="column.wsPath" approved="yes">
+        <source>Path</source>
+        <target state="final">Sti</target>
+      </trans-unit>
+      <trans-unit id="column.wsTitle" resname="column.wsTitle" approved="yes">
+        <source>Changed</source>
+        <target state="final">Ændret</target>
+      </trans-unit>
+      <trans-unit id="column.uid" resname="column.uid" approved="yes">
+        <source>WS ID</source>
+        <target state="final">WS-Id</target>
+      </trans-unit>
+      <trans-unit id="column.oid" resname="column.oid" approved="yes">
+        <source>Live ID</source>
+        <target state="final">Live-Id</target>
+      </trans-unit>
+      <trans-unit id="column.workspaceName" resname="column.workspaceName" approved="yes">
+        <source>Workspace</source>
+        <target state="final">Arbejdsrum</target>
+      </trans-unit>
+      <trans-unit id="column.livePath" resname="column.livePath" approved="yes">
+        <source>Live path</source>
+        <target state="final">Live-sti</target>
+      </trans-unit>
+      <trans-unit id="column.liveTitle" resname="column.liveTitle" approved="yes">
+        <source>Live title</source>
+        <target state="final">Live-titel</target>
+      </trans-unit>
+      <trans-unit id="column.wsSwapColumn" resname="column.wsSwapColumn" approved="yes">
+        <source>Swap workspace</source>
+        <target state="final">Skift arbejdsrum</target>
+      </trans-unit>
+      <trans-unit id="column.integrity" resname="column.integrity" approved="yes">
+        <source>Integrity</source>
+        <target state="final">Integritet</target>
+      </trans-unit>
+      <trans-unit id="tooltip.viewElementAction" resname="tooltip.viewElementAction" approved="yes">
+        <source>Preview element</source>
+        <target state="final">Vis element</target>
+      </trans-unit>
+      <trans-unit id="tooltip.editElementAction" resname="tooltip.editElementAction" approved="yes">
+        <source>Edit element</source>
+        <target state="final">Redigér element</target>
+      </trans-unit>
+      <trans-unit id="tooltip.openPage" resname="tooltip.openPage" approved="yes">
+        <source>Open version of page</source>
+        <target state="final">Åben version af side</target>
+      </trans-unit>
+      <trans-unit id="tooltip.sendToPrevStage" resname="tooltip.sendToPrevStage" approved="yes">
+        <source>Send record to previous Stage</source>
+        <target state="final">Send post til forrige fase</target>
+      </trans-unit>
+      <trans-unit id="tooltip.sendToNextStage" resname="tooltip.sendToNextStage" approved="yes">
+        <source>Send record to next Stage</source>
+        <target state="final">Send post til næste fase</target>
+      </trans-unit>
+      <trans-unit id="tooltip.discardVersion" resname="tooltip.discardVersion" approved="yes">
+        <source>Discard workspace version of record.</source>
+        <target state="final">Annulér arbejdsrumversionen af posten.</target>
+      </trans-unit>
+      <trans-unit id="tooltip.swap" resname="tooltip.swap" approved="yes">
+        <source>Swap live and workspace versions of record</source>
+        <target state="final">Ombyt udgivet- og arbejdsrums-version af elementet</target>
+      </trans-unit>
+      <trans-unit id="tooltip.expand" resname="tooltip.expand" approved="yes">
+        <source>Expand element and show relations</source>
+        <target state="final">Udvid element og vis relationer</target>
+      </trans-unit>
+      <trans-unit id="tooltip.showHistory" resname="tooltip.showHistory" approved="yes">
+        <source>Show history of workspace version</source>
+        <target state="final">Vis historik af arbejdsrum version</target>
+      </trans-unit>
+      <trans-unit id="window.discard.title" resname="window.discard.title" approved="yes">
+        <source>Discard workspace version of record.</source>
+        <target state="final">Annulér arbejdsrumversionen af posten.</target>
+      </trans-unit>
+      <trans-unit id="window.discardAll.title" resname="window.discardAll.title" approved="yes">
+        <source>Discard all workspace version of current page.</source>
+        <target state="final">Smid alle arbejdsrum versioner af nuværende side ud.</target>
+      </trans-unit>
+      <trans-unit id="window.discard.message" resname="window.discard.message" approved="yes">
+        <source>Do you really want to discard this version from workspace?</source>
+        <target state="final">Vil du virkelig forkaste denne version af arbejdsrummet?</target>
+      </trans-unit>
+      <trans-unit id="window.discardAll.message" resname="window.discardAll.message" approved="yes">
+        <source>Do you really want to discard all versions from page?</source>
+        <target state="final">Vil du virkelige forkaste alle versioner fra siden?</target>
+      </trans-unit>
+      <trans-unit id="window.swap.title" resname="window.swap.title" approved="yes">
+        <source>Swap version</source>
+        <target state="final">Ombyt version</target>
+      </trans-unit>
+      <trans-unit id="window.swap.message" resname="window.swap.message" approved="yes">
+        <source>Do you really want to swap this version?</source>
+        <target state="final">Vil du virkelige ombytte denne version?</target>
+      </trans-unit>
+      <trans-unit id="window.massAction.title" resname="window.massAction.title" approved="yes">
+        <source>Prepare to start mass action</source>
+        <target state="final">Gør klar til start af massehandling</target>
+      </trans-unit>
+      <trans-unit id="window.selectionAction.title" resname="window.selectionAction.title" approved="yes">
+        <source>Prepare to execute actions on selection</source>
+        <target state="final">Gør klar til at køre handlinger på det valgte</target>
+      </trans-unit>
+      <trans-unit id="error.stageId.integer" resname="error.stageId.integer" approved="yes">
+        <source>StageId is supposed to be an integer</source>
+        <target state="final">StageId skal være et tal</target>
+      </trans-unit>
+      <trans-unit id="error.stageId.invalid" resname="error.stageId.invalid" xml:space="preserve" approved="yes">
+				<source>The stage to be used seems to be invalid and cannot be used. Please consider to use the update
+					wizard in the install tool to fix this.
+				</source>
+			<target state="final">Det valgte stadie ser du til at være ugyldigt og kan ikke blive brugt. Overvej at bruger opdateringshjælperen
+	 	 	 	 	 under installations værktøjet til at løse dette.</target></trans-unit>
+      <trans-unit id="error.sendToNextStage.noRecordFound" resname="error.sendToNextStage.noRecordFound" approved="yes">
+        <source>The record element could not be found.</source>
+        <target state="final">Post-elementet kunne ikke blive fundet.</target>
+      </trans-unit>
+      <trans-unit id="error.sendToPrevStage.noPreviousStage" resname="error.sendToPrevStage.noPreviousStage" approved="yes">
+        <source>The record element is already in editing stage, there is no previous stage.</source>
+        <target state="final">Elementet er allerede i redigerings-fase. Der er ikke nogen tidligere fase.</target>
+      </trans-unit>
+      <trans-unit id="window.sendToNextStageWindow.itemsWillBeSentTo" resname="window.sendToNextStageWindow.itemsWillBeSentTo" approved="yes">
+        <source>The selected element(s) will be sent to</source>
+        <target state="final">De(t) valgte element(er) vil blive sendt til</target>
+      </trans-unit>
+      <trans-unit id="window.sendToNextStageWindow.selectAll" resname="window.sendToNextStageWindow.selectAll" approved="yes">
+        <source>Select all</source>
+        <target state="final">Vælg alle</target>
+      </trans-unit>
+      <trans-unit id="window.sendToNextStageWindow.deselectAll" resname="window.sendToNextStageWindow.deselectAll" approved="yes">
+        <source>Uncheck all</source>
+        <target state="final">Fravælg alle</target>
+      </trans-unit>
+      <trans-unit id="window.sendToNextStageWindow.sendMailTo" resname="window.sendToNextStageWindow.sendMailTo" approved="yes">
+        <source>Send mail to</source>
+        <target state="final">Send mail til</target>
+      </trans-unit>
+      <trans-unit id="window.sendToNextStageWindow.additionalRecipients" resname="window.sendToNextStageWindow.additionalRecipients" approved="yes">
+        <source>Additional recipients</source>
+        <target state="final">Øvrige modtagere</target>
+      </trans-unit>
+      <trans-unit id="window.sendToNextStageWindow.additionalRecipients.hint" resname="window.sendToNextStageWindow.additionalRecipients.hint" approved="yes">
+        <source>One recipient per line</source>
+        <target state="final">Én modtager pr linje</target>
+      </trans-unit>
+      <trans-unit id="window.sendToNextStageWindow.comments" resname="window.sendToNextStageWindow.comments" approved="yes">
+        <source>Comments</source>
+        <target state="final">Kommentarer</target>
+      </trans-unit>
+      <trans-unit id="window.recordChanges" resname="window.recordChanges" approved="yes">
+        <source>Record changes</source>
+        <target state="final">Registrér ændringer</target>
+      </trans-unit>
+      <trans-unit id="window.recordInformation" resname="window.recordInformation" approved="yes">
+        <source>Information for "{0}"</source>
+        <target state="final">Information om "{0}"</target>
+      </trans-unit>
+      <trans-unit id="window.recordChanges.tabs.changeSummary" resname="window.recordChanges.tabs.changeSummary" approved="yes">
+        <source>Summary of changes</source>
+        <target state="final">Oversigt over ændringer</target>
+      </trans-unit>
+      <trans-unit id="window.recordChanges.tabs.comments" resname="window.recordChanges.tabs.comments" approved="yes">
+        <source>Comments</source>
+        <target state="final">Kommentarer</target>
+      </trans-unit>
+      <trans-unit id="window.recordChanges.tabs.history" resname="window.recordChanges.tabs.history" approved="yes">
+        <source>History</source>
+        <target state="final">Historik</target>
+      </trans-unit>
+      <trans-unit id="window.recordHistory" resname="window.recordHistory" approved="yes">
+        <source>History of record "{0}"</source>
+        <target state="final">Historik over element "{0}"</target>
+      </trans-unit>
+      <trans-unit id="error.getStageTitle.stageNotFound" resname="error.getStageTitle.stageNotFound" approved="yes">
+        <source>Stage not found</source>
+        <target state="final">Fase ikke fundet</target>
+      </trans-unit>
+      <trans-unit id="info.newpage" resname="info.newpage" approved="yes">
+        <source>New Page!</source>
+        <target state="final">Ny side!</target>
+      </trans-unit>
+      <trans-unit id="info.newpage.detail" resname="info.newpage.detail" approved="yes">
+        <source>The previewed page has been created in a workspace and has no live counterpart.</source>
+        <target state="final">Den foreviste side er blevet oprettet i et arbejdsrum og har ikke nogen offentlig modpart.</target>
+      </trans-unit>
+      <trans-unit id="preview.livePreview" resname="preview.livePreview" approved="yes">
+        <source>Live</source>
+        <target state="final">Offentlig</target>
+      </trans-unit>
+      <trans-unit id="preview.livePreviewDetail" resname="preview.livePreviewDetail" approved="yes">
+        <source>Click this element to hide the workspace version and see the live version of the page.</source>
+        <target state="final">Klik her for at skjule arbejdsrum versionen og se en offentlig version af siden.</target>
+      </trans-unit>
+      <trans-unit id="preview.workspacePreview" resname="preview.workspacePreview" approved="yes">
+        <source>Workspace</source>
+        <target state="final">Arbejdsrum</target>
+      </trans-unit>
+      <trans-unit id="preview.workspacePreviewDetail" resname="preview.workspacePreviewDetail" approved="yes">
+        <source>Click this element to hide the live version and see the workspace version of the page.</source>
+        <target state="final">Klik her for at skjule den offentlige version og se arbejdsrum versionen af siden.</target>
+      </trans-unit>
+      <trans-unit id="preview.modeSlider" resname="preview.modeSlider" approved="yes">
+        <source>Slider</source>
+        <target state="final">Skyder</target>
+      </trans-unit>
+      <trans-unit id="preview.modeVbox" resname="preview.modeVbox" approved="yes">
+        <source>Vertical</source>
+        <target state="final">Lodret</target>
+      </trans-unit>
+      <trans-unit id="preview.modeHbox" resname="preview.modeHbox" approved="yes">
+        <source>Horizontal</source>
+        <target state="final">Horisontal</target>
+      </trans-unit>
+      <trans-unit id="label_doaction_publish" resname="label_doaction_publish" approved="yes">
+        <source>Publish</source>
+        <target state="final">Udgiv</target>
+      </trans-unit>
+      <trans-unit id="label_doaction_swap" resname="label_doaction_swap" approved="yes">
+        <source>Swap</source>
+        <target state="final">Ombyt</target>
+      </trans-unit>
+      <trans-unit id="label_doaction_discard" resname="label_doaction_discard" approved="yes">
+        <source>Discard</source>
+        <target state="final">Forkast</target>
+      </trans-unit>
+      <trans-unit id="label_doaction_generatePreviewLinks" resname="label_doaction_generatePreviewLinks" approved="yes">
+        <source>Generate Workspace Preview Links</source>
+        <target state="final">Generér arbejdsrum forevisningslink</target>
+      </trans-unit>
+      <trans-unit id="info.elementAlreadyModified" resname="info.elementAlreadyModified" approved="yes">
+        <source>Element is in workspace stage "%s", modifications will send it back to "%s".</source>
+        <target state="final">Elementet er i arbejdsrumsfase "%s". Ændringer vil blive sendt til "%s".</target>
+      </trans-unit>
+      <trans-unit id="live_workspace" resname="live_workspace" approved="yes">
+        <source>Live Workspace</source>
+        <target state="final">Udgivet arbejdsrum</target>
+      </trans-unit>
+      <trans-unit id="workspace_version" resname="workspace_version" approved="yes">
+        <source>Workspace version</source>
+        <target state="final">Arbejdsrum version</target>
+      </trans-unit>
+      <trans-unit id="current_step" resname="current_step" approved="yes">
+        <source><![CDATA[<b>Current stage step</b>: {0} (<b>{1}</b>/{2})]]></source>
+        <target state="final"><![CDATA[<b>Nuværende fasepunkt</b>: {0} (<b>{1}</b>/{2})]]></target>
+      </trans-unit>
+      <trans-unit id="path" resname="path" approved="yes">
+        <source><![CDATA[<b>Path</b>: {0}]]></source>
+        <target state="final"><![CDATA[<b>Sti</b>: {0}]]></target>
+      </trans-unit>
+      <trans-unit id="stage" resname="stage" approved="yes">
+        <source>Stage {0}</source>
+        <target state="final">Fase {0}</target>
+      </trans-unit>
+      <trans-unit id="comments" resname="comments" approved="yes">
+        <source><![CDATA[User comments for <b>step {0} of stage</b> "{1}"]]></source>
+        <target state="final"><![CDATA[Brugerkommentarer på <b>punkt {0} af fase</b> "{1}"]]></target>
+      </trans-unit>
+      <trans-unit id="language.allLanguages" resname="language.allLanguages" approved="yes">
+        <source>all languages</source>
+        <target state="final">alle sprog</target>
+      </trans-unit>
+      <trans-unit id="language.selectLanguage" resname="language.selectLanguage" approved="yes">
+        <source>all languages</source>
+        <target state="final">alle sprog</target>
+      </trans-unit>
+      <trans-unit id="integrity.dependsOnDefaultLanguageRecord" resname="integrity.dependsOnDefaultLanguageRecord" approved="yes">
+        <source><![CDATA[Record "%s" depends on default language record]]></source>
+        <target state="final"><![CDATA[Element "%s" afhænger af standard sprogelement]]></target>
+      </trans-unit>
+      <trans-unit id="integrity.isDefaultLanguageRecord" resname="integrity.isDefaultLanguageRecord" approved="yes">
+        <source><![CDATA[Default language record for record "%s"]]></source>
+        <target state="final"><![CDATA[Standard sprogelement for element "%s"]]></target>
+      </trans-unit>
+      <trans-unit id="integrity.hasIssuesDescription" resname="integrity.hasIssuesDescription" approved="yes">
+        <source>The integrity check discovered several issues, see status icons in front of each record for further details.</source>
+        <target state="final">Integritetsvalideringen er stødt på flere problemer. Se statusikonet ud for hvert element for yderligere information.</target>
+      </trans-unit>
+      <trans-unit id="integrity.hasIssuesQuestion" resname="integrity.hasIssuesQuestion" approved="yes">
+        <source>Do you want to continue?</source>
+        <target state="final">Vil du fortsætte?</target>
+      </trans-unit>
+      <trans-unit id="status.info" resname="status.info" approved="yes">
+        <source>Information</source>
+        <target state="final">Information</target>
+      </trans-unit>
+      <trans-unit id="status.warning" resname="status.warning" approved="yes">
+        <source>Warning</source>
+        <target state="final">Advarsel</target>
+      </trans-unit>
+      <trans-unit id="status.error" resname="status.error" approved="yes">
+        <source>Error</source>
+        <target state="final">Fejl</target>
+      </trans-unit>
+      <trans-unit id="iframe.livePreview" resname="iframe.livePreview" approved="yes">
+        <source>Preview of the live record</source>
+        <target state="final">Forhåndsvisning af live-elementet</target>
+      </trans-unit>
+      <trans-unit id="iframe.workspacePreview" resname="iframe.workspacePreview" approved="yes">
+        <source>Preview of the record in workspace %s</source>
+        <target state="final">Forhåndsvisning af elementet i arbejdsområde %s</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
