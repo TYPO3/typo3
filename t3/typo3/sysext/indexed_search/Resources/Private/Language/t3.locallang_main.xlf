@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:indexed_search/Resources/Private/Language/locallang_main.xlf" date="2011-10-17T20:22:33Z" product-name="indexed_search" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="mod_indexed_search" resname="mod_indexed_search">
+        <source>Indexed search</source>
+        <target>crwdns222002:0crwdne222002:0</target>
+      </trans-unit>
+      <trans-unit id="mod2_indexed_search" resname="mod2_indexed_search">
+        <source>Indexed search statistics</source>
+        <target>crwdns222004:0crwdne222004:0</target>
+      </trans-unit>
+      <trans-unit id="ignoreExtensions" resname="ignoreExtensions">
+        <source>Extension %s was set to be ignored.</source>
+        <target>crwdns222006:0%scrwdne222006:0</target>
+      </trans-unit>
+      <trans-unit id="pdfToolsNotFound" resname="pdfToolsNotFound">
+        <source>PDF tools was not found in paths '%1$spdftotext' and/or '%1$spdfinfo'</source>
+        <target>crwdns226090:0%1$scrwdnd226090:0%1$scrwdne226090:0</target>
+      </trans-unit>
+      <trans-unit id="pdfToolsDisabled" resname="pdfToolsDisabled">
+        <source>PDF tools disabled</source>
+        <target>crwdns222010:0crwdne222010:0</target>
+      </trans-unit>
+      <trans-unit id="pdfToolsFailed" resname="pdfToolsFailed">
+        <source>PDFtoText Failed on this document: '%s'. Maybe the PDF file is locked for printing or encrypted.</source>
+        <target>crwdns222012:0%scrwdne222012:0</target>
+      </trans-unit>
+      <trans-unit id="catdocNotFound" resname="catdocNotFound">
+        <source>'catdoc' tool for reading Word-files was not found in path '%scatdoc'</source>
+        <target>crwdns222014:0%scrwdne222014:0</target>
+      </trans-unit>
+      <trans-unit id="catdocDisabled" resname="catdocDisabled">
+        <source>catdoc tools (Word-files) disabled</source>
+        <target>crwdns222016:0crwdne222016:0</target>
+      </trans-unit>
+      <trans-unit id="ppthtmlNotFound" resname="ppthtmlNotFound">
+        <source>'ppthtml' tool for reading Powerpoint-files was not found in path '%sppthtml'</source>
+        <target>crwdns222018:0%scrwdne222018:0</target>
+      </trans-unit>
+      <trans-unit id="ppthtmlDisabled" resname="ppthtmlDisabled">
+        <source>ppthtml tools (Powerpoint-files) disabled</source>
+        <target>crwdns222020:0crwdne222020:0</target>
+      </trans-unit>
+      <trans-unit id="xlhtmlNotFound" resname="xlhtmlNotFound">
+        <source>'xlhtml' tool for reading Excel-files was not found in path '%sxlhtml'</source>
+        <target>crwdns222022:0%scrwdne222022:0</target>
+      </trans-unit>
+      <trans-unit id="xlhtmlDisabled" resname="xlhtmlDisabled">
+        <source>xlhtml tools (Excel-files) disabled</source>
+        <target>crwdns222024:0crwdne222024:0</target>
+      </trans-unit>
+      <trans-unit id="unzipNotFound" resname="unzipNotFound">
+        <source>'unzip' tool for reading OpenOffice.org-files was not found in path '%sunzip'</source>
+        <target>crwdns222026:0%scrwdne222026:0</target>
+      </trans-unit>
+      <trans-unit id="unzipDisabled" resname="unzipDisabled">
+        <source>unzip tool (OpenOffice.org-files) disabled</source>
+        <target>crwdns222028:0crwdne222028:0</target>
+      </trans-unit>
+      <trans-unit id="unrtfNotFound" resname="unrtfNotFound">
+        <source>'unrtf' tool for reading RTF-files was not found in path '%sunrtf'</source>
+        <target>crwdns222030:0%scrwdne222030:0</target>
+      </trans-unit>
+      <trans-unit id="unrtfDisabled" resname="unrtfDisabled">
+        <source>unrtf tool (RTF-files) disabled</source>
+        <target>crwdns222032:0crwdne222032:0</target>
+      </trans-unit>
+      <trans-unit id="extension.PDF" resname="extension.PDF">
+        <source>PDF (*.%s)</source>
+        <target>crwdns222034:0%scrwdne222034:0</target>
+      </trans-unit>
+      <trans-unit id="extension.DOC" resname="extension.DOC">
+        <source>MS Word (*.%s)</source>
+        <target>crwdns222036:0%scrwdne222036:0</target>
+      </trans-unit>
+      <trans-unit id="extension.PP" resname="extension.PP">
+        <source>MS Powerpoint (*.%s)</source>
+        <target>crwdns222038:0%scrwdne222038:0</target>
+      </trans-unit>
+      <trans-unit id="extension.XLS" resname="extension.XLS">
+        <source>MS Excel (*.%s)</source>
+        <target>crwdns222040:0%scrwdne222040:0</target>
+      </trans-unit>
+      <trans-unit id="extension.SXC" resname="extension.SXC">
+        <source>OpenOffice.org Calc (*.%s)</source>
+        <target>crwdns222042:0%scrwdne222042:0</target>
+      </trans-unit>
+      <trans-unit id="extension.SXI" resname="extension.SXI">
+        <source>OpenOffice.org Impress (*.%s)</source>
+        <target>crwdns222044:0%scrwdne222044:0</target>
+      </trans-unit>
+      <trans-unit id="extension.SXW" resname="extension.SXW">
+        <source>OpenOffice.org Writer (*.%s)</source>
+        <target>crwdns222046:0%scrwdne222046:0</target>
+      </trans-unit>
+      <trans-unit id="extension.ODS" resname="extension.ODS">
+        <source>ODF Spreadsheet (*.%s)</source>
+        <target>crwdns222048:0%scrwdne222048:0</target>
+      </trans-unit>
+      <trans-unit id="extension.ODP" resname="extension.ODP">
+        <source>ODF Presentation (*.%s)</source>
+        <target>crwdns222050:0%scrwdne222050:0</target>
+      </trans-unit>
+      <trans-unit id="extension.ODT" resname="extension.ODT">
+        <source>ODF Text (*.%s)</source>
+        <target>crwdns222052:0%scrwdne222052:0</target>
+      </trans-unit>
+      <trans-unit id="extension.RTF" resname="extension.RTF">
+        <source>Rich Text Format (*.%s)</source>
+        <target>crwdns222054:0%scrwdne222054:0</target>
+      </trans-unit>
+      <trans-unit id="extension.images" resname="extension.images">
+        <source>Images (*.%s)</source>
+        <target>crwdns222056:0%scrwdne222056:0</target>
+      </trans-unit>
+      <trans-unit id="extension.HTML" resname="extension.HTML">
+        <source>Webpages (*.%s)</source>
+        <target>crwdns222058:0%scrwdne222058:0</target>
+      </trans-unit>
+      <trans-unit id="extension.TXT" resname="extension.TXT">
+        <source>Textfiles (*.%s)</source>
+        <target>crwdns222060:0%scrwdne222060:0</target>
+      </trans-unit>
+      <trans-unit id="extension.CSV" resname="extension.CSV">
+        <source>Comma-Separated Values (*.%s)</source>
+        <target>crwdns222062:0%scrwdne222062:0</target>
+      </trans-unit>
+      <trans-unit id="extension.XML" resname="extension.XML">
+        <source>Extensible Markup Language (*.%s)</source>
+        <target>crwdns222064:0%scrwdne222064:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
