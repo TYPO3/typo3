@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:setup/Resources/Private/Language/locallang_csh_mod.xlf" date="2011-10-17T20:22:37Z" product-name="setup" target-language="pt-BR">
+    <header/>
+    <body>
+      <trans-unit id=".alttitle" resname=".alttitle" approved="yes">
+        <source>User &gt; Setup module</source>
+        <target state="final">Usuário&gt;Módulo de Configuração</target>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>The Setup module allows the backend user to customize TYPO3 for his own login sessions. This includes the backend language and various other interface features.</source>
+        <target state="final">O Módulo de Configuração permite que os usuários personalize TYPO3 para suas próprias sessões login. Isso inclui o idioma do sistema (backend) e várias outras características da interface.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" approved="yes">
+        <source>&lt;b&gt;Notice [For Admins]:&lt;/b&gt; These settings can all be overridden or have their default values changed by "User TSconfig". To read more about this concept, see the link below!</source>
+        <target state="final">&lt;b&gt;Notificação [para Admins]:&lt;/b&gt; Estas configurações podem ser sobrepostos ou ter os valores mudados por "User TSconfig". Para ler mais sobre este conceito, veja o link abaixo!</target>
+      </trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" xml:space="preserve" approved="yes">
+				<source>The Setup module is selected in the left menu.
+This is how the Setup module interface looks like - a list of options to configure.</source>
+			<target state="final">O Módulo de Configuração está selecionada no menu esquerdo. É assim que o Módulo de Configuração parece - uma lista de opções para configurar.</target></trans-unit>
+      <trans-unit id="language.alttitle" resname="language.alttitle" approved="yes">
+        <source>Backend Language selection</source>
+        <target state="final">Seleção do Idioma do Sistema (Backend)</target>
+      </trans-unit>
+      <trans-unit id="option_beUser_realName.alttitle" resname="option_beUser_realName.alttitle" approved="yes">
+        <source>Your real name</source>
+        <target state="final">Seu nome real</target>
+      </trans-unit>
+      <trans-unit id="option_beUser_realName.description" resname="option_beUser_realName.description" approved="yes">
+        <source>Enter your real name here.</source>
+        <target state="final">Insira aqui seu nome real.</target>
+      </trans-unit>
+      <trans-unit id="option_beUser_email.alttitle" resname="option_beUser_email.alttitle" approved="yes">
+        <source>Your email address</source>
+        <target state="final">Seu endereço de email</target>
+      </trans-unit>
+      <trans-unit id="option_emailMeAtLogin.alttitle" resname="option_emailMeAtLogin.alttitle" approved="yes">
+        <source>Notify by login</source>
+        <target state="final">Notificar por acesso</target>
+      </trans-unit>
+      <trans-unit id="option_newPassword.alttitle" resname="option_newPassword.alttitle" approved="yes">
+        <source>Change password</source>
+        <target state="final">Mudar senha</target>
+      </trans-unit>
+      <trans-unit id="reset.alttitle" resname="reset.alttitle" approved="yes">
+        <source>Reset all Values to default</source>
+        <target state="final">Restaurar todos os valores para o padrão</target>
+      </trans-unit>
+      <trans-unit id="reset.description" resname="reset.description" approved="yes">
+        <source>If you select this option all settings in this module will be reset to the default settings of the system.</source>
+        <target state="final">Se você selecionar essa opção todas as configurações deste módulo serão restauradas para as configurações padrão do sistema.</target>
+      </trans-unit>
+      <trans-unit id="reset.details" resname="reset.details" approved="yes">
+        <source>This does not apply to user name, email and password settings of course.</source>
+        <target state="final">Isto não se aplica ao nome de usuário, email e configurações de senha, é claro.</target>
+      </trans-unit>
+      <trans-unit id="simuser.alttitle" resname="simuser.alttitle" approved="yes">
+        <source>Simulate backend user</source>
+        <target state="final">Simular usuário backend</target>
+      </trans-unit>
+      <trans-unit id="simuser.description" resname="simuser.description" approved="yes">
+        <source>This option allows "admin"-users to change settings for another backend user in the system.</source>
+        <target state="final">Esta opção permite que usuários admin alterem as configurações de outro usuário backend no sistema.</target>
+      </trans-unit>
+      <trans-unit id="option_enableInstallTool.alttitle" resname="option_enableInstallTool.alttitle" approved="yes">
+        <source>Admin control for re-enabling Install Tool access</source>
+        <target state="final">Controle admin para reativar acesso ferramenta de instalação</target>
+      </trans-unit>
+      <trans-unit id="option_enableInstallTool.description" resname="option_enableInstallTool.description" approved="yes">
+        <source>By clicking this button, a file typo3conf/ENABLE_INSTALL_TOOL is created (or removed if it already exists). It unlocks the access to the Install Tool (password is still needed!) and will be removed automatically after 1 hour.</source>
+        <target state="final">Clicando neste botão, um arquivo typo3conf/ENABLE_INSTALL_TOOL é criado (ou removido se já existir). Ele desbloqueia o acesso a Ferramenta de Instalação (senha é necessária ainda) e será removido automaticamente depois de 1 hora.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
