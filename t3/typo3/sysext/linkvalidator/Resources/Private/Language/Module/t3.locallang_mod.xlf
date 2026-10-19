@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:linkvalidator/Resources/Private/Language/Module/locallang_mod.xlf" date="2011-10-17T20:22:34Z" product-name="linkvalidator" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab">
+        <source>Check Links</source>
+        <target>crwdns106632:0crwdne106632:0</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr">
+        <source>Checks the links in your website for validity.</source>
+        <target>crwdns106634:0crwdne106634:0</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel">
+        <source>Validates links</source>
+        <target>crwdns106636:0crwdne106636:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
