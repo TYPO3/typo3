@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="fa">
+    <header/>
+    <body>
+      <trans-unit id="common" resname="common" approved="yes">
+        <source>Typical page content</source>
+        <target state="final">محتوای عادی صفحه</target>
+      </trans-unit>
+      <trans-unit id="common_headerOnly_title" resname="common_headerOnly_title" approved="yes">
+        <source>Header Only</source>
+        <target state="final">فقط عنوان</target>
+      </trans-unit>
+      <trans-unit id="common_headerOnly_description" resname="common_headerOnly_description" approved="yes">
+        <source>Adds a header only.</source>
+        <target state="final">فقط یک عنوان می‌آورد.</target>
+      </trans-unit>
+      <trans-unit id="common_regularText_title" resname="common_regularText_title" approved="yes">
+        <source>Regular Text Element</source>
+        <target state="final">یک نوشتۀ معمولی</target>
+      </trans-unit>
+      <trans-unit id="common_regularText_description" resname="common_regularText_description" approved="yes">
+        <source>A regular text element with header and bodytext fields.</source>
+        <target state="final">یک نوشتۀ معمولی دربردارندۀ عنوان و متن اضافه می‌آورد.</target>
+      </trans-unit>
+      <trans-unit id="common_textImage_title" resname="common_textImage_title" approved="yes">
+        <source>Text &amp; Images</source>
+        <target state="final">نوشته و تصویر</target>
+      </trans-unit>
+      <trans-unit id="common_textImage_description" resname="common_textImage_description" approved="yes">
+        <source>Any number of images wrapped right around a regular text element.</source>
+        <target state="final">تصاویری به تعداد مورد نیاز در کنار یک نوشتۀ معمولی نمایش می‌دهد.</target>
+      </trans-unit>
+      <trans-unit id="common_textMedia_title" resname="common_textMedia_title" approved="yes">
+        <source>Text &amp; Media</source>
+        <target state="final">نوشته و رسانه</target>
+      </trans-unit>
+      <trans-unit id="common_textMedia_description" resname="common_textMedia_description" approved="yes">
+        <source>Any number of media wrapped right around a regular text element.</source>
+        <target state="final">تصاویری به تعداد مورد نیاز در اطراف یک نوشتۀ معمولی نمایش می‌دهد.</target>
+      </trans-unit>
+      <trans-unit id="common_imagesOnly_title" resname="common_imagesOnly_title" approved="yes">
+        <source>Images Only</source>
+        <target state="final">فقط تصویر</target>
+      </trans-unit>
+      <trans-unit id="common_imagesOnly_description" resname="common_imagesOnly_description" approved="yes">
+        <source>Any number of images aligned in columns and rows with a caption.</source>
+        <target state="final">هر تعداد تصویر مورد نیاز را در ستون و ردیف بهمراه عنوان هر تصویر نمایش می‌دهد.</target>
+      </trans-unit>
+      <trans-unit id="common_bulletList_title" resname="common_bulletList_title" approved="yes">
+        <source>Bullet List</source>
+        <target state="final">فهرست نقطه دار</target>
+      </trans-unit>
+      <trans-unit id="common_bulletList_description" resname="common_bulletList_description" approved="yes">
+        <source>A single bullet list.</source>
+        <target state="final">یک فهرست نقطه دار نمایش می‌دهد</target>
+      </trans-unit>
+      <trans-unit id="common_table_title" resname="common_table_title" approved="yes">
+        <source>Table</source>
+        <target state="final">جدول</target>
+      </trans-unit>
+      <trans-unit id="common_table_description" resname="common_table_description" approved="yes">
+        <source>A simple table.</source>
+        <target state="final">یک جدول ساده نمایش می دهد.</target>
+      </trans-unit>
+      <trans-unit id="menu" resname="menu" approved="yes">
+        <source>Menu</source>
+        <target state="final">فهرست</target>
+      </trans-unit>
+      <trans-unit id="menu_abstract.title" resname="menu_abstract.title" approved="yes">
+        <source>Abstracts</source>
+        <target state="final">چکیده‌ها</target>
+      </trans-unit>
+      <trans-unit id="menu_abstract.description" resname="menu_abstract.description" approved="yes">
+        <source>Menu of subpages of selected pages including abstracts</source>
+        <target state="final">فهرست زیرصفحات مربوط به صفحات منتخب، به همراه خلاصۀ آنها</target>
+      </trans-unit>
+      <trans-unit id="menu_categorized_content.title" resname="menu_categorized_content.title" approved="yes">
+        <source>Categorized content</source>
+        <target state="final">محتوای گروه‌بندی‌شده</target>
+      </trans-unit>
+      <trans-unit id="menu_categorized_content.description" resname="menu_categorized_content.description" approved="yes">
+        <source>Content elements for selected categories</source>
+        <target state="final">عناصرمحتوائی مربوط به گروه‌های منتخب</target>
+      </trans-unit>
+      <trans-unit id="menu_categorized_pages.title" resname="menu_categorized_pages.title" approved="yes">
+        <source>Categorized pages</source>
+        <target state="final">صفحات گروه‌بندی شده</target>
+      </trans-unit>
+      <trans-unit id="menu_pages.title" resname="menu_pages.title" approved="yes">
+        <source>Pages</source>
+        <target state="final">صفحات</target>
+      </trans-unit>
+      <trans-unit id="menu_pages.description" resname="menu_pages.description" approved="yes">
+        <source>Menu of selected pages</source>
+        <target state="final">فهرست صفحات منتخب</target>
+      </trans-unit>
+      <trans-unit id="menu_subpages.title" resname="menu_subpages.title" approved="yes">
+        <source>Subpages</source>
+        <target state="final">زیرصفحات</target>
+      </trans-unit>
+      <trans-unit id="menu_subpages.description" resname="menu_subpages.description" approved="yes">
+        <source>Menu of subpages of selected pages</source>
+        <target state="final">فهرست زیرصفحات مربوط به صفحات انتخاب شده</target>
+      </trans-unit>
+      <trans-unit id="menu_categorized_pages.description" resname="menu_categorized_pages.description" approved="yes">
+        <source>Pages for selected categories</source>
+        <target state="final">صفحات مرتبط با گروه‌های منتخب</target>
+      </trans-unit>
+      <trans-unit id="menu_recently_updated.title" resname="menu_recently_updated.title" approved="yes">
+        <source>Recently updated pages</source>
+        <target state="final">صفحاتی که اخیرا روزآمد شده‌اند</target>
+      </trans-unit>
+      <trans-unit id="menu_recently_updated.description" resname="menu_recently_updated.description" approved="yes">
+        <source>Menu of recently updated pages</source>
+        <target state="final">فهرست صفحاتی که اخیرا روزآمد شده‌اند</target>
+      </trans-unit>
+      <trans-unit id="menu_related_pages.title" resname="menu_related_pages.title" approved="yes">
+        <source>Related pages</source>
+        <target state="final">صفحات مرتبط</target>
+      </trans-unit>
+      <trans-unit id="menu_related_pages.description" resname="menu_related_pages.description" approved="yes">
+        <source>Menu of related pages based on keywords</source>
+        <target state="final">فهرست صفحات مرتبط با توجه به کلیدواژه‌ها</target>
+      </trans-unit>
+      <trans-unit id="menu_section.title" resname="menu_section.title" approved="yes">
+        <source>Section index</source>
+        <target state="final">فهرست بخش</target>
+      </trans-unit>
+      <trans-unit id="menu_section.description" resname="menu_section.description" approved="yes">
+        <source>Page content marked for section menus</source>
+        <target state="final">محتوای صفحه‌ای که برای فهرست بخش‌ها علامت‌گذاری شده</target>
+      </trans-unit>
+      <trans-unit id="menu_section_pages.title" resname="menu_section_pages.title" approved="yes">
+        <source>Section index of subpages from selected pages</source>
+        <target state="final">فهرست بخش‌های مختلف زیرصفحات مربوط به صفحات منتخب</target>
+      </trans-unit>
+      <trans-unit id="menu_section_pages.description" resname="menu_section_pages.description" approved="yes">
+        <source>Menu of subpages of selected pages including sections</source>
+        <target state="final">فهرست زیرصفحات مربوط به صفحات منتخب به همراه بخش‌ها (Sections)</target>
+      </trans-unit>
+      <trans-unit id="menu_sitemap.title" resname="menu_sitemap.title" approved="yes">
+        <source>Sitemap</source>
+        <target state="final">نقشۀ سایت</target>
+      </trans-unit>
+      <trans-unit id="menu_sitemap_pages.title" resname="menu_sitemap_pages.title" approved="yes">
+        <source>Sitemaps of selected pages</source>
+        <target state="final">نقشۀ سایت از صفحات انتخاب شده</target>
+      </trans-unit>
+      <trans-unit id="menu_sitemap_pages.description" resname="menu_sitemap_pages.description" approved="yes">
+        <source>Expanded menu of all subpages for selected pages</source>
+        <target state="final">فهرست تفصیلی از همۀ زیرصفحات یک صفحۀ منتخب</target>
+      </trans-unit>
+      <trans-unit id="special" resname="special" approved="yes">
+        <source>Special elements</source>
+        <target state="final">عناصر خاص</target>
+      </trans-unit>
+      <trans-unit id="special_filelinks_title" resname="special_filelinks_title" approved="yes">
+        <source>File Links</source>
+        <target state="final">پیوند به فایل</target>
+      </trans-unit>
+      <trans-unit id="special_filelinks_description" resname="special_filelinks_description" approved="yes">
+        <source>Makes a list of files for download.</source>
+        <target state="final">فهرست فایلی برای دریافت نمایش می‌دهد.</target>
+      </trans-unit>
+      <trans-unit id="special_sitemap_title" resname="special_sitemap_title" approved="yes">
+        <source>Sitemap</source>
+        <target state="final">نقشۀ سایت</target>
+      </trans-unit>
+      <trans-unit id="special_menus_title" resname="special_menus_title" approved="yes">
+        <source>Special Menus</source>
+        <target state="final">منوهای خاص</target>
+      </trans-unit>
+      <trans-unit id="special_menus_description" resname="special_menus_description" approved="yes">
+        <source>Creates a menu of pages, sitemap or other special menus.</source>
+        <target state="final">یک فهرست از صفحات، نقشۀ سایت یا منوهای خاص دیگر می‌سازد.</target>
+      </trans-unit>
+      <trans-unit id="special_plainHTML_title" resname="special_plainHTML_title" approved="yes">
+        <source>Plain HTML</source>
+        <target state="final">HTML خالص</target>
+      </trans-unit>
+      <trans-unit id="special_plainHTML_description" resname="special_plainHTML_description" approved="yes">
+        <source>With this element you can insert raw HTML code on the page.</source>
+        <target state="final">از این بخش می توانید کد HTML خالص در صفحه وارد کنید.</target>
+      </trans-unit>
+      <trans-unit id="special_divider_title" resname="special_divider_title" approved="yes">
+        <source>Divider</source>
+        <target state="final">مقسم</target>
+      </trans-unit>
+      <trans-unit id="special_divider_description" resname="special_divider_description" approved="yes">
+        <source>This element inserts a visual divider, which is by default a horizontal line.</source>
+        <target state="final">یک تقسیم‌کنندۀ بصری می‌افزاید که عمدتا یک خط افقی است.</target>
+      </trans-unit>
+      <trans-unit id="special_shortcut_title" resname="special_shortcut_title" approved="yes">
+        <source>Insert records</source>
+        <target state="final">درج ردیف</target>
+      </trans-unit>
+      <trans-unit id="special_shortcut_description" resname="special_shortcut_description" approved="yes">
+        <source>With this element you can embed other content elements.</source>
+        <target state="final">از این عنصر می‌توانید عناصر محتوایی دیگر را اضافه کنید.</target>
+      </trans-unit>
+      <trans-unit id="forms" resname="forms" approved="yes">
+        <source>Form elements</source>
+        <target state="final">عناصر فرم</target>
+      </trans-unit>
+      <trans-unit id="forms_mail_title" resname="forms_mail_title" approved="yes">
+        <source>Mail Form</source>
+        <target state="final">فرم رایانامه</target>
+      </trans-unit>
+      <trans-unit id="forms_mail_description" resname="forms_mail_description" approved="yes">
+        <source>A mail form allowing website users to submit responses.</source>
+        <target state="final">یک فرم رایانامه امکان می‌دهد که کاربران سایت محتوای مورد نظر خود را بفرستند.</target>
+      </trans-unit>
+      <trans-unit id="forms_login_title" resname="forms_login_title" approved="yes">
+        <source>Login Form</source>
+        <target state="final">فرم ورود</target>
+      </trans-unit>
+      <trans-unit id="forms_login_description" resname="forms_login_description" approved="yes">
+        <source>Login/logout form used to password protect pages allowing only authorised website users and groups access.</source>
+        <target state="final">فرم ورود و خروج برای محافظت صفحات بواسطۀ گذرواژه است و امکان می‌دهد کاربران و گروه‌های کاربری خاص به محتوای خاص دسترسی پیدا کنند.</target>
+      </trans-unit>
+      <trans-unit id="plugins" resname="plugins" approved="yes">
+        <source>Plugins</source>
+        <target state="final">افزونه‌ها</target>
+      </trans-unit>
+      <trans-unit id="plugins_general_title" resname="plugins_general_title" approved="yes">
+        <source>General Plugin</source>
+        <target state="final">افزونۀ متدوال</target>
+      </trans-unit>
+      <trans-unit id="plugins_general_description" resname="plugins_general_description" approved="yes">
+        <source>Select this element type to insert a plugin which cannot be found amongst the options below.</source>
+        <target state="final">این عنصر را برای درج افزونه‌ای انتخاب کنید که در گزینه‌های بعدی ظاهر نشده است.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
