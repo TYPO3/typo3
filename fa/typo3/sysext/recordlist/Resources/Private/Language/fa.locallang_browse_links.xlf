@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:recordlist/Resources/Private/Language/locallang_browse_links.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="fa">
+    <header/>
+    <body>
+      <trans-unit id="removeLink" resname="removeLink" approved="yes">
+        <source>Remove link</source>
+        <target state="final">حذف پیوند</target>
+      </trans-unit>
+      <trans-unit id="uploadImage" resname="uploadImage" approved="yes">
+        <source>Upload Image</source>
+        <target state="final">بارگذاری تصویر</target>
+      </trans-unit>
+      <trans-unit id="update" resname="update" approved="yes">
+        <source>Update</source>
+        <target state="final">روزآمد سازی</target>
+      </trans-unit>
+      <trans-unit id="path" resname="path" approved="yes">
+        <source>Path</source>
+        <target state="final">مسیر</target>
+      </trans-unit>
+      <trans-unit id="page" resname="page" approved="yes">
+        <source>Page</source>
+        <target state="final">صفحه</target>
+      </trans-unit>
+      <trans-unit id="file" resname="file" approved="yes">
+        <source>File</source>
+        <target state="final">فایل</target>
+      </trans-unit>
+      <trans-unit id="folder" resname="folder" approved="yes">
+        <source>Folder</source>
+        <target state="final">پوشه</target>
+      </trans-unit>
+      <trans-unit id="extUrl" resname="extUrl" approved="yes">
+        <source>External URL</source>
+        <target state="final">URL خارجی</target>
+      </trans-unit>
+      <trans-unit id="email" resname="email" approved="yes">
+        <source>Email</source>
+        <target state="final">رایانامه</target>
+      </trans-unit>
+      <trans-unit id="special" resname="special" approved="yes">
+        <source>Special</source>
+        <target state="final">خاص</target>
+      </trans-unit>
+      <trans-unit id="folderTree" resname="folderTree" approved="yes">
+        <source>Folder Tree</source>
+        <target state="final">ساختار درختی</target>
+      </trans-unit>
+      <trans-unit id="files" resname="files" approved="yes">
+        <source>Files</source>
+        <target state="final">فایل‌ها</target>
+      </trans-unit>
+      <trans-unit id="folders" resname="folders" approved="yes">
+        <source>Folders</source>
+        <target state="final">پوشه‌ها</target>
+      </trans-unit>
+      <trans-unit id="target" resname="target" approved="yes">
+        <source>Target</source>
+        <target state="final">هدف</target>
+      </trans-unit>
+      <trans-unit id="linkRelationship" resname="linkRelationship" approved="yes">
+        <source>Relationship</source>
+        <target state="final">ارتباط‌ها</target>
+      </trans-unit>
+      <trans-unit id="class" resname="class" approved="yes">
+        <source>CSS-Class</source>
+        <target state="final">CSS-Class</target>
+      </trans-unit>
+      <trans-unit id="title" resname="title" approved="yes">
+        <source>Title</source>
+        <target state="final">عنوان</target>
+      </trans-unit>
+      <trans-unit id="params" resname="params" approved="yes">
+        <source>Additional link parameters</source>
+        <target state="final">مؤلفه‌های اضافی پیوند</target>
+      </trans-unit>
+      <trans-unit id="newWindow" resname="newWindow" approved="yes">
+        <source>New window</source>
+        <target state="final">پنجره جدید</target>
+      </trans-unit>
+      <trans-unit id="top" resname="top" approved="yes">
+        <source>Top</source>
+        <target state="final">بالا</target>
+      </trans-unit>
+      <trans-unit id="none" resname="none" approved="yes">
+        <source>None - new link!</source>
+        <target state="final">هیچ - پیوند جدید!</target>
+      </trans-unit>
+      <trans-unit id="pageTree" resname="pageTree" approved="yes">
+        <source>Page tree</source>
+        <target state="final">ساختار درختی</target>
+      </trans-unit>
+      <trans-unit id="contentElements" resname="contentElements" approved="yes">
+        <source>Content elements</source>
+        <target state="final">عناصر محتوایی</target>
+      </trans-unit>
+      <trans-unit id="selectRecords" resname="selectRecords" approved="yes">
+        <source>Select Records</source>
+        <target state="final">انتخاب ردیف‌ها</target>
+      </trans-unit>
+      <trans-unit id="addToList" resname="addToList" approved="yes">
+        <source>Add to list...</source>
+        <target state="final">اضافه کردن به فهرست...</target>
+      </trans-unit>
+      <trans-unit id="info" resname="info" approved="yes">
+        <source>Info</source>
+        <target state="final">اطلاعات</target>
+      </trans-unit>
+      <trans-unit id="emailAddress" resname="emailAddress" approved="yes">
+        <source>Email address</source>
+        <target state="final">آدرس رایانامه</target>
+      </trans-unit>
+      <trans-unit id="setLink" resname="setLink" approved="yes">
+        <source>Set Link</source>
+        <target state="final">ثبت پیوند</target>
+      </trans-unit>
+      <trans-unit id="urlPlaceholder" resname="urlPlaceholder" translate="no" approved="yes">
+        <source>https://...</source>
+        <target state="final">https://...</target>
+      </trans-unit>
+      <trans-unit id="clickToRedrawFullSize" resname="clickToRedrawFullSize" approved="yes">
+        <source>Image is larger than shown here! Click to redraw page with full sized images.</source>
+        <target state="final">تصویر بزرگ‌تر از آن است که اینجا نشان داده شود! برای بازسازی صفحه با تصویر تمام اندازه کلیک کنید.</target>
+      </trans-unit>
+      <trans-unit id="findDragDrop" resname="findDragDrop" approved="yes">
+        <source>Find and click on your image then drag it into the editor in the main window!</source>
+        <target state="final">تصویر مورد نظر را یافته و روی آن کلیک کنید و آن را درون ویرایش‌گر صفحه اصلی بکشید!</target>
+      </trans-unit>
+      <trans-unit id="noWebFolder" resname="noWebFolder" approved="yes">
+        <source>You cannot drag images from this folder (yellow) because it is internal on the server.</source>
+        <target state="final">نمی‌توانید تصاویر را از این پوشه (زرد) بکشید، زیرا این پوشه برای خادم، داخلی است.</target>
+      </trans-unit>
+      <trans-unit id="currentLink" resname="currentLink" approved="yes">
+        <source>Current Link</source>
+        <target state="final">پیوند فعلی</target>
+      </trans-unit>
+      <trans-unit id="invalidChar" resname="invalidChar" approved="yes">
+        <source>ERROR: Invalid character found in file path (%s). Cannot add the file!</source>
+        <target state="final">خطا: حرف نادرست در مسیر وجود دارد (%s). نمی‌توان فایل را اضافه کرد!</target>
+      </trans-unit>
+      <trans-unit id="toggleSelection" resname="toggleSelection" approved="yes">
+        <source>Toggle selection</source>
+        <target state="final">معکوس کردن انتخاب</target>
+      </trans-unit>
+      <trans-unit id="importSelection" resname="importSelection" approved="yes">
+        <source>Import selection</source>
+        <target state="final">وارد کردن انتخاب</target>
+      </trans-unit>
+      <trans-unit id="recordSelector" resname="recordSelector" approved="yes">
+        <source>Record selector</source>
+        <target state="final">گزینش‌گر ردیف</target>
+      </trans-unit>
+      <trans-unit id="fileSelector" resname="fileSelector" approved="yes">
+        <source>File selector</source>
+        <target state="final">گزینش‌گر فایل</target>
+      </trans-unit>
+      <trans-unit id="folderSelector" resname="folderSelector" approved="yes">
+        <source>Folder selector</source>
+        <target state="final">گزینش‌گر پوشه</target>
+      </trans-unit>
+      <trans-unit id="page_id" resname="page_id" approved="yes">
+        <source>Page ID</source>
+        <target state="final">شناسۀ صفحه</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
