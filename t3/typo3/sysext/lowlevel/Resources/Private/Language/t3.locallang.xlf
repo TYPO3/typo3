@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:lowlevel/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:34Z" product-name="lowlevel" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="configuration" resname="configuration">
+        <source>Configuration</source>
+        <target>crwdns222676:0crwdne222676:0</target>
+      </trans-unit>
+      <trans-unit id="typo3ConfVars" resname="typo3ConfVars">
+        <source>$GLOBALS['TYPO3_CONF_VARS'] (Global Configuration)</source>
+        <target>crwdns222678:0$GLOBALS['TYPO3_CONF_VARS']crwdne222678:0</target>
+      </trans-unit>
+      <trans-unit id="tca" resname="tca">
+        <source>$GLOBALS['TCA'] (Table configuration array)</source>
+        <target>crwdns222680:0$GLOBALS['TCA']crwdne222680:0</target>
+      </trans-unit>
+      <trans-unit id="tcaDescr" resname="tcaDescr">
+        <source>$GLOBALS['TCA_DESCR'] (Table Help Description)</source>
+        <target>crwdns222682:0$GLOBALS['TCA_DESCR']crwdne222682:0</target>
+      </trans-unit>
+      <trans-unit id="tbeStyles" resname="tbeStyles">
+        <source>$GLOBALS['TBE_STYLES'] (Skinning Styles)</source>
+        <target>crwdns222684:0$GLOBALS['TBE_STYLES']crwdne222684:0</target>
+      </trans-unit>
+      <trans-unit id="beUserTsConfig" resname="beUserTsConfig">
+        <source>$GLOBALS['BE_USER']-&gt;getTSConfig() (User TSconfig)</source>
+        <target>crwdns222686:0$GLOBALS['BE_USER']crwdne222686:0</target>
+      </trans-unit>
+      <trans-unit id="beUser" resname="beUser">
+        <source>$GLOBALS['BE_USER']-&gt;uc (User Settings)</source>
+        <target>crwdns222688:0$GLOBALS['BE_USER']crwdne222688:0</target>
+      </trans-unit>
+      <trans-unit id="usersettings" resname="usersettings">
+        <source>$GLOBALS['TYPO3_USER_SETTINGS'] (User Settings Configuration)</source>
+        <target>crwdns222690:0$GLOBALS['TYPO3_USER_SETTINGS']crwdne222690:0</target>
+      </trans-unit>
+      <trans-unit id="routes" resname="routes">
+        <source>Backend Routes</source>
+        <target>crwdns222692:0crwdne222692:0</target>
+      </trans-unit>
+      <trans-unit id="httpMiddlewareStacks" resname="httpMiddlewareStacks">
+        <source>HTTP Middlewares (PSR-15)</source>
+        <target>crwdns222694:0crwdne222694:0</target>
+      </trans-unit>
+      <trans-unit id="siteConfiguration" resname="siteConfiguration">
+        <source>Site Configuration</source>
+        <target>crwdns222696:0crwdne222696:0</target>
+      </trans-unit>
+      <trans-unit id="eventListeners" resname="eventListeners">
+        <source>Event Listeners (PSR-14)</source>
+        <target>crwdns222698:0crwdne222698:0</target>
+      </trans-unit>
+      <trans-unit id="mfaProviders" resname="mfaProviders">
+        <source>MFA providers</source>
+        <target>crwdns222700:0crwdne222700:0</target>
+      </trans-unit>
+      <trans-unit id="softReferenceParsers" resname="softReferenceParsers">
+        <source>Soft Reference Parsers</source>
+        <target>crwdns222702:0crwdne222702:0</target>
+      </trans-unit>
+      <trans-unit id="formYamlConfiguration" resname="formYamlConfiguration">
+        <source>Form: YAML Configuration</source>
+        <target>crwdns222704:0crwdne222704:0</target>
+      </trans-unit>
+      <trans-unit id="t3services" resname="t3services">
+        <source>$GLOBALS['T3_SERVICES'] (Registered Services)</source>
+        <target>crwdns222706:0$GLOBALS['T3_SERVICES']crwdne222706:0</target>
+      </trans-unit>
+      <trans-unit id="tbemodulesext" resname="tbemodulesext">
+        <source>$GLOBALS['TBE_MODULES_EXT'] (BE Modules Extensions)</source>
+        <target>crwdns222708:0$GLOBALS['TBE_MODULES_EXT']crwdne222708:0</target>
+      </trans-unit>
+      <trans-unit id="tbemodules" resname="tbemodules">
+        <source>$GLOBALS['TBE_MODULES'] (BE Modules)</source>
+        <target>crwdns222710:0$GLOBALS['TBE_MODULES']crwdne222710:0</target>
+      </trans-unit>
+      <trans-unit id="pagesTypes" resname="pagesTypes">
+        <source>$GLOBALS['PAGES_TYPES'] (Table permissions by page type)</source>
+        <target>crwdns222712:0$GLOBALS['PAGES_TYPES']crwdne222712:0</target>
+      </trans-unit>
+      <trans-unit id="cropLines" resname="cropLines">
+        <source>Crop lines</source>
+        <target>crwdns222714:0crwdne222714:0</target>
+      </trans-unit>
+      <trans-unit id="variable" resname="variable">
+        <source>Variable</source>
+        <target>crwdns222716:0crwdne222716:0</target>
+      </trans-unit>
+      <trans-unit id="copyPaste" resname="copyPaste">
+        <source>(Now, copy/paste this value into the configuration file where you can set it. This is all you can do from here...)</source>
+        <target>crwdns222718:0crwdne222718:0</target>
+      </trans-unit>
+      <trans-unit id="enterSearchPhrase" resname="enterSearchPhrase">
+        <source>Enter search phrase</source>
+        <target>crwdns222720:0crwdne222720:0</target>
+      </trans-unit>
+      <trans-unit id="search" resname="search">
+        <source>Search</source>
+        <target>crwdns222722:0crwdne222722:0</target>
+      </trans-unit>
+      <trans-unit id="useRegExp" resname="useRegExp">
+        <source>Use regular expression (phrase is surrounded by slashes automatically)</source>
+        <target>crwdns222724:0crwdne222724:0</target>
+      </trans-unit>
+      <trans-unit id="writeValue" resname="writeValue">
+        <source>Write value to configuration file</source>
+        <target>crwdns222726:0crwdne222726:0</target>
+      </trans-unit>
+      <trans-unit id="writeMessage" resname="writeMessage">
+        <source>Following line was added to configuration file (%s): %s%s</source>
+        <target>crwdns222728:0%scrwdnd222728:0%scrwdnd222728:0%scrwdne222728:0</target>
+      </trans-unit>
+      <trans-unit id="writeMessageFailed" resname="writeMessageFailed">
+        <source>Write to configuration file failed (%s)!</source>
+        <target>crwdns222730:0%scrwdne222730:0</target>
+      </trans-unit>
+      <trans-unit id="menuTitle" resname="menuTitle">
+        <source>Overview</source>
+        <target>crwdns222732:0crwdne222732:0</target>
+      </trans-unit>
+      <trans-unit id="recordStatistics" resname="recordStatistics">
+        <source>Record Statistics</source>
+        <target>crwdns222734:0crwdne222734:0</target>
+      </trans-unit>
+      <trans-unit id="totalPageTree" resname="totalPageTree">
+        <source>Total Page Tree</source>
+        <target>crwdns222736:0crwdne222736:0</target>
+      </trans-unit>
+      <trans-unit id="databaseRelations" resname="databaseRelations">
+        <source>Database Relations</source>
+        <target>crwdns222738:0crwdne222738:0</target>
+      </trans-unit>
+      <trans-unit id="fullSearch" resname="fullSearch">
+        <source>Full search</source>
+        <target>crwdns222740:0crwdne222740:0</target>
+      </trans-unit>
+      <trans-unit id="findFilename" resname="findFilename">
+        <source>Find filename</source>
+        <target>crwdns222742:0crwdne222742:0</target>
+      </trans-unit>
+      <trans-unit id="manageRefIndex" resname="manageRefIndex">
+        <source>Manage Reference Index</source>
+        <target>crwdns222744:0crwdne222744:0</target>
+      </trans-unit>
+      <trans-unit id="rawSearch" resname="rawSearch">
+        <source>Raw search in all fields</source>
+        <target>crwdns222746:0crwdne222746:0</target>
+      </trans-unit>
+      <trans-unit id="advancedQuery" resname="advancedQuery">
+        <source>Advanced query</source>
+        <target>crwdns222748:0crwdne222748:0</target>
+      </trans-unit>
+      <trans-unit id="selectRecords" resname="selectRecords">
+        <source>Select records</source>
+        <target>crwdns222750:0crwdne222750:0</target>
+      </trans-unit>
+      <trans-unit id="countResults" resname="countResults">
+        <source>Count results</source>
+        <target>crwdns222752:0crwdne222752:0</target>
+      </trans-unit>
+      <trans-unit id="explainQuery" resname="explainQuery">
+        <source>Explain query</source>
+        <target>crwdns222754:0crwdne222754:0</target>
+      </trans-unit>
+      <trans-unit id="csvExport" resname="csvExport">
+        <source>CSV Export</source>
+        <target>crwdns222756:0crwdne222756:0</target>
+      </trans-unit>
+      <trans-unit id="xmlExport" resname="xmlExport">
+        <source>XML Export</source>
+        <target>crwdns222758:0crwdne222758:0</target>
+      </trans-unit>
+      <trans-unit id="clickToUpdateRefIndex" resname="clickToUpdateRefIndex">
+        <source>Click here to update reference index</source>
+        <target>crwdns222760:0crwdne222760:0</target>
+      </trans-unit>
+      <trans-unit id="updateNow" resname="updateNow">
+        <source>Update now!</source>
+        <target>crwdns222762:0crwdne222762:0</target>
+      </trans-unit>
+      <trans-unit id="clickToTestRefIndex" resname="clickToTestRefIndex">
+        <source>Click here to test reference index</source>
+        <target>crwdns222764:0crwdne222764:0</target>
+      </trans-unit>
+      <trans-unit id="referenceIndex_description" resname="referenceIndex_description">
+        <source>TYPO3's reference index keeps track of the relations between records. As it can happen that the reference index contains outdated values, you can check and update it here.</source>
+        <target>crwdns222766:0crwdne222766:0</target>
+      </trans-unit>
+      <trans-unit id="referenceIndex_buttonUpdate" resname="referenceIndex_buttonUpdate">
+        <source>Update reference index</source>
+        <target>crwdns222768:0crwdne222768:0</target>
+      </trans-unit>
+      <trans-unit id="referenceIndex_buttonCheck" resname="referenceIndex_buttonCheck">
+        <source>Check reference index</source>
+        <target>crwdns222770:0crwdne222770:0</target>
+      </trans-unit>
+      <trans-unit id="checkNow" resname="checkNow">
+        <source>Check now!</source>
+        <target>crwdns222772:0crwdne222772:0</target>
+      </trans-unit>
+      <trans-unit id="checkScript_headline" resname="checkScript_headline">
+        <source>Using the command line interface</source>
+        <target>crwdns222774:0crwdne222774:0</target>
+      </trans-unit>
+      <trans-unit id="checkScript" resname="checkScript">
+        <source>You can also run the check as a shell script using CLI if the processing takes longer than the PHP max_execution_time allows.</source>
+        <target>crwdns222776:0crwdne222776:0</target>
+      </trans-unit>
+      <trans-unit id="checkScript_check_description" resname="checkScript_check_description">
+        <source>To check the reference index use</source>
+        <target>crwdns222778:0crwdne222778:0</target>
+      </trans-unit>
+      <trans-unit id="checkScript_update_description" resname="checkScript_update_description">
+        <source>To update the reference index use</source>
+        <target>crwdns222780:0crwdne222780:0</target>
+      </trans-unit>
+      <trans-unit id="checkScript_moreDetails" resname="checkScript_moreDetails">
+        <source>For more details see</source>
+        <target>crwdns222782:0crwdne222782:0</target>
+      </trans-unit>
+      <trans-unit id="updateRefIndex" resname="updateRefIndex">
+        <source>Update reference index</source>
+        <target>crwdns222784:0crwdne222784:0</target>
+      </trans-unit>
+      <trans-unit id="showSQL" resname="showSQL">
+        <source>Show SQL parts</source>
+        <target>crwdns222786:0crwdne222786:0</target>
+      </trans-unit>
+      <trans-unit id="useFormattedStrings" resname="useFormattedStrings">
+        <source>Use formatted strings, labels and dates instead of original values for results</source>
+        <target>crwdns222788:0crwdne222788:0</target>
+      </trans-unit>
+      <trans-unit id="dontUseOrigValues" resname="dontUseOrigValues">
+        <source>Don't use original values in brackets as prefix for labelled results</source>
+        <target>crwdns222790:0crwdne222790:0</target>
+      </trans-unit>
+      <trans-unit id="sortOptions" resname="sortOptions">
+        <source>Sort selectbox-options for relations by label and not by value</source>
+        <target>crwdns222792:0crwdne222792:0</target>
+      </trans-unit>
+      <trans-unit id="showDeleted" resname="showDeleted">
+        <source>Show even deleted entries (with undelete buttons)</source>
+        <target>crwdns222794:0crwdne222794:0</target>
+      </trans-unit>
+      <trans-unit id="searchOptions" resname="searchOptions">
+        <source>Search options</source>
+        <target>crwdns222796:0crwdne222796:0</target>
+      </trans-unit>
+      <trans-unit id="result" resname="result">
+        <source>Result</source>
+        <target>crwdns222798:0crwdne222798:0</target>
+      </trans-unit>
+      <trans-unit id="tables" resname="tables">
+        <source>Tables</source>
+        <target>crwdns222800:0crwdne222800:0</target>
+      </trans-unit>
+      <trans-unit id="references" resname="references">
+        <source>references</source>
+        <target>crwdns222802:0crwdne222802:0</target>
+      </trans-unit>
+      <trans-unit id="isMissing" resname="isMissing">
+        <source>is missing!</source>
+        <target>crwdns222804:0crwdne222804:0</target>
+      </trans-unit>
+      <trans-unit id="referencedFrom" resname="referencedFrom">
+        <source>Referenced from</source>
+        <target>crwdns222806:0crwdne222806:0</target>
+      </trans-unit>
+      <trans-unit id="enterRegexPattern" resname="enterRegexPattern">
+        <source>Enter regex pattern</source>
+        <target>crwdns222808:0crwdne222808:0</target>
+      </trans-unit>
+      <trans-unit id="searchButton" resname="searchButton">
+        <source>Search</source>
+        <target>crwdns222810:0crwdne222810:0</target>
+      </trans-unit>
+      <trans-unit id="pattern" resname="pattern">
+        <source>Pattern</source>
+        <target>crwdns222812:0crwdne222812:0</target>
+      </trans-unit>
+      <trans-unit id="beingChecked" resname="beingChecked">
+        <source>being checked...</source>
+        <target>crwdns222814:0crwdne222814:0</target>
+      </trans-unit>
+      <trans-unit id="directories" resname="directories">
+        <source>Dirs</source>
+        <target>crwdns222816:0crwdne222816:0</target>
+      </trans-unit>
+      <trans-unit id="directoriesTooDeep" resname="directoriesTooDeep">
+        <source>ERROR: Directories deeper than the following number of levels</source>
+        <target>crwdns222818:0crwdne222818:0</target>
+      </trans-unit>
+      <trans-unit id="files" resname="files">
+        <source>Files</source>
+        <target>crwdns222820:0crwdne222820:0</target>
+      </trans-unit>
+      <trans-unit id="matchingFiles" resname="matchingFiles">
+        <source>Matching files</source>
+        <target>crwdns222822:0crwdne222822:0</target>
+      </trans-unit>
+      <trans-unit id="notChecked" resname="notChecked">
+        <source>not checked.</source>
+        <target>crwdns222824:0crwdne222824:0</target>
+      </trans-unit>
+      <trans-unit id="searchingForFilenames" resname="searchingForFilenames">
+        <source>Searching for filenames</source>
+        <target>crwdns222826:0crwdne222826:0</target>
+      </trans-unit>
+      <trans-unit id="fixLostRecord" resname="fixLostRecord">
+        <source>Click to move this lost record to rootlevel (pid=0)</source>
+        <target>crwdns222828:0crwdne222828:0</target>
+      </trans-unit>
+      <trans-unit id="doktype" resname="doktype">
+        <source>Document types</source>
+        <target>crwdns222830:0crwdne222830:0</target>
+      </trans-unit>
+      <trans-unit id="doktype_value" resname="doktype_value">
+        <source>Document types (value)</source>
+        <target>crwdns222832:0crwdne222832:0</target>
+      </trans-unit>
+      <trans-unit id="pages" resname="pages">
+        <source>Pages</source>
+        <target>crwdns222834:0crwdne222834:0</target>
+      </trans-unit>
+      <trans-unit id="total_pages" resname="total_pages">
+        <source>Total number of default language pages</source>
+        <target>crwdns222836:0crwdne222836:0</target>
+      </trans-unit>
+      <trans-unit id="translated_pages" resname="translated_pages">
+        <source>Total number of translated pages</source>
+        <target>crwdns222838:0crwdne222838:0</target>
+      </trans-unit>
+      <trans-unit id="deleted_pages" resname="deleted_pages">
+        <source>Marked-deleted pages</source>
+        <target>crwdns222840:0crwdne222840:0</target>
+      </trans-unit>
+      <trans-unit id="hidden_pages" resname="hidden_pages">
+        <source>Hidden pages</source>
+        <target>crwdns222842:0crwdne222842:0</target>
+      </trans-unit>
+      <trans-unit id="count" resname="count">
+        <source>Count</source>
+        <target>crwdns222844:0crwdne222844:0</target>
+      </trans-unit>
+      <trans-unit id="label" resname="label">
+        <source>Label</source>
+        <target>crwdns222846:0crwdne222846:0</target>
+      </trans-unit>
+      <trans-unit id="tablename" resname="tablename">
+        <source>Table name</source>
+        <target>crwdns222848:0crwdne222848:0</target>
+      </trans-unit>
+      <trans-unit id="total_lost" resname="total_lost">
+        <source>Records total / lost</source>
+        <target>crwdns222850:0crwdne222850:0</target>
+      </trans-unit>
+      <trans-unit id="relations" resname="relations">
+        <source>Relations</source>
+        <target>crwdns222852:0crwdne222852:0</target>
+      </trans-unit>
+      <trans-unit id="relations_description" resname="relations_description">
+        <source>This will analyze the content of the tables and check if there are 'empty' relations between records or if files are missing from their expected position.</source>
+        <target>crwdns222854:0crwdne222854:0</target>
+      </trans-unit>
+      <trans-unit id="select_db" resname="select_db">
+        <source>Select fields</source>
+        <target>crwdns222856:0crwdne222856:0</target>
+      </trans-unit>
+      <trans-unit id="group_db" resname="group_db">
+        <source>Group fields</source>
+        <target>crwdns222858:0crwdne222858:0</target>
+      </trans-unit>
+      <trans-unit id="tree" resname="tree">
+        <source>The Page Tree</source>
+        <target>crwdns222860:0crwdne222860:0</target>
+      </trans-unit>
+      <trans-unit id="tree_description" resname="tree_description">
+        <source>This shows all pages in the system in one large tree. Beware that this will probably result in a very long document which will also take some time for the server to compute!</source>
+        <target>crwdns222862:0crwdne222862:0</target>
+      </trans-unit>
+      <trans-unit id="records" resname="records">
+        <source>Records Statistics</source>
+        <target>crwdns222864:0crwdne222864:0</target>
+      </trans-unit>
+      <trans-unit id="records_description" resname="records_description">
+        <source>This shows some statistics for the records in the database. This runs through the entire page-tree and therefore it will also load the server heavily!</source>
+        <target>crwdns222866:0crwdne222866:0</target>
+      </trans-unit>
+      <trans-unit id="search_whole_database" resname="search_whole_database">
+        <source>Search whole Database</source>
+        <target>crwdns222868:0crwdne222868:0</target>
+      </trans-unit>
+      <trans-unit id="search_description" resname="search_description">
+        <source>This searches through all database tables and records for a text string.</source>
+        <target>crwdns222870:0crwdne222870:0</target>
+      </trans-unit>
+      <trans-unit id="refindex" resname="refindex">
+        <source>Check and update global reference index</source>
+        <target>crwdns222872:0crwdne222872:0</target>
+      </trans-unit>
+      <trans-unit id="refindex_description" resname="refindex_description">
+        <source>Allows you to maintain the reference index kept by TYPO3.</source>
+        <target>crwdns222874:0crwdne222874:0</target>
+      </trans-unit>
+      <trans-unit id="title" resname="title">
+        <source>Database integrity check</source>
+        <target>crwdns222876:0crwdne222876:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
