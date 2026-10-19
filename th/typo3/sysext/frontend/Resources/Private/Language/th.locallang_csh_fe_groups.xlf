@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_csh_fe_groups.xlf" date="2011-10-17T20:22:32Z" product-name="context_help" target-language="th">
+    <header/>
+    <body>
+      <trans-unit id="hidden.details" resname="hidden.details" xml:space="preserve" approved="yes">
+				<source>If you disable a user group all users which are members of the group will in effect not inherit any properties this group may have given them.
+For instance if a page or content element was assigned access only by this group and you disable the group, no one would gain access to that page or content element.</source>
+			<target state="final">หากคุณปิดการใช้งานกลุ่มผู้ใช้ผู้ใช้ที่เป็นสมาชิกของกลุ่มจะมีผลไม่สืบทอดคุณสมบัติใดกลุ่มนี้อาจมีให้แก่พวกเขา เช่นหากหน้าหรือองค์ประกอบเนื้อหาได้มอบหมายเข้าถึงโดยเฉพาะกลุ่มนี้และคุณปิดการใช้งานไม่มีกลุ่ม หนึ่งจะเข้าถึงที่หรือเนื้อหาองค์ประกอบของหน้า</target></trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Name of the group.</source>
+        <target state="final">ชื่อของกลุ่ม</target>
+      </trans-unit>
+      <trans-unit id="title.details" resname="title.details" approved="yes">
+        <source>This title will appear as the group name in the 'Access'-list in other records.</source>
+        <target state="final">ชื่อนี้จะปรากฏเป็นชื่อกลุ่มในรายการ'Access' ในตำแหน่งอื่น</target>
+      </trans-unit>
+      <trans-unit id="lockToDomain.details" resname="lockToDomain.details" xml:space="preserve" approved="yes">
+				<source>This options may be important if you have multiple websites in the same TYPO3 database but still only one main storage page for all Website users. Thus the users may log in on any of the website URLs. This may be considered a feature (having a global login as a user) or a problem (in which case you should have multiple user storages anyway). However you may wish to limit the use of a Website usergroup to a specific website and thus you don't want the group to be enabled for the user when he logs in at another URL (still from the same database of course). By entering the host name of the website here, you restrict the group to be used only from within this domain.
+
+&lt;b&gt;Notice:&lt;/b&gt; The use for this option is not critical if you have multiple Website user storages, namely one for each site.</source>
+			<target state="final">ตัวเลือกนี้อาจมีความสำคัญหากคุณมีเว็บไซต์หลายใน TYPO3 ฐานข้อมูลเดียวกัน แต่ก็ยังเก็บหน้าหลักเดียวสำหรับผู้ใช้เว็บไซต์ ทำให้ผู้ใช้สามารถเข้าสู่ระบบใด ๆ ของ URL เว็บไซต์ นี้อาจจะพิจารณาคุณสมบัติ (มีการเข้าสู่ระบบโลกเป็นผู้ใช้) หรือปัญหา (ซึ่งในกรณีนี้คุณควรจะมีผู้ใช้หลายเก็บรักษาอยู่แล้ว) แต่คุณอาจต้องการ จำกัด การใช้เว็บไซต์ของ usergroup ไปยังเว็บไซต์เฉพาะและทำให้คุณไม่ต้องการให้กลุ่มที่จะเปิดการใช้งานสำหรับผู้ใช้เมื่อบันทึกในที่อื่น URL (ยังคงมาจากฐานข้อมูลเดียวกันของหลักสูตร) โดยป้อนชื่อโฮสต์ของเว็บไซต์ที่นี่คุณ จำกัด กลุ่มที่ใช้เฉพาะภายในโดเมนนี้ &lt;b&gt;หมายเหตุ :&lt;/b&gt; ตัวเลือกใช้นี้จะไม่สำคัญหากคุณใช้การเก็บรักษาหลายเว็บไซต์คือหนึ่งสำหรับแต่ละเว็บไซต์</target></trans-unit>
+      <trans-unit id="subgroup.description" resname="subgroup.description" approved="yes">
+        <source>Member of other groups.</source>
+        <target state="final">สมาชิกในกลุ่มอื่นๆ</target>
+      </trans-unit>
+      <trans-unit id="subgroup.details" resname="subgroup.details" approved="yes">
+        <source>List of other groups that this group is a member of.</source>
+        <target state="final">รายชื่อกลุ่มอื่น ๆ ที่กลุ่มนี้เป็นสมาชิกของ</target>
+      </trans-unit>
+      <trans-unit id="description.description" resname="description.description" approved="yes">
+        <source>Enter a description of the group.</source>
+        <target state="final">ป้อนคำอธิบายของกลุ่ม</target>
+      </trans-unit>
+      <trans-unit id="description.details" resname="description.details" xml:space="preserve" approved="yes">
+				<source>This is for internal use and is just a way to put a note on what the group is for, why you created it and who should be members.
+Use it as you like.</source>
+			<target state="final">นี้สำหรับใช้ภายในและเป็นเพียงวิธีการใส่บันทึกในสิ่งที่กลุ่มคือเหตุผลที่คุณสร้างได้และที่ควรเป็นสมาชิก ใช้เป็นที่คุณต้องการ</target></trans-unit>
+      <trans-unit id="TSconfig.description" resname="TSconfig.description" approved="yes">
+        <source>TSconfig for the group (advanced).</source>
+        <target state="final">TSconfig สำหรับกลุ่ม (ขั้นสูง)</target>
+      </trans-unit>
+      <trans-unit id="TSconfig.details" resname="TSconfig.details" xml:space="preserve" approved="yes">
+				<source>This is the user TSconfig for the group. The values are inherited by any Website user who is a member of this group.
+The configuration is subject to being overridden in other groups and by the TSconfig of the user himself.</source>
+			<target state="final">นี้จะเป็นกลุ่มผู้ใช้ TSconfig สำหรับ ค่าที่จะสืบทอดโดยที่ผู้ใช้เว็บไซต์ที่เป็นสมาชิกของกลุ่มนี้ กำหนดอาจจะถูกแทนที่ในกลุ่มอื่น ๆ และโดยตัวเอง TSconfig ของผู้ใช้</target></trans-unit>
+      <trans-unit id="TSconfig.syntax" resname="TSconfig.syntax" approved="yes">
+        <source>TypoScript syntax, without conditions and constants.</source>
+        <target state="final">ไวยากรณ์ TypoScript โดยปราศจากเงื่อนไขและค่าคงที่</target>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>Usergroups for Website users.</source>
+        <target state="final">กลุ่มผู้ใช้สำหรับผู้ใช้เว็บไซต์</target>
+      </trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" xml:space="preserve" approved="yes">
+				<source>The form for editing frontend users groups.
+Pages, Content Elements and other records for frontend display often have a selector box where you can define access restriction by selecting access for a certain group only.</source>
+			<target state="final">กลุ่มแบบฟอร์มสำหรับการแก้ไข frontend ผู้ใช้ หน้าเนื้อหาองค์ประกอบและข้อมูลอื่น ๆ สำหรับส่วนหน้าจอมักจะมีกล่องตัวเลือกที่คุณสามารถกำหนดข้อ จำกัด การเข้าถึงโดยการเลือกใช้กลุ่มหนึ่งเท่านั้น</target></trans-unit>
+    </body>
+  </file>
+</xliff>
