@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:info/Resources/Private/Language/InfoPageTsConfig.xlf" date="2011-10-17T20:22:33Z" product-name="info_pagetsconfig" target-language="ja">
+    <header/>
+    <body>
+      <trans-unit id="tsconf_parts_1d" resname="tsconf_parts_1d" approved="yes">
+        <source>Module: Web&gt;List</source>
+        <target state="final">モジュール：ウェブ&gt;一覧</target>
+      </trans-unit>
+      <trans-unit id="mod_pagetsconfig" resname="mod_pagetsconfig" approved="yes">
+        <source>Page TSconfig</source>
+        <target state="final">ページTSconfig</target>
+      </trans-unit>
+      <trans-unit id="pagetitle" resname="pagetitle" approved="yes">
+        <source>Pagetitle:</source>
+        <target state="final">ページタイトル：</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
