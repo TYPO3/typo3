@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/Database.xlf" date="2014-02-07T20:22:32Z" product-name="frontend" target-language="hr">
+    <header/>
+    <body>
+      <trans-unit id="tt_content.table_caption" resname="tt_content.table_caption" approved="yes">
+        <source>Table caption</source>
+        <target state="final">Naslov tablice</target>
+      </trans-unit>
+      <trans-unit id="tt_content.table_delimiter" resname="tt_content.table_delimiter" approved="yes">
+        <source>Field Delimiter</source>
+        <target state="final">Razdvojnik polja</target>
+      </trans-unit>
+      <trans-unit id="tt_content.table_delimiter.124" resname="tt_content.table_delimiter.124" approved="yes">
+        <source>| (Pipe)</source>
+        <target state="final">| (vertikalna crta)</target>
+      </trans-unit>
+      <trans-unit id="tt_content.table_delimiter.59" resname="tt_content.table_delimiter.59" approved="yes">
+        <source>; (Semicolon)</source>
+        <target state="final">; (točka sa zarezom)</target>
+      </trans-unit>
+      <trans-unit id="tt_content.table_delimiter.58" resname="tt_content.table_delimiter.58" approved="yes">
+        <source>: (Colon)</source>
+        <target state="final">: (dvotočka)</target>
+      </trans-unit>
+      <trans-unit id="tt_content.table_delimiter.44" resname="tt_content.table_delimiter.44" approved="yes">
+        <source>, (Comma)</source>
+        <target state="final">, (zarez)</target>
+      </trans-unit>
+      <trans-unit id="tt_content.table_delimiter.9" resname="tt_content.table_delimiter.9" approved="yes">
+        <source>⇥ (Tab)</source>
+        <target state="final">⇥ (tabulator)</target>
+      </trans-unit>
+      <trans-unit id="tt_content.table_enclosure" resname="tt_content.table_enclosure" approved="yes">
+        <source>Text enclosure</source>
+        <target state="final">Spremnik teksta</target>
+      </trans-unit>
+      <trans-unit id="tt_content.table_enclosure.0" resname="tt_content.table_enclosure.0" approved="yes">
+        <source>None</source>
+        <target state="final">Ništa</target>
+      </trans-unit>
+      <trans-unit id="tt_content.table_enclosure.39" resname="tt_content.table_enclosure.39" approved="yes">
+        <source>' (Single quotes)</source>
+        <target state="final">' (jednostruki navodnici)</target>
+      </trans-unit>
+      <trans-unit id="tt_content.table_enclosure.34" resname="tt_content.table_enclosure.34" approved="yes">
+        <source>" (Double quotes)</source>
+        <target state="final">" (dvostruki navodnici)</target>
+      </trans-unit>
+      <trans-unit id="tt_content.table_header_position" resname="tt_content.table_header_position" approved="yes">
+        <source>Table header position</source>
+        <target state="final">Položaj zaglavlja tablice</target>
+      </trans-unit>
+      <trans-unit id="tt_content.table_header_position.0" resname="tt_content.table_header_position.0" approved="yes">
+        <source>No header</source>
+        <target state="final">Bez zaglavlja</target>
+      </trans-unit>
+      <trans-unit id="tt_content.table_header_position.1" resname="tt_content.table_header_position.1" approved="yes">
+        <source>Top</source>
+        <target state="final">Vrh</target>
+      </trans-unit>
+      <trans-unit id="tt_content.table_header_position.2" resname="tt_content.table_header_position.2" approved="yes">
+        <source>Left</source>
+        <target state="final">Lijevo</target>
+      </trans-unit>
+      <trans-unit id="tt_content.table_tfoot" resname="tt_content.table_tfoot" approved="yes">
+        <source>Use table footer (wrap last row with &lt;tfoot&gt; tags)</source>
+        <target state="final">Koristi podnožje tablice (umetni posljednji redak u &lt;tfoot&gt; tagove)</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
