@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_login.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="km">
+    <header/>
+    <body>
+      <trans-unit id="labels.submitLogout" resname="labels.submitLogout" approved="yes">
+        <source>Log Out</source>
+        <target state="final">កត់ត្រា​ចេញ</target>
+      </trans-unit>
+      <trans-unit id="labels.whatIsOpenId" resname="labels.whatIsOpenId" approved="yes">
+        <source>What is OpenId?</source>
+        <target state="final">តើ OpenID ជា​អ្វី ?</target>
+      </trans-unit>
+      <trans-unit id="availableInterfaces" resname="availableInterfaces" approved="yes">
+        <source>Backend,Front End,Traditional Backend</source>
+        <target state="final">Backend, Front End, Backend បុរាណ</target>
+      </trans-unit>
+      <trans-unit id="interface.backend" resname="interface.backend" approved="yes">
+        <source>Backend</source>
+        <target state="final">Backend</target>
+      </trans-unit>
+      <trans-unit id="interface.frontend" resname="interface.frontend" approved="yes">
+        <source>Frontend</source>
+        <target state="final">Frontend</target>
+      </trans-unit>
+      <trans-unit id="interface.backend_old" resname="interface.backend_old" approved="yes">
+        <source>Traditional Backend</source>
+        <target state="final">Backend បុរាណ</target>
+      </trans-unit>
+      <trans-unit id="headline" resname="headline" approved="yes">
+        <source>Login to the TYPO3 CMS Backend on ###SITENAME###</source>
+        <target state="final">កត់ត្រា​ចូល Backend របស់ TYPO3 លើ ###SITENAME###</target>
+      </trans-unit>
+      <trans-unit id="info.about" resname="info.about" approved="yes">
+        <source>This is the backend login of TYPO3. You need username and password to access this administration interface. If you are a visitor of ###SITENAME###, please visit the public website: ###SITELINK###</source>
+        <target state="final">នេះ​ជា​ការកត់ត្រា​ចូល backend របស់ TYPO3 ។ អ្នក​ត្រូវ​មាន​ឈ្មោះ និង ពាក្យ​សម្ងាត់ ដើម្បី​ប្រើ​លើ​ផ្នែក​គ្រប់គ្រង ។ ប្រសិន​បើ​អ្នក​ជា​អ្នក​ទស្សនា​នៃ ###SITENAME### សូម​មើល​វែបសាយ​សម្រាប់​សាធារណៈ៖ ###SITELINK###</target>
+      </trans-unit>
+      <trans-unit id="info.reset" resname="info.reset" approved="yes">
+        <source>Reset this form</source>
+        <target state="final">កំណត់​ទម្រង់​បែបបទ​នេះ​ឡើង​វិញ</target>
+      </trans-unit>
+      <trans-unit id="info.cookies_and_js" resname="info.cookies_and_js" approved="yes">
+        <source>(Note: Cookies and JavaScript must be enabled!)</source>
+        <target state="final">(សម្គាល់៖ ឃុកឃី និង JavaScript ត្រូវ​តែ​បើក​ដំណើរការ!)</target>
+      </trans-unit>
+      <trans-unit id="clear" resname="clear" approved="yes">
+        <source>Clear this field!</source>
+        <target state="final">សម្អាត​ប្រអប់​នេះ!</target>
+      </trans-unit>
+      <trans-unit id="warning.incompatibleBrowserHeadline" resname="warning.incompatibleBrowserHeadline" approved="yes">
+        <source>Unsupported Browser</source>
+        <target state="final">Browser ដែលមិនដំណើរការ</target>
+      </trans-unit>
+      <trans-unit id="warning.incompatibleBrowser" resname="warning.incompatibleBrowser" approved="yes">
+        <source>You are using an unsupported browser version.</source>
+        <target state="final">អ្នក​កំពុង​ប្រើជំនាន់ browser មួយដែលមិនអាចដំណើរការ។</target>
+      </trans-unit>
+      <trans-unit id="error.login" resname="error.login" approved="yes">
+        <source>Your login attempt did not succeed. Make sure to spell your username and password correctly, including upper/lowercase characters.</source>
+        <target state="final">ការព្យាយាម​កត់ត្រា​ចូល​របស់​អ្នក មិន​បាន​ជោគជ័យ ។ ត្រូវ​ប្រាកដ​ថា ឈ្មោះ និង ពាក្យ​សម្ងាត់​ត្រឹមត្រូវ រួម​ទាំង អក្សរ​តូច/ធំ​ផង​ដែរ ។</target>
+      </trans-unit>
+      <trans-unit id="error.cookies_ignore" resname="error.cookies_ignore" approved="yes">
+        <source>Ignore!</source>
+        <target state="final">បោះបង់!</target>
+      </trans-unit>
+      <trans-unit id="error.furtherInformation" resname="error.furtherInformation" approved="yes">
+        <source>For more information or further help click here</source>
+        <target state="final">សម្រាប់​ព័ត៌មាន​បន្ថែម ឬ ជំនួយ​ផ្សេងៗ សូម​ចុច​ទីនេះ</target>
+      </trans-unit>
+      <trans-unit id="typo3.cms" resname="typo3.cms" approved="yes">
+        <source>TYPO3 CMS</source>
+        <target state="final">TYPO3 CMS</target>
+      </trans-unit>
+      <trans-unit id="version.short" resname="version.short" approved="yes">
+        <source>ver.</source>
+        <target state="final">កំណែ</target>
+      </trans-unit>
+      <trans-unit id="copyright" resname="copyright" approved="yes">
+        <source>Copyright</source>
+        <target state="final">រក្សាសិទ្ធិ</target>
+      </trans-unit>
+      <trans-unit id="extension.copyright" resname="extension.copyright" approved="yes">
+        <source>Extensions are copyright of their respective owners.</source>
+        <target state="final">រាល់​អ៊‍ិកស្តិនសិន​រក្សាសិទ្ធ​ដោយ​ម្ចាស់​អភិវឌ្ឍន៍​របស់​ពួក​វា ។</target>
+      </trans-unit>
+      <trans-unit id="details.link" resname="details.link" approved="yes">
+        <source>Go to %s for details.</source>
+        <target state="final">ទៅ %s ដើម្បី​មើល​ព័ត៌មាន​លម្អិត ។</target>
+      </trans-unit>
+      <trans-unit id="keep.notice" resname="keep.notice" approved="yes">
+        <source>Obstructing the appearance of this notice is prohibited by law.</source>
+        <target state="final">ការបិទបាំង​មិន​ឱ្យ​ឃើញ​នូវ​សេចក្ដី​ជូន​ដំណឹង​នេះ នឹង​ត្រូវ​ទទួល​ខុសត្រូវ​តាម​ផ្លូវ​ច្បាប់ ៕</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
