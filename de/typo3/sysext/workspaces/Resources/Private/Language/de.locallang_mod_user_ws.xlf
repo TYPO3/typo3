@@ -1,0 +1,588 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:workspaces/Resources/Private/Language/locallang_mod_user_ws.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel" approved="yes">
+        <source>Workspace overview</source>
+        <target state="final">Arbeitsumgebungsübersicht</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr" approved="yes">
+        <source>Workspace overview showing the changes you have made in the workspace. Here you can also publish the changes to the website if you are allowed to do that.</source>
+        <target state="final">Die Arbeitsumgebungsübersicht zeigt Änderungen, die Sie in der Arbeitsumgebung vorgenommen haben. Mit den entsprechenden Berechtigungen können Sie die Änderungen an der Website von hier aus veröffentlichen.</target>
+      </trans-unit>
+      <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab" approved="yes">
+        <source>Workspace</source>
+        <target state="final">Arbeitsumgebung</target>
+      </trans-unit>
+      <trans-unit id="title" resname="title" approved="yes">
+        <source>Workspace Manager</source>
+        <target state="final">Arbeitsumgebungsverwaltung</target>
+      </trans-unit>
+      <trans-unit id="menuitem_review" resname="menuitem_review" approved="yes">
+        <source>Review and Publish</source>
+        <target state="final">Redigieren und veröffentlichen</target>
+      </trans-unit>
+      <trans-unit id="menuitem_workspaces" resname="menuitem_workspaces" approved="yes">
+        <source>Workspace List</source>
+        <target state="final">Arbeitsumgebungsliste</target>
+      </trans-unit>
+      <trans-unit id="filter_drafts" resname="filter_drafts" approved="yes">
+        <source>Drafts</source>
+        <target state="final">Entwürfe</target>
+      </trans-unit>
+      <trans-unit id="filter_archive" resname="filter_archive" approved="yes">
+        <source>Archive</source>
+        <target state="final">Archiv</target>
+      </trans-unit>
+      <trans-unit id="filter_all" resname="filter_all" approved="yes">
+        <source>All</source>
+        <target state="final">Alle</target>
+      </trans-unit>
+      <trans-unit id="diff_no_diff" resname="diff_no_diff" approved="yes">
+        <source>Do not show differences</source>
+        <target state="final">Unterschiede nicht anzeigen</target>
+      </trans-unit>
+      <trans-unit id="diff_show_inline" resname="diff_show_inline" approved="yes">
+        <source>Show differences inline</source>
+        <target state="final">Unterschiede in Zeile anzeigen</target>
+      </trans-unit>
+      <trans-unit id="diff_show_popup" resname="diff_show_popup" approved="yes">
+        <source>Show diff. popups (branches)</source>
+        <target state="final">Untersch.-PopUp (Zweige) anzeigen</target>
+      </trans-unit>
+      <trans-unit id="label_errors" resname="label_errors" approved="yes">
+        <source>Errors</source>
+        <target state="final">Fehler</target>
+      </trans-unit>
+      <trans-unit id="workspace_description_live" resname="workspace_description_live" approved="yes">
+        <source>The LIVE workspace allows changes to take effect immediately on the website. However versioning can be applied inside the live workspace and this overview shows you draft and archive versions from the various workspaces, including the LIVE workspace.</source>
+        <target state="final">Die LIVE-Arbeitsumgebung ermöglicht Änderungen, die sich direkt auf die Website auswirken. Trotzdem kann eine Versionierung in der LIVE-Arbeitsumgebung angelegt werden. Dieser Überblick zeigt die Entwurfs- und Archivversionen der einzelnen Arbeitsumgebungen, inkl. der LIVE-Arbeitsumgebung.</target>
+      </trans-unit>
+      <trans-unit id="workspace_description_draft" resname="workspace_description_draft" approved="yes">
+        <source>In the Draft workspace all changes will be made as new versions of the live content. Changes can be previewed, reviewed and eventually published live.</source>
+        <target state="final">In der Entwurfsarbeitsumgebung werden alle Veränderungen als neue Versionen des Live-Inhalts angelegt. Für Änderungen gibt es eine Vorschau, sie können begutachtet und gegebenenfalls veröffentlicht werden.</target>
+      </trans-unit>
+      <trans-unit id="workspace_description_no_access" resname="workspace_description_no_access" approved="yes">
+        <source>You have no access to any workspace which might be an error. Please contact you administrator!</source>
+        <target state="final">Sie haben auf keine Arbeitsumgebung Zugriff, was ein möglicherweise ein Irrtum ist. Bitte setzen Sie sich mit dem Administrator in Verbindung!</target>
+      </trans-unit>
+      <trans-unit id="edit_workspace_no_permission" resname="edit_workspace_no_permission" approved="yes">
+        <source>You have no permission to edit this workspace. Only admin users or owners of the workspace can modify its parameters.</source>
+        <target state="final">Sie haben keine Berechtigung, diese Arbeitsumgebung zu bearbeiten. Nur Administratoren und Eigentümer der Arbeitsumgebung können ihre Einstellungen ändern.</target>
+      </trans-unit>
+      <trans-unit id="create_workspace_no_permission" resname="create_workspace_no_permission" approved="yes">
+        <source>You have no permission to create workspaces. Only admin users can create workspaces.</source>
+        <target state="final">Sie haben keine Berechtigung, Arbeitsumgebungen anzulegen. Dies können nur Administratoren.</target>
+      </trans-unit>
+      <trans-unit id="submit_publish_workspace" resname="submit_publish_workspace" approved="yes">
+        <source>Publish workspace</source>
+        <target state="final">Arbeitsumgebung veröffentlichen</target>
+      </trans-unit>
+      <trans-unit id="submit_publish_workspace_confirmation_1" resname="submit_publish_workspace_confirmation_1" approved="yes">
+        <source>Are you sure you want to publish all content in "Publish" stage from the workspace?</source>
+        <target state="final">Alle Inhalte der "Veröffentlichen"-Stufe aus der Arbeitsumgebung tatsächlich veröffentlichen?</target>
+      </trans-unit>
+      <trans-unit id="submit_publish_workspace_confirmation_2" resname="submit_publish_workspace_confirmation_2" approved="yes">
+        <source>Are you sure you want to publish all content from the workspace?</source>
+        <target state="final">Den gesamten Inhalt der Arbeitsumgebung tatsächlich veröffentlichen?</target>
+      </trans-unit>
+      <trans-unit id="submit_swap_workspace" resname="submit_swap_workspace" approved="yes">
+        <source>Swap workspace</source>
+        <target state="final">Arbeitsumgebung austauschen</target>
+      </trans-unit>
+      <trans-unit id="submit_swap_workspace_confirmation_1" resname="submit_swap_workspace_confirmation_1" approved="yes">
+        <source>Are you sure you want to publish (swap) all content in "Publish" stage from the workspace?</source>
+        <target state="final">Alle Inhalte der "Veröffentlichen"-Stufe aus der Arbeitsumgebung tatsächlich veröffentlichen (austauschen)?</target>
+      </trans-unit>
+      <trans-unit id="submit_swap_workspace_confirmation_2" resname="submit_swap_workspace_confirmation_2" approved="yes">
+        <source>Are you sure you want to publish (swap) all content from the workspace?</source>
+        <target state="final">Alle Inhalte der Arbeitsumgebung tatsächlich veröffentlichen (austauschen)?</target>
+      </trans-unit>
+      <trans-unit id="submit_apply_action_on_selected_elements" resname="submit_apply_action_on_selected_elements" approved="yes">
+        <source>Sure you want to perform this action with selected elements?</source>
+        <target state="final">Diese Aktion mit den ausgewählten Elementen tatsächlich durchführen?</target>
+      </trans-unit>
+      <trans-unit id="no_publish_permission" resname="no_publish_permission" approved="yes">
+        <source>You are not permitted to publish from this workspace</source>
+        <target state="final">Sie haben keine Berechtigung, aus dieser Arbeitsumgebung zu veröffentlichen.</target>
+      </trans-unit>
+      <trans-unit id="label_workspace" resname="label_workspace" approved="yes">
+        <source>Workspace</source>
+        <target state="final">Arbeitsumgebung</target>
+      </trans-unit>
+      <trans-unit id="label_description" resname="label_description" approved="yes">
+        <source>Description</source>
+        <target state="final">Beschreibung</target>
+      </trans-unit>
+      <trans-unit id="label_options" resname="label_options" approved="yes">
+        <source>Options</source>
+        <target state="final">Optionen</target>
+      </trans-unit>
+      <trans-unit id="label_status" resname="label_status" approved="yes">
+        <source>Status</source>
+        <target state="final">Status</target>
+      </trans-unit>
+      <trans-unit id="label_pagetree" resname="label_pagetree" approved="yes">
+        <source>Pagetree</source>
+        <target state="final">Seitenbaum</target>
+      </trans-unit>
+      <trans-unit id="label_live_version" resname="label_live_version" approved="yes">
+        <source>Live Version</source>
+        <target state="final">Live-Version</target>
+      </trans-unit>
+      <trans-unit id="label_draft_versions" resname="label_draft_versions" approved="yes">
+        <source>Workspace Versions</source>
+        <target state="final">Entwurfsversionen</target>
+      </trans-unit>
+      <trans-unit id="label_stage" resname="label_stage" approved="yes">
+        <source>Stage</source>
+        <target state="final">Stufe</target>
+      </trans-unit>
+      <trans-unit id="label_publish" resname="label_publish" approved="yes">
+        <source>Publish</source>
+        <target state="final">Veröffentlichen</target>
+      </trans-unit>
+      <trans-unit id="label_lifecycle" resname="label_lifecycle" approved="yes">
+        <source>Lifecycle</source>
+        <target state="final">Lebenszyklus</target>
+      </trans-unit>
+      <trans-unit id="label_access_level" resname="label_access_level" approved="yes">
+        <source>Access level</source>
+        <target state="final">Zugriffsstufe</target>
+      </trans-unit>
+      <trans-unit id="img_title_publish" resname="img_title_publish" approved="yes">
+        <source>Publish</source>
+        <target state="final">Veröffentlichen</target>
+      </trans-unit>
+      <trans-unit id="img_title_swap" resname="img_title_swap" approved="yes">
+        <source>Swap</source>
+        <target state="final">Austauschen</target>
+      </trans-unit>
+      <trans-unit id="remove_from_ws_confirmation" resname="remove_from_ws_confirmation" approved="yes">
+        <source>Remove from workspace?</source>
+        <target state="final">Aus der Arbeitsumgebung tatsächlich entfernen?</target>
+      </trans-unit>
+      <trans-unit id="img_title_remove_from_ws" resname="img_title_remove_from_ws" approved="yes">
+        <source>Remove from workspace?</source>
+        <target state="final">Aus der Arbeitsumgebung tatsächlich entfernen?</target>
+      </trans-unit>
+      <trans-unit id="img_title_edit_page" resname="img_title_edit_page" approved="yes">
+        <source>Edit page</source>
+        <target state="final">Seite bearbeiten</target>
+      </trans-unit>
+      <trans-unit id="img_title_edit_element" resname="img_title_edit_element" approved="yes">
+        <source>Edit element</source>
+        <target state="final">Element bearbeiten</target>
+      </trans-unit>
+      <trans-unit id="img_title_show_log" resname="img_title_show_log" approved="yes">
+        <source>Show Log</source>
+        <target state="final">Protokoll zeigen</target>
+      </trans-unit>
+      <trans-unit id="diffview_label_field_name" resname="diffview_label_field_name" approved="yes">
+        <source>Fieldname</source>
+        <target state="final">Feldname</target>
+      </trans-unit>
+      <trans-unit id="diffview_label_colored_diff_view" resname="diffview_label_colored_diff_view" approved="yes">
+        <source>Colored diff-view</source>
+        <target state="final">Eingefärbte Untersch.-Ansicht</target>
+      </trans-unit>
+      <trans-unit id="diffview_complete_match" resname="diffview_complete_match" approved="yes">
+        <source>Complete match on editable fields.</source>
+        <target state="final">Komplette Übereinstimmung der bearbeitbaren Felder.</target>
+      </trans-unit>
+      <trans-unit id="diffview_cannot_find_records" resname="diffview_cannot_find_records" approved="yes">
+        <source>ERROR: Records could strangely not be found!</source>
+        <target state="final">FEHLER: Seltsamerweise konnten keine Datensätze gefunden werden!</target>
+      </trans-unit>
+      <trans-unit id="img_title_show_more" resname="img_title_show_more" approved="yes">
+        <source>Show more</source>
+        <target state="final">Mehr anzeigen</target>
+      </trans-unit>
+      <trans-unit id="img_title_current_workspace" resname="img_title_current_workspace" approved="yes">
+        <source>This is a current workspace!</source>
+        <target state="final">Das ist eine aktuelle Arbeitsumgebung!</target>
+      </trans-unit>
+      <trans-unit id="img_title_create_new_workspace" resname="img_title_create_new_workspace" approved="yes">
+        <source>Create new workspace</source>
+        <target state="final">Neue Arbeitsumgebung anlegen</target>
+      </trans-unit>
+      <trans-unit id="link_text_create_new_workspace" resname="link_text_create_new_workspace" approved="yes">
+        <source>Create new workspace</source>
+        <target state="final">Neue Arbeitsumgebung anlegen</target>
+      </trans-unit>
+      <trans-unit id="edit_workspace_go_back" resname="edit_workspace_go_back" approved="yes">
+        <source>Go back</source>
+        <target state="final">Zurück</target>
+      </trans-unit>
+      <trans-unit id="edit_workspace_title_edit" resname="edit_workspace_title_edit" approved="yes">
+        <source>Edit workspace</source>
+        <target state="final">Arbeitsumgebung bearbeiten</target>
+      </trans-unit>
+      <trans-unit id="edit_workspace_title_new" resname="edit_workspace_title_new" approved="yes">
+        <source>Create new workspace</source>
+        <target state="final">Neue Arbeitsumgebung anlegen</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_label_current_workspace" resname="workspace_list_label_current_workspace" approved="yes">
+        <source>Current</source>
+        <target state="final">Aktuell</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_label_workspace_title" resname="workspace_list_label_workspace_title" approved="yes">
+        <source>Title</source>
+        <target state="final">Titel</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_label_workspace_description" resname="workspace_list_label_workspace_description" approved="yes">
+        <source>Description</source>
+        <target state="final">Beschreibung</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_label_owners" resname="workspace_list_label_owners" approved="yes">
+        <source>Owners</source>
+        <target state="final">Besitzer</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_label_members" resname="workspace_list_label_members" approved="yes">
+        <source>Members</source>
+        <target state="final">Mitglieder</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_access_admins_only" resname="workspace_list_access_admins_only" approved="yes">
+        <source>Admins only</source>
+        <target state="final">Nur Administratoren</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_access_anyone" resname="workspace_list_access_anyone" approved="yes">
+        <source>no restrictions</source>
+        <target state="final">keine Einschränkungen</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_label_file_mountpoints" resname="workspace_list_label_file_mountpoints" approved="yes">
+        <source>File mountpoints</source>
+        <target state="final">Verzeichnisfreigaben</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_label_db_mountpoints" resname="workspace_list_label_db_mountpoints" approved="yes">
+        <source>Database mountpoints</source>
+        <target state="final">Datenbankfreigaben</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_label_frozen" resname="workspace_list_label_frozen" approved="yes">
+        <source>Frozen</source>
+        <target state="final">Eingefroren</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_label_publish_date" resname="workspace_list_label_publish_date" approved="yes">
+        <source>Publish date</source>
+        <target state="final">Veröffentlichungsdatum</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_label_unpublish_date" resname="workspace_list_label_unpublish_date" approved="yes">
+        <source>Unpublish date</source>
+        <target state="final">Zurückziehungsdatum</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_label_your_access" resname="workspace_list_label_your_access" approved="yes">
+        <source>Your access</source>
+        <target state="final">Ihr Zugriff</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_label_workspace_users" resname="workspace_list_label_workspace_users" approved="yes">
+        <source>Workspace users</source>
+        <target state="final">Arbeitsumgebungsbenutzer</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_label_frozen_yes" resname="workspace_list_label_frozen_yes" approved="yes">
+        <source>Yes</source>
+        <target state="final">Ja</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_label_frozen_no" resname="workspace_list_label_frozen_no" approved="yes">
+        <source>No</source>
+        <target state="final">Nein</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_icon_title_edit_workspace" resname="workspace_list_icon_title_edit_workspace" approved="yes">
+        <source>Edit workspace</source>
+        <target state="final">Arbeitsumgebung bearbeiten</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_icon_title_switch_workspace" resname="workspace_list_icon_title_switch_workspace" approved="yes">
+        <source>Switch workspace</source>
+        <target state="final">Arbeitsumgebung umschalten</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_access_admin" resname="workspace_list_access_admin" approved="yes">
+        <source>Admin</source>
+        <target state="final">Administrator</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_access_online" resname="workspace_list_access_online" approved="yes">
+        <source>Online</source>
+        <target state="final">Online</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_access_offline" resname="workspace_list_access_offline" approved="yes">
+        <source>Offline</source>
+        <target state="final">Offline</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_access_owner" resname="workspace_list_access_owner" approved="yes">
+        <source>Owner</source>
+        <target state="final">Besitzer</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_access_member" resname="workspace_list_access_member" approved="yes">
+        <source>Member</source>
+        <target state="final">Mitglied</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_publishing_count_draft" resname="workspace_list_publishing_count_draft" approved="yes">
+        <source>Draft</source>
+        <target state="final">Entwurf</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_publishing_count_archive" resname="workspace_list_publishing_count_archive" approved="yes">
+        <source>Archive</source>
+        <target state="final">Archiv</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_publishing_count" resname="workspace_list_publishing_count" approved="yes">
+        <source>Published %d times</source>
+        <target state="final">%d mal veröffentlicht</target>
+      </trans-unit>
+      <trans-unit id="stage_sent_to_review" resname="stage_sent_to_review" approved="yes">
+        <source>"%s" sent element to "Review"</source>
+        <target state="final">"%s" hat das Element zum "Begutachten" geschickt</target>
+      </trans-unit>
+      <trans-unit id="stage_approved_for_publish" resname="stage_approved_for_publish" approved="yes">
+        <source>"%s" approved for "Publish"</source>
+        <target state="final">"%s" hat zum "Veröffentlichen" freigegeben</target>
+      </trans-unit>
+      <trans-unit id="stage_rejected" resname="stage_rejected" approved="yes">
+        <source>"%s" rejected element!</source>
+        <target state="final">"%s" hat das Element abgelehnt!</target>
+      </trans-unit>
+      <trans-unit id="stage_reset_to_editing" resname="stage_reset_to_editing" approved="yes">
+        <source>"%s" reset to "Editing"</source>
+        <target state="final">"%s" hat das Element auf "Bearbeiten" zurückgesetzt</target>
+      </trans-unit>
+      <trans-unit id="stage_undefined" resname="stage_undefined" approved="yes">
+        <source>[undefined]</source>
+        <target state="final">[undefiniert]</target>
+      </trans-unit>
+      <trans-unit id="stage_label_user_comment" resname="stage_label_user_comment" approved="yes">
+        <source>User Comment</source>
+        <target state="final">Benutzerkommentar</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_mount_point_inaccessible" resname="workspace_list_mount_point_inaccessible" approved="yes">
+        <source>This mount point is defined for workspace but not accessible to you. If you need access to this mount point, ask your system administrator to give you access to it.</source>
+        <target state="final">Diese Freigabe ist für die Arbeitsumgebung definiert, Sie haben aber keinen Zugriff. Wenn Sie Zugriff auf diese Freigabe benötigen, wenden Sie sich an den Systemadministrator.</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_file_mount_point_live" resname="workspace_list_file_mount_point_live" approved="yes">
+        <source>Mount points from user profile are used.</source>
+        <target state="final">Freigaben des Benutzerprofils werden benutzt.</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_file_mount_point_draft" resname="workspace_list_file_mount_point_draft" approved="yes">
+        <source>File mount points are not available in draft workspace.</source>
+        <target state="final">Verzeichnisfreigaben sind in der Entwurfsarbeitsumgebung nicht verwendbar.</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_file_mount_point_custom" resname="workspace_list_file_mount_point_custom" approved="yes">
+        <source>File mount points are not defined for this workspace. Therefore no file mount points available in the workspace.</source>
+        <target state="final">Verzeichnisfreigaben sind für diese Arbeitsumgebung nicht definiert. Aus diesem Grund sind keine Freigaben in dieser Arbeitsumgebung verfügbar.</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_db_mount_point_live" resname="workspace_list_db_mount_point_live" approved="yes">
+        <source>Mount points from user profile are used.</source>
+        <target state="final">Freigaben des Benutzerprofils werden benutzt.</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_db_mount_point_draft" resname="workspace_list_db_mount_point_draft" approved="yes">
+        <source>Mount points from user profile are used.</source>
+        <target state="final">Freigaben des Benutzerprofils werden benutzt.</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_db_mount_point_custom" resname="workspace_list_db_mount_point_custom" approved="yes">
+        <source>Mount points from user profile are used.</source>
+        <target state="final">Freigaben des Benutzerprofils werden benutzt.</target>
+      </trans-unit>
+      <trans-unit id="publish_title" resname="publish_title" approved="yes">
+        <source>Publish workspace</source>
+        <target state="final">Arbeitsumgebung veröffentlichen</target>
+      </trans-unit>
+      <trans-unit id="swap_title" resname="swap_title" approved="yes">
+        <source>Swap workspace</source>
+        <target state="final">Arbeitsumgebung austauschen</target>
+      </trans-unit>
+      <trans-unit id="publish_status" resname="publish_status" approved="yes">
+        <source>Published records &lt;strong&gt;%d&lt;/strong&gt; to &lt;strong&gt;%d&lt;/strong&gt; of &lt;strong&gt;%d&lt;/strong&gt;.</source>
+        <target state="final">Datensätze &lt;strong&gt;%d&lt;/strong&gt; bis &lt;strong&gt;%d&lt;/strong&gt; von &lt;strong&gt;%d&lt;/strong&gt; veröffentlicht.</target>
+      </trans-unit>
+      <trans-unit id="swap_status" resname="swap_status" approved="yes">
+        <source>Swapped records &lt;strong&gt;%d&lt;/strong&gt; to &lt;strong&gt;%d&lt;/strong&gt; of &lt;strong&gt;%d&lt;/strong&gt;.</source>
+        <target state="final">Datensätze &lt;strong&gt;%d&lt;/strong&gt; bis &lt;strong&gt;%d&lt;/strong&gt; von &lt;strong&gt;%d&lt;/strong&gt; ausgetauscht.</target>
+      </trans-unit>
+      <trans-unit id="publish_prepare" resname="publish_prepare" approved="yes">
+        <source>TYPO3 is preparing to publish records.</source>
+        <target state="final">TYPO3 bereitet die Veröffentlichung der Datensätze vor.</target>
+      </trans-unit>
+      <trans-unit id="swap_prepare" resname="swap_prepare" approved="yes">
+        <source>TYPO3 is preparing to swap records.</source>
+        <target state="final">TYPO3 bereitet den Austausch der Datensätze vor.</target>
+      </trans-unit>
+      <trans-unit id="please_wait" resname="please_wait" approved="yes">
+        <source>Please, wait...</source>
+        <target state="final">Bitte warten...</target>
+      </trans-unit>
+      <trans-unit id="return_to_index" resname="return_to_index" approved="yes">
+        <source>Return to Workspace module</source>
+        <target state="final">Zurück zum Modul Arbeitsumgebung</target>
+      </trans-unit>
+      <trans-unit id="do_not_interrupt_publishing_1" resname="do_not_interrupt_publishing_1" approved="yes">
+        <source>Do not interrupt publishing process or</source>
+        <target state="final">Bitte die Veröffentlichung nicht unterbrechen, da</target>
+      </trans-unit>
+      <trans-unit id="do_not_interrupt_publishing_2" resname="do_not_interrupt_publishing_2" approved="yes">
+        <source>workspace may be left in half-published state!</source>
+        <target state="final">die Arbeitsumgebung sonst evtl. nur teilweise veröffentlicht wird.</target>
+      </trans-unit>
+      <trans-unit id="workspace_published" resname="workspace_published" approved="yes">
+        <source>Workspace has been published.</source>
+        <target state="final">Die Arbeitsumgebung wurde veröffentlicht.</target>
+      </trans-unit>
+      <trans-unit id="workspace_swapped" resname="workspace_swapped" approved="yes">
+        <source>Workspace has been swapped.</source>
+        <target state="final">Die Arbeitsumgebung wurde ausgetauscht.</target>
+      </trans-unit>
+      <trans-unit id="label_reject" resname="label_reject" approved="yes">
+        <source>Reject</source>
+        <target state="final">Ablehnen</target>
+      </trans-unit>
+      <trans-unit id="label_review" resname="label_review" approved="yes">
+        <source>Review</source>
+        <target state="final">Gutachten</target>
+      </trans-unit>
+      <trans-unit id="label_sendtoreview" resname="label_sendtoreview" approved="yes">
+        <source>Send to review</source>
+        <target state="final">Zum Gutachten</target>
+      </trans-unit>
+      <trans-unit id="label_approveforpublishing" resname="label_approveforpublishing" approved="yes">
+        <source>Approve for publishing</source>
+        <target state="final">Zur Veröffentlichung freigeben</target>
+      </trans-unit>
+      <trans-unit id="stage_all" resname="stage_all" approved="yes">
+        <source>All stages</source>
+        <target state="final">Alle Stufen</target>
+      </trans-unit>
+      <trans-unit id="stage_editing" resname="stage_editing" approved="yes">
+        <source>Editing</source>
+        <target state="final">Bearbeiten</target>
+      </trans-unit>
+      <trans-unit id="stage_review" resname="stage_review" approved="yes">
+        <source>Review</source>
+        <target state="final">Gutachten</target>
+      </trans-unit>
+      <trans-unit id="stage_publish" resname="stage_publish" approved="yes">
+        <source>Publish</source>
+        <target state="final">Veröffentlichen</target>
+      </trans-unit>
+      <trans-unit id="label_subelements" resname="label_subelements" approved="yes">
+        <source>Sub elements</source>
+        <target state="final">Unterelemente</target>
+      </trans-unit>
+      <trans-unit id="label_subelementsdetails" resname="label_subelementsdetails" approved="yes">
+        <source>Sub elements, click for details</source>
+        <target state="final">Unterelemente, Klick für Details</target>
+      </trans-unit>
+      <trans-unit id="label_commentforpublisher" resname="label_commentforpublisher" approved="yes">
+        <source>Comment for Publisher</source>
+        <target state="final">Anmerkung für den Veröffentlicher</target>
+      </trans-unit>
+      <trans-unit id="label_resetstage" resname="label_resetstage" approved="yes">
+        <source>Reset stage</source>
+        <target state="final">Stufe zurücksetzen</target>
+      </trans-unit>
+      <trans-unit id="label_undefined" resname="label_undefined" approved="yes">
+        <source>Undefined</source>
+        <target state="final">Undefiniert</target>
+      </trans-unit>
+      <trans-unit id="explain_reject" resname="explain_reject" approved="yes">
+        <source>Please explain why you reject</source>
+        <target state="final">Bitte Grund für die Ablehnung erläutern</target>
+      </trans-unit>
+      <trans-unit id="label_element" resname="label_element" approved="yes">
+        <source>Element</source>
+        <target state="final">Element</target>
+      </trans-unit>
+      <trans-unit id="label_page" resname="label_page" approved="yes">
+        <source>Page</source>
+        <target state="final">Seite</target>
+      </trans-unit>
+      <trans-unit id="label_branch" resname="label_branch" approved="yes">
+        <source>Branch</source>
+        <target state="final">Zweig</target>
+      </trans-unit>
+      <trans-unit id="label_newrecord" resname="label_newrecord" approved="yes">
+        <source>New element</source>
+        <target state="final">Neues Element</target>
+      </trans-unit>
+      <trans-unit id="label_deletedrecord" resname="label_deletedrecord" approved="yes">
+        <source>Deleted element</source>
+        <target state="final">Gelöschtes Element</target>
+      </trans-unit>
+      <trans-unit id="label_otherversions" resname="label_otherversions" approved="yes">
+        <source>Other version(s) in workspace(s)</source>
+        <target state="final">Andere Version(en) in der Arbeitsumgebung</target>
+      </trans-unit>
+      <trans-unit id="label_multipleversions" resname="label_multipleversions" approved="yes">
+        <source>Multiple versions in same workspace!</source>
+        <target state="final">Mehrere Versionen in der selben Arbeitsumgebung!</target>
+      </trans-unit>
+      <trans-unit id="label_nestedversions" resname="label_nestedversions" approved="yes">
+        <source>Version inside version!</source>
+        <target state="final">Version innerhalb einer Version!</target>
+      </trans-unit>
+      <trans-unit id="label_rejected" resname="label_rejected" approved="yes">
+        <source>Rejected</source>
+        <target state="final">Abgelehnt</target>
+      </trans-unit>
+      <trans-unit id="label_showsubelements" resname="label_showsubelements" approved="yes">
+        <source>Show sub elements</source>
+        <target state="final">Unterelemente anzeigen</target>
+      </trans-unit>
+      <trans-unit id="label_onlymychanges" resname="label_onlymychanges" approved="yes">
+        <source>Show only my changes</source>
+        <target state="final">Nur meine Änderungen anzeigen</target>
+      </trans-unit>
+      <trans-unit id="label_allWSes" resname="label_allWSes" approved="yes">
+        <source>All workspaces</source>
+        <target state="final">Alle Arbeitsumgebungen</target>
+      </trans-unit>
+      <trans-unit id="label_notapplicable" resname="label_notapplicable" approved="yes">
+        <source>n/a</source>
+        <target state="final">k.A.</target>
+      </trans-unit>
+      <trans-unit id="label_percentchange" resname="label_percentchange" approved="yes">
+        <source>%%% change</source>
+        <target state="final">%%% Änderung</target>
+      </trans-unit>
+      <trans-unit id="label_percentChange" resname="label_percentChange" approved="yes">
+        <source>%d%% change</source>
+        <target state="final">%d%% Änderung</target>
+      </trans-unit>
+      <trans-unit id="label_doaction_default" resname="label_doaction_default" approved="yes">
+        <source>Do</source>
+        <target state="final">Ausführen</target>
+      </trans-unit>
+      <trans-unit id="label_doaction_publish" resname="label_doaction_publish" approved="yes">
+        <source>Publish</source>
+        <target state="final">Veröffentlichen</target>
+      </trans-unit>
+      <trans-unit id="label_doaction_release" resname="label_doaction_release" approved="yes">
+        <source>Remove this version</source>
+        <target state="final">Diese Version entfernen</target>
+      </trans-unit>
+      <trans-unit id="label_doaction_stage_reject" resname="label_doaction_stage_reject" approved="yes">
+        <source>Reject changes</source>
+        <target state="final">Änderungen ablehnen</target>
+      </trans-unit>
+      <trans-unit id="label_doaction_stage_editing" resname="label_doaction_stage_editing" approved="yes">
+        <source>Send to stage: Editing</source>
+        <target state="final">Auf Stufe setzen: Bearbeiten</target>
+      </trans-unit>
+      <trans-unit id="label_doaction_stage_review" resname="label_doaction_stage_review" approved="yes">
+        <source>Send to stage: Review</source>
+        <target state="final">Auf Stufe setzen: Begutachten</target>
+      </trans-unit>
+      <trans-unit id="label_doaction_stage_publish" resname="label_doaction_stage_publish" approved="yes">
+        <source>Send to stage: Publish</source>
+        <target state="final">Auf Stufe setzen: Veröffentlichen</target>
+      </trans-unit>
+      <trans-unit id="label_doaction_flush" resname="label_doaction_flush" approved="yes">
+        <source>Flush ALL changes/versions</source>
+        <target state="final">ALLE Änderungen/Versionen löschen</target>
+      </trans-unit>
+      <trans-unit id="label_moveto_placeholder" resname="label_moveto_placeholder" approved="yes">
+        <source>Move-to placeholder (destination)</source>
+        <target state="final">Platzhalter für Verschieben (Ziel)</target>
+      </trans-unit>
+      <trans-unit id="label_moveto_pointer" resname="label_moveto_pointer" approved="yes">
+        <source>Move-to pointer (source)</source>
+        <target state="final">Zeiger für Verschieben (Quelle)</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
