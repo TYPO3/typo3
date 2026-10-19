@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:lowlevel/Resources/Private/Language/locallang_mod.xlf" date="2011-10-17T20:22:34Z" product-name="lowlevel" target-language="pt-BR">
+    <header/>
+    <body>
+      <trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel" approved="yes">
+        <source>Database integrity check</source>
+        <target state="final">Teste de integridade do banco de dados</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr" approved="yes">
+        <source>Here you can check the integrity of the database tables configured by the $TCA. For instance all records must belong to a page record. In addition the existence of uploaded files attached to records (normally residing in uploads/* folders) are verified as well. You can also get a view of the total pagetree including deleted pages. Finally you've got access to a global database search facility.&lt;br /&gt;&lt;em&gt;Access for 'admin' users only!&lt;/em&gt;</source>
+        <target state="final">Aqui pode verificar a integridade das tabelas do banco de dados configuradas através de $TCA. Por exemplo, todos os registros devem pertencer a um registro de página. Além disso, a existência de arquivos anexados a registros (normalmente residindo em diretórios 'uploads/*') são verificados também. Você pode também obter uma visualização de toda a árvore de páginas incluíndo as removidas. Finalmente, você tem acesso à facilidade de pesquisa global do banco de dados.&lt;br /&gt;&lt;em&gt; Acesso só para usuários 'admin'!&lt;/em&gt;</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
