@@ -1,0 +1,1092 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_ttc.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="da">
+    <header/>
+    <body>
+      <trans-unit id="CType_formlabel" resname="CType_formlabel" approved="yes">
+        <source>Type</source>
+        <target state="final">Type</target>
+      </trans-unit>
+      <trans-unit id="CType.I.0" resname="CType.I.0" approved="yes">
+        <source>Header</source>
+        <target state="final">Overskrift</target>
+      </trans-unit>
+      <trans-unit id="CType.I.1" resname="CType.I.1" approved="yes">
+        <source>Text</source>
+        <target state="final">Tekst</target>
+      </trans-unit>
+      <trans-unit id="CType.I.2" resname="CType.I.2" approved="yes">
+        <source>Text &amp; Images</source>
+        <target state="final">Tekst &amp; billeder</target>
+      </trans-unit>
+      <trans-unit id="CType.I.3" resname="CType.I.3" approved="yes">
+        <source>Images</source>
+        <target state="final">Billeder</target>
+      </trans-unit>
+      <trans-unit id="CType.I.4" resname="CType.I.4" approved="yes">
+        <source>Bullet List</source>
+        <target state="final">Punktliste</target>
+      </trans-unit>
+      <trans-unit id="CType.I.5" resname="CType.I.5" approved="yes">
+        <source>Table</source>
+        <target state="final">Tabel</target>
+      </trans-unit>
+      <trans-unit id="CType.I.6" resname="CType.I.6" approved="yes">
+        <source>File Links</source>
+        <target state="final">Fil-links</target>
+      </trans-unit>
+      <trans-unit id="CType.I.8" resname="CType.I.8" approved="yes">
+        <source>Form</source>
+        <target state="final">Formular</target>
+      </trans-unit>
+      <trans-unit id="CType.I.9" resname="CType.I.9" approved="yes">
+        <source>Search</source>
+        <target state="final">Søg</target>
+      </trans-unit>
+      <trans-unit id="CType.I.10" resname="CType.I.10" approved="yes">
+        <source>Login</source>
+        <target state="final">Log ind</target>
+      </trans-unit>
+      <trans-unit id="CType.I.11" resname="CType.I.11" approved="yes">
+        <source>Textbox</source>
+        <target state="final">Tekstboks</target>
+      </trans-unit>
+      <trans-unit id="CType.I.12" resname="CType.I.12" approved="yes">
+        <source>Special Menus</source>
+        <target state="final">Specielle menuer</target>
+      </trans-unit>
+      <trans-unit id="CType.I.13" resname="CType.I.13" approved="yes">
+        <source>Insert Records</source>
+        <target state="final">Indsæt elementer</target>
+      </trans-unit>
+      <trans-unit id="CType.I.14" resname="CType.I.14" approved="yes">
+        <source>Insert Plugin</source>
+        <target state="final">Indsæt plugin</target>
+      </trans-unit>
+      <trans-unit id="CType.I.15" resname="CType.I.15" approved="yes">
+        <source>Script</source>
+        <target state="final">Skript</target>
+      </trans-unit>
+      <trans-unit id="CType.I.16" resname="CType.I.16" approved="yes">
+        <source>Divider</source>
+        <target state="final">Adskiller</target>
+      </trans-unit>
+      <trans-unit id="CType.I.17" resname="CType.I.17" approved="yes">
+        <source>HTML</source>
+        <target state="final">HTML</target>
+      </trans-unit>
+      <trans-unit id="CType.textmedia" resname="CType.textmedia" approved="yes">
+        <source>Text &amp; Media</source>
+        <target state="final">Tekst &amp; medier</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_abstract" resname="CType.menu_abstract" approved="yes">
+        <source>Abstracts</source>
+        <target state="final">Sammendrag</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_categorized_pages" resname="CType.menu_categorized_pages" approved="yes">
+        <source>Categorized pages</source>
+        <target state="final">Kategoriserede sider</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_categorized_content" resname="CType.menu_categorized_content" approved="yes">
+        <source>Categorized content</source>
+        <target state="final">Kategoriseret indhold</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_pages" resname="CType.menu_pages" approved="yes">
+        <source>Pages</source>
+        <target state="final">Sider</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_subpages" resname="CType.menu_subpages" approved="yes">
+        <source>Subpages</source>
+        <target state="final">Undersider</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_recently_updated" resname="CType.menu_recently_updated" approved="yes">
+        <source>Recently updated pages</source>
+        <target state="final">Sider opdateret for nylig</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_related_pages" resname="CType.menu_related_pages" approved="yes">
+        <source>Related pages</source>
+        <target state="final">Relaterede sider</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_section" resname="CType.menu_section" approved="yes">
+        <source>Section index</source>
+        <target state="final">Sektionsindeks</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_section_pages" resname="CType.menu_section_pages" approved="yes">
+        <source>Section index of subpages from selected pages</source>
+        <target state="final">Sektionsindeks af undersider fra valgte sider</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_sitemap" resname="CType.menu_sitemap" approved="yes">
+        <source>Sitemap</source>
+        <target state="final">Side-oversigt (Sitemap)</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_sitemap_pages" resname="CType.menu_sitemap_pages" approved="yes">
+        <source>Sitemaps of selected pages</source>
+        <target state="final">Sitemaps af valgte sider</target>
+      </trans-unit>
+      <trans-unit id="CType.div.standard" resname="CType.div.standard" approved="yes">
+        <source>Standard</source>
+        <target state="final">Standard</target>
+      </trans-unit>
+      <trans-unit id="CType.div.lists" resname="CType.div.lists" approved="yes">
+        <source>Lists</source>
+        <target state="final">Lister</target>
+      </trans-unit>
+      <trans-unit id="CType.div.menu" resname="CType.div.menu" approved="yes">
+        <source>Menu</source>
+        <target state="final">Menu</target>
+      </trans-unit>
+      <trans-unit id="CType.div.forms" resname="CType.div.forms" approved="yes">
+        <source>Forms</source>
+        <target state="final">Formularer</target>
+      </trans-unit>
+      <trans-unit id="CType.div.special" resname="CType.div.special" approved="yes">
+        <source>Special</source>
+        <target state="final">Speciel</target>
+      </trans-unit>
+      <trans-unit id="layout.I.1" resname="layout.I.1" approved="yes">
+        <source>Layout 1</source>
+        <target state="final">Layout 1</target>
+      </trans-unit>
+      <trans-unit id="layout.I.2" resname="layout.I.2" approved="yes">
+        <source>Layout 2</source>
+        <target state="final">Layout 2</target>
+      </trans-unit>
+      <trans-unit id="layout.I.3" resname="layout.I.3" approved="yes">
+        <source>Layout 3</source>
+        <target state="final">Layout 3</target>
+      </trans-unit>
+      <trans-unit id="colPos" resname="colPos" approved="yes">
+        <source>Columns</source>
+        <target state="final">Kolonner</target>
+      </trans-unit>
+      <trans-unit id="colPos_formlabel" resname="colPos_formlabel" approved="yes">
+        <source>Column</source>
+        <target state="final">Kolonne</target>
+      </trans-unit>
+      <trans-unit id="colPos.I.0" resname="colPos.I.0" approved="yes">
+        <source>Left</source>
+        <target state="final">Venstre</target>
+      </trans-unit>
+      <trans-unit id="colPos.I.1" resname="colPos.I.1" approved="yes">
+        <source>Normal</source>
+        <target state="final">Normal</target>
+      </trans-unit>
+      <trans-unit id="colPos.I.2" resname="colPos.I.2" approved="yes">
+        <source>Right</source>
+        <target state="final">Højre</target>
+      </trans-unit>
+      <trans-unit id="colPos.I.3" resname="colPos.I.3" approved="yes">
+        <source>Border</source>
+        <target state="final">Kanter</target>
+      </trans-unit>
+      <trans-unit id="colPos.I.unused" resname="colPos.I.unused" approved="yes">
+        <source>Unused</source>
+        <target state="final">Ubrugt</target>
+      </trans-unit>
+      <trans-unit id="date" resname="date" approved="yes">
+        <source>Date</source>
+        <target state="final">Dato</target>
+      </trans-unit>
+      <trans-unit id="date_formlabel" resname="date_formlabel" approved="yes">
+        <source>Date</source>
+        <target state="final">Dato</target>
+      </trans-unit>
+      <trans-unit id="header" resname="header" approved="yes">
+        <source>Header</source>
+        <target state="final">Overskrift</target>
+      </trans-unit>
+      <trans-unit id="header_formlabel" resname="header_formlabel" approved="yes">
+        <source>Header</source>
+        <target state="final">Overskrift</target>
+      </trans-unit>
+      <trans-unit id="header.ALT.shortcut_formlabel" resname="header.ALT.shortcut_formlabel" approved="yes">
+        <source>Name (not visible in frontend)</source>
+        <target state="final">Navn (ikke synlig i frontend)</target>
+      </trans-unit>
+      <trans-unit id="header.ALT.script_formlabel" resname="header.ALT.script_formlabel" approved="yes">
+        <source>Name (not visible in frontend)</source>
+        <target state="final">Navn (ikke synlig i frontend)</target>
+      </trans-unit>
+      <trans-unit id="header.ALT.div_formlabel" resname="header.ALT.div_formlabel" approved="yes">
+        <source>Name (not visible in frontend)</source>
+        <target state="final">Navn (ikke synlig i frontend)</target>
+      </trans-unit>
+      <trans-unit id="header.ALT.html_formlabel" resname="header.ALT.html_formlabel" approved="yes">
+        <source>Name (not visible in frontend)</source>
+        <target state="final">Navn (ikke synlig i frontend)</target>
+      </trans-unit>
+      <trans-unit id="header_position" resname="header_position" approved="yes">
+        <source>Align</source>
+        <target state="final">Justér</target>
+      </trans-unit>
+      <trans-unit id="header_position_formlabel" resname="header_position_formlabel" approved="yes">
+        <source>Alignment</source>
+        <target state="final">Justering</target>
+      </trans-unit>
+      <trans-unit id="header_position.I.1" resname="header_position.I.1" approved="yes">
+        <source>Center</source>
+        <target state="final">Centrum</target>
+      </trans-unit>
+      <trans-unit id="header_position.I.2" resname="header_position.I.2" approved="yes">
+        <source>Right</source>
+        <target state="final">Højre</target>
+      </trans-unit>
+      <trans-unit id="header_position.I.3" resname="header_position.I.3" approved="yes">
+        <source>Left</source>
+        <target state="final">Venstre</target>
+      </trans-unit>
+      <trans-unit id="header_link" resname="header_link" approved="yes">
+        <source>Link</source>
+        <target state="final">Link</target>
+      </trans-unit>
+      <trans-unit id="header_link_formlabel" resname="header_link_formlabel" approved="yes">
+        <source>Link</source>
+        <target state="final">Link</target>
+      </trans-unit>
+      <trans-unit id="header_layout_formlabel" resname="header_layout_formlabel" approved="yes">
+        <source>Type</source>
+        <target state="final">Type</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.1" resname="header_layout.I.1" approved="yes">
+        <source>Layout 1</source>
+        <target state="final">Layout 1</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.2" resname="header_layout.I.2" approved="yes">
+        <source>Layout 2</source>
+        <target state="final">Layout 2</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.3" resname="header_layout.I.3" approved="yes">
+        <source>Layout 3</source>
+        <target state="final">Layout 3</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.4" resname="header_layout.I.4" approved="yes">
+        <source>Layout 4</source>
+        <target state="final">Layout 4</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.5" resname="header_layout.I.5" approved="yes">
+        <source>Layout 5</source>
+        <target state="final">Layout 5</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.6" resname="header_layout.I.6" approved="yes">
+        <source>Hidden</source>
+        <target state="final">Skjult</target>
+      </trans-unit>
+      <trans-unit id="bullets_type" resname="bullets_type" approved="yes">
+        <source>Type of bullets</source>
+        <target state="final">Type af punkttegn</target>
+      </trans-unit>
+      <trans-unit id="bullets_type.0" resname="bullets_type.0" approved="yes">
+        <source>Unordered list (bullets)</source>
+        <target state="final">Usorteret liste (punkttegn)</target>
+      </trans-unit>
+      <trans-unit id="bullets_type.1" resname="bullets_type.1" approved="yes">
+        <source>Ordered list (numbers)</source>
+        <target state="final">Sorteret liste (numre)</target>
+      </trans-unit>
+      <trans-unit id="bullets_type.2" resname="bullets_type.2" approved="yes">
+        <source>Definition list</source>
+        <target state="final">Definitionsliste</target>
+      </trans-unit>
+      <trans-unit id="bodytext.W.forms" resname="bodytext.W.forms" approved="yes">
+        <source>Forms wizard</source>
+        <target state="final">Formularguide</target>
+      </trans-unit>
+      <trans-unit id="imagewidth" resname="imagewidth" approved="yes">
+        <source>Width (pixels)</source>
+        <target state="final">Bredde (pixels)</target>
+      </trans-unit>
+      <trans-unit id="imagewidth_formlabel" resname="imagewidth_formlabel" approved="yes">
+        <source>Width (px)</source>
+        <target state="final">Bredde (px)</target>
+      </trans-unit>
+      <trans-unit id="imageheight" resname="imageheight" approved="yes">
+        <source>Height (pixels)</source>
+        <target state="final">Højde (pixels)</target>
+      </trans-unit>
+      <trans-unit id="imageheight_formlabel" resname="imageheight_formlabel" approved="yes">
+        <source>Height (px)</source>
+        <target state="final">Højde (px)</target>
+      </trans-unit>
+      <trans-unit id="imageorient" resname="imageorient" approved="yes">
+        <source>Position</source>
+        <target state="final">Position</target>
+      </trans-unit>
+      <trans-unit id="imageorient_formlabel" resname="imageorient_formlabel" approved="yes">
+        <source>Position and Alignment</source>
+        <target state="final">Position og justering</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.0" resname="imageorient.I.0" approved="yes">
+        <source>Above, center</source>
+        <target state="final">Over, centreret</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.1" resname="imageorient.I.1" approved="yes">
+        <source>Above, right</source>
+        <target state="final">Over, højre</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.2" resname="imageorient.I.2" approved="yes">
+        <source>Above, left</source>
+        <target state="final">Over, venstre</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.3" resname="imageorient.I.3" approved="yes">
+        <source>Below, center</source>
+        <target state="final">Under, centreret</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.4" resname="imageorient.I.4" approved="yes">
+        <source>Below, right</source>
+        <target state="final">Under, højre</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.5" resname="imageorient.I.5" approved="yes">
+        <source>Below, left</source>
+        <target state="final">Under, venstre</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.6" resname="imageorient.I.6" approved="yes">
+        <source>In text, right</source>
+        <target state="final">I tekst, højre</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.7" resname="imageorient.I.7" approved="yes">
+        <source>In text, left</source>
+        <target state="final">I tekst, venstre</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.8" resname="imageorient.I.8" approved="yes">
+        <source>__No wrap:__</source>
+        <target state="final">__Ingen ombrydning:__</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.9" resname="imageorient.I.9" approved="yes">
+        <source>Beside Text, Right</source>
+        <target state="final">Ved siden af tekst, højre</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.10" resname="imageorient.I.10" approved="yes">
+        <source>Beside Text, Left</source>
+        <target state="final">Ved siden af tekst, venstre</target>
+      </trans-unit>
+      <trans-unit id="imageborder" resname="imageborder" approved="yes">
+        <source>Border</source>
+        <target state="final">Kanter</target>
+      </trans-unit>
+      <trans-unit id="imageborder_formlabel" resname="imageborder_formlabel" approved="yes">
+        <source>Border</source>
+        <target state="final">Kanter</target>
+      </trans-unit>
+      <trans-unit id="image_link" resname="image_link" approved="yes">
+        <source>Link</source>
+        <target state="final">Link</target>
+      </trans-unit>
+      <trans-unit id="image_link_formlabel" resname="image_link_formlabel" approved="yes">
+        <source>Links (one per line, one link per image)</source>
+        <target state="final">Links (en pr. linje, et link pr. billede)</target>
+      </trans-unit>
+      <trans-unit id="image_zoom" resname="image_zoom" approved="yes">
+        <source>Click-enlarge</source>
+        <target state="final">Klik-forstør</target>
+      </trans-unit>
+      <trans-unit id="image_zoom_formlabel" resname="image_zoom_formlabel" approved="yes">
+        <source>Enlarge on Click</source>
+        <target state="final">Forstør ved klik</target>
+      </trans-unit>
+      <trans-unit id="image_frames" resname="image_frames" approved="yes">
+        <source>Frames</source>
+        <target state="final">Rammer</target>
+      </trans-unit>
+      <trans-unit id="image_frames_formlabel" resname="image_frames_formlabel" approved="yes">
+        <source>Graphical Frames</source>
+        <target state="final">Grafiske rammer</target>
+      </trans-unit>
+      <trans-unit id="image_frames.I.0" resname="image_frames.I.0" approved="yes">
+        <source>(None)</source>
+        <target state="final">(Ingen)</target>
+      </trans-unit>
+      <trans-unit id="image_frames.I.1" resname="image_frames.I.1" approved="yes">
+        <source>Frame 1</source>
+        <target state="final">Ramme 1</target>
+      </trans-unit>
+      <trans-unit id="image_frames.I.2" resname="image_frames.I.2" approved="yes">
+        <source>Frame 2</source>
+        <target state="final">Ramme 2</target>
+      </trans-unit>
+      <trans-unit id="image_frames.I.3" resname="image_frames.I.3" approved="yes">
+        <source>Frame 3</source>
+        <target state="final">Ramme 3</target>
+      </trans-unit>
+      <trans-unit id="image_frames.I.4" resname="image_frames.I.4" approved="yes">
+        <source>Frame 4</source>
+        <target state="final">Ramme 4</target>
+      </trans-unit>
+      <trans-unit id="image_frames.I.5" resname="image_frames.I.5" approved="yes">
+        <source>Frame 5</source>
+        <target state="final">Ramme 5</target>
+      </trans-unit>
+      <trans-unit id="image_frames.I.6" resname="image_frames.I.6" approved="yes">
+        <source>Frame 6</source>
+        <target state="final">Ramme 6</target>
+      </trans-unit>
+      <trans-unit id="image_frames.I.7" resname="image_frames.I.7" approved="yes">
+        <source>Frame 7</source>
+        <target state="final">Ramme 7</target>
+      </trans-unit>
+      <trans-unit id="image_frames.I.8" resname="image_frames.I.8" approved="yes">
+        <source>Frame 8</source>
+        <target state="final">Ramme 8</target>
+      </trans-unit>
+      <trans-unit id="imagecols" resname="imagecols" approved="yes">
+        <source>Columns</source>
+        <target state="final">Kolonner</target>
+      </trans-unit>
+      <trans-unit id="imagecols_formlabel" resname="imagecols_formlabel" approved="yes">
+        <source>Number of Columns</source>
+        <target state="final">Antal kolonner</target>
+      </trans-unit>
+      <trans-unit id="image_altText" resname="image_altText" approved="yes">
+        <source>Alternative Text</source>
+        <target state="final">Alternativ tekst</target>
+      </trans-unit>
+      <trans-unit id="altText_formlabel" resname="altText_formlabel" approved="yes">
+        <source>Alternative Labels (one per line)</source>
+        <target state="final">Alternative etiketter (en pr. linje)</target>
+      </trans-unit>
+      <trans-unit id="image_titleText" resname="image_titleText" approved="yes">
+        <source>Title Text</source>
+        <target state="final">Titeltekst</target>
+      </trans-unit>
+      <trans-unit id="titleText_formlabel" resname="titleText_formlabel" approved="yes">
+        <source>Titles (one per line)</source>
+        <target state="final">Titler (en pr. linje)</target>
+      </trans-unit>
+      <trans-unit id="image_longdescURL" resname="image_longdescURL" approved="yes">
+        <source>Long Description URL</source>
+        <target state="final">Lang beskrivelse URL</target>
+      </trans-unit>
+      <trans-unit id="images.addFileReference" resname="images.addFileReference" approved="yes">
+        <source>Add image</source>
+        <target state="final">Tilføj billede</target>
+      </trans-unit>
+      <trans-unit id="longdescURL_formlabel" resname="longdescURL_formlabel" approved="yes">
+        <source>Long Description URLs (one per line)</source>
+        <target state="final">Lang beskrivelse, URLer (en pr. linje)</target>
+      </trans-unit>
+      <trans-unit id="cols" resname="cols" approved="yes">
+        <source>Columns</source>
+        <target state="final">Kolonner</target>
+      </trans-unit>
+      <trans-unit id="cols.I.0" resname="cols.I.0" approved="yes">
+        <source>Auto</source>
+        <target state="final">Auto</target>
+      </trans-unit>
+      <trans-unit id="recursive.I.0" resname="recursive.I.0" approved="yes">
+        <source>0 levels (only selected page)</source>
+        <target state="final">0 niveauer (kun valgte side)</target>
+      </trans-unit>
+      <trans-unit id="recursive.I.1" resname="recursive.I.1" approved="yes">
+        <source>1 level</source>
+        <target state="final">Niveau 1</target>
+      </trans-unit>
+      <trans-unit id="recursive.I.2" resname="recursive.I.2" approved="yes">
+        <source>2 levels</source>
+        <target state="final">Niveau 2</target>
+      </trans-unit>
+      <trans-unit id="recursive.I.3" resname="recursive.I.3" approved="yes">
+        <source>3 levels</source>
+        <target state="final">Niveau 3</target>
+      </trans-unit>
+      <trans-unit id="recursive.I.4" resname="recursive.I.4" approved="yes">
+        <source>4 levels</source>
+        <target state="final">Niveau 4</target>
+      </trans-unit>
+      <trans-unit id="recursive.I.5" resname="recursive.I.5" approved="yes">
+        <source>Infinite</source>
+        <target state="final">Uendelig</target>
+      </trans-unit>
+      <trans-unit id="list_type" resname="list_type" approved="yes">
+        <source>Plugin</source>
+        <target state="final">Plugin</target>
+      </trans-unit>
+      <trans-unit id="list_type_formlabel" resname="list_type_formlabel" approved="yes">
+        <source>Selected Plugin</source>
+        <target state="final">Valgt plugin</target>
+      </trans-unit>
+      <trans-unit id="media" resname="media" approved="yes">
+        <source>Files</source>
+        <target state="final">Filer</target>
+      </trans-unit>
+      <trans-unit id="media.dataAttributes" resname="media.dataAttributes" approved="yes">
+        <source>Additional data-* Attributes for HTML5 video tag</source>
+        <target state="final">Yderligere data-* Attributter for HTML5 video-tag</target>
+      </trans-unit>
+      <trans-unit id="media.dataAttributes.attributeName" resname="media.dataAttributes.attributeName" approved="yes">
+        <source>Name of attribute (without data-)</source>
+        <target state="final">Navn på attribut (uden data-)</target>
+      </trans-unit>
+      <trans-unit id="media.dataAttributes.content" resname="media.dataAttributes.content" approved="yes">
+        <source>Content</source>
+        <target state="final">Indhold</target>
+      </trans-unit>
+      <trans-unit id="media.ALT.uploads_formlabel" resname="media.ALT.uploads_formlabel" approved="yes">
+        <source>Select single files</source>
+        <target state="final">Vælg enkelte filer</target>
+      </trans-unit>
+      <trans-unit id="media.addFileReference" resname="media.addFileReference" approved="yes">
+        <source>Add file</source>
+        <target state="final">Tilføj fil</target>
+      </trans-unit>
+      <trans-unit id="multimedia" resname="multimedia" approved="yes">
+        <source>File</source>
+        <target state="final">Fil</target>
+      </trans-unit>
+      <trans-unit id="multimedia_formlabel" resname="multimedia_formlabel" approved="yes">
+        <source>Selected Media File</source>
+        <target state="final">Vælg mediefil</target>
+      </trans-unit>
+      <trans-unit id="file_collections" resname="file_collections" approved="yes">
+        <source>File collections</source>
+        <target state="final">Filsamlinger</target>
+      </trans-unit>
+      <trans-unit id="file_collections.ALT.uploads_formlabel" resname="file_collections.ALT.uploads_formlabel" approved="yes">
+        <source>Select file collections</source>
+        <target state="final">Vælg filsamlinger</target>
+      </trans-unit>
+      <trans-unit id="filelink_size" resname="filelink_size" approved="yes">
+        <source>Show File Size</source>
+        <target state="final">Vis filstørrelse</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting" resname="filelink_sorting" approved="yes">
+        <source>Sort file list</source>
+        <target state="final">Sortér filliste</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.none" resname="filelink_sorting.none" approved="yes">
+        <source>no sorting</source>
+        <target state="final">ingen sortering</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.extension" resname="filelink_sorting.extension" approved="yes">
+        <source>by file extension</source>
+        <target state="final">ved filendelse</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.name" resname="filelink_sorting.name" approved="yes">
+        <source>by filename</source>
+        <target state="final">ved filnavn</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.type" resname="filelink_sorting.type" approved="yes">
+        <source>by file type</source>
+        <target state="final">ved filtype</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.size" resname="filelink_sorting.size" approved="yes">
+        <source>by file size</source>
+        <target state="final">ved filstørrelse</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.creation_date" resname="filelink_sorting.creation_date" approved="yes">
+        <source>by file creation date</source>
+        <target state="final">efter filoprettelses dato</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.modification_date" resname="filelink_sorting.modification_date" approved="yes">
+        <source>by file modification date</source>
+        <target state="final">efter dato for filændring</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.title" resname="filelink_sorting.title" approved="yes">
+        <source>by file metadata title</source>
+        <target state="final">ved fil metadata titel</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting_direction" resname="filelink_sorting_direction" approved="yes">
+        <source>Sorting direction</source>
+        <target state="final">Sorteringsretning</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting_direction.ascending" resname="filelink_sorting_direction.ascending" approved="yes">
+        <source>Ascending (default)</source>
+        <target state="final">Stigende (standard)</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting_direction.descending" resname="filelink_sorting_direction.descending" approved="yes">
+        <source>Descending</source>
+        <target state="final">Faldende</target>
+      </trans-unit>
+      <trans-unit id="filelink_size_formlabel" resname="filelink_size_formlabel" approved="yes">
+        <source>Display File Size Information</source>
+        <target state="final">Vis filstørrelsesinformation</target>
+      </trans-unit>
+      <trans-unit id="target" resname="target" approved="yes">
+        <source>Target</source>
+        <target state="final">Mål</target>
+      </trans-unit>
+      <trans-unit id="target.I.1" resname="target.I.1" approved="yes">
+        <source>New window</source>
+        <target state="final">Nyt vindue</target>
+      </trans-unit>
+      <trans-unit id="records" resname="records" approved="yes">
+        <source>Items</source>
+        <target state="final">Emner</target>
+      </trans-unit>
+      <trans-unit id="records_formlabel" resname="records_formlabel" approved="yes">
+        <source>Records</source>
+        <target state="final">Elementer</target>
+      </trans-unit>
+      <trans-unit id="space_before_class" resname="space_before_class" approved="yes">
+        <source>Space Before</source>
+        <target state="final">Luft før</target>
+      </trans-unit>
+      <trans-unit id="space_before_class_formlabel" resname="space_before_class_formlabel" approved="yes">
+        <source>Space Before</source>
+        <target state="final">Luft før</target>
+      </trans-unit>
+      <trans-unit id="space_after_class" resname="space_after_class" approved="yes">
+        <source>Space After</source>
+        <target state="final">Luft efter</target>
+      </trans-unit>
+      <trans-unit id="space_after_class_formlabel" resname="space_after_class_formlabel" approved="yes">
+        <source>Space After</source>
+        <target state="final">Luft efter</target>
+      </trans-unit>
+      <trans-unit id="space_class_none" resname="space_class_none" approved="yes">
+        <source>None</source>
+        <target state="final">Ingen</target>
+      </trans-unit>
+      <trans-unit id="space_class_extra_small" resname="space_class_extra_small" approved="yes">
+        <source>Extra Small</source>
+        <target state="final">Ekstra lille</target>
+      </trans-unit>
+      <trans-unit id="space_class_small" resname="space_class_small" approved="yes">
+        <source>Small</source>
+        <target state="final">Lille</target>
+      </trans-unit>
+      <trans-unit id="space_class_medium" resname="space_class_medium" approved="yes">
+        <source>Medium</source>
+        <target state="final">Middel</target>
+      </trans-unit>
+      <trans-unit id="space_class_large" resname="space_class_large" approved="yes">
+        <source>Large</source>
+        <target state="final">Stor</target>
+      </trans-unit>
+      <trans-unit id="space_class_extra_large" resname="space_class_extra_large" approved="yes">
+        <source>Extra Large</source>
+        <target state="final">Ekstra stor</target>
+      </trans-unit>
+      <trans-unit id="frame_class" resname="frame_class" approved="yes">
+        <source>Frame</source>
+        <target state="final">Ramme</target>
+      </trans-unit>
+      <trans-unit id="frame_class_formlabel" resname="frame_class_formlabel" approved="yes">
+        <source>Frame</source>
+        <target state="final">Ramme</target>
+      </trans-unit>
+      <trans-unit id="frame_class.default" resname="frame_class.default" approved="yes">
+        <source>Default</source>
+        <target state="final">Standard</target>
+      </trans-unit>
+      <trans-unit id="frame_class.ruler_before" resname="frame_class.ruler_before" approved="yes">
+        <source>Ruler Before</source>
+        <target state="final">Linje før</target>
+      </trans-unit>
+      <trans-unit id="frame_class.ruler_after" resname="frame_class.ruler_after" approved="yes">
+        <source>Ruler After</source>
+        <target state="final">Linje efter</target>
+      </trans-unit>
+      <trans-unit id="frame_class.indent" resname="frame_class.indent" approved="yes">
+        <source>Indent</source>
+        <target state="final">Indrykning</target>
+      </trans-unit>
+      <trans-unit id="frame_class.indent_left" resname="frame_class.indent_left" approved="yes">
+        <source>Indent, 33/66%</source>
+        <target state="final">Indryk, 33/66%</target>
+      </trans-unit>
+      <trans-unit id="frame_class.indent_right" resname="frame_class.indent_right" approved="yes">
+        <source>Indent, 66/33%</source>
+        <target state="final">Indryk, 66/33%</target>
+      </trans-unit>
+      <trans-unit id="frame_class.none" resname="frame_class.none" approved="yes">
+        <source>No Frame</source>
+        <target state="final">Ingen ramme</target>
+      </trans-unit>
+      <trans-unit id="splash_layout" resname="splash_layout" approved="yes">
+        <source>Textbox Type</source>
+        <target state="final">Tekstboks type</target>
+      </trans-unit>
+      <trans-unit id="splash_layout_formlabel" resname="splash_layout_formlabel" approved="yes">
+        <source>Type</source>
+        <target state="final">Type</target>
+      </trans-unit>
+      <trans-unit id="splash_layout.I.1" resname="splash_layout.I.1" approved="yes">
+        <source>Image Shadow</source>
+        <target state="final">Billedskygge</target>
+      </trans-unit>
+      <trans-unit id="splash_layout.I.2" resname="splash_layout.I.2" approved="yes">
+        <source>Image Frame 1</source>
+        <target state="final">Billedramme 1</target>
+      </trans-unit>
+      <trans-unit id="splash_layout.I.3" resname="splash_layout.I.3" approved="yes">
+        <source>Image Frame 2</source>
+        <target state="final">Billedramme 2</target>
+      </trans-unit>
+      <trans-unit id="splash_layout.I.4" resname="splash_layout.I.4" approved="yes">
+        <source>__Graphical:__</source>
+        <target state="final">__Grafisk:__</target>
+      </trans-unit>
+      <trans-unit id="splash_layout.I.5" resname="splash_layout.I.5" approved="yes">
+        <source>Postit 1</source>
+        <target state="final">Post-it 1</target>
+      </trans-unit>
+      <trans-unit id="sectionIndex" resname="sectionIndex" approved="yes">
+        <source>Index</source>
+        <target state="final">Indeks</target>
+      </trans-unit>
+      <trans-unit id="sectionIndex_formlabel" resname="sectionIndex_formlabel" approved="yes">
+        <source>Show in Section Menus</source>
+        <target state="final">Vis i sektionsmenuer</target>
+      </trans-unit>
+      <trans-unit id="linkToTop" resname="linkToTop" approved="yes">
+        <source>To top</source>
+        <target state="final">Til top</target>
+      </trans-unit>
+      <trans-unit id="linkToTop_formlabel" resname="linkToTop_formlabel" approved="yes">
+        <source>Append with Link to Top of Page</source>
+        <target state="final">Tilføj med link til top af side</target>
+      </trans-unit>
+      <trans-unit id="rte_enabled" resname="rte_enabled" approved="yes">
+        <source>Disable Rich Text Editor</source>
+        <target state="final">Slå formatéret redigering fra</target>
+      </trans-unit>
+      <trans-unit id="rte_enabled_formlabel" resname="rte_enabled_formlabel" approved="yes">
+        <source>Rich Text Editor</source>
+        <target state="final">Formatéret redigering</target>
+      </trans-unit>
+      <trans-unit id="rte_enabled.I.0" resname="rte_enabled.I.0" approved="yes">
+        <source>Disable</source>
+        <target state="final">Deaktivér</target>
+      </trans-unit>
+      <trans-unit id="pi_flexform" resname="pi_flexform" approved="yes">
+        <source>Plugin Options</source>
+        <target state="final">Plugin-valg</target>
+      </trans-unit>
+      <trans-unit id="accessibility_title" resname="accessibility_title" approved="yes">
+        <source>Block title</source>
+        <target state="final">Bloktitel</target>
+      </trans-unit>
+      <trans-unit id="accessibility_bypass" resname="accessibility_bypass" approved="yes">
+        <source>Add link to bypass block</source>
+        <target state="final">Tilføj link for at omgå blok</target>
+      </trans-unit>
+      <trans-unit id="accessibility_bypass_text" resname="accessibility_bypass_text" approved="yes">
+        <source>Link text to bypass block</source>
+        <target state="final">Link-tekst for at omgå blok</target>
+      </trans-unit>
+      <trans-unit id="selected_categories" resname="selected_categories" approved="yes">
+        <source>Selected categories</source>
+        <target state="final">Valgte kategorier</target>
+      </trans-unit>
+      <trans-unit id="category_field" resname="category_field" approved="yes">
+        <source>Category field</source>
+        <target state="final">Kategorifelt</target>
+      </trans-unit>
+      <trans-unit id="ALT.imgOptions" resname="ALT.imgOptions" approved="yes">
+        <source>Image Options</source>
+        <target state="final">Billedvalg</target>
+      </trans-unit>
+      <trans-unit id="ALT.imgLinks" resname="ALT.imgLinks" approved="yes">
+        <source>Image Links</source>
+        <target state="final">Billedlinks</target>
+      </trans-unit>
+      <trans-unit id="ALT.imgDimensions" resname="ALT.imgDimensions" approved="yes">
+        <source>Image Dimensions</source>
+        <target state="final">Billed dimensioner</target>
+      </trans-unit>
+      <trans-unit id="select_key_formlabel" resname="select_key_formlabel" approved="yes">
+        <source>Plugin Mode</source>
+        <target state="final">Plugin-tilstand</target>
+      </trans-unit>
+      <trans-unit id="select_key.ALT.uploads" resname="select_key.ALT.uploads" approved="yes">
+        <source>Read from Path</source>
+        <target state="final">Læs fra sti</target>
+      </trans-unit>
+      <trans-unit id="select_key.ALT.uploads_formlabel" resname="select_key.ALT.uploads_formlabel" approved="yes">
+        <source>Path</source>
+        <target state="final">Sti</target>
+      </trans-unit>
+      <trans-unit id="select_key.ALT.script_formlabel" resname="select_key.ALT.script_formlabel" approved="yes">
+        <source>PHP Code</source>
+        <target state="final">PHP kode</target>
+      </trans-unit>
+      <trans-unit id="imagecaption.ALT.uploads" resname="imagecaption.ALT.uploads" approved="yes">
+        <source>Descriptions</source>
+        <target state="final">Beskrivelser</target>
+      </trans-unit>
+      <trans-unit id="imagecaption.ALT.uploads_formlabel" resname="imagecaption.ALT.uploads_formlabel" approved="yes">
+        <source>File Descriptions (one per line)</source>
+        <target state="final">Filbeskrivelser (en pr. linje)</target>
+      </trans-unit>
+      <trans-unit id="imagecaption.ALT.script" resname="imagecaption.ALT.script" approved="yes">
+        <source>Comments</source>
+        <target state="final">Kommentarer</target>
+      </trans-unit>
+      <trans-unit id="bodytext.ALT.mailform" resname="bodytext.ALT.mailform" approved="yes">
+        <source>Configuration</source>
+        <target state="final">Konfiguration</target>
+      </trans-unit>
+      <trans-unit id="bodytext.ALT.mailform_formlabel" resname="bodytext.ALT.mailform_formlabel" approved="yes">
+        <source>Form Structure</source>
+        <target state="final">Formularstruktur</target>
+      </trans-unit>
+      <trans-unit id="pages.ALT.mailform" resname="pages.ALT.mailform" approved="yes">
+        <source>Target Page</source>
+        <target state="final">Destinationsside</target>
+      </trans-unit>
+      <trans-unit id="pages.ALT.searchform" resname="pages.ALT.searchform" approved="yes">
+        <source>Target page</source>
+        <target state="final">Destinationsside</target>
+      </trans-unit>
+      <trans-unit id="pages.ALT.loginform" resname="pages.ALT.loginform" approved="yes">
+        <source>Selected pages: Target (1st), Frontend user container (2nd)</source>
+        <target state="final">Valgte sider: Destination (1.), frontend bruger-container (2.)</target>
+      </trans-unit>
+      <trans-unit id="pages.ALT.search" resname="pages.ALT.search" approved="yes">
+        <source>Send to Page</source>
+        <target state="final">Send til side</target>
+      </trans-unit>
+      <trans-unit id="pages.ALT.login" resname="pages.ALT.login" approved="yes">
+        <source>Send to Page</source>
+        <target state="final">Send til side</target>
+      </trans-unit>
+      <trans-unit id="pages.ALT.menu_formlabel" resname="pages.ALT.menu_formlabel" approved="yes">
+        <source>Selected Pages</source>
+        <target state="final">Valgte sider</target>
+      </trans-unit>
+      <trans-unit id="pages.ALT.list_formlabel" resname="pages.ALT.list_formlabel" approved="yes">
+        <source>Record Storage Page</source>
+        <target state="final">Opbevaringsside for elementer</target>
+      </trans-unit>
+      <trans-unit id="pages.ALT.script_formlabel" resname="pages.ALT.script_formlabel" approved="yes">
+        <source>Starting Point for This Script</source>
+        <target state="final">Udgangspunkt for dette skript</target>
+      </trans-unit>
+      <trans-unit id="subheader.ALT.mailform" resname="subheader.ALT.mailform" approved="yes">
+        <source>Recipient Email</source>
+        <target state="final">Modtager e-mail</target>
+      </trans-unit>
+      <trans-unit id="subheader.ALT.mailform_formlabel" resname="subheader.ALT.mailform_formlabel" approved="yes">
+        <source>Recipient Email</source>
+        <target state="final">Modtager e-mail</target>
+      </trans-unit>
+      <trans-unit id="bodytext.ALT.html" resname="bodytext.ALT.html" approved="yes">
+        <source>HTML</source>
+        <target state="final">HTML</target>
+      </trans-unit>
+      <trans-unit id="menu.ALT.accessibility_title_formlabel" resname="menu.ALT.accessibility_title_formlabel" approved="yes">
+        <source>Menu block title</source>
+        <target state="final">Menu-blok titel</target>
+      </trans-unit>
+      <trans-unit id="menu.ALT.accessibility_bypass_formlabel" resname="menu.ALT.accessibility_bypass_formlabel" approved="yes">
+        <source>Add link to bypass navigation block</source>
+        <target state="final">Tilføj link for at omgå navigationsblok</target>
+      </trans-unit>
+      <trans-unit id="menu.ALT.accessibility_bypass_text_formlabel" resname="menu.ALT.accessibility_bypass_text_formlabel" approved="yes">
+        <source>Link text to bypass navigation block</source>
+        <target state="final">Link-tekst for at omgå navigationsblok</target>
+      </trans-unit>
+      <trans-unit id="tabs.text" resname="tabs.text" approved="yes">
+        <source>Text</source>
+        <target state="final">Tekst</target>
+      </trans-unit>
+      <trans-unit id="tabs.media" resname="tabs.media" approved="yes">
+        <source>Media</source>
+        <target state="final">Medie</target>
+      </trans-unit>
+      <trans-unit id="tabs.plugin" resname="tabs.plugin" approved="yes">
+        <source>Plugin</source>
+        <target state="final">Plugin</target>
+      </trans-unit>
+      <trans-unit id="sys_language_uid_formlabel" resname="sys_language_uid_formlabel" approved="yes">
+        <source>Language</source>
+        <target state="final">Sprog</target>
+      </trans-unit>
+      <trans-unit id="subheader_formlabel" resname="subheader_formlabel" approved="yes">
+        <source>Subheader</source>
+        <target state="final">Underoverskrift</target>
+      </trans-unit>
+      <trans-unit id="hidden_formlabel" resname="hidden_formlabel" approved="yes">
+        <source>Content Element</source>
+        <target state="final">Indholdselement</target>
+      </trans-unit>
+      <trans-unit id="hidden.I.0" resname="hidden.I.0" approved="yes">
+        <source>Disable</source>
+        <target state="final">Deaktivér</target>
+      </trans-unit>
+      <trans-unit id="starttime_formlabel" resname="starttime_formlabel" approved="yes">
+        <source>Publish Date</source>
+        <target state="final">Udgivelsesdato</target>
+      </trans-unit>
+      <trans-unit id="endtime_formlabel" resname="endtime_formlabel" approved="yes">
+        <source>Expiration Date</source>
+        <target state="final">Udløbsdato</target>
+      </trans-unit>
+      <trans-unit id="fe_group_formlabel" resname="fe_group_formlabel" approved="yes">
+        <source>Usergroup Access Rights</source>
+        <target state="final">Adgangsrettigheder for brugergrupper</target>
+      </trans-unit>
+      <trans-unit id="layout_formlabel" resname="layout_formlabel" approved="yes">
+        <source>Layout</source>
+        <target state="final">Layout</target>
+      </trans-unit>
+      <trans-unit id="bodytext_formlabel" resname="bodytext_formlabel" approved="yes">
+        <source>Text</source>
+        <target state="final">Tekst</target>
+      </trans-unit>
+      <trans-unit id="bodytext.ALT.bulletlist_formlabel" resname="bodytext.ALT.bulletlist_formlabel" approved="yes">
+        <source>Bullet List</source>
+        <target state="final">Punktliste</target>
+      </trans-unit>
+      <trans-unit id="bodytext.ALT.table_formlabel" resname="bodytext.ALT.table_formlabel" approved="yes">
+        <source>Table Structure</source>
+        <target state="final">Tabelstruktur</target>
+      </trans-unit>
+      <trans-unit id="bodytext.ALT.media_formlabel" resname="bodytext.ALT.media_formlabel" approved="yes">
+        <source>Alternative Content</source>
+        <target state="final">Alternativt indhold</target>
+      </trans-unit>
+      <trans-unit id="bodytext.ALT.textbox_formlabel" resname="bodytext.ALT.textbox_formlabel" approved="yes">
+        <source>Text</source>
+        <target state="final">Tekst</target>
+      </trans-unit>
+      <trans-unit id="bodytext.ALT.script_formlabel" resname="bodytext.ALT.script_formlabel" approved="yes">
+        <source>Parameters to pass to the script</source>
+        <target state="final">Parametre der sendes til scriptet</target>
+      </trans-unit>
+      <trans-unit id="bodytext.ALT.html_formlabel" resname="bodytext.ALT.html_formlabel" approved="yes">
+        <source>HTML Code</source>
+        <target state="final">HTML-kode</target>
+      </trans-unit>
+      <trans-unit id="image_formlabel" resname="image_formlabel" approved="yes">
+        <source>Images</source>
+        <target state="final">Billeder</target>
+      </trans-unit>
+      <trans-unit id="image.ALT.textbox_formlabel" resname="image.ALT.textbox_formlabel" approved="yes">
+        <source>Image Files</source>
+        <target state="final">Billedfiler</target>
+      </trans-unit>
+      <trans-unit id="imagecaption_formlabel" resname="imagecaption_formlabel" approved="yes">
+        <source>Captions (one per line)</source>
+        <target state="final">Billedtekster (én per linje)</target>
+      </trans-unit>
+      <trans-unit id="imagecaption.ALT.script_formlabel" resname="imagecaption.ALT.script_formlabel" approved="yes">
+        <source>Comments</source>
+        <target state="final">Kommentarer</target>
+      </trans-unit>
+      <trans-unit id="field.default.hidden" resname="field.default.hidden" approved="yes">
+        <source>Visibility of content element</source>
+        <target state="final">Synlighed af indholdselement</target>
+      </trans-unit>
+      <trans-unit id="field.table.bodytext" resname="field.table.bodytext" approved="yes">
+        <source>Table content</source>
+        <target state="final">Tabelindhold</target>
+      </trans-unit>
+      <trans-unit id="palette.general" resname="palette.general" approved="yes">
+        <source>Content Element</source>
+        <target state="final">Indholdselement</target>
+      </trans-unit>
+      <trans-unit id="palette.headers" resname="palette.headers" approved="yes">
+        <source>Headlines</source>
+        <target state="final">Overskrifter</target>
+      </trans-unit>
+      <trans-unit id="palette.header" resname="palette.header" approved="yes">
+        <source>Header</source>
+        <target state="final">Overskrift</target>
+      </trans-unit>
+      <trans-unit id="palette.visibility" resname="palette.visibility" approved="yes">
+        <source>Visibility</source>
+        <target state="final">Synlighed</target>
+      </trans-unit>
+      <trans-unit id="palette.access" resname="palette.access" approved="yes">
+        <source>Publish Dates and Access Rights</source>
+        <target state="final">Publiceringsdato og adgangsrettigheder</target>
+      </trans-unit>
+      <trans-unit id="palette.frames" resname="palette.frames" approved="yes">
+        <source>Content Element Layout</source>
+        <target state="final">Layout for indholdselement</target>
+      </trans-unit>
+      <trans-unit id="palette.textlayout" resname="palette.textlayout" approved="yes">
+        <source>Text Layout</source>
+        <target state="final">Tekstlayout</target>
+      </trans-unit>
+      <trans-unit id="palette.imagefiles" resname="palette.imagefiles" approved="yes">
+        <source>Images and Captions</source>
+        <target state="final">Billeder og -tekster</target>
+      </trans-unit>
+      <trans-unit id="palette.imagelinks" resname="palette.imagelinks" approved="yes">
+        <source>Behavior</source>
+        <target state="final">Adfærd</target>
+      </trans-unit>
+      <trans-unit id="palette.image_accessibility" resname="palette.image_accessibility" approved="yes">
+        <source>Accessibility</source>
+        <target state="final">Tilgængelighed</target>
+      </trans-unit>
+      <trans-unit id="palette.image_settings" resname="palette.image_settings" approved="yes">
+        <source>Image Adjustments</source>
+        <target state="final">Billedjusteringer</target>
+      </trans-unit>
+      <trans-unit id="palette.imageblock" resname="palette.imageblock" approved="yes">
+        <source>Image Alignment</source>
+        <target state="final">Billedjustering</target>
+      </trans-unit>
+      <trans-unit id="palette.mailform" resname="palette.mailform" approved="yes">
+        <source>Target and Recipient</source>
+        <target state="final">Mål og modtager</target>
+      </trans-unit>
+      <trans-unit id="palette.searchform" resname="palette.searchform" approved="yes">
+        <source>Search Results</source>
+        <target state="final">Søgeresultater</target>
+      </trans-unit>
+      <trans-unit id="palette.loginform" resname="palette.loginform" approved="yes">
+        <source>Redirect Target and Frontend User Container</source>
+        <target state="final">Henvisningsside og systemmappe til frontendbrugere</target>
+      </trans-unit>
+      <trans-unit id="palette.multimediafiles" resname="palette.multimediafiles" approved="yes">
+        <source>Media Files and Parameters</source>
+        <target state="final">Mediefiler og parametre</target>
+      </trans-unit>
+      <trans-unit id="palette.textbox" resname="palette.textbox" approved="yes">
+        <source>Render Text into Images</source>
+        <target state="final">Vis tekst som billeder</target>
+      </trans-unit>
+      <trans-unit id="palette.menu" resname="palette.menu" approved="yes">
+        <source>Menu and Sitemap</source>
+        <target state="final">Menuer og sitemaps</target>
+      </trans-unit>
+      <trans-unit id="palette.menu_accessibility" resname="palette.menu_accessibility" approved="yes">
+        <source>Accessibility</source>
+        <target state="final">Tilgængelighed</target>
+      </trans-unit>
+      <trans-unit id="palette.uploads_layout" resname="palette.uploads_layout" approved="yes">
+        <source>Filelinks Layout</source>
+        <target state="final">Layout for fillinks</target>
+      </trans-unit>
+      <trans-unit id="palette.table_layout" resname="palette.table_layout" approved="yes">
+        <source>Table Layout</source>
+        <target state="final">Tabel-layout</target>
+      </trans-unit>
+      <trans-unit id="palette.appearanceLinks" resname="palette.appearanceLinks" approved="yes">
+        <source>Links</source>
+        <target state="final">Links</target>
+      </trans-unit>
+      <trans-unit id="tabs.access" resname="tabs.access" approved="yes">
+        <source>Access</source>
+        <target state="final">Adgang</target>
+      </trans-unit>
+      <trans-unit id="tabs.appearance" resname="tabs.appearance" approved="yes">
+        <source>Appearance</source>
+        <target state="final">Udseende</target>
+      </trans-unit>
+      <trans-unit id="tabs.behaviour" resname="tabs.behaviour" approved="yes">
+        <source>Behaviour</source>
+        <target state="final">Egenskaber</target>
+      </trans-unit>
+      <trans-unit id="tabs.script" resname="tabs.script" approved="yes">
+        <source>Script</source>
+        <target state="final">Skript</target>
+      </trans-unit>
+      <trans-unit id="tabs.images" resname="tabs.images" approved="yes">
+        <source>Images</source>
+        <target state="final">Billeder</target>
+      </trans-unit>
+      <trans-unit id="tabs.extended" resname="tabs.extended" approved="yes">
+        <source>Extended</source>
+        <target state="final">Udvidet</target>
+      </trans-unit>
+      <trans-unit id="tabs.accessibility" resname="tabs.accessibility" approved="yes">
+        <source>Accessibility</source>
+        <target state="final">Tilgængelighed</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
