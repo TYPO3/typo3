@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/locallang_ceditor.xlf" date="2011-10-17T20:22:37Z" product-name="tstemplate" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="editConstants" resname="editConstants">
+        <source>Edit constants for template</source>
+        <target>crwdns108548:0crwdne108548:0</target>
+      </trans-unit>
+      <trans-unit id="category" resname="category">
+        <source>Category</source>
+        <target>crwdns108550:0crwdne108550:0</target>
+      </trans-unit>
+      <trans-unit id="noConstants" resname="noConstants">
+        <source>No constants available</source>
+        <target>crwdns108552:0crwdne108552:0</target>
+      </trans-unit>
+      <trans-unit id="noConstantsDescription" resname="noConstantsDescription">
+        <source>There are no editable constants available for the Constant Editor.</source>
+        <target>crwdns108554:0crwdne108554:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
