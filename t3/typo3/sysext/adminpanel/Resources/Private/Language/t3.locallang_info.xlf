@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:adminpanel/Resources/Private/Language/locallang_info.xlf" date="2018-03-12T13:52:01Z" product-name="adminpanel" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="module.label" resname="module.label">
+        <source>Info</source>
+        <target>crwdns96198:0crwdne96198:0</target>
+      </trans-unit>
+      <trans-unit id="module.shortinfo" resname="module.shortinfo">
+        <source>(Load Time: %s ms)</source>
+        <target>crwdns96200:0%scrwdne96200:0</target>
+      </trans-unit>
+      <trans-unit id="imagesOnPage" resname="imagesOnPage">
+        <source>Images on this page</source>
+        <target>crwdns96202:0crwdne96202:0</target>
+      </trans-unit>
+      <trans-unit id="imagesSize" resname="imagesSize">
+        <source>Total image file sizes</source>
+        <target>crwdns96204:0crwdne96204:0</target>
+      </trans-unit>
+      <trans-unit id="DocumentSize" resname="DocumentSize">
+        <source>Document size</source>
+        <target>crwdns96206:0crwdne96206:0</target>
+      </trans-unit>
+      <trans-unit id="pageUid" resname="pageUid">
+        <source>Page Uid</source>
+        <target>crwdns96208:0crwdne96208:0</target>
+      </trans-unit>
+      <trans-unit id="pageType" resname="pageType">
+        <source>Page type</source>
+        <target>crwdns96210:0crwdne96210:0</target>
+      </trans-unit>
+      <trans-unit id="groupList" resname="groupList">
+        <source>Frontenduser group combination</source>
+        <target>crwdns96212:0crwdne96212:0</target>
+      </trans-unit>
+      <trans-unit id="noCache" resname="noCache">
+        <source>Page cached</source>
+        <target>crwdns96214:0crwdne96214:0</target>
+      </trans-unit>
+      <trans-unit id="noCache_yes" resname="noCache_yes">
+        <source>Yes</source>
+        <target>crwdns96216:0crwdne96216:0</target>
+      </trans-unit>
+      <trans-unit id="noCache_no" resname="noCache_no">
+        <source>No</source>
+        <target>crwdns96218:0crwdne96218:0</target>
+      </trans-unit>
+      <trans-unit id="countUserInt" resname="countUserInt">
+        <source>Count of USER_INT objects</source>
+        <target>crwdns96220:0crwdne96220:0</target>
+      </trans-unit>
+      <trans-unit id="feuserName" resname="feuserName">
+        <source>Name of logged in FE-User</source>
+        <target>crwdns96222:0crwdne96222:0</target>
+      </trans-unit>
+      <trans-unit id="feuserId" resname="feuserId">
+        <source>Id of logged in FE-User</source>
+        <target>crwdns96224:0crwdne96224:0</target>
+      </trans-unit>
+      <trans-unit id="totalParsetime" resname="totalParsetime">
+        <source>Total parsetime</source>
+        <target>crwdns96226:0crwdne96226:0</target>
+      </trans-unit>
+      <trans-unit id="noUserInt" resname="noUserInt">
+        <source>There are no USER_INT objects on this page.</source>
+        <target>crwdns96228:0crwdne96228:0</target>
+      </trans-unit>
+      <trans-unit id="key" resname="key">
+        <source>Key</source>
+        <target>crwdns96230:0crwdne96230:0</target>
+      </trans-unit>
+      <trans-unit id="value" resname="value">
+        <source>Value</source>
+        <target>crwdns96232:0crwdne96232:0</target>
+      </trans-unit>
+      <trans-unit id="sub.general.label" resname="sub.general.label">
+        <source>General</source>
+        <target>crwdns96234:0crwdne96234:0</target>
+      </trans-unit>
+      <trans-unit id="sub.php.label" resname="sub.php.label">
+        <source>PHP</source>
+        <target>crwdns96236:0crwdne96236:0</target>
+      </trans-unit>
+      <trans-unit id="sub.request.label" resname="sub.request.label">
+        <source>REQUEST</source>
+        <target>crwdns96238:0crwdne96238:0</target>
+      </trans-unit>
+      <trans-unit id="sub.userint.label" resname="sub.userint.label">
+        <source>USER_INT</source>
+        <target>crwdns96240:0crwdne96240:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
