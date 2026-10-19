@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf" date="2018-02-27T22:22:32Z" product-name="backend" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="overview.title" resname="overview.title">
+        <source>Site Configuration</source>
+        <target>crwdns212770:0crwdne212770:0</target>
+      </trans-unit>
+      <trans-unit id="overview.site" resname="overview.site">
+        <source>Site</source>
+        <target>crwdns212772:0crwdne212772:0</target>
+      </trans-unit>
+      <trans-unit id="overview.configuration" resname="overview.configuration">
+        <source>Configuration Folder</source>
+        <target>crwdns212774:0crwdne212774:0</target>
+      </trans-unit>
+      <trans-unit id="overview.noPages.title" resname="overview.noPages.title">
+        <source>No pages found!</source>
+        <target>crwdns212776:0crwdne212776:0</target>
+      </trans-unit>
+      <trans-unit id="overview.noPages.message" resname="overview.noPages.message">
+        <source>Please add at least one page through the Page module.</source>
+        <target>crwdns212778:0crwdne212778:0</target>
+      </trans-unit>
+      <trans-unit id="overview.noSiteConfiguration" resname="overview.noSiteConfiguration">
+        <source>This site does not have a configuration, yet.</source>
+        <target>crwdns212780:0crwdne212780:0</target>
+      </trans-unit>
+      <trans-unit id="overview.addSiteConfiguration" resname="overview.addSiteConfiguration">
+        <source>Add new site configuration for this site</source>
+        <target>crwdns212782:0crwdne212782:0</target>
+      </trans-unit>
+      <trans-unit id="overview.deleteSiteConfiguration" resname="overview.deleteSiteConfiguration">
+        <source>Delete site configuration</source>
+        <target>crwdns212784:0crwdne212784:0</target>
+      </trans-unit>
+      <trans-unit id="overview.fullUrlPrefix" resname="overview.fullUrlPrefix">
+        <source>Full URL prefix</source>
+        <target>crwdns212786:0crwdne212786:0</target>
+      </trans-unit>
+      <trans-unit id="overview.baseUrl" resname="overview.baseUrl">
+        <source>Base URLs</source>
+        <target>crwdns212788:0crwdne212788:0</target>
+      </trans-unit>
+      <trans-unit id="overview.unassignedSites.title" resname="overview.unassignedSites.title">
+        <source>Unassigned site configurations</source>
+        <target>crwdns212790:0crwdne212790:0</target>
+      </trans-unit>
+      <trans-unit id="overview.unassignedSites.description" resname="overview.unassignedSites.description">
+        <source>The following sites don't belong to any page anymore and can be removed.</source>
+        <target>crwdns212792:0crwdne212792:0</target>
+      </trans-unit>
+      <trans-unit id="overview.duplicatedEntryPoints" resname="overview.duplicatedEntryPoints">
+        <source>Duplicated Entrypoints</source>
+        <target>crwdns212794:0crwdne212794:0</target>
+      </trans-unit>
+      <trans-unit id="overview.duplicatedEntryPoints.listing" resname="overview.duplicatedEntryPoints.listing">
+        <source>The following entry points are used more than once:</source>
+        <target>crwdns212796:0crwdne212796:0</target>
+      </trans-unit>
+      <trans-unit id="validation.identifierRenamed.title" resname="validation.identifierRenamed.title">
+        <source>Renamed identifier</source>
+        <target>crwdns212798:0crwdne212798:0</target>
+      </trans-unit>
+      <trans-unit id="validation.identifierRenamed.message" resname="validation.identifierRenamed.message">
+        <source>Given site identifier "%1s" already exists. It has been renamed to "%2s". Maybe you want to edit the site again and give it a better name.</source>
+        <target>crwdns212800:0%1scrwdnd212800:0%2scrwdne212800:0</target>
+      </trans-unit>
+      <trans-unit id="validation.identifierExists.title" resname="validation.identifierExists.title">
+        <source>Identifier not changed</source>
+        <target>crwdns212802:0crwdne212802:0</target>
+      </trans-unit>
+      <trans-unit id="validation.identifierExists.message" resname="validation.identifierExists.message">
+        <source>Given site identifier "%1s" already exists and points to a different site. The existing identifier "%2s" for this site is kept.</source>
+        <target>crwdns212804:0%1scrwdnd212804:0%2scrwdne212804:0</target>
+      </trans-unit>
+      <trans-unit id="validation.required.title" resname="validation.required.title">
+        <source>Site configuration not saved</source>
+        <target>crwdns212806:0crwdne212806:0</target>
+      </trans-unit>
+      <trans-unit id="validation.required.message" resname="validation.required.message">
+        <source>Field "%1s" is a required field, but no value has been provided.</source>
+        <target>crwdns212808:0%1scrwdne212808:0</target>
+      </trans-unit>
+      <trans-unit id="validation.duplicateErrorCode.title" resname="validation.duplicateErrorCode.title">
+        <source>Duplicate error code removed</source>
+        <target>crwdns212810:0crwdne212810:0</target>
+      </trans-unit>
+      <trans-unit id="validation.duplicateErrorCode.message" resname="validation.duplicateErrorCode.message">
+        <source>Two error handler configurations for error code "%1s" found. This would be an invalid configuration, the dangling one has been removed.</source>
+        <target>crwdns212812:0%1scrwdne212812:0</target>
+      </trans-unit>
+      <trans-unit id="validation.duplicateLanguageId.title" resname="validation.duplicateLanguageId.title">
+        <source>Duplicate language configuration removed</source>
+        <target>crwdns212814:0crwdne212814:0</target>
+      </trans-unit>
+      <trans-unit id="validation.duplicateLanguageId.message" resname="validation.duplicateLanguageId.message">
+        <source>Two language configurations for language "%1s" found. This would be an invalid configuration, the dangling one has been removed.</source>
+        <target>crwdns212816:0%1scrwdne212816:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
