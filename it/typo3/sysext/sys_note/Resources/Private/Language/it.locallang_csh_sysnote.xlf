@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:sys_note/Resources/Private/Language/locallang_csh_sysnote.xlf" date="2011-10-17T20:22:37Z" product-name="sys_note" target-language="it">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>Internal reminder note attached to a page.</source>
+        <target state="final">Nota interna allegata alla pagina.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" approved="yes">
+        <source>This provides a simple way to attach informative notes to a page regarding backend-related issues. Use it as you like for reminders, instructions, etc.</source>
+        <target state="final">Questo fornisce un modo semplice per allegare note informative ad una pagina su questioni legate al backend. Usalo come preferisci per promemoria, istruzioni, etc.</target>
+      </trans-unit>
+      <trans-unit id="_.seeAlso" resname="_.seeAlso" approved="yes">
+        <source>pages</source>
+        <target state="final">pagine</target>
+      </trans-unit>
+      <trans-unit id="category.description" resname="category.description" approved="yes">
+        <source>Select a category which describes the character of the note.</source>
+        <target state="final">Seleziona una categoria che descrive il tipo di nota.</target>
+      </trans-unit>
+      <trans-unit id="subject.description" resname="subject.description" approved="yes">
+        <source>Enter a title for the note.</source>
+        <target state="final">Inserisci un titolo per la nota.</target>
+      </trans-unit>
+      <trans-unit id="message.description" resname="message.description" approved="yes">
+        <source>This is the note itself.</source>
+        <target state="final">Questa è la nota stessa.</target>
+      </trans-unit>
+      <trans-unit id="author.description" resname="author.description" approved="yes">
+        <source>Enter your name.</source>
+        <target state="final">Inserisci il tuo nome.</target>
+      </trans-unit>
+      <trans-unit id="email.description" resname="email.description" approved="yes">
+        <source>Enter your email address.</source>
+        <target state="final">Inserisci il tuo indirizzo email.</target>
+      </trans-unit>
+      <trans-unit id="personal.description" resname="personal.description" approved="yes">
+        <source>Check this if you don't want other users to see this note.</source>
+        <target state="final">Spunta questa opzione se non vuoi che altri utenti vedano questa nota.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
