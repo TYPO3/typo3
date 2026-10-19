@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:indexed_search/Resources/Private/Language/locallang_main.xlf" date="2011-10-17T20:22:33Z" product-name="indexed_search" target-language="es-ES">
+    <header/>
+    <body>
+      <trans-unit id="mod_indexed_search" resname="mod_indexed_search" approved="yes">
+        <source>Indexed search</source>
+        <target state="final">Búsqueda indexada</target>
+      </trans-unit>
+      <trans-unit id="mod2_indexed_search" resname="mod2_indexed_search" approved="yes">
+        <source>Indexed search statistics</source>
+        <target state="final">Estadísticas de la búsqueda indexada</target>
+      </trans-unit>
+      <trans-unit id="ignoreExtensions" resname="ignoreExtensions" approved="yes">
+        <source>Extension %s was set to be ignored.</source>
+        <target state="final">La extensión %s fue ignorada</target>
+      </trans-unit>
+      <trans-unit id="pdfToolsNotFound" resname="pdfToolsNotFound" approved="yes">
+        <source>PDF tools was not found in paths '%1$spdftotext' and/or '%1$spdfinfo'"</source>
+        <target state="final">Las herramientas PDF no se encontraron en las rutas '%1$spdftotext' y/o '%1$spdfinfo'"</target>
+      </trans-unit>
+      <trans-unit id="pdfToolsDisabled" resname="pdfToolsDisabled" approved="yes">
+        <source>PDF tools disabled</source>
+        <target state="final">Deshabilitadas Herramientas de PDF</target>
+      </trans-unit>
+      <trans-unit id="pdfToolsFailed" resname="pdfToolsFailed" approved="yes">
+        <source>PDFtoText Failed on this document: '%s'. Maybe the PDF file is locked for printing or encrypted.</source>
+        <target state="final">PDF a texto ha fallado en este documento: '%s'. Tal vez el archivo PDF está bloqueado para la impresión o cifrado.</target>
+      </trans-unit>
+      <trans-unit id="catdocNotFound" resname="catdocNotFound" approved="yes">
+        <source>'catdoc' tool for reading Word-files was not found in path '%scatdoc'</source>
+        <target state="final">'catdoc herramienta para la lectura de las palabras de archivos no se encontró en la ruta '%scatdoc'</target>
+      </trans-unit>
+      <trans-unit id="catdocDisabled" resname="catdocDisabled" approved="yes">
+        <source>catdoc tools (Word-files) disabled</source>
+        <target state="final">Herramientas catdoc (Word-archivos) deshabilitadas</target>
+      </trans-unit>
+      <trans-unit id="ppthtmlNotFound" resname="ppthtmlNotFound" approved="yes">
+        <source>'ppthtml' tool for reading Powerpoint-files was not found in path '%sppthtml'</source>
+        <target state="final">'ppthtml" herramienta para la lectura de archivos de PowerPoint no se encontró en la ruta '%sppthtml'</target>
+      </trans-unit>
+      <trans-unit id="ppthtmlDisabled" resname="ppthtmlDisabled" approved="yes">
+        <source>ppthtml tools (Powerpoint-files) disabled</source>
+        <target state="final">Herramientas ppthtml (Powerpoint-files) deshabilitadas</target>
+      </trans-unit>
+      <trans-unit id="xlhtmlNotFound" resname="xlhtmlNotFound" approved="yes">
+        <source>'xlhtml' tool for reading Excel-files was not found in path '%sxlhtml'</source>
+        <target state="final">La herramienta 'xlhtml' para leer archivos de Excel no se encontró en la ruta '%sxlhtml'</target>
+      </trans-unit>
+      <trans-unit id="xlhtmlDisabled" resname="xlhtmlDisabled" approved="yes">
+        <source>xlhtml tools (Excel-files) disabled</source>
+        <target state="final">herramienta xlhtml (ficheros Execel) deshabilitada</target>
+      </trans-unit>
+      <trans-unit id="unzipNotFound" resname="unzipNotFound" approved="yes">
+        <source>'unzip' tool for reading OpenOffice.org-files was not found in path '%sunzip'</source>
+        <target state="final">la herramienta 'unzip' para leer archivos OpenOffice.org no se encontró en la ruta '%sunzip'</target>
+      </trans-unit>
+      <trans-unit id="unzipDisabled" resname="unzipDisabled" approved="yes">
+        <source>unzip tool (OpenOffice.org-files) disabled</source>
+        <target state="final">herramienta unzip (archivos OpenOffice.org) desactivada</target>
+      </trans-unit>
+      <trans-unit id="unrtfNotFound" resname="unrtfNotFound" approved="yes">
+        <source>'unrtf' tool for reading RTF-files was not found in path '%sunrtf'</source>
+        <target state="final">la herramienta 'unrtf' para leer archivos RTF no se encontró en la ruta '%sunrtf'</target>
+      </trans-unit>
+      <trans-unit id="unrtfDisabled" resname="unrtfDisabled" approved="yes">
+        <source>unrtf tool (RTF-files) disabled</source>
+        <target state="final">herramienta unrtf (archivos RTF) desactivada</target>
+      </trans-unit>
+      <trans-unit id="extension.PDF" resname="extension.PDF" approved="yes">
+        <source>PDF (*.%s)</source>
+        <target state="final">PDF (*.%s)</target>
+      </trans-unit>
+      <trans-unit id="extension.DOC" resname="extension.DOC" approved="yes">
+        <source>MS Word (*.%s)</source>
+        <target state="final">MS Word (*.%s)</target>
+      </trans-unit>
+      <trans-unit id="extension.PP" resname="extension.PP" approved="yes">
+        <source>MS Powerpoint (*.%s)</source>
+        <target state="final">MS Powerpoint (*.%s)</target>
+      </trans-unit>
+      <trans-unit id="extension.XLS" resname="extension.XLS" approved="yes">
+        <source>MS Excel (*.%s)</source>
+        <target state="final">MS Excel (*.%s)</target>
+      </trans-unit>
+      <trans-unit id="extension.SXC" resname="extension.SXC" approved="yes">
+        <source>OpenOffice.org Calc (*.%s)</source>
+        <target state="final">OpenOffice.org Calc (*.%s)</target>
+      </trans-unit>
+      <trans-unit id="extension.SXI" resname="extension.SXI" approved="yes">
+        <source>OpenOffice.org Impress (*.%s)</source>
+        <target state="final">OpenOffice.org Impress (*.%s)</target>
+      </trans-unit>
+      <trans-unit id="extension.SXW" resname="extension.SXW" approved="yes">
+        <source>OpenOffice.org Writer (*.%s)</source>
+        <target state="final">OpenOffice.org Writer (*.%s)</target>
+      </trans-unit>
+      <trans-unit id="extension.ODS" resname="extension.ODS" approved="yes">
+        <source>ODF Spreadsheet (*.%s)</source>
+        <target state="final">Hoja de cálculo ODF (*.%s)</target>
+      </trans-unit>
+      <trans-unit id="extension.ODP" resname="extension.ODP" approved="yes">
+        <source>ODF Presentation (*.%s)</source>
+        <target state="final">Presentación de ODF (*.%s)</target>
+      </trans-unit>
+      <trans-unit id="extension.ODT" resname="extension.ODT" approved="yes">
+        <source>ODF Text (*.%s)</source>
+        <target state="final">Texto ODF (*.%s)</target>
+      </trans-unit>
+      <trans-unit id="extension.RTF" resname="extension.RTF" approved="yes">
+        <source>Rich Text Format (*.%s)</source>
+        <target state="final">Formato de texto enriquecido (*.%s)</target>
+      </trans-unit>
+      <trans-unit id="extension.images" resname="extension.images" approved="yes">
+        <source>Images (*.%s)</source>
+        <target state="final">Imágenes (*.%s)</target>
+      </trans-unit>
+      <trans-unit id="extension.HTML" resname="extension.HTML" approved="yes">
+        <source>Webpages (*.%s)</source>
+        <target state="final">Páginas web (*.%s)</target>
+      </trans-unit>
+      <trans-unit id="extension.TXT" resname="extension.TXT" approved="yes">
+        <source>Textfiles (*.%s)</source>
+        <target state="final">Archivos de texto (*.%s)</target>
+      </trans-unit>
+      <trans-unit id="extension.CSV" resname="extension.CSV" approved="yes">
+        <source>Comma-Separated Values (*.%s)</source>
+        <target state="final">Valores separados por comas (*.%s)</target>
+      </trans-unit>
+      <trans-unit id="extension.XML" resname="extension.XML" approved="yes">
+        <source>Extensible Markup Language (*.%s)</source>
+        <target state="final">Idioma de marcado extensible (*.%s)</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
