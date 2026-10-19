@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_ttc.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="ja">
+    <header/>
+    <body>
+      <trans-unit id="CType_formlabel" resname="CType_formlabel" approved="yes">
+        <source>Type</source>
+        <target state="final">タイプ</target>
+      </trans-unit>
+      <trans-unit id="CType.I.0" resname="CType.I.0" approved="yes">
+        <source>Header</source>
+        <target state="final">ヘッダー</target>
+      </trans-unit>
+      <trans-unit id="CType.I.2" resname="CType.I.2" approved="yes">
+        <source>Text &amp; Images</source>
+        <target state="final">テキスト &amp; 画像</target>
+      </trans-unit>
+      <trans-unit id="CType.I.3" resname="CType.I.3" approved="yes">
+        <source>Images</source>
+        <target state="final">画像</target>
+      </trans-unit>
+      <trans-unit id="CType.I.5" resname="CType.I.5" approved="yes">
+        <source>Table</source>
+        <target state="final">表</target>
+      </trans-unit>
+      <trans-unit id="CType.I.6" resname="CType.I.6" approved="yes">
+        <source>File Links</source>
+        <target state="final">ファイルのリンク</target>
+      </trans-unit>
+      <trans-unit id="CType.I.8" resname="CType.I.8" approved="yes">
+        <source>Form</source>
+        <target state="final">フォーム</target>
+      </trans-unit>
+      <trans-unit id="CType.I.9" resname="CType.I.9" approved="yes">
+        <source>Search</source>
+        <target state="final">検索</target>
+      </trans-unit>
+      <trans-unit id="CType.I.10" resname="CType.I.10" approved="yes">
+        <source>Login</source>
+        <target state="final">ログイン</target>
+      </trans-unit>
+      <trans-unit id="CType.I.11" resname="CType.I.11" approved="yes">
+        <source>Textbox</source>
+        <target state="final">テキストボックス</target>
+      </trans-unit>
+      <trans-unit id="CType.I.12" resname="CType.I.12" approved="yes">
+        <source>Special Menus</source>
+        <target state="final">スペシャルメニュー</target>
+      </trans-unit>
+      <trans-unit id="CType.I.13" resname="CType.I.13" approved="yes">
+        <source>Insert Records</source>
+        <target state="final">レコードの挿入</target>
+      </trans-unit>
+      <trans-unit id="CType.I.14" resname="CType.I.14" approved="yes">
+        <source>Insert Plugin</source>
+        <target state="final">プラグインの挿入</target>
+      </trans-unit>
+      <trans-unit id="CType.I.15" resname="CType.I.15" approved="yes">
+        <source>Script</source>
+        <target state="final">スクリプト</target>
+      </trans-unit>
+      <trans-unit id="CType.I.16" resname="CType.I.16" approved="yes">
+        <source>Divider</source>
+        <target state="final">区切り線</target>
+      </trans-unit>
+      <trans-unit id="CType.I.17" resname="CType.I.17" approved="yes">
+        <source>HTML</source>
+        <target state="final">HTML</target>
+      </trans-unit>
+      <trans-unit id="CType.textmedia" resname="CType.textmedia" approved="yes">
+        <source>Text &amp; Media</source>
+        <target state="final">テキスト &amp; メディア</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_abstract" resname="CType.menu_abstract" approved="yes">
+        <source>Abstracts</source>
+        <target state="final">概要</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_categorized_pages" resname="CType.menu_categorized_pages" approved="yes">
+        <source>Categorized pages</source>
+        <target state="final">分類されたページ</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_categorized_content" resname="CType.menu_categorized_content" approved="yes">
+        <source>Categorized content</source>
+        <target state="final">分類されたコンテンツ</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_pages" resname="CType.menu_pages" approved="yes">
+        <source>Pages</source>
+        <target state="final">ページ</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_subpages" resname="CType.menu_subpages" approved="yes">
+        <source>Subpages</source>
+        <target state="final">サブページ</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_recently_updated" resname="CType.menu_recently_updated" approved="yes">
+        <source>Recently updated pages</source>
+        <target state="final">最近更新されたページ</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_related_pages" resname="CType.menu_related_pages" approved="yes">
+        <source>Related pages</source>
+        <target state="final">関連ページ</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_section" resname="CType.menu_section" approved="yes">
+        <source>Section index</source>
+        <target state="final">セクションインデックス</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_section_pages" resname="CType.menu_section_pages" approved="yes">
+        <source>Section index of subpages from selected pages</source>
+        <target state="final">選択したページからサブページのセクションインデックス</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_sitemap" resname="CType.menu_sitemap" approved="yes">
+        <source>Sitemap</source>
+        <target state="final">サイトマップ</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_sitemap_pages" resname="CType.menu_sitemap_pages" approved="yes">
+        <source>Sitemaps of selected pages</source>
+        <target state="final">選択したページのサイトマップ</target>
+      </trans-unit>
+      <trans-unit id="CType.div.standard" resname="CType.div.standard" approved="yes">
+        <source>Standard</source>
+        <target state="final">標準</target>
+      </trans-unit>
+      <trans-unit id="CType.div.lists" resname="CType.div.lists" approved="yes">
+        <source>Lists</source>
+        <target state="final">一覧</target>
+      </trans-unit>
+      <trans-unit id="CType.div.menu" resname="CType.div.menu" approved="yes">
+        <source>Menu</source>
+        <target state="final">メニュー</target>
+      </trans-unit>
+      <trans-unit id="CType.div.forms" resname="CType.div.forms" approved="yes">
+        <source>Forms</source>
+        <target state="final">フォーム</target>
+      </trans-unit>
+      <trans-unit id="CType.div.special" resname="CType.div.special" approved="yes">
+        <source>Special</source>
+        <target state="final">特別</target>
+      </trans-unit>
+      <trans-unit id="colPos" resname="colPos" approved="yes">
+        <source>Columns</source>
+        <target state="final">カラム</target>
+      </trans-unit>
+      <trans-unit id="colPos_formlabel" resname="colPos_formlabel" approved="yes">
+        <source>Column</source>
+        <target state="final">カラム</target>
+      </trans-unit>
+      <trans-unit id="colPos.I.unused" resname="colPos.I.unused" approved="yes">
+        <source>Unused</source>
+        <target state="final">未使用</target>
+      </trans-unit>
+      <trans-unit id="header" resname="header" approved="yes">
+        <source>Header</source>
+        <target state="final">ヘッダー</target>
+      </trans-unit>
+      <trans-unit id="header_formlabel" resname="header_formlabel" approved="yes">
+        <source>Header</source>
+        <target state="final">ヘッダー</target>
+      </trans-unit>
+      <trans-unit id="header_position.I.1" resname="header_position.I.1" approved="yes">
+        <source>Center</source>
+        <target state="final">中央</target>
+      </trans-unit>
+      <trans-unit id="header_position.I.2" resname="header_position.I.2" approved="yes">
+        <source>Right</source>
+        <target state="final">右</target>
+      </trans-unit>
+      <trans-unit id="header_position.I.3" resname="header_position.I.3" approved="yes">
+        <source>Left</source>
+        <target state="final">左</target>
+      </trans-unit>
+      <trans-unit id="header_link" resname="header_link" approved="yes">
+        <source>Link</source>
+        <target state="final">リンク</target>
+      </trans-unit>
+      <trans-unit id="header_link_formlabel" resname="header_link_formlabel" approved="yes">
+        <source>Link</source>
+        <target state="final">リンク</target>
+      </trans-unit>
+      <trans-unit id="header_layout_formlabel" resname="header_layout_formlabel" approved="yes">
+        <source>Type</source>
+        <target state="final">種類</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.1" resname="header_layout.I.1" approved="yes">
+        <source>Layout 1</source>
+        <target state="final">レイアウト１</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.2" resname="header_layout.I.2" approved="yes">
+        <source>Layout 2</source>
+        <target state="final">レイアウト２</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.3" resname="header_layout.I.3" approved="yes">
+        <source>Layout 3</source>
+        <target state="final">レイアウト３</target>
+      </trans-unit>
+      <trans-unit id="bodytext.W.forms" resname="bodytext.W.forms" approved="yes">
+        <source>Forms wizard</source>
+        <target state="final">フォームウィザード</target>
+      </trans-unit>
+      <trans-unit id="image_link" resname="image_link" approved="yes">
+        <source>Link</source>
+        <target state="final">リンク</target>
+      </trans-unit>
+      <trans-unit id="imagecols" resname="imagecols" approved="yes">
+        <source>Columns</source>
+        <target state="final">カラム</target>
+      </trans-unit>
+      <trans-unit id="images.addFileReference" resname="images.addFileReference" approved="yes">
+        <source>Add image</source>
+        <target state="final">画像を追加</target>
+      </trans-unit>
+      <trans-unit id="cols" resname="cols" approved="yes">
+        <source>Columns</source>
+        <target state="final">カラム</target>
+      </trans-unit>
+      <trans-unit id="list_type" resname="list_type" approved="yes">
+        <source>Plugin</source>
+        <target state="final">プラグイン</target>
+      </trans-unit>
+      <trans-unit id="list_type_formlabel" resname="list_type_formlabel" approved="yes">
+        <source>Selected Plugin</source>
+        <target state="final">選択済みのプラグイン</target>
+      </trans-unit>
+      <trans-unit id="media" resname="media" approved="yes">
+        <source>Files</source>
+        <target state="final">ファイル</target>
+      </trans-unit>
+      <trans-unit id="media.ALT.uploads_formlabel" resname="media.ALT.uploads_formlabel" approved="yes">
+        <source>Select single files</source>
+        <target state="final">一つのファイルを選択</target>
+      </trans-unit>
+      <trans-unit id="media.addFileReference" resname="media.addFileReference" approved="yes">
+        <source>Add file</source>
+        <target state="final">ファイルを追加</target>
+      </trans-unit>
+      <trans-unit id="multimedia" resname="multimedia" approved="yes">
+        <source>File</source>
+        <target state="final">ファイル</target>
+      </trans-unit>
+      <trans-unit id="multimedia_formlabel" resname="multimedia_formlabel" approved="yes">
+        <source>Selected Media File</source>
+        <target state="final">選択したメディアファイル</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.name" resname="filelink_sorting.name" approved="yes">
+        <source>by filename</source>
+        <target state="final">ファイル名順</target>
+      </trans-unit>
+      <trans-unit id="target" resname="target" approved="yes">
+        <source>Target</source>
+        <target state="final">対象</target>
+      </trans-unit>
+      <trans-unit id="records_formlabel" resname="records_formlabel" approved="yes">
+        <source>Records</source>
+        <target state="final">レコード</target>
+      </trans-unit>
+      <trans-unit id="splash_layout" resname="splash_layout" approved="yes">
+        <source>Textbox Type</source>
+        <target state="final">テキストボックスの種類</target>
+      </trans-unit>
+      <trans-unit id="splash_layout_formlabel" resname="splash_layout_formlabel" approved="yes">
+        <source>Type</source>
+        <target state="final">タイプ</target>
+      </trans-unit>
+      <trans-unit id="splash_layout.I.1" resname="splash_layout.I.1" approved="yes">
+        <source>Image Shadow</source>
+        <target state="final">画像の影</target>
+      </trans-unit>
+      <trans-unit id="splash_layout.I.2" resname="splash_layout.I.2" approved="yes">
+        <source>Image Frame 1</source>
+        <target state="final">画像フレーム1</target>
+      </trans-unit>
+      <trans-unit id="pi_flexform" resname="pi_flexform" approved="yes">
+        <source>Plugin Options</source>
+        <target state="final">プラグインオプション</target>
+      </trans-unit>
+      <trans-unit id="selected_categories" resname="selected_categories" approved="yes">
+        <source>Selected categories</source>
+        <target state="final">カテゴリの選択</target>
+      </trans-unit>
+      <trans-unit id="category_field" resname="category_field" approved="yes">
+        <source>Category field</source>
+        <target state="final">カテゴリフィールド</target>
+      </trans-unit>
+      <trans-unit id="select_key_formlabel" resname="select_key_formlabel" approved="yes">
+        <source>Plugin Mode</source>
+        <target state="final">プラグインモード</target>
+      </trans-unit>
+      <trans-unit id="tabs.media" resname="tabs.media" approved="yes">
+        <source>Media</source>
+        <target state="final">メディア</target>
+      </trans-unit>
+      <trans-unit id="tabs.plugin" resname="tabs.plugin" approved="yes">
+        <source>Plugin</source>
+        <target state="final">プラグイン</target>
+      </trans-unit>
+      <trans-unit id="subheader_formlabel" resname="subheader_formlabel" approved="yes">
+        <source>Subheader</source>
+        <target state="final">サブヘッダー</target>
+      </trans-unit>
+      <trans-unit id="hidden_formlabel" resname="hidden_formlabel" approved="yes">
+        <source>Content Element</source>
+        <target state="final">コンテンツエレメント</target>
+      </trans-unit>
+      <trans-unit id="starttime_formlabel" resname="starttime_formlabel" approved="yes">
+        <source>Publish Date</source>
+        <target state="final">公開日時</target>
+      </trans-unit>
+      <trans-unit id="endtime_formlabel" resname="endtime_formlabel" approved="yes">
+        <source>Expiration Date</source>
+        <target state="final">有効期限</target>
+      </trans-unit>
+      <trans-unit id="bodytext.ALT.media_formlabel" resname="bodytext.ALT.media_formlabel" approved="yes">
+        <source>Alternative Content</source>
+        <target state="final">代替コンテンツ</target>
+      </trans-unit>
+      <trans-unit id="image_formlabel" resname="image_formlabel" approved="yes">
+        <source>Images</source>
+        <target state="final">画像</target>
+      </trans-unit>
+      <trans-unit id="image.ALT.textbox_formlabel" resname="image.ALT.textbox_formlabel" approved="yes">
+        <source>Image Files</source>
+        <target state="final">イメージファイル</target>
+      </trans-unit>
+      <trans-unit id="field.default.hidden" resname="field.default.hidden" approved="yes">
+        <source>Visibility of content element</source>
+        <target state="final">コンテンツエレメントの公開範囲</target>
+      </trans-unit>
+      <trans-unit id="palette.general" resname="palette.general" approved="yes">
+        <source>Content Element</source>
+        <target state="final">コンテンツエレメント</target>
+      </trans-unit>
+      <trans-unit id="palette.header" resname="palette.header" approved="yes">
+        <source>Header</source>
+        <target state="final">ヘッダー</target>
+      </trans-unit>
+      <trans-unit id="palette.visibility" resname="palette.visibility" approved="yes">
+        <source>Visibility</source>
+        <target state="final">公開範囲</target>
+      </trans-unit>
+      <trans-unit id="palette.access" resname="palette.access" approved="yes">
+        <source>Publish Dates and Access Rights</source>
+        <target state="final">日付とアクセス権を公開</target>
+      </trans-unit>
+      <trans-unit id="palette.frames" resname="palette.frames" approved="yes">
+        <source>Content Element Layout</source>
+        <target state="final">コンテンツエレメント レイアウト</target>
+      </trans-unit>
+      <trans-unit id="palette.imagefiles" resname="palette.imagefiles" approved="yes">
+        <source>Images and Captions</source>
+        <target state="final">画像とキャプション</target>
+      </trans-unit>
+      <trans-unit id="palette.image_settings" resname="palette.image_settings" approved="yes">
+        <source>Image Adjustments</source>
+        <target state="final">画像の調整</target>
+      </trans-unit>
+      <trans-unit id="palette.imageblock" resname="palette.imageblock" approved="yes">
+        <source>Image Alignment</source>
+        <target state="final">画像の配置</target>
+      </trans-unit>
+      <trans-unit id="palette.multimediafiles" resname="palette.multimediafiles" approved="yes">
+        <source>Media Files and Parameters</source>
+        <target state="final">メディアファイルとパラメータ</target>
+      </trans-unit>
+      <trans-unit id="palette.appearanceLinks" resname="palette.appearanceLinks" approved="yes">
+        <source>Links</source>
+        <target state="final">リンク</target>
+      </trans-unit>
+      <trans-unit id="tabs.access" resname="tabs.access" approved="yes">
+        <source>Access</source>
+        <target state="final">アクセス権限</target>
+      </trans-unit>
+      <trans-unit id="tabs.appearance" resname="tabs.appearance" approved="yes">
+        <source>Appearance</source>
+        <target state="final">表示設定</target>
+      </trans-unit>
+      <trans-unit id="tabs.behaviour" resname="tabs.behaviour" approved="yes">
+        <source>Behaviour</source>
+        <target state="final">動作設定</target>
+      </trans-unit>
+      <trans-unit id="tabs.images" resname="tabs.images" approved="yes">
+        <source>Images</source>
+        <target state="final">画像</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
