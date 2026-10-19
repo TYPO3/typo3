@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:recordlist/Resources/Private/Language/locallang_browse_links.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="lo">
+    <header/>
+    <body>
+      <trans-unit id="removeLink" resname="removeLink" approved="yes">
+        <source>Remove link</source>
+        <target state="final">ລຶບລິ້ງອອກ</target>
+      </trans-unit>
+      <trans-unit id="uploadImage" resname="uploadImage" approved="yes">
+        <source>Upload Image</source>
+        <target state="final">ອັບໂຫຼດຮູບພາບ</target>
+      </trans-unit>
+      <trans-unit id="update" resname="update" approved="yes">
+        <source>Update</source>
+        <target state="final">ອັບເດດ</target>
+      </trans-unit>
+      <trans-unit id="path" resname="path" approved="yes">
+        <source>Path</source>
+        <target state="final">ເສັ້ນທາງ</target>
+      </trans-unit>
+      <trans-unit id="page" resname="page" approved="yes">
+        <source>Page</source>
+        <target state="final">ໜ້າ</target>
+      </trans-unit>
+      <trans-unit id="file" resname="file" approved="yes">
+        <source>File</source>
+        <target state="final">ໄຟລ໌</target>
+      </trans-unit>
+      <trans-unit id="folder" resname="folder" approved="yes">
+        <source>Folder</source>
+        <target state="final">ໂຟນເດີ</target>
+      </trans-unit>
+      <trans-unit id="extUrl" resname="extUrl" approved="yes">
+        <source>External URL</source>
+        <target state="final">URL ພາຍນອກ</target>
+      </trans-unit>
+      <trans-unit id="email" resname="email" approved="yes">
+        <source>Email</source>
+        <target state="final">ອີເມວ</target>
+      </trans-unit>
+      <trans-unit id="telephone" resname="telephone" approved="yes">
+        <source>Telephone</source>
+        <target state="final">ໂທລະສັບ</target>
+      </trans-unit>
+      <trans-unit id="special" resname="special" approved="yes">
+        <source>Special</source>
+        <target state="final">ພິເສດ</target>
+      </trans-unit>
+      <trans-unit id="folderTree" resname="folderTree" approved="yes">
+        <source>Folder Tree</source>
+        <target state="final">ໂຄງສ້າງໂຟນເດີ</target>
+      </trans-unit>
+      <trans-unit id="files" resname="files" approved="yes">
+        <source>Files</source>
+        <target state="final">ໄຟລ໌ທັງໝົດ</target>
+      </trans-unit>
+      <trans-unit id="folders" resname="folders" approved="yes">
+        <source>Folders</source>
+        <target state="final">ໂຟນເດີທັງໝົດ</target>
+      </trans-unit>
+      <trans-unit id="target" resname="target" approved="yes">
+        <source>Target</source>
+        <target state="final">ເປົ້າໝາຍ</target>
+      </trans-unit>
+      <trans-unit id="linkRelationship" resname="linkRelationship" approved="yes">
+        <source>Relationship</source>
+        <target state="final">ຄວາມສຳພັນ</target>
+      </trans-unit>
+      <trans-unit id="class" resname="class" approved="yes">
+        <source>CSS-Class</source>
+        <target state="final">CSS-Class</target>
+      </trans-unit>
+      <trans-unit id="title" resname="title" approved="yes">
+        <source>Title</source>
+        <target state="final">ຫົວຂໍ້</target>
+      </trans-unit>
+      <trans-unit id="params" resname="params" approved="yes">
+        <source>Additional link parameters</source>
+        <target state="final">ພາລາມີເຕີລິ້ງເພີ່ມເຕີມ</target>
+      </trans-unit>
+      <trans-unit id="newWindow" resname="newWindow" approved="yes">
+        <source>New window</source>
+        <target state="final">ໜ້າຕ່າງໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="top" resname="top" approved="yes">
+        <source>Top</source>
+        <target state="final">ເທິງສຸດ</target>
+      </trans-unit>
+      <trans-unit id="none" resname="none" approved="yes">
+        <source>None - new link!</source>
+        <target state="final">ບໍ່ມີ - ລິ້ງໃໝ່!</target>
+      </trans-unit>
+      <trans-unit id="pageTree" resname="pageTree" approved="yes">
+        <source>Page tree</source>
+        <target state="final">ໂຄງສ້າງໜ້າ</target>
+      </trans-unit>
+      <trans-unit id="contentElements" resname="contentElements" approved="yes">
+        <source>Content elements</source>
+        <target state="final">ອົງປະກອບເນື້ອຫາ</target>
+      </trans-unit>
+      <trans-unit id="selectRecords" resname="selectRecords" approved="yes">
+        <source>Select Records</source>
+        <target state="final">ເລືອກຂໍ້ມູນ</target>
+      </trans-unit>
+      <trans-unit id="addToList" resname="addToList" approved="yes">
+        <source>Add to list...</source>
+        <target state="final">ເພີ່ມເຂົ້າໃນລາຍການ...</target>
+      </trans-unit>
+      <trans-unit id="info" resname="info" approved="yes">
+        <source>Info</source>
+        <target state="final">ຂໍ້ມູນ</target>
+      </trans-unit>
+      <trans-unit id="emailAddress" resname="emailAddress" approved="yes">
+        <source>Email address</source>
+        <target state="final">ທີ່ຢູ່ອີເມວ</target>
+      </trans-unit>
+      <trans-unit id="telephoneNumber" resname="telephoneNumber" approved="yes">
+        <source>Telephone number</source>
+        <target state="final">ເບີໂທລະສັບ</target>
+      </trans-unit>
+      <trans-unit id="setLink" resname="setLink" approved="yes">
+        <source>Set Link</source>
+        <target state="final">ຕັ້ງຄ່າລິ້ງ</target>
+      </trans-unit>
+      <trans-unit id="urlPlaceholder" resname="urlPlaceholder" translate="no" approved="yes">
+        <source>https://...</source>
+        <target state="final">https://...</target>
+      </trans-unit>
+      <trans-unit id="clickToRedrawFullSize" resname="clickToRedrawFullSize" approved="yes">
+        <source>Image is larger than shown here! Click to redraw page with full sized images.</source>
+        <target state="final">ຮູບພາບມີຂະໜາດໃຫຍ່ກວ່າທີ່ສະແດງຢູ່ນີ້! ຄລິກເພື່ອສະແດງໜ້າໃໝ່ດ້ວຍຮູບພາບຂະໜາດເຕັມ.</target>
+      </trans-unit>
+      <trans-unit id="findDragDrop" resname="findDragDrop" approved="yes">
+        <source>Find and click on your image then drag it into the editor in the main window!</source>
+        <target state="final">ຊອກຫາ ແລະ ຄລິກໃສ່ຮູບພາບຂອງທ່ານ ຈາກນັ້ນລາກມັນເຂົ້າໄປໃນຕົວແກ້ໄຂໃນໜ້າຕ່າງຫຼັກ!</target>
+      </trans-unit>
+      <trans-unit id="noWebFolder" resname="noWebFolder" approved="yes">
+        <source>You cannot drag images from this folder (yellow) because it is internal on the server.</source>
+        <target state="final">ທ່ານບໍ່ສາມາດລາກຮູບພາບຈາກໂຟນເດີນີ້ (ສີເຫຼືອງ) ໄດ້ ເພາະມັນເປັນຂໍ້ມູນພາຍໃນເຊີບເວີ.</target>
+      </trans-unit>
+      <trans-unit id="currentLink" resname="currentLink" approved="yes">
+        <source>Current Link</source>
+        <target state="final">ລິ້ງປັດຈຸບັນ</target>
+      </trans-unit>
+      <trans-unit id="invalidChar" resname="invalidChar" approved="yes">
+        <source>ERROR: Invalid character found in file path (%s). Cannot add the file!</source>
+        <target state="final">ຂໍ້ຜິດພາດ: ພົບຕົວອັກສອນທີ່ບໍ່ຖືກຕ້ອງໃນເສັ້ນທາງໄຟລ໌ (%s). ບໍ່ສາມາດເພີ່ມໄຟລ໌ໄດ້!</target>
+      </trans-unit>
+      <trans-unit id="toggleSelection" resname="toggleSelection" approved="yes">
+        <source>Toggle selection</source>
+        <target state="final">ສະລັບການເລືອກ</target>
+      </trans-unit>
+      <trans-unit id="importSelection" resname="importSelection" approved="yes">
+        <source>Import selection</source>
+        <target state="final">ນຳເຂົ້າການເລືອກ</target>
+      </trans-unit>
+      <trans-unit id="recordSelector" resname="recordSelector" approved="yes">
+        <source>Record selector</source>
+        <target state="final">ຕົວເລືອກຂໍ້ມູນ</target>
+      </trans-unit>
+      <trans-unit id="fileSelector" resname="fileSelector" approved="yes">
+        <source>File selector</source>
+        <target state="final">ຕົວເລືອກໄຟລ໌</target>
+      </trans-unit>
+      <trans-unit id="folderSelector" resname="folderSelector" approved="yes">
+        <source>Folder selector</source>
+        <target state="final">ຕົວເລືອກໂຟນເດີ</target>
+      </trans-unit>
+      <trans-unit id="page_id" resname="page_id" approved="yes">
+        <source>Page ID</source>
+        <target state="final">ID ຂອງໜ້າ</target>
+      </trans-unit>
+      <trans-unit id="displayThumbs" resname="displayThumbs" approved="yes">
+        <source>Display thumbnails</source>
+        <target state="final">ສະແດງຮູບຫຍໍ້</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
