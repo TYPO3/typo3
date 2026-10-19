@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:info/Resources/Private/Language/locallang_csh_webinfo.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="lo">
+    <header/>
+    <body>
+      <trans-unit id="func_0.alttitle" resname="func_0.alttitle" approved="yes">
+        <source>Basic Settings</source>
+        <target state="final">ການຕັ້ງຄ່າພື້ນຖານ</target>
+      </trans-unit>
+      <trans-unit id="func_0.description" resname="func_0.description" approved="yes">
+        <source>Displays a selection of fields from page records which are regarded as foundational settings for pages. That includes aliases, start- and stop times, access restriction information etc.</source>
+        <target state="final">ສະແດງການເລືອກຟິວຕ່າງໆຈາກບັນທຶກໜ້າເວັບ ເຊິ່ງຖືວ່າເປັນການຕັ້ງຄ່າພື້ນຖານສຳລັບໜ້າເວັບ. ເຊິ່ງລວມມີ ຊື່ແທນ (aliases), ເວລາເລີ່ມຕົ້ນ ແລະ ສິ້ນສຸດ, ຂໍ້ມູນການຈຳກັດການເຂົ້າເຖິງ ແລະ ອື່ນໆ.</target>
+      </trans-unit>
+      <trans-unit id="func_0.details" resname="func_0.details" xml:space="preserve" approved="yes">
+				<source>The Basic Settings view resembles the Cache and Age view quite a lot. They are different only by the selection of fields they show.
+
+&lt;b&gt;Batch editing page fields&lt;/b&gt;
+You will find multiple edit-icons around the interface. All edit icons in head lines will bring you to an editing dialog where you can change exactly that field for all listed tables! Very useful for batch-editing of say all "Start" times.
+If you click the edit icon at the ID numbers of pages you will get straight to the regular editing of a whole page record.</source>
+			<target state="final">ມຸມມອງການຕັ້ງຄ່າພື້ນຖານມີຄວາມຄ້າຍຄືກັບມຸມມອງ ແຄສ (Cache) ແລະ ອາຍຸ (Age) ຫຼາຍ. ພວກມັນແຕກຕ່າງກັນພຽງແຕ່ການເລືອກຟິວທີ່ສະແດງອອກມາເທົ່ານັ້ນ.
+
+&lt;b&gt;ການແກ້ໄຂຟິວຂອງໜ້າເວັບແບບກຸ່ມ&lt;/b&gt;
+ເຈົ້າຈະພົບເຫັນໄອຄອນແກ້ໄຂຫຼາຍອັນຢູ່ໃນສ່ວນຕິດຕໍ່ຜູ້ໃຊ້. ໄອຄອນແກ້ໄຂທັງໝົດໃນຫົວຂໍ້ຈະນຳເຈົ້າໄປຫາໜ້າຕ່າງການແກ້ໄຂ ເຊິ່ງເຈົ້າສາມາດປ່ຽນແປງຟິວນັ້ນໄດ້ຢ່າງຊັດເຈນສຳລັບທຸກຕາຕະລາງທີ່ລະບຸໄວ້! ເຊິ່ງມີປະໂຫຍດຫຼາຍສຳລັບການແກ້ໄຂແບບກຸ່ມ ເຊັ່ນ ເວລາ "ເລີ່ມຕົ້ນ" (Start) ທັງໝົດ.
+ຖ້າເຈົ້າຄລິກໄອຄອນແກ້ໄຂຢູ່ທີ່ໝາຍເລກ ID ຂອງໜ້າເວັບ ເຈົ້າຈະເຂົ້າສູ່ການແກ້ໄຂປົກກະຕິຂອງບັນທຶກໜ້າເວັບທັງໝົດໂດຍກົງ.</target></trans-unit>
+      <trans-unit id="_func_0.seeAlso" resname="_func_0.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:list_module,
+_MOD_web_info:func_2,
+_MOD_web_info:pagetree_overview</source>
+				
+			<target state="final">xMOD_csh_corebe:list_module,
+_MOD_web_info:func_2,
+_MOD_web_info:pagetree_overview</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_func_0.image" resname="_func_0.image" xml:space="preserve" approved="yes">
+				<source>EXT:frontend/Resources/Public/Images/cshimages/pagetree_overview_4.png,
+EXT:frontend/Resources/Public/Images/cshimages/pagetree_overview_8.png,
+EXT:frontend/Resources/Public/Images/cshimages/pagetree_overview_9.png</source>
+				
+			<target state="final">EXT:frontend/Resources/Public/Images/cshimages/pagetree_overview_4.png,
+EXT:frontend/Resources/Public/Images/cshimages/pagetree_overview_8.png,
+EXT:frontend/Resources/Public/Images/cshimages/pagetree_overview_9.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="func_0.image_descr" resname="func_0.image_descr" xml:space="preserve" approved="yes">
+				<source>The Basic Settings view offers a very convenient overview of page urls, start times and access restriction settings in the tree branch.
+If you click an edit-icon in the header you will be able to edit that field for all listed pages.</source>
+			<target state="final">ມຸມມອງການຕັ້ງຄ່າພື້ນຖານໃຫ້ພາບລວມທີ່ສະດວກຫຼາຍກ່ຽວກັບ url ຂອງໜ້າເວັບ, ເວລາເລີ່ມຕົ້ນ ແລະ ການຕັ້ງຄ່າການຈຳກັດການເຂົ້າເຖິງໃນໂຄງສ້າງແບບກິ່ງງ່າ.
+ຖ້າເຈົ້າຄລິກໄອຄອນແກ້ໄຂໃນສ່ວນຫົວ ເຈົ້າຈະສາມາດແກ້ໄຂຟິວນັ້ນສຳລັບທຸກໜ້າທີ່ລະບຸໄວ້.</target></trans-unit>
+      <trans-unit id="func_1.alttitle" resname="func_1.alttitle" approved="yes">
+        <source>Record Overview</source>
+        <target state="final">ພາບລວມຂອງບັນທຶກ</target>
+      </trans-unit>
+      <trans-unit id="func_1.description" resname="func_1.description" approved="yes">
+        <source>Record overview gives you an indispensable overview of the distribution of records in the page tree. Each database table in the system is represented with a column and for each page you can see the number of records from that table located on the page.</source>
+        <target state="final">ພາບລວມຂອງບັນທຶກໃຫ້ພາບລວມທີ່ສຳຄັນຂອງການແຈກຢາຍບັນທຶກໃນໂຄງສ້າງໜ້າເວັບ. ແຕ່ລະຕາຕະລາງຖານຂໍ້ມູນໃນລະບົບຈະຖືກສະແດງດ້ວຍຖັນ ແລະ ສຳລັບແຕ່ລະໜ້າ ເຈົ້າສາມາດເຫັນຈຳນວນບັນທຶກຈາກຕາຕະລາງນັ້ນທີ່ຢູ່ໃນໜ້າດັ່ງກ່າວ.</target>
+      </trans-unit>
+      <trans-unit id="func_1.details" resname="func_1.details" xml:space="preserve" approved="yes">
+				<source>&lt;b&gt;Notice:&lt;/b&gt; Be careful with the level-setting. A high level-setting may cause the module to respond very slowly if there are many pages and many records in the database as well!
+
+&lt;b&gt;Tree stop?&lt;/b&gt;
+Notice the red "+" next to a page in the page tree? This is due to a setting for that page record which means that the page tree will not expand for this page. Typically this is set for protection when there are a large amount of subpages underneath (hundreds of pages typically). If you click the icon/title the overview will jump to make this page the new root of the overview.</source>
+			<target state="final">&lt;b&gt;ຂໍ້ຄວນລະວັງ:&lt;/b&gt; ໃຫ້ລະມັດລະວັງໃນການຕັ້ງຄ່າລະດັບ (level-setting). ການຕັ້ງຄ່າລະດັບສູງອາດຈະເຮັດໃຫ້ໂມດູນຕອບສະໜອງຊ້າຫຼາຍ ຖ້າມີໜ້າເວັບ ແລະ ບັນທຶກຈຳນວນຫຼາຍໃນຖານຂໍ້ມູນ!
+
+&lt;b&gt;ຢຸດການຂະຫຍາຍໂຄງສ້າງ?&lt;/b&gt;
+ສັງເກດເຫັນເຄື່ອງໝາຍ "+" ສີແດງຢູ່ຂ້າງໜ້າເວັບໃນໂຄງສ້າງໜ້າເວັບບໍ່? ນີ້ແມ່ນຍ້ອນການຕັ້ງຄ່າສຳລັບບັນທຶກໜ້າເວັບນັ້ນ ເຊິ່ງໝາຍຄວາມວ່າໂຄງສ້າງໜ້າເວັບຈະບໍ່ຂະຫຍາຍສຳລັບໜ້າເວັບນີ້. ໂດຍປົກກະຕິແລ້ວ ສິ່ງນີ້ຈະຖືກຕັ້ງຄ່າເພື່ອປ້ອງກັນເມື່ອມີໜ້າເວັບຍ່ອຍຈຳນວນຫຼາຍ (ປົກກະຕິແມ່ນຫຼາຍຮ້ອຍໜ້າ). ຖ້າເຈົ້າຄລິກທີ່ໄອຄອນ/ຫົວຂໍ້ ພາບລວມຈະໂດດໄປເຮັດໃຫ້ໜ້າເວັບນີ້ເປັນຮາກ (root) ໃໝ່ຂອງພາບລວມ.</target></trans-unit>
+      <trans-unit id="_func_1.seeAlso" resname="_func_1.seeAlso" xml:space="preserve" approved="yes">
+				<source>_MOD_web_info:pagetree_overview,
+pages:php_tree_stop</source>
+				
+			<target state="final">_MOD_web_info:pagetree_overview,
+pages:php_tree_stop</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_func_1.image" resname="_func_1.image" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/pagetree_overview_6.png</source>
+        <target state="final">EXT:frontend/Resources/Public/Images/cshimages/pagetree_overview_6.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="func_1.image_descr" resname="func_1.image_descr" approved="yes">
+        <source>You can easily see the distribution of Content Elements on a page. You can also see where Template Records - and basically any record! - are located in the page tree!</source>
+        <target state="final">ເຈົ້າສາມາດເຫັນການແຈກຢາຍຂອງອົງປະກອບເນື້ອຫາ (Content Elements) ໃນໜ້າເວັບໄດ້ຢ່າງງ່າຍດາຍ. ເຈົ້າຍັງສາມາດເຫັນໄດ້ວ່າ ບັນທຶກແມ່ແບບ (Template Records) - ແລະ ບັນທຶກໃດໆກໍຕາມ! - ຢູ່ບ່ອນໃດໃນໂຄງສ້າງໜ້າເວັບ!</target>
+      </trans-unit>
+      <trans-unit id="func_2.alttitle" resname="func_2.alttitle" approved="yes">
+        <source>Cache and Age</source>
+        <target state="final">ແຄສ ແລະ ອາຍຸ</target>
+      </trans-unit>
+      <trans-unit id="func_2.description" resname="func_2.description" approved="yes">
+        <source>Displays a selection of fields from page records related to page caching and time settings.</source>
+        <target state="final">ສະແດງການເລືອກຟິວຕ່າງໆຈາກບັນທຶກໜ້າເວັບທີ່ກ່ຽວຂ້ອງກັບການເຮັດແຄສໜ້າເວັບ ແລະ ການຕັ້ງຄ່າເວລາ.</target>
+      </trans-unit>
+      <trans-unit id="_func_2.seeAlso" resname="_func_2.seeAlso" xml:space="preserve" approved="yes">
+				<source>_MOD_web_info:func_0,
+_MOD_web_info:pagetree_overview,
+pages:TSconfig</source>
+				
+			<target state="final">_MOD_web_info:func_0,
+_MOD_web_info:pagetree_overview,
+pages:TSconfig</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_func_2.image" resname="_func_2.image" xml:space="preserve" approved="yes">
+				<source>EXT:frontend/Resources/Public/Images/cshimages/pagetree_overview_5.png,
+EXT:frontend/Resources/Public/Images/cshimages/pagetree_overview_7.png</source>
+				
+			<target state="final">EXT:frontend/Resources/Public/Images/cshimages/pagetree_overview_5.png,
+EXT:frontend/Resources/Public/Images/cshimages/pagetree_overview_7.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="func_2.image_descr" resname="func_2.image_descr" xml:space="preserve" approved="yes">
+				<source>The "Cache and Age" view.
+Here you see the "TSconfig" column. The overview exposes that these two pages include some Page TSconfig code!</source>
+			<target state="final">ມຸມມອງ "ແຄສ ແລະ ອາຍຸ". ຢູ່ບ່ອນນີ້ ເຈົ້າຈະເຫັນຖັນ "TSconfig". ພາບລວມສະແດງໃຫ້ເຫັນວ່າ ສອງໜ້າເວັບນີ້ມີລະຫັດ Page TSconfig ບາງສ່ວນຢູ່!</target></trans-unit>
+      <trans-unit id="lang.details" resname="lang.details" xml:space="preserve" approved="yes">
+				<source>The overview uses colors to signal the availability and fall back situation for a given page. Here is a description for each color code:
+&lt;b&gt;Green background:&lt;/b&gt; Page is translated and viewable in this language. For translations it means that an active page overlay record is present.
+&lt;b&gt;Red background:&lt;/b&gt; Page &lt;em&gt;cannot&lt;/em&gt; be viewed in this language and you will see an error message if you try. Menus should automatically filter out links to pages with this translation.
+&lt;b&gt;Gray background (not available for default language):&lt;/b&gt; Page will fall back to the specified fallback mode for content. Depends on configuration. (sys_language_mode = content_fallback is recommended for most flexible fallback, sys_language_mode = strict will prevent this and issue an error instead!)
+
+&lt;b&gt;The pages "Localization settings:"&lt;/b&gt;
+It is the "Localization settings" of the page record that determines the modes above. In the column of the default language each of these settings are represented by a "N" (Hide page if no translation for current language exists) or a "D" (Hide default language of page).
+As you can see the page "Startpage" has the N flag set and therefore any access to the german version of that page will be blocked with an error message because there is no translation in german. By default "german access" to a non-translated page will just show the english content.
+There is also a page with the D flag ("[Dummy]"). The D flag means that the page is only available in one of the translations, in this case Danish. So any attempt to access the page in the default language or german will show an error message.
+
+So, when the "Localization settings" checkboxes for a page are used, you will get an error message when you try to request a page which has been blocked. This is a feature. The trick is not to create links to those pages.
+
+Menus generated from HMENU objects will always take "sys_language" into account and display only pages which can be accessed for that language. But combined with the "localization settings" of pages which may block page access this becomes a problem with pages which are &lt;em&gt;not&lt;/em&gt; translated (has gray background); You might get menu items which links to non-accessible pages.
+The problem basically is that "&amp;L=xx" is different from internal "sys_language". You would like to avoid that and to do so you should configure "sys_language_mode" to "content_fallback". If you do that sys_language will &lt;em&gt;always&lt;/em&gt; follow what "&amp;L=" instructs it to and your menus will be right. At the same time you will get the default content displayed if no translation exists (because content selection falls back).
+
+Finally, the number found in each column tells you how many content elements are found in the specified language.</source>
+			<target state="final">ພາບລວມໃຊ້ສີເພື່ອບົ່ງບອກເຖິງສະຖານະການມີໃຫ້ໃຊ້ງານ ແລະ ການນຳໃຊ້ເນື້ອຫາສຳຮອງ (fallback) ສຳລັບໜ້າເວັບໃດໜຶ່ງ. ນີ້ແມ່ນຄຳອະທິບາຍສຳລັບແຕ່ລະລະຫັດສີ:
+&lt;b&gt;ພື້ນຫຼັງສີຂຽວ:&lt;/b&gt; ໜ້າເວັບຖືກແປແລ້ວ ແລະ ສາມາດເບິ່ງໄດ້ໃນພາສານີ້. ສຳລັບການແປ ມັນໝາຍຄວາມວ່າມີບັນທຶກການທັບຊ້ອນໜ້າເວັບ (page overlay record) ທີ່ເຮັດວຽກຢູ່.
+&lt;b&gt;ພື້ນຫຼັງສີແດງ:&lt;/b&gt; ໜ້າເວັບ &lt;em&gt;ບໍ່ສາມາດ&lt;/em&gt; ເບິ່ງໄດ້ໃນພາສານີ້ ແລະ ເຈົ້າຈະເຫັນຂໍ້ຄວາມຜິດພາດຖ້າເຈົ້າພະຍາຍາມເບິ່ງ. ເມນູຄວນຈະກັ່ນຕອງລິ້ງໄປຫາໜ້າເວັບທີ່ມີການແປນີ້ອອກໂດຍອັດຕະໂນມັດ.
+&lt;b&gt;ພື້ນຫຼັງສີເທົາ (ບໍ່ມີສຳລັບພາສາເລີ່ມຕົ້ນ):&lt;/b&gt; ໜ້າເວັບຈະກັບໄປໃຊ້ໂໝດສຳຮອງທີ່ລະບຸໄວ້ສຳລັບເນື້ອຫາ. ຂຶ້ນຢູ່ກັບການຕັ້ງຄ່າ. (ແນະນຳໃຫ້ໃຊ້ sys_language_mode = content_fallback ເພື່ອການສຳຮອງທີ່ຍືດຫຍຸ່ນທີ່ສຸດ, sys_language_mode = strict ຈະປ້ອງກັນສິ່ງນີ້ ແລະ ແຈ້ງຂໍ້ຄວາມຜິດພາດແທນ!)
+
+&lt;b&gt;"ການຕັ້ງຄ່າການກຳນົດທ້ອງຖິ່ນ" ຂອງໜ້າເວັບ:&lt;/b&gt;
+ແມ່ນ "ການຕັ້ງຄ່າການກຳນົດທ້ອງຖິ່ນ" ຂອງບັນທຶກໜ້າເວັບທີ່ກຳນົດໂໝດຂ້າງເທິງ. ໃນຖັນຂອງພາສາເລີ່ມຕົ້ນ ແຕ່ລະການຕັ້ງຄ່າເຫຼົ່ານີ້ຈະຖືກແທນດ້ວຍ "N" (ເຊື່ອງໜ້າເວັບຖ້າບໍ່ມີການແປສຳລັບພາສາປັດຈຸບັນ) ຫຼື "D" (ເຊື່ອງພາສາເລີ່ມຕົ້ນຂອງໜ້າເວັບ).
+ດັ່ງທີ່ເຈົ້າເຫັນ ໜ້າ "Startpage" ມີການຕັ້ງຄ່າທຸງ N ໄວ້ ແລະ ດັ່ງນັ້ນ ການເຂົ້າເຖິງເວີຊັນພາສາເຢຍລະມັນຂອງໜ້າເວັບນັ້ນຈະຖືກບລັອກດ້ວຍຂໍ້ຄວາມຜິດພາດ ເພາະວ່າບໍ່ມີການແປເປັນພາສາເຢຍລະມັນ. ໂດຍປົກກະຕິແລ້ວ "ການເຂົ້າເຖິງພາສາເຢຍລະມັນ" ໃນໜ້າເວັບທີ່ບໍ່ໄດ້ແປ ຈະສະແດງເນື້ອຫາເປັນພາສາອັງກິດ.
+ຍັງມີໜ້າເວັບທີ່ມີທຸງ D ("[Dummy]"). ທຸງ D ໝາຍຄວາມວ່າໜ້າເວັບນີ້ມີໃຫ້ໃຊ້ງານພຽງແຕ່ໃນການແປພາສາອັນໃດອັນໜຶ່ງເທົ່ານັ້ນ, ໃນກໍລະນີນີ້ແມ່ນພາສາເດັນມາກ. ດັ່ງນັ້ນ ຄວາມພະຍາຍາມໃດໆທີ່ຈະເຂົ້າເຖິງໜ້າເວັບໃນພາສາເລີ່ມຕົ້ນ ຫຼື ພາສາເຢຍລະມັນ ຈະສະແດງຂໍ້ຄວາມຜິດພາດ.
+
+ດັ່ງນັ້ນ, ເມື່ອມີການໃຊ້ກ່ອງເຄື່ອງໝາຍ "ການຕັ້ງຄ່າການກຳນົດທ້ອງຖິ່ນ" ສຳລັບໜ້າເວັບໃດໜຶ່ງ, ເຈົ້າຈະໄດ້ຮັບຂໍ້ຄວາມຜິດພາດເມື່ອເຈົ້າພະຍາຍາມຮ້ອງຂໍໜ້າເວັບທີ່ຖືກບລັອກໄວ້. ນີ້ແມ່ນຄຸນສົມບັດໜຶ່ງ. ເຄັດລັບແມ່ນການບໍ່ສ້າງລິ້ງໄປຫາໜ້າເວັບເຫຼົ່ານັ້ນ.
+
+ເມນູທີ່ສ້າງຈາກວັດຖຸ HMENU ຈະຄຳນຶງເຖິງ "sys_language" ສະເໝີ ແລະ ສະແດງສະເພາະໜ້າເວັບທີ່ສາມາດເຂົ້າເຖິງໄດ້ສຳລັບພາສານັ້ນ. ແຕ່ເມື່ອລວມກັບ "ການຕັ້ງຄ່າການກຳນົດທ້ອງຖິ່ນ" ຂອງໜ້າເວັບເຊິ່ງອາດຈະບລັອກການເຂົ້າເຖິງໜ້າເວັບ, ສິ່ງນີ້ຈະກາຍເປັນບັນຫາກັບໜ້າເວັບທີ່ &lt;em&gt;ບໍ່ໄດ້&lt;/em&gt; ແປ (ມີພື້ນຫຼັງສີເທົາ); ເຈົ້າອາດຈະໄດ້ລາຍການເມນູທີ່ລິ້ງໄປຫາໜ້າເວັບທີ່ເຂົ້າເຖິງບໍ່ໄດ້.
+ບັນຫາພື້ນຖານແມ່ນ "&amp;L=xx" ແຕກຕ່າງຈາກ "sys_language" ພາຍໃນ. ເຈົ້າຕ້ອງການຫຼີກລ່ຽງສິ່ງນັ້ນ ແລະ ເພື່ອເຮັດແນວນັ້ນ ເຈົ້າຄວນກຳນົດຄ່າ "sys_language_mode" ເປັນ "content_fallback". ຖ້າເຈົ້າເຮັດແນວນັ້ນ sys_language ຈະປະຕິບັດຕາມສິ່ງທີ່ "&amp;L=" ແນະນຳສະເໝີ ແລະ ເມນູຂອງເຈົ້າຈະຖືກຕ້ອງ. ໃນເວລາດຽວກັນ ເຈົ້າຈະໄດ້ຮັບເນື້ອຫາເລີ່ມຕົ້ນທີ່ສະແດງອອກມາ ຖ້າບໍ່ມີການແປ (ເພາະວ່າການເລືອກເນື້ອຫາຈະກັບໄປໃຊ້ແບບສຳຮອງ).
+
+ສຸດທ້າຍ, ຕົວເລກທີ່ພົບໃນແຕ່ລະຖັນຈະບອກເຈົ້າວ່າ ມີອົງປະກອບເນື້ອຫາຈຳນວນເທົ່າໃດໃນພາສາທີ່ລະບຸໄວ້.</target></trans-unit>
+      <trans-unit id="_lang.image" resname="_lang.image" xml:space="preserve" approved="yes">
+				<source>EXT:frontend/Resources/Public/Images/cshimages/localizationoverview.png,
+EXT:frontend/Resources/Public/Images/cshimages/localizationoverview1.png</source>
+				
+			<target state="final">EXT:frontend/Resources/Public/Images/cshimages/localizationoverview.png,
+EXT:frontend/Resources/Public/Images/cshimages/localizationoverview1.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="lang.image_descr" resname="lang.image_descr" xml:space="preserve" approved="yes">
+				<source>Localization overview in the Web&gt;Info module. Use the buttons to edit, view and create new page translation headers. Use the regular page module to put localized content on the pages.
+The "Localization settings" that affect availability of pages in the various languages.</source>
+			<target state="final">ພາບລວມການກຳນົດທ້ອງຖິ່ນໃນໂມດູນ Web&gt;Info. ໃຊ້ປຸ່ມຕ່າງໆເພື່ອແກ້ໄຂ, ເບິ່ງ ແລະ ສ້າງສ່ວນຫົວການແປໜ້າເວັບໃໝ່. ໃຊ້ໂມດູນໜ້າເວັບປົກກະຕິເພື່ອໃສ່ເນື້ອຫາທີ່ແປແລ້ວລົງໃນໜ້າເວັບຕ່າງໆ.
+"ການຕັ້ງຄ່າການກຳນົດທ້ອງຖິ່ນ" ທີ່ມີຜົນຕໍ່ການມີໃຫ້ໃຊ້ງານຂອງໜ້າເວັບໃນພາສາຕ່າງໆ.</target></trans-unit>
+      <trans-unit id="lang.alttitle" resname="lang.alttitle" approved="yes">
+        <source>Localization overview</source>
+        <target state="final">ພາບລວມການກຳນົດທ້ອງຖິ່ນ</target>
+      </trans-unit>
+      <trans-unit id="lang.description" resname="lang.description" approved="yes">
+        <source>Gives an overview of which pages in the page tree are translated to the system languages installed.</source>
+        <target state="final">ໃຫ້ພາບລວມຂອງໜ້າເວັບຕ່າງໆໃນໂຄງສ້າງໜ້າເວັບທີ່ຖືກແປເປັນພາສາຕ່າງໆຂອງລະບົບທີ່ຕິດຕັ້ງໄວ້.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
