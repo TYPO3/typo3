@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:t3editor/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="t3editor" target-language="th">
+    <header/>
+    <body>
+      <trans-unit id="deactivate" resname="deactivate" approved="yes">
+        <source>Deactivate t3editor</source>
+        <target state="final">เลิกใช้งาน t3editor</target>
+      </trans-unit>
+      <trans-unit id="template" resname="template" approved="yes">
+        <source>Template</source>
+        <target state="final">แบบ</target>
+      </trans-unit>
+      <trans-unit id="file" resname="file" approved="yes">
+        <source>File</source>
+        <target state="final">ไฟล์</target>
+      </trans-unit>
+      <trans-unit id="delimiter" resname="delimiter">
+        <source/>
+      </trans-unit>
+      <trans-unit id="constants" resname="constants" approved="yes">
+        <source>Constants</source>
+        <target state="final">ค่าคงที่</target>
+      </trans-unit>
+      <trans-unit id="setup" resname="setup" approved="yes">
+        <source>Setup</source>
+        <target state="final">การติดตั้ง</target>
+      </trans-unit>
+      <trans-unit id="pageIDInteger" resname="pageIDInteger" approved="yes">
+        <source>Syntax error: Parameter pageID must be a valid integer.</source>
+        <target state="final">ข้อผิดพลาดของไวยากรณ์ : Parameter pageID ต้องเป็นตัวเลขที่ถูกต้อง</target>
+      </trans-unit>
+      <trans-unit id="noPermission" resname="noPermission" approved="yes">
+        <source>Access denied: No permission to template records.</source>
+        <target state="final">Access denied : อนุญาตไม่เป็นเทมเพลทระเบียน</target>
+      </trans-unit>
+      <trans-unit id="typeIDMissing" resname="typeIDMissing" approved="yes">
+        <source>Syntax error: At least parameter typeID has to be supplied.</source>
+        <target state="final">ข้อผิดพลาดของไวยากรณ์ : อย่างน้อย typeID พารามิเตอร์จะต้องมี supplied</target>
+      </trans-unit>
+      <trans-unit id="js.label_lines" resname="js.label_lines" approved="yes">
+        <source>lines</source>
+        <target state="final">บรรทัด</target>
+      </trans-unit>
+      <trans-unit id="js.label_documentModified" resname="js.label_documentModified" approved="yes">
+        <source>document has been modified</source>
+        <target state="final">document ได้รับการแก้ไข</target>
+      </trans-unit>
+      <trans-unit id="js.label_errorWhileSaving" resname="js.label_errorWhileSaving" approved="yes">
+        <source>An error occurred while saving the data.</source>
+        <target state="final">เกิดข้อผิดพลาดขณะบันทึกข้อมูล</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
