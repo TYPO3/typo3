@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:indexed_search/Resources/Private/Language/locallang_csh_indexcfg.xlf" date="2011-10-17T20:22:33Z" product-name="indexed_search" target-language="pl">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>The Indexed Search configuration allows you to set up indexing of resources which are external to the TYPO3 page tree. This could be a library of records (like news), a directory structure of files (like PDFs) or an external URL to be crawled to some depth - or third-party content provided from other extensions via hooks.</source>
+        <target state="final">Konfiguracja wyszukiwarki indeksowej pozwala na ustawienie indeksowania źródeł, które są zewnętrzne w stosunku do drzewa stron TYPO3. Mogą to być rekordy news'ów, katalog z plikami (np. PDF), zewnętrzny URL, który ma być przeszukany określoną liczbę poziomów w gląb lub zawartość dostarczona z innych rozszerzeń.</target>
+      </trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Provide a title for the configuration.</source>
+        <target state="final">Podaj nazwę dla konfiguracji.</target>
+      </trans-unit>
+      <trans-unit id="description.description" resname="description.description" approved="yes">
+        <source>If needed, give it a description or put other important notes in this field.</source>
+        <target state="final">Jeżeli jest to potrzebne, podaj opis lub wprowadź inne ważne dla ciebie uwagi.</target>
+      </trans-unit>
+      <trans-unit id="starttime.description" resname="starttime.description" approved="yes">
+        <source>Set a start time for the configuration. If set, the configuration will be bypassed by the crawlers cron job until this time is reached.</source>
+        <target state="final">Ustaw czas rozpoczęcia dla konfiguracji. Jeżeli wskażesz czas, to konfiguracja będzie aktywna dla porocesu indeksowania od zadanej wartości.</target>
+      </trans-unit>
+      <trans-unit id="timer_frequency.description" resname="timer_frequency.description" approved="yes">
+        <source>Use this setting to adjust how often you would like a re-indexing process to run for the configuration.</source>
+        <target state="final">Użyj tego ustawienia aby określić jak często ma być uruchamiany proces reindeksowania dla tej konfiguracji.</target>
+      </trans-unit>
+      <trans-unit id="timer_offset.description" resname="timer_offset.description" approved="yes">
+        <source>The offset adjusts at what time of day you want the indexing process to run.</source>
+        <target state="final">Opcja ta pozwala określić o jakim czasie w ciągu dnia chcesz aby był uruchamiany proces indeksowania.</target>
+      </trans-unit>
+      <trans-unit id="type.description" resname="type.description" approved="yes">
+        <source>Select the type of Indexing Configuration here.</source>
+        <target state="final">Wybierz typ konfiguracji indeksowania.</target>
+      </trans-unit>
+      <trans-unit id="table2index.description" resname="table2index.description" approved="yes">
+        <source>Specify the database table to index records from.</source>
+        <target state="final">Określ tabele w bazie, której rekordy mają zostać zindeksowane.</target>
+      </trans-unit>
+      <trans-unit id="alternative_source_pid.description" resname="alternative_source_pid.description" approved="yes">
+        <source>By default the indexer will select records from the page id where the Indexing Configuration is stored. If you want an alternative page as the source of your records you can enter it here.</source>
+        <target state="final">Domyślnie wyszukiwarka wybiera rekordy dla strony w której znajduje się konfiguracja indeksowania. Jeżeli chcesz ustawić alternatywną stronę jako źródło rekordów może to zrobić tutaj.</target>
+      </trans-unit>
+      <trans-unit id="get_params.description" resname="get_params.description" approved="yes">
+        <source>Enter the GET parameters necessary to display the search results. You can use ###UID### as a marker in the parameter template.</source>
+        <target state="final">Wprowadź parametr GET potrzebny do wyświetlenia wyników wyszukiwania. Możesz użyć ###UID### jako znacznik w szablonie parametrów.</target>
+      </trans-unit>
+      <trans-unit id="fieldlist.description" resname="fieldlist.description" approved="yes">
+        <source>Enter a comma-list of fields to be indexed. The first field name will be used for the search result title.</source>
+        <target state="final">Wprowadź pola do zaindeksowania rozdzielone przecinkami. Pierwsza nazwa pola będzie użyta jako tytuł wyniku wyszukiwania.</target>
+      </trans-unit>
+      <trans-unit id="recordsbatch.description" resname="recordsbatch.description" approved="yes">
+        <source>Enter how many records to index for each instance of the indexing process (how many per minute). Default is 100 records.</source>
+        <target state="final">Wprowadź liczbę rekordów, która ma być indeksowana w osobnym przebiegu procesu indeksowania (ile na minutę). Domyślna warytość to 100 rekordów.</target>
+      </trans-unit>
+      <trans-unit id="externalUrl.description" resname="externalUrl.description" approved="yes">
+        <source>Enter the URL of the external website you want to index.</source>
+        <target state="final">Wprowadź URL zewnętrznego serwisu, którego strony mają być zindeksowane.</target>
+      </trans-unit>
+      <trans-unit id="url_deny.description" resname="url_deny.description" approved="yes">
+        <source>Enter a URL on each line inside of which the crawler should not decend.</source>
+        <target state="final">Wprowadź w osobnych liniach URL'e stron, które mają być pominięte przez proces indeksowania.</target>
+      </trans-unit>
+      <trans-unit id="filepath.description" resname="filepath.description" approved="yes">
+        <source>Enter a filepath inside fileadmin/ where you want the files to be indexed.</source>
+        <target state="final">Wprowadź ścieżkę do plików wewnątrz katalogu fileadmin/, których zawartość ma być zaindeksowana.</target>
+      </trans-unit>
+      <trans-unit id="extensions.description" resname="extensions.description" approved="yes">
+        <source>If you want to index only specific files in the directory, enter a list of file extensions here. For example: "html,pdf,doc"</source>
+        <target state="final">Jeżeli chcesz zaindeksować tylko wybrane pliki w katalogu, wprowadź ich rozszerzenia. Na przykład: "html, pdf, doc"</target>
+      </trans-unit>
+      <trans-unit id="depth.description" resname="depth.description" approved="yes">
+        <source>Levels of recursion.</source>
+        <target state="final">Poziom zagłębienia</target>
+      </trans-unit>
+      <trans-unit id="indexcfgs.description" resname="indexcfgs.description" approved="yes">
+        <source>When a search is conducted in this indexing configuration the actual search will take place in the indexed content from the configurations listed here. You can also enter pages and if you do so the search will take place in indexing configurations found on those pages.</source>
+        <target state="final">Wyszukiwanie odbywa się na zawartości zaindeksowanej za pomocą konfiguracji indeksowania. Może również wskazać strony, na których znajduje się konfiguracja indeskowania i użyć ich do wyszukiwania.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
