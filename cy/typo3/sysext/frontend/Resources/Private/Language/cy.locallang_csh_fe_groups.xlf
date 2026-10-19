@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_csh_fe_groups.xlf" date="2011-10-17T20:22:32Z" product-name="context_help" target-language="cy">
+    <header/>
+    <body>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>This option enables the user group.</source>
+        <target state="final">Mae'r opsiwn hwn yn galluogi'r grŵp defnyddwyr.</target>
+      </trans-unit>
+      <trans-unit id="hidden.details" resname="hidden.details" xml:space="preserve" approved="yes">
+				<source>If you disable a user group all users which are members of the group will in effect not inherit any properties this group may have given them.
+For instance if a page or content element was assigned access only by this group and you disable the group, no one would gain access to that page or content element.</source>
+			<target state="final">Os analluoga grŵp defnyddwyr ni fydd yr holl ddefnyddwyr sy'n aelodau o'r grŵp i bob pwrpas yn etifeddu unrhyw eiddo y gallai'r grŵp hwn fod wedi'i roi iddynt.
+Er enghraifft, pe bai'r grŵp hwn yn cael mynediad i dudalen neu elfen gynnwys yn unig a'ch bod yn analluogi'r grŵp, ni fyddai unrhyw un yn cael mynediad i'r dudalen honno na'r elfen gynnwys.</target></trans-unit>
+      <trans-unit id="_hidden.seeAlso" resname="_hidden.seeAlso" approved="yes">
+        <source>fe_users:disable</source>
+        <target state="final">fe_users: analluoga</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Name of the group.</source>
+        <target state="final">Enw'r grŵp.</target>
+      </trans-unit>
+      <trans-unit id="title.details" resname="title.details" approved="yes">
+        <source>This title will appear as the group name in the 'Access'-list in other records.</source>
+        <target state="final">Bydd y teitl hwn yn ymddangos fel enw'r grŵp ar y rhestr 'Mynediad' mewn cofnodion eraill.</target>
+      </trans-unit>
+      <trans-unit id="subgroup.description" resname="subgroup.description" approved="yes">
+        <source>Member of other groups.</source>
+        <target state="final">Aelod o grwpiau eraill.</target>
+      </trans-unit>
+      <trans-unit id="subgroup.details" resname="subgroup.details" approved="yes">
+        <source>List of other groups that this group is a member of.</source>
+        <target state="final">Rhestr o grwpiau eraill y mae'r grŵp hwn yn aelod ohonynt.</target>
+      </trans-unit>
+      <trans-unit id="description.description" resname="description.description" approved="yes">
+        <source>Enter a description of the group.</source>
+        <target state="final">Rhowch ddisgrifiad o'r grŵp.</target>
+      </trans-unit>
+      <trans-unit id="description.details" resname="description.details" xml:space="preserve" approved="yes">
+				<source>This is for internal use and is just a way to put a note on what the group is for, why you created it and who should be members.
+Use it as you like.</source>
+			<target state="final">Mae hwn at ddefnydd mewnol a dim ond ffordd i roi nodyn yw pwrpas y grŵp, pam y gwnaethoch ei greu a phwy ddylai fod yn aelodau.
+Defnyddiwch ef fel y mynnwch.</target></trans-unit>
+      <trans-unit id="TSconfig.description" resname="TSconfig.description" approved="yes">
+        <source>TSconfig for the group (advanced).</source>
+        <target state="final">TSconfig ar gyfer y grŵp (uwch).</target>
+      </trans-unit>
+      <trans-unit id="TSconfig.details" resname="TSconfig.details" xml:space="preserve" approved="yes">
+				<source>This is the user TSconfig for the group. The values are inherited by any Website user who is a member of this group.
+The configuration is subject to being overridden in other groups and by the TSconfig of the user himself.</source>
+			<target state="final">Dyma'r defnyddiwr TSconfig ar gyfer y grŵp. Etifeddir y gwerthoedd gan unrhyw ddefnyddiwr Gwefan sy'n aelod o'r grŵp hwn.
+Mae'r cyfluniad yn amodol ar gael ei ddiystyru mewn grwpiau eraill a chan TSconfig y defnyddiwr ei hun.</target></trans-unit>
+      <trans-unit id="TSconfig.syntax" resname="TSconfig.syntax" approved="yes">
+        <source>TypoScript syntax, without conditions and constants.</source>
+        <target state="final">Cystrawen typoScript, heb amodau a chysonion.</target>
+      </trans-unit>
+      <trans-unit id="_TSconfig.seeAlso" resname="_TSconfig.seeAlso" approved="yes">
+        <source>fe_users:TSconfig</source>
+        <target state="final">fe_users: TSconfig</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>Usergroups for Website users.</source>
+        <target state="final">Grwpiau Defnyddwyr ar gyfer defnyddwyr y Wefan.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" approved="yes">
+        <source>The access restriction in TYPO3 is assigned to these usergroups. When a page or other element is access restricted to a group, only Website users which are members of that group will be able to view the element on the website.</source>
+        <target state="final">Mae'r cyfyngiad mynediad yn TYPO3 wedi'i aseinio i'r grwpiau defnyddwyr hyn. Pan fydd mynediad i dudalen neu elfen arall wedi'i gyfyngu i grŵp, dim ond defnyddwyr y Wefan sy'n aelodau o'r grŵp hwnnw fydd yn gallu gweld yr elfen ar y wefan.</target>
+      </trans-unit>
+      <trans-unit id="_.seeAlso" resname="_.seeAlso" xml:space="preserve" approved="yes">
+				<source>fe_users,
+About access restricting pages | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/PasswordProtectedPages/</source>
+			<target state="final">fe_users,
+Ynglŷn â mynediad sy'n cyfyngu ar dudalennau | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/PasswordProtectedPages/</target></trans-unit>
+      <trans-unit id="_.image" resname="_.image" xml:space="preserve" approved="yes">
+				<source>EXT:frontend/Resources/Public/Images/cshimages/fegroups_3.png,
+EXT:frontend/Resources/Public/Images/cshimages/fegroups_4.png</source>
+				
+			<target state="final">EXT: frontend / Resources / Public / Images / cshimages / fegroups_3.png,
+EXT: frontend / Resources / Public / Images / cshimages / fegroups_4.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" xml:space="preserve" approved="yes">
+				<source>The form for editing frontend users groups.
+Pages, Content Elements and other records for frontend display often have a selector box where you can define access restriction by selecting access for a certain group only.</source>
+			<target state="final">Y ffurflen ar gyfer golygu grwpiau defnyddwyr frontend.
+dudalennau, Elfennau Cynnwys a chofnodion eraill ar gyfer arddangos frontend flwch dewisydd lle gallwch chi ddiffinio cyfyngiad mynediad trwy ddewis mynediad ar gyfer grŵp penodol yn unig.</target></trans-unit>
+    </body>
+  </file>
+</xliff>
