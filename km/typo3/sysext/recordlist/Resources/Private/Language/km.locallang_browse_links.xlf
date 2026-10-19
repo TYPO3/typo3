@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:recordlist/Resources/Private/Language/locallang_browse_links.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="km">
+    <header/>
+    <body>
+      <trans-unit id="removeLink" resname="removeLink" approved="yes">
+        <source>Remove link</source>
+        <target state="final">ដក​តំណ​ចេញ</target>
+      </trans-unit>
+      <trans-unit id="uploadImage" resname="uploadImage" approved="yes">
+        <source>Upload Image</source>
+        <target state="final">ផ្ទុក​រូបភាព​ឡើង</target>
+      </trans-unit>
+      <trans-unit id="update" resname="update" approved="yes">
+        <source>Update</source>
+        <target state="final">បន្ទាន់​សម័យ</target>
+      </trans-unit>
+      <trans-unit id="path" resname="path" approved="yes">
+        <source>Path</source>
+        <target state="final">ទីតាំង</target>
+      </trans-unit>
+      <trans-unit id="page" resname="page" approved="yes">
+        <source>Page</source>
+        <target state="final">ទំព័រ</target>
+      </trans-unit>
+      <trans-unit id="file" resname="file" approved="yes">
+        <source>File</source>
+        <target state="final">ឯកសារ</target>
+      </trans-unit>
+      <trans-unit id="folder" resname="folder" approved="yes">
+        <source>Folder</source>
+        <target state="final">សឺមី​ឯកសារ</target>
+      </trans-unit>
+      <trans-unit id="extUrl" resname="extUrl" approved="yes">
+        <source>External URL</source>
+        <target state="final">URL ពី​ក្រៅ</target>
+      </trans-unit>
+      <trans-unit id="email" resname="email" approved="yes">
+        <source>Email</source>
+        <target state="final">អ៊‍ីមេល</target>
+      </trans-unit>
+      <trans-unit id="special" resname="special" approved="yes">
+        <source>Special</source>
+        <target state="final">ពិសេស</target>
+      </trans-unit>
+      <trans-unit id="folderTree" resname="folderTree" approved="yes">
+        <source>Folder Tree</source>
+        <target state="final">ឋានានុក្រម​សឺមី</target>
+      </trans-unit>
+      <trans-unit id="files" resname="files" approved="yes">
+        <source>Files</source>
+        <target state="final">ឯកសារ</target>
+      </trans-unit>
+      <trans-unit id="target" resname="target" approved="yes">
+        <source>Target</source>
+        <target state="final">គោលដៅ</target>
+      </trans-unit>
+      <trans-unit id="class" resname="class" approved="yes">
+        <source>CSS-Class</source>
+        <target state="final">CSS-Class</target>
+      </trans-unit>
+      <trans-unit id="title" resname="title" approved="yes">
+        <source>Title</source>
+        <target state="final">ចំណងជើង</target>
+      </trans-unit>
+      <trans-unit id="params" resname="params" approved="yes">
+        <source>Additional link parameters</source>
+        <target state="final">ប៉ារ៉ាម៉ែត​តំណ​បន្ថែម</target>
+      </trans-unit>
+      <trans-unit id="newWindow" resname="newWindow" approved="yes">
+        <source>New window</source>
+        <target state="final">វិនដូវ៍​ថ្មី</target>
+      </trans-unit>
+      <trans-unit id="top" resname="top" approved="yes">
+        <source>Top</source>
+        <target state="final">កំពូល</target>
+      </trans-unit>
+      <trans-unit id="none" resname="none" approved="yes">
+        <source>None - new link!</source>
+        <target state="final">គ្មាន - តំណ​ថ្មី!</target>
+      </trans-unit>
+      <trans-unit id="pageTree" resname="pageTree" approved="yes">
+        <source>Page tree</source>
+        <target state="final">ឋានានុក្រម​ទំព័រ</target>
+      </trans-unit>
+      <trans-unit id="contentElements" resname="contentElements" approved="yes">
+        <source>Content elements</source>
+        <target state="final">ធាតុ​មាតិកា</target>
+      </trans-unit>
+      <trans-unit id="selectRecords" resname="selectRecords" approved="yes">
+        <source>Select Records</source>
+        <target state="final">ជ្រើស​ទិន្នន័យ</target>
+      </trans-unit>
+      <trans-unit id="addToList" resname="addToList" approved="yes">
+        <source>Add to list...</source>
+        <target state="final">ថែម​ទៅ​បញ្ជី...</target>
+      </trans-unit>
+      <trans-unit id="info" resname="info" approved="yes">
+        <source>Info</source>
+        <target state="final">ព័ត៌មាន</target>
+      </trans-unit>
+      <trans-unit id="emailAddress" resname="emailAddress" approved="yes">
+        <source>Email address</source>
+        <target state="final">អាសយដ្ឋាន​អ៊‍ីមេល</target>
+      </trans-unit>
+      <trans-unit id="setLink" resname="setLink" approved="yes">
+        <source>Set Link</source>
+        <target state="final">ដាក់​តំណ</target>
+      </trans-unit>
+      <trans-unit id="clickToRedrawFullSize" resname="clickToRedrawFullSize" approved="yes">
+        <source>Image is larger than shown here! Click to redraw page with full sized images.</source>
+        <target state="final">រូបភាព​ធំ​ជាង​ការបង្ហាញ​នៅ​ទីនេះ! ចុច​ដើម្បី​បើក​ទំព័រ​ជា​ថ្មី ជា​មួយ​ទំហំ​ពិត​របស់​រូប ។</target>
+      </trans-unit>
+      <trans-unit id="findDragDrop" resname="findDragDrop" approved="yes">
+        <source>Find and click on your image then drag it into the editor in the main window!</source>
+        <target state="final">ស្វែងរក និង ចុច​​អូស​​រូបភាព​ទៅ​ក្នុង​កម្មវិធី​កែ​ក្នុង​វិនដូវ៍​ដើម ។</target>
+      </trans-unit>
+      <trans-unit id="noWebFolder" resname="noWebFolder" approved="yes">
+        <source>You cannot drag images from this folder (yellow) because it is internal on the server.</source>
+        <target state="final">អ្នក​មិន​អាច​ទាញ​រូបភាព​ពី​សឺមី​​ (លឿង) នេះ​ទេ ព្រោះ​​ជា​សឺមី​សម្រាប់​ប្រើ​ក្នុង​ម៉ាស៊ីន​បម្រើ ។</target>
+      </trans-unit>
+      <trans-unit id="currentLink" resname="currentLink" approved="yes">
+        <source>Current Link</source>
+        <target state="final">តំណ​ថ្មីៗ</target>
+      </trans-unit>
+      <trans-unit id="invalidChar" resname="invalidChar" approved="yes">
+        <source>ERROR: Invalid character found in file path (%s). Cannot add the file!</source>
+        <target state="final">កំហុស៖ បាន​ឃើញ​តួ​អក្សរ​មិន​ត្រឹមត្រូវ​ក្នុង​ទីតាំង (%s) ។ មិន​អាច​ថែម​ឯកសារ​ទេ!</target>
+      </trans-unit>
+      <trans-unit id="toggleSelection" resname="toggleSelection" approved="yes">
+        <source>Toggle selection</source>
+        <target state="final">ជ្រើសរើស​បិទ/បើក</target>
+      </trans-unit>
+      <trans-unit id="importSelection" resname="importSelection" approved="yes">
+        <source>Import selection</source>
+        <target state="final">ទាញចូល​តាម​ការជ្រើសរើស</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
