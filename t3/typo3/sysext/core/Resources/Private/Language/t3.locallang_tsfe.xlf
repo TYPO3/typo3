@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_tsfe.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="adminOptions" resname="adminOptions">
+        <source>ADMIN PANEL</source>
+        <target>crwdns101374:0crwdne101374:0</target>
+      </trans-unit>
+      <trans-unit id="adminPanelTitle" resname="adminPanelTitle">
+        <source>TYPO3 ADMIN PANEL</source>
+        <target>crwdns101376:0crwdne101376:0</target>
+      </trans-unit>
+      <trans-unit id="preview" resname="preview">
+        <source>Preview</source>
+        <target>crwdns101378:0crwdne101378:0</target>
+      </trans-unit>
+      <trans-unit id="publish" resname="publish">
+        <source>Publish</source>
+        <target>crwdns101380:0crwdne101380:0</target>
+      </trans-unit>
+      <trans-unit id="publish_levels" resname="publish_levels">
+        <source>Publish levels</source>
+        <target>crwdns101382:0crwdne101382:0</target>
+      </trans-unit>
+      <trans-unit id="publish_tree" resname="publish_tree">
+        <source>Publish pages</source>
+        <target>crwdns101384:0crwdne101384:0</target>
+      </trans-unit>
+      <trans-unit id="publish_doit" resname="publish_doit">
+        <source>Publish now!</source>
+        <target>crwdns101386:0crwdne101386:0</target>
+      </trans-unit>
+      <trans-unit id="tsdebug" resname="tsdebug">
+        <source>TypoScript</source>
+        <target>crwdns101388:0crwdne101388:0</target>
+      </trans-unit>
+      <trans-unit id="tsdebug_tree" resname="tsdebug_tree">
+        <source>Tree display</source>
+        <target>crwdns101390:0crwdne101390:0</target>
+      </trans-unit>
+      <trans-unit id="tsdebug_LR" resname="tsdebug_LR">
+        <source>Track content rendering</source>
+        <target>crwdns101392:0crwdne101392:0</target>
+      </trans-unit>
+      <trans-unit id="tsdebug_forceTemplateParsing" resname="tsdebug_forceTemplateParsing">
+        <source>Force TS Rendering</source>
+        <target>crwdns101394:0crwdne101394:0</target>
+      </trans-unit>
+      <trans-unit id="tsdebug_displayTimes" resname="tsdebug_displayTimes">
+        <source>Display all times</source>
+        <target>crwdns101396:0crwdne101396:0</target>
+      </trans-unit>
+      <trans-unit id="tsdebug_displayMessages" resname="tsdebug_displayMessages">
+        <source>Display messages</source>
+        <target>crwdns101398:0crwdne101398:0</target>
+      </trans-unit>
+      <trans-unit id="tsdebug_displayContent" resname="tsdebug_displayContent">
+        <source>Display content</source>
+        <target>crwdns101400:0crwdne101400:0</target>
+      </trans-unit>
+      <trans-unit id="update" resname="update">
+        <source>Update</source>
+        <target>crwdns101402:0crwdne101402:0</target>
+      </trans-unit>
+      <trans-unit id="p_editRecord" resname="p_editRecord">
+        <source>Edit record</source>
+        <target>crwdns101404:0crwdne101404:0</target>
+      </trans-unit>
+      <trans-unit id="p_moveUp" resname="p_moveUp">
+        <source>Move up</source>
+        <target>crwdns101406:0crwdne101406:0</target>
+      </trans-unit>
+      <trans-unit id="p_moveDown" resname="p_moveDown">
+        <source>Move down</source>
+        <target>crwdns101408:0crwdne101408:0</target>
+      </trans-unit>
+      <trans-unit id="p_unhide" resname="p_unhide">
+        <source>Un-Hide</source>
+        <target>crwdns101410:0crwdne101410:0</target>
+      </trans-unit>
+      <trans-unit id="p_hide" resname="p_hide">
+        <source>Hide</source>
+        <target>crwdns101412:0crwdne101412:0</target>
+      </trans-unit>
+      <trans-unit id="p_newSubpage" resname="p_newSubpage">
+        <source>New subpage</source>
+        <target>crwdns101414:0crwdne101414:0</target>
+      </trans-unit>
+      <trans-unit id="p_newRecordAfter" resname="p_newRecordAfter">
+        <source>New record after</source>
+        <target>crwdns101416:0crwdne101416:0</target>
+      </trans-unit>
+      <trans-unit id="p_delete" resname="p_delete">
+        <source>Delete</source>
+        <target>crwdns101418:0crwdne101418:0</target>
+      </trans-unit>
+      <trans-unit id="p_deleteConfirm" resname="p_deleteConfirm">
+        <source>Are you sure you want to delete this record?</source>
+        <target>crwdns101420:0crwdne101420:0</target>
+      </trans-unit>
+      <trans-unit id="p_hideConfirm" resname="p_hideConfirm" xml:space="preserve">
+				<source>Hiding a record will make it invisible on the webpage.  To edit the hidden record enter the backend or enable the frontend preview.
+Continue?</source>
+			<target>crwdns101422:0crwdne101422:0</target></trans-unit>
+    </body>
+  </file>
+</xliff>
