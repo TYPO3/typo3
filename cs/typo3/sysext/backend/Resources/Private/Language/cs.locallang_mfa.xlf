@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_mfa.xlf" date="2021-01-26T11:58:45Z" product-name="cms" target-language="cs">
+    <header/>
+    <body>
+      <trans-unit id="overview.title" resname="overview.title" approved="yes">
+        <source>Multi-factor Authentication Overview</source>
+        <target state="final">Přehled vícefázového ověření</target>
+      </trans-unit>
+      <trans-unit id="overview.badge.active" resname="overview.badge.active" approved="yes">
+        <source>Active</source>
+        <target state="final">Aktivní</target>
+      </trans-unit>
+      <trans-unit id="overview.badge.locked" resname="overview.badge.locked" approved="yes">
+        <source>Locked</source>
+        <target state="final">Uzamčeno</target>
+      </trans-unit>
+      <trans-unit id="overview.defaultProvider" resname="overview.defaultProvider" approved="yes">
+        <source>Default provider</source>
+        <target state="final">Výchozí poskytovatel</target>
+      </trans-unit>
+      <trans-unit id="overview.unlockLinkTitle" resname="overview.unlockLinkTitle" approved="yes">
+        <source>Unlock %s</source>
+        <target state="final">Odemknout %s</target>
+      </trans-unit>
+      <trans-unit id="overview.unlockLinkLabel" resname="overview.unlockLinkLabel" approved="yes">
+        <source>Unlock</source>
+        <target state="final">Odemknout</target>
+      </trans-unit>
+      <trans-unit id="overview.editLinkTitle" resname="overview.editLinkTitle" approved="yes">
+        <source>Edit %s</source>
+        <target state="final">Upravit %s</target>
+      </trans-unit>
+      <trans-unit id="overview.editLinkLabel" resname="overview.editLinkLabel" approved="yes">
+        <source>Edit / Change</source>
+        <target state="final">Upravit / změnit</target>
+      </trans-unit>
+      <trans-unit id="overview.deactivateLinkTitle" resname="overview.deactivateLinkTitle" approved="yes">
+        <source>Deactivate %s</source>
+        <target state="final">Deaktivovat %s</target>
+      </trans-unit>
+      <trans-unit id="overview.deactivateLinkLabel" resname="overview.deactivateLinkLabel" approved="yes">
+        <source>Deactivate</source>
+        <target state="final">Deaktivovat</target>
+      </trans-unit>
+      <trans-unit id="overview.setupLinkTitle" resname="overview.setupLinkTitle" approved="yes">
+        <source>Setup %s</source>
+        <target state="final">Nastavit %s</target>
+      </trans-unit>
+      <trans-unit id="overview.setupLinkLabel" resname="overview.setupLinkLabel" approved="yes">
+        <source>Setup</source>
+        <target state="final">Nastavit</target>
+      </trans-unit>
+      <trans-unit id="overview.setupRequired.title" resname="overview.setupRequired.title" approved="yes">
+        <source>Multi-factor authentication required</source>
+        <target state="final">Je vyžadováno vícefázové ověření</target>
+      </trans-unit>
+      <trans-unit id="overview.setupRequired.message" resname="overview.setupRequired.message" approved="yes">
+        <source>
+					Your installation requires MFA. Therefore please setup one of the following providers to be
+					able to continue to use the backend.
+				</source>
+        <target state="final">
+					Vaše instalace vyžaduje vícefázové ověřování. Proto prosím nastavte jednu z následujících možností, aby bylo
+					možné nadále používat backend.
+				</target>
+      </trans-unit>
+      <trans-unit id="overview.noProviders.title" resname="overview.noProviders.title" approved="yes">
+        <source>No multi-factor authentication providers</source>
+        <target state="final">Žádní poskytovatelé vícefázového ověřování</target>
+      </trans-unit>
+      <trans-unit id="overview.noProviders.message" resname="overview.noProviders.message" approved="yes">
+        <source>There are currently no multi-factor authentication providers available.</source>
+        <target state="final">V současné době nejsou k dispozici žádní poskytovatelé multi-fázového ověřování.</target>
+      </trans-unit>
+      <trans-unit id="overview.noProviders.errorMessage" resname="overview.noProviders.errorMessage" approved="yes">
+        <source>
+					You are required to setup MFA but there are no providers to activate available. You should contact
+					your administrator to solve this.
+				</source>
+        <target state="final">
+					Musíte nastavit vícefázové ověřování, ale nejsou žádní poskytovatelé k dispozici. Měli byste se obrátit na
+					správce, aby vyřešili tuto záležitost.
+				</target>
+      </trans-unit>
+      <trans-unit id="providerNotFound" resname="providerNotFound" approved="yes">
+        <source>Selected MFA provider was not found!</source>
+        <target state="final">Vybraný poskytovatel vícefázového ověřování nebyl nalezen!</target>
+      </trans-unit>
+      <trans-unit id="providerNotActive" resname="providerNotActive" approved="yes">
+        <source>Selected MFA provider has to be active to perform this action!</source>
+        <target state="final">Vybraný poskytovatel vícefázového ověřování musí být aktivní k provedení této akce!</target>
+      </trans-unit>
+      <trans-unit id="providerActive" resname="providerActive" approved="yes">
+        <source>Selected MFA provider has to be inactive to perform this action!</source>
+        <target state="final">Vybraný poskytovatel vícefázového ověřování musí být pro provedení této akce neaktivní!</target>
+      </trans-unit>
+      <trans-unit id="providerIsLocked" resname="providerNotFound" approved="yes">
+        <source>Selected MFA provider has to be unlocked to perform this action!</source>
+        <target state="final">Vybraný poskytovatel vícefázového ověřování musí být odemčen, aby mohl provést tuto akci!</target>
+      </trans-unit>
+      <trans-unit id="setup.instructions" resname="setup.instructions" approved="yes">
+        <source>Setup instructions</source>
+        <target state="final">Pokyny pro nastavení</target>
+      </trans-unit>
+      <trans-unit id="setup.instructions.close" resname="setup.instructions.close" approved="yes">
+        <source>Close setup instructions</source>
+        <target state="final">Zavřít pokyny pro nastavení</target>
+      </trans-unit>
+      <trans-unit id="setup.title" resname="setup.title" approved="yes">
+        <source>Set up %s</source>
+        <target state="final">Nastavit %s</target>
+      </trans-unit>
+      <trans-unit id="edit.title" resname="edit.title" approved="yes">
+        <source>Edit %s</source>
+        <target state="final">Upravit %s</target>
+      </trans-unit>
+      <trans-unit id="edit.defaultProvider" resname="edit.defaultProvider" approved="yes">
+        <source>Default provider</source>
+        <target state="final">Výchozí poskytovatel</target>
+      </trans-unit>
+      <trans-unit id="edit.defaultProvider.description" resname="edit.defaultProvider.description" approved="yes">
+        <source>Select this as your default provider for login into the TYPO3 backend.</source>
+        <target state="final">Vyberte jako výchozí poskytovatele pro přihlášení do backendu TYPO3.</target>
+      </trans-unit>
+      <trans-unit id="edit.defaultProvider.inputLabel" resname="edit.defaultProvider.inputLabel" approved="yes">
+        <source>Use as default provider</source>
+        <target state="final">Použít jako výchozího poskytovatele</target>
+      </trans-unit>
+      <trans-unit id="edit.deactivateProvider" resname="edit.deactivateProvider" approved="yes">
+        <source>Deactivate provider</source>
+        <target state="final">Deaktivovat poskytovatele</target>
+      </trans-unit>
+      <trans-unit id="edit.deactivateProvider.description" resname="edit.deactivateProvider.description" approved="yes">
+        <source>If you don't want to use this provider anymore, you can deactivate it here.</source>
+        <target state="final">Pokud již nechcete používat tohoto poskytovatele, můžete jej deaktivovat zde.</target>
+      </trans-unit>
+      <trans-unit id="edit.deactivateProvider.linkTitle" resname="edit.deactivateProvider.linkTitle" approved="yes">
+        <source>Deactivate %s</source>
+        <target state="final">Deaktivovat %s</target>
+      </trans-unit>
+      <trans-unit id="edit.deactivateProvider.linkText" resname="edit.deactivateProvider.linkText" approved="yes">
+        <source>Deactivate this provider</source>
+        <target state="final">Deaktivovat tohoto poskytovatele</target>
+      </trans-unit>
+      <trans-unit id="activate.failure" resname="activate.failure" approved="yes">
+        <source>Could not activate MFA provider %s. Please try again.</source>
+        <target state="final">Nelze aktivovat poskytovatele vícefázového ověřování %s. Zkuste to prosím znovu.</target>
+      </trans-unit>
+      <trans-unit id="activate.success" resname="activate.success" approved="yes">
+        <source>Successfully activated MFA provider %s.</source>
+        <target state="final">Poskytovatel vícefázového ověřování %s byl úspěšně aktivován.</target>
+      </trans-unit>
+      <trans-unit id="deactivate.failure" resname="deactivate.failure" approved="yes">
+        <source>Could not deactivate MFA provider %s. Please try again.</source>
+        <target state="final">Nelze deaktivovat poskytovatele vícefázového ověřování %s. Zkuste to prosím znovu.</target>
+      </trans-unit>
+      <trans-unit id="deactivate.success" resname="deactivate.success" approved="yes">
+        <source>Successfully deactivated MFA provider %s.</source>
+        <target state="final">Poskytovatel vícefázového ověřování %s byl úspěšně deaktivován.</target>
+      </trans-unit>
+      <trans-unit id="unlock.failure" resname="unlock.failure" approved="yes">
+        <source>Could not unlock MFA provider %s. Please try again.</source>
+        <target state="final">Nelze odemknout poskytovatele vícefázového ověřování %s. Zkuste to prosím znovu.</target>
+      </trans-unit>
+      <trans-unit id="unlock.success" resname="unlock.success" approved="yes">
+        <source>Successfully unlocked MFA provider %s.</source>
+        <target state="final">Poskytovatel vícefázového ověřování %s byl úspěšně odemknut.</target>
+      </trans-unit>
+      <trans-unit id="save.failure" resname="save.failure" approved="yes">
+        <source>Could not update MFA provider %s. Please try again.</source>
+        <target state="final">Poskytovatele vícefázového ověřování %s nelze aktualizovat. Zkuste to prosím znovu.</target>
+      </trans-unit>
+      <trans-unit id="save.success" resname="save.success" approved="yes">
+        <source>Successfully updated MFA provider %s.</source>
+        <target state="final">Poskytovatel vícefázového ověřování %s byl úspěšně aktualizován.</target>
+      </trans-unit>
+      <trans-unit id="auth.authError" resname="auth.authError" approved="yes">
+        <source>Authentication was not successful.</source>
+        <target state="final">Ověření se nezdařilo.</target>
+      </trans-unit>
+      <trans-unit id="auth.submit" resname="auth.submit" approved="yes">
+        <source>Verify</source>
+        <target state="final">Ověřit</target>
+      </trans-unit>
+      <trans-unit id="auth.cancel" resname="auth.cancel" approved="yes">
+        <source>Go back</source>
+        <target state="final">Zpět</target>
+      </trans-unit>
+      <trans-unit id="auth.locked" resname="auth.locked" approved="yes">
+        <source>This provider is temporarily locked!</source>
+        <target state="final">Tento poskytovatel je dočasně uzamčen!</target>
+      </trans-unit>
+      <trans-unit id="auth.alternativeProviders" resname="auth.alternativeProviders" approved="yes">
+        <source>Alternative providers</source>
+        <target state="final">Alternativní poskytovatelé</target>
+      </trans-unit>
+      <trans-unit id="auth.alternativeProviders.use" resname="auth.alternativeProviders.use" approved="yes">
+        <source>Use %s</source>
+        <target state="final">Použít %s</target>
+      </trans-unit>
+      <trans-unit id="standalone.setupProvider" resname="standalone.setupProvider" approved="yes">
+        <source>Set up %s</source>
+        <target state="final">Nastavit %s</target>
+      </trans-unit>
+      <trans-unit id="standalone.selection.title" resname="standalone.selection.title" approved="yes">
+        <source>Set up MFA</source>
+        <target state="final">Nastavit vícefázové ověřování</target>
+      </trans-unit>
+      <trans-unit id="standalone.selection.message" resname="standalone.selection.message" approved="yes">
+        <source>
+					%s requires you setting up MFA to secure your account. Please select one of the
+					available providers below.
+				</source>
+        <target state="final">
+					%s požaduje vícefázové ověřování k zabezpěčení vašeho účtu. Prosíme, zvolte is jednoho z následujících poskytovatelů.</target>
+      </trans-unit>
+      <trans-unit id="standalone.selection.noAvailableProviders" resname="standalone.selection.noAvailableProviders" approved="yes">
+        <source>
+					You are required to set up MFA. However, there are no MFA providers available for you to use.
+					This might be a misconfiguration. Please get in touch with your administrator to find a solution.
+				</source>
+        <target state="final">
+					Musíte nastavit vícefázové ověřování. Nicméně nejsou k dispozici žádní poskytovatelé vícefázového ověřování, kteří by mohli být použiti.
+					Toto může být chybná konfigurace. Kontaktujte prosím správce.
+				</target>
+      </trans-unit>
+      <trans-unit id="standalone.selection.goBack" resname="standalone.selection.goBack" approved="yes">
+        <source>Go back</source>
+        <target state="final">Zpět</target>
+      </trans-unit>
+      <trans-unit id="standalone.setup" resname="standalone.setup" approved="yes">
+        <source>Setup</source>
+        <target state="final">Nastavit</target>
+      </trans-unit>
+      <trans-unit id="standalone.setup.cancel" resname="setup.standalone.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Zrušit</target>
+      </trans-unit>
+      <trans-unit id="standalone.setup.success.title" resname="activate.success" approved="yes">
+        <source>MFA setup successful</source>
+        <target state="final">Nastavení vícefázového ověřování bylo úspěšné</target>
+      </trans-unit>
+      <trans-unit id="standalone.setup.success.message" resname="activate.success" approved="yes">
+        <source>
+					You have successfully activated MFA provider %s. This provider was also automatically set as your
+					default provider. You can change this at any time in your user settings.
+				</source>
+        <target state="final">
+					Úspěšně jste aktivovali poskytovatele vícefázové ověřování %s. Tento poskytovatel byl také automaticky nastaven jako váš
+					výchozí poskytovatel. Můžete to kdykoli změnit v uživatelském nastavení.
+				</target>
+      </trans-unit>
+      <trans-unit id="ajax.success" approved="yes">
+        <source>Success</source>
+        <target state="final">Úspěch</target>
+      </trans-unit>
+      <trans-unit id="ajax.error" approved="yes">
+        <source>An error occurred</source>
+        <target state="final">Vyskytla se chyba</target>
+      </trans-unit>
+      <trans-unit id="ajax.invalidRequest" approved="yes">
+        <source>Invalid request could not be processed</source>
+        <target state="final">Neplatný požadavek nemohl být zpracován</target>
+      </trans-unit>
+      <trans-unit id="ajax.insufficientPermissions" approved="yes">
+        <source>Your are not allowed to perform this action</source>
+        <target state="final">K provedení této akce nemáte oprávnění</target>
+      </trans-unit>
+      <trans-unit id="ajax.deactivate.providersNotDeactivated" approved="yes">
+        <source>No provider has been deactivated</source>
+        <target state="final">Žádný poskytovatel nebyl deaktivován</target>
+      </trans-unit>
+      <trans-unit id="ajax.deactivate.providersDeactivated" approved="yes">
+        <source>Successfully deactivated all active providers for user %s</source>
+        <target state="final">Úspěšně deaktivováni všichni aktivní poskytovatelé pro uživatele %s</target>
+      </trans-unit>
+      <trans-unit id="ajax.deactivate.providerNotFound" approved="yes">
+        <source>Provider %s could not be found</source>
+        <target state="final">Poskytovatel %s nebyl nalezen</target>
+      </trans-unit>
+      <trans-unit id="ajax.deactivate.providerNotDeactivated" approved="yes">
+        <source>Could not deactivate provider %s</source>
+        <target state="final">Nelze deaktivovat poskytovatele %s</target>
+      </trans-unit>
+      <trans-unit id="ajax.deactivate.providerDeactivated" approved="yes">
+        <source>Successfully deactivated provider %s for user %s</source>
+        <target state="final">Úspěšně deaktivován poskytovatel %s pro uživatele %s</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
