@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:t3editor/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="t3editor" target-language="no">
+    <header/>
+    <body>
+      <trans-unit id="deactivate" resname="deactivate" approved="yes">
+        <source>Deactivate t3editor</source>
+        <target state="final">Slå av t3editor</target>
+      </trans-unit>
+      <trans-unit id="template" resname="template" approved="yes">
+        <source>Template</source>
+        <target state="final">Mal</target>
+      </trans-unit>
+      <trans-unit id="file" resname="file" approved="yes">
+        <source>File</source>
+        <target state="final">Fil</target>
+      </trans-unit>
+      <trans-unit id="delimiter" resname="delimiter">
+        <source/>
+      </trans-unit>
+      <trans-unit id="constants" resname="constants" approved="yes">
+        <source>Constants</source>
+        <target state="final">Konstanter</target>
+      </trans-unit>
+      <trans-unit id="setup" resname="setup" approved="yes">
+        <source>Setup</source>
+        <target state="final">Oppsett</target>
+      </trans-unit>
+      <trans-unit id="pageIDInteger" resname="pageIDInteger" approved="yes">
+        <source>Syntax error: Parameter pageID must be a valid integer.</source>
+        <target state="final">Syntaksfeil: Parameter pageID må være et gyldig heltall.</target>
+      </trans-unit>
+      <trans-unit id="noPermission" resname="noPermission" approved="yes">
+        <source>Access denied: No permission to template records.</source>
+        <target state="final">Ingen tilgang: Ingen tillatelse til template records.</target>
+      </trans-unit>
+      <trans-unit id="typeIDMissing" resname="typeIDMissing" approved="yes">
+        <source>Syntax error: At least parameter typeID has to be supplied.</source>
+        <target state="final">Syntaksfeil: Minst parameter typeID må leveres.</target>
+      </trans-unit>
+      <trans-unit id="js.label_lines" resname="js.label_lines" approved="yes">
+        <source>lines</source>
+        <target state="final">linjer</target>
+      </trans-unit>
+      <trans-unit id="js.label_documentModified" resname="js.label_documentModified" approved="yes">
+        <source>document has been modified</source>
+        <target state="final">dokumentet har blitt modifisert</target>
+      </trans-unit>
+      <trans-unit id="js.label_errorWhileSaving" resname="js.label_errorWhileSaving" approved="yes">
+        <source>An error occurred while saving the data.</source>
+        <target state="final">En feil oppstod under lagring av data.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
