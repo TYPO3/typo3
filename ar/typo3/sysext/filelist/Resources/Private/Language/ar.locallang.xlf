@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:filelist/Resources/Private/Language/locallang.xlf" date="2015-08-21T11:45:35Z" product-name="filelist" target-language="ar">
+    <header/>
+    <body>
+      <trans-unit id="search" resname="search" approved="yes">
+        <source>Search</source>
+        <target state="final">بحث</target>
+      </trans-unit>
+      <trans-unit id="flashmessage.no_results" resname="flashmessage.no_results" approved="yes">
+        <source>No results found</source>
+        <target state="final">لم يتم العثور على أي نتائج</target>
+      </trans-unit>
+      <trans-unit id="file_upload.php.pagetitle" resname="file_upload.php.pagetitle" approved="yes">
+        <source>Upload files</source>
+        <target state="final">تحميل الملفات</target>
+      </trans-unit>
+      <trans-unit id="file_upload.php.submit" resname="file_upload.php.submit" approved="yes">
+        <source>Upload files</source>
+        <target state="final">تحميل الملفات</target>
+      </trans-unit>
+      <trans-unit id="file_upload.php.files" resname="file_upload.php.files" approved="yes">
+        <source>files</source>
+        <target state="final">الملفات</target>
+      </trans-unit>
+      <trans-unit id="file_rename.exists.title" resname="file_rename.exists.title" approved="yes">
+        <source>File exists already</source>
+        <target state="final">الملف موجود بالفعل</target>
+      </trans-unit>
+      <trans-unit id="file_rename.exists.description" resname="file_rename.exists.description" approved="yes">
+        <source>You want to rename the file "{0}" to "{1}", but the file "{1}" already exists. How do you want to proceed?</source>
+        <target state="final">أنت تريد إعادة تسمية المِلَفّ "{0}" إلى "{1}"، ولكن المِلَفّ "{1}" موجود بالفعل. كيف تريد المتابعة؟</target>
+      </trans-unit>
+      <trans-unit id="file_rename.actions.cancel" resname="file_rename.actions.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">إلغاء</target>
+      </trans-unit>
+      <trans-unit id="file_rename.actions.rename" resname="file_rename.actions.rename" approved="yes">
+        <source>Rename with unique name</source>
+        <target state="final">إعادة التسمية باسم مخصص</target>
+      </trans-unit>
+      <trans-unit id="file_rename.actions.override" resname="file_rename.actions.override" approved="yes">
+        <source>Overwrite</source>
+        <target state="final">الكتابة فوق</target>
+      </trans-unit>
+      <trans-unit id="file_rename.php.pagetitle" resname="file_rename.php.pagetitle" approved="yes">
+        <source>Rename</source>
+        <target state="final">إعادة التسمية</target>
+      </trans-unit>
+      <trans-unit id="file_rename.php.submit" resname="file_rename.php.submit" approved="yes">
+        <source>Rename</source>
+        <target state="final">إعادة التسمية</target>
+        <note>This label is not used since TYPO3 v9.</note>
+      </trans-unit>
+      <trans-unit id="file_rename.php.label.target.file" resname="file_rename.php.label.target.file" approved="yes">
+        <source>New file name</source>
+        <target state="final">اسم ملف جديد</target>
+      </trans-unit>
+      <trans-unit id="file_rename.php.label.target.folder" resname="file_rename.php.label.target.folder" approved="yes">
+        <source>New folder name</source>
+        <target state="final">اسم مجلد جديد</target>
+      </trans-unit>
+      <trans-unit id="file_replace.php.pagetitle" resname="file_replace.php.pagetitle" approved="yes">
+        <source>Replace</source>
+        <target state="final">إستبدال</target>
+      </trans-unit>
+      <trans-unit id="file_replace.php.selectfile" resname="file_replace.php.selectfile" approved="yes">
+        <source>Select new file</source>
+        <target state="final">حدد ملف جديد</target>
+      </trans-unit>
+      <trans-unit id="file_replace.php.keepfiletitle" resname="file_replace.php.keepfiletitle" approved="yes">
+        <source>Keep the current filename?</source>
+        <target state="final">الاحتفاظ باسم المِلَفّ الحالي؟</target>
+      </trans-unit>
+      <trans-unit id="file_replace.php.browse" resname="file_replace.php.browse" approved="yes">
+        <source>Browse</source>
+        <target state="final">تصفّح</target>
+      </trans-unit>
+      <trans-unit id="file_replace.php.submit" resname="file_replace.php.submit" approved="yes">
+        <source>Replace</source>
+        <target state="final">إستبدال</target>
+      </trans-unit>
+      <trans-unit id="file_edit.php.pagetitle" resname="file_edit.php.pagetitle" approved="yes">
+        <source>Edit</source>
+        <target state="final">تعديل</target>
+      </trans-unit>
+      <trans-unit id="file_edit.php.submit" resname="file_edit.php.submit" approved="yes">
+        <source>Save</source>
+        <target state="final">حفظ</target>
+      </trans-unit>
+      <trans-unit id="file_edit.php.saveAndClose" resname="file_edit.php.saveAndClose" approved="yes">
+        <source>Save and Close</source>
+        <target state="final">حفظ وإغلاق</target>
+      </trans-unit>
+      <trans-unit id="file_edit.php.coundNot" resname="file_edit.php.coundNot" approved="yes">
+        <source>This filetype cannot be edited.&lt;br /&gt;The file must have an extension like:&lt;br /&gt;&lt;br
+					/&gt; &lt;b&gt;%s&lt;/b&gt;
+				</source>
+        <target state="final">لا يمكن تعديل هذا النوع من الملفات.&lt;br /&gt;يجب أن يحتوي الملف على إضافة مثل:&lt;br /&gt;&lt;br
+					/&gt; &lt;b&gt;%s&lt;/b&gt;
+				&lt;unk&gt; &lt;unk&gt; &lt;unk&gt; &lt;unk&gt;				</target>
+      </trans-unit>
+      <trans-unit id="file_newfolder.php.pagetitle" resname="file_newfolder.php.pagetitle" approved="yes">
+        <source>New file or folder</source>
+        <target state="final">ملف أو مجلد جديد</target>
+      </trans-unit>
+      <trans-unit id="file_newfolder.php.newfolders" resname="file_newfolder.php.newfolders" approved="yes">
+        <source>Create new folders</source>
+        <target state="final">إنشاء مجلدات جديدة</target>
+      </trans-unit>
+      <trans-unit id="file_newfolder.php.label_newfolder" resname="file_newfolder.php.label_newfolder" approved="yes">
+        <source>Folder</source>
+        <target state="final">مُجلّد</target>
+      </trans-unit>
+      <trans-unit id="file_newfolder.php.submit" resname="file_newfolder.php.submit" approved="yes">
+        <source>Create folders</source>
+        <target state="final">إنشاء مجلدات</target>
+      </trans-unit>
+      <trans-unit id="create_folder.title" resname="create_folder.title" approved="yes">
+        <source>Create new folder</source>
+        <target state="final">إنشاء مُجلّد جديد</target>
+      </trans-unit>
+      <trans-unit id="create_folder.submit" resname="create_folder.submit" approved="yes">
+        <source>Create folder</source>
+        <target state="final">إنشاء مجلد</target>
+      </trans-unit>
+      <trans-unit id="file_newfolder.php.folders" resname="file_newfolder.php.folders" approved="yes">
+        <source>folders</source>
+        <target state="final">مُجلّدات</target>
+      </trans-unit>
+      <trans-unit id="file_newfolder.php.newfile_submit" resname="file_newfolder.php.newfile_submit" approved="yes">
+        <source>Create file</source>
+        <target state="final">إنشاء ملف</target>
+      </trans-unit>
+      <trans-unit id="file_newfolder.php.newfile" resname="file_newfolder.php.newfile" approved="yes">
+        <source>Create new textfile</source>
+        <target state="final">إنشاء ملف نَصّي جديد</target>
+      </trans-unit>
+      <trans-unit id="file_newfolder.php.label_newfile" resname="file_newfolder.php.label_newfile" approved="yes">
+        <source>File name</source>
+        <target state="final">إسم الملف</target>
+      </trans-unit>
+      <trans-unit id="file_newfolder.php.number_of_folders" resname="file_newfolder.php.number_of_folders" approved="yes">
+        <source>Number of folders</source>
+        <target state="final">عدد المجلدات</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
