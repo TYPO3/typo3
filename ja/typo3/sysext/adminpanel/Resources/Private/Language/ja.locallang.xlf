@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:adminpanel/Resources/Private/Language/locallang.xlf" date="2018-03-31T08:08:00Z" product-name="adminpanel" target-language="ja">
+    <header/>
+    <body>
+      <trans-unit id="deprecatedModuleLabel" resname="deprecatedModuleLabel" approved="yes">
+        <source>General</source>
+        <target state="final">基本設定</target>
+      </trans-unit>
+      <trans-unit id="settings.label" resname="settings.label" approved="yes">
+        <source>Settings</source>
+        <target state="final">設定</target>
+      </trans-unit>
+      <trans-unit id="settings.updateButtonLabel" resname="settings.updateButtonLabel" approved="yes">
+        <source>Update Settings</source>
+        <target state="final">設定を更新</target>
+      </trans-unit>
+      <trans-unit id="button.close" resname="button.close" approved="yes">
+        <source>Close</source>
+        <target state="final">終了</target>
+      </trans-unit>
+      <trans-unit id="button.view" resname="button.view" approved="yes">
+        <source>View</source>
+        <target state="final">参照</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
