@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf" date="2016-10-23T20:22:33Z" product-name="tabs" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="general" resname="general">
+        <source>General</source>
+        <target>crwdns213574:0crwdne213574:0</target>
+      </trans-unit>
+      <trans-unit id="access" resname="access">
+        <source>Access</source>
+        <target>crwdns213576:0crwdne213576:0</target>
+      </trans-unit>
+      <trans-unit id="accesscapabilities" resname="accesscapabilities">
+        <source>Access capabilities</source>
+        <target>crwdns213578:0crwdne213578:0</target>
+      </trans-unit>
+      <trans-unit id="categories" resname="categories">
+        <source>Categories</source>
+        <target>crwdns213580:0crwdne213580:0</target>
+      </trans-unit>
+      <trans-unit id="notes" resname="notes">
+        <source>Notes</source>
+        <target>crwdns213582:0crwdne213582:0</target>
+      </trans-unit>
+      <trans-unit id="language" resname="language">
+        <source>Language</source>
+        <target>crwdns213584:0crwdne213584:0</target>
+      </trans-unit>
+      <trans-unit id="extended" resname="extended">
+        <source>Extended</source>
+        <target>crwdns213586:0crwdne213586:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
