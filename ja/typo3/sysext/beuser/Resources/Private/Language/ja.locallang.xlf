@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:beuser/Resources/Private/Language/locallang.xlf" date="2012-07-16T10:11:32Z" product-name="beuser" target-language="ja">
+    <header/>
+    <body>
+      <trans-unit id="userName" resname="userName" approved="yes">
+        <source>Username</source>
+        <target state="final">ユーザ名</target>
+      </trans-unit>
+      <trans-unit id="realName" resname="realName" approved="yes">
+        <source>Real Name</source>
+        <target state="final">実名</target>
+      </trans-unit>
+      <trans-unit id="users" resname="users" approved="yes">
+        <source>Users</source>
+        <target state="final">ユーザ</target>
+      </trans-unit>
+      <trans-unit id="never" resname="never" approved="yes">
+        <source>Never</source>
+        <target state="final">一切なし</target>
+      </trans-unit>
+      <trans-unit id="details" resname="details" approved="yes">
+        <source>Show details</source>
+        <target state="final">詳細を表示</target>
+      </trans-unit>
+      <trans-unit id="lastLogin" resname="lastLogin" approved="yes">
+        <source>Last login</source>
+        <target state="final">最終ログイン</target>
+      </trans-unit>
+      <trans-unit id="fileMounts" resname="fileMounts" approved="yes">
+        <source>File mountpoints</source>
+        <target state="final">ファイルマウントポイント</target>
+      </trans-unit>
+      <trans-unit id="backendUserGroup" resname="backendUserGroup" approved="yes">
+        <source>User group</source>
+        <target state="final">ユーザグループ</target>
+      </trans-unit>
+      <trans-unit id="switchBackMode" resname="switchBackMode" approved="yes">
+        <source>Switch to user</source>
+        <target state="final">ユーザー切替</target>
+      </trans-unit>
+      <trans-unit id="remove" resname="remove" approved="yes">
+        <source>Remove</source>
+        <target state="final">削除</target>
+      </trans-unit>
+      <trans-unit id="fileMounts" resname="fileMounts" approved="yes">
+        <source>File Mounts</source>
+        <target state="final">ファイルマウントポイント</target>
+      </trans-unit>
+      <trans-unit id="categories" resname="categories" approved="yes">
+        <source>Categories</source>
+        <target state="final">カテゴリ</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
