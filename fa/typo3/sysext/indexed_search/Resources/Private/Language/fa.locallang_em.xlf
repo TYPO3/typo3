@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:indexed_search/Resources/Private/Language/locallang_em.xlf" date="2011-10-17T20:22:32Z" product-name="indexed_search" target-language="fa">
+    <header/>
+    <body>
+      <trans-unit id="indexedsearch.config.pdftools" resname="indexedsearch.config.pdftools" approved="yes">
+        <source>Path to PDF parsers: The indexer uses the applications 'pdftotext' and 'pdfinfo' for extracting content from PDF files. These applications must be installed in this path. Otherwise leave the field empty.</source>
+        <target state="final">مسیر تجزیه کنندۀ PDF: پویش‌گر فهرست از برنامۀ 'pdftotext' و 'pdfinfo' برا باز کردن محتوای فایلهای PDF استفاده می‌نماید. لازم است این برنامه‌ها در این مسیر نصب شود. در غیر این صورت این بخش را خالی باقی بگذارید.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.pdf_mode" resname="indexedsearch.config.pdf_mode" approved="yes">
+        <source>PDF parsing mode: Zero=whole file is indexed in one. Positive value indicates number of pages at a time, eg. "5" would mean 1-5,6-10,.... Negative integer would indicate (abs value) number of groups. Eg "3" groups of 10 pages would be 1-4,5-8,9-10. Range is -100 to 100.</source>
+        <target state="final">حالت پویش PDF: صفر: همۀ فایل در یکی فهرست شده. مقدار مثبت بیانگر تعداد صفحات در یک زمان است، مثلا "5" به معنای 1-5، 6-10و... است، مقدار صحیح منفی به معنای تعداد گروه هاست (مقدار صحیح). مثلا "3" گروه از 10 صفحه معادل 1-4، 5-8، 9-10 خواهد بود. بازه از -100 تا 100 است.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.unzip" resname="indexedsearch.config.unzip" approved="yes">
+        <source>Path to unzip: The indexer uses "unzip" to extract the contents from OpenOffice.org/Oasis OpenDocument files. The application must be installed in this path. Otherwise leave the field empty.</source>
+        <target state="final">مسیر به unzip: فهرست‌ساز از "unzip" برای بازکردن محتوای OpenOffice.org/Oasis استفاده می‌نماید. برنامۀ مذکور باید در این مسیر نصب باشد و الا این بخش را خالی بگذارید.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.catdoc" resname="indexedsearch.config.catdoc" approved="yes">
+        <source>Path to WORD parser: The indexer uses the application 'catdoc' for extracting content from WORD files. The application must be installed in this path. Otherwise leave the field empty.</source>
+        <target state="final">مسیر پویش‌گر WORD: فهرست‌ساز از برنامۀ "catdoc" برای بازکردن محتوای فایل‌های WORD استفاده می‌نماید. برنامۀ مذکور باید در این مسیر نصب باشد و الا این بخش را خالی بگذارید.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.xlhtml" resname="indexedsearch.config.xlhtml" approved="yes">
+        <source>Path to EXCEL parser: The indexer uses the application 'xlhtml' for extracting content from EXCEL files. The application must be installed in this path. Otherwise leave the field empty.</source>
+        <target state="final">مسیر پویش‌گر EXCEL: فهرست‌ساز از برنامۀ "xlhtml" برای بازکردن محتوای فایل‌های EXCEL استفاده می‌نماید. برنامۀ مذکور باید در این مسیر نصب باشد و الا این بخش را خالی بگذارید.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.ppthtml" resname="indexedsearch.config.ppthtml" approved="yes">
+        <source>Path to POWERPOINT parser: The indexer uses the application 'ppthtml' for extracting content from POWERPOINT files. The application must be installed in this path. Otherwise leave the field empty.</source>
+        <target state="final">مسیر پویش‌گر POWERPOINT: فهرست‌ساز از برنامۀ "ppthtml" برای بازکردن محتوای فایل‌های POWERPOINT استفاده می‌نماید. برنامۀ مذکور باید در این مسیر نصب باشد و الا این بخش را خالی بگذارید.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.unrtf" resname="indexedsearch.config.unrtf" approved="yes">
+        <source>Path to RTF parser: The indexer uses the application 'unrtf' for extracting content from RTF files. The application must be installed in this path. Otherwise leave the field empty.</source>
+        <target state="final">مسیر پویش‌گر RTF: فهرست‌ساز از برنامۀ "unrtf" برای بازکردن محتوای فایل‌های RTF استفاده می‌نماید. برنامۀ مذکور باید در این مسیر نصب باشد و الا این بخش را خالی بگذارید.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.debugMode" resname="indexedsearch.config.debugMode" approved="yes">
+        <source>Debug mode: If set, debugging information is collected during indexing and can be shown in the backend. Only for debugging since it slows down the system and fills the database with crap.</source>
+        <target state="final">حالت اشکال‌زدائی: در صورت تنظیم، اطلاعات اشکال‌زائی در حین فهرست‌بندی جمع شده و قابل نمایش در بخش مدیریت است. از آنجا که جمع‌آوری اطلاعات باعث کندشدن سامانه شده و بانک‌داده را با محتوای بیهوده پر می‌کند، این گزینه تنها برای اشکال زدائی استفاده شود.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.fullTextDataLength" resname="indexedsearch.config.fullTextDataLength" approved="yes">
+        <source>Full Text Data Length: If set, the full text data stored will be limited to this byte length. It means you can save some database space but to the degree you cut the length down you also limit possibilities to search for sentences and the search result resume will be limited.</source>
+        <target state="final">حداکثر طول ذخیرۀ کامل داده: در صورت تعیین، طول یک دادۀ متشکل از متن‌تمام‌عیار (FULL TEXT) ذخیره شده به این حداکثر بایت محدود خواهد شد. این به معنای این است که می‌توانید فضای بانک دادۀ بیشتری داشته باشید اما نسبت به درجه‌ای که این طول را کم می‌کنید امکانات جستجو برای جملات را کم می‌کنید و نتیجۀ جستجو محدود خواهد شد.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.disableFrontendIndexing" resname="indexedsearch.config.disableFrontendIndexing" approved="yes">
+        <source>Disable Indexing in Frontend: By default pages are indexed during viewing of pages in the frontend. You can disable this features so indexing of pages is only initiated through the backend page crawler.</source>
+        <target state="final">غیرفعال کردن فهرست‌بندی در خروجی: بطور پیش‌فرض فهرست بندی در هنگام نمایش صفحات توسط کاربران در خروجی سایت صورت می‌گیرد. شما می‌توانید این گزینه را غیرفعال کنید تا فهرست‌بندی صفحات در صفحۀ مدیریت و توسط پویندۀ صفحات (crawler) انجام پذیرد.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.enableMetaphoneSearch" resname="indexedsearch.config.enableMetaphoneSearch" approved="yes">
+        <source>Enable metaphone search (sounds like): 0=disabled, 1=use internal metaphone parser, 2=use advanced doubleMetaphone parser.</source>
+        <target state="final">فعال کردن فراآوا (سیاق): 0=غیرفعال، 1=استفاده از تجزیه کنندۀ داخلی فراآوا، 2=استفاده از تجزیۀ کنندۀ doubleMetaphone .</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.minAge" resname="indexedsearch.config.minAge" approved="yes">
+        <source>Min TTL (hours) for indexed page: The time in hours that must pass before an indexed page can be indexed again regardless of changes on the page.</source>
+        <target state="final">حداقل TTL (به ساعت) برای صفحۀ فهرست شده: زمان بر حسب ساعت برای حداقل عمر یک صفحه قبل از آن که دوباره فهرست شود بدون توجه به زمان تغییر آن.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.maxAge" resname="indexedsearch.config.maxAge" approved="yes">
+        <source>Deprecated! Max TTL (hours) for indexed page: The time in hours that is the maximum age of an indexed page before it will get indexed again. Usually the index is kept consistent, therefore you won't need this feature.</source>
+        <target state="final">منسوخ! حداکثر TTL (به ساعت) برای صفحۀ فهرست شده: زمان بر حسب ساعت برای حداکثر عمر یک صفحه قبل از آن که دوباره فهرست شود. عموما فهرست دائمی خواهد بود، بنابراین شما به این قابلیت احتیاج ندارید.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.maxExternalFiles" resname="indexedsearch.config.maxExternalFiles" approved="yes">
+        <source>Max external files to index: When external files are found on a page this number indicates how many may be indexed at that point. This prevents pages with links to many external documents to take the server down - but it may also prevent documents from being indexed.</source>
+        <target state="final">حداکثر تعداد فایل برای فهرست‌بندی: تعداد فایل‌های بیرونی فهرست شده در یک صفحۀ مجزا. این از فهرست‌بندی صفحات بیرونی که تعداد بسیار زیادی سند در خود دارند جلوگیری می‌کند تا از اختلال در سرور جلوگیری کند. طبعا تعدادی سند فهرست نشده باقی می مانند.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.useCrawlerForExternalFiles" resname="indexedsearch.config.useCrawlerForExternalFiles" approved="yes">
+        <source>Use "crawler" extension to index external files: When external files are found on a page they are added to the "crawler" extensions queue and indexed via the cronscript running the crawler. This eliminates problems with for example many PDF files on a page. Requires a proper configuration of the "crawler" extension.</source>
+        <target state="final">استفاده از افزونۀ crawler جهت فهرست‌بندی فایل‌های بیرونی: در هنگام پیدا شدن فایل‌های بیرونی در یک صفحه آن‌ها به صف افزونۀ "crawler" اصافه می‌شوند و در هنگام اجرای مبتنی بر زمان این افزونه در فهرست جای می‌گیرند. این مشکل تعداد بسیار زیادی از فایلهای مثلا PDF را در یک صفحه از بین می‌برد. نیازمند پیکربندی درست در افزونۀ "crawler"</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.flagBitMask" resname="indexedsearch.config.flagBitMask" approved="yes">
+        <source>Bitmask for Flags (Advanced): By this value (0-255) you can filter the importance of &lt;title&gt; (128), &lt;keywords&gt; (64) and &lt;description&gt; (32) content from HTML documents. By setting this to 0, none of these fields will have any importance over the other. The default value 192 means that title-tag content and meta-keywords will be flagged (and rated higher in search results)</source>
+        <target state="final">Bitmask برای Flagها (پیشرفته): با انتخاب این مقدار (0-255) شما می‌توانید اهمیت عنوان &lt;title&gt; مقدار 128، &lt;keywords&gt; مقدار (64) و &lt;description&gt; مقدار (32) را از اسناد HTML تعیین کنید. اما تنظیم این مقدار به 0 به معنای عدم اولویت یکی بر دیگری است. مقدار پیش فرض 192 است که به معنای این است محتوای برچسب title و فراکلیدواژه‌ها علامت گذاری شده (و در نتایج جستجو پر اهمیت تر خواهد بود)</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.ignoreExtensions" resname="indexedsearch.config.ignoreExtensions" approved="yes">
+        <source>Ignore Extensions: List of file extensions that the external parser will ignore (despite having support for them). Comma list.</source>
+        <target state="final">نادیده گرفتن پسوندها: فهرست فایل‌هائی که تجزیه کنندۀ خارجی آن را نادیده خواهد گرفت. (علیرغم امکان پشتیبانی از آن). فهرست جدا شده توسط ویرگول انگلیسی.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.indexExternalURLs" resname="indexedsearch.config.indexExternalURLs" approved="yes">
+        <source>Index External HTML URLs: If set, links to external URLs will be indexed if they are of type "text/html".</source>
+        <target state="final">فهرست بندی نشانی‌های بیرونی HTML: اگر تنظیم شود پیوندهای مربوط به نشانی‌های بیرونی در صورتی که از نوع "text/html" باشند فهرست‌بندی می‌شوند.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
