@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_sysfilem.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>Filemounts describe a filepath on the server, relative or absolute.</source>
+        <target state="final">Verzeichnisfreigaben beschreiben relative oder absolute Pfade auf dem Server.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" xml:space="preserve" approved="yes">
+				<source>By creating a file mount record and placing a reference to it in a Backend usergroup you can allow a user access to the file mount in the File&gt;List module.
+Filemounts may also configure access to a path on the server to which the user has FTP-access. Just remember to set file-permissions on the server correctly so the webserver user (which PHP is running as) has at least read access to the FTP-dir.
+You can only mount absolute paths if they are within the base path set in $TYPO3_CONF_VARS[BE][lockRootPath]</source>
+			<target state="final">Indem Sie eine Verzeichnisfreigabe erstellen und diese Freigabe einer Backend-Benutzergruppe zuweisen, gewähren Sie diesen Benutzern den Zugriff auf die freigegebenen Dateien (über das Modul "Datei &gt; Dateiliste").
+Verzeichnisfreigaben können unter Umständen auch Pfade beschreiben, zu denen der Benutzer direkten Zugriff per FTP hat. Stellen Sie in diesem Fall sicher, dass der Web-Server (bzw. der Systembenutzer, unter dessen Kennung der PHP-Prozess läuft) zumindest Leserechte auf diese Dateien hat - andernfalls erscheinen solche Dateien nicht im TYPO3-Datei-Browser!
+Absolute Pfade für Verzeichnisfreigaben sind nur innerhalb des durch die Systemvariable $TYPO3_CONF_VARS[BE][lockRootPath] festgelegten Pfades möglich.</target></trans-unit>
+      <trans-unit id="_.seeAlso" resname="_.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_groups:file_mountpoints,
+be_users:file_mountpoints,
+More about File mounts | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/AccessControl/MoreAboutFileMounts/</source>
+				
+			<target state="final">be_groups:file_mountpoints,
+be_users:file_mountpoints,
+Mehr über Dateifreigaben | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/AccessControl/MoreAboutFileMounts/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_.image" resname="_.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/filemount_1.png</source>
+        <target state="final">EXT:core/Resources/Public/Images/cshimages/filemount_1.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Enter a title for the filemount. The title will appear as the name of the file mount when it is applied to users and groups.</source>
+        <target state="final">Geben Sie einen Namen für die Verzeichnisfreigabe an. Dieser Name erscheint, wenn Sie Benutzern oder Gruppen diese Verzeichnisfreigabe zuweisen.</target>
+      </trans-unit>
+      <trans-unit id="_title.image" resname="_title.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/be_groups_5.png</source>
+        <target state="final">EXT:core/Resources/Public/Images/cshimages/be_groups_5.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="path.description" resname="path.description" approved="yes">
+        <source>Enter the path of the filemount, relative or absolute depending on the settings of BASE.</source>
+        <target state="final">Geben Sie den relativen oder absoluten Pfad zur Verzeichnisfreigabe an (abhängig davon, welche Option Sie bei Basis wählen).</target>
+      </trans-unit>
+      <trans-unit id="path.details" resname="path.details" xml:space="preserve" approved="yes">
+				<source>If BASE is set to relative, the path mounted is found in the subfolder "fileadmin/" of the website. Then you should enter the subfolder in "fileadmin/" as path. For instance if you want to mount access to "fileadmin/user_uploads/all/" then enter the value "user_uploads/all" as the value of PATH.
+If BASE is absolute you should enter the absolute path on the server, eg. "/home/ftp_upload" or "C:/home/ftp_upload". Further you must make sure the configuration variable $TYPO3_CONF_VARS[BE][lockRootPath] contains the first part of the path you want to mount.
+
+&lt;strong&gt;Notice:&lt;/strong&gt; In any case, make sure the webserver user which PHP is running as has &lt;em&gt;at least&lt;/em&gt; read-access to the path. If not, the mount will simply not appear without any warnings.
+If you have problems - especially with absolute mounts - try to mount something "simple" like a relative path in fileadmin. If that is working well, try the absolute path.
+
+Your PHP-configuration may also impose other restrictions on you if open_basedir is enabled. Then use relative paths.</source>
+			<target state="final">Wenn Sie bei Basis die Option "relativ" wählen, beziehen sich Verzeichnisfreigaben auf Unterordner von "fileadmin/". Beispiel: Um Ihren Benutzern den Ordner "fileadmin/user_upload/" zur Verfügung zu stellen, können Sie zunächst die Basis-Option "relativ" wählen und dann als Pfad "user_upload/" eingeben.
+Wenn Sie bei Basis die Option "absolut" wählen, beziehen sich Verzeichnisfreigaben auf den absoluten Pfad auf dem Server, also z.B. "/home/ftp_upload" oder "C:/home/ftp_upload". Sie müssen hierbei darauf achten, dass der erste Teil des angegebenen Pfades auch in der Systemvariablen $TYPO3_CONF_VARS[BE][lockRootPath] eingetragen ist.
+
+&lt;strong&gt;Hinweis:&lt;/strong&gt; Stellen Sie sicher, dass der Benutzer des Web-Servers, unter dem PHP läuft, &lt;em&gt;mindestens&lt;/em&gt; Leserechte für den Pfad hat. Wenn das nicht der Fall ist, wird die Freigabe ohne weitere Warnung nicht angezeigt.
+Wenn Sie Probleme mit Verzeichnisfreigaben haben, versuchen Sie zuerst, einen "einfachen" Pfad, wie einen relativen Pfad im Ordner fileadmin/ freizugeben. Wenn das funktioniert, probieren Sie absolute Pfade.
+
+Ihre PHP-Konfiguration kann auch weitere Einschränkungen beinhalten, nämlich wenn "Open Basedir" aktiviert ist. Nutzen Sie in diesem Fall relative Pfade.</target></trans-unit>
+      <trans-unit id="_path.seeAlso" resname="_path.seeAlso" xml:space="preserve" approved="yes">
+				<source>sys_filemounts:base,
+be_groups:file_mountpoints,
+sys_filemounts</source>
+				
+			<target state="final">sys_filemounts:base, be_groups:file_mountpoints, sys_filemounts</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_path.image" resname="_path.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/be_groups_6.png,
+EXT:core/Resources/Public/Images/cshimages/be_groups_7.png</source>
+				
+			<target state="final">EXT:core/Resources/Public/Images/cshimages/be_groups_6.png,
+EXT:core/Resources/Public/Images/cshimages/be_groups_7.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="path.image_descr" resname="path.image_descr" xml:space="preserve" approved="yes">
+				<source>This is a filemount relative to "fileadmin/". The mounted folder is "fileadmin/user_upload/" since "user_upload" is the value of the "Path" field.
+The directory structure of "fileadmin/" where you can see the "user_upload" folder in the bottom of the list.</source>
+			<target state="final">Dies ist eine Verzeichnisfreigabe relativ zum Ordner "fileadmin/". Weil als Pfad "user_upload" eingegeben wurde, ist der freigegebene Ordner "fileadmin/user_upload". Dies ist die Ordnerstruktur von "fileadmin/". Sie finden den Ordner "user_upload" am Ende der Liste.</target></trans-unit>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>Unchecking this option temporarily disables the filemount.</source>
+        <target state="final">Deaktivieren Sie diese Option vorübergehend deaktiviert das Filemount.</target>
+      </trans-unit>
+      <trans-unit id="hidden.details" resname="hidden.details" approved="yes">
+        <source>All backend users using the mount will not have access anymore. This includes 'Admin'-users.</source>
+        <target state="final">Allen Backend-Benutzern - 'Admin'-Benutzer eingeschlossen - wird der Zugriff auf diese Verzeichnisfreigabe entzogen.</target>
+      </trans-unit>
+      <trans-unit id="base.description" resname="base.description" approved="yes">
+        <source>Determines whether the value of the PATH field is to be recognized as an absolute path on the server or a path relative to the fileadmin/ subfolder to the website.</source>
+        <target state="final">Legt fest, ob das Feld "Pfad" als absoluter Pfad oder als relativer Pfad (bezogen auf den Ordner fileadmin/) interpretiert werden soll.</target>
+      </trans-unit>
+      <trans-unit id="_base.seeAlso" resname="_base.seeAlso" approved="yes">
+        <source>sys_filemounts:path</source>
+        <target state="final">sys_filemounts:path</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="read_only.description" resname="read_only.description" approved="yes">
+        <source>Display this file mount as read-only.</source>
+        <target state="final">Diese Dateifreigabe als schreibgeschützt anzeigen.</target>
+      </trans-unit>
+      <trans-unit id="read_only.details" resname="read_only.details" approved="yes">
+        <source>Read-only file mounts are displayed in the Filelist and the Element Browser. They allow displaying of files and folders which are neither writable nor editable for the user.</source>
+        <target state="final">Schreibgeschützte Dateifreigaben werden in der Dateiliste und im Element-Browser angezeigt. Sie erlauben es, Dateien und Ordner anzuzeigen, die der Benutzer nicht bearbeiten kann.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
