@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:sys_note/Resources/Private/Language/locallang_csh_sysnote.xlf" date="2011-10-17T20:22:37Z" product-name="sys_note" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description">
+        <source>Internal reminder note attached to a page.</source>
+        <target>crwdns108394:0crwdne108394:0</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details">
+        <source>This provides a simple way to attach informative notes to a page regarding backend-related issues. Use it as you like for reminders, instructions, etc.</source>
+        <target>crwdns108396:0crwdne108396:0</target>
+      </trans-unit>
+      <trans-unit id="_.seeAlso" resname="_.seeAlso">
+        <source>pages</source>
+        <target>crwdns108398:0crwdne108398:0</target>
+      </trans-unit>
+      <trans-unit id="category.description" resname="category.description">
+        <source>Select a category which describes the character of the note.</source>
+        <target>crwdns108400:0crwdne108400:0</target>
+      </trans-unit>
+      <trans-unit id="subject.description" resname="subject.description">
+        <source>Enter a title for the note.</source>
+        <target>crwdns108402:0crwdne108402:0</target>
+      </trans-unit>
+      <trans-unit id="message.description" resname="message.description">
+        <source>This is the note itself.</source>
+        <target>crwdns108404:0crwdne108404:0</target>
+      </trans-unit>
+      <trans-unit id="author.description" resname="author.description">
+        <source>Enter your name.</source>
+        <target>crwdns108406:0crwdne108406:0</target>
+      </trans-unit>
+      <trans-unit id="email.description" resname="email.description">
+        <source>Enter your email address.</source>
+        <target>crwdns108408:0crwdne108408:0</target>
+      </trans-unit>
+      <trans-unit id="personal.description" resname="personal.description">
+        <source>Check this if you don't want other users to see this note.</source>
+        <target>crwdns108410:0crwdne108410:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
