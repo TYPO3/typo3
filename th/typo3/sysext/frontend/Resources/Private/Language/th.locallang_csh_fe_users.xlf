@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_csh_fe_users.xlf" date="2011-10-17T20:22:32Z" product-name="context_help" target-language="th">
+    <header/>
+    <body>
+      <trans-unit id="username.description" resname="username.description" approved="yes">
+        <source>Enter the username of the website user. This is needed to login.</source>
+        <target state="final">ใส่ชื่อของผู้ใช้เว็บไซต์ เป็นสิ่งจำเป็นเพื่อlogin</target>
+      </trans-unit>
+      <trans-unit id="username.syntax" resname="username.syntax" approved="yes">
+        <source>A username is required and must be in lowercase without spaces in it. The username must be unique among other usernames in the page where it's saved. If it is not unique a number will be prepended automatically.</source>
+        <target state="final">ชื่อผู้ใช้จำเป็นและต้องเป็นตัวพิมพ์เล็กไม่มีช่องว่างในนั้น ชื่อผู้ใช้ต้องไม่ซ้ำกันในชื่อผู้อื่นในหน้าเว็บที่เป็นที่บันทึกไว้ ถ้าไม่ซ้ำกันตัวเลขจะ prepended โดยอัตโนมัติ</target>
+      </trans-unit>
+      <trans-unit id="password.description" resname="password.description" approved="yes">
+        <source>Enter the password for the username above. This is needed to login.</source>
+        <target state="final">ป้อนรหัสผ่านสำหรับชื่อผู้ใช้ข้างต้น นี้เป็นสิ่งจำเป็นเพื่อ login</target>
+      </trans-unit>
+      <trans-unit id="password.syntax" resname="password.syntax" approved="yes">
+        <source>A password is required and must be in lowercase without spaces in it.</source>
+        <target state="final">รหัสผ่านต้องและต้องเป็นตัวพิมพ์เล็กไม่มีช่องว่างในนั้น</target>
+      </trans-unit>
+      <trans-unit id="usergroup.description" resname="usergroup.description" approved="yes">
+        <source>Select a user group for the username.</source>
+        <target state="final">เลือกกลุ่มผู้ใช้สำหรับชื่อผู้ใช้</target>
+      </trans-unit>
+      <trans-unit id="usergroup.details" resname="usergroup.details" approved="yes">
+        <source>When a user logs in he is able to view all content which is access restricted to the user &lt;em&gt;group(s)&lt;/em&gt; the user is a member of. Therefore the user login primarily makes sense with regard to the member groups.</source>
+        <target state="final">เมื่อผู้ใช้บันทึกในเขาเป็นผู้ใช้สามารถดูเนื้อหาที่ จำกัด &lt;em&gt;การเข้าถึงกลุ่มผู้ใช้ (s)&lt;/em&gt; เป็นของสมาชิก ดังนั้นการเข้าสู่ระบบผู้ใช้เป็นหลักทำให้รู้สึกเกี่ยวกับกลุ่มสมาชิก</target>
+      </trans-unit>
+      <trans-unit id="lockToDomain.details" resname="lockToDomain.details" approved="yes">
+        <source>A TYPO3 system may have multiple domains pointing to it. Therefore this option secures that users can login only from a certain host name.</source>
+        <target state="final">ระบบ TYPO3 อาจมีโดเมนหลายโดเมนชี้ไป นี้จึงยึดตัวเลือกที่ผู้ใช้สามารถเข้าสู่ระบบเท่านั้นจากชื่อโฮสต์บาง</target>
+      </trans-unit>
+      <trans-unit id="lockToDomain.syntax" resname="lockToDomain.syntax" approved="yes">
+        <source>Either a domain name, "www.typo3.org" or an IP address, "10.34.222.83"</source>
+        <target state="final">ทั้งชื่อโดเมน www.typo3.com"หรือที่อยู่ IP"10.34.222.83"</target>
+      </trans-unit>
+      <trans-unit id="name.description" resname="name.description" approved="yes">
+        <source>Enter the regular name of the user, both first- and surname.</source>
+        <target state="final">ป้อนชื่อปกติของผู้ใช้ทั้งแรกและนามสกุล</target>
+      </trans-unit>
+      <trans-unit id="address.description" resname="address.description" approved="yes">
+        <source>Enter the street address of the user.</source>
+        <target state="final">ป้อนที่อยู่ของผู้ใช้</target>
+      </trans-unit>
+      <trans-unit id="www.description" resname="www.description" approved="yes">
+        <source>Enter the homepage URL</source>
+        <target state="final">ใส่หน้าแรก URL</target>
+      </trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Enter the job title, eg. 'Director' or 'Accountant'.</source>
+        <target state="final">ป้อนชื่องานเช่น 'กรรมการ'หรือบัญชี'</target>
+      </trans-unit>
+      <trans-unit id="company.description" resname="company.description" approved="yes">
+        <source>Enter the name of the company in which the user is employed.</source>
+        <target state="final">ป้อนชื่อของ บริษัท ที่ผู้ใช้สามารถทำงานได้</target>
+      </trans-unit>
+      <trans-unit id="image.description" resname="image.description" approved="yes">
+        <source>Insert a photo of the user.</source>
+        <target state="final">แทรกภาพของผู้ใช้</target>
+      </trans-unit>
+      <trans-unit id="starttime.description" resname="starttime.description" approved="yes">
+        <source>Enter the date from which the account is active.</source>
+        <target state="final">ป้อนวันซึ่งเป็นบัญชีที่ใช้งานอยู่</target>
+      </trans-unit>
+      <trans-unit id="starttime.syntax" resname="starttime.syntax" xml:space="preserve" approved="yes">
+				<source>The syntax is dd-mm-yy, but you can just enter a "d" in the field to insert todays date. Or "d+10" to insert the date 10 days from now etc.
+The field will re-format any input to fit the format it understands so you can just experiment and you will be able to clearly see how dates should be entered.</source>
+			<target state="final">syntax เป็น dd - mm - yy แต่คุณก็สามารถป้อน"d"ในเขตแทรกในปัจจุบันในวันที่ หรือ"d +10"แทรกวันที่ 10 วันนับจากนี้เป็นต้น ฟิลด์จะ re - ใส่รูปแบบใดเพื่อให้เหมาะสมกับรูปแบบที่เข้าใจเพื่อให้คุณสามารถทดสอบเพียงและคุณจะสามารถเห็นได้ชัดเจนว่าวันที่ควรใส่</target></trans-unit>
+      <trans-unit id="endtime.description" resname="endtime.description" approved="yes">
+        <source>Enter the date from which the account is disabled.</source>
+        <target state="final">ป้อนวันซึ่งบัญชีเป็นผู้พิการ</target>
+      </trans-unit>
+      <trans-unit id="endtime.syntax" resname="endtime.syntax" approved="yes">
+        <source>See "Start"</source>
+        <target state="final">ดู"Start"</target>
+      </trans-unit>
+      <trans-unit id="lastlogin.description" resname="lastlogin.description" approved="yes">
+        <source>This field shows the user's last log in date.</source>
+        <target state="final">ข้อมูลนี้จะแสดงบันทึกล่าสุดของผู้ใช้ในวันที่</target>
+      </trans-unit>
+      <trans-unit id="TSconfig.description" resname="TSconfig.description" approved="yes">
+        <source>Enter additional TSconfig for the user (advanced).</source>
+        <target state="final">ใส่ TSconfig เพิ่มเติมสำหรับผู้ใช้ (ขั้นสูง)</target>
+      </trans-unit>
+      <trans-unit id="TSconfig.syntax" resname="TSconfig.syntax" approved="yes">
+        <source>TypoScript syntax, without conditions and constants.</source>
+        <target state="final">ไวยากรณ์ TypoScript โดยปราศจากเงื่อนไขและค่าคงที่</target>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>A website login user.</source>
+        <target state="final">ผู้ใช้เข้าสู่เว็บไซต์</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" approved="yes">
+        <source>These are users with a username and password who are allowed specific access to otherwise restricted areas on your website.</source>
+        <target state="final">เหล่านี้เป็นผู้ใช้ที่มีชื่อผู้ใช้และรหัสผ่านที่ได้รับอนุญาตให้ใช้เฉพาะพื้นที่หวงห้ามไว้ในเว็บไซต์ของคุณ</target>
+      </trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" xml:space="preserve" approved="yes">
+				<source>Part of the form for editing a frontend user.
+A typical login box (standard) on the website where frontend users can login.</source>
+			<target state="final">ส่วนหนึ่งของการแก้ไขแบบฟอร์มสำหรับผู้ใช้ frontend login กล่องทั่วไป (standard) ในการเข้าสู่ระบบเว็บไซต์ frontend ซึ่งผู้ใช้สามารถ</target></trans-unit>
+    </body>
+  </file>
+</xliff>
