@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="clipBoard" resname="clipBoard" approved="yes">
+        <source>Show clipboard</source>
+        <target state="final">Zwischenablage anzeigen</target>
+      </trans-unit>
+      <trans-unit id="clip_paste" resname="clip_paste" approved="yes">
+        <source>Paste in clipboard content</source>
+        <target state="final">Inhalt der Zwischenablage einfügen</target>
+      </trans-unit>
+      <trans-unit id="clip_pasteInto" resname="clip_pasteInto" approved="yes">
+        <source>Paste into: Clipboard content is inserted into this folder</source>
+        <target state="final">Einfügen in: Inhalt der Zwischenablage wird in diesen Ordner eingefügt</target>
+      </trans-unit>
+      <trans-unit id="editMarked" resname="editMarked" approved="yes">
+        <source>Edit Metadata</source>
+        <target state="final">Metadaten bearbeiten</target>
+      </trans-unit>
+      <trans-unit id="clip_selectMarked" resname="clip_selectMarked" approved="yes">
+        <source>Transfer to clipboard</source>
+        <target state="final">In die Zwischenablage übertragen</target>
+      </trans-unit>
+      <trans-unit id="clip_deleteMarked" resname="clip_deleteMarked" approved="yes">
+        <source>Remove from clipboard</source>
+        <target state="final">Aus der Zwischenablage entfernen</target>
+      </trans-unit>
+      <trans-unit id="clip_deleteMarkedWarning" resname="clip_deleteMarkedWarning" approved="yes">
+        <source>Are you sure you want to delete all marked files from this folder?</source>
+        <target state="final">Alle markierten Dateien aus diesem Ordner tatsächlich löschen?</target>
+      </trans-unit>
+      <trans-unit id="displayThumbs" resname="displayThumbs" approved="yes">
+        <source>Display thumbnails</source>
+        <target state="final">Vorschaubilder anzeigen</target>
+      </trans-unit>
+      <trans-unit id="c_name" resname="c_name" approved="yes">
+        <source>Name</source>
+        <target state="final">Name</target>
+      </trans-unit>
+      <trans-unit id="c_size" resname="c_size" approved="yes">
+        <source>Size</source>
+        <target state="final">Größe</target>
+      </trans-unit>
+      <trans-unit id="c_record_type" resname="c_record_type" approved="yes">
+        <source>Type</source>
+        <target state="final">Typ</target>
+      </trans-unit>
+      <trans-unit id="c_rw" resname="c_rw" approved="yes">
+        <source>RW</source>
+        <target state="final">LS</target>
+      </trans-unit>
+      <trans-unit id="files" resname="files" approved="yes">
+        <source>files</source>
+        <target state="final">Dateien</target>
+      </trans-unit>
+      <trans-unit id="temp" resname="temp" approved="yes">
+        <source>Temporary files</source>
+        <target state="final">Temporäre Dateien</target>
+      </trans-unit>
+      <trans-unit id="read" resname="read" approved="yes">
+        <source>R</source>
+        <target state="final">L</target>
+      </trans-unit>
+      <trans-unit id="recycler" resname="recycler" approved="yes">
+        <source>Recycler</source>
+        <target state="final">Papierkorb</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel" approved="yes">
+        <source>Listing of files in the directory</source>
+        <target state="final">Anzeige von Dateien und Ordnern</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr" approved="yes">
+        <source>This is the file administration system in TYPO3. It allows you to access the file mounts of your login. Through this module you can upload, copy, move an delete files on the server.</source>
+        <target state="final">Dies ist das Dateiverwaltungssystem von TYPO3. Es erlaubt den Zugriff auf die für Ihren Benutzer gültigen Verzeichnisfreigaben. Mit diesem Modul können Sie Dateien hochladen, sie auf dem Server kopieren, verschieben und löschen.</target>
+      </trans-unit>
+      <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab" approved="yes">
+        <source>Filelist</source>
+        <target state="final">Dateiliste</target>
+      </trans-unit>
+      <trans-unit id="write" resname="write" approved="yes">
+        <source>W</source>
+        <target state="final">S</target>
+      </trans-unit>
+      <trans-unit id="storageNotBrowsableTitle" resname="storageNotBrowsableTitle" approved="yes">
+        <source>Access denied.</source>
+        <target state="final">Zugriff verweigert.</target>
+      </trans-unit>
+      <trans-unit id="storageNotBrowsableMessage" resname="storageNotBrowsableMessage" approved="yes">
+        <source>You are trying to access a folder in a storage that is not browsable.</source>
+        <target state="final">Sie versuchen, auf einen Ordner in einem Speicher zuzugreifen, der nicht durchsucht werden kann.</target>
+      </trans-unit>
+      <trans-unit id="missingFolderPermissionsTitle" resname="missingFolderPermissionsTitle" approved="yes">
+        <source>Missing folder permissions</source>
+        <target state="final">Fehlende Ordnerberechtigungen</target>
+      </trans-unit>
+      <trans-unit id="missingFolderPermissionsMessage" resname="missingFolderPermissionsMessage" approved="yes">
+        <source>You have no access to the folder "%s".</source>
+        <target state="final">Sie haben keinen Zugriff auf den Ordner "%s".</target>
+      </trans-unit>
+      <trans-unit id="localStorageOfflineTitle" resname="localStorageOfflineTitle" approved="yes">
+        <source>Base folder for local storage missing or not allowed</source>
+        <target state="final">Basisordner für lokalen Speicher fehlt oder ist nicht erlaubt</target>
+      </trans-unit>
+      <trans-unit id="localStorageOfflineMessage" resname="localStorageOfflineMessage" approved="yes">
+        <source>Verify that the base folder for the storage "%s" exists and is allowed to be accessed.</source>
+        <target state="final">Vergewissern Sie sich, dass der Basisordner für den Speicher "%s" existiert und der Zugriff darauf erlaubt ist.</target>
+      </trans-unit>
+      <trans-unit id="folderNotFoundTitle" resname="folderNotFoundTitle" approved="yes">
+        <source>Folder not found.</source>
+        <target state="final">Ordner nicht gefunden.</target>
+      </trans-unit>
+      <trans-unit id="folderNotFoundMessage" resname="folderNotFoundMessage" approved="yes">
+        <source>The folder "%s" cannot be accessed. Trying to use parent folder(s).</source>
+        <target state="final">Auf den Ordner "%s" kann nicht zugegriffen werden. Versuchen Sie es mit einem übergeordneten Ordner.</target>
+      </trans-unit>
+      <trans-unit id="translateMetadata" resname="translateMetadata" approved="yes">
+        <source>Translate metadata</source>
+        <target state="final">Metadaten übersetzen</target>
+      </trans-unit>
+      <trans-unit id="createMetadataForLanguage" resname="createMetadataForLanguage" approved="yes">
+        <source>Create metadata of this file for %s</source>
+        <target state="final">Metadaten dieser Datei erstellen für %s</target>
+      </trans-unit>
+      <trans-unit id="editMetadataForLanguage" resname="editMetadataForLanguage" approved="yes">
+        <source>Edit metadata of this file for %s</source>
+        <target state="final">Metadaten dieser Datei bearbeiten für %s</target>
+      </trans-unit>
+      <trans-unit id="paramError" resname="paramError" approved="yes">
+        <source>Parameter Error</source>
+        <target state="final">Parameterfehler</target>
+      </trans-unit>
+      <trans-unit id="targetNoDir" resname="targetNoDir" approved="yes">
+        <source>Target was not a directory!</source>
+        <target state="final">Ziel war kein Verzeichnis!</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
