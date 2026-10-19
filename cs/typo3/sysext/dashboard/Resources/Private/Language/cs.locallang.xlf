@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="messages" date="2018-11-27T22:26:21Z" product-name="dashboard" target-language="cs">
+    <header/>
+    <body>
+      <trans-unit id="close" xml:space="preserve" approved="yes">
+				<source>Close</source>
+			<target state="final">Zavřít</target></trans-unit>
+      <trans-unit id="title" xml:space="preserve" approved="yes">
+				<source>Dashboard</source>
+			<target state="final">Nástěnka</target></trans-unit>
+      <trans-unit id="widget.add" xml:space="preserve" approved="yes">
+				<source>Add widget</source>
+			<target state="final">Přidat widget</target></trans-unit>
+      <trans-unit id="widget.add.button.close" xml:space="preserve" approved="yes">
+				<source>Close</source>
+			<target state="final">Zavřít</target></trans-unit>
+      <trans-unit id="widget.add.button.ok" xml:space="preserve" approved="yes">
+				<source>Add widget</source>
+			<target state="final">Přidat widget</target></trans-unit>
+      <trans-unit id="widget.remove.button.close" xml:space="preserve" approved="yes">
+				<source>Close</source>
+			<target state="final">Zavřít</target></trans-unit>
+      <trans-unit id="widget.remove.button.ok" xml:space="preserve" approved="yes">
+				<source>Remove</source>
+			<target state="final">Odstranit</target></trans-unit>
+      <trans-unit id="widget.remove.confirm.title" xml:space="preserve" approved="yes">
+				<source>Remove widget</source>
+			<target state="final">Odstranit widget</target></trans-unit>
+      <trans-unit id="widget.remove.confirm.message" xml:space="preserve" approved="yes">
+				<source>Are you sure you want to remove this widget?</source>
+			<target state="final">Určitě chcete odstranit tento widget?</target></trans-unit>
+      <trans-unit id="widget.error" xml:space="preserve" approved="yes">
+				<source>An error occurred while retrieving information for this widget. Please try again, and if the problem persists, contact your administrator.</source>
+			<target state="final">Při načítání informací o tomto widgetu došlo k chybě. Zkuste to prosím znovu a pokud problém přetrvává, obraťte se na správce.</target></trans-unit>
+      <trans-unit id="dashboard.default" xml:space="preserve" approved="yes">
+				<source>My dashboard</source>
+			<target state="final">Moje nástěnka</target></trans-unit>
+      <trans-unit id="dashboard.default.description" xml:space="preserve" approved="yes">
+				<source>Create a new dashboard with some general TYPO3 widgets on it</source>
+			<target state="final">Vytvořit novou nástěnku s obecným TYPO3 widgetem</target></trans-unit>
+      <trans-unit id="dashboard.empty" xml:space="preserve" approved="yes">
+				<source>Empty dashboard</source>
+			<target state="final">Prázdná nástěnka</target></trans-unit>
+      <trans-unit id="dashboard.empty.description" xml:space="preserve" approved="yes">
+				<source>Your dashboard will be created without any widget on it.</source>
+			<target state="final">Vaše nástěnka bude vytvořena bez jakéhokoliv widgetu.</target></trans-unit>
+      <trans-unit id="dashboard.add" xml:space="preserve" approved="yes">
+				<source>Add dashboard</source>
+			<target state="final">Přidat nástěnku</target></trans-unit>
+      <trans-unit id="dashboard.add.button.close" xml:space="preserve" approved="yes">
+				<source>Close</source>
+			<target state="final">Zavřít</target></trans-unit>
+      <trans-unit id="dashboard.add.button.ok" xml:space="preserve" approved="yes">
+				<source>Add Dashboard</source>
+			<target state="final">Přidat nástěnku</target></trans-unit>
+      <trans-unit id="dashboard.configure" xml:space="preserve" approved="yes">
+				<source>Configure dashboard</source>
+			<target state="final">Nastavit nástěnku</target></trans-unit>
+      <trans-unit id="dashboard.configure.button.close" xml:space="preserve" approved="yes">
+				<source>Close</source>
+			<target state="final">Zavřít</target></trans-unit>
+      <trans-unit id="dashboard.configure.button.ok" xml:space="preserve" approved="yes">
+				<source>Save Dashboard</source>
+			<target state="final">Uložit nástěnku</target></trans-unit>
+      <trans-unit id="dashboard.delete" xml:space="preserve" approved="yes">
+				<source>Delete dashboard</source>
+			<target state="final">Odstranit nástěnku</target></trans-unit>
+      <trans-unit id="dashboard.delete.sure" xml:space="preserve" approved="yes">
+				<source>Are you sure you want to delete this dashboard?</source>
+			<target state="final">Jste si jisti, že chcete smazat tuto nástěnku?</target></trans-unit>
+      <trans-unit id="dashboard.delete.ok" xml:space="preserve" approved="yes">
+				<source>Yes, delete it</source>
+			<target state="final">Ano, odstranit</target></trans-unit>
+      <trans-unit id="dashboard.delete.cancel" xml:space="preserve" approved="yes">
+				<source>Cancel</source>
+			<target state="final">Zrušit</target></trans-unit>
+      <trans-unit id="dashboard.title" xml:space="preserve" approved="yes">
+				<source>Title of dashboard</source>
+			<target state="final">Název nástěnky</target></trans-unit>
+      <trans-unit id="widgets.documentation.gettingStarted.title" xml:space="preserve" approved="yes">
+				<source>Getting Started with TYPO3</source>
+ 			<target state="final">Začínáme s TYPO3</target></trans-unit>
+      <trans-unit id="widgets.documentation.gettingStarted.description" xml:space="preserve" approved="yes">
+				<source>Add a shortcut to the TYPO3 Getting Started Tutorial.</source>
+ 			<target state="final">Přidejte zástupce na TYPO3 tutoriál pro začátečníky.</target></trans-unit>
+      <trans-unit id="widgets.documentation.gettingStarted.text" xml:space="preserve" approved="yes">
+				<source>New to TYPO3? In our Getting Started Tutorial you will learn the basics how to use TYPO3.</source>
+ 			<target state="final">Novinky v TYPO3? V našem průvodci Tutoriál pro začátečníky se naučíte základy, jak používat TYPO3.</target></trans-unit>
+      <trans-unit id="widgets.documentation.gettingStarted.content.label" xml:space="preserve" approved="yes">
+				<source>Getting Started Tutorial</source>
+ 			<target state="final">Tutoriál pro začátečníky</target></trans-unit>
+      <trans-unit id="widgets.documentation.typoscriptReference.title" xml:space="preserve" approved="yes">
+				<source>TypoScript Template Reference</source>
+ 			<target state="final">Reference šablony TypoScriptu</target></trans-unit>
+      <trans-unit id="widgets.documentation.typoscriptReference.description" xml:space="preserve" approved="yes">
+				<source>Add a shortcut to the TYPO3 TypoScript Template Reference.</source>
+ 			<target state="final">Přidejte zkratku na šablony TYPO3 TypoScriptu.</target></trans-unit>
+      <trans-unit id="widgets.documentation.typoscriptReference.text" xml:space="preserve" approved="yes">
+				<source>This document is a reference, used to lookup TypoScript templating.</source>
+ 			<target state="final">Tento dokument je odkazem, který se používá pro vyhledávání šablony TypoScriptu.</target></trans-unit>
+      <trans-unit id="widgets.documentation.typoscriptReference.content.label" xml:space="preserve" approved="yes">
+				<source>TypoScript Template Reference</source>
+ 			<target state="final">Reference šablony TypoScriptu</target></trans-unit>
+      <trans-unit id="widgets.documentation.TSconfigReference.title" xml:space="preserve" approved="yes">
+				<source>TSconfig Reference</source>
+ 			<target state="final">TSconfig Reference</target></trans-unit>
+      <trans-unit id="widgets.documentation.TSconfigReference.description" xml:space="preserve" approved="yes">
+				<source>Add a shortcut to the TYPO3 TSconfig Reference.</source>
+ 			<target state="final">Přidejte zkratku na TYPO3 TSconfig.</target></trans-unit>
+      <trans-unit id="widgets.documentation.TSconfigReference.text" xml:space="preserve" approved="yes">
+				<source>This document describes TSconfig and its options.</source>
+ 			<target state="final">Tento dokument popisuje TSconfig a jeho možnosti.</target></trans-unit>
+      <trans-unit id="widgets.documentation.TSconfigReference.content.label" xml:space="preserve" approved="yes">
+				<source>TSconfig Reference</source>
+ 			<target state="final">TSconfig Reference</target></trans-unit>
+      <trans-unit id="widgets.t3news.title" xml:space="preserve" approved="yes">
+				<source>TYPO3 news</source>
+			<target state="final">Novinky z TYPO3</target></trans-unit>
+      <trans-unit id="widgets.t3news.description" xml:space="preserve" approved="yes">
+				<source>Add a list of news items from the TYPO3 project</source>
+			<target state="final">Přidat seznam novinek z TYPO3</target></trans-unit>
+      <trans-unit id="widgets.t3news.moreItems" xml:space="preserve" approved="yes">
+				<source>More TYPO3 news</source>
+			<target state="final">Další novinky TYPO3</target></trans-unit>
+      <trans-unit id="widgets.t3information.title" xml:space="preserve" approved="yes">
+				<source>About TYPO3</source>
+			<target state="final">O TYPO3</target></trans-unit>
+      <trans-unit id="widgets.t3information.description" xml:space="preserve" approved="yes">
+				<source>Some general information about TYPO3 and the version used</source>
+			<target state="final">Některé obecné informace o TYPO3 a použité verzi</target></trans-unit>
+      <trans-unit id="widgets.t3information.text" resname="widgets.t3information.text" approved="yes">
+        <source><![CDATA[TYPO3 CMS is an enterprise-class, Open Source Content Management System, used internationally to build and manage websites of all types, from small sites for non-profits to multilingual enterprise solutions for large corporations.<br /><br />For further information visit <a href="https://typo3.org/typo3-cms/" target="_blank" rel="noreferrer">typo3.org</a>.<br /><br />TYPO3 CMS is <b>freely available</b> under the <a href="https://typo3.org/project/licenses/" target="_blank" rel="noreferrer">TYPO3-license (GNU/GPL)</a>.<br /><br />You are using version %s - Copyright %s %s]]></source>
+        <target state="final"><![CDATA[TYPO3 CMS je podnikový systém pro správu obsahu s otevřeným zdrojovým kódem, který se používá mezinárodně pro vytváření a správu webových stránek všech typů, od malých pracovišť pro neziskové podniky až po vícejazyčná řešení pro velké korporace.<br /><br />Další informace naleznete na <a href="https://typo3.org/typo3-cms/" target="_blank" rel="noreferrer">typo3.org</a>.<br /><br />TYPO3 CMS je <b>volně k dispozici</b> pod licencí <a href="https://typo3.org/project/licenses/" target="_blank" rel="noreferrer">TYPO3 (GNU/GPL)</a>.<br /><br />Používáte verzi %s - Copyright %s %s]]></target>
+      </trans-unit>
+      <trans-unit id="widgets.t3information.logo" resname="widgets.t3information.logo" approved="yes">
+        <source>TYPO3 CMS logo</source>
+        <target state="final">TYPO3 CMS logo</target>
+      </trans-unit>
+      <trans-unit id="widgets.sysLogErrors.title" xml:space="preserve" approved="yes">
+				<source>Number of errors in system log</source>
+			<target state="final">Počet chyb v systémovém protokolu</target></trans-unit>
+      <trans-unit id="widgets.sysLogErrors.description" xml:space="preserve" approved="yes">
+				<source>Shows the number of errors in the sys log of the last month, grouped by date</source>
+			<target state="final">Zobrazí počet chyb v systémovém protokolu za poslední měsíc, seskupených podle data</target></trans-unit>
+      <trans-unit id="widgets.sysLogErrors.buttonText" xml:space="preserve" approved="yes">
+				<source>Show all errors in log</source>
+			<target state="final">Zobrazit všechny chyby v logu</target></trans-unit>
+      <trans-unit id="widgets.sysLogErrors.chart.dataSet.0" xml:space="preserve" approved="yes">
+				<source>Number of errors</source>
+			<target state="final">Počet chyb</target></trans-unit>
+      <trans-unit id="widgets.typeOfUsers.title" xml:space="preserve" approved="yes">
+				<source>Type of backend users</source>
+			<target state="final">Typ BE-uživatelů</target></trans-unit>
+      <trans-unit id="widgets.typeOfUsers.description" xml:space="preserve" approved="yes">
+				<source>Shows the amount of normal- and admin-users</source>
+			<target state="final">Zobrazuje počet běžných a správcovských uživatelů</target></trans-unit>
+      <trans-unit id="widgets.typeOfUsers.normalUsers" xml:space="preserve" approved="yes">
+				<source>Normal users</source>
+			<target state="final">Běžný uživatel</target></trans-unit>
+      <trans-unit id="widgets.typeOfUsers.adminUsers" xml:space="preserve" approved="yes">
+				<source>Admin users</source>
+			<target state="final">Správce</target></trans-unit>
+      <trans-unit id="widgets.failedLogins.title" xml:space="preserve" approved="yes">
+				<source>Failed backend logins</source>
+			<target state="final">Neúspěšné přihlášení do backendu</target></trans-unit>
+      <trans-unit id="widgets.failedLogins.subtitle" xml:space="preserve" approved="yes">
+				<source>In last 24 hours</source>
+			<target state="final">Za posledních 24 hodin</target></trans-unit>
+      <trans-unit id="widgets.failedLogins.description" xml:space="preserve" approved="yes">
+				<source>Information about the number of failed logins during the last 24 hours.</source>
+			<target state="final">Informace o počtu neúspěšných přihlášení za posledních 24 hodin.</target></trans-unit>
+      <trans-unit id="widgets.t3securityAdvisories.title" xml:space="preserve" approved="yes">
+				<source>TYPO3 security advisories</source>
+			<target state="final">Bezpečnostní poradenství TYPO3</target></trans-unit>
+      <trans-unit id="widgets.t3securityAdvisories.description" xml:space="preserve" approved="yes">
+				<source>Add a list of security advisories from the TYPO3 project</source>
+			<target state="final">Přidat seznam bezpečnostních rad TYPO3</target></trans-unit>
+      <trans-unit id="widgets.t3securityAdvisories.moreItems" xml:space="preserve" approved="yes">
+				<source>More TYPO3 security advisories</source>
+			<target state="final">Další bezpečnostní rady TYPO3</target></trans-unit>
+      <trans-unit id="widget_group.general" xml:space="preserve" approved="yes">
+				<source>General</source>
+ 			<target state="final">Obecné</target></trans-unit>
+      <trans-unit id="widget_group.typo3" xml:space="preserve" approved="yes">
+				<source>TYPO3 community</source>
+ 			<target state="final">Komunita TYPO3</target></trans-unit>
+      <trans-unit id="widget_group.news" xml:space="preserve" approved="yes">
+				<source>News</source>
+ 			<target state="final">Novinky</target></trans-unit>
+      <trans-unit id="widget_group.documentation" xml:space="preserve" approved="yes">
+				<source>Documentation</source>
+ 			<target state="final">Dokumentace</target></trans-unit>
+      <trans-unit id="widget_group.system" xml:space="preserve" approved="yes">
+				<source>System Information</source>
+ 			<target state="final">Informace o systému</target></trans-unit>
+      <trans-unit id="dashboard.empty.content.title" xml:space="preserve" approved="yes">
+				<source>No widgets</source>
+ 			<target state="final">Žádný widget</target></trans-unit>
+      <trans-unit id="dashboard.empty.content.description" xml:space="preserve" approved="yes">
+				<source>There are no widgets on this dashboard yet. You can add widgets now by clicking on the button below.</source>
+ 			<target state="final">Na této nástěnce zatím nejsou žádné widgety. Widget můžete přidat klepnutím na tlačítko níže.</target></trans-unit>
+      <trans-unit id="dashboard.empty.content.button" xml:space="preserve" approved="yes">
+				<source>Add a widget</source>
+ 			<target state="final">Přidat widget</target></trans-unit>
+    </body>
+  </file>
+</xliff>
