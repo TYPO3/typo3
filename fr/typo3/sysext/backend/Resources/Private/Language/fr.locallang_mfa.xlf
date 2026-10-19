@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_mfa.xlf" date="2021-01-26T11:58:45Z" product-name="cms" target-language="fr">
+    <header/>
+    <body>
+      <trans-unit id="overview.title" resname="overview.title" approved="yes">
+        <source>Multi-factor Authentication Overview</source>
+        <target state="final">Présentation de l'authentification multifactorielle</target>
+      </trans-unit>
+      <trans-unit id="overview.badge.active" resname="overview.badge.active" approved="yes">
+        <source>Active</source>
+        <target state="final">Actif</target>
+      </trans-unit>
+      <trans-unit id="overview.badge.locked" resname="overview.badge.locked" approved="yes">
+        <source>Locked</source>
+        <target state="final">Verrouillé</target>
+      </trans-unit>
+      <trans-unit id="overview.defaultProvider" resname="overview.defaultProvider" approved="yes">
+        <source>Default provider</source>
+        <target state="final">Fournisseur par défaut </target>
+      </trans-unit>
+      <trans-unit id="overview.unlockLinkTitle" resname="overview.unlockLinkTitle" approved="yes">
+        <source>Unlock %s</source>
+        <target state="final">Déverrouiller %s</target>
+      </trans-unit>
+      <trans-unit id="overview.unlockLinkLabel" resname="overview.unlockLinkLabel" approved="yes">
+        <source>Unlock</source>
+        <target state="final">Déverrouiller</target>
+      </trans-unit>
+      <trans-unit id="overview.editLinkTitle" resname="overview.editLinkTitle" approved="yes">
+        <source>Edit %s</source>
+        <target state="final">Éditer %s</target>
+      </trans-unit>
+      <trans-unit id="overview.editLinkLabel" resname="overview.editLinkLabel" approved="yes">
+        <source>Edit / Change</source>
+        <target state="final">Modifier / Changer</target>
+      </trans-unit>
+      <trans-unit id="overview.deactivateLinkTitle" resname="overview.deactivateLinkTitle" approved="yes">
+        <source>Deactivate %s</source>
+        <target state="final">Désactiver %s</target>
+      </trans-unit>
+      <trans-unit id="overview.deactivateLinkLabel" resname="overview.deactivateLinkLabel" approved="yes">
+        <source>Deactivate</source>
+        <target state="final">Désactiver</target>
+      </trans-unit>
+      <trans-unit id="overview.setupLinkTitle" resname="overview.setupLinkTitle" approved="yes">
+        <source>Setup %s</source>
+        <target state="final">Configuration %s</target>
+      </trans-unit>
+      <trans-unit id="overview.setupLinkLabel" resname="overview.setupLinkLabel" approved="yes">
+        <source>Setup</source>
+        <target state="final">Configuration</target>
+      </trans-unit>
+      <trans-unit id="overview.setupRequired.title" resname="overview.setupRequired.title" approved="yes">
+        <source>Multi-factor authentication required</source>
+        <target state="final">Authentification multifactorielle requise</target>
+      </trans-unit>
+      <trans-unit id="overview.setupRequired.message" resname="overview.setupRequired.message" approved="yes">
+        <source>
+					Your installation requires MFA. Therefore please setup one of the following providers to be
+					able to continue to use the backend.
+				</source>
+        <target state="final">
+					Votre installation nécessite une MFA. Veuillez donc configurer l'un des fournisseurs suivants pour être
+					en mesure de continuer à utiliser le backend.
+				</target>
+      </trans-unit>
+      <trans-unit id="overview.noProviders.title" resname="overview.noProviders.title" approved="yes">
+        <source>No multi-factor authentication providers</source>
+        <target state="final">Aucun fournisseur d'authentification multifactorielle</target>
+      </trans-unit>
+      <trans-unit id="overview.noProviders.message" resname="overview.noProviders.message" approved="yes">
+        <source>There are currently no multi-factor authentication providers available.</source>
+        <target state="final">Il n'y a actuellement aucun fournisseur d'authentification multifactorielle disponible.</target>
+      </trans-unit>
+      <trans-unit id="overview.noProviders.errorMessage" resname="overview.noProviders.errorMessage" approved="yes">
+        <source>
+					You are required to setup MFA but there are no providers to activate available. You should contact
+					your administrator to solve this.
+				</source>
+        <target state="final">
+Vous devez configurer l'authentification MFA, mais aucun fournisseur n'est disponible pour l'activation. Vous devriez contacter 
+votre administrateur pour résoudre ce problème.</target>
+      </trans-unit>
+      <trans-unit id="providerNotFound" resname="providerNotFound" approved="yes">
+        <source>Selected MFA provider was not found!</source>
+        <target state="final">Le fournisseur MFA sélectionné n'a pas été trouvé !</target>
+      </trans-unit>
+      <trans-unit id="providerNotActive" resname="providerNotActive" approved="yes">
+        <source>Selected MFA provider has to be active to perform this action!</source>
+        <target state="final">Le fournisseur MFA sélectionné doit être actif pour effectuer cette action !</target>
+      </trans-unit>
+      <trans-unit id="providerActive" resname="providerActive" approved="yes">
+        <source>Selected MFA provider has to be inactive to perform this action!</source>
+        <target state="final">Le fournisseur MFA sélectionné doit être inactif pour effectuer cette action !</target>
+      </trans-unit>
+      <trans-unit id="providerIsLocked" resname="providerNotFound" approved="yes">
+        <source>Selected MFA provider has to be unlocked to perform this action!</source>
+        <target state="final">Le fournisseur MFA sélectionné doit être déverrouillé pour effectuer cette action !</target>
+      </trans-unit>
+      <trans-unit id="setup.instructions" resname="setup.instructions" approved="yes">
+        <source>Setup instructions</source>
+        <target state="final">Instructions d'installation</target>
+      </trans-unit>
+      <trans-unit id="setup.instructions.close" resname="setup.instructions.close" approved="yes">
+        <source>Close setup instructions</source>
+        <target state="final">Fermer les instructions d'installation</target>
+      </trans-unit>
+      <trans-unit id="setup.title" resname="setup.title" approved="yes">
+        <source>Set up %s</source>
+        <target state="final">Installation de %s</target>
+      </trans-unit>
+      <trans-unit id="edit.title" resname="edit.title" approved="yes">
+        <source>Edit %s</source>
+        <target state="final">Éditer %s</target>
+      </trans-unit>
+      <trans-unit id="edit.defaultProvider" resname="edit.defaultProvider" approved="yes">
+        <source>Default provider</source>
+        <target state="final">Fournisseur par défaut </target>
+      </trans-unit>
+      <trans-unit id="edit.defaultProvider.description" resname="edit.defaultProvider.description" approved="yes">
+        <source>Select this as your default provider for login into the TYPO3 backend.</source>
+        <target state="final">Sélectionnez par défaut ce fournisseur pour vous connecter au backend TYPO3.</target>
+      </trans-unit>
+      <trans-unit id="edit.defaultProvider.inputLabel" resname="edit.defaultProvider.inputLabel" approved="yes">
+        <source>Use as default provider</source>
+        <target state="final">Utiliser comme fournisseur par défaut</target>
+      </trans-unit>
+      <trans-unit id="edit.deactivateProvider" resname="edit.deactivateProvider" approved="yes">
+        <source>Deactivate provider</source>
+        <target state="final">Désactiver le fournisseur</target>
+      </trans-unit>
+      <trans-unit id="edit.deactivateProvider.description" resname="edit.deactivateProvider.description" approved="yes">
+        <source>If you don't want to use this provider anymore, you can deactivate it here.</source>
+        <target state="final">Si vous ne voulez plus utiliser ce fournisseur, vous pouvez le désactiver ici.</target>
+      </trans-unit>
+      <trans-unit id="edit.deactivateProvider.linkTitle" resname="edit.deactivateProvider.linkTitle" approved="yes">
+        <source>Deactivate %s</source>
+        <target state="final">Désactiver %s</target>
+      </trans-unit>
+      <trans-unit id="edit.deactivateProvider.linkText" resname="edit.deactivateProvider.linkText" approved="yes">
+        <source>Deactivate this provider</source>
+        <target state="final">Désactiver ce fournisseur</target>
+      </trans-unit>
+      <trans-unit id="activate.failure" resname="activate.failure" approved="yes">
+        <source>Could not activate MFA provider %s. Please try again.</source>
+        <target state="final">Impossible d'activer le fournisseur MFA %s. Veuillez réessayer.</target>
+      </trans-unit>
+      <trans-unit id="activate.success" resname="activate.success" approved="yes">
+        <source>Successfully activated MFA provider %s.</source>
+        <target state="final">Fournisseur MFA %s activé avec succès.</target>
+      </trans-unit>
+      <trans-unit id="deactivate.failure" resname="deactivate.failure" approved="yes">
+        <source>Could not deactivate MFA provider %s. Please try again.</source>
+        <target state="final">Impossible de désactiver le fournisseur MFA %s. Veuillez réessayer.</target>
+      </trans-unit>
+      <trans-unit id="deactivate.success" resname="deactivate.success" approved="yes">
+        <source>Successfully deactivated MFA provider %s.</source>
+        <target state="final">Le fournisseur MFA %s a bien été désactivé.</target>
+      </trans-unit>
+      <trans-unit id="unlock.failure" resname="unlock.failure" approved="yes">
+        <source>Could not unlock MFA provider %s. Please try again.</source>
+        <target state="final">Impossible de déverrouiller le fournisseur MFA %s. Veuillez réessayer.</target>
+      </trans-unit>
+      <trans-unit id="unlock.success" resname="unlock.success" approved="yes">
+        <source>Successfully unlocked MFA provider %s.</source>
+        <target state="final">Le fournisseur MFA %s a été déverrouillé avec succès.</target>
+      </trans-unit>
+      <trans-unit id="save.failure" resname="save.failure" approved="yes">
+        <source>Could not update MFA provider %s. Please try again.</source>
+        <target state="final">Impossible de mettre à jour le fournisseur MFA %s. Veuillez réessayer.</target>
+      </trans-unit>
+      <trans-unit id="save.success" resname="save.success" approved="yes">
+        <source>Successfully updated MFA provider %s.</source>
+        <target state="final">Fournisseur MFA %s mis à jour avec succès.</target>
+      </trans-unit>
+      <trans-unit id="auth.authError" resname="auth.authError" approved="yes">
+        <source>Authentication was not successful.</source>
+        <target state="final">L'authentification a échoué.</target>
+      </trans-unit>
+      <trans-unit id="auth.submit" resname="auth.submit" approved="yes">
+        <source>Verify</source>
+        <target state="final">Vérifier</target>
+      </trans-unit>
+      <trans-unit id="auth.cancel" resname="auth.cancel" approved="yes">
+        <source>Go back</source>
+        <target state="final">Retour</target>
+      </trans-unit>
+      <trans-unit id="auth.locked" resname="auth.locked" approved="yes">
+        <source>This provider is temporarily locked!</source>
+        <target state="final">Ce fournisseur est temporairement verrouillé !</target>
+      </trans-unit>
+      <trans-unit id="auth.alternativeProviders" resname="auth.alternativeProviders" approved="yes">
+        <source>Alternative providers</source>
+        <target state="final">Fournisseurs alternatifs</target>
+      </trans-unit>
+      <trans-unit id="auth.alternativeProviders.use" resname="auth.alternativeProviders.use" approved="yes">
+        <source>Use %s</source>
+        <target state="final">Utiliser %s</target>
+      </trans-unit>
+      <trans-unit id="standalone.setupProvider" resname="standalone.setupProvider" approved="yes">
+        <source>Set up %s</source>
+        <target state="final">Installation de %s</target>
+      </trans-unit>
+      <trans-unit id="standalone.selection.title" resname="standalone.selection.title" approved="yes">
+        <source>Set up MFA</source>
+        <target state="final">Installation du MFA</target>
+      </trans-unit>
+      <trans-unit id="standalone.selection.message" resname="standalone.selection.message" approved="yes">
+        <source>
+					%s requires you setting up MFA to secure your account. Please select one of the
+					available providers below.
+				</source>
+        <target state="final">
+					%s nécessite la mise en place du MFA pour sécuriser votre compte. Veuillez sélectionner l'un des
+					fournisseurs disponibles ci-dessous.
+				</target>
+      </trans-unit>
+      <trans-unit id="standalone.selection.noAvailableProviders" resname="standalone.selection.noAvailableProviders" approved="yes">
+        <source>
+					You are required to set up MFA. However, there are no MFA providers available for you to use.
+					This might be a misconfiguration. Please get in touch with your administrator to find a solution.
+				</source>
+        <target state="final">
+					Vous êtes tenu de mettre en place un MFA. Cependant, aucun fournisseur MFA n'est disponible pour vous.
+					Ceci peut être lié à une mauvaise configuration. Veuillez contacter votre administrateur pour trouver une solution.
+				</target>
+      </trans-unit>
+      <trans-unit id="standalone.selection.goBack" resname="standalone.selection.goBack" approved="yes">
+        <source>Go back</source>
+        <target state="final">Retour</target>
+      </trans-unit>
+      <trans-unit id="standalone.setup" resname="standalone.setup" approved="yes">
+        <source>Setup</source>
+        <target state="final">Configurer</target>
+      </trans-unit>
+      <trans-unit id="standalone.setup.cancel" resname="setup.standalone.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Annuler</target>
+      </trans-unit>
+      <trans-unit id="standalone.setup.success.title" resname="activate.success" approved="yes">
+        <source>MFA setup successful</source>
+        <target state="final">Configuration du MFA réussie</target>
+      </trans-unit>
+      <trans-unit id="standalone.setup.success.message" resname="activate.success" approved="yes">
+        <source>
+					You have successfully activated MFA provider %s. This provider was also automatically set as your
+					default provider. You can change this at any time in your user settings.
+				</source>
+        <target state="final">
+					Vous avez activé avec succès le fournisseur MFA %s. Ce fournisseur a également été automatiquement défini comme votre fournisseur par défaut. Vous pouvez le modifier à tout moment dans vos paramètres d'utilisateur.
+				</target>
+      </trans-unit>
+      <trans-unit id="ajax.success" approved="yes">
+        <source>Success</source>
+        <target state="final">Opération réussie</target>
+      </trans-unit>
+      <trans-unit id="ajax.error" approved="yes">
+        <source>An error occurred</source>
+        <target state="final">Une erreur est survenue</target>
+      </trans-unit>
+      <trans-unit id="ajax.invalidRequest" approved="yes">
+        <source>Invalid request could not be processed</source>
+        <target state="final">La requête invalide n'a pas pu être traitée</target>
+      </trans-unit>
+      <trans-unit id="ajax.insufficientPermissions" approved="yes">
+        <source>Your are not allowed to perform this action</source>
+        <target state="final">Vous n'êtes pas autorisé à effectuer cette action</target>
+      </trans-unit>
+      <trans-unit id="ajax.deactivate.providersNotDeactivated" approved="yes">
+        <source>No provider has been deactivated</source>
+        <target state="final">Aucun fournisseur n'a été désactivé</target>
+      </trans-unit>
+      <trans-unit id="ajax.deactivate.providersDeactivated" approved="yes">
+        <source>Successfully deactivated all active providers for user %s</source>
+        <target state="final">Tous les fournisseurs actifs pour l'utilisateur %s ont été désactivés avec succès</target>
+      </trans-unit>
+      <trans-unit id="ajax.deactivate.providerNotFound" approved="yes">
+        <source>Provider %s could not be found</source>
+        <target state="final">Fournisseur %s introuvable</target>
+      </trans-unit>
+      <trans-unit id="ajax.deactivate.providerNotDeactivated" approved="yes">
+        <source>Could not deactivate provider %s</source>
+        <target state="final">Impossible de désactiver le fournisseur %s</target>
+      </trans-unit>
+      <trans-unit id="ajax.deactivate.providerDeactivated" approved="yes">
+        <source>Successfully deactivated provider %s for user %s</source>
+        <target state="final">Le fournisseur %s a été désactivé avec succès pour l'utilisateur %s</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
