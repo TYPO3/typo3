@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:form/Resources/Private/Language/Database.xlf" date="2016-08-21T20:15:32Z" product-name="form" target-language="sl">
+    <header/>
+    <body>
+      <trans-unit id="default" resname="default" xml:space="preserve" approved="yes">
+                <source>Default</source>
+            <target state="final">Privzeto</target></trans-unit>
+      <trans-unit id="tt_content.pi_flexform.formframework.sheet_general" resname="tt_content.pi_flexform.formframework.sheet_general" xml:space="preserve" approved="yes">
+                <source>General</source>
+            <target state="final">Splošno</target></trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.Confirmation.message.label" resname="tt_content.finishersDefinition.Confirmation.message.label" xml:space="preserve" approved="yes">
+                <source>Text</source>
+            <target state="final">Besedilo</target></trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.language.1" resname="tt_content.finishersDefinition.EmailToSender.language.1" xml:space="preserve" approved="yes">
+                <source>Default</source>
+            <target state="final">Privzeto</target></trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.title.label" resname="tt_content.finishersDefinition.EmailToSender.title.label" xml:space="preserve" approved="yes">
+                <source>Title</source>
+            <target state="final">Naslov</target></trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.language.1" resname="tt_content.finishersDefinition.EmailToReceiver.language.1" xml:space="preserve" approved="yes">
+                <source>Default</source>
+            <target state="final">Privzeto</target></trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.title.label" resname="tt_content.finishersDefinition.EmailToReceiver.title.label" xml:space="preserve" approved="yes">
+                <source>Title</source>
+            <target state="final">Naslov</target></trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.Redirect.pageUid.label" resname="tt_content.finishersDefinition.Redirect.pageUid.label" xml:space="preserve" approved="yes">
+                <source>Page</source>
+            <target state="final">Stran</target></trans-unit>
+      <trans-unit id="formEditor.insert_elements" resname="formEditor.insert_elements" xml:space="preserve" approved="yes">
+                <source>Insert elements</source>
+            <target state="final">Vstavi elemente</target></trans-unit>
+      <trans-unit id="formEditor.formElementGroups.html5.label" resname="formEditor.formElementGroups.html5.label" xml:space="preserve" approved="yes">
+                <source>Special elements</source>
+            <target state="final">Posebni elementi</target></trans-unit>
+      <trans-unit id="formEditor.elements.Form.saveSuccessFlashMessageTitle" resname="formEditor.elements.Form.saveSuccessFlashMessageTitle" xml:space="preserve" approved="yes">
+                <source>Save</source>
+            <target state="final">Shrani</target></trans-unit>
+      <trans-unit id="formEditor.elements.Form.saveErrorFlashMessageTitle" resname="formEditor.elements.Form.saveErrorFlashMessageTitle" xml:space="preserve" approved="yes">
+                <source>Save</source>
+            <target state="final">Shrani</target></trans-unit>
+      <trans-unit id="formEditor.modals.validationErrors.confirmButton" resname="formEditor.modals.validationErrors.confirmButton" xml:space="preserve" approved="yes">
+                <source>OK</source>
+            <target state="final">V redu</target></trans-unit>
+      <trans-unit id="formEditor.modals.insertElements.dialogTitle" resname="formEditor.modals.insertElements.dialogTitle" xml:space="preserve" approved="yes">
+                <source>New element</source>
+            <target state="final">Nov element</target></trans-unit>
+      <trans-unit id="formEditor.modals.removeElement.cancleButton" resname="formEditor.modals.removeElement.cancleButton" xml:space="preserve" approved="yes">
+                <source>Cancel</source>
+            <target state="final">Prekliči</target></trans-unit>
+      <trans-unit id="formEditor.modals.close.dialogTitle" resname="formEditor.modals.close.dialogTitle" xml:space="preserve" approved="yes">
+                <source>Do you want to quit without saving?</source>
+            <target state="final">Ali želite zaključiti brez shranjevanja?</target></trans-unit>
+      <trans-unit id="formEditor.modals.close.confirmButton" resname="formEditor.modals.close.confirmButton" xml:space="preserve" approved="yes">
+                <source>Yes, discard my changes</source>
+            <target state="final">Da, zavrzi spremembe</target></trans-unit>
+      <trans-unit id="formEditor.modals.close.cancleButton" resname="formEditor.modals.close.cancleButton" xml:space="preserve" approved="yes">
+                <source>No, I will continue editing</source>
+            <target state="final">Ne, nadaljuj z urejanjem</target></trans-unit>
+      <trans-unit id="formEditor.elements.MinimumMaximumEditorsMixin.editor.minimum.label" resname="formEditor.elements.MinimumMaximumEditorsMixin.editor.minimum.label" xml:space="preserve" approved="yes">
+                <source>Minimum</source>
+            <target state="final">Najmanj</target></trans-unit>
+      <trans-unit id="formEditor.elements.MinimumMaximumEditorsMixin.editor.maximum.label" resname="formEditor.elements.MinimumMaximumEditorsMixin.editor.maximum.label" xml:space="preserve" approved="yes">
+                <source>Maximum</source>
+            <target state="final">Največ</target></trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.pattern.label" resname="formEditor.elements.TextMixin.editor.pattern.label" xml:space="preserve" approved="yes">
+                <source>Pattern</source>
+            <target state="final">Vzorec</target></trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.recipients.gridColumns.value.title" resname="formEditor.elements.Form.finisher.EmailToSender.editor.recipients.gridColumns.value.title" xml:space="preserve" approved="yes">
+                <source>Email Address</source>
+            <target state="final">E-naslov</target></trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.recipients.gridColumns.label.title" resname="formEditor.elements.Form.finisher.EmailToSender.editor.recipients.gridColumns.label.title" xml:space="preserve" approved="yes">
+                <source>Name</source>
+            <target state="final">Ime</target></trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.title.label" resname="formEditor.elements.Form.finisher.EmailToSender.editor.useFluidEmail.label" xml:space="preserve" approved="yes">
+                <source>Title</source>
+            <target state="final">Naslov</target></trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.title.label" resname="formEditor.elements.Form.finisher.EmailToSender.editor.useFluidEmail.label" xml:space="preserve" approved="yes">
+                <source>Title</source>
+            <target state="final">Naslov</target></trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Redirect.editor.pageUid.label" resname="formEditor.elements.Form.finisher.Redirect.editor.pageUid.label" xml:space="preserve" approved="yes">
+                <source>Page</source>
+            <target state="final">Stran</target></trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Redirect.editor.pageUid.buttonLabel" resname="formEditor.elements.Form.finisher.Redirect.editor.pageUid.buttonLabel" xml:space="preserve" approved="yes">
+                <source>Page</source>
+            <target state="final">Stran</target></trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Confirmation.editor.contentElement.buttonLabel" resname="formEditor.elements.Form.finisher.Confirmation.editor.contentElement.buttonLabel" xml:space="preserve" approved="yes">
+                <source>Page Content</source>
+            <target state="final">Vsebina strani</target></trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Confirmation.editor.message.label" resname="formEditor.elements.Form.finisher.Confirmation.editor.message.label" xml:space="preserve" approved="yes">
+                <source>Text</source>
+            <target state="final">Besedilo</target></trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.elementDescription.label" resname="formEditor.elements.FormElement.editor.elementDescription.label" xml:space="preserve" approved="yes">
+                <source>Description</source>
+            <target state="final">Opis</target></trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.xs.label" resname="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.xs.label" xml:space="preserve" approved="yes">
+                <source>Extra small</source>
+            <target state="final">Zelo majhna</target></trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.sm.label" resname="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.sm.label" xml:space="preserve" approved="yes">
+                <source>Small</source>
+            <target state="final">Majhna</target></trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.md.label" resname="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.md.label" xml:space="preserve" approved="yes">
+                <source>Medium</source>
+            <target state="final">Srednja</target></trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.lg.label" resname="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.lg.label" xml:space="preserve" approved="yes">
+                <source>Large</source>
+            <target state="final">Velika</target></trans-unit>
+      <trans-unit id="formEditor.elements.Text.label" resname="formEditor.elements.Text.label" xml:space="preserve" approved="yes">
+                <source>Text</source>
+            <target state="final">Besedilo</target></trans-unit>
+      <trans-unit id="formEditor.elements.Telephone.label" resname="formEditor.elements.Telephone.label" xml:space="preserve" approved="yes">
+                <source>Telephone number</source>
+            <target state="final">Telefonska številka</target></trans-unit>
+      <trans-unit id="formEditor.elements.Date.label" resname="formEditor.elements.Date.label" xml:space="preserve" approved="yes">
+                <source>Date</source>
+            <target state="final">Datum</target></trans-unit>
+      <trans-unit id="formEditor.elements.StaticText.editor.label.label" resname="formEditor.elements.StaticText.editor.label.label" xml:space="preserve" approved="yes">
+                <source>Header</source>
+            <target state="final">Naslov</target></trans-unit>
+      <trans-unit id="formEditor.elements.StaticText.editor.staticText.label" resname="formEditor.elements.StaticText.editor.staticText.label" xml:space="preserve" approved="yes">
+                <source>Text</source>
+            <target state="final">Besedilo</target></trans-unit>
+      <trans-unit id="formEditor.elements.Hidden.label" resname="formEditor.elements.Hidden.label" xml:space="preserve" approved="yes">
+                <source>Hidden</source>
+            <target state="final">Skrito</target></trans-unit>
+      <trans-unit id="formEditor.elements.ContentElement.label" resname="formEditor.elements.ContentElement.label" xml:space="preserve" approved="yes">
+                <source>Content element</source>
+            <target state="final">Vsebinski element</target></trans-unit>
+      <trans-unit id="formEditor.elements.ContentElement.editor.contentElement.buttonLabel" resname="formEditor.elements.ContentElement.editor.contentElement.buttonLabel" xml:space="preserve" approved="yes">
+                <source>Page Content</source>
+            <target state="final">Vsebina strani</target></trans-unit>
+    </body>
+  </file>
+</xliff>
