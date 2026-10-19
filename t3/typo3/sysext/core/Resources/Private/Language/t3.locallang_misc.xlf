@@ -1,0 +1,624 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_misc.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="shortcutDescription" resname="shortcutDescription">
+        <source>This is the shortcuts menu. You do not have any shortcuts added yet, you can do so by clicking the shortcut icon %icon%, which you can find on each page in the backend.</source>
+        <target>crwdns216352:0%icon%crwdne216352:0</target>
+      </trans-unit>
+      <trans-unit id="shortcut_edit" resname="shortcut_edit">
+        <source>Edit</source>
+        <target>crwdns216354:0crwdne216354:0</target>
+      </trans-unit>
+      <trans-unit id="shortcut_create" resname="shortcut_create">
+        <source>Create</source>
+        <target>crwdns216356:0crwdne216356:0</target>
+      </trans-unit>
+      <trans-unit id="shortcut_editID" resname="shortcut_editID">
+        <source>Edit/Search</source>
+        <target>crwdns216358:0crwdne216358:0</target>
+      </trans-unit>
+      <trans-unit id="shortcut_save" resname="shortcut_save">
+        <source>Update shortcut title</source>
+        <target>crwdns216360:0crwdne216360:0</target>
+      </trans-unit>
+      <trans-unit id="shortcut_saveClose" resname="shortcut_saveClose">
+        <source>Update and close editor</source>
+        <target>crwdns216362:0crwdne216362:0</target>
+      </trans-unit>
+      <trans-unit id="shortcut_close" resname="shortcut_close">
+        <source>Close shortcut editor</source>
+        <target>crwdns216364:0crwdne216364:0</target>
+      </trans-unit>
+      <trans-unit id="shortcut_delete" resname="shortcut_delete">
+        <source>Remove shortcut</source>
+        <target>crwdns216366:0crwdne216366:0</target>
+      </trans-unit>
+      <trans-unit id="shortcut_loadEdit" resname="shortcut_loadEdit">
+        <source>Loading page</source>
+        <target>crwdns216368:0crwdne216368:0</target>
+      </trans-unit>
+      <trans-unit id="shortcut_searchFor" resname="shortcut_searchFor">
+        <source>Search for</source>
+        <target>crwdns216370:0crwdne216370:0</target>
+      </trans-unit>
+      <trans-unit id="shortcut_notEditable" resname="shortcut_notEditable">
+        <source>No editable page found!</source>
+        <target>crwdns216372:0crwdne216372:0</target>
+      </trans-unit>
+      <trans-unit id="shortcut_group" resname="shortcut_group">
+        <source>Group</source>
+        <target>crwdns216374:0crwdne216374:0</target>
+      </trans-unit>
+      <trans-unit id="shortcut_group_1" resname="shortcut_group_1">
+        <source>Pages</source>
+        <target>crwdns216376:0crwdne216376:0</target>
+      </trans-unit>
+      <trans-unit id="shortcut_group_2" resname="shortcut_group_2">
+        <source>Records</source>
+        <target>crwdns216378:0crwdne216378:0</target>
+      </trans-unit>
+      <trans-unit id="shortcut_group_3" resname="shortcut_group_3">
+        <source>Files</source>
+        <target>crwdns216380:0crwdne216380:0</target>
+      </trans-unit>
+      <trans-unit id="shortcut_group_4" resname="shortcut_group_4">
+        <source>Tools</source>
+        <target>crwdns216382:0crwdne216382:0</target>
+      </trans-unit>
+      <trans-unit id="shortcut_group_5" resname="shortcut_group_5">
+        <source>Miscellaneous</source>
+        <target>crwdns216384:0crwdne216384:0</target>
+      </trans-unit>
+      <trans-unit id="shortcut_global" resname="shortcut_global">
+        <source>Global</source>
+        <target>crwdns216386:0crwdne216386:0</target>
+      </trans-unit>
+      <trans-unit id="shortcut_all" resname="shortcut_all">
+        <source>All</source>
+        <target>crwdns216388:0crwdne216388:0</target>
+      </trans-unit>
+      <trans-unit id="shortcut_onlyAdmin" resname="shortcut_onlyAdmin">
+        <source>You cannot edit a shared shortcut!</source>
+        <target>crwdns216390:0crwdne216390:0</target>
+      </trans-unit>
+      <trans-unit id="shortcut_selSC" resname="shortcut_selSC">
+        <source>Select shortcut</source>
+        <target>crwdns216392:0crwdne216392:0</target>
+      </trans-unit>
+      <trans-unit id="shortcut_delAllInCat" resname="shortcut_delAllInCat">
+        <source>Delete all shortcuts in this group?</source>
+        <target>crwdns216394:0crwdne216394:0</target>
+      </trans-unit>
+      <trans-unit id="shortcut_onlineWS" resname="shortcut_onlineWS">
+        <source>LIVE workspace</source>
+        <target>crwdns216396:0crwdne216396:0</target>
+      </trans-unit>
+      <trans-unit id="shortcut_active" resname="shortcut_active">
+        <source>active</source>
+        <target>crwdns216398:0crwdne216398:0</target>
+      </trans-unit>
+      <trans-unit id="shortcut_inactive" resname="shortcut_inactive">
+        <source>inactive</source>
+        <target>crwdns216400:0crwdne216400:0</target>
+      </trans-unit>
+      <trans-unit id="shortcut_noWSfound" resname="shortcut_noWSfound">
+        <source>ERROR: No workspaces found!</source>
+        <target>crwdns216402:0crwdne216402:0</target>
+      </trans-unit>
+      <trans-unit id="shortcut_FEPreview" resname="shortcut_FEPreview">
+        <source>Enable Frontend Preview</source>
+        <target>crwdns216404:0crwdne216404:0</target>
+      </trans-unit>
+      <trans-unit id="shortcut_workspace" resname="shortcut_workspace">
+        <source>Go to Workspace Module</source>
+        <target>crwdns216406:0crwdne216406:0</target>
+      </trans-unit>
+      <trans-unit id="bookmark_description" resname="bookmark_description">
+        <source>This is the bookmarks menu. You do not have any bookmarks added yet, you can do so by clicking the bookmark icon %s, which you can find on each page in the backend.</source>
+        <target>crwdns216408:0%scrwdne216408:0</target>
+      </trans-unit>
+      <trans-unit id="bookmark_edit" resname="bookmark_edit">
+        <source>Edit</source>
+        <target>crwdns216410:0crwdne216410:0</target>
+      </trans-unit>
+      <trans-unit id="bookmark_create" resname="bookmark_create">
+        <source>Create</source>
+        <target>crwdns216412:0crwdne216412:0</target>
+      </trans-unit>
+      <trans-unit id="bookmark_editID" resname="bookmark_editID">
+        <source>Edit/Search</source>
+        <target>crwdns216414:0crwdne216414:0</target>
+      </trans-unit>
+      <trans-unit id="bookmark_save" resname="bookmark_save">
+        <source>Update bookmark title</source>
+        <target>crwdns216416:0crwdne216416:0</target>
+      </trans-unit>
+      <trans-unit id="bookmark_saveClose" resname="bookmark_saveClose">
+        <source>Update and close editor</source>
+        <target>crwdns216418:0crwdne216418:0</target>
+      </trans-unit>
+      <trans-unit id="bookmark_close" resname="bookmark_close">
+        <source>Close bookmark editor</source>
+        <target>crwdns216420:0crwdne216420:0</target>
+      </trans-unit>
+      <trans-unit id="bookmark_delete" resname="bookmark_delete">
+        <source>Remove bookmark</source>
+        <target>crwdns216422:0crwdne216422:0</target>
+      </trans-unit>
+      <trans-unit id="bookmark_loadEdit" resname="bookmark_loadEdit">
+        <source>Loading page</source>
+        <target>crwdns216424:0crwdne216424:0</target>
+      </trans-unit>
+      <trans-unit id="bookmark_searchFor" resname="bookmark_searchFor">
+        <source>Search for</source>
+        <target>crwdns216426:0crwdne216426:0</target>
+      </trans-unit>
+      <trans-unit id="bookmark_notEditable" resname="bookmark_notEditable">
+        <source>No editable page found!</source>
+        <target>crwdns216428:0crwdne216428:0</target>
+      </trans-unit>
+      <trans-unit id="bookmark_group" resname="bookmark_group">
+        <source>Group</source>
+        <target>crwdns216430:0crwdne216430:0</target>
+      </trans-unit>
+      <trans-unit id="bookmark_group_1" resname="bookmark_group_1">
+        <source>Pages</source>
+        <target>crwdns216432:0crwdne216432:0</target>
+      </trans-unit>
+      <trans-unit id="bookmark_group_2" resname="bookmark_group_2">
+        <source>Records</source>
+        <target>crwdns216434:0crwdne216434:0</target>
+      </trans-unit>
+      <trans-unit id="bookmark_group_3" resname="bookmark_group_3">
+        <source>Files</source>
+        <target>crwdns216436:0crwdne216436:0</target>
+      </trans-unit>
+      <trans-unit id="bookmark_group_4" resname="bookmark_group_4">
+        <source>Tools</source>
+        <target>crwdns216438:0crwdne216438:0</target>
+      </trans-unit>
+      <trans-unit id="bookmark_group_5" resname="bookmark_group_5">
+        <source>Miscellaneous</source>
+        <target>crwdns216440:0crwdne216440:0</target>
+      </trans-unit>
+      <trans-unit id="bookmark_global" resname="bookmark_global">
+        <source>Global</source>
+        <target>crwdns216442:0crwdne216442:0</target>
+      </trans-unit>
+      <trans-unit id="bookmark_all" resname="bookmark_all">
+        <source>All</source>
+        <target>crwdns216444:0crwdne216444:0</target>
+      </trans-unit>
+      <trans-unit id="bookmark_onlyAdmin" resname="bookmark_onlyAdmin">
+        <source>You cannot edit a shared bookmark!</source>
+        <target>crwdns216446:0crwdne216446:0</target>
+      </trans-unit>
+      <trans-unit id="bookmark_selSC" resname="bookmark_selSC">
+        <source>Select bookmark</source>
+        <target>crwdns216448:0crwdne216448:0</target>
+      </trans-unit>
+      <trans-unit id="bookmark_delAllInCat" resname="bookmark_delAllInCat">
+        <source>Delete all bookmarks in this group</source>
+        <target>crwdns216450:0crwdne216450:0</target>
+      </trans-unit>
+      <trans-unit id="bookmark_onlineWS" resname="bookmark_onlineWS">
+        <source>LIVE workspace</source>
+        <target>crwdns216452:0crwdne216452:0</target>
+      </trans-unit>
+      <trans-unit id="bookmark_active" resname="bookmark_active">
+        <source>active</source>
+        <target>crwdns216454:0crwdne216454:0</target>
+      </trans-unit>
+      <trans-unit id="bookmark_inactive" resname="bookmark_inactive">
+        <source>inactive</source>
+        <target>crwdns216456:0crwdne216456:0</target>
+      </trans-unit>
+      <trans-unit id="bookmark_noWSfound" resname="bookmark_noWSfound">
+        <source>ERROR: No workspaces found!</source>
+        <target>crwdns216458:0crwdne216458:0</target>
+      </trans-unit>
+      <trans-unit id="bookmark_FEPreview" resname="bookmark_FEPreview">
+        <source>Enable Frontend Preview</source>
+        <target>crwdns216460:0crwdne216460:0</target>
+      </trans-unit>
+      <trans-unit id="bookmark_workspaceComparisonView" resname="bookmark_workspaceComparisonView">
+        <source>Enable comparison view</source>
+        <target>crwdns216462:0crwdne216462:0</target>
+      </trans-unit>
+      <trans-unit id="bookmark_workspace" resname="bookmark_workspace">
+        <source>Go to Workspace Module</source>
+        <target>crwdns216464:0crwdne216464:0</target>
+      </trans-unit>
+      <trans-unit id="overwriteExistingFiles" resname="overwriteExistingFiles">
+        <source>Overwrite existing files</source>
+        <target>crwdns216466:0crwdne216466:0</target>
+      </trans-unit>
+      <trans-unit id="uploadMultipleFilesInfo" resname="uploadMultipleFilesInfo">
+        <source>Upload multiple files by holding the Shift or CTRL-file pressed while selecting your files (works on modern browsers only).</source>
+        <target>crwdns216468:0crwdne216468:0</target>
+      </trans-unit>
+      <trans-unit id="fileMetaDataLocation" resname="fileMetaDataLocation">
+        <source>Location</source>
+        <target>crwdns216470:0crwdne216470:0</target>
+      </trans-unit>
+      <trans-unit id="fileMetaErrorInvalidRecord" resname="fileMetaErrorInvalidRecord">
+        <source>File meta data not found</source>
+        <target>crwdns216472:0crwdne216472:0</target>
+      </trans-unit>
+      <trans-unit id="selectPosition" resname="selectPosition">
+        <source>Select a position for the new page</source>
+        <target>crwdns216474:0crwdne216474:0</target>
+      </trans-unit>
+      <trans-unit id="pageSelectPosition" resname="pageSelectPosition">
+        <source>Page (select position)</source>
+        <target>crwdns216476:0crwdne216476:0</target>
+      </trans-unit>
+      <trans-unit id="goBack" resname="goBack">
+        <source>Go back</source>
+        <target>crwdns216478:0crwdne216478:0</target>
+      </trans-unit>
+      <trans-unit id="createNewPage" resname="createNewPage">
+        <source>Create a new page</source>
+        <target>crwdns216480:0crwdne216480:0</target>
+      </trans-unit>
+      <trans-unit id="createNewContent" resname="createNewContent">
+        <source>Create a new content element</source>
+        <target>crwdns216482:0crwdne216482:0</target>
+      </trans-unit>
+      <trans-unit id="clickForWizard" resname="clickForWizard">
+        <source>Click here for wizard!</source>
+        <target>crwdns216484:0crwdne216484:0</target>
+      </trans-unit>
+      <trans-unit id="insertNewPageHere" resname="insertNewPageHere">
+        <source>Insert the new page here</source>
+        <target>crwdns216486:0crwdne216486:0</target>
+      </trans-unit>
+      <trans-unit id="insertNewRecordHere" resname="insertNewRecordHere">
+        <source>Insert new record here</source>
+        <target>crwdns216488:0crwdne216488:0</target>
+      </trans-unit>
+      <trans-unit id="movePageToHere" resname="movePageToHere">
+        <source>Move page to this position</source>
+        <target>crwdns216490:0crwdne216490:0</target>
+      </trans-unit>
+      <trans-unit id="moveElement" resname="moveElement">
+        <source>Move element</source>
+        <target>crwdns216492:0crwdne216492:0</target>
+      </trans-unit>
+      <trans-unit id="moveElements" resname="moveElements">
+        <source>Move elements</source>
+        <target>crwdns216494:0crwdne216494:0</target>
+      </trans-unit>
+      <trans-unit id="copyElements" resname="copyElements">
+        <source>Copy elements</source>
+        <target>crwdns216496:0crwdne216496:0</target>
+      </trans-unit>
+      <trans-unit id="selectPositionOfElement" resname="selectPositionOfElement">
+        <source>Select position of the element</source>
+        <target>crwdns216498:0crwdne216498:0</target>
+      </trans-unit>
+      <trans-unit id="movingElement" resname="movingElement">
+        <source>Move element</source>
+        <target>crwdns216500:0crwdne216500:0</target>
+      </trans-unit>
+      <trans-unit id="makeCopy" resname="makeCopy">
+        <source>Make copy instead of moving element</source>
+        <target>crwdns216502:0crwdne216502:0</target>
+      </trans-unit>
+      <trans-unit id="newContentElement" resname="newContentElement">
+        <source>New content element</source>
+        <target>crwdns216504:0crwdne216504:0</target>
+      </trans-unit>
+      <trans-unit id="newContentElement.filter.label" resname="newContentElement.filter.label">
+        <source>Filter by:</source>
+        <target>crwdns216506:0crwdne216506:0</target>
+      </trans-unit>
+      <trans-unit id="newContentElement.filter.placeholder" resname="newContentElement.filter.placeholder">
+        <source>Search for any content type</source>
+        <target>crwdns216508:0crwdne216508:0</target>
+      </trans-unit>
+      <trans-unit id="newContentElement.filter.noResults" resname="newContentElement.filter.noResults">
+        <source>Unfortunately no content type matches your query, please try a different one.</source>
+        <target>crwdns216510:0crwdne216510:0</target>
+      </trans-unit>
+      <trans-unit id="system_records" resname="system_records">
+        <source>System Records</source>
+        <target>crwdns216512:0crwdne216512:0</target>
+      </trans-unit>
+      <trans-unit id="recordgroup.content" resname="recordgroup.content">
+        <source>Content</source>
+        <target>crwdns216514:0crwdne216514:0</target>
+      </trans-unit>
+      <trans-unit id="recordgroup.backendaccess" resname="recordgroup.backendaccess">
+        <source>Backend Access</source>
+        <target>crwdns216516:0crwdne216516:0</target>
+      </trans-unit>
+      <trans-unit id="recordgroup.frontendaccess" resname="recordgroup.frontendaccess">
+        <source>Frontend Access</source>
+        <target>crwdns216518:0crwdne216518:0</target>
+      </trans-unit>
+      <trans-unit id="1_selectType" resname="1_selectType">
+        <source>First select the type of the new content element</source>
+        <target>crwdns216520:0crwdne216520:0</target>
+      </trans-unit>
+      <trans-unit id="2_selectPosition" resname="2_selectPosition">
+        <source>Now click on the position of the new content element</source>
+        <target>crwdns216522:0crwdne216522:0</target>
+      </trans-unit>
+      <trans-unit id="CM_history" resname="CM_history">
+        <source>History/Undo</source>
+        <target>crwdns216524:0crwdne216524:0</target>
+      </trans-unit>
+      <trans-unit id="CM_hideInMenus" resname="CM_hideInMenus">
+        <source>Hide in menu</source>
+        <target>crwdns216526:0crwdne216526:0</target>
+      </trans-unit>
+      <trans-unit id="CM_showInMenus" resname="CM_showInMenus">
+        <source>Show in menu</source>
+        <target>crwdns216528:0crwdne216528:0</target>
+      </trans-unit>
+      <trans-unit id="CM_perms" resname="CM_perms">
+        <source>Access</source>
+        <target>crwdns216530:0crwdne216530:0</target>
+      </trans-unit>
+      <trans-unit id="CM_moveWizard" resname="CM_moveWizard">
+        <source>Move element</source>
+        <target>crwdns216532:0crwdne216532:0</target>
+      </trans-unit>
+      <trans-unit id="CM_moveWizard_page" resname="CM_moveWizard_page">
+        <source>Move page</source>
+        <target>crwdns216534:0crwdne216534:0</target>
+      </trans-unit>
+      <trans-unit id="CM_newWizard" resname="CM_newWizard">
+        <source>'Create New' wizard</source>
+        <target>crwdns216536:0crwdne216536:0</target>
+      </trans-unit>
+      <trans-unit id="CM_editPageProperties" resname="CM_editPageProperties">
+        <source>Edit page properties</source>
+        <target>crwdns216538:0crwdne216538:0</target>
+      </trans-unit>
+      <trans-unit id="CM_db_list" resname="CM_db_list">
+        <source>Web&gt;List module</source>
+        <target>crwdns216540:0crwdne216540:0</target>
+      </trans-unit>
+      <trans-unit id="noEditPage" resname="noEditPage">
+        <source>You asked to edit page "%s" but you cannot edit this page. Now loading backend as usual.</source>
+        <target>crwdns216542:0%scrwdne216542:0</target>
+      </trans-unit>
+      <trans-unit id="localize" resname="localize">
+        <source>Localize</source>
+        <target>crwdns216544:0crwdne216544:0</target>
+      </trans-unit>
+      <trans-unit id="localize.isLocalizable" resname="localize.isLocalizable">
+        <source>Record can be localized</source>
+        <target>crwdns216546:0crwdne216546:0</target>
+      </trans-unit>
+      <trans-unit id="localize.wasRemovedInOriginal" resname="localize.wasRemovedInOriginal">
+        <source>Record was removed in original language</source>
+        <target>crwdns216548:0crwdne216548:0</target>
+      </trans-unit>
+      <trans-unit id="localizeAllRecords" resname="localizeAllRecords">
+        <source>Localize all records</source>
+        <target>crwdns216550:0crwdne216550:0</target>
+      </trans-unit>
+      <trans-unit id="synchronizeWithOriginalLanguage" resname="synchronizeWithOriginalLanguage">
+        <source>Synchronize with original language</source>
+        <target>crwdns216552:0crwdne216552:0</target>
+      </trans-unit>
+      <trans-unit id="pageTree_filter" resname="pageTree_filter">
+        <source>Filter</source>
+        <target>crwdns216554:0crwdne216554:0</target>
+      </trans-unit>
+      <trans-unit id="switchtouser" resname="switchtouser">
+        <source>Switch to User</source>
+        <target>crwdns216556:0crwdne216556:0</target>
+      </trans-unit>
+      <trans-unit id="switchtousershort" resname="switchtousershort">
+        <source>SU</source>
+        <target>crwdns216558:0crwdne216558:0</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_windowTitle" resname="fileUpload_windowTitle">
+        <source>File Upload Progress</source>
+        <target>crwdns216560:0crwdne216560:0</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_buttonSelectFiles" resname="fileUpload_buttonSelectFiles">
+        <source>Select Files</source>
+        <target>crwdns216562:0crwdne216562:0</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_buttonCancelAll" resname="fileUpload_buttonCancelAll">
+        <source>Cancel All Uploads</source>
+        <target>crwdns216564:0crwdne216564:0</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_infoComponentMaxFileSize" resname="fileUpload_infoComponentMaxFileSize">
+        <source>You can upload files with a maximum size of {0}.</source>
+        <target>crwdns216566:0{0}crwdne216566:0</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_infoComponentFileUploadLimit" resname="fileUpload_infoComponentFileUploadLimit">
+        <source>You can upload a total of {0}.</source>
+        <target>crwdns216568:0{0}crwdne216568:0</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_infoComponentFileTypeLimit" resname="fileUpload_infoComponentFileTypeLimit">
+        <source>You can upload the following file types {0}.</source>
+        <target>crwdns216570:0{0}crwdne216570:0</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_infoComponentOverrideFiles" resname="fileUpload_infoComponentOverrideFiles">
+        <source>Overwrite existing files</source>
+        <target>crwdns216572:0crwdne216572:0</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_processRunning" resname="fileUpload_processRunning">
+        <source>Another process is already uploading</source>
+        <target>crwdns216574:0crwdne216574:0</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_uploadWait" resname="fileUpload_uploadWait">
+        <source>Waiting to start upload of {0}</source>
+        <target>crwdns216576:0{0}crwdne216576:0</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_uploadStarting" resname="fileUpload_uploadStarting">
+        <source>Starting upload of {0}</source>
+        <target>crwdns216578:0{0}crwdne216578:0</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_uploadProgress" resname="fileUpload_uploadProgress">
+        <source>{0}% of {1} uploaded</source>
+        <target>crwdns216580:0{0}crwdnd216580:0{1}crwdne216580:0</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_uploadSuccess" resname="fileUpload_uploadSuccess">
+        <source>{0} was successfully uploaded!</source>
+        <target>crwdns216582:0{0}crwdne216582:0</target>
+      </trans-unit>
+      <trans-unit id="pagetree_networkErrorTitle" resname="pagetree_networkErrorTitle">
+        <source>Page tree error</source>
+        <target>crwdns216584:0crwdne216584:0</target>
+      </trans-unit>
+      <trans-unit id="pagetree_networkErrorDesc" resname="pagetree_networkErrorDesc">
+        <source>Got unexpected response from the server. Please check logs for details.</source>
+        <target>crwdns216586:0crwdne216586:0</target>
+      </trans-unit>
+      <trans-unit id="tree_networkError" resname="tree_networkError">
+        <source>Navigation loading error</source>
+        <target>crwdns216588:0crwdne216588:0</target>
+      </trans-unit>
+      <trans-unit id="tree_networkErrorDescription" resname="tree_networkErrorDescription">
+        <source>Got unexpected response from the server. Please check logs for details.</source>
+        <target>crwdns216590:0crwdne216590:0</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorQueueLimitExceeded" resname="fileUpload_errorQueueLimitExceeded">
+        <source>Too many files selected</source>
+        <target>crwdns216592:0crwdne216592:0</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorQueueFileSizeLimit" resname="fileUpload_errorQueueFileSizeLimit">
+        <source>{0} is too big</source>
+        <target>crwdns216594:0{0}crwdne216594:0</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorQueueZeroByteFile" resname="fileUpload_errorQueueZeroByteFile">
+        <source>{0} is empty</source>
+        <target>crwdns216596:0{0}crwdne216596:0</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorQueueInvalidFiletype" resname="fileUpload_errorQueueInvalidFiletype">
+        <source>Filetype not allowed for {0}</source>
+        <target>crwdns216598:0{0}crwdne216598:0</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorUploadHttp" resname="fileUpload_errorUploadHttp">
+        <source>Too many files selected</source>
+        <target>crwdns216600:0crwdne216600:0</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorUploadHttpError" resname="fileUpload_errorUploadHttpError">
+        <source>A HTTP error occurred: {0}</source>
+        <target>crwdns216602:0{0}crwdne216602:0</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorUploadMissingUrl" resname="fileUpload_errorUploadMissingUrl">
+        <source>Internal error: No Upload URL set</source>
+        <target>crwdns216604:0crwdne216604:0</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorUploadIO" resname="fileUpload_errorUploadIO">
+        <source>Internal error: Problems while reading/writing the file</source>
+        <target>crwdns216606:0crwdne216606:0</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorUploadSecurityError" resname="fileUpload_errorUploadSecurityError">
+        <source>Internal error: {0}</source>
+        <target>crwdns216608:0{0}crwdne216608:0</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorUploadLimit" resname="fileUpload_errorUploadLimit">
+        <source>Upload limit exceeded</source>
+        <target>crwdns216610:0crwdne216610:0</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorUploadFailed" resname="fileUpload_errorUploadFailed">
+        <source>Upload failed</source>
+        <target>crwdns216612:0crwdne216612:0</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorUploadFileIDNotFound" resname="fileUpload_errorUploadFileIDNotFound">
+        <source>Internal error: File ID not found</source>
+        <target>crwdns216614:0crwdne216614:0</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorUploadFileValidation" resname="fileUpload_errorUploadFileValidation">
+        <source>Internal error while validating the file</source>
+        <target>crwdns216616:0crwdne216616:0</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorUploadFileCancelled" resname="fileUpload_errorUploadFileCancelled">
+        <source>Upload of {0} canceled</source>
+        <target>crwdns216618:0{0}crwdne216618:0</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorUploadStopped" resname="fileUpload_errorUploadStopped">
+        <source>Upload of {0} stopped</source>
+        <target>crwdns216620:0{0}crwdne216620:0</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_allErrorMessageTitle" resname="fileUpload_allErrorMessageTitle">
+        <source>All uploads failed</source>
+        <target>crwdns216622:0crwdne216622:0</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_allErrorMessageText" resname="fileUpload_allErrorMessageText">
+        <source>All of your uploads failed.&lt;br /&gt;&lt;br /&gt;If this problem persists, please try another browser, contact your administrator or disable this "Flash Uploader" in your User Settings.&lt;br /&gt;&lt;br /&gt;Detailed problem description:&lt;br /&gt;</source>
+        <target>crwdns216624:0crwdne216624:0</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_allError401" resname="fileUpload_allError401">
+        <source>The server returned the status code 401, which is related to a .htaccess file used for password protection on your server. Unfortunately this can not be handled by your browser's Flash plugin.</source>
+        <target>crwdns216626:0crwdne216626:0</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_allError2038" resname="fileUpload_allError2038">
+        <source>An input/output error occurred (Error #2038). This i.e. happens with servers using a self-signed SSL certificate, which is a limitation of your browser's Flash plugin.</source>
+        <target>crwdns216628:0crwdne216628:0</target>
+      </trans-unit>
+      <trans-unit id="synchronizeFolderRelations.afterFolderRenamed" resname="synchronizeRelations.afterFolderRenamed">
+        <source>%d %s records referencing the renamed directory were updated.</source>
+        <target>crwdns216630:0%dcrwdnd216630:0%scrwdne216630:0</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_title" resname="liveSearch_title">
+        <source>Short result list</source>
+        <target>crwdns216632:0crwdne216632:0</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_emptyText" resname="liveSearch_emptyText">
+        <source>Enter search term</source>
+        <target>crwdns216634:0crwdne216634:0</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_loadingText" resname="liveSearch_loadingText">
+        <source>Searching...</source>
+        <target>crwdns216636:0crwdne216636:0</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_listEmptyText" resname="liveSearch_listEmptyText">
+        <source>No results found.</source>
+        <target>crwdns216638:0crwdne216638:0</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_showAllResults" resname="liveSearch_showAllResults">
+        <source>Show All</source>
+        <target>crwdns216640:0crwdne216640:0</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_helpTitle" resname="liveSearch_helpTitle">
+        <source>How to use advanced search tags</source>
+        <target>crwdns216642:0crwdne216642:0</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_helpDescription" resname="liveSearch_helpDescription">
+        <source>Search in certain tables</source>
+        <target>crwdns216644:0crwdne216644:0</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_helpDescriptionPages" resname="liveSearch_helpDescriptionPages">
+        <source>#page:Home will search for all pages with the title "Home"</source>
+        <target>crwdns216646:0crwdne216646:0</target>
+      </trans-unit>
+      <trans-unit id="viewPort_tooltipModuleMenuSplit" resname="viewPort_tooltipModuleMenuSplit">
+        <source>Drag to resize the Modules Menu</source>
+        <target>crwdns216648:0crwdne216648:0</target>
+      </trans-unit>
+      <trans-unit id="viewPort_tooltipNavigationContainerSplitDrag" resname="viewPort_tooltipNavigationContainerSplitDrag">
+        <source>Drag to resize or double click to collapse the page tree area</source>
+        <target>crwdns216650:0crwdne216650:0</target>
+      </trans-unit>
+      <trans-unit id="viewPort_tooltipNavigationContainerSplitClick" resname="viewPort_tooltipNavigationContainerSplitClick">
+        <source>Click to toggle the page tree area</source>
+        <target>crwdns216652:0crwdne216652:0</target>
+      </trans-unit>
+      <trans-unit id="viewPort_tooltipDebugPanelSplitDrag" resname="viewPort_tooltipDebugPanelSplitDrag">
+        <source>Drag to resize or click to collapse the Debug Panel.</source>
+        <target>crwdns216654:0crwdne216654:0</target>
+      </trans-unit>
+      <trans-unit id="viewport_navigation_show" resname="viewport_navigation_show">
+        <source>Show Navigation</source>
+        <target>crwdns216656:0crwdne216656:0</target>
+      </trans-unit>
+      <trans-unit id="viewport_navigation_hide" resname="viewport_navigation_hide">
+        <source>Hide Navigation</source>
+        <target>crwdns216658:0crwdne216658:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
