@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:seo/Resources/Private/Language/locallang_tca.xlf" date="2018-08-09T16:22:32Z" product-name="seo" target-language="ja">
+    <header/>
+    <body>
+      <trans-unit id="pages.palettes.seo" resname="pages.palettes.seo" approved="yes">
+        <source>General SEO settings</source>
+        <target state="final">全般的なSEO設定</target>
+      </trans-unit>
+      <trans-unit id="pages.og_image" resname="pages.og_image" approved="yes">
+        <source>Image</source>
+        <target state="final">画像</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
