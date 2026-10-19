@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_csh_fe_groups.xlf" date="2011-10-17T20:22:32Z" product-name="context_help" target-language="it">
+    <header/>
+    <body>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>This option enables the user group.</source>
+        <target state="final">Quest'opzione abilita il gruppo di utenti.</target>
+      </trans-unit>
+      <trans-unit id="hidden.details" resname="hidden.details" xml:space="preserve" approved="yes">
+				<source>If you disable a user group all users which are members of the group will in effect not inherit any properties this group may have given them.
+For instance if a page or content element was assigned access only by this group and you disable the group, no one would gain access to that page or content element.</source>
+			<target state="final">Se un gruppo utenti viene disabilitato, tutti gli utenti che appartengono a quel gruppo non erediteranno alcuna proprietà del gruppo. Per esempio se una pagina o un contenuto erano accessibili solo a questo gruppo, che viene disabilitato, nessuno poi potrà ottenere l'accesso alla pagina o al contenuto.</target></trans-unit>
+      <trans-unit id="_hidden.seeAlso" resname="_hidden.seeAlso" approved="yes">
+        <source>fe_users:disable</source>
+        <target state="final">fe_users:disable</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Name of the group.</source>
+        <target state="final">Nome del gruppo.</target>
+      </trans-unit>
+      <trans-unit id="title.details" resname="title.details" approved="yes">
+        <source>This title will appear as the group name in the 'Access'-list in other records.</source>
+        <target state="final">Questo titolo apparirà come il nome del gruppo nella "Lista di Accesso" negli altri record.</target>
+      </trans-unit>
+      <trans-unit id="subgroup.description" resname="subgroup.description" approved="yes">
+        <source>Member of other groups.</source>
+        <target state="final">Membro di altri gruppi.</target>
+      </trans-unit>
+      <trans-unit id="subgroup.details" resname="subgroup.details" approved="yes">
+        <source>List of other groups that this group is a member of.</source>
+        <target state="final">Elenco degli altri gruppi di cui fa parte questo gruppo.</target>
+      </trans-unit>
+      <trans-unit id="description.description" resname="description.description" approved="yes">
+        <source>Enter a description of the group.</source>
+        <target state="final">Inserisci la descrizione del gruppo.</target>
+      </trans-unit>
+      <trans-unit id="description.details" resname="description.details" xml:space="preserve" approved="yes">
+				<source>This is for internal use and is just a way to put a note on what the group is for, why you created it and who should be members.
+Use it as you like.</source>
+			<target state="final">Destinato solo a uso interno; serve per inserire una nota sul gruppo, ad esempio perché è stato creato e quali potrebbero essere i membri.
+Campo da riempire a piacimento.</target></trans-unit>
+      <trans-unit id="TSconfig.description" resname="TSconfig.description" approved="yes">
+        <source>TSconfig for the group (advanced).</source>
+        <target state="final">TSconfig per il gruppo (avanzato).</target>
+      </trans-unit>
+      <trans-unit id="TSconfig.details" resname="TSconfig.details" xml:space="preserve" approved="yes">
+				<source>This is the user TSconfig for the group. The values are inherited by any Website user who is a member of this group.
+The configuration is subject to being overridden in other groups and by the TSconfig of the user himself.</source>
+			<target state="final">Questo è il TSconfig Utente per il gruppo. I valori sono ereditati da qualsiasi utente, del Sito Web, che sia membro di questo gruppo.
+La configurazione può essere sovrascritta in altri gruppi e dallo stesso TSconfig Utente.</target></trans-unit>
+      <trans-unit id="TSconfig.syntax" resname="TSconfig.syntax" approved="yes">
+        <source>TypoScript syntax, without conditions and constants.</source>
+        <target state="final">Sintassi TypoScript, senza condizioni e costanti.</target>
+      </trans-unit>
+      <trans-unit id="_TSconfig.seeAlso" resname="_TSconfig.seeAlso" approved="yes">
+        <source>fe_users:TSconfig</source>
+        <target state="final">fe_users:TSconfig</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>Usergroups for Website users.</source>
+        <target state="final">Gruppi utenti per gli utenti del sito web.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" approved="yes">
+        <source>The access restriction in TYPO3 is assigned to these usergroups. When a page or other element is access restricted to a group, only Website users which are members of that group will be able to view the element on the website.</source>
+        <target state="final">La restrizione di accesso in TYPO3 è assegnata a questi gruppi di utenti. Quando a una pagina o a un elemento è concesso l'accesso da un solo gruppo specifico, solo gli utenti, del sito web, che sono membri di quel gruppo saranno in grado di visualizzare la pagina o l'elemento sul sito.</target>
+      </trans-unit>
+      <trans-unit id="_.seeAlso" resname="_.seeAlso" xml:space="preserve" approved="yes">
+				<source>fe_users,
+About access restricting pages | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/PasswordProtectedPages/</source>
+			<target state="final">fe_users
+Informazioni sull'accesso che limita le pagine | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/PasswordProtectedPages/</target></trans-unit>
+      <trans-unit id="_.image" resname="_.image" xml:space="preserve" approved="yes">
+				<source>EXT:frontend/Resources/Public/Images/cshimages/fegroups_3.png,
+EXT:frontend/Resources/Public/Images/cshimages/fegroups_4.png</source>
+				
+			<target state="final">EXT:frontend/Resources/Public/Images/cshimages/fegroups_3.png,
+EXT:frontend/Resources/Public/Images/cshimages/fegroups_4.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" xml:space="preserve" approved="yes">
+				<source>The form for editing frontend users groups.
+Pages, Content Elements and other records for frontend display often have a selector box where you can define access restriction by selecting access for a certain group only.</source>
+			<target state="final">La form-modifica per i gruppi di utenti del frontend.
+Pagine, Elementi di contenuto e altri record per la visualizzazione del frontend, spesso hanno una casella di selezione dove è possibile definire la restrizione di accesso, selezionando l'accesso solo per un determinato gruppo.</target></trans-unit>
+    </body>
+  </file>
+</xliff>
