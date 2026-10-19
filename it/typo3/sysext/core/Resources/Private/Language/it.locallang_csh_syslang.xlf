@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_syslang.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="it">
+    <header/>
+    <body>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Enter the name of this additional system language.</source>
+        <target state="final">Inserisci il nome di questa lingua di sistema aggiuntiva.</target>
+      </trans-unit>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>Unchecking this option will hide the system language from being available in the backend.</source>
+        <target state="final">La deselezione, di questa opzione, renderà la lingua di sistema non più disponibile nel backend.</target>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>Defines which languages are alternatively available on each webpage.</source>
+        <target state="final">Definisce quali lingue sono disponibili su ogni pagina web.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" xml:space="preserve" approved="yes">
+				<source>The Web&gt;Page module has a feature which allows users to edit page content divided into not only columns but also languages. The languages available for translation are determined by the number of Website Language record created.</source>
+			<target state="final">Il modulo Web&gt;Pagina ha una funzionalità che permette agli utenti di modificare il contenuto della pagina diviso, non solo in colonne, ma anche lingue. Le lingue disponibili per la traduzione sono determinate dal numero di record di lingua creati.</target></trans-unit>
+    </body>
+  </file>
+</xliff>
