@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:indexed_search/Resources/Private/Language/locallang_csh_indexcfg.xlf" date="2011-10-17T20:22:33Z" product-name="indexed_search" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>The Indexed Search configuration allows you to set up indexing of resources which are external to the TYPO3 page tree. This could be a library of records (like news), a directory structure of files (like PDFs) or an external URL to be crawled to some depth - or third-party content provided from other extensions via hooks.</source>
+        <target state="final">इंडेक्स-सर्च कॉन्फ़िगरेशन आपको रिसोर्सेज के जो पेज ट्री के बहार है उसका इंडेक्सिंग का सेट उप करने की अनुमति देता है इसमें रिकार्ड्स की लाइब्रेरी(जैसे न्यूज़), फाइल्स के डायरेक्टरी संरचना(जैसे PDFs) और कुछ गहराई के क्रॉल के लिए बाहरी यूआरएल - और हुक के माध्यम से अन्य एक्सटेंशन से प्रदान किये थर्ड पार्टी कंटेंट.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" approved="yes">
+        <source>The Indexing Configuration records are used to set up how the indexing occurs, at which time and related to which part of the page tree. An important requirement to keep in mind is that the "crawler" extension must be installed since the indexing engine uses the "crawler" extensions queue as a timing device - and using the "crawler" extension means using a cron-job to activate it from the shell.</source>
+        <target state="final">इंडेक्सिंग कॉन्फ़िगरेशन रिकार्ड्स का पेज ट्री के किस हिसे को और किस समय इंडेक्सिंग होता है उसका सेटअप करने के लिए उपयोग होता है.एक महत्वपूर्ण आवश्यकता याद रखने की के जब इंडेक्सिंग इंजन "क्रॉलर" एक्सटेंशन का क़्यू का टाइमिंग डिवाइस के रूप में उपयोग करता है तब क्रॉलर एक्सटेंशन इन्सटाल्ड होना ही चाहिए - और "crawler" एक्सटेंशन का उपयोग मतलब cron-job का शैल में से एक्टिवेट करने का प्रयोग</target>
+      </trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Provide a title for the configuration.</source>
+        <target state="final">कॉन्फ़िगरेशन के लिए टाइटल प्रदान करे</target>
+      </trans-unit>
+      <trans-unit id="description.description" resname="description.description" approved="yes">
+        <source>If needed, give it a description or put other important notes in this field.</source>
+        <target state="final">यदि आवश्यक हो तो , यहाँ डिस्क्रिप्शन दीजिये या इस फील्ड में अन्य महत्वपूर्ण नोट्स डाल दे .</target>
+      </trans-unit>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>Disable the configuration by unchecking this option. If disabled, the configuration will be bypassed by the crawlers cron job.</source>
+        <target state="final">इस विकल्प को अनचेक करके कॉन्फ़िगरेशन को निष्क्रिय करें। यदि निष्क्रिय किया गया है, तो क्रॉलर के क्रोन जॉब द्वारा इस कॉन्फ़िगरेशन को बायपास किया जाएगा।</target>
+      </trans-unit>
+      <trans-unit id="hidden.details" resname="hidden.details" approved="yes">
+        <source>Notice; Disabling the indexing process will not hide already indexed content in search results!</source>
+        <target state="final">नोटिस: इंडेक्सिंग प्रक्रिया को असक्षम करने पर पहले से इंडेक्स्ड किया हुआ कंटेंट रिजल्ट रिजल्ट में हाईड नहीं होगा!</target>
+      </trans-unit>
+      <trans-unit id="_hidden.seeAlso" resname="_hidden.seeAlso" approved="yes">
+        <source>index_config:starttime</source>
+        <target state="final">index_config:starttime</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="starttime.description" resname="starttime.description" approved="yes">
+        <source>Set a start time for the configuration. If set, the configuration will be bypassed by the crawlers cron job until this time is reached.</source>
+        <target state="final">कॉन्फ़िगरेशन के लिए एक शुरुआत का समय निर्धारित करें.अगर सेट, कॉन्फ़िगरेशन crawlers cron job द्वारा नजरअंदाज किया जाएगा जब तक इस समय तक पहुँच जाता है.</target>
+      </trans-unit>
+      <trans-unit id="_starttime.seeAlso" resname="_starttime.seeAlso" approved="yes">
+        <source>index_config:hidden</source>
+        <target state="final">index_config:hidden</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="timer_frequency.description" resname="timer_frequency.description" approved="yes">
+        <source>Use this setting to adjust how often you would like a re-indexing process to run for the configuration.</source>
+        <target state="final">आप कॉन्फ़िगरेशन को रन करने के आप कितनी बार रि-इंडेक्सिंग प्रोसेस करना चाहते है उसे एडजस्ट करने किये इस सेटिंग का प्रयोग करे.</target>
+      </trans-unit>
+      <trans-unit id="_timer_frequency.seeAlso" resname="_timer_frequency.seeAlso" xml:space="preserve" approved="yes">
+				<source>index_config:timer_next_indexing,
+index_config:timer_offset</source>
+				
+			<target state="final">index_config:timer_next_indexing,
+index_config:timer_offset</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="timer_offset.description" resname="timer_offset.description" approved="yes">
+        <source>The offset adjusts at what time of day you want the indexing process to run.</source>
+        <target state="final">इंडेक्सिंग प्रोसेस को रन करने के लिए आप दिन का कोनसा समय पसंद करते है उस समय ओफ़्सेट एडजस्ट होता है.</target>
+      </trans-unit>
+      <trans-unit id="_timer_offset.seeAlso" resname="_timer_offset.seeAlso" approved="yes">
+        <source>index_config:timer_frequency</source>
+        <target state="final">index_config:timer_frequency</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="timer_next_indexing.description" resname="timer_next_indexing.description" approved="yes">
+        <source>This field contains the date and time of the next occurring indexing session. If left blank the next indexing will occur as soon as the cron-script is run again (typically within the next minute) and afterwards set to the next time according to frequency and offset.</source>
+        <target state="final">इस फील्ड में अगले होने वाले इंडेक्सिंग सेशन का समय और तारीख होती है .यदि खाली छोड़ दिया जाये तो अगला इंडेक्सिंग जब cron-script फिर से रन होगी तब होगा(आम तौर पर अगले ही मिनट के भीतर) और बाद में अगला समय आवृत्ति और ऑफसेट के अनुसार निर्धारित करे</target>
+      </trans-unit>
+      <trans-unit id="_timer_next_indexing.seeAlso" resname="_timer_next_indexing.seeAlso" xml:space="preserve" approved="yes">
+				<source>index_config:timer_offset,
+index_config:timer_frequency</source>
+				
+			<target state="final">index_config:timer_offset,
+index_config:timer_frequency</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="type.description" resname="type.description" approved="yes">
+        <source>Select the type of Indexing Configuration here.</source>
+        <target state="final">यहाँ इंडेक्सिंग कॉन्फ़िगरेशन का प्रकार पसंद कीजिये.</target>
+      </trans-unit>
+      <trans-unit id="type.details" resname="type.details" xml:space="preserve" approved="yes">
+				<source>&lt;b&gt;Records&lt;/b&gt; - You will be able to index records on a specified page from a specified database table. You can determine which fields from that record you want to index and how additional GET parameters should look like when linking to the search result.
+&lt;b&gt;Files&lt;/b&gt; - Allows you to index a whole directory of files from the fileadmin/ folder. You can optionally specify how many levels of recursion you want.
+&lt;b&gt;External URL&lt;/b&gt; - Allows you to index an external site and search it from your TYPO3 installation! You can specify how deep the crawler should go on that external URL.
+&lt;b&gt;Page tree&lt;/b&gt; - Allows you to index the page tree using the cron script. This type will not be useful as a category for searching like the other types.
+&lt;b&gt;Meta configuration&lt;/b&gt; - Points to a collection of other indexing configurations in which the search will be done. Cannot be used for cron-job based indexing.
+&lt;b&gt;Custom&lt;/b&gt; - Other extensions might register custom types of configurations.</source>
+			<target state="final">&lt;b&gt;रिकार्ड्स &lt;/b&gt;- आप एक स्पेसिफाइड डेटाबेस टेबल से एक विशेष पेज पर इंडेक्स रिकॉर्ड करने के लिए सक्षम हो जाएंगे.आप उस रिकार्ड्स में से कोनसा फील्ड को इंडेक्स करना चाहते है और आप उस रिकार्ड्स में से कोनसे फील्ड को इंडेक्स करना चाहते है और जब सर्च रिजल्ट के साथ लिंक करे तब एडिशनल GET पैरामीटर्स कैसे दिखेंगे उसे निर्धारित कर सकते है.
+&lt;b&gt;फाइल्स&lt;/b&gt;- fileadmin / फ़ोल्डर से फ़ाइलों की एक पूरी डायरेक्टरी इंडेक्स करने के लिए आपको अनुमति देता है.आप वैकल्पिक रूप से स्पेसिफाय कर सकते हैं कि आपको कितने रिकरजन के स्तर चाहिए.
+&lt;b&gt;बाहरी URL&lt;/b&gt;- आपको बाहरी साइट को इंडेक्स करने की और आपके TYPO3 इंस्टालेशन से सर्च करने की अनुमति देता है!आप स्पेसफाय कर सकते है की क्रॉलर बाहरी URL पर कितना गहरा जाना चाहिए.
+&lt;b&gt;पेज ट्री &lt;/b&gt;- आपको cron-script के उपयोग से पेज ट्री को इंडेक्स करने की अनुमति देता है.यह प्रकार अन्य प्रकार की तरह खोज के लिए एक केटेगरी के रूप में उपयोगी नहीं होगा. 
+&lt;b&gt;मेटा कॉन्फ़िगरेशन&lt;/b&gt;- अन्य इंडेक्सिंग कॉन्फ़िगरेशन के कलेक्शन को पॉइंट्स करे की जहां खोज हो जाएगी.क्रॉन जॉब आधारित इंडेक्सिंग के लिए इस्तेमाल नहीं किया जा सकता है.
+&lt;b&gt;कस्टम&lt;/b&gt;- अन्य एक्सटेंशन कॉन्फ़िगरेशन की कस्टम प्रकार को रजिस्टर कर सकते है.</target></trans-unit>
+      <trans-unit id="table2index.description" resname="table2index.description" approved="yes">
+        <source>Specify the database table to index records from.</source>
+        <target state="final">से रिकॉर्ड इंडेक्स करने के लिए डेटाबेस टेबल स्पेसफाय करें.</target>
+      </trans-unit>
+      <trans-unit id="alternative_source_pid.description" resname="alternative_source_pid.description" approved="yes">
+        <source>By default the indexer will select records from the page id where the Indexing Configuration is stored. If you want an alternative page as the source of your records you can enter it here.</source>
+        <target state="final">डिफ़ॉल्ट रूप से इंडेक्सर जहां इंडेक्सिंग कॉन्फ़िगरेशन संगृहीत है उस पेज आईडी से रिकॉर्ड का चयन करेंगे.यदि आप अपने रिकॉर्ड के सोर्स के रूप में एक विकल्प के पेज चाहते है तो आप इसे यहाँ एंटर कर सकते है.</target>
+      </trans-unit>
+      <trans-unit id="_alternative_source_pid.seeAlso" resname="_alternative_source_pid.seeAlso" approved="yes">
+        <source>index_config:table2index</source>
+        <target state="final">index_config:table2index</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="get_params.description" resname="get_params.description" approved="yes">
+        <source>Enter the GET parameters necessary to display the search results. You can use ###UID### as a marker in the parameter template.</source>
+        <target state="final">खोज परिणामों को प्रदर्शित करने के लिए आवश्यक GET पैरामीटर दर्ज करें.आप पैरामीटर टेम्पलेट में एक मार्कर के रूप में ###UID### का उपयोग कर सकते है.</target>
+      </trans-unit>
+      <trans-unit id="get_params.details" resname="get_params.details" xml:space="preserve" approved="yes">
+				<source>Notice: The GET parameters are appended to the URL of the page where the Indexing Configuration is stored (which must be the page where a plugin exists that can display the records with the given parameters!).
+Example value: "&amp;showUid=###UID###"</source>
+			<target state="final">नोटिस:GET पैरामीटर्स पेज के जहां इंडेक्सिंग कॉन्फ़िगरेशन संगृहीत है उसके URL में जोड़ा जाता है(वही पेज होना चाहिए जिसमे प्लगइन मौजूद हो के जो दिए गए पैरामीटर्स के साथ रिकॉर्ड प्रदर्शित कर सकते हैं!).
+Example value: "&amp;showUid=###UID###"</target></trans-unit>
+      <trans-unit id="_get_params.seeAlso" resname="_get_params.seeAlso" approved="yes">
+        <source>index_config:table2index</source>
+        <target state="final">index_config:table2index</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="fieldlist.description" resname="fieldlist.description" approved="yes">
+        <source>Enter a comma-list of fields to be indexed. The first field name will be used for the search result title.</source>
+        <target state="final">इंडेक्स्ड करने के लिए फील्ड की एक कॉमा-लिस्ट दर्ज कीजिये .पहला फील्ड नाम खोज परिणाम के शीर्षक के लिए इस्तेमाल किया जाएगा.</target>
+      </trans-unit>
+      <trans-unit id="fieldlist.details" resname="fieldlist.details" approved="yes">
+        <source>&lt;b&gt;Example:&lt;/b&gt; "header,bodytext,image_caption" would index the Header, Bodytext and Image Caption fields from "tt_content". Notice that you must use the real database field names, don't spell them wrong!</source>
+        <target state="final">&lt;b&gt;उदाहरण:&lt;/b&gt;"header,bodytext,image_caption" के जो tt_content में से हैडर,बॉडी-टेक्स्ट और इमेज कैप्शन फील्ड को इंडेक्स करेगा.सूचना है कि आपको वास्तविक डेटाबेस फील्ड नाम का उपयोग करना चाहिए, उनका गलत स्पेल नहीं होना चाहिए!</target>
+      </trans-unit>
+      <trans-unit id="_fieldlist.seeAlso" resname="_fieldlist.seeAlso" approved="yes">
+        <source>index_config:table2index</source>
+        <target state="final">index_config:table2index</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="recordsbatch.description" resname="recordsbatch.description" approved="yes">
+        <source>Enter how many records to index for each instance of the indexing process (how many per minute). Default is 100 records.</source>
+        <target state="final">इंडेक्सिंग प्रोसेस के प्रत्येक उदाहरण के लिए कितने रिकॉर्ड इंडेक्स करने है उसे दर्ज कीजिये (प्रत्येक मिनट कितने).डिफ़ॉल्ट 100 रिकार्ड्स है.</target>
+      </trans-unit>
+      <trans-unit id="_recordsbatch.seeAlso" resname="_recordsbatch.seeAlso" approved="yes">
+        <source>index_config:table2index</source>
+        <target state="final">index_config:table2index</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="records_indexonchange.description" resname="records_indexonchange.description" approved="yes">
+        <source>If set, new and changed records from this table will be indexed through a hook in the core (Datahandler) meaning that they will be searchable immediately after addition to the system.</source>
+        <target state="final">यदि सेट किया गया है, तो इस टेबल के नए और संशोधित रिकॉर्ड्स को कोर (DataHandler) में मौजूद हुक के माध्यम से इंडेक्स किया जाएगा, जिससे वे सिस्टम में जोड़ते ही तुरंत खोजने योग्य हो जाएंगे।</target>
+      </trans-unit>
+      <trans-unit id="_records_indexonchange.seeAlso" resname="_records_indexonchange.seeAlso" approved="yes">
+        <source>index_config:table2index</source>
+        <target state="final">index_config:table2index</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="externalUrl.description" resname="externalUrl.description" approved="yes">
+        <source>Enter the URL of the external website you want to index.</source>
+        <target state="final">आप जिस बाहरी वेबसाइट का इंडेक्स करना चाहते है उसका URL दर्ज करे</target>
+      </trans-unit>
+      <trans-unit id="url_deny.description" resname="url_deny.description" approved="yes">
+        <source>Enter a URL on each line inside of which the crawler should not decend.</source>
+        <target state="final">अंदर प्रत्येक लाइन पर एक URL दर्ज करें जिनमें से क्रॉलर decend नहीं होना चाहिए.</target>
+      </trans-unit>
+      <trans-unit id="url_deny.details" resname="url_deny.details" xml:space="preserve" approved="yes">
+				<source>Example:
+If you wish to index "https://typo3.org/" but not "https://typo3.org/extensions/" and "https://typo3.org/downloads/" then you simply enter those two URLs into the box like this:
+
+https://typo3.org/downloads/
+https://typo3.org/extensions/</source>
+			<target state="final">यदि आप "https://typo3.org/" इंडेक्स करना चाह्ते है पर "https://typo3.org/extensions/" और "https://typo3.org/downloads/" नहीं तो आपको केवल वह दो URL को बॉक्स में इस तरह दर्ज करे:
+
+https://typo3.org/downloads/
+https://typo3.org/extensions/</target></trans-unit>
+      <trans-unit id="_url_deny.seeAlso" resname="_url_deny.seeAlso" approved="yes">
+        <source>index_config:externalUrl</source>
+        <target state="final">index_config:externalUrl</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="filepath.description" resname="filepath.description" approved="yes">
+        <source>Enter a filepath inside fileadmin/ where you want the files to be indexed.</source>
+        <target state="final">fieladmin/ में फाइल पाथ को दर्ज करे के जहां आप फाइल्स को इंडेक्स करना चाहते है.</target>
+      </trans-unit>
+      <trans-unit id="filepath.details" resname="filepath.details" approved="yes">
+        <source>Example: "fileadmin/newsletters/"</source>
+        <target state="final">Example: "fileadmin/newsletters/"</target>
+      </trans-unit>
+      <trans-unit id="extensions.description" resname="extensions.description" approved="yes">
+        <source>If you want to index only specific files in the directory, enter a list of file extensions here. For example: "html,pdf,doc"</source>
+        <target state="final">यदि आप केवल डायरेक्टरी में स्पेसिफिक फाइल को इंडेक्स करना चाह्ते है तो आप फाइल के एक्सटेंशन की लिस्ट यहाँ दर्ज करे.उदाहरण के लिए: "html,pdf,doc"</target>
+      </trans-unit>
+      <trans-unit id="_extensions.seeAlso" resname="_extensions.seeAlso" approved="yes">
+        <source>index_config:filepath</source>
+        <target state="final">index_config:filepath</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="depth.description" resname="depth.description" approved="yes">
+        <source>Levels of recursion.</source>
+        <target state="final">recursion का लेवल्स</target>
+      </trans-unit>
+      <trans-unit id="depth.details" resname="depth.details" approved="yes">
+        <source>For file indexing it is the level of directories to decend. For External URLs it's the depth to which the crawler will go with links.</source>
+        <target state="final">फ़ाइल इंडेक्सिंग के लिए यह डायरेक्टरी decend करने का स्तर है.बाहरी URL के लिए यह एक गहराय है के जिसमे crawler लिंक्स के साथ जायेगा</target>
+      </trans-unit>
+      <trans-unit id="_depth.seeAlso" resname="_depth.seeAlso" xml:space="preserve" approved="yes">
+				<source>index_config:externalUrl,
+index_config:filepath</source>
+				
+			<target state="final">index_config:externalUrl,
+ index_config:filepath</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="indexcfgs.description" resname="indexcfgs.description" approved="yes">
+        <source>When a search is conducted in this indexing configuration the actual search will take place in the indexed content from the configurations listed here. You can also enter pages and if you do so the search will take place in indexing configurations found on those pages.</source>
+        <target state="final">जब खोज इस इंडेक्सिंग कॉन्फ़िगरेशन में आयोजित किया जाता है तब वास्तविक खोज यहाँ लिस्ट किये हुए कॉन्फ़िगरेशन से इंडेक्स कंटेंट में जगह लेगा.आप इसके साथ पेज को एंटर कर सकते और यदि आप ऐसा करते हैं तो खोज इंडेक्सिंग कॉन्फ़िगरेशन के उन पेज पर होगी</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
