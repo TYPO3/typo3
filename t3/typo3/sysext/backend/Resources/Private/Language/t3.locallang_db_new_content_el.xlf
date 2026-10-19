@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="sel1" resname="sel1">
+        <source>Please select the type of page content you wish to create</source>
+        <target>crwdns96432:0crwdne96432:0</target>
+      </trans-unit>
+      <trans-unit id="sel2" resname="sel2">
+        <source>Now, click the position where you wish to place the element on the page</source>
+        <target>crwdns96434:0crwdne96434:0</target>
+      </trans-unit>
+      <trans-unit id="common" resname="common">
+        <source>Typical page content</source>
+        <target>crwdns96436:0crwdne96436:0</target>
+      </trans-unit>
+      <trans-unit id="common_headerOnly_title" resname="common_headerOnly_title">
+        <source>Header Only</source>
+        <target>crwdns96438:0crwdne96438:0</target>
+      </trans-unit>
+      <trans-unit id="common_headerOnly_description" resname="common_headerOnly_description">
+        <source>Adds a header only.</source>
+        <target>crwdns96440:0crwdne96440:0</target>
+      </trans-unit>
+      <trans-unit id="common_regularText_title" resname="common_regularText_title">
+        <source>Regular Text Element</source>
+        <target>crwdns96442:0crwdne96442:0</target>
+      </trans-unit>
+      <trans-unit id="common_regularText_description" resname="common_regularText_description">
+        <source>A regular text element with header and bodytext fields.</source>
+        <target>crwdns96444:0crwdne96444:0</target>
+      </trans-unit>
+      <trans-unit id="common_textImage_title" resname="common_textImage_title">
+        <source>Text &amp; Images</source>
+        <target>crwdns96446:0crwdne96446:0</target>
+      </trans-unit>
+      <trans-unit id="common_textImage_description" resname="common_textImage_description">
+        <source>Any number of images wrapped right around a regular text element.</source>
+        <target>crwdns96448:0crwdne96448:0</target>
+      </trans-unit>
+      <trans-unit id="common_textMedia_title" resname="common_textMedia_title">
+        <source>Text &amp; Media</source>
+        <target>crwdns96450:0crwdne96450:0</target>
+      </trans-unit>
+      <trans-unit id="common_textMedia_description" resname="common_textMedia_description">
+        <source>Any number of media wrapped right around a regular text element.</source>
+        <target>crwdns96452:0crwdne96452:0</target>
+      </trans-unit>
+      <trans-unit id="common_imagesOnly_title" resname="common_imagesOnly_title">
+        <source>Images Only</source>
+        <target>crwdns96454:0crwdne96454:0</target>
+      </trans-unit>
+      <trans-unit id="common_imagesOnly_description" resname="common_imagesOnly_description">
+        <source>Any number of images aligned in columns and rows with a caption.</source>
+        <target>crwdns96456:0crwdne96456:0</target>
+      </trans-unit>
+      <trans-unit id="common_bulletList_title" resname="common_bulletList_title">
+        <source>Bullet List</source>
+        <target>crwdns96458:0crwdne96458:0</target>
+      </trans-unit>
+      <trans-unit id="common_bulletList_description" resname="common_bulletList_description">
+        <source>A single bullet list.</source>
+        <target>crwdns96460:0crwdne96460:0</target>
+      </trans-unit>
+      <trans-unit id="common_table_title" resname="common_table_title">
+        <source>Table</source>
+        <target>crwdns96462:0crwdne96462:0</target>
+      </trans-unit>
+      <trans-unit id="common_table_description" resname="common_table_description">
+        <source>A simple table.</source>
+        <target>crwdns96464:0crwdne96464:0</target>
+      </trans-unit>
+      <trans-unit id="menu" resname="menu">
+        <source>Menu</source>
+        <target>crwdns96466:0crwdne96466:0</target>
+      </trans-unit>
+      <trans-unit id="menu_abstract.title" resname="menu_abstract.title">
+        <source>Abstracts</source>
+        <target>crwdns96468:0crwdne96468:0</target>
+      </trans-unit>
+      <trans-unit id="menu_abstract.description" resname="menu_abstract.description">
+        <source>Menu of subpages of selected pages including abstracts</source>
+        <target>crwdns96470:0crwdne96470:0</target>
+      </trans-unit>
+      <trans-unit id="menu_categorized_content.title" resname="menu_categorized_content.title">
+        <source>Categorized content</source>
+        <target>crwdns96472:0crwdne96472:0</target>
+      </trans-unit>
+      <trans-unit id="menu_categorized_content.description" resname="menu_categorized_content.description">
+        <source>Content elements for selected categories</source>
+        <target>crwdns96474:0crwdne96474:0</target>
+      </trans-unit>
+      <trans-unit id="menu_categorized_pages.title" resname="menu_categorized_pages.title">
+        <source>Categorized pages</source>
+        <target>crwdns96476:0crwdne96476:0</target>
+      </trans-unit>
+      <trans-unit id="menu_pages.title" resname="menu_pages.title">
+        <source>Pages</source>
+        <target>crwdns96478:0crwdne96478:0</target>
+      </trans-unit>
+      <trans-unit id="menu_pages.description" resname="menu_pages.description">
+        <source>Menu of selected pages</source>
+        <target>crwdns96480:0crwdne96480:0</target>
+      </trans-unit>
+      <trans-unit id="menu_subpages.title" resname="menu_subpages.title">
+        <source>Subpages</source>
+        <target>crwdns96482:0crwdne96482:0</target>
+      </trans-unit>
+      <trans-unit id="menu_subpages.description" resname="menu_subpages.description">
+        <source>Menu of subpages of selected pages</source>
+        <target>crwdns96484:0crwdne96484:0</target>
+      </trans-unit>
+      <trans-unit id="menu_categorized_pages.description" resname="menu_categorized_pages.description">
+        <source>Pages for selected categories</source>
+        <target>crwdns96486:0crwdne96486:0</target>
+      </trans-unit>
+      <trans-unit id="menu_recently_updated.title" resname="menu_recently_updated.title">
+        <source>Recently updated pages</source>
+        <target>crwdns96488:0crwdne96488:0</target>
+      </trans-unit>
+      <trans-unit id="menu_recently_updated.description" resname="menu_recently_updated.description">
+        <source>Menu of recently updated pages</source>
+        <target>crwdns96490:0crwdne96490:0</target>
+      </trans-unit>
+      <trans-unit id="menu_related_pages.title" resname="menu_related_pages.title">
+        <source>Related pages</source>
+        <target>crwdns96492:0crwdne96492:0</target>
+      </trans-unit>
+      <trans-unit id="menu_related_pages.description" resname="menu_related_pages.description">
+        <source>Menu of related pages based on keywords</source>
+        <target>crwdns96494:0crwdne96494:0</target>
+      </trans-unit>
+      <trans-unit id="menu_section.title" resname="menu_section.title">
+        <source>Section index</source>
+        <target>crwdns96496:0crwdne96496:0</target>
+      </trans-unit>
+      <trans-unit id="menu_section.description" resname="menu_section.description">
+        <source>Page content marked for section menus</source>
+        <target>crwdns96498:0crwdne96498:0</target>
+      </trans-unit>
+      <trans-unit id="menu_section_pages.title" resname="menu_section_pages.title">
+        <source>Section index of subpages from selected pages</source>
+        <target>crwdns96500:0crwdne96500:0</target>
+      </trans-unit>
+      <trans-unit id="menu_section_pages.description" resname="menu_section_pages.description">
+        <source>Menu of subpages of selected pages including sections</source>
+        <target>crwdns96502:0crwdne96502:0</target>
+      </trans-unit>
+      <trans-unit id="menu_sitemap.title" resname="menu_sitemap.title">
+        <source>Sitemap</source>
+        <target>crwdns96504:0crwdne96504:0</target>
+      </trans-unit>
+      <trans-unit id="menu_sitemap.description" resname="menu_sitemap.description">
+        <source>Expanded menu of all subpages of the current site</source>
+        <target>crwdns96506:0crwdne96506:0</target>
+      </trans-unit>
+      <trans-unit id="menu_sitemap_pages.title" resname="menu_sitemap_pages.title">
+        <source>Sitemaps of selected pages</source>
+        <target>crwdns96508:0crwdne96508:0</target>
+      </trans-unit>
+      <trans-unit id="menu_sitemap_pages.description" resname="menu_sitemap_pages.description">
+        <source>Expanded menu of all subpages for selected pages</source>
+        <target>crwdns96510:0crwdne96510:0</target>
+      </trans-unit>
+      <trans-unit id="special" resname="special">
+        <source>Special elements</source>
+        <target>crwdns96512:0crwdne96512:0</target>
+      </trans-unit>
+      <trans-unit id="special_filelinks_title" resname="special_filelinks_title">
+        <source>File Links</source>
+        <target>crwdns96514:0crwdne96514:0</target>
+      </trans-unit>
+      <trans-unit id="special_filelinks_description" resname="special_filelinks_description">
+        <source>Makes a list of files for download.</source>
+        <target>crwdns96516:0crwdne96516:0</target>
+      </trans-unit>
+      <trans-unit id="special_sitemap_title" resname="special_sitemap_title">
+        <source>Sitemap</source>
+        <target>crwdns96518:0crwdne96518:0</target>
+      </trans-unit>
+      <trans-unit id="special_menus_title" resname="special_menus_title">
+        <source>Special Menus</source>
+        <target>crwdns96520:0crwdne96520:0</target>
+      </trans-unit>
+      <trans-unit id="special_menus_description" resname="special_menus_description">
+        <source>Creates a menu of pages, sitemap or other special menus.</source>
+        <target>crwdns96522:0crwdne96522:0</target>
+      </trans-unit>
+      <trans-unit id="special_plainHTML_title" resname="special_plainHTML_title">
+        <source>Plain HTML</source>
+        <target>crwdns96524:0crwdne96524:0</target>
+      </trans-unit>
+      <trans-unit id="special_plainHTML_description" resname="special_plainHTML_description">
+        <source>With this element you can insert raw HTML code on the page.</source>
+        <target>crwdns96526:0crwdne96526:0</target>
+      </trans-unit>
+      <trans-unit id="special_divider_title" resname="special_divider_title">
+        <source>Divider</source>
+        <target>crwdns96528:0crwdne96528:0</target>
+      </trans-unit>
+      <trans-unit id="special_divider_description" resname="special_divider_description">
+        <source>This element inserts a visual divider, which is by default a horizontal line.</source>
+        <target>crwdns96530:0crwdne96530:0</target>
+      </trans-unit>
+      <trans-unit id="special_shortcut_title" resname="special_shortcut_title">
+        <source>Insert records</source>
+        <target>crwdns96532:0crwdne96532:0</target>
+      </trans-unit>
+      <trans-unit id="special_shortcut_description" resname="special_shortcut_description">
+        <source>With this element you can embed other content elements.</source>
+        <target>crwdns96534:0crwdne96534:0</target>
+      </trans-unit>
+      <trans-unit id="forms" resname="forms">
+        <source>Form elements</source>
+        <target>crwdns96536:0crwdne96536:0</target>
+      </trans-unit>
+      <trans-unit id="forms_mail_title" resname="forms_mail_title">
+        <source>Mail Form</source>
+        <target>crwdns96538:0crwdne96538:0</target>
+      </trans-unit>
+      <trans-unit id="forms_mail_description" resname="forms_mail_description">
+        <source>A mail form allowing website users to submit responses.</source>
+        <target>crwdns96540:0crwdne96540:0</target>
+      </trans-unit>
+      <trans-unit id="forms_login_title" resname="forms_login_title">
+        <source>Login Form</source>
+        <target>crwdns96542:0crwdne96542:0</target>
+      </trans-unit>
+      <trans-unit id="forms_login_description" resname="forms_login_description">
+        <source>Login/logout form used to password protect pages allowing only authorised website users and groups access.</source>
+        <target>crwdns96544:0crwdne96544:0</target>
+      </trans-unit>
+      <trans-unit id="plugins" resname="plugins">
+        <source>Plugins</source>
+        <target>crwdns96546:0crwdne96546:0</target>
+      </trans-unit>
+      <trans-unit id="plugins_general_title" resname="plugins_general_title">
+        <source>General Plugin</source>
+        <target>crwdns96548:0crwdne96548:0</target>
+      </trans-unit>
+      <trans-unit id="plugins_general_description" resname="plugins_general_description">
+        <source>Select this element type to insert a plugin which cannot be found amongst the options below.</source>
+        <target>crwdns96550:0crwdne96550:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
