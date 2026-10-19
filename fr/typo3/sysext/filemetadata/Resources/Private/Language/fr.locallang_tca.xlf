@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf" date="2012-10-17T17:55:17Z" product-name="local lang" target-language="fr">
+    <header/>
+    <body>
+      <!-- sys_file_metadata fields -->
+      <trans-unit id="sys_file_metadata.visible" resname="sys_file_metadata.visible" approved="yes">
+        <source>Visible</source>
+        <target state="final">Visible</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.status" resname="sys_file_metadata.status" approved="yes">
+        <source>Status</source>
+        <target state="final">Statut</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.status.1" resname="sys_file_metadata.status.1" approved="yes">
+        <source>Ok</source>
+        <target state="final">Ok</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.status.2" resname="sys_file_metadata.status.2" approved="yes">
+        <source>Pending</source>
+        <target state="final">En attente</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.status.3" resname="sys_file_metadata.status.3" approved="yes">
+        <source>Under review</source>
+        <target state="final">En révision</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.keywords" resname="sys_file_metadata.keywords" approved="yes">
+        <source>Keywords</source>
+        <target state="final">Mots-clés</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.caption" resname="sys_file_metadata.caption" approved="yes">
+        <source>Caption</source>
+        <target state="final">Libellé</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.creator_tool" resname="sys_file_metadata.creator_tool" approved="yes">
+        <source>Creator Tool</source>
+        <target state="final">Outil de création</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.download_name" resname="sys_file_metadata.download_name" approved="yes">
+        <source>Download Name</source>
+        <target state="final">Nom pour le téléchargement</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.creator" resname="sys_file_metadata.creator" approved="yes">
+        <source>Creator</source>
+        <target state="final">Créateur</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.publisher" resname="sys_file_metadata.publisher" approved="yes">
+        <source>Publisher</source>
+        <target state="final">Éditeur</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.source" resname="sys_file_metadata.source" approved="yes">
+        <source>Source</source>
+        <target state="final">Source</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.copyright" resname="sys_file_metadata.copyright" approved="yes">
+        <source>Copyright</source>
+        <target state="final">Droits d'auteur</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.location_country" resname="sys_file_metadata.location_country" approved="yes">
+        <source>Country</source>
+        <target state="final">Pays</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.location_region" resname="sys_file_metadata.location_region" approved="yes">
+        <source>Region</source>
+        <target state="final">Région</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.location_city" resname="sys_file_metadata.location_city" approved="yes">
+        <source>City</source>
+        <target state="final">Ville</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.latitude" resname="sys_file_metadata.latitude" approved="yes">
+        <source>Latitude</source>
+        <target state="final">Latitude</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.longitude" resname="sys_file_metadata.longitude" approved="yes">
+        <source>Longitude</source>
+        <target state="final">Longitude</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.ranking" resname="sys_file_metadata.ranking" approved="yes">
+        <source>Ranking</source>
+        <target state="final">Classement</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.content_creation_date" resname="sys_file_metadata.content_creation_date" approved="yes">
+        <source>Content Creation Date</source>
+        <target state="final">Date de création du contenu</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.content_modification_date" resname="sys_file_metadata.content_modification_date" approved="yes">
+        <source>Content Modification Date</source>
+        <target state="final">Date de modification du contenu</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.note" resname="sys_file_metadata.note" approved="yes">
+        <source>Note</source>
+        <target state="final">Note</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.unit" resname="sys_file_metadata.unit" approved="yes">
+        <source>Unit</source>
+        <target state="final">Unité</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.unit.px" resname="sys_file_metadata.unit.px" approved="yes">
+        <source>Pixels</source>
+        <target state="final">Pixels</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.unit.cm" resname="sys_file_metadata.unit.cm" approved="yes">
+        <source>Centimeters</source>
+        <target state="final">Centimètres</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.unit.in" resname="sys_file_metadata.unit.in" approved="yes">
+        <source>Inches</source>
+        <target state="final">Pouces</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.unit.mm" resname="sys_file_metadata.unit.mm" approved="yes">
+        <source>Millimeters</source>
+        <target state="final">Millimètres</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.unit.m" resname="sys_file_metadata.unit.m" approved="yes">
+        <source>Meters</source>
+        <target state="final">Mètres</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.unit.p" resname="sys_file_metadata.unit.p" approved="yes">
+        <source>Picas</source>
+        <target state="final">Picas</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.unit.pt" resname="sys_file_metadata.unit.pt" approved="yes">
+        <source>Points</source>
+        <target state="final">Points</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.duration" resname="sys_file_metadata.duration" approved="yes">
+        <source>Duration (in seconds)</source>
+        <target state="final">Durée (secondes)</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.color_space" resname="sys_file_metadata.color_space" approved="yes">
+        <source>Color Space</source>
+        <target state="final">Espace de couleurs</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.color_space.RGB" resname="sys_file_metadata.color_space.RGB" approved="yes">
+        <source>RGB</source>
+        <target state="final">RVB</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.color_space.sRGB" resname="sys_file_metadata.color_space.sRGB" approved="yes">
+        <source>sRGB</source>
+        <target state="final">sRVB</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.color_space.CMYK" resname="sys_file_metadata.color_space.CMYK" approved="yes">
+        <source>CMYK</source>
+        <target state="final">CMJN</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.color_space.CMY" resname="sys_file_metadata.color_space.CMY" approved="yes">
+        <source>CMY</source>
+        <target state="final">CMJ</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.color_space.YUV" resname="sys_file_metadata.color_space.YUV" approved="yes">
+        <source>YUV</source>
+        <target state="final">YUV</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.color_space.grey" resname="sys_file_metadata.color_space.grey" approved="yes">
+        <source>Grey</source>
+        <target state="final">Gris</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.color_space.indx" resname="sys_file_metadata.color_space.indx" approved="yes">
+        <source>Indexed</source>
+        <target state="final">Indexé</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.pages" resname="sys_file_metadata.pages" approved="yes">
+        <source>Number of Pages</source>
+        <target state="final">Nombre de pages</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.language" resname="sys_file_metadata.language" approved="yes">
+        <source>File Language</source>
+        <target state="final">Langue du fichier</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.fe_groups" resname="sys_file_metadata.fe_groups" approved="yes">
+        <source>Frontend Permission</source>
+        <target state="final">Permissions frontend</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.width" resname="sys_file_metadata.width" approved="yes">
+        <source>Width</source>
+        <target state="final">Largeur</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.height" resname="sys_file_metadata.height" approved="yes">
+        <source>Height</source>
+        <target state="final">Hauteur</target>
+      </trans-unit>
+      <!-- sys_file_metadata tabs -->
+      <trans-unit id="tabs.metadata" resname="tabs.metadata" approved="yes">
+        <source>Metadata</source>
+        <target state="final">Métadonnées</target>
+      </trans-unit>
+      <trans-unit id="tabs.camera" resname="tabs.camera" approved="yes">
+        <source>Camera Data</source>
+        <target state="final">Données de l'appareil photo</target>
+      </trans-unit>
+      <trans-unit id="tabs.audio" resname="tabs.audio" approved="yes">
+        <source>Audio</source>
+        <target state="final">Audio</target>
+      </trans-unit>
+      <trans-unit id="tabs.video" resname="tabs.video" approved="yes">
+        <source>Video</source>
+        <target state="final">Vidéo</target>
+      </trans-unit>
+      <!-- sys_file_metadata placeholder -->
+      <trans-unit id="placeholder.keywords" resname="placeholder.keywords" approved="yes">
+        <source>Keyword #1, keyword #2, ...</source>
+        <target state="final">Mot-clé 1, mot-clé 2, ...</target>
+      </trans-unit>
+      <!-- sys_file_metadata palette -->
+      <trans-unit id="palette.metrics" resname="palette.metrics" approved="yes">
+        <source>Metrics</source>
+        <target state="final">Métriques</target>
+      </trans-unit>
+      <trans-unit id="palette.geo_location" resname="palette.geo_location" approved="yes">
+        <source>Geo Location</source>
+        <target state="final">Géolocalisation</target>
+      </trans-unit>
+      <trans-unit id="palette.visibility" resname="palette.visibility" approved="yes">
+        <source>Visibility</source>
+        <target state="final">Visibilité</target>
+      </trans-unit>
+      <trans-unit id="palette.content_date" resname="palette.content_date" approved="yes">
+        <source>Content Date</source>
+        <target state="final">Date du contenu</target>
+      </trans-unit>
+      <trans-unit id="palette.accessibility" resname="palette.accessibility" approved="yes">
+        <source>Accessibility</source>
+        <target state="final">Accessibilité</target>
+      </trans-unit>
+      <trans-unit id="palette.gps" resname="palette.gps" approved="yes">
+        <source>GPS</source>
+        <target state="final">GPS</target>
+      </trans-unit>
+      <!-- fe_groups fields -->
+      <trans-unit id="fe_groups.files" resname="fe_groups.files" approved="yes">
+        <source>Allowed files</source>
+        <target state="final">Fichiers autorisés</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
