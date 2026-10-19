@@ -49,7 +49,7 @@ export class CharCounter extends LitElement {
 
   protected override render(): TemplateResult {
     return html`
-      <span class="form-hint form-hint--${this.determineCounterClass()}">
+      <span class="form-hint form-hint--${this.determineCounterClass()}" role="status" aria-live="polite" aria-atomic="true">
         ${labels.get('labels.remainingCharacters', { '0': this.remainingCharacters.toString(10) })}
       </span>
     `;
