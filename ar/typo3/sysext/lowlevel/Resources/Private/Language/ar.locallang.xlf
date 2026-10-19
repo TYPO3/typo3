@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:lowlevel/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:34Z" product-name="lowlevel" target-language="ar">
+    <header/>
+    <body>
+      <trans-unit id="configuration" resname="configuration" approved="yes">
+        <source>Configuration</source>
+        <target state="final">التكوين</target>
+      </trans-unit>
+      <trans-unit id="typo3ConfVars" resname="typo3ConfVars" approved="yes">
+        <source>$GLOBALS['TYPO3_CONF_VARS'] (Global Configuration)</source>
+        <target state="final">$GLOBALS['TYPO3_CONF_VARS'] (التكوين العام)</target>
+      </trans-unit>
+      <trans-unit id="tca" resname="tca" approved="yes">
+        <source>$GLOBALS['TCA'] (Table configuration array)</source>
+        <target state="final">$GLOBALS['TCA'] (مجموعة تكوين الجدول)</target>
+      </trans-unit>
+      <trans-unit id="tcaDescr" resname="tcaDescr" approved="yes">
+        <source>$GLOBALS['TCA_DESCR'] (Table Help Description)</source>
+        <target state="final">$GLOBALS['TCA_DESCR'] (وصف تعليمات الجدول)</target>
+      </trans-unit>
+      <trans-unit id="tbeStyles" resname="tbeStyles" approved="yes">
+        <source>$GLOBALS['TBE_STYLES'] (Skinning Styles)</source>
+        <target state="final">$GLOBALS['TBE_STYLES'] (Skinning Styles)</target>
+      </trans-unit>
+      <trans-unit id="beUserTsConfig" resname="beUserTsConfig" approved="yes">
+        <source>$GLOBALS['BE_USER']-&gt;getTSConfig() (User TSconfig)</source>
+        <target state="final">$GLOBALS['BE_USER']-&gt;getTSConfig() (User TSconfig)</target>
+      </trans-unit>
+      <trans-unit id="beUser" resname="beUser" approved="yes">
+        <source>$GLOBALS['BE_USER']-&gt;uc (User Settings)</source>
+        <target state="final">$GLOBALS['BE_USER']-&gt;uc (إعدادات المُستخدم)</target>
+      </trans-unit>
+      <trans-unit id="usersettings" resname="usersettings" approved="yes">
+        <source>$GLOBALS['TYPO3_USER_SETTINGS'] (User Settings Configuration)</source>
+        <target state="final">$GLOBALS['TYPO3_USER_SETTINGS'] (تكوين إعدادات المستخدم)</target>
+      </trans-unit>
+      <trans-unit id="routes" resname="routes" approved="yes">
+        <source>Backend Routes</source>
+        <target state="final">طُرق الواجهة الخلفية</target>
+      </trans-unit>
+      <trans-unit id="httpMiddlewareStacks" resname="httpMiddlewareStacks" approved="yes">
+        <source>HTTP Middlewares (PSR-15)</source>
+        <target state="final">HTTP Middlewares (PSR-15)</target>
+      </trans-unit>
+      <trans-unit id="siteConfiguration" resname="siteConfiguration" approved="yes">
+        <source>Site Configuration</source>
+        <target state="final">تكوين الموقع</target>
+      </trans-unit>
+      <trans-unit id="eventListeners" resname="eventListeners" approved="yes">
+        <source>Event Listeners (PSR-14)</source>
+        <target state="final">Event Listeners (PSR-14)</target>
+      </trans-unit>
+      <trans-unit id="formYamlConfiguration" resname="formYamlConfiguration" approved="yes">
+        <source>Form: YAML Configuration</source>
+        <target state="final">نموذج: تكوين YAML</target>
+      </trans-unit>
+      <trans-unit id="t3services" resname="t3services" approved="yes">
+        <source>$GLOBALS['T3_SERVICES'] (Registered Services)</source>
+        <target state="final">$GLOBALS['T3_SERVICES'] (الخِدْمَات المُسجلة)</target>
+      </trans-unit>
+      <trans-unit id="tbemodulesext" resname="tbemodulesext" approved="yes">
+        <source>$GLOBALS['TBE_MODULES_EXT'] (BE Modules Extensions)</source>
+        <target state="final">$GLOBALS['TBE_MODULES_EXT'] (إضافات وحدات BE)</target>
+      </trans-unit>
+      <trans-unit id="tbemodules" resname="tbemodules" approved="yes">
+        <source>$GLOBALS['TBE_MODULES'] (BE Modules)</source>
+        <target state="final">$GLOBALS['TBE_MODULES'] (وحدات BE)</target>
+      </trans-unit>
+      <trans-unit id="pagesTypes" resname="pagesTypes" approved="yes">
+        <source>$GLOBALS['PAGES_TYPES'] (Table permissions by page type)</source>
+        <target state="final">$GLOBALS['PAGES_TYPES'] (جدول الأُذونات حسب نوع الصفحة)</target>
+      </trans-unit>
+      <trans-unit id="cropLines" resname="cropLines" approved="yes">
+        <source>Crop lines</source>
+        <target state="final">خطوط الاقتصاص</target>
+      </trans-unit>
+      <trans-unit id="variable" resname="variable" approved="yes">
+        <source>Variable</source>
+        <target state="final">متغير</target>
+      </trans-unit>
+      <trans-unit id="copyPaste" resname="copyPaste" approved="yes">
+        <source>(Now, copy/paste this value into the configuration file where you can set it. This is all you can do from here...)</source>
+        <target state="final">(هو، نسخ/لصق هذه القيمة في ملف التكوين حيث يمكنك تعيينه. هذا كل ما يمكنك القيام به من هنا...)</target>
+      </trans-unit>
+      <trans-unit id="enterSearchPhrase" resname="enterSearchPhrase" approved="yes">
+        <source>Enter search phrase</source>
+        <target state="final">أدخل عبارة البحث</target>
+      </trans-unit>
+      <trans-unit id="search" resname="search" approved="yes">
+        <source>Search</source>
+        <target state="final">البحث</target>
+      </trans-unit>
+      <trans-unit id="useRegExp" resname="useRegExp" approved="yes">
+        <source>Use regular expression (phrase is surrounded by slashes automatically)</source>
+        <target state="final">استخدم التعبير الاعتيادي (العبارة مُحاطة بفواصل مائلة تلقائياً)</target>
+      </trans-unit>
+      <trans-unit id="writeValue" resname="writeValue" approved="yes">
+        <source>Write value to configuration file</source>
+        <target state="final">اكتب قيمة لملف التكوين</target>
+      </trans-unit>
+      <trans-unit id="writeMessage" resname="writeMessage" approved="yes">
+        <source>Following line was added to configuration file (%s): %s%s</source>
+        <target state="final">تمت إضافة السطر التالي إلى مِلَفّ التكوين (%s): %s%s</target>
+      </trans-unit>
+      <trans-unit id="writeMessageFailed" resname="writeMessageFailed" approved="yes">
+        <source>Write to configuration file failed (%s)!</source>
+        <target state="final">فشل الكتابة في ملف التكوين (%s)!</target>
+      </trans-unit>
+      <trans-unit id="menuTitle" resname="menuTitle" approved="yes">
+        <source>Overview</source>
+        <target state="final">نظرة عامّة</target>
+      </trans-unit>
+      <trans-unit id="recordStatistics" resname="recordStatistics" approved="yes">
+        <source>Record Statistics</source>
+        <target state="final">إحصائيات السجل</target>
+      </trans-unit>
+      <trans-unit id="totalPageTree" resname="totalPageTree" approved="yes">
+        <source>Total Page Tree</source>
+        <target state="final">إجمالي شجرة الصفحة</target>
+      </trans-unit>
+      <trans-unit id="databaseRelations" resname="databaseRelations" approved="yes">
+        <source>Database Relations</source>
+        <target state="final">علاقات قواعد البيانات</target>
+      </trans-unit>
+      <trans-unit id="fullSearch" resname="fullSearch" approved="yes">
+        <source>Full search</source>
+        <target state="final">البحث الكامل</target>
+      </trans-unit>
+      <trans-unit id="findFilename" resname="findFilename" approved="yes">
+        <source>Find filename</source>
+        <target state="final">البحث عن اسم الملف</target>
+      </trans-unit>
+      <trans-unit id="manageRefIndex" resname="manageRefIndex" approved="yes">
+        <source>Manage Reference Index</source>
+        <target state="final">إدارة الفهرس المرجعي</target>
+      </trans-unit>
+      <trans-unit id="rawSearch" resname="rawSearch" approved="yes">
+        <source>Raw search in all fields</source>
+        <target state="final">بحث أَوَّلِيّ في جميع الحقول</target>
+      </trans-unit>
+      <trans-unit id="advancedQuery" resname="advancedQuery" approved="yes">
+        <source>Advanced query</source>
+        <target state="final">استعلام مُتقدم</target>
+      </trans-unit>
+      <trans-unit id="selectRecords" resname="selectRecords" approved="yes">
+        <source>Select records</source>
+        <target state="final">تحديد السجلات</target>
+      </trans-unit>
+      <trans-unit id="countResults" resname="countResults" approved="yes">
+        <source>Count results</source>
+        <target state="final">عد النتائج</target>
+      </trans-unit>
+      <trans-unit id="explainQuery" resname="explainQuery" approved="yes">
+        <source>Explain query</source>
+        <target state="final">شرح الاستعلام</target>
+      </trans-unit>
+      <trans-unit id="csvExport" resname="csvExport" approved="yes">
+        <source>CSV Export</source>
+        <target state="final">تصدير CSV</target>
+      </trans-unit>
+      <trans-unit id="xmlExport" resname="xmlExport" approved="yes">
+        <source>XML Export</source>
+        <target state="final">تصدير XML</target>
+      </trans-unit>
+      <trans-unit id="clickToUpdateRefIndex" resname="clickToUpdateRefIndex" approved="yes">
+        <source>Click here to update reference index</source>
+        <target state="final">انقر هنا لتحديث الفِهْرِس المَرجِعي</target>
+      </trans-unit>
+      <trans-unit id="updateNow" resname="updateNow" approved="yes">
+        <source>Update now!</source>
+        <target state="final">التحديث الآن!</target>
+      </trans-unit>
+      <trans-unit id="clickToTestRefIndex" resname="clickToTestRefIndex" approved="yes">
+        <source>Click here to test reference index</source>
+        <target state="final">انقر هنا لاختبار الفِهْرِس المَرجِعي</target>
+      </trans-unit>
+      <trans-unit id="referenceIndex_description" resname="referenceIndex_description" approved="yes">
+        <source>TYPO3's reference index keeps track of the relations between records. As it can happen that the reference index contains outdated values, you can check and update it here.</source>
+        <target state="final">يتتبع المُؤشر المَرجعي لـ TYPO3 العلاقات بين السجلات. نظراً لأنه من الممكن أن يحتوي الفِهْرِس المرجعي على قيم قديمة، يمكنك التحقق من ذلك وتحديثه هنا.</target>
+      </trans-unit>
+      <trans-unit id="referenceIndex_buttonUpdate" resname="referenceIndex_buttonUpdate" approved="yes">
+        <source>Update reference index</source>
+        <target state="final">تحديث فهرس المرجع</target>
+      </trans-unit>
+      <trans-unit id="referenceIndex_buttonCheck" resname="referenceIndex_buttonCheck" approved="yes">
+        <source>Check reference index</source>
+        <target state="final">فحص الفِهْرِس المرجعي</target>
+      </trans-unit>
+      <trans-unit id="checkNow" resname="checkNow" approved="yes">
+        <source>Check now!</source>
+        <target state="final">التحقق الآن!</target>
+      </trans-unit>
+      <trans-unit id="checkScript_headline" resname="checkScript_headline" approved="yes">
+        <source>Using the command line interface</source>
+        <target state="final">استخدام واجهة سطر الأوامر</target>
+      </trans-unit>
+      <trans-unit id="checkScript" resname="checkScript" approved="yes">
+        <source>You can also run the check as a shell script using CLI if the processing takes longer than the PHP max_execution_time allows.</source>
+        <target state="final">يمكنك أيضاً تشغيل هذا الفحص shell script باستخدام CLI إذا كانت المعالجة تستغرق وقتاً أطول مما يسمح به PHP max_execution_times.</target>
+      </trans-unit>
+      <trans-unit id="checkScript_check_description" resname="checkScript_check_description" approved="yes">
+        <source>To check the reference index use</source>
+        <target state="final">للتحقق من استخدام الفِهْرِس المرجِعي</target>
+      </trans-unit>
+      <trans-unit id="checkScript_update_description" resname="checkScript_update_description" approved="yes">
+        <source>To update the reference index use</source>
+        <target state="final">لتحديث استخدام الفِهْرِس المرجِعي</target>
+      </trans-unit>
+      <trans-unit id="checkScript_moreDetails" resname="checkScript_moreDetails" approved="yes">
+        <source>For more details see</source>
+        <target state="final">لمزيد من التفاصيل، انظر</target>
+      </trans-unit>
+      <trans-unit id="updateRefIndex" resname="updateRefIndex" approved="yes">
+        <source>Update reference index</source>
+        <target state="final">تحديث فهرس المرجع</target>
+      </trans-unit>
+      <trans-unit id="showSQL" resname="showSQL" approved="yes">
+        <source>Show SQL parts</source>
+        <target state="final">إظهار أجزاء SQL</target>
+      </trans-unit>
+      <trans-unit id="useFormattedStrings" resname="useFormattedStrings" approved="yes">
+        <source>Use formatted strings, labels and dates instead of original values for results</source>
+        <target state="final">استخدام المقاطع المُنسّقَة والمُسميات والتواريخ بدلاً من القيم الأصلية للنتائج</target>
+      </trans-unit>
+      <trans-unit id="dontUseOrigValues" resname="dontUseOrigValues" approved="yes">
+        <source>Don't use original values in brackets as prefix for labelled results</source>
+        <target state="final">لا تستخدم القيم الأصلية بين قوسين كبداية للنتائج المَوصُوفَة</target>
+      </trans-unit>
+      <trans-unit id="sortOptions" resname="sortOptions" approved="yes">
+        <source>Sort selectbox-options for relations by label and not by value</source>
+        <target state="final">فرز خيارات مربع التحديد للعلاقات حسب التسمية وليس حسب القيمة</target>
+      </trans-unit>
+      <trans-unit id="showDeleted" resname="showDeleted" approved="yes">
+        <source>Show even deleted entries (with undelete buttons)</source>
+        <target state="final">إظهار حتى المُدخلات المحذوفة (مع أزرار إلغاء الحذف)</target>
+      </trans-unit>
+      <trans-unit id="searchOptions" resname="searchOptions" approved="yes">
+        <source>Search options</source>
+        <target state="final">خيارات البحث</target>
+      </trans-unit>
+      <trans-unit id="result" resname="result" approved="yes">
+        <source>Result</source>
+        <target state="final">النتيجة</target>
+      </trans-unit>
+      <trans-unit id="tables" resname="tables" approved="yes">
+        <source>Tables</source>
+        <target state="final">الجداول</target>
+      </trans-unit>
+      <trans-unit id="references" resname="references" approved="yes">
+        <source>references</source>
+        <target state="final">المراجع</target>
+      </trans-unit>
+      <trans-unit id="isMissing" resname="isMissing" approved="yes">
+        <source>is missing!</source>
+        <target state="final">إنه مفقود!</target>
+      </trans-unit>
+      <trans-unit id="referencedFrom" resname="referencedFrom" approved="yes">
+        <source>Referenced from</source>
+        <target state="final">مُشار إليه من</target>
+      </trans-unit>
+      <trans-unit id="enterRegexPattern" resname="enterRegexPattern" approved="yes">
+        <source>Enter regex pattern</source>
+        <target state="final">أدخل نمط التعبير العادي</target>
+      </trans-unit>
+      <trans-unit id="searchButton" resname="searchButton" approved="yes">
+        <source>Search</source>
+        <target state="final">البحث</target>
+      </trans-unit>
+      <trans-unit id="pattern" resname="pattern" approved="yes">
+        <source>Pattern</source>
+        <target state="final">النمط</target>
+      </trans-unit>
+      <trans-unit id="beingChecked" resname="beingChecked" approved="yes">
+        <source>being checked...</source>
+        <target state="final">يتم التحقق...</target>
+      </trans-unit>
+      <trans-unit id="directories" resname="directories" approved="yes">
+        <source>Dirs</source>
+        <target state="final">Dirs</target>
+      </trans-unit>
+      <trans-unit id="directoriesTooDeep" resname="directoriesTooDeep" approved="yes">
+        <source>ERROR: Directories deeper than the following number of levels</source>
+        <target state="final">خطأ: الدلائل أعمق من عدد المستويات التالية</target>
+      </trans-unit>
+      <trans-unit id="files" resname="files" approved="yes">
+        <source>Files</source>
+        <target state="final">الملفات</target>
+      </trans-unit>
+      <trans-unit id="matchingFiles" resname="matchingFiles" approved="yes">
+        <source>Matching files</source>
+        <target state="final">الملفات المُطابقة</target>
+      </trans-unit>
+      <trans-unit id="notChecked" resname="notChecked" approved="yes">
+        <source>not checked.</source>
+        <target state="final">لم يتم التحقق.</target>
+      </trans-unit>
+      <trans-unit id="searchingForFilenames" resname="searchingForFilenames" approved="yes">
+        <source>Searching for filenames</source>
+        <target state="final">البحث عن أسماء الملفات</target>
+      </trans-unit>
+      <trans-unit id="fixLostRecord" resname="fixLostRecord" approved="yes">
+        <source>Click to move this lost record to rootlevel (pid=0)</source>
+        <target state="final">انقر لنقل هذا السجل المفقود إلى مستوى الجذر (pid=0)</target>
+      </trans-unit>
+      <trans-unit id="doktype" resname="doktype" approved="yes">
+        <source>Document types</source>
+        <target state="final">نوع المستند</target>
+      </trans-unit>
+      <trans-unit id="doktype_value" resname="doktype_value" approved="yes">
+        <source>Document types (value)</source>
+        <target state="final">أنواع المستند (قيمة)</target>
+      </trans-unit>
+      <trans-unit id="pages" resname="pages" approved="yes">
+        <source>Pages</source>
+        <target state="final">الصفحات</target>
+      </trans-unit>
+      <trans-unit id="total_pages" resname="total_pages" approved="yes">
+        <source>Total number of default language pages</source>
+        <target state="final">العدد الإجمالي لصفحات اللغة الافتراضية</target>
+      </trans-unit>
+      <trans-unit id="translated_pages" resname="translated_pages" approved="yes">
+        <source>Total number of translated pages</source>
+        <target state="final">العدد الإجمالي للصفحات المُترجمة</target>
+      </trans-unit>
+      <trans-unit id="deleted_pages" resname="deleted_pages" approved="yes">
+        <source>Marked-deleted pages</source>
+        <target state="final">الصفحات المُحددة المَحذوفة</target>
+      </trans-unit>
+      <trans-unit id="hidden_pages" resname="hidden_pages" approved="yes">
+        <source>Hidden pages</source>
+        <target state="final">الصفحات المَخفِية</target>
+      </trans-unit>
+      <trans-unit id="count" resname="count" approved="yes">
+        <source>Count</source>
+        <target state="final">العدّ</target>
+      </trans-unit>
+      <trans-unit id="label" resname="label" approved="yes">
+        <source>Label</source>
+        <target state="final">التسمية</target>
+      </trans-unit>
+      <trans-unit id="tablename" resname="tablename" approved="yes">
+        <source>Table name</source>
+        <target state="final">اسم الجدول</target>
+      </trans-unit>
+      <trans-unit id="total_lost" resname="total_lost" approved="yes">
+        <source>Records total / lost</source>
+        <target state="final">السجلات المجموع / المفقود</target>
+      </trans-unit>
+      <trans-unit id="relations" resname="relations" approved="yes">
+        <source>Relations</source>
+        <target state="final">العلاقات</target>
+      </trans-unit>
+      <trans-unit id="relations_description" resname="relations_description" approved="yes">
+        <source>This will analyze the content of the tables and check if there are 'empty' relations between records or if files are missing from their expected position.</source>
+        <target state="final">سيؤدي هذا إلى تحليل محتوى الجداول والتحقق مما إذا كانت هناك علاقات 'فارغة' بين السجلات أو إذا كانت الملفات مفقودة من موقعها المتوقع.</target>
+      </trans-unit>
+      <trans-unit id="select_db" resname="select_db" approved="yes">
+        <source>Select fields</source>
+        <target state="final">تحديد الحقول</target>
+      </trans-unit>
+      <trans-unit id="group_db" resname="group_db" approved="yes">
+        <source>Group fields</source>
+        <target state="final">حقول المجموعة</target>
+      </trans-unit>
+      <trans-unit id="tree" resname="tree" approved="yes">
+        <source>The Page Tree</source>
+        <target state="final">شجرة الصفحة</target>
+      </trans-unit>
+      <trans-unit id="tree_description" resname="tree_description" approved="yes">
+        <source>This shows all pages in the system in one large tree. Beware that this will probably result in a very long document which will also take some time for the server to compute!</source>
+        <target state="final">هذا يعرض جميع الصفحات في النظام في شجرة واحدة كبيرة. احذر من أن هذا سيؤدي على الأرجح إلى إنشاء مستند طويل جداً، والذي سيستغرق أيضاً بعض الوقت حتى يقوم الخادم بحسابه!</target>
+      </trans-unit>
+      <trans-unit id="records" resname="records" approved="yes">
+        <source>Records Statistics</source>
+        <target state="final">إحصائيات السجلات</target>
+      </trans-unit>
+      <trans-unit id="records_description" resname="records_description" approved="yes">
+        <source>This shows some statistics for the records in the database. This runs through the entire page-tree and therefore it will also load the server heavily!</source>
+        <target state="final">هذا يظهر بعض الإحصائيات للسجلات في قاعدة البيانات. يتم تشغيل هذا عبر شجرة الصفحة بأكملها، وبالتالي فإنه سيتم تحميل الخادم بثقل!</target>
+      </trans-unit>
+      <trans-unit id="search_whole_database" resname="search_whole_database" approved="yes">
+        <source>Search whole Database</source>
+        <target state="final">البحث في قاعدة البيانات بأكملها</target>
+      </trans-unit>
+      <trans-unit id="search_description" resname="search_description" approved="yes">
+        <source>This searches through all database tables and records for a text string.</source>
+        <target state="final">يقوم هذا بالبحث في جميع جداول وسجلات قاعدة البيانات عن كلمة نَصيّة.</target>
+      </trans-unit>
+      <trans-unit id="refindex" resname="refindex" approved="yes">
+        <source>Check and update global reference index</source>
+        <target state="final">فحص وتحديث الفِهْرِس المرجعي العام</target>
+      </trans-unit>
+      <trans-unit id="refindex_description" resname="refindex_description" approved="yes">
+        <source>Allows you to maintain the reference index kept by TYPO3.</source>
+        <target state="final">يسمح لك بالحفاظ على الفِهْرِس المرجعي الذي يحتفظ به TYPO3.</target>
+      </trans-unit>
+      <trans-unit id="title" resname="title" approved="yes">
+        <source>Database integrity check</source>
+        <target state="final">التحقق من سلامة قاعدة البيانات</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
