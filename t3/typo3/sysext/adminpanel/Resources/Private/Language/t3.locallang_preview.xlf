@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:adminpanel/Resources/Private/Language/locallang_preview.xlf" date="2018-03-13T08:08:00Z" product-name="adminpanel" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="module.label" resname="module.label">
+        <source>Preview</source>
+        <target>crwdns96242:0crwdne96242:0</target>
+      </trans-unit>
+      <trans-unit id="showHiddenPages" resname="showHiddenPages">
+        <source>Show hidden pages</source>
+        <target>crwdns96244:0crwdne96244:0</target>
+      </trans-unit>
+      <trans-unit id="showHiddenRecords" resname="showHiddenRecords">
+        <source>Show hidden records</source>
+        <target>crwdns96246:0crwdne96246:0</target>
+      </trans-unit>
+      <trans-unit id="showFluidDebug" resname="showFluidDebug">
+        <source>Show fluid debug output</source>
+        <target>crwdns96248:0crwdne96248:0</target>
+      </trans-unit>
+      <trans-unit id="simulateDate" resname="simulateDate">
+        <source>Simulate time</source>
+        <target>crwdns96250:0crwdne96250:0</target>
+      </trans-unit>
+      <trans-unit id="simulateUserGroup" resname="simulateUserGroup">
+        <source>Simulate user group</source>
+        <target>crwdns96252:0crwdne96252:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
