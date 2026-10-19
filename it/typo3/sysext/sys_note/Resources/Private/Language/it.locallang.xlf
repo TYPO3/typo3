@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:sys_note/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="sys_note" target-language="it">
+    <header/>
+    <body>
+      <trans-unit id="internal_note" resname="internal_note" approved="yes">
+        <source>Internal notes</source>
+        <target state="final">Note interne</target>
+      </trans-unit>
+      <trans-unit id="new_internal_note" resname="new_internal_note" approved="yes">
+        <source>Create internal note for this page</source>
+        <target state="final">Crea una nota interna per questa pagina</target>
+      </trans-unit>
+      <trans-unit id="author" resname="author" approved="yes">
+        <source>Author</source>
+        <target state="final">Autore</target>
+      </trans-unit>
+      <trans-unit id="date" resname="date" approved="yes">
+        <source>Date</source>
+        <target state="final">Data</target>
+      </trans-unit>
+      <trans-unit id="personal" resname="personal" approved="yes">
+        <source>Personal</source>
+        <target state="final">Personale</target>
+      </trans-unit>
+      <trans-unit id="category.1" resname="category.1" approved="yes">
+        <source>Instructions</source>
+        <target state="final">Istruzioni</target>
+      </trans-unit>
+      <trans-unit id="category.2" resname="category.2" approved="yes">
+        <source>Template</source>
+        <target state="final">Template</target>
+      </trans-unit>
+      <trans-unit id="category.3" resname="category.3" approved="yes">
+        <source>Notes</source>
+        <target state="final">Note</target>
+      </trans-unit>
+      <trans-unit id="category.4" resname="category.4" approved="yes">
+        <source>To-do</source>
+        <target state="final">Da fare</target>
+      </trans-unit>
+      <trans-unit id="yes" resname="yes" approved="yes">
+        <source>Yes</source>
+        <target state="final">Si</target>
+      </trans-unit>
+      <trans-unit id="author_deleted" resname="author_deleted" approved="yes">
+        <source>Unknown author</source>
+        <target state="final">Autore sconosciuto</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
