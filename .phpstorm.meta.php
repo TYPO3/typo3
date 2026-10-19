@@ -90,7 +90,7 @@ namespace PHPSTORM_META {
         'frontend.cache.collector',
         'frontend.cache.instruction',
         'frontend.page.information',
-        'frontent.page.parts',
+        'frontend.page.parts',
         'frontend.register.stack',
         'frontend.response.data'
     );
