@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:install/Resources/Private/Language/BackendModule.xlf" date="2011-10-17T20:22:33Z" product-name="install" target-language="pl">
+    <header/>
+    <body>
+      <trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel" approved="yes">
+        <source>Install Tool</source>
+        <target state="final">Narzędzie instalacji</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr" approved="yes">
+        <source>Provides a simple link to the Install Tool. Notice the Install Tool (in typo3/install/) must be enabled.&lt;br /&gt;&lt;em&gt;Access for 'admin' users only!&lt;/em&gt;</source>
+        <target state="final">Zapewnia prosty link do Narzędzia Instalacji. Zwróć uwagę aby Narzędzie Instalacji (w typo3/install/) było włączone.&lt;br /&gt;&lt;em&gt;Dostęp tylko dla administratorów!&lt;/em&gt;&lt;/b&gt;</target>
+      </trans-unit>
+      <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab" approved="yes">
+        <source>Install</source>
+        <target state="final">Instalacja</target>
+      </trans-unit>
+      <trans-unit id="confirmUnlockInstallToolTitle" resname="confirmUnlockInstallToolTitle" approved="yes">
+        <source>The Install Tool is locked</source>
+        <target state="final">Narzędzie Instalacji jest zablokowane</target>
+      </trans-unit>
+      <trans-unit id="confirmUnlockInstallToolButton" resname="confirmUnlockInstallToolButton" approved="yes">
+        <source>Unlock the Install&amp;#160;Tool</source>
+        <target state="final">Odblokuj Narzędzie&amp;#160;Instalacji</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
