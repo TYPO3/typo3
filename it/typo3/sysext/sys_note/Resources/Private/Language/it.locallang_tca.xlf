@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:sys_note/Resources/Private/Language/locallang_tca.xlf" date="2011-10-17T20:22:37Z" product-name="sys_note" target-language="it">
+    <header/>
+    <body>
+      <trans-unit id="sys_note" resname="sys_note" approved="yes">
+        <source>Internal note</source>
+        <target state="final">Nota Interna</target>
+      </trans-unit>
+      <trans-unit id="sys_note.category.I.1" resname="sys_note.category.I.1" approved="yes">
+        <source>Instructions</source>
+        <target state="final">Istruzioni</target>
+      </trans-unit>
+      <trans-unit id="sys_note.category.I.2" resname="sys_note.category.I.2" approved="yes">
+        <source>Template</source>
+        <target state="final">Template</target>
+      </trans-unit>
+      <trans-unit id="sys_note.category.I.3" resname="sys_note.category.I.3" approved="yes">
+        <source>Notes</source>
+        <target state="final">Note</target>
+      </trans-unit>
+      <trans-unit id="sys_note.category.I.4" resname="sys_note.category.I.4" approved="yes">
+        <source>To-do</source>
+        <target state="final">Da fare</target>
+      </trans-unit>
+      <trans-unit id="sys_note.subject" resname="sys_note.subject" approved="yes">
+        <source>Subject</source>
+        <target state="final">Oggetto</target>
+      </trans-unit>
+      <trans-unit id="sys_note.message" resname="sys_note.message" approved="yes">
+        <source>Message</source>
+        <target state="final">Messaggio</target>
+      </trans-unit>
+      <trans-unit id="sys_note.personal" resname="sys_note.personal" approved="yes">
+        <source>Personal</source>
+        <target state="final">Personale</target>
+      </trans-unit>
+      <trans-unit id="sys_note.position" resname="sys_note.position" approved="yes">
+        <source>Position</source>
+        <target state="final">Posizione</target>
+      </trans-unit>
+      <trans-unit id="sys_note.position.top" resname="sys_note.position.top" approved="yes">
+        <source>Top</source>
+        <target state="final">In alto</target>
+      </trans-unit>
+      <trans-unit id="sys_note.position.bottom" resname="sys_note.position.bottom" approved="yes">
+        <source>Bottom</source>
+        <target state="final">In basso</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
