@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:fluid/Resources/Private/Language/locallang.xlf" date="2012-03-30T23:43:57Z" product-name="fluid" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="widget.pagination.previous" resname="widget.pagination.previous">
+        <source>previous</source>
+        <target>crwdns102710:0crwdne102710:0</target>
+      </trans-unit>
+      <trans-unit id="widget.pagination.next" resname="widget.pagination.next">
+        <source>next</source>
+        <target>crwdns102712:0crwdne102712:0</target>
+      </trans-unit>
+      <trans-unit id="widget.pagination.first" resname="widget.pagination.first">
+        <source>first</source>
+        <target>crwdns102714:0crwdne102714:0</target>
+      </trans-unit>
+      <trans-unit id="widget.pagination.last" resname="widget.pagination.last">
+        <source>last</source>
+        <target>crwdns102716:0crwdne102716:0</target>
+      </trans-unit>
+      <trans-unit id="widget.pagination.records" resname="widget.pagination.records">
+        <source>Records</source>
+        <target>crwdns102718:0crwdne102718:0</target>
+      </trans-unit>
+      <trans-unit id="widget.pagination.page" resname="widget.pagination.page">
+        <source>Page</source>
+        <target>crwdns102720:0crwdne102720:0</target>
+      </trans-unit>
+      <trans-unit id="widget.pagination.refresh" resname="widget.pagination.refresh">
+        <source>Refresh</source>
+        <target>crwdns102722:0crwdne102722:0</target>
+      </trans-unit>
+      <trans-unit id="viewhelper.format.bytes.units" resname="viewhelper.format.bytes.units">
+        <source>B,KB,MB,GB,TB,PB,EB,ZB,YB</source>
+        <target>crwdns102724:0crwdne102724:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
