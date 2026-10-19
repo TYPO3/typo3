@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:scheduler/Resources/Private/Language/locallang_csh_scheduler.xlf" date="2011-10-17T20:22:37Z" product-name="scheduler" target-language="pt-BR">
+    <header/>
+    <body>
+      <trans-unit id="task_frequency.seeAlso" resname="task_frequency.seeAlso" approved="yes">
+        <source>Wikipedia reference|http://en.wikipedia.org/wiki/Cron</source>
+        <target state="final">Referências na Wikipédia/http://pt-br.wikipedia.org/wiki/Cron</target>
+      </trans-unit>
+      <trans-unit id="task_multiple.alttitle" resname="task_multiple.alttitle" approved="yes">
+        <source>Multiple executions</source>
+        <target state="final">Múltiplas execuções</target>
+      </trans-unit>
+      <trans-unit id="task_multiple.description" resname="task_multiple.description" approved="yes">
+        <source>Choose whether a task can be running several times simultaneously or not</source>
+        <target state="final">Escolha se uma tarefa pode, ou não, ser executada várias vezes simultaneamente</target>
+      </trans-unit>
+      <trans-unit id="task_email.alttitle" resname="task_email.alttitle" approved="yes">
+        <source>Email address</source>
+        <target state="final">Endereço de email</target>
+      </trans-unit>
+      <trans-unit id="task_email.description" resname="task_email.description" approved="yes">
+        <source>Enter a recipient for the mails sent by the test task</source>
+        <target state="final">Digite um destinatário de emails enviados pela tarefa de teste</target>
+      </trans-unit>
+      <trans-unit id="task_description.alttitle" resname="task_description.alttitle" approved="yes">
+        <source>Task description</source>
+        <target state="final">Descrição de tarefa</target>
+      </trans-unit>
+      <trans-unit id="task_description.description" resname="task_description.description" approved="yes">
+        <source>Enter a description for this task</source>
+        <target state="final">Digite uma descrição para essa tarefa</target>
+      </trans-unit>
+      <trans-unit id="task_group.alttitle" resname="task_group.alttitle" approved="yes">
+        <source>Task group</source>
+        <target state="final">Grupo de tarefa</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
