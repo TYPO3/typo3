@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/siteconfiguration_fieldinformation.xlf" date="2015-01-02T11:16:11Z" product-name="backend" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="site.rootPageId" resname="site.rootPageId">
+        <source>You must create a page with a site root flag.</source>
+        <target>crwdns213006:0crwdne213006:0</target>
+      </trans-unit>
+      <trans-unit id="site.identifier" resname="site.identifier">
+        <source>This name will be used to create the configuration directory. Mind the recommendations for directory names (only a-z,0-9,_,-) and make it unique.</source>
+        <target>crwdns213008:0crwdne213008:0</target>
+      </trans-unit>
+      <trans-unit id="site.base" resname="site.base">
+        <source>Main URL to call the frontend in default language. Can be https://www.example.com/ or just /, if it is just a / you cannot rely on TYPO3 creating full URLs</source>
+        <target>crwdns213010:0crwdne213010:0</target>
+      </trans-unit>
+      <trans-unit id="site.websiteTitle" resname="site.websiteTitle">
+        <source>The title of the website is used for the title tag in the frontend</source>
+        <target>crwdns213012:0crwdne213012:0</target>
+      </trans-unit>
+      <trans-unit id="site.baseVariants" resname="site.baseVariants">
+        <source>This allows you to specify variants of the site's base. Can be used, for example, if you have a different domain for your staging environment.</source>
+        <target>crwdns213014:0crwdne213014:0</target>
+      </trans-unit>
+      <trans-unit id="site_language.base" resname="site_language.base">
+        <source>Use a full qualified domain "https://www.mydomain.fr/" or "/fr/". Use "/" to keep the main URL for the default language. Add language specific suffixes to use those, or configure complete URLs for independent domains.</source>
+        <target>crwdns213016:0crwdne213016:0</target>
+      </trans-unit>
+      <trans-unit id="site_language.locale" resname="site_language.locale">
+        <source>Used for localized date and currency formats. E.g. "de_DE" or "en_US.UTF-8".</source>
+        <target>crwdns213018:0crwdne213018:0</target>
+      </trans-unit>
+      <trans-unit id="site_language.iso-639-1" resname="site_language.iso-639-1">
+        <source>ISO 639-1 code of the Language</source>
+        <target>crwdns213020:0crwdne213020:0</target>
+      </trans-unit>
+      <trans-unit id="site_language.hreflang" resname="site_language.hreflang">
+        <source>Used within for "lang" and "hreflang" attributes</source>
+        <target>crwdns213022:0crwdne213022:0</target>
+      </trans-unit>
+      <trans-unit id="site_language.websiteTitle" resname="site_language.websiteTitle">
+        <source>With this language based Website title, you can override the Website title for this language</source>
+        <target>crwdns213024:0crwdne213024:0</target>
+      </trans-unit>
+      <trans-unit id="site_language.navigationTitle" resname="site_language.navigationTitle">
+        <source>Used within language-related menus</source>
+        <target>crwdns213026:0crwdne213026:0</target>
+      </trans-unit>
+      <trans-unit id="site_language.direction" resname="site_language.direction">
+        <source>Language direction for "dir" attribute</source>
+        <target>crwdns213028:0crwdne213028:0</target>
+      </trans-unit>
+      <trans-unit id="site_language.typo3Language" resname="site_language.typo3Language">
+        <source>Select the language to be used from translation files. Keep default if no translation files are available.</source>
+        <target>crwdns213030:0crwdne213030:0</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorCode" resname="site_errorhandling.errorCode">
+        <source>Make sure to have at least 0 (not defined otherwise) configured in order to serve helpful error messages to your visitors.</source>
+        <target>crwdns213032:0crwdne213032:0</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorFluidTemplate" resname="site_errorhandling.errorFluidTemplate">
+        <source>Path to the fluid template file given by absolute, relative path (from site root) or by referring the template file inside an extension with "EXT:" prefix.</source>
+        <target>crwdns213034:0crwdne213034:0</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorPhpClassFQCN" resname="site_errorhandling.errorPhpClassFQCN">
+        <source>Fully qualified class name to a class that implements the PageErrorHandlerInterface.</source>
+        <target>crwdns213036:0crwdne213036:0</target>
+      </trans-unit>
+      <trans-unit id="site_base_variant.base" resname="site_base_variant.base">
+        <source>For example "https://staging.domain.tld" or "http://www.domain.local"</source>
+        <target>crwdns213038:0crwdne213038:0</target>
+      </trans-unit>
+      <trans-unit id="site_base_variant.condition" resname="site_base_variant.condition">
+        <source>Expression to match this base variant.</source>
+        <target>crwdns213040:0crwdne213040:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
