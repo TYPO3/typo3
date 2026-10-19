@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:redirects/Resources/Private/Language/locallang_slug_service.xlf" date="2017-12-29T20:23:34Z" product-name="redirects" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="notification.slug_and_redirects.title" resname="notification.slug_and_redirects.title">
+        <source>Slugs updated and redirects created</source>
+        <target>crwdns223346:0crwdne223346:0</target>
+      </trans-unit>
+      <trans-unit id="notification.slug_and_redirects.message" resname="notification.slug_and_redirects.message">
+        <source>Because you renamed a slug, the slugs of all sub-pages were updated and redirects were created for you automatically.</source>
+        <target>crwdns223348:0crwdne223348:0</target>
+      </trans-unit>
+      <trans-unit id="notification.slug_only.title" resname="notification.slug_only.title">
+        <source>Slugs updated</source>
+        <target>crwdns223350:0crwdne223350:0</target>
+      </trans-unit>
+      <trans-unit id="notification.slug_only.message" resname="notification.slug_only.message">
+        <source>Because you renamed a slug, the slugs of all sub-pages were updated for you automatically.</source>
+        <target>crwdns223352:0crwdne223352:0</target>
+      </trans-unit>
+      <trans-unit id="notification.redirects.button.revert_update" resname="notification.redirects.button.revert_update">
+        <source>Revert update</source>
+        <target>crwdns223354:0crwdne223354:0</target>
+      </trans-unit>
+      <trans-unit id="notification.redirects.button.revert_redirect" resname="notification.redirects.button.revert_redirect">
+        <source>Revert redirects only</source>
+        <target>crwdns223356:0crwdne223356:0</target>
+      </trans-unit>
+      <trans-unit id="redirects_error_title" resname="redirects_error_title">
+        <source>An error occurred</source>
+        <target>crwdns223358:0crwdne223358:0</target>
+      </trans-unit>
+      <trans-unit id="redirects_error_message" resname="redirects_error_message">
+        <source>Sorry something went wrong.</source>
+        <target>crwdns223360:0crwdne223360:0</target>
+      </trans-unit>
+      <trans-unit id="revert_update_success_title" resname="revert_update_success_title">
+        <source>Revert successful</source>
+        <target>crwdns223362:0crwdne223362:0</target>
+      </trans-unit>
+      <trans-unit id="revert_update_success_message" resname="revert_update_success_message">
+        <source>All slug changes of sub pages have been reverted.</source>
+        <target>crwdns223364:0crwdne223364:0</target>
+      </trans-unit>
+      <trans-unit id="revert_redirects_success_title" resname="revert_redirects_success_title">
+        <source>Revert successful</source>
+        <target>crwdns223366:0crwdne223366:0</target>
+      </trans-unit>
+      <trans-unit id="revert_redirects_success_message" resname="revert_redirects_success_message">
+        <source>All created redirects have been reverted.</source>
+        <target>crwdns223368:0crwdne223368:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
