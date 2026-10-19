@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:linkvalidator/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:34Z" product-name="linkvalidator" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="mod_linkvalidator" resname="mod_linkvalidator">
+        <source>LinkValidator</source>
+        <target>crwdns222600:0crwdne222600:0</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.name" resname="tasks.validate.name">
+        <source>LinkValidator</source>
+        <target>crwdns222602:0crwdne222602:0</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.description" resname="tasks.validate.description">
+        <source>Search for broken links and store the result into the temporary table tx_linkvalidator_link in order to ease up the backend module.</source>
+        <target>crwdns222604:0crwdne222604:0</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.page" resname="tasks.validate.page">
+        <source>Start page (uid)</source>
+        <target>crwdns222606:0crwdne222606:0</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.depth" resname="tasks.validate.depth">
+        <source>Depth</source>
+        <target>crwdns222608:0crwdne222608:0</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.languages" resname="tasks.validate.languages">
+        <source>Languages to search for broken links (Leave empty for all languages).</source>
+        <target>crwdns222610:0crwdne222610:0</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.conf" resname="tasks.validate.conf">
+        <source>Overwrite TSconfig</source>
+        <target>crwdns222612:0crwdne222612:0</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.email" resname="tasks.validate.email">
+        <source>Send email report to</source>
+        <target>crwdns222614:0crwdne222614:0</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.emailOnBrokenLinkOnly" resname="tasks.validate.emailOnBrokenLinkOnly">
+        <source>Send email on new broken links only</source>
+        <target>crwdns222616:0crwdne222616:0</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.emailTemplateName" resname="tasks.validate.emailTemplateName">
+        <source>Email template name (without the extension)</source>
+        <target>crwdns222618:0crwdne222618:0</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.invalidEmail" resname="tasks.validate.invalidEmail">
+        <source>Invalid email format!</source>
+        <target>crwdns222620:0crwdne222620:0</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.invalidPage" resname="tasks.validate.invalidPage">
+        <source>Invalid page uid, please enter a valid page uid!</source>
+        <target>crwdns222622:0crwdne222622:0</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.invalidDepth" resname="tasks.validate.invalidDepth">
+        <source>There is no depth set, please set it to one of the offered values!</source>
+        <target>crwdns222624:0crwdne222624:0</target>
+      </trans-unit>
+      <trans-unit id="tasks.notice.useDefaultTemplate" resname="tasks.notice.useDefaultTemplate">
+        <source>
+					The templateName was automatically set to the default because either the field in the task
+					configuration is empty or no file is found for the given name. Please note that both a .html and
+					.txt file must exist under the configured templatePath.
+				</source>
+        <target>crwdns222626:0crwdne222626:0</target>
+      </trans-unit>
+      <trans-unit id="tasks.error.emptyToEmail" resname="tasks.error.emptyToEmail">
+        <source>There must be at least one recipient defined!</source>
+        <target>crwdns222628:0crwdne222628:0</target>
+      </trans-unit>
+      <trans-unit id="tasks.error.invalidToEmail" resname="tasks.error.invalidToEmail">
+        <source>Invalid format of one or more of the recipient email addresses!</source>
+        <target>crwdns222630:0crwdne222630:0</target>
+      </trans-unit>
+      <trans-unit id="tasks.error.invalidFromEmail" resname="tasks.error.invalidFromEmail">
+        <source>Invalid format of the email address in the from header</source>
+        <target>crwdns222632:0crwdne222632:0</target>
+      </trans-unit>
+      <trans-unit id="tasks.error.invalidTSconfig" resname="tasks.error.invalidTSconfig">
+        <source>Invalid TSconfig in the task configuration!</source>
+        <target>crwdns222634:0crwdne222634:0</target>
+      </trans-unit>
+      <trans-unit id="tasks.error.invalidPageUid" resname="tasks.error.invalidPageUid">
+        <source>The given page id %d is invalid!</source>
+        <target>crwdns222636:0%dcrwdne222636:0</target>
+      </trans-unit>
+      <trans-unit id="tasks.email.title" resname="tasks.email.title">
+        <source>TYPO3 LinkValidator report</source>
+        <target>crwdns222638:0crwdne222638:0</target>
+      </trans-unit>
+      <trans-unit id="tasks.email.overview" resname="tasks.email.overview">
+        <source>Overview of broken links</source>
+        <target>crwdns222640:0crwdne222640:0</target>
+      </trans-unit>
+      <trans-unit id="tasks.email.overview.all" resname="tasks.email.overview.all">
+        <source>Total broken links: %s (last report: %s)</source>
+        <target>crwdns222642:0%scrwdnd222642:0%scrwdne222642:0</target>
+      </trans-unit>
+      <trans-unit id="tasks.email.overview.internal" resname="tasks.email.overview.internal">
+        <source>Internal links: %s (last report: %s)</source>
+        <target>crwdns222644:0%scrwdnd222644:0%scrwdne222644:0</target>
+      </trans-unit>
+      <trans-unit id="tasks.email.overview.external" resname="tasks.email.overview.external">
+        <source>External links: %s (last report: %s)</source>
+        <target>crwdns222646:0%scrwdnd222646:0%scrwdne222646:0</target>
+      </trans-unit>
+      <trans-unit id="tasks.email.overview.file" resname="tasks.email.overview.file">
+        <source>File / Media links: %s (last report: %s)</source>
+        <target>crwdns222648:0%scrwdnd222648:0%scrwdne222648:0</target>
+      </trans-unit>
+      <trans-unit id="tasks.email.listing" resname="tasks.email.lisiting">
+        <source>Listing of broken links</source>
+        <target>crwdns222650:0crwdne222650:0</target>
+      </trans-unit>
+      <trans-unit id="tasks.email.listing.pageExplanation" resname="tasks.email.lisiting">
+        <source>If record type is "Page", the page id is the parent page.</source>
+        <target>crwdns222652:0crwdne222652:0</target>
+      </trans-unit>
+      <trans-unit id="tasks.email.listing.hoverExpalantion" resname="tasks.email.lisiting">
+        <source>Hover over an element to see more information e.g. the record title.</source>
+        <target>crwdns222654:0crwdne222654:0</target>
+      </trans-unit>
+      <trans-unit id="tasks.email.listing.explanation" resname="tasks.email.explanation">
+        <source>Explanation: Record | Language | Page | Record type | Target | Link type</source>
+        <target>crwdns222656:0crwdne222656:0</target>
+      </trans-unit>
+      <trans-unit id="task.email.brokenLinks.record" resname="tasks.email.brokenLinks.record">
+        <source>Record</source>
+        <target>crwdns222658:0crwdne222658:0</target>
+      </trans-unit>
+      <trans-unit id="task.email.brokenLinks.language" resname="tasks.email.brokenLinks.language">
+        <source>Language</source>
+        <target>crwdns222660:0crwdne222660:0</target>
+      </trans-unit>
+      <trans-unit id="task.email.brokenLinks.page" resname="tasks.email.brokenLinks.page">
+        <source>Page</source>
+        <target>crwdns222662:0crwdne222662:0</target>
+      </trans-unit>
+      <trans-unit id="task.email.brokenLinks.recordType" resname="tasks.email.brokenLinks.recordType">
+        <source>Record type</source>
+        <target>crwdns222664:0crwdne222664:0</target>
+      </trans-unit>
+      <trans-unit id="task.email.brokenLinks.target" resname="tasks.email.brokenLinks.target">
+        <source>Target</source>
+        <target>crwdns222666:0crwdne222666:0</target>
+      </trans-unit>
+      <trans-unit id="task.email.brokenLinks.type" resname="tasks.email.brokenLinks.type">
+        <source>Type</source>
+        <target>crwdns222668:0crwdne222668:0</target>
+      </trans-unit>
+      <trans-unit id="task.email.brokenLinks.type.db" resname="tasks.email.brokenLinks.db">
+        <source>Internal</source>
+        <target>crwdns222670:0crwdne222670:0</target>
+      </trans-unit>
+      <trans-unit id="task.email.brokenLinks.type.external" resname="tasks.email.brokenLinks.external">
+        <source>External</source>
+        <target>crwdns222672:0crwdne222672:0</target>
+      </trans-unit>
+      <trans-unit id="task.email.brokenLinks.type.file" resname="tasks.email.brokenLinks.file">
+        <source>File / Media</source>
+        <target>crwdns222674:0crwdne222674:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
