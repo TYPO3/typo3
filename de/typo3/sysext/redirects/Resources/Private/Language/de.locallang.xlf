@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:redirects/Resources/Private/Language/locallang.xlf" date="2017-12-29T20:22:14Z" product-name="redirects" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="redirects" resname="redirects" approved="yes">
+        <source>Redirect Settings</source>
+        <target state="final">Weiterleitungseinstellungen</target>
+      </trans-unit>
+      <trans-unit id="redirects.autoUpdateSlugs" resname="redirects.autoUpdateSlugs" approved="yes">
+        <source>Update the slugs of all sub pages automatically</source>
+        <target state="final">Aktualisiere die URL-Segmente aller Unterseiten automatisch</target>
+      </trans-unit>
+      <trans-unit id="redirects.autoCreateRedirects" resname="redirects.autoCreateRedirects" approved="yes">
+        <source>Create redirects for pages with a new slug automatically</source>
+        <target state="final">Weiterleitungen für Seiten mit einem neuen URL-Segment automatisch erstellen</target>
+      </trans-unit>
+      <trans-unit id="redirects.redirectTTL" resname="redirects.redirectTTL" approved="yes">
+        <source>Time To Live of redirect records in days</source>
+        <target state="final">Lebenszeit für Weiterleitungen in Tagen</target>
+      </trans-unit>
+      <trans-unit id="redirects.httpStatusCode" resname="redirects.httpStatusCode" approved="yes">
+        <source>HTTP Status Code for the redirect, 301 is the default</source>
+        <target state="final">HTTP-Status-Code für die Weiterleitung, 301 ist die Standardeinstellung</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
