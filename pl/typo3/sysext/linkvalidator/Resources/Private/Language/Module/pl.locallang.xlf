@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf" date="2011-10-17T20:22:34Z" product-name="linkvalidator" target-language="pl">
+    <header/>
+    <body>
+      <!-- HTTP status code error messages -->
+      <!-- libcurl error messages from https://curl.haxx.se/libcurl/c/libcurl-errors.html -->
+      <!-- ignoring various FTP errors here: 10 - 15, 17, 19  and other error that are unlikely -->
+    </body>
+  </file>
+</xliff>
