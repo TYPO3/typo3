@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf" date="2011-10-17T20:22:34Z" product-name="linkvalidator" target-language="no">
+    <header/>
+    <body>
+      <trans-unit id="menu.introduction" resname="menu.introduction" approved="yes">
+        <source>Introduction</source>
+        <target state="final">Introduksjon</target>
+      </trans-unit>
+      <trans-unit id="overview.attention.header" resname="overview.attention.header" approved="yes">
+        <source>Attention</source>
+        <target state="final">Oppmerksomhet</target>
+      </trans-unit>
+      <trans-unit id="Report" resname="Report" approved="yes">
+        <source>Report</source>
+        <target state="final">Rapporter</target>
+      </trans-unit>
+      <trans-unit id="hooks.file" resname="hooks.file" approved="yes">
+        <source>File Links</source>
+        <target state="final">Fillinker</target>
+      </trans-unit>
+      <trans-unit id="list.tableHead.path" resname="list.tableHead.path" approved="yes">
+        <source>Path</source>
+        <target state="final">Sti</target>
+      </trans-unit>
+      <trans-unit id="list.tableHead.headlink" resname="list.tableHead.headlink" approved="yes">
+        <source>Link</source>
+        <target state="final">Link</target>
+      </trans-unit>
+      <trans-unit id="list.report.rowdeleted.default.title" resname="list.report.rowdeleted.default.title" approved="yes">
+        <source>Linked</source>
+        <target state="final">Sammenlenket</target>
+      </trans-unit>
+      <trans-unit id="list.msg.ok" resname="list.msg.ok" approved="yes">
+        <source>Ok</source>
+        <target state="final">OK</target>
+      </trans-unit>
+      <trans-unit id="list.msg.lastRun" resname="list.msg.lastRun" approved="yes">
+        <source>%1$s %2$s</source>
+        <target state="final">%1$s %2$s</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
