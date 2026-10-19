@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_common.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="it">
+    <header/>
+    <body>
+      <trans-unit id="about" resname="about" approved="yes">
+        <source>About</source>
+        <target state="final">Informazioni su</target>
+      </trans-unit>
+      <trans-unit id="and" resname="and" approved="yes">
+        <source>and</source>
+        <target state="final">e</target>
+      </trans-unit>
+      <trans-unit id="ascending" resname="ascending" approved="yes">
+        <source>Ascending</source>
+        <target state="final">Ascendente</target>
+      </trans-unit>
+      <trans-unit id="back" resname="back" approved="yes">
+        <source>Back</source>
+        <target state="final">Indietro</target>
+      </trans-unit>
+      <trans-unit id="byteSizeUnits" resname="byteSizeUnits" approved="yes">
+        <source> B| KB| MB| GB</source>
+        <target state="final"> B| KB| MB| GB</target>
+      </trans-unit>
+      <trans-unit id="cancel" resname="cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Annulla</target>
+      </trans-unit>
+      <trans-unit id="category" resname="category" approved="yes">
+        <source>Category</source>
+        <target state="final">Categoria</target>
+      </trans-unit>
+      <trans-unit id="close" resname="close" approved="yes">
+        <source>Close</source>
+        <target state="final">Chiudi</target>
+      </trans-unit>
+      <trans-unit id="delete" resname="delete" approved="yes">
+        <source>Delete</source>
+        <target state="final">Elimina</target>
+      </trans-unit>
+      <trans-unit id="descending" resname="descending" approved="yes">
+        <source>Descending</source>
+        <target state="final">Discendente</target>
+      </trans-unit>
+      <trans-unit id="details" resname="details" approved="yes">
+        <source>Details</source>
+        <target state="final">Dettagli</target>
+      </trans-unit>
+      <trans-unit id="disable" resname="disable" approved="yes">
+        <source>Disable</source>
+        <target state="final">Disabilita</target>
+      </trans-unit>
+      <trans-unit id="disabled" resname="disabled" approved="yes">
+        <source>Disabled</source>
+        <target state="final">Disabilitato</target>
+      </trans-unit>
+      <trans-unit id="down" resname="down" approved="yes">
+        <source>Down</source>
+        <target state="final">Giù</target>
+      </trans-unit>
+      <trans-unit id="download" resname="download" approved="yes">
+        <source>Download</source>
+        <target state="final">Scarica</target>
+      </trans-unit>
+      <trans-unit id="edit" resname="edit" approved="yes">
+        <source>Edit</source>
+        <target state="final">Modifica</target>
+      </trans-unit>
+      <trans-unit id="editField" resname="editField" approved="yes">
+        <source>Edit field</source>
+        <target state="final">Modifica campo</target>
+      </trans-unit>
+      <trans-unit id="editFile" resname="editFile" approved="yes">
+        <source>Edit file</source>
+        <target state="final">Modifica file</target>
+      </trans-unit>
+      <trans-unit id="enable" resname="enable" approved="yes">
+        <source>Enable</source>
+        <target state="final">Abilita</target>
+      </trans-unit>
+      <trans-unit id="enabled" resname="enabled" approved="yes">
+        <source>Enabled</source>
+        <target state="final">Abilitato</target>
+      </trans-unit>
+      <trans-unit id="file" resname="file" approved="yes">
+        <source>File</source>
+        <target state="final">File</target>
+      </trans-unit>
+      <trans-unit id="files" resname="files" approved="yes">
+        <source>Files</source>
+        <target state="final">File</target>
+      </trans-unit>
+      <trans-unit id="folder" resname="folder" approved="yes">
+        <source>Folder</source>
+        <target state="final">Cartella</target>
+      </trans-unit>
+      <trans-unit id="first" resname="first" approved="yes">
+        <source>First</source>
+        <target state="final">Primo</target>
+      </trans-unit>
+      <trans-unit id="from" resname="from" approved="yes">
+        <source>From</source>
+        <target state="final">Da</target>
+      </trans-unit>
+      <trans-unit id="go" resname="go" approved="yes">
+        <source>Go</source>
+        <target state="final">Vai</target>
+      </trans-unit>
+      <trans-unit id="goTo" resname="goTo" approved="yes">
+        <source>Go to</source>
+        <target state="final">Vai a</target>
+      </trans-unit>
+      <trans-unit id="help" resname="help" approved="yes">
+        <source>Help</source>
+        <target state="final">Aiuto</target>
+      </trans-unit>
+      <trans-unit id="item" resname="item" approved="yes">
+        <source>Item</source>
+        <target state="final">Elemento</target>
+      </trans-unit>
+      <trans-unit id="items" resname="items" approved="yes">
+        <source>Items</source>
+        <target state="final">Elementi</target>
+      </trans-unit>
+      <trans-unit id="last" resname="last" approved="yes">
+        <source>Last</source>
+        <target state="final">Ultimo</target>
+      </trans-unit>
+      <trans-unit id="left" resname="left" approved="yes">
+        <source>Left</source>
+        <target state="final">Sinistra</target>
+      </trans-unit>
+      <trans-unit id="login" resname="login" approved="yes">
+        <source>Login</source>
+        <target state="final">Login</target>
+      </trans-unit>
+      <trans-unit id="logout" resname="logout" approved="yes">
+        <source>Logout</source>
+        <target state="final">Esci</target>
+      </trans-unit>
+      <trans-unit id="more" resname="more" approved="yes">
+        <source>More</source>
+        <target state="final">Di più</target>
+      </trans-unit>
+      <trans-unit id="move" resname="move" approved="yes">
+        <source>Move</source>
+        <target state="final">Sposta</target>
+      </trans-unit>
+      <trans-unit id="new" resname="new" approved="yes">
+        <source>New</source>
+        <target state="final">Nuovo</target>
+      </trans-unit>
+      <trans-unit id="next" resname="next" approved="yes">
+        <source>Next</source>
+        <target state="final">Prossimo</target>
+      </trans-unit>
+      <trans-unit id="no" resname="no" approved="yes">
+        <source>No</source>
+        <target state="final">No</target>
+      </trans-unit>
+      <trans-unit id="ok" resname="ok" approved="yes">
+        <source>OK</source>
+        <target state="final">OK</target>
+      </trans-unit>
+      <trans-unit id="open" resname="open" approved="yes">
+        <source>Open</source>
+        <target state="final">Apri</target>
+      </trans-unit>
+      <trans-unit id="page" resname="page" approved="yes">
+        <source>Page</source>
+        <target state="final">Pagina</target>
+      </trans-unit>
+      <trans-unit id="pages" resname="pages" approved="yes">
+        <source>Pages</source>
+        <target state="final">Pagine</target>
+      </trans-unit>
+      <trans-unit id="previous" resname="previous" approved="yes">
+        <source>Previous</source>
+        <target state="final">Precedente</target>
+      </trans-unit>
+      <trans-unit id="print" resname="print" approved="yes">
+        <source>Print</source>
+        <target state="final">Stampa</target>
+      </trans-unit>
+      <trans-unit id="reload" resname="reload" approved="yes">
+        <source>Reload</source>
+        <target state="final">Ricarica</target>
+      </trans-unit>
+      <trans-unit id="right" resname="right" approved="yes">
+        <source>Right</source>
+        <target state="final">Destra</target>
+      </trans-unit>
+      <trans-unit id="save" resname="save" approved="yes">
+        <source>Save</source>
+        <target state="final">Salva</target>
+      </trans-unit>
+      <trans-unit id="saveAndClose" resname="saveAndClose" approved="yes">
+        <source>Save and close</source>
+        <target state="final">Salva e chiudi</target>
+      </trans-unit>
+      <trans-unit id="saveAndCloseDoc" resname="saveAndCloseDoc" approved="yes">
+        <source>Save and close document</source>
+        <target state="final">Salva e chiudi documento</target>
+      </trans-unit>
+      <trans-unit id="saveAndCreateNewDoc" resname="saveAndCreateNewDoc" approved="yes">
+        <source>Save and create new document</source>
+        <target state="final">Salva e crea nuovo documento</target>
+      </trans-unit>
+      <trans-unit id="saveAndViewPage" resname="saveAndViewPage" approved="yes">
+        <source>Save and view page</source>
+        <target state="final">Salva e mostra pagina web</target>
+      </trans-unit>
+      <trans-unit id="search" resname="search" approved="yes">
+        <source>Search</source>
+        <target state="final">Cerca</target>
+      </trans-unit>
+      <trans-unit id="send" resname="send" approved="yes">
+        <source>Send</source>
+        <target state="final">Invia</target>
+      </trans-unit>
+      <trans-unit id="start" resname="start" approved="yes">
+        <source>Start</source>
+        <target state="final">Inizio</target>
+      </trans-unit>
+      <trans-unit id="stop" resname="stop" approved="yes">
+        <source>Stop</source>
+        <target state="final">Fine</target>
+      </trans-unit>
+      <trans-unit id="submit" resname="submit" approved="yes">
+        <source>Submit</source>
+        <target state="final">Invia</target>
+      </trans-unit>
+      <trans-unit id="to" resname="to" approved="yes">
+        <source>To</source>
+        <target state="final">A</target>
+      </trans-unit>
+      <trans-unit id="tsRef" resname="tsRef" approved="yes">
+        <source>TSref reference</source>
+        <target state="final">Riferimento TSref</target>
+      </trans-unit>
+      <trans-unit id="undefined" resname="undefined" approved="yes">
+        <source>Undefined</source>
+        <target state="final">Non definito</target>
+      </trans-unit>
+      <trans-unit id="up" resname="up" approved="yes">
+        <source>Up</source>
+        <target state="final">Sù</target>
+      </trans-unit>
+      <trans-unit id="upload" resname="upload" approved="yes">
+        <source>Upload</source>
+        <target state="final">Carica</target>
+      </trans-unit>
+      <trans-unit id="user" resname="user" approved="yes">
+        <source>User</source>
+        <target state="final">Utente</target>
+      </trans-unit>
+      <trans-unit id="users" resname="users" approved="yes">
+        <source>Users</source>
+        <target state="final">Utenti</target>
+      </trans-unit>
+      <trans-unit id="view" resname="view" approved="yes">
+        <source>View</source>
+        <target state="final">Vedi</target>
+      </trans-unit>
+      <trans-unit id="yes" resname="yes" approved="yes">
+        <source>Yes</source>
+        <target state="final">Sì</target>
+      </trans-unit>
+      <trans-unit id="notAvailableAbbreviation" resname="notAvailableAbbreviation" approved="yes">
+        <source>N/A</source>
+        <target state="final">N/D</target>
+      </trans-unit>
+      <trans-unit id="pleaseConfirm" resname="pleaseConfirm" approved="yes">
+        <source>Please confirm</source>
+        <target state="final">Per favore conferma</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
