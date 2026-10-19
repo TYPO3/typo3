@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:indexed_search/Resources/Private/Language/locallang_csh_indexcfg.xlf" date="2011-10-17T20:22:33Z" product-name="indexed_search" target-language="ro">
+    <header/>
+    <body>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Provide a title for the configuration.</source>
+        <target state="final">Specificaţi titlul configuraţiei.</target>
+      </trans-unit>
+      <trans-unit id="description.description" resname="description.description" approved="yes">
+        <source>If needed, give it a description or put other important notes in this field.</source>
+        <target state="final">Dacă e necesar, introduceţi o descriere sau alte informaţii importante în acest câmp.</target>
+      </trans-unit>
+      <trans-unit id="timer_frequency.description" resname="timer_frequency.description" approved="yes">
+        <source>Use this setting to adjust how often you would like a re-indexing process to run for the configuration.</source>
+        <target state="final">Folosiţi această setare pentru a ajusta cât de des doriţi ca procesul de reindexare să ruleze pentru configuraţia făcută.</target>
+      </trans-unit>
+      <trans-unit id="type.description" resname="type.description" approved="yes">
+        <source>Select the type of Indexing Configuration here.</source>
+        <target state="final">Selectaţi tipul de configurare indexată aici.</target>
+      </trans-unit>
+      <trans-unit id="table2index.description" resname="table2index.description" approved="yes">
+        <source>Specify the database table to index records from.</source>
+        <target state="final">Specificaţi tabela din baza de date din care să fie indexate înregistrările.</target>
+      </trans-unit>
+      <trans-unit id="fieldlist.description" resname="fieldlist.description" approved="yes">
+        <source>Enter a comma-list of fields to be indexed. The first field name will be used for the search result title.</source>
+        <target state="final">Introduceţi o listă de valori separate prin virgulă ce doriţi să fie indexate. Primul câmp va fi folosit ca şi titlul rezultatului căutării.</target>
+      </trans-unit>
+      <trans-unit id="externalUrl.description" resname="externalUrl.description" approved="yes">
+        <source>Enter the URL of the external website you want to index.</source>
+        <target state="final">Introduceţi adresa sitului extern pe care doriţi să îl indexaţi.</target>
+      </trans-unit>
+      <trans-unit id="filepath.description" resname="filepath.description" approved="yes">
+        <source>Enter a filepath inside fileadmin/ where you want the files to be indexed.</source>
+        <target state="final">Introduceţi calea în interiorul fileadmin/ unde vreţi să fie indexate fişierele.</target>
+      </trans-unit>
+      <trans-unit id="filepath.details" resname="filepath.details" approved="yes">
+        <source>Example: "fileadmin/newsletters/"</source>
+        <target state="final">Exemplu: "fileadmin/newsletters/"</target>
+      </trans-unit>
+      <trans-unit id="extensions.description" resname="extensions.description" approved="yes">
+        <source>If you want to index only specific files in the directory, enter a list of file extensions here. For example: "html,pdf,doc"</source>
+        <target state="final">Dacă doriţi să indexaţi doar anumite fişiere dintr-un director, introduceţi o listă de extensii de fişiere aici. Exemplu: "html,pdf,doc"</target>
+      </trans-unit>
+      <trans-unit id="depth.description" resname="depth.description" approved="yes">
+        <source>Levels of recursion.</source>
+        <target state="final">Nivele recursivitate.</target>
+      </trans-unit>
+      <trans-unit id="depth.details" resname="depth.details" approved="yes">
+        <source>For file indexing it is the level of directories to decend. For External URLs it's the depth to which the crawler will go with links.</source>
+        <target state="final">Pentru indxarea fişierelor acesta este nivelul de directoare în care să se parcurgă. Pentru URL extern este adâncimea la care crawler-ul va avansa în linkurile de pe pagină.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
