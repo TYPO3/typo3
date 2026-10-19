@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:install/Resources/Private/Language/Report/locallang.xlf" date="2011-10-17T20:22:33Z" product-name="install" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="environment.status.title" resname="environment.status.title" approved="yes">
+        <source>System environment check</source>
+        <target state="final">Systemumgebungsüberprüfung</target>
+      </trans-unit>
+      <trans-unit id="environment.status.value" resname="environment.status.value" approved="yes">
+        <source>%1$s Test(s)</source>
+        <target state="final">%1$s Test(s)</target>
+      </trans-unit>
+      <trans-unit id="environment.status.message.error" resname="environment.status.message.error" approved="yes">
+        <source>The system environment check returned errors. Those errors will affect the functionality and stability of your TYPO3 CMS instance. Please check the install tool "System environment" for all details.</source>
+        <target state="final">Die Systemumgebungsüberprüfung ergab Fehler. Diese Fehler werden die Funktionalität und Stabilität Ihrer TYPO3-Installation beeinträchtigen. Bitte überprüfen Sie die Seite "System environment" im Install Tool für mehr Details.</target>
+      </trans-unit>
+      <trans-unit id="environment.status.message.warning" resname="environment.status.message.warning" approved="yes">
+        <source>The system environment check returned warnings. Those warnings might have a negative effect on the functionality and stability of your TYPO3 CMS instance. Please check the install tool "System environment" for all details.</source>
+        <target state="final">Die Systemumgebungsüberprüfung ergab Warnungen. Diese Warnungen könnten einen negativen Einfluss auf die Funktionalität und Stabilität Ihrer TYPO3-CMS-Installation haben. Bitte überprüfen Sie die Seite "System environment" im Install Tool für mehr Details.</target>
+      </trans-unit>
+      <trans-unit id="environment.status.message.notice" resname="environment.status.message.notice" approved="yes">
+        <source>The system environment check returned notices. Those should not affect the functionality and stability of your TYPO3 CMS instance. Please check the install tool "System environment" for all details.</source>
+        <target state="final">Die Systemumgebungsüberprüfung ergab Hinweise. Diese Hinweise sollten die Funktionalität und Stabilität Ihrer TYPO3-CMS-Installation nicht beeinträchtigen. Bitte überprüfen Sie die Seite "System environment" im Install Tool für mehr Details.</target>
+      </trans-unit>
+      <trans-unit id="environment.status.message.ok" resname="environment.status.message.ok" xml:space="preserve">
+				<source/>
+			</trans-unit>
+      <trans-unit id="environment.status.message.info" resname="environment.status.message.info" xml:space="preserve">
+				<source/>
+			</trans-unit>
+      <trans-unit id="status_fileSystem" resname="status_fileSystem" approved="yes">
+        <source>File System</source>
+        <target state="final">Dateisystem</target>
+      </trans-unit>
+      <trans-unit id="status_writable" resname="status_writable" approved="yes">
+        <source>Writable</source>
+        <target state="final">Beschreibbar</target>
+      </trans-unit>
+      <trans-unit id="status_missingDirectory" resname="status_missingDirectory" approved="yes">
+        <source>Required directory missing</source>
+        <target state="final">Benötigtes Verzeichnis fehlt</target>
+      </trans-unit>
+      <trans-unit id="status_nonExistingDirectory" resname="status_nonExistingDirectory" approved="yes">
+        <source>Directory not existing</source>
+        <target state="final">Verzeichnis fehlt</target>
+      </trans-unit>
+      <trans-unit id="status_recommendedWritableDirectory" resname="status_recommendedWritableDirectory" approved="yes">
+        <source>Directory should be writable</source>
+        <target state="final">Verzeichnis sollte beschreibbar sein</target>
+      </trans-unit>
+      <trans-unit id="status_requiredWritableDirectory" resname="status_requiredWritableDirectory" approved="yes">
+        <source>Directory not writable</source>
+        <target state="final">Verzeichnis nicht beschreibbar</target>
+      </trans-unit>
+      <trans-unit id="status_directoryDoesNotExist" resname="status_directoryDoesNotExist" approved="yes">
+        <source>%s does not exist.</source>
+        <target state="final">%s existiert nicht.</target>
+      </trans-unit>
+      <trans-unit id="status_directoryDoesNotExistCouldNotCreate" resname="status_directoryDoesNotExistCouldNotCreate" approved="yes">
+        <source>%s does not exist and could not be created.</source>
+        <target state="final">%s existiert nicht und konnte nicht erstellt werden.</target>
+      </trans-unit>
+      <trans-unit id="status_directoryShouldAlsoBeWritable" resname="status_directoryShouldAlsoBeWritable" approved="yes">
+        <source>Also note that it should be writable, if it did exist.</source>
+        <target state="final">Beachten Sie auch, dass das Verzeichnis beschreibbar sein sollte, wenn es existieren würde.</target>
+      </trans-unit>
+      <trans-unit id="status_directoryShouldBeWritable" resname="status_directoryShouldBeWritable" approved="yes">
+        <source>%s should be writable.</source>
+        <target state="final">%s sollte beschreibbar sein.</target>
+      </trans-unit>
+      <trans-unit id="status_directoryMustBeWritable" resname="status_directoryMustBeWritable" approved="yes">
+        <source>%s must be writable.</source>
+        <target state="final">%s muss beschreibbar sein.</target>
+      </trans-unit>
+      <trans-unit id="status_remainingUpdates" resname="status_remainingUpdates" approved="yes">
+        <source>Remaining updates</source>
+        <target state="final">Verbleibende Aktualisierungen</target>
+      </trans-unit>
+      <trans-unit id="status_remoteFetchException" resname="status_remoteFetchException" approved="yes">
+        <source>Could not fetch version matrix of TYPO3. Maybe this instance is blocked by a firewall?</source>
+        <target state="final">Matrix der verfügbaren TYPO3-Versionen konnte nicht heruntergeladen werden. Wird der Zugriff möglicherweise von einer Firewall blockiert?</target>
+      </trans-unit>
+      <trans-unit id="status_isDevelopmentVersion" resname="status_isDevelopmentVersion" approved="yes">
+        <source>This version of TYPO3 seems to be a development version. Thus no update information exists.</source>
+        <target state="final">Diese Version von TYPO3 scheint eine Entwicklungsversion zu sein. Daher stehen keine Informationen zu Aktualisierungen bereit.</target>
+      </trans-unit>
+      <trans-unit id="status_patchLevelNotFoundInReleaseMatrix" resname="status_patchLevelNotFoundInReleaseMatrix" approved="yes">
+        <source>It seems that this TYPO3 version has never been released. Thus no update information exists.</source>
+        <target state="final">Offenbar ist diese TYPO3-Version nie veröffentlicht worden. Daher stehen keine Informationen zu Aktualisierungen bereit.</target>
+      </trans-unit>
+      <trans-unit id="status_newVersionSecurityRelevant" resname="status_newVersionSecurityRelevant" approved="yes">
+        <source>There is a new version of TYPO3 available, updating is security relevant. Please update to version %s.</source>
+        <target state="final">Eine neue Version von TYPO3 ist verfügbar. Diese Aktualisierung ist sicherheitsrelevant. Aktualisieren Sie auf Version %s.</target>
+      </trans-unit>
+      <trans-unit id="status_newVersion" resname="status_newVersion" approved="yes">
+        <source>There is a new version of TYPO3 available. You can update to version %s.</source>
+        <target state="final">Eine neue Version von TYPO3 ist verfügbar. Aktualisieren Sie auf Version %s.</target>
+      </trans-unit>
+      <trans-unit id="status_elts_information" resname="status_elts_information" approved="yes">
+        <source>The currently installed TYPO3 version %s doesn't receive any community-driven updates anymore, consider subscribing to Extended Long Term Support (ELTS) releases. Get more information at %s.</source>
+        <target state="final">Die derzeit installierte TYPO3-Version %s erhält keine von der TYPO3 Community bereitgestellten Updates mehr. Wir empfehlen, die Extended Long Term Support (ELTS) Versionen zu abonnieren. Weitere Informationen erhalten Sie auf %s.</target>
+      </trans-unit>
+      <trans-unit id="status_elts_download" resname="status_elts_download" approved="yes">
+        <source>Please visit %s to download the release in your ELTS area.</source>
+        <target state="final">Bitte besuchen Sie %s um die Version in Ihrem ELTS Bereich herunterzuladen.</target>
+      </trans-unit>
+      <trans-unit id="status_elts_subscribe" resname="status_elts_subscribe" approved="yes">
+        <source>The currently installed TYPO3 version %s doesn't receive any community-driven updates anymore, consider subscribing to Extended Long Term Support (ELTS) releases. Get more information at %s.</source>
+        <target state="final">Die derzeit installierte TYPO3-Version %s erhält keine von der TYPO3 Community bereitgestellten Updates mehr. Wir empfehlen, die Extended Long Term Support (ELTS) Versionen zu abonnieren. Weitere Informationen erhalten Sie auf %s.</target>
+      </trans-unit>
+      <trans-unit id="status_versionOutdated" resname="status_versionOutdated" approved="yes">
+        <source>The TYPO3 version you're using is not supported anymore. You should update to a supported version.</source>
+        <target state="final">Die TYPO3-Version, die Sie verwenden, wird nicht mehr unterstützt. Sie sollten auf eine unterstützte Version aktualisieren.</target>
+      </trans-unit>
+      <trans-unit id="status_noAutomaticCheck" resname="status_noAutomaticCheck" approved="yes">
+        <source>Automatic update checking failed, please check for updates manually.</source>
+        <target state="final">Die automatische Überprüfung auf Aktualisierungen ist fehlgeschlagen. Bitte prüfen Sie manuell, ob Aktualisierung verfügbar sind.</target>
+      </trans-unit>
+      <trans-unit id="status_uptodate" resname="status_uptodate" approved="yes">
+        <source>Your TYPO3 version is up-to-date.</source>
+        <target state="final">Ihre TYPO3-Version ist aktuell.</target>
+      </trans-unit>
+      <trans-unit id="status_installToolPassword" resname="status_installToolPassword" approved="yes">
+        <source>Install Tool Password</source>
+        <target state="final">Passwort für das Installations-Tool</target>
+      </trans-unit>
+      <trans-unit id="status_installTool" resname="status_installTool" approved="yes">
+        <source>Install Tool</source>
+        <target state="final">Install-Tool</target>
+      </trans-unit>
+      <trans-unit id="status_enabledPermanently" resname="status_enabledPermanently" approved="yes">
+        <source>Enabled permanently</source>
+        <target state="final">Dauerhaft aktiviert</target>
+      </trans-unit>
+      <trans-unit id="status_enabledTemporarily" resname="status_enabledTemporarily" approved="yes">
+        <source>Enabled temporarily</source>
+        <target state="final">Temporär aktiviert</target>
+      </trans-unit>
+      <trans-unit id="status_installEnabledTemporarily" resname="status_installEnabledTemporarily" approved="yes">
+        <source>The Install Tool is temporarily enabled. Delete the file "%s" when you have finished setting up TYPO3. If not used the Install Tool will be disabled automatically in %s minutes.</source>
+        <target state="final">Das Installations-Tool ist temporär aktiviert. Löschen Sie die Datei "%s", wenn Sie die Installation von TYPO3 abgeschlossen haben. Wenn Sie das Installations-Tool nicht benutzen, wird es in %s Minuten automatisch deaktiviert.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
