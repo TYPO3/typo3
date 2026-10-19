@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:form/Resources/Private/Language/locallang_formManager_javascript.xlf" date="2016-10-09T03:38:32Z" product-name="form" target-language="lt">
+    <header/>
+    <body>
+      <trans-unit id="formManager.new_form_name" resname="formManager.new_form_name" xml:space="preserve" approved="yes">
+                <source>New form name</source>
+            <target state="final">Naujos formos pavadinimas</target></trans-unit>
+      <trans-unit id="formManager.form_prototype" resname="formManager.form_prototype" xml:space="preserve" approved="yes">
+                <source>Form prototype</source>
+            <target state="final">Formos prototipas</target></trans-unit>
+      <trans-unit id="formManager.form_copied" xml:space="preserve" approved="yes">
+                <source>Copied form</source>
+            <target state="final">Nukopijuota forma</target></trans-unit>
+      <trans-unit id="formManager.cancel" resname="formManager.cancel" xml:space="preserve" approved="yes">
+                <source>Cancel</source>
+            <target state="final">Atšaukti</target></trans-unit>
+      <trans-unit id="formManager.newFormWizard.step1.title" resname="formManager.newFormWizard.step1.title" xml:space="preserve" approved="yes">
+                <source>Create new form</source>
+            <target state="final">Kurti naują formą</target></trans-unit>
+      <trans-unit id="formManager.newFormWizard.step2.title" resname="formManager.newFormWizard.step2.title" xml:space="preserve" approved="yes">
+                <source>Settings</source>
+            <target state="final">Nustatymai</target></trans-unit>
+      <trans-unit id="formManager.newFormWizard.step4.errorTitle" resname="formManager.newFormWizard.step4.errorTitle" xml:space="preserve" approved="yes">
+                <source>Create</source>
+            <target state="final">Kurti</target></trans-unit>
+      <trans-unit id="formManager.newFormWizard.step4.errorMessage" resname="formManager.newFormWizard.step4.errorMessage" xml:space="preserve" approved="yes">
+                <source>The form could not be saved</source>
+            <target state="final">Formos nepavyko išsaugoti</target></trans-unit>
+      <trans-unit id="formManager.duplicateFormWizard.step1.title" resname="formManager.duplicateFormWizard.step1.title" xml:space="preserve" approved="yes">
+                <source>Duplicate form "{0}"</source>
+            <target state="final">Dubliuoti formą „{0}“</target></trans-unit>
+      <trans-unit id="formManager.duplicateFormWizard.step2.errorMessage" resname="formManager.duplicateFormWizard.step2.errorMessage" xml:space="preserve" approved="yes">
+                <source>The form could not be saved</source>
+            <target state="final">Formos nepavyko išsaugoti</target></trans-unit>
+      <trans-unit id="formManager.blankForm.label" xml:space="preserve" approved="yes">
+                <source>Blank form</source>
+            <target state="final">Tuščia forma</target></trans-unit>
+      <trans-unit id="formManager.predefinedForm.label" xml:space="preserve" approved="yes">
+                <source>Predefined form</source>
+            <target state="final">Iš anksto apibrėžta forma</target></trans-unit>
+    </body>
+  </file>
+</xliff>
