@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:form/Resources/Private/Language/locallang_formManager_javascript.xlf" date="2016-10-09T03:38:32Z" product-name="form" target-language="fa">
+    <header/>
+    <body>
+      <trans-unit id="formManager.remove_form_message" resname="formManager.remove_form_message" xml:space="preserve" approved="yes">
+                <source>Are you sure that you want to remove this form?</source>
+            <target state="final">آیا مطمئنید می‌خواهید این فرم را حذف کنید؟</target></trans-unit>
+      <trans-unit id="formManager.newFormWizard.step1.title" resname="formManager.newFormWizard.step1.title" xml:space="preserve" approved="yes">
+                <source>Create new form</source>
+            <target state="final">ساخت یک فرم جدید</target></trans-unit>
+      <trans-unit id="formManager.newFormWizard.step3.title" resname="formManager.newFormWizard.step3.title" xml:space="preserve" approved="yes">
+                <source>Ready</source>
+            <target state="final">آماده</target></trans-unit>
+      <trans-unit id="formManager.newFormWizard.step3.message" resname="formManager.newFormWizard.step3.message" xml:space="preserve" approved="yes">
+                <source>Now you are ready to create your new form.</source>
+            <target state="final">حالا آماده هستید تا فرم جدید خود را بسازید.</target></trans-unit>
+      <trans-unit id="formManager.duplicateFormWizard.step1.title" resname="formManager.duplicateFormWizard.step1.title" xml:space="preserve" approved="yes">
+                <source>Duplicate form "{0}"</source>
+            <target state="final">نسخه‌برداری از فرم "{0}"</target></trans-unit>
+      <trans-unit id="formManager.no_references" resname="formManager.no_references" xml:space="preserve" approved="yes">
+                <source>There are no references yet</source>
+            <target state="final">هنوز هیچ مرجعی وجود ندارد</target></trans-unit>
+      <trans-unit id="formManager.page" resname="formManager.page" xml:space="preserve" approved="yes">
+                <source>Page</source>
+            <target state="final">صفحه</target></trans-unit>
+    </body>
+  </file>
+</xliff>
