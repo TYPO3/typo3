@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:seo/Resources/Private/Language/locallang_tca.xlf" date="2018-08-09T16:22:32Z" product-name="seo" target-language="it">
+    <header/>
+    <body>
+      <trans-unit id="pages.tabs.seo" resname="pages.tabs.seo" approved="yes">
+        <source>SEO</source>
+        <target state="final">SEO</target>
+      </trans-unit>
+      <trans-unit id="pages.palettes.seo" resname="pages.palettes.seo" approved="yes">
+        <source>General SEO settings</source>
+        <target state="final">Impostazioni Generali SEO</target>
+      </trans-unit>
+      <trans-unit id="pages.seo_title" resname="pages.seo_title" approved="yes">
+        <source>Title for search engines</source>
+        <target state="final">Titolo per i Motori di Ricerca</target>
+      </trans-unit>
+      <trans-unit id="pages.palettes.robots" resname="pages.palettes.robots" approved="yes">
+        <source>Robot instructions</source>
+        <target state="final">Istruzioni per i Robot</target>
+      </trans-unit>
+      <trans-unit id="pages.no_index" resname="pages.no_index" approved="yes">
+        <source>No index</source>
+        <target state="final">Nessun indice</target>
+      </trans-unit>
+      <trans-unit id="pages.no_index_formlabel" resname="pages.no_index_formlabel" approved="yes">
+        <source>Index this page</source>
+        <target state="final">Indicizza questa Pagina</target>
+      </trans-unit>
+      <trans-unit id="pages.no_follow" resname="pages.no_follow" approved="yes">
+        <source>No follow</source>
+        <target state="final">Non seguire (No follow)</target>
+      </trans-unit>
+      <trans-unit id="pages.no_follow_formlabel" resname="pages.no_follow_formlabel" approved="yes">
+        <source>Follow this page</source>
+        <target state="final">Segui questa Pagina</target>
+      </trans-unit>
+      <trans-unit id="pages.palettes.opengraph" resname="pages.palettes.opengraph" approved="yes">
+        <source>Open Graph (Facebook)</source>
+        <target state="final">Open Graph (Facebook)</target>
+      </trans-unit>
+      <trans-unit id="pages.og_title" resname="pages.og_title" approved="yes">
+        <source>Title</source>
+        <target state="final">Titolo</target>
+      </trans-unit>
+      <trans-unit id="pages.og_description" resname="pages.og_description" approved="yes">
+        <source>Description</source>
+        <target state="final">Descrizione</target>
+      </trans-unit>
+      <trans-unit id="pages.og_image" resname="pages.og_image" approved="yes">
+        <source>Image</source>
+        <target state="final">Immagine</target>
+      </trans-unit>
+      <trans-unit id="pages.palettes.twittercards" resname="pages.palettes.twittercards" approved="yes">
+        <source>Twitter Cards</source>
+        <target state="final">Le Card di Twitter</target>
+      </trans-unit>
+      <trans-unit id="pages.twitter_title" resname="pages.twitter_title" approved="yes">
+        <source>Twitter Title</source>
+        <target state="final">Titolo Twitter</target>
+      </trans-unit>
+      <trans-unit id="pages.twitter_description" resname="pages.twitter_description" approved="yes">
+        <source>Twitter Description</source>
+        <target state="final">Descrizione Twitter</target>
+      </trans-unit>
+      <trans-unit id="pages.twitter_image" resname="pages.twitter_image" approved="yes">
+        <source>Twitter Image</source>
+        <target state="final">Immagine Twitter</target>
+      </trans-unit>
+      <trans-unit id="pages.twitter_card" resname="pages.twitter_card" approved="yes">
+        <source>Type of card to show</source>
+        <target state="final">Tipo di Card da Visualizzare</target>
+      </trans-unit>
+      <trans-unit id="pages.twitter_card.summary" resname="pages.twitter_card.summary" approved="yes">
+        <source>Summary Card</source>
+        <target state="final">Card Sommario</target>
+      </trans-unit>
+      <trans-unit id="pages.twitter_card.summary_large_image" resname="pages.twitter_card.summary_large_image" approved="yes">
+        <source>Summary Card with a large image</source>
+        <target state="final">Card Sommario con immagine grande</target>
+      </trans-unit>
+      <trans-unit id="pages.palettes.canonical" resname="pages.palettes.canonical" approved="yes">
+        <source>Canonical</source>
+        <target state="final">Canonico</target>
+      </trans-unit>
+      <trans-unit id="pages.canonical_link" resname="pages.canonical_link" approved="yes">
+        <source>Canonical link</source>
+        <target state="final">Collegamento Canonico</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.socialmedia" resname="pages.tabs.socialmedia" approved="yes">
+        <source>Social media</source>
+        <target state="final">Social Media</target>
+      </trans-unit>
+      <trans-unit id="pages.palettes.sitemap" resname="pages.palettes.sitemap" approved="yes">
+        <source>Sitemap</source>
+        <target state="final">Mappa del Sito</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq" resname="pages.sitemap_changefreq" approved="yes">
+        <source>Change frequency</source>
+        <target state="final">Frequenza di Modifica</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq.none" resname="pages.sitemap_changefreq.none" approved="yes">
+        <source>None</source>
+        <target state="final">Nessuno</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq.always" resname="pages.sitemap_changefreq.always" approved="yes">
+        <source>Always</source>
+        <target state="final">Sempre</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq.hourly" resname="pages.sitemap_changefreq.hourly" approved="yes">
+        <source>Hourly</source>
+        <target state="final">Ogni ora</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq.daily" resname="pages.sitemap_changefreq.daily" approved="yes">
+        <source>Daily</source>
+        <target state="final">Giornalmente</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq.weekly" resname="pages.sitemap_changefreq.weekly" approved="yes">
+        <source>Weekly</source>
+        <target state="final">Settimanalmente</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq.monthly" resname="pages.sitemap_changefreq.monthly" approved="yes">
+        <source>Monthly</source>
+        <target state="final">Mensilmente</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq.yearly" resname="pages.sitemap_changefreq.yearly" approved="yes">
+        <source>Yearly</source>
+        <target state="final">Annualmente</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq.never" resname="pages.sitemap_changefreq.never" approved="yes">
+        <source>Never</source>
+        <target state="final">Mai</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_priority" resname="pages.sitemap_priority" approved="yes">
+        <source>Priority</source>
+        <target state="final">Priorità</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
