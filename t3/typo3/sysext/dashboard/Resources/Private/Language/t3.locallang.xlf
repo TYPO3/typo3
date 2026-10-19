@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="messages" date="2018-11-27T22:26:21Z" product-name="dashboard" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="close" resname="close" xml:space="preserve">
+				<source>Close</source>
+			<target>crwdns217570:0crwdne217570:0</target></trans-unit>
+      <trans-unit id="title" resname="title" xml:space="preserve">
+				<source>Dashboard</source>
+			<target>crwdns217572:0crwdne217572:0</target></trans-unit>
+      <trans-unit id="widget.add" resname="widget.add" xml:space="preserve">
+				<source>Add widget</source>
+			<target>crwdns217574:0crwdne217574:0</target></trans-unit>
+      <trans-unit id="widget.add.button.close" resname="widget.add.button.close" xml:space="preserve">
+				<source>Close</source>
+			<target>crwdns217576:0crwdne217576:0</target></trans-unit>
+      <trans-unit id="widget.add.button.ok" resname="widget.add.button.ok" xml:space="preserve">
+				<source>Add widget</source>
+			<target>crwdns217578:0crwdne217578:0</target></trans-unit>
+      <trans-unit id="widget.remove.button.close" resname="widget.remove.button.close" xml:space="preserve">
+				<source>Close</source>
+			<target>crwdns217580:0crwdne217580:0</target></trans-unit>
+      <trans-unit id="widget.remove.button.ok" resname="widget.remove.button.ok" xml:space="preserve">
+				<source>Remove</source>
+			<target>crwdns217582:0crwdne217582:0</target></trans-unit>
+      <trans-unit id="widget.remove.confirm.title" resname="widget.remove.confirm.title" xml:space="preserve">
+				<source>Remove widget</source>
+			<target>crwdns217584:0crwdne217584:0</target></trans-unit>
+      <trans-unit id="widget.remove.confirm.message" resname="widget.remove.confirm.message" xml:space="preserve">
+				<source>Are you sure you want to remove this widget?</source>
+			<target>crwdns217586:0crwdne217586:0</target></trans-unit>
+      <trans-unit id="widget.error" resname="widget.error" xml:space="preserve">
+				<source>An error occurred while retrieving information for this widget. Please try again, and if the problem persists, contact your administrator.</source>
+			<target>crwdns217588:0crwdne217588:0</target></trans-unit>
+      <trans-unit id="dashboard.default" resname="dashboard.default" xml:space="preserve">
+				<source>My dashboard</source>
+			<target>crwdns217590:0crwdne217590:0</target></trans-unit>
+      <trans-unit id="dashboard.default.description" resname="dashboard.default.description" xml:space="preserve">
+				<source>Create a new dashboard with some general TYPO3 widgets on it</source>
+			<target>crwdns217592:0crwdne217592:0</target></trans-unit>
+      <trans-unit id="dashboard.empty" resname="dashboard.empty" xml:space="preserve">
+				<source>Empty dashboard</source>
+			<target>crwdns217594:0crwdne217594:0</target></trans-unit>
+      <trans-unit id="dashboard.empty.description" resname="dashboard.empty.description" xml:space="preserve">
+				<source>Your dashboard will be created without any widget on it.</source>
+			<target>crwdns217596:0crwdne217596:0</target></trans-unit>
+      <trans-unit id="dashboard.add" resname="dashboard.add" xml:space="preserve">
+				<source>Add dashboard</source>
+			<target>crwdns217598:0crwdne217598:0</target></trans-unit>
+      <trans-unit id="dashboard.add.button.close" resname="dashboard.add.button.close" xml:space="preserve">
+				<source>Close</source>
+			<target>crwdns217600:0crwdne217600:0</target></trans-unit>
+      <trans-unit id="dashboard.add.button.ok" resname="dashboard.add.button.ok" xml:space="preserve">
+				<source>Add Dashboard</source>
+			<target>crwdns217602:0crwdne217602:0</target></trans-unit>
+      <trans-unit id="dashboard.configure" resname="dashboard.configure" xml:space="preserve">
+				<source>Configure dashboard</source>
+			<target>crwdns217604:0crwdne217604:0</target></trans-unit>
+      <trans-unit id="dashboard.configure.button.close" resname="dashboard.configure.button.close" xml:space="preserve">
+				<source>Close</source>
+			<target>crwdns217606:0crwdne217606:0</target></trans-unit>
+      <trans-unit id="dashboard.configure.button.ok" resname="dashboard.configure.button.ok" xml:space="preserve">
+				<source>Save Dashboard</source>
+			<target>crwdns217608:0crwdne217608:0</target></trans-unit>
+      <trans-unit id="dashboard.delete" resname="dashboard.delete" xml:space="preserve">
+				<source>Delete dashboard</source>
+			<target>crwdns217610:0crwdne217610:0</target></trans-unit>
+      <trans-unit id="dashboard.delete.sure" resname="dashboard.delete.sure" xml:space="preserve">
+				<source>Are you sure you want to delete this dashboard?</source>
+			<target>crwdns217612:0crwdne217612:0</target></trans-unit>
+      <trans-unit id="dashboard.delete.ok" resname="dashboard.delete.ok" xml:space="preserve">
+				<source>Yes, delete it</source>
+			<target>crwdns217614:0crwdne217614:0</target></trans-unit>
+      <trans-unit id="dashboard.delete.cancel" resname="dashboard.delete.cancel" xml:space="preserve">
+				<source>Cancel</source>
+			<target>crwdns217616:0crwdne217616:0</target></trans-unit>
+      <trans-unit id="dashboard.title" resname="dashboard.title" xml:space="preserve">
+				<source>Title of dashboard</source>
+			<target>crwdns217618:0crwdne217618:0</target></trans-unit>
+      <trans-unit id="widgets.documentation.gettingStarted.title" resname="widgets.documentation.gettingStarted.title" xml:space="preserve">
+				<source>Getting Started with TYPO3</source>
+ 			<target>crwdns217620:0crwdne217620:0</target></trans-unit>
+      <trans-unit id="widgets.documentation.gettingStarted.description" resname="widgets.documentation.gettingStarted.description" xml:space="preserve">
+				<source>Add a shortcut to the TYPO3 Getting Started Tutorial.</source>
+ 			<target>crwdns217622:0crwdne217622:0</target></trans-unit>
+      <trans-unit id="widgets.documentation.gettingStarted.text" resname="widgets.documentation.gettingStarted.text" xml:space="preserve">
+				<source>New to TYPO3? In our Getting Started Tutorial you will learn the basics how to use TYPO3.</source>
+ 			<target>crwdns217624:0crwdne217624:0</target></trans-unit>
+      <trans-unit id="widgets.documentation.gettingStarted.content.label" resname="widgets.documentation.gettingStarted.content.label" xml:space="preserve">
+				<source>Getting Started Tutorial</source>
+ 			<target>crwdns217626:0crwdne217626:0</target></trans-unit>
+      <trans-unit id="widgets.documentation.typoscriptReference.title" resname="widgets.documentation.typoscriptReference.title" xml:space="preserve">
+				<source>TypoScript Template Reference</source>
+ 			<target>crwdns217628:0crwdne217628:0</target></trans-unit>
+      <trans-unit id="widgets.documentation.typoscriptReference.description" resname="widgets.documentation.typoscriptReference.description" xml:space="preserve">
+				<source>Add a shortcut to the TYPO3 TypoScript Template Reference.</source>
+ 			<target>crwdns217630:0crwdne217630:0</target></trans-unit>
+      <trans-unit id="widgets.documentation.typoscriptReference.text" resname="widgets.documentation.typoscriptReference.text" xml:space="preserve">
+				<source>This document is a reference, used to lookup TypoScript templating.</source>
+ 			<target>crwdns217632:0crwdne217632:0</target></trans-unit>
+      <trans-unit id="widgets.documentation.typoscriptReference.content.label" resname="widgets.documentation.typoscriptReference.content.label" xml:space="preserve">
+				<source>TypoScript Template Reference</source>
+ 			<target>crwdns217634:0crwdne217634:0</target></trans-unit>
+      <trans-unit id="widgets.documentation.TSconfigReference.title" resname="widgets.documentation.TSconfigReference.title" xml:space="preserve">
+				<source>TSconfig Reference</source>
+ 			<target>crwdns217636:0crwdne217636:0</target></trans-unit>
+      <trans-unit id="widgets.documentation.TSconfigReference.description" resname="widgets.documentation.TSconfigReference.description" xml:space="preserve">
+				<source>Add a shortcut to the TYPO3 TSconfig Reference.</source>
+ 			<target>crwdns217638:0crwdne217638:0</target></trans-unit>
+      <trans-unit id="widgets.documentation.TSconfigReference.text" resname="widgets.documentation.TSconfigReference.text" xml:space="preserve">
+				<source>This document describes TSconfig and its options.</source>
+ 			<target>crwdns217640:0crwdne217640:0</target></trans-unit>
+      <trans-unit id="widgets.documentation.TSconfigReference.content.label" resname="widgets.documentation.TSconfigReference.content.label" xml:space="preserve">
+				<source>TSconfig Reference</source>
+ 			<target>crwdns217642:0crwdne217642:0</target></trans-unit>
+      <trans-unit id="widgets.t3news.title" resname="widgets.t3news.title" xml:space="preserve">
+				<source>TYPO3 news</source>
+			<target>crwdns217644:0crwdne217644:0</target></trans-unit>
+      <trans-unit id="widgets.t3news.description" resname="widgets.t3news.description" xml:space="preserve">
+				<source>Add a list of news items from the TYPO3 project</source>
+			<target>crwdns217646:0crwdne217646:0</target></trans-unit>
+      <trans-unit id="widgets.t3news.moreItems" resname="widgets.t3news.moreItems" xml:space="preserve">
+				<source>More TYPO3 news</source>
+			<target>crwdns217648:0crwdne217648:0</target></trans-unit>
+      <trans-unit id="widgets.t3information.title" resname="widgets.t3information.title" xml:space="preserve">
+				<source>About TYPO3</source>
+			<target>crwdns217650:0crwdne217650:0</target></trans-unit>
+      <trans-unit id="widgets.t3information.description" resname="widgets.t3information.description" xml:space="preserve">
+				<source>Some general information about TYPO3 and the version used</source>
+			<target>crwdns217652:0crwdne217652:0</target></trans-unit>
+      <trans-unit id="widgets.t3information.text" resname="widgets.t3information.text">
+        <source><![CDATA[TYPO3 CMS is an enterprise-class, Open Source Content Management System, used internationally to build and manage websites of all types, from small sites for non-profits to multilingual enterprise solutions for large corporations.<br /><br />For further information visit <a href="https://typo3.org/typo3-cms/" target="_blank" rel="noreferrer">typo3.org</a>.<br /><br />TYPO3 CMS is <b>freely available</b> under the <a href="https://typo3.org/project/licenses/" target="_blank" rel="noreferrer">TYPO3-license (GNU/GPL)</a>.<br /><br />You are using version %s - Copyright %s %s]]></source>
+        <target><![CDATA[crwdns217654:0%scrwdnd217654:0%scrwdnd217654:0%scrwdne217654:0]]></target>
+      </trans-unit>
+      <trans-unit id="widgets.t3information.logo" resname="widgets.t3information.logo">
+        <source>TYPO3 CMS logo</source>
+        <target>crwdns217656:0crwdne217656:0</target>
+      </trans-unit>
+      <trans-unit id="widgets.sysLogErrors.title" resname="widgets.sysLogErrors.title" xml:space="preserve">
+				<source>Number of errors in system log</source>
+			<target>crwdns217658:0crwdne217658:0</target></trans-unit>
+      <trans-unit id="widgets.sysLogErrors.description" resname="widgets.sysLogErrors.description" xml:space="preserve">
+				<source>Shows the number of errors in the sys log of the last month, grouped by date</source>
+			<target>crwdns217660:0crwdne217660:0</target></trans-unit>
+      <trans-unit id="widgets.sysLogErrors.buttonText" resname="widgets.sysLogErrors.buttonText" xml:space="preserve">
+				<source>Show all errors in log</source>
+			<target>crwdns217662:0crwdne217662:0</target></trans-unit>
+      <trans-unit id="widgets.sysLogErrors.chart.dataSet.0" resname="widgets.sysLogErrors.chart.dataSet.0" xml:space="preserve">
+				<source>Number of errors</source>
+			<target>crwdns217664:0crwdne217664:0</target></trans-unit>
+      <trans-unit id="widgets.typeOfUsers.title" resname="widgets.typeOfUsers.title" xml:space="preserve">
+				<source>Type of backend users</source>
+			<target>crwdns217666:0crwdne217666:0</target></trans-unit>
+      <trans-unit id="widgets.typeOfUsers.description" resname="widgets.typeOfUsers.description" xml:space="preserve">
+				<source>Shows the amount of normal- and admin-users</source>
+			<target>crwdns217668:0crwdne217668:0</target></trans-unit>
+      <trans-unit id="widgets.typeOfUsers.normalUsers" resname="widgets.typeOfUsers.normalUsers" xml:space="preserve">
+				<source>Normal users</source>
+			<target>crwdns217670:0crwdne217670:0</target></trans-unit>
+      <trans-unit id="widgets.typeOfUsers.adminUsers" resname="widgets.typeOfUsers.adminUsers" xml:space="preserve">
+				<source>Admin users</source>
+			<target>crwdns217672:0crwdne217672:0</target></trans-unit>
+      <trans-unit id="widgets.failedLogins.title" resname="widgets.failedLogins.title" xml:space="preserve">
+				<source>Failed backend logins</source>
+			<target>crwdns217674:0crwdne217674:0</target></trans-unit>
+      <trans-unit id="widgets.failedLogins.subtitle" resname="widgets.failedLogins.subtitle" xml:space="preserve">
+				<source>In last 24 hours</source>
+			<target>crwdns217676:0crwdne217676:0</target></trans-unit>
+      <trans-unit id="widgets.failedLogins.description" resname="widgets.failedLogins.description" xml:space="preserve">
+				<source>Information about the number of failed logins during the last 24 hours.</source>
+			<target>crwdns217678:0crwdne217678:0</target></trans-unit>
+      <trans-unit id="widgets.t3securityAdvisories.title" resname="widgets.t3securityAdvisories.title" xml:space="preserve">
+				<source>TYPO3 security advisories</source>
+			<target>crwdns217680:0crwdne217680:0</target></trans-unit>
+      <trans-unit id="widgets.t3securityAdvisories.description" resname="widgets.t3securityAdvisories.description" xml:space="preserve">
+				<source>Add a list of security advisories from the TYPO3 project</source>
+			<target>crwdns217682:0crwdne217682:0</target></trans-unit>
+      <trans-unit id="widgets.t3securityAdvisories.moreItems" resname="widgets.t3securityAdvisories.moreItems" xml:space="preserve">
+				<source>More TYPO3 security advisories</source>
+			<target>crwdns217684:0crwdne217684:0</target></trans-unit>
+      <trans-unit id="widget_group.general" resname="widget_group.general" xml:space="preserve">
+				<source>General</source>
+ 			<target>crwdns217686:0crwdne217686:0</target></trans-unit>
+      <trans-unit id="widget_group.typo3" resname="widget_group.typo3" xml:space="preserve">
+				<source>TYPO3 community</source>
+ 			<target>crwdns217688:0crwdne217688:0</target></trans-unit>
+      <trans-unit id="widget_group.news" resname="widget_group.news" xml:space="preserve">
+				<source>News</source>
+ 			<target>crwdns217690:0crwdne217690:0</target></trans-unit>
+      <trans-unit id="widget_group.documentation" resname="widget_group.documentation" xml:space="preserve">
+				<source>Documentation</source>
+ 			<target>crwdns217692:0crwdne217692:0</target></trans-unit>
+      <trans-unit id="widget_group.system" resname="widget_group.system" xml:space="preserve">
+				<source>System Information</source>
+ 			<target>crwdns217694:0crwdne217694:0</target></trans-unit>
+      <trans-unit id="dashboard.empty.content.title" resname="dashboard.empty.content.title" xml:space="preserve">
+				<source>No widgets</source>
+ 			<target>crwdns217696:0crwdne217696:0</target></trans-unit>
+      <trans-unit id="dashboard.empty.content.description" resname="dashboard.empty.content.description" xml:space="preserve">
+				<source>There are no widgets on this dashboard yet. You can add widgets now by clicking on the button below.</source>
+ 			<target>crwdns217698:0crwdne217698:0</target></trans-unit>
+      <trans-unit id="dashboard.empty.content.button" resname="dashboard.empty.content.button" xml:space="preserve">
+				<source>Add a widget</source>
+ 			<target>crwdns217700:0crwdne217700:0</target></trans-unit>
+    </body>
+  </file>
+</xliff>
