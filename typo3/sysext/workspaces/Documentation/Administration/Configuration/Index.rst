@@ -51,6 +51,11 @@ Description
 
   will restrict the preview mode to "slider".
 
+  The mode a user selects in the preview is stored in the user's backend
+  settings and used as the initial mode the next time the preview is
+  opened. If the stored mode is not allowed for the page, the first
+  allowed mode is used.
+
 Default
   slider, vbox, hbox
 

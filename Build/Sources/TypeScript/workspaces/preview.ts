@@ -22,6 +22,7 @@ import '@typo3/workspaces/renderable/send-to-stage-form';
 import RegularEvent from '@typo3/core/event/regular-event';
 import { topDocument } from '@typo3/core/utility/top-window';
 import labels from '~labels/workspaces.messages';
+import PersistentStorage from '@typo3/backend/storage/persistent';
 
 /**
  * Stage ID for the publish execute action.
@@ -271,13 +272,14 @@ class Preview extends Workspaces {
     this.elements.workspacePreview.classList.remove('typo3-workspace-preview-' + currentPreviewMode);
     this.elements.workspacePreview.classList.add('typo3-workspace-preview-' + newPreviewMode);
 
+    this.elements.stageSliderContainer.classList.toggle('typo3-workspace-topbar-slider-hidden', newPreviewMode !== 'slider');
     if (newPreviewMode === 'slider') {
-      this.elements.stageSliderContainer.style.display = '';
       this.resizeViews();
     } else {
-      this.elements.stageSliderContainer.style.display = 'none';
       this.elements.liveView.style.height = '';
     }
+
+    PersistentStorage.set('workspaces.previewMode', newPreviewMode);
   }
 }
 

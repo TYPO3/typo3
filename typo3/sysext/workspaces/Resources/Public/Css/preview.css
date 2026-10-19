@@ -19,6 +19,7 @@
 .typo3-workspace-topbar-site-logo img{display:block;height:var(--typo3-workspace-topbar-logo-height);width:var(--typo3-workspace-topbar-logo-width)}
 .typo3-workspace-topbar-slider{align-items:center;display:flex;gap:.5rem;max-width:100%;overflow:hidden;white-space:nowrap}
 .typo3-workspace-topbar-slider span{overflow:hidden;text-overflow:ellipsis}
+.typo3-workspace-topbar-slider-hidden{display:none}
 .typo3-workspace-topbar-actions{align-items:center;display:flex;flex-wrap:wrap;gap:calc(var(--typo3-workspace-topbar-gap)/4) var(--typo3-workspace-topbar-gap);max-width:100%}
 .typo3-workspace-topbar-action{align-items:center;display:flex;gap:.5rem;white-space:nowrap}
 .typo3-workspace-preview{position:relative}

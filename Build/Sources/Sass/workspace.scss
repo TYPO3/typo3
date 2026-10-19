@@ -73,6 +73,10 @@
         text-overflow: ellipsis;
         overflow: hidden;
     }
+
+    &-hidden {
+        display: none;
+    }
 }
 
 .typo3-workspace-topbar-actions {

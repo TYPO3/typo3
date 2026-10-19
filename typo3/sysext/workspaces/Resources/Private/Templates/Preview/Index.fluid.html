@@ -13,7 +13,7 @@
                 <span class="typo3-workspace-topbar-site-name">{activeWorkspace}</span>
             </div>
             <f:if condition="{liveUrl}">
-                <div class="typo3-workspace-topbar-slider t3js-stage-slider-container">
+                <div class="typo3-workspace-topbar-slider t3js-stage-slider-container{f:if(condition: '{activePreviewMode} != \'slider\'', then: ' typo3-workspace-topbar-slider-hidden')}">
                     <span><f:translate key="LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:window.version.published" /></span>
                     <div class="form-range form-range-sm" style="width: 150px;">
                         <input type="range" class="form-range-input t3js-stage-slider" min="0" max="100" value="100" step="1">
@@ -32,7 +32,7 @@
                                     class="btn btn-sm btn-default dropdown-toggle"
                                     popovertarget="workspace-preview-mode-menu"
                                 >
-                                    <span class="t3js-active-preview-mode" data-active-preview-mode="{firstPreviewMode}"><f:translate key="LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:preview.mode{firstPreviewMode -> f:format.case(mode: 'capital')}" /></span>
+                                    <span class="t3js-active-preview-mode" data-active-preview-mode="{activePreviewMode}"><f:translate key="LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:preview.mode{activePreviewMode -> f:format.case(mode: 'capital')}" /></span>
                                 </button>
                                 <ul id="workspace-preview-mode-menu" class="dropdown-menu" popover>
                                     <f:for each="{splitPreviewModes}" as="mode">
@@ -54,9 +54,9 @@
         </div>
     </div>
 
-    <div class="typo3-workspace-preview typo3-workspace-preview-{firstPreviewMode} t3js-workspace-preview">
+    <div class="typo3-workspace-preview typo3-workspace-preview-{activePreviewMode} t3js-workspace-preview">
         <f:if condition="{liveUrl}">
-            <iframe class="typo3-workspace-view-live t3js-workspace-view-live" src="{liveUrl}" style="height: 0px;" title="{f:translate(key: 'LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:iframe.livePreview')}"></iframe>
+            <iframe class="typo3-workspace-view-live t3js-workspace-view-live" src="{liveUrl}" style="{f:if(condition: '{activePreviewMode} == \'slider\'', then: 'height: 0px;')}" title="{f:translate(key: 'LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:iframe.livePreview')}"></iframe>
         </f:if>
         <iframe class="typo3-workspace-view-workspace t3js-workspace-view-workspace" src="{wsUrl}" id="workspace-view" title="{f:translate(key: 'LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:iframe.workspacePreview', arguments: {0: activeWorkspace})}"></iframe>
     </div>

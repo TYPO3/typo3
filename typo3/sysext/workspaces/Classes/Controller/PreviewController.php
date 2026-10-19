@@ -97,6 +97,10 @@ final readonly class PreviewController
         if (!array_intersect($splitPreviewModes, $allPreviewModes)) {
             $splitPreviewModes = $allPreviewModes;
         }
+        // Use the preview mode the user picked last time, fall back to the first allowed mode
+        // if none is stored or the stored one is not allowed for this page
+        $storedPreviewMode = (string)($backendUser->uc['workspaces']['previewMode'] ?? '');
+        $activePreviewMode = in_array($storedPreviewMode, $splitPreviewModes, true) ? $storedPreviewMode : current($splitPreviewModes);
         $this->pageRenderer->addInlineSetting('Workspaces', 'id', $pageUid);
 
         $availableWorkspaces = $this->workspaceService->getAvailableWorkspaces();
@@ -164,7 +168,7 @@ final readonly class PreviewController
             'wsUrl' => $wsUrl,
             'activeWorkspace' => $availableWorkspaces[$activeWorkspace],
             'splitPreviewModes' => $splitPreviewModes,
-            'firstPreviewMode' => current($splitPreviewModes),
+            'activePreviewMode' => $activePreviewMode,
         ]);
         $this->pageRenderer->setBodyContent('<body>' . $view->render('Preview/Index'));
         return new HtmlResponse($this->pageRenderer->render($request));
