@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:recordlist/Resources/Private/Language/locallang.xlf" date="2017-02-03T21:13:02Z" product-name="recordlist" target-language="no">
+    <header/>
+    <body>
+      <trans-unit id="create_folder.title" resname="create_folder.title" approved="yes">
+        <source>Create new folder</source>
+        <target state="final">Opprett ny mappe</target>
+      </trans-unit>
+      <trans-unit id="create_folder.submit" resname="create_folder.submit" approved="yes">
+        <source>Create folder</source>
+        <target state="final">Opprett mappe</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
