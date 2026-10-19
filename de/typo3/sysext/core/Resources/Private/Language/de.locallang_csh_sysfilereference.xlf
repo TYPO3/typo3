@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_sysfilereference.xlf" date="2011-10-17T20:22:32Z" product-name="context_help" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="alternative.description" resname="alternative.description" approved="yes">
+        <source>Sets the alternative text of this asset.</source>
+        <target state="final">Setzt einen alternativen Text für diese Datei.</target>
+      </trans-unit>
+      <trans-unit id="alternative.details" resname="alternative.details" approved="yes">
+        <source>When using the img element, specify a short text alternative with the alt attribute. Note. The value of this attribute is referred to as "alt text".
+When an image contains words that are important to understanding the content, the alt text should include those words. This will allow the alt text to play the same function on the page as the image. Note that it does not necessarily describe the visual characteristics of the image itself but must convey the same meaning as the image.</source>
+        <target state="final">Geben Sie, wenn ein img-Element benutzt wird, einen kurzen Alternativtext mit Hilfe des alt-Attributs an. Hinweis: Der Wert dieses Attributs wird als "Alt-Text" verwendet. Wenn ein Bild Wörter enthält, die zum Verständnis des Inhalts wichtig sind, sollte der Alt-Text diese Wörter enthalten. Dies ermöglicht es dem Alt-Text, die Funktion des Bildes in der Seite zu ersetzen. Beachten Sie, dass der Alt-Text nicht zwangsläufig die visuellen Charakteristiken des Bildes selbst beschreibt, sondern dass er dieselbe Bedeutung wie das Bild übertragen muss.</target>
+      </trans-unit>
+      <trans-unit id="link.description" resname="link.description" approved="yes">
+        <source>Sets a link on this asset.</source>
+        <target state="final">Verlinkt diese Datei.</target>
+      </trans-unit>
+      <trans-unit id="link.details" resname="link.details" approved="yes">
+        <source>Use the wizard next to the field to specify a link that a user can follow by clicking the image.</source>
+        <target state="final">Verwenden Sie den Assistenten neben dem Feld, um einen Link anzugeben, dem der Benutzer folgen kann, indem er das Bild anklickt.</target>
+      </trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Sets the title text of this asset.</source>
+        <target state="final">Setzt einen Titel-Text für diese Datei.</target>
+      </trans-unit>
+      <trans-unit id="title.details" resname="title.details" approved="yes">
+        <source>The title attribute is used to provide additional information to help clarify or further describe the purpose of a link.
+If the supplementary information provided through the title attribute is something the user should know before following the link, such as a warning, then it should be provided in the link text rather than in the title attribute.</source>
+        <target state="final">Das Titel-Attribut wird verwendet, um zusätzliche Informationen zur Verfügung zu stellen um den Zweck des Links klarzustellen oder ihn weiter zu erläutern. Wenn der Benutzer die durch das Titel-Attribut gegebenen, zusätzlichen Informationen kennen sollte, bevor er dem Link folgt, wie beispielsweise bei einer Warnung, dann sollten diese Informationen besser im Linktext als im Titel-Attribut angegeben werden.</target>
+      </trans-unit>
+      <trans-unit id="description.description" resname="description.description" approved="yes">
+        <source>Sets the image-caption-text of this asset.</source>
+        <target state="final">Setzt die Bildbeschriftung für diese Datei.</target>
+      </trans-unit>
+      <trans-unit id="description.details" resname="description.details" approved="yes">
+        <source>This text will be displayed underneath your asset and can be used to supply additional context to the image.
+Depending on local laws you might have to use this to supply proper copyright information on your assets.</source>
+        <target state="final">Dieser Text wird unter Ihrer Datei angezeigt und kann benutzt werden, um zusätzlichen Kontext für das Bild anzugeben. Abhängig von lokalen Gesetzen müssen Sie hier ggf. Urheberrechtsinformationen zu der Datei angeben.</target>
+      </trans-unit>
+      <trans-unit id="crop.description" resname="crop.description" approved="yes">
+        <source>Click "Open Editor" to start up the image editor.</source>
+        <target state="final">Klicken Sie "Editor öffnen", um den Bildeditor zu starten.</target>
+      </trans-unit>
+      <trans-unit id="autoplay.description" resname="autoplay.description" approved="yes">
+        <source>Check to let embedded media play once loaded.</source>
+        <target state="final">Markieren Sie diese Option, um eingebundene Medien, nachdem sie geladen wurden, automatisch abspielen zu lassen.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
