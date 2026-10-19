@@ -1437,6 +1437,15 @@ final class SlugLinkGeneratorTest extends AbstractTestCase
                     ['title' => 'Franco-Canadian', 'link' => 'https://acme.ca/about', 'active' => 0, 'current' => 0, 'available' => 0],
                 ],
             ],
+            'ACME Inc (EN) on a page with subpages' => [
+                'https://acme.us/features',
+                1200,
+                [
+                    ['title' => 'English', 'link' => '/features', 'active' => 1, 'current' => 0, 'available' => 1],
+                    ['title' => 'French', 'link' => 'https://acme.fr/features', 'active' => 0, 'current' => 0, 'available' => 0],
+                    ['title' => 'Franco-Canadian', 'link' => 'https://acme.ca/features', 'active' => 0, 'current' => 0, 'available' => 0],
+                ],
+            ],
         ];
     }
 
@@ -1455,7 +1464,7 @@ final class SlugLinkGeneratorTest extends AbstractTestCase
         );
 
         $json = json_decode((string)$response->getBody(), true);
-        $json = $this->filterMenu($json, ['title', 'link', 'available', 'active', 'current']);
+        $json = $this->filterMenu($json, ['title', 'link', 'available', 'active', 'current', 'hasSubpages']);
 
         self::assertSame($expectation, $json);
     }

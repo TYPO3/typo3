@@ -1874,7 +1874,7 @@ abstract class AbstractMenuContentObject
      * Returns menu items as a structured array instead of rendered HTML.
      * This provides direct access to menu data without rendering overhead.
      *
-     * @return array<int, array{data: array, title: string, link: string, target: string, active: int, current: int, spacer: int, hasSubpages: int, children?: array}>
+     * @return array<int, array{data: array, title: string, link: string, target: string, active: int, current: int, spacer: int, hasSubpages?: int, children?: array}>
      */
     public function getMenuItems(): array
     {
@@ -1882,6 +1882,8 @@ abstract class AbstractMenuContentObject
             return [];
         }
 
+        // Language menu items all point to the current page, so the expensive subpage check is skipped
+        $isLanguageMenu = $this->menuNumber === 1 && ($this->conf['special'] ?? '') === 'language';
         $menuItems = [];
         foreach ($this->menuArr as $key => $menuArrItem) {
             $spacer = (bool)($menuArrItem['isSpacer'] ?? false);
@@ -1914,8 +1916,10 @@ abstract class AbstractMenuContentObject
                 'active' => $this->isActive($menuArrItem, $this->getMPvar($key)) ? 1 : 0,
                 'current' => $this->isCurrent($menuArrItem, $this->getMPvar($key)) ? 1 : 0,
                 'spacer' => $spacer ? 1 : 0,
-                'hasSubpages' => $this->isSubMenu($menuArrItem['uid'] ?? 0) ? 1 : 0,
             ];
+            if (!$isLanguageMenu) {
+                $menuItem['hasSubpages'] = $this->isSubMenu($menuArrItem['uid'] ?? 0) ? 1 : 0;
+            }
 
             // Handle IProcFunc for backwards compatibility
             if ($this->mconf['IProcFunc'] ?? false) {
