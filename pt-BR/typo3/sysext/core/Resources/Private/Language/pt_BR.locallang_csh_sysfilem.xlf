@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_sysfilem.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="pt-BR">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>Filemounts describe a filepath on the server, relative or absolute.</source>
+        <target state="final">Montagens de Arquivos descrevem um caminho no servidor, relativo ou absoluto.</target>
+      </trans-unit>
+      <trans-unit id="_.seeAlso" resname="_.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_groups:file_mountpoints,
+be_users:file_mountpoints,
+More about File mounts | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/AccessControl/MoreAboutFileMounts/</source>
+				
+			<target state="final">be_groups:file_mountpoints,
+be_users:file_mountpoints,
+Mais sobre Pontos de Montagem de Arquivos | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/AccessControl/MoreAboutFileMounts/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_.image" resname="_.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/filemount_1.png</source>
+        <target state="final">EXT:core/Resources/Public/Images/cshimages/filemount_1.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_title.image" resname="_title.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/be_groups_5.png</source>
+        <target state="final">EXT:core/Resources/Public/Images/cshimages/be_groups_5.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="path.description" resname="path.description" approved="yes">
+        <source>Enter the path of the filemount, relative or absolute depending on the settings of BASE.</source>
+        <target state="final">Digite o caminho do ponto de montagem, relativo ou absoluto dependendo das configurações da BASE.</target>
+      </trans-unit>
+      <trans-unit id="_path.seeAlso" resname="_path.seeAlso" xml:space="preserve" approved="yes">
+				<source>sys_filemounts:base,
+be_groups:file_mountpoints,
+sys_filemounts</source>
+				
+			<target state="final">sys_filemounts:base,
+be_groups:file_mountpoints,
+sys_filemounts</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_path.image" resname="_path.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/be_groups_6.png,
+EXT:core/Resources/Public/Images/cshimages/be_groups_7.png</source>
+				
+			<target state="final">EXT:core/Resources/Public/Images/cshimages/be_groups_6.png,
+EXT:core/Resources/Public/Images/cshimages/be_groups_7.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="hidden.details" resname="hidden.details" approved="yes">
+        <source>All backend users using the mount will not have access anymore. This includes 'Admin'-users.</source>
+        <target state="final">Todos os usuários de backend usando a montagem não terão mais acesso. Isso inclui 'Usuários Administradores'.</target>
+      </trans-unit>
+      <trans-unit id="base.description" resname="base.description" approved="yes">
+        <source>Determines whether the value of the PATH field is to be recognized as an absolute path on the server or a path relative to the fileadmin/ subfolder to the website.</source>
+        <target state="final">Determina se o valor do campo PATH deve ser reconhecido como um caminho absoluto no servidor ou um caminho em relação à subpasta fileadmin/ para o site.</target>
+      </trans-unit>
+      <trans-unit id="_base.seeAlso" resname="_base.seeAlso" approved="yes">
+        <source>sys_filemounts:path</source>
+        <target state="final">sys_filemounts:path</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="read_only.description" resname="read_only.description" approved="yes">
+        <source>Display this file mount as read-only.</source>
+        <target state="final">Exibir esta montagem de arquivo como somente leitura.</target>
+      </trans-unit>
+      <trans-unit id="read_only.details" resname="read_only.details" approved="yes">
+        <source>Read-only file mounts are displayed in the Filelist and the Element Browser. They allow displaying of files and folders which are neither writable nor editable for the user.</source>
+        <target state="final">Arquivos somente leitura são exibidos na Lista de Arquivos e no Navegador de Elementos. Eles permitem a exibição de arquivos e pastas que não são graváveis nem editáveis para o usuário.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
