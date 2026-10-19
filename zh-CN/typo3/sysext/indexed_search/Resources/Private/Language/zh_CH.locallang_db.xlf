@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:indexed_search/Resources/Private/Language/locallang_db.xlf" date="2011-10-17T20:22:33Z" product-name="indexed_search" target-language="zh-CN">
+    <header/>
+    <body>
+      <trans-unit id="index_config" resname="index_config" approved="yes">
+        <source>Indexing Configuration</source>
+        <target state="final">索引設定</target>
+      </trans-unit>
+      <trans-unit id="index_config.type.I.1" resname="index_config.type.I.1" approved="yes">
+        <source>Database Records</source>
+        <target state="final">資料庫記錄</target>
+      </trans-unit>
+      <trans-unit id="index_config.type.I.2" resname="index_config.type.I.2" approved="yes">
+        <source>Filepath on server</source>
+        <target state="final">伺服器上檔案路徑</target>
+      </trans-unit>
+      <trans-unit id="index_config.type.I.3" resname="index_config.type.I.3" approved="yes">
+        <source>External URL</source>
+        <target state="final">外部 URL</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
