@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/locallang_mod.xlf" date="2011-10-17T20:22:37Z" product-name="tstemplate" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel" approved="yes">
+        <source>Template tools</source>
+        <target state="final">Template-Werkzeuge</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr" approved="yes">
+        <source>Here you manage the TypoScript templates which are in charge of the look of your website on the frontend. The module provides specialized features like an object browser, a constant editor and raw editing facilities.&lt;br /&gt;&lt;em&gt;Access for 'admin' users only!&lt;/em&gt;</source>
+        <target state="final">Hier können Sie TypoScript-Templates verwalten. Diese Templates sind für das Erscheinungsbild Ihrer Website verantwortlich. Das Modul bietet spezielle Funktionen wie einen Objekt-Browser, einen Konstanteneditor und einfache Bearbeitungsmöglichkeiten.&lt;br /&gt;&lt;em&gt;Zugriff nur für Administratoren!&lt;/em&gt;</target>
+      </trans-unit>
+      <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab" approved="yes">
+        <source>Template</source>
+        <target state="final">Template</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
