@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:redirects/Resources/Private/Language/locallang_db.xlf" date="2017-12-29T20:22:14Z" product-name="redirects" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="sys_redirect" resname="sys_redirect" approved="yes">
+        <source>Redirect</source>
+        <target state="final">Weiterleitung</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.source_host" resname="sys_redirect.source_host" approved="yes">
+        <source>Source Domain</source>
+        <target state="final">Quelldomain</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.source_path" resname="sys_redirect.source_path" approved="yes">
+        <source>Source Path</source>
+        <target state="final">Quellpfad</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.force_https" resname="sys_redirect.force_https" approved="yes">
+        <source>SSL Redirect</source>
+        <target state="final">SSL-Weiterleitung</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.force_https.0" resname="sys_redirect.force_https.0" approved="yes">
+        <source>Force SSL Redirect</source>
+        <target state="final">SSL-Weiterleitung erzwingen</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.keep_query_parameters" resname="sys_redirect.keep_query_parameters" approved="yes">
+        <source>GET Parameters</source>
+        <target state="final">GET-Parameter</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.keep_query_parameters.0" resname="sys_redirect.keep_query_parameters.0" approved="yes">
+        <source>Keep GET Parameters</source>
+        <target state="final">GET-Parameter beibehalten</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.respect_query_parameters" resname="sys_redirect.respect_query_parameters" approved="yes">
+        <source>GET Parameters (source)</source>
+        <target state="final">GET-Parameter (Quelle)</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.respect_query_parameters.0" resname="sys_redirect.respect_query_parameters.0" approved="yes">
+        <source>Respect GET Parameters</source>
+        <target state="final">GET-Parameter beachten</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.target" resname="sys_redirect.target" approved="yes">
+        <source>Target</source>
+        <target state="final">Ziel</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.target_statuscode" resname="sys_redirect.target_statuscode" approved="yes">
+        <source>Status Code HTTP Header</source>
+        <target state="final">HTTP-Statuscode</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.target_statuscode.301" resname="sys_redirect.target_statuscode.301" approved="yes">
+        <source>301 Moved Permanently</source>
+        <target state="final">301 Moved Permanently</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.target_statuscode.302" resname="sys_redirect.target_statuscode.302" approved="yes">
+        <source>302 Found</source>
+        <target state="final">302 Found</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.target_statuscode.303" resname="sys_redirect.target_statuscode.303" approved="yes">
+        <source>303 See Other</source>
+        <target state="final">303 See Other</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.target_statuscode.307" resname="sys_redirect.target_statuscode.307" approved="yes">
+        <source>307 Temporary Redirect</source>
+        <target state="final">307 Temporäre Weiterleitung</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.target_statuscode.308" resname="sys_redirect.target_statuscode.308" approved="yes">
+        <source>308 Permanent Redirect</source>
+        <target state="final">308 Permanente Weiterleitung</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.target_statuscode.keep" resname="sys_redirect.target_statuscode.keep" approved="yes">
+        <source>Keep HTTP method</source>
+        <target state="final">HTTP-Methode beibehalten</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.target_statuscode.change" resname="sys_redirect.target_statuscode.change" approved="yes">
+        <source>Change HTTP method to GET</source>
+        <target state="final">HTTP-Methode zu GET ändern</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.hitcount" resname="sys_redirect.hitcount" approved="yes">
+        <source>Count</source>
+        <target state="final">Anzahl</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.lasthiton" resname="sys_redirect.lasthiton" approved="yes">
+        <source>Last Hit on</source>
+        <target state="final">Letzter Treffer am</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.hitcountState" resname="sys_redirect.hitcountState" approved="yes">
+        <source>Hit Counter</source>
+        <target state="final">Trefferzähler</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.disable_hitcount" resname="sys_redirect.disable_hitcount" approved="yes">
+        <source>Disable Hit Counter</source>
+        <target state="final">Trefferzähler deaktivieren</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.disable_hitcount.0" resname="sys_redirect.disable_hitcount.0" approved="yes">
+        <source>Disable</source>
+        <target state="final">Deaktivieren</target>
+      </trans-unit>
+      <trans-unit id="tabs.redirectCount" resname="tabs.redirectCount" approved="yes">
+        <source>Statistics</source>
+        <target state="final">Statistiken</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.protected" resname="sys_redirect.protected" approved="yes">
+        <source>Protected</source>
+        <target state="final">Geschützt</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.protected.description" resname="sys_redirect.protected" approved="yes">
+        <source>When enabled, this redirect will be skipped by scheduled cleanup tasks that might delete redirects under certain conditions.</source>
+        <target state="final">Wenn aktiviert, wird diese Weiterleitung bei Ausführung von (regelmäßig) geplanten Bereinigungsaufgaben übersprungen und nicht gelöscht.</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.is_regexp" resname="sys_redirect.is_regexp" approved="yes">
+        <source>Is regular expression?</source>
+        <target state="final">Ist ein regulärer Ausdruck?</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.is_regexp.0" resname="sys_redirect.is_regexp.0" approved="yes">
+        <source>Yes</source>
+        <target state="final">Ja</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.disabled" resname="sys_redirect.disabled" approved="yes">
+        <source>Disable</source>
+        <target state="final">Deaktiveren</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.disabled.0" resname="sys_redirect.disabled.0" approved="yes">
+        <source>Deactivate redirect</source>
+        <target state="final">Weiterleitung deaktivieren</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
