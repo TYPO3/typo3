@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:form/Resources/Private/Language/locallang_module.xlf" date="2016-06-04T20:22:33Z" product-name="form" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel" approved="yes">
+        <source>Build custom forms</source>
+        <target state="final">Erstellung benutzerdefinierter Formulare</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr" approved="yes">
+        <source>This module ships a flexible and user-friendly form editor. It allows you to build and create versatile forms for your frontend. Your forms can easily be added to any page by using the content element "Form". Within this element, finishers can be overridden.</source>
+        <target state="final">Dieses Modul stellt einen flexiblen und benutzerfreundlichen Formulareditor zur Verfügung. Es ermöglicht Ihnen die Erstellung von vielseitigen Formularen für Ihr Frontend. Ihre Formulare können auf einfache Art und Weise in jede Seite eingefügt werden, indem Sie das Inhaltselement "Mailformular" verwenden. In diesem Inhaltselement können Finishers überschrieben werden.</target>
+      </trans-unit>
+      <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab" approved="yes">
+        <source>Forms</source>
+        <target state="final">Formulare</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
