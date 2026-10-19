@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:about/Resources/Private/Language/Modules/locallang_alt_intro.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="introtext" resname="introtext">
+        <source>Web Content Management System</source>
+        <target>crwdns96116:0crwdne96116:0</target>
+      </trans-unit>
+      <trans-unit id="introtext2" resname="introtext2">
+        <source>This is a brief description of the available modules.</source>
+        <target>crwdns96118:0crwdne96118:0</target>
+      </trans-unit>
+      <trans-unit id="endText" resname="endText">
+        <source>Features may vary depending on your website and permissions</source>
+        <target>crwdns96120:0crwdne96120:0</target>
+      </trans-unit>
+      <trans-unit id="userInfo" resname="userInfo">
+        <source>You're logged in as user</source>
+        <target>crwdns96122:0crwdne96122:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
