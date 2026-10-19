@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_login.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="lv">
+    <header/>
+    <body>
+      <trans-unit id="labels.submitLogout" resname="labels.submitLogout" approved="yes">
+        <source>Log Out</source>
+        <target state="final">Iziet</target>
+      </trans-unit>
+      <trans-unit id="labels.whatIsOpenId" resname="labels.whatIsOpenId" approved="yes">
+        <source>What is OpenId?</source>
+        <target state="final">Kas ir OpenID?</target>
+      </trans-unit>
+      <trans-unit id="info.reset" resname="info.reset" approved="yes">
+        <source>Reset this form</source>
+        <target state="final">Attīrīt šo formu</target>
+      </trans-unit>
+      <trans-unit id="info.cookies_and_js" resname="info.cookies_and_js" approved="yes">
+        <source>(Note: Cookies and JavaScript must be enabled!)</source>
+        <target state="final">(Piezīme: Cookies un JavaScript ir jābūt aktivizētiem!)</target>
+      </trans-unit>
+      <trans-unit id="clear" resname="clear" approved="yes">
+        <source>Clear this field!</source>
+        <target state="final">Attīrīt šo laukumu!</target>
+      </trans-unit>
+      <trans-unit id="error.cookies_ignore" resname="error.cookies_ignore" approved="yes">
+        <source>Ignore!</source>
+        <target state="final">Ignorēt!</target>
+      </trans-unit>
+      <trans-unit id="error.furtherInformation" resname="error.furtherInformation" approved="yes">
+        <source>For more information or further help click here</source>
+        <target state="final">Sīkākai informācijai klikšķiniet šeit</target>
+      </trans-unit>
+      <trans-unit id="typo3.cms" resname="typo3.cms" approved="yes">
+        <source>TYPO3 CMS</source>
+        <target state="final">TYPO3 SVS</target>
+      </trans-unit>
+      <trans-unit id="version.short" resname="version.short" approved="yes">
+        <source>ver.</source>
+        <target state="final">ver.</target>
+      </trans-unit>
+      <trans-unit id="copyright" resname="copyright" approved="yes">
+        <source>Copyright</source>
+        <target state="final">Kopēšanas tiesības</target>
+      </trans-unit>
+      <trans-unit id="extension.copyright" resname="extension.copyright" approved="yes">
+        <source>Extensions are copyright of their respective owners.</source>
+        <target state="final">Paplašinājumu autortiesības pieder to īpašniekiem.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
