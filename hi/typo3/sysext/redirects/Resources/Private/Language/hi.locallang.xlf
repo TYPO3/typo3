@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:redirects/Resources/Private/Language/locallang.xlf" date="2017-12-29T20:22:14Z" product-name="redirects" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="redirects" resname="redirects" approved="yes">
+        <source>Redirect Settings</source>
+        <target state="final">पुनःनिर्देश सेटिंग्स</target>
+      </trans-unit>
+      <trans-unit id="redirects.autoUpdateSlugs" resname="redirects.autoUpdateSlugs" approved="yes">
+        <source>Update the slugs of all sub pages automatically</source>
+        <target state="final">सभी उप पृष्ठों के स्लग्स को स्वतः अद्यतन करें</target>
+      </trans-unit>
+      <trans-unit id="redirects.autoCreateRedirects" resname="redirects.autoCreateRedirects" approved="yes">
+        <source>Create redirects for pages with a new slug automatically</source>
+        <target state="final">नए स्लग के साथ पृष्ठों के लिए पुनःनिर्देशन बनाएं</target>
+      </trans-unit>
+      <trans-unit id="redirects.redirectTTL" resname="redirects.redirectTTL" approved="yes">
+        <source>Time To Live of redirect records in days</source>
+        <target state="final">पुनःनिर्देश रिकॉर्ड का जीवनकाल दिनों में</target>
+      </trans-unit>
+      <trans-unit id="redirects.httpStatusCode" resname="redirects.httpStatusCode" approved="yes">
+        <source>HTTP Status Code for the redirect, 301 is the default</source>
+        <target state="final">पुनःनिर्देश के लिए HTTP स्थिति कोड, 301 डिफ़ॉल्ट है</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
