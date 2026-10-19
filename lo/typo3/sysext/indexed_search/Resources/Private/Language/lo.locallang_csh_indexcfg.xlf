@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:indexed_search/Resources/Private/Language/locallang_csh_indexcfg.xlf" date="2011-10-17T20:22:33Z" product-name="indexed_search" target-language="lo">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>The Indexed Search configuration allows you to set up indexing of resources which are external to the TYPO3 page tree. This could be a library of records (like news), a directory structure of files (like PDFs) or an external URL to be crawled to some depth - or third-party content provided from other extensions via hooks.</source>
+        <target state="final">ການຕັ້ງຄ່າ Indexed Search ຊ່ວຍໃຫ້ເຈົ້າສາມາດຕັ້ງຄ່າການເຮັດດັດສະນີຂອງຊັບພະຍາກອນທີ່ຢູ່ນອກແຜນພູມໜ້າເວັບຂອງ TYPO3. ສິ່ງນີ້ອາດຈະແມ່ນຄັງຂໍ້ມູນ (ເຊັ່ນ: ຂ່າວ), ໂຄງສ້າງໂຟນເດີຂອງໄຟລ໌ (ເຊັ່ນ: ໄຟລ໌ PDF) ຫຼື URL ພາຍນອກທີ່ຈະໃຫ້ຕົວເກັບຂໍ້ມູນ (crawler) ເຂົ້າໄປເກັບຕາມລະດັບຄວາມເລິກທີ່ກຳນົດ - ຫຼື ເນື້ອຫາຈາກພາຍນອກທີ່ສະໜອງໃຫ້ໂດຍສ່ວນເສີມ (extension) ອື່ນໆ ຜ່ານ hooks.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" approved="yes">
+        <source>The Indexing Configuration records are used to set up how the indexing occurs, at which time and related to which part of the page tree. An important requirement to keep in mind is that the "crawler" extension must be installed since the indexing engine uses the "crawler" extensions queue as a timing device - and using the "crawler" extension means using a cron-job to activate it from the shell.</source>
+        <target state="final">ຂໍ້ມູນການຕັ້ງຄ່າການເຮັດດັດສະນີ ຖືກນຳໃຊ້ເພື່ອຕັ້ງຄ່າວ່າຈະໃຫ້ການເຮັດດັດສະນີເກີດຂຶ້ນແນວໃດ, ໃນເວລາໃດ ແລະ ກ່ຽວຂ້ອງກັບພາກສ່ວນໃດຂອງແຜນພູມໜ້າເວັບ. ຂໍ້ກຳນົດທີ່ສຳຄັນທີ່ຄວນຈື່ໄວ້ຄື ຕ້ອງມີການຕິດຕັ້ງສ່ວນເສີມ "crawler" ເນື່ອງຈາກກົນໄກການເຮັດດັດສະນີຈະໃຊ້ຄິວ (queue) ຂອງສ່ວນເສີມ "crawler" ເປັນຕົວຈັບເວລາ - ແລະ ການໃຊ້ສ່ວນເສີມ "crawler" ໝາຍເຖິງການໃຊ້ cron-job ເພື່ອເປີດໃຊ້ງານມັນຈາກ shell.</target>
+      </trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Provide a title for the configuration.</source>
+        <target state="final">ກະລຸນາລະບຸຫົວຂໍ້ສຳລັບການຕັ້ງຄ່າ.</target>
+      </trans-unit>
+      <trans-unit id="description.description" resname="description.description" approved="yes">
+        <source>If needed, give it a description or put other important notes in this field.</source>
+        <target state="final">ຖ້າຈຳເປັນ, ໃຫ້ລະບຸຄຳອະທິບາຍ ຫຼື ໃສ່ໝາຍເຫດທີ່ສຳຄັນອື່ນໆລົງໃນຟີວນີ້.</target>
+      </trans-unit>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>Disable the configuration by unchecking this option. If disabled, the configuration will be bypassed by the crawlers cron job.</source>
+        <target state="final">ປິດການໃຊ້ງານການຕັ້ງຄ່າ ໂດຍການຍົກເລີກການເລືອກຕົວເລືອກນີ້. ຖ້າປິດໃຊ້ງານ, ການຕັ້ງຄ່າຈະຖືກຂ້າມໂດຍ cron job ຂອງ crawlers.</target>
+      </trans-unit>
+      <trans-unit id="hidden.details" resname="hidden.details" approved="yes">
+        <source>Notice; Disabling the indexing process will not hide already indexed content in search results!</source>
+        <target state="final">ໝາຍເຫດ: ການປິດຂະບວນການເຮັດດັດສະນີ ຈະບໍ່ຊ່ອນເນື້ອຫາທີ່ໄດ້ເຮັດດັດສະນີໄປແລ້ວໃນຜົນການຄົ້ນຫາ!</target>
+      </trans-unit>
+      <trans-unit id="_hidden.seeAlso" resname="_hidden.seeAlso" approved="yes">
+        <source>index_config:starttime</source>
+        <target state="final">index_config:starttime</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="starttime.description" resname="starttime.description" approved="yes">
+        <source>Set a start time for the configuration. If set, the configuration will be bypassed by the crawlers cron job until this time is reached.</source>
+        <target state="final">ກຳນົດເວລາເລີ່ມຕົ້ນສຳລັບການຕັ້ງຄ່າ. ຖ້າກຳນົດໄວ້, ການຕັ້ງຄ່າຈະຖືກຂ້າມໂດຍ cron job ຂອງ crawlers ຈົນກວ່າຈະຮອດເວລານີ້.</target>
+      </trans-unit>
+      <trans-unit id="_starttime.seeAlso" resname="_starttime.seeAlso" approved="yes">
+        <source>index_config:hidden</source>
+        <target state="final">index_config:hidden</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="timer_frequency.description" resname="timer_frequency.description" approved="yes">
+        <source>Use this setting to adjust how often you would like a re-indexing process to run for the configuration.</source>
+        <target state="final">ໃຊ້ການຕັ້ງຄ່ານີ້ເພື່ອປັບປ່ຽນວ່າ ເຈົ້າຕ້ອງການໃຫ້ຂະບວນການເຮັດດັດສະນີຄືນໃໝ່ ເຮັດວຽກເລື້ອຍປານໃດສຳລັບການຕັ້ງຄ່ານີ້.</target>
+      </trans-unit>
+      <trans-unit id="_timer_frequency.seeAlso" resname="_timer_frequency.seeAlso" xml:space="preserve" approved="yes">
+				<source>index_config:timer_next_indexing,
+index_config:timer_offset</source>
+				
+			<target state="final">index_config:timer_next_indexing,
+index_config:timer_offset</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="timer_offset.description" resname="timer_offset.description" approved="yes">
+        <source>The offset adjusts at what time of day you want the indexing process to run.</source>
+        <target state="final">ຄ່າ offset ຈະປັບປ່ຽນວ່າ ເຈົ້າຕ້ອງການໃຫ້ຂະບວນການເຮັດດັດສະນີ ເຮັດວຽກໃນເວລາໃດຂອງມື້.</target>
+      </trans-unit>
+      <trans-unit id="_timer_offset.seeAlso" resname="_timer_offset.seeAlso" approved="yes">
+        <source>index_config:timer_frequency</source>
+        <target state="final">index_config:timer_frequency</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="timer_next_indexing.description" resname="timer_next_indexing.description" approved="yes">
+        <source>This field contains the date and time of the next occurring indexing session. If left blank the next indexing will occur as soon as the cron-script is run again (typically within the next minute) and afterwards set to the next time according to frequency and offset.</source>
+        <target state="final">ຟີວນີ້ມີຂໍ້ມູນວັນທີ ແລະ ເວລາຂອງຮອບການເຮັດດັດສະນີຄັ້ງຖັດໄປ. ຖ້າປະຫວ່າງໄວ້, ການເຮັດດັດສະນີຄັ້ງຖັດໄປຈະເກີດຂຶ້ນທັນທີທີ່ cron-script ເຮັດວຽກອີກຄັ້ງ (ໂດຍທົ່ວໄປແມ່ນພາຍໃນນາທີຖັດໄປ) ແລະ ຫຼັງຈາກນັ້ນຈະຖືກຕັ້ງເປັນເວລາຖັດໄປ ຕາມຄວາມຖີ່ ແລະ ຄ່າ offset.</target>
+      </trans-unit>
+      <trans-unit id="_timer_next_indexing.seeAlso" resname="_timer_next_indexing.seeAlso" xml:space="preserve" approved="yes">
+				<source>index_config:timer_offset,
+index_config:timer_frequency</source>
+				
+			<target state="final">index_config:timer_offset,
+index_config:timer_frequency</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="type.description" resname="type.description" approved="yes">
+        <source>Select the type of Indexing Configuration here.</source>
+        <target state="final">ເລືອກປະເພດຂອງການຕັ້ງຄ່າການເຮັດດັດສະນີຢູ່ບ່ອນນີ້.</target>
+      </trans-unit>
+      <trans-unit id="type.details" resname="type.details" xml:space="preserve" approved="yes">
+				<source>&lt;b&gt;Records&lt;/b&gt; - You will be able to index records on a specified page from a specified database table. You can determine which fields from that record you want to index and how additional GET parameters should look like when linking to the search result.
+&lt;b&gt;Files&lt;/b&gt; - Allows you to index a whole directory of files from the fileadmin/ folder. You can optionally specify how many levels of recursion you want.
+&lt;b&gt;External URL&lt;/b&gt; - Allows you to index an external site and search it from your TYPO3 installation! You can specify how deep the crawler should go on that external URL.
+&lt;b&gt;Page tree&lt;/b&gt; - Allows you to index the page tree using the cron script. This type will not be useful as a category for searching like the other types.
+&lt;b&gt;Meta configuration&lt;/b&gt; - Points to a collection of other indexing configurations in which the search will be done. Cannot be used for cron-job based indexing.
+&lt;b&gt;Custom&lt;/b&gt; - Other extensions might register custom types of configurations.</source>
+			<target state="final">ຂໍ້ມູນ - ເຈົ້າຈະສາມາດເຮັດດັດສະນີຂໍ້ມູນໃນໜ້າເວັບທີ່ລະບຸ ຈາກຕາຕະລາງຖານຂໍ້ມູນທີ່ລະບຸໄວ້. ເຈົ້າສາມາດກຳນົດໄດ້ວ່າ ຕ້ອງການເຮັດດັດສະນີຟີວໃດແດ່ຈາກຂໍ້ມູນນັ້ນ ແລະ ຕ້ອງການໃຫ້ພາລາມິເຕີ GET ເພີ່ມເຕີມມີຮູບແບບແນວໃດ ເມື່ອມີການລິ້ງໄປຫາຜົນການຄົ້ນຫາ.
+ໄຟລ໌ - ຊ່ວຍໃຫ້ເຈົ້າສາມາດເຮັດດັດສະນີທັງໝົດໃນໂຟນເດີໄຟລ໌ຈາກ folder fileadmin/. ເຈົ້າສາມາດເລືອກກຳນົດໄດ້ວ່າ ຕ້ອງການໃຫ້ມີລະດັບການເຂົ້າເຖິງແບບຊ້ຳຄືນ (recursion) ຈັກລະດັບ.
+URL ພາຍນອກ - ຊ່ວຍໃຫ້ເຈົ້າສາມາດເຮັດດັດສະນີເວັບໄຊພາຍນອກ ແລະ ຄົ້ນຫາມັນໄດ້ຈາກ TYPO3 ຂອງເຈົ້າ! ເຈົ້າສາມາດກຳນົດໄດ້ວ່າ ຕ້ອງການໃຫ້ຕົວເກັບຂໍ້ມູນ (crawler) ເຂົ້າໄປເລິກປານໃດໃນ URL ພາຍນອກນັ້ນ.
+ແຜນພູມໜ້າເວັບ - ຊ່ວຍໃຫ້ເຈົ້າສາມາດເຮັດດັດສະນີແຜນພູມໜ້າເວັບ ໂດຍໃຊ້ cron script. ປະເພດນີ້ຈະບໍ່ມີປະໂຫຍດໃນການໃຊ້ເປັນໝວດໝູ່ສຳລັບການຄົ້ນຫາ ຄືກັບປະເພດອື່ນໆ.
+ການຕັ້ງຄ່າ Meta - ຊີ້ໄປຫາຊຸດຂອງການຕັ້ງຄ່າການເຮັດດັດສະນີອື່ນໆ ທີ່ຈະມີການຄົ້ນຫາ. ບໍ່ສາມາດໃຊ້ສຳລັບການເຮັດດັດສະນີແບບ cron-job ໄດ້.
+ກຳນົດເອງ - ສ່ວນເສີມອື່ນໆ ອາດຈະມີການລົງທະບຽນປະເພດການຕັ້ງຄ່າແບບກຳນົດເອງ.</target></trans-unit>
+      <trans-unit id="table2index.description" resname="table2index.description" approved="yes">
+        <source>Specify the database table to index records from.</source>
+        <target state="final">ລະບຸຕາຕະລາງຖານຂໍ້ມູນທີ່ຈະເຮັດດັດສະນີຂໍ້ມູນ.</target>
+      </trans-unit>
+      <trans-unit id="alternative_source_pid.description" resname="alternative_source_pid.description" approved="yes">
+        <source>By default the indexer will select records from the page id where the Indexing Configuration is stored. If you want an alternative page as the source of your records you can enter it here.</source>
+        <target state="final">ໂດຍເລີ່ມຕົ້ນ, ຕົວເຮັດດັດສະນີຈະເລືອກຂໍ້ມູນຈາກໄອດີໜ້າ ບ່ອນທີ່ການຕັ້ງຄ່າການເຮັດດັດສະນີຖືກເກັບໄວ້. ຖ້າເຈົ້າຕ້ອງການໃຊ້ໜ້າອື່ນເປັນແຫຼ່ງຂໍ້ມູນ, ເຈົ້າສາມາດປ້ອນຂໍ້ມູນໃສ່ບ່ອນນີ້ໄດ້.</target>
+      </trans-unit>
+      <trans-unit id="_alternative_source_pid.seeAlso" resname="_alternative_source_pid.seeAlso" approved="yes">
+        <source>index_config:table2index</source>
+        <target state="final">index_config:table2index</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="get_params.description" resname="get_params.description" approved="yes">
+        <source>Enter the GET parameters necessary to display the search results. You can use ###UID### as a marker in the parameter template.</source>
+        <target state="final">ປ້ອນພາລາມິເຕີ GET ທີ່ຈຳເປັນເພື່ອສະແດງຜົນການຄົ້ນຫາ. ເຈົ້າສາມາດໃຊ້ ###UID### ເປັນຕົວໝາຍໄວ້ໃນແມ່ແບບພາລາມິເຕີ.</target>
+      </trans-unit>
+      <trans-unit id="get_params.details" resname="get_params.details" xml:space="preserve" approved="yes">
+				<source>Notice: The GET parameters are appended to the URL of the page where the Indexing Configuration is stored (which must be the page where a plugin exists that can display the records with the given parameters!).
+Example value: "&amp;showUid=###UID###"</source>
+			<target state="final">ໝາຍເຫດ: ພາລາມິເຕີ GET ຈະຖືກຕໍ່ທ້າຍ URL ຂອງໜ້າເວັບ ບ່ອນທີ່ການຕັ້ງຄ່າການເຮັດດັດສະນີຖືກເກັບໄວ້ (ເຊິ່ງຕ້ອງແມ່ນໜ້າເວັບທີ່ມີປລັກອິນ ທີ່ສາມາດສະແດງຂໍ້ມູນດ້ວຍພາລາມິເຕີທີ່ກຳນົດໄວ້!).</target></trans-unit>
+      <trans-unit id="_get_params.seeAlso" resname="_get_params.seeAlso" approved="yes">
+        <source>index_config:table2index</source>
+        <target state="final">index_config:table2index</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="fieldlist.description" resname="fieldlist.description" approved="yes">
+        <source>Enter a comma-list of fields to be indexed. The first field name will be used for the search result title.</source>
+        <target state="final">ປ້ອນລາຍຊື່ຟີວທີ່ຈະເຮັດດັດສະນີ ໂດຍຂັ້ນດ້ວຍຈຸດ. ຊື່ຟີວທຳອິດຈະຖືກນຳໃຊ້ເປັນຫົວຂໍ້ຂອງຜົນການຄົ້ນຫາ.</target>
+      </trans-unit>
+      <trans-unit id="fieldlist.details" resname="fieldlist.details" approved="yes">
+        <source>&lt;b&gt;Example:&lt;/b&gt; "header,bodytext,image_caption" would index the Header, Bodytext and Image Caption fields from "tt_content". Notice that you must use the real database field names, don't spell them wrong!</source>
+        <target state="final">ຕົວຢ່າງ: "header,bodytext,image_caption" ຈະເຮັດດັດສະນີຟີວ Header, Bodytext ແລະ Image Caption ຈາກ "tt_content". ຂໍໃຫ້ລະວັງວ່າ ເຈົ້າຕ້ອງໃຊ້ຊື່ຟີວແທ້ຂອງຖານຂໍ້ມູນ, ຢ່າຂຽນຜິດ!</target>
+      </trans-unit>
+      <trans-unit id="_fieldlist.seeAlso" resname="_fieldlist.seeAlso" approved="yes">
+        <source>index_config:table2index</source>
+        <target state="final">index_config:table2index</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="recordsbatch.description" resname="recordsbatch.description" approved="yes">
+        <source>Enter how many records to index for each instance of the indexing process (how many per minute). Default is 100 records.</source>
+        <target state="final">ປ້ອນຈຳນວນຂໍ້ມູນທີ່ຈະເຮັດດັດສະນີ ສຳລັບແຕ່ລະຮອບຂອງຂະບວນການເຮັດດັດສະນີ (ຈຳນວນຕໍ່ນາທີ). ຄ່າເລີ່ມຕົ້ນແມ່ນ 100 ລາຍການ.</target>
+      </trans-unit>
+      <trans-unit id="_recordsbatch.seeAlso" resname="_recordsbatch.seeAlso" approved="yes">
+        <source>index_config:table2index</source>
+        <target state="final">index_config:table2index</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="records_indexonchange.description" resname="records_indexonchange.description" approved="yes">
+        <source>If set, new and changed records from this table will be indexed through a hook in the core (Datahandler) meaning that they will be searchable immediately after addition to the system.</source>
+        <target state="final">ຖ້າຫາກຕັ້ງຄ່າໄວ້, ຂໍ້ມູນໃໝ່ ແລະ ຂໍ້ມູນທີ່ປ່ຽນແປງຈາກຕາຕະລາງນີ້ ຈະຖືກເຮັດດັດສະນີຜ່ານ hook ໃນສ່ວນຫຼັກ (Datahandler) ເຊິ່ງໝາຍຄວາມວ່າ ຈະສາມາດຄົ້ນຫາຂໍ້ມູນໄດ້ທັນທີ ຫຼັງຈາກທີ່ມີການເພີ່ມເຂົ້າໃນລະບົບ.</target>
+      </trans-unit>
+      <trans-unit id="_records_indexonchange.seeAlso" resname="_records_indexonchange.seeAlso" approved="yes">
+        <source>index_config:table2index</source>
+        <target state="final">index_config:table2index</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="externalUrl.description" resname="externalUrl.description" approved="yes">
+        <source>Enter the URL of the external website you want to index.</source>
+        <target state="final">ປ້ອນ URL ຂອງເວັບໄຊພາຍນອກທີ່ເຈົ້າຕ້ອງການເຮັດດັດສະນີ.</target>
+      </trans-unit>
+      <trans-unit id="url_deny.description" resname="url_deny.description" approved="yes">
+        <source>Enter a URL on each line inside of which the crawler should not decend.</source>
+        <target state="final">ປ້ອນ URL ລົງໃນແຕ່ລະແຖວ ທີ່ເຈົ້າບໍ່ຕ້ອງການໃຫ້ຕົວເກັບຂໍ້ມູນ (crawler) ເຂົ້າໄປເກັບຂໍ້ມູນພາຍໃນນັ້ນ.</target>
+      </trans-unit>
+      <trans-unit id="url_deny.details" resname="url_deny.details" xml:space="preserve" approved="yes">
+				<source>Example:
+If you wish to index "https://typo3.org/" but not "https://typo3.org/extensions/" and "https://typo3.org/downloads/" then you simply enter those two URLs into the box like this:
+
+https://typo3.org/downloads/
+https://typo3.org/extensions/</source>
+			<target state="final">ຕົວຢ່າງ:
+If you wish to index "https://typo3.org/" but not "https://typo3.org/extensions/" and "https://typo3.org/downloads/" then you simply enter those two URLs into the box like this:
+
+https://typo3.org/downloads/
+https://typo3.org/extensions/</target></trans-unit>
+      <trans-unit id="_url_deny.seeAlso" resname="_url_deny.seeAlso" approved="yes">
+        <source>index_config:externalUrl</source>
+        <target state="final">index_config:externalUrl</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="filepath.description" resname="filepath.description" approved="yes">
+        <source>Enter a filepath inside fileadmin/ where you want the files to be indexed.</source>
+        <target state="final">ປ້ອນເສັ້ນທາງໄຟລ໌ພາຍໃນ fileadmin/ ບ່ອນທີ່ເຈົ້າຕ້ອງການໃຫ້ເຮັດດັດສະນີໄຟລ໌.</target>
+      </trans-unit>
+      <trans-unit id="filepath.details" resname="filepath.details" approved="yes">
+        <source>Example: "fileadmin/newsletters/"</source>
+        <target state="final">Example: "fileadmin/newsletters/"</target>
+      </trans-unit>
+      <trans-unit id="extensions.description" resname="extensions.description" approved="yes">
+        <source>If you want to index only specific files in the directory, enter a list of file extensions here. For example: "html,pdf,doc"</source>
+        <target state="final">ຖ້າເຈົ້າຕ້ອງການເຮັດດັດສະນີສະເພາະໄຟລ໌ໃດໜຶ່ງໃນໂຟນເດີ, ໃຫ້ປ້ອນລາຍຊື່ນາມສະກຸນໄຟລ໌ຢູ່ບ່ອນນີ້. ຕົວຢ່າງ: "html,pdf,doc"</target>
+      </trans-unit>
+      <trans-unit id="_extensions.seeAlso" resname="_extensions.seeAlso" approved="yes">
+        <source>index_config:filepath</source>
+        <target state="final">index_config:filepath</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="depth.description" resname="depth.description" approved="yes">
+        <source>Levels of recursion.</source>
+        <target state="final">ລະດັບຂອງການເຮັດວຽກແບບຊ້ຳຄືນ (Recursion).</target>
+      </trans-unit>
+      <trans-unit id="depth.details" resname="depth.details" approved="yes">
+        <source>For file indexing it is the level of directories to decend. For External URLs it's the depth to which the crawler will go with links.</source>
+        <target state="final">ລະດັບຂອງການເຮັດວຽກແບບຊ້ຳຄືນ (Recursion).
+</target>
+      </trans-unit>
+      <trans-unit id="_depth.seeAlso" resname="_depth.seeAlso" xml:space="preserve" approved="yes">
+				<source>index_config:externalUrl,
+index_config:filepath</source>
+				
+			<target state="final">index_config:externalUrl,
+index_config:filepath</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="indexcfgs.description" resname="indexcfgs.description" approved="yes">
+        <source>When a search is conducted in this indexing configuration the actual search will take place in the indexed content from the configurations listed here. You can also enter pages and if you do so the search will take place in indexing configurations found on those pages.</source>
+        <target state="final">ເມື່ອມີການຄົ້ນຫາໃນການຕັ້ງຄ່າການເຮັດດັດສະນີນີ້, ການຄົ້ນຫາຕົວຈິງຈະເກີດຂຶ້ນໃນເນື້ອຫາທີ່ໄດ້ເຮັດດັດສະນີແລ້ວ ຈາກການຕັ້ງຄ່າທີ່ລະບຸໄວ້ຢູ່ບ່ອນນີ້. ເຈົ້າຍັງສາມາດລະບຸໜ້າເວັບຕ່າງໆໄດ້ ແລະ ຖ້າເຈົ້າເຮັດແນວນັ້ນ ການຄົ້ນຫາຈະເກີດຂຶ້ນໃນການຕັ້ງຄ່າການເຮັດດັດສະນີ ທີ່ພົບໃນໜ້າເວັບເຫຼົ່ານັ້ນ.
+</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
