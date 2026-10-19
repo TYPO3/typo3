@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="permissions" resname="permissions">
+        <source>Permissions</source>
+        <target>crwdns97778:0crwdne97778:0</target>
+      </trans-unit>
+      <trans-unit id="ch_permissions" resname="ch_permissions">
+        <source>Change permissions</source>
+        <target>crwdns97780:0crwdne97780:0</target>
+      </trans-unit>
+      <trans-unit id="Legend" resname="Legend">
+        <source>Legend</source>
+        <target>crwdns97782:0crwdne97782:0</target>
+      </trans-unit>
+      <trans-unit id="Owner" resname="Owner">
+        <source>Owner</source>
+        <target>crwdns97784:0crwdne97784:0</target>
+      </trans-unit>
+      <trans-unit id="Group" resname="Group">
+        <source>Group</source>
+        <target>crwdns97786:0crwdne97786:0</target>
+      </trans-unit>
+      <trans-unit id="Everybody" resname="Everybody">
+        <source>Everybody</source>
+        <target>crwdns97788:0crwdne97788:0</target>
+      </trans-unit>
+      <trans-unit id="EditLock" resname="EditLock">
+        <source>Lock</source>
+        <target>crwdns97790:0crwdne97790:0</target>
+      </trans-unit>
+      <trans-unit id="EditLock_descr" resname="EditLock_descr">
+        <source>Disable the »Admin-only« edit lock for this page. Currently this page and all content is locked for editing by all non-Admin users.</source>
+        <target>crwdns97792:0crwdne97792:0</target>
+      </trans-unit>
+      <trans-unit id="EditLock_descr2" resname="EditLock_descr2">
+        <source>Enable the »Admin-only« edit lock for this page</source>
+        <target>crwdns97794:0crwdne97794:0</target>
+      </trans-unit>
+      <trans-unit id="Save" resname="Save">
+        <source>Save</source>
+        <target>crwdns97796:0crwdne97796:0</target>
+      </trans-unit>
+      <trans-unit id="Abort" resname="Abort">
+        <source>Abort</source>
+        <target>crwdns97798:0crwdne97798:0</target>
+      </trans-unit>
+      <trans-unit id="Edit" resname="Edit">
+        <source>EDIT</source>
+        <target>crwdns97800:0crwdne97800:0</target>
+      </trans-unit>
+      <trans-unit id="recursive" resname="recursive">
+        <source>Set recursively</source>
+        <target>crwdns97802:0crwdne97802:0</target>
+      </trans-unit>
+      <trans-unit id="page_affected" resname="page_affected">
+        <source>page affected</source>
+        <target>crwdns97804:0crwdne97804:0</target>
+      </trans-unit>
+      <trans-unit id="pages_affected" resname="pages_affected">
+        <source>pages affected</source>
+        <target>crwdns97806:0crwdne97806:0</target>
+      </trans-unit>
+      <trans-unit id="user_overview" resname="user_overview">
+        <source>User overview</source>
+        <target>crwdns97808:0crwdne97808:0</target>
+      </trans-unit>
+      <trans-unit id="Mode" resname="Mode">
+        <source>Mode</source>
+        <target>crwdns97810:0crwdne97810:0</target>
+      </trans-unit>
+      <trans-unit id="Depth" resname="Depth">
+        <source>Depth</source>
+        <target>crwdns97812:0crwdne97812:0</target>
+      </trans-unit>
+      <trans-unit id="level" resname="level">
+        <source>level</source>
+        <target>crwdns97814:0crwdne97814:0</target>
+      </trans-unit>
+      <trans-unit id="levels" resname="levels">
+        <source>levels</source>
+        <target>crwdns97816:0crwdne97816:0</target>
+      </trans-unit>
+      <trans-unit id="User" resname="User">
+        <source>User</source>
+        <target>crwdns97818:0crwdne97818:0</target>
+      </trans-unit>
+      <trans-unit id="def" resname="def">
+        <source>Definition: 'content' is records from all tables on a page - except from records from the table 'pages' (Pages).</source>
+        <target>crwdns97820:0crwdne97820:0</target>
+      </trans-unit>
+      <trans-unit id="A_Granted" resname="A_Granted">
+        <source>Access Granted</source>
+        <target>crwdns97822:0crwdne97822:0</target>
+      </trans-unit>
+      <trans-unit id="A_Denied" resname="A_Denied">
+        <source>Access Denied</source>
+        <target>crwdns97824:0crwdne97824:0</target>
+      </trans-unit>
+      <trans-unit id="1" resname="1">
+        <source>Show page</source>
+        <target>crwdns97826:0crwdne97826:0</target>
+      </trans-unit>
+      <trans-unit id="16" resname="16">
+        <source>Edit content</source>
+        <target>crwdns97828:0crwdne97828:0</target>
+      </trans-unit>
+      <trans-unit id="2" resname="2">
+        <source>Edit page</source>
+        <target>crwdns97830:0crwdne97830:0</target>
+      </trans-unit>
+      <trans-unit id="4" resname="4">
+        <source>Delete page</source>
+        <target>crwdns97832:0crwdne97832:0</target>
+      </trans-unit>
+      <trans-unit id="8" resname="8">
+        <source>New pages</source>
+        <target>crwdns97834:0crwdne97834:0</target>
+      </trans-unit>
+      <trans-unit id="1_t" resname="1_t">
+        <source>Show/Copy page and content.</source>
+        <target>crwdns97836:0crwdne97836:0</target>
+      </trans-unit>
+      <trans-unit id="16_t" resname="16_t">
+        <source>Change/Add/Delete/Move content.</source>
+        <target>crwdns97838:0crwdne97838:0</target>
+      </trans-unit>
+      <trans-unit id="2_t" resname="2_t">
+        <source>Change page eg. change pagetitle etc.</source>
+        <target>crwdns97840:0crwdne97840:0</target>
+      </trans-unit>
+      <trans-unit id="4_t" resname="4_t">
+        <source>Delete/Move page and content.</source>
+        <target>crwdns97842:0crwdne97842:0</target>
+      </trans-unit>
+      <trans-unit id="8_t" resname="8_t">
+        <source>Create new pages under this page.</source>
+        <target>crwdns97844:0crwdne97844:0</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel">
+        <source>Page editing permissions</source>
+        <target>crwdns97846:0crwdne97846:0</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr">
+        <source>Setting of page permissions is vital for controlling backend user access to pages. You can assign a user and a group as owners of a page and set access permissions for each.</source>
+        <target>crwdns97848:0crwdne97848:0</target>
+      </trans-unit>
+      <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab">
+        <source>Access</source>
+        <target>crwdns97850:0crwdne97850:0</target>
+      </trans-unit>
+      <trans-unit id="WorkspaceWarning" resname="WorkspaceWarning">
+        <source>Workspace Warning</source>
+        <target>crwdns97852:0crwdne97852:0</target>
+      </trans-unit>
+      <trans-unit id="WorkspaceWarningText" resname="WorkspaceWarningText">
+        <source>Permissions you set in the workspace are effective on the elements only after they are published! If you need to set permissions which are effective right now, you must do so in the Live workspace. (Permissions are always evaluated on the Live workspace record/placeholder of a draft version)</source>
+        <target>crwdns97854:0crwdne97854:0</target>
+      </trans-unit>
+      <trans-unit id="notSet" resname="notSet">
+        <source>not set</source>
+        <target>crwdns97856:0crwdne97856:0</target>
+      </trans-unit>
+      <trans-unit id="deleted" resname="deleted">
+        <source>deleted</source>
+        <target>crwdns97858:0crwdne97858:0</target>
+      </trans-unit>
+      <trans-unit id="noGroups" resname="noGroups">
+        <source>No user groups exist.</source>
+        <target>crwdns97860:0crwdne97860:0</target>
+      </trans-unit>
+      <trans-unit id="selectNone" resname="selectNone">
+        <source>   - none -   </source>
+        <target>crwdns97862:0crwdne97862:0</target>
+      </trans-unit>
+      <trans-unit id="selectUnchanged" resname="selectUnchanged">
+        <source>   - leave unchanged -   </source>
+        <target>crwdns97864:0crwdne97864:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
