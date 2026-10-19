@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:recordlist/Resources/Private/Language/locallang_browse_links.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="th">
+    <header/>
+    <body>
+      <trans-unit id="removeLink" resname="removeLink" approved="yes">
+        <source>Remove link</source>
+        <target state="final">ลบลิ้งค์</target>
+      </trans-unit>
+      <trans-unit id="uploadImage" resname="uploadImage" approved="yes">
+        <source>Upload Image</source>
+        <target state="final">อัปโหลด ภาพ</target>
+      </trans-unit>
+      <trans-unit id="update" resname="update" approved="yes">
+        <source>Update</source>
+        <target state="final">บันทึก</target>
+      </trans-unit>
+      <trans-unit id="path" resname="path" approved="yes">
+        <source>Path</source>
+        <target state="final">path</target>
+      </trans-unit>
+      <trans-unit id="page" resname="page" approved="yes">
+        <source>Page</source>
+        <target state="final">หน้า</target>
+      </trans-unit>
+      <trans-unit id="file" resname="file" approved="yes">
+        <source>File</source>
+        <target state="final">ไฟล์</target>
+      </trans-unit>
+      <trans-unit id="folder" resname="folder" approved="yes">
+        <source>Folder</source>
+        <target state="final">โฟลเดอร์</target>
+      </trans-unit>
+      <trans-unit id="extUrl" resname="extUrl" approved="yes">
+        <source>External URL</source>
+        <target state="final">URL ภายนอก</target>
+      </trans-unit>
+      <trans-unit id="email" resname="email" approved="yes">
+        <source>Email</source>
+        <target state="final">อีเมล์</target>
+      </trans-unit>
+      <trans-unit id="special" resname="special" approved="yes">
+        <source>Special</source>
+        <target state="final">พิเศษ</target>
+      </trans-unit>
+      <trans-unit id="folderTree" resname="folderTree" approved="yes">
+        <source>Folder Tree</source>
+        <target state="final">โครงสร้างแฟ้ม</target>
+      </trans-unit>
+      <trans-unit id="files" resname="files" approved="yes">
+        <source>Files</source>
+        <target state="final">ไฟล์</target>
+      </trans-unit>
+      <trans-unit id="target" resname="target" approved="yes">
+        <source>Target</source>
+        <target state="final">ที่หมาย</target>
+      </trans-unit>
+      <trans-unit id="class" resname="class" approved="yes">
+        <source>CSS-Class</source>
+        <target state="final">CSS - Class</target>
+      </trans-unit>
+      <trans-unit id="title" resname="title" approved="yes">
+        <source>Title</source>
+        <target state="final">ชื่อเรื่อง</target>
+      </trans-unit>
+      <trans-unit id="params" resname="params" approved="yes">
+        <source>Additional link parameters</source>
+        <target state="final">ใส่ลิงค์เพิ่มเติม</target>
+      </trans-unit>
+      <trans-unit id="newWindow" resname="newWindow" approved="yes">
+        <source>New window</source>
+        <target state="final">หน้าต่างใหม่</target>
+      </trans-unit>
+      <trans-unit id="top" resname="top" approved="yes">
+        <source>Top</source>
+        <target state="final">ด้านบน</target>
+      </trans-unit>
+      <trans-unit id="none" resname="none" approved="yes">
+        <source>None - new link!</source>
+        <target state="final">ไม่มี - เปิดลิ้งค์ใหม่!</target>
+      </trans-unit>
+      <trans-unit id="pageTree" resname="pageTree" approved="yes">
+        <source>Page tree</source>
+        <target state="final">โครงสร้าง หน้า</target>
+      </trans-unit>
+      <trans-unit id="contentElements" resname="contentElements" approved="yes">
+        <source>Content elements</source>
+        <target state="final">องค์ประกอบของเนื้อหา</target>
+      </trans-unit>
+      <trans-unit id="selectRecords" resname="selectRecords" approved="yes">
+        <source>Select Records</source>
+        <target state="final">เลือกบันทีกข้อมูล</target>
+      </trans-unit>
+      <trans-unit id="addToList" resname="addToList" approved="yes">
+        <source>Add to list...</source>
+        <target state="final">เพิ่มเข้ารายการ....</target>
+      </trans-unit>
+      <trans-unit id="info" resname="info" approved="yes">
+        <source>Info</source>
+        <target state="final">ข้อมูล</target>
+      </trans-unit>
+      <trans-unit id="emailAddress" resname="emailAddress" approved="yes">
+        <source>Email address</source>
+        <target state="final">ที่อยู่อีเมล์</target>
+      </trans-unit>
+      <trans-unit id="setLink" resname="setLink" approved="yes">
+        <source>Set Link</source>
+        <target state="final">กำหนดลิ้งค์</target>
+      </trans-unit>
+      <trans-unit id="clickToRedrawFullSize" resname="clickToRedrawFullSize" approved="yes">
+        <source>Image is larger than shown here! Click to redraw page with full sized images.</source>
+        <target state="final">ภาพใหญ่เกินกว่าที่จะแสดงที่นี่ได้! กดปุ่มเพื่อให้แสดงเต็มขนาด</target>
+      </trans-unit>
+      <trans-unit id="findDragDrop" resname="findDragDrop" approved="yes">
+        <source>Find and click on your image then drag it into the editor in the main window!</source>
+        <target state="final">ค้นหาภาพของคุณ แล้วกดปุ่มที่ภาพและลากไปใส่หน้าต่างหลักของโปรเแกรมแก้ไข</target>
+      </trans-unit>
+      <trans-unit id="noWebFolder" resname="noWebFolder" approved="yes">
+        <source>You cannot drag images from this folder (yellow) because it is internal on the server.</source>
+        <target state="final">คุณไม่สามารถลากภาพจากแฟ้มสีเหลืองนี้ได้ เพราะมันอยู่ภายในตัวเซืร์ฟเวอร์</target>
+      </trans-unit>
+      <trans-unit id="currentLink" resname="currentLink" approved="yes">
+        <source>Current Link</source>
+        <target state="final">ลิ้งค์ปัจจุบัน</target>
+      </trans-unit>
+      <trans-unit id="invalidChar" resname="invalidChar" approved="yes">
+        <source>ERROR: Invalid character found in file path (%s). Cannot add the file!</source>
+        <target state="final">ผิดพลาด! พบตัวอักษรที่ไม่ถูกต้องใน Path (%s) ไปยังไฟล์ ไม่สามารถเพิ่มไฟล์ได้!!!</target>
+      </trans-unit>
+      <trans-unit id="toggleSelection" resname="toggleSelection" approved="yes">
+        <source>Toggle selection</source>
+        <target state="final">เลือก Toggle</target>
+      </trans-unit>
+      <trans-unit id="importSelection" resname="importSelection" approved="yes">
+        <source>Import selection</source>
+        <target state="final">เลือกนำเข้า</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
