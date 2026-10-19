@@ -1,0 +1,760 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_tca.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="mod_tx_cms_webinfo_page" resname="mod_tx_cms_webinfo_page" approved="yes">
+        <source>Pagetree Overview</source>
+        <target state="final">Seitenbaumübersicht</target>
+      </trans-unit>
+      <trans-unit id="mod_tx_cms_webinfo_lang" resname="mod_tx_cms_webinfo_lang" approved="yes">
+        <source>Localization Overview</source>
+        <target state="final">Übersetzungsübersicht</target>
+      </trans-unit>
+      <trans-unit id="pages.palettes.standard" resname="pages.palettes.standard" approved="yes">
+        <source>Page</source>
+        <target state="final">Seite</target>
+      </trans-unit>
+      <trans-unit id="pages.palettes.title" resname="pages.palettes.title" approved="yes">
+        <source>Title</source>
+        <target state="final">Titel</target>
+      </trans-unit>
+      <trans-unit id="pages.palettes.visibility" resname="pages.palettes.visibility" approved="yes">
+        <source>Visibility</source>
+        <target state="final">Sichtbarkeit</target>
+      </trans-unit>
+      <trans-unit id="pages.palettes.access" resname="pages.palettes.access" approved="yes">
+        <source>Publish Dates and Access Rights</source>
+        <target state="final">Veröffentlichungsdaten und Zugriffsrechte</target>
+      </trans-unit>
+      <trans-unit id="pages.palettes.abstract" resname="pages.palettes.abstract" approved="yes">
+        <source>Abstract</source>
+        <target state="final">Zusammenfassung</target>
+      </trans-unit>
+      <trans-unit id="pages.palettes.metatags" resname="pages.palettes.metatags" approved="yes">
+        <source>Meta Tags</source>
+        <target state="final">Meta-Tags</target>
+      </trans-unit>
+      <trans-unit id="pages.palettes.editorial" resname="pages.palettes.editorial" approved="yes">
+        <source>Editorial</source>
+        <target state="final">Redaktion</target>
+      </trans-unit>
+      <trans-unit id="pages.palettes.layout" resname="pages.palettes.layout" approved="yes">
+        <source>Page Layout</source>
+        <target state="final">Seitenlayout</target>
+      </trans-unit>
+      <trans-unit id="pages.palettes.module" resname="pages.palettes.module" approved="yes">
+        <source>Use as Container</source>
+        <target state="final">Benutze als Container</target>
+      </trans-unit>
+      <trans-unit id="pages.palettes.replace" resname="pages.palettes.replace" approved="yes">
+        <source>Replace Content</source>
+        <target state="final">Ersetze den Inhalt</target>
+      </trans-unit>
+      <trans-unit id="pages.palettes.links" resname="pages.palettes.links" approved="yes">
+        <source>Links to this Page</source>
+        <target state="final">Links zu dieser Seite</target>
+      </trans-unit>
+      <trans-unit id="pages.palettes.caching" resname="pages.palettes.caching" approved="yes">
+        <source>Caching</source>
+        <target state="final">Caching</target>
+      </trans-unit>
+      <trans-unit id="pages.palettes.language" resname="pages.palettes.language" approved="yes">
+        <source>Language</source>
+        <target state="final">Sprache</target>
+      </trans-unit>
+      <trans-unit id="pages.palettes.miscellaneous" resname="pages.palettes.miscellaneous" approved="yes">
+        <source>Miscellaneous</source>
+        <target state="final">Sonstige</target>
+      </trans-unit>
+      <trans-unit id="pages.palettes.media" resname="pages.palettes.media" approved="yes">
+        <source>Files</source>
+        <target state="final">Dateien</target>
+      </trans-unit>
+      <trans-unit id="pages.palettes.storage" resname="pages.palettes.storage" approved="yes">
+        <source>General Record Storage Page</source>
+        <target state="final">Allgemeine Datensatzsammlung</target>
+      </trans-unit>
+      <trans-unit id="pages.palettes.config" resname="pages.palettes.config" approved="yes">
+        <source>Page TSconfig</source>
+        <target state="final">Page TSconfig</target>
+      </trans-unit>
+      <trans-unit id="pages.doktype_formlabel" resname="pages.doktype_formlabel" approved="yes">
+        <source>Type</source>
+        <target state="final">Typ</target>
+      </trans-unit>
+      <trans-unit id="pages.doktype.I.0" resname="pages.doktype.I.0" approved="yes">
+        <source>Advanced</source>
+        <target state="final">Erweitert</target>
+      </trans-unit>
+      <trans-unit id="pages.doktype.I.2" resname="pages.doktype.I.2" approved="yes">
+        <source>Shortcut</source>
+        <target state="final">Verweis</target>
+      </trans-unit>
+      <trans-unit id="pages.doktype.I.3" resname="pages.doktype.I.3" approved="yes">
+        <source>Not in Menu</source>
+        <target state="final">Nicht im Menü</target>
+      </trans-unit>
+      <trans-unit id="pages.doktype.I.4" resname="pages.doktype.I.4" approved="yes">
+        <source>Backend User Section</source>
+        <target state="final">Backend-Benutzerbereich</target>
+      </trans-unit>
+      <trans-unit id="pages.doktype.I.5" resname="pages.doktype.I.5" approved="yes">
+        <source>Mount Point</source>
+        <target state="final">Einstiegspunkt</target>
+      </trans-unit>
+      <trans-unit id="pages.doktype.I.7" resname="pages.doktype.I.7" approved="yes">
+        <source>Menu Separator</source>
+        <target state="final">Trennzeichen für Menü</target>
+      </trans-unit>
+      <trans-unit id="pages.doktype.I.8" resname="pages.doktype.I.8" approved="yes">
+        <source>Link to External URL</source>
+        <target state="final">Link zu externer URL</target>
+      </trans-unit>
+      <trans-unit id="pages.doktype.div.page" resname="pages.doktype.div.page" approved="yes">
+        <source>Page</source>
+        <target state="final">Seite</target>
+      </trans-unit>
+      <trans-unit id="pages.doktype.div.link" resname="pages.doktype.div.link" approved="yes">
+        <source>Link</source>
+        <target state="final">Link</target>
+      </trans-unit>
+      <trans-unit id="pages.doktype.div.special" resname="pages.doktype.div.special" approved="yes">
+        <source>Special</source>
+        <target state="final">Spezial</target>
+      </trans-unit>
+      <trans-unit id="pages.title_formlabel" resname="pages.title_formlabel" approved="yes">
+        <source>Page Title</source>
+        <target state="final">Seitentitel</target>
+      </trans-unit>
+      <trans-unit id="pages.starttime_formlabel" resname="pages.starttime_formlabel" approved="yes">
+        <source>Publish Date</source>
+        <target state="final">Veröffentlichungsdatum</target>
+      </trans-unit>
+      <trans-unit id="pages.endtime_formlabel" resname="pages.endtime_formlabel" approved="yes">
+        <source>Expiration Date</source>
+        <target state="final">Ablaufdatum</target>
+      </trans-unit>
+      <trans-unit id="pages.fe_group_formlabel" resname="pages.fe_group_formlabel" approved="yes">
+        <source>Usergroup Access Rights</source>
+        <target state="final">Zugriffsrechte für Benutzergruppen</target>
+      </trans-unit>
+      <trans-unit id="pages.hidden" resname="pages.hidden" approved="yes">
+        <source>Hide page</source>
+        <target state="final">Seite verbergen</target>
+      </trans-unit>
+      <trans-unit id="pages.hidden_formlabel" resname="pages.hidden_formlabel" approved="yes">
+        <source>Page</source>
+        <target state="final">Seite</target>
+      </trans-unit>
+      <trans-unit id="pages.hidden_checkbox_1_formlabel" resname="pages.hidden_checkbox_1_formlabel" approved="yes">
+        <source>Disable</source>
+        <target state="final">Deaktivieren</target>
+      </trans-unit>
+      <trans-unit id="pages.layout_formlabel" resname="pages.layout_formlabel" approved="yes">
+        <source>Frontend Layout</source>
+        <target state="final">Frontend-Layout</target>
+      </trans-unit>
+      <trans-unit id="pages.layout.I.1" resname="pages.layout.I.1" approved="yes">
+        <source>Layout 1</source>
+        <target state="final">Layout 1</target>
+      </trans-unit>
+      <trans-unit id="pages.layout.I.2" resname="pages.layout.I.2" approved="yes">
+        <source>Layout 2</source>
+        <target state="final">Layout 2</target>
+      </trans-unit>
+      <trans-unit id="pages.layout.I.3" resname="pages.layout.I.3" approved="yes">
+        <source>Layout 3</source>
+        <target state="final">Layout 3</target>
+      </trans-unit>
+      <trans-unit id="pages.extendToSubpages" resname="pages.extendToSubpages" approved="yes">
+        <source>Include Subpages</source>
+        <target state="final">Inklusive Unterseiten</target>
+      </trans-unit>
+      <trans-unit id="pages.extendToSubpages_formlabel" resname="pages.extendToSubpages_formlabel" approved="yes">
+        <source>Extend to Subpages</source>
+        <target state="final">Auf Unterseiten ausdehnen</target>
+      </trans-unit>
+      <trans-unit id="pages.nav_title" resname="pages.nav_title" approved="yes">
+        <source>Navigation Title</source>
+        <target state="final">Navigationstitel</target>
+      </trans-unit>
+      <trans-unit id="pages.nav_title_formlabel" resname="pages.nav_title_formlabel" approved="yes">
+        <source>Alternative Navigation Title</source>
+        <target state="final">Alternativer Navigationstitel</target>
+      </trans-unit>
+      <trans-unit id="pages.nav_hide" resname="pages.nav_hide" approved="yes">
+        <source>Hide in Menu</source>
+        <target state="final">Im Menü verbergen</target>
+      </trans-unit>
+      <trans-unit id="pages.nav_hide_formlabel" resname="pages.nav_hide_formlabel" approved="yes">
+        <source>In Menus</source>
+        <target state="final">In Menüs</target>
+      </trans-unit>
+      <trans-unit id="pages.nav_hide_checkbox_1_formlabel" resname="pages.nav_hide_checkbox_1_formlabel" approved="yes">
+        <source>Hide</source>
+        <target state="final">Verbergen</target>
+      </trans-unit>
+      <trans-unit id="pages.subtitle" resname="pages.subtitle" approved="yes">
+        <source>Subtitle</source>
+        <target state="final">Untertitel</target>
+      </trans-unit>
+      <trans-unit id="pages.subtitle_formlabel" resname="pages.subtitle_formlabel" approved="yes">
+        <source>Subtitle</source>
+        <target state="final">Untertitel</target>
+      </trans-unit>
+      <trans-unit id="pages.target" resname="pages.target" approved="yes">
+        <source>Target</source>
+        <target state="final">Zielfenster:</target>
+      </trans-unit>
+      <trans-unit id="pages.target_formlabel" resname="pages.target_formlabel" approved="yes">
+        <source>Link Target</source>
+        <target state="final">Linkziel</target>
+      </trans-unit>
+      <trans-unit id="pages.url" resname="pages.url" approved="yes">
+        <source>URL</source>
+        <target state="final">URL</target>
+      </trans-unit>
+      <trans-unit id="pages.url_formlabel" resname="pages.url_formlabel" approved="yes">
+        <source>URL</source>
+        <target state="final">URL</target>
+      </trans-unit>
+      <trans-unit id="pages.lastUpdated" resname="pages.lastUpdated" approved="yes">
+        <source>Last Updated</source>
+        <target state="final">Letzte Aktualisierung</target>
+      </trans-unit>
+      <trans-unit id="pages.lastUpdated_formlabel" resname="pages.lastUpdated_formlabel" approved="yes">
+        <source>Last Update</source>
+        <target state="final">Letzte Aktualisierung</target>
+      </trans-unit>
+      <trans-unit id="pages.newUntil" resname="pages.newUntil" approved="yes">
+        <source>'New' Until</source>
+        <target state="final">"Neu" bis</target>
+      </trans-unit>
+      <trans-unit id="pages.newUntil_formlabel" resname="pages.newUntil_formlabel" approved="yes">
+        <source>Mark as 'New' Until</source>
+        <target state="final">Markiere als 'Neu' bis</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout" resname="pages.cache_timeout" approved="yes">
+        <source>Cache Expires</source>
+        <target state="final">Cache verfällt</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout_formlabel" resname="pages.cache_timeout_formlabel" approved="yes">
+        <source>Cache Lifetime</source>
+        <target state="final">Cache-Dauer</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout.I.1" resname="pages.cache_timeout.I.1" approved="yes">
+        <source>1 min</source>
+        <target state="final">1 Min</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout.I.2" resname="pages.cache_timeout.I.2" approved="yes">
+        <source>5 min</source>
+        <target state="final">5 Min</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout.I.3" resname="pages.cache_timeout.I.3" approved="yes">
+        <source>15 min</source>
+        <target state="final">15 Min</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout.I.4" resname="pages.cache_timeout.I.4" approved="yes">
+        <source>30 min</source>
+        <target state="final">30 Min</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout.I.5" resname="pages.cache_timeout.I.5" approved="yes">
+        <source>1 hour</source>
+        <target state="final">1 Stunde</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout.I.6" resname="pages.cache_timeout.I.6" approved="yes">
+        <source>4 hours</source>
+        <target state="final">4 Stunden</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout.I.7" resname="pages.cache_timeout.I.7" approved="yes">
+        <source>1 day</source>
+        <target state="final">1 Tag</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout.I.8" resname="pages.cache_timeout.I.8" approved="yes">
+        <source>2 days</source>
+        <target state="final">2 Tage</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout.I.9" resname="pages.cache_timeout.I.9" approved="yes">
+        <source>7 days</source>
+        <target state="final">7 Tage</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout.I.10" resname="pages.cache_timeout.I.10" approved="yes">
+        <source>1 month</source>
+        <target state="final">1 Monat</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_tags" resname="pages.cache_tags" approved="yes">
+        <source>Cache Tags</source>
+        <target state="final">Cache-Tags</target>
+      </trans-unit>
+      <trans-unit id="pages.editlock_formlabel" resname="pages.editlock_formlabel" approved="yes">
+        <source>Editable for Admins Only</source>
+        <target state="final">Bearbeitbar nur für Administratoren</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.metadata" resname="pages.tabs.metadata" approved="yes">
+        <source>Metadata</source>
+        <target state="final">Metadaten</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.files" resname="pages.tabs.files" approved="yes">
+        <source>Resources</source>
+        <target state="final">Ressourcen</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.resources" resname="pages.tabs.resources" approved="yes">
+        <source>Resources</source>
+        <target state="final">Ressourcen</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.access" resname="pages.tabs.access" approved="yes">
+        <source>Access</source>
+        <target state="final">Zugriff</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.options" resname="pages.tabs.options" approved="yes">
+        <source>Options</source>
+        <target state="final">Optionen</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.mount" resname="pages.tabs.mount" approved="yes">
+        <source>Mount</source>
+        <target state="final">Einbindung</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.shortcut" resname="pages.tabs.shortcut" approved="yes">
+        <source>Shortcut</source>
+        <target state="final">Verweis</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.url" resname="pages.tabs.url" approved="yes">
+        <source>URL</source>
+        <target state="final">URL</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.extended" resname="pages.tabs.extended" approved="yes">
+        <source>Extended</source>
+        <target state="final">Erweitert</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.appearance" resname="pages.tabs.appearance" approved="yes">
+        <source>Appearance</source>
+        <target state="final">Erscheinungsbild</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.behaviour" resname="pages.tabs.behaviour" approved="yes">
+        <source>Behaviour</source>
+        <target state="final">Verhalten</target>
+      </trans-unit>
+      <trans-unit id="pages.no_search" resname="pages.no_search" approved="yes">
+        <source>Include in Search</source>
+        <target state="final">In Suche einbeziehen</target>
+      </trans-unit>
+      <trans-unit id="pages.no_search_formlabel" resname="pages.no_search_formlabel" approved="yes">
+        <source>Include in Search</source>
+        <target state="final">In Indexsuche einbeziehen</target>
+      </trans-unit>
+      <trans-unit id="pages.no_search_checkbox_1_formlabel" resname="pages.no_search_checkbox_1_formlabel" approved="yes">
+        <source>Disable</source>
+        <target state="final">Deaktivieren</target>
+      </trans-unit>
+      <trans-unit id="pages.shortcut_mode" resname="pages.shortcut_mode" approved="yes">
+        <source>Shortcut Mode</source>
+        <target state="final">Shortcut-Modus</target>
+      </trans-unit>
+      <trans-unit id="pages.shortcut_mode_formlabel" resname="pages.shortcut_mode_formlabel" approved="yes">
+        <source>Shortcut Mode</source>
+        <target state="final">Shortcut-Modus</target>
+      </trans-unit>
+      <trans-unit id="pages.shortcut_mode.I.0" resname="pages.shortcut_mode.I.0" approved="yes">
+        <source>Selected page</source>
+        <target state="final">Ausgewählte Seite</target>
+      </trans-unit>
+      <trans-unit id="pages.shortcut_mode.I.1" resname="pages.shortcut_mode.I.1" approved="yes">
+        <source>First subpage of selected/current page</source>
+        <target state="final">Erste Unterseite der aktuellen Seite</target>
+      </trans-unit>
+      <trans-unit id="pages.shortcut_mode.I.2" resname="pages.shortcut_mode.I.2" approved="yes">
+        <source>Random subpage of selected/current page</source>
+        <target state="final">Zufällige Unterseite der aktuellen Seite</target>
+      </trans-unit>
+      <trans-unit id="pages.shortcut_mode.I.3" resname="pages.shortcut_mode.I.3" approved="yes">
+        <source>Parent page of selected/current page</source>
+        <target state="final">Oberseite der ausgewählten/aktuellen Seite</target>
+      </trans-unit>
+      <trans-unit id="pages.shortcut_formlabel" resname="pages.shortcut_formlabel" approved="yes">
+        <source>Shortcut Target</source>
+        <target state="final">Verweisziel</target>
+      </trans-unit>
+      <trans-unit id="pages.content_from_pid" resname="pages.content_from_pid" approved="yes">
+        <source>Show content from this page instead</source>
+        <target state="final">Inhalt dieser Seite anzeigen:</target>
+      </trans-unit>
+      <trans-unit id="pages.content_from_pid_formlabel" resname="pages.content_from_pid_formlabel" approved="yes">
+        <source>Show Content from Page</source>
+        <target state="final">Zeige Inhalt von Seite</target>
+      </trans-unit>
+      <trans-unit id="pages.mount_pid" resname="pages.mount_pid" approved="yes">
+        <source>Mount Point of</source>
+        <target state="final">Einstiegspunkt von</target>
+      </trans-unit>
+      <trans-unit id="pages.mount_pid_formlabel" resname="pages.mount_pid_formlabel" approved="yes">
+        <source>Mounted page</source>
+        <target state="final">Einstiegsseite</target>
+      </trans-unit>
+      <trans-unit id="pages.mount_pid_ol" resname="pages.mount_pid_ol" approved="yes">
+        <source>Mount Point redirects to mounted page</source>
+        <target state="final">Einstiegspunkt leitet zur eingebundenen Seite weiter</target>
+      </trans-unit>
+      <trans-unit id="pages.mount_pid_ol_formlabel" resname="pages.mount_pid_ol_formlabel" approved="yes">
+        <source>Mount Point Display Option</source>
+        <target state="final">Einstiegspunkt Anzeigeoption</target>
+      </trans-unit>
+      <trans-unit id="pages.mount_pid_ol.I.0" resname="pages.mount_pid_ol.I.0" approved="yes">
+        <source>Show this page</source>
+        <target state="final">Diese Seite anzeigen</target>
+      </trans-unit>
+      <trans-unit id="pages.mount_pid_ol.I.1" resname="pages.mount_pid_ol.I.1" approved="yes">
+        <source>Show the mounted page</source>
+        <target state="final">Zeige die eingebundene Seite</target>
+      </trans-unit>
+      <trans-unit id="pages.abstract" resname="pages.abstract" approved="yes">
+        <source>Abstract</source>
+        <target state="final">Zusammenfassung</target>
+      </trans-unit>
+      <trans-unit id="pages.abstract_formlabel" resname="pages.abstract_formlabel" approved="yes">
+        <source>Abstract</source>
+        <target state="final">Zusammenfassung</target>
+      </trans-unit>
+      <trans-unit id="pages.keywords_formlabel" resname="pages.keywords_formlabel" approved="yes">
+        <source>Keywords</source>
+        <target state="final">Schlagworte</target>
+      </trans-unit>
+      <trans-unit id="pages.description_formlabel" resname="pages.description_formlabel" approved="yes">
+        <source>Description</source>
+        <target state="final">Beschreibung</target>
+      </trans-unit>
+      <trans-unit id="pages.author_formlabel" resname="pages.author_formlabel" approved="yes">
+        <source>Author Name</source>
+        <target state="final">Name des Autors</target>
+      </trans-unit>
+      <trans-unit id="pages.author_email_formlabel" resname="pages.author_email_formlabel" approved="yes">
+        <source>Author Email</source>
+        <target state="final">E-Mail des Autors</target>
+      </trans-unit>
+      <trans-unit id="pages.media" resname="pages.media" approved="yes">
+        <source>Files</source>
+        <target state="final">Dateien</target>
+      </trans-unit>
+      <trans-unit id="pages.media_formlabel" resname="pages.media_formlabel" approved="yes">
+        <source>Media</source>
+        <target state="final">Media</target>
+      </trans-unit>
+      <trans-unit id="pages.php_tree_stop_formlabel" resname="pages.php_tree_stop_formlabel" approved="yes">
+        <source>Hide child pages in page tree</source>
+        <target state="final">Verberge Unterseiten im Seitenbaum</target>
+      </trans-unit>
+      <trans-unit id="pages.is_siteroot" resname="pages.is_siteroot" approved="yes">
+        <source>Is Root of Website</source>
+        <target state="final">Ist Anfang der Website:</target>
+      </trans-unit>
+      <trans-unit id="pages.is_siteroot_formlabel" resname="pages.is_siteroot_formlabel" approved="yes">
+        <source>Use as Root Page</source>
+        <target state="final">Als Anfang der Website benutzen</target>
+      </trans-unit>
+      <trans-unit id="pages.module" resname="pages.module" approved="yes">
+        <source>Contains Plugin</source>
+        <target state="final">Enthält Plug-In:</target>
+      </trans-unit>
+      <trans-unit id="pages.module_formlabel" resname="pages.module_formlabel" approved="yes">
+        <source>Contains Plugin</source>
+        <target state="final">Enthält Plug-In:</target>
+      </trans-unit>
+      <trans-unit id="pages.module.I.1" resname="pages.module.I.1" approved="yes">
+        <source>Shop</source>
+        <target state="final">Shop</target>
+      </trans-unit>
+      <trans-unit id="pages.module.I.2" resname="pages.module.I.2" approved="yes">
+        <source>Board</source>
+        <target state="final">Forum</target>
+      </trans-unit>
+      <trans-unit id="pages.module.I.3" resname="pages.module.I.3" approved="yes">
+        <source>News</source>
+        <target state="final">News</target>
+      </trans-unit>
+      <trans-unit id="pages.module.I.4" resname="pages.module.I.4" approved="yes">
+        <source>Website Users</source>
+        <target state="final">Website-Benutzer</target>
+      </trans-unit>
+      <trans-unit id="pages.module.I.5" resname="pages.module.I.5" approved="yes">
+        <source>Direct Mail</source>
+        <target state="final">Direct Mail</target>
+      </trans-unit>
+      <trans-unit id="pages.module.I.6" resname="pages.module.I.6" approved="yes">
+        <source>Approvals</source>
+        <target state="final">Abstimmungen</target>
+      </trans-unit>
+      <trans-unit id="pages.l18n_cfg" resname="pages.l18n_cfg" approved="yes">
+        <source>Localization Settings</source>
+        <target state="final">Lokalisierungseinstellungen:</target>
+      </trans-unit>
+      <trans-unit id="pages.l18n_cfg_formlabel" resname="pages.l18n_cfg_formlabel" approved="yes">
+        <source>Localization</source>
+        <target state="final">Lokalisierung</target>
+      </trans-unit>
+      <trans-unit id="pages.l18n_cfg.I.1" resname="pages.l18n_cfg.I.1" approved="yes">
+        <source>Hide default language of page</source>
+        <target state="final">Standardsprache der Seite ausblenden</target>
+      </trans-unit>
+      <trans-unit id="pages.l18n_cfg.I.2" resname="pages.l18n_cfg.I.2" approved="yes">
+        <source>Hide page if no translation for current language exists</source>
+        <target state="final">Seite verbergen, wenn keine Übersetzung für die aktuelle Sprache vorhanden ist</target>
+      </trans-unit>
+      <trans-unit id="pages.l18n_cfg.I.2a" resname="pages.l18n_cfg.I.2a" approved="yes">
+        <source>Show page even if no translation exists</source>
+        <target state="final">Seite anzeigen, auch wenn keine Übersetzung vorhanden ist</target>
+      </trans-unit>
+      <trans-unit id="pages.fe_login_mode" resname="pages.fe_login_mode" approved="yes">
+        <source>Login Mode</source>
+        <target state="final">Anmeldemodus:</target>
+      </trans-unit>
+      <trans-unit id="pages.fe_login_mode_formlabel" resname="pages.fe_login_mode_formlabel" approved="yes">
+        <source>Login Behaviour</source>
+        <target state="final">Anmeldeverhalten</target>
+      </trans-unit>
+      <trans-unit id="pages.fe_login_mode.disable" resname="pages.fe_login_mode.disable" approved="yes">
+        <source>Disable</source>
+        <target state="final">Deaktivieren</target>
+      </trans-unit>
+      <trans-unit id="pages.fe_login_mode.enable" resname="pages.fe_login_mode.enable" approved="yes">
+        <source>Enable login</source>
+        <target state="final">Benutzeranmeldung freigeben</target>
+      </trans-unit>
+      <trans-unit id="pages.fe_login_mode.disableAll" resname="pages.fe_login_mode.disableAll" approved="yes">
+        <source>Disable login</source>
+        <target state="final">Benutzeranmeldung deaktivieren</target>
+      </trans-unit>
+      <trans-unit id="pages.fe_login_mode.disableGroups" resname="pages.fe_login_mode.disableGroups" approved="yes">
+        <source>Enable user login, Disable usergroup login</source>
+        <target state="final">Anmeldung für Benutzer freigeben, aber für Benutzergruppen deaktivieren</target>
+      </trans-unit>
+      <trans-unit id="pages.fe_login_mode.enableAgain" resname="pages.fe_login_mode.enableAgain" approved="yes">
+        <source>Re-Enable login</source>
+        <target state="final">Anmeldung wieder freigeben</target>
+      </trans-unit>
+      <trans-unit id="pages.storage_pid_formlabel" resname="pages.storage_pid_formlabel" approved="yes">
+        <source>Page</source>
+        <target state="final">Seite</target>
+      </trans-unit>
+      <trans-unit id="pages.TSconfig_formlabel" resname="pages.TSconfig_formlabel" approved="yes">
+        <source>Page TSconfig</source>
+        <target state="final">Seiten-TSconfig</target>
+      </trans-unit>
+      <trans-unit id="pages.backend_layout_formlabel" resname="pages.backend_layout_formlabel" approved="yes">
+        <source>Backend Layout (this page only)</source>
+        <target state="final">Backend-Layout (nur für diese Seite)</target>
+      </trans-unit>
+      <trans-unit id="pages.backend_layout_next_level_formlabel" resname="pages.backend_layout_next_level_formlabel" approved="yes">
+        <source>Backend Layout (subpages of this page)</source>
+        <target state="final">Backend-Layout (für Unterseiten dieser Seite)</target>
+      </trans-unit>
+      <trans-unit id="pages.backend_layout.none" resname="pages.backend_layout.none" approved="yes">
+        <source>None</source>
+        <target state="final">Keins</target>
+      </trans-unit>
+      <trans-unit id="pages.backend_layout.default" resname="pages.backend_layout.default" approved="yes">
+        <source>Default</source>
+        <target state="final">Standard</target>
+      </trans-unit>
+      <trans-unit id="pages.tsconfig_includes" resname="pages.tsconfig_includes" approved="yes">
+        <source>Include static Page TSconfig (from extensions)</source>
+        <target state="final">Statisches Page TSconfig (von Extensions) einbinden</target>
+      </trans-unit>
+      <trans-unit id="tt_content" resname="tt_content" approved="yes">
+        <source>Page Content</source>
+        <target state="final">Seiteninhalt</target>
+      </trans-unit>
+      <trans-unit id="fe_users" resname="fe_users" approved="yes">
+        <source>Website User</source>
+        <target state="final">Website-Benutzer</target>
+      </trans-unit>
+      <trans-unit id="fe_users.username" resname="fe_users.username" approved="yes">
+        <source>Username</source>
+        <target state="final">Benutzername:</target>
+      </trans-unit>
+      <trans-unit id="fe_users.password" resname="fe_users.password" approved="yes">
+        <source>Password</source>
+        <target state="final">Passwort:</target>
+      </trans-unit>
+      <trans-unit id="fe_users.usergroup" resname="fe_users.usergroup" approved="yes">
+        <source>Groups</source>
+        <target state="final">Benutzergruppen:</target>
+      </trans-unit>
+      <trans-unit id="fe_users.lockToDomain" resname="fe_users.lockToDomain" approved="yes">
+        <source>Lock to Domain</source>
+        <target state="final">An Domäne binden:</target>
+      </trans-unit>
+      <trans-unit id="fe_users.tabs.personelData" resname="fe_users.tabs.personelData" approved="yes">
+        <source>Personal Data</source>
+        <target state="final">Persönliche Daten</target>
+      </trans-unit>
+      <trans-unit id="fe_users.tabs.access" resname="fe_users.tabs.access" approved="yes">
+        <source>Access</source>
+        <target state="final">Zugriff</target>
+      </trans-unit>
+      <trans-unit id="fe_users.tabs.options" resname="fe_users.tabs.options" approved="yes">
+        <source>Options</source>
+        <target state="final">Optionen</target>
+      </trans-unit>
+      <trans-unit id="fe_users.tabs.extended" resname="fe_users.tabs.extended" approved="yes">
+        <source>Extended</source>
+        <target state="final">Erweitert</target>
+      </trans-unit>
+      <trans-unit id="fe_groups" resname="fe_groups" approved="yes">
+        <source>Website Usergroup</source>
+        <target state="final">Website-Benutzergruppe</target>
+      </trans-unit>
+      <trans-unit id="fe_groups.title" resname="fe_groups.title" approved="yes">
+        <source>Group Title</source>
+        <target state="final">Gruppenname:</target>
+      </trans-unit>
+      <trans-unit id="fe_groups.lockToDomain" resname="fe_groups.lockToDomain" approved="yes">
+        <source>Lock to Domain</source>
+        <target state="final">An Domäne binden:</target>
+      </trans-unit>
+      <trans-unit id="fe_groups.subgroup" resname="fe_groups.subgroup" approved="yes">
+        <source>Subgroups</source>
+        <target state="final">Untergruppen:</target>
+      </trans-unit>
+      <trans-unit id="fe_groups.tabs.options" resname="fe_groups.tabs.options" approved="yes">
+        <source>Options</source>
+        <target state="final">Optionen</target>
+      </trans-unit>
+      <trans-unit id="fe_groups.tabs.extended" resname="fe_groups.tabs.extended" approved="yes">
+        <source>Extended</source>
+        <target state="final">Erweitert</target>
+      </trans-unit>
+      <trans-unit id="sys_template" resname="sys_template" approved="yes">
+        <source>Template</source>
+        <target state="final">Template</target>
+      </trans-unit>
+      <trans-unit id="sys_template.title" resname="sys_template.title" approved="yes">
+        <source>Template Title</source>
+        <target state="final">Template-Titel:</target>
+      </trans-unit>
+      <trans-unit id="sys_template.root" resname="sys_template.root" approved="yes">
+        <source>Rootlevel</source>
+        <target state="final">Ist Root-Ebene</target>
+      </trans-unit>
+      <trans-unit id="sys_template.clear" resname="sys_template.clear" approved="yes">
+        <source>Clear</source>
+        <target state="final">Löschen</target>
+      </trans-unit>
+      <trans-unit id="sys_template.sitetitle" resname="sys_template.sitetitle" approved="yes">
+        <source>Website Title</source>
+        <target state="final">Website-Titel:</target>
+      </trans-unit>
+      <trans-unit id="sys_template.constants" resname="sys_template.constants" approved="yes">
+        <source>Constants</source>
+        <target state="final">Konstanten</target>
+      </trans-unit>
+      <trans-unit id="sys_template.resources" resname="sys_template.resources" approved="yes">
+        <source>Resources</source>
+        <target state="final">Ressourcen</target>
+      </trans-unit>
+      <trans-unit id="sys_template.include_static_file" resname="sys_template.include_static_file" approved="yes">
+        <source>Include static (from extensions)</source>
+        <target state="final">Statische Templates einschließen (aus Erweiterungen):</target>
+      </trans-unit>
+      <trans-unit id="sys_template.basedOn" resname="sys_template.basedOn" approved="yes">
+        <source>Include Basis Template</source>
+        <target state="final">Basis-Template einschließen:</target>
+      </trans-unit>
+      <trans-unit id="sys_template.includeStaticAfterBasedOn" resname="sys_template.includeStaticAfterBasedOn" approved="yes">
+        <source>Include Static Templates After Basis Templates</source>
+        <target state="final">Statische Templates nach Basis-Templates einschließen:</target>
+      </trans-unit>
+      <trans-unit id="sys_template.config" resname="sys_template.config" approved="yes">
+        <source>Setup</source>
+        <target state="final">Setup</target>
+      </trans-unit>
+      <trans-unit id="sys_template.editorcfg" resname="sys_template.editorcfg" approved="yes">
+        <source>Backend Editor Configuration</source>
+        <target state="final">Konfiguration Backend-Editor:</target>
+      </trans-unit>
+      <trans-unit id="sys_template.description" resname="sys_template.description" approved="yes">
+        <source>Description</source>
+        <target state="final">Beschreibung</target>
+      </trans-unit>
+      <trans-unit id="sys_template.static_file_mode" resname="sys_template.static_file_mode" approved="yes">
+        <source>Static Template Files from TYPO3 Extensions</source>
+        <target state="final">Statische Template-Dateien aus TYPO3-Erweiterungen:</target>
+      </trans-unit>
+      <trans-unit id="sys_template.static_file_mode.0" resname="sys_template.static_file_mode.0" approved="yes">
+        <source>Default (include before if root flag is set)</source>
+        <target state="final">Standard (einschließen vor, wenn Wurzel-Option gesetzt)</target>
+      </trans-unit>
+      <trans-unit id="sys_template.static_file_mode.1" resname="sys_template.static_file_mode.1" approved="yes">
+        <source>Always include before this template record</source>
+        <target state="final">Stets vor diesem Template-Datensatz einschließen</target>
+      </trans-unit>
+      <trans-unit id="sys_template.static_file_mode.2" resname="sys_template.static_file_mode.2" approved="yes">
+        <source>Never include before this template record</source>
+        <target state="final">Nie vor diesem Template-Datensatz einbinden</target>
+      </trans-unit>
+      <trans-unit id="sys_template.static_file_mode.3" resname="sys_template.static_file_mode.3" approved="yes">
+        <source>Include before all static templates if root flag is set</source>
+        <target state="final">Vor allen statischen Templates einfügen, wenn die Root-Option gesetzt ist</target>
+      </trans-unit>
+      <trans-unit id="sys_template.basedOn_add" resname="sys_template.basedOn_add" approved="yes">
+        <source>Add New Basis Template</source>
+        <target state="final">Neues Basis-Template hinzufügen</target>
+      </trans-unit>
+      <trans-unit id="sys_template.basedOn_edit" resname="sys_template.basedOn_edit" approved="yes">
+        <source>Edit template</source>
+        <target state="final">Template bearbeiten</target>
+      </trans-unit>
+      <trans-unit id="sys_template.tabs.files" resname="sys_template.tabs.files" approved="yes">
+        <source>Resources</source>
+        <target state="final">Ressourcen</target>
+      </trans-unit>
+      <trans-unit id="sys_template.tabs.include" resname="sys_template.tabs.include" approved="yes">
+        <source>Includes</source>
+        <target state="final">Enthält</target>
+      </trans-unit>
+      <trans-unit id="sys_template.tabs.options" resname="sys_template.tabs.options" approved="yes">
+        <source>Options</source>
+        <target state="final">Optionen</target>
+      </trans-unit>
+      <trans-unit id="sys_template.tabs.access" resname="sys_template.tabs.access" approved="yes">
+        <source>Access</source>
+        <target state="final">Zugriff</target>
+      </trans-unit>
+      <trans-unit id="backend_layout" resname="backend_layout" approved="yes">
+        <source>Backend Layout</source>
+        <target state="final">Backend-Layout</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.title" resname="backend_layout.title" approved="yes">
+        <source>Title</source>
+        <target state="final">Titel</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.description" resname="backend_layout.description" approved="yes">
+        <source>Description</source>
+        <target state="final">Beschreibung</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.config" resname="backend_layout.config" approved="yes">
+        <source>Config</source>
+        <target state="final">Konfiguration</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.wizard" resname="backend_layout.wizard" approved="yes">
+        <source>Wizard</source>
+        <target state="final">Assistent</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.icon" resname="backend_layout.icon" approved="yes">
+        <source>Icon</source>
+        <target state="final">Symbol</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.tabs.access" resname="backend_layout.tabs.access" approved="yes">
+        <source>Access</source>
+        <target state="final">Zugriff</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.tabs.extended" resname="backend_layout.tabs.extended" approved="yes">
+        <source>Extended</source>
+        <target state="final">Erweitert</target>
+      </trans-unit>
+      <trans-unit id="no_mount_pid" resname="no_mount_pid" approved="yes">
+        <source>No Mount Point is set</source>
+        <target state="final">Kein Freigabepunkt gesetzt</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
