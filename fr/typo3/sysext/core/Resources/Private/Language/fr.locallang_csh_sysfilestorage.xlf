@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_sysfilestorage.xlf" date="2011-10-17T20:22:32Z" product-name="context_help" target-language="fr">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>File storage, which acts as an entry root point to a file-based structure. See it like a drive or a hard drive volume in your local machine.</source>
+        <target state="final">Stockage de fichiers, qui agit comme un point d'entrée vers une structure basée sur des fichiers. Voyez-le comme un lecteur ou un volume de disque dur sur votre ordinateur local.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details">
+        <source/>
+      </trans-unit>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>Unchecking this option results in removing of the storage from any listings in the backend. Existing file relations will still exist.</source>
+        <target state="final">Décocher cette option entraîne la suppression du stockage de toutes les listes dans le backend. Les relations de fichiers existantes existeront toujours.</target>
+      </trans-unit>
+      <trans-unit id="hidden.details" resname="hidden.details" approved="yes">
+        <source>If you set up a file storage, it will show up on any folder lists, thus allowing to basically browse through the files in this file repository. If you set this checkbox, this storage will be excluded from any listings in the backend. Any existing file references will still exist further.</source>
+        <target state="final">Si vous configurez un stockage de fichiers, celui-ci apparaîtra sur toutes les listes de dossiers, permettant ainsi de parcourir les fichiers de ce référentiel de fichiers. Si vous cochez cette case, cet espace de stockage sera exclu de toute liste du backend. Toute référence de fichier existante, existera toujours.</target>
+      </trans-unit>
+      <trans-unit id="name.description" resname="name.description" approved="yes">
+        <source>The visible identifier for this file storage.</source>
+        <target state="final">L'identifiant visible pour ce stockage de fichier.</target>
+      </trans-unit>
+      <trans-unit id="name.details" resname="name.details" approved="yes">
+        <source>The label entered here will be shown as the name for the entry point in the TYPO3 Backend. Be sure to make it descriptive and logical for your editors.</source>
+        <target state="final">Le libellé entré ici sera affiché comme le nom du point d'entrée dans le backend de TYPO3. Assurez-vous de le rendre descriptif et logique pour vos éditeurs.</target>
+      </trans-unit>
+      <trans-unit id="description.description" resname="description.description" approved="yes">
+        <source>A description of this storage.</source>
+        <target state="final">Une description de ce stockage.</target>
+      </trans-unit>
+      <trans-unit id="description.details" resname="description.details" approved="yes">
+        <source>This description field is used to explain e.g. the location of the storage, also what this storage is meant for or what it contains.</source>
+        <target state="final">Ce champ de description est utilisé pour expliquer, par exemple, l'emplacement du stockage, également ce à quoi ce stockage est destiné ou ce qu'il contient.</target>
+      </trans-unit>
+      <trans-unit id="driver.description" resname="driver.description" approved="yes">
+        <source>Choose the driver as the technical backbone of the storage. Once you've chosen a driver, and saved it, additional configuration will show up.</source>
+        <target state="final">Choisissez le pilote comme moyen de connexion au stockage. Une fois que vous avez choisi un pilote, et sauvegardé, une configuration supplémentaire s'affichera.</target>
+      </trans-unit>
+      <trans-unit id="driver.details" resname="driver.details" approved="yes">
+        <source>The driver is the technical background of a storage, and thus also defines whether the location of the storage is local (= on the same machine as this TYPO3 installation) or remote like a WebDAV server connection. Search for extensions in the TYPO3 Extension Repository that extend this driver list.</source>
+        <target state="final">Le pilote le moyen de connexion à un stockage, et donc définit si l'emplacement du stockage est local (= sur la même machine que cette installation de TYPO3) ou distant comme une connexion de serveur WebDAV. Recherchez des extensions dans le dépôt d'extension TYPO3 qui étendent la liste des pilotes.</target>
+      </trans-unit>
+      <trans-unit id="processingfolder.description" resname="processingfolder.description" approved="yes">
+        <source>Defines the directory on this storage to be used to save temporary files like resized images.</source>
+        <target state="final">Définit le répertoire de ce stockage à utiliser pour enregistrer des fichiers temporaires comme des images redimensionnées.</target>
+      </trans-unit>
+      <trans-unit id="is_browsable.description" resname="is_browsable.description" approved="yes">
+        <source>If set, backend users can browse through this storage. Otherwise it will show up as a unselectable item in the list.</source>
+        <target state="final">Si défini, les utilisateurs backend peuvent naviguer à travers ce stockage. Sinon, il apparaîtra comme un élément non sélectionnable dans la liste.</target>
+      </trans-unit>
+      <trans-unit id="is_public.description" resname="is_public.description" approved="yes">
+        <source>If set, then the files in this storage can be linked directly from the outside world. If this is not set, make sure to provide additional possibilities to access the files in this storage.</source>
+        <target state="final">Si défini, alors les fichiers de ce stockage peuvent être liés directement à partir du monde extérieur. Si cette option n'est pas définie, assurez-vous de fournir des possibilités supplémentaires pour accéder aux fichiers de ce stockage.</target>
+      </trans-unit>
+      <trans-unit id="is_writable.description" resname="is_writable.description" approved="yes">
+        <source>If set, then users are allowed to modify, add, delete files/folders on this storage.</source>
+        <target state="final">Si défini, alors les utilisateurs sont autorisés à modifier, ajouter, supprimer des fichiers/dossiers sur ce stockage.</target>
+      </trans-unit>
+      <trans-unit id="is_online.description" resname="is_online.description" approved="yes">
+        <source>This flag is usually set. If TYPO3 cannot connect to this storage (because it maybe temporary down), then the flag will be checked, and the storage will behave like it is non-browsable in the TYPO3 backend. The admin needs to manually activate it again if it was offline.</source>
+        <target state="final">Ce flag est généralement défini. Si TYPO3 ne peut pas se connecter à ce stockage (parce qu'il est peut-être temporairement en panne), alors le flag sera inactivé, et le stockage se comportera comme non navigable dans le backend de TYPO3. L'administrateur a besoin de l'activer manuellement s'il était déconnecté.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
