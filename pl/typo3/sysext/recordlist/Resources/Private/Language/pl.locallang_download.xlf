@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:recordlist/Resources/Private/Language/locallang_download.xlf" date="2012-06-17T10:22:33Z" product-name="recordlist" target-language="pl">
+    <header/>
+    <body>
+      <trans-unit id="downloadRecord" resname="downloadRecord" approved="yes">
+        <source>Download %d record</source>
+        <target state="final">Pobierz %d rekord</target>
+      </trans-unit>
+      <trans-unit id="downloadRecords" resname="downloadRecords" approved="yes">
+        <source>Download %d records</source>
+        <target state="final">Pobierz %d rekordy</target>
+      </trans-unit>
+      <trans-unit id="download" resname="download" approved="yes">
+        <source>Download</source>
+        <target state="final">Pobierz</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.generalSettings" resname="downloadSettings.generalSettings" approved="yes">
+        <source>General settings</source>
+        <target state="final">Ustawienia ogólne</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.columnsToDownload" resname="downloadSettings.columnsToDownload" approved="yes">
+        <source>Columns to download</source>
+        <target state="final">Kolumny do pobrania</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.selectedColumns" resname="downloadSettings.selectedColumns" approved="yes">
+        <source>Selected columns</source>
+        <target state="final">Wybrane kolumny</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.allColumns" resname="downloadSettings.allColumns" approved="yes">
+        <source>All columns</source>
+        <target state="final">Wszystkie kolumny</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.default" resname="downloadSettings.default" approved="yes">
+        <source>Default: %s</source>
+        <target state="final">Domyślnie: %s</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.filename" resname="downloadSettings.filename" approved="yes">
+        <source>Filename</source>
+        <target state="final">Nazwa pliku</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.format" resname="downloadSettings.format" approved="yes">
+        <source>Format</source>
+        <target state="final">Format</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.format.csv" resname="downloadSettings.format.csv" approved="yes">
+        <source>CSV</source>
+        <target state="final">CSV</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.format.json" resname="downloadSettings.format.json" approved="yes">
+        <source>JSON</source>
+        <target state="final">JSON</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.formatOptions.csv" resname="downloadSettings.formatOptions.csv" approved="yes">
+        <source>CSV options</source>
+        <target state="final">Opcje CSV</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.formatOptions.csv.delimiter" resname="downloadSettings.formatOptions.csv.delimiter" approved="yes">
+        <source>Delimiter</source>
+        <target state="final">Separator</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.formatOptions.csv.delimiter.comma" resname="downloadSettings.formatOptions.csv.delimiter.comma" approved="yes">
+        <source>comma</source>
+        <target state="final">przecinek</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.formatOptions.csv.delimiter.semicolon" resname="downloadSettings.formatOptions.csv.delimiter.semicolon" approved="yes">
+        <source>semicolon</source>
+        <target state="final">średnik</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.formatOptions.csv.quote.space" resname="downloadSettings.formatOptions.csv.quote.space" approved="yes">
+        <source>space</source>
+        <target state="final">spacja</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.formatOptions.csv.quote.custom" resname="downloadSettings.formatOptions.csv.quote.custom" approved="yes">
+        <source>user defined</source>
+        <target state="final">zdefiniowane przez użytkownika</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.formatOptions.json" resname="downloadSettings.formatOptions.json" approved="yes">
+        <source>JSON options</source>
+        <target state="final">Opcje JSON</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
