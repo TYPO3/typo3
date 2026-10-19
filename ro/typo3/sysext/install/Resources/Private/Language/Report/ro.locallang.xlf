@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:install/Resources/Private/Language/Report/locallang.xlf" date="2011-10-17T20:22:33Z" product-name="install" target-language="ro">
+    <header/>
+    <body>
+      <trans-unit id="environment.status.title" resname="environment.status.title" approved="yes">
+        <source>System environment check</source>
+        <target state="final">Verificare sistem</target>
+      </trans-unit>
+      <trans-unit id="environment.status.message.ok" resname="environment.status.message.ok" xml:space="preserve">
+				<source/>
+			</trans-unit>
+      <trans-unit id="environment.status.message.info" resname="environment.status.message.info" xml:space="preserve">
+				<source/>
+			</trans-unit>
+      <trans-unit id="status_fileSystem" resname="status_fileSystem" approved="yes">
+        <source>File System</source>
+        <target state="final">Sistem de fișiere</target>
+      </trans-unit>
+      <trans-unit id="status_writable" resname="status_writable" approved="yes">
+        <source>Writable</source>
+        <target state="final">Drept de scriere</target>
+      </trans-unit>
+      <trans-unit id="status_missingDirectory" resname="status_missingDirectory" approved="yes">
+        <source>Required directory missing</source>
+        <target state="final">Directorul necesar lipsește</target>
+      </trans-unit>
+      <trans-unit id="status_nonExistingDirectory" resname="status_nonExistingDirectory" approved="yes">
+        <source>Directory not existing</source>
+        <target state="final">Directorul nu există</target>
+      </trans-unit>
+      <trans-unit id="status_recommendedWritableDirectory" resname="status_recommendedWritableDirectory" approved="yes">
+        <source>Directory should be writable</source>
+        <target state="final">Directorul ar trebui să aibă drept de scriere</target>
+      </trans-unit>
+      <trans-unit id="status_requiredWritableDirectory" resname="status_requiredWritableDirectory" approved="yes">
+        <source>Directory not writable</source>
+        <target state="final">Directorul nu are drept de scriere</target>
+      </trans-unit>
+      <trans-unit id="status_directoryDoesNotExist" resname="status_directoryDoesNotExist" approved="yes">
+        <source>%s does not exist.</source>
+        <target state="final">%s nu există.</target>
+      </trans-unit>
+      <trans-unit id="status_directoryDoesNotExistCouldNotCreate" resname="status_directoryDoesNotExistCouldNotCreate" approved="yes">
+        <source>%s does not exist and could not be created.</source>
+        <target state="final">%s nu există și nu a putut fi creat.</target>
+      </trans-unit>
+      <trans-unit id="status_directoryShouldAlsoBeWritable" resname="status_directoryShouldAlsoBeWritable" approved="yes">
+        <source>Also note that it should be writable, if it did exist.</source>
+        <target state="final">De asemenea, ar fi trebuit să aibă drept de scriere, dacă ar fi existat.</target>
+      </trans-unit>
+      <trans-unit id="status_directoryShouldBeWritable" resname="status_directoryShouldBeWritable" approved="yes">
+        <source>%s should be writable.</source>
+        <target state="final">%s ar trebui să aibă drept de scriere.</target>
+      </trans-unit>
+      <trans-unit id="status_directoryMustBeWritable" resname="status_directoryMustBeWritable" approved="yes">
+        <source>%s must be writable.</source>
+        <target state="final">%s trebuie să aibă drept de scriere.</target>
+      </trans-unit>
+      <trans-unit id="status_remainingUpdates" resname="status_remainingUpdates" approved="yes">
+        <source>Remaining updates</source>
+        <target state="final">Actualizări restante</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
