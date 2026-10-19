@@ -19,14 +19,17 @@ namespace TYPO3\CMS\Backend\LinkHandler;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use TYPO3\CMS\Backend\Context\PageContextFactory;
 use TYPO3\CMS\Backend\Controller\AbstractLinkBrowserController;
 use TYPO3\CMS\Backend\Module\ModuleData;
 use TYPO3\CMS\Backend\RecordList\ElementBrowserRecordList;
 use TYPO3\CMS\Backend\Tree\View\LinkParameterProviderInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\RecordSearchBoxComponent;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
+use TYPO3\CMS\Core\Routing\SiteMatcher;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -82,6 +85,8 @@ final class RecordLinkHandler extends AbstractLinkHandler implements LinkHandler
         private readonly RecordSearchBoxComponent $recordSearchBoxComponent,
         private readonly LinkService $linkService,
         private readonly TcaSchemaFactory $tcaSchemaFactory,
+        private readonly SiteMatcher $siteMatcher,
+        private readonly PageContextFactory $pageContextFactory,
     ) {
         parent::__construct();
     }
@@ -251,7 +256,7 @@ final class RecordLinkHandler extends AbstractLinkHandler implements LinkHandler
         }
 
         $dbList = $this->elementBrowserRecordList;
-        $dbList->setRequest($request);
+        $dbList->setRequest($this->getRequestWithLanguageContext($request, $selectedPage, $backendUser));
         $dbList->setModuleData($moduleData);
         $dbList->setOverrideUrlParameters(array_merge($this->getUrlParameters([]), ['mode' => 'db', 'expandPage' => $selectedPage]), $request);
         $dbList->setIsEditable(false);
@@ -270,5 +275,21 @@ final class RecordLinkHandler extends AbstractLinkHandler implements LinkHandler
         $html[] = $dbList->generateList();
 
         return implode("\n", $html);
+    }
+
+    /**
+     * Builds a request carrying a PageContext of its own, scoped to the page being
+     * browsed and populated with all languages available on its site. Without this,
+     * DatabaseRecordList::getSelectedLanguageIds() would fall back to the ModuleData
+     * persisted by the Records module (both share the "records" module identifier),
+     * silently reusing whatever language filter was last set there.
+     */
+    private function getRequestWithLanguageContext(ServerRequestInterface $request, int $pageId, BackendUserAuthentication $backendUser): ServerRequestInterface
+    {
+        $site = $this->siteMatcher->matchByPageId($pageId);
+        $languageIds = array_keys($site->getAvailableLanguages($backendUser, false, $pageId));
+        $request = $request->withAttribute('site', $site);
+        $pageContext = $this->pageContextFactory->createWithLanguages($request, $pageId, $languageIds, $backendUser);
+        return $request->withAttribute('pageContext', $pageContext);
     }
 }
