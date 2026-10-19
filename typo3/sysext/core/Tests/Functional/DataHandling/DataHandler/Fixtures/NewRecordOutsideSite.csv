@@ -1,0 +1,12 @@
+"be_users"
+,"uid","pid","username","usergroup","deleted","admin","db_mountpoints","TSconfig"
+,2,0,"editor",1,0,0,1,""
+,3,0,"editor-all-languages",1,0,0,1,"TCAdefaults.tt_content.sys_language_uid = -1"
+,4,0,"editor-other-language",2,0,0,1,""
+"be_groups"
+,"uid","pid","title","deleted","db_mountpoints","tables_select","tables_modify","allowed_languages"
+,1,0,"editors",0,1,"pages,tt_content","pages,tt_content",""
+,2,0,"editors of language 1",0,1,"pages,tt_content","pages,tt_content","1"
+"pages"
+,"uid","pid","sorting","title","deleted","perms_everybody"
+,1,0,128,"Folder outside a site",0,31
