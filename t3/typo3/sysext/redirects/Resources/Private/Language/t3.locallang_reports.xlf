@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:redirects/Resources/Private/Language/locallang_reports.xlf" date="2019-09-05T15:20:15Z" product-name="redirects" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="statusProvider" resname="statusProvider">
+        <source>Redirects</source>
+        <target>crwdns107222:0crwdne107222:0</target>
+      </trans-unit>
+      <trans-unit id="status.conflictingRedirects" resname="status.conflictingRedirects">
+        <source>Conflicting Redirects</source>
+        <target>crwdns107224:0crwdne107224:0</target>
+      </trans-unit>
+      <trans-unit id="status.conflictingRedirects.none" resname="status.conflictingRedirects.none">
+        <source>None</source>
+        <target>crwdns107226:0crwdne107226:0</target>
+      </trans-unit>
+      <trans-unit id="status.conflictingRedirects.count" resname="status.conflictingRedirects.count">
+        <source>%1$s conflicting redirects</source>
+        <target>crwdns107228:0%1$scrwdne107228:0</target>
+      </trans-unit>
+      <trans-unit id="status.conflictingRedirects.message" resname="status.conflictingRedirects.message">
+        <source>These redirects cause a conflict as there are pages that are still accessible with the same URL.</source>
+        <target>crwdns107230:0crwdne107230:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
