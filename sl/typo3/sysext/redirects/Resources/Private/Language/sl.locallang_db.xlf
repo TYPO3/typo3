@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:redirects/Resources/Private/Language/locallang_db.xlf" date="2017-12-29T20:22:14Z" product-name="redirects" target-language="sl">
+    <header/>
+    <body>
+      <trans-unit id="sys_redirect.target" resname="sys_redirect.target" approved="yes">
+        <source>Target</source>
+        <target state="final">Cilj</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.disable_hitcount.0" resname="sys_redirect.disable_hitcount.0" approved="yes">
+        <source>Disable</source>
+        <target state="final">Onemogoči</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.disabled" resname="sys_redirect.disabled" approved="yes">
+        <source>Disable</source>
+        <target state="final">Onemogoči</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
