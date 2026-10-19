@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:recycler/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:35Z" product-name="recycler" target-language="ja">
+    <header/>
+    <body>
+      <trans-unit id="title" resname="title" approved="yes">
+        <source>Recycler</source>
+        <target state="final">ゴミ箱</target>
+      </trans-unit>
+      <trans-unit id="button.cancel" resname="button.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">キャンセル</target>
+      </trans-unit>
+      <trans-unit id="button.delete" resname="button.delete" approved="yes">
+        <source>Delete</source>
+        <target state="final">削除</target>
+      </trans-unit>
+      <trans-unit id="button.deleteselected" resname="button.deleteselected" approved="yes">
+        <source>Delete {0} records</source>
+        <target state="final">{0} 件のレコードを削除</target>
+      </trans-unit>
+      <trans-unit id="button.undo" resname="button.undo" approved="yes">
+        <source>Recover</source>
+        <target state="final">回復</target>
+      </trans-unit>
+      <trans-unit id="button.expand" resname="button.expand" approved="yes">
+        <source>Expand record</source>
+        <target state="final">レコードを展開</target>
+      </trans-unit>
+      <trans-unit id="button.undoselected" resname="button.undoselected" approved="yes">
+        <source>Recover {0} records</source>
+        <target state="final">{0} 件のレコードを回復</target>
+      </trans-unit>
+      <trans-unit id="modal.delete.header" resname="modal.delete.header" approved="yes">
+        <source>Confirm deletion</source>
+        <target state="final">削除の確認</target>
+      </trans-unit>
+      <trans-unit id="modal.undo.header" resname="modal.undo.header" approved="yes">
+        <source>Recover records</source>
+        <target state="final">レコードの回復</target>
+      </trans-unit>
+      <trans-unit id="modal.massdelete.text" resname="modal.massdelete.text" approved="yes">
+        <source>Do you really want to delete all selected records and potential subpages? You cannot revert this action!</source>
+        <target state="final">選択したすべてのレコードと潜在的なサブページを削除してもよろしいですか？この操作を元に戻すことはできませんので注意して下さい。</target>
+      </trans-unit>
+      <trans-unit id="modal.undocontent.text" resname="modal.undocontent.text" approved="yes">
+        <source>Do you really want to recover the record "{0}" {1}?</source>
+        <target state="final">本当にレコード「{0}」に「{1}」を復元しますか？</target>
+      </trans-unit>
+      <trans-unit id="flashmessage.delete.success.plural" resname="flashmessage.delete.success.plural" approved="yes">
+        <source>%d records were deleted.</source>
+        <target state="final">%d 件のレコードが削除されました。</target>
+      </trans-unit>
+      <trans-unit id="table.header.record" resname="table.header.record" approved="yes">
+        <source>Record</source>
+        <target state="final">レコード</target>
+      </trans-unit>
+      <trans-unit id="table.header.tstamp" resname="table.header.tstamp" approved="yes">
+        <source>Last edit</source>
+        <target state="final">最終変更</target>
+      </trans-unit>
+      <trans-unit id="table.header.owner" resname="table.header.owner" approved="yes">
+        <source>Owner</source>
+        <target state="final">オーナー</target>
+      </trans-unit>
+      <trans-unit id="record.deleted" resname="record.deleted" approved="yes">
+        <source>deleted</source>
+        <target state="final">削除済</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
