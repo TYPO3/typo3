@@ -1,0 +1,632 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_csh_ttcontent.xlf" date="2011-10-17T20:22:32Z" product-name="context_help" target-language="cy">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>All visible content on webpages is typically made by "Page Content" records, often referred to as "Content Elements". Content Elements are managed by the "Page" Module which organizes Content Elements in multiple columns and languages.</source>
+        <target state="final">Gwneir yr holl gynnwys gweladwy ar dudalennau gwe yn nodweddiadol gan gofnodion "Cynnwys Tudalen", y cyfeirir atynt yn aml fel "Elfennau Cynnwys". Rheolir Elfennau Cynnwys gan y Modiwl "Tudalen" sy'n trefnu Elfennau Cynnwys mewn sawl colofn ac iaith.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" approved="yes">
+        <source>"Page Content" records are sortable and can be rearranged. The "Language" and "Column" selectors of the "Page Content" records determines when and where they appear. If you do not change the value of the "Language" and "Column" selectors the Content Element will appear in the default configuration.</source>
+        <target state="final">Mae cofnodion "Cynnwys Tudalen" yn ddidynadwy a gellir eu haildrefnu. Mae dewiswyr "Iaith" a "Colofn" y cofnodion "Cynnwys Tudalen" yn penderfynu pryd a ble maen nhw'n ymddangos. Os na fyddwch yn newid gwerth y dewiswyr "Iaith" a "Colofn" bydd yr Elfen Cynnwys yn ymddangos yn y ffurfweddiad diofyn.</target>
+      </trans-unit>
+      <trans-unit id="_.seeAlso" resname="_.seeAlso" xml:space="preserve" approved="yes">
+				<source>Page Content Principles | https://docs.typo3.org/typo3cms/GettingStartedTutorial/GeneralPrinciples/PageContent/,
+_MOD_web_layout</source>
+			<target state="final">Egwyddorion Cynnwys Tudalen | https://docs.typo3.org/typo3cms/GettingStartedTutorial/GeneralPrinciples/PageContent/,
+_MOD_web_layout</target></trans-unit>
+      <trans-unit id="_.image" resname="_.image" xml:space="preserve" approved="yes">
+				<source>EXT:frontend/Resources/Public/Images/cshimages/ttcontent_1.png,
+EXT:frontend/Resources/Public/Images/cshimages/ttcontent_2.png,
+EXT:frontend/Resources/Public/Images/cshimages/ttcontent_3.png</source>
+				
+			<target state="final">EXT: frontend / Resources / Public / Images / cshimages / ttcontent_1.png,
+EXT: frontend / Resources / Public / Images / cshimages / ttcontent_2.png,
+EXT: frontend / Resources / Public / Images / cshimages / ttcontent_3.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" xml:space="preserve" approved="yes">
+				<source>The Page Module is used to manage Content Elements arranged in columns and languages.
+A Content Element has an editing form with many options. The "Type" determines which options are visible.
+In the Frontend, a Content Element like the above could look like this.</source>
+			<target state="final">Defnyddir y Modiwl Tudalen i reoli Elfennau Cynnwys wedi'u trefnu mewn colofnau ac ieithoedd.
+Mae gan Elfen Cynnwys ffurflen olygu gyda llawer o opsiynau. Mae'r "Math" yn penderfynu pa opsiynau sy'n weladwy.
+Yn y Frontend, gallai Elfen Gynnwys fel yr uchod edrych fel hyn.</target></trans-unit>
+      <trans-unit id="CType.description" resname="CType.description" approved="yes">
+        <source>Select the kind of Page Content this element represents. New options will appear when you save the record.</source>
+        <target state="final">Dewiswch y math o Gynnwys Tudalen y mae'r elfen hon yn ei gynrychioli. Bydd opsiynau newydd yn ymddangos pan fyddwch chi'n cadw'r cofnod.</target>
+      </trans-unit>
+      <trans-unit id="_CType.seeAlso" resname="_CType.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:colPos,
+tt_content:sys_language_uid,
+About Content Elements | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/EditPageContent/</source>
+				
+			<target state="final">tt_content: colPos,
+tt_content: sys_language_uid,
+Ynglŷn ag Elfennau Cynnwys | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/EditPageContent/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_CType.image" resname="_CType.image" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/ttcontent_4.png</source>
+        <target state="final">ESTYN: frontend / Resources / Public / Images / cshimages / ttcontent_4.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>Uncheck this box if you wish to disable the Content Element and keep it from being displayed on the website.</source>
+        <target state="final">Dad-diciwch y blwch hwn os ydych yn dymuno analluogi'r Elfen Cynnwys a'i gadw rhag cael ei arddangos ar y wefan.</target>
+      </trans-unit>
+      <trans-unit id="_hidden.seeAlso" resname="_hidden.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:starttime,
+tt_content:endtime,
+tt_content:fe_group,
+tt_content:colPos,
+tt_content:sys_language_uid</source>
+				
+			<target state="final">tt_content: amser cychwyn,
+tt_content: endtime,
+tt_content: fe_group,
+tt_content: colPos,
+tt_content: sys_language_uid</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="starttime.description" resname="starttime.description" approved="yes">
+        <source>Enter the date when the Content Element should be published and displayed on the website.</source>
+        <target state="final">Rhowch y dyddiad pryd y dylid cyhoeddi'r Elfen Gynnwys a'i harddangos ar y wefan.</target>
+      </trans-unit>
+      <trans-unit id="_starttime.seeAlso" resname="_starttime.seeAlso" xml:space="preserve" approved="yes">
+				<source>pages:starttime,
+tt_content:endtime,
+tt_content:hidden,
+tt_content:fe_group</source>
+				
+			<target state="final">tudalennau: amser cychwyn,
+tt_content: endtime,
+tt_content: cudd,
+tt_content: fe_group</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="endtime.description" resname="endtime.description" approved="yes">
+        <source>Enter the date when the Content Element should expire and disappear from the website.</source>
+        <target state="final">Rhowch y dyddiad pan ddylai'r Elfen Cynnwys ddod i ben a diflannu o'r wefan.</target>
+      </trans-unit>
+      <trans-unit id="_endtime.seeAlso" resname="_endtime.seeAlso" xml:space="preserve" approved="yes">
+				<source>pages:endtime,
+tt_content:starttime,
+tt_content:hidden,
+tt_content:fe_group</source>
+				
+			<target state="final">tudalennau: diwedd amser,
+tt_content: amser cychwyn,
+tt_content: cudd,
+tt_content: fe_group</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="fe_group.description" resname="fe_group.description" approved="yes">
+        <source>If Usergroup Access Rights are set to a usergroup name, only website users who are logged in and members of the selected usergroup will be able to view the Content Element. The special option 'Hide at Login' means the Content Element will &lt;em&gt;not&lt;/em&gt; be visible for any website users that are logged in. Likewise "Show at Any Login" will make the Content Element visible for any logged in website user.</source>
+        <target state="final">Os yw Hawliau Mynediad Grwp Defnyddiwr wedi'u gosod i enw grŵp defnyddwyr, dim ond defnyddwyr gwefan sydd wedi mewngofnodi ac aelodau o'r grŵp defnyddwyr a ddewiswyd fydd yn gallu gweld yr Elfen Gynnwys. Mae'r opsiwn arbennig 'Cuddio wrth Mewngofnodi' yn golygu na &lt;em&gt;&lt;/em&gt; yn weladwy ar gyfer unrhyw ddefnyddwyr gwefan sydd wedi mewngofnodi. Yn yr un modd bydd "Show at Any Login" yn gwneud yr Elfen Cynnwys yn weladwy ar gyfer unrhyw ddefnyddiwr gwefan sydd wedi mewngofnodi.</target>
+      </trans-unit>
+      <trans-unit id="fe_group.details" resname="fe_group.details" approved="yes">
+        <source>The 'Hide at Login' option is is useful if you want to present information like "How to Login" that becomes irrelevant when a website user is actually logged in.</source>
+        <target state="final">Mae'r opsiwn 'Cuddio wrth Mewngofnodi' yn ddefnyddiol os ydych chi am gyflwyno gwybodaeth fel "Sut i Mewngofnodi" sy'n dod yn amherthnasol pan fydd defnyddiwr gwefan wedi mewngofnodi.</target>
+      </trans-unit>
+      <trans-unit id="_fe_group.seeAlso" resname="_fe_group.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:hidden,
+tt_content:starttime,
+tt_content:endtime,
+pages:fe_group,
+fe_users,
+fe_groups</source>
+				
+			<target state="final">tt_content: cudd,
+tt_content: amser cychwyn,
+tt_content: endtime,
+dudalen: fe_group,
+fe_users,
+fe_groups</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="sys_language_uid.description" resname="sys_language_uid.description" approved="yes">
+        <source>Select the system language of this Content Element. &lt;strong&gt;Notice:&lt;/strong&gt; This will affect the Content Element visibility by limiting it to a certain language.</source>
+        <target state="final">Dewiswch iaith system yr Elfen Gynnwys hon. &lt;strong&gt;Rhybudd:&lt;/strong&gt; Bydd hyn yn effeithio ar welededd yr Elfen Gynnwys trwy ei gyfyngu i iaith benodol.</target>
+      </trans-unit>
+      <trans-unit id="sys_language_uid.details" resname="sys_language_uid.details" xml:space="preserve" approved="yes">
+				<source>This allows you to assign a specific language to the Content Element. If you select anything but the default value, the element will &lt;em&gt;not&lt;/em&gt; be visible unless the language assigned is also configured by the TypoScript template.
+The available system languages are created by the administrator.</source>
+			<target state="final">Mae hyn yn caniatáu ichi aseinio iaith benodol i'r Elfen Gynnwys. Os dewiswch unrhyw beth ond y gwerth diofyn, ni &lt;em&gt;&lt;/em&gt; oni bai bod yr iaith a neilltuwyd hefyd wedi'i ffurfweddu gan y templed TypoScript.
+Mae'r ieithoedd system sydd ar gael yn cael eu creu gan y gweinyddwr.</target></trans-unit>
+      <trans-unit id="_sys_language_uid.seeAlso" resname="_sys_language_uid.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:colPos,
+sys_language,
+Localization concepts [Technical] | http://typo3.org/documentation/tips-tricks/multi-language-sites-in-typo3/,
+_MOD_web_layout:language_list</source>
+				
+			<target state="final">tt_content: colPos,
+sys_language,
+Cysyniadau [Technical] | http://typo3.org/documentation/tips-tricks/multi-language-sites-in-typo3/,
+_MOD_web_layout: language_list</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="layout.description" resname="layout.description" approved="yes">
+        <source>Select a Layout.</source>
+        <target state="final">Dewiswch Gynllun.</target>
+      </trans-unit>
+      <trans-unit id="layout.details" resname="layout.details" xml:space="preserve" approved="yes">
+				<source>This option does not work by default for all Content Elements but your website may display Content Elements differently depending on the layout.
+
+The File Links Content Element does make use of the Layout field by default:
+"Normal" will provide a list of file links with no thumbnail.
+"Layout 1" adds a file icon to the left of the link
+"Layout 2" adds a thumbnail for image files and an icon for other files. A black border is wrapped around the icon.
+"Layout 3" is similar to Layout 2, but without the black border.</source>
+			<target state="final">Nid yw'r opsiwn hwn yn gweithio yn ddiofyn ar gyfer yr holl Elfennau Cynnwys ond gall eich gwefan arddangos Elfennau Cynnwys yn wahanol yn dibynnu ar y cynllun.
+
+Mae'r Elfen Cynnwys Dolenni Ffeil yn defnyddio'r maes Cynllun yn ddiofyn:
+"Normal" yn darparu rhestr o ddolenni ffeiliau heb fawd bawd.
+"Cynllun 1" yn ychwanegu eicon ffeil i'r chwith o'r ddolen
+"Layout 2" yn ychwanegu bawd ar gyfer ffeiliau delwedd ac eicon ar gyfer ffeiliau eraill. Mae ffin ddu wedi'i lapio o amgylch yr eicon.
+"Cynllun 3" yn debyg i Gynllun 2, ond heb y ffin ddu.</target></trans-unit>
+      <trans-unit id="colPos.description" resname="colPos.description" approved="yes">
+        <source>Select the column position of this element. &lt;strong&gt;Notice:&lt;/strong&gt; This may affect whether the Content Element is visible depending on your website template.</source>
+        <target state="final">Dewiswch safle colofn yr elfen hon. &lt;strong&gt;Rhybudd:&lt;/strong&gt; Gall hyn effeithio ar p'un a yw'r Elfen Cynnwys yn weladwy yn dibynnu ar dempled eich gwefan.</target>
+      </trans-unit>
+      <trans-unit id="colPos.details" resname="colPos.details" xml:space="preserve" approved="yes">
+				<source>Many websites only use one column of content. Some templates, however, let you put content in multiple columns using the Column option.
+
+&lt;strong&gt;Notice:&lt;/strong&gt; Selecting a column other than "Normal" may cause the Content Element to disappear if the website template does not use that column. If your Content Element mysteriously disappears make sure the Column and Language selectors are set correctly.</source>
+			<target state="final">Dim ond un golofn o gynnwys y mae llawer o wefannau yn ei ddefnyddio. Fodd bynnag, mae rhai templedi yn gadael ichi roi cynnwys mewn sawl colofn gan ddefnyddio'r opsiwn Colofn.
+
+&lt;strong&gt;Rhybudd:&lt;/strong&gt; dewis colofn heblaw "Normal" beri i'r Elfen Cynnwys ddiflannu os nad yw templed y wefan yn defnyddio'r golofn honno. Os yw'ch Elfen Cynnwys yn diflannu'n ddirgel gwnewch yn siŵr bod y dewiswyr Colofn ac Iaith wedi'u gosod yn gywir.</target></trans-unit>
+      <trans-unit id="_colPos.seeAlso" resname="_colPos.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:sys_language_uid,
+_MOD_web_layout:columns_multi,
+_MOD_web_layout:columns_single</source>
+				
+			<target state="final">tt_content: sys_language_uid,
+_MOD_web_layout: colofnau_multi,
+_MOD_web_layout: colofnau_single</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="date.description" resname="date.description" approved="yes">
+        <source>Enter a date to be displayed above the header.</source>
+        <target state="final">Rhowch ddyddiad i'w arddangos uwchben y pennawd.</target>
+      </trans-unit>
+      <trans-unit id="header.description" resname="header.description" approved="yes">
+        <source>Enter header text for the Content Element.</source>
+        <target state="final">Rhowch destun pennawd ar gyfer yr Elfen Cynnwys.</target>
+      </trans-unit>
+      <trans-unit id="header.details" resname="header.details" xml:space="preserve" approved="yes">
+				<source>Almost all Content Elements will display this header above the content. If you don't want the header displayed, set the header Layout to "Hidden". You can also choose not to enter any content in this field.
+
+Some content element types do not display the header by default. In those cases the Header field is typically labeled "Name" instead. One example is the HTML Content Element.</source>
+			<target state="final">Bydd bron pob Elfen Cynnwys yn arddangos y pennawd hwn uwchben y cynnwys. Os nad ydych chi am i'r pennawd gael ei arddangos, gosodwch Gynllun y pennawd i "Cudd". Gallwch hefyd ddewis peidio â nodi unrhyw gynnwys yn y maes hwn.
+
+rhai mathau o elfennau cynnwys yn arddangos y pennawd yn ddiofyn. Yn yr achosion hynny mae'r maes Pennawd fel arfer wedi'i labelu'n "Enw" yn lle. Un enghraifft yw'r Elfen Cynnwys HTML.</target></trans-unit>
+      <trans-unit id="_header.seeAlso" resname="_header.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:header_position,
+tt_content:header_link,
+tt_content:header_layout,
+tt_content:date,</source>
+				
+			<target state="final">tt_content: header_position,
+tt_content: header_link,
+tt_content: header_layout,
+tt_content: dyddiad,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_header.image" resname="_header.image" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/ttcontent_6.png</source>
+        <target state="final">ESTYN: frontend / Resources / Public / Images / cshimages / ttcontent_6.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="header_position.description" resname="header_position.description" approved="yes">
+        <source>Aligns the header to the left, center, or right.</source>
+        <target state="final">Yn alinio'r pennawd i'r chwith, y canol neu'r dde.</target>
+      </trans-unit>
+      <trans-unit id="_header_position.seeAlso" resname="_header_position.seeAlso" approved="yes">
+        <source>tt_content:header</source>
+        <target state="final">tt_content: pennawd</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="header_link.description" resname="header_link.description" approved="yes">
+        <source>Creates a link from the header to a Page ID, email address, or URL.</source>
+        <target state="final">Yn creu dolen o'r pennawd i ID Tudalen, cyfeiriad e-bost, neu URL.</target>
+      </trans-unit>
+      <trans-unit id="header_link.syntax" resname="header_link.syntax" xml:space="preserve" approved="yes">
+				<source>If you insert a Page ID (ex. 51), the link will point to the page with id=51 &lt;em&gt;inside&lt;/em&gt; TYPO3.
+If you insert an email address (ex. name@my-domain.test), the link will point to that email address.
+If you insert an URL or domain, (ex. www.typo3.org or http://www.my-domain.org), the link will point to that website.</source>
+			<target state="final">Os mewnosodwch ID Tudalen (ex. 51), bydd y ddolen yn pwyntio at y dudalen gydag id = 51 &lt;em&gt;tu mewn i&lt;/em&gt; TYPO3.
+Os mewnosodwch gyfeiriad e-bost (ex. Name@my-domain.test), bydd y ddolen yn pwyntio at y cyfeiriad e-bost hwnnw.
+Os mewnosodwch URL neu barth, (ex. Www.typo3.org neu http://www.my-domain.org), bydd y ddolen yn pwyntio at y wefan honno.</target></trans-unit>
+      <trans-unit id="_header_link.seeAlso" resname="_header_link.seeAlso" approved="yes">
+        <source>tt_content:header</source>
+        <target state="final">tt_content: pennawd</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="header_layout.description" resname="header_layout.description" approved="yes">
+        <source>Select a visual design for the header.</source>
+        <target state="final">Dewiswch ddyluniad gweledol ar gyfer y pennawd.</target>
+      </trans-unit>
+      <trans-unit id="header_layout.details" resname="header_layout.details" xml:space="preserve" approved="yes">
+				<source>If you select "Default" the standard design (which is one of the layouts 1-5) will be used.
+Alternatively you can select from Layout 1 through 5 which are configured in the website template with individual visual designs.
+If you select "Hidden" the header will simply not appear. This is useful when you don't need a header to display on the website but still want to identify the Content Element in the Backend.</source>
+			<target state="final">Os dewiswch "ddiofyn" bydd y dyluniad safonol (sy'n un o'r cynlluniau 1-5) yn cael ei ddefnyddio.
+Fel arall gallwch ddewis o Gynllun 1 trwy 5 sydd wedi'u ffurfweddu yn nhempled y wefan gyda dyluniadau gweledol unigol.
+Os dewiswch "Cudd" ni fydd y pennawd yn ymddangos. Mae hyn yn ddefnyddiol pan nad oes angen pennawd arnoch i'w arddangos ar y wefan ond yn dal i fod eisiau nodi'r Elfen Gynnwys yn y Penwythnos.</target></trans-unit>
+      <trans-unit id="_header_layout.seeAlso" resname="_header_layout.seeAlso" approved="yes">
+        <source>tt_content:header</source>
+        <target state="final">tt_content: pennawd</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="subheader.description" resname="subheader.description" approved="yes">
+        <source>Enter a subheader to be displayed below the main header. If the Content Element is a "Form" this field is instead used as the Recipient Email.</source>
+        <target state="final">Rhowch is-bennawd i'w arddangos o dan y prif bennawd. Os yw'r Elfen Cynnwys yn "Ffurf", defnyddir y maes hwn yn lle fel E-bost y Derbynnydd.</target>
+      </trans-unit>
+      <trans-unit id="subheader.details" resname="subheader.details" approved="yes">
+        <source>A subheader is displayed only with "Header" Content Elements and with "Form" Content Elements (as the Recipient Email).</source>
+        <target state="final">Arddangosir is-bennawd yn unig gydag Elfennau Cynnwys "Pennawd" a chydag Elfennau Cynnwys "Ffurf" (fel E-bost y Derbynnydd).</target>
+      </trans-unit>
+      <trans-unit id="_subheader.seeAlso" resname="_subheader.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:header
+tt_content:bodytext</source>
+				
+			<target state="final">tt_content: pennawd
+tt_content: bodytext</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="bodytext.description" resname="bodytext.description" approved="yes">
+        <source>Enter the main text.</source>
+        <target state="final">Rhowch y prif destun.</target>
+      </trans-unit>
+      <trans-unit id="bodytext.details" resname="bodytext.details" xml:space="preserve" approved="yes">
+				<source>The main text of the Content Element is entered here and can be formatted with HTML or a Rich Text Editor.
+The field is reused in other Content Element types so changing the type will cause any text to be reused in that new Content Element type.
+
+When you're using this field with the "Text" and "Text &amp; Images" types, the content is normal body text. Each linebreak signifies a new paragraph, you can use the special TYPO3 tag, &amp;lt;LINK&amp;gt;, for making links. You can use many HTML tags but there are limitations depending on your website configuration.
+A Rich Text Editor is commonly used to add a visual editing interface for 'Text' and 'Text &amp; Images' Content Elements.
+
+&lt;b&gt;Bullet Lists:&lt;/b&gt;
+If the type is "Bullet List" each line in this field is a bullet item.
+
+&lt;b&gt;Tables:&lt;/b&gt;
+If the type is "Table" each line represents a table row. Within each line, columns are divided by a vertical bar ('|'). A table row with 3 columns could look like "This is column 1 | Column 2 here | Third column!". The table wizard can also be used for creating tables and is much easier than hand coding them.</source>
+			<target state="final">Mae prif destun yr Elfen Cynnwys wedi'i nodi yma a gellir ei fformatio gyda HTML neu Olygydd Testun Cyfoethog.
+Mae'r maes yn cael ei ailddefnyddio mewn mathau eraill o Elfen Cynnwys felly bydd newid y math yn achosi i unrhyw destun gael ei ailddefnyddio yn y math Elfen Cynnwys newydd hwnnw.
+
+Pan fyddwch chi'n defnyddio'r maes hwn gyda'r &amp; Delweddau", mae'r cynnwys yn destun corff arferol. Mae pob toriad llinell yn dynodi paragraff newydd, gallwch ddefnyddio'r tag TYPO3 arbennig, &amp;lt;LINK&amp;gt;, ar gyfer gwneud dolenni. Gallwch ddefnyddio llawer o dagiau HTML ond mae cyfyngiadau yn dibynnu ar ffurfweddiad eich gwefan.
+Defnyddir Golygydd Testun Cyfoethog yn gyffredin i ychwanegu rhyngwyneb golygu gweledol ar gyfer &amp; Delweddau'.
+
+&lt;b&gt;Rhestrau Bwled:&lt;/b&gt;
+Os yw'r math yn "Rhestr Bwled" mae pob llinell yn y maes hwn yn eitem bwled.
+
+&lt;b&gt;Tablau:&lt;/b&gt;
+Os yw'r math yn "Dabl" mae pob llinell yn cynrychioli rhes bwrdd. O fewn pob llinell, rhennir colofnau â bar fertigol ('|'). Gallai rhes bwrdd gyda 3 cholofn edrych fel "Dyma golofn 1 | Colofn 2 yma | Trydedd golofn!". Gellir defnyddio'r dewin bwrdd hefyd ar gyfer creu byrddau ac mae'n llawer haws na'u codio â llaw.</target></trans-unit>
+      <trans-unit id="_bodytext.seeAlso" resname="_bodytext.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:CType,
+tt_content:subheader,
+xMOD_csh_corebe:wizard_table_wiz</source>
+				
+			<target state="final">tt_content: CType,
+tt_content: is-bennawd,
+xMOD_csh_corebe: wizard_table_wiz</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="image.description" resname="image.description" approved="yes">
+        <source>Insert one or more images.</source>
+        <target state="final">Mewnosodwch un neu fwy o ddelweddau.</target>
+      </trans-unit>
+      <trans-unit id="image.details" resname="image.details" xml:space="preserve" approved="yes">
+				<source>You can attach multiple images to the Content Element.
+Depending on the configuration of TYPO3, you can attach images in many formats without worrying about size and compression. TYPO3's graphics processing handles these details for you.
+
+When you use the "Text &amp; Images" type, it's important to select a proper position for images. For this purpose, use the Position and Alignment selector. See link to "Page Content / Position" below.
+You can also display images in multiple columns and even enable an option that opens full size images when thumbnails are clicked.</source>
+			<target state="final">Gallwch atodi delweddau lluosog i'r Elfen Cynnwys.
+Yn dibynnu ar gyfluniad TYPO3, gallwch atodi delweddau mewn sawl fformat heb boeni am faint a chywasgu. Mae prosesu graffeg TYPO3 yn trin y manylion hyn i chi.
+
+Pan ddefnyddiwch y &amp; ", mae'n bwysig dewis safle cywir ar gyfer delweddau. At y diben hwn, defnyddiwch y dewisydd Swydd ac Aliniad. Gweler y ddolen i "Cynnwys / Swydd Tudalen" isod.
+Gallwch hefyd arddangos delweddau mewn sawl colofn a hyd yn oed alluogi opsiwn sy'n agor delweddau maint llawn pan fydd mân-luniau'n cael eu clicio.</target></trans-unit>
+      <trans-unit id="_image.seeAlso" resname="_image.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:imagewidth,
+tt_content:imageheight,
+tt_content:imageorient,
+tt_content:imageborder,
+tt_content:image_link,
+tt_content:image_zoom,
+tt_content:imagecols,
+tt_content:imagecaption,
+tt_content:image_frames,
+Using images ("Getting Started") | https://docs.typo3.org/typo3cms/GettingStartedTutorial/TheFileModuleOrImageArchives/ManagingFilesInTypo3/
+Using images (Animation) | FILE:EXT:welcome/modsub/ani_10.gif</source>
+				
+			<target state="final">tt_content: imagewidth,
+tt_content: imageheight,
+tt_content: imageorient,
+tt_content: imageborder,
+tt_content: image_link,
+tt_content: image_zoom,
+tt_content: imagecols,
+tt_content: imagecaption,
+tt_content: image_frames,
+Defnyddio delweddau ( "Getting Dechreuwyd ") | https://docs.typo3.org/typo3cms/GettingStartedTutorial/TheFileModuleOrImageArchives/ManagingFilesInTypo3/
+Defnyddio delweddau (Animeiddio) | FILE: EXT: croeso / modsub / ani_10.gif</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_image.image" resname="_image.image" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/ttcontent_5.png</source>
+        <target state="final">ESTYN: frontend / Resources / Public / Images / cshimages / ttcontent_5.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="image.image_descr" resname="image.image_descr" approved="yes">
+        <source>This shows all the options related to inserting images in Content Elements. Depending on user permissions, you may not be able to use all of them.</source>
+        <target state="final">Mae hyn yn dangos yr holl opsiynau sy'n gysylltiedig â mewnosod delweddau yn Elfennau Cynnwys. Yn dibynnu ar ganiatâd defnyddwyr, efallai na fyddwch yn gallu defnyddio pob un ohonynt.</target>
+      </trans-unit>
+      <trans-unit id="imagewidth.description" resname="imagewidth.description" approved="yes">
+        <source>Enter the width (in pixels) for displaying the image in the Frontend of your website.</source>
+        <target state="final">Rhowch y lled (mewn picseli) ar gyfer arddangos y ddelwedd yn Frontend eich gwefan.</target>
+      </trans-unit>
+      <trans-unit id="imagewidth.details" resname="imagewidth.details" approved="yes">
+        <source>The TypoScript template is normally configured with maximum image width so you shouldn't need to specify a width. In unique cases, this provides additional flexibility though.</source>
+        <target state="final">Mae'r templed TypoScript fel arfer wedi'i ffurfweddu gyda'r lled delwedd uchaf felly ni ddylai fod angen i chi nodi lled. Mewn achosion unigryw, mae hyn yn darparu hyblygrwydd ychwanegol.</target>
+      </trans-unit>
+      <trans-unit id="_imagewidth.seeAlso" resname="_imagewidth.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:imageheight,
+tt_content:image</source>
+				
+			<target state="final">tt_content: imageheight,
+tt_content: delwedd</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="imageheight.description" resname="imageheight.description" approved="yes">
+        <source>Enter the height (in pixels) for displaying the images in the Frontend of your website.</source>
+        <target state="final">Rhowch yr uchder (mewn picseli) ar gyfer arddangos y delweddau yn Frontend eich gwefan.</target>
+      </trans-unit>
+      <trans-unit id="_imageheight.seeAlso" resname="_imageheight.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:imagewidth,
+tt_content:image</source>
+				
+			<target state="final">tt_content: imagewidth,
+tt_content: delwedd</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="imageorient.description" resname="imageorient.description" approved="yes">
+        <source>Select the position and alignment of the images relative to the body text.</source>
+        <target state="final">Dewiswch leoliad ac aliniad y delweddau mewn perthynas â thestun y corff.</target>
+      </trans-unit>
+      <trans-unit id="imageorient.details" resname="imageorient.details" xml:space="preserve" approved="yes">
+				<source>The positions above and below the body text are pretty straight forward.
+The options for "In text" mean that images are displayed with text wrapped around them. When you select this option the template will probably force the images into smaller dimensions to accommodate the width of the template and the width of the text. The bodytext will float &lt;em&gt;under&lt;/em&gt; the image block when it reaches the end of the image block. In other words, the body text &lt;em&gt;wraps around&lt;/em&gt; the image block. If you select "In text" below the "No wrap" divider, the body text will not float under the image block, but simply continue in its column.
+Apart from the visual difference there is a technical aspect as well. If you choose to allow the content to wrap the image block you will experience a strange phenomenon when you do not have enough bodytext to make it float around the image: subsequent content elements on the page will appear to be layered on top of the image block. However it's easily solved by changing the "In text" position to the equal value but below the "No wrap" divider.</source>
+			<target state="final">Mae'r swyddi uwchben ac islaw testun y corff yn eithaf syml.
+Mae'r opsiynau ar gyfer "Mewn testun" yn golygu bod delweddau'n cael eu harddangos gyda thestun wedi'i lapio o'u cwmpas. Pan ddewiswch yr opsiwn hwn mae'n debyg y bydd y templed yn gorfodi'r delweddau i ddimensiynau llai i gynnwys lled y templed a lled y testun. Bydd y cyd-destun yn arnofio &lt;em&gt;dan&lt;/em&gt; y bloc delwedd pan fydd yn cyrraedd diwedd y bloc delwedd. Hynny yw, mae testun y corff &lt;em&gt;lapio o amgylch&lt;/em&gt; y bloc delwedd. Os dewiswch "Mewn testun" o dan y rhannwr "Dim lapio", ni fydd testun y corff yn arnofio o dan y bloc delwedd, ond yn syml yn parhau yn ei golofn.
+Ar wahân i'r gwahaniaeth gweledol mae yna agwedd dechnegol hefyd. Os dewiswch ganiatáu i'r cynnwys lapio'r bloc delwedd byddwch yn profi ffenomen ryfedd pan nad oes gennych ddigon o gorff i wneud iddo arnofio o amgylch y ddelwedd: mae'n ymddangos bod elfennau cynnwys dilynol ar y dudalen yn haenog ar ben y bloc delwedd. . Fodd bynnag, mae'n hawdd ei ddatrys trwy newid y safle "Mewn testun" i'r gwerth cyfartal ond yn is na'r rhannwr "Dim lapio".</target></trans-unit>
+      <trans-unit id="imageborder.description" resname="imageborder.description" approved="yes">
+        <source>Displays a colored border around the images.</source>
+        <target state="final">Yn arddangos ffin lliw o amgylch y delweddau.</target>
+      </trans-unit>
+      <trans-unit id="_imageborder.seeAlso" resname="_imageborder.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:imagecols,
+tt_content:image</source>
+				
+			<target state="final">tt_content: imagecols,
+tt_content: delwedd</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="image_link.description" resname="image_link.description" approved="yes">
+        <source>Enter a link for the image. For multiple images, separate the links with commas.</source>
+        <target state="final">Rhowch ddolen ar gyfer y ddelwedd. Ar gyfer delweddau lluosog, gwahanwch y dolenni gyda choma.</target>
+      </trans-unit>
+      <trans-unit id="image_link.details" resname="image_link.details" xml:space="preserve" approved="yes">
+				<source>By default all images share the same link. Your TypoScript template may be configured to allow a separate link for each image. If this is the case, you simply separate the links with a comma.
+
+See Page Content&gt;Link below for details on syntax.</source>
+			<target state="final">Yn ddiofyn mae pob delwedd yn rhannu'r un ddolen. Efallai y bydd eich templed TypoScript wedi'i ffurfweddu i ganiatáu dolen ar wahân ar gyfer pob delwedd. Os yw hyn yn wir, dim ond gwahanu'r cysylltiadau â choma yr ydych chi.
+
+Gweler Tudalen Cynnwys&gt;Dolen isod am fanylion ar gystrawen.</target></trans-unit>
+      <trans-unit id="_image_link.seeAlso" resname="_image_link.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:header_link,
+tt_content:image_zoom,
+tt_content:image</source>
+				
+			<target state="final">tt_content: header_link,
+tt_content: image_zoom,
+tt_content: delwedd</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="image_zoom.description" resname="image_zoom.description" approved="yes">
+        <source>When enabled, clicking an image will open a larger version in a popup window.</source>
+        <target state="final">Pan fydd wedi'i alluogi, bydd clicio delwedd yn agor fersiwn fwy mewn ffenestr naid.</target>
+      </trans-unit>
+      <trans-unit id="image_zoom.details" resname="image_zoom.details" approved="yes">
+        <source>This option overrides the value in the Links field.</source>
+        <target state="final">Mae'r opsiwn hwn yn drech na'r gwerth yn y maes Dolenni.</target>
+      </trans-unit>
+      <trans-unit id="_image_zoom.seeAlso" resname="_image_zoom.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:image_link,
+tt_content:image</source>
+				
+			<target state="final">tt_content: image_link,
+tt_content: delwedd</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="image_frames.description" resname="image_frames.description" approved="yes">
+        <source>Select special image framing options.</source>
+        <target state="final">Dewiswch opsiynau fframio delweddau arbennig.</target>
+      </trans-unit>
+      <trans-unit id="_image_frames.seeAlso" resname="_image_frames.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:image</source>
+				
+			<target state="final">tt_content: delwedd</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="imagecols.description" resname="imagecols.description" approved="yes">
+        <source>Set the number of columns when the images are displayed in the Frontend of the website.</source>
+        <target state="final">Gosodwch nifer y colofnau pan fydd y delweddau'n cael eu harddangos yn Frontend y wefan.</target>
+      </trans-unit>
+      <trans-unit id="_imagecols.seeAlso" resname="_imagecols.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:image</source>
+				
+			<target state="final">tt_content: delwedd</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="imagecaption.description" resname="imagecaption.description" approved="yes">
+        <source>Enter captions for the images. For multiple images, enter one caption per line.</source>
+        <target state="final">Rhowch gapsiynau ar gyfer y delweddau. Ar gyfer delweddau lluosog, nodwch un pennawd i bob llinell.</target>
+      </trans-unit>
+      <trans-unit id="imagecaption.details" resname="imagecaption.details" xml:space="preserve" approved="yes">
+				<source>By default, the caption is positioned below the images. However, your TypoScript template may be configured to allow individual image captions by setting "styles.content.imgtext.captionSplit=1" in your template constants.
+In this case, each line in this field will be the image caption of the corresponding image in the list.
+
+The caption text field is also used by the Content Element type "File Links" where each line represents a description of a file in the list.</source>
+			<target state="final">Yn ddiofyn, mae'r pennawd wedi'i leoli o dan y delweddau. Fodd bynnag, efallai y bydd eich templed TypoScript wedi'i ffurfweddu i ganiatáu capsiynau delwedd unigol trwy osod "style.content.imgtext.captionSplit = 1" yn eich cysonion templed.
+Yn yr achos hwn, pob llinell yn y maes hwn fydd pennawd delwedd y ddelwedd gyfatebol yn y rhestr.
+
+Defnyddir y maes testun pennawd hefyd gan y math Elfen Cynnwys "Dolenni Ffeil" lle mae pob llinell yn cynrychioli disgrifiad o ffeil yn y rhestr.</target></trans-unit>
+      <trans-unit id="cols.description" resname="cols.description" approved="yes">
+        <source>Select a fixed number of table columns</source>
+        <target state="final">Dewiswch nifer sefydlog o golofnau tabl</target>
+      </trans-unit>
+      <trans-unit id="pages.description" resname="pages.description" approved="yes">
+        <source>Select a target page or multiple target pages.</source>
+        <target state="final">Dewiswch dudalen darged neu dudalennau targed lluosog.</target>
+      </trans-unit>
+      <trans-unit id="pages.details" resname="pages.details" xml:space="preserve" approved="yes">
+				<source>This field is used by many of the Content Element types to create a relation to either a single target page or multiple target pages. If no target page is specified, the current page will generally be used.
+
+Using the "Search" Content Element, the target page is where search results will appear. You must make sure that this page has a similar "Search" Content Element to display the results.
+
+The "Login" Content Element (not to be confused with the Login plugin available when the felogin extension is installed) also uses this field to redirect the login to a certain page. That page does not need to contain a "Login" Content Element in order to perform the authentication since any TYPO3 page can handle a login request.
+If you specify a second page in this list, the ID will be passed to the login system as the page inside TYPO3 where website users are found. You should use this only if your template is not already configured to pass this value on.
+In order for the login procedure to work you must make sure that you have created website users and website usergroups, have specified where these website users can be found (typically a SysFolder), a page ID in the page list, and ensured that cookies are enabled for the site.
+
+The "Menu/Sitemap" Content Elements also use this field. In this case the page will determine the starting point for the menu or the actual pages shown in the menu. This behavior depends on the menu type you have selected.
+
+Finally the "Form" element uses this field as the target page to which the form is submitted. A common use is the "Thank you" page after the form is completed.</source>
+			<target state="final">Defnyddir y maes hwn gan lawer o'r mathau Elfen Cynnwys i greu perthynas â naill ai tudalen darged sengl neu dudalennau targed lluosog. Os na nodir tudalen darged, defnyddir y dudalen gyfredol yn gyffredinol.
+
+Gan ddefnyddio'r Elfen Cynnwys "Chwilio", y dudalen darged yw lle bydd canlyniadau chwilio yn ymddangos. Rhaid i chi sicrhau bod gan y dudalen hon Elfen Cynnwys "Chwilio" debyg i arddangos y canlyniadau.
+
+Mae'r Elfen Cynnwys "Mewngofnodi" (na ddylid ei chymysgu â'r ategyn Mewngofnodi sydd ar gael pan fydd yr estyniad felogin wedi'i osod) hefyd yn defnyddio'r maes hwn i ailgyfeirio'r mewngofnodi i dudalen benodol. Nid oes angen i'r dudalen honno gynnwys Elfen Cynnwys "Mewngofnodi" er mwyn cyflawni'r dilysiad gan y gall unrhyw dudalen TYPO3 drin cais mewngofnodi.
+Os nodwch ail dudalen yn y rhestr hon, bydd yr ID yn cael ei basio i'r system fewngofnodi fel y dudalen y tu mewn i TYPO3 lle mae defnyddwyr y wefan yn cael eu darganfod. Dim ond os nad yw'ch templed eisoes wedi'i ffurfweddu i drosglwyddo'r gwerth hwn y dylech ei ddefnyddio.
+Er mwyn i'r weithdrefn fewngofnodi weithio mae'n rhaid i chi sicrhau eich bod wedi creu defnyddwyr gwefan a grwpiau defnyddwyr gwefan, wedi nodi lle y gellir dod o hyd i'r defnyddwyr gwefan hyn (SysFolder yn nodweddiadol), ID tudalen yn y rhestr dudalen, a sicrhau bod cwcis yn cael eu galluogi ar gyfer y wefan.
+
+Mae'r Elfennau Cynnwys "Dewislen / Map Safle" hefyd yn defnyddio'r maes hwn. Yn yr achos hwn, y dudalen fydd yn pennu'r man cychwyn ar gyfer y ddewislen neu'r tudalennau gwirioneddol a ddangosir yn y ddewislen. Mae'r ymddygiad hwn yn dibynnu ar y math o ddewislen rydych chi wedi'i dewis.
+
+Yn olaf, mae'r "Ffurflen" elfen yn defnyddio'r maes hwn gan fod y dudalen targed y mae'r ffurflen yn cael ei chyflwyno. Defnydd cyffredin yw'r dudalen "Diolch" ar ôl i'r ffurflen gael ei chwblhau.</target></trans-unit>
+      <trans-unit id="_pages.seeAlso" resname="_pages.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:CType,
+tt_content:recursive</source>
+				
+			<target state="final">tt_content: CType,
+tt_content: recursive</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="recursive.description" resname="recursive.description" approved="yes">
+        <source>The number of subpage levels that should also be included for each page in the list.</source>
+        <target state="final">Nifer y lefelau is-dudalennau y dylid eu cynnwys hefyd ar gyfer pob tudalen yn y rhestr.</target>
+      </trans-unit>
+      <trans-unit id="recursive.details" resname="recursive.details" xml:space="preserve" approved="yes">
+				<source>This feature depends on the TypoScript template configuration and Content Element type. If enabled, each page listed in the "Pages" field will also have its subpages included to the specified depth.
+
+&lt;strong&gt;Warning:&lt;/strong&gt; If there are many subpages, be aware that this option may return a large number of results</source>
+			<target state="final">Mae'r nodwedd hon yn dibynnu ar gyfluniad templed TypoScript a'r math Elfen Cynnwys. Os yw wedi'i alluogi, bydd is-dudalennau pob tudalen a restrir yn y maes "Tudalennau" hefyd wedi'u cynnwys i'r dyfnder penodedig.
+
+&lt;strong&gt;Rhybudd:&lt;/strong&gt; Os oes llawer o is-dudalennau, byddwch yn ymwybodol y gall yr opsiwn hwn ddychwelyd nifer fawr o ganlyniadau</target></trans-unit>
+      <trans-unit id="_recursive.seeAlso" resname="_recursive.seeAlso" approved="yes">
+        <source>tt_content:pages</source>
+        <target state="final">tt_content: tudalennau</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="menu_type.description" resname="menu_type.description" approved="yes">
+        <source>Select the type of menu you wish to create.</source>
+        <target state="final">Dewiswch y math o ddewislen rydych chi am ei chreu.</target>
+      </trans-unit>
+      <trans-unit id="menu_type.details" resname="menu_type.details" xml:space="preserve" approved="yes">
+				<source>This is a short description of each type:
+
+&lt;strong&gt;Menu of selected pages&lt;/strong&gt;
+This will create a menu with links to the pages in the Selected Pages list.
+
+&lt;strong&gt;Menu of subpages of selected pages&lt;/strong&gt;
+This will create in a menu with links to the subpages of the pages in the Selected Pages list. If you do not specify any pages, the subpages to the current page will be used.
+
+&lt;strong&gt;Menu of subpages of selected pages (with abstract)&lt;/strong&gt;
+Like the previous option, but also displays the content of the Abstract field (or the Description field) for each page in the menu. The Abstract field is given priority over the Description field if both are complete.
+
+&lt;strong&gt;Menu of subpages of selected pages + sections&lt;/strong&gt;
+Like the previous option, but includes links to all Content Elements on the page that are marked to Show In Section Menus.
+
+&lt;strong&gt;Sitemap&lt;/strong&gt;
+Generates a classic tree sitemap. Notice that the sitemap will begin from the current page unless you select another page instead.
+
+&lt;strong&gt;Section index (page content marked for section menus)&lt;/strong&gt;
+This makes a menu of Content Elements on the selected pages for all Content Elements marked to Show In Section Menu. This is a great way to make an index at the top of the page.
+If you don't want certain Content Elements to appear in the list, just uncheck the Show in Section Menus checkbox for those elements.
+
+&lt;strong&gt;Recently updated pages&lt;/strong&gt;
+This displays the 10 most recently updated pages.
+&lt;strong&gt;Notice:&lt;/strong&gt; If you update a page and the updated page is not included in this list, clearing the Page Cache will resolve the issue.
+
+&lt;strong&gt;Related pages (based on keywords)&lt;/strong&gt;
+Displays other related pages based on the keywords of the selected pages matched against the keywords of other pages.</source>
+			<target state="final">Dyma ddisgrifiad byr o bob math:
+
+&lt;strong&gt;Dewislen tudalennau a ddewiswyd&lt;/strong&gt;
+Bydd hyn yn creu dewislen gyda dolenni i'r tudalennau yn y rhestr Tudalennau Dethol.
+
+&lt;strong&gt;Dewislen is-dudalennau tudalennau dethol&lt;/strong&gt;
+Bydd hyn yn creu mewn dewislen gyda dolenni i is-dudalennau'r tudalennau yn y rhestr Tudalennau Dethol. Os na nodwch unrhyw dudalennau, defnyddir yr is-dudalennau i'r dudalen gyfredol.
+
+&lt;strong&gt;Dewislen is-dudalennau tudalennau dethol (gyda chrynodeb)&lt;/strong&gt;
+Fel yr opsiwn blaenorol, ond mae hefyd yn arddangos cynnwys y maes Haniaethol (neu'r maes Disgrifiad) ar gyfer pob tudalen yn y ddewislen. Rhoddir blaenoriaeth i'r maes Haniaethol dros y maes Disgrifiad os yw'r ddau yn gyflawn.
+
+&lt;strong&gt;Dewislen is-dudalennau tudalennau a ddewiswyd + adrannau&lt;/strong&gt;
+Fel yr opsiwn blaenorol, ond mae'n cynnwys dolenni i'r holl Elfennau Cynnwys ar y dudalen sydd wedi'u marcio i Ddangoslenni Mewn Adrannau.
+
+&lt;strong&gt;Map y Safle&lt;/strong&gt;
+cynhyrchu map safle coed clasurol. Sylwch y bydd y map safle yn cychwyn o'r dudalen gyfredol oni bai eich bod chi'n dewis tudalen arall yn lle.
+
+&lt;strong&gt;Mynegai adrannau (cynnwys tudalen wedi'i farcio ar gyfer bwydlenni adran)&lt;/strong&gt;
+hwn yn gwneud dewislen o Elfennau Cynnwys ar y tudalennau a ddewiswyd ar gyfer yr holl Elfennau Cynnwys sydd wedi'u marcio i'w Dangos yn y Ddewislen Adran. Mae hon yn ffordd wych o wneud mynegai ar frig y dudalen.
+Os nad ydych chi am i rai Elfennau Cynnwys ymddangos ar y rhestr, dad-diciwch y blwch gwirio Show in Section Menus ar gyfer yr elfennau hynny.
+
+&lt;strong&gt;Tudalennau a ddiweddarwyd yn ddiweddar&lt;/strong&gt;
+hwn yn dangos y 10 tudalen a ddiweddarwyd yn fwyaf diweddar.
+&lt;strong&gt;Hysbysiad:&lt;/strong&gt; Os byddwch yn diweddaru tudalen ac nid y dudalen diweddaru ei gynnwys yn y rhestr hon, clirio'r Page Cache yn datrys y mater.
+
+&lt;strong&gt;Tudalennau cysylltiedig (yn seiliedig ar eiriau allweddol)&lt;/strong&gt;
+arddangos tudalennau cysylltiedig eraill yn seiliedig ar eiriau allweddol y tudalennau a ddewiswyd sy'n cyfateb i eiriau allweddol tudalennau eraill.</target></trans-unit>
+      <trans-unit id="_menu_type.seeAlso" resname="_menu_type.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:pages,
+tt_content:sectionIndex</source>
+				
+			<target state="final">tt_content: tudalennau,
+tt_content: sectionIndex</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="list_type.description" resname="list_type.description" approved="yes">
+        <source>Select a plugin to insert.</source>
+        <target state="final">Dewiswch ategyn i'w fewnosod.</target>
+      </trans-unit>
+      <trans-unit id="list_type.details" resname="list_type.details" approved="yes">
+        <source>The list of plugins you can insert on a page. The available plugins depend on which extensions are installed.</source>
+        <target state="final">Y rhestr o ategion y gallwch eu mewnosod ar dudalen. Mae'r ategion sydd ar gael yn dibynnu ar ba estyniadau sy'n cael eu gosod.</target>
+      </trans-unit>
+      <trans-unit id="_list_type.image" resname="_list_type.image" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/ttcontent_7.png</source>
+        <target state="final">ESTYN: frontend / Resources / Public / Images / cshimages / ttcontent_7.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="media.description" resname="media.description" approved="yes">
+        <source>Files can be added to the list here.</source>
+        <target state="final">Gellir ychwanegu ffeiliau at y rhestr yma.</target>
+      </trans-unit>
+      <trans-unit id="multimedia.description" resname="multimedia.description" approved="yes">
+        <source>Insert a multimedia element here (ex. Flash movie)</source>
+        <target state="final">Mewnosodwch elfen amlgyfrwng yma (cyn. Ffilm Flash)</target>
+      </trans-unit>
+      <trans-unit id="filelink_size.description" resname="filelink_size.description" approved="yes">
+        <source>Enable the display of file sizes.</source>
+        <target state="final">Galluogi arddangos maint ffeiliau.</target>
+      </trans-unit>
+      <trans-unit id="records.description" resname="records.description" approved="yes">
+        <source>Insert records to be displayed on this page.</source>
+        <target state="final">Mewnosod cofnodion i'w harddangos ar y dudalen hon.</target>
+      </trans-unit>
+      <trans-unit id="sectionIndex.description" resname="sectionIndex.description" approved="yes">
+        <source>If set, the Content Element will appear in Section Menus.</source>
+        <target state="final">Os yw wedi'i osod, bydd yr Elfen Cynnwys yn ymddangos yn y Bwydlenni Adran.</target>
+      </trans-unit>
+      <trans-unit id="sectionIndex.details" resname="sectionIndex.details" approved="yes">
+        <source>See more details about Section Menus by clicking below.</source>
+        <target state="final">Gweler mwy o fanylion am Bwydlenni Adran trwy glicio isod.</target>
+      </trans-unit>
+      <trans-unit id="linkToTop.description" resname="linkToTop.description" approved="yes">
+        <source>If checked, a small  "To Top" link will be added after the Content Element, linking back to the top of the page.</source>
+        <target state="final">Os caiff ei wirio, ychwanegir dolen fach "To Top" ar ôl yr Elfen Gynnwys, gan gysylltu'n ôl â thop y dudalen.</target>
+      </trans-unit>
+      <trans-unit id="rte_enabled.description" resname="rte_enabled.description" approved="yes">
+        <source>If checked, the Rich Text Editor will be disabled for the "Text" and "Text &amp; Image" types (&lt;em&gt;in this Content Element only&lt;/em&gt;).</source>
+        <target state="final">Os caiff ei wirio, bydd y Golygydd Testun Cyfoethog yn anabl ar gyfer y &amp; Delwedd" (&lt;em&gt;yn yr Elfen Gynnwys hon yn unig&lt;/em&gt;).</target>
+      </trans-unit>
+      <trans-unit id="_rte_enabled.seeAlso" resname="_rte_enabled.seeAlso" approved="yes">
+        <source>tt_content:bodytext</source>
+        <target state="final">tt_content: cyd-destun</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="pi_flexform.description" resname="pi_flexform.description" approved="yes">
+        <source>Plugin Configuration</source>
+        <target state="final">Ffurfweddiad Ategyn</target>
+      </trans-unit>
+      <trans-unit id="pi_flexform.details" resname="pi_flexform.details" approved="yes">
+        <source>Some plugins may provide configuration options, but the actual options vary based on the plugin. Behind the scenes, these are based on FlexForms and stored as XML.</source>
+        <target state="final">Efallai y bydd rhai ategion yn darparu opsiynau cyfluniad, ond mae'r opsiynau gwirioneddol yn amrywio yn seiliedig ar yr ategyn. Y tu ôl i'r llenni, mae'r rhain yn seiliedig ar FlexForms ac yn cael eu storio fel XML.</target>
+      </trans-unit>
+      <trans-unit id="_pi_flexform.seeAlso" resname="_pi_flexform.seeAlso" approved="yes">
+        <source>tt_content:list_type</source>
+        <target state="final">tt_content: list_type</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
