@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:extensionmanager/Resources/Private/Language/locallang_db.xlf" date="2015-06-30T15:55:11Z" product-name="" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="tx_extensionmanager_domain_model_extension" resname="tx_extensionmanager_domain_model_extension">
+        <source>Extension</source>
+        <target>crwdns102210:0crwdne102210:0</target>
+      </trans-unit>
+      <trans-unit id="tx_extensionmanager_domain_model_extension.extensionkey" resname="tx_extensionmanager_domain_model_extension.extensionkey">
+        <source>Extension Key</source>
+        <target>crwdns102212:0crwdne102212:0</target>
+      </trans-unit>
+      <trans-unit id="tx_extensionmanager_domain_model_extension.version" resname="tx_extensionmanager_domain_model_extension.version">
+        <source>Version</source>
+        <target>crwdns102214:0crwdne102214:0</target>
+      </trans-unit>
+      <trans-unit id="tx_extensionmanager_domain_model_extension.title" resname="tx_extensionmanager_domain_model_extension.title">
+        <source>Title</source>
+        <target>crwdns102216:0crwdne102216:0</target>
+      </trans-unit>
+      <trans-unit id="tx_extensionmanager_domain_model_extension.description" resname="tx_extensionmanager_domain_model_extension.description">
+        <source>Description</source>
+        <target>crwdns102218:0crwdne102218:0</target>
+      </trans-unit>
+      <trans-unit id="tx_extensionmanager_domain_model_extension.state" resname="tx_extensionmanager_domain_model_extension.state">
+        <source>State</source>
+        <target>crwdns102220:0crwdne102220:0</target>
+      </trans-unit>
+      <trans-unit id="tx_extensionmanager_domain_model_extension.category" resname="tx_extensionmanager_domain_model_extension.category">
+        <source>Category</source>
+        <target>crwdns102222:0crwdne102222:0</target>
+      </trans-unit>
+      <trans-unit id="tx_extensionmanager_domain_model_extension.lastupdated" resname="tx_extensionmanager_domain_model_extension.lastupdated">
+        <source>Last Updated</source>
+        <target>crwdns102224:0crwdne102224:0</target>
+      </trans-unit>
+      <trans-unit id="tx_extensionmanager_domain_model_extension.updatecomment" resname="tx_extensionmanager_domain_model_extension.updatecomment">
+        <source>Update Comment</source>
+        <target>crwdns102226:0crwdne102226:0</target>
+      </trans-unit>
+      <trans-unit id="tx_extensionmanager_domain_model_extension.authorname" resname="tx_extensionmanager_domain_model_extension.authorname">
+        <source>Author Name</source>
+        <target>crwdns102228:0crwdne102228:0</target>
+      </trans-unit>
+      <trans-unit id="tx_extensionmanager_domain_model_extension.authoremail" resname="tx_extensionmanager_domain_model_extension.authoremail">
+        <source>Author Email</source>
+        <target>crwdns102230:0crwdne102230:0</target>
+      </trans-unit>
+      <trans-unit id="tx_extensionmanager_domain_model_extension.md5hash" resname="tx_extensionmanager_domain_model_extension.md5hash">
+        <source>Md5 hash</source>
+        <target>crwdns102232:0crwdne102232:0</target>
+      </trans-unit>
+      <trans-unit id="tx_extensionmanager_domain_model_extension.reviewstate" resname="tx_extensionmanager_domain_model_extension.reviewstate">
+        <source>Review State</source>
+        <target>crwdns102234:0crwdne102234:0</target>
+      </trans-unit>
+      <trans-unit id="tx_extensionmanager_domain_model_extension.integerversion" resname="tx_extensionmanager_domain_model_extension.integerversion">
+        <source>Integer Version</source>
+        <target>crwdns102236:0crwdne102236:0</target>
+      </trans-unit>
+      <trans-unit id="tx_extensionmanager_domain_model_extension.currentversion" resname="tx_extensionmanager_domain_model_extension.currentversion">
+        <source>Current Version</source>
+        <target>crwdns102238:0crwdne102238:0</target>
+      </trans-unit>
+      <trans-unit id="tx_extensionmanager_domain_model_extension.serializedDependencies" resname="tx_extensionmanager_domain_model_extension.serializedDependencies">
+        <source>Serialized dependencies</source>
+        <target>crwdns102240:0crwdne102240:0</target>
+      </trans-unit>
+      <trans-unit id="tx_extensionmanager_domain_model_repository" resname="tx_extensionmanager_domain_model_repository">
+        <source>Repository</source>
+        <target>crwdns102242:0crwdne102242:0</target>
+      </trans-unit>
+      <trans-unit id="tx_extensionmanager_domain_model_repository.title" resname="tx_extensionmanager_domain_model_repository.title">
+        <source>Title</source>
+        <target>crwdns102244:0crwdne102244:0</target>
+      </trans-unit>
+      <trans-unit id="tx_extensionmanager_domain_model_repository.description" resname="tx_extensionmanager_domain_model_repository.description">
+        <source>Description</source>
+        <target>crwdns102246:0crwdne102246:0</target>
+      </trans-unit>
+      <trans-unit id="tx_extensionmanager_domain_model_repository.wsdlUrl" resname="tx_extensionmanager_domain_model_repository.wsdlUrl">
+        <source>WSDL URL</source>
+        <target>crwdns102248:0crwdne102248:0</target>
+      </trans-unit>
+      <trans-unit id="tx_extensionmanager_domain_model_repository.mirrorListUrl" resname="tx_extensionmanager_domain_model_repository.mirrorListUrl">
+        <source>Mirror list URL</source>
+        <target>crwdns102250:0crwdne102250:0</target>
+      </trans-unit>
+      <trans-unit id="tx_extensionmanager_domain_model_repository.lastUpdate" resname="tx_extensionmanager_domain_model_repository.lastUpdate">
+        <source>Last update</source>
+        <target>crwdns102252:0crwdne102252:0</target>
+      </trans-unit>
+      <trans-unit id="tx_extensionmanager_domain_model_repository.extensionCount" resname="tx_extensionmanager_domain_model_repository.extensionCount">
+        <source>Extension count</source>
+        <target>crwdns102254:0crwdne102254:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
