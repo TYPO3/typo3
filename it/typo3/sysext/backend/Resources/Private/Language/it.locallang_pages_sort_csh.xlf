@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_pages_sort_csh.xlf" date="2011-10-17T20:22:37Z" product-name="backend" target-language="it">
+    <header/>
+    <body>
+      <trans-unit id="pages_sort.alttitle" resname="pages_sort.alttitle" approved="yes">
+        <source>Sort Pages</source>
+        <target state="final">Ordina Pagine</target>
+      </trans-unit>
+      <trans-unit id="pages_sort.description" resname="pages_sort.description" approved="yes">
+        <source>Enables you to sort pages alphabetically by title, sub-title or by creation time etc. You can also reverse the order of pages in the page tree.</source>
+        <target state="final">Ti consente di ordinare alfabeticamente le pagine per titolo, sottotitolo, per data di creazione, etc. Puoi anche invertire l'ordine delle pagine nell'albero delle pagine.</target>
+      </trans-unit>
+      <trans-unit id="pages_sort.details" resname="pages_sort.details" xml:space="preserve" approved="yes">
+				<source>Pages in the page tree are always ordered manually. It is possible to move pages up and down etc. But this wizard gives you a quick way to change the manual order of sub-pages.
+
+Simply click one of the links in the bottom of the wizard screen:
+
+&lt;b&gt;Page title&lt;/b&gt;
+Will sort pages by their page title.
+
+&lt;b&gt;Subtitle&lt;/b&gt;
+Will sort page by their Subtitle field.
+
+&lt;b&gt;Change-time&lt;/b&gt;
+Will sort pages by the date they were last changed.
+
+&lt;b&gt;Create-time&lt;/b&gt;
+Will sort pages by their creation date.
+
+&lt;b&gt;Reverse current order&lt;/b&gt;
+Click this to reverse the current order. For example, if you want to sort pages alphabetically but in descending order you simply sort by title first and then reverse the order by clicking this.</source>
+			<target state="final">Le pagine nell'albero delle pagine sono sempre ordinate manualmente. È possibile spostare le pagine su o giù. Questo procedura guidata ti dà un modo rapido per cambiare l'ordine manuale delle sottopagine.
+
+Clicca su uno dei link nella parte inferiore della schermata della procedura guidata:
+
+&lt;b&gt;Titolo della pagina&lt;/b&gt;
+Ordinerà le pagine in base al titolo della pagina.
+
+&lt;b&gt;Sottotitolo&lt;/b&gt;
+Ordinerà le pagine per il loro campo Sottotitolo.
+
+&lt;b&gt;Data modifica&lt;/b&gt;
+Ordinerà le pagine per la data dell'ultima modifica.
+
+&lt;b&gt;Data creazione&lt;/b&gt;
+Ordinerà le pagine per la data di creazione.
+
+&lt;b&gt;Inverti l'ordine corrente&lt;/b&gt;
+Clicca per invertire l'ordine corrente. Ad esempio, se si desidera ordinare le pagine alfabeticamente, ma in ordine decrescente, è sufficiente ordinare prima per titolo e poi invertire l'ordine facendo clic su questo.</target></trans-unit>
+      <trans-unit id="_pages_sort.image" resname="_pages_sort.image" approved="yes">
+        <source>EXT:backend/Resources/Public/Images/Csh/PagesSort.png</source>
+        <target state="final">EXT:backend/Resources/Public/Images/Csh/PagesSort.png</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
