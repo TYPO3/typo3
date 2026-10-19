@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:redirects/Resources/Private/Language/locallang_slug_service.xlf" date="2017-12-29T20:23:34Z" product-name="redirects" target-language="it">
+    <header/>
+    <body>
+      <trans-unit id="notification.slug_and_redirects.title" resname="notification.slug_and_redirects.title" approved="yes">
+        <source>Slugs updated and redirects created</source>
+        <target state="final">Segmenti aggiornati e reindirizzamenti creati</target>
+      </trans-unit>
+      <trans-unit id="notification.slug_and_redirects.message" resname="notification.slug_and_redirects.message" approved="yes">
+        <source>Because you renamed a slug, the slugs of all sub-pages were updated and redirects were created for you automatically.</source>
+        <target state="final">Poiché hai rinominato un segmento, i segmenti di tutte le sottopagine sono stati aggiornati e i reindirizzamenti sono stati ricreati automaticamente per te.</target>
+      </trans-unit>
+      <trans-unit id="notification.slug_only.title" resname="notification.slug_only.title" approved="yes">
+        <source>Slugs updated</source>
+        <target state="final">Segmenti aggiornati</target>
+      </trans-unit>
+      <trans-unit id="notification.slug_only.message" resname="notification.slug_only.message" approved="yes">
+        <source>Because you renamed a slug, the slugs of all sub-pages were updated for you automatically.</source>
+        <target state="final">Poiché hai rinominato un segmento, i segmenti di tutte le sottopagine sono stati aggiornati automaticamente per te.</target>
+      </trans-unit>
+      <trans-unit id="notification.redirects.button.revert_update" resname="notification.redirects.button.revert_update" approved="yes">
+        <source>Revert update</source>
+        <target state="final">Ripristina modifica</target>
+      </trans-unit>
+      <trans-unit id="notification.redirects.button.revert_redirect" resname="notification.redirects.button.revert_redirect" approved="yes">
+        <source>Revert redirects only</source>
+        <target state="final">Ripristina solo i reindirizzamenti</target>
+      </trans-unit>
+      <trans-unit id="redirects_error_title" resname="redirects_error_title" approved="yes">
+        <source>An error occurred</source>
+        <target state="final">Si è verificato un errore</target>
+      </trans-unit>
+      <trans-unit id="redirects_error_message" resname="redirects_error_message" approved="yes">
+        <source>Sorry something went wrong.</source>
+        <target state="final">Ops! Qualcosa è andato storto.</target>
+      </trans-unit>
+      <trans-unit id="revert_update_success_title" resname="revert_update_success_title" approved="yes">
+        <source>Revert successful</source>
+        <target state="final">Ripristino riuscito</target>
+      </trans-unit>
+      <trans-unit id="revert_update_success_message" resname="revert_update_success_message" approved="yes">
+        <source>All slug changes of sub pages have been reverted.</source>
+        <target state="final">Tutte le modifiche ai segmenti URL delle sottopagine sono state annullate.</target>
+      </trans-unit>
+      <trans-unit id="revert_redirects_success_title" resname="revert_redirects_success_title" approved="yes">
+        <source>Revert successful</source>
+        <target state="final">Ripristino riuscito</target>
+      </trans-unit>
+      <trans-unit id="revert_redirects_success_message" resname="revert_redirects_success_message" approved="yes">
+        <source>All created redirects have been reverted.</source>
+        <target state="final">Tutti i reindirizzamenti creati sono stati ripristinati.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
