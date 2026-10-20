@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814802" source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_csh_systmpl.xlf" date="2011-10-17T20:22:32Z" product-name="context_help" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description">
+        <source>TypoScript template record.</source>
+        <target>crwdns74676:0crwdne74676:0</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" xml:space="preserve">
+				<source>The 'Template' records are the vital components used to set the design of the webpages. No matter how (almost) you would like to build your website, it must be initiated by a 'Template' record placed in the root of the page tree of the site.
+Basically, create a 'Template' record, enter a title and make sure to check of Clear constants, setup and Rootline. Then enter some TypoScript configuration in the Setup field and you're set.
+It's very important to read how to do all this in the documents listed below! Also make sure you use the Web&gt;Template module to do all the working with templates. It's a specialized tool to help you with this.</source>
+			<target>crwdns74678:0crwdne74678:0</target></trans-unit>
+      <trans-unit id="_.seeAlso" resname="_.seeAlso" xml:space="preserve">
+				<source>static_template
+TSref | https://docs.typo3.org/typo3cms/TyposcriptReference/
+TypoScript in 45 min| https://docs.typo3.org/typo3cms/TyposcriptIn45MinutesTutorial/</source>
+			<target>crwdns74680:0crwdne74680:0</target></trans-unit>
+      <trans-unit id="_.image" resname="_.image" xml:space="preserve">
+				<source>EXT:frontend/Resources/Public/Images/cshimages/systemplate.png,
+EXT:frontend/Resources/Public/Images/cshimages/systemplate1.png</source>
+				
+			<target>crwdns74682:0crwdne74682:0</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" xml:space="preserve">
+				<source>A Template Record with constants and setup code.
+The Web&gt;Template module contains tools which will help you to edit and validate TypoScript structures.</source>
+			<target>crwdns74684:0crwdne74684:0</target></trans-unit>
+      <trans-unit id="hidden.description" resname="hidden.description">
+        <source>Hiding the template will deactivate the template record.</source>
+        <target>crwdns74686:0crwdne74686:0</target>
+      </trans-unit>
+      <trans-unit id="hidden.details" resname="hidden.details">
+        <source>If the Template Record was the first record on a page hiding it will expose the second record on the page instead.</source>
+        <target>crwdns74688:0crwdne74688:0</target>
+      </trans-unit>
+      <trans-unit id="starttime.description" resname="starttime.description">
+        <source>Start time. Use this to enable a template on a certain date.</source>
+        <target>crwdns74690:0crwdne74690:0</target>
+      </trans-unit>
+      <trans-unit id="endtime.description" resname="endtime.description">
+        <source>End time. Use this to disable a template on a certain date.</source>
+        <target>crwdns74692:0crwdne74692:0</target>
+      </trans-unit>
+      <trans-unit id="title.description" resname="title.description">
+        <source>The title of the template record is only an internal label and does not have any effect on the output in the frontend.</source>
+        <target>crwdns74694:0crwdne74694:0</target>
+      </trans-unit>
+      <trans-unit id="sitetitle.description" resname="sitetitle.description">
+        <source>Website title. Typically this will automatically be prefixed all page titles in the &lt;title&gt; tag of the frontend pages.</source>
+        <target>crwdns74696:0crwdne74696:0</target>
+      </trans-unit>
+      <trans-unit id="constants.description" resname="constants.description">
+        <source>TypoScript Constants.</source>
+        <target>crwdns74698:0crwdne74698:0</target>
+      </trans-unit>
+      <trans-unit id="_constants.seeAlso" resname="_constants.seeAlso">
+        <source>static_template:constants</source>
+        <target>crwdns74700:0crwdne74700:0</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="config.description" resname="config.description">
+        <source>TypoScript Setup code</source>
+        <target>crwdns74702:0crwdne74702:0</target>
+      </trans-unit>
+      <trans-unit id="config.details" resname="config.details">
+        <source>Read more about TypoScript Templates in TSref, TypoScript by Example and Getting Started.</source>
+        <target>crwdns74704:0crwdne74704:0</target>
+      </trans-unit>
+      <trans-unit id="_config.seeAlso" resname="_config.seeAlso" xml:space="preserve">
+				<source>static_template:config,
+TSref | https://docs.typo3.org/typo3cms/TyposcriptReference/
+Getting Started | https://docs.typo3.org/typo3cms/GettingStartedTutorial/
+TypoScript in 45 min| https://docs.typo3.org/typo3cms/TyposcriptIn45MinutesTutorial/
+TypoScript Syntax | https://docs.typo3.org/typo3cms/TyposcriptSyntaxReference/</source>
+				
+			<target>crwdns74706:0crwdne74706:0</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="resources.description" resname="resources.description">
+        <source>Resource files for the template. For example a logo, a TTF-font etc.</source>
+        <target>crwdns74708:0crwdne74708:0</target>
+      </trans-unit>
+      <trans-unit id="resources.details" resname="resources.details">
+        <source>Resource files can be referenced in TypoScript Template code by [filename]*.[ext] and has the advantage that the reference from TypoScript is not broken if you copy or export a Template Record where the resources ends up with new names.</source>
+        <target>crwdns74710:0crwdne74710:0</target>
+      </trans-unit>
+      <trans-unit id="clear.description" resname="clear.description">
+        <source>Flags that will clear the inheritance of TypoScript code from former templates in the root line. There is a flag for Constants and one for Setup code.</source>
+        <target>crwdns74712:0crwdne74712:0</target>
+      </trans-unit>
+      <trans-unit id="clear.details" resname="clear.details">
+        <source>In the Web &gt; Template / Template Analyzer module you can see how far back in the template tree that constants and setup code is inherited.</source>
+        <target>crwdns74714:0crwdne74714:0</target>
+      </trans-unit>
+      <trans-unit id="_clear.seeAlso" resname="_clear.seeAlso">
+        <source>sys_template:root</source>
+        <target>crwdns74716:0crwdne74716:0</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_clear.image" resname="_clear.image">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/systemplate2.png</source>
+        <target>crwdns74718:0crwdne74718:0</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="root.description" resname="root.description">
+        <source>Defines that the template represents a root of a website.</source>
+        <target>crwdns74720:0crwdne74720:0</target>
+      </trans-unit>
+      <trans-unit id="_root.seeAlso" resname="_root.seeAlso">
+        <source>sys_template:clear</source>
+        <target>crwdns74722:0crwdne74722:0</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="includeStaticAfterBasedOn.description" resname="includeStaticAfterBasedOn.description">
+        <source>If set, static templates will be included after "based-on" templates. It basically swaps the order of inclusion of these external TypoScript sources.</source>
+        <target>crwdns74724:0crwdne74724:0</target>
+      </trans-unit>
+      <trans-unit id="includeStaticAfterBasedOn.details" resname="includeStaticAfterBasedOn.details">
+        <source>The Web &gt; Template / Template Analyzer module allows you to view the order of inclusion of all TypoScript sources your template uses.</source>
+        <target>crwdns74726:0crwdne74726:0</target>
+      </trans-unit>
+      <trans-unit id="include_static.description" resname="include_static.description">
+        <source>Static Template records to include.</source>
+        <target>crwdns74728:0crwdne74728:0</target>
+      </trans-unit>
+      <trans-unit id="_include_static.seeAlso" resname="_include_static.seeAlso">
+        <source>static_template</source>
+        <target>crwdns74730:0crwdne74730:0</target>
+      </trans-unit>
+      <trans-unit id="include_static_file.description" resname="include_static_file.description">
+        <source>Static Template files to include.</source>
+        <target>crwdns74732:0crwdne74732:0</target>
+      </trans-unit>
+      <trans-unit id="include_static_file.details" resname="include_static_file.details">
+        <source>Static template files are registered by extensions contrary to Static Template records which come from the static database table, "static_template".</source>
+        <target>crwdns74734:0crwdne74734:0</target>
+      </trans-unit>
+      <trans-unit id="_include_static_file.seeAlso" resname="_include_static_file.seeAlso">
+        <source>sys_template:include_static</source>
+        <target>crwdns74736:0crwdne74736:0</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="basedOn.description" resname="basedOn.description">
+        <source>Other Template Records that are included like "static templates".</source>
+        <target>crwdns74738:0crwdne74738:0</target>
+      </trans-unit>
+      <trans-unit id="static_file_mode.description" resname="static_file_mode.description">
+        <source>Define the mode of inclusion of static template files.</source>
+        <target>crwdns74740:0crwdne74740:0</target>
+      </trans-unit>
+      <trans-unit id="static_file_mode.details" resname="static_file_mode.details">
+        <source>If you are in doubt about the inclusion order, make sure to use the Web &gt; Template / Template Analyzer to view the order.</source>
+        <target>crwdns74742:0crwdne74742:0</target>
+      </trans-unit>
+      <trans-unit id="nextLevel.description" resname="nextLevel.description">
+        <source>Defines a template record to make active one level out in the page tree of this branch. This can be used to define another template record for the general website while having a special template for the frontpage.</source>
+        <target>crwdns74744:0crwdne74744:0</target>
+      </trans-unit>
+      <trans-unit id="description.description" resname="description.description">
+        <source>Enter a description of the template if you like.</source>
+        <target>crwdns74746:0crwdne74746:0</target>
+      </trans-unit>
+      <trans-unit id="editorcfg.description" resname="editorcfg.description">
+        <source>Editor Configuration for the stylesheet editor extension.</source>
+        <target>crwdns74748:0crwdne74748:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
