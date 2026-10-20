@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_mfa.xlf" date="2021-01-26T11:58:45Z" product-name="cms" target-language="ja">
+    <header/>
+    <body>
+      <trans-unit id="auth.submit" approved="yes">
+        <source>Verify</source>
+        <target state="final">確認する</target>
+      </trans-unit>
+      <trans-unit id="auth.cancel" approved="yes">
+        <source>Go back</source>
+        <target state="final">戻る</target>
+      </trans-unit>
+      <trans-unit id="standalone.setup.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">キャンセル</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
