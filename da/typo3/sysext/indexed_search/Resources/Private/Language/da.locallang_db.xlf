@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:indexed_search/Resources/Private/Language/locallang_db.xlf" date="2011-10-17T20:22:33Z" product-name="indexed_search" target-language="da">
+    <header/>
+    <body>
+      <trans-unit id="index_config" approved="yes">
+        <source>Indexing Configuration</source>
+        <target state="final">Indekseringsopsætning</target>
+      </trans-unit>
+      <trans-unit id="index_config.title" approved="yes">
+        <source>Title</source>
+        <target state="final">Titel</target>
+      </trans-unit>
+      <trans-unit id="index_config.description" approved="yes">
+        <source>Description</source>
+        <target state="final">Beskrivelse</target>
+      </trans-unit>
+      <trans-unit id="index_config.type.I.0" translate="no" approved="yes">
+        <source>-</source>
+        <target state="final">-</target>
+      </trans-unit>
+      <trans-unit id="index_config.type.I.1" approved="yes">
+        <source>Database Records</source>
+        <target state="final">Database elementer</target>
+      </trans-unit>
+      <trans-unit id="index_config.type.I.2" approved="yes">
+        <source>Filepath on server</source>
+        <target state="final">Filsti på server</target>
+      </trans-unit>
+      <trans-unit id="index_config.type.I.3" approved="yes">
+        <source>External URL</source>
+        <target state="final">Ekstern URL</target>
+      </trans-unit>
+      <trans-unit id="index_config.type.I.4" approved="yes">
+        <source>Page tree</source>
+        <target state="final">Sidetræ</target>
+      </trans-unit>
+      <trans-unit id="index_config.type.I.5" approved="yes">
+        <source>Meta configuration</source>
+        <target state="final">Meta konfiguration</target>
+      </trans-unit>
+      <trans-unit id="index_config.type" approved="yes">
+        <source>Type</source>
+        <target state="final">Type</target>
+      </trans-unit>
+      <trans-unit id="index_config.depth" approved="yes">
+        <source>Depth</source>
+        <target state="final">Dybde</target>
+      </trans-unit>
+      <trans-unit id="index_config.table2index" approved="yes">
+        <source>Table to index</source>
+        <target state="final">Indeksér tabel</target>
+      </trans-unit>
+      <trans-unit id="index_config.table2index.I.0" translate="no" approved="yes">
+        <source>-</source>
+        <target state="final">-</target>
+      </trans-unit>
+      <trans-unit id="index_config.alternative_source_pid" approved="yes">
+        <source>Alternative Source Page</source>
+        <target state="final">Alternativ kildeside</target>
+      </trans-unit>
+      <trans-unit id="index_config.get_params" approved="yes">
+        <source>GET parameter string (with ###UID### substitution)</source>
+        <target state="final">GET parameter streng (med ###UID### markør)</target>
+      </trans-unit>
+      <trans-unit id="index_config.fields" approved="yes">
+        <source>Fields (first is title)</source>
+        <target state="final">Felter (første er titlen)</target>
+      </trans-unit>
+      <trans-unit id="index_config.externalUrl" approved="yes">
+        <source>External URL (eg. "http://www.domain.org/")</source>
+        <target state="final">Ekstern URL (f.eks. http://www.domain.dk/)</target>
+      </trans-unit>
+      <trans-unit id="index_config.filepath" approved="yes">
+        <source>Filepath</source>
+        <target state="final">Filsti</target>
+      </trans-unit>
+      <trans-unit id="index_config.extensions" approved="yes">
+        <source>Limit to extensions (commalist)</source>
+        <target state="final">Begræns til udvidelser (kommasepareret liste)</target>
+      </trans-unit>
+      <trans-unit id="index_config.url_deny" approved="yes">
+        <source>Enter sub-URLs in which not to decend</source>
+        <target state="final">Angiv sub-URLs som ikke skal nedarve</target>
+      </trans-unit>
+      <trans-unit id="index_config.records_indexonchange" approved="yes">
+        <source>Index Records immediately when saved?</source>
+        <target state="final">Indeksér elementer umiddelbart efter "gem"?:</target>
+      </trans-unit>
+      <trans-unit id="index_config.timer_next_indexing" approved="yes">
+        <source>Next indexing is scheduled (if empty, then immediately)</source>
+        <target state="final">Næste indeksering er planlagt (hvis ikke, så med det samme)</target>
+      </trans-unit>
+      <trans-unit id="index_config.timer_offset" approved="yes">
+        <source>Timing offset from midnight</source>
+        <target state="final">Tidsforskydning efter midnat</target>
+      </trans-unit>
+      <trans-unit id="index_config.timer_frequency" approved="yes">
+        <source>How often would you like a re-index?</source>
+        <target state="final">Hvor ofte ønsker du re-indeksering?</target>
+      </trans-unit>
+      <trans-unit id="index_config.timer_frequency.I.0" approved="yes">
+        <source>Every hour</source>
+        <target state="final">Hver time</target>
+      </trans-unit>
+      <trans-unit id="index_config.timer_frequency.I.1" approved="yes">
+        <source>Every day (24 hours)</source>
+        <target state="final">Hver dag (24 timer)</target>
+      </trans-unit>
+      <trans-unit id="index_config.timer_frequency.I.2" approved="yes">
+        <source>Every week</source>
+        <target state="final">Hver uge</target>
+      </trans-unit>
+      <trans-unit id="index_config.recordsbatch" approved="yes">
+        <source>How many records to index a minute (default is 100)</source>
+        <target state="final">Hvor mange elementer skal indekseres i minuttet (standard er 100)</target>
+      </trans-unit>
+      <trans-unit id="index_config.set_id" approved="yes">
+        <source>Session ID (if &gt; zero, then indexing job is running)</source>
+        <target state="final">Session-ID (hvis &gt; nul, så kører indekseringsjobbet)</target>
+      </trans-unit>
+      <trans-unit id="index_config.indexcfgs" approved="yes">
+        <source>Indexing configurations</source>
+        <target state="final">Indekseringskonfigurationer</target>
+      </trans-unit>
+      <trans-unit id="index_config.parameterCfgs" approved="yes">
+        <source>Parameter combination configuration ([tablename]:&amp;[param]=###UID###)</source>
+        <target state="final">Parameter kombination konfiguration ([tabelnavn]:&amp;[param]=###UID###)</target>
+      </trans-unit>
+      <trans-unit id="index_config.rootpage" approved="yes">
+        <source>Root page</source>
+        <target state="final">Rodside:</target>
+      </trans-unit>
+      <trans-unit id="plugin_title" approved="yes">
+        <source>Indexed Search</source>
+        <target state="final">Indekseret søgning</target>
+      </trans-unit>
+      <trans-unit id="plugin_description" approved="yes">
+        <source>Search based on a database stored index.</source>
+        <target state="final">Søg baseret på et indeks, gemt i databasen.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
