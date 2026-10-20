@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:reports/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:35Z" product-name="reports" target-language="ar">
+    <header/>
+    <body>
+      <trans-unit id="reports_overview" approved="yes">
+        <source>Reports overview</source>
+        <target state="final">نَظْرَة عامة على التقارير</target>
+      </trans-unit>
+      <trans-unit id="choose_report" approved="yes">
+        <source>Report</source>
+        <target state="final">التقرير</target>
+      </trans-unit>
+      <trans-unit id="noReportsTitle" approved="yes">
+        <source>No registered reports</source>
+        <target state="final">لا توجد تقارير مُسجلة</target>
+      </trans-unit>
+      <trans-unit id="noReportsMessage" approved="yes">
+        <source>There are no reports registered in the system and default reports have been disabled.</source>
+        <target state="final">لا توجد تقارير مُسجلة في النظام وقد تم تعطيل التقارير الافتراضية.</target>
+      </trans-unit>
+      <trans-unit id="link.openModule" approved="yes">
+        <source>Open</source>
+        <target state="final">فتح</target>
+      </trans-unit>
+      <trans-unit id="link.openModuleWithTitle" approved="yes">
+        <source>Open %1s</source>
+        <target state="final">فتح %1s</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.title" approved="yes">
+        <source>Content Statistics</source>
+        <target state="final">إحصائياتُ المحتوى</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.shortDescription" approved="yes">
+        <source>Shows statistics about used content elements</source>
+        <target state="final">يعرضُ إحصائياتٍ حولَ عناصرِ المحتوى المستخدَمةِ</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.description" approved="yes">
+        <source>Provides an overview of all content element types, showing how often each appears across the site. Includes summaries per type.</source>
+        <target state="final">يوفِّرُ نظرةً عامةً على جميعِ أنواعِ عناصرِ المحتوى، موضِّحاً عددَ مراتِ ظهورِ كلِّ نوعٍ عبرَ الموقعِ. يتضمَّنُ ملخَّصاتٍ لكلِّ نوعٍ.</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.statistic" approved="yes">
+        <source>Statistics</source>
+        <target state="final">الإحصائيات</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.existingElements.header" approved="yes">
+        <source>Existing Content Element Types</source>
+        <target state="final">أنواعُ عناصرِ المحتوى الموجودةِ</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.existingElements.description" approved="yes">
+        <source>The listed content elements include both visible and hidden records.</source>
+        <target state="final">تشملُ عناصرُ المحتوى المُدرَجةُ السجلاتِ المرئيةَ والمخفيةَ على حدٍّ سواءٍ.</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.existingElements.explanation" approved="yes">
+        <source>Keep in mind that some elements may not appear on any page, and others might be rendered by alternative methods (TypoScript, ViewHelpers, etc.). As a result, it is not technically possible to determine actual usage.</source>
+        <target state="final">ضعْ في اعتبارِكَ أنَّ بعضَ العناصرِ قد لا تظهرُ على أيِّ صفحةٍ، وقد يُصيَّرُ بعضُها الآخرُ بطرقٍ بديلةٍ (TypoScript وViewHelpers وغيرُها). ونتيجةً لذلكَ، لا يكونُ من الممكنِ تقنياً تحديدُ الاستخدامِ الفعليِّ.</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.existingElements.error" approved="yes">
+        <source>The content element database table's schema ("tt_content") could not be analyzed due to a missing or disabled schema type.</source>
+        <target state="final">تعذَّرَ تحليلُ مخططِ جدولِ قاعدةِ بياناتِ عناصرِ المحتوى ("tt_content") بسببِ نوعِ مخططٍ مفقودٍ أو معطَّلٍ.</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.unusedElements.header" approved="yes">
+        <source>Unused content elements</source>
+        <target state="final">عناصرُ المحتوى غيرُ المستخدَمةِ</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.unusedElements.description" approved="yes">
+        <source>This list includes content element types that are not used anywhere, or whose existing instances are all flagged as deleted.</source>
+        <target state="final">تتضمَّنُ هذهِ القائمةُ أنواعَ عناصرِ المحتوى التي لا تُستخدَمُ في أيِّ مكانٍ، أو التي تكونُ جميعُ نُسَخِها الموجودةِ مُوسَّمةً بالحذفِ.</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.fields" approved="yes">
+        <source>%d fields</source>
+        <target state="final">%d حقول</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.field.type" approved="yes">
+        <source>Type</source>
+        <target state="final">النوع</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.field.excluded" approved="yes">
+        <source>Excluded</source>
+        <target state="final">مُستبعَد</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.field.not_excluded" approved="yes">
+        <source>Always visible</source>
+        <target state="final">مرئي دوماً</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.field.required" approved="yes">
+        <source>Required</source>
+        <target state="final">مطلُوب</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.statistic.active_text" approved="yes">
+        <source>%d active / %d hidden</source>
+        <target state="final">%d نشط / %d مخفي</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.statistic.deleted_text" approved="yes">
+        <source>%d deleted</source>
+        <target state="final">تم حذف %d</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.statistic.deleted" approved="yes">
+        <source>Deleted</source>
+        <target state="final">مَحذُوف</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.records" approved="yes">
+        <source>Records</source>
+        <target state="final">السجلات</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.noRecords" approved="yes">
+        <source>No records found</source>
+        <target state="final">لم يتم العثور على سجلات</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
