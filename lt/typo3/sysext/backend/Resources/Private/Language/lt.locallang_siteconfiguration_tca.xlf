@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1522785604" source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf" date="2018-02-27T22:22:32Z" product-name="backend" target-language="lt">
+    <header/>
+    <body>
+      <trans-unit id="site.ctrl.title" resname="site.ctrl.title" approved="yes">
+        <source>Site Configuration</source>
+        <target state="final">Svetainės konfigūracija</target>
+      </trans-unit>
+      <trans-unit id="site.identifier" resname="site.identifier" approved="yes">
+        <source>Site Identifier</source>
+        <target state="final">Svetainės identifikatorius</target>
+      </trans-unit>
+      <trans-unit id="site.rootPageId" resname="site.rootPageId" approved="yes">
+        <source>Root Page ID</source>
+        <target state="final">Šakninio puslapio ID</target>
+      </trans-unit>
+      <trans-unit id="site.base" resname="site.base" approved="yes">
+        <source>Entry Point</source>
+        <target state="final">Įėjimo taškas</target>
+      </trans-unit>
+      <trans-unit id="site.baseVariants" resname="site.baseVariants" approved="yes">
+        <source>Variants for the Entry Point</source>
+        <target state="final">Įėjimo taško variantai</target>
+      </trans-unit>
+      <trans-unit id="site.languages" resname="site.languages" approved="yes">
+        <source>Available Languages for this Site</source>
+        <target state="final">Galimos šios svetainės kalbos</target>
+      </trans-unit>
+      <trans-unit id="site.errorHandling" resname="site.errorHandling" approved="yes">
+        <source>Error Handling</source>
+        <target state="final">Klaidų apdorojimas</target>
+      </trans-unit>
+      <trans-unit id="site.routes" resname="site.routes" approved="yes">
+        <source>Routes</source>
+        <target state="final">Maršrutai</target>
+      </trans-unit>
+      <trans-unit id="site.routes.irreHeader.redirectsTo" resname="site.routes.irreHeader.redirectsTo" approved="yes">
+        <source>redirects to</source>
+        <target state="final">nukreipia į</target>
+      </trans-unit>
+      <trans-unit id="site.tab.languages" resname="site.tab.languages" approved="yes">
+        <source>Languages</source>
+        <target state="final">Kalbos</target>
+      </trans-unit>
+      <trans-unit id="site.tab.errorHandling" resname="site.tab.errorHandling" approved="yes">
+        <source>Error Handling</source>
+        <target state="final">Klaidų apdorojimas</target>
+      </trans-unit>
+      <trans-unit id="site.tab.routes" resname="site.tab.routes" approved="yes">
+        <source>Static Routes</source>
+        <target state="final">Statiniai maršrutai</target>
+      </trans-unit>
+      <trans-unit id="site_language.palette.frontend" resname="site_language.palette.frontend" approved="yes">
+        <source>Frontend related</source>
+        <target state="final">Susiję su frontend</target>
+      </trans-unit>
+      <trans-unit id="site_language.ctrl.title" resname="site_language.ctrl.title" approved="yes">
+        <source>Language Configuration for a Site</source>
+        <target state="final">Svetainės kalbos konfigūracija</target>
+      </trans-unit>
+      <trans-unit id="site_language.language" resname="site_language.language" approved="yes">
+        <source>Language</source>
+        <target state="final">Kalba</target>
+      </trans-unit>
+      <trans-unit id="site_language.languageId" resname="site_language.languageId" approved="yes">
+        <source>Language ID</source>
+        <target state="final">Kalbos ID</target>
+      </trans-unit>
+      <trans-unit id="site_language.title" resname="site_language.title" approved="yes">
+        <source>Title</source>
+        <target state="final">Pavadinimas</target>
+      </trans-unit>
+      <trans-unit id="site_language.navigationTitle" resname="site_language.navigationTitle" approved="yes">
+        <source>Navigation Title</source>
+        <target state="final">Navigacijos pavadinimas</target>
+      </trans-unit>
+      <trans-unit id="site_language.base" resname="site_language.base" approved="yes">
+        <source>Entry Point</source>
+        <target state="final">Įėjimo taškas</target>
+      </trans-unit>
+      <trans-unit id="site_language.locale" resname="site_language.locale" approved="yes">
+        <source>Locale</source>
+        <target state="final">Lokalė</target>
+      </trans-unit>
+      <trans-unit id="site_language.enabled" resname="site_language.enabled" approved="yes">
+        <source>Visible in Frontend</source>
+        <target state="final">Matoma frontend</target>
+      </trans-unit>
+      <trans-unit id="site_language.flag" resname="site_language.flag" approved="yes">
+        <source>Flag icon</source>
+        <target state="final">Vėliavos piktograma</target>
+      </trans-unit>
+      <trans-unit id="site_language.fallbackType" resname="site_language.fallbackType" approved="yes">
+        <source>Fallback Type</source>
+        <target state="final">Atsarginio rodymo tipas</target>
+      </trans-unit>
+      <trans-unit id="site_language.fallbacks" resname="site_language.fallbacks" approved="yes">
+        <source>Fallback to other Language(s) - order is important!</source>
+        <target state="final">Atsarginis rodymas į kitą(-as) kalbą(-as) – tvarka svarbi!</target>
+      </trans-unit>
+      <trans-unit id="site_base_variant.ctrl.title" resname="site_base_variant.ctrl.title" approved="yes">
+        <source>Base</source>
+        <target state="final">Pagrindas</target>
+      </trans-unit>
+      <trans-unit id="site_base_variant.base" resname="site_base_variant.base" approved="yes">
+        <source>Base</source>
+        <target state="final">Pagrindas</target>
+      </trans-unit>
+      <trans-unit id="site_base_variant.base.placeholder" resname="site_base_variant.base.placeholder" approved="yes">
+        <source>www.domain.local</source>
+        <target state="final">www.domain.local</target>
+      </trans-unit>
+      <trans-unit id="site_base_variant.condition" resname="site_base_variant.condition" approved="yes">
+        <source>Condition</source>
+        <target state="final">Sąlyga</target>
+      </trans-unit>
+      <trans-unit id="site_base_variant.condition.placeholder" resname="site_base_variant.condition.placeholder" approved="yes">
+        <source>applicationContext == "Production"</source>
+        <target state="final">applicationContext == "Production"</target>
+      </trans-unit>
+      <trans-unit id="site_base_variant.condition.applicationContext" resname="site_base_variant.condition.applicationContext" approved="yes">
+        <source>Application Context</source>
+        <target state="final">Programos kontekstas</target>
+      </trans-unit>
+      <trans-unit id="site_base_variant.condition.environmentVariable" resname="site_base_variant.condition.environmentVariable" approved="yes">
+        <source>Environment Variable</source>
+        <target state="final">Aplinkos kintamasis</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.ctrl.title" resname="site_errorhandling.ctrl.title" approved="yes">
+        <source>Error Handling</source>
+        <target state="final">Klaidų apdorojimas</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.tab.rootpaths" resname="site_errorhandling.tab.rootpaths" approved="yes">
+        <source>Root Paths (optional)</source>
+        <target state="final">Šakniniai keliai (nebūtina)</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorCode" resname="site_errorhandling.errorCode" approved="yes">
+        <source>HTTP Error Status Code</source>
+        <target state="final">HTTP klaidos būsenos kodas</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorCode.404" resname="site_errorhandling.errorCode.404" approved="yes">
+        <source>404 (Page not found)</source>
+        <target state="final">404 (Puslapis nerastas)</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorCode.403" resname="site_errorhandling.errorCode.403" approved="yes">
+        <source>403 (Forbidden)</source>
+        <target state="final">403 (Draudžiama)</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorCode.500" resname="site_errorhandling.errorCode.500" approved="yes">
+        <source>500 (Internal Server Error)</source>
+        <target state="final">500 (Vidinė serverio klaida)</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorCode.503" resname="site_errorhandling.errorCode.503" approved="yes">
+        <source>503 (Service Unavailable)</source>
+        <target state="final">503 (Paslauga nepasiekiama)</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorCode.0" resname="site_errorhandling.errorCode.0" approved="yes">
+        <source>any error not defined otherwise</source>
+        <target state="final">bet kuri kita neapibrėžta klaida</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorHandler" resname="site_errorhandling.errorHandler" approved="yes">
+        <source>How to handle Errors</source>
+        <target state="final">Kaip apdoroti klaidas</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorHandler.fluid" resname="site_errorhandling.errorHandler.fluid" approved="yes">
+        <source>Fluid Template</source>
+        <target state="final">Fluid šablonas</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorHandler.page" resname="site_errorhandling.errorHandler.page" approved="yes">
+        <source>Show Content from Page</source>
+        <target state="final">Rodyti turinį iš puslapio</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorHandler.php" resname="site_errorhandling.errorHandler.php" approved="yes">
+        <source>PHP Class (must implement the PageErrorHandlerInterface)</source>
+        <target state="final">PHP klasė (turi įgyvendinti PageErrorHandlerInterface)</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorFluidTemplate" resname="site_errorhandling.errorFluidTemplate" approved="yes">
+        <source>Fluid Template File</source>
+        <target state="final">Fluid šablono failas</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorFluidTemplate.placeholder" resname="site_errorhandling.errorFluidTemplate.placeholder" approved="yes">
+        <source>EXT:my_sitepackage/Resources/Private/Templates/Sites/Error.html</source>
+        <target state="final">EXT:my_sitepackage/Resources/Private/Templates/Sites/Error.html</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorFluidTemplatesRootPath" resname="site_errorhandling.errorFluidTemplatesRootPath" approved="yes">
+        <source>Fluid Templates Root Path</source>
+        <target state="final">Fluid šablonų šakninis kelias</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorFluidLayoutsRootPath" resname="site_errorhandling.errorFluidLayoutsRootPath" approved="yes">
+        <source>Fluid Layouts Root Path</source>
+        <target state="final">Fluid išdėstymų šakninis kelias</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorFluidPartialsRootPath" resname="site_errorhandling.errorFluidPartialsRootPath" approved="yes">
+        <source>Fluid Partials Root Path</source>
+        <target state="final">Fluid išdėstymų šakninis kelias</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorContentSource" resname="site_errorhandling.errorContentSource" approved="yes">
+        <source>Show Content from Page</source>
+        <target state="final">Rodyti turinį iš puslapio</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorPhpClassFQCN" resname="site_errorhandling.errorPhpClassFQCN" approved="yes">
+        <source>ErrorHandler Class Target (FQCN)</source>
+        <target state="final">ErrorHandler klasės tikslas (FQCN)</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorPhpClassFQCN.placeholder" resname="site_errorhandling.errorPhpClassFQCN.placeholder" approved="yes">
+        <source>Vendor\ExtensionName\ErrorHandlers\GenericErrorhandler</source>
+        <target state="final">Vendor\ExtensionName\ErrorHandlers\GenericErrorhandler</target>
+      </trans-unit>
+      <trans-unit id="site_route.ctrl.title" resname="site_route.ctrl.title" approved="yes">
+        <source>Routes</source>
+        <target state="final">Maršrutai</target>
+      </trans-unit>
+      <trans-unit id="site_route.type" resname="site_route.type" approved="yes">
+        <source>Route Type</source>
+        <target state="final">Maršruto tipas</target>
+      </trans-unit>
+      <trans-unit id="site_route.staticText" resname="site_route.staticText" approved="yes">
+        <source>Static Text</source>
+        <target state="final">Statinis tekstas</target>
+      </trans-unit>
+      <trans-unit id="site_route.staticText.example1" resname="site_route.staticText.example1" approved="yes">
+        <source>robots.txt Example Content</source>
+        <target state="final">robots.txt pavyzdinis turinys</target>
+      </trans-unit>
+      <trans-unit id="site_route.source" resname="site_route.source" approved="yes">
+        <source>Page, File or URL</source>
+        <target state="final">Puslapis, failas arba URL</target>
+      </trans-unit>
+      <trans-unit id="site_route.route" resname="site_route.route" approved="yes">
+        <source>Static Route Name</source>
+        <target state="final">Statinio maršruto pavadinimas</target>
+      </trans-unit>
+      <trans-unit id="site_route.route.placeholder" resname="site_route.route.placeholder" approved="yes">
+        <source>my-custom_route</source>
+        <target state="final">my-custom_route</target>
+      </trans-unit>
+      <trans-unit id="site_route.route.example1" resname="site_route.route.example1" approved="yes">
+        <source>robots.txt</source>
+        <target state="final">robots.txt</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
