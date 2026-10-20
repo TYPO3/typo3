@@ -1,0 +1,7 @@
+"tx_blogexample_domain_model_blog"
+,"uid","pid","sys_language_uid","l18n_parent","title","posts"
+,1,2,0,0,"Tech blog",0
+,2,2,1,1,"Tech-Blog",1
+"tx_blogexample_domain_model_post"
+,"uid","pid","sys_language_uid","l18n_parent","title","blog"
+,1,2,1,0,"Beitrag",2

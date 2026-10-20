@@ -1,0 +1,4 @@
+"tx_blogexample_domain_model_blog"
+,"uid","l18n_parent","l18n_diffsource","l10n_state","title"
+,1,0,"",\NULL,"Tech blog"
+,2,1,"{""subtitle"":""First subtitle"",""title"":""Tech blog""}","{""subtitle"":""parent""}","Neuer Blog"

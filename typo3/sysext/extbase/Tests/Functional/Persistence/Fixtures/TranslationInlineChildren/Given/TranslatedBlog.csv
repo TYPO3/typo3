@@ -1,0 +1,4 @@
+"tx_blogexample_domain_model_blog"
+,"uid","pid","sys_language_uid","l18n_parent","title","posts","tstamp","crdate"
+,1,2,0,0,"Tech blog",0,1500000000,1500000000
+,2,2,1,1,"Tech-Blog",0,1500000000,1500000000

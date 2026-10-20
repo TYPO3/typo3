@@ -1,0 +1,9 @@
+"tx_blogexample_domain_model_post"
+,"uid","pid","sys_language_uid","l18n_parent","title","comments","tstamp","crdate"
+,1,2,0,0,"Hello world",2,1500000000,1500000000
+,2,2,1,1,"Hallo Welt",0,1500000000,1500000000
+,3,2,2,1,"Bonjour le monde",0,1500000000,1500000000
+"tx_blogexample_domain_model_comment"
+,"uid","pid","post","author","email","content","date","t3_origuid","tstamp","crdate"
+,1,2,1,"Max","max@example.com","Nice read","2026-01-26 10:00:00",0,1500000000,1500000000
+,2,2,1,"Max","max@example.com","Well written","2026-01-26 11:00:00",0,1500000000,1500000000

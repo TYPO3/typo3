@@ -1,0 +1,7 @@
+"tx_blogexample_domain_model_blog"
+,"uid","pid","sys_language_uid","l18n_parent","title","logo"
+,1,2,0,0,"Tech blog",0
+,2,2,1,1,"Tech-Blog",1
+"sys_file_reference"
+,"uid","pid","uid_local","uid_foreign","tablenames","fieldname","sorting_foreign","sys_language_uid","l10n_parent","deleted"
+,1,2,1,2,"tx_blogexample_domain_model_blog","logo",1,1,0,0

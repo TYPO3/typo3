@@ -1,0 +1,11 @@
+"tx_blogexample_domain_model_post"
+,"uid","pid","sys_language_uid","l18n_parent","title","comments"
+,1,2,0,0,"Changed post",2
+,2,2,1,1,"Hallo Welt",2
+,3,2,2,1,"Bonjour le monde",2
+"tx_blogexample_domain_model_comment"
+,"uid","pid","post","content","t3_origuid"
+,1,2,1,"Nice read",0
+,2,2,1,"Well written",0
+,3,2,3,"Nice read",1
+,4,2,3,"Well written",2
