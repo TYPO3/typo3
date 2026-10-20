@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:recycler/Resources/Private/Language/locallang_tasks.xlf" date="2011-10-17T20:22:35Z" product-name="recycler" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="cleanerTaskTitle">
+        <source>Remove deleted records</source>
+        <target>crwdns60614:0crwdne60614:0</target>
+      </trans-unit>
+      <trans-unit id="cleanerTaskDescription">
+        <source>Deletes rows from the database which are flagged as "deleted"</source>
+        <target>crwdns415717:0crwdne415717:0</target>
+      </trans-unit>
+      <trans-unit id="cleanerTaskPeriod">
+        <source>Delete entries older than (in days)</source>
+        <target>crwdns60618:0crwdne60618:0</target>
+      </trans-unit>
+      <trans-unit id="cleanerTaskTCA">
+        <source>Tables</source>
+        <target>crwdns60620:0crwdne60620:0</target>
+      </trans-unit>
+      <trans-unit id="cleanerTaskDescriptionTables">
+        <source>Tables: %s</source>
+        <target>crwdns60622:0%scrwdne60622:0</target>
+      </trans-unit>
+      <trans-unit id="cleanerTaskDescriptionDays">
+        <source>Older than %d day(s)</source>
+        <target>crwdns226064:0%dcrwdne226064:0</target>
+      </trans-unit>
+      <trans-unit id="cleanerTaskErrorPeriod">
+        <source>The period has to be an integer and greater than zero.</source>
+        <target>crwdns60626:0crwdne60626:0</target>
+      </trans-unit>
+      <trans-unit id="cleanerTaskErrorTCAempty">
+        <source>You have to select at least one table.</source>
+        <target>crwdns60628:0crwdne60628:0</target>
+      </trans-unit>
+      <trans-unit id="cleanerTaskErrorTCANotSet">
+        <source>The table "%s" is not in the TCA.</source>
+        <target>crwdns60630:0%scrwdne60630:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
