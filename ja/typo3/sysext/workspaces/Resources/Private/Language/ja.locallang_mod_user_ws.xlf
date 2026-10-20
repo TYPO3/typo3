@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814876" source-language="en" datatype="plaintext" original="EXT:workspaces/Resources/Private/Language/locallang_mod_user_ws.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="ja">
+    <header/>
+    <body>
+      <trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel" approved="yes">
+        <source>Workspace overview</source>
+        <target state="final">ワークスペースの概要</target>
+      </trans-unit>
+      <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab" approved="yes">
+        <source>Workspace</source>
+        <target state="final">ワークスペース</target>
+      </trans-unit>
+      <trans-unit id="menuitem_review" resname="menuitem_review" approved="yes">
+        <source>Review and Publish</source>
+        <target state="final">審査と公開</target>
+      </trans-unit>
+      <trans-unit id="menuitem_workspaces" resname="menuitem_workspaces" approved="yes">
+        <source>Workspace List</source>
+        <target state="final">ワークスペースリスト</target>
+      </trans-unit>
+      <trans-unit id="filter_drafts" resname="filter_drafts" approved="yes">
+        <source>Drafts</source>
+        <target state="final">下書き</target>
+      </trans-unit>
+      <trans-unit id="filter_archive" resname="filter_archive" approved="yes">
+        <source>Archive</source>
+        <target state="final">アーカイブ</target>
+      </trans-unit>
+      <trans-unit id="filter_all" resname="filter_all" approved="yes">
+        <source>All</source>
+        <target state="final">全て</target>
+      </trans-unit>
+      <trans-unit id="label_errors" resname="label_errors" approved="yes">
+        <source>Errors</source>
+        <target state="final">エラー</target>
+      </trans-unit>
+      <trans-unit id="label_options" resname="label_options" approved="yes">
+        <source>Options</source>
+        <target state="final">オプション</target>
+      </trans-unit>
+      <trans-unit id="label_publish" resname="label_publish" approved="yes">
+        <source>Publish</source>
+        <target state="final">公開</target>
+      </trans-unit>
+      <trans-unit id="img_title_publish" resname="img_title_publish" approved="yes">
+        <source>Publish</source>
+        <target state="final">公開</target>
+      </trans-unit>
+      <trans-unit id="img_title_swap" resname="img_title_swap" approved="yes">
+        <source>Swap</source>
+        <target state="final">交換</target>
+      </trans-unit>
+      <trans-unit id="remove_from_ws_confirmation" resname="remove_from_ws_confirmation" approved="yes">
+        <source>Remove from workspace?</source>
+        <target state="final">ワークスペースから削除しますか？</target>
+      </trans-unit>
+      <trans-unit id="img_title_remove_from_ws" resname="img_title_remove_from_ws" approved="yes">
+        <source>Remove from workspace?</source>
+        <target state="final">ワークスペースから削除しますか？</target>
+      </trans-unit>
+      <trans-unit id="img_title_show_log" resname="img_title_show_log" approved="yes">
+        <source>Show Log</source>
+        <target state="final">ログを表示</target>
+      </trans-unit>
+      <trans-unit id="img_title_create_new_workspace" resname="img_title_create_new_workspace" approved="yes">
+        <source>Create new workspace</source>
+        <target state="final">新しいワークスペースを作成</target>
+      </trans-unit>
+      <trans-unit id="link_text_create_new_workspace" resname="link_text_create_new_workspace" approved="yes">
+        <source>Create new workspace</source>
+        <target state="final">新しいワークスペースを作成</target>
+      </trans-unit>
+      <trans-unit id="edit_workspace_title_new" resname="edit_workspace_title_new" approved="yes">
+        <source>Create new workspace</source>
+        <target state="final">新しいワークスペースを作成</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_label_frozen" resname="workspace_list_label_frozen" approved="yes">
+        <source>Frozen</source>
+        <target state="final">凍結</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_label_publish_date" resname="workspace_list_label_publish_date" approved="yes">
+        <source>Publish date</source>
+        <target state="final">公開日</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_label_unpublish_date" resname="workspace_list_label_unpublish_date" approved="yes">
+        <source>Unpublish date</source>
+        <target state="final">公開終了日</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_label_frozen_yes" resname="workspace_list_label_frozen_yes" approved="yes">
+        <source>Yes</source>
+        <target state="final">はい</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_label_frozen_no" resname="workspace_list_label_frozen_no" approved="yes">
+        <source>No</source>
+        <target state="final">いいえ</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_access_online" resname="workspace_list_access_online" approved="yes">
+        <source>Online</source>
+        <target state="final">オンライン</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_access_offline" resname="workspace_list_access_offline" approved="yes">
+        <source>Offline</source>
+        <target state="final">オフライン</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_access_owner" resname="workspace_list_access_owner" approved="yes">
+        <source>Owner</source>
+        <target state="final">所有者</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_access_member" resname="workspace_list_access_member" approved="yes">
+        <source>Member</source>
+        <target state="final">メンバ</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_publishing_count_draft" resname="workspace_list_publishing_count_draft" approved="yes">
+        <source>Draft</source>
+        <target state="final">下書き</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_publishing_count_archive" resname="workspace_list_publishing_count_archive" approved="yes">
+        <source>Archive</source>
+        <target state="final">アーカイブ</target>
+      </trans-unit>
+      <trans-unit id="label_reject" resname="label_reject" approved="yes">
+        <source>Reject</source>
+        <target state="final">拒否</target>
+      </trans-unit>
+      <trans-unit id="label_review" resname="label_review" approved="yes">
+        <source>Review</source>
+        <target state="final">審査</target>
+      </trans-unit>
+      <trans-unit id="stage_review" resname="stage_review" approved="yes">
+        <source>Review</source>
+        <target state="final">審査</target>
+      </trans-unit>
+      <trans-unit id="stage_publish" resname="stage_publish" approved="yes">
+        <source>Publish</source>
+        <target state="final">公開</target>
+      </trans-unit>
+      <trans-unit id="label_page" resname="label_page" approved="yes">
+        <source>Page</source>
+        <target state="final">ページ</target>
+      </trans-unit>
+      <trans-unit id="label_newrecord" resname="label_newrecord" approved="yes">
+        <source>New element</source>
+        <target state="final">新規エレメント</target>
+      </trans-unit>
+      <trans-unit id="label_deletedrecord" resname="label_deletedrecord" approved="yes">
+        <source>Deleted element</source>
+        <target state="final">エレメントの削除</target>
+      </trans-unit>
+      <trans-unit id="label_allWSes" resname="label_allWSes" approved="yes">
+        <source>All workspaces</source>
+        <target state="final">全ワークスペース</target>
+      </trans-unit>
+      <trans-unit id="label_doaction_swap" resname="label_doaction_swap" approved="yes">
+        <source>Swap</source>
+        <target state="final">交換</target>
+      </trans-unit>
+      <trans-unit id="label_doaction_release" resname="label_doaction_release" approved="yes">
+        <source>Remove this version</source>
+        <target state="final">このバージョンを削除</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
