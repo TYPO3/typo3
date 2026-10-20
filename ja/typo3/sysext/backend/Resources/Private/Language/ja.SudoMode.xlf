@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/SudoMode.xlf" date="2023-04-08T00:00:00Z" product-name="backend" target-language="ja">
+    <header/>
+    <body>
+      <trans-unit id="cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">キャンセル</target>
+      </trans-unit>
+      <trans-unit id="verify" approved="yes">
+        <source>Verify</source>
+        <target state="final">認証する</target>
+      </trans-unit>
+      <trans-unit id="password" approved="yes">
+        <source>Password</source>
+        <target state="final">パスワード</target>
+      </trans-unit>
+      <trans-unit id="verifyWithUserPassword" approved="yes">
+        <source>Verify with user password</source>
+        <target state="final">ユーザパスワードで確認</target>
+      </trans-unit>
+      <trans-unit id="verifyWithInstallToolPassword" approved="yes">
+        <source>Verify with Install Tool password</source>
+        <target state="final">インストールツールのパスワードで確認</target>
+      </trans-unit>
+      <trans-unit id="accessGranted" approved="yes">
+        <source>Access granted</source>
+        <target state="final">アクセスを承認しました</target>
+      </trans-unit>
+      <trans-unit id="invalidPassword" approved="yes">
+        <source>Invalid password</source>
+        <target state="final">無効なパスワード</target>
+      </trans-unit>
+      <trans-unit id="userPasswordMode" approved="yes">
+        <source>Use user password instead</source>
+        <target state="final">代わりにユーザパスワードを使用する</target>
+      </trans-unit>
+      <trans-unit id="installToolPasswordMode" approved="yes">
+        <source>Use Install Tool password instead</source>
+        <target state="final">代わりにインストールツールパスワードを使用</target>
+      </trans-unit>
+      <trans-unit id="verificationFailed" approved="yes">
+        <source>Verification failed</source>
+        <target state="final">認証に失敗しました</target>
+      </trans-unit>
+      <trans-unit id="verificationExpired" approved="yes">
+        <source>Confirmation has expired. Please try again.</source>
+        <target state="final">確認の有効期限が切れました。もう一度やり直してください。</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
