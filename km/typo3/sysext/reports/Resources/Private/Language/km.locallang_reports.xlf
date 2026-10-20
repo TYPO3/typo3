@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:reports/Resources/Private/Language/locallang_reports.xlf" date="2011-10-17T20:22:35Z" product-name="reports" target-language="km">
+    <header/>
+    <body>
+      <trans-unit id="status_ok" approved="yes">
+        <source>OK</source>
+        <target state="final">អូខេ</target>
+      </trans-unit>
+      <trans-unit id="status_insecure" approved="yes">
+        <source>Insecure</source>
+        <target state="final">មិន​សុវត្ថភាព</target>
+      </trans-unit>
+      <trans-unit id="status_disabled" approved="yes">
+        <source>Disabled</source>
+        <target state="final">បិទ​ដំណើរការ</target>
+      </trans-unit>
+      <trans-unit id="status_enabled" approved="yes">
+        <source>Enabled</source>
+        <target state="final">បើក​ដំណើរការ</target>
+      </trans-unit>
+      <trans-unit id="status_enabledPermanently" approved="yes">
+        <source>Enabled permanently</source>
+        <target state="final">បើក​ដំណើរការ​រហូត</target>
+      </trans-unit>
+      <trans-unit id="status_enabledTemporarily" approved="yes">
+        <source>Enabled temporarily</source>
+        <target state="final">បើក​ដំណើរការ​បណ្ដោះអាសន្ន</target>
+      </trans-unit>
+      <trans-unit id="status_empty" approved="yes">
+        <source>Empty</source>
+        <target state="final">ទទេ</target>
+      </trans-unit>
+      <trans-unit id="status_connectionFailed" approved="yes">
+        <source>Connection Failed</source>
+        <target state="final">ការភ្ជាប់​បរាជ័យ</target>
+      </trans-unit>
+      <trans-unit id="status_updateComplete" approved="yes">
+        <source>Update Complete</source>
+        <target state="final">អាប់ដេត​ជោគជ័យ</target>
+      </trans-unit>
+      <trans-unit id="status_updateIncomplete" approved="yes">
+        <source>Update Incomplete</source>
+        <target state="final">អាប់ដេត​មិន​ជោគជ័យ</target>
+      </trans-unit>
+      <trans-unit id="status_typo3" approved="yes">
+        <source>TYPO3 System</source>
+        <target state="final">ប្រព័ន្ធ TYPO3</target>
+      </trans-unit>
+      <trans-unit id="status_system" approved="yes">
+        <source>System</source>
+        <target state="final">ប្រព័ន្ធ</target>
+      </trans-unit>
+      <trans-unit id="status_security" approved="yes">
+        <source>Security</source>
+        <target state="final">សុវត្ថភាព</target>
+      </trans-unit>
+      <trans-unit id="status_configuration" approved="yes">
+        <source>Configuration</source>
+        <target state="final">ការខន់ហ្វីក</target>
+      </trans-unit>
+      <trans-unit id="status_referenceIndex" approved="yes">
+        <source>Reference Index</source>
+        <target state="final">មាតិកា​យោង</target>
+      </trans-unit>
+      <trans-unit id="status_memcachedConfiguration" approved="yes">
+        <source>Memcached Configuration</source>
+        <target state="final">ខន់ហ្វីក​ការចងចាំ​ខាស្ស</target>
+      </trans-unit>
+      <trans-unit id="status_encryptionKey" approved="yes">
+        <source>Encryption Key</source>
+        <target state="final">ឃី​អ៊‍ីនគ្រីប</target>
+      </trans-unit>
+      <trans-unit id="status_fileDenyPattern" approved="yes">
+        <source>File Deny Pattern</source>
+        <target state="final">លំនាំ​ហ្វៃល៍​បដិសេធ</target>
+      </trans-unit>
+      <trans-unit id="status_htaccessUploadProtection" approved="yes">
+        <source>.htaccess Upload Protection</source>
+        <target state="final">ការការពារ​អាប់ឡូត .htaccess</target>
+      </trans-unit>
+      <trans-unit id="status_installTool" approved="yes">
+        <source>Install Tool</source>
+        <target state="final">ឧបករណ៍​ដំឡើង</target>
+      </trans-unit>
+      <trans-unit id="status_installEnabledTemporarily" approved="yes">
+        <source>The Install Tool is temporarily enabled. Delete the file "%s" when you have finished setting up TYPO3. If not used the Install Tool will be disabled automatically in %s minutes.</source>
+        <target state="final">ឧបករណ៍​ដំឡើង​បាន​បើក​ដំណើរការ​បណ្ដោះអាសន្ន ។ លុប​ហ្វៃល៍ "%s" ពេល​ដែល​អ្នក​ធ្វើការ​កំណត់​​លើ TYPO3 ចប់ ។ បើ​មិន​បាន​ប្រើ ឧបករណ៍​ដំឡើង​នឹង​បិទ​ដោយ​ខ្លួនឯង​ក្នុង​រយៈពេល %s នាទី ។</target>
+      </trans-unit>
+      <trans-unit id="status_updateTaskTitle" approved="yes">
+        <source>System Status Update</source>
+        <target state="final">បច្ចុប្បន្នភាព​ស្ថានភាព​ប្រព័ន្ធ</target>
+      </trans-unit>
+      <trans-unit id="status_updateTaskDescription" approved="yes">
+        <source>Runs a system status check and sends notifications if problems have been found.</source>
+        <target state="final">ដំណើរការ​ការត្រួតពិនិត្យ​ស្ថានភាព​ប្រព័ន្ធ និង ផ្ញើ​ការជូនដំណឹង ប្រសិន​បើ​រក​ឃើញ​មាន​បញ្ហា ។</target>
+      </trans-unit>
+      <trans-unit id="status_updateTask_email_subject" approved="yes">
+        <source>System Status Notification for site %s</source>
+        <target state="final">ជូន​ដំណឹង​អំពី​ស្ថានភាព​ប្រព័ន្ធ​លើ​វែបសាយ %s</target>
+      </trans-unit>
+      <trans-unit id="status_updateTask_email_site" approved="yes">
+        <source>Site</source>
+        <target state="final">វែបសាយ</target>
+      </trans-unit>
+      <trans-unit id="status_updateTask_email_issues" approved="yes">
+        <source>Issues</source>
+        <target state="final">ចេញ​ផ្សាយ</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
