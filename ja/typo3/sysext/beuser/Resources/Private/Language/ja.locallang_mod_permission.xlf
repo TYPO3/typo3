@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814882" source-language="en" datatype="plaintext" original="EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="ja">
+    <header/>
+    <body>
+      <trans-unit id="Save" resname="Save" approved="yes">
+        <source>Save</source>
+        <target state="final">保存</target>
+      </trans-unit>
+      <trans-unit id="4" resname="4" approved="yes">
+        <source>Delete page</source>
+        <target state="final">ページを削除</target>
+      </trans-unit>
+      <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab" approved="yes">
+        <source>Access</source>
+        <target state="final">アクセス権限</target>
+      </trans-unit>
+      <trans-unit id="deleted" resname="deleted" approved="yes">
+        <source>deleted</source>
+        <target state="final">削除済</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
