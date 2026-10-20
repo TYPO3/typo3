@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814992" source-language="en" datatype="plaintext" original="EXT:reports/Resources/Private/Language/locallang_servicereport.xlf" date="2011-10-17T20:22:37Z" product-name="sv" target-language="it">
+    <header/>
+    <body>
+      <trans-unit id="report_title" resname="report_title" approved="yes">
+        <source>Installed Services</source>
+        <target state="final">Servizi installati</target>
+      </trans-unit>
+      <trans-unit id="report_description" resname="report_description" approved="yes">
+        <source>List of all installed services with information and status for each of them.</source>
+        <target state="final">Lista di tutti i servizi installati con informazioni e stato di ciascuno di essi.</target>
+      </trans-unit>
+      <trans-unit id="report_explanation" resname="report_explanation" approved="yes">
+        <source>This report displays a list of installed services, with detailed information about each of them. The services are ordered by type, priority and quality. Unavailable services are highlighted with an error status.</source>
+        <target state="final">Questo report mostra un elenco di servizi installati, con informazioni dettagliate su ciascuno di essi. I servizi sono ordinati per tipo, priorità e qualità. I servizi non disponibili sono evidenziati con uno stato di errore.</target>
+      </trans-unit>
+      <trans-unit id="externals_explanation" resname="externals_explanation" approved="yes">
+        <source>The "Externals" column shows which external programs a given service relies on. If such program is missing or not executable, the service will be unavailable. Search paths for executables are listed at the bottom of this report.</source>
+        <target state="final">La colonna "Esterni" mostra su quali programmi esterni si basa un determinato servizio. Se tale programma è mancante o non eseguibile, il servizio non sarà disponibile. I percorsi di ricerca per eseguibili sono elencati in fondo a questo report.</target>
+      </trans-unit>
+      <trans-unit id="service_type" resname="service_type" approved="yes">
+        <source>Service type: %s</source>
+        <target state="final">Tipo di servizio: %s</target>
+      </trans-unit>
+      <trans-unit id="service" resname="service" approved="yes">
+        <source>Service</source>
+        <target state="final">Servizio</target>
+      </trans-unit>
+      <trans-unit id="description" resname="description" approved="yes">
+        <source>Description</source>
+        <target state="final">Descrizione</target>
+      </trans-unit>
+      <trans-unit id="priority" resname="priority" approved="yes">
+        <source>Priority</source>
+        <target state="final">Priorità</target>
+      </trans-unit>
+      <trans-unit id="quality" resname="quality" approved="yes">
+        <source>Quality</source>
+        <target state="final">Qualità</target>
+      </trans-unit>
+      <trans-unit id="subtypes" resname="subtypes" approved="yes">
+        <source>Subtypes</source>
+        <target state="final">Sottotipi</target>
+      </trans-unit>
+      <trans-unit id="os" resname="os" approved="yes">
+        <source>OS</source>
+        <target state="final">OS</target>
+      </trans-unit>
+      <trans-unit id="externals" resname="externals" approved="yes">
+        <source>Externals</source>
+        <target state="final">Esterni</target>
+      </trans-unit>
+      <trans-unit id="available" resname="available" approved="yes">
+        <source>Available</source>
+        <target state="final">Disponibile</target>
+      </trans-unit>
+      <trans-unit id="any" resname="any" approved="yes">
+        <source>Any</source>
+        <target state="final">Qualsiasi</target>
+      </trans-unit>
+      <trans-unit id="search_paths" resname="search_paths" approved="yes">
+        <source>Configured search paths for external programs</source>
+        <target state="final">Percorsi di ricerca configurati per programmi esterni</target>
+      </trans-unit>
+      <trans-unit id="path" resname="path" approved="yes">
+        <source>Path</source>
+        <target state="final">Percorso</target>
+      </trans-unit>
+      <trans-unit id="valid" resname="valid" approved="yes">
+        <source>Valid</source>
+        <target state="final">Valido</target>
+      </trans-unit>
+      <trans-unit id="no_search_paths" resname="no_search_paths" approved="yes">
+        <source>No search paths configured.</source>
+        <target state="final">Nessun percorso di ricerca configurato.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
