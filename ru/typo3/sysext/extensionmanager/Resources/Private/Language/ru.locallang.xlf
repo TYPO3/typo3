@@ -1,0 +1,705 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814818" source-language="en" datatype="plaintext" original="EXT:extensionmanager/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="workspaces" target-language="ru">
+    <header/>
+    <body>
+      <trans-unit id="extensionManager" resname="extensionManager" approved="yes">
+        <source>Extension Manager</source>
+        <target state="final">Расширения</target>
+      </trans-unit>
+      <trans-unit id="manageExtensions" resname="manageExtensions" approved="yes">
+        <source>Manage Extensions</source>
+        <target state="final">Управление расширениями</target>
+      </trans-unit>
+      <trans-unit id="installExtension" resname="installExtension" approved="yes">
+        <source>Install Extension</source>
+        <target state="final">Установить расширение</target>
+      </trans-unit>
+      <trans-unit id="composerMode.title" resname="composerMode.title" approved="yes">
+        <source>Composer mode</source>
+        <target state="final">Режим composer</target>
+      </trans-unit>
+      <trans-unit id="composerMode.message" resname="composerMode.message" approved="yes">
+        <source>The system is set to composer mode. Please notice that it is not possible to add an extension with the Extension Manager. You have to use composer to add further extensions to your system.</source>
+        <target state="final">Система установлена в режим composer. Обратите внимание, что невозможно добавить расширения через модуль управления расширениями. Необходимо использовать composer для добавления расширений в систему.</target>
+      </trans-unit>
+      <trans-unit id="installedExtensions" resname="installedExtensions" approved="yes">
+        <source>Installed Extensions</source>
+        <target state="final">Установленные расширения</target>
+      </trans-unit>
+      <trans-unit id="getExtensions" resname="getExtensions" approved="yes">
+        <source>Get Extensions</source>
+        <target state="final">Получить расширения</target>
+      </trans-unit>
+      <trans-unit id="showAllVersions" resname="showAllVersions" approved="yes">
+        <source>Show all versions of</source>
+        <target state="final">Показать все версии для</target>
+      </trans-unit>
+      <trans-unit id="extConfTemplate.backToList" resname="extConfTemplate.backToList" approved="yes">
+        <source>Back to list</source>
+        <target state="final">Назад к списку</target>
+      </trans-unit>
+      <trans-unit id="updateScript.headline" resname="updateScript.headline" approved="yes">
+        <source>Update script for %s</source>
+        <target state="final">Скрипт обновления для %s</target>
+      </trans-unit>
+      <trans-unit id="updateScript.none" resname="updateScript.none" approved="yes">
+        <source>No update necessary.</source>
+        <target state="final">Обновление не требуется.</target>
+      </trans-unit>
+      <trans-unit id="button.cancel" resname="button.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Отмена</target>
+      </trans-unit>
+      <trans-unit id="button.details" resname="button.details" approved="yes">
+        <source>Show Details</source>
+        <target state="final">Показать подробности</target>
+      </trans-unit>
+      <trans-unit id="button.remove" resname="button.remove" approved="yes">
+        <source>Remove extension</source>
+        <target state="final">Удалить расширение</target>
+      </trans-unit>
+      <trans-unit id="button.updateExtension" resname="button.updateExtension" approved="yes">
+        <source>Update extension</source>
+        <target state="final">Обновление расширения</target>
+      </trans-unit>
+      <trans-unit id="button.resolveDependencies" resname="button.resolveDependencies" approved="yes">
+        <source>Resolve dependencies</source>
+        <target state="final">Разрешить зависимости</target>
+      </trans-unit>
+      <trans-unit id="label.resolveDependenciesEnableButton" resname="label.resolveDependenciesEnableButton" approved="yes">
+        <source>I understand what this means and I'm able to investigate on possibly occurring issues by myself.</source>
+        <target state="final">Я понимаю, что это значит, и могу самостоятельно решить возможные проблемы.</target>
+      </trans-unit>
+      <trans-unit id="button.resolveDependenciesIgnore" resname="button.resolveDependenciesIgnore" approved="yes">
+        <source>I know what I'm doing, continue anyway</source>
+        <target state="final">Я уверен в своих действиях, продолжить</target>
+      </trans-unit>
+      <trans-unit id="extensionList.update.script" resname="extensionList.update.script" approved="yes">
+        <source>Execute the update script</source>
+        <target state="final">Выполнить скрипт обновления</target>
+      </trans-unit>
+      <trans-unit id="extensionList.downloadsql" resname="extensionList.downloadsql" approved="yes">
+        <source>Download SQL Dump</source>
+        <target state="final">Скачать данные SQL</target>
+      </trans-unit>
+      <trans-unit id="extensionList.remove" resname="extensionList.remove" approved="yes">
+        <source>Remove</source>
+        <target state="final">Удалить</target>
+      </trans-unit>
+      <trans-unit id="extensionList.update" resname="extensionList.update" approved="yes">
+        <source>Update</source>
+        <target state="final">Обновить</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateToVersion" resname="extensionList.updateToVersion" approved="yes">
+        <source>Update to version %s</source>
+        <target state="final">Обновление до версии %s</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateDisabled" resname="extensionList.updateDisabled" approved="yes">
+        <source>An update is available but this operation is currently disabled</source>
+        <target state="final">Обновление доступно, но эта операция сейчас невозможна</target>
+      </trans-unit>
+      <trans-unit id="extensionList.deactivate" resname="extensionList.deactivate" approved="yes">
+        <source>Deactivate</source>
+        <target state="final">Отключить</target>
+      </trans-unit>
+      <trans-unit id="extensionList.activate" resname="extensionList.activate" approved="yes">
+        <source>Activate</source>
+        <target state="final">Задействовать</target>
+      </trans-unit>
+      <trans-unit id="extensionList.downloadzip" resname="extensionList.downloadzip" approved="yes">
+        <source>Download as zip</source>
+        <target state="final">Скачать zip архив</target>
+      </trans-unit>
+      <trans-unit id="extensionList.uploadExtension" resname="extensionList.uploadExtension" approved="yes">
+        <source>Upload Extension .t3x/.zip</source>
+        <target state="final">Загрузить расширение в виде .t3x/.zip</target>
+      </trans-unit>
+      <trans-unit id="extensionList.overwriteExtension" resname="extensionList.overwriteExtension" approved="yes">
+        <source>Overwrite</source>
+        <target state="final">Перезаписать</target>
+      </trans-unit>
+      <trans-unit id="extensionList.overwritingDisabled" resname="extensionList.overwritingDisabled" approved="yes">
+        <source>Extension is already available and overwriting was not enabled</source>
+        <target state="final">Расширение уже имеется на сервере, а перезапись не была разрешена</target>
+      </trans-unit>
+      <trans-unit id="extensionList.loading" resname="extensionList.loading" approved="yes">
+        <source>Loading form...</source>
+        <target state="final">Загрузка формы...</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.update" resname="extensionList.header.update" approved="yes">
+        <source>Upd.</source>
+        <target state="final">Обн.</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.title.update" resname="extensionList.header.title.update" approved="yes">
+        <source>Update</source>
+        <target state="final">Обновить</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.activate" resname="extensionList.header.activate" approved="yes">
+        <source>A/D</source>
+        <target state="final">От./Вк.</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.title.activate" resname="extensionList.header.title.activate" approved="yes">
+        <source>Activate / Deactivate</source>
+        <target state="final">Отключить / Задействовать</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.extensionName" resname="extensionList.header.extensionName" approved="yes">
+        <source>Extension</source>
+        <target state="final">Расширение</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.version" resname="extensionList.header.version" approved="yes">
+        <source>Version</source>
+        <target state="final">Версия</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.extensionKey" resname="extensionList.header.extensionKey" approved="yes">
+        <source>Key</source>
+        <target state="final">Ключ</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.extensionVersion" resname="extensionList.header.extensionVersion" approved="yes">
+        <source>Version</source>
+        <target state="final">Версия</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.extensionActions" resname="extensionList.header.extensionActions" approved="yes">
+        <source>Actions</source>
+        <target state="final">Действия</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.extensionState" resname="extensionList.header.extensionState" approved="yes">
+        <source>State</source>
+        <target state="final">Состояние</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.extensionType" resname="extensionList.header.extensionType" approved="yes">
+        <source>Type</source>
+        <target state="final">Тип</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.uploadComment" resname="extensionList.header.uploadComment" approved="yes">
+        <source>Upload Comment</source>
+        <target state="final">Комментарии по загрузке</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.lastUpdate" resname="extensionList.header.lastUpdate" approved="yes">
+        <source>Last Updated</source>
+        <target state="final">Последнее обновление</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.description" resname="extensionList.header.description" approved="yes">
+        <source>Description</source>
+        <target state="final">Описание</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.author" resname="extensionList.header.author" approved="yes">
+        <source>Author</source>
+        <target state="final">Автор</target>
+      </trans-unit>
+      <trans-unit id="searchTemplate.searchExtensions" resname="searchTemplate.searchExtensions" approved="yes">
+        <source>Search extensions</source>
+        <target state="final">Поиск расширений</target>
+      </trans-unit>
+      <trans-unit id="extensionList.search" resname="extensionList.search" approved="yes">
+        <source>Search</source>
+        <target state="final">Поиск</target>
+      </trans-unit>
+      <trans-unit id="searchTemplate.submitButton" resname="searchTemplate.submitButton" approved="yes">
+        <source>Go</source>
+        <target state="final">Отправить</target>
+      </trans-unit>
+      <trans-unit id="searchTemplate.resetSearchButton" resname="searchTemplate.resetSearchButton" approved="yes">
+        <source>Reset Search</source>
+        <target state="final">Сбросить поиск</target>
+      </trans-unit>
+      <trans-unit id="searchTemplate.yourSearch" resname="searchTemplate.yourSearch" approved="yes">
+        <source>Your search</source>
+        <target state="final">Вы ищите</target>
+      </trans-unit>
+      <trans-unit id="searchTemplate.searchAgain" resname="searchTemplate.searchAgain" approved="yes">
+        <source>Search again</source>
+        <target state="final">Повторить поиск</target>
+      </trans-unit>
+      <trans-unit id="uploadTemplate.uploadButton" resname="uploadTemplate.uploadButton" approved="yes">
+        <source>Upload!</source>
+        <target state="final">Загрузить!</target>
+      </trans-unit>
+      <trans-unit id="uploadTemplate.extensionLabel" resname="uploadTemplate.extensionLabel" approved="yes">
+        <source>Extension</source>
+        <target state="final">Расширение</target>
+      </trans-unit>
+      <trans-unit id="extensionList.removalConfirmation.title" resname="extensionList.removalConfirmation.title" approved="yes">
+        <source>Extension Removal</source>
+        <target state="final">Удаление расширения</target>
+      </trans-unit>
+      <trans-unit id="extensionList.removalConfirmation.message" resname="extensionList.removalConfirmation.message" approved="yes">
+        <source>The extension is currently installed. Uninstall extension?</source>
+        <target state="final">Расширение в данный момент задействовано. Удалить расширение?</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateConfirmation.title" resname="extensionList.updateConfirmation.title" approved="yes">
+        <source>Update?</source>
+        <target state="final">Обновить?</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateConfirmation.message" resname="extensionList.updateConfirmation.message" approved="yes">
+        <source>Update Comments</source>
+        <target state="final">Обновить комментарии</target>
+      </trans-unit>
+      <trans-unit id="extensionList.databaseImport" resname="extensionList.databaseImport" approved="yes">
+        <source>The static database data has changed. You should re-import the data.</source>
+        <target state="final">Статическая база данных изменилась. Вы должны повторно импортировать данные.</target>
+      </trans-unit>
+      <trans-unit id="extensionList.databaseReload" resname="extensionList.databaseReload" approved="yes">
+        <source>Nothing has changed since last import. You might want to reload static database data.</source>
+        <target state="final">С момента последнего импорта ничего не изменилось. Возможно, вы захотите перезагрузить статические данные базы данных.</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateConfirmation.questionVersionComments" resname="extensionList.updateConfirmation.questionVersionComments" approved="yes">
+        <source>Version Comments</source>
+        <target state="final">Комментарии по версии</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFlashMessage.title" resname="extensionList.updateFlashMessage.title" approved="yes">
+        <source>Extension Update</source>
+        <target state="final">Обновление расширения</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFlashMessage.body" resname="extensionList.updateFlashMessage.body" approved="yes">
+        <source>%s was updated!</source>
+        <target state="final">%s загружено!</target>
+      </trans-unit>
+      <trans-unit id="extensionList.removalConfirmation.question" resname="extensionList.removalConfirmation.question" approved="yes">
+        <source>Are you sure you want to remove the extension?</source>
+        <target state="final">Подтверждаете удаление расширения?</target>
+      </trans-unit>
+      <trans-unit id="dependencyCheck.unresolvedDependencies.title" resname="dependencyCheck.unresolvedDependencies.title" approved="yes">
+        <source>Please read this carefully</source>
+        <target state="final">Внимательно прочитайте</target>
+      </trans-unit>
+      <trans-unit id="dependencyCheck.unresolvedDependencies.message" resname="dependencyCheck.unresolvedDependencies.message" approved="yes">
+        <source><![CDATA[
+					If you continue installing the extension, all dependency checks will be turned off.
+					<ul>
+						<li>Required extensions are tried to be fetched from TER (if they do not yet exist in the system)</li>
+						<li>Version dependency checks are skipped</li>
+					</ul>
+					<strong>
+						Be aware that an installation without dependency checks may turn your installation unusable.<br />
+						In such a case manual intervention is required.
+					</strong>
+				]]></source>
+        <target state="final"><![CDATA[
+					Если продолжить установку расширения, проверка зависимостей будет отключена. &lt;ul&gt; &lt;li&gt;Требуемые расширения будут запрошены из TER (если они отсутствуют в системе)&lt;/li&gt; &lt;li&gt;Номер версии зависимостей не проверяется&lt;/li&gt; &lt;/ul&gt; &lt;strong&gt; Установка без проверки зависимостей может привести к краху системы.&lt;br /&gt; Если это произошло, понадобится ручное вмешательство. &lt;/strong&gt;
+				]]></target>
+      </trans-unit>
+      <trans-unit id="dependencyCheck.unresolvedDependencies.question" resname="dependencyCheck.unresolvedDependencies.question" approved="yes">
+        <source>Are you sure you want to proceed?</source>
+        <target state="final">Настаиваете на продолжении?</target>
+      </trans-unit>
+      <trans-unit id="dependencyCheck.unresolvedDependencies.proceed" resname="dependencyCheck.unresolvedDependencies.proceed" approved="yes">
+        <source>I know what I'm doing, install the extension!</source>
+        <target state="final">Я знаю, что делаю, установить расширение!</target>
+      </trans-unit>
+      <trans-unit id="dependencyCheck.headline" resname="dependencyCheck.headline" approved="yes">
+        <source>The following errors were found while trying to install "%s"</source>
+        <target state="final">Попытка установки повлекла следующие ошибки "%s"</target>
+      </trans-unit>
+      <trans-unit id="dependencyCheck.requiredExtension" resname="dependencyCheck.requiredExtension" approved="yes">
+        <source>Required extension "%s"</source>
+        <target state="final">Требуется расширение "%s"</target>
+      </trans-unit>
+      <trans-unit id="downloadExtension.dependencies.headline" resname="downloadExtension.dependencies.headline" approved="yes">
+        <source>The following dependencies have to be resolved before installation:
+
+
+				</source>
+        <target state="final">Перед установкой необходимо разрешить следующие зависимости:
+
+
+				</target>
+      </trans-unit>
+      <trans-unit id="downloadExtension.dependencies.extensionWithVersion" resname="downloadExtension.dependencies.extensionWithVersion" approved="yes">
+        <source>%1$s (new version %2$s)</source>
+        <target state="final">%1$s (новая версия %2$s)</target>
+      </trans-unit>
+      <trans-unit id="downloadExtension.dependencies.typeHeadline" resname="downloadExtension.dependencies.typeHeadline" xml:space="preserve" approved="yes">
+				<source>&lt;h3&gt;Extensions marked for %s:&lt;/h3&gt;
+%s
+
+
+				</source>
+			<target state="final">&lt;h3&gt;Необходимо %s расширения:&lt;/h3&gt;
+%s
+
+
+				</target></trans-unit>
+      <trans-unit id="downloadExtension.dependencies.resolveAutomatically" resname="downloadExtension.dependencies.resolveAutomatically" approved="yes">
+        <source>Shall these dependencies be resolved automatically?</source>
+        <target state="final">Можно ли автоматически разрешить эти зависимости?</target>
+      </trans-unit>
+      <trans-unit id="downloadExtension.dependencies.errorTitle" resname="downloadExtension.dependencies.errorTitle" approved="yes">
+        <source>Dependencies could not be resolved</source>
+        <target state="final">Невозможно разрешить зависимости</target>
+      </trans-unit>
+      <trans-unit id="downloadExtension.dependencies.errorMessage" resname="downloadExtension.dependencies.errorMessage" approved="yes">
+        <source>The dependencies of the following Extensions could not be resolved</source>
+        <target state="final">Для следующих расширений не удалось решить зависимости</target>
+      </trans-unit>
+      <trans-unit id="downloadExtension.dependencyType.download" resname="downloadExtension.dependencyType.download" approved="yes">
+        <source>download</source>
+        <target state="final">загрузить</target>
+      </trans-unit>
+      <trans-unit id="downloadExtension.dependencyType.install" resname="downloadExtension.dependencyType.install" approved="yes">
+        <source>install</source>
+        <target state="final">установить</target>
+      </trans-unit>
+      <trans-unit id="downloadExtension.dependencyType.update" resname="downloadExtension.dependencyType.update" approved="yes">
+        <source>update</source>
+        <target state="final">обновить</target>
+      </trans-unit>
+      <trans-unit id="downloadExtension.updateExtension.error" resname="downloadExtension.updateExtension.error" approved="yes">
+        <source>Error while updating extension</source>
+        <target state="final">Ошибка в процессе обновления расширения</target>
+      </trans-unit>
+      <trans-unit id="extensionList.dependenciesResolveDownloadError.title" resname="extensionList.dependenciesResolveDownloadError.title" approved="yes">
+        <source>Download Error</source>
+        <target state="final">Ошибка при загрузке</target>
+      </trans-unit>
+      <trans-unit id="extensionList.dependenciesResolveDownloadSuccess.message" resname="extensionList.dependenciesResolveDownloadSuccess.message" approved="yes">
+        <source>Your installation of {0} was successful.</source>
+        <target state="final">Завершена установка {0}.</target>
+      </trans-unit>
+      <trans-unit id="extensionList.dependenciesResolveDownloadSuccess.message.downloadOnly" resname="extensionList.dependenciesResolveDownloadSuccess.message.downloadOnly" approved="yes">
+        <source>Your download of {0} was successful.</source>
+        <target state="final">Успешная загрузка {0}.</target>
+      </trans-unit>
+      <trans-unit id="extensionList.dependenciesResolveDownloadSuccess.header" resname="extensionList.dependenciesResolveDownloadSuccess.header" approved="yes">
+        <source>Log</source>
+        <target state="final">Отчет</target>
+      </trans-unit>
+      <trans-unit id="extensionList.dependenciesResolveDownloadSuccess.item" resname="extensionList.dependenciesResolveDownloadSuccess.item" approved="yes">
+        <source>Extensions</source>
+        <target state="final">Расширения</target>
+      </trans-unit>
+      <trans-unit id="extensionList.dependenciesResolveFlashMessage.title" resname="extensionList.dependenciesResolveFlashMessage.title" approved="yes">
+        <source>{0} installed.</source>
+        <target state="final">{0} установлено.</target>
+      </trans-unit>
+      <trans-unit id="extensionList.dependenciesResolveFlashMessage.title.downloadOnly" resname="extensionList.dependenciesResolveFlashMessage.title.downloadOnly" approved="yes">
+        <source>{0} downloaded.</source>
+        <target state="final">{0} загружено.</target>
+      </trans-unit>
+      <trans-unit id="extensionList.uploadFlashMessage.title" resname="extensionList.uploadFlashMessage.title" approved="yes">
+        <source>Extension Upload</source>
+        <target state="final">Загрузка расширения</target>
+      </trans-unit>
+      <trans-unit id="extensionList.uploadFlashMessage.message" resname="extensionList.uploadFlashMessage.message" approved="yes">
+        <source>%s was uploaded!</source>
+        <target state="final">{0} загружено!</target>
+      </trans-unit>
+      <trans-unit id="extensionList.installedFlashMessage.message" resname="extensionList.installedFlashMessage.message" approved="yes">
+        <source>%s was installed!</source>
+        <target state="final">%s было установлено!</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFromTerFlashMessage.title" resname="extensionList.updateFromTerFlashMessage.title" approved="yes">
+        <source>Update Extension List</source>
+        <target state="final">Обновление списка расширений</target>
+      </trans-unit>
+      <trans-unit id="extensionList.downloadViewHelper.submit" resname="extensionList.downloadViewHelper.submit" approved="yes">
+        <source>Import and Install</source>
+        <target state="final">Импорт и установка</target>
+      </trans-unit>
+      <trans-unit id="extensionList.downloadViewHelper.submit.downloadOnly" resname="extensionList.downloadViewHelper.submit.downloadOnly" approved="yes">
+        <source>Import</source>
+        <target state="final">Импорт</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.label" resname="extensionList.showAllVersions.label" approved="yes">
+        <source>Show all versions</source>
+        <target state="final">Показать все версии</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.extensionKey" resname="extensionList.showAllVersions.extensionKey" approved="yes">
+        <source>Extension key</source>
+        <target state="final">Идентификатор</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.version" resname="extensionList.showAllVersions.version" approved="yes">
+        <source>Version</source>
+        <target state="final">Версия</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.lastUploaded" resname="extensionList.showAllVersions.lastUploaded" approved="yes">
+        <source>Last uploaded</source>
+        <target state="final">Дата последней загрузки</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.downloads" resname="extensionList.showAllVersions.downloads" approved="yes">
+        <source>Downloads</source>
+        <target state="final">Количество загрузок</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.category" resname="extensionList.showAllVersions.category" approved="yes">
+        <source>Category</source>
+        <target state="final">Категория</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.manual" resname="extensionList.showAllVersions.manual" approved="yes">
+        <source>Manual</source>
+        <target state="final">Руководство пользователя</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.author" resname="extensionList.showAllVersions.author" approved="yes">
+        <source>Author</source>
+        <target state="final">Автор</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.readOnline" resname="extensionList.showAllVersions.readOnline" approved="yes">
+        <source>Read online</source>
+        <target state="final">Читать онлайн</target>
+      </trans-unit>
+      <trans-unit id="extensionList.remove.message" resname="extensionList.remove.message" approved="yes">
+        <source>Extension "%s" was removed successfully!</source>
+        <target state="final">Успешно удалено расширение "%s"!</target>
+      </trans-unit>
+      <trans-unit id="extensionList.distribution.key" resname="extensionList.distribution.key" approved="yes">
+        <source>Key</source>
+        <target state="final">Ключ</target>
+      </trans-unit>
+      <trans-unit id="extensionList.distribution.author" resname="extensionList.distribution.author" approved="yes">
+        <source>Author</source>
+        <target state="final">Автор</target>
+      </trans-unit>
+      <trans-unit id="extensionList.distribution.title" resname="extensionList.distribution.title" approved="yes">
+        <source>Title</source>
+        <target state="final">Название</target>
+      </trans-unit>
+      <trans-unit id="extensionList.distribution.version" resname="extensionList.distribution.version" approved="yes">
+        <source>Version</source>
+        <target state="final">Версия</target>
+      </trans-unit>
+      <trans-unit id="extensionList.distribution.downloads" resname="extensionList.distribution.downloads" approved="yes">
+        <source>Downloads</source>
+        <target state="final">Количество загрузок</target>
+      </trans-unit>
+      <trans-unit id="extensionList.distribution.lastUpdated" resname="extensionList.distribution.lastUpdated" approved="yes">
+        <source>Last Update</source>
+        <target state="final">Последнее обновление</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showUnsuitableDistributions" resname="extensionList.showUnsuitableDistributions" approved="yes">
+        <source>Show also distributions that are not suitable for this TYPO3 version</source>
+        <target state="final">Показать дистрибутивы не подходящие для данной версии TYPO3</target>
+      </trans-unit>
+      <trans-unit id="extensionList.officialDistribution" resname="extensionList.officialDistribution" approved="yes">
+        <source>Official distribution</source>
+        <target state="final">Официальный дистрибутив</target>
+      </trans-unit>
+      <trans-unit id="distributions" resname="distributions" approved="yes">
+        <source>Get preconfigured distribution</source>
+        <target state="final">Получить готовые сборки</target>
+      </trans-unit>
+      <trans-unit id="extensionList.installDistribution" resname="extensionList.installDistribution" approved="yes">
+        <source>Install</source>
+        <target state="final">Установить</target>
+      </trans-unit>
+      <trans-unit id="extensionList.installImpexp" resname="extensionList.installImpexp" approved="yes">
+        <source>Please install the Import/Export (impexp) extension to enable distribution support.</source>
+        <target state="final">Для включения поддержки развёртки установите расширение Импорт/экспорт Import/Export (impexp).</target>
+      </trans-unit>
+      <trans-unit id="distribution.installImpexp" resname="distribution.installImpexp" approved="yes">
+        <source>Install impexp</source>
+        <target state="final">Установить impexp</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFromTer.label" resname="extensionList.updateFromTer.label" approved="yes">
+        <source>Retrieving extension list from TYPO3 Extension Repository (TER)...</source>
+        <target state="final">Получение списка расширений из репозитория расширений TYPO3 (TER)...</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFromTer.buttonLabel" resname="extensionList.updateFromTer.buttonLabel" approved="yes">
+        <source>Update now</source>
+        <target state="final">Обновить сейчас</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFromTer.lastUpdate.label" resname="extensionList.updateFromTer.lastUpdate.label" approved="yes">
+        <source>Last update</source>
+        <target state="final">Последнее обновление</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFromTer.lastUpdate.timeSinceLastUpdateLabel" resname="extensionList.updateFromTer.lastUpdate.timeSinceLastUpdateLabel" approved="yes">
+        <source>Time since last update</source>
+        <target state="final">Время с последнего обновления</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFromTer.lastUpdate.noInfo" resname="extensionList.updateFromTer.lastUpdate.noInfo" approved="yes">
+        <source>unknown</source>
+        <target state="final">нет данных</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFromTer.lastUpdate.fullTimeFormat" resname="extensionList.updateFromTer.lastUpdate.fullTimeFormat" approved="yes">
+        <source>Y-m-d H:i:s</source>
+        <target state="final">Y-m-d H:i:s</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFromTer.lastUpdate.timeOfLastUpdate" resname="extensionList.updateFromTer.lastUpdate.timeOfLastUpdate" approved="yes">
+        <source>Time of last update: </source>
+        <target state="final">Время последнего обновления: </target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFromTer.lastUpdate.noTimeOfLastUpdate" resname="extensionList.updateFromTer.lastUpdate.noTimeOfLastUpdate" approved="yes">
+        <source>No last update time known.</source>
+        <target state="final">Время последнего обновления неизвестно.</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFromTer.never" resname="extensionList.updateFromTer.never" approved="yes">
+        <source>Never</source>
+        <target state="final">Никогда</target>
+      </trans-unit>
+      <trans-unit id="extensionList.uninstall.dependencyError" resname="extensionList.uninstall.dependencyError" approved="yes">
+        <source>Cannot deactivate extension '%s' - The extension(s) '%s' depend on it.</source>
+        <target state="final">Невозможно деактивировать расширение '%s' - другие расширения (%s) зависят от него.</target>
+      </trans-unit>
+      <trans-unit id="distribution.error.headline" resname="distribution.error.headline" approved="yes">
+        <source>Could not install distribution '%s'</source>
+        <target state="final">Невозможно установить разработку '%s'</target>
+      </trans-unit>
+      <trans-unit id="distribution.welcome.headline" resname="distribution.welcome.headline" approved="yes">
+        <source>Congratulations...</source>
+        <target state="final">Поздравляем!!!</target>
+      </trans-unit>
+      <trans-unit id="distribution.welcome.message" resname="distribution.welcome.message" approved="yes">
+        <source>You successfully installed the distribution '%s'</source>
+        <target state="final">Вы успешно установили сборку '%s'</target>
+      </trans-unit>
+      <trans-unit id="distribution.welcome.nextSteps" resname="distribution.welcome.nextSteps" approved="yes">
+        <source>Now you can</source>
+        <target state="final">Теперь вы можете</target>
+      </trans-unit>
+      <trans-unit id="distribution.welcome.openViewModule" resname="distribution.welcome.openViewModule" approved="yes">
+        <source>View your website</source>
+        <target state="final">Посмотреть ваш новый сайт</target>
+      </trans-unit>
+      <trans-unit id="distribution.welcome.openPageModule" resname="distribution.welcome.openPageModule" approved="yes">
+        <source>Start editing your website</source>
+        <target state="final">Начать редактирование вашего сайта</target>
+      </trans-unit>
+      <trans-unit id="distribution.dependency.headline" resname="distribution.dependency.headline" approved="yes">
+        <source>Dependencies, conflicts and suggestions</source>
+        <target state="final">Зависимости, конфликты и предложения</target>
+      </trans-unit>
+      <trans-unit id="distribution.dependency.identifier" resname="distribution.dependency.identifier" approved="yes">
+        <source>Identifier</source>
+        <target state="final">Идентификатор</target>
+      </trans-unit>
+      <trans-unit id="distribution.dependency.type" resname="distribution.dependency.type" approved="yes">
+        <source>Type</source>
+        <target state="final">Тип</target>
+      </trans-unit>
+      <trans-unit id="distribution.dependency.version" resname="distribution.dependency.version" approved="yes">
+        <source>Version</source>
+        <target state="final">Версия</target>
+      </trans-unit>
+      <trans-unit id="task.updateExtensionListTask.name" resname="task.updateExtensionListTask.name" approved="yes">
+        <source>Update extension list</source>
+        <target state="final">Обновление списка расширений</target>
+      </trans-unit>
+      <trans-unit id="task.updateExtensionListTask.description" resname="task.updateExtensionListTask.description" approved="yes">
+        <source>Update TER extension list on a regular basis. Once a day is a good interval.</source>
+        <target state="final">Регулярное обновление списка доступных в TER расширений. Хороший выбор – раз в день.</target>
+      </trans-unit>
+      <trans-unit id="report.status.mainRepository.title" resname="report.status.mainRepository.title" approved="yes">
+        <source>Update status of typo3.org main repository extension list</source>
+        <target state="final">Статус обновления списка расширений основного репозитория typo3.org</target>
+      </trans-unit>
+      <trans-unit id="report.status.mainRepository.notFound.value" resname="report.status.mainRepository.notFound.value" approved="yes">
+        <source>Error</source>
+        <target state="final">Ошибка</target>
+      </trans-unit>
+      <trans-unit id="report.status.mainRepository.notFound.message" resname="report.status.mainRepository.notFound.message" approved="yes">
+        <source>The typo3.org extension repository was not found. Please import the main typo3.org extension repository in the install tool wizard.</source>
+        <target state="final">Не найден репозиторий расширений на typo3.org. Импортируйте основной репозиторий расширений на typo3.org в мастере install tool.</target>
+      </trans-unit>
+      <trans-unit id="report.status.mainRepository.notUpToDate.value" resname="report.status.mainRepository.notUpToDate.value" approved="yes">
+        <source>Extension list is not up to date!</source>
+        <target state="final">Не актуален список расширений!</target>
+      </trans-unit>
+      <trans-unit id="report.status.mainRepository.notUpToDate.message" resname="report.status.mainRepository.notUpToDate.message" approved="yes">
+        <source>The Main Repository extension list is older than 7 days. Please update it in the Extension manager or Scheduler.</source>
+        <target state="final">Список расширений основного репозитория старше недели. Обновите его в модуле управления расширениями или в Планировщиками.</target>
+      </trans-unit>
+      <trans-unit id="report.status.mainRepository.upToDate.value" resname="report.status.mainRepository.upToDate.value" approved="yes">
+        <source>OK</source>
+        <target state="final">OK</target>
+      </trans-unit>
+      <trans-unit id="report.status.loadedExtensions.title" resname="report.status.loadedExtensions.title" approved="yes">
+        <source>Security status of loaded extensions</source>
+        <target state="final">Статус безопасности загруженных расширений</target>
+      </trans-unit>
+      <trans-unit id="report.status.loadedExtensions.noInsecureExtensionLoaded.value" resname="report.status.loadedExtensions.noInsecureExtensionLoaded.value" approved="yes">
+        <source>OK</source>
+        <target state="final">OK</target>
+      </trans-unit>
+      <trans-unit id="report.status.loadedExtensions.insecureExtensionLoaded.value" resname="report.status.loadedExtensions.insecureExtensionLoaded.value" approved="yes">
+        <source>%s insecure extension(s) found</source>
+        <target state="final">Найдено %s небезопасное(ых) расширение(ий)</target>
+      </trans-unit>
+      <trans-unit id="report.status.loadedExtensions.insecureExtensionLoaded.message" resname="report.status.loadedExtensions.insecureExtensionLoaded.message" approved="yes">
+        <source>The following extensions are insecure and usage might damage your system. Please update these extensions as soon as possible or remove them from your system:&lt;br&gt;&lt;br&gt;%s</source>
+        <target state="final">Небезопасны следующие расширения и их использование может повредить системе. По возможности быстрее обновите их или удалите из своей системы:&lt;br&gt;&lt;br&gt;%s</target>
+      </trans-unit>
+      <trans-unit id="report.status.loadedExtensions.insecureExtensionLoaded.message.extension" resname="report.status.loadedExtensions.insecureExtensionLoaded.message.extension" approved="yes">
+        <source>&lt;strong&gt;%1$s&lt;/strong&gt; (version %2$s)&lt;br&gt;</source>
+        <target state="final">&lt;strong&gt;%1$s&lt;/strong&gt; (версия %2$s)&lt;br&gt;</target>
+      </trans-unit>
+      <trans-unit id="report.status.existingExtensions.title" resname="report.status.existingExtensions.title" approved="yes">
+        <source>Security status of existing, but not loaded extensions</source>
+        <target state="final">Статус безопасности имеющихся, но не задействованных расширений</target>
+      </trans-unit>
+      <trans-unit id="report.status.existingExtensions.noInsecureExtensionExists.value" resname="report.status.existingExtensions.noInsecureExtensionExists.value" approved="yes">
+        <source>OK</source>
+        <target state="final">OK</target>
+      </trans-unit>
+      <trans-unit id="report.status.existingExtensions.insecureExtensionExists.value" resname="report.status.existingExtensions.insecureExtensionExists.value" approved="yes">
+        <source>%s insecure extension(s) found</source>
+        <target state="final">Найдено %s небезопасное(ых) расширение(ий)</target>
+      </trans-unit>
+      <trans-unit id="report.status.existingExtensions.insecureExtensionExists.message" resname="report.status.existingExtensions.insecureExtensionExists.message" approved="yes">
+        <source>The following extensions were found on your system, but are currently not installed. Please delete the extensions using the extension manager:&lt;br&gt;&lt;br&gt;%s</source>
+        <target state="final">В текущей системе были найдены следующие не задействованные на текущий момент расширения. Удалите их через модуль управления расширениями: &lt;br&gt;&lt;br&gt;%s</target>
+      </trans-unit>
+      <trans-unit id="report.status.existingExtensions.insecureExtensionExists.message.extension" resname="report.status.existingExtensions.insecureExtensionExists.message.extension" approved="yes">
+        <source>&lt;strong&gt;%1$s&lt;/strong&gt; (version %2$s)&lt;br&gt;</source>
+        <target state="final">&lt;strong&gt;%1$s&lt;/strong&gt; (версия %2$s)&lt;br&gt;</target>
+      </trans-unit>
+      <trans-unit id="report.status.loadedOutdatedExtensions.title" resname="report.status.loadedOutdatedExtensions.title" approved="yes">
+        <source>Outdated status of loaded extensions</source>
+        <target state="final">Устаревшие расширения среди загруженных</target>
+      </trans-unit>
+      <trans-unit id="report.status.loadedOutdatedExtensions.noOutdatedExtensionLoaded.value" resname="report.status.loadedOutdatedExtensions.noOutdatedExtensionLoaded.value" approved="yes">
+        <source>OK</source>
+        <target state="final">OK</target>
+      </trans-unit>
+      <trans-unit id="report.status.loadedOutdatedExtensions.outdatedExtensionLoaded.value" resname="report.status.loadedOutdatedExtensions.outdatedExtensionLoaded.value" approved="yes">
+        <source>%s outdated extension(s) found</source>
+        <target state="final">найдено %s устаревших расширений</target>
+      </trans-unit>
+      <trans-unit id="report.status.loadedOutdatedExtensions.outdatedExtensionLoaded.message" resname="report.status.loadedOutdatedExtensions.outdatedExtensionLoaded.message" approved="yes">
+        <source>The following extensions are outdated and may not be compatible with your installation. Please make sure these extensions are compatible and ask the extension author to publish updates:&lt;br&gt;&lt;br&gt;%s</source>
+        <target state="final">Следующие расширения устарели и могут быть несовместимы с вашей сборкой. Убедитесь, что эти расширения совместимы, и попросите их автора выпустить обновления:&lt;br&gt;&lt;br&gt;%s</target>
+      </trans-unit>
+      <trans-unit id="report.status.loadedOutdatedExtensions.outdatedExtensionLoaded.message.extension" resname="report.status.loadedOutdatedExtensions.outdatedExtensionLoaded.message.extension" approved="yes">
+        <source>&lt;strong&gt;%1$s&lt;/strong&gt; (version %2$s)&lt;br&gt;</source>
+        <target state="final">&lt;strong&gt;%1$s&lt;/strong&gt; (версия %2$s)&lt;br&gt;</target>
+      </trans-unit>
+      <trans-unit id="report.status.existingOutdatedExtensions.title" resname="report.status.existingOutdatedExtensions.title" approved="yes">
+        <source>Outdated status of existing, but not loaded extensions</source>
+        <target state="final">Устаревшие расширения среди имеющихся, но не задействованных</target>
+      </trans-unit>
+      <trans-unit id="report.status.existingOutdatedExtensions.noOutdatedExtensionExists.value" resname="report.status.existingOutdatedExtensions.noOutdatedExtensionExists.value" approved="yes">
+        <source>OK</source>
+        <target state="final">OK</target>
+      </trans-unit>
+      <trans-unit id="report.status.existingOutdatedExtensions.outdatedExtensionExists.value" resname="report.status.existingOutdatedExtensions.outdatedExtensionExists.value" approved="yes">
+        <source>%s outdated extension(s) found</source>
+        <target state="final">найдено %s устаревших расширений</target>
+      </trans-unit>
+      <trans-unit id="report.status.existingOutdatedExtensions.outdatedExtensionExists.message" resname="report.status.existingOutdatedExtensions.outdatedExtensionExists.message" approved="yes">
+        <source>The following extensions were found on your system, but are currently not installed. Please make sure they are compatible with your system before installing them:&lt;br&gt;&lt;br&gt;%s</source>
+        <target state="final">Следующие устаревшие расширения присутствуют в системе, но не задействованы. Убедитесь, что они совместимы с вашей сборкой перед их активацией:&lt;br&gt;&lt;br&gt;%s</target>
+      </trans-unit>
+      <trans-unit id="report.status.existingOutdatedExtensions.outdatedExtensionExists.message.extension" resname="report.status.existingOutdatedExtensions.outdatedExtensionExists.message.extension" approved="yes">
+        <source>&lt;strong&gt;%1$s&lt;/strong&gt; (version %2$s)&lt;br&gt;</source>
+        <target state="final">&lt;strong&gt;%1$s&lt;/strong&gt; (версия %2$s)&lt;br&gt;</target>
+      </trans-unit>
+      <trans-unit id="fileHandling.couldNotRemoveDirectory" resname="fileHandling.couldNotRemoveDirectory" approved="yes">
+        <source>ERROR: Could not remove extension directory "%s". Reasons</source>
+        <target state="final">ОШИБКА: невозможно удалить директорию расширения "%s". Причины</target>
+      </trans-unit>
+      <trans-unit id="fileHandling.couldNotCreateDirectory" resname="fileHandling.couldNotCreateDirectory" approved="yes">
+        <source>ERROR: Could not create extension directory "%s"!</source>
+        <target state="final">ОШИБКА: невозможно создать директорию расширения "%s"!</target>
+      </trans-unit>
+      <trans-unit id="fileHandling.installPathWasNoDirectory" resname="fileHandling.installPathWasNoDirectory" approved="yes">
+        <source>ERROR: The extension install path "%s" was no directory!</source>
+        <target state="final">ОШИБКА: путь установки расширения "%s" не является каталогом!</target>
+      </trans-unit>
+      <trans-unit id="config.automaticInstallation" resname="config.automaticInstallation" approved="yes">
+        <source>Install extensions automatically after download from TER or file upload</source>
+        <target state="final">Автоматическая установка расширений после загрузки из TER или файлов</target>
+      </trans-unit>
+      <trans-unit id="config.offlineMode" resname="config.offlineMode" approved="yes">
+        <source>Disable TER connection and hide menu items</source>
+        <target state="final">Отключить подключение TER и скрыть пункты меню</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
