@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814781" source-language="en" datatype="plaintext" original="EXT:belog/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:32Z" product-name="belog" target-language="he">
+    <header/>
+    <body>
+      <trans-unit id="actionLogin" resname="actionLogin" approved="yes">
+        <source>Login</source>
+        <target state="final">כניסה</target>
+      </trans-unit>
+      <trans-unit id="type_255" resname="type_255" approved="yes">
+        <source>LOGIN</source>
+        <target state="final">כניסה</target>
+      </trans-unit>
+      <trans-unit id="action_255_1" resname="action_255_1" approved="yes">
+        <source>LOGIN</source>
+        <target state="final">כניסה</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
