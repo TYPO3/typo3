@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415815005" source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/locallang_info.xlf" date="2011-10-17T20:22:37Z" product-name="tstemplate" target-language="cs">
+    <header/>
+    <body>
+      <trans-unit id="delete" resname="delete" approved="yes">
+        <source>Delete</source>
+        <target state="final">Odstranit</target>
+      </trans-unit>
+      <trans-unit id="toTop" resname="toTop" approved="yes">
+        <source>To top</source>
+        <target state="final">Na začátek</target>
+      </trans-unit>
+      <trans-unit id="fileChanged" resname="fileChanged" approved="yes">
+        <source>File changed</source>
+        <target state="final">Soubor změněn</target>
+      </trans-unit>
+      <trans-unit id="resourceUpdated" resname="resourceUpdated" approved="yes">
+        <source>Resource '%s' has been updated.</source>
+        <target state="final">Zdroj "%s" byl aktualizován.</target>
+      </trans-unit>
+      <trans-unit id="templateInformation" resname="templateInformation" approved="yes">
+        <source>Template information</source>
+        <target state="final">Informace šablony</target>
+      </trans-unit>
+      <trans-unit id="title" resname="title" approved="yes">
+        <source>Title</source>
+        <target state="final">Titulek</target>
+      </trans-unit>
+      <trans-unit id="sitetitle" resname="sitetitle" approved="yes">
+        <source>Sitetitle</source>
+        <target state="final">Titulek webu</target>
+      </trans-unit>
+      <trans-unit id="description" resname="description" approved="yes">
+        <source>Description</source>
+        <target state="final">Popis</target>
+      </trans-unit>
+      <trans-unit id="allowedExtensions" resname="allowedExtensions" approved="yes">
+        <source>Allowed extensions</source>
+        <target state="final">Povolené přípony</target>
+      </trans-unit>
+      <trans-unit id="maxFilesize" resname="maxFilesize" approved="yes">
+        <source>Max filesize</source>
+        <target state="final">Maximální velikost souboru</target>
+      </trans-unit>
+      <trans-unit id="uploadResource" resname="uploadResource" approved="yes">
+        <source>Upload resource</source>
+        <target state="final">Nahrát zdroj</target>
+      </trans-unit>
+      <trans-unit id="newTextResource" resname="newTextResource" approved="yes">
+        <source>New text resource (enter name)</source>
+        <target state="final">Nový textový zdroj (zadejte název)</target>
+      </trans-unit>
+      <trans-unit id="copyResource" resname="copyResource" approved="yes">
+        <source>Make a copy of resource</source>
+        <target state="final">Vytvořit kopii zdroje</target>
+      </trans-unit>
+      <trans-unit id="updateResourceList" resname="updateResourceList" approved="yes">
+        <source>Update resource list</source>
+        <target state="final">Aktualizovat seznam zdrojů</target>
+      </trans-unit>
+      <trans-unit id="constants" resname="constants" approved="yes">
+        <source>Constants</source>
+        <target state="final">Konstanty</target>
+      </trans-unit>
+      <trans-unit id="file" resname="file" approved="yes">
+        <source>File</source>
+        <target state="final">Soubor</target>
+      </trans-unit>
+      <trans-unit id="editResource" resname="editResource" approved="yes">
+        <source>Edit Resource</source>
+        <target state="final">Upravit zdroj</target>
+      </trans-unit>
+      <trans-unit id="filesizeExceeded" resname="filesizeExceeded" approved="yes">
+        <source>Filesize exceeded %s KBytes</source>
+        <target state="final">Velikost souboru překročila %s KBytů</target>
+      </trans-unit>
+      <trans-unit id="notAllowed" resname="notAllowed" approved="yes">
+        <source>Files larger than %s KBytes are not allowed to be edited.</source>
+        <target state="final">Soubory větší než %s KBytů není dovoleno upravovat.</target>
+      </trans-unit>
+      <trans-unit id="setup" resname="setup" approved="yes">
+        <source>Setup</source>
+        <target state="final">Nastavení</target>
+      </trans-unit>
+      <trans-unit id="resources" resname="resources" approved="yes">
+        <source>Resources</source>
+        <target state="final">Zdroje</target>
+      </trans-unit>
+      <trans-unit id="editToView" resname="editToView" approved="yes">
+        <source>(edit to view, %s lines)</source>
+        <target state="final">(upravte pro zobrazení, %s řádků)</target>
+      </trans-unit>
+      <trans-unit id="editTemplateRecord" resname="editTemplateRecord" approved="yes">
+        <source>Edit the whole template record</source>
+        <target state="final">Upravit celý záznam šablony</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
