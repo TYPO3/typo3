@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:felogin/Resources/Private/Language/Database.xlf" date="2011-10-17T20:22:32Z" product-name="felogin" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="tt_content.CType_pi1">
+        <source>Website User Login</source>
+        <target>crwdns55784:0crwdne55784:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.CType.felogin_login.title">
+        <source>Login Form</source>
+        <target>crwdns82521:0crwdne82521:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.CType.felogin_login.description">
+        <source>Login/logout form used to password protect pages allowing only authorised website users and groups access.</source>
+        <target>crwdns82523:0crwdne82523:0</target>
+      </trans-unit>
+      <trans-unit id="felogin_redirectPid">
+        <source>Redirect at Login to Page (felogin)</source>
+        <target>crwdns55786:0crwdne55786:0</target>
+      </trans-unit>
+      <trans-unit id="felogin_forgotHash">
+        <source>Forgot hash</source>
+        <target>crwdns55788:0crwdne55788:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.general_header">
+        <source>General Header</source>
+        <target>crwdns55790:0crwdne55790:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.general_message">
+        <source>General Message</source>
+        <target>crwdns55792:0crwdne55792:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.redirect_header">
+        <source>Redirect Header</source>
+        <target>crwdns55794:0crwdne55794:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.redirect_message">
+        <source>Redirect Message</source>
+        <target>crwdns55796:0crwdne55796:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.welcome_header">
+        <source>Welcome Header</source>
+        <target>crwdns55798:0crwdne55798:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.welcome_message">
+        <source>Welcome Message</source>
+        <target>crwdns55800:0crwdne55800:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.success_header">
+        <source>Login Success Header</source>
+        <target>crwdns55802:0crwdne55802:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.success_message">
+        <source>Login Success Message</source>
+        <target>crwdns55804:0crwdne55804:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.error_header">
+        <source>Login Error Header</source>
+        <target>crwdns55806:0crwdne55806:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.error_message">
+        <source>Login Error Message</source>
+        <target>crwdns55808:0crwdne55808:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.status_header">
+        <source>Status Display Header</source>
+        <target>crwdns55810:0crwdne55810:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.status_message">
+        <source>Status Display Message</source>
+        <target>crwdns55812:0crwdne55812:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.logout_header">
+        <source>Logout Header</source>
+        <target>crwdns55814:0crwdne55814:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.logout_message">
+        <source>Logout Message</source>
+        <target>crwdns55816:0crwdne55816:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.forgot_header">
+        <source>Forgot Password Header</source>
+        <target>crwdns55818:0crwdne55818:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.forgot_message">
+        <source>Forgot Password Message</source>
+        <target>crwdns55820:0crwdne55820:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.sheet_general">
+        <source>General</source>
+        <target>crwdns55822:0crwdne55822:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.sheet_redirect">
+        <source>Redirects</source>
+        <target>crwdns55824:0crwdne55824:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.sheet_messages">
+        <source>Messages</source>
+        <target>crwdns55826:0crwdne55826:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.show_forgot_password">
+        <source>Display Password Recovery Link</source>
+        <target>crwdns55828:0crwdne55828:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.show_permalogin">
+        <source>Display Remember Login Option</source>
+        <target>crwdns55830:0crwdne55830:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.show_logoutFormAfterLogin">
+        <source>Disable redirect after successful login, but display logout-form</source>
+        <target>crwdns55832:0crwdne55832:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.groupSelectmode">
+        <source>FE group select mode:</source>
+        <target>crwdns55834:0crwdne55834:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.groupSelectmode_showAll">
+        <source>Show all</source>
+        <target>crwdns55836:0crwdne55836:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.groupSelectmode_showSelected">
+        <source>Show selected</source>
+        <target>crwdns55838:0crwdne55838:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.groupSelectmode_DontShowSelected">
+        <source>Don't show selected</source>
+        <target>crwdns55840:0crwdne55840:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.groupSelectmode_FromTS">
+        <source>(from Typoscript)</source>
+        <target>crwdns55842:0crwdne55842:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.groupSelection">
+        <source>FE group selection:</source>
+        <target>crwdns55844:0crwdne55844:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.groupSelection_noGroup">
+        <source>no group</source>
+        <target>crwdns55846:0crwdne55846:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.field_manualOrder">
+        <source>Using fieldlists below:</source>
+        <target>crwdns55848:0crwdne55848:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.field_orderList">
+        <source>User Fields/list:</source>
+        <target>crwdns55850:0crwdne55850:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.field_orderDetails">
+        <source>User Fields/details:</source>
+        <target>crwdns55852:0crwdne55852:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.redirectMode">
+        <source>Redirect Mode</source>
+        <target>crwdns55854:0crwdne55854:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.redirectMode.I.0">
+        <source>Defined by Usergroup Record</source>
+        <target>crwdns55856:0crwdne55856:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.redirectMode.I.1">
+        <source>Defined by User Record</source>
+        <target>crwdns55858:0crwdne55858:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.redirectMode.I.2">
+        <source>After Login (TS or Flexform)</source>
+        <target>crwdns55860:0crwdne55860:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.redirectMode.I.3">
+        <source>After Logout (TS or Flexform)</source>
+        <target>crwdns55862:0crwdne55862:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.redirectMode.I.4">
+        <source>After Login Error (TS or Flexform)</source>
+        <target>crwdns55864:0crwdne55864:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.redirectMode.I.5">
+        <source>Defined by GET/POST Parameters</source>
+        <target>crwdns55866:0crwdne55866:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.redirectMode.I.6">
+        <source>Defined by Referrer</source>
+        <target>crwdns55868:0crwdne55868:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.redirectMode.I.7">
+        <source>Defined by Domain Entries</source>
+        <target>crwdns55870:0crwdne55870:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.redirectFirstMethod">
+        <source>Use First Supported Mode from Selection</source>
+        <target>crwdns55872:0crwdne55872:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.redirectDisable">
+        <source>Disable Redirect</source>
+        <target>crwdns55874:0crwdne55874:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.redirectPageLogin">
+        <source>After Successful Login Redirect to Page</source>
+        <target>crwdns55876:0crwdne55876:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.redirectPageLoginError">
+        <source>After Failed Login Redirect to Page</source>
+        <target>crwdns55878:0crwdne55878:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.redirectPageLogout">
+        <source>After Logout Redirect to Page</source>
+        <target>crwdns55880:0crwdne55880:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.template_file">
+        <source>Template File</source>
+        <target>crwdns55882:0crwdne55882:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.user_storage">
+        <source>User Storage Page</source>
+        <target>crwdns55884:0crwdne55884:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
