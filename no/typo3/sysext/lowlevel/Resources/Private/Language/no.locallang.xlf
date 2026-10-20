@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:lowlevel/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:34Z" product-name="lowlevel" target-language="no">
+    <header/>
+    <body>
+      <trans-unit id="search" approved="yes">
+        <source>Search</source>
+        <target state="final">Søk</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.section.result" approved="yes">
+        <source>Result</source>
+        <target state="final">Resultat</target>
+      </trans-unit>
+      <trans-unit id="count" approved="yes">
+        <source>Count</source>
+        <target state="final">Antall</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
