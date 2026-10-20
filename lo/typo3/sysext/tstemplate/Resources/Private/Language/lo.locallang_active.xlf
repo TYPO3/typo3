@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/locallang_active.xlf" date="2011-10-17T20:22:37Z" product-name="tstemplate" target-language="lo">
+    <header/>
+    <body>
+      <trans-unit id="submodule.title" approved="yes">
+        <source>Active TypoScript</source>
+        <target state="final">TypoScript ທີ່ໃຊ້ງານຢູ່</target>
+      </trans-unit>
+      <trans-unit id="submodule.titleWithRecord" approved="yes">
+        <source>Active TypoScript for record "%s"</source>
+        <target state="final">TypoScript ທີ່ໃຊ້ງານຢູ່ສຳລັບຂໍ້ມູນ "%s"</target>
+      </trans-unit>
+      <trans-unit id="submodule.description" approved="yes">
+        <source>Overview of the current TypoScript configuration of the system, divided into constants and setup parts. Optionally, the constant values can be displayed directly in the setup. A targeted search for values and TypoScript names is possible. The list of results can also be filtered according to TypoScript conditions.</source>
+        <target state="final">ພາບລວມຂອງການຕັ້ງຄ່າ TypoScript ປັດຈຸບັນຂອງລະບົບ, ແບ່ງອອກເປັນສ່ວນຄ່າຄົງທີ່ (constants) ແລະ ສ່ວນການຕິດຕັ້ງ (setup). ສາມາດເລືອກສະແດງຄ່າຄົງທີ່ໃນສ່ວນການຕິດຕັ້ງໄດ້ໂດຍກົງ. ສາມາດຄົ້ນຫາຄ່າ ແລະ ຊື່ TypoScript ທີ່ຕ້ອງການໄດ້. ລາຍການຜົນການຄົ້ນຫາຍັງສາມາດກັ່ນຕອງຕາມເງື່ອນໄຂຂອງ TypoScript ໄດ້.</target>
+      </trans-unit>
+      <trans-unit id="infobox.message.noTypoScriptFound" approved="yes">
+        <source>No TypoScript found.</source>
+        <target state="final">ບໍ່ພົບ TypoScript.</target>
+      </trans-unit>
+      <trans-unit id="options.displayComments" approved="yes">
+        <source>Display comments</source>
+        <target state="final">ສະແດງຄຳເຫັນ</target>
+      </trans-unit>
+      <trans-unit id="options.displayConstantSubstitutions" approved="yes">
+        <source>Substitute constants in setup</source>
+        <target state="final">ແທນບ່ອນຄ່າຄົງທີ່ໃນ setup</target>
+      </trans-unit>
+      <trans-unit id="options.selectedRecord" approved="yes">
+        <source>Selected record</source>
+        <target state="final">ຂໍ້ມູນທີ່ເລືອກ</target>
+      </trans-unit>
+      <trans-unit id="options.sortAlphabetically" approved="yes">
+        <source>Sort keys alphabetically</source>
+        <target state="final">ຈັດລຽງຕາມຕົວອັກສອນ</target>
+      </trans-unit>
+      <trans-unit id="sectionHeadline.constants" approved="yes">
+        <source>Constants</source>
+        <target state="final">ຄ່າຄົງທີ່ (Constants)</target>
+      </trans-unit>
+      <trans-unit id="sectionHeadline.setup" approved="yes">
+        <source>Setup</source>
+        <target state="final">ການຕິດຕັ້ງ (Setup)</target>
+      </trans-unit>
+      <trans-unit id="panel.header.conditions" approved="yes">
+        <source>Conditions</source>
+        <target state="final">ເງື່ອນໄຂ</target>
+      </trans-unit>
+      <trans-unit id="panel.header.configuration" approved="yes">
+        <source>Configuration</source>
+        <target state="final">ການຕັ້ງຄ່າ</target>
+      </trans-unit>
+      <trans-unit id="panel.info.conditionActiveCount.multiple" approved="yes">
+        <source>%s active conditions</source>
+        <target state="final">ມີ %s ເງື່ອນໄຂທີ່ໃຊ້ງານຢູ່</target>
+      </trans-unit>
+      <trans-unit id="panel.info.conditionActiveCount.single" approved="yes">
+        <source>%s active condition</source>
+        <target state="final">ມີ %s ເງື່ອນໄຂທີ່ໃຊ້ງານຢູ່</target>
+      </trans-unit>
+      <trans-unit id="panel.info.conditionWithConstant" approved="yes">
+        <source>Constant usage: [%s]</source>
+        <target state="final">ການໃຊ້ຄ່າຄົງທີ່: [%s]</target>
+      </trans-unit>
+      <trans-unit id="tree.valueWithConstant" approved="yes">
+        <source>Constant usage: %s</source>
+        <target state="final">ການໃຊ້ຄ່າຄົງທີ່: %s</target>
+      </trans-unit>
+      <!-- Edit action -->
+      <trans-unit id="editAction.submodule.title" approved="yes">
+        <source>Edit single property</source>
+        <target state="final">ແກ້ໄຂຄຸນສົມບັດດຽວ</target>
+      </trans-unit>
+      <trans-unit id="editAction.submodule.titleWithTemplate" approved="yes">
+        <source>Edit single property in TypoScript record "%s"</source>
+        <target state="final">ແກ້ໄຂຄຸນສົມບັດດຽວໃນຂໍ້ມູນ TypoScript "%s"</target>
+      </trans-unit>
+      <trans-unit id="editAction.infobox.title.noTypoScriptTemplateOnCurrentPage" approved="yes">
+        <source>No TypoScript record on the current page</source>
+        <target state="final">ບໍ່ມີຂໍ້ມູນ TypoScript ໃນໜ້າປັດຈຸບັນ</target>
+      </trans-unit>
+      <trans-unit id="editAction.infobox.message.noTypoScriptTemplateOnCurrentPage" approved="yes">
+        <source>You cannot edit properties and values if there is no current TypoScript record in which the configuration can be stored. Please create an extension TypoScript record in "Edit TypoScript Record" first.</source>
+        <target state="final">ທ່ານບໍ່ສາມາດແກ້ໄຂຄຸນສົມບັດ ແລະ ຄ່າຕ່າງໆໄດ້ ຫາກບໍ່ມີຂໍ້ມູນ TypoScript ປັດຈຸບັນເພື່ອຈັດເກັບການຕັ້ງຄ່າ. ກະລຸນາສ້າງຂໍ້ມູນ TypoScript ສ່ວນເສີມໃນ "ແກ້ໄຂຂໍ້ມູນ TypoScript" ກ່ອນ.</target>
+      </trans-unit>
+      <trans-unit id="editAction.addProperty.headline" approved="yes">
+        <source>Add or override child property</source>
+        <target state="final">ເພີ່ມ ຫຼື ຂຽນທັບຄຸນສົມບັດຍ່ອຍ</target>
+      </trans-unit>
+      <trans-unit id="editAction.addProperty.btn" approved="yes">
+        <source>Add</source>
+        <target state="final">ເພີ່ມ</target>
+      </trans-unit>
+      <trans-unit id="editAction.editProperty.headline" approved="yes">
+        <source>Edit current value</source>
+        <target state="final">ແກ້ໄຂຄ່າປັດຈຸບັນ</target>
+      </trans-unit>
+      <trans-unit id="editAction.editProperty.btn" approved="yes">
+        <source>Update</source>
+        <target state="final">ອັບເດດ</target>
+      </trans-unit>
+      <trans-unit id="editAction.clearObject.headline" approved="yes">
+        <source>Clear the object</source>
+        <target state="final">ລຶບລ້າງ Object</target>
+      </trans-unit>
+      <trans-unit id="editAction.clearObject.infotextWithProperty" approved="yes">
+        <source>The object will be cleared via the statement:</source>
+        <target state="final">Object ຈະຖືກລຶບລ້າງຜ່ານຄຳສັ່ງ:</target>
+      </trans-unit>
+      <trans-unit id="editAction.clearObject.btn" approved="yes">
+        <source>Clear now</source>
+        <target state="final">ລຶບລ້າງຕອນນີ້</target>
+      </trans-unit>
+      <!-- Update action -->
+      <trans-unit id="updateAction.lineAdded" approved="yes">
+        <source>Line added to current TypoScript record</source>
+        <target state="final">ເພີ່ມແຖວເຂົ້າໃນຂໍ້ມູນ TypoScript ປັດຈຸບັນແລ້ວ</target>
+      </trans-unit>
+      <trans-unit id="updateAction.lineNotAdded" approved="yes">
+        <source>No line added to current TypoScript record</source>
+        <target state="final">ບໍ່ມີການເພີ່ມແຖວເຂົ້າໃນຂໍ້ມູນ TypoScript ປັດຈຸບັນ</target>
+      </trans-unit>
+      <trans-unit id="updateAction.noSpaces" approved="yes">
+        <source>You must enter a property with characters "a-z", "A-Z", "0-9", or ".". Dots will be quoted. No spaces or special chars.</source>
+        <target state="final">ທ່ານຕ້ອງປ້ອນຄຸນສົມບັດດ້ວຍຕົວອັກສອນ "a-z", "A-Z", "0-9", ຫຼື ".". ຈຸດຈະຖືກໃສ່ໃນເຄື່ອງໝາຍຄຳເວົ້າ. ຫ້າມມີຍະຫວ່າງ ຫຼື ຕົວອັກສອນພິເສດ.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
