@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415815010" source-language="en" datatype="plaintext" original="EXT:workspaces/Resources/Private/Language/locallang_emails.xlf" date="2011-10-17T20:22:37Z" product-name="workspaces" target-language="es-ES">
+    <header/>
+    <body>
+      <trans-unit id="subject" resname="subject" approved="yes">
+        <source>TYPO3 Workspace Note: Stage Change for ###ELEMENT_NAME###</source>
+        <target state="final">Nota del espacio de trabajo de TYPO3: Cambio de etapa para ###ELEMENT_NAME###</target>
+      </trans-unit>
+      <trans-unit id="message" resname="message" xml:space="preserve" approved="yes">
+				<source>At the TYPO3 site "###SITE_NAME###" (###SITE_URL###)
+in workspace "###WORKSPACE_TITLE###" (###WORKSPACE_UID###)
+the stage has changed for the element(s) "###RECORD_TITLE###" (###ELEMENT_NAME###) at location "###RECORD_PATH###" in the page tree:
+
+=&gt; ###NEXT_STAGE###
+
+User Comment:
+"###COMMENT###"
+
+State was changed by ###USER_FULLNAME### (username: ###USER_USERNAME###)</source>
+			<target state="final">En el sitio TYPO3 "###SITE_NAME###" (###SITE_URL###)
+en el espacio de trabajo "###WORKSPACE_TITLE###" (###WORKSPACE_UID###)
+la etapa ha cambiado para elemento(s) "###RECORD_TITLE###" (###ELEMENT_NAME###) en la ubicación "###RECORD_PATH###" en el árbol de páginas:
+
+=&gt; ###NEXT_STAGE###
+
+Comentario del usuario:
+"###COMENTO"
+
+El estado fue cambiado por ###USER_FULLNAME### (nombre de usuario: ###USER_USER_USERNAME###)</target></trans-unit>
+    </body>
+  </file>
+</xliff>
