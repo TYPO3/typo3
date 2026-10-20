@@ -61,8 +61,8 @@ class AuthenticationService extends AbstractAuthenticationService implements Mim
                 $this->login['uname'],
             ]);
             $this->logger->warning('Login-attempt from {ip}, for username "{username}" with an empty password!', [
-                'ip' => $this->authInfo['REMOTE_ADDR'],
                 'username' => $this->login['uname'],
+                'ip' => $this->authInfo['REMOTE_ADDR'],
             ]);
             return false;
         }
@@ -71,9 +71,9 @@ class AuthenticationService extends AbstractAuthenticationService implements Mim
         if (!is_array($user)) {
             // Failed login attempt (no username found)
             $this->writelog(SystemLogType::LOGIN, SystemLogLoginAction::ATTEMPT, SystemLogErrorClassification::SECURITY_NOTICE, null, 'Login-attempt from ###IP###, username \'%s\' not found!', [$this->login['uname']]);
-            $this->logger->info('Login-attempt from username "{username}" not found!', [
+            $this->logger->info('Login-attempt from {ip}, username "{username}" not found!', [
                 'username' => $this->login['uname'],
-                'REMOTE_ADDR' => $this->authInfo['REMOTE_ADDR'],
+                'ip' => $this->authInfo['REMOTE_ADDR'],
             ]);
         } else {
             $this->logger->debug('User found', [
@@ -166,7 +166,7 @@ class AuthenticationService extends AbstractAuthenticationService implements Mim
         }
 
         // Responsible, authentication ok. Log successful login and return 'auth ok, do NOT check other services'
-        $this->writeLogMessage($this->pObj->loginType . ' Authentication successful for username \'%s\'', $submittedUsername);
+        $this->writeLogMessage($this->pObj->loginType . ' Authentication from ###IP### successful for username \'%s\'', $submittedUsername);
         return 200;
     }
 
@@ -208,7 +208,7 @@ class AuthenticationService extends AbstractAuthenticationService implements Mim
     }
 
     /**
-     * Writes log message. Destination log depends on the current system mode.
+     * Writes a NOTICE-level log message. Destination log depends on the current system mode.
      *
      * This function accepts variable number of arguments and can format
      * parameters. The syntax is the same as for sprintf()
@@ -219,14 +219,23 @@ class AuthenticationService extends AbstractAuthenticationService implements Mim
      */
     protected function writeLogMessage(string $message, ...$params): void
     {
+        // Since this class is extended by many other authentication services,
+        // we treat this method as API and therefore do not change the signature.
+        // Internally the first $params is always the username, so we take that for granted also for any other call.
+        // The username is passed to the logger as a decated data value.
+        $username = '';
         if (!empty($params)) {
             $message = vsprintf($message, $params);
+            $username = $params[0];
         }
         $message = str_replace('###IP###', (string)($this->authInfo['REMOTE_ADDR'] ?? ''), $message);
         if ($this->pObj->loginType === 'FE') {
             $timeTracker = GeneralUtility::makeInstance(TimeTracker::class);
             $timeTracker->setTSlogMessage($message, LogLevel::INFO);
         }
-        $this->logger->notice($message);
+        $this->logger->notice($message, [
+            'username' => $username,
+            'ip' => $this->authInfo['REMOTE_ADDR'],
+        ]);
     }
 }

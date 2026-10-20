@@ -169,6 +169,7 @@ final class AuthenticationServiceTest extends UnitTestCase
             [
                 'db_user' => ['table' => 'be_users'],
                 'HTTP_HOST' => '',
+                'REMOTE_ADDR' => '192.168.1.1',
             ],
             $anyUserAuthentication
         );
@@ -197,6 +198,7 @@ final class AuthenticationServiceTest extends UnitTestCase
             [
                 'db_user' => ['table' => 'be_users'],
                 'HTTP_HOST' => '',
+                'REMOTE_ADDR' => '192.168.1.1',
             ],
             $anyUserAuthentication
         );
@@ -235,6 +237,7 @@ final class AuthenticationServiceTest extends UnitTestCase
             [
                 'db_user' => ['table' => 'be_users'],
                 'HTTP_HOST' => '',
+                'REMOTE_ADDR' => '192.168.1.1',
             ],
             $anyUserAuthentication
         );
