@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:redirects/Resources/Private/Language/locallang.xlf" date="2017-12-29T20:22:14Z" product-name="redirects" target-language="uk">
+    <header/>
+    <body>
+      <trans-unit id="redirects" approved="yes">
+        <source>Redirect Settings</source>
+        <target state="final">Налаштування перенаправлення</target>
+      </trans-unit>
+      <trans-unit id="redirects.autoUpdateSlugs" approved="yes">
+        <source>Update the slugs of all sub pages automatically</source>
+        <target state="final">Оновлювати слаги всіх підсторінок автоматично</target>
+      </trans-unit>
+      <trans-unit id="redirects.autoCreateRedirects" approved="yes">
+        <source>Create redirects for pages with a new slug automatically</source>
+        <target state="final">Автоматично створюйте перенаправлення для сторінок із новим слагом</target>
+      </trans-unit>
+      <trans-unit id="redirects.redirectTTL" approved="yes">
+        <source>Time To Live of redirect records in days</source>
+        <target state="final">Час життя записів перенаправлення в днях</target>
+      </trans-unit>
+      <trans-unit id="redirects.httpStatusCode" approved="yes">
+        <source>HTTP Status Code for the redirect, 301 is the default</source>
+        <target state="final">Код статусу HTTP для перенаправлення, 301 є типовим</target>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.label.days" approved="yes">
+        <source>Cleanup redirects older than provided number of days</source>
+        <target state="final">Очищення перенаправляє старше за вказану кількість днів</target>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.label.domain" approved="yes">
+        <source>Cleanup redirects matching provided domain(s)</source>
+        <target state="final">Очищення перенаправляє відповідно заданому домену(ів)</target>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.label.hitCount" approved="yes">
+        <source>Cleanup redirects matching hit counts lower than given number</source>
+        <target state="final">Очищення переспрямовує відповідну кількість звернень, меншу за задану</target>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.label.creationType" approved="yes">
+        <source>Cleanup redirects matching provided creation type</source>
+        <target state="final">Очищення переспрямовує відповідний наданий тип створення</target>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.label.statusCode" approved="yes">
+        <source>Cleanup redirects matching provided status code(s)</source>
+        <target state="final">Очищення переспрямовує відповідні надані код(и) стану</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
