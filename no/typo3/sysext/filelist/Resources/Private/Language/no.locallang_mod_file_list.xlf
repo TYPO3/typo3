@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814869" source-language="en" datatype="plaintext" original="EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="no">
+    <header/>
+    <body>
+      <trans-unit id="bigControlPanel" resname="bigControlPanel" approved="yes">
+        <source>Extended view</source>
+        <target state="final">Utvidet visning</target>
+      </trans-unit>
+      <trans-unit id="clipBoard" resname="clipBoard" approved="yes">
+        <source>Show clipboard</source>
+        <target state="final">Vis klippebord</target>
+      </trans-unit>
+      <trans-unit id="clip_paste" resname="clip_paste" approved="yes">
+        <source>Paste in clipboard content</source>
+        <target state="final">Lim inn innholdet fra klippebordet</target>
+      </trans-unit>
+      <trans-unit id="clip_pasteInto" resname="clip_pasteInto" approved="yes">
+        <source>Paste into: Clipboard content is inserted into this folder</source>
+        <target state="final">Lim inn i: Innholdet fra klippebordet settes inn i denne mappen</target>
+      </trans-unit>
+      <trans-unit id="clip_markRecords" resname="clip_markRecords" approved="yes">
+        <source>Mark All/Mark none</source>
+        <target state="final">Merk alle/Merk ingen</target>
+      </trans-unit>
+      <trans-unit id="clip_selectMarked" resname="clip_selectMarked" approved="yes">
+        <source>Transfer the selection of files to clipboard</source>
+        <target state="final">Overfør utvalget av filer til klippebordet</target>
+      </trans-unit>
+      <trans-unit id="clip_deleteMarked" resname="clip_deleteMarked" approved="yes">
+        <source>Delete marked</source>
+        <target state="final">Slett markerte</target>
+      </trans-unit>
+      <trans-unit id="clip_deleteMarkedWarning" resname="clip_deleteMarkedWarning" approved="yes">
+        <source>Are you sure you want to delete all marked files from this folder?</source>
+        <target state="final">Er du sikker på at du vil slette alle markerte filer fra mappen?</target>
+      </trans-unit>
+      <trans-unit id="displayThumbs" resname="displayThumbs" approved="yes">
+        <source>Display thumbnails</source>
+        <target state="final">Vis miniatyrer</target>
+      </trans-unit>
+      <trans-unit id="c_file" resname="c_file" approved="yes">
+        <source>File Name</source>
+        <target state="final">Filnavn</target>
+      </trans-unit>
+      <trans-unit id="c_size" resname="c_size" approved="yes">
+        <source>Size</source>
+        <target state="final">Str</target>
+      </trans-unit>
+      <trans-unit id="c_fileext" resname="c_fileext" approved="yes">
+        <source>Type</source>
+        <target state="final">Type</target>
+      </trans-unit>
+      <trans-unit id="c_tstamp" resname="c_tstamp" approved="yes">
+        <source>Last Modified</source>
+        <target state="final">Dato</target>
+      </trans-unit>
+      <trans-unit id="c_rw" resname="c_rw" approved="yes">
+        <source>RW</source>
+        <target state="final">RW</target>
+      </trans-unit>
+      <trans-unit id="c__REF_" resname="c__REF_" approved="yes">
+        <source>Ref</source>
+        <target state="final">Ref</target>
+      </trans-unit>
+      <trans-unit id="files" resname="files" approved="yes">
+        <source>files</source>
+        <target state="final">filer</target>
+      </trans-unit>
+      <trans-unit id="temp" resname="temp" approved="yes">
+        <source>Temporary files</source>
+        <target state="final">Midlertidige filer</target>
+      </trans-unit>
+      <trans-unit id="role_folder_temporary" resname="role_folder_temporary" approved="yes">
+        <source>Temporary files</source>
+        <target state="final">Midlertidige filer</target>
+      </trans-unit>
+      <trans-unit id="role_folder_recycler" resname="role_folder_recycler" approved="yes">
+        <source>Recycler</source>
+        <target state="final">Papirkurv</target>
+      </trans-unit>
+      <trans-unit id="read" resname="read" approved="yes">
+        <source>R</source>
+        <target state="final">R</target>
+      </trans-unit>
+      <trans-unit id="recycler" resname="recycler" approved="yes">
+        <source>Recycler</source>
+        <target state="final">Papirkurv</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel" approved="yes">
+        <source>Listing of files in the directory</source>
+        <target state="final">Listing av filer i katalogen</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr" approved="yes">
+        <source>This is the file administration system in TYPO3. It allows you to access the file mounts of your login. Through this module you can upload, copy, move an delete files on the server.</source>
+        <target state="final">Dette er filadministrasjonsdelen av TYPO3. Her kan du som bruker få tilgang til dine fildrev på serveren. Via denne modulen kan du laste opp, kopiere, flytte og slette filer på serveren.</target>
+      </trans-unit>
+      <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab" approved="yes">
+        <source>Filelist</source>
+        <target state="final">Filliste</target>
+      </trans-unit>
+      <trans-unit id="write" resname="write" approved="yes">
+        <source>W</source>
+        <target state="final">W</target>
+      </trans-unit>
+      <trans-unit id="targetNoDir" resname="targetNoDir" approved="yes">
+        <source>Target was not a directory!</source>
+        <target state="final">Målet var ikke en katalog!</target>
+      </trans-unit>
+      <trans-unit id="localDriverFlexform_basePath" resname="localDriverFlexform_basePath" approved="yes">
+        <source>Base path</source>
+        <target state="final">Basesti</target>
+      </trans-unit>
+      <trans-unit id="localDriverFlexform_basePath_placeholder" resname="localDriverFlexform_basePath_placeholder" approved="yes">
+        <source>Add storage path here. For example: myPath/folder/</source>
+        <target state="final">Legg til lagringsti her. For eksempel: stienMin/mappe/</target>
+      </trans-unit>
+      <trans-unit id="localDriverFlexform_pathType" resname="localDriverFlexform_pathType" approved="yes">
+        <source>Path type</source>
+        <target state="final">Stitype</target>
+      </trans-unit>
+      <trans-unit id="localDriverFlexform_pathType_relative" resname="localDriverFlexform_pathType_relative" approved="yes">
+        <source>relative</source>
+        <target state="final">relativ</target>
+      </trans-unit>
+      <trans-unit id="localDriverFlexform_pathType_absolute" resname="localDriverFlexform_pathType_absolute" approved="yes">
+        <source>absolute</source>
+        <target state="final">absolutt</target>
+      </trans-unit>
+      <trans-unit id="localDriverFlexform_caseSensitive" resname="localDriverFlexform_caseSensitive" approved="yes">
+        <source>Uses case sensitive identifiers</source>
+        <target state="final">Skill mellom store og små bokstaver i identifikatorer</target>
+      </trans-unit>
+      <trans-unit id="storageNotBrowsableTitle" resname="storageNotBrowsableTitle" approved="yes">
+        <source>Access denied.</source>
+        <target state="final">Adgang nektet.</target>
+      </trans-unit>
+      <trans-unit id="storageNotBrowsableMessage" resname="storageNotBrowsableMessage" approved="yes">
+        <source>You are trying to access a folder in a storage that is not browsable.</source>
+        <target state="final">Du prøver å få tilgang til en mappe i et lagringsområde som ikke er blabar.</target>
+      </trans-unit>
+      <trans-unit id="missingFolderPermissionsTitle" resname="missingFolderPermissionsTitle" approved="yes">
+        <source>Missing folder permissions</source>
+        <target state="final">Mangler mappetillatelser</target>
+      </trans-unit>
+      <trans-unit id="missingFolderPermissionsMessage" resname="missingFolderPermissionsMessage" approved="yes">
+        <source>You have no access to the folder "%s".</source>
+        <target state="final">Du har ikke tilgang til mappen "%s".</target>
+      </trans-unit>
+      <trans-unit id="folderNotFoundTitle" resname="folderNotFoundTitle" approved="yes">
+        <source>Folder not found.</source>
+        <target state="final">Mappe ikke funnet.</target>
+      </trans-unit>
+      <trans-unit id="folderNotFoundMessage" resname="folderNotFoundMessage" approved="yes">
+        <source>The folder "%s" cannot be accessed. Trying to use parent folder(s).</source>
+        <target state="final">Mappen "%s" kan ikke nås. Prøver å bruke overordna mappe(ne).</target>
+      </trans-unit>
+      <trans-unit id="translateMetadata" resname="translateMetadata" approved="yes">
+        <source>Translate metadata</source>
+        <target state="final">Oversett metadat</target>
+      </trans-unit>
+      <trans-unit id="createMetadataForLanguage" resname="createMetadataForLanguage" approved="yes">
+        <source>Create metadata of this file for %s</source>
+        <target state="final">Lag metadata av denne filen for %s</target>
+      </trans-unit>
+      <trans-unit id="editMetadataForLanguage" resname="editMetadataForLanguage" approved="yes">
+        <source>Edit metadata of this file for %s</source>
+        <target state="final">Redigere metadata av denne filen for %s</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
