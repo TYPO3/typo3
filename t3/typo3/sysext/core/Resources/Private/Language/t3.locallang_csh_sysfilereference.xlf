@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1445000814" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_sysfilereference.xlf" date="2011-10-17T20:22:32Z" product-name="context_help" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="alternative.description" resname="alternative.description">
+        <source>Sets the alternative text of this asset.</source>
+        <target>crwdns71412:0crwdne71412:0</target>
+      </trans-unit>
+      <trans-unit id="alternative.details" resname="alternative.details">
+        <source>When using the img element, specify a short text alternative with the alt attribute. Note. The value of this attribute is referred to as "alt text".
+When an image contains words that are important to understanding the content, the alt text should include those words. This will allow the alt text to play the same function on the page as the image. Note that it does not necessarily describe the visual characteristics of the image itself but must convey the same meaning as the image.</source>
+        <target>crwdns71414:0crwdne71414:0</target>
+      </trans-unit>
+      <trans-unit id="link.description" resname="link.description">
+        <source>Sets a link on this asset.</source>
+        <target>crwdns71416:0crwdne71416:0</target>
+      </trans-unit>
+      <trans-unit id="link.details" resname="link.details">
+        <source>Use the wizard next to the field to specify a link that a user can follow by clicking the image.</source>
+        <target>crwdns71418:0crwdne71418:0</target>
+      </trans-unit>
+      <trans-unit id="title.description" resname="title.description">
+        <source>Sets the title text of this asset.</source>
+        <target>crwdns71420:0crwdne71420:0</target>
+      </trans-unit>
+      <trans-unit id="title.details" resname="title.details">
+        <source>The title attribute is used to provide additional information to help clarify or further describe the purpose of a link.
+If the supplementary information provided through the title attribute is something the user should know before following the link, such as a warning, then it should be provided in the link text rather than in the title attribute.</source>
+        <target>crwdns71422:0crwdne71422:0</target>
+      </trans-unit>
+      <trans-unit id="description.description" resname="description.description">
+        <source>Sets the image-caption-text of this asset.</source>
+        <target>crwdns71424:0crwdne71424:0</target>
+      </trans-unit>
+      <trans-unit id="description.details" resname="description.details">
+        <source>This text will be displayed underneath your asset and can be used to supply additional context to the image.
+Depending on local laws you might have to use this to supply proper copyright information on your assets.</source>
+        <target>crwdns71426:0crwdne71426:0</target>
+      </trans-unit>
+      <trans-unit id="crop.description" resname="crop.description">
+        <source>Click "Open Editor" to start up the image editor.</source>
+        <target>crwdns71428:0crwdne71428:0</target>
+      </trans-unit>
+      <trans-unit id="autoplay.description" resname="autoplay.description">
+        <source>Check to let embedded media play once loaded.</source>
+        <target>crwdns71430:0crwdne71430:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
