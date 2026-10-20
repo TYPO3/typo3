@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814821" source-language="en" datatype="plaintext" original="EXT:felogin/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:32Z" product-name="felogin" target-language="fr-CA">
+    <header/>
+    <body>
+      <trans-unit id="ll_welcome_header" resname="ll_welcome_header" approved="yes">
+        <source>User login</source>
+        <target state="final">Identification de l'utilisateur</target>
+      </trans-unit>
+      <trans-unit id="ll_welcome_message" resname="ll_welcome_message" approved="yes">
+        <source>Enter your username and password here in order to log in on the website</source>
+        <target state="final">Entrez votre nom d'utilisateur et votre mot de passe ici pour vous connecter sur le site web</target>
+      </trans-unit>
+      <trans-unit id="ll_logout_header" resname="ll_logout_header" approved="yes">
+        <source>You have logged out.</source>
+        <target state="final">Vous avez été déconnecté.</target>
+      </trans-unit>
+      <trans-unit id="ll_logout_message" resname="ll_logout_message" approved="yes">
+        <source>You just logged out from your user session on this website. You can login again or as another user by the form below.</source>
+        <target state="final">Vous avez été déconnecté de votre session d'utilisateur. Vous pouvez vous reconnecter en utilisant le formulaire ci-dessous.</target>
+      </trans-unit>
+      <trans-unit id="ll_error_header" resname="ll_error_header" approved="yes">
+        <source>Login failure</source>
+        <target state="final">Identification incorrecte</target>
+      </trans-unit>
+      <trans-unit id="ll_error_message" resname="ll_error_message" xml:space="preserve" approved="yes">
+				<source>An error occurred during login. Most likely you didn't enter the username or password correctly.
+Be certain that you enter them precisely as they are, including upper/lower case.
+Another possibility is that cookies might be disabled in your web browser.</source>
+			<target state="final">Une erreur est survenue durant la connexion. Vraisemblablement, le nom d'utilisateur ou le mot de passe est incorrect. Soyez précis, en particulier en ce qui concerne l'utilisation des minuscules et des majuscules. Une autre possibilité serait que les fichiers de témoins dans votre fureteur soient désactivés.</target></trans-unit>
+      <trans-unit id="ll_success_header" resname="ll_success_header" approved="yes">
+        <source>Login successful</source>
+        <target state="final">Identification réussie</target>
+      </trans-unit>
+      <trans-unit id="ll_success_message" resname="ll_success_message" approved="yes">
+        <source>You are now logged in as '###USER###'</source>
+        <target state="final">Vous êtes maintenant connecté en tant que [###USER###]</target>
+      </trans-unit>
+      <trans-unit id="ll_status_header" resname="ll_status_header" approved="yes">
+        <source>Current status</source>
+        <target state="final">État actuel</target>
+      </trans-unit>
+      <trans-unit id="ll_status_message" resname="ll_status_message" approved="yes">
+        <source>This is your current status</source>
+        <target state="final">Ceci est votre statut actuel</target>
+      </trans-unit>
+      <trans-unit id="cookie_warning" resname="cookie_warning" approved="yes">
+        <source>Warning: There is a possibility that cookies are not enabled in your web browser! If your login disappears on your next click that is the case and you should enable cookies (or accept cookies from this website) immediately!</source>
+        <target state="final">Attention : Il est possible que les fichiers de témoins ne soient pas activés dans votre fureteur! C'est le cas si votre connexion se perd lorsque vous naviguez sur le site. Dans ce cas, vous devriez immédiatement accepter les témoins, au moins pour ce site web!</target>
+      </trans-unit>
+      <trans-unit id="username" resname="username" approved="yes">
+        <source>Username</source>
+        <target state="final">Nom d'utilisateur</target>
+      </trans-unit>
+      <trans-unit id="password" resname="password" approved="yes">
+        <source>Password</source>
+        <target state="final">Mot de passe</target>
+      </trans-unit>
+      <trans-unit id="login" resname="login" approved="yes">
+        <source>Login</source>
+        <target state="final">Identification</target>
+      </trans-unit>
+      <trans-unit id="permalogin" resname="permalogin" approved="yes">
+        <source>Stay logged in</source>
+        <target state="final">Rester connecté</target>
+      </trans-unit>
+      <trans-unit id="logout" resname="logout" approved="yes">
+        <source>Logout</source>
+        <target state="final">Déconnexion</target>
+      </trans-unit>
+      <trans-unit id="send_password" resname="send_password" approved="yes">
+        <source>Send password</source>
+        <target state="final">Envoyer le mot de passe</target>
+      </trans-unit>
+      <trans-unit id="reset_password" resname="reset_password" approved="yes">
+        <source>Reset Password</source>
+        <target state="final">Réinitialiser le mot de passe</target>
+      </trans-unit>
+      <trans-unit id="ll_change_password_header" resname="ll_change_password_header" approved="yes">
+        <source>Change your password</source>
+        <target state="final">Modifier votre mot de passe</target>
+      </trans-unit>
+      <trans-unit id="ll_change_password_message" resname="ll_change_password_message" approved="yes">
+        <source>Please enter your new password twice. Password needs a minimum length of %s chars.</source>
+        <target state="final">Veuillez entrer votre nouveau mot de passe deux fois. Le mot de passe a besoin d'une longueur minimale de %s caractères.</target>
+      </trans-unit>
+      <trans-unit id="ll_change_password_nolinkprefix_message" resname="ll_change_password_nolinkprefix_message" approved="yes">
+        <source>Error: there is no prefix for the link. Please set one of the following in your typoscript template: plugin.tx_felogin_pi1.feloginBaseURL = http://yourdomain/, config.baseURL = http://yourdomain/, config.absRefPrefix = /</source>
+        <target state="final">Erreur: Il n'y a pas de préfixe pour le lien. Veuillez définir un des éléments suivants dans votre gabarit typoscript: plugin.tx_felogin_pi1.feloginBaseURL = http://votredomain/, config.baseURL = http://votredomain/, config.absRefPrefix = /</target>
+      </trans-unit>
+      <trans-unit id="ll_change_password_notvalid_message" resname="ll_change_password_notvalid_message" approved="yes">
+        <source>The link you clicked is not valid. Please repeat the forgot password procedure.</source>
+        <target state="final">Le lien que vous avez cliqué n'est pas valide. Veuillez répéter la procédure de mot de passe oublié.</target>
+      </trans-unit>
+      <trans-unit id="ll_change_password_notequal_message" resname="ll_change_password_notequal_message" approved="yes">
+        <source>The passwords are not equal, please enter your new password twice. Password needs a minimum length of %s chars.</source>
+        <target state="final">Les mots de passe ne sont pas identiques, veuillez entrer votre nouveau mot de passe deux fois. Le mot de passe a besoin d'une longueur minimale de %s caractères.</target>
+      </trans-unit>
+      <trans-unit id="ll_change_password_tooshort_message" resname="ll_change_password_tooshort_message" approved="yes">
+        <source>The password length is too short. Please enter your new password twice. Password needs a minimum length of %s chars.</source>
+        <target state="final">Le mot de passe est trop court. Veuillez entrer votre nouveau mot de passe deux fois. Le mot de passe a besoin d'une longueur minimale de %s caractères.</target>
+      </trans-unit>
+      <trans-unit id="ll_change_password_done_message" resname="ll_change_password_done_message" approved="yes">
+        <source>Your password has been saved. You can now login with your new password.</source>
+        <target state="final">Votre mot de passe a été enregistré. Vous pouvez maintenant vous connecter avec ce mot de passe.</target>
+      </trans-unit>
+      <trans-unit id="change_password" resname="change_password" approved="yes">
+        <source>Change your password</source>
+        <target state="final">Modifier votre mot de passe</target>
+      </trans-unit>
+      <trans-unit id="newpassword_label1" resname="newpassword_label1" approved="yes">
+        <source>Enter new password</source>
+        <target state="final">Saisissez le nouveau mot de passe</target>
+      </trans-unit>
+      <trans-unit id="newpassword_label2" resname="newpassword_label2" approved="yes">
+        <source>Repeat new password</source>
+        <target state="final">Saisissez une seconde fois le nouveau mot de passe</target>
+      </trans-unit>
+      <trans-unit id="your_email" resname="your_email" approved="yes">
+        <source>Your email</source>
+        <target state="final">Votre adresse email</target>
+      </trans-unit>
+      <trans-unit id="ll_forgot_header" resname="ll_forgot_header" approved="yes">
+        <source>Forgot your password?</source>
+        <target state="final">Avez-vous oublié votre mot de passe?</target>
+      </trans-unit>
+      <trans-unit id="ll_forgot_email_password" resname="ll_forgot_email_password" xml:space="preserve" approved="yes">
+				<source>Your password
+Hi %s
+
+Your username is "%s"
+Your password is "%s"</source>
+			<target state="final">Votre mot de passe Bonjour %s, Votre nom d'utilisateur est "%s". Votre mot de passe est "%s".</target></trans-unit>
+      <trans-unit id="ll_forgot_email_nopassword" resname="ll_forgot_email_nopassword" xml:space="preserve" approved="yes">
+				<source>Your password
+Hi %s
+
+We couldn't find a username for this email address and so cannot send the password to you. Probably you misspelled the email address (upper/lower case makes a difference) or maybe you even didn't register yet?</source>
+			<target state="final">Votre mot de passe Bonjour %s, Aucun nom d'utilisateur n'a été trouvé pour cette adresse de courriel. Ainsi, aucun mot de passe ne peut vous être envoyé. Probablement qu'une erreur s'est glissée dans votre adresse de courriel (les majuscules et les minuscules sont importantes!) ou bien vous n'êtes pas encore inscrit sur le site?</target></trans-unit>
+      <trans-unit id="ll_forgot_validate_reset_password" resname="ll_forgot_validate_reset_password" xml:space="preserve" approved="yes">
+				<source>Your new password
+Dear %s,
+
+This email was sent in response to your request to reset your password. Please click on the link below.
+%s
+
+For security reasons, this link is only active until %s. If you do not visit the link before then, you will need to repeat the password reset steps.</source>
+			<target state="final">Votre nouveau mot de passe
+Cher %s,
+
+Cet e-mail a été envoyé en réponse à votre demande de réinitialisation de votre mot de passe. Veuillez cliquer sur le lien ci-dessous.
+%s
+
+Pour des raisons de sécurité, ce lien n'est actif que jusqu'au %s. Si vous ne visitez pas le lien avant cette date, vous devrez répéter les étapes de réinitialisation du mot de passe.</target></trans-unit>
+      <trans-unit id="ll_forgot_message" resname="ll_forgot_message" approved="yes">
+        <source>Please enter the email address by which you registered your user account. Then press "Send password" and your password will immediately be emailed to you. Make sure to spell your email address correctly.</source>
+        <target state="final">Veuillez indiquer l'adresse de courriel que vous avez utilisée lors de la création de votre compte. Appuyez ensuite sur le bouton « Envoyer le mot de passe » et votre mot de passe vous sera directement transmis par courrier électronique. Assurez-vous de saisir correctement votre adresse de courriel.</target>
+      </trans-unit>
+      <trans-unit id="ll_forgot_message_emailSent" resname="ll_forgot_message_emailSent" approved="yes">
+        <source>Your password has now been sent to the email address %s</source>
+        <target state="final">Votre mot de passe a été envoyé à l'adresse %s.</target>
+      </trans-unit>
+      <trans-unit id="ll_forgot_reset_message" resname="ll_forgot_reset_message" approved="yes">
+        <source>Please enter your username or email address. Instructions for resetting the password will be immediately emailed to you.</source>
+        <target state="final">Veuillez entrer votre nom d'utilisateur ou votre adresse e-mail. Les instructions pour réinitialiser le mot de passe vous seront envoyées immédiatement.</target>
+      </trans-unit>
+      <trans-unit id="ll_forgot_reset_message_emailSent" resname="ll_forgot_reset_message_emailSent" approved="yes">
+        <source>An email has been sent to the address stored in your account and contains a link to reset your password. If you do not receive an email, your account or email address was not found.</source>
+        <target state="final">Un e-mail a été envoyé à l'adresse stockée dans votre compte et contient un lien pour réinitialiser votre mot de passe. Si vous ne recevez pas d'e-mail, votre compte ou votre adresse e-mail n'a pas été trouvé.</target>
+      </trans-unit>
+      <trans-unit id="ll_forgot_reset_message_error" resname="ll_forgot_reset_message_error" approved="yes">
+        <source>Your account or email address does not exist.</source>
+        <target state="final">Votre compte ou votre adresse e-mail n'existe pas.</target>
+      </trans-unit>
+      <trans-unit id="ll_forgot_header_backToLogin" resname="ll_forgot_header_backToLogin" approved="yes">
+        <source>Return to login form</source>
+        <target state="final">Retourner au formulaire d'identification</target>
+      </trans-unit>
+      <trans-unit id="ll_enter_your_data" resname="ll_enter_your_data" approved="yes">
+        <source>Username or email address</source>
+        <target state="final">Nom d'utilisateur ou adresse email</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
