@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:linkvalidator/Resources/Private/Language/db.xlf" date="2011-10-17T20:22:34Z" product-name="linkvalidator" target-language="nl">
+    <header/>
+    <body>
+      <trans-unit id="mod_linkvalidator" approved="yes">
+        <source>LinkValidator</source>
+        <target state="final">Linkcontrole</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.name" approved="yes">
+        <source>LinkValidator</source>
+        <target state="final">Linkcontrole</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.page" approved="yes">
+        <source>Start page (uid)</source>
+        <target state="final">Startpagina (uid)</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.depth" approved="yes">
+        <source>Depth</source>
+        <target state="final">Diepte</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.languages" approved="yes">
+        <source>Languages to search for broken links (Leave empty for all languages).</source>
+        <target state="final">Naar defecte links zoeken in welke talen (leeg laten voor alle talen).</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.conf" approved="yes">
+        <source>Overwrite TSconfig</source>
+        <target state="final">TSconfig overschrijven</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.email" approved="yes">
+        <source>Send email report to</source>
+        <target state="final">E-mailrapportage sturen naar</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.emailOnBrokenLinkOnly" approved="yes">
+        <source>Send email on new broken links only</source>
+        <target state="final">Alleen e-mail sturen als nieuwe defecte links gevonden worden</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.emailTemplateName" approved="yes">
+        <source>Email template name (without the extension)</source>
+        <target state="final">Naam e-mailsjabloon (zonder de extensie)</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.invalidEmail" approved="yes">
+        <source>Invalid email format</source>
+        <target state="final">Ongeldig e-mailadres</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.invalidPage" approved="yes">
+        <source>Invalid page uid, please enter a valid page uid</source>
+        <target state="final">Ongeldige pagina-id, voer een gedige pagina-id in</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.invalidDepth" approved="yes">
+        <source>There is no depth set, please set it to one of the offered values</source>
+        <target state="final">Er is geen diepte ingesteld. Stel dit in op een van de aangeboden waarden</target>
+      </trans-unit>
+      <trans-unit id="tasks.notice.useDefaultTemplate" approved="yes">
+        <source>
+					The templateName was automatically set to the default because either the field in the task
+					configuration is empty or no file is found for the given name. Please note that both a .html and
+					.txt file must exist under the configured templatePath.
+                </source>
+        <target state="final">
+					De sjabloonnaam is automatisch op de standaardwaarde gezet omdat ofwel het veld in de configuratie
+					van de taak leeg is of er geen bestand wordt gevonden voor de opgegeven naam. Let op dat
+					zowel een .html als .txt bestand moet bestaan onder het geconfigureerde templatePath.
+                </target>
+      </trans-unit>
+      <trans-unit id="tasks.error.emptyToEmail" approved="yes">
+        <source>There must be at least one recipient defined</source>
+        <target state="final">Er moet ten minste één ontvanger gedefinieerd zijn</target>
+      </trans-unit>
+      <trans-unit id="tasks.error.invalidToEmail" approved="yes">
+        <source>Invalid format of one or more of the recipient email addresses</source>
+        <target state="final">Ongeldig formaat van een of meer van de e-mailadressen van de ontvangers</target>
+      </trans-unit>
+      <trans-unit id="tasks.error.invalidFromEmail" approved="yes">
+        <source>Invalid format of the email address in the from header</source>
+        <target state="final">Ongeldig formaat van het e-mailaders in de from-header</target>
+      </trans-unit>
+      <trans-unit id="tasks.error.invalidPageUid" approved="yes">
+        <source>The given page id %d is invalid</source>
+        <target state="final">De opgegeven pagina ID %d is ongeldig</target>
+      </trans-unit>
+      <trans-unit id="tasks.email.title" approved="yes">
+        <source>TYPO3 LinkValidator report</source>
+        <target state="final">Verslag van TYPO3 LinkControle</target>
+      </trans-unit>
+      <trans-unit id="tasks.email.overview" approved="yes">
+        <source>Overview of broken links</source>
+        <target state="final">Overzicht van defecte links</target>
+      </trans-unit>
+      <trans-unit id="tasks.email.overview.all" approved="yes">
+        <source>Total broken links: %s (last report: %s)</source>
+        <target state="final">Totaal aantal defecte links: %s (laatste rapport: %s)</target>
+      </trans-unit>
+      <trans-unit id="tasks.email.overview.internal" approved="yes">
+        <source>Internal links: %s (last report: %s)</source>
+        <target state="final">Interne links: %s (laatste rapport: %s)</target>
+      </trans-unit>
+      <trans-unit id="tasks.email.overview.external" approved="yes">
+        <source>External links: %s (last report: %s)</source>
+        <target state="final">Externe links: %s (laatste rapport: %s)</target>
+      </trans-unit>
+      <trans-unit id="tasks.email.overview.file" approved="yes">
+        <source>File / Media links: %s (last report: %s)</source>
+        <target state="final">Bestand / media links: %s (laatste rapport: %s)</target>
+      </trans-unit>
+      <trans-unit id="tasks.email.listing" approved="yes">
+        <source>Listing of broken links</source>
+        <target state="final">Lijst met defecte links</target>
+      </trans-unit>
+      <trans-unit id="tasks.email.listing.pageExplanation" approved="yes">
+        <source>If record type is "Page", the page id is the parent page.</source>
+        <target state="final">Als recordtype "Pagina" is dan is de pagina-id die van de bovenliggende pagina.</target>
+      </trans-unit>
+      <trans-unit id="tasks.email.listing.hoverExpalantion" approved="yes">
+        <source>Hover over an element to see more information e.g. the record title.</source>
+        <target state="final">Beweeg over een element om meer informatie te zien, b.v. de titel van het record.</target>
+      </trans-unit>
+      <trans-unit id="tasks.email.listing.explanation" approved="yes">
+        <source>Explanation: Record | Language | Page | Record type | Target | Link type</source>
+        <target state="final">Uitleg: Record | Taal | Pagina | Type record | Doel | Type link</target>
+      </trans-unit>
+      <trans-unit id="task.email.brokenLinks.record" approved="yes">
+        <source>Record</source>
+        <target state="final">Record</target>
+      </trans-unit>
+      <trans-unit id="task.email.brokenLinks.language" approved="yes">
+        <source>Language</source>
+        <target state="final">Taal</target>
+      </trans-unit>
+      <trans-unit id="task.email.brokenLinks.page" approved="yes">
+        <source>Page</source>
+        <target state="final">Pagina</target>
+      </trans-unit>
+      <trans-unit id="task.email.brokenLinks.recordType" approved="yes">
+        <source>Record type</source>
+        <target state="final">Type record</target>
+      </trans-unit>
+      <trans-unit id="task.email.brokenLinks.target" approved="yes">
+        <source>Target</source>
+        <target state="final">Doel</target>
+      </trans-unit>
+      <trans-unit id="task.email.brokenLinks.type" approved="yes">
+        <source>Type</source>
+        <target state="final">Type</target>
+      </trans-unit>
+      <trans-unit id="task.email.brokenLinks.type.db" approved="yes">
+        <source>Internal</source>
+        <target state="final">Intern</target>
+      </trans-unit>
+      <trans-unit id="task.email.brokenLinks.type.external" approved="yes">
+        <source>External</source>
+        <target state="final">Extern</target>
+      </trans-unit>
+      <trans-unit id="task.email.brokenLinks.type.file" approved="yes">
+        <source>File / Media</source>
+        <target state="final">Bestand / media</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
