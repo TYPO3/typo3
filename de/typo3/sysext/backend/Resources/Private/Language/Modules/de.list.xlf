@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/Modules/list.xlf" date="2026-11-10T13:37:37Z" product-name="list" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="short_description" approved="yes">
+        <source>List of database records</source>
+        <target state="final">Liste der Datenbank-Einträge</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>The records module provides low level access to records appearing on a page.</source>
+        <target state="final">Das Datensatzmodul bietet Low-Level-Zugriff auf Datensätze, die auf einer Seite angezeigt werden.</target>
+      </trans-unit>
+      <trans-unit id="title" approved="yes">
+        <source>Records</source>
+        <target state="final">Datensätze</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
