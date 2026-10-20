@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814822" source-language="en" datatype="plaintext" original="EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf" date="2012-10-17T17:55:17Z" product-name="local lang" target-language="fa">
+    <header/>
+    <body>
+      <!-- sys_file_metadata fields -->
+      <trans-unit id="sys_file_metadata.visible" resname="sys_file_metadata.visible" approved="yes">
+        <source>Visible</source>
+        <target state="final">مرئی</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.status" resname="sys_file_metadata.status" approved="yes">
+        <source>Status</source>
+        <target state="final">وضعیت</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.status.1" resname="sys_file_metadata.status.1" approved="yes">
+        <source>Ok</source>
+        <target state="final">بسیارخوب</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.status.2" resname="sys_file_metadata.status.2" approved="yes">
+        <source>Pending</source>
+        <target state="final">در حال انجام</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.status.3" resname="sys_file_metadata.status.3" approved="yes">
+        <source>Under review</source>
+        <target state="final">در حال بررسی</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.keywords" resname="sys_file_metadata.keywords" approved="yes">
+        <source>Keywords</source>
+        <target state="final">کلیدواژه‌ها</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.caption" resname="sys_file_metadata.caption" approved="yes">
+        <source>Caption</source>
+        <target state="final">عنوان کوتاه</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.creator_tool" resname="sys_file_metadata.creator_tool" approved="yes">
+        <source>Creator Tool</source>
+        <target state="final">ابزار ایجاد کننده</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.download_name" resname="sys_file_metadata.download_name" approved="yes">
+        <source>Download Name</source>
+        <target state="final">نام دریافتی</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.creator" resname="sys_file_metadata.creator" approved="yes">
+        <source>Creator</source>
+        <target state="final">سازنده</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.publisher" resname="sys_file_metadata.publisher" approved="yes">
+        <source>Publisher</source>
+        <target state="final">منتشر کننده</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.source" resname="sys_file_metadata.source" approved="yes">
+        <source>Source</source>
+        <target state="final">منبع</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.copyright" resname="sys_file_metadata.copyright" approved="yes">
+        <source>Copyright</source>
+        <target state="final">حق نشر</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.location_country" resname="sys_file_metadata.location_country" approved="yes">
+        <source>Country</source>
+        <target state="final">کشور</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.location_region" resname="sys_file_metadata.location_region" approved="yes">
+        <source>Region</source>
+        <target state="final">منطقه/استان</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.location_city" resname="sys_file_metadata.location_city" approved="yes">
+        <source>City</source>
+        <target state="final">شهر</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.latitude" resname="sys_file_metadata.latitude" approved="yes">
+        <source>Latitude</source>
+        <target state="final">عرض جغرافیایی</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.longitude" resname="sys_file_metadata.longitude" approved="yes">
+        <source>Longitude</source>
+        <target state="final">طول جغرافیایی</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.ranking" resname="sys_file_metadata.ranking" approved="yes">
+        <source>Ranking</source>
+        <target state="final">رتبه‌بندی</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.content_creation_date" resname="sys_file_metadata.content_creation_date" approved="yes">
+        <source>Content Creation Date</source>
+        <target state="final">تاریخ ساخت محتوا</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.content_modification_date" resname="sys_file_metadata.content_modification_date" approved="yes">
+        <source>Content Modification Date</source>
+        <target state="final">تاریخ ویرایش محتوا</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.note" resname="sys_file_metadata.note" approved="yes">
+        <source>Note</source>
+        <target state="final">یادداشت</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.unit" resname="sys_file_metadata.unit" approved="yes">
+        <source>Unit</source>
+        <target state="final">واحد</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.color_space" resname="sys_file_metadata.color_space" approved="yes">
+        <source>Color Space</source>
+        <target state="final">فضای رنگی</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.pages" resname="sys_file_metadata.pages" approved="yes">
+        <source>Number of Pages</source>
+        <target state="final">تعداد صفحات</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.language" resname="sys_file_metadata.language" approved="yes">
+        <source>File Language</source>
+        <target state="final">زبان فایل</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.fe_groups" resname="sys_file_metadata.fe_groups" approved="yes">
+        <source>Frontend Permission</source>
+        <target state="final">مجوزهای خروجی سایت</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.width" resname="sys_file_metadata.width" approved="yes">
+        <source>Width</source>
+        <target state="final">عرض</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.height" resname="sys_file_metadata.height" approved="yes">
+        <source>Height</source>
+        <target state="final">طول</target>
+      </trans-unit>
+      <!-- sys_file_metadata tabs -->
+      <trans-unit id="tabs.metadata" resname="tabs.metadata" approved="yes">
+        <source>Metadata</source>
+        <target state="final">فراداده‌ها</target>
+      </trans-unit>
+      <!-- sys_file_metadata placeholder -->
+      <!-- sys_file_metadata palette -->
+      <trans-unit id="palette.metrics" resname="palette.metrics" approved="yes">
+        <source>Metrics</source>
+        <target state="final">معیارها</target>
+      </trans-unit>
+      <trans-unit id="palette.geo_location" resname="palette.geo_location" approved="yes">
+        <source>Geo Location</source>
+        <target state="final">مکان جغرافیایی</target>
+      </trans-unit>
+      <trans-unit id="palette.visibility" resname="palette.visibility" approved="yes">
+        <source>Visibility</source>
+        <target state="final">امکان نمایش</target>
+      </trans-unit>
+      <trans-unit id="palette.content_date" resname="palette.content_date" approved="yes">
+        <source>Content Date</source>
+        <target state="final">تاریخ محتوا</target>
+      </trans-unit>
+      <!-- fe_groups fields -->
+      <trans-unit id="fe_groups.files" resname="fe_groups.files" approved="yes">
+        <source>Allowed files</source>
+        <target state="final">فایل‌های مجاز</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
