@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_misc.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="it">
+    <header/>
+    <body>
+      <trans-unit id="overwriteExistingFiles" approved="yes">
+        <source>Overwrite existing files</source>
+        <target state="final">Sovrascrivi i file esistenti</target>
+      </trans-unit>
+      <trans-unit id="uploadMultipleFilesInfo" approved="yes">
+        <source>Upload multiple files by holding the Shift or CTRL-file pressed while selecting your files (works on modern browsers only).</source>
+        <target state="final">Carica più file tenendo premuto il tasto Maiusc (Shift) o il tasto Ctrl durante la selezione dei file (funziona solo per browser moderni).</target>
+      </trans-unit>
+      <trans-unit id="fileMetaDataLocation" approved="yes">
+        <source>Location</source>
+        <target state="final">Posizione</target>
+      </trans-unit>
+      <trans-unit id="fileMetaErrorInvalidRecord" approved="yes">
+        <source>File meta data not found</source>
+        <target state="final">Metadati del file non trovati</target>
+      </trans-unit>
+      <trans-unit id="selectPosition" approved="yes">
+        <source>Select a position for the new page</source>
+        <target state="final">Seleziona la posizione della nuova pagina</target>
+      </trans-unit>
+      <trans-unit id="pageSelectPosition" approved="yes">
+        <source>Page (select position)</source>
+        <target state="final">Pagina (seleziona posizione)</target>
+      </trans-unit>
+      <trans-unit id="pageSelectPositionError" approved="yes">
+        <source>Failed to fetch page details. This is likely due to missing permissions.</source>
+        <target state="final">Impossibile recuperare i dettagli della pagina. Probabilmente a causa dei permessi mancanti.</target>
+      </trans-unit>
+      <trans-unit id="goBack" approved="yes">
+        <source>Go back</source>
+        <target state="final">Indietro</target>
+      </trans-unit>
+      <trans-unit id="createNewPage" approved="yes">
+        <source>Create a new page</source>
+        <target state="final">Crea nuova pagina</target>
+      </trans-unit>
+      <trans-unit id="insertNewPageHere" x-unused-since="15.0" approved="yes">
+        <source>Insert the new page here</source>
+        <target state="final">Inserisci qui la nuova pagina</target>
+      </trans-unit>
+      <trans-unit id="insertNewRecordHere" approved="yes">
+        <source>Insert new record here</source>
+        <target state="final">Inserisci qui il nuovo record</target>
+      </trans-unit>
+      <trans-unit id="moveElementToHere" approved="yes">
+        <source>Move element to this position</source>
+        <target state="final">Sposta l'elemento in questa posizione</target>
+      </trans-unit>
+      <trans-unit id="moveElements" approved="yes">
+        <source>Move elements</source>
+        <target state="final">Sposta elementi</target>
+      </trans-unit>
+      <trans-unit id="copyElements" approved="yes">
+        <source>Copy elements</source>
+        <target state="final">Copia elementi</target>
+      </trans-unit>
+      <trans-unit id="copyElementToHere" approved="yes">
+        <source>Copy element to this position</source>
+        <target state="final">Copia elemento in questa posizione</target>
+      </trans-unit>
+      <trans-unit id="makeCopy" approved="yes">
+        <source>Make copy instead of moving element</source>
+        <target state="final">Crea una copia invece di spostare l'elemento</target>
+      </trans-unit>
+      <trans-unit id="newRecordWizard.filter.placeholder" approved="yes">
+        <source>Search for any record type</source>
+        <target state="final">Cerca per ogni tipo di record</target>
+      </trans-unit>
+      <trans-unit id="newRecordWizard.filter.noResults" approved="yes">
+        <source>Unfortunately, no record type matches your query, please try a different one.</source>
+        <target state="final">Nessun tipo di record corrisponde alla tua ricerca. Provane una diversa.</target>
+      </trans-unit>
+      <trans-unit id="newRecordWizard.recentlyUsed" approved="yes">
+        <source>Recently used</source>
+        <target state="final">Usati di recente</target>
+      </trans-unit>
+      <trans-unit id="newContentElement.filter.placeholder" approved="yes">
+        <source>Search for any content type</source>
+        <target state="final">Cerca un tipo di contenuto</target>
+      </trans-unit>
+      <trans-unit id="newContentElement.filter.noResults" approved="yes">
+        <source>Unfortunately, no content type matches your query, please try a different one.</source>
+        <target state="final">Nessun tipo di contenuto corrisponde alla tua ricerca. Provane una diversa.</target>
+      </trans-unit>
+      <trans-unit id="newContentElement.filter.userNotAllowed" approved="yes">
+        <source>No content elements are available with your current permissions.</source>
+        <target state="final">Nessun elemento di contenuto disponibile con i tuoi attuali permessi.</target>
+      </trans-unit>
+      <trans-unit id="system_records" approved="yes">
+        <source>System Records</source>
+        <target state="final">Record di sistema</target>
+      </trans-unit>
+      <trans-unit id="recordgroup.content" approved="yes">
+        <source>Content</source>
+        <target state="final">Contenuto</target>
+      </trans-unit>
+      <trans-unit id="recordgroup.backendaccess" approved="yes">
+        <source>Backend Access</source>
+        <target state="final">Accesso Backend</target>
+      </trans-unit>
+      <trans-unit id="recordgroup.frontendaccess" approved="yes">
+        <source>Frontend Access</source>
+        <target state="final">Accesso Frontend</target>
+      </trans-unit>
+      <trans-unit id="1_selectType" approved="yes">
+        <source>First select the type of the new content element</source>
+        <target state="final">Seleziona prima il tipo del nuovo elemento di contenuto</target>
+      </trans-unit>
+      <trans-unit id="2_selectPosition" approved="yes">
+        <source>Now click on the position of the new content element</source>
+        <target state="final">Ora clicca sulla posizione del nuovo elemento di contenuto</target>
+      </trans-unit>
+      <trans-unit id="CM_history" approved="yes">
+        <source>History/Undo</source>
+        <target state="final">Cronologia/Annulla</target>
+      </trans-unit>
+      <trans-unit id="CM_hideInMenus" approved="yes">
+        <source>Hide in menu</source>
+        <target state="final">Nascondi nel menù</target>
+      </trans-unit>
+      <trans-unit id="CM_showInMenus" approved="yes">
+        <source>Show in menu</source>
+        <target state="final">Mostra nel menù</target>
+      </trans-unit>
+      <trans-unit id="CM_newWizard" approved="yes">
+        <source>'Create New' wizard</source>
+        <target state="final">Nuovo (procedura guidata)</target>
+      </trans-unit>
+      <trans-unit id="localize" approved="yes">
+        <source>Localize</source>
+        <target state="final">Localizza</target>
+      </trans-unit>
+      <trans-unit id="localize.isLocalizable" approved="yes">
+        <source>Record can be localized</source>
+        <target state="final">Il record può essere localizzato</target>
+      </trans-unit>
+      <trans-unit id="localizeAllRecords" approved="yes">
+        <source>Localize all records</source>
+        <target state="final">Localizza tutti i record</target>
+      </trans-unit>
+      <trans-unit id="synchronizeWithOriginalLanguage" approved="yes">
+        <source>Synchronize with original language</source>
+        <target state="final">Sincronizza con la lingua originale</target>
+      </trans-unit>
+      <trans-unit id="tree_networkError" approved="yes">
+        <source>Navigation loading error</source>
+        <target state="final">Errore di caricamento navigazione</target>
+      </trans-unit>
+      <trans-unit id="tree_networkErrorDescription" approved="yes">
+        <source>Got unexpected response from the server. Please check logs for details.</source>
+        <target state="final">Ricevuta una risposta inaspettata dal server. Controlla i log per i dettagli.</target>
+      </trans-unit>
+      <trans-unit id="synchronizeFolderRelations.afterFolderRenamed" approved="yes">
+        <source>%d %s records referencing the renamed directory were updated.</source>
+        <target state="final">%d %s record, che fanno riferimento alla cartella rinominata, sono stati aggiornati.</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_listEmptyText" approved="yes">
+        <source>No results found.</source>
+        <target state="final">Nessun risultato trovato.</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_hasErrors" approved="yes">
+        <source>Something went wrong.</source>
+        <target state="final">Si è verificato un errore.</target>
+      </trans-unit>
+      <trans-unit id="liveSearch.versionizedRecord" approved="yes">
+        <source>Versionized record</source>
+        <target state="final">Record con versioni</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_helpDescriptionPages" approved="yes">
+        <source>`#page:Home` will search for all pages with the title "Home"</source>
+        <target state="final">`#page:Home cerca tutte le pagine con il titolo "Home"</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_helpDescriptionContent" approved="yes">
+        <source>`#content:Professional` will search for all content elements containing the term "Professional"</source>
+        <target state="final">`#content:Professionale` cercherà tutti gli elementi di contenuto contenenti il termine "Professionale"</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_help.shortcutOpen" approved="yes">
+        <source><![CDATA[You can open the live search by pressing the <kbd><kbd>Ctrl</kbd> + <kbd>K</kbd></kbd> or <kbd><kbd>Cmd</kbd> + <kbd>K</kbd></kbd> keystroke]]></source>
+        <target state="final"><![CDATA[Puoi aprire la ricerca in tempo reale premendo la combinazione di tasti <kbd><kbd>Ctrl</kbd> + <kbd>K</kbd></kbd> o <kbd><kbd>Cmd</kbd> + <kbd>K</kbd></kbd>]]></target>
+      </trans-unit>
+      <trans-unit id="liveSearch_search" approved="yes">
+        <source>Search</source>
+        <target state="final">Cerca</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_searchIn" approved="yes">
+        <source>Search records in</source>
+        <target state="final">Cerca record in</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_activeFilters" approved="yes">
+        <source>active filters</source>
+        <target state="final">filtri attivi</target>
+      </trans-unit>
+      <trans-unit id="viewport_navigation_show" approved="yes">
+        <source>Show Navigation</source>
+        <target state="final">Mostra Navigazione</target>
+      </trans-unit>
+      <trans-unit id="viewport_navigation_hide" approved="yes">
+        <source>Hide Navigation</source>
+        <target state="final">Nascondi Navigazione</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
