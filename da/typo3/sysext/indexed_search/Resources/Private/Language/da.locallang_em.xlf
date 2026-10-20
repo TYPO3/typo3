@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814839" source-language="en" datatype="plaintext" original="EXT:indexed_search/Resources/Private/Language/locallang_em.xlf" date="2011-10-17T20:22:32Z" product-name="indexed_search" target-language="da">
+    <header/>
+    <body>
+      <trans-unit id="indexedsearch.config.pdftools" resname="indexedsearch.config.pdftools" approved="yes">
+        <source>Path to PDF parsers: The indexer uses the applications 'pdftotext' and 'pdfinfo' for extracting content from PDF files. These applications must be installed in this path. Otherwise leave the field empty.</source>
+        <target state="final">Sti til PDF parser: Indeksmotoren bruger applikationen 'pdftotext' og 'pdfinfo' til at ekstrahere indhold fra PDF filer. DIsse applikationer skal være installeret under denne sti. Alternativt lad feltet være tomt.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.pdf_mode" resname="indexedsearch.config.pdf_mode" approved="yes">
+        <source>PDF parsing mode: Zero=whole file is indexed in one. Positive value indicates number of pages at a time, eg. "5" would mean 1-5,6-10,.... Negative integer would indicate (abs value) number of groups. Eg "3" groups of 10 pages would be 1-4,5-8,9-10. Range is -100 to 100.</source>
+        <target state="final">PDF persing-tilstand: Nul=hele filen indekseres på en gang. Positive værdier indikerer antal af sider af gangen, eksempelvis "5" ville betyde 1-5, 6-10, .... Negative tal vil indikere antal af grupper. Eksempelvis "-3" grupper af 10 sider, ville være 1-4, 5-8, 9-10. Området er -100 til 100</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.unzip" resname="indexedsearch.config.unzip" approved="yes">
+        <source>Path to unzip: The indexer uses "unzip" to extract the contents from OpenOffice.org/Oasis OpenDocument files. The application must be installed in this path. Otherwise leave the field empty.</source>
+        <target state="final">Sti til unzip: Indeksmotoren bruger "unzip" til at pakke indhold ud fra OpenOffice.org/Oasis OpenDocument filer. Applikationen skal være installeret under denne sti. Alternativt efterlad feltet tomt.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.catdoc" resname="indexedsearch.config.catdoc" approved="yes">
+        <source>Path to WORD parser: The indexer uses the application 'catdoc' for extracting content from WORD files. The application must be installed in this path. Otherwise leave the field empty.</source>
+        <target state="final">Sti til WORD parser: Indeksmotoren bruger applikationen 'catdoc' til at pakke indhold ud fra Wordfiler. Applikationen skal være installeret under denne sti. Alternativt efterlad feltet tomt.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.xlhtml" resname="indexedsearch.config.xlhtml" approved="yes">
+        <source>Path to EXCEL parser: The indexer uses the application 'xlhtml' for extracting content from EXCEL files. The application must be installed in this path. Otherwise leave the field empty.</source>
+        <target state="final">Sti til EXCEL parser: Indeksmotoren bruger applikationen 'xlhtml' til at pakke indhold ud fra Excelfiler. Applikationen skal være installeret under denne sti. Alternativt efterlad feltet tomt.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.ppthtml" resname="indexedsearch.config.ppthtml" approved="yes">
+        <source>Path to POWERPOINT parser: The indexer uses the application 'ppthtml' for extracting content from POWERPOINT files. The application must be installed in this path. Otherwise leave the field empty.</source>
+        <target state="final">Sti til POWERPOINT parser: Indeksmotoren bruger applikationen 'ppthtml' til at pakke indhold ud fra Powerpointfiler. Applikationen skal være installeret under denne sti. Alternativt efterlad feltet tomt.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.unrtf" resname="indexedsearch.config.unrtf" approved="yes">
+        <source>Path to RTF parser: The indexer uses the application 'unrtf' for extracting content from RTF files. The application must be installed in this path. Otherwise leave the field empty.</source>
+        <target state="final">Sti til RTF parser: Indeksmotoren bruger applikationen 'unrtf' til at pakke indhold ud fra RTF-filer. Applikationen skal være installeret under denne sti. Alternativt efterlad feltet tomt.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.debugMode" resname="indexedsearch.config.debugMode" approved="yes">
+        <source>Debug mode: If set, debugging information is collected during indexing and can be shown in the backend. Only for debugging since it slows down the system and fills the database with crap.</source>
+        <target state="final">Fejlsøgningstilstand: Hvis angivet vil fejlinformation blive indsamlet under indeksering og blive vist i backend. Kun for fejlsøgning, da det sætter performance ned på systemet og fylder databasen med skrammel.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.fullTextDataLength" resname="indexedsearch.config.fullTextDataLength" approved="yes">
+        <source>Full Text Data Length: If set, the full text data stored will be limited to this byte length. It means you can save some database space but to the degree you cut the length down you also limit possibilities to search for sentences and the search result resume will be limited.</source>
+        <target state="final">Fuld takst datalængde: Hvis angivet vil fuldtekst data som gemmes, blive begrænset af denne byte-længde. Det betyder at du kan spare noget databaseplads, men til et vist punkt vil du også begrænse længden, som giver dig færre muligheder for at søge i sætninger, og søgeresultatet vil blive begrænset.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.disableFrontendIndexing" resname="indexedsearch.config.disableFrontendIndexing" approved="yes">
+        <source>Disable Indexing in Frontend: By default pages are indexed during viewing of pages in the frontend. You can disable this features so indexing of pages is only initiated through the backend page crawler.</source>
+        <target state="final">Deaktivér indeksering i frontend. Som standard er sider indekseret under visning i frontend. Du kan deaktivere denne funktion, så indeksering af sider kun initieres af sidecrawleren i backend.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.enableMetaphoneSearch" resname="indexedsearch.config.enableMetaphoneSearch" approved="yes">
+        <source>Enable metaphone search (sounds like): 0=disabled, 1=use internal metaphone parser, 2=use advanced doubleMetaphone parser.</source>
+        <target state="final">Aktivér metafonetisk søgning (lyder som): 0=deaktiveret, 1=brug intern metafonetisk parser, 2=brug avanceret dobbelt metafonetisk parser.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.minAge" resname="indexedsearch.config.minAge" approved="yes">
+        <source>Min TTL (hours) for indexed page: The time in hours that must pass before an indexed page can be indexed again regardless of changes on the page.</source>
+        <target state="final">Minimum TTL for indekseret side: Tid i timer der må gå, før en indekseret side kan indekseres igen, uanset ændringer på siden.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.maxAge" resname="indexedsearch.config.maxAge" approved="yes">
+        <source>Deprecated! Max TTL (hours) for indexed page: The time in hours that is the maximum age of an indexed page before it will get indexed again. Usually the index is kept consistent, therefore you won't need this feature.</source>
+        <target state="final">Forældet! Maksimum TTL (timer) for indekseret side: Tid i timer, som er den maksimale alder for en indekseret side, før den vil blive indekseret igen. Normalt holdes indekset konsistent, så derfor har du ikke brug for denne funktion.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.maxExternalFiles" resname="indexedsearch.config.maxExternalFiles" approved="yes">
+        <source>Max external files to index: When external files are found on a page this number indicates how many may be indexed at that point. This prevents pages with links to many external documents to take the server down - but it may also prevent documents from being indexed.</source>
+        <target state="final">Maksimale eksterne filer til indeksering: Når eksterne filer findes på en side, vil dette tal indikere hvor mange, der skal indekseret. Dette undgår sider med links til mange eksterne dokumenter, som kan trække serveren i knæ - men det kan også forhindre dokumenter fra at blive indekseret.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.useCrawlerForExternalFiles" resname="indexedsearch.config.useCrawlerForExternalFiles" approved="yes">
+        <source>Use "crawler" extension to index external files: When external files are found on a page they are added to the "crawler" extensions queue and indexed via the cronscript running the crawler. This eliminates problems with for example many PDF files on a page. Requires a proper configuration of the "crawler" extension.</source>
+        <target state="final">Brug "crawler" udvidelse til at indeksere eksterne filer: Når eksterne filer findes på en side, tilføjes de "crawler" udvidelsens kø, og indekseres via det cronscript, der kører crawler. Dette eliminerer problemer med for eksempel for mange PDF-filer på en side. Forudsætter en korrekt konfiguration af "crawler" udvidelsen.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.flagBitMask" resname="indexedsearch.config.flagBitMask" approved="yes">
+        <source>Bitmask for Flags (Advanced): By this value (0-255) you can filter the importance of &lt;title&gt; (128), &lt;keywords&gt; (64) and &lt;description&gt; (32) content from HTML documents. By setting this to 0, none of these fields will have any importance over the other. The default value 192 means that title-tag content and meta-keywords will be flagged (and rated higher in search results)</source>
+        <target state="final">Bitmaske for flag (avanceret): Med denne værdi (0-255) kan du filtrere vigtigheden af &lt;title&gt; (128),&lt;keywords&gt; (64) og &lt;description&gt; (32) indhold fra HTML-dokumenter. Ved at angive 0, vil ingen af disse felter have nogen betydning over andre. Standardværdien er 192 hvilket betyder at title-tags indhold og meta-keywords, vil blive mærket (og optræde med højrere rank i søgeresultater)</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.ignoreExtensions" resname="indexedsearch.config.ignoreExtensions" approved="yes">
+        <source>Ignore Extensions: List of file extensions that the external parser will ignore (despite having support for them). Comma list.</source>
+        <target state="final">Ignorér filendelser: Liste af filendelser, som en ekstern parser vil ignorere (uanset at den understøtter dem). Kommaliste.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.indexExternalURLs" resname="indexedsearch.config.indexExternalURLs" approved="yes">
+        <source>Index External HTML URLs: If set, links to external URLs will be indexed if they are of type "text/html".</source>
+        <target state="final">Indeksér eksterne HTML URLer: Hvis angivet vil links til eksterne URLer blive indekseret, hvis de er af typen "text/html".</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.useMysqlFulltext" resname="indexedsearch.config.useMysqlFulltext" approved="yes">
+        <source>Use MySQL specific fulltext search - Update database schema in install tool after toggling this flag</source>
+        <target state="final">Brug MySQL-specifik fuldtekstsøgning - opdatér dtatabase schema in installationsværktøjet, når du har skiftet denne indstilling</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.trackIpInStatistic" resname="indexedsearch.config.trackIpInStatistic" approved="yes">
+        <source>Define the privacy level of the logged IP: 0 for no mask which means no privacy, 1 for masking the host and 2 for masking host and subnet (full privacy)</source>
+        <target state="final">Definér privatlivsniveau for loggede IP: 0 for ingen maske, hvilket betyder intet privatliv, 1 for maskering af host og 2 for maskering af host og subnet (fuldt privatliv)</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
