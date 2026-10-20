@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_download.xlf" date="2012-06-17T10:22:33Z" product-name="recordlist" target-language="ar">
+    <header/>
+    <body>
+      <trans-unit id="downloadRecord" approved="yes">
+        <source>Download %d record</source>
+        <target state="final">تحميل %d سجل</target>
+      </trans-unit>
+      <trans-unit id="downloadRecords" approved="yes">
+        <source>Download %d records</source>
+        <target state="final">تحميل %d سجلات</target>
+      </trans-unit>
+      <trans-unit id="download" approved="yes">
+        <source>Download</source>
+        <target state="final">تحميل</target>
+      </trans-unit>
+      <trans-unit id="downloadRecordSettings" approved="yes">
+        <source>Download %s: %d Record</source>
+        <target state="final">تحميل %s: %d سجل</target>
+      </trans-unit>
+      <trans-unit id="downloadRecordsSettings" approved="yes">
+        <source>Download %s: %d Records</source>
+        <target state="final">تحميل %s: %d سجلات</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.generalSettings" approved="yes">
+        <source>General settings</source>
+        <target state="final">الإعدادات العامة</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.columnsToDownload" approved="yes">
+        <source>Columns to download</source>
+        <target state="final">أعمدة للتحميل</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.selectedColumns" approved="yes">
+        <source>Selected columns</source>
+        <target state="final">الأعمدة المُحَددة</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.allColumns" approved="yes">
+        <source>All columns</source>
+        <target state="final">جميع الأعمدة</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.valueFormat" approved="yes">
+        <source>Format of values</source>
+        <target state="final">صيغة القِيَمْ</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.rawValues" approved="yes">
+        <source>Raw values</source>
+        <target state="final">القيم الخام</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.processedValues" approved="yes">
+        <source>Processed values</source>
+        <target state="final">القيم المُعالَجة</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.default" approved="yes">
+        <source>Default: %s</source>
+        <target state="final">الافتراضي: %s</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.filename" approved="yes">
+        <source>Filename</source>
+        <target state="final">اسم الملف</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.filename.placeholder" approved="yes">
+        <source>e.g. %s_ddmmyy-hhmm</source>
+        <target state="final">e.g. %s_ddmmyy-hhmm</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.format" approved="yes">
+        <source>Format</source>
+        <target state="final">الشكل</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.format.csv" approved="yes">
+        <source>CSV</source>
+        <target state="final">CSV</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.format.json" approved="yes">
+        <source>JSON</source>
+        <target state="final">JSON</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.formatOptions.csv" approved="yes">
+        <source>CSV options</source>
+        <target state="final">خيارات CSV</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.formatOptions.csv.delimiter" approved="yes">
+        <source>Delimiter</source>
+        <target state="final">الفواصل</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.formatOptions.csv.delimiter.comma" approved="yes">
+        <source>comma</source>
+        <target state="final">فاصلة</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.formatOptions.csv.delimiter.semicolon" approved="yes">
+        <source>semicolon</source>
+        <target state="final">فاصلة منقوطة</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.formatOptions.csv.delimiter.pipe" approved="yes">
+        <source>pipe</source>
+        <target state="final">أنبوب</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.formatOptions.csv.delimiter.custom" approved="yes">
+        <source>user defined</source>
+        <target state="final">تم تعريف المستخدم</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.formatOptions.csv.quote" approved="yes">
+        <source>Quote character</source>
+        <target state="final">حرف اقتباس</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.formatOptions.csv.quote.doublequote" approved="yes">
+        <source>double quote</source>
+        <target state="final">اقتباس مزدوج</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.formatOptions.csv.quote.singlequote" approved="yes">
+        <source>single quote</source>
+        <target state="final">علامة اقتباس مُفردة</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.formatOptions.csv.quote.space" approved="yes">
+        <source>space</source>
+        <target state="final">مسافة</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.formatOptions.csv.quote.custom" approved="yes">
+        <source>user defined</source>
+        <target state="final">تم تعريف المستخدم</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.formatOptions.json" approved="yes">
+        <source>JSON options</source>
+        <target state="final">خيارات JSON</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.formatOptions.json.meta" approved="yes">
+        <source>Meta information</source>
+        <target state="final">المعلومات الوَصفِية</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.formatOptions.json.meta.full" approved="yes">
+        <source>Add all relevant information to the download</source>
+        <target state="final">إضافة جميع المعلومات ذات الصلة إلى التحميل</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.formatOptions.json.meta.prefix" approved="yes">
+        <source>Prefix the download with table name and page id</source>
+        <target state="final">بادئة التحميل مع اسم الجدول ومُعرّف الصفحة</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.formatOptions.json.meta.none" approved="yes">
+        <source>No information, only download records</source>
+        <target state="final">لا توجد معلومات، فقط تحميل السجلات</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.preset" approved="yes">
+        <source>Preset</source>
+        <target state="final">إعداد مُسبق</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
