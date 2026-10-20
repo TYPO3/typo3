@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_cache.xlf" date="2026-02-24T00:00:00Z" product-name="lang" target-language="cs">
+    <header/>
+    <body>
+      <trans-unit id="page.label" approved="yes">
+        <source>Clear cache for this page</source>
+        <target state="final">Vymazat cache pro tuto stránku</target>
+      </trans-unit>
+      <trans-unit id="group.pages.label" approved="yes">
+        <source>Flush frontend caches</source>
+        <target state="final">Vymazat cache frontendu</target>
+      </trans-unit>
+      <trans-unit id="group.pages.description" approved="yes">
+        <source>Clear frontend and page-related caches.</source>
+        <target state="final">Smazat cache frontendu a stránek.</target>
+      </trans-unit>
+      <trans-unit id="group.all.label" approved="yes">
+        <source>Flush all caches</source>
+        <target state="final">Vymazat všechny cache</target>
+      </trans-unit>
+      <trans-unit id="group.all.description" approved="yes">
+        <source>Clear frontend and page-related caches, all system-related caches, including localization, extension configuration, file and opcode caches. Rebuilding these caches may take some time.</source>
+        <target state="final">Vymažte cache související s frontendem a stránkami, všechny systémové mezipaměti, včetně mezipaměti pro lokalizaci, konfiguraci rozšíření, soubory a opkódy. Obnovení těchto mezipamětí může chvíli trvat.</target>
+      </trans-unit>
+      <!-- Notifications -->
+      <trans-unit id="notification.success.title" approved="yes">
+        <source>Caches cleared</source>
+        <target state="final">Cache vyčištěna</target>
+      </trans-unit>
+      <trans-unit id="notification.success.message" approved="yes">
+        <source>Caches have been cleared.</source>
+        <target state="final">Cache byly vymazány.</target>
+      </trans-unit>
+      <trans-unit id="notification.error.title" approved="yes">
+        <source>An error occurred</source>
+        <target state="final">Došlo k chybě</target>
+      </trans-unit>
+      <trans-unit id="notification.error.message" approved="yes">
+        <source>An error occurred while clearing the cache. Some caches may not have been cleared successfully.</source>
+        <target state="final">Při vymazání cache došlo k chybě. Některé cache nemusely být úspěšně vymazány.</target>
+      </trans-unit>
+      <trans-unit id="notification.page.success.title" approved="yes">
+        <source>Page cache cleared</source>
+        <target state="final">Cache stránek vymazána</target>
+      </trans-unit>
+      <trans-unit id="notification.page.success.message" approved="yes">
+        <source>Page cache for '%s' has been cleared.</source>
+        <target state="final">Cache stránky '%s' byla vymazána.</target>
+      </trans-unit>
+      <trans-unit id="notification.page.error.title" approved="yes">
+        <source>Page cache not cleared</source>
+        <target state="final">Cache stránky nebyla vyčištěna</target>
+      </trans-unit>
+      <trans-unit id="notification.page.error.message" approved="yes">
+        <source>Page cache could not be cleared.</source>
+        <target state="final">Cache stránky nemohla být vyčištěna.</target>
+      </trans-unit>
+      <trans-unit id="notification.group.pages.success.title" approved="yes">
+        <source>Frontend caches cleared</source>
+        <target state="final">Cache frontendu vymazány</target>
+      </trans-unit>
+      <trans-unit id="notification.group.pages.success.message" approved="yes">
+        <source>Frontend caches have been cleared.</source>
+        <target state="final">Cache frontendu byly vymazány.</target>
+      </trans-unit>
+      <trans-unit id="notification.group.all.success.title" approved="yes">
+        <source>All caches cleared</source>
+        <target state="final">Všechny cache vymazány</target>
+      </trans-unit>
+      <trans-unit id="notification.group.all.success.message" approved="yes">
+        <source>All caches have been cleared.</source>
+        <target state="final">Všechny cache byly vymazány.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
