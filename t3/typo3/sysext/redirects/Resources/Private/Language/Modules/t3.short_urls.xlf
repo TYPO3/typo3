@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:redirects/Resources/Private/Language/Modules/short_urls.xlf" date="2025-11-13T18:00:15Z" product-name="redirects" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="title">
+        <source>Short URLs</source>
+        <target>crwdns393862:0crwdne393862:0</target>
+      </trans-unit>
+      <trans-unit id="short_description">
+        <source>Short URLs Administration</source>
+        <target>crwdns393864:0crwdne393864:0</target>
+      </trans-unit>
+      <trans-unit id="description">
+        <source>Create and manage Short URLs that redirect to longer links for easier sharing and tracking.</source>
+        <target>crwdns394058:0crwdne394058:0</target>
+      </trans-unit>
+      <trans-unit id="heading_text">
+        <source>Short URL Management</source>
+        <target>crwdns393868:0crwdne393868:0</target>
+      </trans-unit>
+      <trans-unit id="add_text">
+        <source>Add Short URL</source>
+        <target>crwdns393870:0crwdne393870:0</target>
+      </trans-unit>
+      <trans-unit id="not_found_with_filter.message">
+        <source>No Short URL could be found with the current set of filters applied.</source>
+        <target>crwdns394060:0crwdne394060:0</target>
+      </trans-unit>
+      <trans-unit id="not_found.title">
+        <source>No Short URLs found</source>
+        <target>crwdns394062:0crwdne394062:0</target>
+      </trans-unit>
+      <trans-unit id="not_found.message">
+        <source>There are currently no Short URLs found in the database.</source>
+        <target>crwdns393876:0crwdne393876:0</target>
+      </trans-unit>
+      <trans-unit id="create">
+        <source>Create new Short URL</source>
+        <target>crwdns393878:0crwdne393878:0</target>
+      </trans-unit>
+      <trans-unit id="delete.title">
+        <source>Delete Short URLs</source>
+        <target>crwdns393880:0crwdne393880:0</target>
+      </trans-unit>
+      <trans-unit id="delete.message">
+        <source>Delete all marked Short URLs permanently? You cannot undo this action.</source>
+        <target>crwdns394064:0crwdne394064:0</target>
+      </trans-unit>
+      <trans-unit id="show">
+        <source>Show Short URL</source>
+        <target>crwdns393884:0crwdne393884:0</target>
+      </trans-unit>
+      <trans-unit id="generate_short_url">
+        <source>Generate Short URL</source>
+        <target>crwdns393886:0crwdne393886:0</target>
+      </trans-unit>
+      <trans-unit id="validation.duplicate_short_url">
+        <source>This Short URL already exists. Please choose a different source host or source path.</source>
+        <target>crwdns393888:0crwdne393888:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
