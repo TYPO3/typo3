@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:theme_camino/Resources/Private/Language/backend_layouts.xlf" date="2026-01-14T12:00:00Z" product-name="theme_camino" target-language="bg">
+    <header/>
+    <body>
+      <!-- Backend layouts -->
+    </body>
+  </file>
+</xliff>
