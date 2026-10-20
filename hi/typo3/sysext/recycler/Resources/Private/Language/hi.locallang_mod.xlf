@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814908" source-language="en" datatype="plaintext" original="EXT:recycler/Resources/Private/Language/locallang_mod.xlf" date="2011-10-17T20:22:35Z" product-name="recycler" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab" approved="yes">
+        <source>Recycler</source>
+        <target state="final">रीसायकलर</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel" approved="yes">
+        <source>TYPO3 Recycler</source>
+        <target state="final">टाइपो3 रीसायकलर</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr" approved="yes">
+        <source>The recycler offers the possibility to restore deleted records or remove them from the database permanently. These actions can be applied to a single record, multiple records, and recursively to child records (ex. restoring a page can restore all content elements on that page). Filtering by page and by table provides a quick overview of deleted records before taking action on them.</source>
+        <target state="final">रीसायकलर डेटाबेस में से हमेशा के लिए निकले गए या डिलीट किये गए रिकॉर्ड को वापिस स्टोर करने की संभावना प्रदान करता है। यह कार्य एक रिकॉर्ड, मल्टीपल रिकॉर्ड, और बारी-बारी से चाइल्ड रिकॉर्ड पर लागू किया जा सकता है। (उदाहरण के लिए. एक पेज तो रि-स्टोर करने से उस पेज का सारा कंटेंट रि-स्टोर कर सकते है)। पेज के द्वारा फ़िल्टरिंग और टेबल के द्वारा फिलटरिंग डिलीटेड रिकॉर्ड पर कार्य से पहले उसका ओवर-व्यू देते है।</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
