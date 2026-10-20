@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1427832976" source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/Database.xlf" date="2014-02-07T20:22:32Z" product-name="frontend" target-language="fa">
+    <header/>
+    <body>
+      <trans-unit id="tt_content.table_caption" resname="tt_content.table_caption" approved="yes">
+        <source>Table caption</source>
+        <target state="final">عنوان جدول</target>
+      </trans-unit>
+      <trans-unit id="tt_content.table_delimiter" resname="tt_content.table_delimiter" approved="yes">
+        <source>Field Delimiter</source>
+        <target state="final">جداساز رشته‌ها</target>
+      </trans-unit>
+      <trans-unit id="tt_content.table_delimiter.124" resname="tt_content.table_delimiter.124" approved="yes">
+        <source>| (Pipe)</source>
+        <target state="final">| (پایپ)</target>
+      </trans-unit>
+      <trans-unit id="tt_content.table_delimiter.59" resname="tt_content.table_delimiter.59" approved="yes">
+        <source>; (Semicolon)</source>
+        <target state="final">; (سمیکولون، ویرگول‌نقطه)</target>
+      </trans-unit>
+      <trans-unit id="tt_content.table_delimiter.58" resname="tt_content.table_delimiter.58" approved="yes">
+        <source>: (Colon)</source>
+        <target state="final">: (کولون، دونقطه)</target>
+      </trans-unit>
+      <trans-unit id="tt_content.table_delimiter.44" resname="tt_content.table_delimiter.44" approved="yes">
+        <source>, (Comma)</source>
+        <target state="final">, (کوما، ویرگول)</target>
+      </trans-unit>
+      <trans-unit id="tt_content.table_delimiter.9" resname="tt_content.table_delimiter.9" approved="yes">
+        <source>⇥ (Tab)</source>
+        <target state="final">⇥ (تب، پرش)</target>
+      </trans-unit>
+      <trans-unit id="tt_content.table_enclosure" resname="tt_content.table_enclosure" approved="yes">
+        <source>Text enclosure</source>
+        <target state="final">محفظۀ نوشته</target>
+      </trans-unit>
+      <trans-unit id="tt_content.table_enclosure.0" resname="tt_content.table_enclosure.0" approved="yes">
+        <source>None</source>
+        <target state="final">هیچ‌کدام</target>
+      </trans-unit>
+      <trans-unit id="tt_content.table_enclosure.39" resname="tt_content.table_enclosure.39" approved="yes">
+        <source>' (Single quotes)</source>
+        <target state="final">' (تک نقل قولی)</target>
+      </trans-unit>
+      <trans-unit id="tt_content.table_enclosure.34" resname="tt_content.table_enclosure.34" approved="yes">
+        <source>" (Double quotes)</source>
+        <target state="final">" (دو نقل قولی)</target>
+      </trans-unit>
+      <trans-unit id="tt_content.table_header_position" resname="tt_content.table_header_position" approved="yes">
+        <source>Table header position</source>
+        <target state="final">محل عنوان جدول</target>
+      </trans-unit>
+      <trans-unit id="tt_content.table_header_position.0" resname="tt_content.table_header_position.0" approved="yes">
+        <source>No header</source>
+        <target state="final">بدون عنوان</target>
+      </trans-unit>
+      <trans-unit id="tt_content.table_header_position.1" resname="tt_content.table_header_position.1" approved="yes">
+        <source>Top</source>
+        <target state="final">بالا</target>
+      </trans-unit>
+      <trans-unit id="tt_content.table_header_position.2" resname="tt_content.table_header_position.2" approved="yes">
+        <source>Left</source>
+        <target state="final">چپ</target>
+      </trans-unit>
+      <trans-unit id="tt_content.table_tfoot" resname="tt_content.table_tfoot" approved="yes">
+        <source>Use table footer (wrap last row with &lt;tfoot&gt; tags)</source>
+        <target state="final">استفاده از پاورقی جدول (احاطۀ آخرین سطر جدول با برچسب &lt;tfoot&gt;)</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
