@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en" trgLang="hi">
+  <file id="f1">
+    <unit id="title">
+      <segment state="final">
+        <source>Advanced query</source>
+        <target>एडवांस्ड क्वेरी</target>
+      </segment>
+    </unit>
+    <unit id="short_description">
+      <segment state="final">
+        <source>Database queries, allowing filtering and sorting</source>
+        <target>डेटाबेस क्वेरी, जो फ़िल्टरिंग और सॉर्टिंग की अनुमति देती हैं</target>
+      </segment>
+    </unit>
+    <unit id="description">
+      <segment state="final">
+        <source>Build custom database queries using a configurable interface that supports filtering, sorting, and limiting results without requiring direct SQL.</source>
+        <target>एक कॉन्फ़िगरेबल इंटरफ़ेस का उपयोग करके कस्टम डेटाबेस क्वेरीज़ बनाएँ, जो सीधे SQL की आवश्यकता के बिना परिणामों को फ़िल्टर करने, सॉर्ट करने और सीमित करने की सुविधा देता है।</target>
+      </segment>
+    </unit>
+  </file>
+</xliff>
