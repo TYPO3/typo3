@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:viewpage/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="viewpage" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="width" approved="yes">
+        <source>Width</source>
+        <target state="final">Breite</target>
+      </trans-unit>
+      <trans-unit id="tablet" approved="yes">
+        <source>Tablet</source>
+        <target state="final">Tablet</target>
+      </trans-unit>
+      <trans-unit id="tabletLandscape" approved="yes">
+        <source>Tablet landscape</source>
+        <target state="final">Tablet Querformat</target>
+      </trans-unit>
+      <trans-unit id="tabletPortrait" approved="yes">
+        <source>Tablet portrait</source>
+        <target state="final">Tablet Hochformat</target>
+      </trans-unit>
+      <trans-unit id="mobile" approved="yes">
+        <source>Mobile</source>
+        <target state="final">Handy</target>
+      </trans-unit>
+      <trans-unit id="desktop" approved="yes">
+        <source>Desktop</source>
+        <target state="final">Desktop</target>
+      </trans-unit>
+      <trans-unit id="customWidth" approved="yes">
+        <source>Custom Size</source>
+        <target state="final">Benutzerdefinierte Größe</target>
+      </trans-unit>
+      <trans-unit id="autoSize" approved="yes">
+        <source>Auto Size</source>
+        <target state="final">Automatische Größe</target>
+      </trans-unit>
+      <trans-unit id="refreshPage" approved="yes">
+        <source>Refresh page</source>
+        <target state="final">Seite aktualisieren</target>
+      </trans-unit>
+      <trans-unit id="language" approved="yes">
+        <source>Language</source>
+        <target state="final">Sprache</target>
+      </trans-unit>
+      <trans-unit id="automatic" approved="yes">
+        <source>Automatic</source>
+        <target state="final">Automatisch</target>
+      </trans-unit>
+      <trans-unit id="maximized" approved="yes">
+        <source>Maximized</source>
+        <target state="final">Maximiert</target>
+      </trans-unit>
+      <trans-unit id="custom" approved="yes">
+        <source>Custom</source>
+        <target state="final">Benutzerdefiniert</target>
+      </trans-unit>
+      <trans-unit id="unidentified" approved="yes">
+        <source>Unidentified</source>
+        <target state="final">Unidentifiziert</target>
+      </trans-unit>
+      <trans-unit id="noValidPageSelected" approved="yes">
+        <source>Please select a page with a valid page type in the page tree to get a preview of it in different screen resolutions.</source>
+        <target state="final">Bitte wählen Sie eine Seite mit einem gültigen Seitentyp im Seitenbaum, um eine Vorschau in verschiedenen Bildschirmauflösungen zu erhalten.</target>
+      </trans-unit>
+      <trans-unit id="noSiteConfiguration" approved="yes">
+        <source>The requested page is missing a valid site configuration.</source>
+        <target state="final">Auf der angefragten Seite fehlt eine gültige Site-Konfiguration.</target>
+      </trans-unit>
+      <trans-unit id="iframe.title" approved="yes">
+        <source>View selected page in different screen resolutions</source>
+        <target state="final">Ansicht ausgewählter Seiten in unterschiedlichen Bildschirm-Auflösungen</target>
+      </trans-unit>
+      <trans-unit id="moduleMenu.dropdown.label" approved="yes">
+        <source>Page language</source>
+        <target state="final">Sprache der Seite</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
