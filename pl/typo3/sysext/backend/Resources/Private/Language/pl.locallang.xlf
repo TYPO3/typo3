@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1420197366" source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang.xlf" date="2015-01-02T11:16:11Z" product-name="backend" target-language="pl">
+    <header/>
+    <body>
+      <trans-unit id="no_modules_registered" resname="no_modules_registered" approved="yes">
+        <source>No modules have been registered. Please contact your system administrator.</source>
+        <target state="final">Brak zarejestrowanych modułów. Proszę skontaktować się z administratorem systemu.</target>
+      </trans-unit>
+      <trans-unit id="show_references" resname="show_references" approved="yes">
+        <source>Show references</source>
+        <target state="final">Pokaż referencje</target>
+      </trans-unit>
+      <trans-unit id="systemmessage.header" resname="systemmessage.header" approved="yes">
+        <source>Application Information</source>
+        <target state="final">Informacje o aplikacji</target>
+      </trans-unit>
+      <trans-unit id="systemmessage.intro" resname="systemmessage.intro" approved="yes">
+        <source><![CDATA[This is a short system overview. For advanced information please head to the <a href="%s">Environment Module</a>.]]></source>
+        <target state="final"><![CDATA[To jest krótki przegląd systemu. Aby uzyskać zaawansowane informacje, przejdź do<a href="%s">Modułu Środowisko</a>.]]></target>
+      </trans-unit>
+      <trans-unit id="systemmessage.allgood" resname="systemmessage.allgood" xml:space="preserve" approved="yes">
+				<source>Your system is fully operational.
+Have a nice day.</source>
+			<target state="final">Twój system jest w pełni gotowy.
+Miłego dnia</target></trans-unit>
+      <trans-unit id="usermodule.su.list" resname="usermodule.su.list" approved="yes">
+        <source>Recently switched to</source>
+        <target state="final">Ostatnio przełączono na</target>
+      </trans-unit>
+      <trans-unit id="usermodule.su.tooltip" resname="usermodule.su.tooltip" approved="yes">
+        <source>Switch to user %s</source>
+        <target state="final">Przełącz na użytkownika %s</target>
+      </trans-unit>
+      <trans-unit id="config.loginLogo" resname="config.loginLogo" approved="yes">
+        <source>Logo: If set, this logo will be used instead of the TYPO3 logo above the login credential fields (e.g. fileadmin/images/login-logo.png or EXT:my_theme/Resources/Public/Images/login-logo.png or //domain.tld/login-logo.png)</source>
+        <target state="final">Logo: Jeśli ustawione, zostanie użyte zamiast standardowego loga na stronie logowania (e.g. fileadmin/images/login-logo.png or EXT:my_theme/Resources/Public/Images/login-logo.png or //domain.tld/login-logo.png)</target>
+      </trans-unit>
+      <trans-unit id="config.loginHighlightColor" resname="config.loginHighlightColor" approved="yes">
+        <source>Highlight Color: If set, this color will be used as highlight color in the login screen.</source>
+        <target state="final">Kolor podświetlenia: Jeśli ustawiony, ten kolor będzie używany jako kolor podświetlenia na ekranie logowania.</target>
+      </trans-unit>
+      <trans-unit id="config.loginBackgroundImage" resname="config.loginBackgroundImage" approved="yes">
+        <source>Background Image: If set, this image will be used as background image for the login screen (e.g. fileadmin/images/my-background.jpg or EXT:my_theme/Resources/Public/Images/my-background.jpg or //domain.tld/my-background.png)</source>
+        <target state="final">Obraz tła: Jeśli ustawiony, ten obraz będzie używany jako obraz tła dla ekranu logowania (np. fileadmin/obrazy/moj-obraz-tla.jpg lub EXT:my_theme/Resources/Public/Images/moj-obraz-tla.jpg lub //domain.tld/moj-obraz-tla.png)</target>
+      </trans-unit>
+      <trans-unit id="config.loginFootnote" resname="config.loginFootnote" approved="yes">
+        <source>Footnote: If set, this text will be displayed on the login screen to provide copyright information for the background image (e.g. © 2017 by Foo Bar) or a descriptive text</source>
+        <target state="final">Notatka: Jeśli ustawiony, tekst ten będzie wyświetlany na ekranie logowania, aby dostarczyć informacje o prawach autorskich dla obrazu tła (np. © 2017 przez Foo Bar) lub tekst opisowy</target>
+      </trans-unit>
+      <trans-unit id="config.backendLogo" resname="config.backendLogo" approved="yes">
+        <source>Logo: If set, this logo will be used instead of the TYPO3 logo in the TYPO3 Backend in the left top corner (e.g. fileadmin/images/backend-logo.png or EXT:my_theme/Resources/Public/Images/backend-logo.png)</source>
+        <target state="final">Logo: Jeśli ustawione, to logo będzie używane zamiast loga TYPO3 w backendzie TYPO3 w lewym górnym rogu (np. fileadmin/obrazy/backend-logo.png lub EXT:my_theme/Resources/Public/Images/backend-logo.png)</target>
+      </trans-unit>
+      <trans-unit id="config.backendFavicon" resname="config.backendFavicon" approved="yes">
+        <source>Favicon: If set, this favicon will be used instead of the TYPO3 logo (e.g. EXT:my_theme/Resources/Public/Images/favicon.ico)</source>
+        <target state="final">Favicon: Jeśli ustawione, ta ikonka będzie używana zamiast loga TYPO3 (np. EXT:my_theme/Resources/Public/Images/favicon.ico)</target>
+      </trans-unit>
+      <trans-unit id="foldertreeview.noFolders.title" resname="foldertreeview.noFolders.title" approved="yes">
+        <source>No folders available</source>
+        <target state="final">Brak dostępnych folderów</target>
+      </trans-unit>
+      <trans-unit id="foldertreeview.noFolders.message" resname="foldertreeview.noFolders.message" approved="yes">
+        <source>You do not have access to any folder. Please ask your administrator to fix access permissions for your account.</source>
+        <target state="final">Nie masz dostępu do folderów. Prosimy o kontakt z administratorem w celu ustalenia uprawnień dostępu.</target>
+      </trans-unit>
+      <trans-unit id="login.link" resname="login.link" approved="yes">
+        <source>Login with username and password</source>
+        <target state="final">Proszę zalogować się podając nazwę użytkownika i hasło</target>
+      </trans-unit>
+      <trans-unit id="login.username" resname="login.username" approved="yes">
+        <source>Username</source>
+        <target state="final">Użytkownik</target>
+      </trans-unit>
+      <trans-unit id="login.password" resname="login.password" approved="yes">
+        <source>Password</source>
+        <target state="final">Hasło</target>
+      </trans-unit>
+      <trans-unit id="login.error.capslock" resname="login.error.capslock" approved="yes">
+        <source>Attention: Caps lock enabled!</source>
+        <target state="final">Uwaga: Caps Lock włączony!</target>
+      </trans-unit>
+      <trans-unit id="login.interface" resname="login.interface" approved="yes">
+        <source>Interface</source>
+        <target state="final">Interfejs</target>
+      </trans-unit>
+      <trans-unit id="login.news.previous" resname="login.news.previous" approved="yes">
+        <source>Previous</source>
+        <target state="final">Poprzednie</target>
+      </trans-unit>
+      <trans-unit id="login.news.next" resname="login.news.next" approved="yes">
+        <source>Next</source>
+        <target state="final">Następne</target>
+      </trans-unit>
+      <trans-unit id="login.error.message" resname="login.error.message" approved="yes">
+        <source>Your login attempt did not succeed</source>
+        <target state="final">Nieudana próba logowania</target>
+      </trans-unit>
+      <trans-unit id="login.error.description" resname="login.error.description" approved="yes">
+        <source>Make sure to spell your username and password correctly, including upper/lowercase characters.</source>
+        <target state="final">Upewnij się, aby przeliterować nazwę użytkownika i hasło poprawnie, w tym górne / małe litery.</target>
+      </trans-unit>
+      <trans-unit id="login.error.javascript" resname="login.error.javascript" approved="yes">
+        <source>Please activate JavaScript!</source>
+        <target state="final">Proszę włączyć JavaScript!</target>
+      </trans-unit>
+      <trans-unit id="login.error.cookies" resname="login.error.cookies" approved="yes">
+        <source>Please activate Cookies!</source>
+        <target state="final">Proszę włączyć obsługę ciasteczek!</target>
+      </trans-unit>
+      <trans-unit id="login.error.referrer" resname="login.error.referrer" approved="yes">
+        <source>TYPO3 relies on HTTP referrers for security reasons in the backend. It seems your browser refused to send this information.</source>
+        <target state="final">TYPO3 polega w backendzie na polecających (referrers) HTTP ze względów bezpieczeństwa. Wygląda na to, że Twoja przeglądarka odmówiła wysłania tych informacji.</target>
+      </trans-unit>
+      <trans-unit id="login.process" resname="login.process" approved="yes">
+        <source>Verifying Login Data ...</source>
+        <target state="final">Weryfikacja danych logowania ...</target>
+      </trans-unit>
+      <trans-unit id="login.submit" resname="login.submit" approved="yes">
+        <source>Login</source>
+        <target state="final">Logowanie</target>
+      </trans-unit>
+      <trans-unit id="login.copyrightLink" resname="login.copyrightLink" approved="yes">
+        <source>More about TYPO3</source>
+        <target state="final">Więcej o TYPO3</target>
+      </trans-unit>
+      <trans-unit id="login.typo3Logo" resname="login.typo3Logo" approved="yes">
+        <source>TYPO3 logo</source>
+        <target state="final">TYPO3 logo</target>
+      </trans-unit>
+      <trans-unit id="login.donate" resname="login.donate" approved="yes">
+        <source>Donate</source>
+        <target state="final">Wspomóż</target>
+      </trans-unit>
+      <trans-unit id="button.showPageTsConfig" resname="button.showPageTsConfig" approved="yes">
+        <source>Show PageTS-Config</source>
+        <target state="final">Pokaż PageTS-Config</target>
+      </trans-unit>
+      <trans-unit id="button.hidePageTsConfig" resname="button.hidePageTsConfig" approved="yes">
+        <source>Hide PageTS-Config</source>
+        <target state="final">Ukryj PageTS-Config</target>
+      </trans-unit>
+      <trans-unit id="formEngine.databaseRecordErrorInlineChildChild" resname="formEngine.databaseRecordErrorInlineChildChild" approved="yes">
+        <source>The record with uid %2$s from table %1$s could not be retrieved from the database. This data incosistency can occur if
+				a base record has been deleted but the intermediate record from table %3$s with uid %4$s still points to it. To fix
+				this situation, either delete the intermediate record, or recover the deleted record using the recycler module.
+				</source>
+        <target state="final">Nie można było pobrać rekordu o uid %2$s z tabeli %1$s. Ta niezgodność danych może wystąpić, jeśli bazowy rekord został usunięty, ale pośredni rekord z tabeli %3$s o uid %4$s nadal na niego wskazuje. Aby rozwiązać tę sytuację albo usuń rekord pośredni, albo odzyskaj usunięte rekordy za pomocą modułu Kosz.
+				</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
