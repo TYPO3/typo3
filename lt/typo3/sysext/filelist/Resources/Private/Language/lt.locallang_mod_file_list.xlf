@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814869" source-language="en" datatype="plaintext" original="EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="lt">
+    <header/>
+    <body>
+      <trans-unit id="clipBoard" resname="clipBoard" approved="yes">
+        <source>Show clipboard</source>
+        <target state="final">Rodyti iškarpinę</target>
+      </trans-unit>
+      <trans-unit id="clip_paste" resname="clip_paste" approved="yes">
+        <source>Paste in clipboard content</source>
+        <target state="final">Įklijuoti iškarpinės turinį</target>
+      </trans-unit>
+      <trans-unit id="clip_pasteInto" resname="clip_pasteInto" approved="yes">
+        <source>Paste into: Clipboard content is inserted into this folder</source>
+        <target state="final">Įklijuoti į: iškarpinės turinys bus įterptas į šį aplanką</target>
+      </trans-unit>
+      <trans-unit id="c_size" resname="c_size" approved="yes">
+        <source>Size</source>
+        <target state="final">Dydis</target>
+      </trans-unit>
+      <trans-unit id="c_rw" resname="c_rw" approved="yes">
+        <source>RW</source>
+        <target state="final">RW</target>
+      </trans-unit>
+      <trans-unit id="files" resname="files" approved="yes">
+        <source>files</source>
+        <target state="final">failai</target>
+      </trans-unit>
+      <trans-unit id="temp" resname="temp" approved="yes">
+        <source>Temporary files</source>
+        <target state="final">Laikinieji failai</target>
+      </trans-unit>
+      <trans-unit id="role_folder_temporary" resname="role_folder_temporary" approved="yes">
+        <source>Temporary files</source>
+        <target state="final">Laikinieji failai</target>
+      </trans-unit>
+      <trans-unit id="role_folder_recycler" resname="role_folder_recycler" approved="yes">
+        <source>Recycler</source>
+        <target state="final">Šiukšlinė</target>
+      </trans-unit>
+      <trans-unit id="read" resname="read" approved="yes">
+        <source>R</source>
+        <target state="final">S</target>
+      </trans-unit>
+      <trans-unit id="recycler" resname="recycler" approved="yes">
+        <source>Recycler</source>
+        <target state="final">Šiukšlinė</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel" approved="yes">
+        <source>Listing of files in the directory</source>
+        <target state="final">Failų sąrašas kataloge</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr" approved="yes">
+        <source>This is the file administration system in TYPO3. It allows you to access the file mounts of your login. Through this module you can upload, copy, move an delete files on the server.</source>
+        <target state="final">Tai yra TYPO3 failų administravimo sistema. Ji leidžia pasiekti jūsų prisijungimui priskirtas failų saugyklas. Naudodami šį modulį galite įkelti, kopijuoti, perkelti ir ištrinti failus serveryje.</target>
+      </trans-unit>
+      <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab" approved="yes">
+        <source>Filelist</source>
+        <target state="final">Failų sąrašas</target>
+      </trans-unit>
+      <trans-unit id="write" resname="write" approved="yes">
+        <source>W</source>
+        <target state="final">R</target>
+      </trans-unit>
+      <trans-unit id="paramError" resname="paramError" approved="yes">
+        <source>Parameter Error</source>
+        <target state="final">Parametro klaida</target>
+      </trans-unit>
+      <trans-unit id="targetNoDir" resname="targetNoDir" approved="yes">
+        <source>Target was not a directory!</source>
+        <target state="final">Tikslas nėra katalogas!</target>
+      </trans-unit>
+      <trans-unit id="storageNotBrowsableTitle" resname="storageNotBrowsableTitle" approved="yes">
+        <source>Access denied.</source>
+        <target state="final">Prieiga draudžiama.</target>
+      </trans-unit>
+      <trans-unit id="storageNotBrowsableMessage" resname="storageNotBrowsableMessage" approved="yes">
+        <source>You are trying to access a folder in a storage that is not browsable.</source>
+        <target state="final">Bandote pasiekti aplanką saugykloje, kurios naršymas nėra leidžiamas.</target>
+      </trans-unit>
+      <trans-unit id="missingFolderPermissionsTitle" resname="missingFolderPermissionsTitle" approved="yes">
+        <source>Missing folder permissions</source>
+        <target state="final">Trūksta aplanko teisių</target>
+      </trans-unit>
+      <trans-unit id="missingFolderPermissionsMessage" resname="missingFolderPermissionsMessage" approved="yes">
+        <source>You have no access to the folder "%s".</source>
+        <target state="final">Neturite prieigos prie aplanko „%s“.</target>
+      </trans-unit>
+      <trans-unit id="folderNotFoundTitle" resname="folderNotFoundTitle" approved="yes">
+        <source>Folder not found.</source>
+        <target state="final">Aplankas nerastas.</target>
+      </trans-unit>
+      <trans-unit id="folderNotFoundMessage" resname="folderNotFoundMessage" approved="yes">
+        <source>The folder "%s" cannot be accessed. Trying to use parent folder(s).</source>
+        <target state="final">Nepavyko pasiekti aplanko „%s“. Bandoma naudoti aukštesnio lygio aplanką.</target>
+      </trans-unit>
+      <trans-unit id="translateMetadata" resname="translateMetadata" approved="yes">
+        <source>Translate metadata</source>
+        <target state="final">Versti metaduomenis</target>
+      </trans-unit>
+      <trans-unit id="createMetadataForLanguage" resname="createMetadataForLanguage" approved="yes">
+        <source>Create metadata of this file for %s</source>
+        <target state="final">Sukurti šio failo metaduomenis kalbai: %s</target>
+      </trans-unit>
+      <trans-unit id="editMetadataForLanguage" resname="editMetadataForLanguage" approved="yes">
+        <source>Edit metadata of this file for %s</source>
+        <target state="final">Redaguoti šio failo metaduomenis kalbai: %s</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
