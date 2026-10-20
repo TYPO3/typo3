@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en" trgLang="lo">
+  <file id="f1">
+    <unit id="title">
+      <segment state="final">
+        <source>Advanced query</source>
+        <target>ການສອບຖາມຂັ້ນສູງ</target>
+      </segment>
+    </unit>
+    <unit id="short_description">
+      <segment state="final">
+        <source>Database queries, allowing filtering and sorting</source>
+        <target>ການສອບຖາມຖານຂໍ້ມູນ, ອະນຸຍາດໃຫ້ມີການກັ່ນຕອງ ແລະ ການຈັດລຽງ</target>
+      </segment>
+    </unit>
+    <unit id="description">
+      <segment state="final">
+        <source>Build custom database queries using a configurable interface that supports filtering, sorting, and limiting results without requiring direct SQL.</source>
+        <target>ສ້າງການສອບຖາມຖານຂໍ້ມູນແບບກຳນົດເອງ ໂດຍໃຊ້ສ່ວນຕິດຕໍ່ຜູ້ໃຊ້ທີ່ສາມາດກຳນົດຄ່າໄດ້ ເຊິ່ງຮອງຮັບການກັ່ນຕອງ, ການຈັດລຽງ, ແລະ ການຈຳກັດຜົນໄດ້ຮັບ ໂດຍບໍ່ຈຳເປັນຕ້ອງໃຊ້ SQL ໂດຍກົງ.</target>
+      </segment>
+    </unit>
+  </file>
+</xliff>
