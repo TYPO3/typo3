@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:form/Resources/Private/Language/locallang_formManager_javascript.xlf" date="2016-10-09T03:38:32Z" product-name="form" target-language="ja">
+    <header/>
+    <body>
+      <trans-unit id="formManager.form_name" approved="yes">
+        <source>Name</source>
+        <target state="final">名前</target>
+      </trans-unit>
+      <trans-unit id="formManager.new_form_name" approved="yes">
+        <source>New form name</source>
+        <target state="final">新しいフォーム名</target>
+      </trans-unit>
+      <trans-unit id="formManager.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">キャンセル</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step2.title" approved="yes">
+        <source>Settings</source>
+        <target state="final">設定</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
