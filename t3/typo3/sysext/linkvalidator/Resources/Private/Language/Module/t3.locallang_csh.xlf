@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814895" source-language="en" datatype="plaintext" original="EXT:linkvalidator/Resources/Private/Language/Module/locallang_csh.xlf" date="2011-10-17T20:22:34Z" product-name="linkvalidator" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="checkboxes.description" resname="checkboxes.description">
+        <source>Click the following checkboxes to consider or to ignore the corresponding broken links.</source>
+        <target>crwdns77638:0crwdne77638:0</target>
+      </trans-unit>
+      <trans-unit id="tablehead_path.description" resname="tablehead_path.description">
+        <source>Path to the content element, which contains the broken link.</source>
+        <target>crwdns77640:0crwdne77640:0</target>
+      </trans-unit>
+      <trans-unit id="tablehead_element.description" resname="tablehead_element.description">
+        <source>Type of the element containing the broken link, its headline and the field in which the broken link is located.</source>
+        <target>crwdns77642:0crwdne77642:0</target>
+      </trans-unit>
+      <trans-unit id="tablehead_headlink.description" resname="tablehead_headlink.description">
+        <source>The linking text.</source>
+        <target>crwdns77644:0crwdne77644:0</target>
+      </trans-unit>
+      <trans-unit id="tablehead_linktarget.description" resname="tablehead_linktarget.description">
+        <source>URL to which the broken link is pointing.</source>
+        <target>crwdns77646:0crwdne77646:0</target>
+      </trans-unit>
+      <trans-unit id="tablehead_linkmessage.description" resname="tablehead_linkmessage.description">
+        <source>Status of that link.</source>
+        <target>crwdns77648:0crwdne77648:0</target>
+      </trans-unit>
+      <trans-unit id="tablehead_lastcheck.description" resname="tablehead_lastcheck.description">
+        <source>Date and time of the last update of the information in each table row.</source>
+        <target>crwdns77650:0crwdne77650:0</target>
+      </trans-unit>
+      <trans-unit id="task_page.alttitle" resname="task_page.alttitle">
+        <source>Start page of the task</source>
+        <target>crwdns77652:0crwdne77652:0</target>
+      </trans-unit>
+      <trans-unit id="task_page.description" resname="task_page.description">
+        <source>UID of the start page for this task.</source>
+        <target>crwdns77654:0crwdne77654:0</target>
+      </trans-unit>
+      <trans-unit id="task_depth.alttitle" resname="task_depth.alttitle">
+        <source>Depth of the task</source>
+        <target>crwdns77656:0crwdne77656:0</target>
+      </trans-unit>
+      <trans-unit id="task_depth.description" resname="task_depth.description">
+        <source>Level of pages the task should check.</source>
+        <target>crwdns77658:0crwdne77658:0</target>
+      </trans-unit>
+      <trans-unit id="task_configuration.alttitle" resname="task_configuration.alttitle">
+        <source>Special TSconfig code</source>
+        <target>crwdns77660:0crwdne77660:0</target>
+      </trans-unit>
+      <trans-unit id="task_configuration.description" resname="task_configuration.description">
+        <source>TSconfig Code which defines settings for linkvalidator to be used for this task.</source>
+        <target>crwdns77662:0crwdne77662:0</target>
+      </trans-unit>
+      <trans-unit id="task_email.alttitle" resname="task_email.alttitle">
+        <source>Email address</source>
+        <target>crwdns77664:0crwdne77664:0</target>
+      </trans-unit>
+      <trans-unit id="task_email.description" resname="task_email.description">
+        <source>Email address to which an email report is sent.</source>
+        <target>crwdns77666:0crwdne77666:0</target>
+      </trans-unit>
+      <trans-unit id="task_emailOnBrokenLinkOnly.alttitle" resname="task_emailOnBrokenLinkOnly.alttitle">
+        <source>Mailing option</source>
+        <target>crwdns132352:0crwdne132352:0</target>
+      </trans-unit>
+      <trans-unit id="task_emailOnBrokenLinkOnly.description" resname="task_emailOnBrokenLinkOnly.description">
+        <source>Only send an email, if new broken links were found.</source>
+        <target>crwdns132354:0crwdne132354:0</target>
+      </trans-unit>
+      <trans-unit id="task_emailTemplateFile.alttitle" resname="task_emailTemplateFile.alttitle">
+        <source>Email template file</source>
+        <target>crwdns132356:0crwdne132356:0</target>
+      </trans-unit>
+      <trans-unit id="task_emailTemplateFile.description" resname="task_emailTemplateFile.description">
+        <source>Define a template to be used for the email.</source>
+        <target>crwdns132358:0crwdne132358:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
