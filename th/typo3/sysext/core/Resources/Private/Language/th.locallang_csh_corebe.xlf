@@ -1,0 +1,542 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814854" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_corebe.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="th">
+    <header/>
+    <body>
+      <trans-unit id=".alttitle" resname=".alttitle" approved="yes">
+        <source>TYPO3 Core</source>
+        <target state="final">TYPO3 Core</target>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>TYPO3 is a Content Management Framework which consists of a central program core with only limited functionality. To extend this core system there are hundreds of extensions which in combination will provide a very capable system.</source>
+        <target state="final">TYPO3 เป็น Content Management Framework ซึ่งประกอบด้วยแกนกลางที่มีโปรแกรมการทำงาน จำกัด เพียง เพื่อขยายระบบแกนนี้มีหลายร้อยนามสกุลที่ผสมในจะให้ระบบสามารถมาก</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" approved="yes">
+        <source>For most people TYPO3 is equivalent to a CMS providing a backend for management of the content and a frontend engine for website display. However TYPO3s core is natively designed to be a general purpose framework for management of database content. The core of TYPO3 delivers a set of principles for storage of this content, user access management, editing of the content, uploading and managing files etc. Many of these principles are expressed as an API (Application Programmers Interface) for use in the &lt;em&gt;extensions&lt;/em&gt; which ultimately adds most of the real functionality.</source>
+        <target state="final">สำหรับ TYPO3 คนส่วนใหญ่เท่ากับ CMS ให้ backend สำหรับการจัดการเนื้อหาและเครื่องยนต์ frontend สำหรับการแสดงผลเว็บไซต์ core TYPO3s แต่ออกแบบ natively เป็นกรอบวัตถุประสงค์ทั่วไปในการจัดการฐานข้อมูล TYPO3 หลักของการส่งเนื้อหากำหนดหลักการจัดเก็บนี้ของการจัดการการเข้าถึงของผู้ใช้การแก้ไขเนื้อหาที่อัปโหลดและจัดการไฟล์อื่น ๆ หลายหลักการเหล่านี้จะแสดงเป็น API (Application Programmers Interface) &lt;em&gt;สำหรับใช้ในส่วนขยายที่&lt;/em&gt; เพิ่มมากที่สุดของการทำงานจริง</target>
+      </trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" approved="yes">
+        <source>TYPO3 backend login screen.</source>
+        <target state="final">ฤดูร้อนเข้าสู่หน้าจอ TYPO3 backend 2004 รุ่น (3.6.1)</target>
+      </trans-unit>
+      <trans-unit id="menu_modules.alttitle" resname="menu_modules.alttitle" approved="yes">
+        <source>Backend modules</source>
+        <target state="final">แบ็กเอนด์โมดูล</target>
+      </trans-unit>
+      <trans-unit id="menu_modules.description" resname="menu_modules.description" approved="yes">
+        <source>The Backend menu reflects the hierarchy of main- and sub-modules in TYPO3. Click a menu item to access the corresponding module.</source>
+        <target state="final">เมนู Backend แสดงลำดับชั้นของหลักและโมดูล sub - in TYPO3 คลิกเมนูรายการเข้าถึงโมดูลที่เกี่ยวข้อง</target>
+      </trans-unit>
+      <trans-unit id="menu_modules.details" resname="menu_modules.details" xml:space="preserve" approved="yes">
+				<source>Backend Users might see different menu items depending on their access permissions. The "Admin" user on a system will always see all modules available.
+
+You can configure the backend to display the menu in two alternative versions (useful on smaller screens); As a selector box or list of icons in the top frame of the backend.
+
+When you click the little "+" or "-" icons next to the main modules, you can collapse (-) or expand (+) all the sub modules. By selecting the "Expand all" check box, all items are expanded. When the checkbox is unselected again, the menu changes back to the previous folding state. If you click "Expand all" and collapse a main module afterwards, the previous folding state is discarded and "Expand all" is unselected again.</source>
+			<target state="final">ผู้ใช้แบ็กเอนด์อาจเห็นรายการเมนูที่แตกต่างกันขึ้นอยู่กับสิทธิ์การเข้าถึงของ "ผู้ดูแลระบบมักจะเห็นโมดูลทั้งหมดที่ คุณสามารถกำหนดค่า backend เพื่อแสดงเมนูในสองรุ่นทางเลือก (มีประโยชน์บนหน้าจอขนาดเล็ก) เป็นกล่องตัวเลือกหรือรายการของไอคอนในกรอบด้านบนของแบ็กเอนด์ เมื่อคุณคลิกที่เล็ก"+"หรือ"--"ถัดจากไอคอนโมดูลหลักคุณสามารถยุบ (--) หรือขยาย (+) sub โมดูลทั้งหมด โดยเลือก"Expand all ช่อง"รายการทั้งหมดจะขยายตัว เมื่อช่องทำเครื่องหมายเป็น unselected อีกครั้งจะเปลี่ยนเมนูกลับไปยังรัฐพับก่อน หากคุณคลิก"Expand all"และยุบโมดูลหลักหลังจากนั้นพับรัฐก่อนจะทิ้งและ"Expand all"เป็น unselected อีกครั้ง</target></trans-unit>
+      <trans-unit id="menu_modules.image_descr" resname="menu_modules.image_descr" xml:space="preserve" approved="yes">
+				<source>This is the range of menu options for a typical backend user.
+For another backend user it might be different. This screenshot shows how another user has different permissions set and therefore access to other modules only. Also the backend language has been set different for this user.</source>
+			<target state="final">นี้เป็นช่วงของตัวเลือกเมนูสำหรับผู้ใช้ทั่วไป backend สำหรับผู้ใช้แบ็กเอนด์อื่นมันอาจจะแตกต่างกัน shot หน้าจอนี้แสดงว่าผู้ใช้อื่นมีสิทธิ์ที่แตกต่างกันตั้งจึงสามารถเข้าถึงโมดูลอื่น ๆ เท่านั้น ยังเป็นภาษาแบ็กเอนด์ได้รับการตั้งค่าต่างๆสำหรับผู้ใช้นี้</target></trans-unit>
+      <trans-unit id="menu_adminFunction.alttitle" resname="menu_adminFunction.alttitle" approved="yes">
+        <source>Admin Functions</source>
+        <target state="final">หน้าที่ Admin</target>
+      </trans-unit>
+      <trans-unit id="menu_adminFunction.description" resname="menu_adminFunction.description" approved="yes">
+        <source>The Admin Functions allow administrators to clear caches etc.</source>
+        <target state="final">หน้าที่ดูแลให้ผู้ดูแลระบบแคชชัดเจนฯลฯ</target>
+      </trans-unit>
+      <trans-unit id="menu_adminFunction.details" resname="menu_adminFunction.details" xml:space="preserve" approved="yes">
+				<source>TYPO3 has multiple caching systems:
+
+&lt;b&gt;Database Cache&lt;/b&gt;
+A very central cache is the database cache table, "cache_hash", which needs to be flushed after certain major changes in the system. You "clear all cache" by clicking the link with the blue icon. After this operation any website content should be re-generated from the sources rather than be delivered from caches. This operation clears &lt;i&gt;all&lt;/i&gt; database tables registered as flushable cache tables.
+
+&lt;b&gt;Cached PHP configuration files from Extensions&lt;/b&gt;
+TYPO3 also caches small configuration scripts from extensions, "ext_localconf.php" and "ext_tables.php". These files are simply read from all installed extensions and concatenated into temporary PHP scripts found in the typo3temp/Cache/Code/cache_core/ folder. Sometimes you need to remove these files so TYPO3 re-writes them from the originals. This is done by the "Clear temp_CACHED" link.
+
+&lt;b&gt;Notice:&lt;/b&gt; You should not clear these caches without a second thought. Clearing caches may affect performance on your server negatively for a while. Obviously the cached content has to be regenerated which takes time and under heavy load it might make your server un-available for a while.</source>
+			<target state="final">TYPO3 มีระบบแคชหลาย &lt;b&gt; ฐานข้อมูล Cache&lt;/b&gt; แคชกลางมากเป็นตารางแคชฐานข้อมูล cache_hash""ซึ่งต้องมีการล้างหลังจากการเปลี่ยนแปลงที่สำคัญบางอย่างในระบบ คุณ"ล้างแคชทั้งหมด"โดยคลิกที่ไอคอนลิงค์สีน้ำเงินกับ หลังจากการดำเนินการนี้เนื้อหาเว็บไซต์ควรกลับสร้างขึ้นจากแหล่งที่มาแทนที่จะถูกส่งจากแคช &lt;i&gt;การดำเนินการนี้เป็นการลบตารางฐานข้อมูลทั้งหมดที่จดทะเบียนในตารางแคช&lt;/i&gt; flushable &lt;b&gt;Cached PHP ไฟล์กำหนดค่าจากการขยาย&lt;/b&gt; ค่าเล็กแคชสคริปต์ยัง TYPO3 จากนามสกุล, ext_localconf.php"และ ext_tables.php" แฟ้มเหล่านี้จะอ่านง่ายจากการติดตั้งส่วนขยายและตัดแบ่งเป็นสคริปต์ PHP ชั่วคราวพบในโฟลเดอร์ typo3conf / ชื่อ"temp_CACHED_ *. php" บางครั้งคุณต้องลบไฟล์เหล่านี้อีกครั้งเพื่อ TYPO3 เขียนได้จากต้นฉบับ นี้จะกระทำโดย"Clear temp_CACHED link" &lt;b&gt;หมายเหตุ :&lt;/b&gt; คุณไม่ควรลบแคชเหล่านี้โดยไม่คิดที่สอง แคช Clearing อาจมีผลต่อประสิทธิภาพการทำงานบนเซิร์ฟเวอร์ของคุณลบในขณะที่ แน่นอนเนื้อหาที่เก็บไว้ได้ที่จะสร้างใหม่ซึ่งต้องใช้เวลาและตามภาระหนักอาจทำให้เซิร์ฟเวอร์ของคุณสามารถยกเลิกในขณะที่</target></trans-unit>
+      <trans-unit id="pagetree.alttitle" resname="pagetree.alttitle" approved="yes">
+        <source>The Page Tree</source>
+        <target state="final">Tree Page</target>
+      </trans-unit>
+      <trans-unit id="pagetree.description" resname="pagetree.description" approved="yes">
+        <source>This is the hierarchical organization of pages in TYPO3. Typically websites are build so they reflect the page structure in the page tree directly in the website navigation.</source>
+        <target state="final">นี้เป็นองค์กรลำดับชั้นของหน้าใน TYPO3 โดยปกติเว็บไซต์ที่สร้างเพื่อให้สะท้อนโครงสร้างหน้าในต้นไม้หน้าโดยตรงในการนำทางเว็บไซต์</target>
+      </trans-unit>
+      <trans-unit id="pagetree.details" resname="pagetree.details" xml:space="preserve" approved="yes">
+				<source>The page tree works like a file system. Each page is like a directory where you can store files. In TYPO3 you store database records inside of each page. Some of these records, typically called "Content Elements", contains the website content of pages. Other records can be from plugins like a glossary or a guestbook and they are only displayed indirectly by a plugin inserted as a Content Element.
+Some backend users will see only a part of the page tree for a website. This feature allows the administrator to configure backend users with different responsibilities for maintaining branches of the page tree.
+
+&lt;b&gt;Navigating the tree&lt;/b&gt;
+Simply click the +/- buttons to expand and contract the branches of the tree.
+If you click the page icons you should see a context menu pop up. It will contain options specifically for that page.
+Clicking the title of a page is another option. It will load the right frame of the Web main module with the selected sub-module. The content shown in the right frame will be related to the page clicked.</source>
+			<target state="final">ต้นไม้หน้างานเช่นระบบไฟล์ หน้าแต่ละเช่นไฟล์ไดเรกทอรีที่คุณสามารถเก็บ ใน TYPO3 คุณเก็บบันทึกฐานข้อมูลภายในของแต่ละหน้า บางรายการเหล่านี้มักจะเรียกว่า"เนื้อหา Elements"มีเนื้อหาเว็บไซต์ของหน้าเว็บ ตำแหน่งอื่น ๆ ได้จากปลั๊กอินเช่นศัพท์หรือสมุดเยี่ยมและพวกเขาจะปรากฏผ่านทาง Element ปลั๊กอินแทรกเป็นเนื้อหา บางส่วนหลังผู้ใช้จะเห็นเพียงต้นไม้บางส่วนของหน้าสำหรับเว็บไซต์ คุณลักษณะนี้ช่วยให้ผู้ดูแลระบบเพื่อกำหนดค่าผู้ใช้แบ็กเอนด์ที่มีความรับผิดชอบแตกต่างกันในการรักษาสาขาของต้นไม้หน้า &lt;b&gt; การนำต้นไม้&lt;/b&gt; เพียงคลิก + / -- ปุ่มเพื่อขยายสาขาและทำสัญญาของต้นไม้ ถ้าคุณคลิกไอคอนหน้าคุณจะเห็น เมนูบริบทปรากฏขึ้น มันจะมีตัวเลือกเฉพาะสำหรับหน้าเว็บที่ คลิกที่หน้าชื่อเรื่องของเป็นตัวเลือกอื่น มันจะโหลดกรอบด้านขวาของโมดูลหลัก Web ด้วยเลือก sub - module กรอบเนื้อหาที่แสดงสิทธิในจะเกี่ยวกับหน้าคลิก</target></trans-unit>
+      <trans-unit id="pagetree.image_descr" resname="pagetree.image_descr" xml:space="preserve" approved="yes">
+				<source>An example of a Page Tree in TYPO3. The page tree is available under any of the Web sub-modules in the menu.
+Clicking the icon of a page displays a context sensitive menu with options for that particular page.
+Clicking the title of a page in the page tree will load the right frame with the current submodule. The page id is passed to the module so it displays content related to the page you clicked.
+Holding the mouse pointer over a page icon for a few seconds will display tool-tip information telling you details about the state of the page. Here a page is access restricted and you will be told which group the access is set for by the tool-tip.</source>
+			<target state="final">ตัวอย่างของหน้าไม้ใน TYPO3 ต้นไม้หน้าสามารถใช้ได้ภายใต้ใด ๆ Web sub - modules ในเมนู คลิกแสดงไอคอนของหน้าบริบทเมนูสำคัญกับตัวเลือกสำหรับหน้านั้น คลิกที่ต้นไม้หน้าชื่อของในหน้าจะโหลดกรอบขวา กับ submodule ปัจจุบัน id หน้าถูกส่งไปยังโมดูลจึงแสดงเนื้อหาที่เกี่ยวข้องกับหน้าเว็บที่คุณคลิก Holding ตัวชี้ของเมาส์เหนือไอคอนหน้าสำหรับสองสามวินาทีจะแสดงผลข้อมูลปลายเครื่องมือบอกคุณรายละเอียดเกี่ยวกับหน้าที่ของรัฐ ที่นี่หน้าเป็น จำกัด การเข้าถึงและคุณจะบอกกลุ่มที่เข้าถึงการตั้งค่าการโดยเครื่องมือเตือน</target></trans-unit>
+      <trans-unit id="filetree.alttitle" resname="filetree.alttitle" approved="yes">
+        <source>The Folder Tree</source>
+        <target state="final">Folder Tree</target>
+      </trans-unit>
+      <trans-unit id="filetree.description" resname="filetree.description" approved="yes">
+        <source>Shows the directory structure of a mounted path on the webserver. You can browse the folder tree like you are used to browse the file system on your own computer.</source>
+        <target state="final">แสดงโครงสร้างไดเรกทอรีของเส้นทางติดตั้งบนเว็บเซิร์ฟเวอร์ คุณสามารถเรียกดูโครงสร้างโฟลเดอร์เช่นคุณจะใช้ในการเรียกดูระบบแฟ้มในคอมพิวเตอร์ของคุณ</target>
+      </trans-unit>
+      <trans-unit id="filetree.details" resname="filetree.details" xml:space="preserve" approved="yes">
+				<source>The Folder Tree is available for any sub-module of the File main module in TYPO3. The File module is like a little web-based FTP-client inside of TYPO3 which allows you to upload, rename, copy, move, delete and edit files inside TYPO3.
+Most users of TYPO3 doesn't need access to the File module and sub-modules in order to upload images on web-pages. They can do this directly when editing Content Elements. But the File module is useful for maintaining collections of files on the server, for example an image archive or files for download.
+
+&lt;b&gt;Navigating the Folder Tree&lt;/b&gt;
+You can expand and contract the folder tree by the +/- icons.
+Clicking a folder icon will display a pop-up menu with options related to that particular folder. Options include copy/cut/paste, rename, upload etc.
+Clicking the folder title will load the currently active sub-module in the right frame of the backend. The sub-module will typically show files and folders inside the folder you clicked.
+
+&lt;b&gt;Granting access to the Folder Tree&lt;/b&gt;
+The administrator needs to allow backend users to access the File modules and in addition make a file mount available to them before they can use the Folder Tree.</source>
+			<target state="final">Folder Tree สามารถใดย่อยโมดูลของโมดูลหลักไฟล์ใน TYPO3 โมดูลไฟล์เหมือนเล็กน้อย - client - FTP ภายในตาม web ของ TYPO3 ที่ช่วยให้คุณสามารถอัปโหลดเปลี่ยนชื่อสำเนา, ย้าย, ลบและแก้ไขไฟล์ภายใน TYPO3 ผู้ใช้ส่วนใหญ่ของ TYPO3 ไม่จำเป็นต้องเข้าถึงไฟล์และ sub module modules - เพื่ออัปโหลดภาพบนหน้าเว็บ พวกเขาสามารถทำสิ่งนี้โดยตรงเมื่อมีการแก้ไของค์ประกอบของเนื้อหา แต่โมดูลไฟล์จะเป็นประโยชน์ในการรักษาคอลเลกชันของแฟ้มบนเซิร์ฟเวอร์เช่นเก็บภาพหรือไฟล์สำหรับดาวน์โหลด &lt;b&gt; การนำ Folder Tree&lt;/b&gt; คุณสามารถขยายและสัญญาต้นไม้โฟลเดอร์ by + / -- ไอคอน คลิกที่ไอคอนโฟลเดอร์จะแสดง a - up เมนูกับตัวเลือกที่เกี่ยวข้องกับที่โฟลเดอร์เฉพาะ รวมถึงการตัดตัวเลือกคัดลอก / วางเปลี่ยนชื่อเป็นต้นอัปโหลด คลิกที่ชื่อโฟลเดอร์ที่จะโหลดการใช้งาน sub - module ในกรอบด้านขวาของแบ็กเอนด์ sub - module มักจะแสดงไฟล์และโฟลเดอร์ภายในคลิกโฟลเดอร์ที่คุณ &lt;b&gt;อนุญาตเข้าถึง Folder Tree&lt;/b&gt; ผู้ดูแลระบบต้องการให้ผู้ใช้แบ็กเอนด์เข้า modules ไฟล์และนอกจากทำให้ไฟล์ติดที่มีให้ก่อนที่จะใช้โฟลเดอร์ ต้นไม้</target></trans-unit>
+      <trans-unit id="filetree.image_descr" resname="filetree.image_descr" xml:space="preserve" approved="yes">
+				<source>The Folder Tree of the "fileadmin/" folder. This is mounted by default for "Admin"-users. Other users will have to have a file mount configured for them first.
+Clicking the icon of a folder displays the context menu of the folder.
+If you click the folder title in the Folder Tree you will see the sub-module loaded in the right frame. Here it is the File &gt; Filelist module that will display files and folders inside. Clicking the icon of a file will display a context menu for the file.</source>
+			<target state="final">Folder Tree ของ fileadmin"/"โฟลเดอร์ นี้จะติดตั้งโดยค่าเริ่มต้นสำหรับ"Admin"ผู้ใช้ ผู้อื่นจะต้องมีแรกแฟ้มติดตั้งค่าสำหรับพวกเขา คลิกโฟลเดอร์ที่ไอคอนของการแสดงเมนูบริบทของโฟลเดอร์ หากคุณคลิกที่ชื่อโฟลเดอร์ในโฟลเดอร์ Tree คุณจะเห็น sub - module โหลดในกรอบด้านขวา นี่มันเป็นไฟล์ภายใน&gt; Filelist โมดูลที่จะแสดงไฟล์และโฟลเดอร์ คลิกที่ไอคอนไฟล์ของจะแสดงเมนูบริบทสำหรับไฟล์</target></trans-unit>
+      <trans-unit id="list_module.alttitle" resname="list_module.alttitle" approved="yes">
+        <source>The Web&gt;List module</source>
+        <target state="final">โมดูล Web&gt; รายการ</target>
+      </trans-unit>
+      <trans-unit id="list_module.description" resname="list_module.description" approved="yes">
+        <source>Listing records located on a page. From here you can copy/cut/paste records around in the system. You can edit records, access the change history of elements etc.</source>
+        <target state="final">บันทึกรายชื่ออยู่บนหน้าเว็บ จากที่นี่คุณสามารถคัดลอก / ตัด / วางรอบบันทึกในระบบ คุณสามารถแก้ไขระเบียนเข้าถึงประวัติการเปลี่ยนแปลงขององค์ประกอบอื่นๆ</target>
+      </trans-unit>
+      <trans-unit id="list_module.details" resname="list_module.details" xml:space="preserve" approved="yes">
+				<source>The list module is like the file manager in an Operating System; it provides basic access to all "elements" available in the system. In TYPO3 almost all information is stored in the database and managed after the same principles internally. For instance Content Elements representing page content are database records just like backend users are. The Web&gt;List module allows us to create, modify and delete both kinds of records after the same principles.
+
+The Web&gt;List module might not be the best "view" of the content on a page for any situation. For instance if you want to manage website content on a page (Content Elements) you should rather use the "Web&gt;Page" module which is designed to display content elements more optimized. But the List module will always give you access to whatever is on the page in a basic way if no better module is available for management.
+
+&lt;b&gt;Single-table mode&lt;/b&gt;
+If you click the tabel title in the listing you will enter single-table mode. In this mode you can select additional fields from the table to show in the listing. Also you will get additional editing facilities, for instance you will be able to edit multiple records at a time and even only certain fields from those records. See the screenshot for more details.</source>
+			<target state="final">โมดูลรายการเป็นเช่นจัดการแฟ้มในระบบปฏิบัติการ; มันสามารถเข้าถึงพื้นฐานองค์ประกอบทั้งหมด""ที่มีอยู่ในระบบ ใน TYPO3 ข้อมูลทั้งหมดเกือบจะถูกจัดเก็บในฐานข้อมูลและการจัดการหลังหลักการเดียวกันภายใน เช่นเนื้อหา Elements แสดงเนื้อหาของหน้าผู้ใช้ฐานข้อมูลมีระเบียนเพียง backend เหมือนเป็น &gt; โมดูล List Web ช่วยให้เราสามารถสร้างแก้ไขและลบประเภททั้งบันทึกหลังหลักการเดียวกัน &gt; module List Web อาจไม่ดู"ดีที่สุด"ของสถานการณ์เนื้อหาบนของเพจ เช่นหากคุณต้องการจัดการเนื้อหาเว็บไซต์ที่เหมาะสมหน้า (Content Elements) ควรคุณค่อนข้างใช้"เว็บ&gt;"Page module ที่ถูกออกแบบมาให้เนื้อหาแสดงองค์ประกอบของ แต่โมดูลปกติมักจะทำให้คุณสามารถเข้าถึงสิ่งที่อยู่ทางหน้าพื้นฐานในกรณีที่ไม่มีโมดูลดีสามารถจัดการ &lt;b&gt; แบบตารางเดียว&lt;/b&gt; ถ้าคุณคลิกที่ชื่อตารางที่ในรายชื่อที่คุณจะเข้าสู่โหมดตารางเดียว ในโหมดนี้คุณสามารถเลือกเขตข้อมูลเพิ่มเติมจากตารางการแสดงในรายการ ยังจะได้รับสิ่งอำนวยความสะดวกการแก้ไขเพิ่มเติมเช่นคุณจะสามารถแก้ไขระเบียนหลายครั้งและบางสาขาเท่านั้นแม้แต่จากระเบียนที่ ดูภาพหน้าจอสำหรับรายละเอียดเพิ่มเติม</target></trans-unit>
+      <trans-unit id="list_module.image_descr" resname="list_module.image_descr" xml:space="preserve" approved="yes">
+				<source>Here the page "Cameras" has been clicked in the page tree and in the right frame the Web&gt;List module shows the contents of the page. Here a single content element (Shop Plugin) is inserted in order to display the other items on the page which are three product records in this case.
+If you enable "Extended mode" and the "Clipboard" you will get additional buttons in the interface to operate on the records shown here. Also notice how you can click any record icon to get a "Clickmenu" for the element.
+Here you see the single-table mode active for the "Page content" table (Content Elements). In the fieldbox the "Hide" field is selected to be included in the listing. If you click any of the edit icons (marked with red border) you will be able to edit [from left to right] a) all listed fields (here "Header" and "Hide"), b) full record or c) a single field (eg. "Hide") for &lt;u&gt;only&lt;/u&gt; the selected records (defined by the checkboxes seen).</source>
+			<target state="final">ที่นี่หน้า"กล้อง"ได้รับการคลิกในต้นไม้หน้าและในกรอบด้านขวา&gt; module List Web แสดงเนื้อหาของหน้าเว็บ ที่นี่เนื้อหาองค์ประกอบเดียว (Shop ปลั๊กอิน) ใส่เพื่อแสดงรายการอื่นในกรณีที่สินค้าหน้าสามรายการนี้ หากคุณใช้"โหมดขยาย"และคลิปบอร์ด""คุณจะได้รับปุ่มเพิ่มเติมในอินเตอร์เฟส ทำงานในตำแหน่งที่แสดงที่นี่ ยังแจ้งให้ทราบว่าคุณสามารถคลิกที่ไอคอนการบันทึกใด ๆ เพื่อให้ได้"Clickmenu"สำหรับองค์ประกอบที่ นี่คุณจะเห็นแบบตารางเดียวใช้งานสำหรับ"ตารางที่"Pagecontent (Content Elements) ใน fieldbox"ช่อง"ซ่อนเลือกที่จะรวมอยู่ในรายการนี้ หากคุณคลิกที่การแก้ไขไอคอน (ช่องที่มีขอบสีแดง) คุณจะสามารถแก้ไข [จากซ้ายไปขวา] a) ทุกฟิลด์รายการ (นี่"หัว"และ"ซ่อน"), b) บันทึกเต็มหรือ c) เขตเดียว (เช่น"ซ่อน") &lt;u&gt;เพื่อจะบันทึกเลือก&lt;/u&gt; (กำหนดโดยเห็นช่องทำเครื่องหมาย)</target></trans-unit>
+      <trans-unit id="list_module_noId.alttitle" resname="list_module_noId.alttitle" approved="yes">
+        <source>Web&gt;List module with no ID given</source>
+        <target state="final">Web module&gt; รายการไม่มี ID ให้</target>
+      </trans-unit>
+      <trans-unit id="list_module_noId.description" resname="list_module_noId.description" approved="yes">
+        <source>The Web&gt;List module must have a page ID passed to it before it can display any content. Please click a page title in the Page Tree.</source>
+        <target state="final">โมดูล Web&gt; รายการต้องมีรหัสผ่านหน้าไปก่อนที่จะสามารถแสดงเนื้อหาใด กรุณาคลิกที่ชื่อเพจในหน้า Tree</target>
+      </trans-unit>
+      <trans-unit id="list_module_root.alttitle" resname="list_module_root.alttitle" approved="yes">
+        <source>Root of the Page Tree</source>
+        <target state="final">รากของต้นไม้หน้า</target>
+      </trans-unit>
+      <trans-unit id="list_module_root.description" resname="list_module_root.description" approved="yes">
+        <source>The root of the Page Tree is having id 0 (zero = no page) and the special circumstance is that records in the page tree root can be accessed and edited &lt;i&gt;only&lt;/i&gt; by "Admin" users.</source>
+        <target state="final">ต้นไม้รากของหน้าจะมี id 0 (ศูนย์ = หน้าไม่) &lt;i&gt;และกรณีพิเศษที่บันทึกในต้นไม้รากหน้าสามารถเข้าถึงและแก้ไขเท่านั้น"ดูแลผู้ใช้"&lt;/i&gt;</target>
+      </trans-unit>
+      <trans-unit id="list_module_root.details" resname="list_module_root.details" xml:space="preserve" approved="yes">
+				<source>Only records from certain database tables are allowed to be created in the page tree root. This includes Backend Users, Backend Groups, File Mount records, Language records etc., and you cannot create Content Elements or Frontend Users in the root of the Page Tree. It also works the other way around; For example you cannot create Backend Users anywhere in the page tree.
+Usually records that are located in the page tree root are somehow "global" for the whole TYPO3 installation and doesn't make sense inside a specific branch of the page tree.</source>
+			<target state="final">บันทึกเฉพาะจากตารางฐานข้อมูลบางอย่างได้รับอนุญาตให้สร้างในต้นไม้รากหน้า ซึ่งรวมถึง Backend Users, Groups Backend, Mount บันทึกไฟล์ภาษาเป็นต้นระเบียนและคุณไม่สามารถสร้างองค์ประกอบหรือเนื้อหาในส่วนหน้าผู้ใช้ต้นไม้รากของหน้า นอกจากนี้ยังทำงานวิธีอื่น ๆ รอบ; ตัวอย่างเช่นคุณไม่สามารถสร้าง Backend ผู้ใช้ที่ใดก็ได้ในต้นไม้หน้า ปกติระเบียนที่อยู่ในต้นไม้รากหน้าเป็นอย่างใด"โลก"สำหรับ TYPO3 การติดตั้งทั้งหมดและไม่สมเหตุสมผลในเฉพาะ สาขาของต้นไม้หน้า</target></trans-unit>
+      <trans-unit id="list_module_root.image_descr" resname="list_module_root.image_descr" xml:space="preserve" approved="yes">
+				<source>Example of records in the page tree root; Backend users, groups, filemounts and website languages.
+When "Admin"-users wants to create a new record in the page tree root they will see a limited number of record types to create. This reflects which tables are configured to be created in the page tree root.</source>
+			<target state="final">ตัวอย่างของการบันทึกในต้นไม้รากหน้านั้นผู้ใช้ Backend, กลุ่ม, filemounts และภาษาเว็บไซต์ เมื่อ"Admin"ผู้ใช้ต้องการสร้างระเบียนใหม่ในต้นไม้รากหน้าจะเห็นเป็นจำนวน จำกัด ชนิดบันทึกการสร้าง นี้จะแสดงที่ตารางมีการกำหนดให้สร้างขึ้นในต้นไม้รากหน้า</target></trans-unit>
+      <trans-unit id="list_clipboard.alttitle" resname="list_clipboard.alttitle" approved="yes">
+        <source>TYPO3 Clipboard</source>
+        <target state="final">คลิปบอร์ด TYPO3</target>
+      </trans-unit>
+      <trans-unit id="list_clipboard.description" resname="list_clipboard.description" approved="yes">
+        <source>The clipboard is an internal registry where records and files can be "stored" temporarily. Usually the clipboard is used for copy/cut/paste operations internally of one or more elements.</source>
+        <target state="final">คลิปบอร์ดเป็นสตรีภายในและไฟล์ที่บันทึกได้"เก็บ"ชั่วคราว มักจะคลิปบอร์ดใช้สำหรับตัดสำเนา / การวางภายในหนึ่งหรือองค์ประกอบ</target>
+      </trans-unit>
+      <trans-unit id="list_clipboard.image_descr" resname="list_clipboard.image_descr" xml:space="preserve" approved="yes">
+				<source>Whenever you use the copy/cut/paste functions in the clickmenus you will actually use the clipboard to store the element internally in TYPO3.
+If you select one of the numeric clipboard pads you will be able to store more than a single element on the clipboard at a time. In the record listings you will then see checkboxes next to the elements by which you can select/deselect elements for the clipboard.</source>
+			<target state="final">เมื่อคุณใช้คัดลอกตัด / หน้าที่วางใน clickmenus ที่จริงจะใช้คลิปบอร์ดในการจัดเก็บองค์ประกอบภายในใน TYPO3 หากคุณเลือกหนึ่งในคลิปบอร์ดตัวเลขแผ่นคุณจะสามารถเก็บได้มากกว่าองค์ประกอบหนึ่งในคลิปบอร์ด ในเวลา ในรายการบันทึกแล้วคุณจะเห็นช่องทำเครื่องหมายถัดจากองค์ประกอบที่คุณสามารถเลือก / ยกเลิกการเลือกองค์ประกอบสำหรับคลิปบอร์ด</target></trans-unit>
+      <trans-unit id="list_searchbox.alttitle" resname="list_searchbox.alttitle" approved="yes">
+        <source>Search Box</source>
+        <target state="final">กล่องค้นหา</target>
+      </trans-unit>
+      <trans-unit id="list_searchbox.description" resname="list_searchbox.description" approved="yes">
+        <source>By this search box you can do a free text search in all the listed records. You can also search recursively in sub-pages by selecting a number of levels to search in the selector box to the right of the search field.</source>
+        <target state="final">โดยช่องค้นหานี้คุณสามารถค้นหาข้อความฟรีทุกรายการจดทะเบียน คุณยังสามารถค้นหา recursively ในเพจย่อยโดยเลือกหลายระดับเพื่อค้นหาในกล่องตัวเลือกที่ด้านขวาของช่องค้นหา</target>
+      </trans-unit>
+      <trans-unit id="list_options.alttitle" resname="list_options.alttitle" approved="yes">
+        <source>List module options</source>
+        <target state="final">ตัวเลือกโมดูล List</target>
+      </trans-unit>
+      <trans-unit id="list_options.description" resname="list_options.description" approved="yes">
+        <source>Enable additional options like the "Extended view" mode to see additional control buttons for each record in the listing or the "Clipboard" to see the clipboard and its content.</source>
+        <target state="final">เปิดใช้"ดู Extended โหมด"จะเห็นปุ่มควบคุมเพิ่มเติมสำหรับการบันทึกในแต่ละรายการ เปิดใช้คลิปบอร์ด""เพื่อดูคลิปบอร์ดและเนื้อหา</target>
+      </trans-unit>
+      <trans-unit id="list_options.image_descr" resname="list_options.image_descr" xml:space="preserve" approved="yes">
+				<source>The options checkboxes.
+Selecting "Extended view" will enable the control buttons in the record lists.</source>
+			<target state="final">ตัวเลือกช่องทำเครื่องหมาย เลือก"ดูเพิ่มเติม"จะช่วยให้ปุ่มควบคุมในการบันทึกรายการ</target></trans-unit>
+      <trans-unit id="new_regular.alttitle" resname="new_regular.alttitle" approved="yes">
+        <source>Create new record</source>
+        <target state="final">สร้างบันทึกใหม่</target>
+      </trans-unit>
+      <trans-unit id="new_regular.description" resname="new_regular.description" approved="yes">
+        <source>This list shows the types of records (database tables) you can create on the page. Click a table name to select the type.</source>
+        <target state="final">รายการนี้จะแสดงชนิดของระเบียน (ตารางฐานข้อมูล) คุณสามารถสร้างบนหน้า คลิกที่ชื่อตารางเพื่อเลือกประเภท</target>
+      </trans-unit>
+      <trans-unit id="new_pages.alttitle" resname="new_pages.alttitle" approved="yes">
+        <source>Create new page wizard</source>
+        <target state="final">ตัวช่วยสร้างหน้าใหม่</target>
+      </trans-unit>
+      <trans-unit id="new_pages.description" resname="new_pages.description" approved="yes">
+        <source>Creating a new page means you have to find a position for it in the page tree. This wizard helps you find this position easily by clicking the flashing arrow pointing to the position you want.</source>
+        <target state="final">การสร้างหน้าใหม่หมายความว่าคุณมีเพื่อค้นหาตำแหน่งสำหรับในต้นไม้หน้า ตัวนี้ช่วยให้คุณค้นหาตำแหน่งนี้ได้อย่างง่ายดายโดยคลิกที่ลูกศรชี้กระพริบที่ตำแหน่งที่คุณต้องการ</target>
+      </trans-unit>
+      <trans-unit id="new_pages.image_descr" resname="new_pages.image_descr" xml:space="preserve" approved="yes">
+				<source>Between each page in the tree you find small icons that point out a place for a new page. Select a position by clicking one of these icons.
+To access the "Create new page wizard" in the first place, just click the link in the Create new record dialog.</source>
+			<target state="final">ระหว่างแต่ละหน้าในต้นไม้ที่คุณพบไอคอนขนาดเล็กที่ชี้หน้าสถานที่ใหม่สำหรับ เลือกไอคอนที่ตำแหน่งโดยการคลิกหนึ่งเหล่านี้ เข้าถึง"สร้างตัวช่วยสร้างหน้าใหม่"ในครั้งแรกที่ให้คลิกลิงค์ในโต้ตอบบันทึกใหม่สร้าง</target></trans-unit>
+      <trans-unit id="new_ce.alttitle" resname="new_ce.alttitle" approved="yes">
+        <source>Create new Content Element Wizard</source>
+        <target state="final">สร้าง Content Wizard ใหม่ Element</target>
+      </trans-unit>
+      <trans-unit id="new_ce.description" resname="new_ce.description" approved="yes">
+        <source>Content Elements come in many flavors and inserting new content on a page means you have to select the right element type. This wizard helps you to pick a main type of element before you actually begin to enter content.</source>
+        <target state="final">เนื้อหา Elements มาหลายรสชาติและแทรกเนื้อหาใหม่ในหน้าหมายความว่าคุณต้องเลือกชนิดขององค์ประกอบที่เหมาะสม ตัวนี้จะช่วยให้คุณเลือกประเภทหลักขององค์ประกอบก่อนที่จะเริ่มเข้าสู่เนื้อหา</target>
+      </trans-unit>
+      <trans-unit id="new_ce.details" resname="new_ce.details" approved="yes">
+        <source>Selecting an element type here will just preset the content element with certain values. You can always change the values later and if you cannot find exactly the type you need you can just pick the one that comes closest to your need, then adjust the details later.</source>
+        <target state="final">เลือกประเภทองค์ประกอบที่นี่จะตั้งไว้เพียงองค์ประกอบเนื้อหาที่มีค่าบางอย่าง คุณสามารถเปลี่ยนค่าในภายหลังและหากคุณไม่พบว่าชนิดที่คุณต้องการคุณก็สามารถเลือกหนึ่งที่มาใกล้เคียงกับความต้องการของคุณแล้วปรับรายละเอียดในภายหลังได้</target>
+      </trans-unit>
+      <trans-unit id="new_ce.image_descr" resname="new_ce.image_descr" xml:space="preserve" approved="yes">
+				<source>The Content Element wizard presents a set of preset types. Just select one by clicking its title.
+After selecting the type you will (often) have to select a position of the element among the other existing Content Elements on the page.
+You can access the Content Element wizard from the Create new record dialog.</source>
+			<target state="final">Element ตัวช่วยสร้างเนื้อหานำเสนอรูปแบบที่กำหนดไว้ล่วงหน้าของ เพียงแค่เลือกโดยคลิกที่ชื่อของมัน หลังจากเลือกเพจที่คุณพิมพ์จะ (มักจะ) มีให้เลือกตำแหน่งเนื้อหาขององค์ประกอบอื่น ๆ ที่มีอยู่ในองค์ประกอบที่ คุณสามารถเข้าถึงองค์ประกอบตัวเนื้อหาจากบันทึกโต้ตอบใหม่สร้าง</target></trans-unit>
+      <trans-unit id="move_el_pages.alttitle" resname="move_el_pages.alttitle" approved="yes">
+        <source>Move page wizard</source>
+        <target state="final">ย้ายตัวช่วยสร้างหน้า</target>
+      </trans-unit>
+      <trans-unit id="move_el_pages.description" resname="move_el_pages.description" approved="yes">
+        <source>By this wizard you can visually re-position (or copy) a page inside TYPO3. The element you move is shown in the top.</source>
+        <target state="final">ด้วยตัวคุณสามารถมองเห็นตำแหน่งใหม่ (หรือสำเนา) หน้าภายใน TYPO3 นี้ องค์ประกอบที่คุณไปจะปรากฏในด้านบน</target>
+      </trans-unit>
+      <trans-unit id="move_el_pages.details" resname="move_el_pages.details" approved="yes">
+        <source>As an alternative to using the regular Copy/Cut/Paste functions in the clickmenus of records you can also use the move-page wizard. It lets you re-position a page by a visual view of the page tree rather than using the concept of "Paste into" and "Paste after".</source>
+        <target state="final">เป็นทางเลือกในการใช้ปกติ Copy / Cut / Paste หน้าที่ใน clickmenus ของบันทึกคุณสามารถใช้ตัวช่วยย้ายหน้า ซึ่งช่วยให้คุณอีกตำแหน่งหน้าได้โดยดูภาพของต้นไม้หน้าแทนที่จะใช้แนวคิด"วางลง"และ"วางหลัง"</target>
+      </trans-unit>
+      <trans-unit id="move_el_pages.image_descr" resname="move_el_pages.image_descr" xml:space="preserve" approved="yes">
+				<source>The wizard works like when you create new pages with the wizard; You position the element by the grey arrows.
+To access the "Move page wizard" you open the clickmenu of the page, select "More options..." and then "Move page". Alternatively you can click the "Move page" icon in the "Extended view" of the Web&gt;List module.</source>
+			<target state="final">ตัวช่วยสร้างการทำงานเช่นเมื่อคุณสร้างหน้าใหม่ด้วยตัวช่วยสร้างนั้นตำแหน่งคุณองค์ประกอบด้วยสีเทาลูกศรที่ ต้องการเข้าถึง"Move ตัวหน้า"คุณเปิดหน้า clickmenu การเลือก"ตัวเลือกต่อ ... " แล้ว"Move หน้า" หรือคุณสามารถคลิก"Move หน้าไอคอน"ในมุมมอง Extended"ของ&gt; module List Web</target></trans-unit>
+      <trans-unit id="move_el_cs.alttitle" resname="move_el_cs.alttitle" approved="yes">
+        <source>Move Content Element Wizard</source>
+        <target state="final">Move Wizard Element Content</target>
+      </trans-unit>
+      <trans-unit id="move_el_cs.description" resname="move_el_cs.description" approved="yes">
+        <source>By this wizard you can visually re-position (or copy) a Content Element inside TYPO3. The element you move is shown in the top.</source>
+        <target state="final">ด้วยตัวคุณสามารถมองเห็นตำแหน่งใหม่ (หรือสำเนา) เนื้อหาภายใน Element TYPO3 นี้ องค์ประกอบที่คุณไปจะปรากฏในด้านบน</target>
+      </trans-unit>
+      <trans-unit id="move_el_cs.details" resname="move_el_cs.details" approved="yes">
+        <source>By the grey icons in the content element list you can point out the new position of the content element. If you need to move the element to another page, simply browse the page tree in the bottom of the wizard.</source>
+        <target state="final">โดยไอคอนสีเทาในรายการองค์ประกอบเนื้อหาที่คุณสามารถชี้ตำแหน่งใหม่ขององค์ประกอบเนื้อหา ถ้าคุณต้องการย้ายองค์ประกอบไปยังหน้าอื่นก็ดูต้นไม้หน้าในด้านล่างของตัวช่วยสร้าง</target>
+      </trans-unit>
+      <trans-unit id="move_el_cs.image_descr" resname="move_el_cs.image_descr" xml:space="preserve" approved="yes">
+				<source>The wizard works like when you create new Content Elements with the wizard; You position the element by the grey arrows.
+To access the "Move Content Element Wizard" you click the "Move element" icon in the "Extended view" of the Web&gt;List module.</source>
+			<target state="final">ตัวช่วยสร้างการทำงานเช่นเมื่อคุณสร้างเนื้อหาใหม่ Elements กับตัวนั้นตำแหน่งคุณองค์ประกอบโดยสีเทาลูกศรที่ ต้องการเข้าถึง"Move Content Element Wizard"คุณคลิกที่"ย้ายองค์ประกอบไอคอน"ในมุมมอง Extended"ใน Web&gt; module List</target></trans-unit>
+      <trans-unit id="history_log.alttitle" resname="history_log.alttitle" approved="yes">
+        <source>History log</source>
+        <target state="final">บันทึกประวัติ</target>
+      </trans-unit>
+      <trans-unit id="history_log.description" resname="history_log.description" approved="yes">
+        <source>The History log gives you a visual overview of the changes that has happened to the element over the last editing operations. You can roll back changes to any state by using the icons in the interface.</source>
+        <target state="final">บันทึกประวัติศาสตร์ให้เห็นภาพรวมของการเปลี่ยนแปลงที่เกิดขึ้นกับองค์ประกอบในช่วงการดำเนินการแก้ไขล่าสุด คุณสามารถย้อนกลับการเปลี่ยนแปลงสถานะใดโดยใช้ไอคอนในอินเตอร์เฟส</target>
+      </trans-unit>
+      <trans-unit id="history_log.details" resname="history_log.details" xml:space="preserve" approved="yes">
+				<source>By default 20 states of history data is preserved in TYPO3 and after a week it expires. The history is very useful for tracking changes to a record since you can see which user did what at which point in time - and roll back any changes you didn't like.
+If you click the roll-back pencil you will revert the element to the state it had at that particular time.
+If you click the Info icon you will see in detail what the difference is from current time to this state of the element.
+
+&lt;b&gt;Configuring levels and expire times [for admins]&lt;/b&gt;
+If you want to extend the number of history states to above the default 20 you can easily do so using Page TSconfig - meaning that it can even depend on the branch of the page tree where the record is stored! See link below.
+
+&lt;b&gt;Notice:&lt;/b&gt; If you do not see red/green difference values, the server TYPO3 runs on does not support making difference views or it has been incorrectly configured to provide this feature.</source>
+			<target state="final">โดยเริ่มต้น 20 รัฐข้อมูลประวัติถูกรักษาไว้ใน TYPO3 และหลังจากหมดสัปดาห์นั้น ประวัติความเป็นมามีประโยชน์มากสำหรับการติดตามการเปลี่ยนแปลงเพื่อบันทึกตั้งแต่คุณสามารถดูได้ที่ผู้ใช้สิ่งที่จุดในเวลา -- และย้อนกลับการเปลี่ยนแปลงใด ๆ ที่คุณไม่ได้เช่น ถ้าคุณคลิกที่ดินสอ roll - back คุณจะกลับไปใช้องค์ประกอบ รัฐมันได้ในเวลาใดที่ หากคุณคลิกที่ไอคอนข้อมูลคุณจะเห็นรายละเอียดของสิ่งที่แตกต่างจากเวลาปัจจุบันนี้รัฐองค์ประกอบของ &lt;b&gt; การกำหนดระดับและหมดอายุครั้ง [สำหรับผู้ดูแลระบบ]&lt;/b&gt; หากคุณต้องการขยายจำนวน รัฐประวัติศาสตร์เพื่อไปเริ่มต้น 20 คุณสามารถทำได้โดยใช้ Page TSconfig -- ความหมายว่ายังสามารถจัดเก็บขึ้นอยู่กับสาขาที่หน้าของต้นไม้ที่บันทึกเป็น! See link ด้านล่าง &lt;b&gt;หมายเหตุ :&lt;/b&gt; ถ้าคุณไม่เห็นสีแดง / สีเขียวค่าความแตกต่าง, TYPO3 ทำงานบนเซิร์ฟเวอร์ไม่สนับสนุนการทำมุมมองที่แตกต่างหรือมีการกำหนดค่าไม่ถูกต้องให้คุณลักษณะนี้</target></trans-unit>
+      <trans-unit id="history_log.image_descr" resname="history_log.image_descr" xml:space="preserve" approved="yes">
+				<source>You can access the History/Undo log from the Web&gt;List module when in "Extended view" mode. Alternatively you can access it under "More options..." in the clickmenu of an element.
+The History log shows visually the changes between each step of editing.</source>
+			<target state="final">คุณสามารถเข้าถึงประวัติการ / Undo log จาก&gt; module List Web เมื่อใน"ดู Extended โหมด" หรือคุณสามารถเข้าถึงได้ภายใต้ตัวเลือกเพิ่มเติม ... " ในองค์ประกอบของ clickmenu บันทึกประวัติแสดงเห็นการเปลี่ยนแปลงระหว่างการแก้ไขแต่ละขั้นตอนของ</target></trans-unit>
+      <trans-unit id="history_sum.alttitle" resname="history_sum.alttitle" approved="yes">
+        <source>History Summary</source>
+        <target state="final">สรุปประวัติ</target>
+      </trans-unit>
+      <trans-unit id="history_sum.description" resname="history_sum.description" approved="yes">
+        <source>This shows the total difference between the selected state in history to the current state of this element.</source>
+        <target state="final">นี้แสดงให้เห็นความแตกต่างระหว่างรัฐทั้งหมดที่เลือกไว้ในประวัติศาสตร์กับสถานะปัจจุบันขององค์ประกอบนี้</target>
+      </trans-unit>
+      <trans-unit id="history_sum.details" resname="history_sum.details" xml:space="preserve" approved="yes">
+				<source>You can browse forth and back in the history using the arrow buttons in the upper left corner. You can also save a state in history by the little "disk-icon".
+Finally you can revert either the whole record to this state in history by the revert icon in the top &lt;em&gt;or&lt;/em&gt; you can revert only a single field if you like to by clicking the revert icon displayed for each field.
+
+&lt;b&gt;Notice:&lt;/b&gt; If you do not see red/green difference values, the server TYPO3 runs on does not support making difference views or it has been incorrectly configured to provide this feature.</source>
+			<target state="final">คุณสามารถเรียกดูและกลับมาในประวัติศาสตร์โดยใช้ปุ่มลูกศรที่มุมบนด้านซ้าย คุณยังสามารถบันทึกประวัติศาสตร์ในรัฐโดยน้อย"ดิสก์ไอคอน" &lt;em&gt;ในที่สุดคุณสามารถเปลี่ยนทั้งบันทึกประวัติศาสตร์นี้รวมถึงรัฐในไอคอนกลับในด้านบนหรือคุณสามารถเปลี่ยนสนามเดียวเท่านั้นหากคุณต้องการโดย&lt;/em&gt; คลิกที่ไอคอนกลับที่แสดงสำหรับแต่ละเขต &lt;b&gt;หมายเหตุ :&lt;/b&gt; ถ้าคุณไม่เห็นสีแดง / สีเขียวค่าความแตกต่าง, TYPO3 ทำงานบนเซิร์ฟเวอร์ไม่สนับสนุนการมุมมองที่แตกต่างหรือมีการกำหนดค่าไม่ถูกต้องให้คุณลักษณะนี้</target></trans-unit>
+      <trans-unit id="history_sum.image_descr" resname="history_sum.image_descr" approved="yes">
+        <source>The Info view of a state in history shows the "sum" of changes from current time to that point in history for the element.</source>
+        <target state="final">ดูข้อมูลของรัฐในประวัติศาสตร์จะแสดงผลรวม""การเปลี่ยนแปลงจากเวลาปัจจุบันไปยังจุดในประวัติศาสตร์ที่สำหรับองค์ประกอบ</target>
+      </trans-unit>
+      <trans-unit id="history_entry.alttitle" resname="history_entry.alttitle" approved="yes">
+        <source>Log entry history</source>
+        <target state="final">ประวัติรายการเข้าสู่ระบบ</target>
+      </trans-unit>
+      <trans-unit id="history_entry.description" resname="history_entry.description" approved="yes">
+        <source>This view displays the changes made to the content element for the log entry you clicked. The red and green values in the text shows the previous/new values of the record.</source>
+        <target state="final">มุมมองนี้จะแสดงการเปลี่ยนแปลงที่ทำกับองค์ประกอบเนื้อหาสำหรับรายการบันทึกที่คุณคลิก ค่าสีแดงและสีเขียวในข้อความก่อนแสดง / ค่าใหม่ของการบันทึก</target>
+      </trans-unit>
+      <trans-unit id="history_entry.details" resname="history_entry.details" approved="yes">
+        <source>&lt;b&gt;Notice:&lt;/b&gt; If you do not see red/green difference values, the server TYPO3 runs on does not support making difference views or it has been incorrectly configured to provide this feature.</source>
+        <target state="final">&lt;b&gt;หมายเหตุ :&lt;/b&gt; ถ้าคุณไม่เห็นสีแดง / สีเขียวค่าความแตกต่าง, TYPO3 ทำงานบนเซิร์ฟเวอร์ไม่สนับสนุนการมุมมองที่แตกต่างหรือมีการกำหนดค่าไม่ถูกต้องให้คุณลักษณะนี้</target>
+      </trans-unit>
+      <trans-unit id="TCEforms.alttitle" resname="TCEforms.alttitle" approved="yes">
+        <source>TYPO3 Editing Forms</source>
+        <target state="final">รูปแบบการแก้ไข TYPO3</target>
+      </trans-unit>
+      <trans-unit id="TCEforms.description" resname="TCEforms.description" approved="yes">
+        <source>All records in TYPO3 is edited through a standardized form interface like the one you see here. No matter if you edit pages, content elements, guestbook items or user records you will use the same familiar interface.</source>
+        <target state="final">บันทึกทั้งหมดใน TYPO3 จะแก้ไขผ่านส่วนติดต่อแบบฟอร์มมาตรฐานเช่นเดียวที่คุณเห็นที่นี่ ไม่ว่าคุณจะแก้ไขหน้าองค์ประกอบเนื้อหารายการสมุดเยี่ยมหรือผู้ใช้บันทึกจะใช้เดิมคุ้นเคย interface</target>
+      </trans-unit>
+      <trans-unit id="TCEforms_cacheSelector.alttitle" resname="TCEforms_cacheSelector.alttitle" approved="yes">
+        <source>Forms Menu</source>
+        <target state="final">เมนูแบบฟอร์ม</target>
+      </trans-unit>
+      <trans-unit id="TCEforms_cacheSelector.description" resname="TCEforms_cacheSelector.description" approved="yes">
+        <source>This is alternative ways to select "Save"/"Close" operations for records. You can also select "clear-cache" operations if you are allowed access to them.</source>
+        <target state="final">นี้เป็นทางเลือกให้เลือก"Save"/"Close การดำเนินงานสำหรับบันทึก คุณยังสามารถเลือก"แคชใส"การดำเนินการถ้าคุณได้รับอนุญาตให้เข้าถึง</target>
+      </trans-unit>
+      <trans-unit id="TCEforms_cacheSelector.details" resname="TCEforms_cacheSelector.details" xml:space="preserve" approved="yes">
+				<source>Clearing the cache for pages and clearing all cache can be done from this menu as well. If you wonder why content on the frontend webpage seems to be different from what is in the database you might need to clear the page cache by using one of these options.
+If cache options are not available for you, you should ask your administrator to enable it for you. (Admins: See link below to TSconfig.)</source>
+			<target state="final">ล้างหน้าและล้างแคชของดีแคชทั้งหมดสามารถทำได้จากเมนูนี้เป็น ถ้าคุณสงสัยว่าทำไมเนื้อหาบนหน้าเว็บ frontend ดูเหมือนว่าจะแตกต่างจากสิ่งที่อยู่ในฐานข้อมูลที่คุณอาจต้องล้างแคชของหน้าโดยใช้หนึ่งในตัวเลือกเหล่านี้ ถ้ามีตัวเลือกแคชไม่ได้สำหรับคุณคุณควรถามผู้ดูแลระบบเพื่อเปิดใช้งาน ให้คุณ (ผู้ดูแล : link ดูด้านล่างเพื่อ TSconfig . )</target></trans-unit>
+      <trans-unit id="perm_module.alttitle" resname="perm_module.alttitle" approved="yes">
+        <source>Viewing page permissions</source>
+        <target state="final">สิทธิ์ในการดูหน้า</target>
+      </trans-unit>
+      <trans-unit id="perm_module.description" resname="perm_module.description" approved="yes">
+        <source>This view will tell you about the page permissions in the page tree.</source>
+        <target state="final">มุมมองนี้จะบอกคุณเกี่ยวกับสิทธิหน้าที่ในต้นไม้หน้า</target>
+      </trans-unit>
+      <trans-unit id="perm_module.details" resname="perm_module.details" xml:space="preserve" approved="yes">
+				<source>There are two modes you can select:
+
+&lt;b&gt;User overview:&lt;/b&gt;
+This will show you the permissions for &lt;em&gt;your&lt;/em&gt; login. So the green/red indicators will reflect the combined user/group/everyone permissions that apply to your login!
+If there is a grey background behind the indicators it tells you that you are the owner of the page.
+
+&lt;b&gt;Permissions&lt;/b&gt;
+Shows the permissions settings for owner / group / everybody. You will be able to edit these settings by clicking the edit icon next to the page title. Only an owner of a page (or the "Admin"-user) can change permissions for the page.</source>
+			<target state="final">มี : มีสองโหมดที่คุณสามารถเลือก &lt;b&gt; ภาพรวมผู้ใช้ :&lt;/b&gt; &lt;em&gt;นี้จะแสดงสิทธิ์ในการเข้าสู่ระบบ&lt;/em&gt; ดังนั้นสีเขียว / สีแดงตัวชี้วัดจะสะท้อนถึงผู้ใช้รวมกลุ่ม / สิทธิ์ทุกคนที่สมัครเข้าสู่ระบบของคุณ ถ้ามีพื้นหลังสีเทาหลังตัวชี้วัดจะบอกคุณว่าคุณหน้าเจ้าของ &lt;b&gt;สิทธิ์&lt;/b&gt; แสดงการตั้งค่าสิทธิ์สำหรับเจ้าของ กลุ่ม / ทุกคน คุณจะสามารถแก้ไขการตั้งค่าเหล่านี้โดยคลิกที่ไอคอนแก้ไขถัดจากชื่อหน้า เฉพาะเจ้าของหน้า (หรือ"Admin"ผู้ใช้) สามารถเปลี่ยนสิทธิ์ของเพจ</target></trans-unit>
+      <trans-unit id="perm_module_setting.alttitle" resname="perm_module_setting.alttitle" approved="yes">
+        <source>Setting permissions for a page</source>
+        <target state="final">การตั้งค่าสิทธิ์สำหรับหน้า</target>
+      </trans-unit>
+      <trans-unit id="perm_module_setting.description" resname="perm_module_setting.description" approved="yes">
+        <source>Select the owner user and group plus the permissions for each in the matrix. Only an owner of a page (or the "Admin"-user) can change permissions for the page.</source>
+        <target state="final">เลือกผู้เจ้าของและกลุ่มบวกสิทธิ์สำหรับแต่ละในเมทริกซ์ เฉพาะเจ้าของหน้า (หรือ"Admin"ผู้ใช้) สามารถเปลี่ยนสิทธิ์ของเพจ</target>
+      </trans-unit>
+      <trans-unit id="perm_module_setting.details" resname="perm_module_setting.details" xml:space="preserve" approved="yes">
+				<source>Setting permissions is done in five categories for owner / group / everybody so it works much like permissions for files and folders in many operating systems.
+
+&lt;b&gt;Show page&lt;/b&gt;
+If set, a user can see the page and its content in the backend. The user can also copy the content but not move, delete or edit.
+
+&lt;b&gt;Edit content&lt;/b&gt;
+Allows users to add, delete, change and move records (other than page records) on this page. This permission must be given if users should be allowed to create Content Elements etc. on the page.
+
+&lt;b&gt;Edit page&lt;/b&gt;
+Allows a user to edit the page record itself. This could be changing the page title or moving the page to another location.
+
+&lt;b&gt;Delete page&lt;/b&gt;
+If set, a user is allowed to delete the page and the content on the page.
+
+&lt;b&gt;New pages&lt;/b&gt;
+Allows users to create sub-pages to this page.</source>
+			<target state="final">การอนุญาตจะกระทำในห้าประเภทสำหรับเจ้าของกลุ่ม / ทุกคน / ดังนั้นการทำงานเหมือนสิทธิ์สำหรับแฟ้มและโฟลเดอร์ในระบบปฏิบัติการหลาย &lt;b&gt; หน้าแสดง&lt;/b&gt; ถ้าตั้งผู้ใช้สามารถดูหน้าเว็บและเนื้อหาในส่วนหลัง ผู้ใช้ยังสามารถคัดลอกเนื้อหา แต่ไม่ย้าย, ลบหรือแก้ไข &lt;b&gt;แก้ไขเนื้อหา&lt;/b&gt; ให้ผู้ใช้เพิ่มลบและบันทึกการเปลี่ยนแปลงย้าย (นอกเหนือระเบียนหน้า) ในหน้านี้ การอนุญาตนี้จะต้องได้รับหากผู้ใช้ควรได้รับอนุญาตให้สร้างเนื้อหาองค์ประกอบอื่น ๆ ในหน้า &lt;b&gt;แก้ไขหน้า&lt;/b&gt; ช่วยให้ผู้ใช้แก้ไขบันทึกหน้าตัวเอง นี้อาจจะเปลี่ยนชื่อหน้าหรือย้ายเพจไปที่อื่น &lt;b&gt;หน้าลบ&lt;/b&gt; หากตั้งผู้ใช้ที่สามารถลบเพจและเพจเนื้อหาใน &lt;b&gt;หน้าใหม่&lt;/b&gt; เปิดให้ผู้ใช้สร้างเพจย่อยที่หน้านี้</target></trans-unit>
+      <trans-unit id="perm_module_setting.image_descr" resname="perm_module_setting.image_descr" approved="yes">
+        <source>In this matrix you can set permissions for owner, group and everybody in the five categories available.</source>
+        <target state="final">ใน matrix นี้คุณสามารถกำหนดสิทธิ์สำหรับเจ้าของกลุ่มและทุกคนในห้าประเภทใช้ได้</target>
+      </trans-unit>
+      <trans-unit id="filelist_module.alttitle" resname="filelist_module.alttitle" approved="yes">
+        <source>File &gt; Filelist module</source>
+        <target state="final">โมดูล File&gt; Filelist</target>
+      </trans-unit>
+      <trans-unit id="filelist_module.description" resname="filelist_module.description" approved="yes">
+        <source>Shows the files and folders from the folder title you have clicked in the folder tree. Click the icons of the files and folders to perform various actions on the elements.</source>
+        <target state="final">แสดงแฟ้มและโฟลเดอร์จากชื่อโฟลเดอร์ที่คุณคลิกในโครงสร้างโฟลเดอร์ คลิกไอคอนของไฟล์และโฟลเดอร์เพื่อดำเนินการต่างๆในองค์ประกอบ</target>
+      </trans-unit>
+      <trans-unit id="filelist_module.details" resname="filelist_module.details" xml:space="preserve" approved="yes">
+				<source>The File &gt; Filelist module provides the main interface to the web-based "FTP-features" in TYPO3. Clicking a folder in the navigation frame will display the files in that folder in the list frame to the right.
+
+If you click the icon of a file you will see a menu pop up with menu items related to the file or folder. This enables you to edit, rename and copy files to name a few.
+
+&lt;b&gt;The "TEMP" folder&lt;/b&gt;
+There is a special folder, the "TEMP" folder. This is meant to be used for temporary uploads of files that are going to be attached to TYPO3 records later. Content in the TEMP folder should be possible to flush once in a while when the folder becomes too crowded with files. So don't store persistent data in there!
+The actual folder name is actually "_temp_". The interface will just interprete this with "TEMP" in bold.
+The same applies to folders named "_recycler_" - they will be trash cans in the folder tree.</source>
+			<target state="final">&gt; Filelist module File ให้อินเตอร์เฟซหลักที่ web - based"FTP คุณสมบัติ"ใน TYPO3 คลิกกรอบนำทางในโฟลเดอร์จะแสดงแฟ้มในรายการที่โฟลเดอร์ในกรอบด้านขวา หากคุณคลิกที่ไอคอนไฟล์ของคุณจะเห็นเมนูปรากฏขึ้นกับรายการเมนูที่เกี่ยวข้องกับแฟ้มหรือโฟลเดอร์ คุณจะสามารถแก้ไขและเปลี่ยนชื่อไฟล์สำเนาเพื่อชื่อไม่กี่ &lt;b&gt; "TEMP"โฟลเดอร์&lt;/b&gt; มีโฟลเดอร์พิเศษ""โฟลเดอร์ชั่วคราว นี้มีขึ้นเพื่อใช้ในการส่งภาพชั่วคราวของแฟ้มที่จะถูกแนบมากับบันทึก TYPO3 ภายหลัง เนื้อหาในโฟลเดอร์ชั่วคราวควรจะสามารถล้างครั้งในภาพในขณะที่เมื่อโฟลเดอร์ก็กลายเป็นแออัดด้วย จึงไม่เก็บข้อมูลถาวรใน there! โฟลเดอร์ชื่อจริงเป็นจริง"_temp_" ติดต่อเพียงแค่จะแปลผลนี้ด้วย"TEMP"ตัวหนา เดียวกันกับโฟลเดอร์ชื่อ"_recycler_"-- พวกเขาจะกระป๋องขยะในต้นไม้โฟลเดอร์</target></trans-unit>
+      <trans-unit id="filelist_module.image_descr" resname="filelist_module.image_descr" xml:space="preserve" approved="yes">
+				<source>Here the content of the TEMP folder is shown in the list frame. You can see the filetype, the modification time, size of the file. If you click the filename you will open the file in the browser (if the path is in the web-root).
+When you click a file icon you see a context menu appear over it. Here you can perform file operations on the item.</source>
+			<target state="final">นี่เนื้อหาของโฟลเดอร์ชั่วคราวจะปรากฏในรายการกรอบ คุณสามารถดู filetype ที่เวลาปรับขนาดของไฟล์ หากคุณคลิกรากชื่อไฟล์ที่คุณจะเปิดในเบราว์เซอร์ file if (เส้นทางที่อยู่ในเว็บ) เมื่อคุณคลิกไอคอนไฟล์ที่คุณเห็นเมนูบริบทจะปรากฏขึ้นนั้น ที่นี่คุณสามารถดำเนินงานในแฟ้มรายการ</target></trans-unit>
+      <trans-unit id="filelist_clipboard.alttitle" resname="filelist_clipboard.alttitle" approved="yes">
+        <source>Filelist Clipboard</source>
+        <target state="final">คลิปบอร์ด Filelist</target>
+      </trans-unit>
+      <trans-unit id="filelist_clipboard.description" resname="filelist_clipboard.description" approved="yes">
+        <source>The TYPO3 clipboard works for files as well as for database records (see the Web&gt;List module). You only need to enable the clipboard if you want to use the numeric clipboard pads.</source>
+        <target state="final">ทำงานคลิปบอร์ด TYPO3 ของไฟล์เป็นฐานข้อมูลสำหรับบันทึก (ดูโมดูล Web List&gt;) คุณจะต้องใช้คลิปบอร์ดหากคุณต้องการใช้แผ่นคลิปบอร์ดตัวเลข</target>
+      </trans-unit>
+      <trans-unit id="filelist_clipboard.image_descr" resname="filelist_clipboard.image_descr" xml:space="preserve" approved="yes">
+				<source>This shows the "Normal" pad on the clipboard. Here an image is now stored. The "Thumbnails" button of the clipboard is enabled so you will see the image icon.
+When the numeric clipboard pads are enabled you will be able to place multiple items on the clipboard at one time. If the items selected are found in the current folder you can also see the selection reflected in the checkboxes of the items. To paste the contents into a file folder you use the paste icons available in the Filelist module.</source>
+			<target state="final">นี้จะแสดง"pad"ปกติในคลิปบอร์ด ที่นี่ภาพจะถูกเก็บไว้ตอนนี้ Thumbnails"ปุ่มคลิปบอร์ดมีการใช้งานดังนั้นคุณจะเห็นไอคอนภาพ เมื่อแผ่นคลิปบอร์ดตัวเลขมีการใช้งานคุณจะสามารถวางหลายรายการในคลิปบอร์ดในครั้งเดียว ถ้ารายการที่เลือกจะอยู่ในโฟลเดอร์ปัจจุบันคุณยังสามารถดูเลือกปรากฏในช่องทำเครื่องหมายของรายการ เพื่อวางเนื้อหาในโฟลเดอร์แฟ้มที่คุณใช้ไอคอนวางจำหน่ายในโมดูล Filelist</target></trans-unit>
+      <trans-unit id="filelist_options.alttitle" resname="filelist_options.alttitle" approved="yes">
+        <source>File &gt; Filelist options</source>
+        <target state="final">File เลือก&gt; Filelist</target>
+      </trans-unit>
+      <trans-unit id="filelist_options.description" resname="filelist_options.description" approved="yes">
+        <source>You can enable the display of image thumbnails and show the clipboard if you need to copy/cut/paste multiple files or folders at a time.</source>
+        <target state="final">คุณสามารถเปิดใช้การแสดงภาพขนาดเล็กภาพและแสดงคลิปบอร์ดถ้าคุณต้องการคัดลอก / ตัด / วางแฟ้มหรือโฟลเดอร์หลายครั้ง</target>
+      </trans-unit>
+      <trans-unit id="filelist_options.image_descr" resname="filelist_options.image_descr" approved="yes">
+        <source>Enabling thumbnails means that all image file types will be displayed with their thumbnails. This makes it easy to browse an archive of files.</source>
+        <target state="final">การเปิดใช้ย่อหมายความว่าทุกประเภทไฟล์ภาพจะแสดงพร้อมกับรูปขนาดย่อของพวกเขา นี้ทำให้ง่ายต่อการเรียกเก็บไฟล์</target>
+      </trans-unit>
+      <trans-unit id="file_edit.alttitle" resname="file_edit.alttitle" approved="yes">
+        <source>Editing a file</source>
+        <target state="final">แก้ไขแฟ้ม</target>
+      </trans-unit>
+      <trans-unit id="file_edit.description" resname="file_edit.description" approved="yes">
+        <source>You can edit the contents of a text file with this dialog.</source>
+        <target state="final">คุณสามารถแก้ไขเนื้อหาของแฟ้มข้อความที่มีการโต้ตอบนี้</target>
+      </trans-unit>
+      <trans-unit id="file_edit.image_descr" resname="file_edit.image_descr" approved="yes">
+        <source>The editing form for a file is this simple textarea field. It's nothing fancy and experienced coders will miss such as TAB-functionality, but it can edit a stylesheet if badly needed...</source>
+        <target state="final">แบบฟอร์มการแก้ไขไฟล์เป็นเขต Textarea นี้ง่าย ก็ไม่มีอะไรแฟนซีและประสบการณ์ coders จะพลาดเช่น TAB ฟังก์ชันการทำงาน แต่สามารถแก้ไข stylesheet หากจำเป็นไม่ดี ...</target>
+      </trans-unit>
+      <trans-unit id="file_newfolder.alttitle" resname="file_newfolder.alttitle" approved="yes">
+        <source>Creating a new folder</source>
+        <target state="final">สร้างโฟลเดอร์ใหม่</target>
+      </trans-unit>
+      <trans-unit id="file_newfolder.description" resname="file_newfolder.description" approved="yes">
+        <source>Enter a name for a new file folder in the tree here. If you want to create multiple folders, please select the number of new folders before entering folder names.</source>
+        <target state="final">ป้อนชื่อสำหรับโฟลเดอร์แฟ้มใหม่ในต้นที่นี่ ถ้าคุณต้องการสร้างโฟลเดอร์ต่างๆกรุณาเลือกจำนวนโฟลเดอร์ใหม่ก่อนที่จะป้อนชื่อโฟลเดอร์</target>
+      </trans-unit>
+      <trans-unit id="file_newfolder.image_descr" resname="file_newfolder.image_descr" xml:space="preserve" approved="yes">
+				<source>To create a new folder you first click the parent folder icon in the folder tree.
+As the next step you select the number of folders to create and then you enter the new folder names.
+After pressing the "Create folders" button the folders will appear in the folder tree when you reload it.</source>
+			<target state="final">เพื่อสร้างโฟลเดอร์ใหม่ที่คุณคลิกแรกที่ไอคอนโฟลเดอร์ในโฟลเดอร์ต้นไม้ ในขั้นถัดไปที่คุณเลือกจำนวนโฟลเดอร์ที่สร้างแล้วคุณใส่โฟลเดอร์ชื่อใหม่ หลังจากที่กดปุ่ม"สร้างโฟลเดอร์ปุ่มโฟลเดอร์จะปรากฏขึ้น ในโครงสร้างโฟลเดอร์เมื่อคุณโหลดมัน</target></trans-unit>
+      <trans-unit id="file_newfile.alttitle" resname="file_newfile.alttitle" approved="yes">
+        <source>Creating a new file</source>
+        <target state="final">สร้างแฟ้มใหม่</target>
+      </trans-unit>
+      <trans-unit id="file_newfile.details" resname="file_newfile.details" approved="yes">
+        <source>Newly created files will have the size of 0 (zero). After creating a new file it would be natural that you wanted to edit the file to put content into it. This is done simply by clicking the icon of the file and select "Edit" from the clickmenu.</source>
+        <target state="final">ไฟล์ที่สร้างขึ้นใหม่จะมีขนาดของ 0 (ศูนย์) หลังจากสร้างไฟล์ใหม่มันจะธรรมชาติที่คุณต้องการแก้ไขไฟล์ที่จะนำเนื้อหาในนั้น นี้จะกระทำได้ง่ายๆโดยคลิกที่ไอคอนของไฟล์และเลือก"แก้ไข"จาก clickmenu</target>
+      </trans-unit>
+      <trans-unit id="file_newfile.image_descr" resname="file_newfile.image_descr" xml:space="preserve" approved="yes">
+				<source>To create a new file, first click the folder icon where you want to create the file. Select "New".
+Then enter the filename in the dialog in the right frame.
+After pressing "Create file" you will see a new, empty file in the folder you selected.</source>
+			<target state="final">เพื่อสร้างไฟล์ใหม่ให้คลิกแรกไอคอนโฟลเดอร์ที่คุณต้องการสร้างแฟ้ม เลือก"New" จากนั้นใส่กรอบ filename สิทธิในในการโต้ตอบ หลังจากกด"Create file"คุณจะเห็นใหม่ file ว่างในโฟลเดอร์ที่คุณเลือก</target></trans-unit>
+      <trans-unit id="file_rename.alttitle" resname="file_rename.alttitle" approved="yes">
+        <source>Rename a file or folder</source>
+        <target state="final">เปลี่ยนชื่อไฟล์หรือโฟลเดอร์</target>
+      </trans-unit>
+      <trans-unit id="file_rename.description" resname="file_rename.description" approved="yes">
+        <source>You can rename files or folders in TYPO3 quite easily. Just notice that certain characters are not allowed. So use a-z, numbers, underscores and don't make the names too long. If you enter invalid characters it will be automatically corrected.</source>
+        <target state="final">คุณสามารถเปลี่ยนชื่อแฟ้มหรือโฟลเดอร์ใน TYPO3 ค่อนข้างง่าย เพียงแจ้งให้ทราบว่าตัวอักษรบางอย่างไม่ได้รับอนุญาต เพื่อใช้ az, ตัวเลข, ขีดและไม่ให้ชื่อยาวเกินไป ถ้าคุณป้อนตัวอักษรที่ไม่ถูกต้องจะได้รับการแก้ไขโดยอัตโนมัติ</target>
+      </trans-unit>
+      <trans-unit id="file_rename.image_descr" resname="file_rename.image_descr" xml:space="preserve" approved="yes">
+				<source>To rename a file (or folder for that sake) just click the icon of it, select "Rename" and enter the new name.
+Notice that restrictions may apply on filenaming, for instance ".php" is usually not a valid extension of a filename for security reasons.</source>
+			<target state="final">เปลี่ยนชื่อไฟล์ (หรือโฟลเดอร์เพื่อประโยชน์ที่) คลิกที่ไอคอนการเลือก"เปลี่ยน"และป้อนชื่อใหม่ ให้สังเกตว่าอาจมีข้อ จำกัด ใน filenaming ตัวอย่างเช่น". php"มักจะไม่ขยายผลของ ชื่อไฟล์เพื่อความปลอดภัย</target></trans-unit>
+      <trans-unit id="file_upload.alttitle" resname="file_upload.alttitle" approved="yes">
+        <source>Uploading files.</source>
+        <target state="final">อัพโหลดไฟล์</target>
+      </trans-unit>
+      <trans-unit id="file_upload.description" resname="file_upload.description" approved="yes">
+        <source>Here you can upload one or more files to the server. Start by selecting the number of files to upload, then you begin to select files from your local computer to upload.</source>
+        <target state="final">ที่นี่คุณสามารถอัปโหลดมากกว่าหนึ่งไฟล์ไปยังเซิร์ฟเวอร์ เริ่มต้นโดยการเลือกจำนวนไฟล์ที่อัพโหลดจากนั้นจะเริ่มต้นเพื่อเลือกไฟล์จากคอมพิวเตอร์ของคุณเพื่ออัปโหลด</target>
+      </trans-unit>
+      <trans-unit id="file_upload.details" resname="file_upload.details" xml:space="preserve" approved="yes">
+				<source>If the filenames you upload exist already they will be renamed with a numeric suffix, eg. "file_01.jpg". However you can avoid this behaviour if you select "Overwrite existing files" before pressing the "Upload" button.
+
+Normally there is a limit to the size of files you can upload. By default PHP will allow you to upload around 2MB. TYPO3 is configured to allow 10MB internally by default. These settings can be changed by your server administrator if you need them changed.
+
+Notice that file uploads may take a significant amount of time, even if you have fast internet access via DSL etc. If you have large amount of files you want to upload - or if the files are very large - you should consider using an FTP client instead. It depends not on TYPO3 but on the webserver whether this is an options for you.</source>
+			<target state="final">ถ้าชื่อไฟล์ที่คุณอัปโหลดอยู่แล้วพวกเขาจะเปลี่ยนชื่อต่อท้ายด้วยตัวเลขเช่น "file_01.jpg" แต่คุณสามารถหลีกเลี่ยงพฤติกรรมนี้หากคุณเลือก"ไฟล์ที่มีอยู่แทนที่"ก่อนกดปุ่ม"อัปโหลด โดยปกติมีการอัพโหลดสามารถเป็นเพื่อ จำกัด ขนาดของไฟล์ที่คุณ โดยปกติ PHP จะทำให้คุณสามารถอัปโหลดรอบ 2MB TYPO3 การกำหนดค่าเพื่อให้ 10MB ภายในโดยปริยาย ตั้งค่าเหล่านี้สามารถเปลี่ยนแปลงได้โดยผู้ดูแลเซิร์ฟเวอร์ของคุณถ้าคุณต้องการเปลี่ยน เงื่อนไขที่อัพโหลดไฟล์อาจใช้เวลาเป็นจำนวนมากเวลาแม้ว่าคุณจะสามารถเข้าถึงอินเทอร์เน็ตได้อย่างรวดเร็วผ่าน DSL ฯลฯ ถ้าคุณมีจำนวนมากของไฟล์ที่คุณต้องการอัพโหลด -- หรือถ้าไฟล์ที่มีขนาดใหญ่มาก -- คุณควรพิจารณาใช้ client FTP แทน ไม่ขึ้นอยู่กับ TYPO3 แต่เมื่อคุณ webserver ว่านี้คือตัวเลือกสำหรับ</target></trans-unit>
+      <trans-unit id="file_upload.image_descr" resname="file_upload.image_descr" xml:space="preserve" approved="yes">
+				<source>To upload files, first click the folder icon where you want to upload to. From the clickmenu you select "Upload files".
+In the next screen you select the number of files and click the "Browse..." buttons to select files from your computer. Finally you click the "Upload files" button to start the upload process (which might take some minutes with large files!)</source>
+			<target state="final">อัปโหลดไฟล์แรกให้คลิกไอคอนโฟลเดอร์ที่คุณต้องการอัปโหลดไปยัง จาก"clickmenu คุณเลือกอัปโหลด"ไฟล์ ในหน้าจอถัดไปที่คุณเลือกคลิกที่หมายเลขของไฟล์และ"Browse ... " ปุ่มเพื่อเลือกไฟล์จากคอมพิวเตอร์ของคุณ คุณคลิกสุดท้าย"อัพโหลดไฟล์"เพื่อเริ่มต้นกระบวนการอัปโหลด (ซึ่งอาจใช้เวลาบางส่วนกับไฟล์ขนาดใหญ่!)</target></trans-unit>
+      <trans-unit id="wizard_table_wiz.alttitle" resname="wizard_table_wiz.alttitle" approved="yes">
+        <source>Table wizard</source>
+        <target state="final">ตัวช่วยสร้างตาราง</target>
+      </trans-unit>
+      <trans-unit id="wizard_table_wiz.description" resname="wizard_table_wiz.description" approved="yes">
+        <source>The table wizard helps you create tables that are normally stored in the database by XML or a syntax where each line represents a row and each cell is divided by a vertical line sign, "|". This wizard makes it transparent for you.</source>
+        <target state="final">ตัวช่วยสร้างตารางช่วยให้คุณสร้างตารางที่เก็บในฐานข้อมูลตามปกติโดย XML หรือไวยากรณ์ที่แต่ละบรรทัดเป็นแถวและแต่ละเซลล์แบ่งด้วยเครื่องหมายเส้นแนวตั้ง"|" ตัวนี้ทำให้โปร่งใสสำหรับคุณ</target>
+      </trans-unit>
+      <trans-unit id="wizard_table_wiz.details" resname="wizard_table_wiz.details" xml:space="preserve" approved="yes">
+				<source>The wizard is quite simple. By the buttons to the left and in the bottom you can add, delete and move columns and rows in the table.
+You can also disable the setting "Small fields" below the wizard if you want larger textarea fields for the editing.</source>
+			<target state="final">ตัวช่วยสร้างง่ายมาก โดยปุ่มด้านซ้ายและด้านล่างที่คุณสามารถเพิ่มลบและย้ายคอลัมน์และแถวในตาราง คุณสามารถปิดใช้งานการตั้งค่า"เขต Small"ด้านล่างตัวถ้าคุณต้องการด้าน Textarea ขนาดใหญ่สำหรับการแก้ไข</target></trans-unit>
+      <trans-unit id="wizard_table_wiz_buttons.alttitle" resname="wizard_table_wiz_buttons.alttitle" approved="yes">
+        <source>Table wizard buttons</source>
+        <target state="final">ตารางปุ่มตัวช่วยสร้าง</target>
+      </trans-unit>
+      <trans-unit id="wizard_table_wiz_buttons.description" resname="wizard_table_wiz_buttons.description" approved="yes">
+        <source>Use the refresh button to update the form without saving it. When you are done you should click one of the real save buttons to save and return to the form from which you entered the wizard. The information from this wizard should then be saved into the field the wizard was associated with.</source>
+        <target state="final">ใช้ปุ่มรีเฟรชเพื่อปรับปรุงรูปแบบโดยไม่ต้องบันทึก เมื่อเสร็จแล้วคุณควรคลิกที่หนึ่งของจริงปุ่ม save เพื่อบันทึกและกลับสู่ฟอร์มที่คุณป้อนตัวช่วยสร้าง ข้อมูลจากตัวนี้แล้วควรได้รับการบันทึกลงในฟิลด์ตัวเชื่อมโยงกับ</target>
+      </trans-unit>
+      <trans-unit id="shortcuts.alttitle" resname="shortcuts.alttitle" approved="yes">
+        <source>Backend Shortcuts</source>
+        <target state="final">ทางลัด Backend</target>
+      </trans-unit>
+      <trans-unit id="shortcuts.description" resname="shortcuts.description" approved="yes">
+        <source>You can create shortcuts to modules in TYPO3 quite easily. The treat is that you can jump between screens in TYPO3 in &lt;em&gt;one&lt;/em&gt; click rather than multiple clicks through backend modules etc. The frame also contains a field for entering a page or record id to edit or just search records.</source>
+        <target state="final">คุณสามารถสร้างทางลัดไปยังโมดูลใน TYPO3 ค่อนข้างง่าย การรักษาคือคุณสามารถข้ามระหว่างหน้าจอใน TYPO3 &lt;em&gt;ในคลิกเดียวแทนที่จะคลิกหลายผ่าน&lt;/em&gt; modules backend เป็นต้นกรอบยังมีช่องสำหรับใส่หน้าหรือบันทึก id แก้ไขหรือค้นหาเพียงระเบียน</target>
+      </trans-unit>
+      <trans-unit id="shortcuts.details" resname="shortcuts.details" xml:space="preserve" approved="yes">
+				<source>In order to create a shortcut it must be supported by the module you want to create the shortcut to. Whether shortcuts are supported can be seen in the bottom of a module. If there is a small "shortcut" icon you can click it to create the shortcut.
+
+In the shortcut frame you can also enter a page id to edit in the "Edit Page ID" box. This will load the current page module with the id provided in the box.
+
+Only "Admin"-users can access the shortcut frame in TYPO3 by default. Other users must have it enabled by the User TSconfig option, "options.shortcutFrame = 1". See link below for details (Admins).
+
+Editing pages from an id is easy with the shortcut frame. Simply enter an integer number and that page will be loaded for editing. If you enter "[table]:[id]" then it will try to edit a record from the [table] table, for example "tt_content:123" will look for content element 123 (for admins only). Finally, if you enter a string that doesn't match a page or other record the Web&gt;List module will be invoked doing a search in the first database mount you have.</source>
+			<target state="final">เพื่อสร้างเป็นทางลัดจะต้องได้รับการสนับสนุนโดยโมดูลที่คุณต้องการสร้างทางลัด ว่าทางลัดได้รับการสนับสนุนสามารถมองเห็นในด้านล่างของโมดูล ถ้ามีทางลัด"เล็ก"icon คุณสามารถคลิกเพื่อสร้างทางลัด ในกรอบทางลัดคุณสามารถใส่กล่องหน้า id แก้ไขใน"แก้ไขเพจ"ID นี้จะโหลดโมดูลหน้าปัจจุบันกับช่อง id ให้ใน เฉพาะ"Admin"ผู้ใช้สามารถเข้าถึงกรอบทางลัดใน TYPO3 โดยปริยาย ผู้อื่นจะต้องได้เปิดการใช้งานโดย TSconfig ตัวเลือกผู้ใช้ options.shortcutFrame"="1" ลิงค์ด้านล่างเพื่อดูรายละเอียด (ผู้ดูแล) การแก้ไขหน้าจาก id ง่ายกับกรอบทางลัด เพียงใส่หมายเลขจำนวนเต็มและหน้าที่จะโหลดสำหรับการแก้ไข หากคุณป้อน"] ตาราง : [] id ["ก็จะพยายามแก้ไขระเบียนจากตาราง] ตาราง [ตัวอย่างเช่น tt_content": 123"จะมองหาองค์ประกอบเนื้อหาที่ 123 (สำหรับผู้ดูแลระบบเท่านั้น) สุดท้ายถ้าคุณเข้าตรงกับสตริงที่ไม่หน้าหรืออื่น ๆ บันทึก&gt; module List Web จะเรียกทำฐานข้อมูลการค้นหาแรกใน mount คุณ</target></trans-unit>
+      <trans-unit id="shortcuts.image_descr" resname="shortcuts.image_descr" xml:space="preserve" approved="yes">
+				<source>To create a shortcut to a page, just click the short cut icon usually found in the bottom of pages.
+You will have to confirm the creation of the shortcut. It is nothing dangerous - only annoying to clean up if you happen to create shortcuts against your own will. Just answer "OK" here.
+When you answer "OK" you should immediately see the shortcut frame reload and a new icon (the module icon) appear. If you click this icon you will now jump to the page you created the shortcut from!
+You can name shortcuts, you can even group them and share them. If you want to edit or delete a shortcut you select the "Edit" checkbox and then click the shortcut icon. This will reload the shortcut frame so you get a field for entering a title. You can also delete all shortcuts in a "group" - here, just click the "0" (zero) to the left of the icons and you will remove all shortcuts in the group.</source>
+			<target state="final">เพื่อสร้างทางลัดไปยังหน้าเพียงคลิกที่ไอคอนตัดสั้นมักจะพบในหน้าล่างของ คุณจะได้รับการยืนยันทางลัดการสร้าง มันเป็นอะไรที่อันตราย -- เท่านั้นรำคาญสะอาดขึ้นถ้าคุณเกิดขึ้นเพื่อสร้างทางลัดกับคุณเองจะ เพียงคำตอบ"OK"ที่นี่ เมื่อคุณตอบ"OK"ทันทีจะเห็นทางลัดโหลดกรอบและไอคอนใหม่ (ไอคอน module) ปรากฏ หากคุณคลิกไอคอนนี้คุณตอนนี้จะข้ามไปจากหน้าคุณลัดสร้าง! คุณสามารถชื่อลัดคุณสามารถกลุ่มแม้พวกเขาและแบ่งปันให้ ถ้าคุณต้องการแก้ไขหรือลบไอคอนทางลัดที่คุณเลือกแก้ไข""ช่องแล้วคลิกทางลัด นี้จะโหลดกรอบทางลัดเพื่อให้คุณได้รับช่องสำหรับใส่ชื่อ คุณยังสามารถลบลัดในกลุ่ม""-- ที่นี่เพียงคลิก"0"(ศูนย์) ด้านซ้ายของไอคอนและคุณจะเอาทางลัดทั้งหมดในกลุ่ม</target></trans-unit>
+      <trans-unit id="workspaceSelector.alttitle" resname="workspaceSelector.alttitle" approved="yes">
+        <source>Workspace Selector</source>
+        <target state="final">เลือกพื้นที่ทำงาน</target>
+      </trans-unit>
+      <trans-unit id="workspaceSelector.description" resname="workspaceSelector.description" approved="yes">
+        <source>By this selectorbox you can switch between the workspaces available to you. When you switch workspace the whole backend will reload.</source>
+        <target state="final">โดย selectorbox นี้คุณสามารถสลับระหว่างพื้นที่ทำงานที่สามารถใช้ได้ เมื่อคุณสลับพื้นที่ทำงาน backend ทั้งหมดจะโหลด</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
