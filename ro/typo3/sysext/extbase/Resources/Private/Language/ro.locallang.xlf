@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814816" source-language="en" datatype="plaintext" original="EXT:extbase/Resources/Private/Language/locallang.xlf" date="2012-10-17T19:30:32Z" product-name="extbase" target-language="ro">
+    <header/>
+    <body>
+      <trans-unit id="property.error" resname="property.error" approved="yes">
+        <source>Validation errors for property "%s"</source>
+        <target state="final">Erori de validare pentru proprietatea "%s"</target>
+      </trans-unit>
+      <trans-unit id="validator.emailaddress.notvalid" resname="validator.emailaddress.notvalid" approved="yes">
+        <source>The given subject was not a valid email address.</source>
+        <target state="final">Valoarea introdusă nu este o adresă email validă.</target>
+      </trans-unit>
+      <trans-unit id="validator.stringlength.between" resname="validator.stringlength.between" approved="yes">
+        <source>The length of the given string was not between %s and %s characters.</source>
+        <target state="final">Lungimea textului introdus trebuie să aibă între %s și %s caractere.</target>
+      </trans-unit>
+      <trans-unit id="validator.stringlength.less" resname="validator.stringlength.less" approved="yes">
+        <source>The length of the given string is less than %s characters.</source>
+        <target state="final">Lungimea textului introdus are mai puțin de %s caractere.</target>
+      </trans-unit>
+      <trans-unit id="validator.string.notvalid" resname="validator.string.notvalid" approved="yes">
+        <source>A valid string is expected.</source>
+        <target state="final">Este necesar să introduceți un text valid.</target>
+      </trans-unit>
+      <trans-unit id="validator.stringlength.exceed" resname="validator.stringlength.exceed" approved="yes">
+        <source>The length of the given string exceeded %s characters.</source>
+        <target state="final">Lungimea textului introdus depăsește %s caractere.</target>
+      </trans-unit>
+      <trans-unit id="validator.alphanumeric.notvalid" resname="validator.alphanumeric.notvalid" approved="yes">
+        <source>The given subject was not a valid alphanumeric string.</source>
+        <target state="final">Textul introdus nu conține doar caractere alfanumerice.</target>
+      </trans-unit>
+      <trans-unit id="validator.datetime.notvalid" resname="validator.datetime.notvalid" approved="yes">
+        <source>The given subject was not a valid DateTime. Got: '%s'</source>
+        <target state="final">Textul introdus nu este un obiect DateTime valid. Am primit: '%s'</target>
+      </trans-unit>
+      <trans-unit id="validator.genericobject.noobject" resname="validator.genericobject.noobject" approved="yes">
+        <source>Value is no object.</source>
+        <target state="final">Valoarea nu este un obiect.</target>
+      </trans-unit>
+      <trans-unit id="validator.float.notvalid" resname="validator.float.notvalid" approved="yes">
+        <source>The given subject was not a valid float.</source>
+        <target state="final">Valoarea introdusă nu este un număr real valid.</target>
+      </trans-unit>
+      <trans-unit id="validator.text.notvalid" resname="validator.text.notvalid" approved="yes">
+        <source>The given subject was not a valid text (e.g. contained XML tags).</source>
+        <target state="final">Valoarea introdusă nu este un text valid (ex: conține tag-uri HTML)</target>
+      </trans-unit>
+      <trans-unit id="validator.regularexpression.empty" resname="validator.regularexpression.empty" approved="yes">
+        <source>The regular expression was empty.</source>
+        <target state="final">Expresia regulară este goală.</target>
+      </trans-unit>
+      <trans-unit id="validator.regularexpression.nomatch" resname="validator.regularexpression.nomatch" approved="yes">
+        <source>The given subject did not match the pattern.</source>
+        <target state="final">Valoarea introdusă nu respectă modelul.</target>
+      </trans-unit>
+      <trans-unit id="validator.regularexpression.error" resname="validator.regularexpression.error" approved="yes">
+        <source>The regular expression '%s' contained an error.</source>
+        <target state="final">Expresia regulară '%s' conține erori.</target>
+      </trans-unit>
+      <trans-unit id="validator.numberrange.notvalid" resname="validator.numberrange.notvalid" approved="yes">
+        <source>The given subject was not a valid number.</source>
+        <target state="final">Valoarea introdusă nu este un număr valid.</target>
+      </trans-unit>
+      <trans-unit id="validator.numberrange.range" resname="validator.numberrange.range" approved="yes">
+        <source>The given subject was not in the valid range (%s - %s).</source>
+        <target state="final">Valoarea introdusă nu se află în intervalul valid (%s - %s).</target>
+      </trans-unit>
+      <trans-unit id="validator.notempty.null" resname="validator.notempty.null" approved="yes">
+        <source>The given subject was NULL.</source>
+        <target state="final">Valoarea introdusă este NULL.</target>
+      </trans-unit>
+      <trans-unit id="validator.notempty.empty" resname="validator.notempty.empty" approved="yes">
+        <source>The given subject was empty.</source>
+        <target state="final">Valoarea introdusă este vidă.</target>
+      </trans-unit>
+      <trans-unit id="validator.number.notvalid" resname="validator.number.notvalid" approved="yes">
+        <source>The given subject was not a valid number.</source>
+        <target state="final">Valoarea introdusă nu este un număr valid.</target>
+      </trans-unit>
+      <trans-unit id="validator.integer.notvalid" resname="validator.integer.notvalid" approved="yes">
+        <source>The given subject was not a valid integer.</source>
+        <target state="final">Valoarea introdusă nu este un număr întreg valid.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
