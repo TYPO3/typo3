@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="messages" date="2018-11-27T22:26:21Z" product-name="sys_note" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="widget.pagesWithInternalNote.title">
+        <source>System Notes</source>
+        <target>crwdns374356:0crwdne374356:0</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.description">
+        <source>Shows a list of pages with system notes.</source>
+        <target>crwdns374444:0crwdne374444:0</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.all.title">
+        <source>All System Notes</source>
+        <target>crwdns374360:0crwdne374360:0</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.all.description">
+        <source>Shows a list of pages with system notes</source>
+        <target>crwdns374446:0crwdne374446:0</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.default.title">
+        <source>Notes in the category "Default"</source>
+        <target>crwdns374364:0crwdne374364:0</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.default.description">
+        <source>Shows a list of pages with system notes in the category "Default"</source>
+        <target>crwdns374448:0crwdne374448:0</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.todo.title">
+        <source>Notes in the category "ToDo"</source>
+        <target>crwdns374368:0crwdne374368:0</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.todo.description">
+        <source>Shows a list of pages with system notes in the category "ToDo"</source>
+        <target>crwdns374450:0crwdne374450:0</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.template.title">
+        <source>Notes in the category "Template"</source>
+        <target>crwdns374372:0crwdne374372:0</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.template.description">
+        <source>Shows a list of pages with system notes in the category "Template"</source>
+        <target>crwdns374452:0crwdne374452:0</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.notes.title">
+        <source>Notes in the category "Notes"</source>
+        <target>crwdns374376:0crwdne374376:0</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.notes.description">
+        <source>Shows a list of pages with system notes in the category "Notes"</source>
+        <target>crwdns374454:0crwdne374454:0</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.instructions.title">
+        <source>Notes in the category "Instructions"</source>
+        <target>crwdns374380:0crwdne374380:0</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.instructions.description">
+        <source>Shows a list of pages with system notes in the category "Instructions"</source>
+        <target>crwdns374456:0crwdne374456:0</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.setting.category.label">
+        <source>Category</source>
+        <target>crwdns374384:0crwdne374384:0</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.setting.category.description">
+        <source>Category to be displayed.</source>
+        <target>crwdns374386:0crwdne374386:0</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.setting.category.label.all">
+        <source>All</source>
+        <target>crwdns374388:0crwdne374388:0</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.created">
+        <source>Created</source>
+        <target>crwdns374390:0crwdne374390:0</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.subjectmessage">
+        <source>Subject and message</source>
+        <target>crwdns374392:0crwdne374392:0</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.goto_page">
+        <source>Go to page</source>
+        <target>crwdns374394:0crwdne374394:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
