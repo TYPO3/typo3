@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814802" source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_csh_systmpl.xlf" date="2011-10-17T20:22:32Z" product-name="context_help" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>TypoScript template record.</source>
+        <target state="final">TypoScript टेम्पलेट रिकॉर्ड।</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" xml:space="preserve" approved="yes">
+				<source>The 'Template' records are the vital components used to set the design of the webpages. No matter how (almost) you would like to build your website, it must be initiated by a 'Template' record placed in the root of the page tree of the site.
+Basically, create a 'Template' record, enter a title and make sure to check of Clear constants, setup and Rootline. Then enter some TypoScript configuration in the Setup field and you're set.
+It's very important to read how to do all this in the documents listed below! Also make sure you use the Web&gt;Template module to do all the working with templates. It's a specialized tool to help you with this.</source>
+			<target state="final">'Template' रिकॉर्ड, वेबपेज का डिज़ाइन सेट करने के लिए इस्तेमाल होने वाले ज़रूरी हिस्से होते हैं। आप अपनी वेबसाइट को (लगभग) किसी भी तरह से बनाना चाहें, इसकी शुरुआत साइट के पेज ट्री के रूट में रखे गए एक 'Template' रिकॉर्ड से ही होनी चाहिए।
+असल में, एक 'Template' रिकॉर्ड बनाएँ, एक टाइटल डालें और 'Clear constants', 'setup' और 'Rootline' को ज़रूर चेक करें। फिर 'Setup' फ़ील्ड में कुछ TypoScript कॉन्फ़िगरेशन डालें और आपका काम हो गया।
+नीचे दिए गए डॉक्यूमेंट्स में यह सब कैसे करना है, यह पढ़ना बहुत ज़रूरी है! साथ ही, यह भी पक्का करें कि आप Templates के साथ सारा काम करने के लिए Web&gt; Template मॉड्यूल का ही इस्तेमाल करें। यह एक खास टूल है जो इस काम में आपकी मदद करेगा।</target></trans-unit>
+      <trans-unit id="_.seeAlso" resname="_.seeAlso" xml:space="preserve" approved="yes">
+				<source>static_template
+TSref | https://docs.typo3.org/typo3cms/TyposcriptReference/
+TypoScript in 45 min| https://docs.typo3.org/typo3cms/TyposcriptIn45MinutesTutorial/</source>
+			<target state="final">static_template
+TSref | https://docs.typo3.org/typo3cms/TyposcriptReference/
+TypoScript in 45 min| https://docs.typo3.org/typo3cms/TyposcriptIn45MinutesTutorial/</target></trans-unit>
+      <trans-unit id="_.image" resname="_.image" xml:space="preserve" approved="yes">
+				<source>EXT:frontend/Resources/Public/Images/cshimages/systemplate.png,
+EXT:frontend/Resources/Public/Images/cshimages/systemplate1.png</source>
+				
+			<target state="final">EXT:frontend/Resources/Public/Images/cshimages/systemplate.png,
+EXT:frontend/Resources/Public/Images/cshimages/systemplate1.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" xml:space="preserve" approved="yes">
+				<source>A Template Record with constants and setup code.
+The Web&gt;Template module contains tools which will help you to edit and validate TypoScript structures.</source>
+			<target state="final">कॉन्स्टेंट्स और सेटअप कोड वाला एक Template Record.
+Web&gt;Template मॉड्यूल में ऐसे टूल्स शामिल हैं, जो आपको TypoScript स्ट्रक्चर्स को एडिट और वैलिडेट करने में मदद करेंगे।</target></trans-unit>
+      <trans-unit id="hidden.details" resname="hidden.details" approved="yes">
+        <source>If the Template Record was the first record on a page hiding it will expose the second record on the page instead.</source>
+        <target state="final">यदि Template Record किसी पेज का पहला रिकॉर्ड था, तो उसे छिपाने पर उसकी जगह पेज का दूसरा रिकॉर्ड दिखाई देगा।</target>
+      </trans-unit>
+      <trans-unit id="starttime.description" resname="starttime.description" approved="yes">
+        <source>Start time. Use this to enable a template on a certain date.</source>
+        <target state="final">शुरू होने का समय। इसका उपयोग किसी निश्चित तारीख पर टेम्पलेट को चालू करने के लिए करें।</target>
+      </trans-unit>
+      <trans-unit id="endtime.description" resname="endtime.description" approved="yes">
+        <source>End time. Use this to disable a template on a certain date.</source>
+        <target state="final">समाप्ति समय। इसका उपयोग किसी निश्चित तिथि पर टेम्पलेट को निष्क्रिय करने के लिए करें।</target>
+      </trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>The title of the template record is only an internal label and does not have any effect on the output in the frontend.</source>
+        <target state="final">टेम्प्लेट रिकॉर्ड का शीर्षक केवल एक आंतरिक लेबल है, और फ्रंटएंड में आउटपुट पर इसका कोई प्रभाव नहीं पड़ता।</target>
+      </trans-unit>
+      <trans-unit id="constants.description" resname="constants.description" approved="yes">
+        <source>TypoScript Constants.</source>
+        <target state="final">TypoScript कॉन्स्टेंट्स।</target>
+      </trans-unit>
+      <trans-unit id="_constants.seeAlso" resname="_constants.seeAlso" approved="yes">
+        <source>static_template:constants</source>
+        <target state="final">static_template:constants</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="config.description" resname="config.description" approved="yes">
+        <source>TypoScript Setup code</source>
+        <target state="final">TypoScript सेटअप कोड</target>
+      </trans-unit>
+      <trans-unit id="config.details" resname="config.details" approved="yes">
+        <source>Read more about TypoScript Templates in TSref, TypoScript by Example and Getting Started.</source>
+        <target state="final">TSref, TypoScript  उदाहरण द्वारा  और शुरू करना में TypoScript टेम्पलेट्स के बारे में और पढ़ें।</target>
+      </trans-unit>
+      <trans-unit id="_config.seeAlso" resname="_config.seeAlso" xml:space="preserve" approved="yes">
+				<source>static_template:config,
+TSref | https://docs.typo3.org/typo3cms/TyposcriptReference/
+Getting Started | https://docs.typo3.org/typo3cms/GettingStartedTutorial/
+TypoScript in 45 min| https://docs.typo3.org/typo3cms/TyposcriptIn45MinutesTutorial/
+TypoScript Syntax | https://docs.typo3.org/typo3cms/TyposcriptSyntaxReference/</source>
+				
+			<target state="final">static_template:config,
+TSref | https://docs.typo3.org/typo3cms/TyposcriptReference/
+Getting Started | https://docs.typo3.org/typo3cms/GettingStartedTutorial/
+TypoScript in 45 min| https://docs.typo3.org/typo3cms/TyposcriptIn45MinutesTutorial/
+TypoScript Syntax | https://docs.typo3.org/typo3cms/TyposcriptSyntaxReference/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="resources.description" resname="resources.description" approved="yes">
+        <source>Resource files for the template. For example a logo, a TTF-font etc.</source>
+        <target state="final">टेम्प्लेट के लिए संसाधन फ़ाइलें। उदाहरण के लिए, एक लोगो, एक TTF-फ़ॉन्ट आदि।</target>
+      </trans-unit>
+      <trans-unit id="resources.details" resname="resources.details" approved="yes">
+        <source>Resource files can be referenced in TypoScript Template code by [filename]*.[ext] and has the advantage that the reference from TypoScript is not broken if you copy or export a Template Record where the resources ends up with new names.</source>
+        <target state="final">TypoScript Template कोड में Resource files को [filename]*.[ext] के ज़रिए रेफरेंस किया जा सकता है। इसका फ़ायदा यह है कि अगर आप किसी Template Record को कॉपी या एक्सपोर्ट करते हैं—जिसमें resources के नाम बदलकर नए हो जाते हैं—तो भी TypoScript से किया गया रेफरेंस टूटता नहीं है।</target>
+      </trans-unit>
+      <trans-unit id="clear.description" resname="clear.description" approved="yes">
+        <source>Flags that will clear the inheritance of TypoScript code from former templates in the root line. There is a flag for Constants and one for Setup code.</source>
+        <target state="final">ये ऐसे फ़्लैग हैं जो रूट लाइन में मौजूद पिछली टेम्प्लेट से TypoScript कोड की इनहेरिटेंस को हटा देंगे। इसमें Constants के लिए एक फ़्लैग है और Setup कोड के लिए एक फ़्लैग है।</target>
+      </trans-unit>
+      <trans-unit id="clear.details" resname="clear.details" approved="yes">
+        <source>In the Web &gt; Template / Template Analyzer module you can see how far back in the template tree that constants and setup code is inherited.</source>
+        <target state="final">Web &gt; Template / Template Analyzer मॉड्यूल में, आप देख सकते हैं कि template tree में constants और setup code कितनी पीछे से inherit किए गए हैं।</target>
+      </trans-unit>
+      <trans-unit id="_clear.seeAlso" resname="_clear.seeAlso" approved="yes">
+        <source>sys_template:root</source>
+        <target state="final">sys_template:root</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_clear.image" resname="_clear.image" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/systemplate2.png</source>
+        <target state="final">EXT:frontend/Resources/Public/Images/cshimages/systemplate2.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="root.description" resname="root.description" approved="yes">
+        <source>Defines that the template represents a root of a website.</source>
+        <target state="final">यह परिभाषित करता है कि यह टेम्पलेट किसी वेबसाइट के root का प्रतिनिधित्व करता है।</target>
+      </trans-unit>
+      <trans-unit id="_root.seeAlso" resname="_root.seeAlso" approved="yes">
+        <source>sys_template:clear</source>
+        <target state="final">sys_template:clear</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="includeStaticAfterBasedOn.description" resname="includeStaticAfterBasedOn.description" approved="yes">
+        <source>If set, static templates will be included after "based-on" templates. It basically swaps the order of inclusion of these external TypoScript sources.</source>
+        <target state="final">यदि इसे सेट किया जाता है, तो static templates को "based-on" टेम्पलेट्स के बाद शामिल किया जाएगा। यह मूल रूप से इन बाहरी TypoScript स्रोतों को शामिल करने के क्रम को आपस में बदल देता है।</target>
+      </trans-unit>
+      <trans-unit id="includeStaticAfterBasedOn.details" resname="includeStaticAfterBasedOn.details" approved="yes">
+        <source>The Web &gt; Template / Template Analyzer module allows you to view the order of inclusion of all TypoScript sources your template uses.</source>
+        <target state="final">Web &gt; Template / Template Analyzer मॉड्यूल आपको उन सभी TypoScript स्रोतों के शामिल होने का क्रम देखने की सुविधा देता है, जिनका उपयोग आपका Template करता है।</target>
+      </trans-unit>
+      <trans-unit id="include_static.description" resname="include_static.description" approved="yes">
+        <source>Static Template records to include.</source>
+        <target state="final">शामिल किए जाने वाले स्टैटिक टेम्प्लेट रिकॉर्ड।</target>
+      </trans-unit>
+      <trans-unit id="_include_static.seeAlso" resname="_include_static.seeAlso" approved="yes">
+        <source>static_template</source>
+        <target state="final">static_template</target>
+      </trans-unit>
+      <trans-unit id="include_static_file.description" resname="include_static_file.description" approved="yes">
+        <source>Static Template files to include.</source>
+        <target state="final">शामिल करने के लिए स्टैटिक टेम्प्लेट फ़ाइलें।</target>
+      </trans-unit>
+      <trans-unit id="include_static_file.details" resname="include_static_file.details" approved="yes">
+        <source>Static template files are registered by extensions contrary to Static Template records which come from the static database table, "static_template".</source>
+        <target state="final">Static template फ़ाइलें extensions द्वारा रजिस्टर की जाती हैं, इसके विपरीत Static Template records, "static_template" नामक static database table से आते हैं।</target>
+      </trans-unit>
+      <trans-unit id="_include_static_file.seeAlso" resname="_include_static_file.seeAlso" approved="yes">
+        <source>sys_template:include_static</source>
+        <target state="final">sys_template:include_static</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="basedOn.description" resname="basedOn.description" approved="yes">
+        <source>Other Template Records that are included like "static templates".</source>
+        <target state="final">अन्य Template Records, जो "static templates" के रूप में शामिल हैं।</target>
+      </trans-unit>
+      <trans-unit id="static_file_mode.description" resname="static_file_mode.description" approved="yes">
+        <source>Define the mode of inclusion of static template files.</source>
+        <target state="final">स्टैटिक टेम्प्लेट फ़ाइलों को शामिल करने का तरीका परिभाषित करें।</target>
+      </trans-unit>
+      <trans-unit id="static_file_mode.details" resname="static_file_mode.details" approved="yes">
+        <source>If you are in doubt about the inclusion order, make sure to use the Web &gt; Template / Template Analyzer to view the order.</source>
+        <target state="final">यदि आपको शामिल करने के क्रम के बारे में कोई संदेह है, तो क्रम देखने के लिए Web &gt; Template / Template Analyzer का उपयोग अवश्य करें।</target>
+      </trans-unit>
+      <trans-unit id="nextLevel.description" resname="nextLevel.description" approved="yes">
+        <source>Defines a template record to make active one level out in the page tree of this branch. This can be used to define another template record for the general website while having a special template for the frontpage.</source>
+        <target state="final">यह एक टेम्प्लेट रिकॉर्ड को परिभाषित करता है, जिसे इस ब्रांच के पेज ट्री में एक लेवल बाहर सक्रिय किया जाता है। इसका उपयोग सामान्य वेबसाइट के लिए एक अन्य टेम्प्लेट रिकॉर्ड परिभाषित करने के लिए किया जा सकता है, जबकि फ्रंटपेज के लिए एक विशेष टेम्प्लेट रखा जा सकता है।</target>
+      </trans-unit>
+      <trans-unit id="description.description" resname="description.description" approved="yes">
+        <source>Enter a description of the template if you like.</source>
+        <target state="final">अगर आप चाहें, तो टेम्प्लेट का विवरण दर्ज करें।</target>
+      </trans-unit>
+      <trans-unit id="editorcfg.description" resname="editorcfg.description" approved="yes">
+        <source>Editor Configuration for the stylesheet editor extension.</source>
+        <target state="final">स्टाइलशीट एडिटर एक्सटेंशन के लिए एडिटर कॉन्फ़िगरेशन।</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
