@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf" date="2021-01-29T00:14:02Z" product-name="cms" target-language="cs">
+    <header/>
+    <body>
+      <trans-unit id="totp.title" approved="yes">
+        <source>Time-based one-time password</source>
+        <target state="final">Časově založené jednorázové heslo</target>
+      </trans-unit>
+      <trans-unit id="totp.description" approved="yes">
+        <source>This provider allows to authenticate with a single-use passcode which is based on the current time.
+					Each code is only valid for 30 seconds. You need an OTP application or device, supporting such tokens.</source>
+        <target state="final">Tento zprostředkovatel umožňuje ověřování pomocí jednorázového přístupového kódu, který je založen na aktuálním čase.
+					Každý kód je platný pouze 30 sekund. Potřebujete aplikaci OTP nebo zařízení, které tyto tokeny podporuje.</target>
+      </trans-unit>
+      <trans-unit id="totp.setupInstructions" approved="yes">
+        <source>The time-based one-time password provider enables you to strengthen your accounts' security by requiring a six-digit code on every login.
+					This provider is based on a shared secret, which will be exchanged between your OTP application (or device) and TYPO3. Each code takes the current time into account and is only valid for 30 seconds.
+
+					Setting up:
+					1. Scan the QR-code or directly enter the shared secret in your application or device
+					2. Add a specific name for this provider (optional)
+					3. Enter the generated six-digit code in the corresponding field
+					4. Submit the form to activate the provider
+
+					Note: In case your application supports otpauth:// URLs, you can retrieve the URL by clicking on the info button next to the shared secret.</source>
+        <target state="final">Poskytovatel časově omezených jednorázových hesel vám umožňuje posílit zabezpečení vašich účtů tím, že při každém přihlášení vyžaduje šestimístný kód.
+Tento poskytovatel je založen na sdíleném tajném klíči, který bude vyměňován mezi vaší aplikací OTP (nebo zařízením) a TYPO3. Každý kód zohledňuje aktuální čas a je platný pouze po dobu 30 sekund.
+
+					Nastavení:
+1. Naskenujte QR kód nebo přímo zadejte sdílené tajemství do své aplikace nebo zařízení.
+2. Přidejte konkrétní název pro tohoto poskytovatele (volitelné).
+3. Zadejte vygenerovaný šestimístný kód do příslušného pole.
+4. Odesláním formuláře aktivujte poskytovatele.
+
+					Poznámka: Pokud vaše aplikace podporuje URL otpauth://, můžete URL získat kliknutím na tlačítko info vedle sdíleného tajného klíče.</target>
+      </trans-unit>
+      <trans-unit id="recoveryCodes.title" approved="yes">
+        <source>Recovery codes</source>
+        <target state="final">Obnovovací kódy</target>
+      </trans-unit>
+      <trans-unit id="recoveryCodes.description" approved="yes">
+        <source>This provider allows to authenticate with a set of single-use passcodes, in case you lost your
+					primary MFA credentials, or just have no access to them temporarily.</source>
+        <target state="final">Tento poskytovatel umožňuje ověřování pomocí sady jednorázových přístupových kódů pro případ, že byste ztratili svůj přístupový kód.
+					primárních pověření MFA nebo k nim jen dočasně nemáte přístup.</target>
+      </trans-unit>
+      <trans-unit id="recoveryCodes.setupInstructions" approved="yes">
+        <source>Recovery codes are random eight-digit codes which can be used to authenticate, in case your lost your main authentication credentials. Each code is only valid once.
+					As soon as all recovery codes are exhausted, you're required to generate a new set. Therefore, periodically check the amount of remaining codes in the Edit / Change view of the provider.
+
+					Setting up:
+					1. Copy the recovery codes and store them at a safe place
+					2. Add a specific name for this provider (optional)
+					3. Submit the form to activate the provider - see below note
+
+					Note: Since the recovery codes are being encrypted and stored securely, this process can take some time.</source>
+        <target state="final">Kódy pro obnovení jsou náhodné osmimístné kódy, které lze použít k ověření v případě ztráty hlavních ověřovacích údajů. Každý kód je platný pouze jednou.
+					Jakmile jsou všechny kódy pro obnovení vyčerpány, musíte si vygenerovat novou sadu. Proto pravidelně kontrolujte množství zbývajících kódů v zobrazení Upravit / Změnit poskytovatele.
+
+					Nastavení: Zkontrolujte, zda je možné použít obnovovací kód, který se používá pro obnovení kódů:
+					1. Zkopírujte kódy pro obnovení a uložte je na bezpečném místě.
+					2. Přidejte specifický název pro tohoto poskytovatele (volitelné).
+					3. Odesláním formuláře aktivujte poskytovatele - viz poznámka níže.
+
+					Poznámka: Vzhledem k tomu, že kódy pro obnovení jsou šifrovány a bezpečně uloženy, může tento proces nějakou dobu trvat.</target>
+      </trans-unit>
+      <trans-unit id="totpInputLabel" approved="yes">
+        <source>Enter the generated six-digit code</source>
+        <target state="final">Zadejte vygenerovaný šestimístný kód</target>
+      </trans-unit>
+      <trans-unit id="totpInputHelp" approved="yes">
+        <source>This code should now be displayed on your device or in your application.</source>
+        <target state="final">Tento kód by se měl nyní zobrazit na vašem zařízení nebo ve vaší aplikaci.</target>
+      </trans-unit>
+      <trans-unit id="locked" approved="yes">
+        <source>The maximum attempts for this provider are exceeded. Please use another provider or contact your administrator.</source>
+        <target state="final">Maximální počet pokusů pro tohoto poskytovatele byl překročen. Použijte jiného poskytovatele nebo se obraťte na správce.</target>
+      </trans-unit>
+      <trans-unit id="edit.table.head" approved="yes">
+        <source>Provider information</source>
+        <target state="final">Informace poskytovatele</target>
+      </trans-unit>
+      <trans-unit id="edit.table.name" approved="yes">
+        <source>Name</source>
+        <target state="final">Jméno</target>
+      </trans-unit>
+      <trans-unit id="edit.table.nameInputPlaceholder" approved="yes">
+        <source>Enter a name</source>
+        <target state="final">Zadejte jméno</target>
+      </trans-unit>
+      <trans-unit id="edit.table.recoveryCodesLeft" approved="yes">
+        <source>Recovery codes left</source>
+        <target state="final">Zbývající kódy pro obnovení</target>
+      </trans-unit>
+      <trans-unit id="edit.table.lastUsed" approved="yes">
+        <source>Last used</source>
+        <target state="final">Naposledy použito</target>
+      </trans-unit>
+      <trans-unit id="edit.table.lastUsed.default" approved="yes">
+        <source>Never</source>
+        <target state="final">Nikdy</target>
+      </trans-unit>
+      <trans-unit id="edit.table.lastUpdated" approved="yes">
+        <source>Last updated</source>
+        <target state="final">Poslední aktualizace</target>
+      </trans-unit>
+      <trans-unit id="edit.regenerate" approved="yes">
+        <source>Regenerate recovery codes</source>
+        <target state="final">Znovu vygenerovat obnovovací kódy</target>
+      </trans-unit>
+      <trans-unit id="edit.regenerate.description" approved="yes">
+        <source>
+					If you lost your recovery codes or just want to get fresh ones, you can
+					regenerate them by selecting the checkbox below. You've currently %d codes left.
+                </source>
+        <target state="final">					Pokud jste ztratili své obnovovací kódy nebo si chcete pořídit nové, můžete
+                    je znovu vygenerovat zaškrtnutím políčka níže. V současné době vám zbývá %d kódů.</target>
+      </trans-unit>
+      <trans-unit id="edit.regenerate.inputLabel" approved="yes">
+        <source>Regenerate recovery codes</source>
+        <target state="final">Znovu vygenerovat obnovovací kódy</target>
+      </trans-unit>
+      <trans-unit id="setup.step.1" approved="yes">
+        <source>Step 1</source>
+        <target state="final">Krok 1</target>
+      </trans-unit>
+      <trans-unit id="setup.step.1a" approved="yes">
+        <source>Step 1a</source>
+        <target state="final">Krok 1a</target>
+      </trans-unit>
+      <trans-unit id="setup.step.1b" approved="yes">
+        <source>Step 1b</source>
+        <target state="final">Krok 1b</target>
+      </trans-unit>
+      <trans-unit id="setup.step.2" approved="yes">
+        <source>Step 2</source>
+        <target state="final">Krok 2</target>
+      </trans-unit>
+      <trans-unit id="setup.step.3" approved="yes">
+        <source>Step 3</source>
+        <target state="final">Krok 3</target>
+      </trans-unit>
+      <trans-unit id="setup.qrCode.label" approved="yes">
+        <source>Scan the displayed QR code</source>
+        <target state="final">Naskenujte zobrazený QR kód</target>
+      </trans-unit>
+      <trans-unit id="setup.qrCode.help" approved="yes">
+        <source>Scan this code with your OTP application (e.g. Google Authenticator).</source>
+        <target state="final">Naskenujte tento kód pomocí OTP aplikace (např. Google Authenticator).</target>
+      </trans-unit>
+      <trans-unit id="setup.secret.label" approved="yes">
+        <source>Copy the shared secret</source>
+        <target state="final">Kopírovat sdílený tajný klíč</target>
+      </trans-unit>
+      <trans-unit id="setup.secret.help" approved="yes">
+        <source>You can also enter the shared secret manually in your OTP application or device.</source>
+        <target state="final">Můžete také ručně zadat sdílený tajný klíč v OTP aplikaci nebo zařízení.</target>
+      </trans-unit>
+      <trans-unit id="setup.name.label" approved="yes">
+        <source>Enter a name (optional)</source>
+        <target state="final">Zadejte název (volitelné)</target>
+      </trans-unit>
+      <trans-unit id="setup.name.help" approved="yes">
+        <source>Specify a custom name for this provider.</source>
+        <target state="final">Zadejte vlastní název pro tohoto poskytovatele.</target>
+      </trans-unit>
+      <trans-unit id="setup.recoveryCodes.InputLabel" approved="yes">
+        <source>Recovery codes</source>
+        <target state="final">Obnovovací kódy</target>
+      </trans-unit>
+      <trans-unit id="setup.recoveryCodes.InputHelp" approved="yes">
+        <source>Copy these codes and store them at a safe place.</source>
+        <target state="final">Zkopírujte tyto kódy a uložte je na bezpečné místo.</target>
+      </trans-unit>
+      <trans-unit id="setup.recoveryCodes.reloadTitle" approved="yes">
+        <source>Reload recovery codes</source>
+        <target state="final">Znovu načíst obnovovací kódy</target>
+      </trans-unit>
+      <trans-unit id="setup.recoveryCodes.reloadLabel" approved="yes">
+        <source>Reload</source>
+        <target state="final">Obnovit</target>
+      </trans-unit>
+      <trans-unit id="setup.recoveryCodes.noActiveProviders.title" approved="yes">
+        <source>Setup not possible</source>
+        <target state="final">Nastavení není možné</target>
+      </trans-unit>
+      <trans-unit id="setup.recoveryCodes.noActiveProviders.message" approved="yes">
+        <source>Recovery codes are only meant as a fallback if you lose access to your main multi-factor authentication credentials. Therefore, please activate a comprehensive MFA provider first.</source>
+        <target state="final">Obnovovací kódy slouží pouze jako záložní řešení pro případ, že ztratíte přístup ke svým hlavním přihlašovacím údajům pro vícefaktorové ověřování. Proto nejprve aktivujte komplexního poskytovatele MFA.</target>
+      </trans-unit>
+      <trans-unit id="setup.totpAuthUrlButton.title" approved="yes">
+        <source>Show authentication URL</source>
+        <target state="final">Zobrazit ověřovací URL</target>
+      </trans-unit>
+      <trans-unit id="setup.totpAuthUrlModal.title" approved="yes">
+        <source>Authentication URL</source>
+        <target state="final">Ověřovací URL</target>
+      </trans-unit>
+      <trans-unit id="setup.totpAuthUrlModal.description" approved="yes">
+        <source>In case you are not able to scan the QR code, but your OTP application supports
+					authentication URLs next to, or instead of plain shared secrets, you can copy and
+					paste the URL shown below. The URL contains some information like the issuer (this site)
+					and your email address or username. Most OTP applications will display this information
+					next to the generated codes.
+                </source>
+        <target state="final">Pokud nemůžete naskenovat QR kód, ale vaše aplikace OTP podporuje
+                    ověřovací URL adresy vedle nebo namísto běžných sdílených tajných klíčů, můžete zkopírovat a
+                    vložit níže uvedenou URL adresu. URL obsahuje některé informace, jako je vydavatel (tato stránka)
+                    a vaše e-mailová adresa nebo uživatelské jméno. Většina aplikací OTP zobrazí tyto informace
+                    vedle vygenerovaných kódů.</target>
+      </trans-unit>
+      <trans-unit id="setup.totpAuthUrlModal.ok" approved="yes">
+        <source>OK</source>
+        <target state="final">OK</target>
+      </trans-unit>
+      <trans-unit id="auth.totp.inputLabel" approved="yes">
+        <source>Enter the six-digit code</source>
+        <target state="final">Zadejte šestimístný kód</target>
+      </trans-unit>
+      <trans-unit id="auth.recoveryCodes.inputLabel" approved="yes">
+        <source>Enter an eight-digit recovery code</source>
+        <target state="final">Zadejte osmimístný obnovovací kód</target>
+      </trans-unit>
+      <trans-unit id="unlock.recoveryCodes.title" approved="yes">
+        <source>Your recovery codes were automatically updated!</source>
+        <target state="final">Vaše obnovovací kódy byly automaticky aktualizovány!</target>
+      </trans-unit>
+      <trans-unit id="unlock.recoveryCodes.message" approved="yes">
+        <source>Please copy and store them at a safe place: %s</source>
+        <target state="final">Prosím, zkopírujte je a uložte na bezpečném místě: %s</target>
+      </trans-unit>
+      <trans-unit id="update.recoveryCodes.title" approved="yes">
+        <source>Recovery codes successfully regenerated</source>
+        <target state="final">Obnovovací kódy byly úspěšně obnoveny</target>
+      </trans-unit>
+      <trans-unit id="update.recoveryCodes.message" approved="yes">
+        <source>Please copy and store them at a safe place: %s</source>
+        <target state="final">Prosím, zkopírujte a uložte je na bezpečném místě: %s</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
