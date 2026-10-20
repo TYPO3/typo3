@@ -1,0 +1,751 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:scheduler/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="scheduler" target-language="ar">
+    <header/>
+    <body>
+      <trans-unit id="button.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">إلغاء</target>
+      </trans-unit>
+      <trans-unit id="button.group.modalOk" approved="yes">
+        <source>Create group</source>
+        <target state="final">إنشاء مجموعة</target>
+      </trans-unit>
+      <trans-unit id="function.scheduler" approved="yes">
+        <source>Scheduled tasks</source>
+        <target state="final">المهام المُجدوَلة</target>
+      </trans-unit>
+      <trans-unit id="function.check" approved="yes">
+        <source>Setup check</source>
+        <target state="final">التحقق من الإعداد</target>
+      </trans-unit>
+      <trans-unit id="function.add" approved="yes">
+        <source>New task</source>
+        <target state="final">مَهمّة جديدة</target>
+      </trans-unit>
+      <trans-unit id="function.group.add" approved="yes">
+        <source>New group</source>
+        <target state="final">مجموعة جديدة</target>
+      </trans-unit>
+      <trans-unit id="function.group.label" approved="yes">
+        <source>Group name</source>
+        <target state="final">اسم المجموعة</target>
+      </trans-unit>
+      <trans-unit id="hdg.cliScript" approved="yes">
+        <source>CLI script</source>
+        <target state="final">CLI script</target>
+      </trans-unit>
+      <trans-unit id="hdg.composerMode" approved="yes">
+        <source>System is running in Composer Mode</source>
+        <target state="final">النظام قيد التشغيل في وضع Composer</target>
+      </trans-unit>
+      <trans-unit id="msg.composerMode" approved="yes">
+        <source>
+					The system is running in composer mode, the path to the `typo3` executable could not be reliably determined.
+					By default, the command to run in composer mode is `vendor/bin/typo3 scheduler:run`.
+                </source>
+        <target state="final">
+					يعمل النظام في وضع Composer، ولا يمكن تحديد المسار المؤدي إلى 'TYPO3` بطريقة موثوقة.
+				بشكل افتراضي، لتشغيله الأمر في وضع Composer هو 'vendor/bin/typo3 scheduler:run`.
+                </target>
+      </trans-unit>
+      <trans-unit id="hdg.lastRun" approved="yes">
+        <source>Last run</source>
+        <target state="final">آخر تشغيل</target>
+      </trans-unit>
+      <trans-unit id="label.automatically" approved="yes">
+        <source>automatically</source>
+        <target state="final">تلقائياً</target>
+      </trans-unit>
+      <trans-unit id="label.cachingFrameworkGarbageCollection.selectBackends" approved="yes">
+        <source>Backend types</source>
+        <target state="final">أنواع الواجهة الخلفية</target>
+      </trans-unit>
+      <trans-unit id="label.recyclerGarbageCollection.numberOfDays" approved="yes">
+        <source>Number of days until removing files</source>
+        <target state="final">عدد الأيام المُتبقية حتى إزالة الملفات</target>
+      </trans-unit>
+      <trans-unit id="label.checkAll" approved="yes">
+        <source>Check/uncheck all</source>
+        <target state="final">تحديد/إلغاء تحديد الكل</target>
+      </trans-unit>
+      <trans-unit id="label.class" approved="yes">
+        <source>Task</source>
+        <target state="final">المهمة</target>
+      </trans-unit>
+      <trans-unit id="label.cron" approved="yes">
+        <source>Cron</source>
+        <target state="final">Cron</target>
+      </trans-unit>
+      <trans-unit id="label.defType" approved="yes">
+        <source>Definition type</source>
+        <target state="final">نوع التعريف</target>
+      </trans-unit>
+      <trans-unit id="label.defType.interval" approved="yes">
+        <source>Interval</source>
+        <target state="final">فترة</target>
+      </trans-unit>
+      <trans-unit id="label.defType.cron" approved="yes">
+        <source>Cron command</source>
+        <target state="final">Cron Command</target>
+      </trans-unit>
+      <trans-unit id="label.description" approved="yes">
+        <source>Description</source>
+        <target state="final">الوَصف</target>
+      </trans-unit>
+      <trans-unit id="label.email" approved="yes">
+        <source>Email</source>
+        <target state="final">البريد الإلكتروني</target>
+      </trans-unit>
+      <trans-unit id="label.end" approved="yes">
+        <source>End (HH:MM DD-MM-YYYY)</source>
+        <target state="final">النهاية (HH:MM DD-MM-YYYY)</target>
+      </trans-unit>
+      <trans-unit id="scheduledFrom" approved="yes">
+        <source>Start at</source>
+        <target state="final">البدء من</target>
+      </trans-unit>
+      <trans-unit id="scheduledUntil" approved="yes">
+        <source>Run periodically until</source>
+        <target state="final">التشغيل بشكل دوري حتى</target>
+      </trans-unit>
+      <trans-unit id="label.executeSelected" approved="yes">
+        <source>Execute</source>
+        <target state="final">تنفيذ</target>
+      </trans-unit>
+      <trans-unit id="label.cronjobSelected" approved="yes">
+        <source>Execute on next cron job</source>
+        <target state="final">التنفيذ في وظيفة Cron التالية</target>
+      </trans-unit>
+      <trans-unit id="label.frequency" approved="yes">
+        <source>Frequency</source>
+        <target state="final">التردّد</target>
+      </trans-unit>
+      <trans-unit id="label.frequency.long" approved="yes">
+        <source>Frequency (seconds or cron command)</source>
+        <target state="final">التردد (ثوان أو أمر cron)</target>
+      </trans-unit>
+      <trans-unit id="label.id" approved="yes">
+        <source>ID</source>
+        <target state="final">ID</target>
+      </trans-unit>
+      <trans-unit id="label.lastExecution" approved="yes">
+        <source>Last Execution</source>
+        <target state="final">آخر إجراء</target>
+      </trans-unit>
+      <trans-unit id="label.manual" approved="yes">
+        <source>Manual</source>
+        <target state="final">الدليل</target>
+      </trans-unit>
+      <trans-unit id="label.manually" approved="yes">
+        <source>manually</source>
+        <target state="final">يدَويّاً</target>
+      </trans-unit>
+      <trans-unit id="label.nextExecution" approved="yes">
+        <source>Next Execution</source>
+        <target state="final">الإجراء التالي</target>
+      </trans-unit>
+      <trans-unit id="label.parallel" approved="yes">
+        <source>Parallel Execution</source>
+        <target state="final">الإجراء المُوازي</target>
+      </trans-unit>
+      <trans-unit id="label.parallel.long" approved="yes">
+        <source>Allow Parallel Execution</source>
+        <target state="final">السماح بالإجراء المُوازي</target>
+      </trans-unit>
+      <trans-unit id="label.serverTime" approved="yes">
+        <source>Server time</source>
+        <target state="final">وقت الخادم</target>
+      </trans-unit>
+      <trans-unit id="label.sleepTime" approved="yes">
+        <source>Sleep time</source>
+        <target state="final">وقت السكون</target>
+      </trans-unit>
+      <trans-unit id="label.start" approved="yes">
+        <source>Start (HH:MM DD-MM-YYYY)</source>
+        <target state="final">البدء (HH:MM DD-MM-YYYY)</target>
+      </trans-unit>
+      <trans-unit id="label.fileStorageIndexing.storage" approved="yes">
+        <source>Storage to index</source>
+        <target state="final">التخزين للفهرسة</target>
+      </trans-unit>
+      <trans-unit id="label.fileStorageExtraction.fileCount" approved="yes">
+        <source>Number of files per run</source>
+        <target state="final">عدد الملفات لكل تشغيل</target>
+      </trans-unit>
+      <trans-unit id="label.fileStorageExtraction.registeredExtractors" approved="yes">
+        <source>Registered extractors</source>
+        <target state="final">المُستَخرجَات المُسجلة</target>
+      </trans-unit>
+      <trans-unit id="label.fileStorageExtraction.registeredExtractors.extractor" approved="yes">
+        <source>%1$s with priority %2$d</source>
+        <target state="final">%1$s مع الأولوية %2$d</target>
+      </trans-unit>
+      <trans-unit id="label.fileStorageExtraction.registeredExtractors.with_extractors" approved="yes">
+        <source>Following extractors have been registered and will be used when running this task</source>
+        <target state="final">تم تسجيل المُستخرجات التالية وسيتم استخدامها عند تشغيل هذه المهمة</target>
+      </trans-unit>
+      <trans-unit id="label.fileStorageExtraction.registeredExtractors.without_extractors" approved="yes">
+        <source>There currently is no extractor registered. This task will have no effect.</source>
+        <target state="final">لا يوجدُ حالياً أيُّ مُستخرِجٍ مُسجَّلٍ. لن يكونَ لهذهِ المهمةِ أيُّ تأثيرٍ.</target>
+      </trans-unit>
+      <trans-unit id="label.tableGarbageCollection.allTables" approved="yes">
+        <source>Clean all available tables</source>
+        <target state="final">تنظيف جميع الجداول المتاحة</target>
+      </trans-unit>
+      <trans-unit id="label.tableGarbageCollection.allTables.description" approved="yes">
+        <source>Note: Entries from all available tables are deleted based on the table-specific "expirePeriod" option.</source>
+        <target state="final">ملاحظة: سيتم حذف الإدخالات من جميع الجداول المتاحة استناداً إلى خيار "expirePeriod" الخاص بالجدول.</target>
+      </trans-unit>
+      <trans-unit id="label.tableGarbageCollection.table" approved="yes">
+        <source>Table to clean up</source>
+        <target state="final">جدول للتنظيف</target>
+      </trans-unit>
+      <trans-unit id="label.tableGarbageCollection.additionalInformationTable" approved="yes">
+        <source>Table: %s</source>
+        <target state="final">الجدول: %s</target>
+      </trans-unit>
+      <trans-unit id="label.tableGarbageCollection.additionalInformationAllTables" approved="yes">
+        <source>All tables</source>
+        <target state="final">جميع الجداول</target>
+      </trans-unit>
+      <trans-unit id="label.tableGarbageCollection.numberOfDays" approved="yes">
+        <source>Delete entries older than given number of days</source>
+        <target state="final">حذف الإدخالات القديمة التي يزيد عمرها عن عدد الأيام المعطى</target>
+      </trans-unit>
+      <trans-unit id="label.optimizeDatabaseTables.selectTables" approved="yes">
+        <source>Database tables</source>
+        <target state="final">جداول قاعدة البيانات</target>
+      </trans-unit>
+      <trans-unit id="label.status" approved="yes">
+        <source>Status</source>
+        <target state="final">الحالة</target>
+      </trans-unit>
+      <trans-unit id="label.type" approved="yes">
+        <source>Type</source>
+        <target state="final">النوع</target>
+      </trans-unit>
+      <trans-unit id="runningType" approved="yes">
+        <source>Run task multiple times?</source>
+        <target state="final">تشغيل المهمة عدة مرات؟</target>
+      </trans-unit>
+      <trans-unit id="label.type.recurring" approved="yes">
+        <source>Recurring</source>
+        <target state="final">مُتكرّر</target>
+      </trans-unit>
+      <trans-unit id="label.type.single" approved="yes">
+        <source>Single</source>
+        <target state="final">فردي</target>
+      </trans-unit>
+      <trans-unit id="label.group" approved="yes">
+        <source>Task group</source>
+        <target state="final">مجموعة المهمة</target>
+      </trans-unit>
+      <trans-unit id="label.noGroup" approved="yes">
+        <source>Not assigned to any task group</source>
+        <target state="final">غير مُسند إلى أي مجموعة مهمة</target>
+      </trans-unit>
+      <trans-unit id="label.group.isDisabled" approved="yes">
+        <source>disabled</source>
+        <target state="final">مُعطّل</target>
+      </trans-unit>
+      <trans-unit id="label.group.unused" approved="yes">
+        <source>Unused task groups</source>
+        <target state="final">مجموعات المهام غير المُستخدمة</target>
+      </trans-unit>
+      <trans-unit id="label.group.tableColumn" approved="yes">
+        <source>Group</source>
+        <target state="final">المجموعة</target>
+      </trans-unit>
+      <trans-unit id="label.group.enable" approved="yes">
+        <source>Enable group</source>
+        <target state="final">تفعيل المجموعة</target>
+      </trans-unit>
+      <trans-unit id="label.group.disable" approved="yes">
+        <source>Disable group</source>
+        <target state="final">تعطيل المجموعة</target>
+      </trans-unit>
+      <trans-unit id="label.group.edit" approved="yes">
+        <source>Edit group</source>
+        <target state="final">تعديل المجموعة</target>
+      </trans-unit>
+      <trans-unit id="label.errorClass" approved="yes">
+        <source>Broken tasks</source>
+        <target state="final">المهام العاطلة</target>
+      </trans-unit>
+      <trans-unit id="label.saveAndCreateNewTask" approved="yes">
+        <source>Save and create new task</source>
+        <target state="final">حفظ وإنشاء مهمة جديدة</target>
+      </trans-unit>
+      <trans-unit id="label.addOptionToCommand" approved="yes">
+        <source>Add option</source>
+        <target state="final">إضافة خيار</target>
+      </trans-unit>
+      <trans-unit id="label.setOptionForCommand" approved="yes">
+        <source>Set option</source>
+        <target state="final">تعيين خيار</target>
+      </trans-unit>
+      <trans-unit id="label.runOnCli" approved="yes">
+        <source>Run on CLI</source>
+        <target state="final">تشغيل على CLI</target>
+      </trans-unit>
+      <trans-unit id="msg.cliScript" approved="yes">
+        <source>The script to execute the Scheduler from the command line is: &lt;strong&gt;"%s scheduler:run"&lt;/strong&gt;.</source>
+        <target state="final">البرنامج النص الذي يُستخدم لتشغيل الجدولة الزمنية من سطر الأوامر هو: &lt;strong&gt;"%s scheduler:run"&lt;/strong&gt;.</target>
+      </trans-unit>
+      <trans-unit id="msg.cliScriptExecutable" approved="yes">
+        <source>The web server user is allowed execute this script.</source>
+        <target state="final">يسمح لمستخدم خادم الويب بتنفيذ هذا البرنامج النصي.</target>
+      </trans-unit>
+      <trans-unit id="msg.cliScriptNotExecutable" approved="yes">
+        <source>The web server user is not allowed to execute this script.</source>
+        <target state="final">لا يسمح لمستخدم خادم الويب بتنفيذ هذا البرنامج النصي.</target>
+      </trans-unit>
+      <trans-unit id="msg.delete" approved="yes">
+        <source>Are you sure you want to delete this task?</source>
+        <target state="final">هل أنت متأكد من أنك تريد حذف هذه المَهمة؟</target>
+      </trans-unit>
+      <trans-unit id="msg.deleteError" approved="yes">
+        <source>The task could not be deleted.</source>
+        <target state="final">لا يُمكن حذف المَهمة.</target>
+      </trans-unit>
+      <trans-unit id="msg.deleteSuccess" approved="yes">
+        <source>The task was successfully deleted.</source>
+        <target state="final">تم حذف المهمة بنجاح.</target>
+      </trans-unit>
+      <trans-unit id="msg.endDateSmallerThanStartDate" approved="yes">
+        <source>The end date is before the start date.</source>
+        <target state="final">تاريخ الانتهاء قبل تاريخ البدء.</target>
+      </trans-unit>
+      <trans-unit id="msg.executed" approved="yes">
+        <source>Task "%s" with uid "%s" has been executed.</source>
+        <target state="final">المهمة "%s" مع معرف "%s" قد تم تنفيذها.</target>
+      </trans-unit>
+      <trans-unit id="msg.frequencyError" approved="yes">
+        <source>Invalid frequency. Please enter either a number of seconds or a valid cron command. The cron parser said: %1$s [code: %2$d].</source>
+        <target state="final">تردد غير صالح. يرجى إدخال عدد من الثواني أو أمر cron صالح. قال مُحلل cron: %1$s [code: %2$d].</target>
+      </trans-unit>
+      <trans-unit id="msg.incompleteLastRun" approved="yes">
+        <source>The information about the last execution of the Scheduler is incomplete.</source>
+        <target state="final">المعلومات حول آخر تنفيذ لجدول المهام غير المُكتملة.</target>
+      </trans-unit>
+      <trans-unit id="msg.invalidFrequency" approved="yes">
+        <source>Invalid frequency. Please enter either a number of seconds or a valid cron command.</source>
+        <target state="final">تردد غير صالح. يرجى إدخال عدد من الثواني أو أمر cron صالح.</target>
+      </trans-unit>
+      <trans-unit id="msg.invalidSleepTime" approved="yes">
+        <source>Please enter a sleep time greater or equal to 0 (zero).</source>
+        <target state="final">الرجاء إدخال وقت سُكون أكبر أو يساوي 0 (صفر).</target>
+      </trans-unit>
+      <trans-unit id="msg.lastRun" approved="yes">
+        <source>The Scheduler was last started (%1$s) on %2$s at %3$s and ended on %4$s at %5$s.</source>
+        <target state="final">آخر مرة بدأ فيها المجدول (%1$s) على %2$s في %3$s وانتهى على %4$s في %5$s.</target>
+      </trans-unit>
+      <trans-unit id="msg.canNotDeleteRunningTask" approved="yes">
+        <source>A running task may not be deleted.</source>
+        <target state="final">قد لا يتم حذف مَهمة قيد التشغيل.</target>
+      </trans-unit>
+      <trans-unit id="msg.maynotEditRunningTask" approved="yes">
+        <source>A running task may not be edited.</source>
+        <target state="final">قد لا يتم تعديل مَهمة قيد التشغيل.</target>
+      </trans-unit>
+      <trans-unit id="msg.maynotStopNonRunningTask" approved="yes">
+        <source>The task is not running. There are no executions to unmark.</source>
+        <target state="final">المهمة ليست قيد التشغيل. لا توجد عمليات تنفيذ لإلغاء تحديدها.</target>
+      </trans-unit>
+      <trans-unit id="msg.noEmail" approved="yes">
+        <source>Please enter an email address.</source>
+        <target state="final">الرجاء إدخال عنوان بريد إلكتروني.</target>
+      </trans-unit>
+      <trans-unit id="msg.noFrequency" approved="yes">
+        <source>No frequency was defined, either as an interval or as a cron command.</source>
+        <target state="final">ولم يتم تعريف أي تردد، سواء كفترة زمنية أو كأمر cron.</target>
+      </trans-unit>
+      <trans-unit id="msg.noLastRun" approved="yes">
+        <source>The Scheduler has never yet run or the information about the last run has been lost.</source>
+        <target state="final">لم يتم تشغيل المُجَدول بعد أو تم فقدان معلومات آخر تشغيل.</target>
+      </trans-unit>
+      <trans-unit id="msg.invalidRunningType" approved="yes">
+        <source>The selected task type must be either "single execution" or "recurring execution".</source>
+        <target state="final">يجبُ أن يكونَ نوعُ المهمةِ المحددةِ إمَّا "تنفيذٌ مُفردٌ" أو "تنفيذٌ متكرِّرٌ".</target>
+      </trans-unit>
+      <trans-unit id="msg.noTasks" approved="yes">
+        <source>No tasks found</source>
+        <target state="final">لم يتم العثور على أي مهام</target>
+      </trans-unit>
+      <trans-unit id="msg.noTasks.createNew" approved="yes">
+        <source>There are currently no configured tasks found. You can create a new one.</source>
+        <target state="final">لا يوجد حالياً أي مهام تم تكوينها. يمكنك إنشاء واحدة جديدة.</target>
+      </trans-unit>
+      <trans-unit id="msg.noTasks.nonAvailable" approved="yes">
+        <source>There are currently no tasks available in the system to be configured.</source>
+        <target state="final">لا توجد حالياً مهام متوفرة في النظام الذي سيتم تكوينه.</target>
+      </trans-unit>
+      <trans-unit id="msg.notExecuted" approved="yes">
+        <source>Task "%s" with uid "%s" has not been executed.</source>
+        <target state="final">المهمة "%s" مع معرف "%s" لم يتم تنفيذها.</target>
+      </trans-unit>
+      <trans-unit id="msg.executionFailed" approved="yes">
+        <source>Execution of task "%1$s" failed with the following message: %2$s</source>
+        <target state="final">فشل تنفيذ المهمة "%1$s" في الرسالة التالية: %2$s</target>
+      </trans-unit>
+      <trans-unit id="msg.schedulingFailed" approved="yes">
+        <source>Scheduling of task "%1$s" failed with the following message: %2$s</source>
+        <target state="final">فشل جدولة المهمة "%1$s" في الرسالة التالية: %2$s</target>
+      </trans-unit>
+      <trans-unit id="msg.toggleDisableFailed" approved="yes">
+        <source>Toggling disabled state of task "%1$s" failed with the following message: %2$s</source>
+        <target state="final">فشل تبديل حالة تعطيل المهمة "%1$s" مع الرسالة التالية: %2$s</target>
+      </trans-unit>
+      <trans-unit id="msg.stopTaskFailed" approved="yes">
+        <source>Stopping task "%1$s" failed with the following message: %2$s</source>
+        <target state="final">فشل إيقاف المهمة "%1$s" مع الرسالة التالية: %2$s</target>
+      </trans-unit>
+      <trans-unit id="msg.executionFailureDefault" approved="yes">
+        <source>The execution failed, but the error message could not be retrieved (it was probably too large). Sorry.</source>
+        <target state="final">فشل التنفيذ، ولكن تعذر استرداد رسالة الخطأ (ربما كانت كبيرة جداً). عُذراً.</target>
+      </trans-unit>
+      <trans-unit id="msg.executionFailureReport" approved="yes">
+        <source>Execution failed: %1$d, %2$s</source>
+        <target state="final">فشل التنفيذ: %1$d, %2$s</target>
+      </trans-unit>
+      <trans-unit id="msg.noStartDate" approved="yes">
+        <source>Please define a start date.</source>
+        <target state="final">الرجاء تحديد تاريخ البدء.</target>
+      </trans-unit>
+      <trans-unit id="msg.invalidStartDate" approved="yes">
+        <source>Start date is invalid.</source>
+        <target state="final">تاريخ البدء غير صالح.</target>
+      </trans-unit>
+      <trans-unit id="msg.invalidEndDate" approved="yes">
+        <source>End date is invalid.</source>
+        <target state="final">تاريخ النهاية غير صالح.</target>
+      </trans-unit>
+      <trans-unit id="msg.invalidNumberOfDays" approved="yes">
+        <source>Number of days is invalid.</source>
+        <target state="final">عدد الأيام غير صالح.</target>
+      </trans-unit>
+      <trans-unit id="msg.selectionOfNonExistingCacheBackends" approved="yes">
+        <source>Some of the selected cache backends do not exist. Please select valid backends only.</source>
+        <target state="final">بعض خوادم التخزين المؤقت المحددة غير موجودة. يُرجى اختيار خوادم صالحة فقط.</target>
+      </trans-unit>
+      <trans-unit id="msg.noCacheBackendSelected" approved="yes">
+        <source>Please select at least one cache backend.</source>
+        <target state="final">الرجاء تحديد ذاكرة تخزين مؤقتة واحدة على الأقل للواجهة الخلفية.</target>
+      </trans-unit>
+      <trans-unit id="msg.invalidTaskClass" approved="yes">
+        <source><![CDATA[<strong>The following tasks are broken.</strong> If your task doesn't have a registered class, you should consider reinstalling the extension that provided them or simply deleting the task. In case the error is "Cannot unserialize [class]", the announced class must be removed from your task class, as it is not allowed to be used due to security reasons. Please check also if any of the listed tasks have to be recreated manually (which can be necessary after an extension update due to breaking changes or missing migration scripts).]]></source>
+        <target state="final"><![CDATA[<strong>المهام التالية تحتاج للإصلاح.</strong> إذا لم تحتوي مهمتك على فئة مسجلة، يُرجى النظر في إعادة تثبيت الإضافة التي يوفرها أو حذف المهمة ببساطة. في حالة الخطأ "لا يمكن فك تسلسل [class]"، يجب إزالة الفئة المُعلنة من فئة المهمة الخاصة بك، حيث لا يُسمح باستخدامها لأسباب أمان. يُرجى التحقق أيضًا مما إذا كانت أي من المهام المدرجة يجب إعادة إنشاؤها يدويًا (وهو قد يكون ضروريًا بعد تحديث الامتداد بسبب التغييرات الكبيرة أو نقص سيناريوهات الهجرة).]]></target>
+      </trans-unit>
+      <trans-unit id="msg.errorMessage" approved="yes">
+        <source>Error message</source>
+        <target state="final">رسالة الخطأ</target>
+      </trans-unit>
+      <trans-unit id="msg.invalidTaskClass.infobox.title" approved="yes">
+        <source>%s registered scheduler tasks can not be executed</source>
+        <target state="final">لا يمكن تنفيذ %s المهام المجدولة المسجلة</target>
+      </trans-unit>
+      <trans-unit id="msg.invalidTaskClass.infobox.message" approved="yes">
+        <source><![CDATA[<a href="#scheduler-task-group-missing">Please check the erroneous tasks.</a>]]></source>
+        <target state="final"><![CDATA[<a href="#scheduler-task-group-missing">يُرجى التحقُّقُ من المهامِ الخاطئةِ.</a>]]></target>
+      </trans-unit>
+      <trans-unit id="msg.schedulerSetupCheck" approved="yes">
+        <source>This screen checks if the requisites for running the Scheduler as a cron job are fulfilled. It also displays information about the last run of the Scheduler.</source>
+        <target state="final">يقوم هذه الشاشة بالتحقق مما إذا تم استيفاء الشروط اللازمة لتشغيل المجدول كوظيفة cron. كما يعرض معلومات حول آخر تشغيل للمجدول.</target>
+      </trans-unit>
+      <trans-unit id="msg.serverTime" approved="yes">
+        <source>Current server time is %s.</source>
+        <target state="final">وقت الخادم الحالي هو %s.</target>
+      </trans-unit>
+      <trans-unit id="msg.serverTimeHelp" approved="yes">
+        <source>All dates and times in the Scheduler are measured according to the server's time, as the Scheduler is run purely on the server-side.</source>
+        <target state="final">جميع التواريخ والأوقات في المُجدول تُقاس وفقًا لوقت الخادم، حيث يتم تشغيل المجدول بشكلٍ خالص على (Server-side).</target>
+      </trans-unit>
+      <trans-unit id="msg.stop" approved="yes">
+        <source>Are you sure you want to mark this task as not running? Note that this will not stop the actual script (if unsure please refer to the manual).</source>
+        <target state="final">هل أنت متأكد من أنك تريد وضع علامة على هذه المهمة على أنها ليست قيد التشغيل؟ لاحظ أن هذا لن يوقف البرنامَج النصي الفعلي (إذا لم تكن متأكدًا يرجى الرجوع إلى الدليل).</target>
+      </trans-unit>
+      <trans-unit id="msg.stopError" approved="yes">
+        <source>The task could not be marked as non-running.</source>
+        <target state="final">لا يمكن وضع علامة على المهمة على أنها ليست قيد التشغيل.</target>
+      </trans-unit>
+      <trans-unit id="msg.stopSuccess" approved="yes">
+        <source>The task was successfully marked as non-running.</source>
+        <target state="final">تم وضع علامة نجاح للمهمة بصفة غير قائمة على التشغيل.</target>
+      </trans-unit>
+      <trans-unit id="msg.taskNotFound" approved="yes">
+        <source>The requested task (UID: %d) was not found.</source>
+        <target state="final">لم يتم العثور على المهمة المطلوبة (UID: %d).</target>
+      </trans-unit>
+      <trans-unit id="msg.updateError" approved="yes">
+        <source>The task could not be updated.</source>
+        <target state="final">تعذّر تحديث المَهمّة.</target>
+      </trans-unit>
+      <trans-unit id="msg.selectionOfNonExistingDatabaseTables" approved="yes">
+        <source>Some of the selected database tables do not exist. Please select only valid tables.</source>
+        <target state="final">بعض جداول قاعدة البيانات المُحددة غير موجودة. الرجاء تحديد جداول صالحة فقط.</target>
+      </trans-unit>
+      <trans-unit id="msg.noDatabaseTablesSelected" approved="yes">
+        <source>Please select at least one database table.</source>
+        <target state="final">الرجاء تحديد جدول قاعدة بيانات واحد على الأقل.</target>
+      </trans-unit>
+      <trans-unit id="msg.unregisteredCommand" approved="yes">
+        <source>Command with identifier "%s" has not been registered.</source>
+        <target state="final">الأمر المُعطى بالمُعرّف "%s" لم يتم تسجيله.</target>
+      </trans-unit>
+      <trans-unit id="msg.errorParsingArguments" approved="yes">
+        <source>Error parsing current set of arguments: "%s".</source>
+        <target state="final">خطأ في تحليل مجموعة الوسائط الحالية: "%s".</target>
+      </trans-unit>
+      <trans-unit id="msg.errorParsingOptions" approved="yes">
+        <source>Error parsing current set of options: "%s".</source>
+        <target state="final">خطأ في تحليل مجموعة الخيارات الحالية: "%s".</target>
+      </trans-unit>
+      <trans-unit id="msg.mandatoryArgumentMissing" approved="yes">
+        <source>Argument "%s" is mandatory.</source>
+        <target state="final">المُعامل "%s" إلزامي.</target>
+      </trans-unit>
+      <trans-unit id="msg.taskEnabled" approved="yes">
+        <source>Task "%s" with uid "%s" has been enabled.</source>
+        <target state="final">تم تفعيل المهمة "%s" برقم الهوية "%s".</target>
+      </trans-unit>
+      <trans-unit id="msg.taskDisabled" approved="yes">
+        <source>Task "%s" with uid "%s" has been disabled.</source>
+        <target state="final">تم تعطيل المهمة "%s" برقم الهوية "%s".</target>
+      </trans-unit>
+      <trans-unit id="msg.taskEnabledAndQueuedForExecution" approved="yes">
+        <source>Task "%s" with uid "%s" has been enabled and queued for execution at next scheduler CLI run.</source>
+        <target state="final">تم تفعيل المهمة "%s" بمُعرّف "%s" وتم وضعها في قائمة الانتظار للتنفيذ في أقرب جِلسة تشغيل لجدول المهام (scheduler) عبر واجهة السطر (CLI).</target>
+      </trans-unit>
+      <trans-unit id="msg.taskQueuedForExecution" approved="yes">
+        <source>Task "%s" with uid "%s" has been queued for execution at next scheduler CLI run.</source>
+        <target state="final">تم إضافة المهمة "%s" ذات المُعرّف "%s" إلى قائمة الانتظار للتنفيذ في التشغيل التالي لجدول المهام الخاص بواجهة سطر الأوامر.</target>
+      </trans-unit>
+      <trans-unit id="msg.group.deleted" approved="yes">
+        <source>Successfully deleted scheduler group.</source>
+        <target state="final">تم حذف مجموعة المُجَدْول بنجاح.</target>
+      </trans-unit>
+      <trans-unit id="msg.group.delete.failed" approved="yes">
+        <source>Failed to delete scheduler group.</source>
+        <target state="final">فشل في حذف مجموعة المُجَدْول.</target>
+      </trans-unit>
+      <trans-unit id="msg.invalidTaskType" approved="yes">
+        <source>Invalid Task type</source>
+        <target state="final">نوع المهمة غير صالح</target>
+      </trans-unit>
+      <trans-unit id="msg.defaultExpirePeriod" approved="yes">
+        <source>Default expire period of %d days, configured for selected table "%s", will be used.</source>
+        <target state="final">سيتم استخدام فترة انتهاء الصلاحية الافتراضية البالغة %d يوماً، والتي تم تكوينها للجدول المحدد "%s".</target>
+      </trans-unit>
+      <trans-unit id="none" approved="yes">
+        <source>None</source>
+        <target state="final">لا شَيْء</target>
+      </trans-unit>
+      <trans-unit id="status" approved="yes">
+        <source>Status</source>
+        <target state="final">الحالة</target>
+      </trans-unit>
+      <trans-unit id="status.progress" approved="yes">
+        <source>Progress</source>
+        <target state="final">مستوى التقدُّم</target>
+      </trans-unit>
+      <trans-unit id="status.disabled" approved="yes">
+        <source>disabled</source>
+        <target state="final">مُعطّل</target>
+      </trans-unit>
+      <trans-unit id="status.disabledByGroup" approved="yes">
+        <source>disabled by group</source>
+        <target state="final">مُعطّل حسب المجموعة</target>
+      </trans-unit>
+      <trans-unit id="status.failure" approved="yes">
+        <source>failure</source>
+        <target state="final">فشل</target>
+      </trans-unit>
+      <trans-unit id="status.late" approved="yes">
+        <source>late</source>
+        <target state="final">متأخر</target>
+      </trans-unit>
+      <trans-unit id="status.running" approved="yes">
+        <source>running</source>
+        <target state="final">قيد التشغيل</target>
+      </trans-unit>
+      <trans-unit id="status.scheduled" approved="yes">
+        <source>scheduled</source>
+        <target state="final">مُجدوَل</target>
+      </trans-unit>
+      <trans-unit id="task" approved="yes">
+        <source>Task</source>
+        <target state="final">المهمة</target>
+      </trans-unit>
+      <trans-unit id="title" approved="yes">
+        <source>TYPO3 Scheduler administration module</source>
+        <target state="final">وحدة إدارة جدولة TYPO3</target>
+      </trans-unit>
+      <trans-unit id="action.run_task" approved="yes">
+        <source>Run task</source>
+        <target state="final">تشغيل المهمة</target>
+      </trans-unit>
+      <trans-unit id="action.run_task_cron" approved="yes">
+        <source>Run task on next cron job</source>
+        <target state="final">تشغيل المَهمّة في الجولة الزمنية التالية للمهمة المُجدولة</target>
+      </trans-unit>
+      <trans-unit id="cachingFrameworkGarbageCollection.name" approved="yes">
+        <source>Caching framework garbage collection</source>
+        <target state="final">جمع القمامة في إطار التخزين المؤقت</target>
+      </trans-unit>
+      <trans-unit id="fileIndexing.name" approved="yes">
+        <source>[OBSOLETE] File Abstraction Layer: Indexing job</source>
+        <target state="final">[OBSOLETE] طبقة تجريد الملفات: وظيفة الفهرسة</target>
+      </trans-unit>
+      <trans-unit id="fileIndexing.description" approved="yes">
+        <source>Runs indexing tasks based on an indexing configuration and a storage/folder information.</source>
+        <target state="final">يقوم بتشغيل مهام الفَهرسة استنادًا إلى تكوين الفهرسة ومعلومات التخزين/المجلد.</target>
+      </trans-unit>
+      <trans-unit id="fileStorageIndexing.name" approved="yes">
+        <source>File Abstraction Layer: Update storage index</source>
+        <target state="final">طبقة التجريد الملفات: تحديث فهرس التخزين</target>
+      </trans-unit>
+      <trans-unit id="fileStorageIndexing.description" approved="yes">
+        <source>Updates the Index/Cache Data of a Storage; only needed if changes to the storage are possible outside the backend (FTP, RemoteStorages).</source>
+        <target state="final">يُحدث بيانات الفِهْرِس/الذاكرة المؤقتة لمخزن، مطلوب فقط في حال كانت هناك تغييرات ممكنة للمخزن خارج لوحة التحكم (FTP، RemoteStorages).</target>
+      </trans-unit>
+      <trans-unit id="fileStorageExtraction.name" approved="yes">
+        <source>File Abstraction Layer: Extract metadata in storage</source>
+        <target state="final">طبقة تجريد الملف: استخراج البيانات الوصفية في التخزين</target>
+      </trans-unit>
+      <trans-unit id="fileStorageExtraction.description" approved="yes">
+        <source>Extracts metadata for all files in storage which have been changed since last run.</source>
+        <target state="final">يستخرج بيانات التعريف لجميع الملفات الموجودة في التخزين والتي تم تغييرها منذ آخر تشغيل.</target>
+      </trans-unit>
+      <trans-unit id="tableGarbageCollection.name" approved="yes">
+        <source>Table garbage collection</source>
+        <target state="final">التطهير الآلي للجداول</target>
+      </trans-unit>
+      <trans-unit id="recyclerGarbageCollection.name" approved="yes">
+        <source>Fileadmin garbage collection</source>
+        <target state="final">مجموعة قمامة Fileadmin</target>
+      </trans-unit>
+      <trans-unit id="executeSchedulableCommandTask.name" approved="yes">
+        <source>Execute console commands</source>
+        <target state="final">تنفيذ أوامر وحدة التحكم</target>
+      </trans-unit>
+      <trans-unit id="executeSchedulableCommandTask.description" approved="yes">
+        <source>Allows regular console commands to be configured and executed through the scheduler framework.</source>
+        <target state="final">تسمح هذه الإضافة بتكوين وتنفيذ الأوامر النصية العادية عبر إطار الجدولة (الجدول الزمني).</target>
+      </trans-unit>
+      <trans-unit id="optimizeDatabaseTable.name" approved="yes">
+        <source>Optimize MySQL database tables</source>
+        <target state="final">تحسين جداول قاعدة البيانات MySQL</target>
+      </trans-unit>
+      <trans-unit id="ipAnonymization.name" approved="yes">
+        <source>Anonymize IP addresses in database tables</source>
+        <target state="final">عدم تتبع عناوين IP في جداول قاعدة البيانات</target>
+      </trans-unit>
+      <trans-unit id="label.ipAnonymization.table" approved="yes">
+        <source>Table to anonymize</source>
+        <target state="final">جدول لإخفاء الهوية</target>
+      </trans-unit>
+      <trans-unit id="label.ipAnonymization.additionalInformationTable" approved="yes">
+        <source>Table: %s after %s days</source>
+        <target state="final">الجدول: %s بعد %s أيام</target>
+      </trans-unit>
+      <trans-unit id="label.ipAnonymization.additionalInformationAllTables" approved="yes">
+        <source>All tables</source>
+        <target state="final">جميع الجداول</target>
+      </trans-unit>
+      <trans-unit id="label.ipAnonymization.numberOfDays" approved="yes">
+        <source>Handle entries older than given number of days</source>
+        <target state="final">التعامل مع الإدخالات القديمة التي يزيد عمرها عن عدد الأيام المعطى</target>
+      </trans-unit>
+      <trans-unit id="label.ipAnonymization.mask" approved="yes">
+        <source>Mask level</source>
+        <target state="final">مستوى القناع</target>
+      </trans-unit>
+      <trans-unit id="label.ipAnonymization.mask.1" approved="yes">
+        <source>Last byte for IPv4 / Interface ID for IPv6</source>
+        <target state="final">آخر بايت لـ IPv4 / معرف الواجهة لـ IPv6</target>
+      </trans-unit>
+      <trans-unit id="label.ipAnonymization.mask.2" approved="yes">
+        <source>Last 2 bytes for IPv4 / Interface &amp; SLA ID for IPv6</source>
+        <target state="final">آخر 2 بايت لـ IPv4 / الواجهة &amp; SLA ID لـ IPv6</target>
+      </trans-unit>
+      <trans-unit id="label.schedulableCommand.command_configuration" approved="yes">
+        <source>Command configuration</source>
+        <target state="final">تكوين الأوامر "Command"</target>
+      </trans-unit>
+      <trans-unit id="label.schedulableCommand.command_configuration.description" approved="yes">
+        <source>Configure available arguments and options for the command.</source>
+        <target state="final">تكوين الحُجج والخيارات المُتاحة للأوامر.</target>
+      </trans-unit>
+      <trans-unit id="command.example1" approved="yes">
+        <source>Every day-of-week from Monday through Friday at 09:00 and 15:00</source>
+        <target state="final">كل يوم من الأسبوع، من يوم الإثنين حتى يوم الجمعة الساعة 09:00 والساعة 15:00</target>
+      </trans-unit>
+      <trans-unit id="command.example2" approved="yes">
+        <source>Every 2 hours</source>
+        <target state="final">كل ساعتين</target>
+      </trans-unit>
+      <trans-unit id="command.example3" approved="yes">
+        <source>Every 20 minutes</source>
+        <target state="final">كل 20 دقيقة</target>
+      </trans-unit>
+      <trans-unit id="command.example4" approved="yes">
+        <source>Every Tuesday at 07:00</source>
+        <target state="final">كل يوم ثلاثاء الساعة 07:00</target>
+      </trans-unit>
+      <trans-unit id="systemmessage.noLastRun" approved="yes">
+        <source><![CDATA[It seems the Scheduler has never yet run. Please check your <a href="%1$s">configuration</a>.]]></source>
+        <target state="final"><![CDATA[يبدو أن المُجَدول لم يعمل بعد. يُرجى التحقق من <a href="%1$s">التكوين</a> الخاص بك.]]></target>
+      </trans-unit>
+      <trans-unit id="systeminformation.lastRunLabel" approved="yes">
+        <source>Last Scheduler run</source>
+        <target state="final">آخر تشغيل للمُجدول</target>
+      </trans-unit>
+      <trans-unit id="systeminformation.lastRunValue" approved="yes">
+        <source>%1$s at %2$s, Duration %3$s, (started %4$s)</source>
+        <target state="final">%1$s في %2$s، المدة %3$s، (بدأت %4$s)</target>
+      </trans-unit>
+      <trans-unit id="msg.group.notification.error.title" approved="yes">
+        <source>Error</source>
+        <target state="final">خطأ</target>
+      </trans-unit>
+      <trans-unit id="msg.group.notification.error.message" approved="yes">
+        <source>Could not create group</source>
+        <target state="final">تعذّر إنشاء المجموعة</target>
+      </trans-unit>
+      <trans-unit id="editableGroupName.input.field.label" approved="yes">
+        <source>Enter a group name</source>
+        <target state="final">أدخل اسماً للمجموعة</target>
+      </trans-unit>
+      <trans-unit id="editableGroupName.button.edit.label" approved="yes">
+        <source>Edit group name</source>
+        <target state="final">تعديل اسم المجموعة</target>
+      </trans-unit>
+      <trans-unit id="newSchedulerTask.filter.placeholder" approved="yes">
+        <source>Search for any kind of tasks</source>
+        <target state="final">البحث عن أي نوع من المهام</target>
+      </trans-unit>
+      <trans-unit id="newSchedulerTask.filter.noResults" approved="yes">
+        <source>Unfortunately no scheduler task matches your query, please try a different one.</source>
+        <target state="final">لسوء الحظ، لا يوجد مهمة مُجدوَلة تُطابق الاستعلام الخاص بك، يرجى تجرِبة مهمة مختلفة.</target>
+      </trans-unit>
+      <!-- Moved from messages.xlf to solve https://forge.typo3.org/issues/108902-->
+      <trans-unit id="delete_group" approved="yes">
+        <source>Delete this task group? You can restore it in the module "Recycler".</source>
+        <target state="final">هل تريدُ حذفَ مجموعةِ المهامِ هذهِ؟ يمكنُكَ استعادتُها في الوحدةِ "سلةُ المحذوفاتِ".</target>
+      </trans-unit>
+      <trans-unit id="delete_task" approved="yes">
+        <source>Delete this task? You can restore it in the module "Recycler".</source>
+        <target state="final">هل تريدُ حذفَ هذهِ المهمةِ؟ يمكنُكَ استعادتُها في الوحدةِ "سلةُ المحذوفاتِ".</target>
+      </trans-unit>
+      <trans-unit id="task.count" approved="yes">
+        <source>{count, plural, one {# task} other {# tasks}}</source>
+        <target state="final">{count, plural, one {# task} other {# tasks}}</target>
+      </trans-unit>
+      <trans-unit id="unusedGroups.count" approved="yes">
+        <source>{count, plural, one {# unused task group} other {# unused task groups}}</source>
+        <target state="final">{count, plural, one {# unused task group} other {# unused task groups}}</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
