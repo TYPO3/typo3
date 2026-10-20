@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415815007" source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="tstemplate" target-language="es-ES">
+    <header/>
+    <body>
+      <trans-unit id="moduleTitle" resname="moduleTitle" approved="yes">
+        <source>Template tools</source>
+        <target state="final">Herramientas de plantillas</target>
+      </trans-unit>
+      <trans-unit id="templateAnalyzer" resname="templateAnalyzer" approved="yes">
+        <source>Template Analyzer</source>
+        <target state="final">Analizador de plantillas</target>
+      </trans-unit>
+      <trans-unit id="infoModify" resname="infoModify" approved="yes">
+        <source>Info/Modify</source>
+        <target state="final">Información/Modificar</target>
+      </trans-unit>
+      <trans-unit id="objectBrowser" resname="objectBrowser" approved="yes">
+        <source>TypoScript Object Browser</source>
+        <target state="final">Navegador de objetos de TypoScript</target>
+      </trans-unit>
+      <trans-unit id="viewTemplates" resname="viewTemplates" approved="yes">
+        <source>Viewing templates of</source>
+        <target state="final">Viendo plantillas de</target>
+      </trans-unit>
+      <trans-unit id="pageName" resname="pageName" approved="yes">
+        <source>Page name</source>
+        <target state="final">Nombre de la página</target>
+      </trans-unit>
+      <trans-unit id="templates" resname="templates" approved="yes">
+        <source>Templates</source>
+        <target state="final">Plantillas</target>
+      </trans-unit>
+      <trans-unit id="isRoot" resname="isRoot" approved="yes">
+        <source>Is Root?</source>
+        <target state="final">¿Es raíz?</target>
+      </trans-unit>
+      <trans-unit id="isExt" resname="isExt" approved="yes">
+        <source>Is Ext?</source>
+        <target state="final">¿Es Extensión?</target>
+      </trans-unit>
+      <trans-unit id="overview" resname="overview" approved="yes">
+        <source>This is an overview of the pages in the database containing one or more template records. Click a page title to go to the page.</source>
+        <target state="final">Esta es una visión general de las páginas de la base de datos que contienen uno o más registros de plantillas. Haz clic en el título de la página para ir a la página.</target>
+      </trans-unit>
+      <trans-unit id="areYouSure" resname="areYouSure" approved="yes">
+        <source>Are you sure you want to do this?</source>
+        <target state="final">¿Estás seguro de que quieres hacer esto?</target>
+      </trans-unit>
+      <trans-unit id="noTemplate" resname="noTemplate" approved="yes">
+        <source>No template</source>
+        <target state="final">Sin plantilla</target>
+      </trans-unit>
+      <trans-unit id="noTemplateDescription" resname="noTemplateDescription" approved="yes">
+        <source>There was no template on this page!</source>
+        <target state="final">¡No hay ninguna plantilla en esta página!</target>
+      </trans-unit>
+      <trans-unit id="createTemplate" resname="createTemplate" approved="yes">
+        <source>Create a template record first in order to edit constants!</source>
+        <target state="final">¡Crea primero un registro de plantilla para editar constantes!</target>
+      </trans-unit>
+      <trans-unit id="createTemplateToEditConfiguration" resname="createTemplateToEditConfiguration" approved="yes">
+        <source>You need to create a template record below in order to edit your configuration.</source>
+        <target state="final">Necesitas crear un registro de plantilla a continuación para poder editar la configuración.</target>
+      </trans-unit>
+      <trans-unit id="newWebsite" resname="newWebsite" approved="yes">
+        <source>Create new website</source>
+        <target state="final">Crear un nuevo sitio web</target>
+      </trans-unit>
+      <trans-unit id="newWebsiteDescription" resname="newWebsiteDescription" approved="yes">
+        <source>If you want this page to be the root of a new website, optionally based on one of the standard templates, then press the button below</source>
+        <target state="final">Si quieres que esta página sea la raíz de un nuevo sitio web, opcionalmente basada en una de las plantillas estándar, entonces pulsa el botón de abajo</target>
+      </trans-unit>
+      <trans-unit id="newWebsiteAction" resname="newWebsiteAction" approved="yes">
+        <source>Create template for a new site</source>
+        <target state="final">Crear plantilla para un nuevo sitio</target>
+      </trans-unit>
+      <trans-unit id="extTemplate" resname="extTemplate" approved="yes">
+        <source>Create extension template</source>
+        <target state="final">Crear plantilla de extensión</target>
+      </trans-unit>
+      <trans-unit id="extTemplateDescription" resname="extTemplateDescription" approved="yes">
+        <source>An extension template allows you to enter TypoScript values that will affect only this page and subpages.</source>
+        <target state="final">Una plantilla de extensión te permite introducir valores de TypoScript que afectarán solo a esta página y subpáginas.</target>
+      </trans-unit>
+      <trans-unit id="extTemplateAction" resname="extTemplateAction" approved="yes">
+        <source>Click here to create an extension template.</source>
+        <target state="final">Haz clic aquí para crear una plantilla de extensión.</target>
+      </trans-unit>
+      <trans-unit id="goToClosest" resname="goToClosest" approved="yes">
+        <source>Go to closest page with template</source>
+        <target state="final">Ir a la página más cercana con plantilla</target>
+      </trans-unit>
+      <trans-unit id="goToClosestDescription" resname="goToClosestDescription" approved="yes">
+        <source>Closest template is on page '%s' (uid %s).</source>
+        <target state="final">La plantilla más cercana está en la página '%s' (uid %s).</target>
+      </trans-unit>
+      <trans-unit id="goToClosestAction" resname="goToClosestAction" approved="yes">
+        <source>Click here to go.</source>
+        <target state="final">Haz clic aquí para ir.</target>
+      </trans-unit>
+      <trans-unit id="titleNewSiteStandard" resname="titleNewSiteStandard" approved="yes">
+        <source>NEW SITE, based on standard</source>
+        <target state="final">NUEVO SITIO, basado en el estándar</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
